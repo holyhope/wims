@@ -5,7 +5,7 @@
 !!
 
 last_=!sh stat -c%Y $wims_home/s2/$wims_session/whoconnect.$wims_class
-!if $wims_nowseconds-$last_>300
+!if $wims_nowseconds-$last_>300 or $wims_read_parm=1
  ses_=!sh cd $wims_home/sessions;\
  grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
  ses_=!words2items $ses_
