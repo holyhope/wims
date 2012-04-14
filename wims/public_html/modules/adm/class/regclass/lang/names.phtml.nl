@@ -70,9 +70,8 @@ Code van $name_classe\
 External authentification CAS (optional)\
  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
-!set name_host=!nosubst Noms des postes à partir desquels vous effectuerez les opérations sensibles \
- dans votre $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
- sensible (conseillé). Mettre le mot <tt class="wims_code_words">all</tt> désactivera cette mesure de sécurité.
+!set name_host=!nosubst Computers van waaruit management mag worden uitgevoerd in de klassen: $name_classe .\
+Als hier niets wordt ingevuld, wordt bij elke handeling eerst een goedkeuringsemailtje verstuurd.\
+Als hier <tt class="wims_code_words">all</tt> wordt ingevuld, zijn deze handelingen vanaf elke computer toegestaan. 
 
-!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
-(fourni par votre ENT par exemple).
+!set name_cas_help=Bij gebruik van externe authentificatie niet het type CAS vergeten.
