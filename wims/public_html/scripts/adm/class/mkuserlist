@@ -83,7 +83,9 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
 	user_class, user_participate, user_exists, user_external_auth
   !readdef $mul_userdir/$u
   
-  !if $user_exists=yes and $user_supervisable!=yes
+  !if $user_exists=yes 
+!! suppress to add supervisor who are registered as participant to appear in userlist
+!! and $user_supervisable!=yes
    userline=:$user_lastname,$user_firstname,$u
 
    !reset userline_external
