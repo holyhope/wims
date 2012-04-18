@@ -1,0 +1,72 @@
+!goto $gstep
+
+:0
+
+!! setup variables on the first page ??
+
+!goto end
+
+:1
+
+  <th>$name_numstud</th><th>Group $name_group</th><th>$name_extra</th>
+ </tr>
+ !for i=1 to $numsess
+$table_tr
+  <td>
+  <input size=4 name="nstud$i" id="nstud$i" value="$(nstud$i)">
+  </td>
+  <td>
+!! need a variable, using exconnip
+!default exconnip$i=gruppo $i
+!if $vote_status=0
+   <input size=20 name="exconnip$i" id="exconnip$i" value="$(exconnip$i)">
+!else
+  $(exconnip$i)
+!endif
+  </td>
+  <td>
+   <input size=10 name="testoextra$i" id="testoextra$i" value="$(testoextra$i)">
+  </td>
+ </tr>
+ !next i
+
+!goto end
+
+:2
+
+!! FIXME: need to check no "," in exconnip/testoextra
+
+!for i=1 to $numsess
+!for dato in nstud$i,testoextra$i,exconnip$i
+ !appendfile $votedir/$vote.data $dato=$($dato)
+!next dato
+!next i
+
+!appendfile $votedir/$vote.data \
+:$testointro
+
+!set reg_src=<div>\
+$testointro\
+</div>\
+\list{
+
+!set reg_src1=$reg_src
+!set reg_src2=\uservar{$nameexvar,nogroup,
+
+!for i=1 to $numsess
+
+!set reg_src1=$reg_src1\
+$(nstud$i): $(exconnip$i) $(testoextra$i),
+!set reg_src2=$reg_src2\
+$i,
+
+!next i
+!set reg_src=$reg_src1\
+$name_cancellation\
+}\
+$reg_src2\
+nogroup\
+}
+
+
+:end
