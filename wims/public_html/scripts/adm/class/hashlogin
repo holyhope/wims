@@ -42,7 +42,12 @@ login_init=$login
       !set tt1=!lookup $login_ext in wimshome/log/classes/$cl/.teacherlist_external
       !set tt2=!lookup $login_ext in wimshome/log/classes/$cl/.userlist_external
       !if $tt1!=$empty or $tt2!=$empty
-         login=$tt1$tt2
+!! user can be both in .userlist and in .teacherlist (see r5260)
+	!if $tt1=$tt2
+           login=$tt1
+        !else
+           login=$tt1$tt2
+        !endif
         !exit
       !endif
       !read adm/class/userinclass $cl,$login
