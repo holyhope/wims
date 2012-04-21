@@ -85,6 +85,9 @@ $ in $l
  rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
 
 !read adm/class/mkuserlist $qclass
+!! log student have been added to class (cfr. module/adm/class/reguser/var.proc)
+date=!translate : to . in $wims_now
+!appendfile wimshome/log/classes/$qclass/.log $date $httpd_REMOTE_ADDR      User $quser added 
 
 !if $class_superclass != $empty
   !read adm/class/mkuserlist $subclass
