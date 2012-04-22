@@ -8,7 +8,11 @@
  !read header_js.phtml
  !set wims_html_header=!append line $header_js_editor to $wims_html_header
 !endif
-
+!if $modtoolhelp=yes or $cmd=help
+ !for id in wims_show, wims_show1, wims_show2
+   !read js/edit_area.phtml $id wimsoef
+ !next
+!endif
 !read adm/css.phtml
 !header
 
