@@ -22,10 +22,17 @@ $table_hdtr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align="center">
+ !set wims_ref_class=wims_button
  !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
+  !set wims_ref_class=wims_button
   !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
+&nbsp;
+  !if $s_!=main
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list&job2=erase&block=$s_ $wims_name_erase
+  !endif
  !endif
 </td>
 !next i

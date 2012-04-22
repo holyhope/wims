@@ -1,0 +1,11 @@
+blocklist=!filelist $wims_home/$Docdir/$doc
+!writefile $docdir/$doc/.index
+blocklist=!words2items $blocklist
+!for b in $blocklist
+ !if .def $ isin $b $ and $b!=.def
+  t_=!defof titb in $docdir/$doc/$b
+  n_=!char 1 to -5 of $b
+  !appendfile $docdir/$doc/.index :$n_\
+$t_
+ !endif
+!next b
