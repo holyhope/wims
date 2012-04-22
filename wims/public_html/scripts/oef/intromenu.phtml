@@ -213,17 +213,16 @@ $name_remarkintro3
 !next
 !set authorlist=!replace internal $translator_unknown by in $authorlist
 !set authorlist=!replace internal ; by , in $authorlist
-
 !if $authorlist!= and $authorlist notsametext $exolist
   !set authorlist=!listuniq $authorlist
   !set tmp=!items2words $module_author
   !set tmp=!replace internal ; by , in $tmp
   !set tmp=!singlespace $tmp
   !set authorlist=!singlespace $authorlist
-  !set authorlist=!listcomplement $tmp in $authorlist
-  !set authorlist_cnt=!itemcnt $authorlist
-  !set authorlist=!replace internal , by ,$ $ in $authorlist 
-  !if $authorlist_cnt > 1
+  !set authorlist1=!listcomplement $tmp in $authorlist
+  !set authorlist_cnt=!itemcnt $authorlist1
+  !set authorlist=!replace internal , by ,$ $ in $authorlist
+  !if $authorlist_cnt > 0
    <div class="wims_contribute">$name_Contribute $authorlist.</div>
   !endif
 !endif
