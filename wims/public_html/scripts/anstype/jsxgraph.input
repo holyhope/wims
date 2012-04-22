@@ -1,0 +1,56 @@
+!set ans_require=jsxgraph
+
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=capture()
+
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!set oef_applet_option=!replace internal $	$ by $\
+$  in $inputsize
+
+!set variable=!line -1 of $oef_applet_option
+!set oef_applet_option=!line 1 to -2 of $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+!if $test issametext $empty
+ !set Inputsize=!replace internal x by , in $Inputsize
+ !set oef_applet_option=!line 2 to -1 of $oef_applet_option
+ !set oef_applet_option=!declosing $oef_applet_option
+ !distribute items $Inputsize into xsize,ysize
+!endif
+
+!set jbox=!line 1 of $oef_applet_option
+
+!set oef_applet_option=!line 2 to -1 of $oef_applet_option
+!set script=$oef_applet_option
+!set variable=!replace internal ; by $\
+$ in $variable
+!set cnt_var=!linecnt $variable
+!reset liste_variable
+!for j_ = 1 to $cnt_var
+ !set l_=!line $j_ of $variable
+ !set l_=!replace internal = by , in $l_
+ !set liste_variable=!append item $jbox_$(l_[1]) to $liste_variable
+ !set script=!replace internal $jbox_$(l_[1]) by $(l_[2]) in $script
+!next
+!set oef_applet_option=$jbox,$xsize x $ysize,$oef_applet_option\
+$liste_variable
+
+!readproc slib/geo2D/jsxgraph $jbox,$xsize x $ysize,$script
+$slib_out
+
+<script>
+var capture = function() {
+        document.getElementById('jsreply$i').value=
+!for var in $liste_variable
+  !set rep=!replace internal var by rep in $var 
+  $(rep).X() + ',' + $(rep).Y() + ';' +
+!next
+'';}
+</script>
+
+<input type="hidden" name="reply$i" id="jsreply$i" value="">

@@ -1,0 +1,75 @@
+reply=$(reply$i)
+replygood=$(replygood$i)
+
+script=!line 1 to -2 of $oef_applet_option
+script1=$script
+liste_variable=!line -1 of $oef_applet_option
+cnt_variable=!itemcnt $liste_variable
+!for j = 1 to $cnt_variable
+  !set script=!replace internal $(liste_variable[$j]) by [$(reply[$j;])] in $script
+  !if \ notin $(replygood[$j;])
+    !set script1=!replace internal $(liste_variable[$j]) by [$(replygood[$j;])] in $script1
+  !endif
+!next
+!set jbox=!item 1 of $oef_applet_option
+
+script1=!replace internal $jbox by new$jbox in $script1
+precision=!getopt precision in $(replyoption$i)
+!default precision=10
+
+!readproc slib/geo2D/jsxgraph $script; brd.suspendUpdate() ;
+
+reply_$i=$slib_out
+!! bonne reponse
+!!!readproc slib/geo2D/jsxgraph $script1; brd.suspendUpdate() ;
+!!reply_$i=$(reply_$i) $slib_out
+
+!! if empty, take the value of reply_$i
+reply__$i=
+!! enlever le ; de la fin
+reply$i=!nonempty lines $(reply$i)
+reply$i=!nonempty rows $(reply$i)
+reply__$i=&nbsp;
+!if $wims_read_parm=nocompare
+  !exit
+!endif
+
+!! on analyse numeriquement la reponse
+
+
+!reset cnt_rep
+!set replygood=!lines2rows $(replygood$i)
+
+!for j= 1 to $cnt_variable
+  !if \ notin $(replygood[$j;]) and $(replygood[$j;]) != $empty
+   !increase cnt_rep
+   !set c=!itemcnt $(replygood[$j;])
+   !for u=1 to $c
+     good_=$(replygood[$j;$u])
+     !ifval abs($good_ - $(reply$i[$j;$u])) < 1/$precision
+       sc=$sc 1
+     !else
+       sc=$sc 0
+     !endif
+     !if $u < $c 
+      sc=$sc,
+     !endif
+   !next
+  !endif
+  sc=$sc;
+!next
+sc=!nonempty rows $sc
+sc=!nonempty items $sc
+
+score=!replace internal ; by , in $sc
+score=!replace internal , by + in $score
+
+score=$[($score)/(2*$cnt_rep)]
+
+freegot=$[$freegot+$score]
+
+!if $score=1
+ diareply$i=good
+!else
+ diareply$i=bad
+!endif
