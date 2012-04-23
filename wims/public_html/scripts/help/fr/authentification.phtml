@@ -1,0 +1,95 @@
+Plusieurs méthodes d'authentification sont possibles dans WIMS :
+
+<ol><li>
+Authentification par WIMS.
+</li><li>
+Authentification CAS permettant d'authentifier les utilisateurs
+avec une authentification unique (environnement Single Sign On (SSO)).
+L'enseignant doit alors connaître l'adresse url qui lui est fourni
+par l'organisme auquel il appartient ainsi que ses élèves.
+</li><li>
+Authentification par un annuaire ldap (dépend des autorisations
+que l'annuaire donne au serveur WIMS).
+</li><li>
+Authentification par un script php (utilise le module raw de wims et demande
+pour l'instant l'installation de simplesamlphp).
+</li></ol>
+
+<p>
+D'autre part, au moment de l'inscription, les données relatives
+à l'identité du participant (nom, prénom, adresse mail, etc) peuvent être cherchées
+dans un annuaire ldap (même restriction que précédemment pour le ldap).
+</p><p>
+Dans chacun des cas, indiquons la procédure d'inscription ou d'authentification :
+</p>
+<h3>
+Authentification par WIMS (défaut)
+</h3>
+C'est l'authentification primitive sous WIMS.
+<ul><li>
+Soit l'enseignant inscrit les participants en choisissant un identifiant et
+en indiquant leur identité, un mot de passe.
+</li><li>
+Soit le participant entre le mot de passe de la classe que lui a donné l'enseignant et
+s'inscrit en choisissant un identifiant et en indiquant son identité, un mot de passe.
+</li></ul>
+Le participant entre ensuite dans la classe avec cet identifiant et son mot de passe.
+
+<h3>
+Authentification par CAS :
+</h3>
+<ul><li>
+L'enseignant doit préliminairement configurer sa classe
+en entrant l'adresse de l'hôte CAS qu'il désire utiliser, soit au moment de la
+création de la classe, soit en allant dans <tt class="wims_code_words">
+Configuration/Maintenance - Authentification</tt>
+(dans le menu de gauche).
+</li><li>
+L'enseignant donne le mot de passe de la classe aux futurs participants.
+</li><li>
+Le participant clique sur le bouton d'entrée sur la ligne de sa classe. La fenêtre
+d'authentification CAS apparaît. Il entre son identifiant CAS.
+S'il n'est pas encore inscrit, le mot de passe de la classe lui est demandé.
+En cas de succès, il lui est demandé d'entrer ses identifiants.
+Il doit aussi accepter les conditions d'utilisation.
+S'il est déjà inscrit, il entre directement dans la classe.
+</li><li>
+L'enseignant peut aussi inscrire lui-même les participants. Dans ce cas,
+le participant a seulement à accepter les conditions d'utilisation.
+</li></ul>
+<h3>
+Authentification par CAS et identification par ldap.
+</h3>
+L'enseignant doit préliminairement configurer sa classe
+en entrant l'adresse de l'hôte CAS qu'il désire utiliser
+en allant dans <tt class="wims_code_words">Configuration/Maintenance - Authentification</tt>
+(dans le menu de gauche) et en entrant les paramètres techniques
+du ldap. Il doit aussi vérifier que l'annuaire accepte des requêtes
+du serveur WIMS (voir avec le responsable de l'annuaire).
+<p>
+Tout se passe alors comme dans le cas d'une authentification simple par CAS,
+mais les identifiants (nom, prénom, ...) sont remplis automatiquement.
+L'identifiant CAS et ldap doivent être les mêmes.
+</p>
+
+<h3>
+Authentification par ldap et identification par ldap.
+</h3>
+
+Tout se passe comme dans l'authentification par CAS et identification ldap.
+
+<h3>Remarques</h3>
+<ul><li>
+<span class="wims_warning">
+Il est déconseillé de changer de type d'authentification lorsque des
+participants sont inscrits.
+</span>
+</li><li>
+Dans le cas d'une authentification externe (à WIMS), un identifiant <i>interne</i>
+est attribué automatiquement. Il ne servira pas pour l'authentification
+mais reste l'identifiant WIMS du participant. Il n'y a plus de mot de passe WIMS
+ou plutôt celui-ci est caché.
+</li><li>
+Des paramètres par défaut peuvent avoir être entrés par le gestionnaire du site
+dans le cas où les classes dépendent majoritairement d'un établissement.
+</li></ul>
