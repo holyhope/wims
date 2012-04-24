@@ -123,7 +123,7 @@
    !default prompt_=!item $inputsize1 of $tt
    !set p_=$prompt_
    !reset tv
-   !if $(replytype$i)  iswordof mark flashcard
+   !if $(replytype$i) iswordof mark flashcard
      !set tv=$(reply$i)
    !else
     !for r_ in $(reply$i)
@@ -131,11 +131,12 @@
      !set tv=!append item $tu to $tv
     !next r_
    !endif
+   
    !set p_=!replace internal  &#59; by ; in $p_
    !if $inputsize1 notitemof $tv
-    !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard
+    !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard checkbox
      !set cl = $colorr_forget
-     !imgrename <span class="$cl"><tt><u>$p_</u></tt></span>
+     !imgrename <span class="$cl">$p_</span>
     !else
      !imgrename <b><tt><u>$p_</u></tt></b>
     !endif
@@ -151,11 +152,11 @@
   !set tt=!word 1 of $(replygood$i)
   !if $tt!=?analyze
    !set cl=$(colorr_$(diareply$i))
-   !if $(replytype$i) iswordof mark flashcard
+   !if $(replytype$i) iswordof mark flashcard checkbox
     !if $inputsize isitemof $ts
       !set cl = $colorr_good
     !else
-    !set cl = $colorr_bad
+      !set cl = $colorr_bad
     !endif
    !endif
   !else
