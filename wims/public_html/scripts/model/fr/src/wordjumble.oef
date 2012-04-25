@@ -33,7 +33,8 @@ remplies ci-dessous.
 \integer{N=3}
 
 :Première liste de mots
-Mettre un mot par ligne, suivi éventuellement d'une indication.
+Mettre un mot (ou groupe de mots) par ligne, suivi éventuellement d'une indication. S'il s'agit
+d'un groupe de mots, remplacer l'espace par  <tt>_</tt>.
 \text{data1=bille, un jeu
 domino,un jeu}
 :Seconde liste de mots
@@ -116,19 +117,23 @@ habitation
 \matrix{indication=\indication[\bat;]}
 \text{mot1=wims(text expand \mot[1] using 01)}
 \text{mot1=wims(words2items \mot1)}
+\text{mot1=wims(replace internal _ by &nbsp; in \mot1)}
 
 \text{mot2=wims(text expand \mot[2] using 01)}
 \text{mot2=wims(words2items \mot2)}
+\text{mot2=wims(replace internal _ by &nbsp; in \mot2)}
 
 \text{mot3=wims(text expand \mot[3] using 01)}
 \text{mot3=wims(words2items \mot3)}
+\text{mot3=wims(replace internal _ by &nbsp; in \mot3)}
 
 \text{mot4=wims(text expand \mot[4] using 01)}
 \text{mot4=wims(words2items \mot4)}
+\text{mot4=wims(replace internal _ by &nbsp; in \mot4)}
 
 \text{mot5=wims(text expand \mot[5] using 01)}
 \text{mot5=wims(words2items \mot5)}
-
+\text{mot5=wims(replace internal _ by &nbsp; in \mot5)}
 \text{Mot=}
 \text{STEP=wims(makelist r x for x=1 to \N)}
 \text{STEP=r1}
@@ -138,7 +143,7 @@ habitation
 \for{a=1 to \step-1}{ 
   \if{\a <= \N}{
   <div style="font-size:large;padding:6px; margin-left:10px;wdith:50%;
-  border : 1px solid #555555;">\Mot[\a;]  
+  border: 1px solid #555555;">\Mot[\a;]  
   \if{ \indication[\a;] notsametext xxx }{ (\indication[\a;]) }</div>
   }
 }
