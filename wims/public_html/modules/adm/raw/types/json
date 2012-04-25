@@ -39,6 +39,7 @@
 !goto footer
 
 :listexos
+exotitlelist = !replace internal  "  by \" in $exotitlelist
 exotitlelist = !replace internal  :  by title:" in $exotitlelist
 exotitlelist = !replace internal  ,  by "},{ "id": " in $exotitlelist
 exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
@@ -52,7 +53,8 @@ exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
 
 :listsheets
 nohidden= $[$cnt-$nb_hidden]
-titles=!replace internal  ,  by "," in $titles
+titles=!replace internal "  by \" in in $titles
+titles=!replace internal ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
 
 !shortout "query_class":"$qclass",\
@@ -66,6 +68,7 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :listexams
+titles=!replace internal "  by \" in in $titles
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
  !shortout "query_class":"$qclass",\
@@ -84,6 +87,7 @@ list=!replace internal  ,  by "," in $list
  exo_points=!line 3 of $exo
  exo_weight=!line 4 of $exo
  exo_title=!line 5 of $exo
+ exo_title=!replace internal "  by \" in in $exo_title
  exo_description=!line 6 of $exo
  
  exo_defs={"module":"$exo_module","title":"$exo_title","params":"$exo_params","points":"$exo_points","weight":"$exo_weight","description":"$exo_description"}

@@ -31,7 +31,7 @@ class_superclass=!defof class_superclass in $classdeffile
  userdeffile=wimshome/log/classes/$class_superclass/$deffile
  test=!defof user_exists in $userdeffile
  !if $test!=yes
-   error=user not present in superclass.
+   error=user not present in superclass $class_superclass.
    !exit
  !endif
  
@@ -42,7 +42,7 @@ class_superclass=!defof class_superclass in $classdeffile
 	 class_typename=!defof class_typename in $classdeffile
 	 
 	 !if $quser!=supervisor and $class_typename iswordof class and $qclass notwordof $test
-	 	error=Sorry, this user does not participates to this subclass.
+	 	error=Sorry, this user ($quser) does not participates to this subclass ($qclass).
 	 	!exit
 	 !endif
 	 
