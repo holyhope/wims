@@ -150,6 +150,8 @@ distracteur
  \text{all=\first}
  \text{alli=\firsti}
 }
+\text{all=wims(nonempty items \all)}
+\text{all=wims(listuniq \all)}
 \integer{acnt=items(\all)}
 \text{sh=shuffle(\acnt)}
 \text{all=item(\sh,\all)}
@@ -160,8 +162,8 @@ distracteur
 \text{size=\size1 x \max2}
 \text{rep=item(1..\prop_cnt,wims(makelist r x for x=1 to 10))}
 \steps{\rep}
-\text{distc=1}
-\conditions{wims(makelist x for x=1 to \tot + \distc)}
+\integer{distc=\dist!= ? 1 : 0}
+\conditions{wims(makelist x for x=1 to \acnt + \distc)}
 
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
@@ -174,7 +176,7 @@ in upper case, or \props[4] in lower case.
 
 <table border="0">
 \for{k=1 to \pcnt}{
- <tr><td align="right">\prop[\k]</td>
+ <tr><td align="left">\prop[\k]</td>
  <td>\embed{reply \k, \size}
  </td></tr>
 }
@@ -222,15 +224,17 @@ text{totans=wims(replace internal &#39; to ' in \totans)}
  }
 }
 \integer{cat=0}
-\for{t=1 to 1}{
- \text{all=\all,\dist}
- \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
- \if{\cat = 0}{
-  \text{clean=\clean \noclass,}
-  \text{check=\check 1,}
- }{
-  \text{clean=\clean \estun \props[\cat],}
-  \text{check=\check 0,}
+\if{\dist!=}{
+ \for{t=1 to 1}{
+  \text{all=\all,\dist}
+  \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
+  \if{\cat = 0}{
+   \text{clean=\clean \dist[\t] \noclass,}
+   \text{check=\check 1,}
+  }{
+   \text{clean=\clean \estun \props[\cat],}
+   \text{check=\check 0,}
+  }
  }
 }
 
