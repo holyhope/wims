@@ -14,6 +14,15 @@ cnt_variable=!itemcnt $liste_variable
 !set jbox=!item 1 of $oef_applet_option
 
 script1=!replace internal $jbox by new$jbox in $script1
+
+!if free isin $reply
+  free_var=$(reply[-1;])
+  free_var=!getopt free in $free_var
+  free_var_cnt=!itemcnt $free_var
+  !for j = 1 to $[$free_var_cnt/2]
+    script=!append line brd.create('point',[$(free_var[2*$j-1]) , $(free_var[2*$j])],{size: 1,showInfobox: false,name:''}) ; to $script
+  !next
+!endif
 precision=!getopt precision in $(replyoption$i)
 !default precision=10
 
@@ -25,11 +34,13 @@ reply_$i=$slib_out
 !!reply_$i=$(reply_$i) $slib_out
 
 !! if empty, take the value of reply_$i
-reply__$i=
 !! enlever le ; de la fin
 reply$i=!nonempty lines $(reply$i)
 reply$i=!nonempty rows $(reply$i)
+reply$i=!replace internal free= by in $(reply$i)
+m_reply$i=$(reply$i)
 reply__$i=&nbsp;
+
 !if $wims_read_parm=nocompare
   !exit
 !endif

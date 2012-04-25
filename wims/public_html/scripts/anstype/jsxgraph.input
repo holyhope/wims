@@ -39,7 +39,19 @@ $ in $variable
 !next
 !set oef_applet_option=$jbox,$xsize x $ysize,$oef_applet_option\
 $liste_variable
-
+!set style_point=!getopt style in $(replyoption$i)
+!set style_point=!declosing $style_point
+!default style_point=size: 1, showInfobox: false, name:''
+!if freepoint isin $(replyoption$i)
+  !set script=$script\
+    var jsxbox_free=[];\
+JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+    var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e),brd);\
+    var p=brd.create('point', coords.usrCoords.slice(1),{$style_point});\
+    var c = [p.X(), p.Y()];\
+    jsxbox_free.push(c);\
+}, this);
+!endif
 !readproc slib/geo2D/jsxgraph $jbox,$xsize x $ysize,$script
 $slib_out
 
@@ -50,6 +62,9 @@ var capture = function() {
   !set rep=!replace internal var by rep in $var 
   $(rep).X() + ',' + $(rep).Y() + ';' +
 !next
+!if freepoint isin $(replyoption$i)
+ 'free=' + jsxbox_free + ';' +
+!endif
 '';}
 </script>
 
