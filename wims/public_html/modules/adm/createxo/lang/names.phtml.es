@@ -43,7 +43,8 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 Ejercicios con una lista de datos\
 Exercises for chemistry\
 Games\
-into name_first,name_datalist,name_chemistry,name_game
+Exercises for language\
+into name_first,name_datalist,name_chemistry,name_game,name_language
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
  <font color="red"><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
