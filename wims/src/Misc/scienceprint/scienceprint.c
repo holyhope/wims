@@ -100,7 +100,6 @@ char *printscience(double value, int sig, int format , int cnt ){
 	    }
 	}
     }
-    if(sig < 1){sig = 1;}
     if(cnt > 1){fprintf(stdout,",");}
     // check on format style versus exponent
     if(exponent10 == 0 ){
@@ -121,6 +120,7 @@ char *printscience(double value, int sig, int format , int cnt ){
 	}
     
     }
+    if(sig < 1){sig = 1;}
     if(format != 3 ){
 	if( format == 0){ // 'calculable' presentation
 	    fprintf(stdout, "%s%.*f*10^%d", sign, sig-1, value, exponent10);

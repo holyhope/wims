@@ -445,7 +445,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     De limiet\
     Mix\
     Opschorten scoreregistratie door studenten\
-    Format du titre des exercices pour les élèves\
+    Generieke naam voor de titel van oefeningen\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\

@@ -46,7 +46,7 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 
 
 !if $error = no_vote
- Vous n'avez pas encore voté donc vous ne pouvez pas voir les résultats.
+    Je hebt nog geen stem uitgebracht en kunt daarom de resultaten niet bekijken.
  !exit
 !endif
 

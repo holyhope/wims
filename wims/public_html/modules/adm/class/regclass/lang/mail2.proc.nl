@@ -14,6 +14,6 @@ op deze WIMS server.\
 \
 \ toegangscode: $regpasswd \
 \
-Als dit bericht U onbekend voorkomt,\
-heeft iemand anders Uw emailadres ingevuld.\
-U kunt dit bericht dan gerust verwijderen.
+Als dit bericht onbekend voorkomt,\
+heeft iemand anders uw emailadres ingevuld.\
+Dit bericht kan worden gewist.

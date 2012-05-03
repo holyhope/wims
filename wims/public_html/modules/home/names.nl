@@ -17,7 +17,7 @@ wims_name_n_supervisor = Docenten bereik
 wims_name_mail = Schrijf naar de docent
 wims_name_pref = Instellingen 
 wims_name_ref = Backward links
-wims_name_stat = Gebruiks statistieken
+wims_name_stat = Serverstatistieken
 
 CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
@@ -63,8 +63,7 @@ U_inscription2 = Aanmelden in een andere klas.
 U_clickhere = Klik hier
 U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
-name_gotosupervise=Pour aller dans une autre classe comme enseignant, contactez l'administrateur\
- du groupement de classes.
+name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te boezoeken.
  
 SU_greet = !nosubst Hallo, $wims_firstname $wims_lastname!<br>\
 Welkom op de Onderhouds pagina van uw klas.<br>
