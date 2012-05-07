@@ -114,7 +114,7 @@ my @liste_env_tabular = ('tabular') ;
 my @liste_env_spec = ('equation', 'multline', 'latexonly',
   'pmatrix','smallmatrix', 'eqnarray', 'array', 'algorithmic', 'algorithm', 'align',
   'thebibliography', 'pspicture', 'picture', 'cases', 'gather',
-  'displaymath', 'math', 'center', 'minipage', 'lstlisting');
+  'displaymath', 'math', 'center', 'minipage', 'lstlisting', 'column', 'columns');
   
 my @liste_com_spec = ('paragraph', 'href', 'url', 'exercise', 'doc') ; #je ne m'en sers pas encore 
 
@@ -742,6 +742,28 @@ sub minipage { my ( $b ) = @_;
    $v[1] 
    </div>";
 }
+sub columns { my ( $b ) = @_; 
+  $b
+}
+
+sub column { my ( $b ) = @_; 
+ my @v = extract_bracketed ($b, '[]') ;
+ my $option = $v[0] ;  
+ $option=~ s/\[\s*b\s*\]/bottom/ ;  
+ $option=~ s/\[\s*t\s*\]/top/ ;
+ $option=~ s/\[\s*c\s*\]/middle/ ; 
+ $option=~s/\[\s*\]/middle/;
+ if (!$option) { $option='middle'} ;
+ @v = extract_bracketed ($v[1], '{}') ;
+ my $width = $v[0] ;
+ $width =~ s/\{(.*)\}/$1/;
+ $width = linewidth($width) ;
+  "<div style=\"width:$width; display:inline-block;vertical-align:$option;\" class=\"column\">
+   $v[1] 
+   </div>";
+}
+
+
 sub lstlisting { my ($b,$id ) = @_ ;
   $b =~ s ,\\,\\\\,g ;
   "<pre class=\"lstlisting\" id=\"lstlisting$id\">$b</pre>";
