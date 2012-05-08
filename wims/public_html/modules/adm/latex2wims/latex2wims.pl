@@ -743,7 +743,9 @@ sub minipage { my ( $b ) = @_;
    </div>";
 }
 sub columns { my ( $b ) = @_; 
+  <div class="columns">
   $b
+  </div>
 }
 
 sub column { my ( $b ) = @_; 
