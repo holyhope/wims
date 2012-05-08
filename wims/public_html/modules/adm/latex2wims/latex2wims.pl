@@ -797,6 +797,9 @@ sub align { my ( $b) = @_;
   $b =~ s|\&|\\)&nbsp;</td><td>&nbsp;\\(|g;
   $b =~ s|\\\\\s*</table>|\\)</td></tr></table>|g;
   $b =~ s|\\\\|\\)</td></tr><tr><td>\\(|g;
+  $b =~ s|\\\(\s+\\\)||g;
+  $b =~ s|\n\\\)|\\\)|g;
+  $b =~ s|\\\(\n|\\\(|g;
   '<div class="math">' . $b . '</div>' ;
 }
 
@@ -810,7 +813,7 @@ sub array {my ( $b ) = @_ ;
   "\\begin{matrix} " . $v[1] . "\\end{matrix} ";
 }
 #TODO pour l'instant
-sub cases {"\\Biggl \\{\\begin{matrix} " . $_[0] . "\\end{matrix}" ; }
+sub cases {"\\Biggl \\lbrace\\begin{matrix} " . $_[0] . "\\end{matrix}" ; }
 
 sub gather { my ($b) = @_;
   my @decoup = split ('\\\\intertext', $b);
