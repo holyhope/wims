@@ -813,7 +813,7 @@ sub array {my ( $b ) = @_ ;
   "\\begin{matrix} " . $v[1] . "\\end{matrix} ";
 }
 #TODO pour l'instant
-sub cases {"\\Biggl \\lbrace\\begin{matrix} " . $_[0] . "\\end{matrix}" ; }
+sub cases {"\\left \\lbrace\\begin{matrix} " . $_[0] . "\\end{matrix} \\right ." ; }
 
 sub gather { my ($b) = @_;
   my @decoup = split ('\\\\intertext', $b);
