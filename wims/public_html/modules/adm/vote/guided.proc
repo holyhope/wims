@@ -10,13 +10,23 @@ thisyear=!char 1 to 4 of $today
  !exit
 !endif
 
-!if $gstep=$empty
+vrfgstep=!defof gstep in $votedir/$vote.data
+!default gstep=$vrfgstep
+
+!! need to have the "onchange="submit()" forms working
+!if $gstep notitemof 2
 !readdef $votedir/$vote.data
 testointro=!record 1 of $votedir/$vote.data
 !endif
 
-vmodellist=exams,groups
+!! do you want model=free here?? if so, we need model/free.phtml
 !bound vmodel within $vmodellist default exams
+
+!! stick to the values in the form
+!default mod_vmodel=$vmodel
+vmodel=$mod_vmodel
+!default mod_numsess=$numsess
+numsess=$mod_numsess
 
 !! need to check nameexvar is consistent
 

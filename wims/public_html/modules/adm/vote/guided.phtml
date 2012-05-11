@@ -1,4 +1,5 @@
 !read adm/lang/date.phtml.$moduclass_lang
+!set wims_form_method=post
 
 <b>
 $name_guidedtitle
@@ -15,10 +16,18 @@ $name_guidedtitle
 <p>$name_introguided</p>
 !form reply
 $table_header
+$table_tr
+  <td>Vote model $name_vmodel</td>
+<td>
+!! FIXME vmodellist_names should be defined in lang files
+!set vmodellist_names=$vmodellist
+!formselect mod_vmodel list $vmodellist prompt $vmodellist_names
+</td>
+</tr>
  $table_tr
 <td>$name_howmany ($name_atmost 10)</td>
 <td>
-!formselect numsess from 1 to 10
+!formselect mod_numsess from 1 to 10
 </td>
 </tr>
 $table_tr
@@ -27,20 +36,10 @@ $table_tr
 <input size=12 name="nameexvar" id="nameexvar">
 </td>
 </tr>
-!! qui non funziona perché non ho il reload della pagina
-!! !read models/$vmodel.phtml
 $table_tr
   <td>$name_textconnip</td>
 <td>
 <input size=12 name="defconnip" id="defconnip">
-</td>
-</tr>
-$table_tr
-  <td>Vote model $name_vmodel</td>
-<td>
-!! vmodellist_names should be defined in lang files
-!set vmodellist_names=$vmodellist
-!formselect vmodel list $vmodellist prompt $vmodellist_names
 </td>
 </tr>
 $table_tr
@@ -60,28 +59,12 @@ $table_end
 
 :1
 
-!form reply
-!if $vote_status=0
-<p>$name_numsess_pre
-<select  name="numsess" onchange="submit()">
-!for i=1 to 10
- !if $i=$numsess
-  <option value="$i" selected>$i</option>
- !else
-  <option value="$i">$i</option>
- !endif
-!next i
-</select>
-$name_numsess_post</p>
-!else
-<p>$name_numsess</p>
-!endif
-</form>
+<h1>$mod_vmodel</h1>
 
 !form reply
 !if $vote_status=0
 <p>Vote models
-<select  name="vmodel" onchange="submit()">
+<select  name="mod_vmodel" onchange="submit()">
 !for i in $vmodellist
  !if $i=$vmodel
   <option value="$i" selected>$i</option>
@@ -97,20 +80,24 @@ $name_numsess_post</p>
 </form>
 
 !form reply
-<p>$name_introtext</p>
-!! FIXME: only text in this textarea, no vote primitives: need to chech user input. also can use editor??
-<center>
-<textarea $wims_id rows=10 cols=65 name="testointro" wrap>
-!replace internal \( by &#92;( in $testointro
-</textarea>
-</center>
+!if $vote_status=0
+<p>$name_numsess_pre
+<select  name="mod_numsess" onchange="submit()">
+!for i=1 to 10
+ !if $i=$numsess
+  <option value="$i" selected>$i</option>
+ !else
+  <option value="$i">$i</option>
+ !endif
+!next i
+</select>
+$name_numsess_post</p>
+!else
+<p>$name_numsess</p>
+!endif
+</form>
 
-
-
-<p>$name_numsess_pre $numsess $name_numsess_post</p>
-
-$table_header
-$table_hdtr
+!form reply
 !read models/$vmodel.phtml
 $table_end
 <div align="center">

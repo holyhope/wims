@@ -16,19 +16,27 @@ $table_header
  $table_tr
   <td colspan="2" align="center">
    <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
+!!!!
+!if $vote_title!=$empty
+!set wims_ref_class=wims_button
+!href cmd=reply&job=guided&vote=$vote $wims_name_guided
+!!   <input type="submit" name="rEg" value="$wims_name_guided" $wims_on_click>
+!endif
+!!!!!!
    &nbsp;<input type="submit" name="abandon" value="$wims_name_giveup">
   </td>
  </tr>
 $table_end
 
-!set vrfgstep=!defof gstep in $votedir/$vote.data
-!if $vrfgstep isitemof 0,1
+!if $vrfvmodel isitemof $vmodellist
 <p>$name_gotoguided
+!set wims_ref_class=wims_button
 !href cmd=reply&job=guided&vote=$vote $wims_name_guided
 !if $vote_status=0
-  (<span class="wims_warning">$name_gotoguided_warning</span>)
+  (Need a link to go back to free mode! With warning!)
 !endif
 .</p>
+!goto end
 !endif
 
 <p><b> $name_content </b>:
@@ -61,4 +69,5 @@ $table_end
  </form>
 !endif
 
+:end
 !reset reg_option reg_status reg_show reg_whovoteshow
