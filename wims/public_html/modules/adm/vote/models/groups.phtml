@@ -1,5 +1,9 @@
 !goto $gstep
 
+!! FIXME: which variables should be set in the form? in this file we use both
+!!        exconnip$i and testoextra$i so that we can switch from exams to
+!!        groups and backwards, but does it make sense?
+
 :0
 
 !! setup variables on the first page ??
@@ -11,7 +15,7 @@
 <p>$name_introtext</p>
 !! FIXME: only text in this textarea, no vote primitives: need to chech user input. also can use editor??
 <center>
-<textarea $wims_id rows=10 cols=65 name="testointro" wrap>
+<textarea class="iEdit" id="testointro" rows="10" cols="80" name="testointro">
 !replace internal \( by &#92;( in $testointro
 </textarea>
 </center>
@@ -47,9 +51,15 @@ $table_tr
 
 :2
 
-!! FIXME: need to check no "," in exconnip/testoextra
+!! need to check $testointro contains no vote primitives
+!for i in uservar,menu,list,radio,checkbox,textarea
+!set testointro=!replace internal \$i by INVALID in $testointro
+!next i
 
 !for i=1 to $numsess
+!! need to check no "," in exconnip/testoextra
+!set exconnip$i=!replace internal , by . in $(exconnip$i)
+!set testoextra$i=!replace internal , by . in $(testoextra$i)
 !for dato in nstud$i,testoextra$i,exconnip$i
  !appendfile $votedir/$vote.data $dato=$($dato)
 !next dato

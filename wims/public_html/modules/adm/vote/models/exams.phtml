@@ -9,9 +9,8 @@
 :1
 
 <p>$name_introtext</p>
-!! FIXME: only text in this textarea, no vote primitives: need to chech user input. also can use editor??
 <center>
-<textarea class="iEdit" id="testointro" $wims_id rows="10" cols="80" name="testointro">
+<textarea class="iEdit" id="testointro" rows="10" cols="80" name="testointro">
 !replace internal \( by &#92;( in $testointro
 </textarea>
 </center>
@@ -79,7 +78,15 @@ $table_tr
 
 :2
 
+!! need to check $testointro contains no vote primitives
+!for i in uservar,menu,list,radio,checkbox,textarea
+!set testointro=!replace internal \$i by INVALID in $testointro
+!next i
+
 !for i=1 to $numsess
+!! need to check no "," in exconnip/testoextra
+!set exconnip$i=!replace internal , by . in $(exconnip$i)
+!set testoextra$i=!replace internal , by . in $(testoextra$i)
 !for dato in nstud$i,bday$i,mese$i,byear$i,bhour$i,bmin$i,testoextra$i,\
  bmonth$i,ehour$i,emin$i,exconnip$i
  !appendfile $votedir/$vote.data $dato=$($dato)
