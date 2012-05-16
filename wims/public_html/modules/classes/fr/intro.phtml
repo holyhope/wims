@@ -2,21 +2,25 @@
 !header
 
 !if $wims_class=$empty
- Ce module est un module interne à une classe virtuelle. Comme vous n'êtes
- pas connecté en tant qu'un membre de cette classe, vous n'avez
- pas le droit d'y accéder. Désolé.
- <p><center>
- !href $ $wims_name_home
- </center> <p>
+ <p>
+  Ce module est un module interne à une classe virtuelle. Comme vous n'êtes
+  pas connecté en tant qu'un membre de cette classe, vous n'avez
+  pas le droit d'y accéder. Désolé.
+ </p>
+ <p style="text-align:center;">
+  !href $ Retour à wims
+ </p>
  !exit
 !endif
 
-Ce module recueille les exercices interactifs qui sont créés dans la
+<p>Ce module recueille les exercices interactifs qui ont été créés dans la
 classe <span class="wims_classdesc">$wims_classname</span>
-(<span class="wims_institutiondesc">$wims_institutionname</span>).
+(<span class="wims_institutiondesc">$wims_institutionname</span>).</p>
 !if $wims_user=supervisor
- !href module=adm/createxo Cliquez ici
- pour en créer un autre.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="icon_button add_exo">Créer un exercice</span>
+ </p>
 !endif
 
 !read oef/intromenu.phtml
