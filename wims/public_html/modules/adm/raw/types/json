@@ -453,7 +453,7 @@ $ by ],[ in $($v)
  !shortout "wims_session":"$num_session",\
 "home_url":"$wims_ref_name?session=$num_session.1",\
 "user":"$quser",\
-"class_id":"$qclass"\
+"class_id":"$wims_class"\
 
 !goto footer
 
@@ -532,38 +532,25 @@ list_cnt=!itemcnt $listclassesuser
 :listmodules
 base_directory=$option
 
-!shortout "base_directory":"$base_directory",\
+!shortout "base_directory":"$base_directory","nbelement":$nb_modules,"listContent":[\
 
-!if $base_directory issametext /
-list_cnt=!itemcnt $llist
-!shortout "listContent":[\
-
-!for i = 1 to $list_cnt
-	level=!item $i of $llist
-	name=!item $i of $lnamelist
-	!shortout  {"id":"$level","title":"$name","module_path":"/$level"}
-	
-	!if  $i < $list_cnt
-		!shortout ,
-	!endif
-!next i
-!shortout ]
-
-!else
-
-!shortout "nbelement":$n,"listContent":[\
-
-list_cnt=!itemcnt $listContent
-!for i = 1 to $list_cnt
+!for i = 1 to $nb_modules
 	id=!item $i of $listContent
-	option=$base_directory/$id
+	!if $base_directory notsametext /
+		option=$base_directory/$id
+	!else
+		option=$base_directory$id
+	!endif
+	pos = !positionof item $id in $llist
+	title=!item $pos of $lnamelist
+
 	!read jobs/getmodule.proc
 	
 	!shortout  {"id":"$id",\
 	"module_path":"$option",\
 	"title":"$title"
 	
-	!if $title notsametext
+	!if $description notsametext
 		!shortout ,"description":"$description",\
 		"index_url" : "$wims_ref_name?module=$option&lang=$language",\
 		"language":"$language",\
@@ -590,7 +577,7 @@ list_cnt=!itemcnt $listContent
 
 !shortout }
 
-	!if  $i < $list_cnt
+	!if  $i < $nb_modules
 		!shortout 	,	
 	!endif
 	

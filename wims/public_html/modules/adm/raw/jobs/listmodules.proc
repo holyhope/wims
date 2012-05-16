@@ -28,11 +28,11 @@
 !read names.$lang
 
 # list1 represente les noms de fichiers a ne pas inclure dans le decompte
-list1=.,..,.DS_Store,.wimshome,adm,classes,data,devel,home,Remarks,template,Changelog.modif,Changelog.new
+list1=.,..,.DS_Store,.wimshome,.svn,adm,classes,data,devel,home,Remarks,template,Changelog.modif,Changelog.new
 # list2 liste tous les fichiers du repertoire /sheets
 list2=!listfile -a $wims_home/public_html/modules$option
 # on retire ensuite de list2 les noms de fichiers de list1
 list2=!lines2items  $list2
 
 listContent=!listcomplement $list1 in $list2 
-n=!itemcnt $listContent
+nb_modules=!itemcnt $listContent
