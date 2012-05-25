@@ -531,8 +531,18 @@ list_cnt=!itemcnt $listclassesuser
 
 :listmodules
 base_directory=$option
+curent_dir=!replace / by , in $base_directory
+curent_dir=!item -1 of $curent_dir
+pos = !positionof item $curent_dir in $wims_listlevel
+title=!item $pos of $name_wims_listlevel
 
-!shortout "base_directory":"$base_directory","nbelement":$nb_modules,"listContent":[\
+
+!shortout "base_directory":"$base_directory",\
+	"nbelement":$nb_modules,\
+	"lang_exists":"$lang_exists",\
+	"lang":"$lang",\
+	"title":"$title",\
+	"listContent":[\
 
 !for i = 1 to $nb_modules
 	id=!item $i of $listContent
@@ -541,10 +551,12 @@ base_directory=$option
 	!else
 		option=$base_directory$id
 	!endif
-	pos = !positionof item $id in $llist
-	title=!item $pos of $lnamelist
+	pos = !positionof item $id in $wims_listlevel
+	
 
 	!read jobs/getmodule.proc
+	
+	!default title=!item $pos of $name_wims_listlevel
 	
 	!shortout  {"id":"$id",\
 	"module_path":"$option",\

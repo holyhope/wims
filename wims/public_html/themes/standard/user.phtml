@@ -33,15 +33,14 @@
 
 :normal
 !read classlogo.phtml
+!if $class_logo!=
+ <div id="wimslogo$class_logoside">
+  <img src="$class_logo" alt="class logo"/>
+ </div>
+!endif
+
 !read ./adm/title.phtml 2\
  <span class="wims_classname">$wims_classname</span> <span class="wims_class_typename">($(wims_name_$class_typename))</span>
-!if $class_logo!=
-<div class="menuitem">
-<div id="wimslogo$class_logoside">
-<img src="$class_logo" border="0" alt="class logo" align="left">
-</div><!--end of wimslogo-->
-</div><!--end of menuitem-->
-!endif
 
 !read adm/class/initclass $wims_superclass, auth
 !!FIXME
