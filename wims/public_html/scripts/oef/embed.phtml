@@ -105,7 +105,7 @@
   !read anstype/$(replytype$i).input noprompt
  !endif
 !else
- !distribute item oef_indgood,oef_indbad,oef_indforget into colorr_good,colorr_bad,colorr_forget
+ !distribute item oef_indgood,oef_indbad,oef_indforget, oef_indneutral into colorr_good,colorr_bad,colorr_forget, colorr_neutral
  !set cl=oef_indforget
  !if $t_=c
   !set cl=$(colorr_$(diachoice$i))
@@ -136,10 +136,10 @@
    !if $inputsize1 notitemof $tv
     !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard checkbox
      !set cl = $colorr_forget
-     !imgrename <span class="$cl">$p_</span>
     !else
-     !imgrename <b><tt><u>$p_</u></tt></b>
+      !set cl=$colorr_neutral
     !endif
+    !imgrename <span class="$cl">$p_</span>
     !exit
    !endif
   !endif
