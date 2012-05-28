@@ -1,6 +1,7 @@
 
 !read adm/title.phtml 3\
-$wims_name_account_property
+$wims_name_account_property\
+($wims_class)
 !if $error!=$empty
  !read lang/msg.phtml.$moduclass_lang
  <p><hr> <p>
@@ -27,7 +28,7 @@ $table_tr
   !if $user_supervisable=yes
     $table_tr<th>$name_gestion</th><td>
     <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise">
-    </tt></td></tr>
+   <tt>$wims_class/n_1, ... </tt></td></tr>
   !endif
 !endif
 !if $class_auth=$empty or $wims_user=supervisor
@@ -51,7 +52,10 @@ $table_tr<th><label for="up_photourl">$name_photourl</label></th><td>
  $table_tr<th><label for="up_vars">$name_vars</label></th><td>
 	<textarea wrap="off" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea></td></tr>
   $table_tr<th><label for="up_external_auth">$name_external_auth</label></th><td>
-	<input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth"></td></tr>
+	<input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth">
+	!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=authentification $wims_name_help
+</td></tr>
 !else
  $table_tr<th><label for="passcheck">$name_classpassword</label></th><td>
  	<input size="14" type="password" name="passcheck" id="passcheck"> <br>
