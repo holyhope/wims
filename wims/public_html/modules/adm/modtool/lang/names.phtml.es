@@ -13,8 +13,7 @@
 !set name_binfile=Ficheros binarios
 !set name_del=Borrar un módulo
 !set name_size=Tamaño
-!set name_publish=!nosubst Publicar <span class="wims_mod_title">$i_title</span><br>\
-	<tt class="wims_fname">$mod</tt>
+!set name_publish=!nosubst Publicar $i_title<br><tt>$mod</tt>
 
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero

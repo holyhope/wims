@@ -13,8 +13,7 @@
 !set name_binfile=Binaire bestanden
 !set name_del=Verwijder een module
 !set name_size=Grootte
-!set name_publish=!nosubst Publiceer <span class="wims_mod_title">$i_title</span><br>\
-	<tt class="wims_fname">$mod</tt>
+!set name_publish=!nosubst Publiceer $i_title<br><tt>$mod</tt>
 
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige
