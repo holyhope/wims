@@ -91,6 +91,8 @@
     var xmin=$xmin,xmax=$xmax,ymin=$ymin,ymax=$ymax;
     var rounding=$rounding
     var IE=false;
+    var relx = 0;
+    var rely = 0;
 
     function showit(){
 	recalculate(event.x,event.y);
@@ -117,8 +119,8 @@
 	if(IE){xi=xi-document.body.scrollLeft ;yi=yi-document.body.scrollTop ;}
 	if(x > xi && x < xi+sizex && y > yi && y < yi+sizey){
 	    xi=x - xi;yi=y - yi;
-	    var relx=px2x(xi);
-	    var rely=px2y(yi);
+	    relx=px2x(xi);
+	    rely=px2y(yi);
 	    relx=(Math.round(rounding*relx))/rounding;
 	    rely=(Math.round(rounding*rely))/rounding;
 	    
