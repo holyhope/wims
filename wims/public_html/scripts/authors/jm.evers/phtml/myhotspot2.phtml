@@ -5,7 +5,8 @@
 !set xmax=!item 2 of $var1
 !set ymin=!item 3 of $var1
 !set ymax=!item 4 of $var1
-<div id="mouse_coords" style="opacity:0.6;filter:alpha(opacity=60);position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
+
+<div id="mouse_coords" style="opacity:0.6;position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
 <div id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:4px;min-height:4px;max-height:4px;height:auto!important;height:4px;"><table summary="" bgcolor="red" width="4" height="4"><tr><th></th></tr></table></div>
 <div id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:6px;height:6px;"></div>
 
@@ -105,13 +106,12 @@
     
     if (!document.all){
 	document.getElementById('myimage').addEventListener("click", showitMOZ, true);
-
-	//document.onclick=showitMOZ;
     }
     else
     { 
 	IE=true;
-	document.getElementById('myimage').addEventListener("click", showit, true);
+	document.getElementById('myimage').onclick=showit;
+	// will not work: document.getElementById('myimage').addEventListener("click", showit, true);
     }
     function recalculate(x,y){
 	var xi = findPosX('myimage');
@@ -123,19 +123,19 @@
 	    rely=px2y(yi);
 	    relx=(Math.round(rounding*relx))/rounding;
 	    rely=(Math.round(rounding*rely))/rounding;
-	    
+	    // XHTML 1.0 needs "px"
 	    if(IE){
-		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop; 
-		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft; 
-		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop; 
-		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft; 	    
-		document.getElementById('mouse_dot_ie').style.display = "block"
+		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop+'px'; 
+		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft+'px'; 
+		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop+'px'; 
+		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft+'px'; 	    
+		document.getElementById('mouse_dot_ie').style.display = "block";
 	    }else{
 		document.getElementById('mouse_coords').style.top = y+6+'px'; 
 		document.getElementById('mouse_coords').style.left = x+6+'px'; 	    
 		document.getElementById('mouse_dot_w3c').style.top = y-3+'px'; 
 		document.getElementById('mouse_dot_w3c').style.left = x-3+'px'; 	    
-		document.getElementById('mouse_dot_w3c').style.display = "block"
+		document.getElementById('mouse_dot_w3c').style.display = "block";
 	    }
 	    document.getElementById('mouse_coords').innerHTML='<b>('+relx+':'+rely+')</b>';
 	}
