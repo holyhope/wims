@@ -592,6 +592,7 @@ int datafile_check(char *name) {
     if((untrust&255)==0) return 0;
     if(strncmp(name,"data/",strlen("data/"))==0) return 0;
     if(strncmp(name,"authors/",strlen("authors/"))==0) return 0;
+    if(strncmp(name,"datamodule/",strlen("datamodule/"))==0) return 0;
     return 1;
 }
 
