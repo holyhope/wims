@@ -15,9 +15,9 @@
 !endif
 
 :mirror_exists
- A module with the same name already exists on another mirror publication servor.
- If you are its author, you must publish at the same publication servor or ask 
- a transfer of your rights. If you are not the other one, please change the name of your module.
+    Er bestaat al een module op een andere publicatie server onder deze naam.
+    Bent u de schrijver van deze module, neem dan contact hierover op met de administrator.
+    In alle andere gevallen : verander de naam van deze module.
 !exit
 
 :antiwversion

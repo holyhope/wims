@@ -76,36 +76,37 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !! guided mode
 
-!set wims_name_guided=Guided mode
-!set name_optionclosed=(closed, will be opened only when other options will be full)
+!set wims_name_guided=Begeleidde mode
+!set name_optionclosed=(gesloten, wordt geopend als alle andere opties zijn ingevuld)
 
-!distribute lines Filling this form you will be able to set up a vote for defining individualized access to sheets or exams\
-Individualized access to sheets or exams\
-How many sessions?\
-at most\
-uservar name\
-Default host IP (can be changed in the following page)\
-Itroductory text (e.g. general instructions for the students)\
-Select date and time of the \
-available exam sessions\
-Num.Stud.\
-Date of<br>session\
-Beg. time<br>of session\
-End time<br>of session\
+!distribute lines Met dit formulier kan op individueel niveau de toegang tot werkbladen en toetsen worden geregeld\
+Individuele toegang tot werkbladen en toetsen\
+Hoeveel sessies ?\
+maximaal\
+uservar naam\
+Default host IP (kan worden veranderd op de volgende pagina)\
+Introductie tekst (dwz introductie tekst voor de student)\
+Selecteerd datum en tijd van de\
+beschikbare toets sessions\
+aantal<br>studenten\
+Datum van<br>sessie\
+Begin tijd<br>van sessie\
+Eind tijd<br>sessie\
 Host IP\
 Extra info\
-Inscription cancellation\
+Afmelding inschrijving\
 into name_introguided name_guidedtitle name_howmany name_atmost name_nameexvar \
 name_textconnip name_introtext \
 name_numsess_pre name_numsess_post \
 name_numstud name_examdate name_begintime name_endtime name_connip name_extra \
 name_cancellation
 
-!set name_numsess=!nosubst $numsess exam sessions are available.
+!set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
 
-!set name_describesource=!nosubst Here you can see the source code of the vote. Check the data and click on <span class="wims_button disabled">$wims_name_tosave</span>.
+!set name_describesource=!nosubst Hier staat de brontekst.
+Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
 
-!set name_examinstr=!nosubst <strong>Exam set up</strong>: for an active worksheet or exam, as <em>Score registration</em> select \
+!set name_examinstr=!nosubst <strong>Toets instellingen</strong>: for an active worksheet or exam, as <em>Score registration</em> select \
 <em>open to following hosts and/or times</em> and write <code>\$nameexvar</code> (including <code>\</code>).
 
 !set name_noguided=You cannot modify an active vote unless it has been created with the guided mode.

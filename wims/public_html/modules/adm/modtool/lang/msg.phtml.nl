@@ -42,19 +42,19 @@
   of niet toegestane lettertekens
   <ul>
   !if incorrect_t1 iswordof $error
-   <li>incorrect zone</li>
+   <li>incorrecte zone</li>
   !endif
   !if incorrect_t2 iswordof $error
-   <li>incorrect category</li>
+   <li>incorrecte categorie</li>
   !endif
   !if incorrect_t3 iswordof $error
-   <li>incorrect name</li>
+   <li>incorrecte naam</li>
   !endif
   !if incorrect_t4 iswordof $error
-   <li>incorrect language</li>
+   <li>incorrecte taal</li>
   !endif
   !if incorrect_tlen iswordof $error
-   <li>too long or too short address</li>
+   <li>adres te lang of te kort</li>
   !endif
  </ul>
  !exit

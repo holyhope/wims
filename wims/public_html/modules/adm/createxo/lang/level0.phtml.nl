@@ -14,7 +14,7 @@ Createxo bevat verschillende hulpmiddelen voor
 <ol>
 <li>Beginners mode voor het maken van:
    <ul><li>
-      open antwoord oefeningen
+      Open antwoord oefeningen
      !href cmd=reply&mode=normal&level=1 $name_normal
  ;</li><li>
     Verschillende demonstratie oefeningen die kunnen fungeren als
@@ -42,7 +42,7 @@ Andere beschikbare hulpmiddelen:
     voor het online aanmaken van verschillende meerkeuze oefeningen
 <li>    
 !href module=adm/modtool $wims_name_modtool 
-    voor het online maken en organiseren van alle types OEF oefeningen en interactieve documenten.
+    voor het online maken en organiseren van alle type OEF oefeningen en interactieve documenten.
     Hiervoor is een 'ontwikkelaar account' noodzakelijk.
     Het publiceren van uw interactieve materiaal verondersteld een Modtool account. 
 <li>

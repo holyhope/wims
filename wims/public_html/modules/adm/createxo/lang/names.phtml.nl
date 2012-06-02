@@ -40,9 +40,9 @@ Beginners kunnen beter
 
 !distribute lines Basis oefeningen\
 Oefeningen die werken met een data lijst\
-Exercises for chemistry\
-Games\
-Exercises for language\
+Scheikunde oefeningen\
+Spelletjes\
+Taalkundige oefeningen\
 into name_first,name_datalist,name_chemistry,name_game,name_language
 
 !set name_save=!nosubst hier is de broncode van <font color="red"><b>$oef_title</b></font>,\
@@ -63,7 +63,7 @@ in OEF formaat (Open Exercice Format).\
  into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
-!set name_success=De softawre heeft de oefening met succes verwerkt.
+!set name_success=De software heeft de oefening met succes verwerkt.
 
 !if $level=1
 !distribute lines Geef de oefening een titel\
