@@ -61,9 +61,9 @@ worden de treffers getoond met in onderstaande prioriteiten volgorde:
 <li>materiaal in een andere taal</li>
 </ol>
 
-<h5>Address of a teaching material</h5>
-If you already know the address of a WIMS teaching material, as <tt class="wims_address">E4/grammar/oeffonction.fr</tt>,
-you may enter it in the search engine.
+<h5>Het adres van materiaal op de server</h5>
+Wanneer het echte adres van WIMS lesmateriaal , zoals <tt class="wims_address">E4/grammar/oeffonction.fr</tt> bekend is
+kan dit ook rechtstreeks in de zoekmachine worden ingevoerd.
 
 <p>
 !tail
