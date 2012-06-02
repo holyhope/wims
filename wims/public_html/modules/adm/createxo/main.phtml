@@ -9,7 +9,10 @@
  !set wims_html_header=!append line $header_js_editor to $wims_html_header
 !endif
 !if $modtoolhelp=yes or $cmd=help
- !for id in wims_show, wims_show1, wims_show2
+!!##FIXME is it too much ? should be calculated ?
+ !set wims_show_liste=!makelist wims_show x for x=1 to 10
+ !set wims_show_liste=!nospace $wims_show_liste
+ !for id in wims_show,$wims_show_liste
    !read js/edit_area.phtml $id wimsoef
  !next
 !endif
