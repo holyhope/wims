@@ -26,9 +26,10 @@
 !header
 
 Deze interne zoekmachine maakt gebruik van zoektermen.<br>
+!if $wims_class=$empty
 Er kan ook gebruik worden gemaakt van de link <span class="wims_button disabled">$wims_name_browse</span> <br>
 voor een overzicht van het beschikbare materiaal op deze server.
-
+!endif
 <h3>Zoekopdracht</h3>
 Voer een zoekterm in en kies het type WIMS bronmateriaal waarin gezocht moet worden.<br>
 <small>(zoals bijvoorbeeld lesmodules, openbare werkbladen, interactieve documenten, online rekenmachines etc.)</small>
