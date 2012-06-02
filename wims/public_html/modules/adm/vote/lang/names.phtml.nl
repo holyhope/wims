@@ -103,13 +103,11 @@ name_cancellation
 
 !set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
 
-!set name_describesource=!nosubst Hier staat de brontekst.
-Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
+!set name_describesource=!nosubst Hier staat de brontekst.Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
 
-!set name_examinstr=!nosubst <strong>Toets instellingen</strong>: for an active worksheet or exam, as <em>Score registration</em> select \
-<em>open to following hosts and/or times</em> and write <code>\$nameexvar</code> (including <code>\</code>).
+!set name_examinstr=!nosubst <strong>Toets instellingen</strong>: voor actieve werbladen en proefwerken,(<em>Score registratie</em>) selecteer <em>open voor IP adressen en tijden</em> en voer <code>\$nameexvar</code> in  (inclusief <code>\</code>).
 
-!set name_noguided=You cannot modify an active vote unless it has been created with the guided mode.
+!set name_noguided=Een actieve instelling kan niet worden veranderd, tenzij deze aangemaakt is in de <em>begeleidde mode</em>.
 
-!set name_gotoguided=To edit this vote you can go to the 
-!set name_gotoguided_warning=editing the vote through this form may may lead to incompatibilities with the guided mode
+!set name_gotoguided=Om de instellingen te wijzigen ga naar&nbsp;
+!set name_gotoguided_warning=Het veranderen van instellingen voor een indiviuele toestafname via dit formulier kan leiden tot incompatibileit met de gegevens uit de <em>begeleidde mode</em>.
