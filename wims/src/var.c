@@ -363,7 +363,7 @@ char *getvar(char *vname)
 {
     char *val;
     getvar_len=0; val=_getvar(vname);
-    if(val==NULL && memcmp(vname,mathfont_prefix,strlen(mathfont_prefix))==0) {
+    if(val==NULL && memcmp(vname,mathfont_prefix,strlen(mathfont_prefix))==0) {// mathfont_prefix m_ is add
 	val=mathfont(vname);
 	if(val) getvar_len=strlen(val); else getvar_len=0;
     }

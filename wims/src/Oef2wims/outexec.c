@@ -56,7 +56,7 @@ char *exec_for(char *p)
     *p4=nextchar;
     return p3+1;    
 }
-
+/* process math formula inside \( ) or \( \) */
 void process_formula(char *p)
 {
     char *p3, bf[MAX_LINELEN+1];
