@@ -460,7 +460,7 @@ void htmlmath(char *p)
 	    p1+=p3-buf;
 	    for(k=1;*(p1+k)=='0' || *(p1+k)=='+';k++);
 	    string_modify(p,p1,p1+k,expstr);
-	    p2+=strlen(expstr)-1;
+	    p2+=strlen(expstr)-k;// delete O and +
 	    string_modify(p,p2,p2,"</sup>");
 	    p2+=strlen("</sup>");
 	}
