@@ -1,3 +1,6 @@
+!! 3 types of input are possible with this page
+!! mathview inputapplet via "id" ; inputfields via normal "mydefaultform"  ; mathml inputfields via "id"
+!! mathml string is in formula$n
 !if $my_arrows=$empty
     !set my_arrows=2
 !endif
@@ -6,67 +9,96 @@
     var URL;
 
     function dontknow(){
-	t=confirm(r0+"\n$dontknow ?");
-	if(t==true){
+	t = confirm(r0+"\n$dontknow ?");
+	if( t == true){
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
 	    document.location.href = URL;if(document.getElementById("MathView")){document.getElementById("MathView").destroy();}
 	}
     }
 
     function sendanswer(){
-    !! reply is cosmetisch : total is the antwoord...
-	var v;var input;var reply="" ;var total=new Array;
-	var ml;var t1;var t2;var applet=0;
-	if(document.getElementById("MathView")){applet=1;}
-	if(applet==1){
-	    !! using the inputapplet
-	    input=document.getElementById("MathView").getLinear();input=input+'';
-	    v=input.length;if(v==0){setAlarm(r1+"\ 1");return;}if(v>100){setAlarm(r2); return;}
+	var input;
+	var show="" ;
+	var reply = new Array;
+	var applet = 0;
+	var inputfieldnumber = 0;
+	var input;
+	if(document.getElementById("MathView")){
+	    applet = 1;
+	    input=document.getElementById("MathView").getLinear();input = input+'';
+	    if( input.length == 0){setAlarm(r1+"\ 1");return;}
+	    if( input.length > 100){setAlarm(r2); return;}
 	    if(input.indexOf('error')!=-1){setAlarm(input);return;}
-	    input=arrows(input,$my_arrows,"","");if(input=="error"){return;}
-	    input=nthroot(input);if(input=="error"){return;}
-	    if(input.indexOf(',')!=-1){setAlarm(r4);return;}
-	    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
-	    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-	    input=science(input);if(input=="error"){return;}
-	    if(check_x(input)==0){return;}
-	    reply=input+"\n";t1=input.indexOf("[");
-	    if(t1 !=- 1){
+	    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+	    input = nthroot(input);if(input ==" error"){return;}
+	    if(input.indexOf(',') != -1){setAlarm(r4);return;}
+	    if(check_f(input) == 0){return;}if(check_o(input) == 0){return;}
+	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
+	    input = science(input);if(input == "error"){return;}
+	    if(check_x(input) == 0){return;}
+	    show=input+"\n";
+	    if(input.indexOf("[") !=- 1){
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-		t1=input.indexOf("[");
-		if(t1!=-1){setAlarm(r13);return;}
+		if( input.indexOf("[") !=-1){setAlarm(r13);return;}
 	    }
-	    input=input.replace(/#/g,' ');
-	    total[0]=input;
+	    input = input.replace(/#/g,' ');
+	    reply[0] = input;
 	}
+	
 	if(document.mydefaultform){
-	    ml=document.mydefaultform.elements.length;
-	    var inputfieldnumber=0;
-	    for(z=0;z<ml;z++){
-		input=document.mydefaultform[z].value;
-		v=input.length;if (v==0){var qu=z+1; setAlarm(r1+"\ "+qu);return;}
-		input=nthroot(input);if(input=="error"){return;}
-		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
-		input=arrows(input,$my_arrows,"","");if(input=="error"){return;}
-		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
-		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-		input=science(input);if(input=="error"){return;}
-		if(check_x(input)==0){return;}
-		reply=reply+input+"\n";t1=input.indexOf("[");
-		if(t1 !=- 1){
+	    var ml=document.mydefaultform.elements.length;
+	    for(var z = 0 ; z < ml; z++){
+		input = document.mydefaultform[z].value;
+		if(input.length == 0){var qu = z+1; setAlarm(r1+"\ "+qu);return;}
+		input = nthroot(input);if(input == "error"){return;}
+		if(input.indexOf(',') != -1){setAlarm(r4);return;}
+		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		if(check_f(input) == 0){return;}
+		if(check_o(input) == 0){return;}
+		if(check_log_NaN(input) == 0){return;}
+		if(check_sqrt_NaN(input)==0){return;}
+		input = science(input);if(input == "error"){return;}
+		if(check_x(input) == 0){return;}
+		show=show+input+"\n";
+		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-		    t1=input.indexOf("[");if(t1!=-1){setAlarm(r13);return;}
+		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
-		total[inputfieldnumber+applet]=input;
-		inputfieldnumber=inputfieldnumber+1;
+		reply[ applet + inputfieldnumber ] = input;
+		inputfieldnumber++;
 	    }
 	}
-	v=total.length;if(v==0){setAlarm(r1);return;}
-	t=confirm(r0+"\n"+reply);
-	if(t==true){total=encodeURIComponent(total);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+total ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
+	
+	if(document.getElementById("mathml0")){
+	    var p=0;
+	    inputfieldnumber++;
+	    while(document.getElementById("mathml"+p)){
+		input = document.getElementById("mathml"+p).value;
+		if (input.length == 0){var qu = input+1; setAlarm(r1+"\ "+qu);return;}
+		input = nthroot(input);if(input == "error"){return;}
+		if(input.indexOf(',') != -1){setAlarm(r4);return;}
+		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		if(check_f(input) == 0){return;}if(check_o(input) == 0){return;}
+		if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
+		input=science(input);if(input == "error"){return;}
+		if(check_x(input) == 0){return;}
+		show=show+input+"\n";
+		if( input.indexOf("[") !=- 1 ){
+		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
+		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
+		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
+		}
+		input = input.replace(/#/g,' ');
+		p++;
+		if(p>99){break;}
+		reply[p + inputfieldnumber + applet] = input;
+	    }
+	}
+	if(reply.length == 0 ){setAlarm(r1);return;}
+	if(confirm(r0+"\n"+show)){reply=encodeURIComponent(reply);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
     }
 </script>
 
