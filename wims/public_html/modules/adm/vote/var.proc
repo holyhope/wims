@@ -70,21 +70,36 @@ votecnt=!recordcnt $votedir/.votes
  !endif
 !endif
 
+!default vote_model=$reg_model
 !if $vote>0 and $vote<=$votecnt
  vdata=!record $vote of $votedir/.votes
- !distribute lines $vdata into vote_status,vote_title,vote_option,vote_show,vote_whovoteshow
+ !distribute lines $vdata into vote_status,vote_title,vote_option,vote_show,vote_whovoteshow,vote_model
  !default vote_option=anonymous
  !default vote_status=0
  !default vote_show=1
+!! !default vote_model=free
  vote_src=!record 0 of $votedir/$vote.src
 !endif
+!default reg_model=$vote_model
 
 !if $vote<1
  job=home
 !endif
 
 vmodellist=exams,groups
-vrfvmodel=!defof vmodel in $votedir/$vote.data
+!! vrfvmodel=!defof vmodel in $votedir/$vote.data
+!! vmodel --> vote_model (defined in the .votes file)
+!! vmodel=!defof vmodel in $votedir/$vote.data
+!! le seguenti servivano per impedire di cambiare il modello se il vote è chiuso
+!! !if $vote_status>0
+!! $mod_vmodel=$empty
+!! !else
+!! !default mod_vmodel=$vmodel
+!! !endif
+!! se $vmodel è $empty, allora il default va su free (??)
+!! !default mod_vmodel=$vmodel
+!! no, we do not want a "default" so that we can check "where we are"
+!! !default mod_vmodel=free
 
 !read $job.proc
 

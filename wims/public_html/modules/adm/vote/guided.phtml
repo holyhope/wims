@@ -14,17 +14,10 @@ $name_guidedtitle
 :0
 !if $vote_status=0
 <p>$name_introguided</p>
-!form reply
+  !! read by edit.phtml, we are already in a form
+!! !form reply
 $table_header
 $table_tr
-  <td>Vote model $name_vmodel</td>
-<td>
-!! FIXME vmodellist_names should be defined in lang files
-!set vmodellist_names=$vmodellist
-!formselect mod_vmodel list $vmodellist prompt $vmodellist_names
-</td>
-</tr>
- $table_tr
 <td>$name_howmany ($name_atmost 10)</td>
 <td>
 !formselect mod_numsess from 1 to 10
@@ -45,7 +38,8 @@ $table_tr
 $table_tr
 <td colspan="2" align="center">
 <input type=hidden name="gstep" value="1">
-<input type="hidden" name="job" value="guided">
+!!<input type="hidden" name="job" value="guided">
+<input type="hidden" name="job" value="edit">
 <input type=submit value="$wims_name_send">
 </td>
 </tr>
@@ -59,28 +53,32 @@ $table_end
 
 :1
 
-!form reply
-!if $vote_status=0
-<p>Vote models
-<select  name="mod_vmodel" onchange="submit()">
-!for i in $vmodellist
- !if $i=$vmodel
-  <option value="$i" selected>$i</option>
- !else
-  <option value="$i">$i</option>
- !endif
-!next i
-</select>
-</p>
-!else
-<p>Model $vmodel</p>
-!endif
-</form>
+!! !form reply
+!! !if $vote_status=0
+!! <p>Vote models
+!! <select  name="reg_model" onchange="submit()">
+!! !for i in $vmodellist
+!!  !if $i=$reg_model
+!!   <option value="$i" selected>$i</option>
+!!  !else
+!!   <option value="$i">$i</option>
+!!  !endif
+!! !next i
+!! </select>
+!! </p>
+!! !else
+<p>Model $vote_model</p>
+!! !endif
+!! </form>
 
-!form reply
+<p>need a link to go back to gstep=0 ??</p>
+
+!! !form reply
 !if $vote_status=0
 <p>$name_numsess_pre
-<select  name="mod_numsess" onchange="submit()">
+!! no, you do not want automatic submission of form
+!!<select  name="mod_numsess" onchange="submit()">
+<select  name="mod_numsess">
 !for i=1 to 10
  !if $i=$numsess
   <option value="$i" selected>$i</option>
@@ -93,16 +91,16 @@ $name_numsess_post</p>
 !else
 <p>$name_numsess</p>
 !endif
-</form>
+!! </form>
 
-!form reply
-!read models/$vmodel.phtml
+!! !form reply
+!read models/$vote_model.phtml
 $table_end
 <div align="center">
 !! FIXME: wims_name_doch_reload ??
 <input type="submit" value="$wims_name_doch_reload" $wims_on_click>
 </div>
- <input type="hidden" name="reg_title" value="$vote_title">
+!! <input type="hidden" name="reg_title" value="$vote_title">
  <input type="hidden" name="nameexvar" value="$nameexvar">
  <input type="hidden" name="gstep" value="2">
 </form>
@@ -112,7 +110,7 @@ $table_end
 :2
 
 !if $gstep>1 and $cmd=reply
- !set wims_menu_items=!append line back2,1,module=$module&job=guided&vote=$vote\
+ !set wims_menu_items=!append line back2,1,module=$module&job=edit&vote=$vote\
  to $wims_menu_items
 !endif
 
@@ -123,21 +121,21 @@ $table_end
 
 !appendfile $votedir/$vote.data gstep=1
 
-!for dato in numsess,nameexvar,defconnip,vmodel
+!for dato in numsess,nameexvar,defconnip
  !appendfile $votedir/$vote.data $dato=$($dato)
 !next
 
-!read models/$vmodel.phtml
+!read models/$vote_model.phtml
 
-!set wims_form_method=post
-!form reply
-$table_header
-!read votesetup.phtml
-$table_end
+!! !set wims_form_method=post
+!! !form reply
+!! $table_header
+!! !read votesetup.phtml
+!! $table_end
 
 <p>$name_describesource</p>
 
-!if $vmodel=exams
+!if $vote_model=exams
 <p>$name_examinstr</p>
 !endif
 
@@ -150,7 +148,8 @@ $reg_src
  <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
  <input type="submit" name="abandon" value="$wims_name_giveup">
  <input type="hidden" name="reg_src" value="$reg_src">
- <input type="hidden" name="job" value="guided">
+!! <input type="hidden" name="job" value="guided">
+ <input type="hidden" name="job" value="edit">
 <hr>
 </center>
 </form>

@@ -5,6 +5,7 @@
  $table_tr<td>$wims_name_title</td><td><input size="50" name="reg_title" value="$vote_title"> </td></tr>
  $table_tr<td>$wims_name_Type</td>
   !default vote_status=0
+  !default reg_model=free
   !set reg_status=$vote_status
   !set reg_option=$vote_option
   !set reg_show=$vote_show
@@ -39,11 +40,22 @@
    !formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
   </td>
  </tr>
-!if $vrfvmodel!=$empty
  $table_tr
-  <td>Model</td>
+  <td>Model (can change only if vote_src=empty)
+!! debug
+-- |$vote_src|
+</td>
   <td>
-  $vrfvmodel
+!! vmodellist_names should be defined in lang files
+  !set vmodellist_names=$vmodellist
+!! need a better way?
+  !if $vote_status=0 and ($vote_src=$empty or $vote_src=<br>)
+   !formselect reg_model list free,$vmodellist prompt free,$vmodellist_names
+  !else
+   $vote_model
+!! why do I need the following? --> questo era in "riserva" lo provo
+!! a togliere per -svn
+!!   <input type="hidden" name="reg_model" value="$vote_model">
+  !endif
   </td>
  </tr>
-!endif

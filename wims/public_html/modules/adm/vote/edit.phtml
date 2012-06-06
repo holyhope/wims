@@ -16,26 +16,49 @@ $table_header
  $table_tr
   <td colspan="2" align="center">
    <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
-!!!!
-!if $vote_title!=$empty
-!set wims_ref_class=wims_button
-!href cmd=reply&job=guided&vote=$vote $wims_name_guided
-!!   <input type="submit" name="rEg" value="$wims_name_guided" $wims_on_click>
-!endif
+!! !!!!
+!! !if $vote_title!=$empty
+!! !set wims_ref_class=wims_button
+!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
+!! !!   <input type="submit" name="rEg" value="$wims_name_guided" $wims_on_click>
+!! !endif
 !!!!!!
    &nbsp;<input type="submit" name="abandon" value="$wims_name_giveup">
   </td>
  </tr>
 $table_end
 
-!if $vrfvmodel isitemof $vmodellist
-<p>$name_gotoguided
-!set wims_ref_class=wims_button
-!href cmd=reply&job=guided&vote=$vote $wims_name_guided
+!! !if $vmodel isitemof $vmodellist
+!! <p>$name_gotoguided
+!! !set wims_ref_class=wims_button
+!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
+!! !if $vote_status=0
+!! <p>(Need a link to go back to free mode! With warning!)</p>
+!! !endif
+!! .</p>
+!! !goto end
+!! !endif
+
 !if $vote_status=0
-  (Need a link to go back to free mode! With warning!)
+!if $vote_model=$empty
+  <p>Insert title and choose whether to use a model (or <code>free</code> for freeform)</p>
+!goto end
 !endif
-.</p>
+!! !if $reg_model=free and $vmodel isitemof $vmodellist
+!! <p>Careful: modification here can result in incompatibilty with guided mode // modification here will be lost if you go back to guided mode</p>
+!! !endif
+!endif
+
+!if $reg_model isitemof $vmodellist
+!! $name_gotoguided 
+!! !set wims_ref_class=wims_button
+!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
+(Need a link to go back to free mode ??)
+!! !if $vote_src!=$empty
+!! <p>the vote has been created under free mode: if you go to guided mode
+!! the data will be lost // you can loose data. Are you sure?</p>
+!! !endif
+!read guided.phtml
 !goto end
 !endif
 

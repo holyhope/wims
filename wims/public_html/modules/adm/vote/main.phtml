@@ -7,10 +7,11 @@
   !endif
 !endif
 !if $job=edit
+  !if $vote_model=free
  !read js/speckedit.phtml src
+  !else
+   !read js/speckedit.phtml testointro
 !endif
-!if $job=guided
- !read js/speckedit.phtml testointro
 !endif
 !read adm/css.phtml
 !header
@@ -19,6 +20,10 @@
  !read lang/msg.phtml.$moduclass_lang
  <p>
 !endif
+
+!! DEBUG info
+  <h1>reg_model=$reg_model,vote_model=$vote_model,vmodel=$vmodel, mod_vmodel=$mod_vmodel</h1>
+  <h1>gstep=$gstep</h1>
 
 !read $job.phtml
 

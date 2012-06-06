@@ -1,4 +1,5 @@
-!read edit.proc
+!! this file is now read by edit.proc
+!! !read edit.proc
 
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
@@ -13,18 +14,18 @@ thisyear=!char 1 to 4 of $today
 vrfgstep=!defof gstep in $votedir/$vote.data
 !default gstep=$vrfgstep
 
-!! need to have the "onchange="submit()" forms working
 !if $gstep notitemof 2
 !readdef $votedir/$vote.data
 testointro=!record 1 of $votedir/$vote.data
 !endif
 
 !! do you want model=free here?? if so, we need model/free.phtml
-!bound vmodel within $vmodellist default exams
+!! vmodel --> vote model (defined elsewhere)
+!! !bound vmodel within $vmodellist default exams
 
 !! stick to the values in the form
-!default mod_vmodel=$vmodel
-vmodel=$mod_vmodel
+!! !default reg_model=$vmodel
+!! vmodel=$reg_model
 !default mod_numsess=$numsess
 numsess=$mod_numsess
 
