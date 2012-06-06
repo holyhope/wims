@@ -91,4 +91,12 @@ date=!translate : to . in $wims_now
 
 !if $class_superclass != $empty
   !read adm/class/mkuserlist $subclass
+!! need also to create teacherlist 
+   !read adm/gateway/mkteacherlist $class_superclass
 !endif
+!if $class_type=4 or $class_type=2
+!! need also to read mkteacherlist as you might want to add users wish user_supervisable=yes
+  !read adm/gateway/mkteacherlist $qclass
+!endif
+
+
