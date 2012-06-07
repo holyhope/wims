@@ -59,9 +59,12 @@ wims_helper=chapter=3
 !! created by adm/raw --> we ckeck $wims_user is defined (?? FIXME ?? better way to check?)
 !! do not add auth_method=cas or ldap, because of the case where the inscription is made by the
 !! teacher. What about of php in this case ?
-  !if $wims_user!=$empty and $auth_method isitemof php
-    auth_user=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user 
-  !endif
+!!
+!! the following is probably not needed (and is breaking students inscription by teacher). 
+!! leave here until some debugging
+!!   !if $wims_user!=$empty and $auth_method isitemof php
+!!     auth_user=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user 
+!!   !endif
   !read adm/class/hashlogin $auth_user,$class,$login_method
   !if $error!=$empty
     !exit
