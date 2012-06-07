@@ -64,6 +64,7 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !set name_textarea_limit=!nosubst limited to $limit_textarea characters
 !set name_whovote=Lijst met stemmers
+!set name_whodontvote=List of those who don't have voted
 
 !set name_csv1=Hier is het bestand. Het kan geopend worden met een spreadsheet\
  programma naar keuze.

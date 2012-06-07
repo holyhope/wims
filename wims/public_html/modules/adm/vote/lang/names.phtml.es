@@ -61,6 +61,7 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !set name_textarea_limit=!nosubst limité à $limit_textarea caractères
 !set name_whovote=Lista de los votantes
+!set name_whodontvote=List of those who don't have voted
 
 !set name_csv1=Ahí tienes el fichero que pueden cargar a distancia y abrir en su programa informático \
 hoja de cálculo preferida&nbsp;

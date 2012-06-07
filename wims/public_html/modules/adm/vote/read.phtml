@@ -29,25 +29,35 @@ $table_header
   </td>
  </tr>
  $table_tr<td>$name_thisvote_answer</td><td>$vcnt</td></tr>
- $table_tr
-  <td>$name_whovote</td>
-  <td>
-   !if $vote_whovoteshow=1
-    !let nb=!itemcnt $whovote
-    !if $nb=0
-     $name_novotant
-    !else
-     !if $nb<=5
-      $name_notenough
-     !else
-      !replace internal , by , $ in $whovote
-     !endif
-    !endif
-   !else
-    $name_hide2
-   !endif
-  </td>
- </tr>
+ nbs=!itemcnt $whovote
+ !if $nbs<=5 or $vote_whovoteshow!=1
+  !if $vote_whovoteshow!=1
+   !let aff=$name_hide2
+  !else
+   !let aff=$name_notenough
+  !endif
+  $table_tr
+   <td>$name_whovote</td>
+   <td rowspan="2">$aff</td>
+  </tr>
+  $table_tr
+   <td>$name_whodontvote</td>
+  </tr>
+ !else
+  !for ty in whovote,whodontvote
+   $table_tr
+    <td>$(name_$ty)</td>
+    <td>
+      !let nb=!itemcnt $($ty)
+      !if $nb=0
+       $name_novotant
+      !else
+       !replace internal , by , $ in $($ty)
+      !endif
+    </td>
+   </tr>
+  !next ty
+ !endif
 $table_end
 
 !if $wims_user=supervisor
