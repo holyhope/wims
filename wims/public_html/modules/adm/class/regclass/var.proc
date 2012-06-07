@@ -52,6 +52,8 @@ wims_helper=chapter=3&open=3_creat#creat
  supervisor=$name_supervisorname
  !if $wims_user!=supervisor
   !default email=!defof user_email in $userdef
+ !else
+  !default email=!defof user_email in wimshome/log/classes/$wims_class/supervisor
  !endif
  !readdef wimshome/log/classes/$wims_class/.def
  !default level=$class_level
@@ -361,6 +363,7 @@ $email
  !if $wims_class!=$empty
   superclass=!append item $class_superclass to $wims_class
   superclass=!nonempty items $superclass
+  cadd_Supervisor=$wims_user
   !if $wims_user!=supervisor
    wims_supervise=!append item $code to $wims_supervise
    !setdef !set user_supervise=$wims_supervise in $userdef
