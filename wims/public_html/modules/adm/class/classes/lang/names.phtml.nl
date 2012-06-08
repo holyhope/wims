@@ -111,3 +111,5 @@ dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op g
 !set name_acceptcgu=Ik ga akkoord met de algemene voorwaarden.
 !set name_seecgu=Lees de algemene voorwaarden.
 
+!set name_sendmailmess=Un message contenant un nouveau mot de passe vous a été envoyé à l'adresse électronique que vous avez défini.
+

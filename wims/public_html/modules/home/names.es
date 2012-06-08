@@ -68,7 +68,7 @@ U_supervise = Inscribirse en una zona de trabajo como profesor.
 U_creatclass = Crear una clase nueva.
 name_gotosupervise=Pour aller dans une autre classe comme enseignant, contactez l'administrateur\
  du groupement de classes.
- 
+U_supconnected=L'enseignant est connecté.
 
 SU_greet = !nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a a la página\
 de mantenimiento de su clase

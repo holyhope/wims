@@ -27,9 +27,13 @@ superclass=!text remove . in $superclass
 !default superclass2=$superclass
 !read tabletheme
 !bound type within supervisor,participant,example,\
-	authsupervisor,authparticipant default example
+	authsupervisor,authparticipant,forgetpwd default example
 !if $type=example
  superclass=
+!endif
+
+!if $type=forgetpwd
+ !changeto forgetpwd.proc
 !endif
 
 !if $superclass=$empty
@@ -191,3 +195,4 @@ listla=
    !changeto var.auth
  !endif
 !endif
+

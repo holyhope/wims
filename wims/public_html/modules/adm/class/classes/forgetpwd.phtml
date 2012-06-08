@@ -1,0 +1,26 @@
+<p>
+!if $class_defined!=yes
+ <span class="wims_warning">$wims_name_Error</span>. $name_warning
+ !exit
+!endif
+!!readproc adm/class/initclass $class,auth
+
+$wims_name_class : $classname.
+!if $step=0
+ !form reply
+  !set auth_user=$auth_user_connection
+   $table_header
+    <tr><td>$wims_name_Login</td><td><input size="20" name="auth_user" value="$auth_user"></td></tr>
+   $table_end
+    <input type="hidden" name="step" value="1">
+   <center>
+    <input type="submit" value="$wims_name_Enter">
+   </center>
+  </form>
+!endif
+
+!if $step=1
+ !if $error=$empty
+  $name_sendmailmess
+ !endif
+!endif
