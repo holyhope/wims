@@ -22,7 +22,6 @@ example
 3,2,2,10,5,0
 -1,-1,-1,-1,-1,-1
 
-
 result is 
 1 line per input number
 6 items per line:
@@ -48,7 +47,7 @@ remarks:
 ruleset:
 120.2		: 4 significant digits
 120.2000	: 7 significant digits
-0120.2		: 4 significant digits
+0.0000120	: 3 significant digits
 scientiffic notation:
 1.202*10^5	: 4 significant digits
 1.20200*10^5	: 6 significant digits
@@ -98,7 +97,8 @@ int main( int argc , char *argv[]){
 	    input++;
 	}
 	input = argv[cnt];
-	strncpy( word, input, length );
+	// better way to use strncpy
+	strncpy( word, input, MAX_DIGITS - strlen(word)-1);
 	// reset
 	found_digit = 0;
 	found_point = 0;
@@ -141,6 +141,7 @@ int main( int argc , char *argv[]){
 		case 'E' : if(found_point == 1){points--;found_point = 0;} found_power++;pow = length - i;sig1 = 0;sig2 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply++;break;
 		case '0' : 
 		    if(i == 0){//last char 
+		    fprintf(stdout,"last zero : sig1 - zeros = %d - %d\n",sig1,zeros );
 			sig1 = sig1 - zeros;
 			sig2++;
 			if(found_power == 1){zeros++;}
@@ -186,6 +187,8 @@ int main( int argc , char *argv[]){
 	else
 	{
 	    // extra check for handling "special cases" 
+	    if(found_point == 1 && found_power == 0 && found_multiply == 0 && word[1] == '.'){ok = 1;}// just a decimal number 0.1233
+	    else
 	    if(found_point == 0 && found_power == 0){ sig2 = length;ok = 1; }	// just a number 12345
 	    else
 	    if(found_point == 0 && found_multiply == 0 && found_power == 1){ sig1 = 0; sig2 = 0 ; dec1 = 0; }	// 10^5
@@ -193,7 +196,7 @@ int main( int argc , char *argv[]){
 	    if(found_point == 1 && found_multiply == 0 && found_power == 1){ sig1 = 0; sig2 = 0 ; dec1 = 0; }	// 10^5.1
 	    else
 	    if(found_point == 0 && found_multiply == 1 && found_power == 1){ dec1 = 0; sig2 = length - zeros - pow;}	// 3*10^5
-	    
+	        
 	    if( found_power == 1){
 		// find out if scientiffic number is correctly written ; ok=0 -> ok=1 
 		// rule [1-9].[0-9]* x10^exp
