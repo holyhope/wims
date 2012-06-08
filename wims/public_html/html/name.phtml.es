@@ -205,6 +205,7 @@
 	Clases de ejemplo\
 	Autentificación del profesor\
 	Autentificación de los participantes\
+        Forget password\
 	Enseñanza primaria\
 	Enseñanza secundaria\
 	Universidad\
@@ -214,7 +215,7 @@
     Agrupación de clases \
     Pórtico de establecimiento \
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
 	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !!!endif

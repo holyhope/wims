@@ -42,6 +42,7 @@ n=!wordcnt $et
 !bound up_topscores between integer 0 and $wims_class_user_limit default $class_topscores
 !bound up_anonymtopscores within yes,no default yes
 !bound up_authscoresuspend within yes,no default yes
+!bound up_supconnectshowed within yes,no default no
 !bound up_exotitleform within -1,0,1,2,3 default 0
 !bound up_exolog between integer 0 and $wims_exolog_limit
 !bound up_examlog between integer 0 and $wims_examlog_limit
@@ -119,7 +120,8 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_ldap_photourl=$class_ldap_photourl\
 !set class_authscoresuspend=$up_authscoresuspend\
 !set class_exotitleform=$up_exotitleform\
-!set class_defined=yes in wimshome/log/classes/$wims_class/.def 
+!set class_supconnectshowed=$up_supconnectshowed\
+!set class_defined=yes in wimshome/log/classes/$wims_class/.def
 
 lastname=!word -1 of $up_supervisor
 firstname=!word 1 to -2 of $up_supervisor

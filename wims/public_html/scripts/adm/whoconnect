@@ -4,27 +4,39 @@
 !!
 !!
 
-!let file_=!replace internal / by ~ in $wims_class
-last_=!sh if [ -e $wims_home/s2/$wims_session/whoconnect.$file_ ]; then\
+!if $wims_user=supervisor
+ !let file_=!replace internal / by ~ in $wims_class
+ last_=!sh if [ -e $wims_home/s2/$wims_session/whoconnect.$file_ ]; then\
 stat -c%Y $wims_home/s2/$wims_session/whoconnect.$file_;\
 fi;
-!default $last_=0
-!if $wims_nowseconds-$last_>300 or $wims_read_parm=1
- ses_=!sh cd $wims_home/sessions;\
- grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
- ses_=!words2items $ses_
- whoconnect=$empty
- !for s_ in $ses_
-  t_=!defof wims_user\
+ !default $last_=0
+ !if $wims_nowseconds-$last_>300 or $wims_read_parm=1
+  ses_=!sh cd $wims_home/sessions;\
+  grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
+  ses_=!words2items $ses_
+  whoconnect=$empty
+  !for s_ in $ses_
+   t_=!defof wims_user\
 wims_firstname\
 wims_lastname in wimshome/sessions/$s_/var.stat
-  !distribute line $t_ into t1_,t2_,t3_
-  !if $t1_!=supervisor
-   whoconnect=!append line $t1_,$s_,$t2_,$t3_ to $whoconnect
-  !endif
- !next s_
- !writefile wimshome/s2/$wims_session/whoconnect.$file_ $whoconnect
+   !distribute line $t_ into t1_,t2_,t3_
+   !if $t1_!=supervisor
+    whoconnect=!append line $t1_,$s_,$t2_,$t3_ to $whoconnect
+   !endif
+  !next s_
+  !writefile wimshome/s2/$wims_session/whoconnect.$file_ $whoconnect
+ !else
+  whoconnect=!record 0 of wimshome/s2/$wims_session/whoconnect.$file_
+ !endif
+ numpartconnected=!linecnt $whoconnect
+ !setdef user_connected=$wims_session in wimshome/log/classes/$wims_class/supconnected
 !else
- whoconnect=!record 0 of wimshome/s2/$wims_session/whoconnect.$file_
+ supervisorconnected=!defof user_connected in wimshome/log/classes/$wims_class/supconnected
+ !if $supervisorconnected!=$empty
+  test_=!defof wims_user in wimshome/sessions/$supervisorconnected/var.stat
+  !if $test_=$empty
+   !reset supervisorconnected
+   !setdef user_connected=$empty in wimshome/log/classes/$wims_class/supconnected
+  !endif
+ !endif
 !endif
-numpartconnected=!linecnt $whoconnect
