@@ -86,7 +86,6 @@ int main( int argc , char *argv[]){
         if( length > MAX_DIGITS){
             fprintf(stdout,"error : number is larger than %d digits\n",MAX_DIGITS);
 	    return 0;
-                                                                                                                           
         }
 	/* test for illegal characters */
 	while (*input){ 
@@ -141,7 +140,6 @@ int main( int argc , char *argv[]){
 		case 'E' : if(found_point == 1){points--;found_point = 0;} found_power++;pow = length - i;sig1 = 0;sig2 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply++;break;
 		case '0' : 
 		    if(i == 0){//last char 
-		    fprintf(stdout,"last zero : sig1 - zeros = %d - %d\n",sig1,zeros );
 			sig1 = sig1 - zeros;
 			sig2++;
 			if(found_power == 1){zeros++;}
