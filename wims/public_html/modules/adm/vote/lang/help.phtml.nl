@@ -30,15 +30,15 @@ plus de volgende extra commando's <dl>
 	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
 	tot op de individuele student te regelen.
 	Vermeld de variabele 
-	<tt class="wims_code_variable">\vname</tt> in de lijst met restricties van de bestreffene 
+	<tt class="wims_code_variable">\vname</tt> in de lijst met restricties van de bestreffende 
 	werkbladen of toetsen.
-	In this case, it is possible to give the maximum number of participants allowed to choose
-	an option: each choice must begin by this number followed by <tt class="wims_code_words">:</tt>
-	For instance,
+	In dat geval is het ook mogelijk het maximale aantal deelnemers aan te geven.
+	Laat elke keuze beginnen met dit getal gevolgs door een dubbele punt <tt class="wims_code_words">:</tt>
+	Bijvoorbeeld:
 <pre>
-\list{46:Seance 1 at 8.00,
-46:Seance 2 at 10.00, 
-40:Seance 3 at 13.00}
+\list{12:Sessie 1 om 8.00,
+16:Sessie 2 om 10.00, 
+21:Sessie 3 om 13.00}
 </pre>
 	</dd>
 <dt><tt class="wims_code_variable">\textarea</tt>
@@ -54,7 +54,7 @@ Een enquete mag tot 64 keuzevelden bevatten.
 
 !if generalinfo iswordof $wims_read_parm
 <ul>
- <li><b>$wims_name_title</b> : the title of the questionnaire.</li>
+ <li><b>$wims_name_title</b> : de titel van de vragenlijst.</li>
  <li><b>$wims_name_Type</b>: 
   <ul>
    <li><b>$name_anonymous </b>: 

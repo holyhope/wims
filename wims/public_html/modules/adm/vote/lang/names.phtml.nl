@@ -88,10 +88,10 @@ uservar naam\
 Default host IP (kan worden veranderd op de volgende pagina)\
 Introductie tekst (dwz introductie tekst voor de student)\
 Selecteerd datum en tijd van de\
-beschikbare toets sessions\
+beschikbare toets sessies\
 aantal<br>studenten\
-Datum van<br>sessie\
-Begin tijd<br>van sessie\
+Datum<br>sessie\
+Begin tijd<br>sessie\
 Eind tijd<br>sessie\
 Host IP\
 Extra info\
@@ -112,3 +112,4 @@ name_cancellation
 
 !set name_gotoguided=Om de instellingen te wijzigen ga naar&nbsp;
 !set name_gotoguided_warning=Het veranderen van instellingen voor een indiviuele toestafname via dit formulier kan leiden tot incompatibileit met de gegevens uit de <em>begeleidde mode</em>.
+

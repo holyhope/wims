@@ -44,7 +44,7 @@ Nieuwe deelnemer,aanmelden,Inloggen,Up\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up
 
-!set name_warning_external=Gebruik de formulier niet: de onderstaande link is niet correct.
+!set name_warning_external=Gebruik het formulier niet: de onderstaande link is niet correct.
 
 !distribute line U heeft geen account in een andere klas.\
 Zoek mijn klassen\
@@ -80,7 +80,7 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 <span class="wims_institutiondesc">$class_institution</span> als de\
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
  
-!set name_research1= Er zijn zeer veel virtuele klassen geinstalleerd op deze server. \
+!set name_research1= Er zijn zeer veel virtuele klassen ge&iuml;nstalleerd op deze server. \
    Om uw klas te vinden, voer een zoekterm in.
  
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
@@ -111,5 +111,5 @@ dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op g
 !set name_acceptcgu=Ik ga akkoord met de algemene voorwaarden.
 !set name_seecgu=Lees de algemene voorwaarden.
 
-!set name_sendmailmess=Un message contenant un nouveau mot de passe vous a été envoyé à l'adresse électronique que vous avez défini.
+!set name_sendmailmess=Er wordt een email gestuurd met een nieuw wachtwoord naar het opgegeven emailadres.
 

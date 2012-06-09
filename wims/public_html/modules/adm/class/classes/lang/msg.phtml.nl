@@ -13,7 +13,7 @@ Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br>
 !endif
 
 !if $error=in_exam
-Je kan niet van klas veranderen tijdens een overhoring !
+Je kan natuurlijk niet van klas veranderen tijdens een overhoring !
  !exit
 !endif
 
@@ -39,11 +39,12 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
 !endif
 
 !if $error=bad_loginmail
- Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription. 
+Je wordt door het systeem niet herkend of je hebt bij de inschrijving geen geldig emailadres opgegeven.
  <br>
- Demandez à votre enseignant de vous attribuer un nouveau mot de passe.
+ Vraag je docent om een nieuw wachtwoord. 
  <form action="#" name="chrono">
- <span class="wims_warning">$wims_name_warning</span> ! Cette procédure de récupération de mot de passe est désactivée pendant 5 secondes &nbsp;!
+ <span class="wims_warning">$wims_name_warning</span> !
+ Deze procedure schakeld weer in na een timeout van 5 seconden &nbsp;! 
  <input size=1 name="clock"> </form>
  !exit
 !endif

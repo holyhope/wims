@@ -65,7 +65,7 @@ U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
 name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te boezoeken.
  
-SU_greet = !nosubst Hallo, $wims_firstname $wims_lastname!<br>\
+SU_greet = !nosubst Welkom, $wims_firstname $wims_lastname!<br>\
 Welkom op de Onderhouds pagina van uw klas.<br>
 SU_Bhome = Terug naar de supervisor pagina
 SU_log = supervisor login
@@ -78,7 +78,7 @@ wims_name_SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
 SU_nopartconnected=Er is op dit moment geen student ingelogd
 SU_numpartconnected=!nosubst Er zijn op dit moment $numpartconnected student ingelogd
-U_supconnected=L'enseignant est connecté.
+U_supconnected=Je docent is ingelogd.
 
 wims_name_SE_list = Leerlingen en cijfers 
 wims_name_SE_part = Zo zien leerlingen deze pagina
@@ -111,3 +111,4 @@ CL_otherNames = Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 !set name_dep = Je cijfer voor deze oefening moet verbeterd worden
 !set name_dep2 = voor dat je deze oefening mag proberen.
 !set name_dep3 = terug naar werkblad.
+

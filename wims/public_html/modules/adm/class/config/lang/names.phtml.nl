@@ -170,8 +170,8 @@ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybod
 name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
 name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
- !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas
-  <em><font color="blue">$nei_description</font></em> dat gedeeld kan worden.
+ !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
+ <em><font color="blue">$nei_description</font></em> dat gedeeld kan worden.
 
  !set name_newres=!nosubst De klas <em><font color="blue">\
   $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
@@ -181,7 +181,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
  !set name_warning_authorized=!nosubst De klas <em><font color="blue">$nei_description</font></em>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
- Ga alleen door als zeker weey dat die niet van toepassing is.
+ Ga alleen door als zeker weet dat die niet van toepassing is.
   
  
  !distribute lines Buurklassen\
@@ -416,7 +416,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 !if $job=list
   !distribute line Naam van het instituut\
     Naam van de klas\
-    Class number\
+    Klas number\
     Opties \
     Modtool Account\
     Beveiliging\
@@ -452,6 +452,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform,name_config_supconnectshowed
+
     !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
 
 !endif
