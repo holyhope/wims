@@ -153,7 +153,7 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Homepagina van je klas,Toevoegen aan werkblad,Insérer comme aide à un exercice d'une feuille,\
+ !distribute items Homepagina van je klas,Toevoegen aan werkblad,Insérer comme aide dans une feuille,\
  Schrijf naar je docent,Uitloggen,\
  De antwoorden zijn reeds verwerkt en de cijfers berekend,\
  Je hebt het behalen van cijfers opgeschort,\

@@ -153,7 +153,7 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Página principal de la clase,Insertar en una hoja de trabajo,Insérer comme aide à un exercice d'une feuille,\
+ !distribute items Página principal de la clase,Insertar en una hoja de trabajo,Insérer comme aide dans une feuille,\
 		Escribir al profesor, Salir,\
 		El registro de notas es cerrado.,\
 		Ha suspendido el registro de notas.,\
