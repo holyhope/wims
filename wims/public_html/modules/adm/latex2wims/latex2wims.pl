@@ -281,7 +281,6 @@ my @cnt = (0) x ($#SECTIONS + 1);
 my ($secpattern) = join('|', @SECTIONS);
 $TEXT =~ s/\\begin\s*{($secpattern)\s*}/cnt_section($1,\@cnt)/eg;
 $TEXT =~ s/\[fragile\]//g;
-$TEXT =~ s/\s*\\frametitle//g;
 $TEXT =~ s/\\end\s*{\s*($secpattern)\s*}/<\/$1>/g;
 $TEXT =~ s/\\wimsentre{($secpattern)}/\\wimsentre$1/g;
 $TEXT =~ s/\\(wimsentre)?($secpattern)\b\*?/open_close($2,\@cnt,$1)/eg;
@@ -1225,9 +1224,19 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\(begin|end){document}/\\document /g;
   $TEXT =~ s/\\exercise{module=([^\&]+)\&([^}]+)}{([^}]+)}/store_sheet($1,$2,$3,$worksheet)/eg ; 
   $TEXT =~ s/\\xspace//g;
+  $TEXT = traite_beamer($TEXT) ; 
   $TEXT;
 }
 
+sub traite_beamer {  my ($TEXT) = @_;
+   $TEXT =~ s/\\uncover\s*(<([^>]+)>)?\s*{(.*)}/\\fold{.}{-->}{$3}/g ; 
+   $TEXT =~ s/\s*\\frametitle{([^}]+)}/store_frametitle($1)/ge;
+   $TEXT ;
+}
+
+sub store_frametitle{ my ($TEXT)= @_ ;
+  "<div class=\"frametitle\">$TEXT</div>"
+}
 sub linewidth { my ($line,$w)= @_ ;
   $line =~ s/1\.[0]\s*\\(line|text)width/100\%/g;
   $line =~ s/0?\.([0-9])\s*\\(line|text)width/$1 0\%/g;
@@ -1312,19 +1321,23 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
 #crée la page
 
 sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ ;
+   my $s='' ; 
+   $s= "l"  if($toc_g) ; $s .= "r" if($toc_d) ;
   if (($toc_g) || ($toc_d)) {
-    $CHEMIN_up . '<table class="doc_table"><tr>'
-   . (($toc_g) ? '<td class="left_toc" id="left_toc">'. $toc_g 
-   . $index . '</td>' : '')
-   . '<td valign="top" align="left" width="100%"><div class="wimsdoc">'
+    $CHEMIN_up . '<div class="doc_latex2wims' . $s . '">'
+   . (($toc_g) ? '<div class="left_toc">'. $toc_g 
+   . $index . '</div>' : '')
+   . '<div class="wimsdoc">'
    . $text
-   . '</div>' .  $CHEMIN_down . ' </td>'
-   . (($toc_d) ? '<td class="right_toc" id="right_toc">'
+   . '</div>'
+   . (($toc_d) ? '<div class="right_toc">'
    . $toc_d
    . '<center>'
    . $LOAD
-   . '</center></td>' : '') 
-   . '</tr></table>'  }
+   . '</center></div>' : '')
+   . $CHEMIN_down ;
+   }
+
    else {$CHEMIN_up . $text . $CHEMIN_down };
  }
 
