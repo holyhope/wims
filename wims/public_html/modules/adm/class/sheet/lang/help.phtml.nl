@@ -67,5 +67,8 @@ In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit ee
 In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit een Schaersvoorde module "H4/stat/stat-4.nl".
 <pre>module=H4/stat/stat-4.nl&taal=nl&subject=5&level=2&total_exos=1&rounding=-1&usage=2&cmd=new,10</pre>
 
+Vous pouvez aussi insérer un lien d'aide dans la feuille en sélectionnant d'abord une ressource WIMS
+et en suivant le lien <span  class="wims_button disabled">$wims_name_addh</span> dans le menu de gauche.
+
 !exit
 

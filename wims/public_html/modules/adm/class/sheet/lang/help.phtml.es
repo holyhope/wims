@@ -40,7 +40,7 @@ Indicación sobre el registro de las notas.
 :feedback
 !read adm/title.phtml 1\
 $(name_shtab[10])
-
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
 !read lang/help.phtml.fr feedback
 
 !exit
