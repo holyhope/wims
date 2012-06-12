@@ -20,7 +20,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set name_manualscore=Handmatig ingevoerde cijfers
 !set name_autoscore=Behaalde cijfers
 !set name_manual_notes=globaal,docent,auto
-!set name_examnote=Proefwerk cijfers
+!set name_examnote=Proefwerkcijfers
 
 !set name_severitylevels=Moeilijkheidsgraad van Werkbladen
 !set name_formula=No,Gewicht,niveau
@@ -46,8 +46,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 
-!set name_warning_no_sequence=You have configured the sequences to appear but have not defined any\
-sequences. So no score can appear.
+!set name_warning_no_sequence=U hebt de werkvolgorde geconfigureerd , maar nog niets aangegeven.Dus er kunnen ook geen cijfers worden getoond.
 
 !if $manual>0
 !set name_manual_explanation=<b>Uitleg.</b> In de kolom <tt>Gemiddelde</tt> , <tt>auto</tt> \
@@ -66,7 +65,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 !if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\
-   Login for external authentification,Inscription,Gestion\
+   Login bij externe authentificatie,Inschrijving,Beheer\
    into name_change,name_regnum,name_comments,name_photourl,name_vars,\
   name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion
   !goto end
