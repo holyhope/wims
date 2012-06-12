@@ -5,7 +5,7 @@
 !if $seq!=
  !set wims_sequence=$seq
 !endif
-
+!read adm/lang/date.phtml.$moduclass_lang
 limit_textarea=600
 
 wims_nw=votedir Votedir userdef vote Vote job empty
@@ -17,6 +17,9 @@ userfile=$userdef
 !read adm/class/classlang names.phtml
 
 !bound vote between integer 1 and 64 default 0
+
+
+!default gstep=0
 
 vote_class=!defof sharing_vote in wimshome/log/classes/$wims_class/neighbors
 !default vote_class=$wims_class
@@ -35,9 +38,12 @@ vote_class=!defof sharing_vote in wimshome/log/classes/$wims_class/neighbors
  rEg=
 !endif
 !if $abandon!=$empty
- job=home
+!!!FIXME edit or home
+ job=edit
+ !set gstep=$[max($gstep-2,0)]
  abandon=
 !endif
+
 readjobs=home,read,help,vote,showresult
 editjobs=creat,guided,edit,reg,erase,preview,csv
 !if $wims_user=supervisor
@@ -60,6 +66,7 @@ votecnt=!recordcnt $votedir/.votes
  !changeto home.proc
 !endif
 !if $job=creat
+   !reset gstep
  !if $votecnt>=64
   error=too_many_votes
   !exit
@@ -81,25 +88,19 @@ votecnt=!recordcnt $votedir/.votes
  vote_src=!record 0 of $votedir/$vote.src
 !endif
 !default reg_model=$vote_model
+!! at some gstep these variables are not in the form but are required by reg.proc, so
+!! we need to be sure to have found defaults
+!default reg_status=$vote_status
+!default reg_option=$vote_option
+!default reg_show=$vote_show
+!default reg_status=$vote_status
 
 !if $vote<1
  job=home
 !endif
 
-vmodellist=exams,groups
-!! vrfvmodel=!defof vmodel in $votedir/$vote.data
-!! vmodel --> vote_model (defined in the .votes file)
-!! vmodel=!defof vmodel in $votedir/$vote.data
-!! le seguenti servivano per impedire di cambiare il modello se il vote è chiuso
-!! !if $vote_status>0
-!! $mod_vmodel=$empty
-!! !else
-!! !default mod_vmodel=$vmodel
-!! !endif
-!! se $vmodel è $empty, allora il default va su free (??)
-!! !default mod_vmodel=$vmodel
-!! no, we do not want a "default" so that we can check "where we are"
-!! !default mod_vmodel=free
+!set vmodellist=accessvar,group
+!set name_vmodellist=$(name_accessvar), $(name_group)
 
 !read $job.proc
 

@@ -77,18 +77,13 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !! guided mode
 
-!set wims_name_guided=Begeleidde mode
-!set name_optionclosed=(gesloten, wordt geopend als alle andere opties zijn ingevuld)
+!set name_optionclosed=gesloten, wordt geopend als alle andere opties zijn ingevuld
 
-!distribute lines Met dit formulier kan op individueel niveau de toegang tot werkbladen en toetsen worden geregeld\
-Individuele toegang tot werkbladen en toetsen\
-Hoeveel sessies ?\
+!distribute lines Hoeveel sessies ?\
 maximaal\
 uservar naam\
 Default host IP (kan worden veranderd op de volgende pagina)\
 Introductie tekst (dwz introductie tekst voor de student)\
-Selecteerd datum en tijd van de\
-beschikbare toets sessies\
 aantal<br>studenten\
 Datum<br>sessie\
 Begin tijd<br>sessie\
@@ -96,20 +91,36 @@ Eind tijd<br>sessie\
 Host IP\
 Extra info\
 Afmelding inschrijving\
-into name_introguided name_guidedtitle name_howmany name_atmost name_nameexvar \
-name_textconnip name_introtext \
-name_numsess_pre name_numsess_post \
-name_numstud name_examdate name_begintime name_endtime name_connip name_extra \
+into name_howmany,name_atmost,name_namevar,name_textconnip,name_introtext,\
+name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
 name_cancellation
 
 !set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
+!set name_session_select=!nosubst Selecteerd datum en tijd van de $numsess beschikbare toets sessies
 
 !set name_describesource=!nosubst Hier staat de brontekst.Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
 
-!set name_examinstr=!nosubst <strong>Toets instellingen</strong>: voor actieve werbladen en proefwerken,(<em>Score registratie</em>) selecteer <em>open voor IP adressen en tijden</em> en voer <code>\$nameexvar</code> in  (inclusief <code>\</code>).
+!if $vote_mode!=free
+ !readproc adm/lang/sheetexam.phtml.$lang
+!endif
 
-!set name_noguided=Een actieve instelling kan niet worden veranderd, tenzij deze aangemaakt is in de <em>begeleidde mode</em>.
+!set name_yourvariable=!nosubst Le nom de la variable correspondant à ce questionnaire \
+  que vous avez choisi est <tt class="wims_code_variable">$namevar</tt>
+!set name_accessvar_instr=!nosubst <strong>Utilisation dans un examen ou dans une feuille</strong>: \
+dans une feuille ou un examen actif, dans <tt class="wims_code_words">$(name_shinfo[6])</tt>, sélectionnez \
+ <tt class="wims_code_words">$(name_allowtype[3])</tt> et écrivez \
+<tt class="wims_code_variable">\$namevar</tt> (y compris <tt class="wims_code_variable">\</tt>).
 
-!set name_gotoguided=Om de instellingen te wijzigen ga naar&nbsp;
-!set name_gotoguided_warning=Het veranderen van instellingen voor een indiviuele toestafname via dit formulier kan leiden tot incompatibileit met de gegevens uit de <em>begeleidde mode</em>.
+!set name_group_instr=!nosubst <strong>Utilisation dans la classe</strong>: vous pouvez filtrer 
+les participants selon cette variable pour certaines activités de la classe.\
 
+!set name_group_help= permet de sélectionner les participants \
+selon les groupes (mail et trombinoscope pour l'instant). 
+
+!set name_accessvar_help=permet d'individualiser l'accès des participants \
+à une feuille ou à un examen.
+
+!distribute items Free Mode ,Access to sheets or exams,Constitution of groups,Groups into name_free,name_accessvar, name_group,name_group1
+
+!set name_model=Model
+!set name_nextstep=Next Step

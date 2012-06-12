@@ -78,82 +78,38 @@ Un questionario può contenere fino a 64 domande.
  <li><b>$name_result</b>: se i risultati sono $(name_publish)s, gli studenti possono prenderne visione (pur di aver risposto a loro volta al questionario). In caso contrario solo il docente può accedere ai risultati del questionario.</li>
  <li><b>$name_whovote</b>: se l'elenco è $name_publish2 allora docente e studenti possono consultarlo (purché abbia risposto un numero di studenti sufficiente a garantire la riservatezza) In caso contrario alors l'enseignant et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants). In caso contrario nessuno può sapere chi ha risposto al questionario!</li>
 </ul> 
+ !goto guidedmode
 !tail
 !exit
 !endif
 
 !if guidedmode iswordof $wims_read_parm
+:guidedmode
+Plusieurs modes sont possibles :
+<ul><li>
+  <b>$name_free</b> :  vous pouvez créer 
+  un questionnaire en utilisant librement les commandes qui se trouvent dans l'aide. 
+  </li><li>
+!readproc adm/lang/sheetexam.phtml.$lang
+  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 
+  La variable technique alors créée vous permettra par exemple de définir un accès individualisé 
+  à des feuilles ou à des examens. Pour cela, si vous avez appelé <tt class="wims_code_variable">ma_variable</tt> quand 
+  le formulaire vous le demandera, il vous suffira d'écrire <tt class="wims_code_variable">\ma_variable</tt> dans la zone 
+  libre de la feuille ou de l'examen correspondant à <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  </li><li>
+  <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
+  (disons que vous l'avez appelé <tt class="wims_code_variable">ma_variable</tt>. A l'aide
+  de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
+  trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b> 
+  d'avoir demandé la variable <tt class="wims_code_variable">var_ma_variable</tt>).
+  D'autres utilisations sont en prévision.
+  </li></ul>
 
-<p>Il modo guidato permette di costruire questionari per l'iscrizione
-agli esami come da istruzioni qui di seguito riportate (si vedano
-anche le 
-!set wims_ref_target=extra
-!href module=help/teacher/faq.fr&+cmd=new&+job=total#r_class_examvote FAQ
-).
-</p>
-J'ai besoin de répartir les étudiants dans plusieurs
-salles lors d'un examen ou à plusieurs heures. Comment faire ? </a></h3>
- Supposons que vous vouliez faire passer un examen à 120 étudiants, dans 
- une salle ne contenant que 50 ordinateurs. Il faut donc repartir 
- l'examen en 3 séances, chacune ayant 46 étudiants (on prévoit quelques 
- machines en panne), sauf la dernière qui n'a que 40 places (raison 
- technique). Supposons que chaque séance dure 90 minutes et que les 3 
- séances soient à 08h00, 10h00, 13h00, dans la même journee 01/06/2006. 
- Aussi, supposons que les noms de domaine des postes dans la salle sont 
- de style 
- <tt class="d">numero-de-poste.salle1.ma-univ.fr</tt>.
-<p> On laisse les étudiants choisir eux-même la séance 
- grâce à un questionnaire (vote). Pour cela,
-<p> <ul><li> Créer un vote nominatif (inscription à l'examen).</li>
-<li> Dans ce vote, après le texte d'instructions, créer le choix :
-<pre class="d"> \menu{46:Séance 1 à partir de 8h, 46:Séance 2 à partir de 10h, 
- 40:Séance 3 à partir de 13h}
-</pre>
- Ici c'est un menu mais on pourrait mettre une liste (<tt class="d">\list</tt>) 
- ou des boutons (<tt class="d">\radio</tt>). Le 
- texte dans le menu est libre, les items sont séparés par des 
- virgules, comme d'habitude (bien sûr, pas de virgule dans chaque item).</li>
-<li> Juste après ce choix, on définit une variable d'enregistrement :
-<pre class="d">\uservar{exam06,>20060601.13:00 <20060601.11:00 .salle1.ma-univ.fr,
-                >20060601.08:00 <20060601.09:30 .salle1.ma-univ.fr,
-                >20060601.10:00 <20060601.11:30 .salle1.ma-univ.fr,
-                >20060601.13:00 <20060601.14:30 .salle1.ma-univ.fr}
-</pre>
- Le premier champ est le nom de la  variable (ici <tt class="d">exam06</tt>, 
- le deuxième servira pour ceux qui n'ont pas choisi (ici, 
- la fin est avant le début, donc pour ceux-ci, rien ne sera 
- ouvert), et à partir du troisième champ, c'est la définition 
- d'ouverture pour chaque choix.
-<p> Ces définitions suivent les mêmes règles que celles de 
- l'ouverture sélective  de notes d'une feuille, donc les espaces sont importants.</li>
-<li>La feuille d'examen peut être ouverte pour simulation jusqu'au, 
- disons, 28 mai. L'inscription peut commencer avant, mais les choix 
- d'étudiants n'auront aucun effet sur la feuille d'examen pour l'instant.
-</li>
-<li>A partir de 29 mai, dans la page de gestion de l'examen, on définit 
- une ouverture sélective comme suit : <tt class="d">\exam06</tt>
- Et l'ouverture sélective est active ! </li>
- </ul>
- La simulation de l'examen sera automatiquement terminée,
- et chaque étudiant verra l'examen s'activer 
- aux heures qu'il a choisies.
-<p> L'enseignant peut consulter le choix de chaque étudiant, non 
- seulement par la page de gestion du vote, mais aussi dans la page donnant les propriétés 
- du compte de l'étudiant (<tt class="d">participants et notes -> nom de 
- l'étudiant -> nom de l'étudiant sur le titre</tt>). 
- Le contenu du choix de l'étudiant, traduit en données d'heures et de poste, 
- apparait dans le champ des variables techniques, sous la forme 
- <tt class="d">exam06=...</tt>.
-<p> L'enseignant peut modifier cette définition s'il a besoin de le 
- faire pour un étudiant particulier, par exemple pour accorder un 
- tiers-temps. Mais il vaut mieux attendre la fermeture d'inscription 
- avant de faire ce genre de modification, car cette dernière risque d'être 
- effacée si l'étudiant change d'avis après et remplacée par le nouveau 
- choix de l'étudiant
+Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
+ne pas utiliser <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
+<tt class="wims_code_variable">manual1</tt>, ...).
 !tail
 !exit
 !endif
-
-
 !tail
 

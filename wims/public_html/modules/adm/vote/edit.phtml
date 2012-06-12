@@ -3,94 +3,50 @@
 !form reply
 <b>
 !if $vote_title=$empty
- $name_creation
+  $name_creation
 !else
- $name_edition
+  $name_edition
 !endif
 </b>
 !set wims_ref_class=wims_button_help
 !href cmd=help&helpname=generalinfo $wims_name_help
 <br>
-$table_header
-!read votesetup.phtml
- $table_tr
-  <td colspan="2" align="center">
-   <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
-!! !!!!
-!! !if $vote_title!=$empty
-!! !set wims_ref_class=wims_button
-!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
-!! !!   <input type="submit" name="rEg" value="$wims_name_guided" $wims_on_click>
-!! !endif
-!!!!!!
-   &nbsp;<input type="submit" name="abandon" value="$wims_name_giveup">
-  </td>
- </tr>
-$table_end
 
-!! !if $vmodel isitemof $vmodellist
-!! <p>$name_gotoguided
-!! !set wims_ref_class=wims_button
-!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
-!! !if $vote_status=0
-!! <p>(Need a link to go back to free mode! With warning!)</p>
-!! !endif
-!! .</p>
-!! !goto end
-!! !endif
-
-!if $vote_status=0
-!if $vote_model=$empty
-  <p>Insert title and choose whether to use a model (or <code>free</code> for freeform)</p>
-!goto end
+!if $gstep= or $gstep=0 or $vote_title=$empty
+  !read votesetup.phtml
 !endif
-!! !if $reg_model=free and $vmodel isitemof $vmodellist
-!! <p>Careful: modification here can result in incompatibilty with guided mode // modification here will be lost if you go back to guided mode</p>
-!! !endif
+!if $error!=$empty
+ !goto endform
+ !exit
 !endif
-
-!if $reg_model isitemof $vmodellist
-!! $name_gotoguided 
-!! !set wims_ref_class=wims_button
-!! !href cmd=reply&job=guided&vote=$vote $wims_name_guided
-(Need a link to go back to free mode ??)
-!! !if $vote_src!=$empty
-!! <p>the vote has been created under free mode: if you go to guided mode
-!! the data will be lost // you can loose data. Are you sure?</p>
-!! !endif
-!read guided.phtml
-!goto end
+!if $gstep>0
+  !read models/$reg_model.phtml
 !endif
+:endform
 
-<p><b> $name_content </b>:
+!! this should probably best be defined in models/_______.phtml
+!! (and similar checks are probably needed in order to !reset gstep, cfr. reg.proc)
+!!
+!! if ok, analogous should be done for previous step - $wims_name_givup
 
-!if $vote_status>0
-  <br>$name_nowritable
-<pre>
-!record 0 of $votedir/$vote.src
-</pre>
+!set submit_name=$name_nextstep
+!set abandon_name=$wims_name_back2
+!if $vote_model=free and $gstep>0
+ !set submit_name=$wims_name_tosave
+ !set abandon_name=$wims_name_giveup
 !else
- &nbsp;
- !set wims_ref_class=wims_button_help
- !href cmd=help $wims_name_help
- </p>
- <center>(
- !if $speckedit=no
-    !set msgsrc1=<textarea id="src" name="reg_src" cols="80" rows="20">$src</textarea>
-    !href cmd=reply&job=edit&speckedit=yes  $wims_name_active
- !else
-   !set msgsrc1=<textarea class="iEdit" id="src" name="reg_src" cols="80" rows="20">$src</textarea>
-   !href cmd=reply&job=edit&speckedit=no $wims_name_desactive
+ !if $gstep>2
+   !set submit_name=$wims_name_tosave
  !endif
- - <small>$wims_name_speck_warning</small>)
- 
- $msgsrc1
-
- <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
- <input type="submit" name="abandon" value="$wims_name_giveup">
- </center>
- </form>
 !endif
+!if $gstep <1
+   !set abandon_name=$wims_name_giveup
+ !endif
 
-:end
-!reset reg_option reg_status reg_show reg_whovoteshow
+<center> 
+   <input type="submit" name="rEg" value="$submit_name" $wims_on_click>
+   &nbsp;<input type="submit" name="abandon" value="$abandon_name">
+</center>
+!reset reg_option reg_status reg_show reg_whovoteshow up_bday[10] up_bmonth[10] up_byear[10] \
+up_bhour[10] up_bmin[10] up_ehour[10] up_emin[10] up_nstud[10]\
+up_testoextra[10] up_exconnip[10] up_testointro up_namevar,up_defconnip 

@@ -21,17 +21,15 @@
  <p>
 !endif
 
-!! DEBUG info
-  <h1>reg_model=$reg_model,vote_model=$vote_model,vmodel=$vmodel, mod_vmodel=$mod_vmodel</h1>
-  <h1>gstep=$gstep</h1>
-
 !read $job.phtml
-
 !if $job!=home
  !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
  to $wims_menu_items
-
+ !if $job notwordof read creat and $reg_title$vote_title!=$empty and $reg_src$vote_src!=$empty
+   !set wims_menu_items=!append line test,1,cmd=reply&job=read\
+   to $wims_menu_items
+ !endif
 !endif
-
+ 
 !tail
 

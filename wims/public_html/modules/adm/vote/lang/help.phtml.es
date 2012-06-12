@@ -81,6 +81,36 @@ Una encuesta puede contener hasta 64 campos de elección.
  et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants).
  Dans le cas contraire, personne ne peut savoir qui a voté !</li>
 </ul> 
+ !goto guidedmode
+!tail
+!exit
+!endif
+
+!if guidedmode iswordof $wims_read_parm
+:guidedmode
+Plusieurs modes sont possibles :
+<ul><li>
+  <b>$name_free</b> :  vous pouvez créer 
+  un questionnaire en utilisant librement les commandes qui se trouvent dans l'aide. 
+  </li><li>
+!readproc adm/lang/sheetexam.phtml.$lang
+  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 
+  La variable technique alors créée vous permettra par exemple de définir un accès individualisé 
+  à des feuilles ou à des examens. Pour cela, si vous avez appelé <tt class="wims_code_variable">ma_variable</tt> quand 
+  le formulaire vous le demandera, il vous suffira d'écrire <tt class="wims_code_variable">\ma_variable</tt> dans la zone 
+  libre de la feuille ou de l'examen correspondant à <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  </li><li>
+  <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
+  (disons que vous l'avez appelé <tt class="wims_code_variable">ma_variable</tt>. A l'aide
+  de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
+  trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b> 
+  d'avoir demandé la variable <tt class="wims_code_variable">var_ma_variable</tt>).
+  D'autres utilisations sont en prévision.
+  </li></ul>
+
+Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
+ne pas utiliser <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
+<tt class="wims_code_variable">manual1</tt>, ...).
 !tail
 !exit
 !endif

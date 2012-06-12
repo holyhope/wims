@@ -13,7 +13,8 @@ reg_title=!singlespace $reg_title
 !bound reg_whovoteshow within 0,1 default 0
 !if $reg_title=$empty
   reg_status=0
- error=no_title
+  gstep=$[max(0,$[$gstep-1])]
+  error=no_title
  :edit
  job=edit
  !changeto edit.proc
@@ -31,7 +32,9 @@ reg_src=!trim $reg_src
 !for i=1 to $votecnt
  v_$i=!record $i of $votedir/.votes
 !next i
-
+!if $reg_model isitemof $vmodellist
+  reg_option=nominative
+!endif
 v_$vote=$reg_status\
 $reg_title\
 $reg_option\
@@ -55,6 +58,15 @@ $reg_model
 
 !if $reg_src=$empty and $vote_status=0
   !goto edit
+!endif
+
+!if $vote_model!=free
+    !goto edit
+!endif
+!! when all is done, need to reset gstep. Not sure this is the best way
+
+!if $gstep=3
+ !reset gstep
 !endif
 job=read
 !read var.proc
