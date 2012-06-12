@@ -21,15 +21,30 @@ $table_tr
    !endif
  </td>
 </tr>
-!if $type_class iswordof 2 4
-  !if $user_participate!=$empty
+!if $type_class iswordof 2 4 or ($class_Supervisor=$wims_realuser and $wims_class!=$wims_superclass and $wims_realuser!=$getuser)
+  !if $user_participate!=$empty and $type_class iswordof 2 4
     $table_tr<th>$name_inscript</th><td><tt>$user_participate</tt></td></tr>
   !endif
   !if $user_supervisable=yes
     $table_tr<th>$name_gestion</th><td>
-    <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise">
-   <tt>$wims_class/n_1, ... </tt></td></tr>
+    !if $type_class iswordof 2 4
+     <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise">
+     <tt>$wims_class/n_1, ... </tt></td></tr>
+    !else
+      !if $wims_class isitemof $user_supervise
+        !set superv=yes
+      !else
+        !set superv=no
+      !endif
+     !formradio superv list yes,no prompt $wims_name_yes, $wims_name_no
+     !set up_firstname=$user_firstname
+     !set up_lastname=$user_lastname
+    !endif 
   !endif
+!endif
+!if $user_supervisable=yes and $getuser!=$wims_realuser and $type_class notwordof 2 4 
+ !goto end
+ !exit
 !endif
 !if $class_auth=$empty or $wims_user=supervisor
 $table_tr<th>$wims_name_Password</th><td>
@@ -61,6 +76,7 @@ $table_tr<th><label for="up_photourl">$name_photourl</label></th><td>
  	<input size="14" type="password" name="passcheck" id="passcheck"> <br>
 	<small>$name_enterpassword</small></td>
 !endif
+:end
 $table_hdtr<td align="center" colspan="2">
 <input type="submit" name="reg" value="$wims_name_tosave"> &nbsp;
 <input type="submit" name="abandon" value="$wims_name_giveup"></td>

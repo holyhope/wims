@@ -4,11 +4,6 @@
  !goto $wims_read_parm
 !endif
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
-<b><font color=green>$wims_institutionname</font></b>
- 
-!set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
-
 !distribute line Povpreèje uèilnice\
 Povpreèje\
 Povpreèje pozitivnih rezultatov\
@@ -55,19 +50,19 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 sequences. So no score can appear.
  
 !if $manual>0
- !set name_manual_explanation=Explanations.</b> In the `Average' columns, `auto' means\
- average of  grades computed from scores obtained in worksheets, `teacher' means 
- average of grades attributed manually by the supervisor, and `global' is computed from \
- the two other averages, by the formula
+!set name_manual_explanation=<b>Explanations.</b> In the <tt>Average</tt> columns, <tt>auto</tt>\
+ means average of grades computed from scores obtained in worksheets, <tt>teacher</tt> means \
+ average of grades attributed manually by the supervisor, and <tt>global</tt> is computed \
+ from the two other averages, by the formula
 !endif
 
 !set name_title_showsheet=!nosubst details of the work on worksheet $numshowsheet<br>$sh_title
 !set name_percentagegot=Percentage of carried out work
-!set name_qualitygot=Quality computed over a maximum of 10
+!set name_qualitygot=Quality calculated out of 10
 !set name_percentagedone=Percentage of carried out work
-!set name_post=Post
+!set name_post=Display
 
-!if $job=userprop
+!if $job iswordof userprop teacher
   !distribute items Spremeni,©tevilka registracije,Opombe,URL d'une photo,Spremenljivke (tehniène),\
   Geslo uèilnice,Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.,\
   Login for external authentification,Inscription,Gestion\
@@ -109,7 +104,6 @@ sequences. So no score can appear.
   !set name_click=Kliknite na uporabni¹ko ime za obnovo.
 !endif
 
-
 !if $job=delprep
   !set name_delete=!nosubst AAli res ¾elite izbrisati uporabnika z imenom \
     <b><em>$firstname $lastname</em></b> iz va¹e uèilnice?
@@ -120,7 +114,7 @@ sequences. So no score can appear.
     Participant information changed\
     Added new participants\
     Addition of new participants ignored because there is no more available space.\
-    Participant information are not changed because grades are uploaded.\
+    Participant information is not changed because grades have been uploaded.\
     Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
     Ignored data about erased participants\
     The following login names are not added because the login is too short\
@@ -143,6 +137,7 @@ sequences. So no score can appear.
  !endif
 
 !set name_topten=!nosubst Top $class_topscores of the class average
+
 :end
 !exit
 

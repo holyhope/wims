@@ -3,8 +3,6 @@
 !if $wims_read_parm!=
  !goto $wims_read_parm
 !endif
- 
-!set months=Jan,Feb,Mar,Apr,Mei,Jun,Jul,Aug,Sept,Okt,Nov,Dec
 
 !distribute line Gemiddelde van deze klas\
 Gemiddelde\
@@ -65,7 +63,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 !set name_percentagedone=Percentage van het afgeronde werk
 !set name_post=Laat zien&nbsp;:
 
-!if $job=userprop
+!if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\
    Login for external authentification,Inscription,Gestion\
@@ -105,7 +103,6 @@ kan dus niet worden overgezet van
   !set name_empty=Er is geen verwijderde student in deze klas.
   !set name_click=Klik op de loginnaam om het account te herstellen.
 !endif
-
 
 !if $job=delprep
   !set name_delete=!nosubst Zeker weten de <b><em>$name_student1</em></b>\

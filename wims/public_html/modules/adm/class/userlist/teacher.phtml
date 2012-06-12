@@ -17,23 +17,30 @@ $table_hdtr
 <th>$wims_name_account</th>
 <th>$wims_name_lastname</th>
 <th>$wims_name_firstname</th>
-<th>$wims_name_action</th>
+<th>$name_gestion</th>
+<th>$wims_name_action</th></tr>
 !for i=1 to $teachercnt
  !set l=!line $i of $teacherlist
- !distribute items $l into l_,f_,c_
+ !distribute items $l into tl_,tf_,tc_
  $table_tr
- <td><tt class="wims_login">$c_</tt></td>
- <td>$l_
+ <td><tt class="wims_login">$tc_
  </td>
- <td>$f_
+  <td>$tl_ </td>
+ <td>$tf_ </td>
+ <td>
+ !readproc adm/class/userdef classes,$wims_superclass,$tc_
+!set tu_=!defof user_supervise in $userdef
+$tu_
+!reset $userdef
  </td>
  <td>
 !! !set wims_ref_class=wims_button
-!!!href cmd=reply&job=deluser&deluser=$c_ $wims_name_erase
+!!!href cmd=reply&job=deluser&deluser=$tc_ $wims_name_erase
 !! &nbsp;
  !set wims_ref_class=wims_button
-!href cmd=reply&job=userprop&getuser=$c_ $wims_name_change
+!href cmd=reply&job=userprop&getuser=$tc_ $wims_name_change
  </td>
+ 
  </tr>
 !next i
 $table_end

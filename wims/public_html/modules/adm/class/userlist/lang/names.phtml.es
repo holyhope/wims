@@ -4,11 +4,6 @@
  !goto $wims_read_parm
 !endif
 
-!set classname=<div class="wims_classname">$wims_classname<div>\
- de <b><font color=green>$wims_institutionname</font></b>
-
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
-
 !distribute line Media de la clase\
 Media\
 Media de las notas positivas\
@@ -51,8 +46,8 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Esta clase no tiene ningún participante aún.
 
-!set name_warning_no_sequence=You have configured the sequences to appear but have not defined any\
-sequences. So no score can appear.
+!set name_warning_no_sequence=You have configured the sequence to be displayed but have not 
+added any sequences. Therefore no score can be displayed.
 
 !if $manual>0
  !set name_manual_explanation=<b>Explicaciones.</b> En las columnas de <tt>media</tt>,\
@@ -68,7 +63,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
 !set name_percentagedone=Porcentaje de trabajo efectuado
 !set name_post=Mostrar
 
-!if $job=userprop
+!if $job iswordof userprop teacher
   !distribute items Cambiar,Número de inscripción,Comentarios,URL de una fotografía,Variables (técnicas),\
   Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes,\
   Login for external authentification,Inscription,Gestion\

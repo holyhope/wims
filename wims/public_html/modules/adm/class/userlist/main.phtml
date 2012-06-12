@@ -34,18 +34,24 @@ $wims_name_part_list
  !goto end
 !endif
  <center>
-
-!if $wims_typename=group and $wims_supertype=2
- !set teacherlist=!record 0 of wimshome/log/classes/$wims_class/.teacherlist
+ !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
+!!##  the administrator at the level of the portal or the creator of the class can add a teacher to 
+!!##  the list of teachers of his class
+!if ($wims_typename=group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
+ !default wims_superclass=$wims_class
+ !set teacherlist=!record 0 of wimshome/log/classes/$wims_superclass/.teacherlist
  !set teachercnt=!linecnt $teacherlist
  !if $teachercnt>0
   !set wims_ref_class=wims_button
   !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
   &nbsp;
  !endif
- !set wims_ref_class=wims_button
+!!## only the administrator has the right to add a teacher to the superclass
+ !if $wims_typename=group and $wims_supertype=2
+  !set wims_ref_class=wims_button
   !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
-  &nbsp;
+   &nbsp;
+ !endif
 !endif
 !if $usercnt==0
  $name_noyetparticipant

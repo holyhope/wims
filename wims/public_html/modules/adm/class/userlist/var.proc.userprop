@@ -1,4 +1,6 @@
-!read adm/class/userisinclass ,$getuser
+!default wims_superclass=$wims_class
+!read adm/class/userisinclass $wims_superclass,$getuser
+!set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
 !if yes notin $script_reply
  error=bad_usercls
  !reset job,getuser
@@ -30,8 +32,19 @@
   error=bad_classpass
   !exit
  !endif
+ 
  up_password=
  replacelist=regnum,comments,photourl,email,external_auth,supervise
+  !for r in $replacelist
+    !default up_$r=$(user_$r)
+  !next
+ !if $superv=no
+   !set up_supervise=!listcomplement $wims_class in $user_supervise
+ !else
+   !set up_supervise=!listuniq $wims_class, $user_supervise
+ !endif
+ !reset superv
+ 
  !read adm/class/adduser $getuser
  !read adm/class/mkuserlist
  !if $class_type isin 1234
