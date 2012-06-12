@@ -93,10 +93,10 @@ Een enquete mag tot 64 keuzevelden bevatten.
 
 !if guidedmode iswordof $wims_read_parm
 :guidedmode
-Plusieurs modes sont possibles :
+De volgende modes zijn mogelijk
 <ul><li>
-  <b>$name_free</b> :  vous pouvez créer 
-  un questionnaire en utilisant librement les commandes qui se trouvent dans l'aide. 
+  <b>$name_free</b> : 
+  er kan een enquete of stemming worden aangemaakt, zie voor de configuratie instellingen de help pagina.
   </li><li>
 !readproc adm/lang/sheetexam.phtml.$lang
   <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 

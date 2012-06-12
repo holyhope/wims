@@ -12,7 +12,7 @@
 !set name_anonymous=anoniem
 !set name_trace=anoniem en traceerbaar
 !set name_choice=Keuze
-!set name_question=Question
+!set name_question=Vraag
 !set name_data=gegevens
 !set name_global=globaal
 !set name_detail=gedetailleerd
@@ -41,7 +41,7 @@
 !distribute lines  Jouw klas heeft geen voorziening voor een verkiezing of enquete.\
 Neem hierover contact op met je docent.\
 Er is geen actieve verkiezing of enquete in je klas.\
-Hier zijn de verkiezingen/enquetes van jouw klas.\
+Hier staan de verkiezingen/enquetes van jouw klas.\
 Aantal stemmen\
 into name_novote,name_novotecheck,name_noactivevote,name_class_vote,\
 name_cnt_votes
@@ -64,10 +64,10 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !set name_textarea_limit=!nosubst limited to $limit_textarea characters
 !set name_whovote=Lijst met stemmers
-!set name_whodontvote=List of those who don't have voted
+!set name_whodontvote=Lijst met niet stemmers
 
 !set name_csv1=Hier is het bestand. Het kan geopend worden met een spreadsheet\
- programma naar keuze.
+programma naar keuze.
 
 !set name_csv2=!nosubst U wilt de gegevens downloaden uit de vragenlijst nummer $vote&nbsp;
 !set name_format=formaat
@@ -96,7 +96,7 @@ name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra
 name_cancellation
 
 !set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
-!set name_session_select=!nosubst Selecteerd datum en tijd van de $numsess beschikbare toets sessies
+!set name_session_select=!nosubst Selecteer datum en tijd van de $numsess beschikbare toets sessies
 
 !set name_describesource=!nosubst Hier staat de brontekst.Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
 
@@ -104,23 +104,20 @@ name_cancellation
  !readproc adm/lang/sheetexam.phtml.$lang
 !endif
 
-!set name_yourvariable=!nosubst Le nom de la variable correspondant à ce questionnaire \
-  que vous avez choisi est <tt class="wims_code_variable">$namevar</tt>
-!set name_accessvar_instr=!nosubst <strong>Utilisation dans un examen ou dans une feuille</strong>: \
-dans une feuille ou un examen actif, dans <tt class="wims_code_words">$(name_shinfo[6])</tt>, sélectionnez \
- <tt class="wims_code_words">$(name_allowtype[3])</tt> et écrivez \
-<tt class="wims_code_variable">\$namevar</tt> (y compris <tt class="wims_code_variable">\</tt>).
+!set name_yourvariable=!nosubst De naam van de variabele voor de instellingen \
+die u hebt gekozen is <tt class="wims_code_variable">$namevar</tt>
+!set name_accessvar_instr=!nosubst <strong>Voor gebruik in een werkblad of toets</strong>: \
+in een actief werkblad of toets, <tt class="wims_code_words">$(name_shinfo[6])</tt>, selecteer \
+ <tt class="wims_code_words">$(name_allowtype[3])</tt> en schrijf \
+<tt class="wims_code_variable">\$namevar</tt> ( <tt class="wims_code_variable">\</tt>).
 
-!set name_group_instr=!nosubst <strong>Utilisation dans la classe</strong>: vous pouvez filtrer 
-les participants selon cette variable pour certaines activités de la classe.\
+!set name_group_instr=!nosubst <strong>Voor gebruik in een klas</strong>: U kunt de deelnemers \
+op basis van deze variabele voor een aantal activiteiten in de klas filteren
+!set name_group_help=kan worden gebruikt om deelnemers per groep (bijv. e-mail en foto gallery ) te selecteren.
 
-!set name_group_help= permet de sélectionner les participants \
-selon les groupes (mail et trombinoscope pour l'instant). 
+!set name_accessvar_help=kan worden gebruikt om werkbladen of toetsen voor een selectieve groep studenten klaar te zetten.
 
-!set name_accessvar_help=permet d'individualiser l'accès des participants \
-à une feuille ou à un examen.
-
-!distribute items Free Mode ,Access to sheets or exams,Constitution of groups,Groups into name_free,name_accessvar, name_group,name_group1
+!distribute items Vrije Mode ,Toegang tot werkbladen en toetsen,Samenstelling van de groep,Groepen into name_free,name_accessvar, name_group,name_group1
 
 !set name_model=Model
-!set name_nextstep=Next Step
+!set name_nextstep=Volgende stap

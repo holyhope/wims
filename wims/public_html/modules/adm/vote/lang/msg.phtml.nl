@@ -50,13 +50,13 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = no_variable
-   Vous n'avez pas donné de nom de variable ou il n'est pas valide.
+    Er is nog geen naam voor deze variabele bekend, of de opgegeven naam is niet geldig.
    !exit
 !endif
 
 !if $error = bad_variable
-   Le nom de variable que vous avez donné (<tt class="wims_code_words">$namevar</tt>) ne convient pas car il 
-   est peut-être utilisé par le logiciel.
+    De naam van variabele (<tt class="wims_code_words">$namevar</tt>) is niet goed gekozen:
+    de naam kan al ingebruik zijn.
    !exit
 !endif
 
