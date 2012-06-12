@@ -28,14 +28,17 @@ $table_header
    !endif
   </td>
  </tr>
+!!## list of voting names can be print even if there is few voters
+!!## in case of nominative vote
+ !if $vote_status > 0 and $vote_whovoteshow=1
  $table_tr<td>$name_thisvote_answer</td><td>$vcnt</td></tr>
  !set nbs=!itemcnt $whovote
- !if $nbs<=5 or $vote_whovoteshow!=1
-  !if $vote_whovoteshow!=1
-   !let aff=$name_hide2
-  !else
+ !if $nbs<=5 and $vote_option notwordof nominative
+  !!!if $vote_whovoteshow!=1
+  !! !let aff=$name_hide2
+  !!!else
    !let aff=$name_notenough
-  !endif
+  !!!endif
   $table_tr
    <td>$name_whovote</td>
    <td rowspan="2">$aff</td>
@@ -58,6 +61,7 @@ $table_header
    </tr>
   !next ty
  !endif
+!endif
 $table_end
 
 !if $wims_user=supervisor
@@ -69,8 +73,6 @@ $table_end
  !endif
  !set wims_menu_items=!append line change,1,cmd=reply&job=edit\
   to $wims_menu_items
-!! !set wims_menu_items=!append line guided,1,cmd=reply&job=guided\
-!!  to $wims_menu_items
 !endif
 
 !if $vote_status=2
