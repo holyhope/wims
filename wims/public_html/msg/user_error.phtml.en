@@ -20,15 +20,16 @@ Pragma: no-cache
 body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
-</head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
+</head><body onload="window.resizeTo(500,200);window.moveTo(250,300);" class="user_error">
 <h1 align="center">ERROR</h1>
 !goto examerr
 !endif
-</head><body>
+
+</head><body class="user_error">
 !if threshold iswordof $wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">We are too busy</h1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  This WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is currently overloaded by a large number of requests, and
  can no longer satisfy further users. Please come back later, 
@@ -41,7 +42,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">SORRY</h1>
  Your request is blocked by this WIMS server: connection quota exceeded.
  </body></html>
@@ -49,9 +50,9 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">Sorry</h1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  WIMS needs a software
  !set miss=!upper $missing_software
 <span class="wims_warning">$miss</span>
