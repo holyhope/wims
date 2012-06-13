@@ -68,8 +68,9 @@ remote_addr= !word 1 of $data1
  
  !if $r_!=$empty and $sess_ID!=$ws and $sess_time>$now and $sm!=#
    !if $sess_IP != $remote_addr
+   
      !sh rm -f ../sessions/$ws/var.stat >/dev/null
-     error= $quser is in an exam session started on another IP ($sess_IP != $data1). Go back quickly to this computer !
+     error= $quser is in an exam session started on another IP ($sess_IP != $remote_addr). Go back quickly to this computer !
      !exit
    !endif
    num_session=$sess_ID

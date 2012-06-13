@@ -1,15 +1,17 @@
 # Utilise pour verifier l'existence d'un etudiant dans une classe
 # Check.user verifie que l'element $quser est present dans $qclass 
 
-#On considere que la classe a été verifie en amont (via check.class)
+#On considere que la classe a ete verifie en amont (via check.class)
 
-quser=!translate internal ./;,?* to $         $ in $quser
+quser=!word 1 of $quser
+quser=!translate internal . to @ in $quser
+quser=!translate internal /;,?* to $         $ in $quser
 !if $ $ isin $quser
  quser=
 !endif
 !if $quser=$empty
  :baduser
- error=bad user
+ error=bad user (empty quser or bad chars detected)
  !exit
 !endif
 
