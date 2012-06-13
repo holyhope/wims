@@ -80,9 +80,15 @@ list=!replace internal  ,  by "," in $list
 
 :getinfoserver
 
-!shortout "server_version":"$version",\
-"compilation_date":"$date_compil"\
+!shortout "server_version":"$wims_version",\
+"compilation_date":"$wims_version_date"
 
+!if $ident != $empty
+ !shortout ,\
+ "edesc_limit":"$edesc_limit",\
+ "etitle_limit":"$etitle_limit"\
+ 
+!endif
 !goto footer
 
 :getsheet
