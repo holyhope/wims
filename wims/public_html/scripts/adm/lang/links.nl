@@ -9,7 +9,5 @@
 !let name_link_regsup= wijst naar de plek waar docenten zich kunnen aanmelden als leraar van $name_classe .(of waar U deze docenten kunt "aanmaken")
 !let name_link_important=Belangrijk
 !let name_link_importantmes=Bookmark deze links voordat U dit venster sluit
+!let name_link_importantmes2=Vous pourrez aussi les retrouver dans la zone de configuration de votre classe.
 !let name_link_classnumber=Het is ook handig het klassenummer even te noteren
-
-
-
