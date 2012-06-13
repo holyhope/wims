@@ -523,10 +523,10 @@ wordt uw klas mogelijk onherstelbaar beschadigd.
  !href cmd=reply&job=list Stop
  als u er niet zeker van bent van de gevolgen. 
  (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
- 
- :arch_end
- 
- <p><b>BELANGRIJK</b>. <ul><li> 
+!exit
+
+:arch_end
+ <p><span class="wims_warning">BELANGRIJK</span>. <ul><li> 
  De integriteit van de opgestuurde data wordt niet gecontroleerd.
  Een handmatige bijwerking van een backup archief 
  wordt door het systeem niet toegestaan.

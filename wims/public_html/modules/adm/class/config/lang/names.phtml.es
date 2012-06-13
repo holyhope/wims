@@ -521,10 +521,10 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
  !href cmd=reply&job=list Deténgase
  si no está completamente seguro de lo que está haciendo (en todo caso,
  guarde una copia del estado actual antes de continuar).
+!exit
 
- :arch_end
-
-<p><b>IMPORTANTE</b>.
+:arch_end
+<p><span class="wims_warning">IMPORTANTE</span>.
 1. No hay verificación de los datos que ha enviado y el sistema no
 autoriza la modificación manual de los archivos de copia de seguridad.
 Los errores introducidos por una modificación manual de los archivos
