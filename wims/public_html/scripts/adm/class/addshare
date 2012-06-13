@@ -16,7 +16,7 @@ as_t_vote=vote
 as_t_cdt=cdt
 as_t_livret=livret
 as_t_forum=forum
-as_t_user=.users .userlist
+as_t_user=.users .userlist .userlist_external
 as_t_motd=.motd
 as_t_sup=supervisor
 as_t_seq=seq
@@ -148,9 +148,13 @@ as_copy=
 !if $as_copy!=$empty
  as_copy=cp -f $as_copy . 2>/dev/null
 !endif
+!if user isitemof $as_l
+  as_touch=touch $1_/.userlist_external
+!endif
 
 !sh cd $wims_home/log/classes/$as_2\
  rm -Rf $L_\
+ $as_touch\
  for f in $L_; do\
   ln -s $1_/$$f .\
  done\
