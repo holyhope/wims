@@ -8,6 +8,13 @@ Pragma: no-cache
 <meta http-equiv=expires content="1 Jan 1990">
 <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<!-- Theme CSS style -->
+<link rel="stylesheet" href="html/themes/$wims_theme/css.css" type="text/css">
+<style type="text/css">
+ input[type="submit"],input[type="button"],.wims_button{ background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;}
+ .wims_button_help{ background-color:$wims_ref_button_help_bgcolor;color:$wims_ref_button_help_color;}
+</style>
+
 !if exam_ isin $wims_user_error
 <style type="text/css"><!--
 body {text-align: justify;
@@ -288,7 +295,9 @@ There is an error in your request to this WIMS site.<p>
  <p>
  You should take time to think carefully and try to solve the exercises
  correctly, instead of ask new ones over and over again.
- !href cmd=resume Cancel the last request
+ !set wims_ref_class=wims_button
+ !href cmd=resume Cancel last request
+ !reset wims_ref_class
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
   <p><span class="wims_warning">$wims_name_warning.</span>! Don't repeat this error!
@@ -380,7 +389,9 @@ under which the error has occurred.
 :end2
 <hr><p>
 <center>
-!href module=home&cmd=new Home page
+!set wims_ref_class=wims_button home
+!href module=home&cmd=new WIMS Home Page
+!reset wims_ref_class
 </center>
 
 </body></html>
