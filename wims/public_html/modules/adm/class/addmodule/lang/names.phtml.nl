@@ -6,7 +6,7 @@
 !set name_choose= Kies het werkblad waarin deze oefening moet worden opgenomen
 !set name_title=Voeg een oefening toe aan een Werkblad
 
-!set name_insert=Een enkele oefeningen toevoegen
+!set name_insert=Deze oefening toevoegen
 !set name_parm=met "init parameters"
 !set name_modifytitle=Er kan nu ook de titel en de omschrijving van het werkblad worden veranderd.
 
@@ -18,7 +18,7 @@
 !set name_end=!nosubst De oefening <span class="wims_mod_title">$title</span> is succesvol opgenomen in het werkblad
 
 !set name_choose_exo=Wordt toegevoegd aan het werkblad als een nieuwe serie oefeningen
-!set name_choose_helpexo=Deze ondersteunende oefeningen worden aangeboden als de score voor het werkblad lager is dan 
+!set name_choose_helpexo=De ondersteunende oefeningen worden aangeboden als de score voor het werkblad lager is dan 
 !set name_choose_series=Klik op de serie oefeningen waarvoor ondersteuning moet worden aangeboden.
 !set name_actualhelp=Ondersteuning bij dit onderwerp
 !set name_series=Serie oefeningen
