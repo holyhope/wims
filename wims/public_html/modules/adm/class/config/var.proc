@@ -3,6 +3,7 @@ wims_prefix=class user tmp n sharing sharable
 wims_pfback=$wims_prefix
 wims_writable=allow except
 wims_nw=today empty nonew creatdays backdays warn
+!!## useful here to be able to read the error msg
 !read adm/class/classlang lang/names.phtml
 
 !if $wims_user!=supervisor and $wims_ismanager<2
@@ -21,6 +22,8 @@ wims_nw=today empty nonew creatdays backdays warn
 	connect,present,access,propagate,index,oefdefault,authtype\
 	default list
 !read adm/levelname.phtml
+!!## must be read again because $job could be not defined
+!read adm/class/classlang lang/names.phtml
 wims_helper=chapter=3
 sharelist=user,doc,exo,sheet,exam,forum,sup,motd,vote,cdt,livret,seq
 nosharelist=user,exo,sheet,exam
