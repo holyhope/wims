@@ -26,8 +26,13 @@ superclass=!text remove . in $superclass
 
 !default superclass2=$superclass
 !read tabletheme
-!bound type within supervisor,participant,example,\
+!if $auth_method=$empty and $class!=$empty
+ !bound type within supervisor,participant,example,\
 	authsupervisor,authparticipant,forgetpwd default example
+!else
+ !bound type within supervisor,participant,example,\
+	authsupervisor,authparticipant default example
+!endif
 !if $type=example
  superclass=
 !endif
