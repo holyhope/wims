@@ -10,6 +10,7 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 
+!default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
     !set name_classe=agrupación de clases

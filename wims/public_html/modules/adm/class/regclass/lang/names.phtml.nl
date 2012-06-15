@@ -6,7 +6,7 @@
 !set nblevel=19
 !! !itemcnt $levelid
 
-
+!default Cltype=$cltype
 !if $Cltype iswordof 2 4
     !if $Cltype=2
 	!set name_classe=klassen
