@@ -18,6 +18,9 @@ wims_name_mail = Schrijf naar de docent
 wims_name_pref = Instellingen 
 wims_name_ref = Backward links
 wims_name_stat = Serverstatistieken
+wims_name_faq       = FAQ
+wims_name_dochelp = Help documenten
+
 
 CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
@@ -25,8 +28,6 @@ CR_mod = Full-power modules
 
 E_comp = gecompileerd op
 E_manager = Site manager:
-wims_name_faq = FAQ
-E_dochelp = Help documenten
 
 RE_found = !nosubst Gezocht en gevonden $gotcnt $tt
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
@@ -49,9 +50,7 @@ U_examworking = Je bent nu met een overhoring voor een cijfer bezig.
 U_examdouble = In dit geval mag je niet inloggen via deze netwerk-verbinding (ip-adres)
 U_examcont = Doorgaan met dit proefwerk.
 wims_name_U_oclass = Andere klassen
-
 wims_name_U_account = Mijn account
-
 wims_name_coeff = weging
 
 U_gotoclass1 = Ga naar een klas als leerling:
@@ -81,7 +80,8 @@ SU_numpartconnected=!nosubst Er zijn op dit moment $numpartconnected student ing
 U_supconnected=Je docent is ingelogd.
 
 wims_name_SE_list = Leerlingen en cijfers 
-wims_name_SE_part = Zo zien leerlingen deze pagina
+wims_name_n_participant = Zo zien leerlingen deze pagina
+
 wims_name_SE_mod = Bericht van de dag
 wims_name_SE_config = Configuratie/Onderhoud
 wims_name_SE_secu = Security management
