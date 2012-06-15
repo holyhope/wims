@@ -33,8 +33,11 @@ slib_width=!nospace $slib_width px
   !if oef iswordof $slib_mod
     slib_image_dir=$imagedir
   !endif
-  !if adm iswordof $slib_mod
-    slib_image_dir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
+  !if adm/createxo isin $module_dir
+    slib_image_dir=$imagedir
+  !endif
+  !if adm/doc isin $module_dir
+      slib_image_dir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
   !endif
   !default slib_image_dir=$module_dir
   slib_image_dir=$slib_image_dir/
