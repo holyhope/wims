@@ -26,7 +26,8 @@ classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
 !endif
 
 !if $csvtype=upload
- !if $classtype isin 13 and $typename notwordof class course
+ !if $classtype isin 13 and $typename notwordof class course and\
+     ($typename notwordof level or $wims_user!=supervisor)
   error=not_class
   !exit
  !endif

@@ -18,7 +18,7 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
-  $name_file <tt>
+  $name_file <tt class="wims_fname">
  !getfile $outfile $outfile
  </tt> $name_download
  <p><hr> <p>
@@ -99,8 +99,9 @@ $name_data2<ul>
 <input type="submit" value="$wims_name_download">
 
 </form>
-
-!if $classtype notin 13 or $typename iswordof class course
+!! open the upload to the level supervisor  alternative use user_supervise
+!if $classtype notin 13 or $typename iswordof class course  or\
+   ($typename iswordof level and $wims_user=supervisor)
  <hr>
  !set wims_form_method=file
  !form reply
