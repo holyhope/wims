@@ -74,50 +74,47 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !! guided mode
 
-!set name_optionclosed=closed, will be opened only when other options will be full
+!set name_optionclosed=ÒÑ¹Ø±Õ, Ö»ÓĞÆäËûÑ¡ÏîÂú×ãÊ±²Å»á´ò¿ª
 
-!distribute lines How many sessions?\
-at most\
-uservar name\
-Default host IP (can be changed in the following page)\
-Introductory text (e.g. general instructions for the students)\
+!distribute lines ¶àÉÙ»á»°?\
+ÖÁ¶à\
+uservar Ãû\
+Ä¬ÈÏÖ÷»ú IP (¿ÉÔÚÏÂÒ³ĞŞ¸Ä)\
+ÒıÑÔ (ÀıÈç¸øÑ§ÉúµÄÒ»°ãĞÔÖ¸Ê¾)\
 Num.Stud.\
-Date of<br>session\
-Beg. time<br>of session\
-End time<br>of session\
-Host IP\
-Extra info\
-Inscription cancellation\
+»á»°<br>ÈÕÆÚ\
+»á»°<br>¿ªÊ¼Ê±¼ä\
+»á»°<br>½áÊøÊ±¼ä\
+Ö÷»ú IP\
+¸½¼ÓĞÅÏ¢\
+È¡Ïû×¢²á\
 into name_howmany,name_atmost,name_namevar,name_textconnip,name_introtext,\
 name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
 name_cancellation
 
-!set name_numsess=!nosubst $numsess sessions are available.
-!set name_session_select=!nosubst Select date and time of the $numsess available sessions\
+!set name_numsess=!nosubst $numsess ¸ö»á»°¿ÉÓÃ.
+!set name_session_select=!nosubst Ñ¡Ôñ $numsess ¸ö¿ÉÓÃ»á»°µÄÈÕÆÚºÍÊ±¼ä\
 
-!set name_describesource=!nosubst Here you can see the source code of the vote. Check the data and click on <span class="wims_button disabled">$wims_name_tosave</span>.
+!set name_describesource=!nosubst ÕâÀïÄã¿ÉÒÔ¼ûµ½Í¶Æ±µÄÔ´Âë. ¼ì²éÊı¾İ²¢µã»÷ <span class="wims_button disabled">$wims_name_tosave</span>.
 
 !if $vote_mode!=free
  !readproc adm/lang/sheetexam.phtml.$lang
 !endif
 
-!set name_yourvariable=!nosubst Le nom de la variable correspondant à ce questionnaire \
-  que vous avez choisi est <tt class="wims_code_variable">$namevar</tt>
-!set name_accessvar_instr=!nosubst <strong>Utilisation dans un examen ou dans une feuille</strong>: \
-dans une feuille ou un examen actif, dans <tt class="wims_code_words">$(name_shinfo[6])</tt>, sélectionnez \
- <tt class="wims_code_words">$(name_allowtype[3])</tt> et écrivez \
-<tt class="wims_code_variable">\$namevar</tt> (y compris <tt class="wims_code_variable">\</tt>).
+!set name_yourvariable=!nosubst ÓëÄãÒÑÑ¡µÄÎÊÌâ±í¶ÔÓ¦µÄ±äÁ¿ÃûÊÇ <tt class="wims_code_variable">$namevar</tt>
+!set name_accessvar_instr=!nosubst <strong>ÔÚÁ·Ï°Ò³»ò¿¼ÊÔÖĞµÄÊ¹ÓÃ</strong>: \
+ÔÚ¼¤»îµÄÁ·Ï°Ò³»ò¿¼ÊÔÖĞ, ÔÚ <tt class="wims_code_words">$(name_shinfo[6])</tt> ÖĞ, ÇëÑ¡È¡\
+ <tt class="wims_code_words">$(name_allowtype[3])</tt> ²¢Ğ´Èë\
+<tt class="wims_code_variable">\$namevar</tt> (°üº¬ <tt class="wims_code_variable">\</tt>).
 
-!set name_group_instr=!nosubst <strong>Utilisation dans la classe</strong>: vous pouvez filtrer \
-les participants selon cette variable pour certaines activités de la classe.
+!set name_group_instr=!nosubst <strong>°à¼¶ÀïµÄÓ¦ÓÃ</strong>: Äã¿ÉÒÔ°´ÕÕÕâ¸ö±äÁ¿\
+¶ÔÄ³Ğ©°à¼¶»î¶¯¹ıÂË²Î¼ÓÕß.
 
-!set name_group_help= permet de sélectionner les participants \
-selon les groupes (mail et trombinoscope pour l'instant). 
+!set name_group_help=ÔÊĞí°´×é (Ä¿Ç°ÎªµçÓÊ»òÏàÆ¬¼¯) Ñ¡Ôñ²Î¼ÓÕß.
 
-!set name_accessvar_help=permet d'individualiser l'accès des participants \
-à une feuille ou à un examen.
+!set name_accessvar_help=ÔÊĞí²Î¼ÓÕß¸öĞÔ»¯½øÈëÁ·Ï°Ò³»ò¿¼ÊÔ.
 
-!distribute items Free Mode ,Access to sheets or exams,Constitution of groups,Groups into name_free,name_accessvar, name_group,name_group1
+!distribute items ×ÔÓÉÄ£Ê½ ,½øÈëÁ·Ï°Ò³»ò¿¼ÊÔ,¹¹½¨×é,×é into name_free,name_accessvar, name_group,name_group1
 
-!set name_model=Model
-!set name_nextstep=Next Step
+!set name_model=Ä£ĞÍ
+!set name_nextstep=ÏÂÒ»²½
