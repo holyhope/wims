@@ -59,10 +59,20 @@
 !endif
 !!------------------------------------Fin de l'insert "Permalien" --------------------------
 
-
+!!FIXME PHP ?
+!if $wims_cas_auth=$empty
+  !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+  !set wims_cas_auth=!getopt class_auth in $m_init_parm
+!endif
+!if $wims_cas_auth!=$empty
+  <div class="topmenuitem">
+  !read adm/class/logout_cas
+ </div><!--topmenuitem-->
+!endif
 </div><!--wimsmenu-->
 </div><!--wimstopbox-->
 !endif
+
 !if $module!=home or $wims_user!=
 <div id="wimsbodybox">
 !if $wims_homeref_n3>0

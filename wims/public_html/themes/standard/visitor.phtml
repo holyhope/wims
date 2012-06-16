@@ -58,6 +58,14 @@
 !! !href module=adm/class/classes&type=example $im "gifs/themes/$wims_theme_image/n_example.gif" alt="n_example" title="n_example"> $V_ex
 </span><!--menuitem-->
 !!!endif
+!if $wims_cas_auth!=$empty
+  <span class="menuitem">
+!!FIXME this line does not work
+ !! !read adm/class/cas_logout
+  !set url = $wims_ref_name?cmd=close&module=home&session=$wims_session
+  <a href="$wims_cas_auth/logout?service=$url">CAS $wims_name_visitor</a>
+ </span><!--menuitem-->
+!endif
 </div><!--wimsmenu-->
 <br class="spacer"/>
 </div>
