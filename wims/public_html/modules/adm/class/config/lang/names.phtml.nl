@@ -58,8 +58,8 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
    Aanwezige cijfers\
    de klasse agenda\
    De aanwezige klasse agenda\
-   Raport boekje\
-   Bestaande raport boekje\
+   Raportboekje\
+   Huidige raportboekje\
    Pedagogische werkvolgorde\
    Impliceerd het herstel van werkbladen, oefeningen, proefwerken en documenten\
    Aanwezige werkvolgorde\
@@ -387,7 +387,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 !endif
 
 !if $job=log
-  !set name_warning_log=Hier is de logfile met onderhouds activiteiten van deze klas.\
+  !set name_warning_log=Hier is de logfile met onderhoudsactiviteiten van deze klas.\
   Aan de hand van dit bestand kan worden nagetrokken of het onderhoud wel door supervisor zelf is uitgevoerd.  
 !endif
 
@@ -400,7 +400,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    !set tit=de zones
   !endif
   !if $job2=userlist
-   !set tit=Student
+   !set tit=Studenten
   !endif
   !if $job2=teacherlist
    !set tit=Docenten
@@ -484,7 +484,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Logo van de klas\
    Positie van het logo\
    links boven, rechts boven\
-   Style theme van de klas\
+   Style thema (CSS) van de klas\
    Iconen\
    Leerniveau\
    Toegangsbeleid voor registeren van cijfers\
@@ -497,11 +497,11 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Menu link kleur\
    Achtergrond plaatje\
    download een css style bestand\
-   Score kleuren (van 0 tot 10) \
-   Button background color\
-   Button text color\
-   Help button background color\
-   Help button text color\
+   Cijfer kleuren (van 0 tot 10) \
+   Achtergrondkleur van een knop\
+   Tektkleur van een knop\
+   Helpknop achtergrond kleur\
+   Helpknop tekst kleur\
    Verbindings link\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
@@ -599,14 +599,13 @@ Om deze mogelijkheid te gebruiken, schrijf naar de
 <a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
 om een dergelijke voorziening te treffen.<br>
 En deze andere server moet uw server wel erkennen.
-De site manager kan hier leren hoe het een en ander  
- <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
+De site manager kan hier leren hoe het <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  
 !exit
  
 :import2
 
-Het werkblad dat u wilt importeren bevat mogelijk oefeningen die alleen bestaan in de buurklas.
+Het te importeren werkblad bevat mogelijk oefeningen die alleen bestaan in de buurklas.
    <p>
 Als deze oefeningen niet aanwezig zijn in uw klas, zal het geimporteerde werkblad niet naar behoren functioneren/
 Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar uw eigen klas.
