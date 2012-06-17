@@ -1,21 +1,21 @@
 
 !read adm/title.phtml 3\
 \
-Fitxers d'imatge per a l'exercici
+Fitxers binaris per a l'exercici
 
 !if $quota=yes
- <span class="wims_warning">$wims_name_Error</span>. No pots posar aquests fitxers a la classe, el
-seu contingut depassa la quantitat d'espai de disc assignat.
- Ho sento.
+ <span class="wims_warning">$wims_name_Error</span>. No es pot posar els arxius en la seva classe perquè
+  el contingut ha assolit o superat la quantitat d'espai permès en disc.
+  Ho sento.
  <p>
  !goto sendend
 !endif
 
 !set wims_form_method=file
- Vous pouvez charger différents types de fichiers (image, mp3, pdf, ...).
+ Podeu carregar diferents tipus d'arxius (imatge, mp3, pdf, ...).
  
 !form reply
-Fitxer d'imatge a enviar a l'exercici&nbsp;:
+Fitxer a dipositar per a l'exercici&nbsp;:
 <input type="file" name="wims_deposit">
 <input type="submit" value="$wims_name_tosave">
 </form>
@@ -23,11 +23,11 @@ Fitxer d'imatge a enviar a l'exercici&nbsp;:
 :sendend
 
 !if $imglist=$empty
- Aquest exercici encara no te fitxer d'imatge.
+ Aquest exercici encara no té arxius binaris.
 !else
- Aquesta és la llista dels fitxers d'imatge d'aquest exercici.
+ Aquesta és la llista de fitxers associats amb l'exercici.
  <p><center><table border="2">
- <th>Nom del fitxer</th><th>Miniatura</th><th>-</th>
+ <th>Nom del fitxer</th><th>Aperçu</th><th>-</th>
  !for i in $imglist
   <tr><td valign="middle" align="center">$i</td>
   <td valign="middle" align="center">
@@ -39,17 +39,43 @@ Fitxer d'imatge a enviar a l'exercici&nbsp;:
   </td>
  !next i
  $table_end <p>
- !set example=!item 1 of $imglist
- Es pot accedir a aquests fitxers d'imatges a l'enunciat de l'exercici amb el paràmetre intern \imagedir. Per exemple,  podeu escriure
- <center><pre>
- &lt;img src=\imagedir/$example&gt;
- </pre></center>
- També podeu escriure <tt>\img{\imagedir/$example}</tt>, o
- <tt>\img{\imagedir/$example}{html options}</tt>. L'avantatge d'aquest darrer mètode és que els etudiants no veuran pas el nom del fitxer. A causa de la seva exigència, utilitzeu aquest mètode només quan sigui necessari.
+ !if $imgfname!=
+   !set example=$imgfname
+ !else
+  !set example=!item 1 of $imglist
+ !endif
+ 
+ Podeu accedir a aquests arxius a l'enunciat de l'exercici a través del
+  paràmetre intern <tt class="wims_code_variable">\imagedir</tt>. 
+ !set example1=!lowercase $example
+ !if .gif isin $example1 or .jpg isin $example1 or .png isin $example1
+   !set test_=1
+ !endif
+ !if $test_=1
+   !set eximage=$example
+ !else
+   !set eximage=file.jpg
+ !endif
+ Per exemple, podeu escriure
+  <center><pre>
+  !if $test_=1
+ &lt;img src="\imagedir/$example"&gt;
+ !else
+   &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
+ !endif
+  </pre></center>
+  Pels fitxers d'imatges, podeu escriure  
+  <tt>&lt;img src="\imagedir/$eximage"&gt;</tt>, però també
+  <tt>\img{\imagedir/$eximage}</tt> o
+ <tt>\img{\imagedir/$eximage}{html options}</tt>. L'avantatge d'aquest mètode
+  és que els estudiants no veuen el nom del fitxer. A causa del seu cost
+  en rendiment, utilitzeu aquest mètode només quan sigui necessari.
+<p>Per d'altres tipus de fitxers, les commandes html han de ser adaptades :
+<tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
 
-Sauvez l'exercice pour que les fichiers ajoutés le soient de manière
-permanente.
+Desa l'exercici perquè els arxius s'afegeixen de manera
+permanent.
 
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
