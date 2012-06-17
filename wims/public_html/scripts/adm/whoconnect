@@ -7,7 +7,7 @@
 !if $wims_user=supervisor
  !let file_=!replace internal / by ~ in $wims_class
  last_=!sh if [ -e $wims_home/s2/$wims_session/whoconnect.$file_ ]; then\
-stat -c%Y $wims_home/s2/$wims_session/whoconnect.$file_;\
+perl -e '@a = stat($ARGV[0]); print $a[9]' $wims_home/s2/$wims_session/whoconnect.$file_;\
 fi;
  !default $last_=0
  !if $wims_nowseconds-$last_>300 or $wims_read_parm=1
