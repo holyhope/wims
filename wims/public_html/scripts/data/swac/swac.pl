@@ -3,6 +3,7 @@
 ## shtooka packages
 use locale;
 use warnings;
+use strict;
 
 my @dirs=() ;
 my $lang='' ;
@@ -121,7 +122,7 @@ sub tags {  my (@list) = @_ ;
  
 sub indexkey { my ($swac) = @_ ; 
  my %HA = %{$ALLTAGS{$swac}} ; 
- %h = ();
+my %h = ();
  while (my ($key, $val) = each %HA)
  { 
    for my $val2 ( split('\|', $val) ) {
@@ -211,7 +212,7 @@ EOT
 ## permet de passer du fichier index.tags.txt à un fichier en tableau 
 #out(tableau(@CHAMP), 'ALL') ; 
 sub tableau {  my @list = @_ ;
-  my $TEXT = "[TAG]" ; $cc=1;
+  my $TEXT = "[TAG]" ; my $cc=1;
   for my $b (@list) {
     $TEXT .= "$b=\\\&$cc\n" ; 
     $cc ++
