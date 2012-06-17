@@ -1,11 +1,16 @@
 !! output : whoconnect=list of connected participant
 !!          numpartconnected=number of participant connected
 !! in wims_class
-!!
-!!
+!! output for supervisor :
+!! wims_whoconnect (tabular one line by participant) login,session,firstname,lastname
+!! wims_connectedlogin : list of connected login
+!! wims_numpartconnected : number of connected participant.
+!! output for other user :
+!! wims_supervisorconnected
 
+
+!let file_=!replace internal / by ~ in $wims_class
 !if $wims_user=supervisor
- !let file_=!replace internal / by ~ in $wims_class
  last_=!sh if [ -e $wims_home/tmp/whoconnect/$file_ ]; then\
 perl -e '@a = stat($ARGV[0]); print $a[9]' $wims_home/tmp/whoconnect/$file_;\
 fi;
@@ -14,28 +19,29 @@ fi;
   ses_=!sh cd $wims_home/sessions;\
   grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
   ses_=!words2items $ses_
-  whoconnect=$empty
+  wims_whoconnect=$empty
   !for s_ in $ses_
    t_=!defof wims_user\
 wims_firstname\
 wims_lastname in wimshome/sessions/$s_/var.stat
    !distribute line $t_ into t1_,t2_,t3_
    !if $t1_!=supervisor
-    whoconnect=!append line $t1_,$s_,$t2_,$t3_ to $whoconnect
+    wims_whoconnect=!append line $t1_,$t2_,$t3_,$s_ to $wims_whoconnect
    !endif
   !next s_
-  !writefile wimshome/tmp/whoconnect/$file_ $whoconnect
+  !writefile wimshome/tmp/whoconnect/$file_ $wims_whoconnect
  !else
-  whoconnect=!record 0 of wimshome/tmp/whoconnect/$file_
+  wims_whoconnect=!record 0 of wimshome/tmp/whoconnect/$file_
  !endif
- numpartconnected=!linecnt $whoconnect
+ wims_connectedlogin=!column 1 of $wims_whoconnect
+ wims_numpartconnected=!linecnt $wims_whoconnect
  !setdef user_connected=$wims_session in wimshome/tmp/whoconnect/sup$file_
 !else
- supervisorconnected=!defof user_connected in wimshome/tmp/whoconnect/sup$file_
- !if $supervisorconnected!=$empty
-  test_=!defof wims_user in wimshome/sessions/$supervisorconnected/var.stat
+ wims_supervisorconnected=!defof user_connected in wimshome/tmp/whoconnect/sup$file_
+ !if $wims_supervisorconnected!=$empty
+  test_=!defof wims_user in wimshome/sessions/$wims_supervisorconnected/var.stat
   !if $test_=$empty
-   !reset supervisorconnected
+   !reset wims_supervisorconnected
    !setdef user_connected=$empty in wimshome/tmp/whoconnect/sup$file_
   !endif
  !endif

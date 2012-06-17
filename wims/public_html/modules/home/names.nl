@@ -76,7 +76,7 @@ SU_shlist = Lesmateriaal van de klas
 wims_name_SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
 SU_nopartconnected=Er is op dit moment geen student ingelogd
-SU_numpartconnected=!nosubst Er zijn op dit moment $numpartconnected student ingelogd
+SU_numpartconnected=!nosubst Er zijn op dit moment $wims_numpartconnected student ingelogd
 U_supconnected=Je docent is ingelogd.
 
 wims_name_SE_list = Leerlingen en cijfers 
