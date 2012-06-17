@@ -26,14 +26,21 @@ wims_firstname\
 wims_lastname in wimshome/sessions/$s_/var.stat
    !distribute line $t_ into t1_,t2_,t3_
    !if $t1_!=supervisor
-    wims_whoconnect=!append line $t1_,$t2_,$t3_,$s_ to $wims_whoconnect
+    !if $t1_ notitemof $wims_connectedlogin
+     wims_whoconnect=!append line $t1_,$t2_,$t3_,$s_ to $wims_whoconnect
+     wims_connectedlogin=!append item $t1_ to $wims_connectedlogin
+    !else
+     pos_=!positionof item $t1_ in $wims_connectedlogin
+     tmp_=!append item $s_ to $(wims_whoconnect[$pos_;])
+     wims_whoconnect=!replace line number $pos_ by $tmp_ in $wims_whoconnect
+    !endif
    !endif
   !next s_
   !writefile wimshome/tmp/whoconnect/$file_ $wims_whoconnect
  !else
   wims_whoconnect=!record 0 of wimshome/tmp/whoconnect/$file_
+  wims_connectedlogin=!column 1 of $wims_whoconnect
  !endif
- wims_connectedlogin=!column 1 of $wims_whoconnect
  wims_numpartconnected=!linecnt $wims_whoconnect
  !setdef user_connected=$wims_session in wimshome/tmp/whoconnect/sup$file_
 !else
