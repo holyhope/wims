@@ -6,8 +6,8 @@
 
 !if $wims_user=supervisor
  !let file_=!replace internal / by ~ in $wims_class
- last_=!sh if [ -e $wims_home/s2/$wims_session/whoconnect.$file_ ]; then\
-perl -e '@a = stat($ARGV[0]); print $a[9]' $wims_home/s2/$wims_session/whoconnect.$file_;\
+ last_=!sh if [ -e $wims_home/tmp/whoconnect/$file_ ]; then\
+perl -e '@a = stat($ARGV[0]); print $a[9]' $wims_home/tmp/whoconnect/$file_;\
 fi;
  !default $last_=0
  !if $wims_nowseconds-$last_>300 or $wims_read_parm=1
@@ -24,19 +24,19 @@ wims_lastname in wimshome/sessions/$s_/var.stat
     whoconnect=!append line $t1_,$s_,$t2_,$t3_ to $whoconnect
    !endif
   !next s_
-  !writefile wimshome/s2/$wims_session/whoconnect.$file_ $whoconnect
+  !writefile wimshome/tmp/whoconnect/$file_ $whoconnect
  !else
-  whoconnect=!record 0 of wimshome/s2/$wims_session/whoconnect.$file_
+  whoconnect=!record 0 of wimshome/tmp/whoconnect/$file_
  !endif
  numpartconnected=!linecnt $whoconnect
- !setdef user_connected=$wims_session in wimshome/log/classes/$wims_class/supconnected
+ !setdef user_connected=$wims_session in wimshome/tmp/whoconnect/sup$file_
 !else
- supervisorconnected=!defof user_connected in wimshome/log/classes/$wims_class/supconnected
+ supervisorconnected=!defof user_connected in wimshome/tmp/whoconnect/sup$file_
  !if $supervisorconnected!=$empty
   test_=!defof wims_user in wimshome/sessions/$supervisorconnected/var.stat
   !if $test_=$empty
    !reset supervisorconnected
-   !setdef user_connected=$empty in wimshome/log/classes/$wims_class/supconnected
+   !setdef user_connected=$empty in wimshome/tmp/whoconnect/sup$file_
   !endif
  !endif
 !endif
