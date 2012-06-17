@@ -1,0 +1,43 @@
+!if $user!=$empty
+ !read adm/class/userdef classes,$wims_class,$user
+ !defread $userdef
+ !read adm/class/userisinclass $wims_class,$user
+!endif
+!if $script_reply!=yes or $user=$empty
+  error=bad_user
+  !reset job
+  !exit
+!endif
+
+pl=!positionof item $user in $wims_connectedlogin
+!if $pl=$empty
+ error=user_notconnected
+ job=list
+ !reset action
+ !exit
+!endif
+don=!line $pl of $wims_whoconnect
+ses=!item 4 of $don
+test=!getdef wims_class\
+wims_alertmsg in wimshome/sessions/$ses/var.stat
+!distribute line $test into test,motdold
+!if $test=$empty
+ !readproc adm/whoconnect 1
+ !reset action
+ job=list
+ error=user_notconnected
+ !exit
+!endif
+
+!if $action=register
+ motd=!detag $motd
+ motd=!char 1 to $alertmsg_limit of $motd
+ ses=!item 4 of $don
+ !for s in $ses
+  !setdef wims_alertmsg=$motd in wimshome/sessions/$s/var.stat
+ !next s
+ !reset user,action,motd
+ job=$empty
+!else
+ motd=motdold
+!endif

@@ -14,12 +14,11 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
 !if $wims_user!=supervisor
  job=hide
 !else
- !bound job within modif,delete,reactivate default $empty
+ !bound job within modif,delete,reactivate,write default $empty
  !if $user=.CLASS.
   !reset user
  !endif
- !readproc  adm/whoconnect
- connectedlogin=!column 1 of $whoconnect
+ !readproc adm/whoconnect 1
 !endif
 
 !if $job!=$empty

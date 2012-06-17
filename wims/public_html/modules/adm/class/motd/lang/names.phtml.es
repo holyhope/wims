@@ -28,3 +28,8 @@ a todos los participantes de la clase, que se mostrará en
 !set name_commun=Mensaje de la clase (común a todos los participantes)
 
 !set name_status=Activo, Ocultado
+
+set name_alertmsg=Message d'alerte
+!set name_walertmsg=Ecrire une alerte
+!set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $user_firstname $user_lastname (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
+!set name_usermultisession=Plusieurs sessions ouvertes

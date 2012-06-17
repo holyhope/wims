@@ -28,3 +28,8 @@ alle studenten de klas.
 !set name_commun=Klasse bericht (voor alle studenten)
 
 !set name_status=Actief,Onzichtbaar
+
+set name_alertmsg=Message d'alerte
+!set name_walertmsg=Ecrire une alerte
+!set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $user_firstname $user_lastname (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
+!set name_usermultisession=Plusieurs sessions ouvertes

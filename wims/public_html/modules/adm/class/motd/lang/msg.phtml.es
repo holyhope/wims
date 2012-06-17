@@ -6,4 +6,10 @@
  !exit
 !endif
 
+!if user_notconnected=$error
+ Ce participant n'est plus connecté !
+ !exit
+!endif
+
+
 !msg $error
