@@ -16,7 +16,14 @@
      !endif
     !endif
     !if $class_auth iswordof php
-      <a class="wims_button" href="$host_auth?enter=$code">$wims_name_Enter</a>
+      !if $userdef=$empty or $code=$superclass
+       <a class="wims_button" href="$host_auth?enter=$code">$wims_name_Enter</a>
+      !else
+!! to fix "direct" access to other classes
+       !set u__=!defof user_external_auth in $userdef
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code&+auth_user=$u__ $name_register
+      !endif
    !endif
    !if $class_auth iswordof ldap
      !set wims_ref_class=wims_button
