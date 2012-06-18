@@ -34,7 +34,6 @@ wims_helper=chapter=3
 #####################################
 
 !if $auth_method isitemof $auth_method_list
-
   !set auth_user=$user_auth
   !if $type=authsupervisor
 !!! FIXME ???? is it useful
@@ -54,7 +53,6 @@ wims_helper=chapter=3
     !endif
     !exit
   !endif
-
 !! for $auth_method=php we must check we are in an authenticated session 
 !! created by adm/raw --> we ckeck $wims_user is defined (?? FIXME ?? better way to check?)
 !! do not add auth_method=cas or ldap, because of the case where the inscription is made by the
@@ -62,6 +60,8 @@ wims_helper=chapter=3
 !!
 !! the following is probably not needed (and is breaking students inscription by teacher). 
 !! leave here until some debugging
+!!
+!! these lines are needed when a teacher (user_supervisable=yes) wants to register himself as a studentd in a class
 !!   !if $wims_user!=$empty and $auth_method isitemof php
 !!     auth_user=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user 
 !!   !endif
@@ -334,7 +334,9 @@ $class_type
   error=login_double
   !exit
  !endif
- !if $idp_method=$empty
+!! temporary FIX: in the future might decide to have 
+!! $idp_method=$empty instead of $idp_method=php
+ !if $idp_method=$empty or $idp_method=php
   up_firstname=$firstn
   up_lastname=$lastn
   up_email=$email
