@@ -70,16 +70,18 @@ char *mathfont(char *fontname)
       fontname+=strlen(mathfont_prefix);
     if(strlen(fontname)==1 /* && strchr("xyz",fontname[0])==NULL */) {
 	char c=fontname[0];
-	if(!isalpha(c)) {
+	if(!isalpha(c)) { // c is not a letter
 	    buf2[0]=c;buf2[1]=0;
 	}
 	else {
+	// case of variable xyz in particular
 	    char *pp;
 	    if(c=='f') pp="&nbsp;"; else pp="";
-	    snprintf(buf2,sizeof(buf2),"<i>%c</i>%s",c,pp);
+	    snprintf(buf2,sizeof(buf2),"<i>%c</i>%s",c,pp); //-> %c%s in mathml
 	}
     }
-    else {
+    else {/* interpret font with at least two caracters as \RR \calB - only outside of math environment
+    not useful in mathml*/
 #ifdef CASE_INSENSITIVE_FS
 	char *underscore;
 	fix_tex_size(); underscore="";
