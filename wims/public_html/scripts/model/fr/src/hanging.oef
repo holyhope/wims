@@ -27,10 +27,6 @@ Texte affiché à la fin de l'exercice, quel que soit le resultat.
 Texte affiché à la fin de l'exercice, quand le mot n'a pas été trouvé.
 \text{echec=Perdu !}
 
-:Afficher les lettres accentuées ?
-Pour se rappeler des lettres deja tapées, l'ensemble des lettres de l'alphabet seront affichées. vous pouvez également afficher les lettres accentuées. Cela reste purement indicatif.
-\text{affaccents=item(2,oui,non)}
-
 :Type du dessin
 Choix du dessin : "pendu", "cartons rouges", ou "têtes de mort"
 \text{type=item(2,3 (têtes de mort),
@@ -38,16 +34,19 @@ Choix du dessin : "pendu", "cartons rouges", ou "têtes de mort"
 	1 (pendu))}
 
 :Données principales.
-Mettre dans la première colonne les mots en minuscules et dans la deuxième une indication éventuelle
+Mettre dans la première colonne les mots en minuscules et dans la deuxième une indication éventuelle. 
+Dans le cas de groupes de mots, remplacer le blanc par un<tt>_</tt>.
 \text{data=éléphant,un animal
 chandelier, la première lettre est c
-mouette rieuse, sur la plage
+mouette_rieuse, sur la plage
 vague, sur la plage
 
 }
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
-
+\text{Indication=Indication}
+\text{motatrouver=Mot à trouver}
+\text{proposer=Proposez une lettre en minuscule}
 \text{type=wims(word 1 of \type)}
 \text{mot=randrow(\data)}
 \text{indication=\mot[2..-1]}
@@ -92,7 +91,7 @@ lines red,6,2,5,3
 lines red,4,2,5,3}
 
 \text{Dessin=<img src="draw(200,200
-\dessin)" alt="Ici le dessin d'un homme pendu se dessine au fur et a mesure des erreurs">}
+\dessin)" alt="Ici le dessin d'un homme pendu se dessine à mesure des erreurs">}
 
 }
 
@@ -131,9 +130,7 @@ lines red,4,2,5,3}
 
 \text{lettre1=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
 \text{accents=à,ä,â,é,è,ê,ë,î,ï,ô,ö,û,ù,-,!,?}
-\if {\affaccents=oui}{
    \text{lettre1=\lettre1,\accents}
-}
 \text{lettre=wims(makelist <span class="notseen">x</span> for x in \lettre1)}
 \text{lettre2=\lettre}
 \text{lettre2=\lettre2[1..10]
@@ -146,18 +143,17 @@ lines red,4,2,5,3}
 
 \integer{reste=6 - \cnt}
 \text{message=Vous avez droit à <strong>\reste</strong> erreurs}
-
 \statement{
 	<p class="instructions">\instruction</p>
-	<p ><em>Indication&nbsp;: <span class="indication">\indication</span></em></p>
+	<p ><em>\Indication&nbsp;: <span class="indication">\indication</span></em></p>
 <div class="floating small_col centrer type\type">
  <div class="dessin"><p>\message</p>
 \Dessin</div>
 </div>
  <div class="floating large_col centrer">
-  <div class="question">Mot à trouver&nbsp;:<span class="word"> \MOT2</span></div>
+  <div class="question">\motatrouver&nbsp;:<span class="word"> \MOT2</span></div>
   <div class="reponse">
-   <label for="reply\step">Proposez une lettre&nbsp;: </label>
+   <label for="reply\step">\proposer&nbsp;: </label>
    \embed{r\step,1
    default
    autocomplete="off" maxlength="1" id="reply\step" style="text-align:center;"}
