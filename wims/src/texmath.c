@@ -293,14 +293,20 @@ int term_cnt(char *p)
     return i;
 }
 
-	/* Print a number */
+/* Print a number: transform 4E+05 in 4 \times 10^{5} and  4E-05 in 4 \times 10^{-5}
+suppress multiple + or 0 - see rawmth.c
+*/
 void putnumber(char *p)
 {
     char *pp;
     pp=strpbrk(p,"Ee");
     if(pp==NULL) {tprint("%s",p); return;}
     *pp++=0;
-    tprint("%s \\times 10^{%s} ",p,pp);
+    if (pp[0]=='-') { tprint("%s \\times 10^{-",p) ; *pp++; } else tprint("%s \\times 10^{",p);
+    int k; 
+    for(k=0; *(pp+k)=='0' || *(pp+k)=='+'; k++ );
+    pp=pp+k;
+    tprint("%s}",pp);
 }
 
 	/* Print a variable name */
