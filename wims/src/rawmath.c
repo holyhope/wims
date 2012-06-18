@@ -607,15 +607,12 @@ void __replace_italics (char *p)
 	p1=p2+strlen("<i></i>")-1;
     }
 }
-/* exponents of 10, or greek letters - should be cut*/
+
 /* exponents of 10 : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21} ; should replace E-05 by 1O^{-5}*/
 /* almost the same as putnumber in texmath.c*/
-
-void __replace_expgrec(char *p)
-{
-   char *p1,*p2,*p3 ;
-
-    for(p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
+void __replace_puiss (char *p)
+{ char *p1, *p2, *p3;
+  for(p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
 	char buf[MAX_LINELEN+1];
 	p2=find_mathvar_end(p1);
 	memmove(buf,p1,p2-p1);buf[p2-p1]=0;
@@ -632,7 +629,19 @@ void __replace_expgrec(char *p)
 	    else { char expstr[]= " \\times 10^{" ; string_modify(p,p1,p1+k,expstr);
 	       p2+=strlen(expstr)-k; string_modify(p,p2,p2,"}"); p2+=strlen("}");}
 	}
-	else {	/* alphabetic name */
+  }
+}
+
+/* replace greek letters and all symbols in hmname*/
+/* not done in texmath.c*/
+void __replace_alphabeta (char *p)
+{char *p1, *p2;
+for(p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
+	char buf[MAX_LINELEN+1];
+	p2=find_mathvar_end(p1);
+	memmove(buf,p1,p2-p1);buf[p2-p1]=0;
+	if(!myisdigit(buf[0])) {
+	/* alphabetic name */
 	    int i;
 	    i=search_list(hmname,hmname_no,sizeof(hmname[0]),buf);
 	    if(i<0) { //don't understand what is done
@@ -684,11 +693,12 @@ void __htmlmath(char *p)
     if(!rawmath_easy) {
 	rawmath_easy=1; rawmath(p); rawmath_easy=0;
     }
-    __replace_htmlmath_gtlt(p); //only used in deduc
+    __replace_htmlmath_gtlt(p); //only used in deductio
     __replace_exponent(p) ;
 	__replace_subscript(p) ;
     __replace_getrid1(p) ;
-    __replace_expgrec(p);
+    __replace_alphabeta(p); //must be before __replace_puiss because of \times
+    __replace_puiss(p);
     __replace_getridstar(p) ;
     __replace_arrow(p) ;
 	/* Now make substitutions */
