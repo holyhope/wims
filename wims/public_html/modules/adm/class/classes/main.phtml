@@ -25,20 +25,30 @@ $class_institution
 
 !if $error!=$empty
  !read lang/msg.phtml.$moduclass_lang
+!! why not having a !goto end here??
+!! (the "!exit" in lang/msg.phtml.$moduclass_lang seems not to be stopping 
+!! the rest of the page from being shown)
+!! !goto end
  <p><hr> <p>
 !endif
 
 
 !!! En fait cela devrait être $idp_method=$empty Comment arrive-t-on ici ?
 !if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
+!! we get here e.g. in case class_authidp=cas;php
 $name_new_participant_external
 
  !if $type_class > 0 and $type!=authsupervisor
   !set tmp_=&subclass=yes
  !endif
  <center>
+!! this is probably the only place we need idp_method=php
+!! (e.g. if class_authidp=cas;php)
  !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
-   <a href="$class_php_auth?enter=$class" class="wims_button">$name_register</a>        
+ !if $type=authsupervisor
+  !set ttmp_=&authtype=teacher
+ !endif
+   <a href="$class_php_auth?enter=$class$ttmp_" class="wims_button">$name_register</a>        
  !else
    !set wims_ref_class=wims_button
    !href module=adm/class/reguser&class=$class$tmp_ $name_register
