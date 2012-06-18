@@ -54,7 +54,7 @@ $name_deposit
    !if $(sharing_$type)=$empty
     <input type="checkbox" name="selection" value="$type">
    !endif
-   $(new_$(type)cnt) $(name_$type).
+   $(new_$(type)cnt) $(name_$type). 
    !if $(sharing_$type)!=$empty
     $name_no_restore
    !else
@@ -109,7 +109,10 @@ $name_method&nbsp;:
  <li><input type="radio" name="restore" value="merge">
   $name_merge <i>($name_merge1)</i>.</li>
 </ul>
-
+!!## TODO desactiver les feuilles s'il n'y pas de participant et enlever la date d'expiration?
+!!!if $(new_usercnt)=0
+!!   <input type="checkbox" name="preparation" value="no"> Mettre les feuilles en préparation
+!!!endif
 <input type="submit" value="$name_selectrestore">
 !set wims_ref_class=wims_button_help
 !href cmd=reply&job=list $wims_name_giveup
