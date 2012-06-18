@@ -50,7 +50,7 @@ void tprint(char *s,...)
       user_error("cmd_output_too_long");
     strcat(texmathbuf,buf);
 }
-
+/* transforms sum(n,n=1..infinity) , product(n/(n+1),n=1..infinity). */
 void _tex_sums(char *p, char *name, int type)
 {
     char *p1,*p2,*p3;
@@ -97,51 +97,51 @@ struct {
     char *left, *right;
     void (*routine) (char *p);
 } tmathfn[]={
-	{"Arg",		1,	"{\\rm Arg}",		"\\right)"},
-        {"Int",		2,	"","",			tex_int},
-        {"Prod",	2,	"","",			tex_prod},
-        {"Sum",		2,	"","",			tex_sum},
-        {"abs",		0,	"\\left|",		"\\right|"},
-	{"acos",	1,	"{\\rm arccos}",	"\\right)"},
-	{"acosh",	1,	"{\\rm Argch}",		"\\right)"},
-	{"arg",		1,	"{\\rm Arg}",		"\\right)"},
-	{"asin",	1,	"{\\rm arcsin}",	"\\right)"},
-	{"asinh",	1,	"{\\rm Argsh}",		"\\right)"},
-	{"atan",	1,	"{\\rm arctg}",		"\\right)"},
-	{"atanh",	1,	"{\\rm Argth}",		"\\right)"},
-	{"ch",		1,	"{\\rm ch}",		"\\right)"},
-        {"conj",	0,	"\\overline{",		"}"},
-        {"conjugate",	0,	"\\overline{",		"}"},
+	{"Arg",		1,	"\\textrm{Arg}",		"\\right)"},
+	{"Int",		2,	"","",			tex_int},
+	{"Prod",	2,	"","",			tex_prod},
+	{"Sum",		2,	"","",			tex_sum},
+	{"abs",		0,	"\\left|",		"\\right|"},
+	{"acos",	1,	"\\textrm{arccos}",	"\\right)"},
+	{"acosh",	1,	"\\textrm{Argch}",		"\\right)"},
+	{"arg",		1,	"\\textrm{Arg}",		"\\right)"},
+	{"asin",	1,	"\\textrm{arcsin}",	"\\right)"},
+	{"asinh",	1,	"\\textrm{Argsh}",		"\\right)"},
+	{"atan",	1,	"\\textrm{arctg}",		"\\right)"},
+	{"atanh",	1,	"\\textrm{Argth}",		"\\right)"},
+	{"ch",		1,	"\\textrm{ch}",		"\\right)"},
+	{"conj",	0,	"\\overline{",		"}"},
+	{"conjugate",	0,	"\\overline{",		"}"},
 	{"cos",		1,	"\\cos",		"\\right)"},
-	{"cosh",	1,	"{\\rm ch}",		"\\right)"},
-	{"cot",		1,	"{\\rm ctg}",		"\\right)"},
-	{"cotan",	1,	"{\\rm ctg}",		"\\right)"},
-	{"cotanh",	1,	"{\\rm cth}",		"\\right)"},
-	{"csc",		1,	"{\\rm csc}",		"\\right)"},
-	{"ctg",		1,	"{\\rm ctg}",		"\\right)"},
-	{"cth",		1,	"{\\rm cth}",		"\\right)"},
-	{"det",		1,	"{\\rm det}",		"\\right)"},
-	{"erf",		1,	"{\\rm erf}",		"\\right)"},
+	{"cosh",	1,	"\\textrm{ch}",		"\\right)"},
+	{"cot",		1,	"\\textrm{ctg}",		"\\right)"},
+	{"cotan",	1,	"\\textrm{ctg}",		"\\right)"},
+	{"cotanh",	1,	"\\textrm{cth}",		"\\right)"},
+	{"csc",		1,	"\\textrm{csc}",		"\\right)"},
+	{"ctg",		1,	"\\textrm{ctg}",		"\\right)"},
+	{"cth",		1,	"\\textrm{cth}",		"\\right)"},
+	{"det",		1,	"\\textrm{det}",		"\\right)"},
+	{"erf",		1,	"\\textrm{erf}",		"\\right)"},
 	{"exp",		1,	"\\exp",		"\\right)"},
-        {"int",		2,	"","",			tex_int},
-        {"integrate",	2,	"","",			tex_int},
-	{"lg",		1,	"{\\rm lg}",		"\\right)"},
+	{"int",		2,	"","",			tex_int},
+	{"integrate",	2,	"","",			tex_int},
+	{"lg",		1,	"\\textrm{lg}",		"\\right)"},
 	{"ln",		1,	"\\ln",			"\\right)"},
 	{"log",		1,	"\\log",		"\\right)"},
-        {"prod",	2,	"","",			tex_prod},
-        {"product",	2,	"","",			tex_prod},
-	{"sec",		1,	"{\\rm sec}",		"\\right)"},
-	{"sgn",		1,	"{\\rm sgn}",		"\\right)"},
-	{"sh",		1,	"{\\rm sh}",		"\\right)"},
-	{"sign",	1,	"{\\rm sign}",		"\\right)"},
+	{"prod",	2,	"","",			tex_prod},
+	{"product",	2,	"","",			tex_prod},
+	{"sec",		1,	"\\textrm{sec}",		"\\right)"},
+	{"sgn",		1,	"\\textrm{sgn}",		"\\right)"},
+	{"sh",		1,	"\\textrm{sh}",		"\\right)"},
+	{"sign",	1,	"\\textrm{sign}",		"\\right)"},
 	{"sin",		1,	"\\sin",		"\\right)"},
-	{"sinh",	1,	"{\\rm sh}",		"\\right)"},
+	{"sinh",	1,	"\\textrm{sh}",		"\\right)"},
 	{"sqrt",	0,	"\\sqrt{",		"}"},
-        {"sum",		2,	"","",			tex_sum},
+	{"sum",		2,	"","",			tex_sum},
 	{"tan",		1,	"\\tan",		"\\right)"},
-	{"tanh",	1,	"{\\rm th}",		"\\right)"},
-	{"tg",		1,	"{\\rm tg}",		"\\right)"},
-	{"th",		1,	"{\\rm th}",		"\\right)"}
+	{"tanh",	1,	"\\textrm{th}",		"\\right)"},
+	{"tg",		1,	"\\textrm{tg}",		"\\right)"},
+	{"th",		1,	"\\textrm{th}",		"\\right)"}
 };
 
 #define tmathfn_no (sizeof(tmathfn)/sizeof(tmathfn[0]))
@@ -534,12 +534,12 @@ void t_onefactor(struct afactor *fb, int num)
 			case ';': goto out;
 		    }
 		}
-		out: if(*pt==';' || *pt==',') {	/* is matrix */
+		out: if(*pt==';' || *pt==',') {	/* is matrix of the form [ 1,2;5,6] */
 		    char mbuf[MAX_LINELEN+1];
 		    char *pp, *pt;
 		    
 		    p++; if(*pe) *pe++=0;
-		    tprint(" \\pmatrix{");
+		    tprint(" \\begin{pmatrix}");
 		    for(pp=p,i=0;*pp;pp=pt,i++) {
 			pt=find_term_end(pp);
 			memmove(mbuf,pp,pt-pp); mbuf[pt-pp]=0;
@@ -551,7 +551,7 @@ void t_onefactor(struct afactor *fb, int num)
 			    tprint("\\cr "); pt++; i=-1;
 			}
 		    }
-		    tprint(" }"); goto expon;
+		    tprint(" \\end{pmatrix}"); goto expon;
 		}		
 		rp2=']'; break;
 	    }
