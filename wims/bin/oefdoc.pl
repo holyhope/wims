@@ -42,12 +42,12 @@ $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ; 
 
-$name{'explanation'}{'ca'}="Explanation" ; 
-$name{'example'}{'ca'}="Example" ;
-$name{'special'}{'ca'}="Special method<br>(statement)";
-$name{'syntax'}{'ca'}="Syntax";
+$name{'explanation'}{'ca'}="Explicació" ; 
+$name{'example'}{'ca'}="Exemple" ;
+$name{'special'}{'ca'}="Mètodes especials<br>(enunciat)";
+$name{'syntax'}{'ca'}="Sintaxi";
 $name{'slib'}{'ca'}='SLIB';
-$name{'anstype'}{'ca'}='Answer types' ;
+$name{'anstype'}{'ca'}='Tipus de Respostes' ;
 
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $DOSSIER_edit_area="public_html/scripts/js/edit_area/reg_syntax";
