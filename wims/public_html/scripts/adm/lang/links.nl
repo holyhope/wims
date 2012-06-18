@@ -9,5 +9,7 @@
 !let name_link_regsup= wijst naar de plek waar docenten zich kunnen aanmelden als leraar van $name_classe .(of waar U deze docenten kunt "aanmaken")
 !let name_link_important=Belangrijk
 !let name_link_importantmes=Bookmark deze links voordat U dit venster sluit
-!let name_link_importantmes2=Dit kan ook worden terug gevonden in de klas configuratie pagina.
+!let name_link_importantmes2=Dit kan ook worden terug gevonden in de klas configuratie pagina (if you change the type of authentification these links might change).
 !let name_link_classnumber=Het is ook handig het klassenummer even te noteren
+!let name_link_enterall=will redirect all users to he homepage of the class (they will need the class password for the registration).
+!let name_link_regsuperv=!nosubst allows teachers to register to the $wims_name_group.

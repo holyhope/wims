@@ -7,9 +7,26 @@
 !readproc adm/lang/links.$modu_lang
 
 $name_link_introduce :
+!if $auth_method=php
+!if $class_type>=2
+!set accesscode=$class_superclass
+!else
+!set accesscode=$code
+!endif
+<ul>
+<li>$name_link_link
+  <a href="$host_auth?enter=$accesscode">$host_auth?enter=$accesscode</a>
+  $name_link_enterall</li>
+!if $class_type>=2
+<li>$name_link_link
+  <a href="$host_auth?enter=$accesscode&teacher=yes">$host_auth?enter=$accesscode&teacher=yes</a>
+  $name_link_regsuperv</li>
+!endif
+</ul>
+!else
 <ul>
  <li>$name_link_link
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=fr&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
   $name_link_supervisor.
  <p></li>
  <li>$name_link_link
@@ -43,6 +60,7 @@ $name_link_introduce :
   <p></li>
  !endif
 </ul>
+!endif
 <span class="wims_warning">$name_link_important</span> : $name_link_importantmes.
 !if adm/class/config notin $module 
  $name_link_importantmes2
