@@ -640,12 +640,26 @@ void t_onestring(char *p)
 	t_oneterm(termbuf,i);
     }
 }
-    
+/* replace \pmatrix{  } by latex syntax \begin{pmatrix} .. \end{pmatrix} */
+
+void _replace_matrix ( char *p , char *s_mat1, char *s_mat2 )
+{ char pbuf[MAX_LINELEN]; 
+  while ( (p = strstr(p,s_mat1)) )
+  { char *p2 = find_matching(p+strlen(s_mat1),'}');
+    long len = p2-p-strlen(s_mat1);
+    if (!p2) { module_error("unmatched_parentheses"); return; }
+    memcpy(pbuf, p+strlen(s_mat1), len); pbuf[len]= 0;
+    p2 ++ ;
+    string_modify(p, p, p2, "\\begin{%s}%s\\end{%s}",s_mat2,pbuf,s_mat2);
+  }
+}
+
 	/* translate raw math expression into TeX source */
 void texmath(char *p)
 {
     char *pp;
-
+    _replace_matrix (p,"\\matrix{","matrix"); 
+    _replace_matrix (p,"\\pmatrix{","pmatrix");
     if(strpbrk(p,"{}\\")!=NULL) return;
     for(pp=strstr(p,"!="); pp; pp=strstr(pp+1,"!=")) {
 	if(pp>p && !isspace(*(pp-1))) continue;
