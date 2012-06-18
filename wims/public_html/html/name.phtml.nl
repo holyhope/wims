@@ -163,6 +163,7 @@
  Bewaar de details van deze oefening,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
+ Vu\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -171,7 +172,8 @@
  wims_name_syou,\
  wims_name_exolog,\
  wims_name_sheetmanagement,\
- wims_name_add_sequence
+ wims_name_add_sequence,\
+ wims_name_readen
  
  !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
