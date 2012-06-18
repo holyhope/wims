@@ -41,7 +41,7 @@ void *xmalloc(size_t n);
 int msleep(int ms);	/* millisecond sleeper */
 void _tolinux(char *p);		/* dos/mac to unix/linux translation */
 void ovlstrcpy(char *dest, char *src);	/* strcpy of possibly overlapping strings (64 bits problem)*/
-void mystrncpy(char *dest, char *src, int lim);	/* optimized and secured strncpy */
+void mystrncpy(char *dest, const char *src, size_t lim);	/* optimized and secured strncpy */
         /* find matching parenthesis.
 	 * The entrance point should be after the opening parenthesis.
 	 * Returns NULL if unmatched. */
@@ -94,7 +94,7 @@ void lines2words(char *p);	/* change lines to words */
 void items2words(char *p);	/* change items to words */
 void items2lines(char *p);	/* change items to lines */
 void strip_enclosing_par(char *p);	/* Strip enclosing pairs of parentheses */
-        /* strstr but may have embedde deros. 
+        /* strstr but may have embedded zeros. 
 	 * Returns memory end if not found.
 	 * Supposes memory ends with 0. */
 char *memstr(char *s1, char *s2, int len);
@@ -106,7 +106,7 @@ void nospace(char *p);		/* collapses all space characters in string. */
 void singlespace(char *p);	/* change all spaces into ' ', and collapse multiple occurences */
 void deaccent(char *p);		/* fold accented letters to unaccented */
 void reaccent(char *p);		/* compose accented letters using symbols */
-	/* modify a string. Bufferlen must be ast least MAX_LINELEN */
+	/* modify a string. Bufferlen must be at least MAX_LINELEN */
 void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...);
 long int filelength(char *fn,...);
 int catfile(FILE *outf, char *fn,...);
@@ -199,3 +199,16 @@ int levelcurve(leveldata *ld);	/* produces level curve data. Returns non-zero if
 #define myislower(x) (x>='a' && x<='z')
 #define myislspace(x) (x==' ' || x=='\t')
 #define myisspace(x) (x==' ' || x=='\t' || x=='\n' || x=='\r')
+
+/* should put parenthesis around x
+#define myisdigit(x) ((x)>='0' && x<='9')
+#define myisalpha(x) (((x)&~32)>='A' && ((x)&~32)<='Z')
+#define myisalnum(x) (myisalpha(x) || myisdigit(x))
+#define myisupper(x) ((x)>='A' && (x)<='Z')
+#define myislower(x) ((x)>='a' && (x)<='z')
+#define myislspace(x) ((x)==' ' || (x)=='\t')
+#define myisspace(x) ((x)==' ' || (x)=='\t' || (x)=='\n' || (x)=='\r')
+*/
+/*ou
+inline int myisdigit(char x) { return x>='0' && x<='9'; }
+*/
