@@ -12,7 +12,11 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
 !readproc tabletheme
 
 !if $wims_user!=supervisor
- job=hide
+ !bound job within hide,readen default hide
+ !if $job=readen
+  !setdef wims_alertmsg=$empty in wimshome/sessions/$wims_session/var.stat
+  !restart module=home
+ !endif
 !else
  !bound job within modif,delete,reactivate,write default $empty
  !if $user=.CLASS.
