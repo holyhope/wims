@@ -42,13 +42,20 @@ $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ; 
 
+$name{'explanation'}{'ca'}="Explanation" ; 
+$name{'example'}{'ca'}="Example" ;
+$name{'special'}{'ca'}="Special method<br>(statement)";
+$name{'syntax'}{'ca'}="Syntax";
+$name{'slib'}{'ca'}='SLIB';
+$name{'anstype'}{'ca'}='Answer types' ;
+
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $DOSSIER_edit_area="public_html/scripts/js/edit_area/reg_syntax";
 my $DOSSIER_wims="public_html/modules/help/wimsdoc.en/cmd/";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
 
-my @Lang=('en','fr','cn', 'nl','it') ;
+my @Lang=('en','fr','cn','nl','it','ca') ;
 
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
