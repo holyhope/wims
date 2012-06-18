@@ -86,10 +86,12 @@ void __insmath(char *p)
     char *f, *pp, *pe, *p1, buf[MAX_LINELEN+1], nbuf[256];
     int ts, n, rawmathready;
 
-    ovlstrcpy(buf,p); strip_trailing_spaces(buf);
+    ovlstrcpy(buf,p); strip_trailing_spaces(buf); singlespace(buf);
     p1=getvar("insmath_slashsubst");
-    if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf);
-    f=instex_check_static(buf); substit(buf);
+    if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf); // substitute backslash parameters 
+    f=instex_check_static(buf); //decide if image already exists
+    substit(buf);
+    /* here replace .. by , : i=1 .. 5 -> i=1, 5 !*/
     for(pp=strstr(buf,".."); pp!=NULL; pp=strstr(pp,"..")) {
 	if(*(pp+2)=='.' || *(pp+2)==',') {
 	    do pp++; while(*pp=='.'); continue;
@@ -108,8 +110,9 @@ void __insmath(char *p)
 	(strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
 	char alignbak[2048];
 	tex: instex_style="$$";
-	if(!ts) texmath(buf);
-	else {
+	if(!ts) texmath(buf); // in particular, reinterpret variables and some fonts or functions as alpha pi cos 
+	// see list in texmath.c : tmathfn 
+	else {// need to interpret x y z 
 	    char *p1;
 	    p1=find_word_start(buf);
 	    if(*p1=='\\') {
@@ -136,23 +139,24 @@ void __insmath(char *p)
 	if(alignbak[0]) setvar("ins_align",alignbak);
 	return;
     }
+    /* end of the only for images*/
     for(pp=find_mathvar_start(buf); *pp; pp=find_mathvar_start(pe)) {
 	pe=find_mathvar_end(pp); n=pe-pp;
 	if(!isalpha(*pp) || n<3 || n>16) continue;
 	memmove(nbuf,pp,n); nbuf[n]=0;
 	if(wordchr(tnames,nbuf)!=NULL) goto tex;
     }
-/*    for(pp=strchr(buf,'{'); pp!=NULL; pp=strchr(pp+1,'{')) *pp='(';
-    for(pp=strchr(buf,'}'); pp!=NULL; pp=strchr(pp+1,'}')) *pp=')';
-*/    for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='(';
-	pp=strchr(pp+1,'/'));
+    
+    for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='(';
+    pp=strchr(pp+1,'/'));
     if(pp!=NULL) goto tex;
     if(rawmathready) rawmath_easy=1;
     for(pp=strchr(buf,'<'); pp!=NULL; pp=strchr(pp+1,'<'))
       string_modify(buf,pp,pp+1,"&lt;");
     for(pp=strchr(buf,'>'); pp!=NULL; pp=strchr(pp+1,'>'))
       string_modify(buf,pp,pp+1,"&gt;");
-    htmlmath(buf); output("%s",buf); rawmath_easy=0;
+    htmlmath(buf); output("%s",buf); 
+    rawmath_easy=0;
 }
 
 char *andor[]={"and","or","not","is","isnot"};
@@ -224,4 +228,3 @@ void insmath(char *p)
     }
     _mathlogic(p,__insmath);
 }
-
