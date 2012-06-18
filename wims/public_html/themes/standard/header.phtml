@@ -60,11 +60,15 @@
 !!------------------------------------Fin de l'insert "Permalien" --------------------------
 
 !!FIXME PHP ?
-!if $wims_cas_auth=$empty
+!if $class_cas_auth=$empty
   !set m_init_parm=!replace internal & by $ $ in $module_init_parm
-  !set wims_cas_auth=!getopt class_auth in $m_init_parm
+  !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
-!if $wims_cas_auth!=$empty
+
+!if $class_cas_auth!=$empty
+!!## it is better that the cas logout appears too much ... 
+!!## can be useless in the case of a supervisor so the next line is commented
+!!!!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
   <div class="topmenuitem">
   !read adm/class/logout_cas
  </div><!--topmenuitem-->
