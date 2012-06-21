@@ -2,25 +2,25 @@
 !header
 
 !if $wims_class=$empty
+ <p>
  Questo è un modulo interno di un corso virtuale, pertanto
  solo gli utenti registrati del corso possono
  accedervi.
- <p><center>
+ </p>
+ <p style="text-align:center;">
  !href $ $wims_name_home
- </center> <p>
+ </p>
  !exit
 !endif
 
-Questo modulo raccoglie esercizi interattivi per il corso
+<p>Questo modulo raccoglie esercizi interattivi per il corso
 <span class="wims_classdesc">$wims_classname</span>
-presso <span class="wims_institutiondesc">$wims_institutionname</span>, creati dal docente
-del
+(<span class="wims_institutiondesc">$wims_institutionname</span>).</p>
 !if $wims_user=supervisor
- corso (che sei tu).
- !href module=adm/createxo Cliccare qui
- per creare un nuovo esercizio.
-!else
- corso.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo  <span class="icon_button add_exo">Crea un nuovo esercizio</span>
+ </p>
 !endif
 
 !read oef/intromenu.phtml

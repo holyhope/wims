@@ -64,7 +64,7 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 
 !set name_textarea_limit=!nosubst massimo $limit_textarea caratteri
 !set name_whovote=Elenco di chi ha risposto
-!set name_whodontvote=List of those who have not voted
+!set name_whodontvote=Elenco di chi non ha risposto
 
 !set name_csv1=Questo è il file che una volta salvato può essere aperto con un qualsiasi\
   foglio eletronico (tipo <em>excel</em>).
@@ -75,20 +75,15 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 !set name_option=Opzioni
 !set name_value=Valori
 
-!! da qui in poi
+!! guided mode
 
-!set wims_name_guided=Modo guidato
 !set name_optionclosed=non disponibile, attivato solo in caso di completamento degli altri turni
 
-!distribute lines Questo modulo permette di costruire un questionario secondo modelli predefiniti\
-Compilazione questionari secondo un modello\
-Quante sessioni d'esame?\
+!distribute lines Quante sessioni?\
 massimo\
 Nome della variabile\
 Default IP di connessione (può essere modificato nella pagina successiva)\
 Testo introduttivo del questionario (eventuali istruzioni per gli studenti)\
-Indicare date e orari delle\
-sessioni d'esame previste\
 Num.Stud.\
 Data<br>sessione\
 Orario<br>inizio sessione\
@@ -96,10 +91,8 @@ Orario<br>termine sessione\
 Conn. IP\
 Event. indicazioni<br>aggiuntive\
 cancella iscrizione\
-into name_introguided name_guidedtitle name_howmany name_atmost name_namevar \
-name_textconnip name_introtext \
-name_numsess_pre name_numsess_post \
-name_numstud name_sessiondate name_begintime name_endtime name_connip name_extra\
+into name_howmany,name_atmost,name_namevar,name_textconnip,name_introtext,\
+name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
 name_cancellation 
 
 !set name_numsess=!nosubst Sono previste $numsess sessioni d'esame.
@@ -110,18 +103,13 @@ name_cancellation
 !if $vote_mode!=free
  !readproc adm/lang/sheetexam.phtml.$lang
 !endif
+
 !set name_yourvariable=!nosubst Il nome della variabile da voi impostata \
   corrispondente a questo questionario è <tt class="wims_code_variable">$namevar</tt>
 !set name_accessvar_instr=!nosubst <strong>Configurazione test di autovalutazione o esame</strong>: \
 dopo aver attivato il test o l'esame, in <tt class="wims_code_words">$(name_shinfo[6])</tt>, selezonare \
  <tt class="wims_code_words">$(name_allowtype[3])</tt> e nello spazio inserire \
 <tt class="wims_code_variable">\$namevar</tt> (compreso <tt class="wims_code_variable">\</tt>).
-
-!! removing double lines
-
-!! not used any longer?
-!set name_examinstr=!nosubst <strong>Configurazione esame</strong>: dopo aver attivato il tema d'esame, nel quadro <em>Registrazione dei voti</em> occorre selezionare \
-<em>Limitata ai seguenti IP (e/o orari)</em> e nello spazio inserire <code>\$namevar</code> (compreso <code>\</code>).
 
 !set name_group_instr=!nosubst <strong>Utilizzo nel corso</strong>: questa variabile vi permette di filtrare \
 gli iscritti per alcune attività del corso.
@@ -137,3 +125,4 @@ ai test di autovalutazione o agli esami.
 
 !set name_model=Modello
 !set name_nextstep=Prosegui
+
