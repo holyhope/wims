@@ -33,22 +33,31 @@ placez un caractère <tt class="wims_code_words">#</tt> dans le champ
 Le tableau doit contenir suffisamment
 d'information valable pour chaque participant à ajouter (nom de famille,
 prénom, mot de passe).
-<h3>Cas d'une authentification externe</h3>
-Le format du fichier est le même, mais vous pouvez remplacer le champ
-<tt class="wims_code_words">login</tt> par le champ
-<tt class="wims_code_words">external_auth</tt>.
-Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
-<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
-d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
-Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
-(<tt class="wims_code_words">external_auth</tt>) peut être mis.
-Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
-une fois que des participants sont inscrits. 
-
 <p>
 Un exemple de fichier valable pour l'inscription :
 <pre>
 login,firstname,lastname,password
 toto,Claude,Toto,1234
 </pre>
+
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous devez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt> (le champ <tt class="wims_code_words">login</tt>
+ne doit pas apparaître).
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) doit être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
+<p>
+Un exemple de fichier valable pour l'inscription :
+<pre>
+external_auth,firstname,lastname
+Claude.Toto,Claude,Toto
+</pre>
+
 !read lang/help.$moduclass_lang/fieldtab.phtml

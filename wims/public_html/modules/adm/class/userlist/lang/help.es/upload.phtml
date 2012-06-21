@@ -28,23 +28,30 @@ Puede utilizar este método para añadir participantes (muchos de una sola vez):
 en este caso la hoja de cálculo debe contener suficiente información válida
 sobre cada participante que se vaya a añadir (apellidos, nombre, contraseña).
 
-<h3>Cas d'une authentification externe</h3>
-Le format du fichier est le même, mais vous pouvez remplacer le champ
-<tt class="wims_code_words">login</tt> par le champ
-<tt class="wims_code_words">external_auth</tt>.
-Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
-<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
-d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
-Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
-(<tt class="wims_code_words">external_auth</tt>) peut être mis.
-Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
-une fois que des participants sont inscrits. 
-
-
-<p>
 Ejemplo de fichero válido para una inscripción:
 <pre>
 login,firstname,lastname,password
 menganez,Claudio,Menganez,1234
 </pre>
+
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous devez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt> (le champ <tt class="wims_code_words">login</tt>
+ne doit pas apparaître).
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) doit être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
+<p>
+Ejemplo de fichero válido para una inscripción:
+<pre>
+external_auth,firstname,lastname
+menganez,Claudio,Menganez,1234
+</pre>
+
 !read lang/help.$moduclass_lang/fieldtab.phtml

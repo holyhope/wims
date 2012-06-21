@@ -19,24 +19,30 @@ de <tt class="wims_code_words">login</tt> aanwezig moet zijn.
  Als U wilt dat sommige rijen niet worden ingelezen, kunt U deze aangeven met een <tt class="wims_code_words">#</tt> in het 
  <tt class="wims_code_words">login</tt> veld.
 
-<h3>Cas d'une authentification externe</h3>
-Le format du fichier est le même, mais vous pouvez remplacer le champ
-<tt class="wims_code_words">login</tt> par le champ
-<tt class="wims_code_words">external_auth</tt>.
-Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
-<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
-d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
-Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
-(<tt class="wims_code_words">external_auth</tt>) peut être mis.
-Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
-une fois que des participants sont inscrits. 
-
-
 <p>
 Bijvoorbeeld:                                                          
 <pre>
 login,firstname,lastname,password,email,regnum,comments
 "ChrisB","Christiaan","Boersma","46As72","chris.boersma@school.nl","2005AZ7253","stapt in 2009 over van VMBO naar HAVO"
+</pre>
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous devez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt> (le champ <tt class="wims_code_words">login</tt>
+ne doit pas apparaître).
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) doit être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
+<p>
+Bijvoorbeeld:                                                          
+<pre>
+external_auth,firstname,lastname
+"ChrisB","Christiaan","Boersma"
 </pre>
 <hr>
 !read lang/help.$moduclass_lang/fieldtab.phtml
