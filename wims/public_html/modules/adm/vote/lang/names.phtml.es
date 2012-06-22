@@ -78,6 +78,7 @@ hoja de cálculo preferida&nbsp;
 !set name_optionclosed=closed, will be opened only when other options will be full
 
 !distribute lines How many sessions?\
+How many groups?\
 at most\
 uservar name\
 Default host IP (can be changed in the following page)\
@@ -89,7 +90,7 @@ End time<br>of session\
 Host IP\
 Extra info\
 Inscription cancellation\
-into name_howmany,name_atmost,name_namevar,name_textconnip,name_introtext,\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,name_introtext,\
 name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
 name_cancellation
 

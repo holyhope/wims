@@ -80,6 +80,7 @@ programma naar keuze.
 !set name_optionclosed=gesloten, wordt geopend als alle andere opties zijn ingevuld
 
 !distribute lines Hoeveel sessies ?\
+How many groups?\
 maximaal\
 uservar naam\
 Default host IP (kan worden veranderd op de volgende pagina)\
@@ -91,7 +92,7 @@ Eind tijd<br>sessie\
 Host IP\
 Extra info\
 Afmelding inschrijving\
-into name_howmany,name_atmost,name_namevar,name_textconnip,name_introtext,\
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,name_introtext,\
 name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
 name_cancellation
 
