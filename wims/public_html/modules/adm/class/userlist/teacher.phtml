@@ -10,9 +10,11 @@ $wims_name_teacherlist
 !!!endif
 
 $table_header
-<caption>
-!href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
-</caption>
+!if $wims_user=supervisor and $wims_realuser=supervisor
+ <caption>
+  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+ </caption>
+!endif
 $table_hdtr
 <th>$wims_name_account</th>
 <th>$wims_name_lastname</th>
@@ -44,4 +46,7 @@ $tu_
  </tr>
 !next i
 $table_end
+
+!set wims_menu_items=!append line part_list,1,cmd=resume\
+to $wims_menu_items
 

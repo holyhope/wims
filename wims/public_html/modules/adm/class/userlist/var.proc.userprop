@@ -38,13 +38,15 @@
   !for r in $replacelist
     !default up_$r=$(user_$r)
   !next
- !if $superv=no
+ !if $wims_user=supervisor and ($wims_realuser!=supervisor and $wims_realuser!=$empty)
+  !if $superv=no 
    !set up_supervise=!listcomplement $wims_class in $user_supervise
- !else
-   !set up_supervise=!listuniq $wims_class, $user_supervise
+  !else
+   !set up_supervise=!listuniq $wims_class, $(user_supervise)
+  !endif
+  !reset superv
  !endif
- !reset superv
- 
+
  !read adm/class/adduser $getuser
  !read adm/class/mkuserlist
  !if $class_type isin 1234
