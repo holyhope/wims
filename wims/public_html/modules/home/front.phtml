@@ -1,0 +1,13 @@
+!if $wims_user=$empty
+<div class="wims_motd">
+  !read ./wimshome/log/motd.phtml.$lang
+</div>
+<div class="wims_frontpage">
+  !readproc wimshome/log/front.phtml.$lang
+  !if yes notin $front_exist
+    !read ./front.phtml.$lang
+  !else
+    !read wimshome/log/front.phtml.$lang
+  !endif
+</div>
+!endif

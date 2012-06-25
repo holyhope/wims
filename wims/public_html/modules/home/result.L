@@ -1,3 +1,4 @@
+!! search_category=L does no more exist
 
 <script language=javascript>
 !set srchl=!translate $ $ to + in $srchl

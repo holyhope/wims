@@ -79,7 +79,7 @@
 <h2 class="wims_subtitle">
  (WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a>
 </h2>
-</div>
+</div><!--end wimstitle-->
 
 !if $wims_ismanager!=0
 <center>
@@ -88,9 +88,13 @@
 !endif
 
 !read ./form.phtml
-!read ./result.phtml
+!if $s_category=V
+ !read ./front.phtml
+!else
+ !read ./result.phtml
+!endif
 
-</div>
+</div><!--end wimsbody-->
 !set wims_show_stat=!tolower $wims_show_stat
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox">
