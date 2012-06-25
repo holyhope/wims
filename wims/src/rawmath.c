@@ -235,10 +235,6 @@ void rawmath(char *p)
     (void)__replace_badchar(p,"**", "^");
     if (__replace_badchar(p,"²", "^2 ")) flatpower=1;
     if (__replace_badchar(p,"³", "^3 ")) flatpower=1;
-/* why is it different
-    while((p1=strchr(p,'¨'))!=NULL) *p1='^';
-*/
-/*    (void)__replace_badchar(p,"¨", "^"); */
     if (mathalign_base < 2) unmatch=__replace_abs(p); 
     __replace_plusminus(p) ; 
     __replace_space(p);
