@@ -162,10 +162,9 @@ int __replace_abs ( char *p )
 }
 
 /* signs: translate ++, +-, -+, ... into one sign. */
-int __replace_plusminus ( char *p )
+void __replace_plusminus ( char *p )
 { 
    char *p1, *p2;
-   int cnt=0 ;
    for(p1=p;*p1!=0;p1++) {
 	int sign, redundant;
 	if(*p1!='+' && *p1!='-') continue;
@@ -179,10 +178,8 @@ int __replace_plusminus ( char *p )
 	if(redundant && *p2!='>' && strncmp(p2,"&gt;",4)!=0) {
 	    if(sign==1) *p1='+'; else *p1='-';
 	    ovlstrcpy(p1+1,p2);
-	    cnt ++;
     }
    }
-   return cnt ;
 }
 
 /* dangling decimal points
@@ -221,13 +218,10 @@ void __replace_space(char *p)
 
 	/* Error-tolerante raw math translation routine */
 	/* Translate error-laden raw math into machine-understandable form. */
-/* where is "modified" used? */
-
 void rawmath(char *p)
 {
     char *p1, *p2, *p3, *p4;
     char warnbuf[1024];
-    int modified=0,user_prohibited=0;
     int ambiguous=0,unknown=0,flatpower=0,badprec=0,unmatch=0;// for warning
 
 	/* looks like a TeX source : do nothing - should continue if mathml ? */
@@ -235,29 +229,21 @@ void rawmath(char *p)
     if(mathalign_base < 2 && (strchr(p,'\\')!=NULL || strchr(p,'{')!=NULL)) return;
     if(strchr(p,'^')==NULL) flatpower=-1;
     if(strlen(p)>=MAX_LINELEN) {*p=0; return;}
-    if(strncmp(p,"1-1+",strlen("1-1+"))==0) user_prohibited=1;
     p1=find_word_start(p);if(*p1==0) return;
     while(*p1=='+') p1++;
     if(p1>p) ovlstrcpy(p,p1);
-    	/* translate ** into ^ */
-    modified += __replace_badchar(p,"**", "^");
-      /* translate '²' into ^ */
-    int f= __replace_badchar(p,"²", "^2 ");
-    modified += f ; if (f>0) flatpower=1;
-    /* translate '³' into ^ */
-    f= __replace_badchar(p,"³", "^3 ");
-    modified += f ; if (f>0) flatpower=1;
+    (void)__replace_badchar(p,"**", "^");
+    if (__replace_badchar(p,"²", "^2 ")) flatpower=1;
+    if (__replace_badchar(p,"³", "^3 ")) flatpower=1;
 /* why is it different
-    while((p1=strchr(p,'¨'))!=NULL) {
-	*p1='^'; modified++;
-    }
+    while((p1=strchr(p,'¨'))!=NULL) *p1='^';
 */
-   modified += __replace_badchar(p,"¨", "^") ;
-   if (mathalign_base < 2) unmatch=__replace_abs(p); 
-   modified += __replace_plusminus(p) ; 
+/*    (void)__replace_badchar(p,"¨", "^"); */
+    if (mathalign_base < 2) unmatch=__replace_abs(p); 
+    __replace_plusminus(p) ; 
     __replace_space(p);
     __treat_decimal(p);
-    if(rawmath_easy || user_prohibited) return;
+    if (rawmath_easy) return;
 
     	/* Principal translation: justapositions to multiplications */
     if(strstr(p,"^1/")!=NULL) badprec=1;
@@ -271,7 +257,6 @@ void rawmath(char *p)
 		if(*p2=='(' && *p1==')') ambiguous=1;
 		if(p2>p1) *p1='*';
 		else string_modify(p,p1,p1,"*");
-		modified++;
 	    }
 	    p1--;continue;
 	}
@@ -327,7 +312,7 @@ void rawmath(char *p)
 			else *p1='(';
 		    }
 		    dd2:
-		    modified++;ambiguous=1;
+		    ambiguous=1;
 		}
 		p1--;continue;
 	    }
@@ -384,7 +369,6 @@ void rawmath(char *p)
 	    if(isalnum(*p2)) {
 		if(p2>p1) *p1='*';
 		else string_modify(p,p1,p1,"*");
-		modified++;
 	    }
 	    p1--;continue;
 	}
