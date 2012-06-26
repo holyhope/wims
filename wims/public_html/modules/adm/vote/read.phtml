@@ -71,7 +71,7 @@ $table_end
   !href cmd=reply&job=csv $wims_name_csv
  <p>
  !endif
- !set wims_menu_items=!append line change,1,cmd=reply&job=edit\
+ !set wims_menu_items=!append line change,1,cmd=reply&job=edit&gstep=0\
   to $wims_menu_items
 !endif
 
@@ -106,4 +106,12 @@ $table_end
  </center></form>
 !endif
 
+!if $wims_user=supervisor and $vote_status=0
+ <center>
+   !form reply
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=edit $wims_name_back2
+ </form>
+ </center>
+!endif
 
