@@ -96,6 +96,14 @@ prefix=déci,déca,méga,téra,péta,yotta,zetta,exa,peta,tera,giga,mega,kilo,hecto,d
 !endif
 
 digit_remarks=aantal significante cijfers,aantal cijfers voor de komma,aantal decimalen,het grondtal,de exponent,aantal cijfers
+# sig1,dec1,dec2,c_base,exponent,ok
+#6 items per line:
+#item 1) real number of significant digits in number_x (eg without leading zeros)
+#item 2) number of digits left from decimal point or if no decimals: total number of digits (length)
+#item 3) number of digits right from decimal point
+#item 4) exponent base (if not present : 1)
+#item 5) exponent (if not present : 0)
+#item 6) indication : is the number corr
 
 # let op: iets ander manier van scoren: beginnen bij 1 ---> wordt minder door strafpunten	
 score=0
@@ -141,9 +149,8 @@ score=0
     !else	
 	!if $unit=1
 	    ans=!words2items $ans
-	    number_g=!item 1 of $ans
-	    org_g=$number_g 
-	    unit_g=!item 2 of $ans
+	    number_a=!item 1 of $ans 
+	    unit_a=!item 2 of $ans
 	    rep=$org
 	    !for q=1 to 25
 		# 26.0 centimeter/milliseconde -> (1/10^-3)* 26.0 *10^-2 m/s
@@ -188,8 +195,8 @@ score=0
 	    rep=!words2items $rep
 	    # 1234,m/sec^2  or 1234,m,/,sec^2
 	    t=!itemcnt $rep
-	    number_a=$empty
-	    unit_a=$empty
+	    number_r=$empty
+	    unit_r=$empty
 	    !if $t=1
 		# 1234m/sec^2 
 	        # always assume: number unit
@@ -197,8 +204,8 @@ score=0
 		# 1234@/@@@^2
 	        t1=!positionof char @ in $rep3
 		t1=!item 1 of $t1
-	        number_a=!char 1 to $[$t1-1] of $rep
-		unit_a=!char $t1 to -1 of $rep
+	        number_r=!char 1 to $[$t1-1] of $rep
+		unit_r=!char $t1 to -1 of $rep
 	    !else
 		# blah blah number unit -> blah,blah,number,unit
 		got=1
@@ -220,54 +227,52 @@ score=0
 		t=!itemcnt $rep
 		# 1234 mmol/gr or 1234mmol /gr  or 1234 mmol/ gr 
 	        !if $t=2	
-	    	    number_a=!item 1 of $rep
-		    unit_a=!item 2 of $rep
+	    	    number_r=!item 1 of $rep
+		    unit_r=!item 2 of $rep
 		    # 1234mmol /gr 
-		    rep3=!replace [a-z] by @ in $number_a
+		    rep3=!replace [a-z] by @ in $number_r
 		    !if @ isin $rep3
 			t1=!positionof char @ in $rep3
 			t1=!item 1 of $t1
-			rest_unit=!char $t1 to -1 of $number_a
-			unit_a=!nospace $rest_unit $unit_a
-			number_a=!char 1 to $[$t1-1] of $number_a
+			rest_unit=!char $t1 to -1 of $number_r
+			unit_r=!nospace $rest_unit $unit_r
+			number_r=!char 1 to $[$t1-1] of $number_r
 		    !endif
 		!else
 		    # hmmm 1234 mmol / gr  of 1234 m mol / gr 
-		    number_a=!item 1 of $rep
-		    unit_a=!item 2 to $t of $rep
-		    unit_a=!replace internal , by $empty in $unit_a
+		    number_r=!item 1 of $rep
+		    unit_r=!item 2 to $t of $rep
+		    unit_r=!replace internal , by $empty in $unit_r
 		!endif
 	    !endif
 	    
-	    number_a=!nospace $number_a
-	    number_a=!replace internal , by $empty in $number_a
+	    number_r=!nospace $number_r
+	    number_r=!replace internal , by $empty in $number_r
 	    # SQRT(12) -> sqrt(12)
-	    number_a=!lower $number_a
-	    unit_a=!nospace $unit_a
-	    !if $unit_a=$number_a
+	    number_r=!lower $number_r
+	    unit_r=!nospace $unit_r
+	    !if $unit_r=$number_r
 	        # we need a unit in the answer
 		maxscore=$[$P1*$maxscore]
 		errortext=!record 91 of $remarkdir/commonremarks.$taal
 		goback=1
 		!exit
 	    !endif
-	    number_a=!rawmath $number_a
-	    sigcheck_a=$number_a
-	    sigcheck_g=$number_g
+	    number_r=!rawmath $number_r
+	    number_r=$[1.0*($number_r)]
 	    number_a=$[1.0*($number_a)]
-	    number_g=$[1.0*($number_g)]
-	    !if NaN isin $number_a
+	    !if NaN isin $number_r
 		errortext=!record 89 of $remarkdir/commonremarks.$taal
 	        goback=1
 		maxscore=$[$P3*$maxscore]
 		!exit
 	    !else
 		# problems with rpm [or Hz]  --> s^-1
-		!if $unit_a=rpm
-		    unit_a=s^-1
-		    number_a=$[$number_a/60]
+		!if $unit_r=rpm
+		    unit_r=s^-1
+		    number_r=$[$number_r/60]
 		!endif
-    		A=!exec units-filter $number_a $unit_a
+    		A=!exec units-filter $number_r $unit_r
 		!if ERROR isin $A
 		    errortext=!record 89 of $remarkdir/commonremarks.$taal
 		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
@@ -276,14 +281,14 @@ score=0
 		    !exit
 		!endif
 	    !endif
-	    G=!exec units-filter $[$number_g] $unit_g
+	    G=!exec units-filter $[$number_a] $unit_a
 	    !if $range=1
 		# 0.5*10^-6 gives ERROR 0.5e-6 is OK
-		diff=!exec units-filter $[1*($diff)] $unit_g
+		diff=!exec units-filter $[1*($diff)] $unit_a
 		diff=!word 1 of $diff
 	    !endif
 	    !if ERROR isin $G
-		errortext=Error in this exercise<br>The correct answer has a non SI unit $unit_g
+		errortext=Error in this exercise<br>The correct answer has a non SI unit $unit_a
 		goback=1
 		!exit
 	    !endif
@@ -295,9 +300,10 @@ score=0
 		G1=!replace internal e+ by *10^ in $G1
 		G1=!replace internal e- by *10^- in $G1		
 	    !endif
-	    number_g=$org_g
 	!else
 ########### no units required [unit=0] 
+########### $ans is !item $p of $(answer$n)
+########### $org is !item $p of $(reply$n)
 	    A1=!replace [a-z]*.[a-z] by $empty in $org
 	    B1=!replace [a-z] by $empty in $org
 	    A1=!lower $A1
@@ -324,88 +330,52 @@ score=0
 	    # maybe answer$n=1.234 km,2.4,3.12 cm ... avoid NaN
 	    # 		var1=0,0,0
 	    G1=!word 1 of $ans
-	    sigcheck_g=$G1
-	    unit_a=$empty
-	    unit_g=$empty
-	    sigcheck_a=$A1
+	    #G1=$[1.0*($ans)]
+	    unit_r=$empty
+	    number_r=$org
 	!endif
 	# end !if $unit=1
 	
 	
-	# find out about the numbers : units-filter destroys my significant digits...use 'original' numbers
-	dtot=!exec sigdigits $sigcheck_g $sigcheck_a $G1
-	#real_significant,integer,decimal,c_base,exponent,ok
-	!if error isin $dtot
-	    errortext=Something went wrong...$dtot 
+	# find out about the numbers 
+	dtot=!exec sigdigits $G1 $A1
+	# sig1,dec1,dec2,c_base,exponent,ok
+	!if $wims_exec_error!=$empty
+	    errortext=Something went wrong...$wims_exec_error 
 	    goback=1
 	    !exit
 	!endif
 	dtot_g=!line 1 of $dtot
 	dtot_a=!line 2 of $dtot
-	# look for precision in correct answer --> $prec (is used to find rounding_off errors)
-	dtot_p=!line 3 of $dtot
 	!if error notin $dtot_a
-	    notation_err=0
+	    notation_err=1
 	    # check only if both reply and  answer$n are scientiffic
-	    !if $(dtot_a[5])>0 and $(dtot_g[5])>0
-		!if $unit_a != $unit_g
-		    dm=3
-		!else
-		    dm=5
-		!endif
-		!for di=1 to $dm
+	    !if $(dtot_a[6])>0 and $(dtot_g[6])>0
+	    # sig1,dec1,dec2,c_base,exponent,ok
+
+		!for di=1 to 6
 		    a=$(dtot_a[$di])
 		    g=$(dtot_g[$di])
 		    !if $a!=$g
-			notation_err=1
+			notation_err=0
+		        score1=$[0.99*$score1]
 			rem8=!append line $ <br><font color=red>$($digit_remarks[$di]) : $a</font> (<font color=green>$g</font>) $ to $rem8
 		    !endif
 		!next di
-		# digits links+rechts van de punt
-		a=$[ $(dtot_a[2]) + $(dtot_a[3]) ]
-		g=$(dtot_g[1])
-		!if $a > $g 
-		    !if $a>$[$g+5]			
-			score1=$[0.85*$score1]
-			rem=!record 100 of $remarkdir/commonremarks.$taal
-		    !else
-			!if $a>$[$g+3]
-			    score1=$[0.90*$score1]
-			    rem=!record 102 of $remarkdir/commonremarks.$taal
-			!else
-			    score1=$[0.95*$score1]
-			    rem=!record 101 of $remarkdir/commonremarks.$taal
-			!endif
-		    !endif
-		    rem8=!append line $ <font color=red>$rem</font> $ to $rem8
-		!endif
 	    !else
-		# geen scientiffic notatie
-		a=$[ $(dtot_a[2]) + $(dtot_a[3]) ]
-		# als 12.3400 6 sig digitst heeft...
-		g=$[ $(dtot_g[2]) + $(dtot_g[3]) ]
-		!if $a != $g 
-		    rem8=<font color=red>$($digit_remarks[1]) ($a &ne; </font><font color=green>$g</font><font color=red>)</font>   
-		    notation_err=1
-		    !if $a>$g
-			!if $a>$[$g+5]
-			    rem=!record 100 of $remarkdir/commonremarks.$taal
-			    score1=$[0.85*$score1]
-			!else
-			    !if $a>$[$g+3]
-				score1=$[0.90*$score1]
-				rem=!record 102 of $remarkdir/commonremarks.$taal
-			    !else
-				score1=$[0.95*$score1]
-				rem=!record 101 of $remarkdir/commonremarks.$taal
-			    !endif
-			!endif
-			rem8=!append line $ <font color=red>$rem</font> $ to $rem8
+		# use internal "algoritm" to check correctness...
+		notation_err=$(dtot_a[7])
+		!if $notation_err=0
+		    !if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
+			score1=$[0.99*$score1]
+			rem8=<br><font color=red>$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</font> &ne; $(dtot_g[3]) + $(dtot_g[4])   
+		    !else
+			notation_err=1
 		    !endif
 		!endif
 	    !endif
-	    !if $notation_err=1
-		rem7=<br>Je antwoord is niet correct genoteerd :
+	    !if $notation_err=0
+		rem7=<br>Je antwoord is niet correct genoteerd...
 	    !endif
 	!else
 	    errortext=!record 36 of $remarkdir/commenremarks.$taal
@@ -413,45 +383,54 @@ score=0
 	    maxscore=$[$P3*$maxscore]
 	    !exit
 	!endif
-	
+	# find precision : using answer$n ; what range for incorrect rounding?
+	dec=!item 4 of $dtot_g
+	c_base=!item 5 of $dtot_g
+	exponent=!item 6 of $dtot_g
+	!if $dec >0
+	    # 2.5*10^5 -> 2.45*10^5 - 2.55*10^5 --> prec = 0.1*10^5
+	    # 2.500*10^5 -> 2.495*10^5 - 2.505*10^5  --> prec =  0.01*10^5
+	    # 12345.50000*10^5 -> 12345.49995*10^5 - 12345.50005*10^5  --> prec =  0.0001*10^5
+	    prec = $[0.45*10^(-1*$dec)*($c_base^($exponent))]
+	!else
+	    # 15*10^5 -> 14.55*10^5 - 15.45*10^5 --> prec = 0.9*10^5
+	    # 15000 -> 14999.5 - 15000.5 --> prec = 1 
+	    prec = $[0.45*$c_base^($exponent)]
+	!endif
+	!if NaN isin $prec
+	    # flaw in program?
+	    prec = $diff
+	!endif
 	# now test the answer...
 	!if $range=1
-	    !ifval $[1*($A1)]=$[1*($G1)]
-		# plain correct...
+	    !if $[1*($A1)]=$[1*($G1)]
+		# answer -  var2 <= reply <= answer + var2 
 		k=green
 	    !else
-		Diff=$[abs(($A1) - ($G1))]
-		# compare precison used to correct last decimal flaw in $diff...
-		diff=$[(ceil($wims_compare_precision*$diff))/$wims_compare_precision]
-		!if $Diff < $diff
+		!if $A1 >= $[$G1 - $diff] and $A1 <= $[$G1 + $diff]
 		    k=green
+		    rem1=!record 96 of $remarkdir/commonremarks.$taal
 		!else
-		    stp=10
-		    !for dx=1 to 10
-			# dx=10 : Diff < 3*diff
-			!if $stp=10
-			    !if $Diff < $[$diff + 0.2*$dx*$diff]
-				stp=$dx
-			    !endif		    
-			!endif
-		    !next dx
-		    !if $stp=10
-			k=red
-			score1=0
+		    !if $A1 >= $[$G1 - $diff - $prec] and $A1 <= $[$G1 + $diff + $prec]
+			rem1=!record 29 of $remarkdir/commonremarks.$taal
+			#@je hebt een afrondingsfoutje gemaakt...
+		        k=#ffc900
+		        score1=$[$score1*$P7]
 		    !else
-			score1=$[$score1*$(P$stp)]
-			!if $stp > 5
-			    rem1=!record 30 of $remarkdir/commonremarks.$taal
-			    #@je hebt een grote afrondingsfout gemaakt...
+			!if $A1 >= $[$G1 - $diff - 2*$prec] and $A1 <= $[$G1 + $diff + 2*$prec]
+			    rem1=!record 29 of $remarkdir/commonremarks.$taal
+			    #@je hebt een afrondingsfoutje gemaakt...
 			    k=#ff7c00
+			    score1=$[$score1*$P8]
 			!else
-			    !if $stp>1
-				rem1=!record 29 of $remarkdir/commonremarks.$taal
-				#@je hebt een afrondingsfoutje gemaakt...
-		    		k=#ffc900
+			    !if $A1 >= $[$G1 - $diff - 4*$prec] and $A1 <= $[$G1 + $diff + 4*$prec]
+				rem1=!record 30 of $remarkdir/commonremarks.$taal
+			        #@je hebt een afrondingsfoutje gemaakt...
+				k=#ff3e00
+			        score1=$[$score1*$P9]
 			    !else
-				k=green
-				rem1=!record 96 of $remarkdir/commonremarks.$taal
+				k=red
+			        score1=0
 			    !endif
 			!endif
 		    !endif
@@ -459,24 +438,9 @@ score=0
 	    !endif
 	!else
 	    # no range given.
-	    # find a number precision  ; what range for incorrect rounding?
-	    dec=!item 3 of $dtot_p
-	    c_base=!item 4 of $dtot_p
-	    exponent=!item 5 of $dtot_p
-	    !if $dec >0
-		prec = $[0.5*10^(-1*$dec)*($c_base^($exponent))]
-	    !else
-		prec = $[0.5*$c_base^($exponent)]
-	    !endif
-	    !if NaN isin $prec
-		# flaw in program?
-		prec = 10^(-15)
-	    !endif
 	    tot=!exec pari if(abs($A1 - $G1) < $prec,1,0)\
 	    if(abs($A1 - $G1) < 2*$prec,1,0)\
-	    if(abs($A1 - $G1) < 3*$prec,1,0)\
-	    if(abs($A1 - $G1) < 4*$prec,1,0)\
-	    if(abs($A1 - $G1) < 5*$prec,1,0)
+	    if(abs($A1 - $G1) < 3*$prec,1,0)
 	    
 	    !if $wims_exec_error!=$empty
 		errortext=Something went wrong...contact the systems administrator
@@ -486,39 +450,23 @@ score=0
 	    r1=!line 1 of $tot
 	    r2=!line 2 of $tot
 	    r3=!line 3 of $tot
-	    r4=!line 4 of $tot
-	    r5=!line 5 of $tot
 	    !if $r1=1 
 		k=green
 	    !else
 		!if $r2=1
 		    rem1=!record 29 of $remarkdir/commonremarks.$taal
 		    #@je hebt een afrondingsfoutje gemaakt...
-		    score1=$[$score1*$P3]
-		    k=green
+		    score1=$[$score1*$P6]
+		    k=orange
 		!else
 		    !if $r3=1
-			score1=$[$score1*$P5]		    
+			score1=$[$score1*$P9]		    
 		        rem1=!record 30 of $remarkdir/commonremarks.$taal
 			#@je hebt een grote afrondingsfout gemaakt !
 		        k=orange
 		    !else
-			!if $r4=1
-			    score1=$[$score1*$P7]		    
-		    	    rem1=!record 30 of $remarkdir/commonremarks.$taal
-			    #@je hebt een grote afrondingsfout gemaakt !
-		    	    k=orange
-			!else
-			    !if $r5=1
-				score1=$[$score1*$P9]		    
-		    		rem1=!record 30 of $remarkdir/commonremarks.$taal
-			        #@je hebt een grote afrondingsfout gemaakt !
-		    		k=orange
-			    !else    
-				k=red
-				score1=0
-			    !endif
-			!endif
+			k=red
+			score1=0
 		    !endif
 		!endif
 	    !endif
@@ -535,21 +483,19 @@ score=0
 	    !next ui
 	    !if $correct_unit=0
 		rem2=!record 92 of $remarkdir/commonremarks.$taal
-		#@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_a</em> ipv <font color=green><em>$unit_g</em></font>
+		#@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 		# geen punten
 		score1=0
 		k=red
 	    !else
-		!if $unit_a != $unit_g
+		!if $unit_r != $unit_a
 		    k=green
-		    rem5=<br>Ik heb <tt>$unit_g</tt> gebruikt...maar <tt>$unit_a</tt> is ook een geldige SI eenheid :)
-		    #@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_a</em> ipv <font color=green><em>$unit_g</em></font>
+		    rem5=<br>Ik heb <tt>$unit_a</tt> gebruikt...maar <tt>$unit_r</tt> is ook een geldige SI eenheid :)
+		    #@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 		!endif
 	    !endif
 	!endif
-#errortext=unit_a=$unit_a unit_g=$unit_g k=$k score=$score score1=$score1
-#goback=1
-#!exit
+
 	!if $teaching=1 and $k=red
 	    !if $A1=$[-1*($G1)] and $correct_unit=1
 		rem3=!record 27 of $remarkdir/commonremarks.$taal
@@ -569,7 +515,7 @@ score=0
 		!next factor
 	    !endif
 	!endif
-	#rep=!htmlmath $number_a $unit_a
+	#rep=!htmlmath $number_r $unit_r
 	yourreply=!append line $li <tt><font color=$k>$org</tt></font><em>$rem1 $rem2 $rem3 $rem4 $rem6 $rem5 $rem7 $rem8</em> $end_li to $yourreply    
     !endif
     score=$[$score+$score1]
@@ -579,7 +525,7 @@ score=0
 maxscore=$[$maxscore*$score/$tg]
 modulescore=$[$modulescore+$maxscore]
 
-!if $maxscore>0.9
+!if $maxscore>0.8
     remark$n=$OK
 !else
     !if $maxscore>0.5

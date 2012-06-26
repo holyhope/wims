@@ -106,3 +106,4 @@
 : Nee, je moet natuurlijk wel een correcte reactie vergelijking invoeren ...<br>A + B -&gt; C + D<br> A + B &lt;-&gt; C + D <br>Kijk maar eventjes in de help-pagina's
 : <br>De <b>massabalans</b> is niet inorde...<br><em>Links en rechts van de pijl zijn verschillen:<br>Het linker gedeelte was: $links<br>Het rechter gedeelte was: $rechts</em><br>
 : <br>Maar je massa- en ladingsbalans is in wel orde ! 
+:aantal significante cijfers,aantal cijfers voor de komma,aantal decimalen,het grondtal,de exponent,aantal cijfers
