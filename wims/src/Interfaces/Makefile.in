@@ -9,20 +9,20 @@ static=
 SETENV_OBJS=@SETENV_OBJS@
 STRIP=@STRIP@
 
-progstatic=pari yacasheader.c yacas maxima scilab
+progstatic=pari yacas maxima scilab
 progdynamic=gap octave m2
 progs=$(progstatic) $(progdynamic)
 
 all: $(progs) install
 
 clean:
-	rm -f $(progs) *.o
+	rm -f $(progs) *.o yacasheader.c 
 
 distclean: clean
 	cd $(PUBDIR); rm -f $(progs)
 	rm -f Makefile
 
-%.o: %.c common.h common.c
+%.o: %.c common.h common.c yacasheader.c 
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 install: $(progs)
