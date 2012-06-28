@@ -1,4 +1,4 @@
-/*  Le compte est bon - version récursive
+/*  Le compte est bon - version recursive
  *  Copyright (C) 2002 Lucas Nussbaum <lucas@lucas-nussbaum.net>
  *
  *  This program is free software; you can redistribute it and/or modify

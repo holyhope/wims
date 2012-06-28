@@ -2,8 +2,8 @@
 #include<string.h>
 
 
-/* Prog C qui fournit les réponses à l'exercice tab2d.oef .
-L'executable doit s'appeler tab2d.o et être placé dans 
+/* Prog C qui fournit les reponses à l'exercice tab2d.oef .
+L'executable doit s'appeler tab2d.o et être place dans 
 ~/wims/other/bin/bioinfo 
 Ce prog doit etre lancé par le script /wims/public_html/bin/sh_bioinfo
 */

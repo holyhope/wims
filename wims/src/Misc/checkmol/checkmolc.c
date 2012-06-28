@@ -144,7 +144,7 @@ v0.3   changed function update_Htotal in order to distinguish between 3-valent
        and 5-valent phosphorus (thanks to H. Feldman for this suggestion);
        added a table (array ringprop) to store ring sizes and aromaticity for
        faster lookup; changed aromaticity detection (chk_arom) to be fully
-       independent of Kekulé structures in condensed ring systems; changed add_ring
+       independent of Kekule structures in condensed ring systems; changed add_ring
        to store new rings in ascending order (with respect to ring size): this
        will cause the aromaticity detection to start with smaller rings;
        added additional calls to chk_arom when in SSR ring search mode (to ensure
