@@ -17,6 +17,4 @@ groep=1 taal=2
 groep=3
 </pre>
 
-Selecteer deelnemers die behoren tot groep 1 en waarvan de taal is 2 of
-deelnemers uit groep 3.
-                                                                                                                                           
+Selecteer deelnemers die behoren tot groep 1 en waarvan de taal is 2 of deelnemers uit groep 3.

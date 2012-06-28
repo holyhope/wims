@@ -99,22 +99,24 @@ De volgende modes zijn mogelijk
   er kan een enquete of stemming worden aangemaakt, zie voor de configuratie instellingen de help pagina.
   </li><li>
 !readproc adm/lang/sheetexam.phtml.$lang
-  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 
-  La variable technique alors créée vous permettra par exemple de définir un accès individualisé 
-  à des feuilles ou à des examens. Pour cela, si vous avez appelé <tt class="wims_code_variable">ma_variable</tt> quand 
-  le formulaire vous le demandera, il vous suffira d'écrire <tt class="wims_code_variable">\ma_variable</tt> dans la zone 
-  libre de la feuille ou de l'examen correspondant à <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  <b>$name_accessvar</b> : 
+  dmv dit formulier kan de openings- en sluitingstijden voor werkbladen en/of toetsen worden ingesteld
+  Met behulp hiervan kan toegang tot  op individueel niveau worden ingeregeld. 
+  Hiertoe kan eenvoudig<tt class="wims_code_variable">mijn_variabele</tt> worden gedefinieerd als
+  <tt class="wims_code_variable">\mijn_variabele</tt> in het daartoe bestemde veld van het werkblad of proefwerk in kwestie
+   <tt class="wims_code_words">$(name_shinfo[6])</tt>.
   </li><li>
-  <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
-  (disons que vous l'avez appelé <tt class="wims_code_variable">ma_variable</tt>. A l'aide
-  de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
-  trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b> 
-  d'avoir demandé la variable <tt class="wims_code_variable">var_ma_variable</tt>).
-  D'autres utilisations sont en prévision.
+  <b>$name_group</b> : 
+  Er kunnen ook groepjes studenten worden gedfinieerd.
+  Er wordt dan weer een naam van de variabele gevraagd; bijvoorbeeld
+   <tt class="wims_code_variable">mijn_inhaal_groepje_variabele</tt>.
+   Met behulp van deze variabele kunnen leerlingen worden toegevoegd.
+   Of emails worden verstuurd naar de deelnemers; lijsten met cijfers worden gesorteerd etc.
+   Meerdere toepassingen worden  nog ontwikkeld.
   </li></ul>
 
-Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
-ne pas utiliser <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
+Let op dat de variabele naam uniek is voor de klas en dat deze variabele niet in gebruik is door WIMS.
+Bijvoorbeeld nooit variabelen gebruiken met namen als  <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
 <tt class="wims_code_variable">manual1</tt>, ...).
 !tail
 !exit

@@ -12,7 +12,7 @@
 
 !if $job=logfile
   !set cdt_subtitle=Log file
-  !set name_text=Lijst met ipadressen ingelogd op de klas agenda
+  !set name_text=Lijst met ip-adressen ingelogd op de klas agenda
   !goto common
 !endif
 

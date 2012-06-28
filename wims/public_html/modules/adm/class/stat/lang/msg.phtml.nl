@@ -6,7 +6,7 @@ Excuses, maar het maken en veranderen van een werkblad is alleen voor de supervi
 !endif
 
 !if bad_class=$error
- Vreemd, ik zie dat Uw klas niet geldig is !
+ Vreemd, ik zie dat deze klas niet geldig is !
  !exit
 !endif
 

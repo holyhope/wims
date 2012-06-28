@@ -13,7 +13,7 @@
 	!set name_sup=van de docent/administateur
 	!else
 	!set name_classe=portaal
-	!set name_sup=van de administateur
+	!set name_sup=van de administrator
     !endif
     !set name_classes=de $name_classe
     !set name_classess=een $name_classe

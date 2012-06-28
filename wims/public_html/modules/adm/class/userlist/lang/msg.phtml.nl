@@ -61,7 +61,7 @@ De student <tt class="wims_login">$checkuser</tt> komt niet voor in de database.
 
 !if $error iswordof login_missing login_empty
 !! login_missing: not find in the ldap for example : should be more precise ??
-   Some logins have not been found.
+    Sommige login accounts konden niet gevonden worden.
  !exit
 !endif
 

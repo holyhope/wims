@@ -29,7 +29,7 @@ alle studenten de klas.
 
 !set name_status=Actief,Onzichtbaar
 
-set name_alertmsg=Message d'alerte
-!set name_walertmsg=Ecrire une alerte
-!set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $user_firstname $user_lastname (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
-!set name_usermultisession=Plusieurs sessions ouvertes
+set name_alertmsg=Spoed bericht
+!set name_walertmsg=Schrijf een spoed bericht
+!set name_Introalertmsg=!nosubst Schrijf een spoed berichtje aan $user_firstname $user_lastname (geen links of html tags toegestaan; maximale bericht lengte $alertmsg_limit karakters).
+!set name_usermultisession=Meerdere sessies op in deze klas

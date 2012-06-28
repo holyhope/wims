@@ -105,7 +105,7 @@ Interne software fout : kan het aantal deelnemers niet vaststellen.
 !endif
 
 !if no_cgu=$error
- Si vous n'acceptez pas les conditions générales d'utilisation, vous ne pouvez pas vous inscrire.
+    U accepteerde de gebruiksvoorwaarden niet en wordt dus niet ingeschreven als deelnemer.
  !exit
 !endif
 
