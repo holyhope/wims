@@ -45,11 +45,25 @@
 	    </small>
 	!if exam notin $session
 	    <br/>
+	    !set texsize=!char 1 of $useropts
+	    !set texalign=!char 2 of $useropts
+	    !if $texalign !=2
+		!set texalign=2
+		!set zoom=1
+		<a onclick="href='$wims_ref_name?session=$session&module=$module&cmd=resume&useropts=$texsize$texalign$zoom'" onmouseover="this.T_OPACITY='70';this.T_PADDING='10';this.T_BORDERCOLOR='red';this.T_BORDERWIDTH='1';return escape('$use_mathml')">
+		    <img src="$gifdir/use_mathml.png" alt="$use_mathml">
+		</a>
+	    !else
+		!set texalign=0
+		<a onclick="href='$wims_ref_name?session=$session&module=$module&cmd=resume&useropts=$texsize$texalign$zoom'" onmouseover="this.T_OPACITY='70';this.T_PADDING='10';this.T_BORDERCOLOR='red';this.T_BORDERWIDTH='1';return escape('$not_use_mathml')">
+		    <img src="$gifdir/not_use_mathml.png" alt="$not_use_mathml">
+		</a>
+	    !endif
 	    <small>
 		$helptext
 		!href target=wims_mhelp module=$module&+session=$session&+cmd=help
 		&nbsp;&nbsp;&nbsp;&nbsp;<em>$wims_name_help popup</em>
-	    </small>
+	    <br/>
 	!endif
     </td>
     <td valign="top" align="right">
