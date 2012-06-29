@@ -333,7 +333,8 @@ void putvar(char *p)
     else tprint("_{%s} ",vbuf);
     }
 }
-
+s
+/* sort according to type */
 int fsort(const void *p1, const void *p2)
 {
     struct afactor *t1, *t2;
@@ -343,7 +344,6 @@ int fsort(const void *p1, const void *p2)
     i1=t1->type; i2=t2->type;
     if(i1>type_var) i1=type_var; if(i2>type_var) i2=type_var;
     return i1-i2;
-    
 }
 
 void t_oneterm(char *p, int num)
@@ -429,24 +429,27 @@ void t_oneterm(char *p, int num)
       }
     }
     bailout:
+/* decide if the factor is of type numeric, integer, poly, transcend or variable 
+*  (see priorities)
+*/
     for(i=0;i<fcnt;i++) {
       pp=factors[i].beg; pe=factors[i].end;
       if(myisdigit(*pp) || *pp=='.') {
         for(pt=pp;pt<pe && myisdigit(*pt);pt++);
-        if(pt<pe) factors[i].type=type_numeric;
-        else factors[i].type=type_integer;
+        if(pt<pe) factors[i].type=type_numeric; // digits with a point
+        else factors[i].type=type_integer;  // digits without point
         continue;
       }
       if(*pp=='(') {
-        factors[i].type=type_poly; continue;
+        factors[i].type=type_poly; continue; //there exists a parenthesis
       }
       pt=strchr(pp,'('); 
-      if(pt!=NULL && pt<pe) factors[i].type=type_transcend;
-      else factors[i].type=type_var;
+      if(pt!=NULL && pt<pe) factors[i].type=type_transcend; //??
+      else factors[i].type=type_var;  // variable in other cases
     }
     dentype=-1;
     for(i=0;i<fcnt;i++) if(factors[i].side<0 && factors[i].type>dentype)
-      dentype=factors[i].type;
+      dentype=factors[i].type; // denominator type will be compared to the type of the factors
     dencnt=numcnt=neucnt=0;
     for(i=0;i<fcnt;i++) {
       if(factors[i].type>dentype) neutral[neucnt++]=factors+i;
@@ -463,8 +466,8 @@ void t_oneterm(char *p, int num)
     if(fcnt<1) tprint("1 ");
     if(dencnt>0) {
       tprint(" {");
-      if(numcnt==0) tprint(" 1"); 
-    else {/* numerator */
+      if(numcnt==0) tprint(" 1"); // no numerator ? will write {1 over denominator}
+      else {/* numerator */
         if(numcnt==1 && *numerator[0]->beg=='(' && 
            find_matching(numerator[0]->beg+1,')')==(numerator[0]->end)-1) {
           *(numerator[0]->end-1)=0;
@@ -472,16 +475,16 @@ void t_oneterm(char *p, int num)
           *(numerator[0]->end-1)=')';
         }
         else for(i=0; i<numcnt; i++) t_onefactor(numerator[i],i);
-    }
-    tprint(" \\over ");      /* Now denominator */
-    if(dencnt==1 && *denominator[0]->beg=='(' && 
-       find_matching(denominator[0]->beg+1,')')==(denominator[0]->end)-1) {
-        *(denominator[0]->end-1)=0;
-        t_onestring(denominator[0]->beg+1);
-        *(denominator[0]->end-1)=')';
-    }
-    else for(i=0;i<dencnt;i++) t_onefactor(denominator[i],i);
-    tprint("} ");
+      }
+      tprint(" \\over ");      /* Now denominator */
+      if(dencnt==1 && *denominator[0]->beg=='(' && 
+        find_matching(denominator[0]->beg+1,')')==(denominator[0]->end)-1) {
+         *(denominator[0]->end-1)=0;
+         t_onestring(denominator[0]->beg+1);
+         *(denominator[0]->end-1)=')';
+      }
+      else for(i=0;i<dencnt;i++) t_onefactor(denominator[i],i);
+      tprint("} ");
     }
     for(i=0;i<neucnt;i++) t_onefactor(neutral[i],i+dencnt);
 }

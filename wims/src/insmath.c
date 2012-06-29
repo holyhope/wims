@@ -90,16 +90,19 @@ void __insmath(char *p)
     p1=getvar("insmath_slashsubst");
     if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf); // substitute backslash parameters 
     f=instex_check_static(buf); //decide if image already exists
-    substit(buf);
+    substit(buf);//substitute the variables
     /* here replace .. by , : i=1 .. 5 -> i=1, 5 !*/
     for(pp=strstr(buf,".."); pp!=NULL; pp=strstr(pp,"..")) {
-    if(*(pp+2)=='.' || *(pp+2)==',') {
+      if(*(pp+2)=='.' || *(pp+2)==',') {
         do pp++; while(*pp=='.'); continue;
+      }
+      *pp=','; *(pp+1)=' ';
     }
-    *pp=','; *(pp+1)=' ';
-    }
+    /* decide if it should be tex */
     ts=0; if(strchr(buf,'\\') || strchr(buf,'}')) ts=1;
-    rawmathready=0; if(!ts) {
+    /* if not and if variable insmath_rawmath is there, do rawmath */
+    rawmathready=0; 
+    if(!ts) { /* should not be tex, looking if rawmath is asked */
       pp=getvar("insmath_rawmath");
       if(pp!=NULL && strstr(pp,"yes")!=NULL) {
         rawmath(buf); rawmathready=1;
@@ -110,7 +113,7 @@ void __insmath(char *p)
     (strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
       char alignbak[2048];
       tex: instex_style="$$";
-      if(!ts) texmath(buf); // in particular, reinterpret variables and some fonts or functions as alpha pi cos 
+      if(!ts) texmath(buf); // possibly tex - in particular, reinterpret variables and some fonts or functions as alpha pi cos 
     // see list in texmath.c : tmathfn 
       else {// need to interpret x y z 
         char *p1;
@@ -118,13 +121,14 @@ void __insmath(char *p)
         if(*p1=='\\') {
           int i;
           char *pt;
-          for(i=1;isalnum(p1[i]);i++);
-          if(p1[i]==0 && (pt=mathfont(p1))!=NULL) {
+          for(i=1;isalnum(p1[i]);i++); /* find an alphanumeric string beginning by \\ */
+          if(p1[i]==0 && (pt=mathfont(p1))!=NULL) { /* find some mathfont as \calB */
             _output_(pt); *p=0; return;
           }
         }
       }
       if(mathalign_base==2 && mathml(buf)) {*p=0; return;}
+/* only for images*/
       pp=getvar("ins_align");
       if(pp!=NULL) mystrncpy(alignbak,pp,sizeof(alignbak));
       setvar("ins_align","middle");
@@ -139,17 +143,17 @@ void __insmath(char *p)
       if(alignbak[0]) setvar("ins_align",alignbak);
       return;
     }
-    /* end of the only for images*/
+/* end of the only for images*/
     for(pp=find_mathvar_start(buf); *pp; pp=find_mathvar_start(pe)) {
       pe=find_mathvar_end(pp); n=pe-pp;
       if(!isalpha(*pp) || n<3 || n>16) continue;
       memmove(nbuf,pp,n); nbuf[n]=0;
       if(wordchr(tnames,nbuf)!=NULL) goto tex;
     }
-    
+/* only for html in case where gifs is activated ?? look for  / ?? */  
     for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='(';
     pp=strchr(pp+1,'/'));
-    if(pp!=NULL) goto tex;
+    if(pp!=NULL) goto tex;  /* so a/4 can be reinterpreted as {1 over 4 } a */
     if(rawmathready) rawmath_easy=1;
     for(pp=strchr(buf,'<'); pp!=NULL; pp=strchr(pp+1,'<'))
       string_modify(buf,pp,pp+1,"&lt;");
