@@ -24,7 +24,6 @@
 	var inputfieldnumber = 0;
 	var input;
 	if(document.getElementById("MathView")){
-	    applet = 1;
 	    input=document.getElementById("MathView").getLinear();input = input+'';
 	    if( input.length == 0){setAlarm(r1+"\ 1");return;}
 	    if( input.length > 100){setAlarm(r2); return;}
@@ -44,6 +43,7 @@
 	    }
 	    input = input.replace(/#/g,' ');
 	    reply[0] = input;
+	    applet=1;
 	}
 	
 	if(document.mydefaultform){
@@ -67,14 +67,13 @@
 		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
-		reply[ applet + inputfieldnumber ] = input;
-		inputfieldnumber++;
+		reply[ applet + z ] = input;
 	    }
+	    inputfieldnumber=ml;
 	}
 	
 	if(document.getElementById("mathml0")){
 	    var p=0;
-	    inputfieldnumber++;
 	    while(document.getElementById("mathml"+p)){
 		input = document.getElementById("mathml"+p).value;
 		if (input.length == 0){var qu = input+1; setAlarm(r1+"\ "+qu);return;}
@@ -92,9 +91,9 @@
 		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
 		}
 		input = input.replace(/#/g,' ');
-		p++;
 		if(p>99){break;}
 		reply[p + inputfieldnumber + applet] = input;
+		p++;
 	    }
 	}
 	if(reply.length == 0 ){setAlarm(r1);return;}
