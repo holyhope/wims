@@ -1,115 +1,114 @@
-<center><h3>Paramètres aléatoires dans un exercice interactif</h3></center> <p>
+<center><h3>Random parameters in an interactive exercise</h3></center> <p>
 
-L'utilisation de paramètres aléatoires rendra votre exercice beaucoup
-plus intéressant, car ce sera un exercice différent chaque fois qu'il est
-redemandé.
+The use of random parameters makes your exercise much more interesting, 
+because it will be a different exercise each time it is requested.
 <p>
-Par exemple, la ligne suivante définit un paramètre sous le nom de
-<font color=blue><b>x1</b></font>, dont la valeur sera un entier aléatoire entre
--10 et 10 (inclusif)&nbsp;:
+For example, the following line defines a parameter under the name of
+<font color=blue><b>x1</b></font>, whose value will be a random integer
+between -10 and 10 (inclusive):
 <pre>
 \integer{x1=random(-10..10)}
 </pre>
-Ce paramètre aléatoire peut ensuite être évoqué par le mot
-<b><tt>\x1</tt></b>, dans l'énoncé, les réponses, l'indication et la solution.
-C'est-à-dire, chaque mot <tt>\x1</tt> dans ces textes 
-sera remplacé par la valeur aléatoire
-du paramètre. Cette substitution prend aussi effet dans les définitions
-d'autres paramètres qui suivent celle de x1.
+This random parameter may then be called by the word
+<b><tt class="wims_code_variable">x1</tt></b>, in the statement, the replis, the hint and the solution.
+That is, each word <tt class="wims_code_variable">x1</tt> in these texts will be replaced
+by the random value of the parameter. This substitution will also take
+place in the definitions of other parameters which follow that of x1.
 <p>
-Supposons maintenant que vous avez entré
+Suppose now that you have entered
 <pre>
 \integer{x1=random(-10..10)}
 \integer{y1=\x1+3}
 </pre>
-dans le champ de la définition de paramètre, et la question
+in the field of the definition of parameters, and the question
 <pre>
-Calculez la multiplication de \x1 par \y1.
+Compute the multiplication of \x1 by \y1.
 </pre>
-dans l'énoncé de l'exercice. Supposons que sur une demande de l'exercice,
-une valeur aléatoire <font color=red>-7</font> est attribuée à \x1. Alors
-le paramètre suivant \y1 prendra la valeur -4, et l'énoncé de l'exercice
-sera présenté sous la forme<p>
-<center>Calculez la multiplication de -7 par -4.
+in the statement of the exercise. Suppose that for a certain request of 
+the exercise, a random value <font color="red">-7</font> 
+is attributed to \x1. Then the following parameter \y1 will take the value
+-4, and the statement of the exercise will be presented under the form<p>
+<center>Compute the multiplication of -7 by -4.
 </center> <p>
-Vous pouvez ensuite définir une réponse numérique au nom de <tt>Le
-produit</tt>, ayant pour bonne solution <tt>(\x1)*(\y1)</tt>. (Remarquez
-qu'ici les parenthèses sont nécessaires car la substitution se fera de façon
-littérale.)
-<a name=list></a>
+You may then define a numerical reply in the name of <tt>The product</tt>,
+having for the good solution <tt class="wims_code_words">(\x1)*(\y1)</tt>. (Remark that here
+the parentheses are necessary, because the substitution is done literarily.)
+<a name="list"></a>
 !if oefparm isitemof $special_parm
  !changeto help/oefparm.phtml
 !endif
 <p>$table_header
-<caption>Quelques autres exemples de paramètres
-!href cmd=help&special_parm=$special_parm,oefparm#list [liste complète]
+<caption>Some other examples of parameters
+!href cmd=help&special_parm=$special_parm,oefparm#list [complete list]
 </caption>
-$table_hdtr<th>Définition</th><th>Effet</th></tr>
-$table_tr<td><tt>\real{x=random(-5..5)}</tt>
-    </td><td>\x sera un nombre réel aléatoire<br>entre -5 et 5
-$table_tr<td><tt>\real{a=random(-5,-3,0.3,4)}</tt>
-    </td><td>\a sera un nombre réel pris aléatoirement<br>parmi -5,-3,0.3 et 4
-$table_tr<td><tt>\complex{z=(1+2*i)^3}</tt>
-    </td><td>\z sera le nombre complexe z=(1+2*i)^3
-$table_tr<td><tt>\text{sign=random(+,-)}</tt>
-    </td><td>\sign sera un signe aléatoire: + ou -
-$table_tr<td><tt>\integer{n=3*exp(\a)}</tt>
-    </td><td>\n sera l'entier le plus proche de 3*e<sup>\a</sup> <br>(il dépend de la
-    valeur de \a)
-$table_tr<td><tt>\function{f=random<br>(x^2+1,sin(x),log(x))}</tt>
-    </td><td>\f sera une fonction aléatoire: soit x^2+1,<br>soit sin(x), soit
+$table_hdtr<th>Definition<th>Effect
+$table_tr<td><tt class="wims_code_words">\real{x=random(-5..5)}</tt>
+    <td>\x will be a random real number<br>between -5 and 5
+$table_tr<td><tt class="wims_code_words">\real{a=random(-5,-3,0.3,4)}</tt>
+    <td>\a will be a real number taken randomly<br>among -5,-3,0.3 and 4
+$table_tr<td><tt class="wims_code_words">\complex{z=(1+2*i)^3}</tt>
+    <td>\z will be the complex number (1+2*i)^3
+$table_tr<td><tt class="wims_code_words">\text{sign=random(+,-)}</tt>
+    <td>\sign will be a random sign: + ou -
+$table_tr<td><tt class="wims_code_words">\integer{n=3*exp(\a)}</tt>
+    <td>\n will be the closest integer to 3*e<sup>\a</sup> <br>(it depends on
+    the value of \a)
+$table_tr<td><tt class="wims_code_words">\function{f=random<br> (x^2+1,sin(x),log(x))}</tt>
+    <td>\f will be a random function: either x^2+1,<br>or sin(x), or
     log(x)
-$table_tr<td><tt>\real{a=evalue(x^2+sin(y),x=3,y=4)}</tt>
-    </td><td>Evaluation de la fonction x^2+sin(y),<br>
-    pour x=3, y=4
-$table_tr<td><tt>\real{r=solve(x^3-3*x+1,x=0..1)}</tt>
-    </td><td>\r sera la racine simple de x^3-3x+1 entre 0 et 1
-$table_tr<td><tt>\function{h=simplify(x^5*y^3*x^2/y)}</tt>
-    </td><td>Expression simplifiée : x<sup>7</sup>y<sup>2</sup>
-$table_tr<td><tt>\function{g=diff(sin(x)+cos(y),x)}</tt>
-    </td><td>\g sera la dérivée de sin(x)+cos(y) par rapport à x
-$table_tr<td><tt>\function{F=int(x^2+3*x+1,x)}
-    </td><td>\F sera une primitive de x^2+3*x+1,<br>
-     le terme constant n'étant pas garanti d'être toujours le même
-!!$table_tr<td><tt>\function{F=int(t^2+3*t+1,t=1..x)}
-!!    <td>\F sera la primitive x^2+3*x+1 telle que g(1)=0
-$table_tr<td><tt>\real{a=int(t^2+3*t+1,t=0..1)}</tt>
-    </td><td>\a sera l'intégrale numérique de x^2+3*x+1, de 0 à 1
-$table_tr<td><tt>\text{f=htmlmath(2*x^2+3*x)}</tt>
-    </td><td>\f sera rendu en html comme: 2x<sup>2</sup>+3x
-$table_tr<td><tt>\text{f=texmath(2*x^2+3*x)}</tt>
-    </td><td>\f sera le source TeX de l'expression.
-$table_tr<td><tt>\integer{n=items(a,b,c,d,e,f)}</tt>
-    </td><td>\n sera le nombre d'articles (ici c'est 6) dans la liste
+$table_tr<td><tt class="wims_code_words">\real{a=evalue(x^2+sin(y),x=3,y=4)}</tt>
+    <td>Evaluation of the function x^2+sin(y),<br>
+    for x=3, y=4
+$table_tr<td><tt class="wims_code_words">\real{r=solve(x^3-3*x+1,x=0..1)}</tt>
+    <td>\r will the the simple root of x^3-3x+1 between 0 and 1
+$table_tr<td><tt class="wims_code_words">\function{h=simplify(x^5*y^3*x^2/y)}</tt>
+    <td>Simplified expression: x<sup>7</sup>y<sup>2</sup>
+$table_tr<td><tt class="wims_code_words">\function{g=diff(sin(x)+cos(y),x)}</tt>
+    <td>\g will the the derivative of sin(x)+cos(y) with respect to x
+$table_tr<td><tt class="wims_code_words">\function{F=int(x^2+3*x+1,x)}</tt>
+    <td>\F will an antiderivative of x^2+3*x+1,<br>
+     the constant term being not garanteed to be always the same
+!!$table_tr<td><tt class="wims_code_words">\function{F=int(t^2+3*t+1,t=1..x)}
+!!    <td>\F will the antiderivative of x^2+3*x+1 with g(1)=0
+$table_tr<td><tt class="wims_code_words">\real{a=int(t^2+3*t+1,t=0..1)}</tt>
+    <td>\a will the numerical integral of x^2+3*x+1 from 0 to 1
+$table_tr<td><tt class="wims_code_words">\text{f=htmlmath(2*x^2+3*x)}</tt>
+    <td>\f will be rendered in html as: 2x<sup>2</sup>+3x
+$table_tr<td><tt class="wims_code_words">\text{f=texmath(2*x^2+3*x)}</tt>
+    <td>\f will be the TeX source for the expression.
+$table_tr<td><tt class="wims_code_words">\integer{n=items(a,b,c,d,e,f)}</tt>
+    <td>\n will be the number of items (here it is 6) in the list
      {a,b,c,d,e,f}
-$table_tr<td><tt>\text{i=item(3,a,b,c,d,e,f)}</tt>
-    </td><td>\i sera l'article numéro 3 de la liste
-     {a,b,c,d,e,f} (donc c).
-$table_tr<td><tt>\text{s=shuffle(6)}
-    </td><td>\s sera la liste des 6 entiers 1,2,...,6, dans un ordre aléatoire.
-$table_tr<td><tt>\text{s=shuffle(a,b,c,d,e)}</tt>
-    </td><td>\s sera les lettres {a,b,c,d,e} dans un ordre aléatoire.
-$table_tr<td><tt>\matrix{m=1,2,3<br>4,5,6<br>7,8,9}
-    </td><td>\m sera la matrice de 3 lignes et 3 colonnes.
-$table_tr<td><tt>\text{t=asis(Comment ça va ? matrix(1,2,3))}</tt>
-    </td><td>\t est la chaîne comme elle est écrite, <br>sans transformation ni conditionalité.</td>
+$table_tr<td><tt class="wims_code_words">\text{i=item(3,a,b,c,d,e,f)}</tt>
+    <td>\i will be the item number 3 of the list
+     {a,b,c,d,e,f} (hence c).
+$table_tr<td><tt class="wims_code_words">\text{s=shuffle(6)}</tt>
+    <td>\s will be the list of 6 integers 1,2,...,6, in random order.
+$table_tr<td><tt class="wims_code_words">\text{s=shuffle(a,b,c,d,e)}</tt>
+    <td>\s will be the letters {a,b,c,d,e} in random order.
+$table_tr<td><tt class="wims_code_words">\matrix{m=1,2,3<br>4,5,6<br>7,8,9}</tt>
+    <td>\m will be the matrix of 3 rows and 3 columns.
+$table_tr<td><tt class="wims_code_words">\text{t=asis(How do you do? item(1,2,3))}</tt>
+    <td>The string as it is, with no transformation nor conditionality.
 
 $table_end <p>
 
-Paramètres conditionnels&nbsp;: vous pouvez écrire<p>
-<tt>\text{ttt=_condition?_def1}</tt> ou <br>
-<tt>\text{ttt=_condition?_def1:_def2}</tt>
+Conditional parameters: You may write
+<pre>
+\text{ttt=_condition?_def1}
+\text{ttt=_condition?_def1:_def2}
+</pre>
 <p>
-Dans ce cas, <tt>ttt</tt> aura la valeur <tt>_def1</tt> si
-<tt>_condition</tt> s'avère vraie, ou <tt>_def2</tt> sinon (dans la seconde
-syntaxe).
-!href target=wims_mhelp cmd=help&special_parm=if Liste de conditions
+In this case, <tt>ttt</tt> will be set to <tt>_def1</tt> if 
+<tt>_condition</tt> is true, or to <tt>_def2</tt> otherwise (in the second
+syntax).
+!href target=wims_mhelp cmd=help&special_parm=if List of conditions
 <p>
-La position relative d'une définition par rapport à l'énoncé est
-importante&nbsp;: si une variable est définie APRES l'énoncé, l'évaluation
-de la variable aura lieu uniquement APRES que l'utilisateur ait répondu à
-la question. Dans ce cas, la définition peut utiliser les réponses données
-par l'utilisateur, via <tt>\reply1</tt>, <tt>\reply2</tt>, etc. Et la
-variable ainsi définie peut être utilisée dans la solution, les conditions
-de test, ou les feedbacks.
+The relative positionning of the definition and the statement is important:
+if a variable is defined AFTER the statement, the evaluation of the variable
+will take place only AFTER the user has replied to the question. In this
+case, the definition may involve user replies, via <tt class="wims_code_variable">\reply1</tt>, 
+<tt class="wims_code_variable">\reply2</tt>, etc. And the variable can be used in testing
+conditions or feedbacks.
+
 
