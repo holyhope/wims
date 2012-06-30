@@ -333,7 +333,7 @@ void putvar(char *p)
     else tprint("_{%s} ",vbuf);
     }
 }
-s
+
 /* sort according to type */
 int fsort(const void *p1, const void *p2)
 {
