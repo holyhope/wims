@@ -552,14 +552,15 @@ void _header(char *p, int option)
 	   hbuf,s2,ol,wsbuf2,bo);*/
 	 if(ol[0]) {
 	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
-	    \n<html><head>%s\n\
+	    \n<html xml:lang=\"%s\"\
+	    xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
      </head>\n<body %s %s\"%s\" %s>\n",
-	   hbuf,s2,ol,wsbuf2,bo);}
+	   lang,hbuf,s2,ol,wsbuf2,bo);}
 	   else {
 	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
-	    \n<html><head>%s\n\
+	    \n<html xml:lang=\"%s\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
      </head>\n<body %s %s%s %s>\n",
-	   hbuf,s2,ol,wsbuf2,bo);
+	   lang,hbuf,s2,ol,wsbuf2,bo);
 	   }
     exec_headmenu(p);
     if(option) exec_title(p);
