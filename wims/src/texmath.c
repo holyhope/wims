@@ -34,9 +34,11 @@ char *find_term_end(char *p);
 void t_onestring(char *p);
 void t_oneterm(char *p, int num);
 void t_onefactor(struct afactor *p, int num);
+/* never used or defined ?? */
 void n_onestring(char *p);
 void n_oneterm(char *p, int num);
 void n_onefactor(struct afactor *p, int num);
+/* */
 void texmath(char *p);
 
 /* print to texmathbuf */
@@ -463,7 +465,7 @@ void t_oneterm(char *p, int num)
     if(neucnt>0) qsort(neutral,neucnt,sizeof(neutral[0]),fsort);
     if(sign>0 && num>0 && rel==0) tprint(" +");
     if(sign<0) tprint(" -");
-    if(fcnt<1) tprint("1 ");
+    if(fcnt<1) tprint("1 "); // no factors why 1 - don't remove the 1 if [1,2;3,4], the 1 is useful? 
     if(dencnt>0) {
       tprint(" {");
       if(numcnt==0) tprint(" 1"); // no numerator ? will write {1 over denominator}
@@ -679,7 +681,7 @@ void texmath(char *p)
     for(pp=p; *pp; pp++) {
     if(isspace(*pp)) {ovlstrcpy(pp,pp+1); pp--;}
     }
-    /* replace ** by ^ */
+    /* replace ** by ^  see __replace_badchar(p,"**", "^");*/
     for(pp=strstr(p,"**"); pp!=NULL; pp=strstr(pp,"**")) {
       *pp='^'; ovlstrcpy(pp+1,pp+2);
     }
