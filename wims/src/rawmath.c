@@ -148,7 +148,7 @@ int __replace_badchar (char *p, char *old, char *new)
   return cnt ;
 }
 
-/* translate |x| into abs(x) -- gives error in mathml ??*/
+/* translate |x| into abs(x)*/
 int __replace_abs ( char *p )
 {  
     char *p1, *p2 ;
@@ -205,26 +205,28 @@ void __treat_decimal(char *p)
   }
 }
 
-/* replace new-lines, tabs. */
+/* replace new-lines, tabs, " */
 void __replace_space(char *p)
 { 
  char *p1 ;
  for(p1=p;*p1!=0; p1++) {
-    if(*p1=='\\' || isspace(*p1)) *p1=' ';// replace \ and all spaces by a simple space - should be
-    if(*p1=='\"') string_modify(p,p1,p1+1,"''"); p1++; // replace " by '' (this is needed in mathml)
+    if(*p1=='\\' || isspace(*p1)) *p1=' ';// replace \ and all spaces by a simple space -
+    if(*p1=='\"') string_modify(p,p1,p1+1,"''"); p1++; // replace " by ''
   }
 }
 
-    /* Error-tolerante raw math translation routine */
-    /* Translate error-laden raw math into machine-understandable form. */
+    /* Error-tolerante raw math translation routine 
+     * Translate error-laden raw math into machine-understandable form.
+     * do nothing if there is some { or \\ 
+     */ 
 void rawmath(char *p)
 {
     char *p1, *p2, *p3, *p4;
     char warnbuf[1024];
     int ambiguous=0,unknown=0,flatpower=0,badprec=0,unmatch=0;// for warning
 
-    /* looks like a TeX source : do nothing - should continue if mathml ? */
-    if(mathalign_base < 2 && (strchr(p,'\\')!=NULL || strchr(p,'{')!=NULL)) return;
+    /* looks like a TeX source : do nothing */
+    if( (strchr(p,'\\')!=NULL || strchr(p,'{')!=NULL)) return;
     if(strchr(p,'^')==NULL) flatpower=-1;
     if(strlen(p)>=MAX_LINELEN) {*p=0; return;}
     p1=find_word_start(p);if(*p1==0) return;
@@ -233,7 +235,7 @@ void rawmath(char *p)
     (void)__replace_badchar(p,"**", "^");
     if (__replace_badchar(p,"²", "^2 ")) flatpower=1;
     if (__replace_badchar(p,"³", "^3 ")) flatpower=1;
-    if (mathalign_base < 2) unmatch=__replace_abs(p); 
+    unmatch=__replace_abs(p);
     __replace_plusminus(p) ; 
     __replace_space(p);
     __treat_decimal(p);
@@ -384,7 +386,7 @@ void rawmath(char *p)
     }
 }
 
- /*  replace < and > by htmlcode - htmlmath_gtlt is only used in deduc - not documented*/
+ /*  replace < and > by html code if htmlmath_gtlt=yes - is only used in deduc - not documented*/
 void __replace_htmlmath_gtlt (char *p) 
 {   char *pp;
     char *p1=getvar("htmlmath_gtlt"); 
@@ -396,8 +398,12 @@ void __replace_htmlmath_gtlt (char *p)
    }
 }
 
-/* exponents : replace x^(zz) by html / mathml code.
- * Input p is destroyed. */
+/* exponents or indices : 
+    all digits or + or - following a ^ or _ are considered as in exponent/subscript
+    expression with ( ) following a ^ or _ are  considered as in exponent/subscript
+    the parenthesis are suppressed except in case of exponent and only digits.
+    
+*/
 void __replace_exponent(char *p)
 {
    char *p1;
@@ -423,13 +429,11 @@ void __replace_exponent(char *p)
                     /* not a digit/letter. Remove (). */ 
                     p3++;*(p2-1)=0;break;
                 }
-                /* FIXME: x^(2), parentheses not removed */
+                /* x^(2), parentheses not removed */
             }
             /* p3: start of word after ^ */
-            /* FIXME: I don't understand why we don't ALWAYS remove
-             * matching parentheses from exponent group. : f^(4) 4-derivative */
-            /* FIXME: I don't understand why we don't always ignore / remove
-             * a leading + sign in exponent group : Cu^+ */
+            /* matching parentheses from exponent group. : f^(4) 4-derivative */
+            /* don't  ignore / remove a leading + sign in exponent group : Cu^+ */
         } else { /* ^[+-] */
             char *ptt=p2;
             p2=find_word_start(find_mathvar_end(p2));
@@ -442,7 +446,7 @@ void __replace_exponent(char *p)
             /* ^[+-]var(...): p2 points after closing ')' */
             /* FIXME: I don't think this 'else' branch is sensible. One
              * should NOT accept x^b(c+1) as meaning x^[b(c+1)]. I would
-             * remove it altogether */
+             * remove it altogether. */
         }
         /* p1 points at ^ before exponent group */
         /* p2 points at end of exponent group */
@@ -455,8 +459,6 @@ void __replace_exponent(char *p)
     }
 }
 
-/* explicit subscript why does not it the same as for the ^ */
-    /* \( b_+(4+6)\) \( b^+(4-5)) has not the same behaviour*/
 void __replace_subscript(char *p)
 {
    char *p1, *p2;
@@ -475,7 +477,7 @@ void __replace_subscript(char *p)
      string_modify(p,p1,p2,"%s%s%s",SUBBEG,buff,SUBEND);}
 }
 
-/* get rid of 1*.. ..*1  exemple : \(1f), \(1x\),  \(1 x\) , \( 1 + x) , \(1 * x), \( x/1 \)*/
+/* get rid of 1*.. ..*1  exemple : 1 * x, x/1 */
 void __replace_getrid1 (char *p)
 {   char *p1, *p2, *p3 ; 
     for(p1=p;*p1;p1++) {
@@ -603,7 +605,8 @@ void __replace_italics (char *p)
     }
 }
 
-/* float (1.2 E-03) : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21} or variable name (alpha10) */
+/* float (1.2 E-03) : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21} 
+ * or replace variable name (alpha) */
 void __replace_mathvar(char *p)
 { char *p1, *p2, *p3;
   char *EXPBEG, *EXPEND, *EXPBEGMINUS, *SUBBEG, *SUBEND, *m_prefix;
@@ -637,13 +640,13 @@ void __replace_mathvar(char *p)
         if( (p3 = strpbrk(buf, "Ee")) == NULL) continue;
         p1 += p3-buf;
             //count the number of 0, +, -
-            if (*(p1+k) == '-') { minus = 1; k++; }
+        if (*(p1+k) == '-') { minus = 1; k++; }
         while(*(p1+k)=='0' || *(p1+k)=='+') k++;
 
-            string_modify(p,p1,p1+k, minus? EXPBEGMINUS: EXPBEG);
-            p2 += strlen(minus? EXPBEGMINUS: EXPBEG)-k;
-            string_modify(p,p2,p2, EXPEND);
-            p2 += strlen(EXPEND);
+        string_modify(p,p1,p1+k, minus? EXPBEGMINUS: EXPBEG);
+        p2 += strlen(minus? EXPBEGMINUS: EXPBEG)-k;
+        string_modify(p,p2,p2, EXPEND);
+        p2 += strlen(EXPEND);
     } else {
             /* alphabetic name, replace greek letters and symbols in hmname*/
             /* not done in texmath.c*/
@@ -672,17 +675,17 @@ void __replace_mathvar(char *p)
   }
 }
 
-/* translate raw math expression into best html way */
+/* translate raw math expression coming from calculators into best html way */
 void __htmlmath(char *p)
 {
     if(!rawmath_easy) { rawmath_easy=1; rawmath(p); rawmath_easy=0;}
     __replace_htmlmath_gtlt(p); //only used in deductio
-    __replace_exponent(p) ;
-    __replace_subscript(p) ;
-    __replace_getrid1(p) ;
+    __replace_exponent(p);
+    __replace_subscript(p);
+    __replace_getrid1(p);
     __replace_mathvar(p);
-    __replace_getridstar(p) ;
-    __replace_arrow(p) ;
+    __replace_getridstar(p);
+    __replace_arrow(p);
 /* Now make substitutions */
     substit(p);
 /* Make single names italic - done automatically by mathml */
