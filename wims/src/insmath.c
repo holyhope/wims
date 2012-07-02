@@ -26,23 +26,6 @@ struct {
 } oldinstex[100];
 int oldtexcnt=0;
 
-    /* Use mathml to output TeX formula.
-     * Returns 1 if OK, 0 if unknown. */
-    /* It doesn't work yet. */
-int mathml(char *p)
-{
-/*    char *p1, buf[MAX_LINELEN+1];
-    if(strlen(p)==1 && isalpha(*p)) {
-    output("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n");
-    snprintf(buf,sizeof(buf),
-         "<mrow><mi>%c</mi></mrow></math>\n",*p);
-    output("%s",buf); return 1;
-    }
-    output("<pre>%s</pre>\n",p); return 1;
-*/    
-    return 0;
-}
-
     /* check whether the same tex source has already been produced */
 int instex_ready(char *p, char *n)
 {
@@ -102,20 +85,28 @@ void __insmath(char *p)
     ts=0; if(strchr(buf,'\\') || strchr(buf,'}')) ts=1;
     /* if not and if variable insmath_rawmath is there, do rawmath */
     rawmathready=0; 
-    if(!ts) { /* should not be tex, looking if rawmath is asked */
+    if(!ts) { /* not tex, looking if rawmath is asked */
       pp=getvar("insmath_rawmath");
       if(pp!=NULL && strstr(pp,"yes")!=NULL) {
         rawmath(buf); rawmathready=1;
       }
     }
-    if(ts || mathalign_base==2 ||
-       (strchr(buf,'[')!=NULL && 
-    (strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
+    if(ts) {
+         _replace_matrix (buf,"\\matrix{","matrix"); //could be done in any case if ts=1
+         _replace_matrix (buf,"\\pmatrix{","pmatrix");
+    }
+/* if ts=1 (it should be a tex formula)  or if there is a [ ,  ; ] matrix */
+    if(ts || 
+      (strchr(buf,'[')!=NULL && (strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
       char alignbak[2048];
       tex: instex_style="$$";
-      if(!ts) texmath(buf); // possibly tex - in particular, reinterpret variables and some fonts or functions as alpha pi cos 
-    // see list in texmath.c : tmathfn 
-      else {// need to interpret x y z 
+      if(!ts) texmath(buf);
+         /* ts=0 but there is some computer matrix to transform 
+          * done by texmath, but it does much more as replacing strings in tmathfn
+          * OK if buf contains " math computer-syntax" ; if not, the result may be bad
+        */
+      else {// seems tex : need to interpret names of variables as \x or \calB
+       if (mathalign_base < 2) { //to check
         char *p1;
         p1=find_word_start(buf);
         if(*p1=='\\') {
@@ -126,9 +117,13 @@ void __insmath(char *p)
             _output_(pt); *p=0; return;
           }
         }
+       }
       }
-      if(mathalign_base==2 && mathml(buf)) {*p=0; return;}
-/* only for images*/
+      /* send to mathml */
+      if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ; return;} 
+/* end if mathml option in case ts=1 or "computer matrix" */
+
+/* creating images*/
       pp=getvar("ins_align");
       if(pp!=NULL) mystrncpy(alignbak,pp,sizeof(alignbak));
       setvar("ins_align","middle");
@@ -143,25 +138,38 @@ void __insmath(char *p)
       if(alignbak[0]) setvar("ins_align",alignbak);
       return;
     }
-/* end of the only for images*/
+
+/* end creating images
+ * we are now in the case where ts=0 and no need of tex for matrix */
+
+/* find math variables */
     for(pp=find_mathvar_start(buf); *pp; pp=find_mathvar_start(pe)) {
       pe=find_mathvar_end(pp); n=pe-pp;
-      if(!isalpha(*pp) || n<3 || n>16) continue;
+      /* non alpha variable or too short or too long to be interpreted as tnames */
+      if(!isalpha(*pp) || n<3 || n>16) continue; 
       memmove(nbuf,pp,n); nbuf[n]=0;
       if(wordchr(tnames,nbuf)!=NULL) goto tex;
+      /* find sqrt int integrate sum prod product Int Sum Prod conj abs, 
+       * so must be texmath interpretated ; after going to tex, return in any case
+       */
     }
-/* only for html in case where gifs is activated ?? look for  / ?? */  
-    for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='(';
-    pp=strchr(pp+1,'/'));
-    if(pp!=NULL) goto tex;  /* so a/4 can be reinterpreted as {1 over 4 } a */
+/* look for  /  to interpretate as quotients - 
+ * extend the version by accepting something else than ( 
+*/  
+    //for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='('; pp=strchr(pp+1,'/'));
+    pp=strchr(buf,'/');
+    if(pp!=NULL) goto tex;  /* so a/4 can be reinterpreted as {a over 4 } ; transform also 5/(x+1) */
     if(rawmathready) rawmath_easy=1;
     for(pp=strchr(buf,'<'); pp!=NULL; pp=strchr(pp+1,'<'))
       string_modify(buf,pp,pp+1,"&lt;");
     for(pp=strchr(buf,'>'); pp!=NULL; pp=strchr(pp+1,'>'))
       string_modify(buf,pp,pp+1,"&gt;");
+/* no tex has been introduced - so go to htmlmath */
     htmlmath(buf); output("%s",buf); 
     rawmath_easy=0;
 }
+
+/* the following is not used in modules : no insmath_logic=yes somewhere */
 
 char *andor[]={"and","or","not","is","isnot"};
 #define andorcnt (sizeof(andor)/sizeof(andor[0]))

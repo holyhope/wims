@@ -628,6 +628,9 @@ void __replace_mathvar(char *p)
   }
   for (p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
     char buf[MAX_LINELEN+1];
+    /* if the variable is preceded by \ do nothing - in fact this should not arrive
+    */ 
+    if (p1>p && *(p1-1) == '\\' ) break ; 
     p2 = find_mathvar_end(p1);
         if (p1 == p2) break;
     memmove(buf,p1,p2-p1);buf[p2-p1]=0;
@@ -695,5 +698,5 @@ void __htmlmath(char *p)
 
 void htmlmath(char *p) 
 {
-  __htmlmath(p) ;
+  __htmlmath(p) ;  if (mathalign_base == 2) { mathml(p,1);} 
 }

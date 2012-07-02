@@ -77,7 +77,8 @@ char *mathfont(char *fontname)
 	// case of variable xyz in particular
 	    char *pp;
 	    if(c=='f') pp="&nbsp;"; else pp="";
-	    snprintf(buf2,sizeof(buf2),"<i>%c</i>%s",c,pp); //-> %c%s in mathml
+	    snprintf(buf2,sizeof(buf2),"<i>%c</i>%s",c,pp); 
+//FIXME-> should we arrive here in mathml case ???
 	}
     }
     else {/* interpret font with at least two caracters as \RR \calB - only outside of math environment

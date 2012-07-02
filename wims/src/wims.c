@@ -357,7 +357,7 @@ void useropts(void);
 #include "test.c"
 #include "compare.c"
 #include "html.c"
-//#include "mathml.c"
+#include "mathml.c"
 #include "texmath.c"
 #include "rawmath.c"
 #include "insmath.c"
