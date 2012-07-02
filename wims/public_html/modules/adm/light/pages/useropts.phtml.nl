@@ -1,16 +1,16 @@
 !!INDEX
-!let module_author	=XIAO, Gang
-!let module_address	=xiao@unice.fr
-!let module_title	=Persoonlijke voorkeurs instellingen WIMS
-!let module_description	=definieer de voorkeurs instellingen
-!let module_version	=1.00
+!let module_author=XIAO, Gang
+!let module_address=xiao@unice.fr
+!let module_title=Persoonlijke voorkeurs instellingen WIMS
+!let module_description=definieer de voorkeurs instellingen
+!let module_version=1.00
 !let module_wims_version=0.13
-!let module_language	=nl
-!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
-!let module_category	=adm
-!let module_level	=
-!let module_domain	=adm
-!let module_keywords	=wims
+!let module_language=nl
+!let module_copyright=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category=adm
+!let module_level=
+!let module_domain=adm
+!let module_keywords=wims
 !!INDEXEND
 
 !let texsize=!char 1 of $useropts
