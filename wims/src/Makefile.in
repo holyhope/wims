@@ -25,7 +25,7 @@ wimsd=@BUILD_WIMSD@
 
 all:: lib$(libtype) progs setupwims mkindex
 
-progs:: flydraw texgif interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims 
+progs:: flydraw texgif mathml interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims 
 
 distconfig: configure.in
 	autoconf
@@ -44,6 +44,7 @@ clean::
 	cd Flydraw; make clean
 	cd Texgif; make clean
 	cd Module; make clean
+	cd Mathml; make clean
 	
 # preserves some generated files in log/, sessions/ and tmp/. Intended.
 distclean::
@@ -115,6 +116,9 @@ flydraw::
 
 texgif::
 	cd Texgif; make all
+
+mathml::
+	cd Mathml; make all ; make install
 
 libstatic::
 	rm -f $(wims_home)/lib/libwims.so 2>/dev/null
