@@ -117,18 +117,28 @@ int mathml(char *p, int option ){
             if (option == 1) {
                 *p=0;
                 while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
-                  if(strcmp(buffer,"ERROR") != 0){
-                   mystrncpy(p, buffer, MAX_LINELEN-1);
-                  }
+            	    if(strcmp(buffer,"ERROR") != 0){
+            		mystrncpy(p, buffer, MAX_LINELEN-1);
+            	    }
+                    else
+                    {
+                	mathalign_base=1;
+                	return 0;
+                    }
                 }
             }
             else
             {
-                    while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
-                  if(strcmp(buffer,"ERROR") != 0){
-                          output("%s", buffer);
-                  }
+        	while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
+        	    if(strcmp(buffer,"ERROR") != 0){
+        		output("%s", buffer);
+        	    }
+                    else
+                    {
+                	mathalign_base=1;
+                	return 0;
                     }
+                }
             }
             fclose (stream);
             close(my_pipe[0]);

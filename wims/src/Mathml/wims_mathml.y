@@ -23,14 +23,19 @@
  static void wims_mathml_default_error (const char * msg)
    {
      if (msg)
-       fprintf(stderr, "Line: %d Error: %s\n", wims_mathml_lineno, msg);
+// since this program will only be used for wims...no sophisticated error message...
+// if "ERROR" we switch to "math_with_gifs" which has already decent error-handling 
+//  ITEX2MML:     fprintf(stderr, "Line: %d Error: %s\n", wims_mathml_lineno, msg);
+       fprintf(stderr, "ERROR");
    }
 
  void (*wims_mathml_error) (const char * msg) = wims_mathml_default_error;
 
  static void yyerror (char * s)
    {
-     char * msg = wims_mathml_copy3 (s, " at token ", yytext);
+//     char * msg = wims_mathml_copy3 (s, " at token ", yytext);
+// Supress error type messages, just ERROR
+     char * msg = "ERROR";
      if (wims_mathml_error)
        (*wims_mathml_error) (msg);
      wims_mathml_free_string (msg);
@@ -396,7 +401,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
   char ** r = (char **) ret_str;
   char * s = wims_mathml_copy7("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
   if( set_javascript() == 1){
-    char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\'",read_mathml_id(),"\');var size = ",read_mathml_id(),".getAttribute(\'mathsize\');var bigsize = 150 + parseInt(size.replace(/%/g,\'\')) + \'%\';",read_mathml_id(),".addEventListener(\'click\', mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\'mathsize\',bigsize);}else{",read_mathml_id(),".setAttribute(\'mathsize\',size);flipflop=0;}}</script>");
+    char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\"",read_mathml_id(),"\");var size = ",read_mathml_id(),".getAttribute(\"mathsize\");var bigsize = 150 + parseInt(size.replace(/%/g,\"\")) + \"%\";",read_mathml_id(),".addEventListener(\"click\", mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\"mathsize\",bigsize);}else{",read_mathml_id(),".setAttribute(\"mathsize\",size);flipflop=0;}}</script>");
     s = wims_mathml_copy2(s,s1);
     wims_mathml_free_string(s1);
   }
@@ -414,7 +419,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
   char ** r = (char **) ret_str;
   char * s = wims_mathml_copy7("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\" <mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
   if( set_javascript() == 1){
-    char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\'",read_mathml_id(),"\');var size = ",read_mathml_id(),".getAttribute(\'mathsize\');var bigsize = 150 + parseInt(size.replace(/%/g,\'\')) + \'%\';",read_mathml_id(),".addEventListener(\'click\', mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\'mathsize\',bigsize);}else{",read_mathml_id(),".setAttribute(\'mathsize\',size);flipflop=0;}}</script>");
+    char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\"",read_mathml_id(),"\");var size = ",read_mathml_id(),".getAttribute(\"mathsize\");var bigsize = 150 + parseInt(size.replace(/%/g,\"\")) + \"%\";",read_mathml_id(),".addEventListener(\"click\", mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\"mathsize\",bigsize);}else{",read_mathml_id(),".setAttribute(\"mathsize\",size);flipflop=0;}}</script>");
     s = wims_mathml_copy2(s,s1);
     wims_mathml_free_string(s1);
   }

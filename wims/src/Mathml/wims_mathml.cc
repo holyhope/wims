@@ -258,7 +258,7 @@ int main (int argc, char ** argv)
 		{
 		    if(bTexString){ // wims usage
 			if(strlen(mathml) > (MAX_MML_SIZE)){
-			    fputs("ERROR MATHML STRING TOO BIG",stdout);
+			    fputs("ERROR",stdout);
 			}
 			else
 			{
@@ -275,7 +275,7 @@ int main (int argc, char ** argv)
 	else
 		{
 		    if(bTexString){ // wims usage
-			fprintf(stdout,"ERROR FAILED TO COMPILE MATHML FROM TEX");
+			fprintf(stdout,"ERROR");
 		    }
 		    else
 		    {
