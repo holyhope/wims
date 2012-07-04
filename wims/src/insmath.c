@@ -164,8 +164,8 @@ void __insmath(char *p)
       string_modify(buf,pp,pp+1,"&lt;");
     for(pp=strchr(buf,'>'); pp!=NULL; pp=strchr(pp+1,'>'))
       string_modify(buf,pp,pp+1,"&gt;");
-/* no tex has been introduced - so go to htmlmath */
-    htmlmath(buf); output("%s",buf); 
+/* no tex has been introduced - so go to mathmlmath */
+    mathmlmath(buf); output("%s",buf); 
     rawmath_easy=0;
 }
 

@@ -698,5 +698,12 @@ void __htmlmath(char *p)
 
 void htmlmath(char *p) 
 {
+__htmlmath(p) ;
+}
+
+/* if mathml is closed, it will be just htmlmath*/
+
+void mathmlmath(char *p) 
+{
   __htmlmath(p) ;  if (mathalign_base == 2) { mathml(p,1);} 
 }
