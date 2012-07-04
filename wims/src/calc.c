@@ -2162,6 +2162,7 @@ MYFUNCTION calc_routine[]={
       {"ls",		0,	calc_listfile},
       {"mailurl",	0,	calc_mailurl},
       {"makelist",	1,	calc_makelist},
+      {"mathmlmath",	0,	mathmlmath},
       {"mathsubst",	1,	calc_mathsubst},
       {"mathsubstit",	1,	calc_mathsubst},
       {"mathsubstitute",1,	calc_mathsubst},

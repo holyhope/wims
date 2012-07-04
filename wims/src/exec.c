@@ -1787,6 +1787,7 @@ MYFUNCTION exec_routine[]={
       {"mailto",	EXEC_MAIL|EXEC_SUBST,	exec_mailto},
       {"mailurl",	EXEC_MAIL|EXEC_SUBST|EXEC_USECALC,calc_mailurl},
       {"makelist",	EXEC_STRING|EXEC_USECALC,calc_makelist},
+      {"mathmlmath",	EXEC_STRING|EXEC_SUBST|EXEC_USECALC,mathmlmath},
       {"mathsubst",	EXEC_STRING|EXEC_USECALC,calc_mathsubst},
       {"mathsubstit",	EXEC_STRING|EXEC_USECALC,calc_mathsubst},
       {"mathsubstitute",EXEC_STRING|EXEC_USECALC,calc_mathsubst},
