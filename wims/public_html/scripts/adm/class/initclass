@@ -2,9 +2,9 @@
 !!!INPUT = number of a class
 !!!OUTPUT= superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method, type_class
 
-!distribute items $wims_read_parm into class,option
-!set class=!text select 1234567890/ in $class
-!if $class=$empty
+!distribute items $wims_read_parm into pclass,option
+!set pclass=!text select 1234567890/ in $pclass
+!if $pclass=$empty
   !exit
 !endif
 
@@ -12,7 +12,7 @@
   !goto auth
 !endif
 
-!set superclass=!text remove . in $class
+!set superclass=!text remove . in $pclass
 !set superclass=!replace internal / by , in $superclass
 !set superclass=$(superclass[1])
 
@@ -22,10 +22,10 @@
 !set auth_method_list=ldap,cas,php
 !set idp_method_list=ldap,php
 
-!set ssclass=!text remove . in $class
+!set ssclass=!text remove . in $pclass
 !set ssclass=!replace internal / by , in $ssclass
 !set ssclass=$(ssclass[1])
-!set type_class=!defof class_type in wimshome/log/classes/$class/.def
+!set type_class=!defof class_type in wimshome/log/classes/$pclass/.def
 
 !set authidp_method=!defof class_authidp in wimshome/log/classes/$ssclass/.def
 !set class_authidp=$authidp_method
