@@ -399,16 +399,15 @@ void __replace_htmlmath_gtlt (char *p)
 }
 
 /* exponents or indices : 
-    all digits or + or - following a ^ or _ are considered as in exponent/subscript
-    expression with ( ) following a ^ or _ are  considered as in exponent/subscript
-    the parenthesis are suppressed except in case of exponent and only digits.
-    
-*/
-void __replace_exponent(char *p)
+ *  all digits or + or - following a ^ or _ are considered as in exponent/subscript
+ *  expression with ( ) following a ^ or _ are  considered as in exponent/subscript
+ *  the parenthesis are suppressed except in case of exponent and only digits.
+ *  if int n != 0, use html code, else use tex code */
+void __replace_exponent(char *p, int n)
 {
    char *p1;
    char *SUPBEG, *SUPEND;
-   if (mathalign_base < 2) { SUPBEG = "<sup>"; SUPEND = "</sup>";} 
+   if (n) { SUPBEG = "<sup>"; SUPEND = "</sup>";} 
    else { SUPBEG = "^{"; SUPEND = "}";}
 
     for(p1=strchr(p,'^');p1!=NULL;p1=strchr(p1+1,'^')) {
@@ -459,11 +458,12 @@ void __replace_exponent(char *p)
     }
 }
 
-void __replace_subscript(char *p)
+/* if int n != 0, use html code, else use tex code */
+void __replace_subscript(char *p, int n)
 {
    char *p1, *p2;
    char *SUBBEG, *SUBEND;
-   if (mathalign_base < 2) {SUBBEG = "<sub>"; SUBEND = "</sub>";} 
+   if (n) {SUBBEG = "<sub>"; SUBEND = "</sub>";} 
    else {SUBBEG = "_{"; SUBEND = "}";}
    for(p1=strchr(p,'_');p1!=NULL;p1=strchr(p1+1,'_')) {
      char buff[256];
@@ -523,10 +523,12 @@ void __replace_getridstar (char *p)
   }
 }
 
-    /* <=, >=, ->, =>, <=> */
-void __replace_arrow ( char *p)
+/* <=, >=, ->, =>, <=> 
+ * if int n != 0, use html code, else use tex code */
+
+void __replace_arrow ( char *p, int n)
 {   char *p1, *p2, *m_prefix;
-    if (mathalign_base < 2) m_prefix="$m_"; else m_prefix="\\";
+    if (n) m_prefix="$m_"; else m_prefix="\\";
     
     for(p1=strstr(p,"&lt;="); p1!=NULL; p1=strstr(p1+1,"&lt;=")) {
       if(*(p1+5)!='&' && *(p1+5)!='=') 
@@ -565,10 +567,10 @@ void __replace_arrow ( char *p)
 /* why <tt> is used sometimes ? replace single characters by italics one
  * is it useful in mathml ?
 */
-void __replace_italics (char *p)
+void __replace_italics (char *p, int n)
 { char *p1, *p2, *p3, pbuf[16];
   char *ITBEG, *ITEND, *ITtBEG, *ITtEND;
-   if (mathalign_base < 2) {
+   if (n) {
      ITBEG = "<i>";ITtBEG = "<i><tt>";
      ITEND = "</i>";ITtEND = "</tt></i>";
   } else {;
@@ -605,13 +607,14 @@ void __replace_italics (char *p)
     }
 }
 
-/* float (1.2 E-03) : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21} 
- * or replace variable name (alpha) */
-void __replace_mathvar(char *p)
+/* float (1.2 E-03) : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21}
+ * or replace variable name (alpha)
+ * if int n != 0, use html code, else use tex code */
+void __replace_mathvar(char *p,int n)
 { char *p1, *p2, *p3;
   char *EXPBEG, *EXPEND, *EXPBEGMINUS, *SUBBEG, *SUBEND, *m_prefix;
   
-  if (mathalign_base < 2) {
+  if ( n ) {
      EXPBEG = " &times; 10<sup>";
      EXPBEGMINUS = " &times; 10<sup>-";
      EXPEND = "</sup>";
@@ -678,32 +681,33 @@ void __replace_mathvar(char *p)
   }
 }
 
-/* translate raw math expression coming from calculators into best html way */
-void __htmlmath(char *p)
+/* translate raw math expression coming from calculators into best html way 
+ * if int n != 0, use html code, else use tex code */
+void __htmlmath(char *p,int n)
 {
     if(!rawmath_easy) { rawmath_easy=1; rawmath(p); rawmath_easy=0;}
     __replace_htmlmath_gtlt(p); //only used in deductio
-    __replace_exponent(p);
-    __replace_subscript(p);
+    __replace_exponent(p,n);
+    __replace_subscript(p,n);
     __replace_getrid1(p);
-    __replace_mathvar(p);
+    __replace_mathvar(p,n);
     __replace_getridstar(p);
-    __replace_arrow(p);
+    __replace_arrow(p,n);
 /* Now make substitutions */
     substit(p);
 /* Make single names italic - done automatically by mathml */
-   __replace_italics(p);
+   __replace_italics(p,n);
    strip_trailing_spaces(p);
 }
 
 void htmlmath(char *p) 
 {
-__htmlmath(p) ;
+ __htmlmath(p,1) ;
 }
 
 /* if mathml is closed, it will be just htmlmath*/
 
 void mathmlmath(char *p) 
-{
-  __htmlmath(p) ;  if (mathalign_base == 2) { mathml(p,1);} 
+{ 
+    if (mathalign_base == 2) { __htmlmath(p,0) ; mathml(p,1);} else { __htmlmath(p,1) ;}
 }
