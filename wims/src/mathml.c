@@ -45,9 +45,10 @@ int mathml(char *p, int option ){
           sprintf(mml_buffer, "%d", MAX_LINELEN);// int --> char
           // setting --tex-size argument to wims_mathml.cc
           char mathml_tex_size[64];//this should be a string like "250%" 
-          int texsize_list[]={5,10,20,50,75,100,120,130,150,180,220,300};
+          int texsize_list[]={20,30,50,70,90,100,120,130,150,180,220,300};
           // analogue to  mathfonts.c but now we talk %  and we could make any amount of changes
           // not limited by font-size !! 
+          // when math_with_gifs is removed from wims, we can rethink / improve this 
           int idx = 6;
           int use_js_zoom = 0; // default js-zoom in mathml if disabled
           // enable via adm/light
