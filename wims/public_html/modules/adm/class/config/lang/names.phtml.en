@@ -6,19 +6,16 @@
 
 !set title=Configuration and Maintenance
 
-!distribute items votes,agenda,\
-	teacher account,forum,skills assessment report,skills\
-	teaching sequences,message board\
-	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_competence,name_seq,name_forum_mesg
-
 !distribute items subclasses,participants,exercises,documents,teachers,worksheets\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
-!distribute item messages of the day,\
-	exercise,worksheet,exam,document,participant\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!distribute item messages of the day,exercise,worksheet,exam,document,\
+	participant,teaching sequences,skills assessment report,skills,votes,\
+	agenda,teacher account,forum,message board\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\	
+	name_user,name_seq,name_livret,name_competence,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
 
 !distribute item messages of the day,\
 	exercises,worksheets,exams,documents,participants\
@@ -30,17 +27,16 @@ name_sheets
  !set name_tosend=To upload backup archives into your class, please give the backup file name
  !set name_namefile=please enter the name of backup file
  !set name_help=You will be prompted for the selection of teaching materials to restore to your class.
- 
+
  !set name_deposit=!nosubst Your backup file <tt class="wims_fname">$wims_deposit</tt> contains the following teaching materials.\
  Please check those you want to restore to your class.
- 
- !set name_no_restore=Cannot be restored because you are sharing teaching materials of\
-	another class. Restoration can only be done on the class originating\
-	the sharing.
 
-  !distribute lines Nothing is selected for restoration.\
+ !set name_no_restore=Cannot be restored because you are sharing teaching materials of\
+	another class. Restoration can only be done on the class originating the sharing.
+
+ !distribute lines Nothing is selected for restoration.\
    Restore everything except class configuration and supervisor account.\
- <span class="wims_warning">Danger!</span> <small>See notes below.</small>\
+   <span class="wims_warning">Danger!</span> <small>See notes below.</small>\
    Class configuration setup.\
     Supervisor account (including your password)\
    participant accounts\
@@ -80,12 +76,12 @@ name_sheets
    name_selectrestore
 
 !distribute lines Backup teaching materials restored to the class\
-  Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
-  Class expiration date has been modified after restoration, because the uploaded date is\
-  Participant accounts already in use in your group of classes (restauration refused)\
-  restore is not allowed because of ressources sharable\
-  Save/Restoration is not needed at this level of the structure\
-into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
+   Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
+   Class expiration date has been modified after restoration, because the uploaded date is\
+   Participant accounts already in use in your group of classes (restauration refused)\
+   restore is not allowed because of ressources sharable\
+   Save/Restoration is not needed at this level of the structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items unrecognizable, too early, too late into ebad,eearly,elate
  
@@ -132,6 +128,7 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 
  !distribute lines Search for a class\
   No class is found for your search. Try again.\
+  Show example classes of the server\
   Neighboring relations between virtual classes allow teaching materials exchange and/or inter-class travel.\
  Click on the name of a class to change your neighboring properties with it.\
  Classes in the same language as yours\
@@ -169,20 +166,21 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+ 
+ !set name_nonewres=!nosubst There is no (new) type of teaching material in the class\
+  <em><font color="blue">$nei_description</font></em> which it allows you to share.
+ 
+ !set name_newres=!nosubst The class <em><font color="blue">\
+  $nei_description</font></em> <b>allows</b> you to share its
+ 
+ !set name_chooseres=!nosubst Choose the teaching material that you <b>allow</b> the class <em><font color="blue">\
+  $nei_description</font></em> to share&nbsp; (<i>select then click on <span class="wims_button disabled">$wims_name_tosave</span></i>)
 
- !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
-  <em><font color="blue">$nei_description</font></em> qu'elle vous autorise à partager.
-
- !set name_newres=!nosubst La classe <em><font color="blue">\
-  $nei_description</font></em> vous <b>autorise</b> à partager ses
-
- !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color="blue">\
-  $nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <span class="wims_button disabled">$wims_name_tosave</span></i>)
-
- !set name_warning_authorized=!nosubst La classe <em><font color="blue">$nei_description</font></em>\
-  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
-  sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
-  voulez partager des ressources.
+ !set name_warning_authorized=!nosubst The class <em><font color="blue">$nei_description</font></em>\
+  allows you to share some teaching material. You should not allow it to share the same type of teaching material\
+  at the risk of confusion. Decide first among the classes you want to share teaching material\
+  with, which one allows to share such or such type of teaching material\
+  and which accept the authorization.
 
  !distribute lines Neighboring relations\
    has not declared yours as its neighbor\
@@ -291,7 +289,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   You have declared the following connections to other servers.\
   Server\
   This WIMS server has the following connectable servers presently.\
-  Actions on the connexion\
+  Actions on the connection\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
@@ -350,14 +348,14 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=authtype
- !set title=External authentification
- !set name_intro_authtype=Choisissez selon l'authentification et l'identification désirées\
- et remplissez les champs utiles correspondants.
- !set name_method_list= authentification par wims, authentification via CAS, \
- authentification via CAS et identification par un ldap,\
- authentification et identification par un ldap,\
- authentification via CAS et identification via php,\
- authentification et identification via php
+ !set title=External authentication
+ !set name_intro_authtype=Choose according to the desired authentication and identification method\
+  and fill in the useful corresponding fields.
+ !set name_method_list= wims authentication, authentication via CAS,\
+ authentication via CAS and identification via ldap,\
+ authentication and identification via ldap,\
+ authentication via CAS and identification via php,\
+ authentication and identification via php
  !goto commun
 !endif
 
@@ -369,11 +367,11 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
 !if $job=propagate
   !if $wims_supertype=2
-   !set name_thisclass=du portail
-   !set name_subclasses=sous-classes
+   !set name_thisclass=of the portal
+   !set name_subclasses=subclasses
   !else
-   !set name_thisclass=de la zone actuelle
-   !set name_subclasses=zones dépendantes
+   !set name_thisclass=of the current zone
+   !set name_subclasses=dependent zones
   !endif
    
  !distribute lines Setups successfully sent to $name_subclasses\
@@ -445,20 +443,19 @@ including change of \
     The limit is\
     Mix\
     Allow score interruption by participant\
-    Format du titre des exercices pour les élèves\
-    Les participants savent si l'enseignant est connecté\
+    Title format for exercises viewed by participants\
+    The participants know if the teacher is online\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform,name_config_supconnectshowed
-    !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
-
+    !set name_config_exotitleformoption=None,Title of the exercise,Number of the worksheet and exercise,Title of the worksheet and number of the exercise,Title of the worksheet and title of the exercise in the worksheet
 
 !endif
 
 :commun
-!distribute line Authentification\
+!distribute line Authentication\
 My personal preferences\
 Resource restrictions\
 OEF configuration\
@@ -473,7 +470,7 @@ Appearance\
 Score restriction\
 Platform address\
 of\
-External authentification\
+External authentication\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
@@ -502,7 +499,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Button text color\
    Help button background color\
    Help button text color\
-   Connexion link\
+   Connection link\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
@@ -554,11 +551,10 @@ You cannot erase teaching materials of the class
  <p>
  On the one hand, suppose that your password is stolen and someone wants to erase
  something on this page. Your teaching activities would be greatly disturbed and
- your students would be penaliseds.
+ your students would be penalizeds.
  <p>
  On the other hand, different teaching materials of the class are inter-dependent.
- If you
- erase some teaching materials without erasing those depending on them, your class
+ If you erase some teaching materials without erasing those depending on them, your class
  will no longer work.
  !href cmd=help&special_parm=dependencies Examples.
  <p>
@@ -588,6 +584,7 @@ In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
 may continue in the mirror class. Scores on the mirror can be merged later.
 !exit
+
 :connect_first
 
 This WIMS server has not declared any connectable remote server. In order
@@ -636,14 +633,14 @@ You are about to replace an existing $(name_$itype)
 :auth1
 This configuration tool is only accessible to secure hosts.
 <p>
-As you have not defined any secure hosts, we are checking your authentification
+As you have not defined any secure hosts, we are checking your authentication
 by sending a secret code to your email address. Please check your mail, pick
 the code, and type it below.
 
 !exit
 :auth2
 
-<b>Note</b>. This authentification is to ensure that even if your password
+<b>Note</b>. This authentication is to ensure that even if your password
 is stolen or leaked, damages to your class will be limited.
 Defining correct secure hosts will simplify the class
 configuration procedure, while keeping a high security level.
