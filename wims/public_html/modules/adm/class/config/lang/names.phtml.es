@@ -6,20 +6,16 @@
 
 !set title=Configuración y Administración
 
-!distribute items encuestas,agenda,\
-	cuenta del profesor,mensajes de un foro de discusión,caderno de competencias,competencia(s)\
-	secuencias pedagógicas, mensajes del foro\
-	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_competence,name_seq,name_forum_mesg
-
 !distribute items zonas,participantes,ejercicios,documentos,profesores,hojas de ejercicios\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
-
-!distribute item mensaje del día,\
-	ejercicio,hoja de trabajo,examen,documento,participante\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!distribute item mensaje del día,ejercicio,hoja de trabajo,examen,documento,\
+	participante,secuencias pedagógicas,caderno de competencias,competencia(s),encuestas,\
+	agenda,cuenta del profesor,mensajes de un foro de discusión,mensajes del foro\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\	
+	name_user,name_seq,name_livret,name_competence,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
 
 !distribute item mensajes del día,\
 	ejercicios,hojas de trabajo,exámenes,documentos,participantes\
@@ -73,7 +69,7 @@ Recuperar los recursos seleccionados\
    Fusión\
 sustituir a los recursos existentes excepto las cuentas de participantes y los ejercicios de la clase. Para estos últimos, los teniendo mismos nombres serán sustituidos por los datos restaurados y se guardarán los otros \
 Restaurar los recursos seleccionados \
-into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
@@ -81,10 +77,10 @@ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_
 
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
-La fecha de expiración de la clase se modificó después de la restauración, ya que la fecha restaurada es \
-  Participant accounts already in use in your groupement (restauration refused)\
-  restore is not allowed because of ressources sharable\
-  Save/Restoration is not needed at this level of the structure\
+   La fecha de expiración de la clase se modificó después de la restauración, ya que la fecha restaurada es \
+   Participant accounts already in use in your group of classes (restauration refused)\
+   restore is not allowed because of ressources sharable\
+   Save/Restoration is not needed at this level of the structure\
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items irreconocible, demasiado pronto, demasiado tarde \
@@ -95,8 +91,8 @@ La fecha de expiración de la clase se modificó después de la restauración, ya qu
   para registrarlo sobre su ordenador.\
   También puede hacer una\
   luego presionan \
-Protección selectiva \
-para modificar el fichero de protección aquí arriba y registran el fichero sobre su ordenador.\
+  Protección selectiva \
+  para modificar el fichero de protección aquí arriba y registran el fichero sobre su ordenador.\
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
@@ -163,21 +159,25 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Lista de otras clases\
    Info recursos compartidos\
    Indicar las clases de ejemplo del servidor\
+   import teaching materials\
+   You can\
+   of the class\
+   Click here to accept\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
-
+ 
  !set name_nonewres=!nosubst No hay ningún (nuevo) tipo de recursos en la clase \
   <em><font color="blue">$nei_description</font></em> que les autoriza a compartir.
-
+ 
  !set name_newres=!nosubst La clase <em><font color="blue">\
   $nei_description</font></em> les <b>autoriza</b> a compartir sus
-
+ 
  !set name_chooseres=!nosubst Elija los recursos que <b> autorizan</b> la clase <em><font color="blue">\
   $nei_description</font></em> a compartir&nbsp; (<i>seleccione luego presionan \
   <span class="wims_button disabled">$wims_name_tosave</span></i>)
-
+ 
  !set name_warning_authorized=!nosubst La clase <em><font color="blue">$nei_description</font></em>\
   les autoriza a compartir algunos recursos. No deben autorizarla a compartir los mismos recursos \
   al riesgo de confusión. Comience por hablar con ella y con todas las clases con las cuales ustedes \
@@ -218,6 +218,7 @@ $nei_description</font></em> como vecina suya?
  recursos compartidos no están vacíos. Si deja de compartir este recurso\
  ahora, ya no podrá volver a compartirlo más tarde. <p>\
  ¿Está seguro de querer dejar de compartir definitivamente este recurso?
+ 
  !set name_stop=dejar de compartirlo.
  !endif
  !if $job2=sharelist
@@ -271,7 +272,7 @@ $nei_description</font></em> como vecina suya?
    local class, remote class\
    class definition, user list, score averages, score details,all but class definition\
    Synchronize\
- (with the other one) for\
+   (with the other one) for\
    Clase remota\
    Servidor remoto\
    Administrar\
@@ -291,11 +292,12 @@ $nei_description</font></em> como vecina suya?
   Ha declarado las siguientes conexiones a otros servidores.\
   Servidor\
   En estos momentos, este servidor WIMS permite conexiones desde los siguientes servidores.\
+  Actions on the connection\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver1
+   wims_name_server,name_listserver1,name_connexion_action
 
  !goto commun
 !endif
@@ -472,7 +474,7 @@ Apariencia\
 Restricción de la puntuación\
 Dirección de una plataforma\
 de\
-External authentification\
+External authentication\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
@@ -501,7 +503,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Color del texto en los botones \
    Color de fondo de los botones de ayuda \
    Color del texto en los botones de ayuda \
-   Connexion link\
+   Connection link\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
@@ -567,16 +569,16 @@ contiene calificaciones.
  mañana por la mañana), o
  <a href="mailto:$wims_site_manager?subject=Por favor borre mi clase">pedir
  al administrador del sitio</a> que la borre por usted.
- !exit
 
+ !exit
+ 
  :clean2
  <p><b>Observaciones</b>. 1. Sólo se puede acceder a esta página mientras
 la página está en preparación. Una vez que han comenzado las actividades de
 los participantes, ya no es posible borrar los recursos.
 <p>
 2. Los recursos compartidos por varias clases sólo pueden borrarse
-desde la clase maestra que comparte. Las otras clases deben
-primero
+desde la clase maestra que comparte. Las otras clases deben primero
 !href cmd=reply&job=neighbor&job2=sharelist dejar de compartir
  los recursos antes de borrarlos.
 

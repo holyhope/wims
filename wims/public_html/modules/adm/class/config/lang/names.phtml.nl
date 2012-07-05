@@ -11,11 +11,11 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 name_sheets
 
 !distribute item bericht van de dag,oefeningen,werkbladen,proefwerken,documenten,\
-studenten,pedagogische volgorde,huiswerk agenda,huiswerk,vragenlijsten,\
-raport boekje,docenten account,discussie forum\
-into name_motd,name_exo,name_sheet,name_exam,name_doc,\
-name_user,name_seq,name_livret,name_competence,name_vote,\
-name_cdt,name_sup,name_forum,name_forum_mes
+	studenten,pedagogische volgorde,huiswerk agenda,huiswerk,vragenlijsten,\
+	raport boekje,docenten account,discussie forum\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+	name_user,name_seq,name_livret,name_competence,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
 
 !distribute item bericht van de dag,\
 oefeningen,werkbladen,proefwerken,documenten,studenten\
@@ -74,11 +74,11 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
-   
+
 !distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
 De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
-  Participant accounts already in use in your groupement (restauration refused)\
+  Participant accounts already in use in your group of classes (restauration refused)\
   restore is not allowed because of ressources sharable\
   Save/Restoration is not needed at this level of the structure\
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
@@ -165,25 +165,25 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    U kunt\
    van de klas\
    Accepteren\
-into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
-name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
-name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
-name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+ into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
  !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
  <em><font color="blue">$nei_description</font></em> dat gedeeld kan worden.
-
+ 
  !set name_newres=!nosubst De klas <em><font color="blue">\
   $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
-
+ 
  !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color="blue">\
  $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
-
+ 
  !set name_warning_authorized=!nosubst De klas <em><font color="blue">$nei_description</font></em>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
  Ga alleen door als zeker weet dat die niet van toepassing is.
   
- 
+
  !distribute lines Buurklassen\
     heeft uw klas nog nioet geaccepteerd als buur\
     accepteerd u als buur voor\
@@ -331,7 +331,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  Geef een hint (mits aanwezig).\
  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
  name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
- 
+
  !set name_warning=!getdef name_remarkintro3 in oef/$lang/names
  !goto commun
 !endif
@@ -575,10 +575,10 @@ van een digitale klas. Wanneer er leerlingen aan het werk zijn, is dit wissen ni
 <p>
 2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist,
 Deze klas moet dan wel eerst
- 
 !href cmd=reply&job=neighbor&job2=sharelist stop de deling
  van lesmateriaal voor dat er gewist kan worden.
 
+!exit
 
 :connect_first_info
 De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
