@@ -1,4 +1,88 @@
-!! for translator : you may replace the "!changeto" line below by a 
-!! translation of the file scripts/help/en/authentification.phtml
+Verschillende authentificatie methodes zijn geschikbaar binnen WIMS:
 
-!changeto help/en/authentification.phtml
+<ol><li>
+Authenticatie door WIMS.
+</li><li>
+CAS authenticatie (Centrale Authenticatie Service) voor het inloggen van gebruikers (single sign on ,SSO). 
+De docent moet het adres (URL) van de organistatie (school) invoeren.
+</li><li>
+Authentificatie door een ldap (Lightweight Directory Access Protocol ,LDAP) directory.
+Hangt af van de permissies voor de  WIMS server binnen deze directory.
+</li><li>
+Authentificatie door een PHP script.
+Gebruikt de "raw access module" van WIMS :
+ op dit moment moet voor een correcte werking "simpleSAMLphp" (http://simplesamlphp.org/) worden geinstalleerd
+</li></ol>
+
+<p>
+Tijdens de regeistraite procedurem zijn de gegevens met betrekking tot de 
+aspirant deelnemer (achternaam,voornaam,emailadres, etc) te vinden in een ldap directory.
+</p><p>
+Hieronder staat nog wat extra informatie mbt registratie en authentificatie :
+</p>
+<h3>
+WIMS authenticatie (default)
+</h3>
+Dit is de standaard WIMS eigen  authentificatie procedure geimplementeerd.
+<ul><li>
+Of de docent registreerd alle deelnemers (bijvoorbeeld mbv spreadsheet klasse lijsten)
+</li><li>
+Of de deelnemers starten  met behulp van een klasse_wachtwoord verkregen bij de docent,zelf een aanmeldings procedure
+</li></ul>
+De deelnemer kan hierna inloggen in zijn / haar klas met loginaam en wachtwoord.
+
+<h3>
+CAS authenticatie
+</h3>
+<ul><li>
+De docent CAS authentificatie geconfigureerd door het adres van de op school gebruikte "CAS host" in te voeren
+tijdens het oprichten van een klas of achteraf op de <tt class="wims_code_words">Configuratie/Onderhoud</tt> 
+pagina (klik op <tt class="wims_code_words">Authenticatie</tt>.
+</li><li>
+De docent geeft hierna het klasse_wachtwoord aan de aspirant deelnemers.
+</li><li>
+De deelnemer klikt op de "inloggen" knop van de klas.
+Het CAS authentificatie venster wordt geopend. Voert de CAS gegevens in.
+Als de deelnemer nog niet is geregistreerd wordt een klasse_wachtwoord gevraagd.
+Hierna worden loginnaam en wachtwoord gevraagd.
+En wordt gevraagd akkoord te gaan met de gebruikersvoorwaarden van WIMS.
+</li><li>
+Een docent kan ook deelnemers registreren. In dat geval hoeft een deelnemer bij de eerste keer inloggen alleen de gebruikersvoorwaarden te accepteren.
+</li></ul>
+<h3>
+CAS authenticatie en ldap identificatie.
+</h3>
+The teacher must have configured his class by entering the address 
+of the CAS host he want to use, using the 
+<tt class="wims_code_words">Configuration/Maintenance</tt> 
+page (clic on <tt class="wims_code_words">Authentication</tt> in the left 
+menu) and entering the technical ldap parameters. He must also verify that 
+the directory server accepts requests from WIMS server (contact the manager of the directory).
+<p>
+Everything goes as in the case of a simple authentication by CAS, 
+but the identifiers (name, ...) are automatically filled. 
+The CAS and ldap username must be the same.
+</p>
+
+<h3>
+ldap authentication and ldap identification.
+</h3>
+ 
+Everything works as in CAS authentication and ldap identification.
+
+<h3>Notes</h3>
+<ul><li>
+<span class="wims_warning">
+It is not advisable to change the authentication type when participants 
+are already registered.
+</span>
+</li><li>
+In the case of external (to WIMS) authentication, an <i>internal</i> 
+identifier is assigned automatically. It will not be used for authentication
+ but remains the identifier of the WIMS participant. 
+There is no more WIMS password (more precisely it is hidden).
+</li><li>
+Default settings may have been defined by the site manager if the 
+classes depend primarily on a single institution.
+You may redefine them for your own class.
+</li></ul>
