@@ -47,7 +47,7 @@ texmath : must be applied to a formula coming from the computer and transforms i
    1 - transforms computer matrix as [ 4,5;6,7] in tex matrix
    2 - transforms A/B in {1 over B} A or { A over B} according to the priority of
      the presume type of A and B (integer, numeric, variable, poly, transcend
-   3 - transforms cos(x)^n in cos^n(x) (list ??)
+   3 - transforms cos(x)^n in cos^n(x) (list ??) not sure of that !
    4 - transforms <=, <=> =>, ->
    5 - transforms a relation without a second member by adding 1
    6 - Replace scientific notation 35E-05 by 10 power and add multiplication sign. Remove the + or 0 useless.
