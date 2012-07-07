@@ -3,7 +3,7 @@
 !set DHTML=$empty
 !set n=$counter
 !if $dragcolors=$empty
-    !set unused_color=#ff0000
+    !set unused_color=#ffbb63
     !set pick_color=#639bff
     !set drop_color=#00fc96
     !set blue_layer=#b2d1ff
@@ -69,12 +69,12 @@
 		!if $break=1
 		<td style="background-color:$blue_layer;text-align:center;vertical-align:middle;height:$ysize;width:$xsize">
 		    <center>
-			<img src="$gifdir/blank.gif" style="display:block" id="blank$c" alt="" width="$xsize">
-			<img src="$gifdir/leftright.gif" style="display:none" id="leftright$c" alt="" width="$xsize">
+			<img src="$gifdir/blank.gif" style="display:block" id="blank$c" alt="" width="$xsize" height="$ysize">
+			<img src="$gifdir/leftright.gif" style="display:none" id="leftright$c" alt="" width="$xsize" height="$ysize">
 		    </center>
 		</td>
 		!endif
-		!if $break = 2
+		!if $break=2
 		    !set break=0
 		    </tr>
 		    <tr>
@@ -160,7 +160,7 @@
 		    document.getElementById("mydiv$p").style.backgroundColor = "$drop_color";
 		    !increase r
 		!next p
-	    only_once=1;
+		only_once=1;
 	    }
 	    return;
 	}
@@ -180,7 +180,7 @@
 		    if( y > dd.elements["mydiv"+reply[p]].y - marge && y < dd.elements["mydiv"+reply[p]].y + marge){
 			if( x > dd.elements["mydiv"+reply[p]].x - marge && x < dd.elements["mydiv"+reply[p]].x + marge){
 			    dd.obj.moveTo(dd.elements["mydiv"+reply[p]].x,dd.elements["mydiv"+reply[p]].y);
-		    	    dd.elements["mydiv"+reply[p]].moveTo(orgx,orgy);
+			    dd.elements["mydiv"+reply[p]].moveTo(orgx,orgy);
 			    found = 1;
 			    tmp = reply[p];
 			    try{setVisible(p);}catch(e){}
@@ -200,8 +200,12 @@
     }
     
     function sendanswer(){
-	if(confirm(r0+"\n"+reply)){
-	    reply=encodeURIComponent(reply + "\n" + connect);
+	for(var p = 0 ; p < size ; p++){
+	    try{setVisible(p);}catch(e){}
+	    document.getElementById("mydiv"+p).style.backgroundColor = "$drop_color";
+	}
+	if(confirm(r0)){
+	    reply=encodeURIComponent(reply);
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
 	    document.location.href = URL;
 	}
