@@ -1,5 +1,4 @@
-!! item_list : lines
-!! item_type : items
+!! item_list : lines , item_type : items , break=2 : 2 columns , break=6 : 6 columns 
 !set DHTML=$empty
 !set n=$counter
 !if $dragcolors=$empty
@@ -16,7 +15,10 @@
 !set c=0
 !set f=0
 !set total_objects=!itemcnt $item_type
-!set break=0
+!set break_cnt=0
+!if $break=$empty
+    !set break=2
+!endif
 <center>
  <table summary="" border="0" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
     <tr>
@@ -36,7 +38,7 @@
 	<table summary="draggable items">
 	    <tr>
 	    !for p=1 to $total_objects
-		!increase break
+		!increase break_cnt
 		!set thing=!line $p of $item_list
 		!set type=$(item_type[$p])
 		<td style="text-align:center;background-color:$blue_layer;vertical-align:middle;">
@@ -66,7 +68,7 @@
 			!set DHTML=!append item "mydiv$c" to $DHTML
 		    </div>
 		</td>
-		!if $break=1
+		!if $break_cnt<$break
 		<td style="background-color:$blue_layer;text-align:center;vertical-align:middle;height:$ysize;width:$xsize">
 		    <center>
 			<img src="$gifdir/blank.gif" style="display:block" id="blank$c" alt="" width="$xsize" height="$ysize">
@@ -74,8 +76,8 @@
 		    </center>
 		</td>
 		!endif
-		!if $break=2
-		    !set break=0
+		!if $break_cnt=$break
+		    !set break_cnt=0
 		    </tr>
 		    <tr>
 		!endif
@@ -118,7 +120,8 @@
     var orgx = 0;
     var orgy = 0;
     var pick_id = 0;
-    var size=dd.elements.length;
+    var size = $total_objects;
+    var show="\n";
     var reply = new Array();
     for(var p = 0;p < size; p++){
 	reply[p] = p;
@@ -131,7 +134,7 @@
     function my_PickFunc(){
 	orgx = dd.obj.x;
 	orgy = dd.obj.y;
-	pick_id=dd.obj.id;
+	pick_id = dd.obj.id;
 	document.getElementById(dd.obj.id).style.backgroundColor = "$pick_color";
     }
     
@@ -161,14 +164,14 @@
 		    document.getElementById("mydiv$p").style.backgroundColor = "$drop_color";
 		    !increase r
 		!next p
-		only_once=1;
+		only_once = 1;
 	    }
 	    return;
 	}
     !endif
     
     function my_DropFunc(){
-	var marge=10;var x=dd.obj.x;var y=dd.obj.y;var found=0;var tmp;var idx;var id;
+	var marge = 10;var x = dd.obj.x;var y = dd.obj.y;var found = 0;var tmp;var idx;var id;
 	if( dd.obj.id == pick_id ){
 	    id = pick_id.replace("mydiv","");
 	    for(var p = 0; p < size  ; p++){
@@ -200,12 +203,33 @@
 	dd.obj='null';
     }
     
+    function check_inputs(input_id){
+	if(document.getElementById(input_id+0)){
+	    var i = 0;var input;var n=1;
+            while(document.getElementById(input_id+i)){
+                input = document.getElementById(input_id+i).value;
+                if (input.length == 0){setAlarm(r44+"&nbsp;no.&nbsp;"+n);return "error";}
+                if(input.indexOf(',') != -1){setAlarm(r4);return "error";}
+                input=science(input);if(input == "error"){return "error";}
+                reply[size+i] = input;
+                show=show+input+"\n";
+		document.getElementById(input_id+i).style.backgroundColor = "$drop_color";
+                i++;
+            }
+        }
+        return;
+    }
+    
     function sendanswer(){
+	// try if inputfields "mathml0" or "myinput0" are present
+	show="";// reset "show"
+	if(check_inputs("mathml")  == "error"){return;}
+	if(check_inputs("myinput") == "error"){return;}
 	for(var p = 0 ; p < size ; p++){
 	    try{setVisible(p);}catch(e){}
 	    document.getElementById("mydiv"+p).style.backgroundColor = "$drop_color";
 	}
-	if(confirm(r0)){
+	if(confirm(r0+show)){
 	    reply=encodeURIComponent(reply);
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
 	    document.location.href = URL;
@@ -219,6 +243,4 @@
             document.location.href = URL;
         }
     }
-
-    
 </script>
