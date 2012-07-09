@@ -889,6 +889,7 @@ return MOL;}
 "\\mathbf"       {return BOLD;}
 "\\mathrm"     |
 "\\rm"  {BEGIN(ROMAN); return RM;}
+"\\rm " { return WIMSROMAN;}
 
 "\\mathbb"       {BEGIN(BBOLD); return BB;}
 
