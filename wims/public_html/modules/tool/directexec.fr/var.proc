@@ -37,6 +37,12 @@ src1=!replace internal &#36; by $$$$ in $src
  !goto execout
 !endif
 
+!if $sw=insmath
+ wims_backslash_insmath=yes
+ swout=\($src1\)
+ !goto execout
+!endif
+
 swout=!exec $sw $src1
 !if $sw iswordof pari
   swout=!replace internal $ $ $ by $\
