@@ -86,14 +86,14 @@ Mathematical formulas.
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px">
  </li><li>
-!!!set zoom=1
-!!  Use zoom on formulas by mouse click.
-!!  !set wims_ref_class=wims_button
-!!    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!!   !set zoom=0 
-!!   &nbsp;
-!!!set wims_ref_class=wims_button
-!!    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+!set zoom=1
+  Use zoom on formulas by mouse click.
+!set wims_ref_class=wims_button
+!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
+!set zoom=0 
+   &nbsp;
+!set wims_ref_class=wims_button
+!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
     Currently, you use the server with "Math with images". If you have a suitable 
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, you may also use MathML.
@@ -149,6 +149,6 @@ Cuando todo corresponda exactamente con lo que quiera, ponga
  title="WIMS">este enlace</a>
 en sus Favoritos, para mantener estas preferencias para conexiones futuras.
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
 :end
 !tail
-
