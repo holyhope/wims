@@ -399,7 +399,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
 | STARTMATH compoundTermList ENDMATH {
   char ** r = (char **) ret_str;
-  char * s = wims_mathml_copy7("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
+  char * s = wims_mathml_copy7("<math display=\"inline\"><mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
   if( set_javascript() == 1){
     char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\"",read_mathml_id(),"\");var size = ",read_mathml_id(),".getAttribute(\"mathsize\");var bigsize = 100 + parseInt(size.replace(/%/g,\"\")) + \"%\";",read_mathml_id(),".addEventListener(\"click\", mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\"mathsize\",bigsize);}else{",read_mathml_id(),".setAttribute(\"mathsize\",size);flipflop=0;}}</script>");
     s = wims_mathml_copy2(s,s1);
@@ -417,7 +417,7 @@ expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 }
 | STARTDMATH compoundTermList ENDMATH {
   char ** r = (char **) ret_str;
-  char * s = wims_mathml_copy7("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\" <mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
+  char * s = wims_mathml_copy7("<math display=\"block\" <mstyle id=\"", read_mathml_id() ,"\" mathsize=\"",read_fontsize(),"\">", $2, "</mstyle></math>");
   if( set_javascript() == 1){
     char * s1=wims_mathml_copy13("<script type=\"text/javascript\">var flipflop=0;var ",read_mathml_id()," = document.getElementById(\"",read_mathml_id(),"\");var size = ",read_mathml_id(),".getAttribute(\"mathsize\");var bigsize = 100 + parseInt(size.replace(/%/g,\"\")) + \"%\";",read_mathml_id(),".addEventListener(\"click\", mathml_resize, false);function mathml_resize(){if(flipflop == 0){flipflop=1;",read_mathml_id(),".setAttribute(\"mathsize\",bigsize);}else{",read_mathml_id(),".setAttribute(\"mathsize\",size);flipflop=0;}}</script>");
     s = wims_mathml_copy2(s,s1);
@@ -2242,9 +2242,9 @@ int wims_mathml_do_html_filter (const char * buffer, unsigned long length, const
 	  if (wims_mathml_write)
 	    {
 	      if (type == ITEX_DELIMITER_DOLLAR)
-		(*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><merror><mtext>", 0);
+		(*wims_mathml_write) ("<math display=\"inline\"><merror><mtext>", 0);
 	      else
-		(*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><merror><mtext>", 0);
+		(*wims_mathml_write) ("<math display=\"block\"><merror><mtext>", 0);
 
 	      (*wims_mathml_write) (wims_mathml_last_error, 0);
 	      (*wims_mathml_write) ("</mtext></merror></math>", 0);
