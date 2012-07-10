@@ -17,7 +17,7 @@
  */
 
 int mathml(char *p, int option ){
-          if (strlen(p)==0) return 1 ;
+    if (strlen(p)==0) return 1 ;
     if( mathalign_base <= 1){
       internal_error(" why is wims trying mathml()?\n");
       return 0; // got to insmath with gifs
@@ -75,6 +75,12 @@ int mathml(char *p, int option ){
           { // we take the default setting from adm/management config
             idx = atoi(getvar("wims_texbasesize")) ;
             if(idx < 0 || idx > 11){ idx = 6; } // the default value 120%
+          }
+          // check is a module wants to disable zooming (eg drag&drop or others )
+          // !set disable_zoom=yes
+          // if not set: disable_zoom="no"; see config.c
+          if( strcmp( getvar("disable_zoom") , "yes" ) == 0 ){
+    	    use_js_zoom = 0;
           }
           // now write the "char" 200% into variable "mathml_tex_size"
           snprintf(mathml_tex_size,sizeof(mathml_tex_size),"%d%%",texsize_list[idx]);

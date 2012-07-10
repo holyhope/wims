@@ -167,6 +167,7 @@ char nodeip[256]="";		/* ip of cluster node if relevant */
 char temp_log[MAX_FNAME+1];	/* temp log file name */
 	/* 0: low; 1: high; 2: MathML */
 int mathalign_base=0;		/* Not use <sup> for middle alignment */
+char *disable_zoom="no"; 	/* yes/no:  default zooming allowed (if enabled via "useropts")  */
 int backup_hour=-1;		/* Hour for daily backup; -1 means no backup. */
 int site_accounting=0;		/* whether accounting should be activated */
 int examlog_limit=7;		/* number of logged exam sessions for each student */
@@ -566,6 +567,7 @@ void module_configure(void)
     setenv("texgif_fontdir",texgif_fontdir,1);
     setenv("texgif_texheader",texgif_texheader,1);
     setvar("wims_texsize","0");
+    setvar("disable_zoom","0");
     confset=0;
 }
 
