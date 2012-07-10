@@ -1,23 +1,29 @@
 !!INDEX
-!let module_author	=XIAO, Gang
-!let module_address	=xiao@unice.fr
-!let module_title	=Persoonlijke voorkeurs instellingen WIMS
-!let module_description	=definieer de voorkeurs instellingen
-!let module_version	=1.00
+!let module_author=XIAO, Gang
+!let module_address=xiao@unice.fr
+!let module_title=Setup your preferences for WIMS
+!let module_description=define preferences for wims
+!let module_version=1.00
 !let module_wims_version=0.13
-!let module_language	=nl
-!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
-!let module_category	=adm
-!let module_level	=
-!let module_domain	=adm
-!let module_keywords	=wims
+!let module_language=nl
+!let module_copyright=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category=adm
+!let module_level=
+!let module_domain=adm
+!let module_keywords=wims
 !!INDEXEND
 
-<hr>
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+
+
 !let texsize=!char 1 of $useropts
 !let texalign=!char 2 of $useropts
-!default texsize=$[$wims_texbasesize-1]
+!let default=$[$wims_texbasesize-1]
+!default texsize=$default
+!let default=!char 1 of $default
 !default texalign=$talign
+!set arg=!nospace $texsize 1
+
 !let useropt2=!char 3 to -1 of $useropts
 !if $useropts!=$empty and $wims_realuser!=$empty
  !readproc adm/class/userdef classes,$wims_class,$wims_realuser
@@ -25,15 +31,14 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
+!set zoom=!char 3 of $useropts
+    
 !header
-
-Deze pagina geeft toegang tot het fijnafstellen van een WIMS sessies.
-
-<p>
-Deze instellingen zijn:
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
 <ul>
 !if $wims_user=$empty
- <li>De taal.
+ <li>De taal :
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
@@ -42,97 +47,111 @@ Deze instellingen zijn:
   !next l
   </li>
 !endif
-!if $texalign = 2
+
 <li>
-    De WIMS server staat op dit moment voor u ingesteld op MathML.<br>
+Wiskundige formules:<br>
+
+!if $texalign=2
+    De server staat afgesteld op MathML (mits er een geschikte browser / plugin wordt toegepast).
+    <center>
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4ac}}{2a}
-    <br>
-    !set zoom=!char 3 of useropts
+    </center>
+    Als de bovenstaande formule niet correct is afgebeeld, kan er gebruik worden gemaakt van een andere
+    <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
+    </a> 
+    of gebruik de server in de afstelling "wiskunde met plaatjes".
+!set wims_ref_class=wims_button
+<center>
+   !href cmd=resume&useropts=$arg Gebruik Wiskunde met plaatjes
+</center> 
+</li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
     !if $ts1<1
-	!let ts1=1
+      !let ts1=1
     !endif
     !if $ts2>9
-	!let ts2=9
-     !endif
-    !href cmd=resume&useropts=$ts1$texalign$zoom <b>verkleinen</b>
-    &nbsp;&nbsp;of&nbsp;&nbsp;
-    !href cmd=resume&useropts=$ts2$texalign$zoom <b>vergroten</b>
-    <br>
-    !set zoom=0
-    !href cmd=resume&useropts=$texsize$texalign$zoom <b>geen inzoomen</b>
-    !set zoom=1
-    &nbsp;&nbsp;of&nbsp;&nbsp;
-    !href cmd=resume&useropts=$texsize$texalign$zoom <b>inzoomen</b>
-    <br>
-    Als bovenstaande formule niet correct is afgebeeld, gebruik dan
-    !set arg=!nospace $texsize 1
-   !href cmd=resume&useropts=$arg &nbsp;"wiskunde met gifs"&nbsp;
-   in plaats van MathML.
-</li>
+      !let ts2=9
+    !endif
+    Stel de grootte van de formules af.
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px">
+    &nbsp;
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$default Standaard
+    &nbsp;
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px">
+ </li><li>
+!set zoom=1
+    Gebruik ook inzoomen per muisklik.
+  !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
+   !set zoom=0 
+   &nbsp;
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
-<li>
-    De WIMS server staat op dit moment voor u afgesteld op "wiskunde met gifs".<br>
-    Er kan ook gebruik worden gemaakt van 
-    !set arg=!nospace $texsize 2
-   !href cmd=resume&useropts=$arg MathML&nbsp;
-   in plaats van "wiskunde met gifs".&nbsp;<br>
-   !! no need to translate tooltip
-   Geschikte <a onmouseover="return Tip('<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Apple<ul><li></li></ul></li></ul>')">
-   <font color="blue">browsers</font></a> voor MathML.
-</li>
- <li>
- Hieronder kunnen deze gifplaatjes worden afgesteld.<br>
- De grootte van wiskundige symbolen en formules:<br>
- Gebruik de onderstaande regel voor de instellingen.
-  <br>
-  Griekse Letters $m_alpha,$m_pi. Wiskundige uitdrukkingen
-  !let ins_align=center
+    De server staat afgesteld op "Wiskunde met plaatjes".
+    Bij gebruik van een geschikte
+    <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, kan de server ook MathML leveren.
+<center>
+!set arg=!nospace $texsize 2
+!set wims_ref_class=wims_button
+!href cmd=resume&useropts=$arg Gebruik MathML
+</center>
+
+</li><li>
+Grootte van wiskundige symbolen en formules.
+!let ts1=!eval $texsize-1
+!let ts2=!eval $texsize+1
+!if $ts1<1
+    !let ts1=1
+  !endif
+!if $ts2>9
+    !let ts2=9
+!endif
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px">
+    &nbsp;
+!set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px">
+  <p>
+  Griekse Letters $m_alpha, $m_pi. Wiskundige uitdrukking 
+  !let ins_align=middle
+!! we need to force dynamic insertion
   !set pw=2
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
   <br>
-  Een gemengd voorbeeld:
+  Gemengde formule
   <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
-  <p>
-  U kunt het formaat van de de wiskundige symbolen
-  !let ts1=!eval $texsize-1
-  !let ts2=!eval $texsize+1
-  !if $ts1<1
-    !let ts1=1
-  !endif
-  !if $ts2>9
-    !let ts2=9
-  !endif
-  !href cmd=resume&useropts=$ts1$texalign$useropt2 <b>verkleinen</b>
-  of
-  !href cmd=resume&useropts=$ts2$texalign$useropt2 <b>vergroten</b>
-  teneinde ze redelijk te laten (in)passen by de tekst.
-  Als de uitdrukking
-  !insmath \frac{x+y}{x^$pw+y^2}
+</li><li>
+Positie van de formules. Als de uitdrukking
+  !insmath (x+y)/(x^$pw + y^2)
   te
   !if $texalign=1
-  hoog is ten opzichte van de tekstregel,
-   !href cmd=resume&useropts=$(texsize)0$useropt2 klik dan hier
-   om de positie van het wiskunde symbool (plaatje) te verlagen.
+  hoog staat tov de tekst
+   !href cmd=resume&useropts=$(texsize)0$useropt2 klik hier
+    om het plaatje te verlagen.
   !else
-  laag is ten opzichte van de tekstregel,
-   !href cmd=resume&useropts=$(texsize)1$useropt2 klik dan hier
-    om de positie van het wiskunde symbool (plaatje) te verhogen. 
+  te laag staat tov de tekst
+   !href cmd=resume&useropts=$(texsize)1$useropt2 klik hier
+   om het plaatje te verhogen
   !endif
-</li>
+!set zoom=$empty
 !endif
+</li>
 </ul>
 
 !if $wims_user=$empty
-Wanneer alles inorde is , voeg dan  
- <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
- title="WIMS">deze link</a> toe aan uw bookmarks.
- Bij een volgend bezoek worden deze instellingen automatisch gebruikt.
+Als alles correct is afgesteld, maak dan van 
+ <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
+ title="WIMS">deze link</a>
+  een bookmark , zodat ook bij een volgend bezoek aan deze server deze instellingen worden gebruikt.
 !else
- Deze instellingen worden bewaard voor uw klas.
+    Deze instellingen worden bewaard voor toekomstige inlogsessies in deze klas.
 !endif
-<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
 :end
 !tail
 
