@@ -19,26 +19,19 @@
  extern char * yytext;
   
 
-
  static void wims_mathml_default_error (const char * msg)
    {
-     if (msg)
-// since this program will only be used for wims...no sophisticated error message...
-// if "ERROR" we switch to "math_with_gifs" which has already decent error-handling 
-//  ITEX2MML:     fprintf(stderr, "Line: %d Error: %s\n", wims_mathml_lineno, msg);
-       fprintf(stderr, "ERROR");
+//   if (msg){ fprintf(stderr, "Line: %d Error: %s\n", wims_mathml_lineno, msg);}
    }
 
  void (*wims_mathml_error) (const char * msg) = wims_mathml_default_error;
 
  static void yyerror (char * s)
    {
-//     char * msg = wims_mathml_copy3 (s, " at token ", yytext);
-// Supress error type messages, just ERROR
-     char * msg = "ERROR";
+//    char * msg = wims_mathml_copy3 (s, " at token ", yytext);
      if (wims_mathml_error)
-       (*wims_mathml_error) (msg);
-     wims_mathml_free_string (msg);
+       (*wims_mathml_error) ("ERROR");
+//     wims_mathml_free_string (msg);
    }
 
  /* Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.

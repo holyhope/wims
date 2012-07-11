@@ -20,11 +20,11 @@ int mathml(char *p, int option ){
     if (strlen(p)==0) return 1 ;
     if( mathalign_base <= 1){
       internal_error(" why is wims trying mathml()?\n");
-      return 0; // got to insmath with gifs
+      return 0; // go to insmath with gifs
     }
     if(strlen(p) > MAX_LINELEN ){ // too big ? probably too big for gifs as well ; but error signalling is better in gif-methods
       mathalign_base = 1;// 0 or 1 position of tex_gifs
-      return 0; // got to insmath with gifs
+      return 0; // go to insmath with gifs
     }
     //singlespace(p); // needed for check unbalanced \left\right in wims_mathml.cc --> insmath.c
     singlespace(p);
@@ -33,7 +33,7 @@ int mathml(char *p, int option ){
     if(pipe(my_pipe)){// pipe could not be opened...
       internal_error("mathml(): pipe() failure.\n");
       mathalign_base = 1;
-      return 0; // got to insmath with gifs
+      return 0; // go to insmath with gifs
     }
     else
     {
@@ -101,7 +101,7 @@ int mathml(char *p, int option ){
           execv("../bin/wims_mathml",argv);
           internal_error("could not execute wims_mathml\n");
           mathalign_base = 1;
-          return 0; // got to insmath with gifs
+          return 0; // go to insmath with gifs
       }
       else
       {
@@ -110,10 +110,11 @@ int mathml(char *p, int option ){
             close(my_pipe[1]);  // close the write end of the pipe in the parent
             internal_error("mathml(): fork() failure.\n");
             mathalign_base = 1;
-            return 0; // got to insmath with gifs
+            return 0; // go to insmath with gifs
           }
           else
           {
+    	    int status;
             FILE *stream;
             close(my_pipe[1]);  // close the write end of the pipe in the parent
             stream = fdopen (my_pipe[0], "r");
@@ -127,14 +128,17 @@ int mathml(char *p, int option ){
             	    if(strcmp(buffer,"ERROR") != 0){
             		mystrncpy(p, buffer, MAX_LINELEN-1);
             	    }
-                    else
+                    else // ERROR close stream; close pipe; wait for clean exit
                     {
-                	mathalign_base=1;
+        		fclose (stream); // do not know if this is really needed... but it won't hurt ?
+        		close(my_pipe[0]);
+        		waitpid(pid, &status, 0);
+                	mathalign_base=1; // go to insmath with gifs
                 	return 0;
                     }
                 }
             }
-            else
+            else // this will probably not used ? remove it ?
             {
         	while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
         	    if(strcmp(buffer,"ERROR") != 0){
@@ -149,7 +153,6 @@ int mathml(char *p, int option ){
             }
             fclose (stream);
             close(my_pipe[0]);
-            int status;
             waitpid(pid, &status, 0);
           }
        }
