@@ -91,8 +91,10 @@ cl_typename = !item ($cl_type+1) of $classtypes
  error=superclass $qclass already exists
  !exit
 !else
- cl_superclass=$qclass
- cl_parent=$qclass 
+ !if / isin $cd
+   cl_superclass=$qclass
+   cl_parent=$qclass
+ !endif
 !endif
 
 log = !sh cd $wims_home/log/classes\
