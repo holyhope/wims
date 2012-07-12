@@ -54,7 +54,7 @@ Wiskundige formules:<br>
 !if $texalign=2
     De server staat afgesteld op MathML (mits er een geschikte browser / plugin wordt toegepast).
     <center>
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4ac}}{2a}
+    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
     </center>
     Als de bovenstaande formule niet correct is afgebeeld, kan er gebruik worden gemaakt van een andere
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font>

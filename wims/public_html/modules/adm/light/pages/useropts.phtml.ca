@@ -57,7 +57,7 @@ Mathematical formulas.
 !if $texalign=2
   The server is currently set to MathML if you have a suitable browser. For example,
     <center>
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4ac}}{2a}
+    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
     </center>
     If the formula is not correctly displayed, you can use another
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
