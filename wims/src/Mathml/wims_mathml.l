@@ -171,9 +171,6 @@ int wims_mathml_displaymode = 0;
 
 "\\#" {yylval=wims_mathml_copy_string("#"); return MOL;}
 
-[0-9]{1,100}\ {0,4}"*"\ {0,4}[a-zA-Z]{1,100} {
-yytext=wims_mathml_remove_char(yytext,"*");yylval=wims_mathml_copy_string(yytext); 
-return MOL;}
 
 ","   |
 ":"   |
@@ -1750,33 +1747,4 @@ static int s_wims_mathml_read (char * buffer, int max_size)
 	}
 	return result;
 }
-
-char * wims_mathml_remove_char(char *p,char *c){
-    int i=0;
-    char temp[2];
-    int maxsize=strlen(p)+1;
-    char buffer[maxsize];
-    memset(buffer,'\0',maxsize);
-    int found = 0;
-    for(i = 0 ; i < strlen(p); i++){
-	if(p[i] == c[0]){
-	    found=1;
-	}
-	else
-	{
-	    temp[0]=p[i];temp[1]='\0'; 
-	    strncat(buffer,temp,2);
-	}
-    }
-    i = 0;
-    if(found == 1){
-	memset(p,'\0',maxsize);//clear
-	while(buffer[i] != '\0'){
-	    p[i] = buffer[i]; // copy buffer into return string.
-	    i++;
-	}
-    }
-    return p;
-}
-
 
