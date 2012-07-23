@@ -1,3 +1,4 @@
+<div class="contenu">
 
 Bienvenido/a a esta página que le permite crear sus propios
 !if $wims_user!=supervisor
@@ -60,3 +61,4 @@ La utilización de Quicktool requiere por el momento de tener una cuenta desarrol
  de las partes interactivas formadas en un medio ambiente <tt>wims</tt>.
  Requiere una cuenta desarrollador.
 </li></ul>
+</div>

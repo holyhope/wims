@@ -1,3 +1,4 @@
+<div class="contenu">
 
 Welkom op de pagina waar
 !if $wims_user!=supervisor
@@ -59,3 +60,4 @@ Andere beschikbare hulpmiddelen:
     omgezet naar interactieve <tt>WIMS</tt>  documenten.
     Ook dit hulpmiddel vereist een 'ontwikkelaar account'.
 </li></ul>
+</div>

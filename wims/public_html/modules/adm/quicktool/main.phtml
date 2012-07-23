@@ -11,18 +11,24 @@
     !if $mtype!=$empty
      !read msg.phtml
     !endif
+    <div class="contenu">
     !read menu.phtml
+    </div>
     !goto end
   !else
     !if $transfert issametext or $transfert=yes
       !set wims_form_method=file
       !read transfert.phtml
     !else
+        <div class="contenu">
       !read menu.phtml
+      </div>
     !endif
   !endif 
 !else
+    <div class="contenu">
   !read menu.phtml
+  </div>
 !endif compute=yes?
  
 :end
@@ -53,4 +59,3 @@
 !tail
 
 !reset wims_exec_error wims_deposit
-

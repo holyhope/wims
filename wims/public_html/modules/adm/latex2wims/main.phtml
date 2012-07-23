@@ -6,23 +6,26 @@ to $wims_menu_items
 !endif
 !header
 
-<div $frame>
+<!--<div $frame>-->
+
 !if $wims_developer=$empty
+
+
+<div class="contenu">
+
 <b>$module_title</b> 
 !read lang/names.phtml.$modu_lang 1
 !href cmd=help&special_parm=doc $name_documentation
  $wims_name_or 
  !getfile latex2wimsdoc.pdf $name_pdf
 .
-<p>
 
 !read lang/names.phtml.$modu_lang 2
 
-
  !form reply
  $name_modtool
-
-<p>
+ 
+ 
 <table align="center"> 
 <tr><td>$wims_name_Login</td><td><input type="login" name="login"></td></tr>
 <tr><td>$wims_name_Password</td><td>
@@ -30,15 +33,20 @@ to $wims_menu_items
 </td></tr></table>
  <center> <input type="submit" value="$wims_name_tosave"></center>
   </form>
+   </div>
   !tail
   !exit
+   
 !endif
+
 
 !if $error!=$empty
   !read lang/msg.phtml.$modu_lang
 !endif
 
-<p>
+ 
+<div class="contenu">
+
 <b>$module_title</b>
 !read lang/names.phtml.$modu_lang 3
 
@@ -64,12 +72,15 @@ $name_select_example
   !endif
 !endif 
 
+</div>
+
+
 <p>
 !if $execut=0
   $hh $name_step 1</h2>
   $name_transfer_wims
   <input type="file" name="wims_deposit">
-  <p>
+
 !if $test!=$empty and ($execut=0 or $cnt_fichier=1)
   $name_filet:
   <pre $pre>
@@ -78,7 +89,7 @@ $name_select_example
    !next
    </pre>
 !endif
-  <p>
+
   <ul>
     <li>
 
@@ -88,6 +99,7 @@ $name_select_example
    </li>
    </ul>
 !endif
+</p>
 
 
 
@@ -134,9 +146,9 @@ $hh $name_step 2</h2>
      !href target=wims_test module=adm/modtool&cmd=reply&jobreq=create Modtool
 
 !if $document notsametext $choix
-<p> <b>$wims_name_warning</b> : $name_warning
+ <b>$wims_name_warning</b> : $name_warning
 !else
-<p> <b>$wims_name_warning</b> : $name_select_warning.
+<b>$wims_name_warning</b> : $name_select_warning.
 !endif
   $hh $name_step 4</h2>
      !formradio execut list 2 prompt $name_exec
@@ -145,7 +157,6 @@ $hh $name_step 2</h2>
 
 !if $execut=3 
   !if $confirm=
-   <p>
    !read lang/names.phtml.$modu_lang 4
    !formradio confirm list 0,1 prompt $wims_name_yes,$wims_name_no
     <ul>
@@ -174,12 +185,17 @@ $hh $name_step 2</h2>
    
 </form>
 
+<!--</div> fin du contenu-->
+
+<!--</div>-->
+
 !if $wims_exec_error!=$empty
  <font color="red"><pre>$wims_exec_error</pre></font>
 !endif
 
-</div>
+
 !tail
 
 !reset wims_exec_error wims_deposit
+
 
