@@ -1,0 +1,44 @@
+!! this script make file .sheetindex
+!! it should be execute when skillbullet is modify
+
+!reset tmprecord
+nbsheet=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!for k=1 to $nbsheet
+ sheet_$k=<ul>
+ !reset flagsh_$k
+!next k
+!for k=1 to $livret_nbcomp
+ !for p=1 to $(nbpalier_$k)
+  tmp=!record $p of $livret_dir/.comp$k
+  !distribute line $tmp into ti,ex
+  ex=!items2lines $ex
+  ex=!replace internal . by , in $ex
+  ex=!column 1 of $ex
+  ex=!listuniq $ex
+  !for t in $ex
+   !if $(flagsh_$t)=1
+    sheet_$t=!append line <li><b>$name_n_Palier : </b> $ti</li> to $(sheet_$t)
+   !else
+    sheet_$t=!append line <li><b>$name_Competence : </b>$(title_$k)<ul><li><b>$name_n_Palier : </b>$ti</li> to $(sheet_$t)
+    flagsh_$t=1
+   !endif
+  !next t
+ !next p
+ !for t=1 to $nbsheet
+  !if $(flagsh_$t)=1
+   !reset flagsh_$t
+   sheet_$t=!append line </ul> to $(sheet_$t)
+  !endif
+ !next t
+!next k
+
+!for k=1 to $nbsheet
+ tst=!linecnt $(sheet_$k)
+ !if $tst>1
+  sheet_$k=!append line </ul> to $(sheet_$k)
+ !else
+  !reset sheet_$k
+ !endif
+ tmprecord=!append line :$(sheet_$k) to $tmprecord
+!next k
+!writefile $livret_dir/sheetindex.rc $tmprecord

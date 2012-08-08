@@ -13,6 +13,13 @@ $sheet_title\
 $name_title
 
 <div class="wims_sheet_desc">$sheet_desc</div>
+!let class_showlivret=!defof class_showlivret in wimshome/log/classes/$wims_class/.def
+!let tmp=!record $sh of wimshome/log/classes/$wims_class/livret/sheetindex.rc
+!if $class_showlivret=yes and $tmp!=$empty
+ <div class="wims_sheet_desc">
+  $name_skillbullet : $tmp
+ </div>
+!endif
 !!expiration date in a variable
 !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.$sh
 !if $expir_user!=

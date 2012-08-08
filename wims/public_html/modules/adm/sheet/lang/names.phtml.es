@@ -36,3 +36,5 @@
 
 !distribute items nivel aproximado, duración \
 into name_level,name_duration
+
+!set name_skillbullet=Compétence(s) du livret concernée(s)
