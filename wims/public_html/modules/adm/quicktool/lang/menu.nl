@@ -46,7 +46,7 @@
 :Stylesheet (CSS) van de vraag
 :Stylesheet (CSS) van de antwoorden of de instructie teksten
 :Stylesheet css
-:"Knippewn en PLakken" toegestaan
+:"Knippen en Plakken" toegestaan
 :MP3 afspeel programma
 :Grootte van afspeelprogramma
 :Deze broncode is te gebruiken binnen Modtool. Vraag indien noodzakelijk een Modtool account aan 

@@ -8,8 +8,8 @@ Als het werkelijk belangrijk is om een nieuwe forum op te richten
 WIMS@$httpd_HTTP_HOST oprichten forum
  en vraag handmatig een nieuw forum op te richten.
  <p>
-U kunt ten allen tijde op elke andere WIMS server zo'n forum op richten,
-mits ze u accepteren als eigenaar/oprichter
+U kunt ten allen tijde op elke andere WIMS server zo'n forum oprichten,
+mits ze u accepteren (...)
 Uiteraard kunt U gewoon de 
 <a href="http://wims.unice.fr/download/wims">WIMS software downloaden</a>
 en het op een locale netwerkserver installeren!

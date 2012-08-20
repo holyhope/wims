@@ -4,9 +4,9 @@
 !set errorhead=<b>$wims_name_Error</b>.
 
 !if prohibited = $error
-  $errorhead Your message contains prohibited words. For example, you
-  can not put some javascript in the message. Attention, this error 
-  is registered by the server.
+  $errorhead Het bericht bevat verboden tekst. Er kan bijvoorbeeld geen javascript worden gebruikt in een bericht.
+  De server heeft dit voorval (inclusief tijd,ip-adres etc) geregistreerd.
+  Bij een volgende overtreding wordt de toegang tot de server onmiddelijke stop gezet. 
   !exit
 !endif
 

@@ -48,7 +48,7 @@ Meer help is over het invoeren van Wiskunde is beschikbaar op
 Om de matrix
 !insmath [1,2,3;4,5,6;7,8,9]
 , te laten zien moet U intypen <tt>\([1,2,3;4,5,6;7,8,9])</tt>. 
-Genested matrices worden ook geaccepteerd.
+Geneste matrices worden ook geaccepteerd.
 <p><center>
 Terug naar het
 !href cmd=resume forum

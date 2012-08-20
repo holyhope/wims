@@ -34,8 +34,8 @@
  Het is niet toegestaan vanaf uw IP adres een module te publiceren.                                                                                                                       
 !exit 
 
-:badcategory                                                                                                                               
- !if / isin $w2                                                                                                                            
+:badcategory
+ !if / isin $w2
   De zone <tt class="wims_code_words">$w2</tt> van uw module is hier onbekend.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
@@ -51,8 +51,8 @@
  De zone <tt class="wims_code_words">$w2</tt> van uw module is hier niet bekend. Rapporteer dit probleem aan de
  !mailurl $sysadmin administator
  van deze server
-.                                                                                                                                          
- !endif                                                                                                                                    
+.
+ !endif
 !exit 
 
 :badhour
@@ -87,7 +87,7 @@
  !else
   U kunt geen niet-bestaande modules veranderen.
  !endif
- Hebt U soms een verkeerd adres van module gebruikt?
+ Hebt U soms een verkeerd adres van de module gebruikt?
 !exit
 
 :badversion
@@ -111,10 +111,10 @@
 !exit
 
 :lengthlimit
-  The module size is too big. So, you cannot install it by this interface. You must contact directly
-  the publication center
+  De module is te groot en kan niet worden geinstalleerd via deze interface.
+  Neem contact op met het publicatie centrum
   !mailurl $sysadmin $centralhost
-  to manage a manual installation.
+  voor een handmatige instalatie.
 !exit
 
 :nochange

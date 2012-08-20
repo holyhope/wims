@@ -50,7 +50,7 @@
 		Enquete,\
 		Algemene voorwaarden,\
 		Hulp nodig ?,\
-		CAS Logout,\
+		CAS uitloggen,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -163,7 +163,7 @@
  Bewaar de details van deze oefening,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
- Vu\
+ Gezien\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\

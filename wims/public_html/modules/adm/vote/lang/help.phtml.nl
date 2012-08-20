@@ -112,7 +112,7 @@ De volgende modes zijn mogelijk
    <tt class="wims_code_variable">mijn_inhaal_groepje_variabele</tt>.
    Met behulp van deze variabele kunnen leerlingen worden toegevoegd.
    Of emails worden verstuurd naar de deelnemers; lijsten met cijfers worden gesorteerd etc.
-   Meerdere toepassingen worden  nog ontwikkeld.
+   Meerdere toepassingen worden nog ontwikkeld.
   </li></ul>
 
 Let op dat de variabele naam uniek is voor de klas en dat deze variabele niet in gebruik is door WIMS.

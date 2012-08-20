@@ -14,9 +14,9 @@
 !set name_format=Antwoordtype
 !set name_listhelp=geen help, aantal letters in een woord, een paar letters van het woord, audio opname, indiviuele help,shown answer
 !set name_prompt=Prompt
-!set name_quifaitquoi=Wie doet wat,Wat word gedaan door wie,willekeurig door elkaar
+!set name_quifaitquoi=Wie doet wat,Wat wordt gedaan door wie,willekeurig door elkaar
 !set name_expert=Expert menu
-!set name_format_text=tekst wordt aangepast aan de vernster grootte (voorkeur), tekst in originele afmetingen
+!set name_format_text=tekst wordt aangepast aan de venster grootte (voorkeur), tekst in originele afmetingen
 !set name_click=klik op het woord
 !set name_name_data=Data bestand
 !set name_name_file=Broncode bestand
@@ -27,7 +27,7 @@
 !set name_reading=Lees het bestand
 !set name_image=afbeelding
 !set name_audio=geluidsopname
-!set name_backlist=andere bestanden indien noodzakelijky
+!set name_backlist=andere bestanden indien noodzakelijk
 !set name_direct=rechtstreeks
 !set name_format_data=Formaat van het data bestand
 !set name_write_manager= door een bericht te sturen naar de website beheerder
@@ -45,5 +45,5 @@ wims_name_quick_QUIFAITQUOI,wims_name_quick_TONIC
 wims_name_help_GAP,wims_name_help_ORDONNE,wims_name_help_COMPOSE,wims_name_help_CORRESP,\
 wims_name_help_QUIFAITQUOI,wims_name_help_TONIC
 
-!distribute item 1st trial,2nd trial,3rd trial,4th trial,Number of trials\
+!distribute item 1st poging,2nd poging,3rd poging,4th poging,Aantal pogingen\
 into name_trial1,name_trial2,name_trial3,name_trial4,name_trialcnt
