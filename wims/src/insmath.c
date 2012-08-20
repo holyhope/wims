@@ -63,6 +63,50 @@ char *instex_check_static(char *p)
 char tnames[]="sqrt int integrate sum prod product \
 Int Sum Prod conj abs";
 
+int __gototex (char *buf,char *f, int ts)
+{
+      char alignbak[2048];
+      char *pp;
+      instex_style="$$";
+      if(!ts) texmath(buf);
+         /* ts=0 but there is some computer matrix to transform 
+          * done by texmath, but it does much more as replacing strings in tmathfn
+          * OK if buf contains " math computer-syntax" ; if not, the result may be bad
+        */
+      else {// seems tex : need to interpret names of variables as \x or \calB
+       //if (mathalign_base < 2) { //to check
+        char *p1;
+        p1=find_word_start(buf);
+        if(*p1=='\\') {
+          int i;
+          char *pt;
+          for(i=1;isalnum(p1[i]);i++); /* find an alphanumeric string beginning by \\ */
+          if(p1[i]==0 && (pt=mathfont(p1))!=NULL) {
+            _output_(pt); *buf=0; return 1;
+          }
+        }
+      // }
+      }
+      /* send to mathml */
+      if (mathalign_base == 2 && mathml(buf,0)) { *buf=0 ;return 1; } 
+/* end if mathml option in case ts=1 or "computer matrix" */
+
+/* creating images*/
+      pp=getvar("ins_align");
+      if(pp!=NULL) mystrncpy(alignbak,pp,sizeof(alignbak));
+      setvar("ins_align","middle");
+      mystrncpy(ins_alt,buf,sizeof(ins_alt));
+      if(f==NULL) {
+        calc_instexst(buf); output("%s",buf);
+      }
+      else {
+        instex_usedynamic=1; exec_instex(buf); instex_usedynamic=0;
+      }
+      instex_style=""; 
+      if(alignbak[0]) setvar("ins_align",alignbak);
+      *buf=0; return 0;
+} 
+
     /* Intelligent insertion of math formulas, kernel */
 void __insmath(char *p)
 {
@@ -98,45 +142,7 @@ void __insmath(char *p)
 /* if ts=1 (it should be a tex formula)  or if there is a [ ,  ; ] matrix */
     if(ts || 
       (strchr(buf,'[')!=NULL && (strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
-      char alignbak[2048];
-      tex: instex_style="$$";
-      if(!ts) texmath(buf);
-         /* ts=0 but there is some computer matrix to transform 
-          * done by texmath, but it does much more as replacing strings in tmathfn
-          * OK if buf contains " math computer-syntax" ; if not, the result may be bad
-        */
-      else {// seems tex : need to interpret names of variables as \x or \calB
-       if (mathalign_base < 2) { //to check
-        char *p1;
-        p1=find_word_start(buf);
-        if(*p1=='\\') {
-          int i;
-          char *pt;
-          for(i=1;isalnum(p1[i]);i++); /* find an alphanumeric string beginning by \\ */
-          if(p1[i]==0 && (pt=mathfont(p1))!=NULL) { /* find some mathfont as \calB */
-            _output_(pt); *p=0; return;
-          }
-        }
-       }
-      }
-      /* send to mathml */
-      if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ; return;} 
-/* end if mathml option in case ts=1 or "computer matrix" */
-
-/* creating images*/
-      pp=getvar("ins_align");
-      if(pp!=NULL) mystrncpy(alignbak,pp,sizeof(alignbak));
-      setvar("ins_align","middle");
-      mystrncpy(ins_alt,buf,sizeof(ins_alt));
-      if(f==NULL) {
-        calc_instexst(buf); output("%s",buf);
-      }
-      else {
-        instex_usedynamic=1; exec_instex(buf); instex_usedynamic=0;
-      }
-      instex_style=""; 
-      if(alignbak[0]) setvar("ins_align",alignbak);
-      return;
+       if(__gototex(buf, f, ts)) return;
     }
 
 /* end creating images
@@ -148,7 +154,7 @@ void __insmath(char *p)
       /* non alpha variable or too short or too long to be interpreted as tnames */
       if(!isalpha(*pp) || n<3 || n>16) continue; 
       memmove(nbuf,pp,n); nbuf[n]=0;
-      if(wordchr(tnames,nbuf)!=NULL) goto tex;
+      if(wordchr(tnames,nbuf)!=NULL) { if(__gototex(buf, f, 0)) return;}
       /* find sqrt int integrate sum prod product Int Sum Prod conj abs, 
        * so must be texmath interpretated ; after going to tex, return in any case
        */
@@ -158,14 +164,14 @@ void __insmath(char *p)
 */  
     //for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='('; pp=strchr(pp+1,'/'));
     pp=strchr(buf,'/');
-    if(pp!=NULL) goto tex;  /* so a/4 can be reinterpreted as {a over 4 } ; transform also 5/(x+1) */
+    if(pp!=NULL){ if( __gototex(buf,f,0)) return;} /* so a/4 can be reinterpreted as {a over 4 } ; transform also 5/(x+1) */
     if(rawmathready) rawmath_easy=1;
     for(pp=strchr(buf,'<'); pp!=NULL; pp=strchr(pp+1,'<'))
       string_modify(buf,pp,pp+1,"&lt;");
     for(pp=strchr(buf,'>'); pp!=NULL; pp=strchr(pp+1,'>'))
       string_modify(buf,pp,pp+1,"&gt;");
 /* no tex has been introduced - so go to mathmlmath */
-    mathmlmath(buf); output("%s",buf); 
+    mathmlmath(buf); output("%s",buf);
     rawmath_easy=0;
 }
 
