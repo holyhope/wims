@@ -9,13 +9,13 @@ Voeg een serie oefeningen toe,\
 into wims_name_addexo,wims_name_addsexo
 
 !set name_desc_title=!nosubst Maximaal $title_limit lettertekens
-!set name_desc_desc=!nosubst Maximaal $desc_limit lettertekens; html tags en links zijn toegestaan
+!set name_desc_desc=!nosubst Maximaal $desc_limit lettertekens; html tags en hyperlinks zijn toegestaan
 
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
 Uitleg,\
-Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het proefwerk meedoen :,Opmerkingen,Maximaal beschikbare tijd voor een proefwerk,Aantal pogingen per proefwerksessie
+Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het proefwerk deelnemen :,Opmerkingen,Maximaal beschikbare tijd voor een proefwerk,Aantal pogingen per proefwerksessie
 
-!let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgend ipadressen (en/of tijdstippen) :
+!let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgende ip-adressen (en/of tijdstippen) :
 !if exam notin $module
  !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
 !endif
@@ -33,7 +33,7 @@ Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het
 
 !set name_deps=Je cijfers voor deze oefeningen moeten verbeterd worden
 !set name_dep=Je cijfer voor deze oefening moet verbeterd worden
-!set name_dep2=voor dat je deze oefening mag proberen.
+!set name_dep2=voordat je deze oefening mag proberen.
 
 !distribute items Gewicht,Co&euml;fficient\
 into name_weight,name_coeff
