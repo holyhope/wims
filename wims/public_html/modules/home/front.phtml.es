@@ -26,3 +26,8 @@ También puede
 !href module=adm/browse&$browse_parm realizar una visita guiada
  a este sitio.
 
+
+For mathematical formulas, the server is currently set to <a href="http://www.w3.org/Math/" target="wims_external">MathML</a> 
+if you have a suitable browser. If not, you can use another browser or 
+use the server with "math with images" in 
+!href module=adm/light&+phtml=useropts.phtml.$lang $wims_name_pref
