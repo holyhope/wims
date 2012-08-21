@@ -36,8 +36,11 @@ Je kunt ook deze website
 !endif
 
 For mathematical formulas, the server is currently set to <a href="http://www.w3.org/Math/" target="wims_external">MathML</a> 
-if you have a suitable browser. If not, you can use another browser or 
+if you have a suitable browser (click here for some 
+<a href="http://www.mozilla.org/projects/mathml/demo/texvsmml.html" target="wims_external">test</a> for your browser). 
+If not, you can use another browser or 
 use the server with "math with images" in 
 !href module=adm/light&+phtml=useropts.phtml.$lang $wims_name_pref
+.
 
 !! adapted to french version...
