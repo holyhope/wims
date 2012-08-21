@@ -63,10 +63,11 @@ char *instex_check_static(char *p)
 char tnames[]="sqrt int integrate sum prod product \
 Int Sum Prod conj abs";
 
-int __gototex (char *buf,char *f, int ts)
+int __gototex (char *p, char *f, int ts)
 {
       char alignbak[2048];
-      char *pp;
+      char *pp, buf[MAX_LINELEN+1];
+      ovlstrcpy(buf,p);
       instex_style="$$";
       if(!ts) texmath(buf);
          /* ts=0 but there is some computer matrix to transform 
@@ -82,13 +83,13 @@ int __gototex (char *buf,char *f, int ts)
           char *pt;
           for(i=1;isalnum(p1[i]);i++); /* find an alphanumeric string beginning by \\ */
           if(p1[i]==0 && (pt=mathfont(p1))!=NULL) {
-            _output_(pt); *buf=0; return 1;
+            _output_(pt); *p=0; return 1;
           }
         }
       // }
       }
       /* send to mathml */
-      if (mathalign_base == 2 && mathml(buf,0)) { *buf=0 ;return 1; } 
+      if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ;return 1; } 
 /* end if mathml option in case ts=1 or "computer matrix" */
 
 /* creating images*/
@@ -104,7 +105,7 @@ int __gototex (char *buf,char *f, int ts)
       }
       instex_style=""; 
       if(alignbak[0]) setvar("ins_align",alignbak);
-      *buf=0; return 0;
+      *p=0; return 0;
 } 
 
     /* Intelligent insertion of math formulas, kernel */
