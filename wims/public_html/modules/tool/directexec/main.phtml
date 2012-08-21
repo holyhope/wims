@@ -28,12 +28,11 @@
    !set module_title=$(module_title_$modu_lang)
 !endif
 !header
-
 !if $compute=yes
  !if $swout=$empty
   <em>$SW</em> $name_non_execute.
  !else
-  <center>$SW</center> :
+  <center>$SW</center>
   !if $sw=draw
    <img align="middle" src="$swout">
    !goto after
@@ -52,7 +51,13 @@
   <script type="text/javascript">
   $swout</script>
     !goto after
-   !endif
+  !endif
+   !if $sw=insmath
+     MathML: $swout
+<p>  Image:
+     !instex $src1
+     !goto after
+  !endif
 <pre style="font-weight:bold;font-family:Courier New,Courier,mono;overflow:auto;color:blue;">
 $swout
 </pre>
