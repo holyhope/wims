@@ -1426,11 +1426,11 @@ pmod: PMOD closedTerm {
 }
 
 texover: MROWOPEN compoundTermList BINOM2 compoundTermList MROWCLOSE {
-  char * s1 = wims_mathml_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $3);
+  char * s1 = wims_mathml_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $4);
   $$ = wims_mathml_copy2(s1,"</mfrac><mo>)</mo></mrow>");
   wims_mathml_free_string(s1);
   wims_mathml_free_string($2);
-  wims_mathml_free_string($3);
+  wims_mathml_free_string($4);
 }
 texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   char * s1 = wims_mathml_copy3("<mfrac><mrow>", $2, "</mrow><mrow>");
