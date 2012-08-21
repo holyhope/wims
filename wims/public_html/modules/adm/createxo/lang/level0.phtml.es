@@ -1,4 +1,4 @@
-<div class="contenu">
+<div class="wims_content">
 
 Bienvenido/a a esta página que le permite crear sus propios
 !if $wims_user!=supervisor

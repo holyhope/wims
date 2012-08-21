@@ -1,4 +1,4 @@
-<div class="contenu">
+<div class="wims_content">
 
 Welkom op de pagina waar
 !if $wims_user!=supervisor
