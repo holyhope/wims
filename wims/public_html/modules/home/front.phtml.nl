@@ -22,7 +22,7 @@ Bezoek:
 !if $wims_theme_version=0
 <li>
 !href module=adm/doc Interactieve Documenten.
- en                                                                                                                                        
+ en
 !href module=help/teacher/faq FAQ [Frans]
 .</li>
 !endif
@@ -35,12 +35,9 @@ Je kunt ook deze website
 .
 !endif
 
-For mathematical formulas, the server is currently set to <a href="http://www.w3.org/Math/" target="wims_external">MathML</a> 
-if you have a suitable browser (click here for some 
-<a href="http://www.mozilla.org/projects/mathml/demo/texvsmml.html" target="wims_external">test</a> for your browser). 
-If not, you can use another browser or 
-use the server with "math with images" in 
+De server staat mbt Wiskundigopmaak ingesteld op <a href="http://www.w3.org/Math/" target="wims_external">MathML</a> .
+Test of uw browser deze opmaak <a href="http://www.mozilla.org/projects/mathml/demo/texvsmml.html" target="wims_external">correct kan weergeven</a>. 
+Zoniet , kies dan bijvoorkeur een geschikte browser (FireFox) of schakel over op "wiskunde met plaatjes" via
 !href module=adm/light&+phtml=useropts.phtml.$lang $wims_name_pref
 .
 
-!! adapted to french version...

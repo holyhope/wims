@@ -16,7 +16,16 @@
  Formaat van de tijden <tt class="wims_code_words">yyyymmdd.hh:mm</tt> (bij meerdere opties deze scheiden door spaties).
 
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
-!read lang/help.phtml.fr variable
+:variable
+<p>
+Om de toegang tot (werkbladen,toetsen) op de server te individualiseren, 
+kan men gebruik maken van een variabele (naam).
+Deze variabele moet worden gedefinieerd voor elke deelnemer en volgens specifieke voorschriften.
+(handmatig in het studenten account of via een spreadsheet)
+Deze individuele toegang kan worden geconfigureerd bij "enquete/stemming" onder "begeleidde mode"
+(zie hiervoor de betreffende helppagina's)
+</p>
+
 !exit
 
 :dependency
@@ -31,7 +40,7 @@ de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en 
 :options
 <center><b>Opties.</b></center>
 Er is op dit moment slechts één optie beschikbaar :
-<ul>                                                                                                                                
+<ul>
 <li><em>autogen</em><br>
 Alleen voor experts en voor het handmatig bijwerken van score resultaten.<br>
 Autogen: betekent dat de oefening automatisch wordt uitgevoerd [automatische piloot...],<br>
