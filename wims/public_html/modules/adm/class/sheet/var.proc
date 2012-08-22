@@ -216,7 +216,9 @@ activetest=!replace line number 3 by $ecnt in $activetest
  !if $allow_parm=$empty
   !sh for c in $setclass; do rm -f $wims_home/log/classes/$$c/.$sheet; done
  !else
-  !sh for c in $setclass; do echo "$allow_parm" >$wims_home/log/classes/$$c/.$sheet; done
+  !for c in $setclass
+   !writefile wimshome/log/classes/$c/.$sheet $allow_parm
+  !next c
  !endif
  wims_class_log=sheet $sheet allow $allowtype $allowshare by $wims_realuser
 !endif

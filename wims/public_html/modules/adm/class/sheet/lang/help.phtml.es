@@ -35,6 +35,9 @@ Indicación sobre el registro de las notas.
  (fin). Las fechas y horas deben estar indicadas en tiempo local del SERVIDOR
  y estas palabras deber ir separadas unas de otras por espacios.
 
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
+
 !exit
 
 :feedback

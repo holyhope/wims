@@ -34,6 +34,8 @@ toe te voegen:
 (eind tijd). 
 Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheiden van de andere instellingen.
 
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
 
 !exit
 

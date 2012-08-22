@@ -3,8 +3,10 @@
 
 :allowtype
 
-<center><b>Indicación sobre el registro de las notas.</b> </center>
-                             En modo selectivo, puede imponer una
+!read adm/title.phtml 1\
+Indicación sobre el registro de las notas.
+
+En modo selectivo, puede imponer una
  restricción en el tiempo de registro de las notas añadiendo las
  palabras
  <tt class="wims_code_words">
@@ -22,6 +24,10 @@
  <br>
  Formato de las horas tope: <tt class="wims_code_words">aaaammjj.hh:mm</tt> (separe varias
  horas tope con espacios).
+
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
+
 !exit
 
 :dependency

@@ -14,6 +14,9 @@
  en moeten worden gescheiden door spaties.
  <br>
  Formaat van de tijden <tt class="wims_code_words">yyyymmdd.hh:mm</tt> (bij meerdere opties deze scheiden door spaties).
+
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
+!read lang/help.phtml.fr variable
 !exit
 
 :dependency
