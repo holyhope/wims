@@ -34,6 +34,10 @@ wims_helper=chapter=3
 #####################################
 
 !if $auth_method isitemof $auth_method_list
+!! in case of auth_method=cas, is it right that we have $user_auth=$empty here ??
+  !if $idp_method=php
+    !default user_auth=$wims_user
+  !endif
   !set auth_user=$user_auth
   !if $type=authsupervisor
 !!! FIXME ???? is it useful
