@@ -1,8 +1,8 @@
 !!INDEX
 !let module_author=XIAO, Gang
 !let module_address=xiao@unice.fr
- !let module_translator=Marina Cazzola
- !let module_translator_address=marina.cazzola@unimib.it
+!let module_translator=Marina Cazzola
+!let module_translator_address=marina.cazzola@unimib.it
 !let module_title=Modifica le opzioni per WIMS
 !let module_description=imposta le opzioni per wims
 !let module_version=1.00
@@ -15,7 +15,7 @@
 !let module_keywords=wims
 !!INDEXEND
 
-!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
 
 
 !let texsize=!char 1 of $useropts
@@ -37,8 +37,8 @@
     
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
-Questa pagina permette di modificare le proprie opzioni per 
-il lavoro su WIMS.
+Questa pagina permette di modificare le proprie opzioni per la 
+visualizzzazione delle pagine WIMS.
 <ul>
 !if $wims_user=$empty
  <li>Lingua.
@@ -52,17 +52,15 @@ il lavoro su WIMS.
 !endif
 
 <li>
-Mathematical formulas.
+Visualizzazione delle formule matematiche.
 
 !if $texalign=2
-  The server is currently set to MathML if you have a suitable browser. For example,
+  La visualizzazione delle formule matematiche è impostata per l'utilizzo di MathML purché si utilizzi un browser adatto. È possibile verificare la compatibilità del browser con l'esempio seguente
     <center>
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
     </center>
-    If the formula is not correctly displayed, you can use another
-    <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
-    </a> 
-    or use the serveur with "math with images".
+    Se la formula qui sopra non è visualizzata correttamente, potete utilizzare un <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
+    </a> diverso o impostare "math with images" per la visualizzazione delle formule.
 !set wims_ref_class=wims_button
 <center>
    !href cmd=resume&useropts=$arg Math with images
@@ -76,7 +74,7 @@ Mathematical formulas.
     !if $ts2>9
       !let ts2=9
     !endif
-    Set the size of mathematical formulas.
+    Imposta la dimensione delle formule matematiche.
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px">
     &nbsp;
@@ -87,7 +85,7 @@ Mathematical formulas.
     !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px">
  </li><li>
 !set zoom=1
-  Use zoom on formulas by mouse click.
+  Abilita l'ingrandimento delle formule tramite un click del mouse.
   !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
    !set zoom=0 
@@ -95,8 +93,8 @@ Mathematical formulas.
 !set wims_ref_class=wims_button
  !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
-    Currently, you use the server with "Math with images". If you have a suitable 
-    <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, you may also use MathML.
+    La visualizzazione delle formule è impostata come "Math with images". Se si utilizza un 
+    <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a> compatibile, è possibile visualizzare le formule utilizzando MathML.
 <center>
 !set arg=!nospace $texsize 2
 !set wims_ref_class=wims_button
@@ -104,8 +102,9 @@ Mathematical formulas.
 </center>
 
 </li><li>
- La dimensione dei simboli e delle formule
- matematiche. Basandosi sugli esempi della riga seguente.
+ Dimensione dei simboli e delle formule
+ matematiche. 
+!! È possibile aumentare o diminuire la dimensione delle formule basandosi sugli esempi della riga seguente.
 !let ts1=!eval $texsize-1
 !let ts2=!eval $texsize+1
 !if $ts1<1
@@ -125,10 +124,11 @@ Mathematical formulas.
 !! we need to force dynamic insertion
   !set pw=2
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
+  <br>
   Una diseguaglianza
   <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
 </li><li>
-Position of the formulas. If the expression
+Allineamento delle formule. Se l'espressione
   !insmath (x+y)/(x^$pw + y^2)
   è
   !if $texalign=1
