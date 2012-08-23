@@ -52,7 +52,7 @@ Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
 Wiskundige formules:<br>
 
 !if $texalign=2
-    De server staat afgesteld op MathML (mits er een geschikte browser / plugin wordt toegepast).
+    De server staat afgesteld op <b>MathML</b>.
     <center>
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
     </center>
