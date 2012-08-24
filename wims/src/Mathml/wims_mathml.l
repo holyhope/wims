@@ -840,7 +840,7 @@ int wims_mathml_displaymode = 0;
 "\\sqrt"         {BEGIN(OPTARG); return SQRT;}
 
 "\\root"         {return ROOT;}
-"\\of" |
+"\\of"
 "\\nonumber"		{yylval=wims_mathml_copy_string("&nbsp;"); return MI;}
 
 "\\space"        {BEGIN(INT1); return SPACE;}
