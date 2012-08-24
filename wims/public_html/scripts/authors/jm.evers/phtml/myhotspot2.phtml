@@ -31,27 +31,28 @@
 	    </tr><tr>
 	!endif
 	<td>
+	    <div id="mydiv">
 	!if $draw=1
 	    !! for fly
 	    !set insdraw_size=$xsize,$ysize
 	    !set ins_attr= id="myimage"
-	    <div id="mydiv">
 		!insdraw $(image$n)
-	    </div>
 	!else
 	    !if $plot=1
 		!! for GNUplot
 	        !set ins_attr= id="myimage"
 		!set insplot_set=$(image_settings$n)
-	        <div id="mydiv">
 	    	    !insplot $(image$n)
-		</div>
 	    !else
-	        <div id="mydiv">
+		!if $svg=1
+		!! for svg images 
+		    !exec svgdraw $(image$n)
+		!else
 	    	    $(image$n)
-		</div>
+		!endif
 	    !endif
 	!endif
+	    </div>
 	</td>
 	</tr>
     </table>

@@ -22,12 +22,17 @@
 	    !if $image=1
 		<br>
 		!if $plot=1
-		    !set insplot_set=$(image_settings$n)		
+		    !set insplot_set=$(image_settings$n)
 		    !insplot $(image$n)
-		!endif
-		!if $draw=1
-		    !set insdraw_size=$XSIZE,$YSIZE
-		    !insdraw $(image$n)
+		!else
+		    !if $draw=1
+			!set insdraw_size=$XSIZE,$YSIZE
+			!insdraw $(image$n)
+		    !else
+			!if $svg=1
+			    $(image$n)
+			!endif
+		    !endif
 		!endif
 	    !endif
 	    !if $applet=1
@@ -65,7 +70,11 @@
 					!else
 					    !if $plot=1
 						!set insplot_set=$(image_settings$n)
-						!insplot $(ex$p) 
+						!insplot $(ex$p)
+					    !else
+						!if $svg=1
+						    $(ex$p) 
+						!endif
 					    !endif
 					!endif
 				    !else
@@ -92,7 +101,7 @@
 		    </p>
 		</td>
 		</tr>
-	    </table>	
+	    </table>
 	</td>
 	</tr>
     </table>

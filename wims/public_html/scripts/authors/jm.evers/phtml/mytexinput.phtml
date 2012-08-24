@@ -148,10 +148,15 @@
 		    !if $draw=1
 			!set insdraw_size=$XSIZE,$YSIZE
 			!insdraw $(image$n)
-		    !endif
-		    !if $plot=1
-			!set insplot_set=$(image_settings$n)
-			!insplot $(image$n)
+		    !else
+			!if $plot=1
+			    !set insplot_set=$(image_settings$n)
+			    !insplot $(image$n)
+			!else
+			    !if $svg=1
+				$(image$n)
+			    !endif
+			!endif
 		    !endif
 		</td>
 	    !endif
