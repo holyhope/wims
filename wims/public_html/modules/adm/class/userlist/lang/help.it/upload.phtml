@@ -3,16 +3,20 @@
 \
 Caricare dati in formato csv
 
+<p>
 Per caricare sul server dati da un foglio eletronico, salvare i dati
 in un formato testo (txt, csv, o tsv), quindi inviare il file al server.
-<p>
+</p><p>
 È possibile inserire dati sugli iscritti o voti. Per inserire dati sugli
 utenti è necessario che il file non contenga voti.
-<p>
+</p><p>
 Si possono inserire voti solo per colonne già esistenti, in altre parole
 prima di caricare i dati da un file occorre creare le colonne (non
 si possono modificare i dati assegnati dal server).
-</p><h3>Authentification via WIMS</h3>
+</p>
+
+<h3>Authentification via WIMS</h3>
+<p>
 La prima riga della tabella deve contenere i nomi di ciascuna colonna
 (per esempio, <tt class="wims_code_words">login</tt>, <tt class="wims_code_words">firstname</tt>, ...).
 Nomi validi e relativo significato sono illustrati nella tabella che segue. 
@@ -22,10 +26,11 @@ una colonna <tt class="wims_code_words">login</tt> (WIMS utilizza questo campo p
 ogni iscritto). Le righe che contengono <tt class="wims_code_words">#</tt> 
 nel campo <tt class="wims_code_words">login</tt>
 vengono ignorate dal server.
-<p>
+</p><p>
 È possibile utilizzare questo metodo per aggiungere iscritti (molti alla
 volta), ma in questo caso la tabella dei dati deve contenere informazioni
 suffcienti (in particolare nome, cognome, password).
+</p>
 
 <p>
 Segue un esempio di file valdo per l'inserimento di nuovi studenti:
@@ -37,7 +42,9 @@ toto,Claude,Toto,1234
 <h3>Autenticazione esterna</h3>
 Il formato dei file è lo stesso, ma si può sostituire il campo <tt
 class="wims_code_words">login</tt> con il campo <tt
-class="wims_code_words">external_auth</tt>.
+class="wims_code_words">external_auth</tt> (in altre parole in questo
+caso il campo <tt class="wims_code_words">login</tt> non deve
+essere presente).
 È necessario inserire i campi nome e cognome (<tt
 class="wims_code_words">firstname</tt>, <tt
 class="wims_code_words">lastname</tt>) a meno che non si utilizzi un
@@ -53,6 +60,7 @@ sconsigliata una volta che gli studenti sono stati inseriti nel corso.
 Segue un esempio di file valdo per l'inserimento di nuovi studenti:
 <pre>
 external_auth,firstname,lastname
-toto,Claude,Toto
+Claude.Toto,Claude,Toto
 </pre>
+
 !read lang/help.$moduclass_lang/fieldtab.phtml
