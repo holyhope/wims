@@ -1,10 +1,9 @@
 !! produces a DHTML page of the  exercise for printing
-
-!if $questiontype !=0 or $applet=1
+!if $questiontype !=0 or $applet=1 
     <font color="red">
 	My guess : this page not very usefull in a printed paperversion<br>
 	It's most likely a multiplechoice exercise<br>
-	or it makes use of some java applets ?
+	or it makes use of some java applets or mathml ?
 	<br>
 	You can always try your browser "print functionality" on the interactive version, and see what happens.
 	<br>
@@ -44,15 +43,13 @@
 		    !endif
 		</div>
 		!if $(formula$n) != $empty
+		<div id="ddd$n" name="ddd$n" style="position:relative;font-size:70%">
 		    <br>
-		    !set formula$n=$(formula$n) \,\,
-		    !increase cnt
-		    !set ins_attr=name="insert$cnt"
-		    !insmath $(formula$n)
-		    !! this will be an image, I hope...if not we are in deep DHTML trouble
+		    !insmath $(formula$n) \,\,
+		</div>
 		!endif
 	    </td>
-	    !set DHTML=!append item "d$n","dd$n","insert$cnt" to $DHTML
+	    !set DHTML=!append item "d$n","dd$n","ddd$n" to $DHTML
     	    </tr><tr>
         !next n
     </table>
