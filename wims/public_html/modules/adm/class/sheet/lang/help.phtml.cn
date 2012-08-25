@@ -21,7 +21,6 @@ $(name_shtab[6])
 为获得成绩加上时间限制.
 
 作为一种选择, 你也可以为获得成绩加上时间限制, 例如
- mots
  <tt class="wims_code_words">
 &gt; yyyymmdd.hh:mm</tt>
  (开始时间) 以及/或
@@ -30,15 +29,47 @@ $(name_shtab[6])
  (结束时间). 标注的是服务器的当地时间,
 相互用空格分隔.
 
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
-!read lang/help.phtml.fr variable
-
+:variable
+<p>
+为了限制进入存取, 可以取一个变量名.
+这个变量应按照规则对每个参加者定义,
+或者在参加者的账户属性里手工定义, 或者通过上传文件 csv 的技术变量实现.
+如果限制是通过对参加者的限制实现的 (例如根据某些数据登入),
+也可以通过创建问题表来实现 (参见相应的帮助).
+</p>
 !exit
 
 :feedback
 !read adm/title.phtml 1\
 $(name_shtab[10])
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
-!read lang/help.phtml.fr feedback
+可以在这里指定与 WIMS 文件或练习的联系. 
+当得分严格低于指定的分数 (满分10分) 时, 与这个资源的联系就会显示.
+第2个项是分数线 (满分10分), 第1项是如下形式的地址 (简化形式):
+<ul><li>
+公众模块或公共文件 : <tt class="wims_address">module=xxx</tt>
+(如 <span class="wims_button disabled">$wims_name_about</span>).
+</li><li>
+班级的练习 : <tt class="wims_address">module=classes/fr&exo=_nom_fichier_</tt>
+这里 <tt>_nom_fichier_</tt> 是练习的文件名 (除去 <tt>.oef</tt>).
+</li><li>
+班级的文件 :
+<tt class="wims_address">module=adm/doc&doc=c1&+block=_nom_bloc</tt>
+</li></ul>
+
+可以添加补充参数 (见 <span class="wims_button disabled">$wims_name_about</span>)
+
+见下面的例, 如果得分小于 5, 就会向学生指示班级的文件 <tt>c2</tt>, 
+更精确地说是此文件的块 <tt>aaa</tt> 所在的页. 
+
+<pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
+
+在下面的例子里, 有一个指向模块 H6/set/oefset.cn 的 WIMS 练习的链接,
+资源的名字是
+traduction1 (在这个练习中学生的成绩还没有记录到班级里).
+
+<pre>module=H6/set/oefset.cn&cmd=new&exo=traduction1,10</pre>
+
+你也可以先选择 WIMS 的一个资源, 再利用左边菜单的链接 
+<span  class="wims_button disabled">$wims_name_addh</span> 把此资源插入页面的帮助链接中.
 
 !exit
