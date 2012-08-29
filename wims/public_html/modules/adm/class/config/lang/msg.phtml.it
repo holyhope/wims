@@ -5,57 +5,61 @@
 
 !if not_secure iswordof $error
  !if $code!=$empty
-  Code secret incorrect.
+  Il codice inserito non è corretto.
  !else
-  Ce module est accessible uniquement à partir d'un poste sûr.
+  Questo modulo è accessibile solo da un IP configurato.
  !endif
- Accès refusé.
+  Accesso negato.
  !exit
 !endif
 
 !if checkhost iswordof $error
- Votre connection actuelle ne fait pas partie de la nouvelle définition
- de postes sûrs. C'est probablement une erreur qui peut vous faire perdre
- le contrôle de la classe. Donc, la définition de postes sûrs n'est pas
- changée.
+ L'IP della connessione attualmente utilizzata non è tra i valori degli IP 
+ sicuri inseriti per la modifica. Si tratta probabilmente di un errore in 
+ quanto se si salva questa configurazione non sarà possibile accedere
+ alle pagine di configurazione del corso. L'opzione <b>non</b>
+ è quindi stata modificata.
  !exit
 !endif
 
 !if bad_file iswordof $error
- Désolé mais je ne peux pas reconnaître <em>$wims_deposit</em> 
- comme un fichier de sauvegarde d'une classe. Soit vous avez envoyé un mauvais
- fichier, soit le fichier est endommagé.
+ Spiacenti ma il file <em>$wims_deposit</em> non è stato riconosciuto
+ come un file di backup valido di un corso. Verificare di aver inviato
+ il file corretto o che il file che si vuole inviare non sia
+ danneggiato.
  !exit
 !endif
 
 !if empty_file iswordof $error
- Aucune ressource de classes n'a été trouvée dans votre fichier de sauvegarde
- <tt class="wims_fname">$wims_deposit</tt>.
+ Il file inviato <tt class="wims_fname">$wims_deposit</tt> non contiene 
+ alcuna risorsa inseribile nel corso.
  !exit
 !endif
 
 !if no_upload iswordof $error
- Les données envoyées sont périmées. Mauvaise manoeuvre. Veuillez réessayer.
+ I dati inviati sono andati in timeout. L'operazione non è andata
+ a buon fine. Riprovate.
  !exit
 !endif
 
 !if remote_sharing iswordof $error
- Une classe voisine partage vos ressources. Tant qu'elle n'a pas arrêté le
- partage de son côté, vous ne pouvez ni renier son droit de continuer le
- partage, ni l'enlever de votre liste de voisins.
+ Un corso vicino sta condividento le vostre risorse. Fino a che tale
+ corso non termina la condivisione voi non potete né negare la condivisione
+ né togliere tale corso dalla lista dei corsi vicini.
  !exit
 !endif
 
 !if share_dep iswordof $error
- Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord partager 
+ La condivisione di risorse deve rispettare le dipendenze: è necessario 
+ condividere
  !if sheet iswordof $error
-  les exercices avant de partager les feuilles de travail.
+  gli esercizi (per poter condividere i test di autovalutazione).
  !else
   !if exam iswordof $error
-   les exercices et les feuilles de travail avant de partager les examens.
+   gli esercizi e i test di autovalutazione (per poter condividere i temi d'esame).
   !else
    !if livret iswordof $error
-    les exercices et les feuilles de travail avant de partager le livret de compétences.
+    gli esercizi e i test di autovalutazione (per poter condividere il registro delle competenze).
    !endif
   !endif    
  !endif
@@ -63,23 +67,22 @@
 !endif
 
 !if stopshare_dep iswordof $error
- Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord arr&ecirc;ter le partage 
+ La condivisione di risorse deve rispettare le dipendenze: è necessario 
+ terminare la condivisione
  !if sheet iswordof $error
-  des examens et du livret de compétences avant celui des feuilles de travail .
+  degli esami e del registro delle competenze (per poter terminare la condivisione dei test di autovalutazione).
  !else
   !if exo iswordof $error
-   des feuilles de travail avant celui des exercices. 
+   dei test di autovalutazione (per poter terminare la condivisione degli esercizi).
   !endif    
  !endif
  !exit
 !endif
 
 !if not_neighbor iswordof $error
- Vous avez essayé de mener une opération avec une classe qui n'est pas votre
- voisin effectif.
+ Avete cercato di compiere una operazione relativamente a un corso che in realtà non è vostro vicino.
  <p>
- Rappelez qu'une classe est votre voisin effectif seulement si les voisinages
- mutuels sont déclarés A LA FOIS par vous et par l'autre classe.
+ Si ricorda che la dichiarazione di vicinato deve essere effettuata da ENTRAMBI i corsi.
  !exit
 !endif
 
@@ -89,7 +92,7 @@
 !endif
 
 !if toobigfile iswordof $error
- La taille de votre fichier est trop importante : la limite est de 12K.
+ Il file è troppo grande: il limite è 12K.
  !exit
 !endif
 

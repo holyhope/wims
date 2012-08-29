@@ -88,26 +88,37 @@ Un questionario può contenere fino a 64 domande.
 :guidedmode
 Sono possibili più modelli:
 <ul><li>
-  <b>$name_free</b>:  per creare un questionario utilizzando liberamente
+  <b>$name_free</b>:  per creare un questionario utilizzando direttamente
   i comandi disponibili.
   </li><li>
 !readproc adm/lang/sheetexam.phtml.$lang
-  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 
-  La variable technique alors créée vous permettra par exemple de définir un accès individualisé 
-  à des feuilles ou à des examens. Pour cela, si vous avez appelé <tt class="wims_code_variable">ma_variable</tt> quand 
-  le formulaire vous le demandera, il vous suffira d'écrire <tt class="wims_code_variable">\ma_variable</tt> dans la zone 
-  libre de la feuille ou de l'examen correspondant à <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  <b>$name_accessvar</b>: è possibile costruire un questionario che
+  permette l'iscrizione a turni distribuiti su giorni, orari, aule.
+  Il questionario definisce una variabile tecnica che il docente può
+  impostare nelle opzioni di test di autovalutazione e temi d'esami
+  per definire un accesso individualizzato basato sulla scelta dello
+  studente. Per far ciò, se in fase di creazione del questionario
+  avete scelto <tt class="wims_code_variable">mia_variable</tt> come
+  nome della variabile, sarà sufficiente impostare <tt
+  class="wims_code_variable">\mia_variable</tt> in corrispondenza
+  dell'opzione <tt class="wims_code_words">$(name_shinfo[6])</tt> del
+  test o dell'esame.
   </li><li>
-  <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
-  (disons que vous l'avez appelé <tt class="wims_code_variable">ma_variable</tt>. A l'aide
-  de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
-  trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b> 
-  d'avoir demandé la variable <tt class="wims_code_variable">var_ma_variable</tt>).
-  D'autres utilisations sont en prévision.
+  <b>$name_group</b>: è possibile costruire un questionario per la
+  creazione di gruppi. In fase di creazione viene chiesto anche in
+  questo caso il nome di una variabile che può essere utilizzata in
+  vari moduli di gestione del corso. Ad esempio se avete scelto <tt
+  class="wims_code_variable">mia_variable</tt> come nome della
+  variabile, potete utilizzarla nei modulo <tt
+  class="wims_code_words">Invia email</tt> o <tt
+  class="wims_code_words">Galleria fotografica</tt> per restringere le
+  azioni ai solo componenti di uno (o più) gruppi; è anche possibile
+  utilizzare la variabile per salvare i dati degli studenti in formato
+  csv (in questo caso occorre però utilizzare la variabile <tt
+  class="wims_code_variable">var_mia_variable</tt>). 
+  Altri possibili utilizzi potranno essere disponibili in futuro.
   </li></ul>
-
-Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
-ne pas utiliser <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
+I nomi delle variabili definite nei questionari devono essere diversi dalle variabili predefinite in WIMS (ad esempio <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
 <tt class="wims_code_variable">manual1</tt>, ...).
 !tail
 !exit
