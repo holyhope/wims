@@ -1,7 +1,7 @@
-type=datalist
+type=first
 textarea="data"
 
-:Domande miste incorporate in un testo scelto a caso (cloze).
+:Domande miste incorporate in un testo (cloze).
 
 Questo esercizio presenta un testo contenente campi in cui inserire le risposte.
 <p>
@@ -20,68 +20,44 @@ codice dell'esercizio.
 
 :%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
 
-:\title{Completa il testo (generalizzato)}
+:\title{Completa il testo (cloze)}
 :\author{XIAO, Gang}
 :\email{xiao@unice.fr}
 
-:Contenuto effettivo dell'esercizio.
-Definire un testo per riga, separando le righe con un punto-e-virgola
-(di conseguenza i testi non possono contenere punti-e-virgola).<p>
-In questi testi, le domande devono essere messe tra due coppie di doppi
+:Dati principali.
+Le domande devono essere messe tra due coppie di doppi
 punti di domanda "??".
 <p>
 La domanda è interpretata come una scelta multipla se contiene più
 elementi separati da virgole. Altrimenti è interpretata come una domanda
 a risposta libera, e il tipo di risposta richiesto (numerico o testuale) 
-è determinato dal dato inserito. Inoltre, nel caso di risposta testuale, 
-se la risposta contiene una barra verticale <tt class="wims_code_words">|</tt>
-il tipo di risposta per la verifica della correttezza è symtext.
+è determinato dal dato inserito. 
 <p>
-In uno stesso testo si possono inserire più domande (fino a 20).
-Se in una risposta libera sono possibili più risposte corrette, separarle
-con una barra verticale <tt class="wims_code_words">|</tt>.
+Si possono inserire fino a 20 domande in una frase. 
+
+Se in una domanda a risposta libera sono possibili più risposte,
+separare le riposte equivalenti (sinonimi) con una barra verticale <tt
+class="wims_code_words">|</tt> (in questo caso la verifica della
+correttezza della risposta è effettuato utilizzando symtext).
 <p>
 $embraced_randitem
 \text{data=
-Le début officiel de la Seconde Guerre Mondiale est marqué par
-??la déclaration de guerre,l'offensive?? de
-??la Grande Bretagne et la France,la France,la Grande Bretagne,
-l'Allemagne,l'Union Soviétique??
-contre ??l'Allemagne,La Pologne,l'Union Soviétique,la France??.;
-
-La Seconde Guerre Mondiale s'est déroulée entre ??1939?? et
-??1945??.;
-
-??La Grande Bretagne et la France ont,La France a,La Grande Bretagne a,
-Les Etats-Unis ont,L'Union Soviétique a?? déclaré la guerre
-contre l'Allemagne en ??1939?? à la suite de l'invasion de
-??la Pologne?? par cette dernière.;
-
-Pendant la Seconde Guerre Mondiale, l'Espagne sous
-??Francisco Franco|[F.|Francisco|] Franco?? est un pays
-??neutre,axe,allié,envahi??.;
-
-??Après avoir battu,Avant d'attaquer?? la France,
-{l'Allemagne,Hitler,l'Allemagne Nazie}
-a lancé une attaque surprise contre l'URSS en
-??décembre,{novembre,octobre},{septembre,août,juillet},{juin,mai,avril},{mars,février,janvier}??
-??1940??, sous le nom {du plan,de l'opération} ??Barbarossa??.
+Compleare: <p>
+Linux a été créé en l'année
+??1991??
+par Linus Torvalds qui était un étudiant 
+??finlandais,suédois,américain,anglais,nordique?? faisant à l'époque son
+apprentissage sur le système
+??Minix?? sur des machines d'architecture
+??Intel 386,Sun,Macintosh,Bull,Microsoft??. Il a posté la première version
+de son système sur un newsgroupe, qui était la version
+??0.02??.
 }
-
-:Testo mostrato prima della domanda. Sono accettati Tag HTML. Può essere vuoto.
-$embraced_randitem
-\text{pre=Completare il testo: <p>}
-
-:Testo mostrato dopo la domanda. Sono accettati Tag HTML. Può essere vuoto.
-$embraced_randitem
-\text{post=}
 
 :%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
 
 \precision{10000}
 \text{data=wims(singlespace \data)}
-\text{data=wims(nonempty rows \data)}
-\text{data=randomrow(\data)}
 \text{data=wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
@@ -134,12 +110,11 @@ $embraced_randitem
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{\pre
+\statement{
 \data[1;]
 \for{k=1 to \qs}{
 \embed{r \k,\lengths[\k]} \data[2*\k+1;]
 }
-\post
 }
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%
