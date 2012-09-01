@@ -24,10 +24,10 @@ $ $ by in $ldap_user
 !for field in $ldap_code
   !reset f
   f=!getopt $field in $ldap_user
-  f=!replace internal _ by $ $ in $f
   !if $(f[1])=file_save
     f=!sh cat $wims_home/tmp/sessions/$wims_session/$(f[2]) | perl -e 'use Encode;while (<>) {print encode("iso-8859-1",decode("utf-8",$$_))}'
   !endif
+  f=!replace internal _ by $ $ in $f
   !if $field=$l_login
     login=!nospace $f
     char=!charcnt $f
