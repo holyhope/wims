@@ -53,7 +53,7 @@ $table_header
  </td></tr>
 !endif
 
-!if $idp_method notitemof $idp_method_list
+!if $idp_method notitemof $idp_method_list and $auth_method isitemof $auth_method_list
  $table_tr<td align="right">
  $wims_name_firstname</td>
  <td><input size="30" name="firstname" value="$firstname"></td></tr>
@@ -72,7 +72,7 @@ $table_header
   !default user_supervise=!getdef user_supervise in wimshome/log/classes/$wims_class/.users/$login
     $table_tr<td align="right">$name_gestion</th><td>
     <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise">
-    </tt></td></tr>
+    <tt>$wims_class/1/101, ... </tt></td></tr>
   !endif
 $table_tr<td align="center" colspan="2">
 <input type="submit" name="confirm" value="$wims_name_tosave">
