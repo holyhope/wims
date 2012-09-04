@@ -4,7 +4,7 @@
  !exit
 !endif
 !if $wims_read_parm!=noprompt
- <tr><td align="right">$(replyname$i)<td>
+ <tr><td style="min-width:50px;">$(replyname$i)</td><td>
 !endif
 
 !set inputoption=!replace internal $	$ by $\
@@ -20,4 +20,7 @@ $ in $inputsize
 
 !bound inputsize between integer 1 and 100 default 18
 <input size=$inputsize name="reply$i" value="$(reply$i)" $inputoption>
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
 !reset inputsize inputoption option

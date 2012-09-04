@@ -19,7 +19,7 @@ $ in $r_
 !endif
 
 !if $wims_read_parm!=noprompt
- <tr><td align="right">$(replyname$i)<td>
+ <tr><td style="min-width:50px;">$(replyname$i)</td><td>
 !endif
 !set keyboard=!getopt keyboard in $(replyoption$i)
 !set style=!getopt style in $(replyoption$i)
@@ -223,5 +223,7 @@ function writeChar(win,string)
 <p>
 
 !!data= decodeURIComponent(data);
-
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
 !reset inputsize

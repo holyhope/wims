@@ -30,7 +30,7 @@
 !set input_rg2=!replace internal \( by \\( in $input_rg
 
 !if $wims_read_parm!=noprompt
- <tr><td align="right">$(replyname$i)<td>
+ <tr><td style="min-width:50px;">$(replyname$i)</td><td>
 !endif
 
 !bound inputsize between integer 1 and 100 default $
@@ -44,6 +44,9 @@
  !endif
 !else
  !formradio reply$i list $input_rg2 prompt $input_rg
+!endif
+!if $wims_read_parm!=noprompt
+ </td></tr>
 !endif
 !reset inputsize
 

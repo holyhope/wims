@@ -16,7 +16,7 @@ $ in $r_
  !endif
 !endif
 !if $wims_read_parm!=noprompt
- <tr><td align="right">$(replyname$i)</td><td>
+ <tr><td style="min-width:50px;">$(replyname$i)</td><td>
 !endif
 !set inputoption=!replace internal $	$ by $\
 $ in $inputsize
@@ -35,4 +35,6 @@ $ in $inputsize
 !bound sizec between integer 1 and 200 default 40
 
 <textarea name="reply$i" rows="$sizer" cols="$sizec" $inputoption>$(reply$i)</textarea>
-
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
