@@ -1,3 +1,8 @@
+<!-- adm/class/exam student.phtml START -->
+
+!! <!--There isn't any help for student yet. this will hide the "help button"-->
+!set module_has_help = no
+
 !read adm/class/classname.phtml $wims_classname\
 $wims_institutionname
 
@@ -83,7 +88,7 @@ $title
  </ol>
  <br class="spacer"/>
 
-
+<p class="exam_instructions">
  !if $t_=no
   $name_examclosed
   !href cmd=reply&job=student $wims_name_refresh
@@ -128,10 +133,11 @@ to $wims_menu_items
   !endif
  !endif
 !endif
+</p>
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p class="simulation">$name_simulation</p>
+  <p class="simulation"><strong>$name_simulation</strong></p>
  !endif
 !endif
 
@@ -140,8 +146,8 @@ to $wims_menu_items
  to $wims_menu_items
 !endif
 
+<!-- adm/class/exam/student.phtml END -->
 !tail
 
 !reset job
-
 

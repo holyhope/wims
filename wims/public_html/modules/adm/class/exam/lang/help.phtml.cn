@@ -1,5 +1,5 @@
 !goto $wims_read_parm
-!exit
+
 
 :allowtype
 
@@ -30,7 +30,9 @@
 也可以通过创建问题表来实现 (参见相应的帮助).
 </p>
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :dependency
  <center><b>成绩间的关联</b></center>
@@ -38,7 +40,9 @@
  例如,
   <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
 意为参加者必须在第 1 题得到 50% 的分数, 第 2 题得 30%, 第 3, 4, 5 题平均得分 60%.
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :options
  <center><b>选项.</b></center>
@@ -46,10 +50,14 @@
   <ul>
    <li><em>autogen</em> 意为自动生成练习, 那怕用户没有点击它. 这样在会话关闭后他仍能参看已记录的练习. 对非手工计分的练习不适用.</li>
   </ul>
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :contenu
  <center><b>练习的内容</b></center>
 这个练习可以从作业页的已有练习中随机选取.
 请从下表列出的练习里标出供考试用的候选练习.
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif

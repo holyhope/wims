@@ -1,5 +1,5 @@
 !goto $wims_read_parm
-!exit
+
 
 :allowtype
 
@@ -28,7 +28,9 @@ En modo selectivo, puede imponer una
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
 !read lang/help.phtml.fr variable
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :dependency
  <center><b>dependencias de puntuaciones</b></center>
@@ -40,7 +42,9 @@ La expresión ``dependencias de puntuaciones''
   significa que el participante debe tener un éxito de 50% en el ejercicio 1,
   30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
   3, 4, 5.
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :options
  <center><b>Options.</b></center>
@@ -50,7 +54,9 @@ La expresión ``dependencias de puntuaciones''
 Formalmente desaconsejado excepto para ejercicios a corrección manual.
  </li>
   </ul>
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :contenu
  <center><b>Contenu d'un exercice</b></center>
@@ -58,4 +64,6 @@ Este ejercicio se puede elegir (aleatoriamente) de una lista de ejercicios
 existentes en las hojas de trabajo. Por favor, marque los ejercicios de la
 hoja de trabajo de la siguiente lista, los cuales serán candidatos
 a ejercicio de este examen.
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif

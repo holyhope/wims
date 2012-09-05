@@ -1,15 +1,16 @@
 !!************** homeref.phtml  ****************
-
 !! This File creates 2 sets of links, to put in the tail menu of Wims.
 !! 1st set contains up to 6 links
 !! 2nd set contains informations about author(s), and mail links to them.
-
 !! **********************************************
- !if yes isin $wims_lightpopup
+<!-- begin of html/homeref.phtml -->
+
+
+!if yes isin $wims_lightpopup
  !if $wims_lightpopup_option=$empty
- !set 1_=!append line ,0, $wims_name_devwims to $1_
- !set 1_=!append line ,0, $wims_name_Author: $module_author to $1_
- !set wims_rm_2=$1_
+  !set 1_=!append line ,0, $wims_name_devwims to $1_
+  !set 1_=!append line ,0, $wims_name_Author: $module_author to $1_
+  !set wims_rm_2=$1_
   !goto rmend
  !else
   !if about isitemof $wims_lightpopup_option
@@ -30,7 +31,7 @@
    !set wims_mdcnt=!charcnt $wims_md
    !if $wims_mdcnt=2
     !set wims_ff=!translate / to ~ in $module
-    <small><a href="http://wims.unice.fr/wims/$(wims_md)_$wims_ff.html">The most recent version</a></small><br>
+    <small><a href="http://wims.unice.fr/wims/$(wims_md)_$wims_ff.html">The most recent version</a></small><br/>
    !endif
   !endif
  !endif
@@ -210,6 +211,8 @@ WIMS $module_title [$module_language]
 !set wims_homeref_n0=!linecnt $wims_rm_0
 !set wims_homeref_n3=!linecnt $wims_rm_3
 !!</div> <!--div dans homeref-->
+
+<!-- END of html/homeref.phtml -->
 
 !read themes.phtml tail
 !robottrap

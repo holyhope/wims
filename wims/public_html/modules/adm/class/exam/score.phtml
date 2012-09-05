@@ -1,4 +1,4 @@
-
+<!-- adm/class/exam/score.phtml BEGIN -->
 
 !if $job=score
  !read adm/class/classname.phtml $wims_classname\
@@ -27,24 +27,42 @@ $wims_institutionname
  $name_empty
 !else
  $table_header
- $table_hdtr
+ 
  <caption>$name_scoreexam</caption>
- $table_tr<th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
- !for i=1 to $exocnt
+  <thead>
+   $table_tr
+    <th>$wims_name_Exercise</th>
+    <th>$wims_name_title</th>
+    <th>$name_coeff</th>
+    <th>$name_Score</th>
+   </tr>
+  </thead>
+  <tbody>
+  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
-   $table_tr<td align="center">$i
-  <td align="center">$ti
-  <td align="center">$we<td align="center">
-  !if $(replied$i)>0
-   $(got$i)
-  !else
-   <small>$name_pending</small>
-  !endif
- !next i
-  $table_tr<td align="center" colspan=4>
- !default score=$sprime
-$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
+   $table_tr
+    <td align="center">$i</td>
+    <td align="center">$ti</td>
+    <td align="center">$we
+    <td align="center">
+      !if $(replied$i)>0
+       $(got$i)
+      !else
+       <small>$name_pending</small>
+      !endif
+    </td>
+   </tr>
+  !next i
+  </tbody>
+  <tfoot>
+   $table_tr
+    <td align="center" colspan="4">
+     !default score=$sprime
+     $name_scoreexam2: <b>$score</b> <small>/ 10</small>.
+    </td>
+   </tr>
+  </tfoot>
  $table_end
 !endif
 <p>
@@ -81,8 +99,11 @@ $name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  </center>
 !endif
 
+
 :end
+<!-- adm/class/exam/score.phtml END -->
 !tail
 
 !reset job
+
 

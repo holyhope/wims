@@ -1,5 +1,4 @@
 !goto $wims_read_parm
-!exit
 
 :allowtype
 
@@ -27,7 +26,9 @@ Les hores de tall es poden utilitzar per permetre que els alumnes facin l'examen
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
 !read lang/help.phtml.fr variable
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :dependency
  <center><b>Dependències de les notes</b></center>
@@ -38,7 +39,9 @@ Les hores de tall es poden utilitzar per permetre que els alumnes facin l'examen
   vol dir que el participant ha de tenir un èxit del 50% a l'exercici 1,
   el 30% a l'exercici 2, i una mitjana d'èxit del 60% als exercicis
   3,4,5.
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :options
  <center><b>Opcions.</b></center>
@@ -50,11 +53,15 @@ Les hores de tall es poden utilitzar per permetre que els alumnes facin l'examen
   excepte per exercicis corregits manualment.
   </li>
   </ul>
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :contenu
  <center><b>Contingut d'un exercici</b></center>
 Aquest exercici pot ser agafat (a l'atzar) d'una llista d'exercicis
 existents en els fulls de treball. Si us plau, marqueu els exercicis dels
 fulls de la següent llista, que passaran a ser candidats a ser exercicis d'aquest examen.
-!exit 
+!if $wims_read_parm!=$empty
+ !exit
+!endif 

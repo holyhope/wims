@@ -1,11 +1,11 @@
-!goto $wims_read_parm
-!exit
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
 
 :allowtype
-
-!read adm/title.phtml 1\
-Indication sur l'enregistrement des notes.
-
+<h2 id="allowtype">Indication sur l'enregistrement des notes.</h2>
+<p>
  Dans le mode sélectif, vous pouvez imposer une
  restriction dans le temps pour l'enregistrement des notes en ajoutant des
  mots
@@ -24,9 +24,10 @@ Indication sur l'enregistrement des notes.
  Format des heures de coupure: <tt class="wims_code_words">aaaammjj.hh:mm</tt> (séparez plusieurs
  heures de coupure par des espaces).
  </small>
+</p>
 
 :variable
-<p>
+<p id="variable">
 Afin d'individualiser les restrictions d'accès, il est possible de mettre le nom d'une variable.
 Cette variable doit alors être définie pour chaque participant selon les règles précédentes
 soit manuellement dans les propriétés du compte d'un participant ou par liaison tableur 
@@ -36,10 +37,14 @@ exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
 (voir l'aide correspondante).
 </p>
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 
 :dependency
- <center><b>Dépendances des scores</b></center>
+ <h2 id="dependency">Dépendances des scores</h2>
+ <p>
  Les dépendances des scores veulent dire qu'un participant doit
   d'abord acquérir des points dans d'autres exercices de la feuille, avant
   de pouvoir travailler sur celui-ci. Par exemple,
@@ -47,23 +52,36 @@ exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
   signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
   30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices
   3,4,5.
-!exit
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 
 :options
- <center><b>Options.</b></center>
- Une seule option est pour l'instant disponible
+ <h2 id="options">Options</h2>
+ <p>
+ Une seule option est pour l'instant disponible&nbsp;:
   <ul>
    <li><em>autogen</em> veut dire que l'exercice est généré automatiquement même 
-   si l'utilisateur ne clique pas dessus pour qu'il puisse consulter l'exercice enregistré 
-   quand la session est fermée. Formellement déconseillé
-  sauf pour les exercices à correction manuelle.
-  </li>
+    si l'utilisateur ne clique pas dessus pour qu'il puisse consulter l'exercice enregistré 
+    quand la session est fermée. Formellement déconseillé
+    sauf pour les exercices à correction manuelle.
+   </li>
   </ul>
-!exit
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 
 :contenu
- <center><b>Contenu d'un exercice</b></center>
-Cet exercice peut être pris (aléatoirement) dans une liste d'exercices
-existants dans des feuilles de travail. Veuillez marquer parmi les exercices des
-feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
-!exit
+ <h2 id="contenu">Contenu d'un exercice</h2>
+ <p>
+ Cet exercice peut être pris (aléatoirement) dans une liste d'exercices
+ existants dans des feuilles de travail. Veuillez marquer parmi les exercices des
+ feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif

@@ -1,11 +1,10 @@
-!goto $wims_read_parm
-!exit
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
 
 :allowtype
-
-!read adm/title.phtml 1\
-Tuning the score registration.
-
+<h2 id="allowtype">Tuning the score registration</h2>
+<p>
 In the selective open mode, you can make time
 restrictions for score registrations, by adding words <tt class="wims_code_words">
 &gt;yyyymmdd.hh:mm</tt>
@@ -21,24 +20,39 @@ restrictions for score registrations, by adding words <tt class="wims_code_words
  <br>
  Format of cut times: <tt class="wims_code_words">yyyymmdd.hh:mm</tt> (separate several cut times
  by white spaces).
+</p>
 
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
-!read lang/help.phtml.fr variable
+:variable
+<p id="variable">
+Afin d'individualiser les restrictions d'accès, il est possible de mettre le nom d'une variable.
+Cette variable doit alors être définie pour chaque participant selon les règles précédentes
+soit manuellement dans les propriétés du compte d'un participant ou par liaison tableur 
+(variable technique).
+Si la restriction est un choix du participant (inscription selon certaines dates par
+exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
+(voir l'aide correspondante).
+</p>
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 
 :dependency
- <center><b>Score dependencies</b></center>
-Score dependencies refers to a certain number of points (or percentages) that must be obtained before
+<h2 id="score_dependency">Score dependencies</h2>
+<p>Score dependencies refers to a certain number of points (or percentages) that must be obtained before
 the student is allowed to move on to the next exercise.
 For example, <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
  means that the participant must have 50% of the points required on exercise 1, 30% on exercise 2, 
  and an average of 60% on exercises 3,4,5.
- <p>
-!exit
+</p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :options
- <center><b>Options.</b></center>
+ <h2 id="options">Options.</h2>
+ <p>
  At this moment just a single option is available. 
  <ul>
   <li><em>autogen</em> means that the exercise is automatically generated
@@ -47,12 +61,19 @@ For example, <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
   manually scored exercises.
  </li>
  </ul>
-!exit
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :contenu
- <center><b>Content</b></center>
-This exercise can be (randomly) taken from a list of existing exercises in
-worksheets. Please mark the worksheet exercises in the following list, which
-you want to be candidate of this exam exercise.
+ <h2 id="contenu">Content</h2>
+ <p>
+  This exercise can be (randomly) taken from a list of existing exercises in
+  worksheets. Please mark the worksheet exercises in the following list, which
+  you want to be candidate of this exam exercise.
+ </p>
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
