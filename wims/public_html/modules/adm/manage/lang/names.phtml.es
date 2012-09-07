@@ -226,11 +226,12 @@ las configuraciones guardadas en el directorio log.
  En consecuencia le recomendamos vivamente que instale ImageMagick antes de continuar.
 
 !set name_dynamic=Comprobar las imágenes dinámicas (puede plantearse hacerlo en distintos navegadores)
-
 !set name_tex=Esta fórmula usa una inserción dinámica escrita en TeX. Debería verse correctamente, a no ser \
- que TeX no esté instalado correctamente en su sistema.\
- Puede cambiar la escala de cambio del tamaño de los tipos de letra TeX si aparecen\
+ que TeX no esté instalado correctamente en su sistema. 
+!set name_size= Puede cambiar la escala de cambio del tamaño de los tipos de letra si aparecen\
  demasiado grandes o demasiado pequeños
+!set name_mathml=This formula uses dynamic MathML. If it does not appear correctly, it is certainly\
+because the browser you use does not treat correctly MathML.
 
 !set name_drawing=Las siguientes dos imágenes han sido generadas por la utilidad interna\
   de dibujo dinámico. La primera es una imagen estática, la segunda es animada.\
