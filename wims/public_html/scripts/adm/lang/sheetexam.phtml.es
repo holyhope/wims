@@ -41,7 +41,7 @@ Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les 
 !set name_dep=Tiene que mejorar su puntuación en el ejercicio
 !set name_dep2= antes de recibir puntuaciones en este.
 
-!distribute items poids,Coeficiente\
-into name_weight,name_coeff
+!distribute items poids,Coeficiente,Score\
+into name_weight,name_coeff,name_Score
 
 !set name_dependency=Dependencias de las puntuaciones&nbsp;

@@ -51,25 +51,26 @@
 !if $error=sharing_sheet
  Vos feuilles sont en partage avec d'autres classes !
  !if $wims_ismanager<2
-  Il faut demander au gestionnaire du site de désactiver la feuille
-  pour vous.
+  Il faut demander au gestionnaire du site de désactiver la feuille pour vous.
   !exit
  !endif
  Vous risquez de mettre vos classes voisines en désordre total en désactivant cette
- feuille. Cette opération est donc <b>fortement déconseillée</b>.
+ feuille. Cette opération est donc <strong>fortement déconseillée</strong>.
+ <p> Voulez-vous vraiment désactiver la feuille ? </p>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes, $(wims_name_actionlist[3])
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no, $wims_name_giveup 
+ </p>
  <p>
- Voulez-vous vraiment désactiver la feuille ?
- <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
- .&nbsp;&nbsp;
- !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
- <p>
- <b>Avant de continuer, demandez au moins aux enseignants de vos classes voisines de
- sauvegarder leurs classes&nbsp;!</b> Si les désordres apparaissent, même
- au bout de plusieurs mois, vous serez obligé de revenir en l'état AVANT la
- désactivation, perdant tout ce qui se passe APRES, et ce pour toutes les classes
- partageant la feuille ! On espère vous avoir suffisamment averti.
+  <b>Avant de continuer, demandez au moins aux enseignants de vos classes voisines de
+  sauvegarder leurs classes&nbsp;!</b> Si les désordres apparaissent, même
+  au bout de plusieurs mois, vous serez obligé de revenir en l'état AVANT la
+  désactivation, perdant tout ce qui se passe APR&Egrave;S, et ce pour toutes les classes
+  partageant la feuille ! On espère vous avoir suffisamment averti.
+ </p>
  !exit
 !endif
 
@@ -79,24 +80,26 @@
 !endif
 
 !if $error=non_empty_activities
- Vous voulez désactiver la feuille $sheet, alors que les participants ont déjà commencé à travailler dessus !
- <p>
+ <p>Vous voulez désactiver la feuille $sheet, alors que les participants ont déjà commencé à travailler dessus !</p>
+ 
  !if share iswordof $confirmed
-  De plus, la feuille est partagée avec d'autres classes où il peut y avoir
-  du travail et des scores aussi. Il est donc interdit de la désactiver.
+  <p>De plus, la feuille est partagée avec d'autres classes où il peut y avoir
+  du travail et des scores aussi. Il est donc interdit de la désactiver.</p>
   !exit
  !endif
- Tous les scores obtenus sur cette feuille seront effacés si vous la
- désactivez. Êtes-vous sûr de vouloir le faire ?
- <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
-.&nbsp;&nbsp;
- !href cmd=resume $wims_name_no; $wims_name_giveup
-. </center> <p>
+ <p>Tous les scores obtenus sur cette feuille seront effacés si vous la
+ désactivez. Êtes-vous sûr de vouloir le faire ?</p>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes, $(wims_name_actionlist[3])
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no, $wims_name_giveup
+ </p>
  Liste de comptes ayant déjà travaillé sur cette feuille :
- <p>
- <tt>$worktest</tt>
- <p>
+ 
+ <p><tt>$worktest</tt></p>
+ 
  <b>Remarque</b>. Cette action ne doit être prise que si c'est une classe de test. N'allez pas plus loin si les participants sont vos vrais élèves&nbsp;!
  !exit
 !endif
@@ -107,21 +110,25 @@
  suppression de l'ensemble des scores sur la feuille, si elle n'est pas interdite par la situation.
  <p>
  Voulez-vous continuer ?
- <p><center>
- !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
- .&nbsp;&nbsp;
- !href cmd=resume $wims_name_no; $wims_name_giveup
- .</center>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=activate $wims_name_yes, $(wims_name_actionlist[1])
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no, $wims_name_giveup
+ </p>
  !exit
 !endif
 
 !if prep_erase=$error
  Voulez-vous vraiment effacer la feuille numéro $sheet ($title)?
- <p><center>
- !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
-.&nbsp;&nbsp;
- !href cmd=resume $wims_name_no ; $wims_name_giveup
-.</center>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=erase $wims_name_yes, $wims_name_erase
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no, $wims_name_giveup
+ </p>
  !exit
 !endif
 
@@ -129,32 +136,34 @@
  Cette feuille numéro $sheet ($title) expire normalement le $expday
  !item $expmon of $months
  $expyear. Voulez-vous la rendre périmée maintenant?
- <p><center>
- !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
- .&nbsp;&nbsp;
- !href cmd=resume $wims_name_no ; $wims_name_giveup
- </center>
+ <p style="text-align:center">
+  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
+.&nbsp;&nbsp;
+  !href cmd=resume $wims_name_no ; $wims_name_giveup
+ </p>
  <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
  sur une feuille périmée. Mais leurs notes antérieures seront conservées 
  (et seront prises en compte dans les statistiques)
- et vous pouvez toujours les consulter.
+ et vous pouvez toujours les consulter.</p>
  !exit
 !endif
 
 !if prep_putsource=$error
+ <p>
  Si vous avez le source d'une feuille sauvée auparavant, vous pouvez l'insérer
  dans la feuille actuelle, en copiant ce source dans la fenêtre ci-dessous,
  puis en cliquant sur le bouton <span class="wims_button disabled">$wims_name_send</span>.
- Vous pouvez aussi utiliser ce
- formulaire pour insérer le source d'une feuille publique par copier-coller.
+ </p>
  <p>
+ Vous pouvez aussi utiliser ce formulaire pour insérer le source d'une feuille publique par copier-coller.
+ </p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
  <input type="hidden" name="job" value="putsource"><center>
  <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send">
+ <p><input type="submit" value="$wims_name_send"></p>
  </center></form>
  <span class="wims_warning">$wims_name_warning</span>.
  N'insérez pas de fichier source modifié&nbsp;! Vous risquez
@@ -174,14 +183,14 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2 <p>
+ <p>$name_expiration1 ($l_date). $name_expiration2 </p>
  !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
  !exit
 !endif
 
 !if $error=srcnoexo
- Cette feuille ne contient aucun exercice, donc son source est vide.<br>
+ Cette feuille ne contient aucun exercice, donc son source est vide.<br/>
  !href cmd=resume retour à la page de préparation
  !exit
 !endif

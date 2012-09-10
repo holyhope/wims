@@ -35,7 +35,7 @@ Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het
 !set name_dep=Je cijfer voor deze oefening moet verbeterd worden
 !set name_dep2=voordat je deze oefening mag proberen.
 
-!distribute items Gewicht,Co&euml;fficient\
-into name_weight,name_coeff
+!distribute items Gewicht,Co&euml;fficient,Score\
+into name_weight,name_coeff,name_Score
 
 !set name_dependency=Cijfer afhankelijkheden&nbsp;

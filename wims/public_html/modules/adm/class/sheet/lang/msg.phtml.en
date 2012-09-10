@@ -58,16 +58,18 @@ Strange, but  I do not find the exercise series to modify !!
  !endif
  Deactivating this worksheet may disrupted neighboring classes. 
  This action is therefore <b>strongly discouraged</b>.
- <p>
- Do you still want to deactivate the worksheet?
- <p><center>
+ <p> Do you still want to deactivate the worksheet?</p>
+ <p style="text-align:center">
+ !set wims_ref_class=wims_button
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
- .&nbsp;&nbsp;
+ &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ </p>
  <p>
- <b>Before continuing, ask at least the supervisors of your class neighbors to
- save their classes!</b>
+  <b>Before continuing, ask at least the supervisors of your class neighbors to
+  save their classes!</b>
+ </p>
  !exit
 !endif
 
@@ -81,48 +83,54 @@ Strange, but  I do not find the exercise series to modify !!
  You want to deactivate worksheet $sheet, although participants have already
  started to work on it!
  <p>
- !if share iswordof $confirmed
-  Moreover, the worksheet is shared with other classes where there may be scores too. 
-  It is therefore not allowed to deactivate it.
-  !exit
- !endif
- All scores obtained on this worksheet will be <b>erased</b>, if you deactivate it.
- Do you still want to proceed?
- <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
- .&nbsp;&nbsp;
- !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center> <p>
- List of students having worked on this worksheet:
+  !if share iswordof $confirmed
+   Moreover, the worksheet is shared with other classes where there may be scores too. 
+   It is therefore not allowed to deactivate it.
+   !exit
+  !endif
+  All scores obtained on this worksheet will be <b>erased</b>, if you deactivate it.
+  Do you still want to proceed?
+ </p>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no; $wims_name_giveup
+ </p>
  <p>
+  List of students having worked on this worksheet:
  <tt>$worktest</tt>
- <p>
- <b>Note</b>. Only deactivate if you are using this class as a test.
+ </p>
+ <p><b>Note</b>. Only deactivate if you are using this class as a test.</p>
  !exit
 !endif
 
 !if prep_activate=$error
- You want to activate worksheet $sheet. <p>
- By activating a worksheet, you make it visible to the participants of the class.  Once activated,
+ You want to activate worksheet $sheet.
+ <p>By activating a worksheet, you make it visible to the participants of the class.  Once activated,
  a worksheet cannot be modified, unless deactivated first. However, deactiviting an activated 
- worksheet will result in losing the scores and grades of the participants.
- <p>
- Do you want to continue?
- <p><center>
- !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
- .&nbsp;&nbsp;
- !href cmd=resume $wims_name_no; $wims_name_giveup
- .</center>
+ worksheet will result in losing the scores and grades of the participants.</p>
+ <p>Do you want to continue?</p>
+ <p style="text-align:center">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_no; $wims_name_giveup
+ </p>
  !exit
 !endif
 
 !if prep_erase=$error
  Do you really want to erase worksheet #$sheet ($title)?
- <p><center>
+ <p style="text-align:center">
+ !set wims_ref_class=wims_button
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
-.&nbsp;&nbsp;
+ &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no ; $wims_name_giveup
-.</center>
+ </p>
  !exit
 !endif
 
@@ -130,14 +138,16 @@ Strange, but  I do not find the exercise series to modify !!
  Worksheet #$sheet ($title) normally expires on $expday
  !item $expmon of $months
  $expyear. Do you want to expire it now?
- <p><center>
+ <p style="text-align:center">
+ !set wims_ref_class=wims_button
  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
- .&nbsp;&nbsp;
+ &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no ; $wims_name_giveup
- . </center>
+ </p>
  <p><b>Remark.</b> Your students cannot continue to work on a
  expired worksheet. But their earlier scores will be conserved (and will be taken into
- account in the statistics), and you can always consult these scores.
+ account in the statistics), and you can always consult these scores.</p>
  !exit
 !endif
 
@@ -152,10 +162,11 @@ Strange, but  I do not find the exercise series to modify !!
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"><center>
- <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send">
- </center></form>
+  <input type="hidden" name="job" value="putsource"><center>
+  <textarea cols="55" rows="10" name="source">$source</textarea>
+  </center>
+  <p><input type="submit" value="$wims_name_send"></p>
+ </form>
  <span class="wims_warning">$wims_name_warning</span>. 
  It is advised not to modify the source code of the worksheet as it may abort the
  worksheet.
@@ -174,9 +185,11 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2 <p>
- !href cmd=resume $wims_name_back2
- ($wims_name_sheetmanagement)
+ $name_expiration1 ($l_date). $name_expiration2 
+ <p>
+  !href cmd=resume $wims_name_back2
+  ($wims_name_sheetmanagement)
+ </p>
  !exit
 !endif
 
