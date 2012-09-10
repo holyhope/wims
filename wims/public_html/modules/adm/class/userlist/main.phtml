@@ -53,21 +53,27 @@ $wims_name_part_list
    &nbsp;
  !endif
 !endif
+!set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
 !if $usercnt==0
  $name_noyetparticipant
+ !if $typen!=level
  &nbsp;
  !set wims_ref_class=wims_button
  !href module=adm/class/reguser&step=1 $wims_name_addstudent
 &nbsp;
+!endif
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
 !else
+!!## it is dangerous to register directly a student in a level
+ !if $typen!=level
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
  &nbsp;
  !set wims_ref_class=wims_button
   !href module=adm/class/reguser&step=1 $wims_name_addstudent
  &nbsp;
+ !endif
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
  
@@ -418,8 +424,12 @@ $wims_name_part_list
 
 !set wims_menu_items=!append line sendmail,1,module=adm/class/sendmail\
 photoboard,1,module=adm/class/photoboard\
-addstudent,1,module=adm/class/reguser&step=1\
-csv,1,cmd=reply&job=csv\
+to $wims_menu_items
+!if $typen!=level
+!set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
+to $wims_menu_items
+!endif
+!set wims_menu_items=!append line csv,1,cmd=reply&job=csv\
  ,0,\
 formula,1,cmd=reply&job=formula&formula=prep\
 grades,1,module=adm/class/grades\
