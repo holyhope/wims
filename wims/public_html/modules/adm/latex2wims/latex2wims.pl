@@ -129,11 +129,11 @@ $hash_command{definition}{paragraph} = '<p class="paragraph"> #1 </p>' ;
 $hash_command{origin}{paragraph} = 'defaut' ;
 
 $hash_command{cnt_arg}{href} = 2 ;
-$hash_command{definition}{href} = '<a http:"#1" target="wims_external">#2</a>';
+$hash_command{definition}{href} = '<a href="http:#1" target="wims_external">#2</a>';
 $hash_command{origin}{href} = 'defaut' ;
 
 $hash_command{cnt_arg}{url} = 1 ;
-$hash_command{definition}{url} = '<a http:"#1" target="wims_external">#1</a>';
+$hash_command{definition}{url} = '<a href="http:#1" target="wims_external">#1</a>';
 $hash_command{origin}{url} = 'defaut' ;
 
 $hash_command{cnt_arg}{exercise} = 2 ;
@@ -721,7 +721,7 @@ sub tabular { my ( $b, $style ) = @_;
 sub includegraphics{ my ( $b, $opt ) = @_;
    $b=~ s/.(pdf|tiff|eps|svg)/.png/ ; 
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\(line|text)width)/linewidth("$2$3",$1)/eg;
-   $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(cm|px)/$1=\"$2$3\"/;
+   $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(cm|px)/ style=\"$1:$2$3;\"/;
   "<img src=\"\\filedir\/$b\" $opt alt=\"\">";
 }
  
