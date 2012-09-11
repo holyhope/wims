@@ -114,9 +114,10 @@ processed=yes
   exist=!defof user_exists in wimshome/$userdir/$l
   existsup=$exist
   !if $existsup=yes
-     lfname=!defof user_lastname,user_firstname in wimshome/$userdir/$l
+     lfname=!defof user_lastname,user_firstname,user_external_auth in wimshome/$userdir/$l
      !default up_firstname=$(lfname[2])
      !default up_lastname=$(lfname[1])
+     !default up_external_auth=$(lfname[3])
      !if $up_firstname!=$empty and $up_lastname!=$empty
        prop=yes
      !endif
@@ -124,9 +125,9 @@ processed=yes
 !!FIXME
     !if $idp_method isitemof $idp_method_list and ($up_firstname=$empty or $up_lastname=$empty)
 !! I am not sure of what we must do : priority to the idp or to the modification of the teacher ??
-      !distribute item $up_firstname, $up_lastname into up_firstname_ or $up_lastname_
+      !distribute item $up_firstname, $up_lastname into up_firstname_ , $up_lastname_
       !read adm/class/idp_$idp_method $up_external_auth
-      !if $up_firstname_!=$empty
+      !if $up_lastname_!=$empty
         up_lastname=$up_lastname_
       !endif
       !if $up_firstname_!=$empty
