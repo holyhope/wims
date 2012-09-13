@@ -333,9 +333,9 @@ for my $tag (keys %{$hash{text}}) {
   $T =~ s/\\($cle)\s*\{(\w*)\}/store_tag($1, $2, $tag, \%hash, \%hash_bloc)/eg;
   $hash{text}{$tag} = $T;
 }
-my @L = sort {$a cmp $b} (keys %{$hash_index{page}}) ;
-out('index', selection('<div class="index">' . makeindex (\%hash_index, 0, @L) . '</div>'
-                         ,'left-selection','index')) if ($INDEX == 1 && makeindex (\%hash_index));
+my @ListIndex = sort {$a cmp $b} (keys %{$hash_index{page}}) ;                  
+out('index', selection('<div class="index">' . makeindex (\%hash_index, 0, @ListIndex) . '</div>'
+                         ,'left-selection','index')) if ((@ListIndex) && $INDEX == 1 && makeindex (\%hash_index));
 
 #crée les blocs [entourés de la table des matières]
 
@@ -371,7 +371,7 @@ for my $tag (keys %{$hash{text}}) {
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
   my $TOCd = ($dotoc_right && $tagupbl ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
-  my $index = ($INDEX == 1) ? "\n\n\\link{index}{$tit_index}" : '';
+  my $index = ($INDEX == 1 && (@ListIndex)) ? "\n\n\\link{index}{$tit_index}" : '';
   my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\" src=\"scripts/js/wz_tooltip.js\"></script>" : '' ;
   out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
 }
@@ -465,7 +465,7 @@ sub class_index { my ($index,$level) = @_ ;
  #!(keys %{$ref_index->{page}}
  #sort keys %{$ref_index->{page}} ; 
 
-sub makeindex { my ($ref_index, $level, @L ) = @_; 
+sub makeindex { my ($ref_index, $level, @L ) = @_;
    return '' if (!$#L) ;
    my $dejavu = '' ;
    my $TEXT = "\n<ul class=\"index\">";
@@ -1335,7 +1335,9 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
    . '<center>'
    . $LOAD
    . '</center></div>' : '')
-   . $CHEMIN_down ;
+   . $CHEMIN_down . 
+   '</div>';
+
    }
 
    else {$CHEMIN_up . $text . $CHEMIN_down };
