@@ -1,6 +1,9 @@
 # ModExoSheet
 # Modifie l'exercice #qexo de la feuille #qsheet
-# 2 options possibles : "moveup" pour remonter l'exercice dans la liste et "modify" pour modifier un des parametres secondaires (tout sauf module et params)
+# 3 options possibles :
+#    "moveup" pour remonter l'exercice dans la liste
+#    "modify" pour modifier un des parametres secondaires (tout sauf module et params)
+#    "remove" pour retirer l'exercice de la feuille
 
 #Pour commencer, on verifie la classe
 !read scripts/check.class
@@ -22,15 +25,20 @@ sheet_status=!line 1 of $qproperties
 !endif
 
 # On verifie que qexo existe.
+exocnt=!recordcnt $qfile
+!if $qexo>$exocnt or $qexo<0
+ error=There is no exo $qexo in sheet $qsheet 
+ !exit
+!endif
 
 # si aucune option specifiee, on modifie l'exo qexo
 !default option=modify
 
-!if $option notitemof modify,moveup
+option=!itemstowords $option
+!if $option notitemof modify,moveup,remove,remove forced
 	error=unknown action ($option)
 	!exit
 !endif
-
 
 # OPTION 1 : move up an exo
 !if $option=moveup and $qexo > 1
@@ -38,13 +46,15 @@ sheet_status=!line 1 of $qproperties
  x_=!record $old_exo of wimshome/log/classes/$qclass/sheets/.sheet$qsheet
  y_=!record $qexo   of wimshome/log/classes/$qclass/sheets/.sheet$qsheet
  
- !distribute items 0,$old_exo into update_field,exo
  update_content=$y_
- !read scripts/update.exo
+ !distribute items 0,$old_exo,$qsheet into update_field,exo,sheet
+ !read adm/class/update.exo
  
- !distribute items 0,$qexo into update_field,exo
  update_content=$x_
- !read scripts/update.exo
+ exo=$qexo
+ !read adm/class/update.exo
+ 
+  message=exo $qexo from sheet $qsheet correctly moved up.
 !endif
 
 # OPTION 2 : modify an exo
@@ -106,11 +116,31 @@ $exo_dep\
 $exo_comment\
 \
 
-  
-  update_field=0
-  exo=$qexo
-  !read scripts/update.exo
+
+ !distribute items 0,$qexo,$qsheet into update_field,exo,sheet
+ !read adm/class/update.exo
+ 
+  message=Modifications done on exo $qexo from sheet $qsheet. ($nbchanged items applied)
 !endif
 
+# OPTION 3 : remove an exo
+!if remove isin $option
+  !distribute items -1,$qexo,$qsheet into update_field,exo,sheet
+  # avant tout, on vérifie qu'il n'y a pas eu de travail sur la feuille qu'on modifie !
+  !read scripts/check.worksheet
+  worktest2=!replace word supervisor by $ in $worktest
+  worktest2=!trim $worktest2
+  # pas besoin d'utiliser l'option "forced" si seul le supervisor a travaillé dans cette feuille.
+  !if $worktest2!=$empty and forced notwordof $option
+         worktest2 = !linestoitems $worktest2
+         error = You can't modify (delete an exercice) sheet $sheet. It has already been used by these students : [$worktest2]
+         !exit
+  !endif
+  # On desactive les scores obtenus sur cette feuille de travail :
+  !read scripts/del.worksheet
+  !read adm/class/update.exo
+  message=exo $qexo correctly removed from sheet $qsheet.
+
+!endif
 
 !read scripts/writeweights
