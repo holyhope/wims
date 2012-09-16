@@ -317,6 +317,10 @@ int wims_mathml_displaymode = 0;
 
 "\\leftrightarrow"  {yylval=wims_mathml_copy_string("&leftrightarrow;"); return MOL;}
 
+"\\longmapsto" {yylval = wims_mathml_copy_string("&#x27FC"); return MOL;}
+"\\Longmapsfrom" {yylval = wims_mathml_copy_string("&#x27FD"); return MOL;}
+"\\Longmapsto" {yylval = wims_mathml_copy_string("&#x27FE"); return MOL;}
+
 "\\mapsto"  |
 "\\map"       {yylval=wims_mathml_copy_string("&map;"); return MOL;}
 
