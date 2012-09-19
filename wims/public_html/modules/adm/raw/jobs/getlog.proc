@@ -1,4 +1,6 @@
 #GetLog permet d'obtenir les logs d'un utilisateur $quser
+# 2 options possibles : "score" ou "noscore"
+# si aucune option specifiée, les 2 sont donnés
 
 #on commence par verifier la classe $qclass
 !read scripts/check.class
@@ -11,3 +13,32 @@
  !exit
 !endif
 
+
+!if $option=score or $option=noscore
+  tmp_log =  !sh cd $wims_home/log/classes/$qclass\
+	cat $option/$quser 2>/dev/null
+!else
+  tmp_log =  !sh cd $wims_home/log/classes/$qclass\
+	cat score/$quser noscore/$quser 2>/dev/null | sort
+!endif
+
+
+
+logsize=!linecnt $tmp_log
+
+!for i=1 to $logsize
+   current = !line $i of $tmp_log
+   
+   # Procedure pour masquer partiellement les IP des etudiants : 
+   IP = !word -1 of $current
+   IP = !replace internal . by , in $IP
+   IP3 = !item -2 of $IP
+   IP4 = !item -1 of $IP
+   masked_IP = ###.###.$IP3.$IP4
+   current = !replace word number -1 by $masked_IP in $current
+   
+   # Log Format : 
+   #DATE, SESSION, SHEET/EXAM, EXO, CMD, IP
+   current = !replace internal $	$ by \t in $current
+   user_log = !append line $current to $user_log
+!next i

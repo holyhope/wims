@@ -434,13 +434,12 @@ $ by ],[ in $($v)
 
 :getlog
 
-!if $option=score or $option=noscore
- !sh cd $wims_home/log/classes/$qclass\
-	cat $option/$quser 2>/dev/null
-!else
- !sh cd $wims_home/log/classes/$qclass\
-	cat score/$quser noscore/$quser 2>/dev/null | sort
-!endif
+user_log=!replace internal $\
+$ by "," in $user_log
+
+!shortout "user_log":["$user_log"]
+
+
 !goto footer
 
 :gettime
