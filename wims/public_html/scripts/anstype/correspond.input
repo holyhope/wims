@@ -1,6 +1,5 @@
 !set anstype=yes
 !set anstyle=dprompt
-!set ans_require=
 
 !if $wims_read_parm=def
  !exit
@@ -51,13 +50,29 @@ $ by ',' in '$Rightarr'
 !set bgc3='bisque'
 !set bgc4='#8080ff'
 !set gify=$[min(40,$sizev)]
-!set lgif='<img src="gifs/arrows/corrleft.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
-!set rgif='<img src="gifs/arrows/corrright.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
-!set lrgif='<img src="gifs/arrows/corrlr.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
+!set lgif='<img src="gifs/arrows/corrleft.gif" width="$sizehm" height="$gify">'
+!set rgif='<img src="gifs/arrows/corrright.gif" width="$sizehm" height="$gify">'
+!set lrgif='<img src="gifs/arrows/corrlr.gif" width="$sizehm" height="$gify">'
 !set wims_ins_alt=none
 !set z=c$i
 
 !read js/dynapi3.phtml
+
+<style type="text/css">
+.etiquette{
+    display:table-cell;
+    text-align:center;
+    height:$(sizev)px;
+    vertical-align:middle;
+    cursor:pointer;
+}
+.gauche{
+    width:$(sizeh1)px;
+}
+.droite{
+    width:$(sizeh2)px;
+}
+</style>
 <script language="javascript" type="text/javascript">
 
  var $(z)_lefts=new Array($leftarr);
@@ -76,9 +91,10 @@ $ by ',' in '$Rightarr'
 
 dynapi.onLoad(function() {
 
- var tstrl='<table style="min-height:$sizev;min-width:$sizeh1; text-align:center;margin-bottom:auto;margin-top:auto;margin-left:auto;margin-right:auto;"><tr><td style="text-align:center;vertical-align:middle;">';
- var tstrr='<table style="min-height:$sizev;min-width:$sizeh1; text-align:center;margin-bottom:auto;margin-top:auto;margin-left:auto;margin-right:auto;"><tr><td style="text-align:center;vertical-align:middle;">';
- var tstr2='<\/td><\/tr><\/table>';
+ var tstrl='<div class="etiquette gauche">';
+ var tstrr='<div class="etiquette droite">';
+ var tstr2='<\/div>';
+
 	himg1=new Image(); himg1.src='gifs/arrows/corrleft.gif';
 	himg2=new Image(); himg2.src='gifs/arrows/corrright.gif';
 	himg3=new Image(); himg3.src='gifs/arrows/corrlr.gif';
