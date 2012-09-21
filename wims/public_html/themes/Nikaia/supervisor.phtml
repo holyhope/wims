@@ -1,0 +1,469 @@
+<!-- begin of $wims_theme/supervisor.phtml -->
+!! supervisor page definition.
+!nocache
+!if $module!=home
+ !exit
+!endif
+!set home_theme=yes
+
+!set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
+!set auth_method_list=cas,ldap,php
+!set auth_method=$(class_authidp[1;])
+!if $auth_method isitemof $auth_method_list
+  !set ext_login=$wims_external_auth
+!endif
+
+!default ext_login=$wims_realuser
+!default ext_login=$wims_user
+!default ext_login=supervisor
+!readproc tabletheme
+
+!read classlogo.phtml
+!if $class_logo!=
+ <div class="menuitem">
+ <div id="wimslogo$class_logoside">
+  <img src="$class_logo" border="0" alt="class logo" align="left">
+ </div><!--wimslogo-->
+ </div><!-- menuitem-->
+!endif
+!read ./adm/title.phtml 2\
+$wims_classname, $wims_institutionname\
+($SU_log - $(wims_name_$class_typename))
+<br clear="all">
+
+
+!if _tool isin $wims_session
+ !read ./tools.phtml
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+ !goto end
+!endif
+!if $class_type isin 3
+ $SU_greet.
+ !read Subclasses1.phtml
+ !if $class_typename=level
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+
+
+<!--1ère ouverture de wimsmenumodubox-->
+
+<div id="wimsmenumodubox">
+
+
+<div class="wimsmenu">
+<div class="menuitem">
+!read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
+</div><!--menuitem-->
+<div class="menuitem">
+!if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+ !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
+!else
+  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
+!endif
+</div><!--menuitem-->
+  !goto end
+ !else
+  !goto nocheck
+ !endif
+!endif
+!if $class_type notin 13
+ $SU_greet
+ $SU_exp1
+ !set d_=!char 7,8 of $class_expiration
+ !set m_=!char 5,6 of $class_expiration
+ !set y_=!char 1 to 4 of $class_expiration
+ !read adm/date.phtml date,$y_,$m_,$d_
+ !href module=adm/class/config $c_date_out
+ $SU_exp2.
+!else
+ $SU_greet.
+!endif
+!set wims_ref_class=wims_button_help
+!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_help
+<br>
+!if $wims_numpartconnected>0
+ $SU_numpartconnected.
+!else
+ $SU_nopartconnected.
+!endif
+
+!if $quota_free<2
+ !if $quota_free<0
+  <p>
+  $wims_name_exceeded
+  <p>
+  !href cmd=close&module=home&lang=$lang $wims_name_visitor
+  </div><!--wimsbody-->
+</div><!--wimspagebox-->
+  !goto end
+ !else
+  <br><b>$wims_name_warning</b>! $wims_name_reaching_limit
+ !endif
+!endif
+:nocheck
+
+!if & isin $newmsgcnt or $newmsgcnt>0
+ <br>
+ !href module=adm/forum/mboard $U_newmsg
+!endif
+<p>
+
+!if $class_type=4
+ <center>
+ !href module=adm/class/gateway $wims_name_SU_Gateway
+ </center> <p>
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+
+<!--2eme ouverture de wimsmenumodubox-->
+
+<div id="wimsmenumodubox">
+<div class="wimsmenu">
+<div class="menuitem">
+!if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+ !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
+!else
+  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
+!endif
+</div><!--menuitem-->
+ !goto end
+ 
+!endif
+
+!if $class_type=2
+ !if $subclasscnt>0
+  $table_header
+  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th>
+  !for i=1 to $subclasscnt
+   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+   !let f_aff=!item 4 of $f_class
+   !let f_name=!item 1 of $f_class
+   $table_tr
+    <td align="center">$ADD_class $i</td>
+    <td>
+    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+    </td>
+    <td align=center>
+     !item 9 of $f_class
+    </td>
+   </tr>
+  !next i
+  $table_end
+  <p><p>
+ !endif
+ 
+</div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+
+<!--3eme ouverture de wimsmenumodubox-->
+
+<div id="wimsmenumodubox">
+<div class="wimsmenu">
+   <div class="menuitem">
+    !read ./adm/oneitem.phtml addclass,1,module=adm/class/regclass
+</div><!--menuitem-->
+ 
+ !goto end
+!endif
+
+<div id="wims_class_manager_msg">
+!read ./wimshome/log/manager_msg.phtml.$lang
+</div>
+
+!set test=!replace / by , in $wims_class
+!if $(test[-1])=0 
+  !set test_up=!replace internal /0- by in $wims_class- 
+  !set wims_ref_class=wims_button
+  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
+!endif
+
+!set ac_0=<small>$(wims_name_shstatus[1])</small>
+!set ac_1=$(wims_name_shstatus[2])
+!set ac_2=$(wims_name_shstatus[3])
+!set ac_3=$(wims_name_shstatus[4])
+!set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+!if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
+ <p>$SU_nosheet
+!else
+ $table_header
+ <caption>$SU_shlist &nbsp;
+ [
+ !href module=adm/class/sequence $wims_name_reorder
+ ]
+ </caption>
+ $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !for i=1 to $subclasscnt
+  !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+  !let f_aff=!item 4 of $f_class
+  !let f_name=!item 1 of $f_class
+  $table_tr
+   <td align="center">$ADD_class $i</td>
+   <td>
+   !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+   </td>
+   <td align="center">-</td>
+  </tr>
+ !next i
+ !for i=1 to $doccnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
+  !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
+  $table_tr<td align="center">$wims_name_doc</td>
+  <td>
+  !href module=adm/doc&job=read&doc=$s_&block=main $t_
+  </td>
+  <td align="center">
+  !item $[$o_ +1] of $wims_name_Docstatus 
+  </td>
+  <td align="center">
+  !set wims_ref_class=wims_button
+  !href module=adm/doc&job=prop&doc=$s_ $wims_name_change
+  </td>
+ !next i
+ !for i=1 to $docpubliccnt
+    !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+    !distribute lines $sh into s_,t_,ti,d_,o_
+    $table_tr<td align="center">$wims_name_doc</td>
+   <td>
+   !href module=$s_&$t_ $ti
+   </td>
+   <td align="center">
+   !item $[$o_ +1] of $wims_name_status
+   </td>
+   <td align="center">
+   !set wims_ref_class=wims_button
+    !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
+   </td>
+ !next i
+ !for i=1 to $sheetcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into ac,t_,ti
+  $table_tr<td align="center">$wims_name_Sheet $i</td>
+  <td>
+  !href module=adm/class/sheet&sheet=$i $ti
+  </td>
+  <td align="center">$(ac_$[$ac])</td>
+  <td align="center">
+   !read adm/sheet/sheetaction.phtml sheet,$i,$ac,1
+  </td>
+ !next i 
+ !for i=1 to $examcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $sh into ac,t_,d_,ti
+  $table_tr<td align="center">$wims_name_Examen $i</td>
+  <td>
+  !href module=adm/class/exam&exam=$i $ti
+  </td>
+  <td align="center">$(ac_$[$ac])</td>
+  <td align="center">
+   !read adm/sheet/sheetaction.phtml exam,$i,$ac,1
+  </td>
+ !next i 
+ !for i=1 to $votecnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+  !distribute lines $sh into st_,ti_,op_,re_
+  $table_tr<td align="center">$wims_name_Vote</td>
+  <td>
+  !href module=adm/vote&job=read&vote=$i $ti_
+  </td>
+  <td align="center">$(ac_$[$st_])</td>
+  <td align="center"> </td>
+ !next i 
+ $table_end <p>
+!endif
+
+!!$ADD_1
+!!!href module=adm/doc&job=creat $ADD_doc
+!!!if $wims_supertype!=4 or $class_typename!=class
+!!,
+!!!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $ADD_sheet
+!!,
+!!!href module=adm/class/exam&exam=$[$examcnt+1] $ADD_exam
+!!,
+!!!href module=adm/createxo $ADD_exo
+!!!endif
+!!!if $class_type=2
+!!,
+!!!href module=adm/class/regclass $ADD_class
+!!!endif
+
+!! $wims_name_or
+!!!href module=adm/vote&job=creat $ADD_vote
+!!.
+
+<p>
+!read ./form.phtml
+!read ./result.phtml
+</div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+
+<!--4eme ouverture de wimsmenumodubox-->
+
+<div id="wimsmenumodubox">
+<div class="wimsmenu">
+!if $wims_supertype!=4 or $class_typename!=class
+   <div class="menuitem">
+   !read ./adm/oneitem.phtml classexo,1,module=classes/$lang&special_parm=.nocache.
+   </div><!--menuitem-->
+   <div class="menuitem">
+   !read ./adm/oneitem.phtml modtool,1,module=adm/modtool
+   </div><!--menuitem-->
+   <div class="itemsep"></div><!--itemsep-->
+!endif
+!if $wims_supertype!=4 or $class_typename!=class
+ <div class="menuitem">
+!read ./adm/oneitem.phtml add_sheet,1,module=adm/class/sheet&sheet=$[$sheetcnt+1] 
+</div><!--menuitem-->
+ <div class="menuitem">
+!read ./adm/oneitem.phtml add_exam,1,module=adm/class/exam&exam=$[$examcnt+1] 
+</div><!--menuitem-->
+ <div class="menuitem">
+!read ./adm/oneitem.phtml add_exo,1,module=adm/createxo 
+</div><!--menuitem-->
+!endif
+!if $class_type=2
+<div class="menuitem">
+!read ./adm/oneitem.phtml add_class,1,module=adm/class/regclass
+</div><!--menuitem-->
+!endif
+<div class="menuitem">
+!read ./adm/oneitem.phtml add_doc,1,module=adm/doc&job=creat
+</div><!--menuitem-->
+<div class="menuitem">
+!read ./adm/oneitem.phtml add_vote,1,module=adm/vote&job=creat
+</div><!--menuitem-->
+<div class="itemsep"></div><!--itemsep-->
+
+!if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course)
+  <div class="menuitem">
+    !read ./adm/oneitem.phtml Score1,1,module=adm/class/userlist
+  </div>
+!endif
+!if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course program)
+  <div class="menuitem">
+  !read ./adm/oneitem.phtml livret,1,module=adm/class/livret
+  </div>
+  <div class="itemsep"></div><!--itemsep-->
+!endif
+
+!endif  
+
+<div class="menuitem">
+!if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+ !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
+!else
+  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
+!endif
+</div><!--menuitem-->
+:end
+
+!set class_ent1=!rows2lines $class_ent
+!set class_ent_n0=!linecnt $class_ent1
+!for i_=1 to $class_ent_n0
+  !set 1_=!line $i_ of $class_ent1
+   <div class="menuitem">
+   !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
+   </div>
+ !next i_
+
+</div><!--menuitem-->
+</div><!--wimsmenu-->
+<div class="spacer"></div>
+</div><!--fermeture unique de wimsmenumodubox-->
+
+
+<!wimsmenubox unique-->
+
+<div id="wimsmenubox" class="footer">
+	<div class="wimsmenu">
+		<div class="menublock">
+			!if $class_typename notsametext program
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml SE_list,1,module=adm/class/userlist
+			</span><!-- menuitem-->
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml n_participant,1,style=student
+			</span><!-- menuitem-->
+			!endif
+		</div><!--end menublock-->
+	!! to separate sort of submenu 
+		<div class="menublock">
+			!if $wims_theme_version=0 or $wims_theme_version=
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml help,1,module=help/main&chapter=3,help
+			</span><!-- menuitem-->
+			!endif
+			!if $class_typename notsametext program
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml SE_mod,1,module=adm/class/motd 
+			</span><!-- menuitem-->
+			!endif
+			!if $exist_cdt=yes
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml cdt,1,module=adm/class/cdt
+			</span><!-- menuitem-->
+			!endif
+			!reset name_c
+			!if $class_superclass!=
+			 !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
+			  !set name_c=<small>($name_c)</small>
+			!endif
+			<span class="menuitem">
+			!read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
+			<small>$name_c</small>
+			</span><!-- menuitem-->
+			!!! the following allows to have forums in level. I comment because 
+			!!I don't know if it useful. don't delete. 
+			!!!if $wims_class=$wims_superclass and $class_type=4
+			!! !set level_cnt=!record 0 of wimshome/log/classes/$wims_class/levels
+			!! !set level_cnt=!linecnt $level_cnt
+			!! !set participate_=!defof user_participate in wimshome/log/classes/$wims_class/.users/$wims_user
+			!! !set supervise_=!defof user_supervise in wimshome/log/classes/$wims_class/.users/$wims_user 
+			!!  !for le_ from 1 to $level_cnt
+			!!   !if ,$wims_class/$le_/ isin ,$participate_,$supervise_
+			!!     !set name_c=!defof class_description in wimshome/log/classes/$wims_class/$le_/.def
+			!!     <div class="menuitem">
+			!!      !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard&forum=classes/$wims_class/$le_
+			!!      ($name_c)
+			!!    </div>
+			!!    !endif
+			!!  !next
+			!!!endif
+		</div><!--end menublock-->
+		<div class="menublock">
+			<div class="menuitem">
+			!read ./adm/oneitem.phtml SE_config,1,module=adm/class/config
+			</div><!--menuitem-->
+			!!<div class="menuitem">
+			!!!read ./adm/oneitem.phtml SE_secu,1,module=adm/class/config&job=security
+			!!</div><!--menuitem-->
+			<div class="menuitem">
+			!read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
+			</div><!--menuitem-->
+		</div><!--end menublock-->
+	</div><!--end wimsmenu-->	
+	
+</div><!--end wimsmenubox unique-->
+  
+</div><!--fermeture wimsbodybox unique-->
+
+<div id="wimstailbox">
+	<div class="wimstail">
+		<div class="tailitem">
+		WIMS-$wims_version@$httpd_HTTP_HOST. 
+		</div><!--tailitem-->
+		<div class="tailitem">
+		$E_manager
+		!mailurl $wims_site_manager\
+		WIMS
+		.</div><!--tailitem-->
+	</div><!--wimstail-->
+</div><!--end wimstailbox unique-->
+
+</body>
+</html>
+<!-- end of $wims_theme/supervisor.phtml -->
