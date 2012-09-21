@@ -1505,12 +1505,12 @@ int wims_mathml_displaymode = 0;
 "\\ZZ" {yylval=wims_mathml_copy_string("&Zopf;"); return MI;}
 "\\NN" {yylval=wims_mathml_copy_string("&Nopf;"); return MI;}
 "\\size["[0-9]{1,4}"]" {yylval=wims_mathml_copy_string(yytext+6);int len=strlen(yylval);if (yylval != wims_mathml_empty_string) { yylval[len-1]='%'; wims_mathml_env_start = 1; return TMP_FONTSIZE;}}
-"\\large" { yylval=wims_mathml_copy_string("150%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
-"\\Large" { yylval=wims_mathml_copy_string("180%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
-"\\huge"  { yylval=wims_mathml_copy_string("220%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
-"\\Huge"  { yylval=wims_mathml_copy_string("260%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
+"\\large" { yylval=wims_mathml_copy_string("120%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
+"\\Large" { yylval=wims_mathml_copy_string("140%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
+"\\huge"  { yylval=wims_mathml_copy_string("200%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
+"\\Huge"  { yylval=wims_mathml_copy_string("250%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
 
-"\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
+"\\includegraphics"(\[[^\]]*\])?\{[^}]*\};
 
 "\\"[a-zA-Z]+    {yylval=wims_mathml_copy_string(yytext+1); return MOP;}
 
