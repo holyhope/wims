@@ -1,0 +1,11 @@
+!set url=$wims_read_parm
+!set url=!nospace $url
+
+!! On utilise une librairie perl pour convertir au format URI correct : liburi-perl
+!! Au besoin, installez cell-ci : 
+!! debian : apt-get install liburi-perl
+!! Mac : port install install p5-uri
+
+!set url=!sh echo "$url" | perl -e 'use URI::Escape; print uri_unescape(<>)';
+
+!set script_out=$url

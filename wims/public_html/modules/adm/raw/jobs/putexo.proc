@@ -60,6 +60,10 @@ n1=!linecnt $data1
 !default sh_comment=$empty
 
 
+# On remplace les eventuels codes URI (%2F, etc..) par les caracteres adequats
+!read adm/urldecode $sh_module
+sh_module = $url
+
 !appendfile wimshome/log/classes/$qclass/sheets/.sheet$qsheet \
 :$sh_module\
 $sh_params\
