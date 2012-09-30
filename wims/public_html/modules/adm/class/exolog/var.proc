@@ -18,12 +18,22 @@ cdir=$wims_home/log/classes/$wims_class
 
 !if $job=log
  !if $logsheet>0 and $logexo>0
+  wimsnow=$wims_now
   !sh mkdir -p $cdir/exolog/$checkuser\
-  cp $sdir/exolog.$logsheet.$logexo $cdir/exolog/$checkuser/$wims_now-$wims_session-$logsheet.$logexo\
+  cp $sdir/exolog.$logsheet.$logexo $cdir/exolog/$checkuser/$wimsnow-$wims_session-$logsheet.$logexo\
   rm -f $sdir/exolog.$logsheet.$logexo\
   list=`ls -r $cdir/exolog/$checkuser | tail -n +$[$wims_class_exolog+1]`\
   if [ ! -z "$$list" ]; then rm -f $cdir/exolog/$checkuser/$$list; fi
   job=list
+!! replace the name of images by rename by the true name when saving
+  rename_list =!record 0 of wimshome/$wims_sesdir/.rename
+  rename_list_cnt=!linecnt $rename_list
+  !for l=1 to $rename_list_cnt
+    rename_l=!line $l of $rename_list
+    rename_l=!replace internal : by , in $rename_l
+    rename_l=!replace internal ? by \? in $rename_l
+    !sh perl -np -i -e 's:$(rename_l[2]):$(rename_l[1]):g' $cdir/exolog/$checkuser/$wimsnow-$wims_session-$logsheet.$logexo 
+  !next
  !else
   job=llist
  !endif
