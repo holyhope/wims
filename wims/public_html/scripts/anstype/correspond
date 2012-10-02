@@ -3,9 +3,7 @@
  !exit
 !endif
 !distribute items $oef_fill_option into sizeh1, sizeh2, sizev
-sizeh1=!nospace $sizeh1 px
-sizeh2=!nospace $sizeh2 px
-sizev=!nospace $sizev px
+
 rr=$(reply$i)
 gg=!singlespace $(replygood$i)
 gg=!rows2lines $gg
@@ -16,13 +14,14 @@ leftcnt=!itemcnt $left
 bgbad=#f04040
 bggood=#40c040
 badcnt=0
+
 tt=<table style="margin-left:auto;margin-right:auto;border-collapse:collapse;padding:4px;border-spacing:4px;">
 !for j=1 to $leftcnt
  g_=!item $j of $right
  r_=!item $j of $rr
  l_=!item $j of $left
  tt=$tt\
-<tr><td style="background-color:#c0c0c0;text-align:center;min-height:$sizev;min-width:$sizeh1;" >$l_</td>\
+<tr><td style="background-color:#c0c0c0;text-align:center;min-height:$(sizev)px;min-width:$(sizeh1)px;" >$l_</td>\
 <td><img src="gifs/arrows/corrlr.gif" alt="arrow">
  !if $g_ notsametext $r_
   !advance badcnt
@@ -31,7 +30,7 @@ tt=<table style="margin-left:auto;margin-right:auto;border-collapse:collapse;pad
   bg=$bggood
  !endif
  tt=$tt\
-</td><td style="background-color:$bg; text-align:center;min-height:$sizev;min-width:$sizeh2;">$r_</td></tr>
+</td><td style="background-color:$bg; text-align:center;min-height:$(sizev)px;min-width:$(sizeh2)px;">$r_</td></tr>
 !next j
 tt=$tt\
 </table>
