@@ -26,7 +26,7 @@ if [ -e wims_mathml.l ] ; then
     <table summary=\"latex commands\" style=\"font-size:8px\"><tr>" > $htmlfile
 firstletter="a"
 Tr=4;
-# 5 collumns... !
+# 5 columns... !
 echo  "		<th>Environments</td><th>\begin{env}&sdot;&sdot;&sdot;\end{env}</th>" >> $htmlfile 
 p=0
 e=$(($Tr - 2))
@@ -82,7 +82,7 @@ echo "</tr><tr>" >> $htmlfile
 	fi
 	chk=`echo $line | wc -c | tr -d '[:blank:]'`
 	if [ $chk -gt 1 ] ; then
-	    echo "<td>\\$line\c</td>" >> $htmlfile
+	    echo "<td>\\\\$line\c</td>" >> $htmlfile
 	    echo "<tr><td>&bsol;$line</td><td>:</td><td>\( \\$line \)</td></tr>" >> $oeffile
 	    echo "<tr><td>&bsol;$line</td><td>:</td><td>
 !insmath \\$line
