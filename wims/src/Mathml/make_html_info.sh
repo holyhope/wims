@@ -27,40 +27,40 @@ if [ -e wims_mathml.l ] ; then
 firstletter="a"
 Tr=4;
 # 5 collumns... !
-echo -n "		<td><b>Environments</b></td><td><b>\begin{env}&sdot;&sdot;&sdot;\end{env}</b></td>" >> $htmlfile 
+echo  "		<th>Environments</td><th>\begin{env}&sdot;&sdot;&sdot;\end{env}</th>" >> $htmlfile 
 p=0
 e=$(($Tr - 2))
 while [ $p -le $e ] ;do
-    echo -n "<td>&nbsp;</td>" >> $htmlfile
+    echo "<td>&nbsp;</td>" >> $htmlfile
     p=$(($p+1))
 done
-echo -n "</tr><tr>" >> $htmlfile
+echo "</tr><tr>" >> $htmlfile
 
 a=0
 for p in matrix pmatrix bmatrix  Bmatrix vmatrix Vmatrix smallmatrix cases dcases align* align aligned gathered split array alignat svg equation eqnarray ; do
-    echo -n "<td>$p</td>" >> $htmlfile
+    echo "<td>$p</td>" >> $htmlfile
     a=$(($a+1))
     if [ $a -gt $Tr ] ; then
-	echo -n "</tr><tr>" >> $htmlfile
+	echo "</tr><tr>" >> $htmlfile
 	a=0
     fi
 done
 p=0
 e=$(($Tr - $a))
 while [ $p -le $e ] ;do
-    echo -n "<td>&nbsp;</td>" >> $htmlfile
+    echo "<td>&nbsp;</td>" >> $htmlfile
     p=$(($p+1))
 done
-echo -n "</tr><tr>" >> $htmlfile
+echo "</tr><tr>" >> $htmlfile
 
     cat wims_mathml.l | grep "^\"" | awk -F\" '{if($2 != "<" && length($2)>5) print $2}' | tr '&{([]})#\' ' ' | sort -duif> $listfile
     p=0
     a=0
     while [ $a -le $Tr ] ; do
-	echo -n "<td><b>$firstletter</b></td>" >> $htmlfile
+	echo "<th>$firstletter</th>\c" >> $htmlfile
 	a=$((a+1))
     done
-    echo -n "</tr><tr>">> $htmlfile
+    echo "</tr><tr>">> $htmlfile
     while read line ; do
 	letter_one=$( set -f; printf "%c " $line )
 	letter_one=`echo $letter_one | tr '[:upper:]' '[:lower:]'`
@@ -68,28 +68,28 @@ echo -n "</tr><tr>" >> $htmlfile
 	    firstletter=$letter_one
 	    a=$p
 	    while [ $a -le $Tr ] ; do
-		echo -n "<td>&nbsp;</td>" >> $htmlfile
+		echo  "<td>&nbsp;</td>" >> $htmlfile
 		a=$((a+1))
 	    done
-	    echo -n "</tr><tr>" >> $htmlfile
+	    echo  "</tr><tr>" >> $htmlfile
 	    a=0
 	    while [ $a -le $Tr ] ; do
-		echo -n "<td><b>$firstletter</b></td>" >> $htmlfile
+		echo  "<th>$firstletter</th>" >> $htmlfile
 		a=$((a+1))
 	    done
-	    echo -n "</tr><tr>" >> $htmlfile
+	    echo  "</tr><tr>" >> $htmlfile
 	    p=0
 	fi
 	chk=`echo $line | wc -c | tr -d '[:blank:]'`
 	if [ $chk -gt 1 ] ; then
-	    echo -n "<td>\\$line</td>" >> $htmlfile
+	    echo "<td>\\$line\c</td>" >> $htmlfile
 	    echo "<tr><td>&bsol;$line</td><td>:</td><td>\( \\$line \)</td></tr>" >> $oeffile
 	    echo "<tr><td>&bsol;$line</td><td>:</td><td>
 !insmath \\$line
 </td></tr>" >> $phtmlfile
 	    p=$((p+1))
 	    if [ $p -gt $Tr ] ; then
-		echo -n "</tr><tr>">> $htmlfile
+		echo  "</tr><tr>">> $htmlfile
 	        p=0
 	    fi
 	fi
