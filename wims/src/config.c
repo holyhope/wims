@@ -756,7 +756,7 @@ void define_html_header(void)
   char *expir, *sp, *cp, *ladirection, *mp;
     char buf[MAX_LINELEN+1],ebuf[128];
     char *nocache="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n\
-<meta http-equiv=\"Cache-Control\" content=\"no-cache\">\n";
+<meta http-equiv=\"Cache-Control\" content=\"no-cache\" />\n";
     int noc;
     time_t t;
 
@@ -826,8 +826,8 @@ void define_html_header(void)
 %s\n\
 --></style>",tmplbuf); }
 		  else {
-		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
-		  <link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\">",nbuf,ti);
+		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
+		  <link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\" />",nbuf,ti);
 		 }
 		setvar("wims_CSS",buf);
 	    }
