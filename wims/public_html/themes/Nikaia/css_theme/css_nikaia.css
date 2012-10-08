@@ -33,13 +33,16 @@
 // Images
 @theme              : "++resource++jalon.theme.images";
 @backgroundImage    : "portal-header_uvsq.png";*//**************************************************/
-/**************************************************/
-/**************************************************/
-/**************************************************/
-/**************************************************/
+
+
+
 /******AFFICHAGE NORMAL**********************************
 **********************************************************************************************/
+
 @media all {
+
+  /* GENERAL */
+
   body {
     margin: 0;
     padding: 0;
@@ -58,6 +61,10 @@
   body div.spacer {
     clear: both;
   }
+  
+  
+  /* DUCUMENTATION */
+  
   body div#wimsdoc div#wimstopbox {
     background-color: #ffffff;
     background-image: none;
@@ -95,18 +102,26 @@
   body div#wimsdoc #wimsbodybox #wimspagebox .wimsdocleftmenu {
     position: relative;
     top: 0;
-    margin-top: 0;
+    margin-top: 10px;
+    float: left;
+    width: 5%;
   }
+  
   body div#wimsdoc #wimsbodybox #wimspagebox .wimsdocleftmenu div.menuitem {
-    display: inline-block;
+    text-align: center;
   }
+  
+  
+  body div#wimsdoc #wimsbodybox #wimspagebox .wimsdocrightmenu {
+  	display: none;
+  }
+  
   body div#wimsdoc #wimsbodybox #wimspagebox div.wimsbody {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    float: none;
-    clear: both;
+    width: 85%;
   }
+  
+  /* AIDE */
+  
   body div#wimsmhelp div#wimstopbox {
     padding-top: 0;
   }
@@ -146,9 +161,9 @@
   }
   body div#wimsmhelp div#wimsbodybox div#wimspagebox div.wimsbody {
     padding: 0;
-    margin: 0;
+    margin: auto;
+    width: 90%;
     float: none;
-    width: 100%;
     -webkit-border-radius: 5px ;
     -moz-border-radius: 5px ;
     border-radius: 5px ;
@@ -196,6 +211,9 @@
   body div#wimsmhelp div#wimsmenubox ul.wimsmenu li a {
     color: #ffffff;
   }
+  
+  /* PAGE D'ACCUEIL */
+  
   body div#wimsfrontpage {
     min-width: 0;
   }
@@ -213,6 +231,10 @@
     width: 100%;
     background: none;
   }
+  
+  
+  /* PAGE NORMALE */
+  
   body ul.wimsmenu {
     padding-top: 0;
     padding-bottom: 0;
@@ -260,6 +282,10 @@
     color: #ffffff;
     margin: 0px 0px 2px 2px;
   }
+  
+  
+  /* HEADER */
+  
   body #wimslogo {
     float: left;
   }
@@ -357,6 +383,10 @@
   #wimstopbox ul.menuglobal li a {
     color: #000000;
   }
+  
+  
+  /* CORPS */
+  
   #wimsbodybox {
     position: relative;
     background-color: #f5f5f5;
@@ -366,7 +396,7 @@
     float: left;
     width: 88%;
     clear: both;
-    min-height: 15em;
+    min-height: 25em;
     background-color: #f5f5f5;
   }
   #wimsbodybox #wimspagebox div#menuprof {
@@ -614,13 +644,6 @@
   #wimsbodybox #wimspagebox div.wimsbody table.wimstable .wims_button {
     background: #808080;
   }
-  #wimsbodybox #wimspagebox div.wimsbody div.contenu {
-    /*background-color: @lightColor;
-  					padding: 10px;
-  					.radius-4(0, 0, 5px, 5px);
-  					clear: both;*/
-  
-  }
   #wimsbodybox #wimspagebox div.wimsbody div.contenu form {
     padding-bottom: 20px;
   }
@@ -746,6 +769,9 @@
   #wimsbodybox #wimspagebox div.wimsbody div.center div.wims_search_classe ul.recherche select {
     padding: 5px 0;
   }
+  
+  /* WIMSMENUMODUBOX */
+  
   #wimsbodybox div#wimsmenumodubox {
     float: left;
     position: relative;
@@ -828,6 +854,9 @@
   #wimsbodybox div#wimsmenubox.footer ul li {
     display: inline-block;
   }
+  
+ /* PIED DE PAGE */ 
+ 
   div#wimstailbox {
     margin-top: 0;
     clear: both;
@@ -836,12 +865,18 @@
   }
 }
 /*fin du media all*/
-/******AFFICHAGE SUR SMARTPHONES, TABLETTES ET PETITS ECRANS**********************************
-**********************************************************************************************/
+
+/******AFFICHAGE SUR SMARTPHONES, TABLETTES ET PETITS ECRANS*********************************/
+
 @media only screen and (max-device-width: 1024px) {
   body {
     font-size: 105%;
   }
+  
+  input[name="keyword"], input.wims_home_form {
+	/*width: 80%;*/
+  }
+  
   /********PAGE D'ACCUEIL MOBILES*************/
   div#wimsfrontpage div#wimstopbox {
     padding-top: 0;
@@ -896,6 +931,19 @@
   div#wimsfrontpage div#wimsbodybox div.footer ul.wimsmenu li.menuitem a:active {
     text-decoration: none;
   }
+  
+  /********DOCUMENTATION MOBILE*******************************/
+  
+  body div#wimsdoc #wimsbodybox #wimspagebox .wimsdocleftmenu, body div#wimsdoc #wimsbodybox #wimspagebox .wimsdocrightmenu,
+  div#wimsdoc div#wimstopbox div.wimsmenu span.menuitem a.doch_printable, 
+  div#wimsdoc div#wimstopbox div.wimsmenu span.menuitem a.doch_about {
+  	display: none;
+  }
+  
+  body div#wimsdoc #wimsbodybox #wimspagebox .wimsbody {
+  	margin: auto;
+  }
+  
   /********HEADER POUR MOBILES***************************/
   #wimstopbox {
     padding-top: 0;
@@ -971,6 +1019,7 @@
     float: none;
     margin: 0;
   }
+    
   #wimsbodybox div#wimspagebox div.wimsbody div.titre_recherche {
     border-radius: 0;
     padding-left: 10px;

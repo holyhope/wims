@@ -755,7 +755,7 @@ void define_html_header(void)
 {
   char *expir, *sp, *cp, *ladirection, *mp;
     char buf[MAX_LINELEN+1],ebuf[128];
-    char *nocache="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\
+    char *nocache="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n\
 <meta http-equiv=\"Cache-Control\" content=\"no-cache\">\n";
     int noc;
     time_t t;
@@ -787,7 +787,7 @@ void define_html_header(void)
 	}
 	snprintf(ebuf,sizeof(ebuf),"%s",expir); strip_trailing_spaces(ebuf);
 	snprintf(buf,sizeof(buf),
-		 "<meta http-equiv=\"expires\" content=\"%s\">\n%s",ebuf,nocache);
+		 "<meta http-equiv=\"expires\" content=\"%s\" />\n%s",ebuf,nocache);
 	setvar("wims_expire",buf);
     }
     css: setvar("wims_CSS","");

@@ -1,4 +1,5 @@
 <!-- begin of $wims_theme/tail.phtml -->
+
 !! Tail menu theme.
 !nocache
 !set wims_theme_tail=yes
@@ -15,23 +16,22 @@
 !endif
 
 
-
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
 <div id="wimsmenumodubox">
  !if $wims_homeref_n0>0
- <div class="wimsmenu">
- !for i_=1 to $wims_homeref_n0
-  !set 1_=!line $i_ of $wims_rm_0
-  !if $(1_[1])=
-   <div class="itemsep"></div>
-  !else
-   <div class="menuitem">
+  <div class="wimsmenu">
+  !for i_=1 to $wims_homeref_n0
+   !set 1_=!line $i_ of $wims_rm_0
+   !if $(1_[1])=
+    <div class="itemsep"></div>
+   !else
+    <div class="menuitem">
      !read oneitem.phtml $1_
-   </div>
-  !endif
- !next i_
-</div><!--wimsmenu-->
-!endif wims_homeref_n0
+    </div>
+   !endif
+  !next i_
+  </div><!--wimsmenu-->
+ !endif wims_homeref_n0
 !if $wims_homeref_n5>0
 <div class="wimsmenu">
 !for i_=1 to $wims_homeref_n5
@@ -90,30 +90,33 @@
 
 !if $wims_homeref_n1>0
 <div id="wimsmenubox">
-<div class="wimsmenu">
-!for i_=1 to $wims_homeref_n1
- !set 1_=!line $i_ of $wims_rm_1
- !set css_class=!item 1 of $1_
- <span class="menuitem $css_class">
- !read oneitem.phtml $1_
- </span><!-- menuitem-->
-!next i_
-</div><!--wimsmenu--></div><!--wimsmenubox-->
+ <div class="wimsmenu">
+  !for i_=1 to $wims_homeref_n1
+   !set 1_=!line $i_ of $wims_rm_1
+   !set css_class=!item 1 of $1_
+   <span class="menuitem $css_class">
+    !read oneitem.phtml $1_
+   </span>
+  !next i_
+ </div><!--wimsmenu-->
+</div><!--wimsmenubox-->
 !endif
+
 </div><!--wimsbodybox-->
+
 !if $wims_homeref_n2>0
 <div id="wimstailbox">
-<div class="wimstail">
-!for i_=1 to $wims_homeref_n2
- <div class="tailitem">
- !set 1_=!line $i_ of $wims_rm_2
- !read oneitem.phtml $1_
- </div><!--tailitem-->
-!next i_
-</div><!--wimstail-->
-
+ <div class="wimstail">
+  !for i_=1 to $wims_homeref_n2
+   <div class="tailitem">
+    !set 1_=!line $i_ of $wims_rm_2
+    !read oneitem.phtml $1_
+   </div><!--tailitem-->
+  !next i_
+ </div><!--wimstail-->
 </div><!--wimstailbox-->
 !endif
+
 !endif
 
 
