@@ -35,7 +35,7 @@ my $INDEX = 0 ;
 my $TOOLTIP = 0 ;
 my $STYLE = '' ;
 my $OPTION = '' ;
-my $tooltip_prompt = '<img src="gifs/picto.gif" alt="picto">' ;
+my $tooltip_prompt = '<img src="gifs/picto.gif" alt="picto" />' ;
 my $linkout='' ; 
 $worksheet= '';
 $SHEET = '' ;
@@ -75,8 +75,8 @@ $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
-my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0>}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0>';
+my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0 />}';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0 />';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################

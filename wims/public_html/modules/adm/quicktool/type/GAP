@@ -19,7 +19,7 @@
    \text{rab_inst=}
    \text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
    \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
-   \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt="">}
+   \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt="" />}
    \if{\inst_audio notsametext }{
      \text{rab_inst1= . isin \inst_audio or \packs= ? 
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
@@ -149,6 +149,12 @@
 
 \matrix{rep=\format iswordof clickfill dragfill raw case ? \trou}
 \matrix{rep=\format iswordof case raw? wims(replace internal &#44; by , in \rep)}
+
+\if{\format=menu}{
+  \text{trouV=slib(oef/blank _, ,\trouV)}
+  \text{rep=slib(oef/blank _, ,\rep)}
+}
+
 \text{choix=\choix notsametext ? wims(append item wims(replace internal ; by , in \trou) to \choix)}
 \text{choix= wims(replace internal | by , in \choix)}
 \text{choix=wims(listuniq \choix)}
