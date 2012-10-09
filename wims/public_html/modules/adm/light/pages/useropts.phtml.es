@@ -15,7 +15,7 @@
 !let module_translator_address=juanrafael.fernandez@hispalinux.es
 !!INDEXEND
 
-!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
 
 
 !let texsize=!char 1 of $useropts
@@ -45,7 +45,7 @@ en WIMS.
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border="1" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
   </li>
@@ -78,13 +78,13 @@ Mathematical formulas.
     !endif
     Set the size of mathematical formulas.
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px">
+    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" />
     &nbsp;
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$default Default
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px">
+    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px"/>
  </li><li>
 !set zoom=1
   Use zoom on formulas by mouse click.
@@ -93,7 +93,7 @@ Mathematical formulas.
 !set zoom=0 
    &nbsp;
 !set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+   !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
     Currently, you use the server with "Math with images". If you have a suitable 
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, you may also use MathML.
@@ -114,10 +114,10 @@ Size of mathematical symbols and formulas.
     !let ts2=9
 !endif
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px">
+    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px">
+    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
   Letras griegas $m_alpha, $m_pi. Expresiones matemáticas 
   !let ins_align=middle
@@ -148,7 +148,6 @@ Cuando todo corresponda exactamente con lo que quiera, ponga
 <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
  title="WIMS">este enlace</a>
 en sus Favoritos, para mantener estas preferencias para conexiones futuras.
-<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 
 :end
 !tail

@@ -6,14 +6,14 @@
 !let module_version=1.00
 !let module_wims_version=0.13
 !let module_language=nl
-!let module_copyright=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
 !let module_category=adm
 !let module_level=
 !let module_domain=adm
 !let module_keywords=wims
 !!INDEXEND
 
-!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'></a></li><li>Windows<ul><li>Internet Explorer : <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'> DESSCI MathPlayer plugin</a><li>Opera : <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
 
 
 !let texsize=!char 1 of $useropts
@@ -42,14 +42,14 @@ Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border="1" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
   </li>
 !endif
 
 <li>
-Wiskundige formules:<br>
+Wiskundige formules:<br/>
 
 !if $texalign=2
     De server staat afgesteld op <b>MathML</b>.
@@ -75,13 +75,13 @@ Wiskundige formules:<br>
     !endif
     Stel de grootte van de formules af.
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px">
+    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px"/>
     &nbsp;
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$default Standaard
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px">
+    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px"/>
  </li><li>
 !set zoom=1
     Gebruik ook inzoomen per muisklik.
@@ -90,7 +90,7 @@ Wiskundige formules:<br>
    !set zoom=0 
    &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+   !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
     De server staat afgesteld op "Wiskunde met plaatjes".
     Bij gebruik van een geschikte
@@ -112,17 +112,17 @@ Grootte van wiskundige symbolen en formules.
     !let ts2=9
 !endif
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px">
+    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px"/>
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px">
+    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px"/>
   <p>
   Griekse Letters $m_alpha, $m_pi. Wiskundige uitdrukking 
   !let ins_align=middle
 !! we need to force dynamic insertion
   !set pw=2
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-  <br>
+  <br/>
   Gemengde formule
   <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
 </li><li>
