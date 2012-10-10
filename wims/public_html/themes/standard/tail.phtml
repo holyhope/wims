@@ -88,7 +88,7 @@
 !endif
 
 !if $wims_homeref_n1>0
-<div id="wimsmenubox">
+<div id="wimsmenubox" class="footer">
  <div class="wimsmenu">
   !for i_=1 to $wims_homeref_n1
    !set 1_=!line $i_ of $wims_rm_1
@@ -101,23 +101,25 @@
 </div><!--wimsmenubox-->
 !endif
 
+<div class="spacer"></div>
 </div><!--wimsbodybox-->
 
 !if $wims_homeref_n2>0
 <div id="wimstailbox">
- <div class="wimstail">
-  !for i_=1 to $wims_homeref_n2
-   <div class="tailitem">
-    !set 1_=!line $i_ of $wims_rm_2
-    !read oneitem.phtml $1_
-   </div><!--tailitem-->
-  !next i_
- </div><!--wimstail-->
+<div class="wimstail">
+!for i_=1 to $wims_homeref_n2
+ <div class="tailitem">
+ !set 1_=!line $i_ of $wims_rm_2
+ !read oneitem.phtml $1_
+ </div><!--tailitem-->
+!next i_
+</div><!--wimstail-->
+
 </div><!--wimstailbox-->
 !endif
-
 !endif
 
+<!--FIN BAS DE PAGE-->
 
 !if help isin $wims_session
 </div><!--wims_mhelp-->

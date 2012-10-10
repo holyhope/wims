@@ -46,7 +46,7 @@ $wims_classname, $wims_institutionname\
  !if $class_typename=level
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
-<div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
+<div id="wimsmenumodubox">
 <div class="wimsmenu">
 <div class="menuitem">
 !read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
@@ -111,7 +111,7 @@ $wims_classname, $wims_institutionname\
  </center> <p>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
-<div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
+<div id="wimsmenumodubox">
 <div class="wimsmenu">
 <div class="menuitem">
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
@@ -148,7 +148,7 @@ $wims_classname, $wims_institutionname\
  
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
-<div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
+<div id="wimsmenumodubox">
 <div class="wimsmenu">
    <div class="menuitem">
     !read ./adm/oneitem.phtml addclass,1,module=adm/class/regclass
@@ -286,7 +286,7 @@ $wims_classname, $wims_institutionname\
 !read ./result.phtml
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
-<div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
+<div id="wimsmenumodubox">
 <div class="wimsmenu">
 !if $wims_supertype!=4 or $class_typename!=class
    <div class="menuitem">
@@ -355,10 +355,11 @@ $wims_classname, $wims_institutionname\
 
 </div><!--menuitem-->
 </div><!--wimsmenu-->
-</div><!--wimsmenumodubox-->
+<div class="spacer"></div>
+</div><!--fermeture unique de wimsmenumodubox-->
 
 
-<div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
+<div id="wimsmenubox">
 <div class="wimsmenu">
 <div class="menublock">
 !if $class_typename notsametext program
@@ -429,17 +430,18 @@ $wims_classname, $wims_institutionname\
 </div><!--end wimsmenubox-->
 </div><!--wimsbodybox-->
 <div id="wimstailbox">
-<div class="wimstail">
-<div class="tailitem">
-WIMS-$wims_version@$httpd_HTTP_HOST. 
-</div><!--tailitem-->
-<div class="tailitem">
-$E_manager
-!mailurl $wims_site_manager\
-WIMS
-.</div><!--tailitem-->
-</div><!--wimstail-->
-</div><!--end wimstailbox-->
+	<div class="wimstail">
+		<div class="tailitem">
+		WIMS-$wims_version@$httpd_HTTP_HOST. 
+		</div><!--tailitem-->
+		<div class="tailitem">
+		$E_manager
+		!mailurl $wims_site_manager\
+		WIMS
+		.</div><!--tailitem-->
+	</div><!--wimstail-->
+</div><!--end wimstailbox unique-->
+
 </body>
 </html>
 <!-- end of $wims_theme/supervisor.phtml -->
