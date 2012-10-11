@@ -1144,7 +1144,7 @@ void calc_instexst(char *p)
     if(ins_alt[0] && strcmp(pt,"none")!=0)
       snprintf(altbuf,sizeof(altbuf)," alt=\"%s\"",ins_alt);
     else  snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
-    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s>%s",
+    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s/>%s",
 	     md1,urlbuf,border,vspace,at,buf2,altbuf,md2);
     setvar("ins_attr",""); ins_alt[0]=0;
     setvar("ins_url",urlbuf);
@@ -1862,7 +1862,7 @@ void calc_imgrename(char *p)
 	p2=find_word_start(p2); p4=find_word_end(p2);
 	memmove(buf,p2,p4-p2); buf[p4-p2]=0;
 	calc_rename(buf); *p3=0;
-	snprintf(buf2,sizeof(buf2),"<img src=\"%s\"%s alt=\"\">",buf, p4);
+	snprintf(buf2,sizeof(buf2),"<img src=\"%s\"%s alt=\"\"/>",buf, p4);
 	*p3=')'; p3++;
 	string_modify(p,p1,p3,"%s",buf2);
 	p1+=strlen(buf2);

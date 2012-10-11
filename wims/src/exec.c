@@ -581,7 +581,7 @@ void exec_header1(char *p) { _header(p,0);}
 
 char href_target[128];
 char jsbuf[512];
-#define jsstr " onClick=\"%s=window.open('','%s','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')\""
+#define jsstr " onclick=\"%s=window.open('','%s','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')\""
 int ref_mhelp=0;
 int follow_list[]={
     ro_session, ro_lang, ro_useropts, ro_module
@@ -849,7 +849,7 @@ void exec_form(char *p)
     if(s!=NULL && *s!=0 && !isspace(*s)) {
 	snprintf(st,sizeof(st)," target=\"%s\"",s);
 	if(strcmp(s,"_parent")!=0) {
-	    new=1; wn="<input type=\"hidden\" name=\"wims_window\" value=\"yes\">\n";
+	    new=1; wn="<input type=\"hidden\" name=\"wims_window\" value=\"yes\"/>\n";
 	}
     }
     else st[0]=0;
@@ -891,7 +891,7 @@ void exec_form(char *p)
 		snprintf(st,sizeof(st),"%.10s%s",s1,href_target+4);
 		s=st;
 	    }
-	    output("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
+	    output("<input type=\"hidden\" name=\"%s\" value=\"%s\"/>\n",
 		   ro_name[follow_list[i]],s);
 	}
     }
@@ -903,9 +903,9 @@ void exec_form(char *p)
 	memmove(buf,p1,i);buf[i]=0;
 	for(i=0;i<CMD_NO && strcmp(buf,commands[i]);i++);
 	if(i<CMD_NO) {
-	    output("<input type=\"hidden\" name=\"cmd\" value=\"%s\">\n",buf);
+	    output("<input type=\"hidden\" name=\"cmd\" value=\"%s\"/>\n",buf);
 	    if(i!=cmd_intro && i!=cmd_new)
-	      output("<input type=\"hidden\" name=\"module\" value=\"%s\">\n",
+	      output("<input type=\"hidden\" name=\"module\" value=\"%s\"/>\n",
 		     getvar(ro_name[ro_module]));
 	}
     }
@@ -1085,7 +1085,7 @@ void _exec_ins(char *p, char *script_name,char *format)
 	*p1=0;
 	if(bbuf[0]==0) snprintf(bbuf,sizeof(bbuf),"Fail");
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 " <img src=\"%s\" alt=\"Error\"> <p><small><pre>%s</pre></small> <p> ",
+		 " <img src=\"%s\" alt=\"Error\"/> <p><small><pre>%s</pre></small> <p> ",
 		 url,bbuf);
 	setvar("ins_warn","fail");
 	setvar("ins_cnt","0");
@@ -1127,14 +1127,14 @@ void _exec_ins(char *p, char *script_name,char *format)
     else snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
     if(strcasecmp(tag,"form")!=0) {
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s>",
+		 "<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s/>",
 		 url, border, vspace, at, buf2, altbuf);
     }
     else {
 	char *n;
 	if(*tag2!=0) n="name="; else n="";
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<input type=\"image\" %s%s src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s>",
+		 "<input type=\"image\" %s%s src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s/>",
 		 n,tag2,url,border,vspace, at,buf2, altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),

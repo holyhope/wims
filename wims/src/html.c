@@ -103,21 +103,21 @@ void _form_menus(char *p,int kind)
 	    break;
 	    
 	    case FORM_RADIO:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s>&nbsp;%s",
+	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>&nbsp;%s",
 		   nbuf,nbuf,p0,pc,plist[i]);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
 	    
 	    case FORM_CHECKBOX:
-	    output("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\"%s>&nbsp;%s",
+	    output("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>&nbsp;%s",
 		   nbuf,nbuf,p0,pc,plist[i]);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
 	    
 	    case FORM_BAR:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s>",
+	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>",
 		   nbuf,nbuf,p0,pc);
 	    break;
 	    
