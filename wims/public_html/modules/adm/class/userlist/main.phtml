@@ -261,11 +261,12 @@ $wims_name_part_list
     !advance cnt_$j
    !endif
   !next j
+  </tr>
  !next i
  !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
 	$[rint(100*$mean_tea/$usercnt)/100],\
 	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
- $table_hdtr<td align="center"><b>$name_classAverage</b></td>
+ $table_hdtr<th>$name_classAverage</th>
  !if $job_affi=notes
   !if $manual>0
    !if $m_glob >0
@@ -358,6 +359,7 @@ $wims_name_part_list
    !endif
    </td>
   !next j
+  </tr>
  !endif
 
  $table_end
@@ -365,7 +367,7 @@ $wims_name_part_list
 !if $activecnt+$eactivecnt>1
   <p>
   !form reply
-  <input type="hidden" name="job" value="sheets">
+  <input type="hidden" name="job" value="sheets"/>
   !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
   <table border="0">
   <tr><td>$name_pickup:
@@ -448,9 +450,9 @@ to $wims_menu_items
 
 !if $manual>0
 <p>$name_manual_explanation</p>
-<p><center>
+<div class="wimscenter">
   $(name_manual_notes[1]) = $[$manual/100]* $(name_manual_notes[2]) + $[1-$manual/100]* $(name_manual_notes[3])
- </center> <p>
+ </div>
 !endif
 
 :end
