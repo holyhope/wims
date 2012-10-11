@@ -4,7 +4,7 @@
 练习的二进制文件
 
 !if $quota=yes
- <b>错误</b>. 你不再能放文件到你的班级里, 因为它的内容已经达到或超出硬盘空间的限制. 抱歉.
+<span class="wims_warning">$wims_name_Error</span>. 你不再能放文件到你的班级里, 因为它的内容已经达到或超出硬盘空间的限制. 抱歉.
  <p>
  !goto sendend
 !endif
@@ -14,8 +14,8 @@
 
 !form reply
 发送到练习的文件 :
-<input type="file" name="wims_deposit">
-<input type="submit" value="$wims_name_tosave">
+<input type="file" name="wims_deposit"/>
+<input type="submit" value="$wims_name_tosave"/>
 </form>
 
 :sendend
@@ -24,19 +24,20 @@
  此练习尚无二进制文件.
 !else
  这里是本练习的文件表.
- <p><center><table border="2">
- <th>文件名</th><th>概要</th><th>-</th>
+<table class="wimsborder center">
+ <tr><th>文件名</th><th>概要</th><th>-</th></tr>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i</td>
-  <td valign="middle" align="center">
+  <tr><td>$i</td>
+  <td>
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40" width="50"></td>
-  <td valign="middle" align="center">
+   height="40" width="50" alt=""/></td>
+  <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
   </td>
  !next i
- $table_end <p>
+ $table_end 
+
  !if $imgfname!=
    !set example=$imgfname
  !else
@@ -56,13 +57,13 @@
 例如, 你可以写
  <center><pre>
   !if $test_=1
- &lt;img src="\imagedir/$example"&gt;
+ &lt;img src="\imagedir/$example"/&gt;
  !else
    &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
  !endif
   </pre></center>
   对于图形文件, 你可以写  
-  <tt>&lt;img src="\imagedir/$eximage"&gt;</tt>, 或
+  <tt>&lt;img src="\imagedir/$eximage"/&gt;</tt>, 或
   <tt>\img{\imagedir/$eximage}</tt> 或
  <tt>\img{\imagedir/$eximage}{html 选项}</tt>. 
  这个方法的好处是学生看不到文件名.
@@ -70,10 +71,9 @@
 <p>对于其他类型的文件, 可以使用 html 的命令 :
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
-
+<p class="wims_warning">
 保存练习以使添加的文件成为永久性的.
-
-
+</p>
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\

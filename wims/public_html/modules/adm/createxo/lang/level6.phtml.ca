@@ -16,8 +16,8 @@ Fitxers binaris per a l'exercici
  
 !form reply
 Fitxer a dipositar per a l'exercici&nbsp;:
-<input type="file" name="wims_deposit">
-<input type="submit" value="$wims_name_tosave">
+<input type="file" name="wims_deposit"/>
+<input type="submit" value="$wims_name_tosave"/>
 </form>
 
 :sendend
@@ -26,19 +26,20 @@ Fitxer a dipositar per a l'exercici&nbsp;:
  Aquest exercici encara no té arxius binaris.
 !else
  Aquesta és la llista de fitxers associats amb l'exercici.
- <p><center><table border="2">
- <th>Nom del fitxer</th><th>Aperçu</th><th>-</th>
+ <table class="wimsborder center">
+ <tr><th>Nom del fitxer</th><th>Aperçu</th><th>-</th>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i</td>
-  <td valign="middle" align="center">
+  <tr><td>$i</td>
+  <td>
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40" width="50"></td>
-  <td valign="middle" align="center">
+   height="40" width="50" alt=""/></td>
+  <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
   </td>
  !next i
- $table_end <p>
+ $table_end 
+
  !if $imgfname!=
    !set example=$imgfname
  !else
@@ -59,13 +60,13 @@ Fitxer a dipositar per a l'exercici&nbsp;:
  Per exemple, podeu escriure
   <center><pre>
   !if $test_=1
- &lt;img src="\imagedir/$example"&gt;
+ &lt;img src="\imagedir/$example"/&gt;
  !else
    &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
  !endif
   </pre></center>
   Pels fitxers d'imatges, podeu escriure  
-  <tt>&lt;img src="\imagedir/$eximage"&gt;</tt>, però també
+  <tt>&lt;img src="\imagedir/$eximage"/&gt;</tt>, però també
   <tt>\img{\imagedir/$eximage}</tt> o
  <tt>\img{\imagedir/$eximage}{html options}</tt>. L'avantatge d'aquest mètode
   és que els estudiants no veuen el nom del fitxer. A causa del seu cost
@@ -73,10 +74,10 @@ Fitxer a dipositar per a l'exercici&nbsp;:
 <p>Per d'altres tipus de fitxers, les commandes html han de ser adaptades :
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
-
+<p class="wims_warning">
 Desa l'exercici perquè els arxius s'afegeixen de manera
 permanent.
-
+</p>
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\

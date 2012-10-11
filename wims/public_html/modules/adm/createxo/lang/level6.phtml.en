@@ -15,8 +15,8 @@ Image files for the exercise
  
 !form reply
 Image file to send to the exercise:
-<input type="file" name="wims_deposit">
-<input type="submit" value="$wims_name_tosave">
+<input type="file" name="wims_deposit"/>
+<input type="submit" value="$wims_name_tosave"/>
 </form>
 
 :sendend
@@ -25,19 +25,19 @@ Image file to send to the exercise:
  This exercise has no image file yet.
 !else
  Here is the list of image files in this exercise.
- <p><center><table border="2">
- <th>File name</th><th>glimps</th><th>-</th>
+ <table class="wimsborder center">
+ <tr><th>File name</th><th>glimps</th><th>-</th></tr>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i</td>
-  <td valign="middle" align="center">
+  <tr><td>$i</td>
+  <td>
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40" width="50"></td>
-  <td valign="middle" align="center">
+   height="40" width="50" alt=""/></td>
+  <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
   </td>
  !next i
- $table_end <p>
+ $table_end
  !set example=!item 1 of $imglist
  These images files can be accessed in the statement of the exercise
  via the internal parameter \imagedir. For
@@ -49,11 +49,47 @@ Image file to send to the exercise:
  <tt>\img{\imagedir/$example}{html options}</tt>. The advantage of this method is that
  the file name will be hidden to the students. Due to its performance
  cost, this method should be used only when necessary.
+ </p>
 !endif
 
+ !if $imgfname!=
+   !set example=$imgfname
+ !else
+  !set example=!item 1 of $imglist
+ !endif
+ <p>
+ On peut accéder à ces fichiers dans l'énoncé de l'exercice via
+ le paramètre interne <tt class="wims_code_variable">\imagedir</tt>. 
+ !set example1=!lowercase $example
+ !if .gif isin $example1 or .jpg isin $example1 or .png isin $example1
+   !set test_=1
+ !endif
+ !if $test_=1
+   !set eximage=$example
+ !else
+   !set eximage=file.jpg
+ !endif
+ Par exemple, vous pouvez écrire
+  <center><pre>
+  !if $test_=1
+ &lt;img src="\imagedir/$example"/&gt;
+ !else
+   &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
+ !endif
+  </pre></center>
+  Pour des fichiers d'images,  vous pouvez écrire  
+  <tt>&lt;img src="\imagedir/$eximage"/&gt;</tt>, mais aussi
+  <tt>\img{\imagedir/$eximage}</tt> ou
+ <tt>\img{\imagedir/$eximage}{html options}</tt>. L'avantage de cette dernière méthode
+ est que les étudiants ne verront pas le nom du fichier. A cause de son coût
+ en performance, n'utilisez cette méthode que lorsque c'est nécessaire.
+<p>Pour d'autres types de fichiers, les commandes html doivent être adaptées :
+<tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
+!endif
+<p class="wims_warning">
 Sauvez l'exercice pour que les fichiers ajoutés le soient de manière
 permanente.
-
+</p>
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\

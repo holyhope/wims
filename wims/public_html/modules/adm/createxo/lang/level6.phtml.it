@@ -15,8 +15,8 @@ File binari da inserire nell'esercizio
  
 !form reply
 Nome del file immagine da inserire nell'esercizio:
-<input type="file" name="wims_deposit">
-<input type="submit" value="$wims_name_tosave">
+<input type="file" name="wims_deposit"/>
+<input type="submit" value="$wims_name_tosave"/>
 </form>
 
 :sendend
@@ -25,25 +25,26 @@ Nome del file immagine da inserire nell'esercizio:
  In questo esrcizio non sono ancora state inserite immagini.
 !else
  Elenco dei file inseriti nell'esercizio.
- <p><center><table border="2">
- <th>Nome del file</th><th>Anteprima</th><th>-</th>
+ <table class="wimsborder center">
+ <tr><th>Nome del file</th><th>Anteprima</th><th>-</th></tr>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i</td>
-  <td valign="middle" align="center">
+  <tr><td>$i</td>
+  <td>
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40" width="50"></td>
-  <td valign="middle" align="center">
+   height="40" width="50" alt=""/></td>
+  <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
   </td>
  !next i
- $table_end <p>
+ $table_end 
+
  !if $imgfname!=
    !set example=$imgfname
  !else
- !set example=!item 1 of $imglist
+  !set example=!item 1 of $imglist
  !endif
-
+ <p>
  Queste immagini possono essere inserite nell'enunciato dell'esercizio
  utilizzando il parametro <tt class="wims_code_variable">\imagedir</tt>. 
  !set example1=!lowercase $example
@@ -58,25 +59,25 @@ Nome del file immagine da inserire nell'esercizio:
  Per esempio scrivendo
  <center><pre>
   !if $test_=1
- &lt;img src="\imagedir/$example"&gt;
+ &lt;img src="\imagedir/$example"/&gt;
  !else
    &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
  !endif
   </pre></center>
  Per i file immagine potete scrivere 
-  <tt>&lt;img src="\imagedir/$eximage"&gt;</tt>, ma anche 
+  <tt>&lt;img src="\imagedir/$eximage"/&gt;</tt>, ma anche 
  <tt>\img{\imagedir/$eximage}</tt>, oppure
  <tt>\img{\imagedir/$eximage}{opzioni html}</tt>. Il vantaggio di questo 
  approccio è che il nome del file non sarà visibile agli studenti. &Egrave; 
  però un metodo <em>costoso</em> e il suo uso va pertanto limitato a quando
- effettivamente necessario.</p>
+ effettivamente necessario.
 <p>Per altri tipi di file il comando html deve essere adattato:
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
-
+<p class="wims_warning">
 Salva l'esercizio in modo che i file siano inseriti definitivamente 
 sul server.
-
+</p>
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\
