@@ -247,6 +247,15 @@ score=0
     answers=!line $a of $(answer$n)
     testvar2=!itemcnt $replies
     testvar1=!itemcnt $answers
+    !if $testvar1>1
+	# needed for checking combined (single inputfield) answers like 1,-1 != replies -1,1
+	# !sort numeric : will preserve sqrt(2),sin(pi)
+	answers=!sort numeric item $answers
+    !endif
+    !if $testvar2>1
+	# needed for checking answers like -1,1 != replies 1,-1
+	replies=!sort numeric item $replies
+    !endif
     checks=$[$checks + $testvar1]
     rem1=$empty
     !if $testvar2!=$testvar1
