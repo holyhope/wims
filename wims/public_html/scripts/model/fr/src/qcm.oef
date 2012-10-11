@@ -18,6 +18,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\title{QCM à la suite}
 :\author{Bernadette, Perrin-Riou}
 :\email{bpr@math.u-psud.fr}
+:\credits{}
 :Instruction Globale
 Tapez ici une instruction commune à toutes les questions de l'exercice
 \text{instruction=Instruction globale : Répondez à chaque question d'une première série, validez, puis répondez aux questions de la seconde série.}
@@ -229,14 +230,14 @@ Casse-noisette}
 \text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
 
 \text{audio=\audio_file notsametext  and  \audio_file notsametext no? 
-<p align="center">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</p>}
+<p class="wimscenter">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</p>}
 
 \text{image=\image_file notsametext  and  \image_file notsametext no? 
-wims(makelist <img src="\imagedir/x " alt=""> for x in \image_file)}
+wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
 
 \if{\video_file notsametext  and  \video_file notsametext no}{ 
   \text{video_file=http notin \video_file ? \imagedir/\video_file}
-\text{video=\video_file notsametext ? <a wims_target=external href="\video_file">[video] </a></p>}
+\text{video=\video_file notsametext ? <a target="wims_external" href="\video_file">[video] </a></p>}
 }
 
 \text{style = <style type="text/css">
@@ -293,13 +294,13 @@ wims(makelist <img src="\imagedir/x " alt=""> for x in \image_file)}
  \text{inst_intro=wims(getopt intro in \preliminaire_test)}
  \text{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
  \text{rab_inst=}
- \text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
+ \text{rab_inst=\inst_title notsametext ?\rab_inst<p class="wimscenter">\inst_title</p>}
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
- \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt=""></p>}
+ \text{rab_inst=\inst_image notsametext ? \rab_inst <p class="wimscenter"><img src="\imagedir/\inst_image" alt=""/></p>}
  \if{\inst_audio notsametext }{
      \text{rab_inst1= . isin \inst_audio or \packs= ? 
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
-     \text{rab_inst=\rab_inst <p align="center">\rab_inst1[1;1]</p>}
+     \text{rab_inst=\rab_inst <p class="wimscenter">\rab_inst1[1;1]</p>}
    }
  \text{preliminaire=\test_inst=1  ? \rab_inst:&nbsp;}
  \text{QUEST=\test_inst=1 ? wims(line 2 to -1 of \QUEST)}
