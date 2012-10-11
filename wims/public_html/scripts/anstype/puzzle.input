@@ -40,14 +40,14 @@
   !set y=$[($s-$x)/$nx+1]
   !readproc oef/draw.phtml $(cutx[2]),$(cuty[2])\
     copy 0,0,$(cutx[$x]),$(cuty[$y]),$(cutx[$x+1]),$(cuty[$y+1]),$image
-  !set Zurl=!append item <img src="$ins_url" width="$width"> to $Zurl
-  !set Zurl2=!replace internal item number $s by <img src="$ins_url" width="$width"> in $Zurl2
+  !set Zurl=!append item <img src="$ins_url" width="$width"/> to $Zurl
+  !set Zurl2=!replace internal item number $s by <img src="$ins_url" width="$width"/> in $Zurl2
   !set Z2=!replace internal item number $s by $t in $Z2
 !next
 !else
  !if text notwordof $(replyoption$i)
-  !set Zurl2=!makelist <img src="$imagedir/x" width="$width"> for x in $image
-  !set Zurl=!makelist <img src="$imagedir/x" width="$width"> for x in $image
+  !set Zurl2=!makelist <img src="$imagedir/x" width="$width"/> for x in $image
+  !set Zurl=!makelist <img src="$imagedir/x" width="$width"/> for x in $image
  !else
   !set Zurl2=!makelist x for x in $image
   !set Zurl=!makelist x for x in $image
@@ -117,4 +117,4 @@ function sendanswer$i()
      }
   }
 </script>
-<input type="hidden" name="reply$i" id="oefvar$i" value="">
+<input type="hidden" name="reply$i" id="oefvar$i" value=""/>
