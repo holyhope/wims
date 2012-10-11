@@ -55,11 +55,11 @@ $name_exo0
   </li>
  !endif
 </ol>
-  <center>
   !if $type!=2 or $ext=1
-  <input type="submit" value="$wims_name_send">
-  !endif
+  <center>
+  <input type="submit" value="$wims_name_send"/>
   </center>
+  !endif
 !endif
 
 !if $step>=$limit
@@ -70,7 +70,7 @@ $name_exo0
 !if $step=1
 <ul><li>  
    !formradio wims_deposit_old list 0 prompt $wims_name_download
-   <input type="file" name="wims_deposit"> 
+   <input type="file" name="wims_deposit"/> 
    !if $already!=
      $name_already
      !formradio wims_deposit_old list $already
@@ -81,8 +81,8 @@ $name_exo0
   </li>
 </ul>
   <center>
-   <input type="submit" value="$wims_name_send">
-   !set wims_ref_class=wims_button
+     !set wims_ref_class=wims_button
+   <input type="submit" value="$wims_name_send"/>
   </center>
   !if $test=noimage
     <span class="wims_warning">$wims_name_warning</span>. $name_noimage
@@ -92,20 +92,19 @@ $name_exo0
   !endif
 !endif
 !if $step>=2
- !distribute item alt=Click,1,form click into ins_attr,ins_border,ins_tag
-  <center>
-  <table><tr><td style="width:50px; height-min:50px;text-align:top;">
-  <center>
+ !distribute item alt="Click",1,form click into ins_attr,ins_border,ins_tag
+
+  <table class="wimsnoborder wimscenter"><tr><td style="width:50px; height-min:50px;text-align:top;">
   !if $step>=3
     !if $type=2 and $ext=2
      $(name_point$type$ext)
       !read zone.phtml
-  </center></td></tr>
+  </td></tr>
   </table>
       !exit
     !endif
        $(name_point$type$ext)
-       <br>
+       <br/>
        !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
        !set insdraw_filebase=!listuniq $insdraw_filebase
        !set ins_border=4
@@ -113,9 +112,8 @@ $name_exo0
      $dessin
      !set imgsrc=$ins_url
   !else
-    <input type="image" name="click" src="$imgsrc" border="1"> 
+    <input type="image" name="click" src="$imgsrc" border="1"/> 
   !endif
-  </center>
 </td><td>
   !if $test=nosize and $begin>=1
    <span class="wims_warning">$wims_name_warning</span>. $name_nosize
@@ -138,27 +136,25 @@ $name_exo0
    !else
       !reset readonly
    !endif
-     <br>
+     <br/>
       $name_legend
-      <input size="20" $readonly name="legend" value="$legend">
+      <input size="20" $readonly name="legend" value="$legend"/>
       !if $type=2 and $ext=1
         !formradio javatype list $list_curve prompt $name_list_curve
       !endif
     </div>
    !if $data!=
-     <pre>$data</pre>
+     <pre style="text-align:left;">$data</pre>
    !endif
   !endif
   </td></tr>
-<tr><td colspan="3"><center>
+<tr><td colspan="3">
 !if $type!=2 or $ext=1
-  <input type="submit" value="$wims_name_send">
+  <input type="submit" value="$wims_name_send"/>
 !endif
-  </center>
 </td></tr>
 </table>
-</center>
 !endif
-</form>
+
 
 !reset test error
