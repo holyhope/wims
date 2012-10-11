@@ -27,10 +27,13 @@ Texte affiché à la fin de l'exercice, quel que soit le resultat.
 Texte affiché à la fin de l'exercice, quand le mot n'a pas été trouvé.
 \text{echec=Perdu !}
 
+:Message sur le nombre d'essais restant
+
+\text{message0=Vous avez droit à XXXX erreurs}
 :Type du dessin
 Choix du dessin : "pendu", "cartons rouges", ou "têtes de mort"
 \text{type=item(2,3 (têtes de mort),
-	2 (Cartons rouges),
+	2 (Carton_rouge, Carton_vert),
 	1 (pendu))}
 
 :Données principales.
@@ -40,14 +43,16 @@ Dans le cas de groupes de mots, remplacer le blanc par un<tt>_</tt>.
 chandelier, la première lettre est c
 mouette_rieuse, sur la plage
 vague, sur la plage
-
 }
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 \text{Indication=Indication}
 \text{motatrouver=Mot à trouver}
 \text{proposer=Proposez une lettre en minuscule}
+\text{typename=wims(declosing wims(word 2 to -1 of \type))}
 \text{type=wims(word 1 of \type)}
+\text{typename=wims(words2items wims(nospace \typename))}
+\text{typename=slib(oef/blank _,,\typename)} 
 \text{mot=randrow(\data)}
 \text{indication=\mot[2..-1]}
 \text{mot=\mot[1]}
@@ -91,13 +96,13 @@ lines red,6,2,5,3
 lines red,4,2,5,3}
 
 \text{Dessin=<img src="draw(200,200
-\dessin)" alt="Ici le dessin d'un homme pendu se dessine à mesure des erreurs">}
+\dessin)" alt="\typename[1]"/>}
 
 }
 
 \text{contenu=&nbsp;}
 \if{\type=2}{
-  \text{contenu=Carton Vert}
+  \text{contenu=\typename[2]}
 }
 
 \if{\type>1}{
@@ -142,7 +147,7 @@ lines red,4,2,5,3}
 \text{cnt=0}
 
 \integer{reste=6 - \cnt}
-\text{message=Vous avez droit à <strong>\reste</strong> erreurs}
+\text{message=wims(replace internal XXXX by <strong>\reste</strong> in \message0)}
 \statement{
 	<p class="instructions">\instruction</p>
 	<p ><em>\Indication&nbsp;: <span class="indication">\indication</span></em></p>
@@ -208,7 +213,7 @@ lines red,4,2,5,3}
  \text{w_class=bad}
 
  \if {\reste > 0}{
-  \text{message=Vous avez droit à <strong>\reste</strong> erreur(s)}
+  \text{message=wims(replace internal XXXX by <strong>\reste</strong> in \message0)}
  }
  \if {\reste <= 0} {
   \text{message=<strong class="oef_condbad">\echec</strong>}
@@ -218,17 +223,17 @@ lines red,4,2,5,3}
  \text{dessin=\dessin
   \pendu[\cnt;]}
  \text{Dessin=<img src="draw(200,200
- \dessin)" alt="Vous avez fait \cnt erreur(s). Vous avancez vers la pendaison...">}
+ \dessin)" alt="Vous avez fait \cnt erreur(s). Vous avancez vers la pendaison..."/>}
  }
 
  \if{\type>1}{
   \integer{h=\order[\cnt]}
   \text{jj=<span id="essai_\h">\contenu</span>}
   \if{\type=2}{
-   \text{dessin=wims(replace internal \jj by <span class="red">Carton Rouge</span> in \dessin)}
+   \text{dessin=wims(replace internal \jj by <span class="red">\typename[1]</span> in \dessin)}
   }
   \if{\type=3}{
-   \text{dessin=wims(replace internal \jj by <img src="gifs/images/skull_and_crossbones50.png" alt="Tête de mort"> in \dessin)}
+   \text{dessin=wims(replace internal \jj by <img src="gifs/images/skull_and_crossbones50.png" alt="\typename[1]"/> in \dessin)}
   }
   \text{Dessin=\dessin} 
  }
