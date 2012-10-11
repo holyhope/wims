@@ -26,7 +26,7 @@ Fichero de imagen que se va a enviar en el ejercicio:
  Este ejercicio no tiene aún ningún fichero de imagen.
 !else
  Lista de ficheros de imagen del ejercicio:
- <table class="wimsborder center">
+ <table class="wimsborder wimscenter">
  <tr><th>Nombre del fichero</th><th>Vista</th><th>-</th></tr>
  !for i in $imglist
   <tr><td>$i</td>

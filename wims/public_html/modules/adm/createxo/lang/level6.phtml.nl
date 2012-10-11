@@ -26,7 +26,7 @@ Het bestand voor deze oefening:
     Deze oefening bevat geen binaire bestanden.
 !else
     Hier staat de lijst van verwerkte bestanden.
- <table class="wimsborder center">
+ <table class="wimsborder wimscenter">
  <tr><th>Bestandsnaam</th><th>thumbnail</th><th>-</th></tr>
  !for i in $imglist
   <tr><td>$i</td>
