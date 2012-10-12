@@ -1087,12 +1087,12 @@ input: INPUT {
     if( strstr(readonly,"1") != NULL){
 	$1 = wims_mathml_copy_string(style);
 	s1 = wims_mathml_copy3(s1,$1,"\" ");
-	s1 = wims_mathml_copy2(s1,"readonly></mn>");
+	s1 = wims_mathml_copy2(s1,"readonly /></mn>");
     }
     else
     {
 	$1 = wims_mathml_copy_string(style);
-	s1 = wims_mathml_copy3(s1,$1,"\"></mn>");
+	s1 = wims_mathml_copy3(s1,$1,"\" /></mn>");
     }
     $$ = wims_mathml_copy_string(s1);
     wims_mathml_free_string(s1);
