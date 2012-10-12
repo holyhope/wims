@@ -1,9 +1,10 @@
 !! produces a DHTML page of the  exercise for printing
-!if $questiontype !=0 or $applet=1 
+
+!if $questiontype !=0 or $applet=1
     <font color="red">
 	My guess : this page not very usefull in a printed paperversion<br>
 	It's most likely a multiplechoice exercise<br>
-	or it makes use of some java applets or mathml ?
+	or it makes use of some java applets ?
 	<br>
 	You can always try your browser "print functionality" on the interactive version, and see what happens.
 	<br>
@@ -43,13 +44,15 @@
 		    !endif
 		</div>
 		!if $(formula$n) != $empty
-		<div id="ddd$n" name="ddd$n" style="position:relative;font-size:70%">
 		    <br>
-		    !insmath $(formula$n) \,\,
-		</div>
+		    !set formula$n=$(formula$n) \,\,
+		    !increase cnt
+		    !set ins_attr=name="insert$cnt"
+		    !insmath $(formula$n)
+		    !! this will be an image, I hope...if not we are in deep DHTML trouble
 		!endif
 	    </td>
-	    !set DHTML=!append item "d$n","dd$n","ddd$n" to $DHTML
+	    !set DHTML=!append item "d$n","dd$n","insert$cnt" to $DHTML
     	    </tr><tr>
         !next n
     </table>
@@ -106,10 +109,10 @@
 <table summary="">
     <tr>
     <td>
-	<input type="button" style="$mybuttonstyle" value="Reload Page" onClick="window.location.reload()">
+	<input type="button" style="$mybuttonstyle" value="Reload Page" onClick="window.location.reload()" />
     </td>
     <td>
-	<input type="button" style="$mybuttonstyle" value="Print" onClick="javascript:window.print();">
+	<input type="button" style="$mybuttonstyle" value="Print" onClick="javascript:window.print();" />
     </td>
     </tr>
 </table>

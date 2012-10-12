@@ -31,38 +31,37 @@
 	    </tr><tr>
 	!endif
 	<td>
-	    <div id="mydiv">
 	!if $draw=1
 	    !! for fly
 	    !set insdraw_size=$xsize,$ysize
 	    !set ins_attr= id="myimage"
+	    <div id="mydiv">
 		!insdraw $(image$n)
+	    </div>
 	!else
 	    !if $plot=1
 		!! for GNUplot
 	        !set ins_attr= id="myimage"
 		!set insplot_set=$(image_settings$n)
+	        <div id="mydiv">
 	    	    !insplot $(image$n)
+		</div>
 	    !else
-		!if $svg=1
-		!! for svg images 
-		    !exec svgdraw $(image$n)
-		!else
+	        <div id="mydiv">
 	    	    $(image$n)
-		!endif
+		</div>
 	    !endif
 	!endif
-	    </div>
 	</td>
 	</tr>
     </table>
     <table summary="">
 	<tr>
 	<th>
-	    <input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
+	    <input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send" />
 	</th>
 	<th>
-	    <input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
+	    <input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
 	</th>
 	</tr>
     </table>
@@ -126,16 +125,16 @@
 	    rely=(Math.round(rounding*rely))/rounding;
 	    // XHTML 1.0 needs "px"
 	    if(IE){
-		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop+'px'; 
-		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft+'px'; 
-		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop+'px'; 
-		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft+'px'; 	    
+		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop+'px';
+		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft+'px';
+		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop+'px';
+		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft+'px';
 		document.getElementById('mouse_dot_ie').style.display = "block";
 	    }else{
-		document.getElementById('mouse_coords').style.top = y+6+'px'; 
-		document.getElementById('mouse_coords').style.left = x+6+'px'; 	    
-		document.getElementById('mouse_dot_w3c').style.top = y-3+'px'; 
-		document.getElementById('mouse_dot_w3c').style.left = x-3+'px'; 	    
+		document.getElementById('mouse_coords').style.top = y+6+'px';
+		document.getElementById('mouse_coords').style.left = x+6+'px';
+		document.getElementById('mouse_dot_w3c').style.top = y-3+'px';
+		document.getElementById('mouse_dot_w3c').style.left = x-3+'px';
 		document.getElementById('mouse_dot_w3c').style.display = "block";
 	    }
 	    document.getElementById('mouse_coords').innerHTML='<b>('+relx+':'+rely+')</b>';

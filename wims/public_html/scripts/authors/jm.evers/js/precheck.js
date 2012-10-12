@@ -46,7 +46,7 @@ function SetTexAppSize(){
 	if(document.getElementById('wait_for_applet')){
 	    document.getElementById('wait_for_applet').style.display = "none"; 
 	}
-    }                                                 
+    }
 }
 
 function setAlarm(txt){
@@ -55,7 +55,7 @@ function setAlarm(txt){
     document.getElementById('alarmtext').style.display = "block"
     document.getElementById('alarmtext').style.top = h/3.5;
     document.getElementById('alarmtext').style.left =w/4;
-    document.getElementById('alarmtext').innerHTML='<table cellpadding=\"10\"><tr><th>'+txt+'</th></tr></table>';
+    document.getElementById('alarmtext').innerHTML='<table cellpadding=\"10\" summary=\"warning\"><tr><th>'+txt+'</th></tr></table>';
     setTimeout('resetAlarm()',4000);
 }
 	

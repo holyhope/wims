@@ -22,17 +22,12 @@
 	    !if $image=1
 		<br>
 		!if $plot=1
-		    !set insplot_set=$(image_settings$n)
+		    !set insplot_set=$(image_settings$n)		
 		    !insplot $(image$n)
-		!else
-		    !if $draw=1
-			!set insdraw_size=$XSIZE,$YSIZE
-			!insdraw $(image$n)
-		    !else
-			!if $svg=1
-			    $(image$n)
-			!endif
-		    !endif
+		!endif
+		!if $draw=1
+		    !set insdraw_size=$XSIZE,$YSIZE
+		    !insdraw $(image$n)
 		!endif
 	    !endif
 	    !if $applet=1
@@ -70,11 +65,7 @@
 					!else
 					    !if $plot=1
 						!set insplot_set=$(image_settings$n)
-						!insplot $(ex$p)
-					    !else
-						!if $svg=1
-						    $(ex$p) 
-						!endif
+						!insplot $(ex$p) 
 					    !endif
 					!endif
 				    !else
@@ -97,7 +88,7 @@
 		</tr><tr>
 		<td  valign="top" align="center">
 		    <p>
-			<input type=button style="$mybuttonstyle" onclick="javascrip:dontknow();" name="but2" value="$dontknow">
+			<input type="button" style="$mybuttonstyle" onclick="javascrip:dontknow();" name="but2" value="$dontknow" />
 		    </p>
 		</td>
 		</tr>

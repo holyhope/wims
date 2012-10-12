@@ -565,7 +565,7 @@ function DDObj(d_o, d_i)
 		this.defsrc = this.src = this.oimg.src;
 		this.htm = '<img name="' + this.id + 'NI1m6G"'+
 			' src="' + this.oimg.src + '" '+
-			'width="' + this.w + '" height="' + this.h + '">';
+			'width="' + this.w + '" height="' + this.h + ' alt="no alt" />';
 		this.t_htm = '<div id="' + this.id +
 			'" style="position:absolute;'+
 			'left:' + (this.cssx = this.x = this.defx) + 'px;'+
@@ -679,7 +679,7 @@ DDObj.prototype.resizeTo = function(d_w, d_h, d_o)
 		this.div.resizeTo(d_w, d_h);
 		if(this.is_image)
 		{
-			this.write('<img src="' + this.src + '" width="' + d_w + '" height="' + d_h + '">');
+			this.write('<img src="' + this.src + '" width="' + d_w + '" height="' + d_h + ' alt="no alt" />');
 			(this.nimg = this.div.document.images[0]).src = this.src;
 		}
 	}
