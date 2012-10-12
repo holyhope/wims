@@ -1,6 +1,9 @@
-!! 3 types of input are possible with this page
-!! mathview inputapplet via "id" ; inputfields via normal "mydefaultform"  ; mathml inputfields via "id"
-!! mathml string is in formula$n
+!! 4 types of input are possible with this page , single or in any combination
+!! 1) mathview inputapplet via "id" ; 
+!! 2) inputfields via normal "mydefaultform"  ; 
+!! 3) mathml inputfields via "id"
+!! 4) svg answer (via draw or inputfields/textarea [ read_svg();]
+
 !if $my_arrows=$empty
     !set my_arrows=2
 !endif
@@ -18,7 +21,7 @@
 
     function sendanswer(){
 	var input;
-	var show="" ;
+	var show="";
 	var reply = new Array;
 	var applet = 0;
 	var inputfieldnumber = 0;
@@ -44,6 +47,7 @@
 	    input = input.replace(/#/g,' ');
 	    reply[0] = input;
 	    applet=1;
+	    inputfieldnumber = 1;
 	}
 	
 	if(document.mydefaultform){
@@ -67,16 +71,17 @@
 		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
-		reply[ applet + z ] = input;
+		reply[inputfieldnumber] = input;
+		show=input+"\n";
+		inputfieldnumber++;
 	    }
-	    inputfieldnumber=ml;
 	}
 	
 	if(document.getElementById("mathml0")){
 	    var p=0;
 	    while(document.getElementById("mathml"+p)){
 		input = document.getElementById("mathml"+p).value;
-		if (input.length == 0){var qu = input+1; setAlarm(r1+"\ "+qu);return;}
+		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
 		input = nthroot(input);if(input == "error"){return;}
 		if(input.indexOf(',') != -1){setAlarm(r4);return;}
 		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
@@ -92,10 +97,35 @@
 		}
 		input = input.replace(/#/g,' ');
 		if(p>99){break;}
-		reply[p + inputfieldnumber + applet] = input;
+		reply[inputfieldnumber] = input;
+		inputfieldnumber++;
 		p++;
 	    }
 	}
+	
+	try{
+	    var svg_reply = read_svg();
+	    for( var p = 0 ; p < svg_reply.length ; p++){
+		input = svg_reply[p];
+		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
+		input = nthroot(input);if( input == "error"){return;}
+		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		if(check_f(input) == 0){return;}
+		if(check_o(input) == 0){return;}
+		if(check_log_NaN(input) == 0){return;}
+		if(check_sqrt_NaN(input) == 0){return;}
+		input = science(input);if(input == "error"){return;}
+		show=show+input+"\n";
+		if( input.indexOf("[") !=- 1 ){
+		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
+		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
+		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
+		}
+		input = input.replace(/#/g,' ');
+		reply[inputfieldnumber] = input;
+		inputfieldnumber++;
+	    }	
+	}catch(e){}
 	if(reply.length == 0 ){setAlarm(r1);return;}
 	if(confirm(r0+"\n"+show)){reply=encodeURIComponent(reply);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
     }
@@ -118,7 +148,7 @@
 			</center>
 			<br>
 		    !else
-			<table summary="">
+			<table summary="question formula and inputfields">
 			    <tr>
 			    <th>
 				!insmath $(formula$n)
@@ -127,12 +157,12 @@
 				<form name="mydefaultform" id="mydefaultform" action="">
 				    !if $inputs=1
 					!if $wims_user=supervisor
-					    <table summary=""><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea></th></tr></table>
+					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea></th></tr></table>
         				!else
-					    <table summary=""><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea></th></tr></table>
+					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea></th></tr></table>
 					!endif
 				    !else
-					<table summary="" cellspacing="1">
+					<table summary="inputfields" cellspacing="1">
 					!set a_items=!itemcnt $(answer$n)
 					!if $a_items != $[floor($inputs)]
 					    !set use_lines=1
@@ -146,10 +176,10 @@
 						!else
 						    !set deelantwoord=!item $p of $(answer$n)
 						!endif
-						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"/></th><th>$(ex$p)&nbsp;</th></tr>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value="$deelantwoord" /></th><th>$(ex$p)&nbsp;</th></tr>
         				    !else
 						!set deelantwoord=!item $p of $(reply$n)
-						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"/></th><th>$(ex$p)&nbsp;</th></tr>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;</th></tr>
 					    !endif
 					!next p
 					</table>
@@ -187,6 +217,9 @@
 		!set insplot_set=$(image_settings$n)
 		!insplot $(image$n)
 	    !endif
+	    !if $svg=1
+		!exec svgdraw $(image$n)
+	    !endif
 	</td>
     !endif
     !if $applet=1
@@ -194,7 +227,7 @@
 	    !! arbitrary value to produce a better layout ...
 	</tr><tr>
 	!endif
-	<td  valign="top" align="center">
+	<td valign="top" align="center">
 	    $(object$n)
 	</td>
     !endif
@@ -204,7 +237,7 @@
     !endif
 	<td valign="top" align="center">
 	    !if $mathview=3
-		<table summary="" $paperbg width="580">
+		<table summary="java input applet" $paperbg width="580">
 		    <tr>
 		    <th>
 			<applet id="MathView" code="MathView.class" codebase="$appletdir" archive="MathView.jar" width="580" height="280">
@@ -241,7 +274,7 @@
 	    !else
 		!if $inputs=1
 		    <form name="mydefaultform" id="mydefaultform" action="">
-			<table summary="" cellpadding="1">
+			<table summary="inputfield" cellpadding="1">
 			    <tr>
 			!if $inputtext1!=$empty
 			    <td>
@@ -261,7 +294,7 @@
 		!else
 		    !if $inputs>1
 		    <form name="mydefaultform" id="mydefaultform" action="">
-			<table summary="" cellpadding="1">
+			<table summary="inputfields" cellpadding="1">
 			!set a_items=!itemcnt $(answer$n)
 			!if $a_items != $[floor($inputs)]
 			    !set use_lines=1
@@ -303,7 +336,7 @@
 !endif
 	</tr>
     </table>
-    <table summary="">
+    <table summary="send or cancel buttons">
 	<tr>
     !if $inputs !=0
 	<th>

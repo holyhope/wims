@@ -60,7 +60,11 @@
 					!set ins_attr=width="$xsize" height="$ysize"
 					!insplot $thing
 				    !else
-					error: no type definitionlist $$item_type[$p]
+					!if $type=4
+					    !exec svgdraw $thing
+					!else
+					    error: no type definitionlist $$item_type[$p]
+					!endif
 				    !endif
 				!endif
 			    !endif
@@ -71,8 +75,8 @@
 		!if $break_cnt<$break
 		<td style="background-color:$blue_layer;text-align:center;vertical-align:middle;height:$ysize;width:$xsize">
 		    <center>
-			<img src="$gifdir/blank.gif" style="display:block" id="blank$c" alt="" width="$xsize" height="$ysize" />
-			<img src="$gifdir/leftright.gif" style="display:none" id="leftright$c" alt="" width="$xsize" height="$ysize" />
+			<img src="$gifdir/blank.gif" style="display:block" id="blank$c" width="$xsize" height="$ysize" alt="noalt" />
+			<img src="$gifdir/leftright.gif" style="display:none" id="leftright$c" width="$xsize" height="$ysize" alt="noalt" />
 		    </center>
 		</td>
 		!endif
@@ -92,18 +96,18 @@
 	<table summary="send buttons">
 	    <tr>
 	    <th>
-    		<input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send" />
+    		<input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send" />
     	    </th>
 	    <th>
 		!if $wims_user = supervisor
     		    <input type="button" style="$mybuttonstyle" onclick="showanswer();" value="show correct answer" />
 		!else
 		    !set clear=!record 67 of $remarkdir/commonremarks.$taal
-    		    <input type=button style="$mybuttonstyle" onclick="resetall();" value="$clear" />
+    		    <input type="button" style="$mybuttonstyle" onclick="resetall();" value="$clear" />
     		!endif
 	    </th>
 	    <th>
-		<input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
+		<input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
 	    </th>
 	    </tr>
 	</table>

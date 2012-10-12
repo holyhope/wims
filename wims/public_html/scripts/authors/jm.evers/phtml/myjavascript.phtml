@@ -16,7 +16,7 @@
 	    	    !endif
 		    !if $(formula$n) != $empty
 			<div align="center">
-			    <table summary="">
+			    <table summary="formula and textarea">
 				<tr>
 				<th>
 				    !insmath $(formula$n)
@@ -59,6 +59,10 @@
 			    !set ins_attr=name="image$n" id="image$n"
 			    !set insplot_set=$(image_settings$n)
 			    !insplot $(image$n)
+			!else
+			    !if $svg=1
+				$(image$n)
+			    !endif
 			!endif
 		    !endif
 		    </td>
@@ -88,14 +92,14 @@
 	!if $inputs=yes
 	    <tr>
 	    <td align="center">
-		<table summary="">
+		<table summary="send and cancel buttons">
 		    <tr>
-		    <th>
-			<input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send" />
-		    </th>
-		    <th>
-			<input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
-		    </th>
+			<th>
+			    <input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send"/>
+			</th>
+		        <th>
+			    <input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow"/>
+			</th>
 		    </tr>
 		</table>
 	    </td>

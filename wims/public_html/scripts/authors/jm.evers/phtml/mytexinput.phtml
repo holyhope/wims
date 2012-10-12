@@ -1,6 +1,7 @@
 !set n=$counter
 <script type="text/javascript">
     var URL;
+    
     function dontknow(){
 	var t=confirm(r0+"\n$dontknow ?");
 	if(t==true){
@@ -8,6 +9,7 @@
 	    document.location.href = URL;
 	}
     }
+    
     function TexAppInputs(num){
 	if( document.getElementById('TexApp1') ){ // starts with 1
 	    var p = 1;
@@ -17,6 +19,7 @@
 	    }
 	}
     }
+    
     function sendanswer(){
 	var reply = new Array();var show ="";
 	var p = 1;var tmp;var tmp1;var cnt = 0;var ans = new Array();
@@ -119,7 +122,7 @@
 					!else
 					    !set deelantwoord=!item $p of $(reply$n)
 					!endif
-					<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord" />
+					<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
 				    </td>
 				    <td>
 					$(ex$p)&nbsp;
@@ -132,7 +135,7 @@
 			</tr>
 		    </table>
 		!else
-		    !insmath $(formula$n)
+		    !insmath $(formula$n)		
 		!endif
 	    !endif
 	</td>
@@ -145,10 +148,15 @@
 		    !if $draw=1
 			!set insdraw_size=$XSIZE,$YSIZE
 			!insdraw $(image$n)
-		    !endif
-		    !if $plot=1
-			!set insplot_set=$(image_settings$n)
-			!insplot $(image$n)
+		    !else
+			!if $plot=1
+			    !set insplot_set=$(image_settings$n)
+			    !insplot $(image$n)
+			!else
+			    !if $svg=1
+				!exec svgdraw $(image$n)
+			    !endif
+			!endif
 		    !endif
 		</td>
 	    !endif
@@ -199,7 +207,7 @@
 				    !else
 					!set deelantwoord=!item $p of $(reply$n)
 				    !endif
-				    <input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord" />
+				    <input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
 				</td>
 				<td>
 				    $(ex$p)&nbsp;
@@ -216,18 +224,18 @@
     <table summary="">
 	<tr>
 	<th>
-    	    <input type="button" style="$mybuttonstyle" onclick="javascript:sendanswer();" value="$send" />
+    	    <input type="button" style="$mybuttonstyle" onclick="javascript:sendanswer();" value="$send">
     	</th>
 	<th>
-	    <input type="button" style="$mybuttonstyle" onclick="javascript:dontknow();" name="but2" value="$dontknow" />
+	    <input type="button" style="$mybuttonstyle" onclick="javascript:dontknow();" name="but2" value="$dontknow">
 	</th>
 	!if $control_inputs = 1
 	    <th>
-		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(1)" name="but3" value="+" />
-	    </th>
+		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(1)" name="but3" value="+">
+	    </th>	
 	    <th>
-		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(-1);" name="but4" value="&minus;" />
-	    </th>
+		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(-1);" name="but4" value="&minus;">
+	    </th>	
 	!endif
 	</tr>
     </table>
