@@ -40,7 +40,7 @@ slib_cnt=!itemcnt $slib_word_mod
     !if $slib_word_test notsametext
      slib_word_test=!replace internal ./ by in $slib_word_test/
      slib_rename=!rename  $imagedir/$slib_word_test$slib_word_mod.$slib_ext
-     slib_out=!append item <img src="$slib_rename"> to $slib_out
+     slib_out=!append item <img src="$slib_rename" alt=""/> to $slib_out
      slib_test=1
    !endif
  !next
@@ -48,7 +48,7 @@ slib_cnt=!itemcnt $slib_word_mod
    slib_word_test2=!lookup $(slib_word[$slib_a]) in datamodule/$slib_dir1/$(slib_lang)_$slib_size.keys
    !if $slib_word_test2 notsametext
     slib_rename= !rename modules/data/$slib_dir1/$slib_word_test2
-    slib_out=!append item <img src="$slib_rename"> to $slib_out
+    slib_out=!append item <img src="$slib_rename"/> to $slib_out
    !else
     slib_out=!append item -- to $slib_out
    !endif
