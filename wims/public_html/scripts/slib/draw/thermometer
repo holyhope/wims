@@ -1,0 +1,101 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_example=3.5,,,,C,html\
+5,[red,blue,blue,purple],120,[-20,40],C,html\
+3.5,,,,F,html\
+3.5,,,[-40,50],F,html\
+
+
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_deg,slib_color,slib_size,slib_range,slib_type,slib_option
+
+!bound slib_style between integer 1 and 2 default 1
+!default slib_type=C
+!set slib_range=!declosing $slib_range
+!if $slib_type=F
+  !default slib_range=-60,130
+  !default slib_size=150
+!else
+  !default slib_range=-30,50
+  !default slib_size=100
+!endif
+
+!set slib_color=!declosing $slib_color
+
+!set insdraw_size=$slib_size,$[4*$slib_size]
+!set slib_deg=$[$slib_deg/10]
+!set xrange=$[2+2]
+!set range=3
+!set yrange1=$[($(slib_range[1])/10)-1]
+!set yrange2=$[($(slib_range[2])/10)+1]
+!set tick=$(slib_color[1])
+!set tick2=$(slib_color[2])
+!set tick3=$(slib_color[3])
+!set tick4=$(slib_color[4])
+!default tick=black
+!default tick2=blue
+!default tick3=grey
+!default tick4=yellow
+!set Ticks=
+!set ticks=
+!set tickss=
+!for i=$yrange1+1 to $yrange2-1
+ !set Ticks=$Ticks\
+line -$range,$i,-0.5,$i,$tick\
+line  $range,$i, 0.5,$i,$tick
+
+  !if $slib_type=F
+!set Ticks=$Ticks\
+text $tick,$range-1,$i+0.3, small, $[$i*10]
+  !else
+  !set Ticks=$Ticks\
+text $tick,-$range-0.5,$i+0.5, large, $i\
+text $tick,$range-0.2,$i+0.5, large, 0
+  !endif
+!next i
+!for j=$yrange1+1 to $yrange2-1
+ !set ticks=$ticks\
+  line -2,$j+0.5,-0.5,$j+0.5,$tick2\
+  line  0.5,$j+0.5, 2,$j+0.5,$tick2
+!next i
+
+!for j=10*($yrange1) to 10*($yrange2-1)
+ !set tickss=$tickss\
+  line -1.5,$[$j/10+0.5],-0.5,$j/10+0.5,$tick3\
+  line  0.5,$[$j/10+0.5], 1.5,$j/10+0.5,$tick3
+!next i
+
+slib_out=\
+transparent white\
+ xrange -$xrange,$xrange+0.3\
+ yrange $yrange1,$yrange2\
+ text $tick,2,$yrange1+0.5,large,$slib_type\
+ linewidth 1\
+ $tickss\
+ $ticks\
+ $Ticks\
+ linewidth 3\
+ rectangle -0.5,$yrange1+0.2,0.5,$yrange2-0.2,grey\
+ rectangle -$xrange,$yrange1,$xrange,$yrange2,grey
+ 
+slib_point=$[($yrange1 + ($slib_deg))/2]
+slib_out=$slib_out\
+ linewidth 1\
+ line -0.5,$slib_deg,0.5,$slib_deg,grey\
+ fill 0,$slib_point,$tick4
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt=""/>
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif
