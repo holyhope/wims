@@ -69,7 +69,7 @@
 <br>
 
  !form reply
- <input type="hidden" name="step" value="1">
+ <input type="hidden" name="step" value="1"/>
  $table_header
  $table_tr
   <td><label for="institution">$name_Name_portal</label></td>
@@ -78,13 +78,13 @@
    !let institution=$wims_institutionname
    $institution
   !else
-   <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim">
+   <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim"/>
   !endif
   </td>
   <td>($name_atmost $instlim $name_characters)</td>
  </tr>
  $table_tr<td><label for="description">$wims_name_name $name_classesss</label></td><td>
-  <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim">
+  <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim"/>
   </td><td>
   ($name_atmost $desclim $name_characters)
  </td></tr>
@@ -110,9 +110,9 @@
   $wims_firstname $wims_lastname
  !else
   <table border="0" cellspacing="0"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
-  <input size="$suplim2" name="firstname" value="$firstname" id="firstname">
+  <input size="$suplim2" name="firstname" value="$firstname" id="firstname"/>
    </td></tr><tr><td><label for="lastname">$wims_name_lastname</label></td><td>
-   <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2">
+   <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2"/>
   </td></tr></table>
  !endif
  </td><td></td></tr>
@@ -121,7 +121,7 @@
    !default email=$email
    $email
   !else
-   <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2">
+   <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2"/>
   !endif
  </td><td>
  !if $regpolicy=email
@@ -130,7 +130,7 @@
  </td></tr>
  !if $Cltype!=1
   $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
-   <input size="16" type="password" name="passsup" id="passsup" maxlength="16">
+   <input size="16" type="password" name="passsup" id="passsup" maxlength="16"/>
    </td><td>
    <small>
    ($name_warningpass).
@@ -139,7 +139,7 @@
  !endif
  
  $table_tr<td><label for="password">$wims_name_Password ($name_classesss)</label></td><td>
-  <input size="16" type="password" name="password" id="password" maxlength="16">
+  <input size="16" type="password" name="password" id="password" maxlength="16"/>
   </td><td>
   <small>($name_warningpass).
   !if $Cltype<2
@@ -182,14 +182,14 @@
 
  $table_tr<td><label for="limit">$name_help_limit</label></td><td>
   !let num=!charcnt $wims_class_user_limit
-  <input size="3" name="limit" value="$limit" id="limit" maxlength="$num">
+  <input size="3" name="limit" value="$limit" id="limit" maxlength="$num"/>
  </td><td>
  <small>(< $wims_class_user_limit.) </small>
  </td></tr>
  
  $table_tr<td><label for="secure">$name_secure ($name_sup)</label></td><td>
   !!!default secure=all
-  <input size="30" name="secure" value="$secure" id="secure">
+  <input size="30" name="secure" value="$secure" id="secure"/>
   !reset secure
  </td><td>
  <small>$name_host
@@ -200,13 +200,13 @@
  </td></tr>
  !if $cltype isin 024
 $table_tr<td><label for="cas_auth">$name_cas ($name_optional)</label></td><td>
-  <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth">
+  <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth"/>
   </td><td>
  <small>$name_cas_help</small>
  </td></tr>
  !endif
 $table_tr<td colspan="3" align="center">
- <input type="submit" value="$name_continue">
+ <input type="submit" value="$name_continue"/>
  </td></tr>
  $table_end
  </form>
@@ -218,16 +218,16 @@ $table_tr<td colspan="3" align="center">
 !read lang/help.phtml.$modu_lang step1
 <p>
  !form reply
- <input type="hidden" name="step" value="2">
+ <input type="hidden" name="step" value="2"/>
  !if $Cltype!=1
   <label for="passsup"> $wims_name_Password ($name_sup)</label> 
-  <input type="password" name="passsup" id="passsup" maxlength="16"> <p>
+  <input type="password" name="passsup" id="passsup" maxlength="16"/> <p>
  !endif
  !if $pword!=$empty
  <label for="password">$wims_name_Password ($name_classesss)</label>
-  <input type="password" name="password" id="password" maxlength="16"> <p>
+  <input type="password" name="password" id="password" maxlength="16"/> <p>
  !endif
- <center><input type="submit" value="$name_continue"></center>
+ <center><input type="submit" value="$name_continue"/></center>
  </form>
  !goto end1
 !endif
@@ -235,9 +235,9 @@ $table_tr<td colspan="3" align="center">
 !if $step=2
  !read lang/help.phtml.$modu_lang step2
  !form reply
- <input type="hidden" name="step" value="3">
- <center><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode">
- <p><input type="submit" value="$name_continue"></center>
+ <input type="hidden" name="step" value="3"/>
+ <center><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode"/>
+ <p><input type="submit" value="$name_continue"/></center>
  </form>
  <span class="wims_warning">$wims_name_warning</span>: $name_warning_code
  <p>

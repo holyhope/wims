@@ -14,10 +14,10 @@
  !next f
  <p>
  !form reply
- <input type="hidden" name="job2" value="erase">
+ <input type="hidden" name="job2" value="erase"/>
  Verwijder een bestand&nbsp;:
  !formselect job2 list $flist
- <input type="submit" value="$wims_name_erase">
+ <input type="submit" value="$wims_name_erase"/>
  </form>
  <p>
  Bestanden kunnen worden opgeroepen in een document door de variabele

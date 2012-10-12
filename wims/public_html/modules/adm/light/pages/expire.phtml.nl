@@ -80,11 +80,11 @@ Huidige einddatum van de klas:
 Nieuwe einddatum van de klas:
 !set parm2=$[$m_]
 !formselect parm2 from 1 to 12 prompt $months
- <input size=2 maxlength=2 name="parm3" value="$d_">,
+ <input size="2" maxlength="2" name="parm3" value="$d_"/>,
 !set parm1=$y_
 !formselect parm1 list $thisyear,$[$thisyear+1]
 . <p><center>
-<input type=submit value="$wims_name_tosave">
+<input type="submit" value="$wims_name_tosave"/>
 </center></form>
 <p>Een einddatum gesteld op vandaag sluit de klas. (effectief van af morgen).
 <p><b>Attentie.</b>

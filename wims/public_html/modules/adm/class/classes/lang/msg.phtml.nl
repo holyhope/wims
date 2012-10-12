@@ -8,7 +8,7 @@ Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br>
  <span class="wims_warning">$wims_name_warning</span>! 
  Elk wachtwoord dat binnen de volgende 5 seconden wordt ingevuld, wordt afgekeurd !
  
- <input size=1 name="clock"> </form>
+ <input size="1" name="clock"/> </form>
  !exit
 !endif
 
@@ -32,7 +32,7 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
   ]
   !let save_logincgu=$auth_user
   <center>
-  <input type="submit" value="$wims_name_tosave">
+  <input type="submit" value="$wims_name_tosave"/>
   </center>
  </form>
  !exit
@@ -45,7 +45,7 @@ Je wordt door het systeem niet herkend of je hebt bij de inschrijving geen geldi
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span> !
  Deze procedure schakeld weer in na een timeout van 5 seconden &nbsp;! 
- <input size=1 name="clock"> </form>
+ <input size="1" name="clock"/> </form>
  !exit
 !endif
 

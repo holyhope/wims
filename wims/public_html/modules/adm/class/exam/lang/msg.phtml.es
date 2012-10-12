@@ -99,9 +99,9 @@
  De lo contrario,
  !href cmd=resume Volver a la página principal del examen.
  !form reply
- <input type="hidden" name="job" value="putsource"><center>
+ <input type="hidden" name="job" value="putsource"/><center>
  <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="Enviar">
+ <p><input type="submit" value="Enviar"/>
  </center></form>
  <b>Advertencia</b>. ¡No inserte fuentes modificados! Corre el riesgo de
  inutilizar su examen.

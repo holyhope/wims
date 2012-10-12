@@ -81,14 +81,14 @@ $d,
 
 !form reply
 Nueva fecha de expiración:
-día <input size=2 maxlength=2 name="parm3" value="$d_">, mes
+día <input size="2" maxlength="2" name="parm3" value="$d_"/>, mes
 !set parm2=$[$m_]
 !formselect parm2 from 1 to 12 prompt $months
 , año
 !set parm1=$y_
 !formselect parm1 list $thisyear,$[$thisyear+1]
 . <p><center>
-<input type=submit value="$wims_name_tosave">
+<input type="submit" value="$wims_name_tosave"/>
 </center></form>
 <p> Hacer que la clase expire hoy significa la clausura de la clase (que será efectiva 
 mañana por la mañana).

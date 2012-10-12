@@ -148,9 +148,9 @@ Uiteraard kan ook met "knippen en plakken" worden gewerkt.
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"><center>
+ <input type="hidden" name="job" value="putsource"/><center>
  <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send">
+ <p><input type="submit" value="$wims_name_send"/>
  </center></form>
  <span class="wims_warning">$wims_name_warning</span>. 
  Voer geen "corrupte code" handmatig in ; het risico
