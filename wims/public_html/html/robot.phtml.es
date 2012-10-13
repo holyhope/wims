@@ -17,7 +17,7 @@ Content-type: text/html; charset=iso-8859-1
 <IMG SRC=gifs/logo.gif border=0 alt="WIMS logo">
 <br><small>acerca de este logo</a>
 </table>
-<hr width=1>
+<hr width=1/>
 <CENTER>
 <H1>
 WIMS <font size=-1>en <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
@@ -28,11 +28,11 @@ WIMS <font size=-1>en <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
 WIMS no ha podido reconocer su navegador web.
 <p>
 !form
-<input type=hidden name=module value=$module>
+<input type=hidden name=module value=$module/>
 Para acceder a los servicios de WIMS, necesita un navegador que permita
 el uso de formularios. Para comprobar la validez del navegador que utiliza,
 escriba por favor la palabra <tt>wims</tt> aquí:
- <input size=6 name=special_parm> y pulse ``Intro''.
+ <input size=6 name=special_parm/> y pulse ``Intro''.
 </form>
 <p>
 Tenga en cuenta que las páginas de WIMS son interactivas, no archivos HTML

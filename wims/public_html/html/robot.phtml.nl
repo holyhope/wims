@@ -17,7 +17,7 @@ Content-type: text/html; charset=iso-8859-1
 <IMG SRC=gifs/logo.gif border=0 alt="WIMS logo">
 <br><small>over dit logo</a>
 </table>
-<hr width=1>
+<hr width=1/>
 <CENTER>
 <H1>
 wims <font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
@@ -28,10 +28,10 @@ wims <font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
 WIMS kan uw webbrowser niet identificeren.
 <p>
 !form
-<input type=hidden name=module value=$module>
+<input type=hidden name=module value=$module/>
 Om gebruik te kunnen maken van deze WIMS server, heb je een browser nodig die overweg kan met "forms" 
 Om jouw browser te testen, typ het woord <tt>wims</tt> hier in:
-<input size=6 name=special_parm> en klik ``Enter''.
+<input size=6 name=special_parm/> en klik ``Enter''.
 </form>
 <p>
 Besef goed dat deze WIMS pagina's interactief zijn en geen statische HTML pagina's.

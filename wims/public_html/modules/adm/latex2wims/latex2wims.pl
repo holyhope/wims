@@ -76,7 +76,7 @@ $FILE = $_;
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0 />}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0 />';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---/> " width="25" height="15" border=0 />';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################
@@ -722,7 +722,7 @@ sub includegraphics{ my ( $b, $opt ) = @_;
    $b=~ s/.(pdf|tiff|eps|svg)/.png/ ; 
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\(line|text)width)/linewidth("$2$3",$1)/eg;
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(cm|px)/ style=\"$1:$2$3;\"/;
-  "<img src=\"\\filedir\/$b\" $opt alt=\"\">";
+  "<img src=\"\\filedir\/$b\" $opt alt=\"\"/>";
 }
  
 sub minipage { my ( $b ) = @_; 
