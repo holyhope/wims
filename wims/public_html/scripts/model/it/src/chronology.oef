@@ -30,6 +30,9 @@ corrispondenza, nella parte in alto inserire gli eventi.}
 \text{facteur=100}
 :Altezza delle etichette
 \integer{height=100}
+:Largeur de la flèche
+Mettre un entier entre 1 et 3
+\integer{wi=1}
 :utilizza i due elementi di dati (0), solo la prima colonna (1), solo la seconda colonna (2)
 \text{choix=0}
 :Contenuto effettivo dell'esercizio.
@@ -60,7 +63,7 @@ corrispondenza, nella parte in alto inserire gli eventi.}
 \text{size=\size,\height2}
 \text{fleche=xrange \xrange
 yrange \yrange
-lines \couleur,\M,1,-1,1,-1,-1,\M,-1,\M,-2,\N+0.5,0,\M,2,\M,1
+lines \couleur,\M,\wi/2,-1,\wi/2,-1,-\wi/2,\M,-\wi/2,\M,-\wi,\N+0.5,0,\M,\wi,\M,\wi/2
 fill 0,\0,\couleur
 }
 
@@ -73,9 +76,9 @@ fill 0,\0,\couleur
 \text{positionhaut=}
 \for{j=0 to \N-1}{
   \text{fleche=\choix=0 or \choix=1 ? \fleche
-  line \j-0.1,-1,\j-0.1,-2,\couleur}
+  line \j-0.1,-\wi/2,\j-0.1,-2*\wi,\couleur}
   \text{fleche=\choix=0 or \choix=2 ? \fleche
-  line \j-0.1,0.7,\j-0.1,2,\couleur}
+  line \j-0.1,\wi/2,\j-0.1,2*\wi,\couleur}
   \text{ans=pari([2*\j+1,2*\j+2])}
  \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
  \text{positionbas=\positionbas
@@ -92,10 +95,10 @@ r\ans[2],\v[1] x \v[2]}
  \text{urlfleche=draw(\size
 \fleche)}
 \statement{\instruction
-<center>
+<div class="wimscenter">
 \special{imagefill \urlfleche,\size[1]x\size[2],\facteur x \height
 \position}
-</center>
+</div>
 }
 
 \answer{}{\rep[1;1]}{type=clickfill}{option=shuffle}
