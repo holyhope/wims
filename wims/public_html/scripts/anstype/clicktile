@@ -109,16 +109,16 @@ sg_tot=!listcomplement $g_tot in $r_tot
     color=$(l[1])
     color_i=!append item $color to $color_i
     !advance cmt
-   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(color)_r$i)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
+   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(color)_r$i)"/><param name="$(w)$(cmt)_color" value="$(l[1])"/> to $applet_parm
   !else
    !if $w iswordof segment line point polygon
-    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"><param name="point_color" value="$(l[1])"> to $applet_parm
+    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"/><param name="point_color" value="$(l[1])"/> to $applet_parm
    !else
      !if $w iswordof copy
         !set l1=!nospace $(l[1..2])
-        !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
+        !set applet_parm=!append line <param name="$w" value="$l1"/><param name="image" value="$(l[-1])"/> to $applet_parm
      !else
-       !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
+       !set applet_parm=!append line <param name="$w" value="$l"/> to $applet_parm
      !endif
    !endif
   !endif
@@ -127,11 +127,11 @@ color_p=!listcomplement $color_i in $color_g,$color_r
 !for co in $color_p
    !if $($(co)_r$i)!=
       !advance cmt
-    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r$i)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r$i)"/><param name="square$(cmt)_color" value="$co"/> to $applet_parm
    !endif
 !next
 reply_$i=<applet id="Clicktile$i" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
-   <param name="status" value="done">\
+   <param name="status" value="done"/>\
    $applet_parm\
 </applet>
 
@@ -152,16 +152,16 @@ reply_$i=<applet id="Clicktile$i" code="Clicktile.class" codebase="$appletdir" a
   !if square isin  $w
     !set color_i=!append item $(l[1]) to $color_i
    !advance cmt
-   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(l[1])_g$i)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
+   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(l[1])_g$i)"/><param name="$(w)$(cmt)_color" value="$(l[1])"/> to $applet_parm
   !else
    !if $w iswordof segment line point polygon
-    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"><param name="point_color" value="$(l[1])"> to $applet_parm
+    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"/><param name="point_color" value="$(l[1])"/> to $applet_parm
    !else
      !if $w iswordof copy
         !set l1=!nospace $(l[1..2])
-        !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
+        !set applet_parm=!append line <param name="$w" value="$l1"/><param name="image" value="$(l[-1])"/> to $applet_parm
       !else
-       !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
+       !set applet_parm=!append line <param name="$w" value="$l"/> to $applet_parm
       !endif
    !endif
   !endif
@@ -170,7 +170,7 @@ color_p=!listcomplement $color_i in $color_g
 !for co in $color_p
    !if $($(co)_g$i)!=
     !advance cmt
-    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g$i)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g$i)"/><param name="square$(cmt)_color" value="$co"/> to $applet_parm
    !endif
  !next
 !set reply_$i=<center>\
@@ -179,7 +179,7 @@ $(reply_$i) \
 </div>\
 <div style="display:inline;border-style:solid; border-color:green; text-align:center; width:$xsize;height:$ysize;">\
 <applet id="Clicktile_good$i" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
-<param name="status" value="done">\
+<param name="status" value="done"/>\
  $applet_parm\
  </applet>\
  </div>\
