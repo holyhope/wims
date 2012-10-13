@@ -136,7 +136,7 @@ void about(void)
 {
     cmdparm="-v"; prepabout("",outputfname,NULL);
     if(readabout()>0)
-      printf("<A HREF=\"%s\">Yacas %s</A>",homepage,aboutbuf);
+      printf("<a href=\"%s\">Yacas %s</a>",homepage,aboutbuf);
 }
 
 char *dynsetup(char *ptr, char *end)

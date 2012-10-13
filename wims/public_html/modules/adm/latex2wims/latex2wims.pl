@@ -75,8 +75,8 @@ $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
-my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0 />}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---/> " width="25" height="15" border=0 />';
+my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border="0" />}';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---/> " width="25" height="15" border="0" />';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################
@@ -426,7 +426,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     my $tp = '' ; 
     if ($TOOLTIP==1) {
     if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=' ' ; } else {
-      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br>': '' ;}
+      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br/>': '' ;}
     $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
     $ref->{toc}{$Id} .= "\n<XXXX=$id>\\link{$id}{$ref->{tittoc}{$id}
@@ -774,8 +774,8 @@ sub verbatim { my ($b,$id ) = @_ ;
 }
 
 sub multline { my ( $b) = @_;
-  $b =~ s/\\\\\s*=/\\)<br>\\(== /g;
-  $b =~ s|\\\\|\\)<br>\\(|g;
+  $b =~ s/\\\\\s*=/\\)<br\/>\\(== /g;
+  $b =~ s|\\\\|\\)<br\/>\\(|g;
   "<div class=\"math\">\\(" . $b . "\\)</div>\n";
 }
 
@@ -791,7 +791,7 @@ sub align1 { my ( $b) = @_;
   '<div class="math">' . $b . '</div>' ;
 }
 sub align { my ( $b) = @_;
-  $b =  '<table border=0 align="center" class="tableau"><tr><td>\\(' . $b . '\\\\</table>';
+  $b =  '<table class="wimscenter wimsnoborder tableau"><tr><td>\\(' . $b . '\\\\</table>';
   if ($b =~ s/\\label{([^\}])}//) { $b = "\\label{$1}" . $b };
   $b =~ s|\&|\\)&nbsp;</td><td>&nbsp;\\(|g;
   $b =~ s|\\\\\s*</table>|\\)</td></tr></table>|g;
@@ -1388,8 +1388,9 @@ sub algorithmic { my ($Text) = @_;
     if ($ligne =~ /^\s*\\COMMENT/) { $ligne = "<i>$ligne</i>\n" };
     $text .= "\n" . $ligne;
     $text =~ s/\n{2,}/\n/g ;
-    $text =~ s/\n+/<br>/g ;
-    $text =~ s/(<br>)+/<br>/g ;
+    $text =~ s/\n+/<br\/>/g ;
+    $text =~ s/(<br\/>)+/<br\/>/g ;
+    $text =~ s/(<br>)+/<br\/>/g ;
   }
   $text ;
 }

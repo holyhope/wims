@@ -107,7 +107,7 @@ void about(void)
 {
 /*    char *p;
 */
-    printf("<A HREF=\"%s\">GAP4</A>",homepage); return;
+    printf("<a href=\"%s\">GAP4</a>",homepage); return;
 /*    prepabout(quitstring,outputfname,NULL);
     if(readabout()>0) {
 	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;

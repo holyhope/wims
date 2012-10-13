@@ -812,7 +812,7 @@ void exec_href(char *p)
     tohttpquery(b1);
     if(strstr(session_prefix,"_check")!=NULL) {
 	if(*b2) output(U,b2);
-	else _output_("<a name=\"0\">");
+	else _output_("<a name=\"0\"></a>");
 	return;
     }
     if(jsbuf[0]==0 && st[0]==0 && strstr(session_prefix,"_exam")!=NULL) {
@@ -821,7 +821,7 @@ void exec_href(char *p)
 	    if(strncmp(p1,"new",3)==0 || strncmp(p1,"renew",5)==0 ||
 	       strncmp(p1,"intro",5)==0) {
 		if(*b2) output(U,b2);
-		else _output_("<a name=\"#\">");
+		else _output_("<a name=\"#\"></a>");
 		return;
 	    }
 	}

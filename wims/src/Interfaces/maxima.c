@@ -172,7 +172,7 @@ void about(void)
     char *p, *p2, *pp;
     int i;
 
-/*    printf("<A HREF=\"%s\">Maxima</A>",homepage); return; */
+/*    printf("<a href=\"%s\">Maxima</a>",homepage); return; */
     prepabout("build_info();\n" quitstring,outputfname,NULL);
     if(readabout()>0) {
 	for(p=aboutbuf; *p; p=find_word_start(find_word_end(p))) {
@@ -185,7 +185,7 @@ void about(void)
 	if(isdigit(*p2)) pp=find_word_end(p2);
 	else for(i=0, pp=p;i<2;i++) pp=find_word_end(find_word_start(pp));
 	*pp=0;
-	if(*p!=0) printf("<A HREF=\"%s\">%s</A>",homepage,p);
+	if(*p!=0) printf("<a href=\"%s\">%s</a>",homepage,p);
     }
 }
 

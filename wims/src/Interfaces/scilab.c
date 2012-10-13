@@ -109,7 +109,7 @@ void about(void)
 	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
 	p=strchr(aboutbuf,'('); if(p!=NULL) *p=0;
 	strip_trailing_spaces(aboutbuf);
-	printf("<A HREF=\"%s\">%s</A>",homepage,aboutbuf);
+	printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }
 
