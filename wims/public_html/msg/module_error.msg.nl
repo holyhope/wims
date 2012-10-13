@@ -167,6 +167,6 @@ $debug
 :
 
 </p>
-Wanneer U dit bericht leest, is er een bug gecontateerd in de module `$module'.<br>
+Wanneer U dit bericht leest, is er een bug gecontateerd in de module `$module'.<br/>
 De WIMS server heeft deze fout geregisteerd. Neem svp contasct op met de auteur van deze module.
 

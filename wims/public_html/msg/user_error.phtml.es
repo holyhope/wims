@@ -19,9 +19,9 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <H1 align="center">Sobrecarga</H1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  Este servidor WIMS <font color="blue">$httpd_HTTP_HOST</font> 
  está sobrecargado en este momento con un gran número de solicitudes,
  y no puede servir a más usuarios. Por favor, vuelva más tarde, o
@@ -33,7 +33,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
-  <hr width="1">
+  <hr width="1"/>
   <h1 align="center">Lo sentimos</h1>
   Este servidor WIMS ha bloqueado su conexión: se ha superado la cuota de conexiones.
   </body></html>
@@ -41,9 +41,9 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">Lo sentimos</h1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  WIMS necesita de la presencia de software
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
@@ -61,7 +61,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">¡Alto!</h1><hr>
+ <h1 align="center">¡Alto!</h1><hr/>
  El contenido de 
  <a href="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> no es 
  compatible con los programas de almacenamiento de páginas ni
@@ -76,7 +76,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align="center">Error de WIMS</h1><hr>
+<h1 align="center">Error de WIMS</h1><hr/>
 
 Hay un error en su solicitud a este sitio WIMS.<p>
 
@@ -103,12 +103,12 @@ Hay un error en su solicitud a este sitio WIMS.<p>
  ¿Estás usando un programa automático para acceder a este sitio?
  :unblock
  !form new
- <input type="hidden" name="module" value="home">
- <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
+ <input type="hidden" name="module" value="home"/>
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]"/>
  Si simplemente ha pulsado el botón `Atrás' de su navegador,
  por favor, escriba la palabra `wims' aquí:
- <input size="8" name="special_parm"> entonces
- <input type="submit" value="enviar al servidor">.</form>
+ <input size="8" name="special_parm"/> entonces
+ <input type="submit" value="enviar al servidor"/>.</form>
  <p>
  Por favor, tenga en cuenta que las páginas de este sitio se generan
  dinámicamente. Así que sólo se pueden usar estando conectados, mediante
@@ -226,13 +226,13 @@ Hay un error en su solicitud a este sitio WIMS.<p>
   !for i in module,special_parm,worksheet
    !if $($i)!=$empty
     !set value=!translate " to $ $ in $($i)
-    <input type="hidden" name="$i" value="$value">
+    <input type="hidden" name="$i" value="$value"/>
    !endif
   !next i
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type="hidden" name="$(name$i)" value="$value">
+    <input type="hidden" name="$(name$i)" value="$value"/>
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
@@ -244,7 +244,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
    !else
     !set len=59
    !endif
-   <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
+   <input size="$len" name="$(name$bad_parentheses)" value="$value"/><p>
   !else
    !if $n>10
     !set n=10
@@ -253,12 +253,12 @@ Hay un error en su solicitud a este sitio WIMS.<p>
    <p>
   !endif
   Then
-  <input type="submit" value="envía la petición corregida.">
-  </form><p><hr><p><center>
+  <input type="submit" value="envía la petición corregida."/>
+  </form><p><hr/><div class="wimscenter">
   !href cmd=resume Descartar la última solicitud
 , or
   !href $ página principal de WIMS
-.</center>
+.</div>
   !exit
 !endif
   
@@ -349,9 +349,9 @@ Hay un error en su solicitud a este sitio WIMS.<p>
   <p>
   Access to this virtual class is temporarily closed by its supervisor.
   Come back later!
-  <p><center>
+  <div class="wimscenter">
   !href cmd=close&module=home WIMS
-  </center>
+  </div>
   </body></html>
   !exit
 !endif  
@@ -366,10 +366,9 @@ con tantos detalles como sean posibles sobre las circunstancias bajo
 las cuales ocurrió el error.
 
 :end2
-<hr><p>
-<center>
+<hr/><div class="wimscenter">
 !href module=home&cmd=new Página principal de WIMS
-</center>
+</div>
 
 </body></html>
 

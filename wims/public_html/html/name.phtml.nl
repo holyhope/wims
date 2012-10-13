@@ -107,7 +107,7 @@
 	    Link voor bookmark,\
 	    Omschrijving,\
 	    Versie,\
-	    Vereiste <br>WIMS versie,\
+	    Vereiste <br/>WIMS versie,\
 	    Taal,\
 	    Schrijver,\
 	    Maintainer,\
@@ -121,8 +121,8 @@
 	    Onderwerp,\
 	    Soort,\
 	    Niveau(s),\
-	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
-	    Hulp software<br>vereist,\
+	    Scorings mechanisme<br/><small>(oefening / ontspanning)</small>,\
+	    Hulp software<br/>vereist,\
 	    Server tijd,\
 	    Data module,\
 	    Ontwikkeld op WIMS,\
@@ -179,7 +179,7 @@
  
  !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
-	$[$wims_homeref_req] punten. <br>Gemiddelde score \
+	$[$wims_homeref_req] punten. <br/>Gemiddelde score \
 	$[$wims_homeref_mean]/10.
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session

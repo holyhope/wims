@@ -19,9 +19,9 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <H1 align="center">We zijn te druk</H1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  Deze WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is op dit moment belast door een zeer groot aantal aanvragen,
  en neemt geen nieuwe opdrachten meer aan.
@@ -33,7 +33,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">SORRY</h1>
  Uw verzoek is geblokkeerd door deze WIMS server: maximum aantal verbindingen is bereikt.
  </body></html>
@@ -41,9 +41,9 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1">
+ <hr width="1"/>
  <h1 align="center">Sorry</h1>
- <hr width="50%"><p>
+ <hr width="50%"/><p>
  WIMS heeft het software pakket
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
@@ -61,7 +61,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <H1 align="center">Stop!</H1><hr>
+ <H1 align="center">Stop!</H1><hr/>
  Het materiaal op
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
  is niet geschikt voor het automaitsch downloaden.
@@ -71,7 +71,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit 
 !endif
 
-<h1 align="center">WIMS error</h1><hr><p>
+<h1 align="center">WIMS error</h1><hr/><p>
 
 Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
 
@@ -97,12 +97,12 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
  Gebruikt U soms een geautomatiseerd download programma om deze site te benaderen?
  :unblock
  !form new
- <input type="hidden" name="module" value="home">
- <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
+ <input type="hidden" name="module" value="home"/>
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]"/>
  Hebt U per ongeluk op de `Terug' knop van de browser geklikt,
  typ dan s.v.p. het woord "wims" hier:
- <input size="8" name="special_parm"> en dan
- <input type="submit" value="opsturen naar de server">.</form>
+ <input size="8" name="special_parm"/> en dan
+ <input type="submit" value="opsturen naar de server"/>.</form>
  <p>
  Besef goed dat deze WIMS pagina's dynamisch worden gegenereerd, en kunnen
  dus <b>alleen</b> online gebruikt worden, via een normale browser.
@@ -165,7 +165,7 @@ Dit is niet toegestaan in Uw virtuele klas.
 
 !if cmd_output_too_long iswordof $wims_user_error
 Het resultaat van de door U verzocht berekening heeft het ingestelde maximum
-ruim overtreden.<br>
+ruim overtreden.<br/>
 U hebt vermoedelijk om een te gecompliceerde? berekening verzocht.
 Vereenvoudig Uw verzoek, s.v.p.
  
@@ -223,7 +223,7 @@ Het sessienummer is niet aanwezig.
 !endif
 
 !if parm_too_long iswordof $wims_user_error
-Uw opdracht regel is veel te groot...<br>
+Uw opdracht regel is veel te groot...<br/>
 Dit is -om beveiligings redenen- niet toegestaan.
   !goto end
 !endif
@@ -246,13 +246,13 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
   !for i in module,special_parm,worksheet
    !if $($i)!=$empty
     !set value=!translate " to $ $ in $($i)
-    <input type="hidden" name="$i" value="$value">
+    <input type="hidden" name="$i" value="$value"/>
    !endif
   !next i
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type="hidden" name="$(name$i)" value="$value">
+    <input type="hidden" name="$(name$i)" value="$value"/>
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
@@ -264,7 +264,7 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
    !else
     !set len=59
    !endif
-   <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
+   <input size="$len" name="$(name$bad_parentheses)" value="$value"/><p>
   !else
    !if $n>10
     !set n=10
@@ -273,18 +273,18 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
    <p>
   !endif
   en vervolgens
-  <input type="submit" value="verstuur de gecorrigeerde text.">
-  </form><p><hr><p><center>
+  <input type="submit" value="verstuur de gecorrigeerde text."/>
+  </form><p><hr/><div class="wimscenter">
   !href cmd=resume Laat maar zitten
 , or
   !href $ wims home
-.</center>
+.</div>
   !exit
 !endif
   
 !if wrong_module iswordof $wims_user_error
  De verzochte module ``$module'' bestaat niet op deze WIMS site.
- <br><small><em>kontroleer regelmatig of de links op uw web-pagina / ELO nog up-to-date zijn.</em></small>
+ <br/><small><em>kontroleer regelmatig of de links op uw web-pagina / ELO nog up-to-date zijn.</em></small>
   !goto end
 !endif
 
@@ -351,8 +351,8 @@ Je hebt geen tijd meer over om het examen af te maken.
 !endif
 
 !if exam_closed iswordof $wims_user_error
-Dit "examen" is op dit moment niet meer bereikbaar voor Uw ipadres.<br>
-Log opnieuw in, en start een nieuw "examen" <br>
+Dit "examen" is op dit moment niet meer bereikbaar voor Uw ipadres.<br/>
+Log opnieuw in, en start een nieuw "examen" <br/>
 Doe eventueel even navraag bij je docent.
  !goto examend
 !endif
@@ -368,7 +368,7 @@ Probeer je een andermans sessie te benaderen?
 !endif
 
 !if no_access iswordof $wims_user_error
-  Door het toegangsbeleid op deze site kan uw verzoek niet worden behandeld.<br>
+  Door het toegangsbeleid op deze site kan uw verzoek niet worden behandeld.<br/>
   Onze excuses.
   !goto end
 !endif  
@@ -376,11 +376,11 @@ Probeer je een andermans sessie te benaderen?
 !if class_closed iswordof $wims_user_error
   Sorry.
   <p>
-  Je docent heeft deze virtuele klas is eventjes gesloten.<br>
+  Je docent heeft deze virtuele klas is eventjes gesloten.<br/>
   Kom later terug, of vraag aan je docent de klas weer te openen...
-  <p><center>
+  <div class="wimscenter">
   !href cmd=close&module=home WIMS
-  </center>
+  </div>
   </body></html>
   !exit
 !endif  
@@ -394,10 +394,9 @@ Je kan natuurlijk ook de
 met een gedetailleerde beschrijving van het geconstateerde ongemak
 
 :end2
-<hr><p>
-<center>
+<hr/><div class="wimscenter">
 !href module=home&cmd=new WIMS start pagina
-</center>
+</div>
 
 </body></html>
 

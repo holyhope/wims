@@ -15,7 +15,7 @@ Content-type: text/html; charset=iso-8859-1
 <tr><td align=center valign=bottom>
 <a href=html/logo.en.html>
 <IMG SRC=gifs/logo.gif border=0 alt="WIMS logo">
-<br><small>acerca de este logo</a>
+<br/><small>acerca de este logo</a>
 </table>
 <hr width=1/>
 <CENTER>

@@ -64,8 +64,8 @@ U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
 name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te boezoeken.
  
-SU_greet = !nosubst Welkom, $wims_firstname $wims_lastname!<br>\
-Welkom op de Onderhouds pagina van uw klas.<br>
+SU_greet = !nosubst Welkom, $wims_firstname $wims_lastname!<br/>\
+Welkom op de Onderhouds pagina van uw klas.<br/>
 SU_Bhome = Terug naar de supervisor pagina
 SU_log = supervisor login
 SU_exp1 = Deze klas is verlopen op:  
