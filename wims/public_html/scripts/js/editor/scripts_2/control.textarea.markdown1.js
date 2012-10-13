@@ -71,7 +71,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 
 			//if(response == null)
 				//return;
-			this.replaceSelection('<img src="\\filedir/'+response+'"' + (selection == '' ? ' alt="'+names["image_alt"]+'">' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+			this.replaceSelection('<img src="\\filedir/'+response+'"' + (selection == '' ? ' alt="'+names["image_alt"]+'"/>' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
 			id: 'markdown_image_button'
 		});
