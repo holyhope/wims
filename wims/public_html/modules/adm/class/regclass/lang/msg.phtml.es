@@ -92,7 +92,7 @@ dejan este campo vacío (se les enviarán códigos secretos temporales
 para las operaciones sensibles), o ponen la palabra <tt class="wims_code_words">all< /tt>
 para desactivar esta medida de seguridad.
 
- <p><hr><p>
+ <p><hr/></p>
  !read help/hosts.phtml
  !reset secure
  !exit

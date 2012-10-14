@@ -351,7 +351,7 @@ Method of automatic daily module update. <dl>
 <dt><tt>install</tt>
    <dd>Install new modules, but not update existing modules.
 <dt><tt>update</tt>
-   <dd>Update existing modules, but not install new modules. <br>
+   <dd>Update existing modules, but not install new modules. <br/>
    This will let you benefit from bug fixes, as well as suffer from
    newly introduced ones.
 <dt><tt>all</tt>

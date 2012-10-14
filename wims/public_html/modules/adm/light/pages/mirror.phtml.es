@@ -47,7 +47,7 @@
 <h1 class="wims_title">
 <font size=+2>W</font>WW
 <font size=+2>I</font>nteractive
-<font size=+2>M</font>ultipurpose<br>
+<font size=+2>M</font>ultipurpose<br/>
 <font size=+2>S</font>erver
 <font size="-1">en <a href="/">$httpd_HTTP_HOST</a></font> <br/>
 $module_title</h1> <p>
@@ -77,7 +77,7 @@ $ in $l_
  público general. Si usa normalmente WIMS en su trabajo, le sugerimos
  que añada a sus Favoritos al menos una de estas direcciones.
  <p>$table_header
- $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br>en que funciona</th><th>Comentarios</th></tr>
+ $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br/>en que funciona</th><th>Comentarios</th></tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
   !set l_=!record $j_ of $mir

@@ -61,9 +61,9 @@ en la nueva.
  <p>
  !changeto list.phtml
 !else
- <p><center>
+  <div class="wimscenter">
   !href cmd=reply&job=list Seguir con el mantenimiento de la clase.
- </center>
+ </div>
 !endif
 
 

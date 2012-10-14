@@ -57,21 +57,21 @@
  participantes de la clase. <p>
  Por favor, tenga en cuenta que, una vez activado, no podrá modificar el
  examen. ¿Desea continuar?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
 !if prep_erase=$error
  ¿Confirma que quiere borrar este examen #$exam ($title)?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
@@ -79,12 +79,11 @@
  Este examen número $exam ($title) normalmente expira el $expday
  !item $expmon of $months
  $expyear. ¿Quiere hacerlo expirar ahora?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
- <p><b>Observación.</b> Sus estudiantes no pueden continuar trabajando en un
+ . </div><b>Observación.</b> Sus estudiantes no pueden continuar trabajando en un
  examen que ha expirado. Pero sus puntuaciones anteriores se conservarán (y se
  tomarán en cuenta en las estadísticas), y siempre podrá consultar estas
  puntuaciones.

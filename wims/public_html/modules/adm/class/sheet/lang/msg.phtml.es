@@ -47,12 +47,11 @@
  esta hoja. Por consiguiente esta operación está <b>fuertemente desaconsejada</b>.
  <p>
  ¿De verdad quiere desactivar la hoja?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
-. </center>
- <p>
+. </div>
  <b>¡Antes de continuar, pida al menos a los profesores de las clases vecinas que
  hagan copias de seguridad de sus clases!</b> Cuando los problemas aparezcan, aunque sea
  después de varios meses, estará obligado a volver al estado ANTERIOR a la
@@ -78,11 +77,11 @@
  !endif
  Todas las puntuaciones obtenidas en el trabajo en esta hoja quedarán borradas
  si la desactiva. ¿Está usted seguro de querer hacerlo?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
-. </center> <p>
+. </div>
  Lista de cuentas que ya han trabajado en esta hoja:
  <p>
  <tt>$worktest</tt>
@@ -102,21 +101,21 @@
  por la situación.
  <p>
  ¿Desea continuar?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
 !if prep_erase=$error
  ¿Realmente quiere borrar la hoja de trabajo #$sheet ($title)?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
-.</center>
+.</div>
  !exit
 !endif
 
@@ -124,12 +123,11 @@
  Esta hoja número $sheet ($title) expira normalmente el $expday
  !item $expmon of $months
  $expyear. ¿Quiere hacerla expirar ahora?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
- . </center>
- <p><b>Nota.</b> Sus estudiantes no pueden continuar trabajando en una hoja
+ . </div><b>Nota.</b> Sus estudiantes no pueden continuar trabajando en una hoja
  que ha expirado. Pero las puntuaciones anteriores se conservarán (y se tomarán en 
  cuenta en las estadísticas), y puede seguir consultándolas.
  !exit

@@ -85,10 +85,10 @@ maximaal\
 uservar naam\
 Default host IP (kan worden veranderd op de volgende pagina)\
 Introductie tekst (dwz introductie tekst voor de student)\
-aantal<br>studenten\
-Datum<br>sessie\
-Begin tijd<br>sessie\
-Eind tijd<br>sessie\
+aantal<br/>studenten\
+Datum<br/>sessie\
+Begin tijd<br/>sessie\
+Eind tijd<br/>sessie\
 Host IP\
 Extra info\
 Afmelding inschrijving\

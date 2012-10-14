@@ -8,7 +8,7 @@
 !endif
 
 !if no_right iswordof $error
-    U heeft niet de rechten om klassen op te richten op deze WIMS-server.<br>
+    U heeft niet de rechten om klassen op te richten op deze WIMS-server.<br/>
     Neem
     !mailurl $wims_site_manager contact op met de site-manager\
     voor meer details over het oprichten van klassen
@@ -108,9 +108,7 @@
  Lees aandachtig de onderstaande documentatie.
  Als het niet duidelijk is, vul hier dan niets of het woord <tt class="wims_code_words">all</tt> in.
  Bij dit laatste schakelt WIMS de controle op ipadressen voor uw klassen uit.
- <p>
- <hr>
- <p>
+ <p><hr/></p>
  !read help/hosts.phtml
  !reset secure
  !exit
@@ -157,7 +155,7 @@
 !endif
 
 !if pass_discord=$error
- Het tweede wachtwoord komt niet overeen met het eerste.<br>
+ Het tweede wachtwoord komt niet overeen met het eerste.<br/>
  Probeer het nog eens.
  !exit
 !endif
@@ -169,14 +167,14 @@
 !endif
 
 !if bad_code=$error
- U hebt niet de juiste toegangscode ingevuld.<br>
+ U hebt niet de juiste toegangscode ingevuld.<br/>
  Hebt U een correct werkend email adres ingevuld?<p>
  Dit voorval wordt opgenomen in de logfiles van deze server.
  !exit
 !endif
 
 !if define_fail=$error or abuse=$error
- De server was niet in staat deze nieuwe klas op te nemen in de database.<br>
+ De server was niet in staat deze nieuwe klas op te nemen in de database.<br/>
  Dit moet een interne fout van de software zijn.
  <p>
  Gaarne dit voorval melden bij de
@@ -187,7 +185,7 @@ Interne serverfout (oprichten van een klas)
 !endif
 
 !if duplicate=$error
- U probeert een bestaande klas opnieuw op te richten...<br>
+ U probeert een bestaande klas opnieuw op te richten...<br/>
  Hebt U op de <b>reload</b>-knop van uw browser geklikt?
  In elk geval: Uw klas $classname bestaat gewoon op deze server, 
  en deze poging wordt dus genegeerd.<p>

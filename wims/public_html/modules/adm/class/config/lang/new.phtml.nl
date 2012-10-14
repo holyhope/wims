@@ -7,7 +7,7 @@
  !endif
  !if backup iswordof $warn
   <p><span class="wims_warning">$wims_name_warning</span>.
-  Het is de verantwoordelijkheid van de individuele docent een backup te maken van de virtuele ruimte.<br>
+  Het is de verantwoordelijkheid van de individuele docent een backup te maken van de virtuele ruimte.<br/>
   Deze server computer zal zonder expliciet contact met de systeembeheer <b>geen backups</b> van virtuele klassen aanmaken.
  !else
   <p>
@@ -37,7 +37,7 @@
   een nieuwe virtuele klas (of een groepje klassen, of een kompleet instituut)
   aan het begin van het schooljaar.
   </li><li>
-  Installeer het lesmateriaal in de nieuwe klas, met de backupfile.<br>
+  Installeer het lesmateriaal in de nieuwe klas, met de backupfile.<br/>
   <small>(zonder de overbodige leerling accounts en scores)</small>
   </li></ol>
  !else
@@ -53,10 +53,10 @@
  <p>
  !changeto list.phtml
 !else
- <p><center>
+  <div class="wimscenter">
   !href cmd=reply&job=list Doorgaan 
   met het klasse onderhoud.
- </center>
+ </div>
 !endif
 
 

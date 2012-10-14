@@ -84,9 +84,9 @@ uservar name\
 Default host IP (can be changed in the following page)\
 Introductory text (e.g. general instructions for the students)\
 Num.Stud.\
-Date of<br>session\
-Beg. time<br>of session\
-End time<br>of session\
+Date of<br/>session\
+Beg. time<br/>of session\
+End time<br/>of session\
 Host IP\
 Extra info\
 Inscription cancellation\

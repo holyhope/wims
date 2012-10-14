@@ -1,8 +1,8 @@
 !set lang_exists=yes
 
 !distribute items día(s),semana(s),mes(es),año(s),Peticiones de página,Sesiones,Sitios,\
-  Número,total,media<br>diaria,media<br>por semana,media<br>por mes,media<br>por año,\
-  media<br>por sitio,Media<br>semanal,Tipo de gráfica,al día,el comienzo\
+  Número,total,media<br/>diaria,media<br/>por semana,media<br/>por mes,media<br/>por año,\
+  media<br/>por sitio,Media<br/>semanal,Tipo de gráfica,al día,el comienzo\
 into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Visitors,\
    name_cnt,name_total,name_avgday,name_avgweek,name_avgmonth,name_avgyear,\
    name_avgsite,name_avghebdo,name_plot,name_byday,name_beginning
@@ -18,14 +18,14 @@ into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Vi
   Número de visitas desde\
   el\
   al\
-  Fecha de<br>instalación\
+  Fecha de<br/>instalación\
   Sous-total\
 into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
   name_to,name_installed,name_subtotal
 !set title=Estadísticas de visitas
 !set name_sum=!nosubst en total $laps días
 
-!set name_prompt= peticiones<br>totales,peticiones<br>por sitio,sitios<br>totales
+!set name_prompt= peticiones<br/>totales,peticiones<br/>por sitio,sitios<br/>totales
 !set name_explanations=<ul>\
 <li>El número de peticiones contabiliza únicamente peticiones de páginas.\
  Las solicitudes de módulos en desarrollo no se han contabilizado.</li>\

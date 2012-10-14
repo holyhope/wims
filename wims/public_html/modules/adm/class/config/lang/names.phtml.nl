@@ -317,7 +317,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=oefdefault
- !set title=Configuratie voor OEF modules<br>[Online Exercise Format] 
+ !set title=Configuratie voor OEF modules<br/>[Online Exercise Format] 
  !distribute lines een serie oefeningen heeft\
  Moeilijkheidsgraad\
  Tijd limiet\
@@ -508,7 +508,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
-!set name_content_style = U kunt een algemeen stylesheet definieren<br>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
+!set name_content_style = U kunt een algemeen stylesheet definieren<br/>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
 
 !set name_content_style2=Kopieer hier een css-stylesheet
 
@@ -583,11 +583,11 @@ Deze klas moet dan wel eerst
 :connect_first_info
 De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
 met een andere WIMS server of een andere ELO
-(Electronische Leer Omgeving) te communiceren.<br>
+(Electronische Leer Omgeving) te communiceren.<br/>
 De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.  
 <p>
 In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,
-zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br>
+zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br/>
 Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd. 
 <p>
 !exit
@@ -597,7 +597,7 @@ Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd.
 Deze WIMS server heeft geen netwerkverbonden servers gedeclareerd.
 Om deze mogelijkheid te gebruiken, schrijf naar de 
 <a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
-om een dergelijke voorziening te treffen.<br>
+om een dergelijke voorziening te treffen.<br/>
 En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  

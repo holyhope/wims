@@ -14,7 +14,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Lijst van oefeningen
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
-!set name_thsheet=No,Titel,Vereist,Weging,Punten<br>verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer
+!set name_thsheet=No,Titel,Vereist,Weging,Punten<br/>verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer
 !set name_minmax=min/gem/max van deze klas
 
 !set name_manualscore=Handmatig ingevoerde cijfers
@@ -33,7 +33,7 @@ name_done,name_equiv
 !set name_formula_comment=U kunt de moeiljkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
 De cijfers worden berekend met maximum = 
 !set name_formula2=!nosubst Cijfers berekenen met als maximum $scoremax
-!set name_pickup=Kies een werkblad<br>om het gemiddelde cijfer per<br>werkblad te laten zien: 
+!set name_pickup=Kies een werkblad<br/>om het gemiddelde cijfer per<br/>werkblad te laten zien: 
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen. 
@@ -56,7 +56,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 
 !endif
 
-!set name_title_showsheet=!nosubst details van werkblad $numshowsheet<br>$sh_title
+!set name_title_showsheet=!nosubst details van werkblad $numshowsheet<br/>$sh_title
 !set name_percentagegot=Percentage van de verkregen punten
 !set name_qualitygot=Kwaliteit berekend over een maximum van 10
 !set name_percentagedone=Percentage van het afgeronde werk
@@ -79,7 +79,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br>(in onbewerkte data)  
+  !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br/>(in onbewerkte data)  
   !goto end
 !endif
 

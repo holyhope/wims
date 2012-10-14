@@ -70,7 +70,7 @@
 !if $error=email_required
  $errorhead Debe dar su dirección de correo para poder enviar un mensaje
  a este panel.
- <br>
+ <br/>
  <b>$wims_name_warning</b>. ¡El servidor verificará esta dirección! Por lo tanto, no
  dé una dirección falsa.
  !set job=compose

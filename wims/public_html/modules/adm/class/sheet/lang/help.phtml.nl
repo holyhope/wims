@@ -6,7 +6,7 @@
 !read adm/title.phtml 1\
 $(name_shtab[6])
 
-  De cijfer afhankelijkheden wil zeggen:<br>
+  De cijfer afhankelijkheden wil zeggen:<br/>
   een student moet eerst de gewenst score hebben behaald voordat de volgende opdracht mag worden gedaan.
   [drempel]
   Bijvoorbeeld:

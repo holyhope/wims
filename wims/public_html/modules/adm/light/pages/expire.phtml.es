@@ -34,7 +34,7 @@
  !exit
 !endif
 
-<hr width=1>
+<hr width=1/>
 <center><h3>$wims_classname, $wims_institutionname</h3>
 <p><h1>Fecha de expiración de la clase</h1></center> <p>
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre

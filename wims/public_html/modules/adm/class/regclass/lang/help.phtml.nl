@@ -6,19 +6,19 @@
  Een indiviuele klas is bedoeld voor een enkele docent en zijn/haar leerlingen. 
 </li>
 <li>
- Een gemeenschappelijke ingang voor een groepje klasses [een soort digi-school]<br>
- geeft leerlingen de mogelijkheid om zonder wachtwoorden over te stappen naar <br>
- andere klassen [andere vakken of cursussen].<br>
- Voor docenten is er de mogelijkheid om lesmateriaal te delen en samen<br>
- met collega&rsquo;s lesmateriaal te ontwikkelen.<br>
+ Een gemeenschappelijke ingang voor een groepje klasses [een soort digi-school]<br/>
+ geeft leerlingen de mogelijkheid om zonder wachtwoorden over te stappen naar <br/>
+ andere klassen [andere vakken of cursussen].<br/>
+ Voor docenten is er de mogelijkheid om lesmateriaal te delen en samen<br/>
+ met collega&rsquo;s lesmateriaal te ontwikkelen.<br/>
  Ook kan een docent meerdere klassen beheren.
 </li>
 <li>
- Een instituut is een groep multi-level klassen.<br>
- Op verschillende niveaus kunnen dwarsverbanden worden gecreerd tussen cursussen,<br>
- lesprogramma's ,lesmateriaal, docenten en studenten.<br>
- Op alle leerniveaus kunnen meerdere gemeenschappelijke ingangen worden gemaakt.<br>
- [voor verschillende vakken, cursussen examentraining  etc.]<br>
+ Een instituut is een groep multi-level klassen.<br/>
+ Op verschillende niveaus kunnen dwarsverbanden worden gecreerd tussen cursussen,<br/>
+ lesprogramma's ,lesmateriaal, docenten en studenten.<br/>
+ Op alle leerniveaus kunnen meerdere gemeenschappelijke ingangen worden gemaakt.<br/>
+ [voor verschillende vakken, cursussen examentraining  etc.]<br/>
  Dit alles kan centraal worden beheerd.
 </li>
 </ul>    
@@ -32,9 +32,9 @@ Het oprichten van
     <font color="blue">$name_classe</font>
      is voorbehouden aan de administrator.
 !endif
-<br>
+<br/>
 <small>
-    Voor deze handeling is een werkend emailadres noodzakelijk.<br>
+    Voor deze handeling is een werkend emailadres noodzakelijk.<br/>
     Nadat uw klas $name_classe is opgericht, bent U verantwoordelijk voor het onderhoud ervan.
 </small>
 <p>

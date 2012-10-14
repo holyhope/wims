@@ -64,7 +64,7 @@ WIMS new developer
 !exit
 :3
 maakt van een latex bestand een WIMS document binnen Modtool.
-<br>En is alleen te gebruiken door docenten met een modtool account.
+<br/>En is alleen te gebruiken door docenten met een modtool account.
 <p>
 Voor een goed resultaat moet ook een css bestand worden gebruikt.
 Leest hiervoor eerst deze 

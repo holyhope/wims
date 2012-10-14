@@ -62,7 +62,7 @@ Finalmente, el botón `Vista previa' de la página de composición de los mensajes
 le permite comprobar si la fórmula que ha introducido se mostrará
 correctamente.
 
-<p><center>
+ <div class="wimscenter">
 !href cmd=resume Volver a los mensajes.
-</center> <p>
+</div>
 

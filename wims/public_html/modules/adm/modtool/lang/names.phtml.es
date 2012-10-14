@@ -13,7 +13,7 @@
 !set name_binfile=Ficheros binarios
 !set name_del=Borrar un módulo
 !set name_size=Tamaño
-!set name_publish=!nosubst Publicar $i_title<br><tt>$mod</tt>
+!set name_publish=!nosubst Publicar $i_title<br/><tt>$mod</tt>
 
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
@@ -41,7 +41,7 @@
 !set name_backto=!nosubst Volver a $otit
 !set name_this1=de se nuevo módulo
 !set name_this2=del módulo actualmente en desarrollo
-!set name_levellist=E: escuela primaria; H: escuela secundaria; U: universidad; <br>G: estudio doctoral; R: investigación
+!set name_levellist=E: escuela primaria; H: escuela secundaria; U: universidad; <br/>G: estudio doctoral; R: investigación
 
 !set name_accountchange=Cambiar las propiedades de su cuenta de desarrollo
 !set name_empty=deje el campo <span class="wims_label"> contraseña</span> vacío si quieren conservar el antiguo
@@ -99,7 +99,7 @@ de desarrollo bajo la dirección
   !distribute lines Nombre de su cuenta de publicación \
   Tipo de publicación\
   versión desarrollo, versión estable - modificar un módulo existente, versión estable - añadir un nuevo módulo\
-  Es una traducción ¿de un módulo que existe <br> creado por otro autor?\
+  Es una traducción ¿de un módulo que existe <br/> creado por otro autor?\
   Modificantes autorizados\
   ¡Lea esto en primer lugar!\
   El módulo publicado aparecerá en el motor de búsqueda del sitio de aquí a algunos minutos.\

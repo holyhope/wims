@@ -11,5 +11,5 @@
 
 !distribute line Módulos nuevos instalados en el servidor \
   Actualizaciones recientes de módulos en el servidor\
-  Nueva<br>versión\
+  Nueva<br/>versión\
 into name_newmodule,name_updatemodule,name_new

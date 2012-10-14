@@ -99,7 +99,7 @@ Gebruik alleen woorden bestaande uit cijfers en/of letters, zonder accenten of s
 !endif
 
 !if pass_error=$error
-Het tweede wachtwoord was niet gelijk aan het eerste!<br>Uw aanmelding is dus helaas mislukt. Probeer het nog eens.
+Het tweede wachtwoord was niet gelijk aan het eerste!<br/>Uw aanmelding is dus helaas mislukt. Probeer het nog eens.
  !exit
 !endif
 

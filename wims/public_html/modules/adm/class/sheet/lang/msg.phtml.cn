@@ -56,12 +56,11 @@
 取消激活此页后有可能使相邻班陷入混乱. 因此<b>强烈劝告</b>你不要做此操作.
  <p>
 你是否仍要取消激活此页?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
- <p>
+ . </div>
  <b>在继续此操作前, 至少应该通知相邻班的主持教师保存他们的班级!</b>
  !exit
 !endif
@@ -80,11 +79,11 @@
   !exit
  !endif
 如果你取消激活, 此页的所有得分都将删除. 确实要这样做吗?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center> <p>
+ . </div>
 在此页作作业的帐户表:
  <p>
  <tt>$worktest</tt>
@@ -99,21 +98,21 @@
 你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
  <p>
 要继续吗?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
 !if prep_erase=$error
 你真的要删除第 $sheet 页 ($title)?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
-.</center>
+.</div>
  !exit
 !endif
 
@@ -121,12 +120,11 @@
 第 $sheet 页 ($title) 正常的失效日期是 $expyear,
  !item $expmon of $months
  $expday. 你要使他在现在失效吗?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
- . </center>
- <p><b>注意.</b> 你的学生不能在已失效的页上做作业.
+ . </div><b>注意.</b> 你的学生不能在已失效的页上做作业.
 但他们以前的成绩仍被保存(而且在统计时被计入), 你总是能查看这些成绩.
  !exit
 !endif
@@ -168,7 +166,7 @@ to $wims_menu_items
 !endif
 
 !if $error=srcnoexo
- 本页不含任何练习, 因此其源码是空的.<br>
+ 本页不含任何练习, 因此其源码是空的.<br/>
  !href cmd=resume 返回准备页
  !exit
 !endif

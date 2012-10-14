@@ -85,8 +85,8 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
  
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
 
-!set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br>\
-     Op <span class="wims_button disabled">Inloggen</span> klikken,  als u al als docent of supervisor ben geregistreerd.<br>\
+!set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br/>\
+     Op <span class="wims_button disabled">Inloggen</span> klikken,  als u al als docent of supervisor ben geregistreerd.<br/>\
      Klik op <span class="wims_button disabled">Aanmelden</span> voor registratie als docent (dit is dus alleen voor docenten).
 
 !if $type=example

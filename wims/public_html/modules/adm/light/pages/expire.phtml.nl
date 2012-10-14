@@ -32,7 +32,7 @@
  !exit
 !endif
 
-<hr width=1>
+<hr width=1/>
 <center><h3>$wims_classname, $wims_institutionname</h3>
 <p><h1>Einddatum van de klas</h1></center> <p>
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December

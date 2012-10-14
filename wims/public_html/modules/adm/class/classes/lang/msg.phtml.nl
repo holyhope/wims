@@ -3,7 +3,7 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if $error=bad_password
-Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br> 
+Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br/> 
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span>! 
  Elk wachtwoord dat binnen de volgende 5 seconden wordt ingevuld, wordt afgekeurd !
@@ -40,7 +40,7 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
 
 !if $error=bad_loginmail
 Je wordt door het systeem niet herkend of je hebt bij de inschrijving geen geldig emailadres opgegeven.
- <br>
+ <br/>
  Vraag je docent om een nieuw wachtwoord. 
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span> !

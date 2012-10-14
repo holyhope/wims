@@ -49,21 +49,21 @@
 !if prep_activate=$error
  你要求激活试卷 $exam, 也就是说, 使它能被班级的参加者打开. <p>
  请注意, 一旦被激活, 你就不再能改动它. 继续吗?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
 !if prep_erase=$error
  你是否真的要删除本试卷 #$exam ($title)?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ . </div>
  !exit
 !endif
 
@@ -71,12 +71,11 @@
  本试卷 #$exam ($title) 将于 $expday 
  !item $expmon of $months
  $expyear 失效. 你要它现在就失效吗?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
- <p><b>注解.</b> 你的学生不能再做已失效的试卷. 但他们的的早先得分纪录仍被保留
+ . </div><b>注解.</b> 你的学生不能再做已失效的试卷. 但他们的的早先得分纪录仍被保留
 (而且在统计时被计入), 而且你总是可以查阅这些分数.
  !exit
 !endif

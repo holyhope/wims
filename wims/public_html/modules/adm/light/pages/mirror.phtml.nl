@@ -46,7 +46,7 @@
 <font size=+2>W</font>WW
 <font size=+2>I</font>nteractieve
 <font size=+2>M</font>ultipurpose
-<font size=+2>S</font>erver<br>
+<font size=+2>S</font>erver<br/>
 <font size="-1">op <a href="/">$httpd_HTTP_HOST</a></font> <br/>
 $module_title</h1> <p>
 
@@ -78,7 +78,7 @@ $ in $l_
  $table_hdtr<th>Website</th>
  <th>Locatie</th>
  <th>Land</th>
- <th>Ondersteund <br>de talen</th>
+ <th>Ondersteund <br/>de talen</th>
  <th>Opmerkingen</th>
  </tr>
  !for i_=1 to $n

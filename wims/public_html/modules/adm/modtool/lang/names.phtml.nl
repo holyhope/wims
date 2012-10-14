@@ -13,7 +13,7 @@
 !set name_binfile=Binaire bestanden
 !set name_del=Verwijder een module
 !set name_size=Grootte
-!set name_publish=!nosubst Publiceer $i_title<br><tt>$mod</tt>
+!set name_publish=!nosubst Publiceer $i_title<br/><tt>$mod</tt>
 
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige
@@ -41,7 +41,7 @@
 !set name_backto=!nosubst Terug naar $otit
 !set name_this1=uw nieuwe module
 !set name_this2=de module in bewerking
-!set name_levellist=E: lagere school; H: middelbare school; U: universiteit; <br>G:promotie ; R: onderzoek
+!set name_levellist=E: lagere school; H: middelbare school; U: universiteit; <br/>G:promotie ; R: onderzoek
 
 !set name_accountchange=Verander uw ontwikkelaars account
 !set name_empty=laat het wachtwoord veld leeg ,als u het niet wilt veranderen
@@ -91,14 +91,14 @@
 
 !if $job=backup
  !set name_save= Hier is de backup file van de module
- !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br> Neem s.v.p. kontakt op met de 
+ !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br/> Neem s.v.p. kontakt op met de 
 !endif
 
 !if $job=publish
   !distribute lines Modtool submissie id\
   Type publicatie\
   experimentele versie,stabiele versie - verander een bestaande module,stabiele versie - voeg een nieuwe module toe\
-  Is deze module een vertaald<br>en gemaakt door een ander ? \
+  Is deze module een vertaald<br/>en gemaakt door een ander ? \
   Toegelaten mede auteurs\
   Lees mij eerst !\
   De veranderde versie van uw module zal vanaf morgen te vinden zijn in de database van de WIMS zoekmachine\

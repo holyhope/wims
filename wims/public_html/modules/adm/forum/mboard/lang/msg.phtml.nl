@@ -38,7 +38,7 @@
 
 !if open_tag = $error
  <b>$wims_name_warning</b>.
- Uw bericht bevat een niet afgesloten html-tag.<br>
+ Uw bericht bevat een niet afgesloten html-tag.<br/>
  Graag controleren en verbeteren.
   <p>
  Uw bericht wordt getoond als een html-pagina, dus als U bijvoorbeeld wiskundige ongelijkheden gebruikt, geef dan een spatie achter het `&lt;' teken, 
@@ -65,7 +65,7 @@
 
 !if $error=email_required
  $errorhead U moet een werkend emailadres invullen om een bericht te kunnen opsturen.
- <br>
+ <br/>
  <b>$wims_name_warning</b>. De server zal het opgegeven adres kontroleren.
  !set job=compose
  !exit

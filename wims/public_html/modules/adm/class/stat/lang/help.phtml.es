@@ -5,12 +5,12 @@ Significado de los términos.
  <dd>Peso del ejercicio en el cálculo de la puntuación de la hoja.
  <p> 
  <dt>índice de dificultad
- <dd>Fórmula de este índice: <p><center>
+ <dd>Fórmula de este índice:  <div class="wimscenter">
    !instex $$$$ \frac{4\times\sqrt{\
    (\hbox{suma de las duraciones})\times\
    (\hbox{número de ejercicios comenzados})}}\
    {(\hbox{número de ejercicios terminados})} $$$$
-  </center> <p>
+  </div>
   Un ejercicio normal tiene habitualmente un índice de dificultad de entre 0.5 y 3.
   <p>
  <dt>nuevos

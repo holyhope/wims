@@ -13,7 +13,7 @@ een niet anonieme enquete
 </ul>
 (Zie de hiervoor passende documentatie).
 Bij dit filteren op technische variabelen gelden de volgende spelregels:
-aan alle filtereisen op 1 regel moet worden voldaan.<br>
+aan alle filtereisen op 1 regel moet worden voldaan.<br/>
 Bij meerdere regels moet aan tenminste 1 regel worden voldaan.
 <p>Een voorbeeld de filter regels
 <pre>

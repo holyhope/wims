@@ -6,18 +6,18 @@
 
 Er zijn twee soorten wachtwoorden voor de aanmelding (registratie):
 <p>
-Het aanmeldings wachtwoord voor het <b>portaal</b> is voor docenten.<br>
-Dit wachtwoord mag <tt><b>nooit</b></tt> worden verstrekt aan studenten.<br>
+Het aanmeldings wachtwoord voor het <b>portaal</b> is voor docenten.<br/>
+Dit wachtwoord mag <tt><b>nooit</b></tt> worden verstrekt aan studenten.<br/>
 Omdat iedereen die zich aanmeld bij deze portaal wordt gezien als docent (met de bijhorende bevoegdheden).
 <p>
-Het aanmeldings wachtwoord voor een klas of voor een cursus is bedoeld voor studenten.<br>
+Het aanmeldings wachtwoord voor een klas of voor een cursus is bedoeld voor studenten.<br/>
 Leeringen moeten zich aanmelden voor een bepaalde klas.
 Een aanmelding in een bepaalde klas, maakt de student automatisch deelnemer voor het gehele instituut.
 <p>
 Alleen klassen en ook sommige cursussen vereisen een aanmeldings wachtwoord,
 omdat andere zones (leerlniveau's, lesprogramma's) geen leerling automatisch accepteren.
 <p>
-U kunt ook een aanmeldings wachtwoord vastleggen (of veranderen) voor een compleet leerniveau.<br>
+U kunt ook een aanmeldings wachtwoord vastleggen (of veranderen) voor een compleet leerniveau.<br/>
 Dit wachtwoord wordt dan automatisch ook gebruikt als het "aanmeldings wachtwoord" voor alle cursussen en klassen onde dat leerniveau.
 <p>
 Laat het invulveld leeg wanneer U alleen enkele eigenschappen wilt veranderen (dus wanneer

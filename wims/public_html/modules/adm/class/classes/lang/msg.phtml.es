@@ -39,7 +39,7 @@ Primero debe aceptar los términos de uso antes identificarle.
 
 !if $error=bad_loginmail
  Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription. 
- <br>
+ <br/>
  Demandez à votre enseignant de vous attribuer un nouveau mot de passe.
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span> ! Cette procédure de récupération de mot de passe est désactivée pendant 5 secondes &nbsp;!

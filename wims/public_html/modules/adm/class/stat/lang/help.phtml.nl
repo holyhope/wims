@@ -5,12 +5,12 @@
  <dd>gewicht van de oefeningen mbt het eindcijfer voor een werkblad.
  <p> 
  <dt>moeilijkheidsgraad
- <dd>Formule voor deze factor: <p><center>
+ <dd>Formule voor deze factor:  <div class="wimscenter">
    !instex $$$$ \frac{4\times\sqrt{\
    (\hbox{totaal verstreken tijd})\times\
    (\hbox{aantal opgestarte oefeningen})}}\
    {(\hbox{aantal voltooide oefeningen})} $$$$
-  </center> <p>
+  </div>
   Een normale oefening heeft een "moeilijkheids-factor" tussen 0.5 en 3.
   <p>
  <dt>nieuw

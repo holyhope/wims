@@ -58,12 +58,11 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  U loopt het risico dat er hierdoor in andere klassen ongeldige werkbladen of toetsen ontstaan.
  <p>
   Doorgaan met de procedure?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
- <p>
+ . </div>
  <b>Het is verstanding om collega's eerst een backup te laten maken van hun klassen.</b>
  !exit
 !endif
@@ -83,11 +82,11 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  !endif
  Alle behaalde cijfers voor dit werblad worden verwijderd, indien U het deactiveerd.
  Doorgaan ?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center> <p>
+ . </div>
  Lijst van deelnemers die aan dit werblad heben gewerkt:
  <p>
  <tt>$worktest</tt>
@@ -103,21 +102,21 @@ U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen w
 Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
 
 Wilt U doorgaan?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- .</center>
+ .</div>
  !exit
 !endif
 
 !if prep_erase=$error
 Weet U zeker dat U het werkblad nummer $sheet ($title) wilt verwijderen?
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
-.</center>
+.</div>
  !exit
 !endif
 
@@ -127,12 +126,11 @@ Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
  $expyear. 
  U wilt het <b>nu</b> laten verlopen?
 
- <p><center>
+  <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
- . </center>
- <p><b>Opmerking.</b> 
+ . </div><b>Opmerking.</b> 
  Uw studenten kunnen niet doorgaan met werken aan een verlopen werkblad.
  Maar hun reeds behaalde cijfers worden uiteraard bewaard (en worden dus ook
  verwerkt in de statistieken) en U kunt ze altijd later nog bestuderen. 
@@ -180,7 +178,7 @@ to $wims_menu_items
 !endif
 
 !if $error=srcnoexo
- Dit werkblad bevat geen enkele oefening en is daardoor leeg...<br>
+ Dit werkblad bevat geen enkele oefening en is daardoor leeg...<br/>
  !href cmd=resume terug naar de werkblad aanmaak pagina
  !exit
 !endif
