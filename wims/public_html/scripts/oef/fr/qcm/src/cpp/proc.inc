@@ -107,7 +107,7 @@
 
 \statement{
 \if{\image notsametext }{
-  <img align="right" hspace=10 src=\imagedir/\image> <p>
+  <img align="right" hspace=10 src=\imagedir/\image/> <p>
 }
 \commonq
 \for{q=1 to \qcnt}{
@@ -123,10 +123,10 @@
   \if{\status issametext end and \repind[\q]>0 and \feedback[\q;\repind[\q]] notsametext }{
    <p><font color=\indcolor[\q]><em>\feedback[\q;\repind[\q]]</em></font>
   }
-  \if{\q<\qcnt and (\steptype issametext all or \q<\step)}{<p><hr>}
+  \if{\q<\qcnt and (\steptype issametext all or \q<\step)}{<p><hr/>}
  }
 }
-\if{\image notsametext }{<br clear=right>}
+\if{\image notsametext }{<br clear=right/>}
 }
 
 \answer{\choicename 1}{\ans[1;];\list[1;]}{type=\anstype}{option=\option}
