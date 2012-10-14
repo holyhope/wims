@@ -24,7 +24,7 @@ Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het
 !let name_selectsheet=Laat alleen oefeningen zien uit werkblad
 
 !if $job=student
-  !set name_title=Werkblad nummer $sheet<br>$title (Presentatie voor studenten)
+  !set name_title=Werkblad nummer $sheet<br/>$title (Presentatie voor studenten)
   !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
   !set name_quality=0 uit $[$re] punten behaald, kwaliteit
 !endif

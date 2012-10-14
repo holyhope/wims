@@ -28,7 +28,7 @@ Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les 
 !let name_selectsheet=Indicar solamente los ejercicios de la hoja
 
 !if $job=student
-  !set name_title=Hoja de trabajo número $sheet<br>$title (presentación para los participantes)
+  !set name_title=Hoja de trabajo número $sheet<br/>$title (presentación para los participantes)
   !set name_assignedwork=Tareas asignadas en esta hoja&nbsp;
   !set name_quality=0 de $[$re] puntos obtenidos, calidad
 !endif
