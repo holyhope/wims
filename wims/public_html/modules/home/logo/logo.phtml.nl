@@ -3,7 +3,7 @@
 Het WIMS logo 
 </h1>
 <p>
-<img src="gifs/logo-160.gif" align="middle" alt="logo">
+<img src="gifs/logo-160.gif" align="middle" alt="logo"/>
 </center>
 <p>
 Deze curve volgt een punt op een schijf met straal 1, rond draaiend
@@ -39,8 +39,7 @@ in het menu van <font color="red">Tracés animés</font>
 om het zelf te plotten.
 <p>
 Gemaakt op 03-27-1998, &copy; XIAO, Gang.
-<p><hr> <p>
-<center>
+<p><hr/></p>  <div class="wimscenter">
 !href module=home Terug naar WIMS
-</center>
+</div>
 </div>
