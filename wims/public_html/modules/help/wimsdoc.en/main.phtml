@@ -52,15 +52,15 @@ on WIMS.
 !else # folding
  <p>Click on a title to expand or fold out its content.
  !for set in user,ref
-  <p><hr><center><h2>$(title_$set)</h2></center>
+  <p><hr/><center><h2>$(title_$set)</h2></center>
   !for i in $($(set)_doc)
    <a name="$i"></a>
    !if ,$i isin $expand
-    <hr><h3>
+    <hr/><h3>
     !href cmd=resume&op=close&subject=$i#$i $(title_$i)
     </h3>
     !read $i.phtml
-    <p><hr>
+    <p><hr/>
    !else
     <h4>$(ref1)$i$(ref2)$i">$(title_$i)</a></h4>
    !endif
@@ -70,7 +70,7 @@ on WIMS.
 
 !if $style=integral
  !for i in $user_doc,$ref_doc
-  <hr><center><h3><a name="$i">$(title_$i)</a></h3></center>
+  <hr/><center><h3><a name="$i">$(title_$i)</a></h3></center>
 
   !read $i.phtml
   <p>
@@ -82,7 +82,7 @@ on WIMS.
  !for set in $user_doc,$ref_doc
   !if $set isin $subject
    <a name="$set"></a>
-   <hr><center><h3>$(title_$set)</h3></center>
+   <hr/><center><h3>$(title_$set)</h3></center>
    !read $set.phtml
    <p>
   !endif
