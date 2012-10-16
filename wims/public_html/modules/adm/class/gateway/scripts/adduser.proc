@@ -13,7 +13,7 @@ bad=
       !set login_method=$idp_method $ldap_login
     !endif
   !endif
-  up_external_auth=$user_auth
+  up_external_auth=!lowercase $user_auth
   !if $new_user!=no
     !read adm/class/hashlogin $user_auth,$class,$login_method
   !endif
@@ -60,7 +60,7 @@ up_lastname=$lastname
 up_firstname=$firstname
 up_email=$email
 up_class=$wims_superclass
-up_external_auth=$user_auth
+up_external_auth=!lowercase $user_auth
 
 replacelist=external_auth,supervise,participate,email
 !read adm/class/adduser $login
