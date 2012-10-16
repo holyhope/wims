@@ -869,11 +869,11 @@ void exec_form(char *p)
     }
     else m=default_form_method;
     if(strstr(session_prefix,"_check")!=NULL) {
-	output("<p><form action=\"NON_EXISTING_PAGE\" onsubmit=\"window.close();\" %s>\n",
+	output("<p></p><form action=\"NON_EXISTING_PAGE\" onsubmit=\"window.close();\" %s>\n",
 	       opt);
 	return;
     }
-    output("<p><form action=\"%s%s\"%s method=\"%s\" %s>\n%s",ref_name,a,st,m,opt,wn);
+    output("<p></p><form action=\"%s%s\"%s method=\"%s\" %s>\n%s",ref_name,a,st,m,opt,wn);
     if(a!=abuf && a[0]) force_setvar("wims_ref_anchor","");
     for(i=0;i<follow_no;i++) {
 	if(robot_access && follow_list[i]==ro_session) continue;
