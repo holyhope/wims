@@ -3,12 +3,22 @@ textarea="datatrue datafalse explain"
 
 :Domanda a scelta multipla con rimescolamento.
 
-Classica domanda a scelta multipla, con risposta corretta che non dipende
-da variazioni particolari dell'esercizio.
-Ma le riposte, come pure il loro ordine di presentazione, sono scelte in
-maniera casuale.
+Classica domanda a scelta multipla. L'ordine di presentazione
+delle domande è casuale, nonché l'elenco delle scelte, purché ne siano 
+definite un numero sufficiente.
+Quando sono presenti più risposte corrette è sufficiente che ne venga
+selezionata una.
+
 <p>
-Autore del modello: Gang Xiao <xiao@unice.fr>
+Le domande non sono casuali, ma uguali per tutti gli studenti. È disponibile
+il modello <b>Scelta multipla avanzata</b> che permette di selezionare
+casualmente le domande.
+
+$image_help
+
+$math_help
+
+<p>Autore del modello: Gang Xiao <xiao@unice.fr></p>
 
 :%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
 
@@ -86,7 +96,30 @@ l'opzione <tt class="wims_code_words">split</tt> permette di assegnare un punteg
 purché senza errori.
 \text{option=}
 
+:Feedback Generale
+Testo che viene mostrato dopo la rispota dello studente, in qualsiasi caso.
+\text{feedback_general=}
+
+:Feedback in caso di risposta corretta
+Testo che viene mostrato dopo la rispota dello studente, nel caso che questa sia corretta o parziale.
+\text{feedback_bon=}
+
+:Feedback in caso di risposta errata
+Testo che viene mostrato dopo la rispota dello studente, nel caso contenga almeno un errore.
+\text{feedback_mauvais=}
+
 :%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+
+\text{empty=}
+\if{\feedback_general != \empty}{
+  \text{feedback_general=<p class="feedback">\feedback_general</p>}
+}
+\if{\feedback_bon != \empty}{
+  \text{feedback_bon=<p class="feedback good_answer">\feedback_bon</p>}
+}
+\if{\feedback_mauvais != \empty}{
+  \text{feedback_mauvais=<p class="feedback bad_answer">\feedback_mauvais</p>}
+}
 
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
@@ -134,5 +167,8 @@ purché senza errori.
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5
 
-\answer{The reply}{\ans;\list}{type=\anstype}{option=\option}
+\answer{Risposta}{\ans;\list}{type=\anstype}{option=\option}
 
+\feedback{1=1}{\feedback_general}
+\feedback{\reply1 isitemof \list[\ans]}{\feedback_bon}
+\feedback{\reply1 notitemof \list[\ans]}{\feedback_mauvais}
