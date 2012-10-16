@@ -18,7 +18,7 @@
 !!Your copyright policy.
 !!Your page will be included in wims distribution if the word `GNU'
 !! appears in the following definition.
-!let module_copyright	=&copy; 2009 (<a href=COPYING>GNU GPL</a>)
+!let module_copyright	=&copy; 2009 (<a href="COPYING">GNU GPL</a>)
 
 !readproc adm/search_engine/names.$lang
 

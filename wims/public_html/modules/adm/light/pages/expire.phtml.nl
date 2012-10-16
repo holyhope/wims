@@ -7,7 +7,7 @@
 !let module_version	=1.10
 !let module_wims_version=1.50
 !let module_language	=nl
-!let module_copyright	=&copy; 1999 (<a href=COPYING>GNU GPL</a>)
+!let module_copyright	=&copy; 1999 (<a href="COPYING">GNU GPL</a>)
 !let module_category	=adm
 !let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
 

@@ -22,7 +22,7 @@
 !!Your copyright policy.
 !!Your page will be included in wims distribution if the word `GNU'
 !! appears in the following definition.
-!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_copyright	=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
 
 !! Possible categories: exercise, tool, dictionary, course, recreation.
 !let module_category	=adm
