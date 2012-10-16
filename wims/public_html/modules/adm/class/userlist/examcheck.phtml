@@ -10,16 +10,19 @@ $name_title_examcheck
 
 !if $error!=$empty
  :msg
- <p>
- !read lang/msg.phtml.$moduclass_lang
- <p>
+ <p class="msg">
+  !read lang/msg.phtml.$moduclass_lang
+ </p>
 !else
  !if $checksessions=$empty
-  $name_no_exampart
-  <p>
+  <p class="no_exampart">
+   $name_no_exampart
+  </p>
  !else
-  $name_exampart
-  <p>$table_header
+  <p class="exampart">
+   $name_exampart
+  <p>
+  $table_header
   $table_hdtr<th rowspan="2">$name_Session</th><th rowspan="2">$name_Exam</th><th rowspan="2">$name_Score<small>/$scoremax</small></th>
   <th colspan="$maxexo">$name_Exercise </th><th rowspan="2">$name_Start</th></tr>
   $table_hdtr
@@ -54,7 +57,7 @@ $name_title_examcheck
     !read date.phtml $(start$(ses)$x)
    </small></td>
   !next t
-  $table_end <p>
+  $table_end
  !endif
 !endif
 
