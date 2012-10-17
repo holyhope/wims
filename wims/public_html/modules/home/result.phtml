@@ -11,11 +11,14 @@
 !endif
 
 !set tt=<span class="wims_emph">$(C_$s_category)</span>
-<p>
+
 !if $gottype=search
+<p>
  $RE_found.
+</p>
 !else
  !if $s_keywords!=$empty and $gotcnt1<1
+ <p>
   $RE_nomatch.
   !if $(rel_$s_category)!=$empty
    $RE_try
@@ -29,7 +32,7 @@
 .
    !endif
   !endif
-  <p>
+  </p>
  !endif
  !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0
   !if $list_start>0
@@ -52,7 +55,7 @@
 !endif
 
 !if $gottype=search or $gotcnt1=0
- <ul  class="wims_home_result_list">
+ <ul class="wims_home_result_list">
  !for i=1 to $gotcnt
   !set m_=!line $i of $gotm
   !set w_=!word $i of $gotw
@@ -60,7 +63,7 @@
   !set t_=!line $i of $gott
   !set d_=!line $i of $gotd
   !set a_=!line $i of $gota
-  <li  class="wims_home_result_list">
+  <li>
   !if $wims_ismanager=2
    <small>$w_</small>
   !endif
@@ -97,16 +100,17 @@ $L, $d_
  </li>
  !reset d_ t_
  !next i
- </ul> <p>
+ </ul>
 !endif
 
 !if $s_category isin AT and $gotcnt1>0
- <p><hr width="50%"/> <p>
+ <p><hr width="50%"/></p>
  !exchange gotcnt,gotcnt1
  !exchange gottype,gottype1
  !exchange gotm,gotm1
  !set tt=<span class="wims_emph">$C_P</span>
  $RE_found. <p>
  !read result.P
+ </p>
 !endif
 

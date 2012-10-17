@@ -21,7 +21,7 @@ $module_title\
 !if $cmd!=reply or $error!=$empty
 $name_intro
  !form reply
- <center><table>
+ <table class="wimsnoborder wimscenter">
  <tr>
   <td>$name_subject</td>
   <td><input name="subject" size="45" value="$subject"/></td>
@@ -30,9 +30,9 @@ $name_intro
 <td>$name_message</td>
  <td><textarea name="msg" cols="40" rows="5">$msg</textarea></td>
  </tr></table>
-<input type="submit" name="reg" value="$wims_name_send"/></center>
-
-<p>
+ <p class="wimscenter">
+<input type="submit" name="reg" value="$wims_name_send"/>
+</p>
 <fieldset><legend>$name_menu
 </legend>
 !set file=wimshome/log/classes/$wims_class/.userlist
@@ -60,32 +60,36 @@ $name_expert0
 <p>
 !formradio job list all prompt $name_allparticipants
 </p>
+<p>
 !formradio job list select prompt <b>$name_select</b>:
 $name_expert1
-
+</p>
 !set wims_chooselist_select=$option
 !set wims_chooselist_checked=$option_select
 
-<center>
+<div class="wimscenter">
 !read js/chooselist.phtml select_user1,select_user2,select_user
-</center>
+</div>
 
-<p></p>
+<p>
 !formradio job list s prompt <b>$name_loginlist</b>:
 $name_expert2
- <center>
+</p>
+<div class="wimscenter">
    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
-</center>
+</div>
 !default job=$job
 <p>
 !formradio job list filter prompt <b>$name_filter:</b>
 $name_expert3
 &nbsp;
+</p>
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=filter $wims_name_help
 
- <center><textarea name="variable" cols="20" rows="3">$variable</textarea>
-</center>
+<div class="wimscenter">
+<textarea name="variable" cols="20" rows="3">$variable</textarea>
+</div>
 
 </fieldset>
 </form>
@@ -106,20 +110,19 @@ $name_expert3
   !goto end
  !endif
 $name_warning
-<center>
+<div class="wimscenter">
 <input name="subject" size="45" value="$subject" readonly/>
 <br/>
 <textarea cols="40" rows="5" readonly>
 $msg
 </textarea>
-</center>
+</div>
 <pre>
 $list_user
 </pre>
 <pre>
 $list_teacher
 </pre>
-<p>
 !if $list_noemail notsametext
 $name_noemail2
 <pre>
@@ -127,13 +130,13 @@ $list_noemail
 </pre>
 !endif
  !form reply
-<center>
+<div class="wimscenter">>
 !set wims_ref_class=wims_button
 !href cmd=reply&confirm=yes $wims_name_send
 &nbsp;&nbsp;&nbsp;
 !set wims_ref_class=wims_button
 !href cmd=resume $wims_name_giveup
-</center>
+</div>
 </form>
 
 !endif

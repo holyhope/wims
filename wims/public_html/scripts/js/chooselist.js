@@ -77,6 +77,5 @@ function moveSwap(l,i,j) {
 }
 
 /* end javascript for HTML_QuickForm_advmultiselect */
-/* ]]> */
 
 </script>
