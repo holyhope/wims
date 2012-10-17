@@ -95,7 +95,14 @@ Ce texte s'affichera après la réponse de l'apprenant, en cas de bonne reponse ou
 Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une mauvaise réponse.
 \text{feedback_mauvais=}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 
 \text{empty=}
 \if{\feedback_general != \empty}{
@@ -135,8 +142,8 @@ Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une 
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
-\text{explain=wims(embraced randitem \explain)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 \text{ans=positionof(1,\ind)}
 \text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
 \text{anstype=checkbox iswordof \option?checkbox:radio}

@@ -25,6 +25,11 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\email{xiao@unice.fr}
 :\credits{}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :Données principales.
 Définir une question par ligne, et séparer les lignes
 par un point-virgule. (Donc les textes eux-mêmes ne peuvent pas contenir
@@ -80,11 +85,12 @@ Le délit de fuite coûte ??6?? point(s) sur le permis.;
 }
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{len=}

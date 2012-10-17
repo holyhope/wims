@@ -46,8 +46,9 @@ Ne mettez pas les cases trop petites.
 
 :Données principales.
 Définir une paire d'objets correspondants par ligne, séparés par une virgule.
+$embraced_randitem
 \matrix{data=
-L'Allemagne,		Berlin
+{L'Allemagne,		Berlin
 L'Australie,		Canberra
 Le Canada,		Ottawa
 La Chine,		Beijing
@@ -66,17 +67,25 @@ La Russie,		Moscou
 $embraced_randitem
 \text{explain=Etablissez la correspondance entre les pays et leurs capitales.}
 
-:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
 
+\text{accolade=item(1,1 oui,
+2 non)}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \integer{datacnt=rows(\data)}
 \integer{tot=\tot>\datacnt?\datacnt}
 
 \text{shuf=item(1..\tot,shuffle(\datacnt))}
 \text{data=row(\shuf,\data)}
+\text{data=\accolade=1? wims(embraced randitem \data)}
+
 \text{datal=column(1,\data)}
 \text{datar=column(2,\data)}
 \text{size=\sizev[]x\sizel[]x\sizer}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
 

@@ -87,8 +87,14 @@ partielle pour des réponses partiellement correctes.
 $embraced_randitem
 \text{explain=Parmi les affirmations suivantes, lesquelles sont vraies ? Marquez-les.}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
 \integer{truecnt=rows(\datatrue)}
@@ -110,10 +116,10 @@ $embraced_randitem
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
 \text{ans=positionof(1,\ind)}
 \text{list=wims(values x for x=1 to \tot)}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
 

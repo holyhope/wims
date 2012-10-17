@@ -69,7 +69,14 @@ Smartphone, Téléphone mobile couplé à un assistant numérique personnel (PDA).
 Internet, Réseau informatique mondial constitué d'un ensemble de réseaux nationaux, régionaux et privés, qui sont reliés par le protocole de communication TCP-IP. 
 WWW,world wide web}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+
 \if{\file notsametext}{
   \text{file=randitem(\file)}
   \integer{datacnt=wims(recordcnt \file)}
@@ -81,7 +88,7 @@ WWW,world wide web}
     \text{data=\data
 wims(record \s of \file)}
   }
-  \matrix{data=wims(randitem embraced \data)}
+  \matrix{data=\accolade=1 ?wims(randitem embraced \data)}
   \text{data=wims(replace internal ;; by ; in \data)}
 }{
   \text{objet_cnt=rows(\data)}

@@ -44,10 +44,15 @@ de son système sur un newsgroupe, qui était la version
 ??0.02,0.00,0.01,0.12,1.00??.
 }
 
-:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \text{data=wims(singlespace \data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 
@@ -62,8 +67,8 @@ de son système sur un newsgroupe, qui était la version
  \text{field=\field\f;}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
+\text{post=\accolade=1 ? wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

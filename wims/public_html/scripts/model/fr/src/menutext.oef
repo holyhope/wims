@@ -74,12 +74,17 @@ $embraced_randitem
 $embraced_randitem
 \text{post=}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 
@@ -94,8 +99,8 @@ $embraced_randitem
  \text{field=\field\f;}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 
