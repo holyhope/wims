@@ -35,7 +35,8 @@ on WIMS.
 <p>
 
 !if $style=integral or $style=indexed
- <center><h2><a name="index">-------- Table of Contents --------</a></h2></center><ul>
+<h2 class="wimscenter"><a name="index">-------- Table of Contents --------</a></h2>
+<ul>
  !for set in user,ref
   <li><h4>$(title_$set)</h4>
   <ol>
@@ -60,7 +61,7 @@ on WIMS.
     !href cmd=resume&op=close&subject=$i#$i $(title_$i)
     </h3>
     !read $i.phtml
-    <p><hr/>
+    <p><hr/></p>
    !else
     <h4>$(ref1)$i$(ref2)$i">$(title_$i)</a></h4>
    !endif
@@ -70,7 +71,7 @@ on WIMS.
 
 !if $style=integral
  !for i in $user_doc,$ref_doc
-  <hr/><center><h3><a name="$i">$(title_$i)</a></h3></center>
+  <hr/><h3 class="wimscenter"><a name="$i">$(title_$i)</a></h3></center>
 
   !read $i.phtml
   <p>
@@ -82,7 +83,7 @@ on WIMS.
  !for set in $user_doc,$ref_doc
   !if $set isin $subject
    <a name="$set"></a>
-   <hr/><center><h3>$(title_$set)</h3></center>
+   <hr/><h3 class="wimscenter">$(title_$set)</h3></center>
    !read $set.phtml
    <p>
   !endif
