@@ -20,7 +20,7 @@ padding-left: 3%; padding-right: 3%;}
 </head><body>
 !if threshold iswordof $wims_user_error
  <hr width="1"/>
- <H1 align="center">Sobrecarga</H1>
+ <h1 align="center">Sobrecarga</h1>
  <hr width="50%"/><p>
  Este servidor WIMS <font color="blue">$httpd_HTTP_HOST</font> 
  está sobrecargado en este momento con un gran número de solicitudes,

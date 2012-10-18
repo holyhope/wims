@@ -20,7 +20,7 @@ padding-left: 3%; padding-right: 3%;}
 </head><body>
 !if threshold iswordof $wims_user_error
  <hr width="1"/>
- <H1 align="center">We zijn te druk</H1>
+ <H1 align="center">We zijn te druk</h1>
  <hr width="50%"/><p>
  Deze WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is op dit moment belast door een zeer groot aantal aanvragen,
@@ -61,7 +61,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <H1 align="center">Stop!</H1><hr/>
+ <h1 align="center">Stop!</h1><hr/>
  Het materiaal op
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
  is niet geschikt voor het automaitsch downloaden.
@@ -304,7 +304,7 @@ Niet spelen met de oefeningen !
  !href cmd=resume Vergeet het laatste verzoek
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><span class="wims_warning">ATTENTIE</span>! 
+  </p><p><span class="wims_warning">ATTENTIE</span>! 
   Deze gebruikersfout niet herhalen ! 
   Dit kan aanleiding geven tot zeer slechte scoreresultaten...zelfs als de cijferregistratie gesloten is.
  !endif

@@ -19,8 +19,8 @@ Content-type: text/html; charset=iso-8859-1
 </table>
 <hr width=1/>
 <CENTER>
-<H1>
-wims <font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
+<h1>
+wims <font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font></h1></CENTER>
 
 <HR width="50%"><p>
 <center><h3>Robots Stop Hier!</center></h3>
