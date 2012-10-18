@@ -2,8 +2,9 @@
 
 !read search.phtml
 !if $clcnt+$sccnt<1 and $keyword!=$empty
- $name_nofound
  <p>
+ $name_nofound
+ </p>
 !endif
 !if $wims_user!=$empty
  !read direct.phtml
@@ -24,9 +25,7 @@
  !endif
 
  !if $sccnt>0
-  <p>
   $table_header
-!!<table border="1">
 
   <caption>$name_portalandgroup</caption>
   $table_hdtr<th rowspan="2">$wims_name_name</th><th>$wims_name_teacher</th><th colspan=2>$wims_name_nameteacher/$wims_name_Supervisor</th></tr>
@@ -57,7 +56,7 @@
    <td align="center">
     !set wims_ref_class=wims_button
     !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
-   </td>
+   </td></tr>
   !next i  
   $table_end
  !endif
@@ -129,7 +128,8 @@
       !set wims_ref_class=wims_button
       !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
       </td>
-     !endif   
+     !endif
+     </tr>
     !next i
    $table_end
   !else
@@ -165,7 +165,9 @@
       !else
        -
       !endif
+      </td>
      !endif
+    </td></tr>
     !next i
     $table_end
    !endif
