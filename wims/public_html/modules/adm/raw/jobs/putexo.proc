@@ -30,16 +30,20 @@ n1=!linecnt $data1
 !for i=1 to $n1
  v_=$empty
  l=!line $i of $data1
- l2=!translate = to $,$ in $l
+ #On remplace temporairement les eventuelles virgules pour ne pas interferer avec la suite
+ l2=!translate , to XTEMPX in $l
+ l2=!translate = to $,$ in $l2
  n_=!item 1 of $l2
- n2=!itemcnt $l2
  v_=!item 2 of $l2
- !if $n2>2
-  !for j=3 to $n2
+ nb_elem=!itemcnt $l2
+ !if $nb_elem>2
+  !for j=3 to $nb_elem
     courrant=!item $j of $l2
     v_=$v_=$courrant
   !next j
  !endif
+ # puis on remet en place les virgules
+ v_=!translate XTEMPX to $,$ in $v_
  sh_$n_=$v_
 !next i
 
