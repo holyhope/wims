@@ -13,12 +13,12 @@ slib_example=3.5,,,,C,html\
 
 :proc
 
-!distribute items $wims_read_parm into slib_deg,slib_color,slib_size,slib_range,slib_type,slib_option
+!distribute items $wims_read_parm into slib_deg,slib_color,slib_size,slib_range,slib_degree,slib_option
 
-!bound slib_style between integer 1 and 2 default 1
-!default slib_type=C
+!set slib_type=!getopt style in $slib_option
+!default slib_type=left
 !set slib_range=!declosing $slib_range
-!if $slib_type=F
+!if $slib_degree=F
   !default slib_range=-60,130
   !default slib_size=150
 !else
@@ -50,14 +50,19 @@ slib_example=3.5,,,,C,html\
 line -$slib_range0,$slib_i,-0.5,$slib_i,$slib_tick\
 line  $slib_range0,$slib_i, 0.5,$slib_i,$slib_tick
 
-  !if $slib_type=F
-!set slib_Ticks=$slib_Ticks\
+!if $slib_type iswordof right
+ !set slib_Ticks=$slib_Ticks\
 text $slib_tick,$slib_range0-1,$slib_i+0.3, small, $[$slib_i*10]
-  !else
+!endif
+!if $slib_type iswordof left
+ !set slib_Ticks=$slib_Ticks\
+text $slib_tick,-$slib_range0-0.4,$slib_i+0.3, small, $[$slib_i*10]
+!endif
+!if $slib_type iswordof leftandright
   !set slib_Ticks=$slib_Ticks\
 text $slib_tick,-$slib_range0-0.5,$slib_i+0.5, large, $slib_i\
 text $slib_tick,$slib_range0-0.2,$slib_i+0.5, large, 0
-  !endif
+!endif
 !next slib_i
 !for slib_j=$slib_yrange1+1 to $slib_yrange2-1
  !set slib_ticks=$slib_ticks\
@@ -74,20 +79,21 @@ text $slib_tick,$slib_range0-0.2,$slib_i+0.5, large, 0
 slib_out=\
 transparent white\
  xrange -$slib_xrange,$slib_xrange+0.3\
- yrange $slib_yrange1,$slib_yrange2\
- text $slib_tick,2,$slib_yrange1+0.5,large,$slib_type\
+ yrange $slib_yrange1-0.5,$slib_yrange2\
+ text $slib_tick,2,$slib_yrange1+0.5,large,$slib_degree\
  linewidth 1\
  $slib_tickss\
  $slib_ticks\
  $slib_Ticks\
  linewidth 3\
- rectangle -0.5,$slib_yrange1+0.2,0.5,$slib_yrange2-0.2,grey\
- rectangle -$slib_xrange,$slib_yrange1,$slib_xrange,$slib_yrange2,grey
- 
+ rectangle -$slib_xrange,$slib_yrange1-0.2,$slib_xrange,$slib_yrange2,blue\
+ lines grey, -0.5,$slib_yrange1+0.3,-0.5,$slib_yrange2-0.2, 0.5,$slib_yrange2-0.2,0.5,$slib_yrange1+0.3\
+ trange pi/2 + pi/6,2*pi + pi/2 - pi/6\
+ plot $slib_tick4, 0 + 0.6*cos(t), $slib_yrange1 + 0.2 + 0.6/4* sin(t)
 slib_point=$[($slib_yrange1 + ($slib_deg))/2]
 slib_out=$slib_out\
  linewidth 1\
- line -0.5,$slib_deg,0.5,$slib_deg,grey\
+ line -0.5,$slib_deg,0.5,$slib_deg,$slib_tick4\
  fill 0,$slib_point,$slib_tick4
 
 !if url iswordof $slib_option or html iswordof $slib_option
