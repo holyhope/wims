@@ -17,14 +17,14 @@ errortext=$empty
 
 !if $wims_user=supervisor
     !if $varlist=$empty
-        errortext=YOU SHOULD DECLARE : <br>varlist=x or varlist=yield
+        errortext=YOU SHOULD DECLARE : <br />varlist=x or varlist=yield
         goback=1
         !exit
     !endif
     !if $var1=$empty
-        errortext=YOU SHOULD DECLARE A $$var1 = a rawmath formula of the question<br>\
-	for instance: the simplify  \frac{4x^{3}}{2x^{\frac{-1}{2}}}<br>\
-	varlist=x<br>\
+        errortext=YOU SHOULD DECLARE A $$var1 = a rawmath formula of the question<br />\
+	for instance: the simplify  \frac{4x^{3}}{2x^{\frac{-1}{2}}}<br />\
+	varlist=x<br />\
 	var1=4*x^3/(2*x^(-1/2))
         goback=1
         !exit
@@ -74,7 +74,7 @@ testvar=$empty
 	errortext=$ex 
 	#var=$var va=$va AAA=$AAA testvar=$testvar
     !else
-	remark$n=$NOK<br>$ex
+	remark$n=$NOK<br />$ex
 	maxscore=0
 	goback=0
     !endif
@@ -91,7 +91,7 @@ testvar=$empty
 	    # heavy pentalty...
 	    maxscore=$[$P9*$maxscore]
     	!else
-	    remark$n=$NOK<br>$ex
+	    remark$n=$NOK<br />$ex
 	    goback=0
 	    maxscore=0
 	!endif
@@ -116,7 +116,7 @@ AAA=!nospace $AAA
 	!if $extra=$empty
 	    extra=$ex
 	!else
-	    extra=!append line $ <br>$ex $ to $extra
+	    extra=!append line $ <br />$ex $ to $extra
 	!endif
     !endif
 !endif
@@ -125,7 +125,7 @@ test=!replace [0-9]e[0-9] by @ in $AAA
     maxscore=$[$P1*$maxscore]
     testvar1=!replace internal e by e+ in $AAA
     testvar1=<font color=green>$testvar1</font>
-    testvar2=<br><font color=red>$AAA</font>
+    testvar2=<br /><font color=red>$AAA</font>
     errortext=!record 16 of $remarkdir/commonremarks.$taal
     goback=1
     !exit
@@ -221,7 +221,7 @@ c1=!nospace $c1
 	    maxscore=$[$P5*$maxscore]
 	!else
 	    # this answer will be wrong !!! no consideration
-	    remark$n=$NOK<br>$ex
+	    remark$n=$NOK<br />$ex
 	    goback=0
 	    maxscore=0
 	!endif
@@ -245,7 +245,7 @@ c2=!nospace $c2
 	    maxscore=$[$P5*$maxscore]
 	!else
 	    # this answer will be wrong !!! no consideration
-	    remark$n=$NOK<br>$ex
+	    remark$n=$NOK<br />$ex
 	    goback=0
 	    maxscore=0
 	!endif
@@ -266,7 +266,7 @@ c3=!item 2 of $tot
 	    maxscore=$[$P5*$maxscore]
 	!else
 	    # this answer will be wrong !!! no consideration
-	    remark$n=$NOK<br>$ex
+	    remark$n=$NOK<br />$ex
 	    goback=0
 	    maxscore=0
 	!endif
@@ -295,7 +295,7 @@ Gc=$[$G]
 	    !if $extra=$empty
 		extra=$ex
 	    !else
-		extra=!append line $ $ex <br> $ to $extra
+		extra=!append line $ $ex <br /> $ to $extra
 	    !endif
 	!else
 	    Ac=!replace internal - by + in $A
@@ -306,7 +306,7 @@ Gc=$[$G]
 		!if $extra=$empty
 		    extra=$ex
 		!else
-		    extra=!append line $ $ex <br> $ to $extra
+		    extra=!append line $ $ex <br /> $ to $extra
 		!endif
 	    !else
 		t3=0
@@ -366,7 +366,7 @@ a2=!line 4 of $tot
 	    maxscore=$[$P7*$maxscore]
 	!else
 	    # this answer will be wrong !!! no consideration
-	    remark$n=$NOK<br>$ex
+	    remark$n=$NOK<br />$ex
 	    goback=0
 	    maxscore=0
 	!endif
@@ -410,7 +410,7 @@ a2=!line 4 of $tot
 			!if $extra=$empty
 			    extra=$ex 
 			!else
-			    extra=!append line $ <br>$ex $ to $extra
+			    extra=!append line $ <br />$ex $ to $extra
 			!endif
 		    !endif
 		!endif
@@ -422,7 +422,7 @@ a2=!line 4 of $tot
 		!if $extra=$empty
 		    extra=$ex
 		!else
-		    extra=!append line $ <br>$ex $ to $extra
+		    extra=!append line $ <br />$ex $ to $extra
 		!endif
 	    !endif
 	!endif
@@ -444,7 +444,7 @@ modulescore=$[$modulescore + $maxscore]
 !endif    
 
 !if $extra != $empty
-    remark$n=!append line  $ <br> $extra $ to $(remark$n)
+    remark$n=!append line  $ <br /> $extra $ to $(remark$n)
 !endif
 goback=0
 !exit

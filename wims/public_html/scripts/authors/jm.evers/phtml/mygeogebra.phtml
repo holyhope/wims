@@ -22,20 +22,19 @@
 	if(t==true){
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
 	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
-	}                                                                                                                                                                 
+	}
     } 
 </script>
-<p align="center">
 <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
     <tr>
-    <td valign="top" align="left">
+    <td>
 	$(question$n)
 	!if $(formula$n) != $empty
-	    <br>
+	    <br />
 	    !insmath $(formula$n)
 	!endif
 	!if $exotext != $empty
-	    <br>
+	    <br />
 	    $exotext
 	!endif
 	!if $inputs>0
@@ -62,9 +61,9 @@
 			    !else
 				!set voorzeggen=!item $i of $(answer$n)
 			    !endif
-			    <input  style=$textareastyle name="myvar1" size="$cols" value=$voorzeggen />
+			    <input  style="$textareastyle" name="myvar1" size="$cols" value=$voorzeggen />
 			!else
-			    <input  style=$textareastyle name="myvar1" size="$cols" value="$myvar1" />
+			    <input  style="$textareastyle" name="myvar1" size="$cols" value="$myvar1" />
 			!endif
 			</td>
 			<td>
@@ -79,38 +78,39 @@
     !if $XSIZE>640
     </tr><tr>
     !endif
-    <td  valign="top">
+    <td>
 	!if $width=$empty
 	    !set width=640
 	    !set height=480
 	!endif
-	<p align="center">
-	    <applet id="ggbApplet" name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
-		<param name="language" value="$taal">
-		<param name="filename" value="../../$module_dir/$ggb">
-		<param name="showToolBar"  value="$showToolBar">
-		<param name="showMenuBar"  value="$showMenuBar">
-		<param name="framePossible" value="$framePossible">
-		<param name="customToolBar" value=$customToolBar>
-		<param name="showAlgebraInput" value="$showAlgebraInput">
+	    <object classid="java:geogebra.GeoGebraApplet.class" type="application/x-java-applet;jpi-version=1.4" id="ggbApplet" name="ggbApplet" width=$width height=$height>
+		<param name="java_code" value="geogebra.GeoGebraApplet" />
+		<param name="java_codebase" value="java/geogebra" />
+		<param name="java_archive" value="geogebra.jar" />
+		<param name="language" value="$taal" />
+		<param name="filename" value="../../$module_dir/$ggb" />
+		<param name="showToolBar"  value="$showToolBar" />
+		<param name="showMenuBar"  value="$showMenuBar" />
+		<param name="framePossible" value="$framePossible" />
+		<param name="customToolBar" value=$customToolBar />
+		<param name="showAlgebraInput" value="$showAlgebraInput" />
+		<param name="mayscript" value="true" />
 		$nojava
-	    </applet>    
+	    </object>
 	    <script type="text/javascript">
 		$appletcommand
 	    </script>
-	</p>
     </td>
     </tr>
 </table>
-<table summary="">
+<table summary="send and cancel buttons">
     <tr>
     <th>
-	<input type="button" style="$mybuttonstyle" onclick="sendanswer();" name="but1" value="$send"/>
+	<input type="button" style="$mybuttonstyle" onclick="sendanswer();" name="but1" value="$send" />
     </th>
     <th>
 	<input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
     </th>
     </tr>
 </table>
-</p>
 

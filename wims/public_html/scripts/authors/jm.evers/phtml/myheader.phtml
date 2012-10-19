@@ -45,24 +45,11 @@
 	    </small>
 	!if exam notin $session
 	    <br/>
-	    !set texsize=!char 1 of $useropts
-	    !set texalign=!char 2 of $useropts
-	    !if $texalign !=2
-		!set texalign=2
-		!set zoom=1
-		<a onclick="href='$wims_ref_name?session=$session&module=$module&cmd=resume&useropts=$texsize$texalign$zoom'" onmouseover="this.T_OPACITY='70';this.T_PADDING='10';this.T_BORDERCOLOR='red';this.T_BORDERWIDTH='1';return escape('$use_mathml')">
-		    <img src="$gifdir/use_mathml.png" alt="$use_mathml" />
-		</a>
-	    !else
-		!set texalign=0
-		<a onclick="href='$wims_ref_name?session=$session&module=$module&cmd=resume&useropts=$texsize$texalign$zoom'" onmouseover="this.T_OPACITY='70';this.T_PADDING='10';this.T_BORDERCOLOR='red';this.T_BORDERWIDTH='1';return escape('$not_use_mathml')">
-		    <img src="$gifdir/not_use_mathml.png" alt="$not_use_mathml" />
-		</a>
-	    !endif
 	    <small>
 		$helptext
+	    </small>
 		!href target=wims_mhelp module=$module&+session=$session&+cmd=help
-		&nbsp;&nbsp;&nbsp;&nbsp;<em>$wims_name_help popup</em>
+		&nbsp;&nbsp;&nbsp;&nbsp;<small><em>$wims_name_help popup</em></small>
 	    <br/>
 	!endif
     </td>
@@ -119,7 +106,7 @@
 				}
 			    }
 			</script>
-			<applet id="calculator" codebase="$appletdir" archive="Rekenmachien.jar" code="Rekenmachien.class" width="100" height="50">
+			<object id="calculator" codebase="$appletdir" archive="Rekenmachien.jar" code="Rekenmachien.class" width="100" height="50">
 			    <param name="fontsize1" value="10">
 			    <param name="fontsize2" value="10">
 			    <param name="fontsize2" value="14">
@@ -129,7 +116,7 @@
 			    <param name="bgcolor1" value="200,250,255">
 			    <param name="bgcolor2" value="200,210,210">
 			    $nojava
-			</applet>
+			</object>
 		    </th>
 		    </tr><tr>
 		    <th>
@@ -198,12 +185,12 @@
     !endif
     !if $try = $maxtry
 	<center>
-	    <hr>
+	    <hr />
 		<font color="$fontcolor3">
 		    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
 		    $alarm
 		</font>
-	    <hr>
+	    <hr />
 	</center>
     !endif
 </p>

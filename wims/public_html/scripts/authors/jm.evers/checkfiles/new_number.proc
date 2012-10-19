@@ -162,7 +162,7 @@ extra=$empty
 		tc_tmp=1
 		tmp=!append item $A to $tmp
 	    !else
-		extra=!append line <strike>&nbsp;&nbsp;<font color="red"><b>$A</b></font>&nbsp;&nbsp;</strike> <br> to $extra
+		extra=!append line <strike>&nbsp;&nbsp;<font color="red"><b>$A</b></font>&nbsp;&nbsp;</strike> <br /> to $extra
 	    !endif
 	!next a
 	!if $tc_tmp=0
@@ -173,7 +173,7 @@ extra=$empty
 		maxscore=$[$P3*$maxscore]
 	    !else
 		maxscore=0
-		remark$n=$NOK<br>$ex
+		remark$n=$NOK<br />$ex
 		goback=0
 	    !endif
 	    !exit
@@ -191,7 +191,7 @@ lg=!linecnt $(answer$n)
 !if $var1 != $empty
     lv=!itemcnt $var1
     !if $lg != $lv
-	errortext=<b>var1</b> is itemlist reserverd for an acuracy range<ul><li> answer &minus; range1 &le; reply &le answer + range1</li><li>1 range per inputfield !!</li><li>answer$n format:<br>1 line per inputfield<br>multiple answers allowed per inputfield<br>however the range will be the same for all answers.</li><li>use -1 for no range</li><li>declare var1=0.125,-1,2.5,-1</li></ul>
+	errortext=<b>var1</b> is itemlist reserverd for an acuracy range<ul><li> answer &minus; range1 &le; reply &le answer + range1</li><li>1 range per inputfield !!</li><li>answer$n format:<br />1 line per inputfield<br />multiple answers allowed per inputfield<br />however the range will be the same for all answers.</li><li>use -1 for no range</li><li>declare var1=0.125,-1,2.5,-1</li></ul>
 	goback=1
 	!exit
     !endif
@@ -203,7 +203,7 @@ lg=!linecnt $(answer$n)
 !if $var2 != $empty
     lv=!itemcnt $var2
     !if $lg != $lv
-	errortext=<b>var2</b> is itemlist reserved for rounding<br>use var2=100,-1,1000
+	errortext=<b>var2</b> is itemlist reserved for rounding<br />use var2=100,-1,1000
 	goback=1
 	!exit
     !endif
@@ -261,7 +261,7 @@ score=0
     !if $testvar2!=$testvar1
 	maxscore=$[$maxscore*(min($testvar1,$testvar2))/(max($testvar1,$testvar2))]
 	rem1=!record 50 of $remarkdir/commonremarks.$taal
-	rem1=<br>$rem1
+	rem1=<br />$rem1
 	#Je hebt $testvar2 antwoord(en) ingeleverd in plaats van $testvar1
     !endif
     !for p=1 to $testvar1
@@ -368,9 +368,9 @@ score=0
 			!endif
 			!if $found=1
 			    !if $rnd>0 or $range!=0
-		    		show_reply=!append line <font color="$k"><b>$org &asymp; $A</b></font><em><br>$rem2</em><br> to $show_reply
+		    		show_reply=!append line <font color="$k"><b>$org &asymp; $A</b></font><em><br />$rem2</em><br /> to $show_reply
 			    !else
-		    		show_reply=!append line <font color="$k"><b>$org</b></font><em><br>$rem2</em><br> to $show_reply
+		    		show_reply=!append line <font color="$k"><b>$org</b></font><em><br />$rem2</em><br /> to $show_reply
 			    !endif
 			    rem2=$empty
 			!endif

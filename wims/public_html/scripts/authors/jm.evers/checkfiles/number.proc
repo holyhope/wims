@@ -57,7 +57,7 @@ test=!singlespace $test
     !if $A=1
 	ex=!record 83 of $remarkdir/commonremarks.$taal
 	#@  Er zijn wel degelijk oplossingen...
-	remark$n=$NOK <br>$ex
+	remark$n=$NOK <br />$ex
 	maxscore=0
 	goback=0
 	!exit
@@ -101,7 +101,7 @@ tot=!singlespace $AAA
 		    tot=!replace internal char number $i by . in $tot
 		    ex=!record 24 of $remarkdir/commonremarks.$taal
 		    !if $extra != $empty
-			extra=$extra<br>$ex
+			extra=$extra<br />$ex
 		    !else
 			extra=$ex
 		    !endif
@@ -157,7 +157,7 @@ AAA=!replace internal ** by ^ in $AAA
 	    !if $extra=$empty
 		extra=$ex
 	    !else
-		extra=$extra<br>$ex
+		extra=$extra<br />$ex
 	    !endif
 	!endif
     !endif
@@ -166,7 +166,7 @@ AAA=!replace internal ** by ^ in $AAA
 	maxscore=$[$P1*$maxscore]
 	testvar1=!replace internal e by e+ in $AAA
 	testvar1=<font color=green>$testvar1</font>
-	testvar2=<br><font color=red>$AAA</font>
+	testvar2=<br /><font color=red>$AAA</font>
 	errortext=!record 16 of $remarkdir/commonremarks.$taal
 	goback=1
 	!exit
@@ -208,7 +208,7 @@ AAA=!replace internal ** by ^ in $AAA
 		    ex=!record 48 of $remarkdir/commonremarks.$taal
 		    # we corrigeren o -> 0 ! 
 		    aaa=!replace internal char number $p by 0 in $aaa
-		    extra=!append line <br>$ex to $extra
+		    extra=!append line <br />$ex to $extra
 		!endif
 	    !endif
 	!next p
@@ -307,7 +307,7 @@ AAA=!replace internal ** by ^ in $AAA
 	!endif
 	!if $i=ln
 	    !if LOG isin $AAA
-		errortext=Het lijkt me sterk dat dit sommetjes zowel een <br><b>log()</b><br>als een<br><b>ln()</b><br>in het antwoord moet hebben
+		errortext=Het lijkt me sterk dat dit sommetjes zowel een <br /><b>log()</b><br />als een<br /><b>ln()</b><br />in het antwoord moet hebben
 		maxscore=$[$P4*$maxscore]
 		goback=1
 		!exit
@@ -463,7 +463,7 @@ AAA=!nospace $AAA
 		    klaar=0
 		    !if $k=1
 			!for w in $p2
-			    kkk=!append line w=$w<br> to $kkk
+			    kkk=!append line w=$w<br /> to $kkk
 			    !if $w>$p1 and $klaar=0
 				!for s=$[$p1+1] to $[$w-1]
 				    ch=!char $s of $test
@@ -508,7 +508,7 @@ AAA=$tot
     testvar2=$ta
     testvar1=$tg
     ex=!record 50 of $remarkdir/commonremarks.$taal
-    extra=!append line <br>$ex to $extra
+    extra=!append line <br />$ex to $extra
 !endif
 
 afr1=$empty
@@ -644,7 +644,7 @@ reversed=0
     !if $ta>$tchk
 	testvar=$[$ta - $tchk]
         ex=!record 51 of $remarkdir/commonremarks.$taal
-	extra=!append line <br>$ex to $extra
+	extra=!append line <br />$ex to $extra
 	maxscore=$[$maxscore*$tchk/$ta]
 	A0=$check_uniq
 	A1=!listuniq $A1
@@ -758,13 +758,13 @@ i=1
 	    !if $score1 = $mx or $score2 = $mx
 		score =$[$mx/3]
 		ex=!record 66 of $remarkdir/commonremarks.$taal
-		extra=!append line <br>$ex to $extra
+		extra=!append line <br />$ex to $extra
 	    !endif
 	!endif
     !else	
 	!if $score2>$score1
 	    ex=!record 29 of $remarkdir/commonremarks.$taal
-	    extra=!append line <br>$ex to $extra
+	    extra=!append line <br />$ex to $extra
 	!endif
 	score=$[(2*$score1+$score2)/3]
     !endif
@@ -774,7 +774,7 @@ i=1
 
 !if $reversed>0
     ex=!record 27 of $remarkdir/commonremarks.$taal
-    extra=!append line $ <br>$ex $ to $extra
+    extra=!append line $ <br />$ex $ to $extra
     score=$[$score + $P7*$reversed]
 !endif
 
@@ -801,7 +801,7 @@ math=0
 !endif
 
 !if $extra != $empty
-    remark$n=!append line $ <br>$extra $ to $(remark$n)
+    remark$n=!append line $ <br />$extra $ to $(remark$n)
 !endif
 
 goback=0

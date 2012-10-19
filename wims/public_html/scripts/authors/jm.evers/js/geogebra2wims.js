@@ -33,7 +33,7 @@ function geogebra2wims(list_of_things) {
 		    else {alert ('object type with name: '+thing+'... is not in my list, please add: ' + it);}
 		    reply=reply + data + ',' ;
 		    if(debug=='1'){alert ('we add the variable data to the URL string :' +data);}
-		}			
+		}
 	    }
 	}
     }

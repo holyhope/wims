@@ -137,7 +137,7 @@
 	<td valign="top" align="left">
 	    !if $(question$n) != $empty
 		$(question$n)
-		<br>
+		<br />
 	    !endif
 	    !if $(formula$n) != $empty
 		!if $embed=1
@@ -146,7 +146,7 @@
 			<center>
 			    !insmath $(formula$n)
 			</center>
-			<br>
+			<br />
 		    !else
 			<table summary="question formula and inputfields">
 			    <tr>
@@ -157,9 +157,9 @@
 				<form name="mydefaultform" id="mydefaultform" action="">
 				    !if $inputs=1
 					!if $wims_user=supervisor
-					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea></th></tr></table>
+					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea></th></tr></table>
         				!else
-					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea></th></tr></table>
+					    <table summary="inputfield"><tr><th>&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea></th></tr></table>
 					!endif
 				    !else
 					<table summary="inputfields" cellspacing="1">
@@ -176,10 +176,10 @@
 						!else
 						    !set deelantwoord=!item $p of $(answer$n)
 						!endif
-						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value="$deelantwoord" /></th><th>$(ex$p)&nbsp;</th></tr>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style="$textareastyle" size="$cols" name="reply" value="$deelantwoord" /></th><th>$(ex$p)&nbsp;</th></tr>
         				    !else
 						!set deelantwoord=!item $p of $(reply$n)
-						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;</th></tr>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style="$textareastyle" size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;</th></tr>
 					    !endif
 					!next p
 					</table>
@@ -193,11 +193,11 @@
 		    <center>
 			!insmath $(formula$n)
 		    </center>
-		    <br>
+		    <br />
 		!endif
 	    !endif
 	    !if $exotext != $empty
-		<br>
+		<br />
 		$exotext
 	    !endif
 	</td>
@@ -240,21 +240,25 @@
 		<table summary="java input applet" $paperbg width="580">
 		    <tr>
 		    <th>
-			<applet id="MathView" code="MathView.class" codebase="$appletdir" archive="MathView.jar" width="580" height="280">
+			<object classid="java:MathView.class" id="MathView" width="580" height="280" type="application/x-java-applet;jpi-version=1.4" >
+			    <param name="java_codebase" value="$appletdir" />
+			    <param name="java_archive" value="MathView.jar" />
+			    <param name="java_code" value="MathView" />
+			    <param name="mayscript" value="true" />
 			    <script language="javascript" type="text/javascript">
 				var thisbackground=document.bgColor;
-				if(thisbackground){var obj="\<param name=bgcolor value="+thisbackground+"\>"}else{var obj="\<param name=bgcolor value=#ffffff\>"}
+				if(thisbackground){var obj="\<param name=\"bgcolor\" value=\""+thisbackground+"\" /\>"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" /\>"}
 				document.write(obj.toString());
 			    </script>
 			    <param name="largefont" value="$largefont">
 			!if $wims_user=supervisor
 			    <param name="oldreply" value="
 			    !nospace $(answer$n)
-			    ">
+			    "/>
 			!else
 			    <param name="oldreply" value="
 			    !nospace $(reply$n)
-			    ">
+			    "/>
 			!endif
 			    <param name="smallfont" value="$smallfont">
 			    <param name="helptext" value="$applettext">
@@ -267,7 +271,7 @@
 			    <param name="my_panel" value="$mathviewpanel">
 			!endif
 			$nojava
-			</applet>
+			</object>
 		    </th>
 		    </tr>
 		</table>
@@ -283,9 +287,9 @@
 			!endif
 			    <td>
 			!if $wims_user=supervisor
-            		    <textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
+            		    <textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
         		!else
-            		    <textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
+            		    <textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
         		!endif
 			    </td>
 			    </tr>

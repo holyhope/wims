@@ -25,7 +25,7 @@ tg=!itemcnt $(answer$n)
 
 !if $ta != $tg
     ex=!record 38 of $remarkdir/commonremarks.$taal
-    errortext=$(reply$n) ... <br>$ex
+    errortext=$(reply$n) ... <br />$ex
     maxscore=$[$P6*$maxscore]
     goback=1
  !exit
@@ -71,12 +71,12 @@ prefix=déci,déca,méga,téra,péta,yotta,zetta,exa,peta,tera,giga,mega,kilo,hecto,d
     p=!itemcnt $var1
     !if $p!=$tg
 	# als var2 perongeluk voor iets anders is bestemd
-	errortext=var1=1,1,1...1 : we must have a unit in all answers <br>var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
+	errortext=var1=1,1,1...1 : we must have a unit in all answers <br />var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
 	goback=1
 	!exit
     !endif
 !else
-    errortext=var1=1,1,1...1 : we must have a unit in all answers <br>var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
+    errortext=var1=1,1,1...1 : we must have a unit in all answers <br />var1=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
     goback=1
     !exit
 !endif
@@ -85,7 +85,7 @@ prefix=déci,déca,méga,téra,péta,yotta,zetta,exa,peta,tera,giga,mega,kilo,hecto,d
     p=!itemcnt $var2
     !if $p!=$tg
 	# als var2 perongeluk voor iets anders is bestemd
-	errortext=answer -  var2 <= reply <= answer + var2 <br>dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
+	errortext=answer -  var2 <= reply <= answer + var2 <br />dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
 	goback=1
 	!exit
     !endif
@@ -141,7 +141,7 @@ score=0
     !if $t>1
 	nw=!item -1 of $test
 	rem6=!record 95 of $remarkdir/commonremarks.$taal
-	rem6=$rem6 <br>$org --> $nw 
+	rem6=$rem6 <br />$org --> $nw 
 	org=$nw
     !endif
     
@@ -276,7 +276,7 @@ score=0
     		A=!exec units-filter $number_r $unit_r
 		!if ERROR isin $A
 		    errortext=!record 89 of $remarkdir/commonremarks.$taal
-		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
+		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br />Geef je antwoord in een geldige <b>SI</b> eenheid...<br />Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
     	    	    maxscore=$[$P5*$maxscore]
     		    goback=1
 		    !exit
@@ -289,7 +289,7 @@ score=0
 		diff=!word 1 of $diff
 	    !endif
 	    !if ERROR isin $G
-		errortext=Error in this exercise<br>The correct answer has a non SI unit $unit_a
+		errortext=Error in this exercise<br />The correct answer has a non SI unit $unit_a
 		goback=1
 		!exit
 	    !endif
@@ -360,7 +360,7 @@ score=0
 		    !if $a!=$g
 			notation_err=0
 		        score1=$[0.99*$score1]
-			rem8=!append line $ <br><font color=red>$($digit_remarks[$di]) : $a</font> (<font color=green>$g</font>) $ to $rem8
+			rem8=!append line $ <br /><font color=red>$($digit_remarks[$di]) : $a</font> (<font color=green>$g</font>) $ to $rem8
 		    !endif
 		!next di
 	    !else
@@ -369,14 +369,14 @@ score=0
 		!if $notation_err=0
 		    !if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
 			score1=$[0.99*$score1]
-			rem8=<br><font color=red>$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</font> &ne; $(dtot_g[3]) + $(dtot_g[4])   
+			rem8=<br /><font color=red>$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</font> &ne; $(dtot_g[3]) + $(dtot_g[4])   
 		    !else
 			notation_err=1
 		    !endif
 		!endif
 	    !endif
 	    !if $notation_err=0
-		rem7=<br>Je antwoord is niet correct genoteerd...
+		rem7=<br />Je antwoord is niet correct genoteerd...
 	    !endif
 	!else
 	    errortext=!record 36 of $remarkdir/commenremarks.$taal
@@ -484,15 +484,15 @@ score=0
 	    !next ui
 	    !if $correct_unit=0
 		rem2=!record 92 of $remarkdir/commonremarks.$taal
-		#@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+		#@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 		# geen punten
 		score1=0
 		k=red
 	    !else
 		!if $unit_r != $unit_a
 		    k=green
-		    rem5=<br>Ik heb <tt>$unit_a</tt> gebruikt...maar <tt>$unit_r</tt> is ook een geldige SI eenheid :)
-		    #@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+		    rem5=<br />Ik heb <tt>$unit_a</tt> gebruikt...maar <tt>$unit_r</tt> is ook een geldige SI eenheid :)
+		    #@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 		!endif
 	    !endif
 	!endif
@@ -508,7 +508,7 @@ score=0
 			!ifval $[1.0*($A1)] = $[($factor)*($G1)]
 			    f=$factor
 			    rem3=!record 90 of $remarkdir/commonremarks.$taal
-			    #@<br>je zit er een factor <b>$f</b> naast !!
+			    #@<br />je zit er een factor <b>$f</b> naast !!
 			    score1=$[$P9*$score1]
 			    found=1
 			!endif

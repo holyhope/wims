@@ -1,8 +1,12 @@
+!! 14/10/2012 disabling coockies to store XML construction
+!! It somehow does not work anymore...and conflicts with wims-cookies
+!! giving an error message "are you trying to use another student session" or something like that
+
 <script type="text/javascript"  src="$jsdir/zirkel2wims.js"></script>
 <script type="text/javascript">
-    var maxcookies=20;
-    var cookiesize=400;
-    var cookiecount=-1;
+!!    var maxcookies=20;
+!!    var cookiesize=400;
+!!    var cookiecount=-1;
     var reply="";
     function readapplet(){
 	!if $list_of_things = $empty
@@ -24,29 +28,28 @@
 	    }
 	!endif
 	reply=encodeURIComponent(reply);
-	
 	!! setting a cookie to save the much too large xml-string...splitting in small cookies...
 	!! no way to retreive browser settings for this cookie cache space...all react different
-	var myConstruction=document.getElementById("zirkel").getConstruction();
-	myConstruction=encodeURIComponent(""+myConstruction+"");
-	    var date = new Date();date.setTime(date.getTime()+600000);var expires=date.toGMTString();
-	    cookiecount=0;cookiearray=new Array();var t1=0;var t2=cookiesize;
-	    totalsize=0;
-	    while(myConstruction.substring(t1,t2).length>0){
-		cookiearray[cookiecount]=myConstruction.substring(t1,t2);
-		totalsize=(totalsize+cookiesize);cookiecount++;t1=t2;t2=t2+cookiesize;
-	    }
-	    if(cookiecount>maxcookies){
-		setAlarm("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
-		cookiecount=-1;
-	    }
-	    else
-	    {
-		for(var p=0;p<cookiecount;p++){
-		    document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires= ; path=/";
-		    !!document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires="+expires+"; path=/";
-		}
-	    }
+!!	var myConstruction=document.getElementById("zirkel").getConstruction();
+!!	myConstruction=encodeURIComponent(""+myConstruction+"");
+!!	    var date = new Date();date.setTime(date.getTime()+600000);var expires=date.toGMTString();
+!!	    cookiecount=0;cookiearray=new Array();var t1=0;var t2=cookiesize;
+!!	    totalsize=0;
+!!	    while(myConstruction.substring(t1,t2).length>0){
+!!		cookiearray[cookiecount]=myConstruction.substring(t1,t2);
+!!		totalsize=(totalsize+cookiesize);cookiecount++;t1=t2;t2=t2+cookiesize;
+!!	    }
+!!	    if(cookiecount>maxcookies){
+!!		setAlarm("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
+!!		cookiecount=-1;
+!!	    }
+!!	    else
+!!	    {
+!!		for(var p=0;p<cookiecount;p++){
+!!		    document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires= ; path=/";
+!!		    !!document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires="+expires+"; path=/";
+!!		}
+!!	    }
     }
     
     function sendanswer(){
@@ -80,7 +83,8 @@
 	    var t=confirm(" $send ?\n"+show);
 	    if(t==true){
 		extra_answer=encodeURIComponent( extra_answer );
-		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer+'&+myvar$n='+cookiecount;
+!!		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer+'&+myvar$n='+cookiecount;
+		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer;
 		document.location.href = URL;
 		document.getElementById("zirkel").destroy();
 	    }
@@ -90,9 +94,10 @@
 	    readapplet();
 	    var t=confirm(" $send ?");
 	    if(t==true){
-		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+'&+myvar$n='+cookiecount ;
+!!		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+'&+myvar$n='+cookiecount ;
+		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply;
 		document.location.href = URL;
-		!!document.getElementById("zirkel").destroy();
+		document.getElementById("zirkel").destroy();
 	    }
 	}
     }
@@ -105,17 +110,16 @@
     }
 </script>
 
-<p align="center">
 <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
     <tr>
     <td valign="top" align="left">
 	$(question$n)
 	!if $(formula$n) != $empty
-	    <br>
+	    <br />
 	    !insmath $(formula$n)
 	!endif
 	!if $exotext != $empty
-	    <br>
+	    <br />
 	    $exotext
 	!endif
 	!if $inputs>0
@@ -132,9 +136,9 @@
 			<td>
 			!if $wims_user=supervisor
 			    !set voorzeggen=!item $i of $(answer$n)
-			    <input id="myinput$[$i-1]" style=$textareastyle name="myinput$[$i-1]" size="$cols" value="$voorzeggen" />
+			    <input id="myinput$[$i-1]" style="$textareastyle" name="myinput$[$i-1]" size="$cols" value="$voorzeggen" />
 			!else
-			    <input id="myinput$[$i-1]" style=$textareastyle name="myinput$[$i-1]" size="$cols" value="$(myinput$[$i-1])" />
+			    <input id="myinput$[$i-1]" style="$textareastyle" name="myinput$[$i-1]" size="$cols" value="$(myinput$[$i-1])" />
 			!endif
 			</td>
 			<td>
@@ -150,22 +154,24 @@
     !if $XSIZE>640
     </tr><tr>
     !endif
-    <td  valign="top">
+    <td>
 	!if $width=$empty
 	    !set width=640
 	    !set height=480
 	!endif
-	<p align="center">
-    	    <applet id="zirkel" name="zirkel" code="rene.zirkel.ZirkelApplet.class" codebase="$appletdir" archive="zirkel.jar" width=$xsize height=$ysize MAYSCRIPT>
-		<param name="language" value="$taal">
-		$var1
-		$nojava
-	    </applet>
-	</p>
+    	<object id="zirkel" name="zirkel" classid="java:rene.zirkel.ZirkelApplet.class" type="application/x-java-applet;jpi-version=1.4" width="$xsize" height="$ysize" >
+    	    <param name="java_code" value="rene.zirkel.ZirkelApplet" />
+    	    <param name="java_codebase" value="$appletdir" />
+    	    <param name="java_archive" value="zirkel.jar" />
+    	    <param name="mayscript" value="true" />
+	    <param name="language" value="$taal" />
+	    $var1
+	    $nojava
+	</object>
     </td>
     </tr>
 </table>
-<table summary="">
+<table summary="send and cancel buttons">
     <tr>
     <th>
 	<input type="button" style="$mybuttonstyle" onclick="sendanswer();" name="but1" value="$send" />
@@ -175,35 +181,36 @@
     </th>
     </tr>
 </table>
-</p>
-!if $(myvar$n) != $empty
-    !if $(myvar$n)>-1
-    !! get the stored cookies .
-    <script type="text/javascript">
-	var cookiecount=$(myvar$n) ;
-	function get_cookie(Name) {
-	    var search = Name + "=";
-	    var returnvalue = "";var end;var offset;
-	    if (document.cookie.length > 0) {
-		offset = document.cookie.indexOf(search);
-		if (offset != -1) { 
-		    offset += search.length;
-		    end = document.cookie.indexOf(";", offset);
-		    if (end == -1) end = document.cookie.length;
-		    returnvalue=unescape(document.cookie.substring(offset, end))
-		}
-	    }
-	    return returnvalue;
-	}
-	var test="";var stored_construction="";
-	for(var p=0;p<=cookiecount;p++){
-	    test = get_cookie("zirkel"+p);
-	    if(test.length != 0){
-		stored_construction=stored_construction+""+test;
-	    }
-	}
-	var test=decodeURIComponent(stored_construction);
-	document.getElementById("zirkel").putConstruction(test);
-    </script>
-    !endif
-!endif
+!!
+!!!if $(myvar$n) != $empty
+!!    !if $(myvar$n)>-1
+!!    !! get the stored cookies .
+!!    <script type="text/javascript">
+!!	var cookiecount=$(myvar$n) ;
+!!	function get_cookie(Name) {
+!!	    var search = Name + "=";
+!!	    var returnvalue = "";var end;var offset;
+!!	    if (document.cookie.length > 0) {
+!!		offset = document.cookie.indexOf(search);
+!!		if (offset != -1) { 
+!!		    offset += search.length;
+!!		    end = document.cookie.indexOf(";", offset);
+!!		    if (end == -1) end = document.cookie.length;
+!!		    returnvalue=unescape(document.cookie.substring(offset, end))
+!!		}
+!!	    }
+!!	    return returnvalue;
+!!	}
+!!	var test="";var stored_construction="";
+!!	for(var p=0;p<=cookiecount;p++){
+!!	    test = get_cookie("zirkel"+p);
+!!	    if(test.length != 0){
+!!		stored_construction=stored_construction+""+test;
+!!	    }
+!!	}
+!!	var test=decodeURIComponent(stored_construction);
+!!	document.getElementById("zirkel").putConstruction(test);
+!!    </script>
+!!    !endif
+!!!endif
+!!

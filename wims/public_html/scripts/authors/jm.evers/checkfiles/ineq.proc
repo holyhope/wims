@@ -26,7 +26,7 @@ test=!wordcnt $(reply$n)
 AAA=!lower $(reply$n)
 !if $wims_user=supervisor
     !if $varlist=$empty
-	errortext=THIS PROC-FILE EXPECTS YOU TO DEFINE A SINGLE VARIABLE LIKE "varlist=x"<br>x&gt;5 <br> x&lt;5&&x&gt;10 <br> 123&lt;x&amp;&amp;&lt;x&lt;432
+	errortext=THIS PROC-FILE EXPECTS YOU TO DEFINE A SINGLE VARIABLE LIKE "varlist=x"<br />x&gt;5 <br /> x&lt;5&&x&gt;10 <br /> 123&lt;x&amp;&amp;&lt;x&lt;432
 	goback=1
 	!exit
     !endif    
@@ -94,7 +94,7 @@ t=!positionof char o in $aaa
 		# we corrigeren o -> 0 ! 
 		aaa=!replace internal char number $p by 0 in $aaa
 		ex=!record 13 of $remarkdir/commonremarks.$taal
-		extra=$extra <br>$ex
+		extra=$extra <br />$ex
 	    !endif
 	!endif
     !next p
@@ -221,9 +221,9 @@ S=!itemcnt $ggg
     # answer wrong
     ex=!record 46 of $remarkdir/commonremarks.$taal
     !if $extra=$empty
-	remark$n=$NOK<br>$ex
+	remark$n=$NOK<br />$ex
     !else
-	remark$n=$NOK<br>$extra<br>$ex
+	remark$n=$NOK<br />$extra<br />$ex
     !endif
     !if $math=0
 	reply$n=!replace internal < by &lt; in $(reply$n)
@@ -257,7 +257,7 @@ S=!itemcnt $ggg
 
 !if $S>5
     goback=1
-    errortext=THERE ARE MORE THAN 5 (e.g. $S) ITEMS IN THE CORRECT ANSWER<br>THIS PROC-FILE CAN ONLY HANDLE 5
+    errortext=THERE ARE MORE THAN 5 (e.g. $S) ITEMS IN THE CORRECT ANSWER<br />THIS PROC-FILE CAN ONLY HANDLE 5
     !exit
 !endif	
 !if $S=5
@@ -288,9 +288,9 @@ S=!itemcnt $ggg
     # answer wrong
     ex=!record 47 of $remarkdir/commonremarks.$taal
     !if $extra=$empty
-	remark$n=$NOK<br>$ex
+	remark$n=$NOK<br />$ex
     !else
-	remark$n=$NOK<br>$extra<br>$ex
+	remark$n=$NOK<br />$extra<br />$ex
     !endif
     goback=0
     maxscore=0
@@ -412,7 +412,7 @@ modulescore=$[$modulescore + $maxscore]
 !endif
 
 !if $extra != $empty
-    remark$n=$(remark$n)<br>$extra
+    remark$n=$(remark$n)<br />$extra
 !endif
 
 goback=0

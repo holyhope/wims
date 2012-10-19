@@ -12,12 +12,12 @@ errortext=$empty
 
 !if $wims_user=supervisor
     !if $arglist=$empty
-        errortext=YOU SHOULD PROVIDE : <br>arglist= f(x)= y= f:x->
+        errortext=YOU SHOULD PROVIDE : <br />arglist= f(x)= y= f:x->
         goback=1
         !exit
     !endif
     !if $varlist=$empty
-        errortext=YOU SHOULD DECLARE : <br>varlist=x or varlist=yield
+        errortext=YOU SHOULD DECLARE : <br />varlist=x or varlist=yield
         goback=1
         !exit
     !endif
@@ -56,7 +56,7 @@ varcnt=!itemcnt $varlist
     !next i
     !if $found < $varcnt
 	errortext=!record 32 of $remarkdir/commonremarks.$taal
-	#@ Je bent de variabele "<b>$testvar</b>" vergeten te gebruiken.<br>Even aanvullen.
+	#@ Je bent de variabele "<b>$testvar</b>" vergeten te gebruiken.<br />Even aanvullen.
 	goback=1
 	# heavy pentalty...
 	maxscore=$[$P6*$maxscore]
@@ -77,7 +77,7 @@ test=!replace internal -> by , in $test
 t1=!itemcnt $test
 !if $t1 <2
     errortext=!record 33 of $remarkdir/commonremarks.$taal
-    #@ Je antwoord moest een vergelijking / functievoorschrift zijn.<br>Even verbeteren.
+    #@ Je antwoord moest een vergelijking / functievoorschrift zijn.<br />Even verbeteren.
     goback=1
     maxscore=$[$maxscore*$P2]
     !exit
@@ -110,7 +110,7 @@ arglist=!lower $arglist
     testvar1=!randitem $arglist
     testvar2=!item 1 of $varlist
     errortext=!record 35 of $remarkdir/commonremarks.$taal
-    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
+    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br />Dus iets als $testvar1=123*$testvar2 - 321 
     goback=1
     maxscore=$[$maxscore*$P3]
     !exit
@@ -123,7 +123,7 @@ arglist=!lower $arglist
 	    testvar1=!randitem $arglist
 	    testvar2=!item 1 of $varlist
 	    errortext=!record 35 of $remarkdir/commonremarks.$taal
-	    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
+	    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br />Dus iets als $testvar1=123*$testvar2 - 321 
 	    goback=1
 	    maxscore=$[$maxscore*$P3]
 	    !exit
@@ -136,7 +136,7 @@ arglist=!lower $arglist
 	testvar2=!item 1 of $varlist
 	testvar1=!randitem $arglist
 	errortext=!record 35 of $remarkdir/commonremarks.$taal
-	#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
+	#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br />Dus iets als $testvar1=123*$testvar2 - 321 
 	goback=1
 	maxscore=$[$maxscore*$P8]
 	!exit
@@ -154,7 +154,7 @@ arglist=!lower $arglist
 		!for i in *,+,-,+,/
 		    !if $i isin $A2
 			errortext=!record 35 of $remarkdir/commonremarks.$taal
-			#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
+			#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br />Dus iets als $testvar1=123*$testvar2 - 321 
 			goback=1
 			maxscore=$[$maxscore*$P7]
 			!exit
@@ -163,7 +163,7 @@ arglist=!lower $arglist
 		AAA=!nospace $A1
 	    !else
 		errortext=!record 36 of $remarkdir/commonremarks.$taal
-		#@Je antwoord "$(reply$n)" ga ik echt niet nakijken.<br>Opnieuw invullen graag.
+		#@Je antwoord "$(reply$n)" ga ik echt niet nakijken.<br />Opnieuw invullen graag.
 		goback=1
 		maxscore=$[$maxscore*$P6]
 		!exit
