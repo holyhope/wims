@@ -48,6 +48,7 @@ Fichero de imagen que se va a enviar en el ejercicio:
  <p>
  Se puede acceder a estos ficheros de imagen en el enunciado del ejercicio
  mediante el parámetro interno \imagedir. Por ejemplo puede escribir
+ </p>
  <center><pre>
  &lt;img src=\imagedir/$example/&gt;
  </pre></center>

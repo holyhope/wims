@@ -125,7 +125,7 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
   !set name_update1=!nosubst De oefening <tt>$existing.oef</tt> is met succes toegevoegd aan module
   !set name_update2=Het is niet gelukt oefening <tt>$existing</tt> toe te voegen aan module
   !set name_update3=Uw oefening is met succes geinstalleerd.
-  !set name_update4= Er is een identieke oefening in uw klas aangetroffen. De laatste toevoeging worde genegeerd.<p>
+  !set name_update4= Er is een identieke oefening in uw klas aangetroffen. De laatste toevoeging worde genegeerd.
   !set name_update5=Deze oefening is alleen bereikaar voor studenten \
   in uw eigen klas en alleen dan als de oefening is opgenomen in een werkblad.
   !distribute lines U kunt nu \
@@ -154,11 +154,11 @@ script tester\
 !exit
 :delete
 De oefening <em>$deltitle</em> is uit de lijst met oefeningen uit uw klas verwijderd.
-<p>
+
 Hier staat de broncode van de oefening, voor het geval u deze nog wilt bewaren voor later.
 Gebruik daarvoor de expert mode van Createxo:
 !href module=adm/createxo&mode=raw $wims_name_createxo
-<p>
+
 
 !exit
 :model
@@ -173,5 +173,5 @@ Bedankt namens allen die profiteren van uw inzet en moeite !
 <p>
 De administrator van deze server zal de oefening nog controleren en de definitieve plaats bepalen.
 Dit kan enkele dagen in beslag nemen.
-
+</p>
 !exit

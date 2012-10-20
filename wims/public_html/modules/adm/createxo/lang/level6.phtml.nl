@@ -7,7 +7,7 @@ Binaire Bestanden voor oefeningen
  <span class="wims_warning">$wims_name_Error</span>.
  Er is helaat voor Uw klas niet genoeg ruimte meer 
  beschikbaar op de harde schijf.
- <p>
+ <p></p>
  !goto sendend
 !endif
 
@@ -72,6 +72,7 @@ Het bestand voor deze oefening:
  Dit gaat wel ten koste van de snelheid; en moet alleen worden gebruikt indien strict noodzakelijk.
 <p>Voor alle andere bestandstypes, kan met html worden geschreven :
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
+</p>
 !endif
 <p class="wims_warning">
 Bewaar de bestanden voor de oefening, zodat ze niet verloren gaan.

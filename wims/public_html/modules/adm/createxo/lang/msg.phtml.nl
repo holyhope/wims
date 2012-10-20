@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<center><h3>$wims_name_Error</h3></center> <p>
+<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
 
 !if no_title iswordof $error
 Geef de oefening eerst een titel.
@@ -36,7 +36,7 @@ Geef de oefening eerst een titel.
 !if def_fail iswordof $error
     De software kon uw oefening niet compileren tot een geldige OEF.
     Er zijn fouten gevonden in uw definities:
- <p><pre>$oef2wims_out</pre> <p>
+ <p><pre>$oef2wims_out</pre>
  !if $mode!=$empty
   !set level=1
  !else
@@ -78,7 +78,7 @@ Geef de oefening eerst een titel.
 
 !if not_supervisor iswordof $error
  Hmm...alleen supervisors kunnen oefeningen verijderen !
- <p>Dit verzoek is niet toegestaan.
+ <p>Dit verzoek is niet toegestaan.</p>
 
  !exit
 !endif

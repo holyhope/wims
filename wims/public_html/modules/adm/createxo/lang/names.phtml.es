@@ -157,7 +157,7 @@ probador de escritura \
 :delete
 El ejercicio <em>$deltitle</em> se ha eliminado de la lista de ejercicios de la
 clase.
-<p>
+
 En el caso en que haya sido un error y desee repararlo, aquí tiene
 el código fuente del ejercicio, que puede guardar como medida de seguridad,
 y copiarlo posteriormente en
@@ -178,4 +178,5 @@ beneficiarán de él.
 <p>
 El administrador de este sitio verificará su ejercicio, y decidirá si ponerlo
 o no en una categoría apropiada. Esto podría tardar algún tiempo.
+</p>
 !exit

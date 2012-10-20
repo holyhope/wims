@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<center><h3>$wims_name_Error</h3></center> <p>
+<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
 
 
 !if no_title iswordof $error
@@ -77,7 +77,7 @@
 !if not_supervisor iswordof $error
  Hmm... ¡Por supuesto, solamente los profesores pueden borrar los ejercicios
  de la clase!
- <p>Su solicitud se ha rechazado.
+ <p>Su solicitud se ha rechazado.</p>
  !exit
 !endif
 
