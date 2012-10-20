@@ -64,7 +64,7 @@ padding-left: 3%; padding-right: 3%;}
  <h1 align="center">Stop!</h1><hr/>
  Het materiaal op
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
- is niet geschikt voor het automaitsch downloaden.
+ is niet geschikt voor het automatisch downloaden.
  De pagina's worden interactief gegenereerd, en zijn ongeschikt voor offline gebruik
  </body>
  </html>
@@ -314,7 +314,7 @@ Niet spelen met de oefeningen !
 :examerr
 
 !if exam_dep iswordof $wims_user_error
-Deze oefening is alleen beschikbaar wanneer je met goed gevolg hebt 
+Deze oefening is alleen beschikbaar wanneer je met goed gevolg 
 
   !if , isin $dep_list
    de opdrachten  $dep_list.
