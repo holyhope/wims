@@ -296,21 +296,18 @@ int term_cnt(char *p)
 }
 
 /* Print a number: transform 4E+05 in 4 \times 10^{5} and  4E-05 in 4 \times 10^{-5}
-suppress multiple + or 0 - see rawmath.c
+suppress multiple + or 0 ; see rawmath.c
 */
 void putnumber(char *p)
-{
-    char *pp;
-    pp=strpbrk(p,"Ee");
-    if(pp==NULL) {tprint("%s",p); return;}
-    *pp++=0;
-    if (pp[0]=='-') { tprint("%s \\times 10^{-",p) ; *pp++; } else tprint("%s \\times 10^{",p);
-    int k; 
-    for(k=0; *(pp+k)=='0' || *(pp+k)=='+'; k++ );
-    pp=pp+k;
-    tprint("%s}",pp);
-}
-
+ {
+     char *sgn = "", *pp = strpbrk(p,"Ee");
+     if (pp == NULL) { tprint("%s",p); return; }
+     *pp++ = 0;
+     if (*pp == '-') { sgn = "-"; pp++; }
+     while (*pp == '0' || *pp == '+') pp++;
+     tprint("%s \\times 10^{%s%s}", p, sgn, pp);
+ }
+ 
 /* Print a variable name ; transform abc475 in abc_475 */
 void putvar(char *p)
 {
