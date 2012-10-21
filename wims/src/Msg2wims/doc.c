@@ -31,13 +31,13 @@ char *prim_if(char *p)
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
     *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
 /*    for(pp=strchr(buf,'\\'); pp!=NULL; pp=strchr(pp+1,'\\')) {
-	if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
+      if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
     }
 */    prepcnt=0; parmprep(buf,pt_text);
     fprintf(outf," \n!if %s \n",buf);
     p5=find_word_start(p4+1);
     if(*p5=='{' && (p6=find_matching(p5+1,'}'))!=NULL) {
-	*p4=elsechar; *p5=' '; *p6=endifchar;
+      *p4=elsechar; *p5=' '; *p6=endifchar;
     }
     else *p4=endifchar;
     return p3+1;
@@ -53,7 +53,7 @@ char *prim_while(char *p)
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
     *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
 /*    for(pp=strchr(buf,'\\'); pp!=NULL; pp=strchr(pp+1,'\\')) {
-	if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
+      if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
     }
 */    prepcnt=0; parmprep(buf,pt_text);
     fprintf(outf," \n!while %s \n",buf);
@@ -71,14 +71,16 @@ char *prim_for(char *p)
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
     *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
 /*    for(pp=strchr(buf,'\\'); pp!=NULL; pp=strchr(pp+1,'\\')) {
-	if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
+      if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
     }
 */    fprintf(outf," \n!for m_%s \n",find_word_start(buf));
     *p4=nextchar;
     return p3+1;    
 }
 
-	/* check whether the name is a document primitive. */
+      /* check whether the name is a document primitive. */
+/* for the moment, only \def \define  if for while or as in "msg2wims_primitives"
+description of primitive must be in primitive_dir="docu/primitives"*/
 char *doccheck(char *p)
 {
     char *pe, *pl, *pv, *pp, namebuf[128], parbuf[8192];
@@ -90,31 +92,31 @@ char *doccheck(char *p)
     k=search_list(primitive,primcnt,sizeof(primitive[0]),namebuf);
     if(k<0) return p;
     if(strcmp(namebuf,"def")==0 || strcmp(namebuf,"define")==0) {
-	char parmbuf[MAX_LINELEN+1];
-	pl=find_word_start(pe);
-	if(*pl=='{') pl=find_word_start(++pl); else return pe;
-	pv=find_matching(pl,'}'); if(pv==NULL) return pe;
-	if(pv-pl>=sizeof(parmbuf)-1) return pe;
-	memmove(parmbuf,pl,pv-pl); parmbuf[pv-pl]=0;
-	def(parmbuf);
-	pe=pv+1; return pe;
+      char parmbuf[MAX_LINELEN+1];
+      pl=find_word_start(pe);
+      if(*pl=='{') pl=find_word_start(++pl); else return pe;
+      pv=find_matching(pl,'}'); if(pv==NULL) return pe;
+      if(pv-pl>=sizeof(parmbuf)-1) return pe;
+      memmove(parmbuf,pl,pv-pl); parmbuf[pv-pl]=0;
+      def(parmbuf);
+      pe=pv+1; return pe;
     }
     if(strcmp(namebuf,"if")==0) return prim_if(pe);
     if(strcmp(namebuf,"for")==0) return prim_for(pe);
     if(strcmp(namebuf,"while")==0) return prim_while(pe);
     fprintf(outf,"\n!read primitives.phtml %d, %s",primserial++,namebuf);
     for(t=0;t<16;t++) {
-	pl=find_word_start(pe);
-	if(*pl=='{') pl=find_word_start(++pl); else break;
-	pv=find_matching(pl,'}'); if(pv==NULL) break;
-	if(pv-pl>=sizeof(parbuf)-1) break;
-	memmove(parbuf,pl,pv-pl); parbuf[pv-pl]=0;
-	for(pp=parbuf; *pp; pp++) {
-	    if(*pp=='	' || *pp=='$') *pp=' ';
-	    if(*pp=='\n') *pp='	';
-	}
-	fprintf(outf,", %s",parbuf);
-	pe=pv+1;
+      pl=find_word_start(pe);
+      if(*pl=='{') pl=find_word_start(++pl); else break;
+      pv=find_matching(pl,'}'); if(pv==NULL) break;
+      if(pv-pl>=sizeof(parbuf)-1) break;
+      memmove(parbuf,pl,pv-pl); parbuf[pv-pl]=0;
+      for(pp=parbuf; *pp; pp++) {
+          if(*pp=='	' || *pp=='$') *pp=' ';
+          if(*pp=='\n') *pp='	';
+      }
+      fprintf(outf,", %s",parbuf);
+      pe=pv+1;
     }
     fprintf(outf," \n");
     return pe;

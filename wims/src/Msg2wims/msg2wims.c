@@ -64,7 +64,7 @@ void get_inf(char *fname)
     fclose(inf); inlen=l;
     for(i=0;i<l;i++)
       if(inbuf[i]==elsechar || inbuf[i]==endifchar ||
-	 inbuf[i]==nextchar || inbuf[i]==whilechar) inbuf[i]=' ';
+       inbuf[i]==nextchar || inbuf[i]==whilechar) inbuf[i]=' ';
 }
 
 void open_outf(char *fname)
@@ -84,12 +84,12 @@ void process_formula(char *p)
     for(p3=strchr(p,'\n'); p3!=NULL; p3=strchr(p3,'\n')) *p3=' ';
     snprintf(bf,sizeof(bf),"%s",p); 
     if(strchr(bf,'\\')==NULL && strchr(bf,'}')==NULL && strlen(bf)>2) {
-	for(p3=strstr(bf,".."); p3!=NULL; p3=strstr(p3,"..")) {
-	    if(*(p3+2)=='.' || *(p3+2)==',') {
-		do p3++; while(*p3=='.'); continue;
-	    }
-	    *p3=','; *(p3+1)=' ';
-	}
+      for(p3=strstr(bf,".."); p3!=NULL; p3=strstr(p3,"..")) {
+          if(*(p3+2)=='.' || *(p3+2)==',') {
+            do p3++; while(*p3=='.'); continue;
+          }
+          *p3=','; *(p3+1)=' ';
+      }
     }
     fprintf(outf,"\n!insmath %s\n",bf);
 }
@@ -100,125 +100,127 @@ int main(int argc, char *argv[])
 
     substitute=substit;
     if(argc==2 && strcmp(argv[1],"table")==0) {
-/*	if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;
-*/	if(verify_order(specialfn, specialfn_no, sizeof(specialfn[0]))) return -1;
-	puts("Table orders OK."); return 0;
+/*if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;*/
+      if(verify_order(specialfn, specialfn_no, sizeof(specialfn[0]))) return -1;
+      puts("Table orders OK."); return 0;
     }
+/*  is defined in public_html/scripts/docu/mkindex now for example */
     p=getenv("w_msg2wims_primitives"); if(p!=NULL) {
-	snprintf(primbuf,sizeof(primbuf),"%s",p);
-	for(p=primbuf; *p; p++) if(!isalnum(*p)) *p=' ';
-	p=find_word_start(primbuf);
-	for(primcnt=0; primcnt<256 && *p; primcnt++, p=find_word_start(p1)) {
-	    p1=find_word_end(p); if(*p1) *p1++=0;
-	    primitive[primcnt]=p;
-	}
-	if(primcnt>0) qsort(primitive,primcnt,sizeof(primitive[0]),_scmp);
+      snprintf(primbuf,sizeof(primbuf),"%s",p);
+      for(p=primbuf; *p; p++) if(!isalnum(*p)) *p=' ';
+      p=find_word_start(primbuf);
+      for(primcnt=0; primcnt<256 && *p; primcnt++, p=find_word_start(p1)) {
+          p1=find_word_end(p); if(*p1) *p1++=0;
+          primitive[primcnt]=p;
+      }
+      if(primcnt>0) qsort(primitive,primcnt,sizeof(primitive[0]),_scmp);
     }
     if(argc<3) bailout(0,0,"missing file names");
     p1=argv[1]; p2=argv[2];
     get_inf(p1); open_outf(p2);
     for(p=tend=inbuf;*p;p++) {
-	switch(*p) {
-	    case '$': fputs("&#36;",outf); break;
-	    case '!': fputs("&#33;",outf); break;
-	    case ':': fputs("&#58;",outf); break;
-	    
-	    case elsechar: {
-		if(primcnt>0) fputs("\n!else\n",outf);
-		else fputc(*p,outf);
-		break;
-	    }
-	    case endifchar: {
-		if(primcnt>0) fputs("\n!endif\n",outf);
-		else fputc(*p,outf);
-		break;
-	    }
-	    case nextchar: {
-		if(primcnt>0) fputs("\n!next\n",outf);
-		else fputc(*p,outf);
-		break;
-	    }
-	    case whilechar: {
-		if(primcnt>0) fputs("\n!endwhile\n",outf);
-		else fputc(*p,outf);
-		break;
-	    }
-	    
-	    case '\n': {
-		if(*(p+1)=='>') {
-		    pre: p++; fputs("\n<i><small><pre wrap>",outf);
-		    for(p1=strchr(p,'\n'); p1!=NULL && *(p1+1)=='>';
-			p1=strchr(++p1,'\n'));
-		    if(p1!=NULL) *p1++=0; else p1=p+strlen(p);
-		    for(p2=p;*p2;p2++) {
-			if(*p2!='<') fputc(*p2,outf);
-			else fputs("&lt;",outf);
-		    }
-		    fputs("</pre></small></i>\n",outf);
-		    p=p1-1; break;
-		}
-		if(*(p+1)!='\n') {fputc(*p,outf);break;}
-		p++; fputs("\n<p>\n",outf);
-		while(*(p+1)=='\n') p++;
-		if(*(p+1)=='>') goto pre;
-		break;
-	    }
-	    
-	    case '<': {
-		char *p2;
-		if(tend>p || (!isalpha(*(p+1)) && *(p+1)!='!')) {
-		    fputc(*p,outf); break;
-		}
-		p2=find_tag_end(p);
-		if(!*p2) {error("open_tag"); p2--;}
-		tend=p2;
-		fputc(*p, outf); break;
-	    }
-	    
-	    case '\\': {
-		char *pe;
-		p++; 
-		if(isalpha(*p)) {
-		    if(primcnt>0) {
-			pe=doccheck(p);
-			if(pe>p) {p=pe-1; break;}
-		    }
-		    for(pe=p;isalnum(*pe) || *pe=='_';pe++);
-		    if(*pe=='[') {
-			char *pv=find_matching(pe+1,']');
-			if(pv!=NULL) {
-			    char c=*p;
-			    memmove(p,p+1,pv-p); *pv=')';
-			    fprintf(outf,"$(m_%c",c); p--; break;
-			}
-		    }
-		    fprintf(outf,"$m_%c",*p); break;
-		}
-		switch(*p) {
-		    case '\\': fputc(*p,outf); break;
-		    case '{':
-		    case '(': {
-			char *p2, *p3, c;
-			if(*p=='{') c='}'; else c=')';
-			p++; p2=find_matching(p,c);
-			if(c==')') p3=strstr(p,"\\)");
-			else p3=strstr(p,"\\}");
-			if((p2==NULL && p3!=NULL) ||
-			   (p2!=NULL && p3!=NULL && p3<p2)) p2=p3+1;
-			if(p2==NULL) fputc(*p,outf);
-			else {
-			    *p2=0; if(*(p2-1)=='\\') *(p2-1)=0;
-			    process_formula(p); p=p2;
-			}
-			break;
-		    }
-		    default: fputc(*p,outf); break;
-		}
-		break;
-	    }
-	    
-	    default: fputc(*p,outf); break;
-	}
+      switch(*p) {
+          case '$': fputs("&#36;",outf); break;
+          case '!': fputs("&#33;",outf); break;
+          case ':': fputs("&#58;",outf); break;
+          
+          case elsechar: {
+            if(primcnt>0) fputs("\n!else\n",outf);
+            else fputc(*p,outf);
+            break;
+          }
+          case endifchar: {
+            if(primcnt>0) fputs("\n!endif\n",outf);
+            else fputc(*p,outf);
+            break;
+          }
+          case nextchar: {
+            if(primcnt>0) fputs("\n!next\n",outf);
+            else fputc(*p,outf);
+            break;
+          }
+          case whilechar: {
+            if(primcnt>0) fputs("\n!endwhile\n",outf);
+            else fputc(*p,outf);
+            break;
+          }
+/* lines begining by > are in small; italics and pre  */          
+          case '\n': {
+            if(*(p+1)=='>') {
+                pre: p++; fputs("\n<i><small><pre wrap>",outf);
+                for(p1=strchr(p,'\n'); p1!=NULL && *(p1+1)=='>';
+                  p1=strchr(++p1,'\n'));
+                if(p1!=NULL) *p1++=0; else p1=p+strlen(p);
+                for(p2=p;*p2;p2++) {
+                  if(*p2!='<') fputc(*p2,outf);
+                  else fputs("&lt;",outf);
+                }
+                fputs("</pre></small></i>\n",outf);
+                p=p1-1; break;
+            }
+/* two successive lines are replaced by an <p> - has to be fixed */
+            if(*(p+1)!='\n') {fputc(*p,outf);break;}
+            p++; fputs("\n<p>\n",outf);
+            while(*(p+1)=='\n') p++;
+            if(*(p+1)=='>') goto pre;
+            break;
+          }
+          
+          case '<': {
+            char *p2;
+            if(tend>p || (!isalpha(*(p+1)) && *(p+1)!='!')) {
+                fputc(*p,outf); break;
+            }
+            p2=find_tag_end(p);
+            if(!*p2) {error("open_tag"); p2--;}
+            tend=p2;
+            fputc(*p, outf); break;
+          }
+/* interpretation of variables */    
+          case '\\': {
+            char *pe;
+            p++; 
+            if(isalpha(*p)) {
+                if(primcnt>0) {
+                  pe=doccheck(p);
+                  if(pe>p) {p=pe-1; break;}
+                }
+                for(pe=p;isalnum(*pe) || *pe=='_';pe++);
+                if(*pe=='[') {
+                  char *pv=find_matching(pe+1,']');
+                  if(pv!=NULL) {
+                      char c=*p;
+                      memmove(p,p+1,pv-p); *pv=')';
+                      fprintf(outf,"$(m_%c",c); p--; break;
+                  }
+                }
+                fprintf(outf,"$m_%c",*p); break;
+            }
+            switch(*p) {
+                case '\\': fputc(*p,outf); break;
+                case '{':
+                case '(': {
+                  char *p2, *p3, c;
+                  if(*p=='{') c='}'; else c=')';
+                        p++; p2=find_matching(p,c);
+                  if(c==')') p3=strstr(p,"\\)");
+                  else p3=strstr(p,"\\}");
+                  if((p2==NULL && p3!=NULL) ||
+                     (p2!=NULL && p3!=NULL && p3<p2)) p2=p3+1;
+                  if(p2==NULL) fputc(*p,outf);
+                  else {
+                      *p2=0; if(*(p2-1)=='\\') *(p2-1)=0;
+                      process_formula(p); p=p2;
+                  }
+                  break;
+                }
+                default: fputc(*p,outf); break;
+            }
+            break;
+          }
+          
+          default: fputc(*p,outf); break;
+      }
     }
     fputc('\n',outf);
     outlen=ftell(outf);  fclose(outf); bailout(inlen,outlen,"");
