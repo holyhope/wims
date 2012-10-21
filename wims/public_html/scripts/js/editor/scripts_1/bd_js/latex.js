@@ -324,11 +324,11 @@ function latexfun(instruction, version){
 	
 	
 var a = [ 
-"<img src='gifs/editor/t1.gif'>",
-"<img src='gifs/editor/t2.gif'>",
-"<img src='gifs/editor/t3.gif'>",
-"<img src='gifs/editor/t4.gif'>",
-"<img src='gifs/editor/t5.gif'>"
+"<img src='gifs/editor/t1.gif'/>",
+"<img src='gifs/editor/t2.gif'/>",
+"<img src='gifs/editor/t3.gif'/>",
+"<img src='gifs/editor/t4.gif'/>",
+"<img src='gifs/editor/t5.gif'/>"
 ];
 
 return a[index2];

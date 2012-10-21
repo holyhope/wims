@@ -894,7 +894,7 @@ text both horizontally (e.g. right) and vertically within that rectangle */
 			'top:' + y + 'px;'+
 			'width:' +  w + 'px;'+
 			'height:' + h + 'px;">'+
-			'<img src="' + imgSrc + '" width="' + w + '" height="' + h + '"' + (a? (' '+a) : '') + '>'+
+			'<img src="' + imgSrc + '" width="' + w + '" height="' + h + '"' + (a? (' '+a) : '') + '/>'+
 			'<\/div>';
 	};
 

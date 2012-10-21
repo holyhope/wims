@@ -564,7 +564,7 @@ function DDObj(d_o, d_i)
 		this.defsrc = this.src = this.oimg.src;
 		this.htm = '<img name="' + this.id + 'NI1m6G"'+
 			' src="' + this.oimg.src + '" '+
-			'width="' + this.w + '" height="' + this.h + '">';
+			'width="' + this.w + '" height="' + this.h + '"/>';
 		this.t_htm = '<div id="' + this.id +
 			'" style="position:absolute;'+
 			'left:' + (this.cssx = this.x = this.defx) + 'px;'+
@@ -678,7 +678,7 @@ DDObj.prototype.resizeTo = function(d_w, d_h, d_o)
 		this.div.resizeTo(d_w, d_h);
 		if(this.is_image)
 		{
-			this.write('<img src="' + this.src + '" width="' + d_w + '" height="' + d_h + '">');
+			this.write('<img src="' + this.src + '" width="' + d_w + '" height="' + d_h + '"/>');
 			(this.nimg = this.div.document.images[0]).src = this.src;
 		}
 	}
@@ -1324,7 +1324,7 @@ function SET_DHTML()
 	}
 	if (dd.n4 || dd.n6 || dd.ie || dd.op || dd.w3c) document.write(
 		(dd.n4? '<div style="position:absolute;"><\/div>\n'
-		: (dd.op && !dd.op6)? '<div id="OpBlUr" style="position:absolute;visibility:hidden;width:0px;height:0px;"><form><input type="text" style="width:0px;height:0px;"><\/form><\/div>'
+		: (dd.op && !dd.op6)? '<div id="OpBlUr" style="position:absolute;visibility:hidden;width:0px;height:0px;"><form><input type="text" style="width:0px;height:0px;"/><\/form><\/div>'
 		: '') + d_htm
 	);
 	dd.z = 0x33;

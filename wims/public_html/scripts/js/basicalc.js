@@ -1,47 +1,47 @@
 
 <center>
-<FORM NAME="Calc">
+<form name="Calc">
 
 <!-- This script and many more are available free online at -->
 <!-- The JavaScript Source!! http://javascript.internet.com -->
 
-<TABLE BORDER=4>
+<table border="4">
 <tr>
 <td>
-<INPUT TYPE="text" NAME="Input" Size="16">
-<br>
+<input type="text" name="Input" size="16"/>
+<br/>
 </td>
 </tr>
 <tr>
 <td>
-<INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="Calc.Input.value += '1'">
-<INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="Calc.Input.value += '2'">
-<INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="Calc.Input.value += '3'">
-<INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="Calc.Input.value += ' + '">
-<br>
-<INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="Calc.Input.value += '4'">
-<INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="Calc.Input.value += '5'">
-<INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="Calc.Input.value += '6'">
-<INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="Calc.Input.value += ' - '">
-<br>
-<INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="Calc.Input.value += '7'">
-<INPUT TYPE="button" NAME="eight" VALUE="  8  " OnCLick="Calc.Input.value += '8'">
-<INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="Calc.Input.value += '9'">
-<INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="Calc.Input.value += ' * '">
-<br>
-<INPUT TYPE="button" NAME="clear" VALUE="  c  " OnClick="Calc.Input.value = ''">
-<INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="Calc.Input.value += '0'">
-<INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="Calc.Input.value = eval(Math.round(eval(Calc.Input.value)*(Math.pow(10,12)))/(Math.pow(10,12)))">
-<INPUT TYPE="button" NAME="div"   VALUE="  &#247;  " OnClick="Calc.Input.value += ' / '">
-<br>
+<input type="button" name="one"   value="  1  " onclick="Calc.Input.value += '1'"/>
+<input type="button" name="two"   value="  2  " OnCLick="Calc.Input.value += '2'"/>
+<input type="button" name="three" value="  3  " onclick="Calc.Input.value += '3'"/>
+<input type="button" name="plus"  value="  +  " onclick="Calc.Input.value += ' + '"/>
+<br/>
+<input type="button" name="four"  value="  4  " onclick="Calc.Input.value += '4'"/>
+<input type="button" name="five"  value="  5  " OnCLick="Calc.Input.value += '5'"/>
+<input type="button" name="six"   value="  6  " onclick="Calc.Input.value += '6'"/>
+<input type="button" name="minus" value="  -  " onclick="Calc.Input.value += ' - '"/>
+<br/>
+<input type="button" name="seven" value="  7  " onclick="Calc.Input.value += '7'"/>
+<input type="button" name="eight" value="  8  " OnCLick="Calc.Input.value += '8'"/>
+<input type="button" name="nine"  value="  9  " onclick="Calc.Input.value += '9'"/>
+<input type="button" name="times" value="  x  " onclick="Calc.Input.value += ' * '"/>
+<br/>
+<input type="button" name="clear" value="  c  " onclick="Calc.Input.value = ''"/>
+<input type="button" name="zero"  value="  0  " onclick="Calc.Input.value += '0'"/>
+<input type="button" name="DoIt"  value="  =  " onclick="Calc.Input.value = eval(Math.round(eval(Calc.Input.value)*(Math.pow(10,12)))/(Math.pow(10,12)))"/>
+<input type="button" name="div"   value="  &#247;  " onclick="Calc.Input.value += ' / '"/>
+<br/>
 </td>
 </tr>
-</TABLE>
-</FORM>
+</table>
+</form>
 </center>
 
 <!-- <p><center>
-<font face="arial, helvetica" size="-2">Free JavaScripts provided<br>
+<font face="arial, helvetica" size="-2">Free JavaScripts provided<br/>
 by <a href="http://javascriptsource.com">The JavaScript Source</a></font>
 </center><p> -->
 
