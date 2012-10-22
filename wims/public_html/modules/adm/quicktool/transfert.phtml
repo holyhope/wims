@@ -2,7 +2,7 @@
 !set submit=submit
 !set wims_form_method=file
 !form reply
-  <p>
+
 !set transf=$frame
 !!!$hh
 !!!href cmd=reply&debut=1&compute=yes&transfert= $wims_name_back2
@@ -50,6 +50,7 @@ to $wims_menu_items
   <tt $st>$target</tt>.
       <p>
 !record 9 of $my_dir
+     </p>
 !!@#      Vous devez maintenant transférer les autres fichiers nécessaires au bon fonctionnement de l'exercice!!#@
  <tt $st>$source.oef</tt></p>
       <ul>
@@ -83,6 +84,7 @@ to $wims_menu_items
        !if $file notsametext and $type_fichier=1
          <p>
 !record 10 of $my_dir
+        </p>
 !!@#         Transférez le fichier de données!!#@
  <input type="file" name="wims_deposit"/>
          <p>
@@ -93,7 +95,7 @@ to $wims_menu_items
 !!@#sous le nom!!#@
  <tt $st>$file</tt>
          !href cmd=help&special_parm=$type_exo [$wims_name_help]
-      <p>
+      </p>
        !formcheckbox type_fichier list 0 prompt $name_backlist.
        !endif
        !if $reading_file notsametext no and $reading_file notsametext and $type_fichier=2
