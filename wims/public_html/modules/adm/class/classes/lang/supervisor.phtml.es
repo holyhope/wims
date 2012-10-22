@@ -9,4 +9,4 @@ Las clases virtuales le permiten organizar el trabajo de sus
  !href target=wims_help module=help/main&chapter=3 páginas de ayuda
 , o echar un vistazo a las
  !href module=$module&type=example clases de ejemplo
-. <p>
+. </p>

@@ -9,4 +9,4 @@ Virtuele klassen geven docenten de mogelijkheid om
  !href target=wims_help module=help/main&chapter=3 help pagina's 
   of U kunt een bezoek brengen aan &eacute;&eacute;n van de
  !href module=$module&type=example demonstratie klassen
-. <p>
+. </p>
