@@ -1,12 +1,13 @@
 !reset wims_deposit
 
 !if $mode=bad_fname
-$name_warning <p>
+<p>$name_warning </p>
 !endif
 
 !if $mode=bad_arch
+<p>
  $name_norecognize
- <p>
+ </p>
 !endif
 
 !if $mode=illegal
@@ -23,7 +24,7 @@ $name_illegal
   !else
    $name_diff3:
   !endif
-   <div style="text-align:center;">
+   <div class="wimscenter">
     <textarea id="wims_show" cols="100" rows="30" name="wims_show" readonly>$diff</textarea>
    </div>
  !endif
@@ -40,11 +41,11 @@ $name_illegal
  <p>
  <small>$name_warning2
  </small>
- <p>
+ </p><p>
 <span class="wims_warning">$wims_name_warning</span>. $name_warning_diff
  <input type="checkbox" name="confirm" value="diffcheck"/>
  $name_show_diff
-</form>
+</p></form>
 !else
 $table_header
 <caption>$name_restored</caption>
@@ -59,8 +60,6 @@ $table_tr
  !href cmd=reply&jobreq=flist&modreq=$restored $name_gotowork
  </td></tr>
  $table_end
-<p>
 
-.
 !endif
 

@@ -12,7 +12,7 @@
   !getfile doc/$f $f
   &nbsp;
  !next f
- <p>
+ </p>
  !form reply
  <input type="hidden" name="job2" value="erase"/>
  Verwijder een bestand&nbsp;:
@@ -23,25 +23,25 @@
  Bestanden kunnen worden opgeroepen in een document door de variabele
  <tt class="wims_code_variable">\filedir</tt>. 
  Bijvoorbeeld,
-<p><center>
+</p><p class="wimscenter">
  <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
+</p><p>
  geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
  Er kan ook worden geschreven:
-<p><center>
+</p><p class="wimscenter">
  <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</center> <p>
+</p>
 om het plaatje <tt class="wims_fname">myfile.jpg</tt> te verwerken in de pagina.
- <p>
 Bestanden opgenomen in dit document zijn alleen beschikbaar voor mensen met "leesrechten" voor dit document
 
-<p>
+</p><p>
 
 Een nieuw commando <tt class="wims_code_words">\href{}{}</tt> is ge&iuml;ntroduceerd. 
 Om een link naar een bestand aan te maken, is de onderstaande syntax afdoende:
-<center>
+</p>
+<p class="wimscenter">
 <tt class="wims_code_words">\href{$f1}</tt> of <tt class="wims_code_words">\href{$f1}{lien}</tt>.
-</center>
+</p>
 !exit
 
 :readauth
