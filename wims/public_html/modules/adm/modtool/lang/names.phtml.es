@@ -70,13 +70,13 @@ de desarrollo bajo la dirección
   puede conducir a la duplicación de su publicación. ¡Sea muy prudente!\
   <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <tt class="wims_fname">pruebas/tt>.
 !set name_warning3=Si ya publicaron este módulo, quiere cambiar esta dirección exactamente según \
-  su dirección pública. Si no arriesgan una duplicación de su publicación.
+  su dirección pública. Si no arriesgan una duplicación de su publicación.</p>
 !endif
 
 !if $job=auth
   !set name_intro=Esta herramienta es para desarrollar en línea, módulos para WIMS. \
     Es una herramienta sofisticada y solamente desarrolladores registrados podrán \
-    acceder a ella. <p> Por favor, introduzca los datos de su identificación.
+    acceder a ella. <p> Por favor, introduzca los datos de su identificación.</p>
 
   !distribute lines escriba\
    al encargado de este servidor\
@@ -136,7 +136,7 @@ into name_diff1,name_diff2,name_diff3
 !if $job=restore
 
  !set name_warning1=Su fichero no tiene el aire de un fichero de protección de un módulo&nbsp;!<p> \
-   No pueden restaurar un fichero sino si fue telecargado antes a partir de Modtool. Vuelva a intentar.
+   No pueden restaurar un fichero sino si fue telecargado antes a partir de Modtool. Vuelva a intentar.</p>
 
  !distribute lines  No pude reconocer su fichero como una protección de módulo. Error en el fichero&nbsp;!\
    Ninguna diferencia se encuentra entre el módulo existente (en su espacio de desarrollo) y lo salvaguarda.\
@@ -150,7 +150,7 @@ into name_diff1,name_diff2,name_diff3
     name_restored
 
 !set name_illegal= ¡Su protección contiene ficheros de tipos ilegales! Restauración imposible.\
- <p> ¿Es una protección de una antigua versión? Ahora deben copiar los ficheros uno a uno
+ <p> ¿Es una protección de una antigua versión? Ahora deben copiar los ficheros uno a uno</p>
 !set name_warning2=Solas las protecciones desde Modtool o los ficheros cargados a distancia \
    desde el centro de publicación  <a href="$downloadsite">$downloadsite</a>\
    se aceptan. Ninguna modificación manual del fichero de archivos se autoriza.
@@ -170,9 +170,9 @@ lo es definitivamente.
 trabajo que hace referencia a su módulo no funcionarán
 ya si se borra este módulo.
 
-<p>
+</p><p>
 Está  seguro de querer borrar el módulo
-
+</p>
 !exit
 :delconfirm
 El fichero
