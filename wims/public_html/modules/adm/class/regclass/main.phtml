@@ -36,6 +36,7 @@
  $name_choose 
  <p>
  !href cmd=reply&step=0&cltype=0 $wims_name_create_class
+ </p>
  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
  to $wims_menu_items
  <p>
@@ -46,6 +47,8 @@
  !else
   <font color="blue"><strike>$wims_name_create_superclass</strike></font> ($noright).
  !endif
+  </p>
+   <p>
  !if 4 isitemof $alltypes
   !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
   ($name_expert)
@@ -54,7 +57,7 @@
  !else
   <font color="blue"><strike>$wims_name_create_portal</strike></font> ($noright).
  !endif
- <p>
+ </p>
   
  <span class="wims_warning">$wims_name_help</span>:
  !read lang/help.phtml.$modu_lang 1
@@ -158,6 +161,7 @@
     selected
    !endif
    >$i
+   </option>
   !next i
   </select> <select name="exp_month" id="exp_month">
   !for i=1 to 12
@@ -167,6 +171,7 @@
    !endif
    >
    !item $i of $months
+   </option>
   !next i
   </select> <select name="exp_year" id="exp_year">
   !for i=$thisyear to $thisyear+1
@@ -175,6 +180,7 @@
     selected
    !endif
    >$i
+   </option>
   !next i
   </select> 
   </td><td><small>$name_help_date</small>
