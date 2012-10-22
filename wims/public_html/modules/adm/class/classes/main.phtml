@@ -38,10 +38,11 @@ $class_institution
 !! we get here e.g. in case class_authidp=cas;php
 $name_new_participant_external
 
- !if $type_class > 0 and $type!=authsupervisor
+ !if $type_class > 0 and $type!=authsupervisor and $authtype_!=teacher
   !set tmp_=&subclass=yes
  !endif
- <center>
+
+ <div class="wimscenter">
 !! this is probably the only place we need idp_method=php
 !! (e.g. if class_authidp=cas;php)
  !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
@@ -51,9 +52,9 @@ $name_new_participant_external
    <a href="$class_php_auth?enter=$class$ttmp_" class="wims_button">$name_register</a>        
  !else
    !set wims_ref_class=wims_button
-   !href module=adm/class/reguser&class=$class$tmp_ $name_register
+   !href module=adm/class/reguser&class=$class$tmp_&authtype_=$authtype_ $name_register
  !endif
- </center>
+ </div>
  !goto end
 !endif
 
@@ -74,9 +75,9 @@ to $wims_menu_items
 !endif
 
  !if $wims_theme_version=0 or $wims_theme_version=
- <center>
+ <div class="wimscenter">
   !href target=wims_help module=help/main&chapter=3 $wims_name_Explanations
- </center>
+ </div>
  !endif
 !endif
 :end
