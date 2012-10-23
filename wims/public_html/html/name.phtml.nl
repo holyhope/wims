@@ -195,7 +195,7 @@
  !default wims_name_sequence=Werkvolgorde
  !set wims_name_sequences=werkvolgorde
  
- !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<p>\
+ !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<br/>\
  Klasse management is hierdoor niet meer bereikbaar.\
  We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
  

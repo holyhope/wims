@@ -1,10 +1,10 @@
 
 !if $gotcnt=0
- <p>
+
  !changeto wimshome/public_html/bases/sheet/$lang/welcome.phtml
 !endif
 
-<ul  class="wims_home_result_list">
+<ul class="wims_home_result_list">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm
  !set t_=!line $i of $gott
@@ -14,5 +14,5 @@
 , $d_
 </li>
 !next i
-</ul> <p>
+</ul>
 

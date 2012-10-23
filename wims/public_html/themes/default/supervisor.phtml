@@ -60,9 +60,8 @@ $SU_greet.
  !if $quota_free<0
   <p>
    $wims_name_exceeded
-  <p>
+  </p><p>
   !href cmd=close&module=home&lang=$lang $wims_name_visitor
-  <p>
   !goto end
  !else
   <br/><b>$wims_name_warning</b>! $wims_name_reaching_limit
@@ -74,19 +73,19 @@ $SU_greet.
  <br/>
  !href module=adm/forum/mboard $U_newmsg
 !endif
-<p>
+
 
 !if $class_type=4
  <center>
  !href module=adm/class/gateway $wims_name_SU_Gateway
- </center> <p>
+ </center>
  !goto end
 !endif
 
 !if $class_type=2
  !if $subclasscnt>0
   $table_header
-  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th>
+  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
   !for i=1 to $subclasscnt
    !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
    !let f_aff=!item 4 of $f_class
@@ -102,7 +101,6 @@ $SU_greet.
    </tr>
   !next i
   $table_end
-  <p><p>
  !endif
  <center>
  !href module=adm/class/regclass $ADD_3 $ADD_class
@@ -130,7 +128,7 @@ $SU_greet.
  !href module=adm/class/sequence $wims_name_reorder
  ]
  </caption>
- $table_hdtr<th>$wims_name_number<th>$wims_name_title<th>$wims_name_Status
+ $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th></tr>
  !for i=1 to $subclasscnt
   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
   !let f_aff=!item 4 of $f_class
@@ -153,6 +151,7 @@ $SU_greet.
   <td align="center"><small>
   !item $[$o_ +1] of $wims_name_Docstatus
   </small></td>
+  </tr>
  !next i
  !for i=1 to $docpubliccnt
     !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
@@ -167,6 +166,7 @@ $SU_greet.
    !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
    ]
   </small></td>
+</tr>
  !next i
  !for i=1 to $sheetcnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
@@ -194,8 +194,9 @@ $SU_greet.
   !href module=adm/vote&job=read&vote=$i $ti_
   </td>
   <td align="center">$(ac_$[$st_])</td>
+</tr>
  !next i 
- $table_end <p>
+ $table_end
 !endif
 $ADD_1
 !href module=adm/doc&job=creat $ADD_doc
@@ -216,7 +217,7 @@ $ADD_1
 !href module=adm/vote&job=creat $ADD_vote
 .
 
-<p>
+<p></p>
 !read ./form.phtml
 !read ./result.phtml
 !if $wims_supertype!=4 or $class_typename!=class
@@ -225,10 +226,11 @@ $ADD_1
 .&nbsp;
 !href module=adm/modtool Modtool
 .
+</p>
 !endif
 :end
-<p><center>
-<table width="99%" border="0" cellspacing="0" cellpadding="3" bgcolor="$wims_ref_bgcolor">
+
+<table class="wimscenter" width="99%" border="0" cellspacing="0" cellpadding="3" bgcolor="$wims_ref_bgcolor">
 <tr><td align="left" width="33%">&nbsp;&nbsp;
 !if $class_typename notsametext program
  !href module=adm/class/userlist $wims_name_SE_list

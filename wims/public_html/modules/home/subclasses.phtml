@@ -19,6 +19,7 @@
    $(U_gotoclass1)
   !endif
 !endif
+</p>
 !if $auth_method isitemof $auth_method_list and $wims_user!=supervisor
       !set u_=$wims_external_auth
 !else
@@ -72,6 +73,7 @@
         </span>
         </li>
        !endif
+       </li>
       !next k_
        </ul><!end--2-->
       !endif sub_cnt>0 
@@ -108,8 +110,9 @@
   !href module=home&cmd=new $wims_name_back2
  !endif
 !endif
-<p>
 !if $supervisable=yes and ($wims_user=supervisor or $wims_class=$wims_superclass) and $class_type notwordof 3 4
+<p>
    !set wims_ref_class=wims_button
    !href module=adm/class/regclass $wims_name_classcreate
+</p>
 !endif
