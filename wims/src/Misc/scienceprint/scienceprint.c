@@ -12,9 +12,8 @@
 Added Mathml output 
 Added option significance=-1 
 To be used when there is no significance known ; just tries to print the number in science notation
-Trying to use the original amount of digits used in "number" argument
-There may be some small flaws in the displayed number of digits (too many) when number is written as "E+123"
-But there never be too few digits (truncation) ; so wims number checking should go fine.
+Using the original amount of digits used in "number" argument
+!exec scienceprint 123.445000e+23,-1 --> 1.23445000*10^25
 
 *********************************************************************************
 
@@ -83,14 +82,17 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
 	    while(value > 10){
 		value=value / 10.0;
 		exponent10++;
+		/* need to set a limit to number of while loops ! */
+		if(exponent10 > 100){fprintf(stdout,"error : number too big (exponent > 100)\n");return 0;}
 	    }
 	}
 	else /* 0 < value < 1 --> exponent10 < 0 */
 	{
-	    sig = sig - 2; /*  "0." = 2 chars */
 	    while(value < 1){
 		value=value*10;
 		exponent10--;
+		/* need to set a limit to number of while loops ! */
+		if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
 	    }
 	}
     }
@@ -109,6 +111,8 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
 		while(value >= 10){
 		    value = value / 10.0;
 	    	    exponent10++;
+		    /* need to set a limit to number of while loops ! */
+		    if(exponent10 > 100){fprintf(stdout,"error : number too big (exponent > 100)\n");return 0;}
 		}
 	    }
 	}
@@ -215,7 +219,14 @@ int main( int argc , char *argv[]){
 	size = 0;
 	while( ptr != NULL ){
 	    switch( idx ){
-		case 0: number = atof(ptr); size = strlen(ptr);if( strstr(ptr,".") != NULL){ size = size - 1 ;}; break;
+		case 0: number = atof(ptr); 
+			/* size only interesting when 'significance=-1' 
+			 determine number of digits : 1.23445e+23 -> size = 6
+			*/
+			size = strlen(ptr);if( strstr(ptr,".") != NULL){ size = size - 1 ;}
+			if( strstr(ptr,"E") != NULL){size = size - strlen(strstr(ptr,"E"));}
+			if( strstr(ptr,"e") != NULL){size = size - strlen(strstr(ptr,"e"));}
+			break;
 		case 1: significance = atoi(ptr);  break;
 		case 2: type = atoi(ptr); if(type < 0 || type > 4 ){type = 0;} break;
 		default: break;
