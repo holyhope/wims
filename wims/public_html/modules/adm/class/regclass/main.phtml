@@ -95,7 +95,7 @@
   <select name="level" id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
-     <option selected value="$(levelid[$k])">$(leveldesc[$k])</option>
+     <option selected="selected" value="$(levelid[$k])">$(leveldesc[$k])</option>
     !else
      <option value="$(levelid[$k])">$(leveldesc[$k])</option>
     !endif
@@ -157,7 +157,7 @@
   !for i=1 to 31
    <option value="$i"
    !ifval $i=$exp_day
-    selected
+    selected="selected"
    !endif
    >$i
    </option>
@@ -166,7 +166,7 @@
   !for i=1 to 12
    <option value="$i"
    !ifval $i=$exp_month
-    selected
+    selected="selected"
    !endif
    >
    !item $i of $months
@@ -176,7 +176,7 @@
   !for i=$thisyear to $thisyear+1
    <option value="$i"
    !ifval $i=$exp_year
-    selected
+    selected="selected"
    !endif
    >$i
    </option>
@@ -189,7 +189,7 @@
   !let num=!charcnt $wims_class_user_limit
   <input size="3" name="limit" value="$limit" id="limit" maxlength="$num"/>
  </td><td>
- <small>(< $wims_class_user_limit.) </small>
+ <small>(&lt; $wims_class_user_limit.) </small>
  </td></tr>
  
  $table_tr<td><label for="secure">$name_secure ($name_sup)</label></td><td>
