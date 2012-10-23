@@ -19,13 +19,13 @@
 
 !if $error!=$empty
  <p>
- 
  !read lang/msg.phtml.$modu_lang
+ </p>
  !if $restart!=no
   <p>
   !href module=$module&cmd=reply&step=0 $name_again
+  </p>
  !endif
- <p>
  !goto end
 !endif
 
@@ -69,10 +69,9 @@
 !if $step=0
  !read lang/help.phtml.$modu_lang 2
 
-<br/>
-
  !form reply
  <input type="hidden" name="step" value="1"/>
+<div class="wimsform">
  $table_header
  $table_tr
   <td><label for="institution">$name_Name_portal</label></td>
@@ -112,7 +111,7 @@
   !let lastname=$wims_lastname
   $wims_firstname $wims_lastname
  !else
-  <table border="0" cellspacing="0"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
+  <table class="wimsnoborder"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
   <input size="$suplim2" name="firstname" value="$firstname" id="firstname"/>
    </td></tr><tr><td><label for="lastname">$wims_name_lastname</label></td><td>
    <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2"/>
@@ -215,6 +214,7 @@ $table_tr<td colspan="3" align="center">
  <input type="submit" value="$name_continue"/>
  </td></tr>
  $table_end
+</div>
  </form>
 
  !goto end
@@ -222,18 +222,20 @@ $table_tr<td colspan="3" align="center">
 
 !if $step=1
 !read lang/help.phtml.$modu_lang step1
-<p>
+
  !form reply
  <input type="hidden" name="step" value="2"/>
+<div class="wimsform">
  !if $Cltype!=1
   <label for="passsup"> $wims_name_Password ($name_sup)</label> 
-  <input type="password" name="passsup" id="passsup" maxlength="16"/> <p>
+  <input type="password" name="passsup" id="passsup" maxlength="16"/>
  !endif
  !if $pword!=$empty
  <label for="password">$wims_name_Password ($name_classesss)</label>
   <input type="password" name="password" id="password" maxlength="16"/> <p>
  !endif
- <center><input type="submit" value="$name_continue"/></center>
+ <p class="wimscenter"><input type="submit" value="$name_continue"/></p>
+ </div>
  </form>
  !goto end1
 !endif
@@ -241,12 +243,13 @@ $table_tr<td colspan="3" align="center">
 !if $step=2
  !read lang/help.phtml.$modu_lang step2
  !form reply
+<div class="wimsform">
  <input type="hidden" name="step" value="3"/>
- <center><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode"/>
- <p><input type="submit" value="$name_continue"/></center>
+ <p class="wimscenter"><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode"/>
+ <p><input type="submit" value="$name_continue"/></p>
+ </div>
  </form>
  <span class="wims_warning">$wims_name_warning</span>: $name_warning_code
- <p>
  !goto end1
 !endif
 

@@ -24,7 +24,7 @@
 </ul>    
 !exit
 :2
- 
+<p>
 Het oprichten van
 !if $Cltype<2
     een klas is voorbehouden aan een docent.
@@ -37,8 +37,8 @@ Het oprichten van
     Voor deze handeling is een werkend emailadres noodzakelijk.<br/>
     Nadat uw klas $name_classe is opgericht, bent U verantwoordelijk voor het onderhoud ervan.
 </small>
-<p>
-Voor het oprichten de onderstaande vragen beantwoorden :
+</p><p>
+Voor het oprichten de onderstaande vragen beantwoorden :</p>
 !exit
  
 :step1
@@ -63,11 +63,12 @@ Het aanmelden van nieuwe leerlingen
  vrij. 
 <small> weet U wel zeker dat deze site dat toestaat ?</small> 
 !endif
-<p>
+</p><p>
 U kunt deze instellingen nog steeds
 !href module=$module&cmd=reply&step=0 corrigeren.
-<p>
+</p><p>
 Als laatste controle: voer nog &eacute;&eacute;n keer het wachtwoord in:
+</p>
 !exit
 
 :step2
@@ -77,7 +78,7 @@ Welkom , $supervisor !
 Om de aanmeldings procedure van $name_classe op de WIMS site $httpd_HTTP_HOSTte voltooien, 
 vul daarvoor hier de code in die zojuist naar het opgegeven emailadres <tt class="wims_address">$email</tt>
 is gestuurd.
-
+</p>
 !exit
 
 :step3
@@ -85,5 +86,5 @@ is gestuurd.
 Hallo , $supervisor!<p>
 Uw $name_classe $classname is aangemaakt. Gefeliciteerd en veel plezier !<p>
 Het aantal deelnemers is beperkt tot $ilimit participants.
-
+</p>
 !exit

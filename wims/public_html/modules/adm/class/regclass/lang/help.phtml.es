@@ -13,9 +13,10 @@ Una <font color=blue>agrupación de clases</font> permite a los
  clases de alumnos, responsabilidades de los profesores, etc.
  Puede crear aquí su página inicial, llamada también
  <font color=blue>portal</font>.
+ </p>
  !exit
 :2
-
+<p>
   La creación
  !if $Cltype<2
    de una <font color="blue">clase</font>
@@ -31,8 +32,9 @@ Una <font color=blue>agrupación de clases</font> permite a los
  !endif
  Necesitará una dirección de correo activa para poder hacerlo.
  Después de crear su  $name_classe,
- ha de asumir la responsabilidad de su mantenimiento. <p>
+ ha de asumir la responsabilidad de su mantenimiento. </p><p>
  Para crear su $name_classe, por favor, rellene la siguiente información.
+ </p>
 !exit
 
 :step1
@@ -56,27 +58,28 @@ Una <font color=blue>agrupación de clases</font> permite a los
   abierta a todo el mundo en internet (¿Está usted seguro? Sepa que
   el administrador del sitio puede rechazarlas y eliminarlas).
  !endif
- <p>
+ </p><p>
  Si encuentra un error en la información anterior, por favor
  !href module=$module&cmd=reply&step=0 corríjala.
- <p>En caso contrario, para poder verificar la exactitud de sus contraseñas,
+ </p><p>En caso contrario, para poder verificar la exactitud de sus contraseñas,
   escríbalas de nuevo.
+</p>
  !exit
 :step2
 
  ¡Bienvenido/a, $supervisor!<p>
  Ahora necesita una clave para terminar la operación de creación de
- su $name_classe bajo WIMS en el sitio $httpd_HTTP_HOST. <p>
+ su $name_classe bajo WIMS en el sitio $httpd_HTTP_HOST. </p><p>
  Esta clave acaba de ser enviada a su dirección de correo
  <tt class="wims_address">$email</tt>. Por favor, compruebe su buzón de correo electrónico (espere
  un poco si no llega), y lea el mensaje que se le ha enviado. Copie la clave del
  mensaje a continuación.
-
+</p>
 !exit
 :step3
 
 ¡Bienvenido/a, $supervisor!<p>
- Su $name_classe $classname ya ha sido creada. ¡Felicidades, y que se divierta!<p>
+ Su $name_classe $classname ya ha sido creada. ¡Felicidades, y que se divierta!</p><p>
  El número de participantes está limitado a $ilimit (incluido usted).
-
+</p>
 !exit
