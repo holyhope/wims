@@ -3,10 +3,9 @@
 !endif
 
 !if $originheader!=$empty and $job=move
- <b>$wims_name_warning</b> ! $name_warning1 $wims_name_or
+ <span class="wims_warning">$wims_name_warning</span class="wims_warning"> ! $name_warning1 $wims_name_or
  !href cmd=reply&jobreq=copy $name_copy
 .
- <p>
 !endif
 
 !if $target=$empty
@@ -14,19 +13,23 @@
  <input type="hidden" name="jobreq" value="$job"/>
  !distribute item $name_choice into P_copy,P_move,L_copy,L_move
  !if $originheader!=$empty
-  $(L_$job) <span class="wims_mod_title">$otit</span> (<tt class="wims_fname">$original2</tt>): <p>
+  $(L_$job) <span class="wims_mod_title">$otit</span> (<tt class="wims_fname">$original2</tt>):
  !else
-  $(P_$job) $name_public_module<p>
+  $(P_$job) $name_public_module
  !endif
+ !set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=addressing $wims_name_help
  !read scripts/addressform.phtml
  </form>
  !if $originheader!=$empty and $o1 isitemof $zonelist,local
   <p>
-  <b>$wims_name_warning</b>. $name_warning2
+  <span class="wims_warning">$wims_name_warning</span>. $name_warning2
+  </p>
  !endif
  !if $originheader!=$empty and ~ notin $original2
   <p>
-  <b>$wims_name_warning</b>. $name_warning3
+  <span class="wims_warning">$wims_name_warning</span>. $name_warning3
+  </p>
  !endif
 !endif
 

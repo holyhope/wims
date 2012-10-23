@@ -64,7 +64,7 @@ Strange, but I do not find the exercise series to modify !!
  This action is therefore <b>strongly discouraged</b>.
  <p>
  Do you still want to deactivate the worksheet?
-  <div class="wimscenter">
+ </p><div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
@@ -83,7 +83,7 @@ Strange, but I do not find the exercise series to modify !!
 !if $error=non_empty_activities
  You want to deactivate worksheet $sheet, although participants have already
  started to work on it!
- <p>
+ 
  !if share iswordof $confirmed
   Moreover, the worksheet is shared with other classes where there may be scores too. 
   It is therefore not allowed to deactivate it.
@@ -99,19 +99,19 @@ Strange, but I do not find the exercise series to modify !!
  List of students having worked on this worksheet:
  <p>
  <tt>$worktest</tt>
- <p>
+ </p>
  <b>Note</b>. Only deactivate if you are using this class as a test.
  !exit
 !endif
 
 !if prep_activate=$error
- You want to activate worksheet $sheet. <p>
+ You want to activate worksheet $sheet.
  By activating a worksheet, you make it visible to the participants of the class.  Once activated,
  a worksheet cannot be modified, unless deactivated first. However, deactiviting an activated 
  worksheet will result in losing the scores and grades of the participants.
  <p>
  Ali ¾elite nadaljevati?
-  <div class="wimscenter">
+ </p> <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
@@ -147,15 +147,15 @@ Strange, but I do not find the exercise series to modify !!
  then clicking on the button <span class="wims_button disabled">$wims_name_send</span>. 
  This form also allows you to insert the
  source of a public worksheet using cut-and-paste.
-  <p>
+
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"/><center>
- <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/>
- </center></form>
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea></p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
+ </p></form>
  <span class="wims_warning">$wims_name_warning</span>. 
  It is advised not to modify the source code of the worksheet as it may abort the
  worksheet.
@@ -174,7 +174,7 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2 <p>
+<p>$name_expiration1 ($l_date). $name_expiration2 </p>
  !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
  !exit

@@ -56,6 +56,7 @@
 取消激活此页后有可能使相邻班陷入混乱. 因此<b>强烈劝告</b>你不要做此操作.
  <p>
 你是否仍要取消激活此页?
+</p>
   <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
@@ -72,7 +73,6 @@
 
 !if $error=non_empty_activities
 你想要取消激活页面 $sheet, 但是参加者已经开始在这个页面上工作了!
- <p>
  !if share iswordof $confirmed
 此外, 此页是与其它班级共享的, 那里也可能有作业或分数.
 因此不允许取消激活.
@@ -87,17 +87,18 @@
 在此页作作业的帐户表:
  <p>
  <tt>$worktest</tt>
- <p>
+ </p>
  <b>注意</b>. 如果是测试用的班级, 则仅仅取消激活.
  !exit
 !endif
 
 !if prep_activate=$error
-你想要激活页面 $sheet. <p>
+你想要激活页面 $sheet. 
 激活页面后, 它就能被班级的所有参加者看到. 一旦被激活, 
 你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
  <p>
 要继续吗?
+</p>
   <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
@@ -133,15 +134,15 @@
 如果你有已保存的源码, 你可将这段源码插入当前页, 只需将这段源码复制入以下窗口,
 再点击按钮 <span class="wims_button disabled">$wims_name_send</span>. 
 这个表也允许你用切割-复制的形式插入公开作业页的源码.
-  <p>
+
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"/><center>
- <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/>
- </center></form>
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea></p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
+ </p></form>
  <span class="wims_warning">$wims_name_warning</span>. 
  不要修改页面的源码, 这样可能使你的整个作业页无法使用.
  !exit
@@ -162,6 +163,7 @@ to $wims_menu_items
  $name_expiration1 ($l_date). $name_expiration2 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
+ </p>
  !exit
 !endif
 

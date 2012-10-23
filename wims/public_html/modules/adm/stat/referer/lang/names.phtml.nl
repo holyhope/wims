@@ -46,13 +46,15 @@ Referentie pagina's vanuit $httpd_HTTP_HOST worden niet meegeteld.
 
 !exit
 :intro
+<p>
 Een webpagina met links naar ons systeem is mogelijk ook een interessante plek
 voor WIMS gebruikers.
 De lijst met "bezoekers via website" geeft daarover enige informatie.
-<p>
+</p><p>
 Anderzijds als u linkst naar WIMS plaatst op uw eigen webpagina's is het
 handig te weten of er ook daadwerkelijk gebruik van wordt gemaakt.
 En het is onze manier om te bedanken voor het plaatsen van een link naar WIMS.
-<p>
+</p><p>
 De lijst met "bezoekers via website" wordt speciaal aangemaakt aan de hand van de
 instelparameters, welke gekozen kunnen worden in het volgende menu.
+</p>

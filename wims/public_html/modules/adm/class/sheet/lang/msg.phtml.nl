@@ -58,7 +58,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  U loopt het risico dat er hierdoor in andere klassen ongeldige werkbladen of toetsen ontstaan.
  <p>
   Doorgaan met de procedure?
-  <div class="wimscenter">
+</p><div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
@@ -74,7 +74,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 
 !if $error=non_empty_activities
 	U wilt het werblad $sheet deactiveren, maar er zijn al studenten mee aan het werk geweest.
- <p>
+
  !if share iswordof $confirmed
      En dit werkblad wordt ook gedeeld mat andere klassen.
      Onmogelijk te deactiveren.
@@ -90,7 +90,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  Lijst van deelnemers die aan dit werblad heben gewerkt:
  <p>
  <tt>$worktest</tt>
- <p>
+ </p>
  <b>Opmerking</b>. 
  Deze handeling moet eigenlijk niet worden uitgevoerd in een actieve klas !.
  En is bedoeld voor "test klassen"
@@ -98,7 +98,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 !endif
 
 !if prep_activate=$error
-U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken. <p>
+U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken.
 Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
 
 Wilt U doorgaan?
@@ -141,15 +141,16 @@ Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
 Hebt U een broncode van een reeds eerder gemaakt werkblad, kan deze
 in het onderstaande venster worden ingevoerd. Daarna klikken op "Sturen".
 Uiteraard kan ook met "knippen en plakken" worden gewerkt.
-  <p>
+
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"/><center>
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
  <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/>
- </center></form>
+ </p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
+ </p></form>
  <span class="wims_warning">$wims_name_warning</span>. 
  Voer geen "corrupte code" handmatig in ; het risico
  bestaat dat het werkblad onbruikbaar wordt.
@@ -174,6 +175,7 @@ to $wims_menu_items
 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
+</p>
  !exit
 !endif
 

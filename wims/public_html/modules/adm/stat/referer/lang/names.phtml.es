@@ -47,14 +47,16 @@ activado en este sitio. No está disponible la lista de enlaces inversos. Lo sent
 
 !exit
 :intro
+<p>
 En general una página web que nos envíe muchos invitados será un lugar
 interesante para el resto de nuestros visitantes. Es lógico, si busca recursos
 web relacionados con este servidor, lo que necesita es una lista de tales
 páginas.
-<p>
+</p><p>
 Por otro lado, si es usted el autor de una página con enlace(s) a nosotros,
 esta lista le permitirá medir la eficacia de su vínculo. Es también nuestra
 manera de agradecerle el enlace.
-<p>
+</p><p>
 Nuestra lista de enlaces inversos se genera dinámicamente, según los parámetros que
 puede elegir en el siguiente menú.
+</p>

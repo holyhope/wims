@@ -56,7 +56,8 @@
  this worksheet. This operation is therefore <b>stronly discouraged</b>.
  <p>
  Do you still want to deactivate the worksheet?
-  <div class="wimscenter">
+ </p>
+ <div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
@@ -75,7 +76,6 @@
 !if $error=non_empty_activities
  You want to deactivate the worksheet $sheet, while participants have already
  started to work on it!
- <p>
  !if share iswordof $confirmed
   Moreover, the worksheet is shared with other classes where there may be works
   and scores too. It is therefore not allowed to deactivate it.
@@ -91,14 +91,14 @@
  List of accounts having worked on this worksheet:
  <p>
  <tt>$worktest</tt>
- <p>
+ </p>
  <b>Note</b>. This action should be taken only if this is a testing class.
  Do not go further if the participants are your real students!
  !exit
 !endif
 
 !if prep_activate=$error
- 您要求運作作業清單  $sheet ，亦即讓作業清單被課程參與者存取。<p>
+ 您要求運作作業清單  $sheet ，亦即讓作業清單被課程參與者存取。<br/>
  請注意，一旦作業清單運作後，您就無法再修改清單。您確定要繼續？
   <div class="wimscenter">
  !href cmd=reply&job=activate  運作清單
@@ -137,15 +137,16 @@
  into the current worksheet, by copying this source into the window below,
  then clicking on the button `Send'. This form also allows you to insert the
  source of a public worksheet using cut-and-paste.
-  <p>
+
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"/><center>
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
  <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/>
- </center></form>
+ </p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
+ </p></form>
  <span class="wims_warning">$wims_name_warning</span>.
  Do not insert modified source file! You risk to make your
  worksheet useless.
@@ -169,7 +170,7 @@ to $wims_menu_items
 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
-
+</p>
  !exit
 !endif
 !msg $error

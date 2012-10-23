@@ -69,7 +69,7 @@
 !if $error=non_empty_activities
  ¡Quiere desactivar la hoja $sheet cuando los participantes ya han empezado
  a trabajar en ella!
- <p>
+
  !if share iswordof $confirmed
   Además la hoja la comparten otras clases, que pueden estar trabajando en ella 
   y tener puntuaciones también. Por tanto está prohibido desactivarla.
@@ -85,7 +85,7 @@
  Lista de cuentas que ya han trabajado en esta hoja:
  <p>
  <tt>$worktest</tt>
- <p>
+ </p>
  <b>Nota</b>. Esta acción no debe realizarse salvo si se trata de una clase de 
  pruebas. ¡No siga adelante si los participantes son sus verdaderos alumnos!
  !exit
@@ -101,6 +101,7 @@
  por la situación.
  <p>
  ¿Desea continuar?
+ </p>
   <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
@@ -140,15 +141,15 @@
  <span class="wims_button disabled">$wims_name_send</span>Enviar</span>.
  También puede utilizar este formulario para insertar los fuentes de una
  hoja pública por el proceso de copiar y pegar.
- <p>
+ 
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value=putsource/><center>
- <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/>
- </center></form>
+ <input type="hidden" name="job" value=putsource/><p class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea></p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
+ </p></form>
  <span class="wims_warning">Atención</span>. ¡No inserte un fichero fuente modificado! Se arriesga a
  inutilizar su hoja de trabajo.
  !exit
@@ -171,7 +172,7 @@ to $wims_menu_items
 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
-
+</p>
  !exit
 !endif
 !msg $error

@@ -96,7 +96,7 @@
  !endif
  <p>Tutti i punteggi ottenuti per questo test di autovalutazione saranno perduti
  se il test viene disattivato. Vuoi veramente disattivare il test?</p>
- <p style="text-align:center">
+ <p class="wimscenter">
   !set wims_ref_class=wims_button
   !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes, $(wims_name_actionlist[3])
   &nbsp;&nbsp;
@@ -116,13 +116,14 @@
 
 !if prep_activate=$error
  Si &egrave; richiesto di dare inizio al test di autovalutazione $sheet, cio&egrave; di renderla
- accessibile agli studenti. <p>
+ accessibile agli studenti.
  Ricordiamo che un test in corso non &egrave; pi&ugrave; modificabile, ma
  occorre prima disattivarlo (in questo caso tutti i punteggi acquisiti dagli
  studenti saranno cancellati). 
  <p>
  Continuare?
- <p style="text-align:center">
+ </p>
+ <p class="wimscenter">
   !set wims_ref_class=wims_button
   !href cmd=reply&job=activate $wims_name_yes, $(wims_name_actionlist[1])
   &nbsp;&nbsp;
@@ -134,7 +135,7 @@
 
 !if prep_erase=$error
  Sicuri di voler eliminare il test numero $sheet ($title)?
- <p style="text-align:center">
+ <p class="wimscenter">
   !set wims_ref_class=wims_button
   !href cmd=reply&job=erase $wims_name_yes, $wims_name_erase
   &nbsp;&nbsp;
@@ -175,10 +176,10 @@
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value="putsource"/><center>
- <textarea cols="55" rows="10" name="source">$source</textarea>
- <p><input type="submit" value="$wims_name_send"/></p>
- </center></form>
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
+ <textarea cols="55" rows="10" name="source">$source</textarea></p>
+ <p class="wimscenter"><input type="submit" value="$wims_name_send"/></p>
+ </form>
  <span class="wims_warning">$wims_name_warning</span>. 
  Non inserire file di istruzioni modificate. Potrebbero
  essere inutilizzabili dal server.

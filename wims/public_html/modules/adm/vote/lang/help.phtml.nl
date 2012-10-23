@@ -26,7 +26,7 @@ plus de volgende extra commando's <dl>
  <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
 	<dd>Registreer de keuze in een variabele <tt>vname</tt> voor elke student afzonderlijk.
 	De waarde van deze variabele is default <tt>val0</tt> , en <tt>val1</tt> 
-	als de student kiest voor de eerste optie, etc.<p>
+	als de student kiest voor de eerste optie, etc.<br/>
 	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
 	tot op de individuele student te regelen.
 	Vermeld de variabele 

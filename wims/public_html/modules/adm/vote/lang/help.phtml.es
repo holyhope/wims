@@ -28,7 +28,7 @@ elementos que los mensajes de los foros. Además se pueden utilizar las siguiente
 	<d>Grabar la elección inmediatamente precedente en una variable
 	individual para el participante, de nombre <tt class="wims_code_variable">vname</tt>. Esta
 	variable tendrá el valor <tt>val0</tt> por defecto, <tt>val1</tt> si
-	el participante había escogido la primera opción, etc. <p>
+	el participante había escogido la primera opción, etc. <br/>
 	Esta variable puede posteriormente utilizarse para definir accesos
 	individualizados a las hojas de trabajo o a los exámenes, poniendo
 	la palabra <tt class="wims_code_variable">\vname</tt> entre las restricciones de la hoja o examen.
