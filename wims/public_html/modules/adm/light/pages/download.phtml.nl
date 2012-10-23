@@ -47,7 +47,8 @@ Zie ook
 <a target="wims_external" href="http://wimsedu.info">http://wimsedu.info</a>
  voor een toelichting bij de installatie [franstalig].
 <p>
-Alle modules [lesmateriaal e.d.] kunnen via internet met "WIMS configuratie & onderhoud"  worden geinstalleerd vanaf een "draaiende" WIMS installatie. 
-
+Alle modules [lesmateriaal e.d.] kunnen via internet met "WIMS configuratie & onderhoud" 
+ worden geinstalleerd vanaf een "draaiende" WIMS installatie. 
+</p>
 !tail
 

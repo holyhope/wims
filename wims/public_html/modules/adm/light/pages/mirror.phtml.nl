@@ -48,7 +48,7 @@
 <font size=+2>M</font>ultipurpose
 <font size=+2>S</font>erver<br/>
 <font size="-1">op <a href="/">$httpd_HTTP_HOST</a></font> <br/>
-$module_title</h1> <p>
+$module_title</h1>
 
 !set mir=wimshome/public_html/html/mirrors.nl
 !set thissite=!tolower $httpd_SERVER_NAME
@@ -68,13 +68,14 @@ $ in $l_
 !next i_
 !set n=!itemcnt $c
 !if $n<1
+<p>
     Deze WIMS server heeft helaas geen lijst met actieve mirrors geinstalleerd.
- <p>
+ </p>
 !else
     Hier is een lijst met WIMS servers die open staan voor publiek.
     Bij regelmatig WIMS gebruik en geen eigen server, is het verstandig een bookmark 
     van deze adressen lijst te maken.
- <p>$table_header
+ $table_header
  $table_hdtr<th>Website</th>
  <th>Locatie</th>
  <th>Land</th>
@@ -97,7 +98,7 @@ $ in $l_
 !!  <td align="center">!mailurl n$e_ $m_\nWIMS site
   </td><td>$r_&nbsp;</td></tr>
  !next i_
- $table_end <p>
+ $table_end
 !endif
 
 :end
@@ -111,9 +112,8 @@ wims mirror
 WIMS is vrije software en kan gratis worden 
 !href module=adm/light&phtml=download.phtml.$lang verkregen
 en geinstalleerd alle op GNU/Linux systemen.
-<p>
 Lees het <a href="README">README</a> bestand in de download directory voor 
 meer details mbt de installatie.
-
+</p>
 !tail
 

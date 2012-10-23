@@ -50,7 +50,7 @@
 <font size=+2>M</font>ultipurpose<br/>
 <font size=+2>S</font>erver
 <font size="-1">en <a href="/">$httpd_HTTP_HOST</a></font> <br/>
-$module_title</h1> <p>
+$module_title</h1>
 
 !set mir=wimshome/public_html/html/mirrors.es
 !set thissite=!tolower $httpd_SERVER_NAME
@@ -70,13 +70,15 @@ $ in $l_
 !next i_
 !set n=!itemcnt $c
 !if $n<1
+<p>
  Este sitio WIMS no parece mantener una lista de réplicas. Lo sentimos.
- <p>
+ </p>
 !else
  Aquí están los otros sitios WIMS que se sabe que están abiertos al
  público general. Si usa normalmente WIMS en su trabajo, le sugerimos
  que añada a sus Favoritos al menos una de estas direcciones.
- <p>$table_header
+ 
+ $table_header
  $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br/>en que funciona</th><th>Comentarios</th></tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
@@ -94,7 +96,7 @@ $ in $l_
 !!  <td align="center">!mailurl n$e_ $m_\nWIMS site
   </td><td>$r_&nbsp;</td></tr>
  !next i_
- $table_end <p>
+ $table_end
 !endif
 
 :end
@@ -109,6 +111,6 @@ WIMS se puede
  gratuitamente,
 y puede instalarse sobre sistemas operativos Linux.
 Por favor, lea el archivo <a href="README">README</a>  para obtener más información sobre cómo instalar WIMS.
-
+</p>
 !tail
 

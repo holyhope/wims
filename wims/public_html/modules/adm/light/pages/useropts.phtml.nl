@@ -53,17 +53,17 @@ Wiskundige formules:<br/>
 
 !if $texalign=2
     De server staat afgesteld op <b>MathML</b>.
-    <center>
+    <p class="wimscenter">
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
-    </center>
+    </p>
     Als de bovenstaande formule niet correct is afgebeeld, kan er gebruik worden gemaakt van een andere
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
     </a> 
     of gebruik de server in de afstelling "wiskunde met plaatjes".
 !set wims_ref_class=wims_button
-<center>
+<p class="wimscenter">
    !href cmd=resume&useropts=$arg Gebruik Wiskunde met plaatjes
-</center> 
+</p> 
 </li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
@@ -95,11 +95,11 @@ Wiskundige formules:<br/>
     De server staat afgesteld op "Wiskunde met plaatjes".
     Bij gebruik van een geschikte
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, kan de server ook MathML leveren.
-<center>
+<p class="wimscenter">
 !set arg=!nospace $texsize 2
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$arg Gebruik MathML
-</center>
+</p>
 
 </li><li>
 Grootte van wiskundige symbolen en formules.
@@ -124,7 +124,7 @@ Grootte van wiskundige symbolen en formules.
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
   <br/>
   Gemengde formule
-  <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
+  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
 </li><li>
 Positie van de formules. Als de uitdrukking
   !insmath (x+y)/(x^$pw + y^2)

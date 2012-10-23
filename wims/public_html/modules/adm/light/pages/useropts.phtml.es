@@ -56,17 +56,17 @@ Mathematical formulas.
 
 !if $texalign=2
   The server is currently set to MathML if you have a suitable browser. For example,
-    <center>
+    <p class="wimscenter">
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
-    </center>
+    </p>
     If the formula is not correctly displayed, you can use another
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
     </a> 
     or use the serveur with "math with images".
 !set wims_ref_class=wims_button
-<center>
+<p class="wimscenter">
    !href cmd=resume&useropts=$arg Math with images
-</center> 
+</p> 
 </li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
@@ -97,11 +97,11 @@ Mathematical formulas.
 !else
     Currently, you use the server with "Math with images". If you have a suitable 
     <a onmouseover="return Tip($tip)"><font color="blue">browser</font></a>, you may also use MathML.
-<center>
+<p class="wimscenter">
 !set arg=!nospace $texsize 2
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$arg MathML
-</center>
+</p>
 
 </li><li>
 Size of mathematical symbols and formulas. 
@@ -125,7 +125,7 @@ Size of mathematical symbols and formulas.
   !set pw=2
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
   Una desigualdad
-  <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
+  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
 </li><li>
 Position of the formulas. If the expression
   !insmath (x+y)/(x^$pw + y^2)

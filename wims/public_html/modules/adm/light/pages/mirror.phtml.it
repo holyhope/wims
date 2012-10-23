@@ -50,7 +50,7 @@
 <font size=+2>M</font>ultipurpose
 <font size=+2>S</font>erver<br/>
 <font size="-1"><a href="/">$httpd_HTTP_HOST</a></font> <br/>
-$module_title</h1> <p>
+$module_title</h1>
 
 !set mir=wimshome/public_html/html/mirrors.it
 !set thissite=!tolower $httpd_SERVER_NAME
@@ -70,15 +70,17 @@ $ in $l_
 !next i_
 !set n=!itemcnt $c
 !if $n<1
- Spiacenti! Questo sito non mantiene un elenco di Mirror.
  <p>
+ Spiacenti! Questo sito non mantiene un elenco di Mirror.
+ </p>
 !else
  Ecco altri siti Wims che permettono accesso pubblico.
  Se utilizzate regolarmente Wims, suggeriamo di conservare qualcuno
  di questi indirizzi nei bookmark, in modo da non dover interrompere il 
  lavoro se il sito abituale dovesse essere temporaneamente 
  inutilizzabile.
- <p>$table_header
+ 
+ $table_header
  $table_hdtr<th>Url</th><th>Luogo</th><th>Stato</th><th>$wims_name_Language<br/>disponibili</th><th>$wims_name_comment</th></tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
@@ -96,7 +98,7 @@ $ in $l_
 !!  <td align="center">!mailurl n$e_ $m_\nWIMS site
   </td><td>$r_&nbsp;</td></tr>
  !next i_
- $table_end <p>
+ $table_end
 !endif
 
 :end
@@ -109,6 +111,6 @@ Wims &egrave; un software
 !href module=adm/light&phtml=download.phtml.$lang disponibile gratuitamente
 , installabile su un server linux.  Leggere il file
 <a href="README">README</a> della distribuzione per i dettagli sull'installazione di WIMS.
-
+</p>
 !tail
 
