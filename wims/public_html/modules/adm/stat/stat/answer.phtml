@@ -29,8 +29,9 @@ $name_number_visits $name_from $date1 $name_to $date2
    !htmlmath $[$total_click]
    </td><td>
    !htmlmath $[rint($total_click/$laps)] 
-   </td><td>
+   </td>
    !if $laps>$week_min
+   <td>
     !htmlmath $[rint($total_click*7/$laps)] 
     </td>
     !if $laps>$month_min
@@ -39,10 +40,12 @@ $name_number_visits $name_from $date1 $name_to $date2
      </td>
      !if $laps>$year_min
      <td>
-      !htmlmath $[rint($total_click*365.25/$laps)] 
+      !htmlmath $[rint($total_click*365.25/$laps)]
+    </td>
      !endif
     !endif
    !endif
+   <td>
    !htmlmath $[$total_click/$total_site] 
    </td>
  </tr>
@@ -96,14 +99,14 @@ $name_number_visits $name_from $date1 $name_to $date2
    <td>1</td>
    </tr>
  $table_end
-<p>
+
 $wims_name_Explanations. $name_explanations
 
 !if $laps >= 3
- <center>
+ <p class="wimscenter">
  <font color="red">$(title_$plot_type) $name_byday</font> <br/>
  !insplot "insplot_data" using 1:2 smooth csplines notitle with lines
- </center>
+ </p>
 !endif
 
 !if $modules=yes and $modulecnt>0
@@ -139,6 +142,7 @@ $wims_name_Explanations. $name_explanations
   <td nowrap>
   !if $module_type=2
    $[$c/100]
+   </td>
    !goto cont
   !endif
   !htmlmath $[$c]
@@ -168,6 +172,7 @@ $wims_name_Explanations. $name_explanations
   !endif
   </td><td>$[rint($c*7/$lps)]</td>
   :cont
+  </tr>
  !next i
  !if $module_type!=2
   $table_hdtr<td>$name_subtotal<td nowrap>
@@ -180,7 +185,7 @@ $wims_name_Explanations. $name_explanations
   !next i
   <td align="center">-</td><td align="center">-</td>
  !endif
-$table_end <p>
+$table_end
 !else
 !set wims_menu_items=!append line statdetail,1,cmd=reply&modules=yes\
  to $wims_menu_items

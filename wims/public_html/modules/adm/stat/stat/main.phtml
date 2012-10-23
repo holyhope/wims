@@ -12,26 +12,27 @@
 
 <h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
 <br/>$title</h1>
-<p><hr/></p>
 
 !if $sitestart=$empty
-$name_warning
 <p>
+$name_warning
+</p>
  !goto end
 !endif
 !if $show=yes and $total_site>0 and $laps>0
  !if $wims_theme_version=
    !href cmd=resume $wims_name_menuback
  !endif
- <p>
+ <div>
  !read answer.phtml
  !set wims_menu_items=!append line back2,1,cmd=resume\
  to $wims_menu_items
- <p>
+ </div>
 !else
  !if $usercnt>0
+ <p>
   $name_numberclass
-  <p>
+  </p>
  !endif
  !read menu.phtml
 !endif
