@@ -27,7 +27,6 @@ Pour les feedback, l'objet peut être appelé par la variable <tt class="wims_code
 :\email{bernadette.perrin-riou@math.u-psud.fr}
 :\credits{}
 
-
 :Format 1
 \text{format1=item(1, radio (un choix parmi la liste suivante),
     numeric (question numérique),
@@ -40,7 +39,7 @@ Donner la liste des bons choix si vous avez choisi le type radio.
 \text{choix1=premier groupe, deuxième groupe, troisième groupe}
 
 :Format 2
-\text{format2=item(3, radio (un choix parmi la liste suivante),
+\text{format2=item(3,radio (un choix parmi la liste suivante),
     numeric (question numérique),
     case (aucune tolérance d'erreur),
 	nocase (tolère minuscule/majuscule),
@@ -87,15 +86,6 @@ courir,3, Je courais, Je courrai}
 :Instruction à la troisième étape
 \text{instruction3=Donner le futur du verbe \name à la première personne du singulier sans oublier le pronom.}
 
-
-\text{feedback1=Le verbe \name est du }
-:Feedback à la deuxième étape
-\text{feedback2=L'imparfait à la première personne du singulier de \name est }
-
-:Feedback à la troisième étape
-\text{feedback3= Le futur à la première personne du singulier  de \name est}
-
-
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 \css{<style type="text/css"> .feedback{color:brown;padding:3pt;}.answer{color:navy;}.name {color:blue;}</style>}
 
@@ -131,6 +121,24 @@ courir,3, Je courais, Je courrai}
   }
 }
 
+\text{reponse1=<span class="oef_indgood">\reponse1</span>}
+\text{reponse2=<span class="oef_indgood">\reponse2</span>}
+\text{reponse3=<span class="oef_indgood">\reponse3</span>}
+:Feedback à la deuxième étape
+
+
+\text{feedback1=L'imparfait à la première personne du singulier de \name est \reponse1}
+
+:Feedback à la troisième étape
+
+\text{feedback2=Le futur à la première personne du singulier \name est \reponse2}
+
+:Feedback à la fin
+
+\text{feedback3=Le groupe est  \reponse3.}
+
+
+:%%%
 \nextstep{\STEP}
 
 \statement{
@@ -142,7 +150,7 @@ courir,3, Je courais, Je courrai}
  \if{\step>=1}{</li>}
  \if{\step>=2}{<li>
   <div class="feedback">
- \if{\sc_reply1=1}{\right}{\false} \feedback1 <span class="oef_indgood">\reponse1</span>.
+ \if{\sc_reply1=1}{\right}{\false} \feedback1.
  </div>
  <div class="instruction">
   \instruction2
@@ -155,27 +163,25 @@ courir,3, Je courais, Je courrai}
 
  \if{\step>=3}{<li>
    <div class="feedback">
-  \if{\sc_reply2=1}{\right}{\false} \feedback2 <span class="oef_indgood">\reponse2</span>.
+  \if{\sc_reply2=1}{\right}{\false} \feedback2.
    </div>
    \if{\step >=3 and \format3!=0}{
      <div class="instruction"> \instruction3
-     \embed{r3}
+     <p>\embed{r3}</p>
      </div>
    }
   }
  \if{\step>=3}{</li>}
 
- 
-  \if{\step>=4 and \format3!=0}{<li>
+  </ol>
+  \if{\step>=4 and \format3!=0}{
    <div class="feedback">
-  \if{\sc_reply3=1}{\right}{\false} \feedback3 <span class="oef_indgood">\reponse3</span>.
+  \if{\sc_reply3=1}{\right}{\false} \feedback3.
    </div>
   }
- </ol>  
+
 }
 
 \answer{}{\rep1}{type=\format1}{option=nonstop}
 \answer{}{\rep2}{type=\format2}{option=nonstop}
 \answer{}{\rep3}{type=\format3}{option=nonstop}
-
-
