@@ -21,19 +21,19 @@ $classname\
 $wims_name_part_list
 
 !if $error!=$empty
- <p>
+ <div class="wimsmsg">
  !read lang/msg.phtml.$moduclass_lang
- <p>
+ <div>
  !set wims_ref_class=wims_button
  !if $wims_class!=$empty
    !href module=home $wims_name_class_home
  !else
    !href module=home $wims_name_home
  !endif
-<p>
+
  !goto end
 !endif
- <center>
+ <div class="wimscenter">
  !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
 !!##  the administrator at the level of the portal or the creator of the class can add a teacher to 
 !!##  the list of teachers of his class
@@ -82,7 +82,7 @@ $wims_name_part_list
  !set wims_ref_class=wims_button
   !href cmd=reply&job=recover $name_partdeleted
  !endif
- </center>
+ </div>
  !if $seq_cnt=0
  <p>
     $name_warning_no_sequence 
