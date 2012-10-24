@@ -8,7 +8,8 @@
  !set st=!char 1 of $ss
  !set l_=!record $sn of wimshome/log/classes/$wims_class/$(file_$st)s
  !set shtit=!line $(line_$st) of $l_
- <p>$table_header
+ 
+ $table_header
  $table_hdtr<th rowspan="$hdrow">$wims_name_Exercise</th>
  !if req isitemof $show and $st=S
   <th rowspan="$hdrow"><small>$name_required_points</small></th>
@@ -35,6 +36,7 @@
  !if deviat isitemof $show
   <th colspan="2">$name_deviation</th>
  !endif
+ </tr>
  !if $hdrow>1
   $table_hdtr
   !if tot isitemof $show
@@ -56,6 +58,7 @@
    <th><small>$name_points</small></th><th><small>$name_duration</small></th>
   !endif
  !endif
+ </tr>
  !for i=$(start$st$sn) to $(end$st$sn)
   !set l_=!record $i of wimshome/log/classes/$wims_class/exostat
   !distribute words $l_ into $fields
@@ -121,6 +124,7 @@
    <td align="right">$durdev</td>
   !endif
   :next
+</tr>
  !next i
  !set test=!listintersect $show and req,weight,cid,tot,scoremean,partmean
  !if $st=S and $(start$st$sn)<$(end$st$sn) and $test!=$empty
@@ -161,10 +165,11 @@
    <td align="center">-</td>
   !endif
  !endif
+ </tr>
  <caption>
  <b>$(name_$st) $sn.</b> $shtit
  <small>($name_theoric $[rint($sdur)] $name_minute)</small>
  </caption>
- $table_end <p>
+ $table_end
 !next ss
 
