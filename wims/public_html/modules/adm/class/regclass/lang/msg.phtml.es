@@ -24,8 +24,9 @@ Creación de una clase virtual
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>La contraseña se envió a la dirección electrónica $sendmail.</center></font>
-  <p>
+  <div class="wimscenter">La contraseña se envió a la dirección electrónica $sendmail.
+  </div>
+  
  !endif
  !if $regpass!=$empty
   Lo sentimos, su contraseña no es correcta. Vuelva a intentarlo.
@@ -35,11 +36,12 @@ Creación de una clase virtual
   La creación de $cname en este sitio está protegida por una contraseña.
   Debe introducir esta contraseña antes de continuar.
  !endif
- <p>
+ 
  !form reply
   <input type="hidden" name="step" value="0"/>
   Introduzca la contraseña: <input size="16" name="regpass" type="password"/>
- </form> <p>
+ </form>
+ <div>
  Nota. Puede solicitar la contraseña necesaria para la creación
  de clases virtuales al
  !mailurl $wims_site_manager administrador\
@@ -58,19 +60,20 @@ Contraseña para la creación de clases virtuales
  !endif
  <p>
  !form reply
-  <p><table border="0" cellspacing="5">
+  <table border="0" cellspacing="5">
   <tr><td align="right">
   Introduzca el nombre de su cuenta:</td><td><input size="20" name="regid"/></td>
   </tr><tr><td align="right">
   Y la contraseña:</td><td><input size="16" name="regpass" type="password"/>
-  <input type="submit" value="De acuerdo"/></td>
+  <input type="submit" value="$wims_name_tosave"/></td>
   </tr></table>
- </form> <p>
+ </form><p>
  Nota. Por favor escriba al
  !mailurl $wims_site_manager administrador\
 Contraseña para la creación de clases virtuales
  de este sitio si desea una cuenta con permisos para la creación de
  clases virtuales.
+ </p>
  !set restart=no
  !exit
 !endif
@@ -130,6 +133,7 @@ para desactivar esta medida de seguridad.
  <p>
 La creación de clases sólo puede tener éxito si
  proporciona SU VERDADERA dirección de correo.
+ </p>
  !exit
 !endif
 
@@ -157,6 +161,7 @@ La creación de clases sólo puede tener éxito si
  No ha tecleado la clave correcta para la clase. ¿Es correcta la dirección
  electrónica que nos ha proporcionado?<p>
  Este fallo ha quedado registrado.
+ </p>
  !exit
 !endif
 
@@ -168,14 +173,17 @@ La creación de clases sólo puede tener éxito si
  !mailurl $wims_site_manager administrador de este sitio\
 user registration failure
 . ¡Gracias!
+</p>
  !exit
 !endif
 
 !if duplicate=$error
  Ha intentado volver a crear una clase ya creada. ¿Quizás ha hecho click
  en el botón <tt>actualizar</tt>? En todo caso ya existe su clase
- $classname y esta segunda tentativa de creación se ha ignorado. <p>
+ $classname y esta segunda tentativa de creación se ha ignorado.
+  <div>
  !read adm/lang/links.phtml.$modu_lang
+ </div>
  !exit
 !endif
 

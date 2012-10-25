@@ -22,8 +22,9 @@ Virtual class creation
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>The password has beedn send by email to the adress
-  <p>
+  <div class="wimscenter">
+  The password has beedn send by email to the adress
+  </div>
  !endif
  !if $regpass!=$empty
   Sorry, your password is not correct. Please try again.
@@ -33,7 +34,7 @@ Virtual class creation
   The creation of $cname on this site is protected by a password.
   You must enter this password before continuing.
  !endif
- <p>
+ 
  !form reply
   <input type="hidden" name="step" value="0"/>
   Enter the password: <input size="16" name="regpass" type="password"/>
@@ -53,20 +54,21 @@ Virtual class creation password
   The creation of virtual classes on this site is protected by a system of
   authentication. Please identify yourself.
  !endif
- <p>
+ 
  !form reply
-  <p><table border="0" cellspacing="5">
+  <table border="0" cellspacing="5">
   <tr><td align="right">
   Entrez the name of your account:</td><td><input size="20" name="regid"/></td>
   </tr><tr><td align="right">
   And the password:</td><td><input size="16" name="regpass" type="password"/>
   <input type="submit" value="$wims_name_tosave"/></td>
   </tr></table>
- </form> <p>
+ </form><p>
  Remark. Please write to
  !mailurl $wims_site_manager the webmaster\
 Virtual class creation password
  if you want an account for creating virtual classes.
+</p>
  !set restart=no
  !exit
 !endif
@@ -125,6 +127,7 @@ Virtual class creation password
  <p>
  Please be aware that your creation of class will not succeed, unless
  you submit a REAL email address of YOUR OWN.
+ </p>
  !exit
 !endif
 
@@ -152,6 +155,7 @@ Virtual class creation password
  You did not enter the right code for the class. Have you given your 
  email address correctly?<p>
  This failure has been logged.
+ </p>
  !exit
 !endif
 
@@ -163,14 +167,17 @@ Virtual class creation password
  !mailurl $wims_site_manager webmaster\
 user registration failure
 . Thanks!
+</p>
  !exit
 !endif
 
 !if duplicate=$error
  You have tried to recreate an existing class. Perhaps because you clicked
  on the button `reload'? In any case, your class $classname is already
- there, and the second tentative of creation is ignored. <p>
+ there, and the second tentative of creation is ignored.
+ <div>
  !read adm/lang/links.phtml.$modu_lang
+ </div>
  !exit
 !endif
 

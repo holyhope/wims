@@ -25,8 +25,9 @@ Création de classe virtuelle
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>Le mot de passe a été envoyé à l'adresse électronique $sendmail.</center></font>
-  <p>
+  <div class="wimscenter">
+  Le mot de passe a été envoyé à l'adresse électronique $sendmail.
+  </div>
  !endif
  !if $regpass!=$empty
   Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
@@ -36,12 +37,13 @@ Création de classe virtuelle
   La création de $cname sur ce site est protégée par un mot de
   passe. Vous devez entrer ce mot de passe avant de continuer.
  !endif
- <p>
+ 
  !form reply
   <input type="hidden" name="step" value="0"/>
   Entrez le mot de passe : <input size="16" name="regpass" type="password"/> 
   <input type="submit" name="Envoyer" value="$wims_name_send"/>
- </form> <p>
+ </form>
+ <div>
  Remarque. Le mot de passe nécessaire à la création de classes virtuelles peut être obtenu auprès du
  !mailurl $wims_site_manager gestionnaire\
 Mot de passe pour la création de classes virtuelles
@@ -65,6 +67,7 @@ Mot de passe pour la création de classes virtuelles
  !else
   !reset sendmail
  !endif
+ </div>
  !set restart=no
  !exit
 !endif
@@ -76,20 +79,21 @@ Mot de passe pour la création de classes virtuelles
   La création de classes virtuelles sur ce site est protégée par un système
   d'authentification. Veuillez vous identifier.
  !endif
- <p>
+ 
  !form reply
-  <p><table border="0" cellspacing="5">
+  <table border="0" cellspacing="5">
   <tr><td align="right">
   Entrez le nom de votre compte :</td><td><input size="20" name="regid"/></td>
   </tr><tr><td align="right">
   Et le mot de passe :</td><td><input size="16" name="regpass" type="password"/>
   <input type="submit" value="$wims_name_tosave"/></td>
   </tr></table>
- </form> <p>
+ </form><p>
  Remarque. Veuillez écrire au
  !mailurl $wims_site_manager gestionnaire\
 Mot de passe pour la création de classes virtuelles
  de ce site si vous voulez un compte de création de classes virtuelles.
+</p>
  !set restart=no
  !exit
 !endif
@@ -148,6 +152,7 @@ Mot de passe pour la création de classes virtuelles
  <p>
 La création de classe ne peut réussir que si vous
  soumettez VOTRE VRAIE adresse électronique.
+ </p>
  !exit
 !endif
 
@@ -173,8 +178,9 @@ La création de classe ne peut réussir que si vous
 
 !if bad_code=$error
  Vous n'avez pas entré le bon code pour la classe. L'adresse électronique
- que avez fournie est-elle correcte&nbsp;?<p>
- Nous avons enregistré cet echec.
+ que vous avez fournie est-elle correcte&nbsp;?<p>
+ Nous avons enregistré cet échec.
+ </p>
  !exit
 !endif
 
@@ -186,6 +192,7 @@ La création de classe ne peut réussir que si vous
  !mailurl $wims_site_manager gestionnaire de ce site\
 user registration failure
 . Merci!
+</p>
  !exit
 !endif
 
@@ -193,8 +200,10 @@ user registration failure
  Vous avez tenté de recréer une classe déjà créée. Peut-être
  avez-vous cliqué sur le bouton <tt>actualiser</tt>&nbsp;? En tout cas, votre classe
  $classname est déjà en place et la deuxième tentative de création
- est ignorée. <p>
+ est ignorée. 
+ <div>
  !read adm/lang/links.phtml.$modu_lang
+ </div>
  !exit
 !endif
 
