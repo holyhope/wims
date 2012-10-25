@@ -162,7 +162,7 @@ extra=$empty
 		tc_tmp=1
 		tmp=!append item $A to $tmp
 	    !else
-		extra=!append line <strike>&nbsp;&nbsp;<font color="red"><b>$A</b></font>&nbsp;&nbsp;</strike> <br /> to $extra
+		extra=!append line <strike>&nbsp;&nbsp;<span style="color:red"><b>$A</b></span>&nbsp;&nbsp;</strike> <br /> to $extra
 	    !endif
 	!next a
 	!if $tc_tmp=0
@@ -295,9 +295,9 @@ score=0
 					score=$[$score+0.1]
 				        #je antwoord &times; -1 was wel goed geweest...
 					!if $range != 0
-					    rem2=<font color=red>&minus;1 &times; ( $A +/- $range )</font> &asymp; <font color=green>$G</font>
+					    rem2=<span style="color:red">&minus;1 &times; ( $A +/- $range )</span> &asymp; <span style="color:green">$G</span>
 					!else
-					    rem2=<font color=red>&minus;1 &times; $A</font> = <font color=green>$G</font>					
+					    rem2=<span style="color:red">&minus;1 &times; $A</span> = <span style="color:green>$G</span>
 					!endif
 					k=red
 				        found=1
@@ -314,7 +314,7 @@ score=0
 					!if $found=0
 					    !if $[1/($A)]=$G
 						score=$[$score+0.1]
-						rem2=<font color=red>1 / $A</font> = <font color=green>$G</font> :(
+						rem2=<span color=red>1 / $A</span> = <span color=green>$G</span> :(
 						#de reciproce van je antwoord was wel goed geweest...
 						found=1
 					    !endif
@@ -353,7 +353,7 @@ score=0
 					    !if $[1/($A)]=$G
 						found=1
 						score=$[$score+$P8]
-						rem2=<font color=green> 1/</font><font color=red>$A</font> = <font color=green>$G</font> :(
+						rem2=<span style="color:green"> 1/</span><span style="color:red">$A</span> = <span style="color:green">$G</span> :(
 						#de reciproce van je antwoord was wel goed geweest...
 					    !endif
 					!endif
@@ -368,9 +368,9 @@ score=0
 			!endif
 			!if $found=1
 			    !if $rnd>0 or $range!=0
-		    		show_reply=!append line <font color="$k"><b>$org &asymp; $A</b></font><em><br />$rem2</em><br /> to $show_reply
+		    		show_reply=!append line <span style="color:$k"><b>$org &asymp; $A</b></span><em><br />$rem2</em><br /> to $show_reply
 			    !else
-		    		show_reply=!append line <font color="$k"><b>$org</b></font><em><br />$rem2</em><br /> to $show_reply
+		    		show_reply=!append line <span style="color:$k"><b>$org</b></span><em><br />$rem2</em><br /> to $show_reply
 			    !endif
 			    rem2=$empty
 			!endif
@@ -378,9 +378,9 @@ score=0
 		!next g
 		!if $found=0
 		    !if $rnd>0 or $range!=0
-			show_reply=!append line <font color="red"><b>$org &asymp; $A</b></font> to $show_reply    
+			show_reply=!append line <span style="color:red"><b>$org &asymp; $A</b></span> to $show_reply
 		    !else
-			show_reply=!append line <font color="red"><b>$org</b></font> to $show_reply
+			show_reply=!append line <span style="color:red"><b>$org</b></span> to $show_reply
 		    !endif
 		    rem2=$empty
 		!endif

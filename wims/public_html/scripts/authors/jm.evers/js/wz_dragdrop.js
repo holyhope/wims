@@ -93,8 +93,7 @@ function WZDD()
 		document.documentElement
 		: (document.body || null);
 	this.op = !!(window.opera && document.getElementById);
-	if(this.op) document.onmousedown = new Function('e',
-		'if(((e = e || window.event).target || e.srcElement).tagName == "IMAGE") return false;');
+	if(this.op) document.onmousedown = new Function('e','if(((e = e || window.event).target || e.srcElement).tagName == "IMAGE") return false;');
 	this.ie = !!(this.n.indexOf("msie") >= 0 && document.all && this.db && !this.op);
 	this.iemac = !!(this.ie && this.n.indexOf("mac") >= 0);
 	this.ie4 = !!(this.ie && !document.getElementById);

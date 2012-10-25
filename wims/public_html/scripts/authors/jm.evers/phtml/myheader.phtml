@@ -2,60 +2,75 @@
     <script type="text/javascript" src="$jsdir/nocut.js"></script>
 !endif
 <script type="text/javascript">
+//<![CDATA[
+
+    var stickit=0;
     function showimage() {
-    MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "width=$XSIZE,height=$YSIZE,left=0,top=0");
-     MijnVenster1.focus();
+	MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "width=$XSIZE,height=$YSIZE,left=0,top=0");
+        MijnVenster1.focus();
     }
+    function showScribble(){
+	if(stickit == 0){
+	    stickit=1;
+	    document.getElementById('stickit_area').style.display = "block";
+	}
+	else
+	{
+    	    stickit=0;
+            document.getElementById('stickit_area').style.display = "none";
+        }
+    }
+//]]>
 </script>
 !if $time=1
-    <script type="text/javascript">var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();</script>
+    <script type="text/javascript">
+    //<![CDATA[
+	var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
+    //]]>
+    </script>
 !endif		
 !set wims_texsize=$mytexsize
 
 !if $debug=1
     !if $wims_exec_error != $empty
 	<p align="center">
-	    <font color="$fontcolor3">$wims_exec_error</font>
+	    <span style="color:$fontcolor3">$wims_exec_error</span>
 	</p>
     !endif
 !endif
-<table summary="" width="100%">
+<table summary="" width="100%" >
     <tr>
     <td valign="top" align="left">
 	!if $exotitle != $empty
-	    <small>
-		<em>
-		    $exotitle
-		</em>
-	    </small>
+		<strong>$exotitle</strong>
 	    <br/>
 	!endif
 	!if $roundingtext!=$empty
-	    <small>
-		<font color="red">
+		<span style="font-size:10px;color:red">
 		    $roundingtext
-		</font>
-	    </small>
+		</span>
 	    <br/>
 	!endif
-	    <small>
-		<font color="red">
-		    $no_back_button
-		</font>
-	    </small>
+	    <span style="font-size:10px;color:red">
+		$no_back_button
+	    </span>
 	!if exam notin $session
 	    <br/>
-	    <small>
 		$helptext
-	    </small>
 		!href target=wims_mhelp module=$module&+session=$session&+cmd=help
-		&nbsp;&nbsp;&nbsp;&nbsp;<small><em>$wims_name_help popup</em></small>
+		<span style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;$wims_name_help popup</span>
 	    <br/>
 	!endif
+    </td>
+    <td>
+	<div id="alarmtext" style="opacity:0.6;z-index:100;display:none;background-color:orange;border:4px solid red;width:300px"></div>
     </td>
     <td valign="top" align="right">
 	<table summary="">
 	    <tr>
+	    <td valign="top" align="right">
+		<textarea id="stickit_area" cols="20" style="display:none;background-color:yellow;font-size:16px;border:2px solid red;width:220px;height:60px;"></textarea>
+	    </td>
 	!if $viewlogo=1
 	    <td valign="top" align="right">
 		<div>
@@ -84,8 +99,8 @@
 	!endif
 	!if $scribbling=1
 	    <td valign="top" align="right">
-		<a onclick="window.open('$htmldir/scribbling.html','scribbling','width=320,height=260,left=0,top=0,status=no,menubar=no,resizable=yes,toolbar=no')">
-		    <img src="$gifdir/pencil.png" width="50" height="70" alt="scriblingpad" />
+		<a onclick="javascrip:showScribble();" onmouseover="return escape('Post-It Memo')" >
+		    <img src="$gifdir/pencil.png" width="50" height="70" alt="scribling" />
 		</a>
 	    </td>
 	!endif
@@ -96,7 +111,7 @@
 		    <th>
 	    		<script type="text/javascript">
 			    function ReadCalculator(){
-				var calc=document.getElementById("calculator").ReadApplet();
+				var calc=document.getElementById("javacalculator").ReadApplet();
 			        var t=confirm("$send \n"+calc);
 				if(t==true){
 				    total=encodeURIComponent(calc);
@@ -106,7 +121,10 @@
 				}
 			    }
 			</script>
-			<object id="calculator" codebase="$appletdir" archive="Rekenmachien.jar" code="Rekenmachien.class" width="100" height="50">
+			<object id="javacalculator" width="100" height="50" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
+			    <param name="java_codebase" value="$appletdir" />
+			    <param name="java_archive" value="Rekenmachien.jar" />
+			    <param name="java_code" value="Rekenmachien.class" />
 			    <param name="fontsize1" value="10">
 			    <param name="fontsize2" value="10">
 			    <param name="fontsize2" value="14">
@@ -120,7 +138,7 @@
 		    </th>
 		    </tr><tr>
 		    <th>
-			<input style="font-size:6pt;background-color:orange" type="button" onclick="javascript:ReadCalculator();" value="$send" />
+			<input style="font-size:8px;background-color:orange" type="button" onclick="javascript:ReadCalculator();" value="$send" />
 		    </th>
 		    <tr>
 		</table>
@@ -171,36 +189,27 @@
     </td>
     </tr>
 </table>
-<p align ="center">
+<p style="text-align:center">
     !if $goback=1
-	<font color="$fontcolor3">
+	<span class="schaersvoorde_alarm">
 	    $errortext &nbsp;
-	</font>
+	</span>
     !else
 	!if $goodbadsign>0
-	    <small>
+	    <span class="schaersvoorde_alarm">
 		$(remark$[$n-1]) &nbsp;
-	    </small>
+	    </span>
 	!endif
     !endif
     !if $try = $maxtry
-	<center>
-	    <hr />
-		<font color="$fontcolor3">
-		    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
-		    $alarm
-		</font>
-	    <hr />
-	</center>
+	!set alarm=!record 52 of $remarkdir/commonremarks.$taal
+	<div style="color:black;background-color:orange;border:2px solid red;width:400px">
+	    $alarm
+	</div>
     !endif
 </p>
-<center>
-    <div id="alarmtext" style="opacity:0.6;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red;width:300px"></div>
-</center>
-<p align="left">
+<p style="text-align:left">
 !if $total_exos>1
-    <small>
-	$questionnumber <b>$n</b>)
-    </small>
+    $questionnumber $n)
 !endif
 </p>

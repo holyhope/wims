@@ -40,8 +40,8 @@
 
 <!-- 
 <p><center>
-<font face="arial, helvetica" size="-2">Free JavaScripts provided<br>
-by <a href="http://javascriptsource.com">The JavaScript Source</a></font>
+<span face="arial, helvetica" size="-2">Free JavaScripts provided<br>
+by <a href="http://javascriptsource.com">The JavaScript Source</a></span>
 </center><p> 
 -->
 

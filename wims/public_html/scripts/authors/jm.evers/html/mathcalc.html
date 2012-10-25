@@ -1,5 +1,18 @@
-<!--
-    This calculator makes use of "MathParser" written by: Carlos R. L. Rodrigues 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xml:lang="nl" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="keywords" content="Javascript wims calculator" />
+<meta name="description" content="Javascript wims calculator" />
+<title>WIMS Javascript Calculator</title>
+</head>
+<body>
+<script type="text/javascript">
+
+/*    This calculator makes use of "MathParser" written by: Carlos R. L. Rodrigues 
     http://jsfromhell.com/classes/math-parser [rev. #2]
     
     The website for very! unreadable javascript...
@@ -14,19 +27,9 @@
     19/12/2009  In case of "forgotten matching parenthesis" adding a ')' e.g.  sin(90 -> sin(90) = 1
     
     J.M. Evers
--->
+*/
+//<![CDATA[
 
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <meta name="keywords" content="Javascript wims calculator">
-    <meta name="description" content="Javascript wims calculator">
-     <title>WIMS Javascript Calculator</title>
-  </head>
-<body>
-<script type="text/javascript">
     var MarthParser;
     var radians=0;
     var Rconst=eval((Math.PI)/180);
@@ -160,10 +163,10 @@
 	while(e.indexOf("e")!=-1){e=e.replace(/e/g,"*10^");}
 	return o.eval(e);
     }
-    
-    
+//]]>
 </script>
 <script type="text/javascript">
+//<![CDATA[
     var memory="";
     function rawmath(i){
 	i=i.toLowerCase();i=i.replace(/\ /g,"");i=i.replace(/\*\*/g,"^");
@@ -258,111 +261,110 @@
 	    document.Calc.Input.value=result;
 	}catch(e){alert("MATH ERROR\n"+e);}
     }
+//]]>
 </script>
 <form name="Calc" action="">
-<table summary="" border=1 bgcolor="black">
+<table summary="" border="1" bgcolor="black">
     <tr>
-    <td>
-	<center>
-	    <input type="text"   name="Input" size="12" style="font-size:22px;background-color:lightgreen">
-	</center>
+    <td nowrap="nowrap" align="center">
+	<input type="text" name="Input" size="12" style="font-size:22px;background-color:lightgreen" />
     </td>
     </tr>
     <tr>
-    <td width="100%" nowrap>
-	<center>
-	    <input id="radian_switch" style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px"  type="button" name="deg;" value="deg" onclick="javascript:set_radians();">
-	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_in" id="mem_in"  value="M in" onclick="javascript:memory_in()">
-	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_out"   value="Mout" onclick="javascript:memory_out()">
-	    <input style="background-color:red;font-weight:normal;color:black;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="exit"   value="Exit" onclick="javascript:window.close()">
-	</center>
+    <td width="100%" nowrap="nowrap" align="center">
+	    <input id="radian_switch" style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px"  type="button" name="deg;" value="deg" onclick="javascript:set_radians();" />
+	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_in" id="mem_in"  value="M in" onclick="javascript:memory_in()" />
+	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_out"   value="Mout" onclick="javascript:memory_out()" />
+	    <input style="background-color:red;font-weight:normal;color:black;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="exit"   value="Exit" onclick="javascript:window.close()" />
     </td>
     </tr>
     <tr>
-    <td>
+    <td nowrap="nowrap">
 	<table summary="">
 	    <tr>
 	    <th>
 		<table summary="">
 		    <tr>
-		    <td bgcolor="black">
+		    <td bgcolor="black" nowrap="nowrap">
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="one"   value="1" onclick="Calc.Input.value += '1'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="two"   value="2" onclick="Calc.Input.value += '2'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="three" value="3" onclick="Calc.Input.value += '3'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="four"  value="4" onclick="Calc.Input.value += '4'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="five"  value="5" onclick="Calc.Input.value += '5'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="six"   value="6" onclick="Calc.Input.value += '6'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="seven" value="7" onclick="Calc.Input.value += '7'" />
 		        <input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="eight" value="8" onclick="Calc.Input.value += '8'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="nine"  value="9" onclick="Calc.Input.value += '9'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="zero"  value="0" onclick="Calc.Input.value += '0'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px"  type="button" name="pi"  value="&pi;" 	onclick="Calc.Input.value += '\u03c0'" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px"  type="button" name="e"  value="e" 	onclick="Calc.Input.value += '\u212e'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="left"   value="(" onclick="Calc.Input.value += '('" />
 			<input style="background-color:white;font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="punt"  value="." onclick="Calc.Input.value += '.'" />
 			<input style="font-weight:normal;text-align:center;font-size:17px;width:30px;height:30px" type="button" name="right"   value=")" onclick="Calc.Input.value += ')'" />
 		    </td>
 		    </tr><tr>
-		    <td style="heigh:30px">
-			<hr>
+		    <td style="height:30px" nowrap="nowrap">
+			<hr />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:lightgreen;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px" type="button" name="DoIt"  value="=" onclick="javascript:rekenuit();" />
 			<input style="background-color:orange;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px" type="button" name="clear" value="C" onclick="Calc.Input.value = ''" />
 		    </td>
+		    </tr>
 		</table>
     	    </th>
 	    <th>
 		<table summary="">
 		    <tr>
-		    <td bgcolor="black">
+		    <td bgcolor="black" nowrap="nowrap">
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px" type="button" name="plus"  value="+" 	onclick="Calc.Input.value += '+'" />
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="minus" value="&minus;" onclick="Calc.Input.value += '-'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="times" value="x" onclick="Calc.Input.value += '*'" />
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="div"   value="&frasl;" onclick="Calc.Input.value += '/'" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="pwr"  value="^" 	onclick="Calc.Input.value += '^'" />
 			<input style="background-color:#ccffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="sqrt"  value="&#8730;" 	onclick="Calc.Input.value += 'sqrt('" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="log"  value="log" 	onclick="Calc.Input.value += 'log('" />
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="ln"  value="ln" 	onclick="Calc.Input.value += 'ln('" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="sin"  value="sin" 	onclick="Calc.Input.value += 'sin('" />
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="asin"  value="asin" 	onclick="Calc.Input.value += 'asin('" />
 		    </td>
 		    </tr><tr>
-		    <td>		    
+		    <td nowrap="nowrap">
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="cos"  value="cos" 	onclick="Calc.Input.value += 'cos('" />
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="acos"  value="acos" onclick="Calc.Input.value += 'acos('" />
 		    </td>
 		    </tr><tr>
-		    <td>
+		    <td nowrap="nowrap">
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="tan"  value="tan" 	onclick="Calc.Input.value += 'tan('" />
 			<input style="background-color:#afffff;font-style:italic;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="atan"  value="atan" 	onclick="Calc.Input.value += 'atan('" />
-		    </tr><tr>
-<!--		    <td>
+		    </td>
+		    </tr>
+<!--		    <td nowrap="nowrap">
 			<input style="background-color:#adffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="^3"  value="x&sup3" 	onclick="Calc.Input.value += '^3'" />
 			<input style="background-color:#adffff;font-weight:normal;text-align:center;font-size:17px;width:45px;height:30px"  type="button" name="^2"  value="x&sup2;" 	onclick="Calc.Input.value += '^2'" />	
 		    </td>

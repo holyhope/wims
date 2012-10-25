@@ -146,7 +146,7 @@ score=0
     !endif
     
     !if ? isin $org
-	yourreply=!append line $li<font color=red>$dontknow</font>$end_li to $yourreply
+	yourreply=!append line $li<span style="color:red">$dontknow</span>$end_li to $yourreply
     !else	
 	!if $unit=1
 	    ans=!words2items $ans
@@ -360,7 +360,7 @@ score=0
 		    !if $a!=$g
 			notation_err=0
 		        score1=$[0.99*$score1]
-			rem8=!append line $ <br /><font color=red>$($digit_remarks[$di]) : $a</font> (<font color=green>$g</font>) $ to $rem8
+			rem8=!append line $ <br /><span style="color:red">$($digit_remarks[$di]) : $a</span> (<span style="color:green">$g</span>) $ to $rem8
 		    !endif
 		!next di
 	    !else
@@ -369,7 +369,7 @@ score=0
 		!if $notation_err=0
 		    !if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
 			score1=$[0.99*$score1]
-			rem8=<br /><font color=red>$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</font> &ne; $(dtot_g[3]) + $(dtot_g[4])   
+			rem8=<br /><span style="color:red">$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</span> &ne; $(dtot_g[3]) + $(dtot_g[4])   
 		    !else
 			notation_err=1
 		    !endif
@@ -461,7 +461,7 @@ score=0
 		    k=orange
 		!else
 		    !if $r3=1
-			score1=$[$score1*$P9]		    
+			score1=$[$score1*$P9]
 		        rem1=!record 30 of $remarkdir/commonremarks.$taal
 			#@je hebt een grote afrondingsfout gemaakt !
 		        k=orange
@@ -484,15 +484,15 @@ score=0
 	    !next ui
 	    !if $correct_unit=0
 		rem2=!record 92 of $remarkdir/commonremarks.$taal
-		#@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+		#@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <span style="color:green"><em>$unit_a</em></span>
 		# geen punten
 		score1=0
 		k=red
 	    !else
 		!if $unit_r != $unit_a
 		    k=green
-		    rem5=<br />Ik heb <tt>$unit_a</tt> gebruikt...maar <tt>$unit_r</tt> is ook een geldige SI eenheid :)
-		    #@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+		    rem5=<br /> <tt>$unit_a</tt> == <tt>$unit_r</tt> :)
+		    #@<br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <span style="color:green"><em>$unit_a</em></span>
 		!endif
 	    !endif
 	!endif
@@ -517,7 +517,7 @@ score=0
 	    !endif
 	!endif
 	#rep=!htmlmath $number_r $unit_r
-	yourreply=!append line $li <tt><font color=$k>$org</tt></font><em>$rem1 $rem2 $rem3 $rem4 $rem6 $rem5 $rem7 $rem8</em> $end_li to $yourreply    
+	yourreply=!append line $li <tt><span style="color:$k">$org</tt></span><em>$rem1 $rem2 $rem3 $rem4 $rem6 $rem5 $rem7 $rem8</em> $end_li to $yourreply
     !endif
     score=$[$score+$score1]
 !next p

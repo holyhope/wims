@@ -5,7 +5,7 @@
 : <small>Help</a> pagina </small>
 : Opgave $counter :
 : Je hebt geen JAVA ondersteuning
-: Je cijfer voor deze oefening is <font color=$resultcolor>$module_score</font>
+: Je cijfer voor deze oefening is <span style="color:$resultcolor">$module_score</span>
 : Ik heb geen idee
 : Opgave
 : Je kunt co&ouml;rdinaten beter met een : of ; schrijven. Dus bijvoorbeeld (x:y)
@@ -23,7 +23,7 @@
 : Je antwoord moet een ongelijkheid zijn zoals<br /> $testvar&gt;123<br />1&lt;$testvar&lt;123<br />$testvar&lt;1 en $testvar&gt;123
 : Jouw "decimale komma" is vervangen door een decimale punt.
 : Je moet de berekeningen zelf uitvoeren.<br />er staat een overbodige "*" operator in het antwoord.
-: Je antwoord is niet na te kijken<br />en veroorzaakt een foutmelding van het algebrasysteem.<br />Voer je antwoord iets wiskundiger in.
+: Je antwoord is niet na te kijken<br />en veroorzaakt een foutmelding van het algebra systeem.<br />Voer je antwoord iets wiskundiger in.
 : Je hebt wat "plussen en minnen" verwisseld.
 : Je hebt een "decimale komma gebruikt"<br />Graag vervangen door een normale "decimale punt".
 : je hebt een afrondingsfoutje gemaakt...
@@ -60,12 +60,12 @@
 :eerste,tweede,derde,vierde,vijfde,zesde,zevende,achtste,negende,tiende,elfde,twaalfde,dertiende,veertiende,vijftiende,zestiende,zeventiende,achttiende,negentiende,twintigste, &eacute;&eacute;nentwintigste, twee&euml;ntwintigste, drie&euml;ntwintigste, vierentwintigste, vijfentwintigste, zesentwintigste, zevenentwintigste, achtentwintigste, negenentwintigste, dertigste, &eacute;&eacute;nendertigste, tweeendertigste,drieendertigste,vierendertigste,vijfendertigste,zesendertigste,zevenendertigste,achtendertigste,negenendertigste,veertigste,&eacute;&eacute;nenveertigste,tweeenveertigste,drieenveertigste,vierenveertigste,vijfenveertigste,zesenveertigste,zevenenveertigste,achtenveertigste,negenenveertigste,vijftigste
 : Bij meerdere oplossingen kun beter je noteren:<br />$testvar
 : Je hebt geen antwoord ingevuld.<br />Als je geen antwoord weet, kun je een ? invullen
-: <small><font color=blue>Klik hier</font> voor een illustratie.</small></a>
+: <small><span style="color:blue">Klik hier</span> voor een illustratie.</small></a>
 : Je kunt beter geen komma's gebruiken.<br /><small>(Dat geeft soms problemen bij het nakijken.)</small>
 : Het aantal wortels is: $testvar1<br /> en niet zoals in jouw antwoord: $testvar2<br />
 : Het antwoord moest exact zijn.
 : Wissen
-: Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br />Geef bijvoorkeur 5*10^5
+: Je kunt beter geen 5<span style="color:red"><b>x</b></span>10^12 schrijven.<br />Geef bijvoorkeur 5*10^5
 : Deze pagina maakt gebruik van "verschuifbare" elementen.<br />Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br />De layout is dus "geheel" vrij.<br />Verder kunnen (met een klein beetje geduld, d'r zit nogal wat rekenwerk voor je browser aanvast)<br /> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br />Zie je <em>geen</em> plaatjes of wiskundige formules<br />geef dan een browser <b>RELOAD</b> op deze pagina 
 : Terug
 :nul,nil,zero,zip,nop,niks,niet,nada,geen,niente
@@ -83,13 +83,13 @@
 : Er zijn wel degelijk oplossingen...
 : Helaas kan ik niet met elke schrijfwijze overweg...<br />Schrijf sin(x)^2 in plaats van sin^2(x)<br />Schrijf cos(x)^2 in plaats van cos^2(x)<br />
 : wit,zwart,rood,blauw,geel,groen,oranje,bruin,paars,turquoise,roze,lila,lichtgroen,ivoorkleurig,grijs,zalmkleurig,maisgeel,olijfgroen
-: Gebruik <font color=red>nooit</font> de back-knop van je browser ! 
+: Gebruik <span style="color:red">nooit</span> de back-knop van je browser ! 
 : Je hebt de som $try keer terug gekregen ter verbetering.<br />Daar worden -normaal gesproken- strafpunten voor gegeven...
 : Een wortel (of logaritme) uit een negatief getal??
 : Ik kan je antwoord <b>$rep</b> niet kontroleren<br />Geef je antwoord in een geldige <b>SI</b> eenheid...<br /> Je "eenheid" <b>$unit_r ...</b> geeft natuurlijk problemen met nakijken.
 : <br />Je zit er een factor $f naast !!
 : Ik verwacht hier eigenlijk een antwoord met een bijpassende [S.I.] eenheid !<br />iets als 1.234 $unit_a ?
-: <br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+: <br />je hebt een verkeerde eenheid gebruikt !<br /><em>$unit_r</em> ipv <span style="color:green"><em>$unit_a</em></span>
 : <br />Je hebt geen eenheid vermeld.<br />Ik neem dus maar aan $unit_a !
 : <br />Je hebt je antwoord in $dec decimalen opgegeven...<br />dat is een te hoge precisie ... $decimals decimalen was gevraagd
 : <br />Ik gebruik alleen het laatste gedeelte van je antwoord...

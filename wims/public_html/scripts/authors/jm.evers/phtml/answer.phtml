@@ -4,19 +4,16 @@
     $finalresult
     !! to ensure playback of the exam is possible
     !if $wims_user=supervisor
-	<div align="center">
-	    <font color="red">Alert: these results are only visible for the <em>supervisor</em></font>
+	    <span class="schaersvoorde_alarm">Alert: these results are only visible for the supervisor</span>
 	    <table summary="" bgcolor="$bgcolor2" cellpadding="10" cellspacing="$cellspacing" border="1">
 		!for n=1 to $total_exos
 		    <tr>
-		    <td valign="top" nowrap>
-			<small>
+		    <td valign="top" nowrap="nowrap">
 			    !if $total_exos >1
 				$questionnumber <b>$n</b>)
 			        <br />
 			    !endif
 			    $(question$n)
-			</small>
 			    !if $(formula$n) !=$empty
 				<br />
 				!insmath $(formula$n) 
@@ -28,16 +25,18 @@
 			    !if $(textanswer$n) != $empty
 				<br />
 				<hr />
-			        <font color="green"><small>$(textanswer$n)</small></font>
+			        <span style="color:green">$(textanswer$n)</span>
         		    !endif
 			</small>
 		    </td>
-		    <td  valign="top" nowrap>
-			<small>
-			    $youranswer
-			    !if $(reply$n) != $empty
-				<br />
-			        !if $multiimage=1
+		    <td  valign="top" nowrap="nowrap">
+		    <strong>$youranswer</strong>
+			!if $(reply$n) != $empty
+			    <br />
+			    !if $multiimage=1
+			    	!if $(reply$n) = ?
+			    	    $dontknow
+			    	!else
 				    !if $plot=1
 					!insplot $(reply$n)
 				    !else
@@ -45,107 +44,113 @@
 					    !insdraw $(reply$n)
 					!endif
 				    !endif
-				!else	
-				    !if $math=1
-					!insmath $(reply$n)
-				    !else
-					$(reply$n)
-				    !endif
+				!endif
+			    !else	
+				!if $math=1
+				    !insmath $(reply$n)
+				!else
+				    <kbd>$(reply$n)</kbd>
 				!endif
 			    !endif
-			</small>
+			!else
+			    <strong>$dontknow</strong>
+			!endif
 		    </td>
 		    </tr>
 		!next n
 	    </table>
-	</div>
     !endif
 !else
-    <div align="center">
-        <table summary="" bgcolor="$bgcolor2" cellpadding="10" cellspacing="$cellspacing" border="1">
-	    !for n=1 to $total_exos
-		<tr>
-		<td valign="top" nowrap>
-		    <small>
-			!if $total_exos >1
-			    $questionnumber <b>$n</b>)<br />
-			!endif
-			$(question$n)
-		    </small>
-			!if $(formula$n) !=$empty
-			    <br />
-			    !insmath $(formula$n) 
-			!endif
-		        !if $(texanswer$n) != $empty
-			    <hr />
-			    !insmath $(texanswer$n)
-			!endif
-			!if $(textanswer$n) != $empty
-			    <br />
-			    <hr width="50%">
-			    <font color="green"><small>$(textanswer$n)</small></font>   
-        		!endif
-		</td>
-		<td  valign="top" nowrap>
-		    <p align="center">
-			!if $(image$n) != $empty
-			    !if $plot=1
-				!set insplot_set=$(image_settings$n) ; size 0.5,0.5;
-				!insplot $(image$n)
-			    !else
-				!if $draw=1
-				    !set insdraw_size=$(image_settings$n)
-			    	    !insdraw $(image$n)
-				!endif
-			    !endif
-			!else
-			    !if $(object$n)!= $empty
-				$(object$n)
-			    !endif
-			!endif
-		    </p>
-		</td>
-		<td  valign="top" nowrap>
-		    <small>
-			$youranswer
-		    </small>
-		    !if $(reply$n) != $empty
-			<br />
-			!if $multiimage=1
-			    !if $plot=1
-				!insplot $(reply$n)
-			    !else
-				!if $draw=1
-				    !insdraw $(reply$n)
-				!endif
-			    !endif
-			!else	
-			    !if $math=1
-				!insmath $(reply$n)
-			    !else
-				$(reply$n)
-			    !endif
-			!endif
-			<hr />
+    <table summary="" bgcolor="$bgcolor2" cellpadding="10" cellspacing="$cellspacing" border="1">
+    !for n=1 to $total_exos
+	<tr>
+	<td valign="top" nowrap="nowrap">
+	!if $total_exos >1
+	    $questionnumber <b>$n</b>)<br />
+	!endif
+	$(question$n)
+	!if $(formula$n) !=$empty
+	    <br />
+	    !insmath $(formula$n) 
+	!endif
+	!if $(texanswer$n) != $empty
+	    <hr />
+	    !insmath $(texanswer$n)
+	!endif
+	!if $(textanswer$n) != $empty
+	    <br />
+	    <hr width="50%">
+	    <span style="color:green">$(textanswer$n)</span>
+    	!endif
+	</td>
+	!if $(image$n) != $empty
+	    <td valign="top" nowrap="nowrap">
+		!if $plot=1
+		    !set insplot_set=$(image_settings$n) ; size 0.5,0.5;
+		    !insplot $(image$n)
+		!else
+		    !if $draw=1
+			!set insdraw_size=$(image_settings$n)
+			!insdraw $(image$n)
 		    !endif
-		    !if $goodbadsign>0	
-			<small>
-			    <em>
-				$(remark$n)
-			    </em>
-			</small>
+		!endif
+	    </td>
+	!endif
+	!if $(object$n)!= $empty
+	    <td valign="top" nowrap="nowrap">
+		$(object$n)
+	    </td>
+	!endif
+	<td valign="top" nowrap="nowrap">
+	    <strong>
+		$youranswer
+	    </strong>
+	!if $(reply$n) != $empty
+	    <br />
+	    !if $multiimage=1
+		!if $(reply$n) = ?
+		    $dontknow
+		!else
+		    !if $plot=1
+			!insplot $(reply$n)
+		    !else
+			!if $draw=1
+			    !insdraw $(reply$n)
+			!endif
 		    !endif
-		</td>
-		</tr>
-	    !next n
-	</table>
-    </div>
+		!endif
+	    !else
+		!if $math=1
+		    !insmath $(reply$n)
+		!else
+		    <kbd>
+			$(reply$n)
+		    </kbd>
+		!endif
+	    !endif
+	!else
+	    <strong>$dontknow</strong>
+	!endif
+	<hr />
+	!if $goodbadsign>0
+	    <strong>
+		$(remark$n)
+	    </strong>
+	!endif
+	</td>
+	</tr>
+    !next n
+    </table>
     $finalresult
 !endif
-!ifval $try >0 and $module_score !=0
-    <br />
+
+!ifval $try >0
+    <p align="left">
     !set s=!record 87 of $remarkdir/commonremarks.$taal
-    <font size="-1" color="red">$s</font>
+	<span class="schaersvoorde_alarm">
+	    $s
+	</span>
+    </p>
 !endif
 !exit
 

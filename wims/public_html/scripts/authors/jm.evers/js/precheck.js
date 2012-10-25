@@ -38,7 +38,7 @@ function SetTexAppSize(){
     	    try{
     		xsize = document.getElementById('TexApp'+p).getPrefferedWidth();
     		ysize = document.getElementById('TexApp'+p).getPrefferedHeight();
-		document.getElementById('TexApp'+p).width = xsize;                                                                             
+		document.getElementById('TexApp'+p).width = xsize;
     		document.getElementById('TexApp'+p).height = ysize;
 		p++;
 	    }catch(e){setAlarm("Your browser does not support resizing of the applet.<br>Opera is known to have some trouble with this.<br>Firefox,Internet Explorer,Google-chrome<br>or even Safari may be a good choice.");return;}// problems on opera (bug)
@@ -56,6 +56,7 @@ function setAlarm(txt){
     document.getElementById('alarmtext').style.top = h/3.5;
     document.getElementById('alarmtext').style.left =w/4;
     document.getElementById('alarmtext').innerHTML='<table cellpadding=\"10\" summary=\"warning\"><tr><th>'+txt+'</th></tr></table>';
+    window.scrollTo(0,0);
     setTimeout('resetAlarm()',4000);
 }
 	
