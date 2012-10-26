@@ -3,13 +3,15 @@ $cdt_title\
 $wims_name_binfile
 
 !if $error!=$empty
+<div class="wimsmsg">
  !read lang/msg.phtml.$moduclass_lang
- <p><hr/></p>
+ </div>
 !endif
 
 !if $erase!=$empty
+<p>
 $name_erasedfile
- <p>
+ </p>
 !endif
 
 !if $quota_free<1
@@ -30,7 +32,7 @@ $name_erasedfile
   !getfile cdt/$wims_class/$f $f
   &nbsp;
  !next f
- <p>
+ </p>
  !form reply
  <input type="hidden" name="job2" value="erase"/>
  $name_erase:
@@ -39,16 +41,17 @@ $name_erasedfile
  </form>
  <p>
 $name_explanation1
-<p><center>
+</p><p class="wimscenter">
  <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</center> <p>
+</p><p>
 $name_explanation2
+</p>
 !endif
 
 <p>
 $(name_availablespace[1]): $quota_total Meg.
 $(name_availablespace[2]): $quota_free Meg.
-
+</p>
 !set wims_menu_items=!append line back2,1,cmd=new&job=home\
 to $wims_menu_items
 

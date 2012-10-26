@@ -35,16 +35,16 @@
   !set name_explanation1=!nosubst Deze bestanden kunnen worden ingebonden door de variabele\
   <tt class="wims_code_variable">\filedir</tt>. \
   Bijvoorbeeld:\
-  <p><center>\
+  <p class="wimscenter">\
   <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
-  </center> <p>\
+  </p>\
   geeft een link naar het bestand \
   <a href="$m_filedir/$f1">$f1</a>.\
   En mag ook gedefinieerd worden als
  
  !set name_explanation2=!nosubst om een plaatje  
  <tt>myfile.jpg</tt> \
- toe te voegen. <p>De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
+ toe te voegen. <br/>De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
  
  !set name_availablespace=Totaal beschikbare hardeschijfruimte,Onbenutte hardeschijfruimte
  

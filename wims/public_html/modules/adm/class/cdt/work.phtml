@@ -5,20 +5,19 @@ $wims_institutionname
 $classname\
 $cdt_title
 
-<center> <b><font size="+1">
+<div class="wimscenter" style="font-weight:bold;">
  !if $jour_begin!=$empty
   $name_between <font color="green">$name_date</font>
   !if $jour_begin!=$jour_end
    $name_and <font color="green">$name_date2</font>
   !endif
  !endif
- </font></b>
-</center> 
+</div> 
 
 !if $cdt_description!=$empty
  <br/>$cdt_description
 !endif
-<p><p>
+<p></p>
 
 !if $cdt_nbdate=0
  $name_noinfo1.
@@ -34,7 +33,6 @@ $cdt_title
  !endif
 !endif
 
-<center>
  $table_header
  $table_hdtr 
   <th>$name_Day</th>
@@ -103,17 +101,18 @@ $cdt_title
  !next i
  $table_end
 !if $nbligne>0
- <p>
+ <p class="wimscenter">
 !set wims_ref_class=wims_button
  !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 $wims_name_print
+</p>
 !set wims_menu_items=!append line printable,1,module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2\
   ,0,\
 to $wims_menu_items
 !endif
- </center>
+
 
 
 :end
-<p><hr width="40%"/> <p>
+<hr style="width:40%;"/>
 !read form.phtml 
 !tail

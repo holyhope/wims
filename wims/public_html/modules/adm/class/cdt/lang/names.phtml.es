@@ -35,14 +35,14 @@
   !set name_explanation1=!nosubst Estos ficheros son accesibles con ayuda de la variable\
   <tt class="wims_code_variable">\filedir</tt>. \
   Por ejemplo,\
-  <p><center>\
+  <p class="wimscenter">\
  <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
- </center> <p>\
+ </p>\
  crea un vínculo hacia el fichero <a href="$m_filedir/$f1">$f1</a>.\
  Pueden también escribir
 
  !set name_explanation2=para incluir el fichero de imagen <tt>myfile.jpg</tt> en la página.\
- <p>Los ficheros depositados son solamente accesibles a los participantes de la clase.
+ <br/>Los ficheros depositados son solamente accesibles a los participantes de la clase.
 
 !set name_availablespace=Espacio disco disponible al principio&nbsp;,Espacio libre
   !goto common

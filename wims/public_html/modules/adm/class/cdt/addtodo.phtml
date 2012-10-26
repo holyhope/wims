@@ -7,17 +7,20 @@ $wims_institutionname
 !read adm/title.phtml 1\
 $classname\
 $cdt_title\
-$cdt_subtitle\
+$cdt_subtitle
 
 !if $error!=$empty
  <p>
- !read lang/msg.phtml.$moduclass_lang 
+ !read lang/msg.phtml.$moduclass_lang
+ </p>
 !endif
 
 !form reply
 <input type="hidden" name="job" value="addtodo"/>
 <input type="hidden" name="job2" value="save"/>
-<p>$name_session:
+<hr style="width:40%;"/>
+<p class="wimscenter"><b>$name_workdone</b></p>
+<div>$name_session:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -27,7 +30,8 @@ $cdt_subtitle\
 !let creyear=!char 1 to 4 of $class_creation
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
 !read adm/lang/datemenu.phtml.$moduclass_lang 1,jday,jmonth,jyear
-<p>
+</div>
+<div>
 $name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
 !for i=1 to $max_todo
@@ -57,15 +61,16 @@ $name_nb_date:
    <br/><textarea $(wims_id$[$i-1]) rows="6" cols="65" name="ddesc$i">
     !replace internal \( by &#92;( in $(ddesc$i)
    </textarea></td>
-  <td>
+  <td></td>
   <td>
   </td>
  </tr>
  !next i
 </table> 
-<center><hr width="30%"/>
-<p><input type="submit" value="$wims_name_tosave" $wims_on_click/>
-</center>
+<hr style="width:40%;"/>
+<p class="wimscenter">
+<input type="submit" value="$wims_name_tosave" $wims_on_click/>
+</p>
 </form>
 
 !set wims_menu_items=!append line back2,1,cmd=new&job=home\
