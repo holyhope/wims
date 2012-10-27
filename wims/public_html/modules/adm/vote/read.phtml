@@ -85,11 +85,14 @@ $table_end
   $name_thisvote_already1<p>
   !exit
  !else
-  $name_thisvote_already2<p>
+ </p>
+  $name_thisvote_already2</p>
   !goto form
  !endif
 !else
- $name_give_your_choice<p>
+<p>
+ $name_give_your_choice
+ </p>
  :form
  !if $wims_user!=supervisor
   !form reply
@@ -101,17 +104,17 @@ $table_end
 !read $votedir/$vote.def
 
 !if $m_formed=yes and $wims_user!=supervisor
- <p><center>
+ <p class="wimscenter wimsform">
  <input type="submit" value="$wims_name_tosave"/>
- </center></form>
+ </p></form>
 !endif
 
 !if $wims_user=supervisor and $vote_status=0
- <center>
    !form reply
+   <p class="wimscenter wimsform">
  !set wims_ref_class=wims_button
  !href cmd=reply&job=edit $wims_name_back2
+ </p>
  </form>
- </center>
 !endif
 
