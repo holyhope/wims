@@ -2,20 +2,20 @@
 !read adm/title.phtml 3\
 \
 $title
-<center>
+<p class="wimscenter">
 !href cmd=reply&job2=def $nei_description
  $name_of
 <em><font color="blue">$nei_institution</font></em>
 ($wims_name_nameteacher:
  <a href="mailto:$nei_email?subject=Class neighboring
 relations">$nei_supervisor</a>)
-</center>
+</p>
 <p>
 $name_class_share
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=share $wims_name_help
-
+</p>
 <ul>
 !for r in $nsharable
  <li><em>$(name_$r)</em> ($(it_$(r)cnt) $name_available).
@@ -32,7 +32,7 @@ $name_class_share
    !endif
   !else
    $name_warning1
-   <em><font color="blue">$nei_description</font></em>.
+   <span class="font-type:italic;color:blue;">$nei_description</span>.
   !endif
  !else
   !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
@@ -55,6 +55,7 @@ $name_class_share
    !endif
   !endif
  !endif
+ </li>
 !next r
 </ul>
 

@@ -17,6 +17,7 @@
  !exit
 !endif
 
+<p>
 $name_help
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -24,7 +25,7 @@ $name_help
 &nbsp;&nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neiexample $name_example
-&nbsp;<p>
+&nbsp;</p>
 
 !if $excls!=yes and ($supertype!=4 or ($supertype=4 and $ctypename iswordof course program))
 <div class="wimscenter">
@@ -47,17 +48,17 @@ $name_help
  !else
    $name_toomany2
  !endif
- <p><center>
+ <p class="wimscenter">
  <input size="20" name="keyword" value="$keyword"/>
  <input type="submit" value="$wims_name_tosave"/>
- </center></form>  <p>
+ </p></form>
 !else
  !if $kw != $empty or $classcnt1 + $classcnt2 > 20
   !form reply
   $name_research
   <input size="20" name="keyword" value="$keyword"/>
   <input type="submit" value="$wims_name_tosave"/>
-  </form> <p>
+  </form>
  !endif
 !endif
 !if $classcnt1 + $classcnt2 < 1
@@ -68,9 +69,9 @@ $name_help
 !if $toomany=yes
  !exit
 !endif
-
-$name_changeneigh
 <p>
+$name_changeneigh
+</p>
 !if $classcnt1>0
  !set clst=$clist1
  $table_header
@@ -80,7 +81,7 @@ $name_changeneigh
 !endif
 
 !if $classcnt2>0
- <p>
+
  !set clst=$clist2
  $table_header
   <caption>$name_otherlanguage</caption>

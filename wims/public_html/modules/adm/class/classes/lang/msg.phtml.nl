@@ -31,9 +31,9 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
   !href cmd=help $name_seecgu
   ]
   !let save_logincgu=$auth_user
-  <center>
+  <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_tosave"/>
-  </center>
+  </div>
  </form>
  !exit
 !endif

@@ -1,11 +1,11 @@
 !if $result=success
  !set wims_class_log=Import $import from $nei by $wims_realuser
 !endif
-
+<p>
 $name_import
 !href cmd=reply&job2=def $nei_description
- (<em><font color=blue>$nei_institution</font></em>)
-<p>
+ (<span style="font-type:italic; color:blue;">$nei_institution</span>)
+</p>
 
 !if $result=confirm
  !if dep iswordof $cfm
@@ -16,41 +16,41 @@ $name_import
   !if $itype=exam
    <span class="wims_warning">$wims_name_warning</span>! 
    !read lang/names.phtml.$moduclass_lang import3
-  !endif 
-  <p>
+  !endif
  !endif
  !if replace iswordof $cfm
-  <span class="wims_warning">$wims_name_warning</span>. 
+  <p><span class="wims_warning">$wims_name_warning</span>. 
    !read lang/names.phtml.$moduclass_lang import4
-  <p>
+  </p>
  !endif
- <p><center><font size="+1">
+<p class="wimscenter wimsform">
  !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes $wims_name_tosave
  &nbsp;
  !href cmd=reply&job2=import $wims_name_giveup
- </font></center> <p>
+ </p>
  !exit
 !endif
 
 !if $result=none
+<div>
 !read lang/names.phtml.$moduclass_lang import5
- <p>
+ </div>
  !exit
 !endif
 
-$name_transfered
+<p>$name_transfered
 !if $itype!=user
  1 $(name_$itype).
  !if $itype iswordof sheet exam
-  ($name_inactif)<p>
+  ($name_inactif)
  !endif
 !else
  $importedcnt $name_neigh_account
- <p><tt>
+ </p><p><tt>
  $imported
- </tt> <p>
+ </tt>
 !endif
-
+</p>
 !href $verif $name_verify
 .&nbsp;
 !href cmd=reply&job2=import $name_otherone

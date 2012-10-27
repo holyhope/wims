@@ -1,7 +1,7 @@
 !goto $wims_read_parm
 
 :allowtype
-<center><b>Openingstijden van een proefwerk</b></center>
+<center><b>Openingstijden van een proefwerk</p>
  U kunt openingstijden definieren voor dit proefwerk, door het toevoegen van woorden
  <tt class="wims_code_words">
 &gt;yyyymmdd.hh:mm</tt>
@@ -30,7 +30,7 @@ Deze individuele toegang kan worden geconfigureerd bij "enquete/stemming" onder 
 !endif
 
 :dependency
-<center><b>Score drempels</b></center>  
+ <p class="wimscenter" style="font-weight:bold;">Score drempels</p>  
 Score drempels dit wil zeggen dat een deelnemer/leerling een bepaalde hoeveelheid punten <br/>
 moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br/>
 We noemen dit toets-type een "drempel toets".<br/>
@@ -41,7 +41,7 @@ de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en 
 !endif
 
 :options
-<center><b>Opties.</b></center>
+ <p class="wimscenter" style="font-weight:bold;">Opties.</p>
 Er is op dit moment slechts één optie beschikbaar :
 <ul>
 <li><em>autogen</em><br/>
@@ -54,7 +54,7 @@ De gebruiker kan dit proefwerk dan raadplegen als de score registratie is afgelo
 !endif
 
 :contenu
- <center><b>Inhoud van een proefwerk</b></center>
+  <p class="wimscenter" style="font-weight:bold;">Inhoud van een proefwerk</p>
 Een oefening kan willekeurig worden genomen uit de lijst van bestaande oefeningen uit de werkbladen.<br/>
 Vink de werkbladen aan in de onderstaande lijst als kandidaten voor dit proefwerk.
 !if $wims_read_parm!=$empty

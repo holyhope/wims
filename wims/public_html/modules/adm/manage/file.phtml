@@ -2,9 +2,9 @@
 
 !if $download=yes
 $name_file ($flen $name_bytes):
- <p><center>
+ <p class="wimscenter">
  !getfile $fname $file
- <p>
+ </p>
  !goto end2
 !endif
 
@@ -12,11 +12,11 @@ $name_file ($flen $name_bytes):
 $name_erase
  <tt><font color="green">$file</font></tt>? <br/>
  <small>($flen $name_bytes, $facc, $name_last $fdat)</small>
- <p> <center> <font size="+2">
+  <p class="wimscenter" style="font-weight:bold;">³É¼ <font size="+2">
  !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
  !href cmd=reply&job=fs $wims_name_no
- </font> <p> <hr/>
+ </font> </p> <hr/>
  !goto end2
 !endif
 
@@ -24,9 +24,9 @@ $name_erase
  <tt><font color="green">$file</font></tt> $name_image. ($flen $name_bytes,
  $facc, $name_last $fdat)
  !if $pubimg!=$empty
-  <p><center>
+  <p class="wimscenter">
   <img border="2" src="$pubimg" alt="$pubimg" />
-  </center>
+  </p>
  !endif
  !goto end
 !endif
@@ -48,7 +48,7 @@ $name_erase
 !form reply
 <input type="hidden" name="job" value="file"/>
 <input type="hidden" name="job2" value="first"/>
-<center>
+<div class="wimscenter">
  $name_content <tt><font color="green">$file</font></tt> <br/>
  <small>($flen $name_bytes, $facc, $name_last $fdat)</small> <br/>
  !if $modifok!=yes
@@ -61,7 +61,7 @@ $name_erase
  <input type="submit" name="save" value="$wims_name_tosave"/>
  <input type="submit" name="abandon" value="$wims_name_giveup"/>
 !endif
-</center>
+</div>
 </form>
 
 :end

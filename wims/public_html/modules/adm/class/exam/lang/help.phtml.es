@@ -33,7 +33,7 @@ En modo selectivo, puede imponer una
 !endif
 
 :dependency
- <center><b>dependencias de puntuaciones</b></center>
+  <p class="wimscenter" style="font-weight:bold;">dependencias de puntuaciones</p>
 La expresión ``dependencias de puntuaciones''
   se refiere a que un participante debe primero lograr puntos
   en otros ejercicios de la hoja, antes de poder trabajar en este.
@@ -47,7 +47,7 @@ La expresión ``dependencias de puntuaciones''
 !endif
 
 :options
- <center><b>Options.</b></center>
+  <p class="wimscenter" style="font-weight:bold;">Options.</p>
  Una única opción está disponible por el momento
   <ul>
    <li><em>autogen</em> quiere decir que se genera el ejercicio automáticamente aunque el usuario no pulsa arriba. Para que pueda consultar el ejercicio registrado cuando se cierra la sesión.
@@ -59,7 +59,7 @@ Formalmente desaconsejado excepto para ejercicios a corrección manual.
 !endif
 
 :contenu
- <center><b>Contenu d'un exercice</b></center>
+  <p class="wimscenter" style="font-weight:bold;">Contenu d'un exercice</p>
 Este ejercicio se puede elegir (aleatoriamente) de una lista de ejercicios
 existentes en las hojas de trabajo. Por favor, marque los ejercicios de la
 hoja de trabajo de la siguiente lista, los cuales serán candidatos
