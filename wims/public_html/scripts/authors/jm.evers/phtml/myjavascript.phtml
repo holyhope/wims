@@ -5,49 +5,51 @@
 //]]>
 </script>
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
-    <table summary="">
-	<tr>
-	<td>
-	    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
-		<tr>
-		<td valign="top" align="left">
-		    !if $(question$n) != $empty
-			$(question$n)
-	    	    !endif
-		    !if $(formula$n) != $empty
-			<div align="center">
-			    <table summary="formula and textarea">
-				<tr>
-				<th>
-				    !insmath $(formula$n)
-				</th>
-			    !if $embed=1
-				<th>
-				    &nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
-				</th>
-				<th>
-				    <form name="myform1" id="myform1" action="">
-					!if $wims_user=supervisor
-					    <textarea id="myinput" style="$textareastyle" cols="$cols" rows="$rows" name="reply$n">$(answer$n)</textarea>
-					!else
-					    <textarea id="myinput" style="$textareastyle" cols="$cols" rows="$rows" name="reply$n">$(reply$n)</textarea>
-					!endif  
-				    </form>
-				</th>
-			    !endif
-				</tr>
-			    </table>
-			</div>
-		    !endif
-		    !if $exotext != $empty
-			$exotext
-		    !endif
-		</td>
+<table class="schaersvoorde_form">
+!! this table has no style "schaersvoorde_form"
+!! if needed declare my_temp_css=<style>....<//style>
+    <tr>
+    <td>
+	<table class="schaersvoorde_form">
+	    <tr>
+	    <td>
+		!if $(question$n) != $empty
+		    $(question$n)
+		    <br />
+	    	!endif
+		!if $(formula$n) != $empty
+			<table>
+			    <tr>
+			    <th>
+				!insmath $(formula$n)
+			    </th>
+			!if $embed=1
+			    <th>
+				&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
+			    </th>
+			    <th>
+				<form name="myform1" id="myform1" action="">
+				    !if $wims_user=supervisor
+					<textarea id="myinput" style="$textareastyle" cols="$cols" rows="$rows" name="reply$n">$(answer$n)</textarea>
+				    !else
+					<textarea id="myinput" style="$textareastyle" cols="$cols" rows="$rows" name="reply$n">$(reply$n)</textarea>
+				    !endif
+				</form>
+			    </th>
+			!endif
+			    </tr>
+			</table>
+		!endif
+		!if $exotext != $empty
+		    $exotext
+		    <br />
+		!endif
+	    </td>
 		!if $image=1
 		    !if $XSIZE>450
 			</tr><tr>
 		    !endif
-		    <td valign="top" align="center">
+		    <td>
 		    !if $draw=1
 			!! for fly
 			!set ins_attr=name="image$n" id="image$n"
@@ -71,7 +73,7 @@
 		    !if $XSIZE>450
 			</tr><tr>
 		    !endif
-		    <td valign="top" align="center">
+		    <td>
 			$(object$n)
 		    </td>
 		!endif
@@ -79,33 +81,34 @@
 		    !if $XSIZE>450
 			</tr><tr>
 		    !endif
-		    <td align="center">
-		    !! this file handles the input
+		    <td>
+		    !!this file handles the input
 			!read $javascript
 		    </td>
 		!endif
-		</tr>
-	    </table>
-	</td>
-	</tr>
-	!! sometimes a better place for the buttons....$javascript does not need to define them in this case.
-	!if $inputs=yes
-	    <tr>
-	    <td align="center">
-		<table summary="send and cancel buttons">
-		    <tr>
-			<th>
-			    <input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send"/>
-			</th>
-		        <th>
-			    <input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow"/>
-			</th>
-		    </tr>
-		</table>
-	    </td>
 	    </tr>
-	!endif
-    </table>
+	</table>
+    </td>
+    </tr>
+!! sometimes a better place for the buttons....$javascript does not need to define them in this case.
+!if $inputs=yes
+    <tr>
+    <td>
+	<table class="schaersvoorde_form">
+	    <tr>
+	    <th>
+		<input type="button" style="$mybuttonstyle" onclick="sendanswer();" value="$send"/>
+	    </th>
+	    <th>
+		<input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow"/>
+	    </th>
+	    </tr>
+	</table>
+    </td>
+    </tr>
+!endif
+</table>
+
 $dhtml
 !!! after the inputelements are in the DOM-tree: fill-in the previous answers
 <script type="text/javascript">

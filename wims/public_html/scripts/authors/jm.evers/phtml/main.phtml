@@ -1,3 +1,9 @@
+<!-- begin main.phtml in authordir -->
+!set wims_html_header=!append line \
+<link rel="stylesheet" type="text/css" href="$htmldir/schaersvoorde.css" /> \
+<!-- schaersvoorde.css ...  xhtml satisfied ? --> \
+$my_temp_css to $wims_html_header
+
 !set module_language=$lang
 !set lang_title=!getdef title_$lang in INDEX
 !if $lang_title!=
@@ -15,49 +21,41 @@
 	!set wims_html_onload=!append word $ $my_html_onload $ to $wims_html_onload
     !endif
     !header
-    <style type="text/css">
-	a:link{color:blue;text-decoration:none;}
-	a:hover{color:red;text-decoration:none;}
-	hr.schaersvoorde_hr {
-	    height:2px;
-	    border-width:0;
-	    color:black;
-	    background-color:black;
-	    width:50%;
-	}
-	span.schaersvoorde_alarm {
-	    color:red;
-	    font-size:75%;
-	    font-style:italic;
-	}
-    </style>
-    <script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script>
-    <script type="text/javascript"  src="$jsdir/precheck.js"></script>
+    <noscript>
+	<img src="$gifdir/enable_javascript.gif" alt="Please enable javascript to work with our Schaersvoorde modules" />
+    </noscript>
+    <script type="text/javascript" src="$jsdir/../lang/remarks.$taal.js"></script>
+    <script type="text/javascript" src="$jsdir/precheck.js"></script>
     <hr />
     <br />
+    <div class="schaervoorde_div">
     !if $status=waiting
-	<div align="center">
+	<!-- begin form.phtml in authordir -->
 	!read $phtmldir/form.phtml
-	</div>
-	<p align="left">
+	<!-- end form.phtml in authordir -->
+	<p style="text-align:left">
         !href exo_Renew
 	</p>
     !else
-	<div align="center">
+    	<!-- begin answer.phtml in authordir -->
 	!read $phtmldir/answer.phtml
-	</div>
-	<p align="left">
+    	<!-- end answer.phtml in authordir -->
+	<p style="text-align:left">
 	!href exo_Again
 	.
 	</p>
+	
 	!if $worksheet=$empty
 	    !href exo_Intro
 	    .
 	!endif
     !endif
+    </div>
+    <!-- end div class="schaersvoorde_div" -->
     :end
     <script type="text/javascript" src="$jsdir/wz_tooltip.js"></script> 
     !tail
 
 !endif
 
+<!-- end main.phtml in authordir -->

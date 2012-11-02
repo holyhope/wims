@@ -62,29 +62,21 @@ imagecnt=0
 !bound printexo within 0,1,2
 !bound noselect within 0,1 default 1
 !bound usage within 0,1,2,3,4,5,6 default 2
-# minimal appearance control...
-fontcolor1=black
-fontcolor2=blue
-fontcolor3=red
-fontcolor4=green	
-fontcolor5=orange
-bgcolor1=#fffff0
-bgcolor2=#fffff0
-bgcolor3=#a0f0g0
 cellpadding=10
 cellspacing=1
 border=1
-mybuttonstyle=color:black;background-color:$bgcolor1;font-weight:normal;text-align:center;
+mybuttonstyle=color:black;background-color:#fffff0;font-weight:normal;text-align:center;
 textareastyle=color:black;background-color:#e8ffff;border:1px solid #ff0000;
 inputstyle=color:black;background-color:#e8ffff;border:1px solid #ff0000;text-align:center;
-# defaults for "textarea nowrap="nowrap"="nowrap"" answering field for freestyle answer
+# textarea defaults
 rows=3
-cols=30
+cols=12
 # defaults for java inputapplet
 largefont=22
 smallfont=14
 applettext=$empty
 special_fraction=0
+# TexApp applet
 my_html_onload=$empty
 # some handy text:
 send=!record 4 of $remarkdir/commonremarks.$taal
@@ -102,7 +94,7 @@ not_use_mathml=!record 111 of $remarkdir/commonremarks.$taal
 !if $printexo=1
     paperbg=$empty
 !else
-    paperbg= style=background-image:url($gifdir/paper.jpg)
+    paperbg=background-image:url($gifdir/paper.jpg)
 !endif
 # usage
 # 0 formal exam
@@ -117,7 +109,7 @@ not_use_mathml=!record 111 of $remarkdir/commonremarks.$taal
 !if $usage=0
     # define the defaults for formal jm.evers exam
     showanswer=0
-    maxtry=10
+    maxtry=2
     teaching=0
     noselect=1
     goodbadsign=0
@@ -135,84 +127,79 @@ not_use_mathml=!record 111 of $remarkdir/commonremarks.$taal
     P10=0.1
     # needs to be specified: not clear right now (see score.proc)
     scoringtype=0
-    !goto KLAAR
-!endif
-!if $usage=1
-    # define the defaults for a test exam
-    showanswer=1
-    maxtry=6
-    teaching=0
-    noselect=1
-    goodbadsign=1
-    !if H1 isin $module
-	calculator=1
+!else
+    !if $usage=1
+	# define the defaults for a test exam
+	showanswer=1
+	maxtry=6
+        teaching=0
+	noselect=1
+        goodbadsign=1
+	!if H1 isin $module
+	    calculator=1
+	!else
+	    calculator=2
+	!endif
+	scribbling=1
+	time=1
+	P1=0.95
+	P2=0.9
+	P3=0.85
+	P4=0.8
+        P5=0.7
+	P6=0.6
+	P7=0.5
+	P8=0.3
+	P9=0.2
+	P10=0.1
+	# needs to be specified: not clear right now (see score.proc)
+	scoringtype=0
     !else
-	calculator=2
+	!if $usage=2
+	    # define the defaults for training
+	    exotitle=!record $[-1*$subject] of lang/remarks.$taal
+	    showanswer=1
+	    image=1
+	    maxtry=5
+	    teaching=1
+	    goodbadsign=2
+	    !if H1 isin $module
+		calculator=1
+	    !else
+		calculator=2
+	    !endif
+	    scribbling=1
+	    noselect=1
+	    time=1
+	    P1=0.95
+	    P2=0.9
+	    P3=0.85
+	    P4=0.8
+	    P5=0.7
+	    P6=0.65
+    	    P7=0.6
+    	    P8=0.5
+    	    P9=0.4
+	    P10=0.3
+	    # needs to be specified: not clear right now (see score.proc)
+    	    scoringtype=0
+	!else
+	    exotitle=!record $[-1*$subject] of lang/remarks.$taal
+    	    P1=0.95
+	    P2=0.9
+    	    P3=0.85
+	    P4=0.8
+    	    P5=0.7
+    	    P6=0.6
+    	    P7=0.5
+	    P8=0.3
+    	    P9=0.2
+	    P10=0.1
+	    # needs to be specified: not clear right now (see score.proc)
+	    scoringtype=0
+	!endif
     !endif
-    scribbling=1
-    time=1
-    P1=0.95
-    P2=0.9
-    P3=0.85
-    P4=0.8
-    P5=0.7
-    P6=0.6
-    P7=0.5
-    P8=0.3
-    P9=0.2
-    P10=0.1
-    # needs to be specified: not clear right now (see score.proc)
-    scoringtype=0
-    !goto KLAAR
 !endif
-!if $usage=2
-    # define the defaults for training
-    #in real exam mode no "exotitle" present
-    exotitle=!record $[-1*$subject] of lang/remarks.$taal
-    showanswer=1
-    image=1
-    maxtry=5
-    teaching=1
-    goodbadsign=2
-    !if H1 isin $module
-	calculator=1
-    !else
-	calculator=2
-    !endif
-    scribbling=1
-    noselect=1
-    time=1
-    P1=0.95
-    P2=0.9
-    P3=0.85
-    P4=0.8
-    P5=0.7
-    P6=0.65
-    P7=0.6
-    P8=0.5
-    P9=0.4
-    P10=0.3
-    # needs to be specified: not clear right now (see score.proc)
-    scoringtype=0
-    !goto KLAAR
-!endif
-!if $usage>2
-    #in real exam mode no "exotitle" present
-    exotitle=!record $[-1*$subject] of lang/remarks.$taal
-    P1=0.95
-    P2=0.9
-    P3=0.85
-    P4=0.8
-    P5=0.7
-    P6=0.6
-    P7=0.5
-    P8=0.3
-    P9=0.2
-    P10=0.1
-    # needs to be specified: not clear right now (see score.proc)
-    scoringtype=0
-!endif
-:KLAAR
 
 !if $goodbadsign !=0
     # signs of content./.
@@ -223,7 +210,15 @@ not_use_mathml=!record 111 of $remarkdir/commonremarks.$taal
 	nok=!record 56 of $remarkdir/commonremarks.$taal
 	bok=!record 57 of $remarkdir/commonremarks.$taal
 	ok=!record 58 of $remarkdir/commonremarks.$taal
+    !else
+	ok=$empty
+	bok=$empty
+	nok=$empty
     !endif
+!else
+    OK=$empty
+    NOK=$empty
+    BOK=$empty
 !endif
 
 !readproc $remarkdir/rounding.$taal

@@ -1,7 +1,7 @@
 !! produces a DHTML page of the  exercise for printing
 
 !if $questiontype !=0 or $applet=1
-    <span style="color:red">
+    <span class="schaersvoorde_alarm">
 	My guess : this page not very usefull in a printed paperversion<br />
 	It's most likely a multiplechoice exercise<br />
 	or it makes use of some java applets ?
@@ -14,7 +14,7 @@
 !else
     <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
     !set DHTML=$empty
-    <table summary="">
+    <table class="schaersvoorde_form">
 	<tr>
 	!set cnt=0
 	!if $total_exos >4
@@ -106,7 +106,7 @@
     </p>
 
 <p style="page-break-after:always"></p>
-<table summary="">
+<table class="schaersvoorde_form">
     <tr>
     <td>
 	<input type="button" style="$mybuttonstyle" value="Reload Page" onClick="window.location.reload()" />
@@ -116,13 +116,11 @@
     </td>
     </tr>
 </table>
-    <span size="-1">
-	!record 69 of $remarkdir/commonremarks.$taal
-	<br />
-	!href module=$module&+session=$session&+cmd=intro
-	!record 70 of $remarkdir/commonremarks.$taal
-	</a>
-    </span>
+    !record 69 of $remarkdir/commonremarks.$taal
+    <br />
+    !href module=$module&+session=$session&+cmd=intro
+    !record 70 of $remarkdir/commonremarks.$taal
+    </a>
 <p style="page-break-after:always"></p>
 
 <script type="text/javascript">

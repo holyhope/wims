@@ -8,28 +8,24 @@
     !endif
 !endif
 
- <table summary="" border="0" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+ <table class="schaersvoorde_form">
     <tr>
-    <td valign="top" align="left">
+    <td>
 	$(question$n)
 	!if $exotext!=$empty
-	    <br />	
-	    <small>
-		<em>
-		    $exotext
-		</em>
-	    </small>
+	    <br />
+	    $exotext
 	!endif
     </td>
     </tr><tr>
-    <td valign="top" align="center">
-	<table summary="" >
+    <td>
+	<table>
 	    <tr>
 	    <td>
-		<table summary="">
+		<table>
 		    <tr>
 		    !for p=1 to $options
-			<td bgcolor="#82bbff">
+			<td style="background-color:#82bbff">
 			    <div id="div$p" style="position:relative;border:2px solid red;width:$[$xsize+2];height:$[$ysize+2]">
 				!if $multiimage=1
 				    !if $draw=1
@@ -53,9 +49,9 @@
 			    <tr>
 			!endif
 		    !next p
-			<td bgcolor="#ff1338">
+			<td style="background-color:#ff1338">
 			    <div id="dontknow" style="position:relative;border:thin solid blue;width:$xsize;heigth:$ysize">
-				<span size="+1">$dontknow</span>
+				<span class="schaersvoorde_alarm">$dontknow</span>
 			    </div>
 			    !set DHTML=!append item "dontknow" to $DHTML
 			</td>
@@ -78,7 +74,7 @@
 				!endif
 			    !endif
 			!else
-			    <img src="$jsdir/transparentpixel.gif" width=$xsize height=$ysize alt="no alt" />
+			    <img src="$jsdir/transparentpixel.gif" width="$xsize" height="$ysize" alt="no alt" />
 			!endif
 		    !endif	
 		    !set DHTML=!append item "target" to $DHTML

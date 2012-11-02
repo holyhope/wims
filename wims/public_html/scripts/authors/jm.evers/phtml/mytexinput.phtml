@@ -82,9 +82,9 @@
 //]]>
 </script>
 
-    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
-	<tr valign="top" >
-	<td align="left">
+    <table summary="" class="schaersvoorde_form">
+	<tr>
+	<td>
 	    !if $(question$n) != $empty
 		$(question$n)
 	    !endif
@@ -94,14 +94,14 @@
 	    !endif
 	    !if $(formula$n) != $empty
 		!if $embed = 1
-		    <table summary="" cellpadding="1">
-			<tr valign="middle">
+		    <table>
+			<tr>
 			<td>
 			    !insmath $(formula$n)
 			</td>
 			<td>
 			    <form id="mydefaultform" name="mydefaultform" action="">
-				<table summary="" cellpadding="1">
+				<table>
 				!set a_items=!itemcnt $(answer$n)
 				!if $a_items != $[floor($inputs)]
 				    !set use_lines=1
@@ -109,7 +109,7 @@
 				    !set use_lines=0
 				!endif
 				!for p=1 to $inputs
-				    <tr valign="middle">
+				    <tr>
 				    <td>
 					$m_rightarrow
 				    </td>
@@ -136,16 +136,16 @@
 			</tr>
 		    </table>
 		!else
-		    !insmath $(formula$n)		
+		    !insmath $(formula$n)
 		!endif
 	    !endif
 	</td>
 	    !if $image=1
 		!if $XSIZE > 450 
 		    </tr>
-		    <tr valign="top">
+		    <tr>
 		!endif
-		<td align="center">
+		<td>
 		    !if $draw=1
 			!set insdraw_size=$XSIZE,$YSIZE
 			!insdraw $(image$n)
@@ -163,18 +163,18 @@
 	    !endif
 	    !if $applet=1
 		!if $XSIZE > 450
-		    </tr><tr valign="top">
+		    </tr><tr>
 		!endif
-		<td align="center">
+		<td>
 		    $(object$n)
 		</td>
 	    !endif
 	    !if $inputs > 0 && $embed != 1
 		!if $XSIZE > 450 
 		    </tr>
-		    <tr valign="top">
+		    <tr>
 		!endif
-		<td nowrap="nowrap">
+		<td>
 		    <form id="mydefaultform" name="mydefaultform" action="">
 			!if $inputs = 1
 			    !if $wims_user=supervisor
@@ -183,7 +183,7 @@
 				<textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
 			    !endif
 			!else
-			    <table summary="" cellpadding="1">
+			    <table>
 			    !set a_items=!itemcnt $(answer$n)
 			    !if $a_items != $[floor($inputs)]
 				!set use_lines=1
@@ -222,7 +222,7 @@
 	    !endif
 	</tr>
     </table>
-    <table summary="">
+    <table class="schaersvoorde_form">
 	<tr>
 	<th>
     	    <input type="button" style="$mybuttonstyle" onclick="javascript:sendanswer();" value="$send">
@@ -233,10 +233,10 @@
 	!if $control_inputs = 1
 	    <th>
 		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(1)" name="but3" value="+">
-	    </th>	
+	    </th>
 	    <th>
 		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(-1);" name="but4" value="&minus;">
-	    </th>	
+	    </th>
 	!endif
 	</tr>
     </table>

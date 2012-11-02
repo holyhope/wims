@@ -20,69 +20,62 @@
             document.getElementById('stickit_area').style.display = "none";
         }
     }
+    !if $time=1
+	var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
+    !endif
 //]]>
 </script>
-!if $time=1
-    <script type="text/javascript">
-    //<![CDATA[
-	var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
-    //]]>
-    </script>
-!endif		
+
 !set wims_texsize=$mytexsize
 
 !if $debug=1
     !if $wims_exec_error != $empty
 	<p align="center">
-	    <span style="color:$fontcolor3">$wims_exec_error</span>
+	    <span style="schaersvoorde_alarm">$wims_exec_error</span>
 	</p>
     !endif
 !endif
-<table summary="" width="100%" >
+<table style="width:100%" >
     <tr>
-    <td valign="top" align="left">
+    <td style="vertical-align:top;text-align:left;float:left;white-space:nowrap">
 	!if $exotitle != $empty
-		<strong>$exotitle</strong>
+		<kbd>$exotitle</kbd>
 	    <br/>
 	!endif
 	!if $roundingtext!=$empty
-		<span style="font-size:10px;color:red">
+		<span class="schaersvoorde_alarm">
 		    $roundingtext
 		</span>
 	    <br/>
 	!endif
-	    <span style="font-size:10px;color:red">
-		$no_back_button
-	    </span>
+	<span class="schaersvoorde_alarm">
+	    $no_back_button
+	</span>
 	!if exam notin $session
 	    <br/>
-		$helptext
-		!href target=wims_mhelp module=$module&+session=$session&+cmd=help
-		<span style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;$wims_name_help popup</span>
-	    <br/>
+	    !href target=wims_mhelp module=$module&+session=$session&+cmd=help <img src="$gifdir/help.jpg" alt="help" /></a>
+	    <a onmouseover="return escape('$helptext')"><img src="$gifdir/tip.jpg" alt="tip" /></a>
 	!endif
     </td>
     <td>
-	<div id="alarmtext" style="opacity:0.6;z-index:100;display:none;background-color:orange;border:4px solid red;width:300px"></div>
+	<div id="alarmtext" style="opacity:0.8;position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:yellow;border:4px solid red;width:400px;"></div>
     </td>
-    <td valign="top" align="right">
-	<table summary="">
+    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
+	<table>
 	    <tr>
-	    <td valign="top" align="right">
+	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		<textarea id="stickit_area" cols="20" style="display:none;background-color:yellow;font-size:16px;border:2px solid red;width:220px;height:60px;"></textarea>
 	    </td>
 	!if $viewlogo=1
-	    <td valign="top" align="right">
-		<div>
-		    <a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
-			$logo
-		    </a>
-		</div>
+	    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
+		<a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
+		    $logo
+		</a>
 	    </td>
 	!endif
 	!if $questiontype isin 0,7
 	    !if $mathview isin 1,2
-		<td valign="top" align="right">
+		<td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		    !if exam isin $session
 			!! hope this is not interfering with something important...
 			!set help_session=!nospace $session _mhelp
@@ -98,15 +91,15 @@
 	    !endif
 	!endif
 	!if $scribbling=1
-	    <td valign="top" align="right">
+	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		<a onclick="javascrip:showScribble();" onmouseover="return escape('Post-It Memo')" >
 		    <img src="$gifdir/pencil.png" width="50" height="70" alt="scribling" />
 		</a>
 	    </td>
 	!endif
 	!if $calculator=3
-	    <td valign="top" align="right">
-		<table summary="">
+	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
+		<table>
 		    <tr>
 		    <th>
 	    		<script type="text/javascript">
@@ -132,7 +125,7 @@
 			    <param name="pencolor1" value="0,0,0">
 			    <param name="pencolor2" value="255,0,15">
 			    <param name="bgcolor1" value="200,250,255">
-			    <param name="bgcolor2" value="200,210,210">
+			    <param name="#fffff0" value="200,210,210">
 			    $nojava
 			</object>
 		    </th>
@@ -145,14 +138,14 @@
 	    </td>
 	!else
 	    !if $calculator=2
-		<td valign="top" align="right">
+		<td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		    <a onclick="window.open('$htmldir/mathcalc.html','calculator','width=280,height=370,left=0,top=0')">
 			<img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" />
 		    </a>
 		</td>
 	    !else
 		!if $calculator=1
-		    <td valign="top" align="right">
+		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 			<a onclick="window.open('$htmldir/basicalc.html','calculator','width=300,height=200,left=0,top=0')">
 			    <img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" />
 			</a>
@@ -161,23 +154,23 @@
 	    !endif
 	!endif
 	!if $debug=1
-	    <td valign="top" align="right">
+	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		!href target=wims_mhelp session=$session&+module=$module&+cmd=help
 		    <img src="$gifdir/exec.png" alt="debug-info" />
 		</a>
 	    </td>
 	!endif
 	!if $time=1
-	    <td valign="top" align="right">
-		<table summary="">
+	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
+		<table>
 		    <tr>
-		    <td valign="top" align="right">
+		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 			<form name="clock" action="">
-			    <input style="text-align:center;background-color:$bgcolor1;color:green;font-size:100%;" type="text" name="time" size="9" />
+			    <input style="text-align:center;background-color:#fffff0;color:green;font-size:100%;" type="text" name="time" size="9" />
 			</form>
 		    </td>
 		    </tr><tr>
-		    <td valign="top" align="right">
+		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 			<a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" border="0" /></a>
 		    </td>
 		    </tr>

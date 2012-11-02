@@ -131,10 +131,9 @@
     }
 //]]>
 </script>
-
-    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+    <table class="schaersvoorde_form">
 	<tr>
-	<td valign="top" align="left">
+	<td>
 	    !if $(question$n) != $empty
 		$(question$n)
 		<br />
@@ -143,12 +142,10 @@
 		!if $embed=1
 		    !if $mathview = 3
 			!!! hmmm
-			<center>
 			    !insmath $(formula$n)
-			</center>
 			<br />
 		    !else
-			<table summary="question formula and inputfields">
+			<table>
 			    <tr>
 			    <th>
 				!insmath $(formula$n)
@@ -190,9 +187,7 @@
 			</table>
 		    !endif
 		!else
-		    <center>
-			!insmath $(formula$n)
-		    </center>
+		    !insmath $(formula$n)
 		    <br />
 		!endif
 	    !endif
@@ -206,7 +201,7 @@
 	    !! arbitrary value to produce a better layout ...
 	</tr><tr>
 	!endif
-	<td  valign="top" align="center">
+	<td>
 	    !if $draw=1
 	    !! for fly
 		!set insdraw_size=$XSIZE,$YSIZE
@@ -227,7 +222,7 @@
 	    !! arbitrary value to produce a better layout ...
 	</tr><tr>
 	!endif
-	<td valign="top" align="center">
+	<td>
 	    $(object$n)
 	</td>
     !endif
@@ -235,7 +230,7 @@
     !if $XSIZE > 450 or $mathview=3
 	</tr><tr>
     !endif
-	<td valign="top" align="center">
+	<td>
 	    !if $mathview=3
 		<table summary="java input applet" $paperbg width="580">
 		    <tr>
@@ -278,7 +273,7 @@
 	    !else
 		!if $inputs=1
 		    <form name="mydefaultform" id="mydefaultform" action="">
-			<table summary="inputfield" cellpadding="1">
+			<table>
 			    <tr>
 			!if $inputtext1!=$empty
 			    <td>
@@ -298,7 +293,7 @@
 		!else
 		    !if $inputs>1
 		    <form name="mydefaultform" id="mydefaultform" action="">
-			<table summary="inputfields" cellpadding="1">
+			<table>
 			!set a_items=!itemcnt $(answer$n)
 			!if $a_items != $[floor($inputs)]
 			    !set use_lines=1
@@ -308,6 +303,9 @@
 			!for p=1 to $inputs
 			    <tr>
 			    <td>
+				!if $inputs>=2
+				    $p)&nbsp;
+				!endif
 				$(inputtext$p)
 			    </td>
 			    <td>
@@ -340,7 +338,7 @@
 !endif
 	</tr>
     </table>
-    <table summary="send or cancel buttons">
+    <table class="schaersvoorde_form">
 	<tr>
     !if $inputs !=0
 	<th>

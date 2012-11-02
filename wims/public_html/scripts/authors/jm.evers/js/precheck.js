@@ -50,13 +50,13 @@ function SetTexAppSize(){
 }
 
 function setAlarm(txt){
-    var h=document.documentElement.clientHeight;
-    var w=document.documentElement.clientWidth;
+    var h = parseInt( (document.documentElement.clientHeight)/2);
+    var w = parseInt( (document.documentElement.clientWidth)/2 - 200);
+    document.getElementById('alarmtext').style.top = h+'px';
+    document.getElementById('alarmtext').style.left = w+'px';
     document.getElementById('alarmtext').style.display = "block"
-    document.getElementById('alarmtext').style.top = h/3.5;
-    document.getElementById('alarmtext').style.left =w/4;
-    document.getElementById('alarmtext').innerHTML='<table cellpadding=\"10\" summary=\"warning\"><tr><th>'+txt+'</th></tr></table>';
-    window.scrollTo(0,0);
+    document.getElementById('alarmtext').innerHTML='<span style=\'color:black;font-size:125%;\'>'+txt+'</span>';
+    window.scrollTo(w,h-60);
     setTimeout('resetAlarm()',4000);
 }
 	
