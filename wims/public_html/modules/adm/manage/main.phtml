@@ -13,23 +13,23 @@
 !header
 
 !if $wims_ismanager iswordof -1 1
-$name_intromain
- <tt class="wims_fname">log/wims.conf</tt>. <p>
+<p>$name_intromain
+ <tt class="wims_fname">log/wims.conf</tt>. </p>
 !endif
 !if $job!=$empty
  !read $job.phtml
 !endif
+
 !if $wims_ismanager=2 and $job!=list
  !set wims_menu_items=!append line sitegestion,1,cmd=reply&job=list\
  to $wims_menu_items
-
-!if $job=conf and $confcat=6
- !set wims_menu_items=!append line download_module,1,cmd=reply&job=modules&job2=first to $wims_menu_items
+ !if $job=conf and $confcat=6
+  !set wims_menu_items=!append line download_module,1,cmd=reply&job=modules&job2=first to $wims_menu_items
+ !endif
+ !if $job=modules and $job2=first
+  !set wims_menu_items=!append line config_module,1,cmd=reply&job=conf&+confcat=6 to $wims_menu_items
+ !endif
 !endif
-!if $job=modules and $job2=first
- !set wims_menu_items=!append line config_module,1,cmd=reply&job=conf&+confcat=6 to $wims_menu_items
-!endif
-
 !tail
 
 !reset auth,save,abandon
