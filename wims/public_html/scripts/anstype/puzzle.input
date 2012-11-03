@@ -68,7 +68,7 @@ $ny,$nx,$width,$height
  !for x=1 to $nx
  !set t=$[$x+($y-1)*($nx)]
  !set t_=!item $x+($y-1)*($nx) of $scramble
-  <td id="$(i)_$t" onclick="javascript:click$i($t);" width="$width" height="$height">
+  <td id="p$(i)_$t" onclick="javascript:click$i($t);" width="$width" height="$height">
   <div id="img$(i)_$(x)_$(y)">$(Zurl[$t_])</div>
   </td>
  !next x
@@ -89,13 +89,13 @@ function click$i(n)
      {
       fl_clic$i=true;
       n_memo$i=n;
-      document.getElementById('$(i)_' + n).style.opacity = '0.45';
+      document.getElementById('p$(i)_' + n).style.opacity = '0.45';
      }
   else {
         newurl=tableurl$i[n];number=table$i[n];
         tableurl$i[n]=tableurl$i[n_memo$i]; table$i[n]=table$i[n_memo$i];
         tableurl$i[n_memo$i]=newurl;table$i[n_memo$i]=number;
-        document.getElementById('$(i)_' + n_memo$i).style.opacity = '1';
+        document.getElementById('p$(i)_' + n_memo$i).style.opacity = '1';
         fl_clic$i=false;
         if(n != n_memo$i){ nb_clic$i ++}
         for(var x=1;x<=$nx;x++) {
