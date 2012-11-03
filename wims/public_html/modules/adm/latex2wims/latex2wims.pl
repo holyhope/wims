@@ -1332,9 +1332,9 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
    . '</div>'
    . (($toc_d) ? '<div class="right_toc">'
    . $toc_d
-   . '<center>'
+   . '<div class="wimscenter">'
    . $LOAD
-   . '</center></div>' : '')
+   . '</div></div>' : '')
    . $CHEMIN_down . 
    '</div>';
 

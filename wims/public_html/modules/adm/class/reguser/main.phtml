@@ -14,11 +14,13 @@ $name_title
  </center>
 !endif
 !if $error!=$empty
- <p>
- !read lang/msg.phtml.$modu_lang
+ <div class="wimsmsg">
+ !read lang/msg.phtml.$modu_lang 
+ </div>
  <p>
  !set wims_ref_class=wims_button
  !href cmd=reply&step=$[max($step-1,0)] $wims_name_back2
+ </p>
  !goto end1
 !endif
 
@@ -145,11 +147,12 @@ $institution
  !endif
  !form reply
  <input type="hidden" name="step" value="1"/>
- <center> <p><label for="classpass">$wims_name_Password</label>
+ <div class="wimscenter wimsform">
+ <p><label for="classpass">$wims_name_Password</label>
  <input type="password" name="classpass" id="classpass"/>
- <p>
+ </p><p>
  <input type="submit" value="$wims_name_send"/>
- </center></form> <p>
+ </p></div></form>
  <span class="wims_warning">$wims_name_warning</span>.
  !if $cltype iswordof 2 4
   $name_access1
@@ -169,7 +172,7 @@ $institution
  <span class="wims_warning">$wims_name_warning</span>. $name_warning_direct
   !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
-  <p>
+  </p>
  !endif
  !goto end1
 !endif
@@ -181,7 +184,7 @@ $institution
   <label for="search">$name_research:</label>
   <input size="20" name="search" id="search" value="$search"/>
   <input type="submit" value="$wims_name_tosave"/>
-  </form> <p>
+  </form>
   !default foundcnt=0
   !if $foundcnt>0
    $table_header
@@ -199,7 +202,7 @@ $institution
    !goto end1
   !endif
   !if $search!=$empty and $foundcnt=0
-   ($name_nofound) <p>
+  <p> ($name_nofound) </p>
   !endif
   $name_newparticipant
  !else
@@ -219,9 +222,7 @@ $name_inscription4:
   !href cmd=help $name_seecgu
   ]
 </p>
-<center>
-  <input type="submit" value="$wims_name_tosave"/>
-</center>
+<div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/></div>
    !goto end1
  !endif
 !!FIXME  $auth_user=$empty
@@ -234,7 +235,7 @@ $name_inscription4:
         <label for="user_auth">$wims_name_Login ($name_external)</label>
         <input size="16" name="user_auth" id="user_auth" value="$user_auth"/> <br/>
  </p> 
-     <center><input type="submit" value="$wims_name_tosave"/></center>
+     <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/></div>
  </form>
      !goto end1
     !endif
@@ -254,7 +255,7 @@ $name_inscription4:
       <input size="60" name="email" id="email" value="$email"/>
     </li>
  </ul>
-  <center><input type="submit" value="$wims_name_tosave"/></center>
+  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/></div>
  </form>
      !goto end1
     !endif
@@ -316,25 +317,25 @@ $name_inscription4:
   </li>
  !endif
  </ul>
- <center><input type="submit" value="$wims_name_tosave"/></center>
+ <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/></div>
  </form>
  !goto end1
 !endif
 
 !if $step=2
  $name_hello, $name_student!<p>
- $name_inscription3 <tt class="wims_login">$login</tt>. <p>
+ $name_inscription3 <tt class="wims_login">$login</tt>. </p>
  !if $email=$empty
-  $name_passwd_nonvalid <p>
+ <p> $name_passwd_nonvalid </p>
  !else
-  $wims_name_email: <tt class="wims_address">$email</tt> <p>
+<p>$wims_name_email: <tt class="wims_address">$email</tt> </p>
  !endif
  <label for="pass2">$name_passwd_exact:</label>
  !form reply
  <input type="hidden" name="step" value="3"/>
- <p></p><center><input type="password" size="16" name="pass2" id="pass2"/>
- <p></p><input type="submit" value="$wims_name_send"/></center>
- </form> <p>
+ <div class="wimscenter wimsform"><input type="password" size="16" name="pass2" id="pass2"/>
+ <br/><input type="submit" value="$wims_name_send"/></div>
+ </form>
  !goto end1
 !endif
 
@@ -350,14 +351,13 @@ $name_inscription4:
   <tt class="wims_login">
   !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
   </tt>.
-  <p>
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
     <p>
     $name_otheractivities
     !href module=adm/class/userlist&job=transfer&getuser=$login $name_transfer1
-    <p>
+    </p>
    !endif
   !endif
   !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
@@ -365,10 +365,11 @@ $name_inscription4:
  to wims_menu_items
   !goto end
  !endif
- $name_hello, $name_student!<p>
- $name_welcome
- <tt class="wims_login">$login</tt>. <p>
+ <p>$name_hello, $name_student!</p>
+ <p>$name_welcome
+ <tt class="wims_login">$login</tt>. </p><p>
  $name_youcan
+ </p>
  !read adm/class/initclass $class,auth
 
  !if $wims_class!=$empty
@@ -410,7 +411,7 @@ $name_inscription4:
 !if $wims_user=supervisor
  !goto end
 !endif
-<p>
+
 !if $cltype iswordof 2 4
  !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items

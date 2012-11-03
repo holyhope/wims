@@ -12,12 +12,12 @@ $sheet_remark
 !endif
 
 !if ($wims_developer!= or $wims_supervisor!= or $wims_user=supervisor) and $latex_exists=1
-  <center>
+  <div class="wimscenter">
   !read oef/latex.proc print
-  </center>
+  </div>
 !endif
 !for i=1 to $N
- <p>
+ <div>
  <b>$name_exo</b> $i.
  !if $(question_$i)=$empty
   ($name_noprint: $(title_$i))
@@ -39,6 +39,7 @@ $sheet_remark
   <a></a>
   $(chce_$i)
  !endif
+ </div>
 !next i
 
 !if $public!=P and $wims_user!=supervisor

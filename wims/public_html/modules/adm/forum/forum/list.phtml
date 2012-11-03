@@ -1,19 +1,20 @@
 
 !if $ccnt<1
- $name_noforum<p>
+<p>
+ $name_noforum</p>
  !href module=home $wims_name_home
  !exit
 !endif
-
+<p>
 $name_number_message
-
-<p>$table_header
-$table_hdtr<th>$wims_name_title<th>$wims_name_Status<th>$wims_name_Language<th>$wims_name_Description
+</p>
+$table_header
+$table_hdtr<th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_Language</th><th>$wims_name_Description</th></tr>
 !for i=1 to $ccnt
  !set l=!record $i of $indf
  !distribute items $l into code,la
  !defread wimshome/log/forums/$code/.def
- $table_tr<td align="center">$mb_title
+ $table_tr<td align="center">$mb_title</td>
  <td align="center">
  !reset user_exists
  !read wimshome/$wims_sesdir/mb_user.$code
@@ -43,7 +44,8 @@ $table_hdtr<th>$wims_name_title<th>$wims_name_Status<th>$wims_name_Language<th>$
  </td><td align="center"><img src="gifs/$la.gif" alt="$la" /></td>
  <td>$mb_description</td>
 !next i
-$table_end <p>
+</tr>
+$table_end
 
 !read lang/names.phtml.$modu_lang create
 

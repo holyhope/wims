@@ -4,7 +4,9 @@ $title
 
 !if $save!=$empty
  !if $error!=$empty
-   !read lang/msg.phtml.$modu_lang
+  <div class="wimsmsg">
+  !read lang/msg.phtml.$modu_lang
+  </div>
  !else
   !if $changed<1
    $name_config
@@ -12,7 +14,7 @@ $title
    $name_updated
   !endif
  !endif
- <p>
+
 !endif
 
 !form reply
@@ -60,12 +62,13 @@ $ in $e_
   </td></tr>
  !endif
 !next i
-$table_end <p></p><center>
+$table_end
+<div class="wimscenter wimsform">
 <input type="submit" name="save" value="$wims_name_tosave"/>
 <input type="submit" name="abandon" value="$wims_name_giveup"/>
-</center>
+</div>
 </form>
 <span class="wims_warning">$wims_name_warning</span>. $name_warning
-<p>
+
 
 !read conf/$catname.phtml

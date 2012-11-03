@@ -1,18 +1,22 @@
 
 !if $rep!=$empty
  !if $status=ERROR
+ <div class="wimsmsg">
   !read lang/msgcl.phtml.$modu_lang $rep2
-  <p><hr width="50%"/><p>
+  </div>
+  <hr width="50%"/>
  !else
   <pre>$rep</pre>
-  <p>
   !if $m1=local
-   $name_local
    <p>
+   $name_local
+   </p>
    $name_error:
    !mailurl $wims_site_manager $wims_name_manager
   !else
+  <p>
    $name_emailsend
+  </p>
   !endif
  !endif
  !exit

@@ -8,7 +8,7 @@
 
 !set name_prog=$name_program
 !if $addline$thiscode$thistitle!=$empty
- <center><h3>
+ <h3 class="wimscenter">
  !set l=!linecnt $addline
  !for i=1 to $l
   !if $i>1
@@ -41,12 +41,14 @@ to $wims_menu_items
    ($wims_superclass) - $(name_$job)
   !endif
  !endif
- </h3></center>
+ </h3>
 !endif
 
 !if $error!=$empty
+ <div class="wimsmsg">
  !read lang/msg.phtml.$moduclass_lang
- <p><hr/></p>
+ </div>
+ <hr/>
 !endif
 !if $wims_menu_items!=
  !set wims_menu_items=!append line ,0,<hr/> to $wims_menu_items
