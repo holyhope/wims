@@ -108,7 +108,7 @@
  Lees aandachtig de onderstaande documentatie.
  Als het niet duidelijk is, vul hier dan niets of het woord <tt class="wims_code_words">all</tt> in.
  Bij dit laatste schakelt WIMS de controle op ipadressen voor uw klassen uit.
- <p><hr/></p>
+ </p><hr/>
  !read help/hosts.phtml
  !reset secure
  !exit
