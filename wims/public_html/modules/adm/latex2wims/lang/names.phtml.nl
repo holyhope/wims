@@ -53,7 +53,7 @@ En is alleen te gebruiken door docenten met een modtool account.
 <p>
 Voor een goed resultaat moet ook een css bestand worden gebruikt.
 Lees hiervoor eerst deze 
-
+</p>
 !exit
 :2
 Om een
@@ -68,10 +68,10 @@ maakt van een latex bestand een WIMS document binnen Modtool.
 <p>
 Voor een goed resultaat moet ook een css bestand worden gebruikt.
 Leest hiervoor eerst deze 
-
+</p>
 !exit
 :4 
 de bestanden van het document <tt $stylett>$document</tt>
     worden gewist en vervangen door de nieuwe.
-   <p>Uitvoeren ? 
+   <p>Uitvoeren ? </p>
 !exit
