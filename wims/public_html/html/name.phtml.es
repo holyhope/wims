@@ -108,7 +108,7 @@
 		Descripción,\
 		Versión,\
 		Versión WIMS <br/> requerida,\
-		Lengua,\br/>
+		Lengua,\
 		Autor,\
 		Maintainer,\
 		Traductor,\
