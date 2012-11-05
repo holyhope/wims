@@ -95,7 +95,7 @@ characters will be reduced to one space.
 <p>
 
 A set of basic <em>builtin rules</em> are defined in the symtext syntax. For
-example, the rule <tt>[Iperm:x,and,y]</tt> matches both samples "x and y"
+example, the rule <span class="tt">[Iperm:x,and,y]</span> matches both samples "x and y"
 and "y and x". Rules can be nested: 
 <pre>neither [Aperm:[Alt:I,me,we,us],nor,our teacher]</pre>
 matches the following 8 cases.
@@ -117,8 +117,8 @@ user-definable dictionaries for various other purposes.
 .
 <p>
 
-For example, a <em>positional macro</em> <tt>_divides</tt> can be defined in
-the macro dictionary, so that the tester <tt>x _divides [y + z]</tt> will
+For example, a <em>positional macro</em> <span class="tt">_divides</span> can be defined in
+the macro dictionary, so that the tester <span class="tt">x _divides [y + z]</span> will
 match the following samples.
 <p>
 
@@ -175,7 +175,7 @@ character must be alphabetic. If the first character is upper-case, it is
 builtin. otherwise it is a macro.
 <p>
 
-Syntax of the matching rule: <tt>[rule_name:parameters]</tt>.
+Syntax of the matching rule: <span class="tt">[rule_name:parameters]</span>.
 <em>rule_name</em> must start with the first character of the block, it must
 be a valid rule name, and the colon must immediately follow the name (no
 spaces inserted). Otherwise the block will be treated as a normal tstring
@@ -190,15 +190,16 @@ positive integer.
 
 There are also two special bracket blocks that are in fact simplifications
 of builtin matching rules:
-<ul>
+<ul><li>
+<span class="tt">[A|B|C]</span> is equivalent to <span class="tt">[Alt:A,B,C]</span>. For this
+reason, the character <span class="tt">|</span> is reserved. To have it matched, write
+<span class="tt">[|]</span> (or <span class="tt">[Alt:|]</span>).
 
-<p><li><tt>[A|B|C]</tt> is equivalent to <tt>[Alt:A,B,C]</tt>. For this
-reason, the character <tt>|</tt> is reserved. To have it matched, write
-<tt>[|]</tt> (or <tt>[Alt:|]</tt>).
 
-<p><li><tt>[**]</tt> is equivalent to <tt>[Wild:**]</tt>, <tt>[* *]</tt> is
-equivalent to <tt>[Wild:* *]</tt>, etc. A block falls into this category if
-the first character is a '<tt>*</tt>'.
+</li><li>
+<span class="tt">[**]</span> is equivalent to <span class="tt">[Wild:**]</span>, <span class="tt">[* *]</span> is
+equivalent to <span class="tt">[Wild:* *]</span>, etc. A block falls into this category if
+the first character is a '<span class="tt">*</span>'.
 
 </ul>
 
@@ -225,13 +226,13 @@ $table_tr
 <td>Alt
 <td align=middle>\(>= 1)
 <td>Matches any one of the parameters.
-<td><tt>[Alt:a,b,c d]</tt> matches "a", "b" or "c d".
+<td><span class="tt">[Alt:a,b,c d]</span> matches "a", "b" or "c d".
 
 $table_tr
 <td>Aperm
 <td align=middle>\(>= 3)
 <td>"And" styled permutation.
-<td><tt>[Aperm:[,],and,A,B,C]</tt> matches "A, B and C", "B, A and C", etc.
+<td><span class="tt">[Aperm:[,],and,A,B,C]</span> matches "A, B and C", "B, A and C", etc.
 The order of parameters 3 and up is arbitrary, and the first two parameters
 are used to insert between them: parameter 1 is inserted except for the
 last insertion where parameter 2 is inserted.
@@ -240,14 +241,14 @@ $table_tr
 <td>Apick
 <td align=middle>\(>= 4)
 <td>"And" styled arbitrary selection.
-<td><tt>[Apick:3,[,],and,A,B,C,D,E]</tt> matches "B, E and A", "C, A and E",
+<td><span class="tt">[Apick:3,[,],and,A,B,C,D,E]</span> matches "B, E and A", "C, A and E",
 etc. Parameter 1 must be an integer and gives the number of items to pick.
 
 $table_tr
 <td>Dic
 <td align=middle>\(1)
 <td>Dictionary check
-<td><tt>[Dic:wordtype transitive verb]</tt> matches any word or group of
+<td><span class="tt">[Dic:wordtype transitive verb]</span> matches any word or group of
 words that is defined in the dictionary "wordtype", with a definition that
 contains an item "transitive verb". <p>
 
@@ -257,12 +258,12 @@ $table_tr
 <td>Dperm
 <td align=middle>\(4)
 <td>Dependent permutation: parameters to match depend on the sample.
-<td><tt>[Dperm:a,b,c,d]</tt> matches either "a b c" or "c d a", but nothing
+<td><span class="tt">[Dperm:a,b,c,d]</span> matches either "a b c" or "c d a", but nothing
 else. For example, <br/>
-<tt>[Dperm:x,beats,y,is beaten by]</tt> matches either "x beats y" or "y is
+<span class="tt">[Dperm:x,beats,y,is beaten by]</span> matches either "x beats y" or "y is
 beaten by x". Or in French,
 <br/>
-<tt>il [Dperm:,y,est allé,à Paris]</tt> matches either "il y est allé" or
+<span class="tt">il [Dperm:,y,est allé,à Paris]</span> matches either "il y est allé" or
 "il est allé à Paris".
 
 
@@ -270,18 +271,18 @@ $table_tr
 <td>Ins
 <td align=middle>\(>= 3)
 <td>Arbitrary insertion of parameter 1.
-<td><tt>[Ins:A,B,C,D,E]</tt> matches "B A C D E", "B C A D E", "B C D A E".
+<td><span class="tt">[Ins:A,B,C,D,E]</span> matches "B A C D E", "B C A D E", "B C D A E".
 Parameter 2 and up must be matched in the given order, while parameter 1 may
 find its place anywhere between them. <p>
 
 To match "A B C D", "B A C D", "B C A D" and "B C D A", put two empty
-parameters: <tt>[Ins:A,,B,C,D,]</tt>.
+parameters: <span class="tt">[Ins:A,,B,C,D,]</span>.
 
 $table_tr
 <td>Iperm
 <td align=middle>\(3)
 <td>Inter-permutation.
-<td><tt>[Iperm:Bill,and,Alice]</tt> matches "Bill and Alice" and "Alice and
+<td><span class="tt">[Iperm:Bill,and,Alice]</span> matches "Bill and Alice" and "Alice and
 Bill". But not the three words in any other order.
 
 $table_tr
@@ -304,26 +305,26 @@ In the first case, the rule matches the empty string in the sample.
 $table_tr
 <td>Nomatch
 <td align=middle>\(0)
-<td>This is a synonym of <tt>None</tt>.
+<td>This is a synonym of <span class="tt">None</span>.
 <td>
 
 $table_tr
 <td>None
 <td align=middle>\(0)
 <td>Matches nothing.
-<td><tt>[None:]</tt> always returns no match.
+<td><span class="tt">[None:]</span> always returns no match.
 
 $table_tr
 <td>Not
 <td align=middle>\(1)
-<td>This is a synonym of <tt>Neg</tt>.
+<td>This is a synonym of <span class="tt">Neg</span>.
 <td>
 
 $table_tr
 <td>Opick
 <td align=middle>\(>= 2)
 <td>Matches an ordered subset of given number of parameters.
-<td>This rule is as <tt>Pick</tt>, except that it only matches subsets that
+<td>This rule is as <span class="tt">Pick</span>, except that it only matches subsets that
 are in the same order as that given in the parameters.
 
 $table_tr
@@ -335,7 +336,7 @@ any combination of words, subrules and macros. If match occurs for the
 second parameter, the matching text will be put as a value of the variable
 and output. <p>
 
-Example. <tt>[Out:myvar,[*]]</tt> matches any single word, and if the
+Example. <span class="tt">[Out:myvar,[*]]</span> matches any single word, and if the
 matched word is "myword" (in the sample), the match output contains a string
 "myvar=myword" that can be parsed to know what word the user has entered in
 this location.
@@ -344,7 +345,7 @@ $table_tr
 <td>Perm
 <td align=middle>\(>= 2)
 <td>Matches all the parameters in arbitrary order.
-<td><tt>[Perm:x,y,z]</tt> matches "x y z", "y x z", "z x y" etc.
+<td><span class="tt">[Perm:x,y,z]</span> matches "x y z", "y x z", "z x y" etc.
 
 $table_tr
 <td>Pick
@@ -352,26 +353,26 @@ $table_tr
 <td>Matches a subset of given number of parameters in any order.
 <td>The first parameter must be a positive integer n. The rule matches any
 subset of n parameters within the rest, in any order. <br/>
-Example: <tt>[Pick:2,a,b,c,d]</tt> matches "a b", "d b", "c a" etc. <br/>
-<tt>[Pick:3,x,y,z]</tt> is equivalent to <tt>[Perm:x,y,z]</tt>. <br/>
-<tt>[Pick:1,a,b,c,d]</tt> is equivalent to <tt>[Alt:a,b,c,d]</tt>.
+Example: <span class="tt">[Pick:2,a,b,c,d]</span> matches "a b", "d b", "c a" etc. <br/>
+<span class="tt">[Pick:3,x,y,z]</span> is equivalent to <span class="tt">[Perm:x,y,z]</span>. <br/>
+<span class="tt">[Pick:1,a,b,c,d]</span> is equivalent to <span class="tt">[Alt:a,b,c,d]</span>.
 
 <p>
-Extensions: <tt>[Pick:+2,...]</tt> matches any subset of at least 2
+Extensions: <span class="tt">[Pick:+2,...]</span> matches any subset of at least 2
 parameters. <br/>
-<tt>[Pick:-3,...]</tt> matches any subset of at most 3 parameters (including
+<span class="tt">[Pick:-3,...]</span> matches any subset of at most 3 parameters (including
 the empty subset).
 
 <p>
 Known bug: repetition of the same parameter is not recognized.
-<tt>[Pick:2,a,b,c,d]</tt> does not match "a c c".
+<span class="tt">[Pick:2,a,b,c,d]</span> does not match "a c c".
 
 $table_tr
 <td>Rep
 <td align=middle>\(>= 1)
 <td>Matches an arbitrary number (at least one) of parameters in any order and
 with any repetition.
-<td><tt>[Rep:0,1]</tt> matches "0 1", "1", "0 1 0 0 1 1 0", etc.
+<td><span class="tt">[Rep:0,1]</span> matches "0 1", "1", "0 1 0 0 1 1 0", etc.
 
 $table_tr
 <td>W
@@ -391,7 +392,7 @@ $table_tr
 where n is a positive number. The first matches any single word, the second
 matches 0 or any number of words, and the third matches from 0 to n
 arbitrary words. For example, <br/>
-<tt>[Wild:* * **3]</tt> matches between 2 to 5 words (inclusive).
+<span class="tt">[Wild:* * **3]</span> matches between 2 to 5 words (inclusive).
 
 $table_end
 
@@ -402,11 +403,11 @@ can either be shared among all modules in the public_html/scripts/symtext
 directory, or be special to one module, in the module's directory.
 <p>
 
-The style must contain an index file, named <tt>def</tt>. It defines the
+The style must contain an index file, named <span class="tt">def</span>. It defines the
 basic configuration choices of the style. Every line of the file is a
-definition under the format <tt>name=value</tt>. <p>
+definition under the format <span class="tt">name=value</span>. <p>
 
-The <tt>def</tt> file must contain a definition <tt>style_exists=yes</tt>,
+The <span class="tt">def</span> file must contain a definition <span class="tt">style_exists=yes</span>,
 otherwise the existence of the style will not be recognized. All the rest is
 optional.<p>
 
@@ -422,16 +423,16 @@ limited.
 For each general dictionary, a variable NAME_unknown can be defined (where
 NAME should be replaced by the dictionary name), which tells how a word
 should be treated if it is not found in the dictionary (unknown). The value
-may be <tt>delete</tt> (default) which means the unknown word should be
-replaced by an empty string; <tt>leave</tt> which will return the unknown
+may be <span class="tt">delete</span> (default) which means the unknown word should be
+replaced by an empty string; <span class="tt">leave</span> which will return the unknown
 word unchanged; or anything else. In the last case, the value will be used
 to replace the unknown word.
 <p>
 
 There may also be three dictionary files with reserved names:
-<tt>suffix</tt>, <tt>trans</tt> and <tt>macros</tt>. All dictionaries are
-line dictionaries, with each line in the format <tt>name:definition</tt>. Names
-must be sorted (using the special program <tt>dicsort</tt> in the WIMS
+<span class="tt">suffix</span>, <span class="tt">trans</span> and <span class="tt">macros</span>. All dictionaries are
+line dictionaries, with each line in the format <span class="tt">name:definition</span>. Names
+must be sorted (using the special program <span class="tt">dicsort</span> in the WIMS
 package). All of the dictionaries are optional.
 <p>
 
@@ -478,18 +479,18 @@ any macro must be composed of exactly one atom.
 <p>
 
 Macro definitions may contain parameters. For this purpose, the character
-<tt>@</tt> has a special meaning in a macro definition. When invoked, it
+<span class="tt">@</span> has a special meaning in a macro definition. When invoked, it
 must be followe by an integer. And the character together with the following
 integer will be replaced by a macro parameter during macro expansion.
 <p>
 
-For a rule macro, <tt>@1</tt> means the first parameter, <tt>@2</tt> means
+For a rule macro, <span class="tt">@1</span> means the first parameter, <span class="tt">@2</span> means
 the second parameter, etc. It is an error if the macro is invoked in a
 tstring without giving enough parameters.
 <p>
 
-For a positional macro, <tt>@1</tt> designates the first atom following the
-macro, while <tt>@-1</tt> designates the first atom preceding the macro, etc.
+For a positional macro, <span class="tt">@1</span> designates the first atom following the
+macro, while <span class="tt">@-1</span> designates the first atom preceding the macro, etc.
 It is also an error if a positional macro is inserted in a tstring without
 enough atoms before or after it as required by its definition.
 <p>
@@ -498,12 +499,12 @@ Care must be taken to the point that a macro parameter may result in several
 atoms after expansion. This is not a problem unless the macro definition
 contains a positional macro. In case where it is necessary to ensure the
 position of parameters, one can enclose the parameter by a pair of brackets,
-such as <tt>[@1]</tt>.
+such as <span class="tt">[@1]</span>.
 <p>
 
 A general dictionary has the same syntax as the reserved ones. In this case,
 the definition field can be a comma-separated list of items. These
-dictionaries are used via the <tt>Dic</tt> builtin rule, which gives a match
+dictionaries are used via the <span class="tt">Dic</span> builtin rule, which gives a match
 if one of the items in the definition is equal to the value given in the
 parameter of the rule.
 <p>
@@ -527,8 +528,8 @@ $table_tr
 <td>The main data input</td>
 <td>A multi-line string. <ul>
 <li>Line 1: command followed by options. Valid commands: <ul>
-  <li><tt>match</tt> check matching.
-  <li><tt>debug</tt> check matching with debug information.
+  <li><span class="tt">match</span> check matching.
+  <li><span class="tt">debug</span> check matching with debug information.
   </ul>
 <li>Line 2: The sample.
 <li>Line 3 and up: Each line is a tester.
@@ -537,7 +538,7 @@ Lines can also be delimited by the semi-colon. For this reason, semi-colons
 must be protected by parentheses in both the sample and the tester.
 <p>
 Options have the same syntax as in the style option definition. With one
-more possible definition here: <tt>style=[the_name_of_style]</tt>.
+more possible definition here: <span class="tt">style=[the_name_of_style]</span>.
 </td></tr>
 
 $table_tr
@@ -569,11 +570,11 @@ debug,word,Output debug information to stderr.\
 language,value,A two-letter language code.\
 matchall,word,Match every line of the tester&#44; instead of stopping after the first match.\
 nocase,word,Fold both texts to lower case before comparison.\
-nocs,word,Replace computer-oriented characters by spaces (<tt>_&$#\\@~</tt>)\
+nocs,word,Replace computer-oriented characters by spaces (<span class="tt">_&$#\\@~</span>)\
 nomath,word,Replace mathematical operators by spaces (<tt>+-*/=|%<>()_</tt>)\
-noparentheses,word,Replace parentheses by spaces (<tt>()[]{}</tt>)\
-nopunct,word,Replace puncuation characters by spaces (<tt>.,;:?!"</tt>) except the dot as a decimal point.\
-noquote,word,Replace quoting characters by spaces (<tt>`'"</tt>)\
+noparentheses,word,Replace parentheses by spaces (<span class="tt">()[]{}</span>)\
+nopunct,word,Replace puncuation characters by spaces (<span class="tt">.,;:?!"</span>) except the dot as a decimal point.\
+noquote,word,Replace quoting characters by spaces (<span class="tt">`'"</span>)\
 reaccent,word,Allow composition of accented letters using special characters.\
 style,value,The style&#44, only valid in the environment parameter.\
 
@@ -638,7 +639,7 @@ $table_hdtr
  !set l=!line $i of $error_data
  !distribute items $l into msg,mean
  $table_tr
- <td><tt>$msg</tt></td>
+ <td><span class="tt">$msg</span></td>
  <td>$mean</td>
  </tr>
 !next i

@@ -61,11 +61,11 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 自由格式的回答就是用户自己键入的回答.
 目前一个练习中最多可以同时提出$answerlim个自由回答的问题. <p>
 其语法如下:
-<tt>\answer{名称}{\reponse}{type=...}{option=...}{weight=...}</tt>
+<span class="tt">\answer{名称}{\reponse}{type=...}{option=...}{weight=...}</span>
 <br/>
 (后面3栏是可选的.)
 <p>
-<h4>参数 <tt>type</tt></h4>
+<h4>参数 <span class="tt">type</span></h4>
 每个自由格式的回答可以互相独立地取下列类型之一.
 
 !for i=1 to 2
@@ -87,7 +87,7 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
     <p>
     <b>注</b>.
     此类型的回答可接受 symtext 的选项. 如果在回答选项里声明了
-    <tt>symtext</tt>, 将按
+    <span class="tt">symtext</span>, 将按
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
    对回答作分析, 特别是对文本不作预处理. 在这种情形,
    symtext 的所有选项都能使用.
@@ -96,7 +96,7 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name1</tt>) $desc.
+   (<span class="tt">$name1</span>) $desc.
   !endif
  !next j
  </ul>
@@ -105,12 +105,12 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 !read help/$lang/embedans.phtml
 
 <p>
-自由格式回答的常用选项是 <tt>default</tt>. 此选项可写成
+自由格式回答的常用选项是 <span class="tt">default</span>. 此选项可写成
 <tt><font color=green>default="默认值"</font></tt> 的形式.
 如果用户的回答是空的, 将用此<b>默认值</b>取代.
 
 <p>
-插入一个回答栏可使用命令 <tt>embed</tt>, 
+插入一个回答栏可使用命令 <span class="tt">embed</span>, 
 !href cmd=help&special_parm=embedans 参看这里. 
 
 <p><h4>测试条件</h4> <p>
@@ -121,12 +121,12 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 的个数所确定的, 这比计算正确答案的个数好.
 <p>
 目前对于一个练习最多可同时定义$condlim个条件, 而且只有数值条件才能如此测试. 其语法如下.
-<p><tt>
+<p><span class="tt">
 \condition{提示文字}{测试条件}{weight=...}
-</tt>
+</span>
 (最后一栏是可选的.)
 <p>
-这里是一些测试条件的例. (<tt>\ans1</tt> 和 <tt>\ans2</tt> 是出现在自由格式解答中的未定义变量.)
+这里是一些测试条件的例. (<span class="tt">\ans1</span> 和 <span class="tt">\ans2</span> 是出现在自由格式解答中的未定义变量.)
 <small>
 !href target=wims_mhelp cmd=help&special_parm=if 全部关系式表
 </small>
@@ -134,19 +134,19 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
 $table_header
 $table_hdtr<th>条件<th>意义</th></tr>
 $table_tr<td><tt>\ans1>=0 and \ans1<=1</tt></td>
-    <td> 若 <tt>ans1</tt> 位于区间 [0,1] 内则判为正确.</td></tr>
-$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt></td>
-    <td>若 <tt>ans1</tt> 是 1, 3 或 5 则判为正确.</td></tr>
-$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
-    <td>若 <tt>ans1</tt> 与 <tt>ans2</tt> 是多项式</td>
+    <td> 若 <span class="tt">ans1</span> 位于区间 [0,1] 内则判为正确.</td></tr>
+$table_tr<td><span class="tt">\ans1=1 or \ans1=3 or \ans1=5</span></td>
+    <td>若 <span class="tt">ans1</span> 是 1, 3 或 5 则判为正确.</td></tr>
+$table_tr<td><span class="tt">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</span></td>
+    <td>若 <span class="tt">ans1</span> 与 <span class="tt">ans2</span> 是多项式</td>
     x<sup>2</sup>-5x+6的两个根则判为正确.</td></tr>
-$table_tr<td><tt>sin(\ans1)=0</tt></td>
-    <td>若 <tt>ans1</tt> 是 $m_pi 的倍数则判为正确.</td></tr>
+$table_tr<td><span class="tt">sin(\ans1)=0</span></td>
+    <td>若 <span class="tt">ans1</span> 是 $m_pi 的倍数则判为正确.</td></tr>
 $table_end <p>
 关于定义回答的语法请参看
 !href cmd=help&special_parm=oef 关于 OEF 格式的帮助.
 
-<h4>选项参数 <tt>weight</tt></h4>
+<h4>选项参数 <span class="tt">weight</span></h4>
 <a name="weight"></a>
 可对回答加权.
 <p>
@@ -157,8 +157,8 @@ $table_end <p>
 
 权重会影响计算的严厉度以及百分比.
 
-可以用变量作为 <tt>weight</tt> 的参数
-if they are defined before <tt class="wims_code_variable">\statement</tt>.
+可以用变量作为 <span class="tt">weight</span> 的参数
+if they are defined before <span class="tt wims_code_variable">\statement</span>.
 <p>
 例:
 <pre>
@@ -167,24 +167,24 @@ if they are defined before <tt class="wims_code_variable">\statement</tt>.
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>选项参数 <tt>option</tt></h4>
+<h4>选项参数 <span class="tt">option</span></h4>
  <a name="option"></a>
-在 <tt>\answer</tt> 或 <tt>\condition</tt> 里允许的 option 有
+在 <span class="tt">\answer</span> 或 <span class="tt">\condition</span> 里允许的 option 有
 <ul>
 <li>
-<tt>option=split</tt> : 当类型 = <tt>correspond</tt>, <tt>checkbox</tt> 或 <tt>mark</tt> 时,
+<span class="tt">option=split</span> : 当类型 = <span class="tt">correspond</span>, <span class="tt">checkbox</span> 或 <span class="tt">mark</span> 时,
 允许对回答拆分给分. 
 </li>
 <li>
-<tt>option=nonstop</tt> : 在分步给出的练习中,
+<span class="tt">option=nonstop</span> : 在分步给出的练习中,
 即使这个问题答错了, 仍然给出下一个问题.
 </li>
-<li><tt>option=noanalyzeprint</tt> : 不打印对回答自动分析的文字.
-而由作者提供合适的反馈. 这适用于某些特殊的类型, 例如 <tt>mark</tt>,
+<li><span class="tt">option=noanalyzeprint</span> : 不打印对回答自动分析的文字.
+而由作者提供合适的反馈. 这适用于某些特殊的类型, 例如 <span class="tt">mark</span>,
 此时自动设置的分析文字往往不合适. 注意: 对条件的分析也不再打印. 
 只有得分仍被打印.</li>
-<li>在 <tt>condition</tt> 后面: 
-<tt>option=hide</tt> : 此条件用于对回答的分析, 但不被打印.
+<li>在 <span class="tt">condition</span> 后面: 
+<span class="tt">option=hide</span> : 此条件用于对回答的分析, 但不被打印.
 </li>
 
 </ul>

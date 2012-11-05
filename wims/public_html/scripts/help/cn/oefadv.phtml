@@ -18,7 +18,7 @@
 否则练习将不能在被保存的环境里正常工作.
 
 <h3>分步练习</h3>
-分步练习可通过命令 <tt>\steps</tt> 定义. 举例来说, 如果你定义 
+分步练习可通过命令 <span class="tt">\steps</span> 定义. 举例来说, 如果你定义 
 
 <pre>\steps{choice 1, reply 1
 choice 2, reply 2, reply 3
@@ -28,23 +28,23 @@ choice 3
 此练习将分成3步, 第一步要求多重选择(choice 1)以及自由格式的回答(reply 1), 
 第2步是一个多重选择以及两个自由格式的回答的回答, 等等.
 <p>
-<tt>\steps</tt> 的内容接受(前面已定义的)参数以及条件定义, 
+<span class="tt">\steps</span> 的内容接受(前面已定义的)参数以及条件定义, 
 正如对参数的定义一样. 这样就使得你可以选择性地展示回答栏(根据参数的随机变量),
 甚至只含一步的情形也是如此.
 <p>
 请注意, 如果用户在前面的步骤里出了错, 以后的步骤就不出现了(可以认为全都错了).
 <p>
-在练习的陈述里, 当前的步数可通过变量 <tt>\step</tt> 获得,
+在练习的陈述里, 当前的步数可通过变量 <span class="tt">\step</span> 获得,
 此变量随着用户回答的进展而逐步取值 1,2,...
 <p>
 为了设计动态的分步练习(步数随用户的回答而发生变化), 
-你可以使用命令 <tt>\nextstep{...}</tt>. <tt>\nextstep</tt> 类似于 <tt>\steps</tt>,
+你可以使用命令 <span class="tt">\nextstep{...}</span>. <span class="tt">\nextstep</span> 类似于 <span class="tt">\steps</span>,
 但只有第一行是有效的. 它仅当其内容是由这样的变量给出时才能使用,
 这个变量应该由 post-reply 的参数定义所改变.
-当在某一步时 <tt>\nextstep</tt> 的内容变成空了, 练习就停止了.
+当在某一步时 <span class="tt">\nextstep</span> 的内容变成空了, 练习就停止了.
 <p>
-在任何情形, 在一个OEF源码内, 最多只能出现一个 <tt>\steps</tt> 或 
-<tt>\nextstep</tt> 的声明.
+在任何情形, 在一个OEF源码内, 最多只能出现一个 <span class="tt">\steps</span> 或 
+<span class="tt">\nextstep</span> 的声明.
 
 <h3>条件分叉与循环</h3>
 
@@ -57,19 +57,19 @@ choice 3
 \while{条件}{循环内容}     (只用在主环境)
 </pre>
 
-这些命令(<tt>while</tt> 除外)可以被用于陈述(<tt>statement</tt>)、提示(<tt>hint</tt>)、解答(<tt>solution</tt>)或反馈(<tt>feedback</tt>)内, 
+这些命令(<span class="tt">while</span> 除外)可以被用于陈述(<span class="tt">statement</span>)、提示(<span class="tt">hint</span>)、解答(<span class="tt">solution</span>)或反馈(<span class="tt">feedback</span>)内, 
 或用于主环境里.
 在最后一种情形, 条件执行只影响参数的定义.
 
 <a name=special></a>
 <h3>特殊方法</h3>
 
-在练习的陈述(<tt>statement</tt>)里利用命令 <tt>\special{...}</tt>
+在练习的陈述(<span class="tt">statement</span>)里利用命令 <span class="tt">\special{...}</span>
 可有下列特殊方法:
 <p>
 !if $special_parm=all
  !for sp in $special_list
-  <p><center><h4>特殊方法 <tt>$sp</tt></center></h4> <p>
+  <p><center><h4>特殊方法 <span class="tt">$sp</span></center></h4> <p>
   一般语法: <tt>\special{$sp <i>参数</i>}</tt> <p>
 
   !read oef/special/$sp.phtml help
@@ -82,7 +82,7 @@ choice 3
 !endif
 
 !if $special_parm2 isitemof $special_list
-<p><center><h4>特殊方法 <tt>$special_parm2</tt></center></h4> <p>
+<p><center><h4>特殊方法 <span class="tt">$special_parm2</span></center></h4> <p>
 一般语法: <tt>\special{$special_parm2 <i>参数</i>}</tt> <p>
 
 !read oef/special/$special_parm2.phtml help
@@ -97,7 +97,7 @@ choice 3
 <p>
 为使用这个功能, 应在 src 下建立一个子目录 cpp/. 
 预资源文件以 .cpp 作为后缀放入此子目录. 在这些文件里,
-你可以加入 cpp 的指令如 <tt>#include</tt> 或 <tt>#if</tt>. 
+你可以加入 cpp 的指令如 <span class="tt">#include</span> 或 <span class="tt">#if</span>. 
 (请参看 cpp 手册或 c 的说明以了解语法详情.)
 <p>
 cpp文件的第一行应该定义一个目标表, 其格式为
@@ -106,7 +106,7 @@ target=targ1 targ2 targ3 ...
 </pre>
 这行命令的意义是本cpp文件将生成 targ1.oef, targ2.oef, 等等.
 (输出文件会自动添加后缀 .oef). 在生成目标文件 <em>targ1</em> 时, 
-谓词 <tt>#TARGET</tt> 会被定义为 <em>targ1</em>. (而且宏
+谓词 <span class="tt">#TARGET</span> 会被定义为 <em>targ1</em>. (而且宏
 <em>TARGET_targ1</em> 也被定义.)
 所以在cpp原文件里可以加入如下的行:
 <pre>
@@ -132,19 +132,19 @@ target=targ1 targ2 targ3 ...
 <p>
 特别提示; 如果你的cpp文件的文本里含有未关闭的单引号或双引号的话,
 cpp会陷于混乱. 在这种情形, 
-你可以利用 c 的注解(<tt>/* ... */</tt>)把含有这样文本的命令保护起来.
+你可以利用 c 的注解(<span class="tt">/* ... */</span>)把含有这样文本的命令保护起来.
 
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : 在以 # 起首的命令,
-如 <tt>#include</tt> 里, 字符 <tt>#</tt> 必须是这一行的第一个字符.
-不可以把 <tt>#</tt> 用作注解字符. 
+如 <span class="tt">#include</span> 里, 字符 <span class="tt">#</span> 必须是这一行的第一个字符.
+不可以把 <span class="tt">#</span> 用作注解字符. 
 </div>
 
 <h3>练习环境</h3>
-特殊变量 <tt>\oefenv</tt> 可用来测试练习的环境(如果在练习里没有对它重定义的话).
+特殊变量 <span class="tt">\oefenv</span> 可用来测试练习的环境(如果在练习里没有对它重定义的话).
 <p>
 目前此变量能测试的内容只有
-``debug''. 在以下情形里, debug将出现在 <tt>\oefenv</tt> 里:
+``debug''. 在以下情形里, debug将出现在 <span class="tt">\oefenv</span> 里:
 <ol>
 <li>当它在创建练习(createxo)内执行时.</li>
 <li>当它在模块工具(modtool)内被测试时, 目的是为了开发.</li>

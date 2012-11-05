@@ -35,7 +35,7 @@ Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les 
 
 !set name_sheetempty=¡La hoja está vacía! No se le ha asignado nada todavía. Posiblemente se trata de un error de su profesor.
 
-!!set name_desc_dependancy=Un participante debe en primer lugar adquirir puntos en otros ejercicios de la hoja, antes de poder trabajar sobre éste. Por ejemplo,  <font color=blue><tt>1:50,2: 30,3+4+5: 60</tt></font> significa que el participante debe tener un éxito del  50% sobre el ejercicio 1, 30% sobre el ejercicio 2, y una media de éxito del 60% sobre los ejercicios 3, 4, 5.
+!!set name_desc_dependancy=Un participante debe en primer lugar adquirir puntos en otros ejercicios de la hoja, antes de poder trabajar sobre éste. Por ejemplo,  <font color=blue><span class="tt">1:50,2: 30,3+4+5: 60</span></font> significa que el participante debe tener un éxito del  50% sobre el ejercicio 1, 30% sobre el ejercicio 2, y una media de éxito del 60% sobre los ejercicios 3, 4, 5.
 
 !set name_deps=Tiene que mejorar sus puntuaciones en los ejercicios
 !set name_dep=Tiene que mejorar su puntuación en el ejercicio
