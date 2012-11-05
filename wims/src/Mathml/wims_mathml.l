@@ -1509,6 +1509,7 @@ int wims_mathml_displaymode = 0;
 "\\Large" { yylval=wims_mathml_copy_string("140%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
 "\\huge"  { yylval=wims_mathml_copy_string("200%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
 "\\Huge"  { yylval=wims_mathml_copy_string("250%");wims_mathml_env_start = 1; return TMP_FONTSIZE;}
+"\\cline{"\ {0,5}[0-9]{1,3}\ {0,5}-\ {0,5}[0-9]{1,3}\ {0,5}"}"
 
 "\\includegraphics"(\[[^\]]*\])?\{[^}]*\};
 
