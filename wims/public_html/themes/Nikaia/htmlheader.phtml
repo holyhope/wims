@@ -10,6 +10,22 @@
 
 $wims_expire
 $wims_CSS
+
+<!-- Script pour afficher les entetes HTTP dans le log firebug -->
+<script type="text/javascript">
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('HEAD', '/', true);            // Relative path of resource
+    
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        console.log(xhr.getAllResponseHeaders());
+      }
+    }
+    
+    xhr.send(null);
+</script>
+
 <link rel="stylesheet" href="html/themes/$wims_theme/css_theme/css_nikaia.css" type="text/css"/>
 
 <!-- METAS iOS : -->
@@ -23,10 +39,17 @@ $wims_CSS
 
 <style type="text/css">
 /* Images du theme*/
-body {
-    background-color: $wims_ref_bgcolor;
+
+body.main_body {
+    background-color: $wims_bgcolor;
     background-image: url("gifs/themes/$wims_theme/portal-header.png");
+    !if $wims_bgimg!=$empty
+        background-image: url("$wims_bgimg");
+    !endif
 }
+a:link{color:$wims_link_color};
+a:visited {color:$wims_vlink_color;}
+
 
 /* Couleurs CSS configurables depuis la configuration du site */
 

@@ -1182,8 +1182,7 @@ void main_phtml_put(char *mname)
     }
     else dirnbuf[0]=0;
     snprintf(buf,sizeof(buf),
-	     "style=\"background-color:%s;a:{color:%s};a:visited {color:%s;}; %s %s\" %s",
-	     bcolor,link,vlink,txbuf, bgbuf,dirnbuf);
+	     "class=\"main_body\" %s",dirnbuf);
     setvar("wims_htmlbody",buf);
     phtml_put(mname,0);
 }
