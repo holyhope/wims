@@ -1167,10 +1167,11 @@ void main_phtml_put(char *mname)
     bg=getvar("wims_bgimg"); bgbuf[0]=0;
     if(bg!=NULL && *bg!=0 && strchr(bg,'\"')==NULL) {
 	if(strchr(bg,'/')==NULL)
-	  snprintf(bgbuf,sizeof(bgbuf),"background-image:url(gifs/bg/%s);",bg);
+	  snprintf(bgbuf,sizeof(bgbuf),"gifs/bg/%s",bg);
 	else
-	  snprintf(bgbuf,sizeof(bgbuf),"background-color:%s;",bg);
+	  snprintf(bgbuf,sizeof(bgbuf),"%s",bg);
     }
+    setvar("wims_bodyimg",bgbuf);
     tx=getvar("wims_textcolor");
     if(tx!=NULL && *tx!=0 && strchr(tx,'\"')==NULL) {
 	snprintf(txbuf,sizeof(txbuf),"color:%s;",tx);
