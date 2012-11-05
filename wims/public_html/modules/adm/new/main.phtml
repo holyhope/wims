@@ -7,9 +7,10 @@
 $mod_title\
 $httpd_HTTP_HOST
 
- <div class="wimscenter">
+!if $wims_theme_version=0 or $wims_theme_version=
+  <div class="wimscenter">
+!endif
 !for j in $joblist
- &nbsp;
  !if $j=$job
  !if $wims_theme_version=0 or $wims_theme_version=
   <u><b>$(wims_name_mod_$j)</b></u>
@@ -25,7 +26,9 @@ $httpd_HTTP_HOST
  &nbsp;
  !endif
 !next j
-</div>
+!if $wims_theme_version=0 or $wims_theme_version=
+  </div>
+!endif
 
 !read $job.phtml
 !set wims_menu_items=!append line rss_new,2,$w_/rss/new.xml,external\
