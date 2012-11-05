@@ -6,7 +6,7 @@
  !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
 
  Quiere cumplir la definición de
- <tt class="wims_warning">$(tmp_$(empty_data)</tt>
+ <span class="tt wims_warning">$(tmp_$(empty_data)</span>
  de su módulo.
  !exit
 !endif

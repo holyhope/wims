@@ -26,11 +26,11 @@ una subcadena de caracteres del nombre de la estación de trabajo o de su número 
 <span class="wims_label">Sitios a los que se les permite recibir calificaciones</span>, puede imponer una
  restricción en el tiempo disponible para el registro de las notas añadiendo 
  las palabras
- <tt class="wims_code_words">
-&gt;aaaammdd.hh:mm</tt>
+ <span class="tt wims_code_words">
+&gt;aaaammdd.hh:mm</span>
  (inicio) y/o
- <tt class="wims_code_words">
-&lt;aaaammdd.hh:mm</tt>
+ <span class="tt wims_code_words">
+&lt;aaaammdd.hh:mm</span>
  (fin). Las fechas y horas deben indicarse en tiempo local del SERVIDOR,
  y estas palabras deben estar separadas unas de otras por espacios.
   </div>

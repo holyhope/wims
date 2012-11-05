@@ -351,7 +351,7 @@ de este sitio. No está autorizado a acceder a este módulo.
 
 !if $job=modules
    !set title=Module download
-  !set name_scheduled=!nosubst  Se ha recibido la petición de ejecutar su orden <tt class="wims_code_words">$auto</tt>. El resultado \
+  !set name_scheduled=!nosubst  Se ha recibido la petición de ejecutar su orden <span class="tt wims_code_words">$auto</span>. El resultado \
    se le enviará por correo electrónico.<p> Por favor no repita la orden hasta que se haya completado su ejecución.
   !distribute lines  entre los anuncios de módulos\
     módulos de la zona\

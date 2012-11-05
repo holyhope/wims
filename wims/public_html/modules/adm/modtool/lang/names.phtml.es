@@ -63,7 +63,7 @@
    Hacer una copia\
    Cambiar el nombre del módulo va a romper las hojas de trabajo que lo utilizan. Garantizan que no es el caso\
 into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst el módulo público <tt class="wims_fname">$original2</tt>) en su espacio \
+!set name_public_module=!nosubst el módulo público <span class="tt wims_fname">$original2</span>) en su espacio \
 de desarrollo bajo la dirección
 !set name_warning2=Cambiar el nombre o duplicar un módulo de dirección pública puede conducir a la duplicación \
   de su publicación. ¡Sea muy prudente! Cambiar el nombre o duplicar un módulo de dirección pública\

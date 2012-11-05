@@ -87,7 +87,7 @@
 !endif
 
 !if login_double=$error
- El identificador de usuario <tt class="wims_login">$login</tt>
+ El identificador de usuario <span class="tt wims_login">$login</span>
  ya se está usando en
  <p class="wimscenter"><span class="wims_emph">$title</span>.
  </p>

@@ -64,11 +64,11 @@
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
  into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubst de reeds gebubliceerde module <span class="wims_mod_title">$otit</span> \
-  (<tt class="wims_fname">$original2</tt>) naar de\
+  (<span class="tt wims_fname">$original2</span>) naar de\
   development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
-  <p>Wil U deze module uitproberen, plaats deze dan in de <tt class="wims_fname">test</tt> zone.
+  <p>Wil U deze module uitproberen, plaats deze dan in de <span class="tt wims_fname">test</span> zone.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
   exact overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
 !endif

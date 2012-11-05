@@ -20,23 +20,23 @@
  </form>
  <p>
  Se puede acceder a los ficheros del documento usando la 
-variable <tt class="wims_code_variable">\filedir</tt> en el documento. Por ejemplo
+variable <span class="tt wims_code_variable">\filedir</span> en el documento. Por ejemplo
 </p><p class="wimscenter">
- <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
 </p><p>
  proporciona un enlace al fichero <a href="$m_filedir/$f1">$f1</a>.
  También puede escribir
 </p><p class="wimscenter">
- <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
 </p><p>
-para incluir un fichero de imagen <tt class="wims_fname">myfile.jpg</tt> en la página.
+para incluir un fichero de imagen <span class="tt wims_fname">myfile.jpg</span> en la página.
  Los ficheros incorporados en el documento sólo serán accesibles
  a quienes estén autorizados a leer el documento.
 </p>
-Une nouvelle commande <tt class="wims_code_words">\href{}{}</tt> est en test. 
+Une nouvelle commande <span class="tt wims_code_words">\href{}{}</span> est en test. 
 Pour obtenir un lien sur le fichier, il suffit alors d'écrire
 <p class="wimscenter">
-<tt class="wims_code_words">\href{$f1}</tt> ou <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+<span class="tt wims_code_words">\href{$f1}</span> ou <span class="tt wims_code_words">\href{$f1}{lien}</span>.
 </p>
 !exit
 
@@ -72,7 +72,7 @@ Ask to open WIMS document $doc
 <span class="wims_warning">ATENCIÓN!!</span> 
 ¡Una vez borrados los documentos no se pueden recuperar!
 <p>
-¿Está seguro de que quiere borrar el documento <tt class="wims_fname">$tit</tt>?
+¿Está seguro de que quiere borrar el documento <span class="tt wims_fname">$tit</span>?
 
 !exit
 

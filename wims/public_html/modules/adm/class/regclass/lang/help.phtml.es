@@ -71,7 +71,7 @@ Una <span class="wims_emph">agrupación de clases</span> permite a los
  Ahora necesita una clave para terminar la operación de creación de
  su $name_classe bajo WIMS en el sitio $httpd_HTTP_HOST. </p><p>
  Esta clave acaba de ser enviada a su dirección de correo
- <tt class="wims_address">$email</tt>. Por favor, compruebe su buzón de correo electrónico (espere
+ <span class="tt wims_address">$email</span>. Por favor, compruebe su buzón de correo electrónico (espere
  un poco si no llega), y lea el mensaje que se le ha enviado. Copie la clave del
  mensaje a continuación.
 </p>

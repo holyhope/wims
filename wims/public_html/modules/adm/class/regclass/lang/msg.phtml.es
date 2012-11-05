@@ -87,7 +87,7 @@ Contraseña para la creación de clases virtuales
 
 !if bad_secure=$error
  ¡Su puesto actual no forma parte de su definición de acceso
-asegurado (<tt class="wims_code_words">$secure</tt>)&nbsp;! Es un error probablemente
+asegurado (<span class="tt wims_code_words">$secure</span>)&nbsp;! Es un error probablemente
 que tendría la consecuencia de prohibirles el acceso de control de su clase.
  <p>
 Lea atentamente la documentación siguiente. Si no comprenden todavía,
@@ -108,7 +108,7 @@ para desactivar esta medida de seguridad.
 !endif
 
 !if too_short=$error
- El campo de datos <tt class="wims_code_words">$(wims_name_$(error_subject))</tt> parece demasiado corto.
+ El campo de datos <span class="tt wims_code_words">$(wims_name_$(error_subject))</span> parece demasiado corto.
  !exit
 !endif
 

@@ -57,7 +57,7 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
 !endif
 
 !if login_double=$error
- El identificador de usuario <tt class="wims_login">$login</tt>
+ El identificador de usuario <span class="tt wims_login">$login</span>
  está ya siendo utilizado en la clase
  $classname.
  Por favor compruebe si no estaba ya inscrito; en caso contrario

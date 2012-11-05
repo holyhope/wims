@@ -102,11 +102,11 @@
 !endif
 
 !if bad_secure=$error
- Uw huidige ipadres staat niet in de door uzelf aangemaakte lijst (<tt class="wims_code_words">$secure</tt>)
+ Uw huidige ipadres staat niet in de door uzelf aangemaakte lijst (<span class="tt wims_code_words">$secure</span>)
  met veilige ipadressen.Dit is waarschijnlijk een typfoutje.
  <p>
  Lees aandachtig de onderstaande documentatie.
- Als het niet duidelijk is, vul hier dan niets of het woord <tt class="wims_code_words">all</tt> in.
+ Als het niet duidelijk is, vul hier dan niets of het woord <span class="tt wims_code_words">all</span> in.
  Bij dit laatste schakelt WIMS de controle op ipadressen voor uw klassen uit.
  </p><hr/>
  !read help/hosts.phtml
@@ -121,7 +121,7 @@
 !endif
 
 !if too_short=$error
- Het veld <tt class="wims_code_words">$(wims_name_$(error_subject))</tt> lijkt wat te kort.
+ Het veld <span class="tt wims_code_words">$(wims_name_$(error_subject))</span> lijkt wat te kort.
  !exit
 !endif
 

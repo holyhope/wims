@@ -106,11 +106,11 @@ name_cancellation
 !endif
 
 !set name_yourvariable=!nosubst De naam van de variabele voor de instellingen \
-die u hebt gekozen is <tt class="wims_code_variable">$namevar</tt>
+die u hebt gekozen is <span class="tt wims_code_variable">$namevar</span>
 !set name_accessvar_instr=!nosubst <strong>Voor gebruik in een werkblad of toets</strong>: \
-in een actief werkblad of toets, <tt class="wims_code_words">$(name_shinfo[6])</tt>, selecteer \
- <tt class="wims_code_words">$(name_allowtype[3])</tt> en schrijf \
-<tt class="wims_code_variable">\$namevar</tt> ( <tt class="wims_code_variable">\</tt>).
+in een actief werkblad of toets, <span class="tt wims_code_words">$(name_shinfo[6])</span>, selecteer \
+ <span class="tt wims_code_words">$(name_allowtype[3])</span> en schrijf \
+<span class="tt wims_code_variable">\$namevar</span> ( <span class="tt wims_code_variable">\</span>).
 
 !set name_group_instr=!nosubst <strong>Voor gebruik in een klas</strong>: U kunt de deelnemers \
 op basis van deze variabele voor een aantal activiteiten in de klas filteren

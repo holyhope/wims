@@ -55,7 +55,7 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = bad_variable
-    De naam van variabele (<tt class="wims_code_words">$namevar</tt>) is niet goed gekozen:
+    De naam van variabele (<span class="tt wims_code_words">$namevar</span>) is niet goed gekozen:
     de naam kan al ingebruik zijn.
    !exit
 !endif

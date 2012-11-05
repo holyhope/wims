@@ -12,29 +12,29 @@
 El contenido de una encuesta puede ser un texto html, reforzado con los mismos
 elementos que los mensajes de los foros. Además se pueden utilizar las siguientes
 órdenes: <dl>
- <dt><tt class="wims_code_variable">\menu{Sí,No}</tt>
+ <dt><span class="tt wims_code_variable">\menu{Sí,No}</span>
 	<dd>Elección mediante un menú.
 	</dd>
- <dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+ <dt><span class="tt wims_code_variable">\list{A,B,C,D}</span>
 	<dd>Elección mediante botones en una lista vertical.
 	</dd>
- <dt><tt class="wims_code_variable">\radio{muy mal, bastante mal, bastante bien, muy bien}</tt>
+ <dt><span class="tt wims_code_variable">\radio{muy mal, bastante mal, bastante bien, muy bien}</span>
 	<dd>Una elección con botones horizontales. 
 	</dd>
-<dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+<dt><span class="tt wims_code_variable">\checkbox{A,B,C,D}</span>
 	<dd>Plusieurs choix possibles par boutons horizontaux.
 	</dd>
- <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+ <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
 	<d>Grabar la elección inmediatamente precedente en una variable
-	individual para el participante, de nombre <tt class="wims_code_variable">vname</tt>. Esta
+	individual para el participante, de nombre <span class="tt wims_code_variable">vname</span>. Esta
 	variable tendrá el valor <tt>val0</tt> por defecto, <tt>val1</tt> si
 	el participante había escogido la primera opción, etc. <br/>
 	Esta variable puede posteriormente utilizarse para definir accesos
 	individualizados a las hojas de trabajo o a los exámenes, poniendo
-	la palabra <tt class="wims_code_variable">\vname</tt> entre las restricciones de la hoja o examen.
+	la palabra <span class="tt wims_code_variable">\vname</span> entre las restricciones de la hoja o examen.
 	Dans ce cas, il est possible de fixer le nombre maximum de participants choisissant une option.
 	Pour cela, chacun des choix doit commencer par le nombre maximum de participants
-	suivi de <tt class="wims_code_words">:</tt>
+	suivi de <span class="tt wims_code_words">:</span>
 	Par exemple,
 <pre>
 \list{46:Séance 1 à partir de 8h,
@@ -96,21 +96,21 @@ Plusieurs modes sont possibles :
 !readproc adm/lang/sheetexam.phtml.$lang
   <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires. 
   La variable technique alors créée vous permettra par exemple de définir un accès individualisé 
-  à des feuilles ou à des examens. Pour cela, si vous avez appelé <tt class="wims_code_variable">ma_variable</tt> quand 
-  le formulaire vous le demandera, il vous suffira d'écrire <tt class="wims_code_variable">\ma_variable</tt> dans la zone 
-  libre de la feuille ou de l'examen correspondant à <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  à des feuilles ou à des examens. Pour cela, si vous avez appelé <span class="tt wims_code_variable">ma_variable</span> quand 
+  le formulaire vous le demandera, il vous suffira d'écrire <span class="tt wims_code_variable">\ma_variable</span> dans la zone 
+  libre de la feuille ou de l'examen correspondant à <span class="tt wims_code_words">$(name_shinfo[6])</span>.
   </li><li>
   <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
-  (disons que vous l'avez appelé <tt class="wims_code_variable">ma_variable</tt>. A l'aide
+  (disons que vous l'avez appelé <span class="tt wims_code_variable">ma_variable</span>. A l'aide
   de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
   trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b> 
-  d'avoir demandé la variable <tt class="wims_code_variable">var_ma_variable</tt>).
+  d'avoir demandé la variable <span class="tt wims_code_variable">var_ma_variable</span>).
   D'autres utilisations sont en prévision.
   </li></ul>
 
 Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
-ne pas utiliser <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
-<tt class="wims_code_variable">manual1</tt>, ...).
+ne pas utiliser <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+<span class="tt wims_code_variable">manual1</span>, ...).
 !tail
 !exit
 !endif

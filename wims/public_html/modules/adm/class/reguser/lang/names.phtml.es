@@ -82,10 +82,10 @@ name_writepasswd,name_obtainpasswd,name_hello
 !set name_access2=!nosubst  Si el profesor ($supervisor) le autoriza a acceder,
 !set name_research=>Para buscar a un participante ya inscrito en $name_classes, escriba una de \
   las partes de su nombre completo o del login
-!set name_nofound=!nosubst con la búsqueda <tt class="wims_code_words">$search</tt> en los nombres o login no se ha hallado\
+!set name_nofound=!nosubst con la búsqueda <span class="tt wims_code_words">$search</span> en los nombres o login no se ha hallado\
 ninguna cuenta de participante
 !set name_student=!nosubst $firstn $lastn!
-!set name_studentadded=!nosubst El participante <tt class="wims_login">$firstn $lastn</tt> ha sido añadido a su $name_classe con el identificador de usuario
+!set name_studentadded=!nosubst El participante <span class="tt wims_login">$firstn $lastn</span> ha sido añadido a su $name_classe con el identificador de usuario
 !set name_welcome=!nosubst Ya está inscrito(a), con el identificador de usuario
 !set name_newparticipant=!nosubst Por favor proporcione las siguientes informaciones \
   relativas al nuevo participante en $classname

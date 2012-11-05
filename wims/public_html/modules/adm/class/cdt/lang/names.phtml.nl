@@ -33,10 +33,10 @@
   !set name_nodeposit=Er kan geen bestand meer worden toegevoegd omdat de ingestelde maximum \
   hardeschijfruimte voor deze klas is bereikt.
   !set name_explanation1=!nosubst Deze bestanden kunnen worden ingebonden door de variabele\
-  <tt class="wims_code_variable">\filedir</tt>. \
+  <span class="tt wims_code_variable">\filedir</span>. \
   Bijvoorbeeld:\
   <p class="wimscenter">\
-  <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
+  <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>\
   </p>\
   geeft een link naar het bestand \
   <a href="$m_filedir/$f1">$f1</a>.\

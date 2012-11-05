@@ -74,7 +74,7 @@ a lo menos\
 
 !set name_host=!nosubst Nombres de las estaciones de trabajo desde las que efectuará las operaciones\
  sensibles sobre su $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
- sensible (conseillé). Mettre le mot <tt class="wims_code_words">all</tt> désactivera cette mesure de sécurité.
+ sensible (conseillé). Mettre le mot <span class="tt wims_code_words">all</span> désactivera cette mesure de sécurité.
 
 !set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
 (fourni par votre ENT par exemple).

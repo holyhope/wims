@@ -76,7 +76,7 @@ Als laatste controle: voer nog één keer het wachtwoord in:
 Welkom , $supervisor ! 
 <p>
 Om de aanmeldings procedure van $name_classe op de WIMS site $httpd_HTTP_HOSTte voltooien, 
-vul daarvoor hier de code in die zojuist naar het opgegeven emailadres <tt class="wims_address">$email</tt>
+vul daarvoor hier de code in die zojuist naar het opgegeven emailadres <span class="tt wims_address">$email</span>
 is gestuurd.
 </p>
 !exit

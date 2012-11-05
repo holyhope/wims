@@ -85,10 +85,10 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_access1=!nosubst Als de administrator ($supervisor) je toegang verleent,
 !set name_access2=!nosubst Als de docent ($supervisor) je toegang verleent,
 !set name_research=Geef een loginnaam of echte naam (of een gedeelte hiervan), om te zoeken naar een deelnemer in $name_classes 
-!set name_nofound=!nosubst Er is geen deelnemer met <tt class="wims_code_words">$search</tt> in echte naam of loginnaam gevonden.
+!set name_nofound=!nosubst Er is geen deelnemer met <span class="tt wims_code_words">$search</span> in echte naam of loginnaam gevonden.
 
 !set name_student=!nosubst $firstn $lastn!
-!set name_studentadded=De deelnemer <tt class="wims_login">$firstn $lastn</tt> is toegevoegd aan $name_classe met loginnaam
+!set name_studentadded=De deelnemer <span class="tt wims_login">$firstn $lastn</span> is toegevoegd aan $name_classe met loginnaam
 !set name_welcome=!nosubst Je bent nu een geregistreerde deelnemer aan $classname, met loginnaam
 !set name_newparticipant=!nosubst Vul het onderstaande formulier in over de nieuwe deelnemer aan $classname.
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .

@@ -21,26 +21,26 @@
  </form>
  <p>
  Bestanden kunnen worden opgeroepen in een document door de variabele
- <tt class="wims_code_variable">\filedir</tt>. 
+ <span class="tt wims_code_variable">\filedir</span>. 
  Bijvoorbeeld,
 </p><p class="wimscenter">
- <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <span class="tt wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</span>
 </p><p>
  geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
  Er kan ook worden geschreven:
 </p><p class="wimscenter">
- <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+ <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
 </p>
-om het plaatje <tt class="wims_fname">myfile.jpg</tt> te verwerken in de pagina.
+om het plaatje <span class="tt wims_fname">myfile.jpg</span> te verwerken in de pagina.
 Bestanden opgenomen in dit document zijn alleen beschikbaar voor mensen met "leesrechten" voor dit document
 
 </p><p>
 
-Een nieuw commando <tt class="wims_code_words">\href{}{}</tt> is ge&iuml;ntroduceerd. 
+Een nieuw commando <span class="tt wims_code_words">\href{}{}</span> is ge&iuml;ntroduceerd. 
 Om een link naar een bestand aan te maken, is de onderstaande syntax afdoende:
 </p>
 <p class="wimscenter">
-<tt class="wims_code_words">\href{$f1}</tt> of <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+<span class="tt wims_code_words">\href{$f1}</span> of <span class="tt wims_code_words">\href{$f1}{lien}</span>.
 </p>
 !exit
 
@@ -63,7 +63,7 @@ Als schrijver van dit document moet u  toestemming aan de
 <span class="wims_warning">WAARSCHUWING !!</span> Er is hier geen "undelete", 
 dus weg is weg&nbsp;!
 <p>
-Weet u zeker dat het document<tt class="wims_fname">$tit</tt>&nbsp; moet worden verwijderd ?
+Weet u zeker dat het document<span class="tt wims_fname">$tit</span>&nbsp; moet worden verwijderd ?
 !exit
 
 :public

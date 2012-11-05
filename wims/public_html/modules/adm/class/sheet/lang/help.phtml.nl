@@ -10,7 +10,7 @@ $(name_shtab[6])
   een student moet eerst de gewenst score hebben behaald voordat de volgende opdracht mag worden gedaan.
   [drempel]
   Bijvoorbeeld:
-  <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
+  <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
   betekend: de student moet 50% van de opdracht 1 goed hebben,
   30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5.
 
@@ -26,11 +26,11 @@ Informatie over het scoringssysteem
 De scoreregistratie tijdstippen kan worden ingesteld 
 door de volgende woorden 
 toe te voegen:
-<tt class="wims_code_words">
-&gt;yyyymmdd.hh:mm</tt></b></font>
+<span class="tt wims_code_words">
+&gt;yyyymmdd.hh:mm</span></b></font>
 (begin tijd) en/of
-<tt class="wims_code_words">
-&lt;yyyymmdd.hh:mm</tt></b></font>
+<span class="tt wims_code_words">
+&lt;yyyymmdd.hh:mm</span></b></font>
 (eind tijd). 
 Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheiden van de andere instellingen.
 
@@ -48,13 +48,13 @@ Deze link (eerste item) is alleen zichtbaar als de score voor het werk lager is 
 Deze limiet score (1 - 10) voor de actieve help kan worden ingesteld (tweede item).
 Syntax voor speciale helppagina's:
 <ul><li>
-Een algemeen toegankelijke WIMS module of document: <tt class="wims_address">module=xxx</tt>
+Een algemeen toegankelijke WIMS module of document: <span class="tt wims_address">module=xxx</span>
 (syntax gelijk aan : <span class="wims_button disabled">$wims_name_about</span>).
 </li><li>
-Een oefening (via createxo) alleen toegankelijk in uw klas (dus eigen werk) : <tt class="wims_address">module=classes/nl&exo=naam_van_de_oefening</tt>.
+Een oefening (via createxo) alleen toegankelijk in uw klas (dus eigen werk) : <span class="tt wims_address">module=classes/nl&exo=naam_van_de_oefening</span>.
  De <tt>naam_van_de_oefening</tt> is de oefening zonder extensie <tt>.oef</tt>).
 </li><li>
-Een document in uw klas :<tt class="wims_address">module=adm/doc&doc=c1&+block=naam_van_het_blok</tt>
+Een document in uw klas :<span class="tt wims_address">module=adm/doc&doc=c1&+block=naam_van_het_blok</span>
 </li></ul>
 Extra parameters kunnen worden toegevoegd  (zie ook <span class="wims_button disabled">$wims_name_about</span>)
 

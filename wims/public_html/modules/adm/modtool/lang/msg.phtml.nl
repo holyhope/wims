@@ -6,7 +6,7 @@
  !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
 
  Vul het definitieveld 
- <tt class="wims_warning">$(tmp_$(empty_data)</tt>
+ <span class="tt wims_warning">$(tmp_$(empty_data)</span>
  van uw module in.
  !exit
 !endif
@@ -22,7 +22,7 @@
 !endif
 
 !if illegal_filedesc iswordof $error
-    U kunt niets anders dan een omschrijving in de "<tt class="wims_fname">filedesc</tt>
+    U kunt niets anders dan een omschrijving in de "<span class="tt wims_fname">filedesc</span>
     vermelden.
  !exit
 !endif

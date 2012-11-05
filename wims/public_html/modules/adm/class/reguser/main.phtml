@@ -324,11 +324,11 @@ $name_inscription4:
 
 !if $step=2
  $name_hello, $name_student!<p>
- $name_inscription3 <tt class="wims_login">$login</tt>. </p>
+ $name_inscription3 <span class="tt wims_login">$login</span>. </p>
  !if $email=$empty
  <p> $name_passwd_nonvalid </p>
  !else
-<p>$wims_name_email: <tt class="wims_address">$email</tt> </p>
+<p>$wims_name_email: <span class="tt wims_address">$email</span> </p>
  !endif
  <label for="pass2">$name_passwd_exact:</label>
  !form reply
@@ -348,9 +348,9 @@ $name_inscription4:
   !set login_wims=!defof user_external_auth in $userdef
   !default login_wims=$login
   $name_studentadded  
-  <tt class="wims_login">
+  <span class="tt wims_login">
   !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
-  </tt>.
+  </span>.
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
@@ -367,7 +367,7 @@ $name_inscription4:
  !endif
  <p>$name_hello, $name_student!</p>
  <p>$name_welcome
- <tt class="wims_login">$login</tt>. </p><p>
+ <span class="tt wims_login">$login</span>. </p><p>
  $name_youcan
  </p>
  !read adm/class/initclass $class,auth

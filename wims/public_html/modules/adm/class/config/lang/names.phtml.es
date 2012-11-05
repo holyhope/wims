@@ -28,7 +28,7 @@ name_sheets
  !set name_namefile=introduzca por favor el nombre del fichero de seguridad
  !set name_help=se le pedirá que seleccione los recursos que quiere recuperar en la clase
 
- !set name_deposit=!nosubst Su copia de seguridad <tt class="wims_fname">$wims_deposit</tt> contiene los recursos\
+ !set name_deposit=!nosubst Su copia de seguridad <span class="tt wims_fname">$wims_deposit</span> contiene los recursos\
 siguientes. Marque lo que quiera recuperar en su clase.
 
  !set name_no_restore=I!set no_restore=Imposible hacer la recuperación porque usted comparte las de otra\
@@ -510,7 +510,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
-<br/>(lorsque <tt class="wims_code_words">$name_css</tt>  est sur <tt class="wims_code_words">class</tt>)&nbsp;:
+<br/>(lorsque <span class="tt wims_code_words">$name_css</span>  est sur <span class="tt wims_code_words">class</span>)&nbsp;:
 
 !set name_content_style2=o copiar aquí la hoja de estilo de la clase
 
@@ -602,7 +602,7 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
  del sitio</a> debe declarar el servidor remoto, y el servidor remoto debe también
  declarar que este servidor WIMS tiene permiso de conexión.
  (El administrador del sitio puede consultar el fichero
- <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> en busca de detalles de
+ <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> en busca de detalles de
  cómo declarar conexiones a sitios).
  !exit
 

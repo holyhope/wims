@@ -25,11 +25,11 @@ Zelfs al is het ingevulde adres een "sub-string" van de hostname of ip-adres
 <div class="wims_smallremark">
     <b>Tip.</b>
      In het <span class="wims_label">Toegestane Adressen</span> veld, kunnen ook <em>openings tijden</em> worden aangebracht door de woorden: 
-    <tt class="wims_code_words">
-&gt;yyyymmdd.hh:mm</tt>
+    <span class="tt wims_code_words">
+&gt;yyyymmdd.hh:mm</span>
     (begin tijd) en/of
-    <tt class="wims_code_words">
-&lt;yyyymmdd.hh:mm</tt> (eind tijd). <br/>
+    <span class="tt wims_code_words">
+&lt;yyyymmdd.hh:mm</span> (eind tijd). <br/>
     De genoemde tijden moeten natuurlijk wel worden genoteerd in de <em>locale tijd van de Server</em><br/>
     en moeten worden gescheiden van de andere "woorden" door spaties.
  </div>

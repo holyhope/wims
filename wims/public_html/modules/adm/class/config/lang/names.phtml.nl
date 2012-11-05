@@ -28,7 +28,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
  !set name_namefile=Geef de naam van het backup archief
  !set name_help=Er wordt gevraagd naar de specifiek te herstellen onderdelen van uw klas.
 
- !set name_deposit=!nosubst Het backup archief <tt class="wims_fname">$wims_deposit</tt> bevar de volgend onderdelen.\
+ !set name_deposit=!nosubst Het backup archief <span class="tt wims_fname">$wims_deposit</span> bevar de volgend onderdelen.\
  Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
  
  !set name_no_restore=De herstelprocedure wordt afgebroken: er is gedeeld materiaal van een andere klas aanwezig.\
@@ -508,7 +508,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
-!set name_content_style = U kunt een algemeen stylesheet definieren<br/>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
+!set name_content_style = U kunt een algemeen stylesheet definieren<br/>(als <span class="tt wims_code_words">$name_css</span> op <span class="tt wims_code_words">klas</span> is gezet)&nbsp;:
 
 !set name_content_style2=Kopieer hier een css-stylesheet
 
@@ -599,7 +599,7 @@ Om deze mogelijkheid te gebruiken, schrijf naar de
 <a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
 om een dergelijke voorziening te treffen.<br/>
 En deze andere server moet uw server wel erkennen.
-De site manager kan hier leren hoe het <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
+De site manager kan hier leren hoe het <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> administratief geregeld moet worden)
  
 !exit
  

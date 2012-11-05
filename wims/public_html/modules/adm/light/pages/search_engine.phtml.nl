@@ -64,7 +64,7 @@ worden de treffers getoond met in onderstaande prioriteiten volgorde:
 
 <h5>Het adres van materiaal op de server</h5>
 <p>
-Wanneer het echte adres van WIMS lesmateriaal , zoals <tt class="wims_address">E4/grammar/oeffonction.fr</tt> bekend is
+Wanneer het echte adres van WIMS lesmateriaal , zoals <span class="tt wims_address">E4/grammar/oeffonction.fr</span> bekend is
 kan dit ook rechtstreeks in de zoekmachine worden ingevoerd.
 </p>
 </div>

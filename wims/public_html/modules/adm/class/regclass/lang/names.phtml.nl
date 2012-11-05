@@ -72,6 +72,6 @@ External authentification CAS (optional)\
 
 !set name_host=!nosubst Computers van waaruit management mag worden uitgevoerd in de klassen: $name_classe .\
 Als hier niets wordt ingevuld, wordt bij elke handeling eerst een goedkeuringsemailtje verstuurd.\
-Als hier <tt class="wims_code_words">all</tt> wordt ingevuld, zijn deze handelingen vanaf elke computer toegestaan. 
+Als hier <span class="tt wims_code_words">all</span> wordt ingevuld, zijn deze handelingen vanaf elke computer toegestaan. 
 
 !set name_cas_help=Bij gebruik van externe authentificatie niet het type CAS vergeten.

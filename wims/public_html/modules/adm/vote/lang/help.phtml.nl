@@ -11,29 +11,29 @@
 !if $wims_read_parm=$empty
 De inhoud van de stemming / verkiezing kan een HTML tekst zijn, met dezelfde WIMS uitbreidingen als voor de "forum-berichten", 
 plus de volgende extra commando's <dl>
- <dt><tt class="wims_code_variable">\menu{JA,NEE}</tt>
+ <dt><span class="tt wims_code_variable">\menu{JA,NEE}</span>
 	<dd>Menu Keuze.
 
- <dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+ <dt><span class="tt wims_code_variable">\list{A,B,C,D}</span>
 	<dd>Een keuze d.m.v. een rij verticale "radiobuttons"
 	</dd>
- <dt><tt class="wims_code_variable">\radio{zeer slecht, slecht,redelijk, prima}</tt>
+ <dt><span class="tt wims_code_variable">\radio{zeer slecht, slecht,redelijk, prima}</span>
 	<dd>Een keuze d.m.v. een rij horizontale "radiobuttons"
 	</dd> 
- <dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+ <dt><span class="tt wims_code_variable">\checkbox{A,B,C,D}</span>
 	<dd>Several choices by horizontal buttons.
 	</dd>
- <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+ <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
 	<dd>Registreer de keuze in een variabele <tt>vname</tt> voor elke student afzonderlijk.
 	De waarde van deze variabele is default <tt>val0</tt> , en <tt>val1</tt> 
 	als de student kiest voor de eerste optie, etc.<br/>
 	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
 	tot op de individuele student te regelen.
 	Vermeld de variabele 
-	<tt class="wims_code_variable">\vname</tt> in de lijst met restricties van de bestreffende 
+	<span class="tt wims_code_variable">\vname</span> in de lijst met restricties van de bestreffende 
 	werkbladen of toetsen.
 	In dat geval is het ook mogelijk het maximale aantal deelnemers aan te geven.
-	Laat elke keuze beginnen met dit getal gevolgs door een dubbele punt <tt class="wims_code_words">:</tt>
+	Laat elke keuze beginnen met dit getal gevolgs door een dubbele punt <span class="tt wims_code_words">:</span>
 	Bijvoorbeeld:
 <pre>
 \list{12:Sessie 1 om 8.00,
@@ -41,7 +41,7 @@ plus de volgende extra commando's <dl>
 21:Sessie 3 om 13.00}
 </pre>
 	</dd>
-<dt><tt class="wims_code_variable">\textarea</tt>
+<dt><span class="tt wims_code_variable">\textarea</span>
    <dd>Een tekst invoerveld, alleen te gebruiken bij een anoniem enquete.
 	</dd>
 </dl>
@@ -102,22 +102,22 @@ De volgende modes zijn mogelijk
   <b>$name_accessvar</b> : 
   dmv dit formulier kan de openings- en sluitingstijden voor werkbladen en/of toetsen worden ingesteld
   Met behulp hiervan kan toegang tot  op individueel niveau worden ingeregeld. 
-  Hiertoe kan eenvoudig<tt class="wims_code_variable">mijn_variabele</tt> worden gedefinieerd als
-  <tt class="wims_code_variable">\mijn_variabele</tt> in het daartoe bestemde veld van het werkblad of proefwerk in kwestie
-   <tt class="wims_code_words">$(name_shinfo[6])</tt>.
+  Hiertoe kan eenvoudig<span class="tt wims_code_variable">mijn_variabele</span> worden gedefinieerd als
+  <span class="tt wims_code_variable">\mijn_variabele</span> in het daartoe bestemde veld van het werkblad of proefwerk in kwestie
+   <span class="tt wims_code_words">$(name_shinfo[6])</span>.
   </li><li>
   <b>$name_group</b> : 
   Er kunnen ook groepjes studenten worden gedfinieerd.
   Er wordt dan weer een naam van de variabele gevraagd; bijvoorbeeld
-   <tt class="wims_code_variable">mijn_inhaal_groepje_variabele</tt>.
+   <span class="tt wims_code_variable">mijn_inhaal_groepje_variabele</span>.
    Met behulp van deze variabele kunnen leerlingen worden toegevoegd.
    Of emails worden verstuurd naar de deelnemers; lijsten met cijfers worden gesorteerd etc.
    Meerdere toepassingen worden nog ontwikkeld.
   </li></ul>
 
 Let op dat de variabele naam uniek is voor de klas en dat deze variabele niet in gebruik is door WIMS.
-Bijvoorbeeld nooit variabelen gebruiken met namen als  <tt class="wims_code_variable">exam1</tt>, ... , <tt class="wims_code_variable">sheet1</tt>, ...,
-<tt class="wims_code_variable">manual1</tt>, ...).
+Bijvoorbeeld nooit variabelen gebruiken met namen als  <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+<span class="tt wims_code_variable">manual1</span>, ...).
 !tail
 !exit
 !endif

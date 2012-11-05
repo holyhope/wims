@@ -35,10 +35,10 @@ Authentification error. You have no right to publish with this IP number. Access
 
 :badcategory
  !if / isin $w2
-  The category <tt class="wims_code_words">$w2</tt> of your submitted module is unknown.
+  The category <span class="tt wims_code_words">$w2</span> of your submitted module is unknown.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  Categories actually available in the zone <tt class="wims_code_words">$(w0[1])</tt> are:
+  Categories actually available in the zone <span class="tt wims_code_words">$(w0[1])</span> are:
   <pre>
   $w3
   </pre>
@@ -46,7 +46,7 @@ Authentification error. You have no right to publish with this IP number. Access
   !mailurl $sysadmin publication maintainer
   if you want to add a new category.
  !else
-  The zone <tt class="wims_code_words">$w2</tt> of your submitted module is unknown.
+  The zone <span class="tt wims_code_words">$w2</span> of your submitted module is unknown.
   Please report your problem to the 
   !mailurl $sysadmin publication maintainer
 .
@@ -63,12 +63,12 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :badlang
- Sorry but the language <tt class="wims_code_words">$w2</tt> does not exist on WIMS yet. Somebody has
+ Sorry but the language <span class="tt wims_code_words">$w2</span> does not exist on WIMS yet. Somebody has
  to translate WIMS to this language before modules can be submitted.
 !exit
 
 :badname
- The module name <tt class="wims_fname">$w2</tt> is bad: it is either too long, too short or contains
+ The module name <span class="tt wims_fname">$w2</span> is bad: it is either too long, too short or contains
  illegal characters.
 !exit
 
@@ -87,7 +87,7 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :badversion
- The version number <tt class="wims_code_words">$w2</tt> of your module is not correctly formatted.
+ The version number <span class="tt wims_code_words">$w2</span> of your module is not correctly formatted.
  Please correct.
 !exit
 
@@ -99,8 +99,8 @@ Authentification error. You have no right to publish with this IP number. Access
 
 :doublelang
  Confusion in module language definition: the INDEX file declares
- <tt class="wims_code_words">language=$w3</tt>, while the directory has extension
- <tt class="wims_code_words">$w2</tt>. Please correct.
+ <span class="tt wims_code_words">language=$w3</span>, while the directory has extension
+ <span class="tt wims_code_words">$w2</span>. Please correct.
 !exit
 
 :empty
@@ -115,7 +115,7 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :nochange
- The module <tt class="wims_fname">$w2</tt>
+ The module <span class="tt wims_fname">$w2</span>
  is not modified since the last submission.
  Submission ignored.
 !exit
@@ -145,7 +145,7 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :noright
- You are not known to be the author or translator of <tt class="wims_fname">$w2</tt>.
+ You are not known to be the author or translator of <span class="tt wims_fname">$w2</span>.
  You can send a
  !href cmd=reply&jobreq=backup backup archive
  of your modification to the author

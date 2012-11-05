@@ -43,7 +43,7 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
 :welcome
  Welkom op $forumname.
   U bent nu een deelnemer aan dit forum, met de loginnaam
-  <tt class="wims_login">$login</tt>. <p>
+  <span class="tt wims_login">$login</span>. <p>
   U kunt nu
   !href module=adm/forum/forum&forum=$forum&type=authuser inloggen
   in het forum.

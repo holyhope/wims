@@ -88,7 +88,7 @@ Gebruik alleen woorden bestaande uit cijfers en/of letters, zonder accenten of s
 !endif
 
 !if login_double=$error
- De login naam  <tt class="wims_login">$login</tt>
+ De login naam  <span class="tt wims_login">$login</span>
  bestaat reeds in
  <p class="wimscenter">
  <span class="wims_emph">$title</span>.
