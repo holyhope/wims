@@ -5,11 +5,12 @@ $title
  $name_domain
 $table_header
  !for t in $Tot_dom
- $table_tr  <th colspan="2">$(name_$t)</th>
+ $table_tr <th colspan="2">$(name_$t)</th></tr>
   !for d in $(tot_dom_$t)
   $table_tr<td>
    !set l_=$(dom_$d)
-    !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b></td>
+    !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b>
+    </td>
    !if $l_=$empty
     <td>
    !else
@@ -24,12 +25,13 @@ $table_header
   !next d
  
  !next $t
+ </tr>
  $table_end
 !else
  $name_available
 !set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
   to $wims_menu_items
- <p>$table_header
+ $table_header
  !for t in $list
   $table_tr
     !set key=$(keywords_$t)
@@ -48,8 +50,8 @@ $table_header
    !endif
   </td>
   !next i
-
+</tr>
   !next t
- </table> <p>
+ </table>
 !endif
 

@@ -8,7 +8,7 @@ $name_workdetail
 !if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $name_student1
  !if $getuser isitemof $wims_connectedlogin
-  <img src="gifs/themes/$wims_theme_icon/connected.png" width="15"/>
+  <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px"/>
  !endif
 !else
  $name_student1
@@ -24,7 +24,7 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
 </font>
 </center>
   !if $user_photourl!=
-   <img src="$user_photourl" width="100" style="position:absolute;top:50px;right:5%;" alt="$name_student2" />
+   <img src="$user_photourl" width="100px" style="position:absolute;top:50px;right:5%;" alt="$name_student2" />
   !endif
 !if $eremain>0
  <div class="emptyline">&nbsp;</div>
@@ -116,12 +116,14 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
   !href cmd=reply&job=examcheck&checkuser=$getuser [$wims_name_detail]
   </small>
  !endif
- $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])<th>$(name_thsheet[9])/$scoremax
+ </th></tr>
+ $table_hdtr<th>$(name_thsheet[1])</th><th>$(name_thsheet[2])</th><th>$(name_thsheet[9])/$scoremax
+ </th></tr>
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
   
-  $table_tr<td align="center">$i
+  $table_tr<td align="center">$i</td>
   <td align="center">$t</td>
   !if $[rint(10*$(es_$i)*$scoremax)/100]>0
    !read adm/class/color $[ceil($(es_$i))]

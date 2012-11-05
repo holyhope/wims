@@ -1,9 +1,10 @@
 !if $error!=$empty
- <p>
+ <p clas="wims_alertmsg>
  !read msg.phtml
+ </p>
  <p>
  !href module=home $wims_name_class_home 
-. <p>
+. </p>
  !goto end
 !endif
 
@@ -16,12 +17,12 @@ $name_showsheet
   !set wims_formselect_switch=multiple size=$[min($activelist_cnt,7)]
   !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
   <input type="submit" value="$wims_name_Show"/>
-  </form>
+</form>
 !else
 !if $usercnt==0
 $name_noparticipant
 !else
- <p>$table_header
+ $table_header
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th><small>$name_cnt_exo 
  <br/> ($nbexototal $name_exo)</small></th><th>$name_total</th>
@@ -57,7 +58,7 @@ $name_noparticipant
   </tr>
 !next
 $table_end
- <p>$name_click
+ <p>$name_click</p>
 !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply\
 back2,1,cmd=new\

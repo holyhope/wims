@@ -13,7 +13,8 @@ de puntos requeridos y la calidad de los puntos obtenidos en los ejercicios
 de la hoja. Sean `x' este porcentaje e `y' la calidad, ambos tendiendo por 
 proporcionalidad a valores entre 0 y 1. Las siguientes son las fórmulas para
 el cálculo de las notas:
-<p>$table_header
+</p>
+$table_header
 $table_hdtr<th>Nivel</th><th>Fórmula</th><th>Explicación</th></tr>
 $table_tr<td align="center">0</td><td align="center">$scoremax max(x,y)
  </td><td>Muy laxa: el máximo entre el porcentaje y la calidad.</td></tr>
@@ -31,7 +32,7 @@ $table_tr<td align="center">5</td><td align="center">$scoremax x<sup>2</sup> y
  </td><td>El porcentaje de trabajo no terminado está sobrepenado.</td></tr>
 $table_tr<td align="center">6</td><td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
  </td><td>Cualquier error está sobrepenado.</td></tr>
-$table_end <p>
+$table_end
 
 Remarque : En niveau 0 et 1, si la note de qualité est 
 inférieure à 1 pour un exercice, le pourcentage de réussite (points obtenus) 
