@@ -82,26 +82,26 @@
 //]]>
 </script>
 
-    <table summary="" class="schaersvoorde_form">
-	<tr>
-	<td>
-	    !if $(question$n) != $empty
-		$(question$n)
-	    !endif
-	    <div id="wait_for_applet" style="text-align:center;display:block;"><img src="$gifdir/wait.gif" alt="wait...wait"></div>
-	    !if $exotext != $empty
-		$exotext
-	    !endif
-	    !if $(formula$n) != $empty
-		!if $embed = 1
-		    <table>
-			<tr>
-			<td>
-			    !insmath $(formula$n)
-			</td>
-			<td>
-			    <form id="mydefaultform" name="mydefaultform" action="">
-				<table>
+<table class="schaersvoorde_form">
+    <tr>
+    <td>
+	!if $(question$n) != $empty
+	    $(question$n)
+	!endif
+	<div id="wait_for_applet" style="text-align:center;display:block;"><img src="$gifdir/wait.gif" alt="wait...wait"></div>
+	!if $exotext != $empty
+	    $exotext
+	!endif
+	!if $(formula$n) != $empty
+	    !if $embed = 1
+		<table>
+		    <tr>
+		    <td>
+			!insmath $(formula$n)
+		    </td>
+		    <td>
+			<form id="mydefaultform" name="mydefaultform" action="">
+			    <table>
 				!set a_items=!itemcnt $(answer$n)
 				!if $a_items != $[floor($inputs)]
 				    !set use_lines=1
@@ -125,119 +125,119 @@
 					!endif
 					<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
 				    </td>
-				    <td>
+	    			    <td>
 					$(ex$p)&nbsp;
 				    </td>
 				    </tr>
 				!next p
-				</table>
-			    </form>
-			</td>
-			</tr>
-		    </table>
+			    </table>
+			</form>
+		    </td>
+		    </tr>
+		</table>
+	    !else
+		!insmath $(formula$n)
+	    !endif
+	!endif
+    </td>
+    !if $image=1
+	!if $XSIZE > 450 
+	    </tr>
+	    <tr>
+	!endif
+	<td>
+	    !if $draw=1
+		!set insdraw_size=$XSIZE,$YSIZE
+		!insdraw $(image$n)
+	    !else
+		!if $plot=1
+		    !set insplot_set=$(image_settings$n)
+		    !insplot $(image$n)
 		!else
-		    !insmath $(formula$n)
+		    !if $svg=1
+			!exec svgdraw $(image$n)
+		    !endif
 		!endif
 	    !endif
 	</td>
-	    !if $image=1
-		!if $XSIZE > 450 
-		    </tr>
-		    <tr>
-		!endif
-		<td>
-		    !if $draw=1
-			!set insdraw_size=$XSIZE,$YSIZE
-			!insdraw $(image$n)
-		    !else
-			!if $plot=1
-			    !set insplot_set=$(image_settings$n)
-			    !insplot $(image$n)
-			!else
-			    !if $svg=1
-				!exec svgdraw $(image$n)
-			    !endif
-			!endif
-		    !endif
-		</td>
-	    !endif
-	    !if $applet=1
-		!if $XSIZE > 450
-		    </tr><tr>
-		!endif
-		<td>
-		    $(object$n)
-		</td>
-	    !endif
-	    !if $inputs > 0 && $embed != 1
-		!if $XSIZE > 450 
-		    </tr>
-		    <tr>
-		!endif
-		<td>
-		    <form id="mydefaultform" name="mydefaultform" action="">
-			!if $inputs = 1
-			    !if $wims_user=supervisor
-		    		<textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
-        		    !else
-				<textarea  id="myinput0" style="$textareastyle" cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
-			    !endif
-			!else
-			    <table>
-			    !set a_items=!itemcnt $(answer$n)
-			    !if $a_items != $[floor($inputs)]
-				!set use_lines=1
-			    !else
-				!set use_lines=0
-			    !endif
-			    !for p=1 to $inputs
-				<tr>
-				<td>
-				    $(inputtext$p)
-				</td>
-				<td>
-				    $m_rightarrow
-				</td>
-				<td>
-				    !if $wims_user=supervisor
-					!if $use_lines=1
-					    !set deelantwoord=!line $p of $(answer$n)
-					!else
-					    !set deelantwoord=!item $p of $(answer$n)
-					!endif
-				    !else
-					!set deelantwoord=!item $p of $(reply$n)
-				    !endif
-				    <input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
-				</td>
-				<td>
-				    $(ex$p)&nbsp;
-				</td>
-				</tr>
-			    !next p
-			    </table>
-			!endif
-		    </form>
-		</td>
-	    !endif
-	</tr>
-    </table>
-    <table class="schaersvoorde_form">
-	<tr>
-	<th>
-    	    <input type="button" style="$mybuttonstyle" onclick="javascript:sendanswer();" value="$send">
-    	</th>
-	<th>
-	    <input type="button" style="$mybuttonstyle" onclick="javascript:dontknow();" name="but2" value="$dontknow">
-	</th>
-	!if $control_inputs = 1
-	    <th>
-		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(1)" name="but3" value="+">
-	    </th>
-	    <th>
-		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(-1);" name="but4" value="&minus;">
-	    </th>
+    !endif
+    !if $applet=1
+	!if $XSIZE > 450
+	    </tr><tr>
 	!endif
-	</tr>
-    </table>
+	<td>
+	    $(object$n)
+	</td>
+    !endif
+    !if $inputs > 0 && $embed != 1
+	!if $XSIZE > 450 
+	    </tr><tr>
+	!endif
+	<td>
+	    <form id="mydefaultform" name="mydefaultform" action="">
+		!if $inputs = 1
+		    !if $wims_user=supervisor
+		    	<textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea>
+    		    !else
+			<textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(reply$n)</textarea>
+		    !endif
+		!else
+		    <table>
+			!set a_items=!itemcnt $(answer$n)
+			!if $a_items != $[floor($inputs)]
+			    !set use_lines=1
+			!else
+			    !set use_lines=0
+			!endif
+			!for p=1 to $inputs
+			    <tr>
+			    <td style="vertical-align:middle">
+				$(inputtext$p)
+			    </td>
+			    <td style="vertical-align:middle">
+				$m_rightarrow
+			    </td>
+			    <td style="vertical-align:middle">
+				!if $wims_user=supervisor
+				    !if $use_lines=1
+					!set deelantwoord=!line $p of $(answer$n)
+				    !else
+					!set deelantwoord=!item $p of $(answer$n)
+				    !endif
+				!else
+				    !set deelantwoord=!item $p of $(reply$n)
+				!endif
+				<input id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord">
+			    </td>
+			    <td style="vertical-align:middle">
+				&nbsp;$(ex$p)
+			    </td>
+			    </tr>
+			!next p
+		    </table>
+		!endif
+	    </form>
+	</td>
+    !endif
+    </tr>
+</table>
+<table class="schaersvoorde_form">
+    <tr>
+    <th>
+    	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send">
+    </th>
+    <th>
+	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow">
+    </th>
+!if $control_inputs = 1
+    <th>
+	<input type="button" class="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(1)" value="+">
+    </th>
+    <th>
+	<input type="button" class="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(-1);" value="&minus;">
+    </th>
+!endif
+    </tr>
+</table>
+
 !exit

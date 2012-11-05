@@ -129,23 +129,22 @@
 		<form name="mydefaultform" id="mydefaultform "action="">
 		    !for i=1 to $inputs
 			<tr>
-			<td>
+			<td style="vertical-align:middle;">
 			    $(inputtext$i)
 			</td>
-			<td>
+			<td style="vertical-align:middle;">
 			    $m_rightarrow
 			</td>
-			<td>
+			<td style="vertical-align:middle;">
 			!if $wims_user=supervisor
 			    !set voorzeggen=!item $i of $(answer$n)
-			    <input id="myinput$[$i-1]" style="$textareastyle" name="myinput$[$i-1]" size="$cols" value="$voorzeggen" />
+			    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$voorzeggen" />
 			!else
-			    <input id="myinput$[$i-1]" style="$textareastyle" name="myinput$[$i-1]" size="$cols" value="$(myinput$[$i-1])" />
+			    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$(myinput$[$i-1])" />
 			!endif
 			</td>
-			<td>
-			    $(ex$p)
-			    &nbsp;
+			<td style="vertical-align:middle;">
+			    &nbsp;$(ex$p)
 			</td>
 			</tr>
 		    !next i
@@ -176,10 +175,10 @@
 <table class="schaersvoorde_form">
     <tr>
     <th>
-	<input type="button" style="$mybuttonstyle" onclick="sendanswer();" name="but1" value="$send" />
+	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     </th>
     <th>
-	<input type="button" style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow" />
+	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
     </th>
     </tr>
 </table>

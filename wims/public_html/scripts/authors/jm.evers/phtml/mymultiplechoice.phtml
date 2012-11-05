@@ -12,95 +12,91 @@
 !set n=$counter
 !! multiplechoice=1 choose from $options possibilities
 !! each possibility is called ex1,ex2,ex3...ex10 etc
-    <table class="schaersvoorde_form">
-	<tr>
-	<td>
-	    $(question$n)
-	    !if $(formula$n) != $empty
-		<br />
-		!insmath $(formula$n)
-	    !endif    
-	    !if $image=1
-		<br />
-		!if $plot=1
-		    !set insplot_set=$(image_settings$n)
-		    !insplot $(image$n)
+<table class="schaersvoorde_form">
+    <tr>
+    <td>
+	$(question$n)
+	!if $(formula$n) != $empty
+	    <br />
+	    !insmath $(formula$n)
+	!endif
+	!if $image=1
+	    <br />
+	    !if $plot=1
+		!set insplot_set=$(image_settings$n)
+		!insplot $(image$n)
+	    !else
+		!if $draw=1
+		    !set insdraw_size=$XSIZE,$YSIZE
+		    !insdraw $(image$n)
 		!else
-		    !if $draw=1
-			!set insdraw_size=$XSIZE,$YSIZE
-			!insdraw $(image$n)
-		    !else
-			!if $svg=1
-			    $(image$n)
-			!endif
+		    !if $svg=1
+			$(image$n)
 		    !endif
 		!endif
 	    !endif
-	    !if $applet=1
-		<br />
-		$(object$n)
-	    !endif
-	    !if $exotext != $empty
-		<br />
-		$exotext
-	    !endif
-	<td>
-	!if $image=0 or $XSIZE>400
-	    </tr><tr>
-	!endif	
-	<td>
-	    <table>
-		<tr>
-		<td  valign="top" align="center">
-		    <table>
-			<tr>
-			!if $options*$xsize>1024
-			    !set one_row=0
-			!else
-			    !set one_row=1
-			!endif
-			!set t=0
-			!for p=1 to $options
-			    !increase t
-			    <td valign="top" style="background-color:lightblue" onMouseover="this.style.backgroundColor='yellow';" onMouseout="this.style.backgroundColor='lightblue';">
-				<a onclick="var t=confirm(r0+'$p');if(t==true){window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
-				    !if $multiimage=1
-					!if $draw=1
-					    !set insdraw_size=$xsize,$ysize
-					    !insdraw $(ex$p)
-					!else
-					    !if $plot=1
-						!set insplot_set=$(image_settings$n)
-						!insplot $(ex$p)
-					    !else
-						!if $svg=1
-						    $(ex$p) 
-						!endif
-					    !endif
-					!endif
-				    !else
-					!if $math=0
-					    <span class="schaersvoorde_link">$(ex$p)</span>
-					!else
-					    !insmath $(ex$p)
-					!endif
+	!endif
+	!if $applet=1
+	    <br />
+	    $(object$n)
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    <td>
+    !if $image=0 or $XSIZE>400
+	</tr><tr>
+    !endif
+    <td>
+	<table>
+	    <tr>
+		!if $options*$xsize>1024
+		    !set one_row=0
+		!else
+		    !set one_row=1
+		!endif
+		!set t=0
+		!for p=1 to $options
+		    !increase t
+		    <td style="vertical-align:top;background-color:lightblue;padding:10px;border-spacing:5px" onMouseover="this.style.backgroundColor='yellow';" onMouseout="this.style.backgroundColor='lightblue';">
+			<a onclick="var t=confirm(r0+'$p');if(t==true){window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
+			!if $multiimage=1
+			    !if $draw=1
+				!set insdraw_size=$xsize,$ysize
+				!insdraw $(ex$p)
+			    !else
+				!if $plot=1
+				    !set insplot_set=$(image_settings$n)
+				    !insplot $(ex$p)
+				!else
+				    !if $svg=1
+					$(ex$p) 
 				    !endif
-				</a>
-			    </td>
-			    !if $t=2 and $one_row=0
-			    	</tr><tr>
-				!set t=0
+				!endif
 			    !endif
-			!next p
-			</tr>
-		    </table>
-		</td>
-		</tr><tr>
-		<td>
-			<input type="button" style="$mybuttonstyle" onclick="javascrip:dontknow();" name="but2" value="$dontknow">
-		</td>
-		</tr>
-	    </table>
-	</td>
-	</tr>
-    </table>
+			!else
+			    !if $math=0
+				<span class="schaersvoorde_link">$(ex$p)</span>
+			    !else
+				!insmath $(ex$p)
+			    !endif
+			!endif
+			</a>
+		    </td>
+		    !if $t=2 and $one_row=0
+		    </tr><tr>
+			!set t=0
+		    !endif
+		!next p
+	    </tr>
+	</table>
+    </td>
+</table>
+<table class="schaersvoorde_form">
+    <tr>
+    <td>
+	<input type="button" class="schaersvoorde_nok_button" onclick="javascrip:dontknow();" value="$dontknow">
+    </td>
+    </tr>
+</table>
