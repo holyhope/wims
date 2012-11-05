@@ -550,14 +550,15 @@ void _header(char *p, int option)
 <head>%s\n\
 </head><body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);*/
+	   /*http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd*/
 	 if(ol[0]) {
-	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
+	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
 	    \n<html xml:lang=\"%s\"\
 	    xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
      </head>\n<body %s %s\"%s\" %s>\n",
 	   lang,hbuf,s2,ol,wsbuf2,bo);}
 	   else {
-	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
+	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
 	    \n<html xml:lang=\"%s\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
      </head>\n<body %s %s%s %s>\n",
 	   lang,hbuf,s2,ol,wsbuf2,bo);
@@ -920,7 +921,7 @@ void exec_robottrap(char *p)
     ovlstrcpy(buf,"session=$wims_session.1&module=adm/trap");
     _output_("<!-- >"); exec_href(buf);
     _output_("Robot trapper, do not click!</a> < -->");
-    exec_href(buf); _output_("<font></font></a>");
+    exec_href(buf); _output_("<span></span></a>");
 }
 
 	/* set definitions in a file. Trusted modules only. */
