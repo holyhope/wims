@@ -18,7 +18,7 @@
 !endif
 
 !if $error!=$empty
- <div class="wimsmsg">
+ <div class="wims_alertmsg">
  !read lang/msg.phtml.$modu_lang
  </div>
  !if $restart!=no
@@ -45,7 +45,7 @@
   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
  to $wims_menu_items
  !else
-  <font color="blue"><strike>$wims_name_create_superclass</strike></font> ($noright).
+  <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
  !endif
   </p>
    <p>
@@ -55,7 +55,7 @@
   !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
  to $wims_menu_items
  !else
-  <font color="blue"><strike>$wims_name_create_portal</strike></font> ($noright).
+  <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
  !endif
  </p>
   
@@ -257,7 +257,7 @@ $table_tr<td colspan="3" align="center">
  !read lang/help.phtml.$modu_lang step3
  !if $Cltype iswordof 0 1
   !let tmp=!positionof item $ilevel in $levelid
-  ($wims_name_level <font color="green">$(leveldesc[$tmp])</font>).
+  ($wims_name_level <span class="wims_emph">$(leveldesc[$tmp])</span>).
  !endif
  !read adm/class/initclass $code,auth
  !if $(class_authidp[1;])=cas 

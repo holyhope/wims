@@ -29,7 +29,7 @@ Het oprichten van
 !if $Cltype<2
     een klas is voorbehouden aan een docent.
 !else
-    <font color="blue">$name_classe</font>
+    <span class="wims_emph">$name_classe</span>
      is voorbehouden aan de administrator.
 !endif
 <br/>
@@ -52,7 +52,7 @@ U bent begonnen met het oprichten van
 $name_classe $classname op de WIMS server van $httpd_HTTP_HOST,
 !if $Cltype iswordof 0 1
  !let tmp=!positionof item $ilevel in $levelid
- op leerniveau <b><font color="green">$(leveldesc[$tmp])</font></b>,
+ op leerniveau <span class="wims_emph">$(leveldesc[$tmp])</span>,
 !endif
 en met de verloopdatum $exp_day/$exp_month/$exp_year .
 Het maximum toegestane aantal  studenten in $classname is $ilimit . 
@@ -67,7 +67,7 @@ Het aanmelden van nieuwe leerlingen
 U kunt deze instellingen nog steeds
 !href module=$module&cmd=reply&step=0 corrigeren.
 </p><p>
-Als laatste controle: voer nog &eacute;&eacute;n keer het wachtwoord in:
+Als laatste controle: voer nog één keer het wachtwoord in:
 </p>
 !exit
 

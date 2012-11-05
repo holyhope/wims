@@ -11,7 +11,7 @@
 !set name_password=aanmeldings wachtwoord van het forum
 !set name_passsup=wachtwoord van de eigenaar
 
-!set forumname=<b><font color=green>$title</font></b>
+!set forumname=<span class="wims_emph">$title</span>
 
 !set months=Jan,Feb,Maart,April,Mei,Juni,Juli,Aug,Sept,Okt,Nov,Dec
 

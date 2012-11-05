@@ -32,7 +32,7 @@ Je kunt ook
 !exit
 
 :enter
-Om naar binnen te gaan als <b><font color=green>$mb_title</font></b>
+Om naar binnen te gaan als <span class="wims_emph">$mb_title</span>
 een <em>geregistreerde gebruiker</em>, 
 geef s.v.p. je loginnaam en wachtwoord:
 
@@ -40,7 +40,7 @@ geef s.v.p. je loginnaam en wachtwoord:
 
 :owner
 
-Om naar binnen te gaan als <b><font color=green>$mb_title</font></b> 
+Om naar binnen te gaan als <span class="wims_emph">$mb_title</span> 
 <em>beheerder</em> vul hier het wachtwoord in:
 
 !exit

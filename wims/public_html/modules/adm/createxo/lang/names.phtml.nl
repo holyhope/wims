@@ -45,7 +45,7 @@ Spelletjes\
 Taalkundige oefeningen\
 into name_first,name_datalist,name_chemistry,name_game,name_language
 
-!set name_save=!nosubst hier is de broncode van <font color="red"><b>$oef_title</b></font>,\
+!set name_save=!nosubst hier is de broncode van <span class="wims_warning">$oef_title</span>,\
 in OEF formaat (Open Exercice Format).\
  Het kan via kopieren tussen de twee regels en plakken op uw eigen pc worden bewaard.
 

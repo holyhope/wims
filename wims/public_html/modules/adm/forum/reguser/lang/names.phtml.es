@@ -39,11 +39,11 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
 :welcome
  Bienvenido/a a $forumname.
   Ya es miembro de este foro de discusión, con identificador de 
-  usuario ``<b><font color=green>$login</font></b>''. <p>
+  usuario <span class="wims_emph">$login</span>. <p>
   Ahora puede
   !href module=adm/forum/forum&forum=$forum&type=authuser acceder
   al foro de discusión.
-
+ </p>
 !exit
  
 :code

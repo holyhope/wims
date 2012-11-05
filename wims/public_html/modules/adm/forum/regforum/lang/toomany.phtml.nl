@@ -1,6 +1,6 @@
 <h3 class="wimscenter">Helaas</h3> 
 <p>
-Het aantal forums op deze site <font color="red">$httpd_HTTP_HOST</font>
+Het aantal forums op deze site <span class="wims_warning">$httpd_HTTP_HOST</span>
 heeft het -door de systeembeheerder ingestelde- maximum bereikt.
 Er kan er dus niet nog &eacute;&eacute;n bij.
  </p><p>

@@ -14,9 +14,9 @@
 <td align="left" valign="middle" width="15%">
   <table align="left" border="0" cellspacing="0" cellpadding="0">
   <tr><td align="center" valign="bottom">
-  !href module=home&special_parm=logo <img src="gifs/logo.gif" border="0" alt="WIMS logo"/>
+  !href module=home&special_parm=logo <img src="gifs/logo.gif" alt="WIMS logo"/>
   </td></tr></table></td>
-<td align="center" valign="bottom" nowrap>
+<td align="center" valign="bottom" wrap="nowrap">
   <br/><font size="+2"><b>$V_title</b></font>
   <br/><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
 <br/> <br/>
@@ -46,12 +46,13 @@ $table_tr<td align="center" colspan="$wims_headmenu_colcnt">
     !reset l_
    !endif
   !endif
-  !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height="16" border="0"/>$l_
+  !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height="16"/>$l_
    <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
  !endif
 !next i
+</td></tr>
   $table_end
-</td><td width="10%">&nbsp;</td>
+</td>
 </tr>
 !if $gotcnt<=0 and $s_keywords=$empty
   <tr><td>&nbsp;</td><td align="center">
@@ -70,12 +71,12 @@ $table_tr<td align="center" colspan="$wims_headmenu_colcnt">
 !endif
 </table></center>
 
-</div><div class="wimsbody"> <p>
+</div><div class="wimsbody">
 
 !if $wims_ismanager!=0
-<center>
+<div class="wimscenter">
  !href module=adm/manage $N_manage
-</center> <p>
+</div>
 !endif
 
 !read ./form.phtml
@@ -86,7 +87,7 @@ $table_tr<td align="center" colspan="$wims_headmenu_colcnt">
 !endif
 
 
-</div><div class="wimstail"><hr/> <p>
+</div><div class="wimstail"><hr/>
 
 !set wims_show_stat=!tolower $wims_show_stat
 !if yes isin $wims_show_stat
@@ -96,35 +97,36 @@ $table_tr<td align="center" colspan="$wims_headmenu_colcnt">
 !endif
 
 $table_header
-$table_tr<td align="center" nowrap colspan="$span">
+$table_tr<td align="center" wrap="nowrap" colspan="$span">
 <small>$CR_1
 !href module=adm/createxo $CR_OEF
  $wims_name_or
 !href module=adm/modtool $CR_mod
 </small>
+</td></tr>
 !if $gotcnt<=0 and $s_keywords=$empty
- $table_tr<td align="center" nowrap><small>
+ $table_tr<td align="center" wrap="nowrap"><small>
 !if $lang=cn
  !href module=help/wimsdoc.cn $wims_name_doctec
 !else
  !href module=help/wimsdoc.en $wims_name_doctec
 !endif
  </small>
- <td align="center" nowrap>
+ </td><td align="center" wrap="nowrap">
  <small> 
  !href module=adm/light&phtml=download.phtml.$lang $wims_name_download
  </small>
- 
  !if yes isin $wims_show_stat
-  <td align="center" nowrap><small>
+  <td align="center" wrap="nowrap"><small>
   !href module=adm/stat/referer $wims_name_ref
   </small>
-  <td align="center" nowrap><small>
+  <td align="center" wrap="nowrap"><small>
   !href module=adm/stat/stat $wims_name_stat
   </small>
  !endif
+</td></tr>
 !endif
-$table_end <p>
+$table_end
 <font size="-1">
 WIMS-$wims_version $E_comp $wims_version_date.
 $E_manager

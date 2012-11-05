@@ -11,7 +11,7 @@
 !set name_password=contraseña del foro
 !set name_passsup=contraseña del propietario
 
-!set forumname=<b><font color=green>$title</font></b>
+!set forumname=<span class="wims_emph">$title</span>
 
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 

@@ -1,12 +1,12 @@
 !!@# translate between !!@# et !!#@
 !if nom_fichier iswordof $error
-  <font color="red">
+  <span class="wims_warning">
 !!@#
 de naam van het bestand is ongeschikt.
 Een bestandsnaam mag geen
   <tt>..</tt> en ook geen <tt> / </tt> bevatten .
 !!#@
-</font>
+</span>
   !exit
 !endif
 !if bad_data iswordof $error
@@ -18,18 +18,18 @@ Een bestandsnaam mag geen
  
 !if $error!=$empty
   !if target iswordof error
-    <font color="red">
+    <span class="wims_warning">
 !!@#
  Kies een module.
 !!#@
-</font> 
+</span> 
     !exit
   !endif
-<font color="red">
+<span class="wims_warning">
 !!@#
 Niet vergeten de verplichte velden, gemarkeerd met een * in te vullen.
 !!#@
-</font>
+</span>
 !endif
 !if type_exo iswordof $error or file iswordof $error
 !!@#

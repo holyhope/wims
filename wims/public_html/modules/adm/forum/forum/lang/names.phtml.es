@@ -33,14 +33,14 @@ pulse en la palabra <span class="wims_button disabled">$name_register</span> par
 !exit
 
 :enter
-Para entrar en <b><font color=green>$mb_title</font></b>
+Para entrar en <span class="wims_emph">$mb_title</span>
 como <em>usuario inscrito</em> por favor introduzca su nombre de
 usuario (login) y su contraseña personal.
 
 !exit
 
 :owner
-Para entrar en  <b><font color=green>$mb_title</font></b> como su
+Para entrar en  <span class="wims_emph">$mb_title</span> como su
 <em>propietario</em>, por favor, introduzca la contraseña del propietario.
 
 !exit

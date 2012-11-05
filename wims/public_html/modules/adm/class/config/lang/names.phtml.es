@@ -169,7 +169,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
  !set name_nonewres=!nosubst No hay ningún (nuevo) tipo de recursos en la clase \
-  <em><font color="blue">$nei_description</font></em> que les autoriza a compartir.
+  <span class="wims_emph">$nei_description</span> que les autoriza a compartir.
  
  !set name_newres=!nosubst La clase <em><font color="blue">\
   $nei_description</font></em> les <b>autoriza</b> a compartir sus

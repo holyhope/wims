@@ -7,7 +7,7 @@ de WIMS hace posible incluir formulas matemáticas de una manera muy
 cómoda. Cuando el lector vea su mensaje, verá las fórmulas formateadas
 automáticamente.
 <p>
-El gestor de foros de discusión usa la barra invertida `<font color=blue>\</font>'
+El gestor de foros de discusión usa la barra invertida <span class="wims_emph">\</span>
 para detectar cuándo quiere usted que interprete lo que escribe como un símbolo
 matemático o una fórmula. La regla es como sigue:
 <p>

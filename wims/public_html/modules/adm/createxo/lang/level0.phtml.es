@@ -4,8 +4,7 @@ Bienvenido/a a esta página que le permite crear sus propios
 !if $wims_user!=supervisor
  ejercicios interactivos,
 !else
- ejercicios interactivos para la clase <font color=blue>
- $wims_classname</font> de <font color=blue>$wims_institutionname</font>.
+ ejercicios interactivos para la clase <span class="wims_emph">$wims_classname</span> de <span class="wims_emph">$wims_institutionname</span>.
 !endif
 
 Tienen a su disposición varias herramientas de creación en Createxo.

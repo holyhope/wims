@@ -12,7 +12,7 @@
   !set title=Búsqueda por tema
   !set name_domain=Por favor, seleccione una de las siguientes áreas.
 
-  !set name_available=!nosubst En la área <i><font color=blue>$name</font></i>, los siguientes temas\
+  !set name_available=!nosubst En la área <span class="wims_emph">$name</span>, los siguientes temas\
  están disponibles.
  !set wims_name_other=Otras áreas
 !endif

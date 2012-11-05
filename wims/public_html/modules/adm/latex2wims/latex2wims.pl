@@ -75,8 +75,8 @@ $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
-my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border="0" />}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border="0" />';
+my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" />}';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" />';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################
@@ -446,7 +446,7 @@ sub store_tag { my ($cle, $label, $tag, $ref, $ref_bloc) = @_;
 
 sub store_label { my ($label, $Id, $ref) = @_;
    $ref->{fichier}{$label} = $Id; 
-   "<a name=\"$label\"></a>";
+   "<a id=\"$label\"></a>";
 }
 
 sub dbg { print STDERR "$_[0]\n" if ($verbose); }
@@ -455,7 +455,7 @@ sub store_index { my ($label, $Id, $ref_index) = @_;
    dbg("... index: \"$label\"");
    my $L = $ref_index->{page}{$label};
    $ref_index->{page}{$label} =  !$L ? $Id : "$L,$Id";
-   "<a name=\"$label\"></a>";
+   "<a id=\"$label\"></a>";
 }
 
 sub class_index { my ($index,$level) = @_ ; 

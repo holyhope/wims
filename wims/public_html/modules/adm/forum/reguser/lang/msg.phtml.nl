@@ -80,7 +80,7 @@ Gebruik alleen woorden bestaande uit cijfers en/of letters, zonder accenten of s
 !endif
 
 !if bad_forumpass=$error
- Het wachtwoord voor <b><font color=green>$title</font></b>
+ Het wachtwoord voor <span class="wims_emph">$title</span>
  is niet correct. 
  U krijgt dus geen toegang tot de aanmeldingsprocedure van dit forum.
  
@@ -88,11 +88,11 @@ Gebruik alleen woorden bestaande uit cijfers en/of letters, zonder accenten of s
 !endif
 
 !if login_double=$error
- De login naam  ``<b><font color=green>$login</font></b>''
+ De login naam  <tt class="wims_login">$login</tt>
  bestaat reeds in
- <p><center>
- <b><font color=green>$title</font></b>.
- </center> <p>
+ <p class="wimscenter">
+ <span class="wims_emph">$title</span>.
+ </p>
  Kontroleer eerst even of U zich al eens heeft aangemeld.
  Kies desnoods een andere login naam.
  !exit

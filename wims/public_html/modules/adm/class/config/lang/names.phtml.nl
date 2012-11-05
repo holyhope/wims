@@ -171,7 +171,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
  !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
- <em><font color="blue">$nei_description</font></em> dat gedeeld kan worden.
+ <span class="wims_emph">$nei_description</span> dat gedeeld kan worden.
  
  !set name_newres=!nosubst De klas <em><font color="blue">\
   $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
@@ -179,7 +179,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color="blue">\
  $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
  
- !set name_warning_authorized=!nosubst De klas <em><font color="blue">$nei_description</font></em>\
+ !set name_warning_authorized=!nosubst De klas <span class="wims_emph">$nei_description</span>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
  Ga alleen door als zeker weet dat die niet van toepassing is.
   
@@ -209,7 +209,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!nosubst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
  
- !set name_accept=!nosubst Accepteert u de klas <em><font color="blue">$nei_description</font></em> als buurklas ?
+ !set name_accept=!nosubst Accepteert u de klas <span class="wims_emph">$nei_description</span> als buurklas ?
    
  !if $job2=stopshare
   !set title=Stop de deling
@@ -230,7 +230,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
   !if $job2=addshare
     !set title=Delen van lesmateriaal met andere klassen
-    !set name_class_share=De klas <em><font color="blue">$nei_description</font></em>\
+    !set name_class_share=De klas <span class="wims_emph">$nei_description</span>\
     heeft het onderstaande materiaal voor uitlening beschikbaar.
   !distribute lines beschikbaar\
     Uw klas deelt dit materiaal daadwerkelijk.\

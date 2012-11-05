@@ -1,33 +1,33 @@
  !goto $wims_read_parm
 
 :1
-Una <font color=blue>agrupación de clases</font> permite a los
+Una <span class="wims_emph">agrupación de clases</span> permite a los
  profesores intercambiar o compartir materiales pedagógicos, y a los
  alumnos pasar de una clase a otra sin tener que volver a introducir la
- contraseña. Puede crear aquí su <font color=blue>página de entrada</font>.
+ contraseña. Puede crear aquí su <span class="wims_emph">página de entrada</span>.
  <p>
- Una <font color=blue>estructura de centro educativo</font> es un conjunto
+ Una <span class="wims_emph">estructura de centro educativo</span> es un conjunto
  multinivel de clases virtuales, capaz de dar respuesta a las necesidades
  de un centro educativo al completo: bases de datos de alumnos y de
  profesores, diferentes niveles de enseñanza, programas, asignaturas y
  clases de alumnos, responsabilidades de los profesores, etc.
  Puede crear aquí su página inicial, llamada también
- <font color=blue>portal</font>.
+ <span class="wims_emph">portal</span>.
  </p>
  !exit
 :2
 <p>
   La creación
  !if $Cltype<2
-   de una <font color="blue">clase</font>
-   es una operación reservada a los <font color="blue">profesores</font>.
+   de una <span class="wims_emph">clase</span>
+   es una operación reservada a los <span class="wims_emph">profesores</span>.
  !else
    !if $Cltype=2
-    de una <font color="blue">página de entrada a una $name_classe</font>
+    de una <span class="wims_emph">página de entrada a una $name_classe</span>
    !else
-    de una <font color="blue">$name_classe</font>
+    de una <span class="wims_emph">$name_classe</span>
    !endif
-   es una operación reservada a un <font color="blue">administrador</font>
+   es una operación reservada a un <span class="wims_emph">administrador</span>
   (que puede ser un profesor).
  !endif
  Necesitará una dirección de correo activa para poder hacerlo.
@@ -47,7 +47,7 @@ Una <font color=blue>agrupación de clases</font> permite a los
  !endif
  $name_classe $classname en el sitio WIMS $httpd_HTTP_HOST,
  !if $Cltype=1
-  de nivel <b><font color=green>$name_level</font></b>,
+  de nivel <span class="wims_emph">$name_level</span>,
  !endif
  que expirará el $exp_day/$exp_month/$exp_year. El número
  máximo de participantes es de $ilimit;

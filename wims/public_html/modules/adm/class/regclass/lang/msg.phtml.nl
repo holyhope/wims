@@ -25,8 +25,8 @@
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>Het wachtwoord is verstuurd naar: $sendmail.</center></font>
-  <p>
+  <p class="wimscenter">Het wachtwoord is verstuurd naar: $sendmail.</p>
+
  !endif
  !if $regpass!=$empty
   Helaas, Uw wachtwoord is niet juist. Probeer het nog eens.
@@ -36,7 +36,7 @@
   Het oprichten van $cname op deze server is beschermd met een wachtwoord.
   Vul hieronder het wachtwoord in.
  !endif
- <p>
+
  !form reply
   <input type="hidden" name="step" value="0"/>
   Het wachtwoord: <input size="16" name="regpass" type="password"/>
@@ -45,7 +45,7 @@
  Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de 
  !mailurl $wims_site_manager systeembeheerder\
  van deze WIMS server.
-    
+</p> 
  !if $regpassmail!=$empty and $sendmail=$empty
   !form reply
   Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
@@ -76,16 +76,16 @@
   Het oprichten van klassen op deze server wordt geregeld door een 
   wachtwoord beschermde aanmeldings procedure.
  !endif
- <p>
+
  !form reply
-  <p><table border="0" cellspacing="5" summary="">
+  <table border="0" cellspacing="5" summary="">
     <tr><td align="right">
     Geef de naam van uw account:</td><td><input size="20" name="regid"/></td>
     </tr><tr><td align="right">
     en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password"/>
     <input type="submit" value="OK"/></td>
     </tr></table>
- </form> <p>
+ </form> 
  Opmerking: Schrijf naar de systeembeheerder of
  !mailurl $wims_site_manager sitemanager\
  voor een account

@@ -80,18 +80,17 @@
 !endif
 
 !if bad_forumpass=$error
- Su contraseña para <b><font color=green>$title</font></b>
+ Su contraseña para <span class="wims_emph">$title</span>
  no es correcta. Por lo tanto, no está autorizado a inscribirse 
  en este foro de discusión. Lo sentimos.
  !exit
 !endif
 
 !if login_double=$error
- El identificador de usuario ``<b><font color=green>$login</font></b>''
+ El identificador de usuario <tt class="wims_login">$login</tt>
  ya se está usando en
- <p><center>
- <b><font color=green>$title</font></b>.
- </center> <p>
+ <p class="wimscenter"><span class="wims_emph">$title</span>.
+ </p>
  Por favor, compruebe si estaba inscrito; de lo contrario, por favor
  elija otro nombre de acceso.
  !exit

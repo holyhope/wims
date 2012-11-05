@@ -57,12 +57,12 @@ Rapport van $name_competences\
 !endif
 
 !if $job=modpalier
-  !set name_job=!nosubst Verander de $name_n_palier $palier (<font color=green>$name_palier</font>) in de $name_competence $comp (<font color=green>$name_comp</font>).
+  !set name_job=!nosubst Verander de $name_n_palier $palier (<span style="color:green;">$name_palier</span>) in de $name_competence $comp (<span style="color:green;">$name_comp</span>).
   !exit
 !endif
 
 !if $job=user
-  !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
+  !set name_job=!nosubst <span style="color:green;">$user_firstname $user_lastname</span>
 !endif
 
 !if $job=delpalier

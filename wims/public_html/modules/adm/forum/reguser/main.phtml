@@ -12,7 +12,7 @@ $title
 
 !if $error!=$empty
 
- <div class="wimsmsg">
+ <div class="wims_alertmsg">
  !read lang/msg.phtml.$modu_lang 
  </div>
 
@@ -24,7 +24,7 @@ $title
  !goto end
 !endif
 
-!set forumname=<b><font color="green">$title</font></b>
+!set forumname=<span class="wims_emph">$title</span>
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
  $forumname
@@ -79,11 +79,11 @@ $wims_name_Password
 !if $step=2
  $name_hello, $name_student!<p>
  $name_inscription2
- ``<tt><b><font color="green">$login</font></b></tt>''. <p>
+ <tt class="wims_login">$login</tt>. <p>
  !if $email=$empty
-  $name_email1 <p>
+  $name_email1 </p>
  !else
-  $name_email2: <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> </p>
  !endif
  $name_email3
  !form reply

@@ -7,14 +7,14 @@ De volgende hulpmiddelen staan op deze server ter beschikking.
 
 
 <ol class="wims_browse_type_list">
-<li class="wims_browse_type_list">Online rekenmachines en functieplotters: onder andere, 
- <ul>
- <li class="wims_browse_type_list">
+<li>Online rekenmachines en functieplotters: onder andere, 
+ <ul class="wims_browse_type_list"">
+ <li>
   !set cat=T
   !reset key
   !href $search_addr Alle beschikbare online tools
   op volgorde van populariteit
- </li><li class="wims_browse_type_list">
+ </li><li>
   Rekenmachines:
   !set cat=P
   !set key=number, complex, roots
@@ -25,7 +25,7 @@ De volgende hulpmiddelen staan op deze server ter beschikking.
   !set key=number, roots
   !href $search_addr specialistische calculators
   (integers, continued fraction, positive characteristics, etc.)
- </li><li class="wims_browse_type_list">
+ </li><li>
   Analysis
   !set key=analysis, calculus, functions
   !set cat=P
@@ -36,12 +36,12 @@ De volgende hulpmiddelen staan op deze server ter beschikking.
   voor alles wat je zou willen weten over rekeken en functies:
 , afgeleide, integraal, limiet, minimum/maximum, wortels,rijen en reeksen,
   Fourier en Laplace transformaties, etc.
- </li><li class="wims_browse_type_list">
+ </li><li>
   !set cat=T
   !set key=linear algebra
   !href $search_addr Lineaire algebra calculators
   $ : lineaire systemen, matrices, determinant, vector ruimtes, etc.
- </li><li class="wims_browse_type_list">
+ </li><li>
   !set cat=T
   !set key=plotter
   Verschillende plotters:
@@ -51,59 +51,59 @@ De volgende hulpmiddelen staan op deze server ter beschikking.
   !href $search_addr snelle popup plotters
 . Die zeer snel een kurve,oppervlakte rijen/reeksen kunnen printen
 
- </li><li class="wims_browse_type_list">
+ </li><li>
   !set cat=T
   !set key=statistics, data
   !href $search_addr Statistiek calculators
 $ : gemiddelden en standaard afwijkingen, histogrammen, regressie, ...
  </li></ul>
  
-</li><li class="wims_browse_type_list">Interactieve oefeningen: oefeningen op WIMS in zeer verschillende uitvoeringen ,
+</li><li>Interactieve oefeningen: oefeningen op WIMS in zeer verschillende uitvoeringen ,
 zoals bijvoorbeeld:
  <ul>
- <li class="wims_browse_type_list">
+ <li>
   !set cat=X
   !reset key
   !href $search_addr Alle beschikbare oefeningen
   op volgorde van popularteit.
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=graphic choices
   !href $search_addr Grafische meerkeuze vragen
   van het type "klik op het goede plaatje"
     
- </li><li class="wims_browse_type_list">
+ </li><li>
   !set key=shoot
   !href $search_addr Schiet oefeningen
   Hier moet je een onzichtbaar punt proberen te raken/klikken, en wordt
   je beoordeeld op de precisie 
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=draw
   !href $search_addr Teken oefeningen
   Hier moet je proberen de juiste curve tekenen met je muis. 
   
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=coincidence
   !href $search_addr herken de curve oefeningen
   Er wordt je een curve getoond, je hebt meerdere kansen om de
   juiste vergelijking van deze curve te achterhalen
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=deductio
   !href $search_addr Deductio oefeningen
   Oefeningen met interactieve bewijsvoering/logica 
 
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=dialog
   !href $search_addr Dialoog oefeningen
   Hier kun je de server vragen stellen om een bepaald wiskundig probleem op te lossen
   Je wordt gestraft voor onzinnige vragen (...)
  
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set key=scenario
   !href $search_addr Scenario oefeningen
   Er worden random en mogelijk ook foute redeneringen getoond, jij moet 
   uitvinden waar de crux zit
   
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set cat=O
   !reset key
   !href $search_addr OEF oefeningen
@@ -112,7 +112,7 @@ zoals bijvoorbeeld:
   De vragen kunnen random zijn , de antwoorden  kunnen multiple choice, getallen
   functies ,text enz zijn.
    
-  </li><li class="wims_browse_type_list">
+  </li><li>
   !set cat=X
   !set key=contrib
   !href $search_addr Diverse Oefeningen
@@ -122,7 +122,7 @@ zoals bijvoorbeeld:
  Je kunt natuurlijk ook de oefeningen  
  !href module=$module&cmd=new&job=subject per onderwerp browsen
 .
-</li><li class="wims_browse_type_list">Mathematical recreations: 
+</li><li>Mathematical recreations: 
  !set cat=R
  !reset key
  !href $search_addr gesorteerd naar populariteit.

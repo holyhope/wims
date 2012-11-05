@@ -43,11 +43,11 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
 :welcome
  Welkom op $forumname.
   U bent nu een deelnemer aan dit forum, met de loginnaam
-  ``<b><font color=green>$login</font></b>''. <p>
+  <tt class="wims_login">$login</tt>. <p>
   U kunt nu
   !href module=adm/forum/forum&forum=$forum&type=authuser inloggen
   in het forum.
- 
+ </p>
 !exit
  
 :code
@@ -57,4 +57,5 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
   <p>
  Om het opgegeven emailadres te controleren,stuurt de server op dit moment
  een (eenmalige) code. Haal deze mail nu op; en vul de code hieronder in:
+ </p>
 !exit

@@ -47,7 +47,7 @@
    !set pswd=$class_password
   !endif
   
-  $table_tr<td align="center">
+  $table_tr<td>
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td>
@@ -58,14 +58,14 @@
      !read participant2.phtml
      !reset tmp_parm
    !else 
-   <td align="center">
+   <td>
    !set wims_ref_class=wims_button
    !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
    </td>
    !endif
-  <td align="center">
+  <td>
   $supv
-  </td> <td align="center">
+  </td> <td>
   !if $pswd=$empty
    $name_open
   !else
@@ -124,13 +124,13 @@ $table_header
   !set directlist_=!items2words $directlist 
   !read adm/class/initclass $code,auth
   !!defread wimshome/log/classes/$code/.def
-  $table_tr<td align="center">
+  $table_tr<td>
     $show
   </td>
   !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
      !read participant2.phtml
   !else 
-  <td align="center"> 
+  <td>
   !set wims_ref_class=wims_button
     !if $code notwordof $directlist_
       !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
@@ -144,10 +144,10 @@ $table_header
     !endif
     </td>
   !endif
-  <td align="center">
+  <td>
   $supv
-  </td><td align="center">$(wims_name_n_$l_)<br/>$name_year $y_</td>
-  <td align="center">
+  </td><td>$(wims_name_n_$l_)<br/>$name_year $y_</td>
+  <td>
   !if $pswd=$empty
    $name_open
   !else

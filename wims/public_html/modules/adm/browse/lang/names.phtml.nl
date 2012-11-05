@@ -12,7 +12,7 @@
   !set title=Browsen per onderwerp
   !set name_domain= Kies een van de volgende onderwerpen. 
   
-  !set name_available=!nosubst Op domein  <i><font color=blue>$name</font></i>, \
+  !set name_available=!nosubst Op domein  <span class="wims_emph">$name</span>, \
   zijn de volgende onderwerpen aanwezig
  !set wims_name_other= Andere domeinen
 !endif

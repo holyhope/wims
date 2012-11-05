@@ -1,7 +1,7 @@
 
 Lista de algunas de las aplicaciones más usadas de este sitio.
 <ul class="wims_browse_list">
- <li class="wims_browse_list">
+ <li>
   !href module=tool/geometry/animtrace Trazas animadas
   , herramientas en línea que dibujan curvas y superficies animadas. Introduzca sus 
   ecuaciones con un parámetro, y obtendrá curvas o superficies sobre las que podrá
@@ -13,8 +13,8 @@ Lista de algunas de las aplicaciones más usadas de este sitio.
   le permite introducir una ecuación implícita, y genera una superficie por traza de rayos, 
   también con posibilidad de animación.
   Muy vistoso, aunque algo más lento.
- 
- </li><li class="wims_browse_list">
+ </p>
+ </li><li>
   !href module=tool/analysis/function Calculadora de funciones:
   introduzca la función, y pulse para averiguar casi todo lo
   que le gustaría saber sobre dicha función: integrales, derivadas,
@@ -24,20 +24,20 @@ Lista de algunas de las aplicaciones más usadas de este sitio.
   que nos devuelve casi todo lo querríamos averiguar sobre la matriz: 
   determinante, inversa, polinomio característico, valores propios y
   vectores propios, etc.
- 
-</li><li class="wims_browse_list">
+ </p>
+</li><li>
   !href module=tool/geometry/rulecomp Regla &amp; Compás
   simula construcciones geométricas con regla y compás, e incluye
   docenas de objetivos predefinidos con soluciones y ayuda.
 
-</li><li class="wims_browse_list">
+</li><li>
   !href module=tool/algebra/factor Factorizador
   de enteros y polinomios, potente y de fácil uso. Factoriza enteros
   de unos 50 dígitos en segundos. También puede escogerse el campo base 
   para la factorización de polinomios: $m_QQ, $m_RR, $m_CC, o incluso
   campos finitos primos.
   
- </li><li class="wims_browse_list">
+ </li><li>
   Algunos juegos en línea:
   !href module=H2/algebra/bargame El juego de la barra
   ,
@@ -45,12 +45,12 @@ Lista de algunas de las aplicaciones más usadas de este sitio.
   ,
   !href module=H3/algebra/spuzzle El puzzle mudable
   .  
- </li><li class="wims_browse_list">
+ </li><li>
   !href module=H5/geometry/gravshoot Tiro al centro de gravedad
   es otro ejercicio gráfico en el que, dados algunos puntos, se le pide 
   que pulse en el centro de gravedad de los puntos. Su puntuación depende de
   la precisión de sus clicks, como en una galería de tiro.
-  <p><small>
+  <p>
   Otros ejercicios de la misma serie:
   !href module=H4/geometry/trishoot Tiro triangular
   ,
@@ -59,20 +59,20 @@ Lista de algunas de las aplicaciones más usadas de este sitio.
   !href module=H6/algebra/compshoot Tiro complejo
   ,
   !href module=U1/algebra/linshoot Tiro lineal
-  .</small>
-
- </li><li class="wims_browse_list">
+  .
+ </p>
+ </li><li>
   !href module=H6/geometry/coincfree Coincidencia a mano alzada
   , un ejercicio visual que le da una curva y le pide que halle
   una función cuya curva esté tan próxima a la dada como sea posible.
-  <p><small>
+  <p>
   Otros ejercicios de la misma serie:
   !href module=U1/algebra/coincpoly Coincidencia polinómica
   ,
   !href module=U1/analysis/coincdev Coincidencia dev
   ,
   !href module=U1/analysis/coinc_eqdif Coincidencia EqDiff
-  .</small>
+  . </p>
 </li>  
 </ul>
 

@@ -32,7 +32,7 @@ name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 !set name_text1=Om oefening (of hulpmiddelen etc) aan een werkblad toe te voegen, moet\
 eerst de betreffende module worden geslecteerd (zie hieronder) ; stel de oefening op de intropagina naar eigen wens \
 af met de daarvoor bestemde instelparameters. \
-Start de oefening en klik vervolgens op de link <font color=blue><tt>voeg toe aan werkblad</tt></font> onderaan de pagina.\
+Start de oefening en klik vervolgens op de link <span class="wims_emph">voeg toe aan werkblad<</span> onderaan de pagina.\
 Voor het selecteren van oefening zijn de volgende opties beschikbaar
 
 !set name_text2=Geef een zoekopdracht

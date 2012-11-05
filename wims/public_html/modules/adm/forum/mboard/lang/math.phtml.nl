@@ -6,11 +6,11 @@ is het bij WIMS mogelijk om ook heel gemakkelijk <b>Wiskundige formules</b> op t
 Wanneer een lezer uw bericht leest, worden de wiskundige formules
 automatisch geformateerd zoals het hoort.
 <p>
-Het message board gebruikt het backslash karakter `<font color=blue>\</font>'
+Het message board gebruikt het backslash karakter <span class="wims_emph">\</span>
 om te zien wannneer er een wiskundig symbool of formule wordt bedoeld.
 De regels zijn als volgt:
 <p>
-Als U een normale backslash `<font color=blue>\</font>'  wilt, kunt U typen: <tt>\\</tt>.
+Als U een normale backslash <span class="wims_emph">\</span>  wilt, kunt U typen: <tt>\\</tt>.
 <p>
 Wilt U wiskundig materiaal of griekse letters gebruiken in het bericht,
 typ dan gewoon <tt>\</tt> in, gevolgd door de naam van het symbool of de griekse letter

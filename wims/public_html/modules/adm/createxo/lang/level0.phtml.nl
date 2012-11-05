@@ -4,8 +4,7 @@ Welkom op de pagina waar
 !if $wims_user!=supervisor
  interactieve oefeningen kunnen worden gemaakt.
 !else
-    interactieve oefeningen kunnen worden gemaakt voor klas <font color=blue>
- $wims_classname</font> van <font color=blue>$wims_institutionname</font>.
+    interactieve oefeningen kunnen worden gemaakt voor klas <span class="wims_emph">$wims_classname</span> van <span class="wims_emph">$wims_institutionname</span>.
 !endif
 
 Createxo bevat verschillende hulpmiddelen voor

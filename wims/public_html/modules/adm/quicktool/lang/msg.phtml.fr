@@ -1,34 +1,35 @@
 !!@# translate between !!@# et !!#@
 !if nom_fichier iswordof $error
-  <font color="red">
+  <span class="wims_warning">
 !!@#
 Votre nom de fichier n'est pas valable, il ne doit y avoir ni 
   <tt>..</tt> ni <tt> / </tt> dans les noms de fichier.
 !!#@
-</font>
+</span>
   !exit
 !endif
 !if bad_data iswordof $error
 !!@#
-<b>Erreur.</b> Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe ?
+<span class="wims_warning">$wims_name_warning</span>.
+Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe ?
 !!#@
  !exit
 !endif
  
 !if $error!=$empty
   !if target iswordof error
-    <font color="red">
+    <span class="wims_warning">
 !!@#
  Choisissez le module.
 !!#@
-</font> 
+</span> 
     !exit
   !endif
-<font color="red">
+<span class="wims_warning">
 !!@#
 N'oubliez pas de remplir les champs obligatoires marqués par *. 
 !!#@
-</font>
+</span>
 !endif
 !if type_exo iswordof $error or file iswordof $error
 !!@#
