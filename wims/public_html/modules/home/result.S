@@ -1,6 +1,6 @@
 
 !if $gotcnt=0
- !changeto lang/welcome.phtml.$lang
+ !changeto lang/welcome-S.phtml.$lang
 !endif
 
 <ul class="wims_home_result_list">
