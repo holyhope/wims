@@ -14,14 +14,13 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<h1 align="center">FOUT</h1>
+<h1 class="wims_center">FOUT</h1>
 !goto examerr
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width="1"/>
- <H1 align="center">We zijn te druk</h1>
- <hr width="50%"/><p>
+ <h1 class="wims_center">We zijn te druk</h1>
+ <hr style="width:50%"/>
  Deze WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is op dit moment belast door een zeer groot aantal aanvragen,
  en neemt geen nieuwe opdrachten meer aan.
@@ -33,17 +32,16 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">SORRY</h1>
+ <h1 class="wims_center">SORRY</h1>
  Uw verzoek is geblokkeerd door deze WIMS server: maximum aantal verbindingen is bereikt.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1"/>
- <h1 align="center">Sorry</h1>
- <hr width="50%"/><p>
+
+ <h1 class="wims_center">Sorry</h1>
+ <hr style="width:50%"/><p>
  WIMS heeft het software pakket
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
@@ -61,7 +59,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">Stop!</h1><hr/>
+ <h1 class="wims_center">Stop!</h1><hr/>
  Het materiaal op
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
  is niet geschikt voor het automatisch downloaden.
@@ -71,14 +69,14 @@ padding-left: 3%; padding-right: 3%;}
  !exit 
 !endif
 
-<h1 align="center">WIMS error</h1><hr/><p>
+<h1 class="wims_center">WIMS error</h1><hr/>
 
 Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
  Voorkom het gebruik van de 'Terug' knop van Uw browser op deze Interactieve server.
-  <p><center>
+  <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -87,7 +85,7 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
   !if $httpd_HTTP_REFERER!=$empty
    &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">Exit WIMS</a>
   !else
-   </center><p>
+   </p>
    <small>Mocht U deze website gewoon willen verlaten, negeer dan deze mededelingen en
    ga door met het klikken van de `Terug' knop.</small>
   !endif
@@ -344,9 +342,9 @@ Je hebt geen tijd meer over om het examen af te maken.
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p><center>
+  <p class="wimscenter">
   <a href=# "window.close();$wims_opener">Sluit dit venster</a>.
-  </center><p>
+  </p>
   !exit
 !endif
 
@@ -363,7 +361,7 @@ Probeer je een andermans sessie te benaderen?
  <p>
  s.v.p.
  <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">maak een nieuwe sessie</a>.
- </body></html>
+ </p></body></html>
  !exit
 !endif
 

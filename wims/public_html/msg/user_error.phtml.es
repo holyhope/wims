@@ -14,27 +14,28 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<h1 align="center">ERROR</h1>
+<h1 class="wims_center">ERROR</h1>
 !goto examerr
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">Sobrecarga</h1>
- <hr width="50%"/><p>
+
+ <h1 class="wims_center">Sobrecarga</h1>
+ <hr style="width:50%"/><p>
  Este servidor WIMS <font color="blue">$httpd_HTTP_HOST</font> 
  está sobrecargado en este momento con un gran número de solicitudes,
  y no puede servir a más usuarios. Por favor, vuelva más tarde, o
  visite otro servidor WIMS.
  <p>Sentimos este inconveniente, y esperamos poder servirle pronto.
  !read mirror.phtml.es
+ </p>
  </body></html>
  !exit
 !endif
 
 !if overload iswordof $wims_user_error
-  <hr width="1"/>
-  <h1 align="center">Lo sentimos</h1>
+
+  <h1 class="wims_center">Lo sentimos</h1>
   Este servidor WIMS ha bloqueado su conexión: se ha superado la cuota de conexiones.
   </body></html>
   !exit
@@ -42,8 +43,8 @@ padding-left: 3%; padding-right: 3%;}
 
 !if ++++missing_ isin ++++$wims_user_error
  <hr width="1"/>
- <h1 align="center">Lo sentimos</h1>
- <hr width="50%"/><p>
+ <h1 class="wims_center">Lo sentimos</h1>
+ <hr style="width:50%"/><p>
  WIMS necesita de la presencia de software
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
@@ -61,7 +62,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">¡Alto!</h1><hr/>
+ <h1 class="wims_center">¡Alto!</h1><hr/>
  El contenido de 
  <a href="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> no es 
  compatible con los programas de almacenamiento de páginas ni
@@ -76,7 +77,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align="center">Error de WIMS</h1><hr/>
+<h1 class="wims_center">Error de WIMS</h1><hr/>
 
 Hay un error en su solicitud a este sitio WIMS.<p>
 
@@ -84,7 +85,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
  !if $wims_human_access=yes
   Por favor, evite usar el botón `Atrás' de su navegador,
   porque está en un servidor interactivo.
-  <p><center>
+  <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -93,7 +94,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
   !if $httpd_HTTP_REFERER!=$empty
    &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">Salir de WIMS</a>
   !else
-   </center><p>
+   </p>
    <small>Si quiere salir de este sitio, ignore este mensaje y siga
    pulsando el botón `Atrás'.</small>
   !endif
@@ -317,9 +318,9 @@ Hay un error en su solicitud a este sitio WIMS.<p>
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p><center>
+  <p class="wimscenter">
   <a href=# onclick="window.close();$wims_opener">Cerrar esta ventana</a>.
-  </center><p>
+  </p>
   !exit
 !endif
 
@@ -335,7 +336,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
  <p>
  Por favor
  <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">establezca una nueva conexión</a>.
- </body></html>
+ </p></body></html>
  !exit
 !endif
 

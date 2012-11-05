@@ -21,15 +21,15 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);" class="user_error">
-<h1 align="center">ERROR</h1>
+<h1 class="wims_center">ERROR</h1>
 !goto examerr
 !endif
 
 </head><body class="user_error">
 !if threshold iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">We are too busy</h1>
- <hr width="50%"/><p>
+
+ <h1 class="wims_center">We are too busy</h1>
+ <hr style="width:50%"/><p>
  This WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is currently overloaded by a large number of requests, and
  can no longer satisfy further users. Please come back later, 
@@ -42,23 +42,23 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">SORRY</h1>
+
+ <h1 class="wims_center">SORRY</h1>
  Your request is blocked by this WIMS server: connection quota exceeded.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1"/>
- <h1 align="center">Sorry</h1>
- <hr width="50%"/><p>
+
+ <h1 class="wims_center">Sorry</h1>
+ <hr style="width:50%"/>
  WIMS needs a software
  !set miss=!upper $missing_software
 <span class="wims_warning">$miss</span>
  to process your request, but that software is not available (or not visible
  to WIMS) on this server.
- <p>
+
  You can either
  <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">write 
  to the site manager</a> to inform him/her of the problem, or choose a
@@ -70,18 +70,18 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">Stop!</h1><hr/>
+ <h1 class="wims_center">Stop!</h1><hr/>
 !endif
 
-<h1 align="center">WIMS error</h1><hr/><p>
+<h1 class="wims_center">WIMS error</h1><hr/>
 
-There is an error in your request to this WIMS site.<p>
+There is an error in your request to this WIMS site.
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
   Please avoid using the `Back' button of your browser,
   because you are on an interactive server.
-  <p><center>
+  <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -339,9 +339,9 @@ There is an error in your request to this WIMS site.<p>
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p><center>
+  <p class="wimscenter">
   <a href=# onclick="window.close();$wims_opener">Close this window</a>.
-  </center><p>
+  </p>
   !exit
 !endif
 
@@ -357,7 +357,7 @@ There is an error in your request to this WIMS site.<p>
  <p>
  Please
  <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">make a new connection</a>.
- </body></html>
+ </p></body></html>
  !exit
 !endif
 

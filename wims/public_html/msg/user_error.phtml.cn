@@ -14,19 +14,18 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<h1 align="center">错误</h1>
+<h1 class="wims_center">错误</h1>
 !goto examerr
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">目前正忙</h1>
- <hr width="50%"/><p>
+ <h1 class="wims_center">目前正忙</h1>
+ <hr style="width:50%"/><p>
  本 WIMS 服务器 <font color="blue">$httpd_HTTP_HOST</font> 
  目前由于大量的请求而超载, 
  不能再接受新的用户. 请稍后再来, 
  或访问其他 WIMS 镜像站.
- <p>我们对由此带来的不便表示歉意,
+ </p>我们对由此带来的不便表示歉意,
  希望很快就能继续为您服务.
  !read mirror.phtml.cn
  </body></html>
@@ -35,16 +34,16 @@ padding-left: 3%; padding-right: 3%;}
 
 !if overload iswordof $wims_user_error
  <hr width="1"/>
- <h1 align="center">抱歉</h1>
+ <h1 class="wims_center">抱歉</h1>
  你的请求因超过连接配额而被服务器阻止.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width="1"/>
- <h1 align="center">抱歉</h1>
- <hr width="50%"/><p>
+
+ <h1 class="wims_center">抱歉</h1>
+ <hr style="width:50%"/>
  WIMS 需要软件
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
@@ -76,7 +75,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align="center">WIMS 错误</h1><hr/><p>
+<h1 class="wims_center">WIMS 错误</h1><hr/><p>
 
  你对本 WIMS 服务器发出的请求里有错.<p>
 
@@ -84,7 +83,7 @@ padding-left: 3%; padding-right: 3%;}
  !if $wims_human_access=yes
   请避免使用浏览器的 `返回' 键,
   因为你面对的是互动的服务器.
-  <p><center>
+  <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -93,7 +92,7 @@ padding-left: 3%; padding-right: 3%;}
   !if $httpd_HTTP_REFERER!=$empty
    &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">退出 WIMS</a>
   !else
-   </center><p>
+   </p>
    <small>如果你想退出本站,
    请忽略此信息并继续按 `返回'.</small>
   !endif
@@ -134,7 +133,7 @@ padding-left: 3%; padding-right: 3%;}
 
 !if bad_command iswordof $wims_user_error
   命令 ``$cmd'' 无效.
-  <p> 有效的命令是: <pre>
+  <p> 有效的命令是: </p><pre>
   new, renew, reply, hint, config </pre>
 !endif
 
@@ -146,6 +145,7 @@ padding-left: 3%; padding-right: 3%;}
   即使在同一个连接中也会变化. 如果遇到这种情形,
   请与班级的指导教师联系, 
   请他改变接入的锁定策略.
+  </p>
   !goto end
 !endif
 
@@ -337,9 +337,9 @@ padding-left: 3%; padding-right: 3%;}
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p><center>
+  <p class="wimscenter">
   <a href=# onclick="window.close();$wims_opener">请关闭此窗口</a>.
-  </center><p>
+  </p>
   !exit
 !endif
 
@@ -355,7 +355,7 @@ padding-left: 3%; padding-right: 3%;}
  <p>
  请
  <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">建立新会话</a>.
- </body></html>
+ </p></body></html>
  !exit
 !endif
 
