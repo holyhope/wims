@@ -57,7 +57,7 @@ Wiskundige formules:<br/>
     !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
     </p>
     Als de bovenstaande formule niet correct is afgebeeld, kan er gebruik worden gemaakt van een andere
-    <a onmouseover="return Tip($tip)"><font color="blue">browser</font>
+    <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>
     </a> 
     of gebruik de server in de afstelling "wiskunde met plaatjes".
 !set wims_ref_class=wims_button
