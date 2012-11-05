@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
             }
 /* two successive lines are replaced by an <p> - has to be fixed */
             if(*(p+1)!='\n') {fputc(*p,outf);break;}
-            p++; fputs("\n<p>\n",outf);
+            p++; fputs("\n<br/>\n",outf);
             while(*(p+1)=='\n') p++;
             if(*(p+1)=='>') goto pre;
             break;
