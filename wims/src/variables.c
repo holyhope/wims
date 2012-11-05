@@ -1167,13 +1167,13 @@ void main_phtml_put(char *mname)
     bg=getvar("wims_bgimg"); bgbuf[0]=0;
     if(bg!=NULL && *bg!=0 && strchr(bg,'\"')==NULL) {
 	if(strchr(bg,'/')==NULL)
-	  snprintf(bgbuf,sizeof(bgbuf),"background=\"gifs/bg/%s\"",bg);
+	  snprintf(bgbuf,sizeof(bgbuf),"background-image:url(gifs/bg/%s);",bg);
 	else
-	  snprintf(bgbuf,sizeof(bgbuf),"background=\"%s\"",bg);
+	  snprintf(bgbuf,sizeof(bgbuf),"background-color:%s;",bg);
     }
     tx=getvar("wims_textcolor");
     if(tx!=NULL && *tx!=0 && strchr(tx,'\"')==NULL) {
-	snprintf(txbuf,sizeof(txbuf),"text=\"%s\"",tx);
+	snprintf(txbuf,sizeof(txbuf),"color:%s;",tx);
     }
     else txbuf[0]=0;
     dirn=getvar("wims_main_dirn");     /* "rtl" for arabic writing ; on pourrait laisser vide pour les autres ? */
@@ -1182,8 +1182,8 @@ void main_phtml_put(char *mname)
     }
     else dirnbuf[0]=0;
     snprintf(buf,sizeof(buf),
-	     "bgcolor=\"%s\" %s %s %s link=\"%s\" vlink=\"%s\"",
-	     bcolor,txbuf,  bgbuf, dirnbuf,link,vlink);
+	     "style=\"background-color:%s;a:{color:%s};a:visited {color:%s;}; %s %s\" %s",
+	     bcolor,link,vlink,txbuf, bgbuf,dirnbuf);
     setvar("wims_htmlbody",buf);
     phtml_put(mname,0);
 }
