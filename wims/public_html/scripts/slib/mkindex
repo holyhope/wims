@@ -37,11 +37,11 @@ cat <<@ >index.phtml
  !set slib_author=\$script_out
  \$table_header
  <caption>\$wims_name_slib</caption>
- \$table_tr<th>\$wims_name_name</th><td><tt>\$slib_detail</tt></td></tr>
+ \$table_tr<th>\$wims_name_name</th><td><span class="tt">\$slib_detail</span></td></tr>
  \$table_tr<th>\$wims_name_title</th><td>\$slib_title</td></tr>
  \$table_tr<th>\$wims_name_Author</th><td>\$slib_author</td></tr>
- \$table_tr<th>\$wims_name_call1</th><td><tt>!readproc slib/\$slib_detail [parameters]</tt></td></tr>
- \$table_tr<th>\$wims_name_call2</th><td><tt>slib(\$slib_detail [parameters])</tt></td></tr>
+ \$table_tr<th>\$wims_name_call1</th><td><span class="tt">!readproc slib/\$slib_detail [parameters]</span></td></tr>
+ \$table_tr<th>\$wims_name_call2</th><td><span class="tt">slib(\$slib_detail [parameters])</span></td></tr>
  \$table_tr<th>\$wims_name_Parameters</th><td>
  !if \$slpcnt>1
   !if + isin \$slpcnt
@@ -70,14 +70,14 @@ cat <<@ >index.phtml
   \$table_tr<th>\$wims_name_comment</th><td>\$slib_comment</td></tr>
  !endif
  !if \$slib_require!=\$empty
-    \$table_tr<th>\$wims_name_Required_Software</th><td><tt>\$slib_require</tt></td></tr>
+    \$table_tr<th>\$wims_name_Required_Software</th><td><span class="tt">\$slib_require</span></td></tr>
  !endif
  !if \$slib_example!=\$empty
 !set excnt=!linecnt \$slib_example
   \$table_tr<th>\$wims_name_Example OEF </th><td>
   !for i=1 to \$excnt
  !set  slib_exemple=!line \$i of \$slib_example
-<p><tt><b>\text{A=slib(\$slib_detail \$slib_exemple)}</b></tt></p>
+<p><span class="tt">\text{A=slib(\$slib_detail \$slib_exemple)}</span></p>
   !set slib_wims_backslash=\$wims_backslash_insmath
   !set wims_backslash_insmath=yes
   !readproc  slib/\$slib_detail \$slib_exemple
@@ -129,7 +129,7 @@ do
   echo $f
   cnt=`expr $cnt + 1`
   cat <<@ >>index.phtml.$ll
-\$table_tr<td><tt>$f</tt></td><td>$tit
+\$table_tr<td><span class="tt wims_code_words">$f</span></td><td>$tit
 !href cmd=\$slib_cmd&special_parm=slib&\$slib_detname=$f\$slib_detailanchor [\$wims_name_detail]
 </td></tr>
 @
