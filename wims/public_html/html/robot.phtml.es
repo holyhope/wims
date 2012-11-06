@@ -33,7 +33,8 @@ Para acceder a los servicios de WIMS, necesita un navegador que permita
 el uso de formularios. Para comprobar la validez del navegador que utiliza,
 escriba por favor la palabra <tt>wims</tt> aquí:
  <input size=6 name=special_parm/> y pulse ``Intro''.
-</form>
+
+!formend
 <p>
 Tenga en cuenta que las páginas de WIMS son interactivas, no archivos HTML
 ordinarios. Deben usarse interactivamente, conectados. No las podrá

@@ -28,7 +28,7 @@
 <input type="submit" value="Search Google"> voor documentatie van
 <select name="q">
 !for sw in $swname
- <option value="$sw documentation">$sw
+ <option value="$sw documentation">$sw</option>
 !next sw
 </select></form>
 

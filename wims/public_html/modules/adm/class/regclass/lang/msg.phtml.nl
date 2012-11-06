@@ -88,7 +88,8 @@
     en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password"/>
     <input type="submit" value="OK"/></td>
     </tr></table>
- </form> 
+ 
+!formend 
  Opmerking: Schrijf naar de systeembeheerder of
  !mailurl $wims_site_manager sitemanager\
  voor een account

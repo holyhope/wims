@@ -32,7 +32,8 @@ WIMS kan uw webbrowser niet identificeren.
 Om gebruik te kunnen maken van deze WIMS server, heb je een browser nodig die overweg kan met "forms" 
 Om jouw browser te testen, typ het woord <tt>wims</tt> hier in:
 <input size=6 name=special_parm/> en klik ``Enter''.
-</form>
+
+!formend
 <p>
 Besef goed dat deze WIMS pagina's interactief zijn en geen statische HTML pagina's.
 De pagina's op deze server moeten dan ook ook ONLINE worden gebruikt en zijn kompleet nutteloos wanneer ze 
