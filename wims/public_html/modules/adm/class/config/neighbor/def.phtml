@@ -22,7 +22,7 @@ $name_neighbor_relation $name_with <span class="wims_emph">$nei_description</spa
   !endif
  !endif
 !endif
-<p>
+
 !if all notwordof $nei_sup $nei_part
 !form reply
 $name_accept
@@ -32,9 +32,10 @@ $name_accept
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
 
-</form> 
+
+!formend 
 !endif
-<p>
+
 
 !if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
    all isitemof $nei_sup,$nei_part
@@ -103,7 +104,8 @@ $name_chooseres:
  !set sh=!replace internal , by , $$name_ in $$name_$sharablelist
  !formcheckbox mksharable list $sharablelist prompt $sh
  <input type="submit" value="$wims_name_tosave"/>
- </form>
+ 
+!formend
 !if $nsharable!=$empty
 <p><b>$wims_name_warning</b>: $name_warning_authorized
 !endif

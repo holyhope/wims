@@ -150,7 +150,8 @@ to $wims_menu_items
  <textarea cols="55" rows="10" name="source">$source</textarea>
  </p>
  <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
- </p></form>
+ </p>
+!formend
  <span class="wims_warning">$wims_name_warning</span>. 
  Voer geen "corrupte code" handmatig in ; het risico
  bestaat dat het werkblad onbruikbaar wordt.

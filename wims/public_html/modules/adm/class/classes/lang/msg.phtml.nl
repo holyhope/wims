@@ -34,7 +34,8 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
   <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_tosave"/>
   </div>
- </form>
+ 
+!formend
  !exit
 !endif
 

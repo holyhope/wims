@@ -41,7 +41,9 @@
   <input type="hidden" name="step" value="0"/>
   Het wachtwoord: <input size="16" name="regpass" type="password"/>
   <input type="submit" name="Envoyer" value="$wims_name_send"/>
- </form><p>
+ 
+!formend
+<p>
  Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de 
  !mailurl $wims_site_manager systeembeheerder\
  van deze WIMS server.
@@ -61,7 +63,8 @@
    !endif
    &nbsp;
   <input type="submit" value="Recevoir" name="Ontvangen"/>
-    </form>
+    
+!formend
    !else
     !reset sendmail
    !endif

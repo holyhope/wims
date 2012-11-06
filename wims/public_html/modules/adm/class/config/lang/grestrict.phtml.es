@@ -14,7 +14,8 @@
  </table> <p>
  <input type="submit" name="save" value="Guardar"/>&nbsp;&nbsp;&nbsp;
  <input type="submit" name="abandon" value="Cancelar"/>
-</form>
+
+!formend
 
 <p>
 Puede introducir una o varias palabras en cada campo. El servidor

@@ -149,7 +149,8 @@ to $wims_menu_items
  <input type="hidden" name="job" value=putsource/><p class="wimscenter">
  <textarea cols="55" rows="10" name="source">$source</textarea></p>
  <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
- </p></form>
+ </p>
+!formend
  <span class="wims_warning">Atención</span>. ¡No inserte un fichero fuente modificado! Se arriesga a
  inutilizar su hoja de trabajo.
  !exit

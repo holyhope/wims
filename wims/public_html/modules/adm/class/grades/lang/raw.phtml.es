@@ -2,11 +2,13 @@
 Aquí están los fuentes separados por comas de las calificaciones introducidas 
 manualmente, las puede modificar directamente (ver las 
 explicaciones de abajo).
-<p>
+
 !form reply
 !mexec catraw.sh
-<p><input type="submit" name="reg" value="$wims_name_tosave"/>
-</form> <p>
+<input type="submit" name="reg" value="$wims_name_tosave"/>
+
+!formend
+
 <b>Atención.</b>¡El servidor no comprueba los datos que envía para su grabación!
 <p>
 Por favor, no modifique la estructura de líneas del archivo, los

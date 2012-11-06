@@ -1,11 +1,13 @@
 
 Hier is de lijst van handmatig ingevoerde cijfers,
  deze kunen rechtstreeks worden aangepast. (zie uitleg beneden)
-<p>
+
 !form reply
 !mexec catraw.sh
 <p><input type="submit" name="reg" value="$wims_name_tosave"/>
-</form> <p>
+
+!formend
+
 <b>Waarschuwing.</b> 
 De WIMS server controleert niet de juistheid van de opgestuurde gegevens.
 <p>

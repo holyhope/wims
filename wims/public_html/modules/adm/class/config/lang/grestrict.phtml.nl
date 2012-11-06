@@ -6,7 +6,7 @@
  Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
  mogelijk andere de instellingen uit de individuele werkbladen
 
- <p>
+
  <table border="0">
  <tr><td align="right">Toegestane adressen&nbsp;:
  <td><input size="35" name="allow" value="$allow"/>
@@ -15,7 +15,8 @@
  </table> <p>
  <input type="submit" name="save" value="$wims_name_tosave"/>&nbsp;&nbsp;&nbsp;
  <input type="submit" name="abandon" value="$wims_name_giveup"/>
-</form>
+
+!formend
 
 <p>
 U kunt een of meerdere adressen invullen in het invulveld.

@@ -33,7 +33,8 @@ Primero debe aceptar los términos de uso antes identificarle.
   <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_tosave"/>
   </div>
- </form>
+ 
+!formend
  !exit
 !endif
 

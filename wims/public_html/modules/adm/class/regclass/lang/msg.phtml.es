@@ -40,7 +40,8 @@ Creación de una clase virtual
  !form reply
   <input type="hidden" name="step" value="0"/>
   Introduzca la contraseña: <input size="16" name="regpass" type="password"/>
- </form>
+ 
+!formend
  <div>
  Nota. Puede solicitar la contraseña necesaria para la creación
  de clases virtuales al
@@ -58,7 +59,7 @@ Contraseña para la creación de clases virtuales
   La creación de clases virtuales en este sitio está protegida por un
   sistema de autentificación. Identifíquese por favor.
  !endif
- <p>
+
  !form reply
   <table border="0" cellspacing="5">
   <tr><td align="right">
@@ -67,7 +68,9 @@ Contraseña para la creación de clases virtuales
   Y la contraseña:</td><td><input size="16" name="regpass" type="password"/>
   <input type="submit" value="$wims_name_tosave"/></td>
   </tr></table>
- </form><p>
+ 
+!formend
+
  Nota. Por favor escriba al
  !mailurl $wims_site_manager administrador\
 Contraseña para la creación de clases virtuales
