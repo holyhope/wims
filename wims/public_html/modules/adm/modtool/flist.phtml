@@ -1,8 +1,9 @@
 !if ~ notin $mod
- <b>$wims_name_warning</b>.
+ <p>
+ <span class="wims_warning">$wims_name_warning</span>.
  $name_simpl_address: <span class="tt wims_fname">$mod</span>.
  !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod $name_updateadress
- <p>
+</p>
 !endif
 
 !read lang/names.phtml.$modu_lang
@@ -20,8 +21,8 @@ $name_file2.
 !endif
 
 !set table_cellpadding=1
-!set table_cellspacing=0
-!set table_center=center
+
+!reset table_center
 !set table_header=!replace internal <> by in $table_header
 !set table_end=!replace internal </> by in $table_end
 
@@ -30,8 +31,8 @@ $table_hdtr
 <th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations</th></tr>
  !for f in $files
   $table_tr
-  <td align="left" nowrap="nowrap" class="wims_fname">$f</td>
-  <td align="center" nowrap="nowrap">
+  <td style="white-space: nowrap;text-align:left;" class="wims_fname">$f</td>
+  <td style="white-space: nowrap;text-align:center;">
   !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
   &nbsp;
@@ -53,7 +54,7 @@ $table_hdtr
   !set t_=$($t_)
   !default t_=--
   $t_
-  </td>
+  </td></tr>
  !next f
 $table_end
 
@@ -62,6 +63,5 @@ $table_end
 $name_addfile:
 <input size="20" name="fname" value="$lastfname"/>
 <input type="submit" value="$wims_name_tosave"/>
-</form>
+!formend
 !reset fname
-

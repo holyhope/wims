@@ -482,6 +482,11 @@ void exec_tail(char *p)
     tail_executed=1;
 }
 
+void exec_formend(char *p)
+{
+    _output_("\n</div></form>");
+}
+
 void determine_font(char *l);
 
 	/* standardized header */
@@ -870,11 +875,11 @@ void exec_form(char *p)
     }
     else m=default_form_method;
     if(strstr(session_prefix,"_check")!=NULL) {
-	output("<p></p><form action=\"NON_EXISTING_PAGE\" onsubmit=\"window.close();\" %s>\n",
+	output("<form action=\"NON_EXISTING_PAGE\" onsubmit=\"window.close();\" %s>\n",
 	       opt);
 	return;
     }
-    output("<p></p><form action=\"%s%s\"%s method=\"%s\" %s>\n%s",ref_name,a,st,m,opt,wn);
+    output("<form action=\"%s%s\"%s method=\"%s\" %s>\n%s<div>",ref_name,a,st,m,opt,wn);
     if(a!=abuf && a[0]) force_setvar("wims_ref_anchor","");
     for(i=0;i<follow_no;i++) {
 	if(robot_access && follow_list[i]==ro_session) continue;
@@ -1710,6 +1715,7 @@ MYFUNCTION exec_routine[]={
       {"form",		EXEC_HREF|EXEC_SUBST,	exec_form},
       {"formbar",	EXEC_HREF,		exec_formbar},
       {"formcheckbox",	EXEC_HREF,		exec_formcheckbox},
+      {"formend",	EXEC_STRING,	exec_formend},
       {"formradio",	EXEC_HREF,		exec_formradio},
       {"formradiobar",	EXEC_HREF,		exec_formbar},
       {"formselect",	EXEC_HREF,		exec_formselect},
