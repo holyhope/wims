@@ -133,7 +133,7 @@
 //]]>
 </script>
 
-<table class="schaersvoorde_form">
+<table id="schaersvoorde_form" class="schaersvoorde_form">
     <tr>
     <td>
 	!if $(question$n) != $empty
@@ -153,7 +153,7 @@
 			    !insmath $(formula$n)
 			</th>
 			<th style="vertical-align:middle">
-			    <form name="mydefaultform" id="mydefaultform" action="">
+			    <form  id="mydefaultform" action="">
 				!if $inputs=1
 				    !if $wims_user=supervisor
 					<table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea></th></tr></table>
@@ -245,10 +245,10 @@
 		    <param name="java_archive" value="MathView.jar" />
 		    <param name="java_code" value="MathView" />
 		    <param name="mayscript" value="true" />
-		    <script language="javascript" type="text/javascript">
-		    var thisbackground=document.bgColor;
-		    if(thisbackground){var obj="\<param name=\"bgcolor\" value=\""+thisbackground+"\" /\>"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" /\>"}
-		    document.write(obj.toString());
+		    <script  type="text/javascript">
+		    //<![CDATA[
+			var thisbackground=document.body.style.backgroundColor;if(thisbackground){var bg_param="<param name=\"bgcolor\" value=\""+thisbackground+"\" />"}else{var bg_param="<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(bg_param.toString());
+		    //]]>
 		    </script>
 		    <param name="largefont" value="$largefont" />
 		!if $wims_user=supervisor
@@ -277,7 +277,7 @@
 	</table>
     !else
 	!if $inputs=1
-	<form name="mydefaultform" id="mydefaultform" action="">
+	<form  id="mydefaultform" action="">
 	    <table>
 		<tr>
 	    !if $inputtext1!=$empty
@@ -297,7 +297,7 @@
 	</form>
 	!else
 	    !if $inputs>1
-		<form name="mydefaultform" id="mydefaultform" action="">
+		<form  id="mydefaultform" action="">
 		    <table>
 		    !set a_items=!itemcnt $(answer$n)
 		    !if $a_items != $[floor($inputs)]
@@ -342,8 +342,8 @@
 !endif
     </tr>
 </table>
-    
-<table class="schaersvoorde_form">
+
+<table id="buttongroup" class="schaersvoorde_form">
     <tr>
 !if $inputs !=0
     <th>

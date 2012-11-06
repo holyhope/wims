@@ -19,7 +19,7 @@
 !if $break=$empty
     !set break=2
 !endif
- <table class="schaersvoorde_form">
+<table id="schaersvoorde_form" class="schaersvoorde_form">
     <tr>
     <td>
 	$(question$n)
@@ -28,7 +28,8 @@
 	    $exotext
 	!endif	
     </td>
-    </tr><tr>
+    </tr>
+    <tr>
     <td>
 	<table>
 	    <tr>
@@ -84,29 +85,26 @@
 	</table>
     </td>
     </tr>
+</table>
+	
+<table id="buttongroup" class="schaersvoorde_form">
     <tr>
-    <td>
-	<table>
-	    <tr>
-	    <th>
-    		<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    	    </th>
-	    <th>
-		!if $wims_user = supervisor
-    		    <input type="button" class="schaersvoorde_ok_button" onclick="showanswer();" value="show correct answer" />
-		!else
-		    !set clear=!record 67 of $remarkdir/commonremarks.$taal
-    		    <input type="button" class="schaersvoorde_nok_button" onclick="resetall();" value="$clear" />
-    		!endif
-	    </th>
-	    <th>
-		<input type="button" class="schaersvoorde_nok_buttom" onclick="javascript:dontknow();" name="but2" value="$dontknow" />
-	    </th>
-	    </tr>
-	</table>
-    </td>
+    <th>
+	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    </th>
+    <th>
+    !if $wims_user = supervisor
+    	<input type="button" class="schaersvoorde_ok_button" onclick="showanswer();" value="show correct answer" />
+    !else
+	!set clear=!record 67 of $remarkdir/commonremarks.$taal
+    	<input type="button" class="schaersvoorde_nok_button" onclick="resetall();" value="$clear" />
+    !endif
+    </th>
+    <th>
+	<input type="button" class="schaersvoorde_nok_buttom" onclick="javascript:dontknow();" value="$dontknow" />
+    </th>
     </tr>
- </table>
+</table>
  
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 

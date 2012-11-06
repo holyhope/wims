@@ -10,7 +10,7 @@
 !endif
 
 !if $rounding=1000000
-    roundingtext=<span style="color:red"  >Je mag hier afgeronde antwoorden geven<br />\
+    roundingtext=<span style="color:red">Je mag hier afgeronde antwoorden geven<br />\
     Bereken dan zo nauwkeurig mogelijk met je grafische rekenmachine<br />\
     En geef je eindantwoord in tenminste <b>twee decimalen nauwkeurig</b> op.
     !exit

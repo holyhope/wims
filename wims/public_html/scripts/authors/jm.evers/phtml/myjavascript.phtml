@@ -4,110 +4,108 @@
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
 //]]>
 </script>
+
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
-<table class="schaersvoorde_form">
-!! this table has no style "schaersvoorde_form"
-!! if needed declare my_temp_css=<style>....<//style>
+
+<table id="schaersvoorde_form" class="schaersvoorde_form">
     <tr>
     <td>
-	<table class="schaersvoorde_form">
+    !if $(question$n) != $empty
+	$(question$n)
+	<br />
+    !endif
+    !if $(formula$n) != $empty
+	<table>
 	    <tr>
-	    <td>
-		!if $(question$n) != $empty
-		    $(question$n)
-		    <br />
-	    	!endif
-		!if $(formula$n) != $empty
-			<table>
-			    <tr>
-			    <th style="vertical-align:middle">
-				!insmath $(formula$n)
-			    </th>
-			!if $embed=1
-			    <th style="vertical-align:middle">
-				&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
-			    </th>
-			    <th style="vertical-align:middle">
-				<form name="myform1" id="myform1" action="">
-				    !if $wims_user=supervisor
-					<textarea id="myinput" class="schaersvoorde_textarea" cols="$cols" rows="$rows" name="reply$n">$(answer$n)</textarea>
-				    !else
-					<textarea id="myinput" class="schaersvoorde_textarea" cols="$cols" rows="$rows" name="reply$n">$(reply$n)</textarea>
-				    !endif
-				</form>
-			    </th>
-			!endif
-			    </tr>
-			</table>
+	    <th style="vertical-align:middle">
+		!insmath $(formula$n)
+	    </th>
+	!if $embed=1
+	    <th style="vertical-align:middle">
+		&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
+	    </th>
+	    <th style="vertical-align:middle">
+		<form name="myform1" id="myform1" action="">
+		!if $wims_user=supervisor
+		    <textarea id="myinput" class="schaersvoorde_textarea" cols="$cols" rows="$rows" name="reply$n">$(answer$n)</textarea>
+		!else
+		    <textarea id="myinput" class="schaersvoorde_textarea" cols="$cols" rows="$rows" name="reply$n">$(reply$n)</textarea>
 		!endif
-		!if $exotext != $empty
-		    $exotext
-		    <br />
-		!endif
-	    </td>
-		!if $image=1
-		    !if $XSIZE>450
-			</tr><tr>
-		    !endif
-		    <td>
-		    !if $draw=1
-			!! for fly
-			!set ins_attr=name="image$n" id="image$n"
-			!set insdraw_size=$XSIZE,$YSIZE
-			!insdraw $(image$n)
-		    !else
-			!if $plot=1
-			    !! for GNUplot
-			    !set ins_attr=name="image$n" id="image$n"
-			    !set insplot_set=$(image_settings$n)
-			    !insplot $(image$n)
-			!else
-			    !if $svg=1
-				!exec svgdraw $(image$n)
-			    !endif
-			!endif
-		    !endif
-		    </td>
-		!endif
-		!if $applet=1
-		    !if $XSIZE>450
-			</tr><tr>
-		    !endif
-		    <td>
-			$(object$n)
-		    </td>
-		!endif
-		!if $javascript != $empty
-		    !if $XSIZE>450
-			</tr><tr>
-		    !endif
-		    <td>
-		    !!this file handles the input
-			!read $javascript
-		    </td>
-		!endif
+		</form>
+	    </th>
+	!endif
 	    </tr>
 	</table>
+    !endif
+    !if $exotext != $empty
+	$exotext
+	<br />
+    !endif
     </td>
+!if $(image$n) != $empty
+ !if $image=1 
+    !if $XSIZE>450
     </tr>
+    <tr>
+    !endif
+    <td>
+    !if $draw=1
+	!! for fly
+	!set ins_attr=name="image$n" id="image$n"
+	!set insdraw_size=$XSIZE,$YSIZE
+	!insdraw $(image$n)
+    !else
+	!if $plot=1
+	    !! for GNUplot
+	    !set ins_attr=name="image$n" id="image$n"
+	    !set insplot_set=$(image_settings$n)
+	    !insplot $(image$n)
+	!else
+	    !if $svg=1
+		!exec svgdraw $(image$n)
+	    !else
+		<span style="schaersvoorde_alarm">set variable draw/plot/svg ---&gt; 1</span>
+	    !endif
+	!endif
+    !endif
+    </td>
+ !endif
+!endif
+!if $applet=1
+ !if $XSIZE>450
+    </tr>
+    <tr>
+ !endif
+    <td>
+	$(object$n)
+    </td>
+!endif
+!if $javascript != $empty
+ !if $XSIZE>450
+    </tr>
+    <tr>
+ !endif
+    <td>
+	!!this file handles the javascript 
+	!read $javascript
+    </td>
+!endif
+    </tr>
+</table>
+
 !! sometimes a better place for the buttons....$javascript does not need to define them in this case.
 !if $inputs=yes
+<table id="buttongroup" class="schaersvoorde_form">
     <tr>
-    <td>
-	<table class="schaersvoorde_form">
-	    <tr>
-	    <th>
-		<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send"/>
-	    </th>
-	    <th>
-		<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow"/>
-	    </th>
-	    </tr>
-	</table>
-    </td>
+    <th>
+	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send"/>
+    </th>
+    <th>
+	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow"/>
+    </th>
     </tr>
-!endif
 </table>
+!endif
 
 $dhtml
 !!! after the inputelements are in the DOM-tree: fill-in the previous answers

@@ -3,26 +3,12 @@
 !endif
 <script type="text/javascript">
 //<![CDATA[
-
     var stickit=0;
-    function showimage() {
-	MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "width=$XSIZE,height=$YSIZE,left=0,top=0");
-        MijnVenster1.focus();
-    }
-    function showScribble(){
-	if(stickit == 0){
-	    stickit=1;
-	    document.getElementById('stickit_area').style.display = "block";
-	}
-	else
-	{
-    	    stickit=0;
-            document.getElementById('stickit_area').style.display = "none";
-        }
-    }
-    !if $time=1
-	var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.getElementById('clock').time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
-    !endif
+    function showimage() {MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "width=$XSIZE,height=$YSIZE,left=0,top=0");MijnVenster1.focus();}
+    function showScribble(){if(stickit == 0){stickit=1;document.getElementById('stickit_area').style.display = "block";}else{stickit=0;document.getElementById('stickit_area').style.display = "none";}}
+!if $time=1
+    var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.getElementById('time').value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
+!endif
 //]]>
 </script>
 
@@ -53,7 +39,7 @@
 	</span>
 	!if exam notin $session
 	    <br/>
-	    !href target=wims_mhelp module=$module&+session=$session&+cmd=help <img src="$gifdir/help.jpg" alt="help" /></a>
+	    !href target=wims_mhelp module=$module&+session=$session&+cmd=help <img src="$gifdir/help.jpg" alt="help" />
 	    <a onmouseover="return escape('$helptext')"><img src="$gifdir/tip.jpg" alt="tip" /></a>
 	!endif
     </td>
@@ -85,7 +71,7 @@
 			!set help_session=!nospace $help_session _ mhelp
 		    !endif
 		    <a onmouseover="return escape('$mathchecktext')" onclick="wims_help=window.open('$wims_ref_name?wims_window=new&+lang=nl&+session=$help_session&+module=$module&+cmd=help&+myvar4=$session','wims_help','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')">
-			<img src="$gifdir/math.jpg" alt="mathematical inputfield" border="0" />
+			<img src="$gifdir/math.jpg" alt="mathematical inputfield" style="border:0px" />
 		    </a>
 		</td>
 	    !endif
@@ -103,6 +89,7 @@
 		    <tr>
 		    <th>
 	    		<script type="text/javascript">
+	    		//<![CDATA[
 			    function ReadCalculator(){
 				var calc=document.getElementById("javacalculator").ReadApplet();
 			        var t=confirm("$send \n"+calc);
@@ -113,6 +100,7 @@
 			    	    document.getElementById("calculator").destroy();
 				}
 			    }
+			//]]>
 			</script>
 			<object id="javacalculator" width="100" height="50" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
 			    <param name="java_codebase" value="$appletdir" />
@@ -140,14 +128,14 @@
 	    !if $calculator=2
 		<td style="vertical-align:top;text-align:right;white-space:nowrap;">
 		    <a onclick="window.open('$htmldir/mathcalc.html','calculator','width=280,height=370,left=0,top=0')">
-			<img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" />
+			<img src="$gifdir/xcalc.png" style="width:50;height=70px;border:0px" alt="calculator" />
 		    </a>
 		</td>
 	    !else
 		!if $calculator=1
 		    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
 			<a onclick="window.open('$htmldir/basicalc.html','calculator','width=300,height=200,left=0,top=0')">
-			    <img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" />
+			    <img src="$gifdir/xcalc.png" style="width:50px;height:70px;border:0px" alt="calculator" />
 			</a>
 		    </td>
 		!endif
@@ -156,7 +144,7 @@
 	!if $debug=1
 	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
 		!href target=wims_mhelp session=$session&+module=$module&+cmd=help
-		    <img src="$gifdir/exec.png" alt="debug-info" />
+		    <img src="$gifdir/exec.png" style="border:0px" alt="debug-info" />
 		</a>
 	    </td>
 	!endif
@@ -165,13 +153,11 @@
 		<table>
 		    <tr>
 		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-			<form id="clock" action="">
-			    <input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;" type="text" id="time" size="7" />
-			</form>
+			<input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;" type="text" id="time" size="7" />
 		    </td>
 		    </tr><tr>
 		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-			<a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" border="0" /></a>
+			<a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" style="border:0px" alt="get FIREFOX" /></a>
 		    </td>
 		    </tr>
 		</table>
