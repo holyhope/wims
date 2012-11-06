@@ -1,0 +1,67 @@
+<!-- MENUMODUBOX (droite) -->
+
+<div id="wimsmenumodubox">
+
+<!--affiche le menu si le module n'est pas la zone enseignant-->
+!if $module != adm/class/classes 
+    !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
+    
+        !if $wims_homeref_n0>0
+            <ul class="wimsmenu">
+                !for i_=1 to $wims_homeref_n0
+                    !set 1_=!line $i_ of $wims_rm_0
+                    !if $(1_[1])=
+                        <li class="itemsep"></li>
+                    !else
+                        <li class="menuitem">
+                        !read oneitem.phtml $1_
+                        </li>
+                    !endif
+                !next i_
+            </ul>
+        !endif wims_homeref_n0
+        
+        !if $wims_homeref_n5>0
+            <ul class="wimsmenu">
+                !for i_=1 to $wims_homeref_n5
+                    <li class="menuitem">
+                        !set 1_=!line $i_ of $wims_rm_5
+                        !read oneitem.phtml $1_
+                    </li><!-- menuitem-->
+                !next i_
+            </ul><!--wimsmenu-->
+        !endif wims_homeref_n5
+        
+        !if $wims_homeref_n4>0
+            <div class="wimstail">
+                !for i_=1 to $wims_homeref_n4
+                    <div class="tailitem">
+                        !set 1_=!line $i_ of $wims_rm_4
+                        !read oneitem.phtml $1_
+                    </div><!--tailitem-->
+                !next i_
+            </div><!--wimstail-->
+        !endif wims_homeref_n4
+        
+        !if $wims_homeref_local_n0>0
+            <ul class="wimsmenu">
+                !for i_=1 to $wims_homeref_local_n0
+                    !set 1_=!line $i_ of $wims_local_menu_items
+                    !if $(1_[1])=
+                        <li class="itemsep">&nbsp;</li>
+                    !else
+                        <li class="menuitem">
+                            !read oneitem.phtml $1_
+                        </li>
+                    !endif
+                !next i_
+            </ul><!--wimsmenu-->
+        !endif wims_homeref_local_n0
+    
+    !endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
+
+!endif <!--fin condition si pas page enseignant-->
+
+
+</div>
+<!-- FIN WIMSMENUMODUBOX-->

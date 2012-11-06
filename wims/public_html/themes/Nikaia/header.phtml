@@ -48,7 +48,6 @@
 
 </div><!--end wimstitle-->
 
-
 <br class="spacer"/>
 
 <ul class="wimsmenu menuglobal">
@@ -139,69 +138,21 @@
   </div><!--wimsmenutab-->
 !endif
 
-<div id="wimspagebox">
-
 <!--Ajout du menu de la zone enseignant-->
 !if $module = adm/class/classes or $module = adm/class/regclass or $module = adm/createxo or $module = adm/createxo or $module = adm/modtool or $module = adm/quicktool or $module = adm/latex2wims
  
-	<!--Menu de gauche-->
-
-	<div id="menuprof">
-
-		<ul class="wimsmenu">
-		
-			<li class="itemsep">Classes:</li>
-			
-			<li class="menuitem test">
-			!read ./adm/oneitem.phtml Recherche,1,module=adm/class/classes&type=supervisor
-			</li>
-			
-			<li class="menuitem classcreate">
-			!href module=adm/class/regclass Creation
-			</li>
-			
-			<li class="menuitem n_example">
-			 !read ./adm/oneitem.phtml Exemples,1,module=adm/class/classes&type=example
-			</li>
-			
-		</ul>
-			
-		<ul class="wimsmenu">
-			
-			 <li class="itemsep">Exercices:</li>
-			<li class="menuitem">
-			!read ./adm/oneitem.phtml createxo,1,module=adm/createxo
-			</li>
-			
-			<li class="menuitem">
-			!read ./adm/oneitem.phtml modtool,1,module=adm/modtool
-			</li>
-			<li class="menuitem">
-			 !read ./adm/oneitem.phtml quicktool,1,cmd=new&module=adm/quicktool
-			 </li>
-			<li class="menuitem">
-			 !read ./adm/oneitem.phtml latex2wims,1,cmd=new&module=adm/latex2wims
-			 </li>
-		 
-		 </ul>
-		 
-		 <!--
-		 <ul class="wimsmenu">
-		 	<li class="itemsep">Wims books:</li>
-		 	<li class="menuitem classcreate">
-		 		!href module=adm/doc&+cmd=new&+job=creat Creation
-		 	</li>
-		 	<li class="menuitem test">
-		 	!href module=adm/doc Recherche
-		 	</li>
-		 </ul>
-		 -->   
- 
-	!!!endif
-	</div>
-	<!--Fin du menu -->
+	!read themes/$wims_theme/widgets/menuprof.phtml
  
 !endif
+
+!!! ICI, impossible de placer menumodubox : les variables qu'il utilise ne sont pas encore instanciées
+!! read themes/$wims_theme/widgets/menumodubox.phtml
+
+
+
+<div id="wimspagebox">
+
+
 
 !if $wims_user!=supervisor and $wims_class!=$empty and $wims_alertmsg!=$empty
  <div class="wims_alertmsg">$wims_alertmsg

@@ -14,54 +14,17 @@
 <div id="wimsfrontpage">
 
 	<div id="wimstopbox">
-	
-	<!--logo université
-	
-	!if $site_logo!=$empty
-	  <div id="wimslogoleft">
-	   <a href="$site_logolink" target="wims_external"><img src="$site_logo" border=0 alt="logo"/></a>
-	  </div>
-	!endif
-	-->
 
-		<!--Titre du site-->
+    	!!Site Title
+		!read themes/$wims_theme/widgets/site_title.phtml
 		
-		<div id="wims_title">
-			<h1 class="wims_title">
-			   WIMS <!--$N_at <a href="/">$httpd_HTTP_HOST</a>-->
-			</h1>
-			
-			<h2 class="wims_subtitle">
-			 	$V_title
-			</h2>
-		</div><!--end wimstitle-->
-	
+		!!Language Selector
+		!read themes/$wims_theme/widgets/language_selector.phtml
 		
-		<!--wimsmenu langues-->
+		!!Institution logo
+		!read themes/$wims_theme/widgets/institution_logo.phtml
 		
-		<ul class="wimsmenu langues">
-			!for i=1 to $wims_language_cnt
-			 !set l=!word $i of $wims_site_languages
-			 !if $l!=$lang
-			  !if $wims_language_cnt>2 and $wims_language_cnt<6
-			   !set l_=<small>$(lang_name_$l)</small>
-			  !else
-			   !if $wims_language_cnt<6
-			    !set l_=$(lang_name_$l)
-			   !else
-			    !reset l_
-			   !endif
-			  !endif
-			<li class="menuitem">
-			  !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height=16 border=0/>$l_
-			   <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
-			</li><!--menuitem-->
-			!endif
-			!next i
-			<li class="itemsep"></li><!--itemsep-->
-		</ul><!--wimsmenu-->	
-		
-		<div class="spacer"></div>
+		<br class="spacer"/>
 
 		<!--wimsmenu menuglobal-->
 		
@@ -103,97 +66,44 @@
 	</div><!-- fin de wimstopbox-->
 
 	<div id="wimsbodybox">				
-	
-	
 		<div id="wimspagebox">
-		
 			<div class="wimsbody">
 			
 				!if $wims_ismanager!=0
-				<center>
+				<p style="text-align:center;">
 				 !href module=adm/manage $N_manage
-				</center> 
+				</p> 
 				!endif
 				
 				<!--Contenu de la page d'accueil-->
+				<!--Recherche exercices-->
+				!read themes/$wims_theme/widgets/search_engine.phtml
+				<!--Recherche classes-->
+				!read themes/$wims_theme/widgets/search_classe.phtml
 				
-				<div class="center">
-					<!--Recherche exercices-->
-					!read themes/$wims_theme/search_engine.phtml
-					<!--Recherche classes-->
-					!read themes/$wims_theme/search_classe.phtml
+				<br class="spacer"/>
 				
-					<div class="spacer"></div>
+				<!--Recherche avancée exercices
+				!read themes/$wims_theme/lang/home.phtml.fr-->
 				
-					<!--Recherche avancée exercices
-					!read themes/$wims_theme/lang/home.phtml.fr-->
-
-				</div><!--fin div center-->
 				
 				<!--Résultats recherche exercices-->
 				!if $s_category=V
-				 <!--!read ./front.phtml-->
+				 !read ./front.phtml
 				!else
 				 !read ./result.phtml
 				!endif
 				
 			</div><!--end wimsbody-->
-			</div><!--wimspagebox-->
-			
-			!set wims_show_stat=!tolower $wims_show_stat
-			
-			
 		</div><!--wimspagebox-->
-		
-		<div class="spacer"></div>
-				
-		
-		<!--Menu bas de page-->
-		
-		<div id="wimsmenubox" class="footer">
-		
-			<ul class="wimsmenu">
-				<li class="menuitem">
-					!read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
-				</li><!-- menuitem-->
-				<li class="menuitem">
-					!read ./adm/oneitem.phtml mirror,1,module=adm/light&phtml=mirror.phtml.$lang
-				</li><!-- menuitem-->
-				<li class="menuitem">
-					!read ./adm/oneitem.phtml forum,1,module=adm/forum/forum
-				</li><!-- menuitem-->
-					!if $wims_theme_icon!= and $wims_theme_icon!=default
-				 <li class="menuitem">
-				 	!read ./adm/oneitem.phtml iconabout,1,module=adm/light&phtml=iconabout.phtml
-				 </li><!-- menuitem-->
-				!endif
-				<li class="menuitem">
-				 	!read ./adm/oneitem.phtml cgu,1,module=adm/light&phtml=cgu.phtml
-				</li><!-- menuitem-->
-			</ul><!--wimsmenu-->
 			
-		</div><!--wimsmenubox footer-->
-		
-		<div class="spacer"></div>
+		!set wims_show_stat=!tolower $wims_show_stat	
 			
 	</div><!--wimsbodybox-->
-	
-	<!-- Credits-->
-	
-	<div id="wimstailbox">
-		<div class="wimstail">
-			<div class="tailitem">
-				WIMS-$wims_version $E_comp $wims_version_date.
-			</div>
-			<div class="tailitem">
-				$E_manager
-				!mailurl $wims_site_manager\
-				WIMS: $httpd_HTTP_HOST
-			.</div><!--tailitem-->
-			!robottrap
-		</div><!--wimstail-->
-	</div><!--wimstailbox-->
+				
+	!read themes/$wims_theme/widgets/menubox.phtml
 
+	!read themes/$wims_theme/widgets/tailbox.phtml
 
 </div><!--wimsfrontpage-->
 
