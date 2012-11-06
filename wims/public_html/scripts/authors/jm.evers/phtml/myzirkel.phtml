@@ -54,15 +54,15 @@
     }
     
     function sendanswer(){
-	if(document.mydefaultform){
+	if(document.getElementById("myinput0")){
 	    var extra_answer=new Array();
 	    var show="";
-	    var input="";var t1;
-	    var ml=document.mydefaultform.elements.length;
-	    var inputfieldnumber=0;
-	    for(z=0;z<ml;z++){
-		input=document.mydefaultform[z].value;
-		v=input.length;if (v==0){var qu=z+1; setAlarm(r1+"\ "+qu);return;}
+	    var input="";
+	    var t1="";
+	    var p=0;
+	    while(document.getElementById('myinput'+p)){
+		input=document.getElementById('myinput'+p).value
+		if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;}
 		input=nthroot(input);if(input=="error"){return;}
 		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
 		input=arrows(input,2,"","");if(input=="error"){return;}
@@ -77,8 +77,10 @@
 		    t1=input.indexOf("[");if(t1!=-1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
-		extra_answer[z]=input;
-		show=show+(z+1)+")  "+input+"\n";
+		extra_answer[p]=input;
+		show=show+parseInt(p+1)+")  "+input+"\n";
+		p++;
+		if(p>100){setAlarm(r2);dontknow();}
 	    }
 	    readapplet();
 	    var t=confirm(" $send ?\n"+show);
@@ -91,7 +93,7 @@
 	    }
 	}
 	else
-	{    
+	{
 	    readapplet();
 	    var t=confirm(" $send ?");
 	    if(t==true){
@@ -126,29 +128,27 @@
 	!endif
 	!if $inputs>0
 	    <table>
-		<form  id="mydefaultform "action="">
-		    !for i=1 to $inputs
-			<tr>
-			<td style="vertical-align:middle;">
-			    $(inputtext$i)
-			</td>
-			<td style="vertical-align:middle;">
-			    $m_rightarrow
-			</td>
-			<td style="vertical-align:middle;">
-			!if $wims_user=supervisor
-			    !set voorzeggen=!item $i of $(answer$n)
-			    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$voorzeggen" />
-			!else
-			    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$(myinput$[$i-1])" />
-			!endif
-			</td>
-			<td style="vertical-align:middle;">
-			    &nbsp;$(ex$p)
-			</td>
-			</tr>
-		    !next i
-		</form>
+	    !for i=1 to $inputs
+		<tr>
+		<td style="vertical-align:middle;">
+		    $(inputtext$i)
+		</td>
+		<td style="vertical-align:middle;">
+		    &nbsp;$m_rightarrow&nbsp;
+		</td>
+		<td style="vertical-align:middle;">
+		!if $wims_user=supervisor
+		    !set voorzeggen=!item $i of $(answer$n)
+		    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$voorzeggen" />
+		!else
+		    <input id="myinput$[$i-1]" style="$textareastyle" size="$cols" value="$(myinput$[$i-1])" />
+		!endif
+		</td>
+		<td style="vertical-align:middle;">
+		    &nbsp;$(ex$p)
+		</td>
+		</tr>
+		!next i
 	    </table>
 	!endif
     </td>
@@ -160,7 +160,7 @@
 	    !set width=640
 	    !set height=480
 	!endif
-    	<object id="zirkel" name="zirkel" classid="java:rene.zirkel.ZirkelApplet.class" type="application/x-java-applet;jpi-version=1.4" width="$xsize" height="$ysize" >
+    	<object id="zirkel" classid="java:rene.zirkel.ZirkelApplet.class" type="application/x-java-applet;jpi-version=1.4" width="$xsize" height="$ysize" >
     	    <param name="java_code" value="rene.zirkel.ZirkelApplet" />
     	    <param name="java_codebase" value="$appletdir" />
     	    <param name="java_archive" value="zirkel.jar" />

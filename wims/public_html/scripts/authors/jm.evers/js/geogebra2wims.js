@@ -43,9 +43,24 @@ function geogebra2wims(list_of_things) {
     reply=reply.replace(/%CE%B/g,'angle@');
     reply=reply.replace(/\^0/g,' degree');
     reply=totalobject_count+','+point_count+','+circle_count+','+line_count+','+segment_count+','+polygon_count+','+conic_count+','+ellipse_count+','+hyperbola_count+','+angle_count+','+vector_count+','+function_count+','+polynomial_count+','+text_count+','+reply;
-    // if some inputarea is present and it is inside a  <form name="sendtext"> than read this as well
+    // if some inputareas are present called myinpu0....myinput100 ; read these as well
     // and append it to the "geogebra string" as "text="+txt
-    if(document.forms['sendtext']){var txt; var l=document.forms['sendtext'].length;for(p=0;p<l;p++){t=document.forms['sendtext'].elements[p].value;if(p==0){txt=t;}else{txt=txt+'@'+t;}} reply=reply+"text="+txt;}
+    // we use @ as fieldseparator.
+    if(document.getElementById('myinput0') ){
+	var p = 0;var t="";var txt="";
+	while( document.getElementById('myinput'+p) ){
+	    t = document.getElementById('myinput'+p).value;
+	    if( p == 0 ){
+		txt = t;
+	    }
+	    else
+	    {
+		txt = txt +"@"+t;
+	    }
+	    p++;
+	}
+	reply=reply+"text="+txt;
+    }
     return reply;
 }
 

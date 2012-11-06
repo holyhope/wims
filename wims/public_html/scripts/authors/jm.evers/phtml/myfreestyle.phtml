@@ -19,7 +19,10 @@
 	    document.location.href = URL;if(document.getElementById("MathView")){document.getElementById("MathView").destroy();}
 	}
     }
+function kut(){
+    alert("OK");
 
+}
     function sendanswer(){
 	var input;
 	var show="";
@@ -50,12 +53,12 @@
 	    applet=1;
 	    inputfieldnumber = 1;
 	}
-	
-	if(document.mydefaultform){
-	    var ml=document.mydefaultform.elements.length;
-	    for(var z = 0 ; z < ml; z++){
-		input = document.mydefaultform[z].value;
-		if(input.length == 0){var qu = z+1; setAlarm(r1+"\ "+qu);return;}
+
+	if(document.getElementById("myinput0")){
+	    var p=0;
+	    while(document.getElementById("myinput"+p)){
+		input = document.getElementById("myinput"+p).value;
+		if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;}
 		input = nthroot(input);if(input == "error"){return;}
 		if(input.indexOf(',') != -1){setAlarm(r4);return;}
 		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
@@ -74,6 +77,8 @@
 		input=input.replace(/#/g,' ');
 		reply[inputfieldnumber] = input;
 		inputfieldnumber++;
+		p++;
+		if(p>100){setAlarm(r2);dontknow();}
 	    }
 	}
 	
@@ -100,6 +105,7 @@
 		reply[inputfieldnumber] = input;
 		inputfieldnumber++;
 		p++;
+		if(p>100){setAlarm(r2);dontknow();}
 	    }
 	}
 	
@@ -153,40 +159,52 @@
 			    !insmath $(formula$n)
 			</th>
 			<th style="vertical-align:middle">
-			    <form  id="mydefaultform" action="">
-				!if $inputs=1
-				    !if $wims_user=supervisor
-					<table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea></th></tr></table>
-        			    !else
-					<table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(reply$n)</textarea></th></tr></table>
-				    !endif
+		    !if $inputs=1
+			!if $wims_user=supervisor
+			    <table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea>&nbsp;$(ex$p)</th></tr></table>
+        		!else
+			    <table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(reply$n)</textarea>&nbsp;$(ex$p)</th></tr></table>
+			!endif
+		    !else
+			    <table>
+			!set a_items=!itemcnt $(answer$n)
+			!if $a_items != $[floor($inputs)]
+			    !set use_lines=1
+			!else
+			    !set use_lines=0
+			!endif
+			!for p=1 to $inputs
+			    !if $wims_user=supervisor
+				!if $use_lines=1
+				    !set deelantwoord=!line $p of $(answer$n)
 				!else
-				    <table>
-				    !set a_items=!itemcnt $(answer$n)
-				    !if $a_items != $[floor($inputs)]
-					!set use_lines=1
-				    !else
-					!set use_lines=0
-				    !endif
-				    !for p=1 to $inputs
-					!if $wims_user=supervisor
-					    !if $use_lines=1
-						!set deelantwoord=!line $p of $(answer$n)
-					    !else
-						!set deelantwoord=!item $p of $(answer$n)
-					    !endif
-					    <tr><th style="vertical-align:middle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></th><th>$(ex$p)&nbsp;</th></tr>
-        				!else
-					    !set deelantwoord=!item $p of $(reply$n)
-					    <tr><th style="vertical-align:middle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value ="$deelantwoord" /></th><th>$(ex$p)&nbsp;</th></tr>
-					!endif
-				    !next p
-				    </table>
+				    !set deelantwoord=!item $p of $(answer$n)
 				!endif
-			    </form>
-			</th>
-			</tr>
-		    </table>
+				<tr>
+				<th style="vertical-align:middle">
+				    &nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />
+				</th>
+				<th>
+				    &nbsp;$(ex$p)
+				</th>
+				</tr>
+        		    !else
+				!set deelantwoord=!item $p of $(reply$n)
+				<tr>
+				<th style="vertical-align:middle">
+				    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value ="$deelantwoord" />
+				</th>
+				<th>
+				    &nbsp;$(ex$p)
+				</th>
+				</tr>
+			    !endif
+			!next p
+			    </table>
+		    !endif
+		    </th>
+		    </tr>
+		</table>
 		!endif
 	    !else
 		!insmath $(formula$n)
@@ -277,7 +295,6 @@
 	</table>
     !else
 	!if $inputs=1
-	<form  id="mydefaultform" action="">
 	    <table>
 		<tr>
 	    !if $inputtext1!=$empty
@@ -294,10 +311,8 @@
 		</td>
 		</tr>
 	    </table>
-	</form>
 	!else
 	    !if $inputs>1
-		<form  id="mydefaultform" action="">
 		    <table>
 		    !set a_items=!itemcnt $(answer$n)
 		    !if $a_items != $[floor($inputs)]
@@ -334,7 +349,6 @@
 			</tr>
 		    !next p
 		    </table>
-		</form>
 	    !endif
 	!endif
     !endif
