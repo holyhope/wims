@@ -18,7 +18,8 @@ Ficheros de imagen para el ejercicio
 Fichero de imagen que se va a enviar en el ejercicio:
 <input type="file" name="wims_deposit"/>
 <input type="submit" value="$wims_name_tosave"/>
-</form>
+
+!formend
 
 :sendend
 

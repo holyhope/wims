@@ -17,7 +17,8 @@
  Borrar un fichero:
  !formselect job2 list $flist
  <input type="submit" value="$wims_name_erase"/>
- </form>
+ 
+!formend
  <p>
  Se puede acceder a los ficheros del documento usando la 
 variable <span class="tt wims_code_variable">\filedir</span> en el documento. Por ejemplo

@@ -18,7 +18,8 @@ Binaire Bestanden voor oefeningen
 Het bestand voor deze oefening:
 <input type="file" name="wims_deposit"/>
 <input type="submit" value="$wims_name_tosave"/>
-</form>
+
+!formend
 
 :sendend
 

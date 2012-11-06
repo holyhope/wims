@@ -18,7 +18,8 @@
  Verwijder een bestand&nbsp;:
  !formselect job2 list $flist
  <input type="submit" value="$wims_name_erase"/>
- </form>
+ 
+!formend
  <p>
  Bestanden kunnen worden opgeroepen in een document door de variabele
  <span class="tt wims_code_variable">\filedir</span>. 

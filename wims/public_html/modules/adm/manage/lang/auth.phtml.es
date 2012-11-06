@@ -4,7 +4,9 @@
 Por favor introduzca la contraseña de administrador del sitio:<p>
 <input size="24" type="password" name="auth"/>
 <input type="submit" value="$wims_name_tosave"/>
-</form></div>
+
+!formend
+</div>
 <p>
 !if $passone!=$empty
 Al no haber definido una contraseña de administrador el servidor ha generado

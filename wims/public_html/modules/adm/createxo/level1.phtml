@@ -28,17 +28,18 @@ $wims_name_email</td><td><input size="30" maxlength="80" name="oef_email" value=
 <div class="wimscenter">
 <input class="wims_button" type="submit" value="$name_continue"/>
 </div>
-</form>
+
+!formend
 
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0
-  <p>
   !form new
   <input type="hidden" name="module" value="$module"/>
   $name_modify
   !formselect existing list $exolist prompt $titlelist
-  <input class="wims_button" type="submit" value="$wims_name_tosave"/></form>
+  <input class="wims_button" type="submit" value="$wims_name_tosave"/>
+!formend
  !endif
 !endif
 
