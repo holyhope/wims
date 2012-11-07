@@ -162,19 +162,13 @@ int main (int argc, char ** argv)
 			}
 		}
 	if (bStop) return 0;
-
-    if( use_javascript == 1 ){
+	/* every mathml-string will have unique id */
 	struct timeval tv;
 	struct timezone tz;
 	struct tm *tm;
 	gettimeofday(&tv, &tz);
 	tm=localtime(&tv.tv_sec);
 	snprintf(wims_mathml_id,sizeof(wims_mathml_id),"wims_mathml%d",tv.tv_usec);
-    }
-    else
-    {
-	snprintf(wims_mathml_id,sizeof(wims_mathml_id),"%s","wims_mathml");
-    }
 
 	if(bTexString){ // WIMS modification: reads a 'latex string' from commandline, if arg="--tex-string"
 	    char *input;
