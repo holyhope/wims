@@ -4,8 +4,8 @@
   !exit
  !endif
  !if $module!=home
-  Désolé, rien n'est trouvé pour <em><font color=red>
-  $search</font></em>.
+  Désolé, rien n'est trouvé pour <span class="wims_emph">
+  $search</span>.
  !endif
  <p>
  Cette base de donnée des formulaires de calcul rapides 
@@ -13,6 +13,7 @@
  enregistré votre requête non aboutie, afin que les auteurs puissent voir ce
  que les gens demandent, et ajouter des formulaires en fonction de la demande.
  Merci pour votre patience.
+ </p>
  !exit
 !endif
 !set gotm=!lines2items $gotm
@@ -58,11 +59,11 @@
   !set n_=!word 1 of $n_
   !if $v_!=$empty
    !if $n_!=$empty
-    !set N_=NAME=$n_
+    !set N_=name=$n_
    !else
     !reset N_
    !endif
-   !set submit$su=<INPUT TYPE=SUBMIT $N_ VALUE="$v_" $jsdef>
+   !set submit$su=<input type="submit" $N_ value="$v_" $jsdef>
   !endif
  !next su
 
@@ -72,26 +73,25 @@
  !default op_precision=$default_precision
  !set content=!nonempty lines $content
  <!--     Independent calculator form: $s     -->
- <FORM TARGET=$winname NAME=calcform ACTION="$wims_ref_name">
- <INPUT TYPE=HIDDEN NAME=session VALUE=popup> $sizeinput
- <INPUT TYPE=HIDDEN NAME=module VALUE=$op_module>
- <INPUT TYPE=HIDDEN NAME=precision VALUE=$op_precision>
+ <form target="$winname" name="calcform" action="$wims_ref_name">
+ <input type="hidden" name="session" value="popup"/> $sizeinput
+ <input type="hidden" name="module" value=$op_module/>
+ <input type="hidden" name="precision" value="$op_precision"/>
  !for o in $oplist
- <INPUT TYPE=HIDDEN NAME=$o VALUE="$(op_$o)">
+ <input type="hidden" name="$o" value="$(op_$o)"/>
  !next o
- <TABLE WIDTH="90%" BORDER=0 CELLSPACING=0 CELLPADDING=3 BGCOLOR="$op_color">
- <TR>$content 
- </TD></TR></TABLE></FORM>
+ <table width="90%" border="0" cellspacing="0" cellpadding="3" bgcolor="$op_color"/>
+ <tr>$content 
+ </td></tr></table></form>
  !reset op_module, op_color, op_size, op_precision
 !next s
 
 !if noremark notwordof $wims_read_parm
- <p><small><b>Remarque.</b>
+ <span class="wims_warning">Remarque.</span>
  Tous les formulaires ci-dessus sont indépendents du serveur Wims et l'un de
  l'autre. Donc ils peuvent aussi fonctionner dans vos propres pages web (mais
  seulement en ligne). Vous pouvez sauver cette page, ouvrir sa source, et
  copier les formulaires que vous voulez dans votre propre page, avec ou sans
  modifications.
- </small>
+
 !endif
-<p>

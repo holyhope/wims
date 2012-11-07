@@ -38,7 +38,8 @@ if [ "$lang" = cn ] ;  then echo "
 drawing="×÷Í¼ÃüÁî"
 synonym="Í¬Òå´Ê"
 fi 
-echo "\$table_header
+echo "!reset table_center
+ \$table_header
  <caption>$drawing</caption>
  \$table_hdtr<th colspan=\"5\">\$wims_name_name - \$wims_name_Syntax</th></tr>
  \$table_hdtr<th colspan=\"2\">$synonym</th>
