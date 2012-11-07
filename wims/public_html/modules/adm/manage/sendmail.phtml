@@ -9,28 +9,28 @@
   $table_header
    $table_tr
     <td>$name_subject</td>
-    <td><input name="sendmail_subject" size="45" value="$sendmail_subject"/></td>
+    <td  style="text-align:left;"><input name="sendmail_subject" size="45" value="$sendmail_subject"/></td>
    </tr>
    $table_tr
     <td>$name_message</td>
-    <td><textarea name="sendmail_msg" cols="80" rows="10">$sendmail_msg</textarea></td>
+    <td  style="text-align:left;"><textarea name="sendmail_msg" cols="80" rows="10">$sendmail_msg</textarea></td>
    </tr>
    $table_tr
     <td>$(name_dest[1])</td>
-    <td>
+    <td  style="text-align:left;">
      !for k=1 to $nbcheck_list
       <input type="checkbox" name="sendmail_dest" value="$k"/>$(check_list[$k]) ($(cnt_list[$k]))<br/>
      !next k
     </td></tr>
    $table_tr
-    <td colspan="2" align="center">
+   $table_end
+  <div class="wimscenter wimsform">
      <input type="hidden" name="step" value="1"/>
      <input type="submit" name="sendmail_reg" value="$wims_name_tosave"/>
      !set wims_ref_class=wims_button
      !href cmd=renew $wims_name_giveup
-    </td>
-   </tr>
-  $table_end
+   </div>
+
  
 !formend
 !else
@@ -50,7 +50,7 @@
     </td>
    </tr>
    $table_tr
-    <td colspan="2" align="center">
+    <td colspan="2">
     !if $step=1
      !form reply
       <input type="hidden" name="step" value="2"/>
