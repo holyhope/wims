@@ -1,5 +1,5 @@
 !default CL_Name=$CL_Names
-!set arr=--->
+
 
 !if $supervisable=yes
  !read subclasses_user.phtml
@@ -46,7 +46,7 @@
      !set t_=participant
      !set type_class=!defof class_type in wimshome/log/classes/$class/.def
      !if $c notitemof $alreadyseen
-      <li> $arr <span class="wims_classes_direct_$type_name">
+      <li>  <span class="wims_classes_direct_$type_name">
       !if $c!=$wims_class
       !href module=adm/class/classes&type=authparticipant&class=$c&auth_user=$u_ $name
       !else
@@ -68,7 +68,7 @@
        !endif
        !if $wims_superclass/$(sub_[$k_;1]) notitemof $alreadyseen and mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
         !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
-        <li> &nbsp; $arr&nbsp;
+        <li>
         <span class="wims_classes_direct_course">
         !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
        ($(CL_Name[4]))
