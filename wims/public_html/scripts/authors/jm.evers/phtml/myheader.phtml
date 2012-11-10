@@ -1,6 +1,7 @@
 !if $noselect=1
     <script type="text/javascript" src="$jsdir/nocut.js"></script>
 !endif
+
 <script type="text/javascript">
 //<![CDATA[
     var stickit=0;
@@ -9,10 +10,9 @@
 !if $time=1
     var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.getElementById('time').value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();
 !endif
+
 //]]>
 </script>
-
-
 !set wims_texsize=$mytexsize
 
 <div id="myheader">
@@ -80,27 +80,6 @@
     		<br />
 	    !endif
 	!endif
-	!if $goback=1
-	    <span class="schaersvoorde_alarm">
-		$errortext &nbsp;
-	    </span>
-	    <br />
-	!else
-	    !if $goodbadsign>0
-		<span class="schaersvoorde_alarm">
-		    $(remark$[$n-1]) &nbsp;
-		</span>
-		<br />
-	    !endif
-	!endif
-	!if $try = $maxtry
-	    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
-	    <div style="color:red;background-color:yellow;border:1px solid red;width:400px;">
-		<span style="schaersvoorde_alarm">
-		    $alarm
-		</span>
-	    </div>
-	!endif
     </div><!-- end div class=header -->
 
     <div id="header3">
@@ -143,10 +122,10 @@
 	    !endif
 	!endif
 	!if $time=1
-	    <div style="display:inline-block;">
-	    <input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;vertical-align:top; " type="text" id="time" size="7" />
+	    <div style="margin:0;vertical-align:top;display:inline-block;padding:1px">
+	    <input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;vertical-align:top;" type="text" id="time" size="7" />
 	    <br />
-	    <a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" style="border:0px;vertical-align:top" /></a>
+	    <a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" style="border:0px;vertical-align:top;" /></a>
 	    </div>
 	!endif
     </div><!-- end div id=myheader -->
@@ -154,4 +133,29 @@
 <br />
 
 <!-- end class=myheader.phtml -->
-<p id="alarmtext" style="text-align:center;margin-left:auto;margin-right:auto;width:600px;height:60px;display:none;top:0px;left:0px;font-style:italic;background-color:yellow;color:red;"></p>
+
+!if $try = $maxtry
+    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
+!endif
+
+<div id="alarmtext" style="white-space:wrap;text-align:center;margin-left:auto;margin-right:auto;max-width:800px;max-height:160px;min-height:50px;display:none;top:0px;left:0px;background-color:yellow;color:red;font-style:italic;border:solid 2px red">
+$errortext
+$(remark$[$n-1])
+$alarm
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+!if $goback=1 or ($goodbadsign>0 and $counter>1) or $try>=$maxtry
+    var h = parseInt( (document.documentElement.clientHeight)/2);
+    var w = parseInt( (document.documentElement.clientWidth)/2 - 200);
+    document.getElementById('alarmtext').style.top = h+'px';
+    document.getElementById('alarmtext').style.left = w+'px';
+    document.getElementById('alarmtext').style.display = "block";
+    document.getElementById('alarmtext').style.backgroundColor = "#99d4e2";
+    window.scrollTo(w,h-120);
+    setTimeout('resetAlarm()',6000);
+    document.getElementById('alarmtext').style.backgroundColor = "yellow";
+!endif
+//]]>
+</script>
