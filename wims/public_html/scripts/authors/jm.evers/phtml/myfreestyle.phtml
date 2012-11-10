@@ -1,9 +1,11 @@
-!! 4 types of input are possible with this page , single or in any combination
-!! 1) mathview inputapplet via "id" ; 
-!! 2) inputfields via normal "mydefaultform"  ; 
-!! 3) mathml inputfields via "id"
-!! 4) svg answer (via draw or inputfields/textarea [ read_svg();]
-
+!! 7 types of input are possible with this page , single or in any combination
+!! 1) mathview inputapplet via id="MathView" ; 
+!! 2) inputfields via id="myinput0" ... id="myselect100"
+!! 3) selectboxes via id="myselect0" ... id="myselect100"
+!! 4) mathml inputfields via id="mathml0" ... id="mathml100"
+!! 5) svg answer (via draw or inputfields/textarea [ read_svg();]
+!! 6) FlyApplet drawing via ReadDrawing() : coordinates/points/lines x1:y1,x2:y2,x3:y3....x_n:y_n (wordmax (=20) is adjustable upperlimit ; wordmin (=1) is adjustable underlimit) from FlyApplet0...FlyApplet100
+!! 7) InvulGrid applet via ReadApplet(0,1,2,3) ; carefull applet produces large strings (html/latex)
 !if $my_arrows=$empty
     !set my_arrows=2
 !endif
@@ -19,10 +21,7 @@
 	    document.location.href = URL;if(document.getElementById("MathView")){document.getElementById("MathView").destroy();}
 	}
     }
-function kut(){
-    alert("OK");
 
-}
     function sendanswer(){
 	var input;
 	var show="";
@@ -54,6 +53,59 @@ function kut(){
 	    inputfieldnumber = 1;
 	}
 
+	if(document.getElementById("InvulGrid0") ){
+	    var p = 0;var tmp_show;var tmp_reply;var tmp_htmlreply;var tmp_latexreply;
+	    var latexreply = "";var invulgrid;
+	    !if $decimals=1
+		var decimals=1;
+	    !else
+		var decimals=0;
+	    !endif
+	    while( document.getElementById('InvulGrid'+p )){
+		invulgrid = document.getElementById('InvulGrid'+p);
+		tmp_show = invulgrid.ReadApplet('1');
+		tmp_reply = invulgrid.ReadApplet('0');
+		tmp_htmlreply = invulgrid.ReadApplet('2');
+		tmp_latexreply = invulgrid.ReadApplet('3');
+		if(tmp_reply.indexOf('error')!= -1){setAlarm(r26+"<br />(java applet no."+parseInt(p+1)+")");return;}
+		if(tmp_reply.indexOf("?") != -1){dontknow();return;}
+		if(decimals == 0){ 
+		    tmp_reply = tmp_reply.replace(/\./g,'');
+		    tmp_show = tmp_show.replace(/\./g,'');
+		}
+		reply[inputfieldnumber] = tmp_reply+"\n"+tmp_htmlreply+"\n"+tmp_latexreply;
+		inputfieldnumber++;
+		show = show+tmp_show+"\n"
+		p++;
+		if(p>10){setAlarm(r2);dontknow();}
+	    }
+	}
+	
+	if(document.getElementById("FlyApplet0") ){
+	<!-- id="FlyApplet0" is not interfering with non-readable FlyApplet based illustrations (id="FlyApplet") -->
+	    var p=0;var rep;
+	    while( document.getElementById("FlyApplet"+p) ){
+		try{
+		    rep=document.getElementById('FlyApplet'+p).ReadDrawing();
+		}catch(e){
+		    setAlarm(r1+" $counter");return;
+		}
+		if(rep.indexOf("error")!=-1){
+		    setAlarm(r1+" $counter");return;
+		}
+		var tmp=rep.split(',');
+		if( tmp.length > $wordmax ){setAlarm(r6);return;}
+		if( tmp.length < $wordmin ){setAlarm(r26);return;}
+		for(var r = 0;r < tmp.length;r = r+2){
+		    show=show+"( "+tmp[r]+" : "+tmp[r+1]+" )\n";
+		    reply[inputfieldnumber] = tmp[r]+":"+tmp[r+1];
+		    inputfieldnumber++;
+		}
+		p++;
+		if(p>10){setAlarm(r2);dontknow();}
+	    }
+	}
+
 	if(document.getElementById("myinput0")){
 	    var p=0;
 	    while(document.getElementById("myinput"+p)){
@@ -82,10 +134,24 @@ function kut(){
 	    }
 	}
 	
+	if( document.getElementById("myselect0") ){
+	    var p = 0;var options;var option_value;var option_text;
+	    while(document.getElementById("myselect"+p)){
+		options = document.getElementById("myselect"+p).options;
+		option_value = options[options.selectedIndex].value;
+		option_text = options[options.selectedIndex].text;
+		reply[inputfieldnumber]=option_value;
+		show=show+option_text+"\n";
+		inputfieldnumber++;
+		p++;
+		if(p>100){setAlarm(r2);dontknow();}
+	    }
+	}
+	
 	if(document.getElementById("mathml0")){
-	    var p=0;
+	    var p = 0;
 	    while(document.getElementById("mathml"+p)){
-		input = document.getElementById("mathml"+p).value;
+		input = document.getElementById('mathml'+p).value;
 		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
 		input = nthroot(input);if(input == "error"){return;}
 		if(input.indexOf(',') != -1){setAlarm(r4);return;}
@@ -111,6 +177,7 @@ function kut(){
 	
 	try{
 	    var svg_reply = read_svg();
+	    if(svg_reply.length > 100 ){setAlarm(r2);dontknow();}
 	    for( var p = 0 ; p < svg_reply.length ; p++){
 		input = svg_reply[p];
 		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
@@ -132,6 +199,7 @@ function kut(){
 		inputfieldnumber++;
 	    }	
 	}catch(e){}
+	document.getElementById('exercise').setAttribute('style','background-color:yellow');
 	if(reply.length == 0 ){setAlarm(r1);return;}
 	if(confirm(r0+"\n"+show)){reply=encodeURIComponent(reply);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
     
@@ -139,181 +207,29 @@ function kut(){
 //]]>
 </script>
 
-<table id="schaersvoorde_form" class="schaersvoorde_form">
+<table id="exercise" class="exercise" >
     <tr>
-    <td>
+    <td class="exercise_t">
 	!if $(question$n) != $empty
 	    $(question$n)
 	    <br />
 	!endif
 	!if $(formula$n) != $empty
 	    !if $embed=1
-		!if $mathview = 3
-		    !!! hmmm
-		    !insmath $(formula$n)
-		    <br />
-		!else
-		    <table>
-			<tr>
-			<th style="vertical-align:middle">
-			    !insmath $(formula$n)
-			</th>
-			<th style="vertical-align:middle">
-		    !if $inputs=1
-			!if $wims_user=supervisor
-			    <table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea>&nbsp;$(ex$p)</th></tr></table>
-        		!else
-			    <table><tr><th style="vertical-align:middle">&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;</th><th><textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(reply$n)</textarea>&nbsp;$(ex$p)</th></tr></table>
-			!endif
-		    !else
-			    <table>
-			!set a_items=!itemcnt $(answer$n)
-			!if $a_items != $[floor($inputs)]
-			    !set use_lines=1
-			!else
-			    !set use_lines=0
-			!endif
-			!for p=1 to $inputs
-			    !if $wims_user=supervisor
-				!if $use_lines=1
-				    !set deelantwoord=!line $p of $(answer$n)
-				!else
-				    !set deelantwoord=!item $p of $(answer$n)
-				!endif
-				<tr>
-				<th style="vertical-align:middle">
-				    &nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />
-				</th>
-				<th>
-				    &nbsp;$(ex$p)
-				</th>
-				</tr>
-        		    !else
-				!set deelantwoord=!item $p of $(reply$n)
-				<tr>
-				<th style="vertical-align:middle">
-				    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value ="$deelantwoord" />
-				</th>
-				<th>
-				    &nbsp;$(ex$p)
-				</th>
-				</tr>
-			    !endif
-			!next p
-			    </table>
-		    !endif
-		    </th>
-		    </tr>
-		</table>
-		!endif
-	    !else
-		!insmath $(formula$n)
-		<br />
-	    !endif
-	!endif
-	!if $exotext != $empty
-	    <br />
-	    $exotext
-	!endif
-    </td>
-    !if $image=1
-	!if $XSIZE > 450 or $mathview=3
-	    !! arbitrary value to produce a better layout ...
-    </tr>
-    <tr>
-	!endif
-    <td>
-	!if $draw=1
-	!! for fly
-	    !set insdraw_size=$XSIZE,$YSIZE
-	    !insdraw $(image$n)
-	!endif
-	!if $plot=1
-	    !! for GNUplot
-	    !set insplot_set=$(image_settings$n)
-	    !insplot $(image$n)
-	!endif
-	!if $svg=1
-	    !exec svgdraw $(image$n)
-	!endif
-    </td>
-    !endif
-    !if $applet=1
-	!if $XSIZE > 450 or $mathview=3
-	    !! arbitrary value to produce a better layout ...
-    </tr>
-    <tr>
-	!endif
-    <td>
-	$(object$n)
-    </td>
-    !endif
-    !if $embed != 1 or $[$embed+$mathview]=4
-	!if $XSIZE > 450 or $mathview=3
-    </tr>
-    <tr>
-    !endif
-    <td>
-    !if $mathview=3
-	<table>
-	    <tr>
-	    <th>
-		<object classid="java:MathView.class" id="MathView" width="580px" height="280px" type="application/x-java-applet;jpi-version=1.4" >
-		    <param name="java_codebase" value="$appletdir" />
-		    <param name="java_archive" value="MathView.jar" />
-		    <param name="java_code" value="MathView" />
-		    <param name="mayscript" value="true" />
-		    <script  type="text/javascript">
-		    //<![CDATA[
-			var thisbackground=document.body.style.backgroundColor;if(thisbackground){var bg_param="<param name=\"bgcolor\" value=\""+thisbackground+"\" />"}else{var bg_param="<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(bg_param.toString());
-		    //]]>
-		    </script>
-		    <param name="largefont" value="$largefont" />
-		!if $wims_user=supervisor
-		    <param name="oldreply" value="
-		    !nospace $(answer$n)
-		    " />
-		!else
-		    <param name="oldreply" value="
-		    !nospace $(reply$n)
-		    " />
-		!endif
-		    <param name="smallfont" value="$smallfont" />
-		    <param name="helptext" value="$applettext" />
-		    <param name="wimsvars" value="$varlist" />
-		    <param name="special_fraction" value="$special_fraction" />
-		    !! declare varlist=x,y,z,s    or varlist=x y z s
-		!if $mathviewpanel=$empty
-		    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/" />
-		!else
-		    <param name="my_panel" value="$mathviewpanel" />
-		!endif
-		    $nojava
-		</object>
-	    </th>
-	    </tr>
-	</table>
-    !else
-	!if $inputs=1
-	    <table>
+	    <table class="exercise">
 		<tr>
-	    !if $inputtext1!=$empty
-		<td style="vertical-align:middle">
-		    $inputtext1:
+		<td class="exercise_m">
+		    !insmath $(formula$n)
 		</td>
-	    !endif
-		<td style="vertical-align:middle">
-	    !if $wims_user=supervisor
-            	<textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(answer$n)</textarea>
-    	    !else
-            	<textarea  id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows" >$(reply$n)</textarea>
-    	    !endif
-		</td>
-		</tr>
-	    </table>
-	!else
-	    !if $inputs>1
-		    <table>
+		<td class="exercise_m">
+		!if $inputs=1
+		    !if $wims_user=supervisor
+			$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+        	    !else
+        		$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+		    !endif
+		!else
+		    <ul class="vlist">
 		    !set a_items=!itemcnt $(answer$n)
 		    !if $a_items != $[floor($inputs)]
 			!set use_lines=1
@@ -321,52 +237,148 @@ function kut(){
 			!set use_lines=0
 		    !endif
 		    !for p=1 to $inputs
-			<tr>
-			<td style="vertical-align:middle">
-			!if $inputs>=2
-			    $p)&nbsp;
-			!endif
-			    $(inputtext$p)
-			</td>
-			<td style="vertical-align:middle">
-			    $m_rightarrow
-			</td>
-			<td style="vertical-align:middle">
+			<li>
 			!if $wims_user=supervisor
 			    !if $use_lines=1
-			    	!set deelantwoord=!line $p of $(answer$n)
+				!set deelantwoord=!line $p of $(answer$n)
 			    !else
-			    	!set deelantwoord=!item $p of $(answer$n)
+				!set deelantwoord=!item $p of $(answer$n)
 			    !endif
-			!else
+        		!else
 			    !set deelantwoord=!item $p of $(reply$n)
 			!endif
-			    <input id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />
-			</td>
-			<td style="vertical-align:middle">
-			    &nbsp;$(ex$p)
-			</td>
-			</tr>
+			$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+			</li>
 		    !next p
-		    </table>
+		    </ul>
+		!endif
+		</td>
+	    </table>
 	    !endif
+	!else
+	    !insmath $(formula$n)
+	    <br />
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    </td>
+!if $image=1
+    !if $XSIZE > 450
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_c">
+    !if $draw=1
+	!set insdraw_size=$(image_settings$n)
+	!insdraw $(image$n)
+    !endif
+    !if $plot=1
+	!set insplot_set=$(image_settings$n)
+	!insplot $(image$n)
+    !endif
+    !if $svg=1
+	!exec svgdraw $(image$n)
+    !endif
+    </td>
+!else
+    !if $applet=1
+	!if $XSIZE > 450 
+        </tr>
+	<tr>
+        !endif
+	<td class="exercise_c">
+	    $(object$n)
+	</td>
+    !endif
+!endif
+!if $mathview=3
+    </tr>
+    <tr>
+    <td class="exercise_c">
+	<object classid="java:MathView.class" id="MathView" width="580" height="280" type="application/x-java-applet;jpi-version=1.4" >
+	    <param name="java_codebase" value="$appletdir" />
+	    <param name="java_archive" value="MathView.jar" />
+	    <param name="java_code" value="MathView" />
+	    <param name="mayscript" value="true" />
+	    <script language="javascript" type="text/javascript" />
+	    //<![CDATA[
+	    var thisbackground=document.bgColor;if(thisbackground){var obj="\<param name=\"bgcolor\" value=\""+thisbackground+"\" />"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(obj.toString());
+	    //]]>
+	    </script>
+	    <param name="largefont" value="$largefont">
+	!if $wims_user=supervisor
+	    <param name="oldreply" value="
+	    !nospace $(answer$n)
+	    "/>
+	!else
+	    <param name="oldreply" value="
+	    !nospace $(reply$n)
+	    "/>
+	!endif
+	    <param name="smallfont" value="$smallfont" />
+	    <param name="helptext" value="$applettext" />
+	    <param name="wimsvars" value="$varlist" />
+	    <param name="special_fraction" value="$special_fraction" />
+	    !! declare varlist=x,y,z,s    or varlist=x y z s
+	!if $mathviewpanel=$empty
+	    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/">
+	!else
+	    <param name="my_panel" value="$mathviewpanel" />
+	!endif
+	    $nojava
+	</object>
+    </td>
+!else
+ !if $embed != 1
+    !if $XSIZE>450
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_t">
+    !if $inputs=1
+	!if $wims_user=supervisor
+            $inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+    	!else
+    	    $inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+    	!endif
+    !else
+	!if $inputs>1
+	    <ul class="vlist">
+	    !set a_items=!itemcnt $(answer$n)
+	    !if $a_items != $[floor($inputs)]
+	        !set use_lines=1
+	    !else
+		!set use_lines=0
+	    !endif
+	    !for p=1 to $inputs
+		<li>
+		!if $wims_user=supervisor
+		    !if $use_lines=1
+			!set deelantwoord=!line $p of $(answer$n)
+		    !else
+			!set deelantwoord=!item $p of $(answer$n)
+		    !endif
+        	!else
+		    !set deelantwoord=!item $p of $(reply$n)
+		!endif
+		    $(inputtext$p)&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+		</li>
+	    !next p
+	    </ul>
 	!endif
     !endif
     </td>
+ !endif
 !endif
     </tr>
 </table>
 
-<table id="buttongroup" class="schaersvoorde_form">
-    <tr>
-!if $inputs !=0
-    <th>
-    	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    </th>
+<div id="send_buttons" class="embedded_central">
+!if $inputs != 0
+    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
 !endif
-    <th>
-	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-    </th>
-    </tr>
-</table>
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
 !exit

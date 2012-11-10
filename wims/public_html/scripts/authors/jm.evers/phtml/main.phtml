@@ -12,9 +12,13 @@ $my_temp_css to $wims_html_header
 
 !if $printexo!=0
     !if $printexo=1
+	<!-- begin print.phtml -->
 	!read $phtmldir/print.phtml
+	<!-- end print.phtml -->
     !else
+    	<!-- begin hyperref.taal.phtml -->
 	!read $remarkdir/hyperref.$taal.phtml
+    	<!-- end hyperref.taal.phtml -->
     !endif
 !else
     !if $my_html_onload != $empty
@@ -26,25 +30,17 @@ $my_temp_css to $wims_html_header
     </noscript>
     <script type="text/javascript" src="$jsdir/../lang/remarks.$taal.js"></script>
     <script type="text/javascript" src="$jsdir/precheck.js"></script>
-    <hr />
-    <br />
     !if $status=waiting
-	<div class="schaervoorde_div">
 	<!-- begin form.phtml in authordir -->
 	!read $phtmldir/form.phtml
 	<!-- end form.phtml in authordir -->
-	</div>
-	<!-- end div class="schaersvoorde_div" -->
 	<p style="text-align:left">
         !href exo_Renew
 	</p>
     !else
-	<div class="schaervoorde_div">
     	<!-- begin answer.phtml in authordir -->
 	!read $phtmldir/answer.phtml
     	<!-- end answer.phtml in authordir -->
-    	</div>
-	<!-- end div class="schaersvoorde_div" -->
 	<p style="text-align:left">
 	!href exo_Again
 	.

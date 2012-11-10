@@ -4,66 +4,70 @@
     $finalresult
     !! to ensure playback of the exam is possible
     !if $wims_user=supervisor
-	    <span class="schaersvoorde_alarm">Alert: these results are only visible for the supervisor</span>
-	    <table id="schaersvoorde_answer" class="schaersvoorde_answer">
-		!for n=1 to $total_exos
-		    <tr>
-		    <td>
-			!if $total_exos >1
-			    $questionnumber <b>$n</b>)
-			    <br />
-			!endif
-			$(question$n)
-			!if $(formula$n) !=$empty
-			    <br />
-			    !insmath $(formula$n) 
-			!endif
-			!if $(texanswer$n) != $empty
-			    <hr class="schaersvoorde_hr" />
-			    !insmath $(texanswer$n)
-			!endif
-			!if $(textanswer$n) != $empty
-			    <br />
-			    <hr class="schaersvoorde_hr" />
-			    $(textanswer$n)
-        		!endif
-		    </td>
-		    <td>
-			$youranswer
-			!if $(reply$n) != $empty
-			    <br />
-			    !if $multiimage=1
-			    	!if $(reply$n) = ?
-			    	    $dontknow
-			    	!else
-				    !if $plot=1
-					!insplot $(reply$n)
-				    !else
-					!if $draw=1
-					    !insdraw $(reply$n)
-					!endif
-				    !endif
-				!endif
-			    !else	
-				!if $math=1
-				    !insmath $(reply$n)
-				!else
-				    $(reply$n)
+	<span class="schaersvoorde_alarm">Alert: these results are only visible for the supervisor</span>
+	<table id="answer" class="answer">
+	!for n=1 to $total_exos
+	    <tr>
+	    <td class="answer_t">
+		!if $total_exos >1
+		    $questionnumber <b>$n</b>)
+		    <br />
+		!endif
+		$(question$n)
+		!if $(formula$n) !=$empty
+		    <br />
+		    !insmath $(formula$n) 
+		!endif
+		!if $(texanswer$n) != $empty
+		    <hr />
+		    <div style="display:block;color:green">
+		    !insmath $(texanswer$n)
+		    </div>
+		!endif
+		!if $(textanswer$n) != $empty
+		    <br />
+		    <hr />
+		    <div style="display:block;color:green">
+			$(textanswer$n)
+		    </div>
+        	!endif
+	    </td>
+	    <td class="answer_t">
+		$youranswer
+		!if $(reply$n) != $empty
+		    <br />
+		    !if $multiimage=1
+			!if $(reply$n) = ?
+			    $dontknow
+			!else
+			    !if $plot=1
+				!insplot $(reply$n)
+			    !else
+				!if $draw=1
+				    !insdraw $(reply$n)
 				!endif
 			    !endif
-			!else
-			    <strong>$dontknow</strong>
 			!endif
-		    </td>
-		    </tr>
-		!next n
-	    </table>
+		    !else	
+			!if $math=1
+			    !insmath $(reply$n)
+			!else
+			    $(reply$n)
+			!endif
+		    !endif
+		!else
+		    $dontknow
+		!endif
+	    </td>
+	    </tr>
+	!next n
+	</table>
     !endif
 !else
-    <table id="schaersvoorde_answer" class="schaersvoorde_answer">
+    <table id="answer" class="answer">
     !for n=1 to $total_exos
 	<tr>
-	<td>
+	<td class="answer_t">
 	!if $total_exos >1
 	    $questionnumber <b>$n</b>)<br />
 	!endif
@@ -73,17 +77,21 @@
 	    !insmath $(formula$n) 
 	!endif
 	!if $(texanswer$n) != $empty
-	    <hr style="width:50%;margin-left:0;color:green" />
-	    !insmath $(texanswer$n)
+	    <hr class="schaersvoorde_div" />
+	    <div style="display:block;color:green">
+		!insmath $(texanswer$n)
+	    </div>
 	!endif
 	!if $(textanswer$n) != $empty
 	    <br />
-	    <hr style="width:50%;margin-left:0;color:green" />
-	    $(textanswer$n)
+	    <hr class="schaersvoorde_hr" />
+	    <div style="display:block;color:green">
+		$(textanswer$n)
+	    </div>
     	!endif
 	</td>
 	!if $(image$n) != $empty
-	    <td>
+	    <td class="answer_t">
 		!if $plot=1
 		    !set insplot_set=$(image_settings$n) ; size 0.5,0.5;
 		    !insplot $(image$n)
@@ -96,11 +104,11 @@
 	    </td>
 	!endif
 	!if $(object$n)!= $empty
-	    <td>
+	    <td class="answer_t">
 		$(object$n)
 	    </td>
 	!endif
-	<td>
+	<td class="answer_t">
 	    $youranswer
 	!if $(reply$n) != $empty
 	    <br />
@@ -120,13 +128,13 @@
 		!if $math=1
 		    !insmath $(reply$n)
 		!else
-		    $(reply$n)
+		    <kbd>
+			$(reply$n)
+		    </kbd>
 		!endif
 	    !endif
 	!else
-	    <span style="schaersvoorde_alarm">
-		$dontknow
-	    </span>
+	    $dontknow
 	!endif
 	<hr />
 	!if $goodbadsign>0

@@ -19,9 +19,9 @@
 !if $break=$empty
     !set break=2
 !endif
-<table id="schaersvoorde_form" class="schaersvoorde_form">
+<table id="exercise" class="exercise">
     <tr>
-    <td>
+    <td class="exercise_t">
 	$(question$n)
 	!if $exotext!=$empty
 	    <br />
@@ -30,8 +30,8 @@
     </td>
     </tr>
     <tr>
-    <td>
-	<table>
+    <td class="exercise_m">
+	<table class="exercise">
 	    <tr>
 	    !for p=1 to $total_objects
 		!increase break_cnt
@@ -86,25 +86,17 @@
     </td>
     </tr>
 </table>
-	
-<table id="buttongroup" class="schaersvoorde_form">
-    <tr>
-    <th>
-	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    </th>
-    <th>
+    
+<div id="send_buttons" class="embedded_central">
+    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     !if $wims_user = supervisor
     	<input type="button" class="schaersvoorde_ok_button" onclick="showanswer();" value="show correct answer" />
     !else
 	!set clear=!record 67 of $remarkdir/commonremarks.$taal
     	<input type="button" class="schaersvoorde_nok_button" onclick="resetall();" value="$clear" />
     !endif
-    </th>
-    <th>
-	<input type="button" class="schaersvoorde_nok_buttom" onclick="javascript:dontknow();" value="$dontknow" />
-    </th>
-    </tr>
-</table>
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
  
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 

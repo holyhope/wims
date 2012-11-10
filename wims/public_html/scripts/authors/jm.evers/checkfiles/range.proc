@@ -273,9 +273,9 @@ score=0
 	k2=green
 	k3=green
 	score1=1
-    	ex1=&nbsp;
-    	ex2=&nbsp;
-	ex3=&nbsp;
+    	r_ex1=&nbsp;
+    	r_ex2=&nbsp;
+	r_ex3=&nbsp;
 	!if $range=1
 	    ra=!item $p of $var2
 	    ra=!replace internal : by , in $ra
@@ -294,12 +294,12 @@ score=0
 		!if $digits !=0
 		    # geen digits
 		    k3=orange
-		    ex1=!record 98 of $remarkdir/commonremarks.$taal
+		    r_ex1=!record 98 of $remarkdir/commonremarks.$taal
 		    #@<br />Ik verwachtte eigenlijk een antwoord met $digits decimalen...
 		    maxscore=$[$maxscore*$P3]
 		!else
 		    k3=green
-		    ex1=!record 99 of $remarkdir/commonremarks.$taal
+		    r_ex1=!record 99 of $remarkdir/commonremarks.$taal
 		    #@<br />Heel goed, het juiste aantal decimalen !
 		!endif
 	    !else
@@ -309,31 +309,31 @@ score=0
 		t1=$[$t2 - $digits]
 		!if $t1 = 0
 		    k3=green
-		    ex1=!record 99 of $remarkdir/commonremarks.$taal
+		    r_ex1=!record 99 of $remarkdir/commonremarks.$taal
 		    #@<br />Heel goed, het juiste aantal decimalen !
 		!else
 		    !if $t1>0
 			!if $t1>3
 			    k3=red
-			    ex1=!record 100 of $remarkdir/commonremarks.$taal
+			    r_ex1=!record 100 of $remarkdir/commonremarks.$taal
 			    #@Je antwoord verondersteld een veel te hoge nauwkeurigheid !
 			    maxscore=$[$maxscore*$P4]
 			!else
 			    !if $t1=1
 				k3=orange
 				maxscore=$[$maxscore*$P1]
-				ex1=!record 101 of $remarkdir/commonremarks.$taal
+				r_ex1=!record 101 of $remarkdir/commonremarks.$taal
 				#@Je antwoord verondersteld een iets te hoge nauwkeurigheid !<br />$digits decimalen was beter geweest.
 			    !else
 				k3=orange
 				maxscore=$[$maxscore*$P3]
-				ex1=!record 102 of $remarkdir/commonremarks.$taal
+				r_ex1=!record 102 of $remarkdir/commonremarks.$taal
 				#@Je antwoord verondersteld een te hoge nauwkeurigheid !<br />$digits decimalen was beter geweest.
 			    !endif
 			!endif
 		    !else
 			maxscore=$[$maxscore*$P3]
-			ex1=!record 103 of $remarkdir/commonremarks.$taal
+			r_ex1=!record 103 of $remarkdir/commonremarks.$taal
 			#@Je antwoord mocht wel wat nauwkeuriger worden opgegeven.<br />$digits decimalen was beter geweest.
 		    !endif
 		!endif
@@ -346,12 +346,12 @@ score=0
 		hier=HIER
 	    !else
 		!if $A >= $[$G - $range1] and $A <= $[$G + $range2]
-	    	    ex2=!record 96 of $remarkdir/commonremarks.$taal
+	    	    r_ex2=!record 96 of $remarkdir/commonremarks.$taal
 		    k2=green
 		    k=green
 		!else
 		    !if $A >= $[$G - 1.5*$range1] and $A <= $[$G + 1.5*$range2]
-			ex2=!record 97 of $remarkdir/commonremarks.$taal
+			r_ex2=!record 97 of $remarkdir/commonremarks.$taal
 			k2=orange
 			k=orange
 			score1=$P5
@@ -362,7 +362,7 @@ score=0
 		    !endif
 		!endif
 	    !endif
-	    #errortext=G=A : $G=$A checking $A &ge; $[$G - $range1] en $A &le; $[$G + $range2] var2=$var2  score1=$score1 k=$k k2=$k2 ex=$ex2 hier=$hier
+	    #errortext=G=A : $G=$A checking $A &ge; $[$G - $range1] en $A &le; $[$G + $range2] var2=$var2  score1=$score1 k=$k k2=$k2 ex=$r_ex2 hier=$hier
 	    #goback=1
 	    #!exit
 	!else
@@ -372,7 +372,7 @@ score=0
 		k2=green
 	    !else
 		!if $[round(10*($A))] = $[round(10*($G))]
-		    ex2=!record 29 of $remarkdir/commonremarks.$taal
+		    r_ex2=!record 29 of $remarkdir/commonremarks.$taal
 		    k2=red
 		    k=orange
 		    score1=$P3
@@ -384,16 +384,16 @@ score=0
 	    !endif
 	!endif
 	!if $[-1*($G)] = $A
-	    ex3=!record 27 of $remarkdir/commonremarks.$taal
+	    r_ex3=!record 27 of $remarkdir/commonremarks.$taal
 	    score1=$P6
 	    k=red
 	!endif
 	!if $[1/($G)]=$A and $score1=0
-	    ex3=<br /><span style="color:red">$A</span>&nbsp;&nbsp;<span style="color:black">&#191;</span>&nbsp;&nbsp;<span style="color:green">$G</span>
+	    r_ex3=<br /><span style="color:red">$A</span>&nbsp;&nbsp;<span style="color:black">&#191;</span>&nbsp;&nbsp;<span style="color:green">$G</span>
 	    score1=$P9
 	    k=red
 	!endif
-	yourreply=!append line $ $li<span style="color:$k">$org</span>$(rem$p)&nbsp;$ex3&nbsp;<span style="color:$k2">$ex2</span><span style="color:$k3">$ex1</span> $end_li $ to $yourreply
+	yourreply=!append line $ $li<span style="color:$k">$org</span>$(rem$p)&nbsp;$r_ex3&nbsp;<span style="color:$k2">$r_ex2</span><span style="color:$k3">$r_ex1</span> $end_li $ to $yourreply
 	score=$[$score + $score1]
     !endif
 !next p

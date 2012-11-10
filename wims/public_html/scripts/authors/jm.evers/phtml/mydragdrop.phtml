@@ -1,28 +1,29 @@
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 !set DHTML=$empty
 !if $draw=1
-    !set insdraw_size=$xsize,$ysize
+    !set insdraw_size=$(image_settings$n)
 !else
     !if $plot=1
 	!set insplot_set=$(image_settings$n)
     !endif
 !endif
 
- <table id="schaersvoorde_form" class="schaersvoorde_form">
+<table id="exercise" class="exercise" >
     <tr>
-    <td>
+    <td class="exercise_t">
 	$(question$n)
 	!if $exotext!=$empty
 	    <br />
 	    $exotext
 	!endif
     </td>
-    </tr><tr>
-    <td>
-	<table>
+    </tr>
+    <tr>
+    <td class="exercise_t">
+	<table class="exercise">
 	    <tr>
-	    <td>
-		<table>
+	    <td class="exercise_m">
+		<table class="exercise">
 		    <tr>
 		    !for p=1 to $options
 			<td style="background-color:#82bbff">
@@ -58,7 +59,7 @@
 		    </tr>
 		</table>
 	    </td>
-	    <td>
+	    <td class="exercise_m">
 		<div id="target" style="background-color:#60ff71;padding:2px; border:thin solid green; margin:2px;width:$xsize;heigth:$ysize">
 		    !if $(formula$n) != $empty
 			!insmath $(formula$n)
@@ -84,10 +85,10 @@
 	</table>
     </td>
     </tr>
- </table>
+</table>
 
 <script type="text/javascript">
-    SET_DHTML( CURSOR_MOVE , $DHTML);	
+    SET_DHTML( CURSOR_MOVE , $DHTML);
 </script>
 <script type="text/javascript">
     function my_DropFunc(){

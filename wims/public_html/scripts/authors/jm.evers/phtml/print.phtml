@@ -14,7 +14,7 @@
 !else
     <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
     !set DHTML=$empty
-    <table id="schaersvoorde_form" class="schaersvoorde_form">
+    <table id="exercise" class="exercise">
 	<tr>
 	!set cnt=0
 	!if $total_exos >4
@@ -62,7 +62,7 @@
 	    !set YSIZE=100
 	!endif
 	!if $XSIZE>400 and $XSIZE<625
-	!! als XSIZE echt 650 hebben we een speciale bedoeling met dat plaatje, hoop ik...
+	!! als XSIZE echt 450 hebben we een speciale bedoeling met dat plaatje, hoop ik...
 	    !set XSIZE=220
 	!endif
 	!set insdraw_size=$XSIZE,$YSIZE
@@ -100,29 +100,21 @@
 		$(answer$n)
 	    !endif
 	    !set DHTML=!append item "insert2$cnt","dddd$n" to $DHTML
-	!next n    
+	!next n
 	</ol>
 	$limited
     </p>
 
 <p style="page-break-after:always"></p>
-<table id="buttongroup" class="schaersvoorde_form">
-    <tr>
-    <td>
-	<input type="button" class="schaersvoorde_nok_button" value="Reload Page" onClick="window.location.reload()" />
-    </td>
-    <td>
-	<input type="button" class="schaersvoorde_ok_button" value="Print" onClick="javascript:window.print();" />
-    </td>
-    </tr>
-</table>
-    !record 69 of $remarkdir/commonremarks.$taal
-    <br />
-    !href module=$module&+session=$session&+cmd=intro
-    !record 70 of $remarkdir/commonremarks.$taal
-    </a>
+<div id="send_buttons" class="embedded_central">
+    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
+!record 69 of $remarkdir/commonremarks.$taal
+<br />
+!href module=$module&+session=$session&+cmd=intro
+!record 70 of $remarkdir/commonremarks.$taal
 <p style="page-break-after:always">&nbsp;</p>
-
 <script type="text/javascript">
 //<![CDATA[
     SET_DHTML( CURSOR_MOVE, RESIZABLE , NO_ALT , SCROLL , $DHTML );
@@ -130,3 +122,4 @@
 </script>
 
 !endif
+!exit

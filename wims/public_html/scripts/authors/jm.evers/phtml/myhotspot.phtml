@@ -12,9 +12,9 @@
 //]]>
 </script>
 !set n=$counter
-    <table id="schaersvoorde_form" class="schaersvoorde_form">
-	<tr>
-	<td>
+<table id="exercise" class="exercise">
+    <tr>
+    <td class="exercise_t">
 	!if $(question$n) != $empty
 	    $(question$n)
 	    <br />
@@ -26,76 +26,26 @@
 	!if $exotext=$empty
 	    $exotext
 	!endif
-	</td>
-	!if $image=2
-	    </tr><tr>
+    </td>
+    <td class="exercise_c">
+	!set ins_attr = ismap 
+    	!href cmd=reply&$no_name
+	!if $draw=1
+	    !set insdraw_size=$(image_settings$n)
+	    !insdraw $(image$n)
 	!endif
-	<td>
-	    !if $image=2
-		<table>
-		    <tr>
-		    !if $draw=1
-		    <th>
-			!set ins_attr = ismap
-        		!href cmd=reply&$no_name
-			!set insdraw_size=$XSIZE,$YSIZE
-			!insdraw $var1
-			</a>
-		    </th>
-		    <th>
-			!set ins_attr = ismap
-        		!href cmd=reply&$no_name
-			!set insdraw_size=$xsize,$ysize
-			!insdraw $var2
-			</a>
-		    </th>
-		    !endif
-		    !if $plot=1
-		    <th>
-			!set ins_attr = ismap
-        		!href cmd=reply&$no_name
-			!set insplot_set=$(image_settings$n)
-			!insplot $var1
-			</a>
-		    </th>
-		    <th>
-			!set ins_attr = ismap
-        		!href cmd=reply&$no_name
-			!set insplot_set=$(image_settings$n)
-			!insplot $var2
-			</a>
-		    </th>
-		    !endif
-		    </tr>
-		</table>
-	    !else
-		!set ins_attr = ismap 
-        	!href cmd=reply&$no_name
-		!if $draw=1
-		    !! for fly
-		    !set insdraw_size=$XSIZE,$YSIZE
-		    !insdraw $(image$n)
-		    </a>
-		!endif
-		!if $plot=1
-	    	    !! for GNUplot
-		    !set insplot_set=$(image_settings$n)
-		    !insplot $(image$n)
-		    </a>
-		!endif
-	    !endif
-	</td>
-	</tr>
-    </table>
-    <table id="buttongroup" class="schaersvoorde_form">
-	<tr>
-	!if $inputs !=0
-	<th>
-	    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-	</th>
+	!if $plot=1
+	    !set insplot_set=$(image_settings$n)
+	    !insplot $(image$n)
 	!endif
-	<th>
-	    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
-	</th>
-	</tr>
-    </table>
+    </td>
+    </tr>
+</table>
+
+<div id="send_buttons" class="embedded_central">
+!if $inputs != 0
+    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+!endif
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
+!exit

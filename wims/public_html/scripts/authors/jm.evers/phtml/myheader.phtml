@@ -12,183 +12,146 @@
 //]]>
 </script>
 
+
 !set wims_texsize=$mytexsize
 
-!if $debug=1
-    !if $wims_exec_error != $empty
-	<p align="center">
-	    <span style="schaersvoorde_alarm">$wims_exec_error</span>
-	</p>
-    !endif
-!endif
-<table style="width:100%" >
-    <tr>
-    <td style="vertical-align:top;text-align:left;float:left;white-space:nowrap">
+<div id="myheader">
+    <div id="header1">
 	!if $exotitle != $empty
-		<kbd>$exotitle</kbd>
-	    <br/>
+	    <kbd>$exotitle</kbd>
+	    <br />
 	!endif
 	!if $roundingtext!=$empty
-		<span class="schaersvoorde_alarm">
-		    $roundingtext
-		</span>
-	    <br/>
+	    <span class="schaersvoorde_alarm">
+		$roundingtext
+	    </span>
+	    <br />
 	!endif
-	<span class="schaersvoorde_alarm">
-	    $no_back_button
-	</span>
+	    <span class="schaersvoorde_alarm">
+		$no_back_button
+	    </span>
+	    <br />
 	!if exam notin $session
-	    <br/>
 	    !href target=wims_mhelp module=$module&+session=$session&+cmd=help <img src="$gifdir/help.jpg" alt="help" />
 	    <a onmouseover="return escape('$helptext')"><img src="$gifdir/tip.jpg" alt="tip" /></a>
+	    <br />
 	!endif
-    </td>
-    <td>
-	<div id="alarmtext" style="opacity:0.8;position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:yellow;border:4px solid red;width:400px;"></div>
-    </td>
-    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-	<table>
-	    <tr>
-	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-		<textarea id="stickit_area" cols="20" rows="3" style="display:none;background-color:yellow;font-size:16px;border:2px solid red;width:220px;height:60px;"></textarea>
-	    </td>
-	!if $viewlogo=1
-	    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
-		<a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
-		    $logo
-		</a>
-	    </td>
+    </div>
+    <!-- end div class=header -->
+    <div id="header2">
+	!if $calculator=3
+	    <script type="text/javascript">
+	    //<![CDATA[
+	    function ReadCalculator(){
+		var calc=document.getElementById("javacalculator").ReadApplet();
+		if(confirm("$send \n"+calc)){
+		    calc = encodeURIComponent(calc);
+		    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+calc ;
+		    document.location.href = URL;
+		    document.getElementById("calculator").destroy();
+		}
+	    }
+	    //]]>
+	    </script>
+	    <object id="javacalculator" width="100px" height="60px" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
+		<param name="java_codebase" value="$appletdir" />
+		<param name="java_archive" value="Rekenmachien.jar" />
+		<param name="java_code" value="Rekenmachien.class" />
+		<param name="fontsize1" value="10" />
+		<param name="fontsize2" value="10" />
+		<param name="fontsize2" value="14" />
+		<param name="language" value="$taal" />
+		<param name="pencolor1" value="0,0,0" />
+		<param name="pencolor2" value="255,0,15" />
+		<param name="bgcolor1" value="200,250,255" />
+		<param name="#fffff0" value="200,210,210" />
+		$nojava
+	    </object>
+	    <br />
+		<input style="font-size:tiny;background-color:#afceff;" type="button" onclick="javascript:ReadCalculator();" value="$send" />
+	    <br />
 	!endif
-	!if $questiontype isin 0,7
-	    !if $mathview isin 1,2
-		<td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-		    !if exam isin $session
-			!! hope this is not interfering with something important...
-			!set help_session=!nospace $session _mhelp
-		    !else
-			!set help_session=!replace internal . by , in $session
-			!set help_session=!item 1 of $help_session
-			!set help_session=!nospace $help_session _ mhelp
-		    !endif
-		    <a onmouseover="return escape('$mathchecktext')" onclick="wims_help=window.open('$wims_ref_name?wims_window=new&+lang=nl&+session=$help_session&+module=$module&+cmd=help&+myvar4=$session','wims_help','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')">
-			<img src="$gifdir/math.jpg" alt="mathematical inputfield" style="border:0px" />
-		    </a>
-		</td>
+	    <textarea id="stickit_area" cols="20" rows="3" style="background-color:yellow;font-size:12pt;display:none;border:1px solid red;"></textarea>
+	!if $debug=1
+	    !if $wims_exec_error != $empty
+    		<span style="schaersvoorde_alarm">$wims_exec_error</span>
+    		<br />
+    		<span style="schaersvoorde_alarm">$debug</span>
+    		<br />
 	    !endif
+	!endif
+	!if $goback=1
+	    <span class="schaersvoorde_alarm">
+		$errortext &nbsp;
+	    </span>
+	    <br />
+	!else
+	    !if $goodbadsign>0
+		<span class="schaersvoorde_alarm">
+		    $(remark$[$n-1]) &nbsp;
+		</span>
+		<br />
+	    !endif
+	!endif
+	!if $try = $maxtry
+	    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
+	    <div style="color:red;background-color:yellow;border:1px solid red;width:400px;">
+		<span style="schaersvoorde_alarm">
+		    $alarm
+		</span>
+	    </div>
+	!endif
+    </div><!-- end div class=header -->
+
+    <div id="header3">
+	!if $debug=1
+	    !href target=wims_mhelp session=$session&+module=$module&+cmd=help
+	    <img src="$gifdir/exec.png" style="border:0px;;vertical-align:top" alt="debug-info" />
+	!endif
+	!if $viewlogo=1
+	    <a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
+		$logo
+	    </a>
+	!endif
+	!if $mathview isin 1,2
+	    !if exam isin $session
+	    !! hope this is not interfering with something important...
+		!set help_session=!nospace $session _mhelp
+	    !else
+		!set help_session=!replace internal . by , in $session
+		!set help_session=!item 1 of $help_session
+		!set help_session=!nospace $help_session _ mhelp
+	    !endif
+	    <a onmouseover="return escape('$mathchecktext')" onclick="wims_help=window.open('$wims_ref_name?wims_window=new&+lang=nl&+session=$help_session&+module=$module&+cmd=help&+myvar4=$session','wims_help','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')">
+		<img src="$gifdir/math.jpg" alt="mathematical inputfield" style="border:0px;;vertical-align:top" />
+	    </a>
 	!endif
 	!if $scribbling=1
-	    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
-		<a onclick="javascrip:showScribble();" onmouseover="return escape('Post-It Memo')" >
-		    <img src="$gifdir/pencil.png" style="width:50;height:70;border:0px" alt="scribling" />
-		</a>
-	    </td>
+	    <a onclick="javascrip:showScribble();" onmouseover="return escape('Post-It Memo')" >
+		<img src="$gifdir/pencil.png" style="width:50;height:70;border:0px;;vertical-align:top" alt="scribling" />
+	    </a>
 	!endif
-	!if $calculator=3
-	    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
-		<table>
-		    <tr>
-		    <th>
-	    		<script type="text/javascript">
-	    		//<![CDATA[
-			    function ReadCalculator(){
-				var calc=document.getElementById("javacalculator").ReadApplet();
-			        var t=confirm("$send \n"+calc);
-				if(t==true){
-				    total=encodeURIComponent(calc);
-			    	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+calc ;
-				    document.location.href = URL;
-			    	    document.getElementById("calculator").destroy();
-				}
-			    }
-			//]]>
-			</script>
-			<object id="javacalculator" width="100" height="50" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
-			    <param name="java_codebase" value="$appletdir" />
-			    <param name="java_archive" value="Rekenmachien.jar" />
-			    <param name="java_code" value="Rekenmachien.class" />
-			    <param name="fontsize1" value="10" />
-			    <param name="fontsize2" value="10" />
-			    <param name="fontsize2" value="14" />
-			    <param name="language" value="$taal" />
-			    <param name="pencolor1" value="0,0,0" />
-			    <param name="pencolor2" value="255,0,15" />
-			    <param name="bgcolor1" value="200,250,255" />
-			    <param name="#fffff0" value="200,210,210" />
-			    $nojava
-			</object>
-		    </th>
-		    </tr><tr>
-		    <th>
-			<input style="font-size:8px;background-color:orange" type="button" onclick="javascript:ReadCalculator();" value="$send" />
-		    </th>
-		    <tr>
-		</table>
-	    </td>
+	!if $calculator=2
+	    <a onclick="window.open('$htmldir/mathcalc.html','calculator','width=280,height=370,left=0,top=0')">
+		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="calculator" />
+	    </a>
 	!else
-	    !if $calculator=2
-		<td style="vertical-align:top;text-align:right;white-space:nowrap;">
-		    <a onclick="window.open('$htmldir/mathcalc.html','calculator','width=280,height=370,left=0,top=0')">
-			<img src="$gifdir/xcalc.png" style="width:50;height=70px;border:0px" alt="calculator" />
-		    </a>
-		</td>
-	    !else
-		!if $calculator=1
-		    <td style="vertical-align:top;text-align:right;white-space:nowrap;">
-			<a onclick="window.open('$htmldir/basicalc.html','calculator','width=300,height=200,left=0,top=0')">
-			    <img src="$gifdir/xcalc.png" style="width:50px;height:70px;border:0px" alt="calculator" />
-			</a>
-		    </td>
-		!endif
+	    !if $calculator=1
+		<a onclick="window.open('$htmldir/basicalc.html','calculator','width=300,height=200,left=0,top=0')">
+		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="calculator" />
+		</a>
 	    !endif
 	!endif
-	!if $debug=1
-	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-		!href target=wims_mhelp session=$session&+module=$module&+cmd=help
-		    <img src="$gifdir/exec.png" style="border:0px" alt="debug-info" />
-		</a>
-	    </td>
-	!endif
 	!if $time=1
-	    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-		<table>
-		    <tr>
-		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-			<input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;" type="text" id="time" size="7" />
-		    </td>
-		    </tr><tr>
-		    <td style="vertical-align:top;text-align:right;float:right;white-space:nowrap;">
-			<a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" style="border:0px" alt="get FIREFOX" /></a>
-		    </td>
-		    </tr>
-		</table>
-	    </td>
+	    <div style="display:inline-block;">
+	    <input style="text-align:center;background-color:#c6e8ff;color:#ff0000;font-size:14pt;vertical-align:top; " type="text" id="time" size="7" />
+	    <br />
+	    <a target="nieuw" href="http://www.mozilla-europe.org/$taal/"><img src="$gifdir/getFireFox.gif" alt="get FIREFOX" style="border:0px;vertical-align:top" /></a>
+	    </div>
 	!endif
-	    </tr>
-	</table>
-    </td>
-    </tr>
-</table>
-<p style="text-align:center">
-    !if $goback=1
-	<span class="schaersvoorde_alarm">
-	    $errortext &nbsp;
-	</span>
-    !else
-	!if $goodbadsign>0
-	    <span class="schaersvoorde_alarm">
-		$(remark$[$n-1]) &nbsp;
-	    </span>
-	!endif
-    !endif
-    !if $try = $maxtry
-	!set alarm=!record 52 of $remarkdir/commonremarks.$taal
-	<div style="color:black;background-color:orange;border:2px solid red;width:400px">
-	    $alarm
-	</div>
-    !endif
-</p>
-<p style="text-align:left">
-!if $total_exos>1
-    $questionnumber $n)
-!endif
-</p>
+    </div><!-- end div id=myheader -->
+</div>
+<br />
+
+<!-- end class=myheader.phtml -->
+<p id="alarmtext" style="text-align:center;margin-left:auto;margin-right:auto;width:600px;height:60px;display:none;top:0px;left:0px;font-style:italic;background-color:yellow;color:red;"></p>

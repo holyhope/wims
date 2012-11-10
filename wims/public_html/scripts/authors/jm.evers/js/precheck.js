@@ -55,8 +55,8 @@ function setAlarm(txt){
     document.getElementById('alarmtext').style.top = h+'px';
     document.getElementById('alarmtext').style.left = w+'px';
     document.getElementById('alarmtext').style.display = "block"
-    document.getElementById('alarmtext').innerHTML='<span style=\'color:black;font-size:125%;\'>'+txt+'</span>';
-    window.scrollTo(w,h-60);
+    document.getElementById('alarmtext').innerHTML=txt;
+    window.scrollTo(w,h-120);
     setTimeout('resetAlarm()',4000);
 }
 	

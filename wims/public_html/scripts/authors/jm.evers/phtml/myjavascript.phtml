@@ -4,59 +4,57 @@
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
 //]]>
 </script>
-
+<!-- standard the drag & drop library is included: images (static;fly;gnuplot [id=image$$n]) may be added by setting the "dhtml" variable -->
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
-
-<table id="schaersvoorde_form" class="schaersvoorde_form">
+<table id="exercise" class="exercise" >
     <tr>
-    <td>
+    <td class="exercise_t">
     !if $(question$n) != $empty
 	$(question$n)
 	<br />
     !endif
     !if $(formula$n) != $empty
-	<table>
+	<table class="exercise">
 	    <tr>
-	    <th style="vertical-align:middle">
+	    <td class="exercise_m">
 		!insmath $(formula$n)
-	    </th>
+	    </td>
 	!if $embed=1
-	    <th style="vertical-align:middle">
-		&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
-	    </th>
-	    <th style="vertical-align:middle">
-<!-- to read these inputfields use document.getElementById('myinput0') in tailmade javascript.js -->
+	    <td class="exercise_m">
+		&nbsp;$m_rightarrow&nbsp;
+	    </td>
+	    <td <td class="exercise_m">
+<!-- to read these inputfields use document.getElementById('myinput0') in tailormade javascript.js -->
 		!if $wims_user=supervisor
 		    <textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>
 		!else
 		    <textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>
 		!endif
-	    </th>
+	    </td>
 	!endif
 	    </tr>
 	</table>
     !endif
     !if $exotext != $empty
-	$exotext
 	<br />
+	$exotext
     !endif
     </td>
-!if $(image$n) != $empty
- !if $image=1 
-    !if $XSIZE>450
+!if $image=1 
+ !if $XSIZE>450
     </tr>
     <tr>
-    !endif
-    <td>
+ !endif
+    <td class="exercise_c">
     !if $draw=1
 	!! for fly
-	!set ins_attr=name="image$n" id="image$n"
-	!set insdraw_size=$XSIZE,$YSIZE
+	!set ins_attr= id="image$n"
+	!set insdraw_size=$(image_settings$n)
 	!insdraw $(image$n)
     !else
 	!if $plot=1
 	    !! for GNUplot
-	    !set ins_attr=name="image$n" id="image$n"
+	    !set ins_attr= id="image$n"
 	    !set insplot_set=$(image_settings$n)
 	    !insplot $(image$n)
 	!else
@@ -68,23 +66,21 @@
 	!endif
     !endif
     </td>
- !endif
-!endif
-!if $applet=1
- !if $XSIZE>450
-    </tr>
-    <tr>
- !endif
-    <td>
+!else
+    !if $applet=1
+      !if $XSIZE>450
+	</tr>
+	<tr>
+    !endif
+    <td class="exercise_c">
 	$(object$n)
     </td>
 !endif
-!if $javascript != $empty
- !if $XSIZE>450
+!if $XSIZE>450
     </tr>
     <tr>
- !endif
-    <td>
+!endif
+    <td class="exercise_c">
 	!!this file handles the javascript 
 	!read $javascript
     </td>
@@ -94,18 +90,10 @@
 
 !! sometimes a better place for the buttons....$javascript does not need to define them in this case.
 !if $inputs=yes
-<table id="buttongroup" class="schaersvoorde_form">
-    <tr>
-    <th>
-	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send"/>
-    </th>
-    <th>
-	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow"/>
-    </th>
-    </tr>
-</table>
-!endif
-
+<div id="send_buttons" class="embedded_central">
+    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
 $dhtml
 !!! after the inputelements are in the DOM-tree: fill-in the previous answers
 <script type="text/javascript">
