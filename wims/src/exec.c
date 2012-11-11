@@ -827,7 +827,7 @@ void exec_href(char *p)
 	    if(strncmp(p1,"new",3)==0 || strncmp(p1,"renew",5)==0 ||
 	       strncmp(p1,"intro",5)==0) {
 		if(*b2) output(U,b2);
-		else _output_("<a name=\"#\"></a>");
+		else _output_("<a id=\"#\"></a>");
 		return;
 	    }
 	}
@@ -879,7 +879,7 @@ void exec_form(char *p)
 	       opt);
 	return;
     }
-    output("<form action=\"%s%s\"%s method=\"%s\" %s>\n%s<div>",ref_name,a,st,m,opt,wn);
+    output("<form action=\"%s%s\"%s method=\"%s\" %s>\n<div>%s",ref_name,a,st,m,opt,wn);
     if(a!=abuf && a[0]) force_setvar("wims_ref_anchor","");
     for(i=0;i<follow_no;i++) {
 	if(robot_access && follow_list[i]==ro_session) continue;
@@ -1091,7 +1091,7 @@ void _exec_ins(char *p, char *script_name,char *format)
 	*p1=0;
 	if(bbuf[0]==0) snprintf(bbuf,sizeof(bbuf),"Fail");
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 " <img src=\"%s\" alt=\"Error\"/> <p><small><pre>%s</pre></small> <p> ",
+		 " <img src=\"%s\" alt=\"Error\"/> <small><pre>%s</pre></small> <br/> ",
 		 url,bbuf);
 	setvar("ins_warn","fail");
 	setvar("ins_cnt","0");
