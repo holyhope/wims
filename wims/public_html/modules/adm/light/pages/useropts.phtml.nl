@@ -42,7 +42,7 @@ Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border="1" />$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
   </li>

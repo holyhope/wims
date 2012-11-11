@@ -1,12 +1,12 @@
 
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error.</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_out iswordof $error
  Votre code n'a pas donné de résultat. Veuillez le corriger.
  !if $m_reply_err!=$empty
-  <pre><font color="red">$m_reply_err</font></pre>
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
  !endif
  !exit
 !endif
@@ -30,19 +30,19 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Votre code contient un mot non autorisé <tt>$illegal_name</tt>. Veuillez corriger.
+  Votre code contient un mot non autorisé <span class="tt">$illegal_name</span>. Veuillez corriger.
   !exit
  !endif
  !if lengthoverflow iswordof $test
   Votre code a dépassé la limite de longueur. Veuillez le réécrire.
   !exit
  !endif
- Votre réponse <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt></center>
+ Votre réponse <p class="wimscenter">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span></p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   n'est pas compréhensible&nbsp;:
-  le mot <font color="red">$w</font>
+  le mot <span class="wims_warning">$w</span>
   n'a pas de rapport avec ce problème ou n'est pas autorisé.
   Veuillez corriger ou choisir une phrase plus simple.
   !exit

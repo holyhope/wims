@@ -2,7 +2,7 @@
 !! whenever the variable `error' is not empty.
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error.</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_out iswordof $error
  Su código no ha devuelto ningún resultado. Por favor corríjalo.
@@ -31,19 +31,19 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Su código contiene el término no autorizado <tt>$illegal_name</tt>. Por favor corríjalo.
+  Su código contiene el término no autorizado <span class="tt">$illegal_name</span>. Por favor corríjalo.
   !exit
  !endif
  !if lengthoverflow iswordof $test
   Su código ha excedido el límite de longitud. Por favor reescríbalo.
   !exit
  !endif
- Su respuesta <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ Su respuesta <p class="wimscenter">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   no es comprensible:
-  el término <font color="red">$w</font>
+  el término <span class="wims_warning">$w</span>
   de la respuesta no tiene relación con el problema o no está autorizado. 
   Por favor corríjalo o elija una expresión más sencilla.
   !exit

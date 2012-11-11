@@ -1,7 +1,7 @@
 
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error.</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_data iswordof $error
  Va¹ odgovor je nepopoln. Prosim, dopolnite ga.
@@ -19,11 +19,11 @@
 !endif
 
 !if bad_answer iswordof $error
- Va¹ odgovor <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ Va¹ odgovor <p class="wimscenter">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-  ni razumljiv: beseda <font color=red>$w</font>
+  ni razumljiv: beseda <span class="wims_warning">$w</span>
   v odgovoru ni videti povezana s problemom. Prosim, da vnesete popravek.
   !exit
  !endif

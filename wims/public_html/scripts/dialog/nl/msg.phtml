@@ -2,7 +2,7 @@
 
 !set wims_module_error=error: $error
 
-<b>FOUT</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_data iswordof $error
  Je hebt een onvolledig ingevuld antwoord opgestuurd. <br/> Graag volledig invullen. 
@@ -17,13 +17,13 @@
 !if double_reply iswordof $error
  Je hebt reeds eerder een antwoord gegeven op deze vraag.
  Dat antwoord is inmiddels geanalyseerd en beoordeeld.
- (Gebruik nooit de <tt>terug knop</tt> van je browser !) 
+ (Gebruik nooit de <span class="tt">terug knop</span> van je browser !) 
  !exit
 !endif
 
 !if bad_answer iswordof $error
- Je opgestuurde antwoord <br/><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <br/></center>
+ Je opgestuurde antwoord <p class="wims_center">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
  !if nocompute isin $test
  is niet toegestaan, en dus afgekeurd.<br/>
  Voer zelf je berekeningen uit en vul dan de resultaten in!

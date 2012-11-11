@@ -2,7 +2,7 @@
 !! whenever the variable `error' is not empty.
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_data iswordof $error
  Vous avez envoyé une réponse incomplète. Veuillez la compléter.
@@ -17,13 +17,13 @@
 !if double_reply iswordof $error
  Vous avez déjà soumis une réponse à ce problème qui a été analysée et notée.
  Les réponses répétitives sont ignorées. (N'utilisez pas le bouton
- <tt>actualiser</tt> de votre navigateur pour reposter les réponses!)
+ <span class="tt">actualiser</span> de votre navigateur pour reposter les réponses!)
  !exit
 !endif
 
 !if bad_answer iswordof $error
- Votre réponse <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ Votre réponse <p class="wims_center">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
  !if nocompute isin $test
   n'est pas permise&nbsp;: veuillez faire le calcul vous-même, et 
   soumettre la valeur qui en résulte.

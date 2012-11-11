@@ -1,12 +1,12 @@
 
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error.</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_out iswordof $error
     U moet het antwoord even veranderen: de opgestuurde code geeft geen zinnige output.
  !if $m_reply_err!=$empty
-  <pre><font color="red">$m_reply_err</font></pre>
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
  !endif
  !exit
 !endif
@@ -30,7 +30,7 @@ Herhalingen van antwoorden worden niet beoordeeld.
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en is niet toegestaan.<br/>Corrigeer dit even.
+  De opgestuurde code bevat de term: <span class="tt">$illegal_name</span> en is niet toegestaan.<br/>Corrigeer dit even.
   !exit
  !endif
  !if lengthoverflow iswordof $test
@@ -38,10 +38,10 @@ Herhalingen van antwoorden worden niet beoordeeld.
   !exit
  !endif
  Het antwoord  <br/><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <br/></center>
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> <br/></center>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-  is onbegrijpelijk: het woord <font color="red">$w</font>
+  is onbegrijpelijk: het woord <span class="wims_warning">$w</span>
   staat in geen enkele relatie met het gestelde probleem.<br/>
   Graag corrigeren
   !exit

@@ -1,12 +1,12 @@
 
 !set wims_module_error=error: $error
 
-<b>$wims_name_Error.</b>
+<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_out iswordof $error
 你的回答不包含任何输出. 请改正.
  !if $m_reply_err!=$empty
-  <pre><font color=red>$m_reply_err</font></pre>
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
  !endif
  !exit
 !endif
@@ -29,18 +29,18 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-你的回答包含非法名字<tt>$illegal_name</tt>. 请改正.
+你的回答包含非法名字<span class="tt">$illegal_name</span>. 请改正.
   !exit
  !endif
  !if lengthoverflow iswordof $test
 你的回答超长. 请重写.
   !exit
  !endif
-你的回答 <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+你的回答 <p class="wimscenter">
+ <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-看不懂: 回答中的<font color=red>$w</font>
+看不懂: 回答中的<span class="wims_warning">$w</span>
 与问题无关. 请改正.
   !exit
  !endif
