@@ -2,62 +2,63 @@
 
 :dellevel
 
-<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+<p><span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 ¡Y <span class="wims_warning">TODO</span>
 lo que hay en este nivel será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 clases, programas, cursos, cuentas de alumnos, actividades, notas!
-<p>
+</p><p>
 ¿Está seguro de querer borrar este nivel?
-
+</p>
 
 !exit
 
 :delclass
 
-<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+<p><span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 ¡Y <span class="wims_warning">TODO</span>
 lo que hay en esta clase será borrado <span class="wims_warning">DEFINITIVAMENTE</span>: 
 cursos, cuentas de alumnos, actividades, notas!
-<p>
+</p><p>
 ¿Está seguro de querer borrar esta clase?
-
+</p>
 !exit
 
 :delprog
-<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+<p><span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 ¡Y <span class="wims_warning">TODO</span>
 lo que hay en este programa será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 cursos, actividades, notas!
-<p>
+</p><p>
 ¿Está seguro de que quiere borrar este programa? 
-
+</p>
 !exit
 
 :delcourse
-<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+<p><span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 ¡Y <span class="wims_warning">TODO</span>
 lo que hay en este curso será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 cuentas de alumnos, actividades, notas!
-<p>
+</p><p>
 ¿Está seguro de querer borrar este curso?
-
+</p>
 !exit
 
 :delteacher
-<<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
-<p>
+</p>
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+</p><p>
 ¿Está usted seguro de que queire borrar la cuenta de profesor <tt>$del</tt>
 ($user_firstname $user_lastname)?
-
+</p>
 !exit
 
 :deltest
 <span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 ¡Y <span class="wims_warning">TODO</span>
 lo que hay en esta zona de pruebas será borrado <span class="wims_warning">DEFINITIVAMENTE</span>!
-<p>
+</p><p>
 ¿Está seguro de que quiere borrar la zona de pruebas?
-
+</p>
 !exit
 
 :progshare
@@ -74,7 +75,7 @@ existantes dans votre programme et est <span class="wims_warning">IRREVERSIBLE</
 Vous ne pourrez pas arrêter le partage et les programmes partageant les
 ressources ne doivent pas être effacés&nbsp;!
 
-<p>
+</p><p>
 Êtes-vous sûr de vouloir continuer&nbsp;?
-
+</p>
 !exit

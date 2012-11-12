@@ -115,7 +115,7 @@ levelnames=Lagere school leerjaar 1,\
 !if $job=backstruct
  !set name_backstruct1=Hier staat het backup bestand:
   !set name_backstruct2=Dit is een door komma's gescheiden databestand.Betekenis van de velden:\
-  <p>type,code,titel,supervisor,klasse wachtwoord,supervisor wachtwoord,opties
+  <p>type,code,titel,supervisor,klasse wachtwoord,supervisor wachtwoord,opties</p>
 
 !endif
 

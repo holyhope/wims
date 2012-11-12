@@ -107,7 +107,7 @@ levelnames=EPO 1,EPO 2,EPO 3,EPO 4,EPO 5,\
 
  !set name_backstruct2=Se trata de un fichero en formato csv. Significado de los campos:\
  <p>tipo, código, título, cuenta-del-administrador, contraseña-de-inscripción, \
-contraseña-del-profesor, opciones.
+contraseña-del-profesor, opciones.</p>
 
 !endif
 

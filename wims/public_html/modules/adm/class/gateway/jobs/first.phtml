@@ -1,17 +1,19 @@
-<center>
-!if $teachercnt=0
+<div class="wimscenter">
+ <p>
+ !if $teachercnt=0
 $name_first1
  !href cmd=reply&job=addteacher $wims_name_addteacher
-. <p>
+. 
 !else
  !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
+</p>
 !set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
 to $wims_menu_items
 !goto nopart
-!if $studentcnt=0
  <p>
+!if $studentcnt=0
  $name_first2
  !href cmd=reply&job=addstudent $wims_name_addstudent
 .
@@ -21,13 +23,15 @@ to $wims_menu_items
  !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
+</p>
 !set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
 to $wims_menu_items
 
 :nopart
-</center>
-<p>
+</div>
+
 !if $levelcnt=0
+<p>
   $name_first3
   !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
@@ -36,6 +40,7 @@ to $wims_menu_items
 !set wims_ref_class=wims_button_help
 
   !href cmd=help&special_parm=structure#level $wims_name_help
+</p>
 !else
  $table_header
  <caption>$name_first4
@@ -51,7 +56,7 @@ to $wims_menu_items
 to $wims_menu_items
  </small></caption>
  $table_hdtr
- <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  <th><small>$name_class</small></th>
  <th><small>$name_program</small></th>
  </tr>

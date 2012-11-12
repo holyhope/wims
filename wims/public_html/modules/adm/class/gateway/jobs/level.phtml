@@ -5,26 +5,26 @@
 !set sup=$class_Supervisor
 !set alevel=$class_level
 !read scripts/levelform.phtml
-<p>
+
 !if $classcnt=0
+<p>
  $name_level1
  !href cmd=reply&job=addclass $wims_name_addclass
 .
 &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#class $wims_name_help
-
+</p>
 !else
  $table_header
  <caption>$name_level4
  &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#class $wims_name_help
- <small>
  !href cmd=reply&job=addclass $wims_name_addclass
- </small></caption>
+ </caption>
  $table_hdtr
- <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  <th><small>$wims_name_course</small></th>
  <th><small>$name_participant</small></th>
  </tr>
@@ -54,18 +54,21 @@
    </td><td align="center">$c</td>
    !set c=!recordcnt $classdir1/$l_/.userlist
    <td align="center">$c</td>
+   </tr>
  !next i
  $table_end
 
 !endif
 
-<p>
+
 !if $progcnt=0
+<p>
 $name_level2
  !href cmd=reply&job=addprog $wims_name_addprog
 .&nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#program $wims_name_help
+</p>
 !else
  $table_header
  <caption>$name_level3
@@ -76,7 +79,7 @@ $name_level2
  !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
- <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th>$name_code</th><th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  <th><small>$wims_name_course</small></th>
  </tr>
  !for i=1 to $progcnt
@@ -103,7 +106,8 @@ $name_level2
    !else
     $name_nonavailable
    !endif
-   </td><td align="center">$c
+   </td><td align="center">$c</td>
+   </tr>
  !next i
  $table_end
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
