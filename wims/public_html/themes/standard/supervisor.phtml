@@ -23,7 +23,7 @@
  <div class="menuitem">
  <div id="wimslogo$class_logoside">
   <img src="$class_logo" alt="class logo" align="left"/>
- </div><!--wimslogo-->
+ </div><!--classlogo-->
  </div><!-- menuitem-->
 !endif
 !read ./adm/title.phtml 2\
@@ -88,9 +88,10 @@ $wims_classname, $wims_institutionname\
  !if $quota_free<0
   <p>
   $wims_name_exceeded
+  </p>
   <p>
   !href cmd=close&module=home&lang=$lang $wims_name_visitor
-  </div><!--wimsbody-->
+  </p></div><!--wimsbody-->
 </div><!--wimspagebox-->
   !goto end
  !else
@@ -103,12 +104,11 @@ $wims_classname, $wims_institutionname\
  <br/>
  !href module=adm/forum/mboard $U_newmsg
 !endif
-<p>
 
 !if $class_type=4
- <center>
+ <div class="wimscenter">
  !href module=adm/class/gateway $wims_name_SU_Gateway
- </center> <p>
+ </div>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox">
@@ -127,23 +127,22 @@ $wims_classname, $wims_institutionname\
 !if $class_type=2
  !if $subclasscnt>0
   $table_header
-  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th>
+  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
   !for i=1 to $subclasscnt
    !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
    !let f_aff=!item 4 of $f_class
    !let f_name=!item 1 of $f_class
    $table_tr
-    <td align="center">$ADD_class $i</td>
+    <td>$ADD_class $i</td>
     <td>
     !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
     </td>
-    <td align=center>
+    <td>
      !item 9 of $f_class
     </td>
    </tr>
   !next i
   $table_end
-  <p><p>
  !endif
  
 </div><!--wimsbody-->
@@ -174,7 +173,7 @@ $wims_classname, $wims_institutionname\
 !set ac_3=$(wims_name_shstatus[4])
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
- <p>$SU_nosheet
+ <p>$SU_nosheet</p>
 !else
  $table_header
  <caption>$SU_shlist &nbsp;
@@ -259,7 +258,7 @@ $wims_classname, $wims_institutionname\
   <td align="center">$(ac_$[$st_])</td>
   <td align="center"> </td>
  !next i 
- $table_end <p>
+ $table_end
 !endif
 
 !!$ADD_1
@@ -281,7 +280,6 @@ $wims_classname, $wims_institutionname\
 !!!href module=adm/vote&job=creat $ADD_vote
 !!.
 
-<p>
 !read ./form.phtml
 !read ./result.phtml
 </div><!--wimsbody-->
