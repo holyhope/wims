@@ -25,7 +25,7 @@
     function sendanswer(){
 	var input;
 	var show="";
-	var reply = new Array;
+	var reply = new Array();
 	var applet = 0;
 	var inputfieldnumber = 0;
 	var input;
@@ -199,10 +199,15 @@
 		inputfieldnumber++;
 	    }	
 	}catch(e){}
-	document.getElementById('exercise').setAttribute('style','background-color:yellow');
-	if(reply.length == 0 ){setAlarm(r1);return;}
-	if(confirm(r0+"\n"+show)){reply=encodeURIComponent(reply);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
-    
+	
+	if(reply[0].length == 0 ){setAlarm(r1);return;}
+	
+	if(confirm(r0+"\n"+show)){
+	    document.getElementById('exercise').setAttribute('style','background-color:#ffafdd');
+	    reply=encodeURIComponent(reply);
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
+	    document.location.href = URL;
+	}
     }
 //]]>
 </script>
@@ -225,7 +230,7 @@
 		    !if $wims_user=supervisor
 			$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
         	    !else
-        		$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n) </textarea>&nbsp;$ex1
+        		$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
 		    !endif
 		!else
 		    <ul class="vlist">
