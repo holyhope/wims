@@ -3,7 +3,7 @@
 $wims_institutionname
 
 !header1
-<script type="text/javascript" src="scripts/js/wz_tooltip.js" language="Javascript"></script>
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 
 
 !if $cmd=help
@@ -89,8 +89,11 @@ $wims_name_part_list
   &nbsp;
  !set wims_ref_class=wims_button
     !href module=adm/class/sequence&job=config $wims_name_config
+ </p>
  !endif
- </p>$table_header
+
+ !reset table_center
+ $table_header
  !if $job_affi=notes
   <caption>$name_formula2</caption>
  !else
@@ -139,6 +142,7 @@ $wims_name_part_list
    !endif
   !next j
  !endif
+ </tr>
  !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
  !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
  !for i=1 to $usercnt
@@ -313,6 +317,7 @@ $wims_name_part_list
     <td align="center">--
   !endif
   </td>
+  </tr>
  !next j
  !if $cnt_glob>0
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
