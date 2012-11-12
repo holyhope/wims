@@ -1,23 +1,25 @@
 !form reply
 <input type="hidden" name="show" value="yes"/>
 $table_header
-$table_tr<td width="40%">$name_showstat</td><td>
+$table_tr<td style="width:40%">$name_showstat</td><td>
 !set wims_formselect_switch=multiple="multiple" size="8"
 !formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
 	prompt\
 	$name_prompt
-</td></tr>$table_tr<td>$name_data</td><td>
+</td></tr>
+$table_tr<td>$name_data</td><td>
 !set wims_formselect_switch=
 !formselect types list 1,2,3 prompt \
 	$name_typ_activities
 </td></tr>
 !if $sharer!=$empty
-$table_tr<td>$name_shareclass
+$table_tr<td>
+  $name_shareclass
 </td><td>
  !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
 </td></tr>
 !endif
-$table_tr
+
 $table_end
 
 <div class="wimscenter wimsform">
