@@ -8,6 +8,10 @@
 * No warrenty whatsoever							*
 *********************************************************************************
 
+12/11/2012
+Added support for numbers like  12345*10^12 
+12345*10^12 --> 12345E12 ---> 1.2345*10^16
+
 18/10/2012 : 
 Added Mathml output 
 Added option significance=-1 
@@ -66,6 +70,35 @@ scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 #define PREFIX_START (-24)
 #define PREFIX_END 24
 #define MAX_CONV 256
+#define MAX_STRING 32
+
+char *str_replace ( const char *word, const char *sub_word, const  char *rep_word ){
+    if(strlen(word) > MAX_STRING){return NULL;}
+    char *part_word = NULL;
+    char *new_word = NULL;
+    char *old_word = NULL;
+    char *head = NULL;
+    /* if either sub_word or rep_word is NULL, duplicate word a let caller handle it */
+    if ( sub_word == NULL || rep_word == NULL ) return strdup(word);
+    new_word = strdup (word);
+    head = new_word;
+    while ( (part_word = strstr ( head, sub_word ))){
+	old_word = new_word;
+        new_word = malloc ( strlen ( old_word ) - strlen ( sub_word ) + strlen ( rep_word ) + 1 );
+        /*failed to alloc mem, free old word and return NULL */
+        if ( new_word == NULL ){
+          free (old_word);return NULL;
+        }
+        memcpy ( new_word, old_word, part_word - old_word );
+        memcpy ( new_word + (part_word - old_word), rep_word, strlen ( rep_word ) );
+        memcpy ( new_word + (part_word - old_word) + strlen( rep_word ), part_word + strlen ( sub_word ), strlen ( old_word ) - strlen ( sub_word ) - ( part_word - old_word ) );
+        memset ( new_word + strlen ( old_word ) - strlen ( sub_word ) + strlen ( rep_word ) , 0, 1 );
+        /* move back head right after the last replacement */
+        head = new_word + (part_word - old_word) + strlen( rep_word );
+        free (old_word);
+    }
+    return new_word;
+}
 
 char *printscience(double value, int sig, int format , int cnt ,int size){
     static char *prefix[] = { "y", "z", "a", "f", "p", "n", MICRO, "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
@@ -197,7 +230,7 @@ int main( int argc , char *argv[]){
     char *input = "\0",*ptr = "\0";
 
     /* test for illegal characters */
-    const char *invalid_characters = "\n\"\'!=ABCDFGHIJKLMNOPQRSTUVWXYZabcdfghijklmnopqrstuvwxyz@#$%^*&()[]{};:~><?/\\|";
+    const char *invalid_characters = "\n\"\'!=ABCDFGHIJKLMNOPQRSTUVWXYZabcdfghijklmnopqrstuvwxyz@#$%&()[]{};:~><?/\\|";
     /* Ee +- are allowed : 12.34e+05  12.34e-08 */
 
     /* walk through argument 1 to end, and call function scienceprint(a,b,c) */
@@ -219,13 +252,23 @@ int main( int argc , char *argv[]){
 	size = 0;
 	while( ptr != NULL ){
 	    switch( idx ){
-		case 0: number = atof(ptr); 
+		case 0: 
 			/* size only interesting when 'significance=-1' 
 			 determine number of digits : 1.23445e+23 -> size = 6
 			*/
-			size = strlen(ptr);if( strstr(ptr,".") != NULL){ size = size - 1 ;}
+			size = strlen(ptr);
+			if( strstr(ptr,".") != NULL){size = size - 1 ;}
+			if( strstr(ptr,"*10^") != NULL){
+			    ptr = str_replace(ptr,"*10^","E");
+			    if(ptr == NULL){
+				fprintf(stdout,"error : in replacement of 10^ notation\n");
+				return 0;
+			    } 
+			    size = size - 3;
+			}
 			if( strstr(ptr,"E") != NULL){size = size - strlen(strstr(ptr,"E"));}
 			if( strstr(ptr,"e") != NULL){size = size - strlen(strstr(ptr,"e"));}
+			number = atof(ptr); 
 			break;
 		case 1: significance = atoi(ptr);  break;
 		case 2: type = atoi(ptr); if(type < 0 || type > 4 ){type = 0;} break;
@@ -244,3 +287,6 @@ int main( int argc , char *argv[]){
     fprintf(stdout,"\n");
     return 0;
 }
+
+
+
