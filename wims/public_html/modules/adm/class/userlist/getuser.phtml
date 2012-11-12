@@ -59,7 +59,8 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
      !read adm/class/colors $[ceil(10*$globalav/$scoremax)]
      <td style=$style_note>$globalav</td></tr>
  $table_end
- $table_header$table_hdtr<th colspan="3">$name_manualscore
+ $table_header
+ $table_hdtr<th colspan="3">$name_manualscore
  !if $wims_user=supervisor
   <br/>
   !href lang=$lang&module=adm/class/grades&method=user&un=$getuser $wims_name_change
@@ -77,14 +78,13 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  <td style=$style_note>$mav</td></tr>
  $table_end
 !else
- <center>
+ <div class="wimscenter">
  $name_globalaverage: <b>$per</b> / $scoremax.
  !if $min_glob<$scoremax
   <br/><small>$name_minmax:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
- </center>
- <div class="emptyline">&nbsp;</div>
+ </div>
 !endif
 
 
