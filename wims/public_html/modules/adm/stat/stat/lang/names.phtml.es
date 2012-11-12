@@ -29,10 +29,10 @@ into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_vis
 !set name_explanations=<ul>\
 <li>El número de peticiones contabiliza únicamente peticiones de páginas.\
  Las solicitudes de módulos en desarrollo no se han contabilizado.</li>\
-<li>El número de sitios visitantes cuenta una visita por día.</li>\
-<li>El número de visitantes aparece entre el número de sitios y el\
+</li><li>El número de sitios visitantes cuenta una visita por día.</li>\
+</li><li>El número de visitantes aparece entre el número de sitios y el\
     número de sesiones.</li>\
-</ul>
+</li></ul>
 !set name_warning=El seguimiento de visitas no está activado en este sitio. No hay estadísticas disponibles. Lo sentimos. <p>
  
  

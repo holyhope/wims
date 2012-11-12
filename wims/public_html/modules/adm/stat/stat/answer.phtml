@@ -24,7 +24,7 @@ $name_number_visits $name_from $date1 $name_to $date2
   !endif
  !endif
  <th>$name_avgsite</th></tr>
- $table_tr<th bgcolor="$table_bgcolor">$name_Requests</th>
+ $table_tr<th style="background-color:$table_bgcolor;">$name_Requests</th>
  <td>
    !htmlmath $[$total_click]
    </td><td>
@@ -49,7 +49,7 @@ $name_number_visits $name_from $date1 $name_to $date2
    !htmlmath $[$total_click/$total_site] 
    </td>
  </tr>
- $table_tr<th bgcolor="$table_bgcolor">$name_Sessions</th>
+ $table_tr<th style="background-color:$table_bgcolor;">$name_Sessions</th>
    <td>
    !htmlmath $[$total_session]
    </td><td>
@@ -74,7 +74,7 @@ $name_number_visits $name_from $date1 $name_to $date2
    !htmlmath $[$total_session/$total_site]
    </td>
    </tr>
- $table_tr<th bgcolor="$table_bgcolor">sites</th>
+ $table_tr<th style="background-color:$table_bgcolor;">sites</th>
    <td>
    !htmlmath $[$total_site]
    </td><td>
@@ -117,6 +117,7 @@ $wims_name_Explanations. $name_explanations
   ($name_from $day1/$month1/$year1 $name_to $day2/$month2/$year2)</caption>
  $table_hdtr<th>$wims_name_name</th><th>
  !item $module_type of $name_prompt
+ </th>
  !if $module_type!=2
   !for i=1 to $langcnt
    !set l=!word $i of $wims_site_languages
@@ -125,7 +126,6 @@ $wims_name_Explanations. $name_explanations
   <th>$name_installed</th>
   <th>$name_avghebdo</th>
  !endif
- </tr>
  !for i=1 to $modulecnt
   !set l=!line $i+1 of $stat_out
   !set c=!word 1 of $l
@@ -133,7 +133,7 @@ $wims_name_Explanations. $name_explanations
    !goto cont
   !endif
   !set t=$[$t+$c]
-  $table_tr<td>
+  </tr>$table_tr<td>
   !set n=!word 3 of $l
   !set n=!char -40 to -1 of $n
   !set n=!translate @ to / in $n
@@ -172,10 +172,9 @@ $wims_name_Explanations. $name_explanations
   !endif
   </td><td>$[rint($c*7/$lps)]</td>
   :cont
-  </tr>
  !next i
  !if $module_type!=2
-  $table_hdtr<td>$name_subtotal<td nowrap="nowrap">
+     </tr>$table_hdtr<td>$name_subtotal<td nowrap="nowrap">
   !htmlmath $t
   </td>
   !for i=1 to $langcnt
@@ -185,6 +184,7 @@ $wims_name_Explanations. $name_explanations
   !next i
   <td align="center">-</td><td align="center">-</td>
  !endif
+</tr>
 $table_end
 !else
 !set wims_menu_items=!append line statdetail,1,cmd=reply&modules=yes\
