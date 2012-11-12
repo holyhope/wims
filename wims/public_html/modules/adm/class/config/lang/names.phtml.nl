@@ -526,7 +526,7 @@ wordt uw klas mogelijk onherstelbaar beschadigd.
 !exit
 
 :arch_end
- <p><span class="wims_warning">BELANGRIJK</span>. <ul><li> 
+ <span class="wims_warning">BELANGRIJK</span>. <ul><li> 
  De integriteit van de opgestuurde data wordt niet gecontroleerd.
  Een handmatige bijwerking van een backup archief 
  wordt door het systeem niet toegestaan.

@@ -1,4 +1,4 @@
-<p>
+
 !if $backdays>7
  !if $backdays>100
     Van uw klas in meer dan 100 dagen geen backup gemaakt. 
@@ -21,17 +21,17 @@
 !if creation iswordof $warn
  <p><b>WAARSCHUWING</b>.
  Uw virtuele klas is $creatdays oud: dit is te oud !
- <p>
+ </p><p>
  Het is dringend aan te bevelen een nieuwe klas op te richten aan het begin van 
  een schooljaar.
  !if $class_type notin 13
   <p>
   Hier kan een nieuwe virtuele klas oprichten, zonder dat er belangrijk lesmateriaal verloren gaat:
-  <ol>
+  </p><ol>
   <li>
   Maak een
   !href cmd=reply&job=arch backup
-  </a> van de klas aan het einde van het schooljaar.
+  van de klas aan het einde van het schooljaar.
   </li><li>
   <a href="$wims_ref_name?lang=$lang&+module=adm/class/regclass">Maak</a>
   een nieuwe virtuele klas (of een groepje klassen, of een kompleet instituut)
@@ -45,12 +45,13 @@
   Maak een 
   !href cmd=reply&job=arch backup
   van alle lesmateriaal van uw huidige klas; hiermee kan een nieuwe klas worden gevuld.
+  </p>
  !endif
 !endif
 
 !if $warn=$empty
  !set job=list
- <p>
+
  !changeto list.phtml
 !else
   <div class="wimscenter">

@@ -531,20 +531,20 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 autoriza la modificación manual de los archivos de copia de seguridad.
 Los errores introducidos por una modificación manual de los archivos
 puede ocasionar comportamientos imprevisibles en su clase.
-<p>
+</p><p>
 2. Salvo en caso de absoluta necesidad, evite recuperar
 <span class="wims_warning">la configuración de la clase</span> y
 <span class="wims_warning">la cuenta del profesor</span>.
 Los errores en los datos enviados para estos dos campos pueden hacer
 perder por completo el control de su clase.
-<p>
+</p><p>
 3. Puede utilizar la copia de seguridad de una clase para instalar una
 nueva. En este caso, evite recuperar los registros de la actividades y las
 notas y puntuaciones (manuales y automáticas). Estos dos tipos de recursos
 no pueden borrarse una vez instalados (medida de seguridad). Y muchas
 operaciones de mantenimiento de la clase son imposibles cuando la clase
 contiene calificaciones.
-
+</p>
 !exit
 
 :clean
@@ -553,35 +553,35 @@ contiene calificaciones.
  <p>
  Esta es una medida de seguridad importante. Si no le gusta
  esta limitación, piense en los dos siguientes aspectos:
- <p>
+ </p><p>
  Por un lado supongamos que un estudiante le roba la contraseña. Si entra
  en esta página para borrarlo todo, los otros estudiantes que no tienen
  culpa de nada lo van a pasar mal, y las actividades pedagógicas que había
  preparado usted resultarán muy perjudicadas.
- <p>
+ </p><p>
  Por otro lado, los diferentes recursos de la clase son interdependientes.
  Si borra ciertos recursos sin borrar los que dependen de ellos, la
  clase ya no funcionará.
  !href cmd=help&special_parm=dependencies Ejemplos.
- <p>
+ </p><p>
  De todas formas, si quiere hacer desaparecer de verdad esta clase, siempre puede
  borrarla (poniendo como fecha de expiración la de hoy la clase desaparecerá
  mañana por la mañana), o
  <a href="mailto:$wims_site_manager?subject=Por favor borre mi clase">pedir
  al administrador del sitio</a> que la borre por usted.
-
+</p>
  !exit
  
  :clean2
- <p><b>Observaciones</b>. 1. Sólo se puede acceder a esta página mientras
+ <b>Observaciones</b>. <p>1. Sólo se puede acceder a esta página mientras
 la página está en preparación. Una vez que han comenzado las actividades de
 los participantes, ya no es posible borrar los recursos.
-<p>
+</p><p>
 2. Los recursos compartidos por varias clases sólo pueden borrarse
 desde la clase maestra que comparte. Las otras clases deben primero
 !href cmd=reply&job=neighbor&job2=sharelist dejar de compartir
  los recursos antes de borrarlos.
-
+</p>
 !exit
 
 :connect_first_info
@@ -593,6 +593,7 @@ En particular, puede crear una réplica de esta clase en un servidor WIMS remoto,
 de forma que si el servidor local queda inutilizable momentáneamente, el trabajo
 puede continuar en la clase espejo. Las puntuaciones logradas en la réplica
 pueden fusionarse más tarde.
+</p>
 !exit
 :connect_first
 
@@ -613,6 +614,7 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
    Si los mismos ejercicios no existen en la suya, la hoja importada
    no funcionará correctamente. Por favor verifique con cuidado que todos
    los ejercicios de la clase vecina tiene su réplica en la suya.
+   </p>
 !exit
 :import3
  Las hojas de examen se basan en las hojas
@@ -620,9 +622,10 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
    Importar una hoja de examen no tiene sentido si no tiene exactamente las
    mismas hojas de trabajo que la clase vecina y si estas hojas no están
    dispuestas en el mismo orden en las dos clases.
-   <p>
+   </p><p>
    De no ser así, con seguridad la hoja de examen importada tendrán
    comportamientos erráticos.
+   </p>
 !exit
 :import4
 
@@ -645,6 +648,7 @@ Como no ha definido ninguna estación de trabajo segura, vamos a
 realizar la autentificación enviándole un código secreto a su dirección
 de correo electrónico.
 Por favor lea el correo, busque el código y tecléelo debajo.
+</p>
 !exit
 :auth2
 <b>Notas</b>. Esta autentificación sirve para asegurarse de que aunque

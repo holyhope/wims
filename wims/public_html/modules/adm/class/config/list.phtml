@@ -15,8 +15,9 @@
 !endif
 !form reply
 <input type="hidden" name="up_job" value="list"/>
+!reset table_center
 $table_header
-$table_tr<td align="right">$name_name_institution</td>
+$table_tr<td>$name_name_institution</td>
 <td colspan="3">
 !if $supertype notin 24 or $classdepth=1
  <input size="50" name="up_institution" value="$class_institution"/>
@@ -24,32 +25,32 @@ $table_tr<td align="right">$name_name_institution</td>
  $class_institution
 !endif
 </td></tr>
-$table_tr<td align="right">$name_name_number</td><td colspan="3">$wims_class</td></tr>
-$table_tr<td align="right">$name_name_class</td>
+$table_tr<td>$name_name_number</td><td colspan="3">$wims_class</td></tr>
+$table_tr<td>$name_name_class</td>
 <td colspan="3">
 <input size="50" name="up_description" value="$class_description"/></td></tr>
-$table_tr<td align="right">$name_secure
+$table_tr<td>$name_secure
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
 </td>
 <td colspan="3">
 <input size="50" name="up_secure" value="$class_secure"/></td></tr>
-$table_tr<td align="right">$wims_name_nameteacher
+$table_tr<td>$wims_name_nameteacher
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
 </td>
 <td colspan="3">
 <input size="40" name="up_supervisor" value="$class_supervisor"/></td></tr>
-$table_tr<td align="right">$wims_name_email
+$table_tr<td>$wims_name_email
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
 </td>
 <td colspan="3">
 <input size="40" name="up_email" value="$class_email"/></td></tr>
-$table_tr<td align="right">$name_optionword
+$table_tr<td>$name_optionword
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=option $wims_name_help
@@ -58,7 +59,7 @@ $table_tr<td align="right">$name_optionword
 <input size="40" name="up_option" value="$class_option"/>
 </td></tr>
 !if $wims_supertype!=4 or $class_typename!=class
-$table_tr<td align="right">
+$table_tr<td>
 $name_devaccount
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -69,7 +70,7 @@ $name_devaccount
 !formcheckbox modtoolchg list 0 prompt $wims_name_change
 </td></tr>
 !endif
-$table_tr<td align="right">
+$table_tr<td>
 $name_lock_level
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -79,7 +80,7 @@ $name_lock_level
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
-</td><td align="right">$name_bestscore
+</td><td>$name_bestscore
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
@@ -91,7 +92,7 @@ $name_lock_level
 /
 !formselect up_anonymtopscores list no,yes prompt $wims_name_no,$wims_name_yes
 </td></tr>
-$table_tr<td align="right">$wims_name_Language
+$table_tr<td>$wims_name_Language
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
@@ -101,7 +102,7 @@ $table_tr<td align="right">$wims_name_Language
 !set langs=!words2items $wims_site_languages
 !formselect up_lang list $langs
 </td>
-<td align="right">
+<td>
 $name_level
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -111,13 +112,13 @@ $name_level
 !set up_level=$class_level
 !formselect up_level list $wims_listlevel prompt $name_wims_listlevel
 </td></tr>
-$table_tr<td align="right">$name_limit
+$table_tr<td>$name_limit
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
 
 </td><td><input size="5" name="up_limit" value="$class_limit"/>
-</td><td align="right">$name_expirationdate
+</td><td>$name_expirationdate
 <small><b>yyyymmdd</b></small>
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -128,7 +129,7 @@ $table_tr<td align="right">$name_limit
 !else
  <tt>$class_expiration</tt>
 !endif
-</td></tr>$table_tr<td align="right">$name_register_exo
+</td></tr>$table_tr<td>$name_register_exo
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
@@ -138,7 +139,7 @@ $table_tr<td align="right">$name_limit
  !let up_exolog=$class_exolog
  !formselect up_exolog from 0 to $wims_exolog_limit
 </td>
-<td align="right">$name_register_exam
+<td>$name_register_exam
  &nbsp;
  !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
@@ -155,7 +156,7 @@ $table_tr<td align="right">$name_limit
 !formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 </td></tr>
 
-$table_tr<td align="right">$name_config_supconnectshowed &nbsp; </td>
+$table_tr<td>$name_config_supconnectshowed &nbsp; </td>
  <td colspan="3">
   !set up_supconnectshowed=$class_supconnectshowed
   !default up_supconnectshowed=no
@@ -163,21 +164,21 @@ $table_tr<td align="right">$name_config_supconnectshowed &nbsp; </td>
  </td>
 </tr>
 
-$table_tr<td align="right">$name_config_authscoresuspend &nbsp; </td>
+$table_tr<td>$name_config_authscoresuspend &nbsp; </td>
  <td colspan="3">
   !set up_authscoresuspend=$class_authscoresuspend
   !default up_authscoresuspend=yes
   !formselect up_authscoresuspend list no,yes prompt $wims_name_no,$wims_name_yes
  </td>
 </tr>
-$table_tr<td align="right">$name_config_exotitleform &nbsp;</td>
+$table_tr<td>$name_config_exotitleform &nbsp;</td>
 <td colspan="3">
  !set up_exotitleform=$class_exotitleform
  !default up_exotitleform=0
  !formselect up_exotitleform list -1,0,1,2,3 prompt $name_config_exotitleformoption
 </tr>
 !set up_ent=$class_ent
-$table_tr<td align="right">$wims_name_config_ent
+$table_tr<td>$wims_name_config_ent
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
@@ -186,7 +187,7 @@ $table_tr<td align="right">$wims_name_config_ent
 <input size="50" name="up_ent" value="$class_ent"/></td></tr>
 !if $class_type iswordof 0 2 4
 !set up_external_auth=$class_external_auth
-$table_tr<td align="right">$wims_name_external_auth
+$table_tr<td>$wims_name_external_auth
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=external_auth $wims_name_help
@@ -206,7 +207,7 @@ $table_hdtr<td align="center" colspan="4">
 </td></tr>$table_end
 
 !formend
-
+<p>
 $name_apparence :
 !href module=adm/light&phtml=useropts.phtml.$lang $name_pref 
 ,
@@ -214,25 +215,25 @@ $name_apparence :
 ,
 !href cmd=reply&job=oefdefault $wims_name_config_oef
 .
-<p>
+</p><p>
 !if $class_type iswordof 2 3 4
  !href cmd=reply&job=propagate $name_dependant_zone
 !endif
-<p>
+</p><p>
 !href cmd=reply&job=neighbor&job2=first $name_neigh
 ,
 !href cmd=reply&job=connect&job2=first $name_link
 ,
 !href cmd=reply&job=list&job2=connectlink $name_connectlink
 .
-<p>
+</p>
 !if $classdepth<=1 
-
+<p>
 !href cmd=reply&job=authtype $name_useauth
 $name_ldap.
- <p>
+</p>
 !endif
-
+<p>
 $name_index
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -259,12 +260,12 @@ $name_index
 !set wims_ref_class=wims_button
 !href cmd=reply&job=index&job2=doc $wims_name_docs
 
-<p>
+</p><p>
 !href cmd=reply&job=security $wims_name_config_secure
   ($name_change
 !href module=adm/class/passwd $wims_name_config_passwd
 ).
-<p>
+</p><p>
 !href cmd=reply&job=arch&job2=first $name_load
 , 
 !href cmd=reply&job=access $name_restriction1
@@ -273,7 +274,7 @@ $name_index
 $name_score,
 !href cmd=reply&job=clean $name_clean
 .
-<p>
+</p><p>
 $name_config
 !href module=adm/forum/mboard&job=config $name_forum
 , 
@@ -285,9 +286,9 @@ $name_config
 ,  
 !href module=adm/class/sequence&job=config $name_seq
 .
-<p>
+</p><p>
 $name_disk: $du MB. ($name_limit2 $wims_class_quota.)
-
+</p>
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_topscores, up_anonymtopscores, up_expiration, up_secure, up_lock,\

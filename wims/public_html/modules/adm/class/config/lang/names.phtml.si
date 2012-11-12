@@ -4,7 +4,7 @@
   !goto $wims_read_parm
 !endif
 
-!set title=Nastavitve in vzdr¾evanje
+!set title=Configuration and Maintenance
 
 !distribute items subclasses,participants,exercises,documents,teachers,worksheets\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
@@ -22,21 +22,21 @@ name_sheets
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
- !set title=Shranjevanje in obnova
+ !set title=Backup and Restoration
  !set name_intro=You can download a backup copy of your class, in the following format 
  !set name_tosend=To upload backup archives into your class, please give the backup file name
  !set name_namefile=please enter the name of backup file
  !set name_help=You will be prompted for the selection of teaching materials to restore to your class.
- 
+
  !set name_deposit=!nosubst Your backup file <span class="tt wims_fname">$wims_deposit</span> contains the following teaching materials.\
-Please check those you want to restore to your class.
+ Please check those you want to restore to your class.
  
  !set name_no_restore=Cannot be restored because you are sharing teaching materials of\
 	another class. Restoration can only be done on the class originating the sharing.
 
-  !distribute lines Nothing is selected for restoration.\
+ !distribute lines Nothing is selected for restoration.\
    Restore everything except class configuration and supervisor account.\
- <span class="wims_warning">Danger!</span> <small>See notes below.</small>\
+   <span class="wims_warning">Danger!</span> <small>See notes below.</small>\
    Class configuration setup.\
     Supervisor account (including your password)\
    participant accounts\
@@ -76,12 +76,12 @@ Please check those you want to restore to your class.
    name_selectrestore
 
 !distribute lines Backup teaching materials restored to the class\
-  Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
-  Class expiration date has been modified after restoration, because the uploaded date is\
-  Participant accounts already in use in your group of classes (restauration refused)\
-  restore is not allowed because of ressources sharable\
-  Save/Restoration is not needed at this level of the structure\
-into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
+   Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
+   Class expiration date has been modified after restoration, because the uploaded date is\
+   Participant accounts already in use in your group of classes (restauration refused)\
+   restore is not allowed because of ressources sharable\
+   Save/Restoration is not needed at this level of the structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items unrecognizable, too early, too late into ebad,eearly,elate
  
@@ -103,7 +103,7 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 !endif
 
 !if $job=clean
- !set title=Èi¹èenje uèilnice
+ !set title=Clean up the class
  !set name_lines=participant activity lines
  !set name_empty=Your class is empty!<p> There is no teaching materials in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
@@ -119,7 +119,7 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 !endif
 
 !if $job=neighbor
- !set title=Sosednje uèilnice
+ !set title=Class neighbors
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
  !set name_toomany=There are too many virtual classes on this site. Please type a keyword\
   to search for the class you want to enter.
@@ -170,11 +170,11 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_nonewres=!nosubst There is no (new) type of teaching material in the class\
   <span class="wims_emph">$nei_description</span> which it allows you to share.
  
- !set name_newres=!nosubst The class <span class="wims_emph">$nei_description</span> <b>allows</b> you to share its
+ !set name_newres=!nosubst The class <em><font color="blue">\
+  $nei_description</font></em> <b>allows</b> you to share its
  
- !set name_chooseres=!nosubst Choose the teaching material that you <b>allow</b> the class \
- <span class="wims_emph">$nei_description</span> to share&nbsp; \
- (<i>select then click on <span class="wims_button disabled">$wims_name_tosave</span></i>)
+ !set name_chooseres=!nosubst Choose the teaching material that you <b>allow</b> the class <em><font color="blue">\
+  $nei_description</font></em> to share&nbsp; (<i>select then click on <span class="wims_button disabled">$wims_name_tosave</span></i>)
  
  !set name_warning_authorized=!nosubst The class <span class="wims_emph">$nei_description</span>\
   allows you to share some teaching material. You should not allow it to share the same type of teaching material\
@@ -259,7 +259,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=connect
- !set title=Povezava z drugimi stre¾niki
+ !set title=Connect to other servers / platforms
  !set name_listserver=List of server connections
 
  !distribute lines Test a server connection\
@@ -310,7 +310,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=present
- !set title=Nastavitve uèilnice
+ !set title=Configuration of class appearance.
  !goto commun
 !endif
 
@@ -335,7 +335,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=security
- !set title=Na voljo so vam naslednje varnostne aktivnosti
+ !set title=Available security management activities
  !set name_see_activity2=You should be the origin of all these activities; if this is not \
    the case, you should verify where there is a leak of your supervisor's password.
  !set name_see_activity1=See the log file of management activities of your class. 
@@ -456,22 +456,22 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 :commun
-!distribute line Authentification\
-Osebne nastavitve\
-Omejitve virov\
-Paramétrage OEF\
-Sosednje uèilnice\
-Nastavitve varnosti\
-Selektivno èi¹èenje\
-Actualiser\
-Drugi stre¾niki\
-Gesla\
+!distribute line Authentication\
+My personal preferences\
+Resource restrictions\
+OEF configuration\
+Class neighbors\
+Security management\
+Selective cleanup\
+Rebuild\
+Other servers\
+Passwords\
 Send setups to subclasses\
-Podoba\
+Appearance\
 Score restriction\
 Platform address\
 of\
-External authentification\
+External authentication\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
@@ -479,8 +479,8 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 
 !distribute lines Secure hosts\
    Style sheet\
-   Logotip uèilnice\
-   Polo¾aj logotipa\
+   Logo of the class\
+   Position of the logo\
    top left corner, top right corner\
    Style theme of the class\
    Icones\
@@ -524,7 +524,7 @@ on <span class="tt wims_code_words">class</span>
 !exit
 
 :arch_end
- <p><span class="wims_warning">IMPORTANT</span>. <ul><li> There is no check of integrity in your uploaded data,
+ <span class="wims_warning">IMPORTANT</span>. <ul><li> There is no check of integrity in your uploaded data,
 and manual modification of the backup archives is not supported by the
 system. Errors introduced by manual modification of archives will result
 in unpredictable behavior of your class.
@@ -549,22 +549,22 @@ You cannot erase teaching materials of the class
  <p>
  This is an important security measure. If you feel that it is an
  inconvenience, think of the following two aspects.
- <p>
+ </p><p>
  On the one hand, suppose that your password is stolen and someone wants to erase
  something on this page. Your teaching activities would be greatly disturbed and
  your students would be penalizeds.
- <p>
+ </p><p>
  On the other hand, different teaching materials of the class are inter-dependent.
  If you erase some teaching materials without erasing those depending on them, your class
  will no longer work.
  !href cmd=help&special_parm=dependencies Examples.
- <p>
+ </p><p>
 If you really want to clean this class, it is best to expire it
  (by setting its expiration date to today, the class will disappear the next
  morning), or
  <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
  the webmaster</a> to erase it for you.
- 
+ </p>
  !exit
  
  :clean2
@@ -586,6 +586,7 @@ can easily move from one class to another.
 In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
 may continue in the mirror class. Scores on the mirror can be merged later.
+</p>
 !exit
 
 :connect_first
@@ -608,6 +609,7 @@ This WIMS server has not declared any connectable remote server. In order
    If the same exercises do not exist in your class, the imported worksheet
    would not work correctly. Please verify carefully whether all the class
    exercises in the neighbor are duplicated in your class.
+   </p>
 !exit
 :import3
    Exam sheets are based on worksheets to make up their
@@ -615,9 +617,10 @@ This WIMS server has not declared any connectable remote server. In order
    Importing an exam sheet makes sense only if you have exactly the same 
    active worksheets as your neighbor, and only if these worksheets are in the
    same order within the two classes.
-   <p>
+   </p><p>
    If this is not the case, the imported exam sheet will almost certainly
    behave erratically.
+   </p>
 !exit
 :import4
 
@@ -638,7 +641,7 @@ This configuration tool is only accessible to secure hosts.
 As you have not defined any secure hosts, we are checking your authentication
 by sending a secret code to your email address. Please check your mail, pick
 the code, and type it below.
-
+</p>
 !exit
 :auth2
 
