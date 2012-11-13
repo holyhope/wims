@@ -57,14 +57,14 @@
 			!endif
 			$(inputtext$i)&nbsp;$m_rightarrow&nbsp;<input id="myinput$[i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" />&nbsp;$(ex$p)
 		    !else
-			$(inputtext$i)&nbsp;$m_rightarrow&nbsp;<input id="myinput[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" />&nbsp;$(ex$p)
+			$(inputtext$i)&nbsp;$m_rightarrow&nbsp;<input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" />&nbsp;$(ex$p)
 		    !endif
 		</li>
 		!next i
 	    </ul>
 	!endif
     </td>
-!if $XSIZE>450
+!if $make_tr=1
     </tr>
     <tr>
 !endif
@@ -87,17 +87,19 @@
 	    <param name="mayscript" value="true" />
 		$nojava
 	</object>
-	<script type="text/javascript">
-	//<![CDATA[
-	    $appletcommand
-	//]]>
-	</script>
+	!if $appletcommand != $empty
+	    <script type="text/javascript">
+	    //<![CDATA[
+		$appletcommand
+	    //]]>
+	    </script>
+	!endif
     </td>
     </tr>
 </table>
 
 <div id="send_buttons" class="embedded_central">
     <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
 </div>
 

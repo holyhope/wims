@@ -57,19 +57,19 @@
         !next n
     </table>
     !if $image=1
-	!if $XSIZE=$empty
-	    !set XSIZE=100
-	    !set YSIZE=100
+	!if $xsize=$empty
+	    !set xsize=100
+	    !set ysize=100
 	!endif
-	!if $XSIZE>400 and $XSIZE<625
-	!! als XSIZE echt 450 hebben we een speciale bedoeling met dat plaatje, hoop ik...
-	    !set XSIZE=220
+	!if $xsize>400 and $xsize<625
+	!! als xsize echt 450 hebben we een speciale bedoeling met dat plaatje, hoop ik...
+	    !set xsize=220
 	!endif
-	!set insdraw_size=$XSIZE,$YSIZE
-	!for n=1 to $total_exos   
+	!set insdraw_size=$xsize,$ysize
+	!for n=1 to $total_exos
 	    !increase cnt
 	    !set ins_attr=name="insert$cnt"
-	    <div id="ddd$n" name="ddd$n" style="position:relative;width:$XSIZE;height:$YSIZE">
+	    <div id="ddd$n" name="ddd$n" style="position:relative;width:$xsize;height:$ysize">
 		!if $plot=1
 		    !set insplot_set=$(image_settings$n)
 		    !insplot $(image$n)
@@ -78,7 +78,7 @@
 		!endif
 	    </div>
 	    !set DHTML=!append item "insert$cnt","ddd$n" to $DHTML
-    	    <p></p>
+    	    <br />
         !next n
     !endif
     <p style="page-break-after:always">
@@ -105,7 +105,7 @@
 	$limited
     </p>
 
-<p style="page-break-after:always"></p>
+<p style="page-break-after:always">&nbsp;</p>
 <div id="send_buttons" class="embedded_central">
     <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />

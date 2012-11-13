@@ -41,19 +41,17 @@
     !endif
     </td>
 !if $image=1 
- !if $XSIZE>450
+ !if $make_tr=1
     </tr>
     <tr>
  !endif
     <td class="exercise_c">
     !if $draw=1
-	!! for fly
 	!set ins_attr= id="image$n"
-	!set insdraw_size=$(image_settings$n)
+	!set insdraw_size=$xsize,$ysize
 	!insdraw $(image$n)
     !else
 	!if $plot=1
-	    !! for GNUplot
 	    !set ins_attr= id="image$n"
 	    !set insplot_set=$(image_settings$n)
 	    !insplot $(image$n)
@@ -68,7 +66,7 @@
     </td>
 !else
     !if $applet=1
-      !if $XSIZE>450
+      !if $make_tr=1
 	</tr>
 	<tr>
     !endif
@@ -76,7 +74,7 @@
 	$(object$n)
     </td>
 !endif
-!if $XSIZE>450
+!if $make_tr>600
     </tr>
     <tr>
 !endif

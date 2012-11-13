@@ -29,7 +29,7 @@
 	    $exotext
 	!endif
     <td>
-!if $XSIZE>450
+!if $make_tr=1
     </tr>
     <tr>
     !endif
@@ -44,8 +44,8 @@
 	!set t=0
 	!for p=1 to $options
 	    !increase t
-	    <td style="vertical-align:top;background-color:lightblue;padding:10px;border-spacing:5px" onMouseover="this.style.backgroundColor='yellow';" onMouseout="this.style.backgroundColor='lightblue';">
-		<a onclick="var t=confirm(r0+'$p');if(t==true){window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
+	    <td style="vertical-align:top;background-color:lightblue;padding:10px;border-spacing:5px" onmouseover="this.style.backgroundColor='yellow';" onmouseout="this.style.backgroundColor='lightblue';">
+		<a style="cursor:pointer" onclick="if(confirm(r0+'$p') ==true){ window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
 	    !if $multiimage=1
 		!if $draw=1
 		    !set insdraw_size=$xsize,$ysize

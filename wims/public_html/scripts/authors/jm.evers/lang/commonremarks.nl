@@ -2,7 +2,7 @@
 : fout
 : bijna goed
 : OK en VERSTUREN
-: <small>Help</a> pagina </small>
+: <small>Kijk in de help pagina&rsquo;s</small>
 : Opgave $counter :
 : Je hebt geen JAVA ondersteuning
 : Je cijfer voor deze oefening is <span style="color:$resultcolor">$module_score</span>
@@ -60,7 +60,7 @@
 :eerste,tweede,derde,vierde,vijfde,zesde,zevende,achtste,negende,tiende,elfde,twaalfde,dertiende,veertiende,vijftiende,zestiende,zeventiende,achttiende,negentiende,twintigste, &eacute;&eacute;nentwintigste, twee&euml;ntwintigste, drie&euml;ntwintigste, vierentwintigste, vijfentwintigste, zesentwintigste, zevenentwintigste, achtentwintigste, negenentwintigste, dertigste, &eacute;&eacute;nendertigste, tweeendertigste,drieendertigste,vierendertigste,vijfendertigste,zesendertigste,zevenendertigste,achtendertigste,negenendertigste,veertigste,&eacute;&eacute;nenveertigste,tweeenveertigste,drieenveertigste,vierenveertigste,vijfenveertigste,zesenveertigste,zevenenveertigste,achtenveertigste,negenenveertigste,vijftigste
 : Bij meerdere oplossingen kun beter je noteren:<br />$testvar
 : Je hebt geen antwoord ingevuld.<br />Als je geen antwoord weet, kun je een ? invullen
-: <small><span style="color:blue">Klik hier</span> voor een illustratie.</small></a>
+: Klik hier voor een illustratie.
 : Je kunt beter geen komma's gebruiken.<br /><small>(Dat geeft soms problemen bij het nakijken.)</small>
 : Het aantal wortels is: $testvar1<br /> en niet zoals in jouw antwoord: $testvar2<br />
 : Het antwoord moest exact zijn.
@@ -101,7 +101,7 @@
 : <br />Je antwoord verondersteld een iets te hoge nauwkeurigheid !
 : <br />Je antwoord verondersteld een te hoge nauwkeurigheid !
 : <br />Je antwoord mocht wel wat nauwkeuriger worden opgegeven.
-: Ik geloof dat je even in de help-pagina van deze som moet kijken<br />Want ik kan geen "echte" reactie vergelijking ontdekken in :<br /><b>$Ah</b>
+: Ik geloof dat je even in de help-pagina van deze som moet kijken<br />Want ik kan geen <em>echte</em> reactie vergelijking ontdekken in :<br /><b>$Ah</b>
 : Een syntaxfoutje, je bent in de reactievergelijking een "+" vergeten...<br />Kijk even in de helppagina's voor de syntaxregeltjes
 : Nee, je moet natuurlijk wel een correcte reactie vergelijking invoeren ...<br />A + B -&gt; C + D<br /> A + B &lt;-&gt; C + D <br />Kijk maar eventjes in de help-pagina's
 : <br />De <b>massabalans</b> is niet inorde...<br /><em>Links en rechts van de pijl zijn verschillen:<br />Het linker gedeelte was: $links<br />Het rechter gedeelte was: $rechts</em><br />
