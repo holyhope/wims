@@ -269,7 +269,7 @@ i=0
  !advance i 
  
  !if $i<$list_cnt
-  !shortout \
+  !shortout ,\
   
  !endif
 
@@ -313,12 +313,14 @@ data_scores =!replace internal , by ],[ in $data_scores
 data_scores =!replace internal ;; by ;""; in $data_scores
 data_scores =!replace internal ; by , in $data_scores
 data_scores =!replace internal NaN by "NaN" in $data_scores
+data_scores = [[$data_scores]]
+data_scores =!replace internal ,] by ] in $data_scores
 
 !shortout "titles":["$tit"],\
 "longtitles":[$dl3],\
 "totweight":"$totweight",\
 "percents (last user)":"$percents",\
-"datas":[[$data_scores]]\
+"datas":$data_scores\
 
 !goto footer
 
@@ -359,6 +361,7 @@ $ by },{ in $data_scores
 
 
 :getsheetscores
+
 !for v in requires, weights
  $v=!trim $($v)
  !if $v != $empty
@@ -368,16 +371,6 @@ $ by },{ in $data_scores
    $v=""
  !endif
 !next v
-
-!if $data_scores != $empty
-   data_scores=!replace internal $\
-$ by },{ in $data_scores
-   data_scores =!replace internal NaN by "NaN" in $data_scores
-
-   data_scores=[{$data_scores}]
-!else
-	data_scores=""
-!endif
 
 sheet_mean_percent =!replace internal NaN by "NaN" in $sheet_mean_percent
 sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
@@ -393,28 +386,82 @@ sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
 "sheet_mean_percent":$sheet_mean_percent,\
 "sheet_max_quality":$sheet_max_quality,\
 "sheet_max_percent":$sheet_max_percent,\
-"sheet_got_detail":$sheetgotdetail,\
-"sheet_quality_detail":$sheetmeandetail,\
 "user_cnt":$usercnt,\
-"datas":$data_scores\
+"data_scores":
+
+
+
+!if $usercnt > 0
+   !shortout [
+   !for u=1 to $usercnt
+     data_scores = !record $u of wimshome/sessions/$wims_session/data.scores
+     data_scores =!replace internal NaN by "NaN" in $data_scores
+     !shortout {$data_scores}
+     !if $u < $usercnt
+        !shortout ,\
+
+     !endif
+   !next u
+   !shortout ]
+!else
+	!shortout ""\
+
+!endif
+
 
 !goto footer
 
 
+:getsheetstats
+
+weights = !wordstoitems $weights
+weights = [$weights]
+sheetgotdetail=[$sheetgotdetail]
+sheetqualitydetail=[$sheetqualitydetail]
+
+!for v in sheet_mean_percent, sheet_mean_quality, sheetmeandetail, sheetgotdetail
+   $v = !replace internal NaN by "NaN" in $($v)
+!next v
+
+!shortout "query_sheet":$qsheet,\
+"query_class":"$qclass",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"sheet_mean_quality":$sheet_mean_quality,\
+"sheet_mean_percent":$sheet_mean_percent,\
+"sheet_got_details":$sheetgotdetail,\
+"sheet_quality_details":$sheetqualitydetail,\
+"sheet_max_quality":$sheet_max_quality,\
+"sheet_max_percent":$sheet_max_percent,\
+"user_cnt":$usercnt,\
+"nb_exos":$nb_exos\
+
+!goto footer
+
+
+
 :getscore
-!for v in examscore, weights, requires, persheet, gotdetail, meandetail, remain
+
+
+json_lists = examscore, weights, requires, summary, gotdetail, meandetail, remain
+double_lists = examscore
+
+!for v in $json_lists
  $v=!trim $($v)
  !if $v != $empty
    $v=!replace internal $\
 $ by ],[ in $($v)
    $v=!replace internal $ $ by , in $($v)
    $v=!replace internal ,] by ] in $($v)
-   $v=[[$($v)]]
+   !if $v isitemof $double_lists or $qsheet = $empty
+     $v=[[$($v)]]
+   !else
+     $v=[$($v)]
+   !endif
  !else
    $v=""
  !endif
 !next v
-
 
 
 !shortout "query_class":"$qclass",\
@@ -423,13 +470,16 @@ $ by ],[ in $($v)
 "exam_scores":$examscore,\
 "weights":$weights,\
 "require_points":$requires,\
-"sheet_summaries":$persheet,\
+"sheet_summaries":$summary,\
 "got_points":$gotdetail,\
 "remain":$remain,\
 "score_status":"$score_status",\
 "score_qualities":$meandetail\
 
+!if $qsheet != $empty
+    !shortout ,"query_sheet":"$qsheet"\
 
+!endif
 !goto footer
 
 :getlog
@@ -693,7 +743,7 @@ listlinks=!replace internal  ,  by "," in $listlinks
 !shortout "message":"exercice $qexo successfully deleted",\
 "exo_id":"$qexo",\
 "compilation_result":"$compilation",\
-"more_infos":"$more_infos",\
+"more_infos":"$more_infos"\
 
 !goto footer
 
@@ -714,6 +764,15 @@ listlinks=!replace internal  ,  by "," in $listlinks
 
 :cleanclass
  !shortout "message":"class $qclass correctly cleaned"\
+ 
+!goto footer
+
+:copyclass
+new_class=!replace internal / by _ in $new_class
+ !shortout "new_class":"$new_class",\
+ "query_class":"$qclass",\
+ "message":"class $qclass correctly copied as $new_class",\
+ "log":"$log"\
  
 !goto footer
 

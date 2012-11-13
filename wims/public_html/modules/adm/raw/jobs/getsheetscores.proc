@@ -52,7 +52,7 @@ class_superclass=!defof class_superclass in $classdeffile
 
 usercnt=!recordcnt  wimshome/log/classes/$qclass/.userlist
 !if $usercnt=0
-  error=There's no user in this class
+  error=There is no user in this class
   !exit
 !endif
 
@@ -65,6 +65,8 @@ sheet_mean_quality=0
 sheet_mean_percent=0
 sheet_max_percent =0
 sheet_max_quality =0
+
+!writefile wimshome/sessions/$wims_session/data.scores \
 
 !for u=1 to $usercnt
 	l=!record $u of wimshome/log/classes/$qclass/.userlist
@@ -88,53 +90,43 @@ sheet_max_quality =0
 		sheet_max_quality=$user_quality
 	!endif
 	
-	gotdetail=!getscore user=$quser class=$qclass
-	gotdetail=!line $active_index of $gotdetail
+	gotdetail=!getscore user=$quser class=$qclass sheet=$qsheet
+	#gotdetail=!line $active_index of $gotdetail
 	
-	meandetail=!getscoremean user=$quser class=$qclass
-	meandetail=!line $active_index of $meandetail
+	meandetail=!getscoremean user=$quser class=$qclass sheet=$qsheet
+	#meandetail=!line $active_index of $meandetail
 	
-	remain=!getscoreremain user=$quser class=$qclass
-	remain=!line $active_index of $remain
+	remain=!getscoreremain user=$quser class=$qclass sheet=$qsheet
+	#remain=!line $active_index of $remain
 	
+
 	!for v in gotdetail, meandetail, remain
-		$v=!trim $($v)
+	    $v=!trim $($v)
 		!if $v != $empty
-			$v=!wordstoitems $($v)
+		    $v=!wordstoitems $($v)
 			$v=[$($v)]
 		!else
 			$v=""
 		!endif
 	!next v
 	
+	new_line = :"id":"$quser", "user_percent":$user_percent, "user_quality":$user_quality,"got_detail":$gotdetail,"mean_detail":$meandetail,"remain":$remain
 	
-	!default sheetmeandetail=$meandetail
-	!default sheetgotdetail=$gotdetail
-	nb_exos=0
-	!for note in $gotdetail
-		sheetgotdetail[$i]=[$sheetgotdetail[$i] + $note]
-		sheetmeandetail[$i]=[$sheetmeandetail[$i] + meandetail[$i]]
-		!advance nb_exos
-	!next note
-	
-	
-	new_line = "id":"$quser", "user_percent":$user_percent, "user_quality":$user_quality,"got_detail":$gotdetail,"mean_detail":$meandetail,"remain":$remain
-	
+	# Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
 	data_scores = !append line $new_line to $data_scores
-
+	!ifval  $u % 100 = 0
+	   !appendfile wimshome/sessions/$wims_session/data.scores $data_scores
+	   data_scores = $empty
+    !endif
 !next u
 
-!for i=0 to $nb_exos
-	sheetgotdetail[$i]=[$sheetgotdetail[$i]/$usercnt]
-	sheetmeandetail[$i]=[$sheetmeandetail[$i]/$usercnt]
-	!advance i
-!next i
+!appendfile wimshome/sessions/$wims_session/data.scores $data_scores
 
 sheet_mean_quality=$[$sheet_mean_quality/$usercnt]
 sheet_mean_percent=$[$sheet_mean_percent/$usercnt]
 
-requires=!getscorerequire class=$qclass
-requires=!line $active_index of $requires
+requires=!getscorerequire class=$qclass sheet=$qsheet
+#requires=!line $active_index of $requires
 
 score_status=!getscorestatus class=$qclass
 
@@ -143,5 +135,4 @@ scoremax=!word 1 of $scoremax
 !default scoremax = 10
 
 weights = !record 0 of wimshome/log/classes/$qclass/sheets/.weight
-weights=!line $qsheet of $weights
-
+weights = !line $qsheet of $weights
