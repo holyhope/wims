@@ -1,3 +1,5 @@
+<!-- begin of $wims_theme/user.phtml -->
+
 !! Class participant page theme.
 !nocache
 !if $module!=home
@@ -43,7 +45,7 @@
  !endif
 !endif
 </center>
-<br style="clear:both;"/> <br/></div><div class="wimsbody">
+<br style="clear:both;"/></div><div class="wimsbody">
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -74,7 +76,6 @@
   !writefile wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
  !endif
 !endif
-
 $U_greet
 <small>
 !if $class_type isin 234
@@ -181,6 +182,7 @@ $U_greet
   !set aelist=!append item $i to $aelist
  !endif
 !next i
+
 !set m=!itemcnt $aelist
 !set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
 !set avlist=
@@ -210,7 +212,7 @@ $U_greet
    !set s_=!line $i of $ds_list
    !set t_=!line $i of $dt_list
    <tr class="wims_user_doc"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-   !href module=adm/doc?job=read&doc=$s_&block=main $t_
+   !href module=adm/doc&job=read&doc=$s_&block=main $t_
    </td></tr>
   !next i
   </table>
@@ -340,5 +342,6 @@ $U_greet
 !endif
 </div></body>
 </html>
+
 
 

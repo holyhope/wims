@@ -1,11 +1,13 @@
+<!-- begin of $wims_theme/supervisor.phtml -->
 !! supervisor page definition.
 !nocache
 !if $module!=home
  !exit
 !endif
-
 !set home_theme=yes
+
 !readproc tabletheme
+
 !read classlogo.phtml
 !if $class_logo!=
 <table border="0" cellspacing="0" cellpadding="8" align="$class_logoside">
@@ -46,20 +48,22 @@ $SU_greet
 !href module=adm/class/config $c_date_out
 $SU_exp2.
 !else
-$SU_greet.
+ $SU_greet.
+ <small>
 !endif
 !href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet [$wims_name_help]
 </small>
 <br/>
 !if $wims_numpartconnected>0
- $SU_numpartconnected
+ $SU_numpartconnected.
 !else
- $SU_nopartconnected
+ $SU_nopartconnected.
 !endif
+
 !if $quota_free<2
  !if $quota_free<0
   <p>
-   $wims_name_exceeded
+  $wims_name_exceeded
   </p>
   !href cmd=close&module=home&lang=$lang $wims_name_visitor
   !goto end
@@ -74,11 +78,10 @@ $SU_greet.
  !href module=adm/forum/mboard $U_newmsg
 !endif
 
-
 !if $class_type=4
- <center>
+ <div class="wimscenter">
  !href module=adm/class/gateway $wims_name_SU_Gateway
- </center>
+ </div>
  !goto end
 !endif
 
@@ -102,11 +105,15 @@ $SU_greet.
   !next i
   $table_end
  !endif
- <center>
+ <div class="wimscenter">
  !href module=adm/class/regclass $ADD_3 $ADD_class
- </center>
+ </div>
  !goto end
 !endif
+
+<div id="wims_class_manager_msg">
+!read ./wimshome/log/manager_msg.phtml.$lang
+</div>
 
 !set test=!replace / by , in $wims_class
 !if $(test[-1])=0 
@@ -120,7 +127,7 @@ $SU_greet.
 !set ac_3=$(wims_name_shstatus[4])
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
- $SU_nosheet
+ <p>$SU_nosheet</p>
 !else
  $table_header
  <caption>$SU_shlist &nbsp;
@@ -266,4 +273,4 @@ WIMS
 </small>
 </div></body>
 </html>
-
+<!-- end of $wims_theme/supervisor.phtml -->
