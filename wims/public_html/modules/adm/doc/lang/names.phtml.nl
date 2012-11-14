@@ -58,6 +58,7 @@ Als schrijver van dit document moet u  toestemming aan de
  Vraag
  !mailurl $wims_site_manager de sitemanager
  dit document te verwijderen.
+ </p>
 !exit
 
 :erase2
@@ -65,6 +66,7 @@ Als schrijver van dit document moet u  toestemming aan de
 dus weg is weg&nbsp;!
 <p>
 Weet u zeker dat het document<span class="tt wims_fname">$tit</span>&nbsp; moet worden verwijderd ?
+</p>
 !exit
 
 :public

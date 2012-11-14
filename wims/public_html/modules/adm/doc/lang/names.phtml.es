@@ -67,6 +67,7 @@ Ask to open WIMS document $doc
  Puede 
  !mailurl $wims_site_manager [wims] Pedir al administrador del sitio
  que borre este documento por usted.
+ </p>
 !exit
 
 :erase2
@@ -74,6 +75,7 @@ Ask to open WIMS document $doc
 ¡Una vez borrados los documentos no se pueden recuperar!
 <p>
 ¿Está seguro de que quiere borrar el documento <span class="tt wims_fname">$tit</span>?
+</p>
 
 !exit
 

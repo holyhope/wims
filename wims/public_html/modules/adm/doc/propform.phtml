@@ -6,20 +6,20 @@
 
 !set wims_form_method=post
 !form reply
-
+!reset table_center
 $table_header
-<tr><td align="right">$wims_name_title</td>
+<tr><td>$wims_name_title</td>
 <td><input type="text" size="40" name="titr" value="$tit"/></td></tr>
-<tr><td align="right">$wims_name_Description</td>
+<tr><td>$wims_name_Description</td>
 <td><input type="text" size="40" name="descr" value="$desc"/></td></tr>
-<tr><td align="right">$wims_name_Author
+<tr><td>$wims_name_Author
 </td>
 <td><input type="text" size="40" name="authorr" value="$author"/>
  (<tt>$wims_name_firstname,$wims_name_lastname</tt>) 
  </td></tr>
-<tr><td align="right">$wims_name_email</td>
+<tr><td>$wims_name_email</td>
 <td><input type="text" size="40" name="emailr" value="$email"/></td></tr>
-<tr><td align="right">$n_header<br/>
+<tr><td>$n_header<br/>
 <span class="small tt">(css, js, etc.)</span></td>
 !set header=!translate internal $	$ to $\
 $ in $header
@@ -31,28 +31,29 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align="right">$wims_name_Copyright:</td><td>
+ <tr><td>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
 	GNU Free Documentation License,\
 	Open Publication License,\
 	$n_copyright2
- </td></tr><tr><td align="right">$name_public</td><td>
+ </td></tr><tr><td>$name_public</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
- </td></tr><tr><td align="right">$wims_name_Language:</td><td>
+ </td></tr><tr><td>$wims_name_Language:</td><td>
  !default dlang=all
- <input size="14" name="dlangr" value="$dlang"/> <br/><span class="tt small">
- (all en fr es it de cn ca nl)</span></td></tr>
+ <input size="14" name="dlangr" value="$dlang"/> <br/>
+ <span class="tt small">(all en fr es it de cn ca nl)</span>
+ </td></tr>
  !if $job=creat
-  <tr><td align="right">$n_codedoc:</td><td nowrap="nowrap">
+  <tr><td>$n_codedoc:</td><td nowrap="nowrap">
   <input type="password" size="$codemax" maxlength="$codemax" name="coder"/> $name_code5
   <input type="password" size="$codemax" maxlength="$codemax" name="coder2"/>
   </td></tr>
   <tr><td colspan="2" class="small"> $name_code4</td></tr>
  !endif
 !else
- <tr><td align="right"> $name_participant<td>
+ <tr><td> $name_participant</td><td>
  !formselect docopenr list 0,1,2 prompt \
 	$wims_name_Docstatus
 	</td></tr>
