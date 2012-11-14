@@ -2,7 +2,6 @@
 !if $save!=$empty and $changed>0
  !href cmd=reply#check $name_click
  $name_refresh
- <p>
  !exit
 !endif
 
@@ -68,7 +67,7 @@ arrow 0,-v,0,v,10,grey\
 linewidth 2\
 levelcurve green,x^4+y^4+(cos(s*pi)*x-sin(s*pi)*y)*(sin(s*pi)*x+cos(s*pi)*y),0,-0.06,0.2,0.6,1
 </td></tr>$table_end
-</td>
+</td></tr>
 $table_tr <td>
 $name_gnuplot1 (
 !exec insplot_about
@@ -79,7 +78,8 @@ $name_gnuplot1 (
 !set insplot_colors= xffffff x000000 x404040 \
  x$color_1 x$color_2 x$color_3 x$color_4 x$color_5 x$color_6 x$color_7 x$color_8 x$color_9 x$color_10
 !insplot [-5:5] [-1.4:1.4] sin(x),cos(x),-sin(x),-cos(x)
-</td></tr>$table_tr <td>
+</td></tr>
+$table_tr <td>
 $name_graphviz1
 !!!! no space after about ...
 !exec graphviz about
@@ -89,8 +89,8 @@ $name_graphviz1
 !set graph=!exec graphviz digraph test {rankdir=LR ; a->b [color=red] ; b-> c; a-> é ; c-> é}
 !set graph=!line 1 of $graph
  <img src="$graph" alt="graphviz"/>
-</td></tr>$table_tr
-<td>
+</td></tr>
+$table_tr<td>
 $name_povray1
 !exec povray about
  $name_povray2
