@@ -6,7 +6,8 @@
 
 !set wims_form_method=post
 !form reply
-<table class="wimsnoborder wimscenter">
+
+$table_header
 <tr><td align="right">$wims_name_title</td>
 <td><input type="text" size="40" name="titr" value="$tit"/></td></tr>
 <tr><td align="right">$wims_name_Description</td>
@@ -19,13 +20,13 @@
 <tr><td align="right">$wims_name_email</td>
 <td><input type="text" size="40" name="emailr" value="$email"/></td></tr>
 <tr><td align="right">$n_header<br/>
-<small>(css, js, etc.)</small>
+<span class="small tt">(css, js, etc.)</span></td>
 !set header=!translate internal $	$ to $\
 $ in $header
 !set hl=!linecnt $header
 !set hr=$[max(3,min($hl+2,10))]
 !set header=!reinput $header
-<td><textarea cols="40" rows="$hr" name="headerr">$header</textarea>
+<td><textarea cols="40" rows="$hr" name="headerr">$header</textarea></td></tr>
 !reset headerr
 !set docopenr=$docopen
 !default docopenr=0
@@ -41,22 +42,21 @@ $ in $header
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align="right">$wims_name_Language:</td><td>
  !default dlang=all
- <input size="14" name="dlangr" value="$dlang"/> <br/><small>
- (all en fr es it de cn ca nl)</small>
+ <input size="14" name="dlangr" value="$dlang"/> <br/><span class="tt small">
+ (all en fr es it de cn ca nl)</span></td></tr>
  !if $job=creat
   <tr><td align="right">$n_codedoc:</td><td nowrap="nowrap">
   <input type="password" size="$codemax" maxlength="$codemax" name="coder"/> $name_code5
   <input type="password" size="$codemax" maxlength="$codemax" name="coder2"/>
-  </td></tr><tr><td colspan="2"><small>
- $name_code4
- </small>
+  </td></tr>
+  <tr><td colspan="2" class="small"> $name_code4</td></tr>
  !endif
 !else
  <tr><td align="right"> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
 	$wims_name_Docstatus
+	</td></tr>
 !endif
-
 </table>
 <p class="wimscenter wimsform">
  <input type="submit" name="rEg" value="$wims_name_tosave"/>&nbsp;

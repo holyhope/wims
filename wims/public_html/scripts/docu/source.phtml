@@ -1,45 +1,44 @@
 !nocache
-<center><h1>$tit
-</h1></center>
+<h1 class="wimscenter">$tit</h1>
 
 !if $titb=$empty
  <p>
  $name_noncreate2
- <p>
+ </p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
  $name_noread
- <p>
+ </p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
 $name_expired
- <p>
+ </p>
  !exit
 !endif
 
 <h3>$titb ($name_src)
-</b><font size="-1">
+<span class="small">
  [
  !href cmd=reply&job=read $n_formatted
- ]</font>
+ ]</span>
 </h3>
 
 <pre wrap>
 !mexec scripts/cat.sh $module_dir/$docdir/$doc/src/$block
 </pre>
 
-<p><hr/>
+<hr/>
 !if $wims_class!=$empty and $wims_user!=supervisor
  !exit
 !endif
 <table width="100%" border="0">
-<tr><td align="left"><small>
+<tr><td align="left" class="small">
 !href cmd=reply&job=read $n_formatted
 &nbsp; par
 !if $email=$empty
@@ -48,17 +47,17 @@ $name_expired
  !mailurl $email $author
 !endif
 !! &copy;
-</small></td>
+</td>
 !if help notin $wims_session
- <td align="right"><small>
+ <td align="right" class="small">
  !href module=home WIMS
   @
  <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</small></td>
+</td>
 !endif
 </tr>
-<tr><td align="left" colspan="2" nowrap>
-<small>$n_lastmod $datm</small></td></tr>
+<tr><td align="left" colspan="2" nowrap class="small">
+$n_lastmod $datm</td></tr>
 </table>
 
 
