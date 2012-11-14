@@ -6,9 +6,15 @@
 !set ymin=!item 3 of $var1
 !set ymax=!item 4 of $var1
 
-<div id="mouse_coords" style="opacity:0.6;position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
-<div id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:4px;min-height:4px;max-height:4px;height:auto!important;height:4px;"><table summary="" bgcolor="red" width="4" height="4"><tr><th></th></tr></table></div>
-<div id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:6px;height:6px;"></div>
+!if $use_arrow = 1
+    <img id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow">
+    <img id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow">
+    <div id="mouse_coords" style="opacity:0.7;position:absolute;z-index:100;display:block;background-color:orange;top:0px;left:0px;font-size:16px;border:1px solid #ff0000;color:black"></div>
+!else
+    <div id="mouse_coords" style="opacity:0.6;position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
+    <div id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:4px;min-height:4px;max-height:4px;height:auto!important;height:4px;"><table summary="" bgcolor="red" width="4" height="4"><tr><th></th></tr></table></div>
+    <div id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:6px;height:6px;"></div>
+!endif
 
 !set n=$counter
 <table id="exercise" class="exercise">
@@ -34,7 +40,7 @@
     <td class="exercise_c">
 	<div id="mydiv">
 	!if $draw=1
-	    !set insdraw_size=$(image_settings$n)
+	    !set insdraw_size=$xsize,$ysize
 	    !set ins_attr= id="myimage"
 	    !insdraw $(image$n)
 	!else
