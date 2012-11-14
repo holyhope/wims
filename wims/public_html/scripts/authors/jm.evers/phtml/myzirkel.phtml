@@ -5,6 +5,18 @@
 <script type="text/javascript"  src="$jsdir/zirkel2wims.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+<!-- no validator -->
+!if $description=$empty
+    var desc_list = null;
+    var default_desc = "$youranswer ";
+    var desc_cnt = 30;
+!else
+    var desc_list="$description";
+ !set desc_cnt = !itemcnt $description
+    var desc_cnt = $desc_cnt;
+    var default_desc = null;
+!endif
+    var description = list2array(desc_list,desc_cnt,default_desc);
 !!    var maxcookies=20;
 !!    var cookiesize=400;
 !!    var cookiecount=-1;

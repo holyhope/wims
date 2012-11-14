@@ -21,6 +21,7 @@ n=$counter
 	        remark$counter=$NOK
 	    !next p
 	    !readproc $procdir/score.proc
+	    !exit
 	!endif
     !endif
 !endif
@@ -32,7 +33,9 @@ n=$counter
 	# give some points for what was good...
 	modulescore=$[$modulescore/$total_exos]
 	total_exos=$counter
-	!goto READY
+	status=done
+	!readproc $procdir/score.proc
+	!exit
     !endif
     
     !if $goback=1
@@ -46,19 +49,19 @@ n=$counter
 	    !else
 		!if $maxscore>0.4
 		    fine=!randitem $bok
-		    clr=orange
+		    clr=#ff7900
 		!else
 		    fine=!randitem $nok
 		    clr=red
 		!endif
 	    !endif
-	    remark$n=$(remark$n)<br /><span style="color:$clr;font-style:italic;">$fine</span>
+	    remark$n=!append line $ <br /><span style="color:$clr;font-style:italic;">$fine</span> $ to $(remark$n)
 	!endif
 	#wims_module_log=!append line $(answer$n) to $wims_module_log 
 	!if $counter=$total_exos
-	    :READY
 	    status=done
 	    !readproc $procdir/score.proc
+	    !exit
 	!else
 	    counter=$[$counter+1]
 	    # reset maxscore 

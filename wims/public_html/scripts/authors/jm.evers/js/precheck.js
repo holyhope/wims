@@ -566,3 +566,25 @@ function is_real_number(t){
     if(s.length != t.length){setAlarm(r37+" "+t) ; return 0;}else{return 1;}
 }
 
+function list2array(list,cnt,desc){
+    if( cnt == null ){ cnt = 30; }
+    if( list == null ){
+	list = new Array(cnt);
+    }
+    else
+    {
+	list = list.split(',');
+    }
+    var c = 1;
+    for(var p = 0 ; p < cnt ; p++ ){
+	if( list[p] != null ){
+	    list[p] = c + " ) " + list[p] + " :\t";
+	}
+	else
+	{
+	    list[p] = desc + " " + c + ")\t";
+	}
+	c++;
+    }
+    return list;
+}

@@ -1,9 +1,27 @@
+
 <script type="text/javascript">
 //<![CDATA[
+<!-- no validator  -->
+    var URL;
+!if $description=$empty
+    var desc_list = null;
+    var default_desc = "$youranswer ";
+    var desc_cnt = 30;
+!else
+    var desc_list="$description";
+ !set desc_cnt = !itemcnt $description
+    var desc_cnt = $desc_cnt;
+    var default_desc = null;
+!endif
+    var description = list2array(desc_list,desc_cnt,default_desc);
+
+!if $goback=1
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
+!endif
 //]]>
 </script>
+
 <!-- standard the drag & drop library is included: images (static;fly;gnuplot [id=image$$n]) may be added by setting the "dhtml" variable -->
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 <table id="exercise" class="exercise" >
@@ -11,7 +29,6 @@
     <td class="exercise_t">
     !if $(question$n) != $empty
 	$(question$n)
-	<br />
     !endif
     !if $(formula$n) != $empty
 	<table class="exercise">
@@ -36,66 +53,68 @@
 	</table>
     !endif
     !if $exotext != $empty
-	<br />
 	$exotext
     !endif
     </td>
-!if $image=1 
- !if $make_tr=1
-    </tr>
-    <tr>
- !endif
-    <td class="exercise_c">
-    !if $draw=1
-	!set ins_attr= id="image$n"
-	!set insdraw_size=$xsize,$ysize
-	!insdraw $(image$n)
-    !else
-	!if $plot=1
+    !if $image=1 
+        !if $make_tr=1
+	    </tr>
+	    <tr>
+        !endif
+	<td class="exercise_t">
+	!if $draw=1
 	    !set ins_attr= id="image$n"
-	    !set insplot_set=$(image_settings$n)
-	    !insplot $(image$n)
+	    !set insdraw_size=$xsize,$ysize
+	    !insdraw $(image$n)
 	!else
-	    !if $svg=1
-		!exec svgdraw $(image$n)
+	    !if $plot=1
+		!set ins_attr= id="image$n"
+		!set insplot_set=$(image_settings$n)
+		!insplot $(image$n)
 	    !else
-		<span style="schaersvoorde_alarm">set variable draw/plot/svg ---&gt; 1</span>
+		!if $svg=1
+		    !exec svgdraw $(image$n)
+		!else
+		    <span style="schaersvoorde_alarm">set variable draw/plot/svg ---&gt; 1</span>
+		!endif
 	    !endif
 	!endif
+	</td>
+    !else
+	!if $applet=1
+    	    !if $make_tr=1
+		</tr>
+		<tr>
+	     !endif
+	<td class="exercise_t">
+	    $(object$n)
+	</td>
+	!endif
     !endif
-    </td>
-!else
-    !if $applet=1
-      !if $make_tr=1
+    !if $make_tr=1
 	</tr>
 	<tr>
     !endif
     <td class="exercise_c">
-	$(object$n)
-    </td>
-!endif
-!if $make_tr>600
-    </tr>
-    <tr>
-!endif
-    <td class="exercise_c">
 	!!this file handles the javascript 
 	!read $javascript
     </td>
-!endif
     </tr>
 </table>
 
 !! sometimes a better place for the buttons....$javascript does not need to define them in this case.
 !if $inputs=yes
-<div id="send_buttons" class="embedded_central">
-    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-</div>
+    <div id="send_buttons" class="embedded_central">
+	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    </div>
+!endif
 $dhtml
-!!! after the inputelements are in the DOM-tree: fill-in the previous answers
-<script type="text/javascript">
-//<![CDATA[
-    try{document.onload=refill();}catch(e){}
-//]]>
-</script>
+!if $goback=1
+    !!! after the inputelements are in the DOM-tree: fill-in the previous answers
+    <script type="text/javascript">
+    //<![CDATA[
+	try{document.onload=refill();}catch(e){}
+    //]]>
+    </script>
+!endif

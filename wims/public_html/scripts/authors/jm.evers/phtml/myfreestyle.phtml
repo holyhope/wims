@@ -9,14 +9,25 @@
 !if $my_arrows=$empty
     !set my_arrows=2
 !endif
-
 <script type="text/javascript">
 //<![CDATA[
+<!-- no validator  -->
     var URL;
+!if $description=$empty
+    var desc_list = null;
+    var default_desc = "$youranswer ";
+    var desc_cnt = 30;
+!else
+    var desc_list="$description";
+ !set desc_cnt = !itemcnt $description
+    var desc_cnt = $desc_cnt;
+    var default_desc = null;
+!endif
+    var description = list2array(desc_list,desc_cnt,default_desc);
 
     function dontknow(){
-	t = confirm(r0+"\n$dontknow ?");
-	if( t == true){
+	if( confirm(r0+"\n$dontknow ?") == true ){
+	    document.getElementById('exercise').setAttribute('style','background-color:#ffbd55');
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
 	    document.location.href = URL;if(document.getElementById("MathView")){document.getElementById("MathView").destroy();}
 	}
@@ -26,10 +37,9 @@
 	var input;
 	var show="";
 	var reply = new Array();
-	var applet = 0;
 	var inputfieldnumber = 0;
-	var input;
 	if(document.getElementById("MathView")){
+	<!-- there can only be one...mathview -->
 	    input=document.getElementById("MathView").getLinear();input = input+'';
 	    if( input.length == 0){setAlarm(r1+"\ 1");return;}
 	    if( input.length > 100){setAlarm(r2); return;}
@@ -41,15 +51,14 @@
 	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 	    input = science(input);if(input == "error"){return;}
 	    if(check_x(input) == 0){return;}
-	    show=input+"\n";
+	    show = description[inputfieldnumber] + input+"\n";
 	    if(input.indexOf("[") !=- 1){
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
 		if( input.indexOf("[") !=-1){setAlarm(r13);return;}
 	    }
 	    input = input.replace(/#/g,' ');
-	    reply[0] = input;
-	    applet=1;
+	    reply[inputfieldnumber] = input;
 	    inputfieldnumber = 1;
 	}
 
@@ -74,8 +83,8 @@
 		    tmp_show = tmp_show.replace(/\./g,'');
 		}
 		reply[inputfieldnumber] = tmp_reply+"\n"+tmp_htmlreply+"\n"+tmp_latexreply;
+		show = show + description[inputfieldnumber] + tmp_show + "\n"
 		inputfieldnumber++;
-		show = show+tmp_show+"\n"
 		p++;
 		if(p>10){setAlarm(r2);dontknow();}
 	    }
@@ -83,21 +92,21 @@
 	
 	if(document.getElementById("FlyApplet0") ){
 	<!-- id="FlyApplet0" is not interfering with non-readable FlyApplet based illustrations (id="FlyApplet") -->
-	    var p=0;var rep;
+	    var p=0;
 	    while( document.getElementById("FlyApplet"+p) ){
 		try{
-		    rep=document.getElementById('FlyApplet'+p).ReadDrawing();
+		    input = document.getElementById('FlyApplet'+p).ReadDrawing();
 		}catch(e){
 		    setAlarm(r1+" $counter");return;
 		}
-		if(rep.indexOf("error")!=-1){
+		if(input.indexOf("error")!=-1){
 		    setAlarm(r1+" $counter");return;
 		}
-		var tmp=rep.split(',');
+		var tmp = input.split(',');
 		if( tmp.length > $wordmax ){setAlarm(r6);return;}
 		if( tmp.length < $wordmin ){setAlarm(r26);return;}
-		for(var r = 0;r < tmp.length;r = r+2){
-		    show=show+"( "+tmp[r]+" : "+tmp[r+1]+" )\n";
+		for(var r = 0;r < tmp.length;r = r + 2){
+		    show = show + description[inputfieldnumber] +"( "+tmp[r]+" : "+tmp[r+1]+" )\n";
 		    reply[inputfieldnumber] = tmp[r]+":"+tmp[r+1];
 		    inputfieldnumber++;
 		}
@@ -120,7 +129,7 @@
 		if(check_sqrt_NaN(input)==0){return;}
 		input = science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show=show+input+"\n";
+		show = show + description[inputfieldnumber] + input + "\n";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
@@ -142,8 +151,8 @@
 		    option_value = options[options.selectedIndex].value;
 		    option_text = options[options.selectedIndex].text;
 		}catch(e){setAlarm(r1+parseInt(p+1));return;}
-		reply[inputfieldnumber]=option_value;
-		show=show+option_text+"\n";
+		reply[inputfieldnumber] = option_value;
+		show = show + description[inputfieldnumber] + option_text+"\n";
 	    	inputfieldnumber++;
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
@@ -162,7 +171,7 @@
 		if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 		input=science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show=show+input+"\n";
+		show = show + description[inputfieldnumber] + input + "\n";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
 		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
@@ -190,7 +199,7 @@
 		if(check_log_NaN(input) == 0){return;}
 		if(check_sqrt_NaN(input) == 0){return;}
 		input = science(input);if(input == "error"){return;}
-		show=show+input+"\n";
+		show = show + description[inputfieldnumber] + input + "\n";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
 		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
@@ -205,7 +214,7 @@
 	if(reply[0].length == 0 ){setAlarm(r1);return;}
 	
 	if(confirm(r0+"\n"+show)){
-	    document.getElementById('exercise').setAttribute('style','background-color:#ffafdd');
+	    document.getElementById('exercise').setAttribute('style','background-color:#5aeb6e');
 	    reply=encodeURIComponent(reply);
 	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
 	    document.location.href = URL;
@@ -274,7 +283,7 @@
     </tr>
     <tr>
     !endif
-    <td class="exercise_c">
+    <td class="exercise_t">
     !if $draw=1
 	!set insdraw_size=$xsize,$ysize
 	!! voor answer.phtml gebruiken we de opgeslagen variabele "insdraw_settings"
@@ -294,7 +303,7 @@
         </tr>
 	<tr>
         !endif
-	<td class="exercise_c">
+	<td class="exercise_c" id="object$n">
 	    $(object$n)
 	</td>
     !endif
@@ -333,50 +342,54 @@
 	!else
 	    <param name="my_panel" value="$mathviewpanel" />
 	!endif
-	    $nojava
+	    <a style="cursor:pointer" onmouseover="return escape('Get JAVA');" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
+	    	$nojava
+	    </a>
 	</object>
     </td>
 !else
- !if $embed != 1
-    !if $make_tr=1
-    </tr>
-    <tr>
-    !endif
-    <td class="exercise_t">
-    !if $inputs=1
-	!if $wims_user=supervisor
-            $inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
-    	!else
-    	    $inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
-    	!endif
-    !else
-	!if $inputs>1
-	    <ul class="vlist">
-	    !set a_items=!itemcnt $(answer$n)
-	    !if $a_items != $[floor($inputs)]
-	        !set use_lines=1
-	    !else
-		!set use_lines=0
-	    !endif
-	    !for p=1 to $inputs
-		<li>
-		!if $wims_user=supervisor
-		    !if $use_lines=1
-			!set deelantwoord=!line $p of $(answer$n)
-		    !else
-			!set deelantwoord=!item $p of $(answer$n)
-		    !endif
-        	!else
-		    !set deelantwoord=!item $p of $(reply$n)
+    !if $embed != 1
+     !if $make_tr=1
+	</tr>
+	<tr>
+     !endif
+	!if $inputs=1
+	<td class="exercise_t" id="use_inputs">
+	    !if $wims_user=supervisor
+        	$inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+    	    !else
+    		$inputtext1&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+    	    !endif
+	</td>
+	!else
+	    !if $inputs>1
+	    <td class="exercise_t" id="use_inputs">
+		<ul class="vlist">
+	        !set a_items=!itemcnt $(answer$n)
+		!if $a_items != $[floor($inputs)]
+	            !set use_lines=1
+		!else
+	    	    !set use_lines=0
 		!endif
-		    $(inputtext$p)&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
-		</li>
-	    !next p
-	    </ul>
+		!for p=1 to $inputs
+		    <li>
+		    !if $wims_user=supervisor
+			!if $use_lines=1
+			    !set deelantwoord=!line $p of $(answer$n)
+			!else
+			    !set deelantwoord=!item $p of $(answer$n)
+			!endif
+        	    !else
+			!set deelantwoord=!item $p of $(reply$n)
+		    !endif
+			$(inputtext$p)&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+		    </li>
+		!next p
+		</ul>
+	    </td>
+	    !endif
 	!endif
     !endif
-    </td>
- !endif
 !endif
     </tr>
 </table>
