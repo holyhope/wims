@@ -13,9 +13,9 @@
  !else
   $pp
   !if $printable!=yes
-   <small>[
+   <span class="small">[
    !href cmd=reply&job=read&foldout=$block.$serial#primi$serial $n_foldout
-   ]</small>
+   ]</span>
   !endif
  !endif
  !exit
@@ -26,14 +26,14 @@
 !set prompt=!item 2 to -1 of $parms
 !default prompt=$titb
 !if $titb=$empty
- !default prompt=<tt>$parm1</tt>
+ !default prompt=<span class="tt">$parm1</span>
  $prompt
  !if $editable=yes
-  <small>[
+  <span class="small">[
   !href cmd=reply&job=edit&block=$parm1 $n_create
-  ]</small>
+  ]</span>
  !else
-  <small>$n_nonavailable</small>
+  <span class="small">$n_nonavailable</span>
  !endif
 !else
  <a id="primi$serial"></a>
@@ -41,10 +41,10 @@
  !if $printable=yes
   !goto alwaysin
  !endif
- <small>[
+ <span class="small">[
  !if $doc/$block.$serial notitemof $foldlist and robot notin $session
   !href cmd=reply&job=read&foldin=$block.$serial#primi$serial $wims_name_detail
-  ]</small>
+  ]</span>
  !else
   !href cmd=reply&job=read&foldout=$block.$serial#primi$serial $n_foldout
   ]
@@ -53,7 +53,7 @@
    !href cmd=reply&job=edit&doc=$doc&block=$parm1 $wims_name_Edit
    ]
   !endif
-  </small>
+  </span>
   :alwaysin
   !set blocksave=$blocksave $block
   !set block=$parm1
