@@ -68,6 +68,7 @@ $name_exo0
 !endif
 
 !if $step=1
+</ol>
 <ul><li>  
    !formradio wims_deposit_old list 0 prompt $wims_name_download
    <input type="file" name="wims_deposit"/> 
@@ -91,7 +92,11 @@ $name_exo0
     <span class="wims_warning">$wims_name_warning</span>. $name_bad_image
   !endif
 !endif
+!if $step=2
+</ol>
+!endif
 !if $step>=2
+
  !distribute item alt="Click",1,form click into ins_attr,ins_border,ins_tag
 
   <table class="wimsnoborder wimscenter"><tr><td style="width:50px; height-min:50px;text-align:top;">
@@ -148,13 +153,14 @@ $name_exo0
    !endif
   !endif
   </td></tr>
-<tr><td colspan="3">
+  </table>
 !if $type!=2 or $ext=1
+ <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_send"/>
-!endif
-</td></tr>
-</table>
+  </div>
 !endif
 
+!endif
+!formend
 
 !reset test error
