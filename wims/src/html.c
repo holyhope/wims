@@ -79,7 +79,7 @@ void _form_menus(char *p,int kind)
 	 pp=getvar("wims_formselect_switch"); if(pp==NULL) pp="";
 	 output("<select %s name=\"%s\" id=\"%s\">\n",pp,nbuf,nbuf);
     }
-    if(kind==FORM_BAR) _output_("<b>-</b>");
+    if(kind==FORM_BAR) _output_("<span style=\"font-weight:bold;\">-</span>");
     val=getvar(nbuf);if(val==NULL) val="";
     for(i=0;i<itemcnt;i++) {
 	 if(type==0) {
@@ -103,28 +103,28 @@ void _form_menus(char *p,int kind)
 	    break;
 	    
 	    case FORM_RADIO:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>&nbsp;%s",
-		   nbuf,nbuf,p0,pc,plist[i]);
+	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>&nbsp;%s",
+		   nbuf,nbuf,i,p0,pc,plist[i]);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
 	    
 	    case FORM_CHECKBOX:
-	    output("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>&nbsp;%s",
-		   nbuf,nbuf,p0,pc,plist[i]);
+	    output("<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>&nbsp;%s",
+		   nbuf,nbuf,i,p0,pc,plist[i]);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
 	    
 	    case FORM_BAR:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>",
-		   nbuf,nbuf,p0,pc);
+	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
+		   nbuf,nbuf,i,p0,pc);
 	    break;
 	    
 	 }
     }
     if(kind==FORM_SELECT) _output_("</select>");
-    if(kind==FORM_BAR) _output_("<b>+</b>");
+    if(kind==FORM_BAR) _output_("<span style=\"font-weight:bold;\">+</span>");
 }
 
 void exec_formselect(char *p)
