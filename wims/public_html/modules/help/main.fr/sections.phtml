@@ -5,18 +5,19 @@
   !set l=!line $i of $(chapter$chapter)
   !set t=!item 1 of $l
   !set s=!item 2 to -1 of $l
-  <li><p><a name=$t></a>
+  <li><a id="$t"></a>
   !if $(chapter)_$t iswordof $open
    !set o=!replace word $(chapter)_$t by $ in $open
-   <h3>$s <font size="-1">
+   <h3>$s <span class="smaller">
    !href module=$module&chapter=$chapter&open=$o replier
-   </font></h3> <p>
+   </span></h3>
+   
    !read $chapter/$t.phtml
   !else
    !href module=$module&chapter=$chapter&open=$open,$(chapter)_$t#$t $s
  !endif
+ </li>
  !next i
  </ol>
-
 
 !endif

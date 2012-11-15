@@ -6,7 +6,7 @@
 
 <div class=wimsmenu>
 !robottrap
-<center>
+
 $table_header
  $table_tr<th>
 !if _ isin $wims_subsession
@@ -20,6 +20,7 @@ $table_header
  !set chapter=-1
  !goto tabend
 !endif
+</th>
 !if $chapter>0
  <th>
  !href module=$module&chapter=0 Index d'aides
@@ -31,14 +32,16 @@ $table_header
 !if $chapter>1
  <th>
  !href module=$module&chapter=$[$chapter-1] Chapitre précédent
+ </th>
 !endif
 !if $chapter<$chaptercnt
  <th>
  !href module=$module&chapter=$[$chapter+1] Chapitre suivant
+ </th>
 !endif
-
+</tr>
 :tabend
-</table></center>
+</table>
 </div><!--wimsmenu-->
 <div id="wimsbodybox">
 <div id="wimspagebox">
@@ -56,7 +59,8 @@ $table_header
  !endif
 !endif
 
-<p><h1 class="wims_title">Aides de WIMS<br/><font size="+1"><b>
-$l</b></font>
-</h1> <p>
+<h1 class="wims_title">Aides de WIMS<br/>
+<span class="wims_emph">
+$l</span>
+</h1>
 
