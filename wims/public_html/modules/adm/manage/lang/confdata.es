@@ -74,8 +74,8 @@ However, recent browsers no longer carry this alignment bug. And for these
 browsers, the patch makes the formulas too high with respect to text. This
 parameter allows you to choose whether or not to activate the patch by
 default. Note that users can define their own preferences. <p>
-The parameter will also be used to activate MathML translation which is not
-yet available. <p>
+The parameter can be used also to activate MathML translation.
+<p>
 If you change this value, do not think of your own browser, but of those of
 your average users!
 
