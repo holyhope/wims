@@ -6,17 +6,9 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator -->
-!if $description=$empty
-    var desc_list = null;
-    var default_desc = "$youranswer ";
-    var desc_cnt = 30;
-!else
-    var desc_list="$description";
- !set desc_cnt = !itemcnt $description
-    var desc_cnt = $desc_cnt;
-    var default_desc = null;
-!endif
-    var description = list2array(desc_list,desc_cnt,default_desc);
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = list2array(descr_list,descr_cnt);
 !!    var maxcookies=20;
 !!    var cookiesize=400;
 !!    var cookiecount=-1;
@@ -117,12 +109,12 @@
 	}
     }
 
+
     function dontknow(){
-	var t=confirm(" $dontknow ?");
-	if(t==true){URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	document.location.href = URL;document.getElementById("zirkel").destroy();
-	}
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+	!!document.location.href = URL;document.getElementById("zirkel").destroy();
     }
+
 //]]>
 </script>
 
@@ -154,7 +146,9 @@
     	    <param name="mayscript" value="true" />
 	    <param name="language" value="$taal" />
 	    $var1
+	    <a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" target="newwindow" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
 	    $nojava
+	    </a>
 	</object>
     </td>
     !if $make_tr=1
@@ -180,7 +174,7 @@
         	    !else
 			!set deelantwoord=!item $p of $(reply$n)
 		    !endif
-			$(inputtext$p)&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+			$(description[$p])&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
 		    </li>
 		!next p
 	    </ul>

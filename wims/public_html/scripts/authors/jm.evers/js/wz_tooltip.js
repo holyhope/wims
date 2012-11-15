@@ -47,8 +47,8 @@ var ttFontSize    = "11px";
 var ttFontWeight  = "normal";     // alternative: "bold";
 var ttLeft        = false;        // tooltip on the left of the mouse? Alternative: true
 var ttOffsetX     = 12;           // horizontal offset of left-top corner from mousepointer
-var ttOffsetY     = 12;           // vertical offset                   "
-var ttOpacity     = 92;          // opacity of tooltip in percent (must be integer between 0 and 100)
+var ttOffsetY     = 30;           // vertical offset                   "
+var ttOpacity     = 95;          // opacity of tooltip in percent (must be integer between 0 and 100)
 var ttPadding     = 3;            // spacing between border and content
 var ttShadowColor = false;
 var ttShadowWidth = false;
@@ -155,22 +155,22 @@ function tt_Htm(tt, t_id, txt)
 	var t_optx = (tt_n4? '' : tt_n6? ('-moz-opacity:'+(t_opa/100.0)) : tt_ie? ('filter:Alpha(opacity='+t_opa+')') : ('opacity:'+(t_opa/100.0))) + ';';
 	var t_y = '<div id="'+t_id+'" style="position:absolute;z-index:1010;';
 	t_y += 'left:0px;top:0px;width:'+(t_w+t_shw)+'px;visibility:'+(tt_n4? 'hide' : 'hidden')+';'+t_optx+'">' +
-		'<table summary="no summary" border="0" cellpadding="0" cellspacing="0"'+(t_bc? (' bgcolor="'+t_bc+'" style="background:'+t_bc+';"') : '')+' width="'+t_w+'">';
+		'<table border="0" cellpadding="0" cellspacing="0"'+(t_bc? (' bgcolor="'+t_bc+'" style="background:'+t_bc+';"') : '')+' width="'+t_w+'">';
 	if(t_tit)
 	{
-		t_y += '<tr><td style="padding-left:3px;padding-right:3px;" align="'+t_algn+'"><span color="'+t_titc+'" face="'+t_ff+'" ' +
+		t_y += '<tr><td style="padding-left:3px;padding-right:3px;" align="'+t_algn+'"><font color="'+t_titc+'" face="'+t_ff+'" ' +
 			'style="color:'+t_titc+';font-family:'+t_ff+';font-size:'+t_fsz+';"><b>' +
-			(tt_n4? '&nbsp;' : '')+t_tit+'</b></span></td></tr>';
+			(tt_n4? '&nbsp;' : '')+t_tit+'</b></font></td></tr>';
 	}
-	t_y += '<tr><td><table summary="no summary" border="0" cellpadding="'+t_padd+'" cellspacing="'+t_bw+'" width="100%">' +
+	t_y += '<tr><td><table border="0" cellpadding="'+t_padd+'" cellspacing="'+t_bw+'" width="100%">' +
 		'<tr><td'+(t_bgc? (' bgcolor="'+t_bgc+'"') : '')+(t_bgimg? ' background="'+t_bgimg+'"' : '')+' style="text-align:'+t_algn+';';
 	if(tt_n6) t_y += 'padding:'+t_padd+'px;';
-	t_y += '" align="'+t_algn+'"><span color="'+t_fc+'" face="'+t_ff+'"' +
+	t_y += '" align="'+t_algn+'"><font color="'+t_fc+'" face="'+t_ff+'"' +
 		' style="color:'+t_fc+';font-family:'+t_ff+';font-size:'+t_fsz+';font-weight:'+t_fwght+';">';
 	if(t_fwght == 'bold') t_y += '<b>';
 	t_y += txt;
 	if(t_fwght == 'bold') t_y += '</b>';
-	t_y += '</span></td></tr></table></td></tr></table>';
+	t_y += '</font></td></tr></table></td></tr></table>';
 	if(t_shw)
 	{
 		var t_spct = Math.round(t_shw*1.3);

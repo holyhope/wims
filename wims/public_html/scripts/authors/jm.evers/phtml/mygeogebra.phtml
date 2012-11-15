@@ -1,6 +1,11 @@
 <script type="text/javascript"  src="$jsdir/geogebra2wims.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+<!-- no validator -->
+    function dontknow(){
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+    }
+
     var list_of_things=new Array();
     !if $list_of_things=$empty 
 	!! A list of all possible object names
@@ -17,14 +22,7 @@
 	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
 	}
     }
-
-    function dontknow(){
-	var t=confirm(" $dontknow ?");
-	if(t==true){
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
-	}
-    } 
+    
 //]]>
 </script>
 <table id="exercise" class="exercise">
@@ -55,9 +53,9 @@
 			!else
 			    !set voorzeggen=!item $i of $(answer$n)
 			!endif
-			$(inputtext$i)&nbsp;$m_rightarrow&nbsp;<input id="myinput$[i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" />&nbsp;$(ex$p)
+			$(description[$i])&nbsp;$m_rightarrow&nbsp;<input id="myinput$[i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" />&nbsp;$(ex$p)
 		    !else
-			$(inputtext$i)&nbsp;$m_rightarrow&nbsp;<input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" />&nbsp;$(ex$p)
+			$(description[$i])&nbsp;$m_rightarrow&nbsp;<input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" />&nbsp;$(ex$p)
 		    !endif
 		</li>
 		!next i
@@ -85,12 +83,9 @@
 	    <param name="customToolBar" value=$customToolBar />
 	    <param name="showAlgebraInput" value="$showAlgebraInput" />
 	    <param name="mayscript" value="true" />
-	    
-	    <a onmouseover="cursor:pointer return escape('Get JAVA');" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
+	    <a onmouseover="return escape('<img src=\'$gifdir/java.jpg\' alt=\'Get JAVA\' />');" href="http://www.java.com/$lang/download/manual.jsp?locale=$lang" >
 		$nojava
 	    </a>
-
-		$nojava
 	</object>
 	!if $appletcommand != $empty
 	    <script type="text/javascript">

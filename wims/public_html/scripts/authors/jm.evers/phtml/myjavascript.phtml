@@ -1,20 +1,10 @@
-
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator  -->
     var URL;
-!if $description=$empty
-    var desc_list = null;
-    var default_desc = "$youranswer ";
-    var desc_cnt = 30;
-!else
-    var desc_list="$description";
- !set desc_cnt = !itemcnt $description
-    var desc_cnt = $desc_cnt;
-    var default_desc = null;
-!endif
-    var description = list2array(desc_list,desc_cnt,default_desc);
-
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = list2array(descr_list,descr_cnt);
 !if $goback=1
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
@@ -114,6 +104,7 @@ $dhtml
     !!! after the inputelements are in the DOM-tree: fill-in the previous answers
     <script type="text/javascript">
     //<![CDATA[
+	<!-- no validator  -->
 	try{document.onload=refill();}catch(e){}
     //]]>
     </script>

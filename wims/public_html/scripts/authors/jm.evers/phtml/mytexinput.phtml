@@ -2,25 +2,12 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator -->
-!if $description=$empty
-    var desc_list = null;
-    var default_desc = "$youranswer ";
-    var desc_cnt = 30;
-!else
-    var desc_list="$description";
- !set desc_cnt = !itemcnt $description
-    var desc_cnt = $desc_cnt;
-    var default_desc = null;
-!endif
-    var description = list2array(desc_list,desc_cnt,default_desc);
-    var URL;
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = list2array(descr_list,descr_cnt);
 
     function dontknow(){
-	var t=confirm(r0+"\n$dontknow ?");
-	if(t==true){
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	    document.location.href = URL;
-	}
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
     }
     
     function TexAppInputs(num){
@@ -34,7 +21,7 @@
     }
     
     function sendanswer(){
-	var reply = new Array();var show ="";
+	var reply = new Array();var show ="<ol>";
 	var p = 1;var tmp;var tmp1;var cnt = 0;var ans = new Array();
 	if( document.getElementById('TexApp1') ){ // starts with 1
     	    while ( document.getElementById('TexApp'+p) ){ 
@@ -54,7 +41,7 @@
 		    }
 		    tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
 		    reply[cnt] = tmp; 
-		    show = show + "\n"+parseInt(cnt+1)+") "+tmp; 
+		    show = show + "<li>" + tmp + </li>; 
 		    cnt++;
         	}
 		p++;
@@ -77,20 +64,13 @@
 		}
 		tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
 		reply[cnt] = tmp;
-		show = show + "\n"+ parseInt(cnt+1)+") "+tmp; 
+		show = show + "<li>" + tmp + "</li>"; 
 		cnt++;p++;s++;
 		if(s>100){setAlarm(r2);dontknow();}
 	    }
 	}
-	var t=confirm(r0+"\n"+show);
-	if(t == true){ 
-	    reply = encodeURIComponent(reply);
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
-!!	    for(var s = 1; s < num_applets ; s++){
-!!		document.getElementById("TexApp"+s).destroy();
-!!	    }
-	    document.location.href = URL;
-	}
+	show = show + "</ol>";
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','#5aeb6e');
     }
 //]]>
 </script>

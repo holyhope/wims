@@ -24,9 +24,8 @@
     <td class="exercise_t">
 	$(question$n)
 	!if $exotext!=$empty
-	    <br />
 	    $exotext
-	!endif	
+	!endif
     </td>
     </tr>
     <tr>
@@ -102,13 +101,14 @@
 
 <script type="text/javascript">
 //<![CDATA[
+<!-- no validator -->
     var URL;
-    SET_DHTML( CURSOR_MOVE , $DHTML);	
+    SET_DHTML( CURSOR_MOVE , $DHTML);
     var orgx = 0;
     var orgy = 0;
     var pick_id = 0;
     var size = $total_objects;
-    var show="\n";
+    var show="<ol>";
     var reply = new Array();
     for(var p = 0;p < size; p++){
 	reply[p] = p;
@@ -199,7 +199,7 @@
                 if(input.indexOf(',') != -1){setAlarm(r4);return "error";}
                 input=science(input);if(input == "error"){return "error";}
                 reply[size+i] = input;
-                show=show+input+"\n";
+                show=show + "<li>" + input + "</li>";
 		document.getElementById(input_id+i).style.backgroundColor = "$drop_color";
                 i++;
             }
@@ -209,26 +209,19 @@
     
     function sendanswer(){
 	// try if inputfields "mathml0" or "myinput0" are present
-	show="";// reset "show"
+	show="<ol>";// reset "show"
 	if(check_inputs("mathml")  == "error"){return;}
 	if(check_inputs("myinput") == "error"){return;}
 	for(var p = 0 ; p < size ; p++){
 	    try{setVisible(p);}catch(e){}
 	    document.getElementById("mydiv"+p).style.backgroundColor = "$drop_color";
 	}
-	if(confirm(r0+show)){
-	    reply=encodeURIComponent(reply);
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
-	    document.location.href = URL;
-	}
+	show = show + "</ol>";
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','#5aeb6e');
     }
     
-   function dontknow(){
-        t = confirm(r0+"\n$dontknow ?");
-        if( t == true){
-            URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-            document.location.href = URL;
-        }
+    function dontknow(){
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
     }
 //]]>
 </script>

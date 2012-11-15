@@ -30,6 +30,8 @@
 // 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
 // 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
 // 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
+// 18 list2array(list,cnt) converts wims item list into javascript array size "cnt" : returns array(cnt)
+// 19 function myConfirm(txt,reply,server,session,module,counter,color) will send answer to server...or not
     
 function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
@@ -59,9 +61,21 @@ function setAlarm(txt){
     window.scrollTo(w,h-120);
     setTimeout('resetAlarm()',4000);
 }
-	
+
+function myConfirm(txt,reply,server,session,module,counter,color){
+    reply=encodeURIComponent(reply);
+    reply = reply.replace(/'/g,'%22'); // need to replace '  
+    var h = parseInt( (document.documentElement.clientHeight)/2);
+    var w = parseInt( (document.documentElement.clientWidth)/2 - 200);
+    document.getElementById('alarmtext').style.top = h+'px';
+    document.getElementById('alarmtext').style.left = w+'px';
+    document.getElementById('alarmtext').style.display = "block";
+    window.scrollTo(w,h-120);
+    document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input id=\"myconfirm_ok\" type=\"button\" class=\"schaersvoorde_ok_button\" value=\"OK\" onclick=\"javascript:document.getElementById(\'exercise\').setAttribute(\'style\',\'background-color:"+color+"\');document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\'; \" />&nbsp;&nbsp;<input id=\"confirm_nok\" type=\"button\" class=\"schaersvoorde_nok_button\" value=\"NOK\" onclick=\"javascript:resetAlarm()\" \>"
+}
+
 function resetAlarm(){
-    document.getElementById('alarmtext').style.display = "none"
+    document.getElementById('alarmtext').style.display = "none";
 }
 
 function science(t){// corrected: startvalue+3 != startvalu*10^3 :)
@@ -566,7 +580,7 @@ function is_real_number(t){
     if(s.length != t.length){setAlarm(r37+" "+t) ; return 0;}else{return 1;}
 }
 
-function list2array(list,cnt,desc){
+function list2array(list,cnt){
     if( cnt == null ){ cnt = 30; }
     if( list == null ){
 	list = new Array(cnt);
@@ -575,16 +589,14 @@ function list2array(list,cnt,desc){
     {
 	list = list.split(',');
     }
-    var c = 1;
     for(var p = 0 ; p < cnt ; p++ ){
 	if( list[p] != null ){
-	    list[p] = c + " ) " + list[p] + " :\t";
+	    list[p] =  list[p] + ":";
 	}
 	else
 	{
-	    list[p] = desc + " " + c + ")\t";
+	    list[p] = "&nbsp;";
 	}
-	c++;
     }
     return list;
 }

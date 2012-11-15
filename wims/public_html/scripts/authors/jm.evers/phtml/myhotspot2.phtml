@@ -1,4 +1,5 @@
-!!hotspot questions  var1 = xmin,xmax,ymin,ymax in coordinatesystem of the graph.
+!!hotspot questions  va
+r1 = xmin,xmax,ymin,ymax in coordinatesystem of the graph.
 !! without ISMAP
 
 !set xmin=!item 1 of $var1
@@ -82,7 +83,7 @@
         !else
 	    !set deelantwoord=!item $p of $(reply$n)
 	!endif
-	    $(inputtext$p)&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+	    $(description[$p])&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
 	</li>
     !next p
 	</ul>
@@ -97,39 +98,31 @@
 </div>
 
 <script type="text/javascript">
-!!//<![CDATA[
-    var URL;
+//<![CDATA[
+<!-- no validator -->
     function dontknow(){
-	var t=confirm(r0+"\n$dontknow ?");
-	if(t==true){
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	    document.location.href = URL;
-	}
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
     }
-    
+
     function sendanswer(){
 	var reply = new Array();
 	var p = 0;
-	var show="";
+	var show="<ol>";
 	if( document.getElementById("myinput0") ){
 	    var tmp;
 	    while (document.getElementById("myinput"+p)){
 		tmp = document.getElementById("myinput"+p).value;
 		if(tmp.length == 0 ){setAlarm(r1+parseInt(p+1));return;}
-		show = show + tmp+"\n";
+		show = show + "<li>" + tmp + "</li>";
 		reply[p] = tmp;
 		p++;
 		if(p > 100){setAlarm(r2);dontknow();}
 	    }
 	}
 	reply[p]= relx+","+rely;
-	show = show + "("+relx+":"+rely+")";
-	if( confirm(r0+"\n"+show) ){
-	    reply = encodeURIComponent(reply);
-	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ; 
-	    document.location.href = URL;
-	}
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','#ffbd55');
     }
+    
     !! wims variables
     var sizex=$xsize;
     var sizey=$xsize;

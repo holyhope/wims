@@ -112,26 +112,12 @@
 	    $youranswer
 	!if $(reply$n) != $empty
 	    <br />
-	    !if $multiimage=1
-		!if $(reply$n) = ?
-		    $dontknow
-		!else
-		    !if $plot=1
-			!insplot $(reply$n)
-		    !else
-			!if $draw=1
-			    !insdraw $(reply$n)
-			!endif
-		    !endif
-		!endif
+	    !if $math=1
+		!insmath $(reply$n)
 	    !else
-		!if $math=1
-		    !insmath $(reply$n)
-		!else
-		    <kbd>
-			$(reply$n)
-		    </kbd>
-		!endif
+		<kbd>
+		    $(reply$n)
+		</kbd>
 	    !endif
 	!else
 	    $dontknow
