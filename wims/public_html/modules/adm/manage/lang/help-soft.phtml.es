@@ -65,6 +65,6 @@ compatibilidad).
 :end
 
 <p>
-Puede hacer una búsqueda del término <tt>$help_conf</tt> en la página
+Puede hacer una búsqueda del término <span class="tt">$help_conf</span> en la página
 principal de WIMS para obtener la lista de módulos que hacen uso de este software.
 

@@ -80,9 +80,9 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
    el dueño de los ficheros.
    
  !set name_warning_chroot=If you use wims-chroot distribution, debe ejecutar \
- el guión <tt>bin/setchroot</tt> como root.
- !set name_warning_wimsd=If you use wimsd, debe ejecutar el guión <tt>bin/setwimsd</tt> como root. 
- !set name_warning_wrapexec=debe ejecutar el guión <tt>bin/setwrapexec</tt> como root.\
+ el guión <span class="tt">bin/setchroot</span> como root.
+ !set name_warning_wimsd=If you use wimsd, debe ejecutar el guión <span class="tt">bin/setwimsd</span> como root. 
+ !set name_warning_wrapexec=debe ejecutar el guión <span class="tt">bin/setwrapexec</span> como root.\
    Esto es crucial para la seguridad de su instalación. 
  !set name_warning3=Estos permisos erróneos constituyen un riesgo de seguridad para su instalación.\
   El problema acaba de ser corregido, pero debe estar alerta y comprobar\
@@ -183,12 +183,12 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      por defecto\
    into name_config,name_default
 
-  !set name_updated=!nosubst El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
-  la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.
+  !set name_updated=!nosubst El fichero <span class="tt">wims.conf</span> hasido actualizado. Puede recuperar \
+  la información de configuración antigua en <span class="tt">$backdir/wims.conf.old</span>.
 
   !set name_warning=Los parámetros con un asterisco `*' en su título son importantes.\
 Los que tienen un signo de peligro `!' pueden dañar la instalación si comete algún error.\
-De todas formas recuerde que si borra el fichero <tt>log/wims.conf</tt>\
+De todas formas recuerde que si borra el fichero <span class="tt">log/wims.conf</span>\
 volverá a empezar con una configuración por defecto. También puede recuperar\
 las configuraciones guardadas en el directorio log.
 !!confcat=6
@@ -333,9 +333,9 @@ de este sitio. No está autorizado a acceder a este módulo.
 !endif
 
 !if $job=mod2
-  !set name_error1=!nosubst El identificador de usuario (login) <tt>$devlogin</tt> \
+  !set name_error1=!nosubst El identificador de usuario (login) <span class="tt">$devlogin</span> \
  está ya siendo usado por otra cuenta. Por favor escoja otro identificador.
-  !set name_error2=!nosubst No ha introducido el campo <tt>$badfield</tt> correctamente.\
+  !set name_error2=!nosubst No ha introducido el campo <span class="tt">$badfield</span> correctamente.\
  Por favor corríjalo.
 
 !exit
@@ -445,9 +445,9 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 Si no, estos módulos irán a buscar los ficheros MP3 sobre el sitio http://shtooka.net\
 \
 Para cargar a distancia las colecciones, hagan lo por línea de pedido con el script\
-<tt>$wims_home/bin/swac </tt>. Instalará algunos paquetes swac al buen lugar.\
-<p><small>Porque los ficheros wims se cifran ISOlatino, no es aún \
-posible utilizar los paquetes cirílicos.</small>
+<span class="tt">$wims_home/bin/swac </span>. Instalará algunos paquetes swac al buen lugar.\
+<p class="small">Porque los ficheros wims se cifran ISOlatino, no es aún \
+posible utilizar los paquetes cirílicos.</p>
 !exit
 !endif
 

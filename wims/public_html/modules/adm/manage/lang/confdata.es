@@ -22,7 +22,7 @@ you need Apache 1.3 or up to get this to work correctly.
 <p>
 If you have just updated Apache httpd and if you have trouble with unknown
 addresses when you activate this feature,
-run the script <tt>bin/apache-config</tt>.
+run the script <span class="tt">bin/apache-config</span>.
 
 :tech aliased_getfile
 getfile address rewriting
@@ -85,12 +85,12 @@ free
 
 You can change this name only if you have correctly aliased things in the
 configuration file of your httpd. For example, if you have run the script
-in <tt>bin/apache-config</tt>,
-you may try the names <tt>index.html</tt> or <tt>wims.html</tt>.
+in <span class="tt">bin/apache-config</span>,
+you may try the names <span class="tt">index.html</span> or <span class="tt">wims.html</span>.
 <p>
 Do not change this if you do not know what you are doing! If you make it
 wrong, you will have to manually recover your config.
-
+</p>
 :class class_limit wims_class_limit
 Limit of the number of virtual classes
 int
@@ -110,9 +110,9 @@ portals. For each field, the following definitions are possible.
 <dt><span class="tt">email</span><dd>Every one can create classes, as long as he/she submits
 his/her working email address. The site will check the effectiveness of this
 email address.
-<dt><tt>passwd ******</tt><dd>The user must enter a password to access the
+<dt><span class="tt">passwd ******</span><dd>The user must enter a password to access the
 creation of classes. You can define the password as the second word
-of the parameter (in replacement of `<tt>******</tt>' above), and
+of the parameter (in replacement of `<span class="tt">******</span>' above), and
 communicate the password to those who you allow to create classes.
 <dt>Host names or IP numbers<dd>
  Only people connecting from the defined hosts will be allowed to create
@@ -284,7 +284,7 @@ Add options to the system command "mail" when using the !mailto command. See
 the sytem's mail manual for details of possible options.
 <p>
 For example, if your system's mail command supports this, you can use 
-<tt>-a "User-Agent: WIMS"</tt> to add a User-Agent header to the mail sent
+<span class="tt">-a "User-Agent: WIMS"</span> to add a User-Agent header to the mail sent
 out by wims. Some providers require this to accept mails.
 
 :security manager_https
@@ -367,7 +367,7 @@ Choose a download site for module update. Known mirror sites:
 $help_downloadsites
 </pre> <p>
 If you choose automatic module update with very small delay (0 or 1 day),
-you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
+you should set the download site to the primary mirror <span class="tt">$(mu_sites[1])</span>.
 
 :housekeep mu_publish_site
 $wims_name_publish_center
@@ -390,7 +390,7 @@ new bugs, because the latter will hopefully be discovered and corrected during
 your delay.
 <p>
 If you choose a very small number here (0 or 1), you should set
-the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
+the download site to the primary mirror <span class="tt">$(mu_sites[1])</span>.
 
 :housekeep mu_zone
 Zones for automatic module update
@@ -420,7 +420,7 @@ free
 Limit the automatic module update to the given categories. "all" means everything.
 <p>
 Some choices of categories (non-exhaustive): <dl>
-<dt><span class="tt">math</span> resp. <tt>physics chemistry language</tt> etc.
+<dt><span class="tt">math</span> resp. <span class="tt">physics chemistry language</span> etc.
     <dd>Corresponding disciplines.
 <dt><span class="tt">cs</span>
     <dd>Computer science.
@@ -467,7 +467,7 @@ some pre-defined background files. These files can be referenced simply by
 their names, without any directory prefix.
 <p>
 Here is the list of such directly usable background image files:
-<p><tt>$bgimgs</tt>
+<p><span class="tt">$bgimgs</span>
 
 :tech,misc rafale_level
 Anti-rapidfire severity
@@ -542,11 +542,11 @@ $csslist
 The style sheet affects almost all pages of the site.
 <p>
 The available stylesheet (css) files are in 
-<tt>public_html/html/css/$lang</tt>. If you
+<span class="tt">public_html/html/css/$lang</span>. If you
 want more stylesheets, you can put new css files into this directory.
 <p>
-If you choose css=<tt>-theme-</tt>, the stylesheet of the current theme
-will be used. No stylesheet will be loaded if css=<tt>----</tt>.
+If you choose css=<span class="tt">-theme-</span>, the stylesheet of the current theme
+will be used. No stylesheet will be loaded if css=<span class="tt">----</span>.
 
 :resources rlimit_cpu
 Processing time allowance in seconds*
