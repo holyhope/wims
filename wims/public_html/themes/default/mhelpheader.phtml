@@ -1,8 +1,12 @@
 !set wims_theme_mhelpheader=yes
 <!-- begin of mhelpheader.phtml -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+!!why is it not in the c code ??
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xml:lang="$lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+
 <head>
+
 !read name.phtml.$module_language
 !if $special_parm=about
  !set wname_h=$wims_name_about
@@ -10,12 +14,16 @@
  !set wname_h=$wims_name_help
 !endif
 !set module_title2=$wname_h : $module_title
+
+!read adm/css.phtml
 $wims_html_header
 </head>
+
 <body $wims_htmlbody onload="window.focus();window.moveTo(150,120);window.resizeTo(700,600);">
-<div class="wimsbody" align="center">
+<div id="wimsmhelp">
+<div class="wimsbody wimscenter">
 <h1>$module_title</h1>
------ $wname_h <small>[<a href="#" onclick="window.close();">$wims_name_back2</a>]</small> -----
+----- $wname_h <span class="small>[<a href="#" onclick="window.close();">$wims_name_back2</a>]</span> -----
 <br/>
 </div>
 
