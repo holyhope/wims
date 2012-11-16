@@ -60,7 +60,7 @@
     function sendanswer(){
 	if(document.getElementById("myinput0")){
 	    var extra_answer=new Array();
-	    var show="";
+	    var show="<ol>";
 	    var input="";
 	    var t1="";
 	    var p=0;
@@ -82,11 +82,12 @@
 		}
 		input=input.replace(/#/g,' ');
 		extra_answer[p]=input;
-		show=show+parseInt(p+1)+")  "+input+"\n";
+		show=show+"<li>"+input+"</li>";
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
 	    }
 	    readapplet();
+	    show=show + "</ol>";
 	    var t=confirm(" $send ?\n"+show);
 	    if(t==true){
 		extra_answer=encodeURIComponent( extra_answer );

@@ -17,7 +17,7 @@
     var description = list2array(descr_list,descr_cnt);
 
     function dontknow(){
-	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
     }
 
     function sendanswer(){
@@ -200,11 +200,11 @@
 	}catch(e){}
 	if(reply[0].length == 0 ){setAlarm(r1);return;}
 	show = show + "</ol>";
-	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','#5aeb6e');
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 //]]>
 </script>
-<table id="exercise" class="exercise" >
+<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
     <td class="exercise_t">
 	!if $(question$n) != $empty
@@ -374,11 +374,12 @@
     !endif
 !endif
     </tr>
-</table>
+</table><!-- end table id=exercise -->
 <div id="send_buttons" class="embedded_central">
 !if $inputs != 0
     <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
 !endif
     <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
 </div>
+
 !exit

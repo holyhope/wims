@@ -44,22 +44,22 @@
 	!endif
     </td><!-- end td class=header1 -->
     <td class="header2">
-	!if $calculator=3
+	!if $xcalc=3
 	    <script type="text/javascript">
 	    //<![CDATA[
 	    <!-- no validator -->
-	    function ReadCalculator(){
-		var calc=document.getElementById("javacalculator").ReadApplet();
+	    function Readxcalc(){
+		var calc=document.getElementById("javaxcalc").ReadApplet();
 		if(confirm("$send \n"+calc)){
 		    calc = encodeURIComponent(calc);
 		    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+calc ;
 		    document.location.href = URL;
-		    document.getElementById("calculator").destroy();
+		    document.getElementById("xcalc").destroy();
 		}
 	    }
 	    //]]>
 	    </script>
-	    <object id="javacalculator" width="100px" height="60px" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
+	    <object id="javaxcalc" width="100px" height="60px" classid="java:Rekenmachien.class" type="application/x-java-applet;jpi-version=1.4">>
 		<param name="java_codebase" value="$appletdir" />
 		<param name="java_archive" value="Rekenmachien.jar" />
 		<param name="java_code" value="Rekenmachien.class" />
@@ -76,7 +76,7 @@
 		</a>
 	    </object>
 	    <br />
-		<input style="font-size:tiny;background-color:#afceff;" type="button" onclick="javascript:ReadCalculator();" value="$send" />
+		<input style="font-size:tiny;background-color:#afceff;" type="button" onclick="javascript:Readxcalc();" value="$send" />
 	    <br />
 	!endif
 	<textarea id="stickit_area" cols="20" rows="3" style="display:none;background-color:yellow;font-size:12pt;border:1px solid red;"></textarea>
@@ -118,14 +118,14 @@
 		<img src="$gifdir/pencil.png" style="width:50;height:70;border:0px;vertical-align:top" alt="scribling" />
 	    </a>
 	!endif
-	!if $calculator=2
-	    <a onclick="window.open('$htmldir/mathcalc.html','calculator','width=265px,height=400px,left=0px,top=0px')">
-		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="calculator" />
+	!if $xcalc=2
+	    <a onclick="window.open('$htmldir/mathcalc.html','xcalc','width=265px,height=400px,left=0px,top=0px')">
+		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 	    </a>
 	!else
-	    !if $calculator=1
-		<a onclick="window.open('$htmldir/basicalc.html','calculator','width=240px,height=240px,left=0px,top=0px')">
-		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="calculator" />
+	    !if $xcalc=1
+		<a onclick="window.open('$htmldir/basicalc.html','xcalc','width=240px,height=240px,left=0px,top=0px')">
+		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 		</a>
 	    !endif
 	!endif
@@ -147,7 +147,7 @@
     !set alarm=!record 52 of $remarkdir/commonremarks.$taal
 !endif
 
-<div id="alarmtext" style="white-space:wrap;text-align:center;margin-left:auto;margin-right:auto;max-width:460px;min-width:120px;max-height:180px;min-height:50px;display:none;top:0px;left:0px;background-color:#daf6a4;font-style:italic;border:solid 2px red">
+<div id="alarmtext" style="white-space:wrap;text-align:center;margin-left:auto;margin-right:auto;max-width:460px;min-width:120px;min-height:50px;display:none;top:0px;left:0px;background-color:#daf6a4;font-style:italic;border:solid 2px red">
 $errortext
 $(remark$[$n-1])
 $alarm
@@ -175,3 +175,5 @@ $alarm
 !endif
 
 <kbd>$questionnumber $counter)</kbd>
+
+!exit

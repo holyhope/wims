@@ -1,20 +1,23 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator  -->
-    var URL;
-    var descr_list="$description";
-    var descr_cnt = 30;
-    var description = list2array(descr_list,descr_cnt);
 !if $goback=1
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
 !endif
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = list2array(descr_list,descr_cnt);
+
+    function dontknow(){
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
 //]]>
 </script>
 
 <!-- standard the drag & drop library is included: images (static;fly;gnuplot [id=image$$n]) may be added by setting the "dhtml" variable -->
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
-<table id="exercise" class="exercise" >
+<table id="exercise" class="exercise" ><!-- begin table id="exercise" -->
     <tr>
     <td class="exercise_t">
     !if $(question$n) != $empty
@@ -31,7 +34,7 @@
 		&nbsp;$m_rightarrow&nbsp;
 	    </td>
 	    <td <td class="exercise_m">
-<!-- to read these inputfields use document.getElementById('myinput0') in tailormade javascript.js -->
+	    <!-- to read these inputfields use document.getElementById('myinput0') in tailormade javascript.js -->
 		!if $wims_user=supervisor
 		    <textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>
 		!else
@@ -85,14 +88,12 @@
 	</tr>
 	<tr>
     !endif
-    <td class="exercise_c">
-	!!this file handles the javascript 
+    <td class="exercise_c"><!-- begin module_dir/js/*.js -->
 	!read $javascript
-    </td>
+    </td><!-- end module_dir/js/*.js -->
     </tr>
-</table>
+</table><!-- end table id="exercise" -->
 
-!! sometimes a better place for the buttons....$javascript does not need to define them in this case.
 !if $inputs=yes
     <div id="send_buttons" class="embedded_central">
 	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
@@ -109,3 +110,4 @@ $dhtml
     //]]>
     </script>
 !endif
+!exit

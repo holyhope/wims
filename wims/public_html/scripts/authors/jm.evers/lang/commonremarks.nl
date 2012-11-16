@@ -10,7 +10,7 @@
 : Opgave
 : Je kunt co&ouml;rdinaten beter met een : of ; schrijven. Dus bijvoorbeeld (x:y)
 : Je moet co&ouml;rdinaten schijven als (x:y) of (x;y) 
-: Je hebt de letter 'o' als cijfer '0' gebruikt?
+: Je hebt de letter &#39;o&#39; als cijfer &#39;0&#39; gebruikt?
 : Je moet de berekeningen zelf uitvoeren.<br />er staat een +/- operator in het antwoord.
 : Je bent een absoluut-streep (|) vergeten.<br />syntax: abs(x) of |x|
 : Je maakt een kleine syntaxfout:<br />schrijf $testvar1 in plaats van $testvar2
@@ -37,7 +37,7 @@
 : Je hebt geen antwoord ingevuld.<br />Als je een antwoord niet weet, kun je een "?" vraagteken invullen.
 : Niet met de adresbalk knoeien.
 : Je antwoord <b>$(reply$n)</b> valt in deze vorm niet na te kijken.<br />Probeer eens een wiskundige schrijfwijze?
-: Je kunt beter een breuk met een <b>"/"</b> schrijven <br />Ik trof een 'loze' dubbele punt ":" aan in je antwoord.
+: Je kunt beter een breuk met een <b>"/"</b> schrijven <br />Ik trof een &#39;loze&#39; dubbele punt ":" aan in je antwoord.
 : Je moet &eacute;&eacute;n van de andere objecten naar dit object slepen.
 : Dit is multiple choice...<br />Je moet gewoon ergens op klikken.
 : Jouw antwoord
@@ -46,7 +46,7 @@
 : De ongelijkheid is niet goed.
 : Je hebt het getalsmatige deel van de ongelijkheid niet goed
 : Je hebt een heel verhaal opgestuurd.<br />Kan het ook korter of zinniger?
-: Je hebt de letter 'o' gebruikt in plaats van een "0".<br />Voor deze keer dan...
+: Je hebt de letter &#39;o&#39; gebruikt in plaats van een "0".<br />Voor deze keer dan...
 : Je hebt $testvar2 antwoord(en) ingeleverd in plaats van $testvar1
 : en je hebt een paar keer hetzelfde goede antwoord ingevuld ? ($testvar stuks)
 : Je hebt de som nu $try keer ter correctie terug gekregen.<br />Je hebt maar nog &eacute;&eacute;n poging over...<br />Wees er voorzichtig mee.
@@ -61,12 +61,12 @@
 : Bij meerdere oplossingen kun beter je noteren:<br />$testvar
 : Je hebt geen antwoord ingevuld.<br />Als je geen antwoord weet, kun je een ? invullen
 : Klik hier voor een illustratie.
-: Je kunt beter geen komma's gebruiken.<br /><small>(Dat geeft soms problemen bij het nakijken.)</small>
+: Je kunt beter geen komma&#39;s gebruiken.<br /><small>(Dat geeft soms problemen bij het nakijken.)</small>
 : Het aantal wortels is: $testvar1<br /> en niet zoals in jouw antwoord: $testvar2<br />
 : Het antwoord moest exact zijn.
 : Wissen
 : Je kunt beter geen 5<span style="color:red"><b>x</b></span>10^12 schrijven.<br />Geef bijvoorkeur 5*10^5
-: Deze pagina maakt gebruik van "verschuifbare" elementen.<br />Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br />De layout is dus "geheel" vrij.<br />Verder kunnen (met een klein beetje geduld, d'r zit nogal wat rekenwerk voor je browser aanvast)<br /> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br />Zie je <em>geen</em> plaatjes of wiskundige formules<br />geef dan een browser <b>RELOAD</b> op deze pagina 
+: Deze pagina maakt gebruik van "verschuifbare" elementen.<br />Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br />De layout is dus "geheel" vrij.<br />Verder kunnen (met een klein beetje geduld, d&#39;r zit nogal wat rekenwerk voor je browser aanvast)<br /> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br />Zie je <em>geen</em> plaatjes of wiskundige formules<br />geef dan een browser <b>RELOAD</b> op deze pagina 
 : Terug
 :nul,nil,zero,zip,nop,niks,niet,nada,geen,niente
 : er zijn geen snijpunten
@@ -102,8 +102,8 @@
 : <br />Je antwoord verondersteld een te hoge nauwkeurigheid !
 : <br />Je antwoord mocht wel wat nauwkeuriger worden opgegeven.
 : Ik geloof dat je even in de help-pagina van deze som moet kijken<br />Want ik kan geen <em>echte</em> reactie vergelijking ontdekken in :<br /><b>$Ah</b>
-: Een syntaxfoutje, je bent in de reactievergelijking een "+" vergeten...<br />Kijk even in de helppagina's voor de syntaxregeltjes
-: Nee, je moet natuurlijk wel een correcte reactie vergelijking invoeren ...<br />A + B -&gt; C + D<br /> A + B &lt;-&gt; C + D <br />Kijk maar eventjes in de help-pagina's
+: Een syntaxfoutje, je bent in de reactievergelijking een "+" vergeten...<br />Kijk even in de helppagina&#39;s voor de syntaxregeltjes
+: Nee, je moet natuurlijk wel een correcte reactie vergelijking invoeren ...<br />A + B -&gt; C + D<br /> A + B &lt;-&gt; C + D <br />Kijk maar eventjes in de help-pagina&#39;s
 : <br />De <b>massabalans</b> is niet inorde...<br /><em>Links en rechts van de pijl zijn verschillen:<br />Het linker gedeelte was: $links<br />Het rechter gedeelte was: $rechts</em><br />
 : <br />Maar je massa- en ladingsbalans is in wel orde ! 
 :aantal significante cijfers,aantal cijfers voor de komma,aantal decimalen,het grondtal,de exponent,aantal cijfers

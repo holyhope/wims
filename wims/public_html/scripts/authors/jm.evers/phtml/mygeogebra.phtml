@@ -3,7 +3,7 @@
 //<![CDATA[
 <!-- no validator -->
     function dontknow(){
-	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
     }
 
     var list_of_things=new Array();
@@ -15,14 +15,8 @@
     !endif
     function sendanswer(){
 	var reply=geogebra2wims(list_of_things);
-	reply=encodeURIComponent( reply );
-	var t=confirm(" $send ?");
-	if(t==true){
-	    var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
-	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
-	}
+	myConfirm("<br />$send<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
-    
 //]]>
 </script>
 <table id="exercise" class="exercise">
@@ -103,3 +97,4 @@
     <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
 </div>
 
+!exit

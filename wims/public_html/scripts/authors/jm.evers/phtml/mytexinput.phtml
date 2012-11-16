@@ -7,7 +7,7 @@
     var description = list2array(descr_list,descr_cnt);
 
     function dontknow(){
-	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
     }
     
     function TexAppInputs(num){
@@ -22,11 +22,13 @@
     
     function sendanswer(){
 	var reply = new Array();var show ="<ol>";
-	var p = 1;var tmp;var tmp1;var cnt = 0;var ans = new Array();
+	var p = 1;
+	var tmp;var tmp1;var cnt = 0;var ans = new Array();
 	if( document.getElementById('TexApp1') ){ // starts with 1
     	    while ( document.getElementById('TexApp'+p) ){ 
 		tmp1 = document.getElementById('TexApp'+p).ReadApplet()+"";
 		ans = tmp1.split(',');
+		if(ans.length>100){setAlarm(r2);dontknow();}
 		for(var s = 0; s < ans.length; s++){
 		    tmp = ans[s];tmp=tmp.replace(/\ /g,'');
 		    if(tmp.length == 0){setAlarm(r1+" "+ parseInt(cnt+1));return;}
@@ -47,11 +49,10 @@
 		p++;
     	    }
 	}
-	var num_applets = p;
-	if( document.getElementById('myinput0') ){
-	    var s = 0;
-	    while( document.getElementById('myinput'+s) ){
-		tmp = document.getElementById('myinput'+s).value;
+	if( document.getElementById('myinput0') ){ // using other inputfields as well ? use wims array-list description for use in confirm div
+	    var inputfieldnumber=0;
+	    while( document.getElementById('myinput'+inputfieldnumber) ){
+		tmp = document.getElementById('myinput'+inputfieldnumber).value;
 		if(tmp.length == 0){setAlarm(r1+" "+ parseInt(cnt+1));return;}
 		if(tmp.indexOf(',')!=-1){setAlarm(r4);return;}
 		if(check_x(tmp) == 0){return;}
@@ -64,20 +65,21 @@
 		}
 		tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
 		reply[cnt] = tmp;
-		show = show + "<li>" + tmp + "</li>"; 
-		cnt++;p++;s++;
-		if(s>100){setAlarm(r2);dontknow();}
+		show = show + "<li>" + description[inputfieldnumber] +  tmp + "</li>"; 
+		cnt++;
+		inputfieldnumber++;
+		if(cnt>100){setAlarm(r2);dontknow();}
 	    }
 	}
 	show = show + "</ol>";
-	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','#5aeb6e');
+	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 //]]>
 </script>
 
 <div id="wait_for_applet" style="text-align:center;display:block;"><img src="$gifdir/wait.gif" alt="wait...wait"></div>
 !! TexApp is in exotext or in object_n
-<table id="exercise" class="exercise" >
+<table id="exercise" class="exercise" ><!-- begin table id="exercise" -->
     <tr>
     <td class="exercise_t">
 	!if $(question$n) != $empty
@@ -122,7 +124,7 @@
     </td>
 !endif
     </tr>
-</table>
+</table><!-- begin table id="exercise" -->
 
 <div id="send_buttons" class="embedded_central">
     <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send">
