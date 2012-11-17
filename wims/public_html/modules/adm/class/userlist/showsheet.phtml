@@ -45,13 +45,14 @@ $name_title_showsheet
  !for j=1 to $nbexo
   !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
   !distribute line $e into m_,n_,bidon,bidon,t_
-  <th><small>
+  <th><span class="small">
   !set wims_ref_title=$t_
   !href cmd=new&module=$m_&$n_ $name_Exercise $j 
-!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a></small></th>
+!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a></span></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
+ </tr>
  !for m=1 to $usercnt
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
@@ -59,7 +60,7 @@ $name_title_showsheet
   <td>
    !href cmd=reply&job=getuser&getuser=$uu $name_student1
    !if $uu isitemof $wims_connectedlogin
-    <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" />
+    <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px;" />
    !endif
   </td>
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet

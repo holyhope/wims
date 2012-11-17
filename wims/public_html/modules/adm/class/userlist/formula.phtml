@@ -9,7 +9,8 @@ $name_severitylevels
 $name_formula_comment
 <input size="5" name="maxscore" value="$scoremax"/>.
 $table_header
-$table_hdtr<th>$(name_formula[1])<th>$wims_name_title<th>$wims_name_Status<th>$(name_formula[2])<th>$(name_formula[3])
+$table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_Status</th>
+  <th>$(name_formula[2])</th><th>$(name_formula[3])</th></tr>
 !for i=1 to $totsheets
  !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !set k_=!line $i of $defaultformula
@@ -21,11 +22,11 @@ $table_hdtr<th>$(name_formula[1])<th>$wims_name_title<th>$wims_name_Status<th>$(
  !set S_=!item $a_+1 of $name_sheetstatut
 
  $table_tr<td align="right">$i</td>
- <td>$c_</td><td align="center">$S_</td>
- <td align="center"><input size="5" name="w$i" value="$(w$i)"/></td>
- <td align="center">
+ <td>$c_</td><td>$S_</td>
+ <td><input size="5" name="w$i" value="$(w$i)"/></td>
+ <td>
  !formselect s$i from 0 to 6
- </td>
+ </td></tr>
 !next i
 !for i=1 to $totexams
  !set ew$i=!line $i of $examweights
@@ -36,9 +37,10 @@ $table_hdtr<th>$(name_formula[1])<th>$wims_name_title<th>$wims_name_Status<th>$(
  !set S_=!item $a_+1 of $name_sheetstatut
  
  $table_tr<td align="right">$name_Exam $i</td>
- <td>$c_</td><td align="center">$S_</td>
- <td align="center"><input size="5" name="ew$i" value="$(ew$i)"/></td>
- <td align="center">--</td>
+ <td>$c_</td><td>$S_</td>
+ <td><input size="5" name="ew$i" value="$(ew$i)"/></td>
+ <td>--</td>
+ </tr>
 !next i
 $table_end
 <div class="wimscenter wimsform">

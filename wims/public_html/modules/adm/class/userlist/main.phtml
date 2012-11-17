@@ -112,20 +112,22 @@ $wims_name_part_list
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th rowspan="2" class="name_exam"><small>$name_Exam $k</small></th>
+    <th rowspan="2" class="name_exam small">$name_Exam $k</th>
    !else
     <th rowspan="2" class="show_sheet">
-    <small>
+    <span class="small">
      !set s=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
      !set s=!line 3 of $s
      !set wims_ref_title=$s
      !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
      !!<a onmouseover="Tip('$s',$tooltip_parm)">$picto</a>
-    </small></th>
+    </span></th>
    !endif
   !next j
-  $table_hdtr<th class="manual_notes"><small>$(name_manual_notes[1])</small></th>
-  <th class="manual_notes"><small>$(name_manual_notes[2])</small></th><th class="manual_notes"><small>$(name_manual_notes[3])</small>
+  <tr>
+  $table_hdtr<th class="manual_notes small">$(name_manual_notes[1])</th>
+  <th class="manual_notes small">$(name_manual_notes[2])</th>
+  <th class="manual_notes small">$(name_manual_notes[3])</th>
  !else
   $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
   !if $job_affi=notes
@@ -134,11 +136,11 @@ $wims_name_part_list
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th class="name_exam"><small>$name_Exam $k</small></th>
+    <th class="name_exam small">$name_Exam $k</th>
    !else
-    <th><small>
+    <th class="small">
      !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
-    </small></th>
+    </th>
    !endif
   !next j
  !endif
@@ -163,21 +165,21 @@ $wims_name_part_list
     !read adm/class/colors $[ceil($glob*10/$scoremax)]
     <td style=$style_note>$glob
    !else
-     <td align="center">--
+     <td>--
    !endif
    </td>
    !if $(manual_$UU)>0
     !read adm/class/colors $[ceil($(manual_$UU)*10/$scoremax)]
     <td style=$style_note>$(manual_$UU)
    !else
-     <td align="center">--
+     <td>--
    !endif
    </td>
    !if $per>0
     !read adm/class/colors $[ceil($per*10/$scoremax)]
     <td style=$style_note>$per
    !else
-     <td align="center">--
+     <td>--
    !endif
    </td>
    !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
@@ -198,7 +200,7 @@ $wims_name_part_list
      !advance cnt_auto
      !advance cnt_glob
     !else
-     <td align="center">--
+     <td>--
     !endif
      </td>
    !endif
@@ -215,7 +217,7 @@ $wims_name_part_list
      !read adm/class/colors $[ceil($p_*10/$scoremax)]
      <td style=$style_note>$p_
     !else
-   <td align="center">$p_
+   <td>$p_
     !endif
      </td>
    !else
@@ -232,7 +234,7 @@ $wims_name_part_list
       !read adm/class/colors $[ceil(10*$p_/$scoremax)]
       <td style=$style_note>$p_
      !else
-      <td align="center">--
+      <td>--
      !endif
       </td>
     !else
@@ -242,7 +244,7 @@ $wims_name_part_list
        !read adm/class/colors $[ceil($p_)]
        <td style=$style_note>$p_
       !else
-       <td align="center">--
+       <td>--
       !endif
       </td>
      !else
@@ -251,7 +253,7 @@ $wims_name_part_list
        !read adm/class/colors $[ceil($p_/10)]
        <td style=$style_note>$p_ %
       !else
-       <td align="center">--
+       <td>--
        </td>
       !endif  
      !endif
@@ -277,21 +279,21 @@ $wims_name_part_list
      !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
      <td style=$style_note>$m_glob
    !else
-     <td align="center">--
+     <td>--
    !endif
    </td>
    !if $m_tea >0
     !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
     <td style=$style_note>$m_tea
    !else
-    <td align="center">--
+    <td>--
    !endif
    </td>
    !if $m_auto>0
     !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
     <td style=$style_note>$m_auto
    !else
-    <td align="center">--
+    <td>--
    !endif
    </td>
   !else
@@ -299,7 +301,7 @@ $wims_name_part_list
     !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
     <td style=$style_note>$m_auto
    !else
-    <td align="center">--
+    <td>--
    !endif
    </td>
   !endif
@@ -314,7 +316,7 @@ $wims_name_part_list
     <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100]
    !endif
   !else
-    <td align="center">--
+    <td>--
   !endif
   </td>
   </tr>
@@ -323,27 +325,27 @@ $wims_name_part_list
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
 	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
-  $table_hdtr<td align="center"><b>$name_posAverage</b></td>
+  $table_hdtr<td><b>$name_posAverage</b></td>
   !if $manual>0
     !if $m_glob>0
      !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
      <td style=$style_note>$m_glob
     !else
-     <td align="center">--
+     <td>--
     !endif
     </td>
     !if $m_tea>0
      !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
      <td style=$style_note>$m_tea
     !else
-     <td align="center">--
+     <td>--
     !endif
     </td>
     !if $m_auto>0
      !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
      <td style=$style_note>$m_auto
     !else
-     <td align="center">--
+     <td>--
     !endif
     </td>
   !else
@@ -351,7 +353,7 @@ $wims_name_part_list
      !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
      <td style=$style_note>$m_auto
     !else
-      <td align="center">--
+      <td>--
     !endif
     </td>
   !endif
@@ -360,13 +362,14 @@ $wims_name_part_list
     !read adm/class/colors $[ceil($(per_$j)/max(1,$(cnt_$j))*10/$scoremax)]
     <td style=$style_note>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]
    !else
-    <td align="center">--
+    <td>--
    !endif
    </td>
+  </tr>
   !next j
+ !else
   </tr>
  !endif
-
  $table_end
 <p>$name_click</p>
 !if $activecnt+$eactivecnt>1
@@ -375,8 +378,7 @@ $wims_name_part_list
   <input type="hidden" name="job" value="sheets"/>
   !set wims_formselect_switch=multiple="multiple" size="$[min($activecnt,6)]"
   <table border="0">
-  <tr><td>$name_pickup:
-  </td><td>&nbsp;&nbsp;
+  <tr><td>$name_pickup:</td><td>&nbsp;&nbsp;
   !reset tmp
   !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
   !for i=1 to $activecnt
