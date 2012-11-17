@@ -17,7 +17,7 @@ $wims_name_account_property\
 $table_header
 $table_tr
  <th>$wims_name_Login</th>
- <td><tt>$getuser</tt>
+ <td><span class="tt">$getuser</span>
   !if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" />
    !endif
@@ -25,13 +25,13 @@ $table_tr
 </tr>
 !if $type_class iswordof 2 4 or ($class_Supervisor=$wims_realuser and $wims_class!=$wims_superclass and $wims_realuser!=$getuser)
   !if $user_participate!=$empty and $type_class iswordof 2 4
-    $table_tr<th>$name_inscript</th><td><tt>$user_participate</tt></td></tr>
+    $table_tr<th>$name_inscript</th><td><span class="tt">$user_participate</span></td></tr>
   !endif
   !if $user_supervisable=yes
     $table_tr<th>$name_gestion</th><td>
     !if $type_class iswordof 2 4
      <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise"/>
-     <tt>$wims_class/1, ... </tt></td></tr>
+     <span class="tt">$wims_class/1, ... </span></td></tr>
     !else
       !if $wims_class isitemof $user_supervise
         !set superv=yes

@@ -49,10 +49,10 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_warning_no_sequence=U hebt de werkvolgorde geconfigureerd , maar nog niets aangegeven.Dus er kunnen ook geen cijfers worden getoond.
 
 !if $manual>0
-!set name_manual_explanation=<b>Uitleg.</b> In de kolom <tt>Gemiddelde</tt> , <tt>auto</tt> \
+!set name_manual_explanation=<b>Uitleg.</b> In de kolom <span class="tt">Gemiddelde</span> , <span class="tt">auto</span> \
 betekend het gemiddelde cijfer voor de server geregistreerde oefeningen en opdrachten in werkbladen,\
-<tt>docent</tt> betekend het gemiddelde cijfer over de handmatig ingevoerde scores door de docent/supervisor,\
-en <tt>globaal</tt> wordt berekend aan de hand van de formule
+<span class="tt">docent</span> betekend het gemiddelde cijfer over de handmatig ingevoerde scores door de docent/supervisor,\
+en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 
 !endif
 
@@ -133,7 +133,7 @@ kan dus niet worden overgezet van
   name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
   
-  !set name_deposit=!nosubst Spreadsheet bestand <tt>$wims_deposit</tt> met succes verwerkt.
+  !set name_deposit=!nosubst Spreadsheet bestand <span class="tt">$wims_deposit</span> met succes verwerkt.
 !endif
 
 !set name_topten=!nosubst Top $class_topscores van deze klas

@@ -50,11 +50,11 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 added any sequences. Therefore no score can be displayed.
 
 !if $manual>0
- !set name_manual_explanation=<b>Explicaciones.</b> En las columnas de <tt>media</tt>,\
-<tt>auto</tt>  se refiere a la media
+ !set name_manual_explanation=<b>Explicaciones.</b> En las columnas de <span class="tt">media</span>,\
+<span class="tt">auto</span>  se refiere a la media
 de las notas calculadas a partir de las puntuaciones obtenidas en las hojas de trabajo,\
- <tt>prof.</tt> se refiere a la media de las notas asignadas manualmente por el profesor.\
-La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmula
+ <span class="tt">prof.</span> se refiere a la media de las notas asignadas manualmente por el profesor.\
+La nota <span class="tt">global</span> se calcula a partir de las otras dos, mediante la fórmula
 !endif
 
 !set name_title_showsheet=!nosubst Detalles del trabajo sobre la hoja $numshowsheet<br/>$sh_title
@@ -137,7 +137,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
 
 
-  !set name_deposit=!nosubst  El fichero de hoja de cálculo <tt>$wims_deposit</tt> ha sido reconocido correctamente.
+  !set name_deposit=!nosubst  El fichero de hoja de cálculo <span class="tt">$wims_deposit</span> ha sido reconocido correctamente.
 !endif
 
 !set name_topten=!nosubst Top $class_topscores de las medias de la clase
