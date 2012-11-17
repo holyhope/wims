@@ -1,0 +1,16 @@
+ <!-- _widgets/sequence.phtml -->
+ !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq>0
+  !read ./sequence.phtml $seq
+  !reset seq
+ !else
+  !for i=1 to $seq_cnt
+     !if $seq_reverse=yes
+      !set u=$[$seq_cnt+1-$i]
+     !else
+      !set u=$i
+     !endif
+    !read ./sequence.phtml $u
+  !next
+ !endif
+ <!--end  _widgets/sequence.phtml -->

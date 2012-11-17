@@ -1,0 +1,48 @@
+<!-- _widgets/usersheet.phtml -->
+!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+!set aclist=
+!for i=1 to $t
+ !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !set a_=!line 1 of $(s_$i)
+ !if $a_>=1 and $a_<=2
+  !set aclist=!append item $i to $aclist
+ !endif
+!next i
+!set n=!itemcnt $aclist
+ !if $n>0
+  <table class="wims_user_sheet_table">
+  !for i=1 to $n
+   !set se=!item $i of $aclist
+   !distribute lines $(s_$se) into ac,t_,ti,de
+   <tr class="wims_user_sheet"><td class="wims_user_sheet_type">$wims_name_Sheet $se. </td><td class="wims_user_sheet_desc">
+  !href module=adm/sheet&sh=$se $ti
+  </td><td class="wims_user_sheet_expire">
+   !if $ac>=2
+    $U_expired
+   !else
+    !if showshexpire iswordof $class_option
+     !read misc/expire.phtml.$lang $t_
+    !endif
+   !endif
+   </td>
+   !set pe=!line $se of $percents
+   !set p1=!word 1 of $pe
+   !set p2=!word 2 of $pe
+   <td class="wims_user_sheet_score">
+   !if $p1!=$empty
+    $p1% $U_done, $U_average $[$p2]/10
+   !else
+    &nbsp;
+   !endif
+   </td><td>
+   !if showshweight iswordof $class_option
+    ($wims_name_coeff
+     !line $i of $wlist
+    )
+   !endif
+   </td></tr>
+  !next i
+  </table>
+ !endif
+<!-- end _widgets/usersheet.phtml -->

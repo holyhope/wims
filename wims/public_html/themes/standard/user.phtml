@@ -5,7 +5,7 @@
 !if $module!=home
  !exit
 !endif
-
+!!initialisation
 !set home_theme=yes
 
 !set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
@@ -31,6 +31,7 @@
  !goto end
 !endif
 
+!!!!
 :normal
 !read classlogo.phtml
 !if $class_logo!=
@@ -43,12 +44,14 @@
  <span class="wims_classname">$wims_classname</span> <span class="wims_class_typename">($(wims_name_$class_typename))</span>
 
 !read adm/class/initclass $wims_superclass, auth
+
 !!FIXME
 !if $auth_method isitemof $auth_method_list
    !set wims_user_ext=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user
- !endif
- !default wims_user_ext=$wims_user
- <div class="wims_classes_direct">
+!endif
+!default wims_user_ext=$wims_user
+
+<div class="wims_classes_direct">
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
   $wims_institutionname
 !else
@@ -63,8 +66,7 @@
  </span>
  !endif
 !endif
-</div>
-!!<br style="clear:both;"/></div><div class=wimsbody>
+</div> <!--wims_classes_direct-->
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -108,276 +110,68 @@ $U_greet
  </p>
 !endif
 
-<div class="wims_class_motd">
-!read ./wimshome/log/classes/$wims_class/.motd
-</div><!--end of wims_class_motd-->
-!let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
-!let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
-!if # notin $test and $test2!=$empty
- <div class="wims_class_pmotd">
- !read ./wimshome/log/classes/$wims_class/motd/$wims_user
- &nbsp; [
- !href module=adm/class/motd $(wims_name_actionlist[4])
-] </div><!-- end of wims_class_pmotd-->
-!endif
+!read themes/_widgets/motd.phtml
 
 !if $class_type>=2
  !read ./subclasses.phtml
  !set is_interclass=yes
 !endif
+
 !set seq_cnt=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
 !set seq_cnt=!line 1 of $seq_cnt
 !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
-!set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+
 !if $seq_open=yes and $seq_cnt>0
- !if $seq>0
-  !read ./sequence.phtml $seq
-  !reset seq
- !else
-  !for i=1 to $seq_cnt
-     !if $seq_reverse=yes
-      !set u=$[$seq_cnt+1-$i]
-     !else
-      !set u=$i
-     !endif
-    !read ./sequence.phtml $u
-  !next
- !endif
+  !read themes/_widgets/sequence.phtml
   !goto endbar
 !endif
+!!define variable $dcnt
+!read themes/_widgets/userdoc.phtml
+!!define variable dpcnt
+!read themes/_widgets/userdocp.phtml
+!!define variable $n
+!read themes/_widgets/usersheet.phtml
+!!define variable $m
+!read themes/_widgets/userexam.phtml
+!!define variable $v
+!read themes/_widgets/uservote.phtml
 
-!set dcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
-!for i=1 to $dcnt
- !set d_=!record $i of wimshome/log/classes/$wims_class/doc/.index
- !distribute lines $d_ into s_,t_,a_,e_,c_,o_
- !if $o_>0
-  !set ds_list=!append line $s_ to $ds_list
-  !set dt_list=!append line $t_ to $dt_list
- !endif
-!next i
-!set dcnt=!linecnt $ds_list
 
-!set dpcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
-!for i=1 to $dpcnt
- !set d__=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
- !distribute lines $d__ into s_,t_,ti_,de_,o_
- !if $o_>0
-  !set dps_list=!append line $s_ to $dps_list
-  !set dpt_list=!append line $t_ to $dpt_list
-  !set dpti_list=!append line $ti_ to $dpti_list
-  !set dpde_list=!append line $de_ to $dpde_list
- !endif
-!next i
-!set dpcnt=!linecnt $dps_list
-
-!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
-!set aclist=
-!for i=1 to $t
- !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
- !set a_=!line 1 of $(s_$i)
- !if $a_>=1 and $a_<=2
-  !set aclist=!append item $i to $aclist
- !endif
-!next i
-!set n=!itemcnt $aclist
-!set t=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
-!set aelist=
-!for i=1 to $t
- !set e_$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
- !set a_=!line 1 of $(e_$i)
- !if $a_>=1 and $a_<=2
-  !set aelist=!append item $i to $aelist
- !endif
-!next i
-
-!set m=!itemcnt $aelist
-!set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
-!set avlist=
-!for i=1 to $t
- !set v_$i=!record $i of wimshome/log/classes/$wims_class/vote/.votes
- !set a_=!line 1 of $(v_$i)
- !if $a_>=1 and $a_<=2
-  !set avlist=!append item $i to $avlist
- !endif
-!next i
-!set v=!itemcnt $avlist
-
-!ifval $dcnt+$dpcnt+$n+$m+$v=0
- !if $is_interclass!=yes
- $U_nosheet
- !endif
-!else
- !if $dcnt>0
-  <table class="wims_user_doc_table">
-  !for i=1 to $dcnt
-   !set s_=!line $i of $ds_list
-   !set t_=!line $i of $dt_list
-   <tr class="wims_user_doc"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-   !href module=adm/doc&job=read&doc=$s_&block=main $t_
-   </td></tr>
-  !next i
-  </table>
- !endif
- !if $dpcnt>0
-  <table class="wims_user_docp_table">
-  !for i=1 to $dpcnt
-   !set s_=!line $i of $dps_list
-   !set t_=!line $i of $dpt_list
-   <tr class="wims_user_docp"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-    !href module=$s_&$t_ $(dpti_list[$i;])
-   </td></tr>
-  !next i
-  </table>
- !endif
- !if $n >0
-  <table class="wims_user_sheet_table">
-  !for i=1 to $n
-   !set se=!item $i of $aclist
-   !distribute lines $(s_$se) into ac,t_,ti,de
-   <tr class="wims_user_sheet"><td class="wims_user_sheet_type">$wims_name_Sheet $se. </td><td class="wims_user_sheet_desc">
-  !href module=adm/sheet&sh=$se $ti
-  </td><td class="wims_user_sheet_expire">
-   !if $ac>=2
-    $U_expired
-   !else
-    !if showshexpire iswordof $class_option
-     !read misc/expire.phtml.$lang $t_
-    !endif
-   !endif
-   </td>
-   !set pe=!line $se of $percents
-   !set p1=!word 1 of $pe
-   !set p2=!word 2 of $pe
-   <td class="wims_user_sheet_score">
-   !if $p1!=$empty
-    $p1% $U_done, $U_average $[$p2]/10
-   !else
-    &nbsp;
-   !endif
-   </td><td>
-   !if showshweight iswordof $class_option
-    ($wims_name_coeff
-     !line $i of $wlist
-    )
-   !endif
-   </td>
-   </tr>
-  !next i
-  </table>
- !endif
- !if $m>0
- <table class="wims_user_exam_table">
- !for i=1 to $m
-  !set se=!item $i of $aelist
-  !distribute lines $(e_$se) into ac,t_,s_,ti,de
-  <tr class="wims_user_exam"><td class="wims_user_exam_type">$wims_name_Examen $se. </td>
-  <td class="wims_user_exam_desc">
-  !href module=adm/class/exam&job=student&exam=$se $ti
-  </td><td class="wims_user_exam_expire">
-  !if $ac>=2
-   $U_expired
-  !else
-   !if showexexpire iswordof $class_option
-    !read misc/expire.phtml.$lang $t_
-   !else
-    &nbsp;
-   !endif
-  !endif
-  </td></tr>
- !next i
- </table>
- !endif
- !if $v>0
- <table class="wims_user_vote_table">
- !for i=1 to $v
-  !set sv=!item $i of $avlist
-  !distribute lines $(v_$sv) into ac,ti
-  <tr class="wims_user_vote"><td class="wims_user_vote_type">$wims_name_Vote $i</td><td class="wims_user_vote_desc">
-  !href module=adm/vote&job=read&vote=$sv $ti
-  </td><td class="wims_user_vote_expire">
-  !if $ac>=2
-   $U_expired
-  !else
-   &nbsp;
-  !endif
-  </td>
- !next i
- </table>
-!endif
-!endif
+!!!ifval $dcnt+$dpcnt+$n+$m+$v=0
+!! !if $is_interclass!=yes
+!!   $U_nosheet
+!! !endif
+!!!else
+!!!endif
 
 :endbar
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox">
 <div class="wimsmenu">
-!if $exist_cdt=yes
-<div class="menuitem">
-  !read ./adm/oneitem.phtml cdt,1,module=adm/class/cdt
-</div><!--menuitem-->
+
+!read themes/_widgets/cdt.phtml
+
+!read themes/_widgets/userforum.phtml
+!!must have read user*.phtml,  with *=sheet, exam must be read before
+!ifval $n+$m>0 and $is_interclass!=yes
+ <div class="itemsep"></div>
+  !read themes/_widgets/userscore.phtml 
+ <div class="itemsep"></div>
 !endif
-!set forum_policy=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
-!reset name_c
-!if $forum_policy!=owner
-  !if $class_superclass!=
-   !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
-   !set name_c=<small>($name_c)</small>
-  !endif
- <div class="menuitem">
-!read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
- $name_c
- </div><!--menuitem-->
-!endif
-!!! the following allows to have forums in level. I comment because 
-!!I don't know if it useful. don't delete. 
-!!!if $wims_class=$wims_superclass and $class_type=4
-!!  !set level_cnt=!record 0 of wimshome/log/classes/$wims_class/levels
-!!  !set level_cnt=!linecnt $level_cnt
-!!  !set participate_=!defof user_participate in wimshome/log/classes/$wims_class/.users/$wims_user
-!!  !set supervise_=!defof user_supervise in wimshome/log/classes/$wims_class/.users/$wims_user 
-!!  !for le_ from 1 to $level_cnt
-!!     !defread wimshome/log/classes/$wims_class/$le/forum/.def
-!!   !if $mb_defined!=yes and ,$wims_class/$le_/ isin ,$participate_,$supervise_ and $mb_readpolicy!=owner
-!!    !set name_c=!defof class_description in wimshome/log/classes/$wims_class/$le_/.def
-!!     <div class="menuitem">
-!!      !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard&forum=classes/$wims_class/$le_
-!!      <small>($name_c)</small>
-!!     </div><!--end menuitem-->
-!!    !endif
-!!  !next
-!!!endif
-!ifval $dcnt+$n+$m+$v>0 and $is_interclass!=yes
-<div class="itemsep"></div>
-<div class="menuitem">
-!read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist
-</div><!--end menuitem-->
- !if $wims_showlivret!=no
-  !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
-  !if $livret_nbcomp >0
-   <div class="menuitem">
-   !read ./adm/oneitem.phtml livret,1,module=adm/class/livret
-   </div><!--end menuitem-->
-  !endif
- !endif
-<div class="itemsep"></div>
-!endif
-!if $class_type isin 013
-<div class="menuitem">
-!read ./adm/oneitem.phtml account,1,module=adm/class/userlist&job=userprop
-</div><!--end menuitem-->
-!endif
+
 !set class_ent1=!rows2lines $class_ent
 !set class_ent_n0=!linecnt $class_ent1
 !if $class_ent_n0>0
-<div class="itemsep"></div><!--tailsep-->
-!for i_=1 to $class_ent_n0
+ <div class="itemsep"></div><!--tailsep-->
+ !for i_=1 to $class_ent_n0
   !set 1_=!line $i_ of $class_ent1
    <div class="menuitem">
    !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
    </div><!--end menuitem-->
-!next i_
+ !next i_
 !endif
+
 !if $wims_user=supervisor
  <div class="itemsep"></div><!--tailsep-->
  <div class="menuitem">
@@ -409,11 +203,6 @@ $U_greet
      !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang 
     </span><!-- end menuitem-->
    </div><!--end menublock-->
-!!<div class="menublock">
-!!<span class="menuitem">
-!!!read ./adm/oneitem.phtml passwd,1,module=adm/class/passwd
-!!</span><!-- menuitem-->
-!!      </div><!--end menublock-->
   </div><!--end of wimsmenu-->
  </div><!--end of wimsmenubox-->
  

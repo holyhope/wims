@@ -29,37 +29,7 @@
  </span> <!--topmenuitem-->
 !next i_
 
-!! -----------------------Insert "Permalien" --------------------------------
-!! Permalien / lecteur exportable : ces lignes permettent d'integrer facilement la page courante a un autre site :
-
-!set current_module=!replace / by , in $module
-
-!set module_path= !item 1 of $current_module	
-!if $module_path notitemof home,adm,classes and _exam notin $session and $wims_lightpopup!=yes and ($wims_user=supervisor or $wims_user=$empty) and ($cmd=intro or $cmd=$empty)
-	!set permalien=$wims_ref_name?module=$module
-
-<div class="topmenuitem" id="header_export">
-<div id="lien_export_media" style="display:block">
-	<a href="#" class="about" onclick="document.getElementById('export_media').style.display = 'block';document.getElementById('lien_export_media').style.display = 'none';">$wims_name_display1</a>
-</div><!--lien_export_media-->
-<div id="export_media" style="display:none" align="left">
-<div class="wimscenter"> -- <strong>$wims_name_display1</strong> 
--- &nbsp; <a href="#" onclick="document.getElementById('export_media').style.display = 'none';document.getElementById('lien_export_media').style.display = 'block';">
-($wims_name_mask_this)</a></div><!--wimstail-->
-	<hr/>
-	<label for="wims_permalink">$wims_name_permalink1</label><br/> 
-	 <small>($wims_name_display2)</small> :
-	<input id="wims_permalink" name="wims_permalink" value="$permalien" size="70"/>
-	<hr/>
-	<label for="wims_embed_textarea">$wims_name_embeddable<br/>
-	<small> ($wims_name_display3) :
-	</small></label>
-	<textarea style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" name="wims_embed_textarea" >&lt;iframe src="$permalien&+embededwindow=true" title="WIMS embeddable" frameborder="0" class="wims_embed" style="width:100%;height:100%;min-height:800px;" allowfullscreen>&lt;/iframe></textarea>
-</div><!--export_media-->
-</div><!--topmenuitem-->
-
-!endif
-!!------------------------------------Fin de l'insert "Permalien" --------------------------
+!read themes/_widgets/permalink.phtml
 
 !!FIXME PHP ?
 !if $class_cas_auth=$empty
@@ -79,8 +49,11 @@
 </div><!--wimstopbox-->
 !endif
 
+
 !if $module!=home or $wims_user!=
 <div id="wimsbodybox">
+
+!!always empty ! has not been used
 !if $wims_homeref_n3>0
   <div id="wimsmenutab">
   <div class="wimsmenu"> 
@@ -97,17 +70,11 @@
   !next i_
   </div><!--wimsmenu-->
   </div><!--wimsmenutab-->
-!endif
+ !endif
 
 <div id="wimspagebox">
 !endif
 
-!if $wims_user!=supervisor and $wims_class!=$empty and $wims_alertmsg!=$empty
- <div class="wims_alertmsg">$wims_alertmsg
- !if adm isin $module or $module=home
-  !href module=adm/class/motd&job=readen $wims_name_readen
- !endif
- </div>
-!endif
+!read themes/_widgets/alertchat.phtml
 
 <!-- end of $wims_theme/header.phtml -->

@@ -10,19 +10,19 @@
 !set home_theme=yes
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
 </div>
-!!!set wims_headmenu_colcnt=5
+
 <div id="wimsfrontpage">
 
 	<div id="wimstopbox">
 
     	!!Site Title
-		!read themes/$wims_theme/widgets/site_title.phtml
+		!read themes/_widgets/site_title.phtml
 
 		!!Institution logo
-		!read themes/$wims_theme/widgets/institution_logo.phtml		
+		!read themes/Nikaia/widgets/institution_logo.phtml		
 
 		!!Language Selector
-		!read themes/$wims_theme/widgets/language_selector.phtml
+		!read themes/_widgets/language_selector.phtml
 
 		
 		<br class="spacer"/>
@@ -42,47 +42,34 @@
 			-->
 			<li class="menuitem">
 			!read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
-			!! !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme_image/n_supervisor.gif" alt="V_sup" title="V_sup"> $V_sup
 			</li><!--menuitem-->
 			
 			<!--
 			<span class="menuitem">
 			!read ./adm/oneitem.phtml n_example,1,module=adm/class/classes&type=example
-			!! !href module=adm/class/classes&type=example $im "gifs/themes/$wims_theme_image/n_example.gif" alt="n_example" title="n_example"> $V_ex
 			</span>
 			!!!endif
 			-->	
 			<li class="menuitem">
 			!read ./adm/oneitem.phtml help,4,module=help/main,help
 			<!--!read ./adm/oneitem.phtml help,4,module=themes/$wims_theme/help/main,help-->	
-			</li>		
-			!if $class_cas_auth!=$empty
-			  <li class="menuitem">
-			!!FIXME this line does not work
-			 !! !read adm/class/cas_logout
-			  !set url = $wims_ref_name?cmd=close&module=home&session=$wims_session&class_auth=
-			  <a href="$class_cas_auth/logout?service=$url">$wims_name_cas_logout</a>
-			 </li>
-			 !endif		 
+			</li>	 
 		</ul><!--wimsmenu-->
+		!read themes/_widgets/authlogout.phtml
 	</div><!-- fin de wimstopbox-->
 
 	<div id="wimsbodybox">				
 		<div id="wimspagebox">
 			<div class="wimsbody">
 			
-				!if $wims_ismanager!=0
-				<p style="text-align:center;">
-				 !href module=adm/manage $N_manage
-				</p> 
-				!endif
+				!read themes/_widgets/manager.phtml
 				
 				<!--Contenu de la page d'accueil-->
 				
     			<!--Recherche exercices-->
-    			!read themes/$wims_theme/widgets/search_engine.phtml
+    			!read themes/Nikaia/widgets/search_engine.phtml
     			<!--Recherche classes-->
-    			!read themes/$wims_theme/widgets/search_classe.phtml
+    			!read themes/Nikaia/widgets/search_classe.phtml
 				
 				<br class="spacer"/>
 				
@@ -104,9 +91,9 @@
 			
 	</div><!--wimsbodybox-->
 				
-	!read themes/$wims_theme/widgets/menubox.phtml
+	!read themes/Nikaia/widgets/menubox.phtml
 
-	!read themes/$wims_theme/widgets/tailbox.phtml
+	!read themes/Nikaia/widgets/tailbox.phtml
 
 </div><!--wimsfrontpage-->
 

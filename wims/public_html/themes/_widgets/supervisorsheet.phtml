@@ -1,0 +1,15 @@
+<!-- _widgets/supervisorssheet.phtml -->
+!for i=1 to $sheetcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into ac,t_,ti
+  $table_tr<td>$wims_name_Sheet $i</td>
+  <td>
+  !href module=adm/class/sheet&sheet=$i $ti
+  </td>
+  <td>$(wims_name_shstatus[$[$ac+1]])</td>
+  <td>
+   !read adm/sheet/sheetaction.phtml sheet,$i,$ac,1
+  </td>
+  </tr>
+ !next i 
+  <!-- end _widgets/supervisorssheet.phtml -->
