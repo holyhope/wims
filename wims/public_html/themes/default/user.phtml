@@ -30,21 +30,25 @@
 <img src="$class_logo" alt="logo" align="left"/>
 </td></tr></table>
 
-<center> <br/>
 !endif
-<b><font size="+2">$wims_classname</font></b>
+<div class="wimscenter">
+<<span style="font-weight:bold;font-size:large;">$wims_classname</span>
 <br/>
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
- $wims_institutionname
+  $wims_institutionname
 !else
- !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
+  <span class="wims_classes_direct_portal">
+   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
+  </span>
   !if / isin $class_parent and $class_type=1
-  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
   / 
-  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+ <span class="wims_classes_direct_class">
+  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user_ext $pname
+ </span>
  !endif
 !endif
-</center>
+</div>
 <br style="clear:both;"/></div><div class="wimsbody">
 
 !if _tool isin $wims_session
@@ -77,17 +81,18 @@
  !endif
 !endif
 $U_greet
-<small>
+<span class="small">
 !if $class_type isin 234
  !href module=adm/class/userlist&job=userprop $wims_name_account
  &nbsp;
 !endif
 !href target=wims_help module=help/main&chapter=3 $wims_name_help
-</small>
+</span>
 
 !if & isin $newmsgcnt or $newmsgcnt>0
- <br/>
+ <p class="wims_newmsg">
  !href module=adm/forum/mboard $U_newmsg
+ </p>
 !endif
 
 !if $wims_supconnectshowed=yes and $wims_supervisorconnected!=$empty
@@ -96,23 +101,13 @@ $U_greet
  </p>
 !endif
 
-<div class="wims_class_motd">
-!read ./wimshome/log/classes/$wims_class/.motd
- </div><!--wims_class_motd-->
-!let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
-!let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
-!if # notin $test and $test2!=$empty
- <div class="wims_class_pmotd">
- !read ./wimshome/log/classes/$wims_class/motd/$wims_user
- &nbsp;
- !href module=adm/class/motd $(wims_name_actionlist[4])
- </div><!--wims_class_pmotd-->
-!endif
+!read themes/_widgets/motd.phtml
 
 !if $class_type>=2
  !read ./subclasses.phtml
  !set is_interclass=yes
 !endif
+
 !set seq_cnt=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
 !set seq_cnt=!line 1 of $seq_cnt
 !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
@@ -137,63 +132,17 @@ $U_greet
  !endif
   !goto endbar
 !endif
+!!define variable $dcnt
+!read themes/_widgets/userdoc.phtml
+!!define variable dpcnt
+!read themes/_widgets/userdocp.phtml
+!!define variable $n
+!read themes/_widgets/usersheet.phtml
+!!define variable $m
+!read themes/_widgets/userexam.phtml
+!!define variable $v
+!read themes/_widgets/uservote.phtml
 
-!set dcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
-!for i=1 to $dcnt
- !set d_=!record $i of wimshome/log/classes/$wims_class/doc/.index
- !distribute lines $d_ into s_,t_,a_,e_,c_,o_
- !if $o_>0
-  !set ds_list=!append line $s_ to $ds_list
-  !set dt_list=!append line $t_ to $dt_list
- !endif
-!next i
-!set dcnt=!linecnt $ds_list
-
-!set dpcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
-!for i=1 to $dpcnt
- !set d__=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
- !distribute lines $d__ into s_,t_,ti_,de_,o_
- !if $o_>0
-  !set dps_list=!append line $s_ to $dps_list
-  !set dpt_list=!append line $t_ to $dpt_list
-  !set dpti_list=!append line $ti_ to $dpti_list
-  !set dpde_list=!append line $de_ to $dpde_list
- !endif
-!next i
-!set dpcnt=!linecnt $dps_list
-
-!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
-!set aclist=
-!for i=1 to $t
- !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
- !set a_=!line 1 of $(s_$i)
- !if $a_>=1 and $a_<=2
-  !set aclist=!append item $i to $aclist
- !endif
-!next i
-!set n=!itemcnt $aclist
-!set t=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
-!set aelist=
-!for i=1 to $t
- !set e_$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
- !set a_=!line 1 of $(e_$i)
- !if $a_>=1 and $a_<=2
-  !set aelist=!append item $i to $aelist
- !endif
-!next i
-
-!set m=!itemcnt $aelist
-!set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
-!set avlist=
-!for i=1 to $t
- !set v_$i=!record $i of wimshome/log/classes/$wims_class/vote/.votes
- !set a_=!line 1 of $(v_$i)
- !if $a_>=1 and $a_<=2
-  !set avlist=!append item $i to $avlist
- !endif
-!next i
-!set v=!itemcnt $avlist
 
 !ifval $dcnt+$dpcnt+$n+$m+$v=0
  !if $is_interclass!=yes
@@ -206,105 +155,6 @@ $U_greet
  !href module=adm/class/userlist $wims_name_myscore
 </div>
  !endif
- !if $dcnt>0
-  <table class="wims_user_doc_table">
-  !for i=1 to $dcnt
-   !set s_=!line $i of $ds_list
-   !set t_=!line $i of $dt_list
-   <tr class="wims_user_doc"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-   !href module=adm/doc&job=read&doc=$s_&block=main $t_
-   </td></tr>
-  !next i
-  </table>
-  
- !endif
- !if $dpcnt>0
-  <table class="wims_user_docp_table">
-  !for i=1 to $dpcnt
-   !set s_=!line $i of $dps_list
-   !set t_=!line $i of $dpt_list
-   <tr class="wims_user_docp"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-    !href module=$s_&$t_ $(dpti_list[$i;])
-   </td></tr>
-  !next i
-  </table>
- !endif
- !if $n >0
-  <table class="wims_user_sheet_table">
-  !for i=1 to $n
-   !set se=!item $i of $aclist
-   !distribute lines $(s_$se) into ac,t_,ti,de
-   <tr class="wims_user_sheet"><td class="wims_user_sheet_type">$wims_name_Sheet $se. <td class="wims_user_sheet_desc">
-  !href module=adm/sheet&sh=$se $ti
-  </td><td class="wims_user_sheet_expire">
-   !if $ac>=2
-    $U_expired
-   !else
-    !if showshexpire iswordof $class_option
-     !read misc/expire.phtml.$lang $t_
-    !endif
-   !endif
-   </td>
-   !set pe=!line $se of $percents
-   !set p1=!word 1 of $pe
-   !set p2=!word 2 of $pe
-   <td class="wims_user_sheet_score">
-   !if $p1!=$empty
-    $p1% $U_done, $U_average $[$p2]/10
-   !else
-    &nbsp;
-   !endif
-   </td><td>
-   !if showshweight iswordof $class_option
-    ($wims_name_coeff
-     !line $i of $wlist
-    )
-   !endif
-   </td>
-   </tr>
-  !next i
-  </table>
- !endif
- !if $m>0
- <table class="wims_user_exam_table">
- !for i=1 to $m
-  !set se=!item $i of $aelist
-  !distribute lines $(e_$se) into ac,t_,s_,ti,de
-  <tr class="wims_user_exam"><td class="wims_user_exam_type">$wims_name_Examen $se. </td>
-  <td class="wims_user_exam_desc">
-  !href module=adm/class/exam&job=student&exam=$se $ti
-  </td><td class="wims_user_exam_expire">
-  !if $ac>=2
-   $U_expired
-  !else
-   !if showexexpire iswordof $class_option
-    !read misc/expire.phtml.$lang $t_
-   !else
-    &nbsp;
-   !endif
-  !endif
-  </td></tr>
- !next i
- </table>
- 
- !endif
- !if $v>0
- <table class="wims_user_vote_table">
- !for i=1 to $v
-  !set sv=!item $i of $avlist
-  !distribute lines $(v_$sv) into ac,ti
-  <tr class="wims_user_vote"><td class="wims_user_vote_type">$wims_name_Vote $i</td><td class="wims_user_vote_desc">
-  !href module=adm/vote&job=read&vote=$sv $ti
-  </td><td class="wims_user_vote_expire">
-  !if $ac>=2
-   $U_expired
-  !else
-   &nbsp;
-  !endif
-  </td>
- !next i
- </table>
-!endif
 !endif
 
 :endbar
@@ -333,7 +183,7 @@ $U_greet
 &nbsp;&nbsp;<br/>
 !href module=adm/class/passwd $wims_name_passwd
 &nbsp;&nbsp;</td></tr></table>
-<p align="right"><small>WIMS-$wims_version@$httpd_HTTP_HOST</small>
+<p align="right"><span class="small">WIMS-$wims_version@$httpd_HTTP_HOST</span>
 :end
 !if $wims_user=supervisor
  <div class="wimscenter">

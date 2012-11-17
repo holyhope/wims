@@ -55,11 +55,11 @@
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
   $wims_institutionname
 !else
-<span class="wims_classes_direct_portal">
- !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
-</span>
- !if / isin $class_parent and $class_type=1
-  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+  <span class="wims_classes_direct_portal">
+   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
+  </span>
+  !if / isin $class_parent and $class_type=1
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
   / 
  <span class="wims_classes_direct_class">
   !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user_ext $pname
@@ -137,12 +137,11 @@ $U_greet
 !read themes/_widgets/uservote.phtml
 
 
-!!!ifval $dcnt+$dpcnt+$n+$m+$v=0
-!! !if $is_interclass!=yes
-!!   $U_nosheet
-!! !endif
-!!!else
-!!!endif
+!ifval $dcnt+$dpcnt+$n+$m+$v=0
+ !if $is_interclass!=yes
+   $U_nosheet
+ !endif
+!endif
 
 :endbar
 </div><!--wimsbody-->
@@ -160,17 +159,7 @@ $U_greet
  <div class="itemsep"></div>
 !endif
 
-!set class_ent1=!rows2lines $class_ent
-!set class_ent_n0=!linecnt $class_ent1
-!if $class_ent_n0>0
- <div class="itemsep"></div><!--tailsep-->
- !for i_=1 to $class_ent_n0
-  !set 1_=!line $i_ of $class_ent1
-   <div class="menuitem">
-   !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
-   </div><!--end menuitem-->
- !next i_
-!endif
+!read themes/_widgets/extlink.phtml
 
 !if $wims_user=supervisor
  <div class="itemsep"></div><!--tailsep-->

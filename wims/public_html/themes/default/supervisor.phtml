@@ -37,22 +37,22 @@
  !else
   !goto nocheck
  !endif
-!endif
+!endif class_type = 3
+
 !if $class_type notin 13
-$SU_greet
-<small>$SU_exp1
-!set d_=!char 7,8 of $class_expiration
-!set m_=!char 5,6 of $class_expiration
-!set y_=!char 1 to 4 of $class_expiration
-!read adm/date.phtml date,$y_,$m_,$d_
-!href module=adm/class/config $c_date_out
-$SU_exp2.
+ $SU_greet
+ $SU_exp1
+ !set d_=!char 7,8 of $class_expiration
+ !set m_=!char 5,6 of $class_expiration
+ !set y_=!char 1 to 4 of $class_expiration
+ !read adm/date.phtml date,$y_,$m_,$d_
+ !href module=adm/class/config $c_date_out
+ $SU_exp2.
 !else
  $SU_greet.
- <small>
 !endif
-!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet [$wims_name_help]
-</small>
+!set wims_ref_class=wims_button_help
+!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_help
 <br/>
 !if $wims_numpartconnected>0
  $SU_numpartconnected.
@@ -65,10 +65,12 @@ $SU_exp2.
   <p>
   $wims_name_exceeded
   </p>
+  <p>
   !href cmd=close&module=home&lang=$lang $wims_name_visitor
+  </p>
   !goto end
  !else
-  <br/><b>$wims_name_warning</b>! $wims_name_reaching_limit
+  <br/><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
  !endif
 !endif
 :nocheck
@@ -83,7 +85,7 @@ $SU_exp2.
  !href module=adm/class/gateway $wims_name_SU_Gateway
  </div>
  !goto end
-!endif
+!endif end $class_type=4
 
 !if $class_type=2
  !if $subclasscnt>0
@@ -94,11 +96,11 @@ $SU_exp2.
    !let f_aff=!item 4 of $f_class
    !let f_name=!item 1 of $f_class
    $table_tr
-    <td align="center">$ADD_class $i</td>
+    <td>$ADD_class $i</td>
     <td>
     !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
     </td>
-    <td align="center">
+    <td>
      !item 9 of $f_class
     </td>
    </tr>
@@ -109,100 +111,35 @@ $SU_exp2.
  !href module=adm/class/regclass $ADD_3 $ADD_class
  </div>
  !goto end
-!endif
-
+!endif class_type=2
+!! classtype != 2,3, 4
 <div id="wims_class_manager_msg">
-!read ./wimshome/log/manager_msg.phtml.$lang
+ !read ./wimshome/log/manager_msg.phtml.$lang
 </div>
 
 !set test=!replace / by , in $wims_class
 !if $(test[-1])=0 
   !set test_up=!replace internal /0- by in $wims_class- 
+  !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
 !endif
 
-!set ac_0=<small>$(wims_name_shstatus[1])</small>
-!set ac_1=$(wims_name_shstatus[2])
-!set ac_2=$(wims_name_shstatus[3])
-!set ac_3=$(wims_name_shstatus[4])
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
  $table_header
- <caption>$SU_shlist &nbsp;
- [
+ <caption>$SU_shlist &nbsp; [
  !href module=adm/class/sequence $wims_name_reorder
- ]
- </caption>
- $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th></tr>
- !for i=1 to $subclasscnt
-  !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
-  !let f_aff=!item 4 of $f_class
-  !let f_name=!item 1 of $f_class
-  $table_tr
-   <td align="center">$ADD_class $i</td>
-   <td>
-   !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
-   </td>
-   <td align="center">-</td>
-  </tr>
- !next i
- !for i=1 to $doccnt
-  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
-  !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
-  $table_tr<td align="center">$wims_name_doc</td>
-  <td>
-  !href module=adm/doc&job=read&doc=$s_&block=main $t_
-  </td>
-  <td align="center"><small>
-  !item $[$o_ +1] of $wims_name_Docstatus
-  </small></td>
-  </tr>
- !next i
- !for i=1 to $docpubliccnt
-    !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
-    !distribute lines $sh into s_,t_,ti,d_,o_
-    $table_tr<td align="center">$wims_name_doc</td>
-   <td>
-   !href module=$s_&$t_ $ti
-   </td>
-   <td align="center"><small>
-   !item $[$o_ +1] of $wims_name_status
-   [
-   !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
-   ]
-  </small></td>
-</tr>
- !next i
- !for i=1 to $sheetcnt
-  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
-  !distribute lines $sh into ac,t_,ti
-  $table_tr<td align="center">$wims_name_Sheet $i</td>
-  <td>
-  !href module=adm/class/sheet&sheet=$i $ti
-  </td>
-  <td align="center">$(ac_$[$ac])</td>
- !next i 
- !for i=1 to $examcnt
-  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
-  !distribute lines $sh into ac,t_,d_,ti
-  $table_tr<td align="center">$wims_name_Examen $i</td>
-  <td>
-  !href module=adm/class/exam&exam=$i $ti
-  </td>
-  <td align="center">$(ac_$[$ac])</td>
- !next i 
- !for i=1 to $votecnt
-  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
-  !distribute lines $sh into st_,ti_,op_,re_
-  $table_tr<td align="center">$wims_name_Vote</td>
-  <td>
-  !href module=adm/vote&job=read&vote=$i $ti_
-  </td>
-  <td align="center">$(ac_$[$st_])</td>
-</tr>
- !next i 
+ ] </caption>
+ $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !read themes/_widgets/supervisorsubclass.phtml
+ !read themes/_widgets/supervisordoc.phtml
+ !read themes/_widgets/supervisordocp.phtml
+ !read themes/_widgets/supervisorsheet.phtml
+ !read themes/_widgets/supervisorexam.phtml
+ !read themes/_widgets/supervisorvote.phtml
  $table_end
 !endif
 $ADD_1

@@ -9,76 +9,42 @@
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
 </div>
 <div class="wimsmenu">
-<center>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+
+<table class="wimscenter">
 <tr>
 <td align="left" valign="middle" width="15%">
   <table align="left" border="0" cellspacing="0" cellpadding="0">
-  <tr><td align="center" valign="bottom">
+  <tr><td valign="bottom">
   !href module=home&special_parm=logo <img src="gifs/logo.gif" alt="WIMS logo"/>
   </td></tr></table></td>
-<td align="center" valign="bottom" wrap="nowrap">
-  <br/><font size="+2"><b>$V_title</b></font>
-  <br/><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
-<br/> <br/>
+  <td valign="bottom" wrap="nowrap">
+  !read themes/_widgets/site_title.phtml
+  </td></tr></table>
 !set wims_headmenu_colcnt=5
 $table_header
-$table_tr<td align="center">
+$table_tr<td>
 !href module=adm/new $wims_name_mod_new
-</td><td align="center">
+</td><td>
 !href module=adm/forum/forum $wims_name_forum
-</td><td align="center">
+</td><td>
 !href module=adm/light&phtml=mirror.phtml.$lang $wims_name_mirror
-</td><td align="center">
+</td><td>
 !href module=adm/light&phtml=useropts.phtml.$lang $wims_name_pref
-</td><td align="center">
+</td><td>
 !href module=help/main $wims_name_help
 </td></tr>
-$table_tr<td align="center" colspan="$wims_headmenu_colcnt">
-!for i=1 to $wims_language_cnt
- !set l=!word $i of $wims_site_languages
- !if $l!=$lang
-  !if $wims_language_cnt>2 and $wims_language_cnt<6
-   !set l_=<small>$(lang_name_$l)</small>
-  !else
-   !if $wims_language_cnt<6
-    !set l_=$(lang_name_$l)
-   !else
-    !reset l_
-   !endif
-  !endif
-  !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height="16"/>$l_
-   <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
- !endif
-!next i
+$table_tr<td colspan="$wims_headmenu_colcnt">
+!read themes/$wims_theme/_widgets/language_selector.phtml
 </td></tr>
   $table_end
-</td>
-</tr>
+
 !if $gotcnt<=0 and $s_keywords=$empty
-  <tr><td>&nbsp;</td><td align="center">
-  $table_header
- $table_tr<td align="center">$V_cls</td>
- <td align="center">
- !href module=adm/class/classes&type=participant $wims_name_n_participant
- </td><td align="center">
- !href module=adm/class/classes&type=supervisor $wims_name_n_supervisor
- </td><td align="center">
- !href module=adm/class/classes&type=example $wims_name_n_example
- </td><td align="center">
- !href module=help/main&chapter=3 $wims_name_help
-   </td></tr>$table_end
-  </td></tr>
+  !read themes/$wims_theme/_widgets/virtualzone.phtml
 !endif
-</table></center>
 
 </div><div class="wimsbody">
 
-!if $wims_ismanager!=0
-<div class="wimscenter">
- !href module=adm/manage $N_manage
-</div>
-!endif
+!read themes/_widgets/manager.phtml
 
 !read ./form.phtml
 !if $s_category=V
@@ -90,51 +56,19 @@ $table_tr<td align="center" colspan="$wims_headmenu_colcnt">
 
 </div><div class="wimstail"><hr/>
 
-!set wims_show_stat=!tolower $wims_show_stat
-!if yes isin $wims_show_stat
- !set span=4
-!else
- !set span=2
-!endif
-
 $table_header
-$table_tr<td align="center" wrap="nowrap" colspan="$span">
-<small>$CR_1
-!href module=adm/createxo $CR_OEF
- $wims_name_or
-!href module=adm/modtool $CR_mod
-</small>
-</td></tr>
+$table_tr
+!read themes/$wims_theme/_widgets/devtools.phtml
+</tr>
 !if $gotcnt<=0 and $s_keywords=$empty
- $table_tr<td align="center" wrap="nowrap"><small>
-!if $lang=cn
- !href module=help/wimsdoc.cn $wims_name_doctec
-!else
- !href module=help/wimsdoc.en $wims_name_doctec
-!endif
- </small>
- </td><td align="center" wrap="nowrap">
- <small> 
- !href module=adm/light&phtml=download.phtml.$lang $wims_name_download
- </small>
- !if yes isin $wims_show_stat
-  <td align="center" wrap="nowrap"><small>
-  !href module=adm/stat/referer $wims_name_ref
-  </small>
-  <td align="center" wrap="nowrap"><small>
-  !href module=adm/stat/stat $wims_name_stat
-  </small>
- !endif
-</td></tr>
+ $table_tr
+ !read themes/$wims_theme/_widgets/documentation.phtml
+ !read themes/$wims_theme/_widgets/site.phtml
+ </tr>
 !endif
 $table_end
-<font size="-1">
-WIMS-$wims_version $E_comp $wims_version_date.
-$E_manager
-!mailurl $wims_site_manager\
-WIMS: $httpd_HTTP_HOST
-.
-</font>
+!read themes/_widgets/visitorcredits.phtml
+
 !robottrap
 </div></body></html>
 
