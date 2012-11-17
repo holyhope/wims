@@ -163,13 +163,9 @@ $U_greet
 !href module=adm/class/classes&type=participant $wims_name_U_oclass
 <br/>
 !href cmd=close&module=home $wims_name_visitor
-!set class_ent1=!rows2lines $class_ent
-!set class_ent_n0=!linecnt $class_ent1
-!for i_=1 to $class_ent_n0
-  !set 1_=!line $i_ of $class_ent1
-     <a href="$(1_[2])" target="wims_external">$(1_[1])</a>
-   <br/>
-!next i_
+
+!read themes/_widgets/extlink.phtml
+
 </td><td align="center" width="33%">
 !if $exist_cdt=yes
   !href module=adm/class/cdt $wims_name_cdt
