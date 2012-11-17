@@ -171,12 +171,14 @@ $wims_classname, $wims_institutionname\
   !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
 !endif
+!!should be deleted
+!!set ac_0=<span class="small">$(wims_name_shstatus[1])</span>
+!!set ac_1=$(wims_name_shstatus[2])
+!!set ac_2=$(wims_name_shstatus[3])
+!!set ac_3=$(wims_name_shstatus[4])
 
-!set ac_0=<span class="small">$(wims_name_shstatus[1])</span>
-!set ac_1=$(wims_name_shstatus[2])
-!set ac_2=$(wims_name_shstatus[3])
-!set ac_3=$(wims_name_shstatus[4])
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
@@ -259,19 +261,7 @@ $wims_classname, $wims_institutionname\
 
 </div><!--wimsbodybox-->
 
-<div id="wimstailbox">
-	<div class="wimstail">
-		<div class="tailitem">
-		WIMS-$wims_version@$httpd_HTTP_HOST. 
-		</div><!--tailitem-->
-		<div class="tailitem">
-		$E_manager
-		!mailurl $wims_site_manager\
-		WIMS
-		.</div><!--tailitem-->
-	</div><!--wimstail-->
-</div><!--end wimstailbox unique-->
-
+!read themes/_widgets/visitorcredits.phtml
 </body>
 </html>
 <!-- end of $wims_theme/supervisor.phtml -->
