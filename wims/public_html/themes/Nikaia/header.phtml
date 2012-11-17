@@ -32,17 +32,6 @@
 
 <br class="spacer"/>
 
-
-<!--
-<div class="wimsmenu">
-!for i_=1 to $wims_hm_cnt
- <span class="topmenuitem">
- !set 1_=!line $i_ of $wims_hm
- !read oneitem.phtml $1_
- </span> 
- !next i_
- -->
-
 <ul class="wimsmenu menuglobal">
 !for i_=1 to $wims_hm_cnt
  <li class="topmenuitem">
@@ -51,45 +40,13 @@
  </li> 
  !next i_
  
-
-!! -----------------------Insert "Permalien" --------------------------------
-!! Permalien / lecteur exportable : ces lignes permettent d'integrer facilement la page courante a un autre site :
-
-!set current_module=!replace / by , in $module
-
-!set module_path= !item 1 of $current_module	
-!if $module_path notitemof home,adm,classes and _exam notin $session and $wims_lightpopup!=yes and ($wims_user=supervisor or $wims_user=$empty) and ($cmd=intro or $cmd=$empty)
-	!set permalien=$wims_ref_name?module=$module
-
-<li class="topmenuitem" id="header_export">
-<div id="lien_export_media" style="display:block">
-	<a href="#" class="about" onclick="document.getElementById('export_media').style.display = 'block';document.getElementById('lien_export_media').style.display = 'none';">$wims_name_display1</a>
-</div><!--lien_export_media-->
-<div id="export_media" style="display:none" align="left">
-<div align="center"> -- <strong>$wims_name_display1</strong> 
--- &nbsp; <a href="#" onclick="document.getElementById('export_media').style.display = 'none';document.getElementById('lien_export_media').style.display = 'block';">
-($wims_name_mask_this)</a></div><!--wimstail-->
-	<hr/>
-	<label for="wims_permalink">$wims_name_permalink1</label><br/> 
-	 <small>($wims_name_display2)</small> :
-	<input id="wims_permalink" name="wims_permalink" value="$permalien" size="70"/>
-	<hr/>
-	<label for="wims_embed_textarea">$wims_name_embeddable<br/>
-	<small> ($wims_name_display3) :
-	</small>
-	<textarea style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" name="wims_embed_textarea" >&lt;iframe src="$permalien&+embededwindow=true" title="WIMS embeddable" frameborder="0" class="wims_embed" style="width:100%;height:100%;min-height:800px;" allowfullscreen>&lt;/iframe></textarea>
-</div><!--export_media-->
-</li><!--topmenuitem-->
-
-!endif
-!!------------------------------------Fin de l'insert "Permalien" --------------------------
+!read themes/$wims_theme/widgets/permalink.phtml
 
 !!FIXME PHP ?
 !if $class_cas_auth=$empty
   !set m_init_parm=!replace internal & by $ $ in $module_init_parm
   !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
-
 !if $class_cas_auth!=$empty
 !!## it is better that the cas logout appears too much ... 
 !!## can be useless in the case of a supervisor so the next line is commented
@@ -101,7 +58,6 @@
 </ul><!--wimsmenu-->
 
 !endif
-
 
 
 !endif

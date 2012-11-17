@@ -14,108 +14,14 @@
  !exit
 !endif
 
+!read themes/_widgets/menumodubox.phtml
 
-!if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
-<div id="wimsmenumodubox">
- !if $wims_homeref_n0>0
-  <div class="wimsmenu">
-  !for i_=1 to $wims_homeref_n0
-   !set 1_=!line $i_ of $wims_rm_0
-   !if $(1_[1])=
-    <div class="itemsep"></div>
-   !else
-    <div class="menuitem">
-     !read oneitem.phtml $1_
-    </div>
-   !endif
-  !next i_
-  </div><!--wimsmenu-->
- !endif wims_homeref_n0
-!if $wims_homeref_n5>0
-<div class="wimsmenu">
-!for i_=1 to $wims_homeref_n5
- <span class="menuitem">
- !set 1_=!line $i_ of $wims_rm_5
- !read oneitem.phtml $1_
- </span><!-- menuitem-->
-!next i_
-</div><!--wimsmenu-->
-!endif wims_homeref_n5
-!if $wims_homeref_n4>0
-<div class="wimstail">
-!for i_=1 to $wims_homeref_n4
- <div class="tailitem">
- !set 1_=!line $i_ of $wims_rm_4
- !read oneitem.phtml $1_
- </div><!--tailitem-->
-!next i_
-</div><!--wimstail-->
-!endif wims_homeref_n4
-
-!if $wims_homeref_local_n0>0
- <div class="wimsmenu">
- !for i_=1 to $wims_homeref_local_n0
-  !set 1_=!line $i_ of $wims_local_menu_items
-  !if $(1_[1])=
-   <div class="itemsep"></div>
-  !else
-   <div class="menuitem">
-     !read oneitem.phtml $1_
-   </div>
-  !endif
- !next i_
-</div><!--wimsmenu-->
-!endif wims_homeref_local_n0
-</div>
-<!--wimsmenumodubox-->
-
-!endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
-!if $wims_homeref_n3>0
-  <div id="wimsmenutab">
-  <div class="wimsmenu"> 
-  !for i_=1 to $wims_homeref_n3
-    !set 1_=!line $i_ of $wims_rm_3
-    !if $(1_[1])=
-      <div class="itemsep"></div>
-    !else
-     <div class="menuitem">
-     !read oneitem.phtml $1_
-     </div>
-    !endif
-  !next i_
-  </div><!--wimsmenu-->
-  </div><!--wimsmenutab-->
-!endif
-
-!if $wims_homeref_n1>0
-<div id="wimsmenubox" class="footer">
- <div class="wimsmenu">
-  !for i_=1 to $wims_homeref_n1
-   !set 1_=!line $i_ of $wims_rm_1
-   !set css_class=!item 1 of $1_
-   <span class="menuitem $css_class">
-    !read oneitem.phtml $1_
-   </span>
-  !next i_
- </div><!--wimsmenu-->
-</div><!--wimsmenubox-->
-!endif
+!read themes/_widgets/menubox.phtml
 
 <div class="spacer"></div>
 </div><!--wimsbodybox-->
 
-!if $wims_homeref_n2>0
-  <div id="wimstailbox">
-   <div class="wimstail">
-    !for i_=1 to $wims_homeref_n2
-     <div class="tailitem">
-      !set 1_=!line $i_ of $wims_rm_2
-      !read oneitem.phtml $1_
-     </div><!--tailitem-->
-    !next i_
-   </div><!--wimstail-->
-  </div><!--wimstailbox-->
- !endif
+!read themes/_widgets/about.phtml
 
 !endif
 

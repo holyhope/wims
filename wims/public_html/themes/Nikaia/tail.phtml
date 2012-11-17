@@ -29,39 +29,14 @@
 
 <!-- MENU BAS DE PAGE -->
 
-!if $wims_homeref_n1>0
-<div id="wimsmenubox" class="footer">
- <ul class="wimsmenu">
-  !for i_=1 to $wims_homeref_n1
-   !set 1_=!line $i_ of $wims_rm_1
-   !set css_class=!item 1 of $1_
-   <li class="menuitem $css_class">
-    !read oneitem.phtml $1_
-   </li><!-- menuitem-->
-  !next i_
- </ul><!--wimsmenu--></div><!--wimsmenubox-->
-!endif
-
-
-</div>
+!read themes/_widgets/menubox.phtml
 
 <!-- FIN WIMSBODYBOX-->
 
 
 
  <!--BAS DE PAGE-->
- !if $wims_homeref_n2>0
-  <div id="wimstailbox">
-   <div class="wimstail">
-    !for i_=1 to $wims_homeref_n2
-     <div class="tailitem">
-      !set 1_=!line $i_ of $wims_rm_2
-      !read oneitem.phtml $1_
-     </div><!--tailitem-->
-    !next i_
-   </div><!--wimstail-->
-  </div><!--wimstailbox-->
- !endif
+!read themes/_widgets/about.phtml
 
 !endif
 
