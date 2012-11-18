@@ -1,0 +1,58 @@
+ <!-- _widgets/docsidemenu.phtml -->
+ !if $job=read
+  <div class="wimsdocleftmenu"> 
+  !if $blocklast!=$empty
+  <div class="menuitem">
+   !read $oneitem backhist,6,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 
+  </div>
+  !endif
+  !if $blocknext!=$empty
+  <div class="menuitem">
+  !read $oneitem nexthist,6,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
+  </div>
+  !endif
+  !if $block!=main and $job=read
+  <div class="menuitem">
+   !read $oneitem doch_up,6,cmd=reply&doc=$doc&block=$upbl
+ </div>
+  !endif
+  !if $prev!=$empty and $prev!=$upbl and $job=read
+  <div class="menuitem">
+  !read $oneitem doch_prev,6,cmd=reply&doc=$doc&block=$prev
+  </div><!-- menuitem-->
+  !endif
+  !if $next!=$empty and $next!=$upbl and $job=read
+   <div class="menuitem">
+  !read $oneitem doch_next,6,cmd=reply&doc=$doc&block=$next
+  </div><!-- menuitem-->
+  !endif
+ </div><!-- wimsdocleftmenu-->
+ <div class="wimsdocrightmenu">
+ !if $block!=main and $job=read
+  !if $blocklast!=$empty
+   <div class="menuitem">
+    !read $oneitem backhist,6,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 
+   </div>
+  !endif
+  !if $blocknext!=$empty
+   <div class="menuitem">
+    !read $oneitem nexthist,6,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
+   </div>
+  !endif
+  <div class="menuitem">
+   !read $oneitem doch_up,6,cmd=reply&doc=$doc&block=$upbl
+   </div>
+ !endif
+ !if $prev!=$empty and $prev!=$upbl
+   <div class="menuitem">
+    !read $oneitem doch_prev,6,cmd=reply&doc=$doc&block=$prev
+   </div><!-- menuitem-->
+ !endif
+ !if $next!=$empty and $next!=$upbl
+   <div class="menuitem">
+  !read $oneitem doch_next,6,cmd=reply&doc=$doc&block=$next
+   </div><!-- menuitem-->
+ !endif
+  </div><!-- wimsdocrightmenu-->
+!endif
+<!-- end _widgets/docsidemenu.phtml -->

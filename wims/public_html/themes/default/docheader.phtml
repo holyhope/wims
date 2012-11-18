@@ -1,81 +1,34 @@
 !! document menu
 !nocache
 !set wims_theme_docheader=yes
-<!--begin of docheader.phtml-->
-<table width="100%" border=0 cellspacing=0 cellpadding=3 bgcolor="$wims_ref_bgcolor">
-<tr><td align=left><small>&nbsp;
-!if help notin $wims_session
- !if $wims_class=$empty
-  !href module=home $wims_name_doch_wims
- !else
-  !if _doc isin $wims_session
-   <a href="#" onclick="window.close()">$wims_name_doch_class</a>
-  !else 
-   !href module=home $wims_name_doch_class
-  !endif
- !endif
-&nbsp;
- !if ..//adm/doc isin ..//$module and \
-    ($wims_class=$empty or $wims_user=supervisor)
-  !href module=$module&cmd=reply&job=home $wims_name_doch_docs
- !endif
-!endif
-!default upbl=main
-!if $block!=main and $job=read
- &nbsp;
- !href cmd=reply&doc=$doc&block=$upbl $wims_name_doch_up
- !! <img src="gifs/arrows/up2.32.gif" alt=up/>
- !if $prev!=$empty and $prev!=$upbl
-  &nbsp;
-  !href cmd=reply&doc=$doc&block=$prev $wims_name_doch_prev
- !endif
- !if $next!=$empty and $next!=$upbl
-  &nbsp;
-  !href cmd=reply&doc=$doc&block=$next $wims_name_doch_next
- !endif
-!endif
-!if $job=read
- !if $blocklast$blocknext!=$empty
-  &nbsp;[
-  !if $blocklast!=$empty
-   !href cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 &lt;&lt;
-  !endif
-   &nbsp;$wims_name_doch_hist
-  !if $blocknext!=$empty
-   &nbsp;
-   !href cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1 &gt;&gt;
-  !endif
-  ]
- !endif
-!! &nbsp;
-!! !href cmd=reply&job=read $wims_name_doch_reload
-!endif
-</small></td><td align=right><small>
-!if $printable=yes
- !href cmd=reply&job=read&doc=$doc&block=$startblock $wims_name_doch_interactive
+!if $wims_class=$empty or adm/doc notin $module
+  !set oneitem=oneitem.phtml
 !else
- !if $job=read
-  !href cmd=reply&job=print&doc=$doc $wims_name_doch_printable
-&nbsp;
- !endif
- !if $job=exosource
-  !href cmd=reply&job=read $wims_name_doch_back
-&nbsp;
- !endif
- !if $doc!=$helpd and $editable=yes
-  !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $wims_name_doch_help
-&nbsp;
- !endif
- !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
-&nbsp;
+  !set oneitem=./adm/oneitem.phtml
 !endif
-</small></td></tr></table>
-<!--end of docheader.phtml-->
+<!-- begin of docheader.phtml -->
 
-!if $wims_user!=supervisor and $wims_class!=$empty and $wims_alertmsg!=$empty
- <div class="wims_alertmsg">$wims_alertmsg
- !if adm isin $module or $module=home
-  !href module=adm/class/motd&job=readen $wims_name_readen
- !endif
- </div>
+!if $job iswordof read print
+ <div id="wimsdoc">
 !endif
+
+!if $wims_lightpopup=yes 
+  !goto end1
+!endif
+<div id="wimstopbox"> 
+ !read themes/_widgets/docheadermenu.phtml
+ !read themes/_widgets/docnavigation.phtml
+</div><!--end of wimstopbox  -->
+:end1
+!if $wims_lightpopup=yes
+  <div id="wimslightpopup">
+   <div id="wimsbodybox">
+    <div id="wimspagebox">
+  !exit
+!endif
+ <div id="wimsbodybox">
+  <div id="wimspagebox">
+
+!read themes/_widgets/alertchat.phtml
+
+<!-- end of docheader.phtml -->

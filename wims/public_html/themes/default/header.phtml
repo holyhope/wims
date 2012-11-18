@@ -30,12 +30,12 @@
 -- &nbsp; <a href="#" onclick="document.getElementById('export_media').style.display = 'none';document.getElementById('lien_export_media').style.display = 'block';">
 ($wims_name_mask_this)</a></div><hr/>
      <strong>$wims_name_permalink1</strong> 
-	 <small>($wims_name_display2)</small> :
+	 <span class="small">($wims_name_display2)</span> :
 	 <a href="$permalien">$permalien</a>
 	<hr/>
 	<b>$wims_name_embeddable</b>
-	<small> ($wims_name_display3) :
-	</small>
+	<span class="small"> ($wims_name_display3) :
+	</span>
 	<textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" >&lt;iframe src="$permalien&+embededwindow=true" width="100%" height="100%">&lt;/iframe></textarea>
 </div> <!--end of wimscenter-->
 </div> <!--end of export_media-->
@@ -49,10 +49,6 @@
 </div> <!--end of wimsmenu-->
 !endif
 
-!if $wims_user!=supervisor and $wims_class!=$empty and $wims_alertmsg!=$empty
- <div class="wims_alertmsg">$wims_alertmsg
- !if adm isin $module or $module=home
-  !href module=adm/class/motd&job=readen $wims_name_readen
- !endif
- </div>
-!endif
+!read themes/_widgets/alertchat.phtml
+
+<!-- end of $wims_theme/header.phtml -->
