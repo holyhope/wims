@@ -167,8 +167,8 @@ int main (int argc, char ** argv)
 	struct timezone tz;
 	struct tm *tm;
 	gettimeofday(&tv, &tz);
-	tm=localtime(&tv.tv_sec);
-	snprintf(wims_mathml_id,sizeof(wims_mathml_id),"wims_mathml%d",tv.tv_usec);
+	tm=localtime(( const time_t * ) &tv.tv_sec);
+	snprintf(wims_mathml_id,sizeof(wims_mathml_id),"wims_mathml%ld",tv.tv_usec);
 
 	if(bTexString){ // WIMS modification: reads a 'latex string' from commandline, if arg="--tex-string"
 	    char *input;

@@ -752,21 +752,18 @@ bigint:  BIGGGINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"600%\" minsize=\"400%\">&Integral;</mo></mtd></mtr></mtable>");
 }
-
-bigint:  BIGGINT {
+| BIGGINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"400%\" minsize=\"30%\">&Integral;</mo></mtd></mtr></mtable>");
 }
- 
-bigint: BIGINT {
+| BIGINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"300%\" minsize=\"200%\">&Integral;</mo></mtd></mtr></mtable>");
 } 
-
-bigint: LARGERINT {
+| LARGERINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"260%\" minsize=\"160%\">&Integral;</mo></mtd></mtr></mtable>");
-} 
+}; 
 
 bigdelim: BIG LEFTDELIM {
   wims_mathml_rowposn = 2;
@@ -1423,7 +1420,7 @@ mfrac: DFRAC closedTerm closedTerm {
 pmod: PMOD closedTerm {
   $$ = wims_mathml_copy3( "<mo lspace=\"mediummathspace\">(</mo><mo rspace=\"thinmathspace\">mod</mo>", $2, "<mo rspace=\"mediummathspace\">)</mo>");
   wims_mathml_free_string($2);
-}
+};
 
 texover: MROWOPEN compoundTermList BINOM2 compoundTermList MROWCLOSE {
   char * s1 = wims_mathml_copy3("<mrow><mo>(</mo><mfrac linethickness=\"0\">", $2, $4);
@@ -1432,7 +1429,7 @@ texover: MROWOPEN compoundTermList BINOM2 compoundTermList MROWCLOSE {
   wims_mathml_free_string($2);
   wims_mathml_free_string($4);
 }
-texover: MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
+| MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
   char * s1 = wims_mathml_copy3("<mfrac><mrow>", $2, "</mrow><mrow>");
   $$ = wims_mathml_copy3(s1, $4, "</mrow></mfrac>");
   wims_mathml_free_string(s1);
