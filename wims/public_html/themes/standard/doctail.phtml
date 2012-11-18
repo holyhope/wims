@@ -9,147 +9,39 @@
 </div><!--end of wimsbody-->
 </div><!--end of wimspagebox-->
 !if $wims_lightpopup=yes
-   <div id="wimstailbox">
-   <div class="wimstail">
-   <div class="tailitem">
-   </div><!--tailitem-->
- <div class="tailitem">
-  $wims_name_devwims
- </div><!--tailitem-->
- <div class="tailitem">
-  $wims_name_Author: $module_author
- </div><!--tailitem-->
-</div><!--wimstail-->
-</div><!--wimstailbox-->
-
- <div class="spacer"></div>
-
-</div> <!-- end of wimsbodybox-->
-</div> <!-- end of wimslightpopup-->
+   !read themes/_widgets/lightpopup.phtml
+   <div class="clearall spacer"></div>
+   </div> <!-- end of wimsbodybox-->
+ </div> <!-- end of wimslightpopup-->
 </div> <!-- end of wimsdoc-->
   !exit
 !endif
 
-<div id="wimsmenubox">
-<div class="wimsmenu">
 !if $job=read
-!if ($wims_class!=$empty and $wims_user!=supervisor)
-</div><!--end of wimsmenu-->
-</div><!--end of wimsmenubox-->
+ !if ($wims_class!=$empty and $wims_user!=supervisor)
 
-  <div class="spacer"></div>
+  <div class="clearall spacer"></div>
 
 </div><!-- end ofwimsbodybox-->
 </div><!--end of wimsdoc-->
  !exit
-!endif
-!endif
-
-!if help isin $wims_session
- <div class="menuitem">
- !href cmd=reply&job=source $n_source0 
- </div>
- !goto end
-!endif
-!if $wims_rm_0!=$empty
-<div id="wimsmenumodubox">
-<div class="wimsmenu">
- !for i_=1 to $wims_homeref_n0
-  !set 1_=!line $i_ of $wims_rm_0
-  !if $(1_[1])=
-   <div class="itemsep"></div>
-  !else
-   <div class="menuitem">
-     !read oneitem.phtml $1_
-   </div>
-  !endif
- !next i_
-</div><!--wimsmenu-->
-</div><!--wimsmenumodubox-->
-!endif
-
-!if $editable=yes
-<div class="menuitem">
- !read $oneitem properties,1,cmd=reply&job=prop
- !!href cmd=reply&job=prop $n_properties
-</div>
-<div class="menuitem">
-!read $oneitem doch_upload,1,cmd=reply&job=file
-!!!href cmd=reply&job=file $wims_name_doch_upload
-</div>
-!endif
- !!!href cmd=reply&job=source $n_source0
-!if $wims_developer!=$empty and COPYING isin $module_copyright
- !set V_=!char 1 of $module
- !set M_=!translate internal / to , in $module
- !set M_=!item 1 of $M_
- !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
-  <div class="menuitem">
-  !read $oneitem modify,1,module=adm/modtool&original=$module
-  !!!href module=adm/modtool&original=$module $wims_name_modify
-  </div>
  !endif
 !endif
-!if ($wims_user=supervisor or $wims_developer!=$empty) and $sheetdata!=$empty and $job!=exosource
-<div class="menuitem">
- !read oneitem.phtml shsource,1,cmd=reply&job=exosource
-</div>
-!endif
-!if $wims_user=supervisor and _adm/doc notin _$module and $job!=exosource
-<div class="menuitem">
- !read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
-</div>
+
+!if help notin $wims_session
+ !!!read themes/_widgets/menumodubox.phtml
+ !read themes/_widgets/docmenumodubox.phtml
 !endif
 
-!goto end
-!endif job=read
-
-!if $job=exosource
-<div class="menuitem">
-!read $oneitem doch_back,1,cmd=reply&job=read
-</div>
-!goto end
-!endif job=exosource
-
-!if $job=print
-<div class="menuitem">
-!read $oneitem doch_interactive,1,cmd=reply&job=read&doc=$doc&block=$startblock
-</div>
-!if $wims_user=supervisor and $sheetdata!=$empty
-<div class="menuitem">
- !read $oneitem source,1,cmd=reply&job=exosource&block=$startblock
- </div>
-!endif
-!goto end
-!endif job=print
-
-:end
-</div><!--end of wimsmenu-->
-</div><!--end of wimsmenubox-->
+!read themes/_widgets/docmenubox.phtml
 
  <div class="spacer"></div>
 
 </div><!-- end ofwimsbodybox-->
-<div id="wimstailbox">
-<div class="wimstail">
-<div class="tailitem">
-!href module=home WIMS
- @
-<a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</div>
-<div class="tailitem">$n_by
- !if $email=$empty
-  $author
- !else
-  !mailurl $email $author
- !endif
- $n_lastmod $datm
-</div>
- 
-</div><!--end of wimstail-->
-</div><!--end of wimstailbox-->
+
+!read themes/_widgets/doctailbox.phtml
+
 !if $job iswordof read print
  </div><!--end of wimsdoc-->
 !endif
 <!-- end of doctail.phtml-->
-
