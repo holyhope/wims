@@ -591,11 +591,11 @@ function list2array(list,cnt){
     }
     for(var p = 0 ; p < cnt ; p++ ){
 	if( list[p] != null ){
-	    list[p] =  list[p] + ":";
+	    list[p] =  list[p] + "&nbsp;=&nbsp;";
 	}
 	else
 	{
-	    list[p] = "&nbsp;";
+	    list[p] = "&nbsp;&nbsp;";
 	}
     }
     return list;

@@ -211,18 +211,21 @@
 	    $(question$n)
 	!endif
 	!if $embed=1
-	    !if $(formula$n) != $empty
 	    <table class="exercise">
 		<tr>
 		<td class="exercise_m">
+		!if $(formula$n) != $empty
 		    !insmath $(formula$n)
+		!else
+		    $(description[1])
+		!endif
 		</td>
 		<td class="exercise_m">
 		!if $inputs=1
 		    !if $wims_user=supervisor
-			$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+			&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
         	    !else
-        		$m_rightarrow &nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
+        		&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
 		    !endif
 		!else
 		    <ul class="vlist">
@@ -344,7 +347,7 @@
     	    !endif
 	</td>
 	!else
-	    !if $inputs>1
+	    !if $inputs > 1
 	    <td class="exercise_t" id="use_inputs">
 		<ul id="zebra_list">
 	        !set a_items=!itemcnt $(answer$n)

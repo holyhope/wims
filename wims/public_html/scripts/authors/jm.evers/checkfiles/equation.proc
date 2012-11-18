@@ -6,9 +6,15 @@
 # y=s*x^t-r
 # this checkfile will return the exercise with penalties more often than is wanted
 # because it's very tricky to let students fill in freestyle equations 
-
+n=$counter
 goback=0
 errortext=$empty
+!if ? isin $(reply$n)
+    goback=0
+    remark$n=$NOK
+    maxscore=0
+    !exit
+!endif
 
 !if $wims_user=supervisor
     !if $arglist=$empty
@@ -24,19 +30,11 @@ errortext=$empty
 !endif
     
 varcnt=!itemcnt $varlist
-n=$counter
 test=!wordcnt $(reply$n)
 !if $test=0
     goback=1
     maxscore=$[$P9*$maxscore]
     errortext=!record 37 of $remarkdir/commonremarks.$taal
-    !exit
-!endif
-
-!if ? isin $(reply$n)
-    remark$n=$NOK
-    goback=0
-    maxscore=0
     !exit
 !endif
 
