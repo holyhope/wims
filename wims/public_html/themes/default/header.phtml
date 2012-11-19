@@ -1,52 +1,60 @@
+<!-- begin of $wims_theme/header.phtml -->
+
 !! Header menu bar definition.
 !nocache
 !set wims_theme_header=yes
-!set wims_theme_version=0
+
+!default wims_theme_icon=$class_theme_icon
+!default wims_theme_icon=standard
+!if _help isin $wims_session
+ <div id="wimsmhelp">
+!endif
+!if _exam isin $wims_session
+ <div id="wimsexam">
+!endif
+!if $wims_lightpopup=yes
+ <div id="wimslightpopup">
+!endif
+!set wims_theme_version=1
 !set current_module=!replace / by , in $module
 !set module_path= !item 1 of $current_module
 !if $wims_hm_cnt!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+
+<div id="wimstopbox">
 <div class="wimsmenu">
-<table class="wimsnoborder wimscenter" style="background-color:$wims_name_bgcolor;" width="100%"><tr>
 !for i_=1 to $wims_hm_cnt
- <td align="center">
+ <span class="topmenuitem">
  !set 1_=!line $i_ of $wims_hm
  !read oneitem.phtml $1_
- </td>
+ </span> <!--topmenuitem-->
 !next i_
-!! -----------------------Insert "Permalien" --------------------------------
-!! Permalien / lecteur exportable : ces lignes permettent d'integrer facilement la page courante a un autre site :
 
-!set current_module=!replace / by , in $module
-!set module_path= !item 1 of $current_module
+!read themes/_widgets/permalink.phtml
 
-!if $module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty
-	!set permalien=$wims_ref_name?module=$module
-<td align="center" class="wims_header" id="header_export">
-<div id="lien_export_media" style="display:block">
-	<a href="#" onclick="document.getElementById('export_media').style.display = 'block';document.getElementById('lien_export_media').style.display = 'none';">$wims_name_display1</a>
-</div>
-<div id="export_media" style="display:none" align="left">
-<div class="wimscenter"> -- <strong>$wims_name_display1</strong> 
--- &nbsp; <a href="#" onclick="document.getElementById('export_media').style.display = 'none';document.getElementById('lien_export_media').style.display = 'block';">
-($wims_name_mask_this)</a></div><hr/>
-     <strong>$wims_name_permalink1</strong> 
-	 <span class="small">($wims_name_display2)</span> :
-	 <a href="$permalien">$permalien</a>
-	<hr/>
-	<b>$wims_name_embeddable</b>
-	<span class="small"> ($wims_name_display3) :
-	</span>
-	<textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" >&lt;iframe src="$permalien&+embededwindow=true" width="100%" height="100%">&lt;/iframe></textarea>
-</div> <!--end of wimscenter-->
-</div> <!--end of export_media-->
-</td>
+!!FIXME PHP ?
+!if $class_cas_auth=$empty
+  !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+  !set class_cas_auth=!getopt class_auth in $m_init_parm
+!endif
+!if $class_cas_auth!=$empty
+!!## it is better that the cas logout appears too much ... 
+!!## can be useless in the case of a supervisor so the next line is commented
+!!!!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
+  <div class="topmenuitem">
+  !read adm/class/logout_cas
+ </div><!--topmenuitem-->
+!endif
+</div><!--wimsmenu-->
+</div><!--wimstopbox-->
+!endif
+
+
+!if $module!=home or $wims_user!=
+<div id="wimsbodybox">
 
 !endif
-!!------------------------------------Fin de l'insert "Permalien" --------------------------
 
-
-</tr></table>
-</div> <!--end of wimsmenu-->
+<div id="wimspagebox">
 !endif
 
 !read themes/_widgets/alertchat.phtml
