@@ -114,7 +114,7 @@ my @liste_env_tabular = ('tabular') ;
 my @liste_env_spec = ('equation', 'multline', 'latexonly',
   'pmatrix','smallmatrix', 'eqnarray', 'array', 'algorithmic', 'algorithm', 'align',
   'thebibliography', 'pspicture', 'picture', 'cases', 'gather',
-  'displaymath', 'math', 'center', 'minipage', 'lstlisting', 'column', 'columns');
+  'displaymath', 'math', 'center', 'minipage', 'lstlisting', 'columns', 'column');
   
 my @liste_com_spec = ('paragraph', 'href', 'url', 'exercise', 'doc') ; #je ne m'en sers pas encore 
 
@@ -408,10 +408,10 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     $titre =~ s/\n/ /g;
     $titre = Numero($id) . "  $titre" if ($NUMERO);
     $toc_titre = Numero($id) . "  $toc_titre" if ($NUMERO);
-    $text .=  $link ?"\n\n\\link{$id}\n\n"
-                    :"\n\n\\fold{$id}{<span class=\"$section\">$titre</span>}\n\n";
+    $text .=  $link ?"<p>\\link{$id}</p>"
+                    :"<p>\\fold{$id}{<span class=\"$section\">$titre</span>}</p>";
     if ($link) {
-      $Toc .=  "\n\n<XXXX=$id>\\link{$id}{$toc_titre}</font><YYYY=$id>\n\n";
+      $Toc .=  "<p><XXXX=\"$id\">\\link{$id}{$toc_titre}<YYYY=\"$id\"></p>";
     }
     $text .= $extract[1];
     $ref->{titb}{$id} = $titre;
@@ -429,8 +429,8 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
       $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br/>': '' ;}
     $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
-    $ref->{toc}{$Id} .= "\n<XXXX=$id>\\link{$id}{$ref->{tittoc}{$id}
-    }$tp <YYYY=$id>\n";
+    $ref->{toc}{$Id} .= "\n<XXXX=\"$id\">\\link{$id}{$ref->{tittoc}{$id}
+    }$tp <YYYY=\"$id\">\n";
   }
  #maintenant, ce qui reste dans $text est exactement ce qu'on doit mettre dans le hash->{text}{$Id}
   $ref->{text}{$Id} = $text;
@@ -1202,6 +1202,8 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\onslide\+<[0-9]*\-[0-9]*>//g;
   $TEXT =~ s/\\onslide<[0-9]*\-[0-9]*->//g;
   $TEXT =~ s/\\onslide<[0-9]*\-[0-9]*>//g;
+  $TEXT =~ s/\[<\+->\]//g;
+ 
 # MODIF YVES NOEL 19/09/2011 (fin)
   $TEXT =~ s/{}//g;
   $TEXT =~ s/\\selectlanguage{french}\\sffamily//g;
@@ -1412,16 +1414,16 @@ sub Numero { my ($id) = @_;
 sub selection { my ($text, $couleur, @tag) = @_ ;
   return '' if !defined($text);
   for my $ta (@tag) {
-    $text =~ s/XXXX=$ta>/div class="$couleur">/g;
-    $text =~ s/YYYY=$ta>/\/div>/g;
+    $text =~ s/XXXX="$ta">/div class="$couleur">/g;
+    $text =~ s/YYYY="$ta">/\/div>/g;
   };
   $text;
 }
 
 sub clean { my ($text, $ref) = @_;
   return '' if !defined($text);
-   $text =~ s/<XXXX=\w*>//g;
-   $text =~ s/<YYYY=\w*>//g;
+   $text =~ s/<XXXX="\w*">//g;
+   $text =~ s/<YYYY="\w*">//g;
    $text =~ s/ZZZZZ(\w+)/store_tip($1,$ref)/ge;
    $text;
 }
