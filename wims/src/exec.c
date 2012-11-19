@@ -1137,11 +1137,12 @@ void _exec_ins(char *p, char *script_name,char *format)
 		 url, border, vspace, at, buf2, altbuf);
     }
     else {
-	char *n;
-	if(*tag2!=0) n="name="; else n="";
+	char *n, *nend;
+/* fix: add quotes at name=" " - should replace border= etc */
+	if(*tag2!=0) {n="name=\"" ; nend="\"";} else {n=""; nend="";}
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<input type=\"image\" %s%s src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s/>",
-		 n,tag2,url,border,vspace, at,buf2, altbuf);
+		 "<input type=\"image\" %s%s%s src=\"%s\" style=\"border-width:%dpx\" vspace=\"%d\" %s %s%s/>",
+		 n,tag2,nend,url,border,vspace, at,buf2,altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),
 			sizeof(outbuf)-strlen(outbuf),"%s",mathalign_sup2);
