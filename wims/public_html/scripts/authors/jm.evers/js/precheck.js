@@ -31,8 +31,14 @@
 // 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
 // 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
 // 18 list2array(list,cnt) converts wims item list into javascript array size "cnt" : returns array(cnt)
-// 19 function myConfirm(txt,reply,server,session,module,counter,color) will send answer to server...or not
-    
+// 19 myConfirm(txt,reply,server,session,module,counter,color) will send answer to server...or not
+// 20 nospace(string) returns string without spaces
+// 21 singlespace(string) returns  string with multiple spaces collapsed (including trailing spaces; eg trim) 
+// 22 word2items(string) returns itemlist (not a js-array ) 1 2 3 -> 1,2,3 
+// 23 rawmath(string) returns modified string 4x -> 4*x  ; 4sin(3pi) -> 4*sin(3*pi)
+// 24 words2string(words,separator) returs modified string 1 2 3 --> 1:2:3 or 1@2@3 
+// 25 wordcnt(string) || wordcount(string) returns amount of words " A   B  ABC     " = 3  [a space is not a word]
+
 function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
 	var p = 1;var xsize,ysize;
@@ -408,8 +414,6 @@ function check_s2(t){
     return t;
 }
 
-    
-
 function keywords(t){
     var kwords=[' en ',' et ',' of ',' or ',' ou ',' plus ',' and ','and/or',' & '];
     var a1;t=t.replace(/\~/g,' ');var trouble=0;t=t.toLowerCase();
@@ -441,16 +445,6 @@ function upper_varlist(varlist,t){
     return t;
 }
 
-function rawmath(t){
-    // poor mans rawmath?
-    var functies=['log','ln','abs','sqrt','sin','cos','tan','atan','acos','sinh','cosh','tanh','pi'];
-    return t;
-}
-
-function represent(t){
-    // unicode math display ?
-    return t;
-}
 function arrows(t,arg1,arg2,arg3){
     // modify t in order to have a uniform arrow.
     var ascii_arrows=['volgt','alors','thus','dus','therefor','ergo','<===>','===>','<==>','==>','<=>','=>','<--->','--->','<-->','-->','<->','->'];
@@ -600,3 +594,98 @@ function list2array(list,cnt){
     }
     return list;
 }
+
+function singlespace(list){
+    var c = 0;
+    while(list.indexOf('  ')!=-1){
+	list = list.replace('  ',' ');
+	c++;
+	if(c > 100){return list;}
+    }
+    if( list.charAt(list.length - 1) == ' ' ){
+	list = list.substring(0,list.length-1);
+    }
+    if( list.charAt(0) == ' ' ){
+	list = list.substring(1,list.length);
+    }
+    return list;
+}
+
+function nospace(list){
+    var c = 0;
+    while(list.indexOf(' ')!=-1){
+	list = list.replace(' ','');
+	c++;
+	if(c > 100){return list;}
+    }
+    return list;
+}
+
+function words2items(words){
+    return words2string(words,',');
+}
+
+function words2string(words,separator){
+    words = singlespace(words);
+    var c = 0;
+    while(words.indexOf(' ')!=-1){
+	words = words.replace(' ',separator);
+	c++;
+	if(c > 100){return words;}
+    }
+    return words;
+}
+
+function wordcnt(string){
+    return wordcount(string);
+}
+
+function wordcount(string){
+    if(string.length == 0 ){return 0;}
+    var tmp = singlespace(string);
+    if(tmp.length  === 0 ){ return 0;}// === checks on value and type
+    tmp = tmp.split(' ');
+    return tmp.length;
+}
+
+function rawmath(i){
+    i=i.toLowerCase();
+    i=i.replace(/\ /g,"");
+    i=i.replace(/\*\*/g,"^");
+    i=i.replace(/\u03c0/g,"pi");i=i.replace(/\u212e/g,"e");
+    if(i.indexOf("e+")!=-1){i=i.replace("e+","*10^");}
+    if(i.indexOf("e-")!=-1){i=i.replace("e-","*10^-");}
+    i=i.replace(/\*\*/g,"*");if(i.charAt(0)=="*"){i=i.substring(1,i.length);}
+    var fun=["asin","acos","atan","sin","cos","tan","log","ln","pi","e","x","y"];
+    var cons=["pi","e","0","1","2","3","4","5","6","7","8","9"];
+    var P;var D;var p;var d;
+    var l=cons.length;var cntl=0;var cntr=0;
+    for(p=0;p<i.length;p++){
+	if(i.charAt(p) == '('){cntl++;}
+	if(i.charAt(p) == ')'){cntr++;}
+    }
+    if(cntl != cntr){i = i+')';}
+    for(p=0;p<fun.length;p++){
+	for(d=0;d<l;d++){
+	    while(i.indexOf(cons[d]+""+fun[p])!=-1){
+		i=i.replace(cons[d]+""+fun[p],cons[d]+"*"+fun[p]);
+	    }
+	    while(i.indexOf(fun[p]+""+cons[d])!=-1){
+		i=i.replace(fun[p]+""+cons[d],fun[p]+"*"+cons[d]);
+	    }
+	}
+    }
+    if(i.indexOf("(")!=-1){
+	for(p=0;p<l;p++){
+	    if(i.indexOf(cons[p]+"(")!=-1){
+		i=i.replace(cons[p]+"(",cons[p]+"*(");
+	    }
+	    if(i.indexOf(")"+cons[p])!=-1){
+		i=i.replace(")"+cons[p],")*"+cons[p]);
+	    }
+	}
+	i=i.replace(/\)\(/g,")*(");
+    }
+    return i;
+}
+    
