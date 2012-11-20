@@ -2,7 +2,7 @@ jQuery.noConflict();
 
 jQuery(function($) {
     
-    var wims_menu = $("#wimsmenumodubox")
+    var wims_menu = $("#wimsmenumodubox");
     
     if (wims_menu)
     {    
