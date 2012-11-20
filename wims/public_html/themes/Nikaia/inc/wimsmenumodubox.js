@@ -1,16 +1,22 @@
+jQuery.noConflict();
 
-$(function(){
-
-    $("#wimsmenumodubox").addClass("{title:'MENU'}");
+jQuery(function($) {
     
-    $("#wimsmenumodubox").buildMbExtruder({
-        position:"right",
-        width:300,
-        extruderOpacity:.8,
-        textOrientation:"tb",
-        onExtOpen:function(){},
-        onExtContentLoad:function(){$("#wimsmenumodubox").openPanel();},
-        onExtClose:function(){}
-    });
+    var wims_menu = $("#wimsmenumodubox")
+    
+    if (wims_menu)
+    {    
+        wims_menu.addClass("{title:'MENU'}");
+        
+        wims_menu.buildMbExtruder({
+            position:"right",
+            width:300,
+            extruderOpacity:.8,
+            textOrientation:"tb",
+            onExtOpen:function(){},
+            onExtContentLoad:function(){wims_menu.openPanel();},
+            onExtClose:function(){}
+        });
+    }
 
 });
