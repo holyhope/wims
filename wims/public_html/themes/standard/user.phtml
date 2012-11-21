@@ -146,32 +146,34 @@ $U_greet
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox">
-<div class="wimsmenu">
+ !distribute items div,div into div0,div1
+ <$div0 class="wimsmenu">
 
-!read themes/_widgets/cdt.phtml
+ !read themes/_widgets/cdt.phtml
 
-!read themes/_widgets/userforum.phtml
+ !read themes/_widgets/userforum.phtml
 !!must have read user*.phtml,  with *=sheet, exam must be read before
-!ifval $n+$m>0 and $is_interclass!=yes
- <div class="itemsep"></div>
-  !read themes/_widgets/userscore.phtml 
- <div class="itemsep"></div>
-!endif
+ !ifval $n+$m>0 and $is_interclass!=yes
+   <$div1 class="itemsep"></$div1>
+    !read themes/_widgets/userscore.phtml 
+   <$div1 class="itemsep"></$div1>
+ !endif
 
-!read themes/_widgets/extlink.phtml
+ !read themes/_widgets/extlink.phtml
 
-!if $wims_user=supervisor
- <div class="itemsep"></div><!--tailsep-->
- <div class="menuitem">
- !read ./adm/oneitem.phtml backteacher,1,$
- </div><!--end menuitem-->
-!endif
+ !if $wims_user=supervisor
+   <$div1 class="itemsep"></$div1><!--itemsep-->
+    <$div1 class="menuitem">
+    !read ./adm/oneitem.phtml backteacher,1,$
+   </$div1><!--end menuitem-->
+ !endif
 
-</div><!--end wimsmenu-->
+ </$div0><!--end wimsmenu-->
 </div><!--end wimsmenumodubox-->
-
+!distribute div,span into div0,div1
+ !reset div0 div1
 !read themes/_widgets/usermenubox.phtml
-
+!reset div0 div1
  <div class="spacer"></div>
 </div><!--end of wimsbodybox-->
 :end

@@ -7,14 +7,14 @@
 !default wims_theme_icon=$class_theme_icon
 !default wims_theme_icon=standard
 !if _help isin $wims_session
- <div id="wimsmhelp">
+  <div id="wimsmhelp">
 !endif
 !if _exam isin $wims_session
- <div id="wimsexam">
+  <div id="wimsexam">
 !endif
 !if $wims_lightpopup=yes
- <!--<div id="wimslightpopup">-->
- <link rel="stylesheet" href="html/themes/$wims_theme/css_theme/light.css" type="text/css">
+  <!--<div id="wimslightpopup">-->
+   <link rel="stylesheet" href="html/themes/$wims_theme/css_theme/light.css" type="text/css">
 
 !endif
 !set wims_theme_version=1
@@ -33,20 +33,18 @@
 <br class="spacer"/>
 
 <ul class="wimsmenu menuglobal">
-!for i_=1 to $wims_hm_cnt
- <li class="topmenuitem">
- !set 1_=!line $i_ of $wims_hm
- !read oneitem.phtml $1_
- </li> 
- !next i_
- 
+!distribute items li into div1
+
+!read themes/_widgets/headmenu.phtml
 !read themes/$wims_theme/widgets/permalink.phtml
 
-!!FIXME PHP ?
-!if $class_cas_auth=$empty
-  !set m_init_parm=!replace internal & by $ $ in $module_init_parm
-  !set class_cas_auth=!getopt class_auth in $m_init_parm
-!endif
+!!## technical parameters
+ !if $class_cas_auth=$empty
+   !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+   !set class_cas_auth=!getopt class_auth in $m_init_parm
+ !endif
+!!## end technical parameters
+
 !if $class_cas_auth!=$empty
 !!## it is better that the cas logout appears too much ... 
 !!## can be useless in the case of a supervisor so the next line is commented
@@ -68,24 +66,6 @@
 !if $module!=home or $wims_user!=
 
 <div id="wimsbodybox">
-!if $wims_homeref_n3>0
-  <div id="wimsmenutab">
-  <ul class="wimsmenu"> 
-  !for i_=1 to $wims_homeref_n3
-    !set 1_=!line $i_ of $wims_rm_3
-    !if $(1_[1])!=
-      <li class="itemsep">toto</li>
-    !else   
-    
-     <li class="menuitem">
-     toto
-     !read oneitem.phtml $1_
-     </li>
-    !endif
-  !next i_
-  </ul><!--wimsmenu-->
-  </div><!--wimsmenutab-->
-!endif
 
 <!--Ajout du menu de la zone enseignant-->
 !if $module = adm/class/classes or $module = adm/class/regclass or $module = adm/createxo or $module = adm/createxo or $module = adm/modtool or $module = adm/quicktool or $module = adm/latex2wims
@@ -99,9 +79,7 @@
 !!! ICI, impossible de placer menumodubox : les variables qu'il utilise ne sont pas encore instanciées
 !! read themes/$wims_theme/widgets/menumodubox.phtml
 
-
 !!chat
-
 !read themes/_widgets/alertchat.phtml
 
 <!-- end of $wims_theme/header.phtml -->

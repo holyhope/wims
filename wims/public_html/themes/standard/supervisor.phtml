@@ -37,6 +37,8 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
  !goto end
 !endif
+!!definition for menumodubox
+!distribute items div,div into div0,div1
 
 !if $class_type isin 3
  $SU_greet.
@@ -46,19 +48,18 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
 
 <!--1ère ouverture de wimsmenumodubox class_type = 3-->
-
 <div id="wimsmenumodubox">
-<div class="wimsmenu">
- <div class="menuitem">
-  !read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
- </div><!--menuitem-->
- <div class="menuitem">
+ <$div0 class="wimsmenu">
+  <$div1 class="menuitem">
+   !read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
+  </$div1><!--menuitem-->
+  <$div1 class="menuitem">
  !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
    !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
  !else
     !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
  !endif
- </div><!--menuitem-->
+  </$div1><!--menuitem-->
   !goto end
  !else
   !goto nocheck
@@ -117,14 +118,14 @@ $wims_classname, $wims_institutionname\
 <!--ouverture de wimsmenumodubox pour class_type=4-->
 
 <div id="wimsmenumodubox">
-  <div class="wimsmenu">
- <div class="menuitem">
+  <$div0 class="wimsmenu">
+   <$div1 class="menuitem">
   !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
    !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
   !else
    !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
   !endif
-  </div><!--menuitem-->
+  </$div1><!--menuitem-->
  !goto end
 !endif end $class_type=4
 
@@ -154,10 +155,10 @@ $wims_classname, $wims_institutionname\
 
 <!--ouverture de de wimsmenumodubox pour class_type=2-->
 <div id="wimsmenumodubox">
- <div class="wimsmenu">
-   <div class="menuitem">
+ <$div0 class="wimsmenu">
+   <$div1 class="menuitem">
     !read ./adm/oneitem.phtml addclass,1,module=adm/class/regclass
-   </div><!--menuitem-->
+   </$div1><!--menuitem-->
  
  !goto end
 !endif class_type=2
@@ -205,41 +206,44 @@ $wims_classname, $wims_institutionname\
 <!--ouverture de wimsmenumodubox pour class!= 2,3,4-->
 
 <div id="wimsmenumodubox">
-<div class="wimsmenu">
+ <$div0 class="wimsmenu">
  !read themes/_widgets/classdevtools.phtml
  !read themes/_widgets/classtools.phtml
  !read themes/_widgets/supervisorscore.phtml
 
 !!!!endif ????
 
-<div class="menuitem">
+<$div1 class="menuitem">
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
 !else
   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
 !endif
-</div><!--menuitem-->
+</$div1><!--menuitem-->
 :end
 
 !read themes/_widgets/entlink.phtml
 
 !!!</div><!--menuitem-->
-</div><!--wimsmenu-->
+</$div0><!--wimsmenu-->
 <div class="spacer"></div>
 </div><!--fermeture unique de wimsmenumodubox-->
 
+!reset div0 div1
+
 <!--wimsmenubox unique-->
 
+!distribute items div, span into div0,div1
 <div id="wimsmenubox" class="footer">
- <div class="wimsmenu">
+ <$div0 class="wimsmenu">
   <div class="menublock">
    !if $class_typename notsametext program
-    <span class="menuitem">
+    <$div1 class="menuitem">
       !read ./adm/oneitem.phtml SE_list,1,module=adm/class/userlist
-    </span><!-- menuitem-->
-    <span class="menuitem">
+    </$div1><!-- menuitem-->
+    <$div1 class="menuitem">
       !read ./adm/oneitem.phtml n_participant,1,style=student
-    </span><!-- menuitem-->
+    </$div1><!-- menuitem-->
    !endif
   </div><!--end menublock-->
 
@@ -249,15 +253,15 @@ $wims_classname, $wims_institutionname\
     !read themes/_widgets/supervisorcdt.phtml
     !read themes/_widgets/supervisorforum.phtml
   </div><!--end menublock-->
-  <div class="menublock">
-    <div class="menuitem">
+   <div class="menublock">
+    <$div1 class="menuitem">
      !read ./adm/oneitem.phtml SE_config,1,module=adm/class/config
-    </div><!--menuitem-->
-    <div class="menuitem">
+    </$div1><!--menuitem-->
+    <$div1 class="menuitem">
      !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
-    </div><!--menuitem-->
+    </$div1><!--menuitem-->
   </div><!--end menublock-->
- </div><!--end wimsmenu-->
+ </$div0><!--end wimsmenu-->
 </div><!--end wimsmenubox-->
 
 </div><!--wimsbodybox-->
