@@ -11,26 +11,18 @@
 
 <div id="wimsfrontpage">
 
- <div id="wimstopbox">
-!!!Pas tout à fait cela
-	!read themes/Nikaia/widgets/institution_logo.phtml
-!if $site_logo!=$empty
-  <div id="wimslogoleft">
-   <a href="$site_logolink" target="wims_external"><img src="$site_logo" alt="logo"/></a>
-  </div>
-!endif
-<div id="wimslogo">
-!href module=home&special_parm=logo <img src="gifs/logo.gif" alt="WIMS logo"/>
-</div>
-<div class="wimsmenu">
+   <div id="wimstopbox">
+!set positionlogo=left
+ !read themes/_widgets/institution_logo.phtml
+
+  <div class="wimsmenu">
     !!Language Selector
 	!read themes/_widgets/language_selector.phtml
-</div><!--wimsmenu-->
-<div class="wimsmenu">
- !read themes/_widgets/virtualzone.phtml
- !read themes/_widgets/authlogout.phtml
-
-</div><!--wimsmenu-->
+  </div><!--wimsmenu-->
+  <div class="wimsmenu">
+   !read themes/_widgets/virtualzone.phtml
+   !read themes/_widgets/authlogout.phtml
+  </div><!--wimsmenu-->
 
  <br class="clearall"/>
 </div>
@@ -50,32 +42,28 @@
 
    </div><!--end wimsbody-->
   </div><!--wimspagebox-->
-
+!distribute items div,div into div0,div1
  <div id="wimsmenumodubox">
-!distribute items div,div into div0,div1 
-   <div class="wimsmenu">
-     <div class="itemsep"></div>
+   <$div0 class="wimsmenu">
+     <$div1 class="itemsep"></$div1>
 !read themes/_widgets/browsesite.phtml
-     <div class="itemsep"></div>
+     <$div1 class="itemsep"></$div1>
 !read themes/_widgets/documentation.phtml
-     <div class="itemsep">$CR_1</div>
+     <$div1 class="itemsep">$CR_1</$div1>
 !read themes/_widgets/devtools.phtml
-    <div class="itemsep"></div>
+    <$div1 class="itemsep"></$div1>
 !read themes/_widgets/site.phtml
-    <div class="itemsep"></div>
-   </div><!--wimsmenu-->
+    <$div1 class="itemsep"></$div1>
+   </$div0><!--wimsmenu-->
 !reset div0 div1
  </div><!--wimsmenumodubox-->
 
 !!! changer le style
 !read themes/_widgets/visitormenubox.phtml
 
-</div><!--wimsbodybox-->
+ </div><!--wimsbodybox-->
 
-!!logo
-
-	!read themes/_widgets/tailbox.phtml
-
+ !read themes/_widgets/tailbox.phtml
  </div><!--wimsfrontpage-->
 
 
