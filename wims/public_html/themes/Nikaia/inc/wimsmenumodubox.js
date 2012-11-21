@@ -9,7 +9,7 @@ jQuery(function($) {
         wims_menu.addClass("{title:'MENU'}");
         
         wims_menu.buildMbExtruder({
-            position:"right",
+            position:"left",
             width:300,
             extruderOpacity:.8,
             textOrientation:"tb",
