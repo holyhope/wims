@@ -484,11 +484,25 @@ $ by ],[ in $($v)
 
 :getlog
 
-user_log=!replace internal $\
-$ by "," in $user_log
+!shortout "query_class":"$qclass",\
+"query_user":"$quser",\
+"user_log":
 
-!shortout "user_log":["$user_log"]
+!if $logsize > 0
+   !shortout [
+   !for i=1 to $logsize
+     current = !record $i of wimshome/sessions/$wims_session/user.log
+     !shortout "$current"
+     !if $i < $logsize
+        !shortout ,\
 
+     !endif
+   !next i
+   !shortout ]
+!else
+	!shortout ""\
+
+!endif
 
 !goto footer
 

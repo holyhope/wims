@@ -22,9 +22,10 @@
 	cat score/$quser noscore/$quser 2>/dev/null | sort
 !endif
 
-
-
 logsize=!linecnt $tmp_log
+
+!writefile wimshome/sessions/$wims_session/user.log \
+
 
 !for i=1 to $logsize
    current = !line $i of $tmp_log
@@ -40,5 +41,14 @@ logsize=!linecnt $tmp_log
    # Log Format : 
    #DATE, SESSION, SHEET/EXAM, EXO, CMD, IP
    current = !replace internal $	$ by \t in $current
-   user_log = !append line $current to $user_log
+   user_log = !append line :$current to $user_log
+   
+   	# Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
+	!ifval  $i % 100 = 0
+	   !appendfile wimshome/sessions/$wims_session/user.log $user_log
+	   user_log = $empty
+    !endif
 !next i
+
+!appendfile wimshome/sessions/$wims_session/user.log $user_log
+user_log = $empty
