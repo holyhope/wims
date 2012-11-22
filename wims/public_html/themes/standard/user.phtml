@@ -148,27 +148,27 @@ $U_greet
 <div id="wimsmenumodubox">
  !distribute items div,div into div0,div1
  <$div0 class="wimsmenu">
-
  !read themes/_widgets/cdt.phtml
-
  !read themes/_widgets/userforum.phtml
+ </$div0>
 !!must have read user*.phtml,  with *=sheet, exam must be read before
  !ifval $n+$m>0 and $is_interclass!=yes
-   <$div1 class="itemsep"></$div1>
-    !read themes/_widgets/userscore.phtml 
-   <$div1 class="itemsep"></$div1>
+   <hr class="itemsep"/>
+   <$div0 class="wimsmenu">
+     !read themes/_widgets/userscore.phtml 
+    </$div0>
  !endif
-
+ <$div0 class="wimsmenu">
  !read themes/_widgets/extlink.phtml
-
+ </$div0>
  !if $wims_user=supervisor
-   <$div1 class="itemsep"></$div1><!--itemsep-->
+   <hr class="itemsep"/>
+   <$div0 class="wimsmenu">
     <$div1 class="menuitem">
     !read ./adm/oneitem.phtml backteacher,1,$
    </$div1><!--end menuitem-->
+   </$div0>
  !endif
-
- </$div0><!--end wimsmenu-->
 </div><!--end wimsmenumodubox-->
 !distribute items div,span into div0,div1
 !read themes/_widgets/usermenubox.phtml

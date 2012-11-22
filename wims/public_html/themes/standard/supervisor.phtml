@@ -203,25 +203,31 @@ $wims_classname, $wims_institutionname\
 <div id="wimsmenumodubox">
  <$div0 class="wimsmenu">
  !read themes/_widgets/classdevtools.phtml
+ </$div0>
+ <hr class="itemsep"/>
+ <$div0 class="wimsmenu">
  !read themes/_widgets/classtools.phtml
+ </$div0>
+ <hr class="itemsep"/>
+ <$div0 class="wimsmenu">
  !read themes/_widgets/supervisorscore.phtml
-
-!!!!endif ????
-
-<$div1 class="menuitem">
+</$div0>
+ <hr class="itemsep"/>
+<$div0 class="wimsmenu">
+ <$div1 class="menuitem">
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
 !else
   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
 !endif
-</$div1><!--menuitem-->
+ </$div1><!--menuitem-->
+</$div0>
 :end
-
+ <hr class="itemsep"/>
+<$div0 class="wimsmenu">
 !read themes/_widgets/entlink.phtml
-
-!!!</div><!--menuitem-->
 </$div0><!--wimsmenu-->
-<div class="spacer"></div>
+<div class="clearall"></div>
 </div><!--fermeture unique de wimsmenumodubox-->
 
 !reset div0 div1
