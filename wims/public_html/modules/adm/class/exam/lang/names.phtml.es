@@ -94,5 +94,5 @@ into name_info,name_content,name_warning
 
 !set name_warning_nonfinished=Todavía no ha completado todos los ejercicios de este examen. Si los acaba\
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
-  el examen, y tendrá que empezar desde el principio la próxima vez.<p>\
+  el examen, y tendrá que empezar desde el principio la próxima vez.<br/>\
   ¿Seguro que quiere terminarlos?

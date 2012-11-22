@@ -95,6 +95,6 @@ Of geef hier generieke titel aan
 !set name_warning_nonfinished=Je hebt nog niet alle opgaven uit dit proefwerk gemaakt. Wanneer je \
 er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt. \
 Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle  \
-random (!) sommen opnieuw doen... <p>Weet je zeker dat je er mee wilt stoppen?
+random (!) sommen opnieuw doen... <br/>Weet je zeker dat je er mee wilt stoppen?
 
 

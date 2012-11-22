@@ -7,13 +7,15 @@ is voorbehouden aan de docent van een klas.
 !endif
 
 !if $error=no_sheet
+ <p>
 De inhoud van een proefwerk kan alleen worden genomen
 uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
- <p>
+ </p><p>
  Uw klas heeft echter geen werkbladen (actief of verlopen). <br/>
  Dus eerst maakt U een werkblad van Uw oefeningen (oef of module)<br/>
  onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b><br/>
  Daarna maakt U van deze actieve/verlopen werkbladen het echte proefwerk.
+ </p>
  !exit
 !endif
 

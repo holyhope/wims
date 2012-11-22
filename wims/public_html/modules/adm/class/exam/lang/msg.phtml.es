@@ -7,12 +7,14 @@
 !endif
 
 !if $error=no_sheet
+ <p>
  El contenido de un examen debe estar tomado de hojas de trabajo
  activadas (activas o caducadas).
- <p>
+ </p><p>
  Su clase no tiene aún hojas de trabajo activadas. Por favor, defina
  su hoja de trabajo, ponga los trabajos en ellas y actívelas, antes de
  definir un examen para la clase.
+ </p>
  !exit
 !endif
 
