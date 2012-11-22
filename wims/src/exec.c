@@ -924,8 +924,8 @@ void exec_robottrap(char *p)
     char buf[MAX_LINELEN+1];
     if(robot_access) return;
     ovlstrcpy(buf,"session=$wims_session.1&module=adm/trap");
-    _output_("<!-- >"); exec_href(buf);
-    _output_("Robot trapper, do not click!</a> < -->");
+    _output_("<!-- "); exec_href(buf);
+    _output_("Robot trapper, do not click!</a> -->");
     exec_href(buf); _output_("<span></span></a>");
 }
 
