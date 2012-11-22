@@ -145,30 +145,11 @@ $U_greet
 :endbar
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
-<div id="wimsmenumodubox">
-<div class="wimsmenu">
 
-!read themes/_widgets/cdt.phtml
-
-!read themes/_widgets/userforum.phtml
 !!must have read user*.phtml,  with *=sheet, exam must be read before
-!ifval $n+$m>0 and $is_interclass!=yes
- <div class="itemsep"></div>
-  !read themes/_widgets/userscore.phtml 
- <div class="itemsep"></div>
-!endif
+!distribute items div,ul into div0,div1
+!read themes/_widgets/usermenumodubox.phtml
 
-!read themes/_widgets/extlink.phtml
-
-!if $wims_user=supervisor
- <div class="itemsep"></div><!--tailsep-->
- <div class="menuitem">
- !read ./adm/oneitem.phtml backteacher,1,$
- </div><!--end menuitem-->
-!endif
-
-</div><!--end wimsmenu-->
-</div><!--end wimsmenumodubox-->
 !distribute items ul,li into div0,div1
 !read themes/_widgets/usermenubox.phtml
 !reset div0 div1
