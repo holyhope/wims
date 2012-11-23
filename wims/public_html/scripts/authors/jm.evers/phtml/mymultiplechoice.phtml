@@ -16,7 +16,11 @@
 	$(question$n)
 	!if $(formula$n) != $empty
 	    <br />
-	    !insmath $(formula$n)
+	    !if $display=1
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
 	!endif
 	!if $applet=1
 	    <br />
@@ -81,6 +85,6 @@
 </table><!-- end table id="exercise" -->
 
 <div id="send_buttons" class="embedded_central">
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();" value="$dontknow" />
 </div>
 !exit

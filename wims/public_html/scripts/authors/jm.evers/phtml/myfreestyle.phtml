@@ -12,9 +12,24 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator  -->
+!if $inputs <0
+    !if $goback=1
+    function refill(){
+	var hi="$(reply$n)";
+	if(hi.length !=0 ){
+	    hi = hi.split(',');
+	    for( var i=0; i<hi.length; i++){
+		try{
+		    document.getElementById("myinput"+i).value = hi[i];
+		}catch(e){}
+	    }
+	}
+    }
+    !endif
+!endif
     var descr_list="$description";
     var descr_cnt = 30;
-    var description = list2array(descr_list,descr_cnt);
+    var description = make_description(descr_list,descr_cnt);
 
     function dontknow(){
 	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
@@ -39,7 +54,7 @@
 	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 	    input = science(input);if(input == "error"){return;}
 	    if(check_x(input) == 0){return;}
-	    show = "<li>"+description[inputfieldnumber] + input+"</li>";
+	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 	    if(input.indexOf("[") !=- 1){
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
@@ -71,7 +86,7 @@
 		    tmp_show = tmp_show.replace(/\./g,'');
 		}
 		reply[inputfieldnumber] = tmp_reply+"\n"+tmp_htmlreply+"\n"+tmp_latexreply;
-		show = show + "<li>"+description[inputfieldnumber] + tmp_show + "</li>"
+		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>"
 		inputfieldnumber++;
 		p++;
 		if(p>10){setAlarm(r2);dontknow();}
@@ -94,7 +109,7 @@
 		if( tmp.length > $wordmax ){setAlarm(r6);return;}
 		if( tmp.length < $wordmin ){setAlarm(r26);return;}
 		for(var r = 0;r < tmp.length;r = r + 2){
-		    show = show + "<li>"+description[inputfieldnumber] +"( "+tmp[r]+" : "+tmp[r+1]+" )</li>";
+		    show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + "( " + tmp[r] + " : " + tmp[r+1]+" )</li>";
 		    reply[inputfieldnumber] = tmp[r]+":"+tmp[r+1];
 		    inputfieldnumber++;
 		}
@@ -117,7 +132,7 @@
 		if(check_sqrt_NaN(input)==0){return;}
 		input = science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show = show + "<li>"+description[inputfieldnumber] + input + "</li>";
+		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
@@ -140,7 +155,7 @@
 		    option_text = options[options.selectedIndex].text;
 		}catch(e){setAlarm(r1+parseInt(p+1));return;}
 		reply[inputfieldnumber] = option_value;
-		show = show + "<li>" + description[inputfieldnumber] + option_text + "</li>";
+		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + option_text + "</li>";
 	    	inputfieldnumber++;
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
@@ -159,7 +174,7 @@
 		if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 		input=science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show = show + "<li>" + description[inputfieldnumber] + input + "</li>";
+		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
 		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
@@ -187,7 +202,7 @@
 		if(check_log_NaN(input) == 0){return;}
 		if(check_sqrt_NaN(input) == 0){return;}
 		input = science(input);if(input == "error"){return;}
-		show = show + "<li>" + description[inputfieldnumber] + input + "</li>";
+		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + input + "</li>";
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
 		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
@@ -209,6 +224,7 @@
     <td class="exercise_t">
 	!if $(question$n) != $empty
 	    $(question$n)
+	    <br />
 	!endif
 	!if $embed=1
 	    <table class="exercise">
@@ -253,10 +269,14 @@
 		!endif
 		</td>
 	    </table>
-	    !endif
 	!else
 	    !if $(formula$n) != $empty
-		!insmath $(formula$n)
+		!if $display=1
+		    !insmath $$$$ $(formula$n) $$$$
+		!else
+		    !insmath $(formula$n)
+		!endif
+		<br />
 	    !endif
 	!endif
 	!if $exotext != $empty
@@ -349,7 +369,7 @@
 	!else
 	    !if $inputs > 1
 	    <td class="exercise_t" id="use_inputs">
-		<ul id="zebra_list">
+		<ul class="zebra_list">
 	        !set a_items=!itemcnt $(answer$n)
 		!if $a_items != $[floor($inputs)]
 	            !set use_lines=1
@@ -380,9 +400,23 @@
 </table><!-- end table id=exercise -->
 <div id="send_buttons" class="embedded_central">
 !if $inputs != 0
-    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
 !endif
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
 </div>
+
+!if $inputs < 0
+    !! we are using other inputfields called "myinput0...myinput_n"
+    !if $goback=1
+	!!! after the inputelements are in the DOM-tree: fill-in the previous answers
+	<script type="text/javascript">
+	//<![CDATA[
+	<!-- no validator  -->
+	    try{document.onload=refill();}catch(e){}
+	//]]>
+	</script>
+    !endif
+!endif
+
 
 !exit

@@ -7,7 +7,7 @@
 !endif
     var descr_list="$description";
     var descr_cnt = 30;
-    var description = list2array(descr_list,descr_cnt);
+    var description = make_description(descr_list,descr_cnt);
 
     function dontknow(){
 	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
@@ -27,7 +27,11 @@
 	<table class="exercise">
 	    <tr>
 	    <td class="exercise_m">
+	    !if $display=1
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
 		!insmath $(formula$n)
+	    !endif
 	    </td>
 	!if $embed=1
 	    <td class="exercise_m">
@@ -96,8 +100,8 @@
 
 !if $inputs=yes
     <div id="send_buttons" class="embedded_central">
-	<input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-	<input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+	<input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+	<input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
     </div>
 !endif
 $dhtml

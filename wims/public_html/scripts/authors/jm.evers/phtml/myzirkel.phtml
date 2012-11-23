@@ -8,7 +8,7 @@
 <!-- no validator -->
     var descr_list="$description";
     var descr_cnt = 30;
-    var description = list2array(descr_list,descr_cnt);
+    var description = make_description(descr_list,descr_cnt);
 !!    var maxcookies=20;
 !!    var cookiesize=400;
 !!    var cookiecount=-1;
@@ -125,7 +125,11 @@
 	$(question$n)
 	!if $(formula$n) != $empty
 	    <br />
-	    !insmath $(formula$n)
+	    !if $display = 1
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
 	!endif
 	!if $exotext != $empty
 	    <br />
@@ -185,8 +189,8 @@
 </table>
 
 <div id="send_buttons" class="embedded_central">
-    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
 </div>
 !exit
 

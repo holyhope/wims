@@ -44,7 +44,7 @@
 	!endif
     </td><!-- end td class=header1 -->
     <td class="header2">
-	!if $xcalc=3
+	!if $calculator=3
 	    <script type="text/javascript">
 	    //<![CDATA[
 	    <!-- no validator -->
@@ -118,12 +118,12 @@
 		<img src="$gifdir/pencil.png" style="width:50;height:70;border:0px;vertical-align:top" alt="scribling" />
 	    </a>
 	!endif
-	!if $xcalc=2
+	!if $calculator=2
 	    <a onclick="window.open('$htmldir/mathcalc.html','xcalc','width=265px,height=400px,left=0px,top=0px')">
 		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 	    </a>
 	!else
-	    !if $xcalc=1
+	    !if $calculator=1
 		<a onclick="window.open('$htmldir/basicalc.html','xcalc','width=240px,height=240px,left=0px,top=0px')">
 		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 		</a>
@@ -148,8 +148,11 @@
 !endif
 
 <div id="alarmtext" style="white-space:wrap;text-align:center;margin-left:auto;margin-right:auto;max-width:460px;min-width:120px;min-height:50px;display:none;top:0px;left:0px;background-color:#daf6a4;font-style:italic;border:solid 2px red">
-$errortext
-$(remark$[$n-1])
+!if $goback = 1
+    $errortext
+!else
+    $(remark$[$n-1])
+!endif
 $alarm
 </div>
 

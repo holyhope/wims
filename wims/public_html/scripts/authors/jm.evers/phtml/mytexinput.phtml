@@ -4,7 +4,7 @@
 <!-- no validator -->
     var descr_list="$description";
     var descr_cnt = 30;
-    var description = list2array(descr_list,descr_cnt);
+    var description = make_description(descr_list,descr_cnt);
 
     function dontknow(){
 	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
@@ -87,7 +87,11 @@
 	    <br />
 	!endif
 	!if $(formula$n) != $empty
-	    !insmath $(formula$n)
+	    !if $display = 1
+		!insmath $$$$ $(formula$n) $$$$
+	    !else
+		!insmath $(formula$n)
+	    !endif
 	    <br />
 	!endif
 	!if $exotext != $empty
@@ -127,10 +131,10 @@
 </table><!-- begin table id="exercise" -->
 
 <div id="send_buttons" class="embedded_central">
-    <input type="button" class="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send">
-    <input type="button" class="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send">
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow">
 !if $control_inputs = 1
-    <input type="button" class="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(1)" value="+">
-    <input type="button" class="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(-1);" value="&minus;">
+    <input type="button" id="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(1)" value="+">
+    <input type="button" id="schaersvoorde_extra_button" onclick="javascript:TexAppInputs(-1);" value="&minus;">
 !endif
 </div>
