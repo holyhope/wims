@@ -91,7 +91,26 @@ $wims_name_part_list
     !href module=adm/class/sequence&job=config $wims_name_config
  </p>
  !endif
-
+!if $usercnt >0
+<p>
+   $name_post
+   !if $job_affi=notes
+    !href cmd=reply&job_affi=qualite $(name_affi[1])
+    ,
+    !href cmd=reply&job_affi=points $(name_affi[2])
+   !else
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=notes $(name_affi[3])
+,
+     !href cmd=reply&job_affi=points $(name_affi[2])
+    !else
+     !href cmd=reply&job_affi=notes $(name_affi[3])
+,
+     !href cmd=reply&job_affi=qualite $(name_affi[1])
+    !endif
+   !endif
+. </p>
+!endif
  !reset table_center
  $table_header
  !if $job_affi=notes
@@ -114,17 +133,16 @@ $wims_name_part_list
     !set k=!char 2 to -1 of $j
     <th rowspan="2" class="name_exam small">$name_Exam $k</th>
    !else
-    <th rowspan="2" class="show_sheet">
-    <span class="small">
+    <th rowspan="2" class="show_sheet small">
      !set s=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
      !set s=!line 3 of $s
      !set wims_ref_title=$s
      !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
      !!<a onmouseover="Tip('$s',$tooltip_parm)">$picto</a>
-    </span></th>
+    </th>
    !endif
   !next j
-  <tr>
+  </tr>
   $table_hdtr<th class="manual_notes small">$(name_manual_notes[1])</th>
   <th class="manual_notes small">$(name_manual_notes[2])</th>
   <th class="manual_notes small">$(name_manual_notes[3])</th>
@@ -254,8 +272,8 @@ $wims_name_part_list
        <td style=$style_note>$p_ %
       !else
        <td>--
+      !endif 
        </td>
-      !endif  
      !endif
      !if $p2=$empty
       !set $p_=0
@@ -319,13 +337,13 @@ $wims_name_part_list
     <td>--
   !endif
   </td>
-  </tr>
  !next j
  !if $cnt_glob>0
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
 	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
-  $table_hdtr<td><b>$name_posAverage</b></td>
+    </tr>
+    $table_hdtr<td class="bold">$name_posAverage</td>
   !if $manual>0
     !if $m_glob>0
      !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
@@ -365,8 +383,8 @@ $wims_name_part_list
     <td>--
    !endif
    </td>
-  </tr>
   !next j
+  </tr>
  !else
   </tr>
  !endif
@@ -377,7 +395,7 @@ $wims_name_part_list
   !form reply
   <input type="hidden" name="job" value="sheets"/>
   !set wims_formselect_switch=multiple="multiple" size="$[min($activecnt,6)]"
-  <table border="0">
+  <table class="wimsnoborder">
   <tr><td>$name_pickup:</td><td>&nbsp;&nbsp;
   !reset tmp
   !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
@@ -411,25 +429,6 @@ $wims_name_part_list
   
 !formend
  !endif
-<p>
-   $name_post
-   !if $job_affi=notes
-    !href cmd=reply&job_affi=qualite $(name_affi[1])
-    ,
-    !href cmd=reply&job_affi=points $(name_affi[2])
-   !else
-    !if $job_affi=qualite
-     !href cmd=reply&job_affi=notes $(name_affi[3])
-,
-     !href cmd=reply&job_affi=points $(name_affi[2])
-    !else
-     !href cmd=reply&job_affi=notes $(name_affi[3])
-,
-     !href cmd=reply&job_affi=qualite $(name_affi[1])
-    !endif
-   !endif
-. </p>
-
 !endif (usercnt=0?)
 
 !set wims_menu_items=!append line sendmail,1,module=adm/class/sendmail\
