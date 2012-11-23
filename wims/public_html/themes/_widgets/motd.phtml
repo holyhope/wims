@@ -1,15 +1,17 @@
 <!-- _widgets/motd.phtml -->
 
 <div class="wims_class_motd">
-!read ./wimshome/log/classes/$wims_class/.motd
+ !read ./wimshome/log/classes/$wims_class/.motd
 </div><!--end of wims_class_motd-->
+
 !let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
 !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
 !if # notin $test and $test2!=$empty
  <div class="wims_class_pmotd">
- !read ./wimshome/log/classes/$wims_class/motd/$wims_user
- &nbsp; [
- !href module=adm/class/motd $(wims_name_actionlist[4])
-] </div><!-- end of wims_class_pmotd-->
+  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
+  &nbsp; [
+  !href module=adm/class/motd $(wims_name_actionlist[4])
+  ] 
+ </div><!-- end of wims_class_pmotd-->
 !endif
 <!-- end _widgets/motd.phtml -->

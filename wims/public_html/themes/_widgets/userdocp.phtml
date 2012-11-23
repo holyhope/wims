@@ -1,4 +1,3 @@
-<!-- _widgets/userdocp.phtml -->
 !set dpcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
 !for i=1 to $dpcnt
  !set d__=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
@@ -13,14 +12,18 @@
 !set dpcnt=!linecnt $dps_list
 
 !if $dpcnt>0
-  <table class="wims_user_docp_table">
+ <!-- _widgets/userdocp.phtml -->
+ <table class="wims_user_docp_table">
   !for i=1 to $dpcnt
    !set s_=!line $i of $dps_list
    !set t_=!line $i of $dpt_list
-   <tr class="wims_user_docp"><td class="wims_user_doc_type">$wims_name_doc</td><td colspan="3">
-    !href module=$s_&$t_ $(dpti_list[$i;])
-   </td></tr>
+   <tr class="wims_user_docp">
+    <td class="wims_user_doc_type">$wims_name_doc</td>
+    <td colspan="3">
+     !href module=$s_&$t_ $(dpti_list[$i;])
+    </td>
+   </tr>
   !next i
-  </table>
- !endif
-<!-- end _widgets/userdocp.phtml -->
+ </table>
+ <!-- end _widgets/userdocp.phtml -->
+!endif

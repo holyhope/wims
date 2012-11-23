@@ -1,22 +1,18 @@
 <!-- _widgets/tailbox.phtml -->
 <div id="wimstailbox">
-	<div class="wimstail">
-		<div class="tailitem">
-			WIMS-$wims_version $E_comp $wims_version_date.
-		</div>
-		<div class="tailitem">
-			$E_manager
-			!mailurl $wims_site_manager\
-			WIMS: $httpd_HTTP_HOST
-		.</div><!--tailitem-->
-		
-		!if $site_logo!=$empty
-		 <!--logo de l'etablissement -->
-         <br class="spacer"/>
-         <div class="institution_logo">
-          <a href="$site_logolink" target="wims_external"><img src="$site_logo" alt="logo de l'etablissement"/></a>
-         </div>
-        !endif
-	</div><!--wimstail-->
+ <div class="wimstail">
+  <div class="tailitem">
+   WIMS-$wims_version $E_comp $wims_version_date.
+  </div>
+  <div class="tailitem">
+   $E_manager
+   !mailurl $wims_site_manager\
+   WIMS: $httpd_HTTP_HOST .
+  </div>
+  
+  !set positionlogo=center
+  !read themes/_widgets/institution_logo.phtml
+
+ </div><!--wimstail-->
 </div><!--wimstailbox-->
 <!-- end _widgets/tailbox.phtml -->

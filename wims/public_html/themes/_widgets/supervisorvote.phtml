@@ -1,16 +1,17 @@
 <!-- _widgets/supervisorvote.phtml -->
 !for i=1 to $votecnt
-  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
-  !distribute lines $sh into st_,ti_,op_,re_
-  $table_tr<td>$wims_name_Vote</td>
+ !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+ !distribute lines $sh into st_,ti_,op_,re_
+ $table_tr
+  <td>$wims_name_Vote</td>
   <td>
-  !href module=adm/vote&job=read&vote=$i $ti_
+   !href module=adm/vote&job=read&vote=$i $ti_
   </td>
   <td>$(wims_name_shstatus[$[$st_+1]])</td>
   <td>
-  !set wims_ref_class=wims_button
-  !href module=adm/vote&job=edit&gstep=0&vote=$i $wims_name_change
+   !set wims_ref_class=wims_button
+   !href module=adm/vote&job=edit&gstep=0&vote=$i $wims_name_change
   </td>
-  </tr>
- !next i
+ </tr>
+!next i
 <!-- end _widgets/supervisorvote.phtml -->
