@@ -1,0 +1,18 @@
+<!-- _widgets/wimsmenumodubox class_type = 3-->
+<div id="wimsmenumodubox">
+ <$div0 class="wimsmenu">
+  <$div1 class="menuitem">
+   !read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
+  </$div1><!--menuitem-->
+  <$div1 class="menuitem">
+ !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
+ !else
+    !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
+ !endif
+  </$div1><!--menuitem-->
+  !read themes/_widgets/extlink.phtml
+ </$div0><!--wimsmenu-->
+ <div class="clearall"></div>
+</div>
+<!--end wimsmenumodubox class_type=3-->

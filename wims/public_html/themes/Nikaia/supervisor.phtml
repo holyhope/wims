@@ -37,32 +37,22 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
  !goto end
 !endif
+!!definition for menumodubox
+!distribute items div,div into div0,div1
 
 !if $class_type isin 3
  $SU_greet.
  !read Subclasses1.phtml
  !if $class_typename=level
- </div><!--wimsbody-->
-</div><!--wimspagebox-->
-
-<!--1ère ouverture de wimsmenumodubox class_type = 3-->
-<div id="wimsmenumodubox">
-<div class="wimsmenu">
- <div class="menuitem">
-  !read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
- </div><!--menuitem-->
- <div class="menuitem">
- !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
-   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
- !else
-    !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
- !endif
- </div><!--menuitem-->
+    </div><!--wimsbody-->
+   </div><!--wimspagebox-->
+  !read themes/_widgets/menumodubox3.phtml
   !goto end
  !else
   !goto nocheck
  !endif
-!endif
+!endif class_type = 3
+
 !if $class_type notin 13
  $SU_greet
  $SU_exp1
@@ -86,16 +76,15 @@ $wims_classname, $wims_institutionname\
 
 !if $quota_free<2
  !if $quota_free<0
-  <p>
-  $wims_name_exceeded
-  </p>
+  <p>$wims_name_exceeded</p>
   <p>
   !href cmd=close&module=home&lang=$lang $wims_name_visitor
-  </p></div><!--wimsbody-->
+  </p>
+ </div><!--wimsbody-->
 </div><!--wimspagebox-->
   !goto end
  !else
-  <br/><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   <br/><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
  !endif
 !endif
 :nocheck
@@ -112,19 +101,9 @@ $wims_classname, $wims_institutionname\
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
 
-<!--2eme ouverture de wimsmenumodubox-->
-
-<div id="wimsmenumodubox">
-  <div class="wimsmenu">
- <div class="menuitem">
-  !if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
-   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
-  !else
-   !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
-  !endif
-  </div><!--menuitem-->
+ !read themes/_widgets/menumodubox4.phtml
  !goto end
-!endif
+!endif class_type=4
 
 !if $class_type=2
  !if $subclasscnt>0
@@ -149,17 +128,10 @@ $wims_classname, $wims_institutionname\
  
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
-
-<!--3eme ouverture de wimsmenumodubox-->
-<div id="wimsmenumodubox">
- <div class="wimsmenu">
-   <div class="menuitem">
-    !read ./adm/oneitem.phtml addclass,1,module=adm/class/regclass
-   </div><!--menuitem-->
- 
+ !read themes/_widgets/menumodubox2.phtml
  !goto end
-!endif
-
+!endif class_type=2
+!! classtype =0 or 1
 <div id="wims_class_manager_msg">
  !read ./wimshome/log/manager_msg.phtml.$lang
 </div>
@@ -170,11 +142,6 @@ $wims_classname, $wims_institutionname\
   !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
 !endif
-!!should be deleted
-!!set ac_0=<span class="small">$(wims_name_shstatus[1])</span>
-!!set ac_1=$(wims_name_shstatus[2])
-!!set ac_2=$(wims_name_shstatus[3])
-!!set ac_3=$(wims_name_shstatus[4])
 
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 
@@ -200,63 +167,15 @@ $wims_classname, $wims_institutionname\
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
 
-<!--4eme ouverture de wimsmenumodubox-->
+!read themes/_widgets/menumodubox0.phtml
 
-<div id="wimsmenumodubox">
-<div class="wimsmenu">
- !read themes/_widgets/classdevtools.phtml
- !read themes/_widgets/classtools.phtml
- !read themes/_widgets/supervisorscore.phtml
-
-!!!!endif ????
-
-<div class="menuitem">
-!if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
-  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
-!else
-  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
-!endif
-</div><!--menuitem-->
 :end
 
-!read themes/_widgets/entlink.phtml
+!reset div0 div1
 
-</div><!--menuitem-->
-</div><!--wimsmenu-->
-<br class="clearall"/>
-</div><!--fermeture unique de wimsmenumodubox-->
-
-<!--wimsmenubox unique-->
-
-<div id="wimsmenubox" class="footer">
- <div class="wimsmenu">
-  <div class="menublock">
-   !if $class_typename notsametext program
-    <span class="menuitem">
-      !read ./adm/oneitem.phtml SE_list,1,module=adm/class/userlist
-    </span><!-- menuitem-->
-    <span class="menuitem">
-      !read ./adm/oneitem.phtml n_participant,1,style=student
-    </span><!-- menuitem-->
-   !endif
-  </div><!--end menublock-->
-
-  <div class="menublock">
-    !read themes/_widgets/supervisormotd.phtml
-!!FIXME should be common with cdt.phtml
-    !read themes/_widgets/supervisorcdt.phtml
-    !read themes/_widgets/supervisorforum.phtml
-  </div><!--end menublock-->
-  <div class="menublock">
-    <div class="menuitem">
-     !read ./adm/oneitem.phtml SE_config,1,module=adm/class/config
-    </div><!--menuitem-->
-    <div class="menuitem">
-     !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
-    </div><!--menuitem-->
-  </div><!--end menublock-->
- </div><!--end wimsmenu-->
-</div><!--end wimsmenubox-->
+!distribute items div, span into div0,div1
+!read themes/_widgets/supervisormenubox.phtml
+!reset div0,div1
 
 </div><!--wimsbodybox-->
 

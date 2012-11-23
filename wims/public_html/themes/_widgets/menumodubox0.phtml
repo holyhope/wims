@@ -1,0 +1,27 @@
+<!-- _widgets/wimsmenumodubox0 class=0 ou 1->
+<div id="wimsmenumodubox">
+ <$div0 class="wimsmenu">
+ !read themes/_widgets/classdevtools.phtml
+ </$div0>
+ <hr class="itemsep"/>
+ <$div0 class="wimsmenu">
+ !read themes/_widgets/classtools.phtml
+ </$div0>
+ <hr class="itemsep"/>
+ <$div0 class="wimsmenu">
+ !read themes/_widgets/supervisorscore.phtml
+</$div0>
+ <hr class="itemsep"/>
+<$div0 class="wimsmenu">
+ <$div1 class="menuitem">
+!if $wims_superclass!=$wims_class and $wims_superclass!=$empty and $auth_method isitemof $auth_method_list
+  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=authsupervisor&auth_user=$ext_login&class=$wims_superclass
+!else
+  !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=supervisor
+!endif
+ </$div1><!--menuitem-->
+ !read themes/_widgets/extlink.phtml>
+  </$div0><!--wimsmenu-->
+  <div class="clearall"></div>
+</div>
+<!-- end _widgets/wimsmenumodubox0 class=0 ou 1->
