@@ -6,13 +6,13 @@ $table_header
  !if $login=$empty
   <caption>$name_addteacher</caption>
  !else
-   <caption>$wims_name_modteacher <tt>$login</tt></caption>
+   <caption>$wims_name_modteacher <span class="tt wims_login">$login</span></caption>
  !endif
   $table_tr<td align="right">$wims_name_Login</td><td>
  !if $login=$empty
   <input size="30" name="login" value=""/>
  !else
-  <tt>$login</tt>
+  <span class="tt wims_login">$login</span>
  !endif
 </td></tr>
  $table_tr<td align="right">
@@ -39,7 +39,7 @@ $table_header
   !endif
   !if $login!=$empty
   $table_tr<td align="right">$wims_name_Login ($name_internal)</td><td>
-    <tt>$login</tt>
+    <span class="tt wims_login">$login</span>
    </td></tr>
   !endif
  $table_tr<td align="right">$wims_name_Login ($name_external)</td><td>
@@ -65,14 +65,14 @@ $table_header
  <td><input size="30" name="email" value="$email"/></td></tr>
 !endif
   !if $user_participate!=$empty
-    $table_tr<td align="right">$name_inscript</th><td><tt>$user_participate</tt></td></tr>
+    $table_tr<td align="right">$name_inscript</th><td><span class="tt">$user_participate</span></td></tr>
   !endif
   !set user_supervisable=!getdef user_supervisable in wimshome/log/classes/$wims_class/.users/$login
   !if $user_supervisable=yes
   !default user_supervise=!getdef user_supervise in wimshome/log/classes/$wims_class/.users/$login
     $table_tr<td align="right">$name_gestion</th><td>
     <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise"/>
-    <tt>$wims_class/1/101, ... </tt></td></tr>
+    <span class="tt">$wims_class/1/101, ... </span></td></tr>
   !endif
 $table_end
 <div class="wimscenter wimsform">

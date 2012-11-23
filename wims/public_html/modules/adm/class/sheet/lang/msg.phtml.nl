@@ -89,7 +89,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  . </div>
  Lijst van deelnemers die aan dit werblad heben gewerkt:
  <p>
- <tt>$worktest</tt>
+ <span class="tt">$worktest</span>
  </p>
  <b>Opmerking</b>. 
  Deze handeling moet eigenlijk niet worden uitgevoerd in een actieve klas !.

@@ -84,7 +84,7 @@
 . </div>
  Lista de cuentas que ya han trabajado en esta hoja:
  <p>
- <tt>$worktest</tt>
+ <span class="tt">$worktest</span>
  </p>
  <b>Nota</b>. Esta acción no debe realizarse salvo si se trata de una clase de 
  pruebas. ¡No siga adelante si los participantes son sus verdaderos alumnos!
