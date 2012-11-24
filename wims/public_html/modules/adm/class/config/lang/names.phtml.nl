@@ -173,11 +173,11 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
  <span class="wims_emph">$nei_description</span> dat gedeeld kan worden.
  
- !set name_newres=!nosubst De klas <em><font color="blue">\
-  $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
+ !set name_newres=!nosubst De klas <span class="wims_emph">\
+  $nei_description</span> geeft  <b>toestemming</b> voor het delen van
  
- !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color="blue">\
- $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
+ !set name_chooseres=!nosubst Kies het materiaal uit klas <span class="wims_emph">\
+ $nei_description</span>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
  
  !set name_warning_authorized=!nosubst De klas <span class="wims_emph">$nei_description</span>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
