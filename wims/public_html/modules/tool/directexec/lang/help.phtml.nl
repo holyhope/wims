@@ -22,7 +22,7 @@
 !endif
 :common
 
-<form action="http://www.google.com/search"/>
+<form action="http://www.google.com/search">
 <div>
 <input type="submit" value="Search Google"/> voor documentatie van
 <select name="q">
