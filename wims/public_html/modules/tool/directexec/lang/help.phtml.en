@@ -24,13 +24,16 @@
 </p>
 :common
 
-<form action="http://www.google.com/search">
-<input type="submit" value="Search Google"> for documentation of
+<form action="http://www.google.com/search"/>
+<div>
+<input type="submit" value="Search Google"/> for documentation of
 <select name="q">
 !for sw in $swname
  <option value="$sw documentation">$sw</option>
 !next sw
-</select></form>
+</select>
+</div>
+</form>
 
 
 !if $special_parm!=flydraw
@@ -50,12 +53,11 @@
 Input and output of any execution is limited to 16K. For obvious security
 reasons, there is no network access, file writing is limited to the current
 directory if not downright denied, and execution time is limited to a few seconds.
-</p>
-<p>
+</p><p>
 !if $securetest=$empty
- Other software can be executed on some other wims servers as <tt>$swname_comp</tt>.<p>
+ Other software can be executed on some other wims servers as <span class="tt">$swname_comp</span>.<p>
 !else
- Special note for C interface: the entry point is <tt>int test(void)</tt>,
- but not <tt>main()</tt>!
+ Special note for C interface: the entry point is <span class="tt">int test(void)</span>,
+ but not <span class="tt">main()</span>!
 !endif
 </p>

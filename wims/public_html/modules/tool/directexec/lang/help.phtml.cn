@@ -1,12 +1,11 @@
 
 !read themes/$wims_theme/table.proc
 !if $special_parm=flydraw
- <p><center><h3>Flydraw 的命令</h3></center><p>
+ <h3 class="wimscenter">Flydraw 的命令</h3>
  !read help/flydraw.phtml
  !exit
 !endif
 
-<p>
 !if $special_parm=jsxgraph
    $name_remark_jsxgraph
   <textarea id="jsxbox" cols="100" rows="15" name="wims_jsxgraph" readonly>
@@ -23,13 +22,16 @@
 !endif
 </p>
 :common
-<form action=http://www.google.com/search>
-<input type=submit value="搜索 Google"> 寻找
+<form action="http://www.google.com/search"/>
+<div>
+<input type=submit value="搜索 Google"/> 寻找
 <select name=q>
 !for sw in $swname
  <option value="$sw documentation">$sw</option>
 !next sw
-</select></form>
+</select>
+</div>
+</form>
 
 
 !if $special_parm!=flydraw
@@ -39,13 +41,14 @@
 </p>
 !endif
 !if $special_parm!=pari
-<p>
+</p><p>
 任何执行的输入输出限制都是 16K. 为安全起见,
 不能连接网络, 写文件限于当前目录.
 执行时间限于几秒.
 
 !endif
-<p>
-对 C 界面的特别注记: 进入点是 <tt>int test(void)</tt>,
-不是 <tt>main()</tt>!
+</p><p>
+对 C 界面的特别注记: 进入点是 <span class="tt">int test(void)</span>,
+不是 <span class="tt">main()</span>!
+</p>
 

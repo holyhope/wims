@@ -24,13 +24,16 @@
 </p>
 :common
 
-<form action="http://www.google.com/search">
-<input type="submit" value="Search Google"> voor documentatie van
+<form action="http://www.google.com/search"/>
+<div>
+<input type="submit" value="Search Google"/> voor documentatie van
 <select name="q">
 !for sw in $swname
  <option value="$sw documentation">$sw</option>
 !next sw
-</select></form>
+</select>
+</div>
+</form>
 
 
 !if $special_parm!=flydraw
@@ -44,18 +47,17 @@
  <a href="http://pari.math.u-bordeaux.fr/dochtml/html.stable/" target="wims_external">
  Pari/GP commando's
  </a>
-
+</p>
 !endif
 <p>
 Invoer en uitvoer  van de aangesproken programma's is beperkt tot 16K.
 Uiteraard is ook netwerktoegang onderbopnden en is het schijven van tempfiles -mits toegestaan- beperkt tot de huidige directory.
 De procestijd wordt beperkt tot een paar seconden. Het geheugengebruikt wordt bewaakt.
-</p>
-<p>
+</p><p>
 !if $securetest=$empty
-    Niet geinstalleerde software kan mogelijke worden uitgevoerd op andere WIMS servers : <tt>$swname_comp</tt>.<p>
+    Niet geinstalleerde software kan mogelijke worden uitgevoerd op andere WIMS servers : <span class="tt">$swname_comp</span>.<p>
 !else
-    Speciale aanwijzing voor C interface: de programmastart is <tt>int test(void)</tt>,
- en niet <tt>main()</tt>!
+    Speciale aanwijzing voor C interface: de programmastart is <span class="tt">int test(void)</span>,
+ en niet <span class="tt">main()</span>!
 !endif
 </p>
