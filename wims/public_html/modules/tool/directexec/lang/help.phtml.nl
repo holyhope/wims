@@ -1,12 +1,11 @@
 
 !read themes/$wims_theme/table.proc
 !if $special_parm=flydraw
- <p><center><h3>Flydraw commando's</h3></center><p>
+ <h3 class="wimscenter">Flydraw commando's</h3>
  !read help/flydraw.phtml
  !exit
 !endif
 
-<p>
 !if $special_parm=jsxgraph
    $name_remark_jsxgraph
   <textarea id="jsxbox" cols="100" rows="15" name="wims_jsxgraph" readonly>
@@ -21,7 +20,6 @@
  </a>
 !goto common
 !endif
-</p>
 :common
 
 <form action="http://www.google.com/search"/>
