@@ -1,4 +1,4 @@
-
+<div class="wimsbody">
 <center><h1>
 Het WIMS logo 
 </h1>

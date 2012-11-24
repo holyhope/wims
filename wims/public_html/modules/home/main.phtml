@@ -4,6 +4,7 @@
 !if _tool isin $wims_session
  !set wims_html_onload=window.focus();window.resizeTo(800,650);window.moveTo(15,35);$wims_html_onload
 !endif
+
 !read adm/css.phtml
 !header1
 
@@ -20,8 +21,12 @@
 
 !if $special_parm=logo
 </div>
- <div class="wimsbody">
- !changeto ./logo/logo.phtml.$lang
+<div id="wimsbodybox">
+ <div id="wimspagebox">
+  !read ./logo/logo.phtml.$lang
+ </div>
+</div>
+!exit
 !endif
 
 !if $special_parm=download
@@ -29,6 +34,7 @@
 <div class="wimsbody">
  !changeto download.phtml
 !endif
+
 !if $wims_user=$empty
  !changeto theme.phtml visitor
 !endif
