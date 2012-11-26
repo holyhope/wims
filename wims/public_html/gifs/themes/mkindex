@@ -19,7 +19,7 @@ fi;
 
 for j in `ls` ; do
  if [ -d "$j" ] && [ ! -s "$j/icon_orig.css" ] ; then
-	rm $j/icon.css ;
+	if [ -s "$j/icon.css" ] ; then rm $j/icon.css ; fi;
 	touch $j/icon.css ;
 	w=0; h=0
 	for a in $type_list ; do 
