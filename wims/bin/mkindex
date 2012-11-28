@@ -37,6 +37,7 @@ SWAC=$WIMS_HOME/public_html/scripts/data/swac
 MODEL=$WIMS_HOME/public_html/scripts/model
 CIRCUIT=$WIMS_HOME/public_html/scripts/data/circuits
 BGIMAGE=$WIMS_HOME/public_html/gifs/bg
+OEF=$WIMS_HOME/public_html/scripts/oef
 
 # MAX_LINELEN
 linelen=15000
@@ -211,6 +212,10 @@ $BASES/doc/.build-index
 
 #model list
 for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done 
+
+#oef/qcm
+# generate exercises in directory oef/$lang/qcm
+for i in fr en cn nl ; do cd $OEF/$i/qcm ; $OEF/mkindex $WIMS_HOME ; done
 
 #oefdocumentation for javascript
 cd $WIMS_HOME
