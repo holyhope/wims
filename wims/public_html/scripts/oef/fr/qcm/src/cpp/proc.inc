@@ -121,7 +121,7 @@
   }
   </table>
   \if{\status issametext end and \repind[\q]>0 and \feedback[\q;\repind[\q]] notsametext }{
-   <p style="color:"\indcolor[\q];font-type:italic">\feedback[\q;\repind[\q]]</p>
+   <p style="color:"\indcolor[\q];font-style:italic">\feedback[\q;\repind[\q]]</p>
   }
   \if{\q<\qcnt and (\steptype issametext all or \q<\step)}{<hr/>}
  }
@@ -159,4 +159,3 @@
 }
 
 \hint{\hint}
-
