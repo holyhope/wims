@@ -5,17 +5,15 @@ textarea="data"
 Al primo passo, contrassegnare le parole; al secondo passo rispondere
 a una domanda su queste parole (texte à répondre). 
 
-<p>
-
-<small>
+<div class="small">
 Se questo esercizio viene inserito in un modulo OEF i dati possono essere
 raccolti in un file ausiliario. In questo caso è sufficiente definire
 la variabile \text{file=} con il nome del file 
 (questo va fatto nel momento in cui si inserisce l'esercizio in un modulo
 OEF in Modtool).
 In Quicktool è disponibile un esercizio di questo tipo più completo.
-</small>
-<p>
+</div>
+
 Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
 
 :%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
@@ -39,6 +37,7 @@ codice dell'esercizio.
 
 :Analisi della ripsosta alla seconda domanda
 Le possibili opzioni sono <span class="tt">case</span>, <span class="tt">nocase</span> (non tenere conto delle maiuscole/minuscole casse).
+Si rien n'est rempli, il n'y a pas de deuxième question posée.
 \text{format=case}
 :Numero di righe di dati
 \text{M=3}
@@ -50,6 +49,7 @@ Una frase per riga. Le parole da selezionare devono essere inserite tra
 due coppie di punti di domanda "??", seguite dal testo della risposta alla
 seconda domanda, usando come separatore il simbolo
 <span class="tt wims_code_words">|</span>.
+$embraced_randitem
 
 \text{data= Le chat ??mange|manger?? la souris.
 Vous ??{avez bu,buvez}|boire?? du {thé,café}.
@@ -63,8 +63,14 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
 {Christian,Paul} et moi ??regardons|regarder?? un film d'aventure.
 }
 
-:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 ################
+\text{accolade=wims(word 1 of \accolade)}
+
 \text{file=}
 \text{partialscore=split}
 
@@ -78,7 +84,7 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
  </style>}
 \text{paste=yes}
 \text{pos_rep=outside}
-\text{second_step=yes}
+\text{second_step=\format notsametext ? yes:no}
 #####################
 
 
@@ -109,7 +115,7 @@ wims(makelist x for x = 1 to \cnt_question)}
 \text{size=\format iswordof dragfill clickfill ? \size x 1}
 
 \text{texte=wims(\texte)}
-\text{texte=wims(embraced randitem \texte)}
+\text{texte=\accolade=1 ?wims(embraced randitem \texte)}
 \text{texte=wims(replace internal ??| by ??&nbsp;| in \texte)}
 \text{texte=wims(replace internal ?? | by ??&nbsp;| in \texte)}
 \matrix{texte=slib(text/markgroup \texte)}
