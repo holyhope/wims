@@ -6,8 +6,8 @@ $name_neighbor_relation $name_with <span class="wims_emph">$nei_description</spa
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
- 
- <p>
+</p>
+<p>
 !if $wims_class notitemof $nei_sup,$nei_part and all notwordof $nei_sup $nei_part
  <span class="wims_emph">$nei_description</span> $name_text1.
 !else
@@ -22,9 +22,11 @@ $name_neighbor_relation $name_with <span class="wims_emph">$nei_description</spa
   !endif
  !endif
 !endif
+</p>
 
 !if all notwordof $nei_sup $nei_part
 !form reply
+<p>
 $name_accept
 !formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
 <input type="submit" value="$wims_name_tosave"/> 
@@ -32,7 +34,7 @@ $name_accept
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
 
-
+</p>
 !formend 
 !endif
 
@@ -43,11 +45,12 @@ $name_accept
  &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=import $wims_name_help
+ </p>
 
  <p>$name_youcan
  !href cmd=reply&job2=import $name_import_resource
  $name_fromtheclass <span class="wims_emph">$nei_description</span>.
- <p>
+ </p>
 !endif
 
 !if  $nei isitemof $n_sup
@@ -56,6 +59,7 @@ $name_accept
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=share $wims_name_help
+</p>
 
 <ul>
 !endif
@@ -71,7 +75,7 @@ $name_accept
   !href cmd=reply&job2=addshare $name_click_ok
 .
  !endif
- <p>
+ </li>
 !endif
 
 !if $nei isitemof $sharing_all
@@ -83,10 +87,10 @@ $name_accept
 . &nbsp;
 !set wims_ref_class=wims_button_help
    !href cmd=help&special_parm=stopshare $wims_name_help
+   </li>
   !endif
  !next r 
  </ul>
- <p>
 !endif
  </li>
 !if $nei isitemof $n_sup and $sharablelist!=$empty
@@ -97,7 +101,7 @@ $name_chooseres:
 &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=sharable $wims_name_help
-<p>
+<br/>
  !set sh=!nospace $sharablelist
  !set sh=!replace internal , by , $$name_ in $$name_$sharablelist
  !formcheckbox mksharable list $sharablelist prompt $sh
@@ -105,7 +109,7 @@ $name_chooseres:
  
 !formend
 !if $nsharable!=$empty
-<p><b>$wims_name_warning</b>: $name_warning_authorized
+<br/><span class="wims_warning">$wims_name_warning</span>: $name_warning_authorized
 !endif
  </li>
 !endif
