@@ -1,13 +1,13 @@
 
 !if $confirm!=$empty and $propagate!=$empty
-$name_propagate_succes:<p><b>
+ <p>$name_propagate_succes:<br/><b>
  !for s in $propagate
   $(name_$s).
  !next s
- </b>
+ </b></p>
 !else
  !form reply
-  $name_propagate_choose: <p>
+  <p>$name_propagate_choose:</p>
 
  !for s in $propall
   !if $(name_$s)!=$empty
@@ -15,10 +15,13 @@ $name_propagate_succes:<p><b>
    <input type="checkbox" name="propagate" value="$s"/>$name_&nbsp;
   !endif
  !next s
- <p>
+ <div class="wimsform wimscenter">
  <input type="submit" name="confirm" value="$wims_name_send"/>
+ </div>
  
 !formend
 !endif
+
 <p>
 $name_warning
+</p>
