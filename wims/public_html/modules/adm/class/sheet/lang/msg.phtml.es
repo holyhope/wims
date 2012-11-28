@@ -146,7 +146,7 @@
 to $wims_menu_items
 
  !form reply
- <input type="hidden" name="job" value=putsource/><p class="wimscenter">
+ <input type="hidden" name="job" value="putsource"/><p class="wimscenter">
  <textarea cols="55" rows="10" name="source">$source</textarea></p>
  <p class="wimscenter"><input type="submit" value="$wims_name_send"/>
  </p>
