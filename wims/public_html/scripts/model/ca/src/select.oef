@@ -5,16 +5,14 @@ textarea="data"
 A la première étape, il est demandé  marquer des mots ; à la seconde étape, 
 une question est posée sur ces mots (texte à répondre). 
 
-<p>
-
-<smaill>
+<div class="small">
 Cet exercice peut facilement être transformé pour être inclus dans un module OEF
 si l'on désire mettre les données dans un fichier auxiliaire. Pour cela,
 il suffit de remplir le champ \text{file=} en mettant le nom du fichier
 (une fois l'exercice transféré dans un module OEF d'un compte Modtool).
 Un exercice du même type plus complet existe dans Quicktool.
-</small>
-<p>
+</div>
+
 Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
 
 :%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
@@ -27,10 +25,9 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 
 :
 \title{Questions sur des mots à sélectionner d'abord}
-:
-\author{Bernadette, Perrin-Riou}
-:
-\email{bpr@math.u-psud.fr}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
 
 :Consigne de la première question
 \text{instruction= Marquer les verbes conjugués.}
@@ -39,6 +36,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 
 :Analyse des réponses de la deuxième question
 Les possibilités sont <span class="tt">case</span>, <span class="tt">nocase</span> (ne tient pas compte de la casse).
+Si rien n'est rempli, il n'y a pas de deuxième question posée.
 \text{format=case}
 :Nombre de lignes des données
 \text{M=3}
@@ -49,6 +47,7 @@ Les possibilités sont <span class="tt">case</span>, <span class="tt">nocase</spa
 Une phrase par ligne. On met entre double points d'interrogation le mot à marquer
 suivi du texte à répondre à la seconde question, séparés par le symbole
 <span class="tt wims_code_words">|</span>.
+$embraced_randitem
 
 \text{data= Le chat ??mange|manger?? la souris.
 Vous ??{avez bu,buvez}|boire?? du {thé,café}.
@@ -62,8 +61,14 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
 {Christian,Paul} et moi ??regardons|regarder?? un film d'aventure.
 }
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 ################
+\text{accolade=wims(word 1 of \accolade)}
+
 \text{file=}
 \text{partialscore=split}
 
@@ -77,7 +82,7 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
  </style>}
 \text{paste=yes}
 \text{pos_rep=outside}
-\text{second_step=yes}
+\text{second_step=\format notsametext ? yes:no}
 #####################
 
 
@@ -86,7 +91,7 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
 \if{\file notsametext}{
   \text{file0=randitem(\file)}
   \integer{cnt_question= wims(recordcnt \file0)}
-  \text{battage=\alea issametext yes ? shuffle(\cnt_question) :
+  \text{battage=\alea issametext yes ? shuffle(\cnt_question):
 wims(makelist x for x = 1 to \cnt_question)}
 \text{texte=wims(record \battage[1] of \file0)}
    }{
@@ -97,7 +102,7 @@ wims(makelist x for x = 1 to \cnt_question)}
   \text{liste=\liste[1..\N]}
   \matrix{data=\data}
   \text{texte=\data[\liste;]}
-  \text{texte=wims(replace internal ; by  </p><p> in <p>\texte</p>)}
+  \text{texte=wims(replace internal ; by  <br/> in \texte)}
 }
 
 \text{autocompletion=\format iswordof case ? autocomplete=off}
@@ -108,7 +113,7 @@ wims(makelist x for x = 1 to \cnt_question)}
 \text{size=\format iswordof dragfill clickfill ? \size x 1}
 
 \text{texte=wims(\texte)}
-\text{texte=wims(embraced randitem \texte)}
+\text{texte=\accolade=1 ?wims(embraced randitem \texte)}
 \text{texte=wims(replace internal ??| by ??&nbsp;| in \texte)}
 \text{texte=wims(replace internal ?? | by ??&nbsp;| in \texte)}
 \matrix{texte=slib(text/markgroup \texte)}
