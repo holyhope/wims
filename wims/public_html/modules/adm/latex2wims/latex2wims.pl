@@ -1391,7 +1391,7 @@ sub algorithmic { my ($Text) = @_;
     $text .= "\n" . $ligne;
     $text =~ s/\n{2,}/\n/g ;
     $text =~ s/\n+/<br\/>/g ;
-    $text =~ s/(<br\/>)+/<br\/>/g ;
+    $text =~ s/(<br\/>)+/<br class="spacer"\/>/g ;
     $text =~ s/(<br>)+/<br\/>/g ;
   }
   $text ;
