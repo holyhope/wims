@@ -38,6 +38,7 @@
 // 23 rawmath(string) returns modified string 4x -> 4*x  ; 4sin(3pi) -> 4*sin(3*pi)
 // 24 words2string(words,separator) returs modified string 1 2 3 --> 1:2:3 or 1@2@3 
 // 25 wordcnt(string) || wordcount(string) returns amount of words " A   B  ABC     " = 3  [a space is not a word]
+// 26 is_text(string) returns 0 if number are present in text
 
 function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
@@ -77,7 +78,7 @@ function myConfirm(txt,reply,server,session,module,counter,color){
     document.getElementById('alarmtext').style.left = w+'px';
     document.getElementById('alarmtext').style.display = "block";
     window.scrollTo(w,h-120);
-    document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input type=\"button\" id=\"schaersvoorde_confirm_ok_button\" value="+r45+" onclick=\"javascript:document.getElementById(\'schaersvoorde_exercise\').setAttribute(\'style\',\'background-color:"+color+"\');document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\'; \" />&nbsp;&nbsp;<input type=\"button\" id=\"schaersvoorde_confirm_nok_button\" value="+r46+" onclick=\"javascript:resetAlarm()\" \>"
+    document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input type=\"button\" id=\"schaersvoorde_confirm_ok_button\" value="+r45+" onclick=\"javascript:document.getElementById(\'schaersvoorde_exercise\').setAttribute(\'style\',\'background-color:"+color+"\');document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\';\" />&nbsp;&nbsp;<input type=\"button\" id=\"schaersvoorde_confirm_nok_button\" value="+r46+" onclick=\"javascript:resetAlarm()\" \>"
 }
 
 function resetAlarm(){
@@ -551,6 +552,14 @@ function arrows(t,arg1,arg2,arg3){
     setAlarm("syntax error in function <br> arrows(t,arg1,arg2,arg3)<br> t is answer <br> arg1=switch, arg1=0: converts ascii arrows to unified \"->\" <br> arg1=1 : converts ascii arrows to unified \"\u2192\" <br> arg1=2 : returns no arrows ,just the text after the last arrow<br> arg1=3 : returns no arrows...the answer is an array <br> arg1=4 : returns the answer ,checks on all steps<br> arg2=variable name<br>arg3=amount if any of arrows...");
 }
 
+function is_text(t){
+    if(t.length == 0 || t == " "){setAlarm(r44);return 0;}
+    var tt=t.toLowerCase();
+    tt = nospace(tt);
+    tt = tt.replace(/[a-z]/g,'');
+    if(tt.length != 0 ){setAlarm("<b>"+t+"</b>...?<br />"+r47);return 0;}
+}
+
 function is_number(t){
     if(t.length == 0 || t == " "){setAlarm(r44);return 0;}
     t=science(t);
@@ -563,7 +572,7 @@ function is_number(t){
 	s=s.replace(f,F);
     }
     s=s.replace(/[a-z\~\!\@\#\$\&\_\=\:\;]/g,'');
-    if(s.length != t.length){setAlarm(r37+" "+t); return 0;}else{return 1;}
+    if(s.length != t.length){setAlarm(r37+"<br /><b>"+t+"</b>..."); return 0;}else{return 1;}
 }
 
 function is_real_number(t){
@@ -571,7 +580,7 @@ function is_real_number(t){
     t=science(t);
     var s=t.toLowerCase();
     s=s.replace(/[a-z\~\!\@\#\$\&\_\=\:\;]/g,'');
-    if(s.length != t.length){setAlarm(r37+" "+t) ; return 0;}else{return 1;}
+    if(s.length != t.length){setAlarm(r37+"<br /><b>"+t+"</b>...") ; return 0;}else{return 1;}
 }
 
 function make_description(list,cnt){

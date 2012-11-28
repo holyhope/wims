@@ -6,8 +6,12 @@
 !! 5) svg answer (via draw or inputfields/textarea [ read_svg();]
 !! 6) FlyApplet drawing via ReadDrawing() : coordinates/points/lines x1:y1,x2:y2,x3:y3....x_n:y_n (wordmax (=20) is adjustable upperlimit ; wordmin (=1) is adjustable underlimit) from FlyApplet0...FlyApplet100
 !! 7) InvulGrid applet via ReadApplet(0,1,2,3) ; carefull applet produces large strings (html/latex)
+
 !if $my_arrows=$empty
     !set my_arrows=2
+!endif
+!if $convert_root=$empty
+    !set convert_root=0
 !endif
 <script type="text/javascript">
 //<![CDATA[
@@ -47,19 +51,21 @@
 	    if( input.length == 0){setAlarm(r1+"\ 1");return;}
 	    if( input.length > 100){setAlarm(r2); return;}
 	    if(input.indexOf('error')!=-1){setAlarm(input);return;}
-	    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
-	    input = nthroot(input);if(input ==" error"){return;}
 	    if(input.indexOf(',') != -1){setAlarm(r4);return;}
 	    if(check_f(input) == 0){return;}if(check_o(input) == 0){return;}
 	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 	    input = science(input);if(input == "error"){return;}
 	    if(check_x(input) == 0){return;}
-	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
+	!if $convert_root=0
+	    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+	    input = nthroot(input);if(input ==" error"){return;}
 	    if(input.indexOf("[") !=- 1){
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
 		if( input.indexOf("[") !=-1){setAlarm(r13);return;}
 	    }
+	!endif
+	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 	    input = input.replace(/#/g,' ');
 	    reply[inputfieldnumber] = input;
 	    inputfieldnumber = 1;
@@ -293,13 +299,15 @@
 	!set insdraw_size=$xsize,$ysize
 	!! voor answer.phtml gebruiken we de opgeslagen variabele "insdraw_settings"
 	!insdraw $(image$n)
-    !endif
-    !if $plot=1
-	!set insplot_set=$(image_settings$n)
-	!insplot $(image$n)
-    !endif
-    !if $svg=1
-	!exec svgdraw $(image$n)
+    !else
+	!if $plot=1
+	    !set insplot_set=$(image_settings$n)
+	    !insplot $(image$n)
+	!else
+	    !if $svg=1
+		!exec svgdraw $(image$n)
+	    !endif
+	!endif
     !endif
     </td>
 !else
@@ -324,7 +332,7 @@
 	    <param name="mayscript" value="true" />
 	    <script type="text/javascript" />
 	    //<![CDATA[
-	    var thisbackground=document.bgColor;if(thisbackground){var obj="\<param name=\"bgcolor\" value=\""+thisbackground+"\" />"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(obj.toString());
+	    if(document.body.style.background){var obj="\<param name=\"bgcolor\" value=\""+document.body.style.background+"\" />"}else{var obj="\<param name=\"bgcolor\" value=\"#ffffff\" />"} document.write(obj.toString());
 	    //]]>
 	    </script>
 	    <param name="largefont" value="$largefont">
@@ -354,10 +362,10 @@
     </td>
 !else
     !if $embed != 1
-     !if $make_tr=1
-	</tr>
-	<tr>
-     !endif
+        !if $make_tr=1
+	    </tr>
+	    <tr>
+        !endif
 	!if $inputs=1
 	<td class="exercise_t" id="use_inputs">
 	    !if $wims_user=supervisor
@@ -406,9 +414,9 @@
 </div>
 
 !if $inputs < 0
-    !! we are using other inputfields called "myinput0...myinput_n"
+<! -- we are using other inputfields not present in this default page...but in a variable (like exotext) called "myinput0...myinput_n"     And we don't want to use the myjavascript template page...  -->
     !if $goback=1
-	!!! after the inputelements are in the DOM-tree: fill-in the previous answers
+	<!--  after the inputelements are in the DOM-tree: try to fill-in the previous answers -->
 	<script type="text/javascript">
 	//<![CDATA[
 	<!-- no validator  -->

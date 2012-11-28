@@ -44,3 +44,5 @@ var r43="Waarom heb je zoveel invoervelden nodig ?";
 var r44="Er is een leeg invulveld...";
 var r45="JA";
 var r46="NEE";
+var r47="Ik verwacht een hier een text antwoord...";
+

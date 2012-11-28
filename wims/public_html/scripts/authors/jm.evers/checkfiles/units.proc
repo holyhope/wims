@@ -123,7 +123,7 @@ score=0
     !else
 	diff=0
     !endif
-    k=$empty    
+    k=$empty
     found=0
     correct_unit=1
     ans=!item $p of $(answer$n)
@@ -141,7 +141,7 @@ score=0
     !if $t>1
 	nw=!item -1 of $test
 	rem6=!record 95 of $remarkdir/commonremarks.$taal
-	rem6=$rem6 <br />$org --> $nw 
+	rem6=$rem6 <br />$org ... $nw 
 	org=$nw
     !endif
     
@@ -348,46 +348,41 @@ score=0
 	!endif
 	dtot_g=!line 1 of $dtot
 	dtot_a=!line 2 of $dtot
-	!if error notin $dtot_a
-	    notation_err=1
-	    # check only if both reply and  answer$n are scientiffic
-	    !if $(dtot_a[6])>0 and $(dtot_g[6])>0
-	    # sig1,dec1,dec2,c_base,exponent,ok
-
-		!for di=1 to 6
-		    a=$(dtot_a[$di])
-		    g=$(dtot_g[$di])
-		    !if $a!=$g
-			notation_err=0
-		        score1=$[0.99*$score1]
-			rem8=!append line $ <br /><span style="color:red">$($digit_remarks[$di]) : $a</span> (<span style="color:green">$g</span>) $ to $rem8
-		    !endif
-		!next di
-	    !else
-		# use internal "algoritm" to check correctness...
-		notation_err=$(dtot_a[7])
-		!if $notation_err=0
-		    !if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
-			score1=$[0.99*$score1]
-			rem8=<br /><span style="color:red">$($digit_remarks[7]) = $(dtot_a[3]) + $(dtot_a[4])</span> &ne; $(dtot_g[3]) + $(dtot_g[4])   
-		    !else
-			notation_err=1
+	!if $unit != 1
+	# unitsfilter will modify numbers : and will render the remarks generated below useless
+	    !if error notin $dtot_a
+		notation_err=0
+		# check only if both reply and  answer$n are scientiffic
+		!if $(dtot_a[6])>0 and $(dtot_g[6])>0
+		# sig1,dec1,dec2,c_base,exponent,ok
+		    !for di=1 to 6
+			a=$(dtot_a[$di])
+		        g=$(dtot_g[$di])
+			!if $a!=$g
+			    notation_err=1
+		    	    score1=$[0.99*$score1]
+			    rem8=!append line $ <br /><span style="color:red">$($digit_remarks[$di]) : $a</span> (<span style="color:green">$g</span>) $ to $rem8
+			!endif
+		    !next di
+		!else
+		    !if $(dtot_a[6])=0
+			!if $[$(dtot_a[3]) + $(dtot_a[4])] != $[$(dtot_g[3]) + $(dtot_g[4])] 
+			    score1=$[0.99*$score1]
+			    rem8=<br /><span style="color:red">$($digit_remarks[6]) = $(dtot_a[3]) + $(dtot_a[4])</span> &ne; $(dtot_g[3]) + $(dtot_g[4])   
+			!endif
 		    !endif
 		!endif
+	    !else
+		errortext=!record 36 of $remarkdir/commenremarks.$taal
+		goback=1
+		maxscore=$[$P3*$maxscore]
+		!exit
 	    !endif
-	    !if $notation_err=0
-		rem7=<br />Je antwoord is niet correct genoteerd...
-	    !endif
-	!else
-	    errortext=!record 36 of $remarkdir/commenremarks.$taal
-	    goback=1
-	    maxscore=$[$P3*$maxscore]
-	    !exit
 	!endif
 	# find precision : using answer$n ; what range for incorrect rounding?
-	dec=!item 4 of $dtot_g
-	c_base=!item 5 of $dtot_g
-	exponent=!item 6 of $dtot_g
+	dec=!item 3 of $dtot_g
+	c_base=!item 4 of $dtot_g
+	exponent=!item 5 of $dtot_g
 	!if $dec >0
 	    # 2.5*10^5 -> 2.45*10^5 - 2.55*10^5 --> prec = 0.1*10^5
 	    # 2.500*10^5 -> 2.495*10^5 - 2.505*10^5  --> prec =  0.01*10^5
@@ -398,7 +393,7 @@ score=0
 	    # 15000 -> 14999.5 - 15000.5 --> prec = 1 
 	    prec = $[0.45*$c_base^($exponent)]
 	!endif
-	!if NaN isin $prec
+	!if NaN isin $prec or $prec=1
 	    # flaw in program?
 	    prec = $diff
 	!endif
@@ -442,7 +437,6 @@ score=0
 	    tot=!exec pari if(abs($A1 - $G1) < $prec,1,0)\
 	    if(abs($A1 - $G1) < 2*$prec,1,0)\
 	    if(abs($A1 - $G1) < 3*$prec,1,0)
-	    
 	    !if $wims_exec_error!=$empty
 		errortext=Something went wrong...contact the systems administrator
 		goback=1

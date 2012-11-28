@@ -44,3 +44,5 @@ var r43="Perché hai bisogno di così tanti campi risposta?";
 var r44="Non hai utilizzato uno dei campi risposta..."; 
 var r45="SI";
 var r46="NO";
+var r47="Mi aspettavo qualcosa del tipo: abc <br />(tipo testo)";
+

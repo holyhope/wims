@@ -44,4 +44,6 @@ var r43="Pourquoi avez-vous besoin de tant de champs de réponses ?";
 var r44="Un des champs de réponses est inutilisé..";
 var r45="OUI";
 var r46="NON";
+var r47="J&rsquo;espérais quelque chose comme: abc (texte)";
+
 
