@@ -105,7 +105,7 @@ Selezionate quelle che volete ripristinare.
 !if $job=clean
  !set title=Manutenzione (pulizia) del corso
  !set name_lines=participant activity lines
- !set name_empty=Il corso è vuoto!<p> Non ci sono risorse del corso che possono essere cancellate.
+ !set name_empty=Il corso è vuoto!<br/> Non ci sono risorse del corso che possono essere cancellate.
  !set name_no_erase=Non si può effettuare la pulizia perché le risorse sono condivise da (from) un altro corso.
 
  !distribute lines Elimina tutto quello che può essere eliminato\
@@ -213,7 +213,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Il vostro corso ha attività in corso e le risorso condivise \
    non sono vuote. Se si interrompe la condivisione ora, non sarà più possibile \
    ripristinarla in seguito. \
- <p>Siete sicuri di voler interrompere definitivamente questa condivisione? 
+ <br/>Siete sicuri di voler interrompere definitivamente questa condivisione? 
  
  !set name_stop=interrompi.
  !endif
@@ -543,28 +543,30 @@ disponibili.</li>
 !exit
 
 :clean
-You cannot erase teaching materials of the class
+<p>
+ You cannot erase teaching materials of the class
  when participant activities have already started.
- <p>
+ </p><p>
  This is an important security measure. If you feel that it is an
  inconvenience, think of the following two aspects.
- <p>
+ </p><p>
  On the one hand, suppose that your password is stolen and someone wants to erase
  something on this page. Your teaching activities would be greatly disturbed and
  your students would be penalised.
- <p>
+ </p><p>
  On the other hand, different teaching materials of the class are inter-dependent.
  If you
  erase some teaching materials without erasing those depending on them, your class
  will no longer work.
  !href cmd=help&special_parm=dependencies Examples.
- <p>
+ </p><p>
  Anyway, if you really want to clean this class, you can always expire it
  (by setting its expiration date to today; the class will disappear the next
  morning), or
  <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
  the webmaster</a> to erase it for you.
- 
+ </p>
+
  !exit
  
 :clean2
@@ -582,7 +584,7 @@ comunque che tutti gli altri corsi
 Server / platform connection allows your class to directly communicate with
 another one on another WIMS server or on another web e-learning platform. Participants
 can easily move from one class to another.
-<p>
+<br/>
 In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
 may continue in the mirror class. Scores on the mirror can be merged later.
@@ -604,24 +606,23 @@ This WIMS server has not declared any connectable remote server. In order
 :import2
  The worksheet you want to import may use exercises defined in the
    neighboring class.
-   <p>
+   <br/>
    If the same exercises do not exist in your class, the imported worksheet
    would not work correctly. Please verify carefully whether all the class
    exercises in the neighbor are duplicated in your class.
 !exit
 :import3
    Exam sheets are based on worksheets to make up their
-   contents. <p>
+   contents. <br/>
    Importing an exam sheet makes sense only if you have exactly the same 
    active worksheets as your neighbor, and only if these worksheets are in the
    same order within the two classes.
-   <p>
+   <br/>
    If this is not the case, the imported exam sheet will almost certainly
    behave erratically.
 !exit 
 :import4
-
-You are about to replace an existing $(name_$itype)
+  You are about to replace an existing $(name_$itype)
   in your class by
   the imported teaching resource. No recovery will be possible after this
   operation, and your existing $(name_$itype), which is different from the
@@ -637,7 +638,7 @@ You are about to replace an existing $(name_$itype)
 :auth1
 Le pagine di configurazione sono accessibili solo se si è definita una 
 connessione sicura.
-<p>
+<br/>
 Dal momento che non è stata configurata una connessione sicura, stiamo inviando
 un messaggio di verifica al tuo indirizzo email. Controlla la posta e inserisci
 qui sotto il codice che hai ricevuto.
@@ -645,16 +646,16 @@ qui sotto il codice che hai ricevuto.
 !exit
 :auth2
 
-<b>Nota</b>. Questa verifica serve a limitare i danni al corso anche in 
+<span class="wims_warning">Nota</span>. Questa verifica serve a limitare i danni al corso anche in 
 caso di furto della password.
 Per una maggiore sicurezza sarebbe opportuno (e più semplice) definire
 correttamente le postazioni di accesso sicure. 
 !exit
 
 :download
-<p><b>Attenzione</b>. Di solito le parti che occupano più spazio sono l'attività
+<p><span class="wims_warning">$wims_name_warning!</span> Di solito le parti che occupano più spazio sono l'attività
 degli iscritti, i messaggi del forum e i documetni del corso. È possibile
-fare più backup separati per ognuna di queste risorse.
+fare più backup separati per ognuna di queste risorse.</p>
 
 !exit
 
