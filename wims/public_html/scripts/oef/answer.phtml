@@ -29,12 +29,12 @@
 
 !if $conditioncnt>0
  !if $embedded_bracket!=$empty
-  <tr><td align="left" colspan="2" nowrap><small>$embedded_bracket</small></td></tr>
+  <tr><td align="left" colspan="2" nowrap><span class="small">$embedded_bracket</span></td></tr>
  !endif
 !endif
 !for i in $condlist
  !if hide notwordof $(condoption$i)
-  <tr><td colspan="2"><b>$(condname$i)</b>:</td><td>
+  <tr><td colspan="2" class="bold">$(condname$i):</td><td>
   !item $(condtest$i)+1 of $condbad,$condgood
   </td></tr>
  !endif
@@ -47,7 +47,7 @@
 !endif
 
 !if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $score<10))
- <p><b>$name_Solution.</b>
+ <span class="bold">$name_Solution.</span>
  !if $solution!=$executed_str or $oef2wims_version<3.10
   $solution
  !else
@@ -56,9 +56,9 @@
 !endif
 
 !if $m_reply_err != $empty
- <pre><font color="red">
+ <pre class="wimswarning">
  $m_reply_err
- </font></pre>
+</pre>
 !endif
   </div>
  </div>
