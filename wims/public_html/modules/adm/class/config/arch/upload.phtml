@@ -5,18 +5,20 @@
 
 !if $no_selection!=$empty
  <b>$wims_name_warning</b>. $name_noselect
- <p>
+ <br/>
 !endif
 
 !if $serial!=$wims_class and $old_testcnt>0
  !set test=bad
 !endif
+
 !if $test=bad
+<div class="wims_alertmsg">
 <span class="wims_warning">$wims_name_warning!</span>
-
 !read lang/names.phtml.$moduclass_lang arch
-
- <hr/> 
+</div>
+!! ?? nsgmls:E: document type does not allow element "HR" here
+!! <hr/> 
 !endif
 
 !form reply
@@ -120,4 +122,6 @@ $name_method&nbsp;:
 
 !formend
 
+<div class="wims_alertmsg">
 !read lang/names.phtml.$moduclass_lang arch_end
+</div>
