@@ -3,10 +3,10 @@
 !header1
 !set module_title=!module title_$lang $module
 !default module_title=!module title $module
-<center><h3>
+<h3 class="wimscenter">
 !href module=$module&cmd=intro WIMS
  $module_title<br/>
-<font size="-1">--- $name_print ---</font></h3></center>
+<span class="smaller">--- $name_print ---</span></h3>
 
 
 !if $error!=$empty
@@ -14,13 +14,14 @@
 !endif
 
 !if ($wims_developer!= or $wims_user=supervisor) and $latex_exists=1
-  <center>
+  <div class="wimscenter">
   !read oef/latex.proc print
-  </center>
+  </div>
 !endif
 !for i=1 to $n
  <div class="emptyline">&nbsp;</div>
- <b>$name_exo</b> $i. (<u><em>$(title_$i)</em></u>)
+ <span class="bold">$name_exo</span> $i. 
+ (<span style="text-decoration:underline,font-style:italic">$(title_$i)</span>)
  !if $(question_$i)=$empty
   ($name_noprint)
  !else
@@ -45,12 +46,12 @@
 !if $test_print=1
 <div class="emptyline">&nbsp;</div><hr/> 
 <div class="wims_solution">
-<center><h3>$name_answers</h3></center>
+<h3 class="wimscenter">$name_answers</h3>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
  !if $t>0
   <div class="emptyline">&nbsp;</div>
-  <b>$name_answer_i.</b><ul>
+  <span class="bold">$name_answer_i.</span><ul>
   !for k=1 to $t
   !set l__=!line $k of $(ans_$i)
   !if $l__ !=
