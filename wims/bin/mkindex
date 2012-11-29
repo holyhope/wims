@@ -37,6 +37,7 @@ BGIMAGE=$WIMS_HOME/public_html/gifs/bg
 OEF=$WIMS_HOME/public_html/scripts/oef
 CLASSES=$WIMS_HOME/log/classes
 DOC=$WIMS_HOME/public_html/scripts/docu
+BASESDOC=$WIMS_HOME/public_html/bases/doc
 
 ## copy all sheet in example class to base/sheet/ for search engine
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
@@ -238,12 +239,19 @@ for cls in $clist; do
   dlist=`ls`
   if [ ! -d "$dlist" ] ; then 
     for doc in $dlist ; do
-      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $cls/doc/$doc 2>/dev/null
+      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 2>/dev/null
     done
   fi
  fi
 done
-
+# compile documents in bases/doc
+cd $BASESDOC
+clist=`ls -d [0-9]*`
+for doc in $clist; do
+  cd $BASESDOC/$doc
+  $DOC/mkindex $WIMS_HOME $BASESDOC/$doc 2>/dev/null
+done
+  
 #oefdocumentation for javascript
 cd $WIMS_HOME
 bin/oefdoc.pl
