@@ -2,7 +2,9 @@
 
 thisdir=`pwd`
 lastdir=$thisdir
+if [ -z "$wims_home" ]; then wims_home=$1; fi;
 if [ -z "$wims_home" ]; then wims_home=$w_wims_home; fi
+if [ -z "$w_wims_class" ] ; then wims_doc=$2 ; fi
 
 while [ -z "$wims_home" ] && [ "$lastdir" != "/" ]
 do
@@ -21,7 +23,7 @@ export w_msg2wims_primitives
 
 test=
 if [ ! -z "$w_wims_class" ]; then
- test=`echo $thisdir | grep '/classes/..$'`
+ test=`echo $thisdir | grep '/classes/..$'` 
 fi
 if [ ! -z "$test" ] && [ -d $wims_home/log/classes/$w_wims_class ]; then
  class_header=$wims_home/log/classes/$w_wims_class
@@ -38,6 +40,13 @@ else
  src=$def/src
 fi
 
+if [ -z "$class_header" ]  && [ ! -z "$wims_doc" ]
+  then
+   class_header=$wims_home/log/classes/$wims_doc
+   def=$class_header
+   src=$class_header/src
+   echo $class_header
+fi
 if [ ! -d $def ]; then 
  echo Directory $def not found.
  exit;

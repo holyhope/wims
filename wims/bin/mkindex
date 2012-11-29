@@ -21,9 +21,6 @@ if [ -z "$test" ]; then WIMS_HOME=..; else WIMS_HOME=$test/..; fi
 cd $WIMS_HOME
 WIMS_HOME=`pwd`
 
-## copy all sheet in example class to base/sheet/ for search engine
-$WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
-
 export mlist slist dicsort_separator dicsort_grouping
 export w_translator_unknown w_dictionary w_translator_switch translator_input
 LANG=C
@@ -39,6 +36,10 @@ CIRCUIT=$WIMS_HOME/public_html/scripts/data/circuits
 BGIMAGE=$WIMS_HOME/public_html/gifs/bg
 OEF=$WIMS_HOME/public_html/scripts/oef
 CLASSES=$WIMS_HOME/log/classes
+DOC=$WIMS_HOME/public_html/scripts/docu
+
+## copy all sheet in example class to base/sheet/ for search engine
+$WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
 
 # MAX_LINELEN
 linelen=15000
@@ -223,6 +224,24 @@ cd $CLASSES
 clist=`ls -d [1-9][0-9][0-9][0-9]`
 for cls in $clist; do
  cd $CLASSES/$cls ;  $OEF/mkindex $WIMS_HOME 2>/dev/null
+done
+
+# compile documents in example class
+cd $CLASSES
+clist=`ls -d [1-9][0-9][0-9][0-9]`
+for cls in $clist; do
+ cd $CLASSES/$cls
+ if [ ! -d doc ] ; then 
+   echo "no document in $cls"
+ else
+  cd doc
+  dlist=`ls`
+  if [ ! -d "$dlist" ] ; then 
+    for doc in $dlist ; do
+      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $cls/doc/$doc 2>/dev/null
+    done
+  fi
+ fi
 done
 
 #oefdocumentation for javascript
