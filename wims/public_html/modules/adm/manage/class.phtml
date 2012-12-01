@@ -23,9 +23,9 @@
 $table_header
 <caption>$name_list</caption>
 $table_hdtr
-<th>$wims_name_name</th><th>$wims_name_action</th><th><small>$wims_name_Language</small></th><th>$wims_name_Supervisor</th>
-<th>$name_created<br/><small>yyyymmdd</small></th>
-<th>$name_expire<br/><small>yyyymmdd</small></th>
+<th>$wims_name_name</th><th>$wims_name_action</th><th class="small">$wims_name_Language</th><th>$wims_name_Supervisor</th>
+<th>$name_created<br/><span class="tt small">yyyymmdd</span></th>
+<th>$name_expire<br/><span class="tt small">yyyymmdd</span></th>
 </tr>
 !if $actives=yes
  <th>load<sup>[1]</sup></th>
@@ -40,7 +40,7 @@ class_creation in wimshome/log/classes/$c_/.def
  !distribute lines $l into l_,s_,m_,f_
  !default f_=--
  $table_tr
- <td><small>$t_<br/>$d_</small></td>
+ <td class="small">$t_<br/>$d_</td>
  <td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
@@ -51,8 +51,8 @@ class_creation in wimshome/log/classes/$c_/.def
 !set wims_ref_class=wims_button
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  </td><td>$l_</td>
- <td><small>
- <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
+ <td class="small">
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a>
  </td><td>$f_<td>$e_</td>
  !if $actives=yes
   !default activ_$c_=-
@@ -67,9 +67,9 @@ $table_end
 $table_header
 <caption>$name_listindependant</caption>
 $table_hdtr
-<th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
-<th>$name_created<br/><small>yyyymmdd</small>
-<th>$name_expire<br/><small>yyyymmdd</small>
+<th>$wims_name_name<th>$wims_name_action<th class="small">$wims_name_Language<th>$wims_name_Supervisor
+<th>$name_created<br/><span class="tt small">yyyymmdd</span>
+<th>$name_expire<br/><span class="tt small">yyyymmdd</span>
 !if $actives=yes
  <th>load<sup>[1]</sup></th>
 !endif
@@ -83,7 +83,7 @@ class_creation in wimshome/log/classes/$c_/.def
  !distribute lines $l into l_,s_,m_,f_
  !default f_=--
  $table_tr
- <td><small>$t_<br/>$d_</small></td>
+ <td class="small">$t_<br/>$d_</td>
  <td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
@@ -94,8 +94,8 @@ class_creation in wimshome/log/classes/$c_/.def
 !set wims_ref_class=wims_button
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  </td><td>$l_</td>
- <td><small>
- <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td class="small">
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a>
  </td><td>$f_</td><td>$e_
  !if $actives=yes
   !default activ_$c_=-
@@ -109,11 +109,11 @@ $table_end
 !if $actives=yes
  <div class="wimscenter">
  !form reply 
- <small><b>[1]</b>. ``<em>load</em>'' 
+ <span class="small bold">[1]</span>. <span class="tt">load</span>'' 
 $name_cumul
- <input type=text name="bst_since" value="$bst_since" onchange="submit()"/>$name_format 
- <span class="wims_emph">yyyymmdd</span></small>.
- <input type=hidden name="keyword" value="$keyword"/>
+ <input type=text name="bst_since" value="$bst_since" onchange="submit()"/>
+ ($name_format <span class="wims_emph">yyyymmdd</span>).
+ <input type="hidden" name="keyword" value="$keyword"/>
 
  !formend
  !href cmd=reply&job=bestclass&keyword=$keyword $wims_name_Show

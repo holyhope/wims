@@ -1,4 +1,4 @@
-<SCRIPT LANGUAGE="JavaScript">
+<script type="text/javascript">
 
 //Created by Fabrice Guerimand
 

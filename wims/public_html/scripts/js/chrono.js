@@ -1,5 +1,5 @@
 
-<script language=javascript type="text/javascript">
+<script type="text/javascript">
 var fixrtick=$wims_read_parm;
 var rtick=fixrtick;
 var enter=new Date();
