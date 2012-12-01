@@ -1,20 +1,25 @@
 
 !form reply
  <input type="hidden" name="job" value="grestrict"/>
- Hier kunt aangeven welke computer netwerkadressen
+ <p>Hier kunt aangeven welke computer netwerkadressen
  mogen deelnemen aan Uw virtuele klas.<br/> 
  Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
  mogelijk andere de instellingen uit de individuele werkbladen
-
-
- <table border="0">
- <tr><td align="right">Toegestane adressen&nbsp;:
- <td><input size="35" name="allow" value="$allow"/>
- <tr><td align="right">Uitgezonderd&nbsp;:
- <td><input size="35" name="except" value="$except"/>
- </table> <p>
+ </p>
+ <div class="wimscenter">
+ <table class="wimsnoborder wimscenter wimsform">
+ <tr><td align="right">Toegestane adressen&nbsp;:</td>
+ <td><input size="35" name="allow" value="$allow"/></td>
+ </tr><tr>
+ <td align="right">Uitgezonderd&nbsp;:</td>
+ <td><input size="35" name="except" value="$except"/></td>
+ </tr>
+ </table>
+ </div>
+ <div class="wimscenter wimsform">
  <input type="submit" name="save" value="$wims_name_tosave"/>&nbsp;&nbsp;&nbsp;
  <input type="submit" name="abandon" value="$wims_name_giveup"/>
+ </div>
 
 !formend
 
@@ -22,7 +27,7 @@
 U kunt een of meerdere adressen invullen in het invulveld.
 De server zal elk ingevuld adres controleren op hostname en ipadres.
 Zelfs al is het ingevulde adres een "sub-string" van de hostname of ip-adres
-<p>
+</p>
 <div class="wims_smallremark">
     <b>Tip.</b>
      In het <span class="wims_label">Toegestane Adressen</span> veld, kunnen ook <em>openings tijden</em> worden aangebracht door de woorden: 
