@@ -491,7 +491,7 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
   $TEXT =~ s/\s*$//; # strip trailing whitespace
  #0 ul et li sans rien
  #1 avec style
- $TEXT =~ s/\\(begin|end)\s*{wimsonly}/\n/g;
+ $TEXT =~ s/\\(begin|end)\s*{wimsonly}//g;
  for my $rubrique (keys %{$ref_env->{list}}) {
      $TEXT = traite_list ($TEXT, $ref, $ref_env, $Id, $rubrique,1);
  }
@@ -533,6 +533,9 @@ for my $rubrique (@liste_env_tabular) {
      warn " ATTENTION : environnement non répertorié : $1" if $1 ne 'matrix';
   }
   $TEXT =~ s,<li>\n+</li>,<li></li>,g;
+  $TEXT =~ s,</div>\s+</div>,</div></div>,g;
+  $TEXT =~ s,</div>\s+<,</div>\n<,g;
+  $TEXT =~ s,<div ([^>]+)>\s+<,<div $1>\n<,g;
   $TEXT;
 }
 
@@ -666,17 +669,17 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
   my $div_f = '</div>';
   if ( $option eq 'titre') { 
     $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;
-    $TEXT =~ s/<\/$rubrique>/<\/span>\n\n/g;
+    $TEXT =~ s/<\/$rubrique>/<\/span>\n/g;
   } elsif (!$a || $option eq 'bloc') {
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])?/$div_d/g;
-    $TEXT =~ s/<\/$rubrique>/$div_f\n\n/g;
+    $TEXT =~ s/<\/$rubrique>/$div_f\n/g;
   } elsif ($option eq 'full') {
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h2 class=\"$b\">$a $1<\/h2>$div_d/g;
     $TEXT =~ s/<$rubrique>/<h2 class=\"$b\">$a<\/h2>$div_d/g;
-    $TEXT =~ s/<\/$rubrique>/$div_f\n\n/g;
+    $TEXT =~ s/<\/$rubrique>/$div_f\n/g;
   } else  { 
     $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;
-    $TEXT =~ s/<\/$rubrique>/<\/span>\n\n/g;
+    $TEXT =~ s/<\/$rubrique>/<\/span>\n/g;
   }
   $TEXT;
 }
@@ -747,12 +750,15 @@ sub columns { my ( $b ) = @_;
 
 sub column { my ( $b ) = @_; 
  my @v = extract_bracketed ($b, '[]') ;
- my $option = $v[0] ;  
- $option=~ s/\[\s*b\s*\]/bottom/ ;  
- $option=~ s/\[\s*t\s*\]/top/ ;
- $option=~ s/\[\s*c\s*\]/middle/ ; 
- $option=~s/\[\s*\]/middle/;
- if (!$option) { $option='middle'} ;
+ my $option = '';
+ $option= $v[0] ; 
+ if($option) {
+  $option=~ s/\[\s*b\s*\]/bottom/ ;  
+  $option=~ s/\[\s*t\s*\]/top/ ;
+  $option=~ s/\[\s*c\s*\]/middle/ ; 
+  $option=~s/\[\s*\]/middle/; 
+  }
+ else{ $option='top'} ;
  @v = extract_bracketed ($v[1], '{}') ;
  my $width = $v[0] ;
  $width =~ s/\{(.*)\}/$1/;
@@ -1233,6 +1239,7 @@ sub traitement_initial { my ($TEXT) = @_;
 sub traite_beamer {  my ($TEXT) = @_;
    $TEXT =~ s/\\uncover\s*(<([^>]+)>)?\s*{(.*)}/\\fold{.}{-->}{$3}/g ; 
    $TEXT =~ s/\s*\\frametitle{([^}]+)}/store_frametitle($1)/ge;
+   $TEXT =~ s/\\pause//g;
    $TEXT ;
 }
 
