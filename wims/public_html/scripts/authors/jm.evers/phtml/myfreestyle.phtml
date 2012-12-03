@@ -13,6 +13,9 @@
 !if $convert_root=$empty
     !set convert_root=0
 !endif
+!if $use_ineq != 1
+    !set use_ineq=0
+!endif
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator  -->
@@ -31,6 +34,7 @@
     }
     !endif
 !endif
+    <!-- do not use "' in description -->
     var descr_list="$description";
     var descr_cnt = 30;
     var description = make_description(descr_list,descr_cnt);
@@ -44,6 +48,7 @@
 	var show="<ol>";
 	var inputfieldnumber = 0;
 	var reply = new Array();
+	var tmp_show;
 
 	if(document.getElementById("MathView")){
 	<!-- there can only be one...mathview -->
@@ -56,6 +61,7 @@
 	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 	    input = science(input);if(input == "error"){return;}
 	    if(check_x(input) == 0){return;}
+	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 	!if $convert_root=0
 	    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
 	    input = nthroot(input);if(input ==" error"){return;}
@@ -65,14 +71,13 @@
 		if( input.indexOf("[") !=-1){setAlarm(r13);return;}
 	    }
 	!endif
-	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
 	    input = input.replace(/#/g,' ');
 	    reply[inputfieldnumber] = input;
 	    inputfieldnumber = 1;
 	}
 
 	if(document.getElementById("InvulGrid0") ){
-	    var p = 0;var tmp_show;var tmp_reply;var tmp_htmlreply;var tmp_latexreply;
+	    var p = 0;var tmp_reply;var tmp_htmlreply;var tmp_latexreply;
 	    var latexreply = "";var invulgrid;
 	    !if $decimals=1
 		var decimals=1;
@@ -131,14 +136,17 @@
 		if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;}
 		input = nthroot(input);if(input == "error"){return;}
 		if(input.indexOf(',') != -1){setAlarm(r4);return;}
-		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		!if $use_ineq!=1
+		    // all arrows will be converted to "->" or only last answer will be stored 
+		    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		!endif
 		if(check_f(input) == 0){return;}
 		if(check_o(input) == 0){return;}
 		if(check_log_NaN(input) == 0){return;}
 		if(check_sqrt_NaN(input)==0){return;}
 		input = science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
+		tmp_show = input;
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
@@ -146,6 +154,16 @@
 		}
 		input=input.replace(/#/g,' ');
 		reply[inputfieldnumber] = input;
+		if( tmp_show.indexOf('<') != -1 || tmp_show.indexOf('>') != -1 ){
+		    //  no interferance with arrows : "->"
+		    if( input.indexOf('=>') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&gt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&gt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&ge;&nbsp;2]</span>");return;}
+		    if( input.indexOf('=<') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&lt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&lt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&le;&nbsp;2]</span>");return;}
+		    tmp_show=tmp_show.replace(/\>=/g,'&ge;');
+		    tmp_show=tmp_show.replace(/\<=/g,'&le;');
+		    tmp_show=tmp_show.replace(/\>/g,'&gt;');
+		    tmp_show=tmp_show.replace(/\</g,'&lt;');
+		}
+		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>";
 		inputfieldnumber++;
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
@@ -175,12 +193,14 @@
 		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
 		input = nthroot(input);if(input == "error"){return;}
 		if(input.indexOf(',') != -1){setAlarm(r4);return;}
+		!if $use_ineq != 1
 		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		!endif
 		if(check_f(input) == 0){return;}if(check_o(input) == 0){return;}
 		if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 		input=science(input);if(input == "error"){return;}
 		if(check_x(input) == 0){return;}
-		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
+		tmp_show = input;
 		if( input.indexOf("[") !=- 1 ){
 		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
 		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
@@ -189,6 +209,16 @@
 		input = input.replace(/#/g,' ');
 		if(p>99){break;}
 		reply[inputfieldnumber] = input;
+		if( tmp_show.indexOf('<') != -1 || tmp_show.indexOf('>') != -1 ){
+		    //  no interferance with arrows : "->"
+		    if( input.indexOf('=>') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&gt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&gt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&ge;&nbsp;2]</span>");return;}
+		    if( input.indexOf('=<') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&lt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&lt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&le;&nbsp;2]</span>");return;}
+		    tmp_show=tmp_show.replace(/\>=/g,'&ge;');
+		    tmp_show=tmp_show.replace(/\<=/g,'&le;');
+		    tmp_show=tmp_show.replace(/\>/g,'&gt;');
+		    tmp_show=tmp_show.replace(/\</g,'&lt;');
+		} 
+		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>";
 		inputfieldnumber++;
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
@@ -202,7 +232,9 @@
 		input = svg_reply[p];
 		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
 		input = nthroot(input);if( input == "error"){return;}
+		!if $use_ineq != 1
 		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
+		!endif
 		if(check_f(input) == 0){return;}
 		if(check_o(input) == 0){return;}
 		if(check_log_NaN(input) == 0){return;}
@@ -239,7 +271,11 @@
 		!if $(formula$n) != $empty
 		    !insmath $(formula$n)
 		!else
-		    $(description[1])
+		    <ul class="vlist"><!-- this "span" line-height / font-size is related to schaersvoorde.css : "schaersvoorde_input" class font-size -->
+		    !for p=1 to $inputs
+			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p])</span></li>
+		    !next p
+		    </ul>
 		!endif
 		</td>
 		<td class="exercise_m">
@@ -297,11 +333,13 @@
     <td class="exercise_t">
     !if $draw=1
 	!set insdraw_size=$xsize,$ysize
+	!set ins_attr=id="myimage"
 	!! voor answer.phtml gebruiken we de opgeslagen variabele "insdraw_settings"
 	!insdraw $(image$n)
     !else
 	!if $plot=1
 	    !set insplot_set=$(image_settings$n)
+	    !set ins_attr=id="myimage"
 	    !insplot $(image$n)
 	!else
 	    !if $svg=1
@@ -377,15 +415,14 @@
 	!else
 	    !if $inputs > 1
 	    <td class="exercise_t" id="use_inputs">
-		<ul class="zebra_list">
 	        !set a_items=!itemcnt $(answer$n)
 		!if $a_items != $[floor($inputs)]
 	            !set use_lines=1
 		!else
 	    	    !set use_lines=0
 		!endif
+		<table class="zebra_table_h2">
 		!for p=1 to $inputs
-		    <li>
 		    !if $wims_user=supervisor
 			!if $use_lines=1
 			    !set deelantwoord=!line $p of $(answer$n)
@@ -395,10 +432,9 @@
         	    !else
 			!set deelantwoord=!item $p of $(reply$n)
 		    !endif
-			$(description[$p])&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
-		    </li>
+		    <tr><td>$(description[$p])</td><td>$m_rightarrow</td><td><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></td><td>&nbsp;$(ex$p)</td></tr>
 		!next p
-		</ul>
+		</table>
 	    </td>
 	    !endif
 	!endif

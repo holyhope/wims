@@ -6,6 +6,7 @@
 # y=s*x^t-r
 # this checkfile will return the exercise with penalties more often than is wanted
 # because it's very tricky to let students fill in freestyle equations 
+# 11/2012 added trigrat() to maxima check 
 n=$counter
 goback=0
 errortext=$empty
@@ -101,9 +102,9 @@ arglist=!lower $arglist
     !endif
     !if $s isin $A2
 	!increase noc
-    !endif	
-!next s    
-	
+    !endif
+!next s
+
 !if $con=0 and $noc=0
     testvar1=!randitem $arglist
     testvar2=!item 1 of $varlist
@@ -165,7 +166,7 @@ arglist=!lower $arglist
 		goback=1
 		maxscore=$[$maxscore*$P6]
 		!exit
-	    !endif	
+	    !endif
 	!else
 	    AAA=!nospace $A1
 	!endif
@@ -195,7 +196,7 @@ GGG=!nospace $GGG
 	    # pari en ln -> log
 	    AAA=!replace internal $i by LOG in $AAA
 	    GGG=!replace internal $i by LOG in $GGG
-	!else    
+	!else
 	    AAA=!replace internal $i by $I in $AAA
 	    GGG=!replace internal $i by $I in $GGG
 	    # sin(x) -> SIN(x)
@@ -220,9 +221,11 @@ GGG=!nospace $GGG
 
 #T1=!evalsubst x=10 in $AAA
 #T2=!evalsubst x=10 in $GGG
-score=!exec maxima if ratsimp($AAA) = ratsimp($GGG) then 1 else 0;\
+test=!exec maxima if ratsimp($AAA) = ratsimp($GGG) then 1 else 0;\
 if ratsimp(rationalize($AAA)) = ratsimp(rationalize($GGG)) then 1 else 0;\
-if rationalize(expand(float($AAA))) = rationalize(expand(float($GGG))) then 1 else 0;
+if rationalize(expand(float($AAA))) = rationalize(expand(float($GGG))) then 1 else 0;\
+trigexpandtimes=true;trigexpandplus=true;\
+if trigrat((trigreduce($AAA))) = trigrat((trigreduce($GGG))) then 1 else 0;
 
 !if $wims_exec_error!= $empty
     errortext=!record 26 of $remarkdir/commonremarks.$taal
@@ -231,13 +234,16 @@ if rationalize(expand(float($AAA))) = rationalize(expand(float($GGG))) then 1 el
     !exit
 !endif
 
-t1=!line 1 of $score
-t2=!line 2 of $score
-t3=!line 3 of $score
-tt=$[$t1 + $t2 + $t3]
+test=!words2items $test
+
+tt=0
+!for p in $test
+    !if $p isin 0,1
+	tt=$[$tt+$p]
+    !endif
+!next p
 
 score=0
-
 !if $tt>0
     score=1
 !else
@@ -262,7 +268,7 @@ score=0
 	    !else
 		score=0
 	    !endif
-	!endif	
+	!endif
     !else
 	score=0
     !endif

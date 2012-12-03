@@ -64,7 +64,7 @@
     <tr>
     !endif
     <td class="exercise_m">
-	<ul class="vlist">
+	<table class="zebra_table_h2">
     !set a_items=!itemcnt $(answer$n)
     !if $a_items != $[floor($inputs)]
         !set use_lines=1
@@ -72,7 +72,6 @@
 	!set use_lines=0
     !endif
     !for p=1 to $inputs
-	<li>
 	!if $wims_user=supervisor
 	    !if $use_lines=1
 		!set deelantwoord=!line $p of $(answer$n)
@@ -82,10 +81,9 @@
         !else
 	    !set deelantwoord=!item $p of $(reply$n)
 	!endif
-	    $(description[$p])&nbsp;$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
-	</li>
+	    <tr><td>$(description[$p])</td><td>$m_rightarrow</td><td><input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" /></td><td>&nbsp;$(ex$p)</td></tr>
     !next p
-	</ul>
+	</table>
     </td>
 !endif
     </tr>
