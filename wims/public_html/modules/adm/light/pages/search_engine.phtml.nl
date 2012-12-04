@@ -39,7 +39,7 @@ De voorkeurstaal van het gezochte materiaal kan ook worden ingevoerd.
 
 <h5>Zoektermen</h5>
 Afgezien van de gebruikelijke zoektermen kan ook bijvoorbeeld <br/>
-een woord als <tt>levelH1</tt> worden gebruikt om een lijst met materiaal te verkrijgen <br/>
+een woord als <span class="tt">levelH1</span> worden gebruikt om een lijst met materiaal te verkrijgen <br/>
 op middelbare school klas 1 niveau.<br/>
 De interne zoekmachine vergelijkt de zoekterm met de sleutelwoorden die de schrijvers van WIMS materiaal
 als "keywords" voor hun werk hebben vastgesteld.
@@ -48,9 +48,9 @@ Bij het invoeren van meerdere termen, wordt een lijst met alle bronmateriaal get
 
  
 <h5>Materiaal</h5> 
-De keuze <tt>$C_A</tt> zoekt in alle bronnen, behalve <tt>$C_P</tt> en  <tt>$C_S</tt><br/>
-De keuze <tt>$C_X</tt> zoekt in alle online oefeningen , zoals in <tt>$C_O</tt><br/>
-Bij de keuze <tt>$C_P</tt> moet er een zoekterm worden ingevoerd.
+De keuze <span class="tt">$C_A</span> zoekt in alle bronnen, behalve <span class="tt">$C_P</span> en  <span class="tt">$C_S</span><br/>
+De keuze <span class="tt">$C_X</span> zoekt in alle online oefeningen , zoals in <span class="tt">$C_O</span><br/>
+Bij de keuze <span class="tt">$C_P</span> moet er een zoekterm worden ingevoerd.
 
 <h5>Default zoektaal</h5>
 De interne zoekmachine zoekt naar materiaal in alle beschikbare talen.
@@ -64,7 +64,7 @@ worden de treffers getoond met in onderstaande prioriteiten volgorde:
 
 <h5>Het adres van materiaal op de server</h5>
 <p>
-Wanneer het echte adres van WIMS lesmateriaal , zoals <span class="tt wims_address">E4/grammar/oeffonction.fr</span> bekend is
+Wanneer het echte adres van WIMS lesmateriaal, zoals <span class="tt wims_address">E4/grammar/oeffonction.fr</span> bekend is
 kan dit ook rechtstreeks in de zoekmachine worden ingevoerd.
 </p>
 </div>
