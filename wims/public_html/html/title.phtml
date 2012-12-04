@@ -2,23 +2,26 @@
 
 !read name.phtml.$module_language
 !set wims_name_titlehelp=$wims_name_help
-<div class="titre_recherche">
-<h1 class="wims_title">
-!if $wims_mode=popup
- <a target="wims" href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=$module">$wims_title_title</a>
- <span class="wims_close_window">[<a href="#" onclick="window.close();">$wims_name_back</a>]</span>
-!else
- <span class="titre">$wims_title_title</span>
- !if $cmd=intro or $cmd=help
-  <span class="wimssubintro">
-  !if $cmd,$special_parm=help,about
-   --- $wims_name_about ---
+
+<!-- Begin html/title.phtml -->
+<div class="title_box">
+ <h1 class="wims_title">
+  !if $wims_mode=popup
+   <a target="wims" href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=$module">$wims_title_title</a>
+   <span class="wims_close_window">[<a href="#" onclick="window.close();">$wims_name_back</a>]</span>
   !else
-   --- $(wims_name_title$cmd) ---
+   <span class="titre">$wims_title_title</span>
+   !if $cmd=intro or $cmd=help
+    <span class="wimssubintro">
+     !if $cmd,$special_parm=help,about
+      --- $wims_name_about ---
+     !else
+      --- $(wims_name_title$cmd) ---
+     !endif
+    </span>
+   !endif
   !endif
-  </span>
- !endif
-!endif
-<br class="spacer"/>
-</h1>
+  <br class="clearall"/>
+ </h1>
 </div>
+<!-- end html/title.phtml -->

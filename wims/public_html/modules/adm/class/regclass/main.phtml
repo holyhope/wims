@@ -3,8 +3,10 @@
 !read tabletheme
 !header1
 
+<!-- Begin regclass/main.phtml -->
+
 <!--!read adm/title.phtml 3\-->
-<div class="titre_recherche">
+<div class="title_box">
 	<h1 class="wims_title">
 		<!--WIMS $httpd_HTTP_HOST\-->
 		$title
@@ -23,7 +25,7 @@
  </div>
  !if $restart!=no
   <p>
-  !href module=$module&cmd=reply&step=0 $name_again
+   !href module=$module&cmd=reply&step=0 $name_again
   </p>
  !endif
  !goto end
@@ -34,33 +36,37 @@
 !!read local.phtml
 <div class="contenu">
  $name_choose 
- <p>
- !href cmd=reply&step=0&cltype=0 $wims_name_create_class
- </p>
- !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
- to $wims_menu_items
- <p>
- !if 2 isitemof $alltypes
-  !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
-  !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
- to $wims_menu_items
- !else
-  <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
- !endif
+ 
+  <p>
+   !href cmd=reply&step=0&cltype=0 $wims_name_create_class
   </p>
-   <p>
- !if 4 isitemof $alltypes
-  !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
-  ($name_expert)
-  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
- to $wims_menu_items
- !else
-  <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
- !endif
- </p>
+ 
+  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+  to $wims_menu_items
+ 
+  <p>
+   !if 2 isitemof $alltypes
+    !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
+    !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+    to $wims_menu_items
+   !else
+    <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
+   !endif
+  </p>
+ 
+  <p>
+   !if 4 isitemof $alltypes
+    !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
+    ($name_expert)
+    !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+    to $wims_menu_items
+   !else
+    <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
+   !endif
+  </p>
   
- <span class="wims_warning">$wims_name_help</span>:
- !read lang/help.phtml.$modu_lang 1
+  <span class="wims_warning">$wims_name_help</span>:
+  !read lang/help.phtml.$modu_lang 1
  </div>
  !goto end
   
@@ -225,16 +231,16 @@ $table_end
 
  !form reply
  <input type="hidden" name="step" value="2"/>
-<div class="wimsform">
- !if $Cltype!=1
-  <label for="passsup"> $wims_name_Password ($name_sup)</label> 
-  <input type="password" name="passsup" id="passsup" maxlength="16"/>
- !endif
- !if $pword!=$empty
- <label for="password">$wims_name_Password ($name_classesss)</label>
-  <input type="password" name="password" id="password" maxlength="16"/>
- !endif
- <p class="wimscenter"><input type="submit" value="$name_continue"/></p>
+ <div class="wimsform">
+  !if $Cltype!=1
+   <label for="passsup"> $wims_name_Password ($name_sup)</label> 
+   <input type="password" name="passsup" id="passsup" maxlength="16"/>
+  !endif
+  !if $pword!=$empty
+   <label for="password">$wims_name_Password ($name_classesss)</label>
+   <input type="password" name="password" id="password" maxlength="16"/>
+  !endif
+  <p class="wimscenter"><input type="submit" value="$name_continue"/></p>
  </div>
  
 !formend
@@ -246,12 +252,14 @@ $table_end
  !form reply
 <div class="wimsform">
  <input type="hidden" name="step" value="3"/>
- <p class="wimscenter"><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode"/>
+ <p class="wimscenter">
+  <label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode"/>
+ </p>
  <p><input type="submit" value="$name_continue"/></p>
- </div>
+</div>
  
 !formend
- <span class="wims_warning">$wims_name_warning</span>: $name_warning_code
+ <span class="wims_warning">$wims_name_warning</span>: <span class="warning_code">$name_warning_code</span>
  !goto end1
 !endif
 
@@ -267,7 +275,7 @@ $table_end
  !else
    !set link_=http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?
  !endif
- <p></p>
+ <br class="spacer"/>
  !read adm/class/links.phtml $code
  !goto end
 !endif
@@ -283,5 +291,4 @@ $table_end
 !tail
 
 !set step=
-
 
