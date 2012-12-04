@@ -260,7 +260,7 @@ out1 ('sheet', $SHEET) ;
 $ABOUT = $hash{about}{main} ; 
 out1 ('about.phtml', (($ABOUT)? $ABOUT :'') . '
 <p>
-Ce document a été créé par Latex2wims.<p>
+Ce document a été créé par Latex2wims.</p>
 
 !changeto docu/about.phtml') ;
 if (!($hash{author}{main})) {
@@ -430,7 +430,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
     $ref->{toc}{$Id} .= "\n<XXXX=\"$id\">\\link{$id}{$ref->{tittoc}{$id}
-    }$tp <YYYY=\"$id\">\n";
+    }$tp <YYYY=\"$id\">";
   }
  #maintenant, ce qui reste dans $text est exactement ce qu'on doit mettre dans le hash->{text}{$Id}
   $ref->{text}{$Id} = $text;
@@ -1397,8 +1397,8 @@ sub algorithmic { my ($Text) = @_;
     if ($ligne =~ /^\s*\\COMMENT/) { $ligne = "<i>$ligne</i>\n" };
     $text .= "\n" . $ligne;
     $text =~ s/\n{2,}/\n/g ;
-    $text =~ s/\n+/<br\/>/g ;
-    $text =~ s/(<br\/>)+/<br class="spacer"\/>/g ;
+    #$text =~ s/\n+/<br\/>/g ;
+    $text =~ s/(<br\s*\/>)+/<br class="spacer"\/>/g ;
     $text =~ s/(<br>)+/<br\/>/g ;
   }
   $text ;
@@ -1429,8 +1429,8 @@ sub selection { my ($text, $couleur, @tag) = @_ ;
 
 sub clean { my ($text, $ref) = @_;
   return '' if !defined($text);
-   $text =~ s/<XXXX="\w*">//g;
-   $text =~ s/<YYYY="\w*">//g;
+   $text =~ s/<XXXX="\w*">/<div class="no_selected">/g;
+   $text =~ s/<YYYY="\w*">/<\/div>/g;
    $text =~ s/ZZZZZ(\w+)/store_tip($1,$ref)/ge;
    $text;
 }
