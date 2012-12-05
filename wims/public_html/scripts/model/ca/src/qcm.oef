@@ -18,6 +18,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\title{QCM à la suite}
 :\author{Bernadette, Perrin-Riou}
 :\email{bpr@math.u-psud.fr}
+:\credits{}
 :Instruction Globale
 Tapez ici une instruction commune à toutes les questions de l'exercice
 \text{instruction=Instruction globale : Répondez à chaque question d'une première série, validez, puis répondez aux questions de la seconde série.}
@@ -72,6 +73,11 @@ padding: 0.2em;}
 :Pourcentage de réussite demandée pour passer à l'étape suivante (si MAX >1)
 
 \text{percent=0}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
 :Question 
 <p>Entrez ici la question à poser, selon le format suivant : </p>
@@ -181,7 +187,7 @@ Le Lac des cygnes
 Casse-noisette}
 
 :
-
+\text{accolade=wims(word 1 of \accolade)}
 \language{fr}
 \computeanswer{no}
 \format{html}
@@ -303,7 +309,7 @@ wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
    }
  \text{preliminaire=\test_inst=1  ? \rab_inst:&nbsp;}
  \text{QUEST=\test_inst=1 ? wims(line 2 to -1 of \QUEST)}
-  \matrix{QUEST=wims(embraced randitem \QUEST)}
+  \matrix{QUEST=\accolade=1 ?wims(embraced randitem \QUEST)}
   \matrix{question = \question
   \QUEST[1;]}
   \matrix{PRELIMINAIRE=\PRELIMINAIRE
@@ -412,7 +418,7 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;2]>0 and \TEST[\h;3]=0}{
                    <span class="incomplete">\incomplete_answer_text
           </span>}
-         \if{\TEST[\h;3]>0}{<font color="red">\bad_answer_text</font>}
+         \if{\TEST[\h;3]>0}{<span style="color:red">\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
          \if{\answer_given=yes}{
           <br/> \qcm_prompt2 

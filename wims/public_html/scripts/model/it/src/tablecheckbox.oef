@@ -73,12 +73,12 @@ immagini.
 \css{<style type="text/css">
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
    table.tableau {border:solid 1px;
-    border-collapse:collapse;}
+    border-collapse:collapse;margin-left:auto;margin-right:auto;}
     table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;
     padding-left:10px;margin-left:20px;}
    ol li {list-style: upper-alpha; }
     table.tableau th { background-color:#CCCFFF;}
-     table.tableau tr > th:first-child {width:400px;}
+    table.tableau tr > th:first-child {width:400px;}
  </style>}
  \text{nonoui=\nonoui issametext ? <img src="scripts/authors/jm.evers/gifs/ok.gif" width="15"/>,<img src="scripts/authors/jm.evers/gifs/nok.gif" width="15"/>}
 \if{\file notsametext}{
@@ -119,19 +119,18 @@ wims(record \s of \file)}
 \text{col=1}
 \statement{
 <div class="question"> \instruction
-<center>
+
 <table class="tableau"><tr> <th></th>
 \for{k=1 to \attribut_cnt}{<th colspan="\col">\attribut[\k]</th>}
 </tr>
 \for{j=1 to \N}{ 
   <tr><th>\data[\j;1]</th>
    \for{k=1 to \attribut_cnt}{
-    \if{\step=1}{<td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
+    \if{\step=1}{<td style="color:\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
     }
   </tr>
 }
 </table>
-</center>
 </div>
 }
 \answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}

@@ -29,6 +29,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\title{Choix multiple}
 :\author{XIAO, Gang}
 :\email{xiao@unice.fr}
+:\credits{}
 
 :Nombre de choix à présenter. Au plus 10.
 Vous devez définir suffisamment de choix. Sinon l'exercice affichera seulement ce qui est disponible.
@@ -54,6 +55,7 @@ Quand il y a plusieurs bons choix, il suffit d'en choisir un, peu importe lequel
 :Le(s) bon(s) choix, un par ligne.
 On peut en placer plusieurs (un par ligne) pour tirer au hasard.
 Evitez les phrases trop longues ! Aucun point-virgule dans la phrase.
+
 $embraced_randitem
 \matrix{datatrue=
 Le bon choix 1.
@@ -94,7 +96,14 @@ Ce texte s'affichera après la réponse de l'apprenant, en cas de bonne reponse ou
 Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une mauvaise réponse.
 \text{feedback_mauvais=}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 
 \text{empty=}
 \if{\feedback_general != \empty}{
@@ -134,8 +143,8 @@ Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une 
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
-\text{explain=wims(embraced randitem \explain)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 \text{ans=positionof(1,\ind)}
 \text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
 \text{anstype=checkbox iswordof \option?checkbox:radio}

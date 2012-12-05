@@ -66,7 +66,7 @@ rabbit,1,0,0,0}
 \css{<style type="text/css">
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
    table.tableau {border:solid 1px;
-    border-collapse:collapse;}
+    border-collapse:collapse;margin-left:auto;margin-right:auto;}
     table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;
     padding-left:10px;margin-left:20px;}
    ol li {list-style: upper-alpha; }
@@ -112,19 +112,18 @@ wims(record \s of \file)}
 \text{col=1}
 \statement{
 <div class="question"> \instruction
-<center>
+
 <table class="tableau"><tr> <th></th>
 \for{k=1 to \attribut_cnt}{<th colspan="\col">\attribut[\k]</th>}
 </tr>
 \for{j=1 to \N}{ 
   <tr><th>\data[\j;1]</th>
    \for{k=1 to \attribut_cnt}{
-    \if{\step=1}{<td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
+    \if{\step=1}{<td style="color:\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
     }
   </tr>
 }
 </table>
-</center>
 </div>
 }
 \answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}
@@ -138,10 +137,10 @@ wims(record \s of \file)}
 \for{u=1 to \N}{
   \for{v=2 to \attribut_cnt+1}{
     \integer{uu=(\u-1)*\attribut_cnt + \v -1}
-    \text{C=\uu isitemof \reply1 and \uu isitemof \Data ? wims(append item  <span style="color:green;font-size:20pt;font-style:bold;">\nonoui[2]</span> to \C)}
-    \text{C=\uu isitemof \reply1 and \uu notitemof \Data ? wims(append item  <span style="color:red;font-size:20pt;font-style:bold;">\nonoui[2]</span> to \C)}
-    \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item <span style="color:red;font-size:20pt;font-style:bold;">\nonoui[1]</span> to \C)}
-    \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item <span style="color:green;font-size:20pt;font-style:bold;">\nonoui[1]</span> to \C)}
+    \text{C=\uu isitemof \reply1 and \uu isitemof \Data ? wims(append item  \croix <td>\nonoui[1]  to \C)}
+    \text{C=\uu isitemof \reply1 and \uu notitemof \Data ? wims(append item \croix <td>\nonoui[2]  to \C)}
+    \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item \nocroix <td>\nonoui[2] to \C)}
+    \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item \nocroix <td>\nonoui[1] to \C)}
   }
 }
 
