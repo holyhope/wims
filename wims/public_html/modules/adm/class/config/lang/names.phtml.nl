@@ -105,7 +105,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 !if $job=clean
  !set title=Opschonen van een klas
  !set name_lines=Studenten activeiten
- !set name_empty=Deze klas is leeg!<p>\
+ !set name_empty=Deze klas is leeg!<br/>\
  Er staat dus ook niets in  dat opgeschoond kan worden.
  !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
 
@@ -216,7 +216,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Uw klas heeft een aciteve cijfer \
   registratie en de gedeelde bronnen zijn niet leeg.\
   Als u nu stopt met lenen kan hier later niet meer op worden teruggekomen.\
-  <p>U wilt definitef stoppen met delen ?
+  <br/>U wilt definitef stoppen met delen ?
  
  !set name_stop=stoppen.
  !endif
@@ -519,7 +519,7 @@ U hebt een backup archief van een andere klas opgestuurd.
 Als er conflicten zijn, 
 wordt uw klas mogelijk onherstelbaar beschadigd.
  !href cmd=help&special_parm=dependencies Waarom&nbsp;?
- <p>
+ <br/>
  !href cmd=reply&job=list Stop
  als u er niet zeker van bent van de gevolgen. 
  (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
@@ -546,50 +546,51 @@ niet meer worden gewist uit een werkende klas.
 !exit
 
 :clean
- U kunt geen lesmateriaal verwijderen waar 
+ <p>U kunt geen lesmateriaal verwijderen waar 
  leerlingen op dit moment nog aan kunnen werken.  
- <p>
+ </p><p>
  Bedenk de volgende zaken:
- <p>
+ </p><p>
  Ten eerste, stel een slimme leerling steelt het supervisor wachtwoord.
  wanneer deze leerling de gehele klas kan verwijderen, hebben
  de goede leerlingen daar toch behoorlijk veel last van (...)
- <p>
+ </p><p>
  Ten tweede, alle bronnen die tezamen de virtuele klas vormen, zijn uiteraard van
  elkaar afhankelijk, gedeeltelijk verwijderen 
  verbreekt waarschijnlijk een hoop dwarsverbanden
  in de digitale werk/leer omgeving. 
  !href cmd=help&special_parm=dependencies Voorbeelden.
- <p>
+ </p><p>
  In elk geval, wanneer U werkelijk deze klas wilt opschonen, kan beter
  de verloopdatum van de klas op "vandaag" zetten.
  Deze klas is dan morgen gewoon verdwenen.
  Of <a href="mailto:$wims_site_manager?subject=Verwijder mijn klas"</a>
  vraag de site-manager om je klas te verwijderen.
+ </p>
  !exit
  
 :clean2
-<p><b>Opmerking</b>. 
-1. Deze pagina is alleen beschikbaar tijdens het opzetten
+<p><b>Opmerking</b>. </p>
+<ul><li>Deze pagina is alleen beschikbaar tijdens het opzetten
 van een digitale klas. Wanneer er leerlingen aan het werk zijn, is dit wissen niet meer mogelijk.
-<p>
-2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist,
+</li><li>
+Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist,
 Deze klas moet dan wel eerst
 !href cmd=reply&job=neighbor&job2=sharelist stop de deling
  van lesmateriaal voor dat er gewist kan worden.
-
+</li></ul>
 !exit
 
 :connect_first_info
-De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
+<p>De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
 met een andere WIMS server of een andere ELO
 (Electronische Leer Omgeving) te communiceren.<br/>
 De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.  
-<p>
+</p><p>
 In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,
 zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br/>
 Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd. 
-<p>
+</p>
 !exit
 
 :connect_first
@@ -606,7 +607,7 @@ De site manager kan hier leren hoe het <span class="tt wims_fname">$basedir/log/
 :import2
 
 Het te importeren werkblad bevat mogelijk oefeningen die alleen bestaan in de buurklas.
-   <p>
+   <br/>
 Als deze oefeningen niet aanwezig zijn in uw klas, zal het geimporteerde werkblad niet naar behoren functioneren/
 Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar uw eigen klas.
 
@@ -614,7 +615,7 @@ Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar
 :import3
 Proefwerken zijn gebaseerd op werkbladen.
 Het importeren van proefwerken is alleen zinvol als alle werkbladen precies synchroon zijn met de andere klas.
-<p>
+<br/>
 Als dit niet het geval is zal het proefwerk niet kunnen functioneren.
 !exit 
 :import4
@@ -629,7 +630,7 @@ Mogelijk is uw klas of instituut vol en is er geen ruimte meer beschikbaar
 
 :auth1
 Deze configuratie stap is alleen bereikbaar vanaf een toegestaan veilig  adres.
-<p>
+<br/>
 Er zijn geen veilige adressen gedefinieerd voor uw klas.
 We controleren nu uw identiteit door een code te sturen naar uw email adres.
 Voer de toegestuurde code hieronder in.

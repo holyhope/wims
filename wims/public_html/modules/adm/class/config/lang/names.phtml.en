@@ -105,7 +105,7 @@ name_sheets
 !if $job=clean
  !set title=Clean up the class
  !set name_lines=participant activity lines
- !set name_empty=Your class is empty!<p> There is no teaching materials in your class that can be cleaned up.
+ !set name_empty=Your class is empty!<br/> There is no teaching materials in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
 
  !distribute lines Clean up everything cleanable\
@@ -215,7 +215,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Your class has active score register, and the shared\
  teaching materials are not empty. If you stop this sharing now, you \
  cannot share them back again later.\
- <p>Are you sure you want to definitely stop this sharing?
+ <br/>Are you sure you want to definitely stop this sharing?
  
  !set name_stop=stop it.
  !endif
@@ -517,7 +517,7 @@ on <span class="tt wims_code_words">class</span>
  You have uploaded teaching materials backed up from another class. If you
  restore incompatible teaching materials to your class, it will simply be destroyed.
  !href cmd=help&special_parm=dependencies Why?
- <p>
+ <br/>
  !href cmd=reply&job=list Stop
  if you are not completely sure of what you are doing. (In any case, keep a
  backup of the current status before continuing.)
@@ -527,32 +527,33 @@ on <span class="tt wims_code_words">class</span>
  <span class="wims_warning">IMPORTANT</span>. <ul><li> There is no check of integrity in your uploaded data,
 and manual modification of the backup archives is not supported by the
 system. Errors introduced by manual modification of archives will result
-in unpredictable behavior of your class.
+in unpredictable behavior of your class.</li>
 
 <li> Whenever possible, avoid restoring 
 <span class="wims_warning">class configuration</span> and
 <span class="wims_warning">supervisor account</span>.
 Errors in the uploaded data for these two fields may make you
-completely lose control of your class.
+completely lose control of your class.</li>
 
 <li> You can use the backup of a class to install a new one. In this case,
 avoid restoring scores and grades (server-computed and manual). These two
 teaching materials cannot be erased once they are installed (security measure).
 And many class maintenance operations will be unavailable if there are
-non-empty score data.
+non-empty score data.</li>
 </ul>
 !exit
 
 :clean
-You cannot erase teaching materials of the class
+<p>
+ You cannot erase teaching materials of the class
  when participant activities have already started.
- <p>
+ </p><p>
  This is an important security measure. If you feel that it is an
  inconvenience, think of the following two aspects.
  </p><p>
  On the one hand, suppose that your password is stolen and someone wants to erase
  something on this page. Your teaching activities would be greatly disturbed and
- your students would be penalizeds.
+ your students would be penalized.
  </p><p>
  On the other hand, different teaching materials of the class are inter-dependent.
  If you erase some teaching materials without erasing those depending on them, your class
@@ -568,25 +569,24 @@ If you really want to clean this class, it is best to expire it
  !exit
  
  :clean2
-<b>Remark</b>. 1. This page is only available when the class is being set
+<span class="wims_warning">Remark</span>. <ul><li>This page is only available when the class is being set
 up. Once student activity has started, cleaning will no longer be possible.
-<p>
-2. Shared teaching materials can only be cleaned from the class
+</li><li>
+Shared teaching materials can only be cleaned from the class
 originating the sharing. The other class should first
 !href cmd=reply&job=neighbor&job2=sharelist stop the sharing
  of the teaching materials before erasing them.
-
+ </li></ul>
 !exit
 
 :connect_first_info
 Server / platform connection allows your class to directly communicate with
 another one on another WIMS server or on another web e-learning platform. Participants
 can easily move from one class to another.
-<p>
+<br/>
 In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
 may continue in the mirror class. Scores on the mirror can be merged later.
-</p>
 !exit
 
 :connect_first
@@ -603,17 +603,18 @@ This WIMS server has not declared any connectable remote server. In order
  !exit
  
 :import2
- The worksheet you want to import may use exercises defined in the
+ <p>The worksheet you want to import may use exercises defined in the
    neighboring class.
-   <p>
+   </p><p>
    If the same exercises do not exist in your class, the imported worksheet
    would not work correctly. Please verify carefully whether all the class
    exercises in the neighbor are duplicated in your class.
    </p>
 !exit
 :import3
-   Exam sheets are based on worksheets to make up their
-   contents. <p>
+   <p>Exam sheets are based on worksheets to make up their
+   contents. 
+   </p><p>
    Importing an exam sheet makes sense only if you have exactly the same 
    active worksheets as your neighbor, and only if these worksheets are in the
    same order within the two classes.
@@ -636,25 +637,26 @@ You are about to replace an existing $(name_$itype) in your class by
 !exit
 
 :auth1
-This configuration tool is only accessible to secure hosts.
-<p>
+<p>This configuration tool is only accessible to secure hosts.
+</p><p>
 As you have not defined any secure hosts, we are checking your authentication
 by sending a secret code to your email address. Please check your mail, pick
 the code, and type it below.
 </p>
 !exit
 :auth2
-
-<b>Note</b>. This authentication is to ensure that even if your password
+<p>
+<span class="wims_warning">Note</span>. This authentication is to ensure that even if your password
 is stolen or leaked, damages to your class will be limited.
 Defining correct secure hosts will simplify the class
 configuration procedure, while keeping a high security level.
+</p>
 !exit
 
 :download
-<b>Remark</b>. Depending on the class activities, usually it is participant
+<p><span class="wims_warning">Remark</span>. Depending on the class activities, usually it is participant
 activities, forum messages and class documents that are of large size. You
 may also consider the possibility of making several selective backups for
 different teaching materials.
-
+</p>
 !exit

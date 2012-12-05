@@ -103,7 +103,7 @@ into name_restore1,name_restore2,name_restore3
 !if $job=clean
  !set title=清除班级
  !set name_lines=参加者活动记录
- !set name_empty=你的班级是空的! <p> 你的班级里没有内容供清除.
+ !set name_empty=你的班级是空的! <br/> 你的班级里没有内容供清除.
  !set name_no_erase=不能被删除, 因为有其他班级共享.
 
  !distribute lines 清除所有能清除的内容\
@@ -207,7 +207,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set title=停止分享
   !set name_warning=你的班级有激活的得分记录, 且被分享的资源非空.\
  如果你现在停止分享, 以后不能再继续分享.\
- <p>你是否确定要停止此分享?
+ </br>你是否确定要停止此分享?
  
  !set name_stop=停止.
  !endif
@@ -508,7 +508,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 你已经上传了其它班级的资源.
 如果你想恢复与你班级不相容的资源, 它将会被破坏.
  !href cmd=help&special_parm=dependencies 为什么?
- <p>
+ <br/>
  !href cmd=reply&job=list 停止
  如果你清楚知道你正在做什么的话. 
  (在继续做下去之前请保留当前状态的一个备份.)
@@ -532,38 +532,40 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 !exit
 
 :clean
+<p>
 一旦参加者已经开始活动, 你就不能删除班级的资源.
- <p>
+ </p><p>
 这是一个重要的安全措施. 如果你觉得不方便, 请考虑以下两种情况:
- <p>
+ </p><p>
 一方面, 假定有学生窃取了你的密码. 如果他进入此页并删去所有内容,
 那么好学生将会受到重大损失, 而你的教学活动也受到极大干扰.
  <p>
 另一方面, 班级的不同资源是相互关联的. 如果你删去了一部分内容,
 而没有删去相关的内容, 那么你的班级就不能正常运行了.
  !href cmd=help&special_parm=dependencies 例.
- <p>
+ </p><p>
 如果你只是想清除这个班级, 你总是可以使这个班级期满终止
 (只要把有效期设为今天, 从明天早晨起这个班级就消失了), 或者
  <a href="mailto:$wims_site_manager?subject=删除我的班级">要求网站管理员</a>
 删除它.
+ </p>
  
  !exit
  
  :clean2
-<b>附注</b>. 1. 仅当班级建立后本页才起作用.
+<p><span class="wims_warning">附注</span>.</p><ul><li> 仅当班级建立后本页才起作用.
 一旦学生开始活动, 就不能再清除.
-<p>
-2. 共享资源只能从发起共享的班级清除.
+</li><li>
+ 共享资源只能从发起共享的班级清除.
 其他班级应在删除这些资源前先
 !href cmd=reply&job=neighbor&job2=sharelist  停止此共享
-
+</li></ul>
 !exit
 
 :connect_first_info
 服务器/平台连接使得你的班级可以与其它WIMS服务器或其它的网上e学习平台建立直接通讯.
 参加者可以无障碍地在连接的班级间漫游.
-<p>
+<br/>
 你还可以在远程WIMS服务器上建立本地班级的镜像,
 这样当本地服务器一时不能使用时, 参加者可以在镜像班级里继续工作.
 得到的分数可以在以后融合进来.
@@ -580,17 +582,20 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
  !exit
  
 :import2
- 你要输入的作业页可能使用了相邻班里定义的练习.
-   <p>
+ <p>你要输入的作业页可能使用了相邻班里定义的练习.
+   </p><p>
    如果你的班级不存在同样的练习, 输入的作业页将不能正常工作.
    请小心检查是否相邻班的所有练习都复制到了你的班级.
+  </p>
 !exit
 :import3
-   考试页是以作业页的内容为基础的. <p>
+   <p>考试页是以作业页的内容为基础的. 
+   </p><p>
    仅当你与相邻班有完全相同的激活作业页并且这些页在两个班级里有相同顺序,
    才有可能输入考试页.
-   <p>
+   </p><p>
    如果达不到上述条件, 输入的考试页很可能出问题.
+   </p>
 !exit 
 :import4
 
@@ -605,21 +610,22 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 !exit
 
 :auth1
-只有安全主机才能进入此配置工具.
-<p>
+<p>只有安全主机才能进入此配置工具.
+</p><p>
 由于你还没有定义安全主机, 我们会发一个密码到你的电邮地址, 以作身份验证之用.
 请打开你的邮箱, 取出密码, 输入到下面
-
+</p>
 !exit
 :auth2
-
-<b>注意</b>. 这个安全验证方法是保证万一你的密码被窃或泄露,
+<p>
+<span class="wims_warning">注意</span>. 这个安全验证方法是保证万一你的密码被窃或泄露,
 仍然可把损害控制住. 而定义合适的安全主机能够简化班级的配置程序,
 同时又能保持高度的安全性.
+</p>
 !exit
 
 :download
-<b>说明</b>. 根据班级的活动情况, 通常参加者活动、论坛信息以及班级文件比较大.
+<p><span class="wims_warning">说明</span>. 根据班级的活动情况, 通常参加者活动、论坛信息以及班级文件比较大.
 你可以考虑对不同资源做几个选择性备份.
-
+</p>
 !exit

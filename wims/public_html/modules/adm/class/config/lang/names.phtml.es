@@ -216,7 +216,7 @@ $nei_description</font></em> como vecina suya?
   !set title=Dejar de compartir un recurso
   !set name_warning=Su clase tiene un registro de actividades activo y los\
  recursos compartidos no están vacíos. Si deja de compartir este recurso\
- ahora, ya no podrá volver a compartirlo más tarde. <p>\
+ ahora, ya no podrá volver a compartirlo más tarde. <br/>\
  ¿Está seguro de querer dejar de compartir definitivamente este recurso?
  
  !set name_stop=dejar de compartirlo.
@@ -516,13 +516,14 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 
 !exit
 :arch
- Ha enviado unos recursos guardados a partir de otra clase.
+ <p>Ha enviado unos recursos guardados a partir de otra clase.
  Si usted recupera recursos incompatibles en su clase, quedará inutilizable.
  !href cmd=help&special_parm=dependencies ¿Por qué?
- <p>
+ </p><p>
  !href cmd=reply&job=list Deténgase
  si no está completamente seguro de lo que está haciendo (en todo caso,
  guarde una copia del estado actual antes de continuar).
+ </p>
 !exit
 
 :arch_end
@@ -548,9 +549,9 @@ contiene calificaciones.
 !exit
 
 :clean
-<b>ATENCIÓN</b>. No puede borrar recursos de la clase
+<p><b>ATENCIÓN</b>. No puede borrar recursos de la clase
  cuando ya han comenzado las actividades de los participantes.
- <p>
+ </p><p>
  Esta es una medida de seguridad importante. Si no le gusta
  esta limitación, piense en los dos siguientes aspectos:
  </p><p>
@@ -573,22 +574,22 @@ contiene calificaciones.
  !exit
  
  :clean2
- <b>Observaciones</b>. <p>1. Sólo se puede acceder a esta página mientras
+<p><span class="wims_warning">Observaciones</span>. </p><ul><li>Sólo se puede acceder a esta página mientras
 la página está en preparación. Una vez que han comenzado las actividades de
 los participantes, ya no es posible borrar los recursos.
-</p><p>
-2. Los recursos compartidos por varias clases sólo pueden borrarse
+</li><li>
+Los recursos compartidos por varias clases sólo pueden borrarse
 desde la clase maestra que comparte. Las otras clases deben primero
 !href cmd=reply&job=neighbor&job2=sharelist dejar de compartir
  los recursos antes de borrarlos.
-</p>
+</li></ul>
 !exit
 
 :connect_first_info
-La conexión a servidores/plataformas permite que su clase se comunique directamente con
+<p>La conexión a servidores/plataformas permite que su clase se comunique directamente con
 una clase en otro servidor WIMS u otra plataforma web de e-learning. Los participantes
 pueden navegar de forma transparente entre las clases conectadas.
-<p>
+</p><p>
 En particular, puede crear una réplica de esta clase en un servidor WIMS remoto,
 de forma que si el servidor local queda inutilizable momentáneamente, el trabajo
 puede continuar en la clase espejo. Las puntuaciones logradas en la réplica
@@ -608,17 +609,17 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
  !exit
 
 :import2
-  La hoja de trabajo que quiere importar puede utilizar ejercicios
+  <p>La hoja de trabajo que quiere importar puede utilizar ejercicios
    definidos en la clase vecina.
-   <p>
+   </p><p>
    Si los mismos ejercicios no existen en la suya, la hoja importada
    no funcionará correctamente. Por favor verifique con cuidado que todos
    los ejercicios de la clase vecina tiene su réplica en la suya.
    </p>
 !exit
 :import3
- Las hojas de examen se basan en las hojas
-   de trabajo para constituir sus contenidos. <p>
+ <p>Las hojas de examen se basan en las hojas
+   de trabajo para constituir sus contenidos. </p><p>
    Importar una hoja de examen no tiene sentido si no tiene exactamente las
    mismas hojas de trabajo que la clase vecina y si estas hojas no están
    dispuestas en el mismo orden en las dos clases.
@@ -641,9 +642,9 @@ Está a punto de sustituir un(a) $(name_$itype)
 !exit
 
 :auth1
-A esta herramienta de configuración sólo puede accederse desde las
+<p>A esta herramienta de configuración sólo puede accederse desde las
 estaciones de trabajo seguras.
-<p>
+</p><p>
 Como no ha definido ninguna estación de trabajo segura, vamos a
 realizar la autentificación enviándole un código secreto a su dirección
 de correo electrónico.
