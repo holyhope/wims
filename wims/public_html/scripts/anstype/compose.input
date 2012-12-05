@@ -1,13 +1,13 @@
 !set anstype=yes
 !set anstyle=symtext
-!set ans_require=
+!set ans_require=dynapi3
 
 !if $wims_read_parm=def
  !exit
 !endif
 !bound inputsize between integer 1 and 40 default 10
 !if $inputsize<=5
- !distribute item '<center>' +,+ '</center>' into ct1,ct2
+ !distribute item '<p class=\"center\">' +,+ '</p>' into ct1,ct2
 !else
  !reset ct1,ct2
 !endif
@@ -91,7 +91,7 @@ dynapi.onLoad(function() {
 
 !reset wims_ins_alt
 !if $wims_read_parm!=noprompt
- </table>
+<tr><td>
  !if $module_language=fr
   Cliquez sur les objets ci-dessous pour composer votre réponse.
   !goto cont
@@ -100,22 +100,22 @@ dynapi.onLoad(function() {
  Klik voor het antwoord op de onderstaande objecten 
   !goto cont
  !endif
- 
+
  Click on the objects below to compose your reply.
  :cont
 !endif
-!if $wims_read_parm!=noprompt
- <p>$(replyname$i)
+!if $wims_read_parm!=noprompt and $(replyname$i) notsametext 
+ <p>$(replyname$i)</p>
 !else
- <p>
+  <br class="spacer" />
 !endif
 
-<p><center>
-<a name="tarea$i" id="tarea$i">
+<div class="wimscenter">
+<a id="tarea$i">
 <img height="2" width="70%" src="gifs/transparent.gif" alt="transparent" align="middle"/>
 </a> <br/>
-<img height=$[$inputsize-10] width="70%" src="gifs/transparent.gif" alt="transparent" align="middle"/>
-</center> <p>
+<img height="$[$inputsize-10]" width="70%" src="gifs/transparent.gif" alt="transparent" align="middle" />
+</div>
 
 !set instex_color=blue
 !for i_=1 to $imgcnt
@@ -132,6 +132,5 @@ dynapi.onLoad(function() {
 <input type="hidden" name="reply$i" value=""/>
 
 !if $wims_read_parm!=noprompt
- <table border=0>
+  </td></tr>
 !endif
-/
