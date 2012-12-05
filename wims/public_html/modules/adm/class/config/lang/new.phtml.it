@@ -1,13 +1,13 @@
 
 !if $backdays>7
  !if $backdays>100
-  Non avete effettuato un backup del vostro corso da più di 100 giorni.
+  <p>Non avete effettuato un backup del vostro corso da più di 100 giorni.</p>
  !else
-  L'ultimo backup effettuato è vecchio di $backdays giorni.
+  <p>L'ultimo backup effettuato è vecchio di $backdays giorni.</p>
  !endif
  !if backup iswordof $warn
-  <span class="wims_warning">$wims_name_warning.</span>
-  <p>
+  <p><span class="wims_warning">$wims_name_warning.</span>
+  <br/>
   Ricordatevi che è responsabilità del docente effettuare i salvataggi
   delle proprie risorse pedagogiche! L'amministratore del server non
   garantisce in alcun modo la possibilità di recuperare il vostro lavoro
@@ -16,7 +16,7 @@
   considerati dal sistema come corsi inattivi e di scarsa importanza,
   motivo per cui potrebbero essere rimossi per lasciare spazio a altri
   corsi.
-  </p>
+ !else
   <p> Mettetevi al riparo da possibili problemi tecnici del server!
  !endif
  !href cmd=reply&job=arch Effettuate un backup del corso
@@ -25,7 +25,7 @@
 !endif
 
 !if creation iswordof $warn
- <b>$wims_name_warning</b>. 
+ <p><span class="wims_warning">$wims_name_warning</span>.</p> 
  <p>Il vostro corso virtuale è troppo vecchio! È stato
  creato più di $creatdays giorni fa.
  </p><p>
@@ -38,7 +38,7 @@
  !if $class_type notin 13
   <p>
   Ecco alcune semplici istruzioni per ricreare il corso senza dover ricreare
-  tutte le risorse pedagogiche.
+  tutte le risorse pedagogiche.</p>
   <ol>
   <li>
   !href cmd=reply&job=arch Effettuare un backup
@@ -66,7 +66,6 @@
 
 !if $warn=$empty
  !set job=list
-
  !changeto list.phtml
 !else
   <div class="wimscenter">

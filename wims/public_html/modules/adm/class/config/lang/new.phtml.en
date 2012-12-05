@@ -1,18 +1,19 @@
-<p>
+
 !if $backdays>7
  !if $backdays>100
-  Your class has not been backed up for more than 100 days.
+  <p>Your class has not been backed up for more than 100 days.</p>
  !else
-  Last backup of your class: $backdays days ago.
+  <p>Last backup of your class: $backdays days ago.</p>
  !endif
  !if backup iswordof $warn
-  <span class="wims_warning">$wims_name_warning</span>.
+  <p><span class="wims_warning">$wims_name_warning</span>.
+  <br/>
   It is the teachers' responsability to backup their own teaching resources!
   The webmaster can only retreive lost worksheets or exercises exceptionally.
   Moreover, virtual classes which have not been regularly
   backed up will be considered as inactive and unimportant by the software,
   and may be erased at any time to make space for others.
- !else
+!else
   <p> Protect yourself against server incidents!
  !endif
  !href cmd=reply&job=arch Backup the class
@@ -21,8 +22,8 @@
 !endif
 
 !if creation iswordof $warn
- <span class="wims_warning">$wims_name_warning</span>. Your virtual class is too old! It already has $creatdays days.
- <p>
+ <p><span class="wims_warning">$wims_name_warning</span>. Your virtual class is too old! It already has $creatdays days.
+ </p><p>
  It is highly recommended that you create a new virtual class structure at
  the end of each academic year. Continue using an old virtual class structure over
  the years will result in registry file and disk quota overflow, which risks
