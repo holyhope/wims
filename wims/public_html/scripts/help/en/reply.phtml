@@ -42,7 +42,7 @@ wlist,List of words,\
 !set namelist=Basic types, Specific or advanced types
 !set symtextlist=text atext raw compose
 
-<center><h3>User replies to an exercise</h3></center> <p>
+<h3>User replies to an exercise</h3>
 
 There are two basic ways in which an OEF exercise accepts user replies:
 multiple choices and freestyle replies. User answers will be analyzed
@@ -51,7 +51,7 @@ according to the nature of the types. It is also possible to show
  to the user when the answer meeds a specified condition (usually to warn a
 typical error).
 
-<p><h4>Multiple choices</h4> <p>
+<h4>Multiple choices</h4>
 A multiple choice is defined by giving a list of good choices (one or
 several) and another list of bad choices. <p>
 Up to $choicelim simultaneous multiple choice questions can be asked for
@@ -64,7 +64,7 @@ See
  for the syntax to define a multiple choice.
 
 <a id="freestyle"></a>
-<p><h4>Freestyle answers</h4> <p>
+<h4>Freestyle answers</h4>
 A freestyle answer is one which is typed by the user.
 Up to $answerlim simultaneous freestyle answers can be asked for one
 exercise, under the current implementation. <p>
@@ -73,12 +73,13 @@ The syntax is as follows:
 \answer{Texte}{\reponse}{type=...}{option=...}{weight=...}
 </pre>
 (The last 3 fields are optional.)
-<p>
-<h5>The parameter <span class="tt wims_code_words">type</span></h5>
-Each freestyle answer can independently take one of the following types.
 
+<h3>The parameter <span class="tt wims_code_words">type</span></h3>
+<p>
+Each freestyle answer can independently take one of the following types.
+</p>
 !for i=1 to 2
- <p><b>$(namelist[$i])</b>
+ <span class="bold">$(namelist[$i])</span>
  !set n=!linecnt $(typelist$i)
  <ul>
  !for j=1 to $n
@@ -90,7 +91,7 @@ Each freestyle answer can independently take one of the following types.
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><p><a id="_$name"></a>
+   <li><a id="_$name"></a>
    !read help/anstype/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -101,43 +102,47 @@ Each freestyle answer can independently take one of the following types.
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
 , in particular with no preliminary processing of the texts. And all the
 symtext options will be understood in this case.
+    </p>
    !endif
-   <p>
   !else
-   <li>
+   </li><li>
    !href cmd=help&special_parm=reply,$name#_$name $title
    (<span class="tt wims_code_words">$name1</span>) $desc.
   !endif
+  </li>
  !next j
  </ul>
 !next i
 
 !read help/$lang/embedans.phtml
 
-<h4>The optional parameter <span class="tt wims_code_words">weight</span></h4>
+<h3>The optional parameter <span class="tt wims_code_words">weight</span></h3>
 <a id="weight"></a>
 It is possible to give a weight to answers.
 <p>
 Example : 
+</p>
 <pre>\answer{}{1}{type=numeric}{weight=8}
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
-
+<p>
 Le niveau de sévérité  sera aussi pris en compte lors du 
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
 par le niveau de sévérité. 
-
+</p><p>
 One can put variables in <span class="tt wims_code_words">weight</span>
 if they are defined before <span class="tt wims_code_variable">\statement</span>.
+
 <p>
 Example :
+</p>
 <pre>
 \text{w = \t = 1 ? 1 : 2}
 \answer{}{1}{type=numeric}{weight=\w}
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>Le paramètre optionnel <span class="tt wims_code_words">option</span></h4>
+<h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  <a id="option"></a>
  Dans le cas de plusieurs options, elles sont séparées par des espaces. 
  For example, <span class="tt wims_code_words">option=default noanalyzeprint</span>
@@ -169,9 +174,9 @@ answer but will not be printed.
 </li>
 </ul>
 D'autres options peuvent être utilisables dans des types particuliers de réponses.
-<p>
 
-<p><h4>Testing conditions</h4> <p>
+<h3>Testing conditions</h3>
+<p>
 Under certain circumstances, it is desired that freestyle answers be tested
 by special conditions (questions with multiple good answers, exercises 
 asking for examples, answers determined by inequalities, etc). This can be
@@ -181,10 +186,10 @@ answer to this question will be fed into this variable. The latter can then
 be used to implement testing conditions. The score given to the exercise is
 then determined by the number of testing conditions which are met, rather
 than the number of answers which meet the good answers.
-<p>
+</p><p>
 Up to $condlim simultaneous conditions can be defined for one
 exercise, under the current implementation. The syntax is as follows.
-<pre>
+</p><pre>
 \condition{prompt text}{testing conditions}{weight=...}
 </pre>
 (The last field is optional.)
@@ -192,22 +197,22 @@ exercise, under the current implementation. The syntax is as follows.
 Here are some examples of testing conditions. (<span class="tt wims_code_variable">ans1</span> and
 <span class="tt wims_code_variable">ans2</span> are undefined variables appearing in freestyle answers, as
 described above.)
-<small>
+
 !href target=wims_mhelp cmd=help&special_parm=if Complete list of relations
-</small>
-<p>
+
+</p>
 $table_header
 $table_hdtr<th>Condition</th><th>meaning</th></tr>
 $table_tr<td><tt class="wims_code_variable">ans1>=0 and \ans1<=1</tt></td>
     <td>Good if <span class="tt wims_code_words">ans1</span> is within the interval [0,1].</td></tr>
-$table_tr<td><span class="tt wims_code_variable">ans1=1 or \ans1=3 or \ans1=5</span></td>
+$table_tr<td class="tt wims_code_variable">ans1=1 or \ans1=3 or \ans1=5</td>
     <td>Good if <span class="tt wims_code_words">ans1</span> is 1, 3 or 5.</td></tr>
-$table_tr<td><span class="tt wims_code_words">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</span></td>
+$table_tr<td class="tt wims_code_words">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</td>
     <td>Good if <span class="tt wims_code_words">ans1</span> and <span class="tt wims_code_words">ans2</span> are the two 
     roots of the polynomial x<sup>2</sup>-5x+6.</td></tr>
-$table_tr<td><span class="tt wims_code_words">sin(\ans1)=0</span></td>
+$table_tr<td class="tt wims_code_words">sin(\ans1)=0</td>
     <td>Good if <span class="tt wims_code_words">ans1</span> is a multiple of $m_pi.</td></tr>
-$table_end <p>
+$table_end
 See
 !href cmd=help&special_parm=oef help on oef format
  for the syntax for defining replies.

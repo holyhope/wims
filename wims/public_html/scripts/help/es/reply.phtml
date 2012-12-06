@@ -25,6 +25,7 @@ chessgame,Déplacement de pièces sur un échiquier\
 geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
 javacurve,Dessin utilisant Java, permettant des tracés avec des formes prédéfinies ou libres\
 jmolclick,Clic sur des atomes en 3D, nécessite l'applet Jmol\
+jsxgraph,Géométrie dynamique,utilisation de l'applet JSXGraph\
 keyboard,Texte, tapé à partir du clavier proposé\
 matrix,Matrice numérique, au sens mathématique ; la comparaison se fait numériquement coefficient par coefficient\
 numexp,Nombre rationnel, la comparison se fait de façon formelle\
@@ -42,7 +43,7 @@ wlist,Liste de mots,\
 !set namelist=Types de base,Types spécifiques ou avancés
 !set symtextlist=text atext raw compose
 
-<center><h3>Respuestas de los usuarios a un ejercicio</h3></center> <p>
+<h3>Respuestas de los usuarios a un ejercicio</h3>
 
 Hay dos maneras básicas en las que un ejercicio OEF acepta respuestas
 del usuario: opciones múltiples y respuestas libres.
@@ -52,19 +53,20 @@ También es posible añadir
  cuando la respuesta cumpla determinada condición (por ejemplo
 para advertir de un error típico).
 
-<p><h4>Opciones múltiples</h4> <p>
+<h4>Opciones múltiples</h4> <p>
 Una opción múltiple se define dando una lista de opciones correctas
 (una o varias) y otra lista con todas las opciones (las opciones correctas
-se añaden de forma automática). <p>
+se añaden de forma automática). 
+</p><p>
 Se pueden pedir hasta $choicelim opciones múltiples simultáneas en un
 ejercicio, con la implementación actual. El número de opciones correctas
 y erróneas en una opción múltiple no tiene límite (excepto la limitación de
 la longitud del texto que impone WIMS).
-<p>
+</p><p>
 Ver la
 !href cmd=help&special_parm=oef help ayuda sobre el formato OEF
  acerca de la sintaxis para definir una opción múltiple.
-
+</p>
 <a id="freestyle"></a>
 <h4>Respuestas de estilo libre</h4>
 Una respuesta de estilo libre es la que la tiene que escribir el usuario.
@@ -77,9 +79,9 @@ La sintaxis es la siguiente:
 <p>
 Cada respuesta libre puede tomar independientemente uno de los siguientes
 tipos:
-
+</p>
 !for i=1 to 2
- <p><b>$(namelist[$i])</b>
+ <span class="bold">$(namelist[$i])</span>
  !set n=!linecnt $(typelist$i)
  <ul>
  !for j=1 to $n
@@ -91,7 +93,7 @@ tipos:
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><p><a id="_$name"></a>
+   <li><a id="_$name"></a>
    !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -102,24 +104,25 @@ tipos:
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
 , en particulier sans aucun traitement préalable des textes. Et toutes les
     options symtext seront comprises dans ce cas.
+    </p>
    !endif
-   <p>
   !else
-   <li>
+   </li><li>
    !href cmd=help&special_parm=reply,$name#_$name $title
    (<span class="tt wims_code_words">$name1</span>) $desc.
   !endif
+  </li>
  !next j
  </ul>
 !next i
 
 !read help/$lang/embedans.phtml
 
-<h4>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h4>
+<h3>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
 <a id="weight"></a> 
 Il permet d'imposer un poids aux questions posées.
-<p>
-Exemple : 
+<br/>
+Exemple :
 <pre>\answer{}{1}{type=numeric}{weight=8}
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
@@ -130,7 +133,7 @@ par le niveau de sévérité.
 
 Il est possible de mettre des variables dans <span class="tt wims_code_words">weight</span>
 dans la mesure où elles sont définies avant le <span class="tt wims_code_variable">\statement</span>.
-<p>
+<br/>
 Exemple :
 <pre>
 \text{w = \t = 1 ? 1 : 2}
@@ -138,13 +141,13 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>Le paramètre optionnel <span class="tt wims_code_words">option</span></h4>
+<h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  <a id="option"></a>
  Dans le cas de plusieurs options, elles sont séparées par des espaces. 
  Par exemple, <span class="tt wims_code_words">option=default noanalyzeprint</span>
  
-Les options possibles à la suite d'une instruction <span class="tt wims_code_words">\answer</span>
-ou <span class="tt wims_code_words">\condition</span> sont
+Les options possibles à la suite d'une instruction <span class="tt wims_code_variable">\answer</span>
+ou <span class="tt wims_code_variable">\condition</span> sont
 <ul>
 <li><span class="tt wims_code_words">option=default</span> : L'option <span class="tt wims_code_words">default</span> est commune à toutes les réponses libres :  cette option
 peut prendre la forme <span class="tt wims_code_words">default="valeur_par_défaut"</span>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
@@ -170,14 +173,14 @@ de la réponse mais ne sera pas  affichée.
 </li>
 </ul>
 D'autres options peuvent être utilisables dans des types particuliers de réponses.
-<p>
 
-<p><h4>Condiciones de comprobación</h4> <p>
+<h4>Condiciones de comprobación</h4>
+<p>
 Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
 se corrijan según condiciones especiales (preguntas con múltiples respuestas
 correctas, ejercicios que pidan ejemplos, respuestas determinadas por 
 desigualdades, etc). Puede hacerse de la siguiente manera: 
-<p>
+</p><p>
 Si la respuesta correcta a una pregunta libre es una variable indefinida
 hasta ahora,
 la respuesta a esta cuestión se asignará en esa variable. La variable
@@ -185,23 +188,23 @@ puede usarse en adelante para implementar las condiciones de comprobación. La
 puntuación dada al ejercicio se determinará por el número de condiciones
 de comprobación que se satisfagan, en lugar del número de respuestas que 
 coincidan con la respuesta correcta.
-<p>
+</p><p>
 Se pueden definir hasta $condlim condiciones simultáneas para un ejercicio,
 con la implementación actual. Únicamente las respuestas numéricas
 pueden ser corregidas así. La sintaxis es
+</p>
 <pre>
 \condition{texto de la pregunta}{condiciones de comprobación}{weight=...}
 </pre>
 (el último campo es optional).
  <p>
-
 A continuación presentamos algunos ejemplos de condiciones de comprobación 
-(<span class="tt wims_code_words">\ans1</span> y <span class="tt wims_code_words">\ans2</span> son dos variables indefinidas que aparecen 
+(<span class="tt wims_code_words">\ans1</span> y <span class="tt wims_code_words">\ans2</span> 
+son dos variables indefinidas que aparecen 
 en las  definiciones de las respuestas libres, como se describe antes).
-<small>
+
 !href target=wims_mhelp cmd=help&special_parm=if Lista completa de las relaciones
-</small>
-<p>
+</p>
 $table_header
 $table_hdtr<th>Condición<th>significado</th></tr>
 $table_tr<td><tt class="wims_code_words">\ans1>=0 and \ans1<=1</tt></td>
@@ -213,7 +216,9 @@ $table_tr<td><span class="tt wims_code_words">(\ans1)*(\ans2)=6 and (\ans1)+(\an
     raíces del polinomio x<sup>2</sup>-5x+6.</td></tr>
 $table_tr<td><span class="tt wims_code_words">sin(\ans1)=0</span></td>
     <td>Correcta si <span class="tt wims_code_words">ans1</span> es un múltiplo de $m_pi.</td></tr>
-$table_end <p>
+$table_end
+<p>
 Ver la
 !href cmd=help&special_parm=oef ayuda sobre el formato OEF
  para ver la sintaxis de la definición de las respuestas.
+</p>
