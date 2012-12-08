@@ -1,5 +1,3 @@
-!! to translate this help you just have to copy this file with correct extension (fr en de) and translate it !
-!!
 
 !let help_isread=yes
 Het vaardigheden overzicht geeft een configureerbaar totaalbeeld van het niveau van een klas.
@@ -9,11 +7,11 @@ een vaardigheidsniveau kan worden berekend.
 <p>
 Ook kan de docent besluiten  sommige werkbladen niet te laten meetellen voor het bepalen van het vaardigheidsniveau.
 Het is mogelijk deze data gedurende meerdere jaren te vervolgen.
-
+</p><p>
 Het vaardigheidsniveau wordt berekend met :
-<center>
+<p><p class="wimscenter">
 !insmath 10 \times \frac{\sum_{i=1}^{N} NM(x_{L[i;1],L[i;2]})}{\sum_{i=1}^{N} \delta_{L[i;1]}}
-</center>
+</p>
 waarin
 <ul>
  <li> <i>N</i> is het aantal oefeningen is een periode.</li>
@@ -28,3 +26,4 @@ waarin
 <p>
 <b><u>Opmerking</u></b>: 
 Als de status van een werkblad wordt veranderd moeten er op dat moment geen leerlingen met de vaardighedenboekje bezig zijn.
+</p>
