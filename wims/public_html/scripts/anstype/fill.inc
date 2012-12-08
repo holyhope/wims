@@ -64,7 +64,7 @@ $ in $input_rg
 !default fillcnt=0
 !increase fillcnt
 !if $wims_read_parm!=noprompt
- <tr><td align="right">$(replyname$i)<td>
+ <tr><td style="text-align:right">$(replyname$i)</td><td>
 !endif
 
 !set sup1=&nbsp;<sup>
@@ -82,10 +82,12 @@ $ in $input_rg
 !endif
 !set sup2=!replace <sup> by </sup> in $sup1
 !set sup2=!replace &nbsp; by $ in $sup2
+!set sup1=
+!set sup2=
 !set fill_namelist=!append item $fillcnt to $fill_namelist
-$sup1<img width="1" height="$[$fill_sy+4]" src="gifs/transparent.gif" alt="transparent"
-border="0" vspace="0" hspace="0" align="top"/><a name="fill$fillcnt" id="fill$fillcnt"><img
-width="$[ceil($sizei/$sizej)*$fill_sx]" height="$[($fill_sy*$sizej)+4]" src="gifs/transparent.gif" alt="transparent"
-border="0" vspace="0" hspace="0" align="top"/></a>$sup2
+$sup1<img style="width:1px; height:$[$fill_sy+4]px" src="gifs/transparent.gif" alt="transparent" 
+align="top"/><a name="fill$fillcnt" id="fill$fillcnt">
+<img style="width:$[ceil($sizei/$sizej)*$fill_sx]px;height:$[($fill_sy*$sizej)+4]px" src="gifs/transparent.gif" alt="transparent" 
+align="top"/></a>$sup2
 <input type="hidden" name="reply$i" value=""/>
 !reset inputsize

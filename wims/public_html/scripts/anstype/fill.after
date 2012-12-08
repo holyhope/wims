@@ -49,7 +49,7 @@ $ by ',' in '$Objs'
 !set align_option=!getopt align in $wims_fill_option
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
-!set crleft='<table border="0" cellpadding="0" cellspacing="0" width="100%" height="$fill_sy"><tr><td align="$align_option">'
+!set crleft='<table style="height:$(fill_sy)px;width:100%; border-collapse:collapse;border-width:0px"><tr><td style="text-align:$align_option">'
 !set crright='<\/td><\/tr><\/table>'
 !set wims_ins_alt=none
 !set tolx=$[round($fill_sx*2/3)]
@@ -292,13 +292,12 @@ function f_cright(n) {
 </script>
 !reset wims_ins_alt
 
-<p style="text-align: left">
+<div style="text-align:left;">
 !for i_=1 to $objcnt2
  !set l_=!item $i_ of $wims_fill_list
- <sup><img width="$fill_sx" height="$[$fill_sy+10]" src="gifs/transparent.gif" alt="transparent"
- border="0" align="top"/><a name="fillobj$i_" id="fillobj$i_"><img
- width="1" height="1" src="gifs/transparent.gif" alt="transparent"
- border="0" align="top"/></a></sup>
+<img style="width:$(fill_sx)px;height:$[$fill_sy+10]px;" src="gifs/transparent.gif" alt="transparent"/><a id="fillobj$i_"><img style="width:1px;height:1px" src="gifs/transparent.gif" alt="transparent"/></a>
 !next i_
-</p><p>
+</div>
+
+<br class="clearall spacer"/>
 
