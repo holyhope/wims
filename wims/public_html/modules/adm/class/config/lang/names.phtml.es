@@ -36,7 +36,7 @@ siguientes. Marque lo que quiera recuperar en su clase.
 
  !distribute lines No ha seleccionado nada que recuperar.\
     Recuperar todo salvo la configuración de la clase y la cuenta del profesor.\
-    <span class="wims_warning">¡Peligro!</span> <small>Ver más abajo.</small>\
+    <span class="wims_warning">¡Peligro!</span> <span class="small">Ver más abajo.</span>\
    Configuración de la clase.\
    Cuenta del profesor (incluida su contraseña)\
    cuentas de los participantes\
@@ -253,9 +253,9 @@ $nei_description</font></em> como vecina suya?
 
   !endif
 
-  !distribute items ---,<small>el profesor</small>,\
-	<small>los participantes</small>,\
-	<small>profesor y participantes</small>\
+  !distribute items ---,<span class="small">el profesor</span>,\
+	<span class="small">los participantes</span>,\
+	<span class="small">profesor y participantes</span>\
   into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun

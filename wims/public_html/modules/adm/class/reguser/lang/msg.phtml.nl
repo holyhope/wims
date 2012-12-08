@@ -10,8 +10,8 @@ $institution
 !if no_class=$error
  De gekozen klas bestaat niet!
  Als dit geen "bug" in de software is, is deze klas waarschijnlijk "verlopen".
- <small>of U bent aan het spelen met deze server: 
- in dat geval, niet vergeten dat alle activiteiten worden gelogd</small>
+ <span class="small">of U bent aan het spelen met deze server: 
+ in dat geval, niet vergeten dat alle activiteiten worden gelogd</span>
  !exit
 !endif
 

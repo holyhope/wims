@@ -122,22 +122,22 @@ levelnames=Lagere school leerjaar 1,\
 !set name_warning_share= Dit lesprogramma kan niet worden verwijderd omdat het gedeeld/geleend lesmateriaal bevat. 
 !if $job=addclass
 !set form_titlename=Naam van de nieuwe klas.\
-<br/><small>(bij meerdere klassen in &eacute;&eacute;n keer aanmelden<br/>\
-de klasnamen dan door komma's scheiden)</small>
+<br/><span class="small">(bij meerdere klassen in één keer aanmelden<br/>\
+de klasnamen dan door komma's scheiden)</span>
 !exit
 !endif
 
 !if $job=addicourse
 !set form_caption=Voeg een interklas cursus toe aan dit lesprogramma
 !set form_titlename=Naam van de nieuwe cursus.\
-<br/><small>(bij meerdere cursussen in &eacute;&eacute;n keer toevoegen<br/>\
-de cursusnamen dan door komma's scheiden)</small>
+<br/><span class="small">(bij meerdere cursussen in één keer toevoegen<br/>\
+de cursusnamen dan door komma's scheiden)</span>
 !exit
 !endif
 
 !if $job=addprog
 !set form_titlename=Naam van het nieuwe lesprogramma.
-<br/><small>(bij meerdere lesprogramma's in &eacute;&eacute;n keer toevoegen<br/>\
-de lesprogramma namen dan door komma's scheiden)</small>
+<br/><span class="small">(bij meerdere lesprogramma's in één keer toevoegen<br/>\
+de lesprogramma namen dan door komma's scheiden)</span>
 !exit
 !endif

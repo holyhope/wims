@@ -39,7 +39,7 @@
   aan het begin van het schooljaar.
   </li><li>
   Installeer het lesmateriaal in de nieuwe klas, met de backupfile.<br/>
-  <small>(zonder de overbodige leerling accounts en scores)</small>
+  <span class="small">(zonder de overbodige leerling accounts en scores)</span>
   </li></ol>
  !else
   <p>

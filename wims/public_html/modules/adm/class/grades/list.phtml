@@ -9,29 +9,29 @@ to $wims_menu_items
 !endif
 
 $table_header
-$table_hdtr<th>$wims_name_name</th><th><small>$name_average</small></th>
+$table_hdtr<th>$wims_name_name</th><th class="small">$name_average</th>
 !for g=1 to $gcnt
- <th><small>
+ <th class="small">
  !set t_=!item $g of $titles
  !if $ucnt<=$maxuser
   !href cmd=reply&method=column&cc=$g $t_
  !else
   $t_
  !endif
- </small>
+ </th>
 !next g
-
-$table_hdtr<td align="center"><b>$name_weight</b><td align="center">--</td>
+</tr>
+$table_hdtr<td align="center" class="bold">$name_weight</td><td align="center">--</td>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
  !default w_=1
- <td align="center"><b>$w_</b></td>
+ <td align="center" class="bold">$w_</td>
 !next g
 !for u=1 to $ucnt
  !set n_=!item $u of $ulist
  !set f_=!item $u of $flist
  !set l_=!item $u of $llist
- $table_tr<td>
+ </tr>$table_tr<td>
  !href cmd=reply&method=user&un=$n_ $l_, $f_
  !set t_=!positionof item $n_ in $uulist
  !if $t_!=
@@ -55,10 +55,11 @@ $table_hdtr<td align="center"><b>$name_weight</b><td align="center">--</td>
  !if $a_!=NaN
  !set a_=$[rint(100*$a_/$wtot)/100]
  !endif
- <td align="center">$a_
+ <td align="center">$a_</td>
  !for g=1 to $gcnt
-  <td align="center">$(G$g)
+  <td align="center">$(G$g)</td>
  !next g
+ </tr>
 !next u
 $table_end
 

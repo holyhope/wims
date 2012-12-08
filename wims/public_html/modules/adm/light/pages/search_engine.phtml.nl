@@ -33,7 +33,7 @@ voor een overzicht van het beschikbare materiaal op deze server.
 !endif
 <h3>Zoekopdracht</h3>
 Voer een zoekterm in en kies het type WIMS bronmateriaal waarin gezocht moet worden.<br/>
-<small>(zoals bijvoorbeeld lesmodules, openbare werkbladen, interactieve documenten, online rekenmachines etc.)</small>
+<span class="small">(zoals bijvoorbeeld lesmodules, openbare werkbladen, interactieve documenten, online rekenmachines etc.)</span>
 De voorkeurstaal van het gezochte materiaal kan ook worden ingevoerd.
 
 

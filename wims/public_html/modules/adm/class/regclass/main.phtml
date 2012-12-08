@@ -138,23 +138,21 @@
  !if $Cltype!=1
   $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
    <input size="16" type="password" name="passsup" id="passsup" maxlength="16"/>
-   </td><td>
-   <small>
+   </td><td class="small">
    ($name_warningpass).
-   $name_help1</small>
+   $name_help1
   </td></tr>
  !endif
  
  $table_tr<td><label for="password">$wims_name_Password ($name_classesss)</label></td><td>
   <input size="16" type="password" name="password" id="password" maxlength="16"/>
-  </td><td>
-  <small>($name_warningpass).
+  </td><td class="small">
+  ($name_warningpass).
   !if $Cltype<2
   $name_help2
   !else
   $name_help3
  !endif
- </small>
  </td></tr>
  
  $table_tr<td><label for="exp_day">$wims_name_expiration</label></td><td>
@@ -187,32 +185,28 @@
    </option>
   !next i
   </select> 
-  </td><td><small>$name_help_date</small>
+  </td><td class="small">$name_help_date
  </td></tr>
 
  $table_tr<td><label for="limit">$name_help_limit</label></td><td>
   !let num=!charcnt $wims_class_user_limit
   <input size="3" name="limit" value="$limit" id="limit" maxlength="$num"/>
- </td><td>
- <small>(&lt; $wims_class_user_limit.) </small>
+ </td><td class="small">(&lt; $wims_class_user_limit.)
  </td></tr>
  
  $table_tr<td><label for="secure">$name_secure ($name_sup)</label></td><td>
   !!!default secure=all
   <input size="30" name="secure" value="$secure" id="secure"/>
   !reset secure
- </td><td>
- <small>$name_host
+ </td><td class="small">$name_host
   !!!if $Cltype<3
   !! $name_optional.
   !!!endif 
-  </small>
  </td></tr>
  !if $cltype isin 024
 $table_tr<td><label for="cas_auth">$name_cas ($name_optional)</label></td><td>
   <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth"/>
-  </td><td>
- <small>$name_cas_help</small>
+  </td><td class="small">$name_cas_help
  </td></tr>
  !endif
 $table_end

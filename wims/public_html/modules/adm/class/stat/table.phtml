@@ -12,22 +12,22 @@
  $table_header
  $table_hdtr<th rowspan="$hdrow">$wims_name_Exercise</th>
  !if req isitemof $show and $st=S
-  <th rowspan="$hdrow"><small>$name_required_points</small></th>
+  <th rowspan="$hdrow" class="small">$name_required_points</th>
  !endif
  !if weight isitemof $show
-  <th rowspan="$hdrow"><small>$name_coeff</small></th>
+  <th rowspan="$hdrow" class="small">$name_coeff</th>
  !endif
  !if cid isitemof $show
-  <th rowspan="$hdrow"><small>$name_index</small></th>
+  <th rowspan="$hdrow" class="small">$name_index</th>
  !endif
  !if tot isitemof $show
   <th colspan="4">$name_totals</th>
  !endif
  !if scoremean isitemof $show
-  <th colspan="2"><small>$name_avg_score</small></th>
+  <th colspan="2" class="small">$name_avg_score</th>
  !endif
  !if partmean isitemof $show
-  <th colspan="4"><small>$name_avg_participant</small></th>
+  <th colspan="4" class="small">$name_avg_participant</th>
  !endif
  !if minmax isitemof $show
   <th colspan="2">$name_min</th>
@@ -40,22 +40,22 @@
  !if $hdrow>1
   $table_hdtr
   !if tot isitemof $show
-   <th><small>$name_new</small></th><th><small>$name_score</small></th>
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
+   <th class="small">$name_new</th><th class="small">$name_score</th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
   !endif
   !if scoremean isitemof $show
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
   !endif
   !if partmean isitemof $show
-   <th><small>$name_new</small></th><th><small>$name_score</small></th>
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
+   <th class="small">$name_new</th><th class="small">$name_score</th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
   !endif
   !if minmax isitemof $show
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
   !endif
   !if deviat isitemof $show
-   <th><small>$name_points</small></th><th><small>$name_duration</small></th>
+   <th class="small">$name_points</th><th class="small">$name_duration</th>
   !endif
  !endif
  </tr>
@@ -71,13 +71,13 @@
   !if $scavg>0 and $st=S
    !set sdur=$[$sdur+$duravg*$3_/$scavg]
   !endif
-  $table_tr<td><small>$exo.
+  $table_tr<td class="small">$exo.
   !if $st=S
    !href target=wims_exo module=$1_&cmd=new&worksheet=$sn&$2_ $t_
   !else
    $t_
   !endif
-  </small>
+  
   !if req isitemof $show and $st=S
    <td align="center">$3_</td>
    !set sreq=$[$sreq+$3_]
@@ -168,7 +168,7 @@
  </tr>
  <caption>
  <b>$(name_$st) $sn.</b> $shtit
- <small>($name_theoric $[rint($sdur)] $name_minute)</small>
+ <span class="small">($name_theoric $[rint($sdur)] $name_minute)</span>
  </caption>
  $table_end
 !next ss

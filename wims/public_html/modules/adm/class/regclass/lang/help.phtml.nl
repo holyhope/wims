@@ -33,10 +33,10 @@ Het oprichten van
      is voorbehouden aan de administrator.
 !endif
 <br/>
-<small>
+<span class="small">
     Voor deze handeling is een werkend emailadres noodzakelijk.<br/>
     Nadat uw klas $name_classe is opgericht, bent U verantwoordelijk voor het onderhoud ervan.
-</small>
+</span>
 </p><p>
 Voor het oprichten de onderstaande vragen beantwoorden :</p>
 !exit
@@ -61,7 +61,7 @@ Het aanmelden van nieuwe leerlingen
  is beveiligd door het wachtwoord $name_classesss.
 !else
  vrij. 
-<small> weet U wel zeker dat deze site dat toestaat ?</small> 
+<span class="small"> weet U wel zeker dat deze site dat toestaat ?</span> 
 !endif
 </p><p>
 U kunt deze instellingen nog steeds

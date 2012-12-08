@@ -70,7 +70,7 @@
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <span class="tt wims_fname">test</span> zone.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
-  exact overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
+  exact overeenkomt met het adres van de reeds gepubliceerde versie.<span class="small">Anders worden er dus twee "dezelfde" modules  gepubliceerd.</span> 
 !endif
 
 !if $job=auth

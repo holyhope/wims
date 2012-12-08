@@ -116,23 +116,23 @@ son compartidos por otros programas.
 
 !if $job=addclass
 !set form_titlename=Títulos de las nuevas clases\
-<br/><small>(separe los títulos con comas si <br/>\
-añade varias clases al mismo tiempo)</small>
+<br/><span class="small">(separe los títulos con comas si <br/>\
+añade varias clases al mismo tiempo)</span>
 !exit
 !endif
 
 !if $job=addicourse
 !set form_caption=Añadir cursos interclases al programa
 !set form_titlename=Títulos de los nuevos cursos\
-<br/><small>(separe los títulos con comas si<br/>\
-añade varios cursos al mismo tiempo)</small>
+<br/><span class="small">(separe los títulos con comas si<br/>\
+añade varios cursos al mismo tiempo)</span>
 
 !exit
 !endif
 
 !if $job=addprog
 !set form_titlename=Títulos de los nuevos programas:\
-<br/><small>(separe los títulos con comas si<br/>\
-añade varios programas al mismo tiempo)</small>
+<br/><span class="small">(separe los títulos con comas si<br/>\
+añade varios programas al mismo tiempo)</span>
 !exit
 !endif

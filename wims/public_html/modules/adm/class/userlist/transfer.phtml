@@ -2,16 +2,16 @@
 $classname\
 $name_title_transfer
 
-<center>
+<div class="wimscenter">
  !href cmd=reply&job=getuser&getuser=$getuser $name_student1
  (<span class="tt">$getuser</span>)
-</center> <p>
+</div>
 
 !if $error=no_reccourse
  <span class="wims_warning">$wims_name_Error</span>. $name_error1
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
- <p>
+ 
  !exit
 !endif
 
@@ -23,9 +23,10 @@ $name_title_transfer
  !else
   $name_activities
   <hr/>
-  <small><pre>
+  <pre class="small">
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
-  </pre></small><hr/><div class="wimscenter">
+  </pre>
+  <hr/><div class="wimscenter">
   !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass $name_merge
 &nbsp;
   !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass $name_replace

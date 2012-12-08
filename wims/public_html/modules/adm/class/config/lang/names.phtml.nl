@@ -36,7 +36,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
  !distribute lines Er is niets geselecteerd voor het herstel.\
  Herstel alles behalve de klas configuratie en het supervisor account.\
- <span class="wims_warning">Opgelet !</span> <small>Zie opmerkingen hieronder.</small>\
+ <span class="wims_warning">Opgelet !</span> <span class="small">Zie opmerkingen hieronder.</span>\
    Klas configuratie.\
    Supervisor account (inclusief uw wachtwoord)\
    Studenten accounts\
@@ -252,9 +252,9 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    
   !endif
 
-  !distribute items ---,<small>supervisor</small>,\
-	<small>student</small>,\
-	<small>iedereen</small>\
+  !distribute items ---,<span class="small">supervisor</span>,\
+	<span class="small">student</span>,\
+	<span class="small">iedereen</span>\
   into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
