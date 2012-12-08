@@ -51,11 +51,11 @@ Fichero de imagen que se va a enviar en el ejercicio:
  Se puede acceder a estos ficheros de imagen en el enunciado del ejercicio
  mediante el parámetro interno \imagedir. Por ejemplo puede escribir
  </p>
- <center><pre>
+ <pre class="wimscenter">
  &lt;img src=\imagedir/$example/&gt;
- </pre></center>
- Puede también escribir simplemente <tt>\img{\imagedir/$example}</tt>, o
- <tt>\img{\imagedir/$example}{opciones html}</tt>. La ventaja de este segundo método
+ </pre>
+ Puede también escribir simplemente <span class="tt">\img{\imagedir/$example}</span>, o
+ <span class="tt">\img{\imagedir/$example}{opciones html}</span>. La ventaja de este segundo método
  es que los estudiantes no verán el nombre del fichero. A causa de su coste
  en consumo de recursos, no utilice este método más que cuando sea necesario.
 !endif

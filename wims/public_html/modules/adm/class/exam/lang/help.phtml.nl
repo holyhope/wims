@@ -1,7 +1,7 @@
 !goto $wims_read_parm
 
 :allowtype
-<center><b>Openingstijden van een proefwerk</p>
+<p class="wimscenter"><b>Openingstijden van een proefwerk</p>
  U kunt openingstijden definieren voor dit proefwerk, door het toevoegen van woorden
  <span class="tt wims_code_words">
 &gt;yyyymmdd.hh:mm</span>

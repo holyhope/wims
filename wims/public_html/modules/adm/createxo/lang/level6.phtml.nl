@@ -60,20 +60,20 @@ Het bestand voor deze oefening:
    !set eximage=file.jpg
  !endif
  Bij voorbeeld, kan geschreven worden
-  <center><pre>
+  <pre class="wimscenter">
   !if $test_=1
  &lt;img src="\imagedir/$example"/&gt;
  !else
    &lt;a href="\imagedir/$example"&gt;$example&lt;/a&gt;.  
  !endif
-  </pre></center>
+  </pre>
   Voor bestanden van het type plaatje, kan geschreven worden
-  <tt>&lt;img src="\imagedir/$eximage"/&gt;</tt>, maar ook
-  <tt>\img{\imagedir/$eximage}</tt> of
- <tt>\img{\imagedir/$eximage}{html options}</tt>. Het voordeel van deze laatste methode is dat de naam van het bestand verborgen is.
+  <span class="tt">&lt;img src="\imagedir/$eximage"/&gt;</span>, maar ook
+  <span class="tt">\img{\imagedir/$eximage}</span> of
+ <span class="tt">\img{\imagedir/$eximage}{html options}</span>. Het voordeel van deze laatste methode is dat de naam van het bestand verborgen is.
  Dit gaat wel ten koste van de snelheid; en moet alleen worden gebruikt indien strict noodzakelijk.
 <p>Voor alle andere bestandstypes, kan met html worden geschreven :
-<tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
+<span class="tt">&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</span> ...
 </p>
 !endif
 <p class="wims_warning">
