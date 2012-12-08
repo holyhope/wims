@@ -441,12 +441,12 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 !if $job=swac
   !set name_mkindex=Make the index
   !set name_text_swac= Pueden cargar a distancia los ficheros MP3 de algunos volúmenes del proyecto Shtooka.\
-<p>Si los módulos que los llaman son muy solicitados por el servidor WIms, deberían hacerlo.\
+</p><p>Si los módulos que los llaman son muy solicitados por el servidor WIms, deberían hacerlo.\
 Si no, estos módulos irán a buscar los ficheros MP3 sobre el sitio http://shtooka.net\
 \
 Para cargar a distancia las colecciones, hagan lo por línea de pedido con el script\
 <span class="tt">$wims_home/bin/swac </span>. Instalará algunos paquetes swac al buen lugar.\
-<p class="small">Porque los ficheros wims se cifran ISOlatino, no es aún \
+</p><p class="small">Porque los ficheros wims se cifran ISOlatino, no es aún \
 posible utilizar los paquetes cirílicos.</p>
 !exit
 !endif

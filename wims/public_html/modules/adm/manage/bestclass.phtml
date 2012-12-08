@@ -22,7 +22,7 @@
   !default bst_since=$tmp
   <input type="text" name="bst_num" value="$bst_num" size="4"/>$name_bestcumul 
   <input type="text" name="bst_since" value="$bst_since" size="7"/>
-  <small>$name_format</small> <span class="tt wims_">yyyymmdd</span>.
+  <span class="small">$name_format</span> <span class="tt wims_">yyyymmdd</span>.
   <input type="hidden" name="job" value="bestclass"/>
   <input type="submit" value="$wims_name_refresh"/>
 
@@ -38,13 +38,13 @@ $table_hdtr
 <th>$name_created<br/><span class="tt wims_code_words">yyyymmdd</span></th>
 <th>$name_expire<br/><span class="tt wims_code_words">yyyymmdd</span></th>
 <th>$name_load<sup>[1]</sup></th>
-<th>$name_part</th></tr>
+<th>$name_part</th></tr>w
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
  !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
  !default f_=--
  $table_tr
- <td><small>$t_<br/>$d_</small></td>
+ <td class="small">$t_<br/>$d_</td>
  <td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
@@ -56,8 +56,8 @@ $table_hdtr
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  </td>
  <td>$l_</td>
- <td><small>
- <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
+ <td class="small">
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a>
  </td>
  <td>$f_<td>$e_</td>
  <td>$load_</td>
@@ -81,7 +81,7 @@ $table_hdtr
  !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
  !default f_=--
  $table_tr
- <td><small>$t_<br/>$d_</small></td>
+ <td class="small">$t_<br/>$d_</td>
  <td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
@@ -93,8 +93,8 @@ $table_hdtr
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
 </td>
 <td>$l_</td>
- <td><small>
- <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small></td>
+ <td class="small">
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a></td>
  <td>$f_<td>$e_</td>
  <td>$load_</td>
  <td>$u_</td>
