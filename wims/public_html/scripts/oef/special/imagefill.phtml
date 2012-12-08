@@ -8,7 +8,9 @@
 
 !set parm=!replace internal $	$ by $ ; $ in $wims_read_parm
 !set parm1=!row 1 of $parm
+
 !distribute items $parm1 into imgurl,bigsize,smallsize
+!!debug tt$imgurl,$bigsize,$smallsize
 !set bigsize=!translate x, to $  $ in $bigsize
 !distribute words $bigsize into bigsizex,bigsizey
 !set ssize=!translate x, to $  $ in $smallsize
@@ -70,7 +72,7 @@ $thisjs
  !set cc2='<\/td><\/tr><\/table>'
  !set wims_ins_alt=none
  !read js/dynapi3.phtml
- <script language=javascript type="text/javascript">
+ <script type="text/javascript">
  dynapi.onLoad(function() {
   $thisjs
  !for c=$oldfillcnt to $fillcnt
