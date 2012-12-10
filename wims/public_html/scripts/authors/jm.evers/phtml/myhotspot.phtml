@@ -1,13 +1,4 @@
 !!hotspot questions
-<script type="text/javascript">
-//<![CDATA[
-<! -- no validator -->
-    function dontknow(){
-	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
-    }
-
-//]]>
-</script>
 !set n=$counter
 <table id="exercise" class="exercise">
     <tr>
@@ -27,6 +18,46 @@
     !if $make_tr = 1
     </tr><tr>
     !endif
+    !if $image=2
+	<td>
+	    <table>
+		<tr>
+	    !if $draw=1
+		<th>
+		!set ins_attr = ismap
+    	        !href cmd=reply&$no_name
+		!set insdraw_size=$xsize,$ysize
+	        !insdraw $var1
+		</a>
+		</th>
+		<th>
+		!set ins_attr = ismap
+    		!href cmd=reply&$no_name
+	        !set insdraw_size=$XSIZE,$YSIZE
+		!insdraw $var2
+		</a>
+		</th>
+	    !endif
+	    !if $plot=1
+		<th>
+	        !set ins_attr = ismap
+    		!href cmd=reply&$no_name
+	        !set insplot_set=$(image_settings$n)
+		!insplot $var1
+	        </a>
+		</th>
+    		<th>
+		!set ins_attr = ismap
+    		!href cmd=reply&$no_name
+		!set insplot_set=$(image_settings$n)
+		!insplot $var2
+		</a>
+		</th>
+	    !endif
+		</tr>
+	</table>
+	</td>
+    !else
     <td class="exercise_c">
 	!set ins_attr = ismap 
     	!href cmd=reply&$no_name
@@ -39,13 +70,9 @@
 	    !insplot $(image$n)
 	!endif
     </td>
+    !endif
     </tr>
 </table>
 
-<div id="send_buttons" class="embedded_central">
-!if $inputs != 0
-    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-!endif
-    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-</div>
 !exit
+
