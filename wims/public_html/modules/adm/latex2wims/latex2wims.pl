@@ -75,8 +75,8 @@ $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
-my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20px" height="20px" />}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25px" height="15px" />';
+my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" style="width:20px;height:20px;" />}';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " style="width:25px;height:15px;" />';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################
@@ -536,6 +536,7 @@ for my $rubrique (@liste_env_tabular) {
   $TEXT =~ s,</div>\s+</div>,</div></div>,g;
   $TEXT =~ s,</div>\s+<,</div>\n<,g;
   $TEXT =~ s,<div ([^>]+)>\s+<,<div $1>\n<,g;
+  $TEXT =~ s/\n{2,}/<br class=\"spacer\"\/>\n/g;
   $TEXT;
 }
 
