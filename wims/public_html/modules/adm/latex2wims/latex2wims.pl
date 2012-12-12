@@ -535,8 +535,8 @@ for my $rubrique (@liste_env_tabular) {
   $TEXT =~ s,<li>\n+</li>,<li></li>,g;
   $TEXT =~ s,</div>\s+</div>,</div></div>,g;
   $TEXT =~ s,</div>\s+<,</div>\n<,g;
-  $TEXT =~ s,<div ([^>]+)>\s+<,<div $1>\n<,g;
-  $TEXT =~ s/\n{2,}/<br class=\"spacer\"\/>\n/g;
+  $TEXT =~ s,<div ([^>]+)>\s+<,<div $1>,g;
+  $TEXT =~ s/\n{2,}/<br class=\"spacer\"\/>/g;
   $TEXT;
 }
 
@@ -622,7 +622,7 @@ sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
       $ref->{upbl}{$newtag} = $Id;
       $milieu = "\n\\$type\{$newtag\}\{"
         . encadr_defaut("<$environ>$titre<\/$environ>", $environ, $ref_env,'titre')
-        . "\}\n\n" ;
+        . "\}\n" ;
     } else {  my $milieu1 = $milieu ; 
       $milieu = encadrement("<$environ>$milieu<\/$environ>", $environ, $ref_env, 'full');
     }
@@ -673,11 +673,11 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
     $TEXT =~ s/<\/$rubrique>/<\/span>\n/g;
   } elsif (!$a || $option eq 'bloc') {
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])?/$div_d/g;
-    $TEXT =~ s/<\/$rubrique>/$div_f\n/g;
+    $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } elsif ($option eq 'full') {
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h2 class=\"$b\">$a $1<\/h2>$div_d/g;
     $TEXT =~ s/<$rubrique>/<h2 class=\"$b\">$a<\/h2>$div_d/g;
-    $TEXT =~ s/<\/$rubrique>/$div_f\n/g;
+    $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } else  { 
     $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;
     $TEXT =~ s/<\/$rubrique>/<\/span>\n/g;
