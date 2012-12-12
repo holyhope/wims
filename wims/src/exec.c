@@ -1133,15 +1133,15 @@ void _exec_ins(char *p, char *script_name,char *format)
     else snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
     if(strcasecmp(tag,"form")!=0) {
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s/>",
+		 "<img src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx\" %s %s%s/>",
 		 url, border, vspace, at, buf2, altbuf);
     }
     else {
 	char *n, *nend;
-/* fix: add quotes at name=" " - should replace border= etc */
+/* fix: add quotes at name=" " */
 	if(*tag2!=0) {n="name=\"" ; nend="\"";} else {n=""; nend="";}
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<input type=\"image\" %s%s%s src=\"%s\" style=\"border-width:%dpx\" vspace=\"%d\" %s %s%s/>",
+		 "<input type=\"image\" %s%s%s src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx\" %s %s%s/>",
 		 n,tag2,nend,url,border,vspace, at,buf2,altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),
