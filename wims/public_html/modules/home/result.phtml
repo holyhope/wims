@@ -4,11 +4,10 @@
 !!!if $s_category=L
 !! !changeto result.L
 !!!endif
-
-!if $error!=$empty
- <p class="wims_alertmsg">
+!if $error!=$empty and  $(ER_$error)!= 
+<p class="wims_alertmsg">
  $(ER_$error)
- </p>
+</p>
 !endif
 
 !set tt=<span class="wims_emph">$(C_$s_category)</span>
@@ -19,8 +18,9 @@
 </p>
 !else
  !if $s_keywords!=$empty and $gotcnt1<1
- <p>
+ <p class="wims_alertmsg">
   $RE_nomatch.
+  </p><p>
   !if $(rel_$s_category)!=$empty
    $RE_try
    !for i in $(rel_$s_category)
