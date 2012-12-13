@@ -731,7 +731,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
 void exec_href(char *p)
 {
     char *s, st[128], sti[128], stc[128], stt[128], *p1, *p2, *p3, *wn="";
-    char *U="<u><font color=\"#A0A0C0\">%s</font></u>";
+    char *U="<span class=\"color:#A0A0C0\">%s</span>";
     char b1[MAX_LINELEN+1], b2[MAX_LINELEN+1];
     int new=0;
     if(!outputing) return;
@@ -818,7 +818,7 @@ void exec_href(char *p)
     tohttpquery(b1);
     if(strstr(session_prefix,"_check")!=NULL) {
 	if(*b2) output(U,b2);
-	else _output_("<a name=\"0\"></a>");
+	else _output_("<a id=\"0\"></a>");
 	return;
     }
     if(jsbuf[0]==0 && st[0]==0 && strstr(session_prefix,"_exam")!=NULL) {
