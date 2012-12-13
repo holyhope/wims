@@ -158,6 +158,13 @@ activetest=!replace line 4 by $ecnt in $activetest
  !default expiration=!line 2 of $activetest
  activetest=!line 1 of $activetest
  exocnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$exam
+ !if $job=student
+  !if randomlist iswordof $class_option
+   !default exolist=!shuffle $exocnt
+  !else
+   !default exolist=!makelist x for x = 1 to $exocnt
+  !endif
+ !endif
 !else
  exam_exist=no
  activetest=-1
