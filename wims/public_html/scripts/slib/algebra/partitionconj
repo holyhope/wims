@@ -1,0 +1,24 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_example=[5,4,2]
+!exit
+
+:proc
+!reset slib_out
+!distribute items $wims_read_parm into slib_partition
+slib_partition=!declosing $slib_partition
+slib_partition=!sort reverse numeric item $slib_partition
+slib_cnt=!itemcnt $slib_partition
+
+!for slib_j=1 to $(slib_partition[1])
+ !reset slib_t
+  !for slib_k=1 to $slib_cnt
+    !if $(slib_partition[$slib_k]) >= $slib_j
+      !increase slib_t
+    !endif
+  !next
+  slib_out=!append item $slib_t to $slib_out
+!next
