@@ -798,7 +798,7 @@ sub align1 { my ( $b) = @_;
   '<div class="math">' . $b . '</div>' ;
 }
 sub align { my ( $b) = @_;
-  $b =  '<table class="wimscenter wimsnoborder tableau"><tr><td>\\(' . $b . '\\\\</table>';
+  $b =  '<table class="wimscenter wimsnoborder tableau" style="width:100%"><tr><td>\\(' . $b . '\\\\</table>';
   if ($b =~ s/\\label{([^\}])}//) { $b = "\\label{$1}" . $b };
   $b =~ s|\&|\\)&nbsp;</td><td>&nbsp;\\(|g;
   $b =~ s|\\\\\s*</table>|\\)</td></tr></table>|g;
@@ -835,7 +835,7 @@ sub gather { my ($b) = @_;
   $b;
 }
 
-sub displaymath {"<div class=\"math\">\\( " . $_[0]. "\\)</div>"; }
+sub displaymath {"<div class=\"math\">\\(\\displaystyle{ " . $_[0]. "}\\)</div>"; }
 sub math {" \\( " . $_[0]. "\\) "; }
 
 
@@ -1127,7 +1127,7 @@ sub traitement_final { my ($TEXT) = @_;
 sub traitemath {my ($txt) = @_;
   my $test = 0;
   while ($txt =~ /\$\$/) {
-    $txt = $` . ($test == 0 ? '<div class="math">\\(' : '\\)</div>') . $';
+    $txt = $` . ($test == 0 ? '<div class="math">\\(\\displaystyle{' : '}\\)</div>') . $';
     $test = 1-$test;
   }
   $txt;
