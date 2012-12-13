@@ -160,7 +160,7 @@ char *texgif_texheader="mathfonts/header";
 char *bgcolor="#E8E8E8";	/* page background color */
 char *bgimg="";			/* page background image file */
 char *pagecss="-theme-";		/* style sheet file */
-char *theme_icon="default";		/* icon */
+char *theme_icon="standard";		/* icon */
 char *usecookie="no";		/* whether to send cookies to anon requests */
 char *mail_opt="";		/* !mailto options */
 char nodeip[256]="";		/* ip of cluster node if relevant */
@@ -168,6 +168,9 @@ char temp_log[MAX_FNAME+1];	/* temp log file name */
 	/* 0: low; 1: high; 2: MathML */
 int mathalign_base=0;		/* Not use <sup> for middle alignment */
 char *disable_zoom="no"; 	/* yes/no:  default zooming allowed (if enabled via "useropts")  */
+int spec_font=0; /* choose of some fonts*/
+ /* special font can be configured in log/wims.conf with variable special_font*/
+char *special_font="letter-spacing:0.3em;line-height:2.7em;word-spacing:0.8em;";
 int backup_hour=-1;		/* Hour for daily backup; -1 means no backup. */
 int site_accounting=0;		/* whether accounting should be activated */
 int examlog_limit=7;		/* number of logged exam sessions for each student */

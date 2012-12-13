@@ -965,17 +965,16 @@ void useropts(void)
     p=getvar("useropts");
     if(p==NULL || *p==0) p=getvar("wims_useropts");
     if(p!=NULL && *p!=0) {
-	if(myisdigit(p[0])) {
-	    usertexsize=p[0]-'0';
-	    if(p[1]!=0) {
-		mathalign_base=p[1]-'0';
-	    }
-	}
-    }
-    if(mathalign_base==1) {
-	mathalign_sup1="<sup>"; mathalign_sup2="</sup>";
-    }
-    else mathalign_sup1=mathalign_sup2="";
+      if(myisdigit(p[0])) {
+        usertexsize=p[0]-'0';
+        if(p[1]!=0) { mathalign_base=p[1]-'0'; }
+      }
+      if(mathalign_base==1) {
+        mathalign_sup1="<sup>"; mathalign_sup2="</sup>";
+      } else mathalign_sup1=mathalign_sup2="";
+/* fourth digit is for special fonts*/
+      if(myisdigit(p[3]) && p[3]!=0){ spec_font=p[3]-'0';}
+   }
 }
 
 	/* popup module help */

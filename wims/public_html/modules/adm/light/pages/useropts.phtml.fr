@@ -4,9 +4,9 @@
 !let module_title=Définir vos préférences pour WIMS
 !let module_description=définir préférences pour wims
 !let module_version=1.00
-!let module_wims_version=0.13
+!let module_wims_version=4.05a
 !let module_language=fr
-!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
+!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>) 2012
 !let module_category=adm
 !let module_level=
 !let module_domain=adm
@@ -22,6 +22,10 @@
 !default texsize=$default
 !let default=!char 1 of $default
 !default texalign=$talign
+!set zoom=!char 3 of $useropts
+!set font=!char 4 of $useropts
+!default zoom=0
+!default font=0
 !set arg=!nospace $texsize 1
 
 !let useropt2=!char 3 to -1 of $useropts
@@ -31,12 +35,10 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
-!set zoom=!char 3 of $useropts
     
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Cette page a pour but de régler quelques préférences sur WIMS.
-
 <ul>
 !if $wims_user=$empty
  <li>Langue par défaut.
@@ -63,7 +65,7 @@ Affichage des formules mathématiques.
     ou mettre le serveur en mode image.
 !set wims_ref_class=wims_button
 <p class="wimscenter">
-   !href cmd=resume&useropts=$arg Mode image
+   !href cmd=resume&useropts=$(arg)0$font Mode image
 </p> 
 </li><li>
     !let ts1=!eval $texsize-1
@@ -76,22 +78,21 @@ Affichage des formules mathématiques.
     !endif
     Réglage de la taille des formules mathématiques.
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:20px"/>
     &nbsp;
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$default Normal
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:20px"/>
  </li><li>
-!set zoom=1
+
   Activation du zoom sur les formules par un click de souris.
 !set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!set zoom=0 
+!href cmd=resume&useropts=$texsize$(texalign)1$font $wims_name_yes
    &nbsp;
 !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+   !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
 !else
     Actuellement, vous utilisez le serveur en mode image. Avec un 
    <a onmouseover="return Tip($tip)"><span class="wims_emph">navigateur</span></a>
@@ -99,7 +100,7 @@ Affichage des formules mathématiques.
 <p class="wimscenter">
 !set arg=!nospace $texsize 2
 !set wims_ref_class=wims_button
-!href cmd=resume&useropts=$arg MathML
+!href cmd=resume&useropts=$(arg)0$font MathML
 </p>
 
 </li><li>
@@ -113,10 +114,10 @@ Réglage de la taille des symboles.
     !let ts2=9
 !endif
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" width="20px"/>
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" width="20px"/>
   <p>
   Lettres grecques $m_alpha, $m_pi. Expression mathématique
   !let ins_align=middle
@@ -132,21 +133,25 @@ Réglage de la position verticale. Si l'expression
   est
   !if $texalign=1
    trop haute par rapport à la ligne de texte,
-   !href cmd=resume&useropts=$(texsize)0$useropt2 cliquez ici
+   !href cmd=resume&useropts=$(texsize)0$zoom$useropt2 cliquez ici
    pour la faire descendre.
   !else
    trop basse par rapport à la ligne de texte,
    !href cmd=resume&useropts=$(texsize)1$useropt2 cliquez ici
    pour la faire monter.
   !endif
-!set zoom=$empty
 !endif
+</li>
+<li>
+!href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Espacement normal des fontes
+
+!href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espacement des fontes pour les dyslexiques
 </li>
 </ul>
 
 !if $wims_user=$empty
  Quand tout correspond exactement à ce que vous désirez, mettez
- <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
+ <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
  title="WIMS">ce lien</a>
  dans les signets de votre navigateur pour conserver ces préférences pour vos connections ultérieures.
 !else

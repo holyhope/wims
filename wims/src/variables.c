@@ -1132,8 +1132,8 @@ void phtml_put_base(char *fname,int cache)
 	/* Read main.phtml, process it, and write to stdout. */
 void main_phtml_put(char *mname)
 {
-    char *p, buf[1024], txbuf[256], dirnbuf[256], bgbuf[256];
-    char *bcolor, *refcolor, *bg, *tx, *dirn, *vlink, *link;
+    char *p, buf[1024], txbuf[256], dirnbuf[256], bgbuf[256], spfbuf[256];
+    char *bcolor, *refcolor, *bg, *tx, *dirn, *vlink, *link, *spf ;
     define_html_header(); readnest=0;
     nph_header(200);
     p=getvar("wims_backslash_insmath");
@@ -1171,12 +1171,19 @@ void main_phtml_put(char *mname)
 	else
 	  snprintf(bgbuf,sizeof(bgbuf),"background-image: url(\"%s\");",bg);
     }
-    setvar("wims_bodyimg",bgbuf);
+    setvar("wims_bodyimg",bgbuf);  
     tx=getvar("wims_textcolor");
     if(tx!=NULL && *tx!=0 && strchr(tx,'\"')==NULL) {
 	snprintf(txbuf,sizeof(txbuf),"color:%s;",tx);
     }
     else txbuf[0]=0;
+   /* special fonts defined in special_font -should also take the value specialfont in wims.conf */
+    if(spec_font==1){ 
+        spf=getvar("wims_specialfont");
+        if(spf!=NULL && *spf!=0) { snprintf(spfbuf,sizeof(spfbuf),"%s",spf);}
+          else { snprintf(spfbuf,sizeof(spfbuf),"%s",special_font); }
+        setvar("wims_special_font",spfbuf);
+    }
     dirn=getvar("wims_main_dirn");     /* "rtl" for arabic writing ; on pourrait laisser vide pour les autres ? */
     if(dirn!=NULL && *dirn!=0 && strchr(dirn,'\"')==NULL) {
 	snprintf(dirnbuf,sizeof(dirnbuf),"dir=\"%s\"",dirn);
