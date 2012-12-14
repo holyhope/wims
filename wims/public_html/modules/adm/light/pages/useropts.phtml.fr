@@ -39,119 +39,149 @@
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Cette page a pour but de régler quelques préférences sur WIMS.
-<ul>
+
 !if $wims_user=$empty
- <li>Langue par défaut.
+ <h2>Langue par défaut</h2>
+ <p>Choissisez la langue d'affichage du site : 
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" />$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" style="height:1.1em;" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
-  </li>
+  </p>
+
 !endif
+
+<h2>Formules mathématiques</h2>
+
+
+<p>Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisation de MathML (à condition que votre navigateur le supporte).</p>
+    Voici quelques exemples : 
+    <ul>
+    
+      <li>Lettres grecques :
+          <pre>
+           !insmath alpha != pi
+          </pre>
+      </li>
+      <li> Expression mathématique :
+       !let ins_align=middle
+    !! we need to force dynamic insertion
+       !set pw=2
+       <pre>
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
+       </pre>
+      </li>
+      <li>Une inégalité mixte : 
+        <pre>
+         !insmath | a + b | <= epsilon + 123.45
+        </pre>
+      </li>
+    </ul>
+
+    
+!if $texalign=2
+    <p>Actuellement, vous affichez les formules en MathML. Si les exemples ci-dessus n'apparaissent pas correctement, vous pouvez utiliser un autre
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">navigateur</a> 
+    ou mettre le serveur en mode image.
+    <ul>
+     <li>Modifier le mode d'affichage : 
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font Mode image
+      
+      !set arg=!nospace $texsize 2
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font MathML
+
+     </li>
+
+     <li>
+      !let ts1=!eval $texsize-1
+      !let ts2=!eval $texsize+1
+      !if $ts1<1
+       !let ts1=1
+      !endif
+      !if $ts2>9
+       !let ts2=9
+      !endif
+      Réglage de la taille des formules mathématiques.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em"/>
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$default Normal
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em"/>
+     </li>
+ 
+     <li>
+      Zoom sur les formules par un click de souris.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)1$font activé
+      &nbsp;
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)0$font désactivé
+!else
+ <p>Actuellement, vous utilisez le serveur en mode image. Avec un 
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">navigateur
+    convenable</a>, vous pouvez utiliser le mode MathML.
+ </p>
+
+
+ <ul>
+  <li>Modifier le mode d'affichage : 
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font Mode image
+
+   !set arg=!nospace $texsize 2
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font MathML
+  </li>
+
+  <li>
+   Réglage de la taille des symboles.
+   !let ts1=!eval $texsize-1
+   !let ts2=!eval $texsize+1
+   !if $ts1<1
+    !let ts1=1
+   !endif
+   !if $ts2>9
+    !let ts2=9
+   !endif
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em"/>
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em"/>
+
 
 <li>
-Affichage des formules mathématiques.
-
-!if $texalign=2
-    Le serveur permet l'utilisation de MathML à condition que votre navigateur le supporte. Par exemple,
-    <p class="wimscenter">
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
-    </p>
-    Si cette formule n'apparait pas correctement, vous pouvez utiliser un autre
-    <a onmouseover="return Tip($tip)"><span class="wims_emph">navigateur</span>
-    </a> 
-    ou mettre le serveur en mode image.
-!set wims_ref_class=wims_button
-<p class="wimscenter">
-   !href cmd=resume&useropts=$(arg)0$font Mode image
-</p> 
-</li><li>
-    !let ts1=!eval $texsize-1
-    !let ts2=!eval $texsize+1
-    !if $ts1<1
-      !let ts1=1
-    !endif
-    !if $ts2>9
-      !let ts2=9
-    !endif
-    Réglage de la taille des formules mathématiques.
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:20px"/>
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$default Normal
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:20px"/>
- </li><li>
-
-  Activation du zoom sur les formules par un click de souris.
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$(texalign)1$font $wims_name_yes
-   &nbsp;
-!set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
-!else
-    Actuellement, vous utilisez le serveur en mode image. Avec un 
-   <a onmouseover="return Tip($tip)"><span class="wims_emph">navigateur</span></a>
-   convenable, vous pouvez utiliser le mode MathML.
-<p class="wimscenter">
-!set arg=!nospace $texsize 2
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$(arg)0$font MathML
-</p>
-
-</li><li>
-Réglage de la taille des symboles.
-!let ts1=!eval $texsize-1
-!let ts2=!eval $texsize+1
-!if $ts1<1
-    !let ts1=1
-  !endif
-!if $ts2>9
-    !let ts2=9
-!endif
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" width="20px"/>
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" width="20px"/>
-  <p>
-  Lettres grecques $m_alpha, $m_pi. Expression mathématique
-  !let ins_align=middle
-!! we need to force dynamic insertion
-  !set pw=2
-  !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-  <br/>
-  Une inégalité mixte
-  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
-</li><li>
 Réglage de la position verticale. Si l'expression
   !insmath (x+y)/(x^$pw + y^2)
   est
   !if $texalign=1
    trop haute par rapport à la ligne de texte,
-   !href cmd=resume&useropts=$(texsize)0$zoom$useropt2 cliquez ici
-   pour la faire descendre.
+   !href cmd=resume&useropts=$(texsize)0$zoom$useropt2 cliquez ici pour la faire descendre.
   !else
    trop basse par rapport à la ligne de texte,
-   !href cmd=resume&useropts=$(texsize)1$useropt2 cliquez ici
-   pour la faire monter.
+   !href cmd=resume&useropts=$(texsize)1$useropt2 cliquez ici pour la faire monter.
   !endif
 !endif
 </li>
-<li> 
-Vous pouvez régler l'espacement des lettres et des mots 
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
-
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Dys
-</li>
 </ul>
 
+<h2>Accessibilité</h2>
+
+<p>Vous pouvez régler l'espacement des lettres et des mots 
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+    
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espacé
+    </p>
+<p>Le mode espacé est particulierement adapté dans le cas d'un lecteur dyslexique.</p>
+
+<br class="spacer"/>
+<p class="center">
 !if $wims_user=$empty
  Quand tout correspond exactement à ce que vous désirez, mettez
  <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
@@ -161,6 +191,7 @@ Vous pouvez régler l'espacement des lettres et des mots
  Vos préférences seront préservées dans vos futures connexions dans cette
  classe.
 !endif
+</p>
 
 :end
 !tail
