@@ -1430,16 +1430,16 @@ texover: MROWOPEN compoundTermList BINOM2 compoundTermList MROWCLOSE {
   wims_mathml_free_string($4);
 }
 | MROWOPEN compoundTermList TEXOVER compoundTermList MROWCLOSE {
-  char * s1 = wims_mathml_copy3("<mfrac><mrow>", $2, "</mrow><mrow>");
-  $$ = wims_mathml_copy3(s1, $4, "</mrow></mfrac>");
+  char * s1 = wims_mathml_copy3("<mstyle displaystyle=\"true\"><mfrac><mrow>", $2, "</mrow><mrow>");
+  $$ = wims_mathml_copy3(s1, $4, "</mrow></mfrac></mstyle>");
   wims_mathml_free_string(s1);
   wims_mathml_free_string($2);
   wims_mathml_free_string($4);
 }
 | left compoundTermList TEXOVER compoundTermList right {
-  char * s1 = wims_mathml_copy3("<mrow>", $1, "<mfrac><mrow>");
+  char * s1 = wims_mathml_copy3("<mrow>", $1, "<mstyle displaystyle=\"true\"><mfrac><mrow>");
   char * s2 = wims_mathml_copy3($2, "</mrow><mrow>", $4);
-  char * s3 = wims_mathml_copy3("</mrow></mfrac>", $5, "</mrow>");
+  char * s3 = wims_mathml_copy3("</mrow></mfrac></mstyle>", $5, "</mrow>");
   $$ = wims_mathml_copy3(s1, s2, s3);
   wims_mathml_free_string(s1);
   wims_mathml_free_string(s2);
