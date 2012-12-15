@@ -170,7 +170,7 @@ Maak dus eerst een
 
 <p>
 Weet U zeker dat deze module verwijderd moet worden?
-
+!!</p> close after the name of the module
 !exit
 :delconfirm
   Het bestand 

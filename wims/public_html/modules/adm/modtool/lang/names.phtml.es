@@ -172,7 +172,7 @@ ya si se borra este módulo.
 
 </p><p>
 Está  seguro de querer borrar el módulo
-</p>
+!!</p> close after the name of the module
 !exit
 :delconfirm
 El fichero
