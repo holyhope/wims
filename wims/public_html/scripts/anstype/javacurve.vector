@@ -1,8 +1,9 @@
+primitive1=arrow $rlist,8,$color1
+primitive2=arrow $glist,8,$color2
 
-rlist=!translate internal ; to , in $rlist
-rlist=!nonempty items $rlist
-m=!itemcnt $glist
-n=!itemcnt $rlist
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=6
+
 !if $n<2
  :badrep
  reply$i=
@@ -24,20 +25,17 @@ ecart2= $[sqrt(($(glist[3]) - ($(rlist[3])))^2 + ($(glist[4]) - ($(rlist[4])))^2
 
 mean=$[max($ecart1,$ecart2)]
 
-primitive1=arrow $rlist,8,$color1
-primitive2=arrow $glist,8,$color2
-
 !if NaN isin $mean or Inf isin $mean
  !goto badrep
 !endif
 
 :diag
 test=$mean
-!if $mean<6
+!if $mean<$precision
   diareply$i=good
   !advance freegot
  !else
-  !if $mean<12
+  !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif

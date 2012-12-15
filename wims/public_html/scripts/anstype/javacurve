@@ -21,6 +21,14 @@ color2=180,180,255
  !endif
 !endif
 
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+!!only in points initially
+glist=!nonempty items $glist
+!!
+m=!itemcnt $glist
+n=!itemcnt $rlist
+
 !if $type iswordof line poly polygon points segment vector rectangle sline circle bound
  !read anstype/javacurve.$type
  !if $Test!=$empty or NaN isin $test

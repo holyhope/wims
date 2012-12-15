@@ -1,8 +1,9 @@
+primitive1=polygon $color1,$rlist
+primitive2=polygon $color2,$glist
 
-rlist=!translate internal ; to , in $rlist
-rlist=!nonempty items $rlist
-m=!itemcnt $glist
-n=!itemcnt $rlist
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=6
+
 !if $n<2
  :badrep
  reply$i=
@@ -24,13 +25,11 @@ curvecomp_yrange=0,1000
 curvecomp_option=discrete1 discrete2
 curvecomp_1=$glist
 curvecomp_2=$rlist
-curvecomp_tolerance=15
+curvecomp_tolerance=$[2*$precision+3]
 
 tt=!exec curvecomp
 !distribute words $tt into mean1, mean2
 mean=$[max($mean1,$mean2)/2]
-primitive1=polygon $color1,$rlist
-primitive2=polygon $color2,$glist
 
 !if NaN isin $mean or Inf isin $mean or $mean1=$empty
  !goto badrep
@@ -38,11 +37,11 @@ primitive2=polygon $color2,$glist
 
 :diag
 test=$mean
-!if $mean<6
+!if $mean<$precision
   diareply$i=good
   !advance freegot
  !else
-  !if $mean<12
+  !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif

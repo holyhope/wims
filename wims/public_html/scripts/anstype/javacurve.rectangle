@@ -1,8 +1,23 @@
+xs1=$[min($(rlist[1]),$(rlist[3]))]
+xs2=$[max($(rlist[1]),$(rlist[3]))]
+xv1=$[min($(glist[1]),$(glist[3]))]
+xv2=$[max($(glist[1]),$(glist[3]))]
+xv3=$[min($(glist[5]),$(glist[7]))]
+xv4=$[max($(glist[5]),$(glist[7]))]
+ys1=$[min($(rlist[2]),$(rlist[4]))]
+ys2=$[max($(rlist[2]),$(rlist[4]))]
+yv1=$[min($(glist[2]),$(glist[4]))]
+yv2=$[max($(glist[2]),$(glist[4]))]
+yv3=$[min($(glist[6]),$(glist[8]))]
+yv4=$[max($(glist[6]),$(glist[8]))]
 
-rlist=!translate internal ; to , in $rlist
-rlist=!nonempty items $rlist
-m=!itemcnt $glist
-n=!itemcnt $rlist
+primitive1=polygon $color1,$xs1,$ys1,$xs2,$ys1,$xs2,$ys2,$xs1,$ys2
+primitive2=polygon $color2,$xv1,$yv1,$xv2,$yv1,$xv2,$yv2,$xv1,$yv2\
+polygon $color2,$xv3,$yv3,$xv4,$yv3,$xv4,$yv4,$xv3,$yv4
+
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=4
+
 !if $n<2
  :badrep
  reply$i=
@@ -23,20 +38,7 @@ n=!itemcnt $rlist
 !! !goto diag
 !!!endif
 
-xs1=$[min($(rlist[1]),$(rlist[3]))]
-xs2=$[max($(rlist[1]),$(rlist[3]))]
-xv1=$[min($(glist[1]),$(glist[3]))]
-xv2=$[max($(glist[1]),$(glist[3]))]
-xv3=$[min($(glist[5]),$(glist[7]))]
-xv4=$[max($(glist[5]),$(glist[7]))]
-ys1=$[min($(rlist[2]),$(rlist[4]))]
-ys2=$[max($(rlist[2]),$(rlist[4]))]
-yv1=$[min($(glist[2]),$(glist[4]))]
-yv2=$[max($(glist[2]),$(glist[4]))]
-yv3=$[min($(glist[6]),$(glist[8]))]
-yv4=$[max($(glist[6]),$(glist[8]))]
-
-tolerance=4
+tolerance=$precision
 xdiff=$[max(abs($xv1-($xs1)),abs($xv2-($xs2)))]
 ydiff=$[max(abs($yv1-($ys1)),abs($yv2-($ys2)))]
 
@@ -55,10 +57,6 @@ ydiff=$[max(abs($yv1-($ys1)),abs($yv2-($ys2)))]
 !endif     
 
 mean=$[min($test1,$test2)]
-
-primitive1=polygon $color1,$xs1,$ys1,$xs2,$ys1,$xs2,$ys2,$xs1,$ys2
-primitive2=polygon $color2,$xv1,$yv1,$xv2,$yv1,$xv2,$yv2,$xv1,$yv2\
-polygon $color2,$xv3,$yv3,$xv4,$yv3,$xv4,$yv4,$xv3,$yv4
 
 !if NaN isin $mean or Inf isin $mean
  !goto badrep

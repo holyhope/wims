@@ -1,8 +1,9 @@
+primitive1=circle $(rlist[1..2]),$[2*$(rlist[3])],$color1
+primitive2=circle $(glist[1..2]),$[2*$(glist[3])],$color2
 
-rlist=!translate internal ; to , in $rlist
-rlist=!nonempty items $rlist
-m=!itemcnt $glist
-n=!itemcnt $rlist
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=6
+
 !if $n<2
  :badrep
  reply$i=
@@ -23,18 +24,16 @@ ecart1= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2
 ecart2= $[abs($(glist[3]) - ($(rlist[3])))]
 
 mean=$[max($ecart1,$ecart2)]
-!if $ecart1 < 6
+!if $ecart1 < $precision
   centre=1
 !else
   centre=0
 !endif
-!if $ecart2 < 6
+!if $ecart2 <$precision
   rayon=1
 !else
   rayon=0
 !endif
-primitive1=circle $(rlist[1..2]),$[2*$(rlist[3])],$color1
-primitive2=circle $(glist[1..2]),$[2*$(glist[3])],$color2
 
 !if NaN isin $mean or Inf isin $mean
  !goto badrep
@@ -42,11 +41,11 @@ primitive2=circle $(glist[1..2]),$[2*$(glist[3])],$color2
 
 :diag
 test=$mean
-!if $mean<6
+!if $mean<$precision
   diareply$i=good
   !advance freegot
  !else
-  !if $mean<12
+  !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif
