@@ -731,7 +731,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
 void exec_href(char *p)
 {
     char *s, st[128], sti[128], stc[128], stt[128], *p1, *p2, *p3, *wn="";
-    char *U="<span class=\"color:#A0A0C0\">%s</span>";
+    char *U="<span style=\"color:#A0A0C0;text-decoration:underline;\">%s</span>";
     char b1[MAX_LINELEN+1], b2[MAX_LINELEN+1];
     int new=0;
     if(!outputing) return;
