@@ -1171,7 +1171,7 @@ void main_phtml_put(char *mname)
 	else
 	  snprintf(bgbuf,sizeof(bgbuf),"background-image: url(\"%s\");",bg);
     }
-    setvar("wims_bodyimg",bgbuf);  
+    setvar("wims_bodyimg",bgbuf);
     tx=getvar("wims_textcolor");
     if(tx!=NULL && *tx!=0 && strchr(tx,'\"')==NULL) {
 	snprintf(txbuf,sizeof(txbuf),"color:%s;",tx);

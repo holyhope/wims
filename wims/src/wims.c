@@ -967,14 +967,14 @@ void useropts(void)
     if(p!=NULL && *p!=0) {
       if(myisdigit(p[0])) {
         usertexsize=p[0]-'0';
+        /* fourth digit is for special fonts*/
         if(p[1]!=0) { mathalign_base=p[1]-'0'; }
       }
-      if(mathalign_base==1) {
-        mathalign_sup1="<sup>"; mathalign_sup2="</sup>";
-      } else mathalign_sup1=mathalign_sup2="";
-/* fourth digit is for special fonts*/
       if(myisdigit(p[3]) && p[3]!=0){ spec_font=p[3]-'0';}
-   }
+    }
+    if(mathalign_base==1) {
+        mathalign_sup1="<sup>"; mathalign_sup2="</sup>";
+    } else mathalign_sup1=mathalign_sup2="";
 }
 
 	/* popup module help */
