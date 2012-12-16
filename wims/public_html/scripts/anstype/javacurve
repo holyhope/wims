@@ -1,15 +1,17 @@
-
 good=!rows2lines $(replygood$i)
 image=!line 1 of $good
 tester=!line 2 of $good
 rlist=$(reply$i)
 m_reply$i=$rlist
 reply__$i=&nbsp;
+
 !if $wims_read_parm=nocompare
  !exit
 !endif
 
 type=!item 1 of $tester
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,default points
+
 glist=!item 2 to -1 of $tester
 color1=black
 color2=180,180,255
@@ -29,11 +31,9 @@ glist=!nonempty items $glist
 m=!itemcnt $glist
 n=!itemcnt $rlist
 
-!if $type iswordof line poly polygon points segment vector rectangle sline circle bound
- !read anstype/javacurve.$type
- !if $Test!=$empty or NaN isin $test
+!read anstype/javacurve.$type
+!if $Test!=$empty or NaN isin $test
   !exit
- !endif
 !endif
 
 ifile=$image

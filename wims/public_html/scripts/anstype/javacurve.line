@@ -1,3 +1,6 @@
+!set precision=!getopt precision in $(replyoption$i)
+!default precision=5
+
  ga=$[$(glist[2])-$(glist[4])]
  gb=$[$(glist[3])-$(glist[1])]
  gc=$[$(glist[2])*($(glist[3]))-($(glist[1]))*($(glist[4]))]
@@ -37,13 +40,25 @@
  !endif
  t2=$[$t2/($gm^2)]
  test=$[max(abs($t1),abs($t2))]
- !if $test<5
+
+!!FIXME different from sline ???
+ !if $test<$precision
   diareply$i=good
   !advance freegot
  !else
-  !if $test<11
+  !if $test<$[2*$precision-1]
    precreply$i=yes
    !advance precgood
   !endif
   diareply$i=bad
  !endif
+
+!ifval abs($t1) < $precision
+  direction=1
+!else
+  direction=0
+!endif
+
+##coordonnées des points cliqués
+## test sur la direction
+m_reply$i =$rlist;$direction

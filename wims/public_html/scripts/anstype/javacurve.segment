@@ -1,6 +1,7 @@
 primitive1=line $rlist,$color1
 primitive2=line $glist,$color2
 
+!!same as polygon
 !set precision=!getopt precision in $(replyoption$i)
 !default precision=6
 
@@ -37,11 +38,11 @@ mean=$[max($mean1,$mean2)/2]
 
 :diag
 test=$mean
-!if $mean<6
+!if $mean<$precision
   diareply$i=good
   !advance freegot
  !else
-  !if $mean<12
+  !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif
