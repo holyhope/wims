@@ -118,8 +118,8 @@ void session_log(char *c)
     agent=getenv("HTTP_USER_AGENT"); if(agent==NULL) agent="";
     s=strchr(sess,'_'); if(s==NULL) s=sess+strlen(sess);
     if(s<sess+4) s=sess; else s=s-4;
-      /* limit agent name to 40 chars */
-    snprintf(tmplbuf,sizeof(tmplbuf),"%s %s %s\11%s\11%.40s",
+      /* limit agent name to 80 chars */
+    snprintf(tmplbuf,sizeof(tmplbuf),"%s %s %s\11%s\11%.80s",
 	     nowstr, s, ip, p, agent);
     write_logfile("session.log",tmplbuf);
 }
