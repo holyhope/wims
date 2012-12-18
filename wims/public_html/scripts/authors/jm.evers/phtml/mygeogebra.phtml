@@ -5,8 +5,13 @@
     function dontknow(){
 	myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');
     }
-
+    <!-- do not use "' in description -->
+    var descr_list="$description";
+    var descr_cnt = 30;
+    var description = make_description(descr_list,descr_cnt);
+    
     var list_of_things=new Array();
+    
     !if $list_of_things=$empty 
 	!! A list of all possible object names
 	list_of_things=['text','point','line','segment','circle','function','polygon','conic','ellipse','polynomial','vector','number','angle'];
@@ -20,24 +25,9 @@
 	    if(test[p] == 0){found_nothing++;}
 	}
 	if(found_nothing == test.length){setAlarm(r35+"<br /> hmmm ? ");return;}
-	if( document.getElementById('myinput0') ){
-	    var p = 0
-	    var input;
-	    var input_reply = new Array();
-	    var show="";
-	    while( document.getElementById("myinput"+p) ){
-		input = document.getElementById('myinput'+p).value;
-		if(input.length == 0){setAlarm(r1+"\ "+parseInt(p+1));return;}
-		input_reply[p] = input;
-		show = show + "<li>" + description[p] + " = " + input + "</li>";
-		p++;
-	    }
-	    myConfirm(show,reply+","+input_reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
-	}
-	else
-	{
-	    myConfirm("<br />$send<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
-	}
+	!! geogebra2wims will send values from myinput0 as
+	!! text=input0@input1@input2....@input_n
+	myConfirm("<br />$send<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 //]]>
 </script>
@@ -74,9 +64,9 @@
 			!else
 			    !set voorzeggen=!item $i of $(answer$n)
 			!endif
-			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" /></td><td>&nbsp;$(ex$p)</td></tr>
+			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="$voorzeggen" /></td><td>&nbsp;$(ex$p)</td></tr>
 		    !else
-			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[i-1]" class="schaersvoorde_textarea" size="$cols" value="" /></td><td>&nbsp;$(ex$p)</td></tr>
+			<tr><td>$(description[$i])</td><td>$m_rightarrow</td><td><input id="myinput$[$i-1]" class="schaersvoorde_textarea" size="$cols" value="" /></td><td>&nbsp;$(ex$p)</td></tr>
 		    !endif
 		!next i
 	    </table>

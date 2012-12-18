@@ -38,7 +38,6 @@ test=!wordcnt $(reply$n)
     errortext=!record 37 of $remarkdir/commonremarks.$taal
     !exit
 !endif
-
 AAA=!nospace $(reply$n)
 AAA=!lower $AAA
 var=!lower $varlist
@@ -227,6 +226,7 @@ if rationalize(expand(float($AAA))) = rationalize(expand(float($GGG))) then 1 el
 trigexpandtimes=true;trigexpandplus=true;\
 if trigrat((trigreduce($AAA))) = trigrat((trigreduce($GGG))) then 1 else 0;
 
+
 !if $wims_exec_error!= $empty
     errortext=!record 26 of $remarkdir/commonremarks.$taal
     goback=1
@@ -250,25 +250,36 @@ score=0
     # score=0
     # give it a try
     !if $varlist != nil
-	g0=$GGG
-        a0=$AAA
-        g1=$GGG
-        a1=$AAA
-	!for i in $rawvars
-	    g0=!replace internal $i by 0 in $g0
-    	    a0=!replace internal $i by 0 in $a0
-    	    g1=!replace internal $i by 1 in $g1
-    	    a1=!replace internal $i by 1 in $a1
-	!next i
-	!ifval $g0=$a0
-	    score=0.15
+	score1=0
+	score2=0
+	c=0
+	!if $rounding<1
+	    rnd=0.01
 	!else
-	    !ifval $g1=$a1
-		score=0.2
-	    !else
-		score=0
-	    !endif
+	    rnd=$[10^(log($rounding)/log(10))]
 	!endif
+	!for i in $rawvars
+	    g0=!evalsubst $i=0 in $GGG
+    	    g1=!evalsubst $i=1 in $GGG
+	    g2=!evalsubst $i=2 in $GGG
+	    a0=!evalsubst $i=0 in $AAA
+	    a1=!evalsubst $i=1 in $AAA
+	    a2=!evalsubst $i=2 in $AAA
+	    !if NaN notin $g0,$a0
+		!ifval $g0=$a0
+		    score1=$[$score1+$P6]
+		!endif
+	    !endif
+	    diff1=$[abs(($g0-$g1)/($g1-$g2))]
+	    diff2=$[abs(($a0-$a1)/($a1-$a2))]
+	    !if NaN notin $diff1,$diff2
+		!ifval $[abs($diff1-$diff2)]<$rnd
+		    score2=$[$score2+$P6]
+		!endif
+	    !endif
+	    !increase c
+	!next i
+	score=$[($score1+$score2)/(2*$c)]
     !else
 	score=0
     !endif

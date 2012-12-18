@@ -2,8 +2,9 @@
 //<![CDATA[
 <!-- no validator  -->
 !if $goback=1
+    !set r=!nospace $(reply$n)
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
-    function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
+    function refill(){var hi="$r";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
 !endif
     <!-- do not use "' in description -->
     var descr_list="$description";

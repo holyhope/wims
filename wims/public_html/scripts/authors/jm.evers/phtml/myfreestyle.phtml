@@ -22,7 +22,8 @@
 !if $inputs <0
     !if $goback=1
     function refill(){
-	var hi="$(reply$n)";
+	!set r=!nospace $(reply$n)
+	var hi="$r";
 	if(hi.length !=0 ){
 	    hi = hi.split(',');
 	    for( var i=0; i<hi.length; i++){
@@ -61,7 +62,12 @@
 	    if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;}
 	    input = science(input);if(input == "error"){return;}
 	    if(check_x(input) == 0){return;}
-	    show = "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + input + "</li>";
+	    show = input;
+	    if( show.indexOf('>') != 0 || show.indexOf('>') ){
+		show=show.replace(/\>=/g,'&ge;');show=show.replace(/\<=/g,'&le;');
+		show=show.replace(/\>/g,'&gt;');
+		show=show.replace(/\</g,'&lt;');
+	    }
 	!if $convert_root=0
 	    input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
 	    input = nthroot(input);if(input ==" error"){return;}
@@ -178,8 +184,8 @@
 		    option_value = options[options.selectedIndex].value;
 		    option_text = options[options.selectedIndex].text;
 		}catch(e){setAlarm(r1+parseInt(p+1));return;}
+		show = show + "<li>" + option_text + "</li>";
 		reply[inputfieldnumber] = option_value;
-		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;" + option_text + "</li>";
 	    	inputfieldnumber++;
 		p++;
 		if(p>100){setAlarm(r2);dontknow();}
@@ -255,6 +261,15 @@
 	show = show + "</ol>";
 	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
+    !if $wims_user=supervisor and $inputs<0
+	function putanswer(){
+	    !set c=0
+	    !for p in $(answer$n)
+		document.getElementById("myinput$c").value = $p ;
+		!increase c
+	    !next p
+	}
+    !endif
 //]]>
 </script>
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
@@ -264,7 +279,7 @@
 	    $(question$n)
 	    <br />
 	!endif
-	!if $embed=1
+	!if $embed=1 and $mathview!=3
 	    <table class="exercise">
 		<tr>
 		<td class="exercise_m">
@@ -447,10 +462,13 @@
     <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
 !endif
     <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-</div>
+
 
 !if $inputs < 0
 <!-- we are using other inputfields not present in this default page...but in a variable (like exotext) called "myinput0...myinput_n"     And we don't want to use the myjavascript template page...  -->
+    !if $wims_user=supervisor
+	<input type="button" id="schaersvoorde_extra_button" onclick="javascript:putanswer();"  value="$user_lastname" />
+    !endif
     !if $goback=1
 	<!--  after the inputelements are in the DOM-tree: try to fill-in the previous answers -->
 	<script type="text/javascript">
@@ -462,5 +480,6 @@
     !endif
 !endif
 
+</div>
 
 !exit

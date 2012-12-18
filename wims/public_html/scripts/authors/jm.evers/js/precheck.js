@@ -71,7 +71,8 @@ function setAlarm(txt){
 
 function myConfirm(txt,reply,server,session,module,counter,color){
     reply=encodeURIComponent(reply);
-    reply = reply.replace(/'/g,'%22'); // need to replace '  
+//    reply = reply.replace(/'/g,'%22'); // need to replace '  
+    reply = reply.replace(/'/g,"\\'"); // need to escape " 
     var h = parseInt( (document.documentElement.clientHeight)/2);
     var w = parseInt( (document.documentElement.clientWidth)/2 - 200);
     document.getElementById('alarmtext').style.top = h+'px';
