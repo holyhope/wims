@@ -6,9 +6,9 @@
 !let module_title=Modifica le opzioni per WIMS
 !let module_description=imposta le opzioni per wims
 !let module_version=1.00
-!let module_wims_version=0.13
+!let module_wims_version=4.05a
 !let module_language=it
-!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
+!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>) 2012
 !let module_category=adm
 !let module_level=
 !let module_domain=adm
@@ -24,6 +24,10 @@
 !default texsize=$default
 !let default=!char 1 of $default
 !default texalign=$talign
+!set zoom=!char 3 of $useropts
+!set font=!char 4 of $useropts
+!default zoom=0
+!default font=0
 !set arg=!nospace $texsize 1
 
 !let useropt2=!char 3 to -1 of $useropts
@@ -33,126 +37,176 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
-!set zoom=!char 3 of $useropts
     
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Questa pagina permette di modificare opzioni di
 visualizzzazione delle pagine WIMS.
-<ul>
+
 !if $wims_user=$empty
- <li>Lingua.
+ <h2>
+   Lingua
+ </h2>
+  <p>
+  È possibile scegliere la lingua del sito:
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" />$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" style="height:1.1em;" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
-  </li>
+  </p>
+
 !endif
 
-<li>
-Visualizzazione delle formule matematiche.
+<h2>
+Visualizzazione delle formule matematiche
+</h2>
+<p>
+Questo server permette 2 modalità di visualizzare delle formule: il modo
+<span class="wims_emph">con immagini</span> e l'utilizzo di <span class="wims_emph">MathML</span> (purché si utilizzi un browser compatibile).</p>
+    <p>
+    Ecco alcuni esempi:
+    </p>
+    <ul>
+      <li>
+        Lettere greche
+          <pre>
+           !insmath alpha != pi
+          </pre>
+      </li>
+      <li>
+       Espressioni matematiche:
+       !let ins_align=middle
+    !! we need to force dynamic insertion
+       !set pw=2
+       <pre>
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4a c}}{2a}
+       </pre>
+      </li>
+      <li>
+       Una diseguaglianza un po' complicata:
+        <pre>
+         !insmath | a + b | <= epsilon + 123.45
+        </pre>
+      </li>
+    </ul>
 
 !if $texalign=2
-  La visualizzazione delle formule matematiche è impostata per l'utilizzo di MathML purché si utilizzi un browser adatto. È possibile verificare la compatibilità del browser con l'esempio seguente
-    <p class="wimscenter">
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
+  <p>La visualizzazione delle formule matematiche è impostata per l'utilizzo di MathML, in questo caso è necessario un browser compatibile. Se gli esempi sopra non sono visualizzati correttamente occorre utilizzare un 
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+    browser
+    </a> 
+    diverso o impostare la modalità <span class="wims_emph">con immagini</span> per la visualizzazione delle formule.
     </p>
-    Se la formula qui sopra non è visualizzata correttamente, potete utilizzare un <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>
-    </a> diverso o impostare "math with images" per la visualizzazione delle formule.
-!set wims_ref_class=wims_button
-<p class="wimscenter">
-   !href cmd=resume&useropts=$arg Math with images
-</p> 
-</li><li>
-    !let ts1=!eval $texsize-1
-    !let ts2=!eval $texsize+1
-    !if $ts1<1
-      !let ts1=1
-    !endif
-    !if $ts2>9
-      !let ts2=9
-    !endif
-    Imposta la dimensione delle formule matematiche.
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px"/>
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$default Default
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px"/>
- </li><li>
-!set zoom=1
-  Abilita l'ingrandimento delle formule tramite un click del mouse.
-  !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-   !set zoom=0 
-   &nbsp;
-!set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
-!else
-    La visualizzazione delle formule è impostata come "Math with images". Se si utilizza un 
-    <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span></a> compatibile, è possibile visualizzare le formule utilizzando MathML.
-<p class="wimscenter">
-!set arg=!nospace $texsize 2
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$arg MathML
-</p>
+    <ul>
+     <li>
+     Modifica la modalità di visualizzazione delle formule:
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font Con immagini
+      
+      !set arg=!nospace $texsize 2
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font MathML
 
-</li><li>
- Dimensione dei simboli e delle formule
- matematiche. 
+     </li>
+     <li>
+      !let ts1=!eval $texsize-1
+      !let ts2=!eval $texsize+1
+      !if $ts1<1
+       !let ts1=1
+      !endif
+      !if $ts2>9
+       !let ts2=9
+      !endif
+      Imposta la dimensione delle formule matematiche.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em"/>
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$default Normale
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em"/>
+     </li><li>
+      Ingrandimento delle formule tramite un click del mouse.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)1$font attivato
+      &nbsp;
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)0$font disattivato
+!else
+ <p>
+    La visualizzazione delle formule è impostata in modalità <span class="wims_emph">con immagini</span>. Se si utilizza un 
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+    browser compatibile
+    </a>, 
+    è possibile visualizzare le formule utilizzando MathML.
+ </p>
+
+ <ul>
+  <li>Modifica la modalità di visualizzazione delle formule:
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font Con immagini
+
+   !set arg=!nospace $texsize 2
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font MathML
+  </li>
+
+  <li>
+   Dimensione dei simboli e delle formule matematiche. 
 !! È possibile aumentare o diminuire la dimensione delle formule basandosi sugli esempi della riga seguente.
-!let ts1=!eval $texsize-1
-!let ts2=!eval $texsize+1
-!if $ts1<1
+   !let ts1=!eval $texsize-1
+   !let ts2=!eval $texsize+1
+   !if $ts1<1
     !let ts1=1
-  !endif
-!if $ts2>9
+   !endif
+   !if $ts2>9
     !let ts2=9
-!endif
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px"/>
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px"/>
-  p class="wimscenter"
-  Lettere greche $m_alpha, $m_pi. Espressioni matematiche
-  !let ins_align=middle
-!! we need to force dynamic insertion
-  !set pw=2
-  !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-  <br/>
-  Una diseguaglianza
-  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
+   !endif
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em"/>
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em"/>
 </li><li>
 Allineamento delle formule. Se l'espressione
   !insmath (x+y)/(x^$pw + y^2)
   è
   !if $texalign=1
    troppo alta rispetto al testo circostante,
-   !href cmd=resume&useropts=$(texsize)0$useropt2 clicca qui
-   per abbassarlo.
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(texsize)0$zoom$font clicca qui per abbassarlo.
   !else
    troppo bassa rispetto al testo circostante,
-   !href cmd=resume&useropts=$(texsize)1$useropt2 clicca qui
-   per alzarlo.
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(texsize)1$zoom$font clicca qui per alzarlo.
   !endif
-!set zoom=$empty
 !endif
 </li>
 </ul>
 
+<h2>Accessibilità</h2>
+
+<p>È possibile configurare la spaziatura delle lettere e delle parole
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normale
+    
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Distanziato
+</p><p>
+Il modo distanziato è particolarmente adatto in caso di un utente dislessico.</p>
+
+<br class="spacer"/>
+<p>
 !if $wims_user=$empty
  Per visitare di nuovo WIMS con le opzioni selezionate, utilizzate
-<a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
+ !set wims_ref_class=wims_button
+<a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$zoom$font"
  title="WIMS">questo link</a>
 (è consigliabile salvare tale link nei Preferiti del browser).
 !else
  Le opzioni selezionate saranno memorizzate per il prossimo login.
 !endif
+</p>
 
 :end
 !tail
