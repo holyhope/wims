@@ -1,6 +1,3 @@
-primitive1=polygon $color1,$rlist
-primitive2=polygon $color2,$glist
-
 !!same as segment
 !set precision=!getopt precision in $(replyoption$i)
 !default precision=6
@@ -41,10 +38,14 @@ test=$mean
 !if $mean<$precision
   diareply$i=good
   !advance freegot
- !else
+!else
   !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif
   diareply$i=bad
- !endif
+!endif
+
+:drawing
+primitive1=polygon $color1,$rlist
+primitive2=polygon $color2,$glist

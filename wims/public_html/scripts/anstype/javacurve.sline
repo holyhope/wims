@@ -10,22 +10,6 @@
  rc=$[$(rlist[2])*($(rlist[3]))-($(rlist[1]))*($(rlist[4]))]
  rm=$[max(abs($ra),abs($rb))]
 
- rr=$[ceil(1000/$rm)+2]
- rp=$[$rr+1]
- rx1=$[$(rlist[1])*$rp-($(rlist[3]))*$rr]
- rx2=$[$(rlist[3])*$rp-($(rlist[1]))*$rr]
- ry1=$[$(rlist[2])*$rp-($(rlist[4]))*$rr]
- ry2=$[$(rlist[4])*$rp-($(rlist[2]))*$rr]
- primitive1=line $(rlist[1]),$(rlist[2]),$rx2,$ry2,$color1
- gr=$[ceil(1000/$gm)+2]
- gp=$[$gr+1]
- gx1=$[$(glist[1])*$gp-($(glist[3]))*$gr]
- gx2=$[$(glist[3])*$gp-($(glist[1]))*$gr]
- gy1=$[$(glist[2])*$gp-($(glist[4]))*$gr]
- gy2=$[$(glist[4])*$gp-($(glist[2]))*$gr]
- primitive2=line $(glist[1]),$(glist[2]),$gx2,$gy2,$color2
- 
-
  !if NaN isin $ga$gb$gc or $gm<$precision
   Test=bad $i
   !exit
@@ -79,3 +63,19 @@
 ##coordonnées des points cliqués
 ## test sur l'origine, test sur la direction, test sur le sens (0 ou 1)
 m_reply$i =$rlist;$origine,$direction,$sens
+
+:drawing
+ rr=$[ceil(1000/$rm)+2]
+ rp=$[$rr+1]
+ rx1=$[$(rlist[1])*$rp-($(rlist[3]))*$rr]
+ rx2=$[$(rlist[3])*$rp-($(rlist[1]))*$rr]
+ ry1=$[$(rlist[2])*$rp-($(rlist[4]))*$rr]
+ ry2=$[$(rlist[4])*$rp-($(rlist[2]))*$rr]
+ primitive1=line $(rlist[1]),$(rlist[2]),$rx2,$ry2,$color1
+ gr=$[ceil(1000/$gm)+2]
+ gp=$[$gr+1]
+ gx1=$[$(glist[1])*$gp-($(glist[3]))*$gr]
+ gx2=$[$(glist[3])*$gp-($(glist[1]))*$gr]
+ gy1=$[$(glist[2])*$gp-($(glist[4]))*$gr]
+ gy2=$[$(glist[4])*$gp-($(glist[2]))*$gr]
+ primitive2=line $(glist[1]),$(glist[2]),$gx2,$gy2,$color2
