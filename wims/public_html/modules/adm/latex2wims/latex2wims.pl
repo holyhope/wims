@@ -357,6 +357,7 @@ for my $tag (keys %{$hash{text}}) {
   my $txt = traitement_final($hash{text}{$tag});
   my $tagupbl = $hash{upbl}{$tag};
   my $type = $hash{type}{$tag} ;
+  my $style = $hash{style}{$tag};
  #si type est non vide il est égal à embed ou fold
   my $dotoc_left = ($OPTION =~ /toc_left/ && !$type);
   my $dotoc_right = ($OPTION =~ /toc_right/ && !$type);
@@ -373,6 +374,7 @@ for my $tag (keys %{$hash{text}}) {
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1 && (@ListIndex)) ? "\n\n\\link{index}{$tit_index}" : '';
   my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\" src=\"scripts/js/wz_tooltip.js\"></script>" : '' ;
+  ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ; 
   out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
 }
 if ($INDEX == 1) { out ('index.hd', hd('index',\%hash) )};
