@@ -264,7 +264,8 @@
     !if $wims_user=supervisor and $inputs<0
 	function putanswer(){
 	    !set c=0
-	    !for p in $(answer$n)
+	    !set ans=!lines2items $(answer$n)
+	    !for p in $ans
 		document.getElementById("myinput$c").value = $p ;
 		!increase c
 	    !next p
@@ -272,6 +273,7 @@
     !endif
 //]]>
 </script>
+
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
     <td class="exercise_t">
@@ -333,7 +335,6 @@
 		!else
 		    !insmath $(formula$n)
 		!endif
-		<br />
 	    !endif
 	!endif
 	!if $exotext != $empty
