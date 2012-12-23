@@ -112,11 +112,11 @@ char *mathfont(char *fontname)
 	if(strstr(middle_fonts,buf2)!=NULL) 
 	  snprintf(buf2,sizeof(buf2),
 		   "%s<img src=\"%s%s\" style=\"vertical-align: middle; border:none\" \
-alt=\"%s\"/>%s",
+alt=\"%s\" />%s",
 		   mathalign_sup1,ref_base,buf1,fontname,mathalign_sup2);
 	else
 	  snprintf(buf2,sizeof(buf2),"<img src=\"%s%s\" style=\"margin:0px; border:none\" \
-alt=\"%s\"/>",
+alt=\"%s\" />",
 		   ref_base,buf1,fontname);
     }
     force_setvar("wims_mathfont_",buf2); return getvar("wims_mathfont_");

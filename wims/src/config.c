@@ -829,9 +829,9 @@ void define_html_header(void)
 %s\n\
 --></style>",tmplbuf); }
 		  else {
-		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\"/>\n\
-<link href=\"html/themes/$wims_theme/theme.css\" rel=\"stylesheet\" type=\"text/css\"/>\n\
-<link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\"/>",nbuf,ti);
+		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
+<link href=\"html/themes/$wims_theme/theme.css\" rel=\"stylesheet\" type=\"text/css\" />\n\
+<link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\" />",nbuf,ti);
 		 }
 		setvar("wims_CSS",buf);
 	    }
