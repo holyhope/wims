@@ -41,6 +41,10 @@ $ by ; in $init_parm
 !set wims_html_header=!append line $header_js to $wims_html_header
 !set wims_html_header=!append line $oefcss to $wims_html_header
 
+!if $wims_class!= and $class_css=yes
+!set wims_html_header=!append line <link href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=css.css" rel="stylesheet" type="text/css" />\
+to $wims_html_header
+!endif
 !header1
 
 !default wims_exotitleform=0
