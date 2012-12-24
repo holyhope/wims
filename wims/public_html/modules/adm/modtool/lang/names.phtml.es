@@ -68,7 +68,7 @@ de desarrollo bajo la dirección
 !set name_warning2=Cambiar el nombre o duplicar un módulo de dirección pública puede conducir a la duplicación \
   de su publicación. ¡Sea muy prudente! Cambiar el nombre o duplicar un módulo de dirección pública\
   puede conducir a la duplicación de su publicación. ¡Sea muy prudente!\
-  <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <tt class="wims_fname">pruebas/tt>.
+  <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <span class="wims_fname">pruebas</span>.
 !set name_warning3=Si ya publicaron este módulo, quiere cambiar esta dirección exactamente según \
   su dirección pública. Si no arriesgan una duplicación de su publicación.</p>
 !endif
@@ -110,7 +110,7 @@ de desarrollo bajo la dirección
    name_local,name_error,name_emailsend,name_goahead
 
  !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
-   publicación $publishname (<tt>$centralhost</tt>). Quiere entrar su identificación de publicación.
+   publicación $publishname (<span class="tt">$centralhost</span>). Quiere entrar su identificación de publicación.
  !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un  \
    módulo existente? Si no, nadie pondrá al día su nueva versión.
  !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local  \
@@ -120,7 +120,7 @@ de desarrollo bajo la dirección
 !set name_cheat1=!nosubst Este módulo declara que se satisface con WIMS-$Wver2,\
  mientras que se desarrolló probablemente o modificado bajo este servidor que es  \
  de versión $wims_version. Deben poner al día el fichero ÍNDICE del módulo \
- modificando la versión de wims en <tt> Propiedades< /tt>.
+ modificando la versión de wims en <span class="tt"> Propiedades< /tt>.
 !set name_cheat2= ¡Si están seguros de lo que hicieron, pueden engañar \
  para hacer creer a los servidores que están en un servidor antiguo (OPERACIÓN MUY ARRIESGADA)!
 
