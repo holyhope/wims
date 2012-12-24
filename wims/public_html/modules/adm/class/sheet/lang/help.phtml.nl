@@ -14,7 +14,7 @@ $(name_shtab[6])
   betekend: de student moet 50% van de opdracht 1 goed hebben,
   30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5.
 
-<div class="emptyline"></div>
+<br class="spacer" />
 !if $wims_read_parm!=$empty
  !exit
 !endif

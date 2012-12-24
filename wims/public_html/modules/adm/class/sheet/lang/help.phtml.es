@@ -13,7 +13,7 @@ $(name_shtab[6])
   significa que el participante debe tener un éxito del 50% en el ejercicio 1,
   30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
   3, 4 y 5.
-<div class="emptyline"></div>
+<br class="spacer" />
 
 !if $wims_read_parm!=$empty
  !exit
