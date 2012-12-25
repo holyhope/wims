@@ -44,8 +44,8 @@
 !header1
 <h1 class="wims_title">
 <span style="text-transform:capitalize;">www
-Interactive Multipurpose Server</span><br/>
-<span style="font-size:small">op <a href="/">$httpd_HTTP_HOST</a></span> <br/>
+Interactive Multipurpose Server</span><br />
+<span style="font-size:small">op <a href="/">$httpd_HTTP_HOST</a></span> <br />
 $module_title</h1>
 
 !set mir=wimshome/public_html/html/mirrors.nl
@@ -77,7 +77,7 @@ $ in $l_
  $table_hdtr<th>Website</th>
  <th>Locatie</th>
  <th>Land</th>
- <th>Ondersteund <br/>de talen</th>
+ <th>Ondersteund <br />de talen</th>
  <th>Opmerkingen</th>
  </tr>
  !for i_=1 to $n

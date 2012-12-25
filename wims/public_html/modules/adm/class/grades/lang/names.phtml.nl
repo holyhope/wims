@@ -12,8 +12,8 @@ into name_weight,name_average
 !set name_enterof=Voer de cijfers in voor
 
 !set name_manual_title=Handmatig ingevoerde cijfers
-!set name_explanation=Hier kunt U handmatig cijfers invoeren voor alle leerlingen uit uw klas.<br/>\
-Elke leerling kan zijn/haar cijfers bekijken wanneer ze zijn ingelogd in deze klas.<br/>\
+!set name_explanation=Hier kunt U handmatig cijfers invoeren voor alle leerlingen uit uw klas.<br />\
+Elke leerling kan zijn/haar cijfers bekijken wanneer ze zijn ingelogd in deze klas.<br />\
 Ook het gemiddelde wordt automatisch berekend over deze cijfers, wat telt voor
 
 !set name_nomanual=Er zijn geen handmatig ingevoerde cijfers in uw klas.

@@ -69,7 +69,7 @@ levelnames=Lagere school leerjaar 1,\
 !set name_Style=Styl van het programma 
 !set name_style=verplicht, vrijblijvend
 !set name_installation=Automatische installatie van de cursussen\
- <br/>in alle klassen van dit leerniveau
+ <br />in alle klassen van dit leerniveau
 !set name_visit=Bezoek
  
 !if $job=addcourse
@@ -122,7 +122,7 @@ levelnames=Lagere school leerjaar 1,\
 !set name_warning_share= Dit lesprogramma kan niet worden verwijderd omdat het gedeeld/geleend lesmateriaal bevat. 
 !if $job=addclass
 !set form_titlename=Naam van de nieuwe klas.\
-<br/><span class="small">(bij meerdere klassen in één keer aanmelden<br/>\
+<br /><span class="small">(bij meerdere klassen in één keer aanmelden<br />\
 de klasnamen dan door komma's scheiden)</span>
 !exit
 !endif
@@ -130,14 +130,14 @@ de klasnamen dan door komma's scheiden)</span>
 !if $job=addicourse
 !set form_caption=Voeg een interklas cursus toe aan dit lesprogramma
 !set form_titlename=Naam van de nieuwe cursus.\
-<br/><span class="small">(bij meerdere cursussen in één keer toevoegen<br/>\
+<br /><span class="small">(bij meerdere cursussen in één keer toevoegen<br />\
 de cursusnamen dan door komma's scheiden)</span>
 !exit
 !endif
 
 !if $job=addprog
 !set form_titlename=Naam van het nieuwe lesprogramma.
-<br/><span class="small">(bij meerdere lesprogramma's in één keer toevoegen<br/>\
+<br /><span class="small">(bij meerdere lesprogramma's in één keer toevoegen<br />\
 de lesprogramma namen dan door komma's scheiden)</span>
 !exit
 !endif

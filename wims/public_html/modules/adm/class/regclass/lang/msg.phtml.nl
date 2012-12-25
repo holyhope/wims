@@ -8,7 +8,7 @@
 !endif
 
 !if no_right iswordof $error
-    U heeft niet de rechten om klassen op te richten op deze WIMS-server.<br/>
+    U heeft niet de rechten om klassen op te richten op deze WIMS-server.<br />
     Neem
     !mailurl $wims_site_manager contact op met de site-manager\
     voor meer details over het oprichten van klassen
@@ -38,9 +38,9 @@
  !endif
 
  !form reply
-  <input type="hidden" name="step" value="0"/>
-  Het wachtwoord: <input size="16" name="regpass" type="password"/>
-  <input type="submit" name="Envoyer" value="$wims_name_send"/>
+  <input type="hidden" name="step" value="0" />
+  Het wachtwoord: <input size="16" name="regpass" type="password" />
+  <input type="submit" name="Envoyer" value="$wims_name_send" />
  
 !formend
 <p>
@@ -51,18 +51,18 @@
  !if $regpassmail!=$empty and $sendmail=$empty
   !form reply
   Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
-  <input type="text" name="adresse1" value="$adresse1" size="20"/>
-  <input type="hidden" name="step" value="0"/>
+  <input type="text" name="adresse1" value="$adresse1" size="20" />
+  <input type="hidden" name="step" value="0" />
   !let nbaddr=!itemcnt $regpassmail
    !if $nbaddr=1
     <font size="+1">@$regpassmail</font>
-    <input type="hidden" name="adresse2" value="$regpassmail"/>
+    <input type="hidden" name="adresse2" value="$regpassmail" />
    !else
     @
     !formselect adresse2 list $regpassmail
    !endif
    &nbsp;
-  <input type="submit" value="Recevoir" name="Ontvangen"/>
+  <input type="submit" value="Recevoir" name="Ontvangen" />
     
 !formend
    !else
@@ -83,10 +83,10 @@
  !form reply
   <table border="0" cellspacing="5" summary="">
     <tr><td align="right">
-    Geef de naam van uw account:</td><td><input size="20" name="regid"/></td>
+    Geef de naam van uw account:</td><td><input size="20" name="regid" /></td>
     </tr><tr><td align="right">
-    en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password"/>
-    <input type="submit" value="OK"/></td>
+    en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password" />
+    <input type="submit" value="OK" /></td>
     </tr></table>
  
 !formend 
@@ -112,7 +112,7 @@
  Lees aandachtig de onderstaande documentatie.
  Als het niet duidelijk is, vul hier dan niets of het woord <span class="tt wims_code_words">all</span> in.
  Bij dit laatste schakelt WIMS de controle op ipadressen voor uw klassen uit.
- </p><hr/>
+ </p><hr />
  !read help/hosts.phtml
  !reset secure
  !exit
@@ -159,7 +159,7 @@
 !endif
 
 !if pass_discord=$error
- Het tweede wachtwoord komt niet overeen met het eerste.<br/>
+ Het tweede wachtwoord komt niet overeen met het eerste.<br />
  Probeer het nog eens.
  !exit
 !endif
@@ -171,14 +171,14 @@
 !endif
 
 !if bad_code=$error
- U hebt niet de juiste toegangscode ingevuld.<br/>
+ U hebt niet de juiste toegangscode ingevuld.<br />
  Hebt U een correct werkend email adres ingevuld?<p>
  Dit voorval wordt opgenomen in de logfiles van deze server.
  !exit
 !endif
 
 !if define_fail=$error or abuse=$error
- De server was niet in staat deze nieuwe klas op te nemen in de database.<br/>
+ De server was niet in staat deze nieuwe klas op te nemen in de database.<br />
  Dit moet een interne fout van de software zijn.
  <p>
  Gaarne dit voorval melden bij de
@@ -189,7 +189,7 @@ Interne serverfout (oprichten van een klas)
 !endif
 
 !if duplicate=$error
- U probeert een bestaande klas opnieuw op te richten...<br/>
+ U probeert een bestaande klas opnieuw op te richten...<br />
  Hebt U op de <b>reload</b>-knop van uw browser geklikt?
  In elk geval: Uw klas $classname bestaat gewoon op deze server, 
  en deze poging wordt dus genegeerd.<p>

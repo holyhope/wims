@@ -9,7 +9,7 @@ Geef de oefening eerst een titel.
 !endif
 
 !if empty_title iswordof $error
- De software kan geen titel vinden voor uw oefening.<br/>Ga na of deze oefening wel een geldige titel heeft.
+ De software kan geen titel vinden voor uw oefening.<br />Ga na of deze oefening wel een geldige titel heeft.
 
  !exit
 !endif
@@ -55,7 +55,7 @@ Geef de oefening eerst een titel.
 
 !if name_exhaustpub iswordof $error
     Er zijn reeds meerdere oefeningen opgenomen met een zelfde naam/titel als
-    de oefening waar u nu aan werkt.<br/>Kies een andere naam voor deze oefening.
+    de oefening waar u nu aan werkt.<br />Kies een andere naam voor deze oefening.
 
 
  !exit
@@ -85,11 +85,11 @@ Geef de oefening eerst een titel.
 
 !if not_exist iswordof $error
  !if $catmodule!=$empty
-  De oefening <tt>$del</tt> uit <tt>$catmodule</tt>
+  De oefening <span class="tt">$del</span> uit <span class="tt">$catmodule</span>
   bestaat niet <b>of</b> mag niet door u worden geimporteerd.
 
  !else
-  Deze oefening <tt>$del</tt> bestaat niet in uw klas. 
+  Deze oefening <span class="tt">$del</span> bestaat niet in uw klas. 
  !endif
  !exit
 !endif

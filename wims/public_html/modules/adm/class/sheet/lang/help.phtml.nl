@@ -6,7 +6,7 @@
 !read adm/title.phtml 1\
 $(name_shtab[6])
 
-  De cijfer afhankelijkheden wil zeggen:<br/>
+  De cijfer afhankelijkheden wil zeggen:<br />
   een student moet eerst de gewenst score hebben behaald voordat de volgende opdracht mag worden gedaan.
   [drempel]
   Bijvoorbeeld:
@@ -52,14 +52,14 @@ Een algemeen toegankelijke WIMS module of document: <span class="tt wims_address
 (syntax gelijk aan : <span class="wims_button disabled">$wims_name_about</span>).
 </li><li>
 Een oefening (via createxo) alleen toegankelijk in uw klas (dus eigen werk) : <span class="tt wims_address">module=classes/nl&exo=naam_van_de_oefening</span>.
- De <tt>naam_van_de_oefening</tt> is de oefening zonder extensie <tt>.oef</tt>).
+ De <span class="tt">naam_van_de_oefening</span> is de oefening zonder extensie <span class="tt">.oef</span>).
 </li><li>
 Een document in uw klas :<span class="tt wims_address">module=adm/doc&doc=c1&+block=naam_van_het_blok</span>
 </li></ul>
 Extra parameters kunnen worden toegevoegd  (zie ook <span class="wims_button disabled">$wims_name_about</span>)
 
 In het onderstaande voorbeeld zal , als het cijfer lager is dan een 5 , een WIMS document uit uw klas worden getoond.
-En wel uit document <tt>c2</tt> de pagina op blok <tt>aaa</tt>. 
+En wel uit document <span class="tt">c2</span> de pagina op blok <span class="tt">aaa</span>. 
 <pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
 
 

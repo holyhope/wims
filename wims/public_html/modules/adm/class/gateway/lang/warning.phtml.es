@@ -47,7 +47,7 @@ cuentas de alumnos, actividades, notas!
 </p>
 <span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 </p><p>
-¿Está usted seguro de que queire borrar la cuenta de profesor <tt>$del</tt>
+¿Está usted seguro de que queire borrar la cuenta de profesor <span class="tt">$del</span>
 ($user_firstname $user_lastname)?
 </p>
 !exit

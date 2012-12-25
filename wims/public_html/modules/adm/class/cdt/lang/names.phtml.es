@@ -41,8 +41,8 @@
  crea un vínculo hacia el fichero <a href="$m_filedir/$f1">$f1</a>.\
  Pueden también escribir
 
- !set name_explanation2=para incluir el fichero de imagen <tt>myfile.jpg</tt> en la página.\
- <br/>Los ficheros depositados son solamente accesibles a los participantes de la clase.
+ !set name_explanation2=para incluir el fichero de imagen <span class="tt">myfile.jpg</span> en la página.\
+ <br />Los ficheros depositados son solamente accesibles a los participantes de la clase.
 
 !set name_availablespace=Espacio disco disponible al principio&nbsp;,Espacio libre
   !goto common

@@ -63,7 +63,7 @@ Está creando el foro de discusión $forumname en el sitio WIMS
 Ahora necesita una clave para finalizar la operación de creación de un
  nuevo foro de discusión bajo WIMS en este sitio $http_HTTP_HOST. <p>
  Esta clave se le acaba de enviar a la dirección de correo que proporcionó
- ``<tt>$email</tt>''. Por favor, compruebe su correo (espere unos minutos si
+ ``<span class="tt">$email</span>''. Por favor, compruebe su correo (espere unos minutos si
  es necesario), y lea el mensaje que se le ha enviado.
  Busque la clave incluida en el mensaje y cópiela a continuación.
  !exit

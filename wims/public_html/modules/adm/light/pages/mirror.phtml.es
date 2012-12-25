@@ -46,8 +46,8 @@
 !header1
 <h1 class="wims_title">
 <span style="text-transform:capitalize;">www
-Interactive Multipurpose Server</span><br/>
-<span style="font-size:small">en <a href="/">$httpd_HTTP_HOST</a></span> <br/>
+Interactive Multipurpose Server</span><br />
+<span style="font-size:small">en <a href="/">$httpd_HTTP_HOST</a></span> <br />
 $module_title</h1>
 
 !set mir=wimshome/public_html/html/mirrors.es
@@ -77,7 +77,7 @@ $ in $l_
  que añada a sus Favoritos al menos una de estas direcciones.
  
  $table_header
- $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br/>en que funciona</th><th>Comentarios</th></tr>
+ $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br />en que funciona</th><th>Comentarios</th></tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
   !set l_=!record $j_ of $mir

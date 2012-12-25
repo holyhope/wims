@@ -40,8 +40,8 @@ De gestuurde data zijn ongeldig ! Probeer het nog eens.
 !endif
 
 !if remote_sharing iswordof $error
-Een "buurt-klas" deelt enkele bronnen uit uw klas.<br/>
-U kunt alleen wijzigingen aanbrengen in materiaal dat niet gedeeld wordt met anderen.<br/>
+Een "buurt-klas" deelt enkele bronnen uit uw klas.<br />
+U kunt alleen wijzigingen aanbrengen in materiaal dat niet gedeeld wordt met anderen.<br />
 Voor beide klassen moet U de deling van materiaal beeindigen.
  !exit
 !endif
@@ -76,7 +76,7 @@ Voor beide klassen moet U de deling van materiaal beeindigen.
 
 !if not_neighbor iswordof $error
 U hebt geen erkende buur klassen. 
- <br/>
+ <br />
 Besef goed dat een klas pas echt een buur klas is als dit door <b>beide</b> klassen wordt erkend !
 
 

@@ -29,7 +29,7 @@
 !exit
 
 :same_devoir2
- No pueden, a partir del mismo día, introducir dos veces la misma fecha de deberes.<br/>
+ No pueden, a partir del mismo día, introducir dos veces la misma fecha de deberes.<br />
  Utilizar más bien el vínculo
  !href cmd=new&job=adddate&filename=$jyear$jmonth$jday modificar una fecha
  .

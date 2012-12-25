@@ -12,35 +12,35 @@ para detectar cuándo quiere usted que interprete lo que escribe como un símbolo
 matemático o una fórmula. La regla es como sigue:
 <p>
 Si quiere escribir una `\' en su mensaje y quiere que aparezca como una
-barra invertida, la escribe dos veces: `<tt>\\</tt>'.
+barra invertida, la escribe dos veces: `<span class="tt">\\</span>'.
 <p>
 Si sólo quiere insertar algunos símbolos matemáticos o letras
-griegas en su mensaje, no tiene más que escribir una <tt>\</tt>  seguida por el
-nombre del símbolo o de la letra griega. Por ejemplo, <tt>\pi</tt> le devuelve
-$m_pi, <tt>\le</tt> da $m_le, <tt>\pm</tt> da $m_pm, <tt>\rightarrow</tt> 
+griegas en su mensaje, no tiene más que escribir una <span class="tt">\</span>  seguida por el
+nombre del símbolo o de la letra griega. Por ejemplo, <span class="tt">\pi</span> le devuelve
+$m_pi, <span class="tt">\le</span> da $m_le, <span class="tt">\pm</span> da $m_pm, <span class="tt">\rightarrow</span> 
 da $m_rightarrow, etc. Los nombres de los símbolos siguen la convención 
 estándar de TeX. Aquí tiene una
 !href target=wims_help module=help/wimsdoc.en&subject=mathfonts#mathfonts lista de símbolos matemáticos y sus nombres
- (sustituya <tt>$$m_</tt> por <tt>\</tt> en los nombres).
+ (sustituya <span class="tt">$$m_</span> por <span class="tt">\</span> en los nombres).
 <p>
 De forma más generalizada, para insertar una fórmula matemática completa en el mensaje,
 puede escribir la fórmula de la forma normal en que la introduciría en cualquier
 software matemático o cualquier herramienta de cálculo de WIMS. Para 
 formatear la fórmula y mostrarla bonita en el foro de discusión, sólo tiene
 que encerrarla entre una par de paréntesis precedidos por una barra invertida `\'.
-Por ejemplo,, <tt>\(x^3-3x+cos(2pi*x)^5)</tt> le devuelve
+Por ejemplo,, <span class="tt">\(x^3-3x+cos(2pi*x)^5)</span> le devuelve
 !insmath x^3-3*x+cos(2pi*x)^5
-, o <tt>\(sqrt(x^2+y^2))</tt> le da
+, o <span class="tt">\(sqrt(x^2+y^2))</span> le da
 !insmath sqrt(x^2+y^2)
-. Puede escribir <tt>\(integrate(x^2+1)dx)</tt> para
+. Puede escribir <span class="tt">\(integrate(x^2+1)dx)</span> para
 !insmath integrate(x^2+1)*dx
-, o <tt>\(integrate(exp(x^2+1),x=1..infinity))</tt> para
+, o <span class="tt">\(integrate(exp(x^2+1),x=1..infinity))</span> para
 !insmath integrate(exp(x^2+1),x=1..infinity)
 . También puede escribir la suma
 !insmath sum(1/n^2,n=1..infinity)
- usando <tt>\(sum(1/n^2,n=1..infinity)</tt>, o el producto
+ usando <span class="tt">\(sum(1/n^2,n=1..infinity)</span>, o el producto
 !insmath product(n/(n+1),n=1..infinity)
- usando <tt>\(product(n/(n+1),n=1..infinity)</tt>.
+ usando <span class="tt">\(product(n/(n+1),n=1..infinity)</span>.
 <p>
 Puede obtener más ayuda acerca de cómo introducir expresiones 
 matemáticas en
@@ -49,11 +49,11 @@ matemáticas en
 <p>
 Para mostrar una matriz
 !insmath [1,2,3;4,5,6;7,8,9]
-, escribiría <tt>\([1,2,3;4,5,6;7,8,9])</tt>. Se aceptan matrices anidadas
+, escribiría <span class="tt">\([1,2,3;4,5,6;7,8,9])</span>. Se aceptan matrices anidadas
 (y se representarán correctamente).
 <p>
 Para expertos en TeX o LaTeX, tenga en cuenta que si el foro de discusión ve
-una fórmula encerrada entre un par de paréntesis precedidos por <tt>\</tt> 
+una fórmula encerrada entre un par de paréntesis precedidos por <span class="tt">\</span> 
 que contiene barras invertidas, lo interpretará como fuente de TeX, y 
 lo enviará directamente a TeX para que lo formatee. Esto le permitirá escribir
 fórmulas muy complejas si sabe cómo se escriben en TeX.

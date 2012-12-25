@@ -51,7 +51,7 @@ into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
  name_inscription_student,name_inyourclass,name_isprotected,name_gotowork
 
 
-!distribute lines beschikbare<br/>plekken\
+!distribute lines beschikbare<br />plekken\
 jaar\
 open,besloten\
 Aanmelden voor deelnemers by $name_classess\

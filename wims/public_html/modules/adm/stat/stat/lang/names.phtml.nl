@@ -1,8 +1,8 @@
 !set lang_exists=yes
 
 !distribute items dagen,weken,maanden,jaren,Aanvragen,Sessies,Via websites,\
-  aantal,totaal,gemiddeld<br/>per jaar,gemiddeld<br/>per week,gemiddeld<br/>per maand,gemiddeld<br/>per jaar,\
-  gemiddeld<br/>per website,Wekelijks<br/>gemiddelde,Een grafiek van,Dagelijks,het begin\
+  aantal,totaal,gemiddeld<br />per jaar,gemiddeld<br />per week,gemiddeld<br />per maand,gemiddeld<br />per jaar,\
+  gemiddeld<br />per website,Wekelijks<br />gemiddelde,Een grafiek van,Dagelijks,het begin\
 into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Visitors,\
    name_cnt,name_total,name_avgday,name_avgweek,name_avgmonth,name_avgyear,\
    name_avgsite,name_avghebdo,name_plot,name_byday
@@ -25,7 +25,7 @@ into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_vis
 !set title=Gebruiks statistieken
 !set name_sum=!nosubst het totaal van $laps dagen
 
-!set name_prompt=totaal<br/>aanvragen,aanvragen<br/>per website,totaal<br/>websites
+!set name_prompt=totaal<br />aanvragen,aanvragen<br />per website,totaal<br />websites
 !set name_explanations=<ul>\
 <li>Bij de berekening van de totale aanvragen wordt geen rekening gehouden met \
 ontwikkelings modules.\

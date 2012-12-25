@@ -4,7 +4,7 @@
 !set name_wroteon=schreef op
 !set name_default=Forum 
 !distribute item <i>onderwerp&nbsp;:</i> <b>,</b> into subj1,subj2
-!distribute item <hr/>,<hr/> into body1,body2
+!distribute item <hr />,<hr /> into body1,body2
 
 !distribute line Lijst van berichten op datum\
 Lijst van berichten op discussie volgorde\
@@ -66,9 +66,9 @@ into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subje
 !set n_prec=Voorgaande
 !set n_first=eerste reactie
 !set n_allfollowing=alle reacties
-!set n_statusask=Dit forum accepteerd geen anonieme berichten.<br/>\
-Het beschermd wel uw ingevulde email adres, zodat er geen misbruik van kan worden gemaakt.<br/>\
-Om het opgegeven email adres te verifieren, wordt nu een code gestuurd naar dit adres.<br/>\
+!set n_statusask=Dit forum accepteerd geen anonieme berichten.<br />\
+Het beschermd wel uw ingevulde email adres, zodat er geen misbruik van kan worden gemaakt.<br />\
+Om het opgegeven email adres te verifieren, wordt nu een code gestuurd naar dit adres.<br />\
 Vul deze code hier in&nbsp;
 !set n_warning=Een bericht is zojuist verstuurd naar het forum. Niet reageren op dit bericht.
 !set n_forum=Forum

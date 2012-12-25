@@ -16,12 +16,12 @@ En modo selectivo, puede imponer una
 &lt;aaaammjj.hh:mm</span>
  (fin). Las fechas y horas deben ser en tiempo local del SERVIDOR
 - y estas palabras deben estar separadas por espacios.
- <br/>
+ <br />
  Las horas tope tienen la finalidad de permitir que la gente haga
  un examen en sesiones diferentes. Un participante que haya trabajado
  en el examen antes de una hora de corte no puede volver a trabajar
  en él después del tope.
- <br/>
+ <br />
  Formato de las horas tope: <span class="tt wims_code_words">aaaammjj.hh:mm</span> (separe varias
  horas tope con espacios).
 

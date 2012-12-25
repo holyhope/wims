@@ -27,8 +27,8 @@ elementos que los mensajes de los foros. Además se pueden utilizar las siguiente
  <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
 	<d>Grabar la elección inmediatamente precedente en una variable
 	individual para el participante, de nombre <span class="tt wims_code_variable">vname</span>. Esta
-	variable tendrá el valor <tt>val0</tt> por defecto, <tt>val1</tt> si
-	el participante había escogido la primera opción, etc. <br/>
+	variable tendrá el valor <span class="tt">val0</span> por defecto, <span class="tt">val1</span> si
+	el participante había escogido la primera opción, etc. <br />
 	Esta variable puede posteriormente utilizarse para definir accesos
 	individualizados a las hojas de trabajo o a los exámenes, poniendo
 	la palabra <span class="tt wims_code_variable">\vname</span> entre las restricciones de la hoja o examen.

@@ -216,7 +216,7 @@ $nei_description</font></em> como vecina suya?
   !set title=Dejar de compartir un recurso
   !set name_warning=Su clase tiene un registro de actividades activo y los\
  recursos compartidos no están vacíos. Si deja de compartir este recurso\
- ahora, ya no podrá volver a compartirlo más tarde. <br/>\
+ ahora, ya no podrá volver a compartirlo más tarde. <br />\
  ¿Está seguro de querer dejar de compartir definitivamente este recurso?
  
  !set name_stop=dejar de compartirlo.
@@ -510,7 +510,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
-<br/>(lorsque <span class="tt wims_code_words">$name_css</span>  est sur <span class="tt wims_code_words">class</span>)&nbsp;:
+<br />(lorsque <span class="tt wims_code_words">$name_css</span>  est sur <span class="tt wims_code_words">class</span>)&nbsp;:
 
 !set name_content_style2=o copiar aquí la hoja de estilo de la clase
 

@@ -71,7 +71,7 @@ Formaat van het statement van de oefening:\
 Deze oefening vraag naar\
 open antwoorden en\
 meerkeuze vragen\
-Niet berekende uitdrukkingen als <tt>3*5-sin(pi/3)</tt>) worden\
+Niet berekende uitdrukkingen als <span class="tt">3*5-sin(pi/3)</span>) worden\
 toegestaan,niet toegestaan\
 conditites worden gebruikt op de open antwoorden te controleren.\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
@@ -113,8 +113,8 @@ Meerkeuze vragen\
 Correcte keuzes\
 Foutieve keuzes\
 Er kan ook optioneel een indicatieve hint en/of een oplossing worden gegeven\
-Indicatie<br/>(html formaat)\
-Oplossing<br/>(html formaat)\
+Indicatie<br />(html formaat)\
+Oplossing<br />(html formaat)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution
@@ -122,8 +122,8 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst De oefening <tt>$existing.oef</tt> is met succes toegevoegd aan module
-  !set name_update2=Het is niet gelukt oefening <tt>$existing</tt> toe te voegen aan module
+  !set name_update1=!nosubst De oefening <span class="tt">$existing.oef</span> is met succes toegevoegd aan module
+  !set name_update2=Het is niet gelukt oefening <span class="tt">$existing</span> toe te voegen aan module
   !set name_update3=Uw oefening is met succes geinstalleerd.
   !set name_update4= Er is een identieke oefening in uw klas aangetroffen. De laatste toevoeging worde genegeerd.
   !set name_update5=Deze oefening is alleen bereikaar voor studenten \

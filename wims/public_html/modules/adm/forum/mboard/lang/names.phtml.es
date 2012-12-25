@@ -5,7 +5,7 @@
 !set name_default=Forum de la classe
 
 !distribute item <i>Subject:</i> <b>,</b> into subj1,subj2
-!distribute item <hr/>,<hr/> into body1,body2
+!distribute item <hr />,<hr /> into body1,body2
 
 !distribute line Lista de mensajes.\
 	Lista de los mensajes por hilo\

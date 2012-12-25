@@ -10,13 +10,13 @@ $name_file ($flen $name_bytes):
 
 !if $erase=ask
 $name_erase
- <span class="tt wims_fname">$file</span>? <br/>
+ <span class="tt wims_fname">$file</span>? <br />
  <span class="small">($flen $name_bytes, $facc, $name_last $fdat)</span>
   <p class="wimscenter" style="font-weight:bold;">³É¼ <font size="+2">
  !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
  !href cmd=reply&job=fs $wims_name_no
- </font> </p> <hr/>
+ </font> </p> <hr />
  !goto end2
 !endif
 
@@ -46,20 +46,20 @@ $name_erase
  
 !set wims_form_method=post
 !form reply
-<input type="hidden" name="job" value="file"/>
-<input type="hidden" name="job2" value="first"/>
+<input type="hidden" name="job" value="file" />
+<input type="hidden" name="job2" value="first" />
 <div class="wimscenter">
- $name_content <span class="tt wims_fname">$file</span> <br/>
- <span class="small wimstech">($flen $name_bytes, $facc, $name_last $fdat)</span> <br/>
+ $name_content <span class="tt wims_fname">$file</span> <br />
+ <span class="small wimstech">($flen $name_bytes, $facc, $name_last $fdat)</span> <br />
  !if $modifok!=yes
-  $name_distrib <br/>
+  $name_distrib <br />
   !set textarea_ro=readonly
  !endif
  !mexec scripts/textarea.sh
-<br/>
+<br />
 !if $modifok=yes
- <input type="submit" name="save" value="$wims_name_tosave"/>
- <input type="submit" name="abandon" value="$wims_name_giveup"/>
+ <input type="submit" name="save" value="$wims_name_tosave" />
+ <input type="submit" name="abandon" value="$wims_name_giveup" />
 !endif
 </div>
 

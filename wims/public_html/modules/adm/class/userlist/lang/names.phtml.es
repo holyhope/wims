@@ -14,7 +14,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Lista de los ejercicios grabados
 !set name_transfer=Transferir sus actividades desde otras clases
 
-!set name_thsheet=Número,título,puntos<br/>requeridos,peso,puntos<br/>obtenidos,%,Calidad&nbsp,severidad,nota
+!set name_thsheet=Número,título,puntos<br />requeridos,peso,puntos<br />obtenidos,%,Calidad&nbsp,severidad,nota
 !set name_minmax=mín/media/máx de la clase&nbsp;
 
 !set name_manualscore=Notas asignadas por el profesor
@@ -33,7 +33,7 @@ name_done,name_equiv
 !set name_formula_comment=Puede definir los niveles de severidad y los pesos de las hojas de trabajo\
 en la tabla siguiente. Las notas serán calculadas con un máximo =
 !set name_formula2=!nosubst Notas calculadas sobre un máximo de $scoremax
-!set name_pickup=Seleccione las hojas para <br/>mostrar los resultados por hoja&nbsp;
+!set name_pickup=Seleccione las hojas para <br />mostrar los resultados por hoja&nbsp;
 !set name_warning= Ha efectuado una petición ilegal.
 
 !set name_click=Pulse sobre un nombre para ver los detalles de su trabajo.
@@ -57,7 +57,7 @@ de las notas calculadas a partir de las puntuaciones obtenidas en las hojas de t
 La nota <span class="tt">global</span> se calcula a partir de las otras dos, mediante la fórmula
 !endif
 
-!set name_title_showsheet=!nosubst Detalles del trabajo sobre la hoja $numshowsheet<br/>$sh_title
+!set name_title_showsheet=!nosubst Detalles del trabajo sobre la hoja $numshowsheet<br />$sh_title
 !set name_percentagegot=Porcentaje de los puntos obtenidos
 !set name_qualitygot=Calidad del trabajo calculada sobre un máximo de 10
 !set name_percentagedone=Porcentaje de trabajo efectuado
@@ -80,7 +80,7 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Detalles del trabajo de $name_student1 <br/>(datos en bruto)
+  !set name_title_getraw=!nosubst Detalles del trabajo de $name_student1 <br />(datos en bruto)
   !goto end
 !endif
 

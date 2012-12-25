@@ -1,6 +1,6 @@
 <b>Eenmalige wachtwoorden</b>.
 <p>
-Dit type wachtwoord kan slechts &eacute;&eacute;n keer worden gebruikt.<br/>
+Dit type wachtwoord kan slechts &eacute;&eacute;n keer worden gebruikt.<br />
 En kan van nut zijn wanneer wachtwoorden in een "onveilige" omgeving moeten worden
 ingevoerd.
 <p>

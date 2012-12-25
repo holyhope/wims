@@ -59,7 +59,7 @@ levelnames=EPO 1,EPO 2,EPO 3,EPO 4,EPO 5,\
 !set name_Style= Estilo del programa
 !set name_style=obligatorio, optativo
 !set name_installation=Instalación automática de los cursos \
- <br/>en todas las clases del nivel \
+ <br />en todas las clases del nivel \
 
  !set name_visit= Visitar
 
@@ -116,7 +116,7 @@ son compartidos por otros programas.
 
 !if $job=addclass
 !set form_titlename=Títulos de las nuevas clases\
-<br/><span class="small">(separe los títulos con comas si <br/>\
+<br /><span class="small">(separe los títulos con comas si <br />\
 añade varias clases al mismo tiempo)</span>
 !exit
 !endif
@@ -124,7 +124,7 @@ añade varias clases al mismo tiempo)</span>
 !if $job=addicourse
 !set form_caption=Añadir cursos interclases al programa
 !set form_titlename=Títulos de los nuevos cursos\
-<br/><span class="small">(separe los títulos con comas si<br/>\
+<br /><span class="small">(separe los títulos con comas si<br />\
 añade varios cursos al mismo tiempo)</span>
 
 !exit
@@ -132,7 +132,7 @@ añade varios cursos al mismo tiempo)</span>
 
 !if $job=addprog
 !set form_titlename=Títulos de los nuevos programas:\
-<br/><span class="small">(separe los títulos con comas si<br/>\
+<br /><span class="small">(separe los títulos con comas si<br />\
 añade varios programas al mismo tiempo)</span>
 !exit
 !endif

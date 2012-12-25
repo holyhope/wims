@@ -10,7 +10,7 @@ into name_changeList, name_javascript_required, name_instruction_list, name_how_
 
 !set name_editor_help=<ul>\
 <li> Klik op een functie in de lijst om de bijhorende helppagina te openen...</li>\
-<li> ... dan, klik op <em>voeg selectie toe</em> om het commando aan de broncode toe te voegen <br/></li>\
+<li> ... dan, klik op <em>voeg selectie toe</em> om het commando aan de broncode toe te voegen <br /></li>\
 <li> De grootte van het edit venster kan worden aangepast door met je muis de hoeken te verslepen</li>\
 <li> Meer informatie over het gebruik van deze editor zot onder de helpknop</li></ul>
 

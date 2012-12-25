@@ -7,7 +7,7 @@
  <form action="#" name="chrono">
  ¡<span class="wims_warning">$wims_name_warning</span>! ¡Cualquier contraseña enviada en los próximos 5 segundos
  será rechazada!
- <input size="1" name="clock"/> </form>
+ <input size="1" name="clock" /> </form>
  !exit
 !endif
 
@@ -31,7 +31,7 @@ Primero debe aceptar los términos de uso antes identificarle.
   ]
   !let save_logincgu=$auth_user
   <div class="wimscenter wimsform">
-  <input type="submit" value="$wims_name_tosave"/>
+  <input type="submit" value="$wims_name_tosave" />
   </div>
  
 !formend
@@ -40,11 +40,11 @@ Primero debe aceptar los términos de uso antes identificarle.
 
 !if $error=bad_loginmail
  Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription. 
- <br/>
+ <br />
  Demandez à votre enseignant de vous attribuer un nouveau mot de passe.
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span> ! Cette procédure de récupération de mot de passe est désactivée pendant 5 secondes &nbsp;!
- <input size="1" name="clock"/> </form>
+ <input size="1" name="clock" /> </form>
  !exit
 !endif
 

@@ -7,7 +7,7 @@
  !endif
  !if backup iswordof $warn
   <p><span class="wims_warning">$wims_name_warning</span>.
-  <br/>
+  <br />
   ¡Es la responsabilidad de los profesores de salvaguardar sus recursos pedagógicos!
 No cuentan nunca con la protección del servidor para recuperar su trabajo perdido.
 Además, las clases virtuales que no son   salvaguardadas regularmente se considerarán

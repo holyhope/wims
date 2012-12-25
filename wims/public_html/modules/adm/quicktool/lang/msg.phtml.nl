@@ -4,7 +4,7 @@
 !!@#
 de naam van het bestand is ongeschikt.
 Een bestandsnaam mag geen
-  <tt>..</tt> en ook geen <tt> / </tt> bevatten .
+  <span class="tt">..</span> en ook geen <span class="tt"> / </span> bevatten .
 !!#@
 </span>
   !exit

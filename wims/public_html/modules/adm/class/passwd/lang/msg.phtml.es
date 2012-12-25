@@ -42,7 +42,7 @@
 !endif
 
 !if bad_user iswordof $error
- Fallo: no hay ningún participante con el nombre de <tt>$part</tt>
+ Fallo: no hay ningún participante con el nombre de <span class="tt">$part</span>
  en la clase.
  !exit
 !endif

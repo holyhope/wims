@@ -1,6 +1,6 @@
 
 !form renew
- <input type="hidden" name="job" value="grestrict"/>
+ <input type="hidden" name="job" value="grestrict" />
  <p>Desde aquí puede configurar las restricciones a nivel de clase de los sitios
  a los que se les permita recibir calificaciones. Estas restricciones 
  se aplicarán siempre independientemente de la configuración individual
@@ -9,16 +9,16 @@
  <div class="wimscenter">
  <table class="wimsnoborder wimscenter wimsform">
  <tr><td align="right">Sitios a los que se les permite recibir calificaciones:</td>
- <td><input size="35" name="allow" value="$allow"/></td>
+ <td><input size="35" name="allow" value="$allow" /></td>
  </tr><tr>
  <td align="right">Exceptuados:</td>
- <td><input size="35" name="except" value="$except"/></td>
+ <td><input size="35" name="except" value="$except" /></td>
  </tr>
  </table>
  </div>
  <div class="wimscenter wimsform">
- <input type="submit" name="save" value="Guardar"/>&nbsp;&nbsp;&nbsp;
- <input type="submit" name="abandon" value="Cancelar"/>
+ <input type="submit" name="save" value="Guardar" />&nbsp;&nbsp;&nbsp;
+ <input type="submit" name="abandon" value="Cancelar" />
  </div>
 
 !formend

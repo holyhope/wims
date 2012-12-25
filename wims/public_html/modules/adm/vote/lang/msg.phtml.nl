@@ -19,7 +19,7 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 
 !if $error = too_many_votes
  Er zijn te veel enquetes in deze klas.
- <br/>
+ <br />
  Waarom heeft u er zoveel nodig?
  !exit
 !endif

@@ -119,11 +119,11 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       !endif
       Set the size of mathematical formulas.
       !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em"/>
+      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$default Default
       !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em"/>
+      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
      </li><li>
       Use zoom on formulas by mouse click.
       !set wims_ref_class=wims_button
@@ -161,9 +161,9 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
     !let ts2=9
    !endif
    !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em"/>
+   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
    !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em"/>
+   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
 </li><li>
 Position of the formulas. If the expression
   !insmath (x+y)/(x^$pw + y^2)
@@ -192,7 +192,7 @@ Position of the formulas. If the expression
 </p><p>
 Le mode espacé est particulierement adapté dans le cas d'un lecteur dyslexique.</p>
 
-<br class="spacer"/>
+<br class="spacer" />
 <p>
 !if $wims_user=$empty
 Cuando todo corresponda exactamente con lo que quiera, ponga

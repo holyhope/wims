@@ -83,11 +83,11 @@
 
 !if not_exist iswordof $error
  !if $catmodule!=$empty
-  El ejercicio <tt>$del</tt> de <tt>$catmodule</tt>
+  El ejercicio <span class="tt">$del</span> de <span class="tt">$catmodule</span>
   que desea importar no existe o usted no está autorizado a
   importarlo.
  !else
-  El ejercicio <tt>$del</tt> que quería modificar/eliminar no existe en su clase.
+  El ejercicio <span class="tt">$del</span> que quería modificar/eliminar no existe en su clase.
  !endif
  !exit
 !endif

@@ -5,7 +5,7 @@ explicaciones de abajo).
 
 !form reply
 !mexec catraw.sh
-<input type="submit" name="reg" value="$wims_name_tosave"/>
+<input type="submit" name="reg" value="$wims_name_tosave" />
 
 !formend
 

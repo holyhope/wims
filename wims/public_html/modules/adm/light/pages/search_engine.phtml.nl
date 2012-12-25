@@ -26,30 +26,30 @@
 !header
 
 <div class="contenu">
-Deze interne zoekmachine maakt gebruik van zoektermen.<br/>
+Deze interne zoekmachine maakt gebruik van zoektermen.<br />
 !if $wims_class=$empty
-Er kan ook gebruik worden gemaakt van de link <span class="wims_button disabled">$wims_name_browse</span> <br/>
+Er kan ook gebruik worden gemaakt van de link <span class="wims_button disabled">$wims_name_browse</span> <br />
 voor een overzicht van het beschikbare materiaal op deze server.
 !endif
 <h3>Zoekopdracht</h3>
-Voer een zoekterm in en kies het type WIMS bronmateriaal waarin gezocht moet worden.<br/>
+Voer een zoekterm in en kies het type WIMS bronmateriaal waarin gezocht moet worden.<br />
 <span class="small">(zoals bijvoorbeeld lesmodules, openbare werkbladen, interactieve documenten, online rekenmachines etc.)</span>
 De voorkeurstaal van het gezochte materiaal kan ook worden ingevoerd.
 
 
 <h5>Zoektermen</h5>
-Afgezien van de gebruikelijke zoektermen kan ook bijvoorbeeld <br/>
-een woord als <span class="tt">levelH1</span> worden gebruikt om een lijst met materiaal te verkrijgen <br/>
-op middelbare school klas 1 niveau.<br/>
+Afgezien van de gebruikelijke zoektermen kan ook bijvoorbeeld <br />
+een woord als <span class="tt">levelH1</span> worden gebruikt om een lijst met materiaal te verkrijgen <br />
+op middelbare school klas 1 niveau.<br />
 De interne zoekmachine vergelijkt de zoekterm met de sleutelwoorden die de schrijvers van WIMS materiaal
 als "keywords" voor hun werk hebben vastgesteld.
-<br/>
+<br />
 Bij het invoeren van meerdere termen, wordt een lijst met alle bronmateriaal getoond dat met beide termen is geassocieerd.
 
  
 <h5>Materiaal</h5> 
-De keuze <span class="tt">$C_A</span> zoekt in alle bronnen, behalve <span class="tt">$C_P</span> en  <span class="tt">$C_S</span><br/>
-De keuze <span class="tt">$C_X</span> zoekt in alle online oefeningen , zoals in <span class="tt">$C_O</span><br/>
+De keuze <span class="tt">$C_A</span> zoekt in alle bronnen, behalve <span class="tt">$C_P</span> en  <span class="tt">$C_S</span><br />
+De keuze <span class="tt">$C_X</span> zoekt in alle online oefeningen , zoals in <span class="tt">$C_O</span><br />
 Bij de keuze <span class="tt">$C_P</span> moet er een zoekterm worden ingevoerd.
 
 <h5>Default zoektaal</h5>

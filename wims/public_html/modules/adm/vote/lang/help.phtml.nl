@@ -24,9 +24,9 @@ plus de volgende extra commando's <dl>
 	<dd>Several choices by horizontal buttons.
 	</dd>
  <dt><span class="tt wims_code_variable">\uservar{vname,val0,val1,...}</span>
-	<dd>Registreer de keuze in een variabele <tt>vname</tt> voor elke student afzonderlijk.
-	De waarde van deze variabele is default <tt>val0</tt> , en <tt>val1</tt> 
-	als de student kiest voor de eerste optie, etc.<br/>
+	<dd>Registreer de keuze in een variabele <span class="tt">vname</span> voor elke student afzonderlijk.
+	De waarde van deze variabele is default <span class="tt">val0</span> , en <span class="tt">val1</span> 
+	als de student kiest voor de eerste optie, etc.<br />
 	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
 	tot op de individuele student te regelen.
 	Vermeld de variabele 

@@ -49,7 +49,7 @@ Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
 !endif
 
 <li>
-Wiskundige formules:<br/>
+Wiskundige formules:<br />
 
 !if $texalign=2
     De server staat afgesteld op <b>MathML</b>.
@@ -75,13 +75,13 @@ Wiskundige formules:<br/>
     !endif
     Stel de grootte van de formules af.
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" />
     &nbsp;
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$default Standaard
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px" />
  </li><li>
 !set zoom=1
     Gebruik ook inzoomen per muisklik.
@@ -112,17 +112,17 @@ Grootte van wiskundige symbolen en formules.
     !let ts2=9
 !endif
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
     &nbsp;
 !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px"/>
+    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
   Griekse Letters $m_alpha, $m_pi. Wiskundige uitdrukking 
   !let ins_align=middle
 !! we need to force dynamic insertion
   !set pw=2
   !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-  <br/>
+  <br />
   Gemengde formule
   </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
 </li><li>

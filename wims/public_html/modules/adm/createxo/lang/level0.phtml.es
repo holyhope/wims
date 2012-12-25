@@ -57,7 +57,7 @@ La utilización de Quicktool requiere por el momento de tener una cuenta desarrol
 <li>
 !href module=adm/latex2wims $wims_name_latex2wims
  permite traducir al formato WIMS  los documentos escritos en látex. Toma cuenta
- de las partes interactivas formadas en un medio ambiente <tt>wims</tt>.
+ de las partes interactivas formadas en un medio ambiente <span class="tt">wims</span>.
  Requiere una cuenta desarrollador.
 </li></ul>
 </div>

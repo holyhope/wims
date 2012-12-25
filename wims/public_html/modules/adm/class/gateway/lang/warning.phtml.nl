@@ -54,7 +54,7 @@ Deze cursus verwijderen ?
 <span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
 </p><p>
-Moet het docenten account <tt>$del</tt> ($user_firstname
+Moet het docenten account <span class="tt">$del</span> ($user_firstname
 $user_lastname) worden verwijderd ? 
 </p>
 !exit

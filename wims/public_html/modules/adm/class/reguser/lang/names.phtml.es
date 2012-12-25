@@ -47,7 +47,7 @@ into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
  name_inscription_student,name_inyourclass,name_isprotected,name_gotowork
 
 
-!distribute lines plazas<br/>disponibles\
+!distribute lines plazas<br />disponibles\
   año\
   abierta,protegida\
   Inscripción a $name_classess\

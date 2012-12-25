@@ -64,7 +64,7 @@ U hebt nu alleen nog de geheime code nodig om het oprichten van
  uw eigen forum op (WIMS $http_HTTP_HOST) af te kunnen ronden.
  <p>
  Deze code is net verstuurd naar het opgegeven email adres:
- ``<tt>$email</tt>''. 
+ ``<span class="tt">$email</span>''. 
   en kopieer de verstuurde code in het onderstaande veld
  !exit
  

@@ -56,7 +56,7 @@
 !if not_neighbor iswordof $error
  Ha intentado realizar una operación con una clase que no es su vecina
  efectiva.
- <br/>
+ <br />
  Recuerde que una clase es su vecina efectiva únicamente si se han declarado
  las vecindades mutuas A LA VEZ por usted y por la otra clase.
  !exit

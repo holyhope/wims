@@ -16,8 +16,8 @@ Ficheros de imagen para el ejercicio
  
 !form reply
 Fichero de imagen que se va a enviar en el ejercicio:
-<input type="file" name="wims_deposit"/>
-<input type="submit" value="$wims_name_tosave"/>
+<input type="file" name="wims_deposit" />
+<input type="submit" value="$wims_name_tosave" />
 
 !formend
 
@@ -33,7 +33,7 @@ Fichero de imagen que se va a enviar en el ejercicio:
   <tr><td>$i</td>
   <td>
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height="40px" width="50px" alt=""/></td>
+   height="40px" width="50px" alt="" /></td>
   <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase

@@ -38,8 +38,8 @@ Creación de una clase virtual
  !endif
  
  !form reply
-  <input type="hidden" name="step" value="0"/>
-  Introduzca la contraseña: <input size="16" name="regpass" type="password"/>
+  <input type="hidden" name="step" value="0" />
+  Introduzca la contraseña: <input size="16" name="regpass" type="password" />
  
 !formend
  <div>
@@ -63,10 +63,10 @@ Contraseña para la creación de clases virtuales
  !form reply
   <table border="0" cellspacing="5">
   <tr><td align="right">
-  Introduzca el nombre de su cuenta:</td><td><input size="20" name="regid"/></td>
+  Introduzca el nombre de su cuenta:</td><td><input size="20" name="regid" /></td>
   </tr><tr><td align="right">
-  Y la contraseña:</td><td><input size="16" name="regpass" type="password"/>
-  <input type="submit" value="$wims_name_tosave"/></td>
+  Y la contraseña:</td><td><input size="16" name="regpass" type="password" />
+  <input type="submit" value="$wims_name_tosave" /></td>
   </tr></table>
  
 !formend
@@ -98,7 +98,7 @@ dejan este campo vacío (se les enviarán códigos secretos temporales
 para las operaciones sensibles), o ponen la palabra <tt class="wims_code_words">all< /tt>
 para desactivar esta medida de seguridad.
 
- </p><hr/>
+ </p><hr />
  !read help/hosts.phtml
  !reset secure
  !exit
@@ -182,7 +182,7 @@ user registration failure
 
 !if duplicate=$error
  Ha intentado volver a crear una clase ya creada. ¿Quizás ha hecho click
- en el botón <tt>actualizar</tt>? En todo caso ya existe su clase
+ en el botón <span class="tt">actualizar</span>? En todo caso ya existe su clase
  $classname y esta segunda tentativa de creación se ha ignorado.
   <div>
  !read adm/lang/links.phtml.$modu_lang

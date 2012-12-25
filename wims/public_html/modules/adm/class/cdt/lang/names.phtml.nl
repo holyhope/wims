@@ -43,8 +43,8 @@
   En mag ook gedefinieerd worden als
  
  !set name_explanation2=!nosubst om een plaatje  
- <tt>myfile.jpg</tt> \
- toe te voegen. <br/>De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
+ <span class="tt">myfile.jpg</span> \
+ toe te voegen. <br />De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
  
  !set name_availablespace=Totaal beschikbare hardeschijfruimte,Onbenutte hardeschijfruimte
  

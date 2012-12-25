@@ -73,7 +73,7 @@ name_replace,name_new,name_sendagain,name_developer,name_savesource,name_downloa
   Este ejercicio pedirá\
   respuestas libres y \
   respuestas de opciones múltiples\
-  Las respuestas numéricas no calculadas (como <tt>3*5-sin(pi/3)</tt>) serán\
+  Las respuestas numéricas no calculadas (como <span class="tt">3*5-sin(pi/3)</span>) serán\
   aceptadas,rechazadas\
   condiciones especiales para corregir las respuestas libres\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
@@ -114,8 +114,8 @@ palabras en una lista,	wlist
  Elecciones correctas\
  Elecciones incorrectas\
  Puedes dar opcionalemente una nota y/o solución\
- Indicación<br/>(Formato html)\
- Solución<br/>(Formato html)\
+ Indicación<br />(Formato html)\
+ Solución<br />(Formato html)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution
@@ -123,8 +123,8 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst L'exercice <tt>$existing.oef</tt> a été mis à jour avec succès dans le module
-  !set name_update2=Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module
+  !set name_update1=!nosubst L'exercice <span class="tt">$existing.oef</span> a été mis à jour avec succès dans le module
+  !set name_update2=Echec de mise a jour de l'exercice <span class="tt">$existing</span> dans le module
   !set name_update3=Su ejercicio se ha instalado con éxito.
    !set name_update4= Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros   dobles.\
   !set name_update5=Este ejercicio será accesible únicamente a los participantes de su clase, \

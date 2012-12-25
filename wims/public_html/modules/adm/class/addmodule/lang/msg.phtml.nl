@@ -14,7 +14,7 @@ Helaas, maar het veranderen van een werkblad is alleen toegestaan voor docenten 
 !endif
 
 !if no_sheet=$error
-Uw klas heeft -nog- geen werkbladen in voorbereiding .<br/> 
+Uw klas heeft -nog- geen werkbladen in voorbereiding .<br /> 
 Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactiveerd werkblad</b>.
  
  !href module=adm/class/sheet&sheet=$[$sheettot+1] Maak een nieuw Werkblad
@@ -34,7 +34,7 @@ Verwijder eerst enkele items alvorens verder te gaan met dit werkblad.
 !endif
 
 !if already_exist=$error
-Het werk dat U wilt toevoegen bestaat reeds in het werkblad $test .<br/>
+Het werk dat U wilt toevoegen bestaat reeds in het werkblad $test .<br />
 U kunt beter niet een zelfde oefening meerdere keren onder dezelfde
 parameters in een werkblad opnemen. <p>
 Verander eerst enkele parameters van de oefening voordat U verder gaat. <p>

@@ -391,11 +391,11 @@ de este sitio. No está autorizado a acceder a este módulo.
     Se han hallado versiones nuevas\
     actualizar todo\
     instalar todos\
-    actualizado<br/>por\
-    Nueva<br/>versión\
+    actualizado<br />por\
+    Nueva<br />versión\
     Hallados módulos nuevos\
-    Versión del<br/>servidor\
-    hecho público<br/>por\
+    Versión del<br />servidor\
+    hecho público<br />por\
   into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
 
 !exit

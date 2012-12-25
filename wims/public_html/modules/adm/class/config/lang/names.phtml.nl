@@ -105,7 +105,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 !if $job=clean
  !set title=Opschonen van een klas
  !set name_lines=Studenten activeiten
- !set name_empty=Deze klas is leeg!<br/>\
+ !set name_empty=Deze klas is leeg!<br />\
  Er staat dus ook niets in  dat opgeschoond kan worden.
  !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
 
@@ -216,7 +216,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Uw klas heeft een aciteve cijfer \
   registratie en de gedeelde bronnen zijn niet leeg.\
   Als u nu stopt met lenen kan hier later niet meer op worden teruggekomen.\
-  <br/>U wilt definitef stoppen met delen ?
+  <br />U wilt definitef stoppen met delen ?
  
  !set name_stop=stoppen.
  !endif
@@ -317,7 +317,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=oefdefault
- !set title=Configuratie voor OEF modules<br/>[Online Exercise Format] 
+ !set title=Configuratie voor OEF modules<br />[Online Exercise Format] 
  !distribute lines een serie oefeningen heeft\
  Moeilijkheidsgraad\
  Tijd limiet\
@@ -508,7 +508,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
-!set name_content_style = U kunt een algemeen stylesheet definieren<br/>(als <span class="tt wims_code_words">$name_css</span> op <span class="tt wims_code_words">klas</span> is gezet)&nbsp;:
+!set name_content_style = U kunt een algemeen stylesheet definieren<br />(als <span class="tt wims_code_words">$name_css</span> op <span class="tt wims_code_words">klas</span> is gezet)&nbsp;:
 
 !set name_content_style2=Kopieer hier een css-stylesheet
 
@@ -519,7 +519,7 @@ U hebt een backup archief van een andere klas opgestuurd.
 Als er conflicten zijn, 
 wordt uw klas mogelijk onherstelbaar beschadigd.
  !href cmd=help&special_parm=dependencies Waarom&nbsp;?
- <br/>
+ <br />
  !href cmd=reply&job=list Stop
  als u er niet zeker van bent van de gevolgen. 
  (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
@@ -584,11 +584,11 @@ Deze klas moet dan wel eerst
 :connect_first_info
 <p>De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
 met een andere WIMS server of een andere ELO
-(Electronische Leer Omgeving) te communiceren.<br/>
+(Electronische Leer Omgeving) te communiceren.<br />
 De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.  
 </p><p>
 In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,
-zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br/>
+zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br />
 Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd. 
 </p>
 !exit
@@ -598,7 +598,7 @@ Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd.
 Deze WIMS server heeft geen netwerkverbonden servers gedeclareerd.
 Om deze mogelijkheid te gebruiken, schrijf naar de 
 <a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
-om een dergelijke voorziening te treffen.<br/>
+om een dergelijke voorziening te treffen.<br />
 En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> administratief geregeld moet worden)
  
@@ -607,7 +607,7 @@ De site manager kan hier leren hoe het <span class="tt wims_fname">$basedir/log/
 :import2
 
 Het te importeren werkblad bevat mogelijk oefeningen die alleen bestaan in de buurklas.
-   <br/>
+   <br />
 Als deze oefeningen niet aanwezig zijn in uw klas, zal het geimporteerde werkblad niet naar behoren functioneren/
 Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar uw eigen klas.
 
@@ -615,7 +615,7 @@ Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar
 :import3
 Proefwerken zijn gebaseerd op werkbladen.
 Het importeren van proefwerken is alleen zinvol als alle werkbladen precies synchroon zijn met de andere klas.
-<br/>
+<br />
 Als dit niet het geval is zal het proefwerk niet kunnen functioneren.
 !exit 
 :import4
@@ -630,7 +630,7 @@ Mogelijk is uw klas of instituut vol en is er geen ruimte meer beschikbaar
 
 :auth1
 Deze configuratie stap is alleen bereikbaar vanaf een toegestaan veilig  adres.
-<br/>
+<br />
 Er zijn geen veilige adressen gedefinieerd voor uw klas.
 We controleren nu uw identiteit door een code te sturen naar uw email adres.
 Voer de toegestuurde code hieronder in.

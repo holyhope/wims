@@ -56,7 +56,7 @@ Andere beschikbare hulpmiddelen:
 <li>     
 !href module=adm/latex2wims $wims_name_latex2wims
     maakt mogelijk dat LaTeX documenten kunnen worden 
-    omgezet naar interactieve <tt>WIMS</tt>  documenten.
+    omgezet naar interactieve <span class="tt">WIMS</span>  documenten.
     Ook dit hulpmiddel vereist een 'ontwikkelaar account'.
 </li></ul>
 </div>

@@ -9,7 +9,7 @@
 !endif
 
 !if not_secure=$error
-Helaas, alleen verbindingen met computers uit de lijst "secure-hosts" mogen de wachtwoorden wijzigen.<br/>
+Helaas, alleen verbindingen met computers uit de lijst "secure-hosts" mogen de wachtwoorden wijzigen.<br />
 Gebruik de
  !href module=adm/class/config klas configuratie pagina
  om de ip-adressen van deze "secure-hosts" de definieren. 
@@ -38,7 +38,7 @@ Gebruik gewoon letters en of cijfers zonder accenten en spaties als wachtwoord.
 
 !if bad_user iswordof $error
     Mislukt: er is hier in deze klas geen
-     leerling genaamd <tt>$part</tt>.
+     leerling genaamd <span class="tt">$part</span>.
     !exit
 !endif
 
