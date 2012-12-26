@@ -1,0 +1,59 @@
+replygood=$(replygood$i)
+!set glist=!item 2 to -1 of $(replygood[2;])
+reply=$(reply$i)
+
+type=$(replygood$i[2;1])
+!!color can be changed... (color1=reponse de l'élève, color2 la réponse)
+!set color1=!getopt color1 in $(replyoption$i)
+!default color1=black
+!set color2=!getopt color2 in $(replyoption$i)
+!default color2=#B4B4FF
+
+!!color2=180,180,255
+!!color2=#B4B4FF
+
+!set rlist=!getopt free in $reply
+m_reply$i=$rlist
+reply__$i=&nbsp;
+
+!!useful only for polygon.
+!set rlist=!translate internal ; to , in $rlist
+!set rlist=!nonempty items $rlist
+!set m=!itemcnt $glist
+!set n=!itemcnt $rlist
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle default points
+
+!if $type notwordof points
+ !if $(reply$i)=$empty
+  error=empty_data
+  !exit
+ !endif
+!endif
+
+!set Inputsize=!replace internal x by , in $oef_applet_option
+!distribute items $Inputsize into xsize,ysize
+
+!set script=$script\
+var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
+var urlImg ="$(replygood$i[1;1])";\
+var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize] ]);\
+/*brd.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
+
+!if $type iswordof line sline segment vector rectangle polygon
+!set script=$script\
+var p=[];\
+var q=[];
+!endif
+
+!read anstype/javacurve.$type
+!if $Test!=$empty or NaN isin $test
+   !exit
+!endif
+
+!readproc slib/geo2D/jsxgraph jsxbox,$xsize x $ysize,$script
+reply_$i=$slib_out

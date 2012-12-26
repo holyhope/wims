@@ -47,5 +47,19 @@ test=$mean
  !endif
 
 :drawing
-primitive1=line $rlist,$color1
-primitive2=line $glist,$color2
+
+!if $(replytype$i)=javacurve
+  primitive1=line $rlist,$color1
+  primitive2=line $glist,$color2
+  !exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+!for j=1 to $m/2
+   script=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'green'}); to $script
+!next
+script=!append line brd.create('line',[p[1],p[2]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $script
+!for j=1 to $n/2
+  script=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:false}); to $script
+!next
+script=!append line brd.create('line',[q[1],q[2]],{strokeColor:'$color1', straightFirst:false, straightLast:false}); to $script

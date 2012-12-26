@@ -1,0 +1,216 @@
+!!author: Julien Lyotard
+!set ans_require=jsxgraph
+
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=capture()
+
+!if $wims_read_parm=def
+  !exit
+!endif
+
+!set oef_applet_option=!replace internal $	$ by $\
+$  in $inputsize
+
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+
+!if $test issametext $empty
+  !set Inputsize=!replace internal x by , in $Inputsize
+  !distribute items $Inputsize into xsize,ysize
+!endif
+
+!!named type 
+!set type=!text remove 0123456789. in $(replygood$i[2;1])
+
+!if debug iswordof $m_oefenv
+  !set showinfobox=true
+!else
+  !set showinfobox=false
+!endif
+
+!if $type != $empty
+  !set script=$script\
+var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
+var urlImg ="$(replygood$i[1;1])";\
+var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize] ]);\
+var jsxbox_free=[];\
+var p=[];
+  !if $type = points
+    !set script=$script\
+var coords;\
+JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e),brd);\
+p.push(brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox}));\
+c = [Math.round(p[p.length-1].X()),Math.round(p[p.length-1].Y())];\
+jsxbox_free.push(c);\
+/*alert(jsxbox_free);*/\
+}, this);\
+function efface() {\
+brd.suspendUpdate();\
+brd.removeObject(p[p.length-1]);\
+p.splice(p.length-1,1);\
+jsxbox_free.splice(p.length,1);\
+/*alert(jsxbox_free);*/\
+brd.unsuspendUpdate();\
+}
+  !endif
+   
+  !if $type iswordof line sline segment vector circle
+    !if $type iswordof line sline segment vector
+      !set trace='line'
+      !default ooo={straightFirst:true}
+      !if $type issametext sline
+        !set ooo={straightFirst:false}
+      !endif
+      !if $type issametext segment
+        !set ooo={straightFirst:false, straightLast:false}
+      !endif
+      !if $type issametext vector
+        !set ooo={straightFirst:false, straightLast:false,lastArrow:true}
+      !endif
+    !endif
+    !if $type issametext circle
+      !set trace='circle'
+      !set ooo={}
+    !endif
+    !set script=$script\
+var pp=[];\
+var re=0;\
+JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+if (re<2){\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:false,strokeColor:'black', showInfobox:$showinfobox});\
+var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
+jsxbox_free.push(c);\
+/*alert(jsxbox_free);*/\
+if(re==1){loui = brd.create($trace,[p[0],p[1]], $ooo);}\
+re=re+1;\
+JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (e) {\
+if(re==1){\
+brd.removeObject(pp);\
+var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+pp = brd.create('point', coor.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox});\
+li = brd.create($trace,[p[0],pp], $ooo);}\
+},this);\
+}\
+}, this);\
+function efface() {\
+brd.removeObject(pp);\
+brd.removeObject(p[0]);\
+brd.removeObject(p[1]);\
+brd.removeObject(loui);\
+brd.removeObject(li);\
+jsxbox_free.splice(p.lenght,2);\
+return re=0;\
+}
+  !endif
+  !if $type = rectangle
+    !set ooo={straightFirst:false, straightLast:false}
+    !set trace='line'
+    !set script=$script\
+var pp=[];\
+var re=0;\
+var li1=[];\
+var li2=[];\
+var li3=[];\
+var li4=[];\
+JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+if (re<2){\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:false,strokeColor:'black', showInfobox:$showinfobox});\
+var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
+jsxbox_free.push(c);\
+/*alert(jsxbox_free);*/\
+if(re==1){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);}\
+re=re+1;\
+JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (e) {\
+if(re==1){\
+brd.removeObject(pp);\
+brd.removeObject(li1);\
+brd.removeObject(li2);\
+brd.removeObject(li3);\
+brd.removeObject(li4);\
+var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+pp = brd.create('point', coor.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox});\
+li1 = brd.create($trace,[[p[0].X(),p[0].Y()],[p[0].X(),function(){ return pp.Y();}]],$ooo );\
+li2 = brd.create($trace,[[p[0].X(),function(){ return pp.Y();}],[function(){ return pp.X();},function(){ return pp.Y();}]],$ooo );\
+li3 = brd.create($trace,[[function(){ return pp.X();},function(){ return pp.Y();}],[function(){ return pp.X();},p[0].Y()]],$ooo );\
+li4 = brd.create($trace,[[function(){ return pp.X();},p[0].Y()],[p[0].X(),p[0].Y()]],$ooo );\
+}\
+},this);\
+}\
+}, this);\
+function efface() {\
+brd.removeObject(pp);\
+brd.removeObject(p[0]);\
+brd.removeObject(p[1]);\
+brd.removeObject(li1);\
+brd.removeObject(li2);\
+brd.removeObject(li3);\
+brd.removeObject(li4);\
+jsxbox_free.splice(p.lenght,2);\
+return re=0;\
+}
+  !endif
+  !if $type = polygon
+    !set script=$script\
+var pp=[];\
+var re=0;\
+var jsss='';\
+JXG.addEvent(document.getElementById('jsxbox'),'click', function (e) {\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:''});\
+var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
+if(re>0){loui = brd.create('segment',[p[re-1],p[re]]);}\
+jsss= jsss+c+';';\
+re=re+1;\
+JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (z) {\
+brd.removeObject(pp);\
+var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(z), brd);\
+pp = brd.create('point', coor.usrCoords.slice(1),{face:'+',size:'8',fixed:true,strokeColor:'black', showInfobox: $showinfobox,name:''});\
+li = brd.create('segment',[p[re-1],pp]);\
+lu = brd.create('segment',[pp,p[0]]);\
+},this);\
+JXG.addEvent(document.getElementById('jsxbox'),'mouseleave', function (y) {\
+JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
+luca = brd.create('segment',[p[re-1],p[0]]);\
+brd.removeObject(pp);\
+return re;\
+},this);\
+}, this);\
+function efface() {\
+brd.removeObject(p);\
+jsss='';\
+/*alert(jss);*/\
+return re=0;\
+}
+  !endif
+!endif
+
+!readproc slib/geo2D/jsxgraph jsxbox,$xsize x $ysize,$script
+
+$slib_out
+<div class="jsxgraph_button">
+<span onclick="efface();" class="wims_button" style="cursor:pointer;">$wims_name_erase</span>
+</div>
+
+<script type="text/javascript">
+!if $type iswordof points
+  var capture = function() {document.getElementById('jsreply$i').value='free='+jsxbox_free +'';}
+!endif
+!if $type iswordof line sline segment vector rectangle
+  var capture = function() {if(re==2){document.getElementById('jsreply$i').value='free='+jsxbox_free +'';}}
+!endif
+!if $type iswordof circle
+  var capture = function() {
+        document.getElementById('jsreply$i').value='free=' + [Math.round(p[0].X()),Math.round(p[0].Y()),Math.round(p[0].Dist(p[1]))] +'';}
+!endif
+!if $type iswordof polygon
+  var capture = function() {
+        document.getElementById('jsreply$i').value='free=' + jsss +'';}
+!endif
+</script>
+
+<input type="hidden" name="reply$i" id="jsreply$i" value="" />
