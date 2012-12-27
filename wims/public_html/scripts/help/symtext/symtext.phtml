@@ -16,7 +16,8 @@
 <h2>Symtext documentation</h2>
 
 !href cmd=help&special_parm=symtext,list List of symtext styles
-. <p>
+. 
+<p>
 
 Symtext is a natural language parsing syntax. It is designed to make it
 easier to identify different ways to say the same thing in natural language,
@@ -30,16 +31,16 @@ Recognition of free text answers is difficult due to the following facts.
 <li>Different context requires different tolerance and precision. A language
 exercise cannot tolerate spelling or grammar error, which may not be the
 case for a mathematical exercise.
-
+</li>
 <li>Natural language often allows many different ways to say the same thing,
 between "A or B" and "B or A", "Paul is older than Bill" and "Bill is
 younger than Paul", "x and y are similar" and "x is similar to y", or even
 "this costs too much" and "it is too expensive".
-
+</li>
 <li>Typing errors are common in freely typed text. In many cases, typing
 errors should be tolerated. But before an unknown word, it is difficult for
 the software to tell whether it is a typing error or a bad answer.
-
+</li>
 </ul>
 
 In view of the above, the design of symtext has incorporated the following
@@ -48,34 +49,36 @@ features.
 <ul>
 <li>A nestable syntax allowing the identification of various language
 alternatives (different ways to say the same thing).
-
+</li>
 <li>Macro dictionaries can be defined to help improve the human readability
 of the matching rules.
-
+</li>
 <li>User-definable multiple dictionaries that can be used for various text
 analysis purposes.
-
+</li>
 <li>Designated portions of the text can be output for further processing.
-
-<li>It is based on user-definable styles, with different styles defining
+</li>
+<li>
+It is based on user-definable styles, with different styles defining
 different dictionaries and macros. So they can be used to deal with
 different context.
-
+</li>
 <li>Language scope can be delimited by declaring the list of allowed words.
 Text containing words not in the list can be considered to be out-scope and
 be sent back for rephrasing, instead of being rejected as bad answer. A
 correct use of this feature can solve most of the problems related to typing
 errors and unexpected answers.
-
+</li>
 </ul>
 
-<p><hr/><h3>How it works</h3>
-
+<hr /><h3>
+How it works</h3>
+<p>
 Symtext deals with the problem of comparing two sentences. The first is the
 <em>sample</em> which is typically the answer given to an exercise. It is
 compared to the second sentence, the <em>tester</em>, which is typically the
 good answer as declared by the author of the exercise.
-<p>
+</p><p>
 
 The sample must be plain text in natural language, while the tester may
 contain <em>symtext rules</em> allowing it to <em>match</em> various samples
@@ -84,7 +87,7 @@ same thing are alternatives in the natural language. The scope of the
 acceptable alternatives depends on the context of the exercise, therefore
 must be precisely defined by the author. Symtext is designed to allow
 authors to make such definitions.
-<p>
+</p><p>
 
 Symtext rules are word based, that is, it only compares words. A word is a
 chain of alphabetic characters or digits delimited by spaces or special
@@ -92,20 +95,20 @@ symbols (parentheses, quotes, punctuations etc.). Any special symbol is
 considered as a word by itself. And symtext does not count the number of
 space characters between two words: any chain of consecutive space
 characters will be reduced to one space.
-<p>
+</p><p>
 
 A set of basic <em>builtin rules</em> are defined in the symtext syntax. For
 example, the rule <span class="tt">[Iperm:x,and,y]</span> matches both samples "x and y"
 and "y and x". Rules can be nested: 
 <pre>neither [Aperm:[Alt:I,me,we,us],nor,our teacher]</pre>
 matches the following 8 cases.
-<p>
+</p><p>
 
 "neither I nor our teacher", "neither our teacher nor I", "neither me nor
 our teacher", "neither our teacher nor me", "neither we nor our teacher",
 "neither our teacher nor we", "neither us nor our teacher", "neither our
 teacher nor us".
-<p>
+</p><p>
 
 In general applications, a context <em>style</em> can be declared before
 making the comparison. A style is a set of dictionaries and options. These
@@ -115,78 +118,79 @@ that can simplify the writing of tester rules and make it more readable, and
 user-definable dictionaries for various other purposes.
 !href cmd=help&special_parm=symtext,list List of styles
 .
-<p>
+</p><p>
 
 For example, a <em>positional macro</em> <span class="tt">_divides</span> can be defined in
 the macro dictionary, so that the tester <span class="tt">x _divides [y + z]</span> will
 match the following samples.
-<p>
+</p><p>
 
 "x divides y + z", "x is a factor of y + z", "y + z is divisible by x", "y +
 z is a multiple of x".
-<p>
+</p><p>
 
 Note here that such a macro is positional, so that the string "y + z" must
 be enclosed in a pair of brackets to make them look as one word for the
 macro. Otherwise it will rather match things like "y is a multiple of x +
 z", which clearly is wrong.
-<p>
+</p><p>
 
 This example shows that the final power of the syntax depends primarily on the
 construction of the macro dictionary (which will vary from style to style).
-<p>
+</p><p>
 
 The tester is a text string containing ordinary words, matching rules and
 positional macros. An ordinary word is simply compared with the word at the
 corresponding position in the sample, while matching rules and macros can
 match multiple possibilities in the sample.
-<p>
+</p><p>
 
 Before comparison takes place, words in both the sample and the tester may
 first be transformed in order to identify small differences that one wants
 to ignore, such as upper and lower cases, singular and plural nouns etc.
-<p>
+</p><p>
 
 Unlike regular expression, symtext match occurs only if the tester matches
 the whole sample. Match does not occur if the tester only matches a part of
 the sample. However, wildcard rules can be included in the tester if part of
 the sample needs to be ignored.
-<p>
+</p>
 
-<p><hr/><h3>Details of the syntax</h3>
+<hr /><h3>Details of the syntax</h3>
 
 <b>Definitions</b>. <ul>
 <li>A <em>tstring</em> is a succession of <em>atoms</em>.
-<li>An <em>atom</em> is either a <em>word</em>, a <em>bracket block</em> or
+</li><li>An <em>atom</em> is either a <em>word</em>, a <em>bracket block</em> or
 a positional macro name.
-<li>A <em>word</em> is either a list of consecutive alphanumerical
+</li><li>A <em>word</em> is either a list of consecutive alphanumerical
 characters or a single special character. In the first case, the word is
 delimited by either spaces or non-alphanumerical characters.
-<li>A <em>bracket block</em> is a substring enclosed by a pair of brackets.
+</li><li>A <em>bracket block</em> is a substring enclosed by a pair of brackets.
 It can be either a tstring, or a <em>matching rule</em>.
-<li>A <em>positional macro</em> is a word (macro name) preceded by the
+</li><li>A <em>positional macro</em> is a word (macro name) preceded by the
 underline character. The macro name must be defined in the macro dictionary,
 otherwise the whole atom will be treated as an ordinary word.
-</ul>
-
+</li></ul>
+<p>
 A <em>matching rule</em> may be either builtin or defined in the style macro
 dictionary. It must be enclosed by a pair of brackets, and the first
 character must be alphabetic. If the first character is upper-case, it is
 builtin. otherwise it is a macro.
-<p>
+</p><p>
 
 Syntax of the matching rule: <span class="tt">[rule_name:parameters]</span>.
 <em>rule_name</em> must start with the first character of the block, it must
 be a valid rule name, and the colon must immediately follow the name (no
 spaces inserted). Otherwise the block will be treated as a normal tstring
-rather than a rule. <p>
+rather than a rule. 
+</p><p>
 
 <em>Parameters</em> is a comma-separated list of strings. Each parameter can
 be a tstring itself (hence can contain nested subrules), except in some
 special cases of builtin rules where some of the parameter has a special
 meaning, e.g. the first parameter of the rule <em>Pick</em> must be a
 positive integer.
-<p>
+</p><p>
 
 There are also two special bracket blocks that are in fact simplifications
 of builtin matching rules:
@@ -203,13 +207,15 @@ the first character is a '<span class="tt">*</span>'.
 
 </ul>
 
-<p><hr/><h3>Builtin rules</h3>
-
+<hr /><h3>Builtin rules</h3>
+<p>
 A builtin rule is a matching rule where the first character of the name is 
-upper-case. <p>
+upper-case. 
+</p><p>
 
 Any parameter may include the comma character, as long as it is enclosed by
-a pair of parentheses or brackets. <p>
+a pair of parentheses or brackets. 
+</p>
 
 
 
