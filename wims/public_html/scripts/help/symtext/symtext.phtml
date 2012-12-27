@@ -218,46 +218,47 @@ a pair of parentheses or brackets. <p>
 $table_header
 $table_hdtr
 <th>name</th>
-<th><small>Number of<br/>parameters</small></th>
+<th><small>Number of<br />parameters</small></th>
 <th>Effect</th>
 <th>Detail</th>
-
+</tr>
 $table_tr
-<td>Alt
-<td align=middle>\(>= 1)
-<td>Matches any one of the parameters.
-<td><span class="tt">[Alt:a,b,c d]</span> matches "a", "b" or "c d".
-
+<td>Alt</td>
+<td align=middle>\(>= 1)</td>
+<td>Matches any one of the parameters.</td>
+<td><span class="tt">[Alt:a,b,c d]</span> matches "a", "b" or "c d".</td>
+</tr>
 $table_tr
-<td>Aperm
-<td align=middle>\(>= 3)
-<td>"And" styled permutation.
+<td>Aperm</td>
+<td align=middle>\(>= 3)</td>
+<td>"And" styled permutation.</td>
 <td><span class="tt">[Aperm:[,],and,A,B,C]</span> matches "A, B and C", "B, A and C", etc.
 The order of parameters 3 and up is arbitrary, and the first two parameters
 are used to insert between them: parameter 1 is inserted except for the
 last insertion where parameter 2 is inserted.
-
+</td></tr>
 $table_tr
-<td>Apick
-<td align=middle>\(>= 4)
-<td>"And" styled arbitrary selection.
+<td>Apick</td>
+<td align=middle>\(>= 4)</td>
+<td>"And" styled arbitrary selection.</td>
 <td><span class="tt">[Apick:3,[,],and,A,B,C,D,E]</span> matches "B, E and A", "C, A and E",
 etc. Parameter 1 must be an integer and gives the number of items to pick.
+</td></tr>
 
 $table_tr
-<td>Dic
-<td align=middle>\(1)
-<td>Dictionary check
+<td>Dic</td>
+<td align=middle>\(1)</td>
+<td>Dictionary check</td>
 <td><span class="tt">[Dic:wordtype transitive verb]</span> matches any word or group of
 words that is defined in the dictionary "wordtype", with a definition that
-contains an item "transitive verb". <p>
+contains an item "transitive verb". 
 
 Note. No word transformation is performed on the parameter of this rule.
-
+</td></tr>
 $table_tr
-<td>Dperm
-<td align=middle>\(4)
-<td>Dependent permutation: parameters to match depend on the sample.
+<td>Dperm</td>
+<td align=middle>\(4)</td>
+<td>Dependent permutation: parameters to match depend on the sample.</td>
 <td><span class="tt">[Dperm:a,b,c,d]</span> matches either "a b c" or "c d a", but nothing
 else. For example, <br/>
 <span class="tt">[Dperm:x,beats,y,is beaten by]</span> matches either "x beats y" or "y is
@@ -265,72 +266,72 @@ beaten by x". Or in French,
 <br/>
 <span class="tt">il [Dperm:,y,est allé,à Paris]</span> matches either "il y est allé" or
 "il est allé à Paris".
-
+</td></tr>
 
 $table_tr
-<td>Ins
-<td align=middle>\(>= 3)
-<td>Arbitrary insertion of parameter 1.
+<td>Ins</td>
+<td align=middle>\(>= 3)</td>
+<td>Arbitrary insertion of parameter 1.</td>
 <td><span class="tt">[Ins:A,B,C,D,E]</span> matches "B A C D E", "B C A D E", "B C D A E".
 Parameter 2 and up must be matched in the given order, while parameter 1 may
 find its place anywhere between them. <p>
 
 To match "A B C D", "B A C D", "B C A D" and "B C D A", put two empty
 parameters: <span class="tt">[Ins:A,,B,C,D,]</span>.
-
+</p></td></tr>
 $table_tr
-<td>Iperm
-<td align=middle>\(3)
-<td>Inter-permutation.
+<td>Iperm</td>
+<td align=middle>\(3)</td>
+<td>Inter-permutation.</td>
 <td><span class="tt">[Iperm:Bill,and,Alice]</span> matches "Bill and Alice" and "Alice and
 Bill". But not the three words in any other order.
-
+</td></tr>
 $table_tr
-<td>M
-<td align=middle>\(1)
-<td>Shared macro.
+<td>M</td>
+<td align=middle>\(1)</td>
+<td>Shared macro.</td>
 <td>The content (any tstring) of the macro can be shared with other calls (with
 the same content). This is mainly designed for the macros file, with the aim of
 reducing the size of compiled ruleset. Moreover, Shared macros can be self-nested
 (while non-shared ones cannot).
-
+</td></tr>
 $table_tr
-<td>Neg
-<td align=middle>\(1)
-<td>Logical match negation.
+<td>Neg</td>
+<td align=middle>\(1)</td>
+<td>Logical match negation.</td>
 <td>This rule returns match if the sample does not match its parameter, and
 vice versa. <p>
 In the first case, the rule matches the empty string in the sample.
-
+</p></td></tr>
 $table_tr
-<td>Nomatch
-<td align=middle>\(0)
-<td>This is a synonym of <span class="tt">None</span>.
+<td>Nomatch</td>
+<td align=middle>\(0)</td>
+<td>This is a synonym of <span class="tt">None</span>.</td>
 <td>
-
+</td></tr>
 $table_tr
-<td>None
-<td align=middle>\(0)
-<td>Matches nothing.
-<td><span class="tt">[None:]</span> always returns no match.
-
+<td>None</td>
+<td align=middle>\(0)</td>
+<td>Matches nothing.</td>
+<td><span class="tt">[None:]</span> always returns no match.</td>
+</tr>
 $table_tr
-<td>Not
-<td align=middle>\(1)
-<td>This is a synonym of <span class="tt">Neg</span>.
+<td>Not</td>
+<td align=middle>\(1)</td>
+<td>This is a synonym of <span class="tt">Neg</span>.</td>
 <td>
-
+</td></tr>
 $table_tr
-<td>Opick
-<td align=middle>\(>= 2)
-<td>Matches an ordered subset of given number of parameters.
+<td>Opick</td>
+<td align=middle>\(>= 2)</td>
+<td>Matches an ordered subset of given number of parameters.</td>
 <td>This rule is as <span class="tt">Pick</span>, except that it only matches subsets that
 are in the same order as that given in the parameters.
-
+</td></tr>
 $table_tr
-<td>Out
-<td align=middle>\(2)
-<td>Match plus output
+<td>Out</td>
+<td align=middle>\(2)</td>
+<td>Match plus output</td>
 <td>The first parameter is a variable name, and the second parameter can be
 any combination of words, subrules and macros. If match occurs for the
 second parameter, the matching text will be put as a value of the variable
@@ -340,17 +341,18 @@ Example. <span class="tt">[Out:myvar,[*]]</span> matches any single word, and if
 matched word is "myword" (in the sample), the match output contains a string
 "myvar=myword" that can be parsed to know what word the user has entered in
 this location.
-
+</p>
+</td></tr>
 $table_tr
-<td>Perm
-<td align=middle>\(>= 2)
-<td>Matches all the parameters in arbitrary order.
+<td>Perm</td>
+<td align=middle>\(>= 2)</td>
+<td>Matches all the parameters in arbitrary order.</td>
 <td><span class="tt">[Perm:x,y,z]</span> matches "x y z", "y x z", "z x y" etc.
-
+</td></tr>
 $table_tr
-<td>Pick
-<td align=middle>\(>= 2)
-<td>Matches a subset of given number of parameters in any order.
+<td>Pick</td>
+<td align=middle>\(>= 2)</td>
+<td>Matches a subset of given number of parameters in any order.</td>
 <td>The first parameter must be a positive integer n. The rule matches any
 subset of n parameters within the rest, in any order. <br/>
 Example: <span class="tt">[Pick:2,a,b,c,d]</span> matches "a b", "d b", "c a" etc. <br/>
@@ -362,22 +364,23 @@ Extensions: <span class="tt">[Pick:+2,...]</span> matches any subset of at least
 parameters. <br/>
 <span class="tt">[Pick:-3,...]</span> matches any subset of at most 3 parameters (including
 the empty subset).
-
+</p>
 <p>
 Known bug: repetition of the same parameter is not recognized.
 <span class="tt">[Pick:2,a,b,c,d]</span> does not match "a c c".
-
+</p>
+</td></tr>
 $table_tr
-<td>Rep
-<td align=middle>\(>= 1)
+<td>Rep</td>
+<td align=middle>\(>= 1)</td>
 <td>Matches an arbitrary number (at least one) of parameters in any order and
-with any repetition.
+with any repetition.</td>
 <td><span class="tt">[Rep:0,1]</span> matches "0 1", "1", "0 1 0 0 1 1 0", etc.
-
+</td></tr>
 $table_tr
-<td>W
-<td align=middle>\(0 or 1)
-<td>Matches words in a list.
+<td>W</td>
+<td align=middle>\(0 or 1)</td>
+<td>Matches words in a list.</td>
 <td>This rule matches the next word if it appears somewhere in the tester or
 if it is a word given in the parameter. <p>
 
@@ -385,40 +388,44 @@ If this rule is put in the last tester line, words in all the tester lines
 will count.
 
 $table_tr
-<td>Wild
-<td align=middle>\(1)
-<td>Wildcard word match.
+<td>Wild</td>
+<td align=middle>\(1)</td>
+<td>Wildcard word match.</td>
 <td>The unique parameter must be composed of words "*", "**", and/or "**n"
 where n is a positive number. The first matches any single word, the second
 matches 0 or any number of words, and the third matches from 0 to n
 arbitrary words. For example, <br/>
 <span class="tt">[Wild:* * **3]</span> matches between 2 to 5 words (inclusive).
-
+</td></tr>
 $table_end
 
-<p><hr/><h3>Construction of styles</h3>
-
+<hr /><h3>Construction of styles</h3>
+<p>
 A style corresponds to a directory and its contents. Under WIMS, the style
 can either be shared among all modules in the public_html/scripts/symtext
 directory, or be special to one module, in the module's directory.
-<p>
+</p><p>
 
 The style must contain an index file, named <span class="tt">def</span>. It defines the
 basic configuration choices of the style. Every line of the file is a
-definition under the format <span class="tt">name=value</span>. <p>
+definition under the format <span class="tt">name=value</span>. 
+</p><p>
 
 The <span class="tt">def</span> file must contain a definition <span class="tt">style_exists=yes</span>,
 otherwise the existence of the style will not be recognized. All the rest is
-optional.<p>
+optional.
+</p><p>
 
 It may contain a definition of <em>option</em>, that lists option words that
-will always be activated for the style. <p>
+will always be activated for the style. 
+</p><p>
 
 It can also define general dictionaries using the name
 <em>dictionaries</em>. The value must be a list of words, each corresponding
 to a dictionary file in the style. The number of general dictionaries is
 limited.
-<p>
+
+</p><p>
 
 For each general dictionary, a variable NAME_unknown can be defined (where
 NAME should be replaced by the dictionary name), which tells how a word
@@ -427,27 +434,31 @@ may be <span class="tt">delete</span> (default) which means the unknown word sho
 replaced by an empty string; <span class="tt">leave</span> which will return the unknown
 word unchanged; or anything else. In the last case, the value will be used
 to replace the unknown word.
-<p>
+
+</p><p>
 
 There may also be three dictionary files with reserved names:
 <span class="tt">suffix</span>, <span class="tt">trans</span> and <span class="tt">macros</span>. All dictionaries are
 line dictionaries, with each line in the format <span class="tt">name:definition</span>. Names
 must be sorted (using the special program <span class="tt">dicsort</span> in the WIMS
 package). All of the dictionaries are optional.
-<p>
+
+</p><p>
 
 Both name and definition may contain space characters. However, except macro
 definitions there is no transformation after the dictionary is read, so only
 single space characters should be used. The name field should start and end
 with non-space characters. Multiple definitions with a same name will give
 unpredictable result.
-<p>
+
+</p><p>
 
 The <em>suffix</em> dictionary is a very special one, that is used to
 transform word suffixes before any other transformation. It is easy to
 understand except that in the name field, the suffixes are defined in
 reverse order.
-<p>
+
+</p><p>
 
 The <em>trans</em> dictionary is used for word replacements after suffix
 transformation. Both dictionaries will be consulted before any string
@@ -456,66 +467,75 @@ singular and plural forms, we can first use the <em>suffix</em> dictionary
 to transform plural nouns into singular suffix if they obey a general suffix
 rule; then for nouns with special plural forms, the <em>trans</em>
 dictionary can be used to transform them.
-<p>
+
+</p><p>
 
 Both the <em>suffix</em> and <em>trans</em> dictionaries must be constructed
 to be <em>order 1 stable</em>, that is, if an already transformed string is
 resubmitted to the dictionary, no further transformation will take place.
-<p>
+
+</p><p>
 
 The <em>macros</em> dictionary contains both definitions for positional
 macros and macro rules. The former have names starting with the underline
 character, while the latter starts with lower case letters.
-<p>
+
+</p><p>
 
 The definition of a macro is a tstring that will be used to replace the
 macro. Macros can be nested, that is, the definition of a macro may contain
 calls to other macros, in any order. However, infinite nesting loops will
 result in an error.
-<p>
+
+</p><p>
 
 In order to preserve consistency for positional macros, the definition of
 any macro must be composed of exactly one atom.
-<p>
+
+</p><p>
 
 Macro definitions may contain parameters. For this purpose, the character
 <span class="tt">@</span> has a special meaning in a macro definition. When invoked, it
 must be followe by an integer. And the character together with the following
 integer will be replaced by a macro parameter during macro expansion.
-<p>
+
+</p><p>
 
 For a rule macro, <span class="tt">@1</span> means the first parameter, <span class="tt">@2</span> means
 the second parameter, etc. It is an error if the macro is invoked in a
 tstring without giving enough parameters.
-<p>
+
+</p><p>
 
 For a positional macro, <span class="tt">@1</span> designates the first atom following the
 macro, while <span class="tt">@-1</span> designates the first atom preceding the macro, etc.
 It is also an error if a positional macro is inserted in a tstring without
 enough atoms before or after it as required by its definition.
-<p>
+
+</p><p>
 
 Care must be taken to the point that a macro parameter may result in several
 atoms after expansion. This is not a problem unless the macro definition
 contains a positional macro. In case where it is necessary to ensure the
 position of parameters, one can enclose the parameter by a pair of brackets,
 such as <span class="tt">[@1]</span>.
-<p>
+
+</p><p>
 
 A general dictionary has the same syntax as the reserved ones. In this case,
 the definition field can be a comma-separated list of items. These
 dictionaries are used via the <span class="tt">Dic</span> builtin rule, which gives a match
 if one of the items in the definition is equal to the value given in the
 parameter of the rule.
-<p>
 
+</p>
 
-<p><hr/><h3>The command line program</h3>
+<hr /><h3>The command line program</h3>
 
 The command line program <em>symtext</em> is specially built for WIMS, so that
 all the input data are sent through environment variables. It can also be
 used as a standalone program, but in this case it is better that a wrapper
-script be used to put the input-output into a more *nix flavor. <p>
+script be used to put the input-output into a more *nix flavor.
 
 $table_header
 <caption>List of environment parameters</caption>
@@ -526,17 +546,24 @@ $table_hdtr<th>Name</th>
 $table_tr
 <td>wims_exec_parm</td>
 <td>The main data input</td>
-<td>A multi-line string. <ul>
-<li>Line 1: command followed by options. Valid commands: <ul>
+<td>A multi-line string. 
+<ul>
+<li>Line 1: command followed by options. Valid commands: 
+ <ul>
   <li><span class="tt">match</span> check matching.
+  </li>
   <li><span class="tt">debug</span> check matching with debug information.
+  </li>
   </ul>
-<li>Line 2: The sample.
-<li>Line 3 and up: Each line is a tester.
+  </li>
+<li>Line 2: The sample.</li>
+<li>Line 3 and up: Each line is a tester.</li>
 </ul>
+<p>
 Lines can also be delimited by the semi-colon. For this reason, semi-colons
 must be protected by parentheses in both the sample and the tester.
-<p>
+
+</p><p>
 Options have the same syntax as in the style option definition. With one
 more possible definition here: <span class="tt">style=[the_name_of_style]</span>.
 </td></tr>
@@ -560,7 +587,8 @@ $table_end
 Options have two origins: either from the environment variable
 <em>w_symtext_option</em> or from the <em>def</em> file of the style. The two
 have the same syntax.
-<p>
+
+</p>
 
 !set option_data=!trim \
 alnumly,word,Transform everything non-alphabetic and non-digit into space.\
@@ -593,15 +621,16 @@ $table_hdtr
  !distribute item $l into name,nature,meaning
  $table_tr
  <td>$name</td>
- <td align=center>$nature</td>
+ <td>$nature</td>
  <td>$meaning
 !next i
 
 $table_end
-<p>
+
+</p><p>
 
 <b>Program output</b>. The output is empty if no match is found.
-<p>
+
 
 !set error_data=!nonempty lines \
 bad_command,Invalid command in the input.\
@@ -639,7 +668,7 @@ $table_hdtr
  !set l=!line $i of $error_data
  !distribute items $l into msg,mean
  $table_tr
- <td><span class="tt">$msg</span></td>
+ <td class="tt">$msg<</td>
  <td>$mean</td>
  </tr>
 !next i
