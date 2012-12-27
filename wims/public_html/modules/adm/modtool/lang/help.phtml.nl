@@ -4,8 +4,9 @@
 !endif
 
 !if $login=$empty
+<p>
  Dit is een hulpmiddel voor het online ontwikkelen van complete WIMS modules.
- <p>
+ </p><p>
  Een dergelijke module kan een "full-power" oefening zijn 
  (vergeleken met de Createxo OEF oefeningen; welke gemakkelijker te maken zijn,
   maar hierdoor natuurlijk ook iets aan mogelijkheden inboeten. 
@@ -15,27 +16,30 @@
  Deze modules worden geschreven in de <b>WIMS programeertaal</b> [phtml] zoals beschreven in de
  !href target=wims_help module=help/wimsdoc WIMS technische documentatie
 .
- <p>
+ </p><p>
  Als U geinteresseerd bent, kan via  
  !mailurl $wims_site_manager de systeembeheerder\
  WIMS Modtool id
  
  een ontwikkelaars account (login naam en wachtwoord) worden aangevraagd.
+ </p>
  !exit
 !endif
 
 !if $mod=$empty
+<p>
  Om aan een module te kunnen werken, moeten we er wel eerst eentje aanmaken.
  Voor het maken van een nieuwe module, moet U dus op de juiste links klikken
  en alle benodigde module administratie invoeren. 
- <p>
+ </p>
 !endif
-
+<p>
 Lees eerst de
  !href target=wims_help module=help/wimsdoc WIMS technische documentatie
  voor de structuur van zo'n WIMS module en uiteraard de syntax van de WIMS programmeertaal.
-<p>
+</p><p>
 Speciale hints:
+</p>
 <ol>
 <li>Om een file te kunnen debuggen, plaats dan de regel
 <pre>

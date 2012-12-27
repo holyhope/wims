@@ -1,5 +1,5 @@
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
@@ -39,7 +39,7 @@
   De zone <span class="tt wims_code_words">$w2</span> van uw module is hier onbekend.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  De huidige categorieen in de zone <b><span class="tt wims_code_words">$(w0[1])</span></b>
+  De huidige categorieen in de zone <span class="bold tt wims_code_words"$(w0[1])</span>
   zijn&nbsp;:
   <pre>
   $w3
@@ -57,10 +57,10 @@
 
 :badhour
  Op dit moment kunt U de module niet publiceren !
- <p>
+
  Kies een tijdstip waarop de server wat minder bezet is.
  Vermijdt publicatie op de volgende tijdstippen: 
- <p>
+  <br class="spacer" />
  $nopublish
 !exit
 
