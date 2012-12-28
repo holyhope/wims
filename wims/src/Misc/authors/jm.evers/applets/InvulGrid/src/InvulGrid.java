@@ -4,12 +4,11 @@
 * This is all amateur scriblings... So no copyrights.				*
 * This source code file, and compiled classes derived from it,			*
 * can be used and distributed without restriction, including for commercial use	*
-* No warrenty.							*
+* No warrenty.									*
 *********************************************************************************
 version 0.41
 11/2012
-Corrected html-table output
-
+corrected html table output
 
 version 0.4
 10/12/2010
@@ -385,7 +384,7 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
     }
 
     public String makeHtml(String[] reply , String[] horline){
-	String table = "<table class=\"schaersvoorde_form\"><tr><td style=\"text-align:right\"><table class=\"schaersvoorde_form\">";
+	String table = "<table style=\"margin-bottom:1px;margin-top:1px;\"><tr><td style=\"text-align:right\"><table style=\"margin-bottom:1px;margin-top:1px;width:100%\">";
 	String tmp="";
 	for( int y = 0 ; y < reply.length ; y++ ){
 	    if(reply[y] != null){
@@ -394,7 +393,7 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 		}
 		else // french
 		{
-		    table=table+"<tr><td style=\"text-align:center;\">&nbsp;&nbsp;&nbsp;&nbsp;</td><td style=\"text-align:right\">"+reply[y]+"</td></tr>";
+		    table=table+"<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td style=\"text-align:right\">"+reply[y]+"</td></tr>";
 		}
 		if(horline[y] != null){
 		    if(horline[y].equals("\u00D7")) tmp = "x";
@@ -403,11 +402,11 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 		    else tmp = horline[y];
 		    
 		    if(right){
-			table=table+"</table></td></tr><tr><td><table class=\"schaersvoorde_form\"><tr><th style=\"width:100%\"><hr style=\"height:2px;color:black;width:100%\"/></th><th>"+tmp+"</th></tr></table></td></tr><td><table class=\"schaersvoorde_form\">";
+			table=table+"</table></td><tr><td><table style=\"margin-bottom:1px;margin-top:1px;width:100%\"><tr><td style=\"width:90%\"><hr></td><td>"+tmp+"</td></tr></table></td></tr><td><table style=\"margin-bottom:1px;margin-top:1px;width:100%\">";
 		    }
 		    else // french
 		    {
-			table=table+"</table></td><tr><td><table class=\"schaersvoorde_form\"><tr><th>"+tmp+"</th><th style=\"width:100%\"><hr style=\"height:2px;color:black;width:100%\"/></th></tr></table></td></tr><td><table class=\"schaersvoorde_form\">";
+			table=table+"</table></td><tr><td><table style=\"margin-bottom:1px;margin-top:1px;width:100%\"><tr><td>"+tmp+"</td><td width=\"90%\"><hr></td></tr></table></td></tr><td><table style=\"margin-bottom:1px;margin-top:1px;width=:100%\">";
 		    }
 		}
 	    }
@@ -604,7 +603,7 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 	    else
 	    {
 		if( s.equalsIgnoreCase("fr")){
-		    line_plus="droite + ";
+		    line_plus="+ à droite ";
 		    line_times="droite x";
 		    delete_line="effacer droite";
 		    clear_all="effacer";
