@@ -9,10 +9,11 @@
     var descr_list="$description";
     var descr_cnt = 30;
     var description = make_description(descr_list,descr_cnt);
-!!    var maxcookies=20;
-!!    var cookiesize=400;
-!!    var cookiecount=-1;
     var reply="";
+    function dontknow(){
+	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
+    }
+
     function readapplet(){
 	!if $list_of_things = $empty
 	    reply=zirkel2wims(null,null);
@@ -32,29 +33,6 @@
 		}
 	    }
 	!endif
-	reply=encodeURIComponent(reply);
-	!! setting a cookie to save the much too large xml-string...splitting in small cookies...
-	!! no way to retreive browser settings for this cookie cache space...all react different
-!!	var myConstruction=document.getElementById("zirkel").getConstruction();
-!!	myConstruction=encodeURIComponent(""+myConstruction+"");
-!!	    var date = new Date();date.setTime(date.getTime()+600000);var expires=date.toGMTString();
-!!	    cookiecount=0;cookiearray=new Array();var t1=0;var t2=cookiesize;
-!!	    totalsize=0;
-!!	    while(myConstruction.substring(t1,t2).length>0){
-!!		cookiearray[cookiecount]=myConstruction.substring(t1,t2);
-!!		totalsize=(totalsize+cookiesize);cookiecount++;t1=t2;t2=t2+cookiesize;
-!!	    }
-!!	    if(cookiecount>maxcookies){
-!!		setAlarm("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
-!!		cookiecount=-1;
-!!	    }
-!!	    else
-!!	    {
-!!		for(var p=0;p<cookiecount;p++){
-!!		    document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires= ; path=/";
-!!		    !!document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires="+expires+"; path=/";
-!!		}
-!!	    }
     }
     
     function sendanswer(){
@@ -88,34 +66,15 @@
 	    }
 	    readapplet();
 	    show=show + "</ol>";
-	    var t=confirm(" $send ?\n"+show);
-	    if(t==true){
-		extra_answer=encodeURIComponent( extra_answer );
-!!		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer+'&+myvar$n='+cookiecount;
-		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer;
-		document.location.href = URL;
-		document.getElementById("zirkel").destroy();
-	    }
+	    reply = reply +','+extra_answer;
+	    myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 	}
 	else
 	{
 	    readapplet();
-	    var t=confirm(" $send ?");
-	    if(t==true){
-!!		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+'&+myvar$n='+cookiecount ;
-		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply;
-		document.location.href = URL;
-		document.getElementById("zirkel").destroy();
-	    }
+	    myConfirm("$send",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 	}
     }
-
-
-    function dontknow(){
-	myConfirm('$dontknow','%3F','$wims_ref_name','$session','$module','$counter','#ffbd55');
-	!!document.location.href = URL;document.getElementById("zirkel").destroy();
-    }
-
 //]]>
 </script>
 
@@ -136,7 +95,7 @@
 	    $exotext
 	!endif
     </td>
-    !if $XSIZE>640
+    !if $make_tr=1
     </tr><tr>
     !endif
     <td class="exercise_t">
@@ -192,37 +151,3 @@
 </div>
 !exit
 
-!!
-!! !if $(myvar$n) != $empty
-!!    !if $(myvar$n)>-1
-!!    !! get the stored cookies .
-!!    <script type="text/javascript">
-!!	var cookiecount=$(myvar$n) ;
-!!	function get_cookie(Name) {
-!!	    var search = Name + "=";
-!!	    var returnvalue = "";var end;var offset;
-!!	    if (document.cookie.length > 0) {
-!!		offset = document.cookie.indexOf(search);
-!!		if (offset != -1) { 
-!!		    offset += search.length;
-!!		    end = document.cookie.indexOf(";", offset);
-!!		    if (end == -1) end = document.cookie.length;
-!!		    returnvalue=unescape(document.cookie.substring(offset, end))
-!!		}
-!!	    }
-!!	    return returnvalue;
-!!	}
-!!	var test="";var stored_construction="";
-!!	for(var p=0;p<=cookiecount;p++){
-!!	    test = get_cookie("zirkel"+p);
-!!	    if(test.length != 0){
-!!		stored_construction=stored_construction+""+test;
-!!	    }
-!!	}
-!!	var test=decodeURIComponent(stored_construction);
-!!	document.getElementById("zirkel").putConstruction(test);
-!!    </script>
-!!    !endif
-!! !endif
-!!
-	    

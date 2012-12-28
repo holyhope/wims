@@ -46,7 +46,7 @@
 
     function sendanswer(){
 	var input;
-	var show="<ol>";
+	var show="<ul>";
 	var inputfieldnumber = 0;
 	var reply = new Array();
 	var tmp_show;
@@ -83,8 +83,12 @@
 	}
 
 	if(document.getElementById("InvulGrid0") ){
-	    var p = 0;var tmp_reply;var tmp_htmlreply;var tmp_latexreply;
-	    var latexreply = "";var invulgrid;
+	    var p = 0;
+	    var tmp_reply="";
+	    var tmp_htmlreply="";
+	    var tmp_latexreply="";
+	    var latexreply="";
+	    var invulgrid;
 	    !if $decimals=1
 		var decimals=1;
 	    !else
@@ -92,7 +96,6 @@
 	    !endif
 	    while( document.getElementById('InvulGrid'+p )){
 		invulgrid = document.getElementById('InvulGrid'+p);
-		tmp_show = invulgrid.ReadApplet('1');
 		tmp_reply = invulgrid.ReadApplet('0');
 		tmp_htmlreply = invulgrid.ReadApplet('2');
 		tmp_latexreply = invulgrid.ReadApplet('3');
@@ -100,10 +103,9 @@
 		if(tmp_reply.indexOf("?") != -1){dontknow();return;}
 		if(decimals == 0){ 
 		    tmp_reply = tmp_reply.replace(/\./g,'');
-		    tmp_show = tmp_show.replace(/\./g,'');
 		}
 		reply[inputfieldnumber] = tmp_reply+"\n"+tmp_htmlreply+"\n"+tmp_latexreply;
-		show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>"
+		show = show + "<br />"+tmp_htmlreply ; 
 		inputfieldnumber++;
 		p++;
 		if(p>10){setAlarm(r2);dontknow();}
@@ -262,13 +264,19 @@
 	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
     !if $wims_user=supervisor and $inputs<0
+	<!-- only visible for supervisor : to fill inputfields called myinput_n not default on this page, but stored in some variable -->
 	function putanswer(){
-	    !set c=0
-	    !set ans=!lines2items $(answer$n)
-	    !for p in $ans
-		document.getElementById("myinput$c").value = $p ;
-		!increase c
-	    !next p
+	    if(document.getElementById('myinput0')){
+		!set ans=!lines2items $(answer$n)
+	        !set s = !itemcnt $ans
+		var ans = new Array();
+	        ans = make_description("$ans",$s);
+		var p = 0
+		while( document.getElementById('myinput'+p)){
+		    document.getElementById('myinput'+p).value = ans[p] ;
+		    p++;
+		}
+	    }
 	}
     !endif
 //]]>
@@ -282,52 +290,53 @@
 	    <br />
 	!endif
 	!if $embed=1 and $mathview!=3
-	    <table class="exercise">
-		<tr>
-		<td class="exercise_m">
-		!if $(formula$n) != $empty
-		    !insmath $(formula$n)
-		!else
-		    <ul class="vlist"><!-- this "span" line-height / font-size is related to schaersvoorde.css : "schaersvoorde_input" class font-size -->
-		    !for p=1 to $inputs
-			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p])</span></li>
-		    !next p
-		    </ul>
-		!endif
-		</td>
-		<td class="exercise_m">
-		!if $inputs=1
-		    !if $wims_user=supervisor
-			&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
-        	    !else
-        		&nbsp;&nbsp;&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
-		    !endif
-		!else
-		    <ul class="vlist">
-		    !set a_items=!itemcnt $(answer$n)
-		    !if $a_items != $[floor($inputs)]
-			!set use_lines=1
-		    !else
-			!set use_lines=0
-		    !endif
-		    !for p=1 to $inputs
-			<li>
-			!if $wims_user=supervisor
-			    !if $use_lines=1
-				!set deelantwoord=!line $p of $(answer$n)
-			    !else
-				!set deelantwoord=!item $p of $(answer$n)
+	    !if $(formula$n) != $empty
+		<table class="exercise">
+		    <tr>
+		    <td class="exercise_c">
+			!insmath $$$$ $(formula$n) $$$$
+		    </td>
+		    <td class="exercise_c">
+			!if $inputs=1
+			    !if $wims_user=supervisor
+				$(description[1])&nbsp;$m_rightarrow&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(answer$n)</textarea>&nbsp;$ex1
+        		    !else
+        			$(description[1])&nbsp;$m_rightarrow&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
 			    !endif
-        		!else
-			    !set deelantwoord=!item $p of $(reply$n)
+			!else
+			    !set a_items=!itemcnt $(answer$n)
+		    	    !if $a_items != $[floor($inputs)]
+				!set use_lines=1
+			    !else
+				!set use_lines=0
+			    !endif
+			    <ul class="vlist">
+			    !for p=1 to $inputs
+				<li>
+				!if $wims_user=supervisor
+				    !if $use_lines=1
+					!set deelantwoord=!line $p of $(answer$n)
+				    !else
+				        !set deelantwoord=!item $p of $(answer$n)
+				    !endif
+        			!else
+				    !set deelantwoord=!item $p of $(reply$n)
+				!endif
+				    $(description[$p])&nbsp;$m_rightarrow&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
+				</li>
+			    !next p
+			    </ul>
 			!endif
-			$m_rightarrow&nbsp;&nbsp;<input type="text" id="myinput$[$p-1]" class="schaersvoorde_input" size="$cols" value="$deelantwoord" />&nbsp;$(ex$p)
-			</li>
-		    !next p
-		    </ul>
-		!endif
-		</td>
-	    </table>
+		    </td>
+		    </tr>
+		</table>
+	    !else
+		<ul class="vlist"><!-- this "span" line-height / font-size is related to schaersvoorde.css : "schaersvoorde_input" class font-size -->
+		!for p=1 to $inputs
+		    <li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p])</span><input type="text" id="myinput$[$p-1]" value="" size="$cols" class="schaersvoorde_input" /></li>
+		!next p
+		</ul>
+	    !endif
 	!else
 	    !if $(formula$n) != $empty
 		!if $display=1
