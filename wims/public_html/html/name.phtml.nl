@@ -88,12 +88,12 @@
     wims_name_for,wims_name_only,\
     wims_name_this_config
 
-!set wims_name_Share = Delen
+!set wims_name_Share = delen
 !set wims_name_to_embed_it = opnemen	
 !set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefenening.
 
 !! the following sentences can be changed according to language if needed
-!set wims_name_display1=!nosubst $wims_name_Share $wims_name_this_module
+!set wims_name_display1=!nosubst $wims_name_this_module $wims_name_Share 
 !set wims_name_display2=!nosubst $wims_name_copy_and_paste $wims_name_the_link $wims_name_on_your_site $wims_name_or $wims_name_in_a_mail
 !set wims_name_display3=!nosubst $wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site
 !set wims_name_permalink1=!nosubst $wims_name_permalink $wims_name_for $wims_name_this_module
