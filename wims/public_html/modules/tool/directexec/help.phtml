@@ -1,7 +1,16 @@
 
 !read themes/$wims_theme/table.proc
 !if $special_parm=flydraw
+
  <h3 class="wimscenter">$name_doc $(swname[1])</h3>
+!set a=!record 0 of example.flydraw
+<div class="float_right">
+!insdraw $a
+</div>
+<textarea id="flydraw" cols="50" rows="15" name="wims_flydraw" readonly>
+   !read example.flydraw
+  </textarea>
+<br class="clearall" />
  !read help/flydraw.phtml
  !exit
 !endif
@@ -15,9 +24,14 @@
 !endif
 
 !if $special_parm=graphviz
-  <textarea id="jsxbox" cols="100" rows="15" name="wims_jsxgraph" readonly>
+  <textarea id="jsxbox" cols="100" rows="15" name="wims_graphviz" readonly>
    !read example.graphviz
   </textarea>
+ !goto common
+!endif
+
+!if $special_parm=flydraw
+  
  !goto common
 !endif
 
