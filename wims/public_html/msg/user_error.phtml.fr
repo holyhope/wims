@@ -32,8 +32,8 @@ padding-left: 3%; padding-right: 3%;}
 
 !if threshold iswordof $wims_user_error
  <hr width="1"/>
- <h1 align="center">Nous sommes trop occupés</h1>
- <hr style="width:50%"/>
+ <h1>Nous sommes trop occupés</h1>
+ <hr style="width:50%" />
  <p>
  Ce serveur WIMS <font color=blue>$httpd_HTTP_HOST</font>
  est actuellement surchargé par un grand nombre de requêtes,
@@ -50,8 +50,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">DESOLÉ</h1>
+ <hr style="width:1px" />
+ <h1>DESOLÉ</h1>
  <p>Votre requête est bloquée par ce serveur WIMS : dépassement de quota de connexions.</p>
  </body></html>
  !exit
@@ -59,8 +59,8 @@ padding-left: 3%; padding-right: 3%;}
 
 !if ++++missing_ isin ++++$wims_user_error
  <hr width="1"/>
- <h1 align="center">Désolé</h1>
- <hr style="width:50%"/>
+ <h1>Désolé</h1>
+ <hr style="width:50%" />
  <p>
  WIMS a besoin d'un logiciel
  !set miss=!upper $missing_software
@@ -79,8 +79,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">Stop&nbsp;!</h1>
- <hr/>
+ <h1>Stop&nbsp;!</h1>
+ <hr />
  Le contenu de
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> n'est pas compatible
  avec un programme de ramassage de pages web ou un `accélérateur d'accès'.
@@ -96,8 +96,8 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align="center">WIMS erreur</h1>
-<hr/>
+<h1>WIMS erreur</h1>
+<hr />
 <p>Il y a une erreur dans votre requête à ce site WIMS.</p>
 
 !if module_change iswordof $wims_user_error
@@ -106,7 +106,7 @@ padding-left: 3%; padding-right: 3%;}
   Veuillez éviter d'utiliser le bouton `Retour' de votre navigateur,
   car vous êtes sur un serveur interactif.
   </p>
-  <p style="text-align:center;">
+  <p class="wims_center">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -131,7 +131,8 @@ padding-left: 3%; padding-right: 3%;}
  Si vous avez simplement cliqué sur le bouton `retour' de votre navigateur,
  veuillez taper le mot `wims' ici&nbsp;:
  <input size="8" name="special_parm"/> puis
- <input type="submit" value="l'envoyer au serveur"/>.</form>
+ <input type="submit" value="l'envoyer au serveur"/>.
+ !formend
  <p>
  Veuillez noter que les pages de ce site sont générées dynamiquement. 
  Elle peuvent donc uniquement être utilisées
@@ -285,9 +286,9 @@ padding-left: 3%; padding-right: 3%;}
   Puis
   <input type="submit" value="envoyer la requête corrigée."/>
   </p>
-  </form>
-  <hr/>
-  <p style="text-align:center;">
+  !formend
+  <hr />
+  <p class="wims_center">
   !href cmd=resume Abandonner la dernière requête
 , ou
   !href $ wims sommaire
@@ -355,7 +356,7 @@ padding-left: 3%; padding-right: 3%;}
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p style="text-align:center;">
+  <p class="wims_center">
    <a href=# onclick="window.close();$wims_opener">Fermer cette fenêtre</a>.
   </p>
   !exit
@@ -389,7 +390,7 @@ padding-left: 3%; padding-right: 3%;}
   L'accès à cette classe virtuelle est provisoirement fermé par l'enseignant.
   Revenez plus tard&nbsp;!
   </p>
-  <p style="text-align:center;">
+  <p class="wims_center">
   !href cmd=close&module=home WIMS
   </p>
   </body></html>
@@ -408,7 +409,7 @@ l'erreur s'est produite.</p>
 
 :end2
 <hr/>
-<p style="text-align:center;">
+<p class="wims_center">
 !set wims_ref_class=wims_button home
 !href module=home&cmd=new Retour à la page d'accueil de WIMS
 !reset wims_ref_class
