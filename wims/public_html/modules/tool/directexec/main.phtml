@@ -34,22 +34,23 @@
  !else
   <div class="center">$SW</div>
   !if $sw=draw
-   <img align="middle" src="$swout"/>
+   <img src="$swout" alt="" />
    !goto after
   !endif
   !if $sw=povray
-   <img align="middle" src="$swout"/>
+   <img src="$swout" alt="" />
    !goto after
   !endif
   !if $sw=graphviz
    !set swout=!line 1 of $swout
-   <img align="middle" src="$swout"/>
+   <img src="$swout" alt="" />
    !goto after
   !endif
   !if $sw=jsxgraph
   <div id="jsxbox" class="box" style="width:400px; height:400px;text-align:center;"></div>
   <script type="text/javascript">
-  $swout</script>
+  $swout
+  </script>
     !goto after
   !endif
    !if $sw=insmath
@@ -68,16 +69,14 @@ $swout
 
 :after
 !if $msg!=$empty
- <hr/>
+ <hr />
  $name_msg <em>$SW</em> :
 <pre style="color:red;font-size:80%">
 $msg
 </pre>
 !endif
-
-<hr/>
 !form reply
-<input type="submit" value="$name_execute"/>
+<input type="submit" value="$name_execute" />
 
 !default sw=sh
 !set wims_formselect_switch=onchange='submit()'
