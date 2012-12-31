@@ -20,7 +20,7 @@
 !set icnt=!rowcnt $parm2
 
 !if $printing=yes or $cmd=hint
- <img src="$imgurl" alt="$imgurl" width="$bigsizex" height="$bigsizey" align="top"/>
+ <img src="$imgurl" alt="$imgurl" style="width:$(bigsizex)px;height:$(bigsizey)px;vertical-align:text-top" />
  !exit
 !endif
 
@@ -44,7 +44,7 @@
   !set i=$n_
   !set inputsize=$smallsize $sizei
   !read anstype/fill.inc noshow
-  !set hlist=$hlist<input type="hidden" name="reply$n_" value=""/>
+  !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
   !set fill_namelist=!append item $oldfillcnt to $fill_namelist
   !increase fillcnt
   !set serial_$fillcnt=$i
@@ -52,13 +52,13 @@
  !endif
 !next t
 
-<a name="fill$oldfillcnt" id="fill$oldfillcnt"><img src="gifs/transparent.gif" alt=transparent
-width="$bigsizex" height="$bigsizey" align="top"/></a>
+<a id="fill$oldfillcnt"><img src="gifs/transparent.gif" alt="transparent"
+style="width:$(bigsizex)px; height:$(bigsizey)px;vertical-align:text-top" /></a>
 !set thisjs=var f_bigimage$oldfillcnt=new DynLayer();\
 f_bigimage$oldfillcnt.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',\
 stretchH:$bigsizex,stretchV:$bigsizey});\
 dynapi.document.addChild(f_bigimage$oldfillcnt);\
-f_bigimage$oldfillcnt.setHTML('<img src="$imgurl" width="$bigsizex" height="$bigsizey"/>');
+f_bigimage$oldfillcnt.setHTML('<img src="$imgurl" width:$(bigsizex)px; height:$(bigsizey)px" alt="" />');
 
 !if $q_form=yes
  $hlist
@@ -68,7 +68,7 @@ $thisjs
  !distribute item 40C040,FF4040 into colorr_good,colorr_bad
  !set colorr_ana=C8C8E0
  !distribute item 20,15 into Sx,Sy
- !set cc1='<table border="0" cellpadding="0" cellspacing="0" width="$ssizex" height="$ssizey"><tr><td align="center">'
+ !set cc1='<table border="0" cellpadding="0" cellspacing="0" style="width:$(ssizex)px;height:$(ssizey)px"><tr><td align="center">'
  !set cc2='<\/td><\/tr><\/table>'
  !set wims_ins_alt=none
  !read js/dynapi3.phtml
@@ -104,7 +104,7 @@ $thisjs
    f_t$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
     left:$rx+$ssizex-4,top:$ry,stretchH:$Sx,stretchV:$Sy});
    dynapi.document.addChild(f_t$c);
-   f_t$c.setHTML('<small><small>[$embcnt]<\/small><\/small>');
+   f_t$c.setHTML('<small>[$embcnt]<\/small>');
    f_t$c.setZIndex(100);
   !endif
  !next c

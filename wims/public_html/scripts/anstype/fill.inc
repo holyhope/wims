@@ -86,8 +86,8 @@ $ in $input_rg
 !set sup2=
 !set vertical=text-top
 !set fill_namelist=!append item $fillcnt to $fill_namelist
-$sup1<img style="width:1px; height:$[$fill_sy+4]px;vertical-align:$vertical;" src="gifs/transparent.gif" alt="transparent" ;/><a id="fill$fillcnt">
+$sup1<img style="width:1px; height:$[$fill_sy+4]px;vertical-align:$vertical;" src="gifs/transparent.gif" alt="transparent" /><a id="fill$fillcnt">
 <img style="width:$[ceil($sizei/$sizej)*$fill_sx]px;height:$[($fill_sy*$sizej)+4]px;vertical-align:$vertical;" 
   src="gifs/transparent.gif" alt="transparent" /></a>$sup2
-<input type="hidden" name="reply$i" value=""/>
+<input type="hidden" name="reply$i" value="" />
 !reset inputsize
