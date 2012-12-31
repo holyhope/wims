@@ -520,13 +520,13 @@ void _header(char *p, int option)
 		     "window.focus();window.resizeTo(%d,%d);",
 		     t1,t2); ws=wsbuf;
 /*	    snprintf(wsbuf,sizeof(wsbuf),
-		     "window.focus();window.resizeTo(%d,%d);window.moveTo(%d,%d);",
+		     "window.focus();window.resizeto(%d,%d);window.moveto(%d,%d);",
 		     t1,t2,t3,t4); ws=wsbuf;
 */	}
     }
     else {
 	if(s1!=NULL && strcmp(s1,"new")==0)
-	  ws="window.focus();window.resizeTo(800,640);window.moveTo(15,35);";
+	  ws="window.focus();window.resizeto(800,640);window.moveto(15,35);";
     }
     if(strstr(session_prefix,"_exam")!=NULL) {
 /*	char buf[64]; */
