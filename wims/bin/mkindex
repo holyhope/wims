@@ -39,6 +39,18 @@ CLASSES=$WIMS_HOME/log/classes
 DOC=$WIMS_HOME/public_html/scripts/docu
 BASESDOC=$WIMS_HOME/public_html/bases/doc
 THEME=$WIMS_HOME/public_html/themes
+DATAMODULE=$WIMS_HOME/public_html/modules/data
+
+cd $DATAMODULE/images;
+## to improve : find the version, write the version in a file, if they are the same, donot execute.
+if [ -f "roadsigns.fr/INDEX" ]; then
+  dir=$DATAMODULE/images/roadsigns.fr
+  for z in 500 200 100 ; do
+    cd $dir/images ; mkdir -p png$z ; 
+    for a in `ls svg/*.svg`; do file=`basename $a .svg`; echo $a ; convert  $a -resize $z $dir/images/png$z/$file.png ; done;
+  done;
+fi;
+
 ## copy all sheet in example class to base/sheet/ for search engine
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
 
@@ -268,3 +280,14 @@ cd $BGIMAGE
 #make css.css
 cd $THEME
 ./mkcss.pl
+
+#make images in some datamodule
+cd $DATAMODULE/images;
+## to improve : find the version, write the version in a file, if they are the same, donot execute.
+if [ -f "roadsigns.fr/INDEX" ]; then
+  dir=$DATAMODULE/images/roadsigns.fr
+  for z in 500 200 100 ; do
+    cd $dir/images ; mkdir -p png$z ; 
+    for a in `ls svg/*.svg`; do file=`basename $a .svg`; convert  $a -resize $z $dir/images/png$z/$file.png ; done;
+  done;
+fi;
