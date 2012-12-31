@@ -1120,7 +1120,7 @@ void calc_instexst(char *p)
     al=getvar("ins_align");
     if(at==NULL) at="";
     if(al==NULL) al="";al=find_word_start(al);
-    if(*al!=0) snprintf(buf2,sizeof(buf2),"align=%s",al); else buf2[0]=0;
+    if(*al!=0) snprintf(buf2,sizeof(buf2),"vertical-align:%s",al); else buf2[0]=0;
     if(b==NULL || *b==0) border=0;
     else border=atoi(b);
     if(border<0) border=0; if(border>100) border=100;
@@ -1144,8 +1144,8 @@ void calc_instexst(char *p)
     if(ins_alt[0] && strcmp(pt,"none")!=0)
       snprintf(altbuf,sizeof(altbuf)," alt=\"%s\"",ins_alt);
     else  snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
-    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx\" %s %s%s />%s",
-	     md1,urlbuf,border,vspace,at,buf2,altbuf,md2);
+    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx;%s\" %s %s />%s",
+	     md1,urlbuf,border,vspace,buf2,at,altbuf,md2);
     setvar("ins_attr",""); ins_alt[0]=0;
     setvar("ins_url",urlbuf);
 }

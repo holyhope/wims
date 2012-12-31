@@ -1104,7 +1104,7 @@ void _exec_ins(char *p, char *script_name,char *format)
     if(at==NULL) at="";
     if(tag==NULL) tag="";
     if(al==NULL) al="";al=find_word_start(al);
-    if(*al!=0) snprintf(buf2,sizeof(buf2),"align=%s",al); else buf2[0]=0;
+    if(*al!=0) snprintf(buf2,sizeof(buf2),"vertical-align:%s",al); else buf2[0]=0;
     if(strcasecmp(al,"middle")==0) middle=1; else middle=0;
     tag2=""; vspace=0;
     if(*tag!=0) {
@@ -1133,16 +1133,16 @@ void _exec_ins(char *p, char *script_name,char *format)
     else snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
     if(strcasecmp(tag,"form")!=0) {
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<img src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx\" %s %s%s />",
-		 url, border, vspace, at, buf2, altbuf);
+		 "<img src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx;%s\" %s %s />",
+		 url, border, vspace, buf2, at, altbuf);
     }
     else {
 	char *n, *nend;
 /* fix: add quotes at name=" " */
 	if(*tag2!=0) {n="name=\"" ; nend="\"";} else {n=""; nend="";}
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<input type=\"image\" %s%s%s src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx\" %s %s%s />",
-		 n,tag2,nend,url,border,vspace, at,buf2,altbuf);
+		 "<input type=\"image\" %s%s%s src=\"%s\" style=\"border:solid;border-width:%dpx;margin-bottom:%dpx;%s\" %s %s />",
+		 n,tag2,nend,url,border,vspace,buf2,at,altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),
 			sizeof(outbuf)-strlen(outbuf),"%s",mathalign_sup2);
