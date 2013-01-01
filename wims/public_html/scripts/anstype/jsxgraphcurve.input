@@ -40,7 +40,7 @@ var p=[];
   !if $type = points
     !set script=$script\
 var coords;\
-JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+JXG.addEvent(document.getElementById('jsxbox'), 'mousedown', function (e) {\
 var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e),brd);\
 p.push(brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox}));\
 c = [Math.round(p[p.length-1].X()),Math.round(p[p.length-1].Y())];\
@@ -78,30 +78,29 @@ brd.unsuspendUpdate();\
     !set script=$script\
 var pp=[];\
 var re=0;\
-JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+JXG.addEvent(document.getElementById('jsxbox'), 'mousedown', function (e) {\
 if (re<2){\
 var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
-p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:false,strokeColor:'black', showInfobox:$showinfobox});\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:true,strokeColor:'black', showInfobox:$showinfobox});\
+if(re==0){lo = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:false,strokeColor:'black', showInfobox:$showinfobox});}\
+lin = brd.create($trace,[p[0],lo], $ooo);\
 var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
 jsxbox_free.push(c);\
 /*alert(jsxbox_free);*/\
-if(re==1){loui = brd.create($trace,[p[0],p[1]], $ooo);}\
+if(re==1){brd.removeObject(lo);\
+loui = brd.create($trace,[p[0],p[1]], $ooo);}\
 re=re+1;\
 JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (e) {\
 if(re==1){\
-brd.removeObject(pp);\
 var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
-pp = brd.create('point', coor.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox});\
-li = brd.create($trace,[p[0],pp], $ooo);}\
+lo.moveTo(coor.usrCoords.slice(1));}\
 },this);\
 }\
-}, this);\
+},this);\
 function efface() {\
-brd.removeObject(pp);\
 brd.removeObject(p[0]);\
 brd.removeObject(p[1]);\
 brd.removeObject(loui);\
-brd.removeObject(li);\
 jsxbox_free.splice(p.lenght,2);\
 return re=0;\
 }
@@ -112,14 +111,15 @@ return re=0;\
     !set script=$script\
 var pp=[];\
 var re=0;\
-var li1=[];\
-var li2=[];\
-var li3=[];\
-var li4=[];\
-JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
+JXG.addEvent(document.getElementById('jsxbox'), 'mousedown', function (e) {\
 if (re<2){\
 var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
-p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:false,strokeColor:'black', showInfobox:$showinfobox});\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',name:'',fixed:true,strokeColor:'black', showInfobox:$showinfobox});\
+if(re==0){pp = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox});\
+li1 = brd.create('line',[[p[0].X(),p[0].Y()],[p[0].X(),function(){ return pp.Y();}]], $ooo );\
+li2 = brd.create('line',[[p[0].X(),function(){ return pp.Y();}],[function(){ return pp.X();},function(){ return pp.Y();}]],$ooo);\
+li3 = brd.create('line',[[function(){ return pp.X();},function(){ return pp.Y();}],[function(){ return pp.X();},p[0].Y()]],$ooo);\
+li4 = brd.create('line',[[function(){ return pp.X();},p[0].Y()],[p[0].X(),p[0].Y()]],$ooo );}\
 var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
 jsxbox_free.push(c);\
 /*alert(jsxbox_free);*/\
@@ -127,25 +127,14 @@ if(re==1){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', 
 re=re+1;\
 JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (e) {\
 if(re==1){\
-brd.removeObject(pp);\
-brd.removeObject(li1);\
-brd.removeObject(li2);\
-brd.removeObject(li3);\
-brd.removeObject(li4);\
 var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
-pp = brd.create('point', coor.usrCoords.slice(1),{face:'+', size:'8',fixed:true,name:'',strokeColor:'black',showInfobox:$showinfobox});\
-li1 = brd.create($trace,[[p[0].X(),p[0].Y()],[p[0].X(),function(){ return pp.Y();}]],$ooo );\
-li2 = brd.create($trace,[[p[0].X(),function(){ return pp.Y();}],[function(){ return pp.X();},function(){ return pp.Y();}]],$ooo );\
-li3 = brd.create($trace,[[function(){ return pp.X();},function(){ return pp.Y();}],[function(){ return pp.X();},p[0].Y()]],$ooo );\
-li4 = brd.create($trace,[[function(){ return pp.X();},p[0].Y()],[p[0].X(),p[0].Y()]],$ooo );\
-}\
+pp.moveTo(coor.usrCoords.slice(1));}\
 },this);\
 }\
 }, this);\
 function efface() {\
 brd.removeObject(pp);\
-brd.removeObject(p[0]);\
-brd.removeObject(p[1]);\
+brd.removeObject(p);\
 brd.removeObject(li1);\
 brd.removeObject(li2);\
 brd.removeObject(li3);\
@@ -156,28 +145,33 @@ return re=0;\
   !endif
   !if $type = polygon
     !set script=$script\
-var pp=[];\
+var lu=[];\
+var lo=[];\
 var re=0;\
 var jsss='';\
-JXG.addEvent(document.getElementById('jsxbox'),'click', function (e) {\
+JXG.addEvent(document.getElementById('jsxbox'),'mousedown', function (e) {\
 var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
 p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:''});\
+var pp = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:'', Opacity:0.5});\
+lo[re] = brd.create('segment',[p[re],pp],{Opacity:0.5});\
+if(re>=1){\
+louis = brd.create('segment',[p[re-1],p[re]]);\
+lu[re] = brd.create('segment',[pp,p[0]],{Opacity:0.5});\
+brd.removeObject(lo[re-1]);}\
+brd.removeObject(lu[re-1]);\
 var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
-if(re>0){loui = brd.create('segment',[p[re-1],p[re]]);}\
 jsss= jsss+c+';';\
 re=re+1;\
 JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (z) {\
-brd.removeObject(pp);\
 var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(z), brd);\
-pp = brd.create('point', coor.usrCoords.slice(1),{face:'+',size:'8',fixed:true,strokeColor:'black', showInfobox: $showinfobox,name:''});\
-li = brd.create('segment',[p[re-1],pp]);\
-lu = brd.create('segment',[pp,p[0]]);\
+pp.moveTo(coor.usrCoords.slice(1));\
 },this);\
 JXG.addEvent(document.getElementById('jsxbox'),'mouseleave', function (y) {\
 JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
+brd.removeObject(lu[re]);\
+brd.removeObject(lo[re]);\
 luca = brd.create('segment',[p[re-1],p[0]]);\
 brd.removeObject(pp);\
-return re;\
 },this);\
 }, this);\
 function efface() {\
@@ -192,6 +186,7 @@ return re=0;\
 !readproc slib/geo2D/jsxgraph jsxbox,$xsize x $ysize,$script
 
 $slib_out
+
 <div class="jsxgraph_button">
 <span onclick="efface();" class="wims_button" style="cursor:pointer;">$wims_name_erase</span>
 </div>
