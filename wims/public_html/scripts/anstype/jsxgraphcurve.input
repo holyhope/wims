@@ -20,9 +20,9 @@ $  in $inputsize
   !set Inputsize=!replace internal x by , in $Inputsize
   !distribute items $Inputsize into xsize,ysize
 !endif
-
-!!named type 
-!set type=!text remove 0123456789. in $(replygood$i[2;1])
+ 
+!set input_type=!text remove 0123456789. in $(replygood$i[2;1])
+!default input_type=points
 
 !if debug iswordof $m_oefenv
   !set showinfobox=true
@@ -30,14 +30,14 @@ $  in $inputsize
   !set showinfobox=false
 !endif
 
-!if $type != $empty
+!if $input_type != $empty
   !set script=$script\
 var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ="$(replygood$i[1;1])";\
 var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize] ]);\
 var jsxbox_free=[];\
 var p=[];
-  !if $type = points
+  !if $input_type = points
     !set script=$script\
 var coords;\
 JXG.addEvent(document.getElementById('jsxbox'), 'mousedown', function (e) {\
@@ -57,21 +57,21 @@ brd.unsuspendUpdate();\
 }
   !endif
    
-  !if $type iswordof line sline segment vector circle
-    !if $type iswordof line sline segment vector
+  !if $input_type iswordof line sline segment vector circle
+    !if $input_type iswordof line sline segment vector
       !set trace='line'
       !default ooo={straightFirst:true}
-      !if $type issametext sline
+      !if $input_type issametext sline
         !set ooo={straightFirst:false}
       !endif
-      !if $type issametext segment
+      !if $input_type issametext segment
         !set ooo={straightFirst:false, straightLast:false}
       !endif
-      !if $type issametext vector
+      !if $input_type issametext vector
         !set ooo={straightFirst:false, straightLast:false,lastArrow:true}
       !endif
     !endif
-    !if $type issametext circle
+    !if $input_type issametext circle
       !set trace='circle'
       !set ooo={}
     !endif
@@ -105,7 +105,7 @@ jsxbox_free.splice(p.lenght,2);\
 return re=0;\
 }
   !endif
-  !if $type = rectangle
+  !if $input_type = rectangle
     !set ooo={straightFirst:false, straightLast:false}
     !set trace='line'
     !set script=$script\
@@ -143,7 +143,7 @@ jsxbox_free.splice(p.lenght,2);\
 return re=0;\
 }
   !endif
-  !if $type = polygon
+  !if $input_type = polygon
     !set script=$script\
 var lu=[];\
 var lo=[];\
@@ -192,17 +192,17 @@ $slib_out
 </div>
 
 <script type="text/javascript">
-!if $type iswordof points
+!if $input_type iswordof points
   var capture = function() {document.getElementById('jsreply$i').value='free='+jsxbox_free +'';}
 !endif
-!if $type iswordof line sline segment vector rectangle
+!if $input_type iswordof line sline segment vector rectangle
   var capture = function() {if(re==2){document.getElementById('jsreply$i').value='free='+jsxbox_free +'';}}
 !endif
-!if $type iswordof circle
+!if $input_type iswordof circle
   var capture = function() {
         document.getElementById('jsreply$i').value='free=' + [Math.round(p[0].X()),Math.round(p[0].Y()),Math.round(p[0].Dist(p[1]))] +'';}
 !endif
-!if $type iswordof polygon
+!if $input_type iswordof polygon
   var capture = function() {
         document.getElementById('jsreply$i').value='free=' + jsss +'';}
 !endif
