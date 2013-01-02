@@ -27,12 +27,16 @@ tot -> 0.10,17.00,123.40,124.00
  
  assumed only powers of 10 [scientific notation]
  
-    
+12/2012
+Modified : using only 10^ in powers 
+(e+8 -> *10^8 ; e-8 -> *10^-8)
+Extra syntax error signal (using more than 1 'e')
+
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_DIGITS 20
+#define MAX_DIGITS 32
 #define MAX_CONV 32
 
 int main( int argc , char *argv[]){
@@ -84,6 +88,10 @@ int main( int argc , char *argv[]){
 	// next item in input argv[1]
 	strncpy( word, ptr, MAX_DIGITS);
 	length = strlen(ptr);
+	if(length > MAX_DIGITS-1){
+	    fprintf(stdout,"ERROR string too large\n");
+	    exit(0);
+	}
 	//reset counters
 	powE = 0;
 	pow10 = 0;
@@ -91,27 +99,32 @@ int main( int argc , char *argv[]){
 	idx2 = 0;
 	i = 0;
 	for( i = 0; i < length ; i++){
+	    if(powE > 1 ){
+		fprintf(stdout,"ERROR in syntax\n");
+		exit(0);
+	    }
 	    if( idx1 + idx2  >  MAX_DIGITS-1){ 
 		fprintf(stdout,"ERROR string too large\n");
 		exit(0);
 	    }
 	    switch( word[i] ){
-		case 'e' : powE=1;break;
-		case 'E' : powE=1;break;
+		case '+' : break; /* do not use 10^+2 */
+		case 'e' : powE++;break;
+		case 'E' : powE++;break;
 		case 'x' : pow10++;break;
 		case '*' : pow10++;break;
 		case '^' : pow10=5;break;
 		default  : 
 		if( pow10 > 0 ){
 		    pow10++;
-		    if( pow10 > 4 ){ //1.23 *10^ 
+		    if( pow10 > 4 ){ /*  *10^ = 4 chars */ 
 			exponent[idx2]=word[i];
 			idx2++;
 		    }
 		}
 		else
 		{ 
-		    if(powE == 1){
+		    if(powE > 0){
 			exponent[idx2] = word[i];
 			idx2++;
 		    }
@@ -128,11 +141,11 @@ int main( int argc , char *argv[]){
         number[idx1] = '\0';
 	if( powE == 1 || pow10> 0 ){
     	    if(cnt > 1){
-		fprintf( stdout , ",%.*fe%s" , DECIMALS , atof(number) , exponent );
+		fprintf( stdout , ",%.*f*10^%s" , DECIMALS , atof(number) , exponent );
 	    }
 	    else
 	    {
-		fprintf( stdout , "%.*fe%s" , DECIMALS , atof(number) , exponent );
+		fprintf( stdout , "%.*f*10^%s" , DECIMALS , atof(number) , exponent );
 	    }
 	}
 	else
