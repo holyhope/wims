@@ -41,7 +41,7 @@ $ in $oef_applet_option
 !if $atoms!=
   !set atoms=!words2items $atoms
   !set atoms=!nospace $atoms
-  !set atoms=<param name="atoms" value="$atoms"/>
+  !set atoms=<param name="atoms" value="$atoms" />
 !endif
 !set template=!getopt template in $oef_applet_option
 !if $template notsametext
@@ -54,7 +54,7 @@ $ in $oef_applet_option
     !readproc oef/togetfile.proc $(cyclo[$t_]).el new\
 $temp
    !set templ=$templ\
- <param name="template$t_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(cyclo[$t_]).el"/>
+ <param name="template$t_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(cyclo[$t_]).el" />
   !next
   !set cnt_=$[$cnt_+6]
  !endif
@@ -71,7 +71,7 @@ $temp
 $temp_mol
    !set cnt_=$[$cnt_+1]
    !set templ=$templ\
-   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$temp_file"/>
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$temp_file" />
   !endif
  !next
 !endif
@@ -85,7 +85,7 @@ $temp_mol
      !set file0=!replace internal / by , in $files
      !readproc oef/togetfile.proc $(file0[-1]) new\
 $temp
-     !set File=!append line <param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])"/> to $File
+     !set File=!append line <param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])" /> to $File
    !next
  !endif
 
@@ -110,7 +110,7 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
  !if $b_=
    !set b_=$(list_default[$u_])
  !endif
- !set params=!append line <param name="$a__" value="$b_"/> to $params
+ !set params=!append line <param name="$a__" value="$b_" /> to $params
 !next
 <script type="text/javascript">
  function GetMoleculeMDLMol(){
@@ -135,13 +135,17 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
  </div>
 !endif
 
-<applet name="WIMSchem" id="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
-	    <param name="showfile" value="$showfile"/>
-	    <param name="show_hydrogen" value="$show_hydrogen"/>
-        <param name="show_carbon" value="$show_carbon"/>
-        $templ
-	    $atoms
-	    $params
-	    $File
-</applet>
+<object name="WIMSchem" id="WIMSchem" type="application/x-java-applet;jpi-version=1.4" \
+ classid="java:WIMSchem.MainApplet" width="$xsize" height="$ysize">
+  <param name="java_archive" value="WIMSchem.jar" />
+  <param name="java_codebase" value="$appletdir" />
+  <param name="java_code" value="WIMSchem.MainApplet" />
+  <param name="showfile" value="$showfile" />
+  <param name="show_hydrogen" value="$show_hydrogen" />
+  <param name="show_carbon" value="$show_carbon" />
+  $templ
+  $atoms
+  $params
+  $File
+</object>
 

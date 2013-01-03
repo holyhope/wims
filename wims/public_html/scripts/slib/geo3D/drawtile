@@ -196,7 +196,11 @@ slib_data=!items2words $slib_data
 $slib_data
 !set slib_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0
 
-slib_out=<applet codebase="java/Lattice" code="LatticeViewer.class" archive="Lattice.jar" width="400" height="400">\
+slib_out=<object type="application/x-java-applet;jpi-version=1.4;jpi-version=1.4" \
+  classid="java:LatticeViewer.class" width="400px" height="400px">\
+<param name="java_codebase" value="java/Lattice" />\
+<param name="java_code" value="LatticeViewer.class" />\
+<param name="java_archive" value="Lattice.jar" />\
 <param name="model"    value="$slib_file"/>\
 <param name="label"    value="false"/>\
 <param name="scale"    value="0.9"/>\
@@ -204,4 +208,4 @@ slib_out=<applet codebase="java/Lattice" code="LatticeViewer.class" archive="Lat
 <param name="bonds"    value="true"/>\
 <param name="bgcolor"  value="$(color[1])"/>\
 <param name="bondcolor" value="$(color[2])"/>\
-</applet>
+</object>

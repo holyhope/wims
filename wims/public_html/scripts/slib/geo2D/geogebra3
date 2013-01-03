@@ -127,18 +127,22 @@ slib_appletoption=
 slib_geogebracommand=
 
 slib_out=$slib_out\
-<applet name="applet$slib_number" codebase="java/geogebra3" code="geogebra.GeoGebraApplet" archive="geogebra.jar" width="$slib_width" height="$slib_height" MAYSCRIPT>\
-<param name="framePossible" value="false"/>\
-<param name="language" value="$slib_language"/>\
-<param name="showToolBar" value="$slib_showToolBar"/>\
-<param name="showToolBarHelp" value="$slib_showToolBarHelp"/>\
-<param name="showResetIcon" value="$slib_showResetIcon"/>\
-<param name="enableRightClick" value="$slib_enableRightClick"/>\
-<param name="showMenuBar" value="$slib_showMenuBar"/>\
-<param name="showAlgebraInput" value="$slib_showAlgebraInput"/>
+<object type="application/x-java-applet;jpi-version=1.4" name="applet$slib_number" \
+  classid="java:geogebra.GeoGebraApplet" width="$slib_width" height="$slib_height" MAYSCRIPT>\
+ <param name="java_codebase" value="java/geogebra3" />\
+ <param name="java_code" value="geogebra.GeoGebraApplet" />\
+ <param name="java_archive" value="geogebra.jar" />\
+ <param name="framePossible" value="false" />\
+ <param name="language" value="$slib_language" />\
+ <param name="showToolBar" value="$slib_showToolBar" />\
+ <param name="showToolBarHelp" value="$slib_showToolBarHelp" />\
+ <param name="showResetIcon" value="$slib_showResetIcon" />\
+ <param name="enableRightClick" value="$slib_enableRightClick" />\
+ <param name="showMenuBar" value="$slib_showMenuBar" />\
+ <param name="showAlgebraInput" value="$slib_showAlgebraInput" />
 !if $slib_ggbBase64 != $empty
    slib_out=$slib_out\
-<param name="ggbBase64" value="$slib_ggbBase64"/>
+ <param name="ggbBase64" value="$slib_ggbBase64" />
 !endif
 !for slib_u=1 to $slib_cnt
   slib_line=!line $slib_u of $slib_data
@@ -147,7 +151,7 @@ slib_out=$slib_out\
   slib_line1=!replace internal ( by , in $slib_line1
   slib_first=!item 1 of $slib_line1
   !if $slib_first iswordof width height $slib_list_ap1
-    slib_out=!append line <param name="$slib_first" value="$(slib_$slib_first)"/> to $slib_out
+    slib_out=!append line <param name="$slib_first" value="$(slib_$slib_first)" /> to $slib_out
     !if $slib_first != customToolBar
       slib_appletoption=!append line $slib_first=$(slib_$slib_first) to $slib_appletoption
     !else
@@ -182,16 +186,16 @@ slib_out=$slib_out\
   !endif
   !default slib_image_dir=$module_dir
   slib_out=$slib_out\
-<param name="filename" value="$slib_image_dir/$slib_file"/>
+ <param name="filename" value="$slib_image_dir/$slib_file" />
 !endif
 
 !if $slib_customToolBar!=$empty
   slib_out=$slib_out \
-<param name="customToolBar" value="$slib_customToolBar"/>
+ <param name="customToolBar" value="$slib_customToolBar" />
 !endif
 slib_out=$slib_out\
 Sorry - the GeoGebra Applet could not be started. Please make sure that Java 1.4.2 (or later) is installed and activated. (<a href="http://java.sun.com/getjava">click here to install Java now</a>)\
-</applet>
+</object>
 
 !if $slib_appletcommand!=
  slib_out=<input type="button" style="background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;" value="$(name_clickgeogebra_$lang)" onclick="Construction$slib_number();"/>\
