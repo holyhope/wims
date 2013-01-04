@@ -150,7 +150,43 @@ jsss='';\
 /*alert(jss);*/\
 return re=0;\
 }
-  !endif
+   !endif
+
+   !if $input_type = curve
+!set script=$script\
+var pp=[];\
+var re=0;\
+var rrr=0;\
+JXG.addEvent(document.getElementById('jsxbox'),'click', function (e) {\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+if(re<2){p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:''});}\
+c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
+jsxbox_free.push(c);\
+re=re+1;\
+JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (z) {\
+var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(z), brd);\
+pp[rrr] = brd.create('point', coor.usrCoords.slice(1),{face:'+',size:'1',Color:'blue',showInfobox:$showinfobox,name:''});\
+d = [Math.round(pp[rrr].X()),Math.round(pp[rrr].Y())];\
+jsxbox_free.push(d);\
+brd.create('segment',[p[0],pp[0]],{Color:'blue'});\
+if(rrr>0){brd.create('segment',[pp[rrr-1],pp[rrr]],{Color:'blue'});}\
+rrr=rrr+1;\
+},this);\
+if(re>=2){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);}\
+}, this);\
+function efface() {\
+brd.removeObject(p);\
+brd.removeObject(pp);\
+jsxbox_free.splice(0,rrr+re+1);\
+p.splice(0,re+1);\
+pp.splice(0,rrr+1);\
+/*alert(jsxbox_free);*/\
+re=0;\
+rrr=0;\
+}
+   !endif
+
+
 
 !readproc slib/geo2D/jsxgraph jsxbox,$jsx_xsize x $jsx_ysize,$script
 
@@ -161,6 +197,9 @@ $slib_out
 !endif
 !if $input_type iswordof line sline segment vector rectangle
   var capture = function() {if(re==2){document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}}
+!endif
+!if $input_type iswordof curve
+  var capture = function() {document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}
 !endif
 !if $input_type iswordof circle
   var capture = function() {
