@@ -10,7 +10,7 @@ reply__$i=&nbsp;
 !endif
 
 type=!item 1 of $tester
-!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,default points
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve default points
 
 glist=!item 2 to -1 of $tester
 color1=black
@@ -22,7 +22,10 @@ color2=180,180,255
   !exit
  !endif
 !endif
-
+!if $type iswordof curve
+  !set Inputsize=!replace internal x by , in $oef_applet_option
+  !distribute items $Inputsize into xsize,ysize
+!endif
 rlist=!translate internal ; to , in $rlist
 rlist=!nonempty items $rlist
 !!only in points initially

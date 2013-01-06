@@ -159,9 +159,9 @@ var re=0;\
 var rrr=0;\
 JXG.addEvent(document.getElementById('jsxbox'),'click', function (e) {\
 var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
-if(re<2){p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:''});}\
+if(re<2){p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', showInfobox:$showinfobox, name:''});\
 c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
-jsxbox_free.push(c);\
+jsxbox_free.push(c);}\
 re=re+1;\
 JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (z) {\
 var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(z), brd);\
@@ -173,6 +173,9 @@ if(rrr>0){brd.create('segment',[pp[rrr-1],pp[rrr]],{Color:'blue'});}\
 rrr=rrr+1;\
 },this);\
 if(re>=2){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);}\
+JXG.addEvent(document.getElementById('jsxbox'),'mouseleave', function (y) {\
+JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
+},this);\
 }, this);\
 function efface() {\
 brd.removeObject(p);\
@@ -192,14 +195,11 @@ rrr=0;\
 
 $slib_out
 <script type="text/javascript">
-!if $input_type iswordof points
+!if $input_type iswordof points curve
   var capture = function() {document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}
 !endif
 !if $input_type iswordof line sline segment vector rectangle
   var capture = function() {if(re==2){document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}}
-!endif
-!if $input_type iswordof curve
-  var capture = function() {document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}
 !endif
 !if $input_type iswordof circle
   var capture = function() {
