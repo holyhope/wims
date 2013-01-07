@@ -15,7 +15,7 @@ $title
 !endif
 
 !if $desc!=$empty
-	<h2>$name_instructions :</h2>
+	<h2>$name_instructions:</h2>
 	<p class="exam_instructions">$desc</p>
 !endif
 
@@ -24,7 +24,7 @@ $title
  !read lang/msg.phtml.$moduclass_lang
  </div>
  !href module=home $wims_name_back2
-. <br />
+ <br />
  !exit
 !endif
 
@@ -61,8 +61,9 @@ $title
     !if $dt=yes
      !advance activeexo
      <span class="exo_link">
-     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-</span>&nbsp;
+      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+     </span>&nbsp;
+     <small>($name_weight: $we)</small>
      !if autogen iswordof $op and $wims_exam_remain!=$empty
       !set ss=$(wims_session)t$(exam)t$i
       !set test=!defof w_cmd in wimshome/sessions/$ss/var

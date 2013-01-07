@@ -74,6 +74,7 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
 !set name_desc_duration=en minutos
+!set name_units_duration=minutos
 !let name_mkexam=Crear el examen
 
 !let name_shinfo_cutt=Horas de corte
