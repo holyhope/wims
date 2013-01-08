@@ -14,8 +14,8 @@ $/ = undef;
 my $char="---";
 
 for my $f (glob("*/*.css.template")) {
-  my $f1= $f ; $f1 =~ s/.template// ;
-  my $TEXT ="/*! generated form $f.css.template - do not modify directly */\n" ;
+  my $f1= $f ; $f1 =~ s/.template// ; my $f2 = "$f1.tmp.css" ;
+  my $TEXT ="/*! generated form $f - do not modify directly */\n" ;
   open(IN,"$f");
   while (<IN> ) {
    my $line=$_ ;
@@ -25,7 +25,8 @@ for my $f (glob("*/*.css.template")) {
  }
  close IN ;
  $TEXT .= "\n";
- out("$f1" ,$TEXT) ;
+ out("$f2" ,$TEXT) ;
+ system("java -jar yuicompressor-2.4.7.jar $f2 -o $f1 -v; rm $f2");
 }
 
 
