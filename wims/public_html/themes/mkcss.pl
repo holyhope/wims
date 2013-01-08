@@ -15,7 +15,7 @@ my $char="---";
 
 for my $f (glob("*/*.css.template")) {
   my $f1= $f ; $f1 =~ s/.template// ;
-  my $TEXT ="/* generated form $f.css.template - do not modify directly */\n" ;
+  my $TEXT ="/*! generated form $f.css.template - do not modify directly */\n" ;
   open(IN,"$f");
   while (<IN> ) {
    my $line=$_ ;
@@ -33,12 +33,12 @@ sub treate { my ($c)= @_ ;
   open(INN, $c);
   my $text = <INN> ; 
   close(INN) ;
-  "\n/* from $c */\n$text" ;
+  "\n/*! from $c */\n$text" ;
 } ;
 
 
 
 sub out { my ($bloc, $text) = @_ ;
-  open  (OUT, ">$bloc") || warn "peut pas créer $bloc"; 
+  open  (OUT, ">$bloc") || warn "Creation du bloc $bloc impossible"; 
   print OUT $text ; close OUT ; 
 } 
