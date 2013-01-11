@@ -24,11 +24,10 @@
 
 :normal
 !read classlogo.phtml
-!if $class_logo!=
-<table border="0" cellspacing="0" cellpadding="8" align="$class_logoside">
-<tr><td align="center" valign="middle">
-<img src="$class_logo" alt="logo" align="left"/>
-</td></tr></table>
+!if $class_logo!=$empty
+<img src="$class_logo" alt="logo" style="align:left;border:0px" />.
+!endif
+
 
 !endif
 <div class="wimscenter">
@@ -49,7 +48,8 @@
  !endif
 !endif
 </div>
-<br style="clear:both;"/></div><div class="wimsbody">
+<br style="clear:both;"/></div>
+<div class="wimsbody">
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -108,7 +108,6 @@ $U_greet
 !set seq_cnt=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
 !set seq_cnt=!line 1 of $seq_cnt
 !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
-
 !if $seq_open=yes and $seq_cnt>0
  <div class="wims_user_myscore">
  !href module=adm/class/userlist $wims_name_myscore
@@ -127,7 +126,6 @@ $U_greet
 !!define variable $v
 !read themes/_widgets/uservote.phtml
 
-
 !ifval $dcnt+$dpcnt+$n+$m+$v=0
  !if $is_interclass!=yes
  $U_nosheet
@@ -142,15 +140,16 @@ $U_greet
 !endif
 
 :endbar
-<table width="99%" border="0" cellspacing="0" cellpadding="3" bgcolor="$wims_ref_bgcolor">
-<tr><td align="left" width="33%">&nbsp;&nbsp;
+<table class="wims_table" style="width:90%">
+<tr>
+<td style="text-align:left">
 !href module=adm/class/classes&type=participant $wims_name_U_oclass
 <br/>
 !href cmd=close&module=home $wims_name_visitor
 
 !read themes/_widgets/extlink.phtml
-
-</td><td align="center" width="33%">
+</td>
+<td style="text-align:center">
 !if $exist_cdt=yes
   !href module=adm/class/cdt $wims_name_cdt
   &nbsp; / &nbsp;
@@ -158,12 +157,15 @@ $U_greet
 !href module=adm/forum/mboard $wims_name_forum
 <br/>
 !mailurl $wims_supervisormail $wims_name_mail
-</td><td align="right" width="33%">
+</td>
+<td style="text-align:right">
 !href module=adm/light&phtml=useropts.phtml.$lang $wims_name_pref
-&nbsp;&nbsp;<br/>
+<br/>
 !href module=adm/class/passwd $wims_name_passwd
-&nbsp;&nbsp;</td></tr></table>
-<p align="right"><span class="small">WIMS-$wims_version@$httpd_HTTP_HOST</span>
+</td>
+</tr>
+</table>
+<p style="text-align:center"><small>WIMS-$wims_version@$httpd_HTTP_HOST</small></p>
 :end
 !if $wims_user=supervisor
  <div class="wimscenter">
