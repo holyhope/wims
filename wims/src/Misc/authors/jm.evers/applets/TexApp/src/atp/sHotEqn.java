@@ -1,5 +1,5 @@
 /*
-Copyright 2006 Stefan Müller and Christian Schmid
+Copyright 2006 Stefan Muller and Christian Schmid
 This file is part of the HotEqn package.
 
 HotEqn is free software; you can redistribute it and/or modify
@@ -46,7 +46,8 @@ public class sHotEqn extends JComponent
         height = 0;
         nameS = null;
         equation = null;
-        Fontname = "Helvetica";
+//       Fontname = "Helvetica";
+        Fontname = "Utopia";
         f1 = new Font(Fontname, 0, 18);
         f2 = new Font(Fontname, 0, 14);
         f3 = new Font(Fontname, 0, 12);
@@ -1748,7 +1749,8 @@ label0:
         int j3 = (j + l2) - 1;
         String s2 = eqScan.nextToken().stringS;
         int k3 = (k2 + l2) - 2;
-        Font font1 = new Font("Helvetica", 0, k3);
+//        Font font1 = new Font("Helvetica", 0, k3);
+        Font font1 = new Font("Utopia", 0, k3);
         g.setFont(font1);
         FontMetrics fontmetrics = g.getFontMetrics();
         if(s.equals("<") || s.equals(">"))

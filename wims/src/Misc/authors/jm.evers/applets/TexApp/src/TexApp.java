@@ -100,7 +100,7 @@ import java.awt.image.BufferedImage;
 import java.util.StringTokenizer;
 import atp.sHotEqn; 
 
-public class TexApp extends Applet {
+public class TexApp extends Applet implements Runnable{
 
     public void init(){
     	setLayout(null);
@@ -129,6 +129,8 @@ public class TexApp extends Applet {
 	setBackground(latex_bgcolor);
     }
 
+    public void run(){
+    }
     
     public int getPrefferedWidth(){ 
     // auto resize applet !
@@ -239,22 +241,14 @@ public class TexApp extends Applet {
         inputwidth = new int[inp];
 	String s1 = getParameter(s);
 	for(int i = 0; i < inp; i++){ inputwidth[i] = DEFAULT_WIDTH;}
-	//  the param is set...is it a single value for all or individual widths?
 	if(s1 != null){
     	    s1 = s1.replaceAll(":", ",");
     	    s1 = s1.replaceAll(";", ",");
     	    StringTokenizer stringtokenizer = new StringTokenizer(s1, ",");
     	    int j = stringtokenizer.countTokens();
-	    if( j == 1 ){ // all fields will have this 'new' default width ...
-		DEFAULT_WIDTH = (int) Integer.parseInt(stringtokenizer.nextToken());
-		for(int i = 0; i < inp; i++){ inputwidth[i] = DEFAULT_WIDTH;}
-	    }
-	    else
-	    { // individual fields width
-		for(int k = 0; k < Math.min(inp,j); k++){
-		    try{ inputwidth[k] = (int) Integer.parseInt(stringtokenizer.nextToken());}
-			catch(Exception e){ System.out.println(" can not parse inteter parameter "+s);}
-		}
+	    for(int k = 0; k < Math.min(inp,j); k++){
+		try{ inputwidth[k] = (int) Integer.parseInt(stringtokenizer.nextToken());}
+		    catch(Exception e){ System.out.println(" can not parse inteter parameter "+s);}
 	    }
 	}
 	return inputwidth;
@@ -296,8 +290,8 @@ public class TexApp extends Applet {
         int[] grow = new int[ newlength ];                                                                                                    
         for(int i = 0; i < array.length; i++){
     	    grow[i] = array[i];
-        }                                                                                                                                  
-        return grow;                                                                                                                       
+        }
+        return grow;
     }   
 
     public BufferedImage[] GrowImageArray(BufferedImage[] array, int newlength){
@@ -305,7 +299,7 @@ public class TexApp extends Applet {
         for(int i = 0; i < array.length; i++){
     	    grow[i] = array[i];
         }
-        return grow;                                                                                                                       
+        return grow;
     }   
     
     public TextField[] GrowTextFieldArray(TextField[] array, int newlength){
@@ -318,9 +312,8 @@ public class TexApp extends Applet {
 	    getEditable("inputfield_editable",newlength);
 	    getValues("inputfield_values",newlength);
 	}
-        return grow;                                                                                                                       
-    }   
-    
+        return grow;
+    }
     public void Get_Latex(){
 	int linecnt = 0;
 	String r = getParameter("latex"+linecnt);
@@ -466,8 +459,8 @@ public class TexApp extends Applet {
 	}
 	else
 	{ // applet param width / height are set to "real values"
-	    if(tmp_xsize > xsize){System.out.println("ERROR: applet window is too small...increase appletparam \"width \" to "+tmp_xsize+" px");}
-	    if(tmp_ysize > ysize){System.out.println("ERROR: applet window is too small...increase appletparam \"height\" to "+tmp_ysize+" px");}
+	    if(tmp_xsize > xsize){System.out.println("ERROR: applet window is too small...increase appletparam \"width \" to "+tmp_xsize+" px");xsize = tmp_xsize;}
+	    if(tmp_ysize > ysize){System.out.println("ERROR: applet window is too small...increase appletparam \"height\" to "+tmp_ysize+" px");ysize = tmp_ysize;}
 	}
     }
     
@@ -485,6 +478,7 @@ public class TexApp extends Applet {
     }
 
     public String ReadApplet(){
+	System.out.println("ReadApplet()\n");
 	String reply="";
 	if(inputs > 0){
 	    try{
@@ -502,7 +496,6 @@ public class TexApp extends Applet {
 	return reply;
     }
 
-    public void run(){}
 
     public void start(){}
 

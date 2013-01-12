@@ -1,5 +1,5 @@
 /*
-Copyright 2006 Stefan Müller and Christian Schmid
+Copyright 2006 Stefan Muller and Christian Schmid
 This file is part of the HotEqn package.
 
 HotEqn is free software; you can redistribute it and/or modify
