@@ -14,6 +14,11 @@ Gebruik nooit de "reload &amp; back" knop van je browser !
  !exit
 !endif
 
+!if $wims_error=bad_data
+ I have failed to evaluate the values you have submitted. A typo?
+ !exit
+!endif
+
 !if $wims_error=no_ldap_parameter
 De met een asterix gemarkeerde velden moeten worden ingevuld.
 Raadpleeg desgewenst eerst de documentatie van uw <tt>ldap</tt> server. 

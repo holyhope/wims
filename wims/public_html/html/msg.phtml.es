@@ -12,6 +12,11 @@
  !exit
 !endif
 
+!if $wims_error=bad_data
+ Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe?
+ !exit
+!endif
+
 !if $wims_error=no_ldap_parameter
  Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
  le gestionnaire de votre annuaire ldap. 
