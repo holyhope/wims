@@ -526,7 +526,7 @@ void _header(char *p, int option)
     }
     else {
 	if(s1!=NULL && strcmp(s1,"new")==0)
-	  ws="window.focus();window.resizeto(800,640);window.moveto(15,35);";
+	  ws="window.focus();window.resizeTo(800,640);window.moveTo(15,35);";
     }
     if(strstr(session_prefix,"_exam")!=NULL) {
 /*	char buf[64]; */
