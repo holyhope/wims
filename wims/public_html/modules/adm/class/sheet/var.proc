@@ -351,7 +351,9 @@ $comment
  !endif
  !if $mod_feedback notsametext $empty
   mod_feedback_lim=$(mod_feedback[2])
+  mod_feedback_lim2=$(mod_feedback[3])
   !bound mod_feedback_lim between 0 and 11 default 10
+  !bound mod_feedback_lim2 between 0 and $mod_feedback_lim default 0
   mod_feedback=!nospace $(mod_feedback[1])
   mod_feedback_test=!replace = by _ in $mod_feedback
   !if cmd_new notin $mod_feedback_test
@@ -360,7 +362,7 @@ $comment
   !if adm/doc isin $mod_feedback and job_read notin $mod_feedback_test
    mod_feedback=$mod_feedback&job=read
   !endif
-  mod_feedback=$mod_feedback,$mod_feedback_lim
+  mod_feedback=$mod_feedback,$mod_feedback_lim,$mod_feedback_lim2
  !endif
  
  !if $activetest=0
