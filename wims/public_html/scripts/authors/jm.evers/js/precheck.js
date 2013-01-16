@@ -1,6 +1,7 @@
 // 3/5/2008 version 0.02 [added item 10]
 // 18/5/2008 version 0.03 [added item 11]
 // 19/5/2008 version 0.04 [added item 12,13,14,15]
+// 12/2012 version 0.05 [added item 16...26]
 // this is all very premature !!! The naming needs to be adapted to f1,f2...f20
 
 //  1 science(t)	checks scientific notation 4e+4 --> 4*10^4		: returns modified t or "error"
@@ -50,7 +51,7 @@ function SetTexAppSize(){
 		document.getElementById('TexApp'+p).width = xsize;
     		document.getElementById('TexApp'+p).height = ysize;
 		p++;
-	    }catch(e){setAlarm("Your browser does not support resizing of the applet.<br>Opera is known to have some trouble with this.<br>Firefox,Internet Explorer,Google-chrome<br>or even Safari may be a good choice.");return;}// problems on opera (bug)
+	    }catch(e){setAlarm("The resizing of the applet went wrong...<br />May be your java \"virtual machine\" is very slow in starting up...<br />Try a reload on the page ...<br />or try a different -more recent- browswer<br />Use the Oracle / SUN java plugin...the \"OpenJDK plugin (icedtea)\" is known to have some serious problems");return;}// problems on opera (bug)
 	}
 	if(document.getElementById('wait_for_applet')){
 	    document.getElementById('wait_for_applet').style.display = "none"; 

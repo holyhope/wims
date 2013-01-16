@@ -25,7 +25,8 @@
 	var p = 1;
 	var tmp;var tmp1;var cnt = 0;var ans = new Array();
 	if( document.getElementById('TexApp1') ){ // starts with 1
-    	    while ( document.getElementById('TexApp'+p) ){ 
+    	    document.getElementById('wait_for_applet').style.display = "none";
+    	    while ( document.getElementById('TexApp'+p) ){
 		tmp1 = document.getElementById('TexApp'+p).ReadApplet()+"";
 		ans = tmp1.split(',');
 		if(ans.length>100){setAlarm(r2);dontknow();}
@@ -43,11 +44,12 @@
 		    }
 		    tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
 		    reply[cnt] = tmp; 
-		    show = show + "<li>" + tmp + "</li>; 
+		    show = show + "<li>" + tmp + "</li>"; 
 		    cnt++;
         	}
 		p++;
     	    }
+    	    document.getElementById('wait_for_applet').style.display = "block";
 	}
 	if( document.getElementById('myinput0') ){ // using other inputfields as well ? use wims array-list description for use in confirm div
 	    var inputfieldnumber=0;
