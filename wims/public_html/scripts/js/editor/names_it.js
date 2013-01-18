@@ -3,7 +3,7 @@ var names= new Array();
 names["lang_name"]="Italiano";
 names["insert_selection"]="inserire la selezione";
 names["not_available"]="La versione "+names["lang_name"]+" non è ancora disponibile.";
-names["contextual_help"]="Help contestuale (con autocompletamento)";
+names["contextual_help"]="Aiuto contestuale (con autocompletamento)";
 names["contextual_help_desc"]="Iserisci una <em>backslash</em> (<code>\\</code>) seguita da una lettera minuscola per attivare l'autocompletamento. La lisa dei comandi sarà filtrata di conseguenza.";
 
 /** HTML entities ***/
@@ -40,7 +40,7 @@ names["email"]="Email";
 /** WIMS 'during' instructions  **/ 
 names["statement"]="Enunciato";
 names["hint"]="Suggerimento";
-names["help"]="Help";
+names["help"]="Istruzioni";
 
 
 /** WIMS 'After' instructions **/
