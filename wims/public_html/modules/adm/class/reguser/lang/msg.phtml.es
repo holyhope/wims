@@ -85,6 +85,7 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
  !mailurl $wims_site_manager administrador de este sitio\
 user registration failure
 . ¡Gracias!
+ </p>
  !exit
 !endif
 
@@ -97,7 +98,7 @@ user registration failure
 site user limit
  para pedirle que aumente este límite o que le
  !href $ conecte a WIMS como visitante
-. <p>
+. </p>
  !exit
 !endif
 

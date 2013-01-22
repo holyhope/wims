@@ -61,6 +61,7 @@ is al in gebruik in de klas
  $classname.
  <p>
  Kontroleer of U zich reeds heeft aangemeld; of anders kies een andere loginnaam. 
+ </p>
  !exit
 !endif
 
@@ -84,6 +85,7 @@ S.v.p dit voorval melden bij de
  !mailurl $wims_site_manager site manager\
 login problemen. 
 Alvast bedankt!
+ </p>
  !exit
 !endif
 
