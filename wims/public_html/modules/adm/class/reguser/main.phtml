@@ -187,7 +187,7 @@ $institution
   <input size="20" name="search" id="search" value="$search" />
   <input type="submit" value="$wims_name_tosave" />
   
-!formend
+ !formend
   !default foundcnt=0
   !if $foundcnt>0
    $table_header
@@ -230,10 +230,13 @@ $name_inscription4:
  !endif
 !!FIXME  $auth_user=$empty
  !if $wims_user=supervisor and $auth_user=$empty
+ 
 !! teacher registering a student with idp ldap
     !if $idp_method isitemof ldap
     <span class="wims_warning">$name_login_external ($name_idp_external)</span>:
 <p>
+
+!!!FIXME check the value of step
         <input type="hidden" name="step" value="3" />
         <label for="user_auth">$wims_name_Login ($name_external)</label>
         <input size="16" name="user_auth" id="user_auth" value="$user_auth" /> <br />

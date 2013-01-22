@@ -186,6 +186,23 @@ $class_type
    found=!sh cd $wims_home/log/classes\
     comm -23 $superclass/.userlist $class/.userlist | \\
 	grep -i "$search" | sed 's/^://' | head -100
+!!add research on the external_login
+   !if $auth_method isitemof $auth_method_list
+       found_external=!sh cd $wims_home/log/classes\
+         comm -23 $superclass/.userlist_external $class/.userlist_external |\\
+	     grep -i "$search" | sed 's/:/,/' | head -100
+	   found_external=!column 2 of $found_external
+	   found_external=!item 1 of $found_external
+	   ext_cnt=!itemcnt $found_external
+	   !for tmp=1 to $ext_cnt
+	     found_ext=!sh cd $wims_home/log/classes\
+         comm -23 $superclass/.userlist $class/.userlist | \\
+	     grep -i "$(found_external[$tmp])" | sed 's/^://' | head -100
+	    !if $found_e notlineof $found
+          found=!append line $found_e to $found
+        !endif
+        !next
+   !endif
    foundcnt=!linecnt $found
    !exit
   !endif
