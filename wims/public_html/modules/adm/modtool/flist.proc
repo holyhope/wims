@@ -102,17 +102,7 @@ mod=$modreq
  i_wims_version=!word 1 of $i_wims_version
  !default i_version=1.00
  !default i_wims_version=$wims_version
- deflist1=translation_language
-
- trans_lang=!words2items $i_translation_language
- i_translation_language=!listintersect $trans_lang and $langlist
- !for l in $(i_translation_language)
-   deflist1=!append item title_$l to $deflist1
-   deflist1=!append item description_$l to $deflist1
-   deflist1=!append item keywords_$l to $deflist1
-   deflist1=!append item translator_$l to $deflist1
-   deflist1=!append item translator_address_$l to $deflist1
- !next
+ 
  !for l in $deflist1
    i_$l=$(i_$l)
  !next

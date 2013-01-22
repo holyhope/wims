@@ -50,8 +50,18 @@ langlist=!words2items $wims_site_languages
 deflist=title, description, language, category, domain, \
 	level, keywords, require, scoring, copyright,\
 	author, address, version, wims_version, vardef, \
-	translator, translator_address, data, maintainer, maintainer_address,\
-	translation_language
+	translator, translator_address, data, maintainer, maintainer_address
+
+deflist1=translation_language
+trans_lang=!words2items $i_translation_language
+ i_translation_language=!listintersect $trans_lang and $langlist
+ !for l in $(i_translation_language)
+   deflist1=!append item title_$l to $deflist1
+   deflist1=!append item description_$l to $deflist1
+   deflist1=!append item keywords_$l to $deflist1
+   deflist1=!append item translator_$l to $deflist1
+   deflist1=!append item translator_address_$l to $deflist1
+ !next
 wims_form_method=post
 !read tabletheme
 
