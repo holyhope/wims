@@ -102,12 +102,11 @@ mod=$modreq
  i_wims_version=!word 1 of $i_wims_version
  !default i_version=1.00
  !default i_wims_version=$wims_version
- ###add fields not accessible by the interface for the moment
- ### will be useful in case of translation in the module itself
  deflist1=translation_language
- trans_lang=!words2items $translation_language
- trans_lang=!listintersect $trans_lang and $langlist
- !for l in $(trans_lang)
+
+ trans_lang=!words2items $i_translation_language
+ i_translation_language=!listintersect $trans_lang and $langlist
+ !for l in $(i_translation_language)
    deflist1=!append item title_$l to $deflist1
    deflist1=!append item description_$l to $deflist1
    deflist1=!append item keywords_$l to $deflist1
@@ -115,18 +114,18 @@ mod=$modreq
    deflist1=!append item translator_address_$l to $deflist1
  !next
  !for l in $deflist1
-  i_$l=$($l)
+   i_$l=$(i_$l)
  !next
  i_translation_language=!items2words $i_translation_language
- #####
+ ###add fields not accessible by the interface for the moment
+ ### will be useful in case of translation in the module itself
  i_mod_related=!words2items $i_mod_related
  i_mod_related=!text select _.-/,$alnum in $i_mod_related
  !default i_mod_related=$mod_related
  !if .. isin $i_mod_related
    i_mod_related=
  !endif
-!! ### faut il faire une autre vérification ?
- #####
+
  !default i_data=$data
  !if .. isin $i_data
   i_data=
