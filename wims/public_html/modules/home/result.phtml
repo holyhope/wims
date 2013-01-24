@@ -69,7 +69,10 @@
    <span class="small">$w_</span>
   !endif
   !if $l_!=$search_lang
-    <img src="gifs/$l_.gif" alt="$l_.gif"/>
+    !set ltrans=!module translation_language $m_
+    !if  $search_lang notin $ltrans
+      <img src="gifs/$l_.gif" alt="$l_.gif"/>
+    !endif
     !set tit_=!module title_$search_lang $m_
     !set desc_=!module description_$search_lang $m_ 
     !set t_=$tit_
