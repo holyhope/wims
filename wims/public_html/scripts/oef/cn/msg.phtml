@@ -1,8 +1,4 @@
 
-!set wims_module_error=error: $error
-
-<span class="wims_warning">$wims_name_Error.</span>
-
 !if empty_out iswordof $error
 你的回答不包含任何输出. 请改正.
  !if $m_reply_err!=$empty
@@ -11,21 +7,7 @@
  !exit
 !endif
 
-!if empty_data iswordof $error
-你发回的答案不完整, 请完成它.
- !exit
-!endif
-
-!if bad_data iswordof $error
-我不能理解你发来的数值, 是打字错误吗?
- !exit
-!endif
-
-!if double_reply iswordof $error
-你已经送来过这个练习的回答, 并已被分析与纪录. 
-重复回答将不被考虑. (不要使用浏览器的 `刷新' 按钮重复回答!)
- !exit
-!endif
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
@@ -36,8 +18,8 @@
 你的回答超长. 请重写.
   !exit
  !endif
-你的回答 <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
+你的回答 
+ <p class="wimscenter tt">$bad_value</p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
 看不懂: 回答中的<span class="wims_warning">$w</span>
@@ -94,3 +76,5 @@
  你还没有修改java的小程序. 请完成它.
  !exit
 !endif
+
+!msg $error

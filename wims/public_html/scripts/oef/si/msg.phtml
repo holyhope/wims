@@ -1,22 +1,13 @@
 
-!set wims_module_error=error: $error
-
-<span class="wims_warning">$wims_name_Error.</span>
-
-!if empty_data iswordof $error
- Va¹ odgovor je nepopoln. Prosim, dopolnite ga.
+!if empty_out iswordof $error
+ Your code did not give any output. Please correct it.
+ !if $m_reply_err!=$empty
+  <pre><span class="wims_warning">$m_reply_err</span></pre>
+ !endif
  !exit
 !endif
 
-!if bad_data iswordof $error
- Vrednosti, ki ste jih poslali, nisem uspel preveriti. Ste morda naredili napako pri vnosu?
- !exit
-!endif
-
-!if double_reply iswordof $error
- Na to vpra¹anje ste ¾e odgovorili in va¹ odgovor je ¾e bil toèkovan. Ponovni odgovori niso veè upo¹tevani. (Ne uporabljajte gumba 'ponovno nalo¾i' (reload), da bi veèkrat odgovarjali na isto vpra¹anje!)
- !exit
-!endif
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
  Va¹ odgovor <p class="wimscenter">
@@ -70,3 +61,5 @@
  You have not modify the applet. Please complete it.
  !exit
 !endif
+
+!msg $error

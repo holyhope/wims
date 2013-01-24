@@ -1,8 +1,4 @@
 
-!set wims_module_error=error: $error
-
-<span class="wims_warning">$wims_name_Error.</span>
-
 !if empty_out iswordof $error
  Your code did not give any output. Please correct it.
  !if $m_reply_err!=$empty
@@ -11,22 +7,7 @@
  !exit
 !endif
 
-!if empty_data iswordof $error
- You have submitted an incomplete reply. Please complete it.
- !exit
-!endif
-
-!if bad_data iswordof $error
- I have failed to evaluate the values you submitted. A typo?
- !exit
-!endif
-
-!if double_reply iswordof $error
- You have already submitted a reply to this problem, which has been 
- analysed and scored. Repetitive replies are ignored. (Don't use the 
- `reload' button of your browser to repost replies!)
- !exit
-!endif
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
@@ -37,8 +18,8 @@
   Your code has exceeded the length limit. Please rewrite it.
   !exit
  !endif
- Your reply <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span></p>
+ Your reply
+ <p class="wimscenter tt">$bad_value</p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   is not understandable: the word <span class="wims_warning">$w</span>
@@ -94,3 +75,5 @@
  You have not modify the applet. Please complete it.
  !exit
 !endif
+
+!msg $error

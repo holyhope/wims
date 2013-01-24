@@ -1,8 +1,4 @@
 
-!set wims_module_error=error: $error
-
-<span class="wims_warning">$wims_name_Error.</span>
-
 !if empty_out iswordof $error
     U moet het antwoord even veranderen: de opgestuurde code geeft geen zinnige output.
  !if $m_reply_err!=$empty
@@ -11,22 +7,7 @@
  !exit
 !endif
 
-!if empty_data iswordof $error
-U heeft een onvolledig antwoord ingevuld.<br/>Graag compleet ingevuld inleveren 
- !exit
-!endif
-
-!if bad_data iswordof $error
- Ik ben er niet in geslaagd het opgestuurde antwoord te controleren.<br/>Misschien een typefoutje? 
- !exit
-!endif
-
-!if double_reply iswordof $error
-Je hebt al eens een antwoord ingeleverd op deze vraag ! 
-Herhalingen van antwoorden worden niet beoordeeld.
-(En in elk geval <b>niet</b> de terug-knop van je browser gebruiken)
- !exit
-!endif
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
@@ -37,9 +18,8 @@ Herhalingen van antwoorden worden niet beoordeeld.
     De hoeveelheid opgestuurde code is groter dan is toegestaan.<br/>Dit moet worden herschreven.
   !exit
  !endif
- Het antwoord  
- <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span></p>
+  Het antwoord 
+ <p class="wimscenter tt">$bad_value</p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   is onbegrijpelijk: het woord <span class="wims_warning">$w</span>
@@ -95,3 +75,5 @@ U hebt te veel verzoeken tot printbare versies ingediend
     Je antwoord bevat geen data. Graag de modificatie in de applet aanbrengen.
  !exit
 !endif
+
+!msg $error

@@ -1,8 +1,3 @@
-!! This file contains error messages. It will be processed
-!! whenever the variable `error' is not empty.
-!set wims_module_error=error: $error
-
-<span class="wims_warning">$wims_name_Error.</span>
 
 !if empty_out iswordof $error
  Il codice inserito non ha prodotto output. Correggere.
@@ -12,28 +7,11 @@
  !exit
 !endif
 
-!if empty_data iswordof $error
- La risposta è incompleta.
- !exit
-!endif
-
-!if bad_data iswordof $error
- Il server non è stato in grado di interpretare la risposta. 
- Errore di battitura?
- !exit
-!endif
-
-!if double_reply iswordof $error
- Hai gi&agrave; dato una risposta a questa domanda e ottenuto un
- punteggio. Le ripetizioni sono ignorate (è inutile utilizzare
- il tasto `reload' del browser per correggere la risposta!)
- !exit
-!endif
+!! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Il codice inserito contiene la parola <span class="tt">$illegal_name</span> che non è 
-  accettata. Correggere.
+  Your code contains illegal name <span class="tt">$illegal_name</span>. Please correct.
   !exit
  !endif
  !if lengthoverflow iswordof $test
@@ -41,8 +19,8 @@
   necessario riscriverlo.
   !exit
  !endif
- La risposta <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span></p>
+ La risposta
+ <p class="wimscenter tt">$bad_value</p>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   non è comprensibile: la parola <span class="wims_warning">$w</span>
@@ -102,3 +80,5 @@
  Non è stata modificata l'applet. Completare la risposta.
  !exit
 !endif
+
+!msg $error
