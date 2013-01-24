@@ -1,57 +1,56 @@
 
-!if $wims_error=empty_data
+!if empty_data iswordof $wims_error
  Has enviat una resposta incompleta. Sisplau completa les teves dades abans d'enviar-les.
  !exit
 !endif
 
-!if $wims_error=double_reply
+!if double_reply iswordof $wims_error
  Ja has enviat una resposta a aquest problema, i ja ha estat analitzada i
  avaluada. Respostes repetides són ignorades. (No utilitzis el botó 
  `actualitzar' del teu navegador per reenviar respostes!)
  !exit
 !endif
 
-!if $wims_error=bad_data
+!if bad_data iswordof $wims_error
  I have failed to evaluate the values you have submitted. A typo?
  !exit
 !endif
 
-!if $wims_error=no_ldap_parameter
+!if no_ldap_parameter iswordof $wims_error
  Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
  le gestionnaire de votre annuaire ldap. 
  !exit
 !endif
 
-!if $wims_error=bad_class
+!if bad_class iswordof $wims_error
 Estrany, però sembla que la vostra classe no és vàlida!
  !exit
 !endif
-!set name_not_supervisor=
-!set name_bad_class=
 
-!if $wims_error iswordof bad_day day_dontexist
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
  La date que vous avez saisie n'est pas valide.
 !exit
 !endif
 
 
-!if $wims_error=not_supervisor
+!if not_supervisor iswordof $wims_error
   Ho sento, però aquesta operació només es permet als professors registrats
  !exit
 !endif
 
-!if $wims_error iswordof nouser bad_user bad_usercls
+!if nouser iswordof $wims_error or iswordof  bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error 
  Etrange, mais je ne trouve pas ce participant dans cette classe !
 !exit
 !endif
 
-!if $wims_error=insert_fail
+!if insert_fail iswordof $wims_error
   El software ha fallat en inserir el teu treball a la base de dades. Sisplau
  comprova les teues dades.
  !exit
 !endif
 
-!if bad_pass=$wims_error
+!if bad_pass iswordof $wims_error
  La vostra contrasenya conté caràcters no permesos. <p>
  Si us plau, escolliu una paraula que només contingui números o lletres
  sense accent i sense espais entre ells.
@@ -63,7 +62,7 @@ Estrany, però sembla que la vostra classe no és vàlida!
  !exit
 !endif
 
-!if bad_login=$wims_error
+!if bad_login iswordof $wims_error
  El vostre nom d'usuari conté caràcters no permesos. <p>
  Si us plau, escolliu una paraula que només contingui números o lletres
  sense accent i sense espais entre ells.

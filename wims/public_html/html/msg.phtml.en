@@ -1,49 +1,50 @@
 
-!if $wims_error=empty_data
+!if empty_data iswordof $wims_error
  You have sent an incomplete reply. Please complete your data before sending
  it.
  !exit
 !endif
 
-!if $wims_error=double_reply
+!if double_reply iswordof $wims_error
  You have already submitted a reply to this problem, which has been 
  analysed and scored. Repetitive replies are ignored. (Don't use the 
  `reload' button of your browser to repost replies!)
  !exit
 !endif
 
-!if $wims_error=bad_data
+!if bad_data iswordof $wims_error
  I have failed to evaluate the values you have submitted. A typo?
  !exit
 !endif
 
-!if $wims_error=no_ldap_parameter
+!if no_ldap_parameter iswordof $wims_error
  Fields indicated with an asterix must be filled in. Please ask the ldap administrator for help if you don't know what to enter in these fields. 
  !exit
 !endif
 
-!if $wims_error=bad_class
+!if bad_class iswordof $wims_error
 It seems that your class is not valid!
  !exit
 !endif
 
-!if $wims_error iswordof bad_day day_dontexist
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
  The given date is not valid.
 !exit
 !endif
 
 
-!if $wims_error=not_supervisor
+!if not_supervisor iswordof $wims_error
  Sorry, but only the registered supervisor of the class can carry out  this operation.
  !exit
 !endif
 
-!if $wims_error iswordof nouser bad_user bad_usercls
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
  This participant does not seem to exist !!!!
 !exit
 !endif
 
-!if $wims_error=insert_fail
+!if insert_fail iswordof $wims_error
  The software has failed to insert your work into the database. Please
  check your data.
  !exit
@@ -61,7 +62,7 @@ It seems that your class is not valid!
  !exit
 !endif
 
-!if bad_login=$wims_error
+!if bad_login iswordof $wims_error
  Your login name contains illegal characters.
  Please use a word containing only digits or letters without accents, and 
  without space between them.

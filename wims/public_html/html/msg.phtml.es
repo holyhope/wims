@@ -1,51 +1,51 @@
 
-!if $wims_error=empty_data
+!if empty_data iswordof $wims_error
  Ha enviado una petición incompleta. Por favor, complete sus datos antes de
  enviarlos.
  !exit
 !endif
 
-!if $wims_error=double_reply
+!if double_reply iswordof $wims_error
  Ya ha enviado una respuesta a este problema, que ha sido analizada y 
  puntuada. Las respuestas repetidas se ignoran (¡No use el botón `Recargar' 
  de su navegador para reenviar respuestas!). 
  !exit
 !endif
 
-!if $wims_error=bad_data
+!if bad_data iswordof $wims_error
  Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe?
  !exit
 !endif
 
-!if $wims_error=no_ldap_parameter
+!if no_ldap_parameter iswordof $wims_error
  Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
  le gestionnaire de votre annuaire ldap. 
  !exit
 !endif
 
-!if $wims_error=bad_class
+!if bad_class iswordof $wims_error
  Extraño, pero encuentro que su clase no es válida!
  !exit
 !endif
 
-
-!if $wims_error iswordof bad_day day_dontexist
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
  La fecha introducida no es válida.
 !exit
 !endif
 
 
-!if $wims_error=not_supervisor
+!if not_supervisor iswordof $wims_error
  Lo siento, pero esta operación se reserva a los profesores registrados de una clase.
  !exit
 !endif
 
-!if $wims_error iswordof nouser bad_user bad_usercls
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
  ¡Extraño pero el participante no parece existir!!!!
 !exit
 !endif
 
-!if $wims_error=insert_fail
+!if insert_fail iswordof $wims_error
  El software no ha podido insertar su trabajo en la base de datos. Por
  favor, compruebe sus datos.
  !exit
@@ -63,10 +63,11 @@
  !exit
 !endif
 
-!if bad_login=$wims_error
+!if bad_login iswordof $wims_error
  Su identificador de usuario contiene caracteres ilegales. <p>
  Por favor utilice una palabra que contenga únicamente cifras o letras
  sin acentos y sin espacios entre ellas.
+ </p>
  !exit
 !endif
 

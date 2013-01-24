@@ -1,51 +1,52 @@
 
-!if $wims_error=empty_data
+!if empty_data iswordof $wims_error
  Vous avez envoyé une réponse incomplète.
  Veuillez compléter vos données avant de les envoyer.
  !exit
 !endif
 
-!if $wims_error=double_reply
+!if double_reply iswordof $wims_error
  Vous avez déjà soumis une réponse à ce problème qui a été analysée et notée.
  Les réponses répétitives sont ignorées. (N'utilisez pas le bouton
  "recharger" de votre navigateur pour reposter les réponses!)
  !exit
 !endif
 
-!if $wims_error=bad_data
+!if bad_data iswordof $wims_error
  Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe?
  !exit
 !endif
 
-!if $wims_error=no_ldap_parameter
+!if no_ldap_parameter iswordof $wims_error
  Vous devez remplir les champs marqués d'un astérisque.
  Consultez pour cela le gestionnaire de votre annuaire ldap. 
  !exit
 !endif
 
-!if $wims_error=bad_class
+!if bad_class iswordof $wims_error
  Etrange, mais je trouve que votre classe n'est pas valide!
  !exit
 !endif
 
-!if $wims_error iswordof bad_day day_dontexist
+!if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
  La date que vous avez saisie n'est pas valide.
 !exit
 !endif
 
 
-!if $wims_error=not_supervisor
+!if not_supervisor iswordof $wims_error
  Désolé, ce module est accessible uniquement à l'enseignant d'une classe
  virtuelle.
  !exit
 !endif
 
-!if $wims_error iswordof nouser bad_user bad_usercls
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
  Étrange, mais je ne trouve pas ce participant dans cette classe ($wims_class) !
 !exit
 !endif
 
-!if $wims_error=insert_fail
+!if insert_fail iswordof $wims_error
  Le logiciel n'a pas pu insérer votre travail dans la classe. Veuillez vérifier vos données.
  !exit
 !endif
@@ -61,7 +62,7 @@
  !exit
 !endif
 
-!if bad_login=$wims_error
+!if bad_login iswordof $wims_error
  <p>Votre nom de login contient des caractères illégaux. </p>
  <p>Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres sans accent 
  et sans espace entre eux.</p>
