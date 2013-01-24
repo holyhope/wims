@@ -8,42 +8,45 @@
 
 $name_link_introduce :
 !if $auth_method=php
-!if $class_type>=2
-!set accesscode=$class_superclass
+ !if $class_type>=2
+  !set accesscode=$class_superclass
+ !else
+  !set accesscode=$code
+ !endif
+ <ul>
+  <li>$name_link_link
+   <a href="$host_auth?enter=$accesscode">$host_auth?enter=$accesscode</a>
+   $name_link_enterall</li>
+ !if $class_type>=2
+   <li>$name_link_link
+   <a href="$host_auth?enter=$accesscode&authtype=teacher">$host_auth?enter=$accesscode&authtype=teacher</a>
+   $name_link_regsuperv</li>
+ !endif
+ </ul>
 !else
-!set accesscode=$code
-!endif
-<ul>
-<li>$name_link_link
-  <a href="$host_auth?enter=$accesscode">$host_auth?enter=$accesscode</a>
-  $name_link_enterall</li>
-!if $class_type>=2
-<li>$name_link_link
-  <a href="$host_auth?enter=$accesscode&authtype=teacher">$host_auth?enter=$accesscode&authtype=teacher</a>
-  $name_link_regsuperv</li>
-!endif
-</ul>
-!else
-<ul>
- <li>$name_link_link
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
+ <ul>
+  <li>$name_link_link
+   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
   $name_link_supervisor.
- </li>
- <li>$name_link_link
-  !set script_out=$wims_ref_name?lang=$lang&module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
-  !if $class_auth=cas
-   !read adm/codeurl $script_out
-  !endif
-  <a href="$(link_)$script_out">$(link_)$script_out</a>
-  $name_link_user
-  !if $Cltype>=2
+  </li>
+  <li>$name_link_link
+   !set script_out=$wims_ref_name?lang=$lang&module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
+   !if $class_auth=cas
+    !read adm/codeurl $script_out
+     <a href="$(link_)$script_out">$(link_)$script_out</a>
+   !else
+   $wims_ref_name $link_
+     <a href="$script_out">$script_out</a>
+   !endif
+   $name_link_user
+   !if $Cltype>=2
     $name_link_grpclass.
-  !endif
-  !if $password!=$empty
+   !endif
+   !if $password!=$empty
     ($name_link_withpwd.).
-  !endif
-  <br/>$name_link_user2.
- </li>
+   !endif
+   <br/>$name_link_user2.
+  </li>
  !if $Cltype>=2
   <li>$name_link_link
    !set script_out=$wims_ref_name?lang=$lang&module=adm/class/reguser&class=$code
@@ -59,7 +62,7 @@ $name_link_introduce :
    !endif
   </li>
  !endif
-</ul>
+ </ul>
 !endif
 <span class="wims_warning">$name_link_important</span> : $name_link_importantmes.
 !if adm/class/config notin $module 
