@@ -7,12 +7,13 @@
 !!compatibility with adm modules ?
 !! try the $lang, then en, then $module_language
 !!
-!!the variable $modul_lang can be used to call other language files
+!!the variable $modu_lang can be used to call other language files
 !!  eventually
 !reset lang_exists
 
-!set modu_lang=$lang
-!read $(script_file).$lang
+!default modu_lang=$lang
+!read $(script_file).$modu_lang
+
 !if $lang_exists!=yes
  !set modu_lang=en
  !read $(script_file).$modu_lang
@@ -21,6 +22,7 @@
    !read $(script_file).$modu_lang
  !endif
 !endif
+
 !set module_language=$modu_lang
 !set title_=!module title_$modu_lang
 !if $title_!=$empty
