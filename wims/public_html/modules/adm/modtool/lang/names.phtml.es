@@ -47,6 +47,16 @@
 !set name_empty=deje el campo <span class="wims_label"> contraseña</span> vacío si quieren conservar el antiguo
 !set name_change=Se cambió la contraseña de su cuenta.
 
+!set name_translation_language=Other languages
+
+!distribute lines Test options\
+  Formula\
+  Low image,High image, Mathml\
+  Zoom\
+  Letter spacing\
+  normal,spaced\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
+
 !if $job=modname
   !set name_moddevcnt=!nosubst Tienen $totalcnt módulos en desarrollo.
   !set name_limited=!nosubst lista limitada a $maxlist módulos

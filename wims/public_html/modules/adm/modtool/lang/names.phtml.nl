@@ -46,6 +46,15 @@
 !set name_accountchange=Verander uw ontwikkelaars account
 !set name_empty=laat het wachtwoord veld leeg ,als u het niet wilt veranderen
 !set name_change=Uw wachtwoord is veranderd.
+!set name_translation_language=Other languages
+
+!distribute lines Test options\
+  Formula\
+  Low image,High image, Mathml\
+  Zoom\
+  Letter spacing\
+  normal,spaced\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
 
 !if $job=modname
   !set name_moddevcnt=!nosubst U heeft $totalcnt modules in bewerking.
