@@ -67,6 +67,7 @@ mod=$modreq
  !if document isitemof $i_category
   i_vardef=docu/var.def
  !endif
+ 
  c=!char 1 of $i_description
  c=!lower $c
  i_description=!replace char number 1 by $c in $i_description
@@ -74,6 +75,18 @@ mod=$modreq
  !if $c!=.
   i_description=$i_description.
  !endif
+ !if $i_translation_language!=$empty
+   !for l_ in $i_translation_language
+     c=!char 1 of $(i_description_$l_)
+     c=!lower $c
+     i_description_$l_=!replace char number 1 by $c in $(i_description_$l_)
+     c=!char -1 of $(i_description_$l_)
+     !if $c!=.
+       i_description_$l_=$(i_description_$l_).
+     !endif
+   !next
+ !endif
+   
  !bound i_language within $langlist default $module_language
  i_level=!listintersect $i_level and $levellist
  !default i_level=$levellist
@@ -98,6 +111,14 @@ mod=$modreq
  i_translator=!char 1 to 100 of $i_translator
  i_translator_address=!word 1 of $i_translator_address
  i_translator_address=!text select $mailchar in $i_translator_address
+ 
+ !if $i_translation_language!=$empty
+   !for l_ in $i_translation_language
+     i_translator_$l_=!char 1 to 100 of $(i_translator_$l_)
+     i_translator_address_$l_=!word 1 of $(i_translator_address_$l_)
+     i_translator_address_$l_=!text select $mailchar in $(i_translator_address_$l_)
+   !next
+ !endif
  i_version=!word 1 of $i_version
  i_wims_version=!word 1 of $i_wims_version
  !default i_version=1.00
