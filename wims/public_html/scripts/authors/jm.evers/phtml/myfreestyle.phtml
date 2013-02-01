@@ -266,15 +266,28 @@
     !if $wims_user=supervisor and $inputs<0
 	<!-- only visible for supervisor : to fill inputfields called myinput_n not default on this page, but stored in some variable -->
 	function putanswer(){
+	    !set ans=!lines2items $(answer$n)
+	    !set s = !itemcnt $ans
 	    if(document.getElementById('myinput0')){
-		!set ans=!lines2items $(answer$n)
-	        !set s = !itemcnt $ans
 		var ans = new Array();
 	        ans = make_description("$ans",$s);
 		var p = 0
 		while( document.getElementById('myinput'+p)){
 		    document.getElementById('myinput'+p).value = ans[p] ;
 		    p++;
+		}
+	    }
+	    else
+	    {
+		if(document.getElementById('mathml0')){
+		    var ans = new Array();
+	    	    ans = make_description("$ans",$s);
+		    var p = 0
+		    while( document.getElementById('mathml'+p)){
+			document.getElementById('mathml'+p).value = ans[p] ;
+			p++;
+		    }
+		
 		}
 	    }
 	}

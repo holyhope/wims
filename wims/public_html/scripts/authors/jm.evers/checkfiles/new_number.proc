@@ -182,7 +182,6 @@ extra=$empty
 	filtered_rep=!append line $tmp to $filtered_rep
     !endif
 !next p
-# nakijken
 #errortext=filtered_rep=$filtered_rep
 #goback=1
 #!exit
@@ -271,119 +270,115 @@ score=0
 	    k=red
 	    !if ? notin $A
 		found=0
-		!for g=1 to $testvar1
-		    !if $found=0
-			G=!item $g of $answers
-			!if $rnd>0
-			    # geen exact antwoord verwacht
-			    A=$[(round($rnd*($A)))/$rnd]
-		    	    G=$[(round($rnd*($G)))/$rnd]
-	    		    !if $[$A+$range] >= $G and $[$A-$range] <= $G
-	    			!increase score
-				k=green
-				found=1
+		G=!item $p of $answers
+		!if $rnd>0
+		    # geen exact antwoord verwacht
+		    A=$[(round($rnd*($A)))/$rnd]
+		    G=$[(round($rnd*($G)))/$rnd]
+	    	    !if $[$A+$range] >= $G and $[$A-$range] <= $G
+	    		!increase score
+			k=green
+			found=1
+			!if $range != 0
+			    !if $A!=$G
+				# antwoord is dus correct dankzij +/-range
+				rem2=!record 96 of $remarkdir/commonremarks.$taal
+				rem2=!append word $ ( +/&minus; $range ) $ to $rem2
+			    !endif
+			!endif
+		    !else
+			!if $teaching=1
+			    !if $[$A+$range]>=$[-1*($G)] and $[$A-$range]<=$[-1*($G)]
+				score=$[$score+0.1]
+				#je antwoord &times; -1 was wel goed geweest...
 				!if $range != 0
-				    !if $A!=$G
-					# antwoord is dus correct dankzij +/-range
-					rem2=!record 96 of $remarkdir/commonremarks.$taal
-					rem2=!append word $ ( +/&minus; $range ) $ to $rem2
-				    !endif
-				!endif
-			    !else
-				!if $teaching=1
-				    !if $[$A+$range]>=$[-1*($G)] and $[$A-$range]<=$[-1*($G)]
-					score=$[$score+0.1]
-				        #je antwoord &times; -1 was wel goed geweest...
-					!if $range != 0
-					    rem2=<span style="color:red">&minus;1 &times; ( $A +/- $range )</span> &asymp; <span style="color:green">$G</span>
-					!else
-					    rem2=<span style="color:red">&minus;1 &times; $A</span> = <span style="color:green>$G</span>
-					!endif
-					k=red
-				        found=1
-				    !else
-					!for f in 10,100,1000,100000,0.1,0.01,0.001,0.0001,0.00001
-					    !if $fnd=0
-						!if $[($A)*$f]=$G
-						    found=1
-						    rem2=!record 90 of $remarkdir/commonremarks.$taal
-						    #je antwoord &times; $f was wel goed geweest...
-						!endif
-					    !endif
-					!next f
-					!if $found=0
-					    !if $[1/($A)]=$G
-						score=$[$score+0.1]
-						rem2=<span style="color:red">1 / $A</span> = <span style="color:green">$G</span> :(
-						#de reciproce van je antwoord was wel goed geweest...
-						found=1
-					    !endif
-					!endif
-				    !endif
-				!endif
-			    !endif
-			!else
-			    #rnd=-1 of rnd=0
-			    !if $range=0
-				f=!exec pari if( abs(($A) - ($G)) < 10^(-15)  || 1.0*($A) == 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
-			    !else
-				# exact...range is dus een beetje onzin...
-				f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))			
-			    !endif
-			    !if $wims_exec_error = $empty
-				!if $f=1
-				    found=1
-				    k=green
-				    score=$[$score+1]
-				    !if $range != 0
-					!if $A!=$G
-					    rem2=!record 96 of $remarkdir/commonremarks.$taal
-					    rem2=!append word $ (+/&minus; $range) $ to $tem2
-					    #Je antwoord ligt binnen de nauwkeurigheids grenzen (+/- $range) 
-					!endif
-				    !endif    
+				    rem2=<span style="color:red">&minus;1 &times; ( $A +/- $range )</span> &asymp; <span style="color:green">$G</span>
 				!else
-				    !if $teaching=1
-					!if $f != $empty
-					    score=$[$score+$P9]
+				    rem2=<span style="color:red">&minus;1 &times; $A</span> = <span style="color:green>$G</span>
+				!endif
+				k=red
+				found=1
+			    !else
+				!for f in 10,100,1000,100000,0.1,0.01,0.001,0.0001,0.00001
+				    !if $fnd=0
+					!if $[($A)*$f]=$G
 					    found=1
 					    rem2=!record 90 of $remarkdir/commonremarks.$taal
 					    #je antwoord &times; $f was wel goed geweest...
-					!else
-					    !if $[1/($A)]=$G
-						found=1
-						score=$[$score+$P8]
-						rem2=<span style="color:green"> 1/</span><span style="color:red">$A</span> = <span style="color:green">$G</span> :(
-						#de reciproce van je antwoord was wel goed geweest...
-					    !endif
 					!endif
 				    !endif
+				!next f
+				!if $found=0
+				    !if $[1/($A)]=$G
+					score=$[$score+0.1]
+					rem2=<span style="color:red">1 / $A</span> = <span style="color:green">$G</span> :(
+					#de reciproce van je antwoord was wel goed geweest...
+					found=1
+				    !endif
 				!endif
-			    !else
-				errortext=$wims_exec_error
-				#!record 26 of $remarkdir/commonremarks.$taal
-				goback=1
-				!exit
 			    !endif
-			!endif
-			!if $found=1
-			    !if $rnd>0 or $range!=0
-		    		show_reply=!append line <span style="color:$k"><b>$org &asymp; $A</b></span><br /><em>$rem2</em><br /> to $show_reply
-			    !else
-		    		show_reply=!append line <span style="color:$k"><b>$org</b></span><br /><em>$rem2</em><br /> to $show_reply
-			    !endif
-			    rem2=$empty
 			!endif
 		    !endif
-		!next g
-		!if $found=0
-		    !if $rnd>0 or $range!=0
-			show_reply=!append line <span style="color:red"><b>$org &asymp; $A</b></span> to $show_reply
+		!else
+		    #exact antwoord of niet gegeven rnd=-1 of rnd=0
+		    !if $range=0
+			f=!exec pari if( abs(($A) - ($G)) < 10^(-15)  || 1.0*($A) == 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
 		    !else
-			show_reply=!append line <span style="color:red"><b>$org</b></span> to $show_reply
+			# exact...range is dus een beetje onzin...
+			f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))			
+		    !endif
+		    !if $wims_exec_error = $empty
+			!if $f=1
+			    found=1
+			    k=green
+			    score=$[$score+1]
+			    !if $range != 0
+				!if $A!=$G
+				    rem2=!record 96 of $remarkdir/commonremarks.$taal
+				    rem2=!append word $ (+/&minus; $range) $ to $tem2
+				    #Je antwoord ligt binnen de nauwkeurigheids grenzen (+/- $range) 
+				!endif
+			    !endif
+			!else
+			    !if $teaching=1
+				!if $f != $empty
+				    score=$[$score+$P9]
+				    found=1
+				    rem2=!record 90 of $remarkdir/commonremarks.$taal
+				    #je antwoord &times; $f was wel goed geweest...
+				!else
+				    !if $[1/($A)]=$G
+					found=1
+					score=$[$score+$P8]
+					rem2=<span style="color:green"> 1/</span><span style="color:red">$A</span> = <span style="color:green">$G</span> :(
+					#de reciproce van je antwoord was wel goed geweest...
+				    !endif
+				!endif
+			    !endif
+			!endif
+		    !else
+			errortext=$wims_exec_error
+			#!record 26 of $remarkdir/commonremarks.$taal
+			goback=1
+			!exit
+		    !endif
+		!endif
+		!if $found=1
+		    !if $rnd>0 or $range!=0
+		    	show_reply=!append line <span style="color:$k"><b>$org &asymp; $A</b></span><br /><em>$rem2</em><br /> to $show_reply
+		    !else
+		    	show_reply=!append line <span style="color:$k"><b>$org</b></span><br /><em>$rem2</em><br /> to $show_reply
 		    !endif
 		    rem2=$empty
 		!endif
+	    !endif
+	    !if $found=0
+		!if $rnd>0 or $range!=0
+		    show_reply=!append line <span style="color:red"><b>$org &asymp; $A</b></span> to $show_reply
+		!else
+		    show_reply=!append line <span style="color:red"><b>$org</b></span> to $show_reply
+		!endif
+		rem2=$empty
 	    !endif
 	!endif
     !next p
