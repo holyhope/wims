@@ -116,6 +116,7 @@ extra=$empty
 	# x1,=,4,en,x2,=,3+sqrt(e^3)
 	# 2/2012 problemen met x_1= moet met maar met sed :(
 	# x1,,,4,,,x2,,,3+sqrt(e^3)
+	rep=!nospace $rep
 	!if $arglist != $empty
 	    !for a in $arglist
 		a=!lower $a
@@ -182,9 +183,7 @@ extra=$empty
 	filtered_rep=!append line $tmp to $filtered_rep
     !endif
 !next p
-#errortext=filtered_rep=$filtered_rep
-#goback=1
-#!exit
+
 lg=!linecnt $(answer$n)
 
 !if $var1 != $empty
@@ -258,6 +257,15 @@ score=0
     checks=$[$checks + $testvar1]
     rem1=$empty
     !if $testvar2!=$testvar1
+    # voor het geval als replies=1 en answers=2,1 --> replies=1,1 
+	!if $testvar2 < $testvar1
+	    cnt=1
+	    !for i=$testvar2 to $testvar1
+		last=!item $cnt of $replies
+		replies=!append item $last to $replies
+		!increase cnt
+	    !next i
+	!endif
 	maxscore=$[$maxscore*(min($testvar1,$testvar2))/(max($testvar1,$testvar2))]
 	rem1=!record 50 of $remarkdir/commonremarks.$taal
 	rem1=<br />$rem1
