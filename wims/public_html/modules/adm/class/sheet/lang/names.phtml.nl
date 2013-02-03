@@ -32,8 +32,8 @@ name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 !set name_text1=Om oefening (of hulpmiddelen etc) aan een werkblad toe te voegen, moet\
 eerst de betreffende module worden geslecteerd (zie hieronder) ; stel de oefening op de intropagina naar eigen wens \
 af met de daarvoor bestemde instelparameters. \
-Start de oefening en klik vervolgens op de link <span class="wims_emph">voeg toe aan werkblad<</span> onderaan de pagina.\
-Voor het selecteren van oefening zijn de volgende opties beschikbaar
+Start de oefening en klik vervolgens op de link <span class="wims_emph">voeg toe aan werkblad</span> onderaan de pagina.\
+Voor het selecteren van oefening zijn de volgende opties beschikbaar:
 
 !set name_text2=Geef een zoekopdracht
 !set name_text3=Zoek naar een oefening met
@@ -43,6 +43,6 @@ Voor het selecteren van oefening zijn de volgende opties beschikbaar
 
 !set name_regmodif=Modificatie geregistreerd
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
-!set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
+!! !set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
 !set name_helpprog=$empty
 

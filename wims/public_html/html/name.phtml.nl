@@ -32,8 +32,8 @@
 		Bewerken,\
 		Attentie,\
 		Gefeliciteerd,\
-		of,\
-		Uitleg,\
+		of ,\
+		Uileg,\
 		Oefening,\
 		Werkblad,\
 		Account,\
@@ -50,9 +50,9 @@
 		Enquete,\
 		Algemene voorwaarden,\
 		Hulp nodig ?,\
-		Bravo!\
+		Bravo !\
 		CAS uitloggen,\
-        Credits,\
+		Met dank aan,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -90,7 +90,7 @@
     wims_name_this_config
 
 !set wims_name_Share = delen
-!set wims_name_to_embed_it = opnemen	
+!set wims_name_to_embed_it = opnemen
 !set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefenening.
 
 !! the following sentences can be changed according to language if needed
@@ -108,7 +108,7 @@
 	    Link voor bookmark,\
 	    Omschrijving,\
 	    Versie,\
-	    Vereiste <br/>WIMS versie,\
+	    Vereiste <br />WIMS versie,\
 	    Taal,\
 	    Schrijver,\
 	    Maintainer,\
@@ -122,8 +122,8 @@
 	    Onderwerp,\
 	    Soort,\
 	    Niveau(s),\
-	    Scorings mechanisme<br/><small>(oefening / ontspanning)</small>,\
-	    Hulp software<br/>vereist,\
+	    Scorings mechanisme<br /><small>(oefening / ontspanning)</small>,\
+	    Hulp software<br />vereist,\
 	    Server tijd,\
 	    Data module,\
 	    Ontwikkeld op WIMS,\
@@ -180,7 +180,7 @@
  
  !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
-	$[$wims_homeref_req] punten. <br/>Gemiddelde score \
+	$[$wims_homeref_req] punten. <br />Gemiddelde score \
 	$[$wims_homeref_mean]/10.
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session
@@ -196,7 +196,7 @@
  !default wims_name_sequence=Werkvolgorde
  !set wims_name_sequences=werkvolgorde
  
- !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<br/>\
+ !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<br />\
  Klasse management is hierdoor niet meer bereikbaar.\
  We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
  
@@ -217,14 +217,14 @@
 	middelbare school\
 	universiteit\
 	klassen lijst\
-    Lijst met klassen en/of instituten\
-    Individuele klassen\
-    Groep klassen\
-    Instituut\
-	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
-	wims_name_classlist,wims_name_portal_list,\
-	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
+	Lijst met klassen en/of instituten\
+	Individuele klassen\
+	Groep klassen\
+	Instituut\
+ into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+ wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+ wims_name_classlist,wims_name_portal_list,\
+ wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !!!endif
 
 !if adm/new isin $module
@@ -318,7 +318,7 @@ wims_name_add_exo,wims_name_classexo
 	Bestand opsturen,\
 	Terug naar de bestanden lijst,\
 	Hoofdpagina van dit document\
-	Transfer,\
+	Verplaatsen,\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\

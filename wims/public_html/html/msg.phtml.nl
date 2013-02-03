@@ -1,21 +1,21 @@
 
 !if empty_data iswordof $wims_error
-Je het een onvolledig antwoord ingeleverd.<br/>
+Je het een onvolledig antwoord ingeleverd.<br />
 Graag geheel ingevuld opsturen. 
 
  !exit
 !endif
 
 !if double_reply iswordof $wims_error
-Je hebt al eens een antwoord ingeleverd bij deze opgave.<br/>
-Dat antwoord is reeds geanalyseerd en verwerkt in je score.<br/>
+Je hebt al eens een antwoord ingeleverd bij deze opgave.<br />
+Dat antwoord is reeds geanalyseerd en verwerkt in je score.<br />
 Herhaalde antwoorden worden genegeerd.
-Gebruik nooit de "reload &amp; back" knop van je browser !
+Gebruik nooit de "back" knop van je browser !
  !exit
 !endif
 
 !if bad_data iswordof $wims_error
- I have failed to evaluate the values you have submitted. A typo?
+    De opgestuurde data / antwoorden kon ik niet verwerken (een tiep foutje ?)
  !exit
 !endif
 

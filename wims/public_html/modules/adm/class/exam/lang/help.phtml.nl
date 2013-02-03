@@ -48,7 +48,9 @@ Er is op dit moment slechts één optie beschikbaar :
 Alleen voor experts en voor het handmatig bijwerken van score resultaten.<br />
 Autogen: betekent dat de oefening automatisch wordt uitgevoerd [automatische piloot...],<br />
 zelfs als de gebruiker nergens op klikt.<br />
-De gebruiker kan dit proefwerk dan raadplegen als de score registratie is afgelopen en de sessie reeds is afgesloten.  
+De gebruiker kan dit proefwerk dan raadplegen als de score registratie is afgelopen en de sessie reeds is afgesloten.
+</li>
+</ul>
 !if $wims_read_parm!=$empty
  !exit
 !endif
