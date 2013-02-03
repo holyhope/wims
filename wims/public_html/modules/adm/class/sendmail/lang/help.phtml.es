@@ -5,17 +5,18 @@
 :filter
 Si definieron variables técnicas asociadas a los participantes
 (por ejemplo su grupo), lo que puede hacerse
-<ul>< li>
+<ul><li>
 con ayuda de la conexión hoja de cálculo,
-<li>
+</li><li>
 directamente en las propiedades de la cuenta de los estudiantes
-<li> por medio de un cuestionario no anónimo
-</ul>
+</li><li> 
+por medio de un cuestionario no anónimo
+</li></ul>
 (véase las documentaciones correspondientes), pueden filtrar
 a los estudiantes relativamente a estas variables. Las condiciones en una misma línea
 deben ser todas llenadas y en el caso de varias líneas, las condiciones al menos de una línea
 deben cumplirse.
-<p> por ejemplo ,
+<p> por ejemplo,</p>
 <pre>
 grupo=1
 grupo=3

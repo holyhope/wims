@@ -6,16 +6,16 @@ Als er technische variabelen bekend zijn van een groep deelnemers, kan hierop wo
 Deze variabelen kunnen worden verkregen via
 <ul><li>
 de link naar het spreadsheet
-<li>
+</li><li>
  de deelnemer accounts
-<li>
+</li><li>
 een niet anonieme enquete
-</ul>
+</li></ul>
 (Zie de hiervoor passende documentatie).
 Bij dit filteren op technische variabelen gelden de volgende spelregels:
 aan alle filtereisen op 1 regel moet worden voldaan.<br />
 Bij meerdere regels moet aan tenminste 1 regel worden voldaan.
-<p>Een voorbeeld de filter regels
+<p>Een voorbeeld de filter regels</p>
 <pre>
 groep=1 
 groep=3
