@@ -1,17 +1,13 @@
 #!/usr/bin/perl
 
 ## validator file validator_uri
-my $file = shift(@ARGV);
-my $uri = shift(@ARGV);
-if ($uri =~ /http/) {
-  use WebService::Validator::HTML::W3C;
-   my $v = WebService::Validator::HTML::W3C->new(detailed => 1);
-    $v->validator_uri($uri);
-}
-{
-  use WebService::Validator::HTML::W3C::Fast;
-  my $v = WebService::Validator::HTML::W3C::Fast->new("detailed" => 1, validator_path  => '$uri');
-}
+ my $file = shift(@ARGV);
+ my $uri = shift(@ARGV);
+ use WebService::Validator::HTML::W3C;
+ my $v = WebService::Validator::HTML::W3C->new(detailed => 1);
+ $v->validator_uri($uri);
+
+
  if ( $v->validate_file("$file") ) {
    if ( !$v->is_valid )
    {
