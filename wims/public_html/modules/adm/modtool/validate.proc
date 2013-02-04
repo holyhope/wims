@@ -1,0 +1,20 @@
+!reset validate_out
+!reset test_validate
+
+test_validate=!sh cat $wims_home/s2/$(wims_session)_test/last.html
+
+!if $test_validate!=$empty
+!!delete the lines coming from post method
+   test_validate=!line 6 to -1 of $test_validate
+!! must copy in an other place : this is done only from modtool
+!! must we check again the developper status ??
+   !filewrite getfile/last.html $test_validate
+!! parametre à aller chercher dans wims.conf
+!! validator_address="http://wimstest1.di.u-psud.fr/w3c-validator/check";
+!! en local : validator_address="/usr/share/w3c-markup-validator/cgi-bin/check"
+
+ !if $validator_address!=$empty and $validation_ask!=$empty
+    validate_out=!sh scripts/adm/validation/validator.pl $wims_home/sessions/$(wims_session)/getfile/last.html $validator_address
+ !endif
+!endif
+
