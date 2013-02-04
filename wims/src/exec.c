@@ -925,8 +925,8 @@ void exec_robottrap(char *p)
     if(robot_access) return;
     ovlstrcpy(buf,"session=$wims_session.1&module=adm/trap");
     _output_("<!-- "); exec_href(buf);
-    _output_("Robot trapper, do not click!</a> -->");
-    exec_href(buf); _output_("<span></span></a>");
+    _output_("Robot trapper, do not click!</a> --><div>");
+    exec_href(buf); _output_("<span></span></a></div>");
 }
 
 	/* set definitions in a file. Trusted modules only. */
