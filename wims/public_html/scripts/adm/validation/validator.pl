@@ -1,14 +1,17 @@
 #!/usr/bin/perl
 
-use WebService::Validator::HTML::W3C;
-
 ## validator file validator_uri
 my $file = shift(@ARGV);
 my $uri = shift(@ARGV);
- my $v = WebService::Validator::HTML::W3C->new(detailed => 1);
- $v->validator_uri($uri);
- $uri=$v->validator_uri();
- ##printf("Validation by %s\n",$uri);
+if ($uri =~ /http/) {
+  use WebService::Validator::HTML::W3C;
+   my $v = WebService::Validator::HTML::W3C->new(detailed => 1);
+    $v->validator_uri($uri);
+}
+{
+  use WebService::Validator::HTML::W3C::Fast;
+  my $v = WebService::Validator::HTML::W3C::Fast->new("detailed" => 1, validator_path  => '$uri');
+}
  if ( $v->validate_file("$file") ) {
    if ( !$v->is_valid )
    {
@@ -26,5 +29,5 @@ my $uri = shift(@ARGV);
        printf("\$wims_name_warning: line %d, %s\n", $E->line, $E->msg);}
    }
  } else {
-     printf ("Failed to validate the website $v->uri : %s\n", $v->validator_error);
+     printf ("Failed to validate the validator $v->uri : %s\n", $v->validator_error);
  }
