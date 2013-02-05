@@ -19,7 +19,6 @@
 
 !if $error = too_many_votes
  Hay demasiadas encuestas / votaciones en su clase.
- <p>
  ¿Por qué necesita tantas?
  !exit
 !endif
