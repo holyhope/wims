@@ -13,12 +13,17 @@ type=$(replygood$i[2;1])
 !!color2=#B4B4FF
 
 !set rlist=!getopt free in $reply
+
 m_reply$i=$rlist
 reply__$i=&nbsp;
 
 !!useful only for polygon.
-!set rlist=!translate internal ; to , in $rlist
+!if $type iswordof polygon 
+  !set rlist=!translate internal ; to , in $rlist
+!endif
+
 !set rlist=!nonempty items $rlist
+!debug $rlist
 !set m=!itemcnt $glist
 !set n=!itemcnt $rlist
 
