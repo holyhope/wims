@@ -64,7 +64,7 @@ $ in $input_rg
 !default fillcnt=0
 !increase fillcnt
 !if $wims_read_parm!=noprompt
- <tr><td style="text-align:right">$(replyname$i)</td><td>
+ <tr><td>$(replyname$i)</td><td>
 !endif
 
 !set sup1=&nbsp;<sup>
