@@ -728,7 +728,7 @@ sub includegraphics{ my ( $b, $opt ) = @_;
    $b=~ s/.(pdf|tiff|eps|svg)/.png/ ; 
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\(line|text)width)/linewidth("$2$3",$1)/eg;
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(cm|px)/ style=\"$1:$2$3;\"/;
-  "<img src=\"\\filedir\/$b\" $opt alt=\"\"/>";
+  "<img src=\"\\filedir\/$b\" $opt alt=\"\" />";
 }
  
 sub minipage { my ( $b ) = @_; 
