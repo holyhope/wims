@@ -9,13 +9,27 @@
  !if ($sharable_sheet!=$empty or $sharing_sheet!=$empty) and share notwordof $confirmed
   !if $confirm=yes and $wims_ismanager>1
    confirmed=share
-  !else
    confirm=
-   confirmed=
-   error=sharing_sheet
-   !exit
+  !else
+  !!!verification a faire ....
+   !if $wims_superclass=$empty or $wims_superclass=$wims_class
+    !for cl_ in $sharable_sheet
+     !set tmp=!defof sharing_sheet in wimshome/log/classes/$cl_/neighbors
+     !if $wims_class iswordof $tmp
+       confirm=
+       confirmed=
+       error=sharing_sheet
+       !reset tmp
+       !exit
+     !endif
+    !next
+   !else
+    confirm=
+    confirmed=
+    error=sharing_sheet
+    !exit
+   !endif
   !endif
-  confirm=
  !endif
  examtest=!sh grep '\<$sheet\.' $wims_home/log/classes/$wims_class/exams/.exam[0-9]*
  !if $examtest!=$empty
