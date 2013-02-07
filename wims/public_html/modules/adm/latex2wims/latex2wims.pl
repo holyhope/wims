@@ -428,7 +428,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     my $tp = '' ; 
     if ($TOOLTIP==1) {
     if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=' ' ; } else {
-      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br/>': '' ;}
+      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br />': '' ;}
     $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
     $ref->{toc}{$Id} .= "\n<XXXX=\"$id\">\\link{$id}{$ref->{tittoc}{$id}
@@ -537,7 +537,7 @@ for my $rubrique (@liste_env_tabular) {
   $TEXT =~ s,<li>\n+</li>,<li></li>,g;
   $TEXT =~ s,</div>\s+</div>,</div></div>,g;
   $TEXT =~ s,</div>\s+<,</div>\n<,g;
-  $TEXT =~ s,<div ([^>]+)>\s+<,<div $1>,g;
+  $TEXT =~ s,<div ([^>]+)>\s+<,<div $1><,g;
   $TEXT =~ s/\n{2,}/<br class=\"spacer\"\/>/g;
   $TEXT;
 }
@@ -1401,8 +1401,8 @@ sub algorithmic { my ($Text) = @_;
     $text .= "\n" . $ligne;
     $text =~ s/\n{2,}/\n/g ;
     #$text =~ s/\n+/<br\/>/g ;
-    $text =~ s/(<br\s*\/>)+/<br class="spacer"\/>/g ;
-    $text =~ s/(<br>)+/<br\/>/g ;
+    $text =~ s/(<br\s*\/>)+/<br class="spacer" \/>/g ;
+    $text =~ s/(<br>)+/<br \/>/g ;
   }
   $text ;
 }
