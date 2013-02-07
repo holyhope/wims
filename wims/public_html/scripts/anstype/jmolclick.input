@@ -125,6 +125,7 @@ $ by ||| in $Rg
 <script type="text/javascript" src="$appletdir/Jmol.js"></script>
 
 <script type="text/javascript">
+/*<![CDATA[*/
 function finalise(){
 var score=0;
 var best=0;
@@ -255,8 +256,7 @@ function affich_rep(selgood,selbad,selforget){
  chscript=chscript+'define ~forget '+selforget+';select ~forget; halos 25%;color halos orange;';
  return chscript;
 }
-
-
+/*]]>*/
 </script>
 
 !if $ans_file0!=$empty
@@ -266,6 +266,7 @@ function affich_rep(selgood,selbad,selforget){
    !set ans_1=jmolScriptWait('script $ans_file1;');
 !endif
 <script type="text/javascript">
+/*<![CDATA[*/
       jmolInitialize('$appletdir','JmolApplet.jar');
       jmolSetAppletColor('white');
       jmolSetCallback("PickCallback", 'jmolscript:pic={atomIndex = _atomPicked}; if(pic.selected==1){select selected and not pic and not {$nosel}}else{select selected or ( pic and not {$nosel})};message "";')
@@ -283,6 +284,7 @@ var jscr='load $file;';
 var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
     $ans_0
     $ans_1
+/*]]>*/
 </script>
 
 !!#####
