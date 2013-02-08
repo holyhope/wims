@@ -204,6 +204,7 @@ rrr=0;\
 
 $slib_out
 <script type="text/javascript">
+/*<![CDATA[*/
 !if $input_type iswordof points
   var capture = function() {document.getElementById('$jsx_reply').value='free='+jsxbox_free +'';}
 !endif
@@ -221,4 +222,5 @@ $slib_out
 !if $input_type iswordof curve
   var capture = function() {document.getElementById('$jsx_reply').value='free='+aa;}
 !endif
+/*]]>*/
 </script>

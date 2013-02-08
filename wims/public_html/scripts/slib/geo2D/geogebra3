@@ -94,6 +94,7 @@ slib_number=$[$slib_number-1]
 !endif
 !! ne trouve pas le fichier (? getXML ?)
 !!slib_algebraview=<script type="text/javascript">\
+!!/*<![CDATA[*/\
 !!function algebraview() {\
 !! var myapplet = document.applet$slib_number; \
 !! var ch=new String(myapplet.getXML());\
@@ -105,6 +106,7 @@ slib_number=$[$slib_number-1]
 !! if (j>-1){ ch=ch.substr(0,j)+cmd+'='+f +ch.substring(i+cmd.length+1+t.length,ch.length);}\
 !! myapplet.setXML(ch);\
 !!}\
+/*]]>*/\
 !!</script>
 !!slib_out=$slib_algebraview
 
@@ -201,12 +203,14 @@ Sorry - the GeoGebra Applet could not be started. Please make sure that Java 1.4
  slib_out=<input type="button" style="background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;" value="$(name_clickgeogebra_$lang)" onclick="Construction$slib_number();"/>\
  $slib_out\
  <script type="text/javascript">\
+/*<![CDATA[*/\
  function Construction$slib_number() {\
  var myapplet = document.applet$slib_number; \
  myapplet.setRepaintingActive(false); \
  $slib_appletcommand\
  myapplet.setRepaintingActive(true);\
 }\
+/*]]>*/\
 </script>
 
 !endif
@@ -214,5 +218,5 @@ slib_number=$[$slib_number+2]
 slib_z1=$wims_read_parm
 !if $slib_debug=true
   slib_out=$slib_out \
-<br/><br/>Parameters read by the applet : $slib_z1<br/><br/>The slib_data : $slib_z2 --> $slib_data
+<br /><br />Parameters read by the applet : $slib_z1<br /><br />The slib_data : $slib_z2 --> $slib_data
 !endif

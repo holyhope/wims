@@ -65,8 +65,9 @@ $temp
   slib_script_file=jmolScriptWait('script $slib_script_file;');
 !endif
 
-!set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script> \
-<script language="javascript" type="text/javascript">\
+!set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script>\
+<script type="text/javascript">\
+/*<![CDATA[*/\
       jmolInitialize('$slib_appletdir','JmolApplet.jar');\
       jmolSetAppletColor('$slib_color');\
    var jscr='load $slib_file;';\
@@ -74,4 +75,5 @@ $temp
     jscr=jscr $slib_script;\
     jmolApplet([$slib_xsize,$slib_ysize],jscr);\
     $slib_script_file\
+/*]]>*/\
 </script>
