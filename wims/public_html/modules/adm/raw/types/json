@@ -486,14 +486,19 @@ $ by ],[ in $($v)
 
 !shortout "query_class":"$qclass",\
 "query_user":"$quser",\
+"query_sheet":"$qsheet",\
+"query_exam":"$qexam",\
+"log_size":"$export_size",\
 "user_log":
 
-!if $logsize > 0
+!if $export_size > 0
    !shortout [
-   !for i=1 to $logsize
+   !for i=1 to $export_size
      current = !record $i of wimshome/sessions/$wims_session/user.log
-     !shortout "$current"
-     !if $i < $logsize
+     current = !singlespace $current
+     current = !replace internal $ $ by "," in $current
+     !shortout ["$current"]
+     !if $i < $export_size
         !shortout ,\
 
      !endif
@@ -505,6 +510,18 @@ $ by ],[ in $($v)
 !endif
 
 !goto footer
+
+
+:getexamsessions
+
+!shortout "query_class":"$qclass",\
+"query_user":"$quser",\
+"sessions_list":"$sessionslist",\
+"nb_sessions":$nbsessions,\
+"user_log":"TODO"
+
+!goto footer
+
 
 :gettime
  !shortout "server_time":"$now_year$now_month$now_day.$now_hour:$now_min:$now_sec"
