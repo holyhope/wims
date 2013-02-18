@@ -46,7 +46,11 @@ $cdt_title
  </tr>
  !for i=1 to $nbligne
 !!  !let mem_tr=$table_tr
-  !let don=!line $i of $list
+  !if $cdt_reversedate=1
+   !let don=!line $nbligne+1-$i of $list
+  !else
+   !let don=!line $i of $list
+  !endif
   !distribute item $don into jour,file,matiere
   !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
   !let file=wimshome/log/classes/$file/cdt/def/$jour

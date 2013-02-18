@@ -22,6 +22,7 @@
   !set name_intro=Ahí tienes los parámetros que pueden cambiar
   !set name_see=Ver
   !set name_see2=el fichero de conexión al cuaderno de texto de la clase
+  !set name_reversedate=Affichage des informations dans l'ordre inverse de leur date
   !goto common
 !endif
 

@@ -9,6 +9,13 @@
   !read adm/date.phtml
   !let creyear=!char 1 to 4 of $class_creation
   !let expyear=!char 1 to 4 of $class_expiration
+  !if $(cdt_ltmonth)!=$empty
+   !let tmp=!sort numeric item of $(cdt_ltmonth)
+   !let miny=!char 1 to 4 of $(tmp[1])
+   !let creyear=$[min($miny,$creyear)]
+   !let maxy=!char 1 to 4 of $(tmp[-1])
+   !let expyear=$[max($expyear,$maxy)]
+  !endif
   !read adm/lang/datemenu.phtml.$moduclass_lang 1,jday,jmonth,jyear
   $name_and
   !if $jyear2=$empty or $jyear2=0 

@@ -22,6 +22,7 @@
   !set name_intro=Hier zijn de instelparameters
   !set name_see=Bekijk 
   !set name_see2=de log file van de agenda.
+  !set name_reversedate=Affichage des informations dans l'ordre inverse de leur date
   !goto common
 !endif
 

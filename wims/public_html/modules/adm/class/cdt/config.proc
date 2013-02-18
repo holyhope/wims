@@ -16,6 +16,7 @@
  cf_title=!singlespace $cf_title
  cf_title=!char 1 to 50 of $cf_title
  cf_link=!char 1 to 20 of $cf_link
+ !bound cf_reversedate between 0 and 1 default $cdt_reversedate
  test=!nospace $cf_link
  !if $test=$empty
   cf_link=$cdt_link
@@ -23,13 +24,16 @@
  cf_description=!char 1 to 1024 of $cf_description
  !setdef !set cdt_title=$cf_title\
 !set cdt_description=$cf_description\
-!set cdt_link=$cf_link in wimshome/log/classes/$wims_class/cdt/.def
+!set cdt_link=$cf_link\
+!set cdt_reversedate=$cf_reversedate in wimshome/log/classes/$wims_class/cdt/.def
  cdt_description=$cf_description
  cdt_title=$cf_title
  cdt_link=$cf_link
+ cdt_reversedate=$cf_reversedate
 !else
- !for k in title,description
+ !for k in title,description,reversedate
   cf_$k=$(cdt_$k)
  !next k
+ !default cf_reversedate=0
 !endif
 
