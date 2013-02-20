@@ -7,18 +7,18 @@ If your exercise requires recognition of a randomly picked picture, the file
 name of the picture might give clue to the exercise. In order to hide this
 file name, you can write
 
-<pre>\img{\imagedir/picture.jpg align="middle" alt="picture"}</pre>
+<pre>\img{\imagedir/picture.jpg  alt="picture"}</pre>
 
 Then on the browser, the student will see
 
-<pre>&lt;img src="a_random_unrelated_file_name" align="middle" alt="picture"&gt;</pre>
+<pre>&lt;img src="a_random_unrelated_file_name" alt="picture" /&gt;</pre>
 
 The true file name is thus hidden to the student.
 
 <p><b>Note</b>. Do not use directly the WIMS command <span class="tt wims_code_words">rename</span> to
 process the file name, or the exercise would not work correctly under saved
 environment.
-
+</p>
 <h3>Multi-step exercises</h3>
 Multi-step exercises can be defined via the command <span class="tt wims_code_variable">\steps</span>. For
 example, if you define (among parameters)
@@ -27,36 +27,36 @@ example, if you define (among parameters)
 choice 2, reply 2, reply 3
 choice 3
 }</pre>
-
+<p>
 the exercise will be presented with 3 steps, the first asks for a multiple
 choice (choice 1) and a freestyle reply (reply 1), the second a multiple
 choice and two freestyle replies, etc.
-<p>
+</p><p>
 The content of <span class="tt wims_code_variable">\steps</span> accepts (earlier-defined) parameters as well as
 conditional definitions, in the same way as the definition of parameters.
 This allows you to selectively present response
 fields (according to random variations of parameters), even in the case
 where there is only one step.
-<p>
+</p><p>
 It is to be noted that if a user makes a mistake in
 an early step, subsequent steps will not be presented (and will be
 considered all wrong).
-<p>
+</p><p>
 The current step number is available to the statement of the exercise,
 via the variable
 <span class="tt wims_code_variable">\step</span> which takes successively the values of 1,2,... when the user
 advances in his/her answering.
-<p>
+</p><p>
 To make dynamic multi-step exercises (steps varying with student answers), you
 can use the command <span class="tt wims_code_words">\nextstep{...}</span>. The content of
 <span class="tt wims_code_variable">\nextstep</span> is the similar to <span class="tt wims_code_variable">\steps</span> but only the first line
 is effective. It is useful only when the content is given by a variable
 which is changed by post-reply parameter definitions. The exercise stops when
 the content of <span class="tt wims_code_variable">\nextstep</span> is empty at some step.
-<p>
+</p><p>
 In any case, at most one declaration <span class="tt wims_code_variable">\steps</span> or <span class="tt wims_code_variable">\nextstep</span>
 should appear in an OEF source.
-
+</p>
 <h3>Conditional branching and loops</h3>
 
 Available commands:
@@ -77,11 +77,12 @@ execution only affects parameter definitions.
 
 With the command <span class="tt wims_code_words">\special{...}</span> in the statement of an exercise, the
 following special methods are available:
-<p>
+<br />
 !if $special_parm=all
  !for sp in $special_list
   <h4 class="wimscenter">The special method <span class="tt wims_code_words">$sp</span></h4>
-  General syntax: <tt class="wims_code_words">\special{$sp <i>parameters</i>}</tt> <div>
+  General syntax: <span class="wims_code_words">\special{$sp <i>parameters</i>}</span> 
+<div>
 
   !read oef/special/$sp.phtml help
   </div>
@@ -95,7 +96,7 @@ following special methods are available:
 
 !if $special_parm2 isitemof $special_list
 <h4 class="wimscenter">The special method <span class="tt wims_code_words">$special_parm2</span></h4>
-General syntax: <tt class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</tt> <div>
+General syntax: <span class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</span> <div>
 
 !read oef/special/$special_parm2.phtml help
 </div>
@@ -109,13 +110,14 @@ This feature is not available for Createxo. You can use it if you write OEF
 It allows you to include common portions of codes into several oef files.
 You can also use it to make batch generation of several oefs from one
 pre-source, each differing from the others by some macro definitions.
-<p>
+</p><p>
 To use this feature, a subdirectory cpp/ should be created under src. Put
 into it pre-source files with extension .cpp. In these files, you can add
 cpp directives like <span class="tt wims_code_words">#include</span> or <span class="tt wims_code_words">#if</span>. (Please refer to cpp
 manual and c specification for details of the syntax.)
-<p>
+</p><p>
 The first line of the cpp file must define a list of targets, in the format
+</p>
 <pre>
 target=targ1 targ2 targ3 ...
 </pre>
@@ -141,6 +143,7 @@ in order to make the contents target-dependent.
 <p>
 Include files should also be put into the src/cpp directory, with extension
 .inc. A line
+</p>
 <pre>
 #include "common.inc"
 </pre>
@@ -151,7 +154,7 @@ directories of include files.
 A special remark: cpp gets confused when your file contains single or double
 quotes in the text that are not closed. In this case, you can protect the
 commands containing such texts by c comments (<span class="tt">/* ... */</span>).
-
+</p>
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : In the commands beginning by # as in
 <span class="tt">#include</span>, the character <span class="tt">#</span> must be the first character of the line. You must not
@@ -165,15 +168,16 @@ an exercise (if it is not redefined within the exercise).
 <p>
 For the time being, the only testable content of the variable is the word
 ``debug''. This word appears within <span class="tt wims_code_variable">\oefenv</span> in the following
-situations: <ol>
+situations: 
+</p><ol>
 <li>When it is executed within Createxo.</li>
 <li>When it is under test in Modtool, by the developer himself.</li>
 <li>When it is a class exercise and is executed by the supervisor.</li>
 </ol>
-Note that in these cases, the good reply will appear as default in the input
+<p>Note that in these cases, the good reply will appear as default in the input
 fields of many types, allowing you to see what the exercise expects without
 typing into the fields.
-<p>
+</p><p>
 You may add debugging informations into your exercise using things like
 </p>
 <pre>
@@ -181,5 +185,3 @@ You may add debugging informations into your exercise using things like
 </pre>
 These debugging informations will be automatically shown when the exercise
 is under test, and automatically hidden when students work on it.
-
-
