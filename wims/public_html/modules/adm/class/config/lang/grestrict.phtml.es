@@ -8,10 +8,10 @@
  </p>
  <div class="wimscenter">
  <table class="wimsnoborder wimscenter wimsform">
- <tr><td align="right">Sitios a los que se les permite recibir calificaciones:</td>
+ <tr><td style="text-align:right">Sitios a los que se les permite recibir calificaciones:</td>
  <td><input size="35" name="allow" value="$allow" /></td>
  </tr><tr>
- <td align="right">Exceptuados:</td>
+ <td style="text-align:right">Exceptuados:</td>
  <td><input size="35" name="except" value="$except" /></td>
  </tr>
  </table>

@@ -48,13 +48,13 @@
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into l_,s_,t_,n_
-   $table_tr<td align="center">$l_</td>
-   <td align="center">
+   $table_tr<td style="text-align:center">$l_</td>
+   <td style="text-align:center">
    !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
-   </td><td align="center">
+   </td><td style="text-align:center">
    !set wims_ref_class=wims_button
     !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
-   </td><td align="center">
+   </td><td style="text-align:center">
    !if $s_!=$empty
     !if $s_=supervisor
      $wims_name_supervisor
@@ -66,7 +66,7 @@
     $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
-   </td><td align="center">$c</td>
+   </td><td style="text-align:center">$c</td>
    </tr>
  !next i
  $table_end
@@ -96,14 +96,14 @@ $name_prog9
  !for i=1 to $icoursecnt
    !set l=!line $i of $icourses
    !distribute items $l into l_,s_,t_,n_
-   $table_tr<td align="center">$l_</td>
-   <td align="center">
+   $table_tr<td style="text-align:center">$l_</td>
+   <td style="text-align:center">
    !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
-   </td><td align="center">
+   </td><td style="text-align:center">
    !set wims_ref_class=wims_button
     !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
 
-   </td><td align="center">
+   </td><td style="text-align:center">
    !if $s_!=$empty
     !if $s_=supervisor
      $s_
@@ -115,7 +115,7 @@ $name_prog9
     $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
-   </td><td align="center">$c</td>
+   </td><td style="text-align:center">$c</td>
  !next i
  $table_end
 !endif
@@ -137,9 +137,9 @@ $name_prog9
   !set l_=!translate / to , in $add
   !set l_=!item 1 of $l_
   !set l_=!defof class_description in $classdir1/$l_/.def
-  <td align="center"><span class="tt">$add</span></td>
-  <td align="center">$l_</td>
-  <td align="left">
+  <td style="text-align:center"><span class="tt">$add</span></td>
+  <td style="text-align:center">$l_</td>
+  <td style="text-align:left">
   !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
   </td></tr>
  !next i

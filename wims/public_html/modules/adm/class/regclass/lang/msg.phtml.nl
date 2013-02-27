@@ -81,10 +81,10 @@
  !endif
 
  !form reply
-  <table border="0" cellspacing="5" summary="">
-    <tr><td align="right">
+  <table class="wimscenter wimsnoborder">
+    <tr><td style="text-align:right">
     Geef de naam van uw account:</td><td><input size="20" name="regid" /></td>
-    </tr><tr><td align="right">
+    </tr><tr><td style="text-align:right">
     en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password" />
     <input type="submit" value="OK" /></td>
     </tr></table>

@@ -16,21 +16,21 @@ el cálculo de las notas:
 </p>
 $table_header
 $table_hdtr<th>Nivel</th><th>Fórmula</th><th>Explicación</th></tr>
-$table_tr<td align="center">0</td><td align="center">$scoremax max(x,y)
+$table_tr<td>0</td><td>$scoremax max(x,y)
  </td><td>Muy laxa: el máximo entre el porcentaje y la calidad.</td></tr>
-$table_tr<td align="center">1</td><td align="center">$scoremax x
+$table_tr<td>1</td><td>$scoremax x
  </td><td>la calidad no se tiene en cuenta. Se logra la nota máxima
  cuando se obtienen todos los puntos requeridos.</td></tr>
-$table_tr<td align="center">2</td><td align="center">$scoremax x y<sup>0.3</sup>
+$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
  </td><td>La calidad tiene un efecto reducido sobre la nota.</td></tr>
-$table_tr<td align="center">3</td><td align="center">$scoremax x y<sup>0.5</sup>
+$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
  </td><td>El efecto de la calidad es mayor.</td></tr>
-$table_tr<td align="center">4</td><td align="center">$scoremax x y
+$table_tr<td>4</td><td>$scoremax x y
  </td><td>Para tener una nota de $scoremax, debe lograr todos los puntos
   requeridos (el 100%) sin cometer errores (calidad=10).</td></tr>
-$table_tr<td align="center">5</td><td align="center">$scoremax x<sup>2</sup> y
+$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
  </td><td>El porcentaje de trabajo no terminado está sobrepenado.</td></tr>
-$table_tr<td align="center">6</td><td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
+$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
  </td><td>Cualquier error está sobrepenado.</td></tr>
 $table_end
 

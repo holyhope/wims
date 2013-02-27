@@ -9,10 +9,10 @@ $name_job
 
 <hr style="width:40%" />
 <ul>
- <li>$name_title_comp : <span style="color:green;"><b>$(title_$comp)</b></span>.</li>
+ <li>$name_title_comp : <span style="color:green;" class="bold">$(title_$comp)</span>.</li>
  !let eold=!record $palier of wimshome/log/classes/$wims_class/livret/.comp$comp
  !distribute line $eold into name,eold
- <li>$name_n_Palier $palier : <span style="color:green;"><b>$name</b></span>.</li>
+ <li>$name_n_Palier $palier : <span style="color:green;" class="bold">$name</span>.</li>
  !if $eold!=
   $table_header
    $table_hdtr<th>$wims_name_Sheet</th><th>$wims_name_Exercise</th><th>$wims_name_title</th><th>&nbsp;</th></tr>
@@ -20,14 +20,14 @@ $name_job
     !let t=!replace internal . by , in $l
     !if $(t[1]) notitemof $livret_nonactivesheet
      $table_tr
-       <td align="center">
+       <td>
         !if $(t[1]) isitemof $nssheets
           $(t[1])
         !else
          !href module=adm/sheet&sh=$(t[1]) $(t[1])
         !endif
        </td>
-       <td align="center">
+       <td>
         !if $(t[1]) notitemof $nssheets
          !set ex=!record $(t[2]) of wimshome/log/classes/$wims_class/sheets/.sheet$(t[1])
          !distribute lines $ex into di,pa,require,we,ti,de

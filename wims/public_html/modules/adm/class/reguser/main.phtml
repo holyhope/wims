@@ -48,24 +48,24 @@ $name_title
   !defread wimshome/log/classes/$cl/.def
   !distribute char $class_level into l1,l2
   !set part=!recordcnt wimshome/log/classes/$cl/.userlist
-  $table_tr<td align="center">
+  $table_tr<td>
   !if $ctype=0
    !href module=$module&cmd=reply&class=$cl $class_institution<br />$class_description
   !else
    !href module=$module&cmd=reply&class=$cl $class_description
   !endif
-  </td><td align="center">
+  </td><td>
   !mailurl $class_email $class_supervisor
   </td>
   !if $class_level=$empty
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
-    <td align="center">$pname</td>
+    <td>$pname</td>
   !else
-    <td align="center">$(level$l1)<br />$name_year $l2</td>
+    <td>$(level$l1)<br />$name_year $l2</td>
   !endif
   !if $ctype=0
-   <td align="center">$(lang_$class_lang)</td>
-   <td align="right">
+   <td>$(lang_$class_lang)</td>
+   <td style="text-align:right">
    !if $class_limit-$part>$site_dispo
     $site_dispo
    !else
@@ -74,9 +74,9 @@ $name_title
    </td>
   !endif
   !if $class_password=$empty
-   <td align="center">$(name_statut[1])</td>
+   <td>$(name_statut[1])</td>
   !else
-   <td align="center">$(name_statut[2])</td>
+   <td>$(name_statut[2])</td>
   !endif
   </tr>
  !next cl

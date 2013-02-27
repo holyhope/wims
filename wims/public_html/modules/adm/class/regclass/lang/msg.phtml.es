@@ -61,10 +61,10 @@ Contraseña para la creación de clases virtuales
  !endif
 
  !form reply
-  <table border="0" cellspacing="5">
-  <tr><td align="right">
+  <table class="wimscenter wimsnoborder">
+  <tr><td style="text-align:right">
   Introduzca el nombre de su cuenta:</td><td><input size="20" name="regid" /></td>
-  </tr><tr><td align="right">
+  </tr><tr><td style="text-align:right">
   Y la contraseña:</td><td><input size="16" name="regpass" type="password" />
   <input type="submit" value="$wims_name_tosave" /></td>
   </tr></table>
