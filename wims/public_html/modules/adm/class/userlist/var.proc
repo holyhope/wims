@@ -68,7 +68,9 @@ sheetcnt=!itemcnt $showsheet
  !distribute item $ into activevars,activesh
 
  seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
- !if $seq_open!=yes
+ !set seq_=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+ !set seq_cnt=!line 1 of $seq_
+ !if $seq_open!=yes or $seq_cnt= or $seq_cnt=0
   !for i=1 to $n
    s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
    !distribute lines $s into a,e,t,d
@@ -83,9 +85,8 @@ sheetcnt=!itemcnt $showsheet
   !next i
  !else
 !!!for sequences
-  !set seq_=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
  !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
-  seq_cnt=!line 1 of $seq_
+  
 !!!!!! for compatibility. Will be remove in the definitive version
   !read adm/class/sheetindex
 !!!!!!
