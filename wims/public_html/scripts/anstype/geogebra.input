@@ -42,7 +42,8 @@ $oef_applet_option
  !endif
 !next
 
-!readproc slib/geo2D/geogebra3 $oef_applet_option language=$ggblang
+!readproc slib/geo2D/geogebra3 $oef_applet_option language=$ggblang number=$[$i+1]
+
 !set out_applet=$slib_out
 
 !readproc slib/geo2D/geogebracommand
@@ -87,12 +88,12 @@ function geogebra2wims() {
     !!!!!!! WIMS !!!!!!!
     prec=$precision;
 
-  ch=new String(document.applets[0].getXML());
+  ch=new String(document.getElementById("applet$i").getXML());
   arr1=new String('<decimals val=\"'+prec+'\"/>');
   for ( i=0 ; i < 18 ; i++){
    dep1=new String('<decimals val=\"'+i+'\"/>');
    ch=ch.replace(dep1,arr1);}
-   document.applets[0].setXML(ch);
+   document.getElementById("applet$i").setXML(ch);
 
    var data = new Array();
    var grec = new Array();
@@ -109,12 +110,12 @@ function geogebra2wims() {
 
   var totalobject_count = 0;
 
-  nbre=document.applets[0].getObjectNumber();
+  nbre=document.getElementById("applet$i").getObjectNumber();
   for ( i=0 ; i < nbre ; i++){
-   thing=document.applets[0].getObjectName(i);
+   thing=document.getElementById("applet$i").getObjectName(i);
    if (!(thing in ignore)) {
-    whatisit=document.applets[0].getObjectType(thing);
-    def=document.applets[0].getCommandString(thing);
+    whatisit=document.getElementById("applet$i").getObjectType(thing);
+    def=document.getElementById("applet$i").getCommandString(thing);
     if (def=='') {def=whatisit;}
 
   !!replace the greek names of the angles
@@ -136,7 +137,7 @@ function geogebra2wims() {
     
     if (whatisit==it)
         {
-        data=document.applets[0].getValueString(thing);
+        data=document.getElementById("applet$i").getValueString(thing);
         data=encodeURIComponent(data);
         data=data.replace(/%C2%B/g,'^');
 
@@ -149,9 +150,9 @@ function geogebra2wims() {
       totalobject_count=totalobject_count + 1;
       if (it=='point'||it=='vector')
         {
-        x=document.applets[0].getXcoord(thing);
+        x=document.getElementById("applet$i").getXcoord(thing);
         x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
-        y=document.applets[0].getYcoord(thing);
+        y=document.getElementById("applet$i").getYcoord(thing);
         y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
         data=thing+'='+it+','+x+','+y;
         }
@@ -231,15 +232,15 @@ function geogebra2wims() {
 }
 
 function algebraview() {
- var ch=new String(document.applets[0].getXML());
+ var ch=new String(document.getElementById("applet$i").getXML());
  var alg1=new String('<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>');
  var alg2=new String('<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>');
  ch=ch.replace(alg1,alg2);
- document.applets[0].setXML(ch);
+ document.getElementById("applet$i").setXML(ch);
 }
 /*]]>*/
 </script>
-<input type=hidden name="reply$i" id="geog" value="" />
+<input type="hidden" name="reply$i" id="geog" value="" />
 $out_applet
 !! cela a l'air de fonctionner un peu mais c'est très très lent. Donc je laisse uniquement
 !! pour voir mémoire....
