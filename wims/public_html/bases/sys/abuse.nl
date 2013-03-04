@@ -1,9 +1,0 @@
-hoerenzoon:abuse
-hufter:abuse
-kanker:abuse
-klootzak:abuse
-kolerelijer:abuse
-rotzak:abuse
-tering:abuse
-varkenskop:abuse
-zwijnebeffer:abuse
