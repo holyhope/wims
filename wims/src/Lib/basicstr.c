@@ -1,7 +1,7 @@
 #ifndef basicstr
 #define basicstr
      
-/* copy of possibly overlapping strings, to replace strcpy which is not guanranteed in this case
+/* copy of possibly overlapping strings, to replace strcpy which is not guaranteed in this case
    and indeed produces errors particularly on 64 bits computers */
 
 void ovlstrcpy(char *dest, char *src)
