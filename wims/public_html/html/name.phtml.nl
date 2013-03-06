@@ -212,7 +212,7 @@
 	Demonstratie klassen\
 	Inloggen voor docenten\
 	Inloggen voor studenten\
-        Forget password\
+        Wachtwoord vergeten\
 	lagere school\
 	middelbare school\
 	universiteit\

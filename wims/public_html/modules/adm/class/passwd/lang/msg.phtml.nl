@@ -24,7 +24,7 @@ Gebruik de
 !endif
 
 !if bad_pass=$error
-Uw nieuwe wachtwoord bevat niet toegestane karakters. <p>
+Uw nieuwe wachtwoord bevat niet toegestane karakters. <br />
 Gebruik gewoon letters en of cijfers zonder accenten en spaties als wachtwoord.
  
  !exit
@@ -44,7 +44,7 @@ Gebruik gewoon letters en of cijfers zonder accenten en spaties als wachtwoord.
 
 !if bad_user_password iswordof $error
     Het oude wachtwoord is niet correct!
-    <p>
+    <br />
     De verandering van je wachtwoord is dus geweigerd!
     !exit
 !endif

@@ -22,7 +22,7 @@
   !set name_intro=Hier zijn de instelparameters
   !set name_see=Bekijk 
   !set name_see2=de log file van de agenda.
-  !set name_reversedate=Affichage des informations dans l'ordre inverse de leur date
+  !set name_reversedate=De informatie in omgekeerde volgorde
   !goto common
 !endif
 
@@ -47,7 +47,7 @@
  <span class="tt">myfile.jpg</span> \
  toe te voegen. <br />De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
  
- !set name_availablespace=Totaal beschikbare hardeschijfruimte,Onbenutte hardeschijfruimte
+ !set name_availablespace=Totaal beschikbare hardeschijf ruimte,Onbenutte hardeschijf ruimte
  
   !goto common
 !endif
