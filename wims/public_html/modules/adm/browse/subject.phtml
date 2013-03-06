@@ -9,17 +9,19 @@ $table_header
  !lookup $t in $dir_lang
  </th></tr>
   !for d in $(tot_dom_$t)
-  $table_tr<td>
+  $table_tr<th>
    !set l_=$(dom_$d)
    !set t_=!lookup $d in $dir_lang
-    !href module=$module&cmd=new&job=$job&parm=$d <b>$t_</b>
-    </td>
+   !default t_=$d
+    !href module=$module&cmd=new&job=$job&parm=$d $t_
+    </th>
    !if $l_=$empty
     <td>
    !else
     <td>
     !for v in $l_
     !set t_=!lookup $v in $dir_lang
+    !default t_=$v
      !href module=$module&cmd=new&job=$job&parm=$v $t_
      &nbsp;
     !next v
@@ -41,14 +43,16 @@ $table_header
   !!keep key - use in search_addr.
   !reset key
     !set key=!lookup $t in $dir
+    !default key=$t
     !set key_l=!lookup $t in $dir_lang
     !set name_$t=!lookup $t in $dir_lang
+    !default name_$t=$t
     !set key=!replace internal _ by $ $  in $t
     !set key=$key,$key_l
-    <td align="left" nowrap="nowrap"><b>$(name_$t)</b></td>
+    <th>$(name_$t)</th>
   !for i in A,T,P,X,S
    !set cat=$i
-   <td nowrap="nowrap">
+   <td >
    !if $i!=A
    <span class="small">
    !href $search_addr $(name_$i)
