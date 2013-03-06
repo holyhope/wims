@@ -1,17 +1,35 @@
+!!temporary - work in progress
+!if $lang notwordof en it fr
+  !set dir_lang=lang/domain.$lang
+!else
+  !set dir_lang=lang/domain.en
+!endif
 
-!read lang/list.phtml.$modu_lang
+!set dir=domain
+
+Tot_dom=!lookup domain in domain
+!for d in $Tot_dom
+  tot_dom_$d=!lookup $d in domain
+  !for l in  $tot_dom_math
+     dom_$l=!lookup $l in domain
+  !next
+!next
+
+!readproc list.phtml
 
 !if $parm=$empty
+
  !exit
 !endif
 
-name=$(name_$parm)
-!if $name=$empty
+list=!lookup $parm in $dir
+name=!lookup $(parm[1]) in $dir_lang
+!if $list=$empty
  parm=
  !exit
 !endif
-list=$(list_$parm)
-!for d in $(dom_$parm)
+
+!for d in $list
  l=$(list_$d)
  list=!append item $l to $list
 !next d

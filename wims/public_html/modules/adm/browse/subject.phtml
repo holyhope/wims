@@ -5,18 +5,22 @@ $title
  $name_domain
 $table_header
  !for t in $Tot_dom
- $table_tr <th colspan="2">$(name_$t)</th></tr>
+ $table_tr <th colspan="2">
+ !lookup $t in $dir_lang
+ </th></tr>
   !for d in $(tot_dom_$t)
   $table_tr<td>
    !set l_=$(dom_$d)
-    !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b>
+   !set t_=!lookup $d in $dir_lang
+    !href module=$module&cmd=new&job=$job&parm=$d <b>$t_</b>
     </td>
    !if $l_=$empty
     <td>
    !else
     <td>
     !for v in $l_
-     !href module=$module&cmd=new&job=$job&parm=$v $(name_$v)
+    !set t_=!lookup $v in $dir_lang
+     !href module=$module&cmd=new&job=$job&parm=$v $t_
      &nbsp;
     !next v
    !endif
@@ -34,10 +38,14 @@ $table_header
  $table_header
  !for t in $list
   $table_tr
-    !set key=$(keywords_$t)
-    !default name_$t=!replace internal _ by $ $  in $t
-    !default key=!replace internal _ by $ $  in $t
-  <td align="left" nowrap="nowrap"><b>$(name_$t)</b></td>
+  !!keep key - use in search_addr.
+  !reset key
+    !set key=!lookup $t in $dir
+    !set key_l=!lookup $t in $dir_lang
+    !set name_$t=!lookup $t in $dir_lang
+    !set key=!replace internal _ by $ $  in $t
+    !set key=$key,$key_l
+    <td align="left" nowrap="nowrap"><b>$(name_$t)</b></td>
   !for i in A,T,P,X,S
    !set cat=$i
    <td nowrap="nowrap">
@@ -50,7 +58,7 @@ $table_header
    !endif
   </td>
   !next i
-</tr>
+ </tr>
   !next t
  </table>
 !endif
