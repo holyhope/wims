@@ -1,12 +1,11 @@
 abstract_algebra:álgebra abstracta
-affgeom:geometría afín
+affine_geometry:geometría afín
 algebra:álgebra
-anageom:geometría analítica
 analysis:análisis
+analytic_geometry:geometría analítica
 angles:ángulos
-arith:aritmética
+arithmetic:aritmética
 Bezout_algorithm:relación de Bezout
-bio:
 biology:
 botanics:
 calc:cálculo
@@ -28,20 +27,20 @@ decimals:decimales
 definite_integrals:integrales definidas	
 derivatives:derivadas
 determinant:determinante
-diagram:
+descriptive_statistics:
 differentiability:derivabilidad
 differential_equations:ecuaciones diferenciales
 diophantine_equations:ecuaciones diofantinas
-distribution:distribuciones
-elemalg:álgebra elemental
+probability_distribution:distribuciones
+elementary_algebra:álgebra elemental
 ellipse:elipse
 entropy:entropía
 equations:ecuaciones
 error_correcting_codes:código corrector de errores
 error_detection:detección de errores
 estimation:
-euclgeom:geometría euclídea
 euclidean_algorithm:división euclidea
+euclidean_geometry:geometría euclídea
 events:
 factorial:factorial
 factorization:factorización
@@ -70,10 +69,10 @@ intervals:intervalos
 Lang:
 Laplace_transforms:transformaciones de  Laplace
 limits:límites
-linalg:álgebra lineal
 line:líneas
-linear_systems:sistemas lineales
+linear_algebra:álgebra lineal
 linear_maps:alicaciones lineales
+linear_systems:sistemas lineales
 lines:líneas
 Lissajous:Lissajous
 listening:
@@ -109,8 +108,8 @@ precalc:pre-cálculo
 primes:números primos
 primitives:primitivas
 proba:probabilidad
-probability:
-probstat:probabilidad-estadística
+probability_statistics:probabilidad-estadística
+probability:probabilidad
 proportionality:proporcionalidad
 random:
 real_numbers:números reales
@@ -122,8 +121,7 @@ sequences:secuencias
 series:series
 sets:conjuntos
 simulation:
-stat:estadística
-statistical_data:datos estadísticos
+data_analysis:datos estadísticos
 statistics:estadística
 surfaces:superficies
 Taylor_expansion:expansión de Taylor

@@ -1,12 +1,11 @@
 abstract_algebra:abstracte algebra
-affgeom:affiene geometrie
+affine_geometry:affiene geometrie
 algebra:algebra
-anageom:analytische geometrie
+analytic_geometry:analytische geometrie
 analysis:analyse
 angles:hoeken
-arith:rekenkunde
+arithmetic:rekenkunde
 Bezout_algorithm:Bezout algoritme
-bio:
 biology:
 botanics:
 calc:rekenen
@@ -28,19 +27,19 @@ decimals:decimalen
 definite_integrals:eindige integralen
 derivatives:afgeleide
 determinant:determinant
-diagram:
+descriptive_statistics:
 differentiability:differentieerbaarheid
 differential_equations:differentiaal vergelijkingen
 diophantine_equations:Diophantische vergelijkingen
-distribution:verdelingen
-elemalg:elementaire algebra
+probability_distribution:verdelingen
+elementary_algebra:elementaire algebra
 ellipse:ellipsen
 entropy:entropie
 equations:vergelijkingen 
 error_correcting_codes:fout correctie codes
 error_detection:fouten signalering
 estimation:
-euclgeom:euclidische geometrie
+euclidean_geometry:euclidische geometrie
 euclidean_algorithm:euclidisch algoritme
 events:
 factorial:factorisaties
@@ -70,7 +69,7 @@ intervals:intervallen
 Lang:
 Laplace_transforms:Laplase transformaties
 limits:limieten
-linalg:lineaire algebra
+linear_algebra:lineaire algebra
 line:lijnen
 linear_systems:lineaire systemen
 linear_maps:lineaire velden
@@ -110,7 +109,7 @@ primes:priemgetallen
 primitives:primitieve
 proba:waarschijnlijkheidsleer
 probability:waarschijnlijkheidsleer
-probstat:waarschijlijkheids rekening
+probability_statistics:waarschijlijkheids rekening
 proportionality:proportionaliteit
 random:
 real_numbers:reeele getallen
@@ -122,9 +121,8 @@ sequences:rijen
 series:reeksen
 sets:
 simulation:
-stat:statistiek
-statistical_data:statistische data
-statistics:
+statistics:statistiek
+data_analysis:statistische data
 surfaces:oppervlakken
 Taylor_expansion:Taylor expansie
 Taylor_series:Taylor reeksontwikkeling
