@@ -2,11 +2,12 @@
 
 use warnings;
 use strict;
-use locale;
+use Encode;
 
 
 #use Text::Balanced qw (extract_bracketed extract_tagged);
-my $dir="../../modules";
+my $dir='../../modules';
+my $site='../site/lists';
 #$/ = undef;
 
 my %trad = ( 
@@ -36,12 +37,22 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
   my %Domain = ( ) ;
   my $Domain=\%Domain;
   my @KEYWORDS=();
-  for my $file (glob("$dir/*/*/*/INDEX")) { 
+  if (-e "$site/A.$lang") {
+    open LI, "$site/A.$lang";
+    while(<LI>){ my $F=$_ ; chomp $F; 
+      my $file= "$dir/$F/INDEX";
+      next if ($file=~/(adm|devel)\//) ;
+      my @keywords = treate_file ("$file", $lang, \%Domain) ;
+      push @KEYWORDS, @keywords;
+   };
+     close LI;
+  } else {
+    for my $file (glob("$dir/*/*/*")) { 
     next if ($file=~/(adm|devel)\//) ;
     my @keywords = treate_file ($file, $lang, \%Domain) ;
     push @KEYWORDS, @keywords;
- };
-
+   }
+ }
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
  ##for my $d (sortuniq(keys %Domain)) {
  ##  out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d}); }
@@ -49,7 +60,7 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
 
 sub treate_file { my ($file, $lang, $ref) = @_;
  my @res = (); my @lu = (); my @l = (); my @dom = ();
- my $keyl ='' ; my $keywords=''; my $keyu;
+ my $keyl ='' ; my $keyw=''; my $keyu;
  open(IN, $file) ;
   while (<IN>) { my $line = $_; 
     next if !($line =~ /keywords|domain/) ;
@@ -65,47 +76,47 @@ sub treate_file { my ($file, $lang, $ref) = @_;
        push @dom, $a ;
       };
     }
-    #$line =~ tr/éè/ee/;
-    if ($line =~ /keywords_$lang=/) {
-     $line =~ s/keywords\_$lang=\s*//;
+    if ($line =~ /keywords_$lang\s*=/) {
      $keyl=treate_keyword($line);
      next if (!($line =~ /,/));
-     @l = treate_line($line);
+     @l = treate_group($line);
     };
-    if ($line =~ /keywords=/) {
-     $line =~ s/keywords=\s*//;
+    if ($line =~ /keywords\s*=/) {
      $keyu=treate_keyword($line);
      next if (!($line =~ /,/));
-     @lu = treate_line($line);
+     @lu = treate_group($line);
     }
   }
   close IN;
   if (@l) { push @res, @l } else { push @res, @lu if (@lu) };
-  if ($keyl) { $keywords = $keyl } else { $keywords = $keyu if ($keyu); }
+  if ($keyl) { $keyw = $keyl } else { $keyw = $keyu if ($keyu); }
   if( @dom ) {
      for my $a (@dom) {
-      if ($a) {$ref->{$a} .= $keywords . "\n" if ($keywords)  ;
+      if ($a) {$ref->{$a} .= $keyw . "\n" if ($keyw)  ;
       }
    }
   }
   @res;
 }
 
-sub treate_line { my $line = $_ ;
-  $line=~ s/keywords_(\w+)=//g;
-  $line=~ s/keywords=//g;
+sub treate_group { my ($line) = @_ ;
+  $line=~ s/keywords_(\w+)\s*=\s*//g;
+  $line=~ s/keywords\s*=\s*//g;
+    $line=treate_accent($line);
   my @k = split(',', $line);
   my @tmp;
   for my $la (@k) { $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
+    next if !($la);
     next if !($la =~ / /);
     push @tmp, "$la:$la," if ($la);
   }
   @tmp;
 }
 
-sub treate_keyword { my $line = $_ ;
-  $line=~ s/keywords_(\w+)=//g;
-  $line=~ s/keywords=//g;
+sub treate_keyword { my ($line) = @_ ;
+  $line=~ s/keywords_(\w+)\s*=\s*//g;
+  $line=~ s/keywords\s*=\s*//g;
+  $line=treate_accent($line);
   if (!($line =~ /,/)) {$line =~ tr / /,/ ;};
   my @k = split(',', $line);
   my $tmp;
@@ -115,6 +126,12 @@ sub treate_keyword { my $line = $_ ;
   $tmp;
 }
 
+sub treate_accent {my ($txt) = @_; 
+  $txt=decode('iso-8859-1',$txt);
+  $txt =~ tr/éèêàùìîóôò/eeeauiiooo/;
+  $txt= encode("iso-8859-1",$txt);
+  $txt
+}
 sub out { my ($bloc, $text) = @_;
   open  (OUT, ">$bloc") ;
   print OUT $text ; close OUT;
