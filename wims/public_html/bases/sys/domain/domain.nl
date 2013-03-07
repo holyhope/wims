@@ -126,7 +126,7 @@ data_analysis:statistische data
 surfaces:oppervlakken
 Taylor_expansion:Taylor expansie
 Taylor_series:Taylor reeksontwikkeling
-technical:
+technical_language:
 test:
 thermodynamics:
 triangles:driehoeken

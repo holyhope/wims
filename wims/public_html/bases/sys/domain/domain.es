@@ -161,7 +161,7 @@ statistics:estadística
 surfaces:superficies
 Taylor_expansion:expansión de Taylor
 Taylor_series: series de Taylor
-technical:
+technical_language:
 test:
 thermodynamics:
 triangles:triángulos
