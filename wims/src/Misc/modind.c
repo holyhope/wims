@@ -387,7 +387,8 @@ char *modindex[]={
       "title", "description", 
       "author", "address", "copyright",
       "version", "wims_version", "language",
-      "category", "level", "domain", "keywords",
+      "category", "level", "domain", "keywords", 
+      "keywords_ca", "keywords_fr", "keywords_it", "keywords_nl",
       "require"
 };
 #define MODINDEX_NO (sizeof(modindex)/sizeof(modindex[0]))
@@ -396,6 +397,7 @@ enum{i_title, i_description,
       i_author,i_address,i_copyright,
       i_version,i_wims_version,i_language,
       i_category,i_level,i_domain,i_keywords,
+      i_keywords_ca,i_keywords_fr,i_keywords_it,i_keywords_nl,
       i_require
 };
 
@@ -491,7 +493,8 @@ void onemodule(const char *name, int serial, int lind)
     int i;
     unsigned char trlist[]={
 	i_title,i_description,i_category,i_domain,i_keywords,
-	  i_require,i_author
+	  i_require,i_author,
+	  i_keywords_ca,i_keywords_fr,i_keywords_it,i_keywords_nl
     };
     #define trcnt (sizeof(trlist)/sizeof(trlist[0]))
     char *p1, *p2, *pp, buf[MAX_LINELEN+1], lbuf[16];
@@ -540,8 +543,10 @@ void onemodule(const char *name, int serial, int lind)
 	p2=find_word_end(p1); if(*p2) *p2++=0;
 	appenditem(p1,lind,serial,4,module_language);
     }
-    snprintf(buf,sizeof(buf),"%s %s %s %s %s",
+    snprintf(buf,sizeof(buf),"%s %s %s %s %s %s %s %s %s",
 	     indbuf[i_description],indbuf[i_keywords],
+	     indbuf[i_keywords_ca],indbuf[i_keywords_fr],
+	     indbuf[i_keywords_it],indbuf[i_keywords_nl],
 	     indbuf[i_domain],indbuf[i_require],indbuf[i_author]);
     towords(buf);
     for(p1=find_word_start(buf);*p1;
@@ -560,8 +565,10 @@ void onemodule(const char *name, int serial, int lind)
 	if(strlen(p1)<=0) continue;
 	appenditem(p1,lind,serial,4,module_language);
     }
-    snprintf(buf,sizeof(buf),"%s, %s, %s",
+    snprintf(buf,sizeof(buf),"%s, %s, %s, %s, %s, %s, %s",
 	     indbuf[i_description],indbuf[i_keywords],
+	     indbuf[i_keywords_ca], indbuf[i_keywords_fr],
+	     indbuf[i_keywords_it], indbuf[i_keywords_nl],
 	     indbuf[i_domain]);
     translate(buf);
     for(p1=find_word_start(buf); *p1;
