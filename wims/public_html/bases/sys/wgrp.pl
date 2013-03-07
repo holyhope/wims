@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Encode;
+use Encode qw(encode decode);
 
 
 #use Text::Balanced qw (extract_bracketed extract_tagged);
@@ -128,10 +128,15 @@ sub treate_keyword { my ($line) = @_ ;
 
 sub treate_accent {my ($txt) = @_; 
   $txt=decode('iso-8859-1',$txt);
-  $txt =~ tr/éèêàùìîóôò/eeeauiiooo/;
+  $txt =~ tr/éèêëàáâãäåùìíîïóôòç/eeeeaaaaaauiiiioooc/;
+  $txt =~ s/[ÀÁÂÃÄÅ]/A/g;
+  $txt =~ s/Ç/C/g;
+  $txt =~ s/[ÈÉÊË]/E/g;
+  $txt =~ s/[ÌÏÎÍ]/I/g;
   $txt= encode("iso-8859-1",$txt);
   $txt
 }
+
 sub out { my ($bloc, $text) = @_;
   open  (OUT, ">$bloc") ;
   print OUT $text ; close OUT;
