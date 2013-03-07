@@ -13,11 +13,9 @@ for i in src/*.tmp
 do
  ##j=`echo $i | sed 's!^src/!!g;s/\.src//g'`
  j=`basename $i .src.tmp`
- echo $j
- echo $i
  if [ ! -e $j ] || [ $i -nt $j ]; then
-  ../../../bin/dicsort $i
-  mv $i.sorted $j
+  ../../../bin/dicsort $i &> /dev/null
+  mv $i.sorted $j 
   #  cp $j $i
  fi
 done
