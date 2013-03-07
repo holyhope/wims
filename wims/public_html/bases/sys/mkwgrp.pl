@@ -8,6 +8,7 @@ use Encode qw(encode decode);
 #use Text::Balanced qw (extract_bracketed extract_tagged);
 my $dir='../../modules';
 my $site='../site/lists';
+my $dom_templ='domain/domain.template';
 #$/ = undef;
 
 my %trad = ( 
@@ -53,6 +54,14 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
     push @KEYWORDS, @keywords;
    }
  }
+ if (-e $dom_templ) {
+   open LI, $dom_templ;
+   while (<LI>) { my @m=split(":\n",$_);
+     for my $a (@m) { $a =~ s/_/ /g;
+     push @KEYWORDS, treate_group($a) };
+   }
+   close LI;
+   }
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
  ##for my $d (sortuniq(keys %Domain)) {
  ##  out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d}); }
