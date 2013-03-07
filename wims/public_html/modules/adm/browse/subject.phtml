@@ -6,7 +6,10 @@ $title
 $table_header
  !for t in $Tot_dom
  $table_tr <th colspan="2">
- !lookup $t in $dir_lang
+ !set td=!lookup $t in $dir_lang
+ !default td=$t
+ $td
+ !reset td
  </th></tr>
   !for d in $(tot_dom_$t)
   $table_tr<th>
@@ -17,6 +20,7 @@ $table_header
     </th>
    !if $l_=$empty
     <td>
+    !href module=$module&cmd=new&job=$job&parm=$d $t_
    !else
     <td>
     !for v in $l_

@@ -10,7 +10,7 @@
 Tot_dom=!lookup domain in $dir
 !for d in $Tot_dom
   tot_dom_$d=!lookup $d in $dir
-  !for l in  $tot_dom_math
+  !for l in  $(tot_dom_$d)
      dom_$l=!lookup $l in $dir
   !next
 !next
@@ -24,10 +24,11 @@ Tot_dom=!lookup domain in $dir
 
 list=!lookup $parm in $dir
 name=!lookup $(parm[1]) in $dir_lang
-!if $list=$empty
- parm=
- !exit
-!endif
+!! need to check this is not breaking anything
+!! !if $list=$empty
+!!  parm=
+!!  !exit
+!! !endif
 
 !for d in $list
  l=$(list_$d)
