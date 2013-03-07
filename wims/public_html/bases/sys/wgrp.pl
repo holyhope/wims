@@ -43,9 +43,8 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
  };
 
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
- for my $d (sortuniq(keys %Domain)) {
-   out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d});
- }
+ ##for my $d (sortuniq(keys %Domain)) {
+ ##  out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d}); }
 }
 
 sub treate_file { my ($file, $lang, $ref) = @_;
@@ -66,7 +65,7 @@ sub treate_file { my ($file, $lang, $ref) = @_;
        push @dom, $a ;
       };
     }
-    $line =~ tr/ιθ/ee/;
+    #$line =~ tr/ιθ/ee/;
     if ($line =~ /keywords_$lang=/) {
      $line =~ s/keywords\_$lang=\s*//;
      $keyl=treate_keyword($line);

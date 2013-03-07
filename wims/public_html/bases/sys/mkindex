@@ -2,12 +2,27 @@
 
 for i in src/*.src
 do
- j=`echo $i | sed 's!^src/!!g;s/\.src//g'`
+ cp $i $i.tmp
+done
+for i in src/words.*.src
+do
+ cat src/table_domain >> $i.tmp
+done
+
+for i in src/*.tmp
+do
+ ##j=`echo $i | sed 's!^src/!!g;s/\.src//g'`
+ j=`basename $i .src.tmp`
+ echo $j
+ echo $i
  if [ ! -e $j ] || [ $i -nt $j ]; then
   ../../../bin/dicsort $i
   mv $i.sorted $j
-#  cp $j $i
+  #  cp $j $i
  fi
 done
+rm src/*.tmp
+
+./wgrp.pl
 
 
