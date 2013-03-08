@@ -1,0 +1,28 @@
+!for a in $Tot_dom
+!set t_dom=!lookup $a in $dir.$lang
+ !set draw$a=digraph bar {\
+	rankdir=LR;\
+	node [fontsize=10,width=".2", height=".2", margin=0 shape=rectangle]; 
+  !set t_dom=!lookup $a in $dir.$lang
+   !set draw$a=$(draw$a)\
+    "$a" [ label= "$t_dom"];
+   !set t1=!lookup $a in $dir
+   !for t2l in $t1
+     !set t2n=!lookup $t2l in $dir.$lang
+     !set draw$a=$(draw$a)\
+        "$a"-> "$t2n";
+     !set t3=!lookup $t2l in $dir
+     !set cnt=!itemcnt $t3
+     !if $cnt > 1
+        !for t3l in $t3
+          !set t3n=!lookup $t3l in $dir.$lang
+         !set draw$a=$(draw$a)\
+           "$t2n" -> "$t3n";
+        !next
+     !endif
+   !next
+  !set draw$a=$(draw$a)\
+}
+!set draw1=!exec graphviz $(draw$a)
+<img src="$(draw1[1;])" />
+!next
