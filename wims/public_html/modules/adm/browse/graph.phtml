@@ -9,6 +9,7 @@
    !set t1=!lookup $a in $dir
    !for t2l in $t1
      !set t2n=!lookup $t2l in $dir.$lang
+     !default t2n=$t2l
      !set draw$a=$(draw$a)\
         "$a"-> "$t2n";
      !set t3=!lookup $t2l in $dir
@@ -16,6 +17,7 @@
      !if $cnt > 1
         !for t3l in $t3
           !set t3n=!lookup $t3l in $dir.$lang
+          !default t3n=$t3l
          !set draw$a=$(draw$a)\
            "$t2n" -> "$t3n";
         !next
