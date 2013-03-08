@@ -34,7 +34,7 @@ my %trad = (
 'linear' => 'linear_algebra',
 );
 
-for my $lang ('it','en','fr','si','cn','nl','ca') {
+for my $lang ('fr','en','fr','si','cn','nl','ca') {
   my %Domain = ( ) ;
   my $Domain=\%Domain;
   my @KEYWORDS=();
@@ -43,7 +43,7 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
     while(<LI>){ my $F=$_ ; chomp $F; 
       my $file= "$dir/$F/INDEX";
       next if ($file=~/(adm|devel)\//) ;
-      my @keywords = treate_file ("$file", $lang, \%Domain) ;
+      my @keywords = treate_file ($file, $lang, \%Domain) ;
       push @KEYWORDS, @keywords;
    };
      close LI;
@@ -61,7 +61,18 @@ for my $lang ('it','en','fr','si','cn','nl','ca') {
      push @KEYWORDS, treate_group($a) };
    }
    close LI;
+   };
+
+ my $file="domain/domain.$lang";
+  if (-e $file) {
+      open LI, $file;
+       while (<LI>) { s /,/\n/g; s /:/\n/g; s /\n+/\n/g; 
+       my @m=split("\n",$_);
+     for my $a (@m) { $a =~ s/_/ /g;
+     push @KEYWORDS, treate_group($a) };
    }
+   close LI;
+   };
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
  ##for my $d (sortuniq(keys %Domain)) {
  ##  out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d}); }
