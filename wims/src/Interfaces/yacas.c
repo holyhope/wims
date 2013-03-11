@@ -50,8 +50,9 @@ char *illegal[]={
 };
 
 	/* name parts which are not allowed */
+	/* 11/3/2013 add "@" and "ConcatStrings" */
 char *illpart[]={
-    "File", "Load", "Plot"
+    "File", "Load", "Plot","ConcatStrings" ,"@"
 };
 
 /***************** Nothing should need change hereafter *****************/
