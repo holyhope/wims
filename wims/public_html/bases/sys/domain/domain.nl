@@ -6,6 +6,7 @@ analysis:analyse
 angles:hoeken
 arithmetic:rekenkunde
 Bezout_algorithm:Bezout algoritme
+biochemistry:
 biology:
 botanics:
 calc:rekenen
