@@ -31,17 +31,17 @@
   
 !endif
 
-!distribute lines Vous pouvez parcourir le contenu de ce site par plusieurs méthodes.\
-  Par sujet\
-  Par niveau d'éducation : \
-  école primaire, école secondaire, université, etc.\
-  Par date : \
-  dernières nouveautés du serveur.\
-  Et pouvez également utiliser les sélections faites pour vous.\
-  Par type de ressource\
-  références, outils de calcul et de tracés, exercices, etc.\
-  Une brève introduction\
-  à quelques-unes des meilleures activités du serveur. \
+!distribute lines Je kunt de inhoud van deze website op diverse manieren benaderen:\
+  Onderwerp\
+  Moeilijkheids graad\
+  lagere school, middelbare school, universiteit, etc.\
+  Datum\
+  laatste nieuwtjes op deze server\
+  Et vous pouvez également utiliser les sélections faites pour vous.\
+  Soort \
+  references, computational en plotting tools, oefeningen, enz.\
+  populairste toepassing\
+  \
   Correspondance indicative\
   avec les programmes de l'enseignement français\
 into name_h_browse,name_by_subject,name_by_level,name_by_level2,name_by_date,name_news,\
