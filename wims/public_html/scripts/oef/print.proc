@@ -73,7 +73,7 @@ $v_
    rep=!append item $choicegood1 to $rep
    rep=!listuniq $rep
    rep=!sort items $rep
-   rep=!replace , by <li> in <ul type=square><li>$rep</ul>
+   rep=!replace , by </li><li> in <ul style="list-style-type: square;"><li>$rep</li></ul>
    chce_$i=$rep
    test_print=1
   !else
@@ -123,7 +123,7 @@ $ in $rg_
       !if $(replytype$k)=imgcomp
        rg_=!item 2 to -1 of $rg_
        rg_=!nospace $rg_
-       rg_=!replace , by >,<img src="$imagedir/ in <img src="$imagedir/$rg_"/>
+       rg_=!replace , by " />,<img src="$imagedir/ in <img src="$imagedir/$rg_" />
        rg__=!shuffle $rg_
        Rg$i=!append line $rg__ to $(Rg$i)
       !else
@@ -139,8 +139,8 @@ $ in $rg_
      !distribute lines $rg__ into rg1__,rg2__
      !set rg__cnt=!wordcnt $rg1__
      !set rg_2_=!shuffle $rg__cnt
-     !set rg__=!replace internal , by </td><td> in <table border=1><tr><td align="center">$rg1__</tr><tr><td align="center">$(rg2__[$rg_2_])</td></tr></table>
-     !set rg_=!replace internal , by </td><td> in <table border=1><tr><td align="center">$(rg_[1;])</tr><tr><td align="center">$(rg_[2;])</td></tr></table>
+     !set rg__=!replace internal , by </td><td> in <table class="wimsborder"><tr><td>$rg1__</td></tr><tr><td>$(rg2__[$rg_2_])</td></tr></table>
+     !set rg_=!replace internal , by </td><td> in <table class="wimsborder"><tr><td>$(rg_[1;])</td></tr><tr><td>$(rg_[2;])</td></tr></table>
    $prompt_
      Rg$i=!append line $(rg__) to $(Rg$i)
    !endif

@@ -19,7 +19,7 @@
 !endif
 !for i=1 to $n
  <br class="spacer" />
- <span class="bold">$name_exo</span> $i. 
+ <span class="bold">$name_exo</span> $i.
  (<span style="text-decoration:underline,font-style:italic">$(title_$i)</span>)
  !if $(question_$i)=$empty
   ($name_noprint)
@@ -43,31 +43,31 @@
 !endif
 
 !if $test_print=1
-<div class="emptyline">&nbsp;</div><hr/> 
+<br class="spacer" /><hr/>
 <div class="wims_solution">
 <h3 class="wimscenter">$name_answers</h3>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
  !if $t>0
-  <div class="emptyline">&nbsp;</div>
-  <span class="bold">$name_answer_i.</span><ul>
+  <br class="spacer" />
+  <span class="bold">$name_answer_i.</span>
+  <ul style="list-style-type:square;">
   !for k=1 to $t
-  !set l__=!line $k of $(ans_$i)
-  !if $l__ !=
-   <li value="$k">
-   !line $k of $(ans_$i)
-   </li>
-  !reset l__
-  !endif
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value="$k">
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif
 !next i
-</div>
+</div><!--end of wims_solution-->
 !endif
 
 :noans
-</div>
 
 !set wims_menu_items=!append line renew,1,cmd=reply&print=yes\
 back2,1,module=$module&cmd=intro\

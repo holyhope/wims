@@ -1,8 +1,8 @@
-
+!set wims_html_header=!append line $oefcss to $wims_html_header
 !header1
 !read adm/title.phtml 2\
 $sheet_title
-
+$oefenv_lang -- $lang $modu_lang
 <div class="wims_sheet_desc">$sheet_desc</div>
 
 $sheet_remark
@@ -17,8 +17,8 @@ $sheet_remark
   </div>
 !endif
 !for i=1 to $N
- <div>
- <b>$name_exo</b> $i.
+ <br class="spacer" />
+ <span class="bold">$name_exo</span> $i.
  !if $(question_$i)=$empty
   ($name_noprint: $(title_$i))
  !else
@@ -39,19 +39,21 @@ $sheet_remark
   <a></a>
   $(chce_$i)
  !endif
- </div>
 !next i
 
 !if $public!=P and $wims_user!=supervisor
  !goto noans
 !endif
 
-<div class="wims_solution"><hr />
+<br class="spacer" /><hr/>
+<div class="wims_solution">
 <h3 class="wimscenter">$wims_name_answer</h3>
 !for i=1 to $N
  !set t=!linecnt $(ans_$i)
  !if $t>0
-  <b>$name_answer $i.</b><ul>
+  <br class="spacer" />
+  <span class="bold">$name_answer $i.</span>
+  <ul style="list-style-type:square;">
   !for k=1 to $t
    !set l__=!line $k of $(ans_$i)
    !if $l__ !=
@@ -67,7 +69,7 @@ $sheet_remark
 </div><!--end of wims_solution-->
 
 :noans
-<p>
+
 !set wims_menu_items=!append line renew,1,cmd=reply\
 back2,1,cmd=reply&job=read\
 to $wims_menu_items

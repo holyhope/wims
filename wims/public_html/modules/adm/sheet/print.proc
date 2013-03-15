@@ -1,4 +1,3 @@
-!!!### language independant 
 !advance prcnt
 !if $prcnt>6 and $wims_user!=supervisor
  error=too_many_print
@@ -103,7 +102,7 @@ $v_
      rep=!append item $choicegood1 to $rep
      rep=!listuniq $rep
      rep=!sort items $rep
-     rep=!replace , by <li> in <ul type=square><li>$rep</ul>
+     rep=!replace , by </li><li> in <ul style="list-style-type:square;"><li>$rep</li></ul>
      chce_$i=$rep
     !else
      chce_$i=
@@ -146,7 +145,7 @@ $ in $rg_
        !if $(replytype$k)=imgcomp
         rg_=!item 2 to -1 of $rg_
         rg_=!nospace $rg_
-        rg_=!replace , by ><img src=$imagedir/ in <img src=$imagedir/$rg_ />
+        rg_=!replace , by " /><img src="$imagedir/ in <img src="$imagedir/$rg_ " />
        !else
         rg_=!translate , to $ $ in $rg_
        !endif
