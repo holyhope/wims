@@ -1,5 +1,8 @@
-!for a in $Tot_dom
-!set t_dom=!lookup $a in $dir.$lang
+!if $wims_read_parm=$empty
+  !exit
+!endif
+!for a in $wims_read_parm
+ !set t_dom=!lookup $a in $dir.$lang
  !set draw$a=digraph bar {\
 	rankdir=LR;\
 	node [fontsize=10,width=".2", height=".2", margin=0 shape=rectangle]; 
@@ -26,5 +29,6 @@
   !set draw$a=$(draw$a)\
 }
 !set draw1=!exec graphviz $(draw$a)
-<img src="$(draw1[1;])" />
+<img src="$(draw1[1;])" alt="$a"/>
 !next
+

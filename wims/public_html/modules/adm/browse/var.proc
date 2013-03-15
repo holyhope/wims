@@ -2,12 +2,29 @@
  !exit
 !endif
 !read adm/language lang/names.phtml
+
 wims_prefix=class user tmp
 !bound job within home,type,subject,level,best,new default home
 !read tabletheme
 
 search_addr=!nosubst module=home&language=$lang&search_keywords=$key&search_category=$cat&$browse_parm
 browse_parm=browse_job=$job&browse_parm=$parm
+
+!if $modu_lang notwordof en it fr ca es nl cn
+  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.en
+!else
+  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.$modu_lang
+!endif
+
+!set dir=wimshome/public_html/bases/sys/domain/domain
+
+Tot_dom=!lookup domain in $dir
+!for d in $Tot_dom
+  tot_dom_$d=!lookup $d in $dir
+  !for l in  $(tot_dom_$d)
+     dom_$l=!lookup $l in $dir
+  !next
+!next
 
 !read $job.proc
 

@@ -30,3 +30,21 @@
  name_research
 
 !endif
+
+!distribute lines Usted puede explorar el contenido de este sitio web siguiendo varios métodos.\
+  Por área\
+  Por nivel educativo\
+  escuela primaria, secundaria y bachillerato, universidad, etc.\
+  Por fecha\
+  las últimas incorporaciones al servidor.\
+  Et pouvez également utiliser les sélections faites pour vous.\
+  Por tipo de recursos\
+  herramientas gráficas y de cálculo, ejercicios, referencias, etc.\
+  Una breve introducción\
+  a alguna de las mejores actividades del servidor.\
+  Correspondance indicative\
+  avec les programmes de l'enseignement français\
+into name_h_browse,name_by_subject,name_by_level,name_by_level2,name_by_date,name_news,\
+  name_selected,name_by_type,name_by_type2,name_introduction,name_thebest,name_french1,\
+  name_french2
+

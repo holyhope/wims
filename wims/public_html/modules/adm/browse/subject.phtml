@@ -37,7 +37,7 @@ $table_header
  !next $t
  </tr>
  $table_end
- !read graph.phtml
+ !read graph.phtml $Tot_dom
 !else
  $name_available
 !set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
@@ -54,7 +54,14 @@ $table_header
     !default name_$t=$t
     !set key=!replace internal _ by $ $  in $t
     !set key=$key,$key_l
-    <th>$(name_$t)</th>
+    !set more=!lookup $t in $dir
+    <th>
+    !if $more!=$empty
+      !href module=$module&cmd=new&job=$job&parm=$t $(name_$t)
+    !else
+      $(name_$t)
+    !endif
+    </th>
   !for i in A,T,P,X,S
    !set cat=$i
    <td >
@@ -70,4 +77,7 @@ $table_header
  </tr>
   !next t
  </table>
+ !read graph.phtml $parm
 !endif
+
+

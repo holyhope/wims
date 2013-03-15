@@ -1,24 +1,7 @@
 !!temporary - work in progress
-!if $modu_lang notwordof en it fr ca es nl
-  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.en
-!else
-  !set dir_lang=wimshome/public_html/bases/sys/domain/domain.$modu_lang
-!endif
 
-!set dir=wimshome/public_html/bases/sys/domain/domain
-
-Tot_dom=!lookup domain in $dir
-!for d in $Tot_dom
-  tot_dom_$d=!lookup $d in $dir
-  !for l in  $(tot_dom_$d)
-     dom_$l=!lookup $l in $dir
-  !next
-!next
-
-!readproc list.phtml
 
 !if $parm=$empty
-
  !exit
 !endif
 
@@ -30,10 +13,13 @@ name=!lookup $(parm[1]) in $dir_lang
 !!  !exit
 !! !endif
 
+!exit
+!! use to have all subdomain ...
 !for d in $list
- l=$(list_$d)
+ l=!lookup $d in $dir
  list=!append item $l to $list
 !next d
+
 list=!sort nocase items $list
 !if $parm!=misc
  list=!nonempty items $parm,$list
