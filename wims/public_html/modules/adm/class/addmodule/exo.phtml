@@ -9,12 +9,12 @@
  <p>
  <span class="tt wims_parm">
   !replace internal & by &amp; in $iniparm
-  </span>
+ </span>
  </p>
  !endif
  <p>
  $name_choose_exo
- <p>
+ </p>
  
  !form reply
  $name_choose :
@@ -30,23 +30,29 @@
   !endif
  !next i
  </select>
- <p>$name_modifytitle
- <p>
+ <p>$name_modifytitle</p>
 
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
  !if __classes/ isin __$dir
    !set title1=!lookup $exo in wimshome/log/classes/$wims_class/Extitles
  !else
-   !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+   !if $tr_lang=yes
+      !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles_$lang
+   !endif
+   !default title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
  !endif
  !if $title1!=$empty
    !set title=$title1
  !endif
+ 
+   
  !set title=!trim $title
  !default title=$wims_name_Exercise
- $wims_name_title: <input size="50" name="title" value="$title" /> <p>
+ $wims_name_title: <input size="50" name="title" value="$title" /> 
+ <p>
  $wims_name_Description: <textarea name="new_desc" rows="5" cols="50">$desc</textarea>
+ </p>
  !if $scoring=yes
   <p>$name_required:
   <input size="4" name="require" value="$require" />

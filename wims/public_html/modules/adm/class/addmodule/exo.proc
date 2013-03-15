@@ -26,8 +26,14 @@ desc_limit=255
   error=no_sheet
   !exit
  !endif
- title=!module title $dir
- desc=!module description $dir
+ test_transl=!module translation_language $dir
+ !if $lang iswordof $test_transl
+   tr_lang=yes
+   title=!module title_$lang $dir
+   desc=!module description_$lang $dir
+ !endif
+ !default title=!module title $dir
+ !default desc=!module description $dir
  cat=!module category $dir
  !if exercise notin $cat and oef notin $cat
   error=not_exo
@@ -97,4 +103,3 @@ $idesc
  exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
  wims_module_log=class $class: add No$exocnt to worksheet $picksheet
 !endif
-

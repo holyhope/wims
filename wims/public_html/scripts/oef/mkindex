@@ -132,6 +132,7 @@ cd $def
 list=`ls *.def 2>/dev/null | sed 's/\.def//g'`
 cd $thisdir
 
+transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`; 
 #if [ -z "$list" ]; then exit; fi
 titlist=
 titlist1=
@@ -142,6 +143,10 @@ for i in $list
 do
  tit=`awk -F= 'NF>=2 {print $2; exit}' $def/$i.def | $LL tr ',\11' '; '`
  echo "$i:$tit" >>$extitles.tmp
+ for lang in $transl_lang ; do
+    titl=`grep "title_$lang" $def/$i.def | awk -F= '{print $2}'`;
+    echo "$i:$titl"  >>"${extitles}_$lang.tmp"
+ done
  titlist="$titlist$tit
 "
  titlist1="$titlist1$tit,"
@@ -157,6 +162,17 @@ else
  rm -f $extitles.tmp.sorted
  echo >$extitles
 fi
+for lang in $transl_lang
+do
+  echo $lang;
+  $wims_home/bin/dicsort "${extitles}_$lang.tmp"
+  if [ -s "${extitles}_$lang.tmp.sorted" ]; then
+   cat "${extitles}_$lang.tmp.sorted" > "${extitles}_$lang"
+  else
+   echo >"${extitles}_$lang"
+  fi
+done
+rm -f *.tmp *.sorted
 
 echo "$titlist" >$tmp1
 echo "$list" >$tmp2
@@ -173,7 +189,6 @@ cat >$exindex <<@
 
 @
 
-transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`; 
 for lang in $transl_lang ; do
   for ex in $list1; do 
     a=`grep title_$lang def/$ex.def | awk -F= '{print $2}'`; 
@@ -236,4 +251,3 @@ $content
 " >>$outputfile
 tit=
 done
-
