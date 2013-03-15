@@ -28,6 +28,14 @@ m_step=1
 !for j=1 to $n
  l=!record $j of $data
  !distribute lines $l into m_,p_,r_,w_,title_$j,d_
+!!! hack for multi-language: the file var.proc of the module is not read - 
+!!! this means that all other options in this var.proc are not taken in account
+ !reset oefenv_lang
+ test_lang=!module translation_language $m_
+ !if $lang iswordof $test_lang
+     oefenv_lang=$lang
+ !endif
+!!!
  module_$j=$m_
  !read imagedir.proc
  test=!module category $m_
