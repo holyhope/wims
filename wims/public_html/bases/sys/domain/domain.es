@@ -25,7 +25,7 @@ code:teoría de la encriptación
 coding:teoría de la encriptación
 combination:combinación
 combinatorics:combinatoria
-complex_numbers:números complejos
+complex_number:números complejos
 conditional_probability:
 confidence_interval:
 congruence:congruencia
@@ -148,7 +148,7 @@ probability_statistics:probabilidad-estadística
 probability:probabilidad
 proportionality:proporcionalidad
 random:
-real_numbers:números reales
+real_number:números reales
 rectangles:rectángulos
 ring:anillos
 roots:raíces

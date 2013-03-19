@@ -17,7 +17,7 @@ circles:cirkel
 code:programmeer theorie
 combi:combinatoriek
 combination:combinaties
-complex_numbers:complexe getallen
+complex_number:complexe getallen
 congruence:congruentie
 conics:kegelsneden
 continued_fraction:rationale getallen
@@ -113,7 +113,7 @@ probability:waarschijnlijkheidsleer
 probability_statistics:waarschijlijkheids rekening
 proportionality:proportionaliteit
 random:
-real_numbers:reeele getallen
+real_number:reeele getallen
 rectangles:vierkanten
 ring:ringen
 roots:wortels
