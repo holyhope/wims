@@ -1,11 +1,14 @@
 !!temporary - work in progress
 
-
 !if $parm=$empty
  !exit
 !endif
 
 list=!lookup $parm in $dir
+!if $list=$empty
+  list=$parm
+!endif
+listcnt=!itemcnt $list
 name=!lookup $(parm[1]) in $dir_lang
 !! need to check this is not breaking anything
 !! !if $list=$empty
