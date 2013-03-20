@@ -7,12 +7,11 @@
  my $v = WebService::Validator::HTML::W3C->new(detailed => 1);
  $v->validator_uri($uri);
 
-
  if ( $v->validate_file("$file") ) {
    if ( !$v->is_valid )
    {
      foreach my $E (@{$v->errors}) {
-       ##next if ($E->msg =~ /not allowed in prolog/);
+       next if ($E->msg =~ /not allowed in prolog/);
        next if ($E->msg =~ /Conflict between Mime Type/); #error coming from last.html
        next if ($E->msg =~ /xmlParseEntityRef/); #error I do not understand, link with &
        printf("\$wims_name_Error: line %d, %s\n", $E->line, $E->msg);
@@ -23,7 +22,8 @@
        next if ($E->msg =~ /Conflict between Mime Type/);  #error coming from last.html
        next if ($E->msg =~ /xmlParseEntityRef/); #error I do not understand, link with &
        printf("\$wims_name_warning: line %d, %s\n", $E->line, $E->msg);}
-   }
+   } else {
+     printf("Validation has been done") ; }
  } else {
      printf ("Failed to validate the validator $v->uri : %s\n", $v->validator_error);
  }
