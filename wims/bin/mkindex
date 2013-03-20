@@ -133,7 +133,7 @@ $translator | sort -nr >lists/robot.sorted
 
 for l in $langs
 do
- awk -F, '$2=="'$l'" {print "!href module="$3" "$4"\n, "$5" <br>"}' lists/robot.sorted >lists/robot-$l.phtml
+ awk -F, '$2=="'$l'" {print "!href module="$3" "$4"\n, "$5" <br />"}' lists/robot.sorted >lists/robot-$l.phtml
 done
 rm -f lists/robot.*
 
@@ -216,7 +216,7 @@ rm -f index.log
 
 
 # make index bases doc
-$BASES/doc/.build-index
+$BASES/doc/.build-index 1>/dev/null
 
 #model list
 for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done 
@@ -238,13 +238,13 @@ clist=`ls -d [1-9][0-9][0-9][0-9]`
 for cls in $clist; do
  cd $CLASSES/$cls
  if [ ! -d doc ] ; then 
-   echo "no document in $cls"
+   echo "no document in $cls" 1>/dev/null
  else
   cd doc
   dlist=`ls`
   if [ ! -d "$dlist" ] ; then 
     for doc in $dlist ; do
-      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 2>/dev/null
+      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 1>/dev/null
     done
   fi
  fi
@@ -254,7 +254,7 @@ cd $BASESDOC
 clist=`ls -d [0-9]*`
 for doc in $clist; do
   cd $BASESDOC/$doc
-  $DOC/mkindex $WIMS_HOME $BASESDOC/$doc 2>/dev/null
+  $DOC/mkindex $WIMS_HOME $BASESDOC/$doc 1>/dev/null 2>/dev/null
 done
   
 #oefdocumentation for javascript
@@ -272,11 +272,15 @@ cd $BGIMAGE
 
 #make images in some datamodule
 cd $DATAMODULE/images;
-## to improve : find the version, write the version in a file, if they are the same, donot execute.
+##create test if done ; do nothing if file test exists
 if [ -f "roadsigns.fr/INDEX" ]; then
-  dir=$DATAMODULE/images/roadsigns.fr
-  for z in 500 200 100 ; do
-    cd $dir/images ; mkdir -p png$z ; 
-    for a in `ls svg/*.svg`; do file=`basename $a .svg`; convert  $a -resize $z $dir/images/png$z/$file.png ; done;
-  done;
+  if [ -f "roadsigns.fr/test" ] ; then echo "no modification in $DATAMODULE/images/roadsigns.fr"; 
+  else
+   dir=$DATAMODULE/images/roadsigns.fr
+   for z in 500 200 100 ; do
+     cd $dir/images ; mkdir -p png$z ; 
+     for a in `ls svg/*.svg`; do file=`basename $a .svg`; convert  $a -resize $z $dir/images/png$z/$file.png 2>/dev/null ; done;
+   done;
+   touch $dir/test ; echo "yes" > $dir/test
+  fi
 fi;
