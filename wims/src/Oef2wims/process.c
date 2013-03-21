@@ -712,9 +712,9 @@ void p_feedback(char *p[MAX_PARM])
     repsubst(buf1); repsubst(buf2);
     if(strstr(buf1,"$m_choice")!=NULL) cmpstr="if";
     prepcnt=0; setpre="!set "; parmprep(buf1, pt_real); setpre="";
-    fprintf(outf,"!%s %s\n <p>",cmpstr, buf1);
+    fprintf(outf,"!%s %s\n <div class='oef_feedbacks'>",cmpstr, buf1);
     out_exec(buf2,NULL);
-    fprintf(outf,"\n!endif\n");
+    fprintf(outf,"</div>\n!endif\n");
 }
 
 	/* definition of steps */
