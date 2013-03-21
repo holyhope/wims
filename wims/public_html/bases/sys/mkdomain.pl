@@ -5,7 +5,7 @@ use strict;
 
 $/ = undef;
 my $dir='domain';
-my $text='';
+my $text=''; my $text2='';
 ## list of all domains in domain/domain
 open IN, "$dir/domain";
 
@@ -17,10 +17,16 @@ while (<IN>) { $text = $_ ;
    $text =~ s/^(\s+)//g;
 }
 close IN;
+$text=~ s/\n\n/\n/g;
+$text2="[\"" . join("\",\n\"",sortuniq(split("\n",$text))) . "\"]";
 $text=join(":\n",sortuniq(split("\n",$text))) . ":\n";
 $text=~ s/^://g;
 $text=~ s/ +\n/\n/g;
+$text2=~ s/^://g;
+print $text2 ; 
+$text2=~ s/ +\n/\n/g;
 out("$dir/domain.template", $text);
+out("$dir/domain.json", $text2);
 
 ## reversing the domain tree
 my %ref = ( ) ;
