@@ -1,34 +1,21 @@
 !set tr=!words2items $i_translation_language
 <script type="text/javascript">
 /*<![CDATA[*/
- !for l_ in $tr
-  !if $l_ isitemof $langlist
    $$(document).ready(function(){
-    $$("#contenu_$l_").hide();
-    $$("#button_$l_").click(function () {
-        $$("#contenu_$l_").slideToggle("slow");
-        $$(this).toggleClass("hiden_$l_"); return false;
+    $$(".content_lang").hide();
+    $$(".button_lang").click(function () {
+        $$(this).next(".content_lang").slideToggle();
     });
   });
-  !endif
- !next
-/*]]>*/
-</script>
-<script type="text/css">
-/*<![CDATA[*/
-!for l_ in $tr
- !if $l_ isitemof $langlist
- .visible_$l_ { display:block; background-color:red;}
- .hide_$l_ {display:none;visibility:hidden;background-color:green;}
- !endif
- !next
+
 /*]]>*/
 </script>
 
+
 !for l_ in $tr
  !if $l_ isitemof $langlist
-   <a id="button_$l_" class="visible_$l_ wims_button">$name_prop ($(l_$l_))</a>
-   <div id="contenu_$l_" href="#">
+   <a class="wims_button button_lang">$name_prop ($(l_$l_))</a>
+   <div class="content_lang" href="#">
     $table_header
      $table_tr
       <th><label for="i_title_$l_">$wims_name_title ($(l_$l_))</label></th>
