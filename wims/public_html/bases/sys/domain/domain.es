@@ -1,20 +1,23 @@
+abelian_group:
 abstract_algebra:álgebra abstracta
 affine_geometry:geometría afín
-algebra_and_geometry:
 algebra:álgebra
+algebra_and_geometry:
 algebraic_geometry:
 algorithmics:
+american_civilisation:
 analysis:análisis
 analytic_geometry:geometría analítica
 angles:ángulos
 arithmetic:aritmética
+arts:
+aylor_expansion:expansión de Taylor
 bezout_algorithm:relación de Bezout
 bilinear_algebra:
 biochemistry:
-bioinformatics:
 biology:
-biotechnology:
 botanics:
+business_english:
 calculus:cálculo
 cell_biology:
 chemistry:
@@ -35,71 +38,85 @@ continuity:continuidad
 cristallography:
 cryptology:criptología
 curves:curvas
-data_analysis:
+cyclic_group:
 data_analysis:datos estadísticos
 decimals:decimales
-definite_integrals:integrales definidas	
-derivatives:derivadas
+definite_integral:integrales definidas	
+derivative:derivadas
 descriptive_statistics:
 determinant:determinante
 differentiability:derivabilidad
 differential_equations:ecuaciones diferenciales
+differential_geometry:
 diophantine_equations:ecuaciones diofantinas
+discrete_mathematics:
+domain:
+dynamics:
 earth_sciences:Sciences de la terre
 ecology:Ecologie
 electricity:Electricité
 electronics:Electronique
 electrostatics:Electrostatique 
 elementary_algebra:álgebra elemental
+elementary_arithmetic:
+elementary_calculus:
+elementary_geometry:
+elementary_mathematics:
 ellipse:elipse
-english_grammar
+endomorphism_reduction:
+english:
 entropy:entropía
 equations:ecuaciones
-ethology:
-etymology
 error_correcting_codes:código corrector de errores
 error_detection:detección de errores
 estimation:
+etymology:
 euclidean_algorithm:división euclidea
 euclidean_geometry:geometría euclídea
 events:
-evolution:
 factorial:factorial
 factorization:factorización
 field:cuerpos
 financial_mathematics:
+finite_group:
 fluid_mechanics:
 fourier_series:series de Fourier
 fourier_transforms:transformaciones de Fourier
-fractions:fracciones
+fraction:fracciones
+french:
+french_grammar:
 functions:funciones
 gas_mechanics:
 gcd_lcm:pgcd ppcm
 genetics:
 geography:
+geology:
 geometry:geometría
+german:
 goldbach:Goldbach
 grammar:
 graph:
 graphing:grafo
-group_theory:
 group:grupos
+group_action:
+group_theory:
 hamming:distancia de Hamming
 histogram:
 histology:
+history:
 hyperbola:hipérbole
 hyperplane:hiperplanos
 immunology:
 inequalities:desigualdades
 informatics:
 information_theory:
-inorganics:
+inorganics_chemistry:
 integers:enteros
-integrals:integrales
+integral:integrales
 intervals:intervalos
+isometries:
 language:
 laplace_transforms:transformaciones de Laplace
-life_sciences:
 limit:límites
 line:líneas
 linear_algebra:álgebra lineal
@@ -107,64 +124,89 @@ linear_maps:alicaciones lineales
 linear_optimisation:
 linear_systems:sistemas lineales
 lines:líneas
+linguistics:
 lissajous:Lissajous
 listening:
 logic:lógica
+magnetism:
 maps:aplicaciones
-Markov_chains:
-math:
+markov_chains:
+mathematics:
 matrix:matrices
 mean:medias
-medecine:
 measurement:
 mechanics:
+medecine:
 misc:miscelánea
 modular_arithmetic:aritmética modular
+music:
 mycology:
 number:números
+number_theory:
 numbering_system:sistemas de numeración
 ode:ODE
+operation:
+operational_research:
+optics:
 organics_chemistry:
 parabola:parábola
 parametric_curves:curvas paramétricas
+pbsolving:
 percentage:porcentajes
 percents:
 permutation:permutación
 phonetics:
 phylogenetics:
 physics:
-physiology:
 plane:planos
 polar_curves:curvas polares
 polygons:polígonos
 polynomials:polinomios
+pre_algebra:
 prealg:pre-álgebra
 precalc:pre-cálculo
 primes:números primos
-primitives:primitivas
-proba:probabilidad
-probability_distribution:distribuciones
-probability_statistics:probabilidad-estadística
+primitive:primitivas
 probability:probabilidad
+probability_distribution:distribuciones
+probability_space:
+probability_statistics:probabilidad-estadística
+programming:
+pronunciation:
 proportionality:proporcionalidad
+quotient_group:
 random:
+random_variable:
+reading:
+real_function:
 real_number:números reales
 rectangles:rectángulos
 ring:anillos
 roots:raíces
 ruler_and_compass:regla y compás
-sequences:secuencias
+sequence:secuencias
 series:series
+set_theory:
 sets:conjuntos
+similarities:
 simulation:
+speaking:
+spelling:
+statistical_test:
 statistics:estadística
 surfaces:superficies
-Taylor_expansion:expansión de Taylor
-Taylor_series: series de Taylor
+symmetric_group:
+tangent:
+taylor_expansion:
+taylor_series: series de Taylor
 technical_language:
-test:
 thermodynamics:
+transformation_group:
 triangles:triángulos
 trigonometry:trigonometría
 vector_space:espacios vectoriales
 vectors:vectores
+vibration:
+vocabulary:
+weaver:
+written_english:

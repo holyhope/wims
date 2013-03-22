@@ -23,9 +23,21 @@ out("$dir/reversedomain",$TEXT);
 
 ##domain list in the three  first levels
 out("$dir/domain.json", domainjson(%ref));
+for my $la ('fr','en','it','si','cn','nl','ca','es') {
+ next if !(-e "$dir/domain.$la");
+ my %dom = treate_domainfile ("domain.$la");
+ my $dom = \%dom; 
+  for my $a (@list) {
+  if (!$dom{$a}) { $dom{$a} = '' ; }
+ };
+ my @D=();
+ while ( my ($key, $value) = each(%dom) ) {
+   push @D, "$key:$value";
+ };
+ out("$dir/domain.$la.tmp", join("\n",sortuniq(@D)));
+}
 
-
-sub domainjson  { my ($ref) = @_ ; 
+sub domainjson { my ($ref) = @_ ; 
   my @D=();
   while ( my ($key, $value) = each(%ref) ) {
     if ( $value =~ /domain\b/ ) { push @D, $key }
@@ -43,6 +55,7 @@ sub domainjson  { my ($ref) = @_ ;
 "##generated\n['" . join("',\n'", sortuniq(@D)) . "']";
 }
 
+
 sub listdomain {
   open IN, "$dir/domain";
   while (<IN>) { $text = $_ ;
@@ -56,6 +69,24 @@ sub listdomain {
  sortuniq(split("\n",$text))
 }
 
+sub treate_domainfile { my ($file) = @_;
+   my %ref = ( ) ; my $ref=\%ref;
+   open IN, "$dir/$file";
+   while (<IN>) { 
+   $text = $_ ;
+   $text =~ s/\n +/\n/g;
+   $text =~ s/\\//g;
+   $text =~ s/^(\s+)//g;
+   $text=~ s/\n+/\n/g;
+   my @L = sortuniq(split("\n",$text));
+   for my $l (@L) {
+     my @la=split(":", $l) ;
+     $ref{$la[0]}=$la[1] if ($la[1]);
+    }
+   }
+  close IN;
+ %ref;
+}
 ## reversing the domain tree
 
 sub hashdomain {

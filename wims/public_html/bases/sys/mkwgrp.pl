@@ -56,7 +56,7 @@ if (-e $dom_reverse) {
   close LI
 }
 
-for my $lang ('fr','en','fr','si','cn','nl','ca') {
+for my $lang ('fr','en','it','si','cn','nl','ca','es') {
   my %Domain = ( ) ;
   my $Domain=\%Domain;
   my @KEYWORDS=();
