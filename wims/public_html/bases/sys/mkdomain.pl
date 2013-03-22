@@ -5,36 +5,63 @@ use strict;
 
 $/ = undef;
 my $dir='domain';
-my $text=''; my $text2='';
 ## list of all domains in domain/domain
-open IN, "$dir/domain";
 
-while (<IN>) { $text = $_ ;
-   $text =~ s/[,:]/\n/g;
-   $text =~ s/\n +/\n/g;
-   $text =~ s/\n\n/\n/g;
-   $text =~ s/\\//g;
-   $text =~ s/^(\s+)//g;
-}
-close IN;
-$text=~ s/\n\n/\n/g;
-$text2="[\"" . join("\",\n\"",sortuniq(split("\n",$text))) . "\"]";
-$text=join(":\n",sortuniq(split("\n",$text))) . ":\n";
+my @list=listdomain();
+my $text=join(":\n", @list) . ":\n"; 
 $text=~ s/^://g;
 $text=~ s/ +\n/\n/g;
-$text2=~ s/^://g; 
-$text2=~ s/ +\n/\n/g;
 out("$dir/domain.template", $text);
-out("$dir/domain.json", $text2);
+
+my %ref= hashdomain() ;
+my $ref=\%ref;
+my $TEXT="##generated\n";
+for my $tag (keys %ref) {
+  $TEXT .= "$tag:$ref{$tag}\n" ;
+}
+out("$dir/reversedomain",$TEXT);
+
+##domain list in the three  first levels
+out("$dir/domain.json", domainjson(%ref));
+
+
+sub domainjson  { my ($ref) = @_ ; 
+  my @D=();
+  while ( my ($key, $value) = each(%ref) ) {
+    if ( $value =~ /domain\b/ ) { push @D, $key }
+    else { 
+      if ($ref{$value}) {
+       if ($ref{$value} =~ /domain\b/) { push @D, $key } 
+         else {
+             if ($ref{$ref{$value}}) {
+               if($ref{$ref{$value}} =~ /domain\b/) { push @D, $key; } 
+               }
+           }
+       }; 
+     };
+   }
+"##generated\n['" . join("',\n'", sortuniq(@D)) . "']";
+}
+
+sub listdomain {
+  open IN, "$dir/domain";
+  while (<IN>) { $text = $_ ;
+   $text =~ s/[,:]/\n/g;
+   $text =~ s/\n +/\n/g;
+   $text =~ s/\\//g;
+   $text =~ s/^(\s+)//g;
+   $text=~ s/\n+/\n/g;
+ }
+ close IN;
+ sortuniq(split("\n",$text))
+}
 
 ## reversing the domain tree
-my %ref = ( ) ;
-my $ref=\%ref;
-$/ = undef;
 
-###fixme : it is not really a tree : so there may be several fathers
-open IN, "$dir/domain";
-while (<IN>) { my $text=$_ ; $text=~ s/\\\n\s*//g;
+sub hashdomain {
+ open IN, "$dir/domain";
+ my %ref = ( ) ; my $ref=\%ref;
+ while (<IN>) { my $text=$_ ; $text=~ s/\\\n\s*//g;
    $text=~ s/\n\s+/\n/g;
    my @text= split("\n", $text);
    for my $line (@text) { 
@@ -43,18 +70,15 @@ while (<IN>) { my $text=$_ ; $text=~ s/\\\n\s*//g;
      my @cut=split(":", $line) ;
      if ($cut[1]) {
        my @son=split(',',$cut[1]);
-      for my $s (@son) { $ref{$s} = $cut[0]; }
-     } 
+      for my $s (@son) { 
+        if ($ref{$s}) { $ref{$s} .= "," . $cut[0]} else {$ref{$s} = $cut[0]}
+      }
+     }
    }
 }
 close IN;
-
-my $TEXT="##generated\n";
-for my $tag (keys %ref) {
-  $TEXT .= "$tag:$ref{$tag}\n" ;
+  %ref
 }
-out("$dir/reversedomain",$TEXT);
-
 
 sub out { my ($bloc, $text) = @_;
   open  (OUT, ">$bloc") ;
