@@ -9,6 +9,8 @@
  !changeto lang/welcome-S.phtml.$lang
 !endif
 
+$wims_name_sheet
+
 <ul class="wims_home_result_list wims_sheet">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm

@@ -129,6 +129,16 @@ search_category=!char 1 of $search_category
  srch=!replace , by , $ in $srch
  srch=!deaccent $srch
  srch=!lower $srch
+!!do not want to use the misprints and suffix
+!if $search_category isin A
+  !read search.C
+   gotmC=$gotm
+   gotwC=$gotw
+   gotcntC=$gotcnt
+   gottC=$gott
+   gotdC=$gotd
+!endif
+
  !! correct misprints in the search words
  dictionary=bases/sys/words.$search_lang
  suffix_dictionary=bases/sys/suffix.$search_lang
@@ -136,6 +146,7 @@ search_category=!char 1 of $search_category
  srch=!exec translator $srch
  srch=!trim $srch
 !endif
+
 !writefile wimshome/$s2dir/home_search search_level=$search_level\
 search_category=$search_category\
 search_domain=$search_domain\
@@ -149,11 +160,11 @@ search_lang=$search_lang
 
 !if $search_category isin A
  !read search.S
-gotmS=$gotm
-gotwS=$gotw
-gotcntS=$gotcnt
-gottS=$gott
-gotdS=$gotd
+ gotmS=$gotm
+ gotwS=$gotw
+ gotcntS=$gotcnt
+ gottS=$gott
+ gotdS=$gotd
 !endif
 
 !read search.ker $search_lang

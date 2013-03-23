@@ -1,0 +1,58 @@
+!!##class
+basedir=bases/class
+!if $srch!=$empty
+ suffix_dictionary=
+ dictionary=$basedir/$search_lang
+ translator_unknown=
+ sout=!exec translator $srch
+ sout=!items2words $sout
+ sout=!words2lines $sout
+ sout=!translate ? to $ $ in $sout
+ sout=!sort lines $sout
+ sout=!nonempty lines $sout
+ scnt=!linecnt $sout
+!else
+ scnt=0
+!endif
+
+# Limit of shown items
+gotlim=50
+!distribute item 0,0,, into weight,gotcnt,gotm,gotw,lastmod
+
+!for i=1 to $scnt
+ l_=!line $i of $sout
+ t_=!wordcnt $l_
+ !advance gotcnt
+ !if $t_=2
+  !distribute word $l_ into m_,w_
+  !if $m_=$lastmod or $gotcnt>$gotlim
+   weight=$[$weight+$w_]
+  !else
+   !if $lastmod!=$empty
+    gotm=$gotm $lastmod
+    gotw=$gotw $weight
+    !advance gotcnt
+   !endif
+   lastmod=$m_
+   weight=$w_
+  !endif
+  !else
+   gotm=$gotm $l_
+ !endif
+!next i
+!if $lastmod!=$empty
+ gotm=$gotm $lastmod
+ gotw=$gotw $weight
+ !advance gotcnt
+!endif
+
+translator_switch=leaveline
+dictionary=$basedir/title
+gott=!exec translator $gotm
+dictionary=$basedir/description
+gotd=!exec translator $gotm
+!if $gotcnt>0 and / notin $gotm
+ dictionary=$basedir/addr
+ gotm=!exec translator $gotm
+!endif
+
