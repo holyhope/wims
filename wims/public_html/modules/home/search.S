@@ -1,7 +1,8 @@
 !!##sheet
+basedir=bases/sheet/index
 !if $srch!=$empty
  suffix_dictionary=
- dictionary=bases/sheet/index/$search_lang
+ dictionary=$basedir/$search_lang
  translator_unknown=
  sout=!exec translator $srch
  sout=!items2words $sout
@@ -49,7 +50,7 @@ translator_switch=leaveline
  gottype=search
  gotw=!words2lines $gotw
  gotm=!words2lines $gotm
- dictionary=bases/sheet/index/weight.$search_lang
+ dictionary=$basedir/weight.$search_lang
  gotW=!exec translator $gotm
  w_=
  !for i=1 to $gotcnt
@@ -61,12 +62,12 @@ translator_switch=leaveline
  gotm=!line $wims_sort_order of $gotm
 !endif
 
-dictionary=bases/sheet/index/title.$search_lang
+dictionary=$basedir/title.$search_lang
 gott=!exec translator $gotm
-dictionary=bases/sheet/index/description.$search_lang
+dictionary=$basedir/description.$search_lang
 gotd=!exec translator $gotm
 !if $gotcnt>0 and / notin $gotm
- dictionary=bases/sheet/index/addr.$search_lang
+ dictionary=$basedir/addr.$search_lang
  gotm=!exec translator $gotm
 !endif
 
