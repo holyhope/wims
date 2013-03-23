@@ -44,7 +44,7 @@ for my $l (@Lang) { my $text='';
    while ( my ($key, $value) = each (%keywords) ) {
      $text .= lc("$key:$value\n") ; 
    }
-   $text =~ s / +(\w+:)/\1/g;
+   $text =~ s / +(\w+:)/$1/g;
    out("$dirout/$l", join("\n", sortuniq(split("\n",$text)))); 
 }
 
