@@ -10,39 +10,22 @@ my $dir='../../modules';
 my $site='../site/lists';
 my $dom_templ='domain/domain.template';
 my $dom_reverse='domain/reversedomain';
+my $dom_json='domain/domain.json';
 #$/ = undef;
+###'arts','earth_sciences','history'
+my @DOMAIN=('biology','chemistry','history','informatics',
+  'language','mathematics','physics');
+if (-e $dom_json) {
+   open LI, $dom_json;  my $text;
+   while(<LI>) { 
+   next if (/^#/) ; $text .= $_;
+   };
+   $text=~ s/(\[|\])//g;
+   $text=~ s/\'//g;
+   push @DOMAIN, split(",\n", $text);
+}
 
-my %trad = ( 
-"algebras" => 'algebra',
-'algo' => 'algorithmic',
-'algorithmics' => 'algorithmic',
-'informatique' => 'informatics',
-'analisi' => 'analysis',
-'analiza' => 'analysis',
-'arithmetic_number'  => 'arithmetic',
-'arithmetics'  => 'arithmetic',
-"calculous"  => 'calculus',
-'evklidska_geometrija' => 'euclidean_geometry',
-'geometrija' => 'geometry',
-'geometrye' => 'geometry',
-'logica' => 'logic',
-'logika' => 'logic',
-'math' => 'mathematics',
-'physique' => 'physics',
-'proba' => 'probability',
-'botany' => 'botanics',
-'=linear_algebra' => 'linear_algebra',
-'linearna_algebra' => 'linear_algebra',
-'linear' => 'linear_algebra',
-'francais_reading_french' => 'french',
-'french_grammar_francais' => 'french',
-'francais' => 'french',
-'number_arithmetic' => 'arithmetic',
-'number_measure' => 'measurement',
-'lang' => 'language',
-'optique' => 'optics',
-'american_civilisation' => 'american_civilisation'
-);
+my %trad = ();
 ## should put all perl programm together
 ## read reversedomain
 if (-e $dom_reverse) {
@@ -76,6 +59,7 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
     push @KEYWORDS, @keywords;
    }
  }
+### traite les groupes de mots cles
  if (-e $dom_templ) {
    open LI, $dom_templ;
    while (<LI>) { my @m=split(":\n",$_);
@@ -84,7 +68,7 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
    }
    close LI;
    };
-
+### traite les groupes de mots domaine
  my $file="domain/domain.$lang";
   if (-e $file) {
       open LI, $file;
@@ -95,12 +79,14 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
    }
    close LI;
    };
- out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
- ##for my $d (sortuniq(keys %Domain)) { 
- ##  out("test/$d.$lang", join("\n",sortuniq(split("\n",$Domain{$d})) ))  if ($Domain{$d}); 
- ##}
-}
 
+ out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
+ for my $d (@DOMAIN) {
+   out("keywords/$d.$lang.tmp",
+     "['" . join("',\n'",sortuniq(split("\n",$Domain{$d})) ) . "']")  if ($Domain{$d}); 
+ }
+}
+### avoir une liste de domaine a priori maintenant
 sub treate_file { my ($file, $lang, $ref) = @_;
  my @res = (); my @lu = (); my @l = (); my @dom = ();
  my $keyl ='' ; my $keyw=''; my $keyu;
