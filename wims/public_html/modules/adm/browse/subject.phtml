@@ -3,43 +3,51 @@ $title
 
 !if $parm=$empty
  $name_domain
-$table_header
- !for t in $Tot_dom
- $table_tr <th colspan="2">
- !set td=!lookup $t in $dir_lang
- !default td=$t
- $td
- !reset td
- </th></tr>
-  !for d in $(tot_dom_$t)
-  $table_tr<th>
-   !set l_=$(dom_$d)
-   !set t_=!lookup $d in $dir_lang
-   !default t_=$d
-    !href module=$module&cmd=new&job=$job&parm=$d $t_
-    </th>
-   !if $l_=$empty
-    <td>
-    !href module=$module&cmd=new&job=$job&parm=$d $t_
-   !else
-    <td>
-    !for v in $l_
-    !set t_=!lookup $v in $dir_lang
-    !default t_=$v
-     !href module=$module&cmd=new&job=$job&parm=$v $t_
-     &nbsp;
-    !next v
-   !endif
-   </td>
-   </tr>
-  !next d
- !next t
- $table_end
- !!!read graph.phtml $Tot_dom
+<div class="wims_widget_box medium_size">
+<ul class="box_content inline">
+!for dom in $Tot_dom
+  !set dom_n=!lookup $dom in $dir_lang
+  !default dom_n=$dom
+  <li>
+  !set wims_ref_class=wims_button
+  !href module=$module&cmd=new&job=subject&parm=$dom $dom_n
+  </li>
+!next
+</ul>
+</div>
 !else
  $name_available
 !set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
   to $wims_menu_items
+
+!set cat=A
+<ul>
+ !for t in $list
+  <li id="$t">
+  !read script.phtml $t
+     !if $cnt > 1
+       <ul>
+        !for ttt in $tt
+         <li id="$ttt">
+          !read script.phtml $ttt
+           !if $cnt > 1
+           <ul>
+            !for tttt in $tt
+             <li id="$tttt">
+             !read script.phtml $tttt
+             </li>
+            !next
+           </ul>
+          !endif
+         </li>
+        !next
+        </ul>
+     !endif
+  </li>
+  !next t
+ </ul>
+ 
+ !exit
  $table_header
  !for t in $list
   $table_tr
@@ -75,6 +83,7 @@ $table_header
  </tr>
   !next t
  </table>
+ 
  !if $listcnt>1
    !read graph.phtml $parm
  !endif
