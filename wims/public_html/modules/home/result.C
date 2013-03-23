@@ -13,6 +13,7 @@ $wims_name_n_example
  !set d_=!line $i of $gotd
  <li class="wims_home_result_list">
  !href module=home&user=anonymous,$m_,anonymous $t_
+ $d_
 </li>
 !next i
 </ul>

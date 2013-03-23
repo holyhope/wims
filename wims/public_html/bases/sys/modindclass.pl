@@ -42,16 +42,17 @@ for my $l (@Lang) { my $text='';
     }
  }
    while ( my ($key, $value) = each (%keywords) ) {
-     $text .= "$key:$value\n" ; 
+     $text .= lc("$key:$value\n") ; 
    }
-   out("$dirout/$l", $text); 
+   $text =~ s / +(\w+:)/\1/g;
+   out("$dirout/$l", join("\n", sortuniq(split("\n",$text)))); 
 }
 
 sub refclass { my @L=@_ ; 
   for my $cl (@L) {
     open IN, "$dir/$cl/.def";
     while(<IN>) {
-    if ($_ =~ /!set class_(\w+)=(.*)/) { $ref{$cl}{$1}=$2 ;}}
+    if ($_ =~ /!set class_(\w+)=\s*(.*)/) { $ref{$cl}{$1}=$2 ;}}
     close IN;
   }
 }
@@ -73,5 +74,3 @@ sub sortuniq {
   my $prev = "not $_[0]";
   grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
 }
-
-#for my $tag (keys %{$hash{text}}) {}

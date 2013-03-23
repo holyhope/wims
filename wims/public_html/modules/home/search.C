@@ -11,10 +11,10 @@ basedir=bases/class
  sout=!sort lines $sout
  sout=!nonempty lines $sout
  scnt=!linecnt $sout
+
 !else
  scnt=0
 !endif
-
 # Limit of shown items
 gotlim=50
 !distribute item 0,0,, into weight,gotcnt,gotm,gotw,lastmod
@@ -46,6 +46,7 @@ gotlim=50
  !advance gotcnt
 !endif
 
+gotm=!words2lines $gotm
 translator_switch=leaveline
 dictionary=$basedir/title
 gott=!exec translator $gotm
@@ -55,4 +56,5 @@ gotd=!exec translator $gotm
  dictionary=$basedir/addr
  gotm=!exec translator $gotm
 !endif
+
 
