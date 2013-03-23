@@ -5,6 +5,9 @@ basedir=bases/class
  dictionary=$basedir/$search_lang
  translator_unknown=
  sout=!exec translator $srch
+ !if $sout=$srch
+   sout=$empty
+ !endif
  sout=!items2words $sout
  sout=!words2lines $sout
  sout=!translate ? to $ $ in $sout
@@ -56,5 +59,3 @@ gotd=!exec translator $gotm
  dictionary=$basedir/addr
  gotm=!exec translator $gotm
 !endif
-
-
