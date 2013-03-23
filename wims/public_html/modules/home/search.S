@@ -1,4 +1,4 @@
-
+!!##sheet
 !if $srch!=$empty
  suffix_dictionary=
  dictionary=bases/sheet/index/$search_lang

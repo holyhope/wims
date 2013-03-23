@@ -84,7 +84,6 @@ search_keywords=!translate " to $ $ in $search_keywords
  search_domain=!trim $search_domain
  search_keywords=!trim $search_keywords
 !endif
-
 search_category=!replace exercise by X in $search_category
 search_category=!replace tool by T in $search_category
 search_category=!replace recreation by R in $search_category
@@ -98,7 +97,7 @@ search_category=!char 1 of $search_category
 
 !if $search_keywords!=$empty
   search_keywords_cnt=!wordcnt $search_keywords
-!!! the keyword should be the address of a module - if it is found, no other search is done
+!!! the keyword may be the address of a module - if it is found, no other search is done
   !if (/ isin $search_keywords or %2F isin $search_keywords) and $search_keywords_cnt=1
      k_=!replace internal module= by in $search_keywords
      k_=!replace internal %2F by / in $k_
@@ -146,6 +145,15 @@ search_lang=$search_lang
 
 !if $search_category isin LPS
  !changeto search.$search_category
+!endif
+
+!if $search_category isin A
+ !read search.S
+gotmS=$gotm
+gotwS=$gotw
+gotcntS=$gotcnt
+gottS=$gott
+gotdS=$gotd
 !endif
 
 !read search.ker $search_lang

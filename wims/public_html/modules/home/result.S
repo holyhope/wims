@@ -1,9 +1,15 @@
+!if $gotcntS > 0
+  !set gotcnt=$gotcntS
+  !set gotm=$gotmS
+  !set gotd=$gotdS
+  !set gott=$gottS
+!endif
 
 !if $gotcnt=0
  !changeto lang/welcome-S.phtml.$lang
 !endif
 
-<ul class="wims_home_result_list">
+<ul class="wims_home_result_list wims_sheet">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm
  !set t_=!line $i of $gott
@@ -14,4 +20,3 @@
 </li>
 !next i
 </ul>
-
