@@ -8,10 +8,10 @@ my $dir='domain';
 ## list of all domains in domain/domain
 
 my @list=listdomain();
-my $text=join(":\n", @list) . ":\n"; 
-$text=~ s/^://g;
-$text=~ s/ +\n/\n/g;
-out("$dir/domain.template", $text);
+#my $text=join(":\n", @list) . ":\n"; 
+#$text=~ s/^://g;
+#$text=~ s/ +\n/\n/g;
+#out("$dir/domain.template", $text);
 
 my %ref= hashdomain() ;
 my $ref=\%ref;
@@ -56,7 +56,7 @@ sub domainjson { my ($ref) = @_ ;
 }
 
 
-sub listdomain {
+sub listdomain { my $text='';
   open IN, "$dir/domain";
   while (<IN>) { $text = $_ ;
    $text =~ s/[,:]/\n/g;
@@ -70,7 +70,7 @@ sub listdomain {
 }
 
 sub treate_domainfile { my ($file) = @_;
-   my %ref = ( ) ; my $ref=\%ref;
+   my %ref = ( ) ; my $ref=\%ref; my $text;
    open IN, "$dir/$file";
    while (<IN>) { 
    $text = $_ ;
