@@ -151,7 +151,7 @@ brd.removeObject(pp);\
 function efface() {\
 brd.removeObject(p);\
 jsss='';\
-alert(jss);\
+/*alert(jsss);*/\
 return re=0;\
 }
    !endif
