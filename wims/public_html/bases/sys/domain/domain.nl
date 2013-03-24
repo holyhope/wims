@@ -6,7 +6,7 @@ abelian_group:
 abstract_algebra:abstracte algebra
 affine_geometry:affiene geometrie
 algebra:algebra
-algebra_and_geometry:
+algebra_geometry:
 algebraic_geometry:
 algorithmics:
 american_civilisation:
