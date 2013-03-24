@@ -4,11 +4,6 @@
 !filewrite getfile/last.html
 test_validate=!sh sed -e '1,6d' < $wims_home/s2/$(wims_session)_test/last.html > $wims_home/sessions/$(wims_session)/getfile/last.html
 
-!! validator_address="http://wimstest1.di.u-psud.fr/w3c-validator/check";
-!! en local : validator_address="/usr/share/w3c-markup-validator/cgi-bin/check"
-
 !if $validator_address!=$empty and $validation_ask!=$empty
-    !!validate_out=!sh scripts/adm/validation/validator.pl $wims_home/s2/$(wims_session)_test/last.html $validator_address $validator_address
-    validate_out=!sh scripts/adm/validation/validator.pl $wims_home/sessions/$(wims_session)/getfile/last.html $validator_address
+  validate_out=!sh scripts/adm/validation/validator.pl $wims_home/sessions/$(wims_session)/getfile/last.html "$validator_address"
 !endif
-
