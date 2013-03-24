@@ -15,9 +15,9 @@ my @Key = ('supervisor','domain','level','lang','institution','description',"add
 my @Lang= ('fr','en','it','nl') ; 
 my %T = ('version' => 'version',
 'lang' => 'language',
-'institution' => 'title',
+'institution' => 'description',
 'supervisor' => 'author',
-'description' => 'description',
+'description' => 'title',
 'level' => 'level',
 );
 my %keywords=();
