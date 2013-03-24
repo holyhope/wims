@@ -18,6 +18,7 @@
 \newtheorem{defn}{Définition}[section] 
 \newtheorem{ex}{Exemple}
 \newtheorem{exo}{Exercice}
+\newtheorem{rem}{Remarque}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\RR{\mathbb R}
 \def\NN{\mathbb N}
@@ -38,6 +39,12 @@
   \end{proof}
   \begin{defn} 
     Voici une définition
+  \end{defn}
+  \begin{rem} 
+    Voici une remarque
+  \end{rem}
+  \begin{defn}[titre]
+    Voici une définition avec titre
   \end{defn}
 \section{Insertion d'un exercice}
 Pour insérer un exercice, prendre les deux premières lignes
@@ -77,7 +84,7 @@ Un exemple de dessin non vu dans le fichier pdf \index{exemple}
 \end{wimsonly}
 
 
-\section{Une animation qui ne va passer dans latex }
+\section{Une animation qui ne doit pas être dans latex}
 \begin{wimsonly}
 \begin{wims}
 
@@ -132,4 +139,30 @@ le paramètre \N}
  c&d&f\\
   \hline
  \end{tabular}
+ 
+ \section{Un algorithme}
+Vous pouvez configurer l'environnement algorithm dans latex pour 
+que les mots clés soient en français
+
+\begin{algorithm}
+\caption{Liste des polygones de Newton}
+\begin{algorithmic}[1]
+\REQUIRE $a, b$
+\ENSURE  $u$ et $v$ tels que $u a + v b = pgcd(a,b)$
+\IF{$a = 0$}
+  \STATE Retourner $[b,0,1]$
+\ENDIF
+  \STATE $x \rightarrow a$,  $y \rightarrow b$, $ vx \rightarrow 0$,  $vy \rightarrow 1$
+  \WHILE{ $ y <> 0$}
+   \STATE $q \rightarrow quotient de x par y$, $r \rightarrow x-q*y$
+  \STATE $t \rightarrow vy$
+  \STATE $vy \rightarrow vx - q*vy$
+  \STATE $vx \rightarrow t$
+  \STATE $x \rightarrow y$
+  \STATE $y \rightarrow r$
+\ENDWHILE
+ \STATE Retourner $\lbrack x, (x-b*vx)/a, vx \rbrack $
+\end{algorithmic}
+\end{algorithm}
+
 \end{document}

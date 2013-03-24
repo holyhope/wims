@@ -657,9 +657,9 @@ sub complete {my ($tag, $ref) = @_;
   if ($INDEX == 1 && !($ref->{titb}{index})) { $ref->{titb}{index} = 'Index' ;}
 }
 
-#option full  <h2 class="defn">Définition [titre perso]</h2> <div class= "definition">  </div> si cela existe
+#option full  <h2 class=" l2w_content defn">Définition [titre perso]</h2> <div class= " l2w_content definition">  </div> si cela existe
 #option bloc  <div class= "definition"> </div>  si cela existe (intérieur d'un fold ou d'un link)
-#option titre  <h2 class="defn">Définition </h2>  si cela existe (titre d'un fold)
+#option titre  <h2 class="l2w_content defn">Définition </h2>  si cela existe (titre d'un fold)
 sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
   my $a = $ref_env->{titre}{$rubrique};
   my $b = $ref_env->{style}{$rubrique};
@@ -668,17 +668,17 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
     $ref_env->{style}{$rubrique} = $b;
     dbg("... environnement $rubrique sans style css, par defaut $rubrique")
   };
-  my $div_d = "<div class=\"$b\">";
+  my $div_d = "<div class=\"l2w_content $b\">";
   my $div_f = '</div>';
   if ( $option eq 'titre') { 
-    $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;
+    $TEXT =~ s/<$rubrique>/<span class=\"l2w_content $b\">/g;
     $TEXT =~ s/<\/$rubrique>/<\/span>\n/g;
   } elsif (!$a || $option eq 'bloc') {
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])?/$div_d/g;
     $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } elsif ($option eq 'full') {
-    $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h2 class=\"$b\">$a $1<\/h2>$div_d/g;
-    $TEXT =~ s/<$rubrique>/<h2 class=\"$b\">$a<\/h2>$div_d/g;
+    $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h2 class=\"l2w_content $b\">$a $1<\/h2>$div_d/g;
+    $TEXT =~ s/<$rubrique>/<h2 class=\"l2w_content $b\">$a<\/h2>$div_d/g;
     $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } else  { 
     $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;
@@ -1361,8 +1361,14 @@ sub store_algo { my ($txt, $acc, $cmd, $comment, $indent) = @_ ;
   $txt .= " " . $acc ;
   $txt .= $hash_algo{titre}{$hash_algo{suite}{$cmd}} if  ($hash_algo{suite}{$cmd}) ;
   $indent = $indent + $hash_algo{avant}{$cmd} ;
-  $txt = "\n" . indent($indent) .  $hash_algo{titre}{$cmd} . $txt  if ( !($cmd =~ /END/) || $algo_noend == 0);
-  $txt .=  indent(3) . "{<i>$comment</i>}" if ($comment) ;
+  if($hash_algo{titre}{$cmd}) {
+   $txt = "\n" . indent($indent) .  $hash_algo{titre}{$cmd} . $txt  if ( !($cmd =~ /END/) || $algo_noend == 0);
+  }
+  else
+  {
+   $txt = "\n" . indent($indent) . $txt  if ( !($cmd =~ /END/) || $algo_noend == 0);
+  }
+  $txt .=  indent('3') . "{<i>$comment</i>}" if ($comment) ;
   $txt .= "\n" ;
   $txt =~ s/\n+/\n/ ;
   $indent += $hash_algo{apres}{$cmd} ;
@@ -1399,11 +1405,11 @@ sub algorithmic { my ($Text) = @_;
     #des commentaires ?
     if ($ligne =~ /^\s*\\COMMENT/) { $ligne = "<i>$ligne</i>\n" };
     $text .= "\n" . $ligne;
-    $text =~ s/\n{2,}/\n/g ;
-    #$text =~ s/\n+/<br\/>/g ;
-    $text =~ s/(<br\s*\/>)+/<br class="spacer" \/>/g ;
-    $text =~ s/(<br>)+/<br \/>/g ;
+    $text =~ s/\n{2,}/\n/g;
+    $text =~ s/(<br\s*\/>)+/<br \/>/g;
+    $text =~ s/(<br>)+/<br \/>/g;
   }
+  $text =~ s/\n/<br \/>/g;
   $text ;
 }
 
