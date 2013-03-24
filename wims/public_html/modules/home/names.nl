@@ -29,7 +29,7 @@ CR_mod = Full-power modules
 E_comp = gecompileerd op
 E_manager = Site manager:
 
-RE_found = !nosubst Gezocht en gevonden $gotcnt $tt
+RE_found = !nosubst Gezocht en gevonden $Gotcnt $tt
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
 RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2 = !nosubst $gotcnt $tt op volgorde van populariteit\

@@ -17,7 +17,7 @@
  $RE_found.
 </p>
 !else
- !if $s_keywords!=$empty and $gotcnt1<1
+ !if $s_keywords!=$empty and $Gotcnt<1
  <p class="wims_alertmsg">
   $RE_nomatch.
   </p><p>
@@ -27,7 +27,7 @@
     !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(C_$i)
     &nbsp;
    !next i
-   !if $has_browse=yes
+   !!if $has_browse=yes
     $wims_name_or
     !href module=adm/browse&$browse_parm $N_browsesite
 .
@@ -35,7 +35,7 @@
   !endif
   </p>
  !endif
- !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0
+ !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
   !if $list_start>0
    !href module=home&cmd=reply&list_start=$[$list_start-$list_batch] &lt;&lt;
    &nbsp;

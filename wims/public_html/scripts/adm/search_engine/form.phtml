@@ -1,11 +1,14 @@
 <!-- adm/search_engine/form.phtml -->
+!!set dir=wimshome/public_html/bases/sys/domain
 
+!!set Tot_Dom=!lookup domain in $dir/domain
+!!set Tot_Dom=all,$Tot_Dom
 !set wims_ref_anchor=#searchform
 
 <div class="wims_search_engine" id="searchform">
 
 !form new
-<input type="hidden" name="module" value="home"/>
+<input type="hidden" name="module" value="home" />
  !set bgcolort=#808080
 !if $wims_accessright!=$empty
  <table class="wimsnoborder" style="background-color:$bgcolor2;">
@@ -48,14 +51,19 @@
 !endif
 </tr><tr>
 <td>
-  <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form"/>
+  <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form" />
 </td><td>
  !formselect search_category list $slist prompt $plist
 !default search_lang=$lang
 !set L_language=!words2items $wims_site_languages
 !formselect search_lang list $L_language
+<br />
+!default search_and=no
+!formselect search_and list yes,no prompt $name_search_and
+!!formselect search_domain list $Tot_Dom
+
 </td><td>
- <input type="submit" value="$N_Search"/>
+ <input type="submit" value="$N_Search" />
 </td></tr>
 </table>
 </div>

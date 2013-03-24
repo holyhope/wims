@@ -29,7 +29,7 @@ E_manager = Administrador del sitio:
 E_faq = FAQ
 E_dochelp = Documents d'aide
 
-RE_found = !nosubst Encontrados $gotcnt $tt para su búsqueda
+RE_found = !nosubst Encontrados $Gotcnt $tt para su búsqueda
 RE_nomatch = !nosubst Su búsqueda no dio ningún resultado
 RE_pop = !nosubst Aquí están los $gotcnt $tt más populares
 RE_pop2 = !nosubst $gotcnt $tt por orden de popularidad\

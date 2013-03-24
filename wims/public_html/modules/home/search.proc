@@ -129,15 +129,20 @@ search_category=!char 1 of $search_category
  srch=!replace , by , $ in $srch
  srch=!deaccent $srch
  srch=!lower $srch
-!!do not want to use the misprints and suffix
-
-!if $search_category isin A
+!!do not want to use the misprints and suffix for the moment
+Gotcnt=0
+!if $search_category iswordof A C
   !read search.C
+   dictionary=bases/sys/words.$search_lang
+   translator_unknown=leave
+   srch=!exec translator $srch
+   srch=!trim $srch
    gotmC=$gotm
    gotwC=$gotw
    gotcntC=$gotcnt
    gottC=$gott
    gotdC=$gotd
+   Gotcnt=$[$Gotcnt + $gotcnt]
 !endif
 
  !! correct misprints in the search words
@@ -166,15 +171,18 @@ search_lang=$search_lang
  gotcntS=$gotcnt
  gottS=$gott
  gotdS=$gotd
+ Gotcnt=$[$Gotcnt + $gotcnt]
 !endif
 
 !read search.ker $search_lang
+ Gotcnt=$[$Gotcnt + $gotcnt]
 :bailout
 
 translator_switch=leaveline
 !bound list_start between integer 0 and 10000 default 0
 list_start=$[$list_batch*floor($list_start/$list_batch)]
-!if $gotcnt=0
+
+!if $Gotcnt=0
  gottype=popular
  # sp=!replace internal wimshome/public_html/ by $ in $search_package1
  # gotM=!sh head -c 10000 $sp/pop/$search_category.$search_lang

@@ -8,7 +8,7 @@ C_S		=Hojas de ejercicios
 C_D		=Lecciones y referencias
 C_P		=Herramientas rápidas
 C_F		=Mensajes de los foros
-
+C_C     =Open classes
 N_browse	=visita guiada
 N_browsesite	=explorar este sitio
 N_browse2	=Explorar este sitio
@@ -17,3 +17,4 @@ N_search	=buscar
 
 name_search_engine=Search Engine
 name_search_help=Tips for searching
+name_search_and=all word groups,one of the word groups
