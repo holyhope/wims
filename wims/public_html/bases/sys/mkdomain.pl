@@ -52,7 +52,7 @@ sub domainjson { my ($ref) = @_ ;
        }; 
      };
    }
-"##generated\n['" . join("',\n'", sortuniq(@D)) . "']";
+"<!-- generated -->\n['" . join("',\n'", sortuniq(@D)) . "']";
 }
 
 
