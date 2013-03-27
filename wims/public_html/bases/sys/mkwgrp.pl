@@ -130,7 +130,7 @@ sub treate_file { my ($file, $lang, $ref) = @_;
   if ($keyl) { $keyw = $keyl } else { $keyw = $keyu if ($keyu); }
   if( @dom ) {
      for my $a (@dom) {
-      if ($a) {$ref->{$a} .= $keyw . "\n" if ($keyw)  ;
+      if ($a) {$ref->{$a} .= $keyw . "\n" if ($keyw) ;
       }
    }
   }
@@ -158,9 +158,15 @@ sub treate_keyword { my ($line) = @_ ;
   if (!($line =~ /,/)) {$line =~ tr / /,/ ;};
   my @k = split(',', $line);
   my $tmp;
-  for my $la (@k) { $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
-  $tmp= join("\n",split(',', $la)) if ($la);
+  for my $la (@k) { 
+  $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
+  if ($la) {
+    if ($tmp) { $tmp .= "\n" . join("\n",split(',', $la))} 
+      else
+      {$tmp = join("\n",split(',', $la))}
   }
+  }
+  $tmp=~ s/'/\\'/g if ($tmp);
   $tmp;
 }
 
