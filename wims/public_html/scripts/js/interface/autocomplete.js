@@ -13,9 +13,19 @@ jQuery(function($) {
       return comma_split( term ).pop();
     }
 
-
-
-    $(".multicomplete").autocomplete({
+    $(".multicomplete")
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if (event.keyCode === $.ui.keyCode.TAB &&  $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      //Adds Autocompletion
+      .autocomplete({
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
         source: function( request, response ) {
           // delegate back to autocomplete, but extract the last term
           response( $.ui.autocomplete.filter(tags, extractLast( request.term ) ) );
@@ -27,19 +37,18 @@ jQuery(function($) {
           // add the selected item
           terms.push( ui.item.value );
           // add placeholder to get the comma-and-space at the end
-          terms.push( "" );
-          this.value = terms.join( ", " );
+          terms.push("");
+          this.value = terms.join(", ");
           return false;
         }
     });
 
     $(".autocomplete").autocomplete({
-      source: function( request, response ) {
-              
-              var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-              response( $.grep( tags, function( item ){
+        source: function( request, response ) {
+            var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+            response( $.grep( tags, function( item ){
                   return matcher.test( item );
-              }) );
-          }
+            }) );
+        }
     });
 });
