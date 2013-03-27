@@ -4,6 +4,18 @@
 !!set Tot_Dom=!lookup domain in $dir/domain
 !!set Tot_Dom=all,$Tot_Dom
 !set wims_ref_anchor=#searchform
+!set list=!record 0 of wimshome/public_html/bases/sys/keywords/list.$search_lang
+!set listcnt=!itemcnt $list
+<script type="text/javascript">
+/*<![CDATA[*/
+     var tags = [
+     !for a=1 to $listcnt
+     !record 0 of wimshome/public_html/bases/sys/keywords/$(list[$a]).$search_lang.tmp
+,
+     !next
+];
+ /*]]>*/
+</script>
 
 <div class="wims_search_engine" id="searchform">
 
@@ -51,7 +63,7 @@
 !endif
 </tr><tr>
 <td>
-  <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form" />
+  <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete" />
 </td><td>
  !formselect search_category list $slist prompt $plist
 !default search_lang=$lang

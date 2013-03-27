@@ -18,7 +18,7 @@ my @DOMAIN=('biology','chemistry','history','informatics',
 if (-e $dom_json) {
    open LI, $dom_json;  my $text;
    while(<LI>) { 
-   next if (/^#/) ; $text .= $_;
+   next if (/^#|<--/) ; $text .= $_;
    };
    $text=~ s/(\[|\])//g;
    $text=~ s/\'//g;
@@ -81,11 +81,21 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
    };
 
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
+ my @list=();
  for my $d (@DOMAIN) {
-   out("keywords/$d.$lang.tmp",
-     "['" . join("',\n'",sortuniq(split("\n",$Domain{$d})) ) . "']")  if ($Domain{$d}); 
+   if ($Domain{$d}) {
+    out("keywords/$d.$lang.tmp",
+     "'" . 
+     join("',\n'",sortuniq(split("\n",$Domain{$d})) ) 
+     . "'"
+     ); 
+    push @list, $d ;
+    };
  }
+ out("keywords/list.$lang", join(",",sortuniq(@list)));
 }
+
+
 ### avoir une liste de domaine a priori maintenant
 sub treate_file { my ($file, $lang, $ref) = @_;
  my @res = (); my @lu = (); my @l = (); my @dom = ();
