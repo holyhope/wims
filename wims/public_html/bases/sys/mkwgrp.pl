@@ -106,11 +106,10 @@ sub treate_file { my ($file, $lang, $ref) = @_;
     $line =~ s/,\s+/,/g; $line =~ s/\s+,/,/g;
     if ($line =~ /domain=/){ $line =~ s/domain=// ;
       $line =~ s/( +\n|\n)//g;
-      $line =~ s/ +/_/g;
+      $line =~ s/ +/_/g; 
       next if( $line =~ /[^[:ascii:]]/);
       $line = lc($line);
-      for my $a (split(",",$line)) {
-       $a = $trad{$a} if ($trad{$a});
+      for my $a (split(",", $line)) {
        next if ($a =~ /tevila/) ;
        push @dom, $a ;
       };
