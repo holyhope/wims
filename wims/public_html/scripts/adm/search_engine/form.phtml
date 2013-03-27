@@ -5,10 +5,13 @@
 !!set Tot_Dom=all,$Tot_Dom
 !set wims_ref_anchor=#searchform
 !set list=!record 0 of wimshome/public_html/bases/sys/keywords/list.$search_lang
+!set list_domain=!replace internal , by ',' in '$list'
 !set listcnt=!itemcnt $list
 <script type="text/javascript">
 /*<![CDATA[*/
      var tags = [
+     $list_domain
+,
      !for a=1 to $listcnt
      !record 0 of wimshome/public_html/bases/sys/keywords/$(list[$a]).$search_lang.tmp
 ,
