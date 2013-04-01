@@ -217,10 +217,12 @@ $slib_out
 !endif
 !if $input_type iswordof polygon
   var capture = function() {
-        document.getElementById('$jsx_reply').value='free=' + jsss +'';}
+    document.getElementById('$jsx_reply').value='free=' + jsss +'';}
 !endif
 !if $input_type iswordof curve
-  var capture = function() {document.getElementById('$jsx_reply').value='free='+aa;}
+  var capture = function(){
+    document.getElementById('$jsx_reply').value='free='+aa;
+  }
 !endif
 /*]]>*/
 </script>

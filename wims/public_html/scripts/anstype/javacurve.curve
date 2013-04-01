@@ -11,9 +11,13 @@
  !exit
 !endif
 
+!!for the moment assume that linecnt =1
+!set linecnt=!itemcnt $(rlist[;1])
+!set n=!itemcnt $(rlist[1;])
+
 !default precision=8
-!!tol1	= 10,   8,   7,   6,   5,    4, 3.5,   3, 2.5,   2
-!!tol2	=50,  40,  30,  25,  20,   17,  15,  13,11.5,  10
+!!tol1	= 10,   8,   7,   6,   5,   4,  3.5,   3, 2.5,   2
+!!tol2	= 50,  40,  30,  25,  20,   17,  15,  13,11.5,  10
 !set precision1=$precision
 !set precision2=$[5*$precision]
 
@@ -42,7 +46,7 @@ curvecomp_yrange=0,$ysize
 
 !!curvecomp_option=discrete1 discrete2
 curvecomp_1=$glist
-curvecomp_2=$rlist
+curvecomp_2=$(rlist[1;])
 curvecomp_tolerance=$precision2
 
 tt=!exec curvecomp
@@ -84,10 +88,11 @@ test=$mean
 script=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $script
 !for j=1 to $m/2
 script=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $script
-script=!append line brd.create('line',[p[$j-1],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $script
+script=!append line brd.create('line',[p[$[$j-1]],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $script
 !next
-script=!append line q[0] = brd.create('point',[$(rlist[1]),$(rlist[2])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
+nb=1
+script=!append line q[0] = brd.create('point',[$(rlist[$nb;1]),$(rlist[$nb;2])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
 !for j=1 to $n/2
-script=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
-script=!append line brd.create('line',[q[$j-1],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $script
+script=!append line q[$j] = brd.create('point',[$(rlist[$nb;2*$j-1]),$(rlist[$nb;2*$j])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
+script=!append line brd.create('line',[q[$[$j-1]],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $script
 !next
