@@ -9,6 +9,7 @@ JXG.Options.point.showInfobox = $showinfobox;\
 var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$jsx_xsize,$jsx_ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ="$jsx_imgurl";\
 var ima = brd.create('image',[urlImg,[0,$jsx_ysize],[$jsx_xsize,-$jsx_ysize] ]);\
+ima.needsRegularUpdate = false;\
 var jsxbox_free=[];\
 var p=[];
   !if $input_type = points
@@ -156,6 +157,38 @@ return re=0;\
 }
    !endif
 
+   !if $input_type = brokenline
+!set script=$script\
+var lo=[];\
+var re=0;\
+var jsss='';\
+JXG.addEvent(document.getElementById('jsxbox'),'mousedown', function (e) {\
+var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e), brd);\
+p[re] = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', name:''});\
+var pp = brd.create('point', coords.usrCoords.slice(1),{face:'+', size:'8',fixed:true,strokeColor:'black', name:'', Opacity:0.5});\
+lo[re] = brd.create('segment',[p[re],pp],{Opacity:0.5});\
+if(re>=1){\
+louis = brd.create('segment',[p[re-1],p[re]]);\
+brd.removeObject(lo[re-1]);}\
+var c = [Math.round(p[re].X()),Math.round(p[re].Y())];\
+jsss= jsss+c+';';\
+re=re+1;\
+JXG.addEvent(document.getElementById('jsxbox'),'mousemove', function (z) {\
+var coor = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(z), brd);\
+pp.moveTo(coor.usrCoords.slice(1));\
+},this);\
+JXG.addEvent(document.getElementById('jsxbox'),'mouseleave', function (y) {\
+JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
+brd.removeObject(lo[re]);\
+brd.removeObject(pp);\
+},this);\
+}, this);\
+function efface() {\
+brd.removeObject(p);\
+jsss='';\
+return re=0;\
+}
+   !endif
    !if $input_type = curve
 !set script=$script\
 var pp=[];\
@@ -215,13 +248,13 @@ $slib_out
   var capture = function() {
         document.getElementById('$jsx_reply').value='free=' + [Math.round(p[0].X()),Math.round(p[0].Y()),Math.round(p[0].Dist(p[1]))] +'';}
 !endif
-!if $input_type iswordof polygon
-  var capture = function() {
+!if $input_type iswordof polygon brokenline 
+var capture = function() {
     document.getElementById('$jsx_reply').value='free=' + jsss +'';}
 !endif
 !if $input_type iswordof curve
   var capture = function(){
-    document.getElementById('$jsx_reply').value='free='+aa;
+    document.getElementById('$jsx_reply').value='free=' + aa;
   }
 !endif
 /*]]>*/

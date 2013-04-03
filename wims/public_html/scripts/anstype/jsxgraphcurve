@@ -3,7 +3,7 @@ replygood=$(replygood$i)
 reply=$(reply$i)
 
 type=$(replygood$i[2;1])
-!!color can be changed... (color1=reponse de l'élève, color2 la réponse)
+!!color can be changed... (color1=student answer, color2 good answer)
 !set color1=!getopt color1 in $(replyoption$i)
 !default color1=black
 !set color2=!getopt color2 in $(replyoption$i)
@@ -18,7 +18,7 @@ m_reply$i=$rlist
 reply__$i=&nbsp;
 
 !!useful only for polygon.
-!if $type iswordof polygon
+!if $type iswordof polygon brokenline
   !set rlist=!translate internal ; to , in $rlist
 !endif
 
@@ -30,7 +30,7 @@ reply__$i=&nbsp;
  !exit
 !endif
 
-!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,curve default points
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,curve,brokenline default points
 
 !if $type notwordof points
  !if $(reply$i)=$empty
@@ -46,15 +46,21 @@ reply__$i=&nbsp;
 var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ='$(replygood$i[1;1])';\
 var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize] ]);\
+ima.needsRegularUpdate = false;\
 /*brd.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
 
-!if $type iswordof line sline segment vector rectangle polygon curve
+!if $type iswordof line sline segment vector rectangle polygon \
+   curve brokenline 
 !set script=$script\
 var p=[];\
 var q=[];
 !endif
 
-!read anstype/javacurve.$type
+!if $type iswordof curve brokenline
+  !read anstype/javacurve.curve
+!else
+  !read anstype/javacurve.$type
+!endif
 !if $Test!=$empty or NaN isin $test
    !exit
 !endif
