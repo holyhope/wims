@@ -10,7 +10,7 @@ jQuery(function($) {
         
         wims_menu.buildMbExtruder({
             position:"left",
-            width:300,
+            width:250,
             extruderOpacity:.8,
             textOrientation:"tb",
             onExtOpen:function(){},
