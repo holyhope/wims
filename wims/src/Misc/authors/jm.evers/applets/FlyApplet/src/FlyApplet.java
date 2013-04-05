@@ -88,6 +88,7 @@ yscale y1,y1_name,y2,y2_name,y3,y3_name,....,fontsize,fontname,color,linewidth
 xlabel x_axis-name,fontsize,fontname,[fontcolor,alpha]
 ylabel y_axis-name,fontsize,fontname,[fontcolor,alpha]
 precision 100 // 2 decimals for reading coords with "mouse yes"
+logbase 2
 xlogscale xstart,xend,color[alpha,linewidth]
 ylogscale ystart,yend,color[alpha,linewidth]
 debug yes //some info on loading script and other trouble
@@ -138,6 +139,7 @@ public class FlyApplet extends JApplet{
     String flyscript;
     double xmin=-10D,xmax=10D;
     double ymin=-10D,ymax=10D;
+    double exp = 10D; /* exp is used for logbase : use command like "logbase 2" to modify*/
     int xsize,ysize;
     URL url;
     int object_count=0;    
@@ -206,87 +208,78 @@ public class FlyApplet extends JApplet{
 		bg = new BufferedImage(xsize,ysize, BufferedImage.TYPE_INT_ARGB );
 	        backg = (Graphics2D) bg.getGraphics();
 		ReadFlyScript(flyscript);
-		// nothing to draw just pointing}
+		// nothing to draw just pointing
 		if(!mouse){FlyApplet_panel.ctype=FlyApplet_panel.NULL;}
 	    }
 	}
-	// see if Gang's params are set; if so use these settings for the drawing etc.
-	try{
-	    parmstr=getParameter("type");
-	    if( parmstr != null || parmstr.length() > 3 ){
-		use_controls = true;
-		parmstr.toLowerCase(); parmstr.trim();
-		FlyApplet_panel.ctype=FlyApplet_panel.NULL;
-		if(parmstr.compareTo("curve")==0) FlyApplet_panel.ctype=FlyApplet_panel.CURVE;
-		if(parmstr.compareTo("rectangle")==0) FlyApplet_panel.ctype=FlyApplet_panel.RECT;
-	        if(parmstr.compareTo("rect")==0) FlyApplet_panel.ctype=FlyApplet_panel.RECT;
-    		if(parmstr.compareTo("circle")==0) FlyApplet_panel.ctype=FlyApplet_panel.CIRCLE;
-	        if(parmstr.compareTo("lines")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
-	        if(parmstr.compareTo("mlines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
-	        if(parmstr.compareTo("multilines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
-	        if(parmstr.compareTo("segments")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
-	        if(parmstr.compareTo("line")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINE;
-	        if(parmstr.compareTo("sline")==0) FlyApplet_panel.ctype=FlyApplet_panel.SLINE;
-	        if(parmstr.compareTo("semiline")==0) FlyApplet_panel.ctype=FlyApplet_panel.SLINE;
-	        if(parmstr.compareTo("seg")==0) FlyApplet_panel.ctype=FlyApplet_panel.SEG;
-	        if(parmstr.compareTo("segment")==0) FlyApplet_panel.ctype=FlyApplet_panel.SEG;
-    	        if(parmstr.compareTo("poly")==0) FlyApplet_panel.ctype=FlyApplet_panel.POLY;
-	        if(parmstr.compareTo("polygon")==0) FlyApplet_panel.ctype=FlyApplet_panel.POLY;
-	        if(parmstr.compareTo("points")==0) FlyApplet_panel.ctype=FlyApplet_panel.POINTS;
-	        if(parmstr.compareTo("vec")==0) FlyApplet_panel.ctype=FlyApplet_panel.VEC;
-	        if(parmstr.compareTo("vector")==0) FlyApplet_panel.ctype=FlyApplet_panel.VEC;
-	        
-	    }
-	    parmstr=getParameter("replyurl");
-	    if(parmstr!=null && parmstr.length()>0){ replystring = parmstr;}
-	    else{ replystring="http://localhost/wims.cgi?";}
-	    
-	    parmstr=getParameter("retry");
-	    if(parmstr!=null && parmstr.length()>0){retry = parmstr;}
-	
-	    parmstr=getParameter("prompt");
-	    if(parmstr!=null && parmstr.length()>0){prompt=parmstr;}
-	    
-	    parmstr=getParameter("dashed");
-	    if(parmstr!=null && parmstr.length()>0){ dashed = true;}
-	    
-	    parmstr=getParameter("linewidth");
-	    if(parmstr!=null && parmstr.length()>0){linewidth =  Integer.parseInt(parmstr);}
-	    
-	    parmstr=getParameter("alpha");
-	    if(parmstr!=null && parmstr.length()>0){
-		alpha =  Integer.parseInt(parmstr);
-		clickcolor = MakeTransparent(clickcolor,alpha);
-	    }
-
-	    parmstr=getParameter("pointstyle");
-	    if(parmstr!=null && parmstr.length()>0){if(parmstr.equalsIgnoreCase("dot")){cross = false;}}
-	    
-	    parmstr=getParameter("background");
-	    if (parmstr!=null && parmstr.length()>0){
-		try {url=new URL(parmstr);}
-		catch (MalformedURLException e) {url=null;}
-		if(url != null){
-		    try{
-			bg = (BufferedImage) ImageIO.read(url); 
-	    	    }catch(IOException e){DeBug("can not load image from "+url+"\n"+e); bg = null;}	
+	else
+	{
+	    // see if Gang's params are set; if so use these settings for the drawing etc.
+	    try{
+		parmstr=getParameter("type");
+	        DeBug("FOUND PARAM TYPE");
+		if( parmstr != null || (parmstr.length() > 3 && parmstr.length() < 11) ){
+		    parmstr.toLowerCase(); parmstr.trim();
+		    FlyApplet_panel.ctype=FlyApplet_panel.NULL;
+		    if(parmstr.compareTo("curve")==0) FlyApplet_panel.ctype=FlyApplet_panel.CURVE;
+		    if(parmstr.compareTo("rectangle")==0) FlyApplet_panel.ctype=FlyApplet_panel.RECT;
+	    	    if(parmstr.compareTo("rect")==0) FlyApplet_panel.ctype=FlyApplet_panel.RECT;
+    		    if(parmstr.compareTo("circle")==0) FlyApplet_panel.ctype=FlyApplet_panel.CIRCLE;
+	    	    if(parmstr.compareTo("lines")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
+		    if(parmstr.compareTo("mlines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
+	            if(parmstr.compareTo("multilines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
+	    	    if(parmstr.compareTo("segments")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
+	    	    if(parmstr.compareTo("line")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINE;
+	    	    if(parmstr.compareTo("sline")==0) FlyApplet_panel.ctype=FlyApplet_panel.SLINE;
+	    	    if(parmstr.compareTo("semiline")==0) FlyApplet_panel.ctype=FlyApplet_panel.SLINE;
+	    	    if(parmstr.compareTo("seg")==0) FlyApplet_panel.ctype=FlyApplet_panel.SEG;
+	    	    if(parmstr.compareTo("segment")==0) FlyApplet_panel.ctype=FlyApplet_panel.SEG;
+    	    	    if(parmstr.compareTo("poly")==0) FlyApplet_panel.ctype=FlyApplet_panel.POLY;
+	    	    if(parmstr.compareTo("polygon")==0) FlyApplet_panel.ctype=FlyApplet_panel.POLY;
+	    	    if(parmstr.compareTo("points")==0) FlyApplet_panel.ctype=FlyApplet_panel.POINTS;
+	    	    if(parmstr.compareTo("vec")==0) FlyApplet_panel.ctype=FlyApplet_panel.VEC;
+	    	    if(parmstr.compareTo("vector")==0) FlyApplet_panel.ctype=FlyApplet_panel.VEC;
 		}
-	    }
-	    parmstr=getParameter("bgcolor");
-	    if(parmstr!=null && parmstr.length()>0) {
-		bgcolor=Color.decode(parmstr);
-		if(bgcolor==null) bgcolor=Color.white;
-	    }
-	    else bgcolor=Color.white;
-	
-	}catch(Exception e){DeBug("Applet will not run in Gang's Input.java mode");}
-	
+		parmstr=getParameter("replyurl");
+		if(parmstr!=null && parmstr.length()>0){ replystring = parmstr;}
+		else{ replystring="http://localhost/wims.cgi?";}    
+		parmstr=getParameter("retry");
+		if(parmstr!=null && parmstr.length()>0){retry = parmstr;}
+		parmstr=getParameter("prompt");
+		if(parmstr!=null && parmstr.length()>0){prompt=parmstr;}	    
+		parmstr=getParameter("dashed");
+		if(parmstr!=null && parmstr.length()>0){ dashed = true;}
+		parmstr=getParameter("linewidth");
+		if(parmstr!=null && parmstr.length()>0){linewidth =  Integer.parseInt(parmstr);}    
+		parmstr=getParameter("alpha");
+		if(parmstr!=null && parmstr.length()>0){
+		    alpha =  Integer.parseInt(parmstr);
+		    clickcolor = MakeTransparent(clickcolor,alpha);
+		}
+		parmstr=getParameter("pointstyle");
+		if(parmstr!=null && parmstr.length()>0){if(parmstr.equalsIgnoreCase("dot")){cross = false;}}
+		parmstr=getParameter("background");
+		if (parmstr!=null && parmstr.length()>0){
+		    try {url=new URL(parmstr);}
+		    catch (MalformedURLException e) {url=null;}
+		    if(url != null){
+			try{
+			    bg = (BufferedImage) ImageIO.read(url); 
+	    		}catch(IOException e){DeBug("can not load image from "+url+"\n"+e); bg = null;}	
+		    }
+		}
+		parmstr=getParameter("bgcolor");
+		if(parmstr!=null && parmstr.length()>0) {
+		    bgcolor=Color.decode(parmstr);
+		    if(bgcolor==null) bgcolor=Color.white;
+		}else{ bgcolor=Color.white;}
+	    }catch(Exception e){DeBug("Applet will not run in Gang's Input.java mode");}
+	}
 	if(use_coords){
 	    textfieldfont = new Font("Helvetica", Font.BOLD, 16); 
 	}
 	setLayout(new BorderLayout());
 	panel=new FlyApplet_panel(bgcolor,clickcolor,bg,linewidth,xsize,ysize,dashed,use_coords,precision,xmin,ymin,xmax,ymax,textfieldfont,cross);
-	
 	controls=new FlyApplet_controls(panel,this);
 	add("Center", panel);
 	if(use_controls){add("South",controls);}
@@ -1156,9 +1149,12 @@ public class FlyApplet extends JApplet{
 	    catch(Exception e){DeBug("failed adding "+words[0]+" exception = "+e); return false;}
 	}
 	else
+	if(cmd.indexOf("logbase") != -1 ){
+	    try{ exp = symbols.eval(words[1]);}catch(SyntaxException e){Debug("error setting logbase "+e);}
+	}
+	else
 	if(cmd.indexOf("ylogscale") != -1){//Math.pow(10, p)
 	// ylogscale ystart,yend,color[alpha,linewidth]
-	    double exp = 10.0D;
 	    int y1,y2;
 	    boolean newsyntax=true;
 	    try{
@@ -1203,7 +1199,6 @@ public class FlyApplet extends JApplet{
 	else	
 	if(cmd.indexOf("xlogscale") != -1){//Math.pow(10, p)
 	    // xlogscale xstart,xend,color[alpha,linewidth]
-	    double exp = 10.0D;
 	    int x1,x2;
 	    boolean newsyntax=true;
 	    try{
