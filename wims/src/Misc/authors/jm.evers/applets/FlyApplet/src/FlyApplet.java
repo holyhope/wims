@@ -1150,7 +1150,7 @@ public class FlyApplet extends JApplet{
 	}
 	else
 	if(cmd.indexOf("logbase") != -1 ){
-	    try{ exp = symbols.eval(words[1]);}catch(SyntaxException e){Debug("error setting logbase "+e);}
+	    try{ exp = symbols.eval(words[1]);}catch(SyntaxException e){DeBug("error setting logbase "+e);}
 	}
 	else
 	if(cmd.indexOf("ylogscale") != -1){//Math.pow(10, p)
