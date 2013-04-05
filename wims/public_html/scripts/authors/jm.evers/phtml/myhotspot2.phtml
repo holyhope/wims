@@ -7,8 +7,8 @@
 !set ymax=!item 4 of $var1
 
 !if $use_arrow = 1
-    <img id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow">
-    <img id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow">
+    <img id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow" />
+    <img id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;top:0px;left:0px;" src="$arrow" />
     <div id="mouse_coords" style="opacity:0.7;position:absolute;z-index:100;display:block;background-color:orange;top:0px;left:0px;font-size:16px;border:1px solid #ff0000;color:black"></div>
 !else
     <div id="mouse_coords" style="opacity:0.6;position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
@@ -116,6 +116,7 @@
 		if(p > 100){setAlarm(r2);dontknow();}
 	    }
 	}
+	show = show + "("+relx+":"+rely+")";
 	reply[p]= relx+","+rely;
 	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
@@ -124,8 +125,12 @@
     var sizex=$xsize;
     var sizey=$xsize;
     var xmin=$xmin,xmax=$xmax,ymin=$ymin,ymax=$ymax;
-    var rounding=$rounding
-    var IE=false;
+!if $rounding < 1
+    var rounding = 100;
+!else
+    var rounding = $rounding;
+!endif
+    var IE = false;
     var relx = 0;
     var rely = 0;
 
@@ -176,7 +181,7 @@
     }
     
     function findPosX(i){
-	obj = document.getElementById(i);
+	var obj = document.getElementById(i);
 	var curleft = 0;
 	if(obj.offsetParent){
     	    while(1){
@@ -195,7 +200,7 @@
     }
 
     function findPosY(i){
-	obj = document.getElementById(i);
+	var obj = document.getElementById(i);
 	var curtop = 0;
 	if(obj.offsetParent){
     	    while(1){
@@ -219,7 +224,7 @@
     }
     
     function px2y(py){ // pixel to y-coords
-        Y = eval(ymax -  py*(ymax - ymin)/sizey);
+        var Y = eval(ymax -  py*(ymax - ymin)/sizey);
         return Y;
     }
 //]]>
