@@ -1,43 +1,56 @@
-\
+\title{Tangente 3}
+\range{-5,5}
+\real{a = random(-1,1)*randint(1..30)/10}
+\real{b = randint(-20..20)/10}
+\real{c = randint(-20..20)/10}
+\function{f = \a*x^2+simplify(\b*x) + \c}
+\real{x0 = randint(-40..40)/10}
+\real{y0 = evalue(\f, x = \x0)}
+\function{df = diff(\f,x)}
+\real{df0 = evalue(\df,x = \x0)}
+\function{D = \df0*x - simplify(\df0*\x0 - \y0)}
+\integer{xmin = min(-3, \x0 - 2)}
+\integer{xmax = max(3, \x0 + 2)}
+\text{A = slib(function/bounds \f, x,\xmin,\xmax)} 
+\integer{ymin = min(-3, \A[1] - 2)}
+\integer{ymax = max(3, \A[2] + 2)}
+\text{rangex = \xmin, \xmax}
+\text{rangey = \ymin, \ymax}
 
-\index{slib!\ttt{matrix/random}}
-
-\title{Quel est le nombre écrit dans la cellule ...}
-\text{nb = 8,6}
-\matrix{A = slib(matrix/random \nb,100)}
-\matrix{A = pari(abs([\A]))}
-\integer{x = randint(1..\nb[2])}
-\integer{y = randint(1..\nb[1])}
-\text{liste = A,B,C,D,E,F}
-\text{a = \liste[\x]}
-\integer{rep = \A[\y;\x]}
-\text{Size = 563,341}
-largeur et hauteur d'une case
-\text{lx = 80}
-\text{ly = 17}
-abscisse de la première cellule
-\text{premier = 111,206}
-\text{coord_x = wims(values \premier[1] + x * \lx for x = 0 to \nb[2]-1)}
-\text{coord_y = wims(values \Size[2] - \premier[2] - y*\ly 
-                                        for y = 0 to \nb[1]-1)}
-\text{dessinprelim=
-  xrange 0,\Size[1]
-  yrange 0,\Size[2]
-  copy 0,\Size[2],-1,-1,-1,-1,tableur.jpg}
-\text{dessin=}
-\for{j = 1 to \nb[2]}{
- \for{i = 1 to \nb[1]}{  
-   \text{dessin = \dessin
-     text black,\coord_x[\j],\coord_y[\i],,\A[\i;\j]}
- }
+\text{dessin = rangex \rangex
+  rangey \rangey
+  arrow \xmin,0,\xmax,0,10, black
+  arrow 0,\ymin,0,\ymax,10, black
+  plot navy,\f
+  circle \x0,\y0,5, red
+  text black,0,0,roman,0
 }
-\text{tableau = draw(\Size
-\dessinprelim
-\dessin)}
-\statement{Voici une image de page de <b>tableur</b>.
-  <p><img src="\tableau"></p>
-  Quel est le nombre écrit dans la cellule \a\y ? 
-  <p align="center"> \embed{r1,5} </p>
+\text{url = draw(200,200
+  \dessin)}
+\text{dessinc = \dessin
+ plot green,\D
 }
+\text{urlc = draw(200,200
+  \dessinc)}
+\real{x1 = \x0+1}
+\real{y1 = \df0*\x1 - \df0*\x0 + \y0}
+\text{P0 = slib(draw/convpixel \x0,\y0,200,200,\rangex,\rangey,0,pixels)}
+\text{P1 = slib(draw/convpixel \x1,\y1,200,200,\rangex,\rangey,0,pixels)}
+\text{rep = \url;line,\P0[1],\P0[2],\P1[1],\P1[2]}
 
-\answer{Case \a\y}{\rep}
+\statement{En utilisant la souris, positionner la  tangente 
+ à la courbe d'équation \(y = \f\) au point  d'abscisse \x0.
+<p>
+NB : <i> le tracé  sera obtenu en définissant deux points 
+ appartenant à cette tangente.</i>
+</p>
+<p class="wimscenter">\embed{reply1,200x200}</p>
+}
+\answer{}{\rep}{type=javacurve}
+
+\text{dessinc = \dessin
+ plot green,\D
+}
+\solution{La droite tangente au point d'abscisse \x0 est dessinée en vert : 
+<p class="wimscenter"><img src="\urlc" alt="" /></p> 
+}

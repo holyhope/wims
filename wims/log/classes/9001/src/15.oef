@@ -1,41 +1,41 @@
+\title{Propriétés d'un test sanguin 2}
+\integer{n = randint(10..100)}
+\integer{x = randint(5..(\n-1))}
+\integer{y = \n-\x}
+\integer{xp = randint(1..\x)}
+\integer{ym = randint(1..\y)}
+\integer{xm = \x-\xp}
+\integer{yp = \y-\ym}
+\css{<style type="text/css">
+  table.mon_tableau {text-align:center; border-collapse:collapse; 
+    border: 1px solid #999;
+    background_color;#F0C300;
+    margin-left:auto;margin-right:auto;}
+    mon_tableau td {text-align:center;width:100px;border: 1px solid #999;}
+</style>}
 
-
-
-\title{Maladies infectieuses}
-\language{fr}
-\format{html}
-
-\matrix{liste = Tuberculose,bactéries  
-  Tétanos,bactéries         
-  Typhoïde,bactéries       
-  Lèpre,bactéries              
-  Rage,virus               
-  Poliomyélite,virus  
-  Rougeole,virus 	
-  Hépatite,virus 	
-  Grippe,virus 		
-  Bronchiolite,virus     
-  Paludisme,parasites	
-  Toxoplasmose,parasites}
-\text{nom = random(bactéries,virus,parasites)}
-\text{mix = shuffle(rows(\liste))}
-\text{listchoix = \liste[\mix[1..6];]}
-\text{choix = \listchoix[;1],ces maladies ne sont pas dues à des \nom}
-\text{rep = position(\nom,\listchoix[;2])}
-\if{\rep=}{\text{rep = 7}}
-
-\statement{Les maladies infectieuses peuvent être dues à des virus,
-  des bactéries ou des parasites qui se multiplient dans l'organisme.
-<p> Parmi les maladies suivantes, sélectionner toutes les maladies 
-    qui sont dues à des \nom :
-<ul>
-  \for{h = 1 to 6}{
-    <li> \embed{reply1,\h}</li>
-  }
-</ul>
- \embed{reply1,7}
-}
-
-\answer{}{\rep;\choix}{type=checkbox}{option=split}
-
-
+\statement{On a fait un test sur  \n échantillons de sang dont \x contenaient 
+une substance interdite X. Le test s'est révélé positif pour 
+\xp \if{\xp = 1}{échantillon}{échantillons}
+contenant la substance X et le test s'est révélé négatif pour \ym 
+\if{\ym = 1}{échantillon}{échantillons} 
+ne contenant pas la substance X. Compléter le tableau des effectifs :<p>
+<table class="mon_tableau">
+   <tr>
+     <td></td><th>Avec X</th><th>Sans X</th>
+   </tr>
+   <tr>
+     <th>Test positif</th>
+     <td>\embed{reply1,5}</td>
+     <td>\embed{reply2,5}</td>
+   </tr> 
+   <tr>
+     <th>Test négatif</th>
+     <td>\embed{reply3,5}</td>
+     <td>\embed{reply4,5}</td>
+   </tr> 
+ </table>}
+\answer{}{\xp}{type=numexp}
+\answer{}{\yp}{type=numexp}
+\answer{}{\xm}{type=numexp}
+\answer{}{\ym}{type=numexp}

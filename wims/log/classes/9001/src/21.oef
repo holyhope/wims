@@ -1,28 +1,39 @@
-\
-
-
-\title{Quelle est la case ?}
+\title{Quel est le nombre écrit dans la cellule ...}
 \text{nb = 8,6}
-\text{case = randint(1..8),randint(1..6)}
+\matrix{A = slib(matrix/random \nb,100)}
+\matrix{A = pari(abs([\A]))}
 \integer{x = randint(1..\nb[2])}
 \integer{y = randint(1..\nb[1])}
 \text{liste = A,B,C,D,E,F}
 \text{a = \liste[\x]}
+\integer{rep = \A[\y;\x]}
 \text{Size = 563,341}
+largeur et hauteur d'une case
 \text{lx = 80}
 \text{ly = 17}
-\text{premier = 70,219}
-\integer{coord_x = \premier[1] + (\x - 1) * \lx}
-\integer{coord_y = \premier[2] + (\y - 2) * \ly}
-\integer{Coord_x = \coord_x + \lx}
-\integer{Coord_y = \coord_y + \ly}
-\text{rect = \coord_x,\coord_y,\Coord_x,\Coord_y}
-\statement{
-Voici une image de page de <b>tableur</b>. Cliquer sur la cellule \a\y. 
-  <p align="center"> \embed{r1, \Size[1] x \Size[2]} </p>
+abscisse de la première cellule
+\text{premier = 111,206}
+\text{coord_x = wims(values \premier[1] + x * \lx for x = 0 to \nb[2]-1)}
+\text{coord_y = wims(values \Size[2] - \premier[2] - y*\ly 
+                                        for y = 0 to \nb[1]-1)}
+\text{dessinprelim=
+  xrange 0,\Size[1]
+  yrange 0,\Size[2]
+  copy 0,\Size[2],-1,-1,-1,-1,tableur.jpg}
+\text{dessin=}
+\for{j = 1 to \nb[2]}{
+ \for{i = 1 to \nb[1]}{  
+   \text{dessin = \dessin
+     text black,\coord_x[\j],\coord_y[\i],,\A[\i;\j]}
+ }
+}
+\text{tableau = draw(\Size
+\dessinprelim
+\dessin)}
+\statement{Voici une image de page de <b>tableur</b>.
+  <p class="wimscenter"><img src="\tableau" alt="" /></p>
+  Quel est le nombre écrit dans la cellule \a\y ?
+  <p class="wimscenter">\embed{r1,5} </p>
 }
 
-\answer{}{\imagedir/tableur.jpg;rectangle, \rect}{type=coord}
-
-
-
+\answer{Case \a\y}{\rep}
