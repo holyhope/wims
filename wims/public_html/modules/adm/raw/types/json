@@ -794,7 +794,13 @@ listlinks=!replace internal  ,  by "," in $listlinks
 !goto footer
 
 :cleanclass
- !shortout "message":"class $qclass correctly cleaned"\
+ suppressed_users = !eval ($usercnt_before - $usercnt_after)
+ !shortout "message":"class $qclass correctly cleaned",\
+ "log":"$log",\
+ "usercnt_before":"$usercnt_before",\
+ "usercnt_after":"$usercnt_after",\
+ "suppressed_users":$suppressed_users,\
+ "qclass":"$qclass"\
  
 !goto footer
 
