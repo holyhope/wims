@@ -6,6 +6,8 @@ input=data1d
 !exit
 
 :proc
+formula=!lines2items $formula
+formula=!nonempty items $formula
 
 cnt=!itemcnt $formula
 !if $cnt>0
@@ -25,10 +27,11 @@ Moyenne harmonique =
 </p>
 Données : $cnt nombres { $formula }
 <p>
-La <em>moyenne harmonique</em> de {<i>x</i><sub>1</sub>,
-<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} est égale à
+La <em>moyenne harmonique</em> de 
+{\(x_1\), \(x_2\), ..., \(x_n\)} 
+est égale à
 !set ins_align=middle
-!insmath n\over \sum_{i=1}^n {1\over x_i}
+!insmath \frac{n}{\sum_{i=1}^n \frac{1}{ x_i}}
 &nbsp;.</p>
 !exit
 

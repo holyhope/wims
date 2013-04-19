@@ -1,5 +1,5 @@
 !header
-
+!set wims_backslash_insmath=yes
 !if $wims_mode=popup
  !changeto popup.phtml
 !endif
@@ -18,13 +18,15 @@
 
 <p>
 !if $error!=$empty
+ <div class="wims_alertmsg">
  !read msg.phtml
+ </div>
 !else
  !read op/$opr.def output
 !endif
 
 :form
-<hr/>
+<hr />
 !read form.phtml
 !href cmd=renew Rafraichir
 .
