@@ -1,0 +1,34 @@
+!! should create an option in translator : for the moment, if a group of 
+!! words is not found, the words are searched. I would like not.
+!! sout=!exec translator $srch
+ Sout=
+ !if $search_and=yes
+   srch=!items2lines $srch
+   scnt=!linecnt $srch
+
+   !for s_ = 1 to $scnt
+     sout_=!lookup $(srch[$s_;]) in wimshome/public_html/$dictionary
+     sout_=!words2items $sout_
+     !if $Sout!=$empty
+       Sout=!listintersection $Sout and $sout_
+     !else
+       Sout=$sout_
+     !endif
+   !next
+   sout=$Sout
+ !else
+    scnt=!itemcnt $srch
+    !for s_ = 1 to $scnt
+      sout_=!lookup $(srch[$s_]) in wimshome/public_html/$dictionary
+      sout_=!words2items $sout_
+      Sout=!append item $sout_ to $Sout
+    !next
+    sout=!listuniq $Sout
+ !endif
+ sout=!items2words $sout
+ sout=!words2lines $sout
+ sout=!translate ? to $ $ in $sout
+ sout=!sort lines $sout
+ sout=!nonempty lines $sout
+ scnt=!linecnt $sout
+

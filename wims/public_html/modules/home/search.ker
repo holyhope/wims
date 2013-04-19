@@ -14,26 +14,7 @@
  suffix_dictionary=
  dictionary=$search_package2/$search_category.$search_lang
  translator_unknown=
- !if $search_and=yes
-   srch=!items2lines $srch
- !endif
- sout=!exec translator $srch
- !if $search_and=yes
-   scnt=!linecnt $srch
-   Sout=!words2items $(sout[1;])
-   !for s=2 to $scnt
-     S=!words2items $(sout[$s;])
-     Sout=!listintersection $Sout and $S
-   !next
-    sout=$Sout
- !endif
- sout=!items2words $sout
- sout=!words2lines $sout
- sout=!translate ? to $ $ in $sout
- sout=!sort lines $sout
- sout=!nonempty lines $sout
- scnt=!linecnt $sout
-
+ !read search.common
 !else
  scnt=0
 !endif
