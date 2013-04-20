@@ -211,11 +211,11 @@ void _mathlogic(char *p, void _put(char *pp))
       if(!isalpha(*p1)) continue;
       if(strncmp(p1,"qzis",4)==0) {
         char *p3, *p4, *p5;
-        int tt;
+        /*int tt;*/
         p4=find_word_start(p2);
         if(*p4!='(') continue;
-        if(strncmp(p1+4,"not",3)==0) {tt=4; p3=p1+7;}
-        else {tt=3; p3=p1+4;}
+        if(strncmp(p1+4,"not",3)==0) {/*tt=4;*/ p3=p1+7;}
+        else {/*tt=3; */p3=p1+4;}
         if(!isalpha(*p3)) continue;
         p4++; p5=find_matching(p4,')');
         if(*p5!=')') continue;
