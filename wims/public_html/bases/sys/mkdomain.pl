@@ -25,6 +25,7 @@ out("$dir/reversedomain",$TEXT);
 
 ##domain list in the three  first levels
 out("$dir/domain.json", domainjson(%ref));
+
 for my $la ('fr','en','it','si','cn','nl','ca','es') {
  next if !(-e "$dir/domain.$la");
  my %dom = treate_domainfile ("$dir/domain.$la");
@@ -33,10 +34,14 @@ for my $la ('fr','en','it','si','cn','nl','ca','es') {
   if (!$dom{$a}) { $dom{$a} = '' ; }
  };
  my @D=();
+ my @D_lang=();
  while ( my ($key, $value) = each(%dom) ) {
    push @D, "$key:$value";
+   $value=~ s/'/ /g;
+   push @D_lang, lc($value);
  };
  out("$dir/domain.$la.tmp", join("\n",sortuniq(@D)) . "\n");
+ out("$dir/domain.$la.json", "'" . join("',\n'",sortuniq(@D_lang)) . "'");
 }
 
 #####################################################

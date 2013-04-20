@@ -6,7 +6,6 @@ use Encode qw(encode decode);
 use search ('out', 'sortuniq', 'treate_accent');
 
 #use Text::Balanced qw (extract_bracketed extract_tagged);
-
 my $dir='../../modules';
 my $site='../site/lists';
 my $dom_templ='domain/domain.template';
@@ -16,6 +15,7 @@ my $dom_json='domain/domain.json';
 ###'arts','earth_sciences','history'
 my @DOMAIN=('biology','chemistry','history','informatics',
   'language','mathematics','physics');
+
 if (-e $dom_json) {
    open LI, $dom_json;  my $text;
    while(<LI>) { 
@@ -60,6 +60,7 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
     push @KEYWORDS, @keywords;
    }
  }
+ 
 ### traite les groupes de mots cles
  if (-e $dom_templ) {
    open LI, $dom_templ;
@@ -82,18 +83,26 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
    };
 
  out("wgrp/wgrp.$lang", join("\n", sortuniq( @KEYWORDS )))  if (@KEYWORDS);
+ 
+     
  my @list=();
+ my @ALL=();
  for my $d (@DOMAIN) {
    if ($Domain{$d}) {
+    push @ALL, split("\n",$Domain{$d});
     out("keywords/$d.$lang.tmp",
      "'" . 
      join("',\n'",sortuniq(split("\n",$Domain{$d})) ) 
      . "'"
-     ); 
+     );
     push @list, $d ;
     };
  }
  out("keywords/list.$lang", join(",",sortuniq(@list)));
+ out("keywords/keywords.$lang.json.tmp",
+     "'" . join("',\n'",sortuniq(@ALL) ) . "'"
+);
+
 }
 
 ######################################################
@@ -159,8 +168,9 @@ sub treate_keyword { my ($line) = @_ ;
   if (!($line =~ /,/)) {$line =~ tr / /,/ ;};
   my @k = split(',', $line);
   my $tmp;
-  for my $la (@k) { 
+  for my $la (@k) {
   $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
+  ##$la=~ s/($nokeyword)//g;
   if ($la) {
     if ($tmp) { $tmp .= "\n" . join("\n",split(',', $la))} 
       else
