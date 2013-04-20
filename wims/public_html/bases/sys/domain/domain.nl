@@ -27,6 +27,7 @@ chemistry:
 cinematics:
 circle:cirkel
 circles:cirkel
+civic_education:
 code:programmeer theorie
 coding:
 combi:combinatoriek
@@ -62,7 +63,6 @@ electricity:
 electronics:
 electrostatics:
 elementary_algebra:elementaire algebra
-elementary_arithmetic:
 elementary_calculus:
 elementary_geometry:
 elementary_mathematics:
@@ -87,7 +87,9 @@ fluid_mechanics:
 fourier_series:
 fraction:
 french:
+french_conjugation:
 french_grammar:
+french_spelling:
 functions:functies
 gas_mechanics:
 gcd_lcm:ggd kgd
@@ -189,6 +191,7 @@ rectangles:vierkanten
 ring:ringen
 roots:wortels
 ruler_and_compass:passer en lineaal
+sciences:
 sequence:rijen
 series:reeksen
 set_theory:

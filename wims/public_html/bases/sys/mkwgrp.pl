@@ -3,9 +3,10 @@
 use warnings;
 use strict;
 use Encode qw(encode decode);
-
+use search ('out', 'sortuniq', 'treate_accent');
 
 #use Text::Balanced qw (extract_bracketed extract_tagged);
+
 my $dir='../../modules';
 my $site='../site/lists';
 my $dom_templ='domain/domain.template';
@@ -48,14 +49,14 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
     while(<LI>){ my $F=$_ ; chomp $F; 
       my $file= "$dir/$F/INDEX";
       next if ($file=~/(adm|devel)\//) ;
-      my @keywords = treate_file ($file, $lang, \%Domain) ;
+      my @keywords = treate_index ($file, $lang, \%Domain) ;
       push @KEYWORDS, @keywords;
    };
      close LI;
   } else {
     for my $file (glob("$dir/*/*/*")) { 
     next if ($file=~/(adm|devel)\//) ;
-    my @keywords = treate_file ($file, $lang, \%Domain) ;
+    my @keywords = treate_index ($file, $lang, \%Domain) ;
     push @KEYWORDS, @keywords;
    }
  }
@@ -95,9 +96,9 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
  out("keywords/list.$lang", join(",",sortuniq(@list)));
 }
 
+######################################################
 
-### avoir une liste de domaine a priori maintenant
-sub treate_file { my ($file, $lang, $ref) = @_;
+sub treate_index { my ($file, $lang, $ref) = @_;
  my @res = (); my @lu = (); my @l = (); my @dom = ();
  my $keyl ='' ; my $keyw=''; my $keyu;
  open(IN, $file) ;
@@ -170,23 +171,3 @@ sub treate_keyword { my ($line) = @_ ;
   $tmp;
 }
 
-sub treate_accent {my ($txt) = @_; 
-  $txt=decode('iso-8859-1',$txt);
-  $txt =~ tr/éèêëàáâãäåùìíîïóôòç/eeeeaaaaaauiiiioooc/;
-  $txt =~ s/[ÀÁÂÃÄÅ]/A/g;
-  $txt =~ s/Ç/C/g;
-  $txt =~ s/[ÈÉÊË]/E/g;
-  $txt =~ s/[ÌÏÎÍ]/I/g;
-  $txt= encode("iso-8859-1",$txt);
-  $txt
-}
-
-sub out { my ($bloc, $text) = @_;
-  open  (OUT, ">$bloc") ;
-  print OUT $text ; close OUT;
-}
-
-sub sortuniq {
-  my $prev = "not $_[0]";
-  grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
-}

@@ -3,15 +3,17 @@
 
 use warnings;
 use strict;
+use search ('out', 'sortuniq', 'hashdomain', 'treate_accent', 'treate_domainfile');
 
 my $dir='../../../log/classes/';
+my $dirdomain='domain';
 ## list of all domains in domain/domain
 my %ref= ();
 my $ref=\%ref;
 my @list=listclass();
 my $dirout="../class";
 $ref=refclass(@list);
-my @Key = ('supervisor','domain','level','lang','institution','description',"addr",'keywords','title');
+my @Key = ('supervisor','domain','level','lang','institution','description','addr','keywords','title');
 my @Lang= ('fr','en','it','nl') ; 
 my %T = ('version' => 'version',
 'lang' => 'language',
@@ -32,22 +34,31 @@ for my $key (@Key) {
   out("$dirout/$T{$key}",join("\n",sort( split("\n", $text)))) if ($T{$key}) ; 
 }
 for my $l (@Lang) { my $text='';
+  my %dom = treate_domainfile ("$dirdomain/domain.$l");
+  my $dom = \%dom; 
   for my $cl (@list) { 
     next if (!($ref{$cl}{'lang'} =~ /$l/)) ;
-    for my $k (split(',',$ref{$cl}{'keywords'})) {
+    next if (!$ref{$cl}{'keywords'});
+    $ref{$cl}{'keywords'}=lc(treate_accent($ref{$cl}{'keywords'}));
+    for my $k (sortuniq(split(', *',$ref{$cl}{'keywords'}))) {
+      $k =treate_accent($k);
       if ($keywords{$k}) { $keywords{$k} .= " " . $cl  } else { $keywords{$k} = $cl};
     }
     for my $k (split(',',$ref{$cl}{'domain'})) {
       if ($keywords{$k}) { $keywords{$k} .= " " . $cl  } else { $keywords{$k} = $cl};
-    }
+       next if !($dom{$k});
+       my $d=lc(treate_accent($dom{$k}));
+      if ($keywords{$d}) { $keywords{$d} .= " " . $cl  } else { $keywords{$d} = $cl};
+  }
  }
    while ( my ($key, $value) = each (%keywords) ) {
-     $text .= lc("$key:$value\n") ; 
+     $text .= "$key:$value\n" ; 
    }
    $text =~ s / +(\w+:)/$1/g;
    out("$dirout/$l", join("\n", sortuniq(split("\n",$text)))); 
 }
 
+###############################
 sub refclass { my @L=@_ ; 
   for my $cl (@L) {
     open IN, "$dir/$cl/.def";
@@ -64,13 +75,4 @@ sub listclass {
    push @L, $cl if (!($cl =~ /[A-Z]+/) && $cl < 10000) ;
   }
   @L
-}
-sub out { my ($bloc, $text) = @_;
-  open  (OUT, ">$bloc") ;
-  print OUT $text ; close OUT;
-}
-
-sub sortuniq {
-  my $prev = "not $_[0]";
-  grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
 }
