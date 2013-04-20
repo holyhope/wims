@@ -1,20 +1,16 @@
-!set module_language=$modu_lang
-!set title_=!module title_$modu_lang
-!if $title_!=$empty
-   !set module_title=$title_
-!endif
-
+!read language lang/names
 !header
 
 !! La présentation de l'exercice.
 !read present.phtml
 
-<hr/>
+<hr />
 
 !if $status=waiting
  !if $error!=$empty
+ <div class="wims_alertmsg">
   !read msg.phtml
-  <hr style="width:50%"/>
+  </div>
  !endif
  !! La forme de réponse
  !read form.phtml
@@ -24,8 +20,9 @@
  </p>
 !else
  !if $error!=$empty
+   <div class="wims_alertmsg">
   !read msg.phtml
-  <hr style="width:50%"/>
+
  !endif
  !! L'analyse de réponse
  !read answer.phtml
