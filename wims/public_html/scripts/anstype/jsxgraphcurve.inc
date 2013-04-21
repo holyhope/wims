@@ -4,12 +4,13 @@
 !set input_cnt=!itemcnt $input_cnt
 !set input_cnt=$[$input_cnt-1]
 
+!set wims_bound=100
+!set name_alert=La taille des requetes sur le serveur ne peut exceder $wims_bound points. Realiser le trace plus rapidement pour que la requete soit plus petite.
 !set script=$script\
 JXG.Options.point.showInfobox = $showinfobox;\
 var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$jsx_xsize,$jsx_ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ="$jsx_imgurl";\
-var ima = brd.create('image',[urlImg,[0,$jsx_ysize],[$jsx_xsize,-$jsx_ysize] ]);\
-ima.needsRegularUpdate = false;\
+var ima = brd.create('image',[urlImg,[0,$jsx_ysize],[$jsx_xsize,-$jsx_ysize]], {fixed: true, highlight: false});\
 var jsxbox_free=[];\
 var p=[];
   !if $input_type = points
@@ -212,6 +213,9 @@ aa=aa+d+',';\
 /*brd.create('segment',[p[0],pp[0]],{Color:'blue'});*/\
 if(rrr>0){brd.create('segment',[pp[rrr-1+jj],pp[rrr+jj]],{Color:'yellow'});}\
 rrr=rrr+1;\
+if(rrr>$wims_bound || jj+rrr>$wims_bound){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
+alert('$name_alert');\
+efface();}\
 },this);\
 if(re%2==0){JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
 aa=aa.substr(0,aa.length-1);\
@@ -230,6 +234,7 @@ JXG.removeAllEvents (document.getElementById ('jsxbox'), 'mousemove', this);\
 aa='';\
 re=0;\
 rrr=0;\
+jj=0;\
 }
    !endif
 
