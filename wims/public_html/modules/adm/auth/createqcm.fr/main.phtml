@@ -7,19 +7,22 @@
 
 !if $status=waiting
  !if $error!=$empty
+  <div class="wims_alertmsg">
   !read msg.phtml
-  <hr style="width:50%" />
+  </div>
  !endif
  !! La forme de réponse
  !!!read form.phtml
 !else
  !if $error!=$empty
+ <div class="wims_alertmsg">
   !read msg.phtml
-  <hr style="width:50%" />
+ </div>
  !endif
  !read answer.phtml
  <p>
  !if $worksheet=$empty
+ !set wims_ref_class=wims_button
   !href exo_Intro
 .
 </p>

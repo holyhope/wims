@@ -1,47 +1,44 @@
 !!! barre de progression !!!
 
-<hr align="center" size="4" width="80%" />
-<center>
-  <table bgcolor="azure" border="3">
+<hr class="wimscenter" size="4" width="80%" />
+  <table class="wimscenter" bgcolor="azure" border="3">
     <tr>
     !for i=1 to $etapesnb
       !if $i<$etape
-        <td align="center" nowrap="nowrap" bgcolor="wheat"> 
+        <td nowrap="nowrap" bgcolor="wheat"> 
 	     <input type="radio" name="navig" value="$i" />
 	        <font color="blue"><small><< Etape $i</small></font>  
 	     <br />
 	      <table>
-	        <tr><td align="center" nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        <tr><td nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
 	        </tr>
               </table>     
         </td>
       !endif
       !if $i=$etape
-        <td align="center" nowrap="nowrap" bgcolor="palegreen">
+        <td nowrap="nowrap" bgcolor="palegreen">
 	  <input type="radio" name="navig" value="$i" checked="checked" />
           Etape $i
 	  <br />
 	      <table>
-	        <tr><td align="center" nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        <tr><td nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
 	        </tr>
               </table>
         </td>
       !endif
       !if $i>$etape
-        <td align="center" nowrap="nowrap">
+        <td nowrap="nowrap">
           <font color="darkgray">Etape $i</font>
         </td>
       !endif
     !next i
     </tr>
   </table>
-</center>
 
 !if $etape=$etapesnb
-<center>
-  <table border="2" bgcolor="wheat">
+  <table class="wimscenter wimsborder" bgcolor="wheat">
     <tr>
-     <td bgcolor="lightblue" align="center">
+     <td bgcolor="lightblue">
        <b><input type="submit" value="Retour" /></b>
        !if $exalert!=$empty
          <br />
@@ -50,5 +47,4 @@
      </td>
    </tr>
   </table>
-</center>
 !endif

@@ -1,35 +1,34 @@
 !!! barre de progression !!!
 
-<hr align="center" size="4" width="80%" />
-<center>
-  <table bgcolor="azure" border="3">
+<hr size="4" width="80%" />
+  <table class="wimscenter wimsborder" bgcolor="azure">
     <tr>
     !for i=1 to $etapesnb
       !if $i<$etape
-        <td align="center" nowrap="nowrap" bgcolor="wheat"> 
+        <td nowrap="nowrap" bgcolor="wheat"> 
 	     <input type="radio" name="navig" value="$i" />
-	        <font color="blue"><small><< Etape $i</small></font>  
+	        <span class="smaller" style="color:blue"><< Etape $i</span>  
 	     <br />
 	      <table>
-	        <tr><td align="center" nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        <tr><td nowrap="nowrap" style="background-color:white">$(labels$(exo)[$i;])</td>
 	        </tr>
               </table>     
         </td>
       !endif
       !if $i=$etape
-        <td align="center" nowrap="nowrap" bgcolor="palegreen">
-	  <input type="radio" name="navig" value=$i checked="checked" />
+        <td nowrap="nowrap" bgcolor="palegreen">
+	  <input type="radio" name="navig" value="$i" checked="checked" />
           Etape $i
 	  <br />
 	      <table>
-	        <tr><td align="center" nowrap="nowrap" bgcolor="white">$(labels$(exo)[$i;])</td>
+	        <tr><td nowrap="nowrap" style="background-color:white">$(labels$(exo)[$i;])</td>
 	        </tr>
               </table>
         </td>
       !endif
       !if $i>$etape
-        <td align="center" nowrap="nowrap">
-          <font color="darkgray">Etape $i</font>
+        <td nowrap="nowrap">
+          <span style="color:darkgray">Etape $i</span>
         </td>
       !endif
     !next i
@@ -38,10 +37,9 @@
 </center>
 
 !if $etape=$etapesnb
-<center>
-  <table border="2" bgcolor="wheat">
+  <table class="wimscenter wimsborder" style="background-color:wheat">
     <tr>
-     <td bgcolor="lightblue" align="center">
+     <td style="background-color:lightblue">
        <b><input type="submit" value="Retour" /></b>
        !if $exalert!=$empty
          <br />
@@ -50,5 +48,4 @@
      </td>
    </tr>
   </table>
-</center>
 !endif

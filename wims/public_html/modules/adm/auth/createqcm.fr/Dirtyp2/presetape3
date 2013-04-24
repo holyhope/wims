@@ -1,8 +1,9 @@
 !!! fichier de présentation de l'étape 3 !!!
-<center>
-  <b><font color=darkcyan size=+1> Etape $etape: <u>saisie des types des fonctions</u> </font></b>
+<div class="wimscenter">
+  <span class="bold larger" style="color:darkcyan"> Etape $etape: <u>saisie des types des fonctions</u> </span>
   <br />
-<table>
+  </div>
+<table class="wimscenter">
   <tr>
     <td bgcolor=lightblue>
       Indiquez le type de la valeur rendue 
@@ -10,15 +11,15 @@
     </td>
   </tr>
 </table>
-</center>
+
 <br />
-<center>
-  <table border=1 width="80%">
+
+  <table class="wimscenter wimsborder" style="width:80%">
     <tr>
-      <th bgcolor=white align="center">
+      <th bgcolor=white>
         Fonction
       </th>
-      <th bgcolor=white align="center">
+      <th bgcolor=white>
         Type de la valeur rendue
       </th>
     </tr>
@@ -26,10 +27,10 @@
     !set fonc=!trim $(foncsrecord[$i;])
     !set fonc=!char 2 to -2 of $fonc
       <tr>
-        <td bgcolor="$(coulors[$i%3+1;])">
+        <td style="background-color:$(coulors[$i%3+1;])">
 	  $fonc
 	</td>
-	<td bgcolor="$(coulors[$i%3+1;])">
+	<td style="background-color:$(coulors[$i%3+1;])">
 	  <select name="typnb">
             !for j=1 to $Nbtyp
               <option value="$j"
@@ -37,12 +38,12 @@
 		   selected
                  !endif
                >$(typafList[$j;])
+               </option>
 	    !next j
           </select>
 	</td>
       </tr>
     !next i
   </table>
-</center>
 
 !read comsDir/valideb
