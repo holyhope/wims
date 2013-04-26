@@ -22,7 +22,7 @@ USA
 en es fr
 wims@wims.cse-institute.org
 wims@wims.cse-institute.org
-:wims.math.ecnu.edu.cn/wims.cgi
+:wims.math.ecnu.edu.cn/wims
 East China Normal University
 China
 cn en fr
@@ -34,12 +34,6 @@ France
 fr en
 wims@wims.univ-mrs.fr
 wims@wims.univ-mrs.fr
-:wims.sf.edu/wims/
-University of Saint Francis
-USA
-en es
-Jan Hlavacek
-jhalavacek@sf.edu
 :wims.auto.u-psud.fr/wims/
 Universite Paris-Sud
 France
@@ -59,34 +53,15 @@ Netherland
 en fr cn es it nl
 wims@math.leidenuniv.nl
 wims@math.leidenuniv.nl
-:https://wims.ofset.org/wims/
-OFSET (Organization for Free Software in Education and Teaching)
-International
-en fr cn es it nl
-wims@wims.ofset.org
-wims@wims.ofset.org
 :wims.unicaen.fr/wims/
 Caen University
 France
 en fr cn es it nl
 Eric Reyssat
 reyssat@math.unicaen.fr
-:wims.linex.org/wims/
-linex.org
-Spain
-es en fr cn it nl
-Antonio Ullan
-antonio.ullan@juntaextremadura.net
-:http://plataforma.cep-marbellacoin.org/wims/
-Centro del Profesorado Marbella-Coín
-Spain
-es en fr it nl cn
-Juan-Rafael Fernandez
-jrfern@gmail.com
 :http://insbaixpenedes.xtec.cat/wims
 Institut Baix Penedès. El Vendrell
 Spain
 ca en fr es it nl
 Manel Querol
 mquerol@xtec.cat
-
