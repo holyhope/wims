@@ -21,7 +21,6 @@ wims_name_stat = Serverstatistieken
 wims_name_faq       = FAQ
 wims_name_dochelp = Help documenten
 
-
 CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
 CR_mod = Full-power modules
@@ -29,6 +28,8 @@ CR_mod = Full-power modules
 E_comp = gecompileerd op
 E_manager = Site manager:
 
+RE_prev  = !nosubst Previous Results
+RE_next  = !nosubst Next Results
 RE_found = !nosubst Gezocht en gevonden $Gotcnt $tt
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
 RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
