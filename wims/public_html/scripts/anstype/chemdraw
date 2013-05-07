@@ -121,8 +121,8 @@ ans_feedback=!lines2rows $ans_feedback
  diareply$i=bad
  !if $ans_image notsametext
    !set height=!getopt height in $(replyoption$i)
-   !default height=200px
-   ans_image=<img src="$imagedir/$ans_image" height="$height" alt="" />
+   !default height=200
+   ans_image=<img src="$imagedir/$ans_image" style="height:$(height)px" alt="" />
  !endif
 !endif
 
@@ -182,7 +182,7 @@ reply_$i =<p>\
   <param name="MENU_HELP" value="no" />\
   <param name="file" value="$replyfile" />\
   <param name="show_hydrogen" value="$ans_show_hydrogen" />\
-        <param name="show_carbon" value="$ans_show_carbon" />\
+  <param name="show_carbon" value="$ans_show_carbon" />\
 </object>
 
 !if $ans_diag<1 and $ans_image notsametext
@@ -193,4 +193,5 @@ $ans_image
 
 reply$i=
 replyGood$i=
+
 
