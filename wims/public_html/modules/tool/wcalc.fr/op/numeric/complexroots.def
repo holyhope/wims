@@ -12,6 +12,7 @@ input=function
  error=bad_formula
  !exit
 !endif
+formula=!rawmath $formula
 result=!exec pari print(polroots(x^$order-($formula))~)
 result=!declosing $result
 result=!trim $result
@@ -35,14 +36,15 @@ Racines
 !htmlmath $formula
 $ :
 !endif
-<table class="wimscenter wimsnoborder">
+
 !set n=!itemcnt $result
+<ul>
 !for i=1 to $n
  !set l=!item $i of $result
- <tr><td align=left nowrap><i>r</i><sub>$i</sub> =
+ <li>\(r_$i\)=
  !htmlmath $l
- </td></tr>
+ </li>
 !next i
-</table>
+</ul>
 !exit
 

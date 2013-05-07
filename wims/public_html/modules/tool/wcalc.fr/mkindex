@@ -23,7 +23,7 @@ do
  base=`echo $i | sed 's/\.def$//;s!^op/!!'`
  index=`echo $base | tr / @`
  if [ ! -f ind/$index ] || [ ind/$index -ot $i ]; then
-  get=`awk -F'=' '$1=="title" || $1=="synonyme" {print $2};
+  get=`awk -F'=' '$1=="title" || $1=="synonyme" {print $2","};
  	$1=="!exit" {exit}' $i |
 	tr 'çéèêëúùûüáàâäãóòôöõíìïîñıÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ' 'ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY' |
 	tr "[A-Z]\-\012\'" '[a-z] , ' | sed 's/,/, /g' | tr -s '[:blank:]' ' '`
