@@ -54,16 +54,16 @@ test=$mean
 !endif
 
 !! $(replytype$i)=jsxgraphcurve
-script=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $script
+script$i=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
 !for j=1 to $m/2
-script=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $script
-script=!append line brd.create('line',[p[$j-1],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $script
+script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+script$i=!append line brd.create('line',[p[$j-1],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
 !next
-script=!append line brd.create('line',[p[$m/2],p[1]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $script
+script$i=!append line brd.create('line',[p[$m/2],p[1]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
 
-script=!append line q[0] = brd.create('point',[$(rlist[1]),$(rlist[2])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
+script$i=!append line q[0] = brd.create('point',[$(rlist[1]),$(rlist[2])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
 !for j=1 to $n/2
-script=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $script
-script=!append line brd.create('line',[q[$j-1],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $script
+script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+script$i=!append line brd.create('line',[q[$j-1],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
 !next
-script=!append line brd.create('line',[q[$n/2],q[1]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $script
+script$i=!append line brd.create('line',[q[$n/2],q[1]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)

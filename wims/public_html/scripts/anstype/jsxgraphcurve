@@ -48,15 +48,15 @@ reply__$i=&nbsp;
 !set Inputsize=!replace internal x by , in $oef_applet_option
 !distribute items $Inputsize into xsize,ysize
 
-!set script=$script\
-var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
+!set script$i=$(script$i)\
+var brd = JXG.JSXGraph.initBoard('jsxbox$i', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ='$(replygood$i[1;1])';\
 var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize]],{fixed: true, highlight: false});\
 /*brd.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
 
 !if $type iswordof line sline segment vector rectangle polygon \
    curve brokenline 
-!set script=$script\
+!set script$i=$(script$i)\
 var p=[];\
 var q=[];
 !endif
@@ -69,6 +69,12 @@ var q=[];
 !if $Test!=$empty or NaN isin $test
    !exit
 !endif
+!reset slib_out
+!readproc slib/geo2D/jsxgraph jsxbox$i,$xsize x $ysize,$(script$i)
+reply_$i=$slib_out\
+$i
 
-!readproc slib/geo2D/jsxgraph jsxbox,$xsize x $ysize,$script
-reply_$i=$slib_out
+!!debug $(reply_1)\
+\
+tti$i
+$(reply_2)\
