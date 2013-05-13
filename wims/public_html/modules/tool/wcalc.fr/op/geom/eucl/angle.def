@@ -7,17 +7,16 @@ input=function
 !exit
 
 :proc
-formula=!item 1 of $formula
 option=!lower $option
 option=!word -1 of $option
 option=!deaccent $option
 !default option=degre
-!if $option notwordof radian radians degre degres
+!if $option notwordof radian radians degre degres degrees
  error=bad_formula
  !exit
 !endif
 
-!if $option iswordof degre degres
+!if $option iswordof degre degres degrees
  o1=rad
  o2=deg
  t1=$formula
@@ -28,12 +27,14 @@ option=!deaccent $option
  o2=rad
  t1=$formula*pi/180
  t2=a
+ 
  prest=print(($formula)/180);
 !endif
 
 result=!exec pari a=$t1; b=$t2; print($formula);\
 	print(b);\
 	$prest
+
 !distribute lines $result into l1, l2, l3
 !if $l3=$empty or NaN isin $[$l2]
  result=

@@ -31,7 +31,6 @@
    !set var_$i=!randitem $l_
   !next i
  !endif
-
  !set ops=!record 2 of $formdir/$s.def
  !set submits=!record 3 of $formdir/$s.def
  !set content=!record 4 of $formdir/$s.def
@@ -40,21 +39,23 @@
  !reset oplist
  !for op=1 to $ocnt
   !set ol=!line $op of $ops
-  !distribute items $ol into n_,v_
+  !distribute items $ol into n_,v_,w_
   !set n_=!word 1 of $n_
-  !if $n_!=$empty and $v_!=$empty
+  !if $n_!=$empty and $w_$v_!=$empty
    !set op_$n_=$v_
+   !if $w_!=
+     !set op_$n_=$(op_n_),$w_
+   !endif
    !set oplist=!append item $n_ to $oplist
   !endif
  !next op
  !set oplist=!listcomplement module,size,color,precision in $oplist
- 
  !set submits=!translate internal " to $ $ in $submits
  !set submits=!nonempty lines $submits
  !set scnt=!linecnt $submits
  !for su=1 to $scnt
   !set sl=!line $su of $submits
-  !distribute items $sl into n_,v_
+  !distribute items $sl into n_,v_,w_
   !set n_=!word 1 of $n_
   !if $v_!=$empty
    !if $n_!=$empty
@@ -62,7 +63,11 @@
    !else
     !reset N_
    !endif
-   !set submit$su=<input type="submit" $N_ value="$v_" $jsdef />
+   !set submit$su=<input type="submit" value="$v_" $jsdef />
+   !if $w_!=$empty
+    !set submit$su=$(submit$su)\
+     <input type="hidden" $N_ value="$v_,$w_" />
+   !endif 
   !endif
  !next su
  !default op_size=$default_size
@@ -82,12 +87,13 @@
  <table style="background-color:$op_color;padding:10pt;
 	border-collapse:collapse; border:1px solid gray;margin:10px;width:90%">
  <tr><td>
- $content 
+ $content
  </td></tr></table>
  </div></form>
  !reset op_module, op_color, op_size, op_precision
 !next s
 <!--     End of Independent calculator form     -->
+
 !if noremark notwordof $wims_read_parm
  <span class="wims_warning">Remarque.</span>
  Tous les formulaires ci-dessus sont indépendents du serveur Wims et l'un de
