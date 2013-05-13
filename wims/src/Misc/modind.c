@@ -39,7 +39,7 @@ char lang[MAX_LANGS][4]={
 };
 #define DEFAULT_LANGCNT	6
 char allang[MAX_LANGS][4]={
-    "en","fr","cn","es","it","nl","tw","de","si","ca","pt"
+    "en","fr","cn","es","it","nl","de","si","ca","pt"
 };
 #define allangcnt 8
 char ignore[MAX_LANGS][MAX_LINELEN+1];
@@ -221,8 +221,9 @@ void _getdef(char buf[], char *name, char value[])
 	if((p1>buf && !isspace(*(p1-1))) || *p2!='=') continue;
 	p3=p1; while(p3>buf && isspace(*(p3-1)) && *(p3-1)!='\n') p3--;
 	if(p3>buf && *(p3-1)!='\n') continue;
-	p2=find_word_start(p2+1);
 	p3=strchr(p2,'\n');
+	p2=find_word_start(p2+1);
+	if(p3 <= p2) continue;
 	snprintf(value,MAX_LINELEN,"%s",p2);
 	if(p3!=NULL && p3-p2<MAX_LINELEN) value[p3-p2]=0;
 	strip_trailing_spaces(value);
@@ -297,6 +298,7 @@ void prep(void)
 	fprintf(addrf,"%d:%s\n",t,p1);
 	fprintf(serialf,"%s:%d\n",p1,t);
 	thislang=-1;
+/* language is taken from the address */
 	if(l>3 && p1[l-3]=='.') {
 	    for(i=0;i<langcnt;i++) if(strcasecmp(lang[i],p1+l-2)==0) break;
 	    if(i<langcnt) {p1[l-3]=0; thislang=i;}
@@ -497,7 +499,7 @@ void onemodule(const char *name, int serial, int lind)
 	  i_keywords_ca,i_keywords_fr,i_keywords_it,i_keywords_nl
     };
     #define trcnt (sizeof(trlist)/sizeof(trlist[0]))
-    char *p1, *p2, *pp, buf[MAX_LINELEN+1], lbuf[16];
+    char *p1, *p2, *pp, *q, buf[MAX_LINELEN+1], lbuf[16];
     FILE *f;
     
     if(module_index(name)) return;
@@ -581,7 +583,8 @@ void onemodule(const char *name, int serial, int lind)
     snprintf(buf,sizeof(buf),"%s",indbuf[i_level]);
     ovlstrcpy(lbuf,"level");
     for(p1=buf; *p1; p1++) if(!isalnum(*p1)) *p1=' ';
-    for(p1=find_word_start(buf); *p1;
+    q=buf+strlen(buf);
+    for(p1=find_word_start(buf); (*p1) && (p1 < q) ;
 	p1=find_word_start(p2)) {
 	p2=find_word_end(p1); 
 	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
