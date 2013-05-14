@@ -21,18 +21,22 @@ my @text=();
 while ( my ($key, $value) = each (%list) ) {
      push @text, "$key:$value" ; }
 ###il faut sorter  
-out("$dirdic/form", join("\n",sortuniq(@text)));
+###out("$dirdic/form", join("\n",sortuniq(@text)));
 
 sub treate_keywords { my ($file) = @_ ;
-   my $t=0 ; my @keywords=();
+   my $t=0; my $t1=0; my @keywords=();
    my $file1 = $file ; $file1=~ s,popup\.fr/form/(.*)\.def,$1,;
     open IN, $file;
     while(<IN>) {
      my $k = $_ ;
-     if( ($k =~ /^:/) && $t==0 ) {
+     if( ($k =~ /^:/) && $t==0 && $t1==0) {
       $t = 1; $k =~ s/://;
       push @keywords,split(", *",$k) ;
-     } 
+     }
+     if( !($k =~ /^:/) && $t==1 && $t1==0) {
+      push @keywords,split(", *",$k) ;
+     }
+     if( ($k =~ /^:/) && $t==1 ) {$t1=1}
     }
     for my $k (@keywords) { chomp $k;
      next if !($k); 
