@@ -6,12 +6,14 @@
   !exit
 !endif
 
-!set parm=!replace internal $	$ by $ ; $ in $wims_read_parm
+!set parm=!replace internal $	$, by , in $wims_read_parm
+!set parm=!replace internal $	$ by $ ; $ in $parm
 !set parm1=!row 1 of $parm
 
 !distribute items $parm1 into imgurl,bigsize,smallsize
-!!debug tt$imgurl,$bigsize,$smallsize
+
 !set bigsize=!translate x, to $  $ in $bigsize
+
 !distribute words $bigsize into bigsizex,bigsizey
 !set ssize=!translate x, to $  $ in $smallsize
 !distribute words $ssize into ssizex,ssizey
