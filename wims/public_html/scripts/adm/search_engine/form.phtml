@@ -1,6 +1,6 @@
 <!-- adm/search_engine/form.phtml -->
 !!set dir=wimshome/public_html/bases/sys/domain
-
+!default search_lang=$lang
 !!set Tot_Dom=!lookup domain in $dir/domain
 !!set Tot_Dom=all,$Tot_Dom
 !set wims_ref_anchor=#searchform
@@ -19,6 +19,7 @@
 !!     !next
 !!!record 0 of wimshome/public_html/bases/sys/domain/domain.$search_lang.json
 !!
+!default search_lang=lang
 !record 0 of wimshome/public_html/bases/sys/keywords/keywords.$search_lang.json.tmp
 ,
 $list_domain
@@ -77,7 +78,7 @@ $list_domain
   <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete" />
 </td><td>
  !formselect search_category list $slist prompt $plist
-!default search_lang=$lang
+
 !set L_language=!words2items $wims_site_languages
 !formselect search_lang list $L_language
 <br />
