@@ -5,7 +5,7 @@
   !set gotd=$gotdC
   !set gott=$gottC
 !endif
-$wims_name_n_example
+
 <ul class="wims_home_result_list wims_class">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm

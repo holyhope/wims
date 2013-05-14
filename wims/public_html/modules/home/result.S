@@ -5,11 +5,9 @@
   !set gott=$gottS
 !endif
 
-!if $gotcnt=0
+!if $gotcntS=0
  !changeto lang/welcome-S.phtml.$lang
 !endif
-
-$wims_name_sheet
 
 <ul class="wims_home_result_list wims_sheet">
 !for i=1 to $gotcnt

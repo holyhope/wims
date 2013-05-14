@@ -19,10 +19,8 @@
 </p>
 !endif
 
-!set tt=<span class="wims_emph">$(C_$s_category)</span>
-
+!set tt=<span class="wims_emph">$(C_A)</span>
 !if $gottype=search
-
 <p class="RE_found">
  $RE_found.
 </p>
@@ -62,12 +60,21 @@
   !reset list_start
  !endif
 !endif
-
 !if $s_category isin PLS
+<p class="wims_emph">$(C_$s_category)</p>
  !changeto result.$s_category
 !endif
 
 !if $gottype=search or $gotcnt1=0
+ !reset tt
+ !if $s_category=A
+   !set tt=<p class="wims_emph">$(C_X), $(C_D), $(C_T)</p>
+ !else
+  !if $s_category notin CS
+   !set tt=<p class="wims_emph">$(C_$s_category)</p>
+  !endif
+ !endif
+$tt
  <ul class="wims_home_result_list">
  !for i=1 to $gotcnt
   !set m_=!line $i of $gotm
@@ -120,10 +127,11 @@ $L, $d_
 !endif
 
 !if $gotcntS > 0
+<p class="wims_emph">$C_S</p>
   !read result.S
 !endif
-
 !if $gotcntC > 0
+<p class="wims_emph">$C_C</p>
   !read result.C
 !endif
 
@@ -132,8 +140,8 @@ $L, $d_
  !exchange gotcnt,gotcnt1
  !exchange gottype,gottype1
  !exchange gotm,gotm1
- !set tt=<span class="wims_emph">$C_P</span>
- <p>$RE_found. </p><div>
+ <p class="wims_emph">$C_P</p>
+ <div>
  !read result.P
  </div>
 !endif
