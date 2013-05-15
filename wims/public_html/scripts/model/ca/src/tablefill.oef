@@ -26,12 +26,10 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 
 :%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
 
-:
-\title{Tableau à remplir (fill)}
-:
-\author{Bernadette, Perrin-Riou}
-:
-\email{bpr@math.u-psud.fr}
+:\title{Tableau à remplir (fill)}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
 :Instruction
 \text{instruction= Remplir le tableau.}
 
@@ -71,9 +69,9 @@ maximum 40 cases à remplir
 
 \css{<style type="text/css">
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
-   table.tableau {border:solid 1px;
-    border-collapse:collapse;margin-left:auto;margin-right:auto;}
-    table.tableau td, th {text-align:center;border:solid 1px;width:55px;}
+   table.tableau {border:solid 1px;margin-left:auto;margin-right:auto;
+    border-collapse:collapse;}
+    table.tableau td, th {text-align:center;border:solid 1px;min-width:50px;}
    ol li {list-style: upper-alpha; }
     table.tableau th { background-color:#CCCFFF;}
  </style>}
@@ -107,7 +105,9 @@ wims(record \s of \file)}
   \text{STEP=\STEP
    wims(makelist r x for x = (\u-1)*\attribut_cnt + 1  to  (\u)*\attribut_cnt)}
   \text{Data=wims(append item \data[\u;2..-1] to \Data)}
+  \for{c=0 to \ch_cnt-1}{
   \text{Data=wims(replace internal \c by \nonoui[\c+1] in \Data)}
+  }
 }
 \matrix{STEP=\STEP}
 \text{STEP1=wims(replace internal ; by , in \STEP)}
