@@ -1,11 +1,11 @@
 !if $wims_read_parm!=slib_header
 !goto proc
 !endif
-slib_title=Solutions of an autonome differential system with jsxgraph.
-slib_parms=9\
+slib_title=Draw with jsxgraph of a solution of a differential system.
+slib_parms=8\
 ,f1\
 ,f2\
-400,size
+400,size\
 -10,xmin\
 10,xmax\
 -10,ymin\
@@ -13,11 +13,12 @@ slib_parms=9\
 red,color
 
 slib_author=Bernadette, Perrin-Riou
-slib_out=  with jsxgraph of the solutions of x'=f1 , y'=f2 \
- where f1 and f2 have x and y as variables
+slib_out=draw in jsxgraph of a solution of x'(t)=f1(t,x,y) , y'(t)=f2(t,x,y) 
 slib_comment=the jsxgraph programm comes from an example on the site of jsxgraph.
 slib_example= x-y, x+y,400,-10,10,-10,10,green\
- 1, (y+2)*(y-1),600,0,20,-10,10,green
+ 1, (y+2)*(y-1),600,0,20,-10,10,green\
+ x-y+sin(t), x+y,400,-10,10,-10,10,green\
+ 1,t,600,0,20,-10,10,green
 !exit
 
 :proc
@@ -31,7 +32,7 @@ slib_example= x-y, x+y,400,-10,10,-10,10,green\
 !default slib_number=!randint 10000,30000
 slib_script=var brd$slib_number = JXG.JSXGraph.initBoard('jsxbox$slib_number', {axis:true, boundingbox:[$slib_xmin,$slib_ymin,$slib_xmax,$slib_ymax]});\
 var N$slib_number = brd$slib_number.create('slider',[[$slib_xmin+1,$[$slib_ymin*0.9]],[$slib_xmax,$[$slib_ymin*0.9]],[0,10,$slib_xmax]], {name:'N'});\
-var P1$slib_number = brd$slib_number.create('point',[0,1.5], {name:'(x_0,y_0)'});\
+var P1$slib_number = brd$slib_number.create('point',[1,1], {name:'(x_0,y_0)'});\
 \
 function doIt$slib_number() {\
   var txt1 = JXG.GeonextParser.geonext2JS('$slib_f1');\

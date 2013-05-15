@@ -11,14 +11,15 @@ slib_parms=9\
 2, ymax\
 red,color\
 0, size of the arrow\
-, option: html\
+,option: html, url\
 
 slib_author=Bernadette, Perrin-Riou
-slib_out= data for drawing phasis diagram of an autonom differential system x' = f1 , y' = f2 \
+slib_out= draw phasis diagram of an autonom differential system x' = f1 , y' = f2 \
   where f1 and f2 are expressions in x and y.
 slib_comment=
 slib_example= x+2-y, x^2-y,-2,2,-2,2,green,8,html\
-x+y,x-y,,,,,,,html
+x+y,x-y,,,,,,,html\
+x+y,x-y
 !exit
 
 :proc
@@ -81,13 +82,13 @@ slib_out = $slib_img
  slib_out =$slib_out\
  $slib_ARROW
 !endif
+slib_out=xrange $slib_XMIN, $slib_XMAX\
+yrange $slib_YMIN, $slib_YMAX\
+hline 0,0,black\
+vline 0,0,black\
+$slib_out
 
 !if url iswordof $slib_option or html iswordof $slib_option
-  slib_out=xrange $slib_XMIN, $slib_XMAX\
-  yrange $slib_YMIN, $slib_YMAX\
-  hline 0,0,black\
-  vline 0,0,black\
-  $slib_out
   insdraw_size=200,200
   !insdraw $slib_out
   slib_out=$ins_url

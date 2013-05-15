@@ -1,22 +1,27 @@
 !if $wims_read_parm!=slib_header
 !goto proc
 !endif
-slib_title=Runge-Kutta
-slib_parms=5\
-y^2*(y-1),f\
-0,t0\
-0.1,h0\
-2,y0\
-10,N
+slib_title=Equation différentielle (par Runge-Kutta) experimental
+slib_parms=6\
+,[f1,f2] or f1\
+0,t0 or [t0,..] initial value for t\
+0,y0  or [x0,y0] initial value at t=t0\
+0.1,h0, if h0 is negative, the curve is given for t < t0\
+10,N number of steps\
+html,option : url, html or data (points of the curve, one line by initial conditions) 
 
 slib_author=Bernadette, Perrin-Riou
 slib_out=data for drawing or draw of the phasis diagram of x' = f1 , y' = f2 \
-  where f1 and f2 have x and y as variables
+  where f1 and f2 have x and y and t as variables where f=[f1,f2]. If only one \
+  function is given as a function of y and t, solve the equation y'=f(y,t). 
 slib_comment=
 slib_example= y*(y-5),0,3,0.5,20,html\
 y*(y-5),0,[-2,1,3,5,0],0.1,20,html\
 y+t,0,5,0.5,20,html\
 y*(y-1),0,0.5,0.5,20\
+y*(y-1),0,0.5,0.5,20,html\
+y*(y-1),0,-0.5,0.5,20\
+y*(y-1),0,-0.5,0.5,20,html\
 [1-x,x^2-y^2],0,[3,0],0.1,100,html\
 
 !exit
@@ -27,13 +32,12 @@ y*(y-1),0,0.5,0.5,20\
 !endif
 !default slib_h=0.1
 !default slib_N=10
-!default slib_y0=2
+!default slib_y0=0
 !default slib_t0=0
 !reset slib_out
 !set slib_rangey= 1000000,-1000000
 !set slib_rangex=1000000,-1000000
 !set test=1
-
 
 !if x isvarof $slib_f
  !set slib_f=!mathsubst y=y[2] in $slib_f 
@@ -68,11 +72,11 @@ y*(y-1),0,0.5,0.5,20\
       k4 = h*f(t + h , y + k3);\
       t1 = t + h;\
       y1 = y + 1/6 * (k1 + 2*k2 + 2*k3 + k4);\
-      ;X[j]=t1;Y[j]=y1;);\
+      ;X[j]=t1;Y[j]=y1);\
   [X,Y]\
 };\
 f(t,y)={$slib_f}; \
- rungekutta(f,$slib_t0, $slib_tmp,$slib_h,$slib_N)
+ rungekutta(f,$slib_t0,$slib_tmp,$slib_h,$slib_N)
 
  !distribute item $slib_data into slib_datat, slib_datay
  !set slib_datat=!declosing $slib_datat
@@ -95,16 +99,24 @@ f(t,y)={$slib_f}; \
      !set slib_d=!replace internal ; by , in $slib_d
  !endif
  !set slib_out=!append line $slib_d to $slib_out
- !next
- 
-!set slib_draw=xrange $slib_rangex\
+!next
+!if data iswordof $slib_option
+  !exit
+!endif
+!set slib_draw=xrange $(slib_rangex[1])*1.1,$(slib_rangex[2])*1.1\
  yrange $(slib_rangey[1])*1.1, $(slib_rangey[2])*1.1
 !for slib_i=1 to $slib_cnt
-  slib_draw=!append line lines black,$(slib_out[$slib_i;]) to $slib_draw
+  slib_draw=!append line lines black,$(slib_out[$slib_i;])\
+fcircle $(slib_out[$slib_i;1,2]),10,blue to $slib_draw
 !next
+slib_draw=$slib_draw\
+ arrow 0,$(slib_rangey[1]),0,$(slib_rangey[2]),6,black\
+ arrow $(slib_rangex[1]),0,$(slib_rangex[2]),0,6,black\
+ point blue,
+
 !if url iswordof $slib_option or html iswordof $slib_option
   !insdraw $slib_draw
- s slib_out=$ins_url
+  slib_out=$ins_url
   !if html iswordof $slib_option
     slib_out=<img src="$ins_url" alt="" />
  !else
