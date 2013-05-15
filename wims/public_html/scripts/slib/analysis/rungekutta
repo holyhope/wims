@@ -15,7 +15,7 @@ slib_out=data for drawing or draw of the phasis diagram of x' = f1 , y' = f2 \
   where f1 and f2 have x and y and t as variables where f=[f1,f2]. If only one \
   function is given as a function of y and t, solve the equation y'=f(y,t). 
 slib_comment=
-slib_example= y*(y-5),0,3,0.5,20,html\
+slib_example= y*(y-5)+t,0,3,0.5,20,html\
 y*(y-5),0,[-2,1,3,5,0],0.1,20,html\
 y+t,0,5,0.5,20,html\
 y*(y-1),0,0.5,0.5,20\
@@ -27,6 +27,7 @@ y*(y-1),0,-0.5,0.5,20,html\
 !exit
 :proc
 !distribute items $wims_read_parm into slib_f,slib_t0,slib_y0,slib_h,slib_N,slib_option
+
 !if $slib_h=NaN
   !reset slib_h
 !endif
@@ -55,7 +56,7 @@ y*(y-1),0,-0.5,0.5,20,html\
   !else
     slib_tmp=[$(slib_y0[$slib_i;])]
   !endif
-  slib_program=!record 0 of gp/rungekutta.gp
+  !!slib_program=!record 0 of gp/rungekutta.gp
  !set slib_data=!exec pari rungekutta(f,t0,y0,h,N)=\
 {\
   my(y,t,y1,t1);\
@@ -77,7 +78,6 @@ y*(y-1),0,-0.5,0.5,20,html\
 };\
 f(t,y)={$slib_f}; \
  rungekutta(f,$slib_t0,$slib_tmp,$slib_h,$slib_N)
-
  !distribute item $slib_data into slib_datat, slib_datay
  !set slib_datat=!declosing $slib_datat
  !set slib_datay=!declosing $slib_datay
@@ -103,16 +103,16 @@ f(t,y)={$slib_f}; \
 !if data iswordof $slib_option
   !exit
 !endif
+!debug
 !set slib_draw=xrange $(slib_rangex[1])*1.1,$(slib_rangex[2])*1.1\
  yrange $(slib_rangey[1])*1.1, $(slib_rangey[2])*1.1
 !for slib_i=1 to $slib_cnt
   slib_draw=!append line lines black,$(slib_out[$slib_i;])\
-fcircle $(slib_out[$slib_i;1,2]),10,blue to $slib_draw
+  fcircle $(slib_out[$slib_i;1]),$(slib_out[$slib_i;2]),10,blue to $slib_draw
 !next
 slib_draw=$slib_draw\
  arrow 0,$(slib_rangey[1]),0,$(slib_rangey[2]),6,black\
  arrow $(slib_rangex[1]),0,$(slib_rangex[2]),0,6,black\
- point blue,
 
 !if url iswordof $slib_option or html iswordof $slib_option
   !insdraw $slib_draw
