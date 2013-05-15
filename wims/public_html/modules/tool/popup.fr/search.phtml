@@ -77,18 +77,15 @@
  !set content=!nonempty lines $content
  <!--     Independent calculator form: $s     -->
  <form target="$winname" name="calcform" action="$wims_ref_name">
- <div>
+ <div style="background-color:$op_color;padding:10pt;
+	border-collapse:collapse; border:1px solid gray;margin:10px;width:90%">
  <input type="hidden" name="session" value="popup" /> $sizeinput
  <input type="hidden" name="module" value="$op_module" />
  <input type="hidden" name="precision" value="$op_precision" />
  !for o in $oplist
  <input type="hidden" name="$o" value="$(op_$o)" />
  !next o
- <table style="background-color:$op_color;padding:10pt;
-	border-collapse:collapse; border:1px solid gray;margin:10px;width:90%">
- <tr><td>
- $content
- </td></tr></table>
+  $content
  </div></form>
  !reset op_module, op_color, op_size, op_precision
 !next s
