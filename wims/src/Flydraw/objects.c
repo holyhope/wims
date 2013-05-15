@@ -743,7 +743,7 @@ void obj_plotjump(objparm *pm)
 }
 
 	/* plot a curve, either parametric or explicit */
-void obj_plot(objparm *pm)
+void _obj_plot(objparm *pm,int dash)
 {
     int i,j,n,dist,xx,yy,varpos;
     char p1[MAX_LINELEN+1], p2[MAX_LINELEN+1];
@@ -793,7 +793,10 @@ void obj_plot(objparm *pm)
 		if(dist>plotjump || dist==1)
 		  gdImageSetPixel(image,ic[0],ic[1],pm->color[0]);
 		else
-		  gdImageLine(image,oc[0],oc[1],ic[0],ic[1],pm->color[0]);
+		 if ( dash==1) {
+		  gdImageDashedLine(image,oc[0],oc[1],ic[0],ic[1],pm->color[0]);
+		  } else
+		  {gdImageLine(image,oc[0],oc[1],ic[0],ic[1],pm->color[0]); }
 		
 	    }
 	}
@@ -801,6 +804,9 @@ void obj_plot(objparm *pm)
     }
     if(vimg_enable) vimg_plotend();
 }
+
+void obj_plot(objparm *pm) { _obj_plot( pm,0) ;}
+void obj_dplot(objparm *pm) { _obj_plot( pm,1) ; }
 
 	/* set levelcurve granularity */
 void obj_levelstep(objparm *pm)

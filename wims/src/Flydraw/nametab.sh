@@ -84,6 +84,7 @@ dline		t_obj	4,1,0,1,	obj_dline
 dlines		t_obj	4,-1,0,1,	obj_dlines
 dhline		t_obj	2,1,-1,1,	obj_hline
 dotfill		t_obj	4,1,1,0,	obj_dotfill
+dplot		t_obj	0,-1,0,1,	obj_dplot
 dvline		t_obj	2,1,-1,1,	obj_vline
 ellipse		t_obj	4,1,0,3,	obj_ellipse
 existing	t_obj	0,0,0,0,	obj_existing
