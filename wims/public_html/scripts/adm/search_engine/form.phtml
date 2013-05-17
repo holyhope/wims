@@ -1,62 +1,17 @@
 <!-- adm/search_engine/form.phtml -->
-!!set dir=wimshome/public_html/bases/sys/domain
+
 !default search_lang=$lang
-!!set Tot_Dom=!lookup domain in $dir/domain
-!!set Tot_Dom=all,$Tot_Dom
 !set wims_ref_anchor=#searchform
-!set list=!record 0 of wimshome/public_html/bases/sys/keywords/list.$search_lang
-!set list_domain=!replace internal , by ',' in '$list'
-!set listcnt=!itemcnt $list
-<script type="text/javascript">
-/*<![CDATA[*/
-     var tags = [
-!if $search_category=P
- !record 0 of wimshome/public_html/modules/tool/popup.$search_lang/dic/form.json
-!else
-!!     !for a=1 to $listcnt
-!!     !record 0 of wimshome/public_html/bases/sys/keywords/$(list[$a]).$search_lang.tmp
-!!,
-!!     !next
-!!!record 0 of wimshome/public_html/bases/sys/domain/domain.$search_lang.json
-!!
-!default search_lang=lang
-!record 0 of wimshome/public_html/bases/sys/keywords/keywords.$search_lang.json.tmp
-,
-$list_domain
-,
-!endif
-];
- /*]]>*/
-</script>
+
+!read adm/search_engine/completion.phtml
 
 <div class="wims_search_engine" id="searchform">
 
 !form new
 <input type="hidden" name="module" value="home" />
- !set bgcolort=#808080
+
 !if $wims_accessright!=$empty
- <table class="wimsnoborder" style="background-color:$bgcolor2;">
- <tr>
- !if $search_package=bases/site
-  <td style="background-color:$bgcolort" class="small">
-   $search_package&nbsp;</td>
- !else
-  <td class="small">
-  !href cmd=new&search_package=bases/site bases/site
-  &nbsp;</td>
- !endif
- !set acr=!words2items $wims_accessright
- !for d_ in $acr
-  !if $search_package=$d_
-   <td style="background-color:$bgcolort" class="small">
-   $d_&nbsp;</td>
-  !else
-   <td class="small">
-   !href cmd=new&search_package=$d_ $d_
-   &nbsp;</td>
-  !endif
- !next d 
- </tr></table>
+!read adm/search_engine/search_accessright.phtml
 !endif
 
  <div class="wims_search_engine">
@@ -66,34 +21,37 @@ $list_domain
  !set wims_ref_class=wims_button_help
 !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
   </td>
+ !!-- clear -->  
 !if $s_keywords!=$empty or $Gotcnt>0
  <td>
  !set wims_ref_class=wims_button
  !href session=$wims_session.1&list=clear $N_clear
- &nbsp;
  </td>
 !endif
-</tr><tr>
+ !!-- end clear -->
+</tr>
+<tr>
 <td>
   <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete" />
 </td><td>
  !formselect search_category list $slist prompt $plist
-
+ !!-- language -->  
 !set L_language=!words2items $wims_site_languages
 !formselect search_lang list $L_language
-<br />
+  !!-- end language -->
+  <br />
+!!-- choice -->  
 !default search_and=no
 !formselect search_and list yes,no prompt $name_search_and
-!!formselect search_domain list $Tot_Dom
-
+!!-- choice -->
 </td><td>
  <input type="submit" value="$N_Search" />
 </td></tr>
 </table>
 </div>
 !formend
+
 </div> 
 <!-- end adm/search_engine/form.phtml -->
 !set srchl=$search_keywords
 !reset search_category, search_keywords
-

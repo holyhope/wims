@@ -1,0 +1,21 @@
+<!-- adm/search_engine/completion.phtml -->
+!!set dir=wimshome/public_html/bases/sys/domain
+!set list=!record 0 of wimshome/public_html/bases/sys/keywords/list.$search_lang
+!set list_domain=!replace internal , by ',' in '$list'
+!!set listcnt=!itemcnt $list
+
+<script type="text/javascript">
+/*<![CDATA[*/
+     var tags = [
+!if $search_category=P
+ !record 0 of wimshome/public_html/modules/tool/popup.$search_lang/dic/form.json
+!else
+!record 0 of wimshome/public_html/bases/sys/keywords/keywords.$search_lang.json.tmp
+,
+$list_domain
+,
+!endif
+];
+ /*]]>*/
+</script>
+<!-- end adm/search_engine/completion.phtml -->
