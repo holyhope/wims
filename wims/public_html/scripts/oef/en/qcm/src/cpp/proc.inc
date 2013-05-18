@@ -114,9 +114,9 @@
  \if{\steptype issametext all or (\status issametext end and \q<=\step) or \q=\step}{
   \if{\qcnt>1}{<div> \q. }
   \statement[\q;]
-  </div><table class"wimsnoborder">
+  </div><table class="wimsnoborder">
   \for{i=1 to \Tot[\q]}{
-   <tr><td nowrap>\embed{reply \q,\i}.</td>
+   <tr><td class="nowrap">\embed{reply \q,\i}.</td>
    <td>\pick[\q;\i]</td></tr>
   }
   </table>

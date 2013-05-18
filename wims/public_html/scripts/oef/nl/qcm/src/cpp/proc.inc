@@ -107,16 +107,16 @@
 
 \statement{
 \if{\image notsametext }{
-  <img align="right" hspace=10 src="\imagedir/\image" alt=""/> <p>
+  <img align="right" hspace="10" src="\imagedir/\image" alt=""/> <p>
 }
 \commonq
 \for{q=1 to \qcnt}{
  \if{\steptype issametext all or (\status issametext end and \q<=\step) or \q=\step}{
   \if{\qcnt>1}{<div> \q. }
   \statement[\q;]
-  </div><table class"wimsnoborder">
+  </div><table class="wimsnoborder">
   \for{i=1 to \Tot[\q]}{
-   <tr><td nowrap>\embed{reply \q,\i}.</td>
+   <tr><td class="nowrap">\embed{reply \q,\i}.</td>
    <td>\pick[\q;\i]</td></tr>
   }
   </table>
@@ -126,7 +126,7 @@
   \if{\q<\qcnt and (\steptype issametext all or \q<\step)}{<hr/>}
  }
 }
-\if{\image notsametext }{<br style="clear:right;"/>}
+\if{\image notsametext }{<br style="float_right;"/>}
 }
 
 \answer{\choicename 1}{\ans[1;];\list[1;]}{type=\anstype}{option=\option}
