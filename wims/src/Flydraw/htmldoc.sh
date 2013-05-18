@@ -10,7 +10,7 @@ echo "
 
 if [ "$lang" = en ] ;  then echo "
 <p>Each command takes one line.</p>
-<p>In the following table, <tt>[color]</tt>
+<p>In the following table, <span class=\"tt\">[color]</span>
 may be either a color name, or 3 integers between 0 and 255, separated by commas,
 for the values of red,green,blue.</p>
 "
@@ -20,7 +20,7 @@ fi ;
 
 if [ "$lang" = fr ] ; then echo "
 <p>Chaque commande prend une ligne.</p>
-<p>Dans la table suivante <tt>[color]</tt>
+<p>Dans la table suivante <span class=\"tt\">[color]</span>
 peut 阾re un nom de couleur ou 3 entiers 0 entre 255, s閜ar閟 par des virgules,
 correspondant aux valeurs de  rouge, vert, bleu.
 </p>
@@ -31,7 +31,7 @@ fi ;
 
 if [ "$lang" = cn ] ;  then echo "
 <p>每条命令占一行.</p>
-<p>在下表中, <tt>[色彩]</tt>
+<p>在下表中, <span class=\"tt\">[色彩]</span>
 可以是色彩名, 或3个用逗号分隔的0到255的整数, 分别代表红绿蓝三种颜色.
 </p>
 "
@@ -48,8 +48,8 @@ echo "!reset table_center
 awk 'BEGIN {a=10}
 	substr($0,1,1)==":" {a=0}
 	{a++}
-	a==1 {print "$table_tr<td colspan=\"5\" nowrap><tt>"substr($0,2)"</tt></td></tr>"}
-	a==2 {print "$table_tr<td colspan=\"2\"><tt>"$0"&nbsp;</tt></td>"}
+	a==1 {print "$table_tr<td colspan=\"5\" class=\"nowrap tt\">"substr($0,2)"</td></tr>"}
+	a==2 {print "$table_tr<td colspan=\"2\"><span class=\"tt\">"$0"&nbsp;</span></td>"}
 	a==3 {print "<td colspan=\"3\">"$0"</td></tr>"}
 	' $file
 
