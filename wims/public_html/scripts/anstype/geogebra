@@ -26,28 +26,33 @@ precision=!getopt precision in $(replyoption$i)
 !!precision=$[2*$precision]
 !default weight=1,0.2,1
 !default output=coord
+!read geogebra_translation
+typelangue_en=$typelangue
 !set ggblang=!getopt language in $(replyoption$i)
-!default ggblang=$module_language
+!default ggblang=$lang
 !read lang/geogebra.phtml.$ggblang
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
 !endif
+
+!set typecnt=!linecnt $typelangue
+!reset name_listtype
+!for a=1 to $typecnt
+  !set ltype=!line $a of $typelangue
+  !set ltype=!replace internal = by , in $ltype
+  !set ltype=!nospace $ltype
+  !set w_$(ltype[2])=$(ltype[1])
+  !set name_listtype=!append item $(ltype[2]) to $name_listtype
+  !set ltype=!line $a of $typelangue_en
+  !set ltype=!replace internal = by , in $ltype
+  !set ltype=!nospace $ltype
+  !set en_w_$(ltype[2])=$(ltype[1])
+!next
+
 !read anstype/geogebra.inc
 !exec pari $pari_header
-#######################
-TODO ??
-#######################
 
-!!!if $w_axeX isin $(reply$i)
- !! $(reply$i)=xX,line,y=0&&y,line,x=0&&$(reply$i)
-!!!endif
-!!  vérifier si l'axe des x a déjà un nom. remplacer sinon, inventer un nom
-!!!endif
-!!reply$i=!replace internal $w_point[$w_axeX] by point in $(reply$i)
-!!reply$i=!replace internal $w_point[$w_axeY] by point in $(reply$i)
-!!reply$i=!replace internal $w_intersection[$w_axeX, $w_axeY] by point in $(reply$i)
-!!reply$i=!replace internal $w_axeX by xX in $(reply$i)
-!!reply$i=!replace internal $w_axeY by yY in $(reply$i)
+
 ####################### 
 ###INITIALISATION
 
@@ -69,7 +74,7 @@ $ in $yourlist_name
 
 ###yourlist_name: A=point,2,3\
 a=line,2x+5y-((3)) \
-b=circle,(x-2)²+(y+3)²-((4))
+b=circle,(x-2)^2+(y+3)^2-((4))
 
 ### name list in the same order
 your_name=!replace internal = by , in $yourlist_name
@@ -93,7 +98,7 @@ Ne sert plus
       !if $(klaar[3])!=$empty
         you=!rawmath $(klaar[3])
         you=!exec pari c=$you ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-        ###coeffs : x²,y²,xy,x,y,cstte
+        ###coeffs : x^2,y^2,xy,x,y,cstte
       !else
         you=$empty
       !endif
@@ -143,7 +148,14 @@ yourlist$output=
 !next
 !endif
 
-yourlist1=!replace internal [ by , in $yourlistformal
+yourlist1=$yourlistformal
+!for a=1 to $typecnt
+  !if $(w_$(name_listtype[$a]))!=$empty
+   !set yourlist1=!replace internal $(w_$(name_listtype[$a]))[ by $(name_listtype[$a])[ in $yourlist1
+  !endif
+!next
+
+yourlist1=!replace internal [ by , in $yourlist1
 yourlist1=!replace internal ] by  in $yourlist1
 yourlist11=!rows2lines $yourlist1
 
@@ -391,6 +403,15 @@ yourlistformal=
 ### mylist2= x_A > x_B,texte1 ; (x_A)^2+(x_B)^2 < 3,texte2 ....
 
 mylist=$(replygood$i)
+!for geoword in $name_listtype
+  !if $(w_$geoword)!=$empty
+    mylist=!replace internal $(w_$geoword)[ by $geoword[ in $(mylist)
+  !endif
+  !if $(enw_$geoword)!=$empty
+    mylist=!replace internal $(enw_$geoword)[ by $geoword[ in $(mylist)
+  !endif
+!next
+
 !!mylist=!replace internal && by $\
 !!$ in $mylist
 
@@ -999,12 +1020,11 @@ msg=<br />$msg</span>
 ####PREPARATION des feedback
 :end
 
-!readproc slib/geo2D/geogebra3  $oef_applet_option\
+!readproc slib/geo2D/geogebra3 $oef_applet_option\
 $feed\
 $yourggb\
 $js_fix\
 language=$ggblang
-
 #### On ne fait afficher que les points nouveaux 
  yourlistnew$output =
  !for p = 1 to $ynamecnt

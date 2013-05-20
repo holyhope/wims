@@ -156,7 +156,7 @@
 !set vectorpointnumericformal=!nosubst de vector $(M_objet[1]) van $(M_objet[3]), met lengte $(M_objet[4])
 !set vectorpointformal=!nosubst de vector $(M_objet[1]) van O naar $(M_objet[3])
 
-!!first should be the language term in small letters ans met no accent
+!! use for translation of the language terms of geogebra
 !set typelangue= punt=point \
 snijpunt=intersection \
 puntcirkel=pointcircle \
@@ -196,4 +196,5 @@ anglegeom=anglegeom
 !set w_and=en
 !set w_uname= Object met foutief label
 !set w_ARC= Cercle DemiCercle ArcCercle ArcCercleCirconscrit
-!! I don't know what to do with this.
+
+
