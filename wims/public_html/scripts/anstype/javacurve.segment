@@ -1,6 +1,14 @@
-!!same as polygon
+!!almost the same as polygon
 !set precision=!getopt precision in $(replyoption$i)
 !default precision=6
+!if $wims_read_parm=nocompare
+  !if $m<2
+   Test=bad $i
+   !exit
+  !endif
+  m_reply$i =$rlist
+  !goto drawing
+!endif
 
 !if $n<2
  :badrep
@@ -38,26 +46,30 @@ test=$mean
 !if $mean<$precision
   diareply$i=good
   !advance freegot
- !else
+!else
   !if $mean<$[2*$precision]
    precreply$i=yes
    !advance precgood
   !endif
   diareply$i=bad
- !endif
+!endif
 
 :drawing
 
 !if $(replytype$i)=javacurve
   primitive1=line $rlist,$color1
-  primitive2=line $glist,$color2
+  !if $wims_read_parm!=nocompare
+   primitive2=line $glist,$color2
+  !endif
   !exit
 !endif
 
 !! $(replytype$i)=jsxgraphcurve
-!for j=1 to $m/2
+!if $wims_read_parm!=nocompare
+ !for j=1 to $m/2
    script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
-!next
+ !next
+!endif
 script$i=!append line brd.create('line',[p[1],p[2]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
 !for j=1 to $n/2
   script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)

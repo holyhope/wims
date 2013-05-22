@@ -1,5 +1,5 @@
 !set precision=!getopt precision in $(replyoption$i)
-!default precision=6
+!default precision=10
 
 !if $n<4
  :badrep
@@ -7,9 +7,12 @@
  test=NaN
  !exit
 !endif
+!if $wims_read_parm=nocompare
+  !goto drawing
+!endif
 !if $m<4
- Test=bad $i
- !exit
+  Test=bad $i
+  !exit
 !endif
 
 !ifval $n!=$m
@@ -43,15 +46,19 @@ test=$mean
 
 !if $(replytype$i)=javacurve
  primitive1=arrow $rlist,8,$color1
- primitive2=arrow $glist,8,$color2
+ !if $wims_read_parm!=nocompare
+  primitive2=arrow $glist,8,$color2
+ !endif 
  !exit
 !endif
 
 !! $(replytype$i)=jsxgraphcurve
-!for j=1 to $m/2
-script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
-!next
+!if $wims_read_parm!=nocompare
+ !for j=1 to $m/2
+  script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ !next
 script$i=!append line brd.create('line',[p[1],p[2]],{strokeColor:'$color2', straightFirst:false, straightLast:false, lastArrow:true}); to $(script$i)
+!endif
 !for j=1 to $n/2
 script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
 !next

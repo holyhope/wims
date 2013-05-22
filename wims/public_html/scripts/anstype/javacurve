@@ -1,22 +1,29 @@
 good=!rows2lines $(replygood$i)
 image=!line 1 of $good
 tester=!line 2 of $good
-rlist=$(reply$i)
-m_reply$i=$rlist
-reply__$i=&nbsp;
 
 !if $wims_read_parm=nocompare
- !exit
+ image=$(oef_applet_option[2;])
+ tester=$(oef_applet_option[3;1])
+ tester=!nonempty lines $tester
+ tester=!words2items $tester
 !endif
-
 type=!item 1 of $tester
-!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve default points
 
-glist=!item 2 to -1 of $tester
+!!color can be changed... (color1=student answer, color2 good answer)
 !set color1=!getopt color1 in $(replyoption$i)
 !default color1=black
 !set color2=!getopt color2 in $(replyoption$i)
 !default color2=180,180,255
+
+rlist=$(reply$i)
+m_reply$i=$rlist
+reply__$i=&nbsp;
+
+!set Inputsize=!replace internal x by , in $(oef_applet_option[1;])
+!distribute items $Inputsize into xsize,ysize
+
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve default points
 
 !if $type notwordof points
  !if $(reply$i)=$empty
@@ -24,23 +31,28 @@ glist=!item 2 to -1 of $tester
   !exit
  !endif
 !endif
-!if $type iswordof curve
-  !set Inputsize=!replace internal x by , in $oef_applet_option
-  !distribute items $Inputsize into xsize,ysize
-!endif
+
 rlist=!translate internal ; to , in $rlist
 rlist=!nonempty items $rlist
-!!only in points initially
-glist=!nonempty items $glist
-!!
-m=!itemcnt $glist
 n=!itemcnt $rlist
 
-!read anstype/javacurve.$type
+!!only in points initially
+!if $wims_read_parm!=nocompare
+ glist=!item 2 to -1 of $tester
+ glist=!nonempty items $glist
+ m=!itemcnt $glist
+!endif
+
+!read anstype/javacurve.$type $wims_read_parm
+
+!if $wims_read_parm=nocompare
+  !goto draw
+!endif
 !if $Test!=$empty or NaN isin $test
   !exit
 !endif
 
+:draw
 ifile=$image
 !if $imagedir isin $image
  ifile=!translate internal / to $ $ in $ifile

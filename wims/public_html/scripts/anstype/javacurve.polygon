@@ -1,4 +1,4 @@
-!!same as segment
+!!almost the same as segment
 !set precision=!getopt precision in $(replyoption$i)
 !default precision=6
 
@@ -7,6 +7,10 @@
  reply$i=
  test=NaN
  !exit
+!endif
+!if $wims_read_parm=nocompare
+m_reply$i =$rlist
+ !goto drawing
 !endif
 !if $m<2
  Test=bad $i
@@ -48,22 +52,27 @@ test=$mean
 
 :drawing
 !if $(replytype$i)=javacurve
- primitive1=polygon $color1,$rlist
- primitive2=polygon $color2,$glist
- !exit
+  primitive1=polygon $color1,$rlist
+  !if $wims_read_parm!=nocompare
+   primitive2=polygon $color2,$glist
+  !endif
+  !exit
 !endif
 
 !! $(replytype$i)=jsxgraphcurve
-script$i=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
-!for j=1 to $m/2
-script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
-script$i=!append line brd.create('line',[p[$j-1],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
-!next
-script$i=!append line brd.create('line',[p[$m/2],p[1]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
+!if $wims_read_parm!=nocompare
+ script$i=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ !for j=1 to $m/2
+  script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+  script$i=!append line brd.create('line',[p[$j-1],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
+ !next
+ script$i=!append line brd.create('line',[p[$m/2],p[1]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
+!endif
 
 script$i=!append line q[0] = brd.create('point',[$(rlist[1]),$(rlist[2])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
 !for j=1 to $n/2
-script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
-script$i=!append line brd.create('line',[q[$j-1],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
+ script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+ script$i=!append line brd.create('line',[q[$j-1],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
 !next
 script$i=!append line brd.create('line',[q[$n/2],q[1]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
+

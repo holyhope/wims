@@ -1,8 +1,5 @@
 !distribute item $wims_read_parm into input_type,jsx_reply,jsx_xsize,jsx_ysize,jsx_imgurl
 !default showinfobox=false
-!set input_cnt=!rows2lines $(replygood$i[;1])
-!set input_cnt=!itemcnt $input_cnt
-!set input_cnt=$[$input_cnt-1]
 
 !set wims_bound=100
 !set name_alert=La taille des requetes sur le serveur ne peut exceder $wims_bound points. Realiser le trace plus rapidement pour que la requete soit plus petite.

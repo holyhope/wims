@@ -1,42 +1,31 @@
 replygood=$(replygood$i)
-
 reply=$(reply$i)
+image=$(replygood$i[1;1])
+tester=$(replygood$i[2;1])
+!set $image
+!if $wims_read_parm=nocompare
+ image=$(oef_applet_option[2;])
+ tester=$(oef_applet_option[3;1])
+ tester=!words2items $tester
+!endif
+type=!item 1 of $tester
 
-type=$(replygood$i[2;1])
 !!color can be changed... (color1=student answer, color2 good answer)
 !set color1=!getopt color1 in $(replyoption$i)
 !default color1=black
 !set color2=!getopt color2 in $(replyoption$i)
 !default color2=#B4B4FF
 
-!if $type iswordof curve
-  !set glist=!item 2 to -1 of $(replygood[2..-1;])
-!else
-  !set glist=!item 2 to -1 of $(replygood[2;])
-!endif
-
-!!color2=180,180,255
-!!color2=#B4B4FF
-
 !set rlist=!getopt free in $reply
-
 m_reply$i=$rlist
 reply__$i=&nbsp;
 
-!!useful only for polygon.
-!if $type iswordof polygon brokenline
-  !set rlist=!translate internal ; to , in $rlist
-!endif
+!set Inputsize=!replace internal x by , in $(oef_applet_option[1;])
+!distribute items $Inputsize into xsize,ysize
+!default xsize=200
+!default ysize=200
 
-!set rlist=!nonempty items $rlist
-!set m=!itemcnt $glist
-!set n=!itemcnt $rlist
-
-!if $wims_read_parm=nocompare
- !exit
-!endif
-
-!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,curve,brokenline default points
+!bound type within line,poly,polygon,points,segment,vector,rectangle,sline,circle,bound,curve,brokenline default points
 
 !if $type notwordof points
  !if $(reply$i)=$empty
@@ -45,14 +34,25 @@ reply__$i=&nbsp;
  !endif
 !endif
 
-!set Inputsize=!replace internal x by , in $oef_applet_option
-!distribute items $Inputsize into xsize,ysize
-!default xsize=200
-!default ysize=200
+!!useful only for polygon.
+!if $type iswordof polygon brokenline
+  !set rlist=!translate internal ; to , in $rlist
+!endif
+!set rlist=!nonempty items $rlist
+!set n=!itemcnt $rlist
+
+!if $wims_read_parm!=nocompare
+ !if $type iswordof curve
+  !set glist=!item 2 to -1 of $(replygood[2..-1;])
+ !else
+  !set glist=!item 2 to -1 of $(replygood[2;])
+ !endif
+ !set m=!itemcnt $glist
+!endif
 
 !set script$i=$(script$i)\
 var brd = JXG.JSXGraph.initBoard('jsxbox$i', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
-var urlImg ='$(replygood$i[1;1])';\
+var urlImg ='$image';\
 var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize]],{fixed: true, highlight: false});\
 /*brd.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
 
@@ -64,13 +64,19 @@ var q=[];
 !endif
 
 !if $type iswordof curve brokenline
-  !read anstype/javacurve.curve
+  !read anstype/javacurve.curve $wims_read_parm
 !else
-  !read anstype/javacurve.$type
+  !read anstype/javacurve.$type $wims_read_parm
+!endif
+!if $wims_read_parm=nocompare
+  !goto draw
 !endif
 !if $Test!=$empty or NaN isin $test
-   !exit
+  !exit
 !endif
+
+:draw
 !reset slib_out
 !readproc slib/geo2D/jsxgraph jsxbox$i,$xsize x $ysize,$(script$i)
 reply_$i=$slib_out
+
