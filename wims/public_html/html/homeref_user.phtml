@@ -49,10 +49,10 @@
  !if $(wims_exofeedback[$wims_exo;])!=$empty
   !set feedexo=$(wims_exofeedback[$wims_exo;])
   !if $module_score!=$empty and $module_score < $(feedexo[2]) and $module_score >= $(feedexo[3])
-    !if $(feedexo[3])=0
+    !if $(feedexo[3])=0 or $(feedexo[3])=$empty
       !set 5_=!append line feedbackexo,7,$(feedexo[1]),mfeed to $5_
     !else
-      !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5
+      !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5_
     !endif
   !endif
  !endif 

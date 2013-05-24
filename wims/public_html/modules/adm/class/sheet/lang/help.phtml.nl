@@ -69,11 +69,14 @@ In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit ee
 In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit een Schaersvoorde module "H4/stat/stat-4.nl".
 <pre>module=H4/stat/stat-4.nl&taal=nl&subject=5&level=2&total_exos=1&rounding=-1&usage=2&cmd=new,10</pre>
 
-En mettant deux nombres, le bouton apparait lorsque le score est compris entre le second nombre
+n mettant deux nombres (dont le deuxième est strictement positif), le bouton 
+apparaît lorsque le score est compris entre le second nombre
 et le premier nombre : par exemple, si vous mettez, 
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
 le bouton apparait lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus 
-qui apparait.
+qui apparait. Si le deuxième nombre est 0, le comportement est le même que s'il 
+n'existait pas.
+
 
 U kunt ook een Help-koppeling ook invoegen aan een werkblad. Klik op de link <span class="wims_button disabled"> $ wims_name_addh </span> in het menu
 !exit
