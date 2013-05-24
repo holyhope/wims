@@ -14,41 +14,36 @@
 !read adm/search_engine/search_accessright.phtml
 !endif
 
- <div class="wims_search_engine">
- <table class="wimscenter wims_search_engine"><tr>
-  <td>$name_search_engine</td>
-   <td>
+ <div class="wimscenter wims_search_engine">
+  <ul class="inline">
+  <li>
+   $name_search_engine
+  </li><li>
  !set wims_ref_class=wims_button_help
 !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
-  </td>
- !!-- clear -->  
-!if $s_keywords!=$empty or $Gotcnt>0
- <td>
- !set wims_ref_class=wims_button
- !href session=$wims_session.1&list=clear $N_clear
- </td>
-!endif
- !!-- end clear -->
-</tr>
-<tr>
-<td>
+  </li></ul>
+ <ul class="inline">
+ <li>
+ <input type="submit" value="$N_Search" />
+ <br />
   <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete" />
-</td><td>
+ </li>
+ <li>
  !formselect search_category list $slist prompt $plist
- !!-- language -->  
-!set L_language=!words2items $wims_site_languages
-!formselect search_lang list $L_language
-  !!-- end language -->
-  <br />
+ <br />
 !!-- choice -->  
 !default search_and=no
 !formselect search_and list yes,no prompt $name_search_and
 !!-- choice -->
-</td><td>
- <input type="submit" value="$N_Search" />
-</td></tr>
-</table>
+</li>
+ !!-- language -->  
+!set L_language=!words2items $wims_site_languages
+!formselect search_lang list $L_language
+  !!-- end language -->
+ </li>
+</ul>
 </div>
+
 !formend
 
 </div> 

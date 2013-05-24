@@ -16,32 +16,35 @@
 !if $error!=$empty and  $(ER_$error)!= 
 <p class="wims_alertmsg">
  $(ER_$error)
+ !read adm/search_engine/search_empty.phtml
 </p>
 !endif
-
 !set tt=<span class="wims_emph">$(C_A)</span>
 !if $gottype=search
-<p class="RE_found">
+<div class="RE_found">
  $RE_found.
-</p>
+ !read adm/search_engine/search_clear.phtml
+</div>
 !else
  !if $s_keywords!=$empty and $Gotcnt<1
- <p class="wims_alertmsg">
+ <div class="wims_alertmsg">
   $RE_nomatch.
-  </p><p>
+  !read adm/search_engine/search_clear.phtml
+ </div>
   !if $(rel_$s_category)!=$empty
+  <div>
    $RE_try
    !for i in $(rel_$s_category)
     !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(C_$i)
     &nbsp;
    !next i
-   !!if $has_browse=yes
+   !if $has_browse=yes
     $wims_name_or
     !href module=adm/browse&$browse_parm $N_browsesite
 .
    !endif
+   </div>
   !endif
-  </p>
  !endif
  !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
   !if $list_start>0
@@ -61,7 +64,8 @@
  !endif
 !endif
 !if $s_category isin PLS
-<p class="wims_emph">$(C_$s_category)</p>
+<div class="wims_emph">$(C_$s_category)
+</div>
  !changeto result.$s_category
 !endif
 
@@ -74,7 +78,8 @@
    !set tt=<p class="wims_emph">$(C_$s_category)</p>
   !endif
  !endif
-$tt
+$tt 
+
  <ul class="wims_home_result_list">
  !for i=1 to $gotcnt
   !set m_=!line $i of $gotm
