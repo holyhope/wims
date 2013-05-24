@@ -31,7 +31,8 @@
  !else
   !read $deffile question
 
-  !if $credits!=$empty and .. notin $credits and \ notin $credits
+  !if $credits!=$empty and .. notin $credits and \ notin $credits \
+    and ($wims_user iswordof supervisor or $wims_user=$empty)
    !set credits=!replace internal < by &lt; in $credits
     <div class="wims_credits">$credits</div>
   !endif
@@ -45,4 +46,6 @@
 !endif
 <!-- end of "oefstatement" -->
 </div>
+<br class="clearall" />
+
 <!-- End Present.phtml-->
