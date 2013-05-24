@@ -36,6 +36,7 @@ my $TOOLTIP = 0 ;
 my $STYLE = '' ;
 my $OPTION = '' ;
 my $tooltip_prompt = '<img src="gifs/picto.gif" alt="picto" />' ;
+$tooltip_prompt='';
 my $linkout='' ; 
 $worksheet= '';
 $SHEET = '' ;
@@ -370,10 +371,17 @@ for my $tag (keys %{$hash{text}}) {
   my $CHEMIN_down=($dotoc_down) ? "<div id=\"down_toc\">$CHEMIN</div>" : '' ; 
   my @Chemin = split(',', $hash{chemin}{$tag});
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
-  my $TOCd = ($dotoc_right && $tagupbl ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
+  my $TOCd = ($dotoc_right && $tag ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
+ 
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
-  my $index = ($INDEX == 1 && (@ListIndex)) ? "\n\n\\link{index}{$tit_index}" : '';
-  my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\" src=\"scripts/js/wz_tooltip.js\"></script>" : '' ;
+  my $index = ($INDEX == 1 && (@ListIndex)) ? "<li>\\link{index}{$tit_index}</li>" : '';
+  my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\">
+  /*<![CDATA[*/
+  jQuery.noConflict();
+  jQuery(function() {jQuery( \"#left_toc\" ).menu();});
+  jQuery(function() {jQuery( \"#right_toc\" ).menu();});
+  /*]]>*/
+  </script>":'';
   ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ; 
   out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
 }
@@ -427,9 +435,12 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
    #modifier avec selection
     my $tp = '' ; 
     if ($TOOLTIP==1) {
-    if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=' ' ; } else {
-      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br />': '' ;}
-    $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
+    if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=($ref->{tittoc}{$id}) ?  
+      "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ; } 
+    else {
+      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ;
+    }
+    #$ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
     $ref->{toc}{$Id} .= "\n<XXXX=\"$id\">\\link{$id}{$ref->{tittoc}{$id}
     }$tp <YYYY=\"$id\">";
@@ -1337,12 +1348,12 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
    $s= "l"  if($toc_g) ; $s .= "r" if($toc_d) ;
   if (($toc_g) || ($toc_d)) {
     $CHEMIN_up . '<div class="doc_latex2wims' . $s . '">'
-   . (($toc_g) ? '<div class="left_toc">'. $toc_g 
-   . $index . '</div>' : '')
+   . (($toc_g) ? '<ul id="left_toc" class="float_left left_toc">'. $toc_g 
+   . $index . '</ul>' : '')
    . '<div class="wimsdoc">'
    . $text
    . '</div>'
-   . (($toc_d) ? '<div class="right_toc">'
+   . (($toc_d) ? '<ul id="right_toc" class="right_toc">'
    . $toc_d
    . '<div class="wimscenter">'
    . $LOAD
@@ -1430,16 +1441,16 @@ sub Numero { my ($id) = @_;
 sub selection { my ($text, $couleur, @tag) = @_ ;
   return '' if !defined($text);
   for my $ta (@tag) {
-    $text =~ s/XXXX="$ta">/div class="$couleur">/g;
-    $text =~ s/YYYY="$ta">/\/div>/g;
+    $text =~ s/XXXX="$ta">/li class="$couleur">/g;
+    $text =~ s/YYYY="$ta">/\/li>/g;
   };
   $text;
 }
 
 sub clean { my ($text, $ref) = @_;
   return '' if !defined($text);
-   $text =~ s/<XXXX="\w*">/<div class="no_selected">/g;
-   $text =~ s/<YYYY="\w*">/<\/div>/g;
+   $text =~ s/<XXXX="\w*">/<li class="no_selected">/g;
+   $text =~ s/<YYYY="\w*">/<\/li>/g;
    $text =~ s/ZZZZZ(\w+)/store_tip($1,$ref)/ge;
    $text;
 }
@@ -1447,9 +1458,9 @@ sub clean { my ($text, $ref) = @_;
 sub store_tip { my ($tag,$ref)=@_ ; 
   my $tip = $ref->{toctip}{$tag} ;
   my $title=$ref->{tittoc}{$tag} ;
-  $tip =~ s/'/\\\\'/g if ($tip) ; 
-   $title =~ s/'/\\\\'/g if ($title) ; 
-  $ref->{toctip}{$tag} ?  "<a onmouseover=\"Tip('$tip',TITLE,'$title',TITLEBGCOLOR,'',WIDTH,'200px')\" onmouseout=\"UnTip()\">$tooltip_prompt<\/a>" : '' ; 
+  #$tip =~ s/'/\\\\'/g if ($tip) ; 
+  $title =~ s/'/\\\\'/g if ($title) ; 
+  $ref->{toctip}{$tag} ? "<ul>$tip</ul>" : '' ; 
 }
 
 sub chemin { my ($tag, $ref) = @_;
