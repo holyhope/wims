@@ -6,6 +6,11 @@
   !set gott=$gottC
 !endif
 
+!default gotcntC=0
+!if $[$gotcntC + $gotcnt]=0
+ !href module=adm/class/classes&type=example $name_allexampleclass
+!endif
+
 <ul class="wims_home_result_list wims_class">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm

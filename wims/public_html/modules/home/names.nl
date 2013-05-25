@@ -9,6 +9,7 @@ N_clear = wissen
 N_go = ga naar
 N_at = bij
 N_hide = Verbergen
+name_allexampleclass=All open classes
 
 V_title = WWW Interactieve Multipurpose Server
 V_cls = Virtuele klaslokalen

@@ -5,7 +5,8 @@
   !set gott=$gottS
 !endif
 
-!if $gotcntS=0
+!default gotcntS=0
+!if $[$gotcntS + $gotcnt]=0
  !changeto lang/welcome-S.phtml.$lang
 !endif
 

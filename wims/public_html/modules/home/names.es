@@ -10,6 +10,7 @@ N_clear = Empezar de nuevo
 N_go = mostrar
 N_at = en
 N_hide = ocultar
+name_allexampleclass=All open classes
 
 V_title = Servidor Interactivo Multipropósito WIMS
 V_cls = Clases virtuales
