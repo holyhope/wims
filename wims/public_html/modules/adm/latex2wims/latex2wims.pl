@@ -375,13 +375,7 @@ for my $tag (keys %{$hash{text}}) {
  
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1 && (@ListIndex)) ? "<li>\\link{index}{$tit_index}</li>" : '';
-  my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\">
-  /*<![CDATA[*/
-  jQuery.noConflict();
-  jQuery(function() {jQuery( \"#left_toc\" ).menu();});
-  jQuery(function() {jQuery( \"#right_toc\" ).menu();});
-  /*]]>*/
-  </script>":'';
+  my $tooltip = "";
   ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ; 
   out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
 }
@@ -1315,6 +1309,12 @@ sub def { my ($ref, @style) = @_;
     $header .= "\t $header_tmp" ;
   }
   close IN;
+  $header .= "\t <script type=\"text/javascript\">\t"
+   . "jQuery.noConflict();\t"
+   . "jQuery(function() {jQuery( \"#left_toc\" ).menu();});\t" 
+   . "jQuery(function() {jQuery( \"#right_toc\" ).menu();});\t"
+   . "</script>" if ($TOOLTIP==1);
+ 
 "copyright=gnu
 docopen=yes
 dlang=fr
