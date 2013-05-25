@@ -5,19 +5,24 @@
 slib_author=Bernadette, Perrin-Riou
 
 slib_example=5,6,100,200,0,10,0,7,0,pixels\
-5,6,100,200,0,10,0,7,10,pixels\
-50,29,100,200,0,10,0,7,0
+7,9,100,200,0,10,0,7,10,pixels\
+7,9,100,200,0,10,0,7,0,pixels\
+[5,7],[6,9],100,200,0,10,0,7,0,pixels
 !exit
 
 :proc
-slib_out=
-
-!distribute  item $wims_read_parm into slib_x,slib_y,slib_sizex,slib_sizey,slib_rangex1,slib_rangex2,slib_rangey1,slib_rangey2,slib_border,slib_pixels
+!reset slib_out
+!distribute item $wims_read_parm into slib_x,slib_y,slib_sizex,slib_sizey,slib_rangex1,slib_rangex2,slib_rangey1,slib_rangey2,slib_border,slib_pixels
+slib_x=!declosing $slib_x
+slib_y=!declosing $slib_y
 !default slib_border=0
-!if $slib_pixels=$empty
-  slib_out = $[($slib_rangex2-($slib_rangex1))/($slib_sizex)*($slib_x+($slib_border))+($slib_rangex1)],$[-($slib_rangey2-($slib_rangey1))/($slib_sizey)*($slib_y+($slib_border))+($slib_rangey2)]
-!else
- slib_out = $[round(($slib_sizex)*($slib_x-($slib_rangex1))/($slib_rangex2-($slib_rangex1))-($slib_border))],$[round(($slib_sizey)*(-($slib_y)+($slib_rangey2))/($slib_rangey2-($slib_rangey1)) - ($slib_border))]
-!endif
-
-slib_out = !trim $slib_out
+slib_cnt=!itemcnt $slib_x
+!for slib_j=1 to $slib_cnt
+ !if $slib_pixels=$empty
+  slib_out = $slib_out,$[($slib_rangex2-($slib_rangex1))/($slib_sizex)*($(slib_x[$slib_j])+($slib_border))+($slib_rangex1)],$[-($slib_rangey2-($slib_rangey1))/($slib_sizey)*($(slib_y[$slib_j])+($slib_border))+($slib_rangey2)]
+ !else
+  slib_out = $slib_out,$[round(($slib_sizex)*($(slib_x[$slib_j])-($slib_rangex1))/($slib_rangex2-($slib_rangex1))-($slib_border))],$[round(($slib_sizey)*(-($(slib_y[$slib_j]))+($slib_rangey2))/($slib_rangey2-($slib_rangey1)) - ($slib_border))]
+ !endif
+!next
+slib_out=!nonempty items $slib_out
+slib_out=!trim $slib_out
