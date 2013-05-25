@@ -3,14 +3,15 @@
 !endif
 
 slib_author=Fabrice, Guerimand
-slib_example=200,200,10,[[0,0],[8,8]],[[0,0],[1,1],[3,0],[0,5],[2,3]],black,grey,red,x,y
+slib_example=200,200,10,[[0,0],[8,8]],[[0,0],[1,1],[3,0],[0,5],[2,3]],black,grey,red,x,y\
+200,200,10,[[0,0],[8,8]],[[0,0],[1,1],[2,1],[1,5],[4,3],[6,7]],black,grey,red,x,y,html
 !exit
 
 
 :proc
 slib_input=$wims_read_parm
 
-!distribute items $slib_input into slib_xsize,slib_ysize,slib_marge,slib_cadrage,slib_point,slib_colora,slib_colorg,slib_colorl,slib_legendex,slib_legendey
+!distribute items $slib_input into slib_xsize,slib_ysize,slib_marge,slib_cadrage,slib_point,slib_colora,slib_colorg,slib_colorl,slib_legendex,slib_legendey,slib_option
 
 !default slib_xsize=400
 !default slib_ysize=400
@@ -63,3 +64,17 @@ arrow $slib_x0,$slib_y0,$slib_x0,0,20,$slib_colora\
 lines $slib_colorl,$slib_coordpt\
 text $slib_colora,$slib_xsize-$slib_dec,$slib_ysize-$slib_marge-20,medium,$slib_legendex\
 text $slib_colora,$slib_marge+15,10,medium,$slib_legendey
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size1=$insdraw_size
+  insdraw_size=$slib_xsize,$slib_ysize
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+  !else
+    slib_out=$slib_out,$insdraw_size
+  !endif
+  insdraw_size=$insdraw_size1
+!endif
+
