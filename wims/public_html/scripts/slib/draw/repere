@@ -3,6 +3,9 @@
 !endif
 
 slib_author=Fabrice, Guerimand 
+slib_example= 200,200,1,-5,5,-5,5,,,red,blue,html\
+200,200,1,-5,5,-5,5,,,red,blue\
+400,200,1,-5,5,-5,5,,,blue,blue,html\
 
 !exit
 
@@ -10,7 +13,7 @@ slib_author=Fabrice, Guerimand
 :proc
 slib_input=$wims_read_parm
 
-!distribute items $slib_input into xsize,ysize,marge,xmin,xmax,ymin,ymax,xgd,ygd,colora,colorg
+!distribute items $slib_input into xsize,ysize,marge,xmin,xmax,ymin,ymax,xgd,ygd,colora,colorg,slib_option
 slib_out=$slib_input
 
 !default xsize=400
@@ -71,4 +74,17 @@ slib_out=$x0,$y0\
 $ex,$[-($ey)]\
 $repere
 
+!if url iswordof $slib_option or html iswordof $slib_option
+  slib_out=!line 3 to - 1 of $slib_out
+  insdraw_size1=$insdraw_size
+  insdraw_size=$xsize,$ysize
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+  !else
+    slib_out=$slib_out,$insdraw_size
+  !endif
+  insdraw_size=$insdraw_size1
+!endif
 
