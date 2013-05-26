@@ -54,7 +54,6 @@ $table_hdtr
 !next sw
 
 $table_end
-
 !if $othermiss!=$empty
  $name_warning_program
  !set ll=!record 12 of lang/cat.$modu_lang
@@ -64,17 +63,19 @@ $table_end
  $table_header
  $table_hdtr<th>$wims_name_name</th><th>$name_dependingonit</th>
  !for other in $othermiss
-  
   !set o=!replace internal units-filter by units in $other
+  !if $(pack_$other)!=$empty
+     !set other=$(pack_$other)
+  !endif
   $table_tr<td class="tt">$other</td>
   <td>
   !if $(mod_$o)!=$empty
-   !set mn=!module title $(mod_$o)
-   !if $mn!=$empty
-    !href module=$(mod_$o) $mn
-   !endif
+    !set mn=!module title $(mod_$o)
+    !if $mn!=$empty
+      !href module=$(mod_$o) $mn
+    !endif
   !else
-   Lots of modules
+    !lookup $o in lang/help_soft.$modu_lang
   !endif
   !if $other iswordof chemeq units-filter
    <span class="small">$name_fail.</span>

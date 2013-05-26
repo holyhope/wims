@@ -51,6 +51,13 @@ l=!record $confcat of lang/cat.$modu_lang
   !endif
  !next other
 !endif
+!if perl notin in $othermiss
+  !set pack_validation=WebService::Validator::HTML::W3C
+  !sh perl -M$pack_validation -e 1
+  !if $wims_exec_error!=$empty
+    othermiss=!append item validation to $othermiss
+  !endif
+!endif
 
 !readdef wimshome/public_html/bases/sys/defaults.conf
 confcnt=!recordcnt lang/confdata.$modu_lang
