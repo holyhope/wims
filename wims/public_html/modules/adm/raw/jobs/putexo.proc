@@ -20,6 +20,12 @@ sheet_status=!line 1 of $qproperties
  !exit
 !endif
 
+exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet
+!if $exocnt >= $SHEET_LIMIT
+ error=Sorry, a sheet is limited to $SHEET_LIMIT exercises.
+ !exit
+!endif
+
 !if $data1=$empty
  error=no data found
  !exit

@@ -35,6 +35,12 @@ exam_status=!line 1 of $qproperties
  !exit
 !endif
 
+exocnt=!recordcnt wimshome/log/classes/$qclass/exams/.exam$qexam
+!if $exocnt >= $EXAM_LIMIT
+ error=Sorry, an exam is limited to $EXAM_LIMIT exercises.
+ !exit
+!endif
+
 !read scripts/check.exo
 
 data1=!nonempty lines $data1
