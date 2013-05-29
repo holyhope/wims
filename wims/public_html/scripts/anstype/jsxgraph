@@ -1,36 +1,41 @@
 reply=$(reply$i)
 replygood=$(replygood$i)
 
-script=!line 1 to -2 of $oef_applet_option
+script=!line 1 to -2 of $(oef_answer_option$i)
+script=!item 2 to -1 of $script
 script1=$script
-liste_variable=!line -1 of $oef_applet_option
+liste_variable=!line -1 of $(oef_answer_option$i)
 cnt_variable=!itemcnt $liste_variable
 !for j = 1 to $cnt_variable
-  !set script=!replace internal $(liste_variable[$j]) by [$(reply[$j;])] in $script
+  !if $(reply[$j;2])=$empty
+    !set script=!replace internal $(liste_variable[$j]) by $(reply[$j;]) in $script
+  !else
+     !set script=!replace internal $(liste_variable[$j]) by [$(reply[$j;])] in $script
+  !endif
   !if \ notin $(replygood[$j;])
     !set script1=!replace internal $(liste_variable[$j]) by [$(replygood[$j;])] in $script1
   !endif
 !next
-!set jbox=!item 1 of $oef_applet_option
+!set jbox=!item 2 of $(oef_answer_option$i)
+!set your_brd=!item 1 of $(oef_answer_option$i)
 
 script1=!replace internal $jbox by new$jbox in $script1
-
 !if free isin $reply
   free_var=$(reply[-1;])
   free_var=!getopt free in $free_var
   free_var_cnt=!itemcnt $free_var
   !for j = 1 to $[$free_var_cnt/2]
-    script=!append line brd.create('point',[$(free_var[2*$j-1]) , $(free_var[2*$j])],{size: 1,showInfobox: false,name:''}) ; to $script
+    script=!append line $(your_brd).create('point',[$(free_var[2*$j-1]) , $(free_var[2*$j])],{size: 1,showInfobox: false,name:''}) ; to $script
   !next
 !endif
 precision=!getopt precision in $(replyoption$i)
 !default precision=10
 
-!readproc slib/geo2D/jsxgraph $script; brd.suspendUpdate() ;
+!readproc slib/geo2D/jsxgraph $script; $(your_brd).suspendUpdate() ;
 
 reply_$i=$slib_out
 !! bonne reponse
-!!!readproc slib/geo2D/jsxgraph $script1; brd.suspendUpdate() ;
+!!!readproc slib/geo2D/jsxgraph $script1; $(your_brd).suspendUpdate() ;
 !!reply_$i=$(reply_$i) $slib_out
 
 !! if empty, take the value of reply_$i
@@ -48,7 +53,7 @@ reply__$i=&nbsp;
 !! on analyse numeriquement la reponse
 
 
-!reset cnt_rep
+!reset cnt_rep sc
 !set replygood=!lines2rows $(replygood$i)
 
 !for j= 1 to $cnt_variable
@@ -58,7 +63,7 @@ reply__$i=&nbsp;
    !for u=1 to $c
      good_=$(replygood[$j;$u])
      !ifval abs($good_ - $(reply$i[$j;$u])) < 1/$precision
-       sc=$sc 1
+       sc=$sc 1/$c
      !else
        sc=$sc 0
      !endif
@@ -75,8 +80,7 @@ sc=!nonempty items $sc
 score=!replace internal ; by , in $sc
 score=!replace internal , by + in $score
 
-score=$[($score)/(2*$cnt_rep)]
-
+score=$[($score)/$cnt_rep]
 freegot=$[$freegot+$score]
 
 !if $score=1

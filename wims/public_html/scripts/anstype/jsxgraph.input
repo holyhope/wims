@@ -2,31 +2,33 @@
 
 !set anstype=yes
 !set anstyle=dprompt
-!set oef_js_submit=capture()
+!set oef_js_submit=$oef_js_submit capture$i();
 
 !if $wims_read_parm=def
  !exit
 !endif
 
-!set oef_applet_option=!replace internal $	$ by $\
+!set oef_answer_option$i=!replace internal $	$ by $\
 $  in $inputsize
-
-!set variable=!line -1 of $oef_applet_option
-!set oef_applet_option=!line 1 to -2 of $oef_applet_option
-!set oef_applet_option=!nonempty lines $oef_applet_option
-!set Inputsize=!line 1 of $oef_applet_option
+!set variable=!line -1 of $(oef_answer_option$i)
+!set oef_answer_option$i=!line 1 to -2 of $(oef_answer_option$i)
+!set oef_answer_option$i=!nonempty lines $(oef_answer_option$i)
+!set Inputsize=!line 1 of $(oef_answer_option$i)
 !set test=!text remove 0123456789x in $Inputsize
 !if $test issametext $empty
  !set Inputsize=!replace internal x by , in $Inputsize
- !set oef_applet_option=!line 2 to -1 of $oef_applet_option
- !set oef_applet_option=!declosing $oef_applet_option
+ !set oef_answer_option$i=!line 2 to -1 of $(oef_answer_option$i)
+ !set oef_answer_option$i=!declosing $(oef_answer_option$i)
  !distribute items $Inputsize into xsize,ysize
 !endif
 
-!set jbox=!line 1 of $oef_applet_option
+!set jbox=!line 1 of $(oef_answer_option$i)
+!set your_brd=!word 2 of $jbox
+!set jbox=!word 1 of $jbox
+!default your_brd=brd
 
-!set oef_applet_option=!line 2 to -1 of $oef_applet_option
-!set script=$oef_applet_option
+!set oef_answer_option$i=!line 2 to -1 of $(oef_answer_option$i)
+!set script$i=$(oef_answer_option$i)
 !set variable=!replace internal ; by $\
 $ in $variable
 !set cnt_var=!linecnt $variable
@@ -35,33 +37,41 @@ $ in $variable
  !set l_=!line $j_ of $variable
  !set l_=!replace internal = by , in $l_
  !set liste_variable=!append item $jbox_$(l_[1]) to $liste_variable
- !set script=!replace internal $jbox_$(l_[1]) by $(l_[2]) in $script
+ !set script$i=!replace internal $jbox_$(l_[1]) by $(l_[2]) in $(script$i)
 !next
-!set oef_applet_option=$jbox,$xsize x $ysize,$oef_applet_option\
+
+!set oef_answer_option$i=$your_brd,$jbox,$xsize x $ysize,$(oef_answer_option$i)\
 $liste_variable
 !set style_point=!getopt style in $(replyoption$i)
 !set style_point=!declosing $style_point
 !default style_point=size: 1, showInfobox: false, name:''
 !if freepoint isin $(replyoption$i)
-  !set script=$script\
+  !set script$i=$(script$i)\
     var jsxbox_free=[];\
 JXG.addEvent(document.getElementById('jsxbox'), 'click', function (e) {\
-    var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, brd.getMousePosition(e),brd);\
-    var p=brd.create('point', coords.usrCoords.slice(1),{$style_point});\
+    var coords = new JXG.Coords(JXG.COORDS_BY_SCREEN, $(your_brd).getMousePosition(e),$(your_brd));\
+    var p=$(your_brd).create('point', coords.usrCoords.slice(1),{$style_point});\
     var c = [p.X(), p.Y()];\
     jsxbox_free.push(c);\
 }, this);
 !endif
-!readproc slib/geo2D/jsxgraph $jbox,$xsize x $ysize,$script
+!readproc slib/geo2D/jsxgraph $jbox,$xsize x $ysize,$(script$i)
 $slib_out
 
 <script type="text/javascript">
 /*<![CDATA[*/
-var capture = function() {
+var capture$i = function() {
         document.getElementById('jsreply$i').value=
-!for var in $liste_variable
-  !set rep=!replace internal var by rep in $var 
-  $(rep).X() + ',' + $(rep).Y() + ';' +
+!set var_cnt=!linecnt $(replygood[;1])
+!for j=1 to $cnt_var
+  !set var=$(liste_variable[$j])
+  !set rep=!replace internal var by rep in $var
+  !set var_cnt=!itemcnt $(replygood$i[$j;])
+  !if $var_cnt =1 and \ notin $(replygood$i[$j;])
+    $(rep).Value() + ';' +
+  !else
+    $(rep).X() + ',' + $(rep).Y() + ';' +
+  !endif
 !next
 !if freepoint isin $(replyoption$i)
  'free=' + jsxbox_free + ';' +
@@ -71,3 +81,5 @@ var capture = function() {
 </script>
 
 <input type="hidden" name="reply$i" id="jsreply$i" value="" />
+
+!reset your_brd jbox
