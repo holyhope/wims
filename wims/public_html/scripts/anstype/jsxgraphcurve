@@ -2,10 +2,11 @@ replygood=$(replygood$i)
 reply=$(reply$i)
 image=$(replygood$i[1;1])
 tester=$(replygood$i[2;1])
-!set $image
+oef_answer_option=$(oef_answer_option$i)
+
 !if $wims_read_parm=nocompare
- image=$(oef_applet_option[2;])
- tester=$(oef_applet_option[3;1])
+ image=$(oef_answer_option[2;])
+ tester=$(oef_answer_option[3;1])
  tester=!words2items $tester
 !endif
 type=!item 1 of $tester
@@ -20,7 +21,7 @@ type=!item 1 of $tester
 m_reply$i=$rlist
 reply__$i=&nbsp;
 
-!set Inputsize=!replace internal x by , in $(oef_applet_option[1;])
+!set Inputsize=!replace internal x by , in $(oef_answer_option[1;])
 !distribute items $Inputsize into xsize,ysize
 !default xsize=200
 !default ysize=200
@@ -51,15 +52,15 @@ reply__$i=&nbsp;
 !endif
 
 !set script$i=$(script$i)\
-var brd = JXG.JSXGraph.initBoard('jsxbox$i', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
+var brd$i = JXG.JSXGraph.initBoard('jsxbox$i', {axis:false, boundingbox: [0,0,$xsize,$ysize],showNavigation:false, showCopyright: false, grid:false });\
 var urlImg ='$image';\
-var ima = brd.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize]],{fixed: true, highlight: false});\
-/*brd.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
+var ima = brd$i.create('image',[urlImg,[0,$ysize],[$xsize,-$ysize]],{fixed: true, highlight: false});\
+/*brd$i.create('text',[0,360, 'e= $oef_fill_option'], {fontSize:15});*/
 
 !if $type iswordof line sline segment vector rectangle polygon \
    curve brokenline 
 !set script$i=$(script$i)\
-var p=[];\
+var p$i=[];\
 var q=[];
 !endif
 
@@ -79,4 +80,3 @@ var q=[];
 !reset slib_out
 !readproc slib/geo2D/jsxgraph jsxbox$i,$xsize x $ysize,$(script$i)
 reply_$i=$slib_out
-

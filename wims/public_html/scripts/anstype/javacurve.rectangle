@@ -84,21 +84,20 @@ polygon $color2,$xv3,$yv3,$xv4,$yv3,$xv4,$yv4,$xv3,$yv4
 !! $(replytype$i)=jsxgraphcurve
 !if $wims_read_parm!=nocompare
  !for j=1 to $m/2
-  script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+  script$i=!append line p$i[$j] = brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'+', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
  !next
  !set script$i=$(script$i)\
-brd.create('line',[[$(glist[1]),$(glist[2])],[$(glist[1]),$(glist[4])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(glist[1]),$(glist[4])],[$(glist[3]),$(glist[4])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(glist[3]),$(glist[4])],[$(glist[3]),$(glist[2])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(glist[3]),$(glist[2])],[$(glist[1]),$(glist[2])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});
+brd$i.create('line',[[$(glist[1]),$(glist[2])],[$(glist[1]),$(glist[4])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(glist[1]),$(glist[4])],[$(glist[3]),$(glist[4])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(glist[3]),$(glist[4])],[$(glist[3]),$(glist[2])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(glist[3]),$(glist[2])],[$(glist[1]),$(glist[2])]],{strokeColor:'$color2', straightFirst:false, straightLast:false});
 
 !endif
 !for j=1 to $n/2
- script$i=!append line q[$j] = brd.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
+ script$i=!append line q[$j] = brd$i.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
 !next
 !set script$i=$(script$i)\
-brd.create('line',[[$(rlist[1]),$(rlist[2])],[$(rlist[1]),$(rlist[4])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(rlist[1]),$(rlist[4])],[$(rlist[3]),$(rlist[4])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(rlist[3]),$(rlist[4])],[$(rlist[3]),$(rlist[2])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
-brd.create('line',[[$(rlist[3]),$(rlist[2])],[$(rlist[1]),$(rlist[2])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});
-
+brd$i.create('line',[[$(rlist[1]),$(rlist[2])],[$(rlist[1]),$(rlist[4])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(rlist[1]),$(rlist[4])],[$(rlist[3]),$(rlist[4])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(rlist[3]),$(rlist[4])],[$(rlist[3]),$(rlist[2])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});\
+brd$i.create('line',[[$(rlist[3]),$(rlist[2])],[$(rlist[1]),$(rlist[2])]],{strokeColor:'$color1', straightFirst:false, straightLast:false});

@@ -90,16 +90,15 @@ test=$mean
 
 !! $(replytype$i)=jsxgraphcurve
 !if $wims_read_parm!=nocompare
- script$i=!append line p[0] = brd.create('point',[$(glist[1]),$(glist[2])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+ script$i=!append line p$i[0] = brd$i.create('point',[$(glist[1]),$(glist[2])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
  !for j=1 to $m/2
-  script$i=!append line p[$j] = brd.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
-  script$i=!append line brd.create('line',[p[$[$j-1]],p[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
+  script$i=!append line p$i[$j] = brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'', size:'0',fixed:true,name:'',showInfobox:false,strokeColor:'$color2'}); to $(script$i)
+  script$i=!append line brd$i.create('line',[p$i[$[$j-1]],p$i[$j]],{strokeColor:'$color2', straightFirst:false, straightLast:false}); to $(script$i)
  !next
 !endif
 nb=1
-script$i=!append line q[0] = brd.create('point',[$(rlist[$nb;1]),$(rlist[$nb;2])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+script$i=!append line q[0] = brd$i.create('point',[$(rlist[$nb;1]),$(rlist[$nb;2])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
 !for j=1 to $n/2
- script$i=!append line q[$j] = brd.create('point',[$(rlist[$nb;2*$j-1]),$(rlist[$nb;2*$j])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
- script$i=!append line brd.create('line',[q[$[$j-1]],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
+ script$i=!append line q[$j] = brd$i.create('point',[$(rlist[$nb;2*$j-1]),$(rlist[$nb;2*$j])],{face:'', size:'8',fixed:true,name:'',showInfobox:false,strokeColor:'$color1'}); to $(script$i)
+ script$i=!append line brd$i.create('line',[q[$[$j-1]],q[$j]],{strokeColor:'$color1',straightFirst:false, straightLast:false}); to $(script$i)
 !next
-
