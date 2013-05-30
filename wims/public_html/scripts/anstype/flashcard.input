@@ -3,11 +3,7 @@
 !set anstype=yes
 !set anstyle=mc
 !set nb_form=0
-!set oef_js_submit=!replace internal ; by , in $oef_js_submit
 
-!set oef_js_submit=!append item fieldsend$i() to $oef_js_submit
-!set oef_js_submit=!listuniq $oef_js_submit
-!set oef_js_submit=!replace internal , by ; in $oef_js_submit
 !if $wims_read_parm=def
  !exit
 !endif
@@ -125,3 +121,5 @@ function flashcard_on$i(s){
    &nbsp;
  !next
 !endif
+
+!set oef_js_submit=$oef_js_submit fieldsend$i();
