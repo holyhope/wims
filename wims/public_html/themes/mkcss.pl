@@ -31,11 +31,13 @@ for my $f (glob("*/*.css.template")) {
 
 
 sub treate { my ($c)= @_ ;
+  if ($c) {
   open(INN, $c);
-  my $text = <INN> ; 
+  my $text = <INN> ;
   close(INN) ;
   "\n/*! from $c */\n$text" ;
-} ;
+  }
+};
 
 
 
