@@ -1348,7 +1348,7 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
    $s= "l"  if($toc_g) ; $s .= "r" if($toc_d) ;
   if (($toc_g) || ($toc_d)) {
     $CHEMIN_up . '<div class="doc_latex2wims' . $s . '">'
-   . (($toc_g) ? '<ul id="left_toc" class="float_left left_toc">'. $toc_g 
+   . (($toc_g) ? '<ul id="left_toc" class="left_toc">'. $toc_g 
    . $index . '</ul>' : '')
    . '<div class="wimsdoc">'
    . $text
