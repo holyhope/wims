@@ -371,7 +371,7 @@ for my $tag (keys %{$hash{text}}) {
   my $CHEMIN_down=($dotoc_down) ? "<div id=\"down_toc\">$CHEMIN</div>" : '' ; 
   my @Chemin = split(',', $hash{chemin}{$tag});
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
-  my $TOCd = ($dotoc_right && $tag ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
+  my $TOCd = ($dotoc_right && $tag ne 'main' && (!($dotoc_left) || $tagupbl ne 'main' )) ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
  
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1 && (@ListIndex)) ? "<li>\\link{index}{$tit_index}</li>" : '';
@@ -427,7 +427,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     $ref->{prev}{$id} = $idold;
     $ref->{next}{$idold} = $id;
    #modifier avec selection
-    my $tp = '' ; 
+    my $tp = '' ;
     if ($TOOLTIP==1) {
     if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=($ref->{tittoc}{$id}) ?  
       "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ; } 
