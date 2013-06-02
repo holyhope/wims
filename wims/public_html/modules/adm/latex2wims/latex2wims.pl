@@ -1300,7 +1300,7 @@ sub def { my ($ref, @style) = @_;
   my $aut = $ref->{author}{main};
   my $mail= $ref->{email}{main};
   my $datm= $ref->{datm}{main};
-  my $header = '' ;
+  my $header = '<link rel="stylesheet" href="html/themes/_css/l2w.css" type="text/css" />'  ;
   my $header_tmp ;
   for my $file (@style){
     if (!open(IN, $DIR . $file)) { die "le fichier $DIR$file n'existe pas";}
@@ -1309,10 +1309,10 @@ sub def { my ($ref, @style) = @_;
     $header .= "\t $header_tmp" ;
   }
   close IN;
-  $header .= "\t <script type=\"text/javascript\">\t"
-   . "jQuery.noConflict();\t"
-   . "jQuery(function() {jQuery( \"#left_toc\" ).menu();});\t" 
-   . "jQuery(function() {jQuery( \"#right_toc\" ).menu();});\t"
+  $header .= "\t<script type=\"text/javascript\">"
+   . "jQuery.noConflict();"
+   . "jQuery(function() {jQuery( \"#left_toc\" ).menu();});" 
+   . "jQuery(function() {jQuery( \"#right_toc\" ).menu();});"
    . "</script>" if ($TOOLTIP==1);
  
 "copyright=gnu
@@ -1471,8 +1471,8 @@ sub chemin { my ($tag, $ref) = @_;
   while ($tagsup !~ /^main\b/) {
     $niv++;
     $tagsup = $ref->{upbl}{$tagsup};
-    $ch  = "$tagsup,$ch";
-    $txt = "\\link{$tagsup}{$ref->{tittoc}{$tagsup}} $FLECHE $txt" ; #if ($tagsup !~ /^main\b/);
+    $ch  = "$tagsup,$ch"; if (!$ref->{tittoc}{$tagsup}) { $ref->{tittoc}{$tagsup}=$tagsup};
+    $txt = "\\link{$tagsup}{$ref->{tittoc}{$tagsup}} $FLECHE $txt" if ($tagsup) ; #if ($tagsup !~ /^main\b/);
   }
   $ref->{chemin}{$tag} = $ch;
   $ref->{niveau}{$tag} = $niv;
