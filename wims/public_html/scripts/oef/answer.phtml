@@ -9,15 +9,17 @@
 <div id="answeranalysis">
 <div class="legend oefanswername">$name_answeranalysis.</div>
 <div class="content">
-<table border="0">
+!if $ansorder!=$empty or $conditioncnt >0
+<table style="border:0">
+!endif
 !distribute item 1,1 into cntr,cntc
 
-!set indgood=<span class="oef_indgood">$indgood</span>
-!set indpartial=<span class="oef_indpartial">$indpartial</span>
-!set indprec=<span class="oef_indprec">$indprec</span>
-!set indbad =<span class="oef_indbad">$indbad</span>
-!set condgood=<span class="oef_condgood">$condgood</span>
-!set condbad =<span class="oef_condbad">$condbad</span>
+!set indgood=<div class="oef_indgood inline">$indgood</div>
+!set indpartial=<div class="oef_indpartial inline">$indpartial</div>
+!set indprec=<div class="oef_indprec inline">$indprec</div>
+!set indbad =<div class="oef_indbad inline">$indbad</div>
+!set condgood=<div class="oef_condgood inline">$condgood</div>
+!set condbad =<div class="oef_condbad inline">$condbad</div>
 
 !for t in $ansorder
  !set i=$(cnt$t)
@@ -39,8 +41,9 @@
   </td></tr>
  !endif
 !next i
-
+!if $ansorder!=$empty or $conditioncnt >0
 </table>
+!endif
 
 !if $feedbackcnt>0
  !read $deffile feedback
