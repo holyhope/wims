@@ -238,7 +238,7 @@ Casse-noisette}
 <p class="wimscenter">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</p>}
 
 \text{image=\image_file notsametext  and  \image_file notsametext no? 
-wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
+wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
 
 \if{\video_file notsametext  and  \video_file notsametext no}{ 
   \text{video_file=http notin \video_file ? \imagedir/\video_file}
@@ -301,7 +301,7 @@ wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
  \text{rab_inst=}
  \text{rab_inst=\inst_title notsametext ?\rab_inst<p class="wimscenter">\inst_title</p>}
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
- \text{rab_inst=\inst_image notsametext ? \rab_inst <p class="wimscenter"><img src="\imagedir/\inst_image" alt=""/></p>}
+ \text{rab_inst=\inst_image notsametext ? \rab_inst <p class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></p>}
  \if{\inst_audio notsametext }{
      \text{rab_inst1= . isin \inst_audio or \packs= ? 
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
@@ -400,9 +400,9 @@ text{testexp=wims(nospace \testexp)}
 \audio\video
  \for{h=1 to \etape[\step]}{
    \if{(\h <= \etape[\step] - \N or r \h isitemof \nstep) and \question[\h;] notsametext }{
-     <p class="enonce">
+     <div class="enonce">
      \if{\cnt_step > 1  and \MAX > 1}{\h : } \PRELIMINAIRE[\h;]
-     \question[\h;]</p>
+     \question[\h;]</div>
    }
    \if{\h <= \etape[\step] - \N and \question[\h;] notsametext}{
     <div class="reponse">
@@ -418,10 +418,10 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;2]>0 and \TEST[\h;3]=0}{
                    <span class="incomplete">\incomplete_answer_text
           </span>}
-         \if{\TEST[\h;3]>0}{<span style="color:red">\bad_answer_text</span>}
+         \if{\TEST[\h;3]>0}{<span class="oef_indbad"></span>\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
          \if{\answer_given=yes}{
-          <br/> \qcm_prompt2 
+          <br /> \qcm_prompt2 
           <ul class="highlight true">
              \for{s=1 to \CNT_choix[\h]}{
                \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>} 
@@ -433,13 +433,12 @@ text{testexp=wims(nospace \testexp)}
    }
    { \if{ r \h isitemof \nstep}{
       <div class="question">
-   <ol>
+    <ol>
       \for{s=1 to \CNT_choix[\h]}{ <li><label>\embed{reply \h , \s}</label></li> }
-      </ol>
+    </ol>
       </div>
       }
    }
-     </ol>
   }
  }
 \answer{}{\REP1;\CHOIX[1;]}{type=\format}{option=\option}
