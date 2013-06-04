@@ -2,22 +2,34 @@
 !header
 
 !if $wims_class=$empty
+ <p>
 本模块是虚拟班的内部模块. 由于你不是以班级成员建立连接的,
 你无权进入. 抱歉.
-  <p class="wimscenter">
- !href $ 返回wims
  </p>
+ <p class="wimscenter">
+  !href $ 返回Wims
+ </p>
+ !tail
  !exit
 !endif
 
-本模块收集了<span class="wims_institutiondesc">$wims_institutionname</span>的
+<p>本模块收集了<span class="wims_institutiondesc">$wims_institutionname</span>的
 <span class="wims_classdesc">$wims_classname</span>的互动式练习,
-它们是在班级内创立的.
+它们是在班级内创立的.</p>
+
 !if $wims_user=supervisor
- !href module=adm/createxo 点击
-这里以创建其它练习.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="icon_button add_exo">点击 这里以创建其它练习.</span>
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Only supervisor can access this exercises list.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
 !endif
 
-!read oef/intromenu.phtml
 !tail
-

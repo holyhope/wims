@@ -2,21 +2,33 @@
 !header
 
 !if $wims_class=$empty
- Ta modul je notranji modul neke uèilnice. Èe niste prijavljeni kot uporabnik te uèilnice,
-ne morete dostopati do njegove vsebine.
-  <p class="wimscenter">
- !href $ $wims_name_home
+ <p>
+  Ta modul je notranji modul neke uèilnice. Èe niste prijavljeni kot uporabnik te uèilnice,
+  ne morete dostopati do njegove vsebine.
  </p>
+ <p class="wimscenter">
+  !href $ $wims_name_home
+ </p>
+ !tail
  !exit
 !endif
 
-Ta modul predstavlja zbirko vaj uèilnice <span class="wims_classdesc">$wims_classname</span> ustanove
-<span class="wims_institutiondesc">$wims_institutionname</span>, ki so bile ustvarjene znotraj uèilnice.
+<p>Ta modul predstavlja zbirko vaj uèilnice <span class="wims_classdesc">$wims_classname</span> ustanove
+<span class="wims_institutiondesc">$wims_institutionname</span>, ki so bile ustvarjene znotraj uèilnice.</p>
+
 !if $wims_user=supervisor
- !href module=adm/createxo Kliknite tukaj
- za ustvarjanje nove vaje.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="icon_button add_exo">ustvarjanje nove vaje</span>
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Only supervisor can access this exercises list.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
 !endif
 
-!read oef/intromenu.phtml
 !tail
-

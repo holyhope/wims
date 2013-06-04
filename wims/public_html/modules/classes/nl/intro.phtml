@@ -2,22 +2,35 @@
 !header
 
 !if $wims_class=$empty
- Deze module hoort bij een virtuele klas<br>.
- En U staat niet geregistreerd als deelnemer, dus kunt deze module niet opvragen, 
-  <p class="wimscenter">
- !href $ $wims_name_home
+ <p>
+  Deze module hoort bij een virtuele klas<br>.
+  En U staat niet geregistreerd als deelnemer, dus kunt deze module niet opvragen, 
  </p>
+ <p class="wimscenter">
+  !href $ $wims_name_home
+ </p>
+ !tail
  !exit
 !endif
-Deze module bevat de interactieve oefeningen voor
-<span class="wims_classdesc">$wims_classname</span> van 
-<span class="wims_institutiondesc">$wims_institutionname</span>, en zijn speciaal gemaakt voor deze klas.
+<p>
+ Deze module bevat de interactieve oefeningen voor
+ <span class="wims_classdesc">$wims_classname</span> van 
+ <span class="wims_institutiondesc">$wims_institutionname</span>, en zijn speciaal gemaakt voor deze klas.
+</p>
+
 !if $wims_user=supervisor
- !href module=adm/createxo Klik hier
- om een nieuwe oefening te maken.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="icon_button add_exo">nieuwe oefening</span>
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Only supervisor can access this exercises list.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
 !endif
 
-
-!read oef/intromenu.phtml
 !tail
-

@@ -2,23 +2,32 @@
 !header
 
 !if $wims_class=$empty
- This module is an internal module of a virtual class. As you are not
+ <p>This module is an internal module of a virtual class. As you are not
  connected as a member of this class, you don't have the right to access
- it. Sorry.
-  <p class="wimscenter">
- !href $ $wims_name_home
+ it. Sorry.</p>
+ <p class="wimscenter">
+  !href $ $wims_name_home
  </p>
+ !tail
  !exit
 !endif
 
-This module gathers interactive exercises for <span class="wims_classdesc">$wims_classname</span>
-of <span class="wims_institutiondesc">$wims_institutionname</span>, which are created in the class.
+<p>This module gathers interactive exercises for <span class="wims_classdesc">$wims_classname</span>
+of <span class="wims_institutiondesc">$wims_institutionname</span>, which are created in the class.</p>
+
 !if $wims_user=supervisor
- !href module=adm/createxo Click here
- to create another exercise.
+ <p>
+  !set wims_ref_class=wims_button
+  !href module=adm/createxo <span class="icon_button add_exo">Create another exercise</span>
+ </p>
+ !read oef/intromenu.phtml
+!else
+  <p>
+   Only supervisor can access this exercises list.
+  </p>
+  <p class="wimscenter">
+   !href $ $wims_name_home
+  </p>
 !endif
 
-
-!read oef/intromenu.phtml
 !tail
-
