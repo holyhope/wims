@@ -65,7 +65,8 @@ Swords=q p query search MT Keywords
  !endif
  !if $p_=$empty or $p_!=$pck
   !writefile wimshome/$wims_sesdir/lastauth
-  !set class_auth=!defof class_auth in wimshome/log/classes/$c_/.def
+  !set authidp_method=!defof class_authidp in wimshome/log/classes/$c_/.def
+  !set class_auth=$(authidp_method[1;])
   !if $class_auth iswordof cas ldap php 
    !restart module=adm/class/classes&type=participant
   !else 
