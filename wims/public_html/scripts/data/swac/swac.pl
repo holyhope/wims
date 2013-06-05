@@ -145,7 +145,9 @@ sub ConsListe { my ($file, $ref, $dir) = @_;
     next if (/<\/file\>/) ;
     s/<tag\s*//g;
     s/\s*\/\>//g;
-    if (/<file path=\"(.*)\"/) { $id = $dir . '/' . $1 ; }
+    if (/<file path=\"(.*)\"/) { 
+      $id = $dir . '/' . $1 ; $id =~ s/\.mp3\b//g;
+    }
     next if (!$id);
     if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) {
       my ($r, $field) = ($2,$1);

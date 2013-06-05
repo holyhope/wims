@@ -8,6 +8,7 @@ slib_author=Bernadette, Perrin-Riou
 slib_example=aprendizaje,spa,player=dewplayer\
 la vieillesse,fra,player=hbs_mp3_player\
 aimer,fra,tag=baseform player=player\
+aimer,fra,tag=baseform\
 carabistouille,fra\
 manger,fra,tag=baseform player=player
 
@@ -88,11 +89,15 @@ slib_son=!randitem $slib_audio
 slib_Son=!append word $slib_son to $slib_Son
 !next slib_w
 slib_son=$slib_Son
+
 :end
-!!slib_out =<embed src=$slib_son $slib_option><noembed><bgsound src=$slib_son $slib_optionhtml></noembed></embed>
 slib_player=!getopt player in $slib_option
 !if $slib_son!=
- !read slib/media/audio $slib_son,$slib_optionhtml,player=$slib_player
+ !if $slib_player!=$empty
+  !read slib/media/audio $slib_son.mp3,$slib_optionhtml,player=$slib_player
+ !else
+  !read slib/media/audio $slib_son,$slib_optionhtml
+ !endif
   slib_wo=!getopt swac_text in $slib_Word
  !if $slib_wo=
    slib_wo=$slib_word

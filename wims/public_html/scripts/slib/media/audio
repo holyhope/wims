@@ -27,9 +27,17 @@ slib_player=!getopt player in $slib_option1
 !endif
 slib_sontest=!replace internal . by , in $slib_son
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
+slib_son=!replace internal .mp3XXXX by in $(slib_son)XXXX
+slib_son=!replace internal  XXXX by in $(slib_son)
+
 !if $slib_player=
-  !default slib_option=height="20" width="150" autostart="false" loop="false"
-  slib_out =<object><embed src="$slib_son" $slib_option > <noembed> <bgsound src="$slib_son"></noembed></embed></object>
+  !default slib_option=height:"20" width="150" autostart="false" loop="false"
+  slib_out=<audio controls="controls" muted="muted">\
+  <source src="$slib_son.ogg" type="audio/ogg" />\
+  <source src="$slib_son.mp3" type="audio/mpeg" />\
+  Your browser does not support the audio tag.\
+</audio>
+
 !else
  !if $slib_player iswordof hbs_mp3_player
   !default slib_option=height="16" width="60" autostart="false" loop="false"
@@ -41,10 +49,3 @@ slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
 !endif
 
 slib_out=$slib_out
-
-
-!!<audio controls="controls">\
-!!  <source src="$slib_son" type="audio/mp3" />\
-!!  <source src="$slib_son" type="audio/ogg" />\
-!!  Your browser does not support the audio tag.\
-!!</audio>
