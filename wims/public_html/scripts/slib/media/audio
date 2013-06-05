@@ -27,10 +27,10 @@ slib_player=!getopt player in $slib_option1
 !endif
 slib_sontest=!replace internal . by , in $slib_son
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
-slib_son=!replace internal .mp3XXXX by in $(slib_son)XXXX
-slib_son=!replace internal  XXXX by in $(slib_son)
 
 !if $slib_player=
+  slib_son=!replace internal .mp3XXXX by in $(slib_son)XXXX
+  slib_son=!replace internal  XXXX by in $(slib_son)
   !default slib_option=height:"20" width="150" autostart="false" loop="false"
   slib_out=<audio controls="controls" muted="muted">\
   <source src="$slib_son.ogg" type="audio/ogg" />\
