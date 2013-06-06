@@ -27,16 +27,37 @@ slib_player=!getopt player in $slib_option1
 !endif
 slib_sontest=!replace internal . by , in $slib_son
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
-
+slib_son=!nospace $slib_son
+slib_objecttag=<object><embed src="$slib_son" $slib_option >\
+    <noembed> <bgsound src="$slib_son"></noembed>\
+  </embed></object>
+  
 !if $slib_player=
-  slib_son=!replace internal .mp3XXXX by in $(slib_son)XXXX
-  slib_son=!replace internal  XXXX by in $(slib_son)
-  !default slib_option=height:"20" width="150" autostart="false" loop="false"
-  slib_out=<audio controls="controls" muted="muted">\
-  <source src="$slib_son.ogg" type="audio/ogg" />\
-  <source src="$slib_son.mp3" type="audio/mpeg" />\
+ !default slib_option=height="20" width="100" autostart="false" loop="false"
+  slib_out=<audio controls="controls">
+ !if .mp3XXXX isin $(slib_son)XXXX
+     slib_out=$slib_out\
+      <source src="$slib_son" type="audio/mpeg" />\
+       $slib_objecttag\
+     
+ !else
+   !if .oggXXXX isin $(slib_son)XXXX
+    slib_out=$slib_out\
+     <source src="$slib_son" type="audio/ogg" />\
+     $slib_objecttag
+   !else
+     slib_out=$slib_out\
+     <source src="$slib_son.ogg" type="audio/ogg" />\
+     <source src="$slib_son.mp3" type="audio/mpeg" />\
+     <object><embed src="$slib_son.mp3" $slib_option >\
+      <noembed> <bgsound src="$slib_son"></noembed>\
+      </embed></object>
+  
+   !endif
+  !endif
+  slib_out=$slib_out\
   Your browser does not support the audio tag.\
-</audio>
+ </audio>
 
 !else
  !if $slib_player iswordof hbs_mp3_player
@@ -44,6 +65,10 @@ slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
     slib_player=player 
   !else
    !default slib_option=height="20" width="180" autostart="false" loop="false"
+  !endif
+  !if .mp3XXX notin $(slib_son)XXX
+!! audio venant de lang/swac
+   slib_son=$(slib_son).mp3
   !endif
  !read slib/media/$slib_player $slib_son,$slib_option
 !endif
