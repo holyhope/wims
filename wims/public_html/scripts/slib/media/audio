@@ -27,15 +27,14 @@ slib_player=!getopt player in $slib_option1
 !endif
 slib_sontest=!replace internal . by , in $slib_son
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
-slib_son=!nospace $slib_son
+
   
 !if $slib_player=
- !default slib_option=style="height:20px; width:100px"
  slib_objecttag=<object><embed src="$slib_son" $slib_option>\
-    <noembed> <bgsound src="$slib_son"></noembed>\
+    <noembed> <bgsound src="$slib_son" /></noembed>\
   </embed></object>
  
-  slib_out=<audio controls="controls" $slib_option>
+  slib_out=<audio controls="controls" class="wims_audio" $slib_option>
  !if .mp3XXXX isin $(slib_son)XXXX
      slib_out=$slib_objecttag
      
