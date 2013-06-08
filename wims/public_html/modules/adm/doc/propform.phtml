@@ -28,6 +28,15 @@ $ in $header
 !set header=!reinput $header
 <td><textarea cols="40" rows="$hr" name="headerr">$header</textarea></td></tr>
 !reset headerr
+!set doctocr=$doctoc
+<tr><td>$n_doctoc
+!set wims_target=wims_internal
+!href cmd=reply&doc=$helpd&block=main&job=read&block=toc $wims_name_help
+</td>
+<td>
+!formradio doctocr list yes,no prompt $wims_name_yes,$wims_name_no
+</td>
+</tr>
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
@@ -46,7 +55,7 @@ $ in $header
  <span class="tt small">(all en fr es it de cn ca nl)</span>
  </td></tr>
  !if $job=creat
-  <tr><td>$n_codedoc:</td><td nowrap="nowrap">
+  <tr><td>$n_codedoc:</td><td class="nowrap">
   <input type="password" size="$codemax" maxlength="$codemax" name="coder" /> $name_code5
   <input type="password" size="$codemax" maxlength="$codemax" name="coder2" />
   </td></tr>
