@@ -41,10 +41,15 @@ $name_noread
  !set block=!item 1 of $waitblock
  !set gotblock=!append item $block to $gotblock
  !set waitblock=!item 2 to -1 of $waitblock
-
+ <div>
  !read $docdir/$doc/$block.def
-
+ </div>
  !goto newblock
 !endif
 
 </div><!-- end of docprint -->
+
+!if $doctoc=yes
+<hr />
+  !read $docdir/$doc/doctoc.def content
+!endif

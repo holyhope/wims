@@ -7,11 +7,12 @@
 !if robot isin $session
  !exit
 !endif
-s
-!if $doctoc=yes
+
+!if $doctoc=yes and $block!=doctoc
   !set header=$header\
  <script type="text/javascript">jQuery.noConflict();jQuery(function() {jQuery( "#doc_toc" ).menu();});</script>
 !endif
+!!( "#doc_toc" ).menu({ position: { my: "left top", at: "right-5 top+5" } });
 
 sheetdata=
 
@@ -54,4 +55,3 @@ histtot=!linecnt $readhist
 
 !read docu/popup.proc
 !read docu/readdates.proc
-
