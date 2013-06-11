@@ -58,6 +58,15 @@ l=!record $confcat of lang/cat.$modu_lang
     othermiss=!append item validation to $othermiss
   !endif
 !endif
+!! test for QRencoder
+testn=!defof QRencode_command in wimshome/log/wims.conf
+testn=!word 1 of $testn
+test=!sh which $testn
+!if /$testn notin $test
+ othermiss=!append item QRencode to $othermiss
+!endif
+!! ---------------- end test
+
 
 !readdef wimshome/public_html/bases/sys/defaults.conf
 confcnt=!recordcnt lang/confdata.$modu_lang

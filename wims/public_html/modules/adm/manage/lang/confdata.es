@@ -787,3 +787,9 @@ Address of a w3c-validator
 free
 
 For example, http://validator.w3.org/check
+
+:software QRencode_command
+Commande d'accès à QRencode
+free
+
+QRencode permet de rèaliser les QRcode sur le serveur.
