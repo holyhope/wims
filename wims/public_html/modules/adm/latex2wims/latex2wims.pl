@@ -376,8 +376,11 @@ for my $tag (keys %{$hash{text}}) {
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1 && (@ListIndex)) ? "<li>\\link{index}{$tit_index}</li>" : '';
   my $tooltip = "";
-  ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ; 
-  out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
+  ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ;
+  my $pat= '<br\s+class="spacer"\s*/>';
+  $txt = $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index);
+  $txt =~ s/$pat\s*$pat/<br class="spacer" \>/g;
+  out ($tag, $txt );
 }
 if ($INDEX == 1) { out ('index.hd', hd('index',\%hash) )};
 my @style = sortuniq(split(',',$STYLE)) if ($STYLE) ;
@@ -543,7 +546,7 @@ for my $rubrique (@liste_env_tabular) {
   $TEXT =~ s,</div>\s+</div>,</div></div>,g;
   $TEXT =~ s,</div>\s+<,</div>\n<,g;
   $TEXT =~ s,<div ([^>]+)>\s+<,<div $1><,g;
-  $TEXT =~ s/\n{2,}/<br class=\"spacer\"\/>/g;
+  $TEXT =~ s/\n{2,5}/<br class=\"spacer\" \/>/g;
   $TEXT;
 }
 
@@ -1203,6 +1206,7 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/{\s*\\\^\s*u\s*}/û/g;
   $TEXT =~ s/{\s*\\`\s*u\s*}/ù/g;
   $TEXT =~ s/{\s*\\c \s*c\s*}/ç/g;
+  $TEXT =~ s/\\maketitle//g;
   $TEXT =~ s/{\\textquotesingle}/'/g;
   $TEXT =~ s/\\textquotesingle/'/g;
   $TEXT =~ s/\\guillemotleft/<</g;
