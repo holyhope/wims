@@ -117,13 +117,12 @@ to $wims_html_header
 
 !if $status=waiting
  !if $error!=$empty
+  <div class="wims_alertmsg">
   !read oef/msg.phtml
-  !if $wims_theme_version= or $wims_theme_version<1 
-   <hr style="width:50%"/>
-  !endif
+  </div>
  !endif
  !read oef/form.phtml
- 
+
  <div id="oef_actions">
  !if $hint!=$empty and $givehint>0
   !set wims_ref_class=wims_button
@@ -157,10 +156,9 @@ to $wims_html_header
  </div> <!-- id oef_action-->
 !else
  !if $error!=$empty
+ <div class="wims_alertmsg">
   !read oef/msg.phtml
-  !if $wims_theme_version= or $wims_theme_version<1 
-  <hr style="width:50%"/>
-  !endif
+ </div>
  !endif
 
  !read oef/answer.phtml
