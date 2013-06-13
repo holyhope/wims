@@ -15,6 +15,8 @@
 !set name_size=Grootte
 !set name_publish=!nosubst Publiceer $i_title<br /><span class="tt">$mod</span>
 
+!set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
+
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige
 !set name_nofile=Geen binaire bestanden aanwezig in deze module.

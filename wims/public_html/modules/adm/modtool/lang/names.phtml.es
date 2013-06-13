@@ -15,6 +15,8 @@
 !set name_size=Tamaño
 !set name_publish=!nosubst Publicar $i_title<br /><span class="tt">$mod</span>
 
+!set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
+
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
 !set name_nofile= Ningún fichero depositado en el módulo.
