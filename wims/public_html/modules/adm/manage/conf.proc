@@ -60,10 +60,14 @@ l=!record $confcat of lang/cat.$modu_lang
 !endif
 !! test for QRencoder
 testn=!defof QRencode_command in wimshome/log/wims.conf
+!default testn=$DF_QRencode_command
 testn=!word 1 of $testn
 test=!sh which $testn
 !if /$testn notin $test
+ !setdef QRencode_open=no in wimshome/log/wims.conf
  othermiss=!append item QRencode to $othermiss
+!else
+ !setdef QRencode_open=yes in wimshome/log/wims.conf
 !endif
 !! ---------------- end test
 

@@ -81,6 +81,7 @@ char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima";
 char *pari_command="gp -f -q -p 150000";
 char *scilab_command="scilab -nwni";
+char *QRencode_command="qrencode -o";
 
   /* default languages */
 char site_langbuf[]="en fr cn es it nl";
@@ -220,6 +221,7 @@ typedef struct {
 
 CONFIG_DATA main_config[]={
       {"PATH",			0, &commonpath},
+      {"QRencode_command",	2, &QRencode_command},
       {"aliased_cgi",		0, &aliased_cgi},
       {"aliased_getfile",	0, &aliased_getfile},
       {"backup_hour",		1, &backup_hour},
