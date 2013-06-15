@@ -11,7 +11,7 @@ String getObjectName(int i) --> returns the construction name of the i-th object
 
 Added 'triangle','quadrilateral' 'etc' als alternatives for 'polygon' (pffff)
 Now this script recognizes : 
-list_of_things=['triangle','quadrilateral','text','point','line','segment','circle','function','polygon','conic','ellipse','polynomial','vector','number','angle'];
+list_of_things=['text','point','line','segment','circle','function','polygon','conic','ellipse','polynomial','vector','number','angle'];
 And will alert , if it encounters a unknown object.
 
 Examples:
@@ -23,7 +23,7 @@ polygon @ name @ surface_area @ A @ B @ C .... @ Z (e.g. : names of corners poin
 function geogebra2wims(list_of_things,debug){
     var polygon_alternatives = ['triangle','quadrilateral','pentagon','hexagon','heptagon','octagon'];var applet = document.getElementById("ggbApplet");var max = applet.getObjectNumber();var total_object_count=0;var point_count=0;var line_count=0;var circle_count=0;var segment_count=0;var polygon_count=0;var function_count=0;var polynomial_count=0;var conic_count=0;var ellipse_count=0;var hyperbola_count=0;var vector_count=0;var angle_count=0;var text_count=0;var reply='';var data = '';if(debug == 1 ){alert(' \"list_of_things\" to check \n'+list_of_things);}var listcnt = list_of_things.length;
     for( var i = 0 ; i < max ; i++ ){
-	var thing = applet.getObjectName(i)var whatisit = applet.getObjectType(thing);if( polygon_alternatives.indexOf(whatisit) != -1 ){whatisit = "polygon";}if(debug == 1){alert("whatisit = "+whatisit);}
+	var thing = applet.getObjectName(i);var whatisit = applet.getObjectType(thing);if( polygon_alternatives.indexOf(whatisit) != -1 ){whatisit = "polygon";}if(debug == 1){alert("whatisit = "+whatisit);}
 	for ( var p=0 ; p < listcnt ; p++){
 	    var it = list_of_things[p];
 	    if( it == whatisit ){
