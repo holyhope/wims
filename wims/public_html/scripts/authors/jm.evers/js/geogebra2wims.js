@@ -20,8 +20,8 @@ line @ name @ slope @ constant   (e.g. : y = slope*x + constant)
 line @ name @ perp @ x = number (e.g. : vertical line x=some_number)
 polygon @ name @ surface_area @ A @ B @ C .... @ Z (e.g. : names of corners points)
 */
-function geogebra2wims(list_of_things,debug){
-    var polygon_alternatives = ['triangle','quadrilateral','pentagon','hexagon','heptagon','octagon'];var applet = document.getElementById("ggbApplet");var max = applet.getObjectNumber();var total_object_count=0;var point_count=0;var line_count=0;var circle_count=0;var segment_count=0;var polygon_count=0;var function_count=0;var polynomial_count=0;var conic_count=0;var ellipse_count=0;var hyperbola_count=0;var vector_count=0;var angle_count=0;var text_count=0;var reply='';var data = '';if(debug == 1 ){alert(' \"list_of_things\" to check \n'+list_of_things);}var listcnt = list_of_things.length;
+function geogebra2wims(list_of_things){
+    var debug=0;var polygon_alternatives = ['triangle','quadrilateral','pentagon','hexagon','heptagon','octagon'];var applet = document.getElementById("ggbApplet");var max = applet.getObjectNumber();var total_object_count=0;var point_count=0;var line_count=0;var circle_count=0;var segment_count=0;var polygon_count=0;var function_count=0;var polynomial_count=0;var conic_count=0;var ellipse_count=0;var hyperbola_count=0;var vector_count=0;var angle_count=0;var text_count=0;var reply='';var data = '';if(debug == 1 ){alert(' \"list_of_things\" to check \n'+list_of_things);}var listcnt = list_of_things.length;
     for( var i = 0 ; i < max ; i++ ){
 	var thing = applet.getObjectName(i);var whatisit = applet.getObjectType(thing);if( polygon_alternatives.indexOf(whatisit) != -1 ){whatisit = "polygon";}if(debug == 1){alert("whatisit = "+whatisit);}
 	for ( var p=0 ; p < listcnt ; p++){
