@@ -20,7 +20,7 @@ line @ name @ slope @ constant   (e.g. : y = slope*x + constant)
 line @ name @ perp @ x = number (e.g. : vertical line x=some_number)
 polygon @ name @ surface_area @ A @ B @ C .... @ Z (e.g. : names of corners points)
 
-remark: 
+remarks: 
 geogebra3 has some issues with frame closing, it will not respond to normal appletmethods stop(),destroy()
 I will try to get hold of the source code  geogebra-2.7 ; and manually add the required new functions.
 geogebra4 is much too heavy for normal usage (use a CAS in java applet ? )
@@ -60,7 +60,7 @@ function geogebra2wims(list_of_things){
     // if some inputareas are present called myinpu0....myinput100 ; read these as well         
     // and append it to the "geogebra string" as "text="+txt  
     // we use @ as fieldseparator.   
-    if(document.getElementById('myinput0') ){var p = 0;var t="";var txt="";while( document.getElementById('myinput'+p) ){ t = document.getElementById('myinput'+p).value; if( p == 0 ){ txt = t; } else { txt = txt +"@"+t;} p++;  } reply=reply+"text="+txt;}if(debug == 1){alert(reply);}
+    if(document.getElementById('myinput0') ){var p = 0;var t="";var txt="";while( document.getElementById('myinput'+p) ){ t = document.getElementById('myinput'+p).value; if( p == 0 ){ txt = t; } else { txt = txt +"@"+t;} p++;  } reply=reply+",text="+txt;}if(debug == 1){alert(reply);}
     return reply;
 }
 
