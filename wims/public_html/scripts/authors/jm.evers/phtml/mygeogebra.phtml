@@ -27,7 +27,13 @@
 	if(found_nothing == test.length){setAlarm(r35+"<br /> hmmm ? ");return;}
 	!! geogebra2wims will send values from myinput0 as
 	!! text=input0@input1@input2....@input_n
-	myConfirm("<br />$send<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+	!! quick fix for this horrible applet
+	!if $taal=nl
+	alert("SLUIT HET GEOGEBRA VENSTER\nVOORDAT JE HET ANTWOORD\nOPSTUURT NAAR WIMS !");
+	!else
+	alert("CLOSE GEOGEBRA WINDOW\nBEFORE SENDING YOUR ANSWER\nTO WIMS !");	
+	!endif
+	myConfirm("<br />$send ?<br />",reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 //]]>
 </script>
@@ -77,11 +83,9 @@
     <tr>
 !endif
 !set server=!replace internal /wims.cgi by $empty in $wims_ref_name
-    <td class="exercise_c">
-	<!-- we use the GeoGebra startbutton (12/2012) -->
+    <td class="exercise_c"><!-- we use only the GeoGebra startbutton (12/2012) -->
 	<!-- attention wims variable customToolbar for "param customToolbar" should be like  " 0 | 3 | 5 " spaces matter !   -->
-	<!-- 15/6/2013 switched to Geogebra3 : to correct trouble on OpenJDK & icedtea-web plugin -->
-	<object classid="java:geogebra.GeoGebraApplet.class" type="application/x-java-applet;jpi-version=1.4" id="ggbApplet" width="164px" height="48px" >
+	<object classid="java:geogebra.GeoGebraApplet.class" type="application/x-java-applet;jpi-version=1.4" id="ggbApplet" width="170px" height="48px" >
 	<param name="java_code" value="geogebra.GeoGebraApplet" />
 	<param name="java_codebase" value="java/geogebra3" />
 	<param name="java_archive" value="geogebra.jar" />
@@ -90,7 +94,8 @@
 	<param name="filename" value="$server/$module_dir/$ggb" />
 	<param name="showToolBar"  value="$showToolBar" />
 	<param name="showMenuBar"  value="$showMenuBar" />
-	<param name="framePossible" value="$framePossible" />
+!!	<param name="framePossible" value="$framePossible" />
+	<param name="framePossible" value="false" />
 	<param name="customToolBar" value=$customToolBar />
 	<param name="showAlgebraInput" value="$showAlgebraInput" />
 	<param name="mayscript" value="true" />

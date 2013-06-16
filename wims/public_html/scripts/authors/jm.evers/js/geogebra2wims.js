@@ -19,6 +19,11 @@ circle @ name @ x_center @ y_center @ radius
 line @ name @ slope @ constant   (e.g. : y = slope*x + constant)
 line @ name @ perp @ x = number (e.g. : vertical line x=some_number)
 polygon @ name @ surface_area @ A @ B @ C .... @ Z (e.g. : names of corners points)
+
+remark: 
+geogebra3 has some issues with frame closing, it will not respond to normal appletmethods stop(),destroy()
+I will try to get hold of the source code  geogebra-2.7 ; and manually add the required new functions.
+geogebra4 is much too heavy for normal usage (use a CAS in java applet ? )
 */
 function geogebra2wims(list_of_things){
     var debug=0;var polygon_alternatives = ['triangle','quadrilateral','pentagon','hexagon','heptagon','octagon'];var applet = document.getElementById("ggbApplet");var max = applet.getObjectNumber();var total_object_count=0;var point_count=0;var line_count=0;var circle_count=0;var segment_count=0;var polygon_count=0;var function_count=0;var polynomial_count=0;var conic_count=0;var ellipse_count=0;var hyperbola_count=0;var vector_count=0;var angle_count=0;var text_count=0;var reply='';var data = '';if(debug == 1 ){alert(' \"list_of_things\" to check \n'+list_of_things);}var listcnt = list_of_things.length;
