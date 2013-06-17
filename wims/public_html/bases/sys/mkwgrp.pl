@@ -91,8 +91,8 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
    if ($Domain{$d}) {
     push @ALL, split("\n",$Domain{$d});
     out("keywords/$d.$lang.tmp",
-     "'" . 
-     join("',\n'",sortuniq(split("\n",$Domain{$d})) ) 
+     "\"" . 
+     join("\",\n\"",sortuniq(split("\n",$Domain{$d})) ) 
      . "'"
      );
     push @list, $d ;
@@ -100,7 +100,7 @@ for my $lang ('fr','en','it','si','cn','nl','ca','es') {
  }
  out("keywords/list.$lang", join(",",sortuniq(@list)));
  out("keywords/keywords.$lang.json.tmp",
-     "'" . join("',\n'",sortuniq(@ALL) ) . "'"
+     "\"" . join("\",\n\"",sortuniq(@ALL) ) . "\""
 );
 
 }
@@ -177,7 +177,7 @@ sub treate_keyword { my ($line) = @_ ;
       {$tmp = join("\n",split(',', $la))}
   }
   }
-  $tmp=~ s/'/\\'/g if ($tmp);
+  #$tmp=~ s/'/\\'/g if ($tmp);
   $tmp;
 }
 
