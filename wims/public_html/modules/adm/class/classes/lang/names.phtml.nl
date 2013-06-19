@@ -53,7 +53,7 @@ Geen klas gevonden.\
 U kunt direct overstappen naar&nbsp;\
 into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
-!let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Language,Anders
+!let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Language,Development
 
 !set name_text1=Kies uit de tabel uw klas\
 <p>Nog niet aangemeld? klik dan op <span class="wims_button disabled">$name_register</span>\

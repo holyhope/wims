@@ -28,7 +28,7 @@ $name_example4
     &nbsp;
    !endif
  !next k
- </div>
+</div>
  $table_header
  
  <caption>$(classification[$exampletype])</caption>
@@ -39,13 +39,13 @@ $name_example4
    !distribute items $l into code,expire,inst,cl
    !defread wimshome/log/classes/$code/.def
    !distribute char $class_level into l_,y_
-   !let clsty=!positionof item $class_level in E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,U6,Lang
+   !let clsty=!positionof item $class_level in E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,U6,Lang
    !if $clsty!=$empty
-    !let clsty=!item $clsty of 1,1,1,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4,5
+    !let clsty=!item $clsty of 1,1,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4,5
    !endif
    !if $exampletype=$clsty or ($clsty=$empty and $exampletype=$nb)
     $table_tr
-     <td>$cl</td>
+     <td>$cl <br /> $inst</td>
      <td>
      !set wims_ref_class=wims_button
       !href module=home&user=anonymous,$code,anonymous $name_anonymous
