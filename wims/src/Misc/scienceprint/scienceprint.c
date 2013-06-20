@@ -7,6 +7,10 @@
 * can be used and distributed without restriction, including for commercial use	*
 * No warrenty whatsoever							*
 *********************************************************************************
+20/6/2012
+Corrected significance flaw when using prefixes
+Simplified routines
+Added type = 5 : prefix-notation with words (nano,mega,giga...etc)
 
 12/11/2012
 Added support for numbers like  12345*10^12 
@@ -47,10 +51,12 @@ scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 9   giga 	G
 6   mega 	M
 3   kilo 	k 
+
 2   hecto	h
 1   deca 	da
 -1  deci 	d 
 -2  centi 	c 
+
 -3  milli 	m
 -6  micro 	µ
 -9  nano 	n
@@ -67,10 +73,10 @@ scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 #include <string.h>
 #include <stdlib.h>
 #define MICRO "µ"
-#define PREFIX_START (-24)
-#define PREFIX_END 24
 #define MAX_CONV 256
 #define MAX_STRING 32
+#define PREFIX_START -24
+#define PREFIX_END 24
 
 char *str_replace ( const char *word, const char *sub_word, const  char *rep_word ){
     if(strlen(word) > MAX_STRING){return NULL;}
@@ -101,119 +107,95 @@ char *str_replace ( const char *word, const char *sub_word, const  char *rep_wor
 }
 
 char *printscience(double value, int sig, int format , int cnt ,int size){
-    static char *prefix[] = { "y", "z", "a", "f", "p", "n", MICRO, "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
-    double display, fract;
-    char *sign = NULL;
-    int exponent10;
-    if( sig == -1 ){
-     /* no significance truncations...just science notation 1234 -> 1.234*10^3  ; try (!) to use same amount of digits*/
+    static char *min[] = {"","m",MICRO,"n","p","f","a","z","y"};
+    static char *plus[] = {"","k", "M", "G", "T", "P", "E", "Z", "Y" };
+    static char *min_word[] = {"","milli","micro","nano","pico","femto","atto","zepto","yocto"};
+    static char *plus_word[] = {"","kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta" };
+    char *sign = NULL;char *prefix = NULL;
+    int exponent10 = 0;
+    int use_word = 0;if(format == 5){format = 3; use_word = 1;} /* switch to using words in stead of prefix  */
+    if(value < 0.0) {sign = "-";value = -value;sig--;} else {sign = "";}    if( sig == -1 ){
+     /* 
+     no significance truncations...just science notation 1234 -> 1.234*10^3 
+     try (!) to use same amount of digits
+     */
 	sig = size;
-	if(format == 3){format = 1;} /* no prefix --> html noation */
-	if(value < 0.0) {sign = "-";value = -value;sig--;} else {sign = "";}
-	exponent10=0;
-	if(value>=1){
-	    while(value > 10){
-		value=value / 10.0;
-		exponent10++;
-		/* need to set a limit to number of while loops ! */
-		if(exponent10 > 100){fprintf(stdout,"error : number too big (exponent > 100)\n");return 0;}
-	    }
-	}
-	else /* 0 < value < 1 --> exponent10 < 0 */
-	{
-	    while(value < 1){
-		value=value*10;
-		exponent10--;
-		/* need to set a limit to number of while loops ! */
-		if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
-	    }
+	if(format == 3){format = 1;} /* never prefix --> html notation */
+    }
+    if(value == 0){fprintf(stdout, "%s%.*f", sign, sig-1, value);return NULL;} /* no need to go further */
+    if(value>1){
+	while(value >= 10){
+	    value=value / 10.0;
+	    exponent10++;
+	    /* need to set a limit to number of while loops ! */
+	    if(exponent10 > 100){fprintf(stdout,"error : number too big (exponent > 100)\n");return 0;}
 	}
     }
-    else
+    else /* 0 < value < 1 --> exponent10 < 0 */
     {
-	if(value < 0.0) {sign = "-";value = -value;} else {sign = "";}
-	exponent10 = lrint( floor( log10(value) ) );/* correctly round to desired precision */
-	value *= pow(10.0, sig - 1 - exponent10);
-	fract = modf(value, &display);
-	if(fract >= 0.5){display += 1.0;}
-	value = display * pow(10.0, exponent10 - sig + 1);
-	if(exponent10 > 0){exponent10 = (exponent10/3)*3;}else{exponent10 = ((-exponent10+3)/3)*(-3);}
-	value *= pow(10.0, -exponent10);
-	if(format != 3){ /* allow all powers; not limited by prefix list */
-	    if(value > 10.0){
-		while(value >= 10){
-		    value = value / 10.0;
-	    	    exponent10++;
-		    /* need to set a limit to number of while loops ! */
-		    if(exponent10 > 100){fprintf(stdout,"error : number too big (exponent > 100)\n");return 0;}
-		}
-	    }
-	}
-	else /* steps of powers dividable by 3 used for prefix notation */
-	{
-	    if (value >= 1000.0) {
-		value = value / 1000.0;
-		exponent10 = exponent10 + 3;
-	    }
-	    else
-	    {
-		if(value >= 100.0){
-		    sig =  sig - 2;
-		}
-		else
-		{
-		    if(value >= 10.0){
-			sig = sig - 1;
-		    }
-		}
-	    }
+	while(value < 1){
+	    value=value*10;
+	    exponent10--;
+	    /* need to set a limit to number of while loops ! */
+	    if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
 	}
     }
-    if(cnt > 1){fprintf(stdout,",");}
-    /* check on format style versus exponent */
-    if(exponent10 == 0 ){
-	format = 3; /* do not use 1.23*10^0 */
+    if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){
+	format = 1; /* not in my list of prefixes ; print in html ! */
     }
-    else
-    {
-	if(exponent10 == 1){
-	    format = 3;/* do not use 1.23*10^1 */
-	    value = value * 10;
-	    sig = sig - 1;
+    sig = sig - 1; /* "%.*f" counts the "." */
+    if(cnt > 1){fprintf(stdout,",");}/* more than one conversion to do : make list */
+    int idx=0;int exp=0;
+    if(exponent10 == 0){format = 6;} /* no need for 2*10^0 */
+    if(sig < 0){sig = 0;} /* better be safe than sorry... */
+    switch(format){
+	case 0: fprintf(stdout, "%s%.*f*10^%d", sign, sig, value, exponent10);break;
+	case 1:	fprintf(stdout, "%s%.*f&times;10<sup>%d</sup>", sign, sig, value, exponent10);break;
+	case 2: fprintf(stdout, "%s%.*f \\times 10^{%d}", sign, sig, value, exponent10);break;
+	case 3:
+/*
+1,1,3 -> 1
+10,1,3 -> 1*10^-2 k
+100,1,3 -> 1*10^-1 k
+1000,1,3 -> 1 k
+10000,1,3 -> 1*10^1 k
+100000,1,3 -> 1*10^2 k
+1000000,1,3 -> 1 M
+10000000,1,3 -> 1*10^1 M
+100000000,1,3 -> 1*10^2 M
+1000000000,1,3 -> 1 G
+1,1,3 -> 1
+0.1,1,3 -> 1*10^-1 
+0.01,1,3 -> 1*10^-2 
+0.001,1,3 -> 1 m
+0.0001,1,3 -> 1*10^-1 m
+0.00001,1,3 -> 1*10^-2 m
+0.000001,1,3 -> 1 µ
+0.0000001,1,3-> 1*10^-1 µ
+0.00000001,1,3-> 1*10^-2 µ
+0.000000001,1,3-> 1 n
+*/
+	exp = exponent10%3;
+	idx = round(exponent10/3);
+	if( exponent10 > 0  ){
+	    if(use_word == 0 ){ prefix = plus[idx]; } else { prefix = plus_word[idx]; }
 	}
 	else
 	{
-	    if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){ 
-		format = 1; /* if no prefix available, revert to html presentation */
-	    }
+	    if(use_word == 0){ prefix = min[-1*idx]; } else { prefix = min_word[-1*idx]; }
 	}
-    
-    }
-    if(sig < 1){sig = 1;}
-    if(format != 3 ){
-	if( format == 0){ /* 'calculable' presentation */
-	    fprintf(stdout, "%s%.*f*10^%d", sign, sig-1, value, exponent10);
+	if( exp == 0){
+	    fprintf(stdout, "%s%.*f %s",sign, sig, value,prefix);
 	}
 	else
 	{
-	    if( format == 1 ){ /* html presentation */
-		fprintf(stdout, "%s%.*f&times;10<sup>%d</sup>", sign, sig-1, value, exponent10);
-	    }
-	    else 
-	    {
-		if(format == 2 ){/* latex presentation */
-		    fprintf(stdout, "%s%.*f \\times 10^{%d}", sign, sig-1, value, exponent10);
-		}
-		else
-		{ /* mathml presentation */
-		    fprintf(stdout,"<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><mstyle id=\"wims_mathml\" mathsize=\"110%%\"><mn>%s%.*f</mn><mo>&times;</mo><msup><mn>10</mn><mn>%d</mn></msup></mstyle></math>", sign, sig-1, value, exponent10);
-		}
-	    }
+	    fprintf(stdout, "%s%.*f&times;10<sup>%d</sup> %s", sign, sig, value, exp, prefix);
 	}
-    }
-    else /* format = 3 : prefix presentation or other more suitable presentation */
-    {
-	fprintf(stdout, "%s%.*f %s", sign, sig-1, value,prefix[(exponent10-PREFIX_START)/3]);
+	break;
+	case 4: fprintf(stdout, "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><mstyle id=\"wims_mathml\" mathsize=\"110%%\"><mn>%s%.*f</mn><mo>&times;</mo><msup><mn>10</mn><mn>%d</mn></msup></mstyle></math>", sign, sig, value, exponent10);break;
+	case 5: break;
+	case 6: fprintf(stdout, "%s%.*f",sign,sig,value);break;
+	default: break;
     }
     return NULL;
 }
@@ -271,7 +253,7 @@ int main( int argc , char *argv[]){
 			number = atof(ptr); 
 			break;
 		case 1: significance = atoi(ptr);  break;
-		case 2: type = atoi(ptr); if(type < 0 || type > 4 ){type = 0;} break;
+		case 2: type = atoi(ptr); if(type < 0 || type > 5 ){type = 0;} break;
 		default: break;
 	    }
 	    idx++;
