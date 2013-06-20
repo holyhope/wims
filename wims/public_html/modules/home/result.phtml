@@ -67,10 +67,10 @@
 
 !if $gottype=search or $gotcnt1=0
  !reset tt
- $RE_found2
  !if $test_exist!=$empty
+  $RE_found2
   <script type="text/javascript">
-//-->
+/*<![CDATA[*/
 function affiche(name) {  
  document.getElementById('affiche_content_'+onglet_affiche).className = 'result_inactif tab';
  document.getElementById('affiche_content_'+name).className = 'affiche_content tab';
@@ -78,13 +78,14 @@ function affiche(name) {
  document.getElementById('contenu_'+name).style.display = 'block';
  onglet_affiche = name;
 }
-var onglet_affiche = '$(test_exist[1])'
+var onglet_affiche = '$(test_exist[1])';
+/*]]>*/
 </script>
-!endif
+ !endif
  !if $s_category=A
   <div class="wimscenter">
    <ul class="tab_content">
-   !for cat in X,D,T,S,C
+   !for cat in X,D,T,R,M,S,C
     !if $(gotcnt$cat)>0
       <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(CC_$cat) ($(gotcnt$cat))</li>
     !endif
@@ -94,7 +95,7 @@ var onglet_affiche = '$(test_exist[1])'
    !endif
    </ul>
   </div>
-   !for cat in X,D,T
+   !for cat in X,D,T,R,M
      !if $(gotcnt$cat) >0
        <div class="content" id="contenu_$cat">
        <p class="wims_emph">$(CC_$cat)</p>
@@ -108,7 +109,7 @@ var onglet_affiche = '$(test_exist[1])'
    !set tt=<p class="wims_emph">$(CC_$s_category)</p>
   !endif
    <p class="wims_emph">$(CC_$s_category)</p>
-       !read result.$s_category
+       !read result.A $s_category
  !endif
  !if $Gotcnt=0
   !read result.A
@@ -133,7 +134,7 @@ var onglet_affiche = '$(test_exist[1])'
   !exchange gottype,gottype1
   !exchange gotm,gotm1
   <div id="contenu_P">
-  <p class="wims_emph">$CC_P</p>
+  <p class="wims_emph">$(CC_P)</p>
   !read result.P
   </div>
  !endif

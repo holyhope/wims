@@ -182,7 +182,7 @@ search_lang=$search_lang
    !set test_exist=!append item S to $test_exist
  !endif
  Gotcnt=$[$Gotcnt + $gotcntS]
- !for cat in X,D,T
+ !for cat in X,D,T,R,M
    !read search.ker $cat
    gotm$cat=$gotm
    gotw$cat=$gotw
@@ -194,7 +194,19 @@ search_lang=$search_lang
     !set test_exist=!append item $cat to $test_exist
    !endif
  !next
+ !goto bailout
 !endif
+!if $search_category isin X,D,T,O,R,M
+   !read search.ker $search_category
+   gotm$search_category=$gotm
+   gotw$search_category=$gotw
+   gotcnt$search_category=$gotcnt
+   gott$search_category=$gott
+   gotd$search_category=$gotd
+   Gotcnt=$[$Gotcnt + $(gotcnt$search_category)]
+!endif
+
+ 
 :bailout
 translator_switch=leaveline
 !bound list_start between integer 0 and 10000 default 0
@@ -247,7 +259,7 @@ gota=!exec translator $gotm
  gotm=!exec translator $gotm
 !endif
 
-!for cat in X,T,D
+!for cat in X,T,D,O,R,M
  dictionary=$search_package2/title
  gott$cat=!exec translator $(gotm$cat)
  dictionary=$search_package2/description
