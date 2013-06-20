@@ -8,7 +8,7 @@
  !read adm/search_engine/search_empty.phtml
 </p>
 !endif
-!set tt=<span class="wims_emph">$(C_A)</span>
+!set tt=<span class="wims_emph">$(CC_A)</span>
 !if $gottype=search
 <div class="RE_found">
  $RE_found.
@@ -24,7 +24,7 @@
   <div>
    $RE_try
    !for i in $(rel_$s_category)
-    !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(C_$i)
+    !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(CC_$i)
     &nbsp;
    !next i
    !if $has_browse=yes
@@ -54,7 +54,7 @@
  !endif
 !endif
 !if $s_category isin PLSC
-<div class="wims_emph">$(C_$s_category)
+<div class="wims_emph">$(CC_$s_category)
 </div>
  !changeto result.$s_category
 !endif
@@ -85,18 +85,18 @@ var onglet_affiche = '$(test_exist[1])'
    <ul class="tab_content">
    !for cat in X,D,T,S,C
     !if $(gotcnt$cat)>0
-      <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(C_$cat)</li>
+      <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(CC_$cat) ($(gotcnt$cat))</li>
     !endif
    !next
    !if $gotcnt1 >0
-     <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('P');">$(C_P)</li>
+     <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('P');">$(CC_P)</li>
    !endif
    </ul>
   </div>
    !for cat in X,D,T
      !if $(gotcnt$cat) >0
        <div class="content" id="contenu_$cat">
-       <p class="wims_emph">$(C_$cat)</p>
+       <p class="wims_emph">$(CC_$cat)</p>
        !read result.A $cat
       </div>
      !endif
@@ -104,9 +104,9 @@ var onglet_affiche = '$(test_exist[1])'
  !else
 !! tt is used in lang/names.$lang
   !if $s_category notin CS
-   !set tt=<p class="wims_emph">$(C_$s_category)</p>
+   !set tt=<p class="wims_emph">$(CC_$s_category)</p>
   !endif
-   <p class="wims_emph">$(C_$s_category)</p>
+   <p class="wims_emph">$(CC_$s_category)</p>
        !read result.$s_category
  !endif
  !if $Gotcnt=0
@@ -115,13 +115,13 @@ var onglet_affiche = '$(test_exist[1])'
 
  !if $gotcntS > 0
   <div class="content" id="contenu_S">
-  <p class="wims_emph">$C_S</p>
+  <p class="wims_emph">$CC_S</p>
   !read result.S
   </div>
  !endif
  !if $gotcntC > 0
   <div class="content" id="contenu_C">
-  <p class="wims_emph">$C_C</p>
+  <p class="wims_emph">$CC_C</p>
   !read result.C
   </div>
  !endif
@@ -132,7 +132,7 @@ var onglet_affiche = '$(test_exist[1])'
   !exchange gottype,gottype1
   !exchange gotm,gotm1
   <div id="contenu_P">
-  <p class="wims_emph">$C_P</p>
+  <p class="wims_emph">$CC_P</p>
   !read result.P
   </div>
  !endif
