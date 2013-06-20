@@ -6,7 +6,7 @@ jQuery(function($) {
     
     if (wims_menu)
     {    
-        wims_menu.addClass("{title:'MENU'}");
+        wims_menu.addClass("{title:'&#8593;&#8595;'}");
         
         wims_menu.buildMbExtruder({
             position:"left",
