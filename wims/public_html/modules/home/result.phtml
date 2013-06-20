@@ -1,17 +1,6 @@
 !nocache
-<a id="searchresult"> </a>
-!! L is no more a category
-!!!if $s_category=L
-!! !changeto result.L
-!!!endif
 
-!! Clear Button
-!!!if $s_keywords!=$empty or $gotcnt>0
-!!<p class="wims_clearSearch">
-!!  !set wims_ref_class=wims_button
-!! !href session=$wims_session.1&list=clear $N_clear
-!!</p>
-!!!endif
+<a id="searchresult"> </a>
 
 !if $error!=$empty and  $(ER_$error)!= 
 <p class="wims_alertmsg">
@@ -42,10 +31,10 @@
     $wims_name_or
     !href module=adm/browse&$browse_parm $N_browsesite
 .
-   !endif
+   !endif has_browse=yes
    </div>
-  !endif
- !endif
+  !endif $(rel_$s_category)
+ !endif $s_keywords!=$empty
  !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
   !if $list_start>0
    !set wims_ref_title = $RE_prev
@@ -69,85 +58,82 @@
 </div>
  !changeto result.$s_category
 !endif
+!!arrive herefor example if the address of the module has been given in the search_engine
+
+!if $Gotcnt=1 and $gotcnt=1
+       !read result.A
+ !exit
+!endif
 
 !if $gottype=search or $gotcnt1=0
  !reset tt
+ !if $test_exist!=$empty
+  <script type="text/javascript">
+//-->
+function affiche(name) {  
+ document.getElementById('affiche_content_'+onglet_affiche).className = 'result_inactif tab';
+ document.getElementById('affiche_content_'+name).className = 'affiche_content tab';
+ document.getElementById('contenu_'+onglet_affiche).style.display = 'none';
+ document.getElementById('contenu_'+name).style.display = 'block';
+ onglet_affiche = name;
+}
+var onglet_affiche = '$(test_exist[1])'
+</script>
+!endif
  !if $s_category=A
-   !set tt=<p class="wims_emph">$(C_X), $(C_D), $(C_T)</p>
+  <div class="wimscenter">
+   <ul class="tab_content">
+   !for cat in X,D,T,S,C
+    !if $(gotcnt$cat)>0
+      <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(C_$cat)</li>
+    !endif
+   !next
+   !if $gotcnt1 >0
+     <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('P');">$(C_P)</li>
+   !endif
+   </ul>
+  </div>
+   !for cat in X,D,T
+     !if $(gotcnt$cat) >0
+       <div class="content" id="contenu_$cat">
+       <p class="wims_emph">$(C_$cat)</p>
+       !read result.A $cat
+      </div>
+     !endif
+   !next
  !else
+!! tt is used in lang/names.$lang
   !if $s_category notin CS
    !set tt=<p class="wims_emph">$(C_$s_category)</p>
   !endif
+   <p class="wims_emph">$(C_$s_category)</p>
+       !read result.$s_category
  !endif
-$tt 
+ !if $Gotcnt=0
+  !read result.A
+ !endif
 
- <ul class="wims_home_result_list">
- !for i=1 to $gotcnt
-  !set m_=!line $i of $gotm
-  !set w_=!word $i of $gotw
-  !set l_=!line $i of $gotl
-  !set t_=!line $i of $gott
-  !set d_=!line $i of $gotd
-  !set a_=!line $i of $gota
-  <li>
-  !if $wims_ismanager=2
-   <span class="small">$w_</span>
-  !endif
-  !if $l_!=$search_lang
-    !set ltrans=!module translation_language $m_
-    !if  $search_lang notin $ltrans
-      <img src="gifs/$l_.gif" alt="$l_.gif"/>
-    !endif
-    !set tit_=!module title_$search_lang $m_
-    !set desc_=!module description_$search_lang $m_ 
-    !set t_=$tit_
-    !set d_=$desc_
-  !endif
-  !if $t_=
-   !set t_=!module title $m_ 
-  !endif
- !if $d_=
-  !set d_=!module description $m_ 
- !endif
-  !set L=
-  !if ../local/ isin ../$m_
-   !set L=<sup>local</sup>
-  !endif
-  !if ../com/ isin ../$m_
-   !set L=<sup>com</sup>
-  !endif
-  !if ../contrib/ isin ../$m_
-   !set L=<sup>contrib</sup>
-  !endif
-  !href module=$m_ $t_
-$L, $d_ 
- !if $wims_show_author=yes
-  <span class="small">(
-  !replace internal , by $ $ in $a_
-)</span>
- !endif
- </li>
- !reset d_ t_
- !next i
- </ul>
-!endif
-
-!if $gotcntS > 0
-<p class="wims_emph">$C_S</p>
+ !if $gotcntS > 0
+  <div class="content" id="contenu_S">
+  <p class="wims_emph">$C_S</p>
   !read result.S
-!endif
-!if $gotcntC > 0
-<p class="wims_emph">$C_C</p>
+  </div>
+ !endif
+ !if $gotcntC > 0
+  <div class="content" id="contenu_C">
+  <p class="wims_emph">$C_C</p>
   !read result.C
-!endif
+  </div>
+ !endif
 
-!if $s_category isin AT and $gotcnt1>0
-<hr style="width:50%"/>
- !exchange gotcnt,gotcnt1
- !exchange gottype,gottype1
- !exchange gotm,gotm1
- <p class="wims_emph">$C_P</p>
- <div>
- !read result.P
- </div>
+ !if $s_category isin AT and $gotcnt1>0
+
+  !exchange gotcnt,gotcnt1
+  !exchange gottype,gottype1
+  !exchange gotm,gotm1
+  <div id="contenu_P">
+  <p class="wims_emph">$C_P</p>
+  !read result.P
+  </div>
+ !endif
 !endif

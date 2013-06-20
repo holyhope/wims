@@ -32,6 +32,7 @@ Processing search request.
   !endif
  !endif
 !endif
+!reset test_exist
 
 s2dir=!replace internal sessions/ by s2/ in $wims_sesdir
 s2dir=!translate internal _ to $ $ in $s2dir
@@ -108,31 +109,34 @@ search_category=!char 1 of $search_category
        gotcnt=1
        gotm=$try
        search_keywords=$k_
+       Gotcnt=1
        !goto bailout
      !endif
   !endif
- k_=!lower $search_keywords
- k_=!deaccent $k_
- l_=[
- e_==
- !if f isvarof $k_ or g isvarof $k_ or x isvarof $k_ or y isvarof $k_ or\
+  k_=!lower $search_keywords
+  k_=!deaccent $k_
+  l_=[
+  e_==
+  !if f isvarof $k_ or g isvarof $k_ or x isvarof $k_ or y isvarof $k_ or\
 	z isvarof $k_ or b isvarof $k_ or c isvarof $k_ or i isvarof $k_ or\
 	^ isin $k_ or / isin $k_ or $e_ isin $k_ or\
 	.0 isin $k_ or .1 isin $k_ or .2 isin $k_ or .3 isin $k_ or\
 	.4 isin $k_ or .5 isin $k_ or .6 isin $k_ or .7 isin $k_ or\
 	.8 isin $k_ or .9 isin $k_ or $l_ isin $k_
-   error=expression
-   gotcnt=0
-   !goto bailout
- !endif
- srch=!translate internal `'".+-_()[]{};: to $             $ in $search_keywords
- srch=!replace , by , $ in $srch
- srch=!deaccent $srch
- srch=!lower $srch
+    error=expression
+    gotcnt=0
+    !goto bailout
+  !endif
+  srch=!translate internal `'".+-_()[]{};: to $             $ in $search_keywords
+  srch=!replace , by , $ in $srch
+  srch=!deaccent $srch
+  srch=!lower $srch
+  
 !!do not want to use the misprints and suffix for the moment
-Gotcnt=0
-!if $search_category iswordof A C
-  !read search.C
+  Gotcnt=0
+!!! classes
+  !if $search_category iswordof A C
+   !read search.C
    dictionary=bases/sys/words.$search_lang
    translator_unknown=leave
    srch=!exec translator $srch
@@ -142,16 +146,19 @@ Gotcnt=0
    gotcntC=$gotcnt
    gottC=$gott
    gotdC=$gotd
-   Gotcnt=$[$Gotcnt + $gotcnt]
-!endif
+   !if $gotcntC >0
+     !set test_exist=!append item C to $test_exist
+   !endif
+   Gotcnt=$[$Gotcnt + $(gotcntC)]
+  !endif
 
  !! correct misprints in the search words
- dictionary=bases/sys/words.$search_lang
- suffix_dictionary=bases/sys/suffix.$search_lang
- translator_unknown=leave
- srch=!exec translator $srch
- srch=!trim $srch
-!endif
+  dictionary=bases/sys/words.$search_lang
+  suffix_dictionary=bases/sys/suffix.$search_lang
+  translator_unknown=leave
+  srch=!exec translator $srch
+  srch=!trim $srch
+!endif  search_keywords!=$empty
 
 !writefile wimshome/$s2dir/home_search search_level=$search_level\
 search_category=$search_category\
@@ -171,13 +178,24 @@ search_lang=$search_lang
  gotcntS=$gotcnt
  gottS=$gott
  gotdS=$gotd
- Gotcnt=$[$Gotcnt + $gotcnt]
+ !if $gotcntS >0
+   !set test_exist=!append item S to $test_exist
+ !endif
+ Gotcnt=$[$Gotcnt + $gotcntS]
+ !for cat in X,D,T
+   !read search.ker $cat
+   gotm$cat=$gotm
+   gotw$cat=$gotw
+   gotcnt$cat=$gotcnt
+   gott$cat=$gott
+   gotd$cat=$gotd
+   Gotcnt=$[$Gotcnt + $(gotcnt$cat)]
+   !if $(gotcnt$cat) >0
+    !set test_exist=!append item $cat to $test_exist
+   !endif
+ !next
 !endif
-
-!read search.ker $search_lang
- Gotcnt=$[$Gotcnt + $gotcnt]
 :bailout
-
 translator_switch=leaveline
 !bound list_start between integer 0 and 10000 default 0
 list_start=$[$list_batch*floor($list_start/$list_batch)]
@@ -208,6 +226,7 @@ list_start=$[$list_batch*floor($list_start/$list_batch)]
 !endif
 
 !if / isin $gotm
+
  dictionary=$search_package2/serial
  translator_unknown=leave
  gotm=!exec translator $gotm
@@ -226,8 +245,25 @@ gota=!exec translator $gotm
 !if / notin $gotm and $gotcnt>0
  dictionary=$search_package2/addr
  gotm=!exec translator $gotm
-!endif 
+!endif
 
+!for cat in X,T,D
+ dictionary=$search_package2/title
+ gott$cat=!exec translator $(gotm$cat)
+ dictionary=$search_package2/description
+ gotd$cat=!exec translator $(gotm$cat)
+ dictionary=$search_package2/language
+ gotl$cat=!exec translator $(gotm$cat)
+ dictionary=$search_package2/author
+ translator_unknown=?
+ gota$cat=!exec translator $(gotm$cat)
+
+ !if / notin $(gotm$cat) and $(gotcnt$cat)>0
+  dictionary=$search_package2/addr
+  gotm$cat=!exec translator $(gotm$cat)
+ !endif 
+ !next
+!endif
 !if $search_category isin AT and $search_keywords!=$empty and\
 	P isin $slist and ($gotcnt<=8 or $gottype!=search)
  gotm1=$gotm
@@ -240,4 +276,3 @@ gota=!exec translator $gotm
 !else
  gotcnt1=0
 !endif
-

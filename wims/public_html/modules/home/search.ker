@@ -8,17 +8,19 @@
 # gotm, gotw, gotcnt
 # gotw is only for debugging uses.
 !nocache
+!distribute words $wims_read_parm into s_cat
 !default search_lang=$lang
+!default s_cat=$search_category
+
 srch=!singlespace $srch
 srch=!replace internal ,$ $ by , in $srch
 srch=!replace internal $ $, by , in $srch
 
 !if $srch!=$empty
  suffix_dictionary=
- dictionary=$search_package2/$search_category.$search_lang
+ dictionary=$search_package2/$s_cat.$search_lang
  translator_unknown=
  !read search.common
- 
 !else
  scnt=0
 !endif

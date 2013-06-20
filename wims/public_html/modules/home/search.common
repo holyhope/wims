@@ -1,13 +1,15 @@
 !! should create an option in translator : for the moment, if a group of 
 !! words is not found, the words are searched. I would like not.
 !! sout=!exec translator $srch
- Sout=
+
+Sout=
  !if $search_and=yes
-   srch=!items2lines $srch
-   scnt=!linecnt $srch
+   srch1=!replace internal ,$ $ by , in $srch
+   srch1=!items2lines $srch1
+   scnt=!linecnt $srch1
 
    !for s_ = 1 to $scnt
-     sout_=!lookup $(srch[$s_;]) in wimshome/public_html/$dictionary
+     sout_=!lookup $(srch1[$s_;]) in wimshome/public_html/$dictionary
      sout_=!words2items $sout_
      !if $Sout!=$empty
        Sout=!listintersection $Sout and $sout_
@@ -31,4 +33,3 @@
  sout=!sort lines $sout
  sout=!nonempty lines $sout
  scnt=!linecnt $sout
-
