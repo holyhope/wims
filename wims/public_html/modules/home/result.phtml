@@ -72,13 +72,13 @@
   <script type="text/javascript">
 /*<![CDATA[*/
 function affiche(name) {  
- document.getElementById('affiche_content_'+onglet_affiche).className = 'result_inactif tab';
- document.getElementById('affiche_content_'+name).className = 'affiche_content tab';
- document.getElementById('contenu_'+onglet_affiche).style.display = 'none';
+ document.getElementById('affiche_content_'+tab_affiche).className = 'wims_tab';
+ document.getElementById('affiche_content_'+name).className = 'affiche_content wims_tab';
+ document.getElementById('contenu_'+tab_affiche).style.display = 'none';
  document.getElementById('contenu_'+name).style.display = 'block';
- onglet_affiche = name;
+ tab_affiche = name;
 }
-var onglet_affiche = '$(test_exist[1])';
+var tab_affiche = '$(test_exist[1])';
 /*]]>*/
 </script>
  !endif
@@ -87,11 +87,11 @@ var onglet_affiche = '$(test_exist[1])';
    <ul class="tab_content">
    !for cat in X,D,T,R,M,S,C
     !if $(gotcnt$cat)>0
-      <li class="result_inactif tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(CC_$cat) ($(gotcnt$cat))</li>
+      <li class="wims_tab" id="affiche_content_$cat" onclick="javascript:affiche('$cat');">$(CC_$cat) ($(gotcnt$cat))</li>
     !endif
    !next
    !if $gotcnt1 >0
-     <li class="result_inactif tab" id="affiche_content_P" onclick="javascript:affiche('P');">$(CC_P) ($gotcnt1)</li>
+     <li class="wims_tab" id="affiche_content_P" onclick="javascript:affiche('P');">$(CC_P) ($gotcnt1)</li>
    !endif
    </ul>
   </div>
