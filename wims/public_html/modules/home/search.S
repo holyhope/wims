@@ -65,4 +65,3 @@ gotd=!exec translator $gotm
  gotm=!exec translator $gotm
 !endif
 
-Gotcnt=$[$Gotcnt + $gotcnt]
