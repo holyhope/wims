@@ -1093,6 +1093,23 @@ int main(int argc, char *argv[], char *envp[])
     int inlen=0;
 /*    int mfd;
 */
+    /******************************
+     * modify a few rlimits for 64-bit processors like amd64
+     */
+    int wordSize=32;
+#ifdef __IA64__
+    wordSize=64;
+#endif
+#ifdef __x86_64__
+    wordSize=64;
+#endif
+    if (wordSize==64){
+      rlimit_as*=2;    /* virtual memory size */
+      rlimit_data*=2;  /* data segment size; maxima requires a lot */
+      rlimit_stack*=2; /* stack size */
+    }
+    /****************************/
+
     error1=user_error; error2=module_error; error3=internal_error;
     class_dir[0]=0;
     substitute=substit; buffer_init(); var_init();
