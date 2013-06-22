@@ -23,16 +23,23 @@ slib_parm=!item 1 to 4 of $wims_read_parm
 !default slib_ok_reply=good
 !default slib_ko_reply=bad
 
+slib_out=$slib_ko_reply
+
 chemeq_option=n
 
 slib_st_eq=!exec chemeq $slib_student_eq
+!if ERROR isin $wims_exec_error
+  !goto end
+!endif
+
 slib_co_eq=!exec chemeq $slib_correct_eq
+!if ERROR isin $wims_exec_error
+  !goto end
+!endif
 
 !if $slib_st_eq = $slib_co_eq
   slib_out=$slib_ok_reply
-!else
-  slib_out=$slib_ko_reply
 !endif
 
+:end
 !reset chemeq_option
-
