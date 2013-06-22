@@ -3,10 +3,11 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 lopt=-lm
-
-LDFLAGS =
 
 all: moneyprint
 
@@ -14,4 +15,4 @@ clean:
 	rm -f *.o *.core *.stackdump moneyprint
 
 moneyprint: moneyprint.c
-	$(cc) $(cflags) $(LDFLAGS) -o moneyprint moneyprint.c $(lopt)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) -o moneyprint moneyprint.c $(lopt)

@@ -1,17 +1,20 @@
 CXX=@CXX@
 CXXFLAGS=@CXXFLAGS@
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 
 chemeq : chemeq.o chemparser.o mendeleiev.o
-	${CXX} $(CXXFLAGS) -o chemeq chemeq.o chemparser.o mendeleiev.o -lfl
+	${CXX} $(CXXFLAGS) $(LDFLAGS) -o chemeq chemeq.o chemparser.o mendeleiev.o -lfl
 
 mendeleiev.o : mendeleiev.c chemeq.h
-	${CXX} $(CXXFLAGS) -c $<
+	${CXX} $(CXXFLAGS) $(CPPFLAGS) -c $<
 
 chemeq.o : chemeq.cc chemeq.h
-	${CXX} $(CXXFLAGS) -c chemeq.cc
+	${CXX} $(CXXFLAGS) $(CPPFLAGS) -c chemeq.cc
 
 chemparser.o : chemparser.cc chemeq.h
-	${CXX} $(CXXFLAGS) -c chemparser.cc
+	${CXX} $(CXXFLAGS) $(CPPFLAGS) -c chemparser.cc
 
 chemparser.cc : chemlex.cc chemeq.y chemeq.h
 	bison  --verbose -o chemparser.cc chemeq.y

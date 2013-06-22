@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 STRIP=@STRIP@
 NETLIBS=@NETLIBS@
@@ -18,9 +21,9 @@ distclean: clean
 	rm -f Makefile
 
 %.o: %.c
-	$(cc) -o $@ $(cflags) $(defines) -c $<
+	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -c $<
 wimsd: wimsd.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(defines) $(NETLIBS) wimsd.o $(SETENV_OBJS) -o $@
+	$(cc) $(cflags) $(LDFLAGS) $(defines) $(NETLIBS) wimsd.o $(SETENV_OBJS) -o $@
 	$(STRIP) wimsd
 	rm -f $(wims_home)/bin/wimsd
 	cp wimsd $(wims_home)/bin

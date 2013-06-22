@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L../../lib -lwims -lm
@@ -18,7 +21,7 @@ distclean:
 	rm -f Makefile
 
 wimslogd: *.c *.h ../wimsdef.h ../Lib/libwims.h
-	$(cc) $(cflags) $(defines) wimslogd.c $(lopt) -o wimslogd
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) wimslogd.c $(lopt) -o wimslogd
 	$(STRIP) wimslogd
 	rm -f $(wims_home)/tmp/log/wimslogd.pid $(wims_home)/sessions/.wimslogd
 	cp wimslogd $(wims_home)/tmp/log/wimslogd.new

@@ -1,7 +1,10 @@
 CC=@CC@
 CFLAGS=@CFLAGS@
 CXX = g++
-CXXFLAGS= -g
+CXXFLAGS= @CXXFLAGS@ -g
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 RECODE_SUPPORT =
 LIBS= -lm -lgmp -lgmpxx
 
@@ -11,10 +14,10 @@ test : all
 	sh units-test
 
 units-filter : unitesparser.o
-	${CXX} $(CXXFLAGS) -o units-filter unitesparser.o $(LIBS)
+	${CXX} $(CXXFLAGS) $(LDFLAGS) -o units-filter unitesparser.o $(LIBS)
 
 unitesparser.o : uniteslex.cc unitesparser.cc
-	${CXX} $(CXXFLAGS) -c $(RECODE_SUPPORT) unitesparser.cc 
+	${CXX} $(CXXFLAGS) $(CPPFLAGS) -c $(RECODE_SUPPORT) unitesparser.cc
 
 uniteslex.cc : unites.l unites.y unites.h
 	flex  -ouniteslex.cc unites.l

@@ -3,6 +3,9 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 rpath=@RPATH@
 STRIP=@STRIP@
@@ -19,7 +22,7 @@ distclean:
 	rm -f Makefile
 
 symtext: *.c *.h
-	$(cc) $(cflags) $(lopt) -o symtext symtext.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(lopt) -o symtext symtext.c
 	./symtext -t
 	$(STRIP) $@
 	cp $@ $(wims_home)/public_html/bin

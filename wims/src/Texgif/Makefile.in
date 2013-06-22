@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 STRIP=@STRIP@
 
@@ -17,7 +20,7 @@ distclean: clean
 	rm -f Makefile
 
 texgif: *.c colors.c *.h ../Flydraw/gd/libgd.a
-	$(cc) $(cflags) $(defines) texgif.c -L../Flydraw/gd -lgd -lm -o texgif
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) texgif.c -L../Flydraw/gd -lgd -lm -o texgif
 	$(STRIP) texgif
 	cp texgif $(wims_home)/public_html/bin/tex..gif
 

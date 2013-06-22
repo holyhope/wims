@@ -3,10 +3,11 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 lopt=-lm
-
-LDFLAGS =
 
 all: toascii
 
@@ -14,4 +15,4 @@ clean:
 	rm -f *.o *.core *.stackdump toascii
 
 toascii: toascii.c
-	$(cc) $(cflags) $(LDFLAGS) -o toascii toascii.c $(lopt)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) -o toascii toascii.c $(lopt)

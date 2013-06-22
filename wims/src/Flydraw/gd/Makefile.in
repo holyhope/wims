@@ -10,16 +10,19 @@
 CC=@CC@
 AR=ar
 CFLAGS=@CFLAGS@
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 RANLIB=@RANLIB@
 LIBS=-L./ -lgd -lm
 
 all: libgd.a
 
 gddemo: gddemo.o libgd.a gd.h gdfonts.h gdfontl.h
-	$(CC) gddemo.o -o gddemo	$(LIBS)
+	$(CC) gddemo.o -o gddemo $(LDFLAGS) $(LIBS)
 
 giftogd: giftogd.o libgd.a gd.h
-	$(CC) giftogd.o -o giftogd	$(LIBS) 
+	$(CC) giftogd.o -o giftogd $(LDFLAGS) $(LIBS)
 
 libgd.a: gd.o gdfontt.o gdfonts.o gdfontmb.o gdfontl.o gdfontg.o \
 	gd.h gdfontt.h gdfonts.h gdfontmb.h gdfontl.h gdfontg.h
@@ -29,7 +32,7 @@ libgd.a: gd.o gdfontt.o gdfonts.o gdfontmb.o gdfontl.o gdfontg.o \
 	$(RANLIB) libgd.a
 
 webgif: webgif.o libgd.a gd.h
-	$(CC) webgif.o -o webgif	$(LIBS)
+	$(CC) webgif.o -o webgif $(LDFLAGS) $(LIBS)
 
 clean:
 	rm -f *.o *.a gddemo giftogd 

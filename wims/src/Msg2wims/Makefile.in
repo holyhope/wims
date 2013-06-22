@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 STRIP=@STRIP@
 rpath=
@@ -19,7 +22,7 @@ distclean:
 	rm -f Makefile
 
 msg2wims: *.c ../Oef2wims/sp.c ../Lib/libwims.*
-	$(cc) $(cflags) $(defines) msg2wims.c $(lopt) -o msg2wims
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) msg2wims.c $(lopt) -o msg2wims
 	./msg2wims table
 	$(STRIP) msg2wims
 	cp msg2wims $(wims_home)/bin

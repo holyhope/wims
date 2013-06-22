@@ -3,12 +3,15 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 
 all:checkmol
 
 checkmol::
-	$(cc) checkmolc.c -o checkmol -lm
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) checkmolc.c -o checkmol -lm
 
 clean::
 	rm -f checkmol

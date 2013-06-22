@@ -3,6 +3,8 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall @STATIC_LIB@
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
 defines=@DEFINES@
 lopt=-lm
 
@@ -14,10 +16,10 @@ all: voronoi
 tt: voronoi t
 	voronoi -t <t >tt
 voronoi: $O
-	$(cc) $(cflags) -o voronoi $O -lm
+	$(cc) $(cflags) $(LDFLAGS) -o voronoi $O -lm
 
 %.o: %.c
-	$(cc) $(cflags) -o $@ -c $<
+	$(cc) $(cflags) $(CPPFLAGS) -o $@ -c $<
 
 $O:vdefs.h
 

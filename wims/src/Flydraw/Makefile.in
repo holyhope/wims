@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 STRIP=@STRIP@
 libpath=-L$(wims_home)/lib -L./gd
 libs=-lm -lgd -lwims
@@ -24,7 +27,7 @@ distclean:
 	rm -f Makefile
 
 flydraw: *.c *.h gd/libgd.a htmldoc.sh commands commands.* ../Lib/libwims.*
-	$(cc) $(cflags) $(defines) flydraw.c $(lopt) -o flydraw
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) flydraw.c $(lopt) -o flydraw
 	$(STRIP) flydraw
 	./flydraw table
 	cp flydraw ../../other/bin/flydraw

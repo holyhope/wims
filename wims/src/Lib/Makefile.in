@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 ranlib=@RANLIB@
 defines=@DEFINES@
 SETENV_OBJS=@SETENV_OBJS@
@@ -15,7 +18,7 @@ static: libwims.a
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 libwims.o: *.c libwims.h 
-	$(cc) -o $@ $(cflags) $(defines) -Dlibwims -c libwims.c
+	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -Dlibwims -c libwims.c
 
 libwims.a: libwims.o $(SETENV_OBJS)
 	ar rc $@ libwims.o $(SETENV_OBJS)

@@ -10,6 +10,9 @@ PACKAGE_VERSION=@PACKAGE_VERSION@
 PACKAGE_STRING=@PACKAGE_STRING@
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 cpp=@CPP@
 defines=@DEFINES@
 STRIP=@STRIP@
@@ -104,10 +107,10 @@ distclean::
 	find .. -name .wimshome | xargs rm -f
 
 wims.o: *.c *.h
-	$(cc) $(cflags) $(defs) -c wims.c
+	$(cc) $(cflags) $(CPPFLAGS) $(defs) -c wims.c
 
 wims: wims.o Lib/libwims.o
-	$(cc) -o wims Lib/libwims.o wims.o $(lopt)
+	$(cc) $(LDFLAGS) -o wims Lib/libwims.o wims.o $(lopt)
 	$(STRIP) wims
 	./wims table
 

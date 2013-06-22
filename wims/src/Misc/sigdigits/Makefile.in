@@ -3,10 +3,11 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 lopt=-lm
-
-LDFLAGS =
 
 all: sigdigits
 
@@ -14,4 +15,4 @@ clean:
 	rm -f *.o *.core *.stackdump sigdigits
 
 sigdigits: sigdigits.c
-	$(cc) $(cflags) $(LDFLAGS) -o sigdigits sigdigits.c $(lopt)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) -o sigdigits sigdigits.c $(lopt)

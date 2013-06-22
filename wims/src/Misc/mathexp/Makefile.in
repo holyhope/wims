@@ -3,6 +3,8 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall @STATIC_LIB@
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
 defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-lm
@@ -18,7 +20,7 @@ distclean:
 	rm -f Makefile
 
 mathexp: *.c
-	$(cc) $(cflags) mathexp.c $(lopt) -o mathexp
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) mathexp.c $(lopt) -o mathexp
 	$(STRIP) $@
 	cp $@ $(wims_home)/public_html/bin
 

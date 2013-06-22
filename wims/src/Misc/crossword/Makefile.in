@@ -3,15 +3,20 @@
 wims_home=../../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 lopt=-lm
 
-LDFLAGS =
 
 all: crossword
 
 clean:
 	rm -f *.o *.core *.stackdump crossword
 
-crossword: crossword.c
-	$(cc) $(cflags) $(LDFLAGS) -o crossword crossword.c
+crossword: crossword.o
+	$(cc) $(LDFLAGS) -o crossword crossword.o
+
+crossword.o: crossword.c
+	$(cc) $(cflags) $(CPPFLAGS) -c crossword.c

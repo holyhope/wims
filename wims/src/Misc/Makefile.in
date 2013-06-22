@@ -3,6 +3,9 @@
 wims_home=../..
 cc=@CC@
 cflags=@CFLAGS@ -Wall
+LDFLAGS=@LDFLAGS@
+CPPFLAGS=@CPPFLAGS@
+
 defines=@DEFINES@
 STRIP=@STRIP@
 rpath=
@@ -131,72 +134,72 @@ distclean: clean
 
 #################################################
 webget: webget.c
-	$(cc) $(cflags) webget.c $(NETLIBS) -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) webget.c $(NETLIBS) -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
 test: test.c
-	$(cc) $(cflags) test.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) test.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 shortpath: shortpath.c
-	$(cc) $(cflags) shortpath.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) shortpath.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 oncechar: oncechar.c
-	$(cc) $(cflags) oncechar.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) oncechar.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 cryptarith: cryptarith.c
-	$(cc) $(cflags) cryptarith.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cryptarith.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 ftype: ftype.c
-	$(cc) $(cflags) ftype.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ftype.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 cyclicode: cyclicode.c
-	$(cc) $(cflags) cyclicode.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cyclicode.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 curvecomp: curvecomp.c
-	$(cc) $(cflags) curvecomp.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) curvecomp.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
 Plouffe: Plouffe.c
-	$(cc) $(cflags) Plouffe.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) Plouffe.c -lm -o $@
 	$(STRIP) $@
 	rm -f $(PUBDIR)/$@; cp $@ $(PUBDIR)
 
 translator: translator.c suffix.c
-	$(cc) $(cflags) translator.c @STATIC_LIB@ -o translator
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) translator.c @STATIC_LIB@ -o translator
 	$(STRIP) translator
 	cp translator $(PUBDIR)
 
 html2msg: html2msg.c ../hmname.c
-	$(cc) $(cflags) html2msg.c -o html2msg
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) html2msg.c -o html2msg
 	$(STRIP) html2msg
 	cp html2msg $(PUBDIR)
 
 huffman : huffman.c
-	$(cc) $(cflags) huffman.c $(lopt) -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) huffman.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
 insplot: insplot.c
-	$(cc) $(cflags) insplot.c -lm -o insplot
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) insplot.c -lm -o insplot
 	$(STRIP) insplot
 #	cp insplot $(PUBDIR)/insplot..processor
 
 wrap: wrap.c
-	$(cc) $(cflags) wrap.c @STATIC_LIB@ -o wrap
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) wrap.c @STATIC_LIB@ -o wrap
 	$(STRIP) wrap
 	cp -f wrap $(PUBDIR)/wrap..exec
 	echo yes >$(wims_home)/log/unsecure
 
 chroot: chroot.c
-	$(cc) $(cflags) chroot.c @STATIC_LIB@ -o chroot
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) chroot.c @STATIC_LIB@ -o chroot
 	$(STRIP) chroot
 	cp -f chroot $(PUBDIR)/ch..root
 	echo yes >$(wims_home)/log/unsecure
@@ -204,39 +207,39 @@ chroot: chroot.c
 #################################################
 
 dicsort: dicsort.c
-	$(cc) $(cflags) dicsort.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) dicsort.c -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modind: modind.c
-	$(cc) $(cflags) modind.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modind.c -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modstat: modstat.c
-	$(cc) $(cflags) modstat.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modstat.c -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 ccsum: ccsum.c
-	$(cc) $(cflags) ccsum.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ccsum.c -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
 exostat: exostat.c
-	$(cc) $(cflags) exostat.c $(lopt) -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) exostat.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
 #passcrypt: passcrypt.c
-#	$(cc) $(cflags) passcrypt.c $(lopt) @CRYPTLIB@ -o $@
+#	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) passcrypt.c $(lopt) @CRYPTLIB@ -o $@
 #	$(STRIP) $@
 #	cp $@ $(OTHERDIR)
 
 phtmltext: phtmltext.c
-	$(cc) $(cflags) phtmltext.c $(lopt) -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) phtmltext.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
 clickzone: clickzone.c ../Flydraw/gd/libgd.a
-	$(cc) $(cflags) clickzone.c $(lopt) -L../Flydraw/gd -lgd -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) clickzone.c $(lopt) -L../Flydraw/gd -lgd -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
