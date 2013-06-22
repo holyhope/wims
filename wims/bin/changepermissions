@@ -58,9 +58,9 @@ echo "
 ****************************  nowrite nowrite2 ****************************"
 cd $wimshome
 
-test=`find $nowrite -perm +22 \! -type l 2>/dev/null | head -20000`
+test=`find $nowrite -perm /22 \! -type l 2>/dev/null | head -20000`
 # Attention, j'ai remplacé w_nowrite2 par nowrite2
-test2=`find $nowrite2 -maxdepth 0 -perm +22 \! -type l 2>/dev/null | head -20000`
+test2=`find $nowrite2 -maxdepth 0 -perm /22 \! -type l 2>/dev/null | head -20000`
 if [ ! -z "$test$test2" ]; then 
  chmod og-w $test $test2 
 echo "$test
@@ -78,7 +78,7 @@ echo "
 
 ****************************  noexec noexec2 ****************************"
 cd $wimshome
-test=`find $noexec -perm +11 -type f 2>/dev/null | head -20000`
+test=`find $noexec -perm /11 -type f 2>/dev/null | head -20000`
 if [ ! -z "$test" ]; then 
 echo "noexec noexec2"
 chmod og-x $test 
