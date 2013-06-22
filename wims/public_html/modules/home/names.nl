@@ -17,7 +17,7 @@ wims_name_n_participant = Studenten bereik
 wims_name_n_supervisor = Docenten bereik
 wims_name_mail = Schrijf naar de docent
 wims_name_pref = Instellingen 
-wims_name_ref = Backward links
+wims_name_ref = Bezoekers
 wims_name_stat = Serverstatistieken
 wims_name_faq       = FAQ
 wims_name_dochelp = Help documenten
@@ -64,7 +64,7 @@ U_inscription2 = Aanmelden in een andere klas.
 U_clickhere = Klik hier
 U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
-name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te boezoeken.
+name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te bezoeken.
  
 SU_greet = !nosubst Welkom, $wims_firstname $wims_lastname!<br/>\
 Welkom op de Onderhouds pagina van uw klas.<br/>
@@ -98,7 +98,7 @@ ADD_class = klas
 ADD_2 = ADD_3 = Toevoegen:
 ADD_cdt = Agenda
 
-CL_Names = Niveaus ,Klassen ,Programma's ,Cursussen ,Interklas cursussen
+CL_Names = Niveaus ,Klassen ,Programma&rsquo;s ,Cursussen ,Interklas cursussen
 CL_Name = niveau,klas,programma,cursus,interklas cursus
 CL_Test = Test zone
 CL_otherNames = Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas

@@ -1,4 +1,5 @@
 !set lang_exists=yes
+
 !if $class_type iswordof 2 4
    !if $class_type=2
     !set name_classe=groep klassen
@@ -22,6 +23,7 @@
    !set name_classessss= De $name_classe
    !set name_sup=docent
  !endif
+
  !if $splevel iswordof 1 2 3
    !set sousclasses=!item $splevel of klas,cursus
    !set Name_level= !item $splevel of Niveau,Klas,Cursus
@@ -59,7 +61,7 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 <p>Nog niet aangemeld? klik dan op <span class="wims_button disabled">$name_register</span>\
  (als de status heet <span class="wims_label">$name_protected</span> , is er een wachtwoord vereist voor de aanmeldings procedure.\
  Dit wachtwoord is verkrijgbaar bij de docent of administrator.)\
-<p>Klik op <span class="wims_button disabled">$wims_name_Enter</span> om in te loggen. 
+Klik op <span class="wims_button disabled">$wims_name_Enter</span> om in te loggen.</p>
 
 !set name_text2=Om over te stappen naar  $name_level_else $sousclasses_else, kies \
 uit de onderstaande tabel.
