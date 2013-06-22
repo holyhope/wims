@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 
-#define VERSION "2.8"
+#define VERSION "2.10"
 
 /* Constante d'Avogadro, recommandée par CODATA, 2006 */
 #define Avogadro 6.022141e+23
@@ -222,6 +222,7 @@ class Chemeq{
   std::string cste;
   long double val;
 public:
+  bool fixRightArrow=false; // will output \\rightarrow when true
   Chemeq(Membre * g, Membre * d) : gauche (g), droit(d), val(MINVAL){};
   const Membre * membredroit()const{return droit;};
   const Membre * membregauche()const{return gauche;};

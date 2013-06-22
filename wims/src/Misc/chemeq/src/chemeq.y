@@ -114,7 +114,7 @@ nombre : Real {$$.r=$1.r;}
 ;
 
 volt : /* rien */
-| spc01 Atome {if ($2.s.compare("V")!=0) yyerror ((char*)"only 'V' allowed as unit"); }
+| spc01 Atome {if ($2.s.compare("V")!=0) yyerror ("only 'V' allowed as unit"); }
 ;
 
 id : Atome {/* $$.s contient le nom */}
@@ -258,7 +258,7 @@ void optionadd(char* b, char* allowed, int c){
 }
 
 int main(int argc, char * argv[]){
-  char * optstr = (char*)"mMlcCwnesvh";
+  char * optstr = "mMlcCwWnesvh";
   char * envoption=getenv("chemeq_option");
   if (envoption==NULL) envoption=getenv("w_chemeq_option");
   char * envinput =getenv("chemeq_input");
@@ -287,6 +287,7 @@ int main(int argc, char * argv[]){
   yyparse();
 
   bool wantedlatex=(strchr(asked,'l')!=NULL);
+  bool fixRightArrow=(strchr(asked,'W')!=NULL);
   if (isequation) {
     for(i=0; i<strlen(asked); i++){
       switch(asked[i]){
@@ -298,6 +299,7 @@ int main(int argc, char * argv[]){
 	std::cout <<  std::endl;
 	break;
       case 'l': nooption=0;
+	result.cq->fixRightArrow=fixRightArrow;
 	std::cout << *result.cq << std::endl;
 	break;
       case 'c': nooption=0;

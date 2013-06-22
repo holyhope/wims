@@ -1,15 +1,15 @@
         -------------------------------------------
-                         chemeq V1.10-1 
+                   chemeq V1.10-1 
         -------------------------------------------
-                              (c)2000 G. Khaznadar
-                  <georgesk@boltz.univ-littoral.fr>
+                   (c)2000 G. Khaznadar
+                  <georgesk@ofset.org>
         -------------------------------------------
 
-chemeq est un filtre simple et autonome écrit en langage C,
-flex et bison. Il accepte des entrées telles que :
+chemeq est un filtre simple et autonome Ã©crit en langage C,
+flex et bison. Il accepte des entrÃ©es telles que :
 2H2 + O2 ---> 2 H2O
 et produit sur sa sortie standard du code LaTeX et des messages relatifs
-à l'équilibre d'une équation de réaction chimique.
+Ã  l'Ã©quilibre d'une Ã©quation de rÃ©action chimique.
 
 exemple:~/src$ echo "2H2 + O2 ---> 2 H2O" | chemeq -lc
 2\,H_{2}\,+\,O_{2}\,\rightarrow\,2\,H_{2}O
@@ -17,14 +17,14 @@ OK
 exemple:~/src$
 
 
-ce qui signifie : 2 molécules de dihydrogène réagissent avec une molécule de
-dioxygène pour donner deux molécules d'eau.
-La première ligne, "2\,H_{2}\,+\,O_{2}\,\rightarrow\,2\,H_{2}O" est une
-réécriture de l'équation en langage LaTeX.
-La deuxième ligne "OK" signifie que l'équation de réaction est équilibrée.
+ce qui signifie : 2 molÃ©cules de dihydrogÃ¨ne rÃ©agissent avec une molÃ©cule de
+dioxygÃ¨ne pour donner deux molÃ©cules d'eau.
+La premiÃ¨re ligne, "2\,H_{2}\,+\,O_{2}\,\rightarrow\,2\,H_{2}O" est une
+rÃ©Ã©criture de l'Ã©quation en langage LaTeX.
+La deuxiÃ¨me ligne "OK" signifie que l'Ã©quation de rÃ©action est Ã©quilibrÃ©e.
 
 
-Quand la chaîne d'entrée n'est pas reconnue, le filtre échoue et 
+Quand la chaÃ®ne d'entrÃ©e n'est pas reconnue, le filtre Ã©choue et 
 renvoie un code 1.
 
 exemple:~/src$ echo "2H^2 + O2 ---> 2 H2O" | chemeq -lc
@@ -32,23 +32,23 @@ ERROR parse error at 4
 exemple:~/src$
 
 NOTE : syntaxe des ions.
-Bien que dans certains cas, une expression plus courte soit acceptée,
-il est préférable de mettre une flèche haute (^) devant les symboles
+Bien que dans certains cas, une expression plus courte soit acceptÃ©e,
+il est prÃ©fÃ©rable de mettre une flÃ¨che haute (^) devant les symboles
 de charge d'un ion.
 Exemples : H3O^+, Fe(CN)6^4-, OH^-
 
 NOTE : crochets
-L'écriture de crochets est autorisée autour de la notation d'un corps simple,
+L'Ã©criture de crochets est autorisÃ©e autour de la notation d'un corps simple,
 comme pour [Fe(CN)6]4-, et seulement dans ce cas.
 
-NOTE : constantes d'équilibre chimique.
-Pour les équilibres chiliques, la constante pour l'équation de Gulder-Waage
-ou le potentiel pour l'équation de Nernst peut être écrite à la fin de
-l'équation, entre parenthèses. Voir quelques exemples dans src/test.1, et
-typographiez-les grâce à LaTeX par la commande src/chemreport
+NOTE : constantes d'Ã©quilibre chimique.
+Pour les Ã©quilibres chiliques, la constante pour l'Ã©quation de Gulder-Waage
+ou le potentiel pour l'Ã©quation de Nernst peut Ãªtre Ã©crite Ã  la fin de
+l'Ã©quation, entre parenthÃ¨ses. Voir quelques exemples dans src/test.1, et
+typographiez-les grÃ¢ce Ã  LaTeX par la commande src/chemreport
 
-Ce filtre peut être utilisé au sein de systèmes d'examens éducatifs,
-pour analyser la réponse d'un étudiant à un problème de physique ou
+Ce filtre peut Ãªtre utilisÃ© au sein de systÃ¨mes d'examens Ã©ducatifs,
+pour analyser la rÃ©ponse d'un Ã©tudiant Ã  un problÃ¨me de physique ou
 de chimie.
 
 Ce petit bout de code est sous GPL, voyez le fichier COPYING.
@@ -62,42 +62,42 @@ Georges.
 			Les options de chemeq
 -----------------------------------------------------------
 
-On peut choisir le format de sortie de chemeq en spécifiant quelques options.
+On peut choisir le format de sortie de chemeq en spÃ©cifiant quelques options.
 Les options valides sont les suivantes :
 
 
   -h	produit un message d'aide en anglais (*H*elp)
   -m	Produit une sortie *M*inimale. Ainsi chemeq est idempotent,
-	c'est à dire que les commandes 'chemeq | chemeq' et 'chemeq' sont
-	équivalentes.
-  -l	Prouduit une chaîne *L*atex représentant l'équation chimique.
+	c'est Ã  dire que les commandes 'chemeq | chemeq' et 'chemeq' sont
+	Ã©quivalentes.
+  -l	Prouduit une chaÃ®ne *L*atex reprÃ©sentant l'Ã©quation chimique.
   -c	Produit un message donnant des indications sur la *C*onservation des
-	éléments et des charges. 'OK' signifie que les éléments et les charges
-	sont conservés.
-  -w	Produit la chaîne LaTeX qui représente l'équation de Gulder-*W*aage
-	relative à l'équation chimique, ou l'équation de Nernst, si l'équation
-	de départ est une demi-réaction rédox.
-  -n	Produit une chaîne *N*ormalisée représentant l'équation de départ.
-	Deux équations chimiques ayant la même chaîne normalisée sont 
-	chimiquement équivalentes, même si l'ordre des molécules est différent,
-	et si les coefficients ne sont pas égaux mais proportionnels.
+	Ã©lÃ©ments et des charges. 'OK' signifie que les Ã©lÃ©ments et les charges
+	sont conservÃ©s.
+  -w	Produit la chaÃ®ne LaTeX qui reprÃ©sente l'Ã©quation de Gulder-*W*aage
+	relative Ã  l'Ã©quation chimique, ou l'Ã©quation de Nernst, si l'Ã©quation
+	de dÃ©part est une demi-rÃ©action rÃ©dox.
+  -n	Produit une chaÃ®ne *N*ormalisÃ©e reprÃ©sentant l'Ã©quation de dÃ©part.
+	Deux Ã©quations chimiques ayant la mÃªme chaÃ®ne normalisÃ©e sont 
+	chimiquement Ã©quivalentes, mÃªme si l'ordre des molÃ©cules est diffÃ©rent,
+	et si les coefficients ne sont pas Ã©gaux mais proportionnels.
 
-Par défaut, 'chemeq' est équivalent à 'chemeq -mlcwn'.
+Par dÃ©faut, 'chemeq' est Ã©quivalent Ã  'chemeq -mlcwn'.
 
 -----------------------------------------------------------
 			INSTALLATION
 -----------------------------------------------------------
-Pour compiler chemeq, lancez 'make' dans le répertoire principal chemeq.
+Pour compiler chemeq, lancez 'make' dans le rÃ©pertoire principal chemeq.
 Pour l'installer avec sa page de manuel, lancez 'make install' dans ce
-même répertoire.
+mÃªme rÃ©pertoire.
 
 -----------------------------------------------------------
 			TEST et DEMONSTRATION
 -----------------------------------------------------------
 
-Si on modifie le code source, il est possible de tester sa conformité
-aux versions précédentes en lançant 'make test' dans le répertoire principal.
+Si on modifie le code source, il est possible de tester sa conformitÃ©
+aux versions prÃ©cÃ©dentes en lanÃ§ant 'make test' dans le rÃ©pertoire principal.
 
-Si 'make test' répond 'OK' à chaque item, et que latex et xdvi sont installés,
+Si 'make test' rÃ©pond 'OK' Ã  chaque item, et que latex et xdvi sont installÃ©s,
 on peut lancer 'make demo' pour voir quelques exemples de traitement 
 typographique.
