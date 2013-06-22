@@ -24,6 +24,8 @@ lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 wimsd=@BUILD_WIMSD@
 
 all:: lib$(libtype) progs setupwims mkindex
+# that line is for the debian package:
+all-debianpkg:: lib$(libtype) progs setupwims
 
 progs:: flydraw texgif mathml interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims 
 
@@ -45,7 +47,7 @@ clean::
 	cd Texgif; make clean
 	cd Module; make clean
 	cd Mathml; make clean
-	
+
 # preserves some generated files in log/, sessions/ and tmp/. Intended.
 distclean::
 	rm -f wims wims.o Common/*.o $(wims_home)/public_html/wims
@@ -69,7 +71,37 @@ distclean::
 	cd Module; make distclean
 	$(wims_home)/public_html/mathfonts/clean
 	rm -rf autom4te.cache 
-	rm -f config.h config.log config.status Makefile
+	rm -f configure config.hin config.h config.log config.status Makefile
+	# clean files which were installed in unusual fashions
+	rm -f ../bin/msg2wims
+	rm -f ../log/classes/.teacher-cls
+	rm -f ../log/classes/.supervisor-supercls
+	rm -f ../log/classes/.supervisor-portal
+	rm -f ../log/classes/.teacher-supercls
+	rm -f ../log/classes/.teacher-portal
+	rm -f ../other/bin/lceb_dynopt
+	rm -f ../public_html/bin/symtext
+	rm -f ../tmp/log/wimslogd.new
+	rm -f ../public_html/wims.cgi
+	rm -f ../log/unsecure
+	rm -f ../log/update-version
+	rm -f ../log/classes/.index
+	rm -f ../public_html/html/Changelog
+	rm -f ../public_html/scripts/help/cn/flydraw.phtml
+	rm -f ../public_html/scripts/help/en/flydraw.phtml
+	rm -f ../public_html/scripts/help/fr/flydraw.phtml
+	# clean files which should be removed by some other Makefile
+	rm -f Misc/checkmol/checkmol
+	rm -f Misc/lceb/lceb_dynopt
+	rm -f Misc/lceb/lceb_dyn
+	rm -f Misc/lceb/lceb_rec
+	rm -f Misc/lceb/lceb_bigsum
+	rm -f Misc/lceb/lceb_easiest
+	rm -f Misc/symtext/symtext
+	rm -f Misc/passcrypt
+	rm -f Flydraw/nametab.c
+	find . -name Makefile | xargs rm -f
+	find .. -name .wimshome | xargs rm -f
 
 wims.o: *.c *.h
 	$(cc) $(cflags) $(defs) -c wims.c
