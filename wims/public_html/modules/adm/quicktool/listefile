@@ -5,9 +5,9 @@
  !!	ls -l $$dd | awk '{print $$9}'
  !!    image_files=!replace internal ./ by $ in $image_files
 	
-image_files=!sh find $dir/images -type f \! -perm /100 | sed 's!^$dir/images/!!' | sort
+image_files=!sh find $dir/images -type f \! -perm +100 | sed 's!^$dir/images/!!' | sort
 
-data_files=!sh find $dir -type f \! -perm /100 | sed 's!^$dir/!!' | sort
+data_files=!sh find $dir -type f \! -perm +100 | sed 's!^$dir/!!' | sort
 df=!words2items $data_files
 data_files=
 !for f in $df
@@ -21,4 +21,4 @@ data_files=
 !next f
 
 
-oef_files=!sh find $dir/src -type f \! -perm /100 | sed 's!^$dir/src/!!' | sort
+oef_files=!sh find $dir/src -type f \! -perm +100 | sed 's!^$dir/src/!!' | sort
