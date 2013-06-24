@@ -1075,7 +1075,6 @@ left_int (trimstr)
   char numstr[256];
   char auxstr[256];
   int auxint = 0;
- /* int code;*/
   char STR1[256];
 
   strcpy (numstr, "-+0123456789");
@@ -1088,7 +1087,6 @@ left_int (trimstr)
       sprintf (auxstr + strlen (auxstr), "%c", trimstr[0]);
       strdelete (trimstr, 1, 1);
     }
- /* code = (sscanf (auxstr, "%d", &auxint) == 0);*/
   return auxint;
 }
 
@@ -2675,7 +2673,7 @@ read_molfile (mfilename)
      char *mfilename;
 {
   /* reads ALCHEMY mol files */
-  int n, code;
+  int n;
   char rline[256], tmpstr[256];
   char xstr[256], ystr[256], zstr[256], chgstr[256];
   float xval, yval, zval, chgval;
@@ -2691,9 +2689,9 @@ read_molfile (mfilename)
   ri = li;
   strcpy (rline, molbuf[ri - 1]);
   sprintf (tmpstr, "%.5s", rline);
-  code = (sscanf (tmpstr, "%d", &n_atoms) == 0);
+  (void)sscanf (tmpstr, "%d", &n_atoms);
   strsub (tmpstr, rline, 14, 5);
-  code = (sscanf (tmpstr, "%d", &n_bonds) == 0);
+  (void)sscanf (tmpstr, "%d", &n_bonds);
   strsub (molname, rline, 42, (int) (strlen (rline) - 42L));
   /* try */
   atom = safe_calloc (n_atoms, sizeof (atom_rec));
@@ -2732,10 +2730,10 @@ read_molfile (mfilename)
       strsub (ystr, rline, 23, 7);
       strsub (zstr, rline, 32, 7);
       strsub (chgstr, rline, 43, 7);
-      code = (sscanf (xstr, "%g", &xval) == 0);
-      code = (sscanf (ystr, "%g", &yval) == 0);
-      code = (sscanf (zstr, "%g", &zval) == 0);
-      code = (sscanf (chgstr, "%g", &chgval) == 0);
+      (void)sscanf (xstr, "%g", &xval);
+      (void)sscanf (ystr, "%g", &yval);
+      (void)sscanf (zstr, "%g", &zval);
+      (void)sscanf (chgstr, "%g", &chgval);
       WITH = &atom[n - 1];
       strcpy (WITH->element, elemstr);
       strcpy (WITH->atype, newatomtype);
@@ -2776,10 +2774,8 @@ read_molfile (mfilename)
       strcpy (rline, molbuf[ri - 1]);
       strsub (a1str, rline, 9, 3);
       strsub (a2str, rline, 15, 3);
-      code = (sscanf (a1str, "%d", &a1val) == 0);
-      /* if code <> 0 then beep; */
-      code = (sscanf (a2str, "%d", &a2val) == 0);
-      /* if code <> 0 then beep; */
+      (void)sscanf(a1str, "%d", &a1val);
+      (void)sscanf(a2str, "%d", &a2val);
       WITH1 = &bond[n];
       WITH1->a1 = a1val;
       WITH1->a2 = a2val;
@@ -2838,10 +2834,10 @@ read_mol2file (mfilename)
       strcpy (rline, molbuf[ri - 1]);
     }
   sprintf (tmpstr, "%.5s", rline);
-  sscanf (tmpstr, "%d", &n_atoms);
+  (void)sscanf (tmpstr, "%d", &n_atoms);
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
   strsub (tmpstr, rline, 7, 5);
-  sscanf (tmpstr, "%d", &n_bonds);
+  (void)sscanf (tmpstr, "%d", &n_bonds);
   /* try */
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
   atom = safe_calloc (n_atoms, sizeof (atom_rec));
@@ -2903,14 +2899,10 @@ read_mol2file (mfilename)
       strsub (ystr, rline, 28, 9);
       strsub (zstr, rline, 38, 9);
       strsub (chgstr, rline, 70, 9);
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
-      sscanf (xstr, "%g", &xval);
-      sscanf (ystr, "%g", &yval);
-      sscanf (zstr, "%g", &zval);
-      sscanf (chgstr, "%g", &chgval);
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
+      (void)sscanf (xstr, "%g", &xval);
+      (void)sscanf (ystr, "%g", &yval);
+      (void)sscanf (zstr, "%g", &zval);
+      (void)sscanf (chgstr, "%g", &chgval);
       WITH = &atom[n - 1];
       strcpy (WITH->element, elemstr);
       strcpy (WITH->atype, newatomtype);
@@ -3151,11 +3143,9 @@ read_MDLmolfile (char *mfilename)
     ri++;
   strcpy (rline, molbuf[ri - 1]);
   sprintf (tmpstr, "%.3s", rline);
-  sscanf (tmpstr, "%d", &n_atoms);
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
+  (void)sscanf (tmpstr, "%d", &n_atoms);
   strsub (tmpstr, rline, 4, 3);
-  sscanf (tmpstr, "%d", &n_bonds);
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
+  (void)sscanf (tmpstr, "%d", &n_bonds);
   strsub (tmpstr, rline, 10, 3);
   /* if it is a CheckMol-tweaked molfile, this is the number of rings */
   n_cmrings = 0;
@@ -3249,8 +3239,7 @@ read_MDLmolfile (char *mfilename)
 	  strsub (zstr, rline, 21, 10);
 	  /*chgstr := '0'; */
 	  strsub (chgstr, rline, 37, 3);	/* new in v0.3j */
-	  sscanf (chgstr, "%f", &chgval);
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
+	  (void)sscanf (chgstr, "%f", &chgval);
 	  if (chgval != 0)
 	    {
 	      if (chgval >= 1 && chgval <= 7)
@@ -3258,15 +3247,12 @@ read_MDLmolfile (char *mfilename)
 	      else
 		{
 		  chgval = 0.0;
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
 		}
 	    }			/* end (v0.3j) */
-	  sscanf (xstr, "%f", &xval);
-	  sscanf (ystr, "%f", &yval);
-	  sscanf (zstr, "%f", &zval);
+	  (void)sscanf (xstr, "%f", &xval);
+	  (void)sscanf (ystr, "%f", &yval);
+	  (void)sscanf (zstr, "%f", &zval);
 	  /* v0.3k: removed superfluous val(chgstr,chgval,code) */
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
-/* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
 	  WITH = &atom[v - 1];
 	  strcpy (WITH->element, elemstr);
 	  if (!strcmp (elemstr, "A ") || !strcmp (elemstr, "Q ") ||
@@ -3423,7 +3409,7 @@ read_MDLmolfile (char *mfilename)
 	    WITH1->stereo = bstereo_double_either;	/* 0.3x */
 	  strsub (tmpstr, rline, 10, 3);
 	  /* new in v0.3n: save original bond stereo specification; */
-	  sscanf (tmpstr, "%d", &bs);
+	  (void)sscanf (tmpstr, "%d", &bs);
 	  /* v0.3n */
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
 	  WITH1->mdl_stereo = bs;	/* v0.3n */
