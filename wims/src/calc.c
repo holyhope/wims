@@ -470,9 +470,9 @@ void calc_randchar(char *p)
 
 void calc_randitem(char *p)
 {
-    int i; char *b;
+    int i;
     i=itemnum(p);
-    b=fnd_item(p,irand(i)+1,tmplbuf);
+   (void) fnd_item(p,irand(i)+1,tmplbuf);
     mystrncpy(p,tmplbuf,MAX_LINELEN);
 }
 
@@ -1809,7 +1809,7 @@ void calc_rename(char *p)
 {
     char buf1[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
     char *p1, *ext, *s;
-    int i,t;
+    int t;
     
     if(robot_access || strstr(p,"getfile")!=NULL) return;
     p1=find_word_start(p); *find_word_end(p1)=0;
@@ -1837,7 +1837,7 @@ void calc_rename(char *p)
     mkfname(buf1,"%s/%s",cwdbuf,p);
     mkfname(buf2,"%s/getfile/rename-%u%s",session_prefix,t,ext);
     if(ftest(buf2)>=0) goto rerand;
-    i=symlink(buf1,buf2);
+    (void) symlink(buf1,buf2);
     s=getvar("wims_session"); if(s==NULL) return;
     if(good_httpd) snprintf(buf1,sizeof(buf1),
 			    "getfile/rename-%u%s?session=%s", t,ext,s);

@@ -271,7 +271,7 @@ void cmd_getscore(char *p)
 {
     struct classdata *cd;
     char *cut[4];
-    int i, sheet, exo, snew, stry, lastsheet, thissheet, thisexo;
+    int i, sheet, exo, snew, stry, thissheet, thisexo;
     double score, score2, quality, tt, ts, thisscore;
     if(cwdtype!=dir_class) {
 	sockerror(2,"getscore_no_class"); return;
@@ -291,7 +291,6 @@ void cmd_getscore(char *p)
     }
     else {thissheet=thisexo=thisscore=0;}
     getscore(cd,opt_user);
-    lastsheet=0;
     for(i=0;i<cd->exocnt;i++) {
 	tscore[i].num=cd->exos[i].num;
 	tscore[i].require=cd->exos[i].require;

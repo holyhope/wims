@@ -171,7 +171,7 @@ long int getinp(char fname[])
 	/* Processes input file */
 void process(void)
 {
-    char *p, *pe, *pp, c;
+    char *p, *pe, *pp;
     int i,j;
     
     for(p=inpbuf,define_no=0;define_no<MAX_DEFINE && p<inpend;p++) {
@@ -199,7 +199,7 @@ void process(void)
 	    if(pp>p) p=pp-1;
 	    continue;
 	}
-	c=*pe; *pe=0;
+	/*c=*pe; */*pe=0;
 	i=search_list(directives,dir_no,sizeof(directives[0]),p);
 	if(i<0) {
 	    if(wordchr(mdef,p)!=NULL) {

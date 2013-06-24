@@ -38,9 +38,9 @@ int ftest(char *fname)
 	/* read the content of a file */
 void readfile(char *fname, char buf[], long int buflen)
 {
-    int fd, t, st;
+    int fd, st;
     long int l, lc;
-    t=0; buf[0]=0;
+    buf[0]=0;
     st=ftest(fname); if(st!=is_file) return;
     l=ftst.st_size; if(l<=0) return;
     if(l>=buflen) l=buflen-1;	/* silent trancation */

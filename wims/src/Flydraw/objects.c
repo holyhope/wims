@@ -715,8 +715,8 @@ void obj_range(objparm *pm)
 	/* set t range */
 void obj_trange(objparm *pm)
 {
-    double dd;
-    dd=pm->pd[1]-pm->pd[0];
+    /*double dd;
+    dd=pm->pd[1]-pm->pd[0];*/
     tstart=pm->pd[0]; tend=pm->pd[1];
     tranged=1;
 }
