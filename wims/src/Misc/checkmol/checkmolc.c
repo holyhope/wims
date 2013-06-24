@@ -3737,14 +3737,14 @@ get_neighbors (Result, id)
      int *Result;
      int id;
 {
-  int i = 0;
+  int i;
   //neighbor_rec nb_tmp;
   int nb_count = 0;
   //int FORLIM = n_bonds;
 
   //memset (Result, 0, sizeof (neighbor_rec));
 
-  for (i; i < n_bonds; i++)
+  for (i = 0; i < n_bonds; i++)
     {
       if (bond[i].a1 == id && atom[bond[i].a2 - 1].heavy
 	  && nb_count < max_neighbors)
@@ -4594,7 +4594,6 @@ ndl_hetatom_count (int a)
 static boolean
 is_oxo_C (int id)
 {
-  boolean Result;
   int i;
   boolean r = false;
   neighbor_rec nb;
@@ -4602,7 +4601,7 @@ is_oxo_C (int id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
@@ -4624,7 +4623,6 @@ is_oxo_C (int id)
 static boolean
 is_thioxo_C (int id)
 {
-  boolean Result;
   int i;
   boolean r = false;
   neighbor_rec nb;
@@ -4632,7 +4630,7 @@ is_thioxo_C (int id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
@@ -4652,7 +4650,6 @@ is_thioxo_C (int id)
 static boolean
 is_imino_C (int id)
 {
-  boolean Result;
   int i;
   boolean r = false;
   neighbor_rec nb;
@@ -4660,7 +4657,7 @@ is_imino_C (int id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
@@ -4678,7 +4675,6 @@ is_imino_C (int id)
 static boolean
 is_true_imino_C (int id)
 {
-  boolean Result;
   int i;
   boolean r = true;
   neighbor_rec nb;
@@ -4690,7 +4686,7 @@ is_true_imino_C (int id)
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
@@ -6908,7 +6904,7 @@ write_mol ()
       printf ("  (%d heavy-atom neighbors, Hexp: %d Htot: %d)",
 	      atom[i - 1].neighbor_count, atom[i - 1].Hexp, atom[i - 1].Htot);
       if (atom[i - 1].formal_charge != 0)
-	printf ("  charge: %ld", atom[i - 1].formal_charge);
+	printf ("  charge: %d", atom[i - 1].formal_charge);
       putchar ('\n');
     }
   FORLIM = n_bonds;
@@ -7596,7 +7592,7 @@ chk_carboxyl_deriv (a_view, a_ref)
   neighbor_rec nb;
   str2 nb_el;
   int o_count = 0, n_count = 0, s_count = 0;
-  int a_o, a_n, a_s, FORLIM;
+  int a_o = 0, a_n = 0, a_s = 0, FORLIM;
 
   memset (nb, 0, sizeof (neighbor_rec));
   get_neighbors (nb, a_view);
@@ -12041,7 +12037,7 @@ write_molstat_X ()
 static int
 find_ndl_ref_atom ()
 {
-  int Result, i;
+  int i;
   int score = -1, index = 0;
   int n_nb, n_hc, FORLIM;
 
@@ -12057,7 +12053,7 @@ find_ndl_ref_atom ()
   /* added in v0.3o: needle atom must be "tagged" in order to be */
   /* selected (prevents unconnected fragments from being overlooked) */
   if (ndl_n_atoms == 0)
-    return Result;
+    return false;
   if (ez_search && ndl_n_heavyatoms > 2)
     {
       FORLIM = ndl_n_atoms;
@@ -13052,7 +13048,6 @@ static boolean
 is_matching (ndl_xmp, hst_xmp)
      int *ndl_xmp, *hst_xmp;
 {
-  boolean Result;
   int i, j, k, l, m, ndl_n_nb, n_nb, ndl_a, hst_a;
   int ndl_b = 0, hst_b = 0, prev_ndl_a = 0, prev_hst_a = 0;
   int next_ndl_a, next_hst_a;
@@ -14470,7 +14465,7 @@ main (int argc, char *argv[])
 			{
 			  if (fp_exactblock)
 			    fpdecimal++;
-			  printf ("%ll\n", fpdecimal);
+			  printf ("%lld\n", fpdecimal);
 			  fpindex = 0;
 			  fpdecimal = 0;
 			  fp_exactblock = false;
@@ -14493,7 +14488,7 @@ main (int argc, char *argv[])
 	{
 	  if (fp_exactblock)
 	    fpdecimal++;
-	  printf ("%ll\n", fpdecimal);
+	  printf ("%lld\n", fpdecimal);
 	}
       zap_needle ();
       if (rfile_is_open)
