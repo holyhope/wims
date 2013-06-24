@@ -4706,7 +4706,6 @@ static boolean
 is_true_exocyclic_imino_C (int id, int r_id)
 {
   /* v0.3j */
-  boolean Result;
   int i, j;
   boolean r = false;
   neighbor_rec nb;
@@ -4715,7 +4714,7 @@ is_true_exocyclic_imino_C (int id, int r_id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   memset (testring, 0, sizeof (ringpath_type));
   ring_size = ringprop[r_id - 1].size;	/* v0.3j */
@@ -4745,7 +4744,6 @@ is_true_exocyclic_imino_C (int id, int r_id)
 static boolean
 is_exocyclic_imino_C (int id, int r_id)
 {
-  boolean Result;
   int i, j;
   boolean r = false;
   neighbor_rec nb;
@@ -4754,7 +4752,7 @@ is_exocyclic_imino_C (int id, int r_id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   memset (testring, 0, sizeof (ringpath_type));
   ring_size = ringprop[r_id - 1].size;	/* v0.3j */
@@ -5723,7 +5721,6 @@ static boolean
 is_hydroximino_C (id)
      int id;
 {
-  boolean Result;
   int i;
   boolean r = false;
   neighbor_rec nb;
@@ -5732,7 +5729,7 @@ is_hydroximino_C (id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
@@ -5765,7 +5762,6 @@ static boolean
 is_hydrazono_C (id)
      int id;
 {
-  boolean Result;
   int i;
   boolean r = false;
   neighbor_rec nb;
@@ -5774,7 +5770,7 @@ is_hydrazono_C (id)
 
   memset (nb, 0, sizeof (neighbor_rec));
   if (id < 1 || id > n_atoms)
-    return Result;
+    return false;
   get_neighbors (nb, id);
   if (strcmp (atom[id - 1].element, "C ") || atom[id - 1].neighbor_count <= 0)
     return false;
