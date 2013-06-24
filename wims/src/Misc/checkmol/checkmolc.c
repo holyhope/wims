@@ -3048,7 +3048,7 @@ read_radicals (radstring_)
      char *radstring_;
 {
   char radstring[256];
-  int a_id, a_rad, n_rads;
+  int a_id, a_rad;
 
   /* typical example: a molecule with 2 cations + 1 anion */
   /* M  CHG  3   8   1  10   1  11  -1 */
@@ -3057,7 +3057,7 @@ read_radicals (radstring_)
     return;
   strdelete (radstring, 1, 6);
   left_trim (radstring);
-  n_rads = left_int (radstring);
+  (void)left_int (radstring);
   /* this assignment must be kept also in non-debug mode! */
 /* p2c: checkmol.pas, line 2077:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
@@ -7386,7 +7386,7 @@ chk_imine (a_ref, a_view)
   int i;
   neighbor_rec nb;
   str2 nb_el;
-  int a_het, a_c;
+  int a_het = 0, a_c;
   int het_count = 0, c_count = 0, o_count = 0;	/* v0.3k */
   int FORLIM;
 
@@ -12147,12 +12147,12 @@ cv_iterate (n_cv_prev)
      int n_cv_prev;
 {
   /* new in v0.3j, modified in v0.3m */
-  int Result, i, j;
+  int i, j;
   neighbor_rec nb;
   int nnb, nsum, n_cv, FORLIM;
 
   if (cv == NULL || ndl_n_atoms == 0)
-    return Result;
+    return false;
   FORLIM = ndl_n_atoms;
   /* update the connection values (Morgan algorithm) */
 
@@ -13465,9 +13465,9 @@ quick_match ()
   boolean res = true;
  /* str3 ndl_atype;*/
   str2 ndl_el;			/* v0.3l */
-  int ndl_chg;			/* v0.3l */
-  int ndl_rad;			/* v0.3x */
-  int ndl_iso;			/* v0.3x */
+  int ndl_chg = 0;		/* v0.3l */
+  int ndl_rad = 0;		/* v0.3x */
+  int ndl_iso = 0;		/* v0.3x */
 
 
   if ((ez_search || rs_search) && ndl_n_heavyatoms > 3)
