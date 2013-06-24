@@ -953,7 +953,7 @@ all_lowercase (char *astring)
 static void
 init_globals ()
 {
-  int i;
+  /*int i;*/
 
   opt_verbose = false;
   opt_debug = false;
@@ -1049,6 +1049,7 @@ init_molstat (mstat)
 }
 
 
+#if 0
 static void
 debugoutput (dstr)
      char *dstr;
@@ -1056,7 +1057,7 @@ debugoutput (dstr)
   if (opt_debug)
     printf ("%s\n", dstr);
 }
-
+#endif
 
 static void
 left_trim (trimstr)
@@ -1074,7 +1075,7 @@ left_int (trimstr)
   char numstr[256];
   char auxstr[256];
   int auxint = 0;
-  int code;
+ /* int code;*/
   char STR1[256];
 
   strcpy (numstr, "-+0123456789");
@@ -1087,7 +1088,7 @@ left_int (trimstr)
       sprintf (auxstr + strlen (auxstr), "%c", trimstr[0]);
       strdelete (trimstr, 1, 1);
     }
-  code = (sscanf (auxstr, "%d", &auxint) == 0);
+ /* code = (sscanf (auxstr, "%d", &auxint) == 0);*/
   return auxint;
 }
 
@@ -1127,8 +1128,8 @@ get_bond (int ba1, int ba2)
   FORLIM = n_bonds;
   for (i = 1; i <= FORLIM; i++)
     {
-      if (bond[i - 1].a1 == ba1 && bond[i - 1].a2 == ba2 ||
-	  bond[i - 1].a1 == ba2 && bond[i - 1].a2 == ba1)
+      if ((bond[i - 1].a1 == ba1 && bond[i - 1].a2 == ba2) ||
+	  (bond[i - 1].a1 == ba2 && bond[i - 1].a2 == ba1))
 	b_id = i;
     }
   return b_id;
@@ -1147,6 +1148,7 @@ clear_atom_tags ()
     }
 }
 
+#if 0
 static void
 set_atom_tags ()
 {
@@ -1159,7 +1161,7 @@ set_atom_tags ()
 	atom[i].tag = true;
     }
 }
-
+#endif
 static void
 order_ringpath (int *r_path)
 {
@@ -1322,7 +1324,7 @@ add_3d (p1, p2)
   return p;
 }
 
-
+#if 0
 static void
 vec2origin (p1, p2)
      p_3d *p1, *p2;
@@ -1335,7 +1337,7 @@ vec2origin (p1, p2)
   p1->y = 0.0;
   p1->z = 0.0;
 }
-
+#endif
 
 static double
 scalar_prod (p1, p2, p3)
@@ -1665,7 +1667,8 @@ list_molstat_codes ()
 }
 
 
-/*static void parse_args()
+#if 0
+static void parse_args()
 {
   int p;
   char parstr[256];
@@ -1677,7 +1680,7 @@ list_molstat_codes ()
   if (progmode == pmCheckMol) {
     for (p = 1; p < P_argc; p++) {
       strcpy(parstr, P_argv[p]);
-      if (!strcmp(parstr, "-l")) {   /* new in v0.3l 
+      if (!strcmp(parstr, "-l")) {   /* new in v0.3l */
 	list_molstat_codes();
 	_Escape(0);
       }
@@ -1692,7 +1695,7 @@ list_molstat_codes ()
 	    l++;
 	  if (strpos2(tmpstr, "r", 1) > 0)
 	    l++;
-	  if (strpos2(tmpstr, "M", 1) > 0)   /* new in v0.3 
+	  if (strpos2(tmpstr, "M", 1) > 0)   /* new in v0.3 */
 	    l++;
 	  if (strlen(tmpstr) > l + 2) {
 	    show_usage();
@@ -1704,11 +1707,11 @@ list_molstat_codes ()
 	  if (strpos2(tmpstr, "v", 1) > 0)
 	    opt_verbose = true;
 /* p2c: checkmol.pas, line 1261:
- * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+ * Note: Turbo Pascal conditional compilation directive was ignored [218] */
 	  /*$IFDEF debug
 	  if (strpos2(tmpstr, "D", 1) > 0)
 	    opt_debug = true;
-	  /*$ENDIF
+	  $ENDIF*/
 	  if (strpos2(tmpstr, "e", 1) > 0)
 	    opt_text = true;
 	  else {
@@ -1778,26 +1781,26 @@ list_molstat_codes ()
 	  /*$IFDEF debug
 	     if (strpos2(parstr, "D", 1) > 1)
 	     opt_debug = true;
-	     /*$ENDIF
+	     $ENDIF*/
 	     if (strpos2(parstr, "x", 1) > 1)
 	     opt_exact = true;
-	     if (strpos2(parstr, "s", 1) > 1)   /* new in v0.2f 
+	     if (strpos2(parstr, "s", 1) > 1)   /* new in v0.2f */
 	     opt_strict = true;
 	     if (strpos2(parstr, "m", 1) > 1)
 	     opt_molout = true;
 	     if (strpos2(parstr, "r", 1) > 1)
 	     opt_rs = rs_ssr;
-	     if (strpos2(parstr, "M", 1) > 0)   /* new in v0.3 
+	     if (strpos2(parstr, "M", 1) > 0)   /* new in v0.3 */
 	     opt_metalrings = true;
-	     if (strpos2(parstr, "g", 1) > 0)   /* new in v0.3d 
+	     if (strpos2(parstr, "g", 1) > 0)   /* new in v0.3d */
 	     opt_geom = true;
-	     if (strpos2(parstr, "G", 1) > 0)   /* new in v0.3f 
+	     if (strpos2(parstr, "G", 1) > 0)   /* new in v0.3f */
 	     opt_chiral = true;
-	     if (strpos2(parstr, "f", 1) > 0) {   /* new in v0.3m 
+	     if (strpos2(parstr, "f", 1) > 0) {   /* new in v0.3m */
 	     opt_fp = true;
 	     fpformat = fpf_boolean;
 	     }
-	     if (strpos2(parstr, "F", 1) > 0) {   /* new in v0.3m 
+	     if (strpos2(parstr, "F", 1) > 0) {   /* new in v0.3m */
 	     opt_fp = true;
 	     fpformat = fpf_decimal;
 	     }
@@ -1819,21 +1822,21 @@ list_molstat_codes ()
 	     opt_stdin = true;
 	     }
 	     }
-	     if (opt_geom)   /* v0.3d 
+	     if (opt_geom)   /* v0.3d */
 	     ez_search = true;
-	     if (opt_chiral)   /* v0.3f 
+	     if (opt_chiral)   /* v0.3f */
 	     rs_search = true;
 	     if (opt_chiral && opt_strict && (opt_exact || opt_fp))
-	     /* new in v0.3j, v0.3m 
+	     /* new in v0.3j, v0.3m */
 	     rs_strict = true;
-	     if (opt_fp) {   /* v0.3m 
+	     if (opt_fp) {   /* v0.3m */
 	     opt_molout = false;
 	     opt_exact = false;
 	     }
-	     }  /* progmode = pmMatchMol 
-	     ringsearch_mode = opt_rs;   /* v0.3i 
+	     }  /* progmode = pmMatchMol */
+	     ringsearch_mode = opt_rs;   /* v0.3i */
 	     }
-	   */
+#endif
 
 static void
 parse_args (int argc, char *argv[])
@@ -1870,7 +1873,7 @@ parse_args (int argc, char *argv[])
 		    l++;
 		  if (strpos2 (tmpstr, "r", 1) > 0)
 		    l++;
-		  /*if (strpos2 (tmpstr, "a", 1) > 0)   /* 0.3x 
+		  /*if (strpos2 (tmpstr, "a", 1) > 0)   // 0.3x 
 		     l++; */
 		  if (strpos2 (tmpstr, "M", 1) > 0)	/* new in v0.3 */
 		    l++;
@@ -1913,7 +1916,7 @@ parse_args (int argc, char *argv[])
 		      if (strpos2 (tmpstr, "r", 1) > 0)
 			opt_rs = rs_ssr;
 		      /* if (strpos2 (tmpstr, "a", 1) > 0)
-		         opt_chg = true; /* 0.3x  */
+		         opt_chg = true; */ /* 0.3x  */
 		      if (strpos2 (tmpstr, "X", 1) > 0)
 			{
 			  opt_molstat = true;
@@ -2165,7 +2168,7 @@ zap_needle ()
   ndl_n_rings = 0;
 }
 
-
+#if 0
 static void
 zap_tmp ()
 {
@@ -2197,7 +2200,7 @@ zap_tmp ()
   tmp_n_bonds = 0;
   tmp_n_rings = 0;
 }
-
+#endif
 
 static boolean
 is_heavyatom (id)
@@ -2211,7 +2214,7 @@ is_heavyatom (id)
     return false;
   /*if (progmode == pmCheckMol && !strcmp (el, "H ")
      && atom[id - 1].nucleon_number < 2)
-     return false;              /* 0.3x  */
+     return false;               0.3x  */
   if (!strcmp (el, "H "))	/* 0.3 p */
     {
       if (progmode == pmMatchMol && !opt_iso)
@@ -2294,7 +2297,7 @@ get_nvalences (a_el)
 
   if (!strcmp (a_el, "H "))
     res = 1;
-  /*if (!strcmp (a_el, "D "))   /* v0.3n 
+  /*if (!strcmp (a_el, "D "))   // v0.3n 
      res = 1; */
   if (!strcmp (a_el, "C "))
     res = 4;
@@ -2543,7 +2546,7 @@ get_element (Result, oldtype)
 
   if (!strcmp (oldtype, "H   "))
     strcpy (elemstr, "H ");
-  /* if (!strcmp (oldtype, "D   "))      /* v0.3n 
+  /* if (!strcmp (oldtype, "D   "))  // v0.3n 
      strcpy (elemstr, "D "); */
   if (!strcmp (oldtype, "CAR "))
     strcpy (elemstr, "C ");
@@ -2666,7 +2669,6 @@ get_MDLelement (Result, oldtype)
     strcpy (elemstr, "??");
   return strcpy (Result, elemstr);
 }
-
 
 static void
 read_molfile (mfilename)
@@ -2981,7 +2983,8 @@ read_charges (chgstring_)
      char *chgstring_;
 {
   char chgstring[256];
-  int a_id, a_chg, n_chrg;
+  int a_id, a_chg;
+  /* int n_chrg;*/
 
   /* typical example: a molecule with 2 cations + 1 anion */
   /* M  CHG  3   8   1  10   1  11  -1 */
@@ -2990,7 +2993,7 @@ read_charges (chgstring_)
     return;
   strdelete (chgstring, 1, 6);
   left_trim (chgstring);
-  n_chrg = left_int (chgstring);
+ /* n_chrg = left_int (chgstring);*/
   /* this assignment must be kept also in non-debug mode! */
 /* p2c: checkmol.pas, line 2077:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
@@ -3012,7 +3015,8 @@ static void
 read_isotopes (char *isotopestring_)
 {
   char isotopestring[256];
-  int a_id, a_nucleon_number, n_isotopes;
+  int a_id, a_nucleon_number;
+  /* int n_isotopes;*/
 
   /* typical example: a molecule with 2 cations + 1 anion */
   /* M  CHG  3   8   1  10   1  11  -1 */
@@ -3021,7 +3025,7 @@ read_isotopes (char *isotopestring_)
     return;
   strdelete (isotopestring, 1, 6);
   left_trim (isotopestring);
-  n_isotopes = left_int (isotopestring);
+  /*n_isotopes = left_int (isotopestring);*/
   /* this assignment must be kept also in non-debug mode! */
 /* p2c: checkmol.pas, line 2077:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
@@ -3094,7 +3098,7 @@ read_MDLmolfile (char *mfilename)
   int i;			/* v0.3j */
   boolean clearcharges = true;	/* v0.3j */
   char STR1[256];
-  int FORLIM;
+/*  int FORLIM;*/
   atom_rec *WITH;
   bond_rec *WITH1;
 
@@ -3479,7 +3483,8 @@ write_MDLmolfile ()
   int a_iso;
   int a_rad;
   char tmflabel[256];		/* v0.3m */
-  char STR1[256], STR7[256];
+  char STR1[256];
+  /*char STR7[256];*/
   int FORLIM;
 
   sprintf (tmflabel, "%d", (int) tweaklevel);	/* v0.3m */
@@ -3845,11 +3850,11 @@ get_ndl_nextneighbors (int *Result, int id, int prev_id)
   return memcpy (Result, nb_tmp, sizeof (neighbor_rec));
 }
 
-
-  /*static int path_pos (id, a_path) int id;
+#if 0
+static int path_pos (id, a_path) int id;
      int *a_path;
      {
-     /* new version in v0.3l 
+     /* new version in v0.3l */
      int i;
      int pp = 0;
 
@@ -3859,15 +3864,16 @@ get_ndl_nextneighbors (int *Result, int id, int prev_id)
      {
      pp = i;
      /* p2c: checkmol.pas, line 2620:
-     * Warning: Expected a '(', found a semicolon [227] 
+     * Warning: Expected a '(', found a semicolon [227]  */
      /* p2c: checkmol.pas, line 2620:
-     * Warning: Expected an expression, found a semicolon [227] 
+     * Warning: Expected an expression, found a semicolon [227] */
      fflush (0);
      P_ioresult = 0;
      }
      }
      return pp;
-     } */
+     }
+#endif
 
 static int
 matchpath_pos (int id, int *a_path)
@@ -3905,8 +3911,8 @@ get_ndl_bond (int ba1, int ba2)
   FORLIM = ndl_n_bonds;
   for (i = 1; i <= FORLIM; i++)
     {
-      if (ndl_bond[i - 1].a1 == ba1 && ndl_bond[i - 1].a2 == ba2 ||
-	  ndl_bond[i - 1].a1 == ba2 && ndl_bond[i - 1].a2 == ba1)
+      if ((ndl_bond[i - 1].a1 == ba1 && ndl_bond[i - 1].a2 == ba2) ||
+	  (ndl_bond[i - 1].a1 == ba2 && ndl_bond[i - 1].a2 == ba1))
 	b_id = i;
     }
   return b_id;
@@ -3986,6 +3992,7 @@ rc_2in1 (int rc_int)
 }
 
 
+#if 0
 static boolean
 rc_different (int rc_int)
 {
@@ -3995,8 +4002,8 @@ rc_different (int rc_int)
   else
     return false;
 }
-
-
+#endif
+#if 0
 static boolean
 rc_independent (int rc_int)
 {
@@ -4006,7 +4013,7 @@ rc_independent (int rc_int)
   else
     return false;
 }
-
+#endif
 
 static boolean
 is_newring (int *n_path)
@@ -4093,7 +4100,7 @@ add_ring (int *n_path)
 /* p2c: checkmol.pas, line 2862:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
   /*$IFDEF debug */
-  char dstr[256];
+  /*char dstr[256];*/
   int FORLIM;
 
   /*$ENDIF */
@@ -4109,7 +4116,7 @@ add_ring (int *n_path)
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
       /*$IFDEF debug 
          debugoutput ("max_rings exceeded!");
-         /*$ENDIF */
+         $ENDIF */
       return;
     }
   n_rings++;
@@ -4151,7 +4158,8 @@ add_ring (int *n_path)
 }
 
 
-  /* static boolean is_ringpath (s_path) int *s_path;
+#if 0
+ static boolean is_ringpath (s_path) int *s_path;
      {
      boolean Result;
      int i, j;
@@ -4162,63 +4170,63 @@ add_ring (int *n_path)
      ringpath_type l_path;
      int FORLIM;
 
-     /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] 
+     /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
      memset (nb, 0, sizeof (neighbor_rec));
      memset (l_path, 0, sizeof (ringpath_type));
      pl = path_length (s_path);
      if (pl < 1)
      {
      /* p2c: checkmol.pas, line 2928:
-     * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+     * Note: Turbo Pascal conditional compilation directive was ignored [218] */
      /*$IFDEF debug 
      debugoutput ("Oops! Got zero-length s_path!");
-     /*$ENDIF 
+     $ENDIF */
      return Result;
      }
      for (i = 0; i < pl; i++)
      l_path[i] = s_path[i];
-     /* check if the last atom is a metal and stop if opt_metalrings is not set (v0.3) 
+     /* check if the last atom is a metal and stop if opt_metalrings is not set (v0.3) */
      if (opt_metalrings == false)
      {
      if (atom[l_path[pl - 1] - 1].metal)
      {
      /* p2c: checkmol.pas, line 2942:
-     * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+     * Note: Turbo Pascal conditional compilation directive was ignored [218] */
      /*$IFDEF debug 
      debugoutput ("skipping metal in ring search");
-     /*$ENDIF 
+     $ENDIF */
      return false;
      }
      }
-     /* check if ring is already closed 
+     /* check if ring is already closed */
      if (pl > 2 && l_path[pl - 1] == l_path[0])
      {
-     l_path[pl - 1] = 0;        /* remove last entry (redundant!) 
+     l_path[pl - 1] = 0;        /* remove last entry (redundant!) */
      order_ringpath (l_path);
      if (is_newring (l_path))
      {
      if (n_rings >= max_rings)
      {
      /* p2c: checkmol.pas, line 2958:
-     * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+     * Note: Turbo Pascal conditional compilation directive was ignored [218] */
      /*$IFDEF debug 
      debugoutput ("maximum number of rings exceeded!");
-     /*$ENDIF 
+     $ENDIF */
      return false;
      }
      add_ring (l_path);
      }
-     /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] 
+     /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
      return true;
      }
-     /* any other case: ring is not (yet) closed 
+     /* any other case: ring is not (yet) closed */
      a_last = l_path[pl - 1];
      get_neighbors (nb, a_last);
      if (atom[a_last - 1].neighbor_count <= 1)
      return false;
      if (n_rings >= max_rings)
-     /* added in v0.2: check if max_rings is reached *
-     {                          /* if ring is not closed, continue searching 
+     /* added in v0.2: check if max_rings is reached **/
+     {                          /* if ring is not closed, continue searching */
      return false;
      }
      FORLIM = atom[a_last - 1].neighbor_count;
@@ -4228,30 +4236,30 @@ add_ring (int *n_path)
      for (j = 1; j < pl; j++)
      {
      if (nb[i] == l_path[j])
-     {                    /* v0.3k 
+     {                    /* v0.3k */
      new_atom = false;
      /* p2c: checkmol.pas, line 2982:
-     * Warning: Expected a '(', found a semicolon [227] *
+     * Warning: Expected a '(', found a semicolon [227] */
      /* p2c: checkmol.pas, line 2982:
-     * Warning: Expected an expression, found a semicolon [227] 
+     * Warning: Expected an expression, found a semicolon [227] */
      fflush (0);
-     P_ioresult = 0;      /* v0.3k *
+     P_ioresult = 0;      /* v0.3k */
      }
      }
-
-     /* added in v0.1a: check if max_rings not yet reached 
-     /* added in v0.2:  limit ring size to max_vringsize instead of max_ringsize 
+     /* added in v0.1a: check if max_rings not yet reached */
+     /* added in v0.2:  limit ring size to max_vringsize instead of max_ringsize */
      if (new_atom && pl < max_vringsize && n_rings < max_rings)
      {
      l_path[pl] = nb[i];
-     if (pl < max_ringsize - 1)   /* just to be sure 
+     if (pl < max_ringsize - 1)   /* just to be sure */
      l_path[pl + 1] = 0;
      if (is_ringpath (l_path))
      rp = true;
      }
      }
      return rp;
-     } */
+     }
+#endif
 
 static boolean
 is_ringpath (int *s_path)
@@ -4354,12 +4362,12 @@ is_ringpath (int *s_path)
 	      return false;
 	    }
 
-	  //printf("%i\n",recursion_depth);
-	  //fflush(stdout);
+	  /*printf("%i\n",recursion_depth);
+	  fflush(stdout);*/
 
 	  if (is_ringpath (l_path))
 	    rp = true;
-	  //return true;
+	  /*return true;*/
 	}
     }
   return rp;
@@ -4412,7 +4420,7 @@ chk_ringbonds ()
     {
       a1rc = atom[bond[i].a1 - 1].ring_count;
       a2rc = atom[bond[i].a2 - 1].ring_count;
-      if (n_rings == 0 || a1rc < n_rings && a2rc < n_rings)
+      if (n_rings == 0 || (a1rc < n_rings && a2rc < n_rings))
 	{
 	  is_ringbond (i + 1);
 	  /*inc(bond^[i].ring_count); */
@@ -4517,7 +4525,7 @@ hetatom_count (int a)
   return hac;
 }
 
-
+#if 0
 static int
 ndl_hetbond_count (int a)
 {
@@ -4553,7 +4561,7 @@ ndl_hetbond_count (int a)
     }
   return ((int) floor (hbc + 0.5));
 }
-
+#endif
 
 static int
 ndl_hetatom_count (int a)
@@ -5422,8 +5430,8 @@ is_C_monosubst_amino (a_view, a_ref)
       (atom[a_view - 1].
        heavy && (bond[get_bond (a_view, a_ref) - 1].btype == 'S')))
     return false;
-  if (strcmp (atom[a_ref - 1].atype, "N3 ")
-      && strcmp (atom[a_ref - 1].atype, "NAM")
+  if ((strcmp (atom[a_ref - 1].atype, "N3 ")
+      && strcmp (atom[a_ref - 1].atype, "NAM"))
       || atom[a_ref - 1].neighbor_count != 2)
     return false;
   get_nextneighbors (nb, a_ref, a_view);
@@ -5451,8 +5459,8 @@ is_C_disubst_amino (a_view, a_ref)
   if (!(atom[a_view - 1].heavy && bond[b - 1].btype == 'S' &&
 	bond[b - 1].arom == false))
     return false;
-  if (strcmp (atom[a_ref - 1].atype, "N3 ")
-      && strcmp (atom[a_ref - 1].atype, "NAM")
+  if ((strcmp (atom[a_ref - 1].atype, "N3 ")
+      && strcmp (atom[a_ref - 1].atype, "NAM"))
       || atom[a_ref - 1].neighbor_count != 3)
     return false;
   get_nextneighbors (nb, a_ref, a_view);
@@ -5494,8 +5502,8 @@ is_true_alkylamino (a_view, a_ref)
       (atom[a_view - 1].
        heavy && (bond[get_bond (a_view, a_ref) - 1].btype == 'S')))
     return false;
-  if (strcmp (atom[a_ref - 1].atype, "N3 ")
-      && strcmp (atom[a_ref - 1].atype, "N3+")
+  if ((strcmp (atom[a_ref - 1].atype, "N3 ")
+      && strcmp (atom[a_ref - 1].atype, "N3+"))
       || atom[a_ref - 1].neighbor_count != 2)
     return false;
   get_nextneighbors (nb, a_ref, a_view);
@@ -5521,8 +5529,8 @@ is_true_dialkylamino (a_view, a_ref)
       (atom[a_view - 1].
        heavy && (bond[get_bond (a_view, a_ref) - 1].btype == 'S')))
     return false;
-  if (strcmp (atom[a_ref - 1].atype, "N3 ")
-      && strcmp (atom[a_ref - 1].atype, "N3+")
+  if ((strcmp (atom[a_ref - 1].atype, "N3 ")
+      && strcmp (atom[a_ref - 1].atype, "N3+"))
       || atom[a_ref - 1].neighbor_count != 3)
     return false;
   get_nextneighbors (nb, a_ref, a_view);
@@ -5536,7 +5544,7 @@ is_true_dialkylamino (a_view, a_ref)
   return r;
 }
 
-
+#if 0
 static boolean
 is_true_alkylarylamino (a_view, a_ref)
      int a_view, a_ref;
@@ -5551,8 +5559,8 @@ is_true_alkylarylamino (a_view, a_ref)
       (atom[a_view - 1].
        heavy && (bond[get_bond (a_view, a_ref) - 1].btype == 'S')))
     return false;
-  if (strcmp (atom[a_ref - 1].atype, "N3 ")
-      && strcmp (atom[a_ref - 1].atype, "N3+")
+  if ((strcmp (atom[a_ref - 1].atype, "N3 ")
+      && strcmp (atom[a_ref - 1].atype, "N3+"))
       || atom[a_ref - 1].neighbor_count != 3)
     return false;
   get_nextneighbors (nb, a_ref, a_view);
@@ -5567,7 +5575,7 @@ is_true_alkylarylamino (a_view, a_ref)
     r = true;
   return r;
 }
-
+#endif
 
 static boolean
 is_hydroxylamino (a_view, a_ref)
@@ -6513,8 +6521,8 @@ update_atypes ()
 		  if (O_count == 0)
 		    {
 		      if (single_count > 3 ||
-			  single_count == 2 && double_count == 1
-			  && C_count >= 2)
+			  (single_count == 2 && double_count == 1
+			  && C_count >= 2))
 			atom[i].formal_charge = 1;
 		    }
 		  else
@@ -6533,7 +6541,7 @@ update_atypes ()
 		}
 	      /* could be an N-oxide -> should be found elsewhere  */
 	      if (triple_count == 1 ||
-		  double_count == 2 && atom[i].neighbor_count == 2)
+		  (double_count == 2 && atom[i].neighbor_count == 2))
 		/* v0.3n */
 		strcpy (atom[i].atype, "N1 ");
 	      if (double_count == 1)
@@ -6640,7 +6648,7 @@ chk_arom ()
 		cumul = true;
 	      a_prev = a_ref;
 	    }
-	  if (n_ar == 6 || n_sb == 3 && n_db == 3 && cumul == false)
+	  if (n_ar == 6 || (n_sb == 3 && n_db == 3 && cumul == false))
 	    {			/* this ring is aromatic */
 	      a_prev = testring[ring_size - 1];
 	      for (j = 0; j < ring_size; j++)
@@ -6760,8 +6768,8 @@ chk_arom ()
 		    {
 		      pi_count++;	/* v0.3j; adjustment for bridgehead N: see below */
 		      if (bt_bk == 'S' && bt_fw == 'S' &&
-			  (ar_bk == true && ar_fw == false ||
-			   ar_bk == false && ar_fw == true))
+			  ((ar_bk == true && ar_fw == false) ||
+			   (ar_bk == false && ar_fw == true)))
 			{
 			  /* v0.3j; if a bridgehead N were not aromatic, it could  */
 			  /* contribute 2 pi electrons --> try also this variant */
@@ -7334,7 +7342,7 @@ chk_ammon (a_ref)
     return;
   if (o_count == 1 && or_count == 0 && bo_sum > 3)
     fg[fg_n_oxide - 1] = true;	/* finds only aliphatic N-oxides! */
-  if ((o_count == 1 && or_count == 1 || o_count == 0) &&
+  if (((o_count == 1 && or_count == 1) || o_count == 0) &&
       atom[a_ref - 1].arom == true)
     fg[fg_quart_ammonium - 1] = true;
 }
@@ -8898,7 +8906,7 @@ chk_carbonyl_deriv_sp3 (a_ref)
     fg[fg_aminal - 1] = true;
   if ((sh_count == 1 || sr_count == 1) && n_count == 1)
     fg[fg_thiohemiaminal - 1] = true;
-  if (sr_count == 2 || or_count == 1 && sr_count == 1)
+  if (sr_count == 2 || (or_count == 1 && sr_count == 1))
     fg[fg_thioacetal - 1] = true;
 }
 
@@ -10612,9 +10620,10 @@ write_fg_bitstring ()
 }
 
 
-  /*static void readinputfile (molfilename) char *molfilename;
+#if 0
+static void readinputfile (molfilename) char *molfilename;
      {
-     /* new version in v0.2g 
+     /* new version in v0.2g */
      char rline[256];
      char *TEMP;
 
@@ -10628,7 +10637,7 @@ write_fg_bitstring ()
      rfile_is_open = true;
      }
      /* p2c: checkmol.pas, line 7733: Warning:
-     * Don't know how to ASSIGN to a non-explicit file variable [207] 
+     * Don't know how to ASSIGN to a non-explicit file variable [207] */
      *rline = '\0';
      mol_in_queue = false;
      while ((!P_eof (rfile)) && (strpos2 (rline, "$$$$", 1) == 0))
@@ -10637,7 +10646,7 @@ write_fg_bitstring ()
      TEMP = strchr (rline, '\n');
      if (TEMP != NULL)
      *TEMP = 0;
-     /*mol_in_queue := false; 
+     /*mol_in_queue := false; */
      if (molbufindex >= max_atoms + max_bonds + 64)
      {
      printf ("Not enough memory for molfile! %12ld\n",
@@ -10680,6 +10689,7 @@ write_fg_bitstring ()
      }
      }
      } */
+#endif
 
 static void
 readinputfile (char *molfilename)
@@ -10756,20 +10766,19 @@ readinputfile (char *molfilename)
   while (strstr (rline, "$$$$") == NULL);
 }
 
-
-
-/* static void copy_mol_to_needle()
+#if 0
+static void copy_mol_to_needle()
 {
   int i, j, FORLIM;
 
   if (n_atoms == 0)
     return;
-  /* try 
+  /* try */
   ndl_atom = (atom_rec *)safe_malloc(n_atoms * sizeof(atom_rec));
   ndl_bond = (bond_rec *)safe_malloc(n_bonds * sizeof(bond_rec));
   ndl_ring = (ringpath_type *)safe_malloc(sizeof(ringlist));
   ndl_ringprop = (ringprop_rec *)safe_malloc(sizeof(ringprop_type));
-  /* except
+  /* except*/
     on e:Eoutofmemory do
       begin
         writeln('Not enough memory');
@@ -10800,9 +10809,9 @@ readinputfile (char *molfilename)
     ndl_atom[i].ring_count = atom[i].ring_count;
     ndl_atom[i].arom = atom[i].arom;
     ndl_atom[i].stereo_care = atom[i].stereo_care;
-    ndl_atom[i].heavy = atom[i].heavy;   /* v0.3l 
-    ndl_atom[i].metal = atom[i].metal;   /* v0.3l 
-  ndl_atom[i].tag = atom[i].tag;	/* v0.3o 
+    ndl_atom[i].heavy = atom[i].heavy;   /* v0.3l */
+    ndl_atom[i].metal = atom[i].metal;   /* v0.3l */
+    ndl_atom[i].tag = atom[i].tag;	/* v0.3o */
 					   }
 					   if (n_bonds > 0) {
 					   FORLIM = n_bonds;
@@ -10811,9 +10820,9 @@ readinputfile (char *molfilename)
 					   ndl_bond[i].a2 = bond[i].a2;
 					   ndl_bond[i].btype = bond[i].btype;
 					   ndl_bond[i].arom = bond[i].arom;
-					   ndl_bond[i].ring_count = bond[i].ring_count;   /* new in v0.3d 
-					   ndl_bond[i].topo = bond[i].topo;   /* new in v0.3d 
-					   ndl_bond[i].stereo = bond[i].stereo;   /* new in v0.3d 
+					   ndl_bond[i].ring_count = bond[i].ring_count;   /* new in v0.3d */
+					   ndl_bond[i].topo = bond[i].topo;   /* new in v0.3d */
+					   ndl_bond[i].stereo = bond[i].stereo;   /* new in v0.3d */
 					   }
 					   }
 					   if (n_rings > 0) {
@@ -10822,7 +10831,7 @@ readinputfile (char *molfilename)
 					   for (j = 0; j < max_ringsize; j++)
 					   ndl_ring[i][j] = ring[i][j];
 					   }
-					   for (i = 0; i < max_rings; i++) {   /* new in v0.3 
+					   for (i = 0; i < max_rings; i++) {   /* new in v0.3 */
 					   ndl_ringprop[i].size = ringprop[i].size;
 					   ndl_ringprop[i].arom = ringprop[i].arom;
 					   ndl_ringprop[i].envelope = ringprop[i].envelope;
@@ -10882,12 +10891,12 @@ readinputfile (char *molfilename)
 					   ndl_molstat.n_rS = molstat.n_rS;
 					   ndl_molstat.n_rX = molstat.n_rX;
 					   ndl_molstat.n_rAr = molstat.n_rAr;
-					   ndl_molstat.n_rBz = molstat.n_rBz;   /* v0.3l 
-					   ndl_molstat.n_br2p = molstat.n_br2p;   /* v0.3n 
+					   ndl_molstat.n_rBz = molstat.n_rBz;   /* v0.3l */
+					   ndl_molstat.n_br2p = molstat.n_br2p;   /* v0.3n */
 					   /* p2c: checkmol.pas, line 7875:
-					   * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+					   * Note: Turbo Pascal conditional compilation directive was ignored [218] */
 					   /*$IFDEF extended_molstat
-					   /* v0.3m 
+					    v0.3m */
 					   ndl_molstat.n_psg01 = molstat.n_psg01;
 					   ndl_molstat.n_psg02 = molstat.n_psg02;
 					   ndl_molstat.n_psg13 = molstat.n_psg13;
@@ -10898,14 +10907,15 @@ readinputfile (char *molfilename)
 					   ndl_molstat.n_psg18 = molstat.n_psg18;
 					   ndl_molstat.n_pstm = molstat.n_pstm;
 					   ndl_molstat.n_psla = molstat.n_psla;
-					   /*$ENDIF
-					   /* make sure some modes can be switched on only by the query file 
-					   /* and not by subsequent haystack file(s) 
-					   if (ez_flag)   /* new in v0.3f 
+					   $ENDIF*/
+					   /* make sure some modes can be switched on only by the query file *M*/
+					   /* and not by subsequent haystack file(s) */
+					   if (ez_flag)   /* new in v0.3f */
 					   ez_search = true;
-					   if (chir_flag)   /* new in v0.3f 
+					   if (chir_flag)   /* new in v0.3f */
 					   rs_search = true;
-					   } */
+					   }
+#endif
 
 
 static void
@@ -11008,18 +11018,19 @@ copy_mol_to_tmp ()
 
 }
 
-/* static void copy_mol_to_tmp()
+#if 0
+static void copy_mol_to_tmp()
 {
   int i, j, FORLIM;
 
   if (n_atoms == 0)
     return;
-  /* try 
+  /* try */
   tmp_atom = (atom_rec *)safe_malloc(n_atoms * sizeof(atom_rec));
   tmp_bond = (bond_rec *)safe_malloc(n_bonds * sizeof(bond_rec));
   tmp_ring = (ringpath_type *)safe_malloc(sizeof(ringlist));
   tmp_ringprop = (ringprop_rec *)safe_malloc(sizeof(ringprop_type));
-  /* except
+  /* except */
     on e:Eoutofmemory do
       begin
         writeln('Not enough memory');
@@ -11050,9 +11061,9 @@ copy_mol_to_tmp ()
     tmp_atom[i].ring_count = atom[i].ring_count;
     tmp_atom[i].arom = atom[i].arom;
     tmp_atom[i].stereo_care = atom[i].stereo_care;
-    tmp_atom[i].heavy = atom[i].heavy;   /* v0.3l 
-    tmp_atom[i].metal = atom[i].metal;   /* v0.3l 
-    tmp_atom[i].tag = atom[i].tag;   /* v0.3o 
+    tmp_atom[i].heavy = atom[i].heavy;   /* v0.3l */
+    tmp_atom[i].metal = atom[i].metal;   /* v0.3l */
+    tmp_atom[i].tag = atom[i].tag;   /* v0.3o */
   }
   if (n_bonds > 0) {
     FORLIM = n_bonds;
@@ -11061,9 +11072,9 @@ copy_mol_to_tmp ()
       tmp_bond[i].a2 = bond[i].a2;
       tmp_bond[i].btype = bond[i].btype;
       tmp_bond[i].arom = bond[i].arom;
-      tmp_bond[i].ring_count = bond[i].ring_count;   /* new in v0.3d 
-      tmp_bond[i].topo = bond[i].topo;   /* new in v0.3d 
-      tmp_bond[i].stereo = bond[i].stereo;   /* new in v0.3d 
+      tmp_bond[i].ring_count = bond[i].ring_count;   /* new in v0.3d */
+      tmp_bond[i].topo = bond[i].topo;   /* new in v0.3d */
+      tmp_bond[i].stereo = bond[i].stereo;   /* new in v0.3d */
     }
   }
   if (n_rings > 0) {
@@ -11072,7 +11083,7 @@ copy_mol_to_tmp ()
       for (j = 0; j < max_ringsize; j++)
 	tmp_ring[i][j] = ring[i][j];
     }
-    for (i = 0; i < max_rings; i++) {   /* new in v0.3 
+    for (i = 0; i < max_rings; i++) {   /* new in v0.3 */
       tmp_ringprop[i].size = ringprop[i].size;
       tmp_ringprop[i].arom = ringprop[i].arom;
       tmp_ringprop[i].envelope = ringprop[i].envelope;
@@ -11132,12 +11143,12 @@ copy_mol_to_tmp ()
   tmp_molstat.n_rS = molstat.n_rS;
   tmp_molstat.n_rX = molstat.n_rX;
   tmp_molstat.n_rAr = molstat.n_rAr;
-  tmp_molstat.n_rBz = molstat.n_rBz;   /* v0.3l 
-  tmp_molstat.n_br2p = molstat.n_br2p;   /* v0.3n 
+  tmp_molstat.n_rBz = molstat.n_rBz;   /* v0.3l */
+  tmp_molstat.n_br2p = molstat.n_br2p;   /* v0.3n */
 /* p2c: checkmol.pas, line 8022:
- * Note: Turbo Pascal conditional compilation directive was ignored [218] 
+ * Note: Turbo Pascal conditional compilation directive was ignored [218] */
   /*$IFDEF extended_molstat
-  /* v0.3m 
+   v0.3m 
   tmp_molstat.n_psg01 = molstat.n_psg01;
   tmp_molstat.n_psg02 = molstat.n_psg02;
   tmp_molstat.n_psg13 = molstat.n_psg13;
@@ -11148,14 +11159,15 @@ copy_mol_to_tmp ()
   tmp_molstat.n_psg18 = molstat.n_psg18;
   tmp_molstat.n_pstm = molstat.n_pstm;
   tmp_molstat.n_psla = molstat.n_psla;
-  /*$ENDIF
-  /* make sure some modes can be switched on only by the query file 
-  /* and not by subsequent haystack file(s) 
-  if (ez_flag)   /* new in v0.3f 
+  $ENDIF*/
+  /* make sure some modes can be switched on only by the query file */
+  /* and not by subsequent haystack file(s) */
+  if (ez_flag)   /* new in v0.3f */
     ez_search = true;
-  if (chir_flag)   /* new in v0.3f 
+  if (chir_flag)   /* new in v0.3f */
     rs_search = true;
-} */
+}
+#endif
 
 static void
 copy_tmp_to_mol ()
@@ -11205,7 +11217,8 @@ copy_tmp_to_mol ()
 
 }
 
-/*static void copy_tmp_to_mol()
+#if 0
+static void copy_tmp_to_mol()
 {
   int i, j, FORLIM;
 
@@ -11220,13 +11233,13 @@ copy_tmp_to_mol ()
   n_Ctot = tmp_n_Ctot;
   n_Otot = tmp_n_Otot;
   n_Ntot = tmp_n_Ntot;
-  /* try 
+  /* try */
   atom = (atom_rec *)safe_malloc(n_atoms * sizeof(atom_rec));
   bond = (bond_rec *)safe_malloc(n_bonds * sizeof(bond_rec));
   ring = (ringpath_type *)safe_malloc(sizeof(ringlist));
   ringprop = (ringprop_rec *)safe_malloc(sizeof(ringprop_type));
   FORLIM = tmp_n_atoms;
-  /* except
+  /* except*/
     on e:Eoutofmemory do
       begin
         writeln('Not enough memory');
@@ -11247,9 +11260,9 @@ copy_tmp_to_mol ()
     atom[i].ring_count = tmp_atom[i].ring_count;
     atom[i].arom = tmp_atom[i].arom;
     atom[i].stereo_care = tmp_atom[i].stereo_care;
-    atom[i].heavy = tmp_atom[i].heavy;   /* v0.3l 
-    atom[i].metal = tmp_atom[i].metal;   /* v0.3l 
-    atom[i].tag = tmp_atom[i].tag;   /* v0.3o 
+    atom[i].heavy = tmp_atom[i].heavy;   /* v0.3l */
+    atom[i].metal = tmp_atom[i].metal;   /* v0.3l */
+    atom[i].tag = tmp_atom[i].tag;   /* v0.3o */
   }
   if (tmp_n_bonds > 0) {
     FORLIM = tmp_n_bonds;
@@ -11258,9 +11271,9 @@ copy_tmp_to_mol ()
       bond[i].a2 = tmp_bond[i].a2;
       bond[i].btype = tmp_bond[i].btype;
       bond[i].arom = tmp_bond[i].arom;
-      bond[i].ring_count = tmp_bond[i].ring_count;   /* new in v0.3d 
-      bond[i].topo = tmp_bond[i].topo;   /* new in v0.3d 
-      bond[i].stereo = tmp_bond[i].stereo;   /* new in v0.3d 
+      bond[i].ring_count = tmp_bond[i].ring_count;   /* new in v0.3d */
+      bond[i].topo = tmp_bond[i].topo;   /* new in v0.3d */
+      bond[i].stereo = tmp_bond[i].stereo;   /* new in v0.3d */
     }
   }
   if (tmp_n_rings > 0) {
@@ -11269,7 +11282,7 @@ copy_tmp_to_mol ()
       for (j = 0; j < max_ringsize; j++)
 	ring[i][j] = tmp_ring[i][j];
     }
-    for (i = 0; i < max_rings; i++) {   /* new in v0.3 
+    for (i = 0; i < max_rings; i++) {   /* new in v0.3 */
       ringprop[i].size = tmp_ringprop[i].size;
       ringprop[i].arom = tmp_ringprop[i].arom;
       ringprop[i].envelope = tmp_ringprop[i].envelope;
@@ -11329,8 +11342,8 @@ copy_tmp_to_mol ()
   molstat.n_rS = tmp_molstat.n_rS;
   molstat.n_rX = tmp_molstat.n_rX;
   molstat.n_rAr = tmp_molstat.n_rAr;
-  molstat.n_rBz = tmp_molstat.n_rBz;   /* v0.3l 
-  molstat.n_br2p = tmp_molstat.n_br2p;   /* v0.3n 
+  molstat.n_rBz = tmp_molstat.n_rBz;   /* v0.3l */
+  molstat.n_br2p = tmp_molstat.n_br2p;   /* v0.3n */
 /* p2c: checkmol.pas, line 8169:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
   /*$IFDEF extended_molstat
@@ -11344,14 +11357,15 @@ copy_tmp_to_mol ()
      molstat.n_psg18 = tmp_molstat.n_psg18;
      molstat.n_pstm = tmp_molstat.n_pstm;
      molstat.n_psla = tmp_molstat.n_psla;
-     /*$ENDIF */
+     $ENDIF */
   /* make sure some modes can be switched on only by the query file */
-  /* and not by subsequent haystack file(s) 
+  /* and not by subsequent haystack file(s) */
      if (ez_flag)
      ez_search = true;
      if (chir_flag)
      rs_search = true;
-     } */
+     }
+#endif
 
 
 
@@ -11506,12 +11520,12 @@ get_molstat ()
 	  if (!strcmp (atype, "N1 "))
 	    molstat.n_N1++;
 	  if (!strcmp (atype, "N2 ") || !strcmp (atype, "NAR") ||
-	      !strcmp (atype, "NAM") && atom[i].arom == true)
+	      (!strcmp (atype, "NAM") && atom[i].arom == true))
 	    /* v0.3n */
 	    molstat.n_N2++;
 	  if (!strcmp (atype, "N3 ") || !strcmp (atype, "NPL") ||
 	      !strcmp (atype, "N3+") ||
-	      !strcmp (atype, "NAM") && atom[i].arom == false)
+	      (!strcmp (atype, "NAM") && atom[i].arom == false))
 	    /* v0.3n */
 	    molstat.n_N3++;
 	  if (!strcmp (elem, "A "))	/* query atom */
@@ -11678,16 +11692,16 @@ get_molstat ()
 		molstat.n_b3++;
 	    }
 	  /* v0.3n: ignore bonds to (explicit) hydrogens */
-	  if (!strcmp (a1el, "C ") && !strcmp (a2el, "O ") ||
-	      !strcmp (a1el, "O ") && !strcmp (a2el, "C "))
+	  if ((!strcmp (a1el, "C ") && !strcmp (a2el, "O ")) ||
+	      (!strcmp (a1el, "O ") && !strcmp (a2el, "C ")))
 	    {
 	      if (btype == 'S')
 		molstat.n_C1O++;
 	      if (btype == 'D')
 		molstat.n_C2O++;
 	    }
-	  if (!strcmp (a1el, "C ") && !strcmp (a2el, "N ") ||
-	      !strcmp (a1el, "N ") && !strcmp (a2el, "C "))
+	  if ((!strcmp (a1el, "C ") && !strcmp (a2el, "N ")) ||
+	      (!strcmp (a1el, "N ") && !strcmp (a2el, "C ")))
 	    molstat.n_CN++;
 	  if (strcmp (a1el, "C ") && atom[a1 - 1].heavy
 	      && strcmp (a2el, "C ") && atom[a2 - 1].heavy)
@@ -12470,7 +12484,7 @@ bondtypes_OK_strict (ndl_b, hst_b)
 /* p2c: checkmol.pas, line 8960:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
   /*$IFDEF debug */
-  char na[256], ha[256];
+  /*char na[256]; char ha[256];*/
   char tstr[256];
 
   /*$ENDIF */
@@ -12573,7 +12587,7 @@ bondtypes_OK (ndl_b, hst_b)
 /* p2c: checkmol.pas, line 9032:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
   /*$IFDEF debug */
-  char na[256], ha[256];
+  /*char na[256], ha[256];*/
   char tstr[256];
   /*$ENDIF */
   int a1, a2;
@@ -13468,7 +13482,7 @@ quick_match ()
   /* added in v0.2c */
   int i;
   boolean res = true;
-  str3 ndl_atype;
+ /* str3 ndl_atype;*/
   str2 ndl_el;			/* v0.3l */
   int ndl_chg;			/* v0.3l */
   int ndl_rad;			/* v0.3x */
@@ -13938,6 +13952,7 @@ normalize_ionic_bonds ()
   return res;			/* v0.3m (return true if any change was made */
 }
 
+#if 0
 static void
 chk_wildcard_rings ()		// new in v0.3p
 // checks if there are any wildcard atom types or bond types
@@ -14031,6 +14046,7 @@ chk_wildcard_rings ()		// new in v0.3p
   // some further refinement would be necessary here in order to unflag everything
   // which contains a wildcard but which definitely cannot be aromatic
 }
+#endif
 
 #ifndef MAKE_SHARED_LIBRARY
 
@@ -14081,7 +14097,7 @@ main (int argc, char *argv[])
 	  exit (2);		/* new in v0.2k */
 	}
       if (!(file_exists (ndl_molfilename)) && !opt_stdin)
-	{			/*not  fileexists(ndl_molfilename) REPLACE!!! 
+	{			/*not  fileexists(ndl_molfilename) REPLACE!!! */
 				   printf("2");
 				   /* p2c: checkmol.pas, line 10128:
 				   * Warning: Expected an expression, found a ')' [227] */
@@ -14149,8 +14165,8 @@ main (int argc, char *argv[])
          ("no aromaticity information found - checking myself...");
          else
          debugoutput ("performing full aromaticity check");
-         /* new in v0.3d */
-      /*$ENDIF */
+         // new in v0.3d 
+      $ENDIF */
       chk_ringbonds ();
       if (ringsearch_mode == rs_ssr)
 	remove_redundant_rings ();
@@ -14193,7 +14209,7 @@ main (int argc, char *argv[])
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
       /*$IFDEF debug 
          debugoutput ("found aromaticity information in input file");
-         /*$ENDIF */
+         $ENDIF */
       if (!opt_xmdlout)
 	normalize_ionic_bonds ();
       update_atypes ();		/* added in v0.2f */
@@ -14290,8 +14306,8 @@ main (int argc, char *argv[])
 	      fpindex++;
 	      count_neighbors ();
 	      /*if (not mol_OK) or (n_atoms < 1) then writeln(mol_count,':no valid structure found') else */
-	      if (!mol_OK || n_atoms < 1
-		  && !(opt_fp && fpformat == fpf_decimal))
+	      if (!mol_OK || (n_atoms < 1
+		  && !(opt_fp && fpformat == fpf_decimal)))
 		printf ("%i:F\n", mol_count);
 	      else
 		{
@@ -14304,14 +14320,14 @@ main (int argc, char *argv[])
 		    }
 		  else
 		    {
-		      if (!found_arominfo || opt_strict && tmfmismatch)
+		      if (!found_arominfo || (opt_strict && tmfmismatch))
 			{	/* added in v0.3m */
 /* p2c: checkmol.pas, line 10294:
  * Note: Turbo Pascal conditional compilation directive was ignored [218] */
 			  /*$IFDEF debug 
 			     debugoutput
 			     ("no aromaticity information found (or tweak mismatch) - checking myself...");
-			     /*$ENDIF */
+			    *$ENDIF */
 			  chk_ringbonds ();
 			  if (ringsearch_mode == rs_ssr)
 			    remove_redundant_rings ();
@@ -14349,7 +14365,7 @@ main (int argc, char *argv[])
 			  /*$IFDEF debug 
 			     debugoutput
 			     ("found aromaticity information in input file");
-			     /*$ENDIF */
+			     $ENDIF */
 			  if (opt_strict)
 			    update_atypes ();
 			  update_Htotal ();
@@ -14444,8 +14460,8 @@ main (int argc, char *argv[])
 		      else
 			{
 			  if (!
-			      (opt_molout || opt_fp
-			       && fpformat == fpf_decimal))
+			      (opt_molout || (opt_fp
+			       && fpformat == fpf_decimal)))
 			    /* inttostr(mol_count), REPLACE!!! */
 			    printf ("%i:F\n", mol_count);
 			}
@@ -14706,7 +14722,7 @@ mm_set_current_mol_as_query (void)
     rs_strict = true;
   else
     rs_strict = false;
-  /* if (rs_strict)              /* v0.3j 
+  /* if (rs_strict)              // v0.3j 
      ndl_ref_atom = find_ndl_ref_atom_cv ();
      //ndl_ref_atom = find_ndl_ref_atom ();
      else
@@ -14716,7 +14732,7 @@ mm_set_current_mol_as_query (void)
 
   molbufindex = 0;
   mol_count = 0;
-//printf("mm_set_current_mol_as_query\n");
+/*printf("mm_set_current_mol_as_query\n");*/
 }
 
 DLLEXPORT int
