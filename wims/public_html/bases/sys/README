@@ -1,20 +1,46 @@
-WIMS' search engine
+WIMS' search engine and als
 ===================
 
-WIMS' search engine works in two stages:
+WIMS' search engine works in three stages:
 
-- the program "modind" reads the INDEX files of all the modules on the
-  site and produces keywords lists stored in
-  ~wims/public_html/bases/site ("modind" creates as well a serial list
-  of all the modules available on the site, see
-  ~/public_html/bases/site/serial, and calculates the ranking of the
-  site's modules)
+- the program perl ~/public_html/bases/sys/mkwgrp.pl 
+  generates keywords (in format .json to be used for completion in 
+  the search engine) and create the files in wgrp. Some files are created
+  in keywords as keywords/algebra.fr.tmp, but not used for the moment 
 
+- the programm ~/public_html/bases/sys/mkdomain.pl creates the lists of domains from
+  the graph in domain/domain with its translation and in json format (english)
+  to be used for completion in modtool properties
+
+- the program ~/public_html/bases/sys/modindclass.pl creates the lists
+  of keywords coming from the example classes in ~/public_html/bases/sys/class 
+  as well as the files author, description, language, level, title 
+   (no ranking is done).
+ 
+- the program "modind" reads 
+  -- the INDEX files of all the modules on the site 
+  -- the words in wgrp
+  and produces keywords lists stored in ~wims/public_html/bases/site 
+  ("modind" creates as well a serial list of all the modules available 
+  on the site, see ~/public_html/bases/site/serial, and calculates 
+  the ranking of the site's modules). The modules are classified according
+  to their types (A=all (except sheet and classes, D=document, O=OEF, X=exercise,
+   T= tool, R=recreation, M= data module).
+  To doing that, it uses some dictionnaries as suffix.$search_lang.
+  Rmk : (bpr) I deliberately delete the suffix.fr as it is incompatible with a list of
+  words shown by completion (for example, loi normale was translated in 
+  loi norm??, I do not remember, it is impossible to write such things
+  to completion, and loi normale was not found).
+  suffix.en should be also deleted. 
+  -- separately it reads also the files in ~/public_html/bases/sys/sheet
+  and do the same type of works
 - the script ~/public_html/modules/home/search.proc (called by the
   "Search" form) reads the lists above, do the actual search in such
-  lists and displays the modules found
+  lists and displays the modules found. It reads also the 
+  files of ~/public_html/bases/sys/class and  ~/public_html/bases/sys/sheets
 
-In both stages files in this directory are used to process the
+In both stages files (suffix.$lang for example, but see upper remark)
+in this directory are used to process the
 keywords present in the modules' INDEX files. Each "search language"
 has its own series of files. The contents of these files should be
 checked by developers and translators, to improve the behaviour of the
@@ -22,6 +48,12 @@ search engine.
 
 The files in this directory are automatically generated (on install)
 by the corresponding ".src" file in the "src" subdirectory. 
+
+(Remark : I delete the files words.fr.src and suffix.fr.src by renaming
+for the moment xx_orig, so they are not used, but on a public servor,
+the files suffix.fr.src must be deleted by hand to make the search engine
+correctly working, will be done by the script in the stable release
+if we are OK)
 
 Syntax: the lines for most of these files are in the form
 
@@ -134,3 +166,13 @@ Some indexing examples
 ======================
 
 todo
+
+
+====================================
+
+In popup.fr, I change also the way to use the keywords for analogous
+reason, I do not have done it in popup.$lang for $lang != fr).
+
+The file suffix.fr was also used by wcalc.fr , for compatibility
+with popup on the external web pages, I keep it (so copy it
+in the wcalc.fr modules).
