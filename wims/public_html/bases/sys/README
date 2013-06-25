@@ -1,18 +1,136 @@
-The files in this directory are used both by modind and by WIMS search
-engine.
+WIMS' search engine
+===================
 
-Note: modind creates the lists in ../site/, such files are used by the
-search engine (~/public_html/modules/home/search.proc)
+WIMS' search engine works in two stages:
 
-which file is used by which program
-which files are automatically generated 
+- the program "modind" reads the INDEX files of all the modules on the
+  site and produces keywords lists stored in
+  ~wims/public_html/bases/site ("modind" creates as well a serial list
+  of all the modules available on the site, see
+  ~/public_html/bases/site/serial, and calculates the ranking of the
+  site's modules)
 
-indignore: words ignored by modind
+- the script ~/public_html/modules/home/search.proc (called by the
+  "Search" form) reads the lists above, do the actual search in such
+  lists and displays the modules found
 
-modind: word,wgrp,suffix,indignore
-search.proc: words,suffix
+In both stages files in this directory are used to process the
+keywords present in the modules' INDEX files. Each "search language"
+has its own series of files. The contents of these files should be
+checked by developers and translators, to improve the behaviour of the
+search engine.
+
+The files in this directory are automatically generated (on install)
+by the corresponding ".src" file in the "src" subdirectory. 
+
+Syntax: the lines for most of these files are in the form
+
+==
+givenword:substitute
+==
+
+=============================================================
+
+Files
+=====
+
+words.$search_lang : correct misprints in the search words
+(used both by "mkindex" and "search.proc"). 
+
+E.g. if the file words.en contains the line
+
+==
+analytical:analytic
+==
+
+then the word "analytical" is considered a misprint and any occurrence
+of the string "analytical" is replaced in the search by the string
+"analytic" (for the language "en")
+
+Note: the file words.en is used by the module tool/wcalc.en (see
+~/public_html/modules/tool/wcalc.en/dic )
+
+=====================
+
+suffix.$search_lang : process common suffixes in the search words
+(used both by "mkindex" and "search.proc"). 
+
+E.g. if the file suffix.en contains the line
+
+==
+ertem:meter
+==
+
+then any word ending in "metre" ("ertem" the other way round) is
+substituted by the corresponding one ending in "meter" (kilometre -->
+kilometer)
+
+=====================
+
+wgrp/wgrp.$search_lang : groups of word
+(these files are automatically generated, used by "mkindex")
+
+E.g. if the file wgrp/wgrp.en contains the line
+
+==
+affine geometry:affine geometry,
+==
+
+then the search matches for the group of words "affine geometry" as a
+whole: if the the user searches for "affine geometry" the search
+engine returns only the modules containing as keyword the exact string
+"affine geometry" (if such line were not present the search engine
+would return both the modules containing the word "affine" and the
+modules containing the word "geometry").
+
+The "wgrp" files are now generated from the modules' keywords by the
+script ~/public_html/bases/sys/mkwgrp.pl : whenever a module contains
+multiple words keywords, such keywords are added to the wgrp files. 
+
+E.g. tool/algebra/smallgroup.fr/INDEX contains the keyword 
+
+keywords=group, finite group, order, subgroup, conjugacy class, center, normal subgroup, subgroup lattice
+
+so for each of the groups of words between two commas the
+corresponding groups of words are created
+
+finite group
+conjugacy class
+normal subgroup
+subgroup lattice
+
+(in the corresponding language file)
+
+NOTE: problems when the strings contains the apostrophe "'"
+(e.g. "algorithme d'euclide")
+
+=====================
+
+indignore.$search_lang : ignored words
+(used by "mkindex")
+
+All the words listed in the file are ignored by the search engine. 
+
+=====================
+
+abuse.$search_lang : swearwords to be ignored by the search engine
+(used by ??)
+
+=====================
+
+andor.$search_lang : conjunctions ("and", "or") to be ignored by the 
+search engine
+(used by ??)
+
+=====================
+
+keywords.fr : ??
+(used by ??)
+
+=======================================================
 
 
-domain.fr vs domain.fr
+Some indexing examples
+======================
 
-words.fr is used in wcalc.fr
+todo
