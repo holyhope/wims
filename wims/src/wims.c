@@ -394,7 +394,7 @@ void cookie2session(void)
     char nbuf[MAX_FNAME+1];
 
     if(mode==mode_popup) return;
-    if(cookiegot[0]==0 || ro_cmd==cmd_close) {
+    if(cookiegot[0]==0) {
 	ckset: cookiegot[0]=0; setcookie=1; return;
     }
     p=getvar("special_parm");
