@@ -1,67 +1,98 @@
 WIMS' search engine and als
-===================
+===========================
 
-WIMS' search engine works in three stages:
+WIMS' search engine works in two stages:
 
-- the program perl ~/public_html/bases/sys/mkwgrp.pl 
-  generates keywords (in format .json to be used for completion in 
-  the search engine) and create the files in wgrp. Some files are created
-  in keywords as keywords/algebra.fr.tmp, but not used for the moment 
-  The keywords are exactly those in the variable keywords (or keywords.$lang
-  if it exists) doing it with the following rules : 
-   taking keywords_$lang if it exists, or keywords (whatever it is a $lang-module
-   or not).
+1) A series of scripts create a set of auxiliary files (generally
+stored in ~/public_html/bases/sys/, see description further down) and
+a list of "keywords" (stored in ~/public_html/bases/site/).
 
-- the programm ~/public_html/bases/sys/mkdomain.pl creates the lists of domains from
-  the graph in domain/domain with its translation and in json format (english)
-  to be used for completion in modtool properties
+(the scripts must be run in the order given here, as some files
+created on earlier stages are used in subsequent stages). In general
+the whole process is run by the script ~/bin/mkindex.
+
+- the perl program ~/public_html/bases/sys/mkwgrp.pl reads the INDEX
+  files of all the modules on the site and generates 
+
+  - keywords (in format .json) to be used for completion in the search
+    engine)
+  - the files in wgrp
+
+  (using the keywords and keywords_lang in the INDEX files, according
+  to this rule: taking keywords_$lang if it exists, or keywords
+  (whatever it is a $lang-module or not).
+
+  Some files are created in keywords as keywords/algebra.fr.tmp, but
+  not used for the moment. The keywords in these "keywords file" are
+  exactly those in the variable keywords (or keywords_$lang if it
+  exists), doing it with the following rules: taking keywords_$lang if
+  it exists, or keywords (whatever it is a $lang-module or not).
+
+- the programm ~/public_html/bases/sys/mkdomain.pl creates the lists
+  of domains from the graph in domain/domain with its translations
+  (domain/domain.$lang) and in json format (english) to be used for
+  completion in modtool properties
  
 - the program ~/public_html/bases/sys/modindclass.pl creates the lists
-  of keywords coming from the example classes in ~/public_html/bases/sys/class 
-  as well as the files author, description, language, level, title 
-   (no ranking is done).
+  of keywords coming from the example classes in
+  ~/public_html/bases/sys/class as well as the files author,
+  description, language, level, title (no ranking is done).
  
 - the program "modind" reads 
+
   -- the INDEX files of all the modules on the site 
-  -- the words in wgrp
-  and produces keywords lists stored in ~wims/public_html/bases/site 
- : they contains the words (or words groups) coming from the variable keywords of the INDEX
-  but also words of the title, description (deleting small words).
-  ("modind" creates as well a serial list of all the modules available 
-  on the site, see ~/public_html/bases/site/serial, and calculates 
-  the ranking of the site's modules). The modules are classified according
-  to their types (A=all (except sheet and classes, D=document, O=OEF, X=exercise,
-   T= tool, R=recreation, M= data module).
-  To doing that, it uses some dictionnaries as suffix.$search_lang.
-  Rmk : (bpr) I deliberately delete the suffix.fr as it is incompatible with a list of
-  words shown by completion (for example, loi normale was translated in 
-  loi norm??, I do not remember, it is impossible to write such things
-  to completion, and loi normale was not found).
-  suffix.en should be also deleted. 
-  -- separately it reads also the files in ~/public_html/bases/sys/sheet
-  and do the same type of works
-- the script ~/public_html/modules/home/search.proc (called by the
-  "Search" form) reads the lists above, do the actual search in such
-  lists and displays the modules found. It reads also the 
-  files of ~/public_html/bases/sys/class and  ~/public_html/bases/sys/sheets
+  -- the auxiliary files in ~/public_html/bases/sys/ (see description
+     below)
 
-In both stages files (suffix.$lang for example, but see upper remark)
-in this directory are used to process the keywords present in the modules' INDEX files.
-Each "search language"
-has its own series of files. For any module, in any language, the keywords
+  and produces keywords lists stored in ~wims/public_html/bases/site :
+  they contains the words (or words groups) coming from the variable
+  keywords of the INDEX but also words of the title, description
+  (deleting small words).
 
-The contents of these files should be
-checked by developers and translators, to improve the behaviour of the
-search engine.
+  "modind" creates as well a serial list of all the modules available
+  on the site, see ~/public_html/bases/site/serial, and calculates the
+  ranking of the site's modules. The modules are classified according
+  to their types: A=all (except sheet and classes), D=document, O=OEF,
+  X=exercise, T= tool, R=recreation, M= data module.
+
+  To do that, "modind" uses some dictionnaries as
+  suffix.$search_lang. --> MC I would simply say uses most of the files in
+  ~/public_html/bases/sys/, e.g. wgrp
+
+  -- separately "modind" reads also the files in
+  ~/public_html/bases/sys/sheet and do the same type of works
+
+2) The script ~/public_html/modules/home/search.proc (called by the
+"Search" form) reads the lists above, do the actual search in such
+lists and displays the modules found. It reads also the files of
+~/public_html/bases/sys/class and ~/public_html/bases/sys/sheets
+
+In both stages files in this directory (see comments
+below)(suffix.$lang for example, but see upper remark) are used to
+process the keywords present in the modules' INDEX files.  Each
+"search language" has its own series of files.
+
+?? For any module, in any language, the keywords
+
+The contents of these files should be checked by developers and
+translators, to improve the behaviour of the search engine.
 
 The files in this directory are automatically generated (on install)
 by the corresponding ".src" file in the "src" subdirectory. 
 
-(Remark : I delete the files words.fr.src and suffix.fr.src by renaming
-for the moment xx_orig, so they are not used, but on a public servor,
-the files suffix.fr.src must be deleted by hand to make the search engine
-correctly working, will be done by the script in the stable release
-if we are OK)
+If any of the files described below is omitted, then the corresponding
+feature in the corresponding language is disabled. E.g. the files
+words.fr/words.fr.src and suffix.fr/suffix.fr.src will be/have been
+deleted in order to make the search engine correctly working.
+
+  Rmk : (bpr) I deliberately delete the suffix.fr as it is
+  incompatible with a list of words shown by completion (for example,
+  loi normale was translated in loi norm??, I do not remember, it is
+  impossible to write such things to completion, and loi normale was
+  not found).  suffix.en should be also deleted.
+
+
+, will be done by the script in the stable release if we are OK)
 
 Syntax: the lines for most of these files are in the form
 
@@ -87,6 +118,11 @@ then the word "analytical" is considered a misprint and any occurrence
 of the string "analytical" is replaced in the search by the string
 "analytic" (for the language "en")
 
+Note: words.fr was deleted because it caused the search engine not to
+work properly. The site manager can reactivate the functionality by
+adding the file again (?? how to get the "original" files from the
+svn?).
+
 Note: the file words.en is used by the module tool/wcalc.en (see
 ~/public_html/modules/tool/wcalc.en/dic )
 
@@ -105,10 +141,14 @@ then any word ending in "metre" ("ertem" the other way round) is
 substituted by the corresponding one ending in "meter" (kilometre -->
 kilometer)
 
+Note: suffix.fr was deleted because it caused the search engine/the
+keyword completion not to work properly. The site manager can
+reactivate the functionality by adding the file again.
+
 =====================
 
 wgrp/wgrp.$search_lang : groups of word
-(these files are automatically generated, used by "mkindex")
+(these files are automatically generated, and used by "mkindex")
 
 E.g. if the file wgrp/wgrp.en contains the line
 
@@ -160,9 +200,11 @@ abuse.$search_lang : swearwords to be ignored by the search engine
 
 andor.$search_lang : conjunctions ("and", "or") to be ignored by the 
 search engine
-The file andor.xx is mentioned in src/insmath.c (processing logic statements in math formulas)
-but this is for the moment used by no modules (to be used, one must have 
-insmath_logic=yes which do not exist in any public module as I know).
+
+The file andor.xx is mentioned in src/insmath.c (processing logic
+statements in math formulas) but this is for the moment used by no
+modules (to be used, one must have insmath_logic=yes which do not
+exist in any public module as I know).
 
 
 =====================
@@ -176,7 +218,169 @@ keywords.fr : ??
 Some indexing examples
 ======================
 
-todo
+U1/algebra/vecshoot.en
+
+As this is an exercise module it is indexed in the lists A.$lang (All)
+and X.$lang (eXercise).
+
+This is a multilanguage module (main language "en", translation
+language "it"). 
+
+The index file contains the following (nonempty) lines
+
+  title=Vector shoot
+  description=click on a linear combination of 2D vectors.
+  language=en
+  category=exercise
+  domain=algebra, linear algebra
+  level=H4,H5,H6,U1,U2
+  keywords=vector, linear combination
+  scoring=yes
+  copyright=&copy; 1998- (<a href="COPYING">GNU GPL</a>) 2013
+  author=XIAO,Gang
+  address=xiao@unice.fr
+  version=2.20
+  wims_version=4.05a
+  translation_language=it
+  title_it=Colpisci i vettori
+  description_it=individuare una combinazione lineare di vettori 2D.
+  keywords_it=vettore, combinazione lineare,bersaglio
+  translator_it=Anna, Lucci
+  translator_address_it=anna.lucci@gmail.it
+
+In stage 1 the module is given a serial number (depending on the
+modules actually available on each site, on my site the serial number
+is "1003"). As the distribution also includes the modules
+U1/algebra/vecshoot.cn (1002) and U1/algebra/vecshoot.fr (1004) that
+correspond to translation of this module into "cn" and "fr"
+respectively, the A.cn/X.cn and A.fr/X.fr contain no reference to this
+module (1003) but contain only reference to the corresponding
+translated module (1002 resp 2004). --> HELP there is no A.cn file!!
+
+The files A.en contains the following lines related to this module.
+
+?? (...?2 is the ranking, why do we sometimes have ....?4 )
+
+2d:1003?2                           from description and description_it
+algebra:1003?2			    from domain
+bersaglio:1003?2		    from keywords_it
+click:1003?2			    from description
+combination:1003?2		    from description (_not_ from keywords)
+combinazione:1003?2		    from description_it
+combinazione lineare:1003?2	    from keywords + wgrp.en
+gang:1003?2  			    from author
+levelh4:1003?2			    from level=h4 (and so on)
+levelh5:1003?2			    
+levelh6:1003?2
+levelu1:1003?2
+levelu2:1003?2
+linear:1003?2		            from description
+linear algebra:1003?2		    from keywords
+linear combination:1003?2	    from keywords
+lineare:1003?2			    from description_it
+shoot:1003?4			    from title
+vector:1003?4                       from title + description 
+				    (vectors --> vector because of 
+				    directive "sr:r" in suffix.en)
+vettore:1003?2			    from keywords_it
+xiao:1003?2			    from author
+
+The file A.it contains the following lines related to this module.
+
+(NOTE: only difference is that in A.it there is the keyword "vectors",
+no difference in keywords, the only difference is in the list of
+modules, list that I omitted to clarify this example)
+
+2d:1003?2
+algebra:1003?2
+bersaglio:1003?2
+click:1003?2
+combination:1003?2
+combinazione:1003?2
+combinazione lineare:1003?2
+gang:1003?2
+levelh4:1003?2
+levelh5:1003?2
+levelh6:1003?2
+levelu1:1003?2
+levelu2:1003?2
+linear:1003?2
+linear algebra:1003?2
+linear combination:1003?2
+lineare:1003?2
+shoot:1003?4
+vector:1003?4
+vectors:1003?2			        no corresponding in A.en because 
+                                        of directive in suffix.en
+vettore:1003?2
+xiao:1003?2
+
+NOTE: title_it is missing from the index: you cannot find the module
+by searching for its Italian title
+
+The file A.$lang for languages different from the above contains lines
+related to this module.
+
+E.g. A.nl
+
+2d:					
+algebraisch:			directive "algebra:algebraisch" in words.nl
+bersaglio:			
+clicking:			directive "click:clicking" in words.nl
+combinaison:			"combination:combinaison" in words.nl
+combinazione:
+combinazione lineare:
+gang:
+levelh4:
+levelh5:
+levelh6:
+levelu1:
+levelu2:
+lineare:
+linearly:			"linear:linearly" in words.nl
+niet: 				"on:niet" in words.nl
+ofwel:				"of:ofwel"
+shooting:			"shoot:shooting"
+vector:
+vettore:
+xiao:
+
+the wgrp groups "linear algebra" and "linear combination" are missing
+because of the directive "linear:linearly" in words.nl which is
+executed before wgrp (?? check).
+
+note: ?? words.nl contains both the line algebra:algebraisch and
+algebraisch:algebra ?? (and more similar pairs)
+
+E.g. A.de
+
+almost the same as A.en except for the lines "vectors" (suffix.en) and
+"vector shoot" (WHY??). There is no "wgrp.de" file.
+
+2d:
+algebra:
+bersaglio:
+click:
+combination:
+combinazione:
+combinazione lineare:
+gang:
+levelh4:
+levelh5:
+levelh6:
+levelu1:
+levelu2:
+linear:
+linear algebra:
+linear combination:
+lineare:
+shoot:
+vector:
+vector shoot:			WHY???
+vectors:			cfr. A.it
+vettore:
+xiao:
+
 
 
 ====================================
@@ -188,7 +392,7 @@ The file suffix.fr was also used by wcalc.fr , for compatibility
 with popup on the external web pages, I keep it (so copy it
 in the wcalc.fr modules).
 
-Be careful : keywords have two significations here :
+Be careful (MC: I know, I hope it is better now with the example): keywords have two significations here :
   - the perl script takes only the words in  the variable keywords
   (so only them are in the list of completion)
   - modind.c creates files A.$lang etc which are based on words of keywords,
