@@ -234,7 +234,9 @@
 	}
 	
 	try{
-	    var svg_reply = read_svg();
+	    var svg_reply;
+	    var iframe = document.getElementById('svg_iframe');
+	    if(iframe){svg_reply = iframe.contentWindow.read_svg();}else{ svg_reply= read_svg();}
 	    if(svg_reply.length > 100 ){setAlarm(r2);dontknow();}
 	    for( var p = 0 ; p < svg_reply.length ; p++){
 		input = svg_reply[p];
