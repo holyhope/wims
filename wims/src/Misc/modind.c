@@ -550,9 +550,9 @@ void onemodule(const char *name, int serial, int lind)
     }
     snprintf(buf,sizeof(buf),"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
 	     indbuf[i_description],indbuf[i_keywords],
-	     indbuf[i_keywords_ca],indbuf[i_keywords_fr],indbuf[i_keywords_fr],
+	     indbuf[i_keywords_ca],indbuf[i_keywords_en],indbuf[i_keywords_fr],
 	     indbuf[i_keywords_it],indbuf[i_keywords_nl],
-	     indbuf[i_title_ca],indbuf[i_title_fr],indbuf[i_title_fr],
+	     indbuf[i_title_ca],indbuf[i_title_en],indbuf[i_title_fr],
 	     indbuf[i_title_it],indbuf[i_title_nl],
 	     indbuf[i_domain],indbuf[i_require],indbuf[i_author]);
     towords(buf);
