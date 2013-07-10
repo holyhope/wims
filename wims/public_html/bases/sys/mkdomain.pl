@@ -41,7 +41,7 @@ for my $la ('fr','en','it','si','cn','nl','ca','es') {
    push @D_lang, lc($value);
  };
  out("$dir/domain.$la.tmp", join("\n",sortuniq(@D)) . "\n");
- out("$dir/domain.$la.json", "'" . join("',\n'",sortuniq(@D_lang)) . "'");
+ out("$dir/domain.$la.json", "\"" . join("\",\n\"",sortuniq(@D_lang)) . "\"");
 }
 
 #####################################################
