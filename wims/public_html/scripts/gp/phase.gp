@@ -136,7 +136,7 @@ do_loop( x0,  y0,  dt)  =
         if (transy(y1) !=  py, break);
       );
       if (dt>0 && steps == 1,
-        dir_angle =  if( x1 !=  x0, atan((y1-y0)/(x1-x0)), sign(y1-y0)*Pi/2)); 
+        dir_angle =  if( x1 !=  x0, atan((y1-y0)/(x1-x0))+if(x1-x0 <0,Pi,0), sign(y1-y0)*Pi/2)); 
       img2  =  [round((x1-XMIN)*gxden)*gxden1 + XMIN, round((y1-YMIN)*gyden)*gyden1 + YMIN]; 
       img1  =  concat( img1, img2); 
     );
