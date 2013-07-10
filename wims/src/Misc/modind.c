@@ -211,6 +211,16 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     ovlstrcpy(bad_beg,buf);
 }
 
+/* add a space after comma to see end of words */
+
+void comma(char *p)
+{
+    char *pp;
+    for(pp=strchr(p,','); pp; pp=strchr(pp+1,','))
+      string_modify(p,pp,pp+1,", ");
+}
+
+
 void _getdef(char buf[], char *name, char value[])
 {
     char *p1, *p2, *p3;
@@ -538,10 +548,12 @@ void onemodule(const char *name, int serial, int lind)
 	/*  Normalize the information, using main dictionary bases/sys/words.xx */
     entrycount=mentrycount; dicbuf=mdicbuf;
     memmove(entry,mentry,mentrycount*sizeof(entry[0]));
-    unknown_type=unk_leave;
+    unknown_type=unk_leave;  /* used in translator_.c */
+
     for(i=0;i<trcnt;i++) {
 	detag(indbuf[trlist[i]]);
 	deaccent(indbuf[trlist[i]]);
+	comma(indbuf[trlist[i]]);
 	singlespace(indbuf[trlist[i]]);
 	suffix_translate(indbuf[trlist[i]]);
 	translate(indbuf[trlist[i]]);
@@ -694,6 +706,7 @@ void onesheet(int serial, int lind)
     for(i=0;i<trcnt;i++) {
 	detag(sindbuf[trlist[i]]);
 	deaccent(sindbuf[trlist[i]]);
+	comma(sindbuf[trlist[i]]);
 	singlespace(sindbuf[trlist[i]]);
 	suffix_translate(sindbuf[trlist[i]]);
 	translate(sindbuf[trlist[i]]);
