@@ -87,7 +87,7 @@ void *xmalloc(size_t n)
 char *acctab="çéèêëúùûüáàâäãóòôöõíìïîñıÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ",
      *deatab="ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY";
 
-	/* fold accented letters to unaccented */
+	/* fold known accented letters to unaccented, other strange characters to space */
 void deaccent(char *p)
 {
     char *sp;
@@ -507,6 +507,7 @@ void onemodule(const char *name, int serial, int lind)
     
     if(module_index(name)) return;
     towords(indbuf[i_category]);
+	/*  list the categories (among A=all,X=eXercise,O,D,...) corresponding to this module  */
     for(i=catcnt=0;i<catno && catcnt<16;i++) {
 	if(wordchr(indbuf[i_category],cat[i].name)!=NULL) 
 	  categories[catcnt++]=cat[i].typ;
@@ -514,23 +515,27 @@ void onemodule(const char *name, int serial, int lind)
     if(catcnt==0) return;
     if(categories[0]!=cat[0].typ)
       categories[catcnt++]=cat[0].typ;
+	/*  write module's name in the category.language files, for instance lists/X.fr for french exercises  */
     for(i=0;i<catcnt;i++) {
 	snprintf(buf,sizeof(buf),"%s/lists/%c.%s",
 		 outdir,categories[i],lang[lind]);
 	f=fopen(buf,"a");
 	if(f!=NULL) {fprintf(f,"%s\n",name); fclose(f);}
     }
+	/*  add serial number and language (resp.title, ...) to corresponding file  */
     fprintf(langf,"%d:%s\n",serial,module_language);
     fprintf(titf,"%d:%s\n",serial,indbuf[i_title]);
     fprintf(descf,"%d:%s\n",serial,indbuf[i_description]);
     fprintf(authorf,"%d:%s\n",serial,indbuf[i_author]);
     fprintf(versionf,"%d:%s\n",serial,indbuf[i_version]);
+	/*  add module's information in html page for robots  */
     snprintf(buf,sizeof(buf),"%s",indbuf[i_description]);
     for(pp=strchr(buf,','); pp; pp=strchr(pp,','))
       string_modify(buf,pp,pp+1,"&#44;");
     if(strcmp(module_language,lang[lind])==0)
       fprintf(robotf,"%s ,%s,%s,%s,%s\n",name,module_language,name,
 	      indbuf[i_title], buf);
+	/*  Normalize the information, using main dictionary bases/sys/words.xx */
     entrycount=mentrycount; dicbuf=mdicbuf;
     memmove(entry,mentry,mentrycount*sizeof(entry[0]));
     unknown_type=unk_leave;
@@ -541,6 +546,7 @@ void onemodule(const char *name, int serial, int lind)
 	suffix_translate(indbuf[trlist[i]]);
 	translate(indbuf[trlist[i]]);
     }
+	/*  append words of title  */
     taken[0]=0; takenlen=tweight=0;
     ovlstrcpy(buf,indbuf[i_title]); towords(buf);
     for(p1=find_word_start(buf);*p1;
@@ -548,6 +554,7 @@ void onemodule(const char *name, int serial, int lind)
 	p2=find_word_end(p1); if(*p2) *p2++=0;
 	appenditem(p1,lind,serial,4,module_language);
     }
+	/*  append words of every other information except level  */
     snprintf(buf,sizeof(buf),"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
 	     indbuf[i_description],indbuf[i_keywords],
 	     indbuf[i_keywords_ca],indbuf[i_keywords_en],indbuf[i_keywords_fr],
@@ -561,9 +568,12 @@ void onemodule(const char *name, int serial, int lind)
 	p2=find_word_end(p1); if(*p2) *p2++=0;
 	appenditem(p1,lind,serial,2,module_language);
     }
+	/*  this time the dictionary is the group dictionary  sys/wgrp/wgrpwith a g (=global ? general ?), not an m . see below main,suffix,group. 
+        and delete unknown ?? and translate  */
     entrycount=gentrycount; dicbuf=gdicbuf;
     memmove(entry,gentry,gentrycount*sizeof(entry[0]));
     unknown_type=unk_delete;
+	/*  append words (?) of every other information except level  */
     ovlstrcpy(buf,indbuf[i_title]); translate(buf);
     for(p1=find_word_start(buf); *p1;
 	p1=find_word_start(p2)) {
@@ -572,6 +582,7 @@ void onemodule(const char *name, int serial, int lind)
 	if(strlen(p1)<=0) continue;
 	appenditem(p1,lind,serial,4,module_language);
     }
+	/*  append words (?) of every other information except level  */
     snprintf(buf,sizeof(buf),"%s, %s, %s, %s, %s, %s, %s, %s",
 	     indbuf[i_description],indbuf[i_keywords],
 	     indbuf[i_keywords_ca], indbuf[i_keywords_en],indbuf[i_keywords_fr],
@@ -585,6 +596,7 @@ void onemodule(const char *name, int serial, int lind)
 	if(strlen(p1)<=0) continue;
 	appenditem(p1,lind,serial,2,module_language);
     }
+	/*  append level information, with weight 2 */
     snprintf(buf,sizeof(buf),"%s",indbuf[i_level]);
     ovlstrcpy(lbuf,"level");
     for(p1=buf; *p1; p1++) if(!isalnum(*p1)) *p1=' ';
@@ -601,6 +613,7 @@ void onemodule(const char *name, int serial, int lind)
 	ovlstrcpy(lbuf+strlen("level"),p1);
 	appenditem(lbuf,lind,serial,2,module_language);
     }
+	/*  append total weight of module to weight file site2/weight.xx  */
     fprintf(weightf,"%d:%d\n",serial,tweight);
 }
 
