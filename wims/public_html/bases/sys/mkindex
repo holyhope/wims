@@ -1,12 +1,14 @@
 #! /bin/sh
 
-## cleaning
+## cleaning (erase xxx.src file if xxx.src_orig exists)
 for i in src/*.src_orig
 do
   j=`basename $i .src_orig`
   rm -f $j
 done
 
+## Sort and copy each files of src/*.src to upper directory after
+## adding content of table_domain to words.*.src.  Use tmp names during this job.
 for i in src/*.src
 do
  cp $i $i.tmp
@@ -28,6 +30,7 @@ do
 done
 rm src/*.tmp
 
+## make list of domains
 ./mkdomain.pl  1>/dev/null
 
 ## use the files generated at the previous script
