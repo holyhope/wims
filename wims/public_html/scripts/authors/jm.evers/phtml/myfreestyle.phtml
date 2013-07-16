@@ -234,33 +234,15 @@
 	}
 	
 	try{
-	    var svg_reply;
-	    var iframe = document.getElementById('svg_iframe');
-	    if(iframe){svg_reply = iframe.contentWindow.read_svg();}else{ svg_reply= read_svg();}
-	    if(svg_reply.length > 100 ){setAlarm(r2);dontknow();}
+	    svg_reply = new Array();svg_reply = read_svg();
 	    for( var p = 0 ; p < svg_reply.length ; p++){
 		input = svg_reply[p];
-		if (input.length == 0){setAlarm(r1+" "+parseInt(p+1));return;}
-		input = nthroot(input);if( input == "error"){return;}
-		!if $use_ineq != 1
-		input = arrows(input,$my_arrows,"","");if(input == "error"){return;}
-		!endif
-		if(check_f(input) == 0){return;}
-		if(check_o(input) == 0){return;}
-		if(check_log_NaN(input) == 0){return;}
-		if(check_sqrt_NaN(input) == 0){return;}
-		input = science(input);if(input == "error"){return;}
+		if (input.length == 0){setAlarm(r1+" "+parseInt(i+1));return;}
 		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + input + "</li>";
-		if( input.indexOf("[") !=- 1 ){
-		    if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;}}
-		    if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;}}
-		    if(input.indexOf("[") != -1){setAlarm(r13);return;}
-		}
-		input = input.replace(/#/g,' ');
 		reply[inputfieldnumber] = input;
 		inputfieldnumber++;
 	    }	
-	}catch(e){}
+	}catch(e){alert(e);}
 	if(reply[0].length == 0 ){setAlarm(r1);return;}
 	show = show + "</ol>";
 	myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
