@@ -89,7 +89,11 @@ mod=$modreq
    
  !bound i_language within $langlist default $module_language
  i_level=!listintersect $i_level and $levellist
- !default i_level=$levellist
+ !if $i_level issametext $levellist
+   !reset i_level
+ !endif
+ level_def=!replace internal ~ by , in $modreq
+ !default i_level=!listintersect $(level_def[1]) and $levellist
  i_copyright=$copyright
  !default i_copyright=$gnu
  !if $year notwordof $i_copyright
