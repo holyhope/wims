@@ -48,6 +48,7 @@ void p_title_ca(char *p[MAX_PARM]) { p_keyword(p, "title_ca"); }
 void p_title_cn(char *p[MAX_PARM]) { p_keyword(p, "title_cn"); }
 void p_title_en(char *p[MAX_PARM]) { p_keyword(p, "title_en"); }
 void p_title_es(char *p[MAX_PARM]) { p_keyword(p, "title_es"); }
+void p_title_fr(char *p[MAX_PARM]) { p_keyword(p, "title_fr"); }
 void p_title_it(char *p[MAX_PARM]) { p_keyword(p, "title_it"); }
 void p_title_nl(char *p[MAX_PARM]) { p_keyword(p, "title_nl"); }
 void p_title_si(char *p[MAX_PARM]) { p_keyword(p, "title_si"); }
