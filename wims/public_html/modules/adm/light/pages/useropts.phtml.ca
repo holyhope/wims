@@ -3,7 +3,7 @@
 !let module_address=xiao@unice.fr
 !let module_translator=Manel Querol
 !let module_translator_address=mquerol@xtec.cat
-!let module_title=Configuració de les preferències pel WIMS
+!let module_title=Configuració de les preferències a WIMS
 !let module_description=defineix les teues preferències a WIMS
 !let module_version=1.00
 !let module_wims_version=0.13
@@ -24,6 +24,10 @@
 !default texsize=$default
 !let default=!char 1 of $default
 !default texalign=$talign
+!set zoom=!char 3 of $useropts
+!set font=!char 4 of $useropts
+!default zoom=0
+!default font=0
 !set arg=!nospace $texsize 1
 
 !let useropt2=!char 3 to -1 of $useropts
@@ -33,121 +37,176 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
-!set zoom=!char 3 of $useropts
     
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
-Aquesta pàgina et permet canviar les preferències de la teua sessió de treball
-a WIMS.
-<ul>
+Aquesta pàgina permet canviar algunes preferències a WIMS.
+
 !if $wims_user=$empty
- <li>La llengua per defecte.
+ <h2>
+  La llengua per defecte
+ </h2>
+  <p>
+  Trieu la llengua de visualització del lloc : 
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" />$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" style="height:1.1em;" />$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
-  </li>
+  </p>
+
 !endif
 
-<li>
-Fórmules matemàtiques.
+<h2>
+ Fórmules matemàtiques.
+</h2>
+<p>
+El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent ús de MathML (si el vostre navegador ho suporta).</p>
+    Alguns exemples : 
+    <ul>
+      <li>
+       Lletres gregues:
+          <pre>
+           !insmath alpha != pi
+          </pre>
+      </li>
+      <li>
+       Expressió matemàtica 
+       !let ins_align=middle
+    !! we need to force dynamic insertion
+       !set pw=2
+       <pre>
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4a c}}{2a}
+       </pre>
+      </li>
+      <li>
+       Una desigualtat: 
+        <pre>
+         !insmath | a + b | <= epsilon + 123.45
+        </pre>
+      </li>
+    </ul>
 
 !if $texalign=2
-  El servidor està configurat per MathML si tens un navegador adequat. Per exemple,
-    <p class="wimscenter">
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
-    </p>
-    Si la fórmula no es mostra correctament, pots utilitzar un altre
-    <a onmouseover="return Tip($tip)"><span class="wims_emph">navegador</span>
-    </a> 
-    o utilitzar el servidor amb "Matemàtiques amb imatges".
-!set wims_ref_class=wims_button
-<p class="wimscenter">
-   !href cmd=resume&useropts=$arg Matemàtiques amb imatges
-</p> 
-</li><li>
-    !let ts1=!eval $texsize-1
-    !let ts2=!eval $texsize+1
-    !if $ts1<1
-      !let ts1=1
-    !endif
-    !if $ts2>9
-      !let ts2=9
-    !endif
-    Establir la mida de les fórmules matemàtiques.
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" alt="arrow" />
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$default Defecte
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px" />
- </li><li>
-!set zoom=1
-  Fer zoom sobre les fórmules clicant amb el ratolí.
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!set zoom=0 
-   &nbsp;
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
-!else
-    Ara, s'utilitza el servidor amb "Matemàtiques amb imatges". Si ho permet el teu 
-    <a onmouseover="return Tip($tip)"><font color="blue">navegador</font></a>, també pots utilitzar MathML.
-<p class="wimscenter">
-!set arg=!nospace $texsize 2
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$arg MathML
-</p>
-
-</li><li>
-La mida dels símbols matemàtics i les fórmules. 
-!let ts1=!eval $texsize-1
-!let ts2=!eval $texsize+1
-!if $ts1<1
-    !let ts1=1
-  !endif
-!if $ts2>9
-    !let ts2=9
-!endif
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
-  Lletres gregues $m_alpha, $m_pi. Expressions matemàtiques 
-  !let ins_align=middle
-!! we need to force dynamic insertion
-  !set pw=2
-  !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-   Una desigualtat 
-  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
+  Actualment el servidor està configurat per a MathML si teniu un navegador adequat. 
+    Si no es mostra correctament la fórmula, podeu utilitzar un altre
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+    navegador
+    </a> 
+    o utilitzar el servidor amb "matemàtiques amb imatges".
+    </p>
+    <ul>
+     <li>
+     Canviar el mode de visualització : 
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font Mode imatge
+      
+      !set arg=!nospace $texsize 2
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$(arg)0$font MathML
+
+     </li>
+     <li>
+      !let ts1=!eval $texsize-1
+      !let ts2=!eval $texsize+1
+      !if $ts1<1
+       !let ts1=1
+      !endif
+      !if $ts2>9
+       !let ts2=9
+      !endif
+      Ajusta la mida de les fórmules matemàtiques.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$default Defecte
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
+     </li><li>
+      Utilitzar el zoom en fórmules amb un clic del ratolí.
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)1$font $wims_name_yes
+      &nbsp;
+      !set wims_ref_class=wims_button
+      !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
+!else
+ <p>
+    Actualment, s'utilitza el servidor amb "Matemàtiques amb imatges". Si teniu un 
+    <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
+    navegador
+    </a>, 
+    adequat també podeu utilitzar MathML.
+ </p>
+
+ <ul>
+  <li>Canviar el mode de visualització : 
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font Mode imatge
+
+   !set arg=!nospace $texsize 2
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(arg)0$font MathML
+  </li>
+
+  <li>
+   Mida dels símbols i fórmules matemàtiques.
+   !let ts1=!eval $texsize-1
+   !let ts2=!eval $texsize+1
+   !if $ts1<1
+    !let ts1=1
+   !endif
+   !if $ts2>9
+    !let ts2=9
+   !endif
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
 </li><li>
 Posició de les fórmules. Si l'expressió
   !insmath (x+y)/(x^$pw + y^2)
   és
   !if $texalign=1
    massa alta respecte a la línia de text,
-   !href cmd=resume&useropts=$(texsize)0$useropt2 clica ací
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(texsize)0$zoom$font clica aquí
    per baixar-la.
   !else
    massa baixa respecte a la línia de text,
-   !href cmd=resume&useropts=$(texsize)1$useropt2 clica ací
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$(texsize)1$zoom$font clica aquí
    per pujar-la.
   !endif
-!set zoom=$empty
 !endif
 </li>
 </ul>
 
-Quan tot estigui d'acord a les teues preferències, posa
-<a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
- title="WIMS">aquest enllaç</a>
-a les teues Adreces d'interès, per mantenir aquestes preferències a les futures connexions.
+<h2>Accessibilitat</h2>
+
+<p>Podeu ajustar l'espaiat entre lletres i paraules 
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+    
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espaiat
+</p><p>
+El mode espaiat és especialment adequat en el cas d'un lector  dislèxic.</p>
+
+<br class="spacer" />
+<p>
+!if $wims_user=$empty
+ Quan tot correspon exactament al que voleu, poseu
+  !set wims_ref_class=wims_button
+ <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$zoom$font" title="WIMS">
+ aquest enllaç
+</a>
+ a les Adreces d'interés, per mantenir aquestes preferències per les properes connexions.
+!else
+ Les preferències es mantindran en les connexions futures en aquesta classe.
+!endif
+</p>
 
 :end
 !tail
