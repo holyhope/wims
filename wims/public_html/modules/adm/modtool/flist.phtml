@@ -10,15 +10,6 @@
 
 !set doctest1=!module category devel/$auth_login/$mod
 
-$name_your_module
-<span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
-<span class="small">
-!href cmd=reply&jobreq=index $mod
-</span>
-$name_file2.
-!if document isin $doctest1
-  (<i>$name_gestion</i>)
-!endif
 <br class="spacer" />
 !form reply
 
@@ -37,7 +28,16 @@ $name_fonte:
 !formend
 
 !read adm/validation/validate.phtml
-
+<br class="spacer" />
+$name_your_module
+<span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
+<span class="small">
+!href cmd=reply&jobreq=index $mod
+</span>
+$name_file2.
+!if document isin $doctest1
+  <div class="wims_emph">$name_gestion</div>
+!endif
 !set table_cellpadding=1
 
 !reset table_center

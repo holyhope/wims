@@ -24,7 +24,7 @@
 !set name_in_module=en el módulo
 !set name_replace=un fichero para sustituirlo&nbsp;
 !set name_addfile=Añadir otro fichero&nbsp;
-!set name_gestion=para ver los ficheros del documento, pulsen el vínculo <span class="wims_button disabled">$wims_name_docgestion</span>
+!set name_gestion=Para ver los ficheros del documento, pulsen el vínculo <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Su módulo
 !set name_file2=contiene los ficheros siguientes
 !set name_updateadress=Ponga la dirección al día
