@@ -5,63 +5,63 @@
 !if empty_data iswordof $error
  !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
 
- Veuillez remplir le champ <span class="tt wims_warning">$(tmp_$(empty_data))</span>
- et vérifiez les autres champs.
+ Si us plau ompliu el camp <span class="tt wims_warning">$(tmp_$(empty_data))</span>
+ i comproveu els altres camps.
  !exit
 !endif
 
 !if bad_fname iswordof $error
- Nom de fichier illégal. Veuillez choisir un autre nom pour votre fichier.
+ Nom del fitxer il·legal. Si us plau trieu un altre nom per al fitxer.
  !exit
 !endif
 
 !if binary_file iswordof $error
- Fichier binaire interdit.
+ Fitxer prohibit.
  !exit
 !endif
 
 !if illegal_filedesc iswordof $error
- Vous ne pouvez mettre que des définitions directes dans 
+ Es poden posar només definicions directes a
  <span class="tt wims_fname">filedesc</span>.
  !exit
 !endif
 
 !if badoriginal iswordof $error
- Ce module ne peut pas être copié.
+ Aquest mòdul no es pot copiar.
  !exit
 !endif
 
 !if clash iswordof $error
- Le module de destination existe déjà.
+ El mòdul de destinació ja existeix.
  !exit
 !endif
 
 !if badtarget iswordof $error
- L'adresse de destination <span class="tt wims_address">$target</span> n'est pas bonne : 
- trop longue, trop courte, incomplète ou caractères non admis.<br />
- Détail des erreurs : 
+ L'adreça de destinació <span class="tt wims_address">$target</span> no és correcta : 
+ massa llarga, massa curta, incompleta o amb caràcters no permesos.<br />
+ Detall dels errors : 
  <ul>
   !if incorrect_t1 iswordof $error
-   <li>Zone incorrecte</li>
+   <li>Zona incorrecta</li>
   !endif
   !if incorrect_t2 iswordof $error
-   <li>Catégorie incorrecte</li>
+   <li>Categoria incorrecta</li>
   !endif
   !if incorrect_t3 iswordof $error
-   <li>Nom incorrect</li>
+   <li>Nom incorrecte</li>
   !endif
   !if incorrect_t4 iswordof $error
-   <li>Langue incorrecte</li>
+   <li>Llengua incorrecta</li>
   !endif
   !if incorrect_tlen iswordof $error
-   <li>longueur incorrecte</li>
+   <li>longitud incorrecta</li>
   !endif
  </ul>
  !exit
 !endif
 
 !if symlink iswordof $error
- Impossible de copier le module source, car il contient des liens symboliques.
+ No es pot copiar el mòdul d'origen, ja que conté enllaços simbòlics.
  !exit
 !endif
 
