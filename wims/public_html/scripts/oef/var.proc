@@ -7,6 +7,8 @@
 !endif
 !set module_language=$lang
 
+!default module_help=popup
+
 #if you change these limits, you have to modify var.def!
 limit_var=2048
 limit_reply=100
@@ -249,7 +251,8 @@ m_oefenv=!replace word debug by $ in $m_oefenv
     !goto cont
    !endif
   !endif
-  m_reply$i=$(reply$i)
+  !! add default to fix a bug with nextstep and type click
+ !default m_reply$i=$(reply$i)
   !default replytype$i=default
   tt=!word 1 of $(replygood$i)
   	# analyzed reply
