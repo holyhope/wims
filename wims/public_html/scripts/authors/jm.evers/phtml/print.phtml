@@ -1,5 +1,11 @@
 !! produces a DHTML page of the  exercise for printing
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">	    
+<html xml:lang="$lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:mathml="http://www.w3.org/1998/Math/MathML">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=iso-8859-1" />
+<title>$module_title</title>
+</head>
+<body>
 !if $questiontype !=0 or $applet=1
     <span class="schaersvoorde_alarm">
 	My guess : this page not very usefull in a printed paperversion<br />
@@ -29,31 +35,34 @@
 	    !set answer$n=$empty
 	    !set options=0
 	    !readproc exos/exo$subject
+	    <tr>
 	    <td>
-		<div id="d$n" name="d$n" style="position:relative;font-size:70%">
+		<div id="d1_$n" name="d1_$n" style="position:relative;font-size:70%">
 		    $questionnumber $n)<br />
 		    !if $(question$n) != $empty
 			$(question$n)
 	    		<br />
 		    !endif
+		    !set DHTML=!append item "d1_$n" to $DHTML
 		</div>
-		<div id="dd$n" name="dd$n" style="position:relative;font-size:70%">
 		    !if $exotext != $empty
-			<br />
-			$exotext
+			<div id="d2_$n" name="d2_$n" style="position:relative;font-size:70%">
+			    <br />
+			    $exotext
+			    !set DHTML=!append item "d2_$n" to $DHTML
+			</div>
 		    !endif
-		</div>
 		!if $(formula$n) != $empty
 		    <br />
 		    !set formula$n=$(formula$n) \,\,
-		    !increase cnt
-		    !set ins_attr=name="insert$cnt"
-		    !insmath $(formula$n)
+		    <div id="d3_$n" name="d3_$n" style="position:relative;font-size:70%">
+			!insmath $(formula$n)
+		    </div>
+		    !set DHTML=!append item "d3_$n" to $DHTML
 		    !! this will be an image, I hope...if not we are in deep DHTML trouble
 		!endif
 	    </td>
-	    !set DHTML=!append item "d$n","dd$n","insert$cnt" to $DHTML
-    	    </tr><tr>
+    	    </tr>
         !next n
     </table>
     !if $image=1
@@ -69,7 +78,7 @@
 	!for n=1 to $total_exos
 	    !increase cnt
 	    !set ins_attr=name="insert$cnt"
-	    <div id="ddd$n" name="ddd$n" style="position:relative;width:$xsize;height:$ysize">
+	    <div id="d4_$n" name="d4_$n" style="position:relative;width:$xsize;height:$ysize">
 		!if $plot=1
 		    !set insplot_set=$(image_settings$n)
 		    !insplot $(image$n)
@@ -77,49 +86,56 @@
 		    !insdraw $(image$n)
 		!endif
 	    </div>
-	    !set DHTML=!append item "insert$cnt","ddd$n" to $DHTML
+	    !set DHTML=!append item "d4_$n" to $DHTML
     	    <br />
         !next n
     !endif
     <p style="page-break-after:always">
+    <hr />
 	<ol>
 	!for n=1 to $total_exos
 	    <li>
 	    !if $(textanswer$n)!=$empty
-		<div id="dddd$n" name="dddd$n" style="position:relative;font-size:70%">
+		<div id="d5_$n" name="d5_$n" style="position:relative;font-size:70%">
 		$(textanswer$n)
 		</div>
 		<br />
+		!set DHTML=!append item "d5_$n" to $DHTML
 	    !endif
 	    !if $(texanswer$n)!=$empty
-		!increase cnt
-		!set ins_attr=name="insert2$cnt"
+		<div id="d6_$n" name="d6_$n" style="position:relative;font-size:70%">
 		!insmath $(texanswer$n)
-		!set DHTML=!append item "insert2$cnt" to $DHTML
+		</div>
+		!set DHTML=!append item "d6_$n" to $DHTML
 	    !else
 		$(answer$n)
 	    !endif
-	    !set DHTML=!append item "insert2$cnt","dddd$n" to $DHTML
 	!next n
 	</ol>
 	$limited
+    </hr />
     </p>
 
 <p style="page-break-after:always">&nbsp;</p>
-<div id="send_buttons" class="embedded_central">
-    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-</div>
 !record 69 of $remarkdir/commonremarks.$taal
 <br />
 !href module=$module&+session=$session&+cmd=intro
 !record 70 of $remarkdir/commonremarks.$taal
+
 <p style="page-break-after:always">&nbsp;</p>
+
 <script type="text/javascript">
 //<![CDATA[
+
+    function print_this(){
+    window.print();
+    } 
     SET_DHTML( CURSOR_MOVE, RESIZABLE , NO_ALT , SCROLL , $DHTML );
 //]]>
 </script>
-
+<input type="button" value="print" onclick="javascript:print_this();" />
 !endif
+
+</body>
+</html>
 !exit
