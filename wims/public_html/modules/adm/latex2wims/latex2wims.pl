@@ -540,7 +540,7 @@ for my $rubrique (@liste_env_tabular) {
   }
  
   if ($TEXT =~ /\\begin\{\s*(\w*)\s*\}/g) {
-     warn " ATTENTION : environnement non répertorié : $1" if $1 ne 'matrix';
+     warn " ATTENTION : environnement non répertorié : $1" if $1 ne 'matrix' && $1 ne 'split';
   }
   $TEXT =~ s,<li>\n+</li>,<li></li>,g;
   $TEXT =~ s,</div>\s+</div>,</div></div>,g;
