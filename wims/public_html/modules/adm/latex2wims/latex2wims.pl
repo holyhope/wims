@@ -75,7 +75,8 @@ while ($_ = shift (@ARGV))
 $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
-$doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
+$doc_DIR = $doc_DIR . '/' if ($doc_DIR) ;
+
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" style="width:20px;height:20px;" />}';
 my $FLECHE = '&#8594;';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
@@ -193,7 +194,6 @@ $SIG{__WARN__} = sub { my ($x) = @_;
 #imposé par wims
 my $BASE = $doc_DIR . 'doc/1/src';
 my $BASE0= $doc_DIR . 'doc/1';
-
 system("mkdir -p $BASE0") if (!$ENV{'wims_exec_parm'});
 system("mkdir -p $BASE") if (!$ENV{'wims_exec_parm'});
 
@@ -742,15 +742,17 @@ sub includegraphics{ my ( $b, $opt ) = @_;
 sub minipage { my ( $b ) = @_; 
  my @v = extract_bracketed ($b, '[]') ;
  my $option = $v[0] ;  
+ if($option) {
  $option=~ s/\[\s*b\s*\]/bottom/ ;  
  $option=~ s/\[\s*t\s*\]/top/ ;
  $option=~ s/\[\s*c\s*\]/middle/ ; 
  $option=~s/\[\s*\]/middle/;
- if (!$option) { $option='middle'} ;
+ } else {
+ $option='middle'} ;
  @v = extract_bracketed ($v[1], '{}') ;
  my $width = $v[0] ;
  $width =~ s/\{(.*)\}/$1/;
- $width = linewidth($width) ;
+ $width = linewidth($width);
   "<div style=\"width:$width; display:inline-block;vertical-align:$option;\" class=\"minipage\">
    $v[1] 
    </div>";
@@ -1131,6 +1133,9 @@ sub traitement_final { my ($TEXT) = @_;
  #contienne un ~. De toute facon
  #ca ne devrait pas exister, mais quand même. ou les wims only
 #   $TEXT =~ s/~/&nbsp;/g;
+   $TEXT =~ s:(<br class="spacer" />\s*<br class="spacer" />):<br class="spacer" />:g;
+   $TEXT =~ s:<br class="spacer" />\s*(</?div):$1:g;
+   $TEXT =~ s:(class="minipage">)\s*<br class="spacer" />:$1:g;
    $TEXT;
 }
 
@@ -1275,7 +1280,6 @@ sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ;
 sub traite_preambule { my ($TEXT, $ref_env, $ref_command, $ref) = @_;
   if ($TEXT=~ s/\\usepackage\[([^]]+)\]\{algorithmic\}//) {
        $algo_noend = 1  if ($1 =~ /noend/);
-       
   } ;
   $TEXT = recup_environ($TEXT, $ref_env);
   $TEXT = recup_command($TEXT, $ref_command);
