@@ -7,5 +7,8 @@
 
 !set options=!word 2 to -1 of $wims_read_parm
 !set newf_=!rename $imgf_
-<img src="$newf_" $options/>
+!if alt notin $options
+  !set options=$options alt=""
+!endif
+<img src="$newf_" $options />
 
