@@ -111,7 +111,7 @@ On peut configurer les options (voir le fichier modèle 'wims.sty')
      
 \samestyle{thm,prop,...} attribue le style css 'thm' aux environnements 
      qui suivent. Par défaut, le style de 'environ' est 'environ'.
-     Ces styles doivent être finis dans le fichier style.css 
+     Ces styles doivent être définis dans le fichier style.css 
      Vous trouverez des exemples dans le fichier style.css
      
 \typefold{proof,...,} 
@@ -153,10 +153,10 @@ Exemples :
      debut : &lt;div class="proof"> (defaut)
      fin   : &lt;/div>            (defaut)
 
-\environnementwims{proof}[1]{Démonstration}{&lt;i>&lt;font color="blue">}{&lt;/font>&lt;/i>}
+\environnementwims{proof}[1]{Démonstration}{&lt;i>&lt;span style="color:blue">}{&lt;/span>&lt;/i>}
      titre : Démonstration
-     debut : &lt;i>&lt;font color="blue">
-     fin   : &lt;/font>&lt;/i>
+     debut : &lt;i>&lt;span style="color:blue">
+     fin   : &lt;/span>&lt;/i>
 
 Le style css est par défaut 'nom' et peut-être renommé grâce à
      \samestyle{}
@@ -207,7 +207,7 @@ Interprétation dans wims d'une commande latex
 Par défaut, c'est la commande latex qui est utilisée par le script, 
 sinon c'est la commande wims. 
 
-\defwims\commande#2{&lt;em>#1&lt;/em> (#2)}
+\defwims\commande#1#2{&lt;em>#1&lt;/em> (#2)}
 
 Si un environnement mathématique ou une commande latex ne "passe pas", 
 vous pouvez aussi utiliser \environnementwims ou \defwims pour
@@ -221,13 +221,14 @@ Les commandes suivantes sont traitées automatiquement dans latex2wims
 actuellement de manière plus ou moins heureuse: 
 
 Il s'agit de 
- - quelques environnements latex qui ne sont pas reconnus par wims :
+ - quelques environnements latex :
 
-   multline, pmatrix, smallmatrix, array, eqnarray, eqnarray*, 
-   align, cases, gather, displaymath, tabular
-   
+   equation, multline, pmatrix, smallmatrix, array, eqnarray, eqnarray*, 
+   align, cases, gather, displaymath, tabular,
+   center, minipage, lstlisting, columns, column,
+   includegraphics
    (la commande tabular est traduite sommairement.)
-   
+
 - quelques commandes standard réinterprétées : 
 
 \label{mon_label}
@@ -341,16 +342,9 @@ Navigation par défaut :
               Description du fichier auxiliaire 'style.css' : 
 
 =======================================================
-On peut redéfinir les styles suivants 
+On peut redéfinir les styles suivants (définis pour certains dans
+le fichier l2w.css de la distribution).
 
-body
-
-.wimsdoc : 
-     style général de la page
-h1 : 
-     style du titre général
-h3 : 
-     style du titre de la page
 div.left_toc : 
      style des tables de matières de gauche
 
@@ -403,8 +397,6 @@ TODO :
 pspicture : met un message d'avertissement
 picture
 
-- \includegraphics[]{} est remplacé par le code html. 
-   Les images chargées sont transférées
    On prévoit de convertir les images eps avec convert en 
    images .jpg
 =============================================
