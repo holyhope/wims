@@ -239,6 +239,9 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
 passwd,1,module=adm/class/passwd&job=part&part=$getuser\
 part_list,1,cmd=resume\
 to $wims_menu_items
+
+!read adm/class/getnextuser $wims_class,$getuser,getuser,getuser
+ 
  !if (($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)) and $wims_showlivret!=no
   !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
  !endif

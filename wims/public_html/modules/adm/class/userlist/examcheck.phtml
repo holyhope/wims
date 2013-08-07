@@ -64,6 +64,8 @@ $name_title_examcheck
 !set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$checkuser\
 to $wims_menu_items
 !if $wims_user=supervisor
+  !read adm/class/getnextuser $wims_class,$checkuser,examcheck,checkuser
+
  !set wims_menu_items=!append line ,0,\
  part_list,1,cmd=resume\
  to $wims_menu_items

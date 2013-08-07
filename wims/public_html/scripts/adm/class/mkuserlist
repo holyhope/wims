@@ -132,13 +132,31 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
 !next N
 
 basedir=$wims_home/log/classes
+basedir2=wimshome/log/classes
 !for c in $clist
- !sh sort -f $basedir/$c/.userlist.raw >$basedir/$c/.userlist\
-  rm -f $basedir/$c/.userlist.raw 2>/dev/null
+ !sh sort -f $basedir/$c/.userlist.raw >$basedir/$c/.userlist 2>/dev/null\
+  rm -f $basedir/$c/.userlist.raw 2>/dev/null\
+  rm -f $basedir/$c/.usernextlist.raw 2>/dev/null\
+  rm -f $basedir/$c/.userprevlist.raw 2>/dev/null
 
- !sh sort -f $basedir/$c/.userlist_external.raw >$basedir/$c/.userlist_external\
+ !sh sort -f $basedir/$c/.userlist_external.raw >$basedir/$c/.userlist_external 2>/dev/null\
   rm -f $basedir/$c/.userlist_external.raw 2>/dev/null
 
+ !set nbuser_=!recordcnt $basedir2/$c/.userlist
+ !writefile $basedir2/$c/.usernextlist.raw
+ !writefile $basedir2/$c/.userprevlist.raw
+ !set firstuser=!record 1 of $basedir2/$c/.userlist
+ !set firstuser1=$firstuser
+ !for l = 2 to $nbuser_
+    !set nextuser=!record $l of $basedir2/$c/.userlist
+    !appendfile $basedir2/$c/.usernextlist.raw $(firstuser[3]):$(nextuser[3])
+    !appendfile $basedir2/$c/.userprevlist.raw $(nextuser[3]):$(firstuser[3])
+    !set firstuser=$nextuser
+ !next
+ !appendfile $basedir2/$c/.usernextlist.raw $(firstuser[3]):$(firstuser1[3])
+ !appendfile $basedir2/$c/.userprevlist.raw $(firstuser1[3]):$(firstuser[3])
+  !sh mv $basedir/$c/.usernextlist.raw $basedir/$c/.usernextlist\
+   mv $basedir/$c/.userprevlist.raw $basedir/$c/.userprevlist
 !next c
 
 !read adm/class/stat
