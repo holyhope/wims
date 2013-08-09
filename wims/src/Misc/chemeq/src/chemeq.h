@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 
-#define VERSION "2.10"
+#define VERSION "2.11"
 
 /* Constante d'Avogadro, recommandée par CODATA, 2006 */
 #define Avogadro 6.022141e+23

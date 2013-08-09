@@ -878,11 +878,7 @@ std::string Chemeq::valeur_latex()const{
 }
 
 std::ostream & operator << (std::ostream & o, const Chemeq & c){
-  if (c.fixRightArrow){
-    o << *c.membregauche() << "\\,\\\\rightarrow\\," << *c.membredroit();
-  } else {
-    o << *c.membregauche() << "\\,\\rightarrow\\," << *c.membredroit();
-  }
+  o << *c.membregauche() << "\\,\\longrightarrow\\," << *c.membredroit();
   if (c.valeur() > MINVAL) {
     o << "\\,(";
     if (c.constante()!=std::string("")) o << c.constante() << "\\,=\\,";
