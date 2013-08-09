@@ -32,6 +32,8 @@ E_manager = Site manager:
 RE_prev  = !nosubst Previous Results
 RE_next  = !nosubst Next Results
 RE_found = !nosubst Gezocht en gevonden $Gotcnt $tt
+RE_found2= They are classified according to the type of activities.\
+  Click the corresponding button to see them.
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
 RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2 = !nosubst $gotcnt $tt op volgorde van populariteit\
