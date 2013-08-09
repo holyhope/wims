@@ -89,7 +89,8 @@ mod=$modreq
    
  !bound i_language within $langlist default $module_language
  i_level=!listintersect $i_level and $levellist
- !if $i_level issametext $levellist
+ i_level_cnt=!itemcnt $i_level
+ !if $i_level issametext $levellist or $i_level_cnt >= 10
    !reset i_level
  !endif
  level_def=!replace internal ~ by , in $modreq
