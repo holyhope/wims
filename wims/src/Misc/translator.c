@@ -192,7 +192,9 @@ void prepare_dic(void)
 	    p1=getenv("untrust"); if(p1 && strstr(p1,"yes")) escape();
 	}
     }
-    dicf=fopen(fname,"r"); if(dicf==NULL) escape();
+/* replace escape() by return if there is some suffix dictionary, */
+
+    dicf=fopen(fname,"r"); if(dicf==NULL) return;
     fseek(dicf,0,SEEK_END);flen=ftell(dicf); fseek(dicf,0,SEEK_SET);
     if(flen>diclim) escape();
     dicbuf=xmalloc(flen+16);flen=fread(dicbuf,1,flen,dicf);
@@ -323,4 +325,3 @@ int main()
     while(*p2);
     return 0;
 }
-

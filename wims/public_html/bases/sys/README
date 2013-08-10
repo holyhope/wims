@@ -104,18 +104,16 @@ feature in the corresponding language is disabled. E.g. the files
 words.fr/words.fr.src and suffix.fr/suffix.fr.src will be/have been
 deleted in order to make the search engine correctly working.
 
-  (Remark : I delete the files words.fr.src and suffix.fr.src by
-  renaming for the moment xx_orig, so they are not used, but on a
-  public servor, feature in the corresponding language is
-  disabled. E.g. the files the files suffix.fr.src must be deleted by
-  hand.
-
-  Rmk : (bpr) I deliberately delete the suffix.fr as it is
-  incompatible with a list of words shown by completion (for example,
-  loi normale was translated in loi norm??, I do not remember, it is
-  impossible to write such things to completion, and loi normale was
-  not found).  suffix.en should be also deleted.
-
+  In version < 4.05c, if there is no file words.$lang, the file
+  suffix.$lang was not used (correction in Misc/translator.c to check
+  in other situations). 
+  The group words were badly treated when the
+  words were already in the title, properties, etc. because of
+  some option unknown_type=unk_delete in modind.c but it has other consequences
+  so it is not the situation.
+  I think that I will put again the suffix.fr again (but one must now really
+  check it : do we want that capital and capitale are the same, which is
+  the case for the moment).
 
 , will be done by the script in the stable release if we are OK)
 
