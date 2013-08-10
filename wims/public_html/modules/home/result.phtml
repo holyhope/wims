@@ -2,7 +2,7 @@
 
 <a id="searchresult"> </a>
 
-!if $error!=$empty and  $(ER_$error)!= 
+!if $error!=$empty and  $(ER_$error)!=
 <p class="wims_alertmsg">
  $(ER_$error)
  !read adm/search_engine/search_empty.phtml
@@ -58,10 +58,13 @@
 </div>
  !changeto result.$s_category
 !endif
-!!arrive herefor example if the address of the module has been given in the search_engine
+!!arrive here for example if the address of the module has been given in the search_engine
 
 !if $Gotcnt=1 and $gotcnt=1
+  <div class="RE_found">
        !read result.A
+ !read adm/search_engine/search_clear.phtml
+ </div>
  !exit
 !endif
 
@@ -71,7 +74,7 @@
   $RE_found2
   <script type="text/javascript">
 /*<![CDATA[*/
-function affiche(name) {  
+function affiche(name) {
  document.getElementById('affiche_content_'+tab_affiche).className = 'wims_tab';
  document.getElementById('affiche_content_'+name).className = 'affiche_content wims_tabselect';
  document.getElementById('content_'+tab_affiche).style.display = 'none';
