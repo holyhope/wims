@@ -9,7 +9,7 @@ N_clear = wissen
 N_go = ga naar
 N_at = bij
 N_hide = Verbergen
-name_allexampleclass=All open classes
+name_allexampleclass=Alle openbare klassen
 
 V_title = WWW Interactieve Multipurpose Server
 V_cls = Virtuele klaslokalen
@@ -29,18 +29,18 @@ CR_mod = Full-power modules
 E_comp = gecompileerd op
 E_manager = Site manager:
 
-RE_prev  = !nosubst Previous Results
-RE_next  = !nosubst Next Results
+RE_prev  = !nosubst Vorige resultaten
+RE_next  = !nosubst Volgende resultaten
 RE_found = !nosubst Gezocht en gevonden $Gotcnt $tt
-RE_found2= They are classified according to the type of activities.\
-  Click the corresponding button to see them.
+RE_found2= De resultaten zijn op type activiteit gerangschikt.\
+ Klik op de corresponderende link.
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
 RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2 = !nosubst $gotcnt $tt op volgorde van populariteit\
 (number $[$list_start+1] - $[$list_start+$gotcnt])
 RE_try = Probeer
 
-U_greet = !nosubst Hallo, $wims_firstname $wims_lastname !
+U_greet = !nosubst Welkom, $wims_firstname $wims_lastname !
 
 U_newmsg = Er zijn $$newmsgcnt nieuwe bericht(en) in het message board.
 U_nosheet = Deze klas heeft (op dit moment)  nog geen werkbladen\
@@ -59,7 +59,7 @@ wims_name_coeff = weging
 
 U_gotoclass1 = Ga naar een klas als leerling:
 U_gotoclass3 = Ga naar een klas als supervisor:
-U_gotoclass = Je klassen :
+U_gotoclass = Uw klassen :
 
 U_inscription1 = Meld je aan bij een klas:
 U_inscription2 = Aanmelden in een andere klas.
@@ -80,8 +80,8 @@ SU_shlist = Lesmateriaal van de klas
 wims_name_SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
 SU_nopartconnected=Er is op dit moment geen student ingelogd
-SU_numpartconnected=!nosubst Er zijn op dit moment $wims_numpartconnected student ingelogd
-U_supconnected=Je docent is ingelogd.
+SU_numpartconnected=!nosubst Er zijn op dit moment $wims_numpartconnected student(en) ingelogd
+U_supconnected=Uw docent is ingelogd.
 
 wims_name_SE_list = Leerlingen en cijfers 
 wims_name_n_participant = Zo zien leerlingen deze pagina
@@ -114,5 +114,5 @@ CL_otherNames = Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 !set name_deps = Je cijfers voor deze oefeningen moeten verbeterd worden
 !set name_dep = Je cijfer voor deze oefening moet verbeterd worden
 !set name_dep2 = voor dat je deze oefening mag proberen.
-!set name_dep3 = terug naar werkblad.
+!set name_dep3 = terug naar het werkblad.
 

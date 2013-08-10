@@ -33,11 +33,11 @@
 
 !distribute lines Je kunt de inhoud van deze website op diverse manieren benaderen:\
   Onderwerp\
-  Moeilijkheids graad\
+  Moeilijkheidsgraad\
   lagere school, middelbare school, universiteit, etc.\
   Datum\
   laatste nieuwtjes op deze server\
-  Et vous pouvez également utiliser les sélections faites pour vous.\
+  En voorgesorteerd materiaal\
   Soort \
   references, computational en plotting tools, oefeningen, enz.\
   populairste toepassing\

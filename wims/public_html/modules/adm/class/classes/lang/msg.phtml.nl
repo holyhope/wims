@@ -45,7 +45,7 @@ Je wordt door het systeem niet herkend of je hebt bij de inschrijving geen geldi
  Vraag je docent om een nieuw wachtwoord. 
  <form action="#" name="chrono">
  <span class="wims_warning">$wims_name_warning</span> !
- Deze procedure schakeld weer in na een timeout van 5 seconden &nbsp;! 
+ Deze inlogprocedure wordt na een timeout van 5 seconden weer actief &nbsp;! 
  <input size="1" name="clock" /> </form>
  !exit
 !endif

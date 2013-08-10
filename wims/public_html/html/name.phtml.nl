@@ -412,8 +412,8 @@ Ruwe gegevens\
 Verander het wachtwoord\
 Verwerkte data\
 Overzicht vaardigheden \
-Next\
-Previous\
+Volgende\
+Vorige\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
  wims_name_next_participant,wims_name_prev_participant
