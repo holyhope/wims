@@ -6,7 +6,7 @@ use Encode;
 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','treate_domainfile');
+our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','treate_domainfile', 'treate_language');
 
 sub treate_domainfile { my ($file) = @_;
    my %ref = ( ) ; my $ref=\%ref; my $text;
@@ -86,3 +86,15 @@ close IN;
   %ref
 }
 
+sub treate_language {
+  my $site_language='en fr nl it cn';
+  my $conf='../../../log/wims.conf';
+  if (-e "$conf") {
+   open IN, "$conf";
+   while (<IN>) {
+     if ($_ =~ s/site_languages=//) { $site_language= $_ ; }
+   }
+  close IN;
+ }
+split(' ', $site_language) ;
+}

@@ -24,7 +24,7 @@ do
  j=`basename $i .src.tmp`
  if [ ! -e $j ] || [ $i -nt $j ]; then
   ../../../bin/dicsort $i 1>/dev/null
-  mv $i.sorted $j 
+  mv $i.sorted $j
   #  cp $j $i
  fi
 done
@@ -32,6 +32,16 @@ rm src/*.tmp
 
 ## make list of domains
 ./mkdomain.pl  1>/dev/null
+## sort as wims needs ...
+
+for i in domain/domaindic.*.tmp
+do
+ j=`basename $i .tmp`
+ if [ ! -e $j ] || [ $i -nt $j ]; then
+  ../../../bin/dicsort $i 1>/dev/null
+  mv $i.sorted $j
+ fi
+done
 
 ## use the files generated at the previous script
 ./mkwgrp.pl 1>/dev/null

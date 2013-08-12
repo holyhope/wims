@@ -20,13 +20,14 @@ a list of "keywords" (stored in ~/public_html/bases/site/).
 created on earlier stages are used in subsequent stages). In general
 the whole process is run by the script ~/bin/mkindex.
 
-* Firstly a series of 3 perl scripts (mkdomain,mkwgrp,modindclass), 
+* Firstly a series of 3 perl scripts (mkdomain, mkwgrp, modindclass), 
 that ~/bin/mkindex.sh calls via ~/public_html/bases/sys/mkindex.sh : 
 
 - the programm ~/public_html/bases/sys/mkdomain.pl creates the lists
   of domains from the graph in domain/domain with its translations
   (domain/domain.$lang) and in json format (english) to be used for
-  completion in modtool properties
+  completion in modtool properties ; create also the domain/domaindic.xx
+  to be used as a dictionnary in modind and in the search engine
  
 - the perl program ~/public_html/bases/sys/mkwgrp.pl reads the INDEX
   files of all the modules on the site and generates 
@@ -44,12 +45,16 @@ that ~/bin/mkindex.sh calls via ~/public_html/bases/sys/mkindex.sh :
   exactly those in the variable keywords (or keywords_$lang if it
   exists), doing it with the following rules: taking keywords_$lang if
   it exists, or keywords (whatever it is a $lang-module or not).
+  It adds also the lang version of the domains (see domain/domain.xx).
 
 - the program ~/public_html/bases/sys/modindclass.pl creates the lists
   of keywords coming from the example classes in
   ~/public_html/bases/class as well as the files author,
   description, language, level, title (no ranking is done).
- 
+
+Be careful : to be used as dictionary, must be sorted by the command
+  bin/dicsort (for example for domaindic).
+
 * Secondly the binary program "modind" (compiled from ~/src/Misc/modind.c) reads 
 
   -- the INDEX files of all the modules on the site 
@@ -68,10 +73,10 @@ that ~/bin/mkindex.sh calls via ~/public_html/bases/sys/mkindex.sh :
   X=exercise, T= tool, R=recreation, M= data module.
 
   To do that, "modind" uses some dictionnaries in
-  ~/public_html/bases/sys/ (as suffix.$search_lang, wgrp, ...)
+  ~/public_html/bases/sys/ (as suffix.xx, wgrp, domaindic.xx ...)
 
   -- separately "modind" reads also the files in
-  ~/public_html/bases/sys/sheet and do the same type of works
+  ~/public_html/bases/sys/sheet and do the same type of works.
 
 
 2) use of index files       
@@ -100,20 +105,15 @@ generated (on install) by the corresponding ".src" file in the "src"
 subdirectory, if it exists.
 
 If any of the files described below is omitted, then the corresponding
-feature in the corresponding language is disabled. E.g. the files
-words.fr/words.fr.src and suffix.fr/suffix.fr.src will be/have been
-deleted in order to make the search engine correctly working.
+feature in the corresponding language is disabled.
 
   In version < 4.05c, if there is no file words.$lang, the file
   suffix.$lang was not used (correction in Misc/translator.c to check
   in other situations). 
-  The group words were badly treated when the
-  words were already in the title, properties, etc. because of
+  The group words were badly treated when the words were already in 
+  the title, properties, etc. because of
   some option unknown_type=unk_delete in modind.c but it has other consequences
   so it is not the situation.
-  I think that I will put again the suffix.fr again (but one must now really
-  check it : do we want that capital and capitale are the same, which is
-  the case for the moment).
 
 , will be done by the script in the stable release if we are OK)
 
@@ -128,7 +128,7 @@ givenword:substitute
 Files
 =====
 
-words.$search_lang : correct misprints in the search words
+words.xx : correct misprints in the search words
 (used both by "mkindex" and "search.proc"). 
 
 E.g. if the file words.en contains the line
@@ -151,7 +151,7 @@ Note: the file words.en is used by the module tool/wcalc.en (see
 
 =====================
 
-suffix.$search_lang : process common suffixes in the search words
+suffix.xx : process common suffixes in the search words
 (used both by "mkindex" and "search.proc"). 
 
 E.g. if the file suffix.en contains the line
@@ -170,7 +170,7 @@ reactivate the functionality by adding the file again.
 
 =====================
 
-wgrp/wgrp.$search_lang : groups of word
+wgrp/wgrp.xx : groups of word
 (these files are automatically generated, and used by "mkindex")
 
 E.g. if the file wgrp/wgrp.en contains the line
@@ -209,19 +209,26 @@ NOTE: problems when the strings contains the apostrophe "'"
 
 =====================
 
-indignore.$search_lang : ignored words
+domaindic.xx
+
+use the files domain/domain.xx to replace the "langugage" domain in the
+  english/technic way.
+
+=====================
+
+indignore.xx : ignored words
 (used by "mkindex")
 
 All the words listed in the file are ignored by the search engine. 
 
 =====================
 
-abuse.$search_lang : swearwords to be ignored by the search engine
+abuse.xx : swearwords to be ignored by the search engine
 (used by ??)
 
 =====================
 
-andor.$search_lang : conjunctions ("and", "or") to be ignored by the 
+andor.xx : conjunctions ("and", "or") to be ignored by the 
 search engine
 
 The file andor.xx is mentioned in src/insmath.c (processing logic
@@ -282,8 +289,10 @@ translated module (1002 resp 2004). --> HELP there is no A.cn file!!
 
 The files A.en contains the following lines related to this module.
 
-?? (...?2 is the ranking, why do we sometimes have ....?4 )
-(ER : It is a weight -- see name of variable in modind.c -- giving more importance to the title words : 4 if the word appears in the module title, 2 otherwise)
+?2 or ?4 is the ranking
+It is a weight -- see name of variable in modind.c -- 
+giving more importance to the title words : 4 if the word appears 
+in the module title, 2 otherwise
 
 2d:1003?2                           from description and description_it
 algebra:1003?2			    from domain
@@ -449,7 +458,8 @@ Extracting information from one module for a given language (function onemodule)
   bases/site2/author|description|language|...
 
 - normalizes data (suppress uppercase, accents, apostrophe, plural) 
-  according to dictionary, to get normalized author,description, title, etc.
+  according to dictionary domaindic, then maindic with suffix, to get normalized 
+  author, description, title, etc.
   This is done in the loop for(i=0;i<trcnt;i++){...}
 
 - transforms the (normalized) title into words (change commas to spaces) 
@@ -460,15 +470,14 @@ Extracting information from one module for a given language (function onemodule)
 - put every information other than title (description, keywords, foreign titles, author...) 
   in a buffer, transforms it into words and appends this as above except than weight=2.
 
-  BUG ? : in this process, i_keywords_fr is used twice, probably the first one should be i_keywords_en, to be checked.
-
 - the 2 preceeding points (treatment of title and other info) are repeated with the difference
   that the transformation into words is replaced by a translation : 
   the commas are kept, but some usual words are deleted.
   BUG ? : Another difference is that part of "other information than title" is missing, 
           for instance the foreign titles, require, author.
 
-ER : I don't know why the process is repeated : should look at appenditem to see where it is appended, maybe the second time is somewhere else.
+ER : I don't know why the process is repeated : should look at appenditem 
+to see where it is appended, maybe the second time is somewhere else.
 
 
 ===============================

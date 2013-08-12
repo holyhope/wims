@@ -138,6 +138,7 @@ search_category=!char 1 of $search_category
   !if $search_category iswordof A C
    !read search.C
    dictionary=bases/sys/words.$search_lang
+   suffix_dictionary=
    translator_unknown=leave
    srch=!exec translator $srch
    srch=!trim $srch
@@ -151,8 +152,15 @@ search_category=!char 1 of $search_category
    !endif
    Gotcnt=$[$Gotcnt + $(gotcntC)]
   !endif
+!! use domaindic dictionnary to replace language by "english version"
+!! the same is done in modind.c
+  dictionary=bases/sys/domaindic.$search_lang
+  suffix_dictionary=
+  translator_unknown=leave
+  srch=!exec translator $srch
+  srch=!trim $srch
 
- !! correct misprints in the search words
+  !! correct misprints in the search words
   dictionary=bases/sys/words.$search_lang
   suffix_dictionary=bases/sys/suffix.$search_lang
   translator_unknown=leave
