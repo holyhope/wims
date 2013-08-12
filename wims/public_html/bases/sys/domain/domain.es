@@ -56,7 +56,7 @@ earth_sciences:Sciences de la terre
 ecology:Ecologie
 electricity:Electricité
 electronics:Electronique
-electrostatics:Electrostatique 
+electrostatics:Electrostatique
 elementary_algebra:álgebra elemental
 elementary_arithmetic:
 elementary_calculus:
@@ -81,7 +81,7 @@ financial_mathematics:
 finite_group:
 fluid_mechanics:
 fourier_series:series de Fourier
-fourier_transforms:transformaciones de Fourier
+fourier_transform:transformaciones de Fourier
 fraction:fracciones
 french:
 french_grammar:
@@ -198,7 +198,7 @@ surfaces:superficies
 symmetric_group:
 tangent:
 taylor_expansion:
-taylor_series: series de Taylor
+taylor_series:series de Taylor
 technical_language:
 thermodynamics:
 transformation_group:

@@ -70,7 +70,7 @@ ellipse:ellipsen
 endomorphism_reduction:
 english:
 entropy:entropie
-equations:vergelijkingen 
+equations:vergelijkingen
 error_correcting_codes:fout correctie codes
 error_detection:fouten signalering
 estimation:
