@@ -67,7 +67,15 @@ var capture$i = function() {
   !set var=$(liste_variable[$j])
   !set rep=!replace internal var by rep in $var
   !set var_cnt=!itemcnt $(replygood$i[$j;])
-  !if $var_cnt =1 and \ notin $(replygood$i[$j;])
+  !if \ isin $(replygood$i[$j;])
+    !set t_=!replace internal : by , in $(replygood$i[$j;])
+    !if $(t_[2]) != $empty
+       !bound var_cnt=$(t_[2]) within 1,2
+    !else
+       !set var_cnt=2
+    !endif
+  !endif
+  !if $var_cnt =1
     $(rep).Value() + ';' +
   !else
     $(rep).X() + ',' + $(rep).Y() + ';' +
