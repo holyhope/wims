@@ -30,6 +30,7 @@ char *outdir=		"public_html/bases/site2";
 char *maindic=		"sys/words";
 char *groupdic=		"sys/wgrp/wgrp";
 char *suffixdic=	"sys/suffix";
+char *domaindic=	"sys/domaindic";
 char *ignoredic=	"sys/indignore";
 char *conffile=		"log/wims.conf";
 char *mlistbase=	"list";
@@ -128,7 +129,7 @@ char *wordchr(char *p, char *w)
 {
     char *r;
 
-    for(r=strstr(p,w);r!=NULL && 
+    for(r=strstr(p,w);r!=NULL &&
 	( (r>p && !isspace(*(r-1))) || (!isspace(*(r+strlen(w))) && *(r+strlen(w))!=0) );
 	r=strstr(r+1,w));
     return r;
@@ -202,7 +203,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
-    
+
     va_start(vp,good);
     vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
@@ -248,7 +249,7 @@ void getdef(char *fname, char *name, char value[])
     FILE *f;
     char *buf;
     int l;
-    
+
     value[0]=0;
     f=fopen(fname,"r"); if(f==NULL) return;
     fseek(f,0,SEEK_END); l=ftell(f); fseek(f,0,SEEK_SET);
@@ -261,9 +262,9 @@ void getdef(char *fname, char *name, char value[])
 
 #include "translator_.c"
 
-char *mdicbuf, *gdicbuf;
-char gentry[sizeof(entry)], mentry[sizeof(entry)];
-int gentrycount, mentrycount;
+char *mdicbuf, *gdicbuf, *ddicbuf;
+char gentry[sizeof(entry)], mentry[sizeof(entry)], dentry[sizeof(entry)];
+int gentrycount, mentrycount, dentrycount;
 
 	/* Preparation of data */
 void prep(void)
@@ -272,7 +273,7 @@ void prep(void)
     char *p1,*p2,*s,*old;
     int i,l,thislang,t;
     FILE *f;
-    
+
     s=getenv("modind_outdir"); if(s!=NULL && *s!=0) outdir=s;
     s=getenv("modind_sheetdir"); if(s!=NULL && *s!=0) sheetdir=s;
     snprintf(buf,sizeof(buf),"%s/addr",outdir);
@@ -357,7 +358,7 @@ void sprep(void)
 {
     char *p1,*p2,*s;
     int i,l,thislang;
-    
+
     modcnt=0;
     s=getenv("slist"); if(s==NULL) return;
     l=strlen(s); if(l<0 || l>100*MAX_LINELEN) return;
@@ -381,7 +382,7 @@ void clean(void)
 }
 
 char *sheetindex[]={
-      "title", "description", 
+      "title", "description",
       "duration", "severity",
       "level", "domain",
       "keywords", "reserved1", "reserved2", "remark"
@@ -396,10 +397,10 @@ enum{s_title, s_description,
 };
 
 char *modindex[]={
-      "title", "description", 
+      "title", "description",
       "author", "address", "copyright",
       "version", "wims_version", "language",
-      "category", "level", "domain", "keywords", 
+      "category", "level", "domain", "keywords",
       "keywords_ca", "keywords_en", "keywords_fr", "keywords_it", "keywords_nl",
       "title_ca", "title_en", "title_fr", "title_it", "title_nl",
       "require"
@@ -482,7 +483,7 @@ void appenditem(char *word, int lind, int serial, int weight, char *l)
     int i, ll;
     char *p;
     FILE *f;
-    
+
     if(!isalnum(*word) || (ll=strlen(word))<2 ||
        wordchr(taken,word)!=NULL ||
        wordchr(ignore[lind],word)!=NULL ||
@@ -502,6 +503,26 @@ void appenditem(char *word, int lind, int serial, int weight, char *l)
     }
 }
 
+void appenditem1 (char *buf, int lind, int serial, int weight, char *l )
+{
+  char *p1, *p2 ;
+  for(p1=find_word_start(buf); *p1;
+	p1=find_word_start(p2)) {
+	p2=strchr(p1,',');
+	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
+	if(strlen(p1)<=0) continue;
+	appenditem(p1,lind,serial,weight,module_language);
+  }
+}
+void appenditem2 (char *buf, int lind, int serial, int weight, char *l )
+{
+  char *p1, *p2 ;
+  for(p1=find_word_start(buf);*p1;
+	p1=find_word_start(p2)) {
+	p2=find_word_end(p1); if(*p2) *p2++=0;
+	appenditem(p1,lind,serial,weight,module_language);
+  }
+}
 void onemodule(const char *name, int serial, int lind)
 {
     int i;
@@ -514,12 +535,12 @@ void onemodule(const char *name, int serial, int lind)
     #define trcnt (sizeof(trlist)/sizeof(trlist[0]))
     char *p1, *p2, *pp, *q, buf[MAX_LINELEN+1], lbuf[16];
     FILE *f;
-    
+
     if(module_index(name)) return;
     towords(indbuf[i_category]);
 	/*  list the categories (among A=all,X=eXercise,O,D,...) corresponding to this module  */
     for(i=catcnt=0;i<catno && catcnt<16;i++) {
-	if(wordchr(indbuf[i_category],cat[i].name)!=NULL) 
+	if(wordchr(indbuf[i_category],cat[i].name)!=NULL)
 	  categories[catcnt++]=cat[i].typ;
     }
     if(catcnt==0) return;
@@ -538,6 +559,7 @@ void onemodule(const char *name, int serial, int lind)
     fprintf(descf,"%d:%s\n",serial,indbuf[i_description]);
     fprintf(authorf,"%d:%s\n",serial,indbuf[i_author]);
     fprintf(versionf,"%d:%s\n",serial,indbuf[i_version]);
+
 	/*  add module's information in html page for robots  */
     snprintf(buf,sizeof(buf),"%s",indbuf[i_description]);
     for(pp=strchr(buf,','); pp; pp=strchr(pp,','))
@@ -545,28 +567,36 @@ void onemodule(const char *name, int serial, int lind)
     if(strcmp(module_language,lang[lind])==0)
       fprintf(robotf,"%s ,%s,%s,%s,%s\n",name,module_language,name,
 	      indbuf[i_title], buf);
-	/*  Normalize the information, using main dictionary bases/sys/words.xx */
-    entrycount=mentrycount; dicbuf=mdicbuf;
-    memmove(entry,mentry,mentrycount*sizeof(entry[0]));
-    unknown_type=unk_leave;  /* used in translator_.c */
 
+	/*  Normalize the information, using dictionary 
+	-- bases/sys/domain.xx without suffix (--> english version)
+	-- bases/sys/words.xx with suffix */
+    entrycount=dentrycount; dicbuf=ddicbuf;
+    memmove(entry,dentry,dentrycount*sizeof(entry[0]));
+    unknown_type=unk_leave;
     for(i=0;i<trcnt;i++) {
 	detag(indbuf[trlist[i]]);
 	deaccent(indbuf[trlist[i]]);
 	comma(indbuf[trlist[i]]);
 	singlespace(indbuf[trlist[i]]);
+	translate(indbuf[trlist[i]]);
+    }
+    
+    entrycount=mentrycount; dicbuf=mdicbuf;
+    memmove(entry,mentry,mentrycount*sizeof(entry[0]));
+    unknown_type=unk_leave;  /* used in translator_.c */
+    for(i=0;i<trcnt;i++) {
 	suffix_translate(indbuf[trlist[i]]);
 	translate(indbuf[trlist[i]]);
     }
-	/*  append words of title  */
+
+/* taken contains all words already seen in the module index */
     taken[0]=0; takenlen=tweight=0;
+/*  append words of title  */
     ovlstrcpy(buf,indbuf[i_title]); towords(buf);
-    for(p1=find_word_start(buf);*p1;
-	p1=find_word_start(p2)) {
-	p2=find_word_end(p1); if(*p2) *p2++=0;
-	appenditem(p1,lind,serial,4,module_language);
-    }
-	/*  append words of every other information except level  */
+    appenditem2(buf,lind,serial,4,module_language);
+
+/*  append words of every other information except level  */
     snprintf(buf,sizeof(buf),"%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",
 	     indbuf[i_description],indbuf[i_keywords],
 	     indbuf[i_keywords_ca],indbuf[i_keywords_en],indbuf[i_keywords_fr],
@@ -575,39 +605,35 @@ void onemodule(const char *name, int serial, int lind)
 	     indbuf[i_title_it],indbuf[i_title_nl],
 	     indbuf[i_domain],indbuf[i_require],indbuf[i_author]);
     towords(buf);
-    for(p1=find_word_start(buf);*p1;
-	p1=find_word_start(p2)) {
-	p2=find_word_end(p1); if(*p2) *p2++=0;
-	appenditem(p1,lind,serial,2,module_language);
-    }
-	/*  this time the dictionary is the group dictionary  sys/wgrp/wgrpwith a g (=global ? general ?), not an m . see below main,suffix,group. 
+    appenditem2(buf,lind,serial,4,module_language);
+
+	/*  this time the dictionary is the group dictionary  sys/wgrp/wgrp
+	 with a g (groupdic), not an m (maindic) . see below main, suffix, group.
         and delete unknown ?? and translate  */
     entrycount=gentrycount; dicbuf=gdicbuf;
     memmove(entry,gentry,gentrycount*sizeof(entry[0]));
+
+/*  append words (?) of every other information except level  */
+    ovlstrcpy(buf,indbuf[i_title]);
     unknown_type=unk_delete;
-	/*  append words (?) of every other information except level  */
-    ovlstrcpy(buf,indbuf[i_title]); translate(buf);
-    for(p1=find_word_start(buf); *p1;
-	p1=find_word_start(p2)) {
-	p2=strchr(p1,',');
-	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-	if(strlen(p1)<=0) continue;
-	appenditem(p1,lind,serial,4,module_language);
-    }
-	/*  append words (?) of every other information except level  */
-    snprintf(buf,sizeof(buf),"%s, %s, %s, %s, %s, %s, %s, %s",
-	     indbuf[i_description],indbuf[i_keywords],
-	     indbuf[i_keywords_ca], indbuf[i_keywords_en],indbuf[i_keywords_fr],
-	     indbuf[i_keywords_it], indbuf[i_keywords_nl],
-	     indbuf[i_domain]);
     translate(buf);
-    for(p1=find_word_start(buf); *p1;
-	p1=find_word_start(p2)) {
-	p2=strchr(p1,','); 
-	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-	if(strlen(p1)<=0) continue;
-	appenditem(p1,lind,serial,2,module_language);
-    }
+    appenditem1(buf,lind,serial,2,module_language);
+
+/*  append words (?) of information of description except level  */
+    snprintf(buf,sizeof(buf),"%s", indbuf[i_description]);
+    unknown_type=unk_delete;
+    translate(buf);
+    appenditem1(buf,lind,serial,4,module_language);
+
+/*  append words (or group of words) of keywords and domain level  */
+    snprintf(buf,sizeof(buf),"%s, %s, %s, %s, %s, %s, %s",
+	     indbuf[i_domain],indbuf[i_keywords],
+	     indbuf[i_keywords_ca], indbuf[i_keywords_en],indbuf[i_keywords_fr],
+	     indbuf[i_keywords_it], indbuf[i_keywords_nl]);
+	unknown_type=unk_leave;
+    translate(buf);
+    appenditem1(buf,lind,serial,2,module_language);
+
 	/*  append level information, with weight 2 */
     snprintf(buf,sizeof(buf),"%s",indbuf[i_level]);
     ovlstrcpy(lbuf,"level");
@@ -615,9 +641,9 @@ void onemodule(const char *name, int serial, int lind)
     q=buf+strlen(buf);
     for(p1=find_word_start(buf); (*p1) && (p1 < q) ;
 	p1=find_word_start(p2)) {
-	p2=find_word_end(p1); 
+	p2=find_word_end(p1);
 	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-	if(!isalpha(*p1) || 
+	if(!isalpha(*p1) ||
 	   (!isdigit(*(p1+1)) && *(p1+1)!=0) ||
 	   (*(p1+1)!=0 && *(p1+2)!=0))
 	  continue;
@@ -633,7 +659,7 @@ void modules(void)
 {
     int i,j,k,d;
     char namebuf[MAX_LINELEN+1];
-    char mdic[MAX_LINELEN+1], sdic[MAX_LINELEN+1], gdic[MAX_LINELEN+1];
+    char mdic[MAX_LINELEN+1], sdic[MAX_LINELEN+1], gdic[MAX_LINELEN+1], ddic[MAX_LINELEN+1];
 
     for(j=0;j<langcnt;j++) {
 	snprintf(namebuf,sizeof(namebuf),"%s/weight.%s",outdir,lang[j]);
@@ -641,12 +667,16 @@ void modules(void)
 	snprintf(mdic,sizeof(mdic),"%s/%s.%s",dicdir,maindic,lang[j]);
 	snprintf(sdic,sizeof(sdic),"%s/%s.%s",dicdir,suffixdic,lang[j]);
 	snprintf(gdic,sizeof(gdic),"%s/%s.%s",dicdir,groupdic,lang[j]);
+	snprintf(ddic,sizeof(ddic),"%s/%s.%s",dicdir,domaindic,lang[j]);
 	suffix_dic(sdic); prepare_dic(gdic);
 	gdicbuf=dicbuf; gentrycount=entrycount;
 	memmove(gentry,entry,gentrycount*sizeof(entry[0]));
 	prepare_dic(mdic);
 	mdicbuf=dicbuf; mentrycount=entrycount;
 	memmove(mentry,entry,mentrycount*sizeof(entry[0]));
+	prepare_dic(ddic);
+	ddicbuf=dicbuf; dentrycount=entrycount;
+	memmove(dentry,entry,dentrycount*sizeof(entry[0]));
 	unknown_type=unk_leave; translate(ignore[j]);
 	for(i=0;i<modcnt;i++) {
 	    if(mod[i].langcnt>0) {
@@ -665,15 +695,17 @@ void modules(void)
 	if(mentrycount>0) free(mdicbuf);
 	if(gentrycount>0) free(gdicbuf);
 	if(suffixcnt>0) free(sufbuf);
+	if(dentrycount>0) free(ddicbuf);
 	if(weightf) fclose(weightf);
     }
 }
 
+/* FIXME ? differences with appenditem - use fprintf instead of  snprintf */
 void sappenditem(char *word, int lind, int serial, int weight)
 {
     int ll;
     char *p;
-    
+
     if(!isalnum(*word) || (ll=strlen(word))<2 ||
        wordchr(taken,word)!=NULL ||
        wordchr(ignore[lind],word)!=NULL ||
@@ -695,19 +727,26 @@ void onesheet(int serial, int lind)
     };
     #define trcnt (sizeof(trlist)/sizeof(trlist[0]))
     char *p1, *p2, buf[MAX_LINELEN+1];
-    
+
     if(sheet_index(serial)) return;
     fprintf(listf,"%s\n",mod[serial].name+3);
     fprintf(titf,"%d:%s\n",serial,sindbuf[s_title]);
     fprintf(descf,"%d:%s\n",serial,sindbuf[s_description]);
-    entrycount=mentrycount; dicbuf=mdicbuf;
-    memmove(entry,mentry,mentrycount*sizeof(entry[0]));
+    entrycount=dentrycount; dicbuf=ddicbuf;
+    memmove(entry,dentry,dentrycount*sizeof(entry[0]));
     unknown_type=unk_leave;
     for(i=0;i<trcnt;i++) {
 	detag(sindbuf[trlist[i]]);
 	deaccent(sindbuf[trlist[i]]);
 	comma(sindbuf[trlist[i]]);
 	singlespace(sindbuf[trlist[i]]);
+	translate(sindbuf[trlist[i]]);
+    }
+    
+    entrycount=mentrycount; dicbuf=mdicbuf;
+    memmove(entry,mentry,mentrycount*sizeof(entry[0]));
+    unknown_type=unk_leave;
+    for(i=0;i<trcnt;i++) {
 	suffix_translate(sindbuf[trlist[i]]);
 	translate(sindbuf[trlist[i]]);
     }
@@ -744,13 +783,14 @@ void onesheet(int serial, int lind)
     translate(buf);
     for(p1=find_word_start(buf); *p1;
 	p1=find_word_start(p2)) {
-	p2=strchr(p1,','); 
+	p2=strchr(p1,',');
 	if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
 	if(strlen(p1)<=0) continue;
 	sappenditem(p1,lind,serial,2);
     }
     fprintf(weightf,"%d:%d\n",serial,tweight);
 }
+
 
 void sheets(void)
 {
