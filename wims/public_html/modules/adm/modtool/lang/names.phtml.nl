@@ -6,7 +6,7 @@
 
 !set name_auth=Ontwikkelaars authentificatie
 !set name_prop=Account gegevens
-!set name_modname=!nosubst Lijst modules van <em>$auth_name</em>
+!set name_modname=!nosubst Lijst modules van <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Maak een nieuwe module
 !set name_diff=Controleer verschil (diff)
 !set name_flist=Lijst van files
