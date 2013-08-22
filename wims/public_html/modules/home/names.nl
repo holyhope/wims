@@ -19,8 +19,6 @@ wims_name_mail = Schrijf naar de docent
 wims_name_pref = Instellingen 
 wims_name_ref = Bezoekers
 wims_name_stat = Serverstatistieken
-wims_name_faq       = FAQ
-wims_name_dochelp = Help documenten
 
 CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen

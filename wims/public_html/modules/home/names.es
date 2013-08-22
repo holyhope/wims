@@ -27,8 +27,6 @@ CR_mod = módulos a toda potencia
 
 E_comp = compilada el
 E_manager = Administrador del sitio:
-E_faq = FAQ
-E_dochelp = Documents d'aide
 
 RE_prev = !nosubst Previous Results
 RE_next = !nosubst Next Results
