@@ -24,4 +24,6 @@ N_search =buscar
 
 name_search_engine=Search Engine
 name_search_help=Tips for searching
+name_search_all=Searching for a resource
+name_search_class=Searching for a class
 name_search_and=all word groups,one of the word groups

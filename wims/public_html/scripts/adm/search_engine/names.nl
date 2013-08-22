@@ -24,5 +24,7 @@ N_search=zoeken
 N_clear=Wissen
 !!name_language_choice=zoeken in taal
 name_search_engine=Zoeken
+name_search_all=Searching for a resource
+name_search_class=Searching for a class
 name_search_help=Zoek tips
 name_search_and=op alle termen,op &eacute;&eacute;n v/d termen
