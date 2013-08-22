@@ -2,8 +2,10 @@ jQuery.noConflict();
 
 jQuery(function($) {
     
-  /* Autocompletion des domaines dans Modtool 
-      attention il faut remplir la variable "tags" pour afficher des mots clés
+  /* Autocompletion d'un champ texte 
+      attention il faut remplir la variable javascript "tags" pour afficher des mots clés
+      ajoutez la classe "multicomplete" ou "autocomplete" au choix sur l'input, selon que vous 
+      souhaitez autoriser un ou plusieurs mot-clés.
   */
   
     function comma_split( val ) {
