@@ -102,8 +102,8 @@ for my $lang (@site_lang) {
  }
  next if !(-e "$ddir/domain.$lang");
  my %dom = treate_domainfile ("$ddir/domain.$lang");
- while ( my ($key, $value) = each(%dom) ) { push @ALL, $value;}
-
+ while ( my ($key, $value) = each(%dom) ) {
+   push @ALL, lc($value);}
  out("keywords/list.$lang", join(",",sortuniq(@list)));
  out("keywords/keywords.$lang.json.tmp",
      "\"" . join("\",\n\"",sortuniq(@ALL) ) . "\""
