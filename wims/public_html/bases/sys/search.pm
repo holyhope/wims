@@ -44,6 +44,7 @@ sub out { my ($bloc, $text) = @_;
 }
 
 sub sortuniq {
+  return if !(@_) ; 
   my $prev = "not $_[0]";
   grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
 }
