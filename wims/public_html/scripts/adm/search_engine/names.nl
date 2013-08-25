@@ -9,7 +9,7 @@ C_D=Les- en oefenmateriaal
 C_P=Popup hulpmiddelen
 C_F=Forum
 C_C=Openbare klaslokalen
-C_M= Data Modules
+C_M=Data Modules
 
 !!change if necessary (short version)
 !for c in A,X,T,R,O,S,D,P,F,C
@@ -24,7 +24,7 @@ N_search=zoeken
 N_clear=Wissen
 !!name_language_choice=zoeken in taal
 name_search_engine=Zoeken
-name_search_all=Searching for a resource
-name_search_class=Searching for a class
+name_search_all=Zoeken
+name_search_class=Zoek naar een klas
 name_search_help=Zoek tips
 name_search_and=op alle termen,op &eacute;&eacute;n v/d termen

@@ -74,9 +74,9 @@
 	wims_name_cas_logout,wims_name_credits
 
 !! **** Menuprof Names ***
-!distribute items Classes, Search,\
-		Creation, Samples,\
-		Exercices, Helps,\
+!distribute items Klassen, Zoeken,\
+		Aanmaken, Voorbeelden,\
+		Oefeningen, Help,\
 		FAQ, Help documenten,\
 	into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
