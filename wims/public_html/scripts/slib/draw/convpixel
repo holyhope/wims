@@ -12,16 +12,16 @@ slib_example=5,6,100,200,0,10,0,7,0,pixels\
 
 :proc
 !reset slib_out
-!distribute item $wims_read_parm into slib_x,slib_y,slib_sizex,slib_sizey,slib_rangex1,slib_rangex2,slib_rangey1,slib_rangey2,slib_border,slib_pixels
-slib_x=!declosing $slib_x
-slib_y=!declosing $slib_y
-!default slib_border=0
-slib_cnt=!itemcnt $slib_x
-!for slib_j=1 to $slib_cnt
- !if $slib_pixels=$empty
-  slib_out = $slib_out,$[($slib_rangex2-($slib_rangex1))/($slib_sizex)*($(slib_x[$slib_j])+($slib_border))+($slib_rangex1)],$[-($slib_rangey2-($slib_rangey1))/($slib_sizey)*($(slib_y[$slib_j])+($slib_border))+($slib_rangey2)]
+!distribute item $wims_read_parm into slib_pix_x,slib_pix_y,slib_pix_sizex,slib_pix_sizey,slib_pix_rangex1,slib_pix_rangex2,slib_pix_rangey1,slib_pix_rangey2,slib_pix_border,slib_pix_pixels
+slib_pix_x=!declosing $slib_pix_x
+slib_pix_y=!declosing $slib_pix_y
+!default slib_pix_border=0
+slib_pix_cnt=!itemcnt $slib_pix_x
+!for slib_j=1 to $slib_pix_cnt
+ !if $slib_pix_pixels=$empty
+  slib_out = $slib_out,$[($slib_pix_rangex2-($slib_pix_rangex1))/($slib_pix_sizex)*($(slib_pix_x[$slib_j])+($slib_pix_border))+($slib_pix_rangex1)],$[-($slib_pix_rangey2-($slib_pix_rangey1))/($slib_pix_sizey)*($(slib_pix_y[$slib_j])+($slib_pix_border))+($slib_pix_rangey2)]
  !else
-  slib_out = $slib_out,$[round(($slib_sizex)*($(slib_x[$slib_j])-($slib_rangex1))/($slib_rangex2-($slib_rangex1))-($slib_border))],$[round(($slib_sizey)*(-($(slib_y[$slib_j]))+($slib_rangey2))/($slib_rangey2-($slib_rangey1)) - ($slib_border))]
+  slib_out = $slib_out,$[round(($slib_pix_sizex)*($(slib_pix_x[$slib_j])-($slib_pix_rangex1))/($slib_pix_rangex2-($slib_pix_rangex1))-($slib_pix_border))],$[round(($slib_pix_sizey)*(-($(slib_pix_y[$slib_j]))+($slib_pix_rangey2))/($slib_pix_rangey2-($slib_pix_rangey1)) - ($slib_pix_border))]
  !endif
 !next
 slib_out=!nonempty items $slib_out
