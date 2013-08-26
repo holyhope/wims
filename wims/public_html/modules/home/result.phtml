@@ -1,7 +1,5 @@
 !nocache
 
-<a id="searchresult"> </a>
-
 !if $error!=$empty and  $(ER_$error)!=
 <p class="wims_alertmsg">
  $(ER_$error)
@@ -71,47 +69,44 @@
 !if $gottype=search or $gotcnt1=0
  !reset tt
  !if $test_exist!=$empty
-  $RE_found2
+  <p>$RE_found2</p>
+
   <script type="text/javascript">
-/*<![CDATA[*/
-function affiche(name) {
- document.getElementById('affiche_content_'+tab_affiche).className = 'wims_tab';
- document.getElementById('affiche_content_'+name).className = 'affiche_content wims_tabselect';
- document.getElementById('content_'+tab_affiche).style.display = 'none';
- document.getElementById('content_'+name).style.display = 'block';
- tab_affiche = name;
-}
-var tab_affiche = '$(test_exist[1])';
-/*]]>*/
-</script>
+    /*<![CDATA[*/
+    jQuery(function($$) {
+        $$( "#searchresult" ).tabs();
+      });
+    /*]]>*/
+  </script>
+
  !endif
+ <div id="searchresult" style="font-size:14px;">
  !if $s_category=A
-  <div class="wimscenter">
-   <ul class="tab_content">
+   <ul>
    !for cat in X,D,T,R,M,S,C
     !if $(gotcnt$cat)>0
-      <li class="wims_tab">
-       <a id="affiche_content_$cat" onclick="javascript:affiche('$cat');">
+      <li>
+       <a href="#content_$cat">
          $(CC_$cat) ($(gotcnt$cat))</a>
        </li>
     !endif
    !next
    !if $gotcnt1 >0
-     <li class="wims_tab">
-      <a id="affiche_content_P" onclick="javascript:affiche('P');">
+     <li >
+      <a href="#content_P">
       $(CC_P) ($gotcnt1)</a>
       </li>
    !endif
    </ul>
-  </div>
    !for cat in X,D,T,R,M
      !if $(gotcnt$cat) >0
-       <div class="wims_search_content" id="content_$cat">
+       <div id="content_$cat">
        <p class="wims_emph">$(CC_$cat)</p>
        !read result.A $cat
       </div> <!-- end C_$cat -->
      !endif
    !next
+
  !else
 !! tt is used in lang/names.$lang
   !if $s_category notin CS
@@ -125,13 +120,13 @@ var tab_affiche = '$(test_exist[1])';
  !endif
 
  !if $gotcntS > 0
-  <div class="wims_search_content" id="content_S">
+  <div id="content_S">
   <p class="wims_emph">$CC_S</p>
   !read result.S
   </div> <!-- end C_S -->
  !endif
  !if $gotcntC > 0
-  <div class="wims_search_content" id="content_C">
+  <div id="content_C">
   <p class="wims_emph">$CC_C</p>
   !read result.C
   </div> <!-- end C_C -->
@@ -141,9 +136,10 @@ var tab_affiche = '$(test_exist[1])';
   !exchange gotcnt,gotcnt1
   !exchange gottype,gottype1
   !exchange gotm,gotm1
-  <div class="wims_search_content" id="content_P">
+  <div id="content_P">
   <p class="wims_emph">$(CC_P)</p>
   !read result.P
   </div><!-- end C_P -->
  !endif
+ </div>
 !endif
