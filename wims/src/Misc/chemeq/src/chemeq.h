@@ -26,7 +26,7 @@
 /* D'où la constante des Gaz parfaits 8.314 J.K^-1.mol^-1 */
 #define R (Kb * Avogadro)
 
-/* Température de référence pour les réactions chimiques, 25�C */
+/* Température de référence pour les réactions chimiques, 25°C */
 #define T0 (273.15+25)
 
 /* MINVAL est une valeur impossible tant pour un potentiel standard */
@@ -222,7 +222,6 @@ class Chemeq{
   std::string cste;
   long double val;
 public:
-  bool fixRightArrow=false; // will output \\rightarrow when true
   Chemeq(Membre * g, Membre * d) : gauche (g), droit(d), val(MINVAL){};
   const Membre * membredroit()const{return droit;};
   const Membre * membregauche()const{return gauche;};
