@@ -40,6 +40,7 @@ DOC=$WIMS_HOME/public_html/scripts/docu
 BASESDOC=$WIMS_HOME/public_html/bases/doc
 THEME=$WIMS_HOME/public_html/themes
 DATAMODULE=$WIMS_HOME/public_html/modules/data
+FORTUNE=$BASES/fortune
 
 ## copy all sheet in example class to base/sheet/ for search engine
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
@@ -57,7 +58,7 @@ $mlist2"
 grep -l "ask_trusted=yes" */*/*/var.init | awk -F "/" '{ print $1"/"$2"/"$3 }' > $BASES/site/trusted_modules
 
 
-cd $WIMS_HOME ; 
+cd $WIMS_HOME ;
 bin/css.pl
 
 cd $BASES/sys ;
@@ -207,19 +208,19 @@ done
 
 #slib index
 cd $SLIB
-./mkindex >>mkindex.log 
+./mkindex >>mkindex.log
 
 #shtooka index
 cd $SWAC
-rm -f index.log 
-./mkindex >>index.log 
+rm -f index.log
+./mkindex >>index.log
 
 
 # make index bases doc
 $BASES/doc/.build-index 1>/dev/null
 
 #model list
-for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done 
+for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done
 
 #oef/qcm
 # generate exercises in directory oef/$lang/qcm
@@ -237,12 +238,12 @@ cd $CLASSES
 clist=`ls -d [1-9][0-9][0-9][0-9]`
 for cls in $clist; do
  cd $CLASSES/$cls
- if [ ! -d doc ] ; then 
+ if [ ! -d doc ] ; then
    echo "no document in $cls" 1>/dev/null
  else
   cd doc
   dlist=`ls`
-  if [ ! -d "$dlist" ] ; then 
+  if [ ! -d "$dlist" ] ; then
     for doc in $dlist ; do
       cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 1>/dev/null
     done
@@ -256,13 +257,13 @@ for doc in $clist; do
   cd $BASESDOC/$doc
   $DOC/mkindex $WIMS_HOME $BASESDOC/$doc 1>/dev/null 2>/dev/null
 done
-  
+
 #oefdocumentation for javascript
 cd $WIMS_HOME
 bin/oefdoc.pl
 
 #make circuits index and generate component images
-## should also understand mkindex and 
+## should also understand mkindex and
 cd $CIRCUIT
 ./mksymbols ; ./mkthumbs
 
@@ -274,13 +275,34 @@ cd $BGIMAGE
 cd $DATAMODULE/images;
 ##create test if done ; do nothing if file test exists
 if [ -f "roadsigns.fr/INDEX" ]; then
-  if [ -f "roadsigns.fr/test" ] ; then echo "no modification in $DATAMODULE/images/roadsigns.fr"; 
+  if [ -f "roadsigns.fr/test" ] ; then echo "no modification in $DATAMODULE/images/roadsigns.fr";
   else
    dir=$DATAMODULE/images/roadsigns.fr
    for z in 500 200 100 ; do
-     cd $dir/images ; mkdir -p png$z ; 
+     cd $dir/images ; mkdir -p png$z ;
      for a in `ls svg/*.svg`; do file=`basename $a .svg`; convert  $a -resize $z $dir/images/png$z/$file.png 2>/dev/null ; done;
    done;
    touch $dir/test ; echo "yes" > $dir/test
   fi
 fi;
+
+#make file.dat for fortune
+cd $FORTUNE
+##create test if done ; do nothing if file test exists
+if [ `which strfile` ]; then
+ if [ -f "test" ]; then
+  echo "no modification in $FORTUNE ; you must delete $FORTUNE/test to recreate the files .dat";
+ else
+  for a in `ls -d *`;
+   do cd $a;
+     if [ ! `ls -d * | wc -c` -eq 0 ] ; then
+       for b in `ls` ; do
+         file=`basename $b .dat` ;
+         strfile $file ;
+       done;
+     fi;
+    cd ..;
+   done
+ fi
+ touch $FORTUNE/test ; echo "yes" >  $FORTUNE/test
+fi
