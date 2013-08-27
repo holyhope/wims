@@ -15,13 +15,14 @@ html,option: html, url\
 slib_author=Bernadette, Perrin-Riou
 slib_out= code for drawing some regions given by inequations
 slib_comment=
-slib_example= [x,y], [y - 0.5, -y + 1],-2,2,-2,2,green\
-[x,y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green\
-[x-y,x+y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green\
-[x-y, x+y], [x^2-y, x^2+y],-2,2,-2,2,green\
- [x,y], [x^2-y, x^2+y,x],-2,2,-2,2,green\
- [x-y, x+y], [x^2-y^2,x],-2,2,-2,2,green\
- [x,y], [x^2-y^2,sin(x/10)+y],-5,5,-5,5,green
+slib_example=[x,y], [y - 0.5, -y + 1],-2,2,-2,2,green,html\
+[x,y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
+[x-y,x+y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
+[x-y, x+y], [x^2-y, x^2+y],-2,2,-2,2,green,html\
+ [x,y], [x^2-y, x^2+y,x],-2,2,-2,2,green,html\
+ [x-y, x+y], [x^2-y^2,x],-2,2,-2,2,green,html\
+ [x,y], [x^2-y^2,sin(x/10)+y],-5,5,-5,5,green,html\
+ [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,red,html
 
 !exit
 
@@ -39,7 +40,7 @@ slib_out=
 !default slib_ymax=2
 
 slib_url=$slib_option
-!default slib_url=html
+!!default slib_url=html
 slib_f=!declosing $slib_f
 slib_fcnt=!itemcnt $slib_f
 !if $slib_fcnt=1
@@ -73,7 +74,8 @@ slib_inc=0.01
      !reset slib_value
       slib_value=!mathsubst x=($(slib_point[1])) in $(slib_FG[$slib_i])
       slib_value=!evalsubst y= ($(slib_point[2])) in $slib_value
-      !ifval $slib_value <= 0 
+      !!should be better to test in pixels ??
+      !ifval $slib_value <= 0.01
         slib_test=0
         !break
       !endif
