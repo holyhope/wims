@@ -21,20 +21,21 @@ $title
   to $wims_menu_items
 
 !set cat=A
+!set search_and=yes
 <ul>
  !for t in $list
   <li id="$t">
-  !read script.phtml $t
+  !read script.phtml $t,$name
      !if $cnt > 1
        <ul>
         !for ttt in $tt
          <li id="$ttt">
-          !read script.phtml $ttt
+          !read script.phtml $ttt,$name
            !if $cnt > 1
            <ul>
             !for tttt in $tt
              <li id="$tttt">
-             !read script.phtml $tttt
+             !read script.phtml $tttt,$name
              </li>
             !next
            </ul>
@@ -47,7 +48,7 @@ $title
   !next t
  </ul>
  
- !exit
+!exit
  $table_header
  !for t in $list
   $table_tr
