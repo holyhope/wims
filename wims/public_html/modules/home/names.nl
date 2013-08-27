@@ -1,5 +1,4 @@
 N_manage = WIMS online onderhoud
-wims_name_mod_new = Nieuwste
 wims_name_mirror = mirror websites
 wims_name_Mirror = Mirror websites
 wims_name_pref = Instellingen

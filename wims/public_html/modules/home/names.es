@@ -1,6 +1,4 @@
 N_manage = Administración de WIMS en línea
-
-wims_name_mod_new = Lo nuevo
 wims_name_mirror = réplicas
 wims_name_Mirror = Réplicas
 wims_name_pref = Preferencias
