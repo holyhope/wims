@@ -33,7 +33,9 @@ coding:
 combi:combinatoriek
 combination:combinaties
 combinatorics:
+complex_analysis:
 complex_number:complexe getallen
+complex_plane:
 conditional_probability:
 confidence_interval:
 congruence:congruentie
@@ -85,6 +87,7 @@ financial_mathematics:
 finite_group:
 fluid_mechanics:
 fourier_series:
+fourier_transform:
 fraction:
 french:
 french_conjugation:
@@ -110,6 +113,7 @@ hamming:Hamming afstand
 histogram:
 histology:
 history:
+homography:
 hyperbola:hyperbolen
 hyperplane:hypervlakken
 immunology:
@@ -168,7 +172,6 @@ plane:vlakken
 polar_curves:polaire kurves
 polygons:polygonen
 polynomials:polynomen
-pre_algebra:
 prealg:pre-algebra
 precalc:pre-calculus
 primes:priemgetallen
@@ -212,6 +215,7 @@ transformation_group:
 triangles:driehoeken
 trigonometry:trigoniometrie
 vector_space:vector ruimte
+vectorial_analysis:
 vectors:vectoren
 vibration:
 vocabulary:
