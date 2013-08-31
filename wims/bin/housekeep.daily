@@ -27,8 +27,44 @@ find tmp/forall -mindepth 1 -mtime +2 -exec rm '{}' 2>/dev/null \;
 mkdir -p tmp/forall
 chmod a+rwx tmp/forall
 
+# Any classes which will expire in one month ?
+cd $WIMS_HOME/log/classes
+for cls in [0-9]*
+do
+exp=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
+
+# exp is the expiration date minus one month (-100 if the month is different 
+# from january , -8900 else)
+exp1=`expr "$exp" : "....\(.*\).."`;
+exp2=$exp
+if [ "$exp1" -eq "01" ]; then exp=`expr $exp - 8900`; else  exp=`expr $exp - 100`; fi
+if [ "$exp" -eq "$today" ]; then
+email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' $cls/.def`
+inst=`awk -F'=' '$1=="!set class_institution" {print $2; exit}' $cls/.def`
+desc=`awk -F'=' '$1=="!set class_description" {print $2; exit}' $cls/.def`
+host=`hostname`
+mail $w_mail_opt -s "WIMS virtual class will expire in 30 days" "$email" <<@
+
+You have created a virtual class
+
+$inst, $desc
+
+(code $cls) on the site $host. This class will be closed in one month
+because it will reach its expiration date.
+
+To get an archive file of the contents of this class, follow this link :
+
+--- WIMS (WWW Interactive Multipurpose Server)
+http://$host/wims/wims.cgi?module=adm/class/classes&+type=authsupervisor&+class=$cls
+
+@
+echo "$today housekeep class-advertising $cls: $email" >>$WIMS_HOME/log/mail.log
+fi
+
+done
+
 # Any expired classes?
-cd log/classes
+cd $WIMS_HOME/log/classes
 for cls in [0-9]*
 do
  exp=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
