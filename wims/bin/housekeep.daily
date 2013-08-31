@@ -36,7 +36,6 @@ exp=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
 # exp is the expiration date minus one month (-100 if the month is different 
 # from january , -8900 else)
 exp1=`expr "$exp" : "....\(.*\).."`;
-exp2=$exp
 if [ "$exp1" -eq "01" ]; then exp=`expr $exp - 8900`; else  exp=`expr $exp - 100`; fi
 if [ "$exp" -eq "$today" ]; then
 email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' $cls/.def`
