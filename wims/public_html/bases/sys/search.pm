@@ -2,7 +2,7 @@ package search;
 
 use strict;
 use warnings;
-use Encode;  
+use Encode;
 
 use Exporter;
 our @ISA = 'Exporter';
@@ -11,7 +11,7 @@ our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','tr
 sub treate_domainfile { my ($file) = @_;
    my %ref = ( ) ; my $ref=\%ref; my $text;
    open IN, "$file";
-   while (<IN>) { 
+   while (<IN>) {
    $text = $_ ;
    $text =~ s/\n +/\n/g;
    $text =~ s/\\//g;
@@ -27,7 +27,7 @@ sub treate_domainfile { my ($file) = @_;
  %ref;
 }
 
-sub treate_accent {my ($txt) = @_; 
+sub treate_accent {my ($txt) = @_;
   $txt=decode('iso-8859-1',$txt);
   $txt =~ tr/éèêëàáâãäåùìíîïóôòç/eeeeaaaaaauiiiioooc/;
   $txt =~ s/[ÀÁÂÃÄÅ]/A/g;
@@ -44,12 +44,12 @@ sub out { my ($bloc, $text) = @_;
 }
 
 sub sortuniq {
-  return if !(@_) ; 
+  return if !(@_) ;
   my $prev = "not $_[0]";
   grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
 }
 
-sub listdomain { my ($file)=@_ ; 
+sub listdomain { my ($file)=@_ ;
   my $text='';
   open IN, "$file";
   while (<IN>) { $text = $_ ;
@@ -71,13 +71,13 @@ sub hashdomain { my ($file)=@_;
  while (<IN>) { my $text=$_ ; $text=~ s/\\\n\s*//g;
    $text=~ s/\n\s+/\n/g;
    my @text= split("\n", $text);
-   for my $line (@text) { 
+   for my $line (@text) {
      next if !($line) ;
      $line =~ s/\s+//g;
      my @cut=split(":", $line) ;
      if ($cut[1]) {
        my @son=split(',',$cut[1]);
-      for my $s (@son) { 
+      for my $s (@son) {
         if ($ref{$s}) { $ref{$s} .= "," . $cut[0]} else {$ref{$s} = $cut[0]}
       }
      }

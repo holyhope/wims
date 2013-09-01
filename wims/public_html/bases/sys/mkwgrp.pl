@@ -10,6 +10,7 @@ my @site_lang= treate_language ();
 my $dir='../../modules';
 my $site='../site/lists';
 my $ddir='domain';
+my $outputkeywords='tmp';
 my $dom_templ='domain/domain.template';
 my $dom_reverse='domain/reversedomain';
 my $dom_json='domain/domain.json';
@@ -103,10 +104,10 @@ for my $lang (@site_lang) {
  next if !(-e "$ddir/domain.$lang");
  my %dom = treate_domainfile ("$ddir/domain.$lang");
  while ( my ($key, $value) = each(%dom) ) {
-   push @ALL, lc($value);}
+   push @ALL, lc(treate_accent($value)) ;}
  out("keywords/list.$lang", join(",",sortuniq(@list)));
- out("keywords/keywords.$lang.json.tmp",
-     "\"" . join("\",\n\"",sortuniq(@ALL) ) . "\""
+ out("$outputkeywords/keywords.$lang.json",
+     "[\"" . join("\",\n\"",sortuniq(@ALL) ) . "\"]"
 );
 
 }
@@ -156,7 +157,8 @@ sub treate_index { my ($file, $lang, $ref) = @_;
 sub treate_group { my ($line) = @_ ;
   $line=~ s/keywords_(\w+)\s*=\s*//g;
   $line=~ s/keywords\s*=\s*//g;
-    $line=treate_accent($line);
+  $line=treate_accent($line);
+  $line =~ s/\./,/g;
   my @k = split(',', $line);
   my @tmp;
   for my $la (@k) { $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
@@ -177,7 +179,7 @@ sub treate_keyword { my ($line) = @_ ;
   for my $la (@k) {
   $la =~ s/^\s+//g; $la =~ s/\s+$//g; $la=lc($la);
   ##$la=~ s/($nokeyword)//g;
-  if ($la) {
+  if ($la && length($la) > 2 ) {
     if ($tmp) { $tmp .= "\n" . join("\n",split(',', $la))}
       else
       {$tmp = join("\n",split(',', $la))}
