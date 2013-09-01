@@ -1318,7 +1318,6 @@ sub def { my ($ref, @style) = @_;
   }
   close IN;
   $header .= "\t<script type=\"text/javascript\">"
-   . "jQuery.noConflict();"
    . "jQuery(function() {jQuery( \"#left_toc\" ).menu();});" 
    . "jQuery(function() {jQuery( \"#right_toc\" ).menu();});"
    . "</script>" if ($TOOLTIP==1);
