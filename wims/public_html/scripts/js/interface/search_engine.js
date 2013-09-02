@@ -1,5 +1,5 @@
 /********* search_engine.js  ************************************************************************
-	scripts dédiés au moteur de recherche de WIMS, déclanchant l'autocompletion
+	scripts dedies au moteur de recherche de WIMS, declenchant l'autocompletion
 ****************************************************************************************************/
 
 function start_multicomplete(){

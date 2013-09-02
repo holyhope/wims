@@ -2,8 +2,8 @@
 /********* Autocomplete.js  ************************************************************************
     Autocompletion d'un champ texte 
     ajoutez la classe "multicomplete" ou "autocomplete" au choix sur l'input, selon que vous 
-    souhaitez autoriser un ou plusieurs mot-clés.
-    Puis lancez set_multicomplete, ou set_autocomplete avec la liste des mots clés en parametre
+    souhaitez autoriser un ou plusieurs mot-cles.
+    Puis lancez set_multicomplete, ou set_autocomplete avec la liste des mots cles en parametre
 ****************************************************************************************************/
 
 
