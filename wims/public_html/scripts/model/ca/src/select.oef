@@ -105,7 +105,7 @@ wims(makelist x for x = 1 to \cnt_question)}
   \text{texte=wims(replace internal ; by  <br/> in \texte)}
 }
 
-\text{autocompletion=\format iswordof case ? autocomplete=off}
+\text{autocompletion=\format iswordof case ? autocomplete="off"}
 \integer{first_step=\first_step notwordof 0 ? 1}
 \text{option_reaccent=\reaccent!=yes ? noreaccent:}
 \text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
@@ -163,7 +163,7 @@ wims(makelist x for x = 1 to \cnt_question)}
 \text{nombre=wims(makelist x for x = 1 to \cnt)}
 %%%%%%%%%%%
 
-\statement{\nopaste <p>\instruction</p>
+\statement{\nopaste <div>\instruction</div>
 \preliminaire
   \if{\reading notsametext }{\special{help reading,[à lire]}}
   \if{\image notsametext }{\special{help image,[à regarder]}}
@@ -171,7 +171,7 @@ wims(makelist x for x = 1 to \cnt_question)}
   \if{\step=\first_step}{
     <div class="question">
    \if{\format iswordof flashcard}{
-     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}  
+     <div> \for{h=1 to \cnt}{\texte[\h] }</div>}  
     \for{h=1 to \cnt}{
       \embed{reply 1,\h} 
     }
@@ -187,7 +187,7 @@ wims(makelist x for x = 1 to \cnt_question)}
       }
     }
     </div>
-     <p>\instruction2</p>
+     <div>\instruction2</div>
     <div class="question">
     <table>
    \for{s= 1 to \cnt_mot}{
@@ -198,7 +198,7 @@ wims(makelist x for x = 1 to \cnt_question)}
    </div>
  }
  \if{\pos_rep=inside}{
-    <p>\instruction2</p>
+    <div>\instruction2</div>
     <div class="question">
     \for{s = 1 to \cnt}{
       \if{\s notitemof \Numero}{\texte[\s]}{
