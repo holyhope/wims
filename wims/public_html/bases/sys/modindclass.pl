@@ -52,9 +52,10 @@ for my $l (@Lang) { my $text='';
   }
  }
    while ( my ($key, $value) = each (%keywords) ) {
-     $text .= "$key:$value\n" ; 
+     my $v = join(" ", sortuniq(split(" ",$value)));
+     $text .= "$key:$v\n" ; 
    }
-   $text =~ s / +(\w+:)/$1/g;
+   $text =~ s / +(\w+:)/ $1/g;
    out("$dirout/$l", join("\n", sortuniq(split("\n",$text)))); 
 }
 
