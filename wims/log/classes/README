@@ -43,6 +43,37 @@ Le fichier .userlist doit donc contenir la ligne
 et recompiler (ou /.build-index dans wims/log/classes) 
 pour qu'elles apparaissent en tant que classe d'exemple
 
+%%%%%%
+Feuilles d'exercice :
+les feuilles sont automatiquement mises dans un répertoire public_html/bases/sheets/
+par le script bin/mkexamplesheet.sh.
+
+title
+description
+duration, date
+severity
+level (E1... U4)
+domain (mots imposés en anglais, voir la liste qui peut augmenter)
+keywords (mots ou groupes de mots séparés par des virgules)
+author
+email
+comment
+
+Pour l'instant, les mots clés ne sont reconnus s'ils existent aussi dans un module !
+
+Les descriptions sur la feuille peuvent être mis dans l'en-tête de la feuille
+ou dans le fichier .sheets (si certains champs ne sont pas remplis, laisser les lignes vides)
+description
+durée,date
+niveau (slevel : numero de la classe pour le secondaire ou T pour terminal)
+niveau (E1... U4)
+domain (mots imposés en anglais, voir la liste qui peut augmenter)
+keyword (mots ou groupes de mots séparés par des virgules)
+author
+email
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%
 
 class_type=0 classe
@@ -63,3 +94,7 @@ class_type=2
  le fichier .subclasses est créé dans la classe
 
 à exploiter
+
+%%%%%
+
+class=1128; level=H1;for i in `seq 30` ; do diff log/classes/$class/sheets/.sheet$i public_html/bases/sheet/fr/$level/$class/sheet$i.def ; done
