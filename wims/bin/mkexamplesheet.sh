@@ -8,6 +8,11 @@
 # this script is launch by mkindex. Don't use it directly
 # 
 
+## level, lang, supervisor, email are those of the class
+## if information is in the file .sheet$i, take it
+## if not, take the information in the file .sheets
+## if not, make something by default
+
 whome="$1"
 if [ -z "$whome" ]; then
  echo "don't use this script directly. execute mkindex";
@@ -23,6 +28,7 @@ for cls in $clist; do
   lang=`awk -F'=' '$1=="!set class_lang" {print $2; exit}' ./$cls/.def`;
   sup=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' ./$cls/.def`;
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' ./$cls/.def`;
+  domain=`awk -F'=' '$1=="!set class_domain" {print $2; exit}' ./$cls/.def`;
   if [ -n "$level" -a -n "$lang" ]; then
    cd $cls/sheets/;
   # echo "--------------- $cls ; $level ; $lang"
@@ -38,7 +44,7 @@ for cls in $clist; do
      namesh=${sh##.};
      if [ -n "$entete" ]; then
       #First case : information is in file .sheet$i : keep it (but not title and desc)
-     # echo "$sh : direct copy";
+      # echo "$sh : direct copy";
       title=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==3){print($0);exit;}} }' .sheets`;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       echo "$title
@@ -51,12 +57,13 @@ $desc" >$tmptarget/$namesh.def;
       title=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==3){print($0);exit;}} }' .sheets`;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       keyword=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==6){print($0);exit;}} }' .sheets`;
+      domain1=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==5){print($0);exit;}} }' .sheets`;
       ## if keyword is empty, take the level (only for H)
       if [ ! -n "$keyword" ]; then 
        if [ -n "$slevel" ]; then 
         keyword=`echo "$slevel"`;
        else
-        keyword=`echo "$level"`;
+        keyword=`echo "level$level"`;
        fi ;
       fi;
      # echo "$sh : make presentation";
@@ -65,7 +72,7 @@ $desc
 ??,$dt
 2
 $level
-
+$domain, $domain1
 $keyword
 $sup
 $email" > $tmptarget/$namesh.def;
