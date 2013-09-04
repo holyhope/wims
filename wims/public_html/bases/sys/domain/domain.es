@@ -1,3 +1,5 @@
+2_shape:
+3_shape:
 abelian_group:
 abstract_algebra:álgebra abstracta
 affine_geometry:geometría afín
@@ -9,6 +11,7 @@ american_civilisation:
 analysis:análisis
 analytic_geometry:geometría analítica
 angles:ángulos
+area:
 arithmetic:aritmética
 arts:
 aylor_expansion:expansión de Taylor
@@ -24,11 +27,14 @@ chemistry:
 cinematics:
 circle:círculos
 circles:círculo
+civic_education:
 code:teoría de la encriptación
 coding:teoría de la encriptación
 combination:combinación
 combinatorics:combinatoria
+complex_analysis:
 complex_number:números complejos
+complex_plane:
 conditional_probability:
 confidence_interval:
 congruence:congruencia
@@ -40,6 +46,7 @@ cryptology:criptología
 curves:curvas
 cyclic_group:
 data_analysis:datos estadísticos
+data_gestion:
 decimals:decimales
 definite_integral:integrales definidas	
 derivative:derivadas
@@ -58,7 +65,6 @@ electricity:Electricité
 electronics:Electronique
 electrostatics:Electrostatique
 elementary_algebra:álgebra elemental
-elementary_arithmetic:
 elementary_calculus:
 elementary_geometry:
 elementary_mathematics:
@@ -74,6 +80,8 @@ etymology:
 euclidean_algorithm:división euclidea
 euclidean_geometry:geometría euclídea
 events:
+exponent:
+exponential:
 factorial:factorial
 factorization:factorización
 field:cuerpos
@@ -84,7 +92,9 @@ fourier_series:series de Fourier
 fourier_transform:transformaciones de Fourier
 fraction:fracciones
 french:
+french_conjugation:
 french_grammar:
+french_spelling:
 functions:funciones
 gas_mechanics:
 gcd_lcm:pgcd ppcm
@@ -104,6 +114,7 @@ hamming:distancia de Hamming
 histogram:
 histology:
 history:
+homography:
 hyperbola:hipérbole
 hyperplane:hiperplanos
 immunology:
@@ -127,6 +138,7 @@ lines:líneas
 linguistics:
 lissajous:Lissajous
 listening:
+logarithm:
 logic:lógica
 magnetism:
 maps:aplicaciones
@@ -137,6 +149,7 @@ mean:medias
 measurement:
 mechanics:
 medecine:
+methodical_calculation:
 misc:miscelánea
 modular_arithmetic:aritmética modular
 music:
@@ -162,7 +175,6 @@ plane:planos
 polar_curves:curvas polares
 polygons:polígonos
 polynomials:polinomios
-pre_algebra:
 prealg:pre-álgebra
 precalc:pre-cálculo
 primes:números primos
@@ -177,13 +189,17 @@ proportionality:proporcionalidad
 quotient_group:
 random:
 random_variable:
+rational_number:
 reading:
 real_function:
 real_number:números reales
 rectangles:rectángulos
+relative_number:
 ring:anillos
 roots:raíces
 ruler_and_compass:regla y compás
+sciences:
+scientific_notation:
 sequence:secuencias
 series:series
 set_theory:
@@ -201,12 +217,15 @@ taylor_expansion:
 taylor_series:series de Taylor
 technical_language:
 thermodynamics:
+time:
 transformation_group:
 triangles:triángulos
 trigonometry:trigonometría
 vector_space:espacios vectoriales
+vectorial_analysis:
 vectors:vectores
 vibration:
 vocabulary:
+volume:
 weaver:
 written_english:

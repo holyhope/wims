@@ -1,3 +1,5 @@
+2_shape:
+3_shape:
 Bezout_algorithm:Bezout algoritme
 Fourier_series:Fourier reeksen
 Fourier_transforms:Fourier transformaties
@@ -13,6 +15,7 @@ american_civilisation:
 analysis:analyse
 analytic_geometry:analytische geometrie
 angles:hoeken
+area:
 arithmetic:rekenkunde
 arts:
 bilinear_algebra:
@@ -47,6 +50,7 @@ cryptology:cryptologie
 curves:kurves
 cyclic_group:
 data_analysis:statistische data
+data_gestion:
 decimals:decimalen
 definite_integral:eindige integralen
 derivative:afgeleide
@@ -80,6 +84,8 @@ etymology:
 euclidean_algorithm:euclidisch algoritme
 euclidean_geometry:euclidische geometrie
 events:
+exponent:
+exponential:
 factorial:factorisaties
 factorization:ontleden
 field:velden
@@ -137,6 +143,7 @@ lines:
 linguistics:
 lissajous:Lissajous figuren
 listening:
+logarithm:
 logic:logica
 magnetism:
 maps:
@@ -147,6 +154,7 @@ mean:gemiddelde
 measurement:
 mechanics:
 medecine:
+methodical_calculation:
 misc:diversen
 modular_arithmetic:modulaire rekenkunde
 music:
@@ -187,14 +195,17 @@ proportionality:proportionaliteit
 quotient_group:
 random:
 random_variable:
+rational_number:
 reading:
 real_function:
 real_number:reeele getallen
 rectangles:vierkanten
+relative_number:
 ring:ringen
 roots:wortels
 ruler_and_compass:passer en lineaal
 sciences:
+scientific_notation:
 sequence:rijen
 series:reeksen
 set_theory:
@@ -211,6 +222,7 @@ taylor_expansion:Taylor expansie
 taylor_series:Taylor reeksontwikkeling
 technical_language:
 thermodynamics:
+time:
 transformation_group:
 triangles:driehoeken
 trigonometry:trigoniometrie
@@ -219,5 +231,6 @@ vectorial_analysis:
 vectors:vectoren
 vibration:
 vocabulary:
+volume:
 weaver:
 written_english:
