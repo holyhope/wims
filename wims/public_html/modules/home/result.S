@@ -15,9 +15,14 @@
  !set m_=!line $i of $gotm
  !set t_=!line $i of $gott
  !set d_=!line $i of $gotd
+ !set i_=!line $i of $goti
+ !set n_=!line $i of $gotm_
+ !if $i_=$n_
+   !set i_=$d_
+ !endif
  <li class="wims_home_result_list">
  !href module=adm/sheet&job=read&sh=$search_lang/$m_ $t_
-, $d_
+, $i_
 </li>
 !next i
 </ul>

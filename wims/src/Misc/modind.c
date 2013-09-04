@@ -47,7 +47,7 @@ char allang[MAX_LANGS][4]={
 char ignore[MAX_LANGS][MAX_LINELEN+1];
 char mlistfile[MAX_LANGS][256];
 int langcnt;
-FILE *langf, *titf, *descf, *weightf, *robotf, *indf, *listf, *addrf, *serialf, *authorf, *versionf;
+FILE *langf, *titf, *descf, *weightf, *robotf, *indf, *listf, *addrf, *serialf, *authorf, *versionf, *remf;
 
 struct cat {
     char *name;
@@ -745,6 +745,8 @@ void onesheet(int serial, int lind)
     fprintf(listf,"%s\n",mod[serial].name+3);
     fprintf(titf,"%d:%s\n",serial,sindbuf[s_title]);
     fprintf(descf,"%d:%s\n",serial,sindbuf[s_description]);
+    fprintf(remf,"%d:%s\n",serial,sindbuf[s_remark]);
+    
     entrycount=dentrycount; dicbuf=ddicbuf;
     memmove(entry,dentry,dentrycount*sizeof(entry[0]));
     unknown_type=unk_leave;
@@ -807,7 +809,7 @@ void onesheet(int serial, int lind)
 void sheets(void)
 {
     int i,j;
-    char mdic[MAX_LINELEN+1], sdic[MAX_LINELEN+1], gdic[MAX_LINELEN+1];
+    char mdic[MAX_LINELEN+1], sdic[MAX_LINELEN+1], gdic[MAX_LINELEN+1], ddic[MAX_LINELEN+1];
     char buf[MAX_LINELEN+1];
     
     for(j=0;j<langcnt;j++) {
@@ -823,11 +825,14 @@ void sheets(void)
     weightf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/addr.%s",sheetdir,lang[j]);
     addrf=fopen(buf,"w");
+    snprintf(buf,sizeof(buf),"%s/index/remark.%s",sheetdir,lang[j]);
+    remf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/serial.%s",sheetdir,lang[j]);
     serialf=fopen(buf,"w");
     snprintf(mdic,sizeof(mdic),"%s/%s.%s",dicdir,maindic,lang[j]);
     snprintf(sdic,sizeof(sdic),"%s/%s.%s",dicdir,suffixdic,lang[j]);
     snprintf(gdic,sizeof(gdic),"%s/%s.%s",dicdir,groupdic,lang[j]);
+    snprintf(ddic,sizeof(ddic),"%s/%s.%s",dicdir,domaindic,lang[j]);
     suffix_dic(sdic); prepare_dic(gdic);
     gdicbuf=dicbuf; gentrycount=entrycount;
     memmove(gentry,entry,gentrycount*sizeof(entry[0]));
@@ -844,6 +849,7 @@ void sheets(void)
     if(mentrycount>0) free(mdicbuf);
     if(gentrycount>0) free(gdicbuf);
     if(suffixcnt>0) free(sufbuf);
+    if(dentrycount>0) free(ddicbuf);
     fclose(titf); fclose(descf); fclose(indf); fclose(listf);
     fclose(weightf); fclose(addrf); fclose(serialf);
     }

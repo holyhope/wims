@@ -1,7 +1,7 @@
 !!##sheet
 basedir=bases/sheet/index
 !if $srch!=$empty
- suffix_dictionary=
+ suffix_dictionary=bases/sys/suffix.$search_lang
  dictionary=$basedir/$search_lang
  translator_unknown=
  !read search.common
@@ -58,8 +58,11 @@ translator_switch=leaveline
 
 dictionary=$basedir/title.$search_lang
 gott=!exec translator $gotm
-dictionary=$basedir/description.$search_lang
-gotd=!exec translator $gotm
+dictionary=$basedir/remark.$search_lang
+goti=!exec translator $gotm
+gotm_=!replace internal $ $ by $\
+$ in $gotm
+
 !if $gotcnt>0 and / notin $gotm
  dictionary=$basedir/addr.$search_lang
  gotm=!exec translator $gotm

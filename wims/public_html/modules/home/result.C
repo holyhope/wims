@@ -19,10 +19,11 @@
  !set i_=!line $i of $goti
  <li class="wims_home_result_list">
  !href module=home&user=anonymous,$m_,anonymous $t_
+.
  !if $i_!=$m_
   $i_
  !endif
-<span class="small">$d_</span>)
+<span class="small">$d_</span>
 </li>
 !next i
 </ul>
