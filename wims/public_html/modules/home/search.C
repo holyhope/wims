@@ -49,3 +49,5 @@ gotd=!exec translator $gotm
  dictionary=$basedir/addr
  gotm=!exec translator $gotm
 !endif
+dictionary=$basedir/info
+goti=!exec translator $gotm
