@@ -58,8 +58,8 @@ translator_switch=leaveline
 
 dictionary=$basedir/title.$search_lang
 gott=!exec translator $gotm
-dictionary=$basedir/remark.$search_lang
-goti=!exec translator $gotm
+dictionary=$basedir/information.$search_lang
+gotiS=!exec translator $gotm
 gotm_=!replace internal $ $ by $\
 $ in $gotm
 
@@ -67,4 +67,3 @@ $ in $gotm
  dictionary=$basedir/addr.$search_lang
  gotm=!exec translator $gotm
 !endif
-

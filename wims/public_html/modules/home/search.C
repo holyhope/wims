@@ -45,11 +45,10 @@ dictionary=$basedir/title
 gott=!exec translator $gotm
 dictionary=$basedir/description
 gotd=!exec translator $gotm
-dictionary=$basedir/info
-goti=!exec translator $gotm
+dictionary=$basedir/information
+gotiC=!exec translator $gotm
 
 !if $gotcnt>0 and / notin $gotm
  dictionary=$basedir/addr
  gotm=!exec translator $gotm
 !endif
-

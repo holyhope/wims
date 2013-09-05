@@ -390,7 +390,7 @@ char *sheetindex[]={
       "title", "description",
       "duration", "severity",
       "level", "domain",
-      "keywords", "reserved1", "reserved2", "remark"
+      "keywords", "reserved1", "reserved2", "information"
 };
 #define SHEETINDEX_NO (sizeof(sheetindex)/sizeof(sheetindex[0]))
 char sindbuf[SHEETINDEX_NO][MAX_LINELEN+1];
@@ -398,7 +398,7 @@ enum{s_title, s_description,
       s_duration, s_severity,
       s_level, s_domain,
       s_keywords, s_reserved1, s_reserved2,
-      s_remark
+      s_information
 };
 
 char *modindex[]={
@@ -475,7 +475,7 @@ int sheet_index(int serial)
     else *p2=0;
     p1=find_word_start(p1); strip_trailing_spaces(p1);
     for(p2=p1;*p2;p2++) if(*p2=='\n') *p2=' ';
-    ovlstrcpy(sindbuf[s_remark],p1);
+    ovlstrcpy(sindbuf[s_information],p1);
     return 0;
 }
 
@@ -736,7 +736,7 @@ void onesheet(int serial, int lind)
 {
     int i;
     unsigned char trlist[]={
-    s_title,s_description,s_domain,s_keywords,s_remark
+    s_title,s_description,s_domain,s_keywords,s_information
     };
     #define trcnt (sizeof(trlist)/sizeof(trlist[0]))
     char *p1, *p2, buf[MAX_LINELEN+1];
@@ -745,7 +745,7 @@ void onesheet(int serial, int lind)
     fprintf(listf,"%s\n",mod[serial].name+3);
     fprintf(titf,"%d:%s\n",serial,sindbuf[s_title]);
     fprintf(descf,"%d:%s\n",serial,sindbuf[s_description]);
-    fprintf(remf,"%d:%s\n",serial,sindbuf[s_remark]);
+    fprintf(remf,"%d:%s\n",serial,sindbuf[s_information]);
     
     entrycount=dentrycount; dicbuf=ddicbuf;
     memmove(entry,dentry,dentrycount*sizeof(entry[0]));
@@ -774,7 +774,7 @@ void onesheet(int serial, int lind)
     }
     snprintf(buf,sizeof(buf),"%s %s %s %s",
          sindbuf[s_description],sindbuf[s_keywords],
-         sindbuf[s_domain],sindbuf[s_remark]);
+         sindbuf[s_domain],sindbuf[s_information]);
     towords(buf);
     for(p1=find_word_start(buf);*p1;
     p1=find_word_start(p2)) {
@@ -794,7 +794,7 @@ void onesheet(int serial, int lind)
     }
     snprintf(buf,sizeof(buf),"%s, %s, %s, %s",
          sindbuf[s_description],sindbuf[s_keywords],
-         sindbuf[s_domain],sindbuf[s_remark]);
+         sindbuf[s_domain],sindbuf[s_information]);
     translate(buf);
     for(p1=find_word_start(buf); *p1;
     p1=find_word_start(p2)) {
@@ -825,7 +825,7 @@ void sheets(void)
     weightf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/addr.%s",sheetdir,lang[j]);
     addrf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/remark.%s",sheetdir,lang[j]);
+    snprintf(buf,sizeof(buf),"%s/index/information.%s",sheetdir,lang[j]);
     remf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/serial.%s",sheetdir,lang[j]);
     serialf=fopen(buf,"w");

@@ -15,7 +15,7 @@
  !set m_=!line $i of $gotm
  !set t_=!line $i of $gott
  !set d_=!line $i of $gotd
- !set i_=!line $i of $goti
+ !set i_=!line $i of $gotiS
  !set n_=!line $i of $gotm_
  !if $i_=$n_
    !set i_=$d_

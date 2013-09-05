@@ -13,7 +13,7 @@ my $ref=\%ref;
 my @list=listclass();
 my $dirout="../class";
 $ref=refclass(@list);
-my @Key = ('supervisor','domain','level','lang','institution','description','addr','keywords','title', 'info');
+my @Key = ('supervisor','domain','level','lang','institution','description','addr','keywords','title', 'information');
 my @Lang= ('fr','en','it','nl') ; 
 my %T = ('version' => 'version',
 'lang' => 'language',
@@ -21,7 +21,7 @@ my %T = ('version' => 'version',
 'supervisor' => 'author',
 'institution' => 'description',
 'level' => 'level',
-'info' => 'info',
+'information' => 'information',
 );
 my %keywords=();
 

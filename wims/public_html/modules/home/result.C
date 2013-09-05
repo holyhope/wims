@@ -16,7 +16,7 @@
  !set m_=!line $i of $gotm
  !set t_=!line $i of $gott
  !set d_=!line $i of $gotd
- !set i_=!line $i of $goti
+ !set i_=!line $i of $gotiC
  <li class="wims_home_result_list">
  !href module=home&user=anonymous,$m_,anonymous $t_
 .
