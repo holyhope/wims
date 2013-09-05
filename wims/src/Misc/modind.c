@@ -839,6 +839,9 @@ void sheets(void)
     prepare_dic(mdic);
     mdicbuf=dicbuf; mentrycount=entrycount;
     memmove(mentry,entry,mentrycount*sizeof(entry[0]));
+    prepare_dic(ddic);
+    ddicbuf=dicbuf; dentrycount=entrycount;
+    memmove(dentry,entry,dentrycount*sizeof(entry[0]));
     unknown_type=unk_leave; translate(ignore[j]);
     for(i=0;i<modcnt;i++) {
         if(mod[i].langs[0]!=j) continue;
