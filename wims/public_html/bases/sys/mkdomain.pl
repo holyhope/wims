@@ -68,7 +68,7 @@ for my $la ( @site_lang) {
    push @D_lang, lc($value);
  };
  out("$dir/domain.$la.tmp", join("\n",sortuniq(@D)) . "\n");
- out("$dir/domaindic.$la", join("\n",sortuniq(@D_reverse)) . "\n");
+ out("$dir/domaindic.$la.tmp", join("\n",sortuniq(@D_reverse)) . "\n");
  out("$dir/domain.$la.json", "\"" . join("\",\n\"",sortuniq(@D_lang)) . "\"");
 }
 
