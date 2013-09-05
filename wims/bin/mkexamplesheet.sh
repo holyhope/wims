@@ -66,7 +66,8 @@ $desc" >$tmptarget/$namesh.def;
         keyword=`echo "level$level"`;
        fi ;
       fi;
-     # echo "$sh : make presentation";
+     # echo "$sh : make presentation"; leave the empty line after email for description
+     # of the sheet in the search engine
       echo "$title
 $desc
 ??,$dt
@@ -75,7 +76,9 @@ $level
 $domain, $domain1
 $keyword
 $sup
-$email" > $tmptarget/$namesh.def;
+$email
+
+" > $tmptarget/$namesh.def;
       cat $sh >> $tmptarget/$namesh.def;
      fi;
    # else
