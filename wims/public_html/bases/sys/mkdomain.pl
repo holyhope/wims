@@ -12,7 +12,7 @@
 ##                 with empty translation replaced by left member (= domain_name) of record
 ##                 and completed with domains appearing in domain but not in domain.xx.
 ##                 This is also sorted.
-# domaindic.xx   : dictionnary for modind
+# domaindic.xx.tmp   : dictionnary for modind
 use warnings;
 use strict;
 use search ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_domainfile', 'treate_language','treate_accent');
