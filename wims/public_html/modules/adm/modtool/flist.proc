@@ -97,6 +97,7 @@ mod=$modreq
  !default i_level=!listintersect $(level_def[1]) and $levellist
  i_copyright=$copyright
  !default i_copyright=$gnu
+ i_copyright=!replace internal \COPYING\> by "COPYING"> in  $i_copyright
  !if $year notwordof $i_copyright
   i_copyright=$i_copyright $year
  !endif
@@ -174,6 +175,7 @@ mod=$modreq
  !endif
  dest=$devdir/$mod
  src=modules/template/$cat1.$i_language
+ ind=!replace " by \\" in $ind
  !sh if [ ! -e "$dest" ]; then\
    mkdir -p $dest\
    cp -pR $src/* $dest\
