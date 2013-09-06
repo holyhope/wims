@@ -16,7 +16,7 @@ function include(fileName){
 
 }
 
-if (version==null)
+if (version===null)
 	var version = "fr";
 
 var liste = "-";
@@ -58,8 +58,9 @@ include('scripts_1/bd_js/'+version+'/slib_bd.js');
 include('scripts_1/bd_js/'+version+'/anstype_bd.js');
 
 // javascript_002.js et Redimensionne.js doivent permettre de redimensionner dynamiquement le textarea
-include('scripts_2/javascript_002.js');
-include('scripts_1/Redimensionne.js');
+// ==> Inutile aujourd'hui, tous les navigateurs le permettent nativement.
+//include('scripts_2/javascript_002.js');
+//include('scripts_1/Redimensionne.js');
 include('scripts_2/fonctions_generiques.js');
 
 // Les scripts "jalon..." sont uniquement utilises ici pour la fonction d'affichage d'une fenetre popup  

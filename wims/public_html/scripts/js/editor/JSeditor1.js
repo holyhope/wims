@@ -16,7 +16,7 @@ function include(fileName){
 
 }
 
-if (version==null)
+if (version===null)
 	var version = "fr";
 
 var liste = "-";
@@ -42,11 +42,6 @@ include('scripts_2/control.textarea.markdown1.js');
 /* gfcursor.js : Librairie de gestion du curseur dans un textearea  */
 /* permet d'ajouter l'instruction selectionnee au niveau du curseur par exemple   */
 include('scripts_2/gfcursor.js');
-
-// javascript_002.js et Redimensionne.js doivent permettre de redimensionner dynamiquement le textarea
-include('scripts_2/javascript_002.js');
-include('scripts_1/Redimensionne.js');
-//include('scripts_2/fonctions_generiques.js');
 
 switch (Nom_Browser) {
  case "Netscape":

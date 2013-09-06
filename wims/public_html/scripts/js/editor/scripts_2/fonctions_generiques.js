@@ -55,7 +55,7 @@ function anime() {
 
 //anime2 :
 function anime2() {
-	if (chrono2 == null) chrono2 = setInterval("instruction()", 15);
+	if (chrono2 === null) chrono2 = setInterval("instruction()", 15);
 }
 
 //image :
@@ -63,7 +63,7 @@ function image() {
 	var url = document.getElementById("url").value;
 	var description = document.getElementById("description").value;
 	hudAnimationFermeture('hud_video_intro');
-	if (description == "") {
+	if (description === "") {
 		description=names["image_alt"];
 	}
     var image = "\\img{" + url + "}{alt='" + description + "'}";
@@ -196,7 +196,7 @@ function initlist() {
 		liste = liste + "<option>" + instructionsss[i] + "</option>";
 	}
 	formselect.innerHTML = "<form name='formu' onclick='afficheaide();'><select ondblclick='inser()' id='select' name='sel' size='10'>" + liste + "</select><br/><input type='button' class='wims_button' value='"+names["insert_selection"]+"' onclick='inser()' /></form>";
-    document.getElementById("name_list_instruction").innerHTML = titre_bd ; 
+    document.getElementById("name_list_instruction").innerHTML = titre_bd ;
 }
 
 function changerListeInstruction() {

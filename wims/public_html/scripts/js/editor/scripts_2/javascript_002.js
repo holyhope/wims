@@ -6,33 +6,33 @@ function Position(x, y)
   this.Add = function(val)
   {
     var newPos = new Position(this.X, this.Y);
-    if(val != null)
+    if(val !== null)
     {
       if(!isNaN(val.X))
         newPos.X += val.X;
       if(!isNaN(val.Y))
-        newPos.Y += val.Y
+        newPos.Y += val.Y;
     }
     return newPos;
-  }
+  };
   
   this.Subtract = function(val)
   {
     var newPos = new Position(this.X, this.Y);
-    if(val != null)
+    if(val !== null)
     {
       if(!isNaN(val.X))
         newPos.X -= val.X;
       if(!isNaN(val.Y))
-        newPos.Y -= val.Y
+        newPos.Y -= val.Y;
     }
     return newPos;
-  }
+  };
   
   this.Min = function(val)
   {
-    var newPos = new Position(this.X, this.Y)
-    if(val == null)
+    var newPos = new Position(this.X, this.Y);
+    if(val === null)
       return newPos;
     
     if(!isNaN(val.X) && this.X > val.X)
@@ -40,13 +40,13 @@ function Position(x, y)
     if(!isNaN(val.Y) && this.Y > val.Y)
       newPos.Y = val.Y;
     
-    return newPos;  
-  }
+    return newPos;
+  };
   
   this.Max = function(val)
   {
-    var newPos = new Position(this.X, this.Y)
-    if(val == null)
+    var newPos = new Position(this.X, this.Y);
+    if(val === null)
       return newPos;
     
     if(!isNaN(val.X) && this.X < val.X)
@@ -54,14 +54,14 @@ function Position(x, y)
     if(!isNaN(val.Y) && this.Y < val.Y)
       newPos.Y = val.Y;
     
-    return newPos;  
-  }  
+    return newPos;
+  };
   
   this.Bound = function(lower, upper)
   {
     var newPos = this.Max(lower);
     return newPos.Min(upper);
-  }
+  };
   
   this.Check = function()
   {
@@ -71,26 +71,26 @@ function Position(x, y)
     if(isNaN(newPos.Y))
       newPos.Y = 0;
     return newPos;
-  }
+  };
   
   this.Apply = function(element)
   {
     if(typeof(element) == "string")
       element = document.getElementById(element);
-    if(element == null)
+    if(element === null)
       return;
     if(!isNaN(this.X))
       element.style.left = this.X + 'px';
     if(!isNaN(this.Y))
-      element.style.top = this.Y + 'px';  
-  }
+      element.style.top = this.Y + 'px';
+  };
 }
 
 function hookEvent(element, eventName, callback)
 {
   if(typeof(element) == "string")
     element = document.getElementById(element);
-  if(element == null)
+  if(element === null)
     return;
   if(element.addEventListener)
   {
@@ -104,7 +104,7 @@ function unhookEvent(element, eventName, callback)
 {
   if(typeof(element) == "string")
     element = document.getElementById(element);
-  if(element == null)
+  if(element === null)
     return;
   if(element.removeEventListener)
     element.removeEventListener(eventName, callback, false);
@@ -147,7 +147,7 @@ function absoluteCursorPostion(eventObj)
   eventObj = eventObj ? eventObj : window.event;
   
   if(isNaN(window.scrollX))
-    return new Position(eventObj.clientX + document.documentElement.scrollLeft + document.body.scrollLeft, 
+    return new Position(eventObj.clientX + document.documentElement.scrollLeft + document.body.scrollLeft,
       eventObj.clientY + document.documentElement.scrollTop + document.body.scrollTop);
   else
     return new Position(eventObj.clientX + window.scrollX, eventObj.clientY + window.scrollY);
@@ -157,10 +157,10 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
 {
   if(typeof(element) == "string")
     element = document.getElementById(element);
-  if(element == null)
+  if(element === null)
       return;
   
-  if(lowerBound != null && upperBound != null)
+  if(lowerBound !== null && upperBound !== null)
   {
     var temp = lowerBound.Min(upperBound);
     upperBound = lowerBound.Max(upperBound);
@@ -174,16 +174,16 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
   var disposed = false;
   
   function dragStart(eventObj)
-  { 
+  {
     if(dragging || !listening || disposed) return;
     dragging = true;
     
-    if(startCallback != null)
+    if(startCallback !== null)
       startCallback(eventObj, element);
     
     cursorStartPos = absoluteCursorPostion(eventObj);
     
-    elementStartPos = new Position(parseInt(element.style.left), parseInt(element.style.top));
+    elementStartPos = new Position(parseInt(element.style.left,10), parseInt(element.style.top,10));
    
     elementStartPos = elementStartPos.Check();
     
@@ -199,12 +199,12 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     
     var newPos = absoluteCursorPostion(eventObj);
     newPos = newPos.Add(elementStartPos).Subtract(cursorStartPos);
-    newPos = newPos.Bound(lowerBound, upperBound)
+    newPos = newPos.Bound(lowerBound, upperBound);
     newPos.Apply(element);
-    if(moveCallback != null)
+    if(moveCallback !== null)
       moveCallback(newPos, element);
         
-    return cancelEvent(eventObj); 
+    return cancelEvent(eventObj);
   }
   
   function dragStopHook(eventObj)
@@ -220,7 +220,7 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     unhookEvent(document, "mouseup", dragStopHook);
     cursorStartPos = null;
     elementStartPos = null;
-    if(endCallback != null)
+    if(endCallback !== null)
       endCallback(element);
     dragging = false;
   }
@@ -230,21 +230,21 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     if(disposed) return;
     this.StopListening(true);
     element = null;
-    attachElement = null
+    attachElement = null;
     lowerBound = null;
     upperBound = null;
     startCallback = null;
-    moveCallback = null
+    moveCallback = null;
     endCallback = null;
     disposed = true;
-  }
+  };
   
   this.StartListening = function()
   {
     if(listening || disposed) return;
     listening = true;
     hookEvent(attachElement, "mousedown", dragStart);
-  }
+  };
   
   this.StopListening = function(stopCurrentDragging)
   {
@@ -254,15 +254,15 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     
     if(stopCurrentDragging && dragging)
       dragStop();
-  }
+  };
   
-  this.IsDragging = function(){ return dragging; }
-  this.IsListening = function() { return listening; }
-  this.IsDisposed = function() { return disposed; }
+  this.IsDragging = function(){ return dragging; };
+  this.IsListening = function() { return listening; };
+  this.IsDisposed = function() { return disposed; };
   
   if(typeof(attachElement) == "string")
     attachElement = document.getElementById(attachElement);
-  if(attachElement == null)
+  if(attachElement === null)
     attachElement = element;
     
   if(!attachLater)

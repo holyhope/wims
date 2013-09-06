@@ -1,3 +1,8 @@
+/** Redimensionne.js
+  Permet de redimensionner un element en "tirant" dessus avec la souris.
+  Utilisé au départ pour les textarea, mais cela devient obsolete, les navigateurs le gérant nativement.
+  ==> Inutilisé pour le moment ?
+*/
 
 function BottomMove(newPos, element)
 {
