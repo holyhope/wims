@@ -22,7 +22,11 @@
  !endif
  <li class="wims_home_result_list">
  !href module=adm/sheet&job=read&sh=$search_lang/$m_ $t_
+ !if $i_ != $empty
 , $i_
+ !else
+.
+!endif
 </li>
 !next i
 </ul>
