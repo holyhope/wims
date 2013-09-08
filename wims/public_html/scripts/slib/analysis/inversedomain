@@ -1,10 +1,10 @@
 !if $wims_read_parm!=slib_header
 !goto proc
 !endif
-slib_title=Image réciproque
-slib_parms=9\
-,f1\
-,f2\
+
+slib_parms=8\
+,[f1x,f1y] $wims_name_or [f1z]\
+,[f21,f22,...]\
 -2,xmin\
 2, xmax\
 -2, ymin\
@@ -13,16 +13,16 @@ red,color\
 html,option: html, url\
 
 slib_author=Bernadette, Perrin-Riou
-slib_out= code for drawing some regions given by inequations
-slib_comment=
+
 slib_example=[x,y], [y - 0.5, -y + 1],-2,2,-2,2,green,html\
 [x,y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
 [x-y,x+y], [x^2+y^2 -1,-x^2-y^2 + 2,-x*y+0.5],-2,2,-2,2,green,html\
 [x-y, x+y], [x^2-y, x^2+y],-2,2,-2,2,green,html\
  [x,y], [x^2-y, x^2+y,x],-2,2,-2,2,green,html\
- [x-y, x+y], [x^2-y^2,x],-2,2,-2,2,green,html\
+ [x-y, x+y], [x^2-y^2,x],-2,2,-2,2,blue,html\
  [x,y], [x^2-y^2,sin(x/10)+y],-5,5,-5,5,green,html\
- [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,red,html
+ [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,,url\
+ [-0.5 * i *z + 1.5],[-(x - 1)^2 - (y + 1)^2 + 0.5^2],-3.2,3.2,-3.2,3.2,,html
 
 !exit
 

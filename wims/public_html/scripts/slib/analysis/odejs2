@@ -1,9 +1,9 @@
 !if $wims_read_parm!=slib_header
 !goto proc
 !endif
-slib_title=Draw of a solution of a differential system with jsxgraph : x'=f1, y=f2\
-x and y as functions of t and (x,y) in the plane (x,y). 
-slib_parms=12\
+slib_author=Bernadette, Perrin-Riou
+
+slib_parms=11\
 ,f1\
 ,f2\
 400,size\
@@ -11,17 +11,11 @@ slib_parms=12\
 10,tmax\
 -10,xmin and ymin\
  10,xmax and ymax\
-[red,blue,green],color\
-[x0,y0],initial point of the solution\
-,data (in brackets) for cursors separated by ; (for each one : symbol used in expressions f1 and f2, name of the cursor, label for the cursor, init values (min,default,max).\
+[red,blue,green],color for draw of x(t), y(t), (x,y)\
+[x0,y0],initial point of the solution at t=tmin\
+,data (in brackets) for sliders separated by a semi-colon ; (for each one: symbol used in expressions f1 and f2, name of the slider, label for the slider, init values (min,default,max).\
 ,a number to identify the applet in case of multiple ones.
-slib_author=Bernadette, Perrin-Riou
-slib_out=Draw a solution of x'(t)=f1(t,x,y) , y'(t)=f2(t,x,y) for t > 0:
-  in the planes (t,x/y) and (x,y) (in the case where f1 different from 1).\
-It is possible to have equations depending on some cursors.
-slib_comment=The jsxgraph programm comes from an example on the website of jsxgraph. \
-The intervalle [tmin,tmax] must contains 0. For the moment, it is not possible to put\
-two such output in the same html page.
+
 slib_example= CC-y^2, x-y,300,-10,10,-10,10,[red,yellow,orange],[2,1],[CC,c,variable T,0,5,10],2
 
 
@@ -86,7 +80,7 @@ slib_script_main=var $brd = JXG.JSXGraph.initBoard('jsxbox$slib_number', \
   {boundingbox:[$[$(slib_tmin)-1],$slib_ymax,$slib_tmax,$slib_ymin],axis:true});\
 \
   $slib_script_cursor\
-  var L=$brd.createElement('line',[[$slib_tmin,0],[$slib_tmin,$slib_ymax]]);\
+  var L=$brd.createElement('line',[[$slib_tmin,0],[$slib_tmin,$slib_ymax]],{fixed:true});\
     starty$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[2]), L], {name:'$slib_n_y',strokeColor:'$slib_colory',fillColor:'$slib_colory',snapWidth:1});\
     startx$slib_number = $brd.createElement('$slib_glider', [0, $(slib_init[1]),L], {name:'$slib_n_x',strokeColor:'$slib_colorx',fillColor:'$slib_colorx'});\
 \
