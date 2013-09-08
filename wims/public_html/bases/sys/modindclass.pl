@@ -65,7 +65,14 @@ sub refclass { my @L=@_ ;
   for my $cl (@L) {
     open IN, "$dir/$cl/.def";
     while(<IN>) {
-    if ($_ =~ /!set class_(\w+)=\s*(.*)/) { $ref{$cl}{$1}=$2 ;}}
+    if ($_ =~ /!set class_(\w+)=\s*(.*)/) {
+    my $f = $1; my $r= $2 ;
+     if ($f =~ /\blevel/) {
+        $r=~ s/ //g;
+        if( $r) { $ref{$cl}{$f}= "level" . join(', level', split(',',$r)) ;}
+       } 
+       else { $ref{$cl}{$1}=$2 ;}}
+       }
     close IN;
   }
 }
