@@ -3,17 +3,18 @@
 # gifs/theme/mkindex
 #
 # Create an automatic file "icon.css" for each theme icon directory.
-# 
+# when adding a new icon, delete the file wimsedu/test
 ###############################################################################
 
 cd `dirname $0`
 type_list="png gif"
 
-if [ ! -s wimsedu1/home.png ] ;
+if [ ! -f wimsedu/test ] ;
  then
     cd wimsedu ;
     for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
     for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
+    touch test;
     cd .. ; 
 fi;
 
