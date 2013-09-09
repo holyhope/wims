@@ -217,6 +217,7 @@ statistical_test:
 statistics:statistiek
 surfaces:oppervlakken
 symmetric_group:
+symmetry:
 tangent:
 taylor_expansion:Taylor expansie
 taylor_series:Taylor reeksontwikkeling

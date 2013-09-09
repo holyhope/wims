@@ -212,6 +212,7 @@ statistical_test:
 statistics:estadística
 surfaces:superficies
 symmetric_group:
+symmetry:
 tangent:
 taylor_expansion:
 taylor_series:series de Taylor
