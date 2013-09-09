@@ -1,4 +1,4 @@
-
+!read adm/levelname.phtml
 !read adm/css.phtml
 !read tabletheme
 !header1
@@ -12,7 +12,6 @@
 		$title
 	</h1>
 </div>
-
 
 !if $toomany=yes
  !read lang/toomany.phtml.$modu_lang
@@ -96,13 +95,14 @@
   ($name_atmost $desclim $name_characters)
  </td></tr>
  !if $Cltype notin 24
+ !set nblevel=!itemcnt $wims_listlevel
  $table_tr<td><label for="level">$wims_name_level $name_classesss</label></td><td>
   <select name="level" id="level">
    !for k=1 to $nblevel
-    !if $(levelid[$k])=$level
-     <option selected="selected" value="$(levelid[$k])">$(leveldesc[$k])</option>
+    !if $(wims_listlevel[$k])=$level
+     <option selected="selected" value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
     !else
-     <option value="$(levelid[$k])">$(leveldesc[$k])</option>
+     <option value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
     !endif
    !next k
   </select>
@@ -229,10 +229,12 @@ $table_end
   !if $Cltype!=1
    <label for="passsup"> $wims_name_Password ($name_sup)</label> 
    <input type="password" name="passsup" id="passsup" maxlength="16" />
+    <br />
   !endif
   !if $pword!=$empty
    <label for="password">$wims_name_Password ($name_classesss)</label>
    <input type="password" name="password" id="password" maxlength="16" />
+   <br />
   !endif
   <p class="wimscenter"><input type="submit" value="$name_continue" /></p>
  </div>
@@ -260,8 +262,8 @@ $table_end
 !if $step=3
  !read lang/help.phtml.$modu_lang step3
  !if $Cltype iswordof 0 1
-  !let tmp=!positionof item $ilevel in $levelid
-  ($wims_name_level <span class="wims_emph">$(leveldesc[$tmp])</span>).
+  !let tmp=!positionof item $ilevel in $wims_listlevel
+  ($wims_name_level <span class="wims_emph">$(name_wims_listlevel[$tmp])</span>).
  !endif
  !read adm/class/initclass $code,auth
  !if $(class_authidp[1;])=cas 

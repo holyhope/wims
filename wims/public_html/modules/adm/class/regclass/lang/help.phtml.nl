@@ -51,8 +51,8 @@ U bent begonnen met het oprichten van
 !endif
 $name_classe $classname op de WIMS server van $httpd_HTTP_HOST,
 !if $Cltype iswordof 0 1
- !let tmp=!positionof item $ilevel in $levelid
- op leerniveau <span class="wims_emph">$(leveldesc[$tmp])</span>,
+ !let tmp=!positionof item $ilevel in $wims_listlevel
+ op leerniveau <span class="wims_emph">$(name_wims_listlevel[$tmp])</span>,
 !endif
 en met de verloopdatum $exp_day/$exp_month/$exp_year .
 Het maximum toegestane aantal  studenten in $classname is $ilimit . 

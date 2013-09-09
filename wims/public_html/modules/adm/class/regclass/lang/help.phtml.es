@@ -47,7 +47,8 @@ Una <span class="wims_emph">agrupación de clases</span> permite a los
  !endif
  $name_classe $classname en el sitio WIMS $httpd_HTTP_HOST,
  !if $Cltype=1
-  de nivel <span class="wims_emph">$name_level</span>,
+ !let tmp=!positionof item $ilevel in $wims_listlevel
+  de nivel <span class="wims_emph">$(name_wims_listlevel[$tmp])</span>,
  !endif
  que expirará el $exp_day/$exp_month/$exp_year. El número
  máximo de participantes es de $ilimit;
