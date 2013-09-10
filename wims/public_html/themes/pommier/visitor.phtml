@@ -1,0 +1,77 @@
+<!-- begin of $wims_theme/visitor.phtml -->
+!! WIMS main entrance page theme.
+!nocache
+!if $module!=home
+ !exit
+!endif
+
+!set home_theme=yes
+!set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
+</div>
+!read themes/_widgets/manager.phtml
+<div id="wimsfrontpage">
+
+ <div id="wimstopbox">
+  !set positionlogo=left
+  !read themes/_widgets/institution_logo.phtml
+
+  <div class="wimsmenu">
+    !!Language Selector
+	!read themes/_widgets/language_selector.phtml
+  </div><!--wimsmenu-->
+  <div class="wimsmenu">
+   !read themes/_widgets/virtualzone.phtml
+   !read themes/_widgets/authlogout.phtml
+  </div><!--wimsmenu-->
+
+ <br class="clearall"/>
+</div>
+<div id="wimsbodybox">
+  <div id="wimspagebox">
+   <div class="wimsbody">
+
+!read themes/_widgets/site_title.phtml
+
+!read ./form.phtml
+<br class="clearall" />
+!if $s_category=V
+ !read ./front.phtml
+!else
+ !read ./result.phtml
+!endif
+
+   </div><!--end wimsbody-->
+  </div><!--wimspagebox-->
+!distribute items div,div into div0,div1
+ <div id="wimsmenumodubox">
+   <$div0 class="wimsmenu">
+!read themes/_widgets/browsesite.phtml
+   </$div0>
+   <hr class="itemsep"/>
+   <$div0 class="wimsmenu">
+!read themes/_widgets/documentation.phtml
+   </$div0>
+     <hr class="itemsep"/>
+     <h2 class="menu_title">$CR_1</h2>
+     <$div0 class="wimsmenu">
+  !read themes/_widgets/devtools.phtml
+     </$div0>
+     <hr class="itemsep"/>
+     <$div0 class="wimsmenu">
+!read themes/_widgets/site.phtml
+     </$div0><!--wimsmenu-->
+!reset div0 div1
+ </div><!--wimsmenumodubox-->
+
+!distribute items div,span into div0,div1
+!read themes/_widgets/visitormenubox.phtml
+!reset div0 div1
+ </div><!--wimsbodybox-->
+
+ !read themes/_widgets/tailbox.phtml
+ </div><!--wimsfrontpage-->
+
+
+ </body>
+</html>
+<!-- end of $wims_theme/visitor.phtml -->

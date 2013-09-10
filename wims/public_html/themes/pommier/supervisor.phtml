@@ -1,0 +1,183 @@
+<!-- begin of $wims_theme/supervisor.phtml -->
+!! supervisor page definition.
+!nocache
+!if $module!=home
+ !exit
+!endif
+!set home_theme=yes
+
+!set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
+!set auth_method_list=cas,ldap,php
+!set auth_method=$(class_authidp[1;])
+!if $auth_method isitemof $auth_method_list
+  !set ext_login=$wims_external_auth
+!endif
+
+!default ext_login=$wims_realuser
+!default ext_login=$wims_user
+!default ext_login=supervisor
+!readproc tabletheme
+
+!read classlogo.phtml
+!if $class_logo!=
+ <div class="menuitem">
+ <div id="wimslogo$class_logoside">
+  <img src="$class_logo" alt="class logo" class="float_left"/>
+ </div><!--classlogo-->
+ </div><!-- menuitem-->
+!endif
+!read ./adm/title.phtml 2\
+$wims_classname, $wims_institutionname\
+($SU_log - $(wims_name_$class_typename))
+<br class="clearall" />
+
+!if _tool isin $wims_session
+ !read ./tools.phtml
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+ !goto end
+!endif
+!!definition for menumodubox
+!distribute items div,div into div0,div1
+
+!if $class_type isin 3
+ $SU_greet.
+ !read Subclasses1.phtml
+ !if $class_typename=level
+    </div><!--wimsbody-->
+   </div><!--wimspagebox-->
+  !read themes/_widgets/menumodubox3.phtml
+  !goto end
+ !else
+  !goto nocheck
+ !endif
+!endif class_type = 3
+
+!if $class_type notin 13
+ $SU_greet
+ $SU_exp1
+ !set d_=!char 7,8 of $class_expiration
+ !set m_=!char 5,6 of $class_expiration
+ !set y_=!char 1 to 4 of $class_expiration
+ !read adm/date.phtml date,$y_,$m_,$d_
+ !href module=adm/class/config $c_date_out
+ $SU_exp2.
+!else
+ $SU_greet.
+!endif
+!set wims_ref_class=wims_button_help
+!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_help
+<br />
+!if $wims_numpartconnected>0
+ $SU_numpartconnected.
+!else
+ $SU_nopartconnected.
+!endif
+
+!if $quota_free<2
+ !if $quota_free<0
+  <p>$wims_name_exceeded</p>
+  <p>
+  !href cmd=close&module=home&lang=$lang $wims_name_visitor
+  </p>
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+  !goto end
+ !else
+   <br /><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
+ !endif
+!endif
+:nocheck
+
+!if & isin $newmsgcnt or $newmsgcnt>0
+ <br />
+ !href module=adm/forum/mboard $U_newmsg
+!endif
+
+!if $class_type=4
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+ !read themes/_widgets/menumodubox4.phtml
+ !goto end
+!endif class_type=4
+
+!if $class_type=2
+ !if $subclasscnt>0
+  $table_header
+  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
+  !for i=1 to $subclasscnt
+   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+   !let f_aff=!item 4 of $f_class
+   !let f_name=!item 1 of $f_class
+   $table_tr
+    <td>$ADD_class $i</td>
+    <td>
+    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+    </td>
+    <td>
+     !item 9 of $f_class
+    </td>
+   </tr>
+  !next i
+  $table_end
+ !endif subclasscnt
+ 
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
+ !read themes/_widgets/menumodubox2.phtml
+ !goto end
+!endif class_type=2
+!! classtype =0 or 1
+<div id="wims_class_manager_msg">
+ !read ./wimshome/log/manager_msg.phtml.$lang
+</div>
+
+!set test=!replace / by , in $wims_class
+!if $(test[-1])=0 
+  !set test_up=!replace internal /0- by in $wims_class- 
+  !set wims_ref_class=wims_button
+  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
+!endif
+
+!set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+
+!if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
+ <p>$SU_nosheet</p>
+!else
+ $table_header
+ <caption>$SU_shlist &nbsp; [
+ !href module=adm/class/sequence $wims_name_reorder
+ ] </caption>
+ $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !read themes/_widgets/supervisorsubclass.phtml
+ !read themes/_widgets/supervisordoc.phtml
+ !read themes/_widgets/supervisordocp.phtml
+ !read themes/_widgets/supervisorsheet.phtml
+ !read themes/_widgets/supervisorexam.phtml
+ !read themes/_widgets/supervisorvote.phtml
+ $table_end
+!endif
+
+!read ./form.phtml
+<br class="clearall" />
+!read ./result.phtml
+</div><!--wimsbody-->
+</div><!--wimspagebox-->
+
+!read themes/_widgets/menumodubox0.phtml
+
+:end
+
+!reset div0 div1
+
+!distribute items div, span into div0,div1
+!read themes/_widgets/supervisormenubox.phtml
+!reset div0,div1
+
+</div><!--wimsbodybox-->
+
+!read themes/_widgets/visitorcredits.phtml
+</body>
+</html>
+<!-- end of $wims_theme/supervisor.phtml -->
