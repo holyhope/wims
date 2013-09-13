@@ -3,10 +3,10 @@
 use warnings;
 use strict;
 use Encode qw(encode decode);
-use search ('out', 'sortuniq', 'treate_accent', 'treate_language', 'treate_domainfile');
+use search ('out', 'sortuniq', 'treate_accent', 'treate_language', 'treate_dict');
 
 #use Text::Balanced qw (extract_bracketed extract_tagged);
-my @site_lang= treate_language ();
+my @site_lang=treate_language ();
 my $dir='../../modules';
 my $site='../site/lists';
 my $ddir='domain';
@@ -102,7 +102,7 @@ for my $lang (@site_lang) {
     };
  }
  next if !(-e "$ddir/domain.$lang");
- my %dom = treate_domainfile ("$ddir/domain.$lang");
+ my %dom = treate_dict ("$ddir/domain.$lang");
  while ( my ($key, $value) = each(%dom) ) {
    push @ALL, lc(treate_accent($value)) ;}
  out("keywords/list.$lang", join(",",sortuniq(@list)));

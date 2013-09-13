@@ -3,7 +3,7 @@
 
 use warnings;
 use strict;
-use search ('out', 'sortuniq', 'hashdomain', 'treate_accent', 'treate_domainfile');
+use search ('out', 'sortuniq', 'hashdomain', 'treate_accent', 'treate_dict');
 
 my $dir='../../../log/classes/';
 my $dirdomain='domain';
@@ -35,7 +35,7 @@ for my $key (@Key) {
   out("$dirout/$T{$key}",join("\n",sort( split("\n", $text)))) if ($T{$key}) ; 
 }
 for my $l (@Lang) { my $text='';
-  my %dom = treate_domainfile ("$dirdomain/domain.$l");
+  my %dom = treate_dict ("$dirdomain/domain.$l");
   my $dom = \%dom; 
   for my $cl (@list) { 
     next if (!($ref{$cl}{'lang'} =~ /$l/)) ;

@@ -6,9 +6,9 @@ use Encode;
 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','treate_domainfile', 'treate_language');
+our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','treate_dict', 'treate_language');
 
-sub treate_domainfile { my ($file) = @_;
+sub treate_dict { my ($file) = @_;
    my %ref = ( ) ; my $ref=\%ref; my $text;
    open IN, "$file";
    while (<IN>) {

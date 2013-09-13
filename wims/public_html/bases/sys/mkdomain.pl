@@ -15,7 +15,7 @@
 # domaindic.xx.tmp   : dictionnary for modind
 use warnings;
 use strict;
-use search ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_domainfile', 'treate_language','treate_accent');
+use search ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_dict', 'treate_language','treate_accent');
 
 my $dir='domain';
 my @site_lang= treate_language ();
@@ -44,12 +44,12 @@ out("$dir/reversedomain",$TEXT);
 ## Put in domain/domain.json the sorted list of domains up to third level
 out("$dir/domain.json", domainjson(%ref));
 
-## for languages for which domain.xx exists (why not "de" ?), construct files
+## for languages for which domain.xx exists, construct files
 ## domain.xx.tmp : sorted list of domains names and their translation, approximately union of domain and domain.xx
 ## domain.xx.json : sorted list of translations of domain names (without domain_name itself)
 for my $la ( @site_lang) {
  next if !(-e "$dir/domain.$la");
- my %dom = treate_domainfile ("$dir/domain.$la");
+ my %dom = treate_dict ("$dir/domain.$la");
  my $dom = \%dom;
   for my $a (@list) {
   if (!$dom{$a}) { $dom{$a} = '' ; }
