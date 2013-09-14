@@ -1,4 +1,4 @@
-<p></p>
+<br class="spacer" />
 !if $class_defined!=yes
  <span class="wims_warning">$wims_name_Error</span>. $name_warning
  !exit
@@ -39,19 +39,20 @@ $name_warning_external
 !formend
   !!FIXME too much !if
    !if $idp_method notwordof ldap
-      <p>$name_new_participant:
+      <p>$name_new_participant:</p>
    !endif
  !else
    !if $idp_method notwordof ldap
-    <p>$name_new_participant_external:
+    <p>$name_new_participant_external:</p>
    !endif
  !endif
  !if $idp_method notwordof ldap
   !if $subclass=yes
    !set tmp_=&subclass=$subclass
   !endif
+  <div class="wimscenter wimsform">
   !set wims_ref_class=wims_button
   !href module=adm/class/reguser&class=$class$tmp_ $name_register
-  </p>
+  </div>
  !endif
 !endif
