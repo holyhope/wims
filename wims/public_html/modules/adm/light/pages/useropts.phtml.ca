@@ -37,7 +37,7 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
-    
+
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Aquesta pàgina permet canviar algunes preferències a WIMS.
@@ -47,7 +47,7 @@ Aquesta pàgina permet canviar algunes preferències a WIMS.
   La llengua per defecte
  </h2>
   <p>
-  Trieu la llengua de visualització del lloc : 
+  Trieu la llengua de visualització del lloc :
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
@@ -63,7 +63,7 @@ Aquesta pàgina permet canviar algunes preferències a WIMS.
 </h2>
 <p>
 El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent ús de MathML (si el vostre navegador ho suporta).</p>
-    Alguns exemples : 
+    Alguns exemples :
     <ul>
       <li>
        Lletres gregues:
@@ -72,7 +72,7 @@ El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent
           </pre>
       </li>
       <li>
-       Expressió matemàtica 
+       Expressió matemàtica
        !let ins_align=middle
     !! we need to force dynamic insertion
        !set pw=2
@@ -81,7 +81,7 @@ El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent
        </pre>
       </li>
       <li>
-       Una desigualtat: 
+       Una desigualtat:
         <pre>
          !insmath | a + b | <= epsilon + 123.45
         </pre>
@@ -90,19 +90,19 @@ El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent
 
 !if $texalign=2
   <p>
-  Actualment el servidor està configurat per a MathML si teniu un navegador adequat. 
+  Actualment el servidor està configurat per a MathML si teniu un navegador adequat.
     Si no es mostra correctament la fórmula, podeu utilitzar un altre
     <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
     navegador
-    </a> 
+    </a>
     o utilitzar el servidor amb "matemàtiques amb imatges".
     </p>
     <ul>
      <li>
-     Canviar el mode de visualització : 
+     Canviar el mode de visualització :
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font Mode imatge
-      
+
       !set arg=!nospace $texsize 2
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font MathML
@@ -133,15 +133,15 @@ El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent
       !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
 !else
  <p>
-    Actualment, s'utilitza el servidor amb "Matemàtiques amb imatges". Si teniu un 
+    Actualment, s'utilitza el servidor amb "Matemàtiques amb imatges". Si teniu un
     <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
     navegador
-    </a>, 
+    </a>,
     adequat també podeu utilitzar MathML.
  </p>
 
  <ul>
-  <li>Canviar el mode de visualització : 
+  <li>Canviar el mode de visualització :
    !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$(arg)0$font Mode imatge
 
@@ -162,6 +162,8 @@ El servidor permet 2 modes de visualització de fórmules : el mode imatge, o fent
    !endif
    !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+   !set wims_ref_class=wims_button
+   !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Defecte
    !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
 </li><li>
@@ -185,10 +187,10 @@ Posició de les fórmules. Si l'expressió
 
 <h2>Accessibilitat</h2>
 
-<p>Podeu ajustar l'espaiat entre lletres i paraules 
+<p>Podeu ajustar l'espaiat entre lletres i paraules
     !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
-    
+
     !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espaiat
 </p><p>
