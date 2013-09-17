@@ -26,7 +26,7 @@ slib_player=!getopt player in $slib_option1
    slib_son=!rename $slib_son
 !endif
 slib_sontest=!replace internal . by , in $slib_son
-!if $slib_sontest notwordof mp3 ogg
+!if $(slib_sontest[-1]) notwordof mp3 ogg
   slib_sontest=mp3
 !endif
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
