@@ -1,0 +1,21 @@
+!!!this file must be in the module directory because of the !mexec !!!!
+INPUT external_login
+OUTPUT : the up_xxx needed for the register of the user
+!!
+!! When idp_method=php user registration is carried out by the php
+!! script and all the data exchange between wims and the php script is
+!! carried out via adm/raw. There are few situation in which data
+!! exchange through this script is necessary
+!!
+
+!! supervisor registering new users in a class (TODO check if extra
+!! checks are needed)
+!if $wims_user=supervisor
+  up_firstname=$firstn
+  up_lastname=$lastn
+  up_email=$email
+!else
+!! todo: should never get to this point, but still need some testing
+  !debug please email this page to wims@unimib.it
+!endif 
+
