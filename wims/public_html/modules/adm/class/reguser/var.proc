@@ -35,9 +35,12 @@ wims_helper=chapter=3
 
 !if $auth_method isitemof $auth_method_list
 !! in case of auth_method=cas, is it right that we have $user_auth=$empty here ??
-  !if $idp_method=php
-    !default user_auth=$wims_user
-  !endif
+!!
+!! !! I think these lines were wrong: not needed and breaking reguser 
+!! !! by supervisor
+!!  !if $idp_method=php
+!!    !default user_auth=$wims_user
+!!  !endif
   !set auth_user=$user_auth
   !if $type=authsupervisor
 !!! FIXME ???? is it useful
@@ -342,9 +345,7 @@ $class_type
   error=login_double
   !exit
  !endif
-!! temporary FIX: in the future might decide to have 
-!! $idp_method=$empty instead of $idp_method=php
- !if $idp_method=$empty or $idp_method=php
+ !if $idp_method=$empty
   up_firstname=$firstn
   up_lastname=$lastn
   up_email=$email
