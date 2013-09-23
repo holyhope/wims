@@ -1,0 +1,10 @@
+!set t=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set aelist=
+!for i=1 to $t
+ !set e_$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ !set a_=!line 1 of $(e_$i)
+ !if $a_>=1 and $a_<=2
+  !set aelist=!append item $i to $aelist
+ !endif
+!next i
+!set m=!itemcnt $aelist

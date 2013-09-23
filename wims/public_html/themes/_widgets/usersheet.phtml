@@ -1,15 +1,5 @@
 
-!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
-!set aclist=
-!for i=1 to $t
- !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
- !set a_=!line 1 of $(s_$i)
- !if $a_>=1 and $a_<=2
-  !set aclist=!append item $i to $aclist
- !endif
-!next i
-!set n=!itemcnt $aclist
+!read themes/_widgets/user_varsheet.phtml
 
 !if $n>0
  <!-- _widgets/usersheet.phtml -->
