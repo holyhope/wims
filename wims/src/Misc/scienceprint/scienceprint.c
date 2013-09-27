@@ -23,6 +23,9 @@ To be used when there is no significance known ; just tries to print the number 
 Using the original amount of digits used in "number" argument
 !exec scienceprint 123.445000e+23,-1 --> 1.23445000*10^25
 
+27/9/2013 
+Correct rounding in stead of truncation...
+
 *********************************************************************************
 
 WIMS usage:
@@ -113,6 +116,7 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
     static char *plus_word[] = {"","kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta" };
     char *sign = NULL;char *prefix = NULL;
     int exponent10 = 0;
+    int factor = pow(10,sig); 
     int use_word = 0;if(format == 5){format = 3; use_word = 1;} /* switch to using words in stead of prefix  */
     if(value < 0.0) {sign = "-";value = -value;sig--;} else {sign = "";}    if( sig == -1 ){
      /* 
@@ -140,6 +144,8 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
 	    if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
 	}
     }
+    /* 27/9/2013 avoid truncating and do normal rounding...grrr */
+    value = (round(factor*value))/factor;
     if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){
 	format = 1; /* not in my list of prefixes ; print in html ! */
     }
