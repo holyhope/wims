@@ -25,6 +25,9 @@ Using the original amount of digits used in "number" argument
 
 27/9/2013 
 Correct rounding in stead of truncation...
+28/9/2013 
+minor issue: 
+small correction in roundoff routine when significance > 6 .... pow(10,7) may give problems when stored in (int) integer
 
 *********************************************************************************
 
@@ -114,11 +117,11 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
     static char *plus[] = {"","k", "M", "G", "T", "P", "E", "Z", "Y" };
     static char *min_word[] = {"","milli","micro","nano","pico","femto","atto","zepto","yocto"};
     static char *plus_word[] = {"","kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta" };
-    char *sign = NULL;char *prefix = NULL;
+    char *sign = NULL;char *prefix = NULL;int pm;int factor;
     int exponent10 = 0;
-    int factor = pow(10,sig); 
     int use_word = 0;if(format == 5){format = 3; use_word = 1;} /* switch to using words in stead of prefix  */
-    if(value < 0.0) {sign = "-";value = -value;sig--;} else {sign = "";}    if( sig == -1 ){
+    if(value < 0.0) {pm = -0.5; sign = "-";value = -value;} else {sign = ""; pm = 0.5;}    
+    if( sig == -1 ){
      /* 
      no significance truncations...just science notation 1234 -> 1.234*10^3 
      try (!) to use same amount of digits
@@ -144,8 +147,9 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
 	    if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
 	}
     }
-    /* 27/9/2013 avoid truncating and do normal rounding...grrr */
-    value = (round(factor*value))/factor;
+    /* 27/9/2013 avoid truncating and do rounding...but not with 7 significant digits*/
+    if(sig > 6){factor = 100000;}else{factor = pow(10,sig+1);}
+    value = (round(factor*value + (pm) ))/factor; /* pm = +/- 0.5 */
     if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){
 	format = 1; /* not in my list of prefixes ; print in html ! */
     }
