@@ -58,8 +58,17 @@ translator_switch=leaveline
 
 dictionary=$basedir/title.$search_lang
 gott=!exec translator $gotm
+translator_unknown1=$translator_unknown
+translator_unknown=leave
+
+dictionary=$basedir/description.$search_lang
+gotd=!exec translator $gotm
 dictionary=$basedir/information.$search_lang
 gotiS=!exec translator $gotm
+
+!! by precaution
+translator_unknown=$translator_unknown1
+
 gotm_=!replace internal $ $ by $\
 $ in $gotm
 
