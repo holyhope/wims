@@ -31,10 +31,10 @@ RE_next  = !nosubst Volgende resultaten
 RE_found = !nosubst Gezocht en gevonden $Gotcnt $tt
 RE_found2= De resultaten zijn op type activiteit gerangschikt.\
  Klik op de corresponderende link.
-RE_warning_more= !nosubst Il y a de nombreuses réponses, seules certaines sont affichées \
-  (limitation à $gotlim2 par type d'activités). Vous pouvez en obtenir d'autres \
-  en ajoutant un autre mot-clé et en utilisant la recherche sur tous les termes\
-  (tous les groupes de mots).
+RE_warning_more= Er zijn meerdere zoekresultaten gevonden.\
+(de limiet is $gotlim2 per soort activiteit).Het zoekresultaat kan verder worden beperkt\
+door het toevoegen van andere zoektermen.
+
 RE_nomatch = !nosubst Er is op deze server niets passends te vinden.
 RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2 = !nosubst $gotcnt $tt op volgorde van populariteit\
