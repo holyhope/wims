@@ -10,7 +10,7 @@ basedir=bases/sheet/index
 !endif
 
 # Limit of shown items
-gotlim=50
+gotlim=1000
 !distribute item 0,0,, into weight,gotcnt,gotm,gotw,lastmod
 
 !for i=1 to $scnt
@@ -54,6 +54,8 @@ translator_switch=leaveline
  !next i
  gotw=!sort reverse numeric lines $w_
  gotm=!line $wims_sort_order of $gotm
+ gotm=!line 1 to $gotlim2 of $gotm
+ gotcnt=!linecnt $gotm
 !endif
 
 dictionary=$basedir/title.$search_lang

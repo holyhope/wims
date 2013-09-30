@@ -7,9 +7,16 @@
 !endif
 !set tt=<span class="wims_emph">$(CC_A)</span>
 !if $gottype=search and ($Gotcnt>1 or $gotcnt>1)
+ !if $Gotcnt<1
+   !set Gotcnt=$gotcnt
+  !endif
+ !if $warning notsametext $empty
+   !set Gotcntplus=!replace internal , by + in $warning
+ !endif
+ !set Gotcnt=$[$Gotcntplus+$Gotcnt]
 <div class="RE_found">
   $RE_found.
-  !if $warning=yes
+  !if $warning notsametext $empty
     $RE_warning_more
   !endif
  !read adm/search_engine/search_clear.phtml

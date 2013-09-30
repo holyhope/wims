@@ -9,9 +9,7 @@
 !if $[$gotcntS + $gotcnt]=0
  !changeto lang/welcome-S.phtml.$lang
 !endif
-<pre>
-$gotd
-</pre>
+
 <ul class="wims_home_result_list wims_sheet">
 !for i=1 to $gotcnt
  !set m_=!line $i of $gotm

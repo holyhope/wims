@@ -9,7 +9,7 @@ basedir=bases/class
  scnt=0
 !endif
 # Limit of shown items
-gotlim=50
+gotlim=1000
 !distribute item 0,0,, into weight,gotcnt,gotm,gotw,lastmod
 
 !for i=1 to $scnt
@@ -40,6 +40,9 @@ gotlim=50
 !endif
 
 gotm=!words2lines $gotm
+gotm=!line 1 to $gotlim2 of $gotm
+gotcnt=!linecnt $gotm
+ 
 translator_switch=leaveline
 dictionary=$basedir/title
 gott=!exec translator $gotm
