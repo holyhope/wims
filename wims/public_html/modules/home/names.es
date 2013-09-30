@@ -31,6 +31,10 @@ RE_next = !nosubst Next Results
 RE_found = !nosubst Encontrados $Gotcnt $tt para su búsqueda
 RE_found2= They are classified according to the type of activities.\
   Click the corresponding button to see them.
+RE_warning_more= Il y a de nombreuses réponses, seules certaines sont affichées \
+  (limitation à 50 par type d'activités). Vous pouvez en obtenir d'autres \
+  en ajoutant un autre mot-clé et en utilisant la recherche sur tous les termes\
+  (tous les groupes de mots).
 RE_nomatch = !nosubst Su búsqueda no dio ningún resultado
 RE_pop = !nosubst Aquí están los $gotcnt $tt más populares
 RE_pop2 = !nosubst $gotcnt $tt por orden de popularidad\

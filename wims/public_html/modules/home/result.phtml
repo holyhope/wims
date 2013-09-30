@@ -1,5 +1,4 @@
 !nocache
-
 !if $error!=$empty and  $(ER_$error)!=
 <p class="wims_alertmsg">
  $(ER_$error)
@@ -10,6 +9,9 @@
 !if $gottype=search and ($Gotcnt>1 or $gotcnt>1)
 <div class="RE_found">
   $RE_found.
+  !if $warning=yes
+    $RE_warning_more
+  !endif
  !read adm/search_engine/search_clear.phtml
 </div>
 !else
