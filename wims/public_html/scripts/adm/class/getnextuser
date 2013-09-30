@@ -5,13 +5,13 @@
 !default gn_getu_=gn_job
 !default gn_cl_=$wims_class
 
-!set nextuser=!lookup $gn_st in wimshome/log/classes/$wims_class/.usernextlist
- !if $nextuser!=$empty
-   !set wims_menu_items=!append line next_participant,1,cmd=reply&job=$gn_job&$gn_getu_=$nextuser\
-  to $wims_menu_items
- !endif
  !set prevuser=!lookup $gn_st in wimshome/log/classes/$wims_class/.userprevlist
  !if $prevuser!=$empty
    !set wims_menu_items=!append line prev_participant,1,cmd=reply&job=$gn_job&$gn_getu_=$prevuser\
+  to $wims_menu_items
+ !endif
+ !set nextuser=!lookup $gn_st in wimshome/log/classes/$wims_class/.usernextlist
+ !if $nextuser!=$empty
+   !set wims_menu_items=!append line next_participant,1,cmd=reply&job=$gn_job&$gn_getu_=$nextuser\
   to $wims_menu_items
  !endif
