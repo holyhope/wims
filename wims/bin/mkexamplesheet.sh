@@ -1,11 +1,11 @@
 #! /bin/sh
 #
-# script to look at each example class and copy sheet in public_html/bases/sheet/$class_lang/$class_level/$class_number/
+# script to look at each example class and copy sheet in public_html/bases/sheet/$class_lang/$class_sheetadress/$class_number/
 # to be execute at before each realize of a wims package.
 #
-# authors : F. Guerimand
+# authors : F. Guerimand, bpr
 # mail : fwguerima@free.fr
-# this script is launch by mkindex. Don't use it directly
+# this script is launch by mkindex. Do not use it directly
 # 
 
 ## level, lang, supervisor, email are those of the class
@@ -29,11 +29,12 @@ for cls in $clist; do
   sup=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' ./$cls/.def`;
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' ./$cls/.def`;
   domain=`awk -F'=' '$1=="!set class_domain" {print $2; exit}' ./$cls/.def`;
-  if [ -n "$level" -a -n "$lang" ]; then
+  sheetadress=`awk -F'=' '$1=="!set class_sheetadress" {print $2; exit}' ./$cls/.def`;
+  if [ -n "$sheetadress" -a -n "$lang" ]; then
    cd $cls/sheets/;
   # echo "--------------- $cls ; $level ; $lang"
    slist=`ls .sheet[0-9]*`;
-   tmptarget="$target/$lang/$level/$cls";
+   tmptarget="$target/$lang/$sheetadress/$cls";
    mkdir -p $tmptarget;
    for sh in $slist; do
     num=${sh##.sheet};
