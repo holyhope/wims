@@ -1,4 +1,4 @@
-!! should create an option in translator : for the moment, if a group of 
+!! should create an option in translator : for the moment, if a group of
 !! words is not found, the words are searched. I would like not.
 !! sout=!exec translator $srch
 
@@ -11,6 +11,7 @@ Sout=
    !for s_ = 1 to $scnt
      sout_=!lookup $(srch1[$s_;]) in wimshome/public_html/$dictionary
      sout_=!words2items $sout_
+     sout_=!replace internal ?4 by ?2 in $sout_
      !if $s_ >1
        Sout=!listintersection $Sout and $sout_
      !else
@@ -33,7 +34,7 @@ Sout=
  sout=!sort lines $sout
  sout=!nonempty lines $sout
  scnt=!linecnt $sout
- 
+
  !if $scnt > $gotlim2
    warning=!append item $[$scnt-$gotlim2] to $warning
 !endif
