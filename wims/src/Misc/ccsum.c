@@ -143,7 +143,8 @@ void oneline(char *p)
     p1=strchr(p,','); if(p1==NULL) return;
     if(!isdigit(*(p1+1))) return;
     snprintf(cbuf,sizeof(cbuf),"%s",p1+1);
-    for(p2=cbuf;isdigit(*p2); p2++); *p2=0; cl=atoi(cbuf);
+    for(p2=cbuf;isdigit(*p2); p2++);
+    *p2=0; cl=atoi(cbuf);
     *p1=0; for(p1--;p1>p && !isspace(*(p1-1)); p1--);
     snprintf(ubuf,sizeof(ubuf),"%s",p1);
     for(i=0;i<sescnt;i++) {

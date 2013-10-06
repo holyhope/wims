@@ -33,7 +33,7 @@ char *langs[]={"en","fr","cn"};
 
 char *post_msg[lang_no]={
     " <small>(click on a value to check its meaning in another window)</small> ",
-    " <small>(cliquez sur une valeur pour voir sa signification dans une autre fen阾re)</small> ",
+    " <small>(cliquez sur une valeur pour voir sa signification dans une autre fen&ecirc;tre)</small> ",
     " <small>(在数字上单击可供你在另一视窗内查阅其意义)</small> "
 };
 

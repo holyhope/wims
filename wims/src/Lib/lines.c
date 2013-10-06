@@ -600,19 +600,20 @@ void strip_enclosing_par(char *p)
     }
 }
 
-	/* change all spaces into ' ', and collapse multiple occurences */
+/* change all spaces into ' ', and collapse multiple occurences */
 void singlespace(char *p)
 {
     char *pp, *pt, *p2;
     for(pp=pt=p;*pp;pp++) {
-	if(!myisspace(*pp)) {*pt++=*pp; continue; }
-	*pt++=' ';
-	for(p2=pp+1;myisspace(*p2);p2++); pp=--p2;
+        if(!myisspace(*pp)) {*pt++=*pp; continue; }
+        *pt++=' ';
+        for(p2=pp+1;myisspace(*p2);p2++);
+        pp=--p2;
     }
     *pt=0;
 }
 
-	/* collapses all space characters in string. */
+/* collapses all space characters in string. */
 void nospace(char *p)
 {
     char *pp, *pt;

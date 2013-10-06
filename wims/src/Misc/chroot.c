@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Change root and exec */
+/* Change root and exec */
 
 #define PROC_QUOTA 15
 #define UID_MIN 10000
@@ -61,7 +61,7 @@ char *env_rm[]={
       "SERVER_ADMIN", "SERVER_ADDR", "SERVER_NAME"
 };
 
-#define env_rm_cnt (sizeof(env_rm)/sizeof(env_rm[0]))	
+#define env_rm_cnt (sizeof(env_rm)/sizeof(env_rm[0]))
 
 char name_sh[32]="/bin/ash.static";
 char opt_sh[32]="-c";
@@ -78,7 +78,8 @@ chdir($ENV{TMPDIR}) || exit;\n\
 chdir(\"/\") && exit;\n\
 ";
 
-	/* remove a tree */
+
+/* Remove a tree */
 int remove_tree(char *dirname)
 {
     DIR *sdir;
@@ -87,26 +88,27 @@ int remove_tree(char *dirname)
 
     sdir=opendir(dirname);
     if(sdir==NULL) {   /* Cannot open session directory. */
-	return -1;
+       return -1;
     }
     while((f=readdir(sdir))!=NULL) {
-	char fname[255];
-	if(strcmp(".",f->d_name)==0 || strcmp("..",f->d_name)==0) continue;
-	snprintf(fname,sizeof(fname),"%s/%s",dirname,f->d_name);
-	if(lstat(fname,&dst)) continue;
-	if(S_ISDIR(dst.st_mode)) remove_tree(fname);
-	else {
-	    if(remove(fname)<0)
-	      fprintf(stderr,"ch..root: unable to remove %s. %s\n",fname,strerror(errno));
-	}
+        char fname[255];
+        if(strcmp(".",f->d_name)==0 || strcmp("..",f->d_name)==0) continue;
+        snprintf(fname,sizeof(fname),"%s/%s",dirname,f->d_name);
+        if(lstat(fname,&dst)) continue;
+        if(S_ISDIR(dst.st_mode)) remove_tree(fname);
+        else {
+            if(remove(fname)<0)
+              fprintf(stderr,"ch..root: unable to remove %s. %s\n",fname,strerror(errno));
+        }
     }
     closedir(sdir);
-    if(rmdir(dirname)<0) {	/* Cannot remove directory. */
-	return -1;
+    if(rmdir(dirname)<0) {  /* Cannot remove directory. */
+       return -1;
     }
     return 0;
 }
 
+/* Clean TMP */
 void cleantmp(void)
 {
     DIR *sdir_base;
@@ -117,17 +119,18 @@ void cleantmp(void)
     sdir_base=opendir(".");
     if(sdir_base==NULL) return;
     while((ses=readdir(sdir_base))!=NULL) {
-	if(ses->d_name[0]=='.') continue;
-	if(lstat(ses->d_name,&dst)) continue;
-	if(!S_ISDIR(dst.st_mode)) continue;
-	if(dst.st_mtime <= now) {
-	    if(dst.st_mtime>=now-CLEAN_DELAY) continue;
-	    if(dst.st_mtime>=now-CLEAN_DELAY2 && (dst.st_mode&S_IRWXO)==0) continue;
-	}
-	remove_tree(ses->d_name);
+        if(ses->d_name[0]=='.') continue;
+        if(lstat(ses->d_name,&dst)) continue;
+        if(!S_ISDIR(dst.st_mode)) continue;
+        if(dst.st_mtime <= now) {
+            if(dst.st_mtime>=now-CLEAN_DELAY) continue;
+            if(dst.st_mtime>=now-CLEAN_DELAY2 && (dst.st_mode&S_IRWXO)==0) continue;
+        }
+        remove_tree(ses->d_name);
     }
 }
 
+/* Cleaning */
 void cleaning(void)
 {
     DIR *sdir_base;
@@ -141,18 +144,19 @@ void cleaning(void)
     sdir_base=opendir("/proc");
     if(sdir_base==NULL) goto tmpdir;
     while((ses=readdir(sdir_base))!=NULL) {
-	if(ses->d_name[0]<'0' || ses->d_name[9]>'9') continue;
-	snprintf(dbuf,sizeof(dbuf),"/proc/%s",ses->d_name);
-	if(lstat(dbuf,&dst)) continue;
-	if(!S_ISDIR(dst.st_mode)) continue;
-	if(dst.st_uid<UID_MIN || dst.st_uid>UID_MIN+UID_MASK) continue;
-	if(((dst.st_gid-UID_MIN-now)&TIME_MASK)<=CPU_MAX) continue;
-	kill(atoi(ses->d_name),SIGKILL);
+        if(ses->d_name[0]<'0' || ses->d_name[9]>'9') continue;
+        snprintf(dbuf,sizeof(dbuf),"/proc/%s",ses->d_name);
+        if(lstat(dbuf,&dst)) continue;
+        if(!S_ISDIR(dst.st_mode)) continue;
+        if(dst.st_uid<UID_MIN || dst.st_uid>UID_MIN+UID_MASK) continue;
+        if(((dst.st_gid-UID_MIN-now)&TIME_MASK)<=CPU_MAX) continue;
+        kill(atoi(ses->d_name),SIGKILL);
     }
     closedir(sdir_base);
     tmpdir: return;
 }
 
+/* Test Must */
 int test_must(void)
 {
     char *pc;
@@ -161,6 +165,7 @@ int test_must(void)
     else return 0;
 }
 
+/* MAIN */
 int main(int argc,char *argv[])
 {
     char *args[1024];
@@ -176,70 +181,72 @@ int main(int argc,char *argv[])
     uid=geteuid();
     t=stat("../chroot/tmp/sessions/.chroot",&st);
     if(uid!=0 || t!=0) {
-	if(test_must()) goto abandon;
-	args[0]="bin/wrap..exec"; k=1;
+        if(test_must()) goto abandon;
+        args[0]="bin/wrap..exec"; k=1;
     }
     else {
-	k=0;
-	p=getenv("REMOTE_ADDR"); if(p && *p) {
-	    pp=strrchr(p,'.'); if(pp) execuid=(atoi(++pp)&UID_MASK)+UID_MIN;
-	}
-	getrlimit(RLIMIT_CPU,&lim);
-	i=lim.rlim_max; if(i<0) i=0; if(i>=CPU_MAX) i=CPU_MAX-1;
-	execgid=((i+now+1)&TIME_MASK)+UID_MIN;
-	cleaning();
+        k=0;
+        p=getenv("REMOTE_ADDR");
+        if(p && *p) {
+            pp=strrchr(p,'.'); if(pp) execuid=(atoi(++pp)&UID_MASK)+UID_MIN;
+        }
+        getrlimit(RLIMIT_CPU,&lim);
+        i=lim.rlim_max; if(i<0) i=0; if(i>=CPU_MAX) i=CPU_MAX-1;
+        execgid=((i+now+1)&TIME_MASK)+UID_MIN;
+        cleaning();
     }
     if(argc>1 && strcmp(argv[1],"cleantmpdir")==0) {
-	if(uid!=0) fprintf(stderr,"ch..root cleantmpdir: uid not changed.\n");
-	else cleantmp();
-	return 0;
+        if(uid!=0) fprintf(stderr,"ch..root cleantmpdir: uid not changed.\n");
+        else cleantmp();
+        return 0;
     }
     if(argc>3 && argv[1][0]=='&') {
-	if(k) goto abandon;
-	if(strcmp(argv[2],"sh")==0) {
-	    lim.rlim_cur=lim.rlim_max=MAX_OUTLEN;
-	    setrlimit(RLIMIT_FSIZE,&lim);
-	    args[0]=name_sh; args[1]=opt_sh;
-	    snprintf(parm,sizeof(parm),"%s\n%s\n",pre_sh,argv[3]);
-	    args[2]=parm; args[3]=NULL; must=1;
-	    goto cont;
-	}
-	if(strcmp(argv[2],"perl")==0) {
-	    lim.rlim_cur=lim.rlim_max=MAX_OUTLEN;
-	    setrlimit(RLIMIT_FSIZE,&lim);
-	    args[0]=name_perl; args[1]=opt_perl;
-	    snprintf(parm,sizeof(parm),"%s\n%s\n",pre_perl,argv[3]);
-	    args[2]=parm; args[3]=NULL; must=1;
-	    goto cont;
-	}
-	goto abandon;
+        if(k) goto abandon;
+        if(strcmp(argv[2],"sh")==0) {
+            lim.rlim_cur=lim.rlim_max=MAX_OUTLEN;
+            setrlimit(RLIMIT_FSIZE,&lim);
+            args[0]=name_sh; args[1]=opt_sh;
+            snprintf(parm,sizeof(parm),"%s\n%s\n",pre_sh,argv[3]);
+            args[2]=parm; args[3]=NULL; must=1;
+            goto cont;
+        }
+        if(strcmp(argv[2],"perl")==0) {
+            lim.rlim_cur=lim.rlim_max=MAX_OUTLEN;
+            setrlimit(RLIMIT_FSIZE,&lim);
+            args[0]=name_perl; args[1]=opt_perl;
+            snprintf(parm,sizeof(parm),"%s\n%s\n",pre_perl,argv[3]);
+            args[2]=parm; args[3]=NULL; must=1;
+            goto cont;
+        }
+        goto abandon;
     }
     for(i=0;i<1000 && i<argc; i++) args[i+k]=argv[i+1];
     args[i]=NULL;
     cont:
     if(uid!=0) {
-	if(test_must()) goto abandon;
-	goto ex2;
+        if(test_must()) goto abandon;
+        goto ex2;
     }
     if(t!=0) {
-	stat("bin",&st); execuid=execgid=st.st_uid;
-	if(test_must()) goto abandon;
-	goto ex;
+        stat("bin",&st); execuid=execgid=st.st_uid;
+        if(test_must()) goto abandon;
+        goto ex;
     }
     if(chroot("../chroot")==0) {
-	(void)chdir("/tmp");
-	lim.rlim_cur=lim.rlim_max=PROC_QUOTA;
-	setrlimit(RLIMIT_NPROC,&lim);
-	setenv("PATH",chroot_path,1);
-	p=getenv("w_wims_session"); if(p && *p) {
-	    snprintf(tmpbuf,sizeof(tmpbuf),"/tmp/sessions/%s",p);
-	    p=strchr(tmpbuf,'_'); if(p) *p=0;
-	    setenv("TMPDIR",tmpbuf,1);
-	    setenv("tmp_dir",tmpbuf,1);
-	    p=getenv("w_wims_priv_chroot");
-	    if(p && strstr(p,"tmpdir")!=NULL)
-	      (void)chdir(tmpbuf);
-	}
+        (void)chdir("/tmp");
+        lim.rlim_cur=lim.rlim_max=PROC_QUOTA;
+        setrlimit(RLIMIT_NPROC,&lim);
+        setenv("PATH",chroot_path,1);
+        p=getenv("w_wims_session");
+        if(p && *p) {
+            snprintf(tmpbuf,sizeof(tmpbuf),"/tmp/sessions/%s",p);
+            p=strchr(tmpbuf,'_'); if(p) *p=0;
+            setenv("TMPDIR",tmpbuf,1);
+            setenv("tmp_dir",tmpbuf,1);
+            p=getenv("w_wims_priv_chroot");
+            if(p && strstr(p,"tmpdir")!=NULL)
+              (void)chdir(tmpbuf);
+        }
     }
     else if(test_must()) goto abandon;
     ex:

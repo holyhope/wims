@@ -361,7 +361,8 @@ void determine_ref_name(void)
 	if(p!=NULL && p>buf+3 && myislower(*(p-1)) && myislower(*(p-2))
 	   && *(p-3)=='/' && myisalpha(*(p+1))) {
 	    char *pp;
-	    for(pp=p+1; myisalnum(*pp); pp++); if(*pp=='/') *(p-3)=0;
+      for(pp=p+1; myisalnum(*pp); pp++);
+      if(*pp=='/') *(p-3)=0;
 	}
 	snprintf(ref_name,sizeof(ref_name)-2,"http://%s%s/%s",s1,buf,cgi_name);
 	mystrncpy(ref_base,ref_name,sizeof(ref_base)-2);
@@ -842,7 +843,6 @@ void define_html_header(void)
 --></style>",tmplbuf); }
 		  else {
 		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
-<link href=\"html/themes/$wims_theme/theme.css\" rel=\"stylesheet\" type=\"text/css\" />\n\
 <link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\" />",nbuf,ti);
 		 }
 		setvar("wims_CSS",buf);

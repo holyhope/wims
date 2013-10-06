@@ -597,9 +597,10 @@ void singlespace(char *p)
 {
     char *pp, *pt, *p2;
     for(pp=pt=p;*pp;pp++) {
-	if(!myisspace(*pp)) {*pt++=*pp; continue; }
-	*pt++=' ';
-	for(p2=pp+1;myisspace(*p2);p2++); pp=--p2;
+    	if(!myisspace(*pp)) {*pt++=*pp; continue; }
+    	*pt++=' ';
+    	for(p2=pp+1;myisspace(*p2);p2++);
+        pp=--p2;
     }
     *pt=0;
 }

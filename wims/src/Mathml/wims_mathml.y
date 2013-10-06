@@ -17,22 +17,21 @@
 #define yytext wims_mathml_yytext
  extern int yylex ();
  extern char * yytext;
-  
 
  static void wims_mathml_default_error (const char * msg)
-   {
+  {
 //   if (msg){ fprintf(stderr, "Line: %d Error: %s\n", wims_mathml_lineno, msg);}
-   }
+  }
 
  void (*wims_mathml_error) (const char * msg) = wims_mathml_default_error;
 
  static void yyerror (char * s)
-   {
+  {
 //    char * msg = wims_mathml_copy3 (s, " at token ", yytext);
-     if (wims_mathml_error)
-       (*wims_mathml_error) ("ERROR");
+    if (wims_mathml_error)
+      (*wims_mathml_error) ("ERROR");
 //     wims_mathml_free_string (msg);
-   }
+  }
 
  /* Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.
   */
@@ -40,10 +39,10 @@
    {
      if (buffer)
        {
-	 if (length)
-	   fwrite (buffer, 1, length, stdout);
-	 else
-	   fputs (buffer, stdout);
+   if (length)
+     fwrite (buffer, 1, length, stdout);
+   else
+     fputs (buffer, stdout);
        }
    }
 
@@ -129,10 +128,10 @@
      char * copy = (char *) malloc(extra + (str ? strlen (str) : 0) + 1);
      if (copy)
        {
-	 if (str)
-	   strcpy(copy, str);
-	 else
-	   copy[0] = 0;
+   if (str)
+     strcpy(copy, str);
+   else
+     copy[0] = 0;
        }
      return copy ? copy : wims_mathml_empty_string;
    }
@@ -149,13 +148,13 @@
 
      if (copy)
        {
-	 if (first)
-	   strcpy(copy, first);
-	 else
-	   copy[0] = 0;
+   if (first)
+     strcpy(copy, first);
+   else
+     copy[0] = 0;
 
-	 if (second) strcat(copy, second);
-	 if ( third) strcat(copy,  third);
+   if (second) strcat(copy, second);
+   if ( third) strcat(copy,  third);
        }
      return copy ? copy : wims_mathml_empty_string;
    }
@@ -287,69 +286,69 @@
 
      while (*ptr1)
        {
-	 switch (*ptr1)
-	   {
-	   case '<':  /* &lt;   */
-	   case '>':  /* &gt;   */
-	     length += 4;
-	     break;
-	   case '&':  /* &amp;  */
-	     length += 5;
-	     break;
-	   case '\'': /* &apos; */
-	   case '"':  /* &quot; */
-	   case '-':  /* &#x2d; */
-	     length += 6;
-	     break;
-	   default:
-	     length += 1;
-	     break;
-	   }
-	 ++ptr1;
+   switch (*ptr1)
+     {
+     case '<':  /* &lt;   */
+     case '>':  /* &gt;   */
+       length += 4;
+       break;
+     case '&':  /* &amp;  */
+       length += 5;
+       break;
+     case '\'': /* &apos; */
+     case '"':  /* &quot; */
+     case '-':  /* &#x2d; */
+       length += 6;
+       break;
+     default:
+       length += 1;
+       break;
+     }
+   ++ptr1;
        }
 
      copy = (char *) malloc (length + 1);
 
      if (copy)
        {
-	 ptr1 = str;
-	 ptr2 = copy;
+   ptr1 = str;
+   ptr2 = copy;
 
-	 while (*ptr1)
-	   {
-	     switch (*ptr1)
-	       {
-	       case '<':
-		 strcpy (ptr2, "&lt;");
-		 ptr2 += 4;
-		 break;
-	       case '>':
-		 strcpy (ptr2, "&gt;");
-		 ptr2 += 4;
-		 break;
-	       case '&':  /* &amp;  */
-		 strcpy (ptr2, "&amp;");
-		 ptr2 += 5;
-		 break;
-	       case '\'': /* &apos; */
-		 strcpy (ptr2, "&apos;");
-		 ptr2 += 6;
-		 break;
-	       case '"':  /* &quot; */
-		 strcpy (ptr2, "&quot;");
-		 ptr2 += 6;
-		 break;
-	       case '-':  /* &#x2d; */
-		 strcpy (ptr2, "&#x2d;");
-		 ptr2 += 6;
-		 break;
-	       default:
-		 *ptr2++ = *ptr1;
-		 break;
-	       }
-	     ++ptr1;
-	   }
-	 *ptr2 = 0;
+   while (*ptr1)
+     {
+       switch (*ptr1)
+         {
+         case '<':
+     strcpy (ptr2, "&lt;");
+     ptr2 += 4;
+     break;
+         case '>':
+     strcpy (ptr2, "&gt;");
+     ptr2 += 4;
+     break;
+         case '&':  /* &amp;  */
+     strcpy (ptr2, "&amp;");
+     ptr2 += 5;
+     break;
+         case '\'': /* &apos; */
+     strcpy (ptr2, "&apos;");
+     ptr2 += 6;
+     break;
+         case '"':  /* &quot; */
+     strcpy (ptr2, "&quot;");
+     ptr2 += 6;
+     break;
+         case '-':  /* &#x2d; */
+     strcpy (ptr2, "&#x2d;");
+     ptr2 += 6;
+     break;
+         default:
+     *ptr2++ = *ptr1;
+     break;
+         }
+       ++ptr1;
+     }
+   *ptr2 = 0;
        }
      return copy ? copy : wims_mathml_empty_string;
    }
@@ -1050,30 +1049,30 @@ input: INPUT {
     char tmp[2];
     int i;
     for(i = 0 ; i < len ; i++){
-	if( yylval[i] == '{' ){
-	    found_left=1;found_right=0;
-	}
-	else
-	{
-	    if( yylval[i] == '}' ){
-		cnt++;found_left=0;found_right=1;
-	    }
-	    else
-	    {
-		if(found_left == 1 && found_right == 0){
-		    tmp[0] = yylval[i];
-		    tmp[1] = '\0';
-		    switch (cnt){
-			case 0 : strncat(size,tmp,1);break;
-		        case 1 : strncat(id,tmp,1);break;
-		        case 2 : strncat(style,tmp,1);break;
-		        case 3 : strncat(value,tmp,1);break;
-		        case 4 : strncat(readonly,tmp,1);break;
-			default : break;
-		    }
-		}	
-	    }
-	}
+  if( yylval[i] == '{' ){
+      found_left=1;found_right=0;
+  }
+  else
+  {
+      if( yylval[i] == '}' ){
+    cnt++;found_left=0;found_right=1;
+      }
+      else
+      {
+    if(found_left == 1 && found_right == 0){
+        tmp[0] = yylval[i];
+        tmp[1] = '\0';
+        switch (cnt){
+      case 0 : strncat(size,tmp,1);break;
+            case 1 : strncat(id,tmp,1);break;
+            case 2 : strncat(style,tmp,1);break;
+            case 3 : strncat(value,tmp,1);break;
+            case 4 : strncat(readonly,tmp,1);break;
+      default : break;
+        }
+    } 
+      }
+  }
     }
     $1 = wims_mathml_copy_string(size);
     char * s1 = wims_mathml_copy3("<mn><input type=\"text\"  size=\"",$1,"\" id=\"mathml");
@@ -1082,14 +1081,14 @@ input: INPUT {
     $1 = wims_mathml_copy_string(value);
     s1 = wims_mathml_copy3(s1,$1,"\" style=\"");
     if( strstr(readonly,"1") != NULL){
-	$1 = wims_mathml_copy_string(style);
-	s1 = wims_mathml_copy3(s1,$1,"\" ");
-	s1 = wims_mathml_copy2(s1,"readonly /></mn>");
+  $1 = wims_mathml_copy_string(style);
+  s1 = wims_mathml_copy3(s1,$1,"\" ");
+  s1 = wims_mathml_copy2(s1,"readonly /></mn>");
     }
     else
     {
-	$1 = wims_mathml_copy_string(style);
-	s1 = wims_mathml_copy3(s1,$1,"\" /></mn>");
+  $1 = wims_mathml_copy_string(style);
+  s1 = wims_mathml_copy3(s1,$1,"\" /></mn>");
     }
     $$ = wims_mathml_copy_string(s1);
     wims_mathml_free_string(s1);
@@ -2071,188 +2070,186 @@ int wims_mathml_do_html_filter (const char * buffer, unsigned long length, const
 
   wims_mathml_error = wims_mathml_keep_error;
 
- _until_math:
+  _until_math:
   ptr2 = ptr1;
 
   while (ptr2 < end)
+  {
+    if (*ptr2 == '$') break;
+    if ((*ptr2 == '\\') && (ptr2 + 1 < end))
     {
-      if (*ptr2 == '$') break;
-      if ((*ptr2 == '\\') && (ptr2 + 1 < end))
-	{
-	  if (*(ptr2+1) == '[') break;
-	}
-      ++ptr2;
+      if (*(ptr2+1) == '[') break;
     }
+    ++ptr2;
+  }
   if (wims_mathml_write && ptr2 > ptr1)
     (*wims_mathml_write) (ptr1, ptr2 - ptr1);
 
   if (ptr2 == end) goto _finish;
 
- _until_html:
+  _until_html:
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end)
+  {
+    if ((*ptr2 == '\\') && (*(ptr2+1) == '['))
     {
-      if ((*ptr2 == '\\') && (*(ptr2+1) == '['))
-	{
-	  type = ITEX_DELIMITER_SQUARE;
-	  ptr2 += 2;
-	}
-      else if ((*ptr2 == '$') && (*(ptr2+1) == '$'))
-	{
-	  type = ITEX_DELIMITER_DOUBLE;
-	  ptr2 += 2;
-	}
-      else
-	{
-	  type = ITEX_DELIMITER_DOLLAR;
-	  ptr2 += 2;
-	}
+      type = ITEX_DELIMITER_SQUARE;
+      ptr2 += 2;
     }
+    else if ((*ptr2 == '$') && (*(ptr2+1) == '$'))
+    {
+      type = ITEX_DELIMITER_DOUBLE;
+      ptr2 += 2;
+    }
+    else
+    {
+      type = ITEX_DELIMITER_DOLLAR;
+      ptr2 += 2;
+    }
+  }
   else goto _finish;
 
   skip = 0;
   match = 0;
 
   while (ptr2 < end)
+  {
+    switch (*ptr2)
     {
-      switch (*ptr2)
-	{
-	case '<':
-	case '>':
-	  if (forbid_markup == 1) skip = 1;
-	  break;
+    case '<':
+    case '>':
+      if (forbid_markup == 1) skip = 1;
+      break;
 
-	case '\\':
-	  if (ptr2 + 1 < end)
-	    {
-	      if (*(ptr2 + 1) == '[')
-		{
-		  skip = 1;
-		}
-	      else if (*(ptr2 + 1) == ']')
-		{
-		  if (type == ITEX_DELIMITER_SQUARE)
-		    {
-		      ptr2 += 2;
-		      match = 1;
-		    }
-		  else
-		    {
-		      skip = 1;
-		    }
-		}
-	    }
-	  break;
+    case '\\':
+      if (ptr2 + 1 < end)
+      {
+        if (*(ptr2 + 1) == '[')
+        {
+          skip = 1;
+        }
+        else if (*(ptr2 + 1) == ']')
+        {
+          if (type == ITEX_DELIMITER_SQUARE)
+          {
+            ptr2 += 2;
+            match = 1;
+          }
+          else
+          {
+            skip = 1;
+          }
+        }
+      }
+      break;
 
-	case '$':
-	  if (type == ITEX_DELIMITER_SQUARE)
-	    {
-	      skip = 1;
-	    }
-	  else if (ptr2 + 1 < end)
-	    {
-	      if (*(ptr2 + 1) == '$')
-		{
-		  if (type == ITEX_DELIMITER_DOLLAR)
-		    {
-		      ptr2++;
-		      match = 1;
-		    }
-		  else
-		    {
-		      ptr2 += 2;
-		      match = 1;
-		    }
-		}
-	      else
-		{
-		  if (type == ITEX_DELIMITER_DOLLAR)
-		    {
-		      ptr2++;
-		      match = 1;
-		    }
-		  else
-		    {
-		      skip = 1;
-		    }
-		}
-	    }
-	  else
-	    {
-	      if (type == ITEX_DELIMITER_DOLLAR)
-		{
-		  ptr2++;
-		  match = 1;
-		}
-	      else
-		{
-		  skip = 1;
-		}
-	    }
-	  break;
+    case '$':
+      if (type == ITEX_DELIMITER_SQUARE)
+      {
+        skip = 1;
+      }
+      else if (ptr2 + 1 < end)
+      {
+        if (*(ptr2 + 1) == '$')
+        {
+          if (type == ITEX_DELIMITER_DOLLAR)
+          {
+            ptr2++;
+            match = 1;
+          }
+          else
+          {
+            ptr2 += 2;
+            match = 1;
+          }
+        }
+        else
+        {
+          if (type == ITEX_DELIMITER_DOLLAR)
+          {
+            ptr2++;
+            match = 1;
+          }
+          else
+          {
+            skip = 1;
+          }
+        }
+      }
+      else
+      {
+        if (type == ITEX_DELIMITER_DOLLAR)
+        {
+          ptr2++;
+          match = 1;
+        }
+        else
+        {
+          skip = 1;
+        }
+      }
+      break;
 
-	default:
-	  break;
-	}
-      if (skip || match) break;
-
-      ++ptr2;
+    default:
+      break;
     }
+    if (skip || match) break;
+
+    ++ptr2;
+  }
   if (skip)
+  {
+    if (type == ITEX_DELIMITER_DOLLAR)
     {
-      if (type == ITEX_DELIMITER_DOLLAR)
-	{
-	  if (wims_mathml_write)
-	    (*wims_mathml_write) (ptr1, 1);
-	  ptr1++;
-	}
-      else
-	{
-	  if (wims_mathml_write)
-	    (*wims_mathml_write) (ptr1, 2);
-	  ptr1 += 2;
-	}
-      goto _until_math;
+      if (wims_mathml_write)
+        (*wims_mathml_write) (ptr1, 1);
+      ptr1++;
     }
+    else
+    {
+      if (wims_mathml_write)
+        (*wims_mathml_write) (ptr1, 2);
+      ptr1 += 2;
+    }
+    goto _until_math;
+  }
   if (match)
+  {
+    mathml = wims_mathml_parse (ptr1, ptr2 - ptr1);
+    if (mathml)
     {
-      mathml = wims_mathml_parse (ptr1, ptr2 - ptr1);
-
-      if (mathml)
-	{
-	  if (wims_mathml_write_mathml)
-	    (*wims_mathml_write_mathml) (mathml);
-	  wims_mathml_free_string (mathml);
-	  mathml = 0;
-	}
-      else
-	{
-	  ++result;
-	  if (wims_mathml_write)
-	    {
-	      if (type == ITEX_DELIMITER_DOLLAR)
-		(*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><merror><mtext>", 0);
-	      else
-		(*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><merror><mtext>", 0);
-
-	      (*wims_mathml_write) (wims_mathml_last_error, 0);
-	      (*wims_mathml_write) ("</mtext></merror></math>", 0);
-	    }
-	}
-      ptr1 = ptr2;
-
-      goto _until_math;
+      if (wims_mathml_write_mathml)
+        (*wims_mathml_write_mathml) (mathml);
+      wims_mathml_free_string (mathml);
+      mathml = 0;
     }
+    else
+    {
+      ++result;
+      if (wims_mathml_write)
+      {
+        if (type == ITEX_DELIMITER_DOLLAR)
+          (*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\"><merror><mtext>", 0);
+        else
+          (*wims_mathml_write) ("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><merror><mtext>", 0);
+          (*wims_mathml_write) (wims_mathml_last_error, 0);
+          (*wims_mathml_write) ("</mtext></merror></math>", 0);
+        }
+    }
+    ptr1 = ptr2;
+
+    goto _until_math;
+  }
   if (wims_mathml_write)
     (*wims_mathml_write) (ptr1, ptr2 - ptr1);
 
- _finish:
+  _finish:
   if (wims_mathml_last_error)
-    {
-      wims_mathml_free_string (wims_mathml_last_error);
-      wims_mathml_last_error = 0;
-    }
+  {
+    wims_mathml_free_string (wims_mathml_last_error);
+    wims_mathml_last_error = 0;
+  }
   wims_mathml_error = save_error_fn;
 
   return result;
