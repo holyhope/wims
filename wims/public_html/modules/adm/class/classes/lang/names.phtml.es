@@ -111,4 +111,4 @@ en su clase y cambiar.
 !set name_acceptcgu=Acepto las condiciones generales de uso
 !set name_seecgu=Consulte las condiciones generales de uso
 
-!set name_sendmailmess=Un message contenant un nouveau mot de passe vous a été envoyé à l'adresse électronique que vous avez défini.
+!set name_sendmailmess=Un message contenant un nouveau mot de passe vous a été envoyé à l'adresse électronique que vous avez définie.
