@@ -40,6 +40,7 @@ RE_pop = !nosubst Aquí están los $gotcnt $tt más populares
 RE_pop2 = !nosubst $gotcnt $tt por orden de popularidad\
 (número $[$list_start+1] - $[$list_start+$gotcnt])
 RE_try = Pruebe
+RE_noKeyword    = You must type in a keyword
 
 U_greet = !nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a\
 a $wims_classname, moderada por $supmail.

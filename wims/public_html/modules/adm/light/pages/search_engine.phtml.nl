@@ -25,7 +25,7 @@
 
 !header
 
-<div class="contenu">
+<div class="wims_content">
 Deze interne zoekmachine maakt gebruik van zoektermen.<br />
 !if $wims_class=$empty
 Er kan ook gebruik worden gemaakt van de link <span class="wims_button disabled">$wims_name_browse</span> <br />
