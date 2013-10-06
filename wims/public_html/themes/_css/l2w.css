@@ -5,18 +5,21 @@
 /* classes pour latex2wims : latex2wims , latex2wimsl, latex2wimsr, latex2wimslr
 selon qu'il y n'a pas de toc, un toc à gauche, à droite, des deux côtés*/
 
-.doc_latex2wims .wimsdoc, .doc_latex2wimsl .wimsdoc, .doc_latex2wimsr .wimsdoc, .doc_latex2wimslr .wimsdoc{
+.doc_latex2wims .wimsdoc,
+.doc_latex2wimsl .wimsdoc,
+.doc_latex2wimsr .wimsdoc,
+.doc_latex2wimslr .wimsdoc{
    display:inline-block;
    text-align:justify;
-   margin-left: 0%;
-   margin-right: 0%;
+   margin-left: 0;
+   margin-right: 0;
    padding-left: 1em;
    padding-right: 1em;
    padding-top: 1em;
-   padding-bottom: 0em;
+   padding-bottom: 0;
    border: solid #FC9;
    border-width: 1px;
-   border-color: #808080;
+   border-color: gray;
    /*  min-height: 300px;*/
    line-height: 1.1;
    overflow: auto;
@@ -24,50 +27,53 @@ selon qu'il y n'a pas de toc, un toc à gauche, à droite, des deux côtés*/
 .doc_latex2wims .wimsdoc {width:100%}
 .doc_latex2wimsl .wimsdoc,.doc_latex2wimsr .wimsdoc{ width:80%;}
 .doc_latex2wimslr .wimsdoc {width:71%;}  
+
 .doc_latex2wimsl .left_toc,.doc_latex2wimslr .right_toc, 
 .doc_latex2wimslr .left_toc,.doc_latex2wimsr .right_toc {
   display: inline-block;
   min-width:10em;
   vertical-align:top;
-  padding: 0.5em;
+  padding: .5em;
   padding-top: 3em;
 }
 
-.left_toc {float:left;left:auto;}
-.right_toc { right:auto;float:right;}
+.left_toc  {float:left;  left: auto;}
+.right_toc {float:right; right:auto;}
 
-#docprint .doc_latex2wimsl .left_toc, #docprint .doc_latex2wimsr .right_toc, #docprint .doc_latex2wimslr .left_toc, #docprint .doc_latex2wimslr .right_toc  {visibility:hidden; display:none;}
+#docprint .doc_latex2wimsl  .left_toc,
+#docprint .doc_latex2wimsr  .right_toc,
+#docprint .doc_latex2wimslr .left_toc,
+#docprint .doc_latex2wimslr .right_toc
+{visibility:hidden; display:none;}
 
 /*Pour mettre en relief l'endroit où on est dans les menus*/
 .left_selection,.right_selection {
-  padding:0.4em;
+  padding:.4em;
   border: solid;
   border-width: thin;
-  border-color:#000000;
+  border-color:#000;
+  background-color:#FC9;
 }
 .no_selected {
-  padding:0.4em;
+  padding:.4em;
   border: solid;
-  border-width: 1px 0px 0px 0px ;
-  border-color:#000000;
+  border-width: 1px 0 0 0;
+  border-color:#000;
 }
 
 /*Pour les menus latéraux, la gestion des liens*/
-.left_toc a,.right_toc a {}
+/*.left_toc a,.right_toc a {}*/
 
  h3.wims_docu_titleb { text-align:center;}
-/*
-h1.wims_docu_title { background-color:#FFCC99;}
-*/
 
-/*Pour mettre en relief l'endroit où on est dans les menus*/
-.left_selection,.right_selection{ background-color:#FFCC99; }
-.wims_chemin { color: #A52A2A;}
+/*h1.wims_docu_title { background-color:#FFCC99;}*/
 
 /* menu en haut ou en bas*/
 .wims_chemin {
-   margin: 0.3em;
-   padding:0.7em;
+/*Pour mettre en relief l'endroit où on est dans les menus*/
+   color: #A52A2A;
+   margin: .3em;
+   padding:.7em;
    border-width: thin;
    font-size: 80% ;
    text-align: center;
@@ -75,18 +81,17 @@ h1.wims_docu_title { background-color:#FFCC99;}
 
 h2.l2w_content {
  font-size: 100%;
- padding-left: 0.3em;
- padding-right: 0.3em;
- margin-bottom:0;padding:3px;
- }
+ margin-bottom:0;
+ padding:3px;
+}
  
 div.l2w_content {
   background-color: #fafafa;
-  padding: 0.3em;
-  margin: 0 0.5em;
+  padding: .3em;
+  margin: 0 .5em;
   border:solid;
   border-width: thin;
-  border-color:#FFCCFF;
+  border-color:#FCF;
 }     
 
 span.l2w_content {
@@ -99,7 +104,7 @@ span.l2w_content {
 .emph {
   font-weight: bold;
   font-family: sans-serif;
-  color: #ff6600;
+  color: #f60;
 }
 .guill {
   font-weight: bold;
@@ -107,83 +112,81 @@ span.l2w_content {
   color: #aeaeae;
 }
 div.math {
-  padding: 0.5em;
+  padding: .5em;
   margin: 0 5%;
   text-align: center;
 }
 
 h2.exercice, h2.exemple {background-color: #CFC;}
-span.exemple {color: #000033; }
-span.exercice { color: #000066; } 
+span.exemple {color: #003; }
+span.exercice { color: #006; } 
 
 h2.defn { background-color: #CCF}
-span.defn { color: #666633; }
+span.defn { color: #663; }
 
-h2.thm { background-color: #FFCCFF; } 
-span.thm { color: #930;}
+h2.thm { background-color: #FCF; } 
+span.thm, span.rem { color: #930;}
 
 h2.dem {
- background-color:#FFFFCC;
+ background-color:#FFC;
  font-size: 100%;
  padding-left: 1em;
- padding-right: 0.3em;
+ padding-right: .3em;
  }
 div.dem {
   background-color: white;
-  padding: 0.3em;
+  padding: .3em;
   margin-left: 10%;
   border-left:solid;
   border-width: thin;
-  border-color:#FFCCFF;
+  border-color:#FCF;
   color: black;
 }
 
 span.dem {
-  color: #000066;
+  color: #006;
   font-family: sans-serif;
   font-weight: bold;    }
 
-.fin { background-color: #FFFFCC;
+.fin { background-color: #FFC;
    font-size: 90%;
    color: navy ; 
-   padding-left: 0.3em;
+   padding-left: .3em;
    text-align: right ;
    margin-right: 10%;
 }
 
 h2.quote {
- background-color: #00FF00;
+ background-color: #0F0;
  font-size: 100%;
- padding-left: 0.3em;
- padding-right: 0.3em;
+ padding-left: .3em;
+ padding-right: .3em;
  }
  
 div.quote {
   padding: 0.5em;
-  margin: 0 7% 0 0.5em;
+  margin: 0 7% 0 .5em;
   background-color:white;
 }
 
 span.quote { color:blue;}
 
 h2.rem {
- background-color: #FF9900;
+ background-color: #F90;
  font-size: 100%;
- padding-left: 0.3em;
- padding-right: 0.3em;
+ padding-left: .3em;
+ padding-right: .3em;
  }
  
 div.rem {
   background-color: white;
-  padding: 0.5em;
+  padding: .5em;
   margin: 0 5%;
   border:solid;
   border-width: thin;
-  border-color:#FFCCFF;
+  border-color:#FCF;
   color: black;
 }
-
-span.rem { color: #930;}
 
 .footnote {
   background-color: lightgrey;
@@ -191,34 +194,30 @@ span.rem { color: #930;}
 }
 span.footnote {font-style:italic}
 div.footnote {
-  padding: 0.5em;
+  padding: .5em;
   margin: 0 3em;
   border:solid;
   border-width: thin;
-  border-color:#FFCCFF;
+  border-color:#FCF;
 }
 
 /* les listes*/
-ol li { list-style:decimal ;}
+ol li, ol.enumerate li { list-style:decimal ;}
 ol ol li {list-style: lower-alpha ;}
 ol ol ol li {list-style:lower-roman;}
 ol ol ol ol li {list-style: upper-alpha;}
-ol.itemize li {list-style:disc ;}
-ul.itemize li {list-style:disc ;}
-ol.enumerate li {list-style:decimal ;}
-ol.trivlist li {list-style:none ;}
-ol.description li {list-style:none ;}
+ol.itemize li , ul.itemize li {list-style:disc ;}
+ol.trivlist li , ol.description li {list-style:none ;}
 span.description_item {font-weight:bold;}
 
 div.desc_item {
   background-color: white;
-  padding: 0.5em;
+  padding: .5em;
   margin: 0 5%;
   border: solid;
-  border:solid;
   border-width: thin;
-  border-color:#FFCCFF;
-  padding-right: 0.3em;
+  border-color:#FCF;
+  padding-right: .3em;
 }
 
  /*Pour les algorithmes*/
@@ -226,8 +225,8 @@ div.desc_item {
 h2.algorithm {
  background-color: #FF3333;
  font-size: 100%;
- padding-left: 0.3em;
- padding-right: 0.3em;
+ padding-left: .3em;
+ padding-right: .3em;
  }
  
 div.algorithm {
@@ -238,12 +237,12 @@ div.algorithm {
   padding-right: 0.3em;
   border-color: #D9D2C0;}
 h4.algo_titre {
- background-color: #CCFF00;
- padding: 1.0em;
- margin: 0 1.0em;
+ background-color: #CF0;
+ padding: 1em;
+ margin: 0 1em;
  font-size: 100%;
  color: black; 
- margin-left: 0%;
+ margin-left: 0;
  text-align: center;
 }
 
@@ -261,8 +260,8 @@ table.tabular {background-color:white;
 }
 
 .pre {background-color: #FFC;
-  padding-left: 0.6em;
-  padding-right: 0.6em;
+  padding-left: .6em;
+  padding-right: .6em;
   padding-top: 1em;
   padding-bottom: 1em;
   border-color: #D9D2C0;
@@ -271,8 +270,8 @@ table.tabular {background-color:white;
   font-weight:bold;
 }
 div.code {
-  background-color : #ffff99;
-  padding : 0.3em;
+  background-color : #ff9;
+  padding : .3em;
   margin-left: 10%;
   margin-right: 10%;
   border-width : thin;
@@ -283,5 +282,5 @@ div.code {
 span.subsubsection {
      color: #A52A2A;
      text-transform: none;
-     background-color: #FFFFCC;
+     background-color: #FFC;
 }
