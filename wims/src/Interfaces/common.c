@@ -245,7 +245,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf,
     char *cm, *p, *p2, abuf[MAX_LINELEN+1];
     char *arg[1024];
 
-    for(cm=cmdf; isspace(*cm); cm++);
+    for(cm=cmdf; isspace(*cm); cm++){};
     if(*cmdf==0) return -1;
     fflush(NULL);	/* flush all output streams before forking
 			 * otherwise they will be doubled */

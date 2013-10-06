@@ -91,7 +91,7 @@ char *show_stat="no";
   /* Author names show up in search result? */
 char *show_author="no";
   /* Show user IP adress to supervisor */
-char *show_ip="yes"; 
+char *show_ip="yes";
   /* busy hours definition */
 char *busyhours="";
   /* Presentation theme */
@@ -99,8 +99,8 @@ char *theme="standard";
   /* directory of session files */	
 char session_dir[MAX_FNAME+1], s2_dir[MAX_FNAME+1];
   /* standardised header model for modules' output. Will be stored
-   * into the variable $wims_html_header. If the theme contains 
-   * a file 'head.phtml', html_header will be defined by the address 
+   * into the variable $wims_html_header. If the theme contains
+   * a file 'head.phtml', html_header will be defined by the address
    * of this file  in subroutine define_html_header */
 char *html_header="html/header.phtml";
   /* standardised about table for modules */
@@ -112,7 +112,7 @@ char *title_page="title.phtml";
 char *header_menu="headmenu.phtml";
 char *header_menu_user="headmenu_user.phtml";
 char *header_menu_supervisor="headmenu_supervisor.phtml";
-  /* standardised referer to wims home, to be included in 
+  /* standardised referer to wims home, to be included in
    * module pages via command !homeref */
 char *home_referer="homeref.phtml";
 char *home_referer_user="homeref_user.phtml";
@@ -135,7 +135,7 @@ char *ref_button_bgcolor="#666666";
 char *ref_button_color="white";
   /* module log disabled by default */
 int modlog=0;
-  /* name of the variable definition file for every module. 
+  /* name of the variable definition file for every module.
    * It is this file which defines the presence of the module.
    * Better do not make it configurable. */
 char var_def_file[256];
@@ -278,7 +278,7 @@ CONFIG_DATA main_config[]={
       {"rlimit_cpu",		1, &rlimit_cpu},
       {"scilab_command",	2, &scilab_command},
       {"show_author",		0, &show_author},
-      {"show_ip",		0, &show_ip},      
+      {"show_ip",		0, &show_ip},
       {"show_stat",		0, &show_stat},
       {"site_accounting",	1, &site_accounting},
       {"site_description",	0, &site_description},
@@ -333,7 +333,7 @@ void determine_ref_name(void)
     setvar("wims_myhostname",hostname);
     ref_base[0]=0;
     if(s2!=NULL) mystrncpy(buf,s2,sizeof(buf));
-    else buf[0]=0; 
+    else buf[0]=0;
     if(s1!=NULL && *buf=='/') {
 	p=strrchr(buf,'/'); if(p==NULL) p=buf; else *p++=0;
 	if(strcmp(p,cgi_name)!=0 && strlen(p)>4 &&
@@ -346,7 +346,7 @@ void determine_ref_name(void)
 	    s2=p; while((s2=strpbrk(s2,"@~"))!=NULL) *s2='/';
 	    if(strncmp(p,"doc/",4)==0) {
 		char *pd, *pb;
-		pd=p+4; 
+		pd=p+4;
 		if(*pd) {
 		    pb=strchr(pd,'/');
 		    if(pb) *pb++=0; else pb="main";
@@ -357,12 +357,12 @@ void determine_ref_name(void)
 	    else setvar(ro_name[ro_module],p);
 	    module_defined=1;
 	}
-	p=strchr(buf,'_'); 
+	p=strchr(buf,'_');
 	if(p!=NULL && p>buf+3 && myislower(*(p-1)) && myislower(*(p-2))
 	   && *(p-3)=='/' && myisalpha(*(p+1))) {
 	    char *pp;
-      for(pp=p+1; myisalnum(*pp); pp++);
-      if(*pp=='/') *(p-3)=0;
+	    for(pp=p+1; myisalnum(*pp); pp++){};
+	    if(*pp=='/') *(p-3)=0;
 	}
 	snprintf(ref_name,sizeof(ref_name)-2,"http://%s%s/%s",s1,buf,cgi_name);
 	mystrncpy(ref_base,ref_name,sizeof(ref_base)-2);
@@ -379,7 +379,7 @@ void main_configure(void)
     int i;
     char *conf_buf,*e,*p,*p2,*p3;
     char buf[MAX_LINELEN+1];
-    
+
     conf_buf=readfile(config_file,NULL,WORKFILE_LIMIT);
     if(conf_buf==NULL) goto fileend;
     e=conf_buf-1; while(e) {
@@ -489,7 +489,7 @@ void set_rlimits(void)
 {
     int i;
     struct rlimit rlim;
-    
+
     for(i=0;i<RESOURCE_NO;i++) {
 	rlim.rlim_cur=rlim.rlim_max=*(resource_table[i].rval);
 	setrlimit(resource_table[i].rname,&rlim);
@@ -667,7 +667,7 @@ void module_index(void)
     double v1, v2;
     int i,l;
     long indf_len;
-    
+
     memmove(var_def_file,default_var_def,strlen(default_var_def)+1);
     ft=readfile(mkfname(NULL,"%s/INDEX",module_prefix),
 		ind_buf,sizeof(ind_buf));
@@ -720,7 +720,7 @@ void module_index(void)
     if(p!=NULL && *p!=0) mystrncpy(var_def_file,p,sizeof(var_def_file));
     p=getvar("module_wims_version"); if(p!=NULL && *p!=0) {
 	v1=atof(p); v2=atof(wims_version);
-	if(finite(v1) && finite(v2) && 
+	if(finite(v1) && finite(v2) &&
 	   (v1>v2 || (v1==v2 && strcmp(find_word_start(p),wims_version)>0))) {
 	    setvar("module_wims_version",p);
 	    setvar("wims_version",wims_version);
@@ -742,7 +742,7 @@ unsigned long create_job_ident(void)
     unsigned long it;
     int i;
     	/* Is this enough to guarantee uniqueness? */
-    
+
     it=(nowtime<<16)+(getpid()&0xffff);
     	/* The encryption is very simple. */
     it=it^0x5a3c9671;
@@ -756,7 +756,7 @@ unsigned long create_job_ident(void)
 void set_job_ident(void)
 {
     unsigned long l,r;
-    
+
     l=create_job_ident();
     /* the last 4 bits always make 0xA. A bug of glibc random()? */
     r=random()>>4;
@@ -776,7 +776,7 @@ void define_html_header(void)
     int noc;
     time_t t;
 
-    noc=0; 
+    noc=0;
     cp=getvar("wims_expire"); if(cp!=NULL) goto css;
     if(!robot_access && cmd_type==cmd_intro && isclassmodule) {
 	sp=getvar("special_parm"); if(sp==NULL) sp="";
@@ -848,7 +848,7 @@ void define_html_header(void)
 		setvar("wims_CSS",buf);
 	    }
 	    else {
-	    
+	
 	    }
 	    if (th) {
 	       nbuf=mkfname(NULL,"html/themes/%s/htmlheader.phtml",th) ;

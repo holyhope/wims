@@ -91,7 +91,7 @@ void mystrncpy(char *dest, const char *src, size_t lim)
 }
 
 	/* find matching parenthesis.
-	 * The entrance point should be after the opening 
+	 * The entrance point should be after the opening
 	 * parenthesis.
 	 * Returns NULL if unmatched. */
 char *find_matching(char *p, char c)
@@ -164,7 +164,7 @@ char *find_word_start(char *p)
 char *strparchr(char *p, char c)
 {
     char *pp;
-    
+
     for(pp=p;*pp && *pp!=c && pp-p<MAX_LINELEN; pp++) {
 	switch(*pp) {
 	    case '(': pp=find_matching(pp+1,')'); break;
@@ -181,7 +181,7 @@ char *strparstr(char *p, char *fnd)
 {
     char *pp, c;
     int n;
-    
+
     if(*fnd==0) return p+strlen(p);
     c=*fnd; n=strlen(fnd);
     for(pp=p;pp-1!=NULL && *pp!=0; pp++) {
@@ -193,10 +193,10 @@ char *strparstr(char *p, char *fnd)
 	}
     }
     if(pp-1==NULL) pp=strstr(p,fnd);
-    if(pp!=NULL) return pp; 
+    if(pp!=NULL) return pp;
     else return p+strlen(p);
 }
-    
+
 	/* Points to the end of an item */
 char *find_item_end(char *p)
 {
@@ -223,7 +223,7 @@ char *wordchr(char *p, char *w)
 
     if(*w==0) return NULL;
     n=strlen(w);
-    for(r=strstr(p,w);r!=NULL && 
+    for(r=strstr(p,w);r!=NULL &&
 	( (r>p && !myisspace(*(r-1))) || (!myisspace(*(r+n)) && *(r+n)!=0) );
 	r=strstr(r+1,w));
     return r;
@@ -342,20 +342,20 @@ int verify_order(void *list, int items, size_t item_size)
     return 0;
 }
 
-	/* searches a list. Returns index if found, -1 if nomatch. 
+	/* searches a list. Returns index if found, -1 if nomatch.
 	 * Uses binary search, list must be sorted. */
 int search_list(void *list, int items, size_t item_size, const char *str)
 {
     int i1,i2,j,k;
     char **p;
     char c;
-    
+
     if(items<=0) return -1;
     j=0; c=*str;
     p=list;
     k=**p-c; if(k==0) k=strcmp(*p,str);
     if(k==0) return k; if(k>0) return -1;
-    p=list+(items-1)*item_size; 
+    p=list+(items-1)*item_size;
     k=**p-c; if(k==0) k=strcmp(*p,str);
     if(k==0) return items-1; if(k<0) return ~items;
     for(i1=0,i2=items-1;i2>i1+1;) {
@@ -395,7 +395,7 @@ unsigned int itemnum(char *p)
 unsigned int wordnum(char *p)
 {
     int i; char *pp;
-    
+
     for(i=0, pp=find_word_start(p); *pp!=0; i++) {
 	while(!myisspace(*pp) && *pp!=0) pp++;
 	while(myisspace(*pp)) pp++;
@@ -414,7 +414,7 @@ char *fnd_line(char *p, int n, char bf[])
 {
     char *pp;
     int i;
-    
+
     for(i=1,pp=p; pp-1!=NULL && *pp!=0 && i<n; pp=strchr(pp,'\n')+1, i++);
     fnd_position=pp; if(pp-1==NULL) {
 	fnd_position=NULL; fnd_nextpos=""; *bf=0; return bf;
@@ -447,7 +447,7 @@ char *fnd_word(char *p, int n, char bf[])
 {
     char *pp;
     int i;
-    
+
     for(i=1, pp=find_word_start(p); *pp!=0 && i<n ; i++) {
 	while(!myisspace(*pp) && *pp!=0) pp++;
 	pp=find_word_start(pp);
@@ -455,7 +455,7 @@ char *fnd_word(char *p, int n, char bf[])
     if(*pp) fnd_position=pp; else fnd_position=NULL;
     for(i=0; *(pp+i)!=0 && !myisspace(*(pp+i)); i++) *(bf+i)=*(pp+i);
     fnd_nextpos=find_word_start(pp+i);
-    *(bf+i)=0; 
+    *(bf+i)=0;
     return bf;
 }
 
@@ -463,7 +463,7 @@ char *fnd_word(char *p, int n, char bf[])
 char *fnd_char(char *p, int n, char bf[])
 {
     int t;
-    
+
     t=strlen(p);
     if(n>t || n<1) {*bf=0;fnd_position=NULL; fnd_nextpos="";}
     else {
@@ -518,7 +518,7 @@ char *fnd_row(char *p, int n, char bf[])
     rows2lines(p); return fnd_line(p,n,bf);
 }
 
-	/* strstr but may have embedde zeros. 
+	/* strstr but may have embedde zeros.
 	 * Returns memory end if not found.
 	 * Supposes memory ends with 0. */
 char *memstr(char *s1, char *s2, int len)
@@ -605,10 +605,10 @@ void singlespace(char *p)
 {
     char *pp, *pt, *p2;
     for(pp=pt=p;*pp;pp++) {
-        if(!myisspace(*pp)) {*pt++=*pp; continue; }
-        *pt++=' ';
-        for(p2=pp+1;myisspace(*p2);p2++);
-        pp=--p2;
+	if(!myisspace(*pp)) {*pt++=*pp; continue; }
+	*pt++=' ';
+	for(p2=pp+1;myisspace(*p2);p2++){};
+	pp=--p2;
     }
     *pt=0;
 }
@@ -708,7 +708,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     char buf[MAX_LINELEN+1];
     int ln, le;
     va_list vp;
-    
+
     va_start(vp,good);
     vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
     ln=strlen(buf); le=strlen(bad_end);
@@ -725,7 +725,7 @@ int catfile(FILE *outf, char *fn,...)
     char buf[4096];
     va_list vp;
     int l,tot,fd;
-    
+
     tot=0;
     va_start(vp,fn);
     vsnprintf(buf,sizeof(buf),fn,vp); va_end(vp);
@@ -744,7 +744,7 @@ long int filelength(char *fn,...)
     va_list vp;
     struct stat st;
     int l;
-    
+
     va_start(vp,fn);
     vsnprintf(buf,sizeof(buf),fn,vp); va_end(vp);
     l=stat(buf,&st); if(l) return -1;
