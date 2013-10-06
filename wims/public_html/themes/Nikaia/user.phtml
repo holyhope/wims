@@ -33,7 +33,7 @@
 
 :normal
 !read classlogo.phtml
-!if $class_logo!=
+!if $class_logo!=$empty
  <div id="wimslogo$class_logoside">
   <img src="$class_logo" alt="class logo" />
  </div>
@@ -66,6 +66,8 @@
  !endif
 !endif
 </div> <!--wims_classes_direct-->
+
+<div class="wims_content">
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -140,8 +142,12 @@ $U_greet
 !endif
 
 :endbar
+</div><!--wims_content-->
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
+
+ <br class="clearall" />
+
 
 !!must have read user*.phtml,  with *=sheet, exam must be read before
 !distribute items div,ul into div0,div1
@@ -150,7 +156,7 @@ $U_greet
 !distribute items ul,li into div0,div1
 !read themes/_widgets/usermenubox.phtml
 !reset div0 div1
- <br class="clearall" />
+
 </div><!--end of wimsbodybox-->
 :end
 </body>

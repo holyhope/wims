@@ -20,16 +20,19 @@
 
 !read classlogo.phtml
 !if $class_logo!=
- <div class="menuitem">
  <div id="wimslogo$class_logoside">
-  <img src="$class_logo" alt="class logo" class="float_left"/>
+  <img src="$class_logo" alt="class logo" class="float_right"/>
  </div><!--classlogo-->
- </div><!-- menuitem-->
 !endif
+
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
 ($SU_log - $(wims_name_$class_typename))
+
+
+
 <br class="clearall" />
+<div class="wims_content">
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -170,7 +173,7 @@ $wims_classname, $wims_institutionname\
 !read themes/_widgets/menumodubox0.phtml
 
 :end
-
+</div><!--wims_content-->
 !reset div0 div1
 
 !distribute items div, span into div0,div1

@@ -1,0 +1,63 @@
+<div id="wimstopbox">
+
+	!!Site Title
+	!read themes/_widgets/site_title.phtml
+
+	!!Institution logo
+	!set positionlogo=right
+	!read themes/_widgets/institution_logo.phtml
+
+	!!Language Selector
+	!read themes/_widgets/language_selector.phtml
+	
+	<br class="clearall"/>
+
+	<ul class="wimsmenu menuglobal">
+		!!module_path = $module_path
+		!!wims_hm_cnt = $wims_hm_cnt
+
+		!if $wims_hm_cnt!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+			!distribute items li into div1
+			!read themes/_widgets/headmenu.phtml
+
+			!distribute items li,div into div0,div1
+   			!read themes/_widgets/permalink.phtml
+   			
+   			!reset div0 div1
+
+   			!!## technical parameters
+			!if $class_cas_auth=$empty
+		     !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+		     !set class_cas_auth=!getopt class_auth in $m_init_parm
+			!endif
+
+			!if $class_cas_auth!=$empty
+			  !!## it is better that the cas logout appears too much ... 
+			  !!## can be useless in the case of a supervisor so the next line is commented
+			  !!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
+			  <li class="topmenuitem">
+			   !read adm/class/logout_cas
+			  </li><!--topmenuitem-->
+			!endif
+
+		!endif
+		
+		!!Menu a afficher sur la page d'accueil des visiteurs
+		!if $module_path isitemof home and $wims_user=$empty
+			!!Accueil WIMS
+			<li class="menuitem">
+				!set wims_ref_class=home
+				!href module=home $wims_name_home
+			</li>
+			!!Zone Enseignants
+			<li class="menuitem">
+				!read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
+			</li>
+			!!Aide
+			<li class="menuitem">
+				!read ./adm/oneitem.phtml help,4,module=help/main,help
+			</li>	 
+		!endif
+	</ul><!--wimsmenu-->
+	!read themes/_widgets/authlogout.phtml
+</div><!-- fin de wimstopbox-->

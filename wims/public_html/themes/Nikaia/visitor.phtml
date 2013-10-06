@@ -13,55 +13,9 @@
 </div>
 
 <div id="wimsfrontpage">
-
-	<div id="wimstopbox">
-
-    	!!Site Title
-		!read themes/_widgets/site_title.phtml
-
-		!!Institution logo
-		!set positionlogo=right
-		!read themes/_widgets/institution_logo.phtml
-
-		!!Language Selector
-		!read themes/_widgets/language_selector.phtml
-
-		
-		<br class="clearall"/>
-
-		<!--wimsmenu menuglobal-->
-		
-		<ul class="wimsmenu menuglobal">
-			!!!if $gotcnt<=0 and $s_keywords=$empty
-			<li class="menuitem">
-			!set wims_ref_class=home
-			!href module=home $wims_name_home
-			</li><!--menuitem-->
-			<!--
-			<span class="menuitem">
-			!read ./adm/oneitem.phtml n_participant,1,module=adm/class/classes&type=participant
-			</span>
-			-->
-			<li class="menuitem">
-			!read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
-			</li><!--menuitem-->
-			
-			<!--
-			<span class="menuitem">
-			!read ./adm/oneitem.phtml n_example,1,module=adm/class/classes&type=example
-			</span>
-			!!!endif
-			-->	
-			<li class="menuitem">
-			!read ./adm/oneitem.phtml help,4,module=help/main,help
-			<!--!read ./adm/oneitem.phtml help,4,module=themes/$wims_theme/help/main,help-->	
-			</li>	 
-		</ul><!--wimsmenu-->
-		!read themes/_widgets/authlogout.phtml
-	</div><!-- fin de wimstopbox-->
-
 	<div id="wimsbodybox">				
 		<div id="wimspagebox">
+
 			<div class="wimsbody">
 			
 				!read themes/_widgets/manager.phtml
@@ -75,14 +29,16 @@
 				
 				<br class="clearall"/>
 				
-				<!--Recherche avancée exercices
-				!read themes/$wims_theme/lang/home.phtml.fr-->
+				!!<!--Recherche avancée exercices-->
+				!!read themes/$wims_theme/lang/home.phtml.fr
 				
 				
-				<!--Résultats recherche exercices-->
+				
 				!if $s_category=V
+				 <!--Exemples de contenus-->
 				 !read ./front.phtml
 				!else
+				 <!--Résultats recherche exercices-->
 				 !read ./result.phtml
 				!endif
 				
