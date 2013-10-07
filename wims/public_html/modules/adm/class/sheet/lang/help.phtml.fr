@@ -8,7 +8,7 @@ $(name_shtab[6])
 
 Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de
 pouvoir travailler sur celui-ci.
-Par exemple, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> 
+Par exemple, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
 signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
  30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.
 <br class="spacer" />
@@ -31,13 +31,28 @@ Indication sur l'enregistrement des notes.
 &lt;aaaammjj.hh:mm</span>
  (fin). Les dates et heures doivent être en temps local du SERVEUR
  et ces mots doivent être séparés les uns des autres par des espaces.
-
+<p>
+Exemple : 
+<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
+permet l'enregistrement des notes entre 2 dates et seulement pour les numéros IP commençant
+par <span class="tt wims_code_words"127.0</span>.
+</p>
 :variable
 <p>
-Afin d'individualiser les restrictions d'accès, il est possible de mettre le nom d'une variable.
+Afin d'individualiser les restrictions d'accès, il est possible de mettre
+une variable (dans l'exemple ci-dessous, mettre
+<span class="tt wims_code_words">\timelimit</span>).
 Cette variable doit alors être définie pour chaque participant selon les règles précédentes
-soit manuellement dans les propriétés du compte d'un participant ou par liaison tableur 
+soit manuellement dans les propriétés du compte d'un participant
 (variable technique).
+</p><p>
+Exemple : mettre
+<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00</span>
+dans le champ "variable technique" des propriétés du compte d'un élève.
+Pour les participants pour lesquels cette variable est vide,
+l'enregistrement des notes est fermé.
+</p><p>
+Il est possible d'ajouter cette variable par liaison tableur.
 Si la restriction est un choix du participant (inscription selon certaines dates par
 exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
 (voir l'aide correspondante).
@@ -49,9 +64,9 @@ exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
 $(name_shtab[10])
 On peut indiquer dans ce champ un lien sur un document de WIMS
 ou un exercice de WIMS. Le lien sur cette ressource apparaîtra lorsque le score est
-strictement inférieur à une note fixée (sur 10). 
-Le second item est la note limite (sur 10), le premier item est l'adresse sous la forme suivante 
-(forme abrégée): 
+strictement inférieur à une note fixée (sur 10).
+Le second item est la note limite (sur 10), le premier item est l'adresse sous la forme suivante
+(forme abrégée):
 <ul><li>
 Exercice d'un module public ou document public : <span class="tt wims_address">module=xxx</span>
 (comme dans <span class="wims_button disabled">$wims_name_about</span>).
@@ -66,8 +81,8 @@ Document de la classe  :
 Les paramètres supplémentaires peuvent être ajoutés (voir <span class="wims_button disabled">$wims_name_about</span>)
 
 Par exemple, dans l'exemple ci-dessous, si la note est inférieure à 5, l'élève sera dirigé
-sur le document de la classe <span class="tt">c2</span>, et plus précisément sur la page correspondant 
-au bloc <span class="tt">aaa</span> de ce document. 
+sur le document de la classe <span class="tt">c2</span>, et plus précisément sur la page correspondant
+au bloc <span class="tt">aaa</span> de ce document.
 
 <pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
 
@@ -78,12 +93,12 @@ la classe).
 
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,10</pre>
 
-En mettant deux nombres (dont le deuxième est strictement positif), le bouton 
+En mettant deux nombres (dont le deuxième est strictement positif), le bouton
 apparaît lorsque le score est compris entre le second nombre
-et le premier nombre : par exemple, si vous mettez, 
+et le premier nombre : par exemple, si vous mettez,
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
-le bouton apparaît lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus 
-qui apparaît. Si le deuxième nombre est 0, le comportement est le même que s'il 
+le bouton apparaît lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus
+qui apparaît. Si le deuxième nombre est 0, le comportement est le même que s'il
 n'existait pas.
 
 Vous pouvez aussi insérer un lien d'aide dans la feuille en sélectionnant d'abord une ressource WIMS
