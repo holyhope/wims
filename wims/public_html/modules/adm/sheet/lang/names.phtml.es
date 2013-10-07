@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !read adm/lang/sheetexam.phtml.$lang
-
+!set name_from=from
 !set name_student1=!nosubst Puede trabajar en esta hoja hasta el $expday $expmon $expyear
 !set name_student2=Esta hoja ha expirado. Puede seguir \
  trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.

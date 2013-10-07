@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !read adm/lang/sheetexam.phtml.$modu_lang
-
+!set name_from=from
 !set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear
 !set name_student2=Dit werkblad is verlopen. Er kan nog wel aan\
  worden gewerkt, maar de behaalde cijfers worden niet meer geregistreerd.
