@@ -1,5 +1,9 @@
 !nocache
 
+!if $test_exist!=$empty
+  !set gottype=search
+!endif
+
 !if $s_category isin ADTXRPOS
   !read adm/search_engine/search_clear.phtml
 !endif
@@ -48,7 +52,6 @@
   !endif $(rel_$s_category)
  </div>
  !endif $s_keywords!=$empty
- 
 
  !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0 and $Gotcnt<1
   <p class="RE_pop">
@@ -66,7 +69,7 @@
    !set wims_ref_title = $RE_next
    !href module=home&cmd=reply&list_start=$[$list_start+$list_batch] &gt;&gt;
   !endif
-  
+
   !reset list_start
  !else
   !if $s_category isin ADXOTR and $s_keywords=$empty
@@ -94,7 +97,6 @@
 
 !if $gottype=search or $gotcnt1=0
  !reset tt
- 
  !if $test_exist!=$empty
   <p>$RE_found2</p>
 

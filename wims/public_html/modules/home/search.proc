@@ -131,7 +131,7 @@ search_category=!char 1 of $search_category
   srch=!replace , by , $ in $srch
   srch=!deaccent $srch
   srch=!lower $srch
-  
+
 !!do not want to use the misprints and suffix for the moment
   Gotcnt=0
 !!! classes
@@ -190,7 +190,7 @@ search_lang=$search_lang
    !set test_exist=!append item S to $test_exist
  !endif
  Gotcnt=$[$Gotcnt + $gotcntS]
- !for cat in X,D,T,R,M
+ !for cat in X,D,T,R,M,P
    !read search.ker $cat
    gotm$cat=$gotm
    gotw$cat=$gotw
@@ -214,7 +214,7 @@ search_lang=$search_lang
    Gotcnt=$[$Gotcnt + $(gotcnt$search_category)]
 !endif
 
- 
+
 :bailout
 translator_switch=leaveline
 !bound list_start between integer 0 and 10000 default 0
@@ -281,7 +281,7 @@ gota=!exec translator $gotm
  !if / notin $(gotm$cat) and $(gotcnt$cat)>0
   dictionary=$search_package2/addr
   gotm$cat=!exec translator $(gotm$cat)
- !endif 
+ !endif
  !next
 !endif
 !if $search_category isin AT and $search_keywords!=$empty and\
@@ -290,6 +290,10 @@ gota=!exec translator $gotm
  gotcnt1=$gotcnt
  gottype1=$gottype
  !read search.P
+ !if $gotcnt1>0
+     test_exist=!append item P to $test_exist
+     gottype=search
+ !endif
  !exchange gottype,gottype1
  !exchange gotcnt,gotcnt1
  !exchange gotm,gotm1
