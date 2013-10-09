@@ -3,7 +3,7 @@
 !! 2) inputfields via id="myinput0" ... id="myselect100"
 !! 3) selectboxes via id="myselect0" ... id="myselect100"
 !! 4) mathml inputfields via id="mathml0" ... id="mathml100"
-!! 5) svg answer (via draw or inputfields/textarea [ read_svg();]
+!! 5) canvas answer (via draw or inputfields/textarea [ read_canvas();]
 !! 6) FlyApplet drawing via ReadDrawing() : coordinates/points/lines x1:y1,x2:y2,x3:y3....x_n:y_n (wordmax (=20) is adjustable upperlimit ; wordmin (=1) is adjustable underlimit) from FlyApplet0...FlyApplet100
 !! 7) InvulGrid applet via ReadApplet(0,1,2,3) ; carefull applet produces large strings (html/latex)
 
@@ -234,9 +234,9 @@
 	}
 	
 	try{
-	    svg_reply = new Array();svg_reply = read_svg();
-	    for( var p = 0 ; p < svg_reply.length ; p++){
-		input = svg_reply[p];
+	    canvas_reply = new Array();canvas_reply = read_canvas();
+	    for( var p = 0 ; p < canvas_reply.length ; p++){
+		input = canvas_reply[p];
 		if (input.length == 0){setAlarm(r1+" "+parseInt(i+1));return;}
 		show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + input + "</li>";
 		reply[inputfieldnumber] = input;
@@ -364,10 +364,6 @@
 	    !set insplot_set=$(image_settings$n)
 	    !set ins_attr=id="myimage"
 	    !insplot $(image$n)
-	!else
-	    !if $svg=1
-		!exec svgdraw $(image$n)
-	    !endif
 	!endif
     !endif
     </td>
