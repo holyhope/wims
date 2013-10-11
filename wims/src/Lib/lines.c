@@ -225,7 +225,7 @@ char *wordchr(char *p, char *w)
     n=strlen(w);
     for(r=strstr(p,w);r!=NULL &&
 	( (r>p && !myisspace(*(r-1))) || (!myisspace(*(r+n)) && *(r+n)!=0) );
-	r=strstr(r+1,w));
+	r=strstr(r+1,w)){};
     return r;
 }
 
