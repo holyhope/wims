@@ -2,8 +2,8 @@ type=datalist
 textarea="data"
 
 :Marquer un mot, puis donner un renseignement concernant ce mot
-A la première étape, il est demandé  marquer des mots ; à la seconde étape, 
-une question est posée sur ces mots (texte à répondre). 
+A la première étape, il est demandé de marquer des mots ; à la seconde étape,
+une question est posée sur ces mots (texte à répondre).
 
 <div class="small">
 Cet exercice peut facilement être transformé pour être inclus dans un module OEF
@@ -127,7 +127,7 @@ wims(makelist x for x = 1 to \cnt_question)}
 \text{texte = \texte[-3;]}
 \text{cnt = items(\texte)}
 \text{Texte=wims(items2words \texte)}
-  
+
 \text{rep_compose = }
 \for{ i = 1 to \cnt_mot}{
  \text{nom_compose= \texte[\numero[\i;]]}
@@ -171,9 +171,9 @@ wims(makelist x for x = 1 to \cnt_question)}
   \if{\step=\first_step}{
     <div class="question">
    \if{\format iswordof flashcard}{
-     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}  
+     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}
     \for{h=1 to \cnt}{
-      \embed{reply 1,\h} 
+      \embed{reply 1,\h}
     }
     </div>
    }
@@ -212,29 +212,29 @@ wims(makelist x for x = 1 to \cnt_question)}
   }
   \if{\pos_rep=under}{
     <div class="question">
-    \for{u = 0 to \quo}{<table border="0">
+    \for{u = 0 to \quo}{<table style="border:none">
     <tr>
-    \for{ v = 1 to \coupure}{<td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+    \for{ v = 1 to \coupure}{<td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-       \if{\coupure*\u+\v <= \cnt}{ 
-         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<sapn style="color:blue;">}
+       \if{\coupure*\u+\v <= \cnt}{
+         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<span style="color:blue;">}
            \texte[\coupure*\u+\v]}{&nbsp;}
           \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</span>}
        </td>
       }
      </tr><tr>
      \for{ v = 1 to \coupure}{
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-        <td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{ 
+        <td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{
          \embed{\STEP[\position[\nombre[\coupure*\u+\v]]], \size
          \autocompletion}
       }{&nbsp;}
       </td>
      }
-    </tr><tr><td colspan="\coupure"><hr/></td></tr>
+    </tr><tr><td colspan="\coupure"><hr /></td></tr>
        </table> }
 
    </div>
@@ -263,4 +263,3 @@ wims(makelist x for x = 1 to \cnt_question)}
 \answer{\rep_compose[18]}{\traduction[18]}{type=\format}{option=\option_reaccent}
 \answer{\rep_compose[19]}{\traduction[19]}{type=\format}{option=\option_reaccent}
 \answer{\rep_compose[20]}{\traduction[20]}{type=\format}{option=\option_reaccent}
-     

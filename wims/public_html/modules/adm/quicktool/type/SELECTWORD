@@ -19,7 +19,7 @@
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
  \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
  \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+     \text{rab_inst1= . isin \inst_audio or \packs= ?
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
      \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
  }
@@ -53,7 +53,7 @@
 \text{cnt = items(\texte)}
 \text{Texte=wims(items2words \texte)}
 
-    
+
 \text{rep_compose = }
 \for{ i = 1 to \cnt_mot}{
  \text{nom_compose= \texte[\numero[\i;]]}
@@ -97,9 +97,9 @@
   \if{\step=\first_step}{
     <div class="question">
    \if{\format iswordof flashcard}{
-     <div> \for{h=1 to \cnt}{\texte[\h] }</div>}  
+     <div> \for{h=1 to \cnt}{\texte[\h] }</div>}
     \for{h=1 to \cnt}{
-      \embed{reply 1,\h} 
+      \embed{reply 1,\h}
     }
     </div>
    }
@@ -117,12 +117,12 @@
     <div class="question">
    \for{s= 1 to \cnt_mot}{
          <br /> \rep_compose[\s] : \embed{reply \STEP[\s],\size
-         \autocompletion}  
+         \autocompletion}
    }
    </div>
  }
  \if{\pos_rep=inside}{
-    <div>\instruction2</div>
+    <div class="instruction">\instruction2</div>
     <div class="question">
     \for{s = 1 to \cnt}{
       \if{\s notitemof \Numero}{\texte[\s]}{
@@ -136,23 +136,23 @@
   }
   \if{\pos_rep=under}{
     <div class="question">
-    \for{u = 0 to \quo}{<table border="0">
+    \for{u = 0 to \quo}{<table style="border:none">
     <tr>
-    \for{ v = 1 to \coupure}{<td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+    \for{ v = 1 to \coupure}{<td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-       \if{\coupure*\u+\v <= \cnt}{ 
-         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<font color="blue">}
+       \if{\coupure*\u+\v <= \cnt}{
+         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<span style="color:blue">}
            \texte[\coupure*\u+\v]}{&nbsp;}
-          \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</font>}
+          \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</span>}
        </td>
       }
      </tr><tr>
      \for{ v = 1 to \coupure}{
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-        <td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{ 
+        <td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{
          \embed{\STEP[\position[\nombre[\coupure*\u+\v]]], \size
          \autocompletion}
       }{&nbsp;}
@@ -187,4 +187,3 @@
 \answer{\rep_compose[18]}{\traduction[18]}{type=\format}{option=\option_reaccent}
 \answer{\rep_compose[19]}{\traduction[19]}{type=\format}{option=\option_reaccent}
 \answer{\rep_compose[20]}{\traduction[20]}{type=\format}{option=\option_reaccent}
-
