@@ -62,9 +62,16 @@ $name_level : $(name_wims_level_$(intro[5;])) $duration - $year<br />$(intro[8;]
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <li class="wims_sheet_list">$i.
+  !if .___ isin $(ti)___
+   !set ti=!replace internal .___ by in $(ti)___
+  !endif
+  <li class="wims_sheet_list">$i
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+  !if $de notsametext $empty
 , $de
+ !else
+.
+ !endif
  </li>
  !next i
  </ul>
