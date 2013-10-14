@@ -21,6 +21,7 @@ arts:
 bilinear_algebra:
 biochemistry:
 biology:
+body_system:
 botanics:
 business_english:
 calc:rekenen
@@ -31,6 +32,7 @@ cinematics:
 circle:cirkel
 circles:cirkel
 civic_education:
+classical_antiquity:
 code:programmeer theorie
 coding:
 combi:combinatoriek
@@ -57,8 +59,9 @@ derivative:afgeleide
 descriptive_statistics:
 determinant:determinant
 differentiability:differentieerbaarheid
-differential_equations:differentiaal vergelijkingen
+differential_equation:differentiaal vergelijkingen
 differential_geometry:
+differential_system:
 diophantine_equations:Diophantische vergelijkingen
 discrete_mathematics:
 domain:
@@ -75,6 +78,7 @@ elementary_mathematics:
 ellipse:ellipsen
 endomorphism_reduction:
 english:
+english_vocabulary:
 entropy:entropie
 equations:vergelijkingen
 error_correcting_codes:fout correctie codes
@@ -98,7 +102,9 @@ fraction:
 french:
 french_conjugation:
 french_grammar:
+french_reading:
 french_spelling:
+french_vocabulary:
 functions:functies
 gas_mechanics:
 gcd_lcm:ggd kgd
