@@ -1,0 +1,79 @@
+type=image
+textarea="data"
+
+:Cliquer sur une image.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste des images et
+de leur caractérisation. Cette caractérisation peut être mise dans l'instruction
+sous la forme <span class="tt wims_code_variable">\name</span>
+</p>
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Cliquer sur la bonne image}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+
+:Données
+Les images peuvent soit être dans l'exercice (mettre
+alors simplement le nom de l'image, ne pas oublier de les charger dans l'exercice), 
+soit dans un module de données d'images 
+(voir l'exemple).
+\text{data=modules/data/images/imgschool.fr/images/abeille.png,l'abeille
+modules/data/images/imgschool.fr/images/ange.png,l'ange
+modules/data/images/imgschool.fr/images/araignee.png,l'araignée
+modules/data/images/imgschool.fr/images/aubergine.png,l'aubergine
+modules/data/images/imgschool.fr/images/ananas.png,l'ananas
+}
+
+:Nombre d'images présentées.
+\integer{cnt=4}
+:La taille verticale des images en pixels
+\text{sizev=100}
+:%%%%%%%%%%%%%%
+ne pas mettre de ; dans sizeh
+\if{\sizeh notsametext }{
+  \text{sizeh= style="height:wims(nospace \sizev px)"}
+}
+\text{mot = randrow(\data)}
+\text{image=\mot[1]}
+\text{ext=item(2,wims(replace internal . by , in wims(lowercase \image)))}
+\text{name=\mot[2]}
+
+:Consigne
+Ici \name représente le deuxième item de l'image qui sera à cliquer.
+\text{instruction=Clique sur \name.}
+
+:%%%%%%%%%%%%%%
+\text{liste=column(1, \data)}
+\text{perturb=wims(listcomplement \image in \liste)}
+\text{perturb=shuffle(\perturb)}
+\text{perturb=\perturb[1..\cnt-1]}
+\text{liste=\image,\perturb}
+\text{Image=}
+\for{j=1 to \cnt}{
+  \text{Image=/ isin \liste[\j] ? wims(append item \liste[\j] to \Image):
+  wims(append item \imagedir/\liste[\j] to \Image)}
+}
+\text{liste=wims(makelist <img src="x" alt="" \sizeh /> for x in \Image)}
+\text{bat=shuffle(\cnt)}
+\text{liste=\liste[\bat]}
+\text{rep=position(1,\bat)}
+\statement{
+<div class="instruction">
+ \instruction
+</div>
+<div class="wimscenter">
+\for{u=1 to \cnt}{ \embed{r1,\u} }
+</div>
+}
+\answer{}{\rep;\liste}{type=click}{option=shuffle}
