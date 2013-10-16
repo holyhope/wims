@@ -1,20 +1,27 @@
 /*
-
 *********************************************************************************
 * J.M. Evers 3/2012                                                             *
-* This is all amateur scriblings... So no copyrights.                           *
+* This is all -very- amateur scriblings... So no copyrights.                    *
 * This source code file, and compiled objects derived from it,                  *
 * can be used and distributed without restriction, including for commercial use *
 * No warrenty whatsoever                                                        *
 *********************************************************************************
-20/6/2012
-Corrected significance flaw when using prefixes
-Simplified routines
-Added type = 5 : prefix-notation with words (nano,mega,giga...etc)
 
-12/11/2012
-Added support for numbers like  12345*10^12 
-12345*10^12 --> 12345E12 ---> 1.2345*10^16
+16/10/2013
+corrected roundoff in case "significance=-1" changed 'factor' from 'int' to 'float'...there must be a better way to do this...
+But in numbers > 1000000000000000 there is still a problem, so take care (!) 
+when there are more than 15 digits in the number (this may vary depending on system / implementations, I guess)
+./scienceprint 901234567890123       ,-1,0 --> 9.01234567890123*10^14
+./scienceprint 9012345678901234      ,-1,0 --> 9.012345678901236*10^15
+./scienceprint 901234567890123*10^70 ,-1,0 --> 9.01234567890123*10^84
+./scienceprint 9012345678901234*10^70,-1,0 --> 9.012345678901227*10^85
+
+28/9/2013 
+minor issue: 
+small correction in roundoff routine when significance > 6 .... pow(10,7) may give problems when stored in (int) integer
+
+27/9/2013 
+Correct rounding in stead of truncation...
 
 18/10/2012 : 
 Added Mathml output 
@@ -23,11 +30,18 @@ To be used when there is no significance known ; just tries to print the number 
 Using the original amount of digits used in "number" argument
 !exec scienceprint 123.445000e+23,-1 --> 1.23445000*10^25
 
-27/9/2013 
-Correct rounding in stead of truncation...
-28/9/2013 
-minor issue: 
-small correction in roundoff routine when significance > 6 .... pow(10,7) may give problems when stored in (int) integer
+12/11/2012
+Added support for numbers like  12345*10^12 
+12345*10^12 --> 12345E12 ---> 1.2345*10^16
+
+20/6/2012
+Corrected significance flaw when using prefixes
+Simplified routines
+Added type = 5 : prefix-notation with words (nano,mega,giga...etc)
+
+
+
+
 
 *********************************************************************************
 
@@ -117,7 +131,7 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
     static char *plus[] = {"","k", "M", "G", "T", "P", "E", "Z", "Y" };
     static char *min_word[] = {"","milli","micro","nano","pico","femto","atto","zepto","yocto"};
     static char *plus_word[] = {"","kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta" };
-    char *sign = NULL;char *prefix = NULL;double pm;int factor;
+    char *sign = NULL;char *prefix = NULL;float pm;double factor;
     int exponent10 = 0;
     int use_word = 0;if(format == 5){format = 3; use_word = 1;} /* switch to using words in stead of prefix  */
     if(value < 0.0) {pm = -0.5; sign = "-";value = -value;} else {sign = ""; pm = 0.5;}    
@@ -147,8 +161,8 @@ char *printscience(double value, int sig, int format , int cnt ,int size){
             if(exponent10 <-100){fprintf(stdout,"error : number too small (exponent < -100)\n");return 0;}
         }
     }
-    /* 27/9/2013 avoid truncating and do rounding...but not with 7 significant digits*/
-    if(sig > 6){factor = 100000;}else{factor = pow(10,sig+1);}
+    /* 27/9/2013 avoid truncating and do rounding...very expensive */
+    factor = pow(10,sig+1);
     value = (round(factor*value + (pm) ))/factor; /* pm = +/- 0.5 */
     if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){
         format = 1; /* not in my list of prefixes ; print in html ! */
