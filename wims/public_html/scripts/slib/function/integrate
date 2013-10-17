@@ -5,8 +5,10 @@
 slib_author=Gang, XIAO
 
 slib_example=sin(x),x,0,5,numeric\
-sin(x),x,0,5,fast\
+sin(x),x,0,5\
+sqrt(sin(x+4)^2 + cos(x+0.5)^2),x,0,5,numeric\
 sin(x),x
+
 slib_require=maxima, pari
 !exit
 
@@ -27,10 +29,11 @@ slib_test=$[($slib_x1)+($slib_x2)]
 !endif
 !if ($slib_out=$empty or integrate isin $slib_out or i isvarof $slib_out) \
   and NaN notin $slib_test
- !if fast isin $slib_opt
+   !!no more a true option (it was not documented), default is fast !
+ !!!if fast isin $slib_opt
   slib_out=!exec pari intnum($slib_var=$slib_x1,$slib_x2,$slib_fn)
- !else
-  slib_out=!exec pari intnum($slib_var=$slib_x1,$slib_x2,$slib_fn,3)
- !endif
+ !!!else
+ !! slib_out=!exec pari intnum($slib_var=$slib_x1,$slib_x2,$slib_fn)
+ !!!endif
 !endif
 
