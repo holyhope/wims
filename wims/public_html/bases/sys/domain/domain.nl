@@ -1,243 +1,243 @@
-2_shape:
-3_shape:
+2_shape:2D
+3_shape:3D
 Bezout_algorithm:Bezout algoritme
 Fourier_series:Fourier reeksen
 Fourier_transforms:Fourier transformaties
 Goldbach:Goldbach
-abelian_group:
-abstract_algebra:abstracte algebra
-affine_geometry:affiene geometrie
-algebra:algebra
-algebra_geometry:
-algebraic_geometry:
-algorithmics:
-american_civilisation:
-analysis:analyse
-analytic_geometry:analytische geometrie
-angles:hoeken
-area:
-arithmetic:rekenkunde
-arts:
+abelian_group:Abelse groep
+abstract_algebra:Abstracte algebra
+affine_geometry:Affiene geometrie
+algebra:Algebra
+algebra_geometry:Algebra geometrie
+algebraic_geometry:Algebraische geometrie
+algorithmics:Algoritmeleer
+american_civilisation:Amerikaanse civilisatie
+analysis:Analyse
+analytic_geometry:Analytische geometrie
+angles:Hoeken
+area:Oppervlak
+arithmetic:Rekenkunde
+arts:Kunst
 bilinear_algebra:
-biochemistry:
-biology:
-body_system:
-botanics:
-business_english:
-calc:rekenen
-calculus:
-cell_biology:
-chemistry:
-cinematics:
-circle:cirkel
-circles:cirkel
+biochemistry:Biochemie
+biology:Biologie
+body_system:Lichaam
+botanics:Plantkunde
+business_english:Technisch engels
+calc:Rekenen
+calculus:Rekenkunde
+cell_biology:Celbiologie
+chemistry:Chemie
+cinematics:Bewegingsleer
+circle:Cirkel
+circles:Cirkel
 civic_education:
-classical_antiquity:
-code:programmeer theorie
-coding:
-combi:combinatoriek
-combination:combinaties
-combinatorics:
-complex_analysis:
-complex_number:complexe getallen
-complex_plane:
-conditional_probability:
-confidence_interval:
-congruence:congruentie
-conics:kegelsneden
-continued_fraction:rationale getallen
-continuity:continuiteit
-cristallography:
-cryptology:cryptologie
-curves:kurves
-cyclic_group:
-data_analysis:statistische data
-data_gestion:
-decimals:decimalen
-definite_integral:eindige integralen
-derivative:afgeleide
-descriptive_statistics:
-determinant:determinant
-differentiability:differentieerbaarheid
-differential_equation:differentiaal vergelijkingen
-differential_geometry:
-differential_system:
+classical_antiquity:Klasieke oudheid
+code:Code
+coding:Programmeren
+combi:Combi
+combination:Combinaties
+combinatorics:Combinatioriek
+complex_analysis:Complexe analyse
+complex_number:Complexe getallen
+complex_plane:Complexe vlak
+conditional_probability:Conditionel kansrekening
+confidence_interval:Betrouwbaarheids interval
+congruence:Congruentie
+conics:Kegelsneden
+continued_fraction:Rationale getallen
+continuity:Continuiteit
+cristallography:Kristallografie
+cryptology:Cryptologie
+curves:Kurves
+cyclic_group:Cyclische groep
+data_analysis:Data analyse
+data_gestion:Gegevensbeheer
+decimals:Decimalen
+definite_integral:Eindige integralen
+derivative:Afgeleide
+descriptive_statistics:Beschrijvende statistiek
+determinant:Determinant
+differentiability:Differentieerbaarheid
+differential_equation:Differentiaal vergelijkingen
+differential_geometry:Differentiaal meetkunde
+differential_system:Differentiaal systeem
 diophantine_equations:Diophantische vergelijkingen
-discrete_mathematics:
-domain:
-dynamics:
-earth_sciences:
-ecology:
-electricity:
-electronics:
-electrostatics:
-elementary_algebra:elementaire algebra
-elementary_calculus:
-elementary_geometry:
-elementary_mathematics:
-ellipse:ellipsen
+discrete_mathematics:Discrete wiskunde
+domain:Domein
+dynamics:Dynamica
+earth_sciences:Geografie
+ecology:Ecologie
+electricity:Electriciteit
+electronics:Electronica
+electrostatics:Electrostatica
+elementary_algebra:Elementaire algebra
+elementary_calculus:Elementaire calculus
+elementary_geometry:Elementaire geometrie
+elementary_mathematics:Elementaire wiskunde
+ellipse:Ellips
 endomorphism_reduction:
-english:
-english_vocabulary:
-entropy:entropie
-equations:vergelijkingen
-error_correcting_codes:fout correctie codes
-error_detection:fouten signalering
-estimation:
-etymology:
-euclidean_algorithm:euclidisch algoritme
-euclidean_geometry:euclidische geometrie
-events:
-exponent:
-exponential:
-factorial:factorisaties
-factorization:ontleden
-field:velden
-financial_mathematics:
-finite_group:
-fluid_mechanics:
-fourier_series:
-fourier_transform:
-fraction:
-french:
+english:Engels
+english_vocabulary:Engelse uitspraak
+entropy:Entropie
+equations:Vergelijkingen
+error_correcting_codes:Fout correctie codes
+error_detection:Fouten signalering
+estimation:Schatten
+etymology:Etymologie
+euclidean_algorithm:Euclidisch algoritme
+euclidean_geometry:Euclidische geometrie
+events:Event
+exponent:Exponent
+exponential:Exponentieel
+factorial:Factorisaties
+factorization:Ontleden
+field:Velden
+financial_mathematics:Financiele wiskunde
+finite_group:Eindige groepen
+fluid_mechanics:Stromingsleer
+fourier_series:Fourier series
+fourier_transform:Fourier transformatie
+fraction:Breuk
+french:Frans
 french_conjugation:
-french_grammar:
-french_reading:
-french_spelling:
-french_vocabulary:
-functions:functies
-gas_mechanics:
-gcd_lcm:ggd kgd
-genetics:
-geography:
-geology:
-geom:geometrie
-geometry:geometrie
-german:
-goldbach:
-grammar:
-graph:
-graphing:grafieken
-group:groepen
-group_action:
-group_theory:
+french_grammar:Franse grammatica
+french_reading:Frans lezen
+french_spelling:Franse spelling
+french_vocabulary:Franse uitspraak
+functions:Functies
+gas_mechanics:Gas mechanica
+gcd_lcm:Gcd
+genetics:Genetica
+geography:Geografie
+geology:Geologie
+geom:Geometrie
+geometry:Geometrie
+german:Duits
+goldbach:Goldbach
+grammar:Grammatica
+graph:Grafiek
+graphing:Grafieken
+group:Groepen
+group_action:Groep aktie
+group_theory:Groep theorie
 hamming:Hamming afstand
-histogram:
-histology:
-history:
+histogram:Histogram
+histology:Histologie
+history:Geschiedenis
 homography:
-hyperbola:hyperbolen
-hyperplane:hypervlakken
-immunology:
-inequalities:ongelijkheden
-informatics:
-information_theory:
-inorganics_chemistry:
-integers:integers
-integral:integraal
-intervals:intervallen
-isometries:
-language:
-laplace_transforms:Laplase transformaties
-limit:limieten
-line:lijnen
-linear_algebra:lineaire algebra
-linear_maps:lineaire velden
-linear_optimisation:
-linear_systems:lineaire systemen
-lines:
-linguistics:
-lissajous:Lissajous figuren
-listening:
-logarithm:
-logic:logica
-magnetism:
-maps:
-markov_chains:
-mathematics:
-matrix:matrices
-mean:gemiddelde
-measurement:
-mechanics:
-medecine:
-methodical_calculation:
-misc:diversen
-modular_arithmetic:modulaire rekenkunde
-music:
-mycology:
-number:getallen breuken
-number_theory:
-numbering_system:getallen stelsels
-ode:ODE
-operation:
-operational_research:
-optics:
-organics_chemistry:
-parabola:parabolen
-parametric_curves:parametrische kurves
+hyperbola:Hyperbolen
+hyperplane:Hypervlakken
+immunology:Immunologie
+inequalities:Ongelijkheden
+informatics:Informatica
+information_theory:Informatie theorie
+inorganics_chemistry:Anorganische chemie
+integers:Integers
+integral:Integraal
+intervals:Intervallen
+isometries:Isometrie
+language:Taal
+laplace_transforms:Laplace transformaties
+limit:Limiet
+line:Lijn
+linear_algebra:Lineaire algebra
+linear_maps:Lineaire velden
+linear_optimisation:Lineaire optimalisatie
+linear_systems:Lineaire systemen
+lines:Lijnen
+linguistics:Taalwetenschap
+lissajous:Lissajous
+listening:Luisteren
+logarithm:Logaritme
+logic:Logica
+magnetism:Magnetisme
+maps:Mappen
+markov_chains:Markov chains
+mathematics:Wiskunde
+matrix:Matrix
+mean:Gemiddelde
+measurement:Meting
+mechanics:Mechanica
+medecine:Medicijn
+methodical_calculation:Hoofdrekenen
+misc:Diversen
+modular_arithmetic:Modulaire rekenkunde
+music:Muziek
+mycology:Mycologie
+number:Getal
+number_theory:Getal theory
+numbering_system:Getallen stelsel
+ode:Ode
+operation:Operatie
+operational_research:Operatie onderzoek
+optics:Optica
+organics_chemistry:Organische chemie
+parabola:Parabolen
+parametric_curves:Parametrische kurves
 pbsolving:
-percentage:percentages
-percents:
-permutation:permutaties
-phonetics:
-phylogenetics:
-physics:
-plane:vlakken
-polar_curves:polaire kurves
-polygons:polygonen
-polynomials:polynomen
-prealg:pre-algebra
-precalc:pre-calculus
-primes:priemgetallen
-primitive:
-proba:waarschijnlijkheidsleer
-probability:waarschijnlijkheidsleer
-probability_distribution:verdelingen
-probability_space:
-probability_statistics:waarschijlijkheids rekening
-programming:
-pronunciation:
-proportionality:proportionaliteit
-quotient_group:
-random:
-random_variable:
-rational_number:
-reading:
-real_function:
-real_number:reeele getallen
-rectangles:vierkanten
-relative_number:
-ring:ringen
-roots:wortels
-ruler_and_compass:passer en lineaal
-sciences:
-scientific_notation:
-sequence:rijen
-series:reeksen
-set_theory:
-similarities:
-simulation:
-speaking:
-spelling:
-statistical_test:
-statistics:statistiek
-surfaces:oppervlakken
-symmetric_group:
-symmetry:
-tangent:
+percentage:Percentages
+percents:Procent
+permutation:Permutaties
+phonetics:Fonetisch
+phylogenetics:Plantengenetica
+physics:Natuurkunde
+plane:Vlak
+polar_curves:Polaire kurves
+polygons:Polygonen
+polynomials:Polynomen
+prealg:Pre-algebra
+precalc:Pre-calculus
+primes:Priemgetallen
+primitive:Primitieve
+proba:Kansrekening
+probability:Waarschijnlijkheid
+probability_distribution:Kansverdelingen
+probability_space:Kansdichtheid
+probability_statistics:Waarschijlijkheids rekening
+programming:Programmeren
+pronunciation:Uitspraak
+proportionality:Proportionaliteit
+quotient_group:quotient groep
+random:Willekeurig
+random_variable:Willekeurige variabele
+rational_number:Rationeel getal
+reading:Lezen
+real_function:Reeele functie
+real_number:Reeele getallen
+rectangles:Vierkanten
+relative_number:Relatief getal
+ring:Ringen
+roots:Wortels
+ruler_and_compass:Passer en lineaal
+sciences:Wetenschappen
+scientific_notation:Wetenschappelijke notatie
+sequence:Rijen
+series:Reeksen
+set_theory:Verzamelingenleer
+similarities:Overeenkomsten
+simulation:Simulatie
+speaking:Praten
+spelling:Spelling
+statistical_test:Statistische test
+statistics:Statistiek
+surfaces:Oppervlakken
+symmetric_group:Symmetrie groep
+symmetry::Symmetrie
+tangent:Tangent
 taylor_expansion:Taylor expansie
-taylor_series:Taylor reeksontwikkeling
-technical_language:
-thermodynamics:
-time:
-transformation_group:
-triangles:driehoeken
-trigonometry:trigoniometrie
-vector_space:vector ruimte
-vectorial_analysis:
-vectors:vectoren
-vibration:
-vocabulary:
-volume:
-weaver:
-written_english:
+taylor_series:Taylor reeks
+technical_language:Technische taal
+thermodynamics:Thermodynamica
+time:Tijd
+transformation_group:Transformatie groep
+triangles:Driehoeken
+trigonometry:Trigoniometrie
+vector_space:Vector ruimte
+vectorial_analysis:Vector analyse
+vectors:Vectoren
+vibration:Vibratie
+vocabulary:Vocabulaire
+volume:Volume
+weaver:Weven
+written_english:Geschreven engels
