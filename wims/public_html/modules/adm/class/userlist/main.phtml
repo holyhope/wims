@@ -23,14 +23,13 @@ $wims_name_part_list ($usercnt)
 !if $error!=$empty
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
- <div>
+ </div>
  !set wims_ref_class=wims_button
  !if $wims_class!=$empty
    !href module=home $wims_name_class_home
  !else
    !href module=home $wims_name_home
  !endif
-
  !goto end
 !endif
  <div class="wimscenter">
@@ -52,7 +51,7 @@ $wims_name_part_list ($usercnt)
   !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
    &nbsp;
  !endif
-!endif
+!endif wims_typename=group etc
 !set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
 !if $usercnt==0
  $name_noyetparticipant
@@ -61,10 +60,11 @@ $wims_name_part_list ($usercnt)
  !set wims_ref_class=wims_button
  !href module=adm/class/reguser&step=1 $wims_name_addstudent
 &nbsp;
-!endif
+ !endif
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
-!else
+ </div>
+!else -- $usercnt>0
 !!## it is dangerous to register directly a student in a level
  !if $typen!=level
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
@@ -91,7 +91,7 @@ $wims_name_part_list ($usercnt)
     !href module=adm/class/sequence&job=config $wims_name_config
  </p>
  !endif
-!if $usercnt >0
+ !if $usercnt > 0
 <p>
    $name_post
    !if $job_affi=notes
@@ -110,7 +110,7 @@ $wims_name_part_list ($usercnt)
     !endif
    !endif
 . </p>
-!endif
+ !endif
  !reset table_center
  $table_header
  !if $job_affi=notes
