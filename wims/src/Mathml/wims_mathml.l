@@ -1490,7 +1490,7 @@ int wims_mathml_displaymode = 0;
 "\\bigggint"   |
 "\\bigggintegral"    {return BIGGGINT;}
 "\\'"	{yylval=wims_mathml_copy_string("\\'"); return MI;}
-"\\input{"\ {0,5}[0-9]{1,3}\ {0,5}"}{"[0-9]{1,3}\ {0,5}"}{"\ {0,5}[a-z0-9#\ :\-;.*?]{0,250}\ {0,5}"}{"\ {0,5}[a-zA-Z0-9#\ :\-\+\=\(\)\[\];.*\^\?]{0,250}\ {0,5}"}{"\ {0,3}[0-1]\ {0,3}"}" {yylval=wims_mathml_copy_string(yytext); return INPUT;}
+"\\input{"\ {0,5}[0-9]{1,3}\ {0,5}"}{"[0-9]{1,3}\ {0,5}"}{"\ {0,5}[a-z0-9#\ :\-;.*?]{0,250}\ {0,5}"}{"\ {0,5}[a-zA-Z0-9#\ :\-\+\=\(\)\[\]\/;.*\^\?]{0,250}\ {0,5}"}{"\ {0,3}[0-1]\ {0,3}"}" {yylval=wims_mathml_copy_string(yytext); return INPUT;}
 "\\\\ \\\\"          {wims_mathml_rowposn=2; yylval="\\\\ \\: \\\\";return ROWSEP;}
 "\\\\"          {wims_mathml_rowposn=2;return ROWSEP;}
 "\\tabularnewline"       {wims_mathml_rowposn=2; return ROWSEP;}
