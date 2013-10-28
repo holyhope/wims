@@ -57,7 +57,9 @@
   Zoom\
   Letter spacing\
   normal,spaced\
-into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
+  Size of the mathematical formulas\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
 
 !if $job=modname
   !set name_moddevcnt=!nosubst Tienen $totalcnt módulos en desarrollo.

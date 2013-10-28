@@ -56,12 +56,14 @@
   Possibilité de zoom\
   Espacement des lettres\
   normal,espacé\
-into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
+  Taille des formules mathématiques\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
 
 !if $job=modname
   !set name_moddevcnt=!nosubst Vous avez $totalcnt modules en développement.
   !set name_limited=!nosubst liste limitée à $maxlist modules
-  
+
   !distribute lines Ne montrer que les modules dont l'adresse contient\
   Cliquez sur le titre d'un module pour y travailler.\
    Vous n'avez pas encore de module en développement. Cliquez ici pour \
@@ -75,7 +77,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Renommer le module va casser les feuilles de travail qui l'utilisent. Assurez-vous que ce n'est pas le cas\
 into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubst le module public <span class="wims_mod_title">$otit</span>\
-(<span class="tt wims_fname">$original2</span>) dans votre espace de développement sous l'adresse 
+(<span class="tt wims_fname">$original2</span>) dans votre espace de développement sous l'adresse
 !set name_warning2=Renommer ou dupliquer un module d'adresse publique\
   peut conduire à la duplication de sa publication. Soyez très prudent !\
   <p>Si vous voulez faire des tests sur le module, choisissez la zone <span class="tt wims_fname">test</span>.</p>
@@ -87,7 +89,7 @@ into name_choice,name_copy,name_warning1
   !set name_intro=Cet outil sert à développer en ligne des modules réguliers (sophistiqués) \
    dans WIMS. Seuls les développeurs inscrits peuvent l'utiliser.\
  <br /> Veuillez donner votre identification de développeur.
- 
+
   !distribute lines écrivez au gestionnaire du site\
     si vous avez oublié votre mot de passe\
     Si vous désirez développer des modules d'activités WIMS,\
@@ -96,7 +98,7 @@ into name_choice,name_copy,name_warning1
     pour écrire plus facilement des exercices interactifs simples, sans avoir besoin d'authentification.\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
- 
+
 !endif
 
 !if $job=backup
@@ -157,7 +159,7 @@ into name_diff1,name_diff2,name_diff3
    Module restauré\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
-  
+
 !set name_illegal= Votre sauvegarde contient des fichiers de types illégaux ! Restauration impossible.\
  <p> Est-ce une sauvegarde d'une ancienne version ? Maintenant vous devez copier les fichiers un par un.</p>
 !set name_warning2=Seules les sauvegardes depuis Modtool ou les fichiers téléchargés\
@@ -165,13 +167,12 @@ into name_diff1,name_diff2,name_diff3
    sont acceptés. Aucune modification manuelle du fichier d'archives n'est autorisée.
 !set name_warning_diff=!nosubst Ce module va remplacer complètement le module existant à la même adresse, \
   sans possibilité de retour. Mais vous pouvez
-  
+
 !endif
 
 !exit
 :del
- Un module effacé l'est
-définitivement. 
+ Un module effacé l'est définitivement.
 !href cmd=reply&jobreq=backup $wims_name_modsave
 
 <p>
@@ -184,7 +185,7 @@ module est effacé.
 !!</p> close after the name of the module
 !exit
 :delconfirm
-Le fichier 
+Le fichier
  <span class="tt wims_fname">$fname</span>
  du module
  <span class="wims_mod_title">$title</span> est effacé.

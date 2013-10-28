@@ -56,12 +56,14 @@
   inzoomen\
   Letter afstand\
   normaal,groot\
-into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
+  Size of the mathematical formulas\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
 
 !if $job=modname
   !set name_moddevcnt=!nosubst U heeft $totalcnt modules in bewerking.
   !set name_limited=!nosubst lijst beperkt tot $maxlist items
-  
+
   !distribute lines Laat alleen modules zien waarvan het adres bevat\
   Klik op de titel van een module, om deze te gaan bewerken.\
    U hebt geen modules in ontwikkeling. S.v.p. klik hier \
@@ -81,14 +83,14 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <span class="tt wims_fname">test</span> zone.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
-  exact overeenkomt met het adres van de reeds gepubliceerde versie.<span class="small">Anders worden er dus twee "dezelfde" modules  gepubliceerd.</span> 
+  exact overeenkomt met het adres van de reeds gepubliceerde versie.<span class="small">Anders worden er dus twee "dezelfde" modules  gepubliceerd.</span>
 !endif
 
 !if $job=auth
   !set name_intro=Dit hulpprogramma is bedoeld voor het online ontwikkelen van speciale WIMS modules,\
  en is alleen toegankelijk voor gebruikers met een ontwikkelaar-account op deze server.\
  <p> Geef hier s.v.p. uw modtool loginnaam.
- 
+
   !distribute lines stuur een email naar de systeembeheerder\
     als u het wachtwoord vergeten bent.\
     Bent U geinteresseerd in het maken van WIMS modules,\
@@ -97,12 +99,12 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
     interactieve WIMS oefeningen te maken.\
  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
- 
+
 !endif
 
 !if $job=backup
  !set name_save= Hier is de backup file van de module
- !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br /> Neem s.v.p. kontakt op met de 
+ !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br /> Neem s.v.p. kontakt op met de
 !endif
 
 !if $job=publish
@@ -146,7 +148,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 !if $job=restore
  !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
  herstelprocedure alleen archieven gebruiken die eerder door Modtool zelf zijn aangemaakt ! Probeer het opnieuw.
- 
+
  !distribute lines Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken. Een fout in het bestand !\
  Er is geen verschil gevonden tussen de bestaande module en de backup.\
    Zeer veel verschillen tussen de bestaande module en de backup versie.\
@@ -157,15 +159,15 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Module hersteld\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
-  
+
 !set name_illegal=De getuurde archieven bevatten niet-toegestane bestands types! Ik kan geen hersteloperatie uitvoeren.\
  <p>Is dit soms een oude backupfile. Probeer bestand voor bestand te kopieren.
 !set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
    <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\
    De backup files mogen nooit handmatig worden gewijzigd.
 !set name_warning_diff=!nosubst Deze backup module overschrijft nu -zonder pardon- de bestaande module met het zelfde module-adres !\
-   U kunt nog wel de verschillen checken met de bestaande module 
- 
+   U kunt nog wel de verschillen checken met de bestaande module
+
 !endif
 
 !exit
@@ -184,7 +186,7 @@ Weet U zeker dat deze module verwijderd moet worden?
 !!</p> close after the name of the module
 !exit
 :delconfirm
-  Het bestand 
+  Het bestand
  <span class="wims_fname">$fname</span>
  uit deze module
  <span class="wims_mod_title">$title</span> is verwijderd.
@@ -192,7 +194,7 @@ Weet U zeker dat deze module verwijderd moet worden?
 
 :delfile
 
-Weet U zeker dat deze file 
+Weet U zeker dat deze file
 <span class="wims_fname">$fname</span>
 verwijderd moet worden uit module
 <span class="wims_mod_title">$title</span>&nbsp;?

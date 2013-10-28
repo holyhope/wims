@@ -45,7 +45,7 @@
 !set name_this2=the current module under development
 !set name_levellist=E: elementary school; H: high school; U: university; <br />G: graduate study; R: research
 
-!set name_accountchange=Change properties of your developer's account 
+!set name_accountchange=Change properties of your developer's account
 !set name_empty=leave the password field empty if you do not want to change it
 !set name_change=Your account password has been changed.
 
@@ -57,12 +57,14 @@
   Zoom\
   Letter spacing\
   normal,spaced\
-into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3
+  Size of the mathematical formulas\
+into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
+  name_useropts4
 
 !if $job=modname
   !set name_moddevcnt=!nosubst You have $totalcnt modules under development.
   !set name_limited=!nosubst list limited to $maxlist items
-  
+
   !distribute lines Show only modules with address containing \
   Click on the title of a module to work on it.\
    You have no module under development yet. Please click to \
@@ -89,7 +91,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   !set name_intro=This tool is for online development of regular modules\
    under WIMS. Only registered developers can access this tool.\
    <p>Please give your developer identification.</p>
- 
+
   !distribute lines write to the webmaster\
     if you have forgotten your password\
     If you are interested in developing WIMS modules, please\
@@ -98,7 +100,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
     to write simple interactive exercises in an easier way, without authentification\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
- 
+
 !endif
 
 !if $job=backup
@@ -131,7 +133,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   !set name_cheat1=!nosubst This module requires  WIMS-$Wver2 or a higher version to run. \
   The module has probably been modified on this server which uses version $wims_version. \
   It is recommended that you update the module's INDEX file.
-  
+
   !set name_cheat2=If you are SURE of what you are doing, you can cheat the servers\
    into thinking that you are on an older server (a VERY RISKY OPERATION)!
 
@@ -148,7 +150,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 
  !set name_warning1=Your file does not look like a module backup file!\
  <p>You can only restore a file downloaded earlier from Modtool. Try again.</p>
- 
+
  !distribute lines  I cannot recognize your file as a module backup. Error in the file!\
    No difference found between the existing module (in your development space) and the backup archives.\
    Only part of the numerous differences between  between the existing module (in your development space) and the backup archive are shown here:\
@@ -159,7 +161,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Module restored\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
     name_restored
-  
+
 !set name_illegal= Your archives contains files of illegal type! It cannot be restored.\
 <p>Is it an old-versioned backup? Now you have to copy the files one by one.</p>
 !set name_warning2=Only backups saved earlier from Modtool or downloaded from the publication center \
@@ -167,7 +169,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   the backup file should be made.
 !set name_warning_diff=!nosubst Restoration of a backup module now completely replaces\
  the existing module with the same address, with no possibility of recovery. But you can also
-  
+
 !endif
 
 !exit
@@ -184,13 +186,13 @@ Are you sure you want to delete the module
 !exit
 
 :delconfirm
- The file 
+ The file
  <span class="tt wims_fname">$fname</span>
  is deleted from the module <span class="wims_mod_title">$title</span>.
 !exit
 
 :delfile
-Are you sure you want to delete the file 
+Are you sure you want to delete the file
 <span class="tt wims_fname">$fname</span>
 from the module
 <span class="wims_mod_title">$title</span>?
