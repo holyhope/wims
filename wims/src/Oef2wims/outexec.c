@@ -135,9 +135,9 @@ void out_exec(char *s1, char *s2)
 		}
 	    }
 	    	/* img */
-	    if(strncmp(p+1,"img",3)==0 && *find_word_start(p+4)=='{') {
+	    if(strncmp(p+1,"img",strlen("img"))==0 && *find_word_start(p+strlen("img")+1)=='{') {
 		pe=pp2=NULL;
-		pp=find_word_start(p+4);
+		pp=find_word_start(p+strlen("img")+1);
 		if(*pp=='{') pe=find_matching(pp+1,'}');
 		if(pe) pp2=find_word_start(pe+1); else continue;
 		pe2=pe;
@@ -150,6 +150,25 @@ void out_exec(char *s1, char *s2)
 		    pp++; *p=*pe=0;
 		    fprintf(outf,"%s \n\
 !read oef/img.phtml %s %s \n$()", ps,pp,pp2);
+		    ps=p=pe2; ps++; continue;
+		}
+	    }
+	    	 /* audio */
+	    if(strncmp(p+1,"audio",strlen("audio"))==0 && *find_word_start(p+strlen("audio")+1)=='{') {
+		pe=pp2=NULL;
+		pp=find_word_start(p+strlen("audio")+1);
+		if(*pp=='{') pe=find_matching(pp+1,'}');
+		if(pe) pp2=find_word_start(pe+1); else continue;
+		pe2=pe;
+		if(*pp2=='{') {
+		    pe2=find_matching(++pp2,'}');
+		    if(pe2) *pe2=0;
+		}
+		else pp2="";
+		if(*pp=='{' && *pe=='}') {
+		    pp++; *p=*pe=0;
+		    fprintf(outf,"%s \n\
+!read oef/audio.phtml %s %s \n$()", ps,pp,pp2);
 		    ps=p=pe2; ps++; continue;
 		}
 	    }

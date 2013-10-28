@@ -1,0 +1,16 @@
+
+!set audiof_=!word 1 of $wims_read_parm
+!! This avoids module errors if people try to hack.
+!if .. isin $audiof_
+ !exit
+!endif
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!set options=!word 2 to -1 of $wims_read_parm
+
+!set audio_=!word 1 of $wims_read_parm
+!readproc slib/media/audio $audio_, $options
+
+$slib_out
