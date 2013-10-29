@@ -16,6 +16,7 @@ http://$ADDRESS/eng-balm-verbs/mp3/eng-I_bought.mp3,,player=player_mp3_multi
 !!!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
 !! !exit
 !!!endif
+ADDRESS=!record 0 of data/swac/packs
 !reset slib_out
 !distribute items $wims_read_parm into slib_son,slib_option,slib_option1
 
@@ -30,7 +31,6 @@ slib_sontest=!replace internal . by , in $slib_son
   slib_sontest=mp3
 !endif
 slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
-
 !if $slib_player=
  slib_objecttag=<object><embed src="$slib_son" $slib_option>\
     <noembed> <bgsound src="$slib_son" /></noembed>\
@@ -46,8 +46,12 @@ slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
      <source src="$slib_son" type="audio/ogg" />\
      $slib_objecttag
    !else
+     slib_son_ogg=$slib_son
+     !if $ADDRESS isin $slib_son_ogg 
+       slib_son_ogg=!replace internal mp3/ by ogg/ in $(slib_son)
+     !endif
      slib_out=$slib_out\
-     <source src="$slib_son.ogg" type="audio/ogg" />\
+     <source src="$slib_son_ogg.ogg" type="audio/ogg" />\
      <source src="$slib_son.mp3" type="audio/mpeg" />
      
    !endif
