@@ -28,7 +28,8 @@ dd=$(reply$i)
     !endif
    !endif
   !else
-   dd2=!append item ?????? to $dd2
+   !set default_$i= !replace internal &nbsp by &nbsp; in $(default_$i)
+   dd2=!append item $(default_$i) to $dd2
   !endif
  !next d_
  dd=$dd2
@@ -83,11 +84,11 @@ ddo=!sort items $dd
        !endif
        !if $diaratio_ > 0
         diaratio=$[max($diaratio,$[$diaratio_/max($poscnt3,1)])]
-       !endif 
+       !endif
    !endif split
  !endif noorder
 !next n
-       
+
 !if $diag=yes
  diareply$i=good
  !advance freegot
