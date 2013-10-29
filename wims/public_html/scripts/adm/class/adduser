@@ -69,7 +69,7 @@ replace_=
 !for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
   external_auth,agreecgu
  !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
-  !if $(up_$n)!=$(user_$n)
+  !if $(up_$n)!=$empty and $(up_$n)!=$(user_$n)
    l_=!singlespace $(up_$n)
    !if $n iswordof participate supervise
     l_=!words2items $l_
@@ -104,7 +104,7 @@ replace_=
   !endif
  !endif
 !next n
-
+!!debug $replace_
 !if $user_exists!=yes and \
 	($up_password=$empty or $up_lastname=$empty or $up_firstname=$empty)
  bad=!append item $uu to $bad
