@@ -190,7 +190,7 @@ en majuscule, ou \props[4] tout en minuscule.
 
 :%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
 
-\answer{\prop[1]}{\r1;\all}{type=dragfill}
+\answer{\prop[1]}{\r1;\all,\dist}{type=dragfill}
 \answer{\prop[2]}{\r2}{type=dragfill}
 \answer{\prop[3]}{\r3}{type=dragfill}
 \answer{\prop[4]}{\r4}{type=dragfill}
@@ -228,16 +228,18 @@ text{totans=wims(replace internal &#39; to ' in \totans)}
   \text{check=\check 0,}
  }
 }
-\integer{cat=0}
+
 \if{\dist!=}{
  \for{t=1 to 1}{
-  \text{all=\all,\dist}
-  \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
-  \if{\cat = 0}{
+   \integer{cat=0}
+   \for{r=1 to \prop_cnt}{
+    \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
+   }
+ \if{\cat = 0}{
    \text{clean=\clean \dist[\t] \noclass,}
    \text{check=\check 1,}
   }{
-   \text{clean=\clean \estun \props[\cat],}
+   \text{clean=\clean \dist[\t] \estun \props[\cat],}
    \text{check=\check 0,}
   }
  }
