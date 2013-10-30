@@ -107,7 +107,7 @@
 
 \statement{
 \if{\image notsametext }{
-  <img align="right" hspace=10 src="\imagedir/\image" alt=""/> <p>
+  <img align="right" hspace="10" src="\imagedir/\image" alt=""/> <p>
 }
 \commonq
 \for{q=1 to \qcnt}{
