@@ -109,7 +109,7 @@ n=!charcnt $pw1
    !exit
   !endif
  !endif
- !read $userdef
+ !defread $userdef
  anc=!word 1 of $user_password
  anc=!passcrypt $anc
  old=!passcrypt $old
@@ -125,7 +125,7 @@ n=!charcnt $pw1
  pass=!getdef user_password in $userdef
  !if $pass=$pw1
   error=success
-  wims_module_log=Change user password: $wims_user
+  wims_module_log=Change user password: $wims_user $wims_realuser
   !if $wims_user=supervisor
    wims_class_log=change password by $wims_realuser
    !read lang/mail.proc.$moduclass_lang
