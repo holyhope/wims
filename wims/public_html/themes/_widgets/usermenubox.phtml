@@ -20,9 +20,17 @@
   
   <$div0 class="menublock">
    <$div1 class="menuitem">
-    !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang 
+    !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
    </$div1>
   </$div0>
+   !if $auth_method notwordof cas ldap php
+  <$div0 class="menublock">
+   <$div1 class="menuitem">
+    !href module=adm/class/passwd&job=user $wims_name_passwd
+   </$div1>
+  </$div0>
+   !endif
+
 !! delete, it is in userprop.phtml
 !! supervisor can arrive here by clicking on "view from student"
 !! password of supervisor must be by the secure zone
