@@ -8,7 +8,7 @@
 
 !set classname=<span class="wims_emph">$wims_classname</span>,\
  <span class="wims_emph">$wims_institutionname</span>
- 
+
 !set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
 
 !distribute line 班级平均\
@@ -39,7 +39,7 @@ name_done,name_equiv
 
 !set name_formula_comment=你可在以下表格里定义作业页的严厉度与权重. \
 总评分的计算将取极大值 =
-!set name_formula2=!nosubst 从 $scoremax 计算的教师评分 
+!set name_formula2=!nosubst 从 $scoremax 计算的教师评分
 !set name_pickup=挑出欲显示的页<br />页平均分:
 !set name_warning=你提出了一个非法的请求.
 
@@ -70,9 +70,11 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !if $job iswordof userprop teacher
   !distribute items 修改,注册号,注解,照片的url,变量 (技术的),\
   班级口令,输入参加者注册的口令,\
-  外部验证的登录,注册,管理\
+  外部验证的登录,注册,管理,\
+   Compulsory\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
   !goto end
 !endif
 
@@ -90,7 +92,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_direct_score= 直接得分表
 
 !if $job=transfer
-   !set name_title_transfer=的活动转移 
+   !set name_title_transfer=的活动转移
    !distribute items 合并, 替换, 检查\
    into name_merge, name_replace,name_show
  !set name_error1=参加者没有在当前班级里注册过以下要转移的课程
@@ -132,7 +134,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
   name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
-  
+
   !set name_deposit=!nosubst 电子表格文件 <span class="tt">$wims_deposit</span> 处理成功.
 !endif
 
@@ -142,10 +144,10 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 :transfer
 <b>说明</b>. <ol>
-<li>"$name_merge"意为把两个课程的活动放在一起.
-<li>"$name_replace"意为其它课程的活动将替代此课程的活动. 仅当前者非空时才发生.
-<li>考试记录以及不计分的活动总是被合并的.
-<li>练习或考试的详情记录不被转移.
-<li>在$name_merge或$name_replace后, 参加者在其它课程的记录将被清除.
+<li>"$name_merge"意为把两个课程的活动放在一起.</li>
+<li>"$name_replace"意为其它课程的活动将替代此课程的活动. 仅当前者非空时才发生.</li>
+<li>考试记录以及不计分的活动总是被合并的.</li>
+<li>练习或考试的详情记录不被转移.</li>
+<li>在$name_merge或$name_replace后, 参加者在其它课程的记录将被清除.</li>
 </ol>
 

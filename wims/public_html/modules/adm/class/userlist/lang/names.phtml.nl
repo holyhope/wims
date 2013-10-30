@@ -31,12 +31,12 @@ into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
 !set name_formula_comment=U kunt de moeiljkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
-De cijfers worden berekend met maximum = 
+De cijfers worden berekend met maximum =
 !set name_formula2=!nosubst Cijfers berekenen met als maximum $scoremax
-!set name_pickup=Kies een werkblad<br />om het gemiddelde cijfer per<br />werkblad te laten zien: 
+!set name_pickup=Kies een werkblad<br />om het gemiddelde cijfer per<br />werkblad te laten zien:
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
-!set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen. 
+!set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen.
 !set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers
 !set name_workdetail=Detail van het werk van
 !set name_activesession=Deze student heeft een nog actieve proefwerk sessie
@@ -65,9 +65,11 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\
-   Login bij externe authentificatie,Inschrijving,Beheer\
+   Login bij externe authentificatie,Inschrijving,Beheer,\
+   Compulsory\
    into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
   !goto end
 !endif
 
@@ -79,7 +81,7 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br />(in onbewerkte data)  
+  !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br />(in onbewerkte data)
   !goto end
 !endif
 
@@ -132,7 +134,7 @@ kan dus niet worden overgezet van
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
   name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
-  
+
   !set name_deposit=!nosubst Spreadsheet bestand <span class="tt">$wims_deposit</span> met succes verwerkt.
 !endif
 
@@ -142,10 +144,12 @@ kan dus niet worden overgezet van
 
 :transfer
 <b>Opmerkingen</b>. <ol>
-<li>"$name_merge" wil zeggen : het samenvoegen van de activiteiten van twee cursussen.
-<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten in deze cursus vervangen/
-<li>Proefwerk cijfers en alle niet_scorende activiteiten worden altijd samengevoegd.
-<li>De verbatim opgeslagen proefwerk &amp; oefeningen worden niet overgezet.
-<li>Na de handeling ($name_merge of $name_replace), worden deze gegevens van de student in de andere cursus gewist.
+<li>"$name_merge" wil zeggen : het samenvoegen van de activiteiten van twee cursussen.</li>
+<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten 
+in deze cursus vervangen.</li>
+<li>Proefwerk cijfers en alle niet_scorende activiteiten worden altijd samengevoegd.</li>
+<li>De verbatim opgeslagen proefwerk &amp; oefeningen worden niet overgezet.</li>
+<li>Na de handeling ($name_merge of $name_replace), worden deze gegevens van de
+student in de andere cursus gewist.</li>
 </ol>
 

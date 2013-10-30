@@ -39,7 +39,7 @@ I voti saranno calcolati con massimo=
 
 !set name_click=Selezionare un nome per visualizzare i dettagli.
 !set name_affi=la qualità,lavoro portato a termine,voti
-!set name_workdetail=Dettagli del lavoro svolto da 
+!set name_workdetail=Dettagli del lavoro svolto da
 !set name_activesession=Questo studente ha una sessione d'esame in corso
 
 !distribute items IP, Tempo rimanente, Sessione d'esame di ,minuti\
@@ -64,13 +64,15 @@ dei voti manuali)
 !set name_qualitygot=Qualità calcolata su un massimo di 10
 !set name_percentagedone=Percentuale di lavoro portato a termine
 !set name_post=Mostra
-  
+
 !if $job iswordof userprop teacher
   !distribute items Cambia,Matricola,Commenti,URL di una foto,Variabili (tecniche),\
   Password pubblica del corso,Inserire la password <em>pubblica</em> del corso e cio&egrave;quella utilizzata per effettuare la prima iscrizione,\
-  Identificativo per autenticazione esterna,Iscrizione,Accesso come docente\
+  Identificativo per autenticazione esterna,Iscrizione,Accesso come docente,\
+   Compulsory\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
   !goto end
 !endif
 
@@ -103,8 +105,8 @@ una opzione per trasferire i dati in questo corso.
 !endif
 
 !if $job=recover
-  !set name_empty=Non è stato escluso alcuno studente. 
-  !set name_click= Selezionare il login dello studente da reinserire. 
+  !set name_empty=Non è stato escluso alcuno studente.
+  !set name_click= Selezionare il login dello studente da reinserire.
 !endif
 
 !if $job=delprep
@@ -135,24 +137,24 @@ una opzione per trasferire i dati in questo corso.
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
   name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
-  
+
   !set name_deposit=!nosubst Il file <span class="tt">$wims_deposit</span> &egrave; elaborato con successo.
 !endif
 
 !set name_topten=!nosubst Migliori $class_topscores punteggi medi del corso
-  
+
 :end
 !exit
 
 :transfer
 <b>Note</b>. <ol>
-<li>"$name_merge" significa che sono unite le attività dei due corsi.
-<li>"$name_replace" significa che le attività dell'altro corso sostiuiscono 
+<li>"$name_merge" significa che sono unite le attività dei due corsi.</li>
+<li>"$name_replace" significa che le attività dell'altro corso sostiuiscono
 quelle registrate per questo (questo è possibile sole se le prime non sono
-vuote).
-<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono 
-sempre unite.
-<li>La registrazione di dettagli degli esercizi non sono trasferiti.
-<li>Dopo aver effettuato il trasferimento (sia come "$name_merge" che come 
-"$name_replace"), i dati dello studente nell'altro corso sono azzerati.
+vuote).</li>
+<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono
+sempre unite.</li>
+<li>La registrazione di dettagli degli esercizi non sono trasferiti.</li>
+<li>Dopo aver effettuato il trasferimento (sia come "$name_merge" che come
+"$name_replace"), i dati dello studente nell'altro corso sono azzerati.</li>
 </ol>

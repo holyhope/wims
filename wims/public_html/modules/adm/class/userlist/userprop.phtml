@@ -6,7 +6,6 @@ $wims_name_account_property\
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
  </div>
-<hr />
 !endif
 
 !read adm/class/initclass $wims_class
@@ -30,8 +29,12 @@ $table_tr
   !if $user_supervisable=yes
     $table_tr<th>$name_gestion</th><td>
     !if $type_class iswordof 2 4
+      !if $wims_user=supervisor
      <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
-     <span class="tt">$wims_class/1, ... </span></td></tr>
+     <span class="tt">$wims_class/1, ... </span>
+      !else
+      <input readonly="readonly" size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
+      !endif
     !else
       !if $wims_class isitemof $user_supervise
         !set superv=yes
@@ -41,10 +44,11 @@ $table_tr
      !formradio superv list yes,no prompt $wims_name_yes, $wims_name_no
      !set up_firstname=$user_firstname
      !set up_lastname=$user_lastname
-    !endif 
+    !endif
+   </td></tr>
   !endif
 !endif
-!if $user_supervisable=yes and $getuser!=$wims_realuser and $type_class notwordof 2 4 
+!if $user_supervisable=yes and $getuser!=$wims_realuser and $type_class notwordof 2 4
  !goto end
  !exit
 !endif
@@ -54,7 +58,7 @@ $table_tr<th>$wims_name_Password</th><td>
 </td></tr>
 !endif
 $table_tr<th><label for="up_lastname">$wims_name_lastname</label></th><td>
-	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" /></tr></tr>
+	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" /></td></tr>
 $table_tr<th><label for="up_firstname">$wims_name_firstname</label></th><td>
 	<input size="$inplen" name="up_firstname" id="up_firstname" value="$user_firstname" /></td></tr>
 $table_tr<th><label for="up_email">$wims_name_email</label></th><td>
@@ -76,7 +80,7 @@ $table_tr<th><label for="up_photourl">$name_photourl</label></th><td>
 !else
  $table_tr<th><label for="passcheck">$name_classpassword</label></th><td>
  	<input size="14" type="password" name="passcheck" id="passcheck" /> <br />
-	<span class="small">$name_enterpassword</span></td>
+	<span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span></td>
 !endif
 :end
 $table_end

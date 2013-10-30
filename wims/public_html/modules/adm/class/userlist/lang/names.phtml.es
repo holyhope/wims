@@ -46,7 +46,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Esta clase no tiene ningún participante aún.
 
-!set name_warning_no_sequence=You have configured the sequence to be displayed but have not 
+!set name_warning_no_sequence=You have configured the sequence to be displayed but have not
 added any sequences. Therefore no score can be displayed.
 
 !if $manual>0
@@ -66,9 +66,11 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !if $job iswordof userprop teacher
   !distribute items Cambiar,Número de inscripción,Comentarios,URL de una fotografía,Variables (técnicas),\
   Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes,\
-  Login for external authentification,Inscription,Gestion\
+  Login for external authentification,Inscription,Gestion,\
+   Compulsory\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion
+  name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
+  name_userprop_warning
   !goto end
 !endif
 
@@ -146,11 +148,11 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 
 :transfer
 <b>Notas</b>. <ol>
-<li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.
+<li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.</li>
 <li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar
-completamente las de este. La sustitución no se realizará si el primero está vacío.
-<li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.
-<li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.
+completamente las de este. La sustitución no se realizará si el primero está vacío.</li>
+<li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.</li>
+<li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.</li>
 <li>Después de la operación (de unir o sustituir), se borrarán los registros de las
-actividades del participante en el otro curso.
+actividades del participante en el otro curso.</li>
 </ol>
