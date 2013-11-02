@@ -56,7 +56,7 @@
   inzoomen\
   Letter afstand\
   normaal,groot\
-  Size of the mathematical formulas\
+  grootte van wiskunde lettertype\
 into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name_useropts3,\
   name_useropts4
 
