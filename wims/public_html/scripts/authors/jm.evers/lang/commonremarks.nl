@@ -109,8 +109,5 @@
 :aantal significante cijfers,aantal cijfers voor de komma,aantal decimalen,het grondtal,de exponent,aantal cijfers
 : Klik hier: Gebruik MathML in plaats van &rsquo;wiskunde met plaatjes&rsquo;
 : Klik hier: Gebruik &rsquo;wiskunde met plaatjes&rsquo; in plaats van MathML.
-:
-
-
-
+: Het goede antwoord is:
 

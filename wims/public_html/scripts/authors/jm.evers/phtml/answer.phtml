@@ -62,6 +62,26 @@
 	    </tr>
 	!next n
 	</table>
+    !else
+    !set correct=!record 112 of $remarkdir/commonremarks.$taal
+     <table id="answer" class="answer">
+	!for n=1 to $total_exos
+	<tr>
+	<td class="answer_t">
+	    !if $total_exos >1
+		$questionnumber <b>$n</b>)
+		<br />
+	    !endif
+	    $correct <span style="color:green">$(answer$n)</span>
+	</td>
+	<td class="answer_t">
+	 $youranswer :
+	 <br />
+	 $(reply$n)
+	</td>
+	</tr>
+	!next n
+    </table>
     !endif
 !else
     <table id="answer" class="answer">
