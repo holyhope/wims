@@ -19,13 +19,10 @@ distclean: clean
 	rm -f $(wims_home)/public_html/bin/tex..gif
 	rm -f Makefile
 
-texgif: *.c colors.c *.h ../Flydraw/gd/libgd.a
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) texgif.c -L../Flydraw/gd -lgd -lm -o texgif
+texgif: *.c colors.c *.h
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) texgif.c -lgd -lm -o texgif
 	$(STRIP) texgif
 	cp texgif $(wims_home)/public_html/bin/tex..gif
-
-../Flydraw/gd/libgd.a:
-	cd ../Flydraw/gd; make libgd.a
 
 colors.c: ../Flydraw/colors colors.sh
 	./colors.sh

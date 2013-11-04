@@ -238,10 +238,8 @@ phtmltext: phtmltext.c
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
-clickzone: clickzone.c ../Flydraw/gd/libgd.a
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) clickzone.c $(lopt) -L../Flydraw/gd -lgd -o $@
+clickzone: clickzone.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) clickzone.c $(lopt) -lgd -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
-../Flydraw/gd/libgd.a::
-	cd ../Flydraw/gd; make libgd.a
