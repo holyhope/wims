@@ -8,9 +8,10 @@ Cet exercice présente des textes où des champs de réponse sont insérés.
 Pour construire un exercice avec ce modèle, il suffit d'entrer les textes.
 Une syntaxe facile permet d'incorporer les champs de choix multiples et les
 réponses libres dans les textes.
+</p>
 <p>
 Auteur du modèle : Gang Xiao <xiao@unice.fr>
-
+</p>
 :%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
 
 Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
@@ -30,18 +31,19 @@ par un point-virgule. (Donc les textes eux-mêmes ne peuvent pas contenir
 des point-virgules.) <p>
 Les questions à poser doivent être mises entre une paire de 
 double-points d'interrogation "??".
-<p>
+</p><p>
 La question est un choix multiple s'il contient plusieurs objets séparés
 par des virgules, la bonne réponse étant en premier. Si la question (entre ??) ne
 contient qu'un objet, c'est alors une réponse libre, numérique s'il s'agit d'un
 nombre ou textuel sinon.
-<p>
+</p><p>
 On peut poser jusqu'à 20 questions dans une même phrase.
 Si plusieurs réponses correctes sont possibles dans une réponse libre, séparer
 toutes les bonnes réponses (synonymes) par un trait vertical <span class="tt wims_code_words">|</span>.
 (l'analyse est alors faite par symtext pour les experts).
-<p>
+</p><p>
 $embraced_randitem
+</p>
 \text{data=
 Le début officiel de la Seconde Guerre Mondiale est marqué par
 ??la déclaration de guerre,l'offensive?? de
@@ -70,19 +72,24 @@ a lancé une attaque surprise contre l'URSS en
 
 :Texte affiché avant la question. Balises html admises. Peut être vide.
 $embraced_randitem
-\text{pre=Remplissez les cases : <p>}
+\text{pre=<p>Remplissez les cases : </p>}
 
 :Texte affiché après la question. Balises html admises. Peut être vide.
 $embraced_randitem
 \text{post=}
 
-:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \precision{10000}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 \text{types=}
@@ -125,8 +132,8 @@ $embraced_randitem
  \text{options=\options,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

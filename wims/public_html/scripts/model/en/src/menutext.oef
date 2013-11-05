@@ -26,8 +26,10 @@ with a ':'. Otherwise the exercise might not be recognised by Createxo.
 :\credits{}
 
 :Format des réponses
-Possibilité : menu, clickfill
-\text{format=menu}
+Possibilité : menu, clickfill, dragfill
+\text{format=item(1,menu,
+	clickfill,
+	dragfill)}
 
 :
 \text{len=150 x 25}
@@ -70,18 +72,24 @@ the capitulation of the ??Chinese,Indian?? government
 
 :Text before the question. html tags allowed, can be empty.
 $embraced_randitem
-\text{pre=Fill-in the choices: <p>}
+\text{pre=<p>Fill-in the choices: </p>}
 
 :Text after the question. html tags allowed, can be empty.
 $embraced_randitem
 \text{post=}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 yes,
+2 no)}
+
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
 
+\text{format=wims(word 1 of \format)}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 
@@ -92,12 +100,12 @@ $embraced_randitem
  \text{g=\f[1]}
  \text{f=wims(sort items \f)}
  \text{g1=positionof(\g,\f)}
- \text{good=\format issametext clickfill ?\good\g,:\good\g1,}
+ \text{good=\format iswordof clickfill dragfill ?\good\g,:\good\g1,}
  \text{field=\field\f;}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 
