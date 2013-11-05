@@ -44,8 +44,13 @@ Mettre les données dans l'ordre où elles doivent apparaître.
 1944,Les femmes acquièrent le droit de vote
 1981,Abolition de la peine de mort}
 
-:%%%%%%%%%%%%%% Rien à modifier ensuite %%%%%%%%%%%%%%%%
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
+:%%%%%%%%%%%%%% Rien à modifier ensuite %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \real{M=\N-0.3}
 \text{xrange=-1,\N+1}
 \text{yrange=\choix iswordof 0 ? -5,5:-2,5}
@@ -56,6 +61,7 @@ Mettre les données dans l'ordre où elles doivent apparaître.
 \text{shu=\shu[1..\N]}
 \text{shu=wims(sort numeric item \shu)}
 \text{data=row([\shu],\data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \matrix{rep=\data}
 \integer{size=(1.5*\facteur)*(\M+1)}
 \integer{height2=4*\height}
