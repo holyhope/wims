@@ -10,6 +10,7 @@
 reply$i=!rawmath $(reply$i)
 reply$i=!trim $(reply$i)
 parleft=(
+parright=)
 dd=$(reply$i)
 c=!char 1 of $dd
 !if $c=+ or $c=-
@@ -45,8 +46,10 @@ testimg=!exec pari abs(imag($test))
     test=NaN nocompute
     !exit
   !endif
-  !if $parleft isin $dd
-!! a modifier
+  dd=!nospace $dd
+
+  !if $parright isin $dd and $parright/ notin $dd
+!! a  supprimer et remplacer par $parright notin $dd
     test=NaN nocompute
   !endif
 !endif
