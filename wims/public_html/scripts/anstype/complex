@@ -54,7 +54,7 @@ testimg=!exec pari abs(imag($test))
   !endif
 !endif
 
-m_reply$i=$(reply$i)
+
 m_reply$i=!mathsubst I=i in $(m_reply$i)
 
 !if $test_comma=yes
@@ -68,9 +68,8 @@ m_reply$i=!mathsubst I=i in $(m_reply$i)
  !endif
  !exit
 !endif
-
 good=!exec pari $(replygood$i)
-!if NaN isin $good or Inf isin $good
+!if NaN isin $good or Inf isin $good or $good=$empty
  Test=bad $i
  !exit
 !endif
