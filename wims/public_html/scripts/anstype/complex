@@ -20,37 +20,37 @@ test=!exec pari $(reply$i)
 testimg=!exec pari abs(imag($test))
 !if $computeanswer!=yes 
   !if ( ^ isin $dd or ( . isin $dd and / isin $dd ) )
-    test=NaN nocompute
+    test=NaN nocomputecomplex
     !exit
   !endif
   testI=!text select iI in $dd
   !if ii isin $testI
-   test=NaN nocompute
+   test=NaN nocomputecomplex
    !exit
   !endif
   !if i notin $testI 
     !if ( + isin $dd or - isin $dd or * isin $dd)
-        test=NaN nocompute
+        test=NaN nocomputecomplex
         !exit
     !endif
   !endif
   testpm=!text select +- in $dd
   testpm=!charcnt $testpm
   !if $testpm > 1
-    test=NaN nocompute
+    test=NaN nocomputecomplex
     !exit
   !endif
   teststar=!text select * in $dd
   teststar=!charcnt $teststar
   !if $teststar > 2 or ($testimg=1 and $teststar=1) or ($teststar=2 and $parleft notin $dd)
-    test=NaN nocompute
+    test=NaN nocomputecomplex
     !exit
   !endif
   dd=!nospace $dd
 
   !if $parright isin $dd and $parright/ notin $dd
 !! a  supprimer et remplacer par $parright notin $dd
-    test=NaN nocompute
+    test=NaN nocomputecomplex
   !endif
 !endif
 

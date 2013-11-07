@@ -39,12 +39,12 @@
   !set w=!word 3 of $test
   no es comprensible:
   el término <span class="wims_warning">$w</span>
-  de la respuesta no tiene relación con el problema o no está autorizado. 
+  de la respuesta no tiene relación con el problema o no está autorizado.
   Por favor corríjalo o elija una expresión más sencilla.
   !exit
  !endif
- !if nocompute iswordof $test
-  no está permitida: por favor, haga los cálculos usted mismo, y 
+ !if nocompute iswordof $test or nocomputecomplex iswordof $test
+  no está permitida: por favor, haga los cálculos usted mismo, y
   envíe el valor resultante.
   !exit
  !endif
@@ -66,8 +66,8 @@
 !endif
 
 !if bad_exo iswordof $error
- Debido a un error en este ejercicio (la respuesta correcta para 
- <b>$(replyname$i)</b> es inválida), es imposible comprobar la 
+ Debido a un error en este ejercicio (la respuesta correcta para
+ <b>$(replyname$i)</b> es inválida), es imposible comprobar la
  corrección de su respuesta. La única solución para usted es cambiar de ejercicio.
  Lo sentimos.
  <p>
