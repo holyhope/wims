@@ -37,9 +37,17 @@ cat $file | cut -d"," -f3 | sort | uniq
 !endif
 
 !if $step=2
- !for us in $save_list
-  !mailto $us -- -f $wims_site_manager\
-[WIMS $wims_serveurname] $save_subject\
+  !set test=!defof mailback_opt in wimshome/log/wims.conf
+  !default test=--
+  !if $test=-r
+    !set mailheader=!nosubst -r $wims_site_manager $us
+  !else
+    !set mailheader=!nosubst $us -- -f $wims_site_manager
+  !endif
+  !for us in $save_list
+    !mailto $mailheader\
+[WIMS $wims_servername] $save_subject\
 $save_msg
- !next us
+
+  !next us
 !endif

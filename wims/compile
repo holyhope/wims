@@ -111,6 +111,11 @@ if [ $option = "--build-chroot" ] ; then
 else
  script=setwrapexec ;
 fi
+if (echo | mail -r wims testuser@localhost 2>/dev/null); then
+    echo "mailback_opt=-r" >> log/wims.conf;
+fi
+chmod 600 log/wims.conf
+
 cat <<@
 
 Please run './bin/$script' (and './bin/apache-config' for the first installation) as root 

@@ -149,25 +149,34 @@ $list_noemail
 !endif
 
 !if $confirm=yes
+ !set test=!defof mailback_opt in wimshome/log/wims.conf
+ !default test=--
+ !if $test=-r
+   !set mailheader=!nosubst -r $supervisormail $us
+ !else
+   !set mailheader=!nosubst $us -- -f $supervisormail
+ !endif
  !set cmp=0
  !set cmp_tr=0
  !set cnt=!linecnt $list_user
  !for l_ =1 to $cnt 
-  !set u=!line $l_ of $list_user
-  !if $(u[4])!=
-   !mailto $(u[4]) -- -f $supervisormail\
+   !set u=!line $l_ of $list_user
+   !if $(u[4])!=
+     !set us=$(u[4])
+     !mailto $mailheader\
    [WIMS $wims_classname] $subject\
  $msg\
  \
  
    !endif
-  !reset u
+   !reset u
  !next
  !set cnt=!linecnt $list_teacher
  !for l_ =1 to $cnt 
-  !set u=!line $l_ of $list_teacher
-  !if $(u[4])!=
-   !mailto $(u[4]) -- -f $supervisormail\
+   !set u=!line $l_ of $list_teacher
+   !if $(u[4])!=
+     !set us=$(u[4])
+     !mailto $mailheader\
    [WIMS $wims_classname] $subject\
  $msg\
  \
