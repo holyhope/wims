@@ -84,9 +84,13 @@ $thisjs
   !set p_=$(reply_$i)
   !set tt=!word 1 of $(replygood$i)
   !if $tt!=?analyze
-    !set cl=$(colorr_$(diareply$i))
+    !set cl=#$(colorr_$(diareply$i))
   !else
-    !set cl=$colorr_ana
+   !if transparent iswordof $wims_fill_option
+     !set cl=
+   !else
+     !set cl=#$colorr_ana
+   !endif
     !set embedded_analyze=!append item $i to $embedded_analyze
 !!    !set embedded_bracket=$embedded_bracket [$embcnt]
   !endif
@@ -97,14 +101,14 @@ $thisjs
   f_l$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
     left:$rx,top:$ry,stretchH:$sizei*$ssizex,stretchV:$ssizey});
   dynapi.document.addChild(f_l$c);
-  f_l$c.setBgColor('#$cl');
+  f_l$c.setBgColor('$cl');
   !set ss=!replace internal " by \" in $(reply$i)
   !set ss=!replace internal , by &nbsp; in $(reply$i)
   !set ss=!replace internal ' by \' in $ss
   f_l$c.setHTML($cc1+'$ss'+$cc2);
   !if $tt!=?analyze
    f_t$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
-    left:$rx+$ssizex-4,top:$ry,stretchH:$Sx,stretchV:$Sy});
+    left:$[$rx+$ssizex-4],top:$ry,stretchH:$Sx,stretchV:$Sy});
    dynapi.document.addChild(f_t$c);
    f_t$c.setHTML('<small>[$embcnt]<\/small>');
    f_t$c.setZIndex(100);
