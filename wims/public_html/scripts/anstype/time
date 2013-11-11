@@ -1,0 +1,24 @@
+
+!! use without good answer
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+Very preliminary.  Suggestions are welcome
+
+!! replygood will be three numbers  in millisecondes
+!! minimum, maximum, second maximum
+!distribute item $(replygood$i) in min_, max_, mmax_
+!if $(reply$i) <= $max_ and  $(reply$i) >= $min_
+  diareply$i=good
+  !advance freegot
+!else
+  !if $(reply$i) > $max_ and  $(reply$i) <= $mmax_
+    diareply$i=good
+    partialgood$i=yes
+    freegot =$[freegot+[($(reply$i)-$max_)/($mmax_-$max_)]
+  !else
+    diareply$i=bad
+  !endif
+!endif
+
