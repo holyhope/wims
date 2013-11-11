@@ -67,7 +67,7 @@
       !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5_
     !endif
   !endif
- !endif 
+ !endif
 !endif
 
 !!********* Link #3 : "Resume"
@@ -135,6 +135,7 @@
 	$thisexo!=
   !set 1_=!append line import,1,module=adm/createxo&existing=$thisexo&catmodule=$module to $1_
 !endif
+
 !else
 !! ---------------------------------------------- place pour ajouter le lien vers la modification de serie dans une feuille
  !if $cmd!=intro and $cmd!=help and $module!=home and \
@@ -147,7 +148,18 @@
  !endif
 !endif
 !set 1_=!append line $wims_menu_items to $1_
+
+!! next exo and prev exo in the menu for supervisor
+!if $wims_user=supervisor and $exoprev$exonext != $empty
+   !set 1_=!append line &#8594;,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
+  to $1_
+   !set 1_=!append line &#8592;,1,cmd=new&module=$module&exo=$exonext&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
+  to $1_
+  !reset exoprev exonext
+!endif
+
 !set wims_rm_0=$1_
+
 !set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
 :rm2
 !if $wims_rm_2!=$empty
@@ -164,7 +176,7 @@
  !if $wims_homeref_author_num>1
   !set 3_=$wims_name_authors:
  !else
-  !set 3_=$wims_name_author: 
+  !set 3_=$wims_name_author:
  !endif
  !set 4_=
  !for ad=1 to $wims_homeref_author_num
@@ -173,9 +185,9 @@
 WIMS $module_title [$module_language]
    !else
      !set 4__=$(script_out[$ad])
-   !endif  
+   !endif
     !set 4_=!append item $4__ to $4_
-  !next 
+  !next
   !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
 

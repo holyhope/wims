@@ -125,6 +125,20 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  !read oef/exo.init
 !endif
 
+!if $cmd iswordof new renew reply and $wims_user=supervisor
+  exonext=!positionof item $exo in $exolist
+  exoprev=$[$exonext-1]
+  exonext=$[$exonext+1]
+  !if $exonext > $exocnt
+    exonext=1
+  !endif
+  !if $exoprev < 1
+    exoprev=$exocnt
+  !endif
+  exoprev=!item $exoprev of $exolist
+  exonext=!item $exonext of $exolist
+!endif
+
 !if $status!=waiting
  !for i=1 to $limit_reply
   !reset replygood$i
