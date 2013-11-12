@@ -1,14 +1,13 @@
 !set style=fr/generic
 
-<center><h2>Le style <span class="tt">generic</span> de symtext (par défaut)</h2></center>
-
+<p>
 C'est le style appliqué par
 !href cmd=help&special_parm=symtext symtext
  quand il n'y a pas de déclaration de style dans les options. La comparaison
 de testes ne tient pas compte de differences en minuscule/majuscule, ni de
 lettres avec ou sans accent, ni de formes plurièles ou singulières des noms
 communs, ni les formes d'accord pour les adjectifs (mots courants uniquement).
-<p>
+</p>
 
 !set n=!recordcnt symtext/$style/macros.help
 !if $n>0
@@ -25,22 +24,23 @@ $table_hdtr<th>Syntaxe</th><th>Reconnaissance</th></tr>
 !for i=1 to $n
  !set l=!record $i of symtext/$style/macros.help
  !distribute lines $l into s1, s2
- $table_tr<td><span class="tt">$s1</span></td>
+ $table_tr<td class="tt">$s1</td>
  <td>$s2</td>
+ </tr>
 !next i
-</tr>
 $table_end
 
 !endif
 <p>
-
 Il y a trois dictionnaires : anto (antonymes), syno (synonymes), type (type
 de mot). Ils peuvent s'utiliser par la règle <span class="tt">[Dic:...]</span> ou les
 macros <span class="tt">[anto:...]</span>, <span class="tt">[syno:...]</span> ou <span class="tt">[type:...]</span>.
 <b>Attention</b> les dictionnaires ne sont pas encore complets.
+</p>
 <p>
-
-Pour le dictionnaire <span class="tt">type</span> (chaque mot peut avoir plusieurs types) : <ul>
+Pour le dictionnaire <span class="tt">type</span> (chaque mot peut avoir plusieurs types) : 
+</p>
+<ul>
 <li><span class="tt">a</span> désigne adjectif.
 </li><li><span class="tt">ad</span> désigne adverbe.
 </li><li><span class="tt">inf</span> désigne verbe en forme infinitif.
