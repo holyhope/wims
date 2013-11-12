@@ -12,7 +12,9 @@
 !for c in $cat_
  <p>$name_prompt_related
  !for t in $p_
-  !href module=home&search_category=$c&search_keywords=$t $t
+  !set t_=!lookup $t in bases/sys/domain/domain.$lang
+  !default t_=$t
+  !href module=home&search_category=$c&search_keywords=$t_ $t_
   &nbsp;
  !next t
 </p>
