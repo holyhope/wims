@@ -9,7 +9,9 @@ do
  for j in $i.*
  do
   k=`echo $j | sed 's/^'$i'.//'`
-  echo "cnt$k="`grep -c . $j` >>.cnt.$i
+  if [ -e $i.$k ] ; then ## $k != *
+   echo "cnt$k="`grep -c . $j` >>.cnt.$i
+  fi
  done
  if [ $i = fr ]; then
   for f in conj accord; do

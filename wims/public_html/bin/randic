@@ -6,7 +6,9 @@
 lang=$w_module_language
 dicdir=bases/dic/$lang
 
-if [ ! -d $dicdir ]; then exit; fi
+if [ ! -d $dicdir ]; then dicdir=bases/dic/en; lang=en; fi
+if [ ! -e $dicdir/.cnt.$lang ]; then dicdir=bases/dic/en; lang=en; fi
+echo $dicdir $lang > aaaa
 cd $dicdir
 
 . ./.cnt.$lang
