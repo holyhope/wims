@@ -2,7 +2,7 @@
 
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
-!if $class_expiration=$empty 
+!if $class_expiration=$empty
  !defread wimshome/log/classes/$wims_class/.def
 !endif
 !if $class_expiration=$empty
@@ -26,7 +26,7 @@ numsess=$mod_numsess
 !next
 
 !if $gstep=2
-!! need to check carefully namexevar vs. up_namevar (at some step we seem to 
+!! need to check carefully namexevar vs. up_namevar (at some step we seem to
 !! be loosing the correction)(?? should this go outside the if $gstep=2)
  !read adm/class/authchars
 
@@ -50,7 +50,7 @@ numsess=$mod_numsess
     gstep=$[max(0,$gstep-1)]
    !exit
  !endif
- !set up_namevar=$namevar 
+ !set up_namevar=$namevar
 !for dato in numsess,namevar,defconnip
  !setdef $dato=$($dato) \
  in  $votedir/$vote.data

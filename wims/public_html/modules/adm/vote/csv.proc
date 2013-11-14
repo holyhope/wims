@@ -26,10 +26,10 @@ htest=!checkhost $sec
  fbase=data-$wims_class-vote-$vote
  fbase=!translate internal / to _ in $fbase
  fname=wimshome/$wims_sesdir/spreadsheet.$csvformat
- 
+
  tit="$title_vote $vote"
  !writefile $fname $tit\
- 
+
  !readdef $votedir/$vote.votes
  !readdef $votedir/$vote.comments
 
@@ -51,7 +51,7 @@ htest=!checkhost $sec
   tableau=_,$prel\
 $tableau
   !goto end
-!endif 
+!endif
 !if $vote_option=trace
  tableau=!makelist x for x = 1 to $vcnt
  tableau=!replace internal , by ; in $tableau
@@ -67,7 +67,7 @@ $tableau
      v1=!itemcnt $v
      !if $v1>0
       !for h = 1 to $v1
-       line=!line $(v[$h]) of $tableau 
+       line=!line $(v[$h]) of $tableau
        line=!replace item number $[$t+1] by _$(l)_ in $line
        tableau=!replace internal line number $(v[$h]) by $line in $tableau
       !next
@@ -120,7 +120,7 @@ $tableau
         cnt_$u=$cmp
         item1=$u
        !endif
-       line=!line $(cnt_$u) of $tableau 
+       line=!line $(cnt_$u) of $tableau
        line=!replace item number 1 by $(v[$h])_ in $line
        line=!replace item number $[$t+1] by _$(l)_ in $line
        tableau=!replace internal line number $(cnt_$u) by $line in $tableau
@@ -135,14 +135,14 @@ entete= !makelist _ Q.x _ for x=1 to $parmcnt
  $tableau
  !goto end
 !endif
- 
+
 :end
 tableau=!replace internal _,_ by $sep in $tableau
 !! !! the following messes up with username containing _
 !! !! testing!
 !!tableau=!replace internal _ by  in $tableau
 tableau=!replace internal --- by  in $tableau
- 
+
 !appendfile $fname $tableau
 
 infile=spreadsheet.$csvformat
