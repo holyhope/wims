@@ -13,7 +13,7 @@
 !set name_binfile=Binaire bestanden
 !set name_del=Verwijder een module
 !set name_size=Grootte
-!set name_publish=!nosubst Publiceer $i_title<br /><span class="tt">$mod</span>
+!set name_publish=!nosubst Publiceer $i_title<br/><span class="tt">$mod</span>
 
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
 
@@ -24,6 +24,8 @@
 !set name_in_module=in de module
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
+!set name_help_addfile=(the name of a file of the OEF exercise source\
+   must be of the form <span class="tt"> src/name_file.oef</span>)
 !set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Uw module
 !set name_file2=bevat de volgende bestanden
@@ -89,7 +91,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 !if $job=auth
   !set name_intro=Dit hulpprogramma is bedoeld voor het online ontwikkelen van speciale WIMS modules,\
  en is alleen toegankelijk voor gebruikers met een ontwikkelaar-account op deze server.\
- <p> Geef hier s.v.p. uw modtool loginnaam.
+ <p> Geef hier s.v.p. uw modtool loginnaam.</p>
 
   !distribute lines stuur een email naar de systeembeheerder\
     als u het wachtwoord vergeten bent.\
@@ -147,7 +149,8 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 
 !if $job=restore
  !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
- herstelprocedure alleen archieven gebruiken die eerder door Modtool zelf zijn aangemaakt ! Probeer het opnieuw.
+ herstelprocedure alleen archieven gebruiken die eerder door Modtool zelf zijn aangemaakt ! \
+ </p>Probeer het opnieuw.
 
  !distribute lines Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken. Een fout in het bestand !\
  Er is geen verschil gevonden tussen de bestaande module en de backup.\
