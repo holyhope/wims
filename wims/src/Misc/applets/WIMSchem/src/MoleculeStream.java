@@ -325,7 +325,7 @@ public class MoleculeStream{
 		}
 	    }
 	}
-	catch (Exception e) {throw new IOException(GENERIC_ERROR+"hier");}
+	catch (Exception e) {throw new IOException(GENERIC_ERROR);}
 
     	return mol;
     }

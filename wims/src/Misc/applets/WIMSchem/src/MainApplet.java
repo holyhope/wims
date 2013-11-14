@@ -322,13 +322,12 @@ public class MainApplet extends JApplet implements ComponentListener{
 		    }
 		    else
 		    {
-			if( DemoMol.indexOf("molfile")!=-1){
-			    AppendMoleculeMDLMol(DemoMol);
-			}
-			else
-			{
-			    System.out.println("Unknown filetype or corrupt file "+filename+"\n"+DemoMol);
-			}
+		     /* 
+		       11/2013 jm.evers
+		       In this place no check on validity of file : maybe look for V2000 ?? 
+		       MoleculeStream.java will throw an error in case of trouble 
+		     */
+			AppendMoleculeMDLMol(DemoMol);
 		    }
 		}
 		else
