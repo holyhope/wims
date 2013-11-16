@@ -5,10 +5,10 @@
 !set anstyle=dprompt
 !set ans_require=matchmol,checkmol,WIMSchem
 
-!set oef_js_submit=GetMoleculeMDLMol()
 !if $wims_read_parm=def
  !exit
 !endif
+!set oef_js_submit=$oef_js_submit GetMoleculeMDLMol$i();
 
 !set wims_backslash_insmath=no
 
@@ -114,18 +114,19 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 !next
 <script type="text/javascript">
 /*<![CDATA[*/
- function GetMoleculeMDLMol(){
-    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
-   var input1=document.WIMSchem.GetMoleculeMDLMol();
-   var result=document.WIMSchem.ReadApplet();
+ function GetMoleculeMDLMol$i(){
+    <!-- reading the WIMSchem file format from a drawing and display it in textarea "moltext" -->
+   var input1=document.WIMSchem$i.GetMoleculeMDLMol();
+   var result=document.WIMSchem$i.ReadApplet();
    var input2=result.split('\n');
-   document.getElementById('WIMSchemreply').value = input2[1] + '\n' + input1;
-   document.WIMSchem.destroy();
+   document.getElementById('WIMSchemreply$i').value = input2[1] + '\n' + input1;
+  !! alert(input2[1] + '\n' + input1);
+   document.WIMSchem$i.destroy();
 }
 /*]]>*/
 </script>
 
-<input type="hidden" name="reply$i" id="WIMSchemreply" value="" />
+<input type="hidden" name="reply$i" id="WIMSchemreply$i" value="" />
 !if help isin $(replyoption$i)
  !set help_option=!getopt help in $(replyoption$i)
  !set help_option=!replace internal help by in $help_option
@@ -137,7 +138,7 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
  </div>
 !endif
 
-<object name="WIMSchem" id="WIMSchem" type="application/x-java-applet;jpi-version=1.4" \
+<object name="WIMSchem$i" id="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4" \
  classid="java:WIMSchem.MainApplet" width="$xsize" height="$ysize">
   <param name="java_archive" value="WIMSchem.jar" />
   <param name="java_codebase" value="$appletdir" />

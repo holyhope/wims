@@ -1,4 +1,5 @@
-test_empty=!line 3 of $(reply$i)
+ans_molecule=$(reply$i)
+test_empty=!line 3 of $ans_molecule
 test_empty=!word 1 of $(test_empty[1;1])
 !if $test_empty=0
  test=NaN chemdraw_empty_data
@@ -52,14 +53,13 @@ $ in $(replygood$i)
 !set ans_newtime=$(wims_nowseconds)_$i
 !set replyfichier=r_$ans_newtime.mol
 
-ans_molecule=$(reply$i)
 
 ans_brut_r=!line 1 of $ans_molecule
 ans_molecule=!line 2 to -1 of $ans_molecule
 !readproc oef/togetfile.proc $replyfichier new\
 $ans_molecule
 
-!set replyfile=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$replyfichier
+!set replyfile$i=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$replyfichier
 
 !if $wims_read_parm=nocompare
  ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
@@ -143,8 +143,8 @@ ans_checkmol_func_g=!nonempty items $ans_checkmol_func_g
 !set xsize=320
 !set ysize=240
 
-reply_$i =<p>\
-<object name="WIMSchem" type="application/x-java-applet;jpi-version=1.4" \
+reply_$i=\
+<object name="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4" \
  classid="java:WIMSchem.MainApplet" width="$xsize" height="$ysize">\
   <param name="java_codebase" value="$ans_appletdir" />\
   <param name="java_code" value="WIMSchem.MainApplet" />\
@@ -180,7 +180,7 @@ reply_$i =<p>\
   <param name="MENU_HYDROGEN" value="no" />\
   <param name="MENU_STEREO" value="no" />\
   <param name="MENU_HELP" value="no" />\
-  <param name="file" value="$replyfile" />\
+  <param name="file" value="$(replyfile$i)" />\
   <param name="show_hydrogen" value="$ans_show_hydrogen" />\
   <param name="show_carbon" value="$ans_show_carbon" />\
 </object>
@@ -191,7 +191,7 @@ $ans_image
 !endif
 
 
-reply$i=
+reply__$i=&nbsp;
 replyGood$i=
 
 
