@@ -1,7 +1,14 @@
 slib_data=$wims_read_parm
 !!the variables slib_x slib_y are used in other slib as stat/histo
-# data: transform items to lines.
+# data: transform rows to lines.
 slib_data=!singlespace $slib_data
+slib_datacnt=!itemcnt $slib_data
+!if $slib_datacnt=1 and [ isin $slib_data and ; notin $slib_data
+   slib_data_=!declosing $slib_data
+   slib_data_=!itemcnt $slib_data_
+   slib_data_=!makelist 1 for x=1 to $slib_data_
+   slib_data=$slib_data, [$slib_data_]
+!endif
 slib_data=!declosing $slib_data
 slib_data=!translate internal ; to $\
 $ in $slib_data
