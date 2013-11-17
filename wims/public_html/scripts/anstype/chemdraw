@@ -6,7 +6,10 @@ test_empty=!word 1 of $(test_empty[1;1])
  error=chemdraw_empty_data
  !exit
 !endif
-
+lang__=$lang
+!if $lang notwordof en fr nl
+  lang__=en
+!endif
 !reset ans_show_hydrogen ans_show_carbon
 ans_appletdir=java/WIMSchem
 !set oef_applet_option=!replace internal $	$ by $\
@@ -71,7 +74,7 @@ $ans_molecule
   !goto end
 !endif
 !for ss_ = 1 to $replygood_cnt
-  ans_is_matching=!exec matchmol -x$match $wims_home/$wims_sesdir/getfile/$replyfichier $wims_home/$wims_sesdir/getfile/$(goodfichier_$ss_) 
+  ans_is_matching=!exec matchmol -x$match $wims_home/$wims_sesdir/getfile/$replyfichier $wims_home/$wims_sesdir/getfile/$(goodfichier_$ss_)
 
  !if invalid isin $ans_is_matching or unknown file format isin $ans_is_matching
    error=bad_exo
@@ -105,7 +108,7 @@ $ans_molecule
    ans_cntdiff=!itemcnt $ans_diff
    !for j=1 to $ans_cntdiff
      s_=$(ans_diff[$j])
-     l_=!record $s_ of anstype/chemdraw.fr
+     l_=!record $s_ of anstype/chemdraw.$lang__
      l_ = $l_ ( $(ans_checkmol_r[$s_]) au lieu de $(ans_checkmol_g[$s_]))
      ans_feedback=!append line $l_  to $ans_feedback
    !next
