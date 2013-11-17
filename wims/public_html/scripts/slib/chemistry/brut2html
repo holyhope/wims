@@ -12,7 +12,10 @@ NH2^+
 :proc
 
 slib_mol=$wims_read_parm
-
+!if $slib_mol=$empty
+  slib_out=
+  !exit
+!endif
 slib_B=!text mark  0123456789 in $slib_mol
 slib_c=!charcnt $slib_mol
 !reset slib_out
