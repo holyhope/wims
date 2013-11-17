@@ -18,15 +18,7 @@ $ in $r_
  <tr><td>$(replyname$i)</td><td>
 !endif
 
-!set inputoption=!replace internal $	$ by $\
-$ in $inputsize
-!set inputsize=!line 1 of $inputoption
-!set inputoption=!line 2 to -1 of $inputoption
-!set option=!line 1 of $inputoption
-!if $option issametext default
-  !set inputoption=!line 2 to -1 of $inputoption
-  !set inputoption=class="wims_oef_input" $inputoption
-!endif
+!read anstype/inputcss.inc
 
 !bound inputsize between integer 1 and 100 default 40
 <input size="$inputsize" name="reply$i" value="$(reply$i)" $inputoption />
