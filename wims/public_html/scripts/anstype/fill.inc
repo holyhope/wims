@@ -91,3 +91,7 @@ $sup1<img style="width:1px; height:$[$fill_sy+4]px;vertical-align:$vertical;" sr
   src="gifs/transparent.gif" alt="transparent" /></a>$sup2
 <input type="hidden" name="reply$i" value="" />
 !reset inputsize
+
+!if $wims_read_parm!=noprompt
+ </td></tr>
+!endif
