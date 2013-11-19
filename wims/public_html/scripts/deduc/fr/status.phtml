@@ -1,6 +1,7 @@
 
-<p>
+
 !if $currstep=1 and $m_context!=$empty
+<p>
  Hypothèses de départ&nbsp;: {
  !set n=!linecnt $m_context
  !for i=1 to $n
@@ -10,7 +11,7 @@
    ;
   !endif
  !next i
- } <p>
+ } </p>
 !else
  !set t__=!word 1 of $newObject
  !distribute item <,>,= into lt,gt,eq
@@ -18,19 +19,22 @@
   !set l=!char 3 to -1 of $newObject
   !set l=!replace internal $\
 $> by , in $l
+  <p>
   Nouvelle hypothèse&nbsp;:
   !htmlmath $l
-  <p>
+  </p>
  !endif
  !if $currstep>1 and $t__ notwordof $lt $gt and $newObject!=$empty
+ <p>
   Vous avez maintenant
   !htmlmath $newObject
-  <p>
+  </p>
  !endif
 !endif
 
 !if $m_goal!=$empty and $status=waiting
  !set n=!linecnt $m_goal
+ <p>
  Reste à prouver&nbsp;: {
  !for i=1 to $n
   !set l=!line $i of $m_goal
@@ -39,6 +43,7 @@ $> by , in $l
    ;
   !endif
  !next i
- } <p>
+ } 
+ </p>
 !endif
 

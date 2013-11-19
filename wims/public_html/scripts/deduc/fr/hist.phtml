@@ -4,7 +4,7 @@
 !endif
 
 !readproc tabletheme
-<p>$table_header
+$table_header
 <caption>Historique des étapes</caption>
 $table_hdtr<th>Etape</th>
 !if $casecnt>1
@@ -18,9 +18,9 @@ $table_hdtr<th>Etape</th>
 !set hstop=$[min($laststep,$currstep+8)]
 !for i=$hstart to $hstop
  !if $i=$currstep
-  !distribute item <font color="#9090C0">,</font> into light1,light2
+  !distribute item <span style="color:#9090C0">,</span> into light1,light2
  !endif
- $table_tr<td align="center" nowrap>$light1
+ $table_tr<td class="wimscenter nowrap">$light1
  $i
  !if $status=waiting
   <small>
@@ -34,9 +34,9 @@ $table_hdtr<th>Etape</th>
 $light2</td>
  !if $casecnt>1
  !set c_=!item $i of $stepcases
-  <td align="center">$light1 \($c_) $light2</td>
+  <td class="wimscenter">$light1 \($c_) $light2</td>
  !endif
- <td align="center">$light1
+ <td class="wimscenter">$light1
  !read deduc/putobject.phtml $i
 $light2</td><td></td><td>$light1
  !line $i of $methods
@@ -48,7 +48,7 @@ $light2</td>
 !endif
 !set t_=!char $i of $stepcounting
 !if $t_=0
- Non-comptée pour score.
+ Non comptée pour score.
  !set R_=1
 !endif
 !if $R_!=1

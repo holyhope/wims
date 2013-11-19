@@ -14,7 +14,7 @@
 :number
  !default 1_=10
  :input
- <input size="$1_" name="methparm$n_" value="$(methparm$n_)"/>
+ <input size="$1_" name="methparm$n_" value="$(methparm$n_)" />
 !exit
 
 :function
@@ -30,6 +30,7 @@
 !exit
 
 :parm
+
  !set N_=!linecnt $(mtobj$n_)
  !reset P_
  !if $N_>1 or ($N_=1 and $n_ isitemof $methparmrelax)
@@ -49,13 +50,14 @@
   !formselect methparm$n_ from 0 to $N_ prompt $p0,$P_
  !else
   !if $N_=1
-   <input type="hidden" name="methparm$n_" value="1"/>
+   <input type="hidden" name="methparm$n_" value="1" />
    !set l=!item 2 to -1 of $(mtobj$n_)
    !set l=!items2words $l
    !insmath $l
   !else
-   <tt>$ch_optional</tt>
+   <span class="tt">$ch_optional</span>
   !endif
  !endif
 !exit
+
 
