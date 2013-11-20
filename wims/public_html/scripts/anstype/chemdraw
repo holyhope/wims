@@ -188,10 +188,11 @@ rep$i=<object name="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4"
 </object>
 
 reply_$i=$(rep$i)
-
-!if $ans_diag<1 and $ans_image notsametext
-reply_$i=<div class="inline" style="border:3px solid red">$(rep$i)</div>\
-<div class="inline" style="border:3px solid green">$ans_image</div>
+!if $ans_diag<1
+   reply_$i=<div class="inline" style="border:3px solid red">$(rep$i)</div>
+   !if $ans_image notsametext
+     <div class="inline" style="border:3px solid green">$ans_image</div>
+   !endif
 !endif
 
 
