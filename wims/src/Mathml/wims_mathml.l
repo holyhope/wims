@@ -811,9 +811,12 @@ int wims_mathml_displaymode = 0;
 "\\closure" |
 "\\widebar"      {return WIDEBAR;}
 
-"\\vec"  |
-"\\overrightarrow"     {return VEC;} 
+"\\vec"  { return VEC;}
 "\\widevec"   {return WIDEVEC;}
+
+
+"\\overrightarrow"     {return OVERRIGHTARROW;} 
+"\\underrightarrow" { return UNDERRIGHTARROW;}
 
 "\\dot"       {return DOT;}
 "\\ddot"      {return DDOT;}
@@ -1103,7 +1106,6 @@ int wims_mathml_displaymode = 0;
 "\\underrightharpoondown" {yylval = wims_mathml_copy_string("&#x20EC"); return MI;}
 "\\underleftharpoondown" {yylval = wims_mathml_copy_string("&#x20ED"); return MI;}
 "\\underleftarrow" {yylval = wims_mathml_copy_string("&#x20EE"); return MI;}
-"\\underrightarrow" {yylval = wims_mathml_copy_string("&#x20EF"); return MI;}
 "\\asteraccent" {yylval = wims_mathml_copy_string("&#x20F0"); return MI;}
 "\\BbbC" {yylval = wims_mathml_copy_string("&#x2102"); return MI;}
 "\\Eulerconst" {yylval = wims_mathml_copy_string("&#x2107"); return MI;}
