@@ -230,10 +230,10 @@ std::ostream & operator << (std::ostream & o, const AtomeListe & l){
   const AtomeListe * al;
   if (l.sq()) o << "[";
   if(l.Z()>0 || l.Z()<-1){
-    o << l.symbole();
+    o << "\\mathrm{" << l.symbole() << "}";
   }
   else if (l.Z()==-1){ // cas de l'électron
-    o << "e";
+    o << "\\mathrm{e}";
   }
   else{                // cas des groupes parenthésés
     o << "(";
@@ -293,7 +293,7 @@ void Molec::printnorm(std::ostream & o)const{
     if(fabs(1.0*ch)!=1) o << fabs(1.0*ch);
     if(ch>0) o << "+"; else o << "-";
   }
-  if (!iswater()&&!iselectron()) o << "_" << moltypeStr[t];
+  if (!iswater() && !iselectron()) o << "_"  << moltypeStr[t];
 }
 
 void Molec::coeff( fraction f){
@@ -402,13 +402,13 @@ bool Molec::printNernstWIMS(std::ostream & o, bool wantedlatex){
 
 bool Molec::iswater()const{
   if (t != aqueous) return 0;
-  if (signature()==std::string("H_{2}O") || 
-      signature()==std::string("OH_{2}")) return 1;
+  if (signature()==std::string("\\mathrm{H}_{2}\\mathrm{O}") || 
+      signature()==std::string("\\mathrm{O}\\mathrm{H}_{2}")) return 1;
   else return 0;
 }
 
 bool Molec::iselectron()const{
-  return (signature()==std::string("e^{-}"));
+  return (signature()==std::string("\\mathrm{e}^{-}"));
 }
 
 fraction Molec::nbelectron()const{
@@ -441,7 +441,7 @@ std::ostream & operator << (std::ostream & o, const Molec & m){
     if(fabs(1.0*m.charge())!=1) o << fabs(1.0*m.charge());
     if(m.charge()>0) o << "+}"; else o << "-}";
   }
-  if (m.typage() != aqueous) o << "_{" << moltypeStr[m.typage()] << "}";
+  if (m.typage() != aqueous && ! m.iselectron()) o << "_{" << moltypeStr[m.typage()] << "}";
   return o;
 }
 
