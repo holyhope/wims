@@ -39,6 +39,11 @@ ok=yes
   !for k=1 to $m1
    x_=!item $k of $l1
    y_=!item $k of $l2
+   y_=!nospace $y_
+   test=$[$y_]
+   !if NaN isin $test
+     !exit
+   !endif
    !ifval $x_!=$y_
     ok=
     !goto bailout
