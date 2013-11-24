@@ -817,6 +817,10 @@ int wims_mathml_displaymode = 0;
 
 "\\overrightarrow"     {return OVERRIGHTARROW;} 
 "\\underrightarrow" { return UNDERRIGHTARROW;}
+"\\overleftarrow"     {return OVERLEFTARROW;} 
+"\\underleftarrow" { return UNDERLEFTARROW;}
+"\\overleftrightarrow" { return UNDERLEFTRIGHTARROW;}
+"\\underleftrightarrow" { return UNDERLEFTRIGHTARROW;}
 
 "\\dot"       {return DOT;}
 "\\ddot"      {return DDOT;}
@@ -1094,18 +1098,15 @@ int wims_mathml_displaymode = 0;
 "\\leftharpoonaccent" {yylval = wims_mathml_copy_string("&#x20D0"); return MI;}
 "\\rightharpoonaccent" {yylval = wims_mathml_copy_string("&#x20D1"); return MI;}
 "\\vertoverlay" {yylval = wims_mathml_copy_string("&#x20D2"); return MI;}
-"\\overleftarrow" {yylval = wims_mathml_copy_string("&#x20D6"); return MI;}
 "\\enclosecircle" {yylval = wims_mathml_copy_string("&#x20DD"); return MI;}
 "\\enclosesquare" {yylval = wims_mathml_copy_string("&#x20DE"); return MI;}
 "\\enclosediamond" {yylval = wims_mathml_copy_string("&#x20DF"); return MI;}
-"\\overleftrightarrow" {yylval = wims_mathml_copy_string("&#x20E1"); return MI;}
 "\\enclosetriangle" {yylval = wims_mathml_copy_string("&#x20E4"); return MI;}
 "\\annuity" {yylval = wims_mathml_copy_string("&#x20E7"); return MI;}
 "\\threeunderdot" {yylval = wims_mathml_copy_string("&#x20E8"); return MI;}
 "\\widebridgeabove" {yylval = wims_mathml_copy_string("&#x20E9"); return MI;}
 "\\underrightharpoondown" {yylval = wims_mathml_copy_string("&#x20EC"); return MI;}
 "\\underleftharpoondown" {yylval = wims_mathml_copy_string("&#x20ED"); return MI;}
-"\\underleftarrow" {yylval = wims_mathml_copy_string("&#x20EE"); return MI;}
 "\\asteraccent" {yylval = wims_mathml_copy_string("&#x20F0"); return MI;}
 "\\BbbC" {yylval = wims_mathml_copy_string("&#x2102"); return MI;}
 "\\Eulerconst" {yylval = wims_mathml_copy_string("&#x2107"); return MI;}
