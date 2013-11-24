@@ -11,7 +11,11 @@
    !if $email=$empty
     $author
    !else
-    !mailurl $email $author
+     !set authorcnt=!itemcnt $(author[;1])
+     !for a = 1 to $authorcnt
+      !mailurl $(email[$a]) $(author[$a;1]) $(author[$a;2])
+      &nbsp;
+     !next
    !endif
    $n_lastmod $datm
   </div>
