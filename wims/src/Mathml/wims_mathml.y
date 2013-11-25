@@ -1526,22 +1526,27 @@ vec: VEC closedTerm {
 
 overrightarrow: OVERRIGHTARROW closedTerm {
   $$ = wims_mathml_copy3("<mover>", $2, "<mo stretchy=\"true\">&rightarrow;</mo></mover>");
+  wims_mathml_free_string($2);
 };
 
 underrightarrow: UNDERRIGHTARROW closedTerm {
   $$ = wims_mathml_copy3("<munder>", $2, "<mo stretchy=\"true\">&rightarrow;</mo></munder>");
+  wims_mathml_free_string($2);
 };
 overleftarrow: OVERLEFTARROW closedTerm {
   $$ = wims_mathml_copy3("<mover>", $2, "<mo stretchy=\"true\">&leftarrow;</mo></mover>");
+  wims_mathml_free_string($2);
 };
 underleftarrow: UNDERLEFTARROW closedTerm {
   $$ = wims_mathml_copy3("<munder>", $2, "<mo stretchy=\"true\">&leftarrow;</mo></munder>");
+  wims_mathml_free_string($2);
 };
 overleftrightarrow: OVERLEFTRIGHTARROW closedTerm {
   $$ = wims_mathml_copy3("<mover>", $2, "<mo stretchy=\"true\">&leftrightarrow;</mo></mover>");
 };
 underleftrightarrow: UNDERLEFTRIGHTARROW closedTerm {
   $$ = wims_mathml_copy3("<munder>", $2, "<mo stretchy=\"true\">&leftrightarrow;</mo></munder>");
+  wims_mathml_free_string($2);
 };
 
 dot: DOT closedTerm {
