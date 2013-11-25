@@ -815,12 +815,19 @@ int wims_mathml_displaymode = 0;
 "\\widevec"   {return WIDEVEC;}
 
 
-"\\overrightarrow"     {return OVERRIGHTARROW;} 
-"\\underrightarrow" { return UNDERRIGHTARROW;}
-"\\overleftarrow"     {return OVERLEFTARROW;} 
-"\\underleftarrow" { return UNDERLEFTARROW;}
-"\\overleftrightarrow" { return UNDERLEFTRIGHTARROW;}
-"\\underleftrightarrow" { return UNDERLEFTRIGHTARROW;}
+"\\overrightarrow"	  {yylval = wims_mathml_copy_string("&rightarrow;"); 	 return OVERARROW;} 
+"\\overleftarrow"         {yylval = wims_mathml_copy_string("&leftarrow;"); 	 return OVERARROW;} 
+"\\overleftrightarrow" 	  {yylval = wims_mathml_copy_string("&leftrightarrow;"); return OVERARROW;}
+"\\overrightharpoonup"    {yylval = wims_mathml_copy_string("&#x21C0"); 	 return OVERARROW;}
+"\\overrightharpoondown"  {yylval = wims_mathml_copy_string("&#x21C1"); 	 return OVERARROW;}
+
+"\\underrightarrow" 	  {yylval = wims_mathml_copy_string("&rightarrow;"); 	 return UNDERARROW;}
+"\\underleftarrow" 	  {yylval = wims_mathml_copy_string("&leftarrow;"); 	 return UNDERARROW;}
+"\\underleftrightarrow"   {yylval = wims_mathml_copy_string("&leftrightarrow;"); return UNDERARROW;}
+"\\underrightharpoonup"   {yylval = wims_mathml_copy_string("&#x21C0"); 	 return UNDERARROW;}
+"\\underrightharpoondown" {yylval = wims_mathml_copy_string("&#x21C1"); 	 return UNDERARROW;}
+
+
 
 "\\dot"       {return DOT;}
 "\\ddot"      {return DDOT;}
@@ -1105,8 +1112,6 @@ int wims_mathml_displaymode = 0;
 "\\annuity" {yylval = wims_mathml_copy_string("&#x20E7"); return MI;}
 "\\threeunderdot" {yylval = wims_mathml_copy_string("&#x20E8"); return MI;}
 "\\widebridgeabove" {yylval = wims_mathml_copy_string("&#x20E9"); return MI;}
-"\\underrightharpoondown" {yylval = wims_mathml_copy_string("&#x20EC"); return MI;}
-"\\underleftharpoondown" {yylval = wims_mathml_copy_string("&#x20ED"); return MI;}
 "\\asteraccent" {yylval = wims_mathml_copy_string("&#x20F0"); return MI;}
 "\\BbbC" {yylval = wims_mathml_copy_string("&#x2102"); return MI;}
 "\\Eulerconst" {yylval = wims_mathml_copy_string("&#x2107"); return MI;}
@@ -1166,7 +1171,7 @@ int wims_mathml_displaymode = 0;
 "\\linefeed" {yylval = wims_mathml_copy_string("&#x21B4"); return MI;}
 "\\carriagereturn" {yylval = wims_mathml_copy_string("&#x21B5"); return MI;}
 "\\barovernorthwestarrow" {yylval = wims_mathml_copy_string("&#x21B8"); return MI;}
-"\\barleftarrowrightarrowba" {yylval = wims_mathml_copy_string("&#x21B9"); return MI;}
+"\\barleftarrowrightarrow" {yylval = wims_mathml_copy_string("&#x21B9"); return MI;}
 "\\acwopencirclearrow" {yylval = wims_mathml_copy_string("&#x21BA"); return MO;}
 "\\cwopencirclearrow" {yylval = wims_mathml_copy_string("&#x21BB"); return MO;}
 "\\leftharpoondown" {yylval = wims_mathml_copy_string("&#x21BD"); return MO;}
