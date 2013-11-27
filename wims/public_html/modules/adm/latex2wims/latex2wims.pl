@@ -904,6 +904,10 @@ sub store_environ { my ($def, $cmd, $narg, $titre, $deb, $fin, $ref_env) = @_;
   $ref_env->{deb}{$cmd} = $deb;
   $ref_env->{fin}{$cmd} = $fin;
   $ref_env->{cnt_arg}{$cmd} = $narg;
+## one can have macro in definition of an environment - not general but useful for language
+  if ($titre=~/\\(\w+)/) {
+    $titre=$hash_command{definition}{$1} if $hash_command{definition}{$1}
+  }
   $ref_env->{titre}{$cmd} = $titre;
   $ref_env->{origin}{$cmd} = $def;
   my $style = $ref_env->{style}{$cmd} ;
@@ -1280,9 +1284,12 @@ sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ;
 sub traite_preambule { my ($TEXT, $ref_env, $ref_command, $ref) = @_;
   if ($TEXT=~ s/\\usepackage\[([^]]+)\]\{algorithmic\}//) {
        $algo_noend = 1  if ($1 =~ /noend/);
-  } ;
-  $TEXT = recup_environ($TEXT, $ref_env);
+  };
   $TEXT = recup_command($TEXT, $ref_command);
+  $TEXT = traite_command($TEXT, $ref_command);
+  $TEXT = recup_environ($TEXT, $ref_env);
+  
+  
   $TEXT = recup_embed($TEXT, $ref) ;
   for my $cmd ('ref','index') {
      $ref->{titb}{$cmd} = $ref_command->{definition}{$cmd . "name"} 
