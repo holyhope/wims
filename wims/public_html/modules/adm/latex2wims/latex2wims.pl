@@ -28,7 +28,7 @@ $/ = undef; # slurp
 #
 ###############################################################################
 #
-my ($FILE, $MACRO, $EMBED, $NUMERO, $doc_DIR, $DIR, $author, $email, $worksheet, $SHEET,$ABOUT) ;
+my ($FILE, $MACRO, $EMBED, $NUMERO, $doc_DIR, $DIR, $author, $email, $worksheet, $SHEET,$ABOUT, $SUBDIR) ;
 my $verbose = 0;
 my $depth = 2 ;
 my $INDEX = 0 ;
@@ -42,6 +42,7 @@ $worksheet= '';
 $SHEET = '' ;
 $DIR = '';
 $doc_DIR = '';
+$SUBDIR='1';
 my @SECTIONS = qw(document part chapter section subsection subsubsection);
 #my @SECTIONS = ( document part entete frame subsection subsubsection );
 #TODO biblio dans un fichier séparé si on a rencontré \begin{thebibliography} Non,
@@ -58,6 +59,7 @@ while ($_ = shift (@ARGV))
   elsif (/^--macro=(.*)$/) { $MACRO   = $1; }
   elsif (/^--docdir=(.*)$/){ $doc_DIR = $1; }
   elsif (/^--dir=(.*)$/)   { $DIR     = $1; }
+  elsif (/^--subdir=(.*)$/){ $SUBDIR  = $1; }
   elsif (/^--embed=(.*)$/) { $EMBED   = $1; } 
   elsif (/^--verbose$/)    { $verbose = 1; }
   elsif (/^--author=(.*)$/){ $author  = $1; }
@@ -76,6 +78,9 @@ $FILE = $_;
 
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ;
+
+my $BASE = $doc_DIR . "doc/$SUBDIR/src";
+my $BASE0= $doc_DIR . "doc/$SUBDIR";
 
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" style="width:20px;height:20px;" />}';
 my $FLECHE = '&#8594;';
@@ -191,9 +196,6 @@ $SIG{__WARN__} = sub { my ($x) = @_;
   print STDERR "### $x";
 };
 
-#imposé par wims
-my $BASE = $doc_DIR . 'doc/1/src';
-my $BASE0= $doc_DIR . 'doc/1';
 system("mkdir -p $BASE0") if (!$ENV{'wims_exec_parm'});
 system("mkdir -p $BASE") if (!$ENV{'wims_exec_parm'});
 
