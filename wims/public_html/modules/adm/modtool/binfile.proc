@@ -8,7 +8,14 @@
 dir=binary,data,images,help,anstype,slib
 cattest=!module category devel/$auth_login/$mod
 !if document isin $cattest
- dir=$dir,doc/1/files
+  dir=
+  test=!defof common_files in wimshome/public_html/$devdir/$mod/doc/.def
+!!!FIXME depends on 1
+  !if $test!=yes
+    dir=doc/1/files
+  !else
+    dir=doc/files
+  !endif
 !endif
 !if oef isin $cattest
  test=!defof common_images in wimshome/public_html/$devdir/$mod/var.proc
