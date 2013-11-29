@@ -131,8 +131,9 @@ done
 cd $def
 list=`ls *.def 2>/dev/null | sed 's/\.def//g'`
 cd $thisdir
-
-transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`; 
+if [ -f "INDEX" ]; then 
+ transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`; 
+fi
 #if [ -z "$list" ]; then exit; fi
 titlist=
 titlist1=
