@@ -103,8 +103,8 @@ void _form_menus(char *p,int kind)
 	    break;
 	    
 	    case FORM_RADIO:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>&nbsp;%s",
-		   nbuf,nbuf,i,p0,pc,plist[i]);
+	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>",
+		   nbuf,nbuf,i,p0,pc,nbuf,i,plist[i]);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
