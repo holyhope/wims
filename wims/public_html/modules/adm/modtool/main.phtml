@@ -49,13 +49,14 @@
   !set doctest=!module category devel/$auth_login/$mod
   !if document isin $doctest
     !set doclist=!defof doclist in wimshome/public_html/$devdir/$mod/doc/.def
+    !set doclist=!words2items $doclist
     !set test=!itemcnt $doclist
     !if $test<=1
      !set wims_menu_items=!append line docgestion,4,module=adm/doc&devdoc=$mod&doc=1&job=read,test\
       to $wims_menu_items
     !else
      !for d_=1 to $test
-      !set wims_menu_items=!append line docgestion $(doclist[$d_]),4,module=adm/doc&devdoc=$mod&doc=$(doclist[$d_])&job=read,test\
+      !set wims_menu_items=!append line docgestion ($(doclist[$d_])),4,module=adm/doc&devdoc=$mod&doc=$(doclist[$d_])&job=read,test\
      to $wims_menu_items
      !next
     !endif

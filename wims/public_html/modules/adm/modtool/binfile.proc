@@ -8,13 +8,13 @@
 dir=binary,data,images,help,anstype,slib
 cattest=!module category devel/$auth_login/$mod
 !if document isin $cattest
-  dir=
+  dir=doc/srctex
   test=!defof common_files in wimshome/public_html/$devdir/$mod/doc/.def
 !!!FIXME depends on 1
   !if $test!=yes
-    dir=doc/1/files
+    dir=!append item doc/1/files to $dir
   !else
-    dir=doc/files
+    dir=!append item doc/files to $dir
   !endif
 !endif
 !if oef isin $cattest
