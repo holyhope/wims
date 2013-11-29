@@ -8,8 +8,9 @@ doc=1
 !endif
 !set module_language=$lang
 
-wims_multiexec=pari maxima yacas octave
 module_title2=!detag $module_title
+
+wims_multiexec=pari maxima yacas octave
 insmath_rawmath=yes
 wims_backslash_insmath=yes
 !read docu/$modu_lang/names
@@ -46,8 +47,13 @@ Docdir=$module_dir/$docdir
 readable=yes
 editable=no
 !default readcnt=0
+!readdef $docdir/.def
 
-m_filedir=$Docdir/$doc/files
+!if $common_files=yes
+  m_filedir=$Docdir/files
+!else
+  m_filedir=$Docdir/$doc/files
+!endif
 !readdef $docdir/$doc/.def
 !if $tit!=$empty
   !default block=main

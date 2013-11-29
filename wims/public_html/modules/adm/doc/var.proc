@@ -109,10 +109,17 @@ openlist=!items2words $openlist $opensite
 doc=!trim $doc
 wims_priv_thisdoc=$docdir/$doc
 !if $doc!=$empty
+  !readdef $docdir/.def
+### common_files can be yes now
  m_filedir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
- !if $filelink!=$Docdir/$doc
-  filelink=$Docdir/$doc
-  !sh if [ -d $wims_home/$Docdir/$doc/files ]; then\
+ #####what is filelink ?
+ !if ($filelink!=$Docdir/$doc and $common_files!=yes) or ($filelink!=$Docdir and $common_files=yes)
+  !if $common_files!=yes 
+    filelink=$Docdir/$doc
+  !else
+    filelink=$Docdir
+  !endif
+  !sh if [ -d $wims_home/$filelink/files ]; then\
    cd $wims_home/$wims_sesdir\
    mkdir -p getfile\
    cd getfile\

@@ -1,4 +1,4 @@
-!!##language independant
+
 !if $wims_read_parm!=$empty
  !set parms=$wims_read_parm
  !set parms=!replace internal $	$ by $\
@@ -33,8 +33,13 @@ $ in $ppm
   !set ins_anim_loop  =!item 3 of $a
  !endif
 !endif
-
-!set insdraw_filebase=$docdir/$doc/files
+!readproc $docdir/doc/.def
+!if $common_files=yes
+  !set doc_=
+!else
+ !set doc_=$doc/
+!endif
+!set insdraw_filebase=$docdir/$(doc_)files
 !set insdraw_size=$sx,$sy
 !set ins_align=middle
 !insdraw $pp
