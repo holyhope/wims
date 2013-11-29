@@ -19,7 +19,7 @@
   !endif
   !if $job iswordof diff or ($job=restore and $confirm=diffcheck)
      !set edit_area_syntax=diff
-  !endif 
+  !endif
   !if $job=edfile
     !read js/edit_area.phtml wims_deposit $edit_area_syntax
   !else
@@ -30,7 +30,7 @@
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$modu_lang 
+ !read lang/msg.phtml.$modu_lang
  </div>
 !endif
 !read $job.phtml
@@ -48,8 +48,17 @@
  to $wims_menu_items
   !set doctest=!module category devel/$auth_login/$mod
   !if document isin $doctest
-    !set wims_menu_items=!append line docgestion,4,module=adm/doc&devdoc=$mod&doc=1&job=read,test\
+    !set doclist=!defof doclist in wimshome/public_html/$devdir/$mod/doc/.def
+    !set test=!itemcnt $doclist
+    !if $test<=1
+     !set wims_menu_items=!append line docgestion,4,module=adm/doc&devdoc=$mod&doc=1&job=read,test\
+      to $wims_menu_items
+    !else
+     !for d_=1 to $test
+      !set wims_menu_items=!append line docgestion $(doclist[$d_]),4,module=adm/doc&devdoc=$mod&doc=$(doclist[$d_])&job=read,test\
      to $wims_menu_items
+     !next
+    !endif
   !endif
  !endif
  !if $job iswordof flist index publish prop diff binfile

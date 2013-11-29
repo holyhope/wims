@@ -7,13 +7,13 @@
 !read defs
 wims_multiexec=pari maxima yacas
 wims_trustfile=primitives/embed.phtml primitives/fold.phtml \
-	primitives/link.phtml primitives/href.phtml primitives/target.phtml \
-	printlink.proc primitives.phtml \
-	oef/togetfile.proc
+   primitives/link.phtml primitives/href.phtml primitives/target.phtml \
+   printlink.proc primitives.phtml \
+   oef/togetfile.proc
 
 insmath_rawmath=yes
 wims_nw=job jobsave editable readable doctype doc block docdir Docdir \
-	foldlist filelink sheetdata empty
+   foldlist filelink sheetdata empty
 wims_nr=wims_sesrandom
 wims_backslash_insmath=yes
 !if $cmd=help and $special_parm!=about
@@ -26,7 +26,7 @@ wims_backslash_insmath=yes
 !endif
 
 !bound job within home,auth,auth2,read,print,edit,prop,source,creat,recode,list,\
-	erase,openclose,help,file,exosource,transfer default home
+   erase,openclose,help,file,exosource,transfer default home
 readjobs=read source list print exosource
 editjobs=edit prop erase openclose file
 !if robot isin $session
@@ -52,8 +52,8 @@ max_blocklen=65536
 max_texlen=32768
 insmath_slashsubst=yes
 msg2wims_primitives=reload fold ref link docform form resource calcform embed\
-	exercise tool doc example help adm tooltip href slib\
-	def define comment draw if for while
+   exercise tool doc example help adm tooltip href slib\
+   def define comment draw if for while
 doc=!text select $namechars in $doc
 block=!text select $namechars in $block
 Docdir=public_html/bases/doc
@@ -105,7 +105,6 @@ openlist=!items2words $openlist $opensite
 !if $job=creat
  !reset doc,tit,desc,author,email,header
 !endif
-
 doc=!trim $doc
 wims_priv_thisdoc=$docdir/$doc
 !if $doc!=$empty
@@ -135,7 +134,7 @@ wims_priv_thisdoc=$docdir/$doc
   block=!char 1 to $namelim of $block
   !read $docdir/$doc/$block.def
   !if $noedit!=yes and $doctype!=class and \
-	($doc iswordof $edlist or $wims_ismanager=2)
+    ($doc iswordof $edlist or $wims_ismanager=2)
    editable=yes
   !endif
   !if $doctype=class and $wims_user!=supervisor
@@ -146,9 +145,9 @@ wims_priv_thisdoc=$docdir/$doc
     editable=yes
    !endif
   !endif
-  !if	$doctype notwordof class devel and \
-	($docopen!=yes or $doc notwordof $openlist) and \
-	$doc notwordof $edlist and $wims_ismanager<2
+  !if $doctype notwordof class devel and \
+    ($docopen!=yes or $doc notwordof $openlist) and \
+    $doc notwordof $edlist and $wims_ismanager<2
    readable=no
   !endif
  !else
@@ -156,7 +155,6 @@ wims_priv_thisdoc=$docdir/$doc
   !reset doc
  !endif
 !endif
-
 !if $job!=home
  !if $doctype=class
   !set wims_module_log=$job $wims_class/$doc $block
@@ -187,8 +185,8 @@ wims_priv_thisdoc=$docdir/$doc
 !endif
 
 !if $doctype=class and \
-	(($job iswordof $readjobs and $readable!=yes) or \
-	($job iswordof $editjobs and $editable!=yes))
+   (($job iswordof $readjobs and $readable!=yes) or \
+   ($job iswordof $editjobs and $editable!=yes))
  job=home
  error=unauthorized
 !endif
