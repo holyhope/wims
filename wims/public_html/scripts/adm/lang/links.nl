@@ -6,6 +6,7 @@
 !let name_link_grpclass=wanneer u klassen hebt aangemaakt van de $name_classe
 !let name_link_withpwd=Ze zullen wel het klasseswachtwoord nodig hebben voor de aanmeldingss-procedure
 !let name_link_user2=Uw lesmateriaal staat daar voor hen ter beschikking
+!let name_link_teacher=allows teachers to enter in the portal
 !let name_link_regsup= wijst naar de plek waar docenten zich kunnen aanmelden als leraar van $name_classe .(of waar U deze docenten kunt "aanmaken")
 !let name_link_important=Belangrijk
 !let name_link_importantmes=Bookmark deze links voordat U dit venster sluit

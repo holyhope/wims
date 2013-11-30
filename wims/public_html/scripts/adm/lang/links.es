@@ -6,6 +6,7 @@
 !let name_link_grpclass=cuando haya creado las clases del $name_classe
 !let name_link_withpwd=necesitarán la contraseña de la clase para inscribirse por sí mismos
 !let name_link_user2=Las hojas de trabajo que prepare les serán accesibles desde esta página de inicio
+!let name_link_teacher=allows teachers to enter in the portal
 !let name_link_regsup=permite a los profesores inscribirse en su $name_classe (o le permite a usted inscribirles)
 !let name_link_important=Importante
 !let name_link_importantmes=¡Guarde estos enlaces antes de salir de esta página

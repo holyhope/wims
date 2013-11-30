@@ -29,6 +29,18 @@ $name_link_introduce :
    <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?module=adm/class/classes&type=authsupervisor&class=$code</a>
   $name_link_supervisor.
   </li>
+  !if $Cltype>=2
+!!portal
+    <li>$name_link_teacher
+    !set script_out=$wims_ref_name?module=adm/class/classes&type=authsupervisor&class=$code
+    !if $class_auth=cas
+      !read adm/codeurl $script_out
+      <a href="$(link_)$script_out">$(link_)$script_out</a>
+    !else
+      <a href="$script_out">$script_out</a>
+    !endif
+   </li>
+  !endif
   <li>$name_link_link
    !set script_out=$wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
    !if $class_auth=cas
