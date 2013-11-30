@@ -203,5 +203,12 @@ header=\
 !default useropts3=0
 !set usersize=$[$wims_texbasesize + ($useropts4)]
 
-$[$wims_texbasesize-1]
 !setdef wims_useropts=$(usersize)$(useropts1)$(useropts2)$(useropts3) in wimshome/sessions/$wims_session/var.stat
+
+dest_=$wims_home/public_html/$devdir/$mod
+
+!if  $mkdoc=1
+  !sh cd $dest_ ; $wims_home/other/bin/src2def ;
+!endif
+
+!reset mkdoc
