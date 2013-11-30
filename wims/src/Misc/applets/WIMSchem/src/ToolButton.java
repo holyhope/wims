@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -27,15 +27,8 @@ public class ToolButton extends JToggleButton
     public JToolTip createToolTip() 
     {
         MultiLineToolTip tip=new MultiLineToolTip();
-	startup();
         tip.setComponent(this);
         return tip;
-    }
-    // jm.evers 3/2010 adjusting tooltip timeouts
-    public void startup(){
-    	ToolTipManager.sharedInstance().setInitialDelay(0);
-	ToolTipManager.sharedInstance().setDismissDelay(100000);
-	ToolTipManager.sharedInstance().setReshowDelay(0);
     }
 }
 
@@ -51,10 +44,6 @@ class MultiLineToolTipUI extends ToolTipUI
 {
     String[] strs;
     int maxWidth=0;
-
-    public void setDismissDelay(){
-    
-    }
     
     public void paint(Graphics g,JComponent c) 
     {

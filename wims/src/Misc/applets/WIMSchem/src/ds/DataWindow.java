@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2008 Dr. Alex M. Clark
     
@@ -18,6 +18,7 @@ import java.util.*;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.datatransfer.*;
+import java.awt.dnd.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -26,18 +27,17 @@ import javax.swing.table.*;
     Main window for datasheet viewing & editing.
 */
 
-public class DataWindow extends JFrame implements ActionListener, WindowListener, KeyListener
+public class DataWindow extends JFrame implements ActionListener, WindowListener, KeyListener, TitleListener
 {
     public static final boolean ALLOW=true; // temporary: disable DataSheet use while development is in-progress
 
     String filename=null;
+    JMenuBar menubar=null;
     JSplitPane splitter=null;
     DataSheet ds=null;
     DataSheetCache cache=null;
     DataTableModel model=null;
-    JTable sheet=null;
-    MainPanel editor=null;
-    int molEdRow=-1,molEdCol=-1;
+    JTable table=null;
     
     ImageIcon mainIcon=null,mainLogo=null;
 
@@ -60,33 +60,40 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	{
 	    ds=new DataSheet();
 	    cache=new DataSheetCache();
-	    ds.AppendColumn("Molecule",DataSheet.COLTYPE_MOLECULE,"Molecular structure");
+	    ds.appendColumn("Molecule",DataSheet.COLTYPE_MOLECULE,"Molecular structure");
 	} 
-	else LoadDataSheet(filename);
+	else loadDataSheet(filename);
 
 	setLayout(new BorderLayout());
 
-	JMenuBar menubar=CreateMenuBar();
+	menubar=new JMenuBar();
+	createMenuBar();
 
-    	model=new DataTableModel(ds,cache);
-	sheet=new JTable(model);
-    	sheet.setPreferredScrollableViewportSize(new Dimension(720,530));
-	sheet.setDefaultRenderer(Molecule.class,model.NewMoleculeRenderer());
-	sheet.setDefaultEditor(Molecule.class,model.NewMoleculeEditor(this));
-	sheet.setRowSelectionAllowed(true);
-	sheet.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-	sheet.addKeyListener(this);
+    	model=new DataTableModel(ds,cache,this);
+	table=new JTable(model)
+	{
+      	    protected boolean processKeyBinding(KeyStroke ks,KeyEvent e,int condition,boolean pressed) 
+	    {
+	    	if (ks.getKeyCode()==KeyEvent.VK_ESCAPE) return false;
+            	if ((e.getModifiersEx() & e.ALT_DOWN_MASK) != 0) return false;
+            	if ((e.getModifiersEx() & e.CTRL_DOWN_MASK) != 0) return false;
+            	return super.processKeyBinding(ks,e,condition,pressed);
+      	    }
+	};
+    	table.setPreferredScrollableViewportSize(new Dimension(720,530));
+	table.setDefaultRenderer(Molecule.class,new TableMoleculeRenderer());
+	table.setDefaultEditor(Molecule.class,new TableMoleculeEditor());
+	table.setRowSelectionAllowed(true);
+	table.setColumnSelectionAllowed(true);
+	table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	table.addKeyListener(this);
+    	table.setTransferHandler(new TransferTableData(table,model));
 		
-	unitRowHeight=sheet.getRowHeight();
-	UpdateRowHeight(2);
-	
-	editor=null;
-
-    	splitter=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,new JScrollPane(sheet),editor);
-	splitter.setOneTouchExpandable(true);
+	unitRowHeight=table.getRowHeight();
+	updateRowHeight(2);
 
     	add(menubar,BorderLayout.NORTH);
-	add(splitter,BorderLayout.CENTER);
+	add(new JScrollPane(table),BorderLayout.CENTER);
 	
 	pack();
 	
@@ -96,22 +103,21 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     // ------------------ utility functions --------------------
 
     // loads a new datasheet and replaces the old one, without question
-    private void LoadDataSheet(String FN)
+    private void loadDataSheet(String FN)
     {
     	DataSheet newDS=null;
 	FileInputStream istr=null;
     	try
 	{
 	    istr=new FileInputStream(FN);
-	    if (DataSheetStream.ExamineIsXMLDS(istr))
+	    if (DataSheetStream.examineIsXMLDS(istr))
 	    {
-	    	newDS=DataSheetStream.ReadXML(istr);
-    	    	SetFilename(FN);
+	    	newDS=DataSheetStream.readXML(istr);
 	    }
-	    else if (DataSheetStream.ExamineIsMDLSDF(istr))
+	    else if (DataSheetStream.examineIsMDLSDF(istr))
 	    {
-	    	newDS=DataSheetStream.ReadSDF(istr);
-		SetFilename(null);
+	    	newDS=DataSheetStream.readSDF(istr);
+		FN=null;
 	    }
 	    else
 	    {
@@ -135,88 +141,91 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	if (newDS==null) 
 	{
 	    ds=new DataSheet(); // blank
+	    replaceTitle();
 	    return;
 	}
 
 	ds=newDS;
+	setFilename(FN);
 	
 	if (model!=null)
 	{
-	    model.SetDataSheet(ds,cache);
+	    model.setDataSheet(ds,cache);
 	    model.fireTableStructureChanged();
 	}
     }
     
-    // assembles the menu items
-    private JMenuBar CreateMenuBar()
+    // assembles the menu items, with appropriate context
+    private void createMenuBar()
     {
-	JMenuBar menubar=new JMenuBar();
-	
+    	boolean allKeys=true;
+    	
     	JMenu menufile=new JMenu("File");
 	menufile.setMnemonic(KeyEvent.VK_F);
-	menufile.add(MenuItem("New",KeyEvent.VK_N,null,KeyStroke.getKeyStroke('N',InputEvent.CTRL_MASK)));
-	menufile.add(MenuItem("Open",KeyEvent.VK_O,null,KeyStroke.getKeyStroke('O',InputEvent.CTRL_MASK)));
-	menufile.add(MenuItem("Save",KeyEvent.VK_S,null,KeyStroke.getKeyStroke('S',InputEvent.CTRL_MASK)));
-	menufile.add(MenuItem("Save As",KeyEvent.VK_A));
+	menufile.add(menuItem("New",KeyEvent.VK_N,null,key('N',InputEvent.CTRL_MASK,allKeys)));
+	menufile.add(menuItem("New Molecule",KeyEvent.VK_M));
+	menufile.add(menuItem("Open",KeyEvent.VK_O,null,key('O',InputEvent.CTRL_MASK,allKeys)));
+	menufile.add(menuItem("Save",KeyEvent.VK_S,null,key('S',InputEvent.CTRL_MASK,allKeys)));
+	menufile.add(menuItem("Save As",KeyEvent.VK_A));
 	JMenu menuexport=new JMenu("Export");
 	menuexport.setMnemonic(KeyEvent.VK_X);
-	menuexport.add(MenuItem("as MDL SDF",KeyEvent.VK_S,null,KeyStroke.getKeyStroke('S',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK)));
+	menuexport.add(menuItem("as MDL SDF",KeyEvent.VK_S,null,key('S',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK,allKeys)));
 	menufile.add(menuexport);
 	menufile.addSeparator();
-	menufile.add(MenuItem("Quit",KeyEvent.VK_Q,null,KeyStroke.getKeyStroke('Q',InputEvent.CTRL_MASK)));
-
-    	JMenu menumol=new JMenu("Molecule");
-	menumol.setMnemonic(KeyEvent.VK_M);
-	menumol.add(MenuItem("Edit Molecule",KeyEvent.VK_E,null,KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0)));
-	menumol.add(MenuItem("Keep Edit",KeyEvent.VK_K,null,KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,InputEvent.CTRL_MASK)));
-	menumol.add(MenuItem("Abandon Edit",KeyEvent.VK_A));
+	menufile.add(menuItem("Quit",KeyEvent.VK_Q,null,key('Q',InputEvent.CTRL_MASK,allKeys)));
 
     	JMenu menuedit=new JMenu("Edit");
 	menuedit.setMnemonic(KeyEvent.VK_E);
-	menuedit.add(MenuItem("Undo",KeyEvent.VK_U,null,KeyStroke.getKeyStroke('Z',InputEvent.CTRL_MASK)));
-	menuedit.add(MenuItem("Redo",KeyEvent.VK_R,null,KeyStroke.getKeyStroke('Z',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK)));
+	menuedit.add(menuItem("Undo",KeyEvent.VK_U,null,key('Z',InputEvent.CTRL_MASK,allKeys)));
+	menuedit.add(menuItem("Redo",KeyEvent.VK_R,null,key('Z',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK,allKeys)));
 	menuedit.addSeparator();
-	menuedit.add(MenuItem("Add Row",KeyEvent.VK_A,null,KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,0)));
-	menuedit.add(MenuItem("Delete Rows",KeyEvent.VK_D));
+	menuedit.add(menuItem("Add Row",KeyEvent.VK_A,null,key(KeyEvent.VK_INSERT,0,allKeys)));
+	menuedit.add(menuItem("Delete Rows",KeyEvent.VK_D));
+	menuedit.add(menuItem("Move Rows Up",KeyEvent.VK_U,null,key(KeyEvent.VK_UP,InputEvent.ALT_MASK,allKeys)));
+	menuedit.add(menuItem("Move Rows Down",KeyEvent.VK_D,null,key(KeyEvent.VK_DOWN,InputEvent.ALT_MASK,allKeys)));
 	menuedit.addSeparator();
-	menuedit.add(MenuItem("Copy Rows",KeyEvent.VK_C,null,KeyStroke.getKeyStroke('C',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK)));
-	menuedit.add(MenuItem("Cut Rows",KeyEvent.VK_T,null,KeyStroke.getKeyStroke('X',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK)));
-	menuedit.add(MenuItem("Paste Rows",KeyEvent.VK_P,null,KeyStroke.getKeyStroke('V',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK)));
+	menuedit.add(menuItem("Copy Rows",KeyEvent.VK_C,null,key('C',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK,allKeys)));
+	menuedit.add(menuItem("Cut Rows",KeyEvent.VK_T,null,key('X',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK,allKeys)));
+	menuedit.add(menuItem("Paste Rows",KeyEvent.VK_P,null,key('V',InputEvent.CTRL_MASK+InputEvent.SHIFT_MASK,allKeys)));
 	menuedit.addSeparator();
-	menuedit.add(MenuItem("Edit Columns",KeyEvent.VK_C));
+	menuedit.add(menuItem("Sheet Summary",KeyEvent.VK_S));
+	menuedit.add(menuItem("Edit Columns",KeyEvent.VK_C));
 	
 	JMenu menuview=new JMenu("View");
 	menuview.setMnemonic(KeyEvent.VK_V);
-	menuview.add(MenuItem("Single Line",KeyEvent.VK_L,null,KeyStroke.getKeyStroke('1',InputEvent.CTRL_MASK)));
-	menuview.add(MenuItem("Small Height",KeyEvent.VK_S,null,KeyStroke.getKeyStroke('2',InputEvent.CTRL_MASK)));
-	menuview.add(MenuItem("Medium Height",KeyEvent.VK_M,null,KeyStroke.getKeyStroke('3',InputEvent.CTRL_MASK)));
-	menuview.add(MenuItem("Large Height",KeyEvent.VK_L,null,KeyStroke.getKeyStroke('4',InputEvent.CTRL_MASK)));
+	menuview.add(menuItem("Single Line",KeyEvent.VK_L,null,key('1',InputEvent.CTRL_MASK,allKeys)));
+	menuview.add(menuItem("Small Height",KeyEvent.VK_S,null,key('2',InputEvent.CTRL_MASK,allKeys)));
+	menuview.add(menuItem("Medium Height",KeyEvent.VK_M,null,key('3',InputEvent.CTRL_MASK,allKeys)));
+	menuview.add(menuItem("Large Height",KeyEvent.VK_L,null,key('4',InputEvent.CTRL_MASK,allKeys)));
 
     	JMenu menuhelp=new JMenu("Help");
 	menuhelp.setMnemonic(KeyEvent.VK_H);
-	menuhelp.add(MenuItem("About",KeyEvent.VK_A));
+	menuhelp.add(menuItem("About",KeyEvent.VK_A));
 
+	menubar.removeAll();
 	menubar.add(menufile);
-	menubar.add(menumol);
 	menubar.add(menuedit);
 	menubar.add(menuview);
 	menubar.add(Box.createHorizontalGlue());
 	menubar.add(menuhelp);
-	
-	return menubar;
     }
+    
+    private KeyStroke key(char key, int mods, boolean really) {return really ? KeyStroke.getKeyStroke(key,mods) : null;}
+    private KeyStroke key(int key, int mods, boolean really) {return really ? KeyStroke.getKeyStroke(key,mods) : null;}
 
-    private JMenuItem MenuItem(String txt,int key) {return MenuItem(txt,key,null,null);}
-    private JMenuItem MenuItem(String txt,int key,Icon icon) {return MenuItem(txt,key,icon,null);}
-    private JMenuItem MenuItem(String txt,int key,Icon icon,KeyStroke accel)
+    private JMenuItem menuItem(String txt,int key) {return menuItem(txt,key,null,null,true);}
+    private JMenuItem menuItem(String txt,int key,Icon icon) {return menuItem(txt,key,icon,null,true);}
+    private JMenuItem menuItem(String txt,int key,Icon icon,KeyStroke accel) {return menuItem(txt,key,icon,accel,true);}
+    private JMenuItem menuItem(String txt,int key,Icon icon,KeyStroke accel,boolean enabled)
     {
     	JMenuItem mi=new JMenuItem(txt,key);
 	mi.addActionListener(this);
+	mi.setEnabled(enabled);
 	if (icon!=null) mi.setIcon(icon);
 	if (accel!=null) mi.setAccelerator(accel);
 	return mi;
     }
-    private JRadioButtonMenuItem RadioMenuItem(String txt,int key,boolean sel,ButtonGroup bg)
+    private JRadioButtonMenuItem radioMenuItem(String txt,int key,boolean sel,ButtonGroup bg)
     {
     	JRadioButtonMenuItem mi=new JRadioButtonMenuItem(txt,sel);
 	mi.addActionListener(this);
@@ -225,29 +234,37 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	return mi;
     }
 
-    private void UpdateRowHeight(int Mag)
+    private void updateRowHeight(int Mag)
     {
     	curRowMag=Mag;
-	sheet.setRowHeight(unitRowHeight*(curRowMag==2 ? 3 : curRowMag==3 ? 6 : curRowMag==4 ? 12 : 1));
+	table.setRowHeight(unitRowHeight*(curRowMag==2 ? 3 : curRowMag==3 ? 6 : curRowMag==4 ? 12 : 1));
     }
     
-    private void SetFilename(String FN)
+    private void setFilename(String FN)
     {
     	filename=FN;
+	replaceTitle();
+    }
+    
+    public void replaceTitle()
+    {
 	String title="WIMSchem DataSheet";
+	if (ds!=null && ds.isDirty()) title="*"+title;
 	if (filename!=null) title+=" - "+new File(filename).getName();
+	if (ds!=null && ds.getTitle().length()>0) title+=":"+ds.getTitle();
 	setTitle(title);
     }
     
-    private void SaveCurrent()
+    private void saveCurrent()
     {
     	if (filename==null) return;
 	try
 	{
 	    FileOutputStream ostr=new FileOutputStream(filename);
-	    DataSheetStream.WriteXML(ostr,ds);
+	    DataSheetStream.writeXML(ostr,ds);
 	    ostr.close();
-	    ds.ClearDirty();
+	    ds.clearDirty();
+	    replaceTitle();
 	}
 	catch (IOException e)
 	{
@@ -256,38 +273,42 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     }
 
     // returns true if two datasheets have the same columns
-    boolean SameColumns(DataSheet DS1,DataSheet DS2)
+    private boolean sameColumns(DataSheet DS1,DataSheet DS2)
     {
-    	if (DS1.NumCols()!=DS2.NumCols()) return false;
-	for (int n=0;n<DS1.NumCols();n++)
+    	if (DS1.numCols()!=DS2.numCols()) return false;
+	for (int n=0;n<DS1.numCols();n++)
 	{
-	    if (DS1.ColName(n).compareTo(DS2.ColName(n))!=0) return false;
-	    if (DS1.ColType(n)!=DS2.ColType(n)) return false;
-	    if (DS1.ColDescr(n).compareTo(DS2.ColDescr(n))!=0) return false;
+	    if (DS1.colName(n).compareTo(DS2.colName(n))!=0) return false;
+	    if (DS1.colType(n)!=DS2.colType(n)) return false;
+	    if (DS1.colDescr(n).compareTo(DS2.colDescr(n))!=0) return false;
 	}
 	return true;
     }
 
     // ------------------ user responses --------------------
 
-    private void FileQuit()
+    private void fileQuit()
     {
-    	if (ds.IsDirty())
+    	if (ds.isDirty())
 	{
-	    String opt[]={"Yes","No"};
-	    if (JOptionPane.showOptionDialog(null,"Current datasheet has been modified. Exit without saving?","Quit",
-    	    	    JOptionPane.YES_NO_OPTION,JOptionPane.YES_NO_OPTION,null,opt,opt[0])!=JOptionPane.YES_OPTION) return;
+    	    if (JOptionPane.showConfirmDialog(null,
+		"Current datasheet has been modified. Exit without saving?","Quit",
+		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
 	}
     	dispose();
     }
     
-    private void FileNew()
+    private void fileNew()
     {
-    	//if (ds.NumRows()==0 && !ds.IsDirty() && filename==null) return; // no point
 	new DataWindow(null).setVisible(true);
     }
     
-    private void FileOpen()
+    private void fileNewMolecule()
+    {
+    	new MainWindow(null,false).setVisible(true);
+    }
+    
+    private void fileOpen()
     {
 	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
 	chooser.setDragEnabled(false);
@@ -297,19 +318,19 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	if (chooser.showOpenDialog(this)!=JFileChooser.APPROVE_OPTION) return;
 	String newfn=chooser.getSelectedFile().getPath();
 	
-	if (ds.NumRows()==0 && !ds.IsDirty())
-	    LoadDataSheet(newfn); // replace blank with new thing
+	if (ds.numRows()==0 && !ds.isDirty())
+	    loadDataSheet(newfn); // replace blank with new thing
 	else 
     	    new DataWindow(newfn).setVisible(true); // pop up a new window
     }
     
-    private void FileSave()
+    private void fileSave()
     {
-    	if (filename==null) {FileSaveAs(); return;}
-	SaveCurrent();
+    	if (filename==null) {fileSaveAs(); return;}
+	saveCurrent();
     }
     
-    private void FileSaveAs()
+    private void fileSaveAs()
     {
 	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
 	chooser.setDragEnabled(false);
@@ -323,16 +344,16 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	File newf=new File(fn);
     	if (newf.exists())
 	{
-	    String opt[]={"Yes","No"};
-	    if (JOptionPane.showOptionDialog(null,"Overwrite existing file ["+newf.getName()+"]?","Save As",
-    	    	    JOptionPane.YES_NO_OPTION,JOptionPane.YES_NO_OPTION,null,opt,opt[0])!=JOptionPane.YES_OPTION) return;
+    	    if (JOptionPane.showConfirmDialog(null,
+		"Overwrite existing file ["+newf.getName()+"]?","Save As",
+		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
 	}    	
     
-    	SetFilename(fn);
-	SaveCurrent();
+    	setFilename(fn);
+	saveCurrent();
     }
     
-    private void FileExportSDF()
+    private void fileExportSDF()
     {
 	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
 	chooser.setDragEnabled(false);
@@ -346,9 +367,9 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	File newf=new File(fn);
     	if (newf.exists())
 	{
-	    String opt[]={"Yes","No"};
-	    if (JOptionPane.showOptionDialog(null,"Overwrite existing file ["+newf.getName()+"]?","Save As",
-    	    	    JOptionPane.YES_NO_OPTION,JOptionPane.YES_NO_OPTION,null,opt,opt[0])!=JOptionPane.YES_OPTION) return;
+    	    if (JOptionPane.showConfirmDialog(null,
+		"Overwrite existing file ["+newf.getName()+"]?","Save As",
+		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
 	}
 	
 	// !! perhaps a warning if there are multiple molecule fields?
@@ -356,7 +377,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	try
 	{
 	    FileOutputStream ostr=new FileOutputStream(fn);
-	    DataSheetStream.WriteSDF(ostr,ds);
+	    DataSheetStream.writeSDF(ostr,ds);
 	    ostr.close();
 	}
 	catch (IOException e)
@@ -365,123 +386,146 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
     }
 
-    private void MoleculeEditMol()
-    {
-    	if (editor!=null) return;
-	int row=sheet.getSelectedRow(),col=sheet.getSelectedColumn();
-	
-	if (row<0 || col<0 || col>=ds.NumCols()) return;
-	
-	if (ds.ColType(col)!=DataSheet.COLTYPE_MOLECULE) return;
+    // !! TODO: undo/redo should un-dirtify the datasheet in some cases
 
-    	// make sure this is the only way to trigger the molecule editor (otherwise is really annoying)
-	model.SetTemporaryEdit(col);
-	sheet.editCellAt(row,col);
-	model.ClearTemporaryEdit();
-    }
-    
-    private void MoleculeKeepEdit()
+    private void editUndo()
     {
-    	if (editor==null) return;
-	Molecule mol=editor.MolData();
-	if (mol.NumAtoms()==0) mol=null;
-    	cache.CacheUndo(ds);
-	ds.SetMolecule(molEdRow,molEdCol,mol);
-	ds.SetDirty();
-	model.fireTableCellUpdated(molEdRow,molEdCol); 
-	editor=null;
-	splitter.setRightComponent(editor);
-	sheet.requestFocusInWindow();
-    }
-    
-    private void MoleculeAbandonEdit()
-    {
-    	if (editor==null) return;
-	if (sheet.getCellEditor()!=null) sheet.getCellEditor().stopCellEditing();
-	editor=null;
-	splitter.setRightComponent(editor);
-	sheet.requestFocusInWindow();
-    }
+    	if (!cache.canUndo()) return;
 
-    private void EditUndo()
-    {
-    	if (!cache.CanUndo()) return;
-
-	DataSheet newds=cache.PerformUndo(ds);
-	boolean colmod=!SameColumns(ds,newds);
+	DataSheet newds=cache.performUndo(ds);
+	boolean colmod=!sameColumns(ds,newds);
 	ds=newds;
 
-	ds.SetDirty();
-	model.SetDataSheet(ds,cache);
+	ds.setDirty();
+	replaceTitle();
+	model.setDataSheet(ds,cache);
 	if (colmod) model.fireTableStructureChanged(); else model.fireTableDataChanged();
     }
     
-    private void EditRedo()
+    private void editRedo()
     {
-    	if (!cache.CanRedo()) return;
+    	if (!cache.canRedo()) return;
 
-	DataSheet newds=cache.PerformRedo(ds);
-	boolean colmod=!SameColumns(ds,newds);
+	DataSheet newds=cache.performRedo(ds);
+	boolean colmod=!sameColumns(ds,newds);
 	ds=newds;
 	
-	ds.SetDirty();
-	model.SetDataSheet(ds,cache);
+	ds.setDirty();
+	replaceTitle();
+	model.setDataSheet(ds,cache);
 	if (colmod) model.fireTableStructureChanged(); else model.fireTableDataChanged();
     }
 
-    private void EditColumns()
+    private void editSummary()
+    {
+    	DialogEditSummary edsumm=new DialogEditSummary(this,ds);
+	if (!edsumm.execute()) return;
+	
+	if (edsumm.resultTitle().equals(ds.getTitle()) && edsumm.resultDescr().equals(ds.getDescription())) return;
+	
+    	ds.setTitle(edsumm.resultTitle());
+	ds.setDescription(edsumm.resultDescr());
+	ds.setDirty();
+	replaceTitle();
+    }
+
+    private void editColumns()
     {
     	DialogEditColumns edcols=new DialogEditColumns(this,ds);
-	if (!edcols.Execute()) return;
+	if (!edcols.execute()) return;
 	
-	ModifyColumns(edcols.ResultOldPos(),edcols.ResultNewPos(),edcols.ResultName(),edcols.ResultType(),edcols.ResultDescr());
-	ds.SetDirty();
-	
+	modifyColumns(edcols.resultOldPos(),edcols.resultNewPos(),edcols.resultName(),edcols.resultType(),edcols.resultDescr());
+
 	model.fireTableStructureChanged();
+	ds.setDirty();
+	replaceTitle();
     }
     
-    private void AddRow()
+    private void addRow()
     {
-    	cache.CacheUndo(ds);
-    	ds.AppendRow();
+    	cache.cacheUndo(ds);
+    	ds.appendRow();
+	int selcol=table.getSelectedColumn();
 	model.fireTableChanged(new TableModelEvent(model));
-	sheet.setRowSelectionInterval(ds.NumRows()-1,ds.NumRows()-1);
+
+    	// !! currently, the INSERT key initiates an edit event...
+	table.changeSelection(ds.numRows()-1,selcol<0 ? 0 : selcol,false,false);
+	
+    	ds.setDirty();
+	replaceTitle();
     }
     
-    private void DeleteRows()
+    private void deleteRows()
     {
-    	if (sheet.getSelectedRowCount()==0) return;
-    	cache.CacheUndo(ds);
-	int[] todel=sheet.getSelectedRows();
-	for (int i=0;i<todel.length;i++)
+    	if (table.getSelectedRowCount()==0) return;
+    	cache.cacheUndo(ds);
+	int[] todel=table.getSelectedRows(); // (sorted)
+	for (int i=todel.length-1;i>=0;i--)
 	{
-	    ds.DeleteRow(i);
+	    ds.deleteRow(i);
 	    for (int j=i+1;j<todel.length;j++) if (todel[j]>todel[i]) todel[j]--;
 	}
 	model.fireTableChanged(new TableModelEvent(model));
+    	ds.setDirty();
+	replaceTitle();
     }
 
-    private void CopyRows()
+    private void moveRowsUp()
     {
-    	if (sheet.getSelectedRowCount()==0) return;
-    	int[] rn=sheet.getSelectedRows();
+    	if (table.getSelectedRowCount()==0 || ds.numCols()==0) return;
+	int[] rows=table.getSelectedRows(); // (is sorted)
+	if (rows[0]==0) return; // if selected the top one, nop
+	
+    	cache.cacheUndo(ds);
+
+    	for (int n=0;n<rows.length;n++) ds.moveRowUp(rows[n]);
+
+	model.fireTableChanged(new TableModelEvent(model));
+	for (int n=0;n<rows.length;n++) table.changeSelection(rows[n]-1,0,n!=0,false);
+	table.setColumnSelectionInterval(0,ds.numCols()-1);
+	
+    	ds.setDirty();
+    	replaceTitle();	
+    }
+    
+    private void moveRowsDown()
+    {
+    	if (table.getSelectedRowCount()==0 || ds.numCols()==0) return;
+	int[] rows=table.getSelectedRows(); // (is sorted)
+	if (rows[rows.length-1]==ds.numRows()-1) return; // if selected the bottom one, nop
+	
+    	cache.cacheUndo(ds);
+
+    	for (int n=rows.length-1;n>=0;n--) ds.moveRowDown(rows[n]);
+
+	model.fireTableChanged(new TableModelEvent(model));
+	for (int n=0;n<rows.length;n++) table.changeSelection(rows[n]+1,0,n!=0,false);
+	table.setColumnSelectionInterval(0,ds.numCols()-1);
+
+    	ds.setDirty();
+    	replaceTitle();	
+    }
+
+    private void copyRows()
+    {
+    	if (table.getSelectedRowCount()==0) return;
+    	int[] rn=table.getSelectedRows();
     
     	DataSheet copy=new DataSheet();
-	for (int n=0;n<ds.NumCols();n++) 
+	for (int n=0;n<ds.numCols();n++) 
 	{
-	    copy.AppendColumn(ds.ColName(n),ds.ColType(n),ds.ColDescr(n));
+	    copy.appendColumn(ds.colName(n),ds.colType(n),ds.colDescr(n));
 	}
 	for (int i=0;i<rn.length;i++)
 	{
-	    copy.AppendRow();
-	    for (int j=0;j<ds.NumCols();j++) copy.SetObject(i,j,ds.GetObject(rn[i],j));
+	    copy.appendRow();
+	    for (int j=0;j<ds.numCols();j++) copy.setObject(i,j,ds.getObject(rn[i],j));
 	}
 	
 	StringWriter sw=new StringWriter();
 	try
 	{
-	    DataSheetStream.WriteXML(new BufferedWriter(sw),copy);
-	    //System.out.println(sw.toString());
+	    DataSheetStream.writeXML(new BufferedWriter(sw),copy);
             Clipboard clip=Toolkit.getDefaultToolkit().getSystemClipboard();
     	    clip.setContents(new StringSelection(sw.toString()),null);
 	}
@@ -492,13 +536,13 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
     }
     
-    private void CutRows()
+    private void cutRows()
     {
-    	CopyRows();
-	DeleteRows();
+    	copyRows();
+	deleteRows();
     }
     
-    private void PasteRows()
+    private void pasteRows()
     {
     	String cliptext="";
     
@@ -521,10 +565,10 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	DataSheet paste=null;
 	try
 	{
-	    if (DataSheetStream.ExamineIsXMLDS(new BufferedReader(new StringReader(cliptext))))
-		paste=DataSheetStream.ReadXML(new BufferedReader(new StringReader(cliptext)));
-	    else if (DataSheetStream.ExamineIsMDLSDF(new BufferedReader(new StringReader(cliptext))))
-		paste=DataSheetStream.ReadSDF(new BufferedReader(new StringReader(cliptext)));
+	    if (DataSheetStream.examineIsXMLDS(new BufferedReader(new StringReader(cliptext))))
+		paste=DataSheetStream.readXML(new BufferedReader(new StringReader(cliptext)));
+	    else if (DataSheetStream.examineIsMDLSDF(new BufferedReader(new StringReader(cliptext))))
+		paste=DataSheetStream.readSDF(new BufferedReader(new StringReader(cliptext)));
 	}
 	catch (IOException e) {e.printStackTrace(); return;}
 
@@ -535,49 +579,47 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    return;
 	}
 	
-    	cache.CacheUndo(ds);
-	
-	//System.out.println("R="+paste.NumRows()+",C="+paste.NumCols());
+    	cache.cacheUndo(ds);
 	
 	// handle columns first: find mapping index for each, based on name
-	int[] newcolpos=new int[paste.NumCols()];
-	for (int i=0;i<paste.NumCols();i++)
+	int[] newcolpos=new int[paste.numCols()];
+	for (int i=0;i<paste.numCols();i++)
 	{
 	    newcolpos[i]=-1;
-	    for (int j=0;j<ds.NumCols();j++) if (ds.ColName(j).compareTo(paste.ColName(i))==0) {newcolpos[i]=j; break;}
-	    if (newcolpos[i]<0) newcolpos[i]=ds.AppendColumn(paste.ColName(i),paste.ColType(i),paste.ColDescr(i));
+	    for (int j=0;j<ds.numCols();j++) if (ds.colName(j).compareTo(paste.colName(i))==0) {newcolpos[i]=j; break;}
+	    if (newcolpos[i]<0) newcolpos[i]=ds.appendColumn(paste.colName(i),paste.colType(i),paste.colDescr(i));
 	}
 	
 	// now paste the new rows
-	for (int i=0;i<paste.NumRows();i++)
+	for (int i=0;i<paste.numRows();i++)
 	{
-	    int rn=ds.AppendRow();
-	    for (int j=0;j<paste.NumCols();j++)
+	    int rn=ds.appendRow();
+	    for (int j=0;j<paste.numCols();j++)
 	    {
 	    	int cn=newcolpos[j];
-		int ptype=paste.ColType(j),dtype=ds.ColType(j);
+		int ptype=paste.colType(j),dtype=ds.colType(j);
 		String strval="";
 		
 		if (ptype==DataSheet.COLTYPE_MOLECULE && dtype==DataSheet.COLTYPE_MOLECULE)
 		{
-		    ds.SetMolecule(rn,cn,paste.GetMolecule(i,j));
+		    ds.setMolecule(rn,cn,paste.getMolecule(i,j));
 		}
 		else if (ptype==DataSheet.COLTYPE_MOLECULE || dtype==DataSheet.COLTYPE_MOLECULE) {} // not possible
 		else 
 	    	{
 		    String val="";
-		    if (ptype==DataSheet.COLTYPE_STRING) val=paste.GetString(i,j);
-		    else if (ptype==DataSheet.COLTYPE_INTEGER) val=String.valueOf(paste.GetInteger(i,j));
-		    else if (ptype==DataSheet.COLTYPE_REAL) val=String.valueOf(paste.GetReal(i,j));
-		    else if (ptype==DataSheet.COLTYPE_BOOLEAN) val=paste.GetBoolean(i,j) ? "true" : "false";
+		    if (ptype==DataSheet.COLTYPE_STRING) val=paste.getString(i,j);
+		    else if (ptype==DataSheet.COLTYPE_INTEGER) val=String.valueOf(paste.getInteger(i,j));
+		    else if (ptype==DataSheet.COLTYPE_REAL) val=String.valueOf(paste.getReal(i,j));
+		    else if (ptype==DataSheet.COLTYPE_BOOLEAN) val=paste.getBoolean(i,j) ? "true" : "false";
 		    
 		    try
 		    {
-	    		if (dtype==DataSheet.COLTYPE_STRING) ds.SetString(rn,cn,val);
-			else if (dtype==DataSheet.COLTYPE_INTEGER) ds.SetInteger(rn,cn,new Integer(val).intValue());
-			else if (dtype==DataSheet.COLTYPE_REAL) ds.SetReal(rn,cn,new Double(val).doubleValue());
+	    		if (dtype==DataSheet.COLTYPE_STRING) ds.setString(rn,cn,val);
+			else if (dtype==DataSheet.COLTYPE_INTEGER) ds.setInteger(rn,cn,new Integer(val).intValue());
+			else if (dtype==DataSheet.COLTYPE_REAL) ds.setReal(rn,cn,new Double(val).doubleValue());
 			else if (dtype==DataSheet.COLTYPE_BOOLEAN) 
-			    ds.SetBoolean(rn,cn,val.toLowerCase().compareTo("true")==0 ? true : false);
+			    ds.setBoolean(rn,cn,val.toLowerCase().compareTo("true")==0 ? true : false);
 		    }
 		    catch (NumberFormatException e) {} // stays null
 		}
@@ -587,7 +629,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	model.fireTableChanged(new TableModelEvent(model));
     }
 
-    private void HelpAbout()
+    private void helpAbout()
     {
     	String msg="WIMSchem v"+MainPanel.VERSION+"\n"+
 	    	   "Molecule drawing tool\n"+
@@ -598,36 +640,15 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 		   "http://sketchel.sf.net\n";
     	JOptionPane.showMessageDialog(null,msg,"About WIMSchem",JOptionPane.INFORMATION_MESSAGE,mainLogo);
     }
- 
-    private void EditMolecule(int RN,int CN)
-    {
-    	if (editor!=null)
-	{
-	    /*editor=null;
-	    splitter.setRightComponent(editor);*/
-	    // !! offer to save, or something?
-	}
-	
-	editor=new MainPanel(null,false,true,null,null,null,null,null,null,true,true);
-    	molEdRow=RN;
-	molEdCol=CN;
-	Molecule mol=ds.GetMolecule(RN,CN);
-	if (mol!=null) editor.SetMolecule(mol.Clone());
-	
-	splitter.setRightComponent(editor);
-	int pos=splitter.getWidth()-560;
-	splitter.setDividerLocation(pos<0 ? 50 : pos);
-	editor.requestFocusInWindow();
-    }
 
-    private void ModifyColumns(int[] OldPos,int[] NewPos,String[] Name,int[] Type,String[] Descr)
+    private void modifyColumns(int[] OldPos,int[] NewPos,String[] Name,int[] Type,String[] Descr)
     {
     	int sz=OldPos.length;
 	
 	// delete those which need to be chopped out
     	for (int n=0;n<sz;n++) if (NewPos[n]<0)
 	{
-	    ds.DeleteColumn(OldPos[n]);
+	    ds.deleteColumn(OldPos[n]);
 	    for (int i=0;i<sz;i++) if (OldPos[i]>OldPos[n]) OldPos[i]--;
 	    for (int i=n;i<sz-1;i++) 
 	    {
@@ -644,21 +665,21 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	// add the new ones
 	for (int n=0;n<sz;n++) if (OldPos[n]<0)
 	{
-	    OldPos[n]=ds.AppendColumn(Name[n],Type[n],Descr[n]);
+	    OldPos[n]=ds.appendColumn(Name[n],Type[n],Descr[n]);
 	}
 	
 	// modify any existing content
 	for (int n=0;n<sz;n++)
 	{
-	    ds.ChangeColumnName(OldPos[n],Name[n],Descr[n]);
-	    ds.ChangeColumnType(OldPos[n],Type[n],true);
+	    ds.changeColumnName(OldPos[n],Name[n],Descr[n]);
+	    ds.changeColumnType(OldPos[n],Type[n],true);
 	}
 	
 	// now redefine the column order
 	int[] reord=new int[sz];
 	for (int n=0;n<sz;n++) reord[NewPos[n]]=OldPos[n];
-    	cache.CacheUndo(ds);
-	ds.ReorderColumns(reord);
+    	cache.cacheUndo(ds);
+	ds.reorderColumns(reord);
     }
 
     // ------------------ event functions --------------------
@@ -669,40 +690,43 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 
     	//System.out.println("CMD:["+cmd+"]");
 
-    	if (e.getSource()==sheet)
+    	if (e.getSource()==table)
 	{
+	    /* !!
 	    String[] rc=cmd.split(",");
-	    EditMolecule(Integer.parseInt(rc[0]),Integer.parseInt(rc[1]));
+	    editMolecule(Integer.parseInt(rc[0]),Integer.parseInt(rc[1]));
+	    */
 	}
-	else if (cmd=="Quit") FileQuit();
-	else if (cmd=="New") FileNew();
-    	else if (cmd=="Open") FileOpen();
-	else if (cmd=="Save") FileSave();
-	else if (cmd=="Save As") FileSaveAs();
-	else if (cmd=="as MDL SDF") FileExportSDF();
-	else if (cmd=="Edit Molecule") MoleculeEditMol();
-	else if (cmd=="Keep Edit") MoleculeKeepEdit();
-	else if (cmd=="Abandon Edit") MoleculeAbandonEdit();
-	else if (cmd=="Undo") EditUndo();
-	else if (cmd=="Redo") EditRedo();
-    	else if (cmd=="Add Row") AddRow();
-    	else if (cmd=="Delete Rows") DeleteRows();
-    	else if (cmd=="Copy Rows") CopyRows();
-    	else if (cmd=="Cut Rows") CutRows();
-    	else if (cmd=="Paste Rows") PasteRows();
-    	else if (cmd=="Edit Columns") EditColumns();
-	else if (cmd=="Single Line") UpdateRowHeight(1);
-	else if (cmd=="Small Height") UpdateRowHeight(2);
-	else if (cmd=="Medium Height") UpdateRowHeight(3);
-	else if (cmd=="Large Height") UpdateRowHeight(4);
-	else if (cmd=="About") HelpAbout();
+	else if (cmd=="Quit") fileQuit();
+	else if (cmd=="New") fileNew();
+	else if (cmd=="New Molecule") fileNewMolecule();
+    	else if (cmd=="Open") fileOpen();
+	else if (cmd=="Save") fileSave();
+	else if (cmd=="Save As") fileSaveAs();
+	else if (cmd=="as MDL SDF") fileExportSDF();
+	else if (cmd=="Undo") editUndo();
+	else if (cmd=="Redo") editRedo();
+    	else if (cmd=="Add Row") addRow();
+    	else if (cmd=="Delete Rows") deleteRows();
+	else if (cmd=="Move Rows Up") moveRowsUp();
+	else if (cmd=="Move Rows Down") moveRowsDown();
+    	else if (cmd=="Copy Rows") copyRows();
+    	else if (cmd=="Cut Rows") cutRows();
+    	else if (cmd=="Paste Rows") pasteRows();
+    	else if (cmd=="Sheet Summary") editSummary();
+    	else if (cmd=="Edit Columns") editColumns();
+	else if (cmd=="Single Line") updateRowHeight(1);
+	else if (cmd=="Small Height") updateRowHeight(2);
+	else if (cmd=="Medium Height") updateRowHeight(3);
+	else if (cmd=="Large Height") updateRowHeight(4);
+	else if (cmd=="About") helpAbout();
     }
     
     public void windowActivated(WindowEvent e) {}
     public void windowClosed(WindowEvent e) {}
     public void windowClosing(WindowEvent e) 
     {
-    	FileQuit();
+    	fileQuit();
     }
     public void windowDeactivated(WindowEvent e) {}
     public void windowDeiconified(WindowEvent e) {}
@@ -711,30 +735,101 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 
     public void keyPressed(KeyEvent e) {}
     public void keyReleased(KeyEvent e) {}
-    public void keyTyped(KeyEvent e) 
+    public void keyTyped(KeyEvent e) {}
+    
+    // Class for allowing molecule, or other table style, data to be dragged into parts of the table.
+    
+    class TransferTableData extends TransferHandler
     {
-    	if (e.getSource()==sheet)
-	{
-	    if (sheet.isEditing()) return;
-	
-    	    //System.out.println("key caught: ["+(int)e.getKeyChar()+"]");
+	JTable table;
+	DataTableModel model;
 
-	    // decide which keys are permitted to activate editing of a cell (other than molecules, which are handled
-	    // by the menu item)
-	    boolean shouldEdit=false;
-	    if (e.getKeyChar()>=32 && e.getKeyChar()<=126) shouldEdit=true;
-	    if (e.getKeyChar()=='\b') shouldEdit=true;
-	    if (e.getModifiers()!=0) shouldEdit=false; 
-	    int row=sheet.getSelectedRow(),col=sheet.getSelectedColumn();
-	    if (row<0 || col<0) shouldEdit=false;
-	    else if (ds.ColType(col)==DataSheet.COLTYPE_MOLECULE) shouldEdit=false; // mols have their own way
-	    
-    	    if (shouldEdit)
+	public TransferTableData(JTable table,DataTableModel model) 
+	{
+	    this.table=table;
+	    this.model=model;
+	}
+	public boolean canImport(TransferHandler.TransferSupport info)
+	{
+	    if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) return false;
+	    String data=null;
+	    try
 	    {
-		model.SetTemporaryEdit(col);
-		sheet.editCellAt(row,col);
-		model.ClearTemporaryEdit();
+		data=(String)info.getTransferable().getTransferData(DataFlavor.stringFlavor);
 	    }
+	    catch (InvalidDnDOperationException e) 
+	    {
+	    	// this is thrown when dragging between different processes; it means we can't actually check the
+		// data here, which is suboptimal, but not the end of the world
+	    	return true;
+	    }
+	    catch (UnsupportedFlavorException e) {return false;}
+	    catch (IOException e) {}
+
+    	    // now we have string data: see if it is a molecule...
+    	    try
+	    {
+	    	Molecule mol=MoleculeStream.readUnknown(new BufferedReader(new StringReader(data)));
+		if (mol!=null) 
+		{
+		    Point pos=info.getDropLocation().getDropPoint();
+		    int col=table.columnAtPoint(pos);
+		    int row=table.rowAtPoint(pos);
+		    return col>=0 && row>=0 && model.getDataSheet().colType(col)==DataSheet.COLTYPE_MOLECULE;
+		}
+	    }
+	    catch (IOException e) {}
+	    
+	    // see if it is a datasheet fragment
+	    // !!
+	    
+	    return false;
+	}
+	public boolean importData(TransferHandler.TransferSupport info)
+	{
+	    if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) return false;
+	    String data=null;
+	    try
+	    {
+		data=(String)info.getTransferable().getTransferData(DataFlavor.stringFlavor);
+	    }
+	    catch (InvalidDnDOperationException e) {return false;}
+	    catch (UnsupportedFlavorException e) {return false;}
+	    catch (IOException e) {}
+
+    	    // now we have string data: see if it is a molecule...
+    	    try
+	    {
+	    	Molecule mol=MoleculeStream.readUnknown(new BufferedReader(new StringReader(data)));
+		if (mol!=null) 
+		{
+		    Point pos=info.getDropLocation().getDropPoint();
+		    int row=table.rowAtPoint(pos);
+		    int col=table.columnAtPoint(pos);
+		    DataSheet ds=model.getDataSheet();
+		    if (row>=0 && col>=0 && ds.colType(col)==DataSheet.COLTYPE_MOLECULE)
+		    {
+		    	model.setValueAt(mol,row,col);
+			model.fireTableDataChanged();
+			return true;
+		    }
+		    else return false;
+		}
+	    }
+	    catch (IOException e) {}
+	    
+	    // see if it is a datasheet fragment
+	    // !!
+	    
+	    return false;
 	}
     }
+    
+}
+
+// Used to allow other classes to notify that the title may need to change.
+
+interface TitleListener
+{
+    public void replaceTitle();
 }

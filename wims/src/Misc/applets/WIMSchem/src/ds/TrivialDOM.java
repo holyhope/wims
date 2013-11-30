@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2008 Dr. Alex M. Clark
     
@@ -41,69 +41,69 @@ public class TrivialDOM
 	    children=new ArrayList<Object>();
 	}
 	
-	public Node Parent() {return parentNode;}
-	public void SetParent(Node Parent) {parentNode=Parent;}
+	public Node parent() {return parentNode;}
+	public void setParent(Node Parent) {parentNode=Parent;}
 	
-	public String NodeName() {return nodeName;}
-	public void SetNodeName(String Name) {nodeName=Name;}
-	public String Attribute(String Attr) {return nodeAttr.containsKey(Attr) ? nodeAttr.get(Attr) : null;}
-	public void SetAttribute(String Attr,String Value) {nodeAttr.put(Attr,Value);}
-	public String[] GetAttributeNames() 
+	public String nodeName() {return nodeName;}
+	public void setNodeName(String Name) {nodeName=Name;}
+	public String attribute(String Attr) {return nodeAttr.containsKey(Attr) ? nodeAttr.get(Attr) : null;}
+	public void setAttribute(String Attr,String Value) {nodeAttr.put(Attr,Value);}
+	public String[] getAttributeNames() 
 	{
 	    Set<String> attr=nodeAttr.keySet();
 	    String[] names=new String[attr.size()];
 	    return attr.toArray(names);
 	}
 	
-	public int NumChildren() {return children.size();}
-	public int ChildType(int N) 
+	public int numChildren() {return children.size();}
+	public int childType(int N) 
 	{
 	    Object child=children.get(N);
 	    if (child instanceof Node) return TYPE_NODE;
 	    if (child instanceof Text) return TYPE_TEXT;
 	    return 0;
 	}
-	public Node GetChildNode(int N) {return (Node)children.get(N);}
-	public Text GetChildText(int N) {return (Text)children.get(N);}
+	public Node getChildNode(int N) {return (Node)children.get(N);}
+	public Text getChildText(int N) {return (Text)children.get(N);}
 	
-	public void Clear() {children.clear();}
-	public void DeleteChild(int N) {children.remove(N);}
+	public void clear() {children.clear();}
+	public void deleteChild(int N) {children.remove(N);}
 	
-	public void SetText(String Txt,boolean Preserve)
+	public void setText(String Txt,boolean Preserve)
 	{
-	    Clear();
+	    clear();
 	    Text txt=new Text(Txt,Preserve);
-	    txt.SetParent(this);
+	    txt.setParent(this);
 	    children.add(txt);
 	}
 	
-	public String GetText()
+	public String getText()
 	{
 	    String txt="";
-	    for (int n=0;n<NumChildren();n++)
+	    for (int n=0;n<numChildren();n++)
 	    {
-	    	if (ChildType(n)==TYPE_TEXT) txt+=GetChildText(n).Get();
-		else txt+=GetChildNode(n).GetText();
+	    	if (childType(n)==TYPE_TEXT) txt+=getChildText(n).get();
+		else txt+=getChildNode(n).getText();
 	    }
 	    return txt;
 	}
 	
-	public void AppendChild(Node Nod) {Nod.SetParent(this); children.add(Nod);}
-	public void AppendChild(Text Txt) {Txt.SetParent(this); children.add(Txt);}
-	public void InsertChild(int N,Node Nod) {Nod.SetParent(this); children.add(N,Nod);}
-	public void InsertChild(int N,Text Txt) {Txt.SetParent(this); children.add(N,Txt);}
+	public void appendChild(Node Nod) {Nod.setParent(this); children.add(Nod);}
+	public void appendChild(Text Txt) {Txt.setParent(this); children.add(Txt);}
+	public void insertChild(int N,Node Nod) {Nod.setParent(this); children.add(N,Nod);}
+	public void insertChild(int N,Text Txt) {Txt.setParent(this); children.add(N,Txt);}
 
-    	public Node AppendNode(String Name) 
+    	public Node appendNode(String Name) 
 	{
 	    Node nod=new Node(Name);
-	    nod.SetParent(this);
+	    nod.setParent(this);
 	    children.add(nod); 
 	    return nod;
 	}
-	public Text AppendText(String Txt,boolean Preserve) 
+	public Text appendText(String Txt,boolean Preserve) 
 	{
 	    Text txt=new Text(Txt,Preserve); 
-	    txt.SetParent(this);
+	    txt.setParent(this);
 	    children.add(txt); 
 	    return txt;
 	}
@@ -117,16 +117,16 @@ public class TrivialDOM
     
     	public Text(String Text,boolean Preserve) {text=Text; preserve=Preserve;}
 
-	public Node Parent() {return parentNode;}
-	public void SetParent(Node Parent) {parentNode=Parent;}
+	public Node parent() {return parentNode;}
+	public void setParent(Node Parent) {parentNode=Parent;}
 
-	public String Get() {return text;}
-    	public void Set(String Txt) {text=Txt;}
-	public boolean Preserve() {return preserve;}
+	public String get() {return text;}
+    	public void set(String Txt) {text=Txt;}
+	public boolean preserve() {return preserve;}
     }
     
-    public Node CreateNode(String Name) {return new Node(Name);}
-    public Text CreateText(String Text,boolean Preserve) {return new Text(Text,Preserve);}
+    public Node createNode(String Name) {return new Node(Name);}
+    public Text createText(String Text,boolean Preserve) {return new Text(Text,Preserve);}
     
     Node doc=null;
 
@@ -143,18 +143,18 @@ public class TrivialDOM
     	doc=DocNode;
     }
     
-    public Node Document() {return doc;}
+    public Node document() {return doc;}
     public String toString()
     {
     	StringWriter out=new StringWriter();
-	try {WriteXML(out,this);}
+	try {writeXML(out,this);}
 	catch (IOException e) {return e.getMessage();}
 	return out.toString();
     }
 
     // parsing input files
 
-    public static TrivialDOM ReadXML(BufferedReader in) throws IOException
+    public static TrivialDOM readXML(BufferedReader in) throws IOException
     {
     	final String EOF="ReadXML: unexpected end of file during parsing";
 
@@ -272,10 +272,10 @@ public class TrivialDOM
 		Node newNode=null;
 		if (node==null)
 		{
-		    newNode=xml.Document();
-		    newNode.SetNodeName(bits[0]);
+		    newNode=xml.document();
+		    newNode.setNodeName(bits[0]);
 		}
-		else newNode=node.AppendNode(bits[0]);
+		else newNode=node.appendNode(bits[0]);
 		
     	    	for (int i=1;i<bits.length;i++)
 		{
@@ -285,7 +285,7 @@ public class TrivialDOM
 		    if (!val.startsWith("\"") || !val.endsWith("\""))
 		    	throw new IOException("Malformed attribute value: ["+snip(bits[i])+"].");
 		    val=val.substring(1,val.length()-1);
-		    newNode.SetAttribute(key,val);
+		    newNode.setAttribute(key,val);
 		}
 		
 		if (!isclosed) node=newNode;
@@ -294,16 +294,16 @@ public class TrivialDOM
 	    {
 	    	if (node==null) throw new IOException("Unexpected end tag: ["+snip(str)+"].");
 	    	str=str.substring(2,str.length()-1);
-		if (str.compareTo(node.NodeName())!=0)
+		if (str.compareTo(node.nodeName())!=0)
 		    throw new IOException("Closing tag does not match opening tag: ["+snip(str)+"].");
-		node=node.Parent();
+		node=node.parent();
 	    }
 	    else if (str.startsWith("<![CDATA["))
 	    {
 	    	if (node==null) throw new IOException("Unexpected CDATA node: ["+snip(str)+"].");
 	    	if (!str.endsWith("]]>")) throw new IOException("CDATA node not ended: ["+snip(str)+"].");
 		str=str.substring(9,str.length()-3);
-    	    	node.AppendText(str,true);
+    	    	node.appendText(str,true);
 	    }
 	    else if (str.startsWith("<!--"))
 	    {
@@ -314,7 +314,7 @@ public class TrivialDOM
 	    else
 	    {
 	    	if (node==null) throw new IOException("Misplaced text-like block: ["+snip(str)+"].");
-		node.AppendText(str.trim(),false);
+		node.appendText(unescapeText(str).trim(),false);
 	    }
 	}	
 
@@ -330,59 +330,62 @@ public class TrivialDOM
     
     // writing output files
 
-    public static void WriteXML(Writer out,TrivialDOM dom) throws IOException
+    public static void writeXML(Writer out,TrivialDOM dom) throws IOException
     {
     	out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    	RecursiveWriteNode(out,dom.Document(),0);
+    	recursiveWriteNode(out,dom.document(),0);
 	out.flush();
     }
     
-    private static void RecursiveWriteNode(Writer out,Node nod,int Level) throws IOException
+    private static void recursiveWriteNode(Writer out,Node nod,int Level) throws IOException
     {
     	// emit the node tag & attributes
 	
     	for (int n=0;n<Level;n++) out.write(" ");
-	out.write("<"+nod.NodeName());
-	String[] attr=nod.GetAttributeNames();
-	for (int n=0;n<attr.length;n++) out.write(" "+attr[n]+"=\""+EscapeAttr(nod.Attribute(attr[n]))+"\"");
+	out.write("<"+nod.nodeName());
+	String[] attr=nod.getAttributeNames();
+	for (int n=0;n<attr.length;n++) out.write(" "+attr[n]+"=\""+escapeAttr(nod.attribute(attr[n]))+"\"");
 
 	// special case for empty nodes
-	if (nod.NumChildren()==0) {out.write("/>\n"); return;}
+	if (nod.numChildren()==0) {out.write("/>\n"); return;}
 
 	out.write(">");
 	
 	boolean doIndent=true;
-	if (nod.NumChildren()==1 && nod.ChildType(0)==TYPE_TEXT) doIndent=false;
-	else if (nod.NumChildren()>0 && nod.ChildType(0)==TYPE_TEXT && nod.GetChildText(0).Preserve()) doIndent=false;
+	if (nod.numChildren()==1 && nod.childType(0)==TYPE_TEXT) doIndent=false;
+	else if (nod.numChildren()>0 && nod.childType(0)==TYPE_TEXT && nod.getChildText(0).preserve()) doIndent=false;
 	
 	if (doIndent) out.write("\n");
 	
 	// emit the child nodes
 	
-	for (int n=0;n<nod.NumChildren();n++)
+	for (int n=0;n<nod.numChildren();n++)
 	{
-	    if (nod.ChildType(n)==TYPE_TEXT)
+	    if (nod.childType(n)==TYPE_TEXT)
 	    {
-	    	Text txt=nod.GetChildText(n);
+	    	Text txt=nod.getChildText(n);
 	    	if (doIndent) for (int i=0;i<Level+1;i++) out.write(" ");
-		if (txt.Preserve()) out.write("<![CDATA[");
-		out.write(EscapeText(txt.Get()));
-		if (txt.Preserve()) out.write("]]>");
+		
+		if (txt.preserve())
+		    out.write("<![CDATA["+txt.get()+"]]>");
+		else
+		    out.write(escapeText(txt.get()));
+		
 		if (doIndent) out.write("\n");
 	    }
-	    else RecursiveWriteNode(out,nod.GetChildNode(n),Level+1);
+	    else recursiveWriteNode(out,nod.getChildNode(n),Level+1);
 	}
 	
 	// emit the closing tag
 	
 	if (doIndent) for (int n=0;n<Level;n++) out.write(" ");
-	out.write("</"+nod.NodeName()+">\n");
+	out.write("</"+nod.nodeName()+">\n");
     }
     
     // miscellaneous
     
     // make sure a string is suitable to encode in an attribute value (quoted)
-    public static String EscapeAttr(String S)
+    public static String escapeAttr(String S)
     {
     	int i;
 	while ((i=S.indexOf('"'))>=0) {S=S.substring(0,i)+"&quot;"+S.substring(i+1);}
@@ -390,7 +393,7 @@ public class TrivialDOM
     	return S;
     }
     // make sure a string is suitable for general XML text
-    public static String EscapeText(String S)
+    public static String escapeText(String S)
     {
     	String str="";
     	int i;
@@ -399,5 +402,19 @@ public class TrivialDOM
 	while ((i=S.indexOf('<'))>=0) {S=S.substring(0,i)+"&lt;"+S.substring(i+1);}
 	while ((i=S.indexOf('>'))>=0) {S=S.substring(0,i)+"&gt;"+S.substring(i+1);}
 	return S;
+    }
+    // convert any escaped entities back into regular text
+    public static String unescapeText(String S)
+    {
+    	String str="";
+	int i=0;
+	while (i<S.length())
+	{
+	    if (i+5<=S.length() && S.substring(i,i+5).equals("&amp;")) {str+="&"; i+=5;}
+	    else if (i+4<=S.length() && S.substring(i,i+4).equals("&lt;")) {str+="<"; i+=4;}
+	    else if (i+4<=S.length() && S.substring(i,i+4).equals("&gt;")) {str+=">"; i+=4;}
+	    else {str+=S.charAt(i); i++;}
+	}
+	return str;
     }
 }

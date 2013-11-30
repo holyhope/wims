@@ -1,5 +1,5 @@
 /*
-    J.M. Evers
+    J.M. Evers 2009
     A check for browserversion.
     A very small applet to be started before the WIMSchem applet.
     Example:

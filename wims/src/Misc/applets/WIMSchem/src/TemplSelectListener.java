@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -12,5 +12,5 @@ package WIMSchem;
 
 public interface TemplSelectListener
 {
-    public void TemplSelected(Molecule mol,int idx);
+    public void templSelected(Molecule mol,int idx);
 }

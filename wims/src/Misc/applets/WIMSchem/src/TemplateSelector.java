@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -53,19 +53,19 @@ public class TemplateSelector extends JFrame implements WindowFocusListener, Mol
 	Color shade2=new Color(Math.max(bckgr.getRed()-16,0),Math.max(bckgr.getGreen()-16,0),bckgr.getBlue());
 	content.setBackground(shade1);
 	
-	for (int n=0;n<NUM_WIDGETS;n++) if (n<templ.NumTemplates())
+	for (int n=0;n<NUM_WIDGETS;n++) if (n<templ.numTemplates())
 	{
 	    pics[n]=new EditorPane(MOL_WIDTH,MOL_HEIGHT);
-	    pics[n].SetEditable(false);
+	    pics[n].setEditable(false);
 	    pics[n].setBackground(shade1);
-	    pics[n].Replace(templ.GetTemplate(n));
-    	    pics[n].ScaleToFit();
+	    pics[n].replace(templ.getTemplate(n));
+    	    pics[n].scaleToFit();
 	    content.add(pics[n]);
 	    pics[n].setLocation(FRAME_SIZE+MOL_WIDTH*(n%MOL_COL),FRAME_SIZE+MOL_HEIGHT*(n/MOL_COL));
-	    pics[n].SetToolCursor();
-	    pics[n].SetMolSelectListener(this);
+	    pics[n].setToolCursor();
+	    pics[n].setMolSelectListener(this);
 	}
-	numPages=(int)Math.ceil(templ.NumTemplates()/(double)NUM_WIDGETS);
+	numPages=(int)Math.ceil(templ.numTemplates()/(double)NUM_WIDGETS);
 	
 	prev=new BasicArrowButton(SwingConstants.WEST);
 	next=new BasicArrowButton(SwingConstants.EAST);
@@ -89,13 +89,13 @@ public class TemplateSelector extends JFrame implements WindowFocusListener, Mol
     	dispose();
     }
     
-    public void MolSelected(EditorPane source,int idx,boolean dblclick)
+    public void molSelected(EditorPane source,int idx,boolean dblclick)
     {
     	if (idx==0) return;
-    	selectListen.TemplSelected(source.MolData().Clone(),idx);
+    	selectListen.templSelected(source.molData().clone(),idx);
     	dispose();
     }
-    public void DirtyChanged(boolean isdirty) {}
+    public void dirtyChanged(boolean isdirty) {}
     
     public void actionPerformed(ActionEvent e)
     {
@@ -109,8 +109,8 @@ public class TemplateSelector extends JFrame implements WindowFocusListener, Mol
 	    for (int n=0;n<NUM_WIDGETS;n++)
 	    {
 	    	int i=curPage*NUM_WIDGETS+n;
-		pics[n].Replace(i<templ.NumTemplates() ? templ.GetTemplate(i) : new Molecule());
-		pics[n].ScaleToFit();
+		pics[n].replace(i<templ.numTemplates() ? templ.getTemplate(i) : new Molecule());
+		pics[n].scaleToFit();
 	    }
 	}
     }

@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2008 Dr. Alex M. Clark
     
@@ -25,81 +25,21 @@ import javax.swing.border.*;
 
 public class DataTableModel extends AbstractTableModel 
 {
-    // Class implemented specially to draw molecules on a table.
-
-    class MoleculeRenderer extends EditorPane implements TableCellRenderer
-    {
-	Border focusBorder=null;
-
-	public MoleculeRenderer() 
-	{
-            setOpaque(true);
-
-	    SetEditable(false);
-	    SetAutoScale(true);
-	}
-
-	public Component getTableCellRendererComponent(JTable table,Object mol,boolean isSelected,boolean hasFocus,int row,int col)
-	{
-    	    if (mol!=null) this.Replace((Molecule)mol); else this.Clear();
-
-    	    setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-
-    	    //SetBorder(hasFocus);
-	    if (hasFocus) 
-	    {
-    		if (focusBorder==null) 
-		    focusBorder=BorderFactory.createMatteBorder(1,1,1,1,table.getSelectionBackground().darker());
-        	setBorder(focusBorder);
-	    }
-	    else setBorder(null);
-
-	    return this;
-	}
-    }
-    public MoleculeRenderer NewMoleculeRenderer() {return new MoleculeRenderer();}
-    
-    // Class implemented for editing of molecules: just sends an event notice to the parent, rather than actually doing the work.
-    
-    class MoleculeEditor extends AbstractCellEditor implements TableCellEditor
-    {
-    	ActionListener actlist;
-    
-    	public MoleculeEditor(ActionListener ActList)
-	{
-	    actlist=ActList;
-	}
-	
-	public Component getTableCellEditorComponent(JTable table,Object value,boolean isSelected,int row,int col) 
-	{
-	    actlist.actionPerformed(new ActionEvent(table,0,row+","+col));
-    	    fireEditingStopped();
-	    return null;
-	}
-	public Object getCellEditorValue() {return null;}
-    }
-    //JOptionPane.showMessageDialog(null,e.toString(),"Clipboard Read Failed",JOptionPane.ERROR_MESSAGE);
-    public MoleculeEditor NewMoleculeEditor(ActionListener ActList) {return new MoleculeEditor(ActList);}
-
-    // main implementation
-
     DataSheet ds=null;
     DataSheetCache cache=null;
-    int temporaryEdit=-1;
-
-    public DataTableModel(DataSheet DS,DataSheetCache Cache) {ds=DS; cache=Cache;}
-    public void SetDataSheet(DataSheet DS,DataSheetCache Cache) {ds=DS; cache=Cache;}
+    TitleListener tlist=null;
     
-    public void SetTemporaryEdit(int Col) {temporaryEdit=Col;}
-    public void ClearTemporaryEdit() {temporaryEdit=-1;}
+    public DataTableModel(DataSheet DS,DataSheetCache Cache,TitleListener TList) {ds=DS; cache=Cache; tlist=TList;}
+    public DataSheet getDataSheet() {return ds;}
+    public void setDataSheet(DataSheet DS,DataSheetCache Cache) {ds=DS; cache=Cache;}
     
-    public int getColumnCount() {return ds.NumCols();}
-    public int getRowCount() {return ds.NumRows();}
-    public String getColumnName(int col) {return ds.ColName(col);}
+    public int getColumnCount() {return ds.numCols();}
+    public int getRowCount() {return ds.numRows();}
+    public String getColumnName(int col) {return ds.colName(col);}
     public Object getValueAt(int row,int col) 
     {
-    	int t=ds.ColType(col);
-	if (ds.IsNull(row,col))
+    	int t=ds.colType(col);
+	if (ds.isNull(row,col))
 	{
 	    if (t==DataSheet.COLTYPE_MOLECULE) return null;
 	    if (t==DataSheet.COLTYPE_BOOLEAN) return new Boolean(false); // (no UI concept of null)
@@ -107,17 +47,17 @@ public class DataTableModel extends AbstractTableModel
 	}
 	else
 	{
-	    if (t==DataSheet.COLTYPE_MOLECULE) return ds.GetMolecule(row,col);
-	    if (t==DataSheet.COLTYPE_STRING) return ds.GetString(row,col);
-	    if (t==DataSheet.COLTYPE_INTEGER) return new Integer(ds.GetInteger(row,col));
-	    if (t==DataSheet.COLTYPE_REAL) return new Double(ds.GetReal(row,col));
-	    if (t==DataSheet.COLTYPE_BOOLEAN) return new Boolean(ds.GetBoolean(row,col));
+	    if (t==DataSheet.COLTYPE_MOLECULE) return ds.getMolecule(row,col);
+	    if (t==DataSheet.COLTYPE_STRING) return ds.getString(row,col);
+	    if (t==DataSheet.COLTYPE_INTEGER) return new Integer(ds.getInteger(row,col));
+	    if (t==DataSheet.COLTYPE_REAL) return new Double(ds.getReal(row,col));
+	    if (t==DataSheet.COLTYPE_BOOLEAN) return new Boolean(ds.getBoolean(row,col));
 	}
 	return "";
     }
     public Class getColumnClass(int col) 
     {
-    	int t=ds.ColType(col);
+    	int t=ds.colType(col);
 	if (t==DataSheet.COLTYPE_MOLECULE) return new Molecule().getClass();
 	if (t==DataSheet.COLTYPE_STRING) return new String("").getClass();
 	if (t==DataSheet.COLTYPE_INTEGER) return new String("").getClass();
@@ -125,52 +65,193 @@ public class DataTableModel extends AbstractTableModel
 	if (t==DataSheet.COLTYPE_BOOLEAN) return new Boolean(false).getClass();
 	return new String("").getClass();
     }
-    public boolean isCellEditable(int row,int col) 
-    {
-    	// (molecule only) return temporaryEdit==col || ds.ColType(col)!=DataSheet.COLTYPE_MOLECULE;
-	return temporaryEdit==col;
-    }
+    public boolean isCellEditable(int row,int col) {return true;}
+    
+    // updates the data in the underlying datasheet, with care to cache undo states, and do nothing if the value is the same
     public void setValueAt(Object val,int row,int col) 
     {
-    	int t=ds.ColType(col);
+    	int t=ds.colType(col);
 	try
 	{
-	    cache.CacheUndo(ds);
-	
-	    if (t==DataSheet.COLTYPE_MOLECULE) ds.SetMolecule(row,col,(Molecule)val);
-	    else if (t==DataSheet.COLTYPE_STRING) ds.SetString(row,col,(String)val);
+	    if (t==DataSheet.COLTYPE_MOLECULE) 
+	    {
+	    	if (!ds.isEqualMolecule(row,col,(Molecule)val))
+		{
+	    	    cache.cacheUndo(ds);
+	    	    ds.setMolecule(row,col,(Molecule)val);
+		    ds.setDirty();
+		    tlist.replaceTitle();
+		}
+	    } 
+	    else if (t==DataSheet.COLTYPE_STRING) 
+	    {
+	    	if (!ds.isEqualString(row,col,(String)val))
+		{
+	    	    cache.cacheUndo(ds);
+	    	    ds.setString(row,col,(String)val);
+		    ds.setDirty();
+		    tlist.replaceTitle();
+		}
+	    }
 	    else if (t==DataSheet.COLTYPE_INTEGER) 
 	    {
 	    	String str=(String)val;
-		if (str.length()==0) ds.SetToNull(row,col);
-	    	else ds.SetInteger(row,col,Integer.parseInt(str));
+		if (str.length()==0) 
+		{
+		    if (!ds.isNull(row,col))
+		    {
+		    	cache.cacheUndo(ds);
+		    	ds.setToNull(row,col);
+			ds.setDirty();
+			tlist.replaceTitle();
+		    }
+		}
+	    	else 
+		{
+		    int i=Integer.parseInt(str);
+		    if (!ds.isEqualInteger(row,col,i))
+		    {
+		    	cache.cacheUndo(ds);
+		    	ds.setInteger(row,col,i);
+			ds.setDirty();
+			tlist.replaceTitle();
+		    }
+		}
 	    }
 	    else if (t==DataSheet.COLTYPE_REAL) 
 	    {
 	    	String str=(String)val;
-		if (str.length()==0) ds.SetToNull(row,col);
-		else ds.SetReal(row,col,Double.parseDouble(str));
+		if (str.length()==0) 
+		{
+		    if (!ds.isNull(row,col))
+		    {
+		    	cache.cacheUndo(ds);
+		    	ds.setToNull(row,col);
+			ds.setDirty();
+			tlist.replaceTitle();
+		    }
+		}
+		else 
+		{
+		    double d=Double.parseDouble(str);
+		    if (!ds.isEqualReal(row,col,d))
+		    {
+		    	cache.cacheUndo(ds);
+		    	ds.setReal(row,col,d);
+			ds.setDirty();
+			tlist.replaceTitle();
+		    }
+		}
 	    }
-	    else if (t==DataSheet.COLTYPE_BOOLEAN) ds.SetBoolean(row,col,((Boolean)val).booleanValue());
-	    
-	    ds.SetDirty();
+	    else if (t==DataSheet.COLTYPE_BOOLEAN) 
+	    {
+	    	boolean b=((Boolean)val).booleanValue();
+		if (!ds.isEqualBoolean(row,col,b))
+		{
+		    cache.cacheUndo(ds);
+	    	    ds.setBoolean(row,col,b);
+		    ds.setDirty();
+		    tlist.replaceTitle();
+	    	}
+	    }
 	}
 	catch (NumberFormatException ex) {} // (do nothing --> change gets rejected)
-    }
-    
-    // normally implemented in JTable, but passed along to this class; returns default editing/rendering properties for unit datatypes,
-    // and a special one for molecules...
-    public TableCellRenderer getCellRenderer(int row,int col,TableCellRenderer def) 
-    {
-    	if (ds.ColType(col)==DataSheet.COLTYPE_MOLECULE)
-	{
-	    // !! if column height is set to one-line, use a 'molecular formula' renderer...
-	    return new MoleculeRenderer();
-	}
-	
-    	return def;
     }
 }
 
 
+// Class implemented specially to draw molecules on a table.
+
+// !! TODO: don't use EditorPane for rendering; instead use DrawMolecule to render onto an offscreen image, and cache this
+
+class TableMoleculeRenderer extends EditorPane implements TableCellRenderer
+{
+    Border focusBorder=null;
+
+    public TableMoleculeRenderer() 
+    {
+        setOpaque(true);
+
+	setEditable(false);
+	setAutoScale(true);
+    }
+
+    public Component getTableCellRendererComponent(JTable table,Object mol,boolean isSelected,boolean hasFocus,int row,int col)
+    {
+    	if (mol!=null) this.replace((Molecule)mol); else this.clear();
+
+    	setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+
+	if (hasFocus) 
+	{
+    	    if (focusBorder==null) 
+		focusBorder=BorderFactory.createMatteBorder(1,1,1,1,table.getSelectionBackground().darker());
+            setBorder(focusBorder);
+	}
+	else setBorder(null);
+
+	return this;
+    }
+}
+
+// Class implemented for editing of molecules: just sends an event notice to the parent, rather than actually doing the work.
+
+class TableMoleculeEditor extends AbstractCellEditor implements TableCellEditor
+{
+    EditorPane edview=null;
+
+    class PopMeUp implements Runnable
+    {
+    	JFrame win;
+    	PopMeUp(JFrame win) {this.win=win;}
+	public void run() {win.setVisible(true); win.requestFocus();}
+    }
+
+    public TableMoleculeEditor()
+    {
+    }
+
+    // custom behaviour: the number of ways to make molecule cells popup the editor has to be somewhat constrained
+    public boolean isCellEditable(EventObject e) 
+    {
+    	if (e instanceof KeyEvent)
+	{
+	    KeyEvent ev=(KeyEvent)e;
+	    return ev.getKeyChar()==' ';
+	}
+	else if (e instanceof MouseEvent)
+	{
+	    MouseEvent ev=(MouseEvent)e;
+	    return ev.getClickCount()==2 && ev.getButton()==MouseEvent.BUTTON1;
+	}
+	// (anything else??)
+    	return false;
+    }
+    
+    public void setMolecule(Molecule mol) {edview.replace(mol);}
+
+    public Component getTableCellEditorComponent(JTable table,Object value,boolean isSelected,int row,int col) 
+    {
+    	Molecule mol=(Molecule)value;
+	DataTableModel model=(DataTableModel)table.getModel();
+
+    	if (mol==null) mol=new Molecule();
+    
+    	edview=new EditorPane();
+	edview.setOpaque(true);
+	edview.setEditable(false);
+	edview.setAutoScale(true);
+	Color sel=table.getSelectionBackground(),dark=sel.darker();
+	edview.setBackground(dark);
+	edview.replace(mol);
+
+    	EditWindow edwin=new EditWindow(mol.clone(),model,this);
+	addCellEditorListener(edwin);
+
+        javax.swing.SwingUtilities.invokeLater(new PopMeUp(edwin));
+
+	return edview;
+    }
+    public Object getCellEditorValue() {return edview==null ? null : edview.molData();}
+}
 

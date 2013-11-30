@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -36,16 +36,16 @@ public class DialogEdit extends JDialog implements ActionListener
     public DialogEdit(Frame Parent,Molecule Mol,ArrayList<Integer> SelIdx)
     {
     	super(Parent,"Edit Molecule",true);
-    	mol=Mol.Clone();
+    	mol=Mol.clone();
 	aselidx=SelIdx;
 	bselidx=new ArrayList<Integer>();
-	for (int n=1;n<=mol.NumBonds();n++) if (aselidx.indexOf(mol.BondFrom(n))>=0 && aselidx.indexOf(mol.BondTo(n))>=0) bselidx.add(n);
+	for (int n=1;n<=mol.numBonds();n++) if (aselidx.indexOf(mol.bondFrom(n))>=0 && aselidx.indexOf(mol.bondTo(n))>=0) bselidx.add(n);
 	
 	setLayout(new BorderLayout());
 	
-	atoms=new JTable(CompileAtomData(),new String[]{"#","El","X","Y","Charge","Unpaired","HExplicit","MapNum"})
+	atoms=new JTable(compileAtomData(),new String[]{"#","El","X","Y","Charge","Unpaired","HExplicit","MapNum"})
 	    {public boolean isCellEditable(int row,int column) {return column>0;}};
-	bonds=new JTable(CompileBondData(),new String[]{"#","From","To","Order","Type"})
+	bonds=new JTable(compileBondData(),new String[]{"#","From","To","Order","Type"})
 	    {public boolean isCellEditable(int row,int column) {return column>2;}};
 
     	atoms.getColumnModel().getColumn(0).setCellEditor(null);
@@ -96,7 +96,7 @@ public class DialogEdit extends JDialog implements ActionListener
 	if (e.getSource()==reject) setVisible(false);
     }
     
-    Object[][] CompileAtomData()
+    private Object[][] compileAtomData()
     {
     	Object[][] data=new Object[aselidx.size()][];
 	
@@ -107,20 +107,20 @@ public class DialogEdit extends JDialog implements ActionListener
 	    int i=aselidx.get(n).intValue();
 	    Object[] da=new Object[8];
 	    da[0]=new Integer(i);
-	    da[1]=new String(mol.AtomElement(i));
-	    da[2]=fmt.format(mol.AtomX(i));
-	    da[3]=fmt.format(mol.AtomY(i));
-	    da[4]=String.valueOf(mol.AtomCharge(i));
-	    da[5]=String.valueOf(mol.AtomUnpaired(i));
-	    da[6]=mol.AtomHExplicit(i)==Molecule.HEXPLICIT_UNKNOWN ? "?" : String.valueOf(mol.AtomHExplicit(i));
-	    da[7]=String.valueOf(mol.AtomMapNum(i));
+	    da[1]=new String(mol.atomElement(i));
+	    da[2]=fmt.format(mol.atomX(i));
+	    da[3]=fmt.format(mol.atomY(i));
+	    da[4]=String.valueOf(mol.atomCharge(i));
+	    da[5]=String.valueOf(mol.atomUnpaired(i));
+	    da[6]=mol.atomHExplicit(i)==Molecule.HEXPLICIT_UNKNOWN ? "?" : String.valueOf(mol.atomHExplicit(i));
+	    da[7]=String.valueOf(mol.atomMapNum(i));
 	    data[n]=da;
 	}
 	
 	return data;
     }
 
-    Object[][] CompileBondData()
+    private Object[][] compileBondData()
     {
     	Object[][] data=new Object[bselidx.size()][];
 	
@@ -129,38 +129,38 @@ public class DialogEdit extends JDialog implements ActionListener
 	    int i=bselidx.get(n).intValue();
 	    Object[] db=new Object[5];
 	    db[0]=new Integer(i);
-	    db[1]=new Integer(mol.BondFrom(i));
-	    db[2]=new Integer(mol.BondTo(i));
-	    db[3]=String.valueOf(mol.BondOrder(i));
-	    db[4]=new String(BOND_TYPES[mol.BondType(i)]);
+	    db[1]=new Integer(mol.bondFrom(i));
+	    db[2]=new Integer(mol.bondTo(i));
+	    db[3]=String.valueOf(mol.bondOrder(i));
+	    db[4]=new String(BOND_TYPES[mol.bondType(i)]);
 	    data[n]=db;
 	}
 	
 	return data;
     }
     
-    boolean ReadData()
+    private boolean ReadData()
     {
     	for (int n=0;n<atoms.getRowCount();n++)
 	{
 	    int i=(Integer)atoms.getValueAt(n,0);
-	    mol.SetAtomElement(i,(String)atoms.getValueAt(n,1));
-	    mol.SetAtomPos(i,Utils.safeDouble((String)atoms.getValueAt(n,2)),Utils.safeDouble((String)atoms.getValueAt(n,3)));
+	    mol.setAtomElement(i,(String)atoms.getValueAt(n,1));
+	    mol.setAtomPos(i,Util.safeDouble((String)atoms.getValueAt(n,2)),Util.safeDouble((String)atoms.getValueAt(n,3)));
 	    
-	    mol.SetAtomCharge(i,Utils.safeInt((String)atoms.getValueAt(n,4)));
-	    mol.SetAtomUnpaired(i,Utils.safeInt((String)atoms.getValueAt(n,5)));
+	    mol.setAtomCharge(i,Util.safeInt((String)atoms.getValueAt(n,4)));
+	    mol.setAtomUnpaired(i,Util.safeInt((String)atoms.getValueAt(n,5)));
 	    String hyStr=(String)atoms.getValueAt(n,6);
-	    int hy=Utils.safeInt(hyStr);
-	    mol.SetAtomHExplicit(i,hyStr.compareTo("0")==0 ? 0 : hy>0 ? hy : Molecule.HEXPLICIT_UNKNOWN);
-	    mol.SetAtomMapNum(i,Utils.safeInt((String)atoms.getValueAt(n,7)));
+	    int hy=Util.safeInt(hyStr);
+	    mol.setAtomHExplicit(i,hyStr.compareTo("0")==0 ? 0 : hy>0 ? hy : Molecule.HEXPLICIT_UNKNOWN);
+	    mol.setAtomMapNum(i,Util.safeInt((String)atoms.getValueAt(n,7)));
 	}
     	for (int n=0;n<bonds.getRowCount();n++)
 	{
 	    int i=(Integer)bonds.getValueAt(n,0);
-	    mol.SetBondOrder(i,new Integer((String)bonds.getValueAt(n,3)).intValue());
+	    mol.setBondOrder(i,new Integer((String)bonds.getValueAt(n,3)).intValue());
 	    int type;
 	    for (int j=BOND_TYPES.length-1;j>=0;j--) if (BOND_TYPES[j].compareTo((String)bonds.getValueAt(n,4))==0) 
-	    	{mol.SetBondType(i,j); break;}
+	    	{mol.setBondType(i,j); break;}
 	}
     	return true;
     }

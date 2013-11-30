@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -64,10 +64,10 @@ public class CatalogWindow extends JFrame
 	for (int n=0;n<COL_SIZE;n++)
 	{
 	    entries[n]=new EditorPane(100,100);
-	    entries[n].SetEditable(false);
-	    entries[n].SetMolSelectListener(this);
-	    entries[n].SetToolCursor();
-	    entries[n].SetBorder(true);
+	    entries[n].setEditable(false);
+	    entries[n].setMolSelectListener(this);
+	    entries[n].setToolCursor();
+	    entries[n].setBorder(true);
 	    entries[n].setMaximumSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 	    content.add(entries[n]);
 	}
@@ -126,18 +126,18 @@ public class CatalogWindow extends JFrame
     }
     
     
-    public void Synch(int Sz)
+    public void synch(int Sz)
     {
 	scroll.setMaximum(Sz);
 	scroll.setVisibleAmount(COL_SIZE);
 	scroll.setUnitIncrement(1);
 	scroll.setBlockIncrement(COL_SIZE);
 	
-	if (basepos+5>=Sz || highestUpdated<=COL_SIZE) UpdatePosition(basepos);
+	if (basepos+5>=Sz || highestUpdated<=COL_SIZE) updatePosition(basepos);
 	highestUpdated=Sz;
     }
 
-    void UpdatePosition(int NewPos)
+    private void updatePosition(int NewPos)
     {
     	// NB: should speed this up sometime by re-using molecules that are already loaded
     
@@ -146,17 +146,17 @@ public class CatalogWindow extends JFrame
 	{
     	    for (int n=0;n<COL_SIZE;n++)
 	    {
-	    	if (basepos+n>=loader.Count()) 
+	    	if (basepos+n>=loader.count()) 
 		{
 		    entries[n].setBackground(bckgr);
-		    entries[n].Clear();
+		    entries[n].clear();
 		}
 		else
 		{
-		    Molecule mol=loader.Get(basepos+n);
+		    Molecule mol=loader.get(basepos+n);
 		    entries[n].setBackground(basepos+n==selnum ? highl : bckgr);
-		    entries[n].Replace(mol,true,false);
-		    entries[n].ScaleToFit();
+		    entries[n].replace(mol,true,false);
+		    entries[n].scaleToFit();
 		    entries[n].repaint();
 		}
 	    }
@@ -164,13 +164,13 @@ public class CatalogWindow extends JFrame
 	catch (Exception e) {e.printStackTrace();}
     }
 
-    synchronized void OpenMolecule(int N)
+    private synchronized void openMolecule(int N)
     {
     	try
 	{
-	    Molecule mol=loader.Get(N);
-	    MainWindow mw=new MainWindow(null,false,null);
-	    mw.MainPanel().SetMolecule(mol);
+	    Molecule mol=loader.get(N);
+	    MainWindow mw=new MainWindow(null,false);
+	    mw.mainPanel().setMolecule(mol);
 	    mw.setVisible(true);
 	}
 	catch (Exception e) {e.printStackTrace();}
@@ -178,7 +178,7 @@ public class CatalogWindow extends JFrame
 
     // event handling
 
-    public void MolSelected(EditorPane source,int idx,boolean dblclick)
+    public void molSelected(EditorPane source,int idx,boolean dblclick)
     {
     	int entnum=-1;
 	for (int n=0;n<COL_SIZE;n++) if (source==entries[n]) {entnum=n; break;}
@@ -191,18 +191,18 @@ public class CatalogWindow extends JFrame
 		entries[n].repaint();
 	    }
 	    
-	    if (idx!=0) OpenMolecule(selnum);
+	    if (idx!=0) openMolecule(selnum);
 	}
 	
     }
-    public void DirtyChanged(boolean isdirty) {}
+    public void dirtyChanged(boolean isdirty) {}
     
     public void actionPerformed(ActionEvent e)
     {
-    	if (e.getSource()==bopen) {if (selnum>=0) OpenMolecule(selnum);}
+    	if (e.getSource()==bopen) {if (selnum>=0) openMolecule(selnum);}
 	if (e.getSource()==bclose) 
 	{
-	    if (loader!=null) loader.Zap();
+	    if (loader!=null) loader.zap();
 	    dispose(); 
 	    return;
 	}
@@ -212,7 +212,7 @@ public class CatalogWindow extends JFrame
     public void componentMoved(ComponentEvent e) {}
     public void componentResized(ComponentEvent e) 
     {
-    	for (int n=0;n<COL_SIZE;n++) entries[n].ScaleToFit();
+    	for (int n=0;n<COL_SIZE;n++) entries[n].scaleToFit();
     }
     public void componentShown(ComponentEvent e) {}
 
@@ -221,12 +221,12 @@ public class CatalogWindow extends JFrame
     	if (e.getSource()==scroll)
     	{
 	    int pos=e.getValue();
-	    if (pos!=basepos) UpdatePosition(pos);
+	    if (pos!=basepos) updatePosition(pos);
 	}
     }
     
     public void windowActivated(WindowEvent e) {}
-    public void windowClosed(WindowEvent e) {loader.Zap();}
+    public void windowClosed(WindowEvent e) {loader.zap();}
     public void windowClosing(WindowEvent e) {}
     public void windowDeactivated(WindowEvent e) {}
     public void windowDeiconified(WindowEvent e) {}
@@ -257,7 +257,7 @@ class CatalogLoader extends Thread
 	    long pos=0,nextpos;
 	    while (!zap)
 	    {
-	    	synchronized (mutex) {nextpos=MoleculeStream.FindNextPosition(istr,pos);}
+	    	synchronized (mutex) {nextpos=MoleculeStream.findNextPosition(istr,pos);}
 		if (nextpos<0) break;
 
     	    	filepos.add(pos);
@@ -268,7 +268,7 @@ class CatalogLoader extends Thread
 		{
     	    	    public void run()
     	    	    {
-     	    	    	wnd.Synch(filepos.size());
+     	    	    	wnd.synch(filepos.size());
 		    }
 		});
 	    }
@@ -280,13 +280,13 @@ class CatalogLoader extends Thread
     	}
     }
     
-    public void Zap() {zap=true;} 
-    public int Count() {synchronized(mutex) {return filepos.size();}}
-    public Molecule Get(int N) 
+    public void zap() {zap=true;} 
+    public int count() {synchronized(mutex) {return filepos.size();}}
+    public Molecule get(int N) 
     {
     	try
 	{
-    	    synchronized(mutex) {return MoleculeStream.FetchFromPosition(istr,filepos.get(N).longValue());}
+    	    synchronized(mutex) {return MoleculeStream.fetchFromPosition(istr,filepos.get(N).longValue());}
 	}
 	catch (IOException e) {return null;}
     }

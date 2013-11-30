@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2008 Dr. Alex M. Clark
     
@@ -31,50 +31,50 @@ public class DataSheetCache
     {
     }
         
-    public boolean CanUndo() {return !undo.empty();}
-    public boolean CanRedo() {return !redo.empty();}
+    public boolean canUndo() {return !undo.empty();}
+    public boolean canRedo() {return !redo.empty();}
     
     /* !! figure something out...
     public void NotifySaved() {saveidx=curidx;}
     public boolean IsSaved() {return curidx==saveidx;}*/
     
-    public void CacheUndo(DataSheet DS)
+    public void cacheUndo(DataSheet DS)
     {
-    	String str=ToString(DS);
+    	String str=toString(DS);
 	undo.push(str);
     	while (undo.size()>MAX_UNDO) undo.remove(0);
 	redo.clear();
     }
     
-    public DataSheet PerformUndo(DataSheet Cur)
+    public DataSheet performUndo(DataSheet Cur)
     {
     	if (undo.empty()) return null;
-	redo.push(ToString(Cur));
-	return FromString(undo.pop());
+	redo.push(toString(Cur));
+	return fromString(undo.pop());
     }
     
-    public DataSheet PerformRedo(DataSheet Cur)
+    public DataSheet performRedo(DataSheet Cur)
     {
     	if (redo.empty()) return null;
-	undo.push(ToString(Cur));
-	return FromString(redo.pop());
+	undo.push(toString(Cur));
+	return fromString(redo.pop());
     }
     
-    private String ToString(DataSheet DS)
+    private String toString(DataSheet DS)
     {
 	StringWriter sw=new StringWriter();
-	try {DataSheetStream.WriteXML(new BufferedWriter(sw),DS);}
+	try {DataSheetStream.writeXML(new BufferedWriter(sw),DS);}
 	catch (IOException e) {return null;}
 	return sw.toString();
     }
     
-    private DataSheet FromString(String StrDS)
+    private DataSheet fromString(String StrDS)
     {
     	DataSheet ds=null;
 	try
 	{
-	    if (DataSheetStream.ExamineIsXMLDS(new BufferedReader(new StringReader(StrDS))))
-		ds=DataSheetStream.ReadXML(new BufferedReader(new StringReader(StrDS)));
+	    if (DataSheetStream.examineIsXMLDS(new BufferedReader(new StringReader(StrDS))))
+		ds=DataSheetStream.readXML(new BufferedReader(new StringReader(StrDS)));
 	}
 	catch (IOException e) {e.printStackTrace();}
 	return ds;

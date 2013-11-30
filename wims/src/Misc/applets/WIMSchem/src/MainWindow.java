@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -28,7 +28,7 @@ public class MainWindow extends JFrame
 {
     public MainPanel mainPanel=null;
 
-    public MainWindow(String LoadFN,boolean StreamMode,Properties Translation) 
+    public MainWindow(String LoadFN,boolean StreamMode) 
     {
     	super("WIMSchem");
 
@@ -40,14 +40,14 @@ public class MainWindow extends JFrame
     	// main panel
 
 	getContentPane().setLayout(new BorderLayout());
-	mainPanel=new MainPanel(LoadFN,StreamMode,false,this,null,Translation,null,null,null,true,true);
+	mainPanel=new MainPanel(LoadFN,MainPanel.MODE_NORMAL,this);
 	getContentPane().add(mainPanel,BorderLayout.CENTER);
 	pack();
 
     	setIconImage(mainPanel.mainIcon.getImage());
     }
 
-    public MainPanel MainPanel() {return mainPanel;}
+    public MainPanel mainPanel() {return mainPanel;}
 
     // ------------------ init functions --------------------
     
@@ -94,7 +94,7 @@ public class MainWindow extends JFrame
 	if (dump)
 	{
 	    System.out.println("WIMSchem: Molecular drawing tool");
-	    System.out.println("          Version "+MainPanel.VERSION+" © 2005-7 Dr. Alex M. Clark");
+	    System.out.println("          Version "+MainPanel.VERSION+" © 2005-2013 Dr. Alex M. Clark");
 	    System.out.println("          Open source, released under the Gnu Public License (GPL),");
 	    System.out.println("          see www.gnu.org. For home page and documentation, see");
 	    System.out.println("          http://sketchel.sf.net\n");
@@ -111,14 +111,14 @@ public class MainWindow extends JFrame
 	{
 	    if (stream || openfiles.size()==0) 
 	    {
-	    	if (!dsmode) new MainWindow(null,stream,null).setVisible(true);
+	    	if (!dsmode) new MainWindow(null,stream).setVisible(true);
 		else new DataWindow(null).setVisible(true);
 	    }
 	    else 
 	    {
 	    	for (int n=0;n<openfiles.size();n++) 
 		{
-		    if (!dsmode) new MainWindow(openfiles.get(n),false,null).setVisible(true);
+		    if (!dsmode) new MainWindow(openfiles.get(n),false).setVisible(true);
 		    else new DataWindow(openfiles.get(n)).setVisible(true);
 		}
 	    }

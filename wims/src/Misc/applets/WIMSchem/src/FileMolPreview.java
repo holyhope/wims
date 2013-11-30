@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -30,9 +30,9 @@ public class FileMolPreview extends EditorPane implements PropertyChangeListener
     	super(200,200);
         fc.addPropertyChangeListener(this);
 	setBackground(Color.WHITE);
-	SetBorder(true);
-	SetToolCursor();
-	SetEditable(false);
+	setBorder(true);
+	setToolCursor();
+	setEditable(false);
     }
 
     public void propertyChange(PropertyChangeEvent ev) 
@@ -60,7 +60,7 @@ public class FileMolPreview extends EditorPane implements PropertyChangeListener
 		try
 		{
 		    FileInputStream istr=new FileInputStream(file);
-		    mol=MoleculeStream.ReadUnknown(istr);
+		    mol=MoleculeStream.readUnknown(istr);
 		    istr.close();
 		}
 		catch (IOException e) 
@@ -69,8 +69,8 @@ public class FileMolPreview extends EditorPane implements PropertyChangeListener
 		}
 	    }
 	    if (mol==null) mol=new Molecule();
-	    Replace(mol);
-	    ScaleToFit();
+	    replace(mol);
+	    scaleToFit();
             if (isShowing()) repaint();
         }
     }

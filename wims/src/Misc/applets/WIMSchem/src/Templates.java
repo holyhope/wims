@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2005 Dr. Alex M. Clark
     
@@ -16,8 +16,8 @@ import java.util.*;
 
 // For obtaining the template list.
 
-public class Templates{
-
+public class Templates
+{
     ArrayList<Molecule> templ=new ArrayList<Molecule>();
 
     // jm.evers: copies... of functions in applet. Should be reorganised !!
@@ -48,75 +48,63 @@ public class Templates{
     }
         
 
-    public Templates(Class cls){
-
+    public Templates(Class cls)
+    {
     	ArrayList<String> list=new ArrayList<String>();
-
 	// jm.evers : if an param template is defined, load them in the ArrayList.
-	boolean inapplet=false;
-	if(MainApplet.templateURL != null){
+	if( MainApplet.templateURL != null ){
 	    for(int p=0; p<MainApplet.templateURL.length ;p++ ){
 		try {
-		    Molecule mol=MoleculeStream.ReadUnknown(new BufferedReader(new StringReader((load(MainApplet.templateURL[p])))));
+		    //Molecule mol = MoleculeStream.readMDLMOL(new BufferedReader(new StringReader((load(MainApplet.templateURL[p])).toString())));    
+		    Molecule mol = MoleculeStream.readUnknown(new BufferedReader(new StringReader((load(MainApplet.templateURL[p])).toString())));    
 		    templ.add(mol);
-		    inapplet=true;
-	    	    System.out.println("loading template"+p);
+	    	    System.out.println("loading template no"+p);
 		} catch (IOException e) {System.out.println("FAILED loading template"+p+"\n Are you using correct MDLMol or Native files??");}
     	    }
-	    // if this was not successfull: maybe the templates are javascript strings?
-	    // not tested 30/12/2008 !!!
-	    if(!inapplet){
-		for(int p=0; p<MainApplet.templateURL.length ;p++ ){
-		    try {
-			System.out.println("MainApplet.templateURL[p]="+MainApplet.templateURL[p]);
-			Molecule mol=MoleculeStream.ReadUnknown(new BufferedReader(new StringReader(MainApplet.templateURL[p].toString())));
-			templ.add(mol);
-			inapplet=true;
-	    		System.out.println("loading template"+p);
-		    }	 catch (IOException e) {System.out.println("FAILED loading template"+p+"\n Are you using correct javascript strings??");}
-    		}
-	    }
 	}
-	
-	if(!inapplet){
-    	// read the list of molecules from the directory file, then create each one of them
-	    try {
-		InputStream istr=cls.getResourceAsStream("/templ/list");
-		BufferedReader in=new BufferedReader(new InputStreamReader(istr));
+	else	
+    	{    // read the list of molecules from the directory file, then create each one of them
+    	    try
+	    {
+    		InputStream istr=cls.getResourceAsStream("/templ/list");
+    	        BufferedReader in=new BufferedReader(new InputStreamReader(istr));
 		String line;
-		while ((line=in.readLine())!=null) {list.add(line);}
+	        while ((line=in.readLine())!=null) {list.add(line);}
 		istr.close();
 	    }
-	    catch (IOException e) {
-		System.out.println("Failed to obtain list of templates:\n"+e.toString());
+	    catch (IOException e) 
+	    {
+		System.out.println("Failed to obtain list of jar included default templates:\n"+e.toString());
 		return;
 	    }
-	    
-	    try {
-		for (int n=0;n<list.size();n++){
-		    InputStream istr=cls.getResourceAsStream("/templ/"+list.get(n));
-		    Molecule mol=MoleculeStream.ReadNative(istr);
+    	    try
+	    {
+		for (int n=0;n<list.size();n++)
+		{
+    	    	    InputStream istr=cls.getResourceAsStream("/templ/"+list.get(n));
+	    	    Molecule mol=MoleculeStream.readNative(istr);
 		    templ.add(mol);
 		    istr.close();
 		}
-	    }
-	    catch (IOException e){
+    	    }
+	    catch (IOException e) 
+	    {
 		System.out.println("Failed to obtain particular template:\n"+e.toString());
 		return;
 	    }
-	}
+	}	
 	// sort the molecules by an index of "complexity" (smaller molecules first, carbon-only favoured)
 	
 	int[] complex=new int[templ.size()];
 	for (int n=0;n<templ.size();n++)
 	{
 	    Molecule mol=templ.get(n);
-	    complex[n]=mol.NumAtoms()*100;
+	    complex[n]=mol.numAtoms()*100;
 	    boolean nonCH=false;
-	    for (int i=1;i<=mol.NumAtoms();i++) 
-	    	if (mol.AtomElement(i).compareTo("C")!=0 && mol.AtomElement(i).compareTo("H")!=0) nonCH=true;
+	    for (int i=1;i<=mol.numAtoms();i++) 
+	    	if (mol.atomElement(i).compareTo("C")!=0 && mol.atomElement(i).compareTo("H")!=0) nonCH=true;
 	    if (!nonCH) complex[n]-=1000;
-	    for (int i=1;i<=mol.NumBonds();i++) complex[n]=complex[n]+mol.BondOrder(i);
+	    for (int i=1;i<=mol.numBonds();i++) complex[n]=complex[n]+mol.bondOrder(i);
 	}
 	
 	int p=0;
@@ -131,9 +119,10 @@ public class Templates{
 	    else p++;
 	}
     }
-    public int NumTemplates() {return templ.size();}
-    public Molecule GetTemplate(int N) {return templ.get(N);}
-    public void AddTemplate(Molecule Mol) {templ.add(Mol);}
+    
+    public int numTemplates() {return templ.size();}
+    public Molecule getTemplate(int N) {return templ.get(N);}
+    public void addTemplate(Molecule Mol) {templ.add(Mol);}
 }
 
 

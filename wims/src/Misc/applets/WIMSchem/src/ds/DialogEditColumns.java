@@ -1,5 +1,5 @@
 /*
-    WIMSchem Elements: Chemistry molecular diagram drawing tool.
+    Sketch Elements: Chemistry molecular diagram drawing tool.
     
     (c) 2008 Dr. Alex M. Clark
     
@@ -26,18 +26,18 @@ import javax.swing.table.*;
 
 public class DialogEditColumns extends JDialog implements ActionListener
 {
-    JButton bappend,bdelete,bmoveup,bmovedn,baccept,breject;
-    JTable table;
-    SchemaDataModel model;
-    DataSheet ds;
+    private JButton bappend,bdelete,bmoveup,bmovedn,baccept,breject;
+    private JTable table;
+    private SchemaDataModel model;
+    private DataSheet ds;
 
-    ArrayList<Integer> idx=new ArrayList<Integer>();
-    ArrayList<String> name=new ArrayList<String>();
-    ArrayList<Integer> type=new ArrayList<Integer>();
-    ArrayList<String> descr=new ArrayList<String>();
+    private ArrayList<Integer> idx=new ArrayList<Integer>();
+    private ArrayList<String> name=new ArrayList<String>();
+    private ArrayList<Integer> type=new ArrayList<Integer>();
+    private ArrayList<String> descr=new ArrayList<String>();
     
-    int[] resultOldPos=null,resultNewPos=null,resultType=null;
-    String[] resultName=null,resultDescr=null;
+    private int[] resultOldPos=null,resultNewPos=null,resultType=null;
+    private String[] resultName=null,resultDescr=null;
     
     public DialogEditColumns(Frame Parent,DataSheet DS)
     {
@@ -46,17 +46,17 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	
 	setLayout(new BorderLayout());
 	
-	for (int n=0;n<ds.NumCols();n++)
+	for (int n=0;n<ds.numCols();n++)
 	{
 	    idx.add(new Integer(n+1));
-	    name.add(ds.ColName(n));
-	    type.add(new Integer(ds.ColType(n)));
-	    descr.add(ds.ColDescr(n));
+	    name.add(ds.colName(n));
+	    type.add(new Integer(ds.colType(n)));
+	    descr.add(ds.colDescr(n));
 	}
 	model=new SchemaDataModel(idx,name,type,descr);
 	table=new JTable(model);
 	    
-	SetColumnModel();
+	setColumnModel();
 	
 	JPanel buttons=new JPanel();
 	buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -80,14 +80,14 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	pack();
     }
 
-    private void SetColumnModel()
+    private void setColumnModel()
     {
 	JComboBox colTypes=new JComboBox();
-    	colTypes.addItem(DataSheet.TypeName(DataSheet.COLTYPE_MOLECULE));
-    	colTypes.addItem(DataSheet.TypeName(DataSheet.COLTYPE_STRING));
-    	colTypes.addItem(DataSheet.TypeName(DataSheet.COLTYPE_REAL));
-    	colTypes.addItem(DataSheet.TypeName(DataSheet.COLTYPE_INTEGER));
-    	colTypes.addItem(DataSheet.TypeName(DataSheet.COLTYPE_BOOLEAN));
+    	colTypes.addItem(DataSheet.typeName(DataSheet.COLTYPE_MOLECULE));
+    	colTypes.addItem(DataSheet.typeName(DataSheet.COLTYPE_STRING));
+    	colTypes.addItem(DataSheet.typeName(DataSheet.COLTYPE_REAL));
+    	colTypes.addItem(DataSheet.typeName(DataSheet.COLTYPE_INTEGER));
+    	colTypes.addItem(DataSheet.typeName(DataSheet.COLTYPE_BOOLEAN));
 	table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(colTypes));
     	table.setPreferredScrollableViewportSize(new Dimension(350,200));
 	table.getColumnModel().getColumn(0).setMaxWidth(40);
@@ -95,17 +95,17 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	table.getColumnModel().getColumn(2).setMaxWidth(100);
     }
 
-    private void ActionAppend()
+    private void actionAppend()
     {
 	idx.add(0);
 	name.add("");
 	type.add(DataSheet.COLTYPE_STRING);
 	descr.add("");
 	model.fireTableStructureChanged();
-	SetColumnModel();
+	setColumnModel();
     }
 
-    private void ActionDelete()
+    private void actionDelete()
     {
     	int i=table.getSelectedRow();
 	if (i<0) return;
@@ -114,10 +114,10 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	type.remove(i);
 	descr.remove(i);
 	model.fireTableStructureChanged();
-	SetColumnModel();
+	setColumnModel();
     }
     
-    private void ActionMove(int Dir)
+    private void actionMove(int Dir)
     {
     	int i=table.getSelectedRow();
 	if (i<0 || i+Dir<0 || i+Dir>=idx.size()) return;
@@ -128,11 +128,11 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	descr.add(i+Dir,descr.remove(i));
 
 	model.fireTableStructureChanged();
-	SetColumnModel();
+	setColumnModel();
     	table.changeSelection(i+Dir,table.getSelectedColumn(),false,false);
     }
 
-    private void ActionAccept()
+    private void actionAccept()
     {
     	for (int n=0;n<idx.size();n++) if (name.get(n).length()==0)
 	{
@@ -141,8 +141,8 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	}
 
     	// count retained+new+deleted
-    	int nsz=ds.NumCols();
-	boolean[] retained=new boolean[ds.NumCols()];
+    	int nsz=ds.numCols();
+	boolean[] retained=new boolean[ds.numCols()];
 	for (int n=0;n<idx.size();n++) 
 	{
 	    int i=idx.get(n).intValue();
@@ -176,20 +176,20 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	{
 	    if (oldIdx[n]<0 && newIdx[n]>=0)
 	    {
-	    	explan+="New column: ["+newName[n]+"], type: "+DataSheet.TypeName(newType[n])+"\n";
+	    	explan+="New column: ["+newName[n]+"], type: "+DataSheet.typeName(newType[n])+"\n";
 	    }
 	    else if (oldIdx[n]>=0 && newIdx[n]<0)
 	    {
-	    	explan+="Delete column: ["+ds.ColName(oldIdx[n])+"]\n";
+	    	explan+="Delete column: ["+ds.colName(oldIdx[n])+"]\n";
 	    }
 	    else if (oldIdx[n]>=0 && newIdx[n]>=0)
 	    {
-	    	if (newName[n].compareTo(ds.ColName(oldIdx[n]))!=0)
-		    explan+="Rename ["+ds.ColName(oldIdx[n])+"] to ["+newName[n]+"]\n";
-		if (newDescr[n].compareTo(ds.ColDescr(oldIdx[n]))!=0)
+	    	if (newName[n].compareTo(ds.colName(oldIdx[n]))!=0)
+		    explan+="Rename ["+ds.colName(oldIdx[n])+"] to ["+newName[n]+"]\n";
+		if (newDescr[n].compareTo(ds.colDescr(oldIdx[n]))!=0)
 		    explan+="Change description for ["+newName[n]+"]\n";
-		if (ds.ColType(oldIdx[n])!=newType[n])
-		    explan+="Change type of ["+newName[n]+"] to: "+DataSheet.TypeName(newType[n])+"\n";
+		if (ds.colType(oldIdx[n])!=newType[n])
+		    explan+="Change type of ["+newName[n]+"] to: "+DataSheet.typeName(newType[n])+"\n";
 		if (newIdx[n]!=oldIdx[n])
 		    explan+="Reorder ["+newName[n]+"] from #"+(oldIdx[n]+1)+" to #"+(newIdx[n]+1)+"\n";
 	    }
@@ -208,32 +208,32 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	setVisible(false);
     }
     
-    private void ActionReject()
+    private void actionReject()
     {
     	setVisible(false);
     }
 
     // returns true if the datasheet has changed
-    public boolean Execute()
+    public boolean execute()
     {
     	setVisible(true);
 	return resultOldPos!=null;
     }
 
-    public int[] ResultOldPos() {return resultOldPos;}
-    public int[] ResultNewPos() {return resultNewPos;}
-    public String[] ResultName() {return resultName;}
-    public int[] ResultType() {return resultType;}
-    public String[] ResultDescr() {return resultDescr;}
+    public int[] resultOldPos() {return resultOldPos;}
+    public int[] resultNewPos() {return resultNewPos;}
+    public String[] resultName() {return resultName;}
+    public int[] resultType() {return resultType;}
+    public String[] resultDescr() {return resultDescr;}
 
     public void actionPerformed(ActionEvent e)
     {
-    	if (e.getSource()==bappend) ActionAppend();
-    	else if (e.getSource()==bdelete) ActionDelete();
-    	else if (e.getSource()==bmoveup) ActionMove(-1);
-    	else if (e.getSource()==bmovedn) ActionMove(1);
-    	else if (e.getSource()==baccept) ActionAccept();
-    	else if (e.getSource()==breject) ActionReject();
+    	if (e.getSource()==bappend) actionAppend();
+    	else if (e.getSource()==bdelete) actionDelete();
+    	else if (e.getSource()==bmoveup) actionMove(-1);
+    	else if (e.getSource()==bmovedn) actionMove(1);
+    	else if (e.getSource()==baccept) actionAccept();
+    	else if (e.getSource()==breject) actionReject();
     }
     
     // internal class for the underlying data
@@ -268,7 +268,7 @@ public class DialogEditColumns extends JDialog implements ActionListener
 		return i==0 ? "" : ""+i;
 	    }
 	    else if (col==1) return name.get(row);
-	    else if (col==2) return DataSheet.TypeName(type.get(row).intValue());
+	    else if (col==2) return DataSheet.typeName(type.get(row).intValue());
 	    else if (col==3) return descr.get(row);
 	    return null;
 	}
@@ -279,11 +279,11 @@ public class DialogEditColumns extends JDialog implements ActionListener
 	    else if (col==2)
 	    {
 	    	String t=(String)value;
-		if (t.compareTo(DataSheet.TypeName(DataSheet.COLTYPE_MOLECULE))==0) type.set(row,DataSheet.COLTYPE_MOLECULE);
-		else if (t.compareTo(DataSheet.TypeName(DataSheet.COLTYPE_STRING))==0) type.set(row,DataSheet.COLTYPE_STRING);
-		else if (t.compareTo(DataSheet.TypeName(DataSheet.COLTYPE_REAL))==0) type.set(row,DataSheet.COLTYPE_REAL);
-		else if (t.compareTo(DataSheet.TypeName(DataSheet.COLTYPE_INTEGER))==0) type.set(row,DataSheet.COLTYPE_INTEGER);
-		else if (t.compareTo(DataSheet.TypeName(DataSheet.COLTYPE_BOOLEAN))==0) type.set(row,DataSheet.COLTYPE_BOOLEAN);
+		if (t.compareTo(DataSheet.typeName(DataSheet.COLTYPE_MOLECULE))==0) type.set(row,DataSheet.COLTYPE_MOLECULE);
+		else if (t.compareTo(DataSheet.typeName(DataSheet.COLTYPE_STRING))==0) type.set(row,DataSheet.COLTYPE_STRING);
+		else if (t.compareTo(DataSheet.typeName(DataSheet.COLTYPE_REAL))==0) type.set(row,DataSheet.COLTYPE_REAL);
+		else if (t.compareTo(DataSheet.typeName(DataSheet.COLTYPE_INTEGER))==0) type.set(row,DataSheet.COLTYPE_INTEGER);
+		else if (t.compareTo(DataSheet.typeName(DataSheet.COLTYPE_BOOLEAN))==0) type.set(row,DataSheet.COLTYPE_BOOLEAN);
 	    }
 	    else if (col==3) descr.set(row,(String)value);
             fireTableCellUpdated(row,col);
