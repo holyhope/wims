@@ -19,8 +19,8 @@ if [ -z "$wims_home" ]; then
 fi
 
 w_msg2wims_primitives="reload fold ref link docform form resource calcform embed tooltip href
-	exercise tool doc example help adm slib
-	def define comment draw if for while"
+   exercise tool doc example help adm slib
+    def define comment draw if for while"
 export w_msg2wims_primitives
 ### macro : structure of the document : define $def and $src
 ### the parameter is the name of the directory in doc (not used in a class)
@@ -78,7 +78,6 @@ gen_doc ( ) {
     awk '/^!if/ {exit}; {print}' $def/$dd >$src/$dh 2>/dev/null
    fi
    if [ ! -f $def/$dd ] || [ $src/$i -nt $def/$dd ]; then
-   # echo $dd
     rm -f $def/$dd 2>/dev/null
     $wims_home/bin/msg2wims $src/$i tmp
     cat $src/$dh >$def/$dd 2>/dev/null
@@ -113,10 +112,14 @@ $tit" >>.index
  fi
 done
 }
+
+latex2wims ( ) {
+    $wims_home/public_html/modules/adm/latex2wims/latex2wims.pl --subdir=$1 --docdir=$lastdir $2.tex
+}
+
 ## on cherche les parametres $def $src
 
-doc ( ) {
- echo "compile $1"
+mk_doc ( ) {
  cd $lastdir
  doc_type $1
  if [ ! -d $def ]; then
@@ -127,7 +130,15 @@ doc ( ) {
   echo Directory $src not found.
   exit;
  fi
- cd $lastdir
+ ##latex2wims
+ if [ -f "$lastdir/doc/srctex/.index" ]; then
+  cd "$lastdir/doc/srctex"  
+  cat .index | while read dd
+   do
+     if [ ! -z "${dd}" ] ; then latex2wims ${dd}; fi
+   done
+fi
+cd $lastdir
 ## cleaning file.def where file has been deleted
  clean_doc $def $src
 ## generated file *.def
@@ -141,10 +152,8 @@ doc ( ) {
 if [ -f $lastdir/doc/.def ] ; then
  doclist=`awk -F'=' '$1=="doclist" {print $2}' $lastdir/doc/.def`
 fi
-echo ''
-echo $doclist
 if [ -z "$doclist" ]; then doclist="1" ; fi
-for l in $doclist; do doc $l; done 
+for l in $doclist; do mk_doc $l; echo "" ; echo "$l done"; done 
 
 ### in case of a class, the parameter of doc ()  do not mind !
 ### many global variables yet
