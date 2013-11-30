@@ -41,16 +41,18 @@ $name_file2.
 !if document isin $doctest1
   <div class="wims_emph">$name_gestion</div>
 !endif
+
+!form reply
+ !reset mkdoc
+ <input type="submit" name="mkdoc" value="$name_compile" />
+!formend
+
 !set table_cellpadding=1
 
 !reset table_center
 !set table_header=!replace internal <> by in $table_header
 !set table_end=!replace internal </> by in $table_end
 
-!form reply
-!formcheckbox mkdoc list 1 prompt $name_compile
-<input type="submit" value="$wims_name_send" />
-!formend
 $table_header
 $table_hdtr
 <th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations</th></tr>
