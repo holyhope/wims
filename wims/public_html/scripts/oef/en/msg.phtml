@@ -46,8 +46,17 @@
 !endif
 
 !if bad_exo iswordof $error
- Due to an error in this exercise (the good answer for <b>$(replyname$i)</b>
- is invalid), it is impossible to test the
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubs (the good answer for the question $j\
+     <span class="tt">$(replyname$j)</span>\
+     is invalid)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ Due to an error in this exercise $whichexo, it is impossible to test the
  correctness of your answer. The only solution for you is to change the
  exercise; sorry.
  <p>
@@ -58,6 +67,7 @@
   contact the author
  !endif
  of the exercise if you want to report the error.
+ </p>
  !exit
 !endif
 

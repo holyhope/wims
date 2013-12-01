@@ -62,20 +62,30 @@
 !endif
 
 !if bad_exo iswordof $error
- A cause d'une erreur dans cet exercice (la bonne réponse pour la question $i
- <b>$(replyname$i)</b> n'est pas valable), il est impossible d'analyser
+
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubst (la bonne réponse pour la question $j \
+     <span class="tt">$(replyname$j)</span>
+     n'est pas valable)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ A cause d'une erreur dans cet exercice $whichexo, il est impossible d'analyser
  votre réponse. La seule solution pour vous est de changer d'exercice&nbsp;;
  toutes nos excuses.
  <p>
  Veuillez
- !if $email!=$empty
-  !mailurl $email contacter l'auteur
- !else
-  contacter l'auteur
- !endif
- de l'exercice si vous voulez signaler cette erreur.
-</p>
- !exit
+  !if $email!=$empty
+   !mailurl $email contacter l'auteur
+  !else
+   contacter l'auteur
+  !endif
+ de l'exercice afin de signaler cette erreur.
+ </p>
+ !exit 
 !endif
 
 !if too_many_print iswordof $error
