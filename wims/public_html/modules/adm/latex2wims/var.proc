@@ -24,10 +24,10 @@ wims_prefix=class user tmp
     wims =!record 0 of wims.sty
     fichier_test=!record 0 of fichier_test.tex
     !filewrite getfile/style.css $style
-    !filewrite getfile/wims.sty $wims 
+    !filewrite getfile/wims.sty $wims
     !filewrite getfile/fichier_test.tex  $fichier_test
-    
-    
+
+
 !if $wims_deposit!=noname.file and $wims_deposit!=$empty
   !sh cd $wims_home/$wims_sesdir\
   	mkdir -p latex2wims\
@@ -39,8 +39,8 @@ wims_prefix=class user tmp
     style=!record 0 of style.css
     wims =!record 0 of wims.sty
     fichier_test=!record 0 of fichier_test.tex
-    !filewrite wimshome/$wims_sesdir/latex2wims/style.css $style 
-    !filewrite wimshome/$wims_sesdir/latex2wims/wims.sty $wims 
+    !filewrite wimshome/$wims_sesdir/latex2wims/style.css $style
+    !filewrite wimshome/$wims_sesdir/latex2wims/wims.sty $wims
     !filewrite wimshome/$wims_sesdir/latex2wims/fichier_test.tex  $fichier_test
     !!!reset exemple
 !endif
@@ -55,11 +55,11 @@ fichiers=!column -1 of $fichiers
 
 Fichiers=!replace internal , by $ $  in $fichiers
 cnt_fichier=!itemcnt $fichiers
-!if $cnt_fichier >0 
-    date=!sh cd $wims_home/$wims_sesdir/latex2wims; ls -al $Fichiers | awk '{ print $$6 " " $$7 " " $$8 }' 
-    date=!trim $date 
+!if $cnt_fichier >0
+    date=!sh cd $wims_home/$wims_sesdir/latex2wims; ls -al $Fichiers | awk '{ print $$6 " " $$7 " " $$8 }'
+    date=!trim $date
     date= !lines2items $date
-!endif 
+!endif
 
 !if $cnt_fichier=1
   principal=1
@@ -69,7 +69,7 @@ cnt_fichier=!itemcnt $fichiers
 !if $execut=2 and $cnt_fichier=0
   error=$error fichier
   execut=1
-!endif 
+!endif
 
 !if $execut=2 and $principal=$empty
   error = $error principal
@@ -100,17 +100,34 @@ Document dans le compte Modtool
        !endif
 !endif
 !if $principal!=$empty and ($execut=2 or $execut=3) and $document!=$empty and $document!=$choix
+   !default subdoc=1
     execut=3
-    !if $confirm=0 
+    !if $confirm=0
       auth_name1=!word 2 of $auth_name
       fichier_p=!item $principal of $fichiers
       !!!mexec dos2unix $fichier_p
       docdir=$wims_home/public_html/modules/devel/$wims_developer/$document
-      !sh rm -r $docdir/doc/1/* ; mkdir -p $docdir/doc/1/src
+      docdirw=wimshome/public_html/modules/devel/$wims_developer/$document
+###common_files ?
+      !read $docdir/.def
+      !if $common_files=yes
+        docfile=doc/files
+      !else
+        docfile=doc/$subdoc/files
+      !endif
+      !sh rm -r $docdir/doc/$subdoc/* ; mkdir -p $docdir/doc/$subdoc/src; mkdir -p $docdir/doc/srctex
+!! inutile de passer par le repertoire provisoire - latex2wims envoyait directement des ficiers dans 
+
       dir=$wims_home/$wims_sesdir/latex2wims/
-      !mexec latex2wims.pl --dir=$dir --docdir=$docdir --author=$auth_name1 --email=$auth_email --worksheet=$wksheet --verbose=1 $fichier_p
-      
-      
+!!!forget about that by using just src2def : --author=$auth_name1 --email=$auth_email --verbose=1
+      !!!mexec latex2wims.pl --subdir=$subdoc --dir=$dir --docdir=$docdir --author=$auth_name1 --email=$auth_email --worksheet=$wksheet --verbose=1 $fichier_p
+      !sh cp $dir/* $docdir/doc/srctex/
+!! create the file OIndex in srctex
+      Oindex=
+      Oindex=!append line $subdoc $fichier_p to $Oindex
+      Oindex=!replace internal .tex by in $Oindex
+      !filewrite $docdirw/doc/srctex/0index $Oindex
+
       images=!sh cd $wims_home\
       ls $wims_sesdir/latex2wims/*
       images=!replace internal / by , in $images
@@ -121,14 +138,15 @@ Document dans le compte Modtool
          images=!replace item number $i by in $images
         !endif
       !next
-
+!!image transfer
       images=!items2words $images
       images=!trim $images
       images=!singlespace $images
-      !sh mkdir -p $docdir/doc/1/files\
-      for a in $images ; do cp $wims_home/$wims_sesdir/latex2wims/$$a $docdir/doc/1/files/$$a ; done\
-     cd $docdir \
-     src2def 2>/dev/null
+      !sh mkdir -p $docdir/doc/$subdoc/$docfiles\
+       for a in $images ; do cp $wims_home/$wims_sesdir/latex2wims/$$a $docdir/doc/$doc/$docfiles/$$a ; done
+!!now src2def make latex2wims       
+       !sh cd $docdir \
+       src2def 2>/dev/null
    !else
     !if $confirm=1
       execut=1
