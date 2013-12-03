@@ -38,7 +38,7 @@ into name_transfer,name_newtransfer,name_transfer_wims,name_documentation,name_p
   name_exec,name_comeback,name_gotomodtool,name_test
   
   
-!set name_warning=!nosubst de bestanden van het document  <tt $stylett>$document</tt>\
+!set name_warning=!nosubst de bestanden van het document  <span class="tt wims_fname">$document</span>\
     worden gewist en vervangen door de nieuwe.
 !set name_select_example=Om verder te gaan, kunt u de drie bestanden ophalen\
 (latex code [*.tex], latex style [*.sty] en een html [*.css]) 
@@ -71,7 +71,7 @@ Leest hiervoor eerst deze
 </p>
 !exit
 :4 
-de bestanden van het document <tt $stylett>$document</tt>
+de bestanden van het document <span class="tt wims_fname">$document</span>
     worden gewist en vervangen door de nieuwe.
    <p>Uitvoeren ? </p>
 !exit
