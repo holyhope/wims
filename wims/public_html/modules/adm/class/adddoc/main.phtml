@@ -22,7 +22,7 @@ $module_title
  !set block=!getopt block in $iniparm1
 $table_header
 $table_tr
-<th>$wims_name_title</th><td colspan="2"> <input size="50" name="title" value="$title" />
+<th>$wims_name_title</th><td> <input size="50" name="title" value="$title" />
 </td></tr>
 $table_tr<th>$wims_name_Status</th>
  <td>
@@ -31,7 +31,13 @@ $table_tr<th>$wims_name_Status</th>
   !if $doc>0
   !formcheckbox update list 0 prompt $wims_name_erase
  !endif
- </td><td>
+ </td></tr>
+$table_tr<th>$name_wksheet</th><td>
+!formselect wksheet from 1 to 64
+</td></tr>
+$table_tr<th>$wims_name_Description</th><td>
+<textarea name="desc" rows="5" cols="50">$desc</textarea></td></tr>
+$table_tr<th>Code</th><td>
  <code>
 !replace internal & by &amp; in $dir
  !if $iniparm!=$empty
@@ -39,9 +45,7 @@ $table_tr<th>$wims_name_Status</th>
  !endif
  </code>
  </td></tr>
-$table_tr<th>$wims_name_Description</th><td colspan="2">
-<textarea name="desc" rows="5" cols="50">$desc</textarea></td></tr>
-$table_end
+ $table_end
 <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
  
 !formend

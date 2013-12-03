@@ -19,7 +19,7 @@ class=$wims_class
 !endif
 !if $job=prop and $cmd iswordof new resume
   sh=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
-  !distribute lines $sh into dir,t_,title,desc,status
+  !distribute lines $sh into dir,t_,title,desc,status,wksheet
 !endif
 !if $cmd=reply and $job=proc
   !read prop.proc
@@ -63,7 +63,8 @@ class=$wims_class
 $iniparm\
 $ititle\
 $idesc\
-$status
+$status\
+$wksheet
 
 wims_module_log=class $class: add $dir
 

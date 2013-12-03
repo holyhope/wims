@@ -1,0 +1,16 @@
+
+!set parmtoread=!singlespace $wims_read_parm
+!set parmtoread=!words2items $parmtoread
+!set parmtoread=!nonempty items $parmtoread
+!set url=$(parmtoread[1])
+!set parmtoread=$(parmtoread[2..-1])
+
+!for p_ in $parmtoread
+
+  !set testw=!replace internal & by $\
+$ in $url
+  !set testw=!replace internal = by , in $testw
+  !set testw=!select $testw where column 1=$p_
+  !set $p_=!nospace $(testw[2])
+!next
+

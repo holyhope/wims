@@ -1,4 +1,5 @@
-!!##language independant
+
+!read getparm $module_init_parm wksheet
 !if \ isin $parm1
  !for p in 1
   !set parm$p=!slashsubst $(parm$p)
@@ -20,6 +21,7 @@
  !set m_exodescription=$d_
  !set prompt=!item 2 to -1 of $parms
  !default prompt=$t_
+
  !href target=wims_exo cmd=new&module=$m_&worksheet=$sh&$p_ $prompt
  !exit
 !endif
@@ -42,7 +44,12 @@
 !next i
 !default lmod=home
 !default lcmd=new
-!set nadd=!translate internal $ $ to & in $nadd
+!set nadd0=!translate internal $ $ to & in $nadd
+
+!if $wksheet!=$empty
+  !set nadd=$nadd worksheet=$wksheet
+  !set nadd=!translate internal $ $ to & in $nadd
+!endif
 !set prompt=!item 2 to -1 of $parms
 !default prompt=!module title_$lang $lmod
 !default prompt=!module title $lmod
@@ -52,11 +59,11 @@
 !if $prim=exercise
  !href target=wims_exo module=$lmod&cmd=$lcmd$nadd $prompt
  !if $lcmd=new
-  !set nadd=!replace internal &+ by & in $nadd
-  !set nadd=!char 2 to -1 of $nadd
+  !set nadd0=!replace internal &+ by & in $nadd0
+  !set nadd0=!char 2 to -1 of $nadd0
   !set sheetdata=$sheetdata\
 :$lmod\
-$nadd\
+$nadd0\
 10\
 1\
 $prompt\
@@ -65,21 +72,22 @@ $prompt\
 \
 module=$module&block=$block&cmd=new,9\
 
+!!module=$module&doc=$doc&block=$block&cmd=new,9\
  !endif
 !endif
 !if $prim=tool
- !href target=wims_tool module=$lmod&cmd=$lcmd$nadd $prompt
+ !href target=wims_tool module=$lmod&cmd=$lcmd$nadd0 $prompt
 !endif
 !if $prim=doc
- !href target=wims_doc module=$lmod&cmd=$lcmd$nadd $prompt
+ !href target=wims_doc module=$lmod&cmd=$lcmd$nadd0 $prompt
 !endif
 !if $prim=example
- !href target=wims_example module=$lmod&cmd=$lcmd$nadd $prompt
+ !href target=wims_example module=$lmod&cmd=$lcmd$nadd0 $prompt
 !endif
 !if $prim=help
- !href target=wims_help module=$lmod&cmd=$lcmd$nadd $prompt
+ !href target=wims_help module=$lmod&cmd=$lcmd$nadd0 $prompt
 !endif
 !if $prim=adm
- !href module=$lmod&cmd=$lcmd$nadd $prompt
+ !href module=$lmod&cmd=$lcmd$nadd0 $prompt
 !endif
 

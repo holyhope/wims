@@ -2,11 +2,11 @@
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 !for i=1 to $docpubliccnt
  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
- !distribute lines $sh into s_,t_,ti,d_,o_
+ !distribute lines $sh into s_,t_,ti,d_,o_,w_
  $table_tr
   <td>$wims_name_doc</td>
   <td>
-   !href module=$s_&$t_ $ti
+   !href module=$s_&$t_&wksheet=$w_ $ti
   </td>
   <td>
    !item $[$o_ +1] of $wims_name_status

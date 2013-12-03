@@ -1,4 +1,13 @@
-!!##language independant
+!read getparm $module_init_parm wksheet
+
+!set testw=!replace internal & by $\
+$ in $module_init_parm
+!set testw=!replace internal = by , in $testw
+!set testw=!select $testw where column 1=wksheet
+!set wksheet=!nospace $(testw[2])
+
+!setdef wims_wksheet=$wksheet in wimshome/sessions/$wims_session/var.stat
+
 !if \ isin $parm1
  !for p in 1
   !set parm$p=!slashsubst $(parm$p)
@@ -50,7 +59,7 @@
 !default prompt=$n_unknown
 
 !if $prim=exercise
- !href target=wims_exo module=$lmod&cmd=$lcmd$nadd $prompt
+ !href target=wims_exo module=$lmod&cmd=$lcmd$nadd&worksheet=$wksheet $prompt
  !if $lcmd=new
   !set nadd=!replace internal &+ by & in $nadd
   !set nadd=!char 2 to -1 of $nadd

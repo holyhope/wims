@@ -1,6 +1,6 @@
 
 rec=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
-!distribute lines $rec into bidon,bidon,title_save,desc_save,status_save
+!distribute lines $rec into bidon,bidon,title_save,desc_save,status_save,wksheet_save
 
 !if $title!=$title_save
  !distribute item 3,$title into update_field,update_content
@@ -12,6 +12,10 @@ rec=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
 !endif
 !if $status!=$status_save
  !distribute item 5,$status into update_field,update_content
+ !read update.doc
+!endif
+!if $wksheet!=$wksheet_save
+ !distribute item 6,$wksheet into update_field,update_content
  !read update.doc
 !endif
 !if $update=0
