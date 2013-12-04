@@ -19,8 +19,7 @@ import java.text.*;
 
 public class SVGBuilder
 {
-    DecimalFormat df = new DecimalFormat("#.##");
-    //System.out.print(df.format(d));
+    DecimalFormat df = new DecimalFormat("#.##",new DecimalFormatSymbols(Locale.US));
     public final static int NOCOLOUR=-1;
     public final static int TXTSTYLE_NORMAL=0;
     public final static int TXTSTYLE_BOLD=0x01;
@@ -240,7 +239,6 @@ public class SVGBuilder
 	Out.println("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
 	Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(0.6 0 0 0.6 0 0)\">");
 	Out.println();
-	
 	// now write out the font definition
 	Out.println("<defs><font id=\""+SVGFont.FONT_FAMILY+"\" horiz-adv-x=\""+SVGFont.FONT_ADV+"\">");
 	Out.println("<font-face font-family=\""+SVGFont.FONT_FAMILY+"\" units-per-em=\""+SVGFont.UNITS_PER_EM+"\" "+" panose-1=\""+SVGFont.PANOSE_1+"\" ascent=\""+SVGFont.ASCENT+"\" descent=\""+SVGFont.DESCENT+"\" alphabetic=\"0\"/>");

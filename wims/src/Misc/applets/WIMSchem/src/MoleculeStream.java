@@ -114,7 +114,7 @@ public class MoleculeStream
     }
     public static void writeNative(BufferedWriter out,Molecule mol) throws IOException
     {
-	DecimalFormat fmt=new DecimalFormat("0.0000");
+	DecimalFormat fmt = new DecimalFormat("0.0000",new DecimalFormatSymbols(Locale.US));
 	
     	out.write("SketchEl!("+mol.numAtoms()+","+mol.numBonds()+")\n");
 	for (int n=1;n<=mol.numAtoms();n++)

@@ -100,7 +100,7 @@ public class DialogEdit extends JDialog implements ActionListener
     {
     	Object[][] data=new Object[aselidx.size()][];
 	
-	DecimalFormat fmt=new DecimalFormat("0.0000");
+	DecimalFormat fmt = new DecimalFormat("0.0000",new DecimalFormatSymbols(Locale.US));
 
 	for (int n=0;n<aselidx.size();n++)
 	{

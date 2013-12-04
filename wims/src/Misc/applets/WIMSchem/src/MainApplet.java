@@ -755,7 +755,7 @@ public class MainApplet extends JApplet implements ComponentListener
 		}
 	    }
 	}
-	DecimalFormat df = new DecimalFormat("#.#");
+	DecimalFormat df = new DecimalFormat("#.#",new DecimalFormatSymbols(Locale.US));
 	/* 
 	    the second 'plainformula' was (the no good) previous smiles-formula ; 
 	    added just to satisfy my checkfiles ... 
