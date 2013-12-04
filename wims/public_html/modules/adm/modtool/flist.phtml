@@ -32,16 +32,21 @@ $name_useropts4:
 
 !read adm/validation/validate.phtml
 <br class="spacer" />
-$name_your_module
-<span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
-<span class="small">
-!href cmd=reply&jobreq=index $mod
-</span>
-$name_file2.
+!if document notin $doctest1
+ $name_your_module
+ <span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
+ <span class="small">
+ !href cmd=reply&jobreq=index $mod
+ </span>
+ $name_file2.
+ !else
 !!the script src2def should be launched for oefexercises also, but I do not see 
 !! the need for the moment
-!if document isin $doctest1
-  <div class="wims_emph">$name_gestion</div>
+  $wims_name_doc <span class="wims_mod_title">$title</span> (<span class="wims_mod_desc">$description</span>)
+  <span class="small">
+ !href cmd=reply&jobreq=index $mod
+ </span>:
+  $name_gestion
   !set testsrc=!record 0 of wimshome/public_html/$devdir/$mod/doc/srctex/0index
   !if $testsrc!=$empty
    !form reply
