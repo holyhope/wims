@@ -237,7 +237,7 @@ public class SVGBuilder
     	    Out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 	    Out.println("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
 	}
-	Out.println("<svg \"xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+	Out.println("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
 	Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(0.6 0 0 0.6 0 0)\">");
 	Out.println();
 	
