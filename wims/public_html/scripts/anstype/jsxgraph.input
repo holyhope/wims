@@ -2,7 +2,6 @@
 
 !set anstype=yes
 !set anstyle=dprompt
-!set oef_js_submit=$oef_js_submit capture$i();
 
 !if $wims_read_parm=def
  !exit
@@ -25,7 +24,7 @@ $  in $inputsize
 !set jbox=!line 1 of $(oef_answer_option$i)
 !set your_brd=!word 2 of $jbox
 !set jbox=!word 1 of $jbox
-!default your_brd=brd
+!default your_brd=brd$i
 
 !set oef_answer_option$i=!line 2 to -1 of $(oef_answer_option$i)
 !set script$i=$(oef_answer_option$i)
@@ -89,5 +88,5 @@ var capture$i = function() {
 </script>
 
 <input type="hidden" name="reply$i" id="jsreply$i" value="" />
-
+!set oef_js_submit=$oef_js_submit capture$i();
 !reset your_brd jbox
