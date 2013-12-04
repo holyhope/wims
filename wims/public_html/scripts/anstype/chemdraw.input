@@ -4,6 +4,10 @@
 !set anstype=yes
 !set anstyle=dprompt
 !set ans_require=matchmol,checkmol,WIMSchem
+!set lang__=$lang
+!if $lang notwordof en fr nl
+  !set lang__=en
+!endif
 
 !if $wims_read_parm=def
  !exit
@@ -146,6 +150,7 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
   <param name="showfile" value="$showfile" />
   <param name="show_hydrogen" value="$show_hydrogen" />
   <param name="show_carbon" value="$show_carbon" />
+  <param name="language" value="$lang__" />\
   $templ
   $atoms
   $params
