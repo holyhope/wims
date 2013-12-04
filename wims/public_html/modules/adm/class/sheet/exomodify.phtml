@@ -1,4 +1,4 @@
-!! fichier de modification des informations sur les exercices d'une feuille
+!! Modify informations on the exercises in a sheet
 !!
 !distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_,feedback_
 !! !set orgtit_=!module title $directory_
@@ -10,18 +10,9 @@ $name_titlemodif $modif
    $table_header
    <input type="hidden" name="modif" value="$ex_" />
    <input type="hidden" name="job" value="modify" />
-!!what can be changed even if the sheet is active
-!if $activetest > 0
-    $table_tr
-    <td>$(name_shtab[10])
-   &nbsp;
-    !set wims_ref_class=wims_button_help
-    !href target=wims_mhelp cmd=help&special_parm=feedback $wims_name_help
-    </td>
-    <td>
-    <textarea name="mod_feedback" rows="1" cols="60" wrap="off">$feedback_</textarea></td>
-    </tr>
-!else
+!! if the sheet is active, the fields that may be changed are
+!! title, description, comment, feedback
+
    $table_tr
     <td>$wims_name_title</td>
 !!($name_oldtitle <em>$orgtit</em>)</td>
@@ -35,6 +26,7 @@ $name_titlemodif $modif
     <td>$(name_shtab[7]) <span class="small">($name_desc_comment)</span></td>
     <td><textarea name="mod_comment" rows="3" cols="60">$comment_</textarea></td>
    </tr>
+ !if $activetest <= 0
    $table_tr
     <td>$name_pointsasked</td>
     <td><input size="4" name="mod_require" value="$require_" /></td>
@@ -52,6 +44,7 @@ $name_titlemodif $modif
     <td><input size="40" name="mod_dep" value="$dep_" /></td>
     !reset mod_dep
    </tr>
+  !endif
    $table_tr
     <td>$(name_shtab[10])
     &nbsp;
@@ -60,7 +53,7 @@ $name_titlemodif $modif
     </td>
     <td><textarea name="mod_feedback" rows="1" cols="60" wrap="off">$feedback_</textarea></td>
    </tr>
-   
+  !if $activetest <= 0
    !let oef=!defof category in wimshome/public_html/modules/$directory_/INDEX
    !if oef isitemof $oef
     $table_tr
@@ -81,8 +74,8 @@ $name_titlemodif $modif
      <td>$directory_ <br /> $parm_ </td>
     </tr>
    !endif
- !endif activetest > 0
-    $table_end 
+ !endif activetest = 0
+    $table_end
    <div class="wimscenter wimsform">
      <input type="submit" value="$wims_name_tosave" /> &nbsp;
      !set wims_ref_class=wims_button

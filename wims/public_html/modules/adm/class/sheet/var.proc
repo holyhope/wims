@@ -25,7 +25,7 @@ wims_helper=chapter=3
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
 
-!if $class_expiration=$empty 
+!if $class_expiration=$empty
  !defread wimshome/log/classes/$wims_class/.def
  !if $wims_superclass!=$empty
   class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
@@ -54,7 +54,7 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
 	and $expyear$expmon$expday<=$class_expiration
 	and N notin $expmon$expday$expyear
  expiration=$expyear$expmon$expday
- !else 
+ !else
    !if $expyear$expmon$expday>$class_expiration
      !readproc adm/date.phtml $class_expiration
      error=toolate
@@ -206,7 +206,7 @@ activetest=!replace line number 3 by $ecnt in $activetest
   allow_parm=none
  !endif
  !if $allowtype=select
-  allow_parm=$IPlist 
+  allow_parm=$IPlist
  !endif
  !if $sharers!=$empty and $allowshare=1
   setclass=!items2words $wims_class,$sharers
@@ -365,7 +365,8 @@ $comment
   !endif
   mod_feedback=$mod_feedback,$mod_feedback_lim,$mod_feedback_lim2
  !endif
- 
+
+ exo=$modif
  !if $activetest=0
    update_content=$D_\
 $p_\
@@ -377,12 +378,22 @@ $mod_dep\
 $mod_comment\
 $mod_feedback
    update_field=0
+   !read adm/class/update.exo
  !else
-   update_content=$mod_feedback
-   update_field=9
+  !distribute lines 5\
+$mod_title into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 6\
+$mod_desc into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 8\
+$mod_comment into update_field,update_content
+  !read adm/class/update.exo
+  !distribute lines 9\
+$mod_feedback into update_field,update_content
+  !read adm/class/update.exo
  !endif
- exo=$modif
- !read adm/class/update.exo
+
  !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment,mod_feedback
 !endif
 
