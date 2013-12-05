@@ -28,6 +28,7 @@ public class SVGBuilder
     public final static int TXTALIGN_LEFT=1;
     public final static int TXTALIGN_RIGHT=2;
     public String g_id = "g_SVG_1000000";
+    public String svg_id = "SVG_1000000";
 
     private boolean fresh=true;
     private double lowX=0,lowY=0,highX=0,highY=0;
@@ -230,14 +231,15 @@ public class SVGBuilder
     {
 	if( MainPanel.appletMode ){ 
 	    g_id = MainApplet.g_id;
+	    svg_id = MainApplet.svg_id;
 	}
 	else
 	{
     	    Out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 	    Out.println("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
 	}
-	Out.println("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
-	Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(0.6 0 0 0.6 0 0)\">");
+	Out.println("<svg id=\""+svg_id+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+	Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(1 0 0 1 0 0)\">");
 	Out.println();
 	// now write out the font definition
 	Out.println("<defs><font id=\""+SVGFont.FONT_FAMILY+"\" horiz-adv-x=\""+SVGFont.FONT_ADV+"\">");

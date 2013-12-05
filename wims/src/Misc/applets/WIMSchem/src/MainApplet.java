@@ -30,6 +30,7 @@ public class MainApplet extends JApplet implements ComponentListener
     MainPanel mainPanel=null;
     long id;
     public static String g_id = "g_SVG_1000000";/* used for SVG zoom in/out */
+    public static String svg_id = "SVG_1000000";/* used for SVG zoom in/out */
     /* jm.evers addition to configure applet */
     static String[] TOOLS={"TOOL_CURSOR","TOOL_ROTATOR","TOOL_ERASOR","TOOL_DIALOG","TOOL_EDIT",
     "TOOL_SETATOM","TOOL_SINGLE","TOOL_DOUBLE","TOOL_TRIPLE","TOOL_ZERO",
@@ -217,19 +218,6 @@ public class MainApplet extends JApplet implements ComponentListener
     
     public String getSVG(String type){ /* 1 or URL : URL is correct answer from server  */
 	SVGMolecule svgmol;
-	String js_zoom = "";
-	boolean use_zoom = getBool("use_zoom",false);
-	if( use_zoom ){ /* simple static in/out zoom, no pan */
-	    id = System.currentTimeMillis();    
-	    g_id = ("g_SVG_"+id).toString();
-	    js_zoom="<script type=\"text/javascript\">"+
-	    "var "+g_id+" = document.getElementById('"+g_id+"');"+
-	     g_id+".addEventListener('mouseover', SVG_big, false);"+
-	     g_id+".addEventListener('click', SVG_normal, false);"+
-	    "function SVG_big(){"+g_id+".setAttributeNS(null, 'transform', 'matrix(1 0 0 1 0 0)');}"+
-	    "function SVG_normal(){"+g_id+".setAttributeNS(null,'transform','matrix(0.6 0 0 0.6 0 0)');}"+
-	    "</script>";
-	}
 	if( type.equals("1") ){ /* get the student reply*/
 	    try{
 		svgmol = new SVGMolecule((mainPanel.editor).molData());
@@ -246,6 +234,35 @@ public class MainApplet extends JApplet implements ComponentListener
 	    }catch(Exception e){return e.toString();}
 	}    
 	svgmol.draw();
+	String js_zoom = "";
+	double zoom_factor = getDouble("zoomfactor",1.00);
+	if( zoom_factor != 1.00 ){ /* simple static in/out zoom, no pan */
+	    id = System.currentTimeMillis();
+	    g_id = ("g_SVG_"+id).toString();
+	    svg_id = ("SVG_"+id).toString();
+	    js_zoom="<script type=\"text/javascript\">"+
+	    "var "+svg_id+" = document.getElementById('"+svg_id+"');"+
+	    "var "+g_id+" = document.getElementById('"+g_id+"');"+
+	     g_id+".addEventListener('click', SVG_zoom, false);"+
+	     "var w0 = "+svg_id+".getAttribute('width');"+
+	     "var h0 = "+svg_id+".getAttribute('height');"+
+	     "var f = "+zoom_factor+";"+
+	     "var w1 = parseInt(f*w0);"+ 
+	     "var h1 = parseInt(f*h0);"+
+	     "var flipflop = 0;"+
+	     "function SVG_zoom(){if( flipflop == 0 ){SVG_big("+svg_id+","+g_id+");flipflop = 1;}else{SVG_normal("+svg_id+","+g_id+");flipflop = 0;}};"+
+	     "function SVG_big(svg_id,g_id){"+
+	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
+	     "svg_id.setAttributeNS(null, 'width',w1);"+
+	     "svg_id.setAttributeNS(null, 'height',h1);"+
+	     "g_id.setAttributeNS(null, 'transform', 'matrix('+f+' 0 0 '+f+' 0 0)');return;};"+
+	     "function SVG_normal(svg_id,g_id){"+
+	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
+	     "svg_id.setAttributeNS(null, 'width',w0);"+
+	     "svg_id.setAttributeNS(null, 'height',h0);"+
+	     "g_id.setAttributeNS(null,'transform','matrix(1 0 0 1 0 0)');return;};"+
+	    "</script>";
+	}
 	String reply = (svgmol + js_zoom).toString();
 	return reply.replaceAll("(\\n|\\r|\\  )", " ");
     }
