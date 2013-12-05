@@ -29,6 +29,8 @@ public class MainApplet extends JApplet implements ComponentListener
 {
     MainPanel mainPanel=null;
     long id;
+    boolean write_js;
+    String zoom_js;
     public static String g_id = "g_SVG_1000000";/* used for SVG zoom in/out */
     public static String svg_id = "SVG_1000000";/* used for SVG zoom in/out */
     /* jm.evers addition to configure applet */
@@ -68,6 +70,8 @@ public class MainApplet extends JApplet implements ComponentListener
 	    ATOM_SELECT_COLOR = getColor("default_atom_select_color",GLOBAL_ALPHA,255,0,0);/* RGB */
 	    BOND_SELECT_COLOR = getColor("default_bond_select_color",GLOBAL_ALPHA,0,0,255);/* RGB */
 	}
+	write_js = true;
+	zoom_js = "";
 	language = getLanguage();
 	TOOL_SELECTION = getTools();
 	MENU_SELECTION = getMenus();
@@ -233,37 +237,48 @@ public class MainApplet extends JApplet implements ComponentListener
 		svgmol = new SVGMolecule(answer_mol);
 	    }catch(Exception e){return e.toString();}
 	}    
-	svgmol.draw();
-	String js_zoom = "";
 	double zoom_factor = getDouble("zoomfactor",1.00);
+	System.out.println("1 write_js = "+write_js);
 	if( zoom_factor != 1.00 ){ /* simple static in/out zoom, no pan */
-	    id = System.currentTimeMillis();
-	    g_id = ("g_SVG_"+id).toString();
-	    svg_id = ("SVG_"+id).toString();
-	    js_zoom="<script type=\"text/javascript\">"+
-	    "var "+svg_id+" = document.getElementById('"+svg_id+"');"+
-	    "var "+g_id+" = document.getElementById('"+g_id+"');"+
-	     g_id+".addEventListener('click', SVG_zoom, false);"+
-	     "var w0 = "+svg_id+".getAttribute('width');"+
-	     "var h0 = "+svg_id+".getAttribute('height');"+
-	     "var f = "+zoom_factor+";"+
-	     "var w1 = parseInt(f*w0);"+ 
-	     "var h1 = parseInt(f*h0);"+
-	     "var flipflop = 0;"+
-	     "function SVG_zoom(){if( flipflop == 0 ){SVG_big_"+id+"("+svg_id+","+g_id+");flipflop = 1;}else{SVG_normal_"+id+"("+svg_id+","+g_id+");flipflop = 0;}};"+
-	     "function SVG_big_"+id+"(svg_id,g_id){"+
-	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
-	     "svg_id.setAttributeNS(null, 'width',w1);"+
-	     "svg_id.setAttributeNS(null, 'height',h1);"+
-	     "g_id.setAttributeNS(null, 'transform', 'matrix('+f+' 0 0 '+f+' 0 0)');return;};"+
-	     "function SVG_normal_"+id+"(svg_id,g_id){"+
-	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
-	     "svg_id.setAttributeNS(null, 'width',w0);"+
-	     "svg_id.setAttributeNS(null, 'height',h0);"+
-	     "g_id.setAttributeNS(null,'transform','matrix(1 0 0 1 0 0)');return;};"+
-	    "</script>";
+	    if( write_js ){
+		id = System.currentTimeMillis();
+		g_id = ("g_SVG_"+id).toString();
+		svg_id = ("SVG_"+id).toString();
+		zoom_js="<script type=\"text/javascript\">"+
+		"var flip = 0;"+
+		"function SVG_zoom(svg,g,w0,h0){"+
+		"var svg = document.getElementById(svg);"+
+		"var g = document.getElementById(g);"+
+		"var f = "+zoom_factor+";"+
+		"if( flip == 1 ){"+
+		"flip = 0;"+
+		"var w1 = parseInt(w0*f);"+
+		"var h1 = parseInt(h0*f);"+
+		"svg.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
+		"svg.setAttributeNS(null, 'width',w1);"+
+		"svg.setAttributeNS(null, 'height',h1);"+
+		"g.setAttributeNS(null,'transform','matrix('+f+' 0 0 '+f+' 0 0)');"+
+		"}"+
+		"else"+
+		"{"+
+		"flip = 1;"+
+		"svg.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
+		"svg.setAttributeNS(null, 'width',w0);"+
+		"svg.setAttributeNS(null, 'height',h0);"+
+		"g.setAttributeNS(null,'transform','matrix(1 0 0 1 0 0)');"+	
+		"};};</script>";
+	    }
 	}
-	String reply = (svgmol + js_zoom).toString();
+	svgmol.draw();
+	String reply = "";
+	if( write_js){
+	    reply = (svgmol + zoom_js).toString();
+	}
+	else
+	{
+	    reply = svgmol.toString();
+	    write_js = false;
+	}
 	return reply.replaceAll("(\\n|\\r|\\  )", " ");
     }
     
