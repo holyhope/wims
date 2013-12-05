@@ -232,14 +232,16 @@ public class SVGBuilder
 	if( MainPanel.appletMode ){ 
 	    g_id = MainApplet.g_id;
 	    svg_id = MainApplet.svg_id;
+	    Out.println("<svg onclick=\"javascript:SVG_zoom('"+svg_id+"','"+g_id+"','"+W+"','"+H+"');\" id=\""+svg_id+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+	    Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(1 0 0 1 0 0)\">");
 	}
 	else
 	{
     	    Out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 	    Out.println("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+	    Out.println("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+	    Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g transform=\"matrix(1 0 0 1 0 0)\">");
 	}
-	Out.println("<svg id=\""+svg_id+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
-	Out.println(" version=\"1\" x=\"0\" y=\"0\" width=\""+W+"\" height=\""+H+"\" viewBox=\"0 0 "+W+" "+H+"\"><g id=\""+g_id+"\" transform=\"matrix(1 0 0 1 0 0)\">");
 	Out.println();
 	// now write out the font definition
 	Out.println("<defs><font id=\""+SVGFont.FONT_FAMILY+"\" horiz-adv-x=\""+SVGFont.FONT_ADV+"\">");
