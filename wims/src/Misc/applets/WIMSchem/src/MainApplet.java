@@ -250,13 +250,13 @@ public class MainApplet extends JApplet implements ComponentListener
 	     "var w1 = parseInt(f*w0);"+ 
 	     "var h1 = parseInt(f*h0);"+
 	     "var flipflop = 0;"+
-	     "function SVG_zoom(){if( flipflop == 0 ){SVG_big("+svg_id+","+g_id+");flipflop = 1;}else{SVG_normal("+svg_id+","+g_id+");flipflop = 0;}};"+
-	     "function SVG_big(svg_id,g_id){"+
+	     "function SVG_zoom(){if( flipflop == 0 ){SVG_big_"+id+"("+svg_id+","+g_id+");flipflop = 1;}else{SVG_normal_"+id+"("+svg_id+","+g_id+");flipflop = 0;}};"+
+	     "function SVG_big_"+id+"(svg_id,g_id){"+
 	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
 	     "svg_id.setAttributeNS(null, 'width',w1);"+
 	     "svg_id.setAttributeNS(null, 'height',h1);"+
 	     "g_id.setAttributeNS(null, 'transform', 'matrix('+f+' 0 0 '+f+' 0 0)');return;};"+
-	     "function SVG_normal(svg_id,g_id){"+
+	     "function SVG_normal_"+id+"(svg_id,g_id){"+
 	     "svg_id.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
 	     "svg_id.setAttributeNS(null, 'width',w0);"+
 	     "svg_id.setAttributeNS(null, 'height',h0);"+
