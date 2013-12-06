@@ -47,7 +47,6 @@ public class SVGMolecule implements ArrangeMeasurement
     	    int btype=arrmol.lineType(n);
 	    double x1=arrmol.lineX1(n),y1=arrmol.lineY1(n),x2=arrmol.lineX2(n),y2=arrmol.lineY2(n);
 	    double dx=x2-x1,dy=y2-y1;
-	    
 	    if (btype==ArrangeMolecule.BLINE_NORMAL)
 	    {
     	    	svg.drawLine(x1,y1,x2,y2,arrmol.lineCol(n),arrmol.lineSize(n));

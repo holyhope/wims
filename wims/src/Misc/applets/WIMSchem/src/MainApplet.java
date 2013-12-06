@@ -29,7 +29,6 @@ public class MainApplet extends JApplet implements ComponentListener
 {
     MainPanel mainPanel=null;
     long id;
-    boolean write_js;
     String zoom_js;
     public static String g_id = "g_SVG_1000000";/* used for SVG zoom in/out */
     public static String svg_id = "SVG_1000000";/* used for SVG zoom in/out */
@@ -70,7 +69,6 @@ public class MainApplet extends JApplet implements ComponentListener
 	    ATOM_SELECT_COLOR = getColor("default_atom_select_color",GLOBAL_ALPHA,255,0,0);/* RGB */
 	    BOND_SELECT_COLOR = getColor("default_bond_select_color",GLOBAL_ALPHA,0,0,255);/* RGB */
 	}
-	write_js = true;
 	zoom_js = "";
 	language = getLanguage();
 	TOOL_SELECTION = getTools();
@@ -238,47 +236,35 @@ public class MainApplet extends JApplet implements ComponentListener
 	    }catch(Exception e){return e.toString();}
 	}    
 	double zoom_factor = getDouble("zoomfactor",1.00);
-	System.out.println("1 write_js = "+write_js);
 	if( zoom_factor != 1.00 ){ /* simple static in/out zoom, no pan */
-	    if( write_js ){
-		id = System.currentTimeMillis();
-		g_id = ("g_SVG_"+id).toString();
-		svg_id = ("SVG_"+id).toString();
-		zoom_js="<script type=\"text/javascript\">"+
-		"var flip = 0;"+
-		"function SVG_zoom(svg,g,w0,h0){"+
-		"var svg = document.getElementById(svg);"+
-		"var g = document.getElementById(g);"+
-		"var f = "+zoom_factor+";"+
-		"if( flip == 1 ){"+
-		"flip = 0;"+
-		"var w1 = parseInt(w0*f);"+
-		"var h1 = parseInt(h0*f);"+
-		"svg.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
-		"svg.setAttributeNS(null, 'width',w1);"+
-		"svg.setAttributeNS(null, 'height',h1);"+
-		"g.setAttributeNS(null,'transform','matrix('+f+' 0 0 '+f+' 0 0)');"+
-		"}"+
-		"else"+
-		"{"+
-		"flip = 1;"+
-		"svg.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
-		"svg.setAttributeNS(null, 'width',w0);"+
-		"svg.setAttributeNS(null, 'height',h0);"+
-		"g.setAttributeNS(null,'transform','matrix(1 0 0 1 0 0)');"+	
-		"};};</script>";
-	    }
+	    id = System.currentTimeMillis();
+	    g_id = ("g_SVG_"+id).toString();
+	    svg_id = ("SVG_"+id).toString();
+	    zoom_js="<script type=\"text/javascript\">"+
+	    "var flip = 0;"+
+	    "function SVG_zoom(svg,g,w0,h0){"+
+	     "var svg = document.getElementById(svg);"+
+	     "var g = document.getElementById(g);"+
+	     "var f = "+zoom_factor+";"+
+	     "if( flip == 1 ){"+
+	      "flip = 0;"+
+	      "var w1 = parseInt(w0*f);"+
+	      "var h1 = parseInt(h0*f);"+
+	      "svg.setAttributeNS(null, 'viewBox', '0 0 '+w1+' '+h1);"+
+	      "svg.setAttributeNS(null, 'width',w1);"+
+	      "svg.setAttributeNS(null, 'height',h1);"+
+	      "g.setAttributeNS(null,'transform','matrix('+f+' 0 0 '+f+' 0 0)');"+
+	     "}else{"+
+	      "flip = 1;"+
+	      "svg.setAttributeNS(null, 'viewBox', '0 0 '+w0+' '+h0);"+
+	      "svg.setAttributeNS(null, 'width',w0);"+
+	      "svg.setAttributeNS(null, 'height',h0);"+
+	      "g.setAttributeNS(null,'transform','matrix(1 0 0 1 0 0)');"+
+	      "};};</script>";
 	}
 	svgmol.draw();
 	String reply = "";
-	if( write_js){
-	    reply = (svgmol + zoom_js).toString();
-	}
-	else
-	{
-	    reply = svgmol.toString();
-	    write_js = false;
-	}
+	reply = (svgmol + zoom_js).toString();
 	return reply.replaceAll("(\\n|\\r|\\  )", " ");
     }
     
