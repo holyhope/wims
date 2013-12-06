@@ -132,11 +132,12 @@ TOOL_SELECT,TOOL_UNSELECT
 <script type="text/javascript">
 /*<![CDATA[*/
 function ReadThis(){
-  var mol=document.getElementById('WIMSchem').GetMoleculeMDLMol();
-  var atoms=document.getElementById('WIMSchem').ReadAtomSelection();
-  var bonds=document.getElementById('WIMSchem').ReadBondSelection();
-  document.getElementById('WIMSchemreply').value = atoms +';' + bonds + '\n'+ mol;
-  document.getElementById('WIMSchem').destroy();
+  var wimschem=document.getElementById('WIMSchem$i');
+  var mol=wimschem.GetMoleculeMDLMol();
+  var atoms=wimschem.ReadAtomSelection();
+  var bonds=wimschem.ReadBondSelection();
+  document.getElementById('WIMSchemreply$i').value = atoms +';' + bonds + '\n'+ mol;
+  wimschem.destroy();
 	 }
 /*]]>*/
 </script>
@@ -145,7 +146,7 @@ function ReadThis(){
   !set parm_angle=<param name="rotation" value="$rotation" />
   !set oef_applet_option=!append line rotation=$rotation to $oef_applet_option
 !endif
-<input type="hidden" name="reply$i" id="WIMSchemreply" value="" />
+<input type="hidden" name="reply$i" id="WIMSchemreply$i" value="" />
 !if help isin $(replyoption$i)
  !set help_option=!getopt help in $(replyoption$i)
  !set help_option=!replace internal help by in $help_option
@@ -158,7 +159,7 @@ function ReadThis(){
  </div>
 !endif
 
-<object name="WIMSchem" id="WIMSchem" type="application/x-java-applet;jpi-version=1.4" \
+<object name="WIMSchem$i" id="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4" \
  classid="java:WIMSchem.MainApplet" width="$xsize" height="$ysize">\
   <param name="java_codebase" value="$appletdir" />\
   <param name="java_code" value="WIMSchem.MainApplet" />\
