@@ -451,8 +451,8 @@ speckEditor.prototype = {
         if (nodes.length == 0 && (tag == "input" || tag == "img" || tag == "hr" || tag == "br" || tag == "feature" ))
         {
             if (!oNode.getAttribute("_moz_editor_bogus_node")) {
-             //s += indent + "<" + tag + this.getAttributes(oNode) + "/>\n";
-              s += indent + "<" + tag + this.getAttributes(oNode) + ">\n";
+              s += indent + "<" + tag + this.getAttributes(oNode) + "/>\n";
+              //s += indent + "<" + tag + this.getAttributes(oNode) + ">\n";
             }
         }
         else
