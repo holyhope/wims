@@ -70,7 +70,7 @@ $temp
    !if $temp_mol=
      !set temp_mol=!record 0 of data/chem/templ/$(template[$s_]).el
    !endif
-   !set temp_file=!replace internal / by _ in $(template[$s_]) 
+   !set temp_file=!replace internal / by _ in $(template[$s_])
    !readproc oef/togetfile.proc $temp_file new\
 $temp_mol
    !set cnt_=$[$cnt_+1]
@@ -119,13 +119,19 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 <script type="text/javascript">
 /*<![CDATA[*/
  function GetMoleculeMDLMol$i(){
+   var wimschem = document.getElementById('WIMSchem$i');
     <!-- reading the WIMSchem file format from a drawing and display it in textarea "moltext" -->
    var input1=document.WIMSchem$i.GetMoleculeMDLMol();
    var result=document.WIMSchem$i.ReadApplet();
    var input2=result.split('\n');
+!if svg iswordof $(replyoption$i)
+   var rep_svg = document.WIMSchem$i.getSVG('1');
+   wimschem.stop();wimschem.destroy();
+   document.getElementById('WIMSchemreply$i').value = rep_svg + '\n' + input2[1] + '\n' + input1;
+!else
+   wimschem.stop();wimschem.destroy();
    document.getElementById('WIMSchemreply$i').value = input2[1] + '\n' + input1;
-  !! alert(input2[1] + '\n' + input1);
-   document.WIMSchem$i.destroy();
+!endif
 }
 /*]]>*/
 </script>
@@ -151,6 +157,7 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
   <param name="show_hydrogen" value="$show_hydrogen" />
   <param name="show_carbon" value="$show_carbon" />
   <param name="language" value="$lang__" />\
+  <param name="zoomfactor" value="1.5">\
   $templ
   $atoms
   $params

@@ -1,5 +1,12 @@
-ans_molecule=$(reply$i)
+!if svg iswordof $(replyoption$i)
+ ans_molecule=!line 2 to -1 of $(reply$i)
+ ans_svg=!line 1 of $(reply$i)
+!else
+ ans_molecule=$(reply$i)
+!endif
+
 test_empty=!line 3 of $ans_molecule
+
 test_empty=!word 1 of $(test_empty[1;1])
 !if $test_empty=0
  test=NaN chemdraw_empty_data
@@ -145,7 +152,9 @@ ans_checkmol_func_g=!nonempty items $ans_checkmol_func_g
 
 !set xsize=320
 !set ysize=240
-
+!if svg iswordof  $(replyoption$i)
+ rep$i=<div class="inline" style="min-width:100px;min-height:100px">$ans_svg</div>
+!else
 rep$i=<object name="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4" \
  classid="java:WIMSchem.MainApplet" width="$xsize" height="$ysize">\
   <param name="java_codebase" value="$ans_appletdir" />\
@@ -186,16 +195,17 @@ rep$i=<object name="WIMSchem$i" type="application/x-java-applet;jpi-version=1.4"
   <param name="show_hydrogen" value="$ans_show_hydrogen" />\
   <param name="show_carbon" value="$ans_show_carbon" />\
 </object>
-
+!endif
 reply_$i=$(rep$i)
 !if $ans_diag<1
    reply_$i=<div class="inline" style="border:3px solid red">$(rep$i)</div>
    !if $ans_image notsametext
-    reply_$i=$(reply_$i) <div class="inline" style="border:3px solid green">$ans_image</div>
+    reply_$i=$(reply_$i) <div class="inline" style="border:3px solid green;vertical-align:middle">$ans_image</div>
    !endif
 !endif
 
 reply__$i=!replace internal name="WIMSchem$i" by name="WIMSchem_rep$i" in $(rep$i)
+
 replyGood$i=$ans_image
 
 
