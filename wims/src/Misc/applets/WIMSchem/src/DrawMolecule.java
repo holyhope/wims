@@ -257,6 +257,7 @@ public class DrawMolecule implements ArrangeMeasurement
 		    g.setColor(new Color(arrmol.lineCol(n)));
 		}
 	    }
+	    
 	    if (btype==ArrangeMolecule.BLINE_NORMAL){
     	    	g.setStroke(new BasicStroke( (float) (factor*(arrmol.lineSize(n))) ,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
 		g.draw(new Line2D.Double(x1,y1,x2,y2));

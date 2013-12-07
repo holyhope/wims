@@ -31,7 +31,7 @@ public class ArrangeMolecule
     public static final int SHOW_RINGID=3;
     public static final int SHOW_PRIORITY=4;
     public static final int SHOW_MAPNUM=5;
-    
+    public int selected_color=0x0000ff; /* blue  for bonds and atoms used in SVG */
     private int elementMode; // one of SHOW_* above
     private boolean showHydrogens; // if false, H's will never be shown
     private double fontSize; // font size for main features, e.g. elements
@@ -127,7 +127,13 @@ public class ArrangeMolecule
 	    a.anum=n;
 	    a.fsz=fontSize;
 	    a.bold=mol.atomMapNum(n)>0;
-	    a.col=0x000000;
+	    if(EditorPane.atomselection[n]){
+		a.col=selected_color;
+	    }
+	    else
+	    {
+		a.col=0x000000;
+	    }
 	    a.cx=measure.angToX(mol.atomX(n));
 	    a.cy=measure.angToY(mol.atomY(n));
 	    a.rw=a.rh=0;
@@ -160,13 +166,14 @@ public class ArrangeMolecule
 	
 	// resolve the bonds which can be analyzed immediately
 	boolean[] bdbl=new boolean[mol.numBonds()]; // set to true if bond is awaiting a double bond assignment
+	int scol; /* select color */
 	for (int n=1;n<=mol.numBonds();n++)
 	{
 	    bdbl[n-1]=mol.bondOrder(n)==2;
 	    
 	    double x1=pointCX(mol.bondFrom(n)-1),y1=pointCY(mol.bondFrom(n)-1);
 	    double x2=pointCX(mol.bondTo(n)-1),y2=pointCY(mol.bondTo(n)-1);
-	    
+	    if(EditorPane.bondselection[n]){scol = selected_color;}else{scol = 0x000000;}
 	    // for non-double bonds, can add the constituents right away
 	    if (mol.bondOrder(n)!=2)
 	    {
@@ -196,7 +203,7 @@ public class ArrangeMolecule
 		if (bo<=1 || mol.bondType(n)!=Molecule.BONDTYPE_NORMAL)
 		{
 		    // just one line
-    	    	    lines.add(new BLine(n,ltype,xy1[0],xy1[1],xy2[0],xy2[1],sz,0x000000));
+    	    	    lines.add(new BLine(n,ltype,xy1[0],xy1[1],xy2[0],xy2[1],sz,scol));
 		}
 		else
 		{
@@ -204,7 +211,7 @@ public class ArrangeMolecule
 		    double v=-0.5*(bo-1);
 		    for (int i=0;i<bo;i++,v++)
 		    {
-		    	lines.add(new BLine(n,BLINE_NORMAL,xy1[0]+v*oxy[0],xy1[1]+v*oxy[1],xy2[0]+v*oxy[0],xy2[1]+v*oxy[1],sz,0x000000));
+		    	lines.add(new BLine(n,BLINE_NORMAL,xy1[0]+v*oxy[0],xy1[1]+v*oxy[1],xy2[0]+v*oxy[0],xy2[1]+v*oxy[1],sz,scol));
 		    }
 		}
 	    }
@@ -247,6 +254,7 @@ public class ArrangeMolecule
 	// now do atomic charges/radical notation
 	for (int n=1;n<=mol.numAtoms();n++)
 	{
+	    if(EditorPane.atomselection[n]){scol = selected_color;}else{scol = 0x000000;}
 	    String str="";
 	    int chg=mol.atomCharge(n);
 	    if (chg==-1) str="-";
@@ -255,7 +263,7 @@ public class ArrangeMolecule
 	    else if (chg>1) str="+"+String.valueOf(chg);
 	    for (int i=mol.atomUnpaired(n);i>0;i--) str+=".";
 	    if (str.length()==0) continue;
-	    annotateAtom(n,str,str.length()==1 ? fontSize : 0.75*fontSize,0x000000);
+	    annotateAtom(n,str,str.length()==1 ? fontSize : 0.75*fontSize,scol);
 	}
 	
     	// add stereo annotations, if requested
@@ -526,9 +534,11 @@ public class ArrangeMolecule
 	    bx2+=dx2;
 	    by2+=dy2;
 	}
+	int scol;
+	if(EditorPane.bondselection[N]){scol = selected_color;}else{scol = 0x000000;}
 
-    	lines.add(new BLine(N,BLINE_NORMAL,ax1,ay1,ax2,ay2,sz,0x000000));
-    	lines.add(new BLine(N,BLINE_NORMAL,bx1,by1,bx2,by2,sz,0x000000));
+    	lines.add(new BLine(N,BLINE_NORMAL,ax1,ay1,ax2,ay2,sz,scol));
+    	lines.add(new BLine(N,BLINE_NORMAL,bx1,by1,bx2,by2,sz,scol));
 
     	if (side==0 && !noshift && mol.atomRingBlock(bf)==0 && mol.atomRingBlock(bt)==0)
 	{
