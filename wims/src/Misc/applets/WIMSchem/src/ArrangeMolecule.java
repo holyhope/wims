@@ -31,7 +31,8 @@ public class ArrangeMolecule
     public static final int SHOW_RINGID=3;
     public static final int SHOW_PRIORITY=4;
     public static final int SHOW_MAPNUM=5;
-    public int selected_color=0x0000ff; /* blue  for bonds and atoms used in SVG */
+    public int selected_color = 0x0000ff; /* blue  for bonds and atoms used in SVG */
+    public int unselected_color = 0x000000; 
     private int elementMode; // one of SHOW_* above
     private boolean showHydrogens; // if false, H's will never be shown
     private double fontSize; // font size for main features, e.g. elements
@@ -127,12 +128,14 @@ public class ArrangeMolecule
 	    a.anum=n;
 	    a.fsz=fontSize;
 	    a.bold=mol.atomMapNum(n)>0;
-	    if(EditorPane.atomselection[n]){
-		a.col=selected_color;
+	    if(MainApplet.ExternalAtomSelection !=  null){
+		if(EditorPane.atomselection[n]){
+		    a.col=selected_color;
+		}
 	    }
 	    else
 	    {
-		a.col=0x000000;
+		a.col=unselected_color;
 	    }
 	    a.cx=measure.angToX(mol.atomX(n));
 	    a.cy=measure.angToY(mol.atomY(n));
@@ -173,7 +176,7 @@ public class ArrangeMolecule
 	    
 	    double x1=pointCX(mol.bondFrom(n)-1),y1=pointCY(mol.bondFrom(n)-1);
 	    double x2=pointCX(mol.bondTo(n)-1),y2=pointCY(mol.bondTo(n)-1);
-	    if(EditorPane.bondselection[n]){scol = selected_color;}else{scol = 0x000000;}
+	    if(MainApplet.ExternalBondSelection !=  null){if(EditorPane.bondselection[n]){scol = selected_color;}else{scol = unselected_color;}}else{ scol = unselected_color;}
 	    // for non-double bonds, can add the constituents right away
 	    if (mol.bondOrder(n)!=2)
 	    {
@@ -252,9 +255,8 @@ public class ArrangeMolecule
 	for (int n=0;n<mol.numAtoms();n++) if (hcount[n]>0) placeHydrogen(n,hcount[n],0,0);
 	
 	// now do atomic charges/radical notation
-	for (int n=1;n<=mol.numAtoms();n++)
-	{
-	    if(EditorPane.atomselection[n]){scol = selected_color;}else{scol = 0x000000;}
+	for (int n=1;n<=mol.numAtoms();n++){ 
+	    if(MainApplet.ExternalAtomSelection !=  null){if(EditorPane.atomselection[n]){scol = selected_color;}else{scol = unselected_color;}}else{scol = unselected_color;}
 	    String str="";
 	    int chg=mol.atomCharge(n);
 	    if (chg==-1) str="-";
@@ -535,8 +537,7 @@ public class ArrangeMolecule
 	    by2+=dy2;
 	}
 	int scol;
-	if(EditorPane.bondselection[N]){scol = selected_color;}else{scol = 0x000000;}
-
+	if(MainApplet.ExternalBondSelection !=  null){if(EditorPane.bondselection[N]){scol = selected_color;}else{scol = unselected_color;}}else{scol = unselected_color;}
     	lines.add(new BLine(N,BLINE_NORMAL,ax1,ay1,ax2,ay2,sz,scol));
     	lines.add(new BLine(N,BLINE_NORMAL,bx1,by1,bx2,by2,sz,scol));
 
