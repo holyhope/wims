@@ -9,10 +9,16 @@
 !read adm/class/classname.phtml $wims_classname\
 $wims_institutionname
 
-!read adm/title.phtml 1\
+!if $seq=$empty
+  !read adm/title.phtml 1\
 $classname\
-$sheet_title\
+$sheet_title \
 $name_title
+!else
+  !read adm/title.phtml 1\
+$classname\
+$sheet_title
+!endif
 
 <div class="wims_sheet_desc">$sheet_desc</div>
 !let class_showlivret=!defof class_showlivret in wimshome/log/classes/$wims_class/.def
@@ -70,7 +76,7 @@ $name_title
  !set expmon=!item $expmon of $months
  <p id="name_student1">$name_student1$exphour
  .</p>
-!endif 
+!endif
 
 !if $sheet_active=2
  <span class="wims_warning">$wims_name_warning</span>.
@@ -104,7 +110,7 @@ $name_title
  !else
   $name_scoreclose
  !endif
- 
+
  <div class="wims_sheet">
  <ul class="wims_sheet_list">
  !let wims_exotitle=$empty
