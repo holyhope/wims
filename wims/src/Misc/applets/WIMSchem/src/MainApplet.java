@@ -49,15 +49,21 @@ public class MainApplet extends JApplet implements ComponentListener
     public static boolean viewH;
     public static boolean[] TOOL_SELECTION;
     public static boolean[] MENU_SELECTION;
-    public static boolean USER_SELECTION;
-    public static int GLOBAL_ALPHA = 140;
-    public static Color ATOM_SELECT_COLOR;
-    public static Color BOND_SELECT_COLOR;
-    public static int[] ExternalAtomSelection;
-    public static Color SelectedAtomColorArray[];
-    public static int[] ExternalBondSelection;
-    public static Color SelectedBondColorArray[];
-    public static boolean ATOM_BUTTONS = true;
+    public static boolean USER_SELECTION = false;
+    public static int GLOBAL_ALPHA = 140; 
+    public static int ATOM_SELECT_HTML_COLOR; /* the default Atom click colour for user interaction when selecting atoms */
+    public static int BOND_SELECT_HTML_COLOR; /* the default bond click colour for user interaction when selecting atoms */
+    public static Color ATOM_SELECT_COLOR;/* the colour for not-by-param-selected-atoms */
+    public static Color BOND_SELECT_COLOR;/* the colour for not-by-param-selected-bonds */
+    public static int[] ExternalAtomSelection; /* atom line numbers in MDLmol file */
+    public static Color SelectedAtomColorArray[];/* atom corresponding colours for line numbers in MDLmol file */
+    public static int[] ExternalBondSelection;/* bonding line numbers in MDLmol file */
+    public static Color SelectedBondColorArray[];;/* corresponding bonding colours for line numbers in MDLmol file */
+    public static int SelectedAtomColorInt[]; /* int color numbers set by params used in svg export */
+    public static int SelectedBondColorInt[]; /* colors set by params used in svg export */
+    public static boolean ATOM_BUTTONS = true; /* button row with atoms SOUTH */
+    public static boolean SUPERUSER_SELECTION = false; /* if true the exported SVG will be coloured according params */
+    
     public static String language;
     public void init(){
 	ATOM_BUTTONS = getBool("atom_button_row",false); /* if set an extra row of buttons will be shown  */
@@ -68,6 +74,8 @@ public class MainApplet extends JApplet implements ComponentListener
 	    if( GLOBAL_ALPHA > 250 ){GLOBAL_ALPHA = 140;}
 	    ATOM_SELECT_COLOR = getColor("default_atom_select_color",GLOBAL_ALPHA,255,0,0);/* RGB */
 	    BOND_SELECT_COLOR = getColor("default_bond_select_color",GLOBAL_ALPHA,0,0,255);/* RGB */
+	    ATOM_SELECT_HTML_COLOR = RGB2int("default_atom_select_color",0x0000ff);/* int for svg */
+	    BOND_SELECT_HTML_COLOR = RGB2int("default_bond_select_color",0x00ff00);/* int for svg */
 	}
 	zoom_js = "";
 	language = getLanguage();
@@ -194,14 +202,31 @@ public class MainApplet extends JApplet implements ComponentListener
 	
 	return "error getting MDLMol file from applet";
     }
-
-    public void componentHidden(ComponentEvent e) {}
-    public void componentMoved(ComponentEvent e) {}
-    public void componentResized(ComponentEvent e)
-    {
+    public int RGB2int(String p, int d){ /* convert 255,0,255 -> ff00ff*/
+	String param = getParameter(p);
+	if( param != null && param.length()>0 ){
+    	    int k = 0;String hex = "";String tmp="";
+    	    StringTokenizer q = new StringTokenizer(param, ",");
+    	    int c = q.countTokens();
+    	    if( c != 3){System.out.println("use R,G,B for colours ; use param color_alpha for transparency"); return d;}
+    	    for( int a = 0; a < 3 ; a++){
+		k = Integer.parseInt(q.nextToken(), 10);
+		tmp = Integer.toHexString(k);
+		while (tmp.length()<2) tmp="0"+tmp; 
+		hex = hex+""+tmp;
+            }
+            return Integer.parseInt(hex,16);
+	}
+	else
+	{
+	    return d;
+	}
     }
-    public void componentShown(ComponentEvent e) 
-    {
+
+    public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    public void componentShown(ComponentEvent e){
     	mainPanel.scaleToFit();
 	mainPanel.repaint();
     }
@@ -218,23 +243,40 @@ public class MainApplet extends JApplet implements ComponentListener
 	return reply; 
     }
     
-    public String getSVG(String type){ /* 1 or URL : URL is correct answer from server  */
+    public String getSVG(String type){
 	SVGMolecule svgmol;
 	if( type.equals("1") ){ /* get the student reply*/
 	    try{
+		System.out.println("ok : exporting user drawing to SVG");
 		svgmol = new SVGMolecule((mainPanel.editor).molData());
 	    }catch(Exception e){return e.toString();}
 	}
 	else
 	{
-	    try{
-		type = getString("file2");
-		if( type == null ){return "no answer molecule MDLMol to SVG";}
-		String correct_answer = loadAny(type);
-		Molecule answer_mol = MoleculeStream.readMDLMOL(new BufferedReader(new StringReader(correct_answer.toString())));
-		svgmol = new SVGMolecule(answer_mol);
-	    }catch(Exception e){return e.toString();}
-	}    
+	 /*
+	     check if we have a param 'name=file2' : reserved for the correctmolecule in mdlmol --> svg 
+	     using javascript:getSVG(2)
+	 */
+	    type = getString("file2");
+	    USER_SELECTION = false; /* disable colours of studentreply in correct answer svg ! */    
+	    SUPERUSER_SELECTION = true; /* if appropriate set html colours to applet colours */
+	    if( type != null ){ /* ok found param file2 */
+		try{
+		    String correct_answer = loadAny(type);
+		    Molecule answer_mol = MoleculeStream.readMDLMOL(new BufferedReader(new StringReader(correct_answer.toString())));
+		    svgmol = new SVGMolecule(answer_mol);
+		    System.out.println("ok : exporting file2 to SVG");
+		}catch(Exception e){return e.toString();}
+	    }
+	    else
+	    {
+		/* use the drawing in the applet for export to svg*/
+		try{
+		    svgmol = new SVGMolecule((mainPanel.editor).molData());
+		    System.out.println("ok : exporting molecule in applet window to SVG\npossibly colouring atoms and bonds\naccording to color params");
+		}catch(Exception e){return e.toString();}
+	    }
+	}
 	double zoom_factor = getDouble("zoomfactor",1.00);
 	if( zoom_factor != 1.00 ){ /* simple static in/out zoom, no pan */
 	    id = System.currentTimeMillis();
@@ -596,10 +638,12 @@ public class MainApplet extends JApplet implements ComponentListener
 	    int max=i.countTokens();
 	    ExternalAtomSelection = new int[max];
 	    SelectedAtomColorArray = new Color[max];
+	    SelectedAtomColorInt = new int[max];
 	    String ColorParam;
 	    for(int p=0;p<max;p++){
 		ExternalAtomSelection[p] = Integer.parseInt(i.nextToken());
 	        // now try to find the color belonging to this selected atom
+	        SelectedAtomColorInt[p] = RGB2int("select_atom_color"+ExternalAtomSelection[p]+"",0x00ff00);
 	        ColorParam=getParameter("select_atom_color"+ExternalAtomSelection[p]);
 		if(ColorParam != null && ColorParam.length()>0){
 		    ColorParam=ColorParam.replaceAll(":",",");ColorParam=ColorParam.replace(";",",");
@@ -622,6 +666,7 @@ public class MainApplet extends JApplet implements ComponentListener
 		    SelectedAtomColorArray[p] = ATOM_SELECT_COLOR;
 		}
 	    }
+	    SUPERUSER_SELECTION = true;
 	}else{ ExternalAtomSelection = null;}
 	return ExternalAtomSelection;
     }
@@ -638,9 +683,11 @@ public class MainApplet extends JApplet implements ComponentListener
 	    int max=i.countTokens();
 	    ExternalBondSelection = new int[max];
 	    SelectedBondColorArray = new Color[max];
+	    SelectedBondColorInt = new int[max];
 	    for(int p=0;p<max;p++){
 		ExternalBondSelection[p] = Integer.parseInt(i.nextToken());
 	        // now try to find the color belonging to this selected bond 
+	        SelectedBondColorInt[p] = RGB2int("select_bond_color"+ExternalBondSelection[p]+"",0x0000ff);
 	        ColorParam=getParameter("select_bond_color"+ExternalBondSelection[p]);
 		if(ColorParam != null && ColorParam.length()>0){
 		    ColorParam=ColorParam.replaceAll(":",",");ColorParam=ColorParam.replace(";",",");
@@ -663,6 +710,7 @@ public class MainApplet extends JApplet implements ComponentListener
 		    SelectedBondColorArray[p] = BOND_SELECT_COLOR;
 		}
 	    }
+	    SUPERUSER_SELECTION = true; 
 	}else{ ExternalBondSelection = null;}
 	return ExternalBondSelection;
     }

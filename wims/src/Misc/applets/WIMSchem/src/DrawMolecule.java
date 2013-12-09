@@ -225,6 +225,7 @@ public class DrawMolecule implements ArrangeMeasurement
 	    double x1=arrmol.lineX1(n),y1=arrmol.lineY1(n),x2=arrmol.lineX2(n),y2=arrmol.lineY2(n);
 	    double dx=x2-x1,dy=y2-y1;
 	    int factor = 1;/* multiply linewidth when user selected */
+	    g.setColor(new Color(arrmol.lineCol(n)));
 	    if( MainApplet.USER_SELECTION ){
 		if( EditorPane.bondselection.length > mol.numBonds()){ // userbased click selection
 		    if( EditorPane.bondselection[arrmol.lineBNum(n)] ){
@@ -252,12 +253,7 @@ public class DrawMolecule implements ArrangeMeasurement
 			}
 		    }
 		}
-		else
-		{
-		    g.setColor(new Color(arrmol.lineCol(n)));
-		}
 	    }
-	    
 	    if (btype==ArrangeMolecule.BLINE_NORMAL){
     	    	g.setStroke(new BasicStroke( (float) (factor*(arrmol.lineSize(n))) ,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
 		g.draw(new Line2D.Double(x1,y1,x2,y2));

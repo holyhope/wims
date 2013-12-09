@@ -31,7 +31,6 @@ public class ArrangeMolecule
     public static final int SHOW_RINGID=3;
     public static final int SHOW_PRIORITY=4;
     public static final int SHOW_MAPNUM=5;
-    public int selected_color = 0x0000ff; /* blue  for bonds and atoms used in SVG */
     public int unselected_color = 0x000000; 
     private int elementMode; // one of SHOW_* above
     private boolean showHydrogens; // if false, H's will never be shown
@@ -128,14 +127,22 @@ public class ArrangeMolecule
 	    a.anum=n;
 	    a.fsz=fontSize;
 	    a.bold=mol.atomMapNum(n)>0;
-	    if(MainApplet.ExternalAtomSelection !=  null){
-		if(EditorPane.atomselection[n]){
-		    a.col=selected_color;
-		}
+	    
+	    a.col=unselected_color;
+	    if(MainApplet.USER_SELECTION){/*give the molecule the user selected colours */
+		if(EditorPane.atomselection[n]){a.col = MainApplet.ATOM_SELECT_HTML_COLOR;}
 	    }
 	    else
 	    {
-		a.col=unselected_color;
+		if(MainApplet.SUPERUSER_SELECTION){/*give the molecule the param selected colours */
+		    if( MainApplet.ExternalAtomSelection != null ){
+			for(int p=0 ; p < (MainApplet.ExternalAtomSelection).length; p++ ){
+			    if( n == MainApplet.ExternalAtomSelection[p] ){
+				a.col = MainApplet.SelectedAtomColorInt[p] ;
+			    }
+			}
+		    }
+		}
 	    }
 	    a.cx=measure.angToX(mol.atomX(n));
 	    a.cy=measure.angToY(mol.atomY(n));
@@ -173,10 +180,26 @@ public class ArrangeMolecule
 	for (int n=1;n<=mol.numBonds();n++)
 	{
 	    bdbl[n-1]=mol.bondOrder(n)==2;
-	    
 	    double x1=pointCX(mol.bondFrom(n)-1),y1=pointCY(mol.bondFrom(n)-1);
 	    double x2=pointCX(mol.bondTo(n)-1),y2=pointCY(mol.bondTo(n)-1);
-	    if(MainApplet.ExternalBondSelection !=  null){if(EditorPane.bondselection[n]){scol = selected_color;}else{scol = unselected_color;}}else{ scol = unselected_color;}
+	    scol = unselected_color;	    
+	    if(MainApplet.USER_SELECTION){
+		if(EditorPane.bondselection[n]){
+		    scol = MainApplet.BOND_SELECT_HTML_COLOR;
+		}
+	    }
+	    else
+	    {
+		if(MainApplet.SUPERUSER_SELECTION){/*give the molecule the param selected colours */
+		    if( MainApplet.ExternalBondSelection != null ){
+			for(int p = 0 ; p < (MainApplet.ExternalBondSelection).length; p++ ){
+			    if( n == MainApplet.ExternalBondSelection[p] ){
+				scol = MainApplet.SelectedBondColorInt[p] ;
+			    }
+			}
+		    }
+		}
+	    }
 	    // for non-double bonds, can add the constituents right away
 	    if (mol.bondOrder(n)!=2)
 	    {
@@ -255,8 +278,25 @@ public class ArrangeMolecule
 	for (int n=0;n<mol.numAtoms();n++) if (hcount[n]>0) placeHydrogen(n,hcount[n],0,0);
 	
 	// now do atomic charges/radical notation
-	for (int n=1;n<=mol.numAtoms();n++){ 
-	    if(MainApplet.ExternalAtomSelection !=  null){if(EditorPane.atomselection[n]){scol = selected_color;}else{scol = unselected_color;}}else{scol = unselected_color;}
+	for (int n=1;n<=mol.numAtoms();n++){
+	    scol = unselected_color;
+	    if(MainApplet.USER_SELECTION){
+		if(EditorPane.atomselection[n]){
+		    scol = MainApplet.ATOM_SELECT_HTML_COLOR;
+		}
+	    }
+	    else
+	    {
+		if(MainApplet.SUPERUSER_SELECTION){/*give the molecule the param selected colours */
+		    if( MainApplet.ExternalAtomSelection != null ){
+			for(int p = 0 ; p < (MainApplet.ExternalAtomSelection).length; p++ ){
+			    if( n == MainApplet.ExternalAtomSelection[p] ){
+				scol = MainApplet.SelectedAtomColorInt[p] ;
+			    }
+			}
+		    }
+		}
+	    }
 	    String str="";
 	    int chg=mol.atomCharge(n);
 	    if (chg==-1) str="-";
@@ -536,8 +576,24 @@ public class ArrangeMolecule
 	    bx2+=dx2;
 	    by2+=dy2;
 	}
-	int scol;
-	if(MainApplet.ExternalBondSelection !=  null){if(EditorPane.bondselection[N]){scol = selected_color;}else{scol = unselected_color;}}else{scol = unselected_color;}
+	int scol = unselected_color;
+	if(MainApplet.USER_SELECTION){
+	    if(EditorPane.bondselection[N]){
+		scol = MainApplet.BOND_SELECT_HTML_COLOR;
+	    }
+	}
+	else
+	{
+	    if(MainApplet.SUPERUSER_SELECTION){/*give the molecule the param selected colours */
+		if( MainApplet.ExternalBondSelection != null ){
+		    for(int p = 0 ; p < (MainApplet.ExternalBondSelection).length; p++ ){
+			if( N == MainApplet.ExternalBondSelection[p] ){
+			    scol = MainApplet.SelectedBondColorInt[p] ;
+			}
+		    }
+		}
+	    }
+	}
     	lines.add(new BLine(N,BLINE_NORMAL,ax1,ay1,ax2,ay2,sz,scol));
     	lines.add(new BLine(N,BLINE_NORMAL,bx1,by1,bx2,by2,sz,scol));
 
