@@ -32,11 +32,15 @@ $  in $inputsize
 $ in $variable
 !set cnt_var=!linecnt $variable
 !reset liste_variable
+!reset liste_dim
 !for j_ = 1 to $cnt_var
  !set l_=!line $j_ of $variable
  !set l_=!replace internal = by , in $l_
  !set liste_variable=!append item $jbox_$(l_[1]) to $liste_variable
  !set script$i=!replace internal $jbox_$(l_[1]) by $(l_[2]) in $(script$i)
+ !set l_=!declosing $(l_[2])
+ !set l_=!itemcnt $l_
+ !set liste_dim=!append item $l_ to $liste_dim
 !next
 
 !set oef_answer_option$i=$your_brd,$jbox,$xsize x $ysize,$(oef_answer_option$i)\
@@ -61,20 +65,9 @@ $slib_out
 /*<![CDATA[*/
 var capture$i = function() {
         document.getElementById('jsreply$i').value=
-!set var_cnt=!linecnt $(replygood[;1])
 !for j=1 to $cnt_var
-  !set var=$(liste_variable[$j])
-  !set rep=!replace internal var by rep in $var
-  !set var_cnt=!itemcnt $(replygood$i[$j;])
-  !if \ isin $(replygood$i[$j;])
-    !set t_=!replace internal : by , in $(replygood$i[$j;])
-    !if $(t_[2]) != $empty
-       !bound var_cnt=$(t_[2]) within 1,2
-    !else
-       !set var_cnt=2
-    !endif
-  !endif
-  !if $var_cnt =1
+  !set rep=!replace internal var by rep in $(liste_variable[$j])
+  !if $(liste_dim[$j])=1
     $(rep).Value() + ';' +
   !else
     $(rep).X() + ',' + $(rep).Y() + ';' +
