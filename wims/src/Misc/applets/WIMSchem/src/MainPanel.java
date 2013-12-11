@@ -1221,9 +1221,9 @@ public class MainPanel extends JPanel implements ActionListener, MouseListener, 
  	 case 17: return translation.getProperty("CUT_TIP");
  	 case 18: return translation.getProperty("COPY_TIP");
  	 case 19: return translation.getProperty("PASTE");
- 	 case 20: return translation.getProperty("UNSELECT");
- 	 case 21: return translation.getProperty("SELECT");
-	 default : return "NO TIP?";
+ 	 case 20: return translation.getProperty("SELECT");
+	 case 21: return translation.getProperty("UNSELECT");
+ 	 default : return "NO TIP?";
 	}
     }
     private Properties loadProperties(String lang){
