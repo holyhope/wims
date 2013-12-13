@@ -50,7 +50,11 @@
   !readproc docu/printlink.proc $parm1
  !else
   !if $pdoc=$doc
-   !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms&wksheet=$wksheet$anchor $pname
+   !if $wksheet!=$empty and $wksheet!=0
+     !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms&wksheet=$wksheet$anchor $pname
+   !else
+     !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms$anchor $pname
+   !endif
   !else
    !href module=$pdoc&cmd=new&job=read&block=$parm1$mparms$anchor $pname
   !endif
