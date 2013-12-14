@@ -19,7 +19,7 @@ manger,fra,tag=baseform player=player
 !!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
 !! !exit
 !!!endif
-!reset slib_out slib_son slib_Son slib_son_mod slib_Word slib_word
+!reset slib_out slib_son slib_Son slib_son_mod slib_Word slib_word slib_player
 ADDRESS=!record 0 of data/swac/packs
 
 !distribute items $wims_read_parm into slib_word,slib_packs,slib_option,slib_optionhtml
@@ -28,6 +28,7 @@ slib_son_mod=!singlespace $slib_word
 slib_son_mod=!replace internal $ $ by _ in $slib_son_mod
 slib_son_mod=!nospace $slib_son_mod
 slib_son_mod=!replace internal " by in $slib_son_mod
+!!FIXME Imindex in class ??
 slib_son_test=!lookup $slib_son_mod.mp3 in Imindex
 !if $slib_son_test notsametext
    slib_son_test=!replace internal ./ by in $slib_son_test/
@@ -82,7 +83,7 @@ slib_son=!randitem $slib_audio
  !else
      slib_son=http://$ADDRESS/$slib_dir/mp3/$(slib_son1[-1])
  !endif
- !if rename iswordof $slib_option2 
+ !if rename iswordof $slib_option2
    slib_son=!rename $slib_son
  !endif
 !endif
@@ -111,5 +112,10 @@ $ by $ $ in $slib_out
   $slib_Word
  !endif
 !else
-slib_out=
+!!if nothing is found, try just the word ! hope that \imagedir has been written or an address
+ !if / isin $slib_word
+   !read slib/media/audio $slib_word,$slib_optionhtml,player=$slib_player
+ !else
+   slib_out=
+ !endif
 !endif
