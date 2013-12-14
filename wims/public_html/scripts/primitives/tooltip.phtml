@@ -1,5 +1,3 @@
-!!##language independant
-
 !! \tooltip{texte}{[option]}{popup text}
 !if $parms issametext
    !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
@@ -7,14 +5,21 @@
 !exit
 !endif
 !set parms=!slashsubst $parms
+!set parmscnt=!itemcnt $parms
 !set parm1=!item 1 of $parms
-!set text=!item 3 to -1 of $parms
-!set option=!item  2 of $parms
+!if $parmscnt=2
+  !set text=!item 2 of $parms
+  !set option=
+!else
+ !set text=!item 3 to -1 of $parms
+ !set option=!item 2 of $parms
+!endif
+
 !if nojs iswordof $option
   !set option=!replace internal nojs by in $option
   !set special_out=
 !else
-  !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>  
+  !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 !endif
 !set option=!trim $option
 !set option=!declosing $option
@@ -33,7 +38,7 @@
 $ by  $  in  $text
  !set special_out=$special_out\
  <span class="tooltip"><a onmouseover="Tip('$text',$option)" onmouseout="UnTip()">$parm1</a></span>
- !else 
+ !else
  !set special_out=$text
  !endif
 $special_out
