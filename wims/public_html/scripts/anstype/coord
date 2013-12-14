@@ -38,6 +38,7 @@ ifile=$image
  !endif
 !endif
 
+ifile$i=$ifile
 tmp=!declosing $(reply$i)
 x=!item 1 of $tmp
 y=!item 2 of $tmp
@@ -71,26 +72,36 @@ test2=!line 2 to -1 of $test
 !else
  ball=redball
  colfill=red
+ !if goodanswershown iswordof $(replyoption$i)
+  colgood=green
+ !endif
 !endif
 
 !if fill iswordof $(replyoption$i) and bound isitemof $tester
- !insdraw existing $ifile\
+  !if $colgood!=$empty
+    testgood=fill $(tester[3]),$(tester[4]),$colgood
+  !endif
+ !insdraw existing $(ifile$i)\
  fill $x,$y,$colfill\
- $test2
+ $test2\
+ $testgood
 !else
- !insdraw existing $ifile\
+   !if $colgood!=$empty
+    testgood=copy $(tester[3])-7,$(tester[4])-7,-1,-1,-1,-1,$(colgood)ball.gif
+   !endif
+ !insdraw existing $(ifile$i)\
  copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
- $test2
+ $test2\
+ $testgood
 !endif
 
-!if analysenofig notitemof $(replyoption$i)
- reply_$i=<img src="$ins_url" alt="$ins_url" style="margin-left:5px;margin-bottom:5px;vertical-align:middle;"/>
+!if analysenofig notwordof $(replyoption$i)
+ reply_$i=<img src="$ins_url" alt="" style="margin-left:5px;margin-bottom:5px;vertical-align:middle;"/>
 !else
  reply_$i=&nbsp;
 !endif
-
 !if fill iswordof $(replyoption$i) and bound isitemof $tester
-  reply__$i=<img src="$ins_url" alt="$ins_url" style="margin-left:5px;margin-bottom:5px"/>
+  reply__$i=<img src="$ins_url" alt="" style="margin-left:5px;margin-bottom:5px" />
 !else
   reply__$i=<img src="gifs/$ball.gif" alt="$ball"/>
 !endif
@@ -117,4 +128,3 @@ m_result$i=$i_
  !endif
  diareply$i=bad
 !endif
-
