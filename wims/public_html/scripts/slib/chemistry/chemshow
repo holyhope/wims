@@ -17,13 +17,14 @@ data/chem/templ/benzene.el
 
 !default slib_xsize=540
 !default slib_ysize=450
-!for slib_opt in show_carbon,show_hydrogen,showfile
+!for slib_opt in show_carbon,show_hydrogen,showfile,language
   !set $slib_opt=!getopt $slib_opt in $slib_option
 !next
 
 !default slib_show_hydrogen=yes
 !default slib_show_carbon=no
 !default slib_showfile=yes
+!default slib_language=en
 
 !set slib_template=!getopt template in $slib_option
 !if $slib_template notsametext
@@ -112,6 +113,7 @@ slib_out=\
    <param name="showfile" value="$slib_showfile" />\
    <param name="show_hydrogen" value="$slib_show_hydrogen" />\
    <param name="show_carbon" value="$slib_show_carbon" />\
+   <param name="language" value="$slib_language" />\
    $slib_templ\
    $slib_atoms\
    $slib_params\
