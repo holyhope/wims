@@ -24,13 +24,19 @@ slib_option= !item -1 of $wims_read_parm
 
 slib_data=!translate $	$ to $\
 $ in $slib_data
+slib_data_cnt=!linecnt $slib_data
+!if $slib_data_cnt=1
+!!should be an address
+  slib_out=$slib_data
+  !goto end
+!endif
 slib_fichier=fichier.$slib_cnt
 slib_fichier=$wims_nowseconds.$slib_cnt
 
 !readproc oef/togetfile.proc $slib_fichier new\
 $slib_data
 slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_fichier
-
+:end
 slib_out=<object type="application/x-java-applet;jpi-version=1.4" \
  classid="java:ThreeD.class" width="$(slib_width)px" height="$(slib_height)px">\
 <param name="java_codebase" value="java/ThreeD" />\
