@@ -38,13 +38,16 @@
   !for r in $replacelist
     !default up_$r=$(user_$r)
   !next
- !if $wims_user=supervisor and ($wims_realuser!=supervisor and $wims_realuser!=$empty)
+ !if $wims_user=supervisor or ($wims_realuser!=supervisor and $wims_realuser!=$empty)
   !if $superv=no 
    !set up_supervise=!listcomplement $wims_class in $user_supervise
   !else
    !set up_supervise=!listuniq $wims_class, $(user_supervise)
   !endif
-  !reset superv
+  !if $up_supervise=$empty
+     up_supervise=noclass
+  !endif
+  !!reset superv
  !endif
 
  !set up_external_auth=!lowercase $up_external_auth
