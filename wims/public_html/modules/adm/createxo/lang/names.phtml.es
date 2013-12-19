@@ -138,7 +138,7 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !if $level=7
  name_warning_empty=Veuillez choisir le nom du fichier source.
  name_choice_module=Sélectionner un module
- name_choice_filename=Nom du fichier source de l'exercice (n'utiliser que des symboles alphanumérique)
+ name_choice_filename=Nom du fichier source de l'exercice (n'utiliser que des symboles alphanumériques)
  name_register_dev=Save the exercise source file in the modtool account
 !endif
 
