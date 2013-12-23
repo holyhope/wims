@@ -158,8 +158,8 @@ done :
     TODO: check if these can be harmonized eg made more generic
 -25/11/2013
     Harmonized UNDERARROW OVERARROW ; to add more just
-    "\\my_new_under_Arrow" <-->  {yylval = wims_mathml_copy_string("&some_unicode_arrow;"); <-> return UNDERARROW;}  
-    "\\my_new_over_Arrow" <-->  {yylval = wims_mathml_copy_string("&some_unicode_arrow;"); <-> return OVERARROW;}  
+    "\\my_new_under_Arrow" {yylval = wims_mathml_copy_string("&some_unicode_arrow;");  return UNDERARROW;}  
+    "\\my_new_over_Arrow"  {yylval = wims_mathml_copy_string("&some_unicode_arrow;");  return OVERARROW; }  
     added as proof of concept:
     \overrightharpoonup
     \overrightharpoondown
@@ -172,7 +172,7 @@ done :
     - added str_replace() to replace '\lt' and '\gt' from SVG-text or HTML-text into  '<' and '>'
     - corrected SVG environment (trouble with \lt \gt)
     
-    We now the 'W3C correct' annotations for HTML / SVG in MathML/XML:
+    We now use the 'W3C correct' annotations for embedding HTML / SVG in XML:
     <semantics><annotation-xml encoding="application/xhtml+xml"> any_valid_html_text </annotation-xml></semantics>
     <semantics><annotation-xml encoding="SVG1.1"> 		 any_valid_svg_text  </annotation-xml></semantics>
     

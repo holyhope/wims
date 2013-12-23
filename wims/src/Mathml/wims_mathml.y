@@ -1780,7 +1780,7 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 }
 | BEGINENV SVG ENDSVG {
   $$ = wims_mathml_copy_string(" ");
-};
+}
 | BEGINENV HTML XMLSTRING ENDHTML {
   $$ = wims_mathml_copy3("<semantics><annotation-xml encoding=\"application/xhtml+xml\">", $3, "</annotation-xml></semantics>");
   wims_mathml_free_string($3);
