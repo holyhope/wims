@@ -76,7 +76,9 @@ test2=!line 2 to -1 of $test
   colgood=green
  !endif
 !endif
-
+!!to document- fragile
+feedback=!getopt feedback in $(replyoption$i)
+feedback=!declosing $feedback
 !if fill iswordof $(replyoption$i) and bound isitemof $tester
   !if $colgood!=$empty
     testgood=fill $(tester[3]),$(tester[4]),$colgood
@@ -84,15 +86,17 @@ test2=!line 2 to -1 of $test
  !insdraw existing $(ifile$i)\
  fill $x,$y,$colfill\
  $test2\
- $testgood
+ $testgood\
+ $feedback
 !else
-   !if $colgood!=$empty
-    testgood=copy $(tester[3])-7,$(tester[4])-7,-1,-1,-1,-1,$(colgood)ball.gif
+   !if $colgood!=$empty and $(tester[1]) iswordof circle point
+     testgood=copy $(tester[2])-7,$(tester[3])-7,-1,-1,-1,-1,$(colgood)ball.gif
    !endif
  !insdraw existing $(ifile$i)\
  copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
  $test2\
- $testgood
+ $testgood\
+ $feedback
 !endif
 
 !if analysenofig notwordof $(replyoption$i)
