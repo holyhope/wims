@@ -166,3 +166,28 @@ done :
     \underrightharpoonup
     \underrightharpoondown
     
+-23/12/2013
+    - added new environment '\begin{html} any_valid_html_text \end{html}'
+    - corrected (W3C) mathml string output for '\input{size}{id}{style}{value}{readonly}'
+    - added str_replace() to replace '\lt' and '\gt' from SVG-text or HTML-text into  '<' and '>'
+    - corrected SVG environment (trouble with \lt \gt)
+    
+    We now the 'W3C correct' annotations for HTML / SVG in MathML/XML:
+    <semantics><annotation-xml encoding="application/xhtml+xml"> any_valid_html_text </annotation-xml></semantics>
+    <semantics><annotation-xml encoding="SVG1.1"> 		 any_valid_svg_text  </annotation-xml></semantics>
+    
+    Example:
+    my homebrew 'input_pseudo_latex'
+    \frac{ \input{2}{0}{color:red}{?}{0} }{ 1234 }
+    is equivalent to:
+    \frac{ \begin{html}<input size='2' id='mathml0' style='color:red' value='?' />\end{html} }{ 1234 }
+    
+    In the html/svg environment, any thing goes, like the square root of an image...
+    \sqrt{ \begin{html} <img src="my_image.gif" alt="noalt" /> \end{html} }
+
+    These are all -of course- incompatible with Latex !
+    
+    
+    
+    
+    

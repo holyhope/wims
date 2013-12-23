@@ -372,7 +372,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token TMP_FONTSIZE LARGERINT BIGINT BIGGINT BIGGGINT CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL DFRAC FRAC TFRAC SFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM BINOM2 TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN TEX_OPTIONS ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM WIMSROMAN BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC OVERARROW UNDERARROW HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV EQUATION MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR SPECIAL INPUT BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
+%token TMP_FONTSIZE LARGERINT BIGINT BIGGINT BIGGGINT CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL DFRAC FRAC TFRAC SFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM BINOM2 TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN TEX_OPTIONS ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM WIMSROMAN BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC OVERARROW UNDERARROW HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV EQUATION MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG HTML ENDHTML SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR SPECIAL INPUT BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE ITEXNUM RAISEBOX NEG
 
 %%
 
@@ -1077,7 +1077,7 @@ input: INPUT {
   }
     }
     $1 = wims_mathml_copy_string(size);
-    char * s1 = wims_mathml_copy3("<mn><input type=\"text\"  size=\"",$1,"\" id=\"mathml");
+    char * s1 = wims_mathml_copy3("<mn><semantics><annotation-xml encoding=\"application/xhtml+xml\"><input type=\"text\"  size=\"",$1,"\" id=\"mathml");
     $1 = wims_mathml_copy_string(id);
     s1 = wims_mathml_copy3(s1,$1,"\" value=\"");
     $1 = wims_mathml_copy_string(value);
@@ -1085,12 +1085,12 @@ input: INPUT {
     if( strstr(readonly,"1") != NULL){
   $1 = wims_mathml_copy_string(style);
   s1 = wims_mathml_copy3(s1,$1,"\" ");
-  s1 = wims_mathml_copy2(s1,"readonly /></mn>");
+  s1 = wims_mathml_copy2(s1,"readonly /></annotation-xml></semantics></mn>");
     }
     else
     {
   $1 = wims_mathml_copy_string(style);
-  s1 = wims_mathml_copy3(s1,$1,"\" /></mn>");
+  s1 = wims_mathml_copy3(s1,$1,"\" /></annotation-xml></semantics></mn>");
     }
     $$ = wims_mathml_copy_string(s1);
     wims_mathml_free_string(s1);
@@ -1781,6 +1781,13 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
 | BEGINENV SVG ENDSVG {
   $$ = wims_mathml_copy_string(" ");
 };
+| BEGINENV HTML XMLSTRING ENDHTML {
+  $$ = wims_mathml_copy3("<semantics><annotation-xml encoding=\"application/xhtml+xml\">", $3, "</annotation-xml></semantics>");
+  wims_mathml_free_string($3);
+}
+| BEGINENV HTML ENDHTML {
+  $$ = wims_mathml_copy_string(" ");
+};
 
 substack: SUBSTACK MROWOPEN tableRowList MROWCLOSE {
   $$ = wims_mathml_copy3("<mrow><mtable columnalign=\"center\" rowspacing=\"0.5ex\">", $3, "</mtable></mrow>");
@@ -2268,3 +2275,40 @@ int wims_mathml_do_html_filter (const char * buffer, unsigned long length, const
 
   return result;
 }
+
+
+void replace_str(const char *str, const char *old, const char *new){
+/* http://creativeandcritical.net/str-replace-c/ */
+    char *ret, *r;
+    const char *p, *q;
+    size_t oldlen = strlen(old);
+    size_t count, retlen, newlen = strlen(new);
+
+    if (oldlen != newlen){
+	for (count = 0, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen){
+	    count++;
+	    retlen = p - str + strlen(p) + count * (newlen - oldlen);
+	}
+    } 
+    else
+    {
+	retlen = strlen(str);
+    }
+    
+    if ((ret = malloc(retlen + 1)) == NULL){
+	ret = NULL;
+    }
+    else
+    {
+	for (r = ret, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen) {
+	    size_t l = q - p;
+	    memcpy(r, p, l);
+	    r += l;
+	    memcpy(r, new, newlen);
+	    r += newlen;
+	}
+	strcpy(r, p);
+    }
+    yylval = ret;
+}
+		

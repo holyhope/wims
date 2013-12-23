@@ -5,7 +5,7 @@
 %{
 %}
 %option noyywrap
-%x MATH FINDARG ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND OPTARG ARRAYOPTIONS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
+%x MATH FINDARG ATTRIBUTELIST BBOLD FRAKTUR CALLIGRAPHIC ROMAN PLAINTEXT INT1 INT2 INT3 MATHENV SVGENV SVGEND HTMLENV HTMLEND  OPTARG ARRAYOPTIONS COLOPTS TEXTOPTARG TEXTOPTARG1 RAISEBOX1 RAISEBOX2
 %{
 #include <string.h>
 
@@ -1584,6 +1584,7 @@ int wims_mathml_displaymode = 0;
 "\{array\}" |
 "\{alignat\}" {if (wims_mathml_env_start == 1) BEGIN(ARRAYOPTIONS); else BEGIN(MATH); return ARRAY;}
 "\{svg\}" {wims_mathml_env_start = 0; BEGIN(SVGENV); return SVG;}
+"\{html\}" {wims_mathml_env_start = 0; BEGIN(HTMLENV); return HTML;}
 "\{equation\}"  {wims_mathml_env_start = 0; BEGIN(MATH); return EQUATION;}
 "\{eqnarray\}" {wims_mathml_env_start = 0; BEGIN(MATH); return MATRIX;}
 
@@ -1650,12 +1651,31 @@ int wims_mathml_displaymode = 0;
 
 
 <SVGENV>{
-"\\end\{svg" {yylval=wims_mathml_copy_string(yytext); yylval[yyleng-8]=0; BEGIN(SVGEND); return XMLSTRING;}
+"\\end\{svg" {
+    yylval = wims_mathml_copy_string(yytext);
+    replace_str(yylval,"\\lt ","<");
+    replace_str(yylval,"\\gt ",">");
+    yyleng = strlen(yylval);
+    yylval[yyleng-8]=0; BEGIN(SVGEND); return XMLSTRING;}
 (.|\n) {yymore();}
 }
 
 <SVGEND>{
 "\}" {BEGIN(MATH); return ENDSVG;}
+}
+
+<HTMLENV>{
+"\\end\{html" {
+    yylval = wims_mathml_copy_string(yytext);
+    replace_str(yylval,"\\lt ","<");
+    replace_str(yylval,"\\gt ",">");
+    yyleng = strlen(yylval);
+    yylval[yyleng-9]=0; BEGIN(HTMLEND); return XMLSTRING;}
+(.|\n) {yymore();}
+}
+
+<HTMLEND>{
+"\}" {BEGIN(MATH); return ENDHTML;}
 }
 
 <ROMAN>{
