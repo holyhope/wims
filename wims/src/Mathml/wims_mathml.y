@@ -1051,33 +1051,33 @@ input: INPUT {
     char tmp[2];
     int i;
     for(i = 0 ; i < len ; i++){
-  if( yylval[i] == '{' ){
-      found_left=1;found_right=0;
-  }
-  else
-  {
-      if( yylval[i] == '}' ){
-    cnt++;found_left=0;found_right=1;
-      }
-      else
-      {
-    if(found_left == 1 && found_right == 0){
-        tmp[0] = yylval[i];
-        tmp[1] = '\0';
-        switch (cnt){
-      case 0 : strncat(size,tmp,1);break;
-            case 1 : strncat(id,tmp,1);break;
-            case 2 : strncat(style,tmp,1);break;
-            case 3 : strncat(value,tmp,1);break;
-            case 4 : strncat(readonly,tmp,1);break;
-      default : break;
-        }
-    } 
-      }
-  }
+	if( yylval[i] == '{' ){
+    	    found_left=1;found_right=0;
+	}
+	else
+	{
+    	    if( yylval[i] == '}' ){
+	    cnt++;found_left=0;found_right=1;
+    	    }
+    	    else
+    	    {
+		if(found_left == 1 && found_right == 0){
+    		    tmp[0] = yylval[i];
+    		    tmp[1] = '\0';
+    		    switch (cnt){
+    			case 0 : strncat(size,tmp,1);break;
+    			case 1 : strncat(id,tmp,1);break;
+    			case 2 : strncat(style,tmp,1);break;
+    			case 3 : strncat(value,tmp,1);break;
+    			case 4 : strncat(readonly,tmp,1);break;
+    			default : break;
+    		    }
+		} 
+    	    }
+	}
     }
     $1 = wims_mathml_copy_string(size);
-    char * s1 = wims_mathml_copy3("<mn><semantics><annotation-xml encoding=\"application/xhtml+xml\"><input type=\"text\"  size=\"",$1,"\" id=\"mathml");
+    char * s1 = wims_mathml_copy3("<mn><semantics><annotation-xml encoding=\"application/xhtml+xml\"><input type=\"text\" xmlns=\"http://www.w3.org/1999/xhtml\" size=\"",$1,"\" id=\"mathml");
     $1 = wims_mathml_copy_string(id);
     s1 = wims_mathml_copy3(s1,$1,"\" value=\"");
     $1 = wims_mathml_copy_string(value);
