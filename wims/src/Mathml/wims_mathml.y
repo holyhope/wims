@@ -1077,21 +1077,21 @@ input: INPUT {
 	}
     }
     $1 = wims_mathml_copy_string(size);
-    char * s1 = wims_mathml_copy3("<semantics><annotation-xml encoding=\"application/xhtml+xml\"><input type=\"text\" xmlns=\"http://www.w3.org/1999/xhtml\" size=\"",$1,"\" id=\"mathml");
+    char * s1 = wims_mathml_copy3("<semantics><annotation-xml encoding=\"application/xhtml+xml\"><textarea xmlns=\"http://www.w3.org/1999/xhtml\" cols=\"",$1,"\" rows=\"1\" id=\"mathml");
     $1 = wims_mathml_copy_string(id);
-    s1 = wims_mathml_copy3(s1,$1,"\" value=\"");
-    $1 = wims_mathml_copy_string(value);
-    s1 = wims_mathml_copy3(s1,$1,"\" style=\"");
+    s1 = wims_mathml_copy3(s1,$1,"\" style=\"vertical-align:middle;overflow:hidden;resize:none;");
     if( strstr(readonly,"1") != NULL){
 	$1 = wims_mathml_copy_string(style);
 	s1 = wims_mathml_copy3(s1,$1,"\" ");
-	s1 = wims_mathml_copy2(s1,"readonly /></annotation-xml></semantics>");
+	s1 = wims_mathml_copy2(s1," readonly=\"readonly\">");
     }
     else
     {
 	$1 = wims_mathml_copy_string(style);
-	s1 = wims_mathml_copy3(s1,$1,"\" /></annotation-xml></semantics>");
+	s1 = wims_mathml_copy3(s1,$1,"\">");
     }
+    $1 = wims_mathml_copy_string(value);
+    s1 = wims_mathml_copy3(s1,$1,"</textarea></annotation-xml></semantics>");
     $$ = wims_mathml_copy_string(s1);
     wims_mathml_free_string(s1);
     wims_mathml_free_string($1);

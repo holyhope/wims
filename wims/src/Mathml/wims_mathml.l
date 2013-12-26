@@ -1635,6 +1635,7 @@ int wims_mathml_displaymode = 0;
 		if( yytext[p+1] != ':' && yytext[p+1] != '|' && 
 		    yytext[p-1] != ':' && yytext[p-1] != '|' ){
 			strncat(M," none ",6);
+			strncat(H," none ",6);
 			/* we must use "none" : otherwise all columns will be "solid" */
 		}
 	    }
