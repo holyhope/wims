@@ -41,7 +41,6 @@ Para elegir su trabajo, tienen una de las posibilidades siguientes
 !set name_getsource=Voici le source de cette feuille. Vous pouvez copier ce source (entre les deux lignes composées de `*'; \
 utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement. 
 
-!set name_regmodif=Modificación registrada
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
 !!set name_helpprog=Ayudarse de esta correspondencia orientativa, entre los programas de la enseñanza francesa y los ejercicios Wims
 !set name_helpprog=$empty
