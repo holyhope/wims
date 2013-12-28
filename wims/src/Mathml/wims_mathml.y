@@ -721,12 +721,12 @@ closedTerm: array
 
 left: LEFT LEFTDELIM {
   wims_mathml_rowposn = 2;
-  $$ = wims_mathml_copy3("<mo>", $2, "</mo>");
+  $$ = wims_mathml_copy3("<mo stretchy=\"true\">", $2, "</mo>");
   wims_mathml_free_string($2);
 }
 | LEFT OTHERDELIM {
   wims_mathml_rowposn = 2;
-  $$ = wims_mathml_copy3("<mo>", $2, "</mo>");
+  $$ = wims_mathml_copy3("<mo stretchy=\"true\">", $2, "</mo>");
   wims_mathml_free_string($2);
 }
 | LEFT PERIODDELIM {
@@ -736,11 +736,11 @@ left: LEFT LEFTDELIM {
 };
 
 right: RIGHT RIGHTDELIM {
-  $$ = wims_mathml_copy3("<mo>", $2, "</mo>");
+  $$ = wims_mathml_copy3("<mo stretchy=\"true\">", $2, "</mo>");
   wims_mathml_free_string($2);
 }
 | RIGHT OTHERDELIM {
-  $$ = wims_mathml_copy3("<mo>", $2, "</mo>");
+  $$ = wims_mathml_copy3("<mo stretchy=\"true\">", $2, "</mo>");
   wims_mathml_free_string($2);
 }
 | RIGHT PERIODDELIM {
