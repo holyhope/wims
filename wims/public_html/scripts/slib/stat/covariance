@@ -15,9 +15,11 @@ slib_require=pari
 slib_out=
 !readproc slib/stat/dataproc $wims_read_parm
 
-!if $slib_y=$empty or $slib_x=$empty
+!if $slib_weight=$empty or $slib_data=$empty
  !exit
 !endif
+slib_x=$slib_data
+slib_y=$slib_weight
 slib_cnt=!itemcnt $slib_x
 slib_cnty=!itemcnt $slib_y
 !if $slib_cnt<>$slib_cnty
