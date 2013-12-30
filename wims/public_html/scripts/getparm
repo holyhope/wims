@@ -1,5 +1,5 @@
 !!! input:url_to_analyse name_of_parameters_asked
-!!! output: the variable contained in name_of_parameters_asked
+!!! output: the variable contained in name_of_parameters_asked (prefixed by get_  to prevent incompatibility)
 !set parmtoread=!singlespace $wims_read_parm
 !set parmtoread=!words2items $parmtoread
 !set parmtoread=!nonempty items $parmtoread
@@ -12,6 +12,6 @@
 $ in $url
   !set testw=!replace internal = by , in $testw
   !set testw=!select $testw where column 1=$p_
-  !set $p_=!nospace $(testw[;2])
+  !set get_$p_=!nospace $(testw[;2])
 !next
 

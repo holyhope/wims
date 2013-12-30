@@ -1,5 +1,5 @@
 !read getparm $module_init_parm wksheet
-
+!! output is get_wksheet
 !set parm1=!text select /$namechars in $parm1
 !set parm1=!char 1 to $namelim*2 of $parm1
 
@@ -50,8 +50,8 @@
   !readproc docu/printlink.proc $parm1
  !else
   !if $pdoc=$doc
-   !if $wksheet!=$empty and $wksheet!=0
-     !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms&wksheet=$wksheet$anchor $pname
+   !if $get_wksheet!=$empty and $get_wksheet!=0
+     !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms&wksheet=$get_wksheet$anchor $pname
    !else
      !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms$anchor $pname
    !endif
