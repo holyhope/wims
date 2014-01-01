@@ -5,7 +5,7 @@
 !if $cmd=new or $cmd=resume
  $name_insert <span class="tt wims_fname">$dir</span>
  !if $iniparm!=$empty
-  $name_parm 
+  $name_parm
  <p>
  <span class="tt wims_parm">
   !replace internal & by &amp; in $iniparm
@@ -15,7 +15,7 @@
  <p>
  $name_choose_exo
  </p>
- 
+
  !form reply
  $name_choose :
  <select name="picksheet">
@@ -45,11 +45,10 @@
  !if $title1!=$empty
    !set title=$title1
  !endif
- 
-   
+
  !set title=!trim $title
  !default title=$wims_name_Exercise
- $wims_name_title: <input size="50" name="title" value="$title" /> 
+ $wims_name_title: <input size="50" name="title" value="$title" />
  <p>
  $wims_name_Description: <textarea name="new_desc" rows="5" cols="50">$desc</textarea>
  </p>
@@ -62,8 +61,22 @@
  $name_weight:
   <input size="6" name="weight" value="$weight" />.
  !endif
+!if $exocnt_=$get_qnum and $get_random=0
+<div>
+$name_orderchange:
+ <table>
+  !for ex = 1 to $exocnt_
+   <tr><td class="bold">
+ !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$dir/Extitles
+   </td><td>
+    <input name="update_ex$ex" size="5" value="$ex" />
+  </td></tr>
+  !next
+ </table>
+</div>
+ !endif
  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_Insert" /></div>
- 
+
 !formend
 !endif
 

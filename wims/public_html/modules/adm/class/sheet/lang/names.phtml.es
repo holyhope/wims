@@ -2,7 +2,7 @@
 
 !read adm/lang/date.phtml.$moduclass_lang
 !read adm/lang/sheetexam.phtml.$lang
- 
+
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
@@ -11,6 +11,7 @@
 !if $activetest<=0
  !let wims_name_sheetadmin=Página de preparación
  !set name_title=!nosubst Preparación de la hoja de trabajo $sheet
+ !set name_order=Order of the exercises of the series
 !else
  !let wims_name_sheetadmin=Página de gestión
  !set name_title=!nosubst Gestión de la hoja $sheet
@@ -39,7 +40,7 @@ Para elegir su trabajo, tienen una de las posibilidades siguientes
 !set name_text4=Buscar un ejercicio de su cuenta
 
 !set name_getsource=Voici le source de cette feuille. Vous pouvez copier ce source (entre les deux lignes composées de `*'; \
-utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement. 
+utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement.
 
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
 !!set name_helpprog=Ayudarse de esta correspondencia orientativa, entre los programas de la enseñanza francesa y los ejercicios Wims

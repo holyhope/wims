@@ -22,3 +22,4 @@
 !set name_choose_series=Cliquez sur le nom de la séries d'exercices à laquelle vous souhaitez ajouter l'aide
 !set name_actualhelp=Aide actuelle
 !set name_series=Séries d'exercices
+!set name_orderchange=Changer l'ordre des exercices

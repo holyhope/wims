@@ -59,6 +59,7 @@ $name_titlemodif $modif
     $table_tr
      <td>
       $(name_shtab[9])
+      !set parm__=$parm_
       !let parm_=!replace internal & by ; in $parm_
       !let parm_=!replace internal scoredelay=; by scoredelay=0; in $parm_
       !let parm_=!replace internal exo=; by exo=0; in $parm_
@@ -73,6 +74,25 @@ $name_titlemodif $modif
      </td>
      <td>$directory_ <br /> $parm_ </td>
     </tr>
+    !read getparm $parm__ exo qnum random
+    !set exocnt_=!itemcnt $get_exo
+    !if $get_qnum=$exocnt_ and $get_random=0 and $get_qnum>1
+    $table_tr
+    <td>
+  $name_order
+    </td><td>
+   <table>
+  !for ex = 1 to $exocnt_
+   <tr><td>
+   !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$directory_/Extitles
+   </td><td>
+    <input name="update_ex$ex" size="5" value="$ex" />
+  </td></tr>
+  !next
+ </table>
+    </td>
+    </tr>
+    !endif
    !endif
  !endif activetest = 0
     $table_end

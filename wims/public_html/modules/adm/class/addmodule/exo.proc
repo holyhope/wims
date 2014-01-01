@@ -93,6 +93,32 @@ desc_limit=255
    !exit
   !endif
  !next i
+####
+  !if $get_random=0
+  !for i=1 to $get_qnum
+    update_order=!append item $(update_ex$i) to $update_order
+  !next
+
+  get_exo=$(get_exo[$update_order])
+  iniparm2=!replace internal & by $\
+$ in $iniparm
+  iniparm2_cnt=!linecnt $iniparm2
+  new_iniparm=
+  equal==
+  !for v in $get_exo
+    new_iniparm=!append item exo=$v to $new_iniparm
+  !next
+  !for u=1 to $iniparm2_cnt
+    l=!line $u of $iniparm2
+    !if exo$equal notin $l
+     new_iniparm=!append item $l to $new_iniparm
+    !endif
+  !next
+  new_iniparm=!nospace $new_iniparm
+  new_iniparm=!replace internal , by & in $new_iniparm=
+  iniparm=$new_iniparm
+!endif
+#####
  !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$picksheet :$dir\
 $iniparm\
 $require\

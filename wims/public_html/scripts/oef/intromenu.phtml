@@ -27,7 +27,7 @@
 
 !if $special_parm3!=$empty
  !let tmp=!replace internal ; by $ $ in $special_parm3
- !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
+ !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,random,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
   !let t=!getopt $(cle) in $tmp
   !default $(cle)=$t
  !next cle
@@ -73,7 +73,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    !endif
 !endif
 
-!if $lang notsametext $module_language and $(titlelist_$lang) notsametext 
+!if $lang notsametext $module_language and $(titlelist_$lang) notsametext
  !set titlelist=$(titlelist_$lang)
 !endif
 
@@ -123,7 +123,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
     <div class="field">
      <label for="intro_qcmpresent">$name_qcmanswer: </label>
      !default intro_qcmpresent=4
-     !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+     !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
@@ -152,6 +152,12 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
       !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
      </label>
     </div>
+    <div class="field">
+     <label>
+      !formcheckbox random list 0 prompt $name_aleaseries
+     </label>
+    </div>
+
     !let tmp=!replace word expert by $ in $special_parm2
     !set tmp3=!replace internal intro_expert=yes by in $special_parm3
     <input type="hidden" name="intro_expert" value="yes" />
