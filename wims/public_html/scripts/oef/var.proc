@@ -267,7 +267,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
   !endif
   !! add default to fix a bug with nextstep and type click
  !default m_reply$i=$(reply$i)
- !default m_reply_$i=$(m_reply$i)
+ !default m_reply_$i=$(reply_$i)
   !default replytype$i=default
   tt=!word 1 of $(replygood$i)
   	# analyzed reply
@@ -280,6 +280,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
     !goto end
    !endif
    !default m_reply$i=$(reply$i)
+   !default m_reply_$i=$(reply_$i)
    !read oef/screply.proc
    val$tt=$(m_reply$i)
    !if NaN isin $test
@@ -293,6 +294,8 @@ m_oefenv=!replace word debug by $ in $m_oefenv
    !goto end
   !endif
   !default m_reply$i=$(reply$i)
+  !default m_reply_$i=$(reply_$i)
+  !default m_reply_$i=$(reply$i)
   !read oef/screply.proc
   !if bad isin $Test
    error=bad_exo $i
