@@ -560,12 +560,12 @@ void _header(char *p, int option)
 	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
 	    \n<html xml:lang=\"%s\"\
 	    xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
-     </head>\n<body %s %s\"%s\" %s>\n",
-	   lang,hbuf,s2,ol,wsbuf2,bo);}
+     </head>\n<body %s %s\"%s\" %s>\n<script type=\"text/javascript\">if(navigator.userAgent.indexOf(\"Firefox\") == -1){var script = document.createElement(\"script\");script.type = \"text/javascript\";script.src  = \"scripts/js/mathjax/MathJax.js?config=default.js\";document.body.appendChild(script);}</script>\n",
+     lang,hbuf,s2,ol,wsbuf2,bo);}
 	   else {
 	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
 	    \n<html xml:lang=\"%s\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
-     </head>\n<body %s %s%s %s>\n",
+     </head>\n<body %s %s%s %s>\n<script type=\"text/javascript\">if(navigator.userAgent.indexOf(\"Firefox\") == -1){var script = document.createElement(\"script\");script.type = \"text/javascript\";script.src  = \"scripts/js/mathjax/MathJax.js?config=default.js\";document.body.appendChild(script);}</script>\n",
 	   lang,hbuf,s2,ol,wsbuf2,bo);
 	   }
     exec_headmenu(p);
