@@ -3,6 +3,8 @@
  */
 
 
+%parse-param {char **ret_str}
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -11,8 +13,6 @@
 #include "wims_mathml.h"
 
 #define YYSTYPE char *
-#define YYPARSE_PARAM_TYPE char **
-#define YYPARSE_PARAM ret_str
 
 #define yytext wims_mathml_yytext
  extern int yylex ();
@@ -25,8 +25,8 @@
 
  void (*wims_mathml_error) (const char * msg) = wims_mathml_default_error;
 
- static void yyerror (char * s)
-  {
+ static void yyerror (char ** ret_str, char * s)
+   {
 //    char * msg = wims_mathml_copy3 (s, " at token ", yytext);
     if (wims_mathml_error)
       (*wims_mathml_error) ("ERROR");
@@ -2311,4 +2311,3 @@ void replace_str(const char *str, const char *old, const char *new){
     }
     yylval = ret;
 }
-		
