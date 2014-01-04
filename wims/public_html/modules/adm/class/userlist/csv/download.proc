@@ -14,7 +14,7 @@ dl=!replace grade by manual in $dl
 dl=!replace word allscores by allscore in $dl
 dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
-
+dl_tmp=$dl
 basic=login lastname firstname password email regnum comments photourl participate supervise external_auth vars
 sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
@@ -60,10 +60,30 @@ av=
 !endif
 good=$good $av
 
+!for i in $activesh
+  se=
+  e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !for ee=1 to $e
+    se1=sheet$(i)_exo_$(ee)_I1
+    se2=sheet$(i)_exo_$(ee)_I2
+    se=$se $se1 $se2
+    name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
+    name=!line 5 of $name
+    name_$se1=$name I1 (%)
+    name_$se2=$name I2
+  !next
+  !if sheetexo$i iswordof $dl
+    dl=!replace word sheetexo$i by $se in $dl
+    dl=!replace word sheetexo$i by  in $dl
+    good=$good $se
+  !endif
+!next
+
 dl=!replace word averages by $av in $dl
 dl=!replace word sheets by $sh in $dl
 dl=!replace word exams by $ex in $dl
 dl=!replace word manuals by $ma in $dl
+
 dl=!words2items $dl
 dl=!listuniq $dl
 good=!words2items $good
@@ -101,6 +121,7 @@ tit=!translate , to $sep in $dl
 !for n in $dl_var
  dl4=!replace user_$n by $(quote)user__$n$quote in $dl4
 !next n
+
 dl3=!replace user_ by $$name_ in $dl2
 dl2=!replace user_ by $$user_ in $dl2
 dl5=!replace user_ by $$name__ in $dl4
@@ -130,7 +151,7 @@ $dl3$dl5\
   user_participate=!items2words $user_participate
   user_supervise=!items2words $user_supervise
  !if $scores=yes
-  !read adm/class/userscore
+  !read adm/class/userscore $uu
   user_average1=$per
   user_average2=$(manual_$uuu)
   !if average0 isitemof $dl
@@ -141,6 +162,7 @@ $dl3$dl5\
     p_=!line $i of $percents
     !distribute words $p_ into p1,p2
     !if $p2!=$empty
+###f_$i is defined by var.proc.weights
      !distribute item $[$p1/100],$[$p2/10] into x_,y_
      user_sheet$i=$[rint(100*$scoremax*$(f_$i))/100]
     !else
@@ -148,6 +170,18 @@ $dl3$dl5\
     !endif
    !endif
   !next i
+  !for i=1 to $sheetcnttot
+   !if sheetexo$i iswordof $dl_tmp and $i isitemof $activesh
+    !let e_=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+    !for k_ = 1 to $e_
+      d_=!getscore user=$uu sheet=$i work=$k_
+      dd_=!getscorerequire user=$uu sheet=$i work=$k_
+      m_=!getscoremean user=$uu sheet=$i work=$k_
+      user_sheet$(i)_exo_$(k_)_I1=$[ceil(100*$d_/$dd_)]
+      user_sheet$(i)_exo_$(k_)_I2=$m_
+    !next k_
+   !endif
+  !next
   !for i=1 to $examcnttot
    !if exam$i isitemof $dl and $i isitemof $activexams
     user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
