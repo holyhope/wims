@@ -85,7 +85,7 @@ int getscoreuser(char *classe, char *user)
     mystrncpy(rscore_user,user,sizeof(rscore_user));
     return 0;
 }
-
+// work=exo ??
 char *scorepname[]={
      "class","user","sheet","work","exam"
 };
@@ -127,7 +127,7 @@ void _scoreparm(char *p)
           score_sheet=atoi(pd);
           break;
          }
-         case 3: /* work */
+         case 3: /* work=exo */
            score_exo=atoi(pd); break;
          case 4: /* exam */
            score_isexam=1; break;
@@ -151,7 +151,10 @@ void _scoreparm(char *p)
     }
 }
 
-     /* gather user score. */
+/* gather score: relatif to some of the 
+ *  user class work sheet exam 
+ *    dtype can be require weight score mean remain
+*/
 void _getscore(char *p,int dtype)
 {
     int i,sh,ex,osh;
@@ -161,6 +164,8 @@ void _getscore(char *p,int dtype)
     _scoreparm(p);
     if(*score_class==0 || *score_user==0) return;
     if(getscoreuser(score_class,score_user)<0) return;
+/* code exo as 2^8 number_sheet + number_exo, so limit the number_exo to 2^8
+*/ 
     for(i=osh=0,p1=p;i<scorecnt && p1-p<MAX_LINELEN-32;i++) {
      sh=(rscore[i].num>>8)+1; if(sh<1 || sh>MAX_SHEETS) break;
      if(score_sheet!=0) {

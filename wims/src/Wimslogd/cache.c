@@ -177,7 +177,7 @@ struct classdata *getclasscache(char *cl)
     cd->examcnt=k-cd->exocnt; cd->exocnt=k;
     return cd;
 }
-
+// misprint ?? sheetdata ?? does not seem to be used.
 	/* prepare cache for a sheet */
 struct sheetata *getsheetcache(char *cl, char *sh)
 {

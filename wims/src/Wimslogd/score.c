@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-          /* student score management */
+     /* student score management */
 
 double oldfactor=0.85;  /* quality factor, should remain stable. */
 
