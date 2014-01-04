@@ -14,8 +14,43 @@ MC	= Marina Cazzola
 OB  = Olivier Bado
 RM	= Régine Mangeard
 
-wims.4.07a [r7068]
-  2013-12-04:
+---------------------------------------------------------------------------
+wims.4.07b
+2014-01-03: Improve matrix anstype:- add split options for matrix
+  - add color in false coefficients
+  - add variable result$i as a mask for good and bad coefficients
+  In oef exercises, reply_$i is now accessible;; contains the student answer eventually reformated
+     as it appears in embed case or in the analysis of the question.
+2014-01-01
+ in oef exo : give the possibility to impose the order of
+the exercises in a series (the interface was not there).
+2013-12-30: delete the link reference
+2013-12-28 MathML:adding stretchy="true" to delimiters LEFT/RIGHT triggered by \left \right (JE)
+  delete the link reference. Should be put again if work is done on data
+2013-12-27:add zones K1, K2 K3 ; add category physical_education
+2013-12-26:modify OEF in a sheet now not display in a popup windows
+2013-12-26: MathML:  Fixing MathJax inputfield bug by using a pre-styled 'textarea' instead of a 'input'
+2013-12-23:can add draw feedback in the coord anstype
+2013-12-23: Mathml:
+  - added environment \begin{html}...\end{html}
+  - corrected environment \begin{svg}
+  - introduce replace_str() function
+  - using correct semantics for pseudo latex \input
+2013-12-15: add possibility to use the technical variables in the motd
+  (call it by \var_xxx if the variable is xxx as in the liaison tableur - in internal it is user__xxx.
+2013-12-14: add the option  goodanswershown to coord anstype
+2013-12-08: the number of the sheet will no more appear when one uses sequences.
+2013-12-04: allows to modify some fields in the insertion of an exo in a sheet when
+  it is active: description, title, comments, feedback
+2013-12-04: add variable doclist and common_images in var.proc
+2013-12-03: fix binomialinv : exact formula when q=p=0.5,
+ else use octave (no result in the first example before).
+2013-12-03: when inserting a public document in a class, it is now possible
+ to link it with some sheet.
+2013-12-03: use src2def in latex2wims module
+2013-12-03: add primitive audio in documents
+2013-12-03: button compile only if srctex is working
+2013-12-04:
   Allows to modify some fields in the insertion of an exo in a sheet when
   it is active: description, title, comments, feedback
   Allow to link a public document with a class sheet
@@ -23,34 +58,36 @@ wims.4.07a [r7068]
   - deposit in doc/srctex
   - common_files
   - can have the translation in the same module
-  new WIMSChem (JE) : svg version
+
+new WIMSChem (JE) : svg version
+---------------------------------------------------------------------------
+wims.4.07a [r7068]
   add anstype time
   add anstype complex
   clean public_html/bases/dic (regenerate files)
   fix warnings in compilation
   fix bugs in search engine
   recover some links lost in theme for student account, change password
-
+---------------------------------------------------------------------------
 wims.4.06 [r7010]
-
  add example classes from Chantal Causse
  work on example sheets
  improvment of the search engine
  add theme pommier (experimental)
  add analysis slib in differential systems
  change the way to insert keywords for autocompletion
-
+---------------------------------------------------------------------------
 wims.4.05c
 2013-08-07: add possibility to go directly from score of a participant to
 the next one (also for exam, raw data, etc).
 2013-07: add slib for differential equations, inversedomain (in analysis).
-
+---------------------------------------------------------------------------
 wims.4.05b [r6700]
 2013-06: add three example classes.
   improve latex2wims (change tooltip in jQuery menu)
   fix some trouble in search engine (in case of several word groups).
   in documents, a block named doctoc can be exploited as a summary table.
-
+---------------------------------------------------------------------------
 wims.4.05a [r6585]
 2013-06-14: work on popup tool (french version).
 2013-06-12: add slib on differential equations.
@@ -65,9 +102,9 @@ wims.4.05a [r6585]
 - fix bug: if the sequence has been configured on yes,
   but no sequence has been created, the supervisor will see the notes.
 - add language menu in properties of a module (modtool) ;
-  add jquery for toggle the language menu. 
+  add jquery for toggle the language menu.
 - many changes for better compatibility with xhtml and html 5
-- some css have been added and used in adm modules  as wimscenter, wimsemph, tt, small, 
+- some css have been added and used in adm modules  as wimscenter, wimsemph, tt, small,
   smaller, bold, wimsborder, wimsnoborder (for tables), clearall, spacer, ...
   cut css in small parts, it will be easier to compare for differents themes
 2013-01-08: use yuicompressor-2.4.7.jar to compress css.css
@@ -79,10 +116,10 @@ wims.4.05a [r6585]
 2012-11-28: cleaning generated files in the example class and documents in bases - the generation
   is done by bin/mkindex (adapt the script src2def and docu/mkindex to be able to do that)
 2012-11-28: clean the generated files in oef/$lang/qcm - they will be generated now by bin/mkindex
-2012-11-22 : new jobs in raw as copyclass and getsheetstats,  optimizing getlog job, 
+2012-11-22 : new jobs in raw as copyclass and getsheetstats,  optimizing getlog job,
    now it can render more than 500 lines of a user log (OB)
 2012-11-21: add jquery.min.js in public_html/scripts/js/jquery/jquery.min.js
-2012-11-07: in wims_mathml, replace non-unique id="wims_mathml" by a 
+2012-11-07: in wims_mathml, replace non-unique id="wims_mathml" by a
   unique id (id="wims_mathml.....") (JE)
 2012-11   : introduce widgets and cut the different actions in small pieces (OB, BPR)
 2012-11-06: add !formend command to close a !form
@@ -96,9 +133,9 @@ wims.4.05a [r6585]
 2012-10-17: add an example class from Chantal Causse
 2012-10-16: Fix bug which limits the option shuffle in some anstype
   (comes with the r2063 - because of default in anstype/checkbox)
-2012-10-16: Examcheck can now be accessed by a direct link (cmd=new), not only after displaying 
+2012-10-16: Examcheck can now be accessed by a direct link (cmd=new), not only after displaying
    the entire user list (cmd = reply)
-2012-10-16: fix bug in cas authentification (not sensible to case): external_auth will 
+2012-10-16: fix bug in cas authentification (not sensible to case): external_auth will
    be always in lowercase
 2012-10-13: add parameter for the width of the arrow in chronology model
 2012-10-12: add slib/draw/thermometer, add add slib/draw/meter
@@ -107,9 +144,9 @@ wims.4.05a [r6585]
 2012-10-03: in modttol, add version of the public module when the same exists in modtool
 2012-10-02: change tables in correspond in css (OB)
 2012-09-30: add some ipa symbols in keyboard anstype
-2012-09-30: fix following bug in exolog : renamed-images had the name of the link, 
+2012-09-30: fix following bug in exolog : renamed-images had the name of the link,
   so the exercise was not visible  once the session was killed.
-2012-09-30: fix bug in csv upload and on external_auth : was erased if login is given 
+2012-09-30: fix bug in csv upload and on external_auth : was erased if login is given
   and if there is not external_auth in a csv file.
 2012-09-21: add Nikaia theme (OB)
 ---------------------------------------------------------------------------
@@ -124,7 +161,7 @@ wims.4.03f [r5592]
 wims.4.03e [r5543]
 2012-07-04: add mathmlmath command - accessible by !mathmlmath [r5542]
 2012-07-02: add mathml (JE, BPR) [r5524]
-2012-06-24: add css styles for simple/sample tables (wimsborder, wimsnoborder) 
+2012-06-24: add css styles for simple/sample tables (wimsborder, wimsnoborder)
 2012-06-23: version 0.94 of jsxgraphcore.js, HTML Virtual Keyboard Interface Script - v1.49
 2012-06-18: Alert message can be send to user connected by supervisor (FG)
             supervisor can see if participants are connected (FG)
@@ -133,21 +170,21 @@ wims.4.03e [r5543]
 ---------------------------------------------------------------------------
 wims.4.03c [r5393]
 2012-06-12: add the "besoin d'aide" in the sheetsource of a document (bpr, idea of C. Causse)
-2012-06-12: in a superclass, the creator of a class can give 
+2012-06-12: in a superclass, the creator of a class can give
      a gestion access to another teacher (bpr)
 2012-06-12: Add guided mode in vote (MC, bpr)
 2012-04-22: Can erase a block of a document [r5266] (bpr)
 2012-04-04: Supervisor can see which participants of a class are connected (FG)
 2012-04-02: Added graphical interactive interface to add help to a series of a sheet (FG)
-2012-02-20: Added small exec utility scienceprint (JE) 
+2012-02-20: Added small exec utility scienceprint (JE)
 2012-03-15: External authentification and identification are implemented.
     Add supervise (and participate) fields in the properties of a participant which can be
     changed by the administrator (case of superclasses).
     Improved navigation in superclass (access right)
-    In case of external authentification : in a superclass, the teacher who wants to 
-    go in another class must ask to its supervisor.  
-2012-01-22: a vote can be desactivate if there is no votant yet or if there is no content. 
-    If one save before fill the content, the title is saved (no error message). It is not possible 
+    In case of external authentification : in a superclass, the teacher who wants to
+    go in another class must ask to its supervisor.
+2012-01-22: a vote can be desactivate if there is no votant yet or if there is no content.
+    If one save before fill the content, the title is saved (no error message). It is not possible
     to activate if there is no content. (bpr) [r4950]
 2012-01-09: add command slib in document. (bpr) [r4910]
 2012-01-07: add jsxgraph (javascript); add ggb2jsxgraph slib; add the interface in directexex. (bpr)
@@ -166,18 +203,18 @@ wims.4.03a [r4868]
      notation) (bpr) [r4864]
      improvment in latex2wims (minipage, lstlistings are interpreted) [r4866]
 2011-12-17: build the list of css classes.
-2011-12-17: build list of modules asking to be trusted (must have the line ask_trusted=yes in the 
-     module file var.init). This list is showed in the help of the field "trusted_module" 
+2011-12-17: build list of modules asking to be trusted (must have the line ask_trusted=yes in the
+     module file var.init). This list is showed in the help of the field "trusted_module"
      in manager module (bpr) [r4833].
 2011-12-14: add "credits" field in OEF exercises to be inserting at the end of the exercise ;
-    add the list of authors who are not the main authors (have made exercises) in an OEF 
+    add the list of authors who are not the main authors (have made exercises) in an OEF
     module intro  (bpr) [r4810]
 2011-12-12: supervisor can disallowed score interruption by participant (FG) [r4808]
 2011-11-01: in mboard, messages not yet read are in red (css style wims_forum_item_toread)  (bpr) [r4758]
 2011-11-01: - add slib/geo3D/drawtile (draw cubes in 3D)
   - add slib to manipulate blank in oef exercises (replace a blank by a character
   or a character by a blank).
-  - add bound option in anstype javacurve. Allow multiple select click in regions 
+  - add bound option in anstype javacurve. Allow multiple select click in regions
   (analyzed as in anstype coord (option bound))  (bpr)
 2011-10-19: add option absolute in the anstype numeric  (bpr)
 2011-10-15: mail in forum is send to all teachers of the class in the case of a superclass  (bpr)
@@ -214,10 +251,10 @@ uniformly according to language; it is also possible to put an email for each au
 ---------------------------------------------------------------------------
 wims.4.01f [r4248]
 2011-06 : add new jobs in module adm/raw (used in connection with other platforms) (OB)
-2011-06-09: modification in votes (in particular add checkbox, display result 
+2011-06-09: modification in votes (in particular add checkbox, display result
     in a table) r[4191] (FG)
-2011-06-: slib (BPR) 
-     - help can be now translated 
+2011-06-: slib (BPR)
+     - help can be now translated
      - add option url and html in slib drawings
 2011-06- in a superclass, a teacher can be a participant in a class and a supervisor
      in another one (BPR)
@@ -232,7 +269,7 @@ wims.4.01f [r4248]
 2011-03-18:
    - general clean up in the Makefile and the configure file (Karim Belabas)
    - kill compiler warnings.
-   - separate the wrapuid functionnality in 3 scripts : setwrapexec (essential and needed 
+   - separate the wrapuid functionnality in 3 scripts : setwrapexec (essential and needed
      for safe operation of external programs), setchroot, setwimsd
    - clean bashism
 2011-02-19 : add logout in modtool (BPR) [r3768]
@@ -260,14 +297,14 @@ wims.4.01c [r3585]
 ([r3416 and others] bpr
 2010-08-21: add crossword anstype, crossword slib and crossword program in src/Misc/crossword from the
   jigsaw.c ([r3397] bpr)
-2010-06--: add editor for createxo (OB) - integration of the OEF documentation (not finished). 
+2010-06--: add editor for createxo (OB) - integration of the OEF documentation (not finished).
 
 ---------------------------------------------------------------------------
 wims.4.01a [r3378]
 2010-07-18: add puzzle anstype (bpr)
 2010-07-18: fix bug in insdraw..processor : datamodule was not interpreted and images in $common_images were
   not found in this repertory when call with copy flydraw command.
-2010-07-16: add oef command teximg (gives the address of some tex text, can be used to be copied 
+2010-07-16: add oef command teximg (gives the address of some tex text, can be used to be copied
 in a draw image (bpr).
 2010-06-2: fix introduced bugs in modtool (bpr).
 2010-06-11: add the variables title_$lang in oef modules. (bpr)
@@ -275,8 +312,8 @@ in a draw image (bpr).
 
 ---------------------------------------------------------------------------
 wims.4.00 [r3243]
-2010-04-19: add css class : wims_button and wims_button_help and introduce it in many adm modules ; 
-    use it for input[submit] (OB and BPR). 
+2010-04-19: add css class : wims_button and wims_button_help and introduce it in many adm modules ;
+    use it for input[submit] (OB and BPR).
     Added ref_button_color, ref_button_bgcolor, ref_button_help_color, ref_button_help_bgcolor
     (adm/manage and adm/class/config) and vlink_color,link_color (config.c) [around r3076-3079]
 2010-04-08: can download and publish from many download center list in bases/sys/publishcenter directory (FG & BPR)
@@ -289,7 +326,7 @@ wims.4.00 [r3243]
 2010-02-23: OEF exercises: add command \latex{} - if it contains something (tex version of the statement),
   a tex file can be download with the exercises (two latex environments can be used (statement and solution))
    [r2656 | bpr]
-2010-02-23:OEF the printable sheet uses now the number of exercises in a serie of OEF exercises. 
+2010-02-23:OEF the printable sheet uses now the number of exercises in a serie of OEF exercises.
    [r2656 | bpr]
 
 ---------------------------------------------------------------------------
@@ -299,8 +336,8 @@ wims.3.65m [r2626] wims.3.65l [r2098] wims.3.65k [r1989]
 2010-02-19:add notion of maintainer of a module (module variable maintainer and maintainer_adresse),
    can be used in any module and appear in the "about" ([r2607] bpr)
 2010-02-16:add anonymity option in best scores [r2581 | ER]
-2010-02-: all previously existing language dependent adm modules are replaced by one module 
-  constructed by localization of these modules, keeping a single computation core and 
+2010-02-: all previously existing language dependent adm modules are replaced by one module
+  constructed by localization of these modules, keeping a single computation core and
   adding dictionaries. [essentially bpr with help of translators and als]
 2010-01-03: add type jmolclick based on jmol [r2097 | bpr]
 2010-01-03: add flash player for video and audio and slib [r2096 | bpr ]
@@ -314,21 +351,21 @@ wims.3.65j [r1941] wims.3.65i [r1872] wims.3.65h [r1832] wims.3.65f [r1511] wims
 2009-11-12: add Véronique Royer Terminale Class (BPR)
 2009-10-: improvment in language independancy.
 2009-09-20: add photoboard [r1631] (BPR)
-2009-09-20: clean userlist.$lang module and change the order of sheets in case where sequences 
+2009-09-20: clean userlist.$lang module and change the order of sheets in case where sequences
 are used (round [r1627]) (BPR)
-2009-09-07: standard theme supervisor read manager message in file log/manager_msg.phtml.$lang. 
+2009-09-07: standard theme supervisor read manager message in file log/manager_msg.phtml.$lang.
 No interface. (BPR)
-2009-09-06: modified units-filter; fixed a bug in the rendering of numbers whose absolute value 
-is in the interval 0..1; slightly modified the rounding routine to get a smarter behavior 
+2009-09-06: modified units-filter; fixed a bug in the rendering of numbers whose absolute value
+is in the interval 0..1; slightly modified the rounding routine to get a smarter behavior
 with data whose mantissa should be 0.5 (and are actually messed up by float calculation) (GK)
-2000-09-02: improvement of module adm/class/sheet.fr (FG) 
-2009-09-02: search_engine form files and linked names moved from module home to 
-script/adm/search_engine for calling by other modules (FG) 
-2009-08-31: upgraded units-filter to version 3.0. This should fix the bug with wrong truncations. 
-For example earlier versions rounded the value 2.5 to 2 and not 3 as expected. 
-Now the analyzer uses the GNU multiprecision library, and calculations are done 
+2000-09-02: improvement of module adm/class/sheet.fr (FG)
+2009-09-02: search_engine form files and linked names moved from module home to
+script/adm/search_engine for calling by other modules (FG)
+2009-08-31: upgraded units-filter to version 3.0. This should fix the bug with wrong truncations.
+For example earlier versions rounded the value 2.5 to 2 and not 3 as expected.
+Now the analyzer uses the GNU multiprecision library, and calculations are done
 with rational multiprecision numbers (GK)
-2009-08-23: add flydraw documentation translation in french and prepare for other languages [r1502] 
+2009-08-23: add flydraw documentation translation in french and prepare for other languages [r1502]
 2009-08-22: add description field in class documents (appear only in sequences) [r1499] (BPR)
 2009-08-16: participant index is done in all subclasses when indexing is done from portals [r1459] (BPR)
 2009-08-05: add speckedit (html editor) (for the moment in in motd and mboard) [r1448] (BPR)
@@ -342,12 +379,12 @@ wims.3.65c [r1377]
 2009-06-30: add module livret for view notes in competence table (FG)
 2009-06-28:add in class config the possibility to give a link on another platform which will appear in
    the class homepage - only in standard theme [r1288] (BPR)
-2009-06-01:add option word in class config to show sheet weights in user page home [r1209] (BPR) 
+2009-06-01:add option word in class config to show sheet weights in user page home [r1209] (BPR)
 2009-05-21: add mhelptail.phtml [r1175] (BPR)
-2009-04-24: OEF accepts \css (allows to introduce a css style) [r1104] (BPR) 
+2009-04-24: OEF accepts \css (allows to introduce a css style) [r1104] (BPR)
 2009-04-20: cleanup of html codes - add label in some forms (modtool, inscription, class creation) (BPR)
 2009-04-19: add !header1 (as !header but without title) [r1050] (BPR)
-2009-04-16: Flydraw update : add vectorial graphics file output (DXF), new command vimg, vimgfile ; 
+2009-04-16: Flydraw update : add vectorial graphics file output (DXF), new command vimg, vimgfile ;
    add also double arrows (arrow2) [r1024] (GX)
 2009-04-05: add js for keyboard, html editor [r1012] (BPR)
 2009-04-05: add german collection from shtooka projects (math voc and numbers) [r1011] (BPR)
@@ -360,7 +397,7 @@ wims.3.65c [r1377]
 2009-02-27: fix internal server error on ubuntu (BPR) [r964]
 
 ---------------------------------------------------------------------------
-wims.3.65b [r940] wims.3.65a [r940] 
+wims.3.65b [r940] wims.3.65a [r940]
 2009-01-25: add zirkel applet. (BPR) [r940]
 2009-01-25: add photourl variable in userlist. (BPR) [r938-937]
 2009-01-04: add chemistry program for analysing molfile. (BPR) [r913]
@@ -384,7 +421,7 @@ wims.3.64 [r798]
 2008-08-26:add slib for phonetics (BPR) [r791]
 2008-08-23: improvment in geogebra type. (BPR) [r776]
 2008-08-11: Add command tooltip in document - improve the special method in oef (BPR) [r756-r757]
-2008-08-10:scripts/oef/togetfile.proc is trusted file for adm/doc as it 
+2008-08-10:scripts/oef/togetfile.proc is trusted file for adm/doc as it
      is already for createxo (fix a submitted bug) (BPR) [r749]
 2008-08-08: adm/doc.* : make some phtml files language independant (BPR)
 2008-08-:latex2wims - add tabular type environment and fix minor bugs (BPR)
@@ -395,23 +432,23 @@ wims.3.63d [r720]
 
 ---------------------------------------------------------------------------
 wims.3.63c [r677]
-2008-06-xx: big improvment in Dutch, Italian and Catalan version. 
+2008-06-xx: big improvment in Dutch, Italian and Catalan version.
 2008-06-18: add interface to ldap authentification in a class (BPR for interface +
 C. Lefèvre) [r633]
-2008-06-18: delete adm/scenario.* adm/dialog.* - they have been transferred in 
+2008-06-18: delete adm/scenario.* adm/dialog.* - they have been transferred in
      scripts/scenario scripts/dialog (see docu and oef) - allow publication of the modules
      using them [r623], [r624] (BPR)
 2008-06-16: add possibility to hide exam registrations to students. [r603] (BPR)
 2008-06-14: may download style css in class [r565] (BPR)
 2008-06-14: change place of photos and basis of the puzzle modules to scripts/data/
-    - the modules H3/algebra/spuzzle.$lang and  U2/algebra/qpuzzle.$langwill will 
+    - the modules H3/algebra/spuzzle.$lang and  U2/algebra/qpuzzle.$langwill will
     be added in the Nice publication center at next release. [r563] (BPR)
-2008-06-13: add Imindex in oef modules (for ulterior testing if a file is in \imagedir) 
+2008-06-13: add Imindex in oef modules (for ulterior testing if a file is in \imagedir)
      [r561] (BPR)
-2008-06-08: add new fields title_$lang description_$lang translation_language for modules 
-     who have their language translation insid them (don't yet accessible by the Modtool 
+2008-06-08: add new fields title_$lang description_$lang translation_language for modules
+     who have their language translation insid them (don't yet accessible by the Modtool
      interface) [r554] (BPR)
-2008-06-08: add option in embed of "input type" (autocompletion=off, css style for 
+2008-06-08: add option in embed of "input type" (autocompletion=off, css style for
     the input box [r521] (BPR)
 2008-06-08: add eqsign option in equation [r518] (RM)
 2008-06-08: add sheets for level U3 [r519] (BPR)
@@ -425,15 +462,15 @@ wims.3.63b [r468]
       [r451] (BPR)
 2008-05-24: add style css documentation in bases ; fix bug in management : css stylesheet in home/css
       doesn't appear in list (BPR)
-2008-05-04: improvment in the adm module new : use the title in user language 
+2008-05-04: improvment in the adm module new : use the title in user language
       if it is defined in the INDEX module (for JE modules in particular) [r392] (BPR)
 2008-05-??: improvment in adm/raw (OB)
 2008-04-28: add catalan version (from Manel Querol)
 2008-04-07: add data/scripts in the list of directories where the command
       rename may be used [r382] (BPR)
 2008-04-07: add english example class [r379-380] (BPR)
-2008-02-17: fix in formal type (in case of nonanalysed answer) (BPR-ER) 
-2008-01-12: manage.en bug correcting, add class search engine and bestclass general activity showing [r282] (FG)  
+2008-02-17: fix in formal type (in case of nonanalysed answer) (BPR-ER)
+2008-01-12: manage.en bug correcting, add class search engine and bestclass general activity showing [r282] (FG)
 2008-01-08: Improved chemistry slib [r281] (GK)
 
 -------------------------------------------------------------------------
@@ -444,39 +481,39 @@ wims.3.63a [r256]
 2007-12-26: Fixed bug in mboard.fr ; add list by subject, improved navigation, add
         css style (wims_forum_intro, wims_forum_msg, wims_forum_list) ; language in fr/ [r237] (BPR)
 2007-12-25: add adm module : class/activity (BPR)
-2007-12-15: del unused link on supervisor page for class groupement (class_type=2) (FG) 
+2007-12-15: del unused link on supervisor page for class groupement (class_type=2) (FG)
 2007-12-15: module cdt.fr and cdt.en add exam to linklist (FG)
 2007-12-14: superclass_quota replace class_quota for portal structure (FG)
-2007-12-08: add to votes (french version) "traced vote" ; add csv upload of votes results. 
+2007-12-08: add to votes (french version) "traced vote" ; add csv upload of votes results.
         [r217] (BPR)
 2007-12-03: give to sc_reply the same status as reply. Can be used in test conditions.
         [r213] (BPR)
 2007-12-03: Add option "noreaccent" in answer type case [r209] (BPR)
 2007-11-28: Fixed bug in votes [r203] (BPR)
-2007-11-25: Fixed bug: login with point was accepted but data was erased 
+2007-11-25: Fixed bug: login with point was accepted but data was erased
         by csv upload [r202] (BPR)
 2007-11-23: Fixed bug: presentation sheet with doc page (all lang) (FG)
-2007-11-21: Add an option parameter for answer : noanalyzeprint : in this case, no 
-        preformatted analyzed answer is printed (only the score). (BPR)  
-2007-11-20: Some oef help translations in script/help in separate directories (for the moment, 
+2007-11-21: Add an option parameter for answer : noanalyzeprint : in this case, no
+        preformatted analyzed answer is printed (only the score). (BPR)
+2007-11-20: Some oef help translations in script/help in separate directories (for the moment,
         fr, es, cn) (BPR)
 2007-09-27: Fixed in adm/class/userlist.fr/cvs : email variable was removed when
-        uploading cvs, empty variables for participants were replaced by preceeding 
-        participants when downloading cvs. Added possibility to download or upload 
+        uploading cvs, empty variables for participants were replaced by preceeding
+        participants when downloading cvs. Added possibility to download or upload
         technical variables. (BPR)
 For the moment, only in french version. (BPR)
 2007-09-25: patch on the cn version (from Zhijie Chen, transmitted by GX)
 2007-09-16: fixed the anstype scripts for chemeq, units,
             sigunits. Now they allow to see the good replies in debug
             mode with Createxo, and the correct answer is shown when a bad
-            reply has been fed in. (GK) 
+            reply has been fed in. (GK)
 2007-09-16 Add chemistry slib (GK)
-2007-08-28 Correction for option keeporder : solution was in first position in type clickfill for option 
+2007-08-28 Correction for option keeporder : solution was in first position in type clickfill for option
          keeporder (BPR)
 2007-08-27 Add votes in class download (class/config) (BPR)
-2007-08-19 Add special method tabs2lines in OEF (in OEF, lines in variables 
-	       are transformed to tabs after error messages or next step, 
-	       which is not accepted in some applets). Same as special method expandlines 
+2007-08-19 Add special method tabs2lines in OEF (in OEF, lines in variables
+	       are transformed to tabs after error messages or next step,
+	       which is not accepted in some applets). Same as special method expandlines
 	       except for the pre tag (BPR)
 2007-08-13 Add javascript wz_dragdrop.js  in js/ (BPR)
 2007-08-13 Add slib/utilities/tooltip and special method tooltip in OEF (BPR)
@@ -498,7 +535,7 @@ Version 3.62 packed.
 	      Link on program.fr et faq.fr (french version) in public_html/modules/adm/browse.fr/home.phtml
 		 and public_html/modules/adm/class/sheet.fr/main.phtml
 	      Option "nonstop" in step exercises
-	      New parameter \sc_reply$i in OEF : accessible for feedback with 
+	      New parameter \sc_reply$i in OEF : accessible for feedback with
 		 default values  0,1, 0.5 according the student reply is
 		 bad, good or partially good
 	      public_html/bases/doc/1027 Presentation improvment
@@ -644,7 +681,7 @@ Version 3.62 packed.
 ---------------------------------------------
 Version 3.60 packed.
 2006-10-17: class/cdt.fr updated to 1.11 (FG).
-2006-10-15: Fixed: nesting error in symtex permpick (lind2 incremented 
+2006-10-15: Fixed: nesting error in symtex permpick (lind2 incremented
 		without decrementing in case of failure).
 2006-10-13: Fixed: nested errors provoke "Premature end of script headers".
 	    Fixed in adm/modtool: class user developer link was broken due
@@ -975,7 +1012,7 @@ Version 3.54 packed.
 2005-12-05: Fixed typos in Dutch version (Joke Evers).
 2005-12-04: Added slib series "graphpaper" (Georges Khaznadar).
 2005-12-03: A strange bug of bash eats the alias definition in bin/dircptest.
-	    Patched scripts in createxo, modtool and bin/mkindex using 
+	    Patched scripts in createxo, modtool and bin/mkindex using
 	    variable definition.
 2005-12-01: Must_chroot was not enforced in software interfaces.
 	    Added tolerance to antidated files in wimslogd.
@@ -1308,7 +1345,7 @@ Version 3.46 packed.
 	    Backup file number reduced.
 	    File management in online maintenance becomes operational.
 2004-10-17: added !mailurl (counter-spam crypted email interface).
-2004-10-10: Large file download: was cut off by alarm limit, 
+2004-10-10: Large file download: was cut off by alarm limit,
 	    now available for 100kb/s or more.
 2004-10-09: "all" allowed in host checking.
 2004-10-08: Broken sheet file blocked supervisor home page: fixed.
@@ -1968,7 +2005,7 @@ Version 2.42 packed.
 2001-03-30: Security in virtual classes: one-time personal passwords.
 	    Session closed when user quits the class.
 	    (English and French versions only)
-2001-03-24: Security in virtual classes: new user cannot use 
+2001-03-24: Security in virtual classes: new user cannot use
 	    account names where an erased user has worked.
 2001-03-19: Popup operating mode allowing people to embed Wims tools into
 	    their own web pages w/o installing the server.
@@ -2332,7 +2369,7 @@ Version 0.17.2 packed.
 ---------------------------------------------
 Version 0.17.1 packed.
 Version 0.16.4 packed.
-1998-07-19 Request w/o command: now go to intro or new, depending on 
+1998-07-19 Request w/o command: now go to intro or new, depending on
 	the existence of intro.phtml.
 	   added module_init_parm.
 ---------------------------------------------
