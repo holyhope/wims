@@ -489,7 +489,20 @@ void exec_formend(char *p)
 
 void determine_font(char *l);
 
-	/* standardized header */
+void _headmathjax ( char *p) 
+{ 
+   _output_("\n<script type=\"text/javascript\">\
+if(navigator.userAgent..toLowerCase().\"firefox\") == -1 && \
+navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
+navigator.userAgent.toLowerCase().indexOf(\"safari\") == -1){\
+var script = document.createElement(\"script\");\
+script.type = \"text/javascript\";\
+script.src  = \"scripts/js/mathjax/MathJax.js?config=default.js\";\
+document.body.appendChild(script);\
+}</script>\n");
+}
+
+   /* standardized header */
 void _header(char *p, int option)
 {
     char *s1, *s2, hbuf[MAX_LINELEN+1], *ws="", *ws2="", *bo, *ol;
@@ -498,7 +511,7 @@ void _header(char *p, int option)
     if(!outputing || header_executed) return;
     s1=getvar("wims_window");
     if(mode==mode_popup) {
-	if(s1!=NULL && *s1!=0) {
+      if(s1!=NULL && *s1!=0) {
 	    char *p1, *p2;
 	    int t1,t2/*,t3,t4*/;
 	    p1=find_word_start(s1);
@@ -554,30 +567,29 @@ void _header(char *p, int option)
 /*    output("<html>\n\
 <head>%s\n\
 </head><body %s %s%s %s>\n",
-	   hbuf,s2,ol,wsbuf2,bo);*/
-	   /*http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd*/
-	 if(ol[0]) {
-	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
-	    \n<html xml:lang=\"%s\"\
-	    xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
-     </head>\n<body %s %s\"%s\" %s>\n<script type=\"text/javascript\">if(navigator.userAgent.indexOf(\"Firefox\") == -1){var script = document.createElement(\"script\");script.type = \"text/javascript\";script.src  = \"scripts/js/mathjax/MathJax.js?config=default.js\";document.body.appendChild(script);}</script>\n",
-     lang,hbuf,s2,ol,wsbuf2,bo);}
-	   else {
-	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
-	    \n<html xml:lang=\"%s\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
-     </head>\n<body %s %s%s %s>\n<script type=\"text/javascript\">if(navigator.userAgent.indexOf(\"Firefox\") == -1){var script = document.createElement(\"script\");script.type = \"text/javascript\";script.src  = \"scripts/js/mathjax/MathJax.js?config=default.js\";document.body.appendChild(script);}</script>\n",
-	   lang,hbuf,s2,ol,wsbuf2,bo);
-	   }
+       hbuf,s2,ol,wsbuf2,bo);*/
+       /*http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd*/
+     if(ol[0]) {
+        output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
+        \n<html xml:lang=\"%s\"\
+        xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
+     </head>\n<body %s %s\"%s\" %s>", lang,hbuf,s2,ol,wsbuf2,bo);}
+     else {
+       output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">\
+        \n<html xml:lang=\"%s\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:mathml=\"http://www.w3.org/1998/Math/MathML\"><head>%s\n\
+        </head>\n<body %s %s%s %s>", lang,hbuf,s2,ol,wsbuf2,bo);
+    }
+    _headmathjax(p);
     exec_headmenu(p);
     if(option) exec_title(p);
     if(cmd_type==cmd_help) {
-	char *s=getvar("special_parm");
-	if(s==NULL) s="";
-	m_file.linepointer=m_file.linecnt;
-	if(strcmp(s,"about")==0) ovlstrcpy(hbuf,"about.phtml");
-	else ovlstrcpy(hbuf,"help.phtml");
-	exec_read(hbuf); exec_tail(p); /* param of exec_...() must be readable */
-	return;
+      char *s=getvar("special_parm");
+      if(s==NULL) s="";
+      m_file.linepointer=m_file.linecnt;
+      if(strcmp(s,"about")==0) ovlstrcpy(hbuf,"about.phtml");
+      else ovlstrcpy(hbuf,"help.phtml");
+      exec_read(hbuf); exec_tail(p); /* param of exec_...() must be readable */
+     return;
     }
     header_executed=1;
 }
@@ -727,6 +739,8 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
     }
 }
 
+
+     
 	/* Create href to wims requests. subst() is not done. */
 void exec_href(char *p)
 {
@@ -1328,7 +1342,7 @@ void exec_insplot3d(char *p)
 {
     char *fmt;
     if(robot_access) {
-	*p=0; return;
+     *p=0; return;
     }
     fmt=getvar("ins_format"); if(fmt==NULL || *fmt==0) fmt=DEFAULT_INS_FORMAT;
     prepare_insplot_parm(p); setenv("insplot_method","3D",1);
@@ -1338,7 +1352,7 @@ void exec_insplot3d(char *p)
     unsetenv("multiplot");setvar("insplot_split","");
 }
 
-	/* Insert dynamic gif draw. The parm preparation is specific to fly. */
+    /* Insert dynamic gif draw. The parm preparation is specific to fly. */
 void exec_insdraw(char *p)
 {
     char *pp, *fmt;
@@ -1346,9 +1360,9 @@ void exec_insdraw(char *p)
     double d;
     
     if(robot_access) {
-	*p=0; return;
+      *p=0; return;
     }
-/*    calc_tolower(p);	*/
+/*    calc_tolower(p);*/
     fmt=getvar("ins_format"); if(fmt==NULL || *fmt==0) fmt=DEFAULT_INS_FORMAT;
     while((pp=wordchr(p,"output"))!=NULL) memmove(pp,"zqkwfx",6);
       /* frames of animation */
@@ -1377,14 +1391,14 @@ void exec_increase(char *p)
     char *p1, *p2;
     p1=find_word_start(p); p2=find_word_end(p1);
     if(p2<=p1) {
-	*p=0; return;
+      *p=0; return;
     }
     *p2=0;p2=getvar(p1);
     if(p2==NULL) p2="";
     setvar(p1,int2str(atoi(p2)+1)); *p=0;
 }
 
-	/* bound a variable */
+/* bound a variable */
 void exec_bound(char *p)
 {
     char *p1, *p2, *p3;
