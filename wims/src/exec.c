@@ -492,7 +492,7 @@ void determine_font(char *l);
 void _headmathjax ( char *p) 
 { 
    _output_("\n<script type=\"text/javascript\">\
-if(navigator.userAgent..toLowerCase().indexOf(\"firefox\") == -1 && \
+if(navigator.userAgent.toLowerCase().indexOf(\"firefox\") == -1 && \
 navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
 navigator.userAgent.toLowerCase().indexOf(\"safari\") == -1){\
 var script = document.createElement(\"script\");\
