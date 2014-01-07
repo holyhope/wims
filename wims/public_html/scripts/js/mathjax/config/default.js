@@ -1,3 +1,8 @@
+/*
+ 4/1/2014 : adapted for wims (MathML-input , HTML-CSS and STIX only)
+ 7/1/2014 :replaced fonts STIX-Web by TeX (STIX-Web not working)
+*/
+
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
 
@@ -39,10 +44,6 @@
  *  want to change them from their default values.
  */
 
-/*
-4/1/2014
-adapted for wims (MathML-input , HTML-CSS and STIX only)
-*/
 MathJax.Hub.Config({
 
   //
@@ -358,7 +359,7 @@ MathJax.Hub.Config({
     //
     //  if you want to prevent the use of web-based fonts.
     //
-    webFont: "STIX-Web",
+    webFont: ["TeX"],
     
     //
     //  This is the font to use for image fallback mode (when none of the
@@ -494,7 +495,7 @@ MathJax.Hub.Config({
   //
   //  These parameters control the SVG output jax.
   //
-  "SVG": {},
+  SVG: {},
   //============================================================================
   //
   //  These parameters control the contextual menus that are available on the 
