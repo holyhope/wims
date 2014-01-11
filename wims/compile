@@ -19,7 +19,9 @@ if [ ! "$option" ] ; then option=no ; fi ;
 if [ "$option" = "--build-chroot" ] ; then
   echo "compile with option $option"
 fi
-
+if [ "$option" = "--mathjax" ] ; then
+  echo "load mathjax with option $option"
+fi
 cd `dirname $0`
 
 if [ "$option" = "--build-chroot" ] ; then
@@ -34,6 +36,20 @@ if [ "$option" = "--build-chroot" ] ; then
 @
    exit 1
   fi 
+fi
+
+if [ "$option" = "--mathjax" ] ; then
+    vmathjax=v2.3
+    if [ -d "public_html/scripts/js/mathjax" ] ; then
+     mv public_html/scripts/js/mathjax public_html/scripts/js/mathjax_tmp
+    fi;
+    cd tmp
+    wget https://github.com/mathjax/MathJax/zipball/$vmathjax-latest
+    unzip $vmathjax-latest
+    rm $vmathjax-latest
+    cd ..
+    mv -f tmp/mathjax-MathJax-* public_html/scripts/js/mathjax
+    rm -rf public_html/scripts/js/mathjax_tmp 
 fi
 
 cd src
