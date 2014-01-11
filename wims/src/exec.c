@@ -491,7 +491,7 @@ void determine_font(char *l);
 
 void _headmathjax ( char *p)
 {
-   _output_("\n<script type=\"text/javascript\">if(\
+   _output_("\n<script type=\"text/javascript\">/*<![CDATA[*/if(\
 navigator.userAgent.toLowerCase().indexOf(\"firefox\") == -1 &&\
 navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
 (navigator.userAgent.toLowerCase().indexOf(\"safari\") == -1 || navigator.userAgent.toLowerCase().indexOf(\"chrome\") > 0)\
@@ -499,7 +499,7 @@ navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
 script.type = \"text/javascript\";\
 script.src  = \"scripts/js/mathjax/MathJax.js?config=MML_HTMLorMML-full.js\";\
 document.body.appendChild(script);\
-}</script>\n");
+}/*]]>*/</script>\n");
 }
 
    /* standardized header */
