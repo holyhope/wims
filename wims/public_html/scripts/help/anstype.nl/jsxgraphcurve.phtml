@@ -1,12 +1,12 @@
-<b>Teken een rechte, polygon , punten , segment , vector ,rechthoek, stippellijn </b> 
+<b>Teken een rechte, polygon , punten , segment , vector ,rechthoek, stippellijn </b>
 (naam : <span class="tt wims_code_words">jsxgraphcurve</span>)
 <br />
 Dit antwoordmodel kijkt de tekening van de gebruiker na.
 De syntax is gelijk aan die van antwoordmodel "javacurve" maar gebruikt hiervoor javascript inplaats van java.
 
 <p>Enkele bijzonderheden:
-Het gebruik van de css klassen 
-<span class="wims_code_words">jxgbox</span> en <span class="wims_code_words">jsxgraph_button</span> kunnen 
+Het gebruik van de css klassen
+<span class="wims_code_words">jxgbox</span> en <span class="wims_code_words">jsxgraph_button</span> kunnen
 worden gebruikt om het antwoord te centreren op de pagina, bijvoorbeeld:
 </p>
 <pre>
@@ -15,6 +15,30 @@ worden gebruikt om het antwoord te centreren op de pagina, bijvoorbeeld:
 .jsxgraph_button {text-align:center;}
 &lt;/style>
 </pre>
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+ </tr>
+  !next
+  $table_tr<td class="tt wims_code_words">
+  brokenline,x1,y1,x2,y2, ...
+  </td><td>
+  Polygonal line
+  </td></tr>
+$table_end
 
 Bijvoorbeeld :
 

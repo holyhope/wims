@@ -1,13 +1,38 @@
-<b>Dessiner une droite, un polygone, des points, un segment, un vecteur, 
+<b>Dessiner une droite, un polygone, des points, un segment, un vecteur,
 un rectangle, une ligne brisée</b>
 (nom : <span class="tt wims_code_words">jsxgraphcurve</span>)
 <br />
 Ce type de réponse permet à l'utilisateur de dessiner une droite, un polygone,
 un rectangle ou plusieurs points dans un dessin. La syntaxe est exactement la même
 que celle de javacurve mais utilise javascript au lieu de java.
+Il faut y rajouter la figure <span class="wims_code_words">brokenline</span>
+
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td class="tt wims_code_words">
+!line 1 of $l_
+    </td><td>
+!line 2 to -1 of $l_
+   </td>
+  </tr>
+  !next
+  $table_tr<td class="tt wims_code_words">
+  brokenline,x1,y1,x2,y2, ...
+  </td><td>
+  Ligne polygonale
+  </td></tr>
+$table_end
 
 <p>Nous donnons ici quelques particularités.
-Si l'on désire centrer le résultat, on doit définir les classes css  
+Si l'on désire centrer le résultat, on doit définir les classes css
 <span class="wims_code_words">jxgbox</span> et <span class="wims_code_words">jsxgraph_button</span>.
 Par exemple,
 </p>

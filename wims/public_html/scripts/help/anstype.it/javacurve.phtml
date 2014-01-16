@@ -2,7 +2,7 @@
 <b>Disegna una retta, un poligono, punti, un segmento, un vettore, un rettangolo.</b>
 (nome : <span class="tt wims_code_words">javacurve</span>)
 <br/>
-Questo tipo di risposta permette all'utente di disegnare una retta, un poligono, 
+Questo tipo di risposta permette all'utente di disegnare una retta, un poligono,
 un segmento, un vettore, un rettangolo o un insieme di punti su un disegno.
 <p>
 La risposta corretta deve essere data come matriche (utilizzando un punto
@@ -10,9 +10,9 @@ e virgola `;' come separatore tra le righe). La prima riga è l'URL dell'immagine
 presentata all'utente. La seconda riga è il criterio per valutare il disegno
 eseguito dall'utente, secondo le condizioni della tabella seguente.
 Si l'on désire analyser la réponse par des conditions,
-on mettra une variable vide pour la bonne réponse et on rajoute 
+on mettra une variable vide pour la bonne réponse et on rajoute
 dans le champ <span class="tt wims_code_words">embed</span>
-en seconde ligne l'URl de l'image et en troisième ligne le type de tracé comme 
+en seconde ligne l'URl de l'image et en troisième ligne le type de tracé comme
 dans le tableau suivant (par exemple <span class="tt wims_code_words">points</span>,
 <span class="tt wims_code_words">line</span> ...).
 
@@ -31,16 +31,17 @@ $table_header
     </td><td>
 !line 2 to -1 of $l_
    </td>
+   </tr>
   !next
 $table_end
 <p>
 Options may be added in the option field:
-<span class="tt wims_code_words">precision</span, 
-<span class="tt wims_code_words">color1</span (reply color), 
+<span class="tt wims_code_words">precision</span,
+<span class="tt wims_code_words">color1</span (reply color),
 <span class="tt wims_code_words">color2</span> (good answer color).
 
 The parameter <span class="tt wims_code_words">precision</span> is subtil ...
-for example 
+for example
 </p>
 <pre>
 \answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
@@ -51,27 +52,27 @@ Le paramètre <span class="tt wims_code_words">precision</span> doit être manié a
 Si raccomanda che questo campo di risposta sia inserito nell'enunciato con un comando
  <span class="tt wims_code_words">embed</span>. Non può essere utilizzato insieme ad altri campi di risposta per
  l'ovvio motivo che il click dell'utente invia immediatamente l'esercizio al server per
- la verifica della correttezza. Le dimensioni dell'immagine devono essere inseriti come 
- opzioni di tale comando nella forma <span class="tt wims_code_words">L x H</span>, e.g. <span class="tt wims_code_words">\embed{reply</span><em>n</em>, 
+ la verifica della correttezza. Le dimensioni dell'immagine devono essere inseriti come
+ opzioni di tale comando nella forma <span class="tt wims_code_words">L x H</span>, e.g. <span class="tt wims_code_words">\embed{reply</span><em>n</em>,
  <span class="tt wims_code_words">300 x 400}</span>.
 
 </p>
 In generale le informazioni del disegno effettuato dall'utente sono salvate nella
- variabile <span class="tt wims_code_variable">\reply</span><em>n</em>, dove <em>n</em> è il numero del campo 
- di risposta, variabile che può essere utilizzata in un \feedback e in generale in tale 
+ variabile <span class="tt wims_code_variable">\reply</span><em>n</em>, dove <em>n</em> è il numero del campo
+ di risposta, variabile che può essere utilizzata in un \feedback e in generale in tale
  variabile vengono salvate le coordinate del click (x1,...)
  eccetto che nei casi seguenti:
 <ul><li>
 Nel caso di <span class="tt wims_code_words">points</span>,
- the first line is the list of click coordinates in pixels, 
+ the first line is the list of click coordinates in pixels,
  the second line is <span class="tt wims_code_words">n1,n2,n3</span> with
 <span class="tt wims_code_words">n1</span> number of correct points, <span class="tt wims_code_words">n2</span> number of missing points,
 <span class="tt wims_code_words">n3</span> number of incorrect points.The third line is the list
-of numbers of correctly found points. 
+of numbers of correctly found points.
 </li><li>
 nel caso di <span class="tt wims_code_words">cercle</span>, the first line is the list
 of click coordinates and radius in pixels, the second line
-is <span class="tt wims_code_words">n1,n2</span> with 
+is <span class="tt wims_code_words">n1,n2</span> with
 <span class="tt wims_code_words">n1</span> 1 if the center is correct, else 0 and
 <span class="tt wims_code_words">n2</span> 1 if the radius is correct, else 0.
 </li>
