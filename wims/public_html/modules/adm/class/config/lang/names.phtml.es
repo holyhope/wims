@@ -13,7 +13,7 @@ name_sheets
 !distribute item mensaje del día,ejercicio,hoja de trabajo,examen,documento,\
 	participante,secuencias pedagógicas,caderno de competencias,competencia(s),encuestas,\
 	agenda,cuenta del profesor,mensajes de un foro de discusión,mensajes del foro\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,\	
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
 	name_user,name_seq,name_livret,name_competence,name_vote,\
 	name_cdt,name_sup,name_forum,name_forum_mesg
 
@@ -167,17 +167,17 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
- 
+
  !set name_nonewres=!nosubst No hay ningún (nuevo) tipo de recursos en la clase \
   <span class="wims_emph">$nei_description</span> que les autoriza a compartir.
- 
+
  !set name_newres=!nosubst La clase <em><font color="blue">\
   $nei_description</font></em> les <b>autoriza</b> a compartir sus
- 
+
  !set name_chooseres=!nosubst Elija los recursos que <b> autorizan</b> la clase <em><font color="blue">\
   $nei_description</font></em> a compartir&nbsp; (<i>seleccione luego presionan \
   <span class="wims_button disabled">$wims_name_tosave</span></i>)
- 
+
  !set name_warning_authorized=!nosubst La clase <em><font color="blue">$nei_description</font></em>\
   les autoriza a compartir algunos recursos. No deben autorizarla a compartir los mismos recursos \
   al riesgo de confusión. Comience por hablar con ella y con todas las clases con las cuales ustedes \
@@ -218,7 +218,7 @@ $nei_description</font></em> como vecina suya?
  recursos compartidos no están vacíos. Si deja de compartir este recurso\
  ahora, ya no podrá volver a compartirlo más tarde. <br />\
  ¿Está seguro de querer dejar de compartir definitivamente este recurso?
- 
+
  !set name_stop=dejar de compartirlo.
  !endif
  !if $job2=sharelist
@@ -257,7 +257,7 @@ $nei_description</font></em> como vecina suya?
 	<span class="small">los participantes</span>,\
 	<span class="small">profesor y participantes</span>\
   into n_n0, n_n1, n_n2, n_n3
-	
+
  !goto commun
 !endif
 
@@ -446,7 +446,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     el límite es\
     Mix\
     Allow score interruption by participant\
-    Format du titre des exercices pour les élèves\
+    Title for OEF exercises viewed by participants\
  Les participants savent si l'enseignant est connecté\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
@@ -572,7 +572,7 @@ contiene calificaciones.
  al administrador del sitio</a> que la borre por usted.
 </p>
  !exit
- 
+
  :clean2
 <p><span class="wims_warning">Observaciones</span>. </p><ul><li>Sólo se puede acceder a esta página mientras
 la página está en preparación. Una vez que han comenzado las actividades de

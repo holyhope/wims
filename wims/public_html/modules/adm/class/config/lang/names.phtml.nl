@@ -30,7 +30,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
  !set name_deposit=!nosubst Het backup archief <span class="tt wims_fname">$wims_deposit</span> bevar de volgend onderdelen.\
  Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
- 
+
  !set name_no_restore=De herstelprocedure wordt afgebroken: er is gedeeld materiaal van een andere klas aanwezig.\
  Herstel kan alleen worden uitgevoerd op het originele materiaal van af de uitlenende klas.
 
@@ -84,7 +84,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items onherkenbaar is, te vroeg is, te laat is into ebad,eearly,elate
- 
+
  !distribute lines Helaas, het maken van een backup archief is mislukt. Een interne fout.\
  Hier is het backup archief van uw klas\
  Klik hier voor het downloaden\
@@ -98,7 +98,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
  !set name_download5=Het backup archief is misschien te groot om naar deze sever te sturen.\
  Om (meerdere) kleinere archieven aan te leggen kunt u gebruik maken van een selectieve backup.
 
-  
+
  !goto commun
 !endif
 
@@ -169,20 +169,20 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
- 
+
  !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas\
  <span class="wims_emph">$nei_description</span> dat gedeeld kan worden.
- 
+
  !set name_newres=!nosubst De klas <span class="wims_emph">\
   $nei_description</span> geeft  <b>toestemming</b> voor het delen van
- 
+
  !set name_chooseres=!nosubst Kies het materiaal uit klas <span class="wims_emph">\
  $nei_description</span>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
- 
+
  !set name_warning_authorized=!nosubst De klas <span class="wims_emph">$nei_description</span>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
  Ga alleen door als zeker weet dat die niet van toepassing is.
-  
+
 
  !distribute lines Buurklassen\
     heeft uw klas nog nioet geaccepteerd als buur\
@@ -208,21 +208,21 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
  !set name_inactif=!nosubst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
- 
+
  !set name_accept=!nosubst Accepteert u de klas <span class="wims_emph">$nei_description</span> als buurklas ?
-   
+
  !if $job2=stopshare
   !set title=Stop de deling
   !set name_warning=Uw klas heeft een aciteve cijfer \
   registratie en de gedeelde bronnen zijn niet leeg.\
   Als u nu stopt met lenen kan hier later niet meer op worden teruggekomen.\
   <br />U wilt definitef stoppen met delen ?
- 
+
  !set name_stop=stoppen.
  !endif
  !if $job2=sharelist
   !set title= Informatie over gedeeld materiaal.
-  !set name_sharelist=!nosubst Uw klas deelt $(name_$rec) afkomstig uit 
+  !set name_sharelist=!nosubst Uw klas deelt $(name_$rec) afkomstig uit
   !distribute lines U deelt geen materiaal uit andere klassen.\
    U deelt materiaal uit andere klassen\
   into name_noresource,name_resource
@@ -240,23 +240,23 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Het supervisor account delen is niet verstandig ! \
   into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
     name_dangerous
-  
+
   !set name_warning1=Dit materiaal kan niet worden uitgeleend: omdat uw klas het materiaal leent uit een andere klas.\
-  
-  
-  
+
+
+
   !set name_warning2=!nosubst U kunt dit materiaal niet delen om dat uw eigen $(name_$r) niet leeg zijn.\
   Voor dat met een deling kan worden begonnen moet u eerst
   !set name_warning_erase=!nosubst Dit verwijdert dus al uw bestaande $(name_$r)! \
   En zonder backup is dit definitef weg.
-   
+
   !endif
 
   !distribute items ---,<span class="small">supervisor</span>,\
 	<span class="small">student</span>,\
 	<span class="small">iedereen</span>\
   into n_n0, n_n1, n_n2, n_n3
-	
+
  !goto commun
 !endif
 
@@ -317,7 +317,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=oefdefault
- !set title=Configuratie voor OEF modules<br />[Online Exercise Format] 
+ !set title=Configuratie voor OEF modules<br />[Online Exercise Format]
  !distribute lines een serie oefeningen heeft\
  Moeilijkheidsgraad\
  Tijd limiet\
@@ -375,20 +375,20 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    !set name_thisclass=van deze actuele zone
    !set name_subclasses=onafhankelijke zones
   !endif
-   
+
  !distribute lines De configuratie is met succes geinstalleerd in  $name_subclasses\
  De volgende configuraties  van $name_thisclass kunnen worden geinstalleerd in alle $name_subclasses\
  into name_propagate_succes,name_propagate_choose
 
  !set name_warning=Opmerking: de configuratie instellingen \
  van $name_subclasses worden niet automatisch\
- bijgewerkt als de instellingen voor $name_thisclass worden veranderd. 
+ bijgewerkt als de instellingen voor $name_thisclass worden veranderd.
 
 !endif
 
 !if $job=log
   !set name_warning_log=Hier is de logfile met onderhoudsactiviteiten van deze klas.\
-  Aan de hand van dit bestand kan worden nagetrokken of het onderhoud wel door supervisor zelf is uitgevoerd.  
+  Aan de hand van dit bestand kan worden nagetrokken of het onderhoud wel door supervisor zelf is uitgevoerd.
 !endif
 
 !if $job=index
@@ -445,7 +445,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     De limiet\
     Mix\
     Opschorten scoreregistratie door studenten\
-    Generieke naam voor de titel van oefeningen\
+    Generieke naam voor de titel van OEF oefeningen\
  Les participants savent si l'enseignant est connecté\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
@@ -516,19 +516,19 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 :arch
 
 U hebt een backup archief van een andere klas opgestuurd.
-Als er conflicten zijn, 
+Als er conflicten zijn,
 wordt uw klas mogelijk onherstelbaar beschadigd.
  !href cmd=help&special_parm=dependencies Waarom&nbsp;?
  <br />
  !href cmd=reply&job=list Stop
- als u er niet zeker van bent van de gevolgen. 
+ als u er niet zeker van bent van de gevolgen.
  (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
 !exit
 
 :arch_end
- <span class="wims_warning">BELANGRIJK</span>. <ul><li> 
+ <span class="wims_warning">BELANGRIJK</span>. <ul><li>
  De integriteit van de opgestuurde data wordt niet gecontroleerd.
- Een handmatige bijwerking van een backup archief 
+ Een handmatige bijwerking van een backup archief
  wordt door het systeem niet toegestaan.
 
 <li> Indien mogelijk vermijdt herstel van
@@ -538,16 +538,16 @@ Fouten in deze bestanden
  maken uw klas stuurloos.
 <li> U kunt een backup archief gebruiken voor
  het snel installeren van een nieuwe klas.
-In dit geval vermijdt gebruik van scores en 
+In dit geval vermijdt gebruik van scores en
 cijferregistratie (server of handmatig)
-Deze twee kunnen -ivm bewaking van de cijfers- 
+Deze twee kunnen -ivm bewaking van de cijfers-
 niet meer worden gewist uit een werkende klas.
 </ul>
 !exit
 
 :clean
- <p>U kunt geen lesmateriaal verwijderen waar 
- leerlingen op dit moment nog aan kunnen werken.  
+ <p>U kunt geen lesmateriaal verwijderen waar
+ leerlingen op dit moment nog aan kunnen werken.
  </p><p>
  Bedenk de volgende zaken:
  </p><p>
@@ -556,9 +556,9 @@ niet meer worden gewist uit een werkende klas.
  de goede leerlingen daar toch behoorlijk veel last van (...)
  </p><p>
  Ten tweede, alle bronnen die tezamen de virtuele klas vormen, zijn uiteraard van
- elkaar afhankelijk, gedeeltelijk verwijderen 
+ elkaar afhankelijk, gedeeltelijk verwijderen
  verbreekt waarschijnlijk een hoop dwarsverbanden
- in de digitale werk/leer omgeving. 
+ in de digitale werk/leer omgeving.
  !href cmd=help&special_parm=dependencies Voorbeelden.
  </p><p>
  In elk geval, wanneer U werkelijk deze klas wilt opschonen, kan beter
@@ -568,7 +568,7 @@ niet meer worden gewist uit een werkende klas.
  vraag de site-manager om je klas te verwijderen.
  </p>
  !exit
- 
+
 :clean2
 <p><b>Opmerking</b>. </p>
 <ul><li>Deze pagina is alleen beschikbaar tijdens het opzetten
@@ -585,25 +585,25 @@ Deze klas moet dan wel eerst
 <p>De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
 met een andere WIMS server of een andere ELO
 (Electronische Leer Omgeving) te communiceren.<br />
-De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.  
+De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.
 </p><p>
 In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,
 zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br />
-Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd. 
+Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd.
 </p>
 !exit
 
 :connect_first
 
 Deze WIMS server heeft geen netwerkverbonden servers gedeclareerd.
-Om deze mogelijkheid te gebruiken, schrijf naar de 
-<a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
+Om deze mogelijkheid te gebruiken, schrijf naar de
+<a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a>
 om een dergelijke voorziening te treffen.<br />
 En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het <span class="tt wims_fname">$basedir/log/classes/.connections/myself</span> administratief geregeld moet worden)
- 
+
 !exit
- 
+
 :import2
 
 Het te importeren werkblad bevat mogelijk oefeningen die alleen bestaan in de buurklas.
@@ -617,7 +617,7 @@ Proefwerken zijn gebaseerd op werkbladen.
 Het importeren van proefwerken is alleen zinvol als alle werkbladen precies synchroon zijn met de andere klas.
 <br />
 Als dit niet het geval is zal het proefwerk niet kunnen functioneren.
-!exit 
+!exit
 :import4
 U bent van plan een bestaande $(name_$itype) in uw eigen klas te vervangen door een geimporteerde versie.
 Er is geen herstel mogelijk na deze operatie
@@ -638,14 +638,14 @@ Voer de toegestuurde code hieronder in.
 !exit
 :auth2
 
-<b>Opmerking</b>. 
+<b>Opmerking</b>.
 Deze maatregel is noodzakelijk om te verhinderen dat het weklekken van een supervisor wachtwoord
 grotere gevolgen heeft voor uw klas.
 Het is veel betere een beveiligde verbinding [ip adres] te definieren voor deze configuratie stap.
 !exit
 
 :download
-<b>Opmerking</b>. 
+<b>Opmerking</b>.
 Normaal zijn de opgeslagen oefeningen en proefwerken van studenten, forumberichten en documenten in een klas de grootste bestanden.
 U kunt overwegen diverse kleinere  selectieve backup archieven aan te maken voor deze data.
 
