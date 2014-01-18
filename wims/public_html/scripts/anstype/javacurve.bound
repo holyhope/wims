@@ -119,8 +119,9 @@ points $color2,$glist
   !if $j notin $correct
     script$i=!append line brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'o', size:'8',fixed:true,name:'',strokeColor:'$color2',fillColor:'none' ,showInfobox:false}); to $(script$i)
   !else
-    script$i=!append line brd$i.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'o', size:'8',fixed:true,name:'',strokeColor:'$color2',fillColor:'none' ,showInfobox:false}); to $(script$i)
-!endif
+    sj=!positionof item $j in $correct
+    script$i=!append line brd$i.create('point',[$(rlist[2*$(util[$sj])-1]),$(rlist[2*$(util[$sj])])],{face:'o', size:'8',fixed:true,name:'',strokeColor:'blue',fillColor:'none' ,showInfobox:false}); to $(script$i)
+  !endif
  !next
 !endif
 !for j=1 to $n/2
