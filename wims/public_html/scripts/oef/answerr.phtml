@@ -3,6 +3,9 @@
   !exit
  !endif
  !set style=!defof anstyle in anstype/$(replytype$i).input
+ !if $style=noanswer
+   !exit
+ !endif
   !default reply_$i=$(reply$i)
   !if $(noshow$i)=yes
    !set reply_$i=
@@ -20,7 +23,7 @@
    !imgrename $(replyname$i)&nbsp;$eq</td><td class="tt">$(reply_$i)
   !else
     !if $(replyname$i) notsametext
-      !imgrename $(replyname$i)   
+      !imgrename $(replyname$i)
     !endif
   !endif
   !if $tt!=?analyze
