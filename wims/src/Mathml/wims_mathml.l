@@ -813,7 +813,7 @@ int wims_mathml_displaymode = 0;
 
 "\\vec"  { return VEC;}
 "\\widevec"   {return WIDEVEC;}
-
+"\\limits"  {/* Ignore  */ ;}
 
 "\\overrightarrow"	  {yylval = wims_mathml_copy_string("&rightarrow;"); 	 return OVERARROW;} 
 "\\overleftarrow"         {yylval = wims_mathml_copy_string("&leftarrow;"); 	 return OVERARROW;} 
