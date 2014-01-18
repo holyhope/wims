@@ -37,7 +37,6 @@ ifile=$image
 !endif
 util=
 Bon1=0
-
 !for si = 1 to $[$m/2]
    !!on parcourt les points à cliquer
    !if NaN isin $x$y
@@ -76,19 +75,6 @@ manque1 = $[$m/2 - $Bon1]
 manque= $[1 - 2*$Bon1/$m]
 Bon = $[2*$Bon1/$m]
 
-
-primitive1=linewidth 1
-
-!for si = 1 to $[$n/2]
-  primitive1=$primitive1\
-line $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])+6], $color1\
-line $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])+6], $color1
-!next 
-
-primitive2=linewidth 8\
-points $color2,$glist
-
-
 !if NaN isin $Bon or Inf isin $Bon
  !goto badrep
 !endif
@@ -107,8 +93,33 @@ points $color2,$glist
    diareply$i=bad
   !endif
 !endif
-##nombre de bons points, nombre de points oubliés, nombre de points en trop, 
+##nombre de bons points, nombre de points oubliés, nombre de points en trop,
 ##numéro des points corrects
 m_reply$i =$Bon1,$manque1,$trop1;$correct
 
 :end
+
+!if $(replytype$i)=javacurve
+primitive1=linewidth 1
+
+!for si = 1 to $[$n/2]
+  primitive1=$primitive1\
+line $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])+6], $color1\
+line $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])+6], $color1
+!next
+
+primitive2=linewidth 8\
+points $color2,$glist
+!exit
+!endif
+
+!! $(replytype$i)=jsxgraphcurve
+!if $wims_read_parm!=nocompare
+ !for j=1 to $m/2
+  script$i=!append line brd$i.create('point',[$(glist[2*$j-1]),$(glist[2*$j])],{face:'o', size:'8',fixed:true,name:'',strokeColor:'$color2',fillColor:'none' ,showInfobox:false}); to $(script$i)
+ !next
+!endif
+!for j=1 to $n/2
+  script$i=!append line brd$i.create('point',[$(rlist[2*$j-1]),$(rlist[2*$j])],{face:'+', size:'8',fixed:true,name:'',strokeColor:'$color1',showInfobox:false}); to $(script$i)
+!next
+!endif

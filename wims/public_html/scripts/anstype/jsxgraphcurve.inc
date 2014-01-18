@@ -10,7 +10,7 @@ var urlImg ='$jsx_imgurl';\
 var ima = brd$jsx_nb.create('image',[urlImg,[0,$jsx_ysize],[$jsx_xsize,-$jsx_ysize]], {fixed: true, highlight: false});\
 var jsxbox_free$jsx_nb=[];\
 var p$jsx_nb=[];
-  !if $input_type = points
+  !if $input_type iswordof points bound
     !set script$jsx_nb=$(script$jsx_nb)\
 var coords;\
 JXG.addEvent(document.getElementById('jsxbox$jsx_nb'), 'mousedown', function (e) {\
@@ -29,7 +29,7 @@ jsxbox_free$jsx_nb.pop();\
 brd$jsx_nb.unsuspendUpdate();\
 }
   !endif
-   
+
   !if $input_type iswordof line sline segment vector circle
     !if $input_type iswordof line sline segment vector
       !set trace='line'
@@ -243,7 +243,7 @@ jj$jsx_nb=0;\
 $slib_out
 <script type="text/javascript">
 /*<![CDATA[*/
-!if $input_type iswordof points
+!if $input_type iswordof points bound
   var capture$jsx_nb = function() {document.getElementById('$jsx_reply').value='free='+jsxbox_free$jsx_nb +'';}
 !endif
 !if $input_type iswordof line sline segment vector rectangle
@@ -253,7 +253,7 @@ $slib_out
   var capture$jsx_nb = function() {
         document.getElementById('$jsx_reply').value='free=' + [Math.round(p$jsx_nb[0].X()),Math.round(p$jsx_nb[0].Y()),Math.round(p$jsx_nb[0].Dist(p$jsx_nb[1]))] +'';}
 !endif
-!if $input_type iswordof polygon brokenline 
+!if $input_type iswordof polygon brokenline
 var capture$jsx_nb = function() {
     document.getElementById('$jsx_reply').value='free=' + jsss$jsx_nb +'';}
 !endif

@@ -141,13 +141,28 @@ s z &#643; &#658; l m n &#626; &#640;      \
 !! &#627;
 !goto kb
 !endif
+!if $keyboard=braille
+ !set prefix=10
+ !set keyboard=&#241; &#243; &#249; &#265; &#257; &#251; &#267; &#259; &#250; &#266; \
+&#245; &#247; &#253; &#269; &#261; &#255; &#271; &#263; &#254; &#270; &#277; \
+&#279; &#298; &#285; &#301; &#293; &#300;&#241; &#300;&#243; &#300;&#249; &#300;&#265; &#300;&#257; &#300;&#251; &#300;&#267; \
+&#300;&#259; &#300;&#250; &#300;&#266; &#294; &#294; &#242; &#262; &#252; &#276; \
+&#290; &#278; &#246; &#278; &#244; &#290; &#290;
+
+!goto kb
+!endif
 
 :kb
+
 !set keyboard=!declosing $keyboard
 !set keyboard=!rows2lines $keyboard
 !set keyboard=!lines2rows $keyboard
 !set keyboard=!singlespace $keyboard
 !set keyboard=!rows2lines $keyboard
+!if $prefix!=
+  !set keyboard=!replace internal # by #$prefix in $keyboard
+!endif
+
 !set cnt_kb=!linecnt $keyboard
 
 <script type="text/javascript">
