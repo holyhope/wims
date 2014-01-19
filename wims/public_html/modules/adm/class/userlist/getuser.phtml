@@ -93,7 +93,7 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
 !if $class_topscores>0
 
  $table_header$table_hdtr<th colspan="2">$name_topten</td></tr>
- !for i=1 to $class_topscores 
+ !for i=1 to $class_topscores
   !set L=!line $i of   $TT
   !if $class_anonymtopscores=yes
    !set name=$i
@@ -124,7 +124,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
-  
+
   $table_tr<td>$i</td>
   <td>$t</td>
   !if $[rint(10*$(es_$i)*$scoremax)/100]>0
@@ -189,7 +189,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   <td>$(title_)</td>
   <td>$(req_)</td>
   <td>$(weight_)</td>
-  !set d_=!getscore user=$getuser sheet=$n_
+  !set d_=!getscore user=$getuser sheet=$n_ work=$j
   !default d_=0
   !read adm/class/colors $[ceil(10*$d_/$(req_))]
   !if $d_>0
@@ -241,7 +241,7 @@ part_list,1,cmd=resume\
 to $wims_menu_items
 
 !read adm/class/getnextuser $wims_class,$getuser,getuser,getuser
- 
+
  !if (($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)) and $wims_showlivret!=no
   !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
  !endif
