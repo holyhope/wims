@@ -853,11 +853,12 @@ sub gather { my ($b) = @_;
 sub displaymath {"<div class=\"math\">\\(\\displaystyle{ " . $_[0]. "}\\)</div>"; }
 sub math {" \\( " . $_[0]. "\\) "; }
 
-sub figure { my $caption='';
-  if ( $_[0] =~ s/\\caption\{([^}]+)}//) {$caption=$1 };
+sub figure { my $caption=''; my $c =$_[0];
+  $c =~ s /^\[([^\]]+)//; print $c;
+  if ( $c =~ s/\\caption\{([^}]+)}//) {$caption=$1 };
   "<div class=\"figure\"> " .
   (($caption) ? "<div class=\"caption\">". $caption . "</div>":"")
-    . $_[0] . "</div>" ;}
+    . $c . "</div>" ;}
 
 sub thebibliography { my ( $b ) = @_;
   $b =~ s/\\bibitem{([^}]+)}/<\/li>\n<li>\[$1\]\\label{$1} /g;
