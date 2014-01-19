@@ -2064,12 +2064,12 @@ static void wims_mathml_keep_error (const char * msg)
 
 int wims_mathml_html_filter (const char * buffer, unsigned long length)
 {
-  wims_mathml_do_html_filter (buffer, length, 0);
+ return wims_mathml_do_html_filter (buffer, length, 0);
 }
 
 int wims_mathml_strict_html_filter (const char * buffer, unsigned long length)
 {
-  wims_mathml_do_html_filter (buffer, length, 1);
+  return wims_mathml_do_html_filter (buffer, length, 1);
 }
 
 int wims_mathml_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)

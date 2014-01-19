@@ -26,9 +26,9 @@ extern "C" {
   /* Alternatively, to filter generic source and converting embedded equations, use:
    */
   extern int    wims_mathml_filter (const char * buffer, unsigned long length);
-
   extern int    wims_mathml_html_filter (const char * buffer, unsigned long length);
   extern int    wims_mathml_strict_html_filter (const char * buffer, unsigned long length);
+  extern int 	wims_mathml_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup);
 
 
   /* To change output methods:
@@ -60,6 +60,7 @@ extern "C" {
   extern int    wims_mathml_displaymode;
 
   extern char * wims_mathml_remove_char(char * str , char * c);
+  extern void replace_str(const char *str, const char *old, const char *newer);
 #ifdef __cplusplus
 }
 #endif
