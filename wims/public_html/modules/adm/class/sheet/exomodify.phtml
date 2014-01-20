@@ -76,6 +76,7 @@ $name_titlemodif $modif
     </tr>
     !read getparm $parm__ exo qnum random
     !set exocnt_=!itemcnt $get_exo
+
     !if $get_qnum=$exocnt_ and $get_random=0 and $get_qnum>1
     $table_tr
     <td>
@@ -84,7 +85,10 @@ $name_titlemodif $modif
    <table>
   !for ex = 1 to $exocnt_
    <tr><td>
-   !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$directory_/Extitles
+   !! ne fonctionne pas dans une classe
+   !set tt_ex=!lookup $(get_exo[$ex]) in wimshome/public_html/modules/$directory_/Extitles
+   !default tt_ex= $(get_exo[$ex])
+   $tt_ex
    </td><td>
     <input name="update_ex$ex" size="5" value="$ex" />
   </td></tr>
