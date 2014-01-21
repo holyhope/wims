@@ -23,15 +23,15 @@ $(name_shtab[6])
 !read adm/title.phtml 1\
 Informatie over het scoringssysteem
 
-De scoreregistratie tijdstippen kan worden ingesteld 
-door de volgende woorden 
+De scoreregistratie tijdstippen kan worden ingesteld
+door de volgende woorden
 toe te voegen:
 <span class="tt wims_code_words">
 &gt;yyyymmdd.hh:mm</span></b></font>
 (begin tijd) en/of
 <span class="tt wims_code_words">
 &lt;yyyymmdd.hh:mm</span></b></font>
-(eind tijd). 
+(eind tijd).
 Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheiden van de andere instellingen.
 
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
@@ -59,7 +59,7 @@ Een document in uw klas :<span class="tt wims_address">module=adm/doc&doc=c1&+bl
 Extra parameters kunnen worden toegevoegd  (zie ook <span class="wims_button disabled">$wims_name_about</span>)
 
 In het onderstaande voorbeeld zal , als het cijfer lager is dan een 5 , een WIMS document uit uw klas worden getoond.
-En wel uit document <span class="tt">c2</span> de pagina op blok <span class="tt">aaa</span>. 
+En wel uit document <span class="tt">c2</span> de pagina op blok <span class="tt">aaa</span>.
 <pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
 
 
@@ -69,15 +69,20 @@ In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit ee
 In het onderstaande voorbeeld wordt doorverwezen naar specifieke oefening uit een Schaersvoorde module "H4/stat/stat-4.nl".
 <pre>module=H4/stat/stat-4.nl&taal=nl&subject=5&level=2&total_exos=1&rounding=-1&usage=2&cmd=new,10</pre>
 
-n mettant deux nombres (dont le deuxième est strictement positif), le bouton 
+n mettant deux nombres (dont le deuxième est strictement positif), le bouton
 apparaît lorsque le score est compris entre le second nombre
-et le premier nombre : par exemple, si vous mettez, 
+et le premier nombre : par exemple, si vous mettez,
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
-le bouton apparait lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus 
-qui apparait. Si le deuxième nombre est 0, le comportement est le même que s'il 
+le bouton apparait lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus
+qui apparait. Si le deuxième nombre est 0, le comportement est le même que s'il
 n'existait pas.
 
 
 U kunt ook een Help-koppeling ook invoegen aan een werkblad. Klik op de link <span class="wims_button disabled"> $ wims_name_addh </span> in het menu
 !exit
 
+:series
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
+!read lang/help.phtml.fr series
+
+!exit

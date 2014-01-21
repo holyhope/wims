@@ -47,3 +47,9 @@ $(name_shtab[10])
 !read lang/help.phtml.fr feedback
 
 !exit
+
+:series
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
+!read lang/help.phtml.fr series
+
+!exit

@@ -6,9 +6,9 @@
 !read adm/title.phtml 1\
 $(name_shtab[6])
 
-Lo studente deve acquisire punti da altri esercizi del test, 
-prima di poter affrontare questo. 
-Per esempio, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> significa che lo studente deve avere un risultato almeno del 50% nell'esercizio 1, 
+Lo studente deve acquisire punti da altri esercizi del test,
+prima di poter affrontare questo.
+Per esempio, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> significa che lo studente deve avere un risultato almeno del 50% nell'esercizio 1,
  30% nell'esercizio 2 e una media del 60% negli esercizi 3, 4 e 5.
 <br class="spacer" />
 !if $wims_read_parm!=$empty
@@ -20,9 +20,9 @@ Per esempio, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> signific
 !read adm/title.phtml 1\
 Opzioni per la registrazione dei voti
 
-È possibile inserire un controllo per limitare la registrazione dei voti 
-a determinati periodi e/o a determinate postazioni, 
-selezionando &ldquo;limitata ai seguenti IP (e/o orari)&rdquo; e 
+È possibile inserire un controllo per limitare la registrazione dei voti
+a determinati periodi e/o a determinate postazioni,
+selezionando &ldquo;limitata ai seguenti IP (e/o orari)&rdquo; e
 utilizzando i seguenti formati<br />
 Per le date:<br />
 <span class="tt wims_code_words">
@@ -30,7 +30,7 @@ Per le date:<br />
 (data e ora di inizio) and/or
 <span class="tt wims_code_words">
 &lt;yyyymmdd.hh:mm</span>
-(data e ora di fine). Queste date devono essere espresse nel fuso orario 
+(data e ora di fine). Queste date devono essere espresse nel fuso orario
 del SERVER, e devono essere separate tramite spazi l'una dall'altra (o da
 eventuali altre istruzioni simili).
 <br />
@@ -40,12 +40,12 @@ Per le postazioni:
 :variable
 Utilizzo di variabili
 <p>
-Per indicare le limitazioni di accesso alla registrazione dei voti è possibile 
-utilizzare variabili indicandone il nome. Tale variabile deve 
+Per indicare le limitazioni di accesso alla registrazione dei voti è possibile
+utilizzare variabili indicandone il nome. Tale variabile deve
 allora essere definita per ciascuno studente secondo le regole indicate
-sopra. Questo può essere fatto manualmente nelle "opzioni account" dello 
-studente oppure attraverso l'upload di un file csv (nel campo variabili 
-tecniche). 
+sopra. Questo può essere fatto manualmente nelle "opzioni account" dello
+studente oppure attraverso l'upload di un file csv (nel campo variabili
+tecniche).
 Se si vuole lasciare la scelta agli studenti (ad esempio proponendo una
 serie di date), è possibile utilizzare un questionario creato
 da un modello (si vedano le pagine di help corrispondenti).
@@ -58,8 +58,8 @@ $(name_shtab[10])
 È possibile impostare in questo campo un link verso un documento
 WIMS o un esercizio WIMS. Tale link apparirà allo studente nel caso in cui
 il punteggio ottenuto è strettamente inferiore al voto indicato (in decimi).
-Il secondo parametro è il voto limite (in decimi), il primo parametro è 
-l'indirizzo della risorsa WIMS nella forma seguente (forma abbreviata): 
+Il secondo parametro è il voto limite (in decimi), il primo parametro è
+l'indirizzo della risorsa WIMS nella forma seguente (forma abbreviata):
 <ul><li>
 Esercizio di un modulo o un documento pubblico: <span class="tt wims_address">module=xxx</span>
 (come indicato nella pagina <span class="wims_button disabled">$wims_name_about</span> del modulo).
@@ -77,12 +77,12 @@ veda la pagina <span class="wims_button disabled">$wims_name_about</span> del mo
 
 Nell'esempio seguente, se il voto è inferiore a 5 allo studente sarà mostrato il link
 verso il documento <span class="tt">c2</span> del corso, e più precisamente alla pagina di tale
-documento corrispondente al blocco <span class="tt">aaa</span>. 
+documento corrispondente al blocco <span class="tt">aaa</span>.
 
 <pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
 
-Nell'esempio seguente, sarà mostrato un link verso l'esercizio del file traduction1 
-del modulo WIMS H6/set/oefset.fr (il voto ottenuto dallo studente svolgendo tale 
+Nell'esempio seguente, sarà mostrato un link verso l'esercizio del file traduction1
+del modulo WIMS H6/set/oefset.fr (il voto ottenuto dallo studente svolgendo tale
 esercizio non sarà conteggiato nella media dei voti dello studente).
 
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,10</pre>
@@ -91,12 +91,18 @@ Mettendo due numeri (di cui il secondo strettamente positivo), il pulsante
 appare quando il punteggio è compreso tra i due numeri: per esempio
 se si mette
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
-il pulsante appare nel caso in cui il punteggio è 10 e apparirà la 
-parola $wims_name_feedbackplus. Se il secondo numero è zero, il sistema 
+il pulsante appare nel caso in cui il punteggio è 10 e apparirà la
+parola $wims_name_feedbackplus. Se il secondo numero è zero, il sistema
 si comporta come nel caso venga inserito un solo numero.
 
-È anche possibile inserire un link di questo tipo nel test selezionando la risorsa WIMS che 
-si vuole inserire e successivamente cliccando sul link 
+È anche possibile inserire un link di questo tipo nel test selezionando la risorsa WIMS che
+si vuole inserire e successivamente cliccando sul link
 <span  class="wims_button disabled">$wims_name_addh</span> nel menu di sinistra.
+
+!exit
+
+:series
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
+!read lang/help.phtml.fr series
 
 !exit
