@@ -32,6 +32,10 @@ bad=
  error=empty_data
  !exit
 !endif
+!set login_char=!charcnt $login
+!if $login_char=3
+  !set login=$(login)0
+!endif
 
 test=!defof user_exists in $classdir1/.users/$login
 !if $new_user=yes and $test=yes
