@@ -32,7 +32,7 @@ void secure_exec(void)
 int __sorter(const void *p1, const void *p2)
 {
     struct SORT_STRUCT *pp1, *pp2;
-    
+
     pp1=(struct SORT_STRUCT *) p1; pp2=(struct SORT_STRUCT *) p2;
     if(_sort_numeric) {
 	double dd=(pp1->val)-(pp2->val);
@@ -84,7 +84,7 @@ void calc_sort(char *p)
     int (*cutfn)(char *p,char *list[],int max);
     int nocase=0, reverse=0, numeric=0, type;
     int i,j,l,t,total;
-    
+
     cutfn=NULL;
     for(i=0,p1=find_word_start(p);i>=0;p1=find_word_start(p2)) {
 	p2=find_word_end(p1); if(*p2!=0) *p2++=0;
@@ -167,7 +167,7 @@ void _get_exec_error(char *errorfname, char *cmdname)
     }
     if(obuf[0]) {
 	p2=find_word_end(obuf);
-	if((manageable<1 || strcasecmp(tmp_debug,"yes")!=0) && 
+	if((manageable<1 || strcasecmp(tmp_debug,"yes")!=0) &&
 	   !trusted_module() &&
 	   strncmp(p2," not_INStalled",strlen(" not_INStalled"))==0) {
 	    *p2=0; setvar("missing_software",obuf);
@@ -225,7 +225,7 @@ void calc_exec(char *p)
 	fd_set rset;
 	struct timeval t;
 	int v1, v2, fd;
-	
+
 	i=strlen(parm);
 	fd=mxtab[multiexec_index].pipe_stdin[1];
 	(void)write(fd,parm,i);
@@ -256,7 +256,7 @@ void calc_exec(char *p)
     execredirected(cmdstr,NULL,outfname,errorfname,abuf);
     if(open_working_file(&wf,varfname)==0) {
 	char *pt, *pv;
-	while(wgetline(tmplbuf,MAX_LINELEN, &wf)!=EOF) { 
+	while(wgetline(tmplbuf,MAX_LINELEN, &wf)!=EOF) {
 	    pt=find_word_start(tmplbuf); pv=strchr(pt,'=');
 	    if(pv==NULL || pv<=tmplbuf) continue;
 	    *pv=0; pv=find_word_start(++pv);
@@ -283,7 +283,7 @@ void calc_exec(char *p)
     return;
 }
 
-	/* execute external program in the module directory. 
+	/* execute external program in the module directory.
 	 * For privileged modules only */
 void calc_mexec(char *p)
 {
@@ -362,7 +362,7 @@ void calc_mathsubst(char *p)
     val=strchr(p,'=');
     if(val==NULL) {
 	error:
-	module_error("mathsubst_syntax"); *p=0;return; 
+	module_error("mathsubst_syntax"); *p=0;return;
     }
     nam=find_word_start(p); *val=0;
     val=find_word_start(val+1);
@@ -383,7 +383,7 @@ void calc_evalsubst(char *p)
     calc_evalue(p);
 }
 
-	/* Nothing needs to be done in the function; 
+	/* Nothing needs to be done in the function;
 	 * substitution is done or not by tag in the structure. */
 void calc_subst(char *p)
 {
@@ -429,7 +429,7 @@ void calc_randdouble(char *p)
     double lbound, ubound;
     int n, i, t;
     char *parm[2], *p1;
-    
+
     t=_randrep(p); n=cutitems(p,parm,2);
     if(n<=0) {
 	snprintf(p,3,"0"); return; /* Random without bound: return 0. */
@@ -451,7 +451,7 @@ void calc_randfile(char *p)
 {
     char *pp, n[MAX_FNAME+1];
     int i, j;
-    
+
     pp=find_word_start(p); *find_word_end(pp)=0;
     mystrncpy(n,pp,sizeof(n));
     i=datafile_recordnum(pp);
@@ -504,7 +504,7 @@ void calc_randperm(char *p)
     char *list[MAX_RANDPERM];
     int table[MAX_RANDPERM];
     char *p1,*p2,*pp;
-    
+
     t=0; pt=0; pp=p;
     p1=find_word_start(p); p2=find_word_end(p1);
     if(p2-p1==strlen("even") && strncasecmp(p1,"even",strlen("even"))==0) {
@@ -513,7 +513,7 @@ void calc_randperm(char *p)
     if(p2-p1==strlen("odd") && strncasecmp(p1,"odd",strlen("odd"))==0) {
 	t=-1; pp=p2;
     }
-    
+
     p1=find_item_end(pp); if(*p1==',') {
 	type=1; n=cutitems(pp,list,MAX_RANDPERM); v=0;
     }
@@ -523,7 +523,7 @@ void calc_randperm(char *p)
     if(n==1 && !finite(v)) {ovlstrcpy(p,pp); goto shorder;}
     if(n<=0) {*p=0; return;}
     if(n==1 && type==0) {
-	ovlstrcpy(p,"1"); 
+	ovlstrcpy(p,"1");
 	shorder: force_setvar("wims_shuffle_order","1"); return;
     }
     if(n>MAX_RANDPERM) n=MAX_RANDPERM;
@@ -591,7 +591,7 @@ void calc_wordnum(char *p)
 void calc_lengthof(char *p)
 {
     int i;
-/* Strip leading and trailing spaces? */  
+/* Strip leading and trailing spaces? */
     i=strlen(p); mystrncpy(p,int2str(i),MAX_LINELEN);
 }
 
@@ -764,7 +764,7 @@ void calc_translate(char *p)
 	mystrncpy(bf[i],q[i],sizeof(bf[i]));substit(bf[i]);
     }
     if(bf[0][0]==0) goto bailout;
-    if(internal || strstr(tmp_dir,"sessions")==NULL || (strpbrk(bf[0],"\\[-")==NULL && 
+    if(internal || strstr(tmp_dir,"sessions")==NULL || (strpbrk(bf[0],"\\[-")==NULL &&
        strpbrk(bf[1],"\\[-")==NULL)) {	/* direct internal translation */
 	char *pp;
 	if(strlen(bf[1])<strlen(bf[0])) bf[0][strlen(bf[1])]=0;
@@ -772,7 +772,7 @@ void calc_translate(char *p)
 	    pp=strpbrk(pp+1,bf[0])) {
 	    for(i=0;bf[0][i]!=*pp && bf[0][i]!=0;i++);
 	    if(bf[0][i]!=0) *pp=bf[1][i];
-	}	    
+	}
 	bailout: mystrncpy(p,bf[2],MAX_LINELEN);
 	return;
     }
@@ -793,7 +793,7 @@ void _pos(char *hay, char *stitch, int style, char *out,
 {
     int i,n,t;
     char buf[MAX_LINELEN+1], nbuf[10];
-    
+
     n=objnum(hay);
     for(i=1;i<=n;i++) {
 	fnd_obj(hay,i,buf);
@@ -810,7 +810,7 @@ void calc_pos(char *p)
     char buf[2][MAX_LINELEN+1];
     char *p1, *p2;
     int  style;
-    
+
     p1=find_word_start(p); p2=wordchr(p1,"in");
     if(p2==NULL) module_error("syntax_error");
     *p2=0;p2=find_word_start(p2+strlen("in"));
@@ -868,7 +868,7 @@ void _obj_replace(char *orig, char *by, char *in, int num,
 {
     int i;
     char *p1, *p2;
-    
+
     ovlstrcpy(result,in);
     if(num!=0) {
 	num=objnum(in); i=evalue(orig);
@@ -979,7 +979,7 @@ void calc_replace(char *p)
     }
     if(internal || strstr(tmp_dir,"sessions")==NULL || (strpbrk(bf[0],"\\[^.*$")==NULL &&
        strpbrk(bf[1],"\\[^.*$")==NULL)) {
-	/* No regexp, direct replace */	
+	/* No regexp, direct replace */
 	char *pp;
 	for(pp=strstr(bf[2],bf[0]);pp<bf[2]+MAX_LINELEN && pp!=NULL;
 	    pp=strstr(pp+strlen(bf[1]),bf[0])) {
@@ -1004,12 +1004,12 @@ void calc_hex(char *p)
     unsigned char *p1, orig[MAX_LINELEN+1];
     char *p2;
     char *hex="0123456789ABCDEF";
-    
+
     mystrncpy((char*)orig,p,MAX_LINELEN);
     for(p1=orig, p2=p; *p1 && p2-p<MAX_LINELEN-2; p1++) {
 	*p2++=hex[(*p1>>4)&15]; *p2++=hex[*p1&15];
     }
-    *p2=0;    
+    *p2=0;
 }
 
 	/* transforms to lower/upper cases */
@@ -1056,10 +1056,10 @@ void calc_date(char *p)
 void calc_listfile(char *p)
 {
     char *pp;
-    
+
     	/* only for trusted modules */
     if(!trusted_module() || is_class_module) {
-	module_error("not_trusted"); *p=0; return; 
+	module_error("not_trusted"); *p=0; return;
     }
     	/* security measures. */
     for(pp=p;*pp;pp++) if(isspace(*pp) || *pp==';') *pp=' ';
@@ -1087,7 +1087,7 @@ void calc_instexst(char *p)
     p1=find_word_start(p); p2=find_word_end(p1);
     p3=p2-4; vspace=0;
     fix_tex_size();
-    t=untrust; untrust=0; 
+    t=untrust; untrust=0;
     if(find_module_file(m_file.name,bufc,0)) module_error(m_file.name);
     else stat(bufc,&stc);
     untrust=t;
@@ -1229,7 +1229,7 @@ void calc_listintersect(char *p)
     char *cut[MAX_LIST];
     char *pp, *ll;
     int i,n;
-    
+
     pp=wordchr(p,"and");
     if(pp==NULL) module_error("syntax_error");
     *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("and"));
@@ -1252,7 +1252,7 @@ void calc_listunion(char *p)
     char *cut[MAX_LIST];
     char *pp, *ll;
     int i,n;
-    
+
     pp=wordchr(p,"and");
     if(pp==NULL) module_error("syntax_error");
     *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("and"));
@@ -1281,7 +1281,7 @@ void calc_listcomplement(char *p)
     char *cut[MAX_LIST];
     char *pp, *ll;
     int i,n;
-    
+
     pp=wordchr(p,"in");
     if(pp==NULL) module_error("syntax_error");
     *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("in"));
@@ -1306,16 +1306,16 @@ void calc_dictionary(char *p)
     int t;
     pp=wordchr(p,"for");
     if(pp==NULL || pp<=p) module_error("syntax_error");
-    *(find_word_end(pp-1))=0; 
+    *(find_word_end(pp-1))=0;
     ovlstrcpy(name,p); substit(name);
     pp=find_word_start(pp+strlen("for")); t=0;
-    if(memcmp(pp,"word",strlen("word"))==0 && 
-       (isspace(*(pp+strlen("word"))) || 
+    if(memcmp(pp,"word",strlen("word"))==0 &&
+       (isspace(*(pp+strlen("word"))) ||
 	(*(pp+strlen("word"))=='s' && isspace(*(pp+strlen("words")))))) {
 	pp=find_word_start(pp+strlen("words")); t=1;
     }
-    if(memcmp(pp,"line",strlen("line"))==0 && 
-       (isspace(*(pp+strlen("line"))) || 
+    if(memcmp(pp,"line",strlen("line"))==0 &&
+       (isspace(*(pp+strlen("line"))) ||
 	(*(pp+strlen("line"))=='s' && isspace(*(pp+strlen("lines")))))) {
 	pp=find_word_start(pp+strlen("lines")); t=1;
     }
@@ -1345,7 +1345,7 @@ void calc_module(char *p)
 {
     char *p1,*p2, ind_buf[MAX_LINELEN+1], buf[MAX_FNAME+1];
     char *tp;
-    
+
     p1=find_word_start(p); p2=find_word_end(p1);
     if(*p2!=0) *p2++=0;
     p2=find_word_start(p2); *find_word_end(p2)=0;
@@ -1398,7 +1398,7 @@ void calc_detag(char *p)
     }
 }
 
-	/* prepare a string to be inserted into a form input 
+	/* prepare a string to be inserted into a form input
 	 * or textarea as is */
 void calc_reinput(char *p)
 {
@@ -1415,7 +1415,7 @@ void calc_defof(char *p)
 {
     char *p1;
     char fbuf[MAX_FNAME+1], nbuf[MAX_LINELEN+1], tbuf[MAX_LINELEN+1];
-    
+
     secure_exec();
     p1=wordchr(p,"in"); if(p1==NULL) module_error("syntax_error");
     *p1=0; p1=find_word_start(p1+strlen("in"));
@@ -1453,7 +1453,7 @@ void calc_select(char *p)
     if(*p1==0 || *p2==0) module_error("syntax_error");
     ovlstrcpy(buf1,p1); ovlstrcpy(buf2,p2); sep='\n';
 	/* buf1: data; buf2: condition. */
-    substit(buf1); 
+    substit(buf1);
     if(strstr(buf2,"column")!=NULL) {	/* matrix */
 	lmax=0; if(rows2lines(buf1)) sep=';';
 	for(p1=strstr(buf2,"column"); p1; p1=strstr(p1+1,"column")) {
@@ -1484,7 +1484,7 @@ void calc_select(char *p)
     }
     else {	/* datafile */
 	module_error("syntax_error");
-	
+
     }
     if(buf[0]!=0) buf[strlen(buf)-1]=0;
     mystrncpy(p,buf,MAX_LINELEN);
@@ -1504,7 +1504,7 @@ void calc_columnof(char *p)
     if(*p2==0) {*p=0; return;}
     ovlstrcpy(buf1,p1); ovlstrcpy(buf2,p2); sep='\n';
 	/* buf1: number(s); buf2: matrix. */
-    substit(buf1); substit(buf2); 
+    substit(buf1); substit(buf2);
     if(rows2lines(buf2)) sep=';';
     if(strchr(buf1,',')==NULL && wordchr(buf1,"to")==NULL
        && strstr(buf1,"..")==NULL) sep=',';
@@ -1529,7 +1529,7 @@ void calc_solve(char *p)
     char buf[MAX_LINELEN+1], vbuf[MAX_LINELEN+1];
     double v, dd, start, stop, step, old, v1, v2, v3, d1, d2, d3;
     int i, pos;
-    
+
     forp=wordchr(p,"for");
     if(forp==NULL) { syntax: module_error("syntax_error"); *p=0; return; }
     *forp=0; forp+=strlen("for");
@@ -1553,7 +1553,7 @@ void calc_solve(char *p)
     step=(stop-start)/100; if(step==0) return;
     pp=p; old=0;
     for(v=start; v<=stop; v+=step, old=dd) {
-	eval_setval(pos,v); 
+	eval_setval(pos,v);
 	set_evalue_error(0); set_evalue_pointer(buf); dd=_evalue(10);
 	if(v==start) continue;
 	if(!finite(old) || !finite(dd) || (old>0 && dd>0) || (old<0 && dd<0))
@@ -1584,7 +1584,7 @@ void _values(char *p, int type)
     char *f[64];
     double v, dd, start, stop, step, v0;
     int i, k, fcnt, pos, posr;
-    
+
     forp=wordchr(p,"for");
     if(forp==NULL) { syntax: module_error("syntax_error"); *p=0; return; }
     *forp=0; forp+=strlen("for"); forp=find_word_start(forp);
@@ -1641,7 +1641,7 @@ void _values(char *p, int type)
 	    }
 	    else ps=forstruct.pos[i];
 	    ovlstrcpy(buf2,buf); l=strlen(ps);ln=strlen(EV_X);
-	    for(pt=varchr(buf2,EV_X);pt!=NULL;pt=varchr(pt+l,EV_X)) 
+	    for(pt=varchr(buf2,EV_X);pt!=NULL;pt=varchr(pt+l,EV_X))
 	      string_modify(buf2,pt,pt+ln,"%s",ps);
 	    if(pp-p+strlen(buf2)>=MAX_LINELEN-1) return;
 	    if(pp>p) *pp++=','; ovlstrcpy(pp,buf2);
@@ -1707,7 +1707,7 @@ void calc_leveldata(char *p)
     char *pp,*p2,fbuf[MAX_LINELEN+1],buf[MAX_LINELEN+1];
     double d[4];
     int i;
-    
+
     sizep=wordchr(p,"size");
     rangep=wordchr(p,"ranges");
     fp=wordchr(p,"function");
@@ -1788,7 +1788,7 @@ void calc_lookup(char *p)
 {
     char buf2[MAX_LINELEN+1], buf3[MAX_FNAME+1];
     char *p2;
-    
+
     p2=wordchr(p,"in"); if(p2==NULL) {abort: *p=0; return;}
     *p2=0;p2=find_word_start(p2+2);
     mystrncpy(buf2,p2,sizeof(buf2)); substit(buf2);
@@ -1801,7 +1801,7 @@ void calc_lookup(char *p)
 	  goto abort;
 	_lookup(p,buf3);
     }
-    else _lookup(p,buf2); 
+    else _lookup(p,buf2);
 }
 
 	/* Hide name of a file. Only in module directory or in gifs/ */
@@ -1810,7 +1810,7 @@ void calc_rename(char *p)
     char buf1[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
     char *p1, *ext, *s;
     int t;
-    
+
     if(robot_access || strstr(p,"getfile")!=NULL) return;
     p1=find_word_start(p); *find_word_end(p1)=0;
     if(strncmp(p1,ref_name,strlen(ref_name))==0) p1+=strlen(ref_name);
@@ -1853,7 +1853,7 @@ void calc_imgrename(char *p)
 {
     char buf[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
     char *p1, *p2, *p3, *p4;
-    
+
     for(p1=varchr(p,"imgrename"); p1!=NULL; p1=varchr(p1,"imgrename")) {
 	p2=find_word_start(p1+strlen("imgrename"));
 	if(*p2!='(') {p1=p2; continue;}
@@ -1867,7 +1867,7 @@ void calc_imgrename(char *p)
 	string_modify(p,p1,p3,"%s",buf2);
 	p1+=strlen(buf2);
     }
-    
+
 }
 
 	/* internal use only */
@@ -1882,7 +1882,7 @@ char *saltchar="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./
 
 void calc_passcheck(char *p)
 {
-    
+
 }
 
 void calc_passcrypt(char *p)
@@ -1910,7 +1910,7 @@ void exec_readproc(char *p);
 void calc_mailurl(char *p)
 {
     char *p0, buf[MAX_LINELEN+1];
-    
+
     if(robot_access) {*p=0; return;}
     snprintf(buf,sizeof(buf),"mailurl.proc %s",p);
     exec_readproc(buf);
@@ -1923,7 +1923,7 @@ void calc_getopt(char *p)
 {
     char *p1, *p2, *p3, *p4;
     char buf1[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
-    
+
     p1=wordchr(p,"in"); if(p1==NULL) module_error("syntax error");
     *p1=0; p1=find_word_start(p1+3);
     mystrncpy(buf1,p,MAX_LINELEN); mystrncpy(buf2,p1,MAX_LINELEN);
@@ -1960,7 +1960,7 @@ void calc_getopt(char *p)
 		    else goto nomatch;
 		}
 		default: {
-		    nomatch: 
+		    nomatch:
 		    *find_word_end(p3)=0;
 		}
 	    }
@@ -2014,7 +2014,7 @@ void calc_embraced(char *p)
 	goto end;
     }
     module_error("syntax_error");
-    
+
     end:
     mystrncpy(p,buf,MAX_LINELEN);
 }
@@ -2030,7 +2030,7 @@ void calc_checkdata(char *p)
 {
     char *p1, *p2, buf[MAX_LINELEN+1], nbuf[MAX_FNAME+1];
     struct stat st;
-    
+
     memmove(p,"yes",4);
     p1=getvar("module_data");
     if(p1==NULL || *p1==0) return;
