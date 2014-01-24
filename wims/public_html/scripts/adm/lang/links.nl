@@ -6,11 +6,11 @@
 !let name_link_grpclass=wanneer u klassen hebt aangemaakt van de $name_classe
 !let name_link_withpwd=Ze zullen wel het klasseswachtwoord nodig hebben voor de aanmeldingss-procedure
 !let name_link_user2=Uw lesmateriaal staat daar voor hen ter beschikking
-!let name_link_teacher=allows teachers to enter in the portal
+!let name_link_teacher=inloggen voor docenten 
 !let name_link_regsup= wijst naar de plek waar docenten zich kunnen aanmelden als leraar van $name_classe .(of waar U deze docenten kunt "aanmaken")
 !let name_link_important=Belangrijk
 !let name_link_importantmes=Bookmark deze links voordat U dit venster sluit
 !let name_link_importantmes2=Dit kan ook worden terug gevonden in de klas configuratie pagina (if you change the type of authentification these links might change).
 !let name_link_classnumber=Het is ook handig het klassenummer even te noteren
-!let name_link_enterall=will redirect all users to he homepage of the class (they will need the class password for the registration).
-!let name_link_regsuperv=!nosubst allows teachers to register to the $wims_name_group.
+!let name_link_enterall=verwijst naar de home pagina van de klas (er is een klassewachtwoord vereist voor aanmelding).
+!let name_link_regsuperv=!nosubst docenten aanmelden bij $wims_name_group.
