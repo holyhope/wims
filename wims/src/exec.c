@@ -834,7 +834,7 @@ void exec_href(char *p)
       return;
     }
     if(jsbuf[0]==0 && st[0]==0 && strstr(session_prefix,"_exam")!=NULL) {
-      p1=strstr(b1,"cmd="); 
+      p1=strstr(b1,"cmd=");
       if(p1!=NULL) {
         p1+=strlen("cmd=");
         if(strncmp(p1,"new",3)==0 || strncmp(p1,"renew",5)==0 ||
@@ -1915,7 +1915,7 @@ static void _skip_contents(int isif)
       if((m_file.lines[j].isstart&2)==0) {
         m_file.linepointer++; continue;
       }
-      i=m_file.lines[j].execcode; 
+      i=m_file.lines[j].execcode;
       if(i<0) {
         if(wgetline(buf,MAX_NAMELEN+4,&m_file)==EOF) return;
         p1=buf+1; if(*p1!='i' && *p1!='e' && *p1!='w') continue;

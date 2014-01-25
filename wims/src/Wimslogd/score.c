@@ -49,7 +49,7 @@ void scoreline(struct classdata *cd, char *l)
 
     i=cutwords(l,pm,8); if(i<6) return;
     if(strcmp(pm[i-1],"noscore")==0 || strcmp(pm[i-1],"erased")==0) {
-     if(strcmp(pm[1],oldsession)!=0) 
+     if(strcmp(pm[1],oldsession)!=0)
        mystrncpy(oldsession,pm[1],sizeof(oldsession));
      return;
     }
@@ -64,7 +64,7 @@ void scoreline(struct classdata *cd, char *l)
 
      if(strcmp(pm[1],oldsession)==0 &&   /* measure to prohibit simultaneous scoring. */
         sheet==oldsheet && exo==oldexo &&
-        strncmp(pm[0],oldraf[6],13)!=0   /* prohit scores immediately after rafale */
+        strncmp(pm[0],oldraf[6],13)!=0   /* prohibit scores immediately after rafale */
         ) {
          thiscore->user+=score;
          thiscore->user2*=oldfactor;
@@ -241,7 +241,7 @@ void getscore(struct classdata *cd, char *user)
     struct stat st[3];
     int i, cnt, non[3];
     char buf[3][MAX_FNAME+1];
-    
+
     snprintf(buf[0],sizeof(buf[0]),"score/%s",user);
     snprintf(buf[1],sizeof(buf[1]),"score/%s.exam",user);
     snprintf(buf[2],sizeof(buf[2]),"score/%s.bin",user);
@@ -297,7 +297,8 @@ void cmd_getscore(char *p)
      tscore[i].weight=cd->exos[i].weight;
      sheet=(cd->exos[i].num>>8)+1;
      exo=((cd->exos[i].num)&255)+1;
-     score=uscore[i].user; stry=uscore[i].try; score2=uscore[i].user2;
+     score=uscore[i].user; stry=uscore[i].try;
+     score2=uscore[i].user2;
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
          score2*=oldfactor; score2+=thisscore;
@@ -318,7 +319,8 @@ void cmd_getscore(char *p)
          quality=score2/(ts*tt);
      }
      else score=quality=0;
-     tscore[i].score=score; tscore[i].mean=quality;
+     tscore[i].score=score;
+     tscore[i].mean=quality;
     }
     answerlen=cd->exocnt*sizeof(tscore[0]);
     memmove(textbuf+3,tscore,answerlen);
@@ -329,7 +331,7 @@ void cmd_scorelog(char *p)
 {
     struct classdata *cd;
     char buf[MAX_LINELEN+1];
-    
+
     if(cwdtype!=dir_class) {
      sockerror(2,"scorelog_no_class"); return;
     }
