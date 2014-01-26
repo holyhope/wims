@@ -2,26 +2,31 @@
 <b>Betekenis van de termen</b>
 <dl>
  <dt>gewicht
- <dd>gewicht van de oefeningen mbt het eindcijfer voor een werkblad.
- <p> 
+ </dt>
+<dd>gewicht van de oefeningen mbt het eindcijfer voor een werkblad.
+ </dd>
  <dt>moeilijkheidsgraad
- <dd>Formule voor deze factor:  <div class="wimscenter">
+ </dt>
+<dd>Formule voor deze factor:  <div class="wimscenter">
    !instex $$$$ \frac{4\times\sqrt{\
    (\hbox{totaal verstreken tijd})\times\
    (\hbox{aantal opgestarte oefeningen})}}\
    {(\hbox{aantal voltooide oefeningen})} $$$$
   </div>
   Een normale oefening heeft een "moeilijkheids-factor" tussen 0.5 en 3.
-  <p>
+  </dd>
  <dt>nieuw
- <dd>Telling van het aantal opgestarte oefeningen.
- <p>
+ </dt>
+<dd>Telling van het aantal opgestarte oefeningen.
+ </dd>
  <dt>cijfers
- <dd>Telling van het aantal afgeronde oefeningen.
- <p>
+ </dt>
+<dd>Telling van het aantal afgeronde oefeningen.
+ </dd>
  <dt>tijdsduur
- <dd>In minuten. Alleen de tijdsduur van afgeronde oefeningen worden meegeteld.
- <p>
+ </dt>
+<dd>In minuten. Alleen de tijdsduur van afgeronde oefeningen worden meegeteld.
+ </dd>
 </dl>
 
 
