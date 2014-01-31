@@ -416,8 +416,14 @@ void __replace_exponent(char *p, int n)
         p3 = p2 = find_word_start(p1+1);
         if(*p2=='+' || *p2=='-') p2++;
         p2 = find_word_start(p2);
-        if(*p2=='(') { /* ^[+-]( */
-            p2 = find_matching(p2+1,')');
+        /* 
+    	    jm.evers 31.1.2014
+    	    add '}' to recognized parenthesis in exponent
+    	    !mathmlmath 2 \cdot x^{3} will now produce correct exponent...
+    	    !mathmlmath should convert LaTeX input into correct MathML 
+        */
+        if(*p2=='(' || *p2 == '{') { /* ^[+-]( */
+    	    if(*p2 == '('){ p2 = find_matching(p2+1,')');}else { if(*p2 == '{'){ p2 = find_matching(p2+1,'}');}}
             /* no matching ')' : p2 = end of line; otherwise just after ')' */
             if (p2==NULL) p2=p+strlen(p); else p2++;
             /* ^( followed by any number of digits/letters, up to p2
