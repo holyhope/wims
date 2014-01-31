@@ -49,6 +49,15 @@ function mark_bg_$i(k,tag) {
 }
 /*]]>*/
 </script>
+<style type="text/css">
+.mark_label{
+    background-color:none;
+    color:#000090;
+    text-decoration:none;
+    cursor:pointer;
+}
+</style>
+
 !set mark_js_$i=yes
 !endif
 
@@ -63,9 +72,7 @@ function mark_bg_$i(k,tag) {
 !for k=$mark_start to $mark_end
  !set id=mark_$(i)_$k
  !default prompt_=!item $k of $input_rg
- <a href="#" style="text-decoration:none;"
- onclick="mark_bg_$i($k,'$id')"><span 
- style="background-color:none;color:#000090;text-decoration:none;" id="$id">$prompt_</span></a>
+ <span onclick="mark_bg_$i($k,'$id')" class="mark_label" id="$id">$prompt_</span>
  !reset prompt_
 !next k
 !reset inputsize
