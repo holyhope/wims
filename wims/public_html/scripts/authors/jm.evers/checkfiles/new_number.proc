@@ -38,6 +38,8 @@
 # Let op: 
 # bij complexe getallen i=10 ... 
 # vervang i door 10 in answer$n !!! anders problemen met nakijken...
+# 2/2014: let op: als e,E,i,I in $arglist , wordt het antwoorde niet gecorrigeerd op e,complex i
+# economie6.nl module E = ? E - I = ? --> arglist=E,E-I
 
 # 2/2012 arglist=x : x=123 and x_2=344 and x3=134
 # echo "x=pi en x1=234432 en x_2=2345424 en x12345=453535" | sed 's/x[_0-9]*=//g' --> pi en 234432 en 2345424 en 453535
@@ -118,8 +120,8 @@ extra=$empty
 	# x1,,,4,,,x2,,,3+sqrt(e^3)
 	rep=!nospace $rep
 	!if $arglist != $empty
+	    arglist=!lower $arglist
 	    !for a in $arglist
-		a=!lower $a
 		rep=!replace $a[_0-9]*= by , in $rep
 		#rep=!replace internal $a by , in $rep
 	    !next a
@@ -136,19 +138,23 @@ extra=$empty
 	    A=!toupper $a
 	    rep=!replace internal $a by $A in $rep
 	!next a
-	!if e isin $rep
-	    !for a in *e,e*,+e,e+, e,e ,-e,e-,/e,e/,^e,e^
-		A=!toupper $a
-		rep=!replace internal $a by $A in $rep
-	    !next a
+	!if e notin $arglist
+	    !if e isin $rep
+		!for a in *e,e*,+e,e+, e,e ,-e,e-,/e,e/,^e,e^
+		    A=!toupper $a
+		    rep=!replace internal $a by $A in $rep
+		!next a
+	    !endif
 	!endif
-	!if i isin $rep
-	    # vervang i door een getal...geen problemen met "afronden" en met pari "I"
-	    list1=*10,10*,+10,10+, 10,10 ,-10,10-,/10,10/,^10,10^
-	    list2=*i,i*,+i,i+, i,i ,-i,i-,/i,i/,^i,i^
-	    !for a=1 to 12
-		rep=!replace internal $(list2[$a]) by $(list1[$a]) in $rep
-	    !next a
+	!if i notin $arglist
+	    !if i isin $rep
+		# vervang i door een getal...geen problemen met "afronden" en met pari "I"
+	        list1=*10,10*,+10,10+, 10,10 ,-10,10-,/10,10/,^10,10^
+	        list2=*i,i*,+i,i+, i,i ,-i,i-,/i,i/,^i,i^
+		!for a=1 to 12
+		    rep=!replace internal $(list2[$a]) by $(list1[$a]) in $rep
+		!next a
+	    !endif
 	!endif
 	rep=!replace [a-z\~\!\@\#\$\%\&\_\;] by $empty in $rep
 	rep=!lower $rep
