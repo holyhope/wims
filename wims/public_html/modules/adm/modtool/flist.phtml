@@ -10,25 +10,30 @@
 
 !set doctest1=!module category devel/$auth_login/$mod
 
-<br class="spacer" />
-!form reply
-
-<input type="submit" value="$name_optiontest" />
-<ul class="inline" style="padding:10px;border:1px solid black;margin:auto;">
- <li>$name_formule:
-!formradio useropts1 list 0,1,2 prompt $name_useropts1
- </li><li>
-$name_useropts2:
-!formradio useropts2 list 0,1 prompt $wims_name_no,$wims_name_yes
- </li><li>
-$name_fonte:
-!formradio useropts3 list 0,1 prompt $name_useropts3
- </li><li>
-$name_useropts4:
-!formradio useropts4 list 0,1,2
- </li>
- </ul>
-!formend
+<a id="optiontestLink"
+   class="wims_button"
+   onclick="jQuery('#optiontest').slideToggle();"
+   style="float:right;margin:1em;">$name_optiontest</a>
+<fieldset id="optiontest" style="display:none;border:1px ridge black;margin:auto;text-align:center;">
+<legend>$name_optiontest</legend>
+  !form reply
+    <ul class="inline" >
+     <li>$name_formule:
+      !formradio useropts1 list 0,1,2 prompt $name_useropts1
+     </li><li>
+      $name_useropts2:
+      !formradio useropts2 list 0,1 prompt $wims_name_no,$wims_name_yes
+     </li><li>
+      $name_fonte:
+      !formradio useropts3 list 0,1 prompt $name_useropts3
+     </li><li>
+      $name_useropts4:
+      !formradio useropts4 list 0,1,2
+     </li>
+    </ul>
+    <input type="submit"  />
+  !formend
+</fieldset>
 
 !read adm/validation/validate.phtml
 <br class="spacer" />
@@ -65,7 +70,8 @@ $name_useropts4:
 
 $table_header
 $table_hdtr
-<th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations</th></tr>
+  <th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations</th>
+</tr>
  !for f in $files
   $table_tr
   <td style="text-align:left;" class="wims_fname nowrap">$f</td>
@@ -86,24 +92,27 @@ $table_hdtr
    !set wims_ref_class=wims_button
    !href target=wims_test module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
   !endif
-&nbsp;</td><td style="text-align:left">
-  !set t_=!translate . to _ in $f
-  !set t_=$($t_)
-  !default t_=--
-  $t_
-  </td></tr>
+&nbsp;</td>
+  <td>
+    !set t_=!translate . to _ in $f
+    !set t_=!translate / to _ in $t_
+    !set t_=$($t_)
+    !default t_=--
+    $t_
+  </td>
+  </tr>
  !next f
 $table_end
 
 !form reply
-<input type="hidden" name="jobreq" value="edfile" />
-$name_addfile:
-<input size="20" name="fname" value="$lastfname" />
-<input type="submit" value="$wims_name_tosave" />
-!if oef isin $category
-<span class="small">
-$name_help_addfile
-</span>
-!endif
+  <input type="hidden" name="jobreq" value="edfile" />
+  $name_addfile:
+  <input size="20" name="fname" value="$lastfname" />
+  <input type="submit" value="$wims_name_tosave" />
+  !if oef isin $category
+    <span class="small">
+    $name_help_addfile
+  </span>
+  !endif
 !formend
 !reset fname
