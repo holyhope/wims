@@ -25,7 +25,6 @@
 
 !set name_lastname=Visitant
 !set name_firstname=Anònim
-
 !!!!
 
 !set name_emptytitle=Aquest mòdul és un grup d'exercicis. Sembla que l'heu demanat \
@@ -38,8 +37,8 @@
   Un altre\
   abandonar la sèrie i demanar-ne un de nou\
   Continuar la sèrie amb el següent exercici\
-  (Heu d'anar fins al final d'una sèrie si vols una nota.)\
-  (Heu estat castigat per excedir el límit de temps.)\
+  (Has d'anar fins al final d'una sèrie si vols una nota.)\
+  (Has estat castigat per excedir el límit de temps.)\
   Mode de desenvolupament&nbsp;\
   respostes correctes inserides en els camps de resposta per defecte.\
   inserir respostes correctes en els camps de resposta\
@@ -75,14 +74,18 @@
     name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
     name_simplifiedmenu,name_expertmenu,name_select,name_exercices,name_menu
 
-!set name_choice=mai, si la nota no és màxima, sempre
+ !set name_datamodule=Aquest mòdul requereix el mòdul de dades <span class="tt">$module_data</span> \
+  que no està instal · lat en aquest servidor. Si vol utilitzar, \
+  demanar a l'administrador del lloc per instal·lar-lo.
 
+!set name_choice=mai, si la nota no és màxima, sempre
+!set name_qcm=QCM
 !set name_choice_check=Figuri sempre la resposta correcta,\
   Penalitzar respostes incorrectes a les opcions múltiples.,\
   Mostrar la resposta correcta.,\
   Permetre suggeriments (si estan disponibles).
 
- !set name_aleaseries= Proposer les exercices de la série dans l'ordre.
+ !set name_aleaseries= Proposar els exercicis de la sèrie en ordre.
  !set name_remarkintro1=Després d'haver seleccionat un exercici de la llista,\
 cliqueu a <span class="wims_button disabled">$wims_name_work</span>. Els exercicis es trien a l'atzar entre la vostra selecció \
   (o entre tots els exercicis disponibles si no en trieu cap).
@@ -95,8 +98,23 @@ cliqueu a <span class="wims_button disabled">$wims_name_work</span>. Els exercic
 
 !endif
 
+
 !distribute line Ho sento, aquest exercici no disposa d'ajuda\
 Ho sento, aquest exercici no dóna cap suggeriment.\
 into name_warning_help, name_warning_hint
+
+!if $special_parm=about
+  !distribute line En aquest moment està treballant en un exercici del tipus\
+  Aquest exercici conté una solució explicada i una indicació.\
+  Aquest exercici conté una solució explicada però cap indicació.\
+  Aquest exercici conté una indicació però cap solució explicada.\
+  Aquest exercici no conté ni solució explicada ni indicació.\
+  Aquest exercici es basa en una col · lecció d'exercicis (mòdul), amb la informació:\
+  Els drets d'autor dels exercicis són propietat dels respectius autors.\
+  Enllaç\
+into name_about1,name_hint1,name_hint2,name_hint3,name_hint4,\
+ name_collection,name_copyr,name_linkfor
+
+!endif
 
 !set name_latexprint= Font latex d'alguns dels exercicis.
