@@ -18,7 +18,7 @@ The true file name is thus hidden to the student.
 <p><b>Note</b>. Do not use directly the WIMS command <span class="tt wims_code_words">rename</span> to
 process the file name, or the exercise would not work correctly under saved
 environment.
-
+</p>
 <h3>Multi-step exercises</h3>
 Multi-step exercises can be defined via the command <span class="tt wims_code_variable">\steps</span>. For
 example, if you define (among parameters)
@@ -77,11 +77,12 @@ execution only affects parameter definitions.
 
 With the command <span class="tt wims_code_words">\special{...}</span> in the statement of an exercise, the
 following special methods are available:
-<p>
+<br />
 !if $special_parm=all
  !for sp in $special_list
   <h4 class="wimscenter">The special method <span class="tt wims_code_words">$sp</span></h4>
-  General syntax: <span class="wims_code_words">\special{$sp <i>parameters</i>}</span> <div>
+  General syntax: <span class="wims_code_words">\special{$sp <i>parameters</i>}</span> 
+<div>
 
   !read oef/special/$sp.phtml help
   </div>
@@ -95,24 +96,26 @@ following special methods are available:
 
 !if $special_parm2 isitemof $special_list
 <h4 class="wimscenter">The special method <span class="tt wims_code_words">$special_parm2</span></h4>
-General syntax: <spab class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</span> <div>
+General syntax: <span class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</span> <div>
 
 !read oef/special/$special_parm2.phtml help
 </div>
 !endif
 
 <h3>Preprocessed sources</h3>
-<p>
+
 This feature is not available for Createxo. You can use it if you write OEF
 (and Deductio) exercises under Modtool.
-</p><p>
+<p>
 It allows you to include common portions of codes into several oef files.
 You can also use it to make batch generation of several oefs from one
 pre-source, each differing from the others by some macro definitions.
 </p><p>
 To use this feature, a subdirectory cpp/ should be created under src. Put
 into it pre-source files with extension .cpp. In these files, you can add
-cpp directives like <span class="tt wims_code_words">#include</span> or <span class="tt wims_code_words">#if</span>. (Please refer to cpp
+cpp directives like <span class="tt wims_code_words">#include</span>, <span class="tt wims_code_words">#define</span>
+or <span class="tt wims_code_words">#if</span>. 
+(Please refer to cpp
 manual and c specification for details of the syntax.)
 </p><p>
 The first line of the cpp file must define a list of targets, in the format
@@ -122,17 +125,16 @@ target=targ1 targ2 targ3 ...
 </pre>
 This line means that this cpp file should generate targ1.oef, targ2.oef, etc.
 (the extension .oef will be
-appended to the output names). When generating the target file <em>targ1</em>, the
-predicate <span class="tt wims_code_words">#TARGET</span> will be defined as <em>targ1</em>. (And a macro
-<em>TARGET_targ1</em> is also defined.)
+appended to the output names). When generating the target file <em>targ1</em>, a macro
+<em>TARGET_targ1</em> is defined.
 Therefore in the cpp source file, you can add lines like
 <pre>
-#if #TARGET (targ1)
+#if defined TARGET_targ1 
  \title{Exercise 1}
  \integer{v1=3}
  \text{t1=this is target 1}
 #endif
-#if #TARGET (targ2)
+#if defined TARGET_targ2 
  \title{Exercise 2}
  \integer{v1=5}
  \text{t1=this is target 2}
@@ -142,20 +144,22 @@ in order to make the contents target-dependent.
 <p>
 Include files should also be put into the src/cpp directory, with extension
 .inc. A line
-</p><pre>
+</p>
+<pre>
 #include "common.inc"
 </pre>
-<p>will insert the content of common.inc into the generated oef file.
+will insert the content of common.inc into the generated oef file.
 Please note that for security reasons, it is prohibited to specify
 directories of include files.
-</p><p>
+<p>
 A special remark: cpp gets confused when your file contains single or double
 quotes in the text that are not closed. In this case, you can protect the
 commands containing such texts by c comments (<span class="tt">/* ... */</span>).
 </p>
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : In the commands beginning by # as in
-<span class="tt">#include</span>, the character <span class="tt">#</span> must be the first character of the line. You must not
+<span class="tt">#include</span>, the character <span class="tt">#</span> must be the
+first character of the line. You must not
 use <span class="tt">#</span> as a character comment. 
 </div>
 
@@ -172,13 +176,13 @@ situations:
 <li>When it is under test in Modtool, by the developer himself.</li>
 <li>When it is a class exercise and is executed by the supervisor.</li>
 </ol>
-<p>
-Note that in these cases, the good reply will appear as default in the input
+<p>Note that in these cases, the good reply will appear as default in the input
 fields of many types, allowing you to see what the exercise expects without
 typing into the fields.
 </p><p>
 You may add debugging informations into your exercise using things like
-</p><pre>
+</p>
+<pre>
 \if{debug iswordof \oefenv}{debugging informations to add into}
 </pre>
 These debugging informations will be automatically shown when the exercise

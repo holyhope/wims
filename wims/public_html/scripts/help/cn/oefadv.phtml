@@ -108,17 +108,16 @@ cpp文件的第一行应该定义一个目标表, 其格式为
 target=targ1 targ2 targ3 ...
 </pre>
 这行命令的意义是本cpp文件将生成 targ1.oef, targ2.oef, 等等.
-(输出文件会自动添加后缀 .oef). 在生成目标文件 <em>targ1</em> 时, 
-谓词 <span class="tt">#TARGET</span> 会被定义为 <em>targ1</em>. (而且宏
-<em>TARGET_targ1</em> 也被定义.)
+(输出文件会自动添加后缀 .oef). 而且宏
+<em>TARGET_targ1</em> 也被定义.
 所以在cpp原文件里可以加入如下的行:
 <pre>
-#if #TARGET (targ1)
+#if define TARGET_targ1
  \title{练习1}
  \integer{v1=3}
  \text{t1=这是target 1}
 #endif
-#if #TARGET (targ2)
+#if define_TARGET_targ2
  \title{练习2}
  \integer{v1=5}
  \text{t1=这是target 2}

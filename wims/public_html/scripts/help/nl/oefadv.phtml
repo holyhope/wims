@@ -16,7 +16,7 @@ De echte bestands naam is dus verborgen voor de leerling.
 <p><b>Opmerking</b>. 
 Het direct gebruik van het WIMS commando <em>rename</em> voor dit doel wordt
 niet aangeraden: de oefening zal dan onder omstandigheden niet meer functioneren.
-
+</p>
 <h3>Oefeningen met meerdere stappen</h3>
 Een "multi-step" oefening kan met het commando <span class="tt wims_code_variable">\steps</span>
 worden geactiveerd. 
@@ -43,12 +43,12 @@ Het volgnummer van een stap wordt opgeslagen in de variabele <span class="tt wim
 en is oproepbaar in het <em>statement</em> van de OEF.
 De eerste stap geeft dus <span class="tt wims_code_words">\step = 1</span>
 Als de leerling bezig is met de tweede stap in de OEF wordt de variabele <span class="tt wims_code_words">\step = 2</span> enz.
-<p>
+</p><p>
 Om met multi-step OEF's nog interactiever te reageren op de antwoorden van leerlingen,
 is het commando <span class="tt wims_code_words">\nextstep{...}</span>. 
 De sleutel die dit commando accepteerd is vergelijkbaar met <span class="tt wims_code_words">\steps{...}</span>
 Beide commando's mogen niet door elkaar gebruikt worden.
-
+</p>
 
 <h3>Het if-statement en for loops</h3>
 
@@ -104,14 +104,15 @@ oefeningen in OEF of Deductio.
 Dit <span class="tt">cpp</span> systeem maakt hergebruik van overeenkomstige code mogelijk: 
 diverse OEF scripten kunnen deze gemeenschappelijke code aanroepen [compile time].
 En op deze manier is "bulk productie" van oefeningen mogelijk.
-<p>
+</p><p>
 Om dit systeem te gebruikem moet er eerst een subdirectory src/cpp worden aangemaakt,
 waarin alle *.cpp scripten worden geplaatst.
 U kunt gebruik maken van preproccessor statements als <span class="tt wims_code_words">#include</span> of <span class="tt wims_code_words">#if</span>. 
 (Lees de cpp handleiding voor meer details van de te gebruiken syntax.)
-<p>
+</p><p>
 De eerste regel van een *.cpp bestand moet een lijst van targets definieren,
 zoals
+</p>
 <pre>
 target=oefening_1 oefening_2 oefening_3 ...
 </pre>
@@ -124,12 +125,12 @@ predicaat <span class="tt">#TARGET</span> wordt defenieerd als <em>oefening_1</e
 (en een macro <em>TARGET_oefening_1</em> wordt eveneens aangemaakt.)
 Hiertoe kan in de cpp code worden vermeld:
 <pre>
-#if #TARGET (oefening_1)
+#if defined TARGET_oefening_1 
  \title{Opdracht 1}
  \integer{v1=3}
  \text{t1=dit is target 1}
 #endif
-#if #TARGET (oefening_2)
+#if defined TARGET_oefening_2 
  \title{Opdracht 2}
  \integer{v1=5}
  \text{t1=dit is target 2}
@@ -138,7 +139,7 @@ Hiertoe kan in de cpp code worden vermeld:
 zodat de inhoud target afhankelijk kan worden.
 <p>
 Alle include bestanden met een uitgang <span class="tt">*.inc</span> moeten ook in de directory src/cpp worden geplaatst.
-<br/>
+</p><p>
 De regel
 <pre>
 #include "common.inc"
@@ -150,7 +151,7 @@ Ze moeten in dezelde directory worden geplaatst als de cpp bestanden.
 Opmerking:<br/>
 De cpp processor raakt in de war als er een oneven aantal aanhalingstekens worden gebruikt.<br/>
 U kunt gewone opmerkingen bij de code beschermen door (<span class="tt">/* ... */</span>).
-
+</p>
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : Alle commando's beginnende met een "#", zoals in
 <span class="tt">#include</span>, de <span class="tt">#</span> moet het eerste teken zijn op een regel.
@@ -163,6 +164,7 @@ script te testen.
 <p>
 Op dit moment is alleen de variabele <span class="tt wims_code_words">debug</span> actief binnen <span class="tt wims_code_variable">\oefenv</span> in de
 volgende situaties:
+</p>
 <ol>
 <li>OEF wordt uitgevoerd binnen het hulpmiddel Createxo.
 <li>OEF wordt uitgevoerd door de ontwikkelaar zelf binnen het hulpmiddel Modtool
@@ -171,10 +173,9 @@ volgende situaties:
 Opmerking: in al deze gevallen zal het door uw OEF gedefinieerde goede antwoord worden getoond in het invulveld.
 <p>
 De syntax voor het aanroepen van de debug info is :
+</p>
 <pre>
 \if{debug iswordof \oefenv}{de gewenste debug informatie }
 </pre>
 Deze info wordt automatisch getoond als de oefening wordt getest.
 Wanneer de oefening in gebruik is door een leerling, wordt deze niet getoond.
-
-

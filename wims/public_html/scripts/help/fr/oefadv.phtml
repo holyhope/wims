@@ -112,28 +112,29 @@ l'utiliser si vous écrivez des exercices OEF (et Deductio) sous Modtool.
 Elle vous permet d'inclure des parties de codes communes dans plusieurs fichiers OEF.
 Vous pouvez également l'utiliser pour fabriquer par lots plusieurs oef à partir d'un
 pré-source, chacun différant des autres par quelques définitions de macros.
-<p>
+</p><p>
 Pour utiliser cette possibilité, un sous-répertoire cpp/ doit être créée sous src. Y mettre
 les fichiers de pré-source d'extension .cpp. Dans ces fichiers, vous pouvez ajouter
-des directives cpp comme <span class="tt wims_code_words">#include</span> ou <span class="tt wims_code_words">#if</span>. (Veuillez vous référer aux 
+des directives cpp comme <span class="tt wims_code_words">#include</span>,
+<span class="tt wims_code_words">#define</span> ou 
+<span class="tt wims_code_words">#if</span>. (Veuillez vous référer aux 
 manuels cpp et aux spécifications c pour les détails de la syntaxe.)
-<p>
+</p><p>
 La première ligne du fichier cpp doit définir une liste de cibles (targets), dans le format
 <pre>
 target=targ1 targ2 targ3 ...
 </pre>
 Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
-(l'extension. OEF sera ajoutée aux noms de sortie). Lors de la génération du fichier 
-cible <em>targ1</em>, le prédicat <span class="tt wims_code_words">#TARGET</span> sera défini comme <em>targ1</em> 
-(Une macro <em>TARGET_targ1</em> est également définie.)
+(l'extension .oef sera donc ajoutée aux noms de sortie). Lors de la génération du fichier 
+cible <em>targ1.oef</em>, une macro <em>TARGET_targ1</em> est définie.
 Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 <pre>
-#if #TARGET (targ1)
+#if defined TARGET_targ1 
  \title{Exercise 1}
  \integer{v1=3}
  \text{t1=this is target 1}
 #endif
-#if #TARGET (targ2)
+#if defined TARGET_targ2 
  \title{Exercise 2}
  \integer{v1=5}
  \text{t1=this is target 2}
@@ -153,11 +154,13 @@ spécifier des répertoires de fichiers include.
 Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
 des apostrophes ou guillemets qui ne sont pas fermés. Dans ce cas, vous pouvez protéger
 les commandes contenant ces textes par des commentaires C (<span class="tt wims_code_words">/* ... */</span>).
+</p>
 
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : Dans les commandes commençant par # comme dans 
-<span class="tt">#include</span>, le caractère <span class="tt">#</span> doit être le premier caractère de la ligne. Il ne faut pas non plus utiliser
-<span class="tt">#</span> comme caractères de commentaires. 
+<span class="tt">#include</span>, le caractère <span class="tt">#</span> doit être le 
+premier caractère de la ligne. Il ne faut pas non plus utiliser
+<span class="tt">#</span> comme caractère de commentaires. 
 </div>
 
 <h3>Environnement dans un exercice</h3>
@@ -165,8 +168,9 @@ La variable spéciale  <span class="tt wims_code_variable">\oefenv</span> est uti
 (si elle n'est pas redéfinie dans l'exercice).
 <p>
 Pour l'instant, le seul contenu possible de cette variable est le mot
-``debug''. Ce mot apparaît à l'intérieur de <span class="tt wims_code_variable">\oefenv</span> dans les situations 
-suivantes :
+``debug''. Ce mot apparaît à l'intérieur de <span class="tt wims_code_variable">\oefenv</span> 
+dans les situations suivantes.
+</p>
 <ol>
 <li>quand l'exercice est exécuté à l'intérieur de Createxo ;</li>
 <li>quand il est testé dans Modtool par le développeur lui-même</li>
@@ -179,10 +183,9 @@ réponse sans avoir besoin de remplir vous-même les champs.
 <p>
 Vous pouvez ajouter des informations de débogage à l'intérieur de votre exercice
 en utilisant des conditions comme 
+</p>
 <pre>
 \if{debug iswordof \oefenv}{informations de débogage à ajouter ici}
 </pre>
 Ces informations sont alors automatiquement montrées quand l'exercice
 est sous test et automatiquement cachées quand les étudiants y travaillent.
-
-

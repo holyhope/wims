@@ -7,7 +7,7 @@ If your exercise requires recognition of a randomly picked picture, the file
 name of the picture might give clue to the exercise. In order to hide this
 file name, you can write
 
-<pre>\img{\imagedir/picture.jpg  alt="picture"}</pre>
+<pre>\img{\imagedir/picture.jpg alt="picture"}</pre>
 
 Then on the browser, the student will see
 
@@ -113,7 +113,10 @@ pre-source, each differing from the others by some macro definitions.
 </p><p>
 To use this feature, a subdirectory cpp/ should be created under src. Put
 into it pre-source files with extension .cpp. In these files, you can add
-cpp directives like <span class="tt wims_code_words">#include</span> or <span class="tt wims_code_words">#if</span>. (Please refer to cpp
+cpp directives like <span class="tt wims_code_words">#include</span>,
+<span class="tt wims_code_words">#define</span>
+or <span class="tt wims_code_words">#if</span>. 
+(Please refer to cpp
 manual and c specification for details of the syntax.)
 </p><p>
 The first line of the cpp file must define a list of targets, in the format
@@ -123,17 +126,16 @@ target=targ1 targ2 targ3 ...
 </pre>
 This line means that this cpp file should generate targ1.oef, targ2.oef, etc.
 (the extension .oef will be
-appended to the output names). When generating the target file <em>targ1</em>, the
-predicate <span class="tt wims_code_words">#TARGET</span> will be defined as <em>targ1</em>. (And a macro
-<em>TARGET_targ1</em> is also defined.)
+appended to the output names). When generating the target file <em>targ1</em>, a macro
+<em>TARGET_targ1</em> is defined.
 Therefore in the cpp source file, you can add lines like
 <pre>
-#if #TARGET (targ1)
+#if defined TARGET_targ1 
  \title{Exercise 1}
  \integer{v1=3}
  \text{t1=this is target 1}
 #endif
-#if #TARGET (targ2)
+#if defined TARGET_targ2 
  \title{Exercise 2}
  \integer{v1=5}
  \text{t1=this is target 2}
@@ -157,7 +159,8 @@ commands containing such texts by c comments (<span class="tt">/* ... */</span>)
 </p>
 <div class="wims_warning">
 <span class="wims_warning">$wims_name_warning</span> : In the commands beginning by # as in
-<span class="tt">#include</span>, the character <span class="tt">#</span> must be the first character of the line. You must not
+<span class="tt">#include</span>, the character <span class="tt">#</span> must be the
+first character of the line. You must not
 use <span class="tt">#</span> as a character comment. 
 </div>
 
