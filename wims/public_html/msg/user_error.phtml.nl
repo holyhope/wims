@@ -289,8 +289,9 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
 !endif
   
 !if wrong_module iswordof $wims_user_error
- De verzochte module ``$module'' bestaat niet op deze WIMS site.
- <br /><small><em>kontroleer regelmatig of de links op uw web-pagina / ELO nog up-to-date zijn.</em></small>
+ !set tmp=!translate "!/<>;': to $         $ in $module
+ <p>De verzochte module <code>$tmp</code> bestaat niet op deze WIMS site.
+ <br /><small><em>kontroleer regelmatig of de links op uw web-pagina / ELO nog up-to-date zijn.</em></small></p>
   !goto end
 !endif
 

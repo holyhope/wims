@@ -264,7 +264,8 @@ Hay un error en su solicitud a este sitio WIMS.<p>
 !endif
   
 !if wrong_module iswordof $wims_user_error
-  El módulo ``$module'' que ha solicitado no existe en este servidor.
+  !set tmp=!translate "!/<>;': to $         $ in $module
+  El módulo <code>$tmp</code> que ha solicitado no existe en este servidor.
 !endif
 
 !if wrong_session iswordof $wims_user_error
