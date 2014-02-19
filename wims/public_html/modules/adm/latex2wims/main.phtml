@@ -35,10 +35,10 @@ to $wims_menu_items
 
 <div class="wims_content">
 
-<b>$module_title</b> 
+<b>$module_title</b>
 !read lang/names.phtml.$modu_lang 1
 !href cmd=help&special_parm=doc $name_documentation
- $wims_name_or 
+ $wims_name_or
  !getfile latex2wimsdoc.pdf $name_pdf
 .
 
@@ -46,30 +46,36 @@ to $wims_menu_items
 
  !form reply
  $name_modtool
- 
- 
-<table class="wimsnoborder wimscenter wimsform">
-<tr><td>$wims_name_Login</td><td><input type="text" name="login" /></td></tr>
-<tr><td>$wims_name_Password</td><td>
-  <input type="password" name="passwd" />
-</td></tr></table>
- <p class="wimscenter"> <input type="submit" value="$wims_name_tosave" /></p>
 
+
+<fieldset class="property_fields halfwidth blockcenter">
+    <div class="field box">
+      <label for="login">$wims_name_Login</label>
+      <input type="text" name="login" id="login" />
+    </div>
+    <div class="field box">
+      <label for="passwd">$wims_name_Password</label>
+      <input type="password" name="passwd" id="passwd" />
+    </div>
+    <div class="field box">
+    <input type="submit" value="$wims_name_tosave" />
+    </div>
+ </fieldset>
   !formend
 </div> <!--end content 1-->
   !tail
   !exit
-   
+
 !endif
 
 
 !if $error!=$empty
   <div class="wims_alertmsg">
- !read lang/msg.phtml.$modu_lang 
+ !read lang/msg.phtml.$modu_lang
   </div>
 !endif
 
- 
+
 <div class="wims_content">
 
 <b>$module_title</b>
@@ -77,7 +83,7 @@ to $wims_menu_items
 
 !href cmd=help&special_parm=doc $name_documentation
 .
-  
+
 !set wims_form_method=file
 !default !set execut=0
 !form reply
@@ -86,9 +92,9 @@ $name_select_example
   !getfile fichier_test.tex $name_latex
 ,
   !getfile style.css $name_css
-, 
+,
   !getfile wims.sty $name_latex2wims
-, 
+,
   !getfile latex2wimsdoc.pdf $name_pdf
 .
  !if $exemple!=1
@@ -128,14 +134,14 @@ $name_select_example
 !if $execut=1
 
 <h2 class="hh"> $name_step 1</h2>
-!if $cnt_fichier >0 
+!if $cnt_fichier >0
    $name_youcan
     !formcheckbox execut list 0 prompt $name_newtransfer
  !else
    $name_youmust
    !default !set execut=0
    !formradio execut list 0 prompt $name_atleast
-   
+
    <p class="wimscenter">
 <input type="submit" value="$wims_name_tosave" />
 </p>
@@ -152,16 +158,16 @@ $name_select_example
       <li>
         !formradio principal list $i prompt $(fichiers[$i]) ($name_transferdate $(date[$i]))
       </li>
-   !next 
+   !next
   </ul>
  !! $name_sheet
  !! !formradio wksheet list 1,2,3,4,5,6,7,8,9
  <h2 class="hh"> $name_step 3</h2>
 
 !if $list_module!=$empty
-   $name_namedocument:  
+   $name_namedocument:
            <p class="wimscenter">
-           !formselect document list $choix,$list_module    
+           !formselect document list $choix,$list_module
          </p>
        $name_newmodule
 !else
@@ -176,10 +182,10 @@ $name_select_example
 !endif
   <h2 class="hh"> $name_step 4</h2>
      !formradio execut list 2 prompt $name_exec
-  
+
 !endif
 
-!if $execut=3 
+!if $execut=3
   !if $confirm=
    !read lang/names.phtml.$modu_lang 4
    !formradio confirm list 0,1 prompt $wims_name_yes,$wims_name_no

@@ -1,54 +1,46 @@
 !! might want to share code with edit.phtml
 !reset table_center
-$table_header
- $table_hdtr
-  <th>$name_option</th><th>$name_value</th>
- </tr>
- $table_tr<td>$wims_name_title</td><td><input size="50" name="reg_title" value="$vote_title" /> </td></tr>
- $table_tr<td>$wims_name_Type</td>
+
+<fieldset class="property_fields blockcenter">
+  <div class="field box">
+   <label for="reg_title">$wims_name_title</label>
+   <input size="50" name="reg_title" value="$vote_title" id="reg_title"/>
+  </div>
+  <div class="field box">
+   <label for="reg_option">$wims_name_Type</label>
   !default vote_status=0
  !! !default reg_model=free
   !set reg_status=$vote_status
   !set reg_option=$vote_option
   !set reg_show=$vote_show
   !set reg_whovoteshow=$vote_whovoteshow
-  <td>
   !if $vote_status=0
     !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
   !else
     $(name_$(vote_option))
   !endif
-  </td>
- </tr>
- $table_tr
-  <td>$wims_name_Status</td>
-  <td>
+ </div>
+ <div class="field box">
+  <label for="reg_status">$wims_name_Status</label>
   !if $vote_status=0 or $vcnt=0 or $vcnt=$empty or $vote_src$reg_src=$empty
    !formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
   !else
    !formselect reg_status from 1 to 3 prompt $name_1,$name_2,$name_3
   !endif
-  </td>
- </tr>
- $table_tr
- <td>
+ </div>
+ <div class="field box">
  !if $gstep= $empty or $gstep=0
     <input type="hidden" name="gstep" value="1" />
-!endif
-  $name_result</td>
-  <td>
+ !endif
+  <label for="reg_show ">$name_result</label>
    !formselect reg_show list 1,0 prompt $name_publish,$name_hide
-  </td>
- </tr>
- $table_tr
-  <td>$name_whovote</td>
-  <td>
+ </div>
+ <div class="field box">
+ <label for="reg_whovoteshow">$name_whovote</label>
    !formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
-  </td>
- </tr>
- $table_tr
-  <td>$name_model</td>
-  <td>
+ </div>
+ <div class="field box">
+  <label for="reg_model">$name_model</label>
 !!bad conditions !!!
   !if $vote_status=0 and ($vote_src=$empty or $vote_src=<br /> or $vote_src=<br />)
    !formselect reg_model list free,$vmodellist prompt $name_free,$name_vmodellist
@@ -61,7 +53,5 @@ $table_header
 
  !set wims_ref_class=wims_button_help
  !href cmd=help&helpname=guidedmode $wims_name_help
-  </td>
- </tr>
- $table_end
-
+ </div>
+ </fieldset>
