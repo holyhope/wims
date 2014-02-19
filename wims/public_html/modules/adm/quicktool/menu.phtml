@@ -11,10 +11,10 @@
 !if $wims_developer=$empty
 <b>$module_title</b>
 !record 1 of $my_dir
-!!@# vous permet de créer le source d'exercices type. Il est particulièrement adapté aux exercices de langues. 
+!!@# vous permet de créer le source d'exercices type. Il est particulièrement adapté aux exercices de langues.
 !!Pour rendre ces exercices plus attractifs, il est bien d'avoir un grand jeu de phrases, de questions ou de textes.
-!!Vous pouvez prévoir d'insérer dans l'exercice des fichiers audio ou des images,  des textes à lire dans une autre fenêtre et même des videos.  
-!!Les exercices ainsi créés peuvent ensuite être utilisés dans les classes  virtuelles de WIMS. 
+!!Vous pouvez prévoir d'insérer dans l'exercice des fichiers audio ou des images,  des textes à lire dans une autre fenêtre et même des videos.
+!!Les exercices ainsi créés peuvent ensuite être utilisés dans les classes  virtuelles de WIMS.
 !!<p>Vous pouvez regarder les exemples ci-dessous. <hr />!!#@
 
 (<span class="wims_button disabled">$wims_name_help</span>).
@@ -39,20 +39,26 @@ WIMS modtool
 !!!record 6 of $my_dir
 
 !!@#       Veuillez donner votre identification de développeur de Modtool!!#@
-       
-       <table class="wimsnoborder wimscenter wimsform">
-         <tr><td>$wims_name_Login</td><td><input type="text" name="login" /></td></tr>
-         <tr><td>$wims_name_Password</td><td>
-          <input type="password" name="passwd" />
-         </td></tr></table>
-        !set submit=submit
+
+       <fieldset class="property_fields halfwidth blockcenter">
+        <div class="field box">
+         <label for "login">$wims_name_Login</label>
+         <input type="text" name="login" id="login"/></td></tr>
+         </div>
+         <div class="field box">
+         <label for "passwd">$wims_name_Password</label>
+          <input type="password" name="passwd" id="passwd" />
+         </div>
+        </fieldset>
+       !set submit=submit
     !endif
+!! use in other situations - do not put in the fieldset for the moment
     <p class="wimscenter"><input type="$submit" $balise_obl  value="$wims_name_tosave" /></p>
 
   !formend
 !exit
 !endif
-!if $type_exo=$empty or $debut=1 
+!if $type_exo=$empty or $debut=1
   !if $type_exo!=$empty
 !record 4 of  $my_dir
 !!@#Vous aviez choisi !!#@
@@ -63,15 +69,15 @@ WIMS modtool
  !record 6 of  $my_dir
 !!@#   Regardez l'aide générale dans le menu en haut!!#@
 ,
- 
+
 !record 7 of $my_dir
 !!@#sélectionnez le type d'exercice que vous désirez créer, puis cliquez sur!!#@
- 
+
 
    $table_header
     $table_hdtr<td colspan="3" align="center"><input type="submit" $balise_obl value="$wims_name_tosave" /></td></tr>
     $table_tr<th>$wims_name_Type</th><th>$wims_name_Description</th><th>$name_Example</th>
-   !set u = !linecnt $name 
+   !set u = !linecnt $name
    !for i = 1 to $u
      $table_tr<td width="12%">
      !set cnt=!itemcnt $(name[$i;])
@@ -81,12 +87,12 @@ WIMS modtool
      !next a
      </td><td width="25%">$(explication[$i;])</td>
      <td>
-     !for j = 1 to $(nb_example[$i]) 
+     !for j = 1 to $(nb_example[$i])
      !set ex_data = !getdef file in $example_dir/$(name_example[$i])/$j
      !set ex_title = !getdef title in $example_dir/$(name_example[$i])/$j
      !set ex_data=!nospace $ex_data
      !set ex_source = !getdef source in $example_dir/$(name_example[$i])/$j
-  
+
 !href target=wims_help module=$module_test&exo=$ex_source&cmd=new <i>$ex_title</i>
  &nbsp;
 !href cmd=reply&example=$j&TYPE=$(name_example[$i]) $wims_name_source
@@ -111,8 +117,8 @@ $table_end
        !record 4 of $my_dir
      <b>$(wims_name_quick_$type_exo)</b>. &nbsp;
        !set wims_ref_class=wims_button_help
-       !href cmd=help&special_parm=$(Type_exo[1]) $wims_name_help 
-&nbsp; 
+       !href cmd=help&special_parm=$(Type_exo[1]) $wims_name_help
+&nbsp;
 !!(<i>
 !!       !formcheckbox debut list 1 prompt $name_change
 !!  </i>)
@@ -131,7 +137,7 @@ $table_header
 !href target=wims_mhelp cmd=help&special_parm1=namewriting $wims_name_help
          </td><td> <input size="20" name="author" id="author" value="$author" /></td></tr>
          $table_tr<td><label for="email">$wims_name_email*</label></td><td> <input size="20" name="email" id="email" value="$email" /></td></tr>
-         $table_tr<td><label for="file">$name_name_data*</label> 
+         $table_tr<td><label for="file">$name_name_data*</label>
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=data_file$type_exo $wims_name_help
@@ -149,7 +155,7 @@ $table_header
          $table_tr<td><label for="N">
 !record 10 of $my_dir
 !!@# Nombre de jeux de données utilisés  !!#@
-       
+
        !if $type_exo notwordof SELECTWORD GAP SELECTWORDA SELECTWORDB
 !record 11 of $my_dir
 !!@#          à chaque étape !!#@
@@ -158,9 +164,9 @@ $table_header
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=data $wims_name_help
-&nbsp; 
+&nbsp;
        </td><td>
-         !formradio N from 1 to 6 
+         !formradio N from 1 to 6
          !formradio N list all prompt $name_all
          </td></tr>
        !if $type_exo notwordof GAP QCMIII SELECTWORD SELECTWORDA SELECTWORDB
@@ -171,7 +177,7 @@ $table_header
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=etape $wims_name_help
 &nbsp;
-        </td><td> 
+        </td><td>
            !formradio MAX1 from 1 to 5
            !formradio MAX1 list all prompt $name_all2
          </td></tr>
@@ -181,9 +187,9 @@ $table_header
         $table_tr<td><label for="M">
 !record 13 of $my_dir
 !!@#        Nombre d'objets dans la correspondance !!#@
-</label> 
-        </td><td> 
-        !formradio M from 3 to 6 
+</label>
+        </td><td>
+        !formradio M from 3 to 6
       !endif
       !if $type_exo notwordof CORRESP ORDONNE  QUIFAITQUOI QCMIII
         $table_tr<td><label for="alea">
@@ -199,7 +205,7 @@ $table_header
         $table_tr<td><label for="answer_given">
 !record 15 of $my_dir
 !!@#       Réponses données !!#@
-</label> 
+</label>
         &nbsp;
         !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=answer_given $wims_name_help
@@ -225,7 +231,7 @@ $table_header
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=format_radio $wims_name_help
 &nbsp; </td><td>
-        !formradio format list radio,checkbox 
+        !formradio format list radio,checkbox
         </td></tr>
         $table_tr<td><label for="percent">
 !record 16 of $my_dir
@@ -245,7 +251,7 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=first_step $wims_name_help
-&nbsp;</td><td> 
+&nbsp;</td><td>
             !formradio first_step list 1,0 prompt $wims_name_yes,$wims_name_no
 <br /><label for="format0">
         $name_format
@@ -260,7 +266,7 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=second_step $wims_name_help
-&nbsp;</td><td> 
+&nbsp;</td><td>
             !formradio second_step list yes,no prompt $wims_name_yes,$wims_name_no
          </td></tr>
         $table_tr<td><label for="partialscore">
@@ -269,11 +275,11 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=partialscore $wims_name_help
-&nbsp;</td><td> 
+&nbsp;</td><td>
             !formradio partialscore list split,no prompt $wims_name_yes,$wims_name_no
          </td></tr>
         $table_tr<td><label for="format">
-        $name_format 
+        $name_format
 !record 20 of $my_dir
 !!@#(si question supplémentaire) !!#@
 </label> &nbsp;
@@ -281,10 +287,10 @@ $table_header
 !href target=wims_mhelp cmd=help&special_parm1=format_click $wims_name_help
 &nbsp; </td><td>
         !formradio format list case,clickfill,dragfill prompt case,clickfill,dragfill
-        <br /> 
+        <br />
 !record 21 of $my_dir
 !!@#        Pour le format !!#@
- 
+
 <span class="tt">case</span>
         !reset reaccent=
 !record 22 of $my_dir
@@ -341,7 +347,7 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=menu_commun $wims_name_help
-&nbsp; 
+&nbsp;
         </td><td>
         !formradio common list yes,no prompt $wims_name_yes,$wims_name_no
         </td></tr>
@@ -353,7 +359,7 @@ $table_header
 !href target=wims_mhelp cmd=help&special_parm1=specialhelp $wims_name_help
 &nbsp; </td><td>
 
-<label for="specialhelp1">$name_trial1:</label> 
+<label for="specialhelp1">$name_trial1:</label>
         !formradio specialhelp1 list 0,1,2,3,4,5 prompt $name_listhelp
 <br /><label for="specialhelp2">$name_trial2:</label>
         !formradio specialhelp2 list 0,1,2,3,4,5 prompt $name_listhelp
@@ -361,7 +367,7 @@ $table_header
         !formradio specialhelp3 list 0,1,2,3,4,5 prompt $name_listhelp
 <br /><label for="specialhelp4">$name_trial4:</label>
         !formradio specialhelp4 list 0,1,2,3,4,5 prompt $name_listhelp
-<br /><label for="helpprompt">$name_prompt : </label><input size="5" name="helpprompt" id="helpprompt" value="$helpprompt" />    
+<br /><label for="helpprompt">$name_prompt : </label><input size="5" name="helpprompt" id="helpprompt" value="$helpprompt" />
         </td></tr>
       !endif
       !if $type_exo iswordof TRUEFALSE GAP QUIFAITQUOI QCMIII
@@ -369,7 +375,7 @@ $table_header
         !!$table_tr<td><i><label for="choicetf">
 !record 28 of $my_dir
 !!@#           Choix de réponses !!#@
- 
+
 </label></i>
 !set wims_ref_class=wims_button_help
          !href target=wims_mhelp cmd=help&special_parm1=choice $wims_name_help
@@ -389,7 +395,7 @@ $table_header
            </i>&nbsp;
            !set wims_ref_class=wims_button_help
            !href target=wims_mhelp cmd=help&special_parm1=choice2 $wims_name_help
-           
+
 </label>
            </td><td><input size="35" name="choice_gap" id="choice_gap" value="$choice_gap" /></td></tr>
        !endif
@@ -428,13 +434,13 @@ $table_header
        $table_tr<td><label for="taille_case">
 !record 31 of $my_dir
 !!@#       Taille des cases !!#@
- 
+
 (case) </label>
        !if $type_exo iswordof SELECTWORD
 !record 32 of $my_dir
 !!@#         (si question supplémentaire)!!#@
- 
-       !endif 
+
+       !endif
        &nbsp;
        !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=taille_case $wims_name_help
@@ -476,7 +482,7 @@ $table_header
     $table_tr<td><i><label for="instruction">
 !record 36 of $my_dir
 !!@#   Consigne de l'exercice!!#@
- 
+
  </label></i> &nbsp;
  !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=instruction $wims_name_help
@@ -493,7 +499,7 @@ $table_header
     !!if $type_exo iswordof GAP
     $table_tr<td><i><label for="packs">
 !record 38 of $my_dir
-!!@#    Paquets SWAC!!#@ 
+!!@#    Paquets SWAC!!#@
 </label></i> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=swac $wims_name_help
@@ -511,9 +517,9 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=reading $wims_name_help
-&nbsp;: 
+&nbsp;:
     !formradio reading_file1 list yes,no prompt $wims_name_yes,$wims_name_no
-    </td><td> 
+    </td><td>
     <table class="wimsnoborder">
      <tr>
       <td><i><label for="reading_file0">$name_name_file</label></i></td><td><input size="15" name="reading_file0" id="reading_file0" value="$reading_file0" /></td></tr>
@@ -537,7 +543,7 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=audio $wims_name_help
-&nbsp; : 
+&nbsp; :
     !formradio audio_file1 list yes,no prompt $wims_name_yes,$wims_name_no
     </td><td>
     <table class="wimsnoborder">
@@ -545,7 +551,7 @@ $table_header
         <td><i><label for="audio_file0">
 !record 41 of $my_dir
 !!@#        nom du fichier!!#@
- 
+
         </i></td><td><input size="15" name="audio_file0" id="audio_file0" value="$audio_file0" /></td>
        </tr>
      </table>
@@ -556,13 +562,13 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=video $wims_name_help
-&nbsp; : 
+&nbsp; :
     !formradio video_file1 list yes,no prompt $wims_name_yes,$wims_name_no
     </td><td>
     <table class="wimsnoborder"><tr><td><i><label for="video_file0">
 !record 43 of $my_dir
 !!@#    adresse url de la video!!#@
- 
+
 </label></i> </td><td><input size="15" name="video_file0" id="video_file0" value="$video_file0" />
     </td><tr><td><label for="video_tag">$name_click</label></td><td> <input size="8" name="video_tag" id="video_tag" value="$video_tag" /></td></tr>
     </table></td></tr>
@@ -572,13 +578,13 @@ $table_header
 </label> &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=image $wims_name_help
-&nbsp;: 
+&nbsp;:
     !formradio image_file1 list yes,no prompt $wims_name_yes,$wims_name_no
      </td><td>
      <table class="wimsnoborder"><tr><td><i><label for="image_file0">
 !record 45 of $my_dir
 !!@#     nom du fichier!!#@
- 
+
 </label></i></td><td>
      <input size="15" name="image_file0" id="image_file0" value="$image_file0" />
     </td><tr><td><label for="image_tag">
@@ -593,7 +599,7 @@ $table_header
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=css $wims_name_help
 &nbsp;</td><td>
-    <textarea class="nowrap" rows="2" cols="30" name="style_question" id="style_question">$style_question</textarea> 
+    <textarea class="nowrap" rows="2" cols="30" name="style_question" id="style_question">$style_question</textarea>
     </td></tr>
     $table_tr<td><label for="style_reponse">
 !record 47 of $my_dir
@@ -613,11 +619,11 @@ $table_header
 !href target=wims_mhelp cmd=help&special_parm1=css1 $wims_name_help
 &nbsp; </td><td>
     <textarea class="nowrap" rows="2" cols="30" name="style_css" id="style_css">$style_css</textarea> </td></tr>
-   !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB 
+   !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB
     $table_tr<td><label for="paste">
 !record 49 of $my_dir
 !!@#       "Copier-Coller" possible!!#@
- 
+
 </label>       &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=nopaste $wims_name_help
@@ -627,7 +633,7 @@ $table_header
        </td></tr>
      !endif
     !if $type_exo iswordof QCM
-    $table_tr<td><label for="qcm_prompt1">$name_prompt</label> 
+    $table_tr<td><label for="qcm_prompt1">$name_prompt</label>
        &nbsp;
        !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=prompts $wims_name_help
@@ -639,23 +645,23 @@ $table_header
         <textarea class="nowrap" rows="1" cols="20" name="bad_answer_text" id="bad_answer_text">$bad_answer_text</textarea>
         <textarea class="nowrap" rows="1" cols="20" name="incomplete_answer_text" id="incomplete_answer_text">$incomplete_answer_text</textarea>
        </td></tr>
-     !endif   
+     !endif
      $table_tr<td><label for="player_option">
 !record 50 of $my_dir
 !!@#     Choix du lecteur mp3!!#@
- 
+
 </label>      &nbsp;
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=player $wims_name_help
 &nbsp;</td><td>
       !formselect player list $list_player
 !record 51 of $my_dir
-!!@# Taille du lecteur!!#@ 
+!!@# Taille du lecteur!!#@
       <input size="20" name="player_option" id="player_option" value="$player_option" />
       </td></tr>
     $table_end
     !set transfert=
-  !endif 
+  !endif
 !endif
 <p class="wimscenter"><input type="submit" $balise_obl value="$wims_name_tosave" /></p>
 
