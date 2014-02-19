@@ -14,20 +14,31 @@ $wims_name_config
 $name_intro:
 !form reply
 <input type="hidden" name="job" value="config" />
-<ul>
- <li>$wims_name_title<br />
-  <input size="60" name="cf_title" value="$cf_title" /></li>
- <li>$wims_name_Description<br />
-  <textarea wrap name="cf_description" cols="60" rows="5">$cf_description</textarea></li>
- <li>$name_link: <input size="60" name="cf_link" value="$cdt_link" /></li> 
- <li>
-  $name_reversedate 
-  !formradio cf_reversedate list 1,0 prompt $wims_name_yes,$wims_name_no
- </li>
- <li>
+<fieldset class="property_fields halfwidth blockcenter">
+    <legend></legend>
+    <div class="field box">
+     <label for="cf_title">$wims_name_title</label>
+    <input size="60" name="cf_title" value="$cf_title" id="cf_title" />
+   </div>
+   <div class="field box">
+     <label for="cf_description">$wims_name_Description</label>
+     <textarea class="wrap" name="cf_description" cols="60" rows="5" id="cf_description">
+      $cf_description
+     </textarea>
+  </div>
+  <div class="field box">
+   <label for="cf_link">$name_link </label>
+    <input size="60" name="cf_link" value="$cdt_link" id="cf_link" />
+  </div>
+  <div class="field box">
+   <label for=" cf_reversedate">$name_reversedate</label>
+   !formradio cf_reversedate list 1,0 prompt $wims_name_yes,$wims_name_no
+   </div>
+   <div class="field box">
   !href cmd=renew&job=logfile $name_see
-  $name_see2.</li>
-</ul>
+  $name_see2.
+   </div>
+</fieldset>
 <p class="wimscenter"><input type="submit" name="cf_set" value="$wims_name_tosave" />
 &nbsp;&nbsp;<input type="submit" name="cf_abandon" value="$wims_name_giveup" />
 </p>
