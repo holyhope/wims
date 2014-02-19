@@ -34,15 +34,15 @@
 
 !!read local.phtml
 <div class="wims_content">
- $name_choose 
- 
+ $name_choose
+
   <p>
    !href cmd=reply&step=0&cltype=0 $wims_name_create_class
   </p>
- 
+
   !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
   to $wims_menu_items
- 
+
   <p>
    !if 2 isitemof $alltypes
     !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
@@ -52,7 +52,7 @@
     <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
    !endif
   </p>
- 
+
   <p>
    !if 4 isitemof $alltypes
     !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
@@ -63,12 +63,12 @@
     <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
    !endif
   </p>
-  
+
   <span class="wims_warning">$wims_name_help</span>:
   !read lang/help.phtml.$modu_lang 1
  </div>
  !goto end
-  
+
 !endif
 
 !if $step=0
@@ -76,87 +76,92 @@
 
  !form reply
  <input type="hidden" name="step" value="1" />
- $table_header
- $table_tr
-  <td><label for="institution">$name_Name_portal</label></td>
-  <td>
+
+<fieldset class="property_fields">
+    <legend></legend>
+    <div class="field box">
+     <label for="institution">$name_Name_portal</label>
+      <div class="formHelp">$name_atmost $instlim $name_characters</div>
   !if $Cltype isin 13
    !let institution=$wims_institutionname
    $institution
   !else
    <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim" />
   !endif
-  </td>
-  <td>($name_atmost $instlim $name_characters)</td>
- </tr>
- $table_tr<td><label for="description">$wims_name_name $name_classesss</label></td><td>
-  <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" />
-  </td><td>
-  ($name_atmost $desclim $name_characters)
- </td></tr>
- !if $Cltype notin 24
- !set nblevel=!itemcnt $wims_listlevel
- $table_tr<td><label for="level">$wims_name_level $name_classesss</label></td><td>
-  <select name="level" id="level">
+   </div>
+
+   <div class="field box">
+    <label for="description">$wims_name_name $name_classesss</label>
+    <div class="formHelp">$name_atmost $desclim $name_characters</div>
+    <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" />
+  </div>
+  !if $Cltype notin 24
+   !set nblevel=!itemcnt $wims_listlevel
+   <div class="field box">
+    <label for="level">$wims_name_level $name_classesss</label>
+     <select name="level" id="level">
    !for k=1 to $nblevel
     !if $(wims_listlevel[$k])=$level
      <option selected="selected" value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
     !else
      <option value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
     !endif
-   !next k
-  </select>
- </td><td></td></tr>
+    !next k
+   </select>
+   </div>
  !endif
-!set suplim2 =$[rint($suplim/3)]
-!set emaillim2= $[rint(2*$emaillim/3)]
- $table_tr<td>$wims_name_Supervisor</td><td>
+
+  !set suplim2 =$[rint($suplim/3)]
+  !set emaillim2= $[rint(2*$emaillim/3)]
+  <div class="field box">
  !if $Cltype=1
   !let firstname=$wims_firstname
   !let lastname=$wims_lastname
-  $wims_firstname $wims_lastname
+  $wims_name_Supervisor: $wims_firstname $wims_lastname
  !else
-  <table class="wimsnoborder"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
+  $wims_name_Supervisor
+  <label for="firstname">$wims_name_firstname</label>
   <input size="$suplim2" name="firstname" value="$firstname" id="firstname" />
-   </td></tr><tr><td><label for="lastname">$wims_name_lastname</label></td><td>
-   <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" />
-  </td></tr></table>
+  <label for="lastname">$wims_name_lastname</label>
+  <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" />
  !endif
- </td><td></td></tr>
- $table_tr<td><label for="email">$wims_name_email</label></td><td>
-  !if $Cltype=1 and $email!=$empty
-   !default email=$email
-   $email
-  !else
-   <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" />
-  !endif
- </td><td>
- !if $regpolicy=email
-   <br />($name_regpolicy)
-  !endif
- </td></tr>
- !if $Cltype!=1
-  $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
-   <input size="16" type="password" name="passsup" id="passsup" maxlength="16" />
-   </td><td class="small">
-   ($name_warningpass).
-   $name_help1
-  </td></tr>
- !endif
- 
- $table_tr<td><label for="password">$wims_name_Password ($name_classesss)</label></td><td>
-  <input size="16" type="password" name="password" id="password" maxlength="16" />
-  </td><td class="small">
-  ($name_warningpass).
-  !if $Cltype<2
-  $name_help2
-  !else
-  $name_help3
- !endif
- </td></tr>
- 
- $table_tr<td><label for="exp_day">$wims_name_expiration</label></td><td>
- <select name="exp_day" id="exp_day">
+ </div>
+
+   <div class="field box">
+     <label for="email">$wims_name_email</label>
+     !if $regpolicy=email
+     <div class="formHelp">$name_regpolicy</div>
+     !endif
+    !if $Cltype=1 and $email!=$empty
+      !default email=$email
+      $email
+    !else
+     <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" />
+    !endif
+   </div>
+   !if $Cltype!=1
+    <div class="field box">
+    <label for="passsup">$wims_name_Password ($name_sup)</label>
+    <div class="formHelp">$name_warningpass  $name_help1</div>
+    <input size="16" type="password" name="passsup" id="passsup" maxlength="16" />
+    </div>
+   !endif
+
+   <div class="field box">
+     <label for="password">$wims_name_Password ($name_classesss)</label>
+     <div class="formHelp">$name_warningpass
+      !if $Cltype<2
+       $name_help2
+     !else
+       $name_help3
+     !endif
+     </div>
+    <input size="16" type="password" name="password" id="password" maxlength="16" />
+   </div>
+   <div class="field box">
+   <label for="exp_day">$wims_name_expiration</label>
+   <div class="formHelp">$name_help_date</div>
+    <select name="exp_day" id="exp_day">
   !for i=1 to 31
    <option value="$i"
    !ifval $i=$exp_day
@@ -165,7 +170,8 @@
    >$i
    </option>
   !next i
-  </select> <select name="exp_month" id="exp_month">
+  </select>
+  <select name="exp_month" id="exp_month">
   !for i=1 to 12
    <option value="$i"
    !ifval $i=$exp_month
@@ -175,7 +181,8 @@
    !item $i of $months
    </option>
   !next i
-  </select> <select name="exp_year" id="exp_year">
+  </select>
+  <select name="exp_year" id="exp_year">
   !for i=$thisyear to $thisyear+1
    <option value="$i"
    !ifval $i=$exp_year
@@ -184,32 +191,32 @@
    >$i
    </option>
   !next i
-  </select> 
-  </td><td class="small">$name_help_date
- </td></tr>
+  </select>
+  </div>
+   <div class="field box">
+     <label for="limit">$name_help_limit</label>
+     <div class="formHelp">&lt; $wims_class_user_limit</div>
+    !let num=!charcnt $wims_class_user_limit
+    <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
+  </div>
 
- $table_tr<td><label for="limit">$name_help_limit</label></td><td>
-  !let num=!charcnt $wims_class_user_limit
-  <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
- </td><td class="small">(&lt; $wims_class_user_limit.)
- </td></tr>
- 
- $table_tr<td><label for="secure">$name_secure ($name_sup)</label></td><td>
-  !!!default secure=all
-  <input size="30" name="secure" value="$secure" id="secure" />
-  !reset secure
- </td><td class="small">$name_host
+   <div class="field box">
+     <label for="secure">$name_secure ($name_sup)</label>
+     <div class="formHelp"> $name_host</div>
+     !!!default secure=all
+     <input size="30" name="secure" value="$secure" id="secure" />
+    !reset secure
   !!!if $Cltype<3
   !! $name_optional.
-  !!!endif 
- </td></tr>
- !if $cltype isin 024
-$table_tr<td><label for="cas_auth">$name_cas ($name_optional)</label></td><td>
-  <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
-  </td><td class="small">$name_cas_help
- </td></tr>
- !endif
-$table_end
+  !!!endif
+  </div>
+   !if $cltype isin 024
+   <div class="field box">
+   <label for="cas_auth">$name_cas ($name_optional)</label>
+   <div class="formHelp">$name_cas_help</div>
+   <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
+  !endif
+</fieldset>
 <div class="wimscenter wimsform">
  <input type="submit" value="$name_continue" />
 </div>
@@ -227,7 +234,7 @@ $table_end
  <input type="hidden" name="step" value="2" />
  <div class="wimsform">
   !if $Cltype!=1
-   <label for="passsup"> $wims_name_Password ($name_sup)</label> 
+   <label for="passsup"> $wims_name_Password ($name_sup)</label>
    <input type="password" name="passsup" id="passsup" maxlength="16" />
     <br />
   !endif
@@ -238,7 +245,7 @@ $table_end
   !endif
   <p class="wimscenter"><input type="submit" value="$name_continue" /></p>
  </div>
- 
+
 !formend
  !goto end1
 !endif
@@ -253,7 +260,7 @@ $table_end
  </p>
  <p><input type="submit" value="$name_continue" /></p>
 </div>
- 
+
 !formend
  <span class="wims_warning">$wims_name_warning</span>: <span class="warning_code">$name_warning_code</span>
  !goto end1
@@ -266,7 +273,7 @@ $table_end
   ($wims_name_level <span class="wims_emph">$(name_wims_listlevel[$tmp])</span>).
  !endif
  !read adm/class/initclass $code,auth
- !if $(class_authidp[1;])=cas 
+ !if $(class_authidp[1;])=cas
    !set link_=$host_auth/login?service=
  !else
    !set link_=http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?
