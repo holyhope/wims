@@ -21,21 +21,31 @@ $name_warning_external
  !!FIXME for PHP
  !if $auth_method notitemof cas
  $name_enter
+   !if $auth_method notitemof ldap
+    <div class="wimscenter wimsform">
+    !set wims_ref_class=wims_button
+    !href cmd=reply&type=forgetpwd&class=$class $wims_name_n_forgetpwd
+    </div>
+   !endif
    !form reply
    !set auth_user=$auth_user_connection
-    <table class="wimscenter wimsnoborder">
-   <tr><td>$wims_name_Login</td><td><input size="20" name="auth_user" value="$auth_user" /></td></tr>
-   <tr><td>$wims_name_Password</td><td><input type="password" size="20" name="auth_password" /></td></tr>
-   !if $auth_method notitemof ldap
-    <tr><td colspan="2">
-    !href cmd=reply&type=forgetpwd&class=$class $wims_name_n_forgetpwd
-    </td></tr>
-   !endif 
-   $table_end
-   <div class="wimscenter wimsform">
+   <fieldset class="property_fields halfwidth">
+    <legend></legend>
+
+    <div class="field box">
+     <label for="login">$wims_name_Login</label>
+     <input size="20" name="auth_user" value="$auth_user" id="login" />
+    </div>
+    <div class="field box">
+     <label for="password">$wims_name_Password</label>
+     <input type="password" size="20" name="auth_password" id="password" />
+    </div>
+   </fieldset>
+
+  <div class="wimscenter wimsform">
    <input type="submit" value="$wims_name_Enter" />
-   </div>
-   
+ </div>
+
 !formend
   !!FIXME too much !if
    !if $idp_method notwordof ldap
