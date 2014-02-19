@@ -15,7 +15,7 @@ $name_title
 !endif
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$modu_lang 
+ !read lang/msg.phtml.$modu_lang
  </div>
  <p>
  !set wims_ref_class=wims_button
@@ -30,7 +30,7 @@ $name_title
 !endif
 
 !if $class=$empty
- $name_inscription 
+ $name_inscription
 
  $table_header
  !if $ctype=0
@@ -132,7 +132,7 @@ $institution
  !endif
  !if $cltype iswordof 4 2
   $name_warning_protected
-  !if $classcnt>0 
+  !if $classcnt>0
   $name_inscription_student
   !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
@@ -146,14 +146,18 @@ $institution
  !else
   $name_asaparticipant.
  !endif
+ </p>
  !form reply
  <input type="hidden" name="step" value="1" />
- <div class="wimscenter wimsform">
- <p><label for="classpass">$wims_name_Password</label>
- <input type="password" name="classpass" id="classpass" />
- </p><p>
- <input type="submit" value="$wims_name_send" />
- </p></div>
+ <fieldset class="property_fields halfwidth blockcenter">
+   <div class="field box">
+    <label for="classpass">$wims_name_Password</label>
+    <input type="password" name="classpass" id="classpass" />
+   </div>
+   <div class="field box">
+    <input type="submit" value="$wims_name_send" />
+   </div>
+ </fieldset>
 !formend
  <span class="wims_warning">$wims_name_warning</span>.
  !if $cltype iswordof 2 4
@@ -212,7 +216,7 @@ $institution
   !if $idp_method notitemof $idp_method_list
   $name_inscription2
   !endif
- !endif  
+ !endif
   !form reply
 !! check user supervisor??
 
@@ -240,7 +244,7 @@ $name_inscription4:
         <input type="hidden" name="step" value="3" />
         <label for="user_auth">$wims_name_Login ($name_external)</label>
         <input size="16" name="user_auth" id="user_auth" value="$user_auth" /> <br />
- </p> 
+ </p>
      <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
 
 !formend
@@ -249,19 +253,26 @@ $name_inscription4:
 !! teacher registering a student with external auth without idp ldap
     !if $auth_method isitemof $auth_method_list
     <input type="hidden" name="step" value="3" />
-    <ul>
-    <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn" />
-        <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn" />
-    </li>
-    <li>
-      <label for="user_auth">$wims_name_Login ($name_external)</label>
-      <input size="16" name="user_auth" id="user_auth" value="$user_auth" /> <br />
-  <span class="wims_warning">$name_login_external_warning</span>
-    </li>
-    <li><label for="email">$wims_name_email ($name_optional) :</label><br />
+    <fieldset class="property_fields halfwidth blockcenter">
+    <div class="field box">
+     <label for="lastn">$wims_name_lastname</label>
+     <input size="20" name="lastn" id="lastn" value="$lastn" />
+     <label for="firstn">$wims_name_firstname</label>
+     <input size="20" name="firstn" id="firstn" value="$firstn" />
+    </div>
+    <div class="field box">
+      <label for="user_auth">$wims_name_Login </label>
+      <div class="formHelp">$name_external,
+        <span class="wims_warning">$name_login_external_warning</span>
+      </div>
+      <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
+    </div>
+    <div class="field box">
+      <label for="email">$wims_name_email</label>
+      <div class="formHelp">$name_optional</div>
       <input size="60" name="email" id="email" value="$email" />
-    </li>
- </ul>
+    </div>
+   </fieldset>
   <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
 
 !formend
@@ -273,59 +284,73 @@ $name_inscription4:
  !else
   <input type="hidden" name="step" value="3" />
  !endif
- <ul>
- <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn" />
-<label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn" />
- </li>
+  <fieldset class="property_fields halfwidth blockcenter">
+   <div class="field box">
+    <label for="lastn">$wims_name_lastname</label>
+    <input size="20" name="lastn" id="lastn" value="$lastn" />
+
+    <label for="firstn">$wims_name_firstname</label>
+    <input size="20" name="firstn" id="firstn" value="$firstn" />
+   </div>
  !if $wims_user=supervisor
    !reset login
  !endif
  !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
-   <li><label for="login">$wims_name_Login</label>
-   <input size="16" name="login" id="login" value="$login" /> <br />
+   <div class="field box">
+    <label for="login">$wims_name_Login</label>
+    <input size="16" name="login" id="login" value="$login" />
    !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
     !reset login_ext
-     <span class="wims_warning">$name_login_external_warning</span>
-     <li><label for="login_ext">$wims_name_Login ($name_external)</label>
-     <input size="16" name="login_ext" id="login_ext" value="$login_ext" /> 
-    </li>
+     <label for="login_ext">$wims_name_Login ($name_external)</label>
+     <div class="formHelp">
+      <span class="wims_warning">$name_login_external_warning</span>
+      </div>
+     <input size="16" name="login_ext" id="login_ext" value="$login_ext" />
+
    !else
       $name_warning_login
-      </li>
    !endif
+   </div>
    !if $auth_method notitemof $auth_method_list
-    <li><label for="pass">$wims_name_Password</label>
-   <input type="password" size="16" name="pass" id="pass" /> <br />
-    $name_passwd_warning
-   </li>
+    <div class="field box">
+      <label for="pass">$wims_name_Password</label>
+      <div class="formHelp">$name_passwd_warning</div>
+      <input type="password" size="16" name="pass" id="pass" />
+     </div>
    !endif
  !else
-   <li>$wims_name_Login ($name_internal)
-  <input size="16" name="login" id="login" value="$login" readonly="readonly" />
-  </li>
-   <li>$wims_name_Login ($name_external)
-  <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly="readonly" />
-   <span class="wims_warning"></span>
-  </li>
+    <div class="field box">
+     <label for="login">$wims_name_Login</label>
+     <div class="formHelp">$name_internal</div>
+     <input size="16" name="login" id="login" value="$login" readonly="readonly" />
+    </div>
+    <div class="field box">
+      <label for="login_ext">$wims_name_Login</label>
+      <div class="formHelp">$name_external, <span class="wims_warning"></span></div>
+      <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly="readonly" />
+   </div>
  !endif
- <li><label for="email">$wims_name_email ($name_optional) :</label><br />
-  <input size="60" name="email" id="email" value="$email" />
- </li>
+   <div class="field box">
+    <label for="email">$wims_name_email</label>
+    <div class="formHelp">$name_optional</div>
+    <input size="60" name="email" id="email" value="$email" />
+   </div>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
-  <li>$name_accounttype:
-  !default utype=0
-  !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
-  </li>
+   <div class="field box">
+    <label for="utype">$name_accounttype</label>
+   !default utype=0
+    !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
+   </div>
  !endif
  !if $wims_user!=supervisor
-  <li>
-  !formcheckbox agreecgu list yes prompt $name_cgu
+   <div class="field box">
+   !formcheckbox agreecgu list yes prompt $name_cgu
    [
   !href cmd=help $name_seecgu
   ]
-  </li>
+   </div>
  !endif
- </ul>
+ </fieldset>
  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
 
 !formend
@@ -358,7 +383,7 @@ $name_inscription4:
  !if $wims_user=supervisor
   !set login_wims=!defof user_external_auth in $userdef
   !default login_wims=$login
-  $name_studentadded  
+  $name_studentadded
   <span class="tt wims_login">
   !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
   </span>.
@@ -397,14 +422,14 @@ $name_inscription4:
         !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
       !endif
    !endif
-!!FIXME what about php here 
+!!FIXME what about php here
 !! Pourquoi est-ce different : dans le second cas ouvre une autre session, demande de nouveau le mot de passe ???
  !else
-   !if $auth_method isitemof cas 		
-      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class 		
-      !read adm/codeurl $url 		
-      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def 		
-      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a> 		
+   !if $auth_method isitemof cas
+      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
+      !read adm/codeurl $url
+      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def
+      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
    !else
      !if $auth_method iswordof ldap
         !set tmp=!getdef user_external_auth in wimshome/log/classes/$ssclass/.users/$login

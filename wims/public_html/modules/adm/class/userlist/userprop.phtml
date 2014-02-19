@@ -13,25 +13,28 @@ $wims_name_account_property\
 !form reply
 <input type="hidden" name="job" value="userprop" />
 <input type="hidden" name="getuser" value="$getuser" />
-$table_header
-$table_tr
- <th>$wims_name_Login</th>
- <td><span class="tt">$getuser</span>
+<fieldset class="property_fields halfwidth blockcenter">
+ <div class="field box">
+   <label>$wims_name_Login</label>
+    <span class="tt">$getuser</span>
   !if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connect" />
    !endif
- </td>
-</tr>
+ </div>
 !if $type_class iswordof 2 4 or ($class_Supervisor=$wims_realuser and $wims_class!=$wims_superclass and $wims_realuser!=$getuser)
   !if $user_participate!=$empty and $type_class iswordof 2 4
-    $table_tr<th>$name_inscript</th><td class="tt">$user_participate</td></tr>
+    <div class="field box">
+     <label>$name_inscript</label>
+     <span class="tt">$user_participate</span>
+    </div>
   !endif
   !if $user_supervisable=yes
-    $table_tr<th>$name_gestion</th><td>
+    <div class="field box">
+     <label for="up_supervise">$name_gestion</label>
     !if $type_class iswordof 2 4
       !if $wims_user=supervisor
-     <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
-     <span class="tt">$wims_class/1, ... </span>
+      <div class="formHelp"><span class="tt">$wims_class/1, ... </span></div>
+      <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
       !else
       <input readonly="readonly" size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
       !endif
@@ -44,8 +47,8 @@ $table_tr
      !formradio superv list yes,no prompt $wims_name_yes, $wims_name_no
      !set up_firstname=$user_firstname
      !set up_lastname=$user_lastname
+     </div>
     !endif
-   </td></tr>
   !endif
 !endif
 !if $user_supervisable=yes and $getuser!=$wims_realuser and $type_class notwordof 2 4
@@ -53,42 +56,61 @@ $table_tr
  !exit
 !endif
 !if $class_auth=$empty or $wims_user=supervisor
-$table_tr<th>$wims_name_Password</th><td>
+  <div class="field box">
+    <label>$wims_name_Password</label>
 	!href module=adm/class/passwd&job=part&part=$getuser $name_change
-</td></tr>
+ </div>
 !endif
-$table_tr<th><label for="up_lastname">$wims_name_lastname</label></th><td>
-	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" /></td></tr>
-$table_tr<th><label for="up_firstname">$wims_name_firstname</label></th><td>
-	<input size="$inplen" name="up_firstname" id="up_firstname" value="$user_firstname" /></td></tr>
-$table_tr<th><label for="up_email">$wims_name_email</label></th><td>
-	<input size="$inplen" name="up_email" id="up_email" value="$user_email" /></td></tr>
-$table_tr<th><label for="up_regnum">$name_regnum</label></th><td>
-	<input size="$inplen" name="up_regnum" id="up_regnum" value="$user_regnum" /></td></tr>
-$table_tr<th><label for="up_photourl">$name_photourl</label></th><td>
-	<input size="$inplen" name="up_photourl" id="up_photourl" value="$user_photourl" /></td></tr>
+
+<div class="field box">
+  <label for="up_lastname">$wims_name_lastname</label>
+	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" />
+</div>
+<div class="field box">
+  <label for="up_firstname">$wims_name_firstname</label>
+	<input size="$inplen" name="up_firstname" id="up_firstname" value="$user_firstname" />
+</div>
+<div class="field box">
+  <label for="up_email">$wims_name_email</label>
+	<input size="$inplen" name="up_email" id="up_email" value="$user_email" />
+</div>
+<div class="field box">
+  <label for="up_regnum">$name_regnum</label>
+	<input size="$inplen" name="up_regnum" id="up_regnum" value="$user_regnum" />
+</div>
+<div class="field box">
+  <label for="up_photourl">$name_photourl</label>
+	<input size="$inplen" name="up_photourl" id="up_photourl" value="$user_photourl" />
+ </div>
 !if $wims_user=supervisor
- $table_tr<th><label for="up_comments">$name_comments</label></th><td>
-	<input size="$inplen" name="up_comments" id="up_comments" value="$user_comments" /></td></tr>
- $table_tr<th><label for="up_vars">$name_vars</label></th><td>
-	<textarea wrap="off" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea></td></tr>
-  $table_tr<th><label for="up_external_auth">$name_external_auth</label></th><td>
+ <div class="field box">
+    <label for="up_comments">$name_comments</label>
+	<input size="$inplen" name="up_comments" id="up_comments" value="$user_comments" />
+  </div>
+  <div class="field box">
+    <label for="up_vars">$name_vars</label>
+	<textarea wrap="off" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea>
+  </div>
+  <div class="field box">
+    <label for="up_external_auth">$name_external_auth</label>
 	<input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth" />
 	!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=authentification $wims_name_help
-</td></tr>
+ </div>
 !else
- $table_tr<th><label for="passcheck">$name_classpassword</label></th><td>
- 	<input size="14" type="password" name="passcheck" id="passcheck" /> <br />
-	<span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span></td>
+ <div class="field box">
+   <label for="passcheck">$name_classpassword</label>
+   <div class="formHelp"><span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span></div>
+ 	<input size="14" type="password" name="passcheck" id="passcheck" />
+ </div>
 !endif
 :end
-$table_end
-<div class="wimscenter wimsform">
-<input type="submit" name="reg" value="$wims_name_tosave" /> &nbsp;
-<input type="submit" name="abandon" value="$wims_name_giveup" />
-</div>
 
+<div class="wimscenter wimsform">
+ <input type="submit" name="reg" value="$wims_name_tosave" /> &nbsp;
+ <input type="submit" name="abandon" value="$wims_name_giveup" />
+</div>
+</fieldset>
 
 !formend
 
