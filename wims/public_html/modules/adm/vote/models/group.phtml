@@ -3,28 +3,26 @@
 
 :1
 
-$table_header
-$table_tr
-<td>$name_howmanygroups ($name_atmost 10)</td>
-<td>
+<fieldset class="property_fields blockcenter">
+ <div class="field box">
+  <label for="mod_numsess">$name_howmanygroups </label>
+  <div class="formHelp">$name_atmost 10</div>
 !if $vote_status>0
  $numsess
 !else
  !formselect mod_numsess from 1 to 10
 !endif
-</td>
-</tr>
-$table_tr
-<td>$name_namevar <span class="field_required">*</span></td>
-<td>
+  </div>
+  <div class="field box">
+   <label for="namevar">$name_namevar <span class="field_required">*</span></label>
 !if $vote_status>0
  $namevar
 !else
- <input size="12" name="up_namevar" id="namevar" value="$namevar" /><span class="small">$(name_$(reg_model)_help)</span>
+  <div class="formHelp">$(name_$(reg_model)_help)</div>
+ <input size="12" name="up_namevar" id="namevar" value="$namevar" />
 !endif
-</td>
-</tr>
-$table_end
+  </div>
+</fieldset>
 <input type="hidden" name="gstep" value="2" />
 
 !exit
@@ -37,10 +35,8 @@ $table_end
 !!</div>
 
 <p>$name_session_select</p>
-
 $table_header
-$table_hdtr
-
+ $table_hdtr
   <th>$name_numstud</th><th>$name_group1</th><th>$name_extra</th>
  </tr>
  !for i=1 to $numsess
