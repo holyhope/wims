@@ -1,80 +1,99 @@
 
 !form reply
 <input type="hidden" name="job" value="$job" />
-$table_header
+
 !if $auth_method notitemof $auth_method_list
  !if $login=$empty
-  <caption>$name_addteacher</caption>
+  <div class="wimscenter">$name_addteacher</div>
  !else
-   <caption>$wims_name_modteacher <span class="tt wims_login">$login</span></caption>
+   <div class="wimscenter">$wims_name_modteacher <span class="tt wims_login">$login</span></div>
  !endif
-  $table_tr<td style="text-align:right">$wims_name_Login</td><td>
+<fieldset class="property_fields halfwidth blockcenter">
+   <legend></legend>
+   <div class="field box">
+    <label for="login">$wims_name_Login</td><td>
  !if $login=$empty
-  <input size="30" name="login" value="" />
+    <input size="30" name="login" value="" id="login"/>
  !else
-  <span class="tt wims_login">$login</span>
+    <span class="tt wims_login">$login</span>
  !endif
-</td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_Password</td>
- <td><input type="password" size="30" name="pass" value="" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_repeat_pass</td>
- <td><input type="password" size="30" name="pass2" value="" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_firstname</td>
- <td><input size="30" name="firstname" value="$firstname" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_lastname</td>
- <td><input size="30" name="lastname" value="$lastname" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_email</td>
- <td><input size="30" name="email" value="$email" /></td></tr>
+   </div>
+   <div class="field box">
+    <label for="pass">$wims_name_Password</label>
+    <input type="password" size="30" name="pass" value="" id="pass"/>
+   </div>
+   <div class="field box">
+    <label for="pass2">$wims_name_repeat_pass</label>
+    <input type="password" size="30" name="pass2" value=""  id="pass2"/>
+   </div>
+   <div class="field box">
+    <label for="firstname">$wims_name_firstname</label>
+    <input size="30" name="firstname" value="$firstname" id="firstname"/>
+   </div>
+   <div class="field box">
+    <label for="lastname">$wims_name_lastname</label>
+    <input size="30" name="lastname" value="$lastname" id="lastname"/>
+   </div>
+   <div class="field box">
+    <label for="email"> $wims_name_email</label>
+    <input size="30" name="email" value="$email" id="email"/>
+   </div>
 !else  external
   !if $login=$empty
-     <caption>$name_addteacher</caption>
+     <div class="wimscenter">$name_addteacher</div>
   !else
     !set user_external_auth=!getdef user_external_auth in wimshome/log/classes/$wims_class/.users/$login
-    <caption>$wims_name_modteacher</caption>
+    <div class="wimscenter">$wims_name_modteacher</div>
   !endif
+  <fieldset class="property_fields halfwidth blockcenter">
   !if $login!=$empty
-  $table_tr<td style="text-align:right">$wims_name_Login ($name_internal)</td><td>
-    <span class="tt wims_login">$login</span>
-   </td></tr>
+    <div class="field box">
+     <label>$wims_name_Login</label>
+      <div class="formHelp">$name_internal</div>
+      <span class="tt wims_login">$login</span>
+     </div>
   !endif
- $table_tr<td style="text-align:right">$wims_name_Login ($name_external)</td><td>
-   <input size="30" name="user_auth" value="$user_external_auth" />
-   <span class="wims_warning"><span class="wims_small_remark">
-   $name_login_external 
-   !if $idp_method isitemof $idp_method_list
-    ($name_idp_external)</span>
-   !endif
-.</span>
- </td></tr>
+    <div class="field box">
+     <label for="user_auth">$wims_name_Login</label>
+     <div class="formHelp">$name_external,
+      <span class="wims_warning wims_small_remark">$name_login_external
+      !if $idp_method isitemof $idp_method_list
+       ($name_idp_external)
+      !endif
+      </span>
+     </div>
+     <input size="30"name="user_auth" value="$user_external_auth" id="user_auth" />
+   </div>
 !endif
 
 !if $idp_method notitemof $idp_method_list and $auth_method isitemof $auth_method_list
- $table_tr<td style="text-align:right">
- $wims_name_firstname</td>
- <td><input size="30" name="firstname" value="$firstname" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_lastname</td>
- <td><input size="30" name="lastname" value="$lastname" /></td></tr>
- $table_tr<td style="text-align:right">
- $wims_name_email</td>
- <td><input size="30" name="email" value="$email" /></td></tr>
+    <div class="field box">
+     <label for="firstname">$wims_name_firstname</label>
+     <input size="30" name="firstname" value="$firstname" id="firstname" />
+     <label for="lastname">$wims_name_lastname</label>
+     <input size="30" name="lastname" value="$lastname" id="lastname" />
+    </div>
+    <div class="field box">
+     <label for="email"> $wims_name_email</label>
+     <input size="30" name="email" value="$email" id="email"/>
+   </div>
 !endif
-  !if $user_participate!=$empty
-    $table_tr<td style="text-align:right">$name_inscript</th><td class="tt">$user_participate</td></tr>
+!if $user_participate!=$empty
+  <div class="field box">
+    <label>$name_inscript</label>
+    <span class="tt">$user_participate</span>
+  </div>
   !endif
   !set user_supervisable=!getdef user_supervisable in wimshome/log/classes/$wims_class/.users/$login
   !if $user_supervisable=yes
   !default user_supervise=!getdef user_supervise in wimshome/log/classes/$wims_class/.users/$login
-    $table_tr<td style="text-align:right">$name_gestion</th><td>
-    <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise" />
-    <span class="tt">$wims_class/1/101, ... </span></td></tr>
+    <div class="field box">
+     <label for="up_supervise">$name_gestion</label>
+     <div class="formHelp"><span class="tt">$wims_class/1/101, ... </span></div>
+     <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise" /
+    </div>
   !endif
-$table_end
+  </fieldset>
 <div class="wimscenter wimsform">
 <input type="submit" name="confirm" value="$wims_name_tosave" />
 &nbsp;
