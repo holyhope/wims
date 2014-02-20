@@ -153,7 +153,7 @@ $institution
  <fieldset class="property_fields halfwidth blockcenter">
    <div class="field box">
     <label for="classpass">$wims_name_Password</label>
-    <input type="password" name="classpass" id="classpass" />
+    <input type="password" name="classpass" id="classpass" required="required" placeholder="$wims_name_Password"/>
    </div>
    <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_send" />
@@ -225,7 +225,7 @@ $institution
    <input type="hidden" name="step" value="3" />
 $name_inscription4:
 <p>
-   !formcheckbox agreecgu list yes prompt $name_cgu
+ !formcheckbox agreecgu list yes prompt <label for="agreecgu0">$name_cgu</label>
    [
   !href cmd=help $name_seecgu
   ]
@@ -263,15 +263,15 @@ $name_inscription4:
     </div>
     <div class="field box">
       <label for="user_auth">$wims_name_Login </label>
+      <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
       <div class="formHelp">$name_external,
         <span class="wims_warning">$name_login_external_warning</span>
       </div>
-      <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
     </div>
     <div class="field box">
       <label for="email">$wims_name_email</label>
+      <input type="email" size="60" name="email" id="email" value="$email" />
       <div class="formHelp">$name_optional</div>
-      <input size="60" name="email" id="email" value="$email" />
     </div>
    </fieldset>
   <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
@@ -299,42 +299,42 @@ $name_inscription4:
  !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
    <div class="field box">
     <label for="login">$wims_name_Login</label>
+    <input size="16" name="login" id="login" value="$login" />
     !if $auth_method notitemof $auth_method_list or $wims_user!=supervisor
        <div class="formHelp">$name_warning_login</div>
     !endif
-    <input size="16" name="login" id="login" value="$login" />
    !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
     !reset login_ext
      <label for="login_ext">$wims_name_Login</label>
+     <input size="16" name="login_ext" id="login_ext" value="$login_ext" />
      <div class="formHelp">$name_external
       <span class="wims_warning">$name_login_external_warning</span>
-      </div>
-     <input size="16" name="login_ext" id="login_ext" value="$login_ext" />
+     </div>
    !endif
    </div>
    !if $auth_method notitemof $auth_method_list
     <div class="field box">
       <label for="pass">$wims_name_Password</label>
+      <input type="password" size="16" name="pass" id="pass" required="required"/>
       <div class="formHelp">$name_passwd_warning</div>
-      <input type="password" size="16" name="pass" id="pass" />
      </div>
    !endif
  !else
     <div class="field box">
      <label for="login">$wims_name_Login</label>
-     <div class="formHelp">$name_internal</div>
      <input size="16" name="login" id="login" value="$login" readonly="readonly" />
+     <div class="formHelp">$name_internal</div>
     </div>
     <div class="field box">
       <label for="login_ext">$wims_name_Login</label>
-      <div class="formHelp">$name_external, <span class="wims_warning"></span></div>
       <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly="readonly" />
+      <div class="formHelp">$name_external, <span class="wims_warning"></span></div>
    </div>
  !endif
    <div class="field box">
     <label for="email">$wims_name_email</label>
+    <input type="email" size="60" name="email" id="email" value="$email" required="required" />
     <div class="formHelp">$name_optional</div>
-    <input size="60" name="email" id="email" value="$email" />
    </div>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
    <div class="field box">
@@ -345,7 +345,7 @@ $name_inscription4:
  !endif
  !if $wims_user!=supervisor
    <div class="field box">
-   !formcheckbox agreecgu list yes prompt $name_cgu
+   !formcheckbox agreecgu list yes prompt <label for="agreecgu0">$name_cgu</label>
    [
   !href cmd=help $name_seecgu
   ]
@@ -370,8 +370,10 @@ $name_inscription4:
  <label for="pass2">$name_passwd_exact</label>
  !form reply
  <input type="hidden" name="step" value="3" />
- <div class="wimscenter wimsform"><input type="password" size="16" name="pass2" id="pass2" />
- <br /><input type="submit" value="$wims_name_send" /></div>
+ <div class="wimscenter wimsform">
+  <input type="password" size="16" name="pass2" id="pass2" required="required" />
+  <br /><input type="submit" value="$wims_name_send" />
+ </div>
 
 !formend
  !goto end1

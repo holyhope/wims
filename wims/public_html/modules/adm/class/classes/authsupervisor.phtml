@@ -1,27 +1,26 @@
 
 !if $class_defined!=yes
  <div class="wims_alertmsg">
- <span class="wims_warning">$wims_name_Error</span>. $name_warning
+  <span class="wims_warning">$wims_name_Error</span>. $name_warning
  </div>
  !exit
 !endif
-<p>
-$name_entersup
-</p>
+
+<p>$name_entersup</p>
+
 !set wims_form_method=post
 !form reply
-    <input type="hidden" name="auth_user" value="supervisor" />
+  <input type="hidden" name="auth_user" value="supervisor" />
   <fieldset class="property_fields halfwidth blockcenter">
-    <legend></legend>
+    <legend>Connexion</legend>
     <div class="field box">
      <label for="password">$wims_name_Password </label>
-      <div class="formHelp">$name_sup</div>
-     <input type="password" size="20" name="auth_password" id="password" />
+     <input type="password" size="20" name="auth_password" id="password" required="required" placeholder="$name_sup"/>
+     <div class="formHelp">$name_sup</div>
     </div>
+    <div class="wimscenter wimsform">
+	  <input type="submit" value="$wims_name_Enter" />
+	</div>
  </fieldset>
-
-<div class="wimscenter wimsform">
-<input type="submit" value="$wims_name_Enter" />
-</div>
 
 !formend
