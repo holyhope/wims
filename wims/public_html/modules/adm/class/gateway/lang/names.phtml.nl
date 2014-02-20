@@ -66,14 +66,14 @@ levelnames=Lagere school leerjaar 1,\
 !set name_code=Code
 !set name_register=Aanmelden
 !set name_supervisor2=Verantwoordelijk
-!set name_Style=Styl van het programma 
+!set name_Style=Styl van het programma
 !set name_style=verplicht, vrijblijvend
 !set name_installation=Automatische installatie van de cursussen\
  <br />in alle klassen van dit leerniveau
 !set name_visit=Bezoek
- 
+
 !if $job=addcourse
-   !set name_course1=Er is in deze klas geen programma waaraan cursussen kunnen worden toegevoegd. 
+   !set name_course1=Er is in deze klas geen programma waaraan cursussen kunnen worden toegevoegd.
    !set name_course2=Er is geen klas of programma waaraan deze cursus kan worden toegevoegd.
    !set name_course3=Hier staan de programma's in uw klas waaraan deze cursus kan worden toegevoegd.\
    Klik op de naam voor toevoegen.
@@ -87,7 +87,7 @@ levelnames=Lagere school leerjaar 1,\
 !endif
 
 !if $job=first
-  !set name_first1=Er zijn nog geen docenten  
+  !set name_first1=Er zijn nog geen docenten
   !set name_first2=Er zijn nog geen studenten
   !set name_first3=Er zijn geen leerniveau's aangemaakt.
   !set name_first4=Beschikbare leerniveau's
@@ -109,7 +109,7 @@ levelnames=Lagere school leerjaar 1,\
  !set name_prog6=Deel materiaal met andere lesprogamma's (<b>exprimenteel</b>)
  !set name_prog7=Lesmateriaal uit dit lesprogramma wordt gedeeld met andere lesprogramma's.
  !set name_prog8=Dit programma deelt lesmateriaal uit programma
- !set name_prog9=Dit programma heeft geen interklas cusussen. 
+ !set name_prog9=Dit programma heeft geen interklas cusussen.
 !endif
 
 !if $job=backstruct
@@ -119,25 +119,25 @@ levelnames=Lagere school leerjaar 1,\
 
 !endif
 
-!set name_warning_share= Dit lesprogramma kan niet worden verwijderd omdat het gedeeld/geleend lesmateriaal bevat. 
+!set name_warning_share= Dit lesprogramma kan niet worden verwijderd omdat het gedeeld/geleend lesmateriaal bevat.
 !if $job=addclass
-!set form_titlename=Naam van de nieuwe klas.\
-<br /><span class="small">(bij meerdere klassen in één keer aanmelden<br />\
-de klasnamen dan door komma's scheiden)</span>
+!set form_titlename=Naam van de nieuwe klas.
+!set form_titlename2=bij meerdere klassen in één keer aanmelden\
+ de klasnamen dan door komma's scheiden
 !exit
 !endif
 
 !if $job=addicourse
 !set form_caption=Voeg een interklas cursus toe aan dit lesprogramma
-!set form_titlename=Naam van de nieuwe cursus.\
-<br /><span class="small">(bij meerdere cursussen in één keer toevoegen<br />\
-de cursusnamen dan door komma's scheiden)</span>
+!set form_titlename=Naam van de nieuwe cursus.
+!set form_titlename2=bij meerdere cursussen in één keer toevoegen \
+ de cursusnamen dan door komma's scheiden
 !exit
 !endif
 
 !if $job=addprog
 !set form_titlename=Naam van het nieuwe lesprogramma.
-<br /><span class="small">(bij meerdere lesprogramma's in één keer toevoegen<br />\
-de lesprogramma namen dan door komma's scheiden)</span>
+!set form_titlename2=bij meerdere lesprogramma's in één keer toevoegen \
+ de lesprogramma namen dan door komma's scheiden
 !exit
 !endif

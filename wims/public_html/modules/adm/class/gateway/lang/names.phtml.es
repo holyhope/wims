@@ -115,24 +115,24 @@ contraseña-del-profesor, opciones.</p>
 son compartidos por otros programas.
 
 !if $job=addclass
-!set form_titlename=Títulos de las nuevas clases\
-<br /><span class="small">(separe los títulos con comas si <br />\
-añade varias clases al mismo tiempo)</span>
+!set form_titlename=Títulos de las nuevas clases
+!set form_titlename2=separe los títulos con comas si \
+  añade varias clases al mismo tiempo
 !exit
 !endif
 
 !if $job=addicourse
 !set form_caption=Añadir cursos interclases al programa
-!set form_titlename=Títulos de los nuevos cursos\
-<br /><span class="small">(separe los títulos con comas si<br />\
-añade varios cursos al mismo tiempo)</span>
+!set form_titlename=Títulos de los nuevos cursos
+!set form_titlename2=separe los títulos con comas si \
+ añade varios cursos al mismo tiempo
 
 !exit
 !endif
 
 !if $job=addprog
-!set form_titlename=Títulos de los nuevos programas:\
-<br /><span class="small">(separe los títulos con comas si<br />\
-añade varios programas al mismo tiempo)</span>
+!set form_titlename=Títulos de los nuevos programas:
+!set form_titlename2=separe los títulos con comas si \
+  añade varios programas al mismo tiempo)
 !exit
 !endif
