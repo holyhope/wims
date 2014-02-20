@@ -147,6 +147,7 @@ $institution
   $name_asaparticipant.
  !endif
  </p>
+
  !form reply
  <input type="hidden" name="step" value="1" />
  <fieldset class="property_fields halfwidth blockcenter">
@@ -154,7 +155,7 @@ $institution
     <label for="classpass">$wims_name_Password</label>
     <input type="password" name="classpass" id="classpass" />
    </div>
-   <div class="field box">
+   <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_send" />
    </div>
  </fieldset>
@@ -298,17 +299,17 @@ $name_inscription4:
  !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
    <div class="field box">
     <label for="login">$wims_name_Login</label>
+    !if $auth_method notitemof $auth_method_list or $wims_user!=supervisor
+       <div class="formHelp">$name_warning_login</div>
+    !endif
     <input size="16" name="login" id="login" value="$login" />
    !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
     !reset login_ext
-     <label for="login_ext">$wims_name_Login ($name_external)</label>
-     <div class="formHelp">
+     <label for="login_ext">$wims_name_Login</label>
+     <div class="formHelp">$name_external
       <span class="wims_warning">$name_login_external_warning</span>
       </div>
      <input size="16" name="login_ext" id="login_ext" value="$login_ext" />
-
-   !else
-      $name_warning_login
    !endif
    </div>
    !if $auth_method notitemof $auth_method_list
@@ -350,8 +351,9 @@ $name_inscription4:
   ]
    </div>
  !endif
- </fieldset>
  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+ </fieldset>
+
 
 !formend
  !goto end1
