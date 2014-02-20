@@ -3,43 +3,41 @@
 
 :1
 !reset table_center
-$table_header
-$table_tr
-<td>$name_howmany ($name_atmost 10)</td>
-<td>
+<fieldset class="property_fields blockcenter">
+  <legend>$name_create_or_edit</legend>
+  <div class="field box">
+   <label for="mod_numsess">$name_howmany</label>
+   <div class="formHelp">$name_atmost 10</div>
 !if $vote_status>0
 $numsess
 !else
 !formselect mod_numsess from 1 to 10
 !endif
-</td>
-</tr>
-$table_tr
-<td>$name_namevar <span class="field_required">*</span></td>
-<td>
+   </div>
+  <div class="field box">
+  <label for="namevar">$name_namevar <span class="field_required">*</span></label>
+  <div class="formHelp">$(name_$(reg_model)_help)</div>
 !if $vote_status>0
-$namevar
+  $namevar
 !else
-<input size="12" name="up_namevar" id="namevar" value="$namevar" /> <span class="small">$(name_$(reg_model)_help)</span>
+   <input size="12" name="up_namevar" id="namevar" value="$namevar" />
 !endif
-</td>
-</tr>
-$table_tr
-  <td>$name_textconnip</td>
-<td>
+   </div>
+   <div class="field box">
+   <label for="defconnip">$name_textconnip</label>
+   <div class="formHelp">$name_textconnip2</div>
 !if $vote_status>0
-$defconnip
+  $defconnip
 !else
-<input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
+  <input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
 !endif
-</td>
-</tr>
-$table_end
+ </div>
+ </fieldset>
 <input type="hidden" name="gstep" value="2" />
 
 !exit
 :2
-<p>$name_introtext</p>
+<p>$name_introtext ($name_introtext2)</p>
 <div class="wimscenter">
 <textarea class="iEdit" id="testointro" rows="10" cols="80" name="up_testointro">
 !replace internal \( by &#92;( in $testointro
@@ -66,7 +64,7 @@ $table_hdtr
  !for i=1 to $numsess
 $table_tr
   <td>
-  <input size=4 name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
+  <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
   </td>
   <td>
    !default up_bday$i=$jday
@@ -95,13 +93,13 @@ $table_tr
   <td>
 !if $vote_status=0
    !default up_exconnip$i=$defconnip
-   <input size=10 name="up_exconnip$i" id="exconnip$i" value="$(up_exconnip$i)" />
+   <input size="10" name="up_exconnip$i" id="exconnip$i" value="$(up_exconnip$i)" />
 !else
    $(exconnip$i)
 !endif
   </td>
   <td>
-   <input size=10 name="up_testoextra$i" id="testoextra$i" value="$(testoextra$i)" />
+   <input size="10" name="up_testoextra$i" id="testoextra$i" value="$(testoextra$i)" />
   </td>
  </tr>
  !next i
@@ -121,7 +119,7 @@ $table_tr
 !for dato in numsess,namevar,defconnip
   !appendfile $votedir/$vote.data $dato=$($dato)
 !next dato
-!!## NOTE: the above list should be setup at model level 
+!!## NOTE: the above list should be setup at model level
 !##! (e.g. defconnip is not needed for vote_model=groups)
 
 !for i=1 to $numsess

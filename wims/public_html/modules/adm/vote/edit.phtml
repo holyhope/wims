@@ -1,16 +1,12 @@
 
 !set wims_form_method=post
 !form reply
-<b>
+
 !if $vote_title=$empty
-  $name_creation
+ !set name_create_or_edit= $name_creation
 !else
-  $name_edition
+ !set name_create_or_edit= $name_edition
 !endif
-</b>
-!set wims_ref_class=wims_button_help
-!href cmd=help&helpname=generalinfo $wims_name_help
-<br />
 
 !if $gstep= or $gstep=0 or $vote_title=$empty
   !read votesetup.phtml
@@ -20,6 +16,8 @@
  !exit
 !endif
 !if $gstep>0
+!!to put in the legend
+  $name_create_or_edit
   !read models/$reg_model.phtml
 !endif
 :endform

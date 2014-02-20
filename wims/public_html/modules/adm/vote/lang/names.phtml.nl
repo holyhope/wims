@@ -83,8 +83,10 @@ programma naar keuze.
 How many groups?\
 maximaal\
 uservar naam\
-Default host IP (kan worden veranderd op de volgende pagina)\
-Introductie tekst (dwz introductie tekst voor de student)\
+Default host IP \
+kan worden veranderd op de volgende pagina\
+Introductie tekst \
+dwz introductie tekst voor de student\
 aantal<br />studenten\
 Datum<br />sessie\
 Begin tijd<br />sessie\
@@ -92,9 +94,10 @@ Eind tijd<br />sessie\
 Host IP\
 Extra info\
 Afmelding inschrijving\
-into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,name_introtext,\
-name_numstud,name_sessiondate,name_begintime,name_endtime,name_connip,name_extra,\
-name_cancellation
+into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
+  name_textconnip2, name_introtext,name_introtext2,name_numstud,name_sessiondate,\
+  name_begintime,name_endtime,name_connip,name_extra,\
+  name_cancellation
 
 !set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
 !set name_session_select=!nosubst Selecteer datum en tijd van de $numsess beschikbare toets sessies
