@@ -17,8 +17,11 @@
  </p>
 
  !form reply
- $name_choose :
- <select name="picksheet">
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_title</legend>
+ <div class="field box">
+  <label for="picksheet">$name_choose</label>
+  <select name="picksheet" id="picksheet">
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
@@ -29,8 +32,8 @@
    <option value="$se">$wims_name_Sheet $se: $ti</option>
   !endif
  !next i
- </select>
- <p>$name_modifytitle</p>
+  </select>
+  </div>
 
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
@@ -48,35 +51,42 @@
 
  !set title=!trim $title
  !default title=$wims_name_Exercise
- $wims_name_title: <input size="50" name="title" value="$title" />
- <p>
- $wims_name_Description: <textarea name="new_desc" rows="5" cols="50">$desc</textarea>
- </p>
+ <div class="field box">
+  <label for="title">$wims_name_title</label>
+  <div class="formHelp">$name_modifytitle</div>
+  <input size="50" name="title" value="$title" id="title" />
+ </div>
+ <div class="field box">
+  <label for="new_desc">$wims_name_Description</label>
+  <textarea name="new_desc" rows="5" cols="50" id="new_desc">$desc</textarea>
+ </div>
  !if $scoring=yes
-  <p>$name_required:
-  <input size="4" name="require" value="$require" />
-  <span class="small">
-  ($name_repeat)
-  </span></p>
- $name_weight:
-  <input size="6" name="weight" value="$weight" />.
+  <div class="field box">
+   <label for="require">$name_required</label>
+   <div class="formHelp">$name_repeat</div>
+   <input size="4" name="require" value="$require" id="require" />
+  </div>
+  <div class="field box">
+   <label for="weight">$name_weight</label>
+   <input size="6" name="weight" value="$weight" id="weight" />
+  </div>
  !endif
 !if $exocnt_=$get_qnum and $get_random=0
-<div>
-$name_orderchange:
- <table>
+  <div class="field box">
+   <label>$name_orderchange</label>
+   <table>
   !for ex = 1 to $exocnt_
-   <tr><td class="bold">
- !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$dir/Extitles
+   <tr><td>
+   !lookup $(get_exo[$ex]) in wimshome/public_html/modules/$dir/Extitles
    </td><td>
     <input name="update_ex$ex" size="5" value="$ex" />
   </td></tr>
   !next
- </table>
-</div>
+   </table>
+    </div>
  !endif
  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_Insert" /></div>
-
+</fieldset>
 !formend
 !endif
 
