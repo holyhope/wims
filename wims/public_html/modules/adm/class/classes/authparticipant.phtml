@@ -21,13 +21,13 @@
  !reset user_auth
  !set wims_form_method=post
  !!FIXME for PHP
- 
+
  !if $auth_method notitemof cas
    $name_enter
    !form reply
    !set auth_user=$auth_user_connection
    <fieldset class="property_fields halfwidth blockcenter">
-      <legend>Connexion</legend>
+      <legend>$wims_name_connexion</legend>
 
       <div class="field box">
        <label for="login">$wims_name_Login</label>
@@ -51,9 +51,9 @@
 
    !!FIXME too much !if
    !if $idp_method notwordof ldap
-     $name_new_participant: 
+     $name_new_participant:
    !endif
- 
+
  !! else :  $auth_method is cas
  !else
    !if $idp_method notwordof ldap
@@ -65,7 +65,7 @@
   !if $subclass=yes
    !set tmp_=&subclass=$subclass
   !endif
-  
+
   !set wims_ref_class=wims_button
   !href module=adm/class/reguser&class=$class$tmp_ $name_register
 

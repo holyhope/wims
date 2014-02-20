@@ -107,7 +107,7 @@
 !set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefenening.
 
 !! the following sentences can be changed according to language if needed
-!set wims_name_display1=!nosubst $wims_name_this_module $wims_name_Share 
+!set wims_name_display1=!nosubst $wims_name_this_module $wims_name_Share
 !set wims_name_display2=!nosubst $wims_name_copy_and_paste $wims_name_the_link $wims_name_on_your_site $wims_name_or $wims_name_in_a_mail
 !set wims_name_display3=!nosubst $wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site
 !set wims_name_permalink1=!nosubst $wims_name_permalink $wims_name_for $wims_name_this_module
@@ -190,8 +190,8 @@
  wims_name_sheetmanagement,\
  wims_name_add_sequence,\
  wims_name_readen
- 
- !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
+
+ !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op.
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br />Gemiddelde score \
 	$[$wims_homeref_mean]/10.
@@ -208,14 +208,14 @@
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Werkvolgorde
  !set wims_name_sequences=werkvolgorde
- 
+
  !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<br />\
  Klasse management is hierdoor niet meer bereikbaar.\
  We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
- 
+
  !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde server limiet.\
  Als deze limiet is bereikt , wordt het klasse management geblokkeerd !
- 
+
  !set wims_name_chseries=!nosubst Sla de veranderingen aan serie oefeningen $(special_parm4[2]) werkblad $(special_parm4[1]) op
 !endif
 
@@ -225,7 +225,8 @@
 	Demonstratie klassen\
 	Inloggen voor docenten\
 	Inloggen voor studenten\
-        Wachtwoord vergeten\
+	Inloggen\
+    Wachtwoord vergeten\
 	lagere school\
 	middelbare school\
 	universiteit\
@@ -235,9 +236,10 @@
 	Groep klassen\
 	Instituut\
  into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
- wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
- wims_name_classlist,wims_name_portal_list,\
- wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
+   wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_connexion\
+   wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+   wims_name_classlist,wims_name_portal_list,\
+   wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !!!endif
 
 !if adm/new isin $module

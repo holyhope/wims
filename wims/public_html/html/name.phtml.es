@@ -102,8 +102,8 @@
 	wims_name_for,wims_name_only,\
 	wims_name_this_config
 
-!set wims_name_Share = Share 
-!set wims_name_to_embed_it = to embed it	
+!set wims_name_Share = Share
+!set wims_name_to_embed_it = to embed it
 !set wims_name_permalink_desc = Copy one of these links to share this easily (through mail, bookmark, ...).
 
 !! the following sentences can be changed according to language if needed
@@ -214,7 +214,7 @@
 
  !set wims_name_reaching_limit=Su clase alcanza el límite de espacio disco autorizado.\
   Una vez este límite pasado, se bloqueará la gestión de la clase!
-  
+
  !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
 !endif
 
@@ -224,7 +224,8 @@
 	Clases de ejemplo\
 	Autentificación del profesor\
 	Autentificación de los participantes\
-        Forget password\
+	Autentificación\
+    Forget password\
 	Enseñanza primaria\
 	Enseñanza secundaria\
 	Universidad\
@@ -234,7 +235,8 @@
     Agrupación de clases \
     Pórtico de establecimiento \
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_connexion,\
+	wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
 	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !!!endif
