@@ -12,7 +12,7 @@ $module_title
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$moduclass_lang 
+ !read lang/msg.phtml.$moduclass_lang
  </div>
  !set wims_ref_class=wims_button
 <p class="wimscenter">
@@ -35,42 +35,39 @@ $module_title
    !endif
    <li><input type="radio" name="job" $ch_class value="class" /> $name_classpasswd ($name_warning1).</li>
   </ul>
-  $table_header
 
  !else
-   $table_header
-    $table_tr
-     <th colspan="2">
+    <fieldset class="property_fields halfwidth blockcenter">
+     <legend>
       $(name_$(job)passwd)
       !if $job=part
        <span class="tt">$part</span>
       !endif
+      </legend>
       <input type="hidden" name="job" value="$job" />
-     </th>
-    </tr>
  !endif
 !else
- <input type="hidden" name="job" value="user" />
- $table_header
+  <input type="hidden" name="job" value="user" />
+  <fieldset class="property_fields halfwidth blockcenter">
 !endif
  !if $job=user or $job=none
-  $table_tr
-   <td>$name_actualpasswd</td>
-   <td><input type="password" size="16" name="old" /></td>
-  </tr>
+  <div class="field box">
+   <label for="old">$name_actualpasswd</label>
+   <input type="password" size="16" name="old" id="old" />
+  </div>
  !endif
- $table_tr
-  <td>$name_newpasswd</td>
-  <td><input type="password" size="16" name="pw1" /></td>
- </tr>
- $table_tr
-  <td>$name_newpasswd2</td>
-  <td><input type="password" size="16" name="pw2" /></td>
- </tr>
-$table_end
-  <div class="wimscenter wimsform">
+   <div class="field box">
+     <label for="pw1">$name_newpasswd</label>
+     <input type="password" size="16" name="pw1" id="pw1" />
+   </div>
+   <div class="field box">
+     <label for="pw2">$name_newpasswd2</label>
+     <input type="password" size="16" name="pw2" id="pw2"/>
+   </div>
+   <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_tosave" />
- </div>
+   </div>
+  </fieldset>
 
 <p class="small">$name_jetable
 !set wims_ref_class=wims_button_help
