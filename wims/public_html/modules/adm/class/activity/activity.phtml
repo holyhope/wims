@@ -3,21 +3,28 @@
  !read msg.phtml
  </p>
  <p>
- !href module=home $wims_name_class_home 
+ !href module=home $wims_name_class_home
 . </p>
  !goto end
 !endif
 
-!default name_student=!nosubst $lastname, $firstname  
+!default name_student=!nosubst $lastname, $firstname
 !readproc var.activity.proc
 !if $showsheet=$empty
-$name_showsheet
 !form reply
   <input type="hidden" name="job" value="select" />
-  !set wims_formselect_switch=multiple size="$[min($activelist_cnt,7)]"
-  !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
-  <input type="submit" value="$wims_name_Show" />
-
+  <fieldset class="property_fields halfwidth blockcenter">
+      <legend>$name_title</legend>
+     <div class="field box">
+     <label for="showsheet">$name_showsheet</label>
+     <br />
+  !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
+    !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
+     </div>
+     <div class="wimscenter wimsform">
+      <input type="submit" value="$wims_name_Show" />
+     </div>
+   </fieldset>
 !formend
 !else
 !if $usercnt==0
@@ -25,7 +32,7 @@ $name_noparticipant
 !else
  $table_header
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
- <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$name_cnt_exo 
+ <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$name_cnt_exo
  <br /> ($nbexototal $name_exo)</th><th>$name_total</th>
  !for j in $showsheet
  !if $(activ[$j])>0
@@ -36,7 +43,7 @@ $name_noparticipant
  $table_hdtr
  <th></th><th></th><th></th><th></th><th></th>
  !for j in $showsheet
- !if $(activ[$j])>0 
+ !if $(activ[$j])>0
   <th class="small">$name_cnt_exo</th><th class="small">$name_time</th>
  !endif
  !next j

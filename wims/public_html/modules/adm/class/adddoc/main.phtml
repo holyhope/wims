@@ -16,38 +16,44 @@ $module_title
  !goto end
 !endif
  $name_intro.
- !form reply 
+ !form reply
 
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set block=!getopt block in $iniparm1
-$table_header
-$table_tr
-<th>$wims_name_title</th><td> <input size="50" name="title" value="$title" />
-</td></tr>
-$table_tr<th>$wims_name_Status</th>
- <td>
- !formselect status list 0,1 prompt $wims_name_status
- <input type="hidden" name="job" value="$job" /> 
+ <fieldset class="property_fields halfwidth blockcenter">
+    <legend>$module_title</legend>
+    <div class="field box">
+      <label for="title">$wims_name_title</label>
+      <input size="50" name="title" value="$title" id="title" />
+    </div>
+    <div class="field box">
+      <label for="status">$wims_name_Status</label>
+     !formselect status list 0,1 prompt $wims_name_status
+     <input type="hidden" name="job" value="$job" />
   !if $doc>0
-  !formcheckbox update list 0 prompt $wims_name_erase
+   !formcheckbox update list 0 prompt $wims_name_erase
  !endif
- </td></tr>
-$table_tr<th>$name_wksheet</th><td>
-!formselect wksheet from 0 to 64
-</td></tr>
-$table_tr<th>$wims_name_Description</th><td>
-<textarea name="desc" rows="5" cols="50">$desc</textarea></td></tr>
-$table_tr<th>Code</th><td>
- <code>
+    </div>
+    <div class="field box">
+      <label for="wksheet">$name_wksheet</label>
+       !formselect wksheet from 0 to 64
+    </div>
+    <div class="field box">
+      <label for="desc">$wims_name_Description</label>
+     <textarea name="desc" rows="5" cols="50" id="desc">$desc</textarea>
+    </div>
+    <div class="field box">
+     <label>Code</label>
+      <code>
 !replace internal & by &amp; in $dir
  !if $iniparm!=$empty
 !replace internal & by &amp; in &$iniparm
  !endif
- </code>
- </td></tr>
- $table_end
-<div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
- 
+     </code>
+    </div>
+  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
+  </fieldset>
+
 !formend
 !endif
 
