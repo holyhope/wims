@@ -23,8 +23,9 @@ function sendanswer(){
   <!-- MathView js input html5 applet -->
   if(document.getElementById("JSMathView")){
    input=document.getElementById("JSMathView").value;
-   input=input.replace(/&radic;/g,'sqrt');
-   input=input.replace(/&euro;/g,'euro');
+   <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
+   input=input.replace(/\u221A/g,'sqrt');
+   input=input.replace(/\u20AC/g,'euro');
    if( input.length == 0) {setAlarm(r1+"\ $counter");return;};
    if( input.length > 200 ){setAlarm(r2); return;};
    if(input.indexOf(',') != -1 && input.indexOf('table') == -1){setAlarm(r4);return;};
@@ -108,7 +109,7 @@ function sendanswer(){
 		    <td onclick="javascript:button('&euro;');">&euro;</td>
 		    </tr>
 		    <tr id="math_op2" style="display:table-row">
-		    <td onclick="javascript:button('&radic;');">&radic;</td>
+		    <td onclick="javascript:button('&radic;()');">&radic;()</td>
 		    <td onclick="javascript:button('sin()');">sin</td>
 		    <td onclick="javascript:button('cos()');">cos</td>
 		    <td onclick="javascript:button('tan()');">tan</td>
@@ -148,16 +149,16 @@ function sendanswer(){
 		    <td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
 		    <td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
 		    </tr>
-		    <tr id="math_op6" style="display:none">                                                         
-		    <td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>                                  
-		    <td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>                                     
-		    <td onclick="javascript:button(' and ');">  &#8743;</td>                                        
-		    <td onclick="javascript:button(' or ');">   &#8744;</td>                                        
-		    <td onclick="javascript:button(' <= ');">   &#8804;</td>                                        
-		    <td onclick="javascript:button(' >= ');">   &#8805;</td>                                        
-		    <td onclick="javascript:button('f(x) = ');">   f(x) =</td>                                      
-		    <td onclick="javascript:button('F(x) = );">    F(x) =</td>                                      
-		    </tr>                                                                                           
+		    <tr id="math_op6" style="display:none">
+		    <td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
+		    <td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
+		    <td onclick="javascript:button(' and ');">  &#8743;</td>
+		    <td onclick="javascript:button(' or ');">   &#8744;</td>
+		    <td onclick="javascript:button(' <= ');">   &#8804;</td>
+		    <td onclick="javascript:button(' >= ');">   &#8805;</td>
+		    <td onclick="javascript:button('f(x) = ');">   f(x) =</td>
+		    <td onclick="javascript:button('F(x) = ');">    F(x) =</td>
+		    </tr>
 		</table>
 	    </td>
 	    </tr>
@@ -206,8 +207,8 @@ function sendanswer(){
 function rewrite(input){
  if(input.indexOf("sqrt[") != -1){ input = displayroot(input);}
  if(input.indexOf("log[") != -1){ input = displaylog(input);}
- var rep1 = ["pi",">=","<="," and "," or "," isin "," in "," notin","R","N"];
- var rep2 = ["\\pi","\\ge"," \\le "," \\wedge "," \\Vee "," \\in "," \\in "," \\notin ","\\R","\\N"];
+ var rep1 = ["pi",">=","<="," and "," or "," isin "," in "," notin","R","N","dy/dx"];
+ var rep2 = ["\\pi","\\ge"," \\le "," \\wedge "," \\Vee "," \\in "," \\in "," \\notin ","\\R","\\N","{\\d y}/{\\d x}"];
  for(var i=0; i < rep1.length ; i++){
    input = input.split(rep1[i]).join(rep2[i])
  }
