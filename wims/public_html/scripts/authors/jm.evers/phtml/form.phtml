@@ -2,7 +2,12 @@
 <!-- begin myheader.phtml -->
 !read $phtmldir/myheader.phtml
 <!-- end myheader.phtml -->
-
+!if $mathview=5
+<!-- begin mymathinput.phtml mathview=5 questiontype=10 -->
+    !read $phtmldir/mymathinput.phtml
+<!-- end mymathinput.phtml mathview=5 questiontype=10 -->
+ !exit
+!endif
 
 !if $questiontype=0
 <!-- begin myfreestyle.phtml questiontype=0 -->
@@ -68,9 +73,16 @@
 !endif
 
 !if $questiontype=9
-<!-- begin mytexinput.phtml questiontype=8 -->
-    !read $phtmldir/mytexinput.phtml
 <!-- begin mytexinput.phtml questiontype=9 -->
+    !read $phtmldir/mytexinput.phtml
+<!-- end mytexinput.phtml questiontype=9 -->
+ !exit
+!endif
+
+!if $questiontype=10
+<!-- begin mymathinput.phtml questiontype=10 -->
+    !read $phtmldir/mymathinput.phtml
+<!-- end mymathinput.phtml questiontype=10 -->
  !exit
 !endif
 

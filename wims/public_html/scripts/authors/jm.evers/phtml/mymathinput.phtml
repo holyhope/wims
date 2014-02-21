@@ -1,120 +1,6 @@
 !set n=$counter
-<link rel="stylesheet" type="text/css" href="$htmldir/schaersvoorde.css" />
 <link rel="stylesheet" href="$htmldir/jqmath.css">
 <script src="$jsdir/jqmath.js"></script> 
-<script type="text/javascript" src="$jsdir/../lang/remarks.$taal.js"></script>
-<script type="text/javascript" src="$jsdir/precheck.js"></script>
-<table class="exercise">
-    <tr>
-    <td class="exercise_c">
-	<table class="exercise">
-	    <tr>
-	    <td class="exercise_c">
-		!if $(question$n) != $empty
-		    $(question$n)
-		    <br />
-		!endif
-		!if $(formula$n) != $empty
-		    !insmath $(formula$n)
-		!endif
-		!if $exotext != $empty
-		    <br />
-		    $exotext
-		!endif
-	        <div id="alarmtext" name="alarmtext" style="position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red"></div>
-	    </td>
-	    </tr>
-	    <tr>
-	    <td class="exercise_m">
-		<table>
-		    <tr>
-		    <td id="math_out" style="font-size:180%;">
-		    </td>
-		    </tr>
-		    <tr>
-		    <td>
-			<textarea class="schaervoorde_input" id="JSMathView" rows="2" cols="30"></textarea>
-		    </td>
-		    </tr>
-		    <tr>
-		    <td>
-		    <table class="demospecial" id="show_it">
-			<tr id="math_op0"></tr>
-		        <tr id="math_op1" style="display:table-row">
-			<td onclick="javascript:button('^');">	^</td>
-		        <td onclick="javascript:button('/');">	/</td>
-		        <td onclick="javascript:button('*');">	*</td>
-		        <td onclick="javascript:button('+');">	+</td>
-		        <td onclick="javascript:button('-');">&minus;</td>
-		        <td onclick="javascript:button('(');">	(</td>
-		        <td onclick="javascript:button(')');">	)</td>
-		        <td onclick="javascript:button('&euro;');">&euro;</td>
-			</tr>
-		        <tr id="math_op2" style="display:table-row">
-		        <td onclick="javascript:button('&radic;');">&radic;</td>
-		        <td onclick="javascript:button('sin()');">sin</td>
-			<td onclick="javascript:button('cos()');">cos</td>
-		        <td onclick="javascript:button('tan()');">tan</td>
-		        <td onclick="javascript:button('log()');">log</td>
-		        <td onclick="javascript:button('pi');">&pi;</td>
-			<td colspan="2" id="clear_it" style="background-color:orange;">
-	    		!record 67 of $remarkdir/commonremarks.$taal
-		        </td>
-		        </tr>
-		        <tr id="math_op3" style="display:none">
-		        <td onclick="javascript:button(' in ');">   &#8712;</td>
-		        <td onclick="javascript:button(' notin ');">&#8713;</td>
-		        <td onclick="javascript:button(' and ');">  &#8743;</td>
-		        <td onclick="javascript:button(' or ');">   &#8744;</td>
-		        <td onclick="javascript:button(' <= ');">   &#8804;</td>
-		        <td onclick="javascript:button(' >= ');">   &#8805;</td>
-		        <td onclick="javascript:button(' R ');">    &#8476;</td>
-			<td onclick="javascript:button(' N ');">    N</td>
-		        </tr>
-		        <tr id="math_op4" style="display:none">
-		        <td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[5]()');"><sup>5</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[6]()');"><sup>6</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[7]()');"><sup>7</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[8]()');"><sup>8</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[9]()');"><sup>9</sup>&radic;()</td>
-		        <td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
-		        </tr>
-		        <tr id="math_op5" style="display:none">
-		        <td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
-		        <td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
-		        <td onclick="javascript:button('log[4]()');"><sup>4</sup>log()</td>
-		        <td onclick="javascript:button('log[5]()');"><sup>5</sup>log()</td>
-			<td onclick="javascript:button('log[6]()');"><sup>6</sup>log()</td>
-		        <td onclick="javascript:button('log[7]()');"><sup>7</sup>log()</td>
-		        <td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
-		        <td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
-			</tr>
-		        <tr id="math_op6" style="display:none">
-		        <td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
-		        <td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
-		        <td onclick="javascript:button(' and ');">  &#8743;</td>
-		        <td onclick="javascript:button(' or ');">   &#8744;</td>
-		        <td onclick="javascript:button(' <= ');">   &#8804;</td>
-		        <td onclick="javascript:button(' >= ');">   &#8805;</td>
-		        <td onclick="javascript:button('f(x) = ');">   f(x) =</td>
-			<td onclick="javascript:button('F(x) = );">    F(x) =</td>
-		        </tr>
-		    </table>
-		    </td>
-		    </tr>
-		</table>
-	    </td>
-	    </tr>
-	</table>
-    </td>
-    </tr>
-</table>
-<div id="send_buttons" class="embedded_central">
-    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
-    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
-</div>
 !if $my_arrows=$empty
     !set my_arrows=2
 !endif
@@ -141,7 +27,7 @@ function sendanswer(){
    input=input.replace(/&euro;/g,'euro');
    if( input.length == 0) {setAlarm(r1+"\ $counter");return;};
    if( input.length > 200 ){setAlarm(r2); return;};
-   if(input.indexOf(',') != -1 && input.indexOf('table') == -1){setA larm(r4);return;};
+   if(input.indexOf(',') != -1 && input.indexOf('table') == -1){setAlarm(r4);return;};
    if(check_f(input) == 0){return;};
    if(check_o(input) == 0){return;};
    if(check_log_NaN(input) == 0){return;}
@@ -175,6 +61,114 @@ function sendanswer(){
 }
 //]]>
 </script>
+
+<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+    <tr>
+    <td class="exercise_t">
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br />
+	!endif
+	!if $(formula$n) != $empty
+	    !insmath $(formula$n)
+	!endif
+	!if $exotext != $empty
+	    <br />
+	    $exotext
+	!endif
+    </td>
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    </tr>
+    <tr>
+    <td class="exercise_c">
+	<table>
+	    <tr>
+	    <td id="math_out" style="font-size:120%;"></td>
+	    </tr>
+	    <tr>
+	    <td>
+		<textarea class="schaervoorde_input" id="JSMathView" rows="2" cols="40"></textarea>
+	    </td>
+	    </tr>
+	    <tr>
+	    <td>
+		<table class="demospecial" id="show_it">
+		    <tr id="math_op0"></tr>
+		    <tr id="math_op1" style="display:table-row">
+		    <td onclick="javascript:button('^');">	^</td>
+		    <td onclick="javascript:button('/');">	/</td>
+		    <td onclick="javascript:button('*');">	*</td>
+		    <td onclick="javascript:button('+');">	+</td>
+		    <td onclick="javascript:button('-');">&minus;</td>
+		    <td onclick="javascript:button('(');">	(</td>
+		    <td onclick="javascript:button(')');">	)</td>
+		    <td onclick="javascript:button('&euro;');">&euro;</td>
+		    </tr>
+		    <tr id="math_op2" style="display:table-row">
+		    <td onclick="javascript:button('&radic;');">&radic;</td>
+		    <td onclick="javascript:button('sin()');">sin</td>
+		    <td onclick="javascript:button('cos()');">cos</td>
+		    <td onclick="javascript:button('tan()');">tan</td>
+		    <td onclick="javascript:button('log()');">log</td>
+		    <td onclick="javascript:button('pi');">&pi;</td>
+		    <td colspan="2" id="clear_it" style="background-color:orange;">
+	    	    !record 67 of $remarkdir/commonremarks.$taal
+		    </td>
+		    </tr>
+		    <tr id="math_op3" style="display:none">
+		    <td onclick="javascript:button(' in ');">   &#8712;</td>
+		    <td onclick="javascript:button(' notin ');">&#8713;</td>
+		    <td onclick="javascript:button(' and ');">  &#8743;</td>
+		    <td onclick="javascript:button(' or ');">   &#8744;</td>
+		    <td onclick="javascript:button(' <= ');">   &#8804;</td>
+		    <td onclick="javascript:button(' >= ');">   &#8805;</td>
+		    <td onclick="javascript:button(' R ');">    &#8476;</td>
+		    <td onclick="javascript:button(' N ');">    N</td>
+		    </tr>
+		    <tr id="math_op4" style="display:none">
+		    <td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[5]()');"><sup>5</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[6]()');"><sup>6</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[7]()');"><sup>7</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[8]()');"><sup>8</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[9]()');"><sup>9</sup>&radic;()</td>
+		    <td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
+		    </tr>
+		    <tr id="math_op5" style="display:none">
+		    <td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
+		    <td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
+		    <td onclick="javascript:button('log[4]()');"><sup>4</sup>log()</td>
+		    <td onclick="javascript:button('log[5]()');"><sup>5</sup>log()</td>
+		    <td onclick="javascript:button('log[6]()');"><sup>6</sup>log()</td>
+		    <td onclick="javascript:button('log[7]()');"><sup>7</sup>log()</td>
+		    <td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
+		    <td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
+		    </tr>
+		    <tr id="math_op6" style="display:none">                                                         
+		    <td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>                                  
+		    <td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>                                     
+		    <td onclick="javascript:button(' and ');">  &#8743;</td>                                        
+		    <td onclick="javascript:button(' or ');">   &#8744;</td>                                        
+		    <td onclick="javascript:button(' <= ');">   &#8804;</td>                                        
+		    <td onclick="javascript:button(' >= ');">   &#8805;</td>                                        
+		    <td onclick="javascript:button('f(x) = ');">   f(x) =</td>                                      
+		    <td onclick="javascript:button('F(x) = );">    F(x) =</td>                                      
+		    </tr>                                                                                           
+		</table>
+	    </td>
+	    </tr>
+	</table>
+    </td>
+    </tr>
+</table>
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+</div>
 
 <script type="text/javascript">
  var JSMathView = document.getElementById("JSMathView");

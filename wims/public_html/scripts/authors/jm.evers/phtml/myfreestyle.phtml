@@ -38,13 +38,6 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
   !endif
    input = input.replace(/#/g,' ');reply[inputfieldnumber] = input;inputfieldnumber = 1;
   };
-  <!-- JSMathView HTML5 input "applet" -->
-  if(document.getElementById("JSMathView")){input=document.getElementById("JSMathView").value;if( input.length == 0){setAlarm(r1+"\ 1");return;};if( input.length > 100){setAlarm(r2); return;};if(input.indexOf('error')!=-1){setAlarm(input);return;};if(input.indexOf(',') != -1){setAlarm(r4);return;};if(check_f(input) == 0){return;}if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;};input = science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};show = input;if( show.indexOf('>') != 0 || show.indexOf('>') ){show=show.replace(/\>=/g,'&ge;');show=show.replace(/\<=/g,'&le;');show=show.replace(/\>/g,'&gt;');show=show.replace(/\</g,'&lt;');};
-  !if $convert_root=0
-   input = arrows(input,$my_arrows,"","");if(input == "error"){return;};input = nthroot(input);if(input ==" error"){return;};if(input.indexOf("[") !=- 1){if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;};};if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;};};if( input.indexOf("[") !=-1){setAlarm(r13);return;};};
-  !endif
-   input = input.replace(/#/g,' ');reply[inputfieldnumber] = input;inputfieldnumber = 1;
-  };
   <!-- InvulGrid ruitjespapier applet -->
   if(document.getElementById("InvulGrid0") ){var p = 0;var tmp_reply="";var tmp_htmlreply="";var tmp_latexreply="";var latexreply="";var invulgrid;
    !if $decimals=1
@@ -190,11 +183,10 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
     !endif
 !endif
 
-!if $mathview=3 or $mathview=5
+!if $mathview=3
     </tr>
     <tr>
     <td class="exercise_c">
-     !if $mathview=3
 	<object classid="java:MathView.class" id="MathView" width="580" height="280" type="application/x-java-applet;jpi-version=1.4" >
 	    <param name="java_codebase" value="$appletdir" />
 	    <param name="java_archive" value="MathView.jar" />
@@ -229,9 +221,6 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
 	    	$nojava
 	    </a>
 	</object>
-     !else
-        !read $phtmldir/showmath.js.embed.phtml
-     !endif
     </td>
 !else
     !if $embed != 1
