@@ -14,7 +14,8 @@
 !set name_repeat=cada respuesta correcta en el ejercicio da 10 puntos; ponga \
  más de 10 puntos aquí si quiere que el participante repita el ejercicio.
 
-!set name_weight=Peso de los puntos obtenidos en este trabajo (para el cálculo de la media)
+!set name_weight=Peso de los puntos obtenidos en este trabajo
+!set name_weight_hint=para el cálculo de la media
 !set name_end=!nosubst  El recurso <span class="wims_mod_title">$title</span> se ha añadido con éxito a la hoja de trabajo
 
 !set name_choose_exo=Cette ressource sera insérée comme une nouvelle série d'exercices de la feuille.

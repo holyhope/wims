@@ -14,7 +14,8 @@
 !set name_repeat=elk 100% correct antwoord levert 10 punten op: dus als er meer dan\
   10 punten wordt gevraagd moet de leerling deze opdracht meerdere keren doen.
 
-!set name_weight=Het gewicht van de punten (deze weging wordt gebruikt voor de berekening van het gemiddelde):
+!set name_weight=Het gewicht van de punten
+!set name_weight_hint=deze weging wordt gebruikt voor de berekening van het gemiddelde
 !set name_end=!nosubst De oefening <span class="wims_mod_title">$title</span> is succesvol opgenomen in het werkblad
 
 !set name_choose_exo=Wordt toegevoegd aan het werkblad als een nieuwe serie oefeningen
