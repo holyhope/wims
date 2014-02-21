@@ -1,29 +1,29 @@
 !form reply
 <input type="hidden" name="show" value="yes" />
-$table_header
-$table_tr<td style="width:40%">$name_showstat</td><td>
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_title</legend>
+   <div class="field box">
+      <label for="show">$name_showstat</label>
 !set wims_formselect_switch=multiple="multiple" size="8"
 !formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
 	prompt\
 	$name_prompt
-</td></tr>
-$table_tr<td>$name_data</td><td>
+   </div>
+   <div class="field box">
+     <label for="types">$name_data</label>
 !set wims_formselect_switch=
 !formselect types list 1,2,3 prompt \
 	$name_typ_activities
-</td></tr>
+    </div>
 !if $sharer!=$empty
-$table_tr<td>
-  $name_shareclass
-</td><td>
- !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
-</td></tr>
+   <div class="field box">
+    <label for="share">$name_shareclass</label>
+    !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
+   </div>
 !endif
-
-$table_end
-
-<div class="wimscenter wimsform">
-<input type="submit" value="$wims_name_Show" />
-</div>
+   <div class="wimscenter wimsform">
+     <input type="submit" value="$wims_name_Show" />
+  </div>
+</fieldset>
 
 !formend
