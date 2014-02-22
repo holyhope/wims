@@ -1,68 +1,47 @@
 !form reply
-!reset table_center
-$table_header
- $table_tr
-  <td  style="text-align:center">$name_series</td>
-  <td>
+<fieldset class="property_fields halfwidth blockcenter">
+  <legend>$title</legend>
+  <div class="field box">
+    <label for="nw_qnum">$name_series</label>
    !set nw_qnum=$user_qnum
    !formselect nw_qnum from 1 to 9
    $wims_name_exercises.
-  </td>
- </tr>
- $table_tr
-  <td  style="text-align:center">$name_severity</td>
-  <td>
+  </div>
+  <div class="field box">
+   <label for="nw_qcmlevel">$name_severity</label>
    !set nw_qcmlevel=$user_qcmlevel
    !formselect nw_qcmlevel from 1 to 9
-  </td>
- </tr>
- $table_tr
-  <td  style="text-align:center">$name_chrono </td>
-  <td>
-   <input size="7" name="nw_scoredelay" value="$user_scoredelay" /> $name_secondes.
-  </td>
- </tr>
- $table_tr
-  <td  style="text-align:center">$name_qcm</td>
-  <td>
+  </div>
+  <div class="field box">
+   <label for="nw_scoredelay">$name_chrono </label>
+   <input size="7" name="nw_scoredelay" id="nw_scoredelay" value="$user_scoredelay" /> $name_secondes.
+  </div>
+  <div class="field box">
+   <label for="">$name_qcm</label>
    !set nw_qcmpresent=$user_qcmpresent
-   !formselect nw_qcmpresent list 2,3,4,5,6,7,8 
-  </td>
- </tr>
- $table_tr
-  <td  style="text-align:center">$name_solution</td>
-  <td>
+   !formselect nw_qcmpresent list 2,3,4,5,6,7,8
+  </div>
+  <div class="field box">
+   <label for="nw_presentsol">$name_solution</label>
    !default nw_presentsol=$user_presentsol
    !formselect nw_presentsol list 0,1,2 prompt $name_prompt
-  </td>
- </tr>
- $table_tr
-  <td rowspan="4">&nbsp;</td><td>
+  </div>
+  <div class="field box">
    !set nw_check=$user_check
    !formcheckbox nw_check list 1 prompt $name_prompt1
-  </td>
- </tr>
- $table_tr
-  <td>
+   <br />
    !formcheckbox nw_check list 2 prompt $name_prompt2
- </td>
- </tr>
- $table_tr
-  <td>
+   <br />
    !formcheckbox  nw_check list 3 prompt $name_prompt3
-  </td>
- </tr>
- $table_tr
-  <td>
+   <br />
    !formcheckbox nw_check list 4 prompt $name_prompt4
    !let tmp=!replace word expert by $ in $special_parm2
-  </td>
- </tr>
- $table_end
- <div class="wimscenter wimsform">
-  <input type="submit" value="$wims_name_tosave" />
-  <input type="hidden" value="1" name="step" />
- </div>
+  </div>
+  <div class="wimscenter wimsform">
+   <input type="submit" value="$wims_name_tosave" />
+   <input type="hidden" value="1" name="step" />
+  </div>
+ </fielset>
 
 !formend
 

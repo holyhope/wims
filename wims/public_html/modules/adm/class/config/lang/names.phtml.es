@@ -21,6 +21,11 @@ name_sheets
 	ejercicios,hojas de trabajo,exámenes,documentos,participantes\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
+!if $job=grestrict
+ !set name_allowedsites=Sitios a los que se les permite recibir calificaciones
+ !set name_excepted=Exceptuados
+!endif
+
 !if $job=arch
  !set title=Copias de seguridad y Recuperación
  !set name_intro=Puede descargar una copia de seguridad de su clase, en formato

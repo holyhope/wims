@@ -21,6 +21,11 @@ name_sheets
 oefeningen,werkbladen,proefwerken,documenten,studenten\
 into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
+!if $job=grestrict
+ !set name_allowedsites=Toegestane adressen
+ !set name_excepted=Uitgezonderd
+!endif
+
 !if $job=arch
  !set title=Backup en Herstel
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
