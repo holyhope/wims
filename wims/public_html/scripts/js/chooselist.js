@@ -1,6 +1,7 @@
 <script type="text/javascript">
+/*<![CDATA[*/
 function moveSelections(selectLeft, selectRight, selectHidden, action) {
-  var menuFrom; var menuTo;  var i ; 
+  var menuFrom; var menuTo;  var i ;
     if (action == 'add') {
         menuFrom = selectLeft;
         menuTo = selectRight;
@@ -77,5 +78,5 @@ function moveSwap(l,i,j) {
 }
 
 /* end javascript for HTML_QuickForm_advmultiselect */
-
+/*]]>*/
 </script>
