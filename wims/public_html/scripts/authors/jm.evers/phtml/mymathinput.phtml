@@ -98,7 +98,7 @@ function sendanswer(){
     <td>
 	<table class="demospecial" id="show_it">
 	    <tr id="math_op0">
-		<td colspan="3" id="clear_it">
+		<td colspan="2" id="clear_it">
 	    	!record 67 of $remarkdir/commonremarks.$taal
 		</td>
 	    <!-- contents of mathviewpanel -->
@@ -164,14 +164,14 @@ function sendanswer(){
 		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
 	    </tr>
 	    <tr id="math_op7" style="display:none">
-		<td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
-		<td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
-		<td onclick="javascript:button(' and ');">  &#8743;</td>
-		<td onclick="javascript:button(' or ');">   &#8744;</td>
-		<td onclick="javascript:button(' <= ');">   &#8804;</td>
-		<td onclick="javascript:button(' >= ');">   &#8805;</td>
-		<td onclick="javascript:button('f(x) = ');">   f(x) =</td>
-		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
+		<td onclick="javascript:button('->');">&Rightarrow;</td>
+		<td onclick="javascript:button('-->');">&longrightarrow;</td>
+		<td onclick="javascript:button('<->');">&leftrightarrow;</td>
+		<td onclick="javascript:button('<=>');">&Leftrightarrow;</td>
+		<td onclick="javascript:button('Sum');">&Sum;</td>
+		<td onclick="javascript:button('(\\table a,b,c;d,e,f;g,h,i)');">matrix</td>
+		<td onclick="javascript:button('inf');">&infin;</td>
+		<td onclick="javascript:button('int');">&int;</td>
 	    </tr>
 	    <tr id="control_1" style="display:table-row">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
@@ -181,7 +181,7 @@ function sendanswer(){
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(4);"><sup>3</sup>&radic;</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(5);"><sup>3</sup>log()</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(6);">dy/dx</td>	
-		<td style="background-color:lightgreen" onclick="javascript:show_button_row(7);"></td>	
+		<td style="background-color:lightgreen" onclick="javascript:show_button_row(7);">&longrightarrow;</td>	
 	    </tr>
 	</table>
     </td>
@@ -205,9 +205,10 @@ function sendanswer(){
  var mathviewpanel ="$mathviewpanel";
  mathviewpanel = mathviewpanel.split(':');
  if(mathviewpanel.length > 1){
-  for(var i=1; i<mathviewpanel.length;i++){
+  for(var i=1; i<7;i++){
    (function(){
     var paneltxt = mathviewpanel[i];
+    if(i>=mathviewpanel.length){paneltxt = ' ';}
     var td = document.createElement('td');
     document.getElementById('math_op0').appendChild(td);
     td.addEventListener('click',function(e){button(paneltxt);},false);
@@ -217,10 +218,10 @@ function sendanswer(){
  }
  function show_button_row(row){hide_button_row();document.getElementById("math_op"+row).style.display = 'table-row';};
  function hide_button_row(){for(var i=1; i<8 ;i++){document.getElementById("math_op"+i).style.display = 'none';}};
- function button(myValue){var myField =  document.getElementById("JSMathView");if(document.selection){myField.focus();var sel = document.selection.createRange();sel.text = myValue;} else { if(myField.selectionStart || myField.selectionStart == '0'){var startPos = myField.selectionStart;var endPos = myField.selectionEnd;myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos,myField.value.length);} else {myField.value += myValue;}}}
  function displayroot(t){var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;t2=t.indexOf("](");if(t2==-1){return;};org=t;t=t.replace(/sqrt\(/g,"SQRT(");t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");if(test.indexOf("#")!=-1){return;};t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){power=t.substring(t2+1,t3);if(power.length==0){return t;};if(power<2){return;}t4="["+power+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;}}}};begin=begin+2;sqrt=t.substring(begin,end);mod=(power % 2);if(sqrt<0 && mod!=1){return;};t=t.replace("@("+sqrt+")","{^"+power+"&radic;#"+sqrt+"!}");}else{t=t.replace("]","?");}trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}};t=t.replace(/SQRT\(/g,"&radic;#");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"&radic;");return t;}
  function displaylog(t){var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;t2=t.indexOf("](");if(t2==-1){return;}t=t.replace(/log\(/g,'LOG(');t=t.replace(/log/g,"@");t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){grondtal=t.substring(t2+1,t3);if(grondtal=="10"){return;};if(grondtal=="e" || grondtal=='E'){return;};t4="["+grondtal+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;};};};};begin=begin+2;teller=t.substring(begin,end);if(grondtal==teller){setAlarm(r17);};t=t.replace("@("+teller+")","{^"+grondtal+"~#"+teller+"!}");}else{t=t.replace("[","%");};t2=t.indexOf("[");trouble++;if(trouble>100){setAlarm(r20);t="error";return t;};};t=t.replace(/\%/g,"[");t=t.replace(/~/g,"log");t=t.replace(/LOG\(/g,"log#");t=t.replace(/@/g,"log");return t;}
  function find_group(t){var left=0;var idx=-1;while(t.indexOf('(') != -1 ){t=t.replace('(','#');left++;idx = t.indexOf(')');while( idx != -1 ){t=t.replace(')','!');left--;if(left == 0){t=t.substring(0,idx+1)+"}"+t.substring(idx+1,t.length);return t;};idx=t.indexOf(')');};};return t;}
+ function button(myValue){if(document.selection){JSMathView.focus();var sel = document.selection.createRange();sel.text = myValue;}else{ if(JSMathView.selectionStart || JSMathView.selectionStart == '0'){var startPos = JSMathView.selectionStart;var endPos = JSMathView.selectionEnd;JSMathView.value = JSMathView.value.substring(0, startPos) + myValue + JSMathView.value.substring(endPos,JSMathView.value.length);} else {JSMathView.value += myValue;};};if(myValue.indexOf('()') != -1){JSMathView.setSelectionRange(startPos+myValue.length - 1,startPos+myValue.length - 1);};};
 
 function rewrite(input){
  if(input.indexOf("sqrt[") != -1){ input = displayroot(input);}
