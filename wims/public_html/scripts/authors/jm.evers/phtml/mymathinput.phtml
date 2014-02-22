@@ -24,6 +24,12 @@ function sendanswer(){
   if(document.getElementById("JSMathView")){
    input=document.getElementById("JSMathView").value;
    <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
+   !if $special_fraction=1
+    input = singlespace(input);
+    input = input.replace(/\ /g,'+');
+    if(input.indexOf('+') == 0 ){input = input.substring(1,input.length);}
+    if(input.indexOf('+') == input.length ){input = input.substring(0,input.length-1);}
+   !endif
    input=input.replace(/\u221A/g,'sqrt');
    input=input.replace(/\u20AC/g,'euro');
    if( input.length == 0) {setAlarm(r1+"\ $counter");return;};
@@ -65,7 +71,7 @@ function sendanswer(){
 
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
-    <td class="exercise_c">
+    <td class="exercise_m">
 	!if $(question$n)!= $empty
 	    $(question$n)
 	!endif
@@ -73,13 +79,13 @@ function sendanswer(){
 	    <br />
 	    $exotext
 	!endif
-	<table>
+	<table class="exercise">
 	    <tr>
 	    !if $(formula$n) != $empty
-	    <td>
+	    <td class="exercise_c">
 		!insmath $(formula$n)
 	    </td>
-	    <td>
+	    <td class="exercise_c">
 		$m_rightarrow
 	    </td>
 	    !endif

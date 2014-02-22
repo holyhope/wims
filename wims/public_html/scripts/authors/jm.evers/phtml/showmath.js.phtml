@@ -14,7 +14,7 @@
 <div id="alarmtext" name="alarmtext" style="position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red"></div>
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
-    <td class="exercise_c">
+    <td class="exercise_m">
 	!if $(question$n)!= $empty
 	    $(question$n)
 	!endif
@@ -22,13 +22,13 @@
 	    <br />
 	    $exotext
 	!endif
-	<table>
+	<table class="exercise">
 	    <tr>
 	    !if $(formula$n) != $empty
-	    <td>
+	    <td class="exercise_c">
 		!insmath $(formula$n)
 	    </td>
-	    <td>
+	    <td class="exercise_c">
 		$m_rightarrow
 	    </td>
 	    !endif
@@ -132,6 +132,12 @@ function sendanswer(){
   <!-- MathView js input html5 applet -->
   if(document.getElementById("JSMathView")){
    input=document.getElementById("JSMathView").value;
+  !if $special_fraction=1
+   input = singlespace(input);
+   input = input.replace(/\ /g,'+');
+   if(input.indexOf('+') == 0 ){input = input.substring(1,input.length);}
+   if(input.indexOf('+') == input.length ){input = input.substring(0,input.length-1);}
+  !endif 
    input=input.replace(/\u221A/g,'sqrt');
    input=input.replace(/\u20AC/g,'euro');
    if( input.length == 0) {setAlarm(r1+"\ $counter");return;};

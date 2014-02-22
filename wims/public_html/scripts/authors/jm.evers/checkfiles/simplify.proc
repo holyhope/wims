@@ -346,17 +346,27 @@ a1=!line 3 of $tot
 a2=!line 4 of $tot
 !if $tt=1
     # answer is technically correct
-    simpler=0
+    simpler1=0
     !for p in $varlist
 	c1=!positionof char $p in $AAA
         c3=!positionof char $p in $a2
         c1=!itemcnt $c1
         c3=!itemcnt $c3
-	!if $c3<$c1
-	    !increase simpler
+	!if $[$c3-$c1]<0
+	    !increase simpler1
 	!endif
     !next p
-    !if $simpler>0
+    simpler2=0
+    !for p in $varlist
+	c1=!positionof char $p in $AAA
+        c3=!positionof char $p in $a1
+        c1=!itemcnt $c1
+        c3=!itemcnt $c3
+	!if $[$c3-$c1]<0
+	    !increase simpler2
+	!endif
+    !next p
+    !if $simpler1>0 and $simpler2>0
 	# can the answer be further simplified on variable level?
 	ex=!record 74 of $remarkdir/commonremarks.$taal
 	testvar=<em>$AAA</em>
