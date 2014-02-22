@@ -210,14 +210,15 @@ function sendanswer(){
 
 function rewrite(input){
  if(input.indexOf("sqrt[") != -1){ input = displayroot(input);}
- if(input.indexOf("log[") != -1){ input = displaylog(input);}
- var rep1 = ["*","sqrt","pi",">=","<="," and "," or "," isin "," in "," notin","R","N","dy/dx"];
- var rep2 = ["&sdot;","&radic;","\\pi","\\ge"," \\le "," \\wedge "," \\Vee "," \\in "," \\in "," \\notin ","\\R","\\N","{\\d y}/{\\d x}"];
+ var rep1 = ["log(","*","sqrt","pi",">=","<="," and "," or "," isin "," in "," notin","R","N","dy/dx"];
+ var rep2 = ["fck(","&sdot;","&radic;","\\pi","\\ge"," \\le "," \\wedge "," \\Vee "," \\in "," \\in "," \\notin ","\\R","\\N","{\\d y}/{\\d x}"];
  for(var i=0; i < rep1.length ; i++){
    input = input.split(rep1[i]).join(rep2[i])
  }
- var math = ["sin","cos","tan","asin","acos","atan"];
- var rep_math = ["\\sin","\\cos","\\tan","\\asin","\\acos","\\atan"];
+ // replace log( by fck( to avoid a clash between log[a](b)
+ // sqrt[a](b) is no problem : sqrt -> &radic;
+ var math = ["sin","cos","tan","asin","acos","atan","fck"];
+ var rep_math = ["\\sin","\\cos","\\tan","\\asin","\\acos","\\atan","\\fck"];
  var tmp_right;var tmp_left;var idx;
  for(var i=0;i < math.length ; i++){
   idx = input.indexOf(math[i])
@@ -231,6 +232,8 @@ function rewrite(input){
   }
   input=input.replace(/@/g,rep_math[i]);
  };
+ if(input.indexOf("log[") != -1){ input = displaylog(input);}
+ input=input.replace(/fck/g,'log'); 
  input=input.replace(/#/g,'(');
  input=input.replace(/!/g,')');
  return input;
