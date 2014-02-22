@@ -65,102 +65,96 @@ function sendanswer(){
 
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
-    <td class="exercise_t">
-	!if $(question$n) != $empty
+    <td class="exercise_c">
+	!if $(question$n)!= $empty
 	    $(question$n)
-	    <br />
-	!endif
-	!if $(formula$n) != $empty
-	    !insmath $(formula$n)
 	!endif
 	!if $exotext != $empty
 	    <br />
 	    $exotext
 	!endif
-    </td>
-    !if $make_tr=1
-    </tr>
-    <tr>
-    !endif
-    </tr>
-    <tr>
-    <td class="exercise_c">
 	<table>
 	    <tr>
+	    !if $(formula$n) != $empty
+	    <td>
+		!insmath $(formula$n)
+	    </td>
+	    <td>
+		$m_rightarrow
+	    </td>
+	    !endif
 	    <td id="math_out" style="font-size:120%;"></td>
 	    </tr>
-	    <tr>
-	    <td>
-		<textarea class="schaervoorde_input" id="JSMathView" rows="2" cols="40"></textarea>
-	    </td>
+	</table>
+	<textarea class="schaervoorde_input" id="JSMathView" rows="2" cols="40"></textarea>
+    </td>
+    </tr>
+    <tr>
+    <td>
+	<table class="demospecial" id="show_it">
+	    <tr id="math_op0">
+	    <!-- contents of mathviewpanel -->
 	    </tr>
-	    <tr>
-	    <td>
-		<table class="demospecial" id="show_it">
-		    <tr id="math_op0"></tr>
-		    <tr id="math_op1" style="display:table-row">
-		    <td onclick="javascript:button('^');">	^</td>
-		    <td onclick="javascript:button('/');">	/</td>
-		    <td onclick="javascript:button('*');">	*</td>
-		    <td onclick="javascript:button('+');">	+</td>
-		    <td onclick="javascript:button('-');">&minus;</td>
-		    <td onclick="javascript:button('(');">	(</td>
-		    <td onclick="javascript:button(')');">	)</td>
-		    <td onclick="javascript:button('&euro;');">&euro;</td>
-		    </tr>
-		    <tr id="math_op2" style="display:table-row">
-		    <td onclick="javascript:button('&radic;()');">&radic;()</td>
-		    <td onclick="javascript:button('sin()');">sin</td>
-		    <td onclick="javascript:button('cos()');">cos</td>
-		    <td onclick="javascript:button('tan()');">tan</td>
-		    <td onclick="javascript:button('log()');">log</td>
-		    <td onclick="javascript:button('pi');">&pi;</td>
-		    <td colspan="2" id="clear_it" style="background-color:orange;">
-	    	    !record 67 of $remarkdir/commonremarks.$taal
-		    </td>
-		    </tr>
-		    <tr id="math_op3" style="display:none">
-		    <td onclick="javascript:button(' in ');">   &#8712;</td>
-		    <td onclick="javascript:button(' notin ');">&#8713;</td>
-		    <td onclick="javascript:button(' and ');">  &#8743;</td>
-		    <td onclick="javascript:button(' or ');">   &#8744;</td>
-		    <td onclick="javascript:button(' <= ');">   &#8804;</td>
-		    <td onclick="javascript:button(' >= ');">   &#8805;</td>
-		    <td onclick="javascript:button(' R ');">    &#8476;</td>
-		    <td onclick="javascript:button(' N ');">    N</td>
-		    </tr>
-		    <tr id="math_op4" style="display:none">
-		    <td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[5]()');"><sup>5</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[6]()');"><sup>6</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[7]()');"><sup>7</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[8]()');"><sup>8</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[9]()');"><sup>9</sup>&radic;()</td>
-		    <td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
-		    </tr>
-		    <tr id="math_op5" style="display:none">
-		    <td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
-		    <td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
-		    <td onclick="javascript:button('log[4]()');"><sup>4</sup>log()</td>
-		    <td onclick="javascript:button('log[5]()');"><sup>5</sup>log()</td>
-		    <td onclick="javascript:button('log[6]()');"><sup>6</sup>log()</td>
-		    <td onclick="javascript:button('log[7]()');"><sup>7</sup>log()</td>
-		    <td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
-		    <td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
-		    </tr>
-		    <tr id="math_op6" style="display:none">
-		    <td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
-		    <td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
-		    <td onclick="javascript:button(' and ');">  &#8743;</td>
-		    <td onclick="javascript:button(' or ');">   &#8744;</td>
-		    <td onclick="javascript:button(' <= ');">   &#8804;</td>
-		    <td onclick="javascript:button(' >= ');">   &#8805;</td>
-		    <td onclick="javascript:button('f(x) = ');">   f(x) =</td>
-		    <td onclick="javascript:button('F(x) = ');">    F(x) =</td>
-		    </tr>
-		</table>
-	    </td>
+	    <tr id="math_op1" style="display:table-row">
+		<td onclick="javascript:button('^');">	^</td>
+		<td onclick="javascript:button('/');">	/</td>
+		<td onclick="javascript:button('*');">	*</td>
+		<td onclick="javascript:button('+');">	+</td>
+		<td onclick="javascript:button('-');">&minus;</td>
+		<td onclick="javascript:button('(');">	(</td>
+		<td onclick="javascript:button(')');">	)</td>
+		<td onclick="javascript:button('&euro;');">&euro;</td>
+	    </tr>
+	    <tr id="math_op2" style="display:table-row">
+		<td onclick="javascript:button('&radic;()');">&radic;()</td>
+		<td onclick="javascript:button('sin()');">sin</td>
+		<td onclick="javascript:button('cos()');">cos</td>
+		<td onclick="javascript:button('tan()');">tan</td>
+		<td onclick="javascript:button('log()');">log</td>
+		<td onclick="javascript:button('pi');">&pi;</td>
+		<td colspan="2" id="clear_it" style="background-color:orange;">
+	    	!record 67 of $remarkdir/commonremarks.$taal
+		</td>
+	    </tr>
+	    <tr id="math_op3" style="display:none">
+		<td onclick="javascript:button(' in ');">   &#8712;</td>
+		<td onclick="javascript:button(' notin ');">&#8713;</td>
+		<td onclick="javascript:button(' and ');">  &#8743;</td>
+		<td onclick="javascript:button(' or ');">   &#8744;</td>
+		<td onclick="javascript:button(' <= ');">   &#8804;</td>
+		<td onclick="javascript:button(' >= ');">   &#8805;</td>
+		<td onclick="javascript:button(' R ');">    &#8476;</td>
+		<td onclick="javascript:button(' N ');">    N</td>
+	    </tr>
+	    <tr id="math_op4" style="display:none">
+		<td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[5]()');"><sup>5</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[6]()');"><sup>6</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[7]()');"><sup>7</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[8]()');"><sup>8</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[9]()');"><sup>9</sup>&radic;()</td>
+		<td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
+	    </tr>
+	    <tr id="math_op5" style="display:none">
+		<td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
+		<td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
+		<td onclick="javascript:button('log[4]()');"><sup>4</sup>log()</td>
+		<td onclick="javascript:button('log[5]()');"><sup>5</sup>log()</td>
+		<td onclick="javascript:button('log[6]()');"><sup>6</sup>log()</td>
+		<td onclick="javascript:button('log[7]()');"><sup>7</sup>log()</td>
+		<td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
+		<td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
+	    </tr>
+	    <tr id="math_op6" style="display:none">
+		<td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
+		<td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
+		<td onclick="javascript:button(' and ');">  &#8743;</td>
+		<td onclick="javascript:button(' or ');">   &#8744;</td>
+		<td onclick="javascript:button(' <= ');">   &#8804;</td>
+		<td onclick="javascript:button(' >= ');">   &#8805;</td>
+		<td onclick="javascript:button('f(x) = ');">   f(x) =</td>
+		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
 	    </tr>
 	</table>
     </td>
@@ -170,14 +164,17 @@ function sendanswer(){
     <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
     !if $wims_user!=supervisor
-	<input type="button" id="schaersvoorde_extra_button" onclick="document.getElementById('JSMathView').value = '$(answer$n)';" value="$wims_firstname $wims_lastname" /> 
+	<input type="button" id="schaersvoorde_extra_button" onclick="document.getElementById('JSMathView').value = '$(answer$n)';doMathSrc(1);" value="$wims_firstname $wims_lastname" /> 
     !endif
 </div>
 
 <script type="text/javascript">
  var JSMathView = document.getElementById("JSMathView");
- var show_it = document.getElementById("show_it");
- var clear_it = document.getElementById("clear_it");
+ var show_it    = document.getElementById("show_it");
+ var clear_it   = document.getElementById("clear_it");
+ var math_out   = document.getElementById("math_out");
+
+ <!-- mathviewpanel something like module_title:sqrt():sin():f(x):F(x) -->
  var mathviewpanel ="$mathviewpanel";
  mathviewpanel = mathviewpanel.split(':');
  if(mathviewpanel.length > 1){
@@ -198,9 +195,10 @@ function sendanswer(){
     document.getElementById('math_op5').style = 'table-row';
     document.getElementById('math_op6').style = 'table-row';
  }
+ 
  function button(myValue){var myField =  document.getElementById("JSMathView");if(document.selection){myField.focus();var sel = document.selection.createRange();sel.text = myValue;} else { if(myField.selectionStart || myField.selectionStart == '0'){var startPos = myField.selectionStart;var endPos = myField.selectionEnd;myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos,myField.value.length);} else {myField.value += myValue;}}}
- function displayroot(t){var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;t2=t.indexOf("](");if(t2==-1){setAlarm(r11);t="error";return t;};org=t;t=t.replace(/sqrt\(/g,"SQRT(");t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");if(test.indexOf("#")!=-1){setAlarm(r11);t="error"; return t;};t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){power=t.substring(t2+1,t3);if(power.length==0){setAlarm(r16);t="error";return t;};if(power<2){setAlarm(r16);t="error";return t;}t4="["+power+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;}}}};begin=begin+2;sqrt=t.substring(begin,end);mod=(power % 2);if(sqrt<0 && mod!=1){setAlarm(r16);t="error";return t;};t=t.replace("@("+sqrt+")","{^"+power+"&radic;#"+sqrt+"!}");}else{t=t.replace("]","?");}trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}};t=t.replace(/SQRT\(/g,"&radic;#");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"&radic;");return t;}
- function displaylog(t){var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;t2=t.indexOf("](");if(t2==-1){setAlarm(r11);t="error";return t;}t=t.replace(/log\(/g,'LOG(');t=t.replace(/log/g,"@");t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){grondtal=t.substring(t2+1,t3);if(grondtal=="10"){setAlarm(r14);t="error";return t;};if(grondtal=="e" || grondtal=='E'){setAlarm(r15);t="error";return t;};t4="["+grondtal+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;};};};};begin=begin+2;teller=t.substring(begin,end);if(grondtal==teller){setAlarm(r17);};t=t.replace("@("+teller+")","{^"+grondtal+"~#"+teller+"!}");}else{t=t.replace("[","%");};t2=t.indexOf("[");trouble++;if(trouble>100){setAlarm(r20);t="error";return t;};};t=t.replace(/\%/g,"[");t=t.replace(/~/g,"log");t=t.replace(/LOG\(/g,"log#");t=t.replace(/@/g,"log");return t;}
+ function displayroot(t){var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;t2=t.indexOf("](");if(t2==-1){return;};org=t;t=t.replace(/sqrt\(/g,"SQRT(");t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");if(test.indexOf("#")!=-1){return;};t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){power=t.substring(t2+1,t3);if(power.length==0){return t;};if(power<2){return;}t4="["+power+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;}}}};begin=begin+2;sqrt=t.substring(begin,end);mod=(power % 2);if(sqrt<0 && mod!=1){return;};t=t.replace("@("+sqrt+")","{^"+power+"&radic;#"+sqrt+"!}");}else{t=t.replace("]","?");}trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}};t=t.replace(/SQRT\(/g,"&radic;#");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"&radic;");return t;}
+ function displaylog(t){var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;t2=t.indexOf("](");if(t2==-1){return;}t=t.replace(/log\(/g,'LOG(');t=t.replace(/log/g,"@");t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){grondtal=t.substring(t2+1,t3);if(grondtal=="10"){return;};if(grondtal=="e" || grondtal=='E'){return;};t4="["+grondtal+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;};};};};begin=begin+2;teller=t.substring(begin,end);if(grondtal==teller){setAlarm(r17);};t=t.replace("@("+teller+")","{^"+grondtal+"~#"+teller+"!}");}else{t=t.replace("[","%");};t2=t.indexOf("[");trouble++;if(trouble>100){setAlarm(r20);t="error";return t;};};t=t.replace(/\%/g,"[");t=t.replace(/~/g,"log");t=t.replace(/LOG\(/g,"log#");t=t.replace(/@/g,"log");return t;}
  function find_group(t){var left=0;var idx=-1;while(t.indexOf('(') != -1 ){t=t.replace('(','#');left++;idx = t.indexOf(')');while( idx != -1 ){t=t.replace(')','!');left--;if(left == 0){t=t.substring(0,idx+1)+"}"+t.substring(idx+1,t.length);return t;};idx=t.indexOf(')');};};return t;}
 
 function rewrite(input){
@@ -237,7 +235,6 @@ clear_it.addEventListener('click',function(e){JSMathView.value=" ";doMathSrc(1);
 JSMathView.addEventListener('keyup',function(e){doMathSrc(1);},false);
 
 function doMathSrc(n) {
- var math_out = document.getElementById("math_out");
  var org = JSMathView.value;
  var ms = rewrite(org);
  if(!ms){return;};

@@ -1,4 +1,13 @@
 /*
+ 
+ jm.evers 22/2/2014
+ preliminary version of jqmath written with some jquery (grrrr)
+ when wims-integration is finished, 
+ I will rewrite jqmath , removing all JQuery !...the most used useless js-glue-library 
+  
+*/
+
+/*
  * jQuery JavaScript Library v1.4.3
  * http://jquery.com/
  *
