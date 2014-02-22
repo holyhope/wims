@@ -49,12 +49,13 @@
   !if $login!=$empty
     <div class="field box">
      <label>$wims_name_Login</label>
-      <div class="formHelp">$name_internal</div>
       <span class="tt wims_login">$login</span>
+      <div class="formHelp">$name_internal</div>
      </div>
   !endif
     <div class="field box">
      <label for="user_auth">$wims_name_Login</label>
+     <input size="30"name="user_auth" value="$user_external_auth" id="user_auth" />
      <div class="formHelp">$name_external,
       <span class="wims_warning wims_small_remark">$name_login_external
       !if $idp_method isitemof $idp_method_list
@@ -62,7 +63,6 @@
       !endif
       </span>
      </div>
-     <input size="30"name="user_auth" value="$user_external_auth" id="user_auth" />
    </div>
 !endif
 
@@ -89,16 +89,17 @@
   !default user_supervise=!getdef user_supervise in wimshome/log/classes/$wims_class/.users/$login
     <div class="field box">
      <label for="up_supervise">$name_gestion</label>
+     <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise" />
      <div class="formHelp"><span class="tt">$wims_class/1/101, ... </span></div>
-     <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise" /
     </div>
   !endif
-  </fieldset>
-<div class="wimscenter wimsform">
+  <div class="wimscenter wimsform">
 <input type="submit" name="confirm" value="$wims_name_tosave" />
 &nbsp;
 <input type="submit" name="cancel" value="$wims_name_giveup" />
 </div>
+  </fieldset>
+
 
 !formend
 

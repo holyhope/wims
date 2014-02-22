@@ -33,8 +33,8 @@ $wims_name_account_property\
      <label for="up_supervise">$name_gestion</label>
     !if $type_class iswordof 2 4
       !if $wims_user=supervisor
-      <div class="formHelp"><span class="tt">$wims_class/1, ... </span></div>
       <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
+      <div class="formHelp"><span class="tt">$wims_class/1, ... </span></div>
       !else
       <input readonly="readonly" size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
       !endif
@@ -94,14 +94,16 @@ $wims_name_account_property\
   <div class="field box">
     <label for="up_external_auth">$name_external_auth</label>
 	<input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth" />
-	!set wims_ref_class=wims_button_help
+	!set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=authentification $wims_name_help
  </div>
 !else
  <div class="field box">
    <label for="passcheck">$name_classpassword</label>
-   <div class="formHelp"><span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span></div>
- 	<input size="14" type="password" name="passcheck" id="passcheck" />
+   	<input size="14" type="password" name="passcheck" id="passcheck" />
+   	<div class="formHelp">
+   	 <span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span>
+   	</div>
  </div>
 !endif
 :end

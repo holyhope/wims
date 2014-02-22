@@ -77,23 +77,23 @@
  !form reply
  <input type="hidden" name="step" value="1" />
 
-<fieldset class="property_fields">
+<fieldset class="property_fields blockcenter">
     <legend></legend>
     <div class="field box">
      <label for="institution">$name_Name_portal</label>
-      <div class="formHelp">$name_atmost $instlim $name_characters</div>
   !if $Cltype isin 13
    !let institution=$wims_institutionname
    $institution
   !else
    <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim" />
+   <div class="formHelp">$name_atmost $instlim $name_characters</div>
   !endif
    </div>
 
    <div class="field box">
     <label for="description">$wims_name_name $name_classesss</label>
-    <div class="formHelp">$name_atmost $desclim $name_characters</div>
     <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" />
+    <div class="formHelp">$name_atmost $desclim $name_characters</div>
   </div>
   !if $Cltype notin 24
    !set nblevel=!itemcnt $wims_listlevel
@@ -129,26 +129,27 @@
 
    <div class="field box">
      <label for="email">$wims_name_email</label>
-     !if $regpolicy=email
-      <div class="formHelp">$name_regpolicy</div>
-     !endif
     !if $Cltype=1 and $email!=$empty
       !default email=$email
       $email
     !else
       <input size="$emaillim2" name="email" value="$email" id="email" maxlength="$emaillim2" />
     !endif
+    !if $regpolicy=email
+      <div class="formHelp">$name_regpolicy</div>
+     !endif
    </div>
    !if $Cltype!=1
     <div class="field box">
      <label for="passsup">$wims_name_Password ($name_sup)</label>
-     <div class="formHelp">$name_warningpass  $name_help1</div>
      <input size="16" type="password" name="passsup" id="passsup" maxlength="16" />
+     <div class="formHelp">$name_warningpass $name_help1</div>
     </div>
    !endif
 
    <div class="field box">
      <label for="password">$wims_name_Password ($name_classesss)</label>
+     <input size="16" type="password" name="password" id="password" maxlength="16" />
      <div class="formHelp">$name_warningpass
       !if $Cltype<2
        $name_help2
@@ -156,11 +157,9 @@
        $name_help3
      !endif
      </div>
-     <input size="16" type="password" name="password" id="password" maxlength="16" />
    </div>
    <div class="field box">
     <label for="exp_day">$wims_name_expiration</label>
-    <div class="formHelp">$name_help_date</div>
     <select name="exp_day" id="exp_day">
   !for i=1 to 31
    <option value="$i"
@@ -192,19 +191,20 @@
    </option>
   !next i
   </select>
+  <div class="formHelp">$name_help_date</div>
   </div>
    <div class="field box">
      <label for="limit">$name_help_limit</label>
-     <div class="formHelp">&lt; $wims_class_user_limit</div>
     !let num=!charcnt $wims_class_user_limit
     <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
+    <div class="formHelp">&lt; $wims_class_user_limit</div>
   </div>
 
    <div class="field box">
      <label for="secure">$name_secure ($name_sup)</label>
-     <div class="formHelp"> $name_host</div>
      !!!default secure=all
      <input size="30" name="secure" value="$secure" id="secure" />
+     <div class="formHelp">$name_host</div>
     !reset secure
   !!!if $Cltype<3
   !! $name_optional.
@@ -213,15 +213,14 @@
    !if $cltype isin 024
     <div class="field box">
      <label for="cas_auth">$name_cas ($name_optional)</label>
-     <div class="formHelp">$name_cas_help</div>
      <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
+     <div class="formHelp">$name_cas_help</div>
     </div>
   !endif
+  <div class="wimscenter wimsform">
+   <input type="submit" value="$name_continue" />
+  </div>
 </fieldset>
-<div class="wimscenter wimsform">
- <input type="submit" value="$name_continue" />
-</div>
-
 
 !formend
 
@@ -233,20 +232,24 @@
 
  !form reply
  <input type="hidden" name="step" value="2" />
- <div class="wimsform">
+ <fieldset class="property_fields blockcenter">
   !if $Cltype!=1
-   <label for="passsup"> $wims_name_Password ($name_sup)</label>
-   <input type="password" name="passsup" id="passsup" maxlength="16" />
-    <br />
+   <div class="field box">
+    <label for="passsup"> $wims_name_Password ($name_sup)</label>
+    <input type="password" name="passsup" id="passsup" maxlength="16" />
+   </div>
   !endif
   !if $pword!=$empty
-   <label for="password">$wims_name_Password ($name_classesss)</label>
-   <input type="password" name="password" id="password" maxlength="16" />
-   <br />
+   <div class="field box">
+     <label for="password">$wims_name_Password</label>
+     <input type="password" name="password" id="password" maxlength="16" />
+     <div class="formHelp">$name_classesss</div>
+   </div>
   !endif
-  <p class="wimscenter"><input type="submit" value="$name_continue" /></p>
- </div>
-
+   <div class="wimscenter wimsform">
+    <input type="submit" value="$name_continue" />
+   </div>
+ </fieldset>
 !formend
  !goto end1
 !endif
@@ -254,16 +257,20 @@
 !if $step=2
  !read lang/help.phtml.$modu_lang step2
  !form reply
-<div class="wimsform">
  <input type="hidden" name="step" value="3" />
- <p class="wimscenter">
-  <label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode" />
- </p>
- <p><input type="submit" value="$name_continue" /></p>
-</div>
+   <fieldset class="property_fields blockcenter">
+    <div class="field box">
+     <label for="typecode">$name_code</label>
+     <input size="12" name="typecode" id="typecode" />
+    </div>
+    <div class="wimscenter wimsform">
+     <input type="submit" value="$name_continue" />
+    </div>
+   </fieldset>
 
 !formend
- <span class="wims_warning">$wims_name_warning</span>: <span class="warning_code">$name_warning_code</span>
+ <span class="wims_warning">$wims_name_warning</span>:
+ <span class="warning_code">$name_warning_code</span>
  !goto end1
 !endif
 
