@@ -1,7 +1,7 @@
 !if $job2=connectlink
 !!FIXME php
 !read adm/class/initclass $wims_class,auth
- !if $(class_authidp[1;])=cas 
+ !if $(class_authidp[1;])=cas
    !set link_=$host_auth/login?service=
  !else
    !set link_=http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?
@@ -15,202 +15,201 @@
 !endif
 !form reply
 <input type="hidden" name="up_job" value="list" />
-!reset table_center
-$table_header
-$table_tr<td>$name_name_institution</td>
-<td colspan="3">
+<fieldset class="property_fields blockcenter">
+  <legend>$wims_class</legend>
+  <div class="field box">
+     <label>$name_name_institution</label>
 !if $supertype notin 24 or $classdepth=1
- <input size="50" name="up_institution" value="$class_institution" />
+     <input size="50" name="up_institution" id="up_institution" value="$class_institution" />
 !else
- $class_institution
+     $class_institution
 !endif
-</td></tr>
-$table_tr<td>$name_name_number</td><td colspan="3">$wims_class</td></tr>
-$table_tr<td>$name_name_class</td>
-<td colspan="3">
-<input size="50" name="up_description" value="$class_description" /></td></tr>
-$table_tr<td>$name_secure
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
-</td>
-<td colspan="3">
-<input size="50" name="up_secure" value="$class_secure" /></td></tr>
-$table_tr<td>$wims_name_nameteacher
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
-</td>
-<td colspan="3">
-<input size="40" name="up_supervisor" value="$class_supervisor" /></td></tr>
-$table_tr<td>$wims_name_email
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=email $wims_name_help
-</td>
-<td colspan="3">
-<input size="40" name="up_email" value="$class_email" /></td></tr>
-$table_tr<td>$name_optionword
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=option $wims_name_help
-</td>
-<td colspan="3">
-<input size="40" name="up_option" value="$class_option" />
-</td></tr>
-!if $wims_supertype!=4 or $class_typename!=class
-$table_tr<td>
-$name_devaccount
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
+   </div>
 
-</td><td colspan="3">
-!set modtoolchg=1
-!formcheckbox modtoolchg list 0 prompt $wims_name_change
-</td></tr>
-!endif
-$table_tr<td>
-$name_lock_level
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
+   <div class="field box">
+     <label for="up_description">$name_name_class</label>
+     <input size="50" name="up_description" id="up_description" value="$class_description" />
+   </div>
 
-</td><td>
-!set up_lock=$class_lock
-!default up_lock=0
-!formselect up_lock list 0,2,3,4,5,6,7
-</td><td>$name_bestscore
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
+   <div class="field box">
+     <label>$name_secure</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
+     <input size="50" name="up_secure" id="up_secure" value="$class_secure" />
+    </div>
 
+    <div class="field box">
+     <label>$wims_name_nameteacher</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
+     <input size="40" name="up_supervisor" id="up_supervisor" value="$class_supervisor" />
+    </div>
+
+     <div class="field box">
+     <label>$wims_name_email</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
+     <input size="40" name="up_email" id="up_email" value="$class_email" />
+    </div>
+
+    <div class="field box">
+      <label for="up_option">$name_optionword</label>
+ !set wims_ref_class=wims_button_help float_right
+     !href cmd=help&special_parm=config&special_parm2=option $wims_name_help
+     <input size="40" name="up_option" id="up_option" value="$class_option" />
+    </div>
+
+    <div class="field box">
+     <label>$name_bestscore</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
 !default class_topscores=0
 !default class_anonymtopscores=yes
 !set up_anonymtopscores=$class_anonymtopscores
-</td><td><input size="3" name="up_topscores" value="$class_topscores" />
+   <input size="3" name="up_topscores" id="up_topscores" value="$class_topscores" />
 /
 !formselect up_anonymtopscores list no,yes prompt $wims_name_no,$wims_name_yes
-</td></tr>
-$table_tr<td>$wims_name_Language
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
+    </div>
 
-</td><td>
+    <div class="field box">
+      <label for="up_lang">$wims_name_Language</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
 !set up_lang=$class_lang
 !set langs=!words2items $wims_site_languages
-!formselect up_lang list $langs
-</td>
-<td>
-$name_level
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=level $wims_name_help
+   !formselect up_lang list $langs
+    </div>
 
-</td><td>
+    <div class="field box">
+      <label for="up_level">$name_level</label>
+!set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=level $wims_name_help
 !set up_level=$class_level
-!formselect up_level list $wims_listlevel prompt $name_wims_listlevel
-</td></tr>
-$table_tr<td>$name_limit
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
+  !formselect up_level list $wims_listlevel prompt $name_wims_listlevel
+   </div>
 
-</td><td><input size="5" name="up_limit" value="$class_limit" />
-</td><td>$name_expirationdate
-<span class="small bold">yyyymmdd</span>
+   <div class="field box">
+     <label for="up_limit">$name_limit</label>
 &nbsp;
-!set wims_ref_class=wims_button_help
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
+     <input size="5" name="up_limit" id="up_limit" value="$class_limit" />
+   </div>
+
+   <div class="field box">
+      <label for="up_expiration">$name_expirationdate</label>
+!set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
-</td><td>
 !if $class_type notin 13
- <input size="8" maxlength="8" name="up_expiration" value="$class_expiration" />
+      <input size="8" maxlength="8" name="up_expiration" id="up_expiration" value="$class_expiration" />
 !else
- <span class="tt">$class_expiration</span>
+     <span class="tt">$class_expiration</span>
 !endif
-</td></tr>$table_tr<td>$name_register_exo
-&nbsp;
-!set wims_ref_class=wims_button_help
+    <div class="formHelp">yyyymmdd</div>
+   </div>
+
+   <div class="field box">
+     <label for="up_exolog">$name_register_exo</label>
+!set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
-</td>
 !default class_exolog=0
-<td>
  !let up_exolog=$class_exolog
  !formselect up_exolog from 0 to $wims_exolog_limit
-</td>
-<td>$name_register_exam
- &nbsp;
- !set wims_ref_class=wims_button_help
- !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
+   </div>
+
+   <div class="field box">
+    <div class="inline">
+      <label for="up_examlog">$name_register_exam
  !default class_examlog=$wims_examlog_limit
  !let up_examlog=$class_examlog
  !formselect up_examlog from 0 to $wims_examlog_limit
-</td>
-<td>$name_visible
-&nbsp;
-!set wims_ref_class=wims_button_help
+    !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
+   </div>
+      <div class="float_right">
+      <label for="up_examshow">$name_visible</label>
+!set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
 !default class_examshow=yes
 !set up_examshow=$class_examshow
-!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
-</td></tr>
+  !formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
+    </div>
+   </div>
 
-$table_tr<td>$name_config_supconnectshowed &nbsp; </td>
- <td colspan="3">
+   <div class="field box">
+      <label for="up_supconnectshowed">$name_config_supconnectshowed</label>
   !set up_supconnectshowed=$class_supconnectshowed
   !default up_supconnectshowed=no
-  !formselect up_supconnectshowed list no,yes prompt $wims_name_no,$wims_name_yes
- </td>
-</tr>
+    !formselect up_supconnectshowed list no,yes prompt $wims_name_no,$wims_name_yes
+   </div>
 
-$table_tr<td>$name_config_authscoresuspend &nbsp; </td>
- <td colspan="3">
+   <div class="field box">
+      <label for="up_authscoresuspend">$name_config_authscoresuspend</label>
   !set up_authscoresuspend=$class_authscoresuspend
   !default up_authscoresuspend=yes
   !formselect up_authscoresuspend list no,yes prompt $wims_name_no,$wims_name_yes
- </td>
-</tr>
-$table_tr<td>$name_config_exotitleform &nbsp;</td>
-<td colspan="3">
+   </div>
+
+   <div class="field box">
+      <label for="up_exotitleform">$name_config_exotitleform &nbsp;</label>
  !set up_exotitleform=$class_exotitleform
  !default up_exotitleform=0
  !formselect up_exotitleform list -1,0,1,2,3 prompt $name_config_exotitleformoption
-</tr>
 !set up_ent=$class_ent
-$table_tr<td>$wims_name_config_ent
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
-</td>
-<td colspan="3">
-<input size="50" name="up_ent" value="$class_ent" /></td></tr>
-!if $class_type iswordof 0 2 4
-!set up_external_auth=$class_external_auth
-$table_tr<td>$wims_name_external_auth
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=external_auth $wims_name_help
-</td>
-<td colspan="3">
-<textarea name="up_external_auth" cols="50" rows="6">$class_external_auth</textarea>
-!!<input size="50" name="up_external_auth" value="$class_external_auth" />
-!set up_mixed_external_auth=$class_mixed_external_auth
-!default up_mixed_external_auth=0
-!formradio up_mixed_external_auth list 0,1,2 prompt $wims_name_no, $name_mix_auth, $wims_name_yes
-</td></tr>
-!endif
-$table_end
-<div class="wimscenter wimsform">
-<input type="submit" name="save" value="$wims_name_tosave" />
-&nbsp;
-<input type="submit" name="abandon" value="$wims_name_giveup" />
-</div>
+   </div>
 
+   <div class="field box">
+      <label for="up_ent">$wims_name_config_ent</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
+     <input size="50" name="up_ent" id="up_ent" value="$class_ent" />
+   </div>
+
+!!! Unuseful nox
+!!!if $class_type iswordof 0 2 4
+!! !set up_external_auth=$class_external_auth
+!!     <div class="field box">
+!!       <label for="up_external_auth">$wims_name_external_auth</label>
+!!!set wims_ref_class=wims_button_help float_right
+!!!href cmd=help&special_parm=config&special_parm2=external_auth $wims_name_help
+!!   <textarea name="up_external_auth" id="up_external_auth" cols="50" rows="6">$class_external_auth</textarea>
+!!!!<input size="50" name="up_external_auth" value="$class_external_auth" />
+!!!set up_mixed_external_auth=$class_mixed_external_auth
+!!!default up_mixed_external_auth=0
+!!!formradio up_mixed_external_auth list 0,1,2 prompt $wims_name_no, $name_mix_auth, $wims_name_yes
+!!    </div>
+!!!endif
+
+!if $wims_supertype!=4 or $class_typename!=class
+   <div class="field box">
+    <label for="modtoolchg">$name_devaccount</label>
+  !set wims_ref_class=wims_button_help float_right
+  !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
+  !set modtoolchg=1
+     !formcheckbox modtoolchg list 0 prompt $wims_name_change
+    </div>
+!endif
+
+!! Lock does not work
+!! <div class="field box">
+!!      <label>$name_lock_level</label>
+!!  !set wims_ref_class=wims_button_help float_right
+!!   !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
+!!  !set up_lock=$class_lock
+!!  !default up_lock=0
+!!  !formselect up_lock list 0,2,3,4,5,6,7
+!!   </div>
+
+  <div class="wimscenter wimsform">
+    <input type="submit" name="save" value="$wims_name_tosave" />
+&nbsp;
+    <input type="submit" name="abandon" value="$wims_name_giveup" />
+  </div>
+</fieldset>
 !formend
 <p>
 $name_apparence :
-!href module=adm/light&phtml=useropts.phtml.$lang $name_pref 
+!href module=adm/light&phtml=useropts.phtml.$lang $name_pref
 ,
 !href cmd=reply&job=present $wims_name_config_present
 ,
@@ -228,7 +227,7 @@ $name_apparence :
 !href cmd=reply&job=list&job2=connectlink $name_connectlink
 .
 </p>
-!if $classdepth<=1 
+!if $classdepth<=1
 <p>
 !href cmd=reply&job=authtype $name_useauth
 $name_ldap.
@@ -268,23 +267,23 @@ $name_index
 ).
 </p><p>
 !href cmd=reply&job=arch&job2=first $name_load
-, 
+,
 !href cmd=reply&job=access $name_restriction1
-, 
- !href cmd=reply&job=grestrict $name_restriction2 
+,
+ !href cmd=reply&job=grestrict $name_restriction2
 $name_score,
 !href cmd=reply&job=clean $name_clean
 .
 </p><p>
 $name_config
 !href module=adm/forum/mboard&job=config $name_forum
-, 
+,
 !href module=adm/class/motd $name_motd
-,  
+,
 !href module=adm/class/cdt&job=config $name_cdt
-,  
+,
 !href module=adm/class/livret&job=config $name_livret
-,  
+,
 !href module=adm/class/sequence&job=config $name_seq
 .
 </p><p>
