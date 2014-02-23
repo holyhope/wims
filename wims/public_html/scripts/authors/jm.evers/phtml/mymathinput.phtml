@@ -23,18 +23,22 @@ function sendanswer(){
   <!-- MathView js input html5 applet -->
   if(document.getElementById("JSMathView")){
    input=document.getElementById("JSMathView").value;
-   <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
+   if( input.length == 0) {setAlarm(r1+"\ $counter");return;};
+   if( input.length > 200 ){setAlarm(r2); return;};
+   if(input.indexOf(',') != -1 && input.indexOf('table') == -1){setAlarm(r4);return;};
    !if $special_fraction=1
+   <!-- allow 1 2/3 to be send as 1+2/3 in stead of 12/3... -->
     input = singlespace(input);
     input = input.replace(/\ /g,'+');
     if(input.indexOf('+') == 0 ){input = input.substring(1,input.length);}
     if(input.indexOf('+') == input.length ){input = input.substring(0,input.length-1);}
    !endif
-   input=input.replace(/\u221A/g,'sqrt');
-   input=input.replace(/\u20AC/g,'euro');
-   if( input.length == 0) {setAlarm(r1+"\ $counter");return;};
-   if( input.length > 200 ){setAlarm(r2); return;};
-   if(input.indexOf(',') != -1 && input.indexOf('table') == -1){setAlarm(r4);return;};
+   <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
+   var unicode_math = ["\u2227","\u2228","\u2264","\u2265","\u2212","\u221A","\u20AC","\u03C0","\u2208","\u2209","\u21D2","\u27F6","\u2192","\u2194","\u21D4","\u2211","\\table","\u221E","\u222B"];
+   var calc_math = [" and "," or "," <= "," >= ","-","sqrt"," euro ","pi"," in "," notin "," -> "," -> "," -> "," -> "," -> "," SUM "," "," inf "," int "];
+   for(var i=0; i < unicode_math.length ; i++){
+    input = input.split(unicode_math[i]).join(calc_math[i]);
+   }
    if(check_f(input) == 0){return;};
    if(check_o(input) == 0){return;};
    if(check_log_NaN(input) == 0){return;}
@@ -50,19 +54,20 @@ function sendanswer(){
    };
   !if $convert_root=0
    input = arrows(input,$my_arrows,"","");if(input == "error"){return;};
-   input = nthroot(input);if(input ==" error"){return;};
+   input = nthroot(input);if(input == "error"){return;};
    if(input.indexOf("[") !=- 1){
     if(input.indexOf("sqrt[")!=-1){
-     input=specialroot(input);if(input=="error"){return;};
+     input=specialroot(input);if(input == "error"){return;};
     };
     if(input.indexOf("log[")!=-1){
-     input=speciallog(input);if(input=="error"){return;};
+     input=speciallog(input);if(input == "error"){return;};
     };
     if( input.indexOf("[") !=-1){setAlarm(r13);return;};
    };
   !endif
    reply[inputfieldnumber] = input;inputfieldnumber = 1;
   };
+  alert(reply);
   if(reply[0].length == 0 ){setAlarm(r1);return;};show = show + "</ol>";
   myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 }
@@ -108,7 +113,7 @@ function sendanswer(){
 		<td onclick="javascript:button('/');">	/</td>
 		<td onclick="javascript:button('*');">	*</td>
 		<td onclick="javascript:button('+');">	+</td>
-		<td onclick="javascript:button('-');">&minus;</td>
+		<td onclick="javascript:button(' &minus; ');">&minus;</td><!-- \u2212 -->
 		<td onclick="javascript:button('(');">	(</td>
 		<td onclick="javascript:button(')');">	)</td>
 		<td onclick="javascript:button('&euro;');">&euro;</td>
@@ -121,16 +126,16 @@ function sendanswer(){
 		<td onclick="javascript:button('log()');">log</td>
 		<td onclick="javascript:button('asin()');">asin</td>
 		<td onclick="javascript:button('acos()');">acos</td>
-		<td onclick="javascript:button('pi');">&pi;</td>
+		<td onclick="javascript:button('pi ');">&pi;</td>
 	    </tr>
 	    <tr id="math_op3" style="display:none">
-		<td onclick="javascript:button(' in ');">   &#8712;</td>
-		<td onclick="javascript:button(' notin ');">&#8713;</td>
-		<td onclick="javascript:button(' and ');">  &#8743;</td>
-		<td onclick="javascript:button(' or ');">   &#8744;</td>
-		<td onclick="javascript:button(' <= ');">   &#8804;</td>
-		<td onclick="javascript:button(' >= ');">   &#8805;</td>
-		<td onclick="javascript:button(' R ');">    &#8476;</td>
+		<td onclick="javascript:button(' &#8712; ');">   &#8712;</td><!-- in \u2208 -->
+		<td onclick="javascript:button(' &#8713; ');">&#8713;</td><!-- notin \u2209 -->
+		<td onclick="javascript:button(' &#8743; ');">  &#8743;</td><!-- and \u2227 -->
+		<td onclick="javascript:button(' &#8744; ');">   &#8744;</td><!-- or \u2228 -->
+		<td onclick="javascript:button(' &#8804; ');">   &#8804;</td><!-- <= \u2264 -->
+		<td onclick="javascript:button(' &#8805; ');">   &#8805;</td><!-- >= \u2265 -->
+		<td onclick="javascript:button(' &#8476; ');">    &#8476;</td><!-- R -->
 		<td onclick="javascript:button(' N ');">    N</td>
 	    </tr>
 	    <tr id="math_op4" style="display:none">
@@ -156,27 +161,27 @@ function sendanswer(){
 	    <tr id="math_op6" style="display:none">
 		<td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
 		<td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
-		<td onclick="javascript:button(' and ');">  &#8743;</td>
-		<td onclick="javascript:button(' or ');">   &#8744;</td>
-		<td onclick="javascript:button(' <= ');">   &#8804;</td>
-		<td onclick="javascript:button(' >= ');">   &#8805;</td>
+		<td onclick="javascript:button(' &#8743; ');">  &#8743;</td><!-- and \u22C0 -->
+		<td onclick="javascript:button(' &#8744; ');">   &#8744;</td><!-- or \u22C1 -->
+		<td onclick="javascript:button(' &#8804; ');">   &#8804;</td><!-- <= \u2264 -->
+		<td onclick="javascript:button(' &#8805; ');">   &#8805;</td><!-- >= \u2265 -->
 		<td onclick="javascript:button('f(x) = ');">   f(x) =</td>
 		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
 	    </tr>
 	    <tr id="math_op7" style="display:none">
-		<td onclick="javascript:button('->');">&Rightarrow;</td>
-		<td onclick="javascript:button('-->');">&longrightarrow;</td>
-		<td onclick="javascript:button('<->');">&leftrightarrow;</td>
-		<td onclick="javascript:button('<=>');">&Leftrightarrow;</td>
-		<td onclick="javascript:button('Sum');">&Sum;</td>
-		<td onclick="javascript:button('(\\table a,b,c;d,e,f;g,h,i)');">matrix</td>
-		<td onclick="javascript:button('inf');">&infin;</td>
-		<td onclick="javascript:button('int');">&int;</td>
+		<td onclick="javascript:button(' &Rightarrow; ');">&Rightarrow;</td><!-- \u21D2 &rArr; &#8658; -->
+		<td onclick="javascript:button(' &longrightarrow; ');">&longrightarrow;</td><!-- \u2192 -->
+		<td onclick="javascript:button(' &leftrightarrow; ');">&leftrightarrow;</td><!-- \u2194 -->
+		<td onclick="javascript:button(' &Leftrightarrow; ');">&Leftrightarrow;</td><!-- \u21D4 -->
+		<td onclick="javascript:button(' &Sum; ');">&Sum;</td><!-- \u2211 -->
+		<td onclick="javascript:button('( \\table a,b,c;d,e,f;g,h,i) ');">matrix</td>
+		<td onclick="javascript:button(' &infin; ');">&infin;</td><!--  \u221E -->
+		<td onclick="javascript:button(' &int; ');">&int;</td><!-- \u222B -->
 	    </tr>
 	    <tr id="control_1" style="display:table-row">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
-		<td style="background-color:lightgreen" onclick="javascript:show_button_row(1);">+&minus;</td>	
-		<td style="background-color:lightgreen" onclick="javascript:show_button_row(2);">sin()</td>	
+		<td style="background-color:lightgreen" onclick="javascript:show_button_row(1);">+ &minus;</td>	
+		<td style="background-color:lightgreen" onclick="javascript:show_button_row(2);">sin</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(3);">&#8712;</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(4);"><sup>3</sup>&radic;</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(5);"><sup>3</sup>log()</td>	
@@ -225,10 +230,10 @@ function sendanswer(){
 
 function rewrite(input){
  if(input.indexOf("sqrt[") != -1){ input = displayroot(input);}
- var rep1 = ["log(","*","sqrt","pi",">=","<="," and "," or "," isin "," in "," notin","R","N","dy/dx"];
+ var rep1 = ["log(","*","sqrt","pi",">=","<="," and "," or "," isin "," in "," notin "," R "," N ","dy/dx"];
  var rep2 = ["fck(","&sdot;","&radic;","\\pi","\\ge"," \\le "," \\wedge "," \\Vee "," \\in "," \\in "," \\notin ","\\R","\\N","{\\d y}/{\\d x}"];
  for(var i=0; i < rep1.length ; i++){
-   input = input.split(rep1[i]).join(rep2[i])
+   input = input.split(rep1[i]).join(rep2[i]);
  }
  // replace log( by fck( to avoid a clash between log[a](b)
  // sqrt[a](b) is no problem : sqrt -> &radic;
@@ -236,7 +241,7 @@ function rewrite(input){
  var rep_math = ["\\sin","\\cos","\\tan","\\asin","\\acos","\\atan","\\fck"];
  var tmp_right;var tmp_left;var idx;
  for(var i=0;i < math.length ; i++){
-  idx = input.indexOf(math[i])
+  idx = input.indexOf(math[i]);
   while( idx != -1){
    input = input.replace(math[i],"@");
    tmp_right = input.substring(idx,input.length);
