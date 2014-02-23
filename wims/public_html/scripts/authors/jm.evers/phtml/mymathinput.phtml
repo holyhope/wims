@@ -33,9 +33,10 @@ function sendanswer(){
     if(input.indexOf('+') == 0 ){input = input.substring(1,input.length);}
     if(input.indexOf('+') == input.length ){input = input.substring(0,input.length-1);}
    !endif
+   show = input;
    <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
-   var unicode_math = ["\u2227","\u2228","\u2264","\u2265","\u2212","\u221A","\u20AC","\u03C0","\u2208","\u2209","\u21D2","\u27F6","\u2192","\u2194","\u21D4","\u2211","\\table","\u221E","\u222B"];
-   var calc_math = [" and "," or "," <= "," >= ","-","sqrt"," euro ","pi"," in "," notin "," -> "," -> "," -> "," -> "," -> "," SUM "," "," inf "," int "];
+   var unicode_math = ["\u2227","\u2228","\u2264","\u2265","\u2212","\u221A","\u20AC","\u03C0","\u2208","\u2209","\u21D2","\u27F6","\u2192","\u2194","\u21D4","\u2211","\\table","\u221E","\u222B","\u2329","\u232A","\u29F5"];
+   var calc_math = [" and "," or "," <= "," >= ","-","sqrt"," euro ","pi"," in "," notin "," -> "," -> "," -> "," -> "," -> "," SUM "," "," inf "," int "," langle "," rangle "," \\ "];
    for(var i=0; i < unicode_math.length ; i++){
     input = input.split(unicode_math[i]).join(calc_math[i]);
    }
@@ -45,13 +46,6 @@ function sendanswer(){
    if(check_sqrt_NaN(input) == 0){return;};
    input = science(input);if(input == "error"){return;};
    if(check_x(input) == 0){return;};
-   show = input;
-   if( show.indexOf('>') != 0 || show.indexOf('>') ){
-    show=show.replace(/\>=/g,'&ge;');
-    show=show.replace(/\<=/g,'&le;');
-    show=show.replace(/\>/g,'&gt;');
-    show=show.replace(/\</g,'&lt;');
-   };
   !if $convert_root=0
    input = arrows(input,$my_arrows,"","");if(input == "error"){return;};
    input = nthroot(input);if(input == "error"){return;};
@@ -62,12 +56,10 @@ function sendanswer(){
     if(input.indexOf("log[")!=-1){
      input=speciallog(input);if(input == "error"){return;};
     };
-    if( input.indexOf("[") !=-1){setAlarm(r13);return;};
    };
   !endif
    reply[inputfieldnumber] = input;inputfieldnumber = 1;
   };
-  alert(reply);
   if(reply[0].length == 0 ){setAlarm(r1);return;};show = show + "</ol>";
   myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 }
@@ -109,6 +101,7 @@ function sendanswer(){
 	    <!-- contents of mathviewpanel -->
 	    </tr>
 	    <tr id="math_op1" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('^');">	^</td>
 		<td onclick="javascript:button('/');">	/</td>
 		<td onclick="javascript:button('*');">	*</td>
@@ -119,6 +112,7 @@ function sendanswer(){
 		<td onclick="javascript:button('&euro;');">&euro;</td>
 	    </tr>
 	    <tr id="math_op2" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('&radic;()');">&radic;()</td>
 		<td onclick="javascript:button('sin()');">sin</td>
 		<td onclick="javascript:button('cos()');">cos</td>
@@ -129,6 +123,7 @@ function sendanswer(){
 		<td onclick="javascript:button('pi ');">&pi;</td>
 	    </tr>
 	    <tr id="math_op3" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button(' &#8712; ');">   &#8712;</td><!-- in \u2208 -->
 		<td onclick="javascript:button(' &#8713; ');">&#8713;</td><!-- notin \u2209 -->
 		<td onclick="javascript:button(' &#8743; ');">  &#8743;</td><!-- and \u2227 -->
@@ -139,6 +134,7 @@ function sendanswer(){
 		<td onclick="javascript:button(' N ');">    N</td>
 	    </tr>
 	    <tr id="math_op4" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
 		<td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
 		<td onclick="javascript:button('sqrt[5]()');"><sup>5</sup>&radic;()</td>
@@ -149,6 +145,7 @@ function sendanswer(){
 		<td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
 	    </tr>
 	    <tr id="math_op5" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
 		<td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
 		<td onclick="javascript:button('log[4]()');"><sup>4</sup>log()</td>
@@ -159,6 +156,7 @@ function sendanswer(){
 		<td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
 	    </tr>
 	    <tr id="math_op6" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
 		<td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
 		<td onclick="javascript:button(' &#8743; ');">  &#8743;</td><!-- and \u22C0 -->
@@ -169,6 +167,7 @@ function sendanswer(){
 		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
 	    </tr>
 	    <tr id="math_op7" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button(' &Rightarrow; ');">&Rightarrow;</td><!-- \u21D2 &rArr; &#8658; -->
 		<td onclick="javascript:button(' &longrightarrow; ');">&longrightarrow;</td><!-- \u2192 -->
 		<td onclick="javascript:button(' &leftrightarrow; ');">&leftrightarrow;</td><!-- \u2194 -->
@@ -177,6 +176,17 @@ function sendanswer(){
 		<td onclick="javascript:button('( \\table a,b,c;d,e,f;g,h,i) ');">matrix</td>
 		<td onclick="javascript:button(' &infin; ');">&infin;</td><!--  \u221E -->
 		<td onclick="javascript:button(' &int; ');">&int;</td><!-- \u222B -->
+	    </tr>
+	    <tr id="math_op8" style="display:none">
+		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
+		<td onclick="javascript:button(' x &#8712; R &#10741; {a:b:c}');">x &#8712; R \ {a:b:c}</td><!-- \u29F5 -->
+		<td onclick="javascript:button(' &#9001; : &#9002; ');"> &#9001; : &#9002; </td><!-- \u2329 : \u232A -->
+		<td onclick="javascript:button(' &#9001; ');"> &#9001; </td><!-- \u2329 -->
+		<td onclick="javascript:button(' &#9002; ');"> &#9002; </td><!-- \u232A -->
+		<td onclick="javascript:button(' [ ');"> [ </td>
+		<td onclick="javascript:button(' ] ');"> ] </td>
+		<td onclick="javascript:button(' &infin; ');">&infin;</td><!-- \u222B -->
+		<td onclick="javascript:button(' R Z N');">R Z N</td>
 	    </tr>
 	    <tr id="control_1" style="display:table-row">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
@@ -187,6 +197,7 @@ function sendanswer(){
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(5);"><sup>3</sup>log()</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(6);">dy/dx</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(7);">&longrightarrow;</td>	
+		<td style="background-color:lightgreen" onclick="javascript:show_button_row(8);">&#9001; : &#9002;</td>	
 	    </tr>
 	</table>
     </td>
@@ -201,6 +212,7 @@ function sendanswer(){
 </div>
 
 <script type="text/javascript">
+ var num_button_tabs = 8;
  var JSMathView = document.getElementById("JSMathView");
  var show_it    = document.getElementById("show_it");
  var clear_it   = document.getElementById("clear_it");
@@ -210,7 +222,7 @@ function sendanswer(){
  var mathviewpanel ="$mathviewpanel";
  mathviewpanel = mathviewpanel.split(':');
  if(mathviewpanel.length > 1){
-  for(var i=1; i<7;i++){
+  for(var i=1; i<num_button_tabs;i++){
    (function(){
     var paneltxt = mathviewpanel[i];
     if(i>=mathviewpanel.length){paneltxt = ' ';}
@@ -222,7 +234,7 @@ function sendanswer(){
   };
  }
  function show_button_row(row){hide_button_row();document.getElementById("math_op"+row).style.display = 'table-row';};
- function hide_button_row(){for(var i=1; i<8 ;i++){document.getElementById("math_op"+i).style.display = 'none';}};
+ function hide_button_row(){for(var i=1; i<num_button_tabs+1 ;i++){document.getElementById("math_op"+i).style.display = 'none';}};
  function displayroot(t){var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;t2=t.indexOf("](");if(t2==-1){return;};org=t;t=t.replace(/sqrt\(/g,"SQRT(");t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");if(test.indexOf("#")!=-1){return;};t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){power=t.substring(t2+1,t3);if(power.length==0){return t;};if(power<2){return;}t4="["+power+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;}}}};begin=begin+2;sqrt=t.substring(begin,end);mod=(power % 2);if(sqrt<0 && mod!=1){return;};t=t.replace("@("+sqrt+")","{^"+power+"&radic;#"+sqrt+"!}");}else{t=t.replace("]","?");}trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}};t=t.replace(/SQRT\(/g,"&radic;#");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"&radic;");return t;}
  function displaylog(t){var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;t2=t.indexOf("](");if(t2==-1){return;}t=t.replace(/log\(/g,'LOG(');t=t.replace(/log/g,"@");t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){grondtal=t.substring(t2+1,t3);if(grondtal=="10"){return;};if(grondtal=="e" || grondtal=='E'){return;};t4="["+grondtal+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;};};};};begin=begin+2;teller=t.substring(begin,end);if(grondtal==teller){setAlarm(r17);};t=t.replace("@("+teller+")","{^"+grondtal+"~#"+teller+"!}");}else{t=t.replace("[","%");};t2=t.indexOf("[");trouble++;if(trouble>100){setAlarm(r20);t="error";return t;};};t=t.replace(/\%/g,"[");t=t.replace(/~/g,"log");t=t.replace(/LOG\(/g,"log#");t=t.replace(/@/g,"log");return t;}
  function find_group(t){var left=0;var idx=-1;while(t.indexOf('(') != -1 ){t=t.replace('(','#');left++;idx = t.indexOf(')');while( idx != -1 ){t=t.replace(')','!');left--;if(left == 0){t=t.substring(0,idx+1)+"}"+t.substring(idx+1,t.length);return t;};idx=t.indexOf(')');};};return t;}
