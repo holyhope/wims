@@ -22,7 +22,7 @@ if [ ! "$option" ] ; then option=no ; fi ;
 
 for a in $(seq $#) ; do opt=$1;
  if [ "$opt" = "--build-chroot" ] ; then
-  if [ -d chroot ] ; then  
+  if [ -d chroot ] ; then
     mkdir -p chroot/tmp
     mkdir -p chroot/tmp/sessions
     touch chroot/tmp/sessions/.chroot
@@ -32,7 +32,7 @@ for a in $(seq $#) ; do opt=$1;
 
 @
    exit 1
-  fi 
+  fi
  fi
  if [ "$opt" = "--mathjax" ] ; then
   echo "load mathjax"
@@ -46,7 +46,7 @@ for a in $(seq $#) ; do opt=$1;
     rm -f $vmathjax-latest
     cd $dir
     mv -f tmp/mathjax-MathJax-* public_html/scripts/js/mathjax
-    rm -rf public_html/scripts/js/mathjax_tmp   
+    rm -rf public_html/scripts/js/mathjax_tmp
  fi
  if [ "$opt" = "--modules" ] ; then
     echo "load modules"
@@ -93,7 +93,11 @@ fi
 cd ..
 
 if [ -f log/wims.conf ]; then :; else
-  cat <<@ 
+  if (echo | mail -r wims testuser@localhost 2>/dev/null); then
+    echo "mailback_opt=-r" >> log/wims.conf;
+    chmod 600 log/wims.conf
+  fi
+  cat <<@
 
 You can configure some parameters which allow the manager site
 to make more configuration from the web interface.
@@ -105,7 +109,7 @@ Please write the IP address of the wims webmaster ? [127.0.0.1]
     echo "manager_site=$ans1" >> log/wims.conf
     chmod 600 log/wims.conf
   fi
-  cat <<@ 
+  cat <<@
 
 Please write the email address of the wims webmaster: ? []
 @
@@ -119,8 +123,8 @@ Please write the email address of the wims webmaster: ? []
   fi
 fi
 if [ -f log/.wimspass ]; then :; else
-  cat <<@ 
-  
+  cat <<@
+
 Please give the password for the wims webmaster
 You can change it in the file log/.wimspass
 Webmaster password: ? []
@@ -136,14 +140,10 @@ if [ $option = "--build-chroot" ] ; then
 else
  script=setwrapexec ;
 fi
-if (echo | mail -r wims testuser@localhost 2>/dev/null); then
-    echo "mailback_opt=-r" >> log/wims.conf;
-fi
-chmod 600 log/wims.conf
 
 cat <<@
 
-Please run './bin/$script' (and './bin/apache-config' for the first installation) as root 
+Please run './bin/$script' (and './bin/apache-config' for the first installation) as root
 (e.g. using sudo) to finish WIMS setup.
 
 See README about installation of help and teaching modules.
