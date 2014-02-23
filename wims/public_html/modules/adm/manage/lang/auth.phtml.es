@@ -1,26 +1,20 @@
+!set name_admpasswd=Contraseña de administrador del sitio
 
-<div class="wimscenter">
-!form reply
-Por favor introduzca la contraseña de administrador del sitio:<p>
-<input size="24" type="password" name="auth" />
-<input type="submit" value="$wims_name_tosave" />
-
-!formend
-</div>
+!read authscript.phtml
 <p>
 !if $passone!=$empty
 Al no haber definido una contraseña de administrador el servidor ha generado
  una contraseña de un solo uso para esta sesión. Podrá encontrarla en el fichero
- <span class="tt">$wims_home/$oncename</span> en la cuenta del servidor WIMS. 
+ <span class="tt">$wims_home/$oncename</span> en la cuenta del servidor WIMS.
  Por favor lea el fichero y teclee su contenido en el campo anterior.
  </p><p>
  Si desea definir una contraseña permanente (lo que es cómodo pero menos
  seguro que las contraseñas de un solo uso) puede guardarla en un fichero de
- nombre <span class="tt">$wims_home/log/.wimspass</span>. 
+ nombre <span class="tt">$wims_home/log/.wimspass</span>.
  ¡Pero <b>DEBE</b> hacer que sólo usted pueda leer ese fichero!
 !else
  Ha definido una contraseña permanente de administrador del sitio. Por favor
- recuerde que también puede utilizar contraseñas de un solo uso, que son más 
+ recuerde que también puede utilizar contraseñas de un solo uso, que son más
  seguras.
  </p><p>
  Para cambiar a contraseñas de un solo uso no tiene más que borrar el fichero

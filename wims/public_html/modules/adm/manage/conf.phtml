@@ -1,6 +1,5 @@
-!read adm/title.phtml 3\
-\
-$title
+!read adm/title.phtml 1
+
 
 !if $save!=$empty
  !if $error!=$empty
@@ -18,26 +17,19 @@ $title
 !endif
 
 !form reply
-$table_header
-
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$title</legend>
 !for i=1 to $confcnt
  !set r_=!record $i of lang/confdata.$modu_lang
  !set t_=!word 1 of $r_
  !if $catname isitemof $t_
+   <div class="field box">
   !distribute lines $r_ into a_,b_,c_,e_
   !distribute words $a_ into t_,n_,N_
   !set D_=$($n_)
-  $table_tr
-  <td>$b_ </td><td>
-  !set wims_ref_class=wims_button_help
+  <label for="">$b_</label>
+  !set wims_ref_class=wims_button_help float_right
   !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
-  !if $c_ iswordof free int
-   <br />
-   <span class="small">
-   <a href="#" onclick="document.forms[0].conf_$i.value='$(DF_$n_)'">$name_default</a>
-   </span>
-  !endif
-   </td><td class="nowrap" style="text-align:left;">
   !if $c_=free
    <input size="40" name="conf_$i" value="$D_" />
   !endif
@@ -58,15 +50,20 @@ $ in $e_
    !distribute lines $e_ into x_,y_
    !formcheckbox conf_$i list $x_ prompt $y_
   !endif
+  !if $c_ iswordof free int
+  <span class="small">
+   <a href="#" onclick="document.forms[0].conf_$i.value='$(DF_$n_)'">$name_default</a>
+   </span>
+  !endif
   !set g_=!trim $g_
-  </td></tr>
+  </div>
  !endif
 !next i
-$table_end
-<div class="wimscenter wimsform">
-<input type="submit" name="save" value="$wims_name_tosave" />
-<input type="submit" name="abandon" value="$wims_name_giveup" />
-</div>
+ <div class="wimscenter wimsform">
+   <input type="submit" name="save" value="$wims_name_tosave" />
+   <input type="submit" name="abandon" value="$wims_name_giveup" />
+ </div>
+</fieldset>
 
 !formend
 <span class="wims_warning">$wims_name_warning</span>. $name_warning
