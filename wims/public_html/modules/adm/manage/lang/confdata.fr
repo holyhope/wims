@@ -140,7 +140,7 @@ Si l'espace disque d'un portail atteint ou dépasse ce nombre en Megabits,
 la page d'accueil de l'administrateur du portail sera bloquée.
 
 :class class_user_limit wims_class_user_limit
-Nombre maximum de participants dans chaque classe
+Nombre maximum de participants par classe
 int
 0,2000
 
@@ -167,7 +167,7 @@ to avoid future problems. Module developers should be encouraged to
 publish their modules into local space in order to make them usable by others.
 </p>
 :class examlog_limit
-Nombre maximum des sessions d'examens enregistrées par participant
+Nombre maximum de sessions d'examens enregistrées par participant
 int
 0,100
 Please note that this is site-wide limitation, setups of individual classes
@@ -217,7 +217,7 @@ Si vous l'avez installé dans un répertoire ayant un exécutable <span class="tt">
 qui soit dans les chemins usuels, vous n'avez pas besoin de changer ce champ.
 
 :log general_log_limit
-Longueur maximale (en bytes) des principaux fichiers de log
+Longueur maximale (en bits) des fichiers de log
 int
 0,102400000
 Longueur maximale (en bytes) des principaux fichiers de log (access.log, post.log, session.log).
@@ -290,7 +290,7 @@ Par exemple, si la commande <span class="tt">mail</span> l'accepte, vous pouvez 
 aux mails envoyés par WIMS.
 </p>
 :security manager_https
-La maintenance du site demande une connection <span class="tt">https</span>.*
+Conenxion <span class="tt">https</span> pour la maintenance du site.*
 choice
 0,1;$wims_name_no,$wims_name_yes
 Quand cela est possible, utilisez la connection <span class="tt">https</span> pour
@@ -300,14 +300,14 @@ Tout ce que vous avez à faire est de configurer votre httpd
 pour qu'il accepte des requêtes https.
 
 :security manager_site
-Les connexions pour la maintenance du site doivent provenir d'un site ayant cet IP*!
+IP de maintenance du site*
 free
 
 Vous pouvez entrer ici plusieurs numéros IP (en les séparant par des espaces).
 Les numéros partiels comme 134.59.10. sont acceptés, mais soyez conscient que plus
 il y a de numéros acceptés, plus vous augmentez les risques de sécurité.
 Le numéro le plus sûr est 127.0.0.1
-(localhost). Dans tous les cas, ne mettez que des sites dont vous êtes sûrs
+(localhost). Dans tous les cas, ne mettez que des sites dont vous êtes sûr.
  Une intrusion sur votre server comme administrateur de site représente un
  grand danger pour votre installation.
 <p>
@@ -322,7 +322,7 @@ Vous n'avez pas besoin de changer ce champ si Maxima est installé de manière
 usuelle avec l'exécutable dans PATH.
 
 :log module_log
-Informations log des modules individuels
+Logs des modules individuels
 choice
 1,0;$wims_name_yes,$wims_name_no
 La plupart des modules WIMS définissent leurs propres informations à mettre dans le log.
@@ -332,7 +332,7 @@ Faites attention cependant que ces fichiers de log finissent par prendre de
 la place sur le disque, car il y a des centaines de modules.
 
 :log module_log_limit
-Longueur maximale (en bits) des fichiers de log des modules
+Longueur maximale (en bits) des logs
 int
 0,102400000
 Longueur maximale des fichiers de log des modules. Cette limite est utilisée par quelques
@@ -361,7 +361,7 @@ Méthode de mise à jour automatique quotidienne. <dl>
 </dl>
 
 :housekeep mu_download_site
-Site de téléchargement pour la mise à jour des modules
+Site de téléchargement de mise à jour des modules
 checkbox
 $mu_downloadsites
 Choisissez un site de téléchargement pour la mise à jour des modules.
@@ -390,7 +390,7 @@ de nouveaux bugs, car il faut espérer que ceux-là seront découverts
 et corrigés pendant le délai.
 </p>
 :housekeep mu_zone
-Zones concernées par la mise à jour automatique des modules
+Zones mises à jour automatiquement
 free
 
 La mise à jour automatique des modules est limitée aux zones indiquées.
@@ -412,7 +412,7 @@ Choix possibles de zones: <dl>
 Vous pouvez mettre plusieurs zones séparées par des espaces.
 </p>
 :housekeep mu_cat
-Catégories à mettre à jour automatiquement
+Catégories mises à jour automatiquement
 free
 
 Limite la mise à jour automatique des modules aux catégories indiquées.
@@ -483,12 +483,11 @@ disable this measure.
 Couleur de fond des tables
 free
 
-Background color appearing in head menus and many WIMS administration
-modules. Use a color name or #rrggbb hexadecimal code (see html standard for
-detail).
+Couleur de fond des menus des modules administratifs
+Mettre un nom de couleur ou le code html hexadecimal #rrggbb.
 
 :appearances ref_menucolor wims_ref_menucolor
-Couleur des liens dans les menus et les tables de référence
+Couleur des liens dans les menus et les tables
 free
 Vous pouvez choisir ici la couleur des liens des menus. Cela n'est pas possible
 pour le thème <span class="tt">default</span>.
@@ -573,7 +572,7 @@ yes,no;$wims_name_yes,$wims_name_no
 Les comptes de log doivent être activés pour que les statistiques puissent être montrés.
 
 :housekeep site_accounting
-Comptes d'activité
+Logs d'activité
 choice
 0,1; $wims_name_no,$wims_name_yes
 Active ou désactive les logs d'activité journalière. Il est nécessaire de l'activer pour
@@ -692,7 +691,7 @@ this field, separated by white spaces.
 Avoid defining trusted modules unless you are really sure of what you are doing.
 </p>
 :class user_limit wims_user_limit
-Nombre maximum du nombre total de participants dans toutes les classes
+Nombre maximum de participants inscrits sur le serveur
 int
 10,100000
 Each time a new participant registration occurs, the sum of existing
@@ -723,7 +722,7 @@ The use of cookies for works in virtual classes is not affected by this
 parameter.
 </p>
 :log show_ip
-Montrer l'IP de l'utilisateur à l'administrateur dans une classe
+IP d'utilisateurs vus par l'administrateur d'une classe
 choice
 yes,no;$wims_name_yes,$wims_name_no
 Si <span class="tt">no</span> est sélectionné, l'administrateur de classe ne verra pas
@@ -785,7 +784,7 @@ entrer comme identifiant.
 Ces valeurs seront utilisées par défaut dans les classes permettant l'authentification par un annuaire LDAP.
 
 :auth ldap_login
-login wims parmi les identifiants ldap
+Login wims parmi les identifiants ldap
 free
 
 C'est cet identifiant qui sera utilisé par WIMS dans sa structure interne.
