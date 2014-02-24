@@ -43,54 +43,53 @@
   !form reply
   <input type="hidden" name="confirm" value="yes" />
   <input type="hidden" name="vcheat" value="$vcheat" />
-!reset table_center
-  $table_header
- $table_tr<td> $wims_name_publish_center</td><td> 
-  !formselect submitpublish_site list $mu_publish_site prompt $publishcentersname
-  &nbsp;
-  !set wims_ref_class=wims_button_help
+  <fieldset class="property_fields blockcenter">
+      <legend>$wims_name_publish</legend>
+      <div class="field box">
+       <label for="submitpublish_site">$wims_name_publish_center</label>
+       !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=publication $wims_name_help
-  </td></tr>
-  $table_tr<td>$name_publishaccount</td>
-  <td><input type="text" size="20" name="submitauth" value="$submitauth" />
-  </td></tr>
-  $table_tr<td>$wims_name_Password</td>
-  <td><input type="password" size="20" name="submitpass" value="$submitpass" />
-  </td></tr>
-  $table_tr<td>$name_publishtype</td>
-  <td>
-  !set submittype=stable
-  !formselect submittype list devel,stable,new prompt $name_prompt
-  </td></tr>
-  $table_tr<td>$name_translation
-  </td><td>
+       !formselect submitpublish_site list $mu_publish_site prompt $publishcentersname
+      </div>
+      <div class="field box">
+        <label for="submitauth">$name_publishaccount</label>
+        <input type="text" size="20" name="submitauth" id="submitauth" value="$submitauth" />
+      </div>
+      <div class="field box">
+        <label for="submitpass">$wims_name_Password</label>
+        <input type="password" size="20" name="submitpass" id="submitpass" value="$submitpass" />
+      </div>
+      <div class="field box">
+        <label for="submittype">$name_publishtype</label>
+      !set submittype=stable
+        !formselect submittype list devel,stable,new prompt $name_prompt
+      </div>
+      <div class="field box">
+        <label for="istranslate">$name_translation</label>
   !set istranslate=no
-  !formselect istranslate list yes,no prompt $wims_name_yes,$wims_name_no
-  </td></tr>
-  $table_tr<td>$name_authorized
-  </td><td>
-  <input size="40" name="modifiers" value="$modifiers" />
-  &nbsp;
-  !set wims_ref_class=wims_button_help
-  !href cmd=help&special_parm=modifiers $wims_name_help
-  </td></tr>
-  $table_end
-  <div class="wimscenter wimsform">
-  <input type="submit" value="$wims_name_tosave" />
-  </div>
-
-  $name_warning1
+        !formselect istranslate list yes,no prompt $wims_name_yes,$wims_name_no
+      </div>
+      <div class="field box">
+        <label for="modifiers">$name_authorized</label>
+         !set wims_ref_class=wims_button_help float_right
+        !href cmd=help&special_parm=modifiers $wims_name_help
+        <input size="40" name="modifiers" id="modifiers" value="$modifiers" />
+      </div>
+     <div class="wimscenter wimsform">
+       <input type="submit" value="$wims_name_tosave" />
+     </div>
+     </fieldset>
+   $name_warning1
  !else
   $name_warning2
-  <div class="wimscenter">
+    <div class="wimscenter">
   !href cmd=reply&confirm=yes&vcheat=$vcheat $wims_name_yes
   &nbsp;
   !href cmd=reply&jobreq=flist $wims_name_giveup
-  </div>
+    </div>
 
   $name_warning3
 
-!formend
  !endif
+ !formend
 !endif
-
