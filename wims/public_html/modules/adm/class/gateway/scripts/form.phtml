@@ -6,15 +6,13 @@
  !if $form_caption!=$empty
  $form_caption
 !endif
-</legend>
+ </legend>
  <div class="field box">
- <span class="small">
 !if $passhow=yes
  !href cmd=reply&passhow=no $name_hidepass
 !else
  !href cmd=reply&passhow=yes $name_showpass
 !endif
-  </span>
  </div>
   <div class="field box">
    <label for="title">$form_titlename</label>
@@ -28,44 +26,43 @@
     !formselect alevel list $levellist prompt $levelnames
    </div>
 !endif
- <div class="field box">
-  <label for="sup">$name_supervisor2</label>
- !set wims_ref_class=wims_button_help float_right
+   <div class="field box">
+    <label for="sup">$name_supervisor2</label>
+  !set wims_ref_class=wims_button_help float_right
   !href cmd=help&special_parm=supervisor $wims_name_help
 !readproc scripts/teacherlist.proc
- !formselect sup list $tlist1 prompt $tlist2
- <div class="formHelp">$form_classname</div>
+  !formselect sup list $tlist1 prompt $tlist2
+    <div class="formHelp">$form_classname</div>
   </div>
 !if $form_prog=yes
- <div class="field box">
-  <label for="progstyle1">$name_Style</label>
-
+   <div class="field box">
+     <label for="progstyle1">$name_Style</label>
 !set wims_ref_class=wims_button_help float_right
  !href cmd=help&special_parm=progopt $wims_name_help
-
  !formselect progstyle1 list mandatory,optional prompt\
 	$name_style
- </div>
- <div class="field box">
- <label for="progstyle2">$name_installation</label>
+   </div>
+   <div class="field box">
+    <label for="progstyle2">$name_installation</label>
 
 !set wims_ref_class=wims_button_help float_right
  !href cmd=help&special_parm=progopt $wims_name_help
 
  !formselect progstyle2 list all,select prompt $wims_name_yes,$wims_name_no
- </div>
+   </div>
 !endif
 !if $form_pass=yes
  <div class="field box">
   <label for="pass">$wims_name_Password</label>
-  <div class="formHelp">$name_register</div>
  !set wims_ref_class=wims_button_help float_right
  !href cmd=help&special_parm=pass $wims_name_help
 
  !if $passhow=yes
   <input type="text" size="30" name="pass" value="$pass" id="pass" />
+  <div class="formHelp">$name_register</div>
  !else
   <input type="password" size="30" name="pass" value="" id="pass" />
+  <div class="formHelp">$name_register</div>
   </div>
   <div class="field box">
   <label for="pass2">$wims_name_repeat_pass </label>
@@ -76,17 +73,19 @@
 !endif
  <div class="field box">
   <label for="passs">$wims_name_Password</label>
-  <div class="formHelp">$name_supervisor2</div>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=passs $wims_name_help
 !if $passhow=yes
   <input type="text" size="30" name="passs" value="$passs" id="passs" />
+  <div class="formHelp">$name_supervisor2</div>
 !else
- <input type="password" size="30" name="passs" value="" id="passs" />
- <div class="field box">
- <label for="passs2"> $wims_name_repeat_pass</label>
- <input type="password" size="30" name="passs2" value="" id="passs2" />
- <div class="formHelp">$name_supervisor2</div>
+  <input type="password" size="30" name="passs" value="" id="passs" />
+  <div class="formHelp">$name_supervisor2</div>
+  </div>
+  <div class="field box">
+   <label for="passs2">$wims_name_repeat_pass</label>
+   <input type="password" size="30" name="passs2" value="" id="passs2" />
+   <div class="formHelp">$name_supervisor2</div>
 !endif
  </div>
  <div class="field box">
@@ -96,18 +95,17 @@
 !href cmd=help&special_parm=sechost $wims_name_help
 !set sechost=$class_secure
 !default sechost=all
- <input type="text" size="30" name="sechost" value="$sechost" id="sechost" />
+   <input type="text" size="30" name="sechost" value="$sechost" id="sechost" />
 !reset sechost
   </div>
-</fieldset>
-<div class="wimscenter wimsform">
+  <div class="wimscenter wimsform">
  <input type="submit" name="confirm" value="$wims_name_tosave" />
 !if $form_cancel!=$empty
  &nbsp;
-  <input type="submit" name="cancel" value="$form_cancel" />
+   <input type="submit" name="cancel" value="$form_cancel" />
 !endif
 </div>
-
+</fieldset>
 
 !formend
 
