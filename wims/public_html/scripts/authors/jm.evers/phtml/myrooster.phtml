@@ -1,49 +1,65 @@
 !! some wims_variables for tuning the svg image
-!set id=$wims_nowseconds
-!set xn=4
-!set yn=8
-!set bg_color=#FFFFFF
-!set click_colors=["#FF0000","#0000FF","#008000","#FFA500","$bg_color"];
+!!#    <param name="max_x" value="$var2"/>                                                                                
+!!#    <param name="max_y" value="$var3"/>                                                                                
+!!#    <param name="size_x" value="$var4"/>                                                                               
+!!#    <param name="size_y" value="$var5"/>                                                                               
+!!#    <param name="color1" value="$var6"/>                                                                               
+!!#    <param name="color2" value="$var7"/>                                                                               
+!!#    <param name="interactive" value="$var8"/>..                                                                        
+!!#    <param name="percentage" value="$var9"/>..                                                                         
+!!#    <param name="level" value="$var10"/>..
+
+!set max_x=$var2
+!set max_y=$var3
+!set size_x=$var4
+!set size_y=$var5
+
+!set xsize=$[$var4*$var2]
+!set ysize=$[$var5*$var3]
+!set color1=$var7
+!set color2=$var6
+!set interactive=$var8
+!set percentage=$var9
+!set level=$var10
 !set line_width=2
-!set fill_color=#00FF00
-!set stroke_color=#FF0000
-!set fill_opacity=0.3
-!set stroke_opacity=0.3
-!set dont_click_x=[1,1,1,1,1,1,1]
-!set dont_click_y=[1,2,3,4,5,6,7]
-!!!set dont_click_x=[]
-!!!set dont_click_y=[]
-!set status=waiting
-!set xsize=360
-!set ysize=360
-!set clicktile_image=http://localhost/drum.jpg
-
+!set stroke_color=#FFFFFF 
+!set fill_opacity=1
+!set stroke_opacity=1
+!set clicktile_image=$empty
+!set id=$wims_nowseconds
+answer$n=$(answer$n)
+!set interactive=0
 <script type="text/javascript">
-var descr_list="$description";var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
-function sendanswer(){
-  var reply = new Array();
-  var p = 0;
-  if( document.getElementById('myinput0')){
-    while( document.getElementById('myinput'+p) ){
-	reply[p] = document.getElementById('myinput'+p).value;
-	p++;
+    var descr_list="$description";
+    var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);
+    function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
+    function sendanswer(){
+	var reply = new Array();
+	var p = 0;
+	if( document.getElementById('myinput0')){
+	while( document.getElementById('myinput'+p) ){
+	    reply[p] = document.getElementById('myinput'+p).value;
+	    p++;
+	}
     }
-  }
-  !if $interactive = 1
-    reply[p] = "\n"+read_svg();
-  !endif    
-  myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
-}
-
+    !if $percentage=1
+	var tmp = read_svg();
+	reply[p] = "\n"+parseFloat(100*tmp[2]/tmp[0]);
+    !else
+	reply[p] = "\n"+read_svg();    
+    !endif
+  alert(reply);
+    myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+    }
 !if $wims_user=supervisor
-function putanswer(){
+    function putanswer(){
     !set wims_answer = !words2items $(answer$n)
     !set num_answers = !itemcnt $wims_answer
-    var answer = make_description("$wims_answer",$num_answers);
-    for(var p=0;p<answer.length;p++){
-	document.getElementById('myinput'+p).value = answer[p];
+        var answer = make_description("$wims_answer",$num_answers);
+	for(var p=0;p<answer.length;p++){
+	    document.getElementById('myinput'+p).value = answer[p];
+	}
     }
-}
 !endif
 </script>
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
@@ -61,13 +77,13 @@ function putanswer(){
       !for p=1 to $inputs
        <tr>
         <td class="exercise_c">
-         $(description[p])
+         $(description[$p])
          </td>
          <td class="exercise_c">
           &nbsp;$m_rightarrow&nbsp;
          </td>
          <td class="exercise_c">
-          <textarea class="schaersvoorde_input" cols="$cols" rows="$rows" id="myinput$[$p-1]"></textarea>
+          <input class="schaersvoorde_input" size="$cols" type="text" id="myinput$[$p-1]" value="" />&nbsp;$(ex$p)
          </td>
 	</tr>
       !next p
@@ -83,36 +99,56 @@ function putanswer(){
 	    <g id="svg_transform$id" transform="scale(1)" >
 		<image preserveAspectRatio="none" xlink:href="$clicktile_image" x="0" y="0" height="100%" width="100%"></image> 
 		<script type="text/javascript">
+		    "use strict";
+		    String.prototype.colorNameToHex = function (returnUnresolved){ 
+			var hexRGB, definedColorNames = {"aliceblue": "#f0f8ff", "antiquewhite": "#faebd7", "aqua": "#00ffff", "aquamarine": "#7fffd4", "azure": "#f0ffff", "beige": "#f5f5dc", "bisque": "#ffe4c4", "black": "#000000", "blanchedalmond": "#ffebcd", "blue": "#0000ff", "blueviolet": "#8a2be2", "brown": "#a52a2a", "burlywood": "#deb887", "cadetblue": "#5f9ea0", "chartreuse": "#7fff00", "chocolate": "#d2691e", "coral": "#ff7f50", "cornflowerblue": "#6495ed", "cornsilk": "#fff8dc", "crimson": "#dc143c", "cyan": "#00ffff", "darkblue": "#00008b", "darkcyan": "#008b8b", "darkgoldenrod": "#b8860b", "darkgray": "#a9a9a9", "darkgreen": "#006400", "darkkhaki": "#bdb76b", "darkmagenta": "#8b008b", "darkolivegreen": "#556b2f", "darkorange": "#ff8c00", "darkorchid": "#9932cc", "darkred": "#8b0000", "darksalmon": "#e9967a", "darkseagreen": "#8fbc8f", "darkslateblue": "#483d8b", "darkslategray": "#2f4f4f", "darkturquoise": "#00ced1", "darkviolet": "#9400d3", "deeppink": "#ff1493", "deepskyblue": "#00bfff", "dimgray": "#696969", "dodgerblue": "#1e90ff", "firebrick": "#b22222", "floralwhite": "#fffaf0", "forestgreen": "#228b22", "fuchsia": "#ff00ff", "gainsboro": "#dcdcdc", "ghostwhite": "#f8f8ff", "gold": "#ffd700", "goldenrod": "#daa520", "gray": "#808080", "green": "#008000", "greenyellow": "#adff2f", "honeydew": "#f0fff0", "hotpink": "#ff69b4", "indianred ": "#cd5c5c", "indigo ": "#4b0082", "ivory": "#fffff0", "khaki": "#f0e68c", "lavender": "#e6e6fa", "lavenderblush": "#fff0f5", "lawngreen": "#7cfc00", "lemonchiffon": "#fffacd", "lightblue": "#add8e6", "lightcoral": "#f08080", "lightcyan": "#e0ffff", "lightgoldenrodyellow": "#fafad2", "lightgrey": "#d3d3d3", "lightgreen": "#90ee90", "lightpink": "#ffb6c1", "lightsalmon": "#ffa07a", "lightseagreen": "#20b2aa", "lightskyblue": "#87cefa", "lightslategray": "#778899", "lightsteelblue": "#b0c4de", "lightyellow": "#ffffe0", "lime": "#00ff00", "limegreen": "#32cd32", "linen": "#faf0e6", "magenta": "#ff00ff", "maroon": "#800000", "mediumaquamarine": "#66cdaa", "mediumblue": "#0000cd", "mediumorchid": "#ba55d3", "mediumpurple": "#9370d8", "mediumseagreen": "#3cb371", "mediumslateblue": "#7b68ee", "mediumspringgreen": "#00fa9a", "mediumturquoise": "#48d1cc", "mediumvioletred": "#c71585", "midnightblue": "#191970", "mintcream": "#f5fffa", "mistyrose": "#ffe4e1", "moccasin": "#ffe4b5", "navajowhite": "#ffdead", "navy": "#000080", "oldlace": "#fdf5e6", "olive": "#808000", "olivedrab": "#6b8e23", "orange": "#ffa500", "orangered": "#ff4500", "orchid": "#da70d6", "palegoldenrod": "#eee8aa", "palegreen": "#98fb98", "paleturquoise": "#afeeee", "palevioletred": "#d87093", "papayawhip": "#ffefd5", "peachpuff": "#ffdab9", "peru": "#cd853f", "pink": "#ffc0cb", "plum": "#dda0dd", "powderblue": "#b0e0e6", "purple": "#800080", "red": "#ff0000", "rosybrown": "#bc8f8f", "royalblue": "#4169e1", "saddlebrown": "#8b4513", "salmon": "#fa8072", "sandybrown": "#f4a460", "seagreen": "#2e8b57", "seashell": "#fff5ee", "sienna": "#a0522d", "silver": "#c0c0c0", "skyblue": "#87ceeb", "slateblue": "#6a5acd", "slategray": "#708090", "snow": "#fffafa", "springgreen": "#00ff7f", "steelblue": "#4682b4", "tan": "#d2b48c", "teal": "#008080", "thistle": "#d8bfd8", "tomato": "#ff6347", "turquoise": "#40e0d0", "violet": "#ee82ee", "wheat": "#f5deb3", "white": "#ffffff", "whitesmoke": "#f5f5f5", "yellow": "#ffff00", "yellowgreen": "#9acd32", "darkgrey": "#a9a9a9", "darkslategrey": "#2f4f4f", "dimgrey": "#696969", "grey": "#808080", "lightgray": "#d3d3d3", "lightslategrey": "#778899", "slategrey": "#708090"};
+			if (definedColorNames[this.toLowerCase()] !== undefined) {
+			    hexRGB = definedColorNames[this.toLowerCase()];
+			} 
+			else
+			{ 
+			    hexRGB = this; 
+			}
+			return hexRGB
+		    };
 		    var line_width = $line_width;
-		    var stroke_color = "$stroke_color";
-		    var fill_color = "$fill_color";
+		    var stroke_color = "$stroke_color".colorNameToHex();
+		    var fill_color = "$fill_color".colorNameToHex();
 		    var stroke_opacity = $stroke_opacity;
 		    var fill_opacity = $fill_opacity;
 		    var id = $id;
-		    var xn = $xn;
-		    var yn = $yn;
-		    var dont_click_x = $dont_click_y;
-		    var dont_click_y = $dont_click_x;
+		    var max_x = $max_x;
+		    var max_y = $max_y;
+		    var total = max_x*max_y;
+		    var interactive = $interactive;
+		    var color1 = "$color1".colorNameToHex();
+		    var color2 = "$color2".colorNameToHex();
+		    var color_rect = new Array(total)
+		    var idx=0;
+		    for(var p=0;p < total ;p++){
+			color_rect[p] = color1;
+		    }
+		    if(interactive == 0){
+			var limx=1+parseInt((max_x-1)*Math.random());
+			var limy=1+parseInt((max_y-1)*Math.random());
+			for(var p=0;p < max_x ;p++){
+			    for(var i=0;i < max_y ;i++){
+				if( p < limx && i < limy ){
+				    color_rect[idx] = color2;
+				}
+				idx++;
+			    }
+			}
+		    }
 		    var wims_svg = document.getElementById("wims_svg"+id);
 		    var data = (wims_svg.getAttribute("viewBox")).split(' ');
-		    sizex = data[2] - data[0];
-		    sizey = data[3] - data[1];
-		    var w = sizex / xn;
-		    var h = sizey / yn;
+		    var sizex = data[2] - data[0];
+		    var sizey = data[3] - data[1];
+		    var w = $size_x;/* width of small rectangle in px */
+		    var h = $size_y;/* height of small rectangle in px */
 		    var x,y;
-		    var bg_color = "$bg_color";
-		    var color_num = 1;
-		    var num_proctected_rects = 10; 
-		    var i = 0;
-		    var image_colors = $click_colors
-		    var color_idx = 0;
-		    var found;
-		    var color_length = image_colors.length;
-		    var protected = new Array(); 
-		    var user_click_colors = new Array();
-		    user_click_colors = image_colors.listuniq();
-		    var num_colors = user_click_colors.length;
-		    var protected_idx = 0;
+		    idx=0;
+		    var user_click_color = color2;
 		    for(var p = 0 ; p < sizey ; p = p+h){
 			for(var i = 0 ; i < sizex ; i = i+w){
 			    var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -122,58 +158,33 @@ function putanswer(){
 			    rect.setAttributeNS(null,"height",h);
 			    rect.setAttributeNS(null,"stroke-width",line_width);
 			    rect.setAttributeNS(null,"id","rect"+id);
-			    found = 0;
-			    for(var c = 0; c < dont_click_x.length && found == 0 ; c++){
-				if(p == w*(dont_click_x[c]-1) && i == h*(dont_click_y[c]-1)){
-				    found = 1;
-				}
-			    }
-			    if(found == 1){
-				rect.setAttributeNS(null,"fill",image_colors[color_idx]);
-				protected[protected_idx] = "rect"+id;protected_idx++;
-				if(color_idx > color_length - 1){ color_idx = 0;  } else { color_idx++; }
-			    }
-			    else
-			    {
-				rect.setAttributeNS(null,"fill",bg_color);
-			    }
+			    rect.setAttributeNS(null,"fill",color_rect[idx]);
 			    rect.setAttributeNS(null,"stroke",stroke_color);
 			    rect.setAttributeNS(null,"stroke-opacity",stroke_opacity);
 			    rect.setAttributeNS(null,"fill-opacity",fill_opacity);
-			    if("waiting" == "$status" ){
+			    if("waiting" == "$status" && interactive == 1 ){
 				rect.addEventListener("mousedown", function(action){svg_mouse(action.which,this.id)}, false);
 			    }
-			    wims_svg.appendChild(rect);id++;
+			    wims_svg.appendChild(rect);id++;idx++;
 			}
 		    }
-		    function paint_color(myid){
-			for(var p = 0; p< protected.length; p++){
-			    if( myid == protected[p] ){
-				return 0;
-			    }
+
+		    function svg_mouse(button,myid){
+			if( button > 1){
+			    if(user_click_color == color2){user_click_color = color1;}else{user_click_color = color2;}
 			}
 			try{
 			    var obj = document.getElementById(myid);
-			    obj.setAttributeNS(null,"fill",user_click_colors[color_num]);
+			    obj.setAttributeNS(null,"fill",user_click_color);
 			}catch(e){setAlarm(e);}
-			return 0;
 		    }
-		    function svg_mouse(button,myid){
-			if( button > 1){
-			    color_num++;
-			    if( color_num > num_colors - 1){
-				color_num = 0; /* cycle colours */
-			    }
-			}
-			paint_color(myid);
-			return 0;
-		    }
+
 		    function read_svg(){
 			/* String S=total_aantal+","+onveranderd_aantal+","+veranderd_aantal+","+omtrek_van_geklikte_ruitjes;*/
 			var x;var y;var click_reply=new Array();var obj;var color;var myid;
-			tot = xn*yn;var xc = new Array(tot);var yc = new Array(tot);var cc = new Array(tot);
+			var tot = max_x*max_y;var xc = new Array(tot);var yc = new Array(tot);var cc = new Array(tot);
 			var idx = 0;
-			click_reply[0] = parseInt(xn*yn); /* sum */
+			click_reply[0] = parseInt(max_x*max_y); /* sum */
 			click_reply[1] = 0; /* unchanged */
 			click_reply[2] = 0; /* changed */
 			click_reply[3] = 0; /* total perimeter of changed rects */
@@ -184,19 +195,17 @@ function putanswer(){
 			    y = (obj.getAttributeNS(null,"y"));
 			    xc[idx] = x/w;
 			    yc[idx] = y/h;
-			    if( protected.indexOf(myid) == -1 ){
-				color = obj.getAttributeNS(null,"fill");
-				if( color != bg_color ){
-				    click_reply[2] = click_reply[2]+1;cc[idx] = 1;
-				}
-				else
-				{
-				    click_reply[1]=click_reply[1]+1;cc[idx] = 0;
-				}
+			    color = obj.getAttributeNS(null,"fill");
+			    if( color != color1 ){/* e.g. colour is changed */
+				click_reply[2] = click_reply[2]+1;cc[idx] = 1;
+			    }
+			    else
+			    {
+				click_reply[1]=click_reply[1]+1;cc[idx] = 0;
 			    }
 			    idx++;
 			}
-			var fx;if( xn < yn ){ fx = yn/xn;fy = 1;} else { fx = 1;fy = xn/yn; }
+			var fx;var fy;if( max_x < max_y ){ fx = max_y/max_x;fy = 1;} else { fx = 1;fy = max_x/max_y; }
 			click_reply[3] = click_reply[2] * (2*fy + 2*fx);
 			if( click_reply[2] > 1 ){
 			    for( var i=0 ; i < idx ; i++){
@@ -212,7 +221,7 @@ function putanswer(){
 				}
 			    }
 			}
-			return click_reply+"\n"+xc+"\n"+yc;
+			return click_reply;
 		    }
 		</script>
 		<script type="text/javascript">
