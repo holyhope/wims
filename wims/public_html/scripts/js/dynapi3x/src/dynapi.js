@@ -419,7 +419,7 @@ p.include = function() {
 		for (var i=0;i<list.length;i++) {
 			src = list[i];
 			this.scripts[src].loaded = true;
-			dynapi.frame.document.write('<script type="text/javascript" language="JavaScript" src="'+src+'"><\/script>');
+			dynapi.frame.document.write('<script type="text/javascript" src="'+src+'"><\/script>');
 		}
 	}
 };

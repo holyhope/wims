@@ -75,7 +75,7 @@ IOElement.fnPrecreate = function() {
 	}else{
 		if (this._winXFrames) t = '<frame src="about:blank" name="',this._elmID,'" scrolling="none">';
 		else if (dynapi.ua.ns4) t = '<ilayer width='+this.w+' height='+this.h+' name="'+this._elmID+'" visibility="inherit"></ilayer>';
-		else t = '<iframe name="'+this._elmID+'" width='+this.w+' height='+this.h+' scrolling="no" frameborder="no" marginwidth=0 marginheight=0 style="overflow:hidden;"></iframe>';
+		else t = '<iframe name="'+this._elmID+'" width='+this.w+' height='+this.h+' scrolling="no" frameborder="no" marginwidth=0 marginheight=0 style="overflow:visible;"></iframe>';
 		this._elmThread=this._elmID; this._elmBusy[this._elmID]=false;
 	}
 
