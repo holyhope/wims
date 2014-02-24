@@ -1,0 +1,237 @@
+!! some wims_variables for tuning the svg image
+!set id=$wims_nowseconds
+!set xn=4
+!set yn=8
+!set bg_color=#FFFFFF
+!set click_colors=["#FF0000","#0000FF","#008000","#FFA500","$bg_color"];
+!set line_width=2
+!set fill_color=#00FF00
+!set stroke_color=#FF0000
+!set fill_opacity=0.3
+!set stroke_opacity=0.3
+!set dont_click_x=[1,1,1,1,1,1,1]
+!set dont_click_y=[1,2,3,4,5,6,7]
+!!!set dont_click_x=[]
+!!!set dont_click_y=[]
+!set status=waiting
+!set xsize=360
+!set ysize=360
+!set clicktile_image=http://localhost/drum.jpg
+
+<script type="text/javascript">
+var descr_list="$description";var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
+function sendanswer(){
+  var reply = new Array();
+  var p = 0;
+  if( document.getElementById('myinput0')){
+    while( document.getElementById('myinput'+p) ){
+	reply[p] = document.getElementById('myinput'+p).value;
+	p++;
+    }
+  }
+  !if $interactive = 1
+    reply[p] = "\n"+read_svg();
+  !endif    
+  myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+}
+
+!if $wims_user=supervisor
+function putanswer(){
+    !set wims_answer = !words2items $(answer$n)
+    !set num_answers = !itemcnt $wims_answer
+    var answer = make_description("$wims_answer",$num_answers);
+    for(var p=0;p<answer.length;p++){
+	document.getElementById('myinput'+p).value = answer[p];
+    }
+}
+!endif
+</script>
+<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+    <tr>
+    <td class="exercise_m">
+    !if $(question$n) != $empty
+     $(question$n)
+    !endif
+    !if $exotext != $empty
+     <br />
+     $exotext
+    !endif
+    !if $inputs > 0
+     <table class="exercise">
+      !for p=1 to $inputs
+       <tr>
+        <td class="exercise_c">
+         $(description[p])
+         </td>
+         <td class="exercise_c">
+          &nbsp;$m_rightarrow&nbsp;
+         </td>
+         <td class="exercise_c">
+          <textarea class="schaersvoorde_input" cols="$cols" rows="$rows" id="myinput$[$p-1]"></textarea>
+         </td>
+	</tr>
+      !next p
+     </table>
+    !endif 
+    </td>
+    !if $make_tr=1
+    </tr>
+    <tr>
+    !endif
+    <td class="exercise_c" onmouseover="check_svg_capability()" id="svg_div$id" >
+	<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" id="wims_svg$id" width="$xsize" height="$ysize" viewBox="0 0 $xsize $ysize" >
+	    <g id="svg_transform$id" transform="scale(1)" >
+		<image preserveAspectRatio="none" xlink:href="$clicktile_image" x="0" y="0" height="100%" width="100%"></image> 
+		<script type="text/javascript">
+		    var line_width = $line_width;
+		    var stroke_color = "$stroke_color";
+		    var fill_color = "$fill_color";
+		    var stroke_opacity = $stroke_opacity;
+		    var fill_opacity = $fill_opacity;
+		    var id = $id;
+		    var xn = $xn;
+		    var yn = $yn;
+		    var dont_click_x = $dont_click_y;
+		    var dont_click_y = $dont_click_x;
+		    var wims_svg = document.getElementById("wims_svg"+id);
+		    var data = (wims_svg.getAttribute("viewBox")).split(' ');
+		    sizex = data[2] - data[0];
+		    sizey = data[3] - data[1];
+		    var w = sizex / xn;
+		    var h = sizey / yn;
+		    var x,y;
+		    var bg_color = "$bg_color";
+		    var color_num = 1;
+		    var num_proctected_rects = 10; 
+		    var i = 0;
+		    var image_colors = $click_colors
+		    var color_idx = 0;
+		    var found;
+		    var color_length = image_colors.length;
+		    var protected = new Array(); 
+		    var user_click_colors = new Array();
+		    user_click_colors = image_colors.listuniq();
+		    var num_colors = user_click_colors.length;
+		    var protected_idx = 0;
+		    for(var p = 0 ; p < sizey ; p = p+h){
+			for(var i = 0 ; i < sizex ; i = i+w){
+			    var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+			    rect.setAttributeNS(null,"x",i);
+			    rect.setAttributeNS(null,"y",p);
+			    rect.setAttributeNS(null,"width",w);
+			    rect.setAttributeNS(null,"height",h);
+			    rect.setAttributeNS(null,"stroke-width",line_width);
+			    rect.setAttributeNS(null,"id","rect"+id);
+			    found = 0;
+			    for(var c = 0; c < dont_click_x.length && found == 0 ; c++){
+				if(p == w*(dont_click_x[c]-1) && i == h*(dont_click_y[c]-1)){
+				    found = 1;
+				}
+			    }
+			    if(found == 1){
+				rect.setAttributeNS(null,"fill",image_colors[color_idx]);
+				protected[protected_idx] = "rect"+id;protected_idx++;
+				if(color_idx > color_length - 1){ color_idx = 0;  } else { color_idx++; }
+			    }
+			    else
+			    {
+				rect.setAttributeNS(null,"fill",bg_color);
+			    }
+			    rect.setAttributeNS(null,"stroke",stroke_color);
+			    rect.setAttributeNS(null,"stroke-opacity",stroke_opacity);
+			    rect.setAttributeNS(null,"fill-opacity",fill_opacity);
+			    if("waiting" == "$status" ){
+				rect.addEventListener("mousedown", function(action){svg_mouse(action.which,this.id)}, false);
+			    }
+			    wims_svg.appendChild(rect);id++;
+			}
+		    }
+		    function paint_color(myid){
+			for(var p = 0; p< protected.length; p++){
+			    if( myid == protected[p] ){
+				return 0;
+			    }
+			}
+			try{
+			    var obj = document.getElementById(myid);
+			    obj.setAttributeNS(null,"fill",user_click_colors[color_num]);
+			}catch(e){setAlarm(e);}
+			return 0;
+		    }
+		    function svg_mouse(button,myid){
+			if( button > 1){
+			    color_num++;
+			    if( color_num > num_colors - 1){
+				color_num = 0; /* cycle colours */
+			    }
+			}
+			paint_color(myid);
+			return 0;
+		    }
+		    function read_svg(){
+			/* String S=total_aantal+","+onveranderd_aantal+","+veranderd_aantal+","+omtrek_van_geklikte_ruitjes;*/
+			var x;var y;var click_reply=new Array();var obj;var color;var myid;
+			tot = xn*yn;var xc = new Array(tot);var yc = new Array(tot);var cc = new Array(tot);
+			var idx = 0;
+			click_reply[0] = parseInt(xn*yn); /* sum */
+			click_reply[1] = 0; /* unchanged */
+			click_reply[2] = 0; /* changed */
+			click_reply[3] = 0; /* total perimeter of changed rects */
+			for(var p=$id; p < id ;p++){
+			    myid = "rect"+p;
+			    obj = document.getElementById(myid);
+			    x = (obj.getAttributeNS(null,"x"));
+			    y = (obj.getAttributeNS(null,"y"));
+			    xc[idx] = x/w;
+			    yc[idx] = y/h;
+			    if( protected.indexOf(myid) == -1 ){
+				color = obj.getAttributeNS(null,"fill");
+				if( color != bg_color ){
+				    click_reply[2] = click_reply[2]+1;cc[idx] = 1;
+				}
+				else
+				{
+				    click_reply[1]=click_reply[1]+1;cc[idx] = 0;
+				}
+			    }
+			    idx++;
+			}
+			var fx;if( xn < yn ){ fx = yn/xn;fy = 1;} else { fx = 1;fy = xn/yn; }
+			click_reply[3] = click_reply[2] * (2*fy + 2*fx);
+			if( click_reply[2] > 1 ){
+			    for( var i=0 ; i < idx ; i++){
+				if( cc[i] == 1 ){ /* clicked */
+				    for( var p=0; p < idx ; p++){
+					if( cc[p] == 1 && p != i){ /* do not count the same rect */
+					    if( xc[i] == xc[p] && yc[i] == yc[p] - 1 ){ click_reply[3] = click_reply[3] - fx;}
+					    if( xc[i] == xc[p] && yc[i] == yc[p] + 1 ){ click_reply[3] = click_reply[3] - fx;}
+					    if( xc[i] == xc[p] - 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
+					    if( xc[i] == xc[p] + 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
+					}
+				    }
+				}
+			    }
+			}
+			return click_reply+"\n"+xc+"\n"+yc;
+		    }
+		</script>
+		<script type="text/javascript">
+		//<![CDATA[
+		    var just_once = 0;function check_svg_capability(){if( just_once == 0 ){ if( document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Shape", "1.0") == null ){alert("Your browser does not support SVG \n To enjoy this exercise \nGet Firefox\n http://www.mozilla.org");just_once = 1;}}}
+		//]]>
+		</script>
+	    </g>
+	</svg>
+    <tr>
+    </td>
+    </tr>
+</table>
+<div id="send_buttons" class="embedded_central">
+    <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
+    <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
+    !if $wims_user=supervisor
+	<input type="button" id="schaersvoorde_extra_button" onclick="javascript:putanswer();" value="$wims_firstname $wims_lastname" /> 
+    !endif
+</div>
+
+!exit
