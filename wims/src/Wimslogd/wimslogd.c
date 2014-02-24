@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 		strerror(errno));
 	exit(1);
     }
-*/    
+*/
     verify_tables();
     init_random();
     modupdatetime=(double) random()*350/RAND_MAX;
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
     accessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
     accessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then it is a cluster child */
     if(strstr(buf,"yes")!=NULL) {	/* register my real IP */
-	accessfile(nodeipbuf,"r","/etc/myip"); 
+	accessfile(nodeipbuf,"r","/etc/myip");
 	accessfile(nodeipbuf,"w","tmp/log/myip");
     }
     do {

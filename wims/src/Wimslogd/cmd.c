@@ -17,7 +17,7 @@
 
 /* daemon command processing */
 
-	/* testing routine. Don't touch! */
+/* testing routine. Don't touch! */
 void cmd_test(char *p)
 {
 }
@@ -68,19 +68,19 @@ struct {
     char *name;
     void (*routine) (char *p);
 } cmdlist[]={
-        {"forkcnt",	cmd_forklist},
-        {"forkcount",	cmd_forklist},
-        {"forklist",	cmd_forklist},
-        {"getscore",	cmd_getscore},
-	{"ping",	cmd_ping},
-	{"readfile",	cmd_readfile},
-	{"record",	cmd_record},
-	{"recordcnt",	cmd_recordcnt},
-	{"recordcount",	cmd_recordcnt},
-	{"recordno",	cmd_recordcnt},
-	{"recordnum",	cmd_recordcnt},
-        {"scorelog",	cmd_scorelog},
-        {"test",	cmd_test},
+        {"forkcnt",    cmd_forklist},
+        {"forkcount",    cmd_forklist},
+        {"forklist",    cmd_forklist},
+        {"getscore",    cmd_getscore},
+        {"ping",    cmd_ping},
+        {"readfile",    cmd_readfile},
+        {"record",    cmd_record},
+        {"recordcnt",    cmd_recordcnt},
+        {"recordcount",    cmd_recordcnt},
+        {"recordno",    cmd_recordcnt},
+        {"recordnum",    cmd_recordcnt},
+        {"scorelog",    cmd_scorelog},
+        {"test",    cmd_test},
 };
 #define cmdcnt (sizeof(cmdlist)/sizeof(cmdlist[0]))
 
@@ -88,7 +88,7 @@ void cmd(void)
 {
     char *p1, *p2, cmdline[MAX_LINELEN+1];
     int i;
-    
+
     errno=0;
     p1=find_word_start(textptr); p2=find_word_end(p1);
     if(*p2) *p2++=0;

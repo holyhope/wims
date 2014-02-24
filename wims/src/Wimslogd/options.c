@@ -36,7 +36,7 @@ int options(void)
 		if(cwdtype!=dir_home) {
 		    sockerror(2,"option_conflict"); return -1;
 		}
-		if(strlen(p1)>=MAX_CLASSLEN || !myisdigit(*p1) || 
+		if(strlen(p1)>=MAX_CLASSLEN || !myisdigit(*p1) ||
 		   strstr(p1,"..")!=NULL) {
 		    sockerror(2,"illegal_fname %s",p1);
 		    return -1;
