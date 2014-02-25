@@ -14,13 +14,13 @@
         <input size="65" name="title" id="title" value="$title" required="required" />
         <div class="formHelp">$name_desc_title</div>
       </div>
-      <div class="field box">
+      !ifval $activetest>-1
+        <div class="field box">
          <label for="">$(name_shinfo[2])</label>
-     $(statutname[$activetest+2]) &nbsp;
-   !ifval $activetest>-1
+         $(wims_name_shstatus[$activetest+1]) &nbsp;
     !read adm/sheet/sheetaction.phtml sheet,$sheet,$activetest,0
-   !endif
-      </div>
+        </div>
+         !endif
       <div class="field box">
        <label for="desc">$(name_shinfo[3])</label>
        <textarea id="desc" class="iEdit" rows="6" cols="65" name="desc">$desc</textarea>
