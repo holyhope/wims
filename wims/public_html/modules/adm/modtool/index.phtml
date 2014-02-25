@@ -15,17 +15,17 @@
      <div class="field box">
        <label for="">$wims_name_Address</label>
        <div class="wims_fname">
- !if $title!=$empty and $modreq!=.new
-  $modreq&nbsp;
-  !set wims_ref_class=wims_button
-  !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
-&nbsp;
-!set wims_ref_class=wims_button
-  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
- !else
-  !set modreq=.new
-  !read scripts/addressform.phtml nook
- !endif
+       !if $title!=$empty and $modreq!=.new
+        $modreq&nbsp;
+        !set wims_ref_class=wims_button
+        !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
+      &nbsp;
+      !set wims_ref_class=wims_button
+        !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
+       !else
+        !set modreq=.new
+        !read scripts/addressform.phtml nook
+       !endif
        </div>
      </div>
      <div class="field box">
@@ -66,13 +66,13 @@
  !formcheckbox i_level list $levellist
      <br /><span class="small">$name_levellist</span>
      </div>
-     <div class="field box">
+     <div class="field box fullwidth">
        <label for="i_scoring">$wims_name_Scoring</label>
  !default i_scoring=no
        !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
        <div class="formHelp">$wims_name_Scoringhelp</div>
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_version">$wims_name_Version</label>
        !set wims_ref_class=wims_button_help float_right
  !href cmd=help&special_parm=version $wims_name_help
@@ -80,14 +80,14 @@
       <input type="text" size="6" name="i_version" id="i_version" value="$i_version" />
        <div class="formHelp">$name_increment</div>
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_wims_version">$wims_name_Required_WIMS_version</label>
          !set wims_ref_class=wims_button_help float_right
         !href cmd=help&special_parm=wimsversion $wims_name_help
  !default i_wims_version=$wims_version
        <input type="text" size="6" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />&nbsp;
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_author">$wims_name_Author</label>
        !set wims_ref_class=wims_button_help float_right
     !href cmd=help&special_parm=namewriting $wims_name_help
@@ -98,12 +98,12 @@
            <span class="tt">$wims_name_firstname,$wims_name_lastname</span>
          </div>
        </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_address">$wims_name_auth_email</label>
  !default i_address=$auth_email
        <input type="text" size="$size" name="i_address" id="i_address" value="$i_address" />
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
         <label for="i_maintainer">$wims_name_Maintainer</label>
         !set wims_ref_class=wims_button_help float_right
         !href cmd=help&special_parm=maintainer $wims_name_help
@@ -111,15 +111,15 @@
         <div class="formHelp">$wims_name_firstname, $wims_name_lastname</div>
 
      </div>
-     <div class="field box">
-       <label for="i_maintainer_address">$wims_name_email <br />($wims_name_Maintainer)</label>
+     <div class="field box halfwidth">
+       <label for="i_maintainer_address">$wims_name_email ($wims_name_Maintainer)</label>
        <input type="text" size="$size" name="i_maintainer_address" id="i_maintainer_address" value="$i_maintainer_address" />
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_translator">$wims_name_Translator</label>
        <input type="text" size="$size" name="i_translator" id="i_translator" value="$i_translator" />
      </div>
-     <div class="field box">
+     <div class="field box halfwidth">
        <label for="i_translator_address">$wims_name_tr_email</label>
        <input type="text" size="$size" name="i_translator_address" id="i_translator_address" value="$i_translator_address" />
      </div>
@@ -154,6 +154,7 @@
      !read translationindex.phtml
    !endif
     </div>
+    <br class="spacer"/>
    <div class="wimscenter wimsform">
      <input type="submit" name="inddef" value="$wims_name_tosave" />
 &nbsp;&nbsp;
