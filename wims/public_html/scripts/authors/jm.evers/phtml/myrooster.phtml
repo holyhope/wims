@@ -9,17 +9,8 @@
 !!#    <param name="percentage" value="$var9"/>..                                                                         
 !!#    <param name="level" value="$var10"/>..
 
-!set max_x=$var2
-!set max_y=$var3
-!set size_x=$var4
-!set size_y=$var5
-
 !set xsize=$[$var4*$var2]
 !set ysize=$[$var5*$var3]
-!set color1=$var7
-!set color2=$var6
-!set interactive=$var8
-!set percentage=$var9
 !set level=$var10
 !set line_width=2
 !set stroke_color=#FFFFFF 
@@ -27,29 +18,29 @@
 !set stroke_opacity=1
 !set clicktile_image=$empty
 !set id=$wims_nowseconds
-answer$n=$(answer$n)
-!set interactive=0
+
 <script type="text/javascript">
     var descr_list="$description";
     var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);
-    function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
+    function dontknow(){
+	var reply = new Array()
+	for( var p = 0 ; p < $inputs; p++){
+	    reply[p] = "?";
+	}
+	reply[p] = read_svg();
+	myConfirm('$dontknow',reply,'$wims_ref_name','$session','$module','$counter','$nok_send_color');
+    }
     function sendanswer(){
 	var reply = new Array();
 	var p = 0;
 	if( document.getElementById('myinput0')){
-	while( document.getElementById('myinput'+p) ){
-	    reply[p] = document.getElementById('myinput'+p).value;
-	    p++;
+	    while( document.getElementById('myinput'+p) ){
+		reply[p] = document.getElementById('myinput'+p).value;
+	        p++;
+	    }
 	}
-    }
-    !if $percentage=1
-	var tmp = read_svg();
-	reply[p] = "\n"+parseFloat(100*tmp[2]/tmp[0]);
-    !else
-	reply[p] = "\n"+read_svg();    
-    !endif
-  alert(reply);
-    myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
+	reply[p] = read_svg();
+        myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 !if $wims_user=supervisor
     function putanswer(){
@@ -62,7 +53,7 @@ answer$n=$(answer$n)
     }
 !endif
 </script>
-<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+<table id="exercise" class="exercise" >
     <tr>
     <td class="exercise_m">
     !if $(question$n) != $empty
@@ -117,18 +108,19 @@ answer$n=$(answer$n)
 		    var stroke_opacity = $stroke_opacity;
 		    var fill_opacity = $fill_opacity;
 		    var id = $id;
-		    var max_x = $max_x;
-		    var max_y = $max_y;
+		    var max_x = $var2;
+		    var max_y = $var3;
 		    var total = max_x*max_y;
-		    var interactive = $interactive;
-		    var color1 = "$color1".colorNameToHex();
-		    var color2 = "$color2".colorNameToHex();
+		    var interactive = $var8;
+		    var color2 = "$var6".colorNameToHex();
+		    var color1 = "$var7".colorNameToHex();
 		    var color_rect = new Array(total)
 		    var idx=0;
 		    for(var p=0;p < total ;p++){
 			color_rect[p] = color1;
 		    }
 		    if(interactive == 0){
+		    !if $var10=0
 			var limx=1+parseInt((max_x-1)*Math.random());
 			var limy=1+parseInt((max_y-1)*Math.random());
 			for(var p=0;p < max_x ;p++){
@@ -139,13 +131,39 @@ answer$n=$(answer$n)
 				idx++;
 			    }
 			}
+		    !endif
+		    !if $var10=1
+			var k;
+			for(var p=0;p < max_x ;p++){
+			    k=Math.random();
+			    for(var i=0;i < max_y ;i++){
+				if( k > 0.3 ){
+				    color_rect[idx] = color2;
+				}
+				idx++;
+			    }
+			}
+		    !endif
+		    !if $var10=2
+		        var k; 
+			for(var p=0;p < max_x ;p++){
+			    for(var i=0;i < max_y ;i++){
+				k=Math.random();
+				if( k > 0.2 ){
+				    color_rect[idx] = color2;
+				}
+				idx++;
+			    }
+			}
+		    !endif
+		    
 		    }
 		    var wims_svg = document.getElementById("wims_svg"+id);
 		    var data = (wims_svg.getAttribute("viewBox")).split(' ');
 		    var sizex = data[2] - data[0];
 		    var sizey = data[3] - data[1];
-		    var w = $size_x;/* width of small rectangle in px */
-		    var h = $size_y;/* height of small rectangle in px */
+		    var w = $var4;/* width of small rectangle in px */
+		    var h = $var5;/* height of small rectangle in px */
 		    var x,y;
 		    idx=0;
 		    var user_click_color = color2;
@@ -231,7 +249,6 @@ answer$n=$(answer$n)
 		</script>
 	    </g>
 	</svg>
-    <tr>
     </td>
     </tr>
 </table>
