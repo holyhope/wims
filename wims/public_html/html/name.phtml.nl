@@ -121,7 +121,7 @@
 	    Link voor bookmark,\
 	    Omschrijving,\
 	    Versie,\
-	    Vereiste <br />WIMS versie,\
+	    Vereiste WIMS versie,\
 	    Taal,\
 	    Schrijver,\
 	    Maintainer,\
@@ -135,8 +135,9 @@
 	    Onderwerp,\
 	    Soort,\
 	    Niveau(s),\
-	    Scorings mechanisme<br /><small>(oefening / ontspanning)</small>,\
-	    Hulp software<br />vereist,\
+	    Scorings mechanisme,\
+	    oefening / ontspanning,\
+	    Hulp software vereist,\
 	    Server tijd,\
 	    Data module,\
 	    Ontwikkeld op WIMS,\
@@ -162,7 +163,7 @@
 	wims_name_Copyright,wims_name_Keywords,\
 	wims_name_tr_email,wims_name_auth_email,\
 	wims_name_Domain,wims_name_Type,wims_name_Levels,\
-	wims_name_Scoring,\
+	wims_name_Scoring,wims_name_Scoringhelp,\
 	wims_name_require,wims_name_server_time,wims_name_datamodule,\
 	wims_name_devwims,wims_name_publish_center,wims_name_download_center,\
 	wims_name_Syntax,wims_name_Meaning

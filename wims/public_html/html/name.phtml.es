@@ -121,7 +121,7 @@
 		Vínculo para marca-página,\
 		Descripción,\
 		Versión,\
-		Versión WIMS <br/> requerida,\
+		Versión WIMS requerida,\
 		Lengua,\
 		Autor,\
 		Maintainer,\
@@ -135,8 +135,9 @@
 		Dominio,\
 		Tipo,\
 		Nivel(x),\
-		Mecanismo de puntuación <br/><small>(ejercicio/recreación)</small>,\
-		Programas informáticos de apoyo<br/>necesarios,\
+		Mecanismo de puntuación,\
+		ejercicio/recreación,\
+		Programas informáticos de apoyo necesarios,\
 		Server Time,\
 		Data module,\
 		Developped on WIMS,\
@@ -162,7 +163,7 @@
 	wims_name_Copyright,wims_name_Keywords,\
 	wims_name_tr_email,wims_name_auth_email,\
 	wims_name_Domain,wims_name_Type,wims_name_Levels,\
-	wims_name_Scoring,\
+	wims_name_Scoring,wims_name_Scoringhelp,\
 	wims_name_require,wims_name_server_time,wims_name_datamodule,\
 	wims_name_devwims,wims_name_publish_center,wims_name_download_center,\
 	wims_name_Syntax,wims_name_Meaning
