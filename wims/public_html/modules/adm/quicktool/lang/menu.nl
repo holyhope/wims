@@ -7,34 +7,34 @@
 :Selecteer het type oefening en klik op bewaren.
 :Voer de vereiste informatie in (velden gemarkeerd met een asterisk zijn verplicht);<i> de schuin geschreven onderdelen kunnen direkt in de datafile worden opgenomen, in zo'n geval verwijderen en vervangen door een spatie , dan klikken op
 :Naam van het broncode bestand
-:Aanta vereiste data sets 
+:Aanta vereiste data sets
 :in elke stap
 :Maximaal aantal stappen
 :Aantal items dat moet overeenkomen
 :Data sets worden in een willekeurige volgorde getoond
 :Correcte antwoorden aanwezig
-:Drempel score om de oefening te mogen vervolgen (mits er meerdere stappen in de oefening aanwezig zijn)
+:Drempel score om de oefening te mogen vervolgen
 :Vraagtype voor het selecteren van woorden
 :Aanvullende vraag
 :Gedeeltelijke score
-:(in het geval van een aanvullende vraag)
+:in het geval van een aanvullende vraag
 :Voor het formaat
 :Sta toe dat e' worde ingevoerd in plaats van é ...
-:Antwoorden  (mits aanvullende vraag)
+:Antwoorden
 :Voor het formaat
 :Antwoorden
-:Gedeelde lijst (formaat markeer en formaat menu)
+:Gedeelde lijst
 :Speciale help
 :Kies antwoordmodel
 :Specifieke teksregel
 :Grootte van de labels
 :Grootte van de blankovelden
-:(indien een aanvullende vraag aanwezig)
+:indien een aanvullende vraag aanwezig
 :Grootte van het invulveld
 :Grootte van de labels
-:(indien een aanvullende vraag aanwezig)
+:indien een aanvullende vraag aanwezig
 :Instrukties voor deze oefening
-:Instrukties voor deze oefening (aanvullende vraag)
+:Instrukties voor deze oefening
 :SWAC pakketten
 :tekst/lees bestand
 :Luister bestand
@@ -49,5 +49,7 @@
 :"Knippen en Plakken" toegestaan
 :MP3 afspeel programma
 :Grootte van afspeelprogramma
-:Deze broncode is te gebruiken binnen Modtool. Vraag indien noodzakelijk een Modtool account aan 
+:Deze broncode is te gebruiken binnen Modtool. Vraag indien noodzakelijk een Modtool account aan
 :Lijst met keuze woorden
+:mits er meerdere stappen in de oefening aanwezig zijn
+:formaat markeer en formaat menu

@@ -166,6 +166,9 @@ $table_end
   !href target=wims_mhelp cmd=help&special_parm1=file $wims_name_help
           <input size="15" name="source" id="source" value="$source" required="required"/>
         </div>
+        </fieldset>
+    <fieldset class="property_fields blockcenter">
+       <legend>$name_setup</legend>
        !if $type_exo notwordof CORRESP ORDONNE QUIFAITQUOI
          <div class="field box">
            <label for="N">
@@ -250,10 +253,14 @@ $table_end
         <div class="field box">
           <label for="percent">
 !record 16 of $my_dir
-!!@#        Pourcentage de réussite nécessaire pour pouvoir continuer (dans le cas où il y a plusieurs étapes) !!#@
+!!@#        Pourcentage de réussite nécessaire pour pouvoir continuer!!#@
          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=percent $wims_name_help
+          <div class="formHelp">
+!record 54 of $my_dir
+!!@#        dans le cas où il y a plusieurs étapes !!#@
+         </div>
         !formradio  percent list 0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1 prompt 0%,10%,20%,30%,40%,50%,60%,70%,80%,90%,100%
         </div>
       !endif
@@ -295,30 +302,40 @@ $table_end
         <div class="field box">
           <label for="format">
            $name_format
-!record 20 of $my_dir
-!!@#(si question supplémentaire) !!#@
           </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_click $wims_name_help
-        !formradio format list case,clickfill,dragfill prompt case,clickfill,dragfill
-        <br />
+          !formradio format list case,clickfill,dragfill prompt case,clickfill,dragfill
+          <div class="formHelp">
+!record 20 of $my_dir
+!!@#(si question supplémentaire) !!#@
+          </div>
+          <br />
+          <label>
 !record 21 of $my_dir
 !!@#        Pour le format !!#@
 
 <span class="tt">case</span>
-        !reset reaccent=
+          </label>
+          !formcheckbox reaccent list yes prompt $wims_name_yes
+          <div class="formHelp">
+                !reset reaccent=
 !record 22 of $my_dir
 !!@#        Permettre d'écrire e' au lieu de é ...!!#@
-        !formcheckbox reaccent list yes prompt $wims_name_yes
+          </div>
         </div>
         <div class="field box">
           <label for="pos_rep">
 !record 23 of $my_dir
-!!@#        Réponses (si question supplémentaire) !!#@
-         </label>
+!!@#        Réponses !!#@
+          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
         !formradio  pos_rep list inside,outside,under prompt $name_position
+          <div class="formHelp">
+!record 32 of $my_dir
+!!@#         si question supplémentaire!!#@
+          </div>
         </div>
       !endif
       !if $type_exo iswordof SELECTWORDA
@@ -359,6 +376,10 @@ $table_end
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=menu_commun $wims_name_help
         !formradio common list yes,no prompt $wims_name_yes,$wims_name_no
+        <div class="formatHelp">
+!record 55 of $my_dir
+!!@#       format mark, menu !!#@
+         </div>
        </div>
        <div class="field box">
           <label>
@@ -453,16 +474,17 @@ $table_end
 !!@#       Taille des cases !!#@
 
 (case) </label>
-       !if $type_exo iswordof SELECTWORD
-!record 32 of $my_dir
-!!@#         (si question supplémentaire)!!#@
-
-       !endif
-
        !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=taille_case $wims_name_help
            <input size="15" name="taille_case" id="taille_case" value="$taille_case" />
-        </div>
+        !if $type_exo iswordof SELECTWORD
+          <div class="formHelp">
+!record 32 of $my_dir
+!!@#         si question supplémentaire!!#@
+          </div>
+        !endif
+
+</div>
     !endif
     !if $type_exo iswordof COMPOSE
         <div class="field box">
@@ -482,17 +504,21 @@ $table_end
 !!@#       Taille des étiquettes !!#@
          </label>
        !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB
-          (drag ou click)
+          (drag / click)
        !endif
        !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=taille_drag $wims_name_help
        !if $type_exo iswordof SELECTWORD
-!record 35 of $my_dir
-!!@#         (si question supplémentaire) !!#@
-    !set wims_ref_class=wims_button_help float_right
-     !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
-       !endif
+        !set wims_ref_class=wims_button_help float_right
+        !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
+        !endif
        <input size="15" name="taille_drag" id="taille_drag" value="$taille_drag" />
+       !if $type_exo iswordof SELECTWORD
+         <div class="formHelp">
+!record 35 of $my_dir
+!!@#         si question supplémentaire !!#@
+        </div>
+      !endif
     </div>
     !endif
     <div class="field box">
@@ -505,13 +531,17 @@ $table_end
       <textarea class="nowrap" rows="4" cols="30" name="instruction" id="instruction">$instruction</textarea>
    </div>
     !if $type_exo iswordof SELECTWORDB SELECTWORD
-      <div class="field box">
-        <label for="instruction2">
+       <div class="field box">
+         <label for="instruction2">
 !record 37 of $my_dir
-!!@#      Consigne de l'exercice (si question supplémentaire)!!#@
-        </label>
-       <textarea class="nowrap" rows="4" cols="30" name="instruction2" id="instruction2">$instruction2</textarea>
-     </div>
+!!@#      Consigne de l'exercice!!#@
+         </label>
+         <div class="formHelp">
+!record 32 of $my_dir
+!!@#         si question supplémentaire!!#@
+        </div>
+        <textarea class="nowrap" rows="4" cols="30" name="instruction2" id="instruction2">$instruction2</textarea>
+      </div>
     !endif
     !!if $type_exo iswordof GAP
       <div class="field box">
@@ -526,10 +556,25 @@ $table_end
      !set wims_formselect_switch=
      </div>
     !!endif
+    <div class="field box">
+        <label for="player">
+!record 50 of $my_dir
+!!@#     Choix du lecteur mp3!!#@
+
+        </label>
+!set wims_ref_class=wims_button_help float_right
+!href target=wims_mhelp cmd=help&special_parm1=player $wims_name_help
+      !formselect player list $list_player
+      <label for="player_option">
+!record 51 of $my_dir
+!!@# Taille du lecteur!!#@
+      </label>
+      <input size="20" name="player_option" id="player_option" value="$player_option" />
+    </div>
     </fieldset>
    <fieldset class="property_fields blockcenter">
     <legend>
-      <a id="expert"></a>$name_expert <i>$(wims_name_quick_$type_exo)</i>
+      <a id="expert"></a>$name_expert
     </legend>
      <div class="field box">
        <label for="reading_file1">
@@ -662,21 +707,6 @@ $table_end
         <textarea class="nowrap" rows="1" cols="20" name="incomplete_answer_text" id="incomplete_answer_text">$incomplete_answer_text</textarea>
        </div>
      !endif
-      <div class="field box">
-        <label for="player">
-!record 50 of $my_dir
-!!@#     Choix du lecteur mp3!!#@
-
-        </label>
-!set wims_ref_class=wims_button_help float_right
-!href target=wims_mhelp cmd=help&special_parm1=player $wims_name_help
-      !formselect player list $list_player
-      <label for="player_option">
-!record 51 of $my_dir
-!!@# Taille du lecteur!!#@
-      </label>
-      <input size="20" name="player_option" id="player_option" value="$player_option" />
-    </div>
   </fieldset>
     !set transfert=
   !endif

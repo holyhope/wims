@@ -1,6 +1,6 @@
 !default reading_tag=[leest de tekst]
 !default image_tag=[bekijke de afbeelding]
-!default video_tag=[video] 
+!default video_tag=[video]
 
 !default qcm_prompt1=Je antwoord :
 !default qcm_prompt2=Het correcte antwoord :

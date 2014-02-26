@@ -15,14 +15,14 @@ Een bestandsnaam mag geen
 !!#@
  !exit
 !endif
- 
+
 !if $error!=$empty
   !if target iswordof error
     <span class="wims_warning">
 !!@#
  Kies een module.
 !!#@
-</span> 
+</span>
     !exit
   !endif
 <span class="wims_warning">
@@ -33,9 +33,9 @@ Niet vergeten de verplichte velden, gemarkeerd met een * in te vullen.
 !endif
 !if type_exo iswordof $error or file iswordof $error
 !!@#
-In bijzonder : 
+In bijzonder :
 !!#@
-<dl> 
+<dl>
 !if type_exo iswordof $error
  <dt>
 !!@#
@@ -58,10 +58,8 @@ In dit stadium wordt er een bestands naam verwacht.
 !!@#
 Eert moet er een OEF module in uw Modtool account worden aangemaakt.
 !!#@
-!endif 
+!endif
 !exit
 
 
 !msg $error
-
-

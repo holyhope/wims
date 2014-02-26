@@ -2,7 +2,7 @@
 :Kopieer deze broncode in een Modtool module met de volgende naam
 :of zet het automatisch over.
 :Kied een module
-:Voor dat het bestand kan worden overgezet moet eerst uw ontwikkelaars account en wachtwoord worden ingevoerd. 
+:Voor dat het bestand kan worden overgezet moet eerst uw ontwikkelaars account en wachtwoord worden ingevoerd.
 :Geef uw Modtool loginnaam en wachtwoord
 :Het bestand
 :is overgezet naar de Modtool module
@@ -25,6 +25,6 @@
 :Wanneer alle noodzakelijke bestanden zijn overgezet
 :Bestanden aanwezig in de module
 :Broncode bestanden (src)
-:Data en tekst bestanden 
+:Data en tekst bestanden
 :Afbeeldingen en geluidsbestanden
 

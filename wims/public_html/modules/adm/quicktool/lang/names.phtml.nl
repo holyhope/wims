@@ -33,7 +33,7 @@
 !set name_write_manager= door een bericht te sturen naar de website beheerder
 !set wims_name_remark=Opmerking
 !set name_commun=Toon de overeenkomstige eigenschappen
-!set name_gen_data=De oefening wordt gemaakt met de data die u verwerkt in dit bestand, met de volgende syntax :  
+!set name_gen_data=De oefening wordt gemaakt met de data die u verwerkt in dit bestand, met de volgende syntax :
 
 !set name_list_exo=Meerkeuze,Goed of Fout,Kies een woord,Kies een woord A,Leeg veld,Rangschikken,Samenstellen,Corresponderen,Wie doe wat,Tonic
 
@@ -47,3 +47,5 @@ wims_name_help_QUIFAITQUOI,wims_name_help_TONIC
 
 !distribute item 1st poging,2nd poging,3rd poging,4th poging,Aantal pogingen\
 into name_trial1,name_trial2,name_trial3,name_trial4,name_trialcnt
+
+!set name_setup= Oefening configureren
