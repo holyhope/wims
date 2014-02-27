@@ -86,6 +86,7 @@ WIMS modtool
      !set cnt=!itemcnt $(name[$i;])
      !for a =1 to $cnt
         <br />
+        !set wims_ref_class=wims_formradio
         !formradio type_exo list $(name[$i;$a]) prompt $(wims_name_quick_$(name[$i;$a]))
      !next a
      </td><td width="25%">$(explication[$i;])</td>
@@ -183,7 +184,9 @@ $table_end
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=data $wims_name_help
 <br />
+!set wims_ref_class=wims_formradio
          !formradio N from 1 to 6
+!set wims_ref_class=wims_formradio
          !formradio N list all prompt $name_all
         </div>
          !if $type_exo notwordof GAP QCMIII SELECTWORD SELECTWORDA SELECTWORDB
@@ -194,8 +197,9 @@ $table_end
           </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=etape $wims_name_help
-
+!set wims_ref_class=wims_formradio
            !formradio MAX1 from 1 to 5
+!set wims_ref_class=wims_formradio
            !formradio MAX1 list all prompt $name_all2
          </div>
         !endif
@@ -206,6 +210,7 @@ $table_end
 !record 13 of $my_dir
 !!@#        Nombre d'objets dans la correspondance !!#@
           </label>
+!set wims_ref_class=wims_formradio
         !formradio M from 3 to 6
         </div>
       !endif
@@ -217,6 +222,7 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=alea $wims_name_help
+!set wims_ref_class=wims_formradio
         !formradio alea list yes,no prompt $wims_name_yes,$wims_name_no
         </div>
       !endif
@@ -228,6 +234,7 @@ $table_end
          </label>
         !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=answer_given $wims_name_help
+!set wims_ref_class=wims_formradio
         !formradio answer_given list yes,no prompt $wims_name_yes,$wims_name_no
         </div>
       !endif
@@ -236,6 +243,7 @@ $table_end
           <label for="try">$name_trialcnt</label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=try $wims_name_help
+!set wims_ref_class=wims_formradio
          !formradio try list 1,2,3,4,5,6,7,8,9,10
         </div>
       !endif
@@ -248,6 +256,7 @@ $table_end
          <label for="format">$name_format</label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_radio $wims_name_help
+!set wims_ref_class=wims_formradio
         !formradio format list radio,checkbox
         </div>
         <div class="field box">
@@ -261,6 +270,7 @@ $table_end
 !record 54 of $my_dir
 !!@#        dans le cas où il y a plusieurs étapes !!#@
          </div>
+!set wims_ref_class=wims_formradio
         !formradio  percent list 0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1 prompt 0%,10%,20%,30%,40%,50%,60%,70%,80%,90%,100%
         </div>
       !endif
@@ -272,6 +282,7 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=first_step $wims_name_help
+!set wims_ref_class=wims_formradio
             !formradio first_step list 1,0 prompt $wims_name_yes,$wims_name_no
 <br />
          <label for="format0">
@@ -279,6 +290,7 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help&special_parm1=format0 $wims_name_help
+!set wims_ref_class=wims_formradio
           !formradio format list mark,flashcard
         </div>
         <div class="field box">
@@ -288,6 +300,7 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help float_right
  !href target=wims_mhelp cmd=help&special_parm1=second_step $wims_name_help
+ !set wims_ref_class=wims_formradio
             !formradio second_step list yes,no prompt $wims_name_yes,$wims_name_no
         </div>
         <div class="field box">
@@ -297,6 +310,7 @@ $table_end
         </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=partialscore $wims_name_help
+!set wims_ref_class=wims_formradio
             !formradio partialscore list split,no prompt $wims_name_yes,$wims_name_no
         </div>
         <div class="field box">
@@ -305,6 +319,7 @@ $table_end
           </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_click $wims_name_help
+!set wims_ref_class=wims_formradio
           !formradio format list case,clickfill,dragfill prompt case,clickfill,dragfill
           <div class="formHelp">
 !record 20 of $my_dir
@@ -592,6 +607,7 @@ $table_end
        </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=reading $wims_name_help
+    !set wims_formradio_class=wims_button_help
     !formradio reading_file1 list yes,no prompt $wims_name_yes,$wims_name_no
     <ul>
      <li>
@@ -617,6 +633,7 @@ $table_end
       </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=audio $wims_name_help
+!set wims_ref_class=wims_formradio
     !formradio audio_file1 list yes,no prompt $wims_name_yes,$wims_name_no
     <ul><li>
         <label for="audio_file0">
@@ -634,6 +651,7 @@ $table_end
        </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=video $wims_name_help
+!set wims_ref_class=wims_formradio
     !formradio video_file1 list yes,no prompt $wims_name_yes,$wims_name_no
       <ul><li>
        <label for="video_file0">
@@ -655,6 +673,7 @@ $table_end
       </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=image $wims_name_help
+!set wims_ref_class=wims_formradio
     !formradio image_file1 list yes,no prompt $wims_name_yes,$wims_name_no
     <ul><li>
        <label for="image_file0">
@@ -705,7 +724,7 @@ $table_end
       </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=nopaste $wims_name_help
-
+!set wims_ref_class=wims_formradio
         !formradio paste list yes,no prompt $wims_name_yes,$wims_name_no
        </div>
      !endif

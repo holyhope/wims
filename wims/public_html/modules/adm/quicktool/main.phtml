@@ -5,6 +5,7 @@
 !if $(module_title_$modu_lang)!=
   !set module_title=$(module_title_$modu_lang)
 !endif
+
 !header
 !if $compute=yes
   !if $error!=$empty
@@ -26,13 +27,13 @@
       !read menu.phtml
       </div>
     !endif
-  !endif 
+  !endif
 !else
     <div class="wims_content">
   !read menu.phtml
   </div>
 !endif compute=yes?
- 
+
 :end
 
 !if $type_exo!=$empty
@@ -49,7 +50,7 @@
 !if $wims_developer!= and $type_exo=
 !set wims_menu_items=!append line  ,0,\
    to $wims_menu_items
-!set u = !linecnt $name      
+!set u = !linecnt $name
 !for i = 1 to $u
    !set cnt=!itemcnt $(name[$i;])
    !for a =1 to $cnt
