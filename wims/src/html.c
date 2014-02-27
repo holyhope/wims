@@ -25,14 +25,14 @@ enum {
 
 	/* Produces <select> and <option>s.
 	 * Parameter string: name from n1 to n2 [prompt plist]
-	 * or name, list slist [prompt plist] 
+	 * or name, list slist [prompt plist]
 	 * Using script to do this is too slow. */
 void _form_menus(char *p,int kind)
 {
-    char *n, *li, *pp, *val, *p0, *p1, *p2, *pc;
+    char *n, *li, *pp, *val, *p0, *p1, *p2, *pc, *s, *pfre="";
     char *vlist[MAX_MENU_ITEMS], *plist[MAX_MENU_ITEMS];
     char nbuf[MAX_LINELEN+1],vbuf[MAX_LINELEN+1],pbuf[MAX_LINELEN+1];
-    char buf[256];
+    char buf[256], pfrb[256];
     int i,i1=0,i2,itemcnt,type;
     if(!outputing) return;
     n=find_word_start(p); if(*n==0) return;
@@ -79,7 +79,13 @@ void _form_menus(char *p,int kind)
 	 pp=getvar("wims_formselect_switch"); if(pp==NULL) pp="";
 	 output("<select %s name=\"%s\" id=\"%s\">\n",pp,nbuf,nbuf);
     }
-    if(kind==FORM_BAR) _output_("<span style=\"font-weight:bold;\">-</span>");
+    if(kind==FORM_BAR) {
+      s=getvar("wims_ref_class");
+      if(s!=NULL && *s!=0 && !isspace(*s)) {
+       snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
+      } else { pfrb[0]=0; pfre=""; }
+      output("%s<span style=\"font-weight:bold;\">-</span>",pfrb);
+    }
     val=getvar(nbuf);if(val==NULL) val="";
     for(i=0;i<itemcnt;i++) {
 	 if(type==0) {
@@ -89,42 +95,48 @@ void _form_menus(char *p,int kind)
 	 else p0=vlist[i];
 	 if(*find_word_start(p0)==0) continue;
 	 if(plist[i]==NULL) plist[i]=p0;
-	 if(*val!=0 && 
-	   (strcmp(p0,val)==0 || 
-	    ( (kind==FORM_SELECT || kind==FORM_CHECKBOX) 
+	 if(*val!=0 &&
+	   (strcmp(p0,val)==0 ||
+	    ( (kind==FORM_SELECT || kind==FORM_CHECKBOX)
 	     && itemchr(val,p0)!=NULL))) {
 	    if(kind==FORM_SELECT) pc=" selected=\"selected\"";
 	    else pc=" checked=\"checked\"";
 	 }
 	 else pc="";
+	 s=getvar("wims_ref_class");
+     if(s!=NULL && *s!=0 && !isspace(*s)) {
+       snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
+     }
+     else { pfrb[0]=0; pfre=""; }
 	 switch(kind) {
 	    case FORM_SELECT:
 	    output("<option value=\"%s\"%s>%s</option>\n",p0,pc,plist[i]);
 	    break;
-	    
+
 	    case FORM_RADIO:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>",
-		   nbuf,nbuf,i,p0,pc,nbuf,i,plist[i]);
+	    output("%s<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+		   pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
-	    
+
 	    case FORM_CHECKBOX:
-	    output("<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>&nbsp;%s",
-		   nbuf,nbuf,i,p0,pc,plist[i]);
+	    output("%s<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+		   pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
 	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
 	    _output_("\n");
 	    break;
-	    
+
 	    case FORM_BAR:
 	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
 		   nbuf,nbuf,i,p0,pc);
 	    break;
-	    
+
 	 }
     }
+    setvar("wims_formradio_class","");
     if(kind==FORM_SELECT) _output_("</select>");
-    if(kind==FORM_BAR) _output_("<span style=\"font-weight:bold;\">+</span>");
+    if(kind==FORM_BAR) output("<span style=\"font-weight:bold;\">+</span>%s",pfre);
 }
 
 void exec_formselect(char *p)
