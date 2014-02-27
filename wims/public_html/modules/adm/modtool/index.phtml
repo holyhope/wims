@@ -37,13 +37,9 @@
        <input size="$size" name="i_description" id="i_description" value="$i_description" />
      </div>
      <div class="field box">
-       <label for="i_language">$wims_name_Language</label>
- !default i_language=$module_language
-      !formselect i_language list $langlist prompt $langname
-     </div>
-     <div class="field box">
      <label for="i_label">$wims_name_Type</label>
  !set wims_formselect_switch=multiple
+ !set wims_ref_class=wims_formradio
  !formcheckbox i_category list exercise,tool,document,recreation,oef,deductio\
    prompt $name_type
      </div>
@@ -62,7 +58,14 @@
 </script>
      </div>
      <div class="field box">
+       <label for="i_keywords">$wims_name_Keywords</label>
+        !set wims_ref_class=wims_button_help float_right
+        !href cmd=help&special_parm=keywords $wims_name_help
+       <input size="$size" name="i_keywords" id="i_keywords" value="$i_keywords" />
+      </div>
+     <div class="field box">
        <label for="i_level">$wims_name_Levels</label>
+!set wims_ref_class=wims_formradio
  !formcheckbox i_level list $levellist
      <br /><span class="small">$name_levellist</span>
      </div>
@@ -71,21 +74,6 @@
  !default i_scoring=no
        !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
        <div class="formHelp">$wims_name_Scoringhelp</div>
-     </div>
-     <div class="field box halfwidth">
-       <label for="i_version">$wims_name_Version</label>
-       !set wims_ref_class=wims_button_help float_right
- !href cmd=help&special_parm=version $wims_name_help
- !default i_version=1.00
-      <input type="text" size="6" name="i_version" id="i_version" value="$i_version" />
-       <div class="formHelp">$name_increment</div>
-     </div>
-     <div class="field box halfwidth">
-       <label for="i_wims_version">$wims_name_Required_WIMS_version</label>
-         !set wims_ref_class=wims_button_help float_right
-        !href cmd=help&special_parm=wimsversion $wims_name_help
- !default i_wims_version=$wims_version
-       <input type="text" size="6" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />&nbsp;
      </div>
    </fieldset>
 
@@ -115,8 +103,9 @@
         <div class="formHelp">$wims_name_firstname, $wims_name_lastname</div>
      </div>
      <div class="field box halfwidth">
-       <label for="i_maintainer_address">$wims_name_email ($wims_name_Maintainer)</label>
+       <label for="i_maintainer_address">$wims_name_email</label>
        <input type="text" size="$size" name="i_maintainer_address" id="i_maintainer_address" value="$i_maintainer_address" />
+       <div class="formHelp">$wims_name_Maintainer</div>
      </div>
      <div class="field box halfwidth">
        <label for="i_translator">$wims_name_Translator</label>
@@ -128,27 +117,11 @@
      </div>
    </fieldset>
    <fieldset class="property_fields blockcenter">
-     <legend>Divers</legend>
-     <div class="field box">
-       <label for="i_require">$wims_name_require</label>
- !formcheckbox i_require list $swlist prompt $swname
-      </div>
+     <legend>$wims_name_Language</legend>
       <div class="field box">
-        <label for="i_data">$wims_name_datamodule</label>
-        !set wims_ref_class=wims_button_help float_right
-        !href cmd=help&special_parm=datamodule $wims_name_help
-        <input size="$size" name="i_data" id="i_data" value="$i_data" />
-      </div>
-      <div class="field box">
-       <label for="i_keywords">$wims_name_Keywords</label>
-        !set wims_ref_class=wims_button_help float_right
-        !href cmd=help&special_parm=keywords $wims_name_help
-       <input size="$size" name="i_keywords" id="i_keywords" value="$i_keywords" />
-      </div>
-     <div class="field box">
-       <label for="i_copyright">$wims_name_Copyright</label>
- !set wims_formselect_switch=
-      !formselect i_copyright list gnu prompt GNU General Public License
+       <label for="i_language">$wims_name_Language</label>
+ !default i_language=$module_language
+      !formselect i_language list $langlist prompt $langname
      </div>
      <div class="field box">
        <label for="i_translation_language">$name_translation_language</label>
@@ -160,6 +133,40 @@
      !read translationindex.phtml
    !endif
     </div>
+   </field>
+   <fieldset class="property_fields blockcenter">
+     <legend>$wims_name_config</legend>
+     <div class="field box halfwidth">
+       <label for="i_version">$wims_name_Version</label>
+       !set wims_ref_class=wims_button_help float_right
+ !href cmd=help&special_parm=version $wims_name_help
+ !default i_version=1.00
+      <input type="text" size="6" name="i_version" id="i_version" value="$i_version" />
+       <div class="formHelp">$name_increment</div>
+     </div>
+     <div class="field box halfwidth">
+       <label for="i_wims_version">$wims_name_Required_WIMS_version</label>
+         !set wims_ref_class=wims_button_help float_right
+        !href cmd=help&special_parm=wimsversion $wims_name_help
+ !default i_wims_version=$wims_version
+       <input type="text" size="6" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />&nbsp;
+     </div>
+     <div class="field box">
+       <label for="i_require">$wims_name_require</label>
+!set wims_ref_class=wims_formradio
+ !formcheckbox i_require list $swlist prompt $swname
+      </div>
+      <div class="field box">
+        <label for="i_data">$wims_name_datamodule</label>
+        !set wims_ref_class=wims_button_help float_right
+        !href cmd=help&special_parm=datamodule $wims_name_help
+        <input size="$size" name="i_data" id="i_data" value="$i_data" />
+      </div>
+     <div class="field box">
+       <label for="i_copyright">$wims_name_Copyright</label>
+ !set wims_formselect_switch=
+      !formselect i_copyright list gnu prompt GNU General Public License
+     </div>
     </fieldset>
    <div class="wimscenter wimsform">
      <input type="submit" name="inddef" value="$wims_name_tosave" />
