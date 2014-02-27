@@ -1,5 +1,4 @@
-!read adm/title.phtml 1
-
+!!read adm/title.phtml 1
 
 !if $save!=$empty
  !if $error!=$empty
@@ -13,28 +12,35 @@
    $name_updated
   !endif
  !endif
-
 !endif
 
 !form reply
-<fieldset class="property_fields halfwidth blockcenter">
+<fieldset class="property_fields blockcenter">
  <legend>$title</legend>
 !for i=1 to $confcnt
  !set r_=!record $i of lang/confdata.$modu_lang
  !set t_=!word 1 of $r_
  !if $catname isitemof $t_
-   <div class="field box">
-  !distribute lines $r_ into a_,b_,c_,e_
+   <div class="field box halfwidth">
+  !distribute lines $r_ into a_,b_,c_,e_,f_
   !distribute words $a_ into t_,n_,N_
   !set D_=$($n_)
   <label for="">$b_</label>
   !set wims_ref_class=wims_button_help float_right
   !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
+
+  <div class="formHelp">
+    $f_
+  </div>
+
   !if $c_=free
-   <input size="40" name="conf_$i" value="$D_" />
+    <input size="40" name="conf_$i" id="conf_$i" value="$D_" />
   !endif
   !if $c_=int
-   <input size="10" name="conf_$i" value="$D_" />
+    <input size="10" name="conf_$i" id="conf_$i" value="$D_" />
+  !endif
+  !if $c_=color
+    <input size="10" name="conf_$i" id="conf_$i" value="$D_" type="color" />
   !endif
   !if $c_=choice
    !set conf_$i=$D_
@@ -50,18 +56,19 @@ $ in $e_
    !distribute lines $e_ into x_,y_
    !formcheckbox conf_$i list $x_ prompt $y_
   !endif
-  !if $c_ iswordof free int
-  <span class="small">
-   <a href="#" onclick="document.forms[0].conf_$i.value='$(DF_$n_)'">$name_default</a>
+  !if $c_ iswordof free int color
+   <span class="small">
+     <input type="button" onclick="document.forms[0].conf_$i.value='$(DF_$n_)'" value="$name_default" class="wims_button"/>
    </span>
   !endif
   !set g_=!trim $g_
   </div>
  !endif
 !next i
- <div class="wimscenter wimsform">
+ <div class="wimscenter actions">
    <input type="submit" name="save" value="$wims_name_tosave" />
-   <input type="submit" name="abandon" value="$wims_name_giveup" />
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list $wims_name_giveup
  </div>
 </fieldset>
 

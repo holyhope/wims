@@ -180,7 +180,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !if $job=conf
   !set title=!nosubst Configuración de $cattit
   !distribute lines La configuración no ha cambiado porque no ha hecho modificaciones.\
-     por defecto\
+por defecto\
    into name_config,name_default
 
   !set name_updated=!nosubst El fichero <span class="tt">wims.conf</span> hasido actualizado. Puede recuperar \
