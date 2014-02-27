@@ -3,7 +3,8 @@
 # Line 2. prompt
 # Line 3. variable type
 # Line 4. selection range; prompts
-# Line 5 and up. help
+# Line 5 Small Help
+# Line 6 and up. More help
 
 :tech PATH
 PATH
@@ -19,10 +20,9 @@ yes,no;$wims_name_yes,$wims_name_no
 Set to yes if you want internet robots to see some WIMS contents as html
 pages. Helps for making the site better referenced and better known, but
 you need Apache 1.3 or up to get this to work correctly.
-<p>
-If you have just updated Apache httpd and if you have trouble with unknown
+<p>If you have just updated Apache httpd and if you have trouble with unknown
 addresses when you activate this feature,
-run the script <span class="tt">bin/apache-config</span>.
+run the script <span class="tt">bin/apache-config</span>.</p>
 
 :tech aliased_getfile
 getfile address rewriting
@@ -32,9 +32,8 @@ Activating this allows you to get correct file names when downloading
 wims-generated files: backup archives, student data in virtual classes, some
 image files, etc. Otherwise all file downloads will default to the name
 "wims.cgi" which has to be manually corrected when you save the file.
-<p>
-You may get into trouble downloading if your Apache httpd is not correctly
-configured. In this case, say "no".
+<p>You may get into trouble downloading if your Apache httpd is not correctly
+configured. In this case, say "no".</p>
 
 :housekeep backup_hour
 Hour of daily backup
@@ -50,7 +49,7 @@ free
 You can list here the hours during which the server is most likely to be busy.
 Some activities such as local module publication will be prohibited during 
 such periods. Give a list of words composed of two digits: for example,
-<p>"08 09 13 14".
+<p>"08 09 13 14".</p>
 
 :graphics default_anim_format ins_format
 Format of dynamic animations*
@@ -273,8 +272,8 @@ the newly-created session will be removed.
 <p>
 This delay only applies to sessions without authentication. Creating a
 session without reusing it is usually a behavior of internet robots.
-<p>
-This delay cannot be bigger than that for idle anonymous sessions.
+</p>
+<p>This delay cannot be bigger than that for idle anonymous sessions.</p>
 
 :tech mail_opt
 Options for !mailto command
@@ -295,7 +294,7 @@ Whenever possible, choose https connection to increase security. An
 intrusion to your server as webmaster represents a great danger to your
 installation!
 <p>WIMS is compatible with https. All you have to do is to configure your
-httpd so that it accepts https requests.
+httpd so that it accepts https requests.</p>
 
 :security manager_site
 Site maintenance connections must come from a site with this IP*!
@@ -490,42 +489,47 @@ detail).
 :appearances ref_menucolor wims_ref_menucolor
 Link color in menus and reference table. 
 free
-You can choose the color menu link  here. This is possible only
-for "new themes", so not for default theme.
+
+You can choose the color menu link  here.
+This is possible only for "new themes", so not for default theme.
 Choose it according to the table background color
 
 :appearances ref_button_bgcolor wims_ref_button_bgcolor
 Button background color
 free
-You can choose the background color action buttons here. This is possible only
-for "new themes", so not for default theme.
+
+You can choose the background color action buttons here.
+This is possible only for "new themes", so not for default theme.
 Choose it according to the table background color
 
 :appearances ref_button_color wims_ref_button_color
 Button color
 free
-You can choose the color of the text of action buttons here. This is possible only
-for "new themes", it does not work perfectly for default theme.
+
+You can choose the color of the text of action buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
 
 :appearances ref_button_help_bgcolor wims_ref_button_help_bgcolor
 Help button background color
 free
-You can choose the  background color of help link buttons here. This is possible only
-for "new themes", it does not work perfectly for default theme.
+
+You can choose the  background color of help link buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
 
 :appearances ref_button_help_color wims_ref_button_help_color
 Help button color
 free
-You can choose the color of the text of most of help link buttons here. This is possible only
-for "new themes", it does not work perfectly for default theme.
+
+You can choose the color of the text of most of help link buttons here.
+This is possible only for "new themes", it does not work perfectly for default theme.
 
 :appearances theme wims_theme
 Presentation theme
 choice
 $themelist
-You can choose the presentation theme here : <span class="tt">default</span>
-is the original theme. The theme <span class="tt">standard</span> allows a more configurable css style
-and icon theme.
+You can choose the presentation theme here.
+<span class="tt">default</span> is the original theme.
+The theme <span class="tt">standard</span> allows a more configurable css style and icon theme.
 
 :appearances theme_icon wims_theme_icon
 Icon theme
@@ -544,9 +548,9 @@ The style sheet affects almost all pages of the site.
 The available stylesheet (css) files are in 
 <span class="tt">public_html/html/css/$lang</span>. If you
 want more stylesheets, you can put new css files into this directory.
-<p>
-If you choose css=<span class="tt">-theme-</span>, the stylesheet of the current theme
-will be used. No stylesheet will be loaded if css=<span class="tt">----</span>.
+</p>
+<p>If you choose css=<span class="tt">-theme-</span>, the stylesheet of the current theme
+will be used. No stylesheet will be loaded if css=<span class="tt">----</span>.</p>
 
 :resources rlimit_cpu
 Processing time allowance in seconds*
@@ -557,32 +561,28 @@ computation will be cut off and an error message will be sent back.
 It is useless to increase this number too much, because in normal
 circumstances few internet users will wait more than a few dozens of
 seconds for a page.
-<p>
-This is also a very important security measure to check denial-of-service
-attacks.
+<p>This is also a very important security measure to check denial-of-service attacks.</p>
 
 :appearances show_author wims_show_author
 Show author names in search results
 choice
 yes,no;$wims_name_yes,$wims_name_no
-Do you want the author names to show up behind each module in the search
-results?
+Do you want the author names to show up behind each module in the search results?
 
 :appearances show_stat wims_show_stat
 Show site usage statistics
 choice
 yes,no;$wims_name_yes,$wims_name_no
 Log accounting must be activated before statistics can be shown.
-<p>
-To activate log accounting, you should run log/account.sh once every early
-morning, by putting it into crontab.
+<p>To activate log accounting, you should run log/account.sh once every early
+morning, by putting it into crontab.</p>
 
 :housekeep site_accounting
 Activity accounting
 choice
 0,1; no, yes
-Enable or disable daily activity accounting. This is necessary for site
-activity statistics, as well as for virtual class connection time accounting.
+Enable or disable daily activity accounting.
+This is necessary for site activity statistics, as well as for virtual class connection time accounting.
 
 :misc site_description wims_site_description
 Site description
@@ -590,9 +590,7 @@ free
 
 This description text is put in the header of every page rendered by the
 server. Its main purpose is to inform internet robots.
-<p>
-Modules will also have access to this text via the variable
-$$wims_site_description.
+<p>Modules will also have access to this text via the variable $$wims_site_description.</p>
 
 :misc site_keywords site_keywords wims_site_keywords
 Site keywords
@@ -602,9 +600,7 @@ This is a general keyword list which will be put to the header of every page
 rendered by the server, appended by the keyword list of the module. Its main
 purpose is to make the server better referenced by internet robots (hence
 search engines).
-<p>
-Modules will also have access to this text via the variable
-$$wims_site_keywords.
+<p>Modules will also have access to this text via the variable $$wims_site_keywords.</p>
 
 :appearances site_languages wims_site_languages
 Supported languages*
@@ -623,22 +619,19 @@ si (Slovenian),
 tw (Chinese gib5).
 
 List them separated by white spaces.
-<p>
-The order of your listing is important: languages listed first will get
-more priority.
+<p>The order of your listing is important: languages listed first will get more priority.</p>
 
 :appearances site_manager wims_site_manager
 Your email address*
 free
 
-This will be given as the email address of the webmaster. It is to this 
-address that visitors and users of the server will report server problems.
+This will be given as the email address of the webmaster.
+It is to this address that visitors and users of the server will report server problems.
 <p>
 You must change the default value $DF_site_manager to YOUR email address, if
 you do not read messages sent to $DF_site_manager.
-<p>
-Modules will also have access to this text via the variable
-$$wims_site_manager.
+</p>
+<p>Modules will also have access to this text via the variable $$wims_site_manager.</p>
 
 :graphics texbasesize
 Default TeX font size step*
@@ -652,29 +645,22 @@ session to another, except for virtual class users.
 <p>
 Do not adjust this font size only according to your own browser! Think of
 others who may have different font sizes in their browsers.
-<p>
-Each step increases (decreases) 9% of the linear size of the font.
+</p>
+<p>Each step increases (decreases) 9% of the linear size of the font.</p>
 
 :resources threshold1
 First load threshold
 int
 10,500
-If the server load average (as reported by `w', `uptime' or `top') exceeds
-this value times 0.01, visitors outside a virtual class will be refused
-access.
-<p>
-The time allowance for each request will also be reduced if the server load
-approaches this value.
+If the server load average (as reported by `w', `uptime' or `top') exceeds this value times 0.01, visitors outside a virtual class will be refused access.
+<p>The time allowance for each request will also be reduced if the server load approaches this value.</p>
 
 :resources threshold2
 Second load threshold
 int
 10,500
-If the server load average (as reported by `w', `uptime' or `top') exceeds
-this value times 0.01, visitors not from priority sites will be refused
-access.
-<p>
-This value should normally be larger than the first load threshold.
+If the server load average (as reported by `w', `uptime' or `top') exceeds this value times 0.01, visitors not from priority sites will be refused access.
+<p>This value should normally be larger than the first load threshold.</p>
 
 :security trusted_modules
 List of trusted modules
@@ -690,8 +676,8 @@ Administration modules (in the subdirectory adm/) and the home module are
 automatically trusted. If you want to add other modules to this list, add
 their addresses (the part after `module=' in the http request string) into
 this field, separated by white spaces.
-<p>
-Avoid defining trusted modules unless you are really sure of what you are doing.
+</p>
+<p>Avoid defining trusted modules unless you are really sure of what you are doing.</p>
 
 :class user_limit wims_user_limit
 Limit of the total number of users in all classes
@@ -712,17 +698,15 @@ as data file for participant works. So do not set it too small.
 Cookie for anonymous visitors
 choice
 yes,no;$wims_name_yes,$wims_name_no
-If you choose `yes', the server will send cookies to anonymous visitors,
-which helps tracking the user.
+If you choose `yes', the server will send cookies to anonymous visitors, which helps tracking the user.
 <p>
 Note that cookies are not mandatory: even if
 the visitor disables cookies, he will still be able to work normally on WIMS.
 The main difference is that cookies can help them to keep their
 personal preferences longer, and can improve server performance by
 eliminating unnecessary session creations.
-<p>
-The use of cookies for works in virtual classes is not affected by this
-parameter.
+</p>
+<p>The use of cookies for works in virtual classes is not affected by this parameter.</p>
 
 :log show_ip
 Show userIP to supervisor in class logfile
@@ -741,32 +725,38 @@ LDAP host
 free
 
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_port
 LDAP Port
 free
 
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_version
 LDAP Version
 free
 
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_base
 LDAP Base
 free
 
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_branch
 LDAP Branch
 free
 
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_uid
 LDAP identifier
 free
 
 It is the login used by the ldap. The participant must enter it as login.
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
 :auth ldap_login
 WIMS login
 free
