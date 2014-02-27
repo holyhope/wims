@@ -1,53 +1,44 @@
 !!!### langage independant
 !!
-<br />
+
 !form reply
 <input type="hidden" name="job" value="exo" />
 <input type="hidden" name="exo" value="$exo" />
 
-$table_header
- $table_tr
-  <td>$wims_name_Exercise</td><td>$exo</td> 
- </tr>
- $table_tr
-  <td>$name_weight</td><td><input size="5" name="eweight" value="$eweight" /></td>
- </tr>
- $table_tr
-  <td>$wims_name_title</td><td><input size="20" name="ename" value="$ename" /></td>
- </tr>
- $table_tr
-  <td>$name_dependency 
-  &nbsp;
-!set wims_ref_class=wims_button_help
+<fieldset class="property_fields">
+  <legend>$wims_name_Exercise $exo</legend>
+  <div class="field box halfwidth">
+    <label for="ename">$wims_name_title</label>
+    <input size="20" name="ename" id="ename" value="$ename" />
+  </div>
+  <div class="field box halfwidth">
+    <label for="eweight">$name_weight</label>
+    <input size="5" name="eweight" id="eweight" value="$eweight" />
+  </div>
+  <div class="field box halfwidth">
+     <label for="edep">$name_dependency</label>
+!set wims_ref_class=wims_button_help float_right
    !href target=wims_mhelp cmd=help&special_parm=dependency $wims_name_help
- </td>
-  <td><input size="40" name="edep" value="$edep" /></td>
- </tr>
- $table_tr
-  <td>$name_Options 
-  &nbsp;
-!set wims_ref_class=wims_button_help
-   !href target=wims_mhelp cmd=help&special_parm=options $wims_name_help
-  </td>
-  <td>
-   !formcheckbox eopt list $optionlist
-  </td>
- </tr>
- $table_tr
-  <td>$wims_name_comment <span class="small">($name_desc_comment)</span></td>
-  <td><textarea name="ecomment" rows="3" cols="60">$ecomment</textarea></td>
- </tr>
- $table_tr
-  <td>$name_contenu 
-  &nbsp;
-!set wims_ref_class=wims_button_help
+     <input size="40" name="edep" id="edep" value="$edep" />
+   </div>
+   <div class="field box">
+     <label for="eopt">$name_Options</label>
+!set wims_ref_class=wims_button_help float_right
+      !href target=wims_mhelp cmd=help&special_parm=options $wims_name_help
+      !formcheckbox eopt list $optionlist
+   </div>
+   <div class="field box">
+     <label for="ecomment">$wims_name_comment</label>
+     <textarea name="ecomment" id="ecomment" rows="3" cols="60">$ecomment</textarea>
+     <div class="formHelp">$name_desc_comment</div>
+   </div>
+   <div class="field box">
+    <label for="">$name_contenu</label>
+!set wims_ref_class=wims_button_help float_right
    !href target=wims_mhelp cmd=help&special_parm=contenu $wims_name_help
-  </td>
-  <td>
    !read adm/class/transfertexo.phtml
-  </td>
- $table_end
- <div class="wimscenter wimsform">
+  </div>
+  <div class="wimscenter wimsform">
    <input type="submit" value="$wims_name_tosave" name="save" />
    &nbsp;
    !if $exo>$exocnt
@@ -58,6 +49,6 @@ $table_header
     !href cmd=reply $wims_name_giveup
    !endif
   </div>
-
+</fieldset>
 !formend
 !reset save

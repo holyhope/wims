@@ -7,79 +7,67 @@
 
  <fieldset class="property_fields">
 
-   <legend>$name_info :</legend>
+   <legend>$name_info</legend>
 
   !!Title
   <div class="field box fullwidth">
     <label for="title">$(name_shinfo[1])</label>
-    <div class="formHelp">$name_desc_title</div>
     <input size="65" name="title" id="title" value="$title" />
+    <div class="formHelp">$name_desc_title</div>
   </div>
 
   !!Status
-  <div class="field  box">
-   <label for="">$(name_shinfo[2]) </label>
-   <div>
-     $(statutname[$activetest+2]) &nbsp;
-     !ifval $activetest>-1
+  !if $activetest>-1
+    <div class="field  box">
+     <label for="">$(name_shinfo[2]) </label>
+     $(wims_name_shstatus[$activetest+1]) &nbsp;
       !read adm/sheet/sheetaction.phtml exam,$exam,$activetest,0
-     !endif
-   </div>
-  </div>
-
+    </div>
+  !endif
   !!Description
   <div class="field box fullwidth">
    <label for="desc">$(name_shinfo[3])</label>
-   <div class="formHelp">$name_desc_desc</div>
    <textarea id="desc" class="iEdit" rows="6" cols="65" name="desc">$desc</textarea>
+   <div class="formHelp">$name_desc_desc</div>
   </div>
 
   !!Comments
   <div class="field box fullwidth">
    <label for="comment">$(name_shinfo[8])</label>
+   <textarea id="comment" class="iEdit" rows="6" cols="65" name="comment">$comment</textarea>
    <div class="formHelp">$name_desc_comment</div>
-   <textarea id="comment" class="iEdit" rows="6" cols="65" name="comment">$comment</textarea> </div>
-
+  </div>
   !!Expiration Date
-  <div class="field halfwidth float_left">
-      <div class="box">
+  <div class="field box halfwidth">
        <label for="expday">$(name_shinfo[4])</label>
-       <div class="formHelp">$name_desc_expday &nbsp;</div>
         !distribute item $[$expday],$[$expmon] into expday,expmon
         !formselect expday from 1 to 31
         !formselect expmon from 1 to 12 prompt $months
         !formselect expyear from $thisyear to $thisyear+1
-      </div>
+        <div class="formHelp">$name_desc_expday</div>
   </div>
 
   !!Duration
-  <div class="field halfwidth float_left">
-      <div class="box">
+  <div class="field box halfwidth">
        <label for="duration">$(name_shinfo[9])</label>
-       <div class="formHelp">$name_desc_duration</div>
        <input size="5" name="duration" id="duration" value="$duration" style="text-align:right;" /> <span class="units">$name_units_duration</span>
-      </div>
+       <div class="formHelp">$name_desc_duration</div>
   </div>
 
   !! Tries
-  <div class="field halfwidth float_left">
-      <div class="box">
+  <div class="field box halfwidth">
        <label for="tries">$(name_shinfo[10])</label>
        <div class="formHelp">$name_desc_tries &nbsp;</div>
        <input size="5" name="tries" id="tries" value="$stries" />
       </div>
-  </div>
 
   !if $activetest>0
     !!Allow Type
-    <div class="field halfwidth float_left">
-    <div class="box">
+    <div class="field box halfwidth">
      <input type="hidden" name="allow" value="yes" />
      <label for="allowtype">$(name_shinfo[6])</label>
-     <div class="formHelp float_right">
-      !set wims_ref_class=wims_button_help
+      !set wims_ref_class=wims_button_help float_right
       !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
-     </div>
      <br class="clearall" />
      !formselect allowtype list all, simulation, none, select prompt $name_allowtype
      <input size="50" name="IPlist" value="$IPlist" />
@@ -92,7 +80,6 @@
      !else
       <input type="hidden" name="allowshare" value="0" />
      !endif
-    </div>
     </div>
 
     !!Cut Hours
