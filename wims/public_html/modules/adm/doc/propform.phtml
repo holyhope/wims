@@ -26,15 +26,15 @@
 		<label for="emailr">$wims_name_email</label>
 		<input type="text" size="40" id="emailr" name="emailr" value="$email" />
 	</div>
-	<div class="field box">
+	<div class="field box fullwidth">
 		<label for="headerr">$n_header</label>
 		!set header=!translate internal $	$ to $\
 $ in $header
 		!set hl=!linecnt $header
 		!set hr=$[max(3,min($hl+2,10))]
 		!set header=!reinput $header
-		<textarea cols="40" rows="$hr" id="headerr" name="headerr">$header</textarea>
 		<div class="formHelp">css, js, etc.</div>
+		<textarea cols="40" rows="$hr" id="headerr" name="headerr">$header</textarea>
 	</div>
 
 	!reset headerr
@@ -44,8 +44,8 @@ $ in $header
 			!set wims_ref_target=wims_internal
     		!set wims_ref_class=wims_button_help float_right
 			!href cmd=reply&doc=$helpd&job=read&block=doctochelp $wims_name_help
-!set wims_ref_class=wims_formradio
-		!formradio doctocr list yes,no prompt $wims_name_yes,$wims_name_no
+			!set wims_ref_class=wims_formradio
+			!formradio doctocr list yes,no prompt $wims_name_yes,$wims_name_no
 	</div>
 	!set docopenr=$docopen
 	!default docopenr=0
