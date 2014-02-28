@@ -332,6 +332,7 @@ $table_end
 
 <span class="tt">case</span>
           </label>
+          !set wims_ref_class=wims_formradio
           !formcheckbox reaccent list yes prompt $wims_name_yes
           <div class="formHelp">
                 !reset reaccent=
@@ -346,6 +347,7 @@ $table_end
           </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
+        !set wims_ref_class=wims_formradio
         !formradio  pos_rep list inside,outside,under prompt $name_position
           <div class="formHelp">
 !record 32 of $my_dir
@@ -358,12 +360,14 @@ $table_end
            <label for="format">$name_format</label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_click $wims_name_help
+        !set wims_ref_class=wims_formradio
         !formradio format list case,clickfill,dragfill prompt case,clickfill,dragfill
         <br />
 !record 24 of $my_dir
 !!@#        Pour le format !!#@
     <span class="tt">case</span>
         !reset reaccent=
+        !set wims_ref_class=wims_formradio
         !formcheckbox reaccent list yes prompt $name_e
          </div>
          <div class="field box">
@@ -373,6 +377,7 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
+        !set wims_ref_class=wims_formradio
         !formradio  pos_rep list inside,outside prompt $name_position2
         </div>
       !endif
@@ -381,6 +386,7 @@ $table_end
           <label for="format">$name_format</label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=format_click $wims_name_help
+         !set wims_ref_class=wims_formradio
           !formradio format list case,clickfill,dragfill,mark,menu prompt case,clickfill,dragfill,mark,menu
         </div>
         <div class="field box">
@@ -390,8 +396,9 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=menu_commun $wims_name_help
+!set wims_ref_class=wims_formradio
         !formradio common list yes,no prompt $wims_name_yes,$wims_name_no
-        <div class="formatHelp">
+        <div class="formHelp">
 !record 55 of $my_dir
 !!@#       format mark, menu !!#@
          </div>
@@ -403,17 +410,21 @@ $table_end
          </label>
 !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=specialhelp $wims_name_help
-
+<br />
         <label for="specialhelp1">$name_trial1:</label>
+!set wims_ref_class=wims_formradio
         !formradio specialhelp1 list 0,1,2,3,4,5 prompt $name_listhelp
 <br />
         <label for="specialhelp2">$name_trial2:</label>
+!set wims_ref_class=wims_formradio
         !formradio specialhelp2 list 0,1,2,3,4,5 prompt $name_listhelp
 <br />
         <label for="specialhelp3">$name_trial3:</label>
+!set wims_ref_class=wims_formradio
         !formradio specialhelp3 list 0,1,2,3,4,5 prompt $name_listhelp
 <br />
        <label for="specialhelp4">$name_trial4:</label>
+!set wims_ref_class=wims_formradio
         !formradio specialhelp4 list 0,1,2,3,4,5 prompt $name_listhelp
 <br />
        <label for="helpprompt">$name_prompt : </label>
@@ -463,6 +474,7 @@ $table_end
             <label for="sens">Sens</label>
            !set wims_ref_class=wims_button_help float_right
            !href target=wims_mhelp cmd=help&special_parm1=sens $wims_name_help
+           !set wims_ref_class=wims_formradio
            !formradio sens list 1,2,3 prompt $name_quifaitquoi
          </div>
          <div class="field box">
@@ -490,11 +502,11 @@ $table_end
        <div class="field box"><label for="taille_case">
 !record 31 of $my_dir
 !!@#       Taille des cases !!#@
-
-(case) </label>
+</label>
        !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=taille_case $wims_name_help
            <input size="15" name="taille_case" id="taille_case" value="$taille_case" />
+           <div class="formHelp">case</div>
         !if $type_exo iswordof SELECTWORD
           <div class="formHelp">
 !record 32 of $my_dir
@@ -521,9 +533,6 @@ $table_end
 !record 34 of $my_dir
 !!@#       Taille des étiquettes !!#@
          </label>
-       !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB
-          (drag / click)
-       !endif
        !set wims_ref_class=wims_button_help float_right
 !href target=wims_mhelp cmd=help&special_parm1=taille_drag $wims_name_help
        !if $type_exo iswordof SELECTWORD
@@ -531,8 +540,12 @@ $table_end
         !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
         !endif
        <input size="15" name="taille_drag" id="taille_drag" value="$taille_drag" />
+       !if $type_exo iswordof GAP SELECTWORDA SELECTWORDB
+          <div class="formHelp">drag / click</div>
+       !endif
        !if $type_exo iswordof SELECTWORD
          <div class="formHelp">
+         drag / click
 !record 35 of $my_dir
 !!@#         si question supplémentaire !!#@
         </div>
@@ -619,6 +632,7 @@ $table_end
         <input size="8" name="reading_tag" id="reading_tag" value="$reading_tag" />
      </li>
      <li>
+     !set wims_ref_class=wims_formradio
       !formradio raw list 0,1 prompt $name_format_text
       &nbsp;
       !set wims_ref_class=wims_button_help
@@ -687,6 +701,9 @@ $table_end
      <label for="image_tag">$name_click</label>
      <input size="8" name="image_tag" id="image_tag" value="$image_tag" />
     </div>
+  </fieldset>
+  <fieldset class="property_fields blockcenter">
+    <legend>CSS</legend>
     <div class="field box">
       <label for="style_question">
 !record 46 of $my_dir
