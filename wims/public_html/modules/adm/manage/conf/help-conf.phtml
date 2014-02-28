@@ -1,6 +1,3 @@
-!if $help_conf isitemof 35,36
- !readproc mu/publishdownload.def
-!endif
 !if NaN isin $[$help_conf]
  !set r=!recordcnt lang/confdata.$modu_lang
  !for i=1 to $r
@@ -13,6 +10,11 @@
  :out
 !else
  !set t=!record $help_conf of lang/confdata.$modu_lang
+!endif
+!set help_conf_record=!line 1 of $t
+!if mu_publish_site iswordof $help_conf_record or \
+    mu_download_site iswordof $help_conf_record
+   !readproc mu/publishdownload.def
 !endif
 !set tt=!line 2 of $t
 !set sitehelp=!record 0 of lang/sitehelp.phtml.$modu_lang
