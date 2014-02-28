@@ -78,7 +78,7 @@
  <input type="hidden" name="step" value="1" />
 
 <fieldset class="property_fields blockcenter">
-    <legend></legend>
+    <legend>$name_classe</legend>
     <div class="field box">
      <label for="institution">$name_Name_portal</label>
   !if $Cltype isin 13
@@ -113,19 +113,24 @@
 
   !set suplim2 =$[rint($suplim/3)]
   !set emaillim2= $[rint(2*$emaillim/3)]
-  <div class="field box">
  !if $Cltype=1
+  <div class="field box">
   !let firstname=$wims_firstname
   !let lastname=$wims_lastname
   $wims_name_Supervisor: $wims_firstname $wims_lastname
+  </div>
  !else
-  $wims_name_Supervisor
-  <label for="firstname">$wims_name_firstname</label>
-  <input size="$suplim2" name="firstname" value="$firstname" id="firstname" />
-  <label for="lastname">$wims_name_lastname</label>
-  <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" />
+  <div class="field box halfwidth">
+    <label for="firstname">$wims_name_firstname</label>
+    <input size="$suplim2" name="firstname" value="$firstname" id="firstname" />
+    <div class="formHelp">$wims_name_Supervisor</div>
+  </div>
+  <div class="field box halfwidth">
+    <label for="lastname">$wims_name_lastname</label>
+    <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" />
+    <div class="formHelp">$wims_name_Supervisor</div>
+  </div>
  !endif
- </div>
 
    <div class="field box">
      <label for="email">$wims_name_email</label>
@@ -140,17 +145,18 @@
      !endif
    </div>
    !if $Cltype!=1
-    <div class="field box">
+    <div class="field box halfwidth">
      <label for="passsup">$wims_name_Password ($name_sup)</label>
      <input size="16" type="password" name="passsup" id="passsup" maxlength="16" />
-     <div class="formHelp">$name_warningpass $name_help1</div>
+     <div class="formHelp">$name_warningpass. $name_help1</div>
     </div>
+    <div class="field box halfwidth">
+    !else
+    <div class="field box">
    !endif
-
-   <div class="field box">
      <label for="password">$wims_name_Password ($name_classesss)</label>
      <input size="16" type="password" name="password" id="password" maxlength="16" />
-     <div class="formHelp">$name_warningpass
+     <div class="formHelp">$name_warningpass.
       !if $Cltype<2
        $name_help2
      !else
@@ -158,7 +164,7 @@
      !endif
      </div>
    </div>
-   <div class="field box">
+   <div class="field box halfwidth">
     <label for="exp_day">$wims_name_expiration</label>
     <select name="exp_day" id="exp_day">
   !for i=1 to 31
@@ -193,7 +199,7 @@
   </select>
   <div class="formHelp">$name_help_date</div>
   </div>
-   <div class="field box">
+   <div class="field box halfwidth">
      <label for="limit">$name_help_limit</label>
     !let num=!charcnt $wims_class_user_limit
     <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
