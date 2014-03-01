@@ -23,5 +23,5 @@
 !set name_choose_series=Klik op de serie oefeningen waarvoor ondersteuning moet worden aangeboden.
 !set name_actualhelp=Ondersteuning bij dit onderwerp
 !set name_series=Serie oefeningen
-!set name_orderchange=Change the order of the exercises
+!set name_orderchange=Verander de volgorde van de oefeningen
 

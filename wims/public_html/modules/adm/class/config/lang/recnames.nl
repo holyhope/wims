@@ -13,7 +13,7 @@ score:leerling activiteiten en cijfers
 seq:werk in pedagogische volgorde
 sheet:werkbladen
 sup:docenten accounts
-user:leerlling accounts
+user:leerling accounts
 vote:vragenlijsten
 
 

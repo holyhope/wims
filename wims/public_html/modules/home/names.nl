@@ -40,7 +40,7 @@ RE_pop = !nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2 = !nosubst $gotcnt $tt op volgorde van populariteit\
 (number $[$list_start+1] - $[$list_start+$gotcnt])
 RE_try = Probeer
-RE_noKeyword    = You must type in a keyword
+RE_noKeyword    = Er is geen zoekterm ingevuld.
 
 U_greet = !nosubst Welkom, $wims_firstname $wims_lastname !
 

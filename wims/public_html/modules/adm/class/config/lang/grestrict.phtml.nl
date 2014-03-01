@@ -1,13 +1,13 @@
 <p>Hier kunt aangeven welke computer netwerkadressen
- mogen deelnemen aan Uw virtuele klas.<br />
+ mogen deelnemen aan uw virtuele klas.<br />
  Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
  mogelijk andere de instellingen uit de individuele werkbladen
 </p>
 !read grestrictform.phtml
 <p>
 U kunt een of meerdere adressen invullen in het invulveld.
-De server zal elk ingevuld adres controleren op hostname en ipadres.
-Zelfs al is het ingevulde adres een "sub-string" van de hostname of ip-adres
+De server zal elk ingevuld adres controleren op "hostname" en ipadres.
+(Zelfs al is het ingevulde adres een "sub-string" van de "hostname" of ip-adres.)
 </p>
 <div class="wims_smallremark">
     <b>Tip.</b>
