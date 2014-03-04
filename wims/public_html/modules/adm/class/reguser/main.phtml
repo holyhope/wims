@@ -239,7 +239,6 @@ $name_inscription4:
 !! teacher registering a student with idp ldap
     !if $idp_method isitemof ldap
     <span class="wims_warning">$name_login_external ($name_idp_external)</span>:
-<p>
 
 !!!FIXME check the value of step
         <input type="hidden" name="step" value="3" />
@@ -401,10 +400,10 @@ $name_inscription4:
   !set lastn=!defof user_lastname in $userdef
  !if $wims_user=supervisor
   !set login_wims=!defof user_external_auth in $userdef
-  !default login_wims=$login
+  !default login_wims=$Login
   $name_studentadded
   <span class="tt wims_login">
-  !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
+  !href module=adm/class/userlist&job=userprop&getuser=$Login $login_wims
   </span>.
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test
