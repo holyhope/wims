@@ -1,19 +1,26 @@
 <div class="wimscenter">--- $title ---</div>
 
-
 !set wims_form_method=file
 !form reply
 <input type="hidden" name="bin_job" value="deposit" />
-$name_depos
-!formselect bin_dir list $dir
- / <input type="file" name="wims_deposit" size="30" />
-<input type="submit" value="$wims_name_send" />
 !set doctest1=!module category devel/$auth_login/$mod
 !if oef isin $doctest1
   !set doctest1=oef
 !endif
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=binfile&special_parm2=$doctest1 $wims_name_help
+
+<fieldset class="property_fields halfwidth blockcenter">
+   <legend></legend>
+   <div class="field box">
+     <label>$name_depos</label>
+   !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=binfile&special_parm2=$doctest1 $wims_name_help
+    !formselect bin_dir list $dir
+ / <input type="file" name="wims_deposit" size="30" />
+  </div>
+  <div class="wimscenter wimsform">
+    <input type="submit" value="$wims_name_send" />
+  </div>
+</fieldset>
 !formend
 
 !if $bcnt>0
