@@ -25,6 +25,10 @@ code=!word 1 of $code
 	!read var.check	
 !endif
 
+!if $job isin $allowed_jobs_without_auth
+  !default ident_type=json
+!endif
+
 !if $error=$empty
  !read jobs/$job.proc
 !endif
