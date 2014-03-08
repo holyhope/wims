@@ -6,7 +6,7 @@
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
 	symlink toolong unpublishable please-update-module-version lengthlimit \
-	mirror_exists
+	mirror_exists domain_keyword
  !goto $w1
 !else
  !default wims_read_parm=Une erreur technique est apparue.
@@ -30,7 +30,7 @@
 !exit
 
 :badauthhost
- Erreur d'authentification. Vous n'avez pas l'autorisation de publier avec ce 
+ Erreur d'authentification. Vous n'avez pas l'autorisation de publier avec ce
  numéro IP. Accès refusé.
 !exit
 
@@ -57,7 +57,7 @@
 
 :badhour
  Ce n'est pas le moment de publier !
- 
+
  Veuillez choisir un moment où le serveur est plus calme. Evitez de publier
  des modules durant les heures suivantes :
  <br class="spacer" />
@@ -65,8 +65,8 @@
 !exit
 
 :badlang
- Désolé mais la langue <span class="tt wims_code_words">$w2</span> n'existe pas encore sur WIMS. 
- Quelqu'un doit d'abord traduire WIMS dans cette langue avant qu'un 
+ Désolé mais la langue <span class="tt wims_code_words">$w2</span> n'existe pas encore sur WIMS.
+ Quelqu'un doit d'abord traduire WIMS dans cette langue avant qu'un
  module puisse être publié.
 !exit
 
@@ -95,7 +95,7 @@
 !exit
 
 :badwimsversion
- La déclaration de wims_version de votre module doit être une version WIMS 
+ La déclaration de wims_version de votre module doit être une version WIMS
  existante entre 3.36 et la dernière sortie.
  Ce n'est apparemment pas le cas. Veuillez corriger.
 !exit
@@ -111,7 +111,7 @@
 !exit
 
 :lengthlimit
-  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé 
+  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé
   par cette interface. Vous pouvez vous adresser directement au centre de publication
   !mailurl $sysadmin $centralhost
   afin qu'une installation manuelle soit faite.
@@ -129,7 +129,7 @@
 
 :nolocalright
  Pour pouvoir installer votre module dans l'espace local du serveur,
- vous devez d'abord demander au gestionnaire du site de vous en 
+ vous devez d'abord demander au gestionnaire du site de vous en
  donner le droit.
 !exit
 
@@ -188,7 +188,7 @@ Vous devez changer la version du module dont vous faites une mise à jour
 
 :symlink
  Les liens symboliques ne sont plus admis dans les nouveaux modules.
- Si c'est un module OEF ancienne version, vous pouvez le traduire en 
+ Si c'est un module OEF ancienne version, vous pouvez le traduire en
  nouvelle version ne contenant pas de lien symbolique.
 !exit
 
@@ -200,14 +200,14 @@ Vous devez changer la version du module dont vous faites une mise à jour
 :unpublishable
  Ce module a une adresse qui n'est pas publiable
  !if $unpublishable_site!=
- sur le serveur 
+ sur le serveur
  <span class="tt">$unpublishable_site</span>.
- !endif 
+ !endif
  Il doit d'abord être
  !href cmd=reply&jobreq=move&modreq=$mod renommé
  ou
  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod dupliqué
- pour être publiable sur ce serveur. 
+ pour être publiable sur ce serveur.
  !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
  En effet, votre module étant déclaré comme un module d'exercices OEF,
   son nom doit commencer par <span class="tt wims_code_words">oef</span>.
@@ -216,6 +216,12 @@ Vous devez changer la version du module dont vous faites une mise à jour
   En effet, votre module étant déclaré comme un document,
   son nom doit commencer par <span class="tt wims_code_words">doc</span>.
 !endif
-  
 !exit
 
+:domain_keyword
+ Les champs <span class="wims_label">$wims_name_Domain</span> ou
+ <span class="wims_label">$wims_name_Keywords</span> n'ont pas été remplis.
+ Merci de modifier les
+!href cmd=reply&jobreq=index $wims_name_properties
+ du module $mod en consultant les aides.
+!exit

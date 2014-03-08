@@ -127,19 +127,34 @@ de desarrollo bajo la dirección
    name_local,name_error,name_emailsend,name_goahead
 
  !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
-   publicación $publishname (<span class="tt">$centralhost</span>). Quiere entrar su identificación de publicación.
+   publicación $publishname
+ !set name_warning01=Quiere entrar su identificación de publicación.
  !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un  \
    módulo existente? Si no, nadie pondrá al día su nueva versión.
  !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local  \
    de este servidor. ¿Quieren seguir?
-!set name_warning3=La principal ventaja de una publicación en el espacio local es evidenciar \
+ !set name_warning3=La principal ventaja de una publicación en el espacio local es evidenciar \
   el módulo en el motor de búsqueda del servidor local.
-!set name_cheat1=!nosubst Este módulo declara que se satisface con WIMS-$Wver2,\
+  !set name_cheat1=!nosubst Este módulo declara que se satisface con WIMS-$Wver2,\
  mientras que se desarrolló probablemente o modificado bajo este servidor que es  \
  de versión $wims_version. Deben poner al día el fichero ÍNDICE del módulo \
  modificando la versión de wims en <span class="tt"> Propiedades< /tt>.
-!set name_cheat2= ¡Si están seguros de lo que hicieron, pueden engañar \
+  !set name_cheat2= ¡Si están seguros de lo que hicieron, pueden engañar \
  para hacer creer a los servidores que están en un servidor antiguo (OPERACIÓN MUY ARRIESGADA)!
+  !set name_warning_domain=!nosubst You should check the properties of the module and\
+     use domains and keywords which are in the helps of the field\
+     <span class="wims_label">$wims_name_Domain</span> and \
+     <span class="wims_label">$wims_name_Keywords</span>. \
+     If none of them is convenient, you could help us by sending your propositions to
+  !set name_warning_domain2=!nosubst Click on the field help\
+     <span class="wims_label">$wims_name_Domain</span> or\
+     <span class="wims_label">$wims_name_Keywords</span> to find the list
+  !set name_warning_keywords=!nosubst To improve the referencement of public modules,\
+   check the domains and keywords (see the field helps\
+   <span class="wims_label">$wims_name_Domain</span> and \
+   <span class="wims_label">$wims_name_Keywords</span>),\
+   use the technical english versions.\
+   You could help us by sending new propositions for domains and keywords to
 
 !endif
 

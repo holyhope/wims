@@ -2,11 +2,11 @@
 <span class="wims_warning">$wims_name_Error</span>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
-    badname badtar badtype badversion badwimsversion \
-    doublelang empty nochange noindex nolocalright \
-    nongnu nooriginal noreply noright noright_translate notallow robot \
-    symlink toolong unpublishable please-update-module-version lengthlimit \
-	mirror_exists
+	badname badtar badtype badversion badwimsversion \
+	doublelang empty nochange noindex nolocalright \
+	nongnu nooriginal noreply noright noright_translate notallow robot \
+	symlink toolong unpublishable please-update-module-version lengthlimit \
+	mirror_exists domain_keyword
  !goto $w1
 !else
  !default $wims_read_parm=发生了技术错误.
@@ -54,14 +54,14 @@
 
 :badhour
 现在不是发布本地模块的时候!
- 
+
 请选择服务器空闲的时候. 不要在以下时段发布模块:
  <br class="spacer" />
  $nopublish
 !exit
 
 :badlang
-对不起, WIMS还没有语言<span class="tt wims_code_words">$w2</span>. 
+对不起, WIMS还没有语言<span class="tt wims_code_words">$w2</span>.
 在提交模块前需要有人把WIMS翻译到这种语言.
 !exit
 
@@ -93,7 +93,7 @@
 !exit
 
 :doublelang
-模块语言定义混乱: INDEX文件声明 <span class="tt wims_code_words">language=$w3</span>, 
+模块语言定义混乱: INDEX文件声明 <span class="tt wims_code_words">language=$w3</span>,
 而目录的后缀是 <span class="tt wims_code_words">$w2</span>. 请改正.
 !exit
 
@@ -117,7 +117,7 @@
 !exit
 
 :nolocalright
-为把你的模块安装到服务器的本地空间, 
+为把你的模块安装到服务器的本地空间,
 你首先应该要求网站管理员给你授权.
 !exit
 
@@ -126,7 +126,7 @@
 !exit
 
 :nooriginal
-发布中心找不到此翻译模块的原始模块. 
+发布中心找不到此翻译模块的原始模块.
 你是否给了错误的地址?
 !exit
 
@@ -135,7 +135,7 @@
 !exit
 
 :noright
-你不是<span class="tt wims_fname">$w2</span>的作者或翻译者. 
+你不是<span class="tt wims_fname">$w2</span>的作者或翻译者.
 你可以把你的修改的
  !href cmd=reply&jobreq=backup 备份档案
 发给作者
@@ -164,7 +164,7 @@
 !exit
 
 :toolong
-对不起, 你的模块对于自动提交来说太大了. 
+对不起, 你的模块对于自动提交来说太大了.
 你可以手工发送给发布管理人. 谢谢!
 !exit
 
@@ -176,3 +176,10 @@
 它.
 !exit
 
+:domain_keyword
+ The fields <span class="wims_label">$wims_name_Domain</span> or
+ <span class="wims_label">$wims_name_Keywords</span> have not been filled.
+ Thanks to modify
+!href cmd=reply&jobreq=index $wims_name_properties
+ of the module $mod and read the helps.
+!exit

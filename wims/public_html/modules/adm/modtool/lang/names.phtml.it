@@ -66,7 +66,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 !if $job=modname
   !set name_moddevcnt=!nosubst Hai $totalcnt moduli in lavorazione.
   !set name_limited=!nosubst la lista è limitata a $maxlist elementi
-  
+
   !distribute lines Mostra solo i moduli il cui indirizzo contiene \
    Clicca sul titolo del modulo per modificarlo.\
    Non ci sono moduli in lavorazione. È possibile\
@@ -92,7 +92,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   !set name_intro=Questo modulo interattivo permette lo sviluppo di moduli (sofisticati)\
  per WIMS. Solo utenti con un account di gestione moduli possono accedere.\
  <p>Inserire i propri dati di accesso
- 
+
   !distribute lines contattare il gestore del sito\
     se non si ricordano i dati.\
     Se siete interessati a creare e gestire moduli interattivi WIMS,\
@@ -101,12 +101,12 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
     per creare esercizi interattivi più semplici, attraverso una interfaccia facilitata e senza il bisogno di registrazione.\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
- 
+
 !endif
 
 !if $job=backup
  !set name_save=Questo è il file di backup del modulo
- !set name_internal_error=Errore interno: impossibile generare il file di backup del modulo. Si prega di contattare il 
+ !set name_internal_error=Errore interno: impossibile generare il file di backup del modulo. Si prega di contattare il
 !endif
 
 !if $job=publish
@@ -124,7 +124,8 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    name_local,name_error,name_emailsend,name_goahead
 
  !set name_warning0=!nosubst Questo è un modulo con un indirizzo pubblico pronto per la pubblicazion attraverso il \
-  centro di pubblicazione $publishname (<span class="tt">$centralhost</span>). Per favore inserire i propri dati di accesso.
+  centro di pubblicazione $publishname.
+ !set name_warning01=Per favore inserire i propri dati di accesso.
  !set name_warning1=Avete incrementato il numero della versione del modulo, se state pubblicando \
   una nuova versione di un modulo esistente? Se non lo fate, questa nuova versione non sarà acquisita da nessun server.
  !set name_warning2= Questo modulo ha un indirizzo locale (<span class="tt wims_fname">local</span>). Sarà pubblicato solamente nello spazio <span class="tt wims_fname">local</span> di questo server.\
@@ -134,7 +135,22 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   !set name_cheat1=!nosubst Questo modulo dichiara che funziona con la versione $Wver2 di WIMS, ma \
     in realtà è stato creato con la versione $wims_version. Probabilmente è un errore ed è \
     necessario aggiornare il file INDEX del modulo aggiornando la &ldquo;Versione di WIMS necessaria&rdquo; nelle <em>Proprietà</em> del modulo.
-  !set name_cheat2= Se siete sicuri di sapere cosa stata facendo, potete imbrogliare il server (l'operazione è MOLTO RISCHIOSA)!
+  !set name_cheat2= Se siete sicuri di sapere cosa stata facendo, potete \
+    imbrogliare il server (l'operazione è MOLTO RISCHIOSA)!
+  !set name_warning_domain=!nosubst You should check the properties of the module and\
+     use domains and keywords which are in the helps of the field\
+     <span class="wims_label">$wims_name_Domain</span> and \
+     <span class="wims_label">$wims_name_Keywords</span>. \
+     If none of them is convenient, you could help us by sending your propositions to
+  !set name_warning_domain2=!nosubst Click on the field help\
+     <span class="wims_label">$wims_name_Domain</span> or\
+     <span class="wims_label">$wims_name_Keywords</span> to find the list
+  !set name_warning_keywords=!nosubst To improve the referencement of public modules,\
+   check the domains and keywords (see the field helps\
+   <span class="wims_label">$wims_name_Domain</span> and \
+   <span class="wims_label">$wims_name_Keywords</span>),\
+   use the technical english versions.\
+   You could help us by sending new propositions for domains and keywords to
 
 !endif
 
@@ -148,7 +164,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 !if $job=restore
  !set name_warning1=Il vostro file non è riconosciuto come un file di backup!\
  <br />È possibile ripristinare solo file creati come backup di Modtool. Riprovate.
- 
+
  !distribute lines  Il vostro file non è riconosciuto come un file di backup. Errore nel file!\
    Non ci sono differenze tra il modulo presente sul server (nello spazio di lavorazione) e il file di backup.\
    Viene mostrata solo una parte delle numerose differenze tra il modulo presente sul server (nello spazio di lavorazione) e il file di backup:\
@@ -159,7 +175,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Modulo ripristinato\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
-  
+
 !set name_illegal= Il vostro backup contiene file di tipo non consentito! Non può essere ripristinato.\
 <br />Forse si tratta di un backup troppo vecchio? In questo caso è necessario compiare sul server i file uno a uno.
 !set name_warning2=Solo backup creati tramite Modtool o prelevati dal centro di pubblicazione \
@@ -168,18 +184,18 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   dei file di backup.
 !set name_warning_diff=!nosubst Il ripristino di un file di backup ora sostituisce completamente i contenuti del modulo con lo stesso indirizzo esistente,\
   senza possibilità di recupero, ma è possibile
-  
+
 !endif
 
 !exit
 :del
 L'operazione di cancellazione non è
-reversibile. Si consiglia di 
+reversibile. Si consiglia di
 !href cmd=reply&jobreq=backup $wims_name_modsave
 
 <p>
 <b>ATTENZIONE</b>: ci possono essere corsi virtuali o test di
-autovalutazione che fanno riferimento a questo modulo, cancellare il 
+autovalutazione che fanno riferimento a questo modulo, cancellare il
 modulo potrebbe creare problemi.
 
 </p><p>
@@ -187,7 +203,7 @@ Sicuri di voler eliminare il modulo
 !!</p> close after the name of the module
 !exit
 :delconfirm
- Il file 
+ Il file
  <span class="wims_fname">$fname</span>
  è stato cancellato dal modulo
  <span class="wims_mod_title">$title</span>.

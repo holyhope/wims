@@ -6,7 +6,7 @@
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
 	symlink toolong unpublishable please-update-module-version lengthlimit \
-	mirror_exists
+	mirror_exists domain_keyword
  !goto $w1
 !else
  !default $wims_read_parm=A technical error occurred.
@@ -16,7 +16,7 @@
 
 :mirror_exists
  A module with the same name already exists on another mirror publication servor.
- If you are its author, you must publish at the same publication servor or ask 
+ If you are its author, you must publish at the same publication servor or ask
  a transfer of your rights. If you are not the other one, please change the name of your module.
 !exit
 
@@ -47,7 +47,7 @@
   if you want to add a new category.
  !else
   The zone <span class="tt wims_code_words">$w2</span> of your submitted module is unknown.
-  Please report your problem to the 
+  Please report your problem to the
   !mailurl $sysadmin publication maintainer
 .
  !endif
@@ -55,7 +55,7 @@
 
 :badhour
  This is not the time to publish a local module!
- 
+
  Please choose a period when the server is quieter. Avoid publishing
  modules during the following hours:
  <br class="spacer" />
@@ -189,3 +189,10 @@ have been done in the file NEWS.
  if you want to publish it.
 !exit
 
+:domain_keyword
+ The fields <span class="wims_label">$wims_name_Domain</span> or
+ <span class="wims_label">$wims_name_Keywords</span> have not been filled.
+ Thanks to modify
+!href cmd=reply&jobreq=index $wims_name_properties
+ of the module $mod and read the helps.
+!exit

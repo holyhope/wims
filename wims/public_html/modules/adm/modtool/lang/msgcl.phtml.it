@@ -6,7 +6,7 @@
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
 	symlink toolong unpublishable please-update-module-version lengthlimit \
-	mirror_exists
+	mirror_exists domain_keyword
  !goto $w1
 !else
  !default wims_read_parm=Errore tecnicno.
@@ -16,7 +16,7 @@
 
 :mirror_exists
  A module with the same name already exists on another mirror publication servor.
- If you are its author, you must publish at the same publication servor or ask 
+ If you are its author, you must publish at the same publication servor or ask
  a transfer of your rights. If you are not the other one, please change the name of your module.
 !exit
 
@@ -30,7 +30,7 @@
 !exit
 
 :badauthhost
- Errore di autenticazione. Non siete autorizzati a pubblicare un modulo da 
+ Errore di autenticazione. Non siete autorizzati a pubblicare un modulo da
  questo IP. Accesso negato.
 !exit
 
@@ -48,7 +48,7 @@
   if you want to add a new category.
  !else
   The zone <span class="tt wims_code_words">$w2</span> of your submitted module is unknown.
-  Please report your problem to the 
+  Please report your problem to the
  !mailurl $sysadmin publication maintainer
 .
  !endif
@@ -198,8 +198,8 @@ have been done in the file NEWS.
  !if $unpublishable_site!=
  sul server
  <span class="tt">$unpublishable_site</span>.
- !endif 
- Occorre prima 
+ !endif
+ Occorre prima
  !href cmd=reply&jobreq=move&modreq=$mod cambiare nome
  o
  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod duplicare il modulo
@@ -212,6 +212,13 @@ have been done in the file NEWS.
   En effet, votre module étant déclaré comme un document,
   son nom doit commencer par <span class="tt wims_code_words">doc</span>.
 !endif
-  
+
 !exit
 
+:domain_keyword
+ The fields <span class="wims_label">$wims_name_Domain</span> or
+ <span class="wims_label">$wims_name_Keywords</span> have not been filled.
+ Thanks to modify
+!href cmd=reply&jobreq=index $wims_name_properties
+ of the module $mod and read the helps.
+!exit

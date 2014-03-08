@@ -30,7 +30,7 @@
  !href cmd=reply&vcheat=no $name_goahead
 .
  </div>
- $name_cheat2 : 
+ $name_cheat2 :
  !href cmd=reply&vcheat=yes $name_goahead
 .
  !exit
@@ -40,6 +40,28 @@
  !if $local!=yes
   !href cmd=help&special_parm=publish $name_readhelp
   $name_warning0
+ <ul>
+ <li>$wims_name_Domain: <span class="tt">$i_domain</span></li>
+ <li>$wims_name_Keywords:<span class="tt">$i_keywords</span></li>
+</ul>
+!set  sysadmin_mail=!getdef sysadmin in wimshome/public_html/bases/sys/publishcenter/$(mu_publish_site[1])
+ !if $dombad!=$empty
+   <div class="wims_alertmsg">
+    $name_warning_nodomain:
+    <span class="tt">$dombad</span>.
+    $name_warning_nodomain2
+   <br class="spacer" />
+    $name_warning_domain
+   !mailurl $sysadmin_mail $sysadmin_mail\
+[WIMS] keywords domain
+   </div>
+  !else
+  <div>
+    $name_warning_keywords
+    !mailurl $sysadmin_mail $sysadmin_mail
+  </div>
+!endif
+$name_warning01
   !form reply
   <input type="hidden" name="confirm" value="yes" />
   <input type="hidden" name="vcheat" value="$vcheat" />

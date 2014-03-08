@@ -125,7 +125,8 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    name_local,name_error,name_emailsend,name_goahead
 
  !set name_warning0=!nosubst Dit is een openbare / publiek-adres module en die wordt geinstalleerd op\
-  de "hoofd distributie server" $publishname (<span class="tt">$centralhost</span>). Geef hier uw "publicatie id".
+  de "hoofd distributie server" $publishname.
+ !set name_warning01=Geef hier uw "publicatie id".
  !set name_warning1= Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,\
  niet vergeten het <em>versienummer</em> van de module te verhogen. Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
  !set name_warning2=Uw module heeft een lokaal adres.\
@@ -138,6 +139,20 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   om dit recht te trekken.
  !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
  door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
+ !set name_warning_domain=!nosubst You should check the properties of the module and\
+     use domains and keywords which are in the helps of the field\
+     <span class="wims_label">$wims_name_Domain</span> and \
+     <span class="wims_label">$wims_name_Keywords</span>. \
+     If none of them is convenient, you could help us by sending your propositions to
+  !set name_warning_domain2=!nosubst Click on the field help\
+     <span class="wims_label">$wims_name_Domain</span> or\
+     <span class="wims_label">$wims_name_Keywords</span> to find the list
+  !set name_warning_keywords=!nosubst To improve the referencement of public modules,\
+   check the domains and keywords (see the field helps\
+   <span class="wims_label">$wims_name_Domain</span> and \
+   <span class="wims_label">$wims_name_Keywords</span>),\
+   use the technical english versions.\
+   You could help us by sending new propositions for domains and keywords to
 
 !endif
 

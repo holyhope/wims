@@ -6,8 +6,29 @@ mcnt=!itemcnt $mname
 !distribute items $mname into m1,m2,m3
 mdir=$m1/$m2
 mname=$m3
+
+!!check domain
+i_domain=!module domain devel/$auth_login/$mod
+i_domain=!nonempty items $i_domain
+i_keywords=!module keywords devel/$auth_login/$mod
+i_keywords=!nonempty items $i_keywords
+
+!reset dombad domgood
+!for cd in $i_domain
+  check_domain=!lookup $cd in wimshome/public_html/bases/sys/domain/reversedomain
+  !if $check_domain =$empty
+    dombad=!append item $cd to $dombad
+  !else
+    domgood=!append item $cd to $domgood
+  !endif
+!next
+
 !if $m1=local
  local=yes
+!endif
+!if $i_domain=$empty or $i_keywords=$empty
+  rep=ERROR domain_keyword $mod
+  !goto end
 !endif
 !if $mcnt!=3 or $m1 notitemof $zonepublishs
  rep=ERROR unpublishable $mod
@@ -56,7 +77,6 @@ wver2=$Wver2
  pubprep=yes
  !exit
 !endif
-
 target=!translate internal ~ to / in $mod
 thisver=!module version devel/$auth_login/$mod
 oldver=!module version $target

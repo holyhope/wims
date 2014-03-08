@@ -6,7 +6,7 @@
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
 	symlink toolong unpublishable please-update-module-version lengthlimit \
-	mirror_exists
+	mirror_exists domain_keyword
  !goto $w1
 !else
  !default $wims_read_parm=A technical error occurred.
@@ -47,7 +47,7 @@ Authentification error. You have no right to publish with this IP number. Access
   if you want to add a new category.
  !else
   The zone <span class="tt wims_code_words">$w2</span> of your submitted module is unknown.
-  Please report your problem to the 
+  Please report your problem to the
   !mailurl $sysadmin publication maintainer
 .
  !endif
@@ -55,7 +55,7 @@ Authentification error. You have no right to publish with this IP number. Access
 
 :badhour
  This is not the time to publish a local module!
- 
+
  Please choose a period when the server is quieter. Avoid publishing
  modules during the following hours:
  <br class="spacer" />
@@ -108,7 +108,7 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :lengthlimit
-  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé 
+  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé
   par cette interface. Vous pouvez vous adresser directement au centre de publication
   !mailurl $sysadmin $centralhost
   afin qu'une installation manuelle soit faite.
@@ -188,3 +188,10 @@ have been done in the file NEWS.
  if you want to publish it.
 !exit
 
+:domain_keyword
+ The fields <span class="wims_label">$wims_name_Domain</span> or
+ <span class="wims_label">$wims_name_Keywords</span> have not been filled.
+ Thanks to modify
+!href cmd=reply&jobreq=index $wims_name_properties
+ of the module $mod and read the helps.
+!exit
