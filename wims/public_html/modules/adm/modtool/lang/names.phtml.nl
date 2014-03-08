@@ -121,8 +121,9 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   Als dit niet de bedoeling is, graag de systeembeheerder van deze server vragen de module handmatig te verwijderen\
   U wordt een email ter bevestiging toegestuurd.\
   OK, ga door\
+  The following domains do not exist\
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
-   name_local,name_error,name_emailsend,name_goahead
+   name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
 
  !set name_warning0=!nosubst Dit is een openbare / publiek-adres module en die wordt geinstalleerd op\
   de "hoofd distributie server" $publishname.

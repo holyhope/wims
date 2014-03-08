@@ -123,8 +123,9 @@ de desarrollo bajo la dirección
   Si es un error, quiere pedir al gestor del lugar retirar manualmente el módulo que publicaron.\
   Van a recibir un correo electrónico que confirma la recepción del envío.\
   De acuerdo, ande\
+  The following domains do not exist\
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
-   name_local,name_error,name_emailsend,name_goahead
+   name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
 
  !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
    publicación $publishname
