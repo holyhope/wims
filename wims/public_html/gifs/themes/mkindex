@@ -3,35 +3,36 @@
 # gifs/theme/mkindex
 #
 # Create an automatic file "icon.css" for each theme icon directory.
+# wimsedu only :
 # when adding a new icon, delete the file wimsedu/test
 ###############################################################################
 
 cd `dirname $0`
 type_list="png gif"
 
-if [ ! -f wimsedu/test ] ;
- then
-    cd wimsedu ;
-    for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
-    for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
-    touch test;
-    cd .. ; 
+if [ ! -f wimsedu/test ] ; then
+	cd wimsedu ;
+  for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
+  for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
+  touch test;
+  cd .. ;
 fi;
 
 for j in `ls` ; do
- if [ -d "$j" ] && [ ! -s "$j/icon_orig.css" ] ; then
-	if [ -s "$j/icon.css" ] ; then rm $j/icon.css ; fi;
-	touch $j/icon.css ;
-	w=0; h=0
-	for a in $type_list ; do 
-	 if [ -s $j/home.$a ]; then 
-         w=`identify -format \%w $j/home.$a`;
-         h=`identify -format \%h $j/home.$a`;
-	 fi;
-	done;
-	w=`expr $w + 4`
-	h=`expr $h + 0`
-	echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a, .icon_button{
+	if [ -d "$j" ] ; then
+		if [ ! -s "$j/icon_orig.css" ] ; then
+			if [ -s "$j/icon.css" ] ; then rm $j/icon.css ; fi;
+			touch $j/icon.css ;
+			w=0; h=0
+			for a in $type_list ; do 
+		 		if [ -s $j/home.$a ]; then 
+	      	w=`identify -format \%w $j/home.$a`;
+	      	h=`identify -format \%h $j/home.$a`;
+		 		fi;
+			done;
+			w=`expr $w + 4`
+			h=`expr $h + 0`
+			echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a, .icon_button{
 	background-repeat:no-repeat;
 	background-position:0% 50%;
 	min-height:"$h"px;
@@ -47,11 +48,20 @@ for j in `ls` ; do
 }
 #wimsmenubox .menuitem {background-image:none;}
 " > icon.css
-	for a in $type_list ; do 
-	  for i in `ls $j/*.$a 2>/dev/null` ; do 
-		file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
-	  done
-	done
-	mv icon.css $j ;
- fi;
+			for a in $type_list ; do 
+		  	for i in `ls $j/*.$a 2>/dev/null` ; do 
+					file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
+		  	done
+			done
+			mv icon.css $j ;
+		fi;
+
+		if [ -s "$j/icon_orig.css" ] && [ ! -s "$j/icon.css" ] ; then
+			java -jar ../../themes/yuicompressor $j/icon_orig.css -o $j/icon-min.css -v;
+		else
+	 		java -jar ../../themes/yuicompressor $j/icon.css -o $j/icon-min.css -v;
+		fi;
+		echo "$j icon theme done."
+  fi;
+
 done

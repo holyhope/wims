@@ -26,7 +26,7 @@ for my $f (glob("*/*.css.template")) {
  close IN ;
  $TEXT .= "\n";
  out("$f2" ,$TEXT) ;
- system("java -jar yuicompressor-2.4.7.jar $f2 -o $f1 -v; rm $f2");
+ system("java -jar yuicompressor $f2 -o $f1 -v; rm $f2");
 }
 
 

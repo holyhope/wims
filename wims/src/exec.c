@@ -892,7 +892,7 @@ void exec_form(char *p)
            opt);
       return;
     }
-    output("<form action=\"%s%s\"%s method=\"%s\" %s>\n<div>%s",ref_name,a,st,m,opt,wn);
+    output("<form action=\"%s%s\"%s method=\"%s\" %s>\n<div class='wims_form'>%s",ref_name,a,st,m,opt,wn);
     if(a!=abuf && a[0]) force_setvar("wims_ref_anchor","");
     for(i=0;i<follow_no;i++) {
       if(robot_access && follow_list[i]==ro_session) continue;
@@ -937,9 +937,8 @@ void exec_robottrap(char *p)
     char buf[MAX_LINELEN+1];
     if(robot_access) return;
     ovlstrcpy(buf,"session=$wims_session.1&module=adm/trap");
-    _output_("<!-- "); exec_href(buf);
-    _output_("Robot trapper, do not click!</a> --><div>");
-    exec_href(buf); _output_("<span></span></a></div>");
+    _output_("<!-- "); exec_href(buf);_output_("Robot trapper, do not click!</a> -->");
+    _output_("<div class='wimstrap'>");exec_href(buf); _output_("<span></span></a></div>");
 }
 
     /* set definitions in a file. Trusted modules only. */
