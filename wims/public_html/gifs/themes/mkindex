@@ -12,10 +12,10 @@ type_list="png gif"
 
 if [ ! -f wimsedu/test ] ; then
 	cd wimsedu ;
-  for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
-  for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
-  touch test;
-  cd .. ;
+	for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
+	for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
+	touch test;
+	cd .. ;
 fi;
 
 for j in `ls` ; do
@@ -25,10 +25,10 @@ for j in `ls` ; do
 			touch $j/icon.css ;
 			w=0; h=0
 			for a in $type_list ; do 
-		 		if [ -s $j/home.$a ]; then 
-	      	w=`identify -format \%w $j/home.$a`;
-	      	h=`identify -format \%h $j/home.$a`;
-		 		fi;
+				if [ -s $j/home.$a ]; then 
+					w=`identify -format \%w $j/home.$a`;
+					h=`identify -format \%h $j/home.$a`;
+				fi;
 			done;
 			w=`expr $w + 4`
 			h=`expr $h + 0`
@@ -49,9 +49,9 @@ for j in `ls` ; do
 #wimsmenubox .menuitem {background-image:none;}
 " > icon.css
 			for a in $type_list ; do 
-		  	for i in `ls $j/*.$a 2>/dev/null` ; do 
+				for i in `ls $j/*.$a 2>/dev/null` ; do 
 					file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
-		  	done
+				done
 			done
 			mv icon.css $j ;
 		fi;
@@ -59,9 +59,9 @@ for j in `ls` ; do
 		if [ -s "$j/icon_orig.css" ] && [ ! -s "$j/icon.css" ] ; then
 			java -jar ../../themes/yuicompressor $j/icon_orig.css -o $j/icon-min.css -v;
 		else
-	 		java -jar ../../themes/yuicompressor $j/icon.css -o $j/icon-min.css -v;
+			java -jar ../../themes/yuicompressor $j/icon.css -o $j/icon-min.css -v;
 		fi;
 		echo "$j icon theme done."
-  fi;
+	fi;
 
 done
