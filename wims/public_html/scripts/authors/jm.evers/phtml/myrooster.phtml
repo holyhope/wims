@@ -24,22 +24,22 @@
     var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);
     function dontknow(){
 	var reply = new Array()
-	for( var p = 0 ; p < $inputs; p++){
+	reply[0] = read_svg();
+	for( var p = 1 ; p <= $inputs; p++){
 	    reply[p] = "?";
 	}
-	reply[p] = read_svg();
 	myConfirm('$dontknow',reply,'$wims_ref_name','$session','$module','$counter','$nok_send_color');
     }
     function sendanswer(){
 	var reply = new Array();
+	reply[0] = read_svg();
 	var p = 0;
 	if( document.getElementById('myinput0')){
 	    while( document.getElementById('myinput'+p) ){
-		reply[p] = document.getElementById('myinput'+p).value;
+		reply[p+1] = document.getElementById('myinput'+p).value;
 	        p++;
 	    }
 	}
-	reply[p] = read_svg();
         myConfirm('$send ?',reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
     }
 !if $wims_user=supervisor
@@ -111,6 +111,8 @@
 		    var max_x = $var2;
 		    var max_y = $var3;
 		    var total = max_x*max_y;
+		    var w = $var4;/* width of small rectangle in px */
+		    var h = $var5;/* height of small rectangle in px */
 		    var interactive = $var8;
 		    var color2 = "$var6".colorNameToHex();
 		    var color1 = "$var7".colorNameToHex();
@@ -131,8 +133,8 @@
 				idx++;
 			    }
 			}
-		    !endif
-		    !if $var10=1
+		    !else
+			!if $var10=1
 			var k;
 			for(var p=0;p < max_x ;p++){
 			    k=Math.random();
@@ -143,9 +145,8 @@
 				idx++;
 			    }
 			}
-		    !endif
-		    !if $var10=2
-		        var k; 
+			!else
+		    	var k;
 			for(var p=0;p < max_x ;p++){
 			    for(var i=0;i < max_y ;i++){
 				k=Math.random();
@@ -155,15 +156,13 @@
 				idx++;
 			    }
 			}
+			!endif
 		    !endif
-		    
 		    }
 		    var wims_svg = document.getElementById("wims_svg"+id);
 		    var data = (wims_svg.getAttribute("viewBox")).split(' ');
 		    var sizex = data[2] - data[0];
 		    var sizey = data[3] - data[1];
-		    var w = $var4;/* width of small rectangle in px */
-		    var h = $var5;/* height of small rectangle in px */
 		    var x,y;
 		    idx=0;
 		    var user_click_color = color2;
@@ -223,16 +222,20 @@
 			    }
 			    idx++;
 			}
-			var fx;var fy;if( max_x < max_y ){ fx = max_y/max_x;fy = 1;} else { fx = 1;fy = max_x/max_y; }
-			click_reply[3] = click_reply[2] * (2*fy + 2*fx);
+			/* correct perimetre if size of rectangle != 1x1 */
+			var fx;var fy;if( w < h ){ fx = h/w;fy = 1;} else { fx = 1;fy = w/h; }
+			click_reply[3] = click_reply[2] * (2*fy + 2*fx);/* max perimetre */
 			if( click_reply[2] > 1 ){
 			    for( var i=0 ; i < idx ; i++){
 				if( cc[i] == 1 ){ /* clicked */
-				    for( var p=0; p < idx ; p++){
+				    for( var p=0; p < idx ; p++){ /* look for neighbours */
 					if( cc[p] == 1 && p != i){ /* do not count the same rect */
 					    if( xc[i] == xc[p] && yc[i] == yc[p] - 1 ){ click_reply[3] = click_reply[3] - fx;}
+					    else
 					    if( xc[i] == xc[p] && yc[i] == yc[p] + 1 ){ click_reply[3] = click_reply[3] - fx;}
+					    else
 					    if( xc[i] == xc[p] - 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
+					    else
 					    if( xc[i] == xc[p] + 1 && yc[i] == yc[p] ){ click_reply[3] = click_reply[3] - fy;}
 					}
 				    }
