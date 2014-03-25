@@ -42,6 +42,6 @@ sub treate { my ($c)= @_ ;
 
 
 sub out { my ($bloc, $text) = @_ ;
-  open  (OUT, ">$bloc") || warn "Creation du bloc $bloc impossible"; 
-  print OUT $text ; close OUT ; 
-} 
+  open  (OUT, ">$bloc") || warn "Creation du bloc $bloc impossible";
+  print OUT $text ; close OUT ;
+}
