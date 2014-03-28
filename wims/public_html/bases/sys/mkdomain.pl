@@ -18,6 +18,7 @@ use strict;
 use search ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_dict', 'treate_language','treate_accent');
 
 my $dir='domain';
+my $outputkeywords='tmp';
 my @site_lang= treate_language ();
 $/ = undef;
 
@@ -43,6 +44,7 @@ out("$dir/reversedomain",$TEXT);
 
 ## Put in domain/domain.json the sorted list of domains up to third level
 out("$dir/domain.json", domainjson(%ref));
+out("$outputkeywords/keywords.tech.json", keywordsjson(%ref));
 
 ## for languages for which domain.xx exists, construct files
 ## domain.xx.tmp : sorted list of domains names and their translation, approximately union of domain and domain.xx
@@ -89,4 +91,8 @@ sub domainjson { my ($ref) = @_ ;
      };
    }
 "<!-- generated -->\n['" . join("',\n'", sortuniq(@D)) . "']";
+}
+
+sub keywordsjson { my ($ref) = @_ ;
+"[\"" . join("\",\n\"", sortuniq(keys %ref)) . "\"]";
 }
