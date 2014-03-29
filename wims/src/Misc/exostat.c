@@ -16,7 +16,7 @@
  */
 
 /* This is an internal program,
- * used to show statistics of frequentation, module by module. 
+ * used to show statistics of frequentation, module by module.
 */
 
 #include "../Lib/libwims.h"
@@ -44,7 +44,7 @@ double scsum, scavg, scdeviat, scmin, scmax, cid;
 double dursum, duravg, durdeviat, durmin, durmax;
 
 int filecnt=0, fcind;
-char *dirbase, types[256];
+char *dirbase, *sdata;
 
 int str2time(char *p)
 {
@@ -121,8 +121,8 @@ void onedir(char *dirname)
     char buf[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
     DIR *dir;
     struct dirent *ff;
-    char *t1, *t2;
-
+    char *t1, *t2, types[256];
+    snprintf(types,sizeof(types),"%s",sdata);
     for(t1=find_word_start(types); *t1; t1=find_word_start(t2)) {
       t2=find_word_end(t1); if(*t2) *t2++=0;
       snprintf(buf,sizeof(buf),"%s/%s/%s",dirbase,dirname,t1);
@@ -165,8 +165,9 @@ void stati(exodata *dat)
     }
 }
 
-      /* Output line format:
-       * type sh exo newcnt scorecnt scsum dursum scavg duravg scmin durmin scmax durmax scdeviat durdeviat cid*/
+/* Output line format:
+ * type sh exo newcnt scorecnt scsum dursum scavg duravg scmin durmin scmax durmax scdeviat durdeviat cid
+ */
 void output(void)
 {
     int i;
@@ -206,7 +207,7 @@ int main()
 {
     char cla[MAX_LINELEN+1];
     char *c1, *c2;
-    char *sdata, *cdata;
+    char *cdata;
 
     memset(shdata,0,sizeof(shdata)); memset(examdata,0,sizeof(examdata));
     dirbase=getenv("exostat_dirbase");
@@ -216,7 +217,6 @@ int main()
     cdata=getenv("exostat_classes");
     if(cdata==NULL || *cdata==0) cdata=getenv("w_wims_class");
     if(cdata==NULL || *cdata==0) return -1;
-    snprintf(types,sizeof(types),"%s",sdata);
     snprintf(cla,sizeof(cla),"%s",cdata);
     for(c1=cla; *c1; c1++) if(!isalnum(*c1) && *c1!='/') *c1=' ';
     for(c1=find_word_start(cla); *c1; c1=find_word_start(c2)) {
