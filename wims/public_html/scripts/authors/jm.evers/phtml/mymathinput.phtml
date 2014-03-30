@@ -65,9 +65,14 @@ function sendanswer(){
 }
 //]]>
 </script>
-<table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+!if $(object$n) != $empty
+<table class="exercise" >
     <tr>
     <td class="exercise_m">
+!endif
+    <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
+	<tr>
+        <td class="exercise_m">
 	!if $(question$n)!= $empty
 	    $(question$n)
 	!endif
@@ -75,32 +80,32 @@ function sendanswer(){
 	    <br />
 	    $exotext
 	!endif
-	<table class="exercise">
-	    <tr>
-	    !if $(formula$n) != $empty
-	    <td class="exercise_c">
-		!insmath $(formula$n)
-	    </td>
-	    <td class="exercise_c">
-		&nbsp;$m_rightarrow&nbsp;
-	    </td>
-	    !endif
-	    <td id="math_out" style="font-size:120%;"></td>
-	    </tr>
-	</table>
-	<textarea id="JSMathView" style="color:black;background-color:#e8ffff;border:1px solid #ff0000;width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;" ></textarea>
-    </td>
-    </tr>
-    <tr>
-    <td>
-	<table class="demospecial" id="show_it">
-	    <tr id="math_op0">
+	    <table class="exercise">
+		<tr>
+		!if $(formula$n) != $empty
+		<td class="exercise_c">
+		    !insmath $(formula$n)
+		</td>
+	        <td class="exercise_c">
+		    &nbsp;$m_rightarrow&nbsp;
+		</td>
+		!endif
+		<td id="math_out" style="font-size:120%;"></td>
+		</tr>
+	    </table>
+	    <textarea id="JSMathView" style="color:black;background-color:#e8ffff;border:1px solid #ff0000;width:100%;webkit-box-sizing:border-box;moz-box-sizing:border-box;box-sizing:border-box;"></textarea>
+	</td>
+	</tr>
+	<tr>
+	<td class="exercise_c">
+	    <table class="demospecial" id="show_it">
+		<tr id="math_op0">
 		<td colspan="2" id="clear_it">
 	    	!record 67 of $remarkdir/commonremarks.$taal
 		</td>
-	    <!-- contents of mathviewpanel -->
-	    </tr>
-	    <tr id="math_op1" style="display:none">
+		<!-- contents of mathviewpanel -->
+		</tr>
+		<tr id="math_op1" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('^');">	^</td>
 		<td onclick="javascript:button('/');">	/</td>
@@ -110,8 +115,8 @@ function sendanswer(){
 		<td onclick="javascript:button('(');">	(</td>
 		<td onclick="javascript:button(')');">	)</td>
 		<td onclick="javascript:button('&euro;');">&euro;</td>
-	    </tr>
-	    <tr id="math_op2" style="display:none">
+		</tr>
+		<tr id="math_op2" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('&radic;()');">&radic;()</td>
 		<td onclick="javascript:button('sin()');">sin</td>
@@ -121,8 +126,8 @@ function sendanswer(){
 		<td onclick="javascript:button('asin()');">asin</td>
 		<td onclick="javascript:button('acos()');">acos</td>
 		<td onclick="javascript:button('pi ');">&pi;</td>
-	    </tr>
-	    <tr id="math_op3" style="display:none">
+		</tr>
+		<tr id="math_op3" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button(' &#8712; ');">   &#8712;</td><!-- in \u2208 -->
 		<td onclick="javascript:button(' &#8713; ');">&#8713;</td><!-- notin \u2209 -->
@@ -132,8 +137,8 @@ function sendanswer(){
 		<td onclick="javascript:button(' &#8805; ');">   &#8805;</td><!-- >= \u2265 -->
 		<td onclick="javascript:button(' &#8476; ');">    &#8476;</td><!-- R -->
 		<td onclick="javascript:button(' N ');">    N</td>
-	    </tr>
-	    <tr id="math_op4" style="display:none">
+		</tr>
+		<tr id="math_op4" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('sqrt[3]()');"><sup>3</sup>&radic;()</td>
 		<td onclick="javascript:button('sqrt[4]()');"><sup>4</sup>&radic;()</td>
@@ -143,8 +148,8 @@ function sendanswer(){
 		<td onclick="javascript:button('sqrt[8]()');"><sup>8</sup>&radic;()</td>
 		<td onclick="javascript:button('sqrt[9]()');"><sup>9</sup>&radic;()</td>
 		<td onclick="javascript:button('sqrt[10]()');"><sup>10</sup>&radic;()</td>
-	    </tr>
-	    <tr id="math_op5" style="display:none">
+		</tr>
+		<tr id="math_op5" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('log[2]()');"><sup>2</sup>log()</td>
 		<td onclick="javascript:button('log[3]()');"><sup>3</sup>log()</td>
@@ -154,8 +159,8 @@ function sendanswer(){
 		<td onclick="javascript:button('log[7]()');"><sup>7</sup>log()</td>
 		<td onclick="javascript:button('log[8]()');"><sup>8</sup>log()</td>
 		<td onclick="javascript:button('log[9]()');"><sup>9</sup>log()</td>
-	    </tr>
-	    <tr id="math_op6" style="display:none">
+		</tr>
+		<tr id="math_op6" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button('f\'(x) = ');">   f'(x) = </td>
 		<td onclick="javascript:button('dy/dx = ');"> dy/dx = </td>
@@ -165,8 +170,8 @@ function sendanswer(){
 		<td onclick="javascript:button(' &#8805; ');">   &#8805;</td><!-- >= \u2265 -->
 		<td onclick="javascript:button('f(x) = ');">   f(x) =</td>
 		<td onclick="javascript:button('F(x) = ');">    F(x) =</td>
-	    </tr>
-	    <tr id="math_op7" style="display:none">
+		</tr>
+		<tr id="math_op7" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button(' &Rightarrow; ');">&Rightarrow;</td><!-- \u21D2 &rArr; &#8658; -->
 		<td onclick="javascript:button(' &longrightarrow; ');">&longrightarrow;</td><!-- \u2192 -->
@@ -176,8 +181,8 @@ function sendanswer(){
 		<td onclick="javascript:button('( \\table a,b,c;d,e,f;g,h,i) ');">matrix</td>
 		<td onclick="javascript:button(' &infin; ');">&infin;</td><!--  \u221E -->
 		<td onclick="javascript:button(' &int;_{a}^{b} ');">&int;</td><!-- \u222B -->
-	    </tr>
-	    <tr id="math_op8" style="display:none">
+		</tr>
+		<tr id="math_op8" style="display:none">
 		<td style="background-color:yellow" onclick="javascript:hide_button_row();"><img src="$gifdir/punt.gif" alt="wissen" /></td>	
 		<td onclick="javascript:button(' x &#8712; R &#10741; {a:b:c}');">x &#8712; R \ {a:b:c}</td><!-- \u29F5 -->
 		<td onclick="javascript:button(' &#9001; : &#9002; ');"> &#9001; : &#9002; </td><!-- \u2329 : \u232A -->
@@ -187,8 +192,8 @@ function sendanswer(){
 		<td onclick="javascript:button(' ] ');"> ] </td>
 		<td onclick="javascript:button(' &infin; ');">&infin;</td><!-- \u222B -->
 		<td onclick="javascript:button(' R Z N');">R Z N</td>
-	    </tr>
-	    <tr id="control_1" style="display:table-row">
+		</tr>
+		<tr id="control_1" style="display:table-row;">
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(1);">+ &minus;</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(2);">sin</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(3);">&#8712;</td>	
@@ -198,11 +203,21 @@ function sendanswer(){
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(7);">&longrightarrow;</td>	
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(8);">&#9001; : &#9002;</td>
 		<td style="background-color:lightgreen" onclick="javascript:show_button_row(8);">&#9001; : &#9002;</td>		
-	    </tr>
-	</table>
+		</tr>
+	    </table>
+	</td>
+	</tr>
+    </table>
+!if $(object$n)!=$empty
+    !if $make_tr=1
+	</tr>
+	<tr>
+    !endif
+    <td class="exercise_t">
+	$(object$n)
     </td>
-    </tr>
 </table>
+!endif
 <div id="send_buttons" class="embedded_central">
     <input type="button" id="schaersvoorde_ok_button" onclick="javascript:sendanswer();" value="$send" />
     <input type="button" id="schaersvoorde_nok_button" onclick="javascript:dontknow();"  value="$dontknow" />
