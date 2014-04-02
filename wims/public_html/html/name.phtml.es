@@ -221,20 +221,20 @@
 
 !!!if adm/class isin $module or adm/manage isin $module
  !distribute line Zona de los Profesores \
-	Zona de los estudiantes\
-	Clases de ejemplo\
-	Autentificación del profesor\
-	Autentificación de los participantes\
-	Autentificación\
-    Forget password\
-	Enseñanza primaria\
-	Enseñanza secundaria\
-	Universidad\
-	Lista de clases \
-    Lista de clases y pórticos \
-    Clase individual\
-    Agrupación de clases \
-    Pórtico de establecimiento \
+Zona de los estudiantes\
+Clases de ejemplo\
+Autentificación del profesor\
+Autentificación de los participantes\
+Autentificación\
+Forget password\
+Enseñanza primaria\
+Enseñanza secundaria\
+Universidad\
+Lista de clases \
+Lista de clases y pórticos \
+Clase individual\
+Agrupación de clases \
+Pórtico de establecimiento \
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_connexion,\
 	wims_name_n_forgetpwd,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
@@ -244,10 +244,10 @@
 
 !if adm/new isin $module
   !distribute line Nuevos módulos\
-  Módulos actualizados \
-  Cambios en el sistema \
-  RSS Nuevos módulos\
-  RSS Módulos actualizados \
+Módulos actualizados \
+Cambios en el sistema \
+RSS Nuevos módulos\
+RSS Módulos actualizados \
   into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
@@ -256,35 +256,35 @@
 
 !if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
   !distribute line Probar el módulo \
-   Gestor de documento \
-   Contenido del módulo \
-   Otros archivos \
-   Propiedades \
-   Guardar\
-   Diferencias \
-   Publicar \
-   Nuevo Módulo \
-   Lista de los módulos \
-   Depósito de archivos \
-   Restauración \
-   Propiedades de la cuenta \
-   Probador de programas \
-   Documentación OEF \
-   Biblioteca de programas \
-   Tipos de respuestas posibles \
-   Doc técnica \
-   Volver a la lista de archivos \
-   Cambiar el archivo \
-   Cambiar\
-   Atras\
-   Eliminar\
-   Acción\
-   Para utilizar esta actividad, debe activar java en su navigador.\
-   Fecha\
-   Añadir\
-   Suprimir\
-   Source\
-   Salir\
+Gestor de documento \
+Contenido del módulo \
+Otros archivos \
+Propiedades \
+Guardar\
+Diferencias \
+Publicar \
+Nuevo Módulo \
+Lista de los módulos \
+Depósito de archivos \
+Restauración \
+Propiedades de la cuenta \
+Probador de programas \
+Documentación OEF \
+Biblioteca de programas \
+Tipos de respuestas posibles \
+Doc técnica \
+Volver a la lista de archivos \
+Cambiar el archivo \
+Cambiar\
+Atras\
+Eliminar\
+Acción\
+Para utilizar esta actividad, debe activar java en su navigador.\
+Fecha\
+Añadir\
+Suprimir\
+Source\
+Salir\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
@@ -295,8 +295,8 @@ wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source
 wims_name_visitor
 
 !distribute line Volver a la página de creación de ejercicios \
-   Lista de modelos \
-   Modelos preparados \
+Lista de modelos \
+Modelos preparados \
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute line Probar el ejercicio \
@@ -359,11 +359,11 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name
 wims_name_Docstatus,wims_name_number
 
  !distribute line Añadir una fecha \
-   Añadir un archivo \
-   Añadir deberes \
-   Configurar \
-   Abandonar \
-   Cuaderno de textos\
+Añadir un archivo \
+Añadir deberes \
+Configurar \
+Abandonar \
+Cuaderno de textos\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
 
@@ -390,7 +390,7 @@ wims_name_Docstatus,wims_name_number
 
 !if config isin $module or $module=home
  !distribute line Página principal de configuración\
- Gestión de la estructura\
+Gestión de la estructura\
 into wims_name_config, wims_name_struct
 !endif
 
@@ -444,10 +444,10 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 !endif
 
 !distribute lines Modtool\
-   Createxo\
-   Quicktool\
-   Latex2wims\
-   Imageclick\
+Createxo\
+Quicktool\
+Latex2wims\
+Imageclick\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_coordclick
 
 !distribute line activar el editor HTML \
