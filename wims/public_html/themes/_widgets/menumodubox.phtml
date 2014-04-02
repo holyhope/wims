@@ -1,3 +1,8 @@
+!if $module = home
+  !set path = ./adm/
+!else
+  !set path = $empty
+!endif
 
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
  <!-- _widgets/menumodubox.phtml -->
@@ -17,7 +22,7 @@
       !endif
       !set wims_ref_class = !item 1 of $1_
       <$div1 class="menuitem $wims_ref_class">
-       !read ./adm/oneitem.phtml $1_
+       !read $(path)oneitem.phtml $1_
       </$div1>
      !else
        !if $started=1
@@ -28,7 +33,7 @@
        !endif
 
        <h2 class="menu_title">
-        !read ./adm/oneitem.phtml $1_
+        !read $(path)oneitem.phtml $1_
        </h2>
        <$div0 class="wimsmenu homeref_n0">
        !set started=1
@@ -43,7 +48,7 @@
     !for i_=1 to $wims_homeref_n5
      !!<$div1 class="menuitem ">
       !set 1_=!line $i_ of $wims_rm_5
-      !read ./adm/oneitem.phtml $1_
+      !read $(path)oneitem.phtml $1_
      !!</$div1><!-- menuitem-->
     !next i_
    </$div0><!--wimsmenu-->
@@ -55,7 +60,7 @@
      !set 1_=!line $i_ of $wims_rm_4
      !set wims_ref_class = !item 1 of $1_
      <$div1 class="menuitem $wims_ref_class">
-      !read ./adm/oneitem.phtml $1_
+      !read $(path)oneitem.phtml $1_
      </$div1>
     !next i_
    </$div0><!--wimsmenu-->
@@ -70,7 +75,7 @@
      !else
       !set wims_ref_class = !item 1 of $1_
       <$div1 class="menuitem $wims_ref_class">
-       !read ./adm/oneitem.phtml $1_
+       !read $(path)oneitem.phtml $1_
       </$div1>
      !endif
     !next i_
