@@ -43,25 +43,22 @@
    </div><!--end wimsbody-->
   </div><!--wimspagebox-->
 !distribute items div,div into div0,div1
- <div id="wimsmenumodubox">
-   <$div0 class="wimsmenu">
-!read themes/_widgets/browsesite.phtml
-   </$div0>
-   <hr class="itemsep"/>
-   <$div0 class="wimsmenu">
-!read themes/_widgets/documentation.phtml
-   </$div0>
-     <hr class="itemsep"/>
-     <h2 class="menu_title">$CR_1</h2>
-     <$div0 class="wimsmenu">
-  !read themes/_widgets/devtools.phtml
-     </$div0>
-     <hr class="itemsep"/>
-     <$div0 class="wimsmenu">
-!read themes/_widgets/site.phtml
-     </$div0><!--wimsmenu-->
-!reset div0 div1
- </div><!--wimsmenumodubox-->
+
+!! Sets all links to be displayed in menumodubox
+!read themes/_procs/browsesite.proc
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,Docs
+!read themes/_procs/documentation.proc
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,$CR_1
+!read themes/_procs/devtools.proc
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,Site
+!read themes/_procs/site.proc
+!set wims_homeref_n0 = !linecnt $wims_rm_0
+
+!read themes/_widgets/menumodubox.phtml
+
 
 !distribute items div,span into div0,div1
 !read themes/_widgets/visitormenubox.phtml
