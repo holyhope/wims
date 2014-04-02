@@ -3,13 +3,13 @@
 !default ysize = 300
 !default num_x = 10
 !default num_y = 10 
-!default svg_click_colors = '#ff0000,#0000ff,#00ff00'
-!default svg_bg_color = '#ffffff'
+!default svg_click_colors = #ff0000,#0000ff,#00ff00
+!default svg_bg_color = #ffffff
 !default svg_interactive = 1
 !default fill_opacity = 1
 !default stroke_opacity = 0.8
 !default svg_linewidth = 1
-!default stroke_color = 'grey'
+!default stroke_color = grey
 !! set of coordinates in Quadrant I (fig_x:fig_y) fig_x --> 0...num_x fig_y -->0...num_y with colors from fig_color array
 !! fig_x = '1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5'                                                    
 !! fig_y = '1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5'
@@ -17,7 +17,7 @@
 !! this image will be protected from user clicks
 !default fig_x = null
 !default fig_y = null
-!default fig_color = '#FF0000'
+!default fig_color = #FF0000
 !! optional add objects: circle(s), line(s) or polyline; all coordinates are in px; not in 'QI grid'
 !! these objects are static; can not be (re)moved and will not be read by read_svg()
 !! circle (x,y,r in px) is js.array: 9 elements per circle ['xc_1','yc_1','r_1','linewidth_1','strokecolor_1','strokeopacity_1','filled_1','fillcolor_1','fillopacity_1',...] 
@@ -78,7 +78,7 @@
     function svg_mouse(action,myid,img){
 	try{action.preventDefault;action.stopPropagation();} catch(e){}
 	if( action.which != 1 ){ img.coloridx++;}
-	if( img.coloridx > img.svg_click_colors.length ){ img.coloridx = 0; }
+	if( img.coloridx >= img.svg_click_colors.length ){ img.coloridx = 0; }
 	try{
 	    var obj = document.getElementById(myid);
 	    obj.setAttributeNS(null,"fill",img.svg_click_colors[img.coloridx]);
@@ -143,8 +143,8 @@
 		rect.setAttributeNS(null,"stroke",this.stroke_color);
 		rect.setAttributeNS(null,"stroke-opacity",this.stroke_opacity);
 		rect.setAttributeNS(null,"fill-opacity",this.fill_opacity);
+		found = 0;
 		if( this.fig_x != null){ /* create proctected squares from arrays fig_x / fig_y */
-		    found = 0;
 		    for(var fx = 0; fx < lx && found == 0 ; fx++){
 			if(this.fig_x[fx] == x+1 && this.fig_y[fx] == this.num_y - y ){ /* data all in Quadrant I ... */
 			    rect.setAttributeNS(null,"fill",this.fig_color[fx]);
@@ -154,7 +154,8 @@
 		}
 		if( found == 0 ){
 		    rect.setAttributeNS(null,"fill",this.svg_bg_color );
-		    if("waiting" == "$status" && this.svg_interactive == 1 ){
+!!		    if("waiting" == "$status" || this.svg_interactive == 1 ){
+		    if(this.svg_interactive == 1 ){
 			(function(rect_id){
 			    rect.addEventListener("mousedown", function(action){
 			    svg_mouse(action,rect_id,eval('image'+id));}, false);
@@ -348,7 +349,7 @@
 		<image preserveAspectRatio="none" xlink:href="$svg_bgimage" x="0" y="0" height="100%" width="100%"></image> 
 		<script type="text/javascript">
 		    !! var image$id = new svg_image($id,$xsize,$ysize,$num_x,$num_y,$svg_click_colors,$svg_bg_color,$svg_interactive,$fig_x,$fig_y,$fig_color,$fill_opacity,$stroke_opacity,$svg_linewidth,$stroke_color,$circle,$line,$polyline);
-		    var image$id = new svg_image($id,$xsize,$ysize,$num_x,$num_y,$svg_click_colors,$svg_bg_color,$svg_interactive,$fig_x,$fig_y,$fig_color,$fill_opacity,$stroke_opacity,$svg_linewidth,$stroke_color);
+		    var image$id = new svg_image('$id','$xsize','$ysize','$num_x','$num_y','$svg_click_colors','$svg_bg_color','$svg_interactive','$fig_x','$fig_y','$fig_color','$fill_opacity','$stroke_opacity','$svg_linewidth','$stroke_color');
 		</script>
 	    </g>
 	</svg>

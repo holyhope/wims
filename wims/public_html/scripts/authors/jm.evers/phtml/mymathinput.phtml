@@ -255,6 +255,8 @@ function sendanswer(){
  function doMathSrc(n){var org = JSMathView.value;var ms = rewrite(org);if(!ms){return;};ms = ms.replace(/&([-#.\w]+);|\\([a-z]+)(?: |(?=[^a-z]))/ig,function(s, e, m){if (m && (M.macros_[m] || M.macro1s_[m])){ return s;};var t = '&'+(e || m)+';', res = $$('<span>'+t+'</span>').text();return res != t ? res : ents_[e || m] || s;});var t;try { math_out.removeChild(math_out.childNodes[0]); } catch(e){};try { t = M.sToMathE(ms, true); math_out.appendChild(t);} catch(e) { setAlarm(e+"<br />"+org); };JSMathView.value = org;}
  /* make input textarea same width as control button table */
  function adapt_width(){try{var inp_width=document.getElementById('control_1').offsetWidth;JSMathView.style.width = inp_width+'px'; } catch(e){};};
+ /* resize when page fully loaded... */
+ adapt_width();
 </script>
 
     
