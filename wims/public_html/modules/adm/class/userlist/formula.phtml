@@ -25,7 +25,21 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
  <td>$c_</td><td>$S_</td>
  <td><input size="5" name="w$i" value="$(w$i)" /></td>
  <td>
- !formselect s$i from 0 to 6
+!! this list must be compatible with the list in scripts/adm/class/sheetweights
+ !formselect s$i list 0,1,2,3,4,5,6,7,8,9,10,11,12,13 prompt max(C,Q),\
+C,\
+C*Q^0.3,\
+C*Q^0.5,\
+C*Q,\
+C^2*Q,\
+(C*Q)^2,\
+max(B,Q),\
+B,\
+B*Q^0.3,\
+B*Q^0.5,\
+B*Q,\
+B^2*Q,\
+(B*Q)^2
  </td></tr>
 !next i
 !for i=1 to $totexams
@@ -35,7 +49,7 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
  !set a_=!word 1 of $t_
  !set c_=!line 4 of $t_
  !set S_=!item $a_+1 of $name_sheetstatut
- 
+
  $table_tr<td style="text-align:right">$name_Exam $i</td>
  <td>$c_</td><td>$S_</td>
  <td><input size="5" name="ew$i" value="$(ew$i)" /></td>

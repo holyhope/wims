@@ -7,34 +7,54 @@
 \
 Niveaux de sévérité des feuilles de travail
 <p>
-Le serveur calcule deux moyennes pour le travail de chaque participant sur
-chaque feuille&nbsp;: un pourcentage de points obtenus par rapport au nombre
-de points demandés et la qualité des points obtenus sur les exercices
-de la feuille. Soient x ce pourcentage et y la qualité, tous deux ramenés
-par proportionnalité à des valeurs entre 0 et 1. 
- Voici les formules pour calculer les notes, suivant le niveau de sévérité fixé par l'enseignant.
+Le serveur calcule les moyennes pour chaque feuille de trois indicateurs
+du travail de chaque participant : le quotient C des points cumulés
+par le nombre de points demandés 10*n, la qualité Q des points obtenus sur les exercices
+de la feuille et la moyenne B des n meilleures notes,
+ramenés à des valeurs entre 0 et 1.
+</p><p>
+Voici les formules possibles permettant de calculer la note de la feuille,
+suivant le choix fixé par l'enseignant (niveau de sévérité).
 </p>
+!reset table_center
 $table_header
 $table_hdtr<th>Niveau</th><th>Formule</th><th>$wims_name_Explanation</th></tr>
-$table_tr<td>0</td><td>$scoremax max(x,y)
- </td><td>Très laxiste&nbsp;: maximum entre pourcentage et qualité.</td></tr>
-$table_tr<td>1</td><td>$scoremax x
- </td><td>la qualité n'est pas prise en compte. Vous avez la note maximale
+$table_tr<td>0</td><td>$scoremax max(C,Q)
+ </td><td>maximum entre points acquis et qualité.</td></tr>
+$table_tr<td>1</td><td>$scoremax C
+ </td><td>La qualité n'est pas prise en compte. Vous avez la note maximale
  lorsque tous les points demandés sont acquis.</td></tr>
-$table_tr<td>2</td><td>$scoremax x y<sup>0.3</sup>
+$table_tr<td>2</td><td>$scoremax C Q<sup>0.3</sup>
  </td><td>La qualité n'a que peu d'effet sur la note.</td></tr>
-$table_tr<td>3</td><td>$scoremax x y<sup>0.5</sup>
+$table_tr<td>3</td><td>$scoremax C Q<sup>0.5</sup>
  </td><td>Plus d'effet de la qualité.</td></tr>
-$table_tr<td>4</td><td>$scoremax x y
+$table_tr<td>4</td><td>$scoremax C Q
  </td><td>Pour avoir une note de $scoremax, il faut avoir tous les points
   demandés (100%) sans faire de faute (qualité=10).</td></tr>
-$table_tr<td>5</td><td>$scoremax x<sup>2</sup> y
- </td><td>Le pourcentage manquant est sur-puni.</td></tr>
-$table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
- </td><td>Toute faute est sur punie.</td></tr>
+$table_tr<td>5</td><td>$scoremax C<sup>2</sup> Q
+ </td><td></td></tr>
+$table_tr<td>6</td><td>$scoremax C<sup>2</sup> Q<sup>2</sup>
+ </td><td></td></tr>
+ $table_tr<td>7</td><td>$scoremax max(B,Q)
+ </td><td> maximum entre la moyenne des n meilleures notes et la note de qualité.</td></tr>
+$table_tr<td>8</td><td>$scoremax B
+ </td><td>La qualité n'est pas prise en compte. La note est maximale
+ lorsque vous avez eu suffisamment de notes égales au maximum.</td></tr>
+$table_tr<td>9</td><td>$scoremax B Q<sup>0.3</sup>
+ </td><td>La qualité n'a que peu d'effet sur la note.</td></tr>
+$table_tr<td>10</td><td>$scoremax B Q<sup>0.5</sup>
+ </td><td>Plus d'effet de la qualité.</td></tr>
+$table_tr<td>11</td><td>$scoremax B Q
+ </td><td>Pour avoir une note de $scoremax, il faut avoir tous les points
+  demandés (100%) sans faire de faute (qualité=10).</td></tr>
+$table_tr<td>12</td><td>$scoremax B<sup>2</sup> Q
+ </td><td></td></tr>
+$table_tr<td>13</td><td>$scoremax B<sup>2</sup> Q<sup>2</sup>
+ </td><td></td></tr>
 $table_end
 
-Remarque : En niveau 0 et 1, si la note de qualité est 
-inférieure à 1 pour un exercice, le pourcentage de réussite (points obtenus) 
-est mis à 0% pour cet exercice lors du calcul de x ; si la note de qualité est comprise entre 1 et 2, 
-le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de x. 
+En niveau 0 et 1, si la note de qualité est
+inférieure à 1 pour un exercice, le pourcentage de points acquis
+est mis à 0% pour cet exercice lors du calcul de C ;
+si la note de qualité est comprise entre 1 et 2,
+le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de C.

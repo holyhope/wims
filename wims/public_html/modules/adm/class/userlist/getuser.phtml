@@ -165,23 +165,27 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !endif
  <a id="sheet$n_"></a>
  <br class="spacer" />
- $table_header$table_hdtr<th colspan="7">
+ $table_header$table_hdtr<th colspan="10">
  !href module=adm/sheet&sh=$n_ $hat
  <span class="small">$(name_thsheet[4]) $A_, $(name_thsheet[8]) $B_<br />
  !set A_=!line $n_ of $percents
  !distribute words $A_ into p1,p2
  !if $p2!=$empty
-  !distribute item $[$p1/100],$[$p2/10] into x_,y_
-  !set p_=$[rint(100*$scoremax*$(f_$n_))/100]
-  $name_done:$p1%, $(name_thsheet[7]):$p2/10, $name_equiv <b>$p_</b> / $scoremax.
+  !distribute item $[$p1/100],$[$p2/10],$[$(p3_$n_)] into x_,y_,z_
+  !set p_=$[ceil(100*$scoremax*$(f_$n_))/100]
+  $name_done:$p1%, $(name_thsheet[7]):$p2/10, $(name_thsheet[10]): $[10*$(p3_$n_)]; $name_equiv <b>$p_</b> / $scoremax.
   !if $(min_$n_)<$scoremax
    <br />$name_minmax: $(min_$n_)/$(mean_$n_)/$(max_$n_)
   !endif
  !endif
  </span>
  </th></tr>
- $table_hdtr<th>$(name_thsheet[1])</th><th>$(name_thsheet[2])</th><th>$(name_thsheet[3])</th><th>$(name_thsheet[4])</th>
-     <th>$(name_thsheet[5])</th><th>$(name_thsheet[6])</th><th>$(name_thsheet[7])</th></tr>
+ $table_hdtr<th>$(name_thsheet[1])</th>
+     <th>$(name_thsheet[2])</th>
+     <th>$(name_thsheet[3])</th><th>$(name_thsheet[4])</th>
+     <th>$(name_thsheet[5])</th><th>$(name_thsheet[6])</th>
+     <th>$(name_thsheet[7])</th><th>$(name_thsheet[10])</th>
+     <th>$(name_thsheet[11])</th><th>$(name_thsheet[12])</th></tr>
  !for j=1 to $e_
   !let d=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$n_
   !distribute line $d into t,t,req_,weight_,title_,t
@@ -189,10 +193,11 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   <td>$(title_)</td>
   <td>$(req_)</td>
   <td>$(weight_)</td>
+  !set try=!getscoretry user=$getuser sheet=$n_ work=$j
   !set d_=!getscore user=$getuser sheet=$n_ work=$j
   !default d_=0
   !read adm/class/colors $[ceil(10*$d_/$(req_))]
-  !if $d_>0
+  !if $try>0
    <td style=$style_note>
    $d_
   !else
@@ -211,17 +216,37 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    <td>---
   !endif
   </td>
-  !set d_=!getscoremean user=$getuser sheet=$n_ work=$j
-  !default d_=0
-  !read adm/class/colors $[ceil($d_)]
-  !if $d_>0
+  !if $try>0
+   !set d_=!getscoremean user=$getuser sheet=$n_ work=$j
+   !default d_=0
+   !read adm/class/colors $[ceil($d_)]
    <td style=$style_note>
        $d_
   !else
    <td>--
   !endif
    </td>
-   </tr>
+  !if $try>0
+     !set best=!item $j of $(user_best_$(n_))
+     !read adm/class/colors $[ceil($best)]
+     <td style=$style_note>$[$best*10] %
+  !else
+      <td>--
+   !endif
+   </td>
+   <td>
+   $try
+   </td>
+   !if $try>0
+   !set last=!getscorelast user=$getuser sheet=$n_ work=$j
+    !read adm/class/colors $[ceil($last)]
+    <td style=$style_note>
+     $last
+   !else
+    <td> --
+   !endif
+   </td>
+  </tr>
  !next j
  $table_end
  :next
@@ -254,4 +279,3 @@ to $wims_menu_items
  !endif
 !endif
  <br class="spacer" />
-

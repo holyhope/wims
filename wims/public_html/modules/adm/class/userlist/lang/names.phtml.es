@@ -14,7 +14,8 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Lista de los ejercicios grabados
 !set name_transfer=Transferir sus actividades desde otras clases
 
-!set name_thsheet=Número,título,puntos<br />requeridos,peso,puntos<br />obtenidos,%,Calidad&nbsp,severidad,nota
+!set name_thsheet=Número,título,puntos<br />requeridos,peso,puntos<br />obtenidos,%,Calidad&nbsp,severidad,nota,\
+  Best scores,Number of tries,Last result
 !set name_minmax=mín/media/máx de la clase&nbsp;
 
 !set name_manualscore=Notas asignadas por el profesor

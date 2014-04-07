@@ -1,14 +1,21 @@
 !default uu=$wims_read_parm
 
+!!one line by sheet : points quality
 percents=!getscorepercent user=$uu
 percnt=!linecnt $percents
 per=0
 av=0
 
+!! add new indicator, it should be better if it would created in the line
+!!percents in the future
+!! w_$i etc are defined in sheetweights
+!!give an average for all sheets and the user $uu - even not seen in sequences ??
 !for i=1 to $percnt
  perc=!line $i of $percents
  !distribute words $perc into p1,p2
  !if $p2!=$empty and $(w_$i)!=$empty
+  !read adm/class/userindic $uu,$wims_class,$i
+  z_=$[$script_percent3]
   !distribute item $[$p1/100],$[$p2/10] into x_,y_
   per=$[$per+($(w_$i))*$(f_$i)]
  !endif

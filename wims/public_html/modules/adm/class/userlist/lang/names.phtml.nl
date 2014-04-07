@@ -14,7 +14,8 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Lijst van oefeningen
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
-!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer
+!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
+ Best scores,Number of tries,Last result
 !set name_minmax=min/gem/max van deze klas
 
 !set name_manualscore=Handmatig ingevoerde cijfers
@@ -145,7 +146,7 @@ kan dus niet worden overgezet van
 :transfer
 <b>Opmerkingen</b>. <ol>
 <li>"$name_merge" wil zeggen : het samenvoegen van de activiteiten van twee cursussen.</li>
-<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten 
+<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten
 in deze cursus vervangen.</li>
 <li>Proefwerk cijfers en alle niet_scorende activiteiten worden altijd samengevoegd.</li>
 <li>De verbatim opgeslagen proefwerk &amp; oefeningen worden niet overgezet.</li>
