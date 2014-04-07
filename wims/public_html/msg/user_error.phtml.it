@@ -23,7 +23,7 @@ padding-left: 3%; padding-right: 3%;}
 --></style>
 </head>
 <body onload="window.resizeTo(500,200);window.moveTo(250,300);" class="user_error">
-<h1 align="center">ERRORE</h1>
+ <h1 class="wimscenter">ERRORE</h1>
 !goto examerr
 !endif
 
@@ -32,16 +32,17 @@ padding-left: 3%; padding-right: 3%;}
 
 !if threshold iswordof $wims_user_error
  <hr width="1"/>
- <h1 align="center">We are too busy</h1>
+ <h1>We are too busy</h1>
  <hr style="width:50%"/>
  <p>
- Questo server WIMS <font color="blue">$httpd_HTTP_HOST</font>
+ Questo server WIMS <span class="color:blue">$httpd_HTTP_HOST</span>
  è sovraccarico e non è in grado di accettare altri
  utenti. Si prega di ritornare più tardi o di utilizzare un
  altro server WIMS.
+ </p><p>
+ Siamo molto desolati e speriamo di poter essere di nuovo utili
+ in futuro.
  </p>
- <p>Siamo molto desolati e speriamo di poter essere di nuovo utili
- in futuro.</p>
 
  !read mirror.phtml.it
  </body>
@@ -50,8 +51,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width="1"/>
- <h1 align="center">SPIACENTI</h1>
+ <hr style="width:1px" />
+ <h1>SPIACENTI</h1>
  <p>La vostra richiesta ha causato un blocco di questo server WIMS: 
  è stata raggiunta la quota massima di connessioni.</p>
  </body></html>
@@ -60,19 +61,19 @@ padding-left: 3%; padding-right: 3%;}
 
 !if ++++missing_ isin ++++$wims_user_error
  <hr width="1"/>
- <h1 align="center">Spiacenti</h1>
+ <h1>Spiacenti</h1>
  <hr style="width:50%"/>
  <p>
- WIMS needs a software
+ WIMS ha bisogno del programma
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
- to process your request, but that software is not available (or not visible
- to WIMS) on this server.</p>
+ per completare la richiesta inviata, ma tale programma non è disponibile (o
+ non è utilizzabile da WIMS) su questo server.</p>
  <p>
- You can either
- <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">write 
- to the site manager</a> to inform him/her of the problem, or choose a
- mirror site from the table below.</p>
+ Potete
+ <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">scrivere
+ al webmaster</a> per comunicare il problema, o scegliere un altro sito WIMS
+ nella tabella qui sotto.</p>
  <p><a href="wims.cgi">WIMS homepage</a>.</p>
  !read mirror.phtml.it
  </body></html>
@@ -80,7 +81,7 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align="center">Stop!</h1>
+ <h1>Stop!</h1>
  <hr/>
  Le contenu de
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> n'est pas compatible
@@ -97,9 +98,11 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align="center">Errore WIMS</h1>
+<h1>Errore WIMS</h1>
 <hr/>
-<p>C'è un errore nella richiesta effettuata.</p>
+<p>
+C'è un errore nella richiesta effettuata.
+</p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
@@ -107,7 +110,7 @@ padding-left: 3%; padding-right: 3%;}
   L'uso del tasto `Back' è incompatibile con WIMS.
   Le pagine sono generate interattivamente a richiesta.
   </p>
-  <p style="text-align:center;">
+  <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
   !href module=$module $tit
@@ -118,8 +121,9 @@ padding-left: 3%; padding-right: 3%;}
   !else
    </p>
    <p>
-   <small>Se state cercando di uscire da WIMS, ignorate questo 
-   messaggio e continuate a selezionare il tasto `Back/Indietro'.</small></p>
+   <span class="small">Se state cercando di uscire da WIMS, ignorate questo 
+   messaggio e continuate a selezionare il tasto `Back/Indietro'.
+   </span></p>
   !endif
   !exit
  !endif
@@ -133,46 +137,56 @@ padding-left: 3%; padding-right: 3%;}
  Se avete semplicemente cliccato erroneamente sul tasto `Back' del browser
  scrivete la parola `wims' qui
  <input size="8" name="special_parm"/> e quindi
- <input type="submit" value="Procedete"/>.</form>
+ <input type="submit" value="Procedete" />.
+!formend
  <p>
  Ricordiamo che le pagine WIMS sono generate dinamicamente a richiesta e
  il loro utilizzo off line non è di alcuna utilità.
- &Egrave; del tutto inutile scaricare le pagine con un 
- `robot'.</p>
+ È del tutto inutile scaricare le pagine con un programma
+ automatico.
+ </p>
  !if robot_doubt iswordof $wims_user_error
-  <p><small>A tentativi di intrusione nel sistema si risponderà 
-  limitando le possibilità di accesso.</small></p>
+  <p class="small">A tentativi di intrusione nel sistema si risponderà 
+  limitando le possibilità di accesso.
+  </p>
  !endif
  !exit
 !endif
 
 !if robot_doubt iswordof $wims_user_error
  <p>Spiacente: accesso negato perché sei sospettato di utilizzare, 
- contrariamente alle nostre richieste, un `robot' per accedere alle pagine.</p>
+ contrariamente alle nostre richieste, un programma automatico copiare le pagine.</p>
  !goto unblock
 !endif
 
 !if allow_violation iswordof $wims_user_error
-  <p>Non è permesso definire la variabile ``$wims_error_data''
-  tramite il comando ``$cmd''.</p>
+  <p>
+  Non è permesso definire la variabile ``$wims_error_data''
+  tramite il comando ``$cmd''.
+  </p>
 !endif
 
 !if bad_command iswordof $wims_user_error
-  <p>Il comando ``$cmd'' non è valido.</p>
-  <p> I comandi validi sono: </p>
+  <p>
+  Il comando ``$cmd'' non è valido.
+  </p>
+  <p>
+  I comandi validi sono: 
+  </p>
   <pre>new, renew, reply, help, hint, config </pre>
 !endif
 
 !if bad_host iswordof $wims_user_error
-  <p>La session ``$session'' è stata creata da un altro server. Accesso
-  negato. </p>
   <p>
-  Nota: per ragioni di sicurezza, WIMS non permette di cambiare il computer
-  da cui ci si connette a metà di una sessione di lavoro. 
+  State cercando di accedere a una sessione che è stata creata da un'altra 
+  postazione. Per ragioni di sicurezza, WIMS non permette di cambiare la 
+  postazione da cui ci si connette a metà di una sessione di lavoro. 
+  </p>
+  <p>
   Sfortunatamente alcuni internet provider forniscono ip dinamici che 
   POTREBBERO cambiare a connessione attiva. 
-  In questo caso dovete chiedere al docente di cambiare la modalità 
-  di accesso.
+  In questo caso, se incorrete spesso in questo inconveniente, dovete 
+  chiedere al docente di cambiare la modalità di accesso al corso.
   </p>
 !endif
 
@@ -186,27 +200,35 @@ padding-left: 3%; padding-right: 3%;}
 
 !if bad_insnum iswordof $wims_user_error
  !if $cmd=getfile
-  <p>Il file non esiste.</p>
+  <p>
+  Il file non esiste.
+  </p>
  !else
-  <p>Il nome del file da inserire dinamicamente non è valido.</p>
+  <p>
+  Il nome del file da inserire dinamicamente non è valido.
+  </p>
  !endif
 !endif
 
 !if cmd_output_too_long iswordof $wims_user_error
-  <p>&Egrave; stato raggiunto il limite di potenza di calcolo utilizzabile.
+  <p>
+  È stato raggiunto il limite di potenza di calcolo utilizzabile.
   La richiesta è eccessivamente complicata e laboriosa. 
-  Si prega di rivedere i dati inseriti.</p>
+  Si prega di rivedere i dati inseriti.
+  </p>
 !endif
 
 !if double_click iswordof $wims_user_error
- <p>Questa richiesta è arrivata mentre si stava già 
- analizzando un'altra vostra richiesta.</p>
  <p>
- &Egrave; inutile continuare a cliccare, ma è necessario aspettare
+ Questa richiesta è arrivata mentre si stava già 
+ analizzando un'altra vostra richiesta.
+ </p>
+ <p>
+ È inutile continuare a cliccare, ma è necessario aspettare
  <span class="wims_warning">$wims_cpu_limit secondi</span>
  perché la richiesta precedente vada a termine, dopo di che 
  !href cmd=resume cliccando qui
- si pu&ograve; riprendere a lavorare.
+ si può riprendere a lavorare.
  </p>
  <p>(E si prega di essere più 
  pazienti quando si sottopongono a WIMS conti laboriosi.)
@@ -219,51 +241,73 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if invalid_char_in_query_string iswordof $wims_user_error
-  <p>La sostituzione ``$wims_error_data'' nei parametri non è
-  ammessa.</p>
+  <p>
+  La sostituzione ``$wims_error_data'' nei parametri non è
+  ammessa.
+  </p>
 !endif
 
 !if name_conflict iswordof $wims_user_error
-  <p>``$wims_error_data'' è un nome riservato per WIMS.</p>
+  <p>
+  ``$wims_error_data'' è un nome riservato per WIMS.
+  </p>
 !endif
 
 !if no_command iswordof $wims_user_error
-  <p>Non è un comando.</p>
+  <p>
+  Non è un comando.
+  </p>
 !endif
 
 !if no_insnum iswordof $wims_user_error
  !if $cmd=getfile
-  <p>Manca il nome del file.</p>
+  <p>
+  Manca il nome del file.
+  </p>
  !else
-  <p>Richiesta di inserimento automatico senza indicarne il numero.</p>
+  <p>
+  Richiesta di inserimento automatico senza indicarne il numero.
+  </p>
  !endif
 !endif
 
 !if no_module_name iswordof $wims_user_error
-  <p>Richiesta di una sessione senza indicare un modulo.</p>
+  <p>
+  Richiesta di una sessione senza indicare un modulo.
+  </p>
 !endif
 
 !if no_session iswordof $wims_user_error
-  <p>Manca il codice della sessione.</p>
+  <p>
+  Manca il codice della sessione.
+  </p>
 !endif
   
 !if parm_too_long iswordof $wims_user_error
-  <p>Si sono inseriti troppi parametri. Questo non è permesso
-  per ragioni di sicurezza.</p>
+  <p>
+  Si sono inseriti troppi parametri. Questo non è permesso
+  per ragioni di sicurezza.
+  </p>
 !endif
 
 !if string_too_long iswordof $wims_user_error
-  <p>La definizione di una variabile è troppo lunga.</p>
+  <p>
+  La definizione di una variabile è troppo lunga.
+  </p>
 !endif
 
 !if too_many_variables iswordof $wims_user_error
-  <p>Il numero di paramtri inseriti eccede il limite massimo permesso
-  da questa installazione di WIMS.</p>
+  <p>
+  Il numero di paramtri inseriti eccede il limite massimo permesso
+  da questa installazione di WIMS.
+  </p>
 !endif
 
 !if unmatched_parentheses iswordof $wims_user_error
-  <p>C'è un errore nelle parentesi. &Egrave; possibile correggere
-  l'errore in questo spazio.</p>
+  <p>
+  C'è un errore nelle parentesi. È possibile correggere
+  l'errore in questo spazio.
+  </p>
   !form $cmd
   $(name$bad_parentheses) =
   !for i in module,special_parm,worksheet
@@ -290,9 +334,9 @@ padding-left: 3%; padding-right: 3%;}
   Quindi
   <input type="submit" value="inviare la risposta corretta."/>
   </p>
-  </form>  
+  !formend
   <hr/>
-  <p style="text-align:center;">
+  <p class="wimscenter">
   !href cmd=resume Annullare
 , oppure
   !href $ [WIMS home]
@@ -311,19 +355,20 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if rafale iswordof $wims_user_error
- <p>Please don't play with the exercises!</p>
+ <p>Per favore, non giocate con gli esercizi!</p>
  <p>
- You should take time to think carefully and try to solve the exercises
- correctly, instead of ask new ones over and over again.
+ Dovete prendervi il tempo che vi serve per pensare alla risoluzione degli
+ esercizi, invece di continuare a chiederne di nuovi.
  </p>
  !set wims_ref_class=wims_button
- !href cmd=resume Cancel the last request
+ !href cmd=resume Annullare l'ultima richiesta
  !reset wims_ref_class
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
   <p><span class="wims_warning">$wims_name_warning.</span>! Non ripetere questo errore!
   Le attività possono attribuire punteggi negativi anche quando la
-  registrazione dei voti per le altre attività è chiusa.</p>
+  registrazione dei voti per le altre attività è chiusa.
+  </p>
  !endif
  !goto end2
 !endif
@@ -332,11 +377,11 @@ padding-left: 3%; padding-right: 3%;}
 
 !if exam_dep iswordof $wims_user_error
   <p>Puoi cominciare a lavorare su questo esercizio solo quando hai ottenuto
-  un punteggio sufficiente nell'esercizio (o negli esercizi)
+  un punteggio sufficiente 
   !if , isin $dep_list
-   exercises $dep_list.
+   negli esercizi $dep_list.
   !else
-   exercise $dep_list.
+   nell'esercizio $dep_list.
   !endif
   </p>
   <p>Comincia da quest'ultimo!</p>
@@ -349,8 +394,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if exam_exo_finished iswordof $wims_user_error
-  <p>You have already done this exercise with a score of $wims_exo_lastscore.</p>
-  <p>You cannot do it again because this is an examination.</p>
+  <p>Hai già completato questo esercizio ottenendo un il punteggio di $wims_exo_lastscore.</p>
+  <p>Durante un esame non è possibile ripetere lo stesso esercizio.</p>
   !goto examend
 !endif
 
@@ -361,7 +406,7 @@ padding-left: 3%; padding-right: 3%;}
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
-  <p style="text-align:center;">
+  <p class="wimscenter">
   <a href=# onclick="window.close();$wims_opener">Chiudi questa finestra</a>.
   </p>
   !exit
@@ -395,7 +440,7 @@ padding-left: 3%; padding-right: 3%;}
   L'accesso a questo corso virtuale è stato temporaneamente chiuso dal docente.
   Si prega di riprovare più tardi!
   </p>
-  <p style="text-align:center;">
+  <p class="wimscenter">
   !href cmd=close&module=home WIMS
   </p>
   </body></html>
@@ -407,15 +452,14 @@ padding-left: 3%; padding-right: 3%;}
 probabilmente si tratta di un errore nella pagina. In questo caso
 contattatene l'autore per informarlo dell'errore.
 </p>
-<p>  &Egrave; possibile 
+<p>  È possibile 
 contattare il 
-<a href="mailto:$wims_site_manager?subject=wims.cgi">manager di questo
-server</a>, precisando quanti più dettagli possibili per ricostruire
+<a href="mailto:$wims_site_manager?subject=wims.cgi">webmaster</a>, precisando quanti più dettagli possibili per ricostruire
 l'errore.</p>
 
 :end2
 <hr/>
-<p style="text-align:center;">
+<p class="wimscenter">
 !set wims_ref_class=wims_button home
 !href module=home&cmd=new [WIMS home]
 !reset wims_ref_class
