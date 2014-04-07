@@ -35,9 +35,9 @@
 			  !!## it is better that the cas logout appears too much ... 
 			  !!## can be useless in the case of a supervisor so the next line is commented
 			  !!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
-			  <li class="topmenuitem">
+			  <li class="menuitem logout_cas">
 			   !read adm/class/logout_cas
-			  </li><!--topmenuitem-->
+			  </li>
 			!endif
 
 		!endif
@@ -45,16 +45,16 @@
 		!!Menu a afficher sur la page d'accueil des visiteurs
 		!if $module_path isitemof home and $wims_user=$empty
 			!!Accueil WIMS
-			<li class="menuitem">
+			<li class="menuitem home">
 				!set wims_ref_class=home
 				!href module=home $wims_name_home
 			</li>
 			!!Zone Enseignants
-			<li class="menuitem">
+			<li class="menuitem n_supervisor">
 				!read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
 			</li>
 			!!Aide
-			<li class="menuitem">
+			<li class="menuitem help">
 				!read ./adm/oneitem.phtml help,4,module=help/main,help
 			</li>	 
 		!endif

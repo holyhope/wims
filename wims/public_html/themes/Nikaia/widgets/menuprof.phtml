@@ -1,11 +1,14 @@
-!if $module = home
-  !set path = ./adm/
-!else
-  !set path = $empty
-!endif
+!!menuprof.phtml : variant of menumodubox.phtml, but including customised separators
+!! (maby this can be a replacement for menumodubox)
 
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
- <!-- _widgets/menumodubox.phtml -->
+    !if $module = home
+      !set path_ = ./adm/
+    !else
+      !set path_ = $empty
+    !endif
+
+ <!-- _widgets/$theme/menuprof.phtml -->
  <div id="menuprof">
   !if $wims_homeref_n0>0
    <$div0 class="wimsmenu homeref_n0">
@@ -20,7 +23,7 @@
 
      !if $is_link!=0
       <$div1 class="menuitem $wims_ref_class">
-       !read $(path)oneitem.phtml $1_
+       !read $(path_)oneitem.phtml $1_
       </$div1>
       !set started=1
      !else
@@ -29,12 +32,12 @@
            <$div0 class="wimsmenu homeref_n0">
        !endif
        <li class="$wims_ref_class menu_title">
-        !read $(path)oneitem.phtml $1_
+        !read $(path_)oneitem.phtml $1_
        </li>
      !endif
     !endif
    !next i_
-   </$div0><!--wimsmenu-->
+   </$div0>
   !endif wims_homeref_n0
 
   !if $wims_homeref_n5>0
@@ -42,10 +45,10 @@
     !for i_=1 to $wims_homeref_n5
      !!<$div1 class="menuitem ">
       !set 1_=!line $i_ of $wims_rm_5
-      !read $(path)oneitem.phtml $1_
-     !!</$div1><!-- menuitem-->
+      !read $(path_)oneitem.phtml $1_
+     !!</$div1>
     !next i_
-   </$div0><!--wimsmenu-->
+   </$div0>
   !endif wims_homeref_n5
 
   !if $wims_homeref_n4>0
@@ -54,10 +57,10 @@
      !set 1_=!line $i_ of $wims_rm_4
      !set wims_ref_class = !item 1 of $1_
      <$div1 class="menuitem $wims_ref_class">
-      !read $(path)oneitem.phtml $1_
+      !read $(path_)oneitem.phtml $1_
      </$div1>
     !next i_
-   </$div0><!--wimsmenu-->
+   </$div0>
   !endif wims_homeref_n4
 
   !if $wims_homeref_local_n0>0
@@ -69,12 +72,12 @@
      !else
       !set wims_ref_class = !item 1 of $1_
       <$div1 class="menuitem $wims_ref_class">
-       !read $(path)oneitem.phtml $1_
+       !read $(path_)oneitem.phtml $1_
       </$div1>
      !endif
     !next i_
-   </$div0><!--wimsmenu-->
+   </$div0>
   !endif wims_homeref_local_n0
- </div> <!--wimsmenumodubox-->
-<!-- end _widgets/menumodubox.phtml -->
+ </div>
+<!-- end _widgets/theme/menuprof.phtml -->
 !endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
