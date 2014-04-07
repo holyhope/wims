@@ -22,7 +22,7 @@ double oldfactor=0.85;  /* quality factor, should remain stable. */
      /* User score information of an exercise. Size: 16 bytes. */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
-    float user, user2;
+    float user, user2, last;
 } scoredata;
 
 struct scoreheader {
@@ -69,6 +69,7 @@ void scoreline(struct classdata *cd, char *l)
          thiscore->user+=score;
          thiscore->user2*=oldfactor;
          thiscore->user2+=score;
+         thiscore->last=score;
          if(thiscore->try<60000) thiscore->try++;
          oldsheet=oldexo=0;
      }
@@ -272,7 +273,7 @@ void cmd_getscore(char *p)
     struct classdata *cd;
     char *cut[4];
     int i, sheet, exo, snew, stry, thissheet, thisexo;
-    double score, score2, quality, tt, ts, thisscore;
+    double score, score2, slast, quality, tt, ts, thisscore;
     if(cwdtype!=dir_class) {
      sockerror(2,"getscore_no_class"); return;
     }
@@ -299,13 +300,17 @@ void cmd_getscore(char *p)
      exo=((cd->exos[i].num)&255)+1;
      score=uscore[i].user; stry=uscore[i].try;
      score2=uscore[i].user2;
+     slast=uscore[i].last;
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
          score2*=oldfactor; score2+=thisscore;
+         slast=thisscore;
      }
      if(sheet==256) {
          tscore[i].score=score;
          tscore[i].mean=stry*2+uscore[i].hint;
+         tscore[i].last=slast;
+         tscore[i].try=stry;
          continue;
      }
      if(score>cd->exos[i].require) score=cd->exos[i].require;
@@ -318,9 +323,10 @@ void cmd_getscore(char *p)
          ts=(1-pow(oldfactor,stry))/(1-oldfactor);
          quality=score2/(ts*tt);
      }
-     else score=quality=0;
-     tscore[i].score=score;
-     tscore[i].mean=quality;
+     else score=quality=slast=stry=0;
+     tscore[i].score=score; tscore[i].mean=quality;
+     tscore[i].last=slast;
+     tscore[i].try=stry;
     }
     answerlen=cd->exocnt*sizeof(tscore[0]);
     memmove(textbuf+3,tscore,answerlen);

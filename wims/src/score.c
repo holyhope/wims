@@ -19,7 +19,7 @@
 
 double oldfactor=0.85;     /* quality factor, should remain stable. */
 
-enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain};
+enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain, sr_last, sr_try};
 char scorebuf[MAX_CLASSEXOS*sizeof(scoreresult)+32];
 struct scoreresult *rscore;
 int scorecnt;
@@ -85,7 +85,7 @@ int getscoreuser(char *classe, char *user)
   mystrncpy(rscore_user,user,sizeof(rscore_user));
   return 0;
 }
-// work=exo ??
+/* work : exo */
 char *scorepname[]={
      "class","user","sheet","work","exam"
 };
@@ -182,6 +182,8 @@ void _getscore(char *p,int dtype)
          case sr_score: {d=rscore[i].score; break;}
          case sr_mean: {d=rscore[i].mean; break;}
          case sr_remain: {d=rscore[i].require-rscore[i].score; break;}
+         case sr_last: {d=rscore[i].last; break;}
+         case sr_try: {d=rscore[i].try; break;}
          default: {d=0; break;}
      }
      p1=moneyprint(p1,d); *p1++=' ';
@@ -218,6 +220,15 @@ void calc_getscorerequire(char *p)
 void calc_getscoreweight(char *p)
 {
   _getscore(p,sr_weight);
+}
+void calc_getscorelast(char *p)
+{
+  _getscore(p,sr_last);
+}
+
+void calc_getscoretry(char *p)
+{
+  _getscore(p,sr_try);
 }
 
 /* percentage of work done for each sheet. */
