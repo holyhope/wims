@@ -42,9 +42,9 @@ exodata shdata[MAX_SHEET*MAX_EXO],examdata[MAX_EXAM*MAX_EXO];
 /* cid: combined index of difficulty */
 double scsum, scavg, scdeviat, scmin, scmax, cid;
 double dursum, duravg, durdeviat, durmin, durmax;
-
+double best[10];
 int filecnt=0, fcind;
-char *dirbase, *sdata;
+char *dirbase, *sdata, user[256];
 
 int str2time(char *p)
 {
@@ -56,14 +56,13 @@ int str2time(char *p)
     return hr*3600+min*60+sec;
 }
 
-void oneline(char *p)
+void oneline(char *p, char *typ)
 {
     int i, sh, ex, t;
     char *data[64];
     exodata *tab;
     char *pp, *pe;
-
-    for(i=0, pp=find_word_start(p); i<8 && *pp; pp=find_word_start(pe),i++) {
+    for(i=0, pp=find_word_start(p); i<9  && *pp; pp=find_word_start(pe),i++) {
       pe=find_word_end(pp); if(*pe) *pe++=0;
       data[i]=pp;
     }
@@ -79,6 +78,14 @@ void oneline(char *p)
     tab+=(sh-1)*MAX_EXO+(ex-1);
     t=str2time(data[0]); if(t==-1) return;
     if(strstr(data[4],"new")!=NULL) {
+      if(strcmp(typ,"score")==0){
+        if ((i > 7 && strcmp(data[7],"noscore")==0)
+            || (i > 8 && strcmp(data[8],"noscore")==0)) { return; }
+      }
+      if(strcmp(typ,"noscore")==0){
+        if (i < 7 || ( i>7 && strcmp(data[7],typ)!=0)
+            || (i > 8 && strcmp(data[8], typ)!=0)) { return; }
+      }
       snprintf(tab->lastnew,12,"%s",data[1]);
       tab->newcnt++; tab->lasttime=t;
       fcind++;
@@ -98,7 +105,7 @@ void oneline(char *p)
     }
 }
 
-void onefile(char *fname)
+void onefile(char *fname, char *typ)
 {
     FILE *f;
     char *buf, *pp, *pe;
@@ -110,31 +117,64 @@ void onefile(char *fname)
     fcind=0;
     for(pp=buf; pp; pp=pe) {
       pe=strchr(pp,'\n'); if(pe!=NULL) *pe++=0;
-      oneline(pp);
+      oneline(pp,typ);
     }
     free(buf);
     if(fcind>0) filecnt++;
 }
 
-void onedir(char *dirname)
+void onedir_ (char buf[MAX_LINELEN+1], char *typ)
 {
-    char buf[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
-    DIR *dir;
-    struct dirent *ff;
-    char *t1, *t2, types[256];
-    snprintf(types,sizeof(types),"%s",sdata);
-    for(t1=find_word_start(types); *t1; t1=find_word_start(t2)) {
-      t2=find_word_end(t1); if(*t2) *t2++=0;
-      snprintf(buf,sizeof(buf),"%s/%s/%s",dirbase,dirname,t1);
-      dir=opendir(buf); if(dir==NULL) return;
+  char buf2[MAX_LINELEN+1];
+  DIR *dir;
+  struct dirent *ff;
+  dir=opendir(buf); if(dir==NULL) return;
       while((ff=readdir(dir))!=NULL) {
           if(!isalnum(ff->d_name[0]) ||
              strcmp(ff->d_name,"supervisor")==0) continue;
           snprintf(buf2,sizeof(buf2),"%s/%s",buf,ff->d_name);
-          onefile(buf2);
+          onefile(buf2,typ);
       }
       closedir(dir);
+}
+
+void onedir(char *dirname)
+{
+    char buf[MAX_LINELEN+1];
+    char *t1, *t2, types[256];
+    snprintf(types,sizeof(types),"%s",sdata);
+    for(t1=find_word_start(types); *t1; t1=find_word_start(t2)) {
+      t2=find_word_end(t1); if(*t2) *t2++=0;
+      snprintf(buf,sizeof(buf),"%s/%s/score",dirbase,dirname);
+      onedir_(buf,t1);
+      snprintf(buf,sizeof(buf),"%s/%s/noscore",dirbase,dirname);
+      onedir_(buf,t1);
     }
+}
+
+void oneuser(char *dirname, char fname[64])
+{
+    char buf[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
+    char *t1, *t2, types[256];
+    snprintf(types,sizeof(types),"%s",sdata);
+    for(t1=find_word_start(types); *t1; t1=find_word_start(t2)) {
+      t2=find_word_end(t1); if(*t2) *t2++=0;
+      snprintf(buf,sizeof(buf),"%s/%s/score/%s",dirbase,dirname,fname);
+      onefile(buf,t1);
+      snprintf(buf2,sizeof(buf),"%s/%s/noscore/%s",dirbase,dirname,fname);
+      onefile(buf2,t1);
+    }
+}
+
+void multiuser(char *dirname, char *user)
+{
+   char buf[MAX_LINELEN+1];
+   char *u1, *u2;
+   snprintf(buf,sizeof(buf),"%s",user);
+   for(u1=find_word_start(buf); *u1; u1=find_word_start(u2)) {
+      u2=find_word_end(u1); if(*u2) *u2++=0;
+      oneuser(dirname, u1);
+  }
 }
 
 void stati(exodata *dat)
@@ -144,11 +184,17 @@ void stati(exodata *dat)
 
     scsum=scavg=scdeviat=dursum=duravg=durdeviat=cid=0;
     scmin=10; scmax=0; durmin=24*3600; durmax=0;
+    {int k; for(k=0; k<10; k++) best[k]=0 ;}
     for(i=0,j=dat->firstscore; i<dat->scorecnt; i++) {
       s=(double) scores[j].score/100; d=(double) scores[j].dure/60;
       scsum+=s; dursum+=d;
       if(scmin>s) scmin=s; if(scmax<s) scmax=s;
       if(durmin>d) durmin=d; if(durmax<d) durmax=d;
+      {
+       int k, l = 0;
+       for (k = 0; k < 10; k++) if (best[k] < best[l]) l = k;
+       if (best[l] < s) best[l] = s;
+      }
       j=scores[j].next;
     }
     if(i<=0) {scmin=durmin=0; return;}
@@ -168,13 +214,13 @@ void stati(exodata *dat)
 /* Output line format:
  * type sh exo newcnt scorecnt scsum dursum scavg duravg scmin durmin scmax durmax scdeviat durdeviat cid
  */
-void output(void)
+
+void  outsheetexo (int i, int flag)
 {
-    int i;
-    for(i=0;i<MAX_SHEET*MAX_EXO;i++) {
-      if(shdata[i].newcnt<=0) continue;
-      stati(shdata+i);
-      printf(":S %2d %2d %4d %4d \
+  if(shdata[i].newcnt<=0) return;
+  stati(shdata+i);
+  switch(flag) {
+     case 0: printf(":S %2d %2d %4d %4d \
 %4.0f %4.0f %5.2f %5.2f \
 %5.2f %4.1f %5.2f %5.1f \
 %5.2f %5.2f %4.1f\n",
@@ -184,10 +230,27 @@ void output(void)
              scavg, duravg,
              scmin,durmin,scmax,durmax,
              scdeviat, durdeviat,
+             cid); break;
+     case 1: printf("%d_%d=%d,%d,\
+%.0f,%.0f,%.2f,%.2f,\
+%.2f,%.1f,%.2f,%.1f,\
+%.2f,%.2f,%.1f;",
+             i/MAX_EXO+1,i%MAX_EXO+1,
+             shdata[i].newcnt, shdata[i].scorecnt,
+             scsum, dursum,
+             scavg, duravg,
+             scmin,durmin,scmax,durmax,
+             scdeviat, durdeviat,
              cid);
-    }
-    for(i=0;i<MAX_EXAM*MAX_EXO;i++) {
-      if(examdata[i].newcnt<=0) continue;
+            int k; for (k=0; k<10; k++) printf("%.2f,", best[k]);
+            printf("\n");
+            break;
+   }
+}
+
+void outexamexo (int i)
+{
+   if(examdata[i].newcnt<=0) return;
       stati(examdata+i);
       printf(":E %2d %2d %4d %4d \
 %4.0f %4.0f %5.2f %5.2f \
@@ -200,14 +263,20 @@ void output(void)
              scmin,durmin,scmax,durmax,
              scdeviat, durdeviat,
              cid);
-    }
+}
+
+void output(void)
+{
+    int i;
+    for(i=0;i<MAX_SHEET*MAX_EXO;i++) { outsheetexo(i, 0);}
+    for(i=0;i<MAX_EXAM*MAX_EXO;i++) { outexamexo(i);}
 }
 
 int main()
 {
-    char cla[MAX_LINELEN+1];
+    char cla[MAX_LINELEN+1], user[256];
     char *c1, *c2;
-    char *cdata;
+    char *cdata, *udata, *sh;
 
     memset(shdata,0,sizeof(shdata)); memset(examdata,0,sizeof(examdata));
     dirbase=getenv("exostat_dirbase");
@@ -218,11 +287,27 @@ int main()
     if(cdata==NULL || *cdata==0) cdata=getenv("w_wims_class");
     if(cdata==NULL || *cdata==0) return -1;
     snprintf(cla,sizeof(cla),"%s",cdata);
-    for(c1=cla; *c1; c1++) if(!isalnum(*c1) && *c1!='/') *c1=' ';
-    for(c1=find_word_start(cla); *c1; c1=find_word_start(c2)) {
-      c2=find_word_end(c1); if(*c2) *c2++=0;
-      onedir(c1);
+    udata=getenv("exostat_user");
+    if(udata==NULL || *udata==0) {
+     for(c1=cla; *c1; c1++) if(!isalnum(*c1) && *c1!='/') *c1=' ';
+     for(c1=find_word_start(cla); *c1; c1=find_word_start(c2)) {
+       c2=find_word_end(c1); if(*c2) *c2++=0;
+       onedir(c1);
+      }
+       output();
+    } else {
+      snprintf(user,sizeof(user),"%s",udata);
+      multiuser(cla, user);
+      sh=getenv("exostat_sheet");
+      if( sh==NULL || *sh==0 ) { output(); }
+      else {
+         int s=atoi(sh);
+         s=(s-1)*MAX_EXO;
+         int i;
+         for(i=s;i < s + MAX_EXO;i++) {
+         outsheetexo(i, 1);
+         }
+       };
     }
-    output();
     return 0;
 }
