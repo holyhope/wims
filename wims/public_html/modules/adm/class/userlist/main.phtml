@@ -19,7 +19,7 @@ $wims_institutionname
 !read adm/title.phtml 1\
 $classname\
 $wims_name_part_list ($usercnt)
- 
+
 !if $error!=$empty
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
@@ -34,7 +34,7 @@ $wims_name_part_list ($usercnt)
 !endif
  <div class="wimscenter">
  !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
-!!##  the administrator at the level of the portal or the creator of the class can add a teacher to 
+!!##  the administrator at the level of the portal or the creator of the class can add a teacher to
 !!##  the list of teachers of his class
 !if ($wims_typename=group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
  !default wims_superclass=$wims_class
@@ -76,7 +76,7 @@ $wims_name_part_list ($usercnt)
  !endif
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
- 
+
  !if $deleted!=$empty
   &nbsp;
  !set wims_ref_class=wims_button
@@ -85,7 +85,7 @@ $wims_name_part_list ($usercnt)
  </div>
  !if $seq_cnt=0
  <p>
-    $name_warning_no_sequence 
+    $name_warning_no_sequence
   &nbsp;
  !set wims_ref_class=wims_button
     !href module=adm/class/sequence&job=config $wims_name_config
@@ -149,7 +149,7 @@ $wims_name_part_list ($usercnt)
  !else
   $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
   !if $job_affi=notes
-   <th class="average">$name_Average</th> 
+   <th class="average">$name_Average</th>
   !endif
   !for j in $showsheet
    !if E isin $j
@@ -214,7 +214,7 @@ $wims_name_part_list ($usercnt)
    !if $job_affi=notes
     !if $per>0
      !read adm/class/colors $[ceil($per*10/$scoremax)]
-     <td style=$style_note>$per 
+     <td style=$style_note>$per
      !advance cnt_auto
      !advance cnt_glob
     !else
@@ -235,7 +235,7 @@ $wims_name_part_list ($usercnt)
      !read adm/class/colors $[ceil($p_*10/$scoremax)]
      <td style=$style_note>$p_
     !else
-   <td>$p_
+     <td>$p_
     !endif
      </td>
    !else
@@ -272,7 +272,7 @@ $wims_name_part_list ($usercnt)
        <td style=$style_note>$p_ %
       !else
        <td>--
-      !endif 
+      !endif
        </td>
      !endif
      !if $p2=$empty
@@ -426,7 +426,7 @@ $wims_name_part_list ($usercnt)
   </td>
   <td><input type="submit" value="$wims_name_Show" /></td>
   </tr></table>
-  
+
 !formend
  !endif
 !endif (usercnt=0?)
