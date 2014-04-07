@@ -21,7 +21,7 @@
 			!read themes/_widgets/headmenu.phtml
 
 			!distribute items li,div into div0,div1
-   			!read themes/_widgets/permalink.phtml
+   			!read themes/$wims_theme/widgets/permalink.phtml
    			
    			!reset div0 div1
 
@@ -31,14 +31,8 @@
 		     !set class_cas_auth=!getopt class_auth in $m_init_parm
 			!endif
 
-			!if $class_cas_auth!=$empty
-			  !!## it is better that the cas logout appears too much ... 
-			  !!## can be useless in the case of a supervisor so the next line is commented
-			  !!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
-			  <li class="menuitem logout_cas">
-			   !read adm/class/logout_cas
-			  </li>
-			!endif
+            !read themes/_widgets/authlogout.phtml
+
 
 		!endif
 		
@@ -59,5 +53,4 @@
 			</li>	 
 		!endif
 	</ul><!--wimsmenu-->
-	!read themes/_widgets/authlogout.phtml
 </div><!-- fin de wimstopbox-->
