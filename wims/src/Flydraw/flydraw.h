@@ -24,12 +24,12 @@
 #include <ctype.h>
 #include <math.h>
 
-#include "gd.h"
-#include "gdfontt.h"
-#include "gdfonts.h"
-#include "gdfontmb.h"
-#include "gdfontl.h"
-#include "gdfontg.h"
+#include <gd.h>
+#include <gdfontt.h>
+#include <gdfonts.h>
+#include <gdfontmb.h>
+#include <gdfontl.h>
+#include <gdfontg.h>
 
 #define MAX_PARMS   8192
 #define MAX_SIZE    4096

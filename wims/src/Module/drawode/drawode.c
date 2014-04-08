@@ -11,7 +11,7 @@
 #include <math.h>
 #include <string.h>
 #include <unistd.h>
-#include "gd.h"
+#include <gd.h>
 #include "drawode.h"
 
 #define NTEST 50
@@ -71,7 +71,7 @@ static int get_point(double *x, double *y)
   int div, i, j;
   int mdiv, mi=0, mj=0;
   int found;
-  
+
   mdiv=0;
   div=1;
   memcpy(xr, pr, sizeof(pr));
@@ -124,7 +124,7 @@ static double get_dt(void)
   double dt;
   double x, y, xp, yp;
   int i;
-  
+
   dx=funcs[func_num][0];
   dy=funcs[func_num][1];
   dt=1.0; /* enough, eh? */
@@ -211,7 +211,7 @@ static void draw_main(double dt)
 	  px0=lrint((x0-XMIN)/(XMAX-XMIN)*width);
 	  py0=lrint((y0-YMIN)/(YMAX-YMIN)*height);
 	  px1=px0+lrint(ARROW_LEN*cos(dir_angle));
-	  py1=py0+lrint(ARROW_LEN*sin(dir_angle));	  
+	  py1=py0+lrint(ARROW_LEN*sin(dir_angle));
 	  px2=px1-lrint(ARROW_LEN*cos(dir_angle-ARROW_ANGLE));
 	  py2=py1-lrint(ARROW_LEN*sin(dir_angle-ARROW_ANGLE));
 	  px3=px1-lrint(ARROW_LEN*cos(dir_angle+ARROW_ANGLE));
@@ -305,7 +305,7 @@ int main(int argc, char **argv)
 	read_params(optarg);
 	break;
       }
-  
+
   if (out_fname==NULL)
     {
       fprintf(stderr, "You need to specify a file name.\n");

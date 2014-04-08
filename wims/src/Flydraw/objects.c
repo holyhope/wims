@@ -64,7 +64,7 @@ FILE *open4read(char *n)
 	snprintf(tbuf,sizeof(tbuf),"%s/drawfile_.gif",p1);
 	snprintf(sbuf,sizeof(sbuf),"convert %s %s",namebuf,tbuf);
 	if (system(sbuf)) error("system_failed");
-        f=fopen(tbuf,"r");	
+        f=fopen(tbuf,"r");
     }
     return f;
 }
@@ -110,7 +110,7 @@ void obj_existing(objparm *pm)
 {
     FILE *inf;
     char *pp;
-    
+
     if(image) {
 	gdImageDestroy(image);image=NULL;
     }
@@ -139,7 +139,7 @@ void _obj_arrow(objparm *pm, int twoside)
 {
     int l,ii[6],xx,yy;
     double dx,dy,length,dd[6];
-    scale(pm->pd,pm->p,2); 
+    scale(pm->pd,pm->p,2);
     xx=ii[0]=pm->p[2];yy=ii[1]=pm->p[3];
     l=pm->pd[4];if(l<0) l=0; if(l>200) l=200;
     scale2(pm->pd[0]-pm->pd[2],pm->pd[1]-pm->pd[3],&dx,&dy);
@@ -299,7 +299,7 @@ void obj_lines(objparm *pm)
     int i, n;
     n=(pm->pcnt)/2;
     scale(pm->pd,pm->p,n);
-    for(i=2;i<2*n;i+=2) 
+    for(i=2;i<2*n;i+=2)
       gdImageLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
     if(vimg_enable) vimg_polyline(scale_buf,n,0);
 }
@@ -325,7 +325,7 @@ void obj_points(objparm *pm)
       gdImageSetPixel(image,pm->p[i],pm->p[i+1],pm->color[0]);
 }
 
-	/* lattice. 
+	/* lattice.
 	 * x0,y0,xv1,yv1,xv2,yv2,n1,n2,color */
 void obj_lattice(objparm *pm)
 {
@@ -541,10 +541,10 @@ void obj_string(objparm *pm)
 	if(p2 && *(p2+1)==0) {*p2=0; pe++;}
     }
     if(pm->fill)
-      gdImageStringUp(image,*(fonttab[i].fpt),pm->p[0],pm->p[1],pe,
+      gdImageStringUp(image,*(fonttab[i].fpt),pm->p[0],pm->p[1], (unsigned char*) pe,
 		    pm->color[0]);
     else
-      gdImageString(image,*(fonttab[i].fpt),pm->p[0],pm->p[1],pe,
+      gdImageString(image,*(fonttab[i].fpt),pm->p[0],pm->p[1], (unsigned char*) pe,
 		    pm->color[0]);
 }
 
@@ -561,7 +561,7 @@ void obj_copy(objparm *pm)
     char *pp;
     FILE *inf;
     gdImagePtr	insimg;
-    
+
     pp=find_word_start(pm->str);*find_word_end(pp)=0;
     inf=open4read(pp);
     if(inf==NULL) {
@@ -572,7 +572,7 @@ void obj_copy(objparm *pm)
 	error("bad_gif"); return;
     }
     scale(pm->pd,pm->p,1);
-    if(pm->pd[2]<0 && pm->pd[3]<0 && pm->pd[4]<0 && pm->pd[5]<0) 
+    if(pm->pd[2]<0 && pm->pd[3]<0 && pm->pd[4]<0 && pm->pd[5]<0)
       gdImageCopy(image,insimg,pm->p[0],pm->p[1],0,0,
 		  insimg->sx,insimg->sy);
     else
@@ -587,7 +587,7 @@ void obj_copyresize(objparm *pm)
     char *pp;
     FILE *inf;
     gdImagePtr	insimg;
-    
+
     pp=find_word_start(pm->str);*find_word_end(pp)=0;
     inf=open4read(pp);
     if(inf==NULL) {
@@ -598,7 +598,7 @@ void obj_copyresize(objparm *pm)
 	error("bad_gif"); return;
     }
     scale(pm->pd+4,pm->p+4,2);
-    if(pm->pd[0]<0 && pm->pd[1]<0 && pm->pd[2]<0 && pm->pd[3]<0) 
+    if(pm->pd[0]<0 && pm->pd[1]<0 && pm->pd[2]<0 && pm->pd[3]<0)
       gdImageCopyResized(image,insimg,pm->p[4],pm->p[5],0,0,
 			 pm->p[6]-pm->p[4]+1,pm->p[7]-pm->p[5]+1,
 			 insimg->sx,insimg->sy);
@@ -773,7 +773,7 @@ void _obj_plot(objparm *pm,int dash)
     if(vimg_enable) vimg_plotstart();
     for(i=j=0;i<=tstep;i++) {
 	if(n==1) {
-	    if(tranged) t=tstart+i*v; else t=xstart+i*v; 
+	    if(tranged) t=tstart+i*v; else t=xstart+i*v;
 	    eval_setval(varpos,t); dc[0]=t; dc[1]=evalue(p1);
 	}
 	else {
@@ -797,7 +797,7 @@ void _obj_plot(objparm *pm,int dash)
 		  gdImageDashedLine(image,oc[0],oc[1],ic[0],ic[1],pm->color[0]);
 		  } else
 		  {gdImageLine(image,oc[0],oc[1],ic[0],ic[1],pm->color[0]); }
-		
+
 	    }
 	}
 	memmove(oc,ic,sizeof(oc));
@@ -824,7 +824,7 @@ void obj_levelcurve(objparm *pm)
     int n,i;
     double d;
     leveldata *ld;
-    
+
     ld=xmalloc(sizeof(leveldata)+16);
     ld->xname="x"; ld->yname="y";
     ld->xsize=sizex; ld->ysize=sizey; ld->datacnt=0;
@@ -955,7 +955,7 @@ void obj_killtranslation(objparm *pm)
 
 /***** Les modifs de Jean-Christophe Leger Fev 2006 *****/
 
-/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES, une liste de 4 nombres reels pour la matrice */ 
+/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES, une liste de 4 nombres reels pour la matrice */
 void obj_setmatrix(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -969,7 +969,7 @@ void obj_setmatrix(objparm *pm)
   matrices_pavage[nummatrix][3] = pm->pd[4];
 }
 
-/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */ 
+/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */
 void obj_resetmatrix(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -983,7 +983,7 @@ void obj_resetmatrix(objparm *pm)
   matrices_pavage[nummatrix][3] = 1;
 
 }
-/* arguments: un numero de vecteur entre 1 et JC_NB_MATRICES, une liste de 2 nombres reels pour le vecteur */ 
+/* arguments: un numero de vecteur entre 1 et JC_NB_MATRICES, une liste de 2 nombres reels pour le vecteur */
 void obj_setvector(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -995,7 +995,7 @@ void obj_setvector(objparm *pm)
   vecteurs_pavage[nummatrix][1] = pm->pd[2];
 }
 
-/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */ 
+/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */
 void obj_resetvector(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -1007,7 +1007,7 @@ void obj_resetvector(objparm *pm)
   vecteurs_pavage[nummatrix][1] = 0;
 }
 
-/* arguments: un numero de vecteur entre 1 et JC_NB_MATRICES, une liste de 6 nombres reels pour la matrice et le vecteur */ 
+/* arguments: un numero de vecteur entre 1 et JC_NB_MATRICES, une liste de 6 nombres reels pour la matrice et le vecteur */
 void obj_settransform(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -1024,7 +1024,7 @@ void obj_settransform(objparm *pm)
 }
 
 
-/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */ 
+/* arguments: un numero de matrice entre 1 et JC_NB_MATRICES */
 void obj_resettransform(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
@@ -1040,7 +1040,7 @@ void obj_resettransform(objparm *pm)
   matrices_pavage[nummatrix][3] = 1;
 }
 
-/* arguments: une liste de 6 nombres reels pour les coordonnees de l'origine et des vecteurs de base */ 
+/* arguments: une liste de 6 nombres reels pour les coordonnees de l'origine et des vecteurs de base */
 void obj_setparallelogram(objparm *pm)
 {
   int i;
@@ -1076,13 +1076,13 @@ void obj_multicopy(objparm *pm)
     /* gestion palette de couleur de l'image a inserer */
     int colorMap[gdMaxColors];
     int comptmat=0; /* combien de matrices en tout ? */
-    
+
     for (i=0; (i<gdMaxColors); i++) {
       colorMap[i] = (-1);
     }
 
     /* Gestion des parametres la liste est censee finir avec le nom du fichier */
-    t=pm->pcnt-1; /* il faut enlever le nom de fichier ! c'est le nombre de parametres en plus */ 
+    t=pm->pcnt-1; /* il faut enlever le nom de fichier ! c'est le nombre de parametres en plus */
     pp=find_word_start(pm->str);
     /* visiblement find_word_start n'arrive pas a trouver le dernier mot dans un contexte ou le nombre de parameters est variable
      * on cherche donc l'emplacement de la derniere virgule:
@@ -1106,8 +1106,8 @@ void obj_multicopy(objparm *pm)
 	error("bad_gif"); return;
     }
 
-    /* On recupere les numeros des matrices/vecteurs a faire agir, 
-     * s'il n'y en a pas, on les fait toutes agir 
+    /* On recupere les numeros des matrices/vecteurs a faire agir,
+     * s'il n'y en a pas, on les fait toutes agir
      */
     for(i=0;i<t && i< JC_NB_MATRICES;i++) {
       if(pm->pd[i]>=1 && pm->pd[i]<=JC_NB_MATRICES){
@@ -1121,7 +1121,7 @@ void obj_multicopy(objparm *pm)
       }
       comptmat=JC_NB_MATRICES;
     }
-  
+
 
     imax = gdImageSX(insimg);
     jmax = gdImageSY(insimg);
@@ -1137,12 +1137,12 @@ void obj_multicopy(objparm *pm)
 	    /* If it's the same image, mapping is trivial, dans notre cas ca n'arrive jamais... */
 	    if (image == insimg) {
 	      nc = c;
-	    } else { 
+	    } else {
 	      /* First look for an exact match */
 	      nc = gdImageColorExact(image,
 				     insimg->red[c], insimg->green[c],
 				     insimg->blue[c]);
-	    }	
+	    }
 	    if (nc == (-1)) {
 	      /* No, so try to allocate it */
 	      nc = gdImageColorAllocate(image,
@@ -1209,7 +1209,7 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
     char buf[MAX_LINELEN+1];
     char *p1, *p2;
     int j,t,c,c1,c2;
-    
+
     c=o->color_pos;c1=c2=0;
     pm->color[0]=pm->color[1]=0;
     if(c>0) c1=c; if(c<0) c2=-c; c=c1+c2;
