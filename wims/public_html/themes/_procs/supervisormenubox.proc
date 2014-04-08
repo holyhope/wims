@@ -1,11 +1,12 @@
-!!supervisormenubox.proc : 
+<!-- supervisormenubox.proc -->
 !! Adds all Supervisor links in wims_rm_1 for footer navigation menus
 
 !if $class_typename notsametext program
     !set wims_rm_1 = $wims_rm_1\
+menublock,0,\
 SE_list,1,module=adm/class/userlist\
 n_participant,1,style=student\
-itemsep,0,\
+menublock,0,\
 SE_mod,1,module=adm/class/motd
 
 !endif
@@ -19,8 +20,6 @@ cdt,1,module=adm/class/cdt
 !read themes/_procs/supervisorforum.proc
 
 !set wims_rm_1 = $wims_rm_1\
-itemsep,0,\
+menublock,0,\
 SE_config,1,module=adm/class/config\
 pref,1,module=adm/light&phtml=useropts.phtml.$lang
-
-!set wims_homeref_n1 = !linecnt $wims_rm_1
