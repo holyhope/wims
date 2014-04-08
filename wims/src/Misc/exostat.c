@@ -78,14 +78,13 @@ void oneline(char *p, char *typ)
     tab+=(sh-1)*MAX_EXO+(ex-1);
     t=str2time(data[0]); if(t==-1) return;
     if(strstr(data[4],"new")!=NULL) {
-      if(strcmp(typ,"score")==0 && (
+      if(strcmp(typ,"score")==0 &&
         (strcmp(data[6],"noscore")==0 || (i > 7 && strcmp(data[7],"noscore")==0)
-            || (i > 8 && strcmp(data[8],"noscore")==0))) { return; }
-      if(strcmp(typ,"noscore")==0 && (
+            || (i > 8 && strcmp(data[8],"noscore")==0))){ return; }
+      if(strcmp(typ,"noscore")==0 &&
         (i < 7 || ( i>7 && strcmp(data[7],typ)!=0)
-            || (i > 8 && strcmp(data[8], typ)!=0))
-        ) { return; }
-      }
+            || (i > 8 && strcmp(data[8], typ)!=0)
+        )) { return; }
       snprintf(tab->lastnew,12,"%s",data[1]);
       tab->newcnt++; tab->lasttime=t;
       fcind++;
@@ -102,8 +101,7 @@ void oneline(char *p, char *typ)
       if(strcmp(typ,"noscore")==0 && (
         ( i < 7 || ( i > 7 && strcmp(data[7],"noscore")!=0)
             || (i > 8 && strcmp(data[8], typ)!=0))
-        ) { return; }
-      }
+             )){ return; }
       t-=tab->lasttime; tab->lasttime=-1; if(t<0) t+=24*3600;
       if(t<0) t=0; if(t>5*3600) t=5*3600;
       scores[sccnt].dure=t; scores[sccnt].next=-1;
