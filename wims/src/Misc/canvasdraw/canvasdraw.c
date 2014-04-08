@@ -1,0 +1,5735 @@
+/*
+27/7/2013 version 0.01
+"Inspired" by FLY program: http://martin.gleeson.com/fly
+*********************************************************************************
+* J.M. Evers 7/2013								*
+* This is all just amateur scriblings... So no copyrights.			*
+* This source code file, and compiled objects derived from it,			*
+* can be used and distributed without restriction, including for commercial use	*
+* No warrenty whatsoever							*
+*********************************************************************************
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h> /* use for random id's */
+#include <math.h>
+/* 
+#include <ctype.h>
+11/2013
+removed: FreeBSD 9.0 / 9.1 C-lib bug...in chroot it will result in: Undefined symbol "_ThreadRuneLocale" implemented own versions of tolower() / toupper()
+Clang is fine (FreeBSD 10.0)
+*/
+
+/* 
+in case svgdraw is in ~/src/Misc/svgdraw
+#include "../svgdraw/include/matheval.h"
+*/
+#include "include/matheval.h"
+#include <assert.h> 
+#include "canvasdraw.h"
+#include <sys/stat.h>
+
+/* needed for gettimeofday */
+#include <sys/time.h>
+#include "canvasmacro.c"
+/******************************************************************************
+**  Internal Functions
+******************************************************************************/
+void	add_to_buffer(char *tmp); /* add tmp_buffer to the buffer */
+void	sync_input(FILE *infile);/* proceed with inputfile */
+void	canvas_error(char *msg);
+void 	add_javascript_functions(int js_functions[], int canvas_root_id);
+void	reset();/* reset some global variables like "use_filled" , "use_dashed" */
+int	get_token(FILE *infile); /* read next char until EOL*/
+int 	x2px(double x);
+int 	y2px(double y);
+double 	px2x(int x);
+double 	px2y(int y);
+double	get_real(FILE *infile,int last); /* read a values; calculation and symbols allowed */
+double  get_double(FILE *infile , int orientation , int last); /*the same as get_real(): but for an unknown amount of data args*/
+char    *str_replace ( const char *word, const char *sub_word, const char *rep_word );
+char 	*get_color(FILE *infile,int last); /* read hex-color or colorname -> hex */
+char	*get_string(FILE *infile,int last); /* get the string at theend of a command */
+char	*get_string_argument(FILE *infile,int last); /* the same, but with "comma" as  separator */
+char 	*convert_hex2rgb(char *hexcolor);
+void 	add_read_canvas(int reply_format);
+void	make_js_include(int canvas_root_id);
+void	check_string_length(int length);/* checks if the length of string argument of command is correct */
+FILE 	*js_include_file; 
+FILE	*get_file(int *line_number, char **filename);
+FILE 	*infile;    /* will be stdin */
+/******************************************************************************
+** global
+******************************************************************************/
+int finished = FALSE;/* main variable for signalling the end of the fly-script ; if finished = 1 ; write to stdout or canvasz */
+int line_number = 1;/* used in canvas_error() ; keep track of line number in canvasdraw/fly - script */
+/* set some variables to avoid trouble (NaN) in case of syntax and other usage errors */
+int xsize = 320;
+int ysize = 320;
+double xmin = 0.0;
+double xmax = 320.0;
+double ymin = 0.0;
+double ymax = 320.0;
+double tmax = 2;
+double tmin = -2;
+/* flag to indicate parsing of line status */
+int done = FALSE; 
+int type; /* eg command number */
+int onclick = 0;/* 0 = noninteractive ; 1 = onclick ; 2 = draggable*/
+int use_rotate = FALSE;
+int use_translate = FALSE;
+int use_filled = FALSE;
+int use_dashed = FALSE; /* dashing not natively supported in firefox  , for now... */
+char buffer[MAX_BUFFER];/* contains js-functions with arguments ... all other basic code is directly printed into js-include file */
+
+/******************************************************************************
+** Main Program
+******************************************************************************/
+int main(int argc, char *argv[]){
+    /* need unique id for every call to canvasdraw : rand(); is too slow...will result in many identical id's */
+    struct timeval tv;struct timezone tz;gettimeofday(&tv, &tz);unsigned int canvas_root_id = (unsigned int) tv.tv_usec;
+    infile = stdin;/* read flyscript via stdin */
+    int i,c;
+    double double_data[MAX_INT+1];
+    int int_data[MAX_INT+1];
+    for(i=0;i<MAX_INT;i++){int_data[i]=0;double_data[i]=0;}
+    int use_parametric = FALSE;/* will be reset after parametric plotting */
+    int use_axis = FALSE;
+    int use_axis_numbering = FALSE;
+    int line_width = 1;
+    int decimals = 2;
+    int debug = 0;
+    int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate */
+    int use_userdraw = FALSE; /* flag to indicate user interaction: incompatible with "drag & drop" code !! */
+    int drag_type = -1;/* 0,1,2 : xy,x,y */
+    int use_tooltip = FALSE;
+    char *tooltip_text = "Click here";
+    char *temp = ""; /* */
+    char *bgcolor = "";/* used for background of canvas_div ; default is tranparent */
+    char *stroke_color = "255,0,0";
+    char *fill_color = "0,255,0";
+    char *font_family = "12px Ariel"; /* commands xaxistext,yaxistext,legend,text/textup/string/stringup may us this */
+    char *font_color = "#00000";
+    char *draw_type = "points";
+    char *fly_font = "normal";
+    char *input_style = "";
+    char *flytext = "";
+    int pixelsize = 1;
+    int reply_format = 0;
+    int input_cnt = 0;
+    int ext_img_cnt = 0;
+    int font_size = 12;
+    int dashtype[2] = { 2 , 2 };
+    int js_function[MAX_JS_FUNCTIONS]; /* javascript functions include objects on demand basis : only once per object type */
+    for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
+    int arrow_head = 8; /* size in px*/
+    int crosshair_size = 10; /* size in px*/
+    int plot_steps = 150; 
+    int found_size_command = 0;
+    int click_cnt = 1;
+    int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
+    int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
+    int use_mouse_coordinates = FALSE;
+    double angle = 0.0;
+    int translate_x = 0;
+    int translate_y = 0;
+    int clickfillmarge = 20;
+    int animation_type = 9; /* == object type curve in drag library */
+    size_t string_length = 0;
+    double stroke_opacity = 0.8;
+    double fill_opacity = 0.8;
+    char *URL = "http://localhost/images";
+    memset(buffer,'\0',MAX_BUFFER);
+    void *tmp_buffer = "";
+    
+    /* default writing a unzipped js-include file into wims getfile directory */
+    char *w_wims_session = getenv("w_wims_session");
+    if(  w_wims_session == NULL || *w_wims_session == 0 ){ 
+	canvas_error("Hmmm, your wims environment does not exist...\nCanvasdraw should be used within wims.");
+    }
+    int L0=strlen(w_wims_session) + 21;
+    char *getfile_dir = my_newmem(L0); /* create memory to fit string precisely */
+    snprintf(getfile_dir,L0, "../sessions/%s/getfile",w_wims_session);/* string will fit precisely  */
+    mode_t process_mask = umask(0); /* check if file exists */
+    int result = mkdir(getfile_dir, S_IRWXU | S_IRWXG | S_IRWXO);
+    if( result == 0 || errno == EEXIST ){
+     umask(process_mask); /* be sure to set correct permission */
+     char *w_session = getenv("w_session"); 
+     int L1 = (int) (strlen(w_session)) + find_number_of_digits(canvas_root_id) + 48;
+    char *getfile_cmd = my_newmem(L1); /* create memory to fit string precisely */
+     snprintf(getfile_cmd,L1,"wims.cgi?session=%s&cmd=getfile&special_parm=%d.js",w_session,canvas_root_id);/* extension ".gz" is MANDATORY for webserver */	
+    /* write the include tag to html page:<script type="text/javascript" src="wims.cgi?session=%s&cmd=getfile&special_parm=11223344_js"></script> */
+    /* now write file into getfile dir*/
+    char *w_wims_home = getenv("w_wims_home"); /* "/home/users/wims" : we need absolute path for location */
+    int L2 = (int) (strlen(w_wims_home)) + (int) (strlen(w_wims_session)) + find_number_of_digits(canvas_root_id) + 23;
+    char *location = my_newmem(L2); /* create memory to fit string precisely */
+    snprintf(location,L2,"%s/sessions/%s/getfile/%d.js",w_wims_home,w_wims_session,canvas_root_id);/*absolute path */
+    js_include_file = fopen(location,"w");/* open the file location for writing */
+    /* check on opening...if nogood : mount readonly? disk full? permissions not set correctly? */
+    if(js_include_file == NULL){ canvas_error("SHOULD NOT HAPPEN : could not write to javascript include file...check your system logfiles !" );}
+
+/* ----------------------------------------------------- */
+/* while more lines to process */
+
+    while(!finished){
+	if(line_number>1 && found_size_command == FALSE){canvas_error("command \"size xsize,ysize\" needs to come first ! ");}
+	type = get_token(infile);
+	done = FALSE;
+	/*
+	@canvasdraw
+	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li>
+	<li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li></ul>
+	*/
+	switch(type){
+	case END:
+	finished = 1;
+	done = TRUE;
+	break;
+	case 0:
+	    sync_input(infile);
+	    break;
+	case COMMENT:
+	    sync_input(infile);
+	    break;
+	case EMPTY:
+	    sync_input(infile);
+	    break;
+	case SIZE:
+	    /*
+	    @size width,height
+	    @set canvas size in pixels
+	    @mandatory first command
+	    */
+	    found_size_command = TRUE;
+	    xsize = (int)(abs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
+	    ysize = (int)(abs(round(get_real(infile,1))));
+	    /* sometimes we want xrange / yrange to be in pixels...without telling x/y-range */
+	    xmin = 0;xmax = xsize;
+	    ymin = ysize;ymax = 0;
+
+/* 
+ The sequence in which stuff is finally printed is important !!
+ for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
+*/
+fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block\"><span id=\"tooltip_placeholder%d\" style=\"display:none\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
+fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
+fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
+fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+/* default add the drag code : nearly always used ...*/
+add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
+	    break;
+	case XRANGE:
+	/*
+	@ xrange xmin,xmax
+	@ if not given: 0,xsize (eg in pixels) 
+	*/
+	    for(i = 0 ; i<2; i++){
+		switch(i){
+		    case 0: xmin = get_real(infile,0);break;
+		    case 1: xmax = get_real(infile,1);break;
+		    default: break;
+		}
+	    }
+	    if(xmin >= xmax){canvas_error(" xrange is not OK : xmin &lt; xmax !\n");}
+	    fprintf(js_include_file,"var xmin = %f;var xmax = %f;",xmin,xmax);
+	    break;
+	case YRANGE:
+	/*
+	@ yrange ymin,ymax
+	@ if not given 0,ysize (eg in pixels)
+	*/
+	    for(i = 0 ; i<2; i++){
+		switch(i){
+		    case 0: ymin = get_real(infile,0);break;
+		    case 1: ymax = get_real(infile,1);break;
+		    default: break;
+		}
+	    }
+	    if(ymin >= ymax){canvas_error(" yrange is not OK : ymin &lt; ymax !\n");}
+	    fprintf(js_include_file,"var ymin = %f;var ymax = %f;",ymin,ymax);
+	    break;
+	case TRANGE:
+	/*
+	@ trange tmin,tmax
+	@ default -2,2
+	*/
+	    use_parametric = TRUE;
+	    for(i = 0 ; i<2; i++){
+		switch(i){
+		    case 0: tmin = get_real(infile,0);break;
+		    case 1: tmax = get_real(infile,1);break;
+		    default: break;
+		}
+	    }
+	    if(tmin >= tmax ){canvas_error(" trange is not OK : tmin &lt; tmax!\n");}
+	    break;
+	case LINEWIDTH:
+	/*
+	@ linewidth int
+	@ default 1
+	*/
+	    line_width = (int) (get_real(infile,1));
+	    break;
+	case ARROWHEAD:
+	/*
+	@ arrowhead int
+	@ default 8 (pixels)
+	*/
+	    arrow_head = (int) (get_real(infile,1));
+	    break;
+	case CROSSHAIRSIZE:
+	/*
+	@ crosshairsize int
+	@ default 10 (px)
+	*/
+	    crosshair_size = (int) (get_real(infile,1));
+	    break;
+	case CROSSHAIR:
+	/*
+	@ crosshair x,y,color
+	@ draw a single crosshair point at (x;y) in color 'color'
+	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<3;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,0,0,0,use_rotate,angle,flytext,font_size,font_family);
+    			click_cnt++;reset();
+    			break;
+		    default:break;
+		}
+	    }
+	    break;
+	case CROSSHAIRS:
+	/*
+	@ crosshairs color,x1,y1,x2,y2,...,x_n,y_n
+	@ draw multiple crosshair points at given coordinates in color 'color'
+	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
+	@ may be set draggable / onclick individually (!)
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+    	    for(c=0 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
+	case POINT:
+	/*
+	@ point x,y,color
+	@ draw a single point at (x;y) in color 'color'
+	@ use command 'linewidth int'  to adust size
+	@ may be set draggable / onclick
+	@ will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming) 
+	*/
+    	    for(i=0;i<3;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
+		    decimals = find_number_of_digits(precision);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family);
+		    click_cnt++;break;
+		    default: break;
+		}
+	    }
+	    reset();
+	    break;
+	case POINTS:
+	/*
+	@ points color x1,y1,x2,y2,...,x_n,y_n
+	@ draw multiple points at given coordinates in color 'color'
+	@ use command 'linewidth int'  to adust size
+	@ may be set draggable / onclick individually (!)
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);	    
+	    for(c = 0 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
+	case SEGMENT:
+	/*
+	@ segment x1,y1,x2,y2,color
+	@ draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++) {
+		switch(i){
+		    case 0: double_data[0]= get_real(infile,0);break; /* x1-values */
+		    case 1: double_data[1]= get_real(infile,0);break; /* y1-values */
+		    case 2: double_data[2]= get_real(infile,0);break; /* x2-values */
+		    case 3: double_data[3]= get_real(infile,0);break; /* y2-values */
+		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+			break;
+		    default: break;
+		}
+	    }
+	    break;
+	case LINE:
+	/*
+	@ line x1,y1,x2,y2,color
+	@ draw a line through points (x1:y1)--(x2:y2) in color 'color'
+	@ or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: double_data[10]= get_real(infile,0);break; /* x-values */
+		    case 1: double_data[11]= get_real(infile,0);break; /* y-values */
+		    case 2: double_data[12]= get_real(infile,0);break; /* x-values */
+		    case 3: double_data[13]= get_real(infile,0);break; /* y-values */
+		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
+		    if( double_data[10] == double_data[12] ){ /* vertical line*/
+			double_data[1] = xmin;
+			double_data[3] = ymax;
+			double_data[0] = double_data[10];
+			double_data[2] = double_data[10];
+		    }
+		    else
+		    {
+			if( double_data[11] == double_data[13] ){ /* horizontal line */
+			    double_data[1] = double_data[11];
+			    double_data[3] = double_data[11];
+			    double_data[0] = ymin;
+			    double_data[2] = xmax;
+			}
+			else
+			{
+			/* m */
+			double_data[5] = (double_data[13] - double_data[11]) /(double_data[12] - double_data[10]);
+			/* q */
+			double_data[6] = double_data[11] - ((double_data[13] - double_data[11]) /(double_data[12] - double_data[10]))*double_data[10];
+			
+			/*xmin,m*xmin+q,xmax,m*xmax+q*/
+			
+			    double_data[1] = (double_data[5])*(xmin)+(double_data[6]);
+			    double_data[3] = (double_data[5])*(xmax)+(double_data[6]);
+			    double_data[0] = xmin;
+			    double_data[2] = xmax;
+			}
+		    }
+		    decimals = find_number_of_digits(precision);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+		    click_cnt++;reset();
+		    break;
+		}
+	    }
+	    break;
+	case HLINE: 
+	/*
+	@ hline x,y,color
+	@ draw a horizontal line through point (x:y) in color 'color'
+	@ or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<3;i++) {
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1: double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
+		    double_data[3] = double_data[1];
+		    decimals = find_number_of_digits(precision);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+		    click_cnt++;reset();
+		    break;
+		}
+	    }
+	    break;
+	case VLINE:
+	/*
+	@ vline x,y,color
+	@ draw a vertical line through point (x:y) in color 'color'
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<3;i++) {
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1: double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2: stroke_color=get_color(infile,1);/* name or hex color */
+			double_data[2] = double_data[0];
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+		    break;
+		}
+	    }
+	    break;
+	case SQUARE:
+	/*
+	@ square x,y,side,color
+	@ draw a square with left top corner (x:y) with side 'side' in color 'color'
+	@ use command 'fsquare x,y,side,color' for a filled square
+	@ use command/keyword  'filled' before command 'square x,y,side,color'
+	@ use command 'fillcolor color' before 'fsquare' to set the fill colour.
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);
+			   double_data[3] = double_data[2];
+			   break; /* x-values */
+		    case 3:stroke_color = get_color(infile,1);/* name or hex color */
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+			break;
+		}
+	    }
+	    break;
+	case ROUNDRECT:
+	/*
+	@ roundrect x1,y1,x2,y2,radius,color
+	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
+	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+	@ use command 'fillcolor color' before 'froundrect' to set the fill colour.
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<6;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);break; /* x-values */
+		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
+		    case 4:int_data[0] = (int) (get_real(infile,0));break; /* radius value in pixels */
+		    case 5:stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+	            break;
+		}
+	    }
+	    break;
+	case RECT:
+	/*
+	@ rect x1,y1,x2,y2,color
+	@ use command 'rect x1,y1,x2,y2,color' for a filled rectangle
+	@ use command/keyword  'filled' before command 'rect x1,y1,x2,y2,color'
+	@ use command 'fillcolor color' before 'frect' to set the fill colour.
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);break; /* x-values */
+		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
+		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[2],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[3],decimals,double_data[3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+			break;
+		}
+	    }
+	    break;
+	case POLYLINE:
+	/*
+	@ polyline color,x1,y1,x2,y2...x_n,y_n
+	@ may be set draggable / onclick
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    i=0;
+	    c=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		for( c = 0 ; c < 2; c++){
+		    if(c == 0 ){
+			double_data[i] = get_real(infile,0);
+			i++;
+		    }
+		    else
+		    {
+			double_data[i] = get_real(infile,1);
+			i++;
+		    }
+		}
+	    }
+	    /* draw path : not closed & not filled */
+    	    decimals = find_number_of_digits(precision);
+	    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+	    click_cnt++;reset();
+	    break;
+	case POLY:
+	/*
+	@ poly color,x1,y1,x2,y2...x_n,y_n
+	@ draw closed polygon
+	@ use command 'fpoly' to fill it, use command 'fillcolor color' to set the fill color
+	@ may be set draggable / onclick
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    i=0;
+	    c=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		for( c = 0 ; c < 2; c++){
+		    if(c == 0 ){
+			double_data[i] = get_real(infile,0);
+			i++;
+		    }
+		    else
+		    {
+			double_data[i] = get_real(infile,1);
+			i++;
+		    }
+		}
+	    }
+	    /* draw path :  closed & optional filled */
+    		decimals = find_number_of_digits(precision);
+		string_length = snprintf(NULL,0,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+		click_cnt++;reset();
+	    break;
+	case ARC: 
+	/*
+	 @ arc xc,yc,width,height,start_angle,end_angle,color
+	 @ can not be set "onclick" or "drag xy"
+	 @ attention: width == height == radius in pixels)
+	*/
+	    for(i=0;i<7;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:int_data[0] = (int)(get_real(infile,0));break; /* width in pixels ! */
+		    case 3:int_data[1] = (int)(get_real(infile,0));break; /* height in pixels ! */
+		    case 4:double_data[2] = get_real(infile,0);break; /* start angle in degrees */
+		    case 5:double_data[3] = get_real(infile,0);break; /* end angle in degrees */
+		    case 6:stroke_color = get_color(infile,1);/* name or hex color */
+		    /* in Shape library:
+			x[0] = x[1] = xc
+			y[0] = y[1] = yc
+			w[0] = w[1] = radius = width = height  
+			h[0] = start_angle ; h[1] = end_engle 
+		    */
+    			decimals = find_number_of_digits(precision);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],int_data[0],int_data[0],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+    			reset();
+	            break;
+		}
+	    }
+	    break;
+	case ELLIPSE:
+	/*
+	@ ellipse xc,yc,radius_x,radius_y,color
+	@ a ellipse with center xc/yc in x/y-range 
+	@ radius_x and radius_y are in pixels
+	@ may be set draggable / onclick
+	@ will shrink / expand on zoom out / zoom in 
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);break; /* rx -> px  */
+		    case 3:double_data[3] = get_real(infile,0);break; /* ry -> px  */ 
+		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,3,[%.*f],[%.*f],[%.*f],[%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+		    break;
+		}
+	    }
+	    break;
+	case DASHTYPE:
+	/*
+	@ dashtype int ,int
+	@ When dashed is set, the objects will be drawn with this dashtyp
+	@ default value "dashtype 2,2"
+	*/
+	    for(i=0;i<2;i++){
+		switch(i){
+	    	    case 0 : dashtype[0] = (int) line_width*( get_real(infile,0)) ; break;
+	    	    case 1 : dashtype[1] = (int) line_width*( get_real(infile,1)) ; break;
+		}
+	    }
+	break;
+	case CIRCLE:
+	/*
+	@ circle xc,yc,width (2*r in pixels),color
+	@ use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
+	@ use command 'fillcolor color' to set the fillcolor
+	@ may be set draggable / onclick
+	@ will shrink / expand on zoom out / zoom in 
+	*/
+    	    for(i=0;i<4;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* radius in 'dx' xrange*/
+    		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+		    break;
+		}
+	    }
+	    break;
+	case RAYS:
+	/*
+	 @ rays color,xc,yc,x1,y1,x2,y2,x3,y3...x_n,y_n
+	 @ draw rays in color 'color' and center (xc:yc)
+	 @ may be set draggable or onclick (the complete object, not an indiviual ray !)
+	*/
+	    stroke_color=get_color(infile,0);
+	    i=0;
+	    while( ! done ){     /* get next until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to much rays in argument: repeat command multiple times to fit");}
+		if( i > 3){
+		    double_data[i++] = double_data[0];
+		    double_data[i++] = double_data[1];
+		}
+		for(c=0; c<=1 ;c++){ /* switch x2px / y2px */
+		    double_data[i++]= get_double(infile,c,1);
+		}
+	    }
+    	    decimals = find_number_of_digits(precision);
+	    for(c=0; c<i;c = c+4){
+		click_cnt++;
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c+2],decimals,double_data[0],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+	    }
+	    reset();
+	    break;
+	case ARROW:
+	/*
+	@ arrow x1,y1,x2,y2,h,color
+	@ draw a single headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
+	@ use command 'linewidth int' to adjust thickness of the arrow
+	@ may be set draggable / onclick
+	*/
+    	    for(i=0;i<6;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = get_real(infile,0);break; /* x */
+    		    case 3: double_data[3] = get_real(infile,0);break; /* y */
+    		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
+    		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;
+			reset();
+			break;
+    		}
+    	    }
+    	    break;
+	case ARROW2:
+	/*
+	@ arrow2 x1,y1,x2,y2,h,color
+	@ draw a double headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and  in color 'color'
+	@ use command 'arrowhead int' to adjust the arrow head size
+	@ use command 'linewidth int' to adjust thickness of the arrow
+	@ may be set draggable / onclick
+	*/
+    	    for(i=0;i<6;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = get_real(infile,0);break; /* x */
+    		    case 3: double_data[3] = get_real(infile,0);break; /* y */
+    		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
+    		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+			click_cnt++;reset();
+			break;
+    		}
+    	    }
+    	    break;
+	case PARALLEL: 
+	/*
+	 @ parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
+	 @ can not be set "onclick" or "drag xy" 
+	*/
+	    for( i = 0;i < 8; i++ ){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* x1-values  -> x-pixels*/
+		    case 1: double_data[1] = get_real(infile,0);break; /* y1-values  -> y-pixels*/
+		    case 2: double_data[2] = get_real(infile,0);break; /* x2-values  -> x-pixels*/
+		    case 3: double_data[3] = get_real(infile,0);break; /* y2-values  -> y-pixels*/
+		    case 4: double_data[4] = xmin + get_real(infile,0);break; /* xv -> x-pixels */
+		    case 5: double_data[5] = ymax + get_real(infile,0);break; /* yv -> y-pixels */
+		    case 6: int_data[0] = (int) (get_real(infile,0));break; /* n  */
+		    case 7: stroke_color=get_color(infile,1);/* name or hex color */
+    		    decimals = find_number_of_digits(precision);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,11,[%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f],[%d,%d,%d],[%d,%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[4],decimals,double_data[1],decimals,double_data[3],decimals,double_data[5],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+		    click_cnt++;reset();
+		    break;
+		    default: break;
+		}
+	    }
+	    break;
+	case TRIANGLE:
+	/*
+	 @triangle x1,y1,x2,y2,x3,y3,color
+	 @may be set draggable / onclic
+	*/
+    	    for(i=0;i<7;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = get_real(infile,0);break; /* x */
+    		    case 3: double_data[3] = get_real(infile,0);break; /* y */
+    		    case 4: double_data[4] = get_real(infile,0);break; /* x */
+    		    case 5: double_data[5] = get_real(infile,0);break; /* y */
+    		    case 6: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,6,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+    			click_cnt++;reset();
+    			break;
+    		    default: break;
+    		}
+    	    }
+	    break;
+	case LATTICE:
+	/*
+	 @lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
+	 @can not be set "onclick" or "drag xy" 
+	*/
+	    if( js_function[DRAW_LATTICE] != 1 ){ js_function[DRAW_LATTICE] = 1;}
+	    for( i = 0; i<9; i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0));break; /* x0-values  -> x-pixels*/
+		    case 1: int_data[1] = y2px(get_real(infile,0));break; /* y0-values  -> y-pixels*/
+		    case 2: int_data[2] = (int) (get_real(infile,0));break; /* x1-values  -> x-pixels*/
+		    case 3: int_data[3] = (int) (get_real(infile,0));break; /* y1-values  -> y-pixels*/
+		    case 4: int_data[4] = (int) (get_real(infile,0));break; /* x2-values  -> x-pixels*/
+		    case 5: int_data[5] = (int) (get_real(infile,0));break; /* y2-values  -> y-pixels*/
+		    case 6: int_data[6] = (int) (get_real(infile,0));break; /* n1-values */
+		    case 7: int_data[7] = (int) (get_real(infile,0));break; /* n2-values */
+		    case 8: stroke_color=get_color(infile,1);
+    			decimals = find_number_of_digits(precision);
+			string_length = snprintf(NULL,0,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,[%d,%d]);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			snprintf(tmp_buffer,string_length,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,[%d,%d]);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+			add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case SNAPTOGRID:
+	/*
+	 @ snaptogrid
+	 @ keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
+	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor
+	*/
+	    fprintf(js_include_file,"\nuse_snap_to_grid = 1;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round(snap_x*px2x(x))));};\nfunction snap_to_y(y){return y2px(snap_y*(Math.round(snap_y*px2y(y))));};\n");
+	break;
+	case USERDRAW:
+	/*
+	@ userdraw object_type,color
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>circle</li><li>circles</li><li>arrow</li><li>arrows</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
+	@ note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
+	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
+	@ use command "dashed" and/or "dashtype int,int" to trigger dashing 
+	@ use command "debug" to view the output of javascript funcion read_canvas();
+	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
+	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
+	*/
+	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
+		canvas_error("Only one userdraw primitive may be used: read documentation !!");
+	    }
+	    use_userdraw = TRUE;
+	    fprintf(js_include_file,"<!-- begin userdraw mouse events -->\nvar userdraw_x = new Array();var userdraw_y = new Array();var userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->\n",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
+	    draw_type = get_string_argument(infile,0);
+	    stroke_color = get_color(infile,1);
+	    if( strcmp(draw_type,"point") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if(reply_format < 1 ){reply_format = 8;}
+		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		add_js_points(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
+	    }
+	    else
+	    if( strcmp(draw_type,"points") == 0 ){
+	        if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+	        if(reply_format < 1 ){reply_format = 8;}
+		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		add_js_points(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
+	    }
+	    else
+	    if( strcmp(draw_type,"segment") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_segments(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"segments") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_segments(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"circle") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if(reply_format < 1){reply_format = 10;}
+		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
+		add_js_circles(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"circles") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if(reply_format < 1){reply_format = 10;}
+		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
+		add_js_circles(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if(strcmp(draw_type,"crosshair") == 0 ){
+		if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+		if(reply_format < 1){reply_format = 8;}
+		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+	    }
+	    else
+	    if(strcmp(draw_type,"crosshairs") == 0 ){
+		if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+		if(reply_format < 1){reply_format = 8;}
+		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+	    }
+	    else
+	    if(strcmp(draw_type,"freehandline") == 0 ){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 6;}
+		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+	    }
+	    else
+	    if(strcmp(draw_type,"freehandlines") == 0 ){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 6;}
+		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+	    }
+	    else
+	    if(strcmp(draw_type,"path") == 0 ){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 6;}
+		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+	    }
+	    else
+	    if(strcmp(draw_type,"paths") == 0 ){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 6;}
+		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+	    }
+	    else
+	    if(strcmp(draw_type,"arrows") == 0 ){
+		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_arrows(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+	    }
+	    else
+	    if(strcmp(draw_type,"arrow") == 0 ){
+		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_arrows(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+	    }
+	    else
+	    if(strcmp(draw_type,"polygon") == 0){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_poly(js_include_file,-1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if(strncmp(draw_type,"poly",4) == 0){
+		if(strlen(draw_type) < 5){canvas_error("use command \"userdraw poly[3-9],color\" eg userdraw poly6,blue");}
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_poly(js_include_file,(int) (draw_type[4]-'0'),draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if(strcmp(draw_type,"triangle") == 0){
+		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_poly(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if( strcmp(draw_type,"line") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"lines") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"rects") == 0){
+		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_rect(js_include_file,2,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if( strcmp(draw_type,"roundrects") == 0){
+		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_rect(js_include_file,2,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if( strcmp(draw_type,"rect") == 0){
+		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_rect(js_include_file,1,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else 
+	    if( strcmp(draw_type,"roundrect") == 0){
+		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
+		if(reply_format < 1){reply_format = 2;}
+		add_js_rect(js_include_file,1,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"text") == 0){
+		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
+		if(reply_format < 1){reply_format = 17;}
+		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+	    }
+	    else 
+	    {
+		canvas_error("unknown drawtype or typo? ");
+	    }
+	    reset();
+	break;
+	case PLOTSTEPS:
+	    /*
+	     @ plotsteps a_number
+	     @ default 150
+	     @ use with care !
+	    */
+	    plot_steps = (int) (get_real(infile,1));
+	    break;
+	case FONTSIZE:
+	/*
+	 @fontsize font_size
+	 @default value 12
+	*/
+	    font_size = (int) (get_real(infile,1));
+	    break;
+	case FONTCOLOR:
+	/*
+	 @fontcolor color
+	 @color: hexcolor or colorname
+	 @default: black
+	 @example usage: x/y-axis text
+	*/
+	    font_color = get_color(infile,1);
+	    break;
+	case ANIMATE:
+	/*
+	 @animate type
+	 @type may be "point" (nothing else , yet...)
+	 @the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
+	 @will animate a point on the next plot/curve command
+	 @the curve will not be draw
+	 @moves repeatedly from xmin to xmax
+	*/
+	    if( strstr(get_string(infile,1),"point") != 0 ){animation_type = 15;}else{canvas_error("the only animation type (for now) is \"point\"...");}
+	    break;
+	case CURVE:
+	/*
+	 @curve color,formula(x)
+	 @plot color,formula(x)
+	 @use command trange before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
+	 @use command "precision" to increase the number of digits of the plotted points
+	 @use command "plotsteps" to increase / decrease the amount of plotted points (default 150)
+	 @may be set draggable / onclick
+	*/
+	    if( use_parametric == TRUE ){ /* parametric color,fun1(t),fun2(t)*/
+		use_parametric = FALSE;
+		stroke_color = get_color(infile,0);
+		char *fun1 = get_string_argument(infile,0);
+		char *fun2 = get_string_argument(infile,1);
+	        if( strlen(fun1) == 0 || strlen(fun2) == 0 ){canvas_error("parametric functions are NOT OK !");}
+		use_parametric = FALSE;
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,animation_type,eval_parametric(xsize,ysize,fun1,fun2,xmin,xmax,ymin,ymax,tmin,tmax,plot_steps,precision),2*line_width,2*line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+    		click_cnt++;
+    	    }
+	    else
+	    {
+		stroke_color = get_color(infile,0);
+	        char *fun1 = get_string_argument(infile,1);
+		if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}	
+    		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
+    		click_cnt++;
+	    }
+	    animation_type = 9;/* rest to curve plotting without animation */
+	    reset();
+	    break;
+	case FLY_TEXT:
+	/*
+	@ text fontcolor,x,y,font,text_string
+	@ font may be described by keywords : giant,huge,normal,small,tiny
+	@ use command 'fontsize' to increase base fontsize for the keywords 
+	@ may be set "onclick" or "drag xy"
+	@ backwards compatible with flydraw
+	@ unicode supported: text red,0,0,huge,\\u2232
+	@ use command 'string' and 'fontfamily' for a more fine grained control over html5 canvas text element
+	@ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+	*/
+	    for(i = 0; i < 5 ;i++){
+		switch(i){
+		    case 0: stroke_color = get_color(infile,0);break;/* font_color == stroke_color name or hex color */
+		    case 1: double_data[0] = get_real(infile,0);break; /* x */
+		    case 2: double_data[1] = get_real(infile,0);break; /* y */
+		    case 3: fly_font = get_string_argument(infile,0);
+			    if(strcmp(fly_font,"giant") == 0){
+				font_size = (int)(font_size + 24);
+			    }
+			    else
+			    {
+				if(strcmp(fly_font,"huge") == 0){
+				    font_size = (int)(font_size + 14);
+				}
+				else
+				{
+				    if(strcmp(fly_font,"large") == 0){
+					font_size = (int)(font_size + 6);
+					}
+					else
+					{
+					    if(strcmp(fly_font,"small") == 0){
+						font_size = (int)(font_size - 4);
+						if(font_size<0){font_size = 8;}
+					}
+				    }
+				}
+			    }
+			    break; /* font_size ! */
+		    case 4: 
+			temp = get_string_argument(infile,1);
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%d,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,0,0,temp,font_size,font_family);
+			click_cnt++;reset();break;
+		    default:break;
+		}
+	    }
+	    break;
+	case FLY_TEXTUP:
+	/*
+	 @ textup fontcolor,x,y,font,text_string
+	 @ can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
+	 @ font may be described by keywords : giant,huge,normal,small,tiny
+	 @ use command 'fontsize' to increase base fontsize for the keywords 
+	 @ backwards compatible with flydraw
+	 @ unicode supported: textup red,0,0,huge,\\u2232
+	 @ use command 'stringup' and 'fontfamily' for a more fine grained control over html5 canvas text element
+	 @ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+	*/
+	    if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}	
+	    for(i = 0; i<5 ;i++){
+		switch(i){
+		    case 0: font_color = get_color(infile,0);break;/* name or hex color */
+		    case 1: int_data[0] = x2px(get_real(infile,0));break; /* x */
+		    case 2: int_data[1] = y2px(get_real(infile,0));break; /* y */
+		    case 3: fly_font = get_string_argument(infile,0);
+			    if(strcmp(fly_font,"giant") == 0){
+				font_size = (int)(font_size + 24);
+			    }
+			    else
+			    {
+				if(strcmp(fly_font,"huge") == 0){
+				    font_size = (int)(font_size + 14);
+				}
+				else
+				{
+				    if(strcmp(fly_font,"large") == 0){
+					font_size = (int)(font_size + 6);
+					}
+					else
+					{
+					    if(strcmp(fly_font,"small") == 0){
+						font_size = (int)(font_size - 4);
+						if(font_size<0){font_size = 8;}
+					}
+				    }
+				}
+			    }
+			    break; /* font_size ! */
+		    case 4: 
+		    decimals = find_number_of_digits(precision);
+		    temp = get_string_argument(infile,1);
+		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_translate,translate_x,translate_y);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_translate,translate_x,translate_y);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case FONTFAMILY:
+	/*
+	 @ fontfamily font_description
+	 @ set the font family; for browsers that support it
+	 @ font_description: Ariel ,Courier, Helvetica etc
+	 @ in case commands<br /> 'string color,x,y,the string'<br /> 'stringup color,x,y,rotation,the string'<br />fontfamily can be something like:<br />italic 34px Ariel
+	 @ use correct syntax : 'font style' 'font size'px 'fontfamily'
+	*/
+	    font_family = get_string(infile,1);
+	    break;
+	case STRINGUP:
+	/* 
+	 @ stringup color,x,y,rotation_degrees,the text string 
+	 @ can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
+	 @ unicode supported: stringup red,0,0,45,\\u2232
+	 @ use a command like 'fontfamily bold 34px Courier' <br />to set fonts on browser that support font change
+
+	*/
+	    if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}	/* can not be added to shape library : rotate / mouse issues */
+	    for(i=0;i<6;i++){
+		switch(i){
+		    case 0: font_color = get_color(infile,0);break;/* name or hex color */
+		    case 1: int_data[0] = x2px(get_real(infile,0));break; /* x */
+		    case 2: int_data[1] = y2px(get_real(infile,0));break; /* y */
+		    case 3: double_data[0] = get_real(infile,0);break;/* rotation */
+		    case 4: decimals = find_number_of_digits(precision);
+			    temp = get_string_argument(infile,1);
+			    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_translate,translate_x,translate_y);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_translate,translate_x,translate_y);
+			    add_to_buffer(tmp_buffer);
+			    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case STRING:
+	/* 
+	 @ string color,x,y,the text string
+	 @ may be set "onclick" or "drag xy"
+	 @ unicode supported: string red,0,0,\\u2232
+	 @ use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change 
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: stroke_color = get_color(infile,0);break;/* name or hex color */
+		    case 1: double_data[0] = get_real(infile,0);break; /* x in xrange*/
+		    case 2: double_data[1] = get_real(infile,0);break; /* y in yrange*/
+		    case 3: decimals = find_number_of_digits(precision);
+			temp = get_string_argument(infile,1);
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%d,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,0,0,temp,font_size,font_family);
+			click_cnt++;reset();break;
+			    break;
+		    default:break;
+		}
+	    }
+	    break;
+	case MATHML:
+	/*
+	@ mathml x1,y1,x2,y2,mathml_string
+	@ mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2) 
+	@ can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
+	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br />attention: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();" 
+	@ If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
+	*/
+	    if( js_function[DRAW_XML] != 1 ){ js_function[DRAW_XML] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x in x/y-range coord system -> pixel width */
+		    case 1: int_data[1]=y2px(get_real(infile,0));break; /* y in x/y-range coord system  -> pixel height */
+		    case 2: int_data[2]=x2px(get_real(infile,0)) - int_data[0];break; /* width in x/y-range coord system -> pixel width */
+		    case 3: int_data[3]=y2px(get_real(infile,0)) - int_data[1];break; /* height in x/y-range coord system  -> pixel height */
+		    case 4: decimals = find_number_of_digits(precision);
+			    if(onclick == 1 ){ onclick = click_cnt;click_cnt++;} 
+			    temp = get_string(infile,1);
+			    if( strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'"); }
+			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
+			    add_to_buffer(tmp_buffer);
+			    /* 
+			     in case inputs are present , trigger adding the read_mathml() 
+			     if no other reply_format is defined
+			     note: all other reply types will include a reading of elements with id='mathml'+p)
+			     */
+			    if(strstr(temp,"mathml0") != NULL){
+			     if(reply_format < 1 ){reply_format = 16;} /* no other reply type is defined */
+			    }
+			    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case HTTP:
+	/*
+	 @http x1,y1,x2,y2,http://some_adress.com
+	 @an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2) 
+	 @do not use interactivity (or mouse) if the mouse needs to be active in the iframe
+	 @can not be 'set onclick' or 'drag xy'
+	*/
+	    if( js_function[DRAW_HTTP] != 1 ){ js_function[DRAW_HTTP] = 1;}	
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x in x/y-range coord system -> pixel width */
+		    case 1: int_data[1]=y2px(get_real(infile,0));break; /* y in x/y-range coord system  -> pixel height */
+		    case 2: int_data[2]=x2px(get_real(infile,0)) - int_data[0];break; /* width in x/y-range coord system -> pixel width */
+		    case 3: int_data[3]=y2px(get_real(infile,0)) - int_data[1];break; /* height in x/y-range coord system  -> pixel height */
+		    case 4: decimals = find_number_of_digits(precision);
+			    temp = get_string(infile,1);
+			    if(strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'");}
+			    string_length = snprintf(NULL,0,"draw_http(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_http(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
+			    add_to_buffer(tmp_buffer);
+		    break;
+		}
+	    }
+	    reset();
+	    break;
+	case HTML:
+	/*
+	 @ html x1,y1,x2,y2,html_string
+	 @ all tags are allowed
+	 @ can be set onclick <br />(dragging not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
+	 @ if inputfields are incorporated  (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_canvas(); <br />If other inputfields (command input / command textarea) or userdraw is performed, these values will NOT be read as well.
+	 
+	 note: uses the same code as 'mathml'
+	*/
+	    break;
+	case X_AXIS_STRINGS:
+	/*
+	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ use these x-axis values in stead of default xmin...xmax
+	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ if the 'x-axis words' are to big amd will overlap, a simple alternating offset will be applied
+	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
+	 @ example:<br />size 400,400<br />xrange -5*pi,5*pi<br />yrange -100,500<br />axis<br />xaxis -4*pi:-4\\u03c0:-3*pi:-3\\u03c0:-2*pi:-2\\u03c0:-1*pi:-\\u03c0:0:0:pi:\\u03c0:2*pi:2\\u03c01:3*pi:3\\u03c0:4*pi:4\\u03c0<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid pi,1,grey,1,3,6,grey
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr(temp,":") != 0 ){ temp = str_replace(temp,":","\",\"");}
+	    if( strstr(temp,"pi") != 0 ){ temp = str_replace(temp,"pi","(3.1415927)");}/* we need to replace pi for javascript y-value*/
+	    fprintf(js_include_file,"x_strings = [\"%s\"];\n ",temp);
+	    use_axis_numbering = 1;
+	    break;
+	case Y_AXIS_STRINGS:
+	/*
+	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ use these y-axis values in stead of default ymin...ymax
+	 @ example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr(temp,":") != 0 ){ temp = str_replace(temp,":","\",\"");}
+	    if( strstr(temp,"pi") != 0 ){ temp = str_replace(temp,"pi","(3.1415927)");}/* we need to replace pi for javascript y-value*/
+	    fprintf(js_include_file,"y_strings = [\"%s\"];\n ",temp);
+	    use_axis_numbering = 1;
+	    break;
+	 
+	case AXIS_NUMBERING:
+	/*
+	    @ axisnumbering 
+	    @ keyword, no aguments required
+	*/
+	    use_axis_numbering = 1;
+	    break;
+	case AXIS:
+	/*
+	    @ axis
+	    @ keyword, no aguments required
+
+	*/
+	    use_axis = TRUE;
+	    break;
+	case GRID:/* xmajor,ymajor,color [,xminor,yminor,tick length (px) ,color]*/
+	/*
+	 @ grid step_x,step_y,gridcolor
+	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ if keywords "axis" or "axisnumbering" are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+	 @ can not be set "onclick" or "drag xy"
+	 @ use commands 'xlabel some_string' and/or 'ylabel some_string' to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
+	 @ see commands "xaxis" or "xaxistext", "yaxis" or "yaxistext" to set tailormade values on axis (the used font is set by command fontfamily; default '12px Ariel')
+	 @ see command "legend" to set a legend for the graph ;<br />use command "fontsize" to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
+	*/
+	    if( js_function[DRAW_GRID] != 1 ){ js_function[DRAW_GRID] = 1;}
+	    for(i=0;i<4;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break;/* xmajor */
+		    case 1:double_data[1] = get_real(infile,0);break;/* ymajor */
+		    case 2:
+		    if( use_axis == TRUE ){
+			stroke_color = get_color(infile,0);
+			done = FALSE;
+			int_data[0] = (int) (get_real(infile,0));/* xminor */
+			int_data[1] = (int) (get_real(infile,0));/* yminor */
+			int_data[2] = (int) (get_real(infile,0));/* tic_length */
+			fill_color = get_color(infile,1); /* used as axis_color*/
+			fprintf(js_include_file,"var snap_x = %f;var snap_y = %f\n",double_data[0]/int_data[0],double_data[1]/int_data[1]);
+		    }
+		    else
+		    {
+			int_data[0] = 1;
+			int_data[1] = 1;
+			stroke_color = get_color(infile,1);
+			fill_color = stroke_color;
+			fprintf(js_include_file,"var snap_x = %f;var snap_y = %f\n",double_data[0],double_data[1]);
+		    }
+		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
+/* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
+
+		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		}
+	    }
+	    reset();
+	    break;
+	case OPACITY:
+	/*
+	@ opacity 0-255,0-255
+	@
+	*/
+	    for(i = 0 ; i<2;i++){
+		switch(i){
+		    case 0: double_data[0]=(int)(get_real(infile,0));break;
+		    case 1: double_data[1]=(int)(get_real(infile,1));break;
+		    default: break;
+		}
+	    }
+	    if( double_data[0] < 0 || double_data[0] > 255 || double_data[1] < 0 || double_data[1] > 255  ){ canvas_error("opacity [0 - 255] , [0 - 255]");}/* typo or non-RGB ? */
+	    stroke_opacity = (double) (0.0039215*double_data[0]);/* 0.0 - 1.0 */
+	    fill_opacity = (double) (0.0039215*double_data[1]);/* 0.0 - 1.0 */
+	    break;
+	case ROTATE:
+	/*
+	 @rotate rotation_angle
+	 @
+	*/
+	    use_rotate = TRUE;
+	    use_translate = TRUE;
+	    translate_x = x2px(0);
+	    translate_y = y2px(0);
+	    angle = get_real(infile,1);
+	    break;
+	case KILLTRANSLATION:
+	/*
+	 killtranslation
+	*/
+	    break;
+	case TRANSLATION:
+	/*
+	 @translation tx,ty
+	 @
+	*/
+	    use_translate = TRUE;
+	    translate_x = get_real(infile,0);
+	    translate_y = get_real(infile,1);
+	    break;
+	case DASHED:
+	/*
+	@ keyword "dashed"
+	@ next object will be drawn with a dashed line
+	@ change dashing scheme by using command "dashtype int,int)
+	*/
+	    use_dashed = TRUE;
+	    break;
+	case FILLED:
+	/*
+	@ keyword "filled" 
+	@ the next 'fillable' object (only) will be filled 
+	@ use command "fillcolor color" to set fillcolor
+	@ use command "opacity 0-255,0-255" to set stroke and fill-opacity
+	@ use command "fill x,y,color" or "floodfill x,y,color" to fill the space around (x;y) with color <br />pixel operation implemented in javascript: use with care !
+	*/
+	    use_filled = TRUE;
+	    break;
+	case STYLE:
+	/*
+	 @highlight color,opacity,linewidth
+	 @ NOT IMPLEMENTED
+	 @ use command "onclick" : when the object receives a userclick it will increase it's linewidth
+	*/
+	    break;
+	case FILLCOLOR:
+	/*
+	@ fillcolor colorname or #hex
+	@ Set the color for a filled object : mainly used for command 'userdraw obj,stroke_color'
+	@ All fillable massive object will have a fillcolor == strokecolor (just to be compatible with flydraw...)
+	*/
+	    fill_color = get_color(infile,1);
+	    break;
+	case STROKECOLOR:
+	/*
+	@ strokecolor colorname or #hex
+	@ to be used for commands that do not supply a color argument (like command 'linegraph')
+	*/
+	    stroke_color = get_color(infile,1);
+	    break;
+	case BGIMAGE: 
+	/*
+	 @bgimage image_location
+	 @use an image as background .<br />(we use the background of 'canvas_div' )
+	 @the background image will be resized to match "width = xsize" and "height = ysize"
+	*/
+	URL = get_string(infile,1);
+	fprintf(js_include_file,"<!-- set background image to canvas div -->\ncanvas_div.style.backgroundImage = \"url(%s)\";canvas_div.style.backgroundSize = \"%dpx %dpx\";\n",URL,xsize,ysize);
+	    break;
+	case BGCOLOR: 
+	/*
+	 @bgcolor colorname or #hex
+	 @use this color as background of the "div" containing the canvas(es)
+	*/
+	/* [255,255,255]*/
+	    bgcolor = get_string(infile,1);
+	    if(strstr(bgcolor,"#") == NULL){ /* convert colorname -> #ff00ff */
+		int found = 0;
+	        for( i = 0; i < NUMBER_OF_COLORNAMES ; i++ ){
+		    if( strcmp( colors[i].name , bgcolor ) == 0 ){
+			bgcolor = colors[i].hex;
+			found = 1;
+		        break;
+	    	    }
+		}
+		if(found == 0){canvas_error("your bgcolor is not in my rgb.txt data list : use hexcolor...something like #a0ffc4");}
+	    }
+	    fprintf(js_include_file,"<!-- set background color of canvas div -->\ncanvas_div.style.backgroundColor = \"%s\";canvas_div.style.opacity = %f;\n",bgcolor,fill_opacity);
+	    break;
+	case COPY:
+	/*
+	@ copy x,y,x1,y1,x2,y2,[filename URL]
+	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
+	@ If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
+	@ [filename] is the URL of the image	
+	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
+	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent 
+
+	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+	draw_external_image(canvas_type,URL,sx,sy,swidth,sheight,x,y,width,height,drag_drop){
+	*/
+	    for(i = 0 ; i<7;i++){
+		switch(i){
+		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x left top corner in x/y range  */
+		    case 1: int_data[1]=y2px(get_real(infile,0));break; /* y left top corner in x/y range */
+		    case 2: int_data[2]=(int)(get_real(infile,0));break;/* x1 in px of external image */
+		    case 3: int_data[3]=(int)(get_real(infile,0));break;/* y1 in px of external image */
+		    case 4: int_data[4]=(int)(get_real(infile,0));break;/* x2 --> width  */
+		    case 5: int_data[5]=(int)(get_real(infile,0)) ;break;/* y2 --> height */
+		    case 6: URL = get_string(infile,1);
+			    int_data[6] = int_data[4] - int_data[2];/* swidth & width (if not scaling )*/
+			    int_data[7] = int_data[5] - int_data[3];/* sheight & height (if not scaling )*/
+			    if( drag_type > -1 ){
+				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
+				if(reply_format < 1 ){reply_format = 20;}
+				string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
+				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);			    
+				drag_type = -1;
+				ext_img_cnt++;
+			    }
+			    else
+			    {
+				if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
+				/*
+				draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\n\
+				*/
+				string_length = snprintf(NULL,0,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7]);
+				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+				snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7]);
+			    }
+			    add_to_buffer(tmp_buffer);
+			    break;
+		    default: break;
+		}
+	    }
+	    reset();
+	    break;
+/*
+context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+img 	Specifies the image, canvas, or video element to use
+sx 	The x coordinate where to start clipping : x1 = int_data[0]
+sy 	The y coordinate where to start clipping : x2 = int_data[1]
+swidth 	The width of the clipped image : int_data[2] - int_data[0] 
+sheight The height of the clipped image : int_data[3] - int_data[1]
+x 	The x coordinate where to place the image on the canvas : dx1 = int_data[4]
+y 	The y coordinate where to place the image on the canvas : dy1 = int_data[5]
+width 	The width of the image to use (stretch or reduce the image) : dx2 - dx1 = int_data[6]
+height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1 = int_data[7]
+*/
+	case COPYRESIZED:
+	/*
+	@ copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
+	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range 
+	@ If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
+	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
+	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent 
+	*/
+	    for(i = 0 ; i<9;i++){
+		switch(i){
+		    case 0: int_data[0] = (int)(get_real(infile,0));break; /* x1 */
+		    case 1: int_data[1] = (int)(get_real(infile,0));break; /* y1 */
+		    case 2: int_data[2] = (int)(get_real(infile,0));break;/* x2 */
+		    case 3: int_data[3] = (int)(get_real(infile,0));break;/* y2 */
+		    case 4: int_data[4] = x2px(get_real(infile,0));break;/* dx1 */
+		    case 5: int_data[5] = y2px(get_real(infile,0));break;/* dy1 */
+		    case 6: int_data[6] = x2px(get_real(infile,0));break;/* dx2 */
+		    case 7: int_data[7] = y2px(get_real(infile,0));break;/* dy2 */
+		    case 8: URL = get_string(infile,1);
+			    if( drag_type > -1 ){
+				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
+				if(reply_format < 1 ){reply_format = 20;}
+			        string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
+				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
+				drag_type = -1;
+				ext_img_cnt++;
+			    }
+			    else
+			    {
+				if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
+			        string_length = snprintf(NULL,0,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7]);
+			        check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			        snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7]);
+			    }
+			    add_to_buffer(tmp_buffer);
+		    default: break;
+		}
+	    }
+	    reset();
+	    break;
+	case BUTTON:
+	/*
+	 button x,y,value
+	*/
+	break;
+	case INPUTSTYLE:
+	/*
+	@ inputstyle style_description
+	@ example: inputstyle color:blue;font-weight:bold;font-style:italic;font-size:16pt
+	*/
+	    input_style = get_string(infile,1);
+	    break;
+	case INPUT:
+	/* 
+	 @ input x,y,size,editable,value
+	 @ to set inputfield "readonly", use editable = 0 
+	 @ only active inputfields (editable = 1) will be read with read_canvas();
+	 @ may be further controlled by "inputstyle" (inputcss is not yet implemented...)
+	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+	*/
+	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}	
+	    for(i = 0 ; i<5;i++){
+		switch(i){
+		    case 0: int_data[0]=x2px(get_real(infile,0));break;/* x in px */
+		    case 1: int_data[1]=y2px(get_real(infile,0));break;/* y in px */
+		    case 2: int_data[2]=abs( (int)(get_real(infile,0)));break; /* size */
+		    case 3: if( get_real(infile,1) >0){int_data[3] = 1;}else{int_data[3] = 0;};break; /* readonly */
+		    case 4: 
+			    temp = get_string_argument(infile,1);
+			    string_length = snprintf(NULL,0,  "draw_inputs(%d,%d,%d,%d,%d,%d,\"%s\",\"%s\");\n",canvas_root_id,input_cnt,int_data[0],int_data[1],int_data[2],int_data[3],input_style,temp);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_inputs(%d,%d,%d,%d,%d,%d,\"%s\",\"%s\");\n",canvas_root_id,input_cnt,int_data[0],int_data[1],int_data[2],int_data[3],input_style,temp);
+			    add_to_buffer(tmp_buffer);
+			    input_cnt++;break;
+		    default: break;
+		}
+	    }
+	    if(reply_format < 1 ){reply_format = 15;}
+	    reset();
+	    break;
+	case TEXTAREA:
+	/* 
+	 @ textarea x,y,cols,rows,readonly,value
+	 @ may be further controlled by "inputstyle"
+	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+	*/
+	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}	
+	    for(i = 0 ; i<6;i++){
+		switch(i){
+		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x in px */
+		    case 1: int_data[1]=y2px(get_real(infile,0));break; /* y in px */
+		    case 2: int_data[2]=abs( (int)(get_real(infile,0)));break;/* cols */
+		    case 3: int_data[3]=abs( (int)(get_real(infile,0)));break;/* rows */
+		    case 4: if( get_real(infile,1) >0){int_data[4] = 1;}else{int_data[3] = 0;};break; /* readonly */
+		    case 5: temp = get_string_argument(infile,1);
+			    string_length = snprintf(NULL,0,  "draw_textareas(%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\");\n",canvas_root_id,input_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],input_style,temp);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_textareas(%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\");\n",canvas_root_id,input_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],input_style,temp);
+			    add_to_buffer(tmp_buffer);
+			    input_cnt++;break;
+		    default: break;
+		}
+	    }
+	    if(reply_format < 1 ){reply_format = 15;}
+	    reset();
+	    break;
+	case MOUSE_PRECISION:
+	/*
+	    @ precision int
+	    @ 10 = 1 decimal ; 100 = 2 decimals etc
+	    @ may be used / changed before every object
+	*/
+	    precision = (int) (get_real(infile,1));
+	    break;
+	case ZOOM:
+	/*
+	 @ zoom button_color
+	 @ introduce a controlpanel at the lower right corner
+	 @ giving six 15x15pixel 'active' rectangle areas<br />(for x,leftarrow,rightarrow,uparrow,downarrow and a '-' and a '+' sign ) for zooming and/or panning of the image
+	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
+	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
+	 @ command 'opacity' may be used to set stroke_opacity of 'buttons 
+	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
+	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	*/
+	    fprintf(js_include_file,"use_pan_and_zoom = 1;\n");
+	    if( js_function[DRAW_ZOOM_BUTTONS] != 1 ){ js_function[DRAW_ZOOM_BUTTONS] = 1;}
+	    /* we use BG_CANVAS (0) */
+	    stroke_color = get_color(infile,1);
+	    string_length = snprintf(NULL,0," draw_zoom_buttons(%d,\"%s\",%f);\n",BG_CANVAS,stroke_color,stroke_opacity);
+	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    snprintf(tmp_buffer,MAX_BUFFER-1,"draw_zoom_buttons(%d,\"%s\",%f);\n",BG_CANVAS,stroke_color,stroke_opacity);
+	    add_to_buffer(tmp_buffer);
+	    done = TRUE;
+	    break;
+	case ONCLICK:
+	/*
+	 @ onclick
+	 @ keyword, no arguments
+	 @ if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
+	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked. 
+	 @ NOTE: not all objects  may be set clickable
+	*/
+	    
+	    onclick = 1;
+	    break;
+	case DRAG:
+	/*
+	 @ drag [x][y][xy]
+	 @ the next object will be draggable in x / y / xy direction
+	 @ the displacement can be read by 'javascript:read_dragdrop();'
+	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images. 
+	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	*/
+	    temp = get_string(infile,1);
+	    if(strstr(temp,"xy") != NULL ){ 
+		drag_type = 0;
+	    }
+	    else
+	    {
+		if(strstr(temp,"x") != NULL ){ 
+		    drag_type = 1;
+		}
+		else
+	        {
+	    	    drag_type = 2;
+	        }
+	    }
+	    onclick = 2;
+	    /* if(use_userdraw == TRUE ){canvas_error("\"drag & drop\" may not be combined with \"userdraw\" or \"pan and zoom\" \n");} */
+	    break;
+	case BLINK:
+	/*
+	 @ blink time(seconds)
+	 @ NOT IMPLEMETED -YET
+	*/
+	    break;
+	case MOUSE:
+	/*
+	 @ mouse color,fontsize
+	 @ will display the cursor coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
+	*/
+	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
+	    stroke_color = get_color(infile,0);
+	    font_size = (int) (get_real(infile,1));
+	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity);
+	    break;
+	case INTOOLTIP:
+	    /*
+	    @ intooltip link_text
+	    @ link_text is a single line (span-element)
+	    @ link_text may also be an image URL http://some_server/images/my_image.png
+	    @ link_text may contain HTML markup
+	    @ the canvas will be displayed in a tooltip on 'link_text'
+	    @ the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link test will alos be shown with this bgcolor.
+	    */
+	    use_tooltip = TRUE;
+	    tooltip_text = get_string(infile,1);
+	    if(strstr(tooltip_text,"\"") != 0 ){ tooltip_text = str_replace(tooltip_text,"\"","'"); }
+	    break;
+	case AUDIO:
+	/*
+	@ audio x,y,w,h,loop,visible,audiofile location
+	@ x,y : left top corner of audio element (in xrange / yrange)
+	@ w,y : width and height in pixels
+	@ loop : 0 or 1 ( 1 = loop audio fragment)
+	@ visible : 0 or 1 (1 = show controls)
+	@ audio format may be in *.mp3 or *.ogg
+	@ If you are using *.mp3 : be aware that FireFox will not (never) play this ! (Pattented format)
+	@ if you are using *.ogg : be aware that Microsoft based systems not support it natively
+	@ To avoid problems supply both types (mp3 and ogg) of audiofiles.<br />the program will use both as source tag
+	@ example: upload both audio1.ogg and audio1.mp3 to http://server/files/<br />audio 0,0,http://server/files/audio1.mp3<br />svdraw will copy html-tag audio1.mp3 to audio1.ogg<br /> and the browser will play the compatible file (audio1.ogg or audio1.mp3)<br />
+	*/
+	    if( js_function[DRAW_AUDIO] != 1 ){ js_function[DRAW_AUDIO] = 1;}
+	    for(i=0;i<7;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x in x/y-range coord system -> pixel */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y in x/y-range coord system  -> pixel */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* pixel width */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* height pixel height */
+		    case 4: int_data[4] = (int) (get_real(infile,0)); if(int_data[4] != TRUE){int_data[4] = FALSE;} break; /* loop boolean */
+		    case 5: int_data[5] = (int) (get_real(infile,0)); if(int_data[5] != TRUE){int_data[5] = FALSE;} break; /* visible boolean */
+		    case 6: 
+		    temp = get_string(infile,1);
+		    if( strstr(temp,".mp3") != 0 ){ temp = str_replace(temp,".mp3","");}
+		    if( strstr(temp,".ogg") != 0 ){ temp = str_replace(temp,".ogg","");}
+		    string_length = snprintf(NULL,0,  "draw_audio(%d,%d,%d,%d,%d,%d,%d,\"%s.ogg\",\"%s.mp3\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],temp,temp);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_audio(%d,%d,%d,%d,%d,%d,%d,\"%s.ogg\",\"%s.mp3\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],temp,temp);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case VIDEO:
+	/*
+	@ video x,y,w,h,videofile location
+	@ x,y : left top corner of audio element (in xrange / yrange)
+	@ w,y : width and height in pixels
+	@ example:<br />wims getfile : video 0,0,120,120,myvideo.mp4
+	@ video format may be in *.mp4 (todo:other formats)
+	*/
+	    if( js_function[DRAW_VIDEO] != 1 ){ js_function[DRAW_VIDEO] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x in x/y-range coord system -> pixel */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y in x/y-range coord system  -> pixel */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* pixel width */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* height pixel height */
+		    case 4: temp = get_string(infile,1);
+			    string_length = snprintf(NULL,0,  "draw_video(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_video(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
+			    add_to_buffer(tmp_buffer);
+			    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case HATCHFILL:
+	/*
+	@ hatchfill x0,y0,dx,dy,color
+	@ x0,y0 in xrange / yrange
+	@ distances dx,dy in pixels
+	*/
+	    if( js_function[DRAW_HATCHFILL] != 1 ){ js_function[DRAW_HATCHFILL] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y  */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* dx pixel */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* dy pixel*/
+		    case 4: stroke_color = get_color(infile,1);
+		    /* draw_hatchfill(ctx,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize) */
+		    string_length = snprintf(NULL,0,  "draw_hatchfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_hatchfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case GRIDFILL:
+	/*
+	@ gridfill x0,y0,dx,dy,color
+	@ x0,y0 in xrange / yrange
+	@ distances dx,dy in pixels
+	*/
+	    if( js_function[DRAW_GRIDFILL] != 1 ){ js_function[DRAW_GRIDFILL] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y  */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* dx pixel */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* dy pixel*/
+		    case 4: stroke_color = get_color(infile,1);
+		    /* draw_gridfill(ctx,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize) */
+		    string_length = snprintf(NULL,0,  "draw_gridfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_gridfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case DOTFILL:
+	/*
+	@ dotfill x0,y0,dx,dy,color
+	@ x0,y0 in xrange / yrange
+	@ distances dx,dy in pixels
+	@ radius of dots is linewidth
+	*/
+	    if( js_function[DRAW_DOTFILL] != 1 ){ js_function[DRAW_DOTFILL] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y  */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* dx pixel */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* dy pixel*/
+		    case 4: stroke_color = get_color(infile,1);
+		    /* draw_dotfill(ctx,x0,y0,dx,dy,radius,color,opacity,xsize,ysize) */
+		    string_length = snprintf(NULL,0,  "draw_dotfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_dotfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case IMAGEFILL:
+	/*
+	@ imagefill dx,dy,image_url
+	@ The next suitable <b>filled object</b> will be filled with "image_url" tiled
+	@ After pattern filling ,the fill-color should be reset !
+	@ wims getins / image from class directory : imagefill 80,80,my_image.gif
+	@ normal url : imagefill 80,80,$module_dir/gifs/my_image.gif
+	@ normal url : imagefill 80,80,http://adres/a/b/c/my_image.jpg
+	@ if dx,dy is larger than the image, the whole image will be background to the next object.
+	*/
+	    if( js_function[DRAW_IMAGEFILL] != 1 ){ js_function[DRAW_IMAGEFILL] = 1;}
+	    for(i=0 ;i < 3 ; i++){
+		switch(i){
+		    case 0:int_data[0] = (int) (get_real(infile,0));break;
+		    case 1:int_data[1] = (int) (get_real(infile,0));break;
+		    case 2: URL = get_string_argument(infile,1);
+			    string_length = snprintf(NULL,0,  "draw_imagefill(%d,%d,%d,\"%s\",%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],URL,xsize,ysize);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_imagefill(%d,%d,%d,\"%s\",%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],URL,xsize,ysize);
+			    add_to_buffer(tmp_buffer);
+		    break;
+		}
+	    }
+	break;
+	case FILLTOBORDER:
+	/*
+	@ filltoborder x,y,bordercolor,color
+	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color' 
+	@ any other color will not act as border to the bucket fill
+	@ use this command  after all boundary objects are declared.
+	@ NOTE: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	*/
+	    for(i=0 ;i < 4 ; i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break;
+		    case 1:double_data[1] = get_real(infile,0);break;
+		    case 2:bgcolor = get_color(infile,0);break;
+		    case 3:fill_color = get_color(infile,1);
+			   if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
+				js_function[DRAW_FILLTOBORDER] = 1;
+				add_js_filltoborder(js_include_file,canvas_root_id);
+			   }
+			   decimals = find_number_of_digits(precision);
+			   string_length = snprintf(NULL,0,  "filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			   snprintf(tmp_buffer,string_length,"filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   add_to_buffer(tmp_buffer);
+			   break;
+		    default:break;
+		    }
+	        }
+	break;
+	case FLOODFILL:
+	/*
+	@ floodfill x,y,color
+	@ alternative syntax: fill x,y,color
+	@ fill the region of point (x:y) with color 'color'
+	@ any other color or size of picture (borders of picture) will act as border to the bucket fill
+	@ use this command  after all boundary objects are declared.
+	@ Use command 'clickfill,color' for user click driven flood fill.
+	@ NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+	@ NOTE: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	*/
+	    for(i=0 ;i < 4 ; i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break;
+		    case 1:double_data[1] = get_real(infile,0);break;
+		    case 2:fill_color = get_color(infile,1);
+			   if(js_function[DRAW_FLOODFILL] != 1 ){/* use only once */
+				js_function[DRAW_FLOODFILL] = 1;
+				add_js_floodfill(js_include_file,canvas_root_id);
+			   }
+			   decimals = find_number_of_digits(precision);/*floodfill(interaction,x,y,[R,G,B,A]) */
+			   string_length = snprintf(NULL,0,  "floodfill(0,%.*f,%.*f,[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
+			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			   snprintf(tmp_buffer,string_length,"floodfill(0,%.*f,%.*f,[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
+			   add_to_buffer(tmp_buffer);
+			   break;
+		    default:break;
+		    }
+	        }
+	break;
+	case CLICKFILLMARGE:
+	    clickfillmarge = (int) (get_real(infile,1));
+	    break;
+	/*
+	@ clickfillmarge int
+	@ default 20 (pixels)
+	@ when using command "clickfill fillcolor" a coloured area my be reverted ("undo") <br />back to background colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
+	*/
+	case CLICKFILL:
+	/*
+	@ clickfill fillcolor
+	@ user left mouse click will floodfill the area with fillcolor
+	@ multiple areas may be coloured
+	@ the coloured areas can be removed (changed to "bgcolor") by  middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
+	@ the answer will be read as the (x:y) click coordinates per coloured area
+	@ background color of main div may be set by using command "bgcolor color"
+	@ may not be combined with command "userdraw"
+	@ NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+	*/
+	 fill_color = get_color(infile,1);
+	 if(js_function[DRAW_FLOODFILL] != 1 ){/* use only once */
+	    js_function[DRAW_FLOODFILL] = 1;
+	    add_js_floodfill(js_include_file,canvas_root_id);
+	 }
+	 fprintf(js_include_file,"<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};\n<!-- end command clickfill -->\n",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
+	 add_read_canvas(1);
+	break;
+	case SETPIXEL:
+	/*
+	@ setpixel x,y,color
+	@ A "point" with diameter 1 pixel centeres at (x:y) in xrange / yrange
+	@ pixels can not be dragged or clicked
+	@ "pixelsize = 1" may be changed by command "pixelsize int"
+	*/
+	    if( js_function[DRAW_PIXELS] != 1 ){ js_function[DRAW_PIXELS] = 1;}
+	    for(i=0;i<3;i++){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0); break; /* x */
+		    case 1: double_data[1] = get_real(infile,0); break; /* y  */
+		    case 2: stroke_color = get_color(infile,1);
+			   string_length = snprintf(NULL,0,"draw_setpixel([%f],[%f],\"%s\",%.2f,%d);\n",double_data[0],double_data[1],stroke_color,stroke_opacity,pixelsize);
+			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			   snprintf(tmp_buffer,string_length,"draw_setpixel([%f],[%f],\"%s\",%.2f,%d);\n",double_data[0],double_data[1],stroke_color,stroke_opacity,pixelsize);
+			   add_to_buffer(tmp_buffer);
+			   break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case PIXELSIZE:
+	/*
+	@ pixelsize int
+	@ in case you want to deviate from default pixelsize = 1...
+	*/
+	    pixelsize = (int) get_real(infile,1);
+	break;
+	case PIXELS:
+	/*
+	@ pixels color,x1,y1,x2,y2,x3,y3...
+	@ Draw  "points" with diameter 1 pixel
+	@ pixels can not be dragged or clicked
+	@ "pixelsize = 1" may be changed by command "pixelsize int"
+	*/
+	    if( js_function[DRAW_PIXELS] != 1 ){ js_function[DRAW_PIXELS] = 1;}
+	    stroke_color=get_color(infile,0);
+	    i=0;
+	    c=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		for( c = 0 ; c < 2; c++){
+		    if(c == 0 ){
+			double_data[i] = get_real(infile,0);
+			i++;
+		    }
+		    else
+		    {
+			double_data[i] = get_real(infile,1);
+			i++;
+		    }
+		}
+	    }
+	    decimals = find_number_of_digits(precision);
+	    /*  *double_xy2js_array(double xy[],int len,int decimals) */
+	    string_length = snprintf(NULL,0,  "draw_setpixel(%s,\"%s\",%.2f,%d);\n",double_xy2js_array(double_data,i,decimals),stroke_color,stroke_opacity,pixelsize);
+	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    snprintf(tmp_buffer,string_length,"draw_setpixel(%s,\"%s\",%.2f,%d);\n",double_xy2js_array(double_data,i,decimals),stroke_color,stroke_opacity,pixelsize);
+	    add_to_buffer(tmp_buffer);
+	    break;
+	case DEBUG:
+	/*
+	@ debug
+	@ keyword, no arguments
+	@ use as first command (before 'size')
+	@ will show a few buttons to read_canvas(); read_mathml(); and read_dragdrop();
+	@ only to be used in a single canvasdraw instance <br />or in case of multiple canvasdraw images , only the last image
+	*/
+	debug = 1;
+	fprintf(stdout,"\n\
+<!-- THIS IS JUST FOR DEBUGGING ANSWER TYPES IN A SINGLE CANVASDRAW INSTANCE -->\n\
+<input type=\"button\" onclick=\"javascript:alert(read_canvas());\" value=\"read_canvas()\" />\n\
+<input type=\"button\" onclick=\"javascript:alert(read_mathml());\" value=\"read_mathml()\" />\n\
+<input type=\"button\" onclick=\"javascript:alert(read_dragdrop());\" value=\"read_dragdrop()\" />\n");
+	done = TRUE;
+
+	case REPLYFORMAT:
+	/*
+	@ replyformat number
+	@ default values should be fine !
+	@ use command "debug" to check return values of javascript function read_canvas();
+	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = retruns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</ul>
+	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
+	*/
+	 reply_format = (int) get_real(infile,1);
+	break;
+	case LEGENDCOLORS:
+	/*
+	@ legendcolors color1:color2:color3:...:color_n
+	@ will be used to colour a legend
+	@ make sure the number of colours match the number of legend items
+	@ command 'legend' in case of 'piechart' and 'barchart' will use these colours per default (no need to specify 'legendcolors' 
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
+	    fprintf(js_include_file,"var legendcolors%d = [\"%s\"];\n",canvas_root_id,temp);
+	    break;
+	case LEGEND:
+	/*
+	@ legend string1:string2:string3....string_n
+	@ will be used to create a legend for a graph
+	@ also see command 'piechart'	
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
+	    fprintf(js_include_file,"var legend%d = [\"%s\"];\n",canvas_root_id,temp);
+	    break;
+	case XLABEL:
+	/*
+	@ xlabel some_string
+	@ will be used to create a label for the x-axis (label is in quadrant I)
+	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
+	*/
+	    temp = get_string(infile,1);
+	    fprintf(js_include_file,"var xaxislabel = \"%s\"; ",temp);
+	    break;
+	case YLABEL:
+	/*
+	@ ylabel some_string
+	@ will be used to create a (vertical) label for the y-axis (label is in quadrant I) 
+	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
+	*/
+	    temp = get_string(infile,1);
+	    fprintf(js_include_file,"var yaxislabel = \"%s\"; ",temp);
+	    break;
+	case LINEGRAPH: /* scheme: var linegraph_0 = [ 'stroke_color','line_width','use_dashed' ,'dashtype0','dashtype1','x1','y1',...,'x_n','y_n'];*/
+	/*
+	@ linegraph x1:y1;x2:y2...x_n:y;2
+	@ will plot your data in a graph
+	@ may only to be used together with command 'grid'
+	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+	@ use command 'legend' to provide an optional legend in right-top-corner
+	@ also see command 'piechart'
+	@ multiple linegraphs may be used in a single plot
+	@ <ul><li>use command 'strokecolor' before command 'linegraph' to set the color of this graph</li><li>use command 'linewidth' before command 'linegraph' to set linewidth of this graph</li><li>use command 'dashed' before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command 'dashtype' before command 'linegraph' to set the type of dashing of the graph</li></ul>
+	*/    
+	    temp = get_string(infile,1);
+	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
+	    fprintf(js_include_file,"var linegraph_%d = [\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%s\"];\n",linegraph_cnt,stroke_color,line_width,use_dashed,dashtype[0],dashtype[1],temp);
+	    linegraph_cnt++;
+	    reset();
+	    break;
+	case CLOCK:
+	/*
+	@ clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]
+	@ type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
+	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2,[space]<br />default colours: clock 0,0,60,4,35,45,1,2,,,,,<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,white,white,black,yellow
+	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
+	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
+	@ no combinations with other reply_types allowed, for now
+	@ if command 'debug' is set, 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
+	*/
+	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
+
+	/*    var clock = function(xc,yc,radius,H,M,S,h_color,m_color,s_color,bg_color,fg_color) */
+	    for(i=0;i<9;i++){
+	     switch(i){
+	      case 0: int_data[0] = x2px(get_real(infile,0)); break; /* xc */
+	      case 1: int_data[1] = y2px(get_real(infile,0)); break; /* yc */
+	      case 2: int_data[2] = get_real(infile,0);break;/* radius in px */
+	      case 3: int_data[3] = get_real(infile,0);break;/* hours */
+	      case 4: int_data[4] = get_real(infile,0);break;/* minutes */
+	      case 5: int_data[5] = get_real(infile,0);break;/* seconds */
+	      case 6: 
+	      int_data[6] = get_real(infile,0);if(int_data[6] < 0 || int_data[6] > 2){canvas_error("hourglass can be 0,1 or 2");}break;/* type hourglass */
+	      case 7: int_data[7] = (int)(get_real(infile,0));/* interactive 0,1,2*/
+	    		switch(int_data[7]){
+	    		 default:break;
+	    		 case 1 :if(clock_cnt == 0){
+	    			    if( reply_format == 0 ){
+	    			     reply_format = 18; /* user sets clock */
+	    			     string_length = snprintf(NULL,0,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    			     check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    			     add_to_buffer(tmp_buffer);
+				    }
+				    else
+				    {
+				     canvas_error("interactive clock may not be used together with other reply_types...");
+			    	    }
+			          }
+			          if(debug == 1 ){
+			            fprintf(stdout,"<br /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S-\" /><br />",clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt);
+			          }
+			          break;
+			 case 2 :if( reply_format == 0 ){
+				    reply_format = 19; /* "onclick */
+				    fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
+			    	 }
+			    	 else
+			    	 {
+			    	  if( reply_format != 19){
+			    	   canvas_error("clickable clock(s) may not be used together with other reply_types...");
+			    	  }
+			    	 }
+			    	 break;
+			}
+			break;
+		case 8: 
+			temp = get_string(infile,1);
+			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
+			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
+			string_length = snprintf(NULL,0,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+	    		check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			snprintf(tmp_buffer,string_length,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+			add_to_buffer(tmp_buffer);
+			clock_cnt++;
+			break;
+		default:break;
+	     }
+	    }
+	    break;
+	case BARCHART:
+	/*
+	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
+	@ will be used to create a legend for bar graph
+	@ may only to be used together with command 'grid'
+	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+	@ use command 'legend' to provide an optional legend in right-top-corner
+	@ also see command 'piechart'	
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
+	    fprintf(js_include_file,"var barchart%d = [\"%s\"];\n",canvas_root_id,temp);
+	    reset();
+	    break;
+	case PIECHART:
+	/*
+	@ piechart xc,yc,radius,'data+colorlist'
+	@ (xc : yc) center of circle diagram in xrange/yrange
+	@ radius in pixels
+	@ data+color list: a colon separated list of raw data and corresponding colours<br />canvasdraw will not check validity of colornames...<br />in case of trouble look into javascript debugging of your browser
+	@ example data+colorlist : 132:red:23565:green:323:black:234324:orange:23434:yellow:2543:white
+	@ the number of colors must match the number of data.
+	@ use command "opacity 0-255,0-255" to adjust fill_opacity of colours
+	@ use command "legend string1:string2:...:string_n" to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...
+	*/
+	    if( js_function[DRAW_PIECHART] != 1 ){ js_function[DRAW_PIECHART] = 1;}	
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y  */
+		    case 2: int_data[2] = (int)(get_real(infile,1));break;/* radius*/
+		    case 3: temp = get_string(infile,1);
+			    if( strstr( temp, ":" ) != 0 ){ temp = str_replace(temp,":","\",\"");}
+			    string_length = snprintf(NULL,0,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,font_size,font_family);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,font_size,font_family);
+			    add_to_buffer(tmp_buffer);
+			   break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case STATUS:
+	    fprintf(js_include_file,"\nstatus=\"waiting\";\n");
+	    break;
+	case XLOGSCALE:
+	/*
+	    @xlogscale g,xmajor,xminor
+	    @create a log grid in xrange 
+	*/
+	    break;
+	case YLOGSCALE:
+	    break;
+	case XYLOGSCALE:
+	default:sync_input(infile);
+	break;
+    }
+  } 
+  /* we are done parsing script file */
+  
+  /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable shapes / objects  ! */
+  add_javascript_functions(js_function,canvas_root_id);
+   /* add read_canvas() etc functions if needed */
+  if( reply_format > 0 ){ add_read_canvas(reply_format);}
+  /* using mouse coordinate display ? */
+  if( use_mouse_coordinates == TRUE ){
+    tmp_buffer = my_newmem(26);
+    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
+  }
+  /* add global variables / contants */
+  fprintf(js_include_file,"\n\
+  <!-- some extra global stuff ... need to rethink this -->\n\
+  var precision = %d;var xmin=%.*f;var xmax=%.*f;var ymin=%.*f;\
+  var ymax=%.*f;var xmin_start=xmin;var xmax_start=xmax;\
+  var ymin_start=ymin;var ymax_start=xmax;var zoom_increment = (xmax - xmin)/20;\
+  var pan_x_increment = (xmax - xmin)/20;var pan_y_increment = (ymax - ymin)/20;\
+  <!-- THIS ZOOM & PAN BUTTON STUFF IS JUST  A TEMPORARY SOLUTION -->\n\
+  function start_canvas%d(type){\n\
+   switch(type){\n\
+    case 0:xmin = xmin + zoom_increment;ymin = ymin + zoom_increment;xmax = xmax - zoom_increment;ymax = ymax - zoom_increment;break;\n\
+    case 1:xmin = xmin - zoom_increment;ymin = ymin - zoom_increment;xmax = xmax + zoom_increment;ymax = ymax + zoom_increment;break;\n\
+    case 2:xmin = xmin - pan_x_increment;ymin = ymin ;xmax = xmax - pan_x_increment;ymax = ymax;break;\n\
+    case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\n\
+    case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\n\
+    case 5:xmin = xmin;ymin = ymin + pan_y_increment ;xmax = xmax;ymax = ymax + pan_y_increment;break;\n\
+    case 6:location.reload();break;\n\
+    default:break;\n\
+   };\n\
+   if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\n\
+   if(ymax<=ymin){ymin=ymin_start;ymax=ymax_start;};\n\
+   try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\n\
+   <!-- buffer -->\n\
+   %s\n\
+  };\n\
+  start_canvas%d(22);\n\
+ };\n\
+<!-- end wims_canvas_function -->\n\
+wims_canvas_function%d();\n",precision,decimals,xmin,decimals,xmax,decimals,ymin,decimals,ymax,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
+/* done writing the javascript include file */
+fclose(js_include_file);
+
+}
+
+/* if using a tooltip, this should always be printed to the *.phtml file, so stdout */
+if(use_tooltip == TRUE){
+  add_js_tooltip(canvas_root_id,tooltip_text,bgcolor,xsize,ysize);
+}
+exit(EXIT_SUCCESS);
+}
+/* end main() */
+
+/******************************************************************************
+**
+**  sync_input
+**
+**  synchronises input line - reads to end of line, leaving file pointer
+**  at first character of next line.
+**
+**  Used by:
+**  main program - error handling.
+**
+******************************************************************************/
+void sync_input(FILE *infile)
+{
+	int c = 0;
+
+	if( c == '\n' ) return;
+	while( ( (c=getc(infile)) != EOF ) && (c != '\n') && (c != '\r')) ;
+	if( c == EOF ) finished = 1;
+	if( c == '\n' || c == '\r') line_number++;
+	return;
+}
+
+/******************************************************************************/
+
+char *str_replace(const char *str, const char *old, const char *new){
+/* http://creativeandcritical.net/str-replace-c/ */
+    if(strlen(str) > MAX_BUFFER){canvas_error("string argument too big");}
+    char *ret, *r;
+    const char *p, *q;
+    size_t oldlen = strlen(old);
+    size_t count = 0;
+    size_t retlen = 0;
+    size_t newlen = strlen(new);
+    if (oldlen != newlen){
+	for (count = 0, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen){
+	    count++;
+	    retlen = p - str + strlen(p) + count * (newlen - oldlen);
+	}
+    } 
+    else
+    {
+	retlen = strlen(str);
+    }
+    
+    if ((ret = malloc(retlen + 1)) == NULL){
+	ret = NULL;
+	canvas_error("string argument is NULL");
+    }
+    else
+    {
+	for (r = ret, p = str; (q = strstr(p, old)) != NULL; p = q + oldlen) {
+	    size_t l = q - p;
+	    memcpy(r, p, l);
+	    r += l;
+	    memcpy(r, new, newlen);
+	    r += newlen;
+	}
+	strcpy(r, p);
+    }
+    return ret;
+}
+
+/******************************************************************************/
+/*
+avoid the use of ctypes.h for tolower() toupper();
+it gives trouble in FreeBSD 9.0 / 9.1 when used in a chroot environment (C library bug) : Undefined symbol "_ThreadRuneLocale"
+Upper case -> Lower case : c = c - 'A'+ 'a';
+Lower case ->  Upper case  c = c + 'A'  - 'a';
+*/
+int tolower(int c){
+ if(c <= 'Z'){
+  if (c >= 'A'){
+   return c - 'A' + 'a';
+  }
+ }
+ return c;
+} 
+
+int toupper(int c){
+ if(c >= 'a' && c <= 'z'){
+   return c + 'A' - 'a';
+ }
+ return c;
+} 
+
+char *get_color(FILE *infile , int last){
+    int c,i = 0,is_hex = 0;
+    char temp[MAX_COLOR_STRING], *string;
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) ){
+	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
+	if( c == '#' ){
+	    is_hex = 1;
+	}
+	if( c != ' '){
+	    temp[i]=tolower(c);
+	    i++;
+	}
+    }
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' ){ done = TRUE; line_number++; }
+    if( c == EOF ){finished = 1;}
+    if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
+    temp[i]='\0';
+    if( strlen(temp) == 0 ){ canvas_error("expected a colorname or hexnumber, but found nothing !!");}
+    if( is_hex == 1 ){
+	char red[3], green[3], blue[3];
+	red[0]   = toupper(temp[1]); red[1]   = toupper(temp[2]); red[2]   = '\0';
+	green[0] = toupper(temp[3]); green[1] = toupper(temp[4]); green[2] = '\0';
+	blue[0]  = toupper(temp[5]); blue[1]  = toupper(temp[6]); blue[2]  = '\0';
+	int r = (int) strtol(red,   NULL, 16);
+	int g = (int) strtol(green, NULL, 16);
+	int b = (int) strtol(blue,  NULL, 16);
+        string = (char *)my_newmem(12);
+	snprintf(string,11,"%d,%d,%d",r,g,b);
+	return string;
+    }
+    else
+    {
+        string = (char *)my_newmem(sizeof(temp));
+	snprintf(string,sizeof(temp),"%s",temp);
+	for( i = 0; i <= NUMBER_OF_COLORNAMES ; i++ ){
+	    if( strcmp( colors[i].name , string ) == 0 ){
+		return colors[i].rgb;
+	    }
+	}
+    }
+    /* not found...return error */
+    free(string);string = NULL;
+    canvas_error("I was expecting a color name or hexnumber...but found nothing.");
+    return NULL;
+}
+
+char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 final argument */
+    int c,i=0;
+    char  temp[MAX_BUFFER], *string;
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') ){
+	temp[i]=c;
+	i++;
+	if(i > MAX_BUFFER){ canvas_error("string size too big...repeat command to fit string");break;}
+    }
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' ) { done = TRUE; line_number++; }
+    if( c == EOF ) {
+	finished = 1;
+	if( last != 1 ){ canvas_error("expected more arguments");}
+    }
+    temp[i]='\0';
+    if( strlen(temp) == 0 ){ canvas_error("expected a word or string, but found nothing !!");}
+    string=(char *)my_newmem(strlen(temp));
+    snprintf(string,sizeof(temp),"%s",temp);
+    return string;
+}
+
+char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments ; last=1 final argument */
+    int c,i=0;
+    char temp[MAX_BUFFER], *string;
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',') ){
+	temp[i]=c;
+	i++;
+	if(i > MAX_BUFFER){ canvas_error("string size too big...will cut it off");break;}
+    }
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' ) { line_number++; }
+    if( c == EOF ) {finished = 1;}
+    if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
+    temp[i]='\0';
+    if( strlen(temp) == 0 ){ canvas_error("expected a word or string (without comma) , but found nothing !!");}
+    string=(char *)my_newmem(sizeof(temp));
+    snprintf(string,sizeof(temp),"%s",temp);
+    done = TRUE;
+    return string;
+}
+
+double get_real(FILE *infile, int last){ /* accept anything that looks like an number ?  last = 0 : more arguments ; last=1 final argument */
+    int c,i=0,found_calc = 0;
+    double y;
+    char tmp[MAX_INT];
+    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') ){
+     if( c != ' ' ){
+     /* 
+     libmatheval will segfault when for example: "xrange -10,+10" or "xrange -10,10+" is used 
+     We will check after assert() if it's a NULL pointer...and exit program via :
+     canvas_error("I'm having trouble parsing your \"expression\" ");
+     */
+      if( i == 0 &&  c == '+' ){ 
+       continue;
+      } 
+      else
+      {
+       if(canvas_iscalculation(c) != 0){
+        found_calc = 1;
+        c = tolower(c);
+       }
+       tmp[i] = c;
+       i++;
+      }
+     }
+     if( i > MAX_INT - 1){canvas_error("number too large");}
+    }
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' ){ done = TRUE; line_number++; }
+    if( c == EOF ){done = TRUE ; finished = 1;}
+    tmp[i]='\0';
+    if( strlen(tmp) == 0 ){canvas_error("expected a number , but found nothing !!");}
+    if( found_calc == 1 ){ /* use libmatheval to calculate 2*pi/3 */
+     void *f = evaluator_create(tmp);
+     assert(f);if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
+     y = evaluator_evaluate_x(f, 1);
+     /* if function is bogus; y = 1 : so no core dumps */
+     evaluator_destroy(f);
+    }
+    else
+    {
+     y = atof(tmp);
+    }
+    return y;
+}
+
+double get_double(FILE *infile , int orientation , int last){  /* last = 0 : more arguments ; last=1 final argument */
+/* orientation=0 : x-values ...  orientation=1 :y-values */
+    int c;
+    int i = 0;
+    int found_calc = 0; /* signal user input like : 2*pi/3 */
+    char tmp[MAX_INT];
+    double dx;
+    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n')){
+	if( c != ' '){/* no spaces in numbers */
+	    if(canvas_iscalculation(c) != 0 ){
+	found_calc = 1;
+	c = tolower(c);
+	    }
+	    tmp[i]=c;
+	    i++;
+	    if( i > MAX_INT-1){canvas_error("number too large");}
+	}
+    }
+    if( c == '\n' || c == EOF ){
+	if( last == 0 ){canvas_error("expecting more arguments");}
+	if( c == EOF ){finished = TRUE;}
+	done = TRUE; 
+	/*return 0; */
+    }
+    tmp[i]='\0';
+    
+    if( strlen(tmp) == 0 || i == 0){ 
+	if( orientation == 0 ){
+	    canvas_error("expected a x-value \n e.g. a number in x-range / y-range coordinate system\nbut found nothing !!");
+	}
+	else
+	{
+	    canvas_error("expected a y-value \n e.g. a number in x-range / y-range coordinate system\nbut found nothing !!");
+	}
+    }
+    if( found_calc == 1 ){ /* use libmatheval to calculate 2*pi/3 */
+	void *f = evaluator_create(tmp);
+	assert(f);
+	if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ");}
+	dx = evaluator_evaluate_x(f, 1);
+	evaluator_destroy(f);
+    }
+    else
+    {
+	dx = atof(tmp); /* no pi/e/sin(2*pi/3) found : will use atof to convert inputstring  to float */
+    }
+    if( c == '\n') { line_number++; }
+    if( c != EOF ) {
+	if( c == '\n' ) {
+	    done = TRUE;
+	}
+    }
+    else
+    {
+	finished = TRUE;
+    }
+    if( (done == TRUE || finished == TRUE) && last != 1 ){ canvas_error("expected more arguments");}
+    if(orientation == 0){
+	return x2px( dx ); /* convert to pixels according xrange */
+    }
+    else
+    {
+	return y2px( dx );/* convert to pixels according yrange */
+    }
+}
+void canvas_error(char *msg){
+    fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number,msg);
+    finished = 1;
+    exit(EXIT_SUCCESS);
+}
+
+
+/* convert x/y coordinates to pixel */
+int x2px(double x){
+ return x*xsize/(xmax - xmin) -  xsize*xmin/(xmax - xmin);
+}
+
+int y2px(double y){
+ return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);
+}
+
+double px2x(int x){
+ return (x*(xmax - xmin)/xsize + xmin);
+}
+double px2y(int y){
+ return (y*(ymax - ymin)/ysize + ymin);
+}
+
+void add_to_buffer(char *tmp){
+ if( tmp == NULL || tmp == 0 ){ canvas_error("nothing to add_to_buffer()...");}
+ /*  do we have enough space left in buffer[MAX_BUFFER] ? */
+ int space_left = (int) (sizeof(buffer) - strlen(buffer));
+ if( space_left > strlen(tmp)){
+  strncat(buffer,tmp,space_left - 1);/* add safely "tmp" to the string buffer */
+ }
+ else
+ {
+  canvas_error("buffer is too big\n");
+ }
+ tmp = NULL;free(tmp);
+ return;
+}
+
+void reset(){
+ if(use_filled == TRUE){use_filled = FALSE;}
+ if(use_dashed == TRUE){use_dashed = FALSE;}
+ if(use_translate == TRUE){use_translate = FALSE;}
+ if(use_rotate == TRUE){use_rotate = FALSE;}
+ onclick = 0;
+}
+
+
+
+/* What reply format in read_canvas();
+
+note:if userdraw is combined with inputfields...every "userdraw" based answer will append "\n" and  inputfield.value()
+1 = x1,x2,x3,x4....x_n
+    y1,y2,y3,y4....y_n
+
+    x/y in pixels
+
+2 = x1,x2,x3,x4....x_n
+    y1,y2,y3,y4....y_n
+    x/y in  xrange / yrange coordinate system
+
+3 = x1,x2,x3,x4....x_n
+    y1,y2,y3,y4....y_n
+    r1,r2,r3,r4....r_n
+
+    x/y in pixels 
+    r in pixels
+
+4 = x1,x2,x3,x4....x_n
+    y1,y2,y3,y4....y_n
+    r1,r2,r3,r4....r_n
+
+    x/y in  xrange / yrange coordinate system
+    r in pixels
+
+5 = Ax1,Ax2,Ax3,Ax4....Ax_n
+    Ay1,Ay2,Ay3,Ay4....Ay_n
+    Bx1,Bx2,Bx3,Bx4....Bx_n
+    By1,By2,By3,By4....By_n
+    Cx1,Cx2,Cx3,Cx4....Cx_n
+    Cy1,Cy2,Cy3,Cy4....Cy_n
+    ....
+    Zx1,Zx2,Zx3,Zx4....Zx_n
+    Zy1,Zy2,Zy3,Zy4....Zy_n
+    
+    x/y in pixels
+
+6 = Ax1,Ax2,Ax3,Ax4....Ax_n
+    Ay1,Ay2,Ay3,Ay4....Ay_n
+    Bx1,Bx2,Bx3,Bx4....Bx_n
+    By1,By2,By3,By4....By_n
+    Cx1,Cx2,Cx3,Cx4....Cx_n
+    Cy1,Cy2,Cy3,Cy4....Cy_n
+    ....
+    Zx1,Zx2,Zx3,Zx4....Zx_n
+    Zy1,Zy2,Zy3,Zy4....Zy_n
+
+    x/y in  xrange / yrange coordinate system
+    
+7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n
+    
+    x/y in pixels
+
+8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n
+    
+    x/y in  xrange / yrange coordinate system
+
+9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n    
+
+    x/y in pixels
+
+10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n    
+
+    x/y in  xrange / yrange coordinate system
+
+11 = Ax1,Ay1,Ax2,Ay2
+     Bx1,By1,Bx2,By2
+     Cx1,Cy1,Cx2,Cy2
+     Dx1,Dy1,Dx2,Dy2
+     ......
+     Zx1,Zy1,Zx2,Zy2
+     
+    x/y in  xrange / yrange coordinate system
+
+12 = Ax1,Ay1,Ax2,Ay2
+     Bx1,By1,Bx2,By2
+     Cx1,Cy1,Cx2,Cy2
+     Dx1,Dy1,Dx2,Dy2
+     ......
+     Zx1,Zy1,Zx2,Zy2
+     
+    x/y in pixels
+
+13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2
+
+    x/y in  xrange / yrange coordinate system
+14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2
+    x/y in pixels
+15 = reply from inputfields,textareas
+    reply1,reply2,reply3,...,reply_n
+
+16 = read mathml inputfields only
+
+17 = read userdraw text only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n
+ when ready : calculate size_t of string via snprintf(NULL,0,"blah blah...");
+
+18 = read clock(s) : H1:M1:S1,H2:M2:S2,...H_n:M_n:S_n
+19 = return clicked object number (analogue to shape-library onclick)
+20 = return x/y-data in x-range/y-range of all 'draggable' images
+21 = return verbatim coordinates (x1:y1) (x2:y2)...(x_n:y_n)
+22 = array : x1,y1,x2,y2,x3,y3,x4,y4...x_n,y_n
+    x/y in  xrange / yrange coordinate system
+
+*/
+
+
+void add_read_canvas(int type_reply){
+/* just 1 reply type allowed */
+switch(type_reply){
+/*  TO DO
+!!!!  NEED TO SIMPLIFY !!!!  
+answers may have:
+x-values,y-values,r-values,input-fields,mathml-inputfields,text-typed answers
+*/
+    case 1: fprintf(js_include_file,"\
+<!-- begin function 1 read_canvas() -->\n\
+function read_canvas(){\
+ if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+input_reply + \"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return userdraw_x+\"\\n\"+userdraw_y;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 1 read_canvas() -->\n");
+    break;
+    case 2: fprintf(js_include_file,"\
+<!-- begin function 2 read_canvas() -->\n\
+function read_canvas(){\
+ if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
+ var reply_x = new Array();var reply_y = new Array();var p = 0;\
+ while(userdraw_x[p]){\
+  reply_x[p] = px2x(userdraw_x[p]);\
+  reply_y[p] = px2y(userdraw_y[p]);\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\")){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y;\
+  };\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 2 read_canvas() -->\n");
+    break;
+    case 3: fprintf(js_include_file,"\
+<!-- begin function 3 read_canvas() -->\n\
+function read_canvas(){\
+ if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius+\"\\n\"+userdrawW_text;\
+  }\
+  else\
+  {\
+   return userdraw_x+\"\\n\"+userdraw_y+\"\\n\"+userdraw_radius;\
+  }\
+ }\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 3 read_canvas() -->\n");
+    break;
+    case 4: fprintf(js_include_file,"\
+<!-- begin function 4 read_canvas() -->\n\
+function read_canvas(){\
+ var reply_x = new Array();var reply_y = new Array();var p = 0;\
+ while(userdraw_x[p]){\
+  reply_x[p] = px2x(userdraw_x[p]);\
+  reply_y[p] = px2y(userdraw_y[p]);\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y +\"\\n\"+userdraw_radius+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y +\"\\n\"+userdraw_radius+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_radius+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_radius;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 4 read_canvas() -->\n");
+    break;
+    /* 
+	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
+	used for userdraw multiple paths 
+    */
+    case 5: fprintf(js_include_file,"\
+<!-- begin function 5 read_canvas() -->\n\
+function read_canvas(){\
+ var p = 0;\
+ var reply = \"\";\
+ for(p = 0; p < userdraw_x.length;p++){\
+  if(userdraw_x[p] != null ){\
+   reply = reply + userdraw_x[p]+\"\\n\"+userdraw_y[p]+\"\\n\";\
+  };\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ userdraw_x = [];userdraw_y = [];\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 5 read_canvas() -->\n");
+    break;
+    /* 
+	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
+	used for userdraw multiple paths 
+    */
+    case 6: fprintf(js_include_file,"\
+<!-- begin function 6 read_canvas() -->\n\
+function read_canvas(){\
+ var p = 0;\
+ var reply = \"\";\
+ var tmp_x = new Array();\
+ var tmp_y = new Array();\
+ for(p = 0 ; p < userdraw_x.length; p++){\
+  tmp_x = userdraw_x[p];\
+  tmp_y = userdraw_y[p];\
+  if(tmp_x != null){\
+   for(var i = 0 ; i < tmp_x.length ; i++){\
+    tmp_x[i] = px2x(tmp_x[i]);\
+    tmp_y[i] = px2y(tmp_y[i]);\
+   };\
+   reply = reply + tmp_x + \"\\n\" + tmp_y +\"\\n\";\
+  };\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ userdraw_x = [];userdraw_y = [];\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 6 read_canvas() -->\n");
+    break;
+    case 7: fprintf(js_include_file,"\
+<!-- begin function 7 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;\
+ while(userdraw_x[p]){\
+  reply[p] = userdraw_x[p] +\":\" + userdraw_y[p];\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply+\"\\n\"+input_reply;\
+  }\
+ };\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 7 read_canvas() -->\n");
+    break;
+    case 8: fprintf(js_include_file,"\
+<!-- begin function 8 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;\
+ while(userdraw_x[p]){\
+  reply[p] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]);\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 8 read_canvas() -->\n");
+    break;
+    case 9: fprintf(js_include_file,"\
+<!-- begin function 9 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;\
+ while(userdraw_x[p]){\
+  reply[p] = userdraw_x[p] +\":\" + userdraw_y[p] + \":\" + userdraw_radius[p];\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 9 read_canvas() -->\n");
+    break;
+    case 10: fprintf(js_include_file,"\
+<!-- begin function 10 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;\
+ while(userdraw_x[p]){\
+  reply[p] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]) +\":\" + userdraw_radius[p];\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 10 read_canvas() -->\n");
+    break;
+    case 11: fprintf(js_include_file,"\
+<!-- begin function 11 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = \"\";\
+ var p = 0;\
+ while(userdraw_x[p]){\
+  reply = reply + px2x(userdraw_x[p]) +\",\" + px2y(userdraw_y[p]) +\",\" + px2x(userdraw_x[p+1]) +\",\" + px2y(userdraw_y[p+1]) +\"\\n\" ;\
+  p = p+2;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 11 read_canvas() -->\n");
+    break;
+    case 12: fprintf(js_include_file,"\
+<!-- begin function 12 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = \"\";\
+ var p = 0;\
+ for(p = 0; p< userdraw_x.lenght;p = p+2){\
+  if(userdraw_x[p] != null){\
+    reply = reply + userdraw_x[p] +\",\" + userdraw_y[p] +\",\" + userdraw_x[p+1] +\",\" + userdraw_y[p+1] +\"\\n\" ;\
+  };\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 12 read_canvas() -->\n");
+    break;
+    case 13: fprintf(js_include_file,"\
+<!-- begin function 13 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;var i = 0;\
+ while(userdraw_x[p]){\
+  reply[i] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]) +\":\" + px2x(userdraw_x[p+1]) +\":\" + px2y(userdraw_y[p+1]);\
+  p = p+2;i++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 13 read_canvas() -->\n");
+    break;
+    case 14: fprintf(js_include_file,"\
+<!-- begin function 14 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;var i = 0;\
+ while(userdraw_x[p]){\
+  reply[i] = userdraw_x[p] +\":\" + userdraw_y[p] +\":\" + userdraw_x[p+1] +\":\" + userdraw_y[p+1];\
+  p = p+2;i++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+ this.read_canvas = read_canvas;\n\
+<!-- end function 14 read_canvas() -->\n");
+    break;
+    case 15: fprintf(js_include_file,"\
+<!-- begin function 15  read_canvas() -->\n\
+function read_canvas(){\
+ var input_reply = new Array();\
+ var p = 0;\
+ if( document.getElementById(\"canvas_input0\")){\
+  var t = 0;\
+  while(document.getElementById(\"canvas_input\"+t)){\
+   if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+    input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+    p++;\
+   };\
+   t++;\
+  };\
+ };\
+ if( typeof userdraw_text != 'undefined' ){\
+   return input_reply +\"\\n\"+userdraw_text;\
+ }\
+ else\
+ {\
+  return input_reply;\
+ };\
+};\
+ this.read_canvas = read_canvas;\n\
+<!-- end function 15 read_canvas() -->\n");
+    break;
+    case 16: fprintf(js_include_file,"\
+<!-- begin function 16 read_mathml() -->\n\
+function read_mathml(){\
+ var reply = new Array();\
+ var p = 0;\
+ if( document.getElementById(\"mathml0\")){\
+  while(document.getElementById(\"mathml\"+p)){\
+   reply[p] = document.getElementById(\"mathml\"+p).value;\
+   p++;\
+  };\
+ };\
+return reply;\
+};\
+this.read_mathml = read_mathml;\n\
+<!-- end function 16 read_mathml() -->\n");
+    break;
+    case 17:  fprintf(js_include_file,"\
+<!-- begin function 17 read_canvas() -->\n\
+function read_canvas(){\
+ if( userdraw_text.length == 0){alert(\"no text typed...\");return;}\
+ return userdraw_text;\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 17 read_canvas() -->\n");
+    break;
+    case 18: fprintf(js_include_file,"\
+<!-- begin function 18 read_canvas() -->\n\
+function read_canvas(){\
+ var p = 0;\
+ var reply = new Array();\
+ var name;\
+ var t = true;\
+ while(t){\
+  try{ name = eval('clocks'+p);\
+  reply[p] = parseInt((name.H+name.M/60+name.S/3600)%%12)+\":\"+parseInt((name.M + name.S/60)%%60)+\":\"+(name.S)%%60;p++}catch(e){t=false;};\
+ };\
+ if( p == 0){alert(\"clock(s) not modified...\");return;}\
+ return reply;\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 18 read_canvas() -->\n");
+    break;
+    case 19: fprintf(js_include_file,"\
+<!-- begin function 19 read_canvas() -->\n\
+function read_canvas(){\
+ return reply[0];\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 19 read_canvas() -->\n");
+    case 20: fprintf(js_include_file,"\
+<!-- begin function 20 read_canvas() -->\n\
+function read_canvas(){\
+ var len  = ext_drag_images.length;\
+ var reply = new Array(len);\
+ for(var p = 0 ; p < len ; p++){\
+    var img = ext_drag_images[p];\
+    reply[p] = px2x(img[6])+\":\"+px2y(img[7]);\
+ };\
+ return reply;\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 20 read_canvas() -->\n");
+    break;
+    case 21: fprintf(js_include_file,"\
+<!-- begin function 21 read_canvas() -->\n\
+function read_canvas(){\
+ if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
+ var reply_coord = new Array();var p = 0;\
+ while(userdraw_x[p]){\
+  reply_coord[p] = \"(\"+px2x(userdraw_x[p])+\":\"+px2y(userdraw_y[p])+\")\";\
+  p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_coord+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_coord+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_coord+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_coord;\
+  };\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 21 read_canvas() -->\n");
+    break;
+    case 22: fprintf(js_include_file,"\
+<!-- begin function 22 read_canvas() -->\n\
+function read_canvas(){\
+ var reply = new Array();\
+ var p = 0;\
+ var idx = 0;\
+ while(userdraw_x[p]){\
+  reply[idx] = px2x(userdraw_x[p]);\
+  idx++;\
+  reply[idx] = px2y(userdraw_y[p]);\
+  idx++;p++;\
+ };\
+ if(p == 0){alert(\"nothing drawn...\");return;};\
+ if( document.getElementById(\"canvas_input0\") ){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply +\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply +\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply;\
+  }\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 22 read_canvas() -->\n");
+    break;
+
+    default: canvas_error("hmmm unknown replyformat...");break;
+}
+ return;
+}
+
+
+/* 
+ add drawfunction : 
+ - functions used by userdraw_primitives (circle,rect,path,triangle...)
+ - things not covered by the drag&drop library (static objects like parallel, lattice ,gridfill , imagefill)
+ - grid / mathml
+ - will not scale or zoom in
+ - will not be filled via pixel operations like fill / floodfill / filltoborder / clickfill
+ - is printed directly into 'js_include_file' 
+*/
+
+void add_javascript_functions(int js_functions[],int canvas_root_id){
+int i;
+for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
+ if( js_functions[i] == 1){
+    switch(i){
+    case DRAG_EXTERNAL_IMAGE:
+fprintf(js_include_file,"\n<!-- drag external images --->\n\
+var external_canvas = create_canvas%d(7,xsize,ysize);\n\
+var external_ctx = external_canvas.getContext(\"2d\");\n\
+var external_canvas_rect = external_canvas.getBoundingClientRect();\n\
+canvas_div.addEventListener(\"mousedown\",setxy,false);\n\
+canvas_div.addEventListener(\"mouseup\",dragstop,false);\n\
+canvas_div.addEventListener(\"mousemove\",dragxy,false);\n\
+var selected_image = null;\n\
+var ext_image_cnt = 0;\n\
+var ext_drag_images = new Array();\n\
+function drag_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,draggable){\n\
+ ext_image_cnt = idx;\n\
+ var image = new Image();\n\
+ image.src = URL;\n\
+ image.onload = function(){\n\
+  if( x0 < 1 ){ x0 = 0; };if( y0 < 1 ){ y0 = 0; };if( sx < 1 ){ sx = 0; };if( sy < 1 ){ sy = 0; };\n\
+  if( width < 1 ){ width = image.width; };if( height < 1 ){ height = image.height; };\n\
+  if( swidth < 1 ){ swidth = image.width; };if( sheight < 1 ){ sheight = image.height; };\n\
+  img = new Array(10);\n\
+  img[0] = draggable;img[1] = image;img[2] = sx;img[3] = sy;img[4] = swidth;img[5] = sheight;\n\
+  img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;\n\
+  ext_drag_images[idx] = img;\n\
+  external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\n\
+ };\n\
+};\n\
+function dragstop(evt){\n\
+ selected_image = null;return;\n\
+};\n\
+function dragxy(evt){\n\
+ if( selected_image != null ){\n\
+  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\n\
+  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\n\
+  var s_img = ext_drag_images[selected_image];\n\
+  s_img[6] = evt.clientX - external_canvas_rect.left + xoff;\n\
+  s_img[7] = evt.clientY - external_canvas_rect.top + yoff;\n\
+  ext_drag_images[selected_image] = s_img;\n\
+  external_ctx.clearRect(0,0,xsize,ysize);\n\
+  for(var i = 0; i <= ext_image_cnt ; i++){\n\
+   var img = ext_drag_images[i];\n\
+   external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\n\
+  };\n\
+ };\n\
+};\n\
+function setxy(evt){\n\
+ if( ! selected_image && evt.which == 1 ){\n\
+  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\n\
+  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\n\
+  var xm = evt.clientX - external_canvas_rect.left + xoff;\n\
+  var ym = evt.clientY - external_canvas_rect.top + yoff;\n\
+  for(var p = 0 ; p <= ext_image_cnt ; p++){\n\
+   var img = ext_drag_images[p];\n\
+   if( img[0] == 1 ){\n\
+    var w = img.width;\n\
+    var h = img.height;\n\
+    if( xm > img[6] && xm < img[6] + img[4]){\n\
+     if( ym > img[7] && ym < img[7] + img[5]){\n\
+      img[6] = xm;\n\
+      img[7] = ym;\n\
+      ext_drag_images[p] = img;\n\
+      selected_image = p;\n\
+      dragxy(evt);\n\
+     };\n\
+    };\n\
+   };\n\
+  };\n\
+ }\n\
+ else\n\
+ {\n\
+  selected_image = null;\n\
+ }\n\
+};",canvas_root_id);
+    break;
+
+    case DRAW_EXTERNAL_IMAGE:
+fprintf(js_include_file,"\n<!-- draw external images -->\n\
+draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\
+ var image = new Image();\
+ image.src = URL;\
+ var canvas_bg_div = document.getElementById(\"canvas_div%d\");\
+ image.onload = function(){\
+  if( x0 < 1 ){ x0 = 0; };\
+  if( y0 < 1 ){ y0 = 0; };\
+  if( sx < 1 ){ sx = 0; };\
+  if( sy < 1 ){ sy = 0; };\
+  if( width < 1 ){ width = image.width;};\
+  if( height < 1 ){ height = image.height;};\
+  if( swidth < 1 ){ swidth = image.width;};\
+  if( sheight < 1 ){ sheight = image.height;};\
+  var ml = x0 - sx;\
+  var mh = y0 - sy;\
+  canvas_bg_div.style.backgroundPosition= \"left \"+ml+\"px top \"+mh+\"px\";\
+  canvas_bg_div.style.backgroundSize = width+\"px \"+height+\"px\";\
+  canvas_bg_div.style.backgroundRepeat = \"no-repeat\";\
+  canvas_bg_div.style.backgroundPosition= sx+\"px \"+sy+\"px\";\
+  canvas_bg_div.style.backgroundImage = \"url(\" + URL + \")\";\
+ };\
+};\n",canvas_root_id);    
+    break;
+    
+    case DRAW_ZOOM_BUTTONS: /* 6 rectangles 15x15 px  forbidden zone for drawing : y < ysize - 15*/
+fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
+draw_zoom_buttons = function(canvas_type,color,opacity){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.font =\"18px Ariel\";\
+ ctx.textAlign = \"right\";\
+ ctx.fillStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
+ ctx.fillText(\"+\",xsize,ysize);\
+ ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
+ ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
+ ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
+ ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
+ ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
+ ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
+ ctx.stroke();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    
+    break;
+    case DRAW_GRIDFILL:/* not used for userdraw */
+fprintf(js_include_file,"\n<!-- draw gridfill -->\n\
+draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ var x,y;\
+ ctx.save();\
+ ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
+ for( x = x0 ; x < xsize+dx ; x = x + dx ){\
+    ctx.moveTo(x,y0);\
+    ctx.lineTo(x,ysize);\
+ };\
+ for( y = y0 ; y < ysize +dx; y = y + dy ){\
+    ctx.moveTo(x0,y);\
+    ctx.lineTo(xsize,y);\
+ };\
+ ctx.stroke();\
+ ctx.restore();\
+ return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_IMAGEFILL:/* not  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw imagefill -->\n\
+draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ var img = new Image();\
+ img.src = URL;\
+ img.onload = function(){\
+  if( (img.width > xsize-x0) && (img.height > ysize-y0) ){\
+    ctx.drawImage(img,x0,y0,xsize,ysize);\
+  }\
+  else\
+  {\
+    var repeat = \"repeat\";\
+    if(img.width > xsize - x0){\
+	repeat = \"repeat-y\";\
+    }\
+    else\
+    {\
+     if( img.height > ysize -x0 ){\
+      repeat = \"repeat-x\";\
+     }\
+    }\
+    var pattern = ctx.createPattern(img,repeat);\
+    ctx.rect(x0,y0,xsize,ysize);\
+    ctx.fillStyle = pattern;\
+  }\
+  ctx.fill();\
+ };\
+ ctx.restore();\
+ return;\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_DOTFILL:/* not  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw dotfill -->\n\
+draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ var x,y;\
+ ctx.closePath();\
+ ctx.save();\
+ ctx.fillStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
+ for( x = x0 ; x < xsize+dx ; x = x + dx ){\
+  for( y = y0 ; y < ysize+dy ; y = y + dy ){\
+   ctx.arc(x,y,radius,0,2*Math.PI,false);\
+   ctx.closePath();\
+  }\
+ }\
+ ctx.fill();\
+ ctx.restore();\
+ return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_HATCHFILL:/* not used for userdraw */
+fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
+draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
+  var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ var x;\
+ var y;\
+ ctx.save();\
+ ctx.lineWidth = linewidth;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ y = ysize;\
+ for( x = x0 ; x < xsize ; x = x + dx ){\
+  ctx.moveTo(x,y0);\
+  ctx.lineTo(xsize,y);\
+  y = y - dy;\
+ };\
+ y = y0;\
+ for( x = xsize ; x > 0 ; x = x - dx){\
+  ctx.moveTo(x,ysize);\
+  ctx.lineTo(x0,y);\
+  y = y + dy;\
+ };\
+ x = x0;\
+ for( y = y0 ; y < ysize ; y = y + dy ){\
+  ctx.moveTo(xsize,y);\
+  ctx.lineTo(x,ysize);\
+  x = x + dx;\
+ };\
+ x = xsize;\
+ for( y = ysize ; y > y0 ; y = y - dy ){\
+  ctx.moveTo(x,y0);\
+  ctx.lineTo(x0,y);\
+  x = x - dx;\
+ };\
+ ctx.stroke();\
+ ctx.restore();\
+ return;\
+ }\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_CIRCLES:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw circles -->\n\
+draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ for(var p = 0 ; p < x_points.length ; p++ ){\
+  ctx.beginPath();\
+  ctx.arc(x_points[p],y_points[p],radius[p],0,2*Math.PI,false);\
+  ctx.closePath();\
+  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+  if(use_filled == 1){ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();}\
+  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+  ctx.stroke();\
+ }\
+ ctx.restore();\
+ return;\
+};\n");
+    break;
+    
+    case DRAW_SEGMENTS:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw segments -->\n\
+draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ for(var p = 0 ; p < x_points.length ; p = p+2 ){\
+  ctx.beginPath();\
+  ctx.moveTo(x_points[p],y_points[p]);\
+  ctx.lineTo(x_points[p+1],y_points[p+1]);\
+  ctx.closePath();\
+  ctx.stroke();\
+  }\
+  ctx.restore();\
+  return;\
+ };");
+    break;
+    
+    case DRAW_LINES:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw lines -->\n\
+function calc_line(x1,x2,y1,y2){\
+ var marge = 2;\
+ if(x1 < x2+marge && x1>x2-marge){\
+  return [x1,0,x1,ysize];\
+ };\
+ if(y1 < y2+marge && y1>y2-marge){\
+  return [0,y1,xsize,y1];\
+ };\
+ var Y1 = y1 - (x1)*(y2 - y1)/(x2 - x1);\
+ var Y2 = y1 + (xsize - x1)*(y2 - y1)/(x2 - x1);\
+ return [0,Y1,xsize,Y2];\
+};\
+draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ var line = new Array(4);\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ for(var p = 0 ; p < x_points.length ; p = p+2 ){\
+  line = calc_line(x_points[p],x_points[p+1],y_points[p],y_points[p+1]);\
+  ctx.beginPath();\
+  ctx.moveTo(line[0],line[1]);\
+  ctx.lineTo(line[2],line[3]);\
+  ctx.closePath();\
+  ctx.stroke();\
+  }\
+  ctx.restore();\
+  return;\
+ };");
+    break;
+
+    case DRAW_CROSSHAIRS:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw crosshairs  -->\n\
+draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_translate,vector){\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ var x1,x2,y1,y2;\
+ for(var p = 0 ; p < x_points.length ; p++ ){\
+  x1 = x_points[p] - crosshair_size;\
+  x2 = x_points[p] + crosshair_size;\
+  y1 = y_points[p] - crosshair_size;\
+  y2 = y_points[p] + crosshair_size;\
+  ctx.beginPath();\
+  ctx.moveTo(x1,y1);\
+  ctx.lineTo(x2,y2);\
+  ctx.closePath();\
+  ctx.stroke();\
+  ctx.beginPath();\
+  ctx.moveTo(x2,y1);\
+  ctx.lineTo(x1,y2);\
+  ctx.closePath();\
+  ctx.stroke();\
+ }\
+ ctx.restore();\
+  return;\
+};\n");
+    break;
+
+    case DRAW_RECTS:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw rects -->\n\
+draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle = \"rgba('+stroke_color+','+stroke_opacity+')\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];}};\
+ for(var p = 0 ; p < x_points.length ; p = p + 2){\
+  ctx.beginPath();\
+  ctx.rect(x_points[p],y_points[p],x_points[p+1]-x_points[p],y_points[p+1]-y_points[p]);\
+  ctx.closePath();\
+  if(use_filled == 1 ){ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();}\
+  ctx.stroke();\
+ };\
+ ctx.restore();\
+ return;\
+};\n");
+    break;
+
+    case DRAW_ROUNDRECTS:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw round rects -->\n\
+draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ var x,y,w,h,r;\
+ for(var p = 0; p < x_points.length; p = p+2){\
+  x = x_points[p];y = y_points[p];w = x_points[p+1] - x;h = y_points[p+1] - y;r = parseInt(0.1*w);\
+  ctx.beginPath();ctx.moveTo(x + r, y);\
+  ctx.lineTo(x + w - r, y);\
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);\
+  ctx.lineTo(x + w, y + h - r);\
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);\
+  ctx.lineTo(x + r, y + h);\
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);\
+  ctx.lineTo(x, y + r);\
+  ctx.quadraticCurveTo(x, y, x + r, y);\
+  ctx.closePath();if( use_dashed == 1 ){ctx.setLineDash([dashtype0,dashtype1]);};\
+  ctx.strokeStyle =\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+  if( use_filled == 1 ){ctx.fillStyle =\"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();};\
+  ctx.stroke();\
+ }\
+ ctx.restore();\
+};\n");
+    break; 
+
+    case DRAW_ELLIPSES:/* not  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw ellipses -->\n\
+draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ var cx,cy,ry,rx;\
+ ctx.lineWidth = line_width;\
+ if( use_filled == 1 ){ctx.fillStyle =\"rgba(\"+fill_color+\",\"+fill_opacity+\")\";};\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ for(var p=0;p< x_points.length;p = p+2){\
+  ctx.beginPath();\
+  cx = x_points[p];cy = y_points[p];rx = 0.25*x_points[p+1];ry = 0.25*y_points[p+1];\
+  ctx.translate(cx - rx, cy - ry);\
+  ctx.scale(rx, ry);\
+  ctx.arc(1, 1, 1, 0, 2 * Math.PI, false);\
+  if( use_filled == 1 ){ctx.fill();}\
+  ctx.stroke();\
+ };\
+ ctx.restore();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+
+    case DRAW_PATHS: /*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw paths -->\n\
+draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.lineJoin = \"round\";\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.beginPath();\
+ ctx.moveTo(x_points[0],y_points[0]);\
+ for(var p = 1 ; p < x_points.length ; p++ ){ctx.lineTo(x_points[p],y_points[p]);}\
+ if(closed_path == 1){ctx.lineTo(x_points[0],y_points[0]);ctx.closePath();}\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ if(use_filled == 1){ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();}\
+ ctx.stroke();\
+ ctx.restore();\
+ return;\
+};");
+    
+    break;
+    case DRAW_ARROWS:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw arrows -->\n\
+draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.lineWidth = line_width;\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ ctx.lineCap = \"round\";\
+ ctx.save();\
+ var x1,y1,x2,y2,dx,dy,len;\
+ for(var p = 0 ; p < x_points.length - 1 ; p = p +2){\
+   ctx.restore();ctx.save();\
+   x1 = x_points[p];y1 = y_points[p];x2 = x_points[p+1];y2 = y_points[p+1];dx = x2 - x1;dy = y2 - y1;\
+   len = Math.sqrt(dx*dx+dy*dy);\
+   ctx.translate(x2,y2);\
+   ctx.rotate(Math.atan2(dy,dx));\
+   ctx.lineCap = \"round\";\
+   ctx.beginPath();\
+   ctx.moveTo(0,0);\
+   ctx.lineTo(-len,0);\
+   ctx.closePath();\
+   ctx.stroke();\
+   ctx.beginPath();\
+   ctx.moveTo(0,0);\
+   ctx.lineTo(-1*arrow_head,-0.5*arrow_head);\
+   ctx.lineTo(-1*arrow_head, 0.5*arrow_head);\
+   ctx.closePath();\
+   ctx.fill();\
+   if( type == 2 ){\
+     ctx.restore();\
+     ctx.save();\
+     ctx.translate(x1,y1);\
+     ctx.rotate(Math.atan2(-dy,-dx));\
+     ctx.beginPath();\
+     ctx.moveTo(0,0);\
+     ctx.lineTo(-1*arrow_head,-0.5*arrow_head);\
+     ctx.lineTo(-1*arrow_head, 0.5*arrow_head);\
+     ctx.closePath();\
+     ctx.stroke();\
+     ctx.fill();\
+   }\
+  }\
+  ctx.restore();\
+  return;\
+};\n");
+    break;
+
+    case DRAW_VIDEO:/* not  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw video -->\n\
+draw_video = function(canvas_root_id,x,y,w,h,URL){\
+ var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
+ var video_div = document.createElement(\"div\");\
+ canvas_div.appendChild(video_div);\
+ video_div.style.position = \"absolute\";\
+ video_div.style.left = x+\"px\";\
+ video_div.style.top = y+\"px\";\
+ video_div.style.width = w+\"px\";\
+ video_div.style.height = h+\"px\";\
+ var video = document.createElement(\"video\");\
+ video_div.appendChild(video);\
+ video.style.width = w+\"px\";\
+ video.style.height = h+\"px\";\
+ video.autobuffer = true;\
+ video.controls = true;video.autoplay = false;\
+ var src = document.createElement(\"source\");\
+ src.type = \"video/mp4\";\
+ src.src = URL;\
+ video.appendChild(src);\
+ video.load();\
+ return;\
+};\n");    
+    break;
+    
+    case DRAW_AUDIO:/* not used for userdraw */
+fprintf(js_include_file,"\n<!-- draw audio -->\n\
+draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
+ var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
+ var audio_div = document.createElement(\"div\");\
+ canvas_div.appendChild(audio_div);\
+ audio_div.style.position = \"absolute\";\
+ audio_div.style.left = x+\"px\";\
+ audio_div.style.top = y+\"px\";\
+ audio_div.style.width = w+\"px\";\
+ audio_div.style.height = h+\"px\";\
+ var audio = document.createElement(\"audio\");\
+ audio_div.appendChild(audio);\
+ audio.setAttribute(\"style\",\"width:\"+w+\"px;height:\"+h+\"px\");\
+ audio.autobuffer = true;\
+ if(visible == 1 ){ audio.controls = true;audio.autoplay = false;}else{ audio.controls = false;audio.autoplay = true;}\
+ if(loop == 1 ){ audio.loop = true;}else{ audio.loop = false;}\
+ var src1 = document.createElement(\"source\");\
+ src1.type = \"audio/ogg\";\
+ src1.src = URL1;\
+ audio.appendChild(src1);\
+ var src2 = document.createElement(\"source\");\
+ src2.type = \"audio/mpeg\";\
+ src2.src = URL2;\
+ audio.appendChild(src2);\
+ audio.load();\
+ return;\
+};\n");
+    break;
+    
+    case DRAW_HTTP:/* not  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw http -->\n\
+draw_http = function(canvas_root_id,x,y,w,h,URL){\
+ var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
+ var http_div = document.createElement(\"div\");\
+ var iframe = document.createElement(\"iframe\");\
+ canvas_div.appendChild(http_div);\
+ http_div.appendChild(iframe);\
+ iframe.src = URL;\
+ iframe.setAttribute(\"width\",w);\
+ iframe.setAttribute(\"height\",h);\
+ return;\
+};\n");
+    break;
+    
+    case DRAW_XML:
+fprintf(js_include_file,"\n<!-- draw xml -->\n\
+draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
+ var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
+ var xml_div = document.createElement(\"div\");\
+ canvas_div.appendChild(xml_div);\
+ xml_div.innerHTML = mathml;\
+ if(onclick != 0){\
+  xml_div.onclick = function(){\
+   reply[0] = onclick;\
+   alert(\"send \"+onclick+\" ?\");\
+  };\
+ };\
+ xml_div.style.position = \"absolute\";\
+ xml_div.style.left = x+\"px\";\
+ xml_div.style.top = y+\"px\";\
+ xml_div.style.width = w+\"px\";\
+ xml_div.style.height = h+\"px\";\
+ return;\
+};\n"
+);
+    break;
+
+    case DRAW_GRID:/* not used for userdraw */
+fprintf(js_include_file,"\n<!-- draw grid -->\n\
+draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
+var obj;\
+if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+ obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+}\
+else\
+{\
+ obj = create_canvas%d(canvas_type,xsize,ysize);\
+};\
+var ctx = obj.getContext(\"2d\");\
+ctx.clearRect(0,0,xsize,ysize);\
+if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ctx.save();\
+if( use_translate == 1 ){ctx.translate(vector[0],vector[1]);};\
+if( use_rotate == 1 ){ctx.translate(x2px(0),y2px(0));ctx.rotate(angle*Math.PI/180);ctx.translate(-1*(x2px(0)),-1*(y2px(0)));};\
+var stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ctx.fillStyle = \"rgba(\"+font_color+\",\"+1.0+\")\";\
+var axis_color = \"rgba(\"+axis_color+\",\"+stroke_opacity+\")\";\
+ctx.font = font_family;\
+var xstep = xsize*xmajor/(xmax - xmin);\
+var ystep = ysize*ymajor/(ymax - ymin);\
+var x2step = xstep / xminor;\
+var y2step = ystep / yminor;\
+var zero_y = y2px(0);\
+var zero_x = x2px(0);\
+ctx.beginPath();\
+ctx.lineWidth = line_width;\
+ctx.strokeStyle = stroke_color;\
+for(var p = zero_x ; p < xsize; p = p + xstep){\
+ ctx.moveTo(p,0);\
+ ctx.lineTo(p,ysize);\
+};\
+for(var p = zero_x ; p > 0; p = p - xstep){\
+ ctx.moveTo(p,0);\
+ ctx.lineTo(p,ysize);\
+};\
+for(var p = zero_y ; p < ysize; p = p + ystep){\
+ ctx.moveTo(0,p);\
+ ctx.lineTo(xsize,p);\
+};\
+for(var p = zero_y ; p > 0; p = p - ystep){\
+ ctx.moveTo(0,p);\
+ ctx.lineTo(xsize,p);\
+};\
+if( typeof xaxislabel !== 'undefined' ){\
+ ctx.save();\
+ ctx.font = \"italic \"+font_size+\"px Ariel\";\
+ var corr =  ctx.measureText(xaxislabel).width;\
+ ctx.fillText(xaxislabel,xsize - 1.5*corr,zero_y - tics_length - 0.4*font_size);\
+ ctx.restore();\
+};\
+if( typeof yaxislabel !== 'undefined' ){\
+ ctx.save();\
+ ctx.font = \"italic \"+font_size+\"px Ariel\";\
+ corr =  ctx.measureText(yaxislabel).width;\
+ ctx.translate(zero_x+tics_length + font_size,corr+font_size);\
+ ctx.rotate(-0.5*Math.PI);\
+ ctx.fillText(yaxislabel,0,0);\
+ ctx.restore();\
+};\
+ctx.stroke();\
+ctx.closePath();\
+if( use_axis == 1 ){\
+ ctx.beginPath();\
+ ctx.strokeStyle = stroke_color;\
+ ctx.lineWidth = 0.6*line_width;\
+ for(var p = zero_x ; p < xsize; p = p + x2step){\
+  ctx.moveTo(p,0);\
+  ctx.lineTo(p,ysize);\
+ };\
+ for(var p = zero_x ; p > 0; p = p - x2step){\
+  ctx.moveTo(p,0);\
+  ctx.lineTo(p,ysize);\
+ };\
+ for(var p = zero_y ; p < ysize; p = p + y2step){\
+  ctx.moveTo(0,p);\
+  ctx.lineTo(xsize,p);\
+ };\
+ for(var p = zero_y ; p > 0; p = p - y2step){\
+  ctx.moveTo(0,p);\
+  ctx.lineTo(xsize,p);\
+ };\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.beginPath();\
+ ctx.lineWidth = 2*line_width;\
+ ctx.strokeStyle = axis_color;\
+ ctx.moveTo(0,zero_y);\
+ ctx.lineTo(xsize,zero_y);\
+ ctx.moveTo(zero_x,0);\
+ ctx.lineTo(zero_x,ysize);\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.lineWidth = line_width+0.5;\
+ ctx.beginPath();\
+ for(var p = zero_x ; p < xsize; p = p + xstep){\
+  ctx.moveTo(p,zero_y-tics_length);\
+  ctx.lineTo(p,zero_y+tics_length);\
+ };\
+ for(var p = zero_x ; p > 0; p = p - xstep){\
+  ctx.moveTo(p,zero_y-tics_length);\
+  ctx.lineTo(p,zero_y+tics_length);\
+ };\
+ for(var p = zero_y ; p < ysize; p = p + ystep){\
+  ctx.moveTo(zero_x-tics_length,p);\
+  ctx.lineTo(zero_x+tics_length,p);\
+ };\
+ for(var p = zero_y ; p > 0; p = p - ystep){\
+  ctx.moveTo(zero_x-tics_length,p);\
+  ctx.lineTo(zero_x+tics_length,p);\
+ };\
+ for(var p = zero_x ; p < xsize; p = p + x2step){\
+  ctx.moveTo(p,zero_y-0.5*tics_length);\
+  ctx.lineTo(p,zero_y+0.5*tics_length);\
+ };\
+ for(var p = zero_x ; p > 0; p = p - x2step){\
+  ctx.moveTo(p,zero_y-0.5*tics_length);\
+  ctx.lineTo(p,zero_y+0.5*tics_length);\
+ };\
+ for(var p = zero_y ; p < ysize; p = p + y2step){\
+  ctx.moveTo(zero_x-0.5*tics_length,p);\
+  ctx.lineTo(zero_x+0.5*tics_length,p);\
+ };\
+ for(var p = zero_y ; p > 0; p = p - y2step){\
+  ctx.moveTo(zero_x-0.5*tics_length,p);\
+  ctx.lineTo(zero_x+0.5*tics_length,p);\
+ };\
+ ctx.stroke();\
+ ctx.closePath();\
+ if( use_axis_numbering == 1 ){\
+  var shift = zero_y+2*font_size;var flip=0;var skip=0;var corr;var cnt;var disp_cnt;var prec;\
+  if( x_strings != null ){\
+   var f = 1.4;\
+   var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
+   for(var p = 0 ; p < len ; p = p+2){\
+     var x_nums = x2px(eval(x_strings[p]));\
+     var x_text = x_strings[p+1];\
+     corr = ctx.measureText(x_text).width;\
+     skip = 1.2*corr/xstep;\
+     if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
+     if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
+     ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
+   }\
+  }\
+  else\
+  {\
+   corr=0;skip = 0;cnt = xmajor;\
+   prec = Math.log(precision)/(Math.log(10));\
+   for( var p = zero_x + xstep ; p < xsize ; p = p+xstep){\
+    if(skip == 0 ){\
+      disp_cnt = cnt.toFixed(prec);\
+      corr = ctx.measureText(disp_cnt).width;\
+      skip = parseInt(1.2*corr/xstep);\
+      ctx.fillText(disp_cnt,p-0.5*corr,zero_y+1.4*font_size);\
+    }\
+    else\
+    {\
+     skip--;\
+    };\
+    cnt = cnt + xmajor;\
+   };\
+   cnt = -1*xmajor;skip = 0;\
+   for( var p = zero_x - xstep ; p > 0 ; p = p-xstep){\
+    if(skip == 0 ){\
+     disp_cnt = cnt.toFixed(prec);\
+     corr = ctx.measureText(disp_cnt).width;\
+     skip = parseInt(1.2*corr/xstep);\
+     ctx.fillText(disp_cnt,p-0.5*corr,zero_y+1.4*font_size);\
+    }\
+    else\
+    {\
+     skip--;\
+    };\
+    cnt = cnt - xmajor;\
+   };\
+  };\
+  if( y_strings != null ){\
+   var len = y_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"yaxis number unpaired:  text missing ! \");return;};\
+   for(var p = 0 ; p < len ; p = p+2){\
+    var y_nums = y2px(eval(y_strings[p]));\
+    var y_text = y_strings[p+1];\
+    var f = 1.4;\
+    corr = 2 + tics_length + ctx.measureText(y_text).width;\
+    if( corr > zero_x){corr = parseInt(zero_x+2); }\
+    ctx.fillText(y_text,zero_x - corr,y_nums);\
+   };\
+  }\
+  else\
+  {\
+   corr = 0;cnt = -1*ymajor;skip = 0;\
+   for( var p = zero_y + ystep ; p < ysize ; p = p+ystep){\
+    if(skip == 0 ){\
+     skip = parseInt(1.4*font_size/ystep);\
+     disp_cnt = cnt.toFixed(prec);\
+     corr = 2 + tics_length + ctx.measureText(disp_cnt).width;\
+     ctx.fillText(disp_cnt,zero_x - corr,p+0.4*font_size);\
+    }\
+    else\
+    {\
+     skip--;\
+    };\
+    cnt = cnt - ymajor;\
+   }\
+   cnt = ymajor;skip = 0;\
+   for( var p = zero_y - ystep ; p > 0 ; p = p-ystep){\
+    if(skip == 0 ){\
+     skip = parseInt(1.4*font_size/ystep);\
+     disp_cnt = cnt.toFixed(prec);\
+     corr = 2 + tics_length + ctx.measureText(disp_cnt).width;\
+     ctx.fillText(disp_cnt,zero_x - corr,p+0.4*font_size);\
+    }\
+    else\
+    {\
+     skip--;\
+    };\
+    cnt = cnt + ymajor;\
+   }\
+  };\
+ };\
+ ctx.strokeStyle = stroke_color;\
+ ctx.lineWidth = 2;\
+ ctx.beginPath();\
+ ctx.rect(0,0,xsize,ysize);\
+ ctx.closePath();\
+ ctx.stroke();\
+};\
+if( typeof linegraph_0 !== 'undefined' ){\
+ ctx.restore();\
+ ctx.save();\
+ ctx.globalAlpha = 1.0;\
+ var i = 0;\
+ var line_name = eval('linegraph_'+i);\
+ while ( typeof line_name !== 'undefined' ){\
+  ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
+  ctx.lineWidth = parseInt(line_name[1]);\
+  if(line_name[2] == \"1\"){\
+   var d1 = parseInt(line_name[3]);\
+   var d2 = parseInt(line_name[4]);\
+   if(ctx.setLineDash){ ctx.setLineDash(d1,d2); } else { ctx.mozDash = [d1,d2];};\
+  }\
+  else\
+  {\
+  if(ctx.setLineDash){ctx.setLineDash = null;}\
+  if(ctx.mozDash){ctx.mozDash = null;}\
+  };\
+  var data_x = new Array();\
+  var data_y = new Array();\
+  var lb = line_name.length;\
+  var idx = 0;\
+  for( var p = 5 ; p < lb ; p = p + 2 ){\
+   data_x[idx] = x2px(line_name[p]);\
+   data_y[idx] = y2px(line_name[p+1]);\
+   idx++;\
+  };\
+  for( var p = 0; p < idx ; p++){\
+   ctx.beginPath();\
+   ctx.moveTo(data_x[p],data_y[p]);\
+   ctx.lineTo(data_x[p+1],data_y[p+1]);\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+  i++;\
+  try{ line_name = eval('linegraph_'+i); }catch(e){ break; }\
+ };\
+};\
+var barcolor = new Array();\
+if( typeof barchart%d  !== 'undefined' ){\
+ ctx.restore();\
+ ctx.save();\
+ ctx.globalAlpha = 1.0;\
+ var bar_x = new Array();\
+ var bar_y = new Array();\
+ var lb = barchart%d.length;\
+ var idx = 0;\
+ for( var p = 0 ; p < lb ; p = p + 3 ){\
+  bar_x[idx] = x2px(barchart%d[p]);\
+  bar_y[idx] = y2px(barchart%d[p+1]);\
+  barcolor[idx] = barchart%d[p+2];\
+  idx++;\
+ };\
+ var dx = parseInt(0.6*xstep);\
+ ctx.globalAlpha = fill_opacity;\
+ for( var p = 0; p < idx ; p++ ){\
+  ctx.beginPath();\
+  ctx.strokeStyle = barcolor[p];\
+  ctx.fillStyle = barcolor[p];\
+  ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
+  ctx.fill();\
+  ctx.stroke();\
+  ctx.closePath();\
+ };\
+};\
+if( typeof legend%d  !== 'undefined' ){\
+ ctx.globalAlpha = 1.0;\
+ ctx.font = \"bold \"+font_size+\"px Ariel\";\
+ var y_offset = 2*font_size;\
+ var txt;var txt_size;\
+ var x_offset = xsize - 2*font_size;\
+ var l_length = legend%d.length;\
+ if( typeof legendcolors%d !== 'undefined' ){\
+  for(var p = 0 ; p < l_length ; p++){\
+    barcolor[p] = legendcolors%d[p];\
+  };\
+ }else{\
+  if( barcolor.length == 0 ){\
+   for(var p = 0 ; p < l_length ; p++){\
+    barcolor[p] = stroke_color;\
+   };\
+  };\
+ };\
+ for(var p = 0; p < l_length; p++){\
+  ctx.fillStyle = barcolor[p];\
+  txt = legend%d[p];\
+  txt_size = ctx.measureText(txt).width;\
+  ctx.fillText(legend%d[p],x_offset - txt_size, y_offset);\
+  y_offset = parseInt(y_offset + 1.5*font_size);\
+ };\
+};\
+ctx.restore();\
+return;\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_PIECHART:
+fprintf(js_include_file,"\n<!-- draw piechars -->\n\
+function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fill_opacity,font_size,font_family){\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ld = data_color_list.length;\
+ var sum = 0;\
+ var idx = 0;\
+ var colors = new Array();\
+ var data = new Array();\
+ for(var p = 0;p < ld; p = p + 2){\
+  data[idx] = parseFloat(data_color_list[p]);\
+  sum = sum + data[idx];\
+  colors[idx] = data_color_list[p+1];\
+  idx++;\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ var angle;\
+ var angle_end = 0;\
+ var offset = Math.PI / 2;\
+ ctx.globalAlpha = fill_opacity;\
+ for(var p=0; p < idx; p++){\
+  ctx.beginPath();\
+  ctx.fillStyle = colors[p];\
+  ctx.moveTo(x_center,y_center);\
+  angle = Math.PI * (2 * data[p] / sum);\
+  ctx.arc(x_center,y_center, radius, angle_end - offset, angle_end + angle - offset, false);\
+  ctx.lineTo(x_center, y_center);\
+  ctx.fill();\
+  ctx.closePath();\
+  angle_end  = angle_end + angle;\
+ };\
+ if( typeof legend%d  !== 'undefined' ){\
+  ctx.globalAlpha = 1.0;\
+  ctx.font = font_size+\"px \"+font_family;\
+  var y_offset = font_size; \
+  var x_offset = 0;\
+  var txt;var txt_size;\
+  for(var p = 0; p < idx; p++){\
+   ctx.fillStyle = colors[p];\
+   txt = legend%d[p];\
+   txt_size = ctx.measureText(txt).width;\
+   if( x_center + radius + txt_size > xsize ){ x_offset =  x_center + radius + txt_size - xsize;} else { x_offset = 0; };\
+   ctx.fillText(legend%d[p],x_center + radius - x_offset, y_center - radius + y_offset);\
+   y_offset = parseInt(y_offset + 1.5*font_size);\
+  };\
+ };\
+ ctx.restore();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+    
+    break;
+    case DRAW_ARCS:
+fprintf(js_include_file,"\n<!-- draw arcs -->\n\
+draw_arc = function(canvas_type,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
+ if( use_translate == 1 ){ctx.translate(vector[0],vector[1]);};\
+ if( use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
+ if(end < start){var tmp = end;end = start;start=tmp;};\
+ start=360-start;\
+ end=360-end;\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ if( use_filled == 1 ){\
+  ctx.beginPath();\
+  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
+  var x1 = xc + r*Math.cos(Math.PI*start/180);\
+  var y1 = yc + r*Math.sin(Math.PI*start/180);\
+  var x2 = xc + r*Math.cos(Math.PI*end/180);\
+  var y2 = yc + r*Math.sin(Math.PI*end/180);\
+  ctx.beginPath();\
+  ctx.moveTo(x1,y1);\
+  ctx.lineTo(xc,yc);\
+  ctx.moveTo(xc,yc);\
+  ctx.lineTo(x2,y2);\
+  ctx.closePath();\
+  ctx.arc(xc, yc, r, start*(Math.PI / 180), end*(Math.PI / 180),true);\
+  ctx.fill();\
+  ctx.stroke();\
+ }\
+ else\
+ {\
+    ctx.beginPath();\
+    ctx.arc(xc, yc, r, start*(Math.PI / 180), end*(Math.PI / 180),true);\
+    ctx.stroke();\
+    ctx.closePath();\
+ }\
+ ctx.restore();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    
+    break;
+    case DRAW_TEXTS:
+fprintf(js_include_file,"\n<!-- draw text -->\n\
+draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_translate,vector){\
+  var obj;\
+  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+  }\
+  else\
+  {\
+   obj = create_canvas%d(canvas_type,xsize,ysize);\
+  };\
+  var ctx = obj.getContext(\"2d\");\
+  if(angle2 == 0 && angle != 0){\
+   ctx.save();\
+   if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+   if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+  };\
+  if( font_family.indexOf('px') != null ){\
+   ctx.font = font_family;\
+  }\
+  else\
+  {\
+   ctx.font = \"+font_size+'px '+font_family \";\
+  };\
+  ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+  if(angle2 != 0){\
+   ctx.save();\
+   ctx.translate(x,y);\
+   ctx.rotate((360-angle2)*(Math.PI / 180));\
+   ctx.fillText(text,0,0);\
+   ctx.restore();\
+  }else{ctx.fillText(text,x,y);};\
+ ctx.restore();\
+ return;\
+ };\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    
+    break;
+    case DRAW_CURVE:
+fprintf(js_include_file,"\n<!-- draw curve -->\n\
+draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.beginPath();ctx.lineWidth = line_width;\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.moveTo(x2px(x_points[0]),y2px(y_points[0]));\
+ for(var p = 1 ; p < x_points.length ; p++){\
+  if( y2px(y_points[p]) > -5 && y2px(y_points[p]) < ysize+5 ){\
+  ctx.lineTo(x2px(x_points[p]),y2px(y_points[p]));\
+  }\
+  else\
+  {\
+   ctx.stroke();\
+   ctx.beginPath();\
+   p++;\
+   ctx.moveTo(x2px(x_points[p]),y2px(y_points[p]));\
+  };\
+ };\
+ ctx.stroke();\
+ ctx.restore();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_INPUTS:
+fprintf(js_include_file,"\n<!-- draw input fields -->\n\
+draw_inputs = function(root_id,input_cnt,x,y,size,readonly,style,value){\
+var canvas_div = document.getElementById(\"canvas_div\"+root_id);\
+var input = document.createElement(\"input\");\
+input.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
+input.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px;\"+style);\
+input.setAttribute(\"size\",size);\
+input.setAttribute(\"value\",value);\
+if( readonly == 0 ){ input.setAttribute(\"readonly\",\"readonly\");};\
+canvas_div.appendChild(input);\n};");
+    break;
+    
+    case DRAW_TEXTAREAS:
+fprintf(js_include_file,"\n<!-- draw text area inputfields -->\n\
+draw_textareas = function(root_id,input_cnt,x,y,cols,rows,readonly,style,value){\
+var canvas_div = document.getElementById(\"canvas_div\"+root_id);\
+var textarea = document.createElement(\"textarea\");\
+textarea.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
+textarea.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px;\"+style);\
+textarea.setAttribute(\"cols\",cols);\
+textarea.setAttribute(\"rows\",rows);\
+textarea.innerHTML = value;\
+canvas_div.appendChild(textarea);\n};");
+    break;
+    
+case DRAW_PIXELS:
+fprintf(js_include_file,"\n<!-- draw pixel -->\n\
+draw_setpixel = function(x,y,color,opacity,pixelsize){\
+ var canvas = create_canvas%d(10,xsize,ysize);\
+ var d = 0.5*pixelsize;\
+ var ctx = canvas.getContext(\"2d\");\
+ ctx.fillStyle = \"rgba(\"+color+\",\"+opacity+\")\";\
+ ctx.clearRect(0,0,xsize,ysize);\
+ for(var p=0; p<x.length;p++){\
+  ctx.fillRect( x2px(x[p]) - d, y2px(y[p]) - d , pixelsize, pixelsize );\
+ };\
+ ctx.fill();ctx.stroke();\
+};",canvas_root_id);
+break;
+
+case DRAW_CLOCK:
+fprintf(js_include_file,"\n<!-- begin command clock -->\n\
+var clock_canvas = create_canvas%d(%d,xsize,ysize);\
+var clock_ctx = clock_canvas.getContext(\"2d\");\
+var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color,bg_color,fg_color){\
+ clock_ctx.save();\
+ this.type = type || 0;\
+ this.interaction = interaction || 0;\
+ this.H = H || parseInt(110*(Math.random()));\
+ this.M = M || parseInt(590*(Math.random()));\
+ this.S = S || parseInt(590*(Math.random()));\
+ this.xc = xc || xsize/2;\
+ this.yc = yc || ysize/2;\
+ this.radius = radius || xsize/4;\
+ var font_size = parseInt(0.2*this.radius);\
+ this.H_color = h_color || \"blue\";\
+ this.M_color = m_color || \"blue\";\
+ this.S_color = s_color || \"blue\";\
+ this.fg_color = fg_color || \"red\";\
+ this.bg_color = bg_color || \"white\";\
+ clock_ctx.translate(this.xc,this.yc);\
+ clock_ctx.beginPath();\
+ clock_ctx.arc(0,0,this.radius,0,2*Math.PI,false);\
+ clock_ctx.fillStyle = this.bg_color;\
+ clock_ctx.fill();\
+ clock_ctx.closePath();\
+ clock_ctx.beginPath();\
+ clock_ctx.font = font_size+\"px Arial\";\
+ clock_ctx.fillStyle = this.fg_color;\
+ clock_ctx.textAlign = \"center\";\
+ clock_ctx.textBaseline = 'middle';\
+ var angle;var x1,y1,x2,y2;\
+ var angle_cos;var angle_sin;\
+ switch(type){\
+ case 0:clock_ctx.beginPath();\
+ for(var p = 1; p <= 12 ; p++){\
+  angle_cos = this.radius*(Math.cos(p * (Math.PI * 2) / 12));\
+  angle_sin = this.radius*(Math.sin(p * (Math.PI * 2) / 12));\
+  x1 = 0.8*angle_cos;y1 = 0.8*angle_sin;x2 = angle_cos;y2 = angle_sin;\
+  clock_ctx.moveTo(x1,y1);\
+  clock_ctx.lineTo(x2,y2);\
+ };\
+ for(var p = 1; p <= 60 ; p++){\
+  angle_cos = this.radius*(Math.cos(p * (Math.PI * 2) / 60));\
+  angle_sin = this.radius*(Math.sin(p * (Math.PI * 2) / 60));\
+  x1 = 0.9*angle_cos;y1 = 0.9*angle_sin;x2 = angle_cos;y2 = angle_sin;\
+  clock_ctx.moveTo(x1,y1);\
+  clock_ctx.lineTo(x2,y2);\
+ };\
+ clock_ctx.closePath();\
+ clock_ctx.stroke();\
+ break;\
+ case 1:\
+ for(var p= 1; p <= 12 ; p++){ angle = (p - 3) * (Math.PI * 2) / 12;x1 = 0.9*this.radius*Math.cos(angle);y1 = 0.9*this.radius*Math.sin(angle);clock_ctx.fillText(p, x1, y1);};break;\
+ case 2:for(var p= 1; p <= 12 ; p++){ angle = (p - 3) * (Math.PI * 2) / 12;x1 = 1.1*this.radius*Math.cos(angle);y1 = 1.1*this.radius*Math.sin(angle);clock_ctx.fillText(p, x1, y1);};\
+ clock_ctx.beginPath();\
+ for(var p = 1; p <= 12 ; p++){\
+  angle_cos = this.radius*(Math.cos(p * (Math.PI * 2) / 12));\
+  angle_sin = this.radius*(Math.sin(p * (Math.PI * 2) / 12));\
+  x1 = 0.9*angle_cos;y1 = 0.9*angle_sin;x2 = angle_cos;y2 = angle_sin;\
+  clock_ctx.moveTo(x1,y1);\
+  clock_ctx.lineTo(x2,y2);\
+ };\
+ for(var p = 1; p <= 60 ; p++){\
+  angle_cos = this.radius*(Math.cos(p * (Math.PI * 2) / 60));\
+  angle_sin = this.radius*(Math.sin(p * (Math.PI * 2) / 60));\
+  x1 = 0.95*angle_cos;y1 = 0.95*angle_sin;x2 = angle_cos;y2 = angle_sin;\
+  clock_ctx.moveTo(x1,y1);\
+  clock_ctx.lineTo(x2,y2);\
+ };\
+ clock_ctx.closePath();\
+ clock_ctx.stroke();\
+ break;\
+ };\
+ angle = (this.H - 3 + this.M/60 ) * 2 * Math.PI / 12;\
+ clock_ctx.rotate(angle);\
+ clock_ctx.beginPath();\
+ clock_ctx.moveTo(-3, -2);\
+ clock_ctx.lineTo(-3, 2);\
+ clock_ctx.lineTo(this.radius * 0.7, 1);\
+ clock_ctx.lineTo(this.radius  * 0.7, -1);\
+ clock_ctx.fillStyle = this.H_color;\
+ clock_ctx.fill();\
+ clock_ctx.rotate(-angle);\
+ angle = (this.M - 15 + this.S/60) * 2 * Math.PI / 60;\
+ clock_ctx.rotate(angle);\
+ clock_ctx.beginPath();\
+ clock_ctx.moveTo(-3, -2);\
+ clock_ctx.lineTo(-3, 2);\
+ clock_ctx.lineTo(this.radius  * 0.8, 1);\
+ clock_ctx.lineTo(this.radius  * 0.8, -1);\
+ clock_ctx.fillStyle = this.M_color;\
+ clock_ctx.fill();\
+ clock_ctx.rotate(-angle);\
+ angle = (this.S - 15) * 2 * Math.PI / 60;\
+ clock_ctx.rotate(angle);\
+ clock_ctx.beginPath();\
+ clock_ctx.moveTo(0,0);\
+ clock_ctx.lineTo(this.radius  * 0.95, 0);\
+ clock_ctx.lineTo(this.radius  * 0.9, -1);\
+ clock_ctx.strokeStyle = this.S_color;\
+ clock_ctx.stroke();\
+ clock_ctx.restore();\
+};\
+\n<!-- end command clock -->\n",canvas_root_id,CLOCK_CANVAS);
+break;
+
+case DRAW_LATTICE:
+fprintf(js_include_file,"\n<!-- draw lattice -->\n\
+draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,vector){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.fillStyle =\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ var radius = line_width;\
+ var x = 0;\
+ var y = 0;\
+ var x_step_px = xsize/(xmax-xmin);\
+ var y_step_px = ysize/(ymax-ymin);\
+ var xv1 = dx1*x_step_px;\
+ var yv1 = dy1*y_step_px;\
+ var xv2 = dx2*x_step_px;\
+ var yv2 = dy2*y_step_px;\
+ for(var p = 0; p < n1 ;p++){\
+  x = p*xv1 + x0;\
+  y = p*yv1 + y0;\
+  for(var c = 0; c < n2 ; c++){\
+   ctx.beginPath();\
+   ctx.arc(x+c*xv2,y+c*yv2,radius,0,2*Math.PI,false);\
+   ctx.fill();\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+ };\
+ ctx.restore();\
+ return;\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+
+    default:break;
+   }
+  }
+ }
+  return;
+}
+
+void check_string_length(int L){
+ if(L<1 || L > MAX_BUFFER-1){
+  canvas_error("problem with your arguments to command...");
+ }
+ return;
+}
+
+
+int get_token(FILE *infile){
+	int     c,i=0;
+	char    temp[MAX_INT], *input_type;
+	char	*line="line",
+	*audio="audio",
+	*blink="blink",
+	*arrowhead="arrowhead",
+	*crosshairsize="crosshairsize",
+	*crosshair="crosshair",
+	*crosshairs="crosshairs",
+	*audioobject="audioobject",
+	*style="style",
+	*mouse="mouse",
+	*userdraw="userdraw",
+	*highlight="highlight",
+	*http="http",
+	*rays="rays",
+	*dashtype="dashtype",
+	*dashed="dashed",
+	*filled="filled",
+	*lattice="lattice",
+	*parallel="parallel",
+	*segment="segment",
+	*dsegment="dsegment",
+	*seg="seg",
+	*bgimage="bgimage",
+	*bgcolor="bgcolor",
+	*strokecolor="strokecolor",
+	*backgroundimage="backgroundimage",
+	*text="text",
+	*textup="textup",
+	*mouseprecision="mouseprecision",
+	*precision="precision",
+	*plotsteps="plotsteps",
+	*plotstep="plotstep",
+	*tsteps="tsteps",
+	*curve="curve",
+	*dcurve="dcurve",
+	*plot="plot",
+	*dplot="dplot",
+	*fontsize="fontsize",
+	*fontcolor="fontcolor",
+	*axis="axis",
+	*axisnumbering="axisnumbering",
+	*axisnumbers="axisnumbers",
+	*arrow="arrow",
+	*darrow="darrow",
+	*arrow2="arrow2",
+	*darrow2="darrow2",
+	*zoom="zoom",
+	*grid="grid",
+	*hline="hline",
+	*drag="drag",
+	*horizontalline="horizontalline",
+	*vline="vline",
+	*verticalline="verticalline",
+	*triangle="triangle",
+	*ftriangle="ftriangle",
+	*mathml="mathml",
+	*html="html",
+	*input="input",
+	*button="button",
+	*inputstyle="inputstyle",
+	*textarea="textarea",
+	*trange="trange",
+	*ranget="ranget",
+	*xrange="xrange",
+	*yrange="yrange",
+	*rangex="rangex",
+	*rangey="rangey",
+	*polyline="polyline",
+	*lines="lines",
+	*poly="poly",
+	*polygon="polygon",
+	*fpolygon="fpolygon",
+	*fpoly="fpoly",
+	*filledpoly="filledpoly",
+	*filledpolygon="filledpolygon",
+	*rect="rect",
+	*frect="frect",
+	*rectangle="rectangle",
+	*frectangle="frectangle",
+	*square="square",
+	*fsquare="fsquare",
+	*dline="dline",
+	*arc="arc",
+	*filledarc="filledarc",
+	*size="size",
+	*string="string",
+	*stringup="stringup",
+	*copy="copy",
+	*copyresized="copyresized",
+	*opacity="opacity",
+	*transparent="transparent",
+	*fill="fill",
+	*slider="slider",
+	*point="point",
+	*points="points",
+	*linewidth="linewidth",
+	*circle="circle",
+	*fcircle="fcircle",
+	*disk="disk",
+	*comment="#",
+	*end="end",
+	*ellipse="ellipse",
+	*fellipse="fellipse",
+	*rotate="rotate",
+	*fontfamily="fontfamily",
+	*fillcolor="fillcolor",
+	*clicktile="clicktile",
+	*clicktile_colors="clicktile_colors",
+	*translation="translation",
+	*translate="translate",
+	*killtranslation="killtranslation",
+	*killtranslate="killtranslate",
+	*onclick="onclick",
+	*roundrect="roundrect",
+	*froundrect="froundrect",
+	*roundrectangle="roundrectangle",
+	*patternfill="patternfill",
+	*hatchfill="hatchfill",
+	*diafill="diafill",
+	*dotfill="dotfill",
+	*gridfill="gridfill",
+	*imagefill="imagefill",
+	*logbase="logbase",
+	*xlogscale="xlogscale",
+	*ylogscale="ylogscale",
+	*xylogscale="xylogscale",
+	*intooltip="intooltip",
+	*replyformat="replyformat",
+	*floodfill="floodfill",
+	*filltoborder="filltoborder",
+	*clickfill="clickfill",
+	*debug="debug",
+	*setpixel="setpixel",
+	*pixels="pixels",
+	*pixelsize="pixelsize",
+	*clickfillmarge="clickfillmarge",
+	*xaxis="xaxis",
+	*yaxis="yaxis",
+	*xaxistext="xaxistext",
+	*yaxistext="yaxistext",
+	*piechart="piechart",
+	*legend="legend",
+	*legendcolors="legendcolors",
+	*xlabel="xlabel",
+	*ylabel="ylabel",
+	*barchart="barchart",
+	*linegraph="linegraph",
+	*clock="clock",
+	*animate="animate",
+	*video="video",
+	*status="status",
+	*snaptogrid="snaptogrid";
+
+	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
+	    if( i == 0 && (c == ' ' || c == '\t') ){
+	continue; /* white spaces or tabs allowed before first command identifier */
+	    }
+	    else
+	    {
+	if( c == ' ' || c == '\t' ){
+	    break;
+	}
+	else
+	{
+	    temp[i] = c;
+	    if(i > MAX_INT - 2){canvas_error("command string too long !");}
+	    i++;
+	}
+	    }
+	    if(temp[0] == '#') break;
+	}
+	if (c == EOF) finished = 1;
+
+	if (c == '\n' || c == '\r') {
+	line_number++;
+	if (i == 0) { return EMPTY; }
+	} else if (c == EOF) {
+	return 0;
+	}
+
+	temp[i]='\0';
+	input_type=(char*)my_newmem(strlen(temp));
+	snprintf(input_type,sizeof(temp),"%s",temp);
+
+	if( strcmp(input_type, size) == 0 ){
+	free(input_type);
+	return SIZE;
+	}
+	if( strcmp(input_type, xrange) == 0 ){
+	free(input_type);
+	return XRANGE;
+	}
+	if( strcmp(input_type, rangex) == 0 ){
+	free(input_type);
+	return XRANGE;
+	}
+	if( strcmp(input_type, trange) == 0 ){
+	free(input_type);
+	return TRANGE;
+	}
+	if( strcmp(input_type, ranget) == 0 ){
+	free(input_type);
+	return TRANGE;
+	}
+	if( strcmp(input_type, yrange) == 0 ){
+	free(input_type);
+	return YRANGE;
+	}
+	if( strcmp(input_type, rangey) == 0 ){
+	free(input_type);
+	return YRANGE;
+	}
+	if( strcmp(input_type, linewidth) == 0 ){
+	free(input_type);
+	return LINEWIDTH;
+	}
+	if( strcmp(input_type, dashed) == 0 ){
+	free(input_type);
+	return DASHED;
+	}
+	if( strcmp(input_type, dashtype) == 0 ){
+	free(input_type);
+	return DASHTYPE;
+	}
+	if( strcmp(input_type, axisnumbering) == 0 ){
+	free(input_type);
+	return AXIS_NUMBERING;
+	}
+	if( strcmp(input_type, axisnumbers) == 0 ){
+	free(input_type);
+	return AXIS_NUMBERING;
+	}
+	if( strcmp(input_type, axis) == 0 ){
+	free(input_type);
+	return AXIS;
+	}
+	if( strcmp(input_type, grid) == 0 ){
+	free(input_type);
+	return GRID;
+	}
+	if( strcmp(input_type, parallel) == 0 ){
+	free(input_type);
+	return PARALLEL;
+	}
+	if( strcmp(input_type, hline) == 0 ||  strcmp(input_type, horizontalline) == 0 ){
+	free(input_type);
+	return HLINE;
+	}
+	if( strcmp(input_type, vline) == 0 ||  strcmp(input_type, verticalline) == 0 ){
+	free(input_type);
+	return VLINE;
+	}
+	if( strcmp(input_type, line) == 0 ){
+	free(input_type);
+	return LINE;
+	}
+	if( strcmp(input_type, seg) == 0 ||  strcmp(input_type, segment) == 0 ){
+	free(input_type);
+	return SEGMENT;
+	}
+	if( strcmp(input_type, dsegment) == 0 ){
+	free(input_type);
+	use_dashed = TRUE;
+	return SEGMENT;
+	}
+	if( strcmp(input_type, crosshairsize) == 0 ){
+	free(input_type);
+	return CROSSHAIRSIZE;
+	}
+	if( strcmp(input_type, arrowhead) == 0 ){
+	free(input_type);
+	return ARROWHEAD;
+	}
+	if( strcmp(input_type, crosshairs) == 0 ){
+	free(input_type);
+	return CROSSHAIRS;
+	}
+	if( strcmp(input_type, crosshair) == 0 ){
+	free(input_type);
+	return CROSSHAIR;
+	}
+	if( strcmp(input_type, onclick) == 0 ){
+	free(input_type);
+	return ONCLICK;
+	}
+	if( strcmp(input_type, drag) == 0 ){
+	free(input_type);
+	return DRAG;
+	}
+	if( strcmp(input_type, userdraw) == 0 ){
+	free(input_type);
+	return USERDRAW;
+	}
+	if( strcmp(input_type, highlight) == 0 || strcmp(input_type, style) == 0 ){
+	free(input_type);
+	return STYLE;
+	}
+	if( strcmp(input_type, fillcolor) == 0 ){
+	free(input_type);
+	return FILLCOLOR;
+	}
+	if( strcmp(input_type, strokecolor) == 0 ){
+	free(input_type);
+	return STROKECOLOR;
+	}
+	if( strcmp(input_type, filled) == 0  ){
+	free(input_type);
+	return FILLED;
+	}
+	if( strcmp(input_type, http) == 0 ){
+	free(input_type);
+	return HTTP;
+	}
+	if( strcmp(input_type, rays) == 0 ){
+	free(input_type);
+	return RAYS;
+	}
+	if( strcmp(input_type, lattice) == 0 ){
+	free(input_type);
+	return LATTICE;
+	}
+	if( strcmp(input_type, bgimage) == 0 ){
+	free(input_type);
+	return BGIMAGE;
+	}
+	if( strcmp(input_type, bgcolor) == 0 ){
+	free(input_type);
+	return BGCOLOR;
+	}
+	if( strcmp(input_type, backgroundimage) == 0 ){
+	free(input_type);
+	return BGIMAGE;
+	}
+	if( strcmp(input_type, text) == 0 ){
+	free(input_type);
+	return FLY_TEXT;
+	}
+	if( strcmp(input_type, textup) == 0 ){
+	free(input_type);
+	return FLY_TEXTUP;
+	}
+	if( strcmp(input_type, mouse) == 0 ){
+	free(input_type);
+	return MOUSE;
+	}
+	if( strcmp(input_type, mouseprecision) == 0 ){
+	free(input_type);
+	return MOUSE_PRECISION;
+	}
+	if( strcmp(input_type, precision) == 0 ){
+	free(input_type);
+	return MOUSE_PRECISION;
+	}
+	if( strcmp(input_type, curve) == 0 ){
+	free(input_type);
+	return CURVE;
+	}
+	if( strcmp(input_type, dcurve) == 0 ){
+	free(input_type);
+	return CURVE;
+	}
+	if( strcmp(input_type, plot) == 0 ){
+	free(input_type);
+	return CURVE;
+	}
+	if( strcmp(input_type, dplot) == 0 ){
+	free(input_type);
+	return CURVE;
+	}
+	if( strcmp(input_type, plotsteps) == 0 ){
+	free(input_type);
+	return PLOTSTEPS;
+	}
+	if( strcmp(input_type, plotstep) == 0 ){
+	free(input_type);
+	return PLOTSTEPS;
+	}
+	if( strcmp(input_type, tsteps) == 0 ){
+	free(input_type);
+	return PLOTSTEPS;
+	}
+	if( strcmp(input_type, fontsize) == 0 ){
+	free(input_type);
+	return FONTSIZE;
+	}
+	if( strcmp(input_type, fontcolor) == 0 ){
+	free(input_type);
+	return FONTCOLOR;
+	}
+	if( strcmp(input_type, arrow) == 0 ){
+	free(input_type);
+	return ARROW;
+	}
+	if( strcmp(input_type, arrow2) == 0 ){
+	free(input_type);
+	return ARROW2;
+	}
+	if( strcmp(input_type, darrow) == 0 ){
+	free(input_type);
+	return ARROW;
+	}
+	if( strcmp(input_type, darrow2) == 0 ){
+	free(input_type);
+	use_dashed = TRUE;
+	return ARROW2;
+	}
+	if( strcmp(input_type, zoom) == 0 ){
+	free(input_type);
+	return ZOOM;
+	}
+	if( strcmp(input_type, triangle) == 0 ){
+	free(input_type);
+	return TRIANGLE;
+	}
+	if( strcmp(input_type, ftriangle) == 0 ){
+	free(input_type);
+	use_filled = TRUE;
+	return TRIANGLE;
+	}
+	if( strcmp(input_type, input) == 0 ){
+	free(input_type);
+	return INPUT;
+	}
+	if( strcmp(input_type, inputstyle) == 0 ){
+	free(input_type);
+	return INPUTSTYLE;
+	}
+	if( strcmp(input_type, textarea) == 0 ){
+	free(input_type);
+	return TEXTAREA;
+	}
+	if( strcmp(input_type, mathml) == 0 ){
+	free(input_type);
+	return MATHML;
+	}
+	if( strcmp(input_type, html) == 0 ){
+	free(input_type);
+	return MATHML;
+	}
+	if( strcmp(input_type, fontfamily) == 0 ){
+	free(input_type);
+	return FONTFAMILY;
+	}
+	if( strcmp(input_type, lines) == 0  ||  strcmp(input_type, polyline) == 0 ){
+	free(input_type);
+	return POLYLINE;
+	}
+	if( strcmp(input_type, rect) == 0  ||  strcmp(input_type, rectangle) == 0 ){
+	free(input_type);
+	return RECT;
+	}
+	if( strcmp(input_type, roundrect) == 0  ||  strcmp(input_type, roundrectangle) == 0 ){
+	free(input_type);
+	return ROUNDRECT;
+	}
+	if( strcmp(input_type, froundrect) == 0 ){
+	free(input_type);
+	use_filled = TRUE;
+	return ROUNDRECT;
+	}
+	if( strcmp(input_type, square) == 0 ){
+	free(input_type);
+	return SQUARE;
+	}
+	if( strcmp(input_type, fsquare) == 0 ){
+	free(input_type);
+	use_filled = TRUE;
+	return SQUARE;
+	}
+	if( strcmp(input_type, dline) == 0 ){
+	use_dashed = TRUE;
+	free(input_type);
+	return LINE;
+	}
+	if( strcmp(input_type, frect) == 0 || strcmp(input_type, frectangle) == 0 ){
+	use_filled = TRUE;
+	free(input_type);
+	return RECT;
+	}
+	if( strcmp(input_type, fcircle) == 0  ||  strcmp(input_type, disk) == 0 ){
+	use_filled = TRUE;
+	free(input_type);
+	return CIRCLE;
+	}
+	if( strcmp(input_type, circle) == 0 ){
+	free(input_type);
+	return CIRCLE;
+	}
+	if( strcmp(input_type, point) == 0 ){
+	free(input_type);
+	return POINT;
+	}
+	if( strcmp(input_type, points) == 0 ){
+	free(input_type);
+	return POINTS;
+	}
+	if( strcmp(input_type, filledarc) == 0 ){
+	use_filled = TRUE;
+	free(input_type);
+	return ARC;
+	}
+	if( strcmp(input_type, arc) == 0 ){
+	free(input_type);
+	return ARC;
+	}
+	if( strcmp(input_type, poly) == 0 ||  strcmp(input_type, polygon) == 0 ){
+	free(input_type);
+	return POLY;
+	}
+	if( strcmp(input_type, fpoly) == 0 ||  strcmp(input_type, filledpoly) == 0 || strcmp(input_type,filledpolygon) == 0  || strcmp(input_type,fpolygon) == 0  ){
+	use_filled = TRUE;
+	free(input_type);
+	return POLY;
+	}
+	if( strcmp(input_type, ellipse) == 0){
+	free(input_type);
+	return ELLIPSE;
+	}
+	if( strcmp(input_type, fill) == 0 ){
+	free(input_type);
+	return FLOODFILL;
+	}
+	if( strcmp(input_type, string) == 0 ){
+	free(input_type);
+	return STRING;
+	}
+	if( strcmp(input_type, stringup) == 0 ){
+	free(input_type);
+	return STRINGUP;
+	}
+	if( strcmp(input_type, opacity) == 0 ){
+	free(input_type);
+	return OPACITY;
+	}
+	if( strcmp(input_type, comment) == 0){
+	free(input_type);
+	return COMMENT;
+	}
+	if( strcmp(input_type, end) == 0){
+	free(input_type);
+	return END;
+	}
+	if( strcmp(input_type, fellipse) == 0){
+	free(input_type);
+	use_filled = TRUE;
+	return ELLIPSE;
+	}	
+	if( strcmp(input_type, blink) == 0 ){
+	free(input_type);
+	return BLINK;
+	}
+	if( strcmp(input_type, button) == 0){
+	free(input_type);
+	return BUTTON;
+	}
+	if( strcmp(input_type, translation) == 0 ||  strcmp(input_type, translate) == 0  ){
+	free(input_type);
+	return TRANSLATION;
+	}
+	if( strcmp(input_type, killtranslation) == 0 ||  strcmp(input_type, killtranslate) == 0){
+	free(input_type);
+	return KILLTRANSLATION;
+	}
+	if( strcmp(input_type, rotate) == 0){
+	free(input_type);
+	return ROTATE;
+	}
+	if( strcmp(input_type, audio) == 0 ){
+	free(input_type);
+	return AUDIO;
+	}
+	if( strcmp(input_type, audioobject) == 0 ){
+	free(input_type);
+	return AUDIOOBJECT;
+	}
+	if( strcmp(input_type, slider) == 0 ){
+	free(input_type);
+	return SLIDER;
+	}
+	if( strcmp(input_type, copy) == 0 ){
+	free(input_type);
+	return COPY;
+	}
+	if( strcmp(input_type, copyresized) == 0 ){
+	free(input_type);
+	return COPYRESIZED;
+	}
+	if( strcmp(input_type, patternfill) == 0 ){
+	free(input_type);
+	return PATTERNFILL;
+	}
+	if( strcmp(input_type, hatchfill) == 0 ){
+	free(input_type);
+	return HATCHFILL;
+	}
+	if( strcmp(input_type, diafill) == 0 ){
+	free(input_type);
+	return DIAFILL;
+	}
+	if( strcmp(input_type, dotfill) == 0 ){
+	free(input_type);
+	return DOTFILL;
+	}
+	if( strcmp(input_type, gridfill) == 0 ){
+	free(input_type);
+	return GRIDFILL;
+	}
+	if( strcmp(input_type, imagefill) == 0 ){
+	free(input_type);
+	return IMAGEFILL;
+	}
+	if( strcmp(input_type, clicktile_colors) == 0 ){
+	free(input_type);
+	return CLICKTILE_COLORS;
+	}
+	if( strcmp(input_type, clicktile) == 0 ){
+	free(input_type);
+	return CLICKTILE;
+	}
+	if( strcmp(input_type, xlogscale) == 0 ){
+	free(input_type);
+	return XLOGSCALE;
+	}
+	if( strcmp(input_type, ylogscale) == 0 ){
+	free(input_type);
+	return YLOGSCALE;
+	}
+	if( strcmp(input_type, xylogscale) == 0 ){
+	free(input_type);
+	return XYLOGSCALE;
+	}
+	if( strcmp(input_type, ylogscale) == 0 ){
+	free(input_type);
+	return YLOGSCALE;
+	}
+	if( strcmp(input_type, logbase) == 0 ){
+	free(input_type);
+	return LOGBASE;
+	}
+	if( strcmp(input_type, intooltip) == 0 ){
+	free(input_type);
+	return INTOOLTIP;
+	}
+	if( strcmp(input_type,video) == 0 ){
+	free(input_type);
+	return VIDEO;
+	}
+	if( strcmp(input_type,floodfill) == 0 || strcmp(input_type,fill) == 0 ){
+	free(input_type);
+	return FLOODFILL;
+	}	
+	if( strcmp(input_type,filltoborder) == 0 ){
+	free(input_type);
+	return FILLTOBORDER;
+	}	
+	if( strcmp(input_type,clickfill) == 0 ){
+	free(input_type);
+	return CLICKFILL;
+	}	
+	if( strcmp(input_type, replyformat) == 0 ){
+	free(input_type);
+	return REPLYFORMAT;
+	}
+	if( strcmp(input_type, debug) == 0 ){
+	free(input_type);
+	return DEBUG;
+	}
+	if( strcmp(input_type, pixelsize) == 0 ){
+	free(input_type);
+	return PIXELSIZE;
+	}
+	if( strcmp(input_type, setpixel) == 0 ){
+	free(input_type);
+	return SETPIXEL;
+	}
+	if( strcmp(input_type, pixels) == 0 ){
+	free(input_type);
+	return PIXELS;
+	}
+	if( strcmp(input_type, clickfillmarge) == 0 ){
+	free(input_type);
+	return CLICKFILLMARGE;
+	}
+	if( strcmp(input_type, xaxis) == 0 || strcmp(input_type, xaxistext) == 0 ){
+	free(input_type);
+	return X_AXIS_STRINGS;
+	}
+	if( strcmp(input_type, yaxis) == 0  ||  strcmp(input_type, yaxistext) == 0 ){
+	free(input_type);
+	return Y_AXIS_STRINGS;
+	}
+	if( strcmp(input_type, piechart) == 0  ){
+	free(input_type);
+	return PIECHART;
+	}
+	if( strcmp(input_type, barchart) == 0  ){
+	free(input_type);
+	return BARCHART;
+	}
+	if( strcmp(input_type, linegraph) == 0  ){
+	free(input_type);
+	return LINEGRAPH;
+	}
+	if( strcmp(input_type, clock) == 0  ){
+	free(input_type);
+	return CLOCK;
+	}
+	if( strcmp(input_type, legend) == 0  ){
+	free(input_type);
+	return LEGEND;
+	}
+	if( strcmp(input_type, legendcolors) == 0  ){
+	free(input_type);
+	return LEGENDCOLORS;
+	}
+	if( strcmp(input_type, xlabel) == 0  ){
+	free(input_type);
+	return XLABEL;
+	}
+	if( strcmp(input_type, ylabel) == 0  ){
+	free(input_type);
+	return YLABEL;
+	}
+	if( strcmp(input_type, animate) == 0  ){
+	free(input_type);
+	return ANIMATE;
+	}
+	/* these are bitmap related flydraw commmands...must be removed. eventually */
+	if( strcmp(input_type, transparent) == 0 ){
+	free(input_type);
+	return TRANSPARENT;
+	}
+	if( strcmp(input_type, status) == 0 ){
+	free(input_type);
+	return STATUS;
+	}
+	if( strcmp(input_type, snaptogrid) == 0 ){
+	free(input_type);
+	return SNAPTOGRID;
+	}
+	free(input_type);
+	ungetc(c,infile);
+	return 0;
+}
+

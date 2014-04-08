@@ -24,7 +24,7 @@
 /***************** Nothing should need change hereafter *****************/
 
 #include "../Lib/libwims.h"
-#include "../Flydraw/gd.h"
+#include <gd.h>
 
 #define VLEN 1024
 

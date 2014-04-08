@@ -31,12 +31,13 @@ moneyprint=moneyprint
 toascii=toascii
 scienceprint=scienceprint
 sigdigits=sigdigits
+canvasdraw=canvasdraw
 
 OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii scienceprint sigdigits
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii scienceprint sigdigits canvasdraw
 
 maintainer:: java
 
@@ -91,6 +92,11 @@ scienceprint::
 sigdigits::
 	cd sigdigits ; make && $(STRIP) sigdigits
 	cp $@/sigdigits $(OTHERDIR)
+
+canvasdraw::
+	cd canvasdraw ; make
+	cp $@/canvasdraw $(OTHERDIR)
+
 java::
 	cd authors/jm.evers/applets ; make && make install
 	cd applets ; make && make install
@@ -111,6 +117,7 @@ clean:
 	cd toascii ; make clean
 	cd scienceprint ; make clean
 	cd sigdigits ; make clean
+	cd canvasdraw ; make clean
 
 distclean: clean
 	rm -f $(progs2)
@@ -127,6 +134,7 @@ distclean: clean
 	cd toascii ; make clean
 	cd scienceprint ; make clean
 	cd sigdigits ; make clean
+	cd canvasdraw; make distclean
 	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(lceb) $(crossword) $(moneyprint) $(toascii) $(scienceprint) $(sigdigits)
 	cd $(BINDIR); rm -f $(Homebin)
 	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)

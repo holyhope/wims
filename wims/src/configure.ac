@@ -232,8 +232,7 @@ AC_SUBST(FLEXLIB)
 AC_SUBST(GDLIB)
 AC_SUBST(CRYPTLIB)
 
-AC_CONFIG_FILES([Flydraw/gd/Makefile
-                 Flydraw/Makefile
+AC_CONFIG_FILES([Flydraw/Makefile
                  Interfaces/Makefile
                  Lib/Makefile
                  Makefile
@@ -252,6 +251,7 @@ AC_CONFIG_FILES([Flydraw/gd/Makefile
                  Misc/toascii/Makefile
                  Misc/scienceprint/Makefile
                  Misc/sigdigits/Makefile
+                 Misc/canvasdraw/Makefile
                  Misc/whirlgif/Makefile
                  Misc/authors/jm.evers/applets/Makefile
                  Module/Makefile

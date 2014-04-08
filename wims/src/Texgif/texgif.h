@@ -28,7 +28,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <ctype.h>
-#include "gd.h"
+#include <gd.h>
 
 #define MAX_LINELEN		16383
 #define FILE_LENGTH_LIMIT	(1*1024*1024)

@@ -1,0 +1,1337 @@
+
+<html>
+<head></head>
+<body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
+<center><h3>Implemented canvasdraw commands (Sat Apr  5 09:08:38 CEST 2014)</h3></center>
+<ul>
+
+<li><span style="color:red">canvasdraw
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li>
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">size width,height
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">set canvas size in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">mandatory first command
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> xrange xmin,xmax
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> if not given: 0,xsize (eg in pixels)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> yrange ymin,ymax
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> if not given 0,ysize (eg in pixels)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> trange tmin,tmax
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default -2,2
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> linewidth int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default 1
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> arrowhead int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default 8 (pixels)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> crosshairsize int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default 10 (px)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> crosshair x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a single crosshair point at (x;y) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'crosshairsize int' and / or 'linewidth int' to adust
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> crosshairs color,x1,y1,x2,y2,...,x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw multiple crosshair points at given coordinates in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'crosshairsize int' and / or 'linewidth int' to adust
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> point x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a single point at (x;y) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> points color x1,y1,x2,y2,...,x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw multiple points at given coordinates in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> segment x1,y1,x2,y2,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> line x1,y1,x2,y2,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a line through points (x1:y1)--(x2:y2) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> hline x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a horizontal line through point (x:y) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> vline x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a vertical line through point (x:y) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> square x,y,side,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a square with left top corner (x:y) with side 'side' in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fsquare x,y,side,color' for a filled square
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'square x,y,side,color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' before 'fsquare' to set the fill colour.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> roundrect x1,y1,x2,y2,radius,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' before 'froundrect' to set the fill colour.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> rect x1,y1,x2,y2,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use command 'rect x1,y1,x2,y2,color' for a filled rectangle
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'rect x1,y1,x2,y2,color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' before 'frect' to set the fill colour.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> polyline color,x1,y1,x2,y2...x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> poly color,x1,y1,x2,y2...x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw closed polygon
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fpoly' to fill it, use command 'fillcolor color' to set the fill color
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> arc xc,yc,width,height,start_angle,end_angle,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> attention: width == height == radius in pixels)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> ellipse xc,yc,radius_x,radius_y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> a ellipse with center xc/yc in x/y-range
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> radius_x and radius_y are in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> dashtype int ,int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> When dashed is set, the objects will be drawn with this dashtyp
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default value "dashtype 2,2"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> circle xc,yc,width (2*r in pixels),color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> rays color,xc,yc,x1,y1,x2,y2,x3,y3...x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw rays in color 'color' and center (xc:yc)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable or onclick (the complete object, not an indiviual ray !)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> arrow x1,y1,x2,y2,h,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a single headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> arrow2 x1,y1,x2,y2,h,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw a double headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'arrowhead int' to adjust the arrow head size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">triangle x1,y1,x2,y2,x3,y3,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">may be set draggable / onclic
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">can not be set "onclick" or "drag xy"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> snaptogrid
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to xmajor / ymajor grid
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if xminor / yminor is defined, the drawing will snap to xminor/yminor
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> userdraw object_type,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>circle</li><li>circles</li><li>arrow</li><li>arrows</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "filled", "opacity int,int" and "fillcolor color" to trigger coloured filling of fillable objects
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "dashed" and/or "dashtype int,int" to trigger dashing
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "debug" to view the output of javascript funcion read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be combined with onclick or drag xy of other components of flyscript objects (although not very usefull...)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> plotsteps a_number
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default 150
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use with care !
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">fontsize font_size
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">default value 12
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">fontcolor color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">color: hexcolor or colorname
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">default: black
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">example usage: x/y-axis text
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">animate type
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">type may be "point" (nothing else , yet...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">will animate a point on the next plot/curve command
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the curve will not be draw
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">moves repeatedly from xmin to xmax
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">curve color,formula(x)
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">plot color,formula(x)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use command trange before command curve / plot (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use command "precision" to increase the number of digits of the plotted points
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use command "plotsteps" to increase / decrease the amount of plotted points (default 150)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> text fontcolor,x,y,font,text_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> font may be described by keywords : giant,huge,normal,small,tiny
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize' to increase base fontsize for the keywords
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set "onclick" or "drag xy"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> backwards compatible with flydraw
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> unicode supported: text red,0,0,huge,\u2232
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'string' and 'fontfamily' for a more fine grained control over html5 canvas text element
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> Avoid mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> textup fontcolor,x,y,font,text_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> font may be described by keywords : giant,huge,normal,small,tiny
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize' to increase base fontsize for the keywords
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> backwards compatible with flydraw
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> unicode supported: textup red,0,0,huge,\u2232
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'stringup' and 'fontfamily' for a more fine grained control over html5 canvas text element
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> Avoid mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> fontfamily font_description
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> set the font family; for browsers that support it
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> font_description: Ariel ,Courier, Helvetica etc
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case commands<br /> 'string color,x,y,the string'<br /> 'stringup color,x,y,rotation,the string'<br />fontfamily can be something like:<br />italic 34px Ariel
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use correct syntax : 'font style' 'font size'px 'fontfamily'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> stringup color,x,y,rotation_degrees,the text string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> unicode supported: stringup red,0,0,45,\u2232
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use a command like 'fontfamily bold 34px Courier' <br />to set fonts on browser that support font change
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> string color,x,y,the text string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> may be set "onclick" or "drag xy"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> unicode supported: string red,0,0,\u2232
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> mathml x1,y1,x2,y2,mathml_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br />attention: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">http x1,y1,x2,y2,http://some_adress.com
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">do not use interactivity (or mouse) if the mouse needs to be active in the iframe
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">can not be 'set onclick' or 'drag xy'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> html x1,y1,x2,y2,html_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> all tags are allowed
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can be set onclick <br />(dragging not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if inputfields are incorporated (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_canvas(); <br />If other inputfields (command input / command textarea) or userdraw is performed, these values will NOT be read as well.
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these x-axis values in stead of default xmin...xmax
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if the 'x-axis words' are to big amd will overlap, a simple alternating offset will be applied
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />size 400,400<br />xrange -5*pi,5*pi<br />yrange -100,500<br />axis<br />xaxis -4*pi:-4\u03c0:-3*pi:-3\u03c0:-2*pi:-2\u03c0:-1*pi:-\u03c0:0:0:pi:\u03c0:2*pi:2\u03c01:3*pi:3\u03c0:4*pi:4\u03c0<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid pi,1,grey,1,3,6,grey
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these y-axis values in stead of default ymin...ymax
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> axisnumbering
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no aguments required
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> axis
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no aguments required
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> grid step_x,step_y,gridcolor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if keywords "axis" or "axisnumbering" are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use commands 'xlabel some_string' and/or 'ylabel some_string' to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> see commands "xaxis" or "xaxistext", "yaxis" or "yaxistext" to set tailormade values on axis (the used font is set by command fontfamily; default '12px Ariel')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> see command "legend" to set a legend for the graph ;<br />use command "fontsize" to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> opacity 0-255,0-255
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">rotate rotation_angle
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">translation tx,ty
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> keyword "dashed"
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> next object will be drawn with a dashed line
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> change dashing scheme by using command "dashtype int,int)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> keyword "filled"
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> the next 'fillable' object (only) will be filled
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "fillcolor color" to set fillcolor
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "opacity 0-255,0-255" to set stroke and fill-opacity
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "fill x,y,color" or "floodfill x,y,color" to fill the space around (x;y) with color <br />pixel operation implemented in javascript: use with care !
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">highlight color,opacity,linewidth
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> NOT IMPLEMENTED
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "onclick" : when the object receives a userclick it will increase it's linewidth
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> fillcolor colorname or #hex
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> Set the color for a filled object : mainly used for command 'userdraw obj,stroke_color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> All fillable massive object will have a fillcolor == strokecolor (just to be compatible with flydraw...)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> strokecolor colorname or #hex
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> to be used for commands that do not supply a color argument (like command 'linegraph')
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">bgimage image_location
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">use an image as background .<br />(we use the background of 'canvas_div' )
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the background image will be resized to match "width = xsize" and "height = ysize"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">bgcolor colorname or #hex
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">use this color as background of the "div" containing the canvas(es)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> copy x,y,x1,y1,x2,y2,[filename URL]
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> [filename] is the URL of the image
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if you want to draw / userdraw on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if you want to draw / userdraw on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> inputstyle style_description
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> example: inputstyle color:blue;font-weight:bold;font-style:italic;font-size:16pt
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> input x,y,size,editable,value
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> to set inputfield "readonly", use editable = 0
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only active inputfields (editable = 1) will be read with read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be further controlled by "inputstyle" (inputcss is not yet implemented...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> textarea x,y,cols,rows,readonly,value
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> may be further controlled by "inputstyle"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> precision int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> 10 = 1 decimal ; 100 = 2 decimals etc
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be used / changed before every object
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> zoom button_color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> introduce a controlpanel at the lower right corner
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> giving six 15x15pixel 'active' rectangle areas<br />(for x,leftarrow,rightarrow,uparrow,downarrow and a '-' and a '+' sign ) for zooming and/or panning of the image
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> command 'opacity' may be used to set stroke_opacity of 'buttons
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: only objects that may be set draggable / clickable will be zoomed / panned
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> onclick
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no arguments
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: not all objects may be set clickable
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> drag [x][y][xy]
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> the next object will be draggable in x / y / xy direction
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the displacement can be read by 'javascript:read_dragdrop();'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> blink time(seconds)
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> NOT IMPLEMETED -YET
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> mouse color,fontsize
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will display the cursor coordinates in 'color' and 'font size'<br /> using default fontfamily Ariel
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> intooltip link_text
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> link_text is a single line (span-element)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> link_text may also be an image URL http://some_server/images/my_image.png
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> link_text may contain HTML markup
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the canvas will be displayed in a tooltip on 'link_text'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link test will alos be shown with this bgcolor.
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> audio x,y,w,h,loop,visible,audiofile location
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x,y : left top corner of audio element (in xrange / yrange)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> w,y : width and height in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> loop : 0 or 1 ( 1 = loop audio fragment)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> visible : 0 or 1 (1 = show controls)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> audio format may be in *.mp3 or *.ogg
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> If you are using *.mp3 : be aware that FireFox will not (never) play this ! (Pattented format)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if you are using *.ogg : be aware that Microsoft based systems not support it natively
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> To avoid problems supply both types (mp3 and ogg) of audiofiles.<br />the program will use both as source tag
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example: upload both audio1.ogg and audio1.mp3 to http://server/files/<br />audio 0,0,http://server/files/audio1.mp3<br />svdraw will copy html-tag audio1.mp3 to audio1.ogg<br /> and the browser will play the compatible file (audio1.ogg or audio1.mp3)<br />
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> video x,y,w,h,videofile location
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x,y : left top corner of audio element (in xrange / yrange)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> w,y : width and height in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />wims getfile : video 0,0,120,120,myvideo.mp4
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> video format may be in *.mp4 (todo:other formats)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> hatchfill x0,y0,dx,dy,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x0,y0 in xrange / yrange
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> distances dx,dy in pixels
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> gridfill x0,y0,dx,dy,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x0,y0 in xrange / yrange
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> distances dx,dy in pixels
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> dotfill x0,y0,dx,dy,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x0,y0 in xrange / yrange
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> distances dx,dy in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> radius of dots is linewidth
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> imagefill dx,dy,image_url
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> The next suitable <b>filled object</b> will be filled with "image_url" tiled
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> After pattern filling ,the fill-color should be reset !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims getins / image from class directory : imagefill 80,80,my_image.gif
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> normal url : imagefill 80,80,$module_dir/gifs/my_image.gif
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> normal url : imagefill 80,80,http://adres/a/b/c/my_image.jpg
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if dx,dy is larger than the image, the whole image will be background to the next object.
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> filltoborder x,y,bordercolor,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> fill the region of point (x:y) bounded by 'bordercolor' with color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> any other color will not act as border to the bucket fill
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use this command after all boundary objects are declared.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> floodfill x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> alternative syntax: fill x,y,color
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> fill the region of point (x:y) with color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> any other color or size of picture (borders of picture) will act as border to the bucket fill
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use this command after all boundary objects are declared.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> Use command 'clickfill,color' for user click driven flood fill.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> clickfillmarge int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default 20 (pixels)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> when using command "clickfill fillcolor" a coloured area my be reverted ("undo") <br />back to background colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> clickfill fillcolor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> user left mouse click will floodfill the area with fillcolor
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> multiple areas may be coloured
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the coloured areas can be removed (changed to "bgcolor") by middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the answer will be read as the (x:y) click coordinates per coloured area
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> background color of main div may be set by using command "bgcolor color"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may not be combined with command "userdraw"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> setpixel x,y,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> A "point" with diameter 1 pixel centeres at (x:y) in xrange / yrange
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> pixels can not be dragged or clicked
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> "pixelsize = 1" may be changed by command "pixelsize int"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> pixelsize int
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> in case you want to deviate from default pixelsize = 1...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> pixels color,x1,y1,x2,y2,x3,y3...
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> Draw "points" with diameter 1 pixel
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> pixels can not be dragged or clicked
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> "pixelsize = 1" may be changed by command "pixelsize int"
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> debug
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no arguments
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use as first command (before 'size')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will show a few buttons to read_canvas(); read_mathml(); and read_dragdrop();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only to be used in a single canvasdraw instance <br />or in case of multiple canvasdraw images , only the last image
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> replyformat number
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default values should be fine !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "debug" to check return values of javascript function read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br /> y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br /> y1,y2,y3,y4....y_n<br /> r1,r2,r3,r4....r_n<br /> x/y in pixels <br /> r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br /> y1,y2,y3,y4....y_n<br /> r1,r2,r3,r4....r_n<br /> x/y in xrange / yrange coordinate system<br /> r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br /> Ay1,Ay2,Ay3,Ay4....Ay_n<br /> Bx1,Bx2,Bx3,Bx4....Bx_n<br /> By1,By2,By3,By4....By_n<br /> Cx1,Cx2,Cx3,Cx4....Cx_n<br /> Cy1,Cy2,Cy3,Cy4....Cy_n<br /> ....<br /> Zx1,Zx2,Zx3,Zx4....Zx_n<br /> Zy1,Zy2,Zy3,Zy4....Zy_n<br /> x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br /> Ay1,Ay2,Ay3,Ay4....Ay_n<br /> Bx1,Bx2,Bx3,Bx4....Bx_n<br /> By1,By2,By3,By4....By_n<br /> Cx1,Cx2,Cx3,Cx4....Cx_n<br /> Cy1,Cy2,Cy3,Cy4....Cy_n<br /> ....<br /> Zx1,Zx2,Zx3,Zx4....Zx_n<br /> Zy1,Zy2,Zy3,Zy4....Zy_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br /> x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br /> x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br /> x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br /> x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br /> Bx1,By1,Bx2,By2<br /> Cx1,Cy1,Cx2,Cy2<br /> Dx1,Dy1,Dx2,Dy2<br /> ......<br /> Zx1,Zy1,Zx2,Zy2<br /> x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br /> Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br /> Dx1,Dy1,Dx2,Dy2<br /> ......<br /> Zx1,Zy1,Zx2,Zy2<br /> x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br /> x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br /> x/y in pixels</li><li>15 = reply from inputfields,textareas<br /> reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = retruns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br /> x/y in xrange / yrange coordinate system</ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> legendcolors color1:color2:color3:...:color_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will be used to colour a legend
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> make sure the number of colours match the number of legend items
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> command 'legend' in case of 'piechart' and 'barchart' will use these colours per default (no need to specify 'legendcolors'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> legend string1:string2:string3....string_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will be used to create a legend for a graph
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> also see command 'piechart'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> xlabel some_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will be used to create a label for the x-axis (label is in quadrant I)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> ylabel some_string
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will be used to create a (vertical) label for the y-axis (label is in quadrant I)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> linegraph x1:y1;x2:y2...x_n:y;2
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will plot your data in a graph
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may only to be used together with command 'grid'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'legend' to provide an optional legend in right-top-corner
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> also see command 'piechart'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> multiple linegraphs may be used in a single plot
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> <ul><li>use command 'strokecolor' before command 'linegraph' to set the color of this graph</li><li>use command 'linewidth' before command 'linegraph' to set linewidth of this graph</li><li>use command 'dashed' before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command 'dashtype' before command 'linegraph' to set the type of dashing of the graph</li></ul>
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2,[space]<br />default colours: clock 0,0,60,4,35,45,1,2,,,,,<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,white,white,black,yellow
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> canvasdraw will not check validity of colornames...the javascript console is your best friend
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> no combinations with other reply_types allowed, for now
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if command 'debug' is set, 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> will be used to create a legend for bar graph
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may only to be used together with command 'grid'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'legend' to provide an optional legend in right-top-corner
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> also see command 'piechart'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> piechart xc,yc,radius,'data+colorlist'
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> (xc : yc) center of circle diagram in xrange/yrange
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> radius in pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> data+color list: a colon separated list of raw data and corresponding colours<br />canvasdraw will not check validity of colornames...<br />in case of trouble look into javascript debugging of your browser
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example data+colorlist : 132:red:23565:green:323:black:234324:orange:23434:yellow:2543:white
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the number of colors must match the number of data.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "opacity 0-255,0-255" to adjust fill_opacity of colours
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "legend string1:string2:...:string_n" to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">xlogscale g,xmajor,xminor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">create a log grid in xrange
+</span></li>
+	    
+</ul>
+	    
+
+    </li>
+    </ul>
+</body>
+</html>
+
