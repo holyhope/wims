@@ -25,7 +25,7 @@ void sp_asis(char *p, int ptype)
 void sp_evalue(char *p, int ptype)
 {
     char *p1, *p2, *pe;
-    
+
     p1=strparchr(p,',');
     if(p1==NULL) {
 	fprintf(outf,"%stmp%d=%s\n\n",setpre,prepcnt,p);
@@ -79,7 +79,7 @@ void sp_det(char *p, int ptype)
 void sp_int(char *p, int ptype)
 {
     char *s;
- 
+
     if((s=strchr(p,'='))!=NULL) *s=',';
     if((s=strstr(p,".."))!=NULL) {*s=','; *(s+1)=' ';}
     fprintf(outf,"%stmp=!translate ;\";': to $     $ in %s \n\
@@ -148,6 +148,15 @@ void sp_draw(char *p, int ptype)
     if(p2==NULL) return; *p2++=0;
     fprintf(outf,"!readproc %s/draw.phtml %s \\\n%s \n\
 %stmp%d=$ins_url\n", primitive_dir, p, p2, setpre,prepcnt);
+}
+
+void sp_canvasdraw(char *p, int ptype)
+{
+    char *p2;
+    p2=strchr(p,'	'); if(p2==NULL) p2=strchr(p,'\n');
+    if(p2==NULL) return; *p2++=0;
+    fprintf(outf,"!readproc %s/canvasdraw.phtml %s \\\n%s \n\
+%stmp%d=$canvasdraw_out\n", primitive_dir, p, p2, setpre,prepcnt);
 }
 
 void sp_shuffle(char *p, int ptype)
@@ -239,7 +248,7 @@ void sp_row(char *p, int ptype)
 	fprintf(outf,"%stmp%d=!select $tmp where %s\n\n",setpre,prepcnt,buf);
 	return;
     }
-    while((p2=strstr(buf,".."))!=NULL) 
+    while((p2=strstr(buf,".."))!=NULL)
       string_modify(buf,p2,p2+2," to ");
     fprintf(outf,"%stmp=!row %s of $tmp\n\
 %stmp%d=!translate internal $\\\n$ to ; in $tmp\n",
@@ -284,6 +293,7 @@ struct {
     void (*processor)(char *p, int ptype);
 } specialfn[]={
       {"asis",		sp_asis},
+      {"canvasdraw",	sp_canvasdraw},
       {"column",	sp_column},
       {"deriv",		sp_diff},
       {"derivative",	sp_diff},
@@ -317,7 +327,7 @@ struct {
       {"simplify",	sp_simplify},
       {"slib",		sp_slib},
       {"solve",		sp_solve},
-      {"teximg",		sp_teximg},
+      {"teximg",	sp_teximg},
       {"texmath",	sp_texmath},
       {"wims",		sp_wims},
       {"yacas",		sp_yacas}

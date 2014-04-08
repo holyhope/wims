@@ -54,18 +54,18 @@ char *exec_for(char *p)
     }
     fprintf(outf," \n!for m_%s \n$()",find_word_start(buf));
     *p4=nextchar;
-    return p3+1;    
+    return p3+1;
 }
 /* process math formula inside \( ) or \( \) */
 void process_formula(char *p)
 {
     char *p3, bf[MAX_LINELEN+1];
-    
+
     if(strlen(p)>=MAX_LINELEN) error("formula too long");
     while((p3=strstr(p,"&lt;"))!=NULL) memmove(p3," <  ",4);
     while((p3=strstr(p,"&gt;"))!=NULL) memmove(p3," >  ",4);
     for(p3=strchr(p,'\n'); p3!=NULL; p3=strchr(p3,'\n')) *p3=' ';
-    snprintf(bf,sizeof(bf),"%s",p); 
+    snprintf(bf,sizeof(bf),"%s",p);
     if(strchr(bf,'\\')==NULL && strchr(bf,'}')==NULL && strlen(bf)>2) {
 	for(p3=strstr(bf,".."); p3!=NULL; p3=strstr(p3,"..")) {
 	    if(*(p3+2)=='.' || *(p3+2)==',') {
@@ -118,6 +118,23 @@ void out_exec(char *s1, char *s2)
 		pt=exec_if(p+2); if(pt>p+2) {p=pt-1;ps=pt;}
 		continue;
 	    }
+	    	/* canvasdraw */
+	    if(strncmp(p+1,"canvasdraw",10)==0 && *find_word_start(p+11)=='{') {
+		pe=pp2=pe2="";
+		pp=find_word_start(p+11);
+		if(*pp) pe=find_matching(pp+1,'}');
+		if(pe) pp2=find_word_start(pe+1); else continue;
+		if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
+		if(pe2 && *pp2=='{' && *pe2=='}') {
+		    pp++; pp2++; *p=*pe=*pe2=0;
+		    while((pt=strstr(pp2,"$val1/"))!=NULL)
+		      ovlstrcpy(pt,pt+strlen("$val1/"));
+		    fprintf(outf,"%s \n\
+!read oef/canvasdraw.phtml %s \\\n%s \n$()", ps,pp,pp2);
+		    ps=p=pe2; ps++; continue;
+		}
+	    }
+
 	    	/* draw */
 	    if(strncmp(p+1,"draw",4)==0 && *find_word_start(p+5)=='{') {
 		pe=pp2=pe2="";
@@ -127,7 +144,7 @@ void out_exec(char *s1, char *s2)
 		if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
 		if(pe2 && *pp2=='{' && *pe2=='}') {
 		    pp++; pp2++; *p=*pe=*pe2=0;
-		    while((pt=strstr(pp2,"$val1/"))!=NULL) 
+		    while((pt=strstr(pp2,"$val1/"))!=NULL)
 		      ovlstrcpy(pt,pt+strlen("$val1/"));
 		    fprintf(outf,"%s \n\
 !read oef/draw.phtml %s \\\n%s \n$()", ps,pp,pp2);
@@ -206,7 +223,7 @@ void out_exec(char *s1, char *s2)
 	    if(p2==NULL) continue;
 	    *p++=0; fprintf(outf,"%s",ps);
 	    *p2=0; if(*(p2-1)=='\\') *(p2-1)=0;
-	    process_formula(p+1); 
+	    process_formula(p+1);
 	    formulaend: p=p2; ps=p+1;
 	    continue;
 	}
@@ -216,7 +233,7 @@ void out_exec(char *s1, char *s2)
 	       (p2!=NULL && p3!=NULL && p3<p2)) p2=p3+1;
 	    if(p2==NULL) continue;
 	    *p++=0; fprintf(outf,"%s",ps);
-	    *p2=0; process_formula(p+1); 
+	    *p2=0; process_formula(p+1);
 	    goto formulaend;
 	}
     }
