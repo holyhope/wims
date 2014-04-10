@@ -12,7 +12,7 @@ $name_title_showsheet
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$moduclass_lang 
+ !read lang/msg.phtml.$moduclass_lang
  </div>
  <p>
  !href module=home $wims_name_class_home
@@ -45,10 +45,11 @@ $name_title_showsheet
  !for j=1 to $nbexo
   !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
   !distribute line $e into m_,n_,bidon,bidon,t_
-  <th><span class="small">
+  <th class="small">
   !set wims_ref_title=$t_
-  !href cmd=new&module=$m_&$n_ $name_Exercise $j 
-!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a></span></th>
+  !href cmd=new&module=$m_&$n_ $name_Exercise $j
+!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a>
+  </th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -77,13 +78,13 @@ $name_title_showsheet
      !let tot_0=$[$tot_0+$t]
     !if $t!=0
      !increase nonzero_0
-    !endif 
+    !endif
     !let tmp=!getscore user=$uu sheet=$numshowsheet
     !for k=1 to $nbexo
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
-      !endif 
+      !endif
       !let div=!word $k of $require
       !if $div!=0
        !let t=$[rint($t/$div*10000)/100]
@@ -98,13 +99,13 @@ $name_title_showsheet
       !else
        <td>--
       !endif
-      </td>  
+      </td>
     !next k
    !else
      !let t=!word 2 of $tot
      !let tot_0=$[$tot_0+$t]
      !read adm/class/colors $[ceil($t)]
-     !if $t!=0 
+     !if $t!=0
       <td style=$style_note>
       $t
       !increase nonzero_0
@@ -123,13 +124,13 @@ $name_title_showsheet
       !else
        <td>--
       !endif
-      </td> 
+      </td>
       !let tot_$k=$[$(tot_$k)+$t]
     !next k
    !endif
   </tr>
  !next m
- $table_hdtr<td><b>$name_classAverage</b></td>
+ $table_hdtr<th>$name_classAverage</th>
  !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
  <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
  !for j=1 to $nbexo
@@ -143,7 +144,7 @@ $name_title_showsheet
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td><b>$name_posAverage</b></td>
+  $table_hdtr<th>$name_posAverage</th>
    !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1)]
    <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
   !for j=1 to $nbexo
@@ -153,7 +154,7 @@ $name_title_showsheet
     $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
     !else
        <td>--
-    !endif  
+    !endif
    </td>
   !next j
   </tr>
@@ -162,7 +163,7 @@ $table_end
  <p>$name_click
  !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
 &nbsp;.&nbsp;
-   $name_post 
+   $name_post
     !if $job_affi=qualite
      !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
     !else
