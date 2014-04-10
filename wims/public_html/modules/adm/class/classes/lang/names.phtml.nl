@@ -55,7 +55,7 @@ Geen klas gevonden.\
 U kunt direct overstappen naar&nbsp;\
 into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
-!let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Language,Development
+!let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Language,Archives,Development
 
 !set name_text1=Kies uit de tabel uw klas\
 <p>Nog niet aangemeld? klik dan op <span class="wims_button disabled">$name_register</span>\
@@ -81,10 +81,10 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 !set name_entersup=!nosubst Om in $name_classes <span class="wims_classdesc">$class_description</span> van\
 <span class="wims_institutiondesc">$class_institution</span> als de\
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
- 
+
 !set name_research1= Er zijn zeer veel virtuele klassen ge&iuml;nstalleerd op deze server. \
    Om uw klas te vinden, voer een zoekterm in.
- 
+
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
 
 !set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br />\
@@ -109,7 +109,7 @@ dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op g
 
   !set name_sheet_example=U kunt ook de gebruikte werkbladen importeren [en modificeren] in uw eigen klas.
 !endif
- 
+
 !set name_acceptcgu=Ik ga akkoord met de algemene voorwaarden.
 !set name_seecgu=Lees de algemene voorwaarden.
 

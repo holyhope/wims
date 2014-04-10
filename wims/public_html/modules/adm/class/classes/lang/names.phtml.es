@@ -55,7 +55,7 @@ Ninguna clase corresponde a su investigación.\
 Puede cambiar directamente en&nbsp;\
 into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
-!let classification=Escuela,Colegio,Liceo,Universidad,Language,Development
+!let classification=Escuela,Colegio,Liceo,Universidad,Language,Archives,Development
 
 !set name_text1=Elija la línea correspondiente a la clase o al centro educativo que le corresponda. \
 <p>Pulse <span class="wims_button disabled">$wims_name_Enter</span> para entrar, inscrito (si la clase tiene el estatuto de\
