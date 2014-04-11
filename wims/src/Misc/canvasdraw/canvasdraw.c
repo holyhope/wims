@@ -30,7 +30,7 @@ in case svgdraw is in ~/src/Misc/svgdraw
 #include "include/matheval.h"
 #include <assert.h> 
 #include "canvasdraw.h"
-#include <sys/stat.h>
+#include<sys/stat.h>
 
 /* needed for gettimeofday */
 #include <sys/time.h>
@@ -359,7 +359,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
 	case POINTS:
 	/*
-	@ points color x1,y1,x2,y2,...,x_n,y_n
+	@ points color,x1,y1,x2,y2,...,x_n,y_n
 	@ draw multiple points at given coordinates in color 'color'
 	@ use command 'linewidth int'  to adust size
 	@ may be set draggable / onclick individually (!)
@@ -854,9 +854,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ snaptogrid
 	 @ keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
-	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor
+	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor <br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	    fprintf(js_include_file,"\nuse_snap_to_grid = 1;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round(snap_x*px2x(x))));};\nfunction snap_to_y(y){return y2px(snap_y*(Math.round(snap_y*px2y(y))));};\n");
+	fprintf(js_include_file,"\nuse_snap_to_grid = 1;\nfunction snap_to_x(x){return snap_x*(Math.round(x/snap_x));};function snap_to_y(y){return snap_y*(Math.round(y/snap_y));};\n");
 	break;
 	case USERDRAW:
 	/*
@@ -1408,7 +1408,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			int_data[1] = (int) (get_real(infile,0));/* yminor */
 			int_data[2] = (int) (get_real(infile,0));/* tic_length */
 			fill_color = get_color(infile,1); /* used as axis_color*/
-			fprintf(js_include_file,"var snap_x = %f;var snap_y = %f\n",double_data[0]/int_data[0],double_data[1]/int_data[1]);
 		    }
 		    else
 		    {
@@ -1416,9 +1415,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			int_data[1] = 1;
 			stroke_color = get_color(infile,1);
 			fill_color = stroke_color;
-			fprintf(js_include_file,"var snap_x = %f;var snap_y = %f\n",double_data[0],double_data[1]);
 		    }
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
+		    /* set snap_x snap_y values in pixels */
+		    fprintf(js_include_file,"var snap_x = %d;var snap_y = %d\n;",(int)(double_data[0] * xsize / (int_data[0]*(xmax - xmin))),(int)(double_data[1] * ysize / (int_data[1]*(ymax - ymin))));
 /* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
 
 		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
