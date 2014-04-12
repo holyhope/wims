@@ -92,25 +92,80 @@ $wims_name_part_list ($usercnt)
  </p>
  !endif
  !if $usercnt > 0
+  !if $activecnt+$eactivecnt>1
+
+  !form reply
+  <input type="hidden" name="job" value="sheets" />
+  !set wims_formselect_switch=multiple="multiple" size="$[min($activecnt,6)]"
+  $name_pickup
+<div class="wimscenter">
+  !reset tmp
+  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !if $seq_open!=yes
+    !set ti=!item 3 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set tmp=!append item $se: $ti to $tmp
+   !else
+    !set ti=!item 4 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set seq=!item 3 of $sh
+    !set tmp=!append item $seq/$se: $ti to $tmp
+   !endif
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set l=!replace internal , by &#44; in $l
+   !set tmp=!append item $name_Exam $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  </div>
 <p>
-   $name_post
+   $wims_name_or $name_post
    !if $job_affi=notes
     !href cmd=reply&job_affi=qualite $(name_affi[1])
     ,
     !href cmd=reply&job_affi=points $(name_affi[2])
-   !else
-    !if $job_affi=qualite
+    ,
+    !href cmd=reply&job_affi=best $(name_affi[4])
+   !endif
+   !if $job_affi=qualite
      !href cmd=reply&job_affi=notes $(name_affi[3])
 ,
      !href cmd=reply&job_affi=points $(name_affi[2])
-    !else
+,
+    !href cmd=reply&job_affi=best $(name_affi[4])
+   !endif
+   !if $job_affi=points
      !href cmd=reply&job_affi=notes $(name_affi[3])
 ,
      !href cmd=reply&job_affi=qualite $(name_affi[1])
+,
+     !href cmd=reply&job_affi=best $(name_affi[4])
     !endif
+    !if $job_affi=best
+     !href cmd=reply&job_affi=qualite $(name_affi[1])
+,
+     !href cmd=reply&job_affi=points $(name_affi[2])
+,
+    !href cmd=reply&job_affi=notes $(name_affi[3])
+
    !endif
 . </p>
+<div class="wimsform wimscenter">
+  <input type="submit" value="$wims_name_Show" />
+  </div>
+
+!formend
  !endif
+ <p>$name_click</p>
+!endif
  !reset table_center
  $table_header
  !if $job_affi=notes
@@ -121,8 +176,12 @@ $wims_name_part_list ($usercnt)
   !let showsheet=!listintersect $showsheet and $tmp
   !if $job_affi=qualite
    <caption>$name_qualitygot</caption>
-  !else
+  !endif
+  !if $job_affi=points
    <caption>$name_percentagedone</caption>
+  !endif
+  !if $job_affi=best
+   <caption>$name_percentagebest</caption>
   !endif
  !endif
  !if $manual>0 and $job_affi=notes
@@ -265,8 +324,19 @@ $wims_name_part_list ($usercnt)
        <td>--
       !endif
       </td>
-     !else
+     !endif
+     !if points iswordof $job_affi
       !set p_=$p1
+      !if $p_>0
+       !read adm/class/colors $[ceil($p_/10)]
+       <td style=$style_note>$p_ %
+      !else
+       <td>--
+      !endif
+       </td>
+     !endif
+     !if best iswordof $job_affi
+      !set p_=$p3
       !if $p_>0
        !read adm/class/colors $[ceil($p_/10)]
        <td style=$style_note>$p_ %
@@ -387,46 +457,6 @@ $wims_name_part_list ($usercnt)
  !endif
  </tr>
  $table_end
-<p>$name_click</p>
-!if $activecnt+$eactivecnt>1
-
-  !form reply
-  <input type="hidden" name="job" value="sheets" />
-  !set wims_formselect_switch=multiple="multiple" size="$[min($activecnt,6)]"
-  <table class="wimsnoborder">
-  <tr><td>$name_pickup:</td><td>&nbsp;&nbsp;
-  !reset tmp
-  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
-  !for i=1 to $activecnt
-   !set sh=!line $i of $activesheets
-   !set se=!item 1 of $sh
-   !if $seq_open!=yes
-    !set ti=!item 3 to -1 of $sh
-    !set ti=!replace internal , by &#44; in $ti
-    !set tmp=!append item $se: $ti to $tmp
-   !else
-    !set ti=!item 4 to -1 of $sh
-    !set ti=!replace internal , by &#44; in $ti
-    !set seq=!item 3 of $sh
-    !set tmp=!append item $seq/$se: $ti to $tmp
-   !endif
-  !next i
-  !set ash=$activesh
-  !for i=1 to $eactivecnt
-   !set tt=!item $i of $activexams
-   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
-   !set l=!line 4 of $l
-   !set l=!replace internal , by &#44; in $l
-   !set tmp=!append item $name_Exam $tt: $l to $tmp
-   !set ash=!append item E$tt to $ash
-  !next i
-  !formselect showsheet list $ash prompt $tmp
-  </td>
-  <td><input type="submit" value="$wims_name_Show" /></td>
-  </tr></table>
-
-!formend
- !endif
 !endif (usercnt=0?)
 
 !set wims_menu_items=!append line sendmail,1,module=adm/class/sendmail\

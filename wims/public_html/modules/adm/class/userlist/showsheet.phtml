@@ -23,21 +23,49 @@ $name_title_showsheet
 !if $usercnt==0
  $name_noyetparticipant
 !else
+<p>$name_click $wims_name_or
+$name_post
+   !set wims_ref_class=wims_button
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+    !endif
+    !if $job_affi=points
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !set wims_ref_class=wims_button
+      !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+    !endif
+    !if $job_affi=best
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !set wims_ref_class=wims_button
+      !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+    !endif
+</p>
+!set wims_ref_class=wims_button
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
  $table_header
- !bound job_affi within points,qualite default points
+ !bound job_affi within points,qualite, best default points
  !if $job_affi=points
   !let sign=%
   !set sign1=100
   <caption>$name_percentagegot</caption>
- !else
-  !if $job_affi=qualite
+ !endif
+ !if $job_affi=qualite
    !let sign=$empty
    !set sign1=10
    <caption>$name_qualitygot</caption>
-  !else
+ !endif
+ !if $job_affi=best
+  !let sign=%
+  !set sign1=100
+   <caption>$name_percentagebest</caption>
+  !endif
+ !if $job_affi=
+  !let sign=%
+  !set sign1=100
    <caption>$name_percentagedone</caption>
   !endif
- !endif
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_Average</th>
  !let tot_0=0
@@ -160,17 +188,6 @@ $name_title_showsheet
   </tr>
  !endif
 $table_end
- <p>$name_click
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
-&nbsp;.&nbsp;
-   $name_post
-    !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
-    !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
-    !endif
-.
-</p>
 
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
