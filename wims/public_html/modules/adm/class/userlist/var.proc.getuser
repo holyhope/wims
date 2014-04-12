@@ -68,6 +68,7 @@
   !endif
  !endif
  l=!line 2 of $means
+
  !distribute words $l into\
 	min_auto,mean_auto,max_auto,\
 	min_tea,mean_tea,max_tea,\
@@ -82,17 +83,6 @@
  !read adm/class/userscore
  globalav=$[rint($manual*$mav+((100-$manual)*$per))/100]
  exologs=!filelist $wims_home/log/classes/$wims_class/exolog/$getuser
-
- !for shs=1 to $activecnt
-   !set sh=!line $shs of $activesheets
-   !set ss=$(sh[1])
-   !reset user_data_$ss
-   !!only one sheet can be change
-   !read adm/class/userindic $uu,$wims_class,$ss
-!!now script_best has a value
-   user_best_$ss=$(script_best)
-   p3_$ss=$(script_percent3[1])
- !next
 !else
  job=
 !endif

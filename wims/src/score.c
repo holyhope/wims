@@ -19,7 +19,7 @@
 
 double oldfactor=0.85;     /* quality factor, should remain stable. */
 
-enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain, sr_last, sr_try};
+enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain, sr_last, sr_try, sr_best};
 char scorebuf[MAX_CLASSEXOS*sizeof(scoreresult)+32];
 struct scoreresult *rscore;
 int scorecnt;
@@ -184,6 +184,7 @@ void _getscore(char *p,int dtype)
          case sr_remain: {d=rscore[i].require-rscore[i].score; break;}
          case sr_last: {d=rscore[i].last; break;}
          case sr_try: {d=rscore[i].try; break;}
+         case sr_best: {d=rscore[i].best; break;}
          default: {d=0; break;}
      }
      p1=moneyprint(p1,d); *p1++=' ';
@@ -231,11 +232,19 @@ void calc_getscoretry(char *p)
   _getscore(p,sr_try);
 }
 
-/* percentage of work done for each sheet. */
+/* gather user score average. */
+void calc_getscorebest(char *p)
+{
+  _getscore(p,sr_best);
+}
+
+/* percentage of work done for each sheet:
+ * score(=cumulative_points) mean(=quality) best_percent
+ */
 void calc_getscorepercent(char *p)
 {
   int i,j,jend;
-  double tot, mean, d;
+  double tot, mean, totb, d;
   char *p1;
 
   _scoreparm(p);
@@ -243,24 +252,34 @@ void calc_getscorepercent(char *p)
   if(getscoreuser(score_class,score_user)<0) return;
   for(p1=p,i=0;i<totsheets && p1-p<MAX_LINELEN-32;i++) {
     if(scoresum[i]==0) {
-      ovlstrcpy(p1,"0 0\n"); p1+=strlen(p1); continue;
+      ovlstrcpy(p1,"0 0 0\n"); p1+=strlen(p1); continue;
     }
     if(score_sheet!=0 && i!=score_sheet-1) continue;
     if(scoresum[i]<=0) *p1++='\n';
-    tot=mean=0; jend=sheetstart[i]+shexocnt[i];
+    tot=mean=totb=0; jend=sheetstart[i]+shexocnt[i];
     for(j=sheetstart[i];j<jend;j++) {
-      /* if mean<1 then ignore score.
-       * if mean<2 then half score. */
+/* if mean<1 then ignore score.
+ * if mean<2 then half score. */
       if(rscore[j].mean>=1) {
-	double dt=rscore[j].score;
-	if(rscore[j].mean<2) dt=dt/2;
-	d=dt*rscore[j].weight;
-	mean+=rscore[j].mean*d; tot+=d;
+	    double dt=rscore[j].score;
+	    float db=rscore[j].best;
+	    if(rscore[j].mean<2) {dt=dt/2; db=db/2;}
+	    d=dt*rscore[j].weight;
+/* quality */
+	    mean+=rscore[j].mean*d;
+/* cumulative score */
+	    tot+=d;
+/* best */
+	    totb+=db*rscore[j].weight;
       }
     }
-    if(tot>0) d=mean/tot; else d=0;
+    if(tot>0) {d=mean/tot;} else d=0;
+/* cumulative score */
     p1=moneyprint(p1,rint(100*tot/scoresum[i])); *p1++=' ';
-    p1=moneyprint(p1,d); *p1++='\n';
+/* quality */
+    p1=moneyprint(p1,d); *p1++=' ';
+/* best */
+    p1=moneyprint(p1,rint(100*totb/scoresum[i])); *p1++='\n';
   }
   *p1=0;
 }

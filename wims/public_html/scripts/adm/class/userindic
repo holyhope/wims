@@ -1,3 +1,4 @@
+!!no more use !
 !!input :user, class, sheet (optional), exo (optional)
 !!output:
 !! script_out: lines for each exo in sheet coming from exostat
@@ -35,7 +36,7 @@
   !reset sc_best
   !set sc_sheet_cnt=!itemcnt $sc_sheet
   !for sc_s=1 to $sc_sheet_cnt
-    sc_sh=$(sc_sheet[$sc_s])
+    !set sc_sh=$(sc_sheet[$sc_s])
     !set script_out=!sh export exostat_dirbase exostat_types exostat_classes exostat_user exostat_sheet\
 	exostat_dirbase=$wims_home/log/classes\
 	exostat_types="score"\
@@ -65,14 +66,17 @@
        !set script_p3=$script_p3 + $sc_w*$sc_best_
       !endif
 !!leave the empty items
-       sc_best=$sc_best$sc_best_,
+       !set sc_best=$sc_best$sc_best_,
      !next exo
-     !set script_best=$script_best\
-$sc_best
-     !set script_percent3=$script_percent3\
-$[ceil(100*($script_p3)/$sc_wg)/1000]
-    !set script_out=!append line $script_out_ to $script_out
+
+     !set script_best=!append line $sc_best to $script_best
+     !set script_percent3=!append line $[ceil(100*($script_p3)/$sc_wg)/1000] to $script_percent3\
+     !set script_out=!append line $script_out_ to $script_out
+     !else
+       !set script_best=!append line 0 to $script_best
+     !set script_percent3=!append line 0 to $script_percent3
+    !endif
   !next sheet
 !endif
-
 :end
+

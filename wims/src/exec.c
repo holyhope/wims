@@ -1735,6 +1735,7 @@ MYFUNCTION exec_routine[]={
       {"getdef",    EXEC_SCORE|EXEC_USECALC,calc_defof},
       {"getfile",   EXEC_HREF|EXEC_SUBST,    exec_getfile},
       {"getscore",  EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscore},
+      {"getscorebest",EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscorebest},
       {"getscorelast",EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscorelast},
       {"getscoremean",EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscoremean},
       {"getscorepercent",EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscorepercent},

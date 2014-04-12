@@ -22,6 +22,7 @@
   min_auto=$[min($min_auto,$per)]
   !advance auto_cnt
  !endif
+
  !if $manual>0
   glob=$[rint($manual*$(manual_$uu)+(100-$manual)*($per))/100]
   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$uu)] into mean_glob,mean_tea
@@ -44,9 +45,9 @@
     p_=$[rint(10*$scoremax*$(es_$k))/100]
    !else
     p_=!line $j of $percents
-    !distribute words $p_ into p1,p2
+    !distribute words $p_ into p1,p2,p3
     !if $p2!=$empty
-     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     !distribute item $[$p1/100],$[$p2/10],$[$p3/100] into x_,y_,z_
      p_=$[rint(100*$scoremax*$(f_$j))/100]
     !else
      p_=0

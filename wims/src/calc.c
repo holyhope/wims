@@ -2105,6 +2105,7 @@ MYFUNCTION calc_routine[]={
       {"getdef",	1,	calc_defof},
       {"getopt",	1,	calc_getopt},
       {"getscore",	0,	calc_getscore},
+      {"getscorebest",	0,	calc_getscorebest},
       {"getscorelast",	0,	calc_getscorelast},
       {"getscoremean",0,	calc_getscoremean},
       {"getscorepercent",0,	calc_getscorepercent},
