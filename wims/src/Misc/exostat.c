@@ -79,7 +79,7 @@ void oneline(char *p, char *typ)
     t=str2time(data[0]); if(t==-1) return;
     if(strstr(data[4],"new")!=NULL) {
       if(strcmp(typ,"score")==0 &&
-        (strcmp(data[6],"noscore")==0 || (i > 7 && strcmp(data[7],"noscore")==0)
+        ((i > 6 && strcmp(data[6],"noscore")==0) || (i > 7 && strcmp(data[7],"noscore")==0)
             || (i > 8 && strcmp(data[8],"noscore")==0))){ return; }
       if(strcmp(typ,"noscore")==0 &&
         (i < 7 || ( i>7 && strcmp(data[7],typ)!=0)
