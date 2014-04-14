@@ -856,7 +856,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor <br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nuse_snap_to_grid = 1;\nfunction snap_to_x(x){return snap_x*(Math.round(x/snap_x));};function snap_to_y(y){return snap_y*(Math.round(y/snap_y));};\n");
+	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x;var snap_y;\nfunction snap_to_x(x){return snap_x*(Math.round(x/snap_x));};function snap_to_y(y){return snap_y*(Math.round(y/snap_y));};\n");
 	break;
 	case USERDRAW:
 	/*
@@ -1418,7 +1418,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    }
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
 		    /* set snap_x snap_y values in pixels */
-		    fprintf(js_include_file,"var snap_x = %d;var snap_y = %d\n;",(int)(double_data[0] * xsize / (int_data[0]*(xmax - xmin))),(int)(double_data[1] * ysize / (int_data[1]*(ymax - ymin))));
+		    fprintf(js_include_file,"snap_x = %d;snap_y = %d\n;",(int)(double_data[0] * xsize / (int_data[0]*(xmax - xmin))),(int)(double_data[1] * ysize / (int_data[1]*(ymax - ymin))));
 /* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
 
 		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
@@ -3794,11 +3794,12 @@ draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,y
  var x,y;\
  ctx.save();\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
+ snap_x = dx;snap_y = dy;\
  for( x = x0 ; x < xsize+dx ; x = x + dx ){\
     ctx.moveTo(x,y0);\
     ctx.lineTo(x,ysize);\
  };\
- for( y = y0 ; y < ysize +dx; y = y + dy ){\
+ for( y = y0 ; y < ysize+dy; y = y + dy ){\
     ctx.moveTo(x0,y);\
     ctx.lineTo(xsize,y);\
  };\
@@ -3864,6 +3865,7 @@ draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize
  var x,y;\
  ctx.closePath();\
  ctx.save();\
+ snap_x = dx;snap_y = dy;\
  ctx.fillStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  for( x = x0 ; x < xsize+dx ; x = x + dx ){\
   for( y = y0 ; y < ysize+dy ; y = y + dy ){\
@@ -3875,7 +3877,7 @@ draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize
  ctx.restore();\
  return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-    
+
     case DRAW_HATCHFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
 draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
@@ -3922,7 +3924,6 @@ draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_
  return;\
  }\n",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-    
     case DRAW_CIRCLES:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw circles -->\n\
 draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
