@@ -33,7 +33,7 @@ for cls in [0-9]*
 do
 exp=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
 
-# exp is the expiration date minus one month (-100 if the month is different 
+# exp is the expiration date minus one month (-100 if the month is different
 # from january , -8900 else)
 exp1=`expr "$exp" : "....\(.*\).."`;
 if [ "$exp1" -eq "01" ]; then exp=`expr $exp - 8900`; else  exp=`expr $exp - 100`; fi
@@ -81,7 +81,7 @@ You have created a virtual class
 (code $cls) on the site $host. This class is now closed,
 because it has reached its expiration date.
 
-The complete registry of this class (user list and activity history) 
+The complete registry of this class (user list and activity history)
 is stored in an archive file, which can be sent to you upon request
 to the webmaster of this site.
 
@@ -112,12 +112,20 @@ for l in `find . -name examlog -type d`; do
    if [ -n "$list" ]; then echo rm -Rf $list; fi
  done
 done
+
+# calculate the size of the classes
+cd $WIMS_HOME/log/classes
+for cls in [0-9]*
+do
+ du -ks $cls > $cls/.du
+done;
+
 # check if all compulsory directories are here (only in non example classes)
 cd $WIMS_HOME/log/classes
 list=`find [0-9][0-9][0-9][0-9][0-9]* -type d -maxdepth 0` ;
 for s in $list ; do
    for d in .users sheets exams doc score noscore vote cdt src def livret seq ; do
-    mkdir -p $s/$d 
+    mkdir -p $s/$d
    done
 done
 # Sheet expiration management. This should be activated during summer vacation.
@@ -138,7 +146,7 @@ for s in `find . -path '*/sheets/.sheets' -type f`; do
 done
 
 # Build class index file
-rm .lockindex
+rm -f .lockindex
 ./.build-index
 
 cd $WIMS_HOME/log

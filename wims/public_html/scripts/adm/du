@@ -4,7 +4,10 @@ dir=!word 1 of $wims_read_parm
  !exit
 !endif
 
-du=!sh du -ks $dir
+du=!sh cat $dir/.du 2>/dev/null
+!if $du=$empty
+ du=!sh du -ks $dir
+!endif
+
 du=!word 1 of $du
 du=$[floor(($du+1023)/1024)]
-
