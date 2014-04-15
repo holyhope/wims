@@ -7,49 +7,11 @@
 * No warrenty whatsoever                                                        *
 *********************************************************************************
 
-16/10/2013
-corrected roundoff in case "significance=-1" changed 'factor' from 'int' to 'float'...there must be a better way to do this...
-But in numbers > 1000000000000000 there is still a problem, so take care (!) 
-when there are more than 15 digits in the number (this may vary depending on system / implementations, I guess)
-./scienceprint 901234567890123       ,-1,0 --> 9.01234567890123*10^14
-./scienceprint 9012345678901234      ,-1,0 --> 9.012345678901236*10^15
-./scienceprint 901234567890123*10^70 ,-1,0 --> 9.01234567890123*10^84
-./scienceprint 9012345678901234*10^70,-1,0 --> 9.012345678901227*10^85
-
-28/9/2013 
-minor issue: 
-small correction in roundoff routine when significance > 6 .... pow(10,7) may give problems when stored in (int) integer
-
-27/9/2013 
-Correct rounding in stead of truncation...
-
-18/10/2012 : 
-Added Mathml output 
-Added option significance=-1 
-To be used when there is no significance known ; just tries to print the number in science notation
-Using the original amount of digits used in "number" argument
-!exec scienceprint 123.445000e+23,-1 --> 1.23445000*10^25
-
-12/11/2012
-Added support for numbers like  12345*10^12 
-12345*10^12 --> 12345E12 ---> 1.2345*10^16
-
-20/6/2012
-Corrected significance flaw when using prefixes
-Simplified routines
-Added type = 5 : prefix-notation with words (nano,mega,giga...etc)
-
-
-
-
-
-*********************************************************************************
-
 WIMS usage:
 sci_num = !exec scienceprint number,significance,type
 
-number: a number
-significance : desired precision
+number: a number (like 12345 123.45*10^2 123.45E+02)
+significance : desired precision (if significance= -1 : "science notation" in name amount of digits)
 type (optional args): calc = 0 / html = 1 / latex = 2  / prefix = 3  / mathml = 4
 
 default  : calc   notation : 120000,3   -> 1.20*10^5
@@ -59,10 +21,44 @@ type = 2 : latex notation  : 120000,3,2 -> 1.20 \times 10^{5}
 type = 3 : prefix-notation : 120000,3,3 -> 120.0 k
 type = 3 : if -24 > prefix > 24         -> type = 1 (html)
 type = 4 : mathml notation 
+type = 5 : prefix-notation with words (nano,mega,giga...etc) :120000,3,3 -> 120.0 kilo
 
 multiple conversion: use space between arguments
 scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 
+
+*********************************************************************************
+16/10/2013
+corrected roundoff in case "significance=-1" changed 'factor' from 'int' to 'float'...there must be a better way to do this...
+But in numbers > 1000000000000000 there is still a problem, so take care (!) 
+when there are more than 15 digits in the number (this may vary depending on system / implementations, I guess)
+./scienceprint 901234567890123       ,-1,0 --> 9.01234567890123*10^14
+./scienceprint 9012345678901234      ,-1,0 --> 9.012345678901236*10^15
+./scienceprint 901234567890123*10^70 ,-1,0 --> 9.01234567890123*10^84
+./scienceprint 9012345678901234*10^70,-1,0 --> 9.012345678901227*10^85
+*********************************************************************************
+28/9/2013 
+minor issue: 
+Added type = 5 : prefix-notation with words (nano,mega,giga...etc)
+small correction in roundoff routine when significance > 6 .... pow(10,7) may give problems when stored in (int) integer
+*********************************************************************************
+27/9/2013 
+Correct rounding in stead of truncation...
+*********************************************************************************
+18/10/2012 : 
+Added Mathml output 
+Added option significance=-1 
+To be used when there is no significance known ; just tries to print the number in science notation
+Using the original amount of digits used in "number" argument
+!exec scienceprint 123.445000e+23,-1 --> 1.23445000*10^25
+*********************************************************************************
+12/11/2012
+Added support for numbers like  12345*10^12 
+12345*10^12 --> 12345E12 ---> 1.2345*10^16
+*********************************************************************************
+20/6/2012
+Corrected significance flaw when using prefixes
+Simplified routines
 24  yotta       Y 
 21  zetta       Z 
 18  exa         E 
@@ -71,12 +67,10 @@ scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 9   giga        G
 6   mega        M
 3   kilo        k 
-
 2   hecto       h
 1   deca        da
 -1  deci        d 
 -2  centi       c 
-
 -3  milli       m
 -6  micro       µ
 -9  nano        n
@@ -85,9 +79,7 @@ scienceprint 120000,4 122900,5 120036,6,3 --> 120.0*10^3,122.90*10^3,120.036 k
 -18 atto        a
 -21 zepto       z
 -24 yocto       y
-
 */
-
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
