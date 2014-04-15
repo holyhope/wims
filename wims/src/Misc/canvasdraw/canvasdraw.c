@@ -203,13 +203,14 @@ int main(int argc, char *argv[]){
 	    @size width,height
 	    @set canvas size in pixels
 	    @mandatory first command
+	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0)
 	    */
 	    found_size_command = TRUE;
 	    xsize = (int)(abs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
 	    ysize = (int)(abs(round(get_real(infile,1))));
 	    /* sometimes we want xrange / yrange to be in pixels...without telling x/y-range */
 	    xmin = 0;xmax = xsize;
-	    ymin = ysize;ymax = 0;
+	    ymin = 0;ymax = ysize;
 
 /* 
  The sequence in which stuff is finally printed is important !!
@@ -856,7 +857,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor <br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x;var snap_y;\nfunction snap_to_x(x){return snap_x*(Math.round(x/snap_x));};function snap_to_y(y){return snap_y*(Math.round(y/snap_y));};\n");
+	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x;var snap_y;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
 	break;
 	case USERDRAW:
 	/*
@@ -1418,7 +1419,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    }
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
 		    /* set snap_x snap_y values in pixels */
-		    fprintf(js_include_file,"snap_x = %d;snap_y = %d\n;",(int)(double_data[0] * xsize / (int_data[0]*(xmax - xmin))),(int)(double_data[1] * ysize / (int_data[1]*(ymax - ymin))));
+		    fprintf(js_include_file,"snap_x = %f;snap_y = %f\n;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
 /* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
 
 		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
@@ -1884,6 +1885,31 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    string_length = snprintf(NULL,0,  "draw_hatchfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 		    snprintf(tmp_buffer,string_length,"draw_hatchfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    add_to_buffer(tmp_buffer);
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
+	case DIAMONDFILL:
+	/*
+	@ diamondfill x0,y0,dx,dy,color
+	@ x0,y0 in xrange / yrange
+	@ distances dx,dy in pixels
+	*/
+	    if( js_function[DRAW_DIAMONDFILL] != 1 ){ js_function[DRAW_DIAMONDFILL] = 1;}
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
+		    case 1: int_data[1] = y2px(get_real(infile,0)); break; /* y  */
+		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* dx pixel */
+		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* dy pixel*/
+		    case 4: stroke_color = get_color(infile,1);
+		    /* draw_hatchfill(ctx,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize) */
+		    string_length = snprintf(NULL,0,  "draw_diamondfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_diamondfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
 		    add_to_buffer(tmp_buffer);
 		    break;
 		    default:break;
@@ -3878,9 +3904,9 @@ draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize
  return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
-    case DRAW_HATCHFILL:/* not used for userdraw */
+    case DRAW_DIAMONDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
-draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
+draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
   var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -3918,6 +3944,41 @@ draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_
   ctx.moveTo(x,y0);\
   ctx.lineTo(x0,y);\
   x = x - dx;\
+ };\
+ ctx.stroke();\
+ ctx.restore();\
+ return;\
+ }\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
+    
+    case DRAW_HATCHFILL:/* not used for userdraw */
+fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
+draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
+  var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ var x;\
+ var y;\
+ ctx.save();\
+ ctx.lineWidth = linewidth;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ y = ysize;\
+ for( x = x0 ; x < xsize ; x = x + dx ){\
+  ctx.moveTo(x,y0);\
+  ctx.lineTo(xsize,y);\
+  y = y - dy;\
+ };\
+ y = y0;\
+ for( x = xsize ; x >= dx ; x = x - dx){\
+  ctx.moveTo(x,ysize);\
+  ctx.lineTo(x0,y);\
+  y = y + dy;\
  };\
  ctx.stroke();\
  ctx.restore();\
@@ -5108,6 +5169,7 @@ int get_token(FILE *infile){
 	*patternfill="patternfill",
 	*hatchfill="hatchfill",
 	*diafill="diafill",
+	*diamondfill="diamondfill",
 	*dotfill="dotfill",
 	*gridfill="gridfill",
 	*imagefill="imagefill",
@@ -5584,9 +5646,9 @@ int get_token(FILE *infile){
 	free(input_type);
 	return HATCHFILL;
 	}
-	if( strcmp(input_type, diafill) == 0 ){
+	if( strcmp(input_type, diafill) == 0  || strcmp(input_type, diamondfill) == 0  ){
 	free(input_type);
-	return DIAFILL;
+	return DIAMONDFILL;
 	}
 	if( strcmp(input_type, dotfill) == 0 ){
 	free(input_type);
