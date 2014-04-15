@@ -57,10 +57,10 @@ int getscoreuser(char *classe, char *user)
     else nowscore="";
   }
   snprintf(scorebuf+sizeof(int),sizeof(scorebuf)-sizeof(int),
-	   "-c%s -u%s getscore %s %s %s",
-	   classe,user,nowsheet,nowexo,nowscore);
-  i=kerneld(scorebuf,sizeof(scorebuf)); if(i<0)
-					  internal_error("getscoreuser(): daemon failure.");
+       "-c%s -u%s getscore %s %s %s",
+       classe,user,nowsheet,nowexo,nowscore);
+  i=kerneld(scorebuf,sizeof(scorebuf));
+  if(i<0)  internal_error("getscoreuser(): daemon failure.");
   if(memcmp(scorebuf+sizeof(int),"OK",2)!=0) {
     if(memcmp(scorebuf+sizeof(int),"ERROR",5)==0) {
       module_error(find_word_start(scorebuf+sizeof(int)+8));
@@ -261,16 +261,16 @@ void calc_getscorepercent(char *p)
 /* if mean<1 then ignore score.
  * if mean<2 then half score. */
       if(rscore[j].mean>=1) {
-	    double dt=rscore[j].score;
-	    float db=rscore[j].best;
-	    if(rscore[j].mean<2) {dt=dt/2; db=db/2;}
-	    d=dt*rscore[j].weight;
+        double dt=rscore[j].score;
+        float db=rscore[j].best;
+        if(rscore[j].mean<2) {dt=dt/2; db=db/2;}
+        d=dt*rscore[j].weight;
 /* quality */
-	    mean+=rscore[j].mean*d;
+        mean+=rscore[j].mean*d;
 /* cumulative score */
-	    tot+=d;
+        tot+=d;
 /* best */
-	    totb+=db*rscore[j].weight;
+        totb+=db*rscore[j].weight;
       }
     }
     if(tot>0) {d=mean/tot;} else d=0;
@@ -372,18 +372,18 @@ int getscorestatus(char *classe, int sheet)
     score_statussheet=sheet; score_statusisexam=isexam;
     score_status=_getscorestatus(classe,sheet); score_isexam=0;
     if(score_status==1 && (cmd_type==cmd_new || cmd_type==cmd_renew
-			   || isexam)) {
+               || isexam)) {
       char *p;
       p=getvar("wims_scorereg");
       if(p==NULL || strcmp(p,"suspend")!=0)
-	setvar("wims_scoring","pending");
+         setvar("wims_scoring","pending");
       else setvar("wims_scoring","");
     }
   }
   if(isexam && score_status==0) {
     char *p;
     p=getvar("wims_user"); if(p==NULL || strcmp(p,"supervisor")!=0)
-			     user_error("exam_closed");
+                 user_error("exam_closed");
   }
   return score_status;
 }

@@ -79,7 +79,7 @@ void nph_header(int code)
       case 420: cstr="WIMS Nested Error"; break;
       case 450: cstr="WIMS User Error"; break;
       case 500: cstr="WIMS Internal Error"; break;
-      case 550: cstr="WIMS Module Error"; break;      
+      case 550: cstr="WIMS Module Error"; break;
       default: cstr="ERROR"; break;
     }
     if(httpd_type!=httpd_wims) printf("Status: %d %s\r\n",code,cstr);
@@ -133,7 +133,7 @@ void tex_nospace(char *p)
     for(p1=buf,p2=p;*p2 && p1-buf<MAX_LINELEN-4;p2++) {
       if(!isspace(*p2)) {*p1++=*p2;continue;}
       while(isspace(*p2)) p2++;
-      if(*(p1-1)=='\\' || 
+      if(*(p1-1)=='\\' ||
          (p1>buf && myisalnum(*(p1-1)) && myisalnum(*p2)))
         *p1++=' ';
       *p1++=*p2;
@@ -221,12 +221,12 @@ char *readfile(char *fname, char buf[], long int buflen)
     fd=open(fname,O_RDONLY); if(fd==-1) return NULL;
     if(buf==NULL) bf=xmalloc(l+8); else {bf=buf;if(l==0) {t=1; l=buflen-1;}}
     lc=read(fd,bf,l); close(fd);
-    if(lc<0 || lc>l || (lc!=l && t==0)) 
+    if(lc<0 || lc>l || (lc!=l && t==0))
       {if(buf==NULL) free(bf); else buf[0]=0; return NULL;}
     bf[lc]=0; _tolinux(bf); return bf;
 }
 
-      /* Get a line in a stored working file. 
+      /* Get a line in a stored working file.
        * Buffer length is always MAX_LINELEN. */
 int wgetline(char buf[], size_t buflen, WORKING_FILE *f)
 {
@@ -364,14 +364,14 @@ void user_error(char msg[])
     if(ftest(erfname)!=is_file) internal_error("user_error(): error message file not found.\n\
 Bad installation.");
     force_setvar("wims_user_error",msg);
-    if(strcmp(msg,"threshold")!=0) user_error_log(msg); 
-    memmove(module_prefix,".",2); 
+    if(strcmp(msg,"threshold")!=0) user_error_log(msg);
+    memmove(module_prefix,".",2);
     if(lastout_file!=-1 && outputing) {
       flushoutput(); close(lastout_file); lastout_file=-1;
     }
     nph_header(450);
-    phtml_put_base(erfname,0); 
-    if(strcmp(msg,"double_click")!=0) delete_pid(); 
+    phtml_put_base(erfname,0);
+    if(strcmp(msg,"double_click")!=0) delete_pid();
     else {
       cleantmpdir(); flushlog();
     }
@@ -500,13 +500,13 @@ int trusted_module(void)
     char *modname, *w, buf[MAX_LINELEN+1];
     int i,n;
     static int _trusted=-1;      /* avoid repeated computations */
-    
+
     if(untrust&255) return 0;
     if(_trusted>=0) return _trusted;
     modname=getvar(ro_name[ro_module]);
     if(modname==NULL || *modname==0) return 0;
-    if(memcmp(modname,"adm/",strlen("adm/"))==0 || 
-       memcmp(modname,"classes/",strlen("classes/"))==0 || 
+    if(memcmp(modname,"adm/",strlen("adm/"))==0 ||
+       memcmp(modname,"classes/",strlen("classes/"))==0 ||
        strcmp(modname,home_module)==0 ||
        memcmp(modname,"help/",strlen("help/"))==0) {
       tr:
@@ -522,14 +522,14 @@ int trusted_module(void)
     return _trusted=0;
 }
 
-      /* file should be in the module directory, but 
+      /* file should be in the module directory, but
        * it may also be somewhere else.
        * buf[] requires MAX_FNAME+1 length.
        * Returns 0 if found. */
 int find_module_file(char *fname, char buf[], int mode)
 {
     char *p, dtest[32];
-    
+
     fname=find_word_start(fname);
     if(*fname==0) return -1;
       /* Name checking: no directory backtracing. */
@@ -552,7 +552,7 @@ int find_module_file(char *fname, char buf[], int mode)
       else {
           mkfname(buf,"w/%s/%s",module_prefix,p+1);
       }
-      untrust|=4; 
+      untrust|=4;
     }
     else {
       openit: mkfname(buf,"%s/%s",module_prefix,fname);
@@ -564,7 +564,7 @@ isexec:
           setvar("executable",fname); module_error("executable");
           return -1;
       }
-      if(strncmp(fname,"adm/",4)==0 && 
+      if(strncmp(fname,"adm/",4)==0 &&
          (!trusted_module() || is_class_module)) return -1;
       mkfname(buf,"scripts/%s",fname);
       lastopen:
@@ -581,7 +581,7 @@ isexec:
       /* This is deprecated because of the wimshome/ method. */
 /* int user_file(char *name) {
     if(name[0]=='/' || name[0]=='.' ||
-       strstr(name,"classes/")!=NULL || 
+       strstr(name,"classes/")!=NULL ||
        strstr(name,"forums/")!=NULL ||
        strstr(name,"sessions/")!=NULL ||
        strstr(name,"doc/")!=NULL) return 1; else return 0;
@@ -631,7 +631,7 @@ unsigned int datafile_recordnum(char *p)
     t=untrust; ret=0;
     if(direct_datafile) mystrncpy(nbuf,p,sizeof(nbuf));
     else if(datafile_check(p)!=0 || find_module_file(p,nbuf,0)) goto ret;
-    readdatafile(nbuf); 
+    readdatafile(nbuf);
     for(i=nextdatacache, pp=datacache[i]; *pp;) {
       pp=_nextdata(pp+1); i++;
       if(i<DATAFIELD_LIMIT) {
@@ -719,7 +719,7 @@ int _http2env(char outs[], char ins[])
       }
       outs[k]=ins[j];
     }
-    outs[k]=0;    
+    outs[k]=0;
     return k;
 }
 
@@ -749,7 +749,7 @@ int http2env(char outs[], char ins[])
       }
       outs[k]=ins[j];
     }
-    outs[k]=0;    
+    outs[k]=0;
     return k;
 }
 
@@ -844,7 +844,7 @@ void create_pid(void)
     char buf[MAX_FNAME+1], pbuf[256], obuf[MAX_FNAME+1];
     struct stat dst;
     struct utimbuf ub;
-    
+
     if(robot_access || *session_prefix==0) return;
     if(cmd_type==cmd_getframe) return;
     mkfname(buf,"%s/.pid",s2_prefix);
@@ -904,7 +904,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
           if(outf!=NULL) (void)freopen(outf,"w",stdout);
           if(errf!=NULL) (void)freopen(errf,"w",stderr);
       }
-            /* This is to patch LinuxPPC uid wrapping 
+            /* This is to patch LinuxPPC uid wrapping
              * for scripts */
       t=0; if(strchr(cmdf,'/')) {
           int tf;
@@ -932,7 +932,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
       exit(127);
     }
     else {      /* parent */
-      wrapexec=0; status=0; 
+      wrapexec=0; status=0;
       if(exec_wait && !is_multiexec) {
           killpid=pid; forkalarm();
           waitpid(pid,&status,0); killpid=0; finalalarm();
@@ -947,10 +947,10 @@ int multiexec(char *cmd, char **abuf)
 {
     char *p;
     int i;
-    
+
     if(robot_access) return 0;
     if(strstr(tmp_dir,"sessions/")==NULL) return 0;
-    if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1) 
+    if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1)
       setenv("multiexec_debug","yes",1);
     p=getvar("wims_multiexec");
     if(p==NULL || wordchr(p,cmd)==NULL) return 0; /* not allowed */
@@ -1129,7 +1129,7 @@ void _setdef(char buf[], char *name, char *value)
 {
     char *p1, *p2, *p3;
     int n;
-    
+
     for(p1=strstr(buf,name); p1!=NULL; p1=strstr(p1+1,name)) {
       p2=find_word_start(p1+strlen(name));
       if((p1>buf && !isspace(*(p1-1))) || *p2!='=') continue;
@@ -1143,7 +1143,7 @@ void _setdef(char buf[], char *name, char *value)
       return;
     }
     n=strlen(buf);
-    if(n>0 && buf[n-1]!='\n') 
+    if(n>0 && buf[n-1]!='\n')
       snprintf(buf+n,MAX_LINELEN-n,"\n%s=%s\n",name,value);
     else
       snprintf(buf+n,MAX_LINELEN-n,"%s=%s\n",name,value);
@@ -1184,7 +1184,7 @@ int checkhost(char *hlist)
     char buf[MAX_LINELEN+1];
     char lbuf[1024], hbuf1[256], hbuf2[256];
     char *p1, *p2, *pb, *pe, *pp;
-    
+
     if(*remote_addr==0) return 0;
     snprintf(hbuf1,sizeof(hbuf1),"+%s+",remote_addr);
     if(*remote_host!=0) {
@@ -1204,7 +1204,7 @@ int checkhost(char *hlist)
       if(myisalnum(*p1)) pb="+"; else pb="";
       if(myisalnum(*(p2-1))) pe="+"; else pe="";
       snprintf(lbuf,sizeof(lbuf),"%s%s%s",pb,p1,pe);
-      for(pp=p1; *pp && (myisdigit(*pp) || *pp=='.'); pp++); 
+      for(pp=p1; *pp && (myisdigit(*pp) || *pp=='.'); pp++);
       if(*pp) pp=hbuf2;      /* host name */
       else pp=hbuf1;         /* ip number */
       if(strstr(pp,lbuf)!=NULL) return 1;      /* found */
@@ -1277,12 +1277,12 @@ void putlastout(void)
 struct sockaddr_un sun;
 
       /* returns >=0 if OK. */
+
 int kerneld(char *p, int bufsize)
 {
     int sock, s, t, t1, l, *ip;
     struct timeval tv;
     fd_set rset;
-    
     sock=socket(PF_UNIX,SOCK_STREAM,0);
     s=connect(sock,(const struct sockaddr *)&sun,sizeof(sun));
     if(s) {bad: close(sock); return -1;}
@@ -1293,8 +1293,9 @@ int kerneld(char *p, int bufsize)
       tv.tv_sec=2; tv.tv_usec=0;
       FD_ZERO(&rset); FD_SET(sock,&rset);
       if(select(sock+1,&rset,NULL,NULL,&tv)<=0) goto bad;
-      t1=read(sock,p+t,l-t);
+      t1=read(sock,p+t,l+sizeof(int)-t);
       if(t1+t<sizeof(int)) goto bad;
+      if (t1 < 0) goto bad;
       l=*ip; if(l<=0) goto bad;
       if(l>=bufsize-sizeof(int)-4) user_error("cmd_output_too_long");
       t+=t1;
@@ -1309,7 +1310,7 @@ void _daemoncmd(char *p)
     char buf[MAX_LINELEN+1+sizeof(int)];
     char *p1, *p2, *p3;
     mystrncpy(buf+sizeof(int),p,sizeof(buf)-sizeof(int));
-    if(kerneld(buf,sizeof(buf))<0) 
+    if(kerneld(buf,sizeof(buf))<0)
       internal_error("Daemon communication error.");
     p1=find_word_start(buf+sizeof(int));
     p2=find_word_end(p1); if(*p2) *p2++=0;
@@ -1317,7 +1318,7 @@ void _daemoncmd(char *p)
       mystrncpy(p,p2,MAX_LINELEN); return;
     }
     p1=find_word_start(p2); p2=find_word_end(p1); if(*p2) *p2++=0;
-    p2=find_word_start(p2); p3=find_word_end(p2); 
+    p2=find_word_start(p2); p3=find_word_end(p2);
     if(*p3) {
       *p3++=0; p3=find_word_start(p3); strip_trailing_spaces(p3);
       setvar("wims_error_data",p3);
