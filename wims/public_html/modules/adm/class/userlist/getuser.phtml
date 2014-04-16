@@ -181,12 +181,16 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !endif
  </span>
  </th></tr>
- $table_hdtr<th>$(name_thsheet[1])</th>
-     <th>$(name_thsheet[2])</th>
+ !set nb_col=5
+ $table_hdtr
+     <th>$(name_thsheet[1])</th><th>$(name_thsheet[2])</th>
      <th>$(name_thsheet[3])</th><th>$(name_thsheet[4])</th>
+
      <th>$(name_thsheet[5])</th><th>$(name_thsheet[6])</th>
      <th>$(name_thsheet[7])</th><th>$(name_thsheet[10])</th>
-     <th>$(name_thsheet[12])</th><th>$(name_thsheet[11])</th></tr>
+     <th>$(name_thsheet[12])</th>
+
+     <th>$(name_thsheet[11])</th></tr>
  !for j=1 to $e_
   !let d=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$n_
   !distribute line $d into t,t,req_,weight_,title_,t
@@ -195,58 +199,40 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   <td>$(req_)</td>
   <td>$(weight_)</td>
   !set try=!getscoretry user=$getuser sheet=$n_ work=$j
-  !set d_=!getscore user=$getuser sheet=$n_ work=$j
-  !default d_=0
-  !read adm/class/colors $[ceil(10*$d_/$(req_))]
-  !if $try>0
-   <td style=$style_note>
-   $d_
+  !if $try<=0
+   !makelist <td>--</td> for j=1 to $nb_col
   !else
-   <td>--
-  !endif
-  </td>
-  !if $(req_)>0
+!!cumul
+   !set d_=!getscore user=$getuser sheet=$n_ work=$j
+   !default d_=0
    !read adm/class/colors $[ceil(10*$d_/$(req_))]
-   !if $d_>0
-    <td style=$style_note>
-    $[round(100*$d_/$(req_))]%
+   <td style=$style_note>$d_</td>
+!!percentage
+   !if $(req_)>0
+    !read adm/class/colors $[ceil(10*$d_/$(req_))]
+     <td style=$style_note>$[round(100*$d_/$(req_))]%</td>
    !else
-    <td>--
+     <td>--</td>
    !endif
-  !else
-   <td>---
-  !endif
-  </td>
-  !if $try>0
+!!quality
    !set d_=!getscoremean user=$getuser sheet=$n_ work=$j
    !default d_=0
    !read adm/class/colors $[ceil($d_)]
-   <td style=$style_note>
-       $d_
-  !else
-   <td>--
-  !endif
-   </td>
-  !if $try>0
-     !set best=!getscorebest user=$getuser sheet=$n_ work=$j
-     !read adm/class/colors $[ceil(10*$best/$req_)]
-     <td style=$style_note>
-     $[round(10*$[$best*10/$req_])] %
-  !else
-      <td>--
-   !endif
-   </td>
-   !if $try>0
+    <td style=$style_note>$d_</td>
+!!best percentage
+   !set best=!getscorebest user=$getuser sheet=$n_ work=$j
+   !read adm/class/colors $[ceil(10*$best/$req_)]
+   <td style=$style_note>$[round(10*$[$best*10/$req_])] %</td>
+!!last
    !set last=!getscorelast user=$getuser sheet=$n_ work=$j
-    !read adm/class/colors $[ceil($last)]
-    <td style=$style_note>
-     $last
-   !else
-    <td> --
-   !endif
-   </td>
-   <td>
-   $try
+   !read adm/class/colors $[ceil($last)]
+   <td style=$style_note>$last</td>
+
+
+!endif try
+!!try
+  <td>
+    $try
    </td>
   </tr>
  !next j
