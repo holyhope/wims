@@ -129,6 +129,7 @@
 #define ANIMATE		132
 #define STATUS		133 
 #define SNAPTOGRID	134
+#define USERINPUT_XY	135
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

@@ -138,6 +138,7 @@ int main(int argc, char *argv[]){
     int translate_y = 0;
     int clickfillmarge = 20;
     int animation_type = 9; /* == object type curve in drag library */
+    int use_input_xy = FALSE;
     size_t string_length = 0;
     double stroke_opacity = 0.8;
     double fill_opacity = 0.8;
@@ -859,6 +860,18 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x;var snap_y;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
 	break;
+	case USERINPUT_XY:
+	/*
+	@ userinput_xy
+	@ keyword 
+	@ to be used in combination with command "userdraw object_type,color"
+	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values) 
+	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
+	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+	*/
+	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
+	use_input_xy = TRUE;
+	break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
@@ -872,6 +885,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ use command "debug" to view the output of javascript funcion read_canvas();
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
+	@ may be combined with keyword 'userinput_xy'
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
 		canvas_error("Only one userdraw primitive may be used: read documentation !!");
@@ -884,6 +898,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format < 1 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		if(use_input_xy == 1){ 
+		    add_input_circle(js_include_file,1,1);
+		    add_input_xy(js_include_file,canvas_root_id);
+		}
 		add_js_points(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
 	    }
 	    else
@@ -891,6 +909,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	        if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 	        if(reply_format < 1 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		if(use_input_xy == 1){ 
+		    add_input_circle(js_include_file,1,2);
+		    add_input_xy(js_include_file,canvas_root_id);
+		}
 		add_js_points(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
 	    }
 	    else
@@ -898,6 +920,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
+		if(use_input_xy == 1){ 
+		    add_input_segment(js_include_file,1);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
 		add_js_segments(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
 	    else
@@ -905,6 +931,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
+		if(use_input_xy == 1){ 
+		    add_input_segment(js_include_file,2);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
 		add_js_segments(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
 	    else
@@ -912,6 +942,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format < 1){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
+		if(use_input_xy == 1){ 
+		    add_input_circle(js_include_file,2,1);
+		    add_input_xyr(js_include_file,canvas_root_id);
+		}
 		add_js_circles(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
 	    else
@@ -920,6 +954,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
 		add_js_circles(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ 
+		    add_input_circle(js_include_file,2,2);
+		    add_input_xyr(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if(strcmp(draw_type,"crosshair") == 0 ){
@@ -927,6 +965,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"crosshairs") == 0 ){
@@ -934,48 +973,56 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandline") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandlines") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"path") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"paths") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrows") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrow") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"polygon") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_poly(js_include_file,-1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if(strncmp(draw_type,"poly",4) == 0){
@@ -983,12 +1030,14 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_poly(js_include_file,(int) (draw_type[4]-'0'),draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if(strcmp(draw_type,"triangle") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_poly(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"line") == 0 ){
@@ -996,6 +1045,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"lines") == 0 ){
@@ -1003,36 +1053,42 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"rects") == 0){
 		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_rect(js_include_file,2,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrects") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_rect(js_include_file,2,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"rect") == 0){
 		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_rect(js_include_file,1,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrect") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_rect(js_include_file,1,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"text") == 0){
 		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
 		if(reply_format < 1){reply_format = 17;}
 		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    {
@@ -1801,6 +1857,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    @ the canvas will be displayed in a tooltip on 'link_text'
 	    @ the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link test will alos be shown with this bgcolor.
 	    */
+	    if(use_input_xy == TRUE){canvas_error("intooltip can not be combined with userinput_xy command");}
 	    use_tooltip = TRUE;
 	    tooltip_text = get_string(infile,1);
 	    if(strstr(tooltip_text,"\"") != 0 ){ tooltip_text = str_replace(tooltip_text,"\"","'"); }
@@ -2400,6 +2457,9 @@ fclose(js_include_file);
 /* if using a tooltip, this should always be printed to the *.phtml file, so stdout */
 if(use_tooltip == TRUE){
   add_js_tooltip(canvas_root_id,tooltip_text,bgcolor,xsize,ysize);
+}
+if(use_input_xy == TRUE){
+  add_js_use_input_xy(canvas_root_id);
 }
 exit(EXIT_SUCCESS);
 }
@@ -5202,7 +5262,8 @@ int get_token(FILE *infile){
 	*animate="animate",
 	*video="video",
 	*status="status",
-	*snaptogrid="snaptogrid";
+	*snaptogrid="snaptogrid",
+	*userinput_xy="userinput_xy";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -5790,6 +5851,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, snaptogrid) == 0 ){
 	free(input_type);
 	return SNAPTOGRID;
+	}
+	if( strcmp(input_type, userinput_xy) == 0 ){
+	free(input_type);
+	return USERINPUT_XY;
 	}
 	free(input_type);
 	ungetc(c,infile);
