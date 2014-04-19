@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block\"><span id=\"tooltip_placeholder%d\" style=\"display:none\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
-fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
 add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
@@ -868,6 +868,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values) 
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
 	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
 	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
 	use_input_xy = TRUE;
@@ -886,12 +887,13 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
 	@ may be combined with keyword 'userinput_xy'
+	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
 		canvas_error("Only one userdraw primitive may be used: read documentation !!");
 	    }
 	    use_userdraw = TRUE;
-	    fprintf(js_include_file,"<!-- begin userdraw mouse events -->\nvar userdraw_x = new Array();var userdraw_y = new Array();var userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->\n",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
+	    fprintf(js_include_file,"<!-- begin userdraw mouse events -->\nvar userdraw_x = new Array();var userdraw_y = new Array();var userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
 	    draw_type = get_string_argument(infile,0);
 	    stroke_color = get_color(infile,1);
 	    if( strcmp(draw_type,"point") == 0 ){
@@ -1330,6 +1332,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
 	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br />attention: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();" 
 	@ If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
+	
 	*/
 	    if( js_function[DRAW_XML] != 1 ){ js_function[DRAW_XML] = 1;}
 	    for(i=0;i<5;i++){
@@ -1786,13 +1789,13 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
 	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
-	    fprintf(js_include_file,"use_pan_and_zoom = 1;\n");
+	    fprintf(js_include_file,"use_pan_and_zoom = 1;");
 	    if( js_function[DRAW_ZOOM_BUTTONS] != 1 ){ js_function[DRAW_ZOOM_BUTTONS] = 1;}
 	    /* we use BG_CANVAS (0) */
 	    stroke_color = get_color(infile,1);
-	    string_length = snprintf(NULL,0," draw_zoom_buttons(%d,\"%s\",%f);\n",BG_CANVAS,stroke_color,stroke_opacity);
+	    string_length = snprintf(NULL,0," draw_zoom_buttons(%d,\"%s\",%f);",BG_CANVAS,stroke_color,stroke_opacity);
 	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    snprintf(tmp_buffer,MAX_BUFFER-1,"draw_zoom_buttons(%d,\"%s\",%f);\n",BG_CANVAS,stroke_color,stroke_opacity);
+	    snprintf(tmp_buffer,MAX_BUFFER-1,"draw_zoom_buttons(%d,\"%s\",%f);",BG_CANVAS,stroke_color,stroke_opacity);
 	    add_to_buffer(tmp_buffer);
 	    done = TRUE;
 	    break;
@@ -2131,7 +2134,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    js_function[DRAW_FLOODFILL] = 1;
 	    add_js_floodfill(js_include_file,canvas_root_id);
 	 }
-	 fprintf(js_include_file,"<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};\n<!-- end command clickfill -->\n",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
+	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
 	 add_read_canvas(1);
 	break;
 	case SETPIXEL:
@@ -2231,7 +2234,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var legendcolors%d = [\"%s\"];\n",canvas_root_id,temp);
+	    fprintf(js_include_file,"var legendcolors%d = [\"%s\"];",canvas_root_id,temp);
 	    break;
 	case LEGEND:
 	/*
@@ -2241,7 +2244,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var legend%d = [\"%s\"];\n",canvas_root_id,temp);
+	    fprintf(js_include_file,"var legend%d = [\"%s\"];",canvas_root_id,temp);
 	    break;
 	case XLABEL:
 	/*
@@ -2251,7 +2254,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
 	*/
 	    temp = get_string(infile,1);
-	    fprintf(js_include_file,"var xaxislabel = \"%s\"; ",temp);
+	    fprintf(js_include_file,"var xaxislabel = \"%s\";",temp);
 	    break;
 	case YLABEL:
 	/*
@@ -2261,7 +2264,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
 	*/
 	    temp = get_string(infile,1);
-	    fprintf(js_include_file,"var yaxislabel = \"%s\"; ",temp);
+	    fprintf(js_include_file,"var yaxislabel = \"%s\";",temp);
 	    break;
 	case LINEGRAPH: /* scheme: var linegraph_0 = [ 'stroke_color','line_width','use_dashed' ,'dashtype0','dashtype1','x1','y1',...,'x_n','y_n'];*/
 	/*
@@ -2276,7 +2279,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/    
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var linegraph_%d = [\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%s\"];\n",linegraph_cnt,stroke_color,line_width,use_dashed,dashtype[0],dashtype[1],temp);
+	    fprintf(js_include_file,"var linegraph_%d = [\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%s\"];",linegraph_cnt,stroke_color,line_width,use_dashed,dashtype[0],dashtype[1],temp);
 	    linegraph_cnt++;
 	    reset();
 	    break;
@@ -2361,7 +2364,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var barchart%d = [\"%s\"];\n",canvas_root_id,temp);
+	    fprintf(js_include_file,"var barchart%d = [\"%s\"];",canvas_root_id,temp);
 	    reset();
 	    break;
 	case PIECHART:
@@ -2421,31 +2424,28 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
     snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
   }
   /* add global variables / contants */
-  fprintf(js_include_file,"\n\
-  <!-- some extra global stuff ... need to rethink this -->\n\
+  fprintf(js_include_file,"\n<!-- some extra global stuff -->\n\
   var precision = %d;var xmin=%.*f;var xmax=%.*f;var ymin=%.*f;\
   var ymax=%.*f;var xmin_start=xmin;var xmax_start=xmax;\
   var ymin_start=ymin;var ymax_start=xmax;var zoom_increment = (xmax - xmin)/20;\
   var pan_x_increment = (xmax - xmin)/20;var pan_y_increment = (ymax - ymin)/20;\
-  <!-- THIS ZOOM & PAN BUTTON STUFF IS JUST  A TEMPORARY SOLUTION -->\n\
-  function start_canvas%d(type){\n\
-   switch(type){\n\
-    case 0:xmin = xmin + zoom_increment;ymin = ymin + zoom_increment;xmax = xmax - zoom_increment;ymax = ymax - zoom_increment;break;\n\
-    case 1:xmin = xmin - zoom_increment;ymin = ymin - zoom_increment;xmax = xmax + zoom_increment;ymax = ymax + zoom_increment;break;\n\
-    case 2:xmin = xmin - pan_x_increment;ymin = ymin ;xmax = xmax - pan_x_increment;ymax = ymax;break;\n\
-    case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\n\
-    case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\n\
-    case 5:xmin = xmin;ymin = ymin + pan_y_increment ;xmax = xmax;ymax = ymax + pan_y_increment;break;\n\
-    case 6:location.reload();break;\n\
-    default:break;\n\
-   };\n\
-   if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\n\
-   if(ymax<=ymin){ymin=ymin_start;ymax=ymax_start;};\n\
-   try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\n\
-   <!-- buffer -->\n\
-   %s\n\
-  };\n\
-  start_canvas%d(22);\n\
+  function start_canvas%d(type){\
+   switch(type){\
+    case 0:xmin = xmin + zoom_increment;ymin = ymin + zoom_increment;xmax = xmax - zoom_increment;ymax = ymax - zoom_increment;break;\
+    case 1:xmin = xmin - zoom_increment;ymin = ymin - zoom_increment;xmax = xmax + zoom_increment;ymax = ymax + zoom_increment;break;\
+    case 2:xmin = xmin - pan_x_increment;ymin = ymin ;xmax = xmax - pan_x_increment;ymax = ymax;break;\
+    case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\
+    case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\
+    case 5:xmin = xmin;ymin = ymin + pan_y_increment ;xmax = xmax;ymax = ymax + pan_y_increment;break;\
+    case 6:location.reload();break;\
+    default:break;\
+   };\
+   if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\
+   if(ymax<=ymin){ymin=ymin_start;ymax=ymax_start;};\
+   try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\
+   %s\
+  };\
+  start_canvas%d(22);\
  };\n\
 <!-- end wims_canvas_function -->\n\
 wims_canvas_function%d();\n",precision,decimals,xmin,decimals,xmax,decimals,ymin,decimals,ymax,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
@@ -2457,9 +2457,6 @@ fclose(js_include_file);
 /* if using a tooltip, this should always be printed to the *.phtml file, so stdout */
 if(use_tooltip == TRUE){
   add_js_tooltip(canvas_root_id,tooltip_text,bgcolor,xsize,ysize);
-}
-if(use_input_xy == TRUE){
-  add_js_use_input_xy(canvas_root_id);
 }
 exit(EXIT_SUCCESS);
 }
@@ -2912,7 +2909,7 @@ answers may have:
 x-values,y-values,r-values,input-fields,mathml-inputfields,text-typed answers
 */
     case 1: fprintf(js_include_file,"\
-<!-- begin function 1 read_canvas() -->\n\
+\n<!-- begin function 1 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
@@ -2947,10 +2944,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 1 read_canvas() -->\n");
+<!-- end function 1 read_canvas() -->");
     break;
     case 2: fprintf(js_include_file,"\
-<!-- begin function 2 read_canvas() -->\n\
+\n<!-- begin function 2 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
@@ -2992,10 +2989,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 2 read_canvas() -->\n");
+<!-- end function 2 read_canvas() -->");
     break;
     case 3: fprintf(js_include_file,"\
-<!-- begin function 3 read_canvas() -->\n\
+\n<!-- begin function 3 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
@@ -3030,10 +3027,10 @@ function read_canvas(){\
  }\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 3 read_canvas() -->\n");
+<!-- end function 3 read_canvas() -->");
     break;
     case 4: fprintf(js_include_file,"\
-<!-- begin function 4 read_canvas() -->\n\
+\n<!-- begin function 4 read_canvas() -->\n\
 function read_canvas(){\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
  while(userdraw_x[p]){\
@@ -3074,14 +3071,14 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 4 read_canvas() -->\n");
+<!-- end function 4 read_canvas() -->");
     break;
     /* 
 	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
 	used for userdraw multiple paths 
     */
     case 5: fprintf(js_include_file,"\
-<!-- begin function 5 read_canvas() -->\n\
+\n<!-- begin function 5 read_canvas() -->\n\
 function read_canvas(){\
  var p = 0;\
  var reply = \"\";\
@@ -3124,14 +3121,14 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 5 read_canvas() -->\n");
+<!-- end function 5 read_canvas() -->");
     break;
     /* 
 	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
 	used for userdraw multiple paths 
     */
     case 6: fprintf(js_include_file,"\
-<!-- begin function 6 read_canvas() -->\n\
+\n<!-- begin function 6 read_canvas() -->\n\
 function read_canvas(){\
  var p = 0;\
  var reply = \"\";\
@@ -3182,10 +3179,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 6 read_canvas() -->\n");
+<!-- end function 6 read_canvas() -->");
     break;
     case 7: fprintf(js_include_file,"\
-<!-- begin function 7 read_canvas() -->\n\
+\n<!-- begin function 7 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
@@ -3226,10 +3223,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 7 read_canvas() -->\n");
+<!-- end function 7 read_canvas() -->");
     break;
     case 8: fprintf(js_include_file,"\
-<!-- begin function 8 read_canvas() -->\n\
+\n<!-- begin function 8 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
@@ -3270,10 +3267,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 8 read_canvas() -->\n");
+<!-- end function 8 read_canvas() -->");
     break;
     case 9: fprintf(js_include_file,"\
-<!-- begin function 9 read_canvas() -->\n\
+\n<!-- begin function 9 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
@@ -3314,10 +3311,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 9 read_canvas() -->\n");
+<!-- end function 9 read_canvas() -->");
     break;
     case 10: fprintf(js_include_file,"\
-<!-- begin function 10 read_canvas() -->\n\
+\n<!-- begin function 10 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
@@ -3358,10 +3355,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 10 read_canvas() -->\n");
+<!-- end function 10 read_canvas() -->");
     break;
     case 11: fprintf(js_include_file,"\
-<!-- begin function 11 read_canvas() -->\n\
+\n<!-- begin function 11 read_canvas() -->\n\
 function read_canvas(){\
  var reply = \"\";\
  var p = 0;\
@@ -3402,10 +3399,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 11 read_canvas() -->\n");
+<!-- end function 11 read_canvas() -->");
     break;
     case 12: fprintf(js_include_file,"\
-<!-- begin function 12 read_canvas() -->\n\
+\n<!-- begin function 12 read_canvas() -->\n\
 function read_canvas(){\
  var reply = \"\";\
  var p = 0;\
@@ -3447,10 +3444,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 12 read_canvas() -->\n");
+<!-- end function 12 read_canvas() -->");
     break;
     case 13: fprintf(js_include_file,"\
-<!-- begin function 13 read_canvas() -->\n\
+\n<!-- begin function 13 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;var i = 0;\
@@ -3491,10 +3488,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 13 read_canvas() -->\n");
+<!-- end function 13 read_canvas() -->");
     break;
     case 14: fprintf(js_include_file,"\
-<!-- begin function 14 read_canvas() -->\n\
+\n<!-- begin function 14 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;var i = 0;\
@@ -3535,10 +3532,10 @@ function read_canvas(){\
  };\
 };\
  this.read_canvas = read_canvas;\n\
-<!-- end function 14 read_canvas() -->\n");
+<!-- end function 14 read_canvas() -->");
     break;
     case 15: fprintf(js_include_file,"\
-<!-- begin function 15  read_canvas() -->\n\
+\n<!-- begin function 15  read_canvas() -->\n\
 function read_canvas(){\
  var input_reply = new Array();\
  var p = 0;\
@@ -3561,10 +3558,10 @@ function read_canvas(){\
  };\
 };\
  this.read_canvas = read_canvas;\n\
-<!-- end function 15 read_canvas() -->\n");
+<!-- end function 15 read_canvas() -->");
     break;
     case 16: fprintf(js_include_file,"\
-<!-- begin function 16 read_mathml() -->\n\
+\n<!-- begin function 16 read_mathml() -->\n\
 function read_mathml(){\
  var reply = new Array();\
  var p = 0;\
@@ -3577,19 +3574,19 @@ function read_mathml(){\
 return reply;\
 };\
 this.read_mathml = read_mathml;\n\
-<!-- end function 16 read_mathml() -->\n");
+<!-- end function 16 read_mathml() -->");
     break;
     case 17:  fprintf(js_include_file,"\
-<!-- begin function 17 read_canvas() -->\n\
+\n<!-- begin function 17 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_text.length == 0){alert(\"no text typed...\");return;}\
  return userdraw_text;\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 17 read_canvas() -->\n");
+<!-- end function 17 read_canvas() -->");
     break;
     case 18: fprintf(js_include_file,"\
-<!-- begin function 18 read_canvas() -->\n\
+\n<!-- begin function 18 read_canvas() -->\n\
 function read_canvas(){\
  var p = 0;\
  var reply = new Array();\
@@ -3603,17 +3600,17 @@ function read_canvas(){\
  return reply;\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 18 read_canvas() -->\n");
+<!-- end function 18 read_canvas() -->");
     break;
     case 19: fprintf(js_include_file,"\
-<!-- begin function 19 read_canvas() -->\n\
+\n<!-- begin function 19 read_canvas() -->\n\
 function read_canvas(){\
  return reply[0];\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 19 read_canvas() -->\n");
+<!-- end function 19 read_canvas() -->");
     case 20: fprintf(js_include_file,"\
-<!-- begin function 20 read_canvas() -->\n\
+\n<!-- begin function 20 read_canvas() -->\n\
 function read_canvas(){\
  var len  = ext_drag_images.length;\
  var reply = new Array(len);\
@@ -3624,10 +3621,10 @@ function read_canvas(){\
  return reply;\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 20 read_canvas() -->\n");
+<!-- end function 20 read_canvas() -->");
     break;
     case 21: fprintf(js_include_file,"\
-<!-- begin function 21 read_canvas() -->\n\
+\n<!-- begin function 21 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  var reply_coord = new Array();var p = 0;\
@@ -3668,10 +3665,10 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 21 read_canvas() -->\n");
+<!-- end function 21 read_canvas() -->");
     break;
     case 22: fprintf(js_include_file,"\
-<!-- begin function 22 read_canvas() -->\n\
+\n<!-- begin function 22 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
@@ -3715,7 +3712,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 22 read_canvas() -->\n");
+<!-- end function 22 read_canvas() -->");
     break;
 
     default: canvas_error("hmmm unknown replyformat...");break;
@@ -3741,75 +3738,75 @@ for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
     switch(i){
     case DRAG_EXTERNAL_IMAGE:
 fprintf(js_include_file,"\n<!-- drag external images --->\n\
-var external_canvas = create_canvas%d(7,xsize,ysize);\n\
-var external_ctx = external_canvas.getContext(\"2d\");\n\
-var external_canvas_rect = external_canvas.getBoundingClientRect();\n\
-canvas_div.addEventListener(\"mousedown\",setxy,false);\n\
-canvas_div.addEventListener(\"mouseup\",dragstop,false);\n\
-canvas_div.addEventListener(\"mousemove\",dragxy,false);\n\
-var selected_image = null;\n\
-var ext_image_cnt = 0;\n\
-var ext_drag_images = new Array();\n\
-function drag_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,draggable){\n\
- ext_image_cnt = idx;\n\
- var image = new Image();\n\
- image.src = URL;\n\
- image.onload = function(){\n\
-  if( x0 < 1 ){ x0 = 0; };if( y0 < 1 ){ y0 = 0; };if( sx < 1 ){ sx = 0; };if( sy < 1 ){ sy = 0; };\n\
-  if( width < 1 ){ width = image.width; };if( height < 1 ){ height = image.height; };\n\
-  if( swidth < 1 ){ swidth = image.width; };if( sheight < 1 ){ sheight = image.height; };\n\
-  img = new Array(10);\n\
-  img[0] = draggable;img[1] = image;img[2] = sx;img[3] = sy;img[4] = swidth;img[5] = sheight;\n\
-  img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;\n\
-  ext_drag_images[idx] = img;\n\
-  external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\n\
- };\n\
-};\n\
-function dragstop(evt){\n\
- selected_image = null;return;\n\
-};\n\
-function dragxy(evt){\n\
- if( selected_image != null ){\n\
-  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\n\
-  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\n\
-  var s_img = ext_drag_images[selected_image];\n\
-  s_img[6] = evt.clientX - external_canvas_rect.left + xoff;\n\
-  s_img[7] = evt.clientY - external_canvas_rect.top + yoff;\n\
-  ext_drag_images[selected_image] = s_img;\n\
-  external_ctx.clearRect(0,0,xsize,ysize);\n\
-  for(var i = 0; i <= ext_image_cnt ; i++){\n\
-   var img = ext_drag_images[i];\n\
-   external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\n\
-  };\n\
- };\n\
-};\n\
-function setxy(evt){\n\
- if( ! selected_image && evt.which == 1 ){\n\
-  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\n\
-  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\n\
-  var xm = evt.clientX - external_canvas_rect.left + xoff;\n\
-  var ym = evt.clientY - external_canvas_rect.top + yoff;\n\
-  for(var p = 0 ; p <= ext_image_cnt ; p++){\n\
-   var img = ext_drag_images[p];\n\
-   if( img[0] == 1 ){\n\
-    var w = img.width;\n\
-    var h = img.height;\n\
-    if( xm > img[6] && xm < img[6] + img[4]){\n\
-     if( ym > img[7] && ym < img[7] + img[5]){\n\
-      img[6] = xm;\n\
-      img[7] = ym;\n\
-      ext_drag_images[p] = img;\n\
-      selected_image = p;\n\
-      dragxy(evt);\n\
-     };\n\
-    };\n\
-   };\n\
-  };\n\
- }\n\
- else\n\
- {\n\
-  selected_image = null;\n\
- }\n\
+var external_canvas = create_canvas%d(7,xsize,ysize);\
+var external_ctx = external_canvas.getContext(\"2d\");\
+var external_canvas_rect = external_canvas.getBoundingClientRect();\
+canvas_div.addEventListener(\"mousedown\",setxy,false);\
+canvas_div.addEventListener(\"mouseup\",dragstop,false);\
+canvas_div.addEventListener(\"mousemove\",dragxy,false);\
+var selected_image = null;\
+var ext_image_cnt = 0;\
+var ext_drag_images = new Array();\
+function drag_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,draggable){\
+ ext_image_cnt = idx;\
+ var image = new Image();\
+ image.src = URL;\
+ image.onload = function(){\
+  if( x0 < 1 ){ x0 = 0; };if( y0 < 1 ){ y0 = 0; };if( sx < 1 ){ sx = 0; };if( sy < 1 ){ sy = 0; };\
+  if( width < 1 ){ width = image.width; };if( height < 1 ){ height = image.height; };\
+  if( swidth < 1 ){ swidth = image.width; };if( sheight < 1 ){ sheight = image.height; };\
+  img = new Array(10);\
+  img[0] = draggable;img[1] = image;img[2] = sx;img[3] = sy;img[4] = swidth;img[5] = sheight;\
+  img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;\
+  ext_drag_images[idx] = img;\
+  external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\
+ };\
+};\
+function dragstop(evt){\
+ selected_image = null;return;\
+};\
+function dragxy(evt){\
+ if( selected_image != null ){\
+  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
+  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);\
+  var s_img = ext_drag_images[selected_image];\
+  s_img[6] = evt.clientX - external_canvas_rect.left + xoff;\
+  s_img[7] = evt.clientY - external_canvas_rect.top + yoff;\
+  ext_drag_images[selected_image] = s_img;\
+  external_ctx.clearRect(0,0,xsize,ysize);\
+  for(var i = 0; i <= ext_image_cnt ; i++){\
+   var img = ext_drag_images[i];\
+   external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\
+  };\
+ };\
+};\
+function setxy(evt){\
+ if( ! selected_image && evt.which == 1 ){\
+  var xoff = (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
+  var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);\
+  var xm = evt.clientX - external_canvas_rect.left + xoff;\
+  var ym = evt.clientY - external_canvas_rect.top + yoff;\
+  for(var p = 0 ; p <= ext_image_cnt ; p++){\
+   var img = ext_drag_images[p];\
+   if( img[0] == 1 ){\
+    var w = img.width;\
+    var h = img.height;\
+    if( xm > img[6] && xm < img[6] + img[4]){\
+     if( ym > img[7] && ym < img[7] + img[5]){\
+      img[6] = xm;\
+      img[7] = ym;\
+      ext_drag_images[p] = img;\
+      selected_image = p;\
+      dragxy(evt);\
+     };\
+    };\
+   };\
+  };\
+ }\
+ else\
+ {\
+  selected_image = null;\
+ };\
 };",canvas_root_id);
     break;
 
@@ -3836,7 +3833,7 @@ draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,dragg
   canvas_bg_div.style.backgroundPosition= sx+\"px \"+sy+\"px\";\
   canvas_bg_div.style.backgroundImage = \"url(\" + URL + \")\";\
  };\
-};\n",canvas_root_id);    
+};",canvas_root_id);    
     break;
     
     case DRAW_ZOOM_BUTTONS: /* 6 rectangles 15x15 px  forbidden zone for drawing : y < ysize - 15*/
@@ -3862,7 +3859,7 @@ draw_zoom_buttons = function(canvas_type,color,opacity){\
  ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
  ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
  ctx.stroke();\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     
     break;
     case DRAW_GRIDFILL:/* not used for userdraw */
@@ -3891,7 +3888,7 @@ draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,y
  };\
  ctx.stroke();\
  ctx.restore();\
- return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+ return;};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_IMAGEFILL:/* not  used for userdraw */
@@ -3933,7 +3930,7 @@ draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
  };\
  ctx.restore();\
  return;\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_DOTFILL:/* not  used for userdraw */
@@ -3961,7 +3958,7 @@ draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize
  }\
  ctx.fill();\
  ctx.restore();\
- return;};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+ return;};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
     case DRAW_DIAMONDFILL:/* not used for userdraw */
@@ -4008,7 +4005,7 @@ draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,strok
  ctx.stroke();\
  ctx.restore();\
  return;\
- }\n",canvas_root_id,canvas_root_id,canvas_root_id);
+ }",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_HATCHFILL:/* not used for userdraw */
@@ -4043,7 +4040,7 @@ draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_
  ctx.stroke();\
  ctx.restore();\
  return;\
- }\n",canvas_root_id,canvas_root_id,canvas_root_id);
+ };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case DRAW_CIRCLES:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw circles -->\n\
@@ -4063,7 +4060,7 @@ draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,str
  }\
  ctx.restore();\
  return;\
-};\n");
+};");
     break;
     
     case DRAW_SEGMENTS:/*  used for userdraw */
@@ -4148,7 +4145,7 @@ draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,strok
  }\
  ctx.restore();\
   return;\
-};\n");
+};");
     break;
 
     case DRAW_RECTS:/*  used for userdraw */
@@ -4169,7 +4166,7 @@ draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opaci
  };\
  ctx.restore();\
  return;\
-};\n");
+};");
     break;
 
     case DRAW_ROUNDRECTS:/*  used for userdraw */
@@ -4197,7 +4194,7 @@ draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_
   ctx.stroke();\
  }\
  ctx.restore();\
-};\n");
+};");
     break; 
 
     case DRAW_ELLIPSES:/* not  used for userdraw */
@@ -4230,7 +4227,7 @@ draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,s
   ctx.stroke();\
  };\
  ctx.restore();\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
     case DRAW_PATHS: /*  used for userdraw */
@@ -4301,7 +4298,7 @@ draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,
   }\
   ctx.restore();\
   return;\
-};\n");
+};");
     break;
 
     case DRAW_VIDEO:/* not  used for userdraw */
@@ -4327,7 +4324,7 @@ draw_video = function(canvas_root_id,x,y,w,h,URL){\
  video.appendChild(src);\
  video.load();\
  return;\
-};\n");    
+};");    
     break;
     
     case DRAW_AUDIO:/* not used for userdraw */
@@ -4357,7 +4354,7 @@ draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
  audio.appendChild(src2);\
  audio.load();\
  return;\
-};\n");
+};");
     break;
     
     case DRAW_HTTP:/* not  used for userdraw */
@@ -4372,7 +4369,7 @@ draw_http = function(canvas_root_id,x,y,w,h,URL){\
  iframe.setAttribute(\"width\",w);\
  iframe.setAttribute(\"height\",h);\
  return;\
-};\n");
+};");
     break;
     
     case DRAW_XML:
@@ -4394,7 +4391,7 @@ draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
  xml_div.style.width = w+\"px\";\
  xml_div.style.height = h+\"px\";\
  return;\
-};\n"
+};"
 );
     break;
 
@@ -4720,7 +4717,7 @@ if( typeof legend%d  !== 'undefined' ){\
 };\
 ctx.restore();\
 return;\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_PIECHART:
@@ -4777,7 +4774,7 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
   };\
  };\
  ctx.restore();\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     
     break;
     case DRAW_ARCS:
@@ -4826,7 +4823,7 @@ draw_arc = function(canvas_type,xc,yc,r,start,end,line_width,stroke_color,stroke
     ctx.closePath();\
  }\
  ctx.restore();\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     
     break;
     case DRAW_TEXTS:
@@ -4863,7 +4860,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
   }else{ctx.fillText(text,x,y);};\
  ctx.restore();\
  return;\
- };\n",canvas_root_id,canvas_root_id,canvas_root_id);
+ };",canvas_root_id,canvas_root_id,canvas_root_id);
     
     break;
     case DRAW_CURVE:
@@ -4899,7 +4896,7 @@ draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color
  };\
  ctx.stroke();\
  ctx.restore();\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_INPUTS:
@@ -4912,7 +4909,7 @@ input.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px;\"
 input.setAttribute(\"size\",size);\
 input.setAttribute(\"value\",value);\
 if( readonly == 0 ){ input.setAttribute(\"readonly\",\"readonly\");};\
-canvas_div.appendChild(input);\n};");
+canvas_div.appendChild(input);};");
     break;
     
     case DRAW_TEXTAREAS:
@@ -4925,7 +4922,7 @@ textarea.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px
 textarea.setAttribute(\"cols\",cols);\
 textarea.setAttribute(\"rows\",rows);\
 textarea.innerHTML = value;\
-canvas_div.appendChild(textarea);\n};");
+canvas_div.appendChild(textarea);};");
     break;
     
 case DRAW_PIXELS:
@@ -5046,8 +5043,7 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.strokeStyle = this.S_color;\
  clock_ctx.stroke();\
  clock_ctx.restore();\
-};\
-\n<!-- end command clock -->\n",canvas_root_id,CLOCK_CANVAS);
+};",canvas_root_id,CLOCK_CANVAS);
 break;
 
 case DRAW_LATTICE:
@@ -5089,7 +5085,7 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
  };\
  ctx.restore();\
  return;\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
     default:break;
