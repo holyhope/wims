@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Fri Apr 18 12:46:36 CEST 2014)</h3></center>
+<center><h3>Implemented canvasdraw commands (Mon Apr 21 16:18:38 CEST 2014)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -384,6 +384,9 @@
 <li><span style="color:blue;font-size:0.8em"> can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> user drawings will not zoom on zooming (or pan on panning)
+</span></li>
+	    
 </ul>
 	    
 <li><span style="color:red"> userdraw object_type,color
@@ -419,6 +422,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be combined with keyword 'userinput_xy'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 </span></li>
 	    
 </ul>
@@ -677,12 +683,28 @@
 	    
 </ul>
 	    
+<li><span style="color:red"> sgraph xstart,ystart,xmajor,ymajor,xminor,yminor,majorgrid_color,minorgrid_color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> primitive implementation of a 'broken scale' graph...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> not very versatile.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />size 400,400<br />xrange 0,10000<br />yrange 0,100<br />sgraph 9000,50,100,10,4,4,grey,blue<br />userinput_xy<br />linewidth 2<br />userdraw segments,red
+</span></li>
+	    
+</ul>
+	    
 <li><span style="color:red"> grid step_x,step_y,gridcolor
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> if keywords "axis" or "axisnumbering" are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"

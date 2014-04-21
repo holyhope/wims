@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block\"><span id=\"tooltip_placeholder%d\" style=\"display:none\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
-fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;var xstart = 0;var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
 add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
@@ -858,7 +858,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor <br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x;var snap_y;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
+	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x = 1;var snap_y = 1;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
 	break;
 	case USERINPUT_XY:
 	/*
@@ -967,7 +967,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
-		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 1){ 
+		    add_input_crosshair(js_include_file,1);
+		    add_input_xy(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if(strcmp(draw_type,"crosshairs") == 0 ){
@@ -975,7 +978,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
-		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 1){ 
+		    add_input_crosshair(js_include_file,2);
+		    add_input_xy(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandline") == 0 ){
@@ -1010,14 +1016,20 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 1){ 
+		    add_input_arrow(js_include_file,2);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrow") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 1){ 
+		    add_input_arrow(js_include_file,1);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if(strcmp(draw_type,"polygon") == 0){
@@ -1445,11 +1457,40 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	    use_axis = TRUE;
 	    break;
+	case SGRAPH:
+	/*
+	 @ sgraph xstart,ystart,xmajor,ymajor,xminor,yminor,majorgrid_color,minorgrid_color
+	 @ primitive implementation of a 'broken scale' graph...
+	 @ not very versatile.
+	 @ example:<br />size 400,400<br />xrange 0,10000<br />yrange 0,100<br />sgraph 9000,50,100,10,4,4,grey,blue<br />userinput_xy<br />linewidth 2<br />userdraw segments,red
+	*/
+	    if( js_function[DRAW_SGRAPH] != 1 ){ js_function[DRAW_SGRAPH] = 1;}	
+	    for(i = 0 ; i < 8 ;i++){
+	        switch(i){
+	    	    case 0:double_data[0] = get_real(infile,0);break;
+	    	    case 1:double_data[1] = get_real(infile,0);break;
+	    	    case 2:double_data[2] = get_real(infile,0);break;
+	    	    case 3:double_data[3] = get_real(infile,0);break;
+	    	    case 4:int_data[0] = (int)(get_real(infile,0));break;
+	    	    case 5:int_data[1] = (int)(get_real(infile,0));break;
+	    	    case 6:stroke_color = get_color(infile,0);break;
+	    	    case 7:font_color = get_color(infile,1);
+	    	    string_length = snprintf(NULL,0,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity);
+	    	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    	    snprintf(tmp_buffer,string_length,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity);
+	    	    add_to_buffer(tmp_buffer);
+	    	    break;
+	    	    default:break;
+	        }
+	    }
+	    /* sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity)*/
+	    break;
 	case GRID:/* xmajor,ymajor,color [,xminor,yminor,tick length (px) ,color]*/
 	/*
 	 @ grid step_x,step_y,gridcolor
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
 	 @ if keywords "axis" or "axisnumbering" are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+	 @ if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
 	 @ can not be set "onclick" or "drag xy"
 	 @ use commands 'xlabel some_string' and/or 'ylabel some_string' to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
 	 @ see commands "xaxis" or "xaxistext", "yaxis" or "yaxistext" to set tailormade values on axis (the used font is set by command fontfamily; default '12px Ariel')
@@ -3120,7 +3161,7 @@ function read_canvas(){\
   }\
  };\
 };\
-this.read_canvas = read_canvas;\n\
+this.read_canvas = rdad_canvas;\n\
 <!-- end function 5 read_canvas() -->");
     break;
     /* 
@@ -4394,6 +4435,149 @@ draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
 };"
 );
     break;
+    case DRAW_SGRAPH:
+/* 
+ xstart = given
+ ystart = given
+ sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily)
+*/
+fprintf(js_include_file,"\n<!-- draw sgraph -->\n\
+draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity){\n\
+ var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{ obj = create_canvas%d(canvas_type,xsize,ysize);};\n\
+ var ctx = obj.getContext(\"2d\");\n\
+ ctx.font = fontfamily;\n\
+ ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\n\
+ ctx.clearRect(0,0,xsize,ysize);\n\
+ ctx.lineWidth = 2;\n\
+ var font_size = 16;\
+ var d_x =  1.8*font_size;\n\
+ var d_y =  ctx.measureText(\"+ymax+\").width;\n\
+ var dx = xsize / (xmax - xmin);\n\
+ var dy = ysize / (ymax - ymin);\n\
+ var zero_x = d_y + dx;\n\
+ var zero_y = ysize - dy - d_x;\n\
+ var snor_x\n\
+ if( xstart != xmin){\
+  snor_x = 0.1*xsize;\n\
+ }\n\
+ else\n\
+ {\n\
+  snor_x = 0;\n\
+  xstart = xmin;\n\
+ };\n\
+ ctx.beginPath();\n\
+ ctx.moveTo(xsize,zero_y);\n\
+ ctx.lineTo(zero_x,zero_y);\n\
+ ctx.lineTo(zero_x,0);\n\
+ ctx.stroke();\n\
+ ctx.closePath();\n\
+ ctx.beginPath();\n\
+ ctx.moveTo(zero_x,zero_y);\n\
+ ctx.lineTo(zero_x + 0.25*snor_x,zero_y - 0.1*snor_x);\n\
+ ctx.lineTo(zero_x + 0.5*snor_x,zero_y + 0.1*snor_x);\n\
+ ctx.lineTo(zero_x + 0.75*snor_x,zero_y - 0.1*snor_x);\n\
+ ctx.lineTo(zero_x + snor_x,zero_y);\n\
+ ctx.stroke();\n\
+ ctx.closePath();\n\
+ ctx.lineWidth = 1;\n\
+ ctx.beginPath();\n\
+ var num = xstart;\n\
+ var cnt = 0;\n\
+ var step_x = xmajor*(xsize - zero_x - snor_x)/(xmax - xstart);\n\
+ for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\n\
+   ctx.moveTo(x,zero_y);\n\
+   ctx.lineTo(x,0);\n\
+   if(cnt %%2 == 0){\n\
+    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,ysize - 0.9*font_size);\n\
+   }\n\
+   else\n\
+   {\n\
+    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,ysize - 0.1*font_size);\n\
+   }\n\
+   cnt++;\n\
+   num = num + xmajor;\n\
+ };\n\
+ ctx.stroke();\n\
+ ctx.closePath();\n\
+ if( xminor > 1){\n\
+  ctx.beginPath();\n\
+  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+opacity+\")\";\n\
+  var minor_step_x = step_x / xminor;\n\
+  for(var x = zero_x+snor_x ; x < xsize;x = x + minor_step_x){\n\
+   ctx.moveTo(x,zero_y);\n\
+   ctx.lineTo(x,0);\n\
+  };\n\
+  ctx.stroke();\n\
+  ctx.closePath();\n\
+ };\n\
+ xmin = xstart - (xmajor*(zero_x+snor_x)/step_x);\n\
+ if( ystart != ymin){\n\
+  snor_y = 0.1*ysize;\n\
+ }\n\
+ else\n\
+ {\n\
+  snor_y = 0;\n\
+  ystart = ymin;\n\
+ };\n\
+ ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\n\
+ ctx.beginPath();\n\
+ ctx.moveTo(zero_x,zero_y);\n\
+ ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.25*snor_y);\n\
+ ctx.lineTo(zero_x + 0.1*snor_y,zero_y - 0.5*snor_y);\n\
+ ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.75*snor_y);\n\
+ ctx.lineTo(zero_x,zero_y - snor_y);\n\
+ ctx.stroke();\n\
+ ctx.closePath();\n\
+ ctx.beginPath();\n\
+ num = ystart;\n\
+ var step_y = ymajor*(zero_y - snor_y)/(ymax - ystart);\n\
+ for(var y = zero_y - snor_y ; y > 0; y = y - step_y){\n\
+  ctx.moveTo(zero_x,y);\n\
+  ctx.lineTo(xsize,y);\n\
+  ctx.fillText(num,zero_x - ctx.measureText(num+\" \").width,parseInt(y+0.2*font_size));\n\
+  num = num + ymajor;\n\
+ };\n\
+ ctx.stroke();\n\
+ ctx.closePath();\n\
+ if( yminor > 1){\n\
+  ctx.beginPath();\n\
+  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+opacity+\")\";\n\
+  var minor_step_y = step_y / yminor;\n\
+  for(var y = zero_y - snor_y ; y > 0 ;y = y - minor_step_y){\n\
+   ctx.moveTo(zero_x,y);\n\
+   ctx.lineTo(xsize,y);\n\
+  };\n\
+  ctx.stroke();\n\
+  ctx.closePath();\n\
+ };\n\
+ ymin = ystart - (ymajor*(ysize - zero_y + snor_y)/step_y);\n\
+ if( typeof legend%d  !== 'undefined' ){\
+  ctx.globalAlpha = 1.0;\
+  var y_offset = 2*font_size;\
+  var txt;var txt_size;\
+  var x_offset = xsize - 2*font_size;\
+  var l_length = legend%d.length;var barcolor = new Array();\
+  if( typeof legendcolors%d !== 'undefined' ){\
+   for(var p = 0 ; p < l_length ; p++){\
+    barcolor[p] = legendcolors%d[p];\
+   };\
+  }else{\
+   if( barcolor.length == 0 ){\
+    for(var p = 0 ; p < l_length ; p++){\
+     barcolor[p] = stroke_color;\
+    };\
+   };\
+  };\
+  for(var p = 0; p < l_length; p++){\
+   ctx.fillStyle = barcolor[p];\
+   txt = legend%d[p];\
+   txt_size = ctx.measureText(txt).width;\
+   ctx.fillText(legend%d[p],x_offset - txt_size, y_offset);\
+   y_offset = parseInt(y_offset + 1.5*font_size);\
+  };\
+ };\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
 
     case DRAW_GRID:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw grid -->\n\
@@ -4420,8 +4604,9 @@ var xstep = xsize*xmajor/(xmax - xmin);\
 var ystep = ysize*ymajor/(ymax - ymin);\
 var x2step = xstep / xminor;\
 var y2step = ystep / yminor;\
-var zero_y = y2px(0);\
-var zero_x = x2px(0);\
+var zero_x;var zero_y;var f_x;var f_y;\
+if(xmin < 0 ){zero_x = x2px(0);f_x = 1;}else{zero_x = x2px(xmin);f_x = -1;}\
+if(ymin < 0 ){zero_y = y2px(0);f_y = 1;}else{zero_y = y2px(ymin);f_y = -1;}\
 ctx.beginPath();\
 ctx.lineWidth = line_width;\
 ctx.strokeStyle = stroke_color;\
@@ -4543,14 +4728,14 @@ if( use_axis == 1 ){\
   }\
   else\
   {\
-   corr=0;skip = 0;cnt = xmajor;\
+   corr=0;skip = 1;cnt = px2x(zero_x);\
    prec = Math.log(precision)/(Math.log(10));\
-   for( var p = zero_x + xstep ; p < xsize ; p = p+xstep){\
+   for( var p = zero_x ; p < xsize ; p = p+xstep){\
     if(skip == 0 ){\
       disp_cnt = cnt.toFixed(prec);\
       corr = ctx.measureText(disp_cnt).width;\
       skip = parseInt(1.2*corr/xstep);\
-      ctx.fillText(disp_cnt,p-0.5*corr,zero_y+1.4*font_size);\
+      ctx.fillText(disp_cnt,p-0.5*corr,parseInt(zero_y+(1.4*f_x*font_size)));\
     }\
     else\
     {\
@@ -4558,13 +4743,13 @@ if( use_axis == 1 ){\
     };\
     cnt = cnt + xmajor;\
    };\
-   cnt = -1*xmajor;skip = 0;\
-   for( var p = zero_x - xstep ; p > 0 ; p = p-xstep){\
+   cnt = px2x(zero_x);skip = 1;\
+   for( var p = zero_x ; p > 0 ; p = p-xstep){\
     if(skip == 0 ){\
      disp_cnt = cnt.toFixed(prec);\
      corr = ctx.measureText(disp_cnt).width;\
      skip = parseInt(1.2*corr/xstep);\
-     ctx.fillText(disp_cnt,p-0.5*corr,zero_y+1.4*font_size);\
+     ctx.fillText(disp_cnt,p-0.5*corr,parseInt(zero_y+(1.4*f_x*font_size)));\
     }\
     else\
     {\
@@ -4586,13 +4771,13 @@ if( use_axis == 1 ){\
   }\
   else\
   {\
-   corr = 0;cnt = -1*ymajor;skip = 0;\
-   for( var p = zero_y + ystep ; p < ysize ; p = p+ystep){\
+   corr = 0;cnt = px2y(zero_y);skip = 1;\
+   for( var p = zero_y ; p < ysize ; p = p+ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
      disp_cnt = cnt.toFixed(prec);\
-     corr = 2 + tics_length + ctx.measureText(disp_cnt).width;\
-     ctx.fillText(disp_cnt,zero_x - corr,p+0.4*font_size);\
+     if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
+     ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
     }\
     else\
     {\
@@ -4600,13 +4785,13 @@ if( use_axis == 1 ){\
     };\
     cnt = cnt - ymajor;\
    }\
-   cnt = ymajor;skip = 0;\
-   for( var p = zero_y - ystep ; p > 0 ; p = p-ystep){\
+   corr = 0;cnt = px2y(zero_y);skip = 1;\
+   for( var p = zero_y ; p > 0 ; p = p-ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
      disp_cnt = cnt.toFixed(prec);\
-     corr = 2 + tics_length + ctx.measureText(disp_cnt).width;\
-     ctx.fillText(disp_cnt,zero_x - corr,p+0.4*font_size);\
+     if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
+     ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
     }\
     else\
     {\
@@ -5259,7 +5444,8 @@ int get_token(FILE *infile){
 	*video="video",
 	*status="status",
 	*snaptogrid="snaptogrid",
-	*userinput_xy="userinput_xy";
+	*userinput_xy="userinput_xy",
+	*sgraph="sgraph";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -5851,6 +6037,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);
 	return USERINPUT_XY;
+	}
+	if( strcmp(input_type, sgraph) == 0 ){
+	free(input_type);
+	return SGRAPH;
 	}
 	free(input_type);
 	ungetc(c,infile);

@@ -23,8 +23,10 @@ void add_js_rect(FILE *js_include_file,int num,int roundrect,char *draw_type,int
 void add_js_floodfill(FILE *js_include_file,int canvas_root_id);
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int fontsize,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y);
-void add_input_circle(FILE *js_include_file,int type,int num);/* reads the X/Y inputfields used for correcting a userbased drawing ... */
-void add_input_segment(FILE *js_include_file,int num);/* read X/Y inputfield and add a single segment */
+void add_input_circle(FILE *js_include_file,int type,int num);
+void add_input_segment(FILE *js_include_file,int num);
+void add_input_crosshair(FILE *js_include_file,int num);
+void add_input_arrow(FILE *js_include_file,int num);
 void add_input_xy(FILE *js_include_file, int canvas_root_id);
 void add_input_xyr(FILE *js_include_file, int canvas_root_id);
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
@@ -617,6 +619,10 @@ function canvas_remove(x,y){\
 }
 
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
+/* 
+constants in draw_arrows() ... for this moment: var type = 1;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
+ 
+*/
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var canvas_rect;\
 var num = %d;\
@@ -627,16 +633,12 @@ var use_dashed = %d;\
 var dashtype0 = %d;\
 var dashtype1 = %d;\
 var arrow_head = %d;\
-var click_cnt=0;\
 var x0,y0;\
-var type = 0;\
-var use_rotate = 0;\
-var angle = 0;\
-var use_translate = 0;\
-var vector=[0,0];\
+var type = 1;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
 function user_draw(evt){\
- if( xy_cnt != 0 && xy_cnt%%2 == 0){\
- draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+ var lu = userdraw_x.length;\
+ if( lu != 0 && lu%%2 == 0){\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
  }\
  var y = evt.clientY - canvas_rect.top;\
  if( y < ysize - 15){\
@@ -647,16 +649,14 @@ function user_draw(evt){\
    y = snap_to_y(y);\
   };\
   if( evt.which == 1 ){\
-   if(click_cnt == 0){\
+   if( lu%%2 == 0){\
     x0 = x;y0 = y;\
-    if(num == 1){ userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[xy_cnt] = x0;userdraw_y[xy_cnt] = y0;  xy_cnt++; }\
-    click_cnt = 1;\
+    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
     user_drag(evt);\
    }\
    else\
    {\
-    click_cnt = 0;\
-    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;xy_cnt++;};\
+    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
     draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
    }\
   }\
@@ -670,15 +670,16 @@ function user_drag(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
+ var lu = userdraw_x.length;\
  if( use_snap_to_grid == 1 ){\
-  x = snap_to_x(x);\
-  y = snap_to_y(y);\
+   x = snap_to_x(x);\
+   y = snap_to_y(y);\
  };\
- if(click_cnt == 1 ){\
+ if( lu%%2 != 0 ){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_arrows(context_userdraw,[x0,x],[y0,y],arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
-  if( xy_cnt > 0){\
-  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  if( lu > 0){\
+    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
   }\
  }\
 };\
@@ -687,7 +688,7 @@ function canvas_remove(x,y){\
  for(var p = 0;p < userdraw_x.length ; p++){\
   if(userdraw_x[p] < x + marge && userdraw_x[p] > x - marge ){\
    if(userdraw_y[p] < y + marge && userdraw_y[p] > y - marge ){\
-    if( confirm(\"remove vector ?\" )){\
+    if( confirm(\"remove line ?\" )){\
      context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
      if( p%%2 == 0 ){\
       userdraw_x.splice(p,2);userdraw_y.splice(p,2);\
@@ -696,15 +697,15 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
-     xy_cnt--;\
-     if(xy_cnt < 2){xy_cnt = 0;click_cnt = 0;userdraw_x = [];userdraw_y = [];return;};\
-     draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+     if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
+     draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector,type,use_rotate,angle,use_translate,vector);\
     }\
     return;\
    }\
   }\
  }\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,arrow_head);
+
 }
 
 void add_js_paths(FILE *js_include_file,int num,char *draw_type,int line_width, int closed_path,char *stroke_color,double stroke_opacity,int use_filled, char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
@@ -1676,6 +1677,63 @@ function user_redraw(){\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
  };};",type,num,num);
 }
+
+void add_input_crosshair(FILE *js_include_file,int num){
+fprintf(js_include_file,"\n<!-- begin add_input_crosshair -->\n\
+function user_redraw(){\
+ var add_x = document.getElementById(\"userinput_x\").value;\
+ if( add_x.length > 0 ){\
+  var add_y = document.getElementById(\"userinput_y\").value;\
+  if( isNaN(add_x - 1) || isNaN(add_y - 1 ) ){alert(\"illegal input \\nI am expecting a single point (x:y) \");return;}\
+  var lu = userdraw_x.length;\
+  if( %d == 1 ){\
+   userdraw_x[0] = x2px(add_x);\
+   userdraw_y[0] = y2px(add_y);\
+  }\
+  else\
+  {\
+    userdraw_x[lu] = x2px(add_x);\
+    userdraw_y[lu] = y2px(add_y);\
+    xy_cnt++;\
+  };\
+  document.getElementById(\"userinput_x\").value=\"\";document.getElementById(\"userinput_y\").value=\"\";\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_crosshairs(context_userdraw,userdraw_x,userdraw_y,line_width,crosshair_size,stroke_color,stroke_opacity,0,0,0,[0,0]);\
+ };\
+};",num);
+}
+
+void add_input_arrow(FILE *js_include_file,int num){/* read X/Y inputfield and add a single segment */
+fprintf(js_include_file,"\n<!-- begin add_input_arrow -->\n\
+function user_redraw(){\
+  var add_x1 = document.getElementById(\"userinput_x1\").value;\
+ if( add_x1.length > 0 ){\
+  var add_y1 = document.getElementById(\"userinput_y1\").value;\
+  var add_x2 = document.getElementById(\"userinput_x2\").value;\
+  var add_y2 = document.getElementById(\"userinput_y2\").value;\
+  if( isNaN(add_x1 - 1) ||  isNaN(add_y1 - 1)  || isNaN(add_x2 - 1) ||  isNaN(add_y2 - 1) ){alert(\"illegal input\");return;}\
+  if( %d == 2 ){\
+    var s = userdraw_x.length;\
+    userdraw_x[s] = x2px(add_x1);\
+    userdraw_y[s] = y2px(add_y1);\
+    userdraw_x[s+1] = x2px(add_x2);\
+    userdraw_y[s+1] = y2px(add_y2);\
+  }\
+  else\
+  {\
+   userdraw_x[0] = x2px(add_x1);\
+   userdraw_y[0] = y2px(add_y1);\
+   userdraw_x[1] = x2px(add_x2);\
+   userdraw_y[1] = y2px(add_y2);\
+  };\
+  document.getElementById(\"userinput_x1\").value=\"\";document.getElementById(\"userinput_y1\").value=\"\";\
+  document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+ };\
+};",num);
+}
+
 
 void add_input_segment(FILE *js_include_file,int num){/* read X/Y inputfield and add a single segment */
 fprintf(js_include_file,"\n<!-- begin add_input_segment -->\n\
