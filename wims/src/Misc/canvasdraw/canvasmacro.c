@@ -54,7 +54,7 @@ var canvas_rect;\
 function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  y0 = evt.clientY - canvas_rect.top;\
- if(y0 < ysize - 15 ){\
+ if(y0 < ysize + 1){\
   x0 = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
    x0 = snap_to_x(x0);\
@@ -213,7 +213,7 @@ var marge = 10*line_width;\
 function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  y0 = evt.clientY - canvas_rect.top;\
- if( y0  < ysize - 15 ){\
+ if( y0  < ysize + 1 ){\
   x0 = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
    x0 = snap_to_x(x0);\
@@ -318,7 +318,7 @@ var marge = 10*line_width;\
 function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  y = evt.clientY - canvas_rect.top;\
- if( y < ysize - 15 ){\
+ if( y < ysize + 1 ){\
   x = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
@@ -400,7 +400,7 @@ function user_drag(evt){return;};\
 function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var y = evt.clientY - canvas_rect.top;\
- if( y < ysize - 15 ){\
+ if( y < ysize + 1 ){\
   var lu = userdraw_x.length;\
   var x = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
@@ -460,7 +460,7 @@ function user_draw(evt){\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
  }\
  var y = evt.clientY - canvas_rect.top;\
- if( y < ysize - 15){\
+ if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
@@ -543,7 +543,7 @@ var click_cnt=0;\
 var radius = new Array();\
 function user_draw(evt){\
  var y = evt.clientY - canvas_rect.top;\
- if( y < ysize - 15){\
+ if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
@@ -641,7 +641,7 @@ function user_draw(evt){\
   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
  }\
  var y = evt.clientY - canvas_rect.top;\
- if( y < ysize - 15){\
+ if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   if( use_snap_to_grid == 1 ){\
@@ -761,7 +761,7 @@ function user_draw(evt){\
 function user_drag(evt){\
  if(click_cnt == 1 ){\
   temp_y[xy_cnt] = evt.clientY - canvas_rect.top;\
-  if( temp_y[xy_cnt] < ysize - 15){\
+  if( temp_y[xy_cnt] < ysize + 1){\
    temp_x[xy_cnt] = evt.clientX - canvas_rect.left;\
    if( use_snap_to_grid == 1 ){\
     temp_x[xy_cnt] = snap_to_x(temp_x[xy_cnt]);\
