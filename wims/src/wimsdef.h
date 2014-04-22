@@ -69,7 +69,7 @@
 
 typedef struct scoreresult {
     unsigned short int num, pad;
-    float require, weight, score, mean, last, try, best;
+    float require, weight, score, mean, last, try, best, level;
 } scoreresult;
 
 #define wimsdef_h

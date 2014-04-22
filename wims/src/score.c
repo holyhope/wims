@@ -19,7 +19,7 @@
 
 double oldfactor=0.85;     /* quality factor, should remain stable. */
 
-enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain, sr_last, sr_try, sr_best};
+enum {sr_require, sr_weight, sr_score, sr_mean, sr_remain, sr_last, sr_try, sr_best, sr_level};
 char scorebuf[MAX_CLASSEXOS*sizeof(scoreresult)+32];
 struct scoreresult *rscore;
 int scorecnt;
@@ -153,7 +153,7 @@ void _scoreparm(char *p)
 
 /* gather score: relatif to some of the
  *  user class work sheet exam
- *    dtype can be require weight score mean remain
+ *    dtype can be require weight score mean remain best last level try
  */
 
 void _getscore(char *p,int dtype)
@@ -165,7 +165,7 @@ void _getscore(char *p,int dtype)
     _scoreparm(p);
     if(*score_class==0 || *score_user==0) return;
     if(getscoreuser(score_class,score_user)<0) return;
-/* code exo as 2^8 number_sheet + number_exo, so limit the number_exo to 2^8
+/*  2^8 no_sheet + no_exo_in_the_sheet so limit no_exo to 2^8
 */
     for(i=osh=0,p1=p;i<scorecnt && p1-p<MAX_LINELEN-32;i++) {
      sh=(rscore[i].num>>8)+1; if(sh<1 || sh>MAX_SHEETS) break;
@@ -185,6 +185,7 @@ void _getscore(char *p,int dtype)
          case sr_last: {d=rscore[i].last; break;}
          case sr_try: {d=rscore[i].try; break;}
          case sr_best: {d=rscore[i].best; break;}
+         case sr_level: {d=rscore[i].level ;break;}
          default: {d=0; break;}
      }
      p1=moneyprint(p1,d); *p1++=' ';
@@ -222,29 +223,46 @@ void calc_getscoreweight(char *p)
 {
   _getscore(p,sr_weight);
 }
+/* user last score*/
 void calc_getscorelast(char *p)
 {
   _getscore(p,sr_last);
 }
 
+/* gather user score try numbers. */
 void calc_getscoretry(char *p)
 {
   _getscore(p,sr_try);
 }
 
-/* gather user score average. */
+/* if the required points are 10* N, gather N user best scores */
 void calc_getscorebest(char *p)
 {
   _getscore(p,sr_best);
 }
 
+/* gather user score average. */
+void calc_getscorelevel(char *p)
+{
+  _getscore(p,sr_level);
+}
+
 /* percentage of work done for each sheet:
- * score(=cumulative_points) mean(=quality) best_percent
+ * score mean best level
+ * as follows
+ * score=100*cumulative_points/required_points) (< 100)
+ * mean = quality (<10)
+ * best= 10*(required/10 best_scores)/required_points (< 100)
+ * level= minimum of the required/10 best_scores (< 10)
  */
-void calc_getscorepercent(char *p)
+/*!distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/10] into z0_,y_,z1_,z2_
+
+ !distribute words $perc into p1,p2,p3,p4
+*/
+ void calc_getscorepercent(char *p)
 {
   int i,j,jend;
-  double tot, mean, totb, d;
+  double tot, mean, totb, totl, totw, d;
   char *p1;
 
   _scoreparm(p);
@@ -252,18 +270,19 @@ void calc_getscorepercent(char *p)
   if(getscoreuser(score_class,score_user)<0) return;
   for(p1=p,i=0;i<totsheets && p1-p<MAX_LINELEN-32;i++) {
     if(scoresum[i]==0) {
-      ovlstrcpy(p1,"0 0 0\n"); p1+=strlen(p1); continue;
+      ovlstrcpy(p1,"0 0 0 0\n"); p1+=strlen(p1); continue;
     }
     if(score_sheet!=0 && i!=score_sheet-1) continue;
     if(scoresum[i]<=0) *p1++='\n';
-    tot=mean=totb=0; jend=sheetstart[i]+shexocnt[i];
+    tot=mean=totb=totl=totw=0; jend=sheetstart[i]+shexocnt[i];
     for(j=sheetstart[i];j<jend;j++) {
 /* if mean<1 then ignore score.
  * if mean<2 then half score. */
       if(rscore[j].mean>=1) {
         double dt=rscore[j].score;
         float db=rscore[j].best;
-        if(rscore[j].mean<2) {dt=dt/2; db=db/2;}
+        float dl=rscore[j].level;
+        if(rscore[j].mean<2) {dt=dt/2; db=db/2; dl=dl/2;}
         d=dt*rscore[j].weight;
 /* quality */
         mean+=rscore[j].mean*d;
@@ -271,6 +290,9 @@ void calc_getscorepercent(char *p)
         tot+=d;
 /* best */
         totb+=db*rscore[j].weight;
+/* level */
+        totl+=dl*rscore[j].weight;
+        totw+=rscore[j].weight;
       }
     }
     if(tot>0) {d=mean/tot;} else d=0;
@@ -279,7 +301,11 @@ void calc_getscorepercent(char *p)
 /* quality */
     p1=moneyprint(p1,d); *p1++=' ';
 /* best */
-    p1=moneyprint(p1,rint(100*totb/scoresum[i])); *p1++='\n';
+    p1=moneyprint(p1,rint(100*totb/scoresum[i])); *p1++=' ';
+/* level */
+    p1=moneyprint(p1,rint(10*totl/totw));
+
+   *p1++='\n';
   }
   *p1=0;
 }

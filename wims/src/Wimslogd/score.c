@@ -22,7 +22,7 @@ double oldfactor=0.85;  /* quality factor, should remain stable. */
      /* User score information of an exercise. Size: 16 bytes. */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
-    float user, user2, last, best;
+    float user, user2, last, best, level;
 } scoredata;
 
 struct scoreheader {
@@ -33,6 +33,7 @@ struct scoreheader {
 struct scoredata uscore[MAX_CLASSEXOS];
 
 struct scoreresult tscore[MAX_CLASSEXOS];
+/*FIXME  256 : should be linked tot the max of the cd->exos[num].require /10 */
 typedef struct scorehigh {
     float best, high[256];
 } scorehigh;
@@ -86,10 +87,18 @@ void scoreline(struct classdata *cd, char *l)
             thishscore->best +=score-thishscore->high[j];
             thishscore->high[j] = score;
           }
+        }
+        thiscore->best=thishscore->best;
+/* find the minimum of the required best scores */
+        {
+         int k, j = 0 ;
+         for (k = 0; 10*k < cd->exos[num].require; k++) {
+           if (thishscore->high[k] < thishscore->high[j]) j = k;
          }
-         thiscore->best=thishscore->best;
-         if(thiscore->try<60000) thiscore->try++;
-         oldsheet=oldexo=0;
+         thiscore->level=thishscore->high[j];
+        }
+        if(thiscore->try<60000) thiscore->try++;
+        oldsheet=oldexo=0;
      }
     }
     else {
@@ -295,6 +304,7 @@ void cmd_getscore(char *p)
     double score, score2, slast, quality, tt, ts, thisscore;
     float shigh[10];
     float sbest=0;
+    float slevel=0;
 
     if(cwdtype!=dir_class) {
      sockerror(2,"getscore_no_class"); return;
@@ -324,9 +334,10 @@ void cmd_getscore(char *p)
      score2=uscore[i].user2;
      slast=uscore[i].last;
      sbest=uscore[i].best;
-      {int k;
+     slevel=uscore[i].level;
+     { int k;
       for (k = 0; 10*k < cd->exos[i].require; k++) { shigh[k] = hscore[i].high[k]; }
-      }
+     }
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
          score2*=oldfactor; score2+=thisscore;
@@ -340,8 +351,9 @@ void cmd_getscore(char *p)
          tscore[i].best=sbest;
          hscore[i].best=sbest;
          {int k;
-      for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=shigh[k]; }
-      }
+           for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=shigh[k]; }
+         }
+         tscore[i].level=slevel;
          continue;
      }
      if(score>cd->exos[i].require) score=cd->exos[i].require;
@@ -354,15 +366,16 @@ void cmd_getscore(char *p)
          ts=(1-pow(oldfactor,stry))/(1-oldfactor);
          quality=score2/(ts*tt);
      }
-     else {score=quality=slast=stry=sbest=0;
-     {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { shigh[k]=0; }}
+     else {
+       score=quality=slast=stry=sbest=slevel=0;
+       {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { shigh[k]=0;} }
      }
      tscore[i].score=score; tscore[i].mean=quality;
      tscore[i].last=slast;
      tscore[i].try=stry;
      tscore[i].best=sbest;
      hscore[i].best=sbest;
-     {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=0; }}
+     tscore[i].level=slevel;
      }
     answerlen=cd->exocnt*sizeof(tscore[0]);
     memmove(textbuf+3,tscore,answerlen);
