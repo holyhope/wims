@@ -4454,7 +4454,7 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
  var dy = ysize / (ymax - ymin);\
  var zero_x = d_y + dx;\
  var zero_y = ysize - dy - d_x;\
- var snor_x\
+ var snor_x;\
  if( xstart != xmin){\
   snor_x = 0.1*xsize;\
  }\
