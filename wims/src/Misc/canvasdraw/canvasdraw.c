@@ -4481,17 +4481,19 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
  ctx.closePath();\
  ctx.beginPath();\
  var num = xstart;\
- var cnt = 0;\
+ var flipflop = 1;\
  var step_x = xmajor*(xsize - zero_x - snor_x)/(xmax - xstart);\
  for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\
-   if(cnt %%2 == 0){\
+   if( 0.5*ctx.measureText(num).width > step_x ){\
+    if( flipflop == 1 ){flipflop = 0;}else{flipflop = 1;};\
+   };\
+   if( flipflop == 1){\
     ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+font_size);\
    }\
    else\
    {\
     ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+2*font_size);\
    }\
-   cnt++;\
    num = num + xmajor;\
  };\
  ctx.stroke();\
@@ -4622,12 +4624,12 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
    y_offset = parseInt(y_offset + 1.5*font_size);\
   };\
  };\
- if( typeof xaxislabel !== 'indefined' ){\
+ if( typeof xaxislabel !== 'undefined' ){\
    ctx.fillStyle = \'#000000\';\
    var txt_size = ctx.measureText(xaxislabel).width + 4 ;\
    ctx.fillText(xaxislabel,xsize - txt_size, zero_y - 7);\
  };\
- if( typeof yaxislabel !== 'indefined'){\
+ if( typeof yaxislabel !== 'undefined'){\
    ctx.save();\
    ctx.fillStyle = \'#000000\';\
    var txt_size = ctx.measureText(yaxislabel).width;\
