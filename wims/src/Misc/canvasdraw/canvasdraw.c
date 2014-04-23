@@ -1475,9 +1475,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    	    case 5:int_data[1] = (int)(get_real(infile,0));break;
 	    	    case 6:stroke_color = get_color(infile,0);break;
 	    	    case 7:font_color = get_color(infile,1);
-	    	    string_length = snprintf(NULL,0,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity);
+	    	    string_length = snprintf(NULL,0,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f,%d);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity,font_size);
 	    	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    	    snprintf(tmp_buffer,string_length,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity);
+	    	    snprintf(tmp_buffer,string_length,"xstart = %f;\nystart = %f;\ndraw_sgraph(%d,%d,%f,%f,%d,%d,\"%s\",\"%s\",\"%s\",%f,%d);\n",double_data[0],double_data[1],GRID_CANVAS,precision,double_data[2],double_data[3],int_data[0],int_data[1],stroke_color,font_color,font_family,stroke_opacity,font_size);
 	    	    add_to_buffer(tmp_buffer);
 	    	    break;
 	    	    default:break;
@@ -2518,10 +2518,10 @@ void sync_input(FILE *infile)
 {
 	int c = 0;
 
-	if( c == '\n' ) return;
-	while( ( (c=getc(infile)) != EOF ) && (c != '\n') && (c != '\r')) ;
+	if( c == '\n' || c == ';' ) return;
+	while( ( (c=getc(infile)) != EOF ) && (c != '\n') && (c != '\r') && (c != ';')) ;
 	if( c == EOF ) finished = 1;
-	if( c == '\n' || c == '\r') line_number++;
+	if( c == '\n' || c == '\r' || c == ';') line_number++;
 	return;
 }
 
@@ -2591,7 +2591,7 @@ int toupper(int c){
 char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) ){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' )  && ( c != ';')){
 	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
 	if( c == '#' ){
 	    is_hex = 1;
@@ -2601,8 +2601,8 @@ char *get_color(FILE *infile , int last){
 	    i++;
 	}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' ){ done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' || c == ';'){ done = TRUE; line_number++; }
     if( c == EOF ){finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -2638,13 +2638,13 @@ char *get_color(FILE *infile , int last){
 char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char  temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') ){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ';' )){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...repeat command to fit string");break;}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' ) { done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' || c == ';') { done = TRUE; line_number++; }
     if( c == EOF ) {
 	finished = 1;
 	if( last != 1 ){ canvas_error("expected more arguments");}
@@ -2659,13 +2659,13 @@ char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 f
 char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',') ){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',') && ( c != ';' )){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...will cut it off");break;}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' ) { line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' || c == ';') { line_number++; }
     if( c == EOF ) {finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -2680,7 +2680,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     int c,i=0,found_calc = 0;
     double y;
     char tmp[MAX_INT];
-    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') ){
+    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
      if( c != ' ' ){
      /* 
      libmatheval will segfault when for example: "xrange -10,+10" or "xrange -10,10+" is used 
@@ -2702,8 +2702,8 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
      }
      if( i > MAX_INT - 1){canvas_error("number too large");}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' ){ done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
     if( c == EOF ){done = TRUE ; finished = 1;}
     tmp[i]='\0';
     if( strlen(tmp) == 0 ){canvas_error("expected a number , but found nothing !!");}
@@ -2728,18 +2728,18 @@ double get_double(FILE *infile , int orientation , int last){  /* last = 0 : mor
     int found_calc = 0; /* signal user input like : 2*pi/3 */
     char tmp[MAX_INT];
     double dx;
-    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n')){
+    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
 	if( c != ' '){/* no spaces in numbers */
 	    if(canvas_iscalculation(c) != 0 ){
-	found_calc = 1;
-	c = tolower(c);
+		found_calc = 1;
+		c = tolower(c);
 	    }
 	    tmp[i]=c;
 	    i++;
 	    if( i > MAX_INT-1){canvas_error("number too large");}
 	}
     }
-    if( c == '\n' || c == EOF ){
+    if( c == '\n' || c == EOF || c == ';' ){
 	if( last == 0 ){canvas_error("expecting more arguments");}
 	if( c == EOF ){finished = TRUE;}
 	done = TRUE; 
@@ -2767,9 +2767,9 @@ double get_double(FILE *infile , int orientation , int last){  /* last = 0 : mor
     {
 	dx = atof(tmp); /* no pi/e/sin(2*pi/3) found : will use atof to convert inputstring  to float */
     }
-    if( c == '\n') { line_number++; }
+    if( c == '\n' || c == ';') { line_number++; }
     if( c != EOF ) {
-	if( c == '\n' ) {
+	if( c == '\n' || c ==';') {
 	    done = TRUE;
 	}
     }
@@ -4442,115 +4442,161 @@ draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
  sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily)
 */
 fprintf(js_include_file,"\n<!-- draw sgraph -->\n\
-draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity){\n\
- var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{ obj = create_canvas%d(canvas_type,xsize,ysize);};\n\
- var ctx = obj.getContext(\"2d\");\n\
- ctx.font = fontfamily;\n\
- ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\n\
- ctx.clearRect(0,0,xsize,ysize);\n\
- ctx.lineWidth = 2;\n\
- var font_size = 16;\
- var d_x =  1.8*font_size;\n\
- var d_y =  ctx.measureText(\"+ymax+\").width;\n\
- var dx = xsize / (xmax - xmin);\n\
- var dy = ysize / (ymax - ymin);\n\
- var zero_x = d_y + dx;\n\
- var zero_y = ysize - dy - d_x;\n\
- var snor_x\n\
+draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity,font_size){\
+ var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{ obj = create_canvas%d(canvas_type,xsize,ysize);};\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.font = fontfamily;\
+ var minor_opacity = 0.8*opacity;\
+ ctx.clearRect(0,0,xsize,ysize);\
+ var d_x =  1.8*font_size;\
+ var d_y =  ctx.measureText(\"+ymax+\").width;\
+ var dx = xsize / (xmax - xmin);\
+ var dy = ysize / (ymax - ymin);\
+ var zero_x = d_y + dx;\
+ var zero_y = ysize - dy - d_x;\
+ var snor_x\
  if( xstart != xmin){\
-  snor_x = 0.1*xsize;\n\
- }\n\
- else\n\
- {\n\
-  snor_x = 0;\n\
-  xstart = xmin;\n\
- };\n\
- ctx.beginPath();\n\
- ctx.moveTo(xsize,zero_y);\n\
- ctx.lineTo(zero_x,zero_y);\n\
- ctx.lineTo(zero_x,0);\n\
- ctx.stroke();\n\
- ctx.closePath();\n\
- ctx.beginPath();\n\
- ctx.moveTo(zero_x,zero_y);\n\
- ctx.lineTo(zero_x + 0.25*snor_x,zero_y - 0.1*snor_x);\n\
- ctx.lineTo(zero_x + 0.5*snor_x,zero_y + 0.1*snor_x);\n\
- ctx.lineTo(zero_x + 0.75*snor_x,zero_y - 0.1*snor_x);\n\
- ctx.lineTo(zero_x + snor_x,zero_y);\n\
- ctx.stroke();\n\
- ctx.closePath();\n\
- ctx.lineWidth = 1;\n\
- ctx.beginPath();\n\
- var num = xstart;\n\
- var cnt = 0;\n\
- var step_x = xmajor*(xsize - zero_x - snor_x)/(xmax - xstart);\n\
- for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\n\
-   ctx.moveTo(x,zero_y);\n\
-   ctx.lineTo(x,0);\n\
-   if(cnt %%2 == 0){\n\
-    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,ysize - 0.9*font_size);\n\
-   }\n\
-   else\n\
-   {\n\
-    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,ysize - 0.1*font_size);\n\
-   }\n\
-   cnt++;\n\
-   num = num + xmajor;\n\
- };\n\
- ctx.stroke();\n\
- ctx.closePath();\n\
- if( xminor > 1){\n\
-  ctx.beginPath();\n\
-  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+opacity+\")\";\n\
-  var minor_step_x = step_x / xminor;\n\
-  for(var x = zero_x+snor_x ; x < xsize;x = x + minor_step_x){\n\
-   ctx.moveTo(x,zero_y);\n\
-   ctx.lineTo(x,0);\n\
-  };\n\
-  ctx.stroke();\n\
-  ctx.closePath();\n\
- };\n\
- xmin = xstart - (xmajor*(zero_x+snor_x)/step_x);\n\
- if( ystart != ymin){\n\
-  snor_y = 0.1*ysize;\n\
- }\n\
- else\n\
- {\n\
-  snor_y = 0;\n\
-  ystart = ymin;\n\
- };\n\
- ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\n\
- ctx.beginPath();\n\
- ctx.moveTo(zero_x,zero_y);\n\
- ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.25*snor_y);\n\
- ctx.lineTo(zero_x + 0.1*snor_y,zero_y - 0.5*snor_y);\n\
- ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.75*snor_y);\n\
- ctx.lineTo(zero_x,zero_y - snor_y);\n\
- ctx.stroke();\n\
- ctx.closePath();\n\
- ctx.beginPath();\n\
- num = ystart;\n\
- var step_y = ymajor*(zero_y - snor_y)/(ymax - ystart);\n\
- for(var y = zero_y - snor_y ; y > 0; y = y - step_y){\n\
-  ctx.moveTo(zero_x,y);\n\
-  ctx.lineTo(xsize,y);\n\
-  ctx.fillText(num,zero_x - ctx.measureText(num+\" \").width,parseInt(y+0.2*font_size));\n\
-  num = num + ymajor;\n\
- };\n\
- ctx.stroke();\n\
- ctx.closePath();\n\
- if( yminor > 1){\n\
-  ctx.beginPath();\n\
-  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+opacity+\")\";\n\
-  var minor_step_y = step_y / yminor;\n\
-  for(var y = zero_y - snor_y ; y > 0 ;y = y - minor_step_y){\n\
-   ctx.moveTo(zero_x,y);\n\
-   ctx.lineTo(xsize,y);\n\
-  };\n\
-  ctx.stroke();\n\
-  ctx.closePath();\n\
- };\n\
- ymin = ystart - (ymajor*(ysize - zero_y + snor_y)/step_y);\n\
+  snor_x = 0.1*xsize;\
+ }\
+ else\
+ {\
+  snor_x = 0;\
+  xstart = xmin;\
+ };\
+ ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\
+ ctx.lineWidth = 2;\
+ ctx.beginPath();\
+ ctx.moveTo(xsize,zero_y);\
+ ctx.lineTo(zero_x,zero_y);\
+ ctx.lineTo(zero_x,0);\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.beginPath();\
+ ctx.moveTo(zero_x,zero_y);\
+ ctx.lineTo(zero_x + 0.25*snor_x,zero_y - 0.1*snor_x);\
+ ctx.lineTo(zero_x + 0.5*snor_x,zero_y + 0.1*snor_x);\
+ ctx.lineTo(zero_x + 0.75*snor_x,zero_y - 0.1*snor_x);\
+ ctx.lineTo(zero_x + snor_x,zero_y);\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.beginPath();\
+ var num = xstart;\
+ var cnt = 0;\
+ var step_x = xmajor*(xsize - zero_x - snor_x)/(xmax - xstart);\
+ for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\
+   if(cnt %%2 == 0){\
+    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+font_size);\
+   }\
+   else\
+   {\
+    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+2*font_size);\
+   }\
+   cnt++;\
+   num = num + xmajor;\
+ };\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.lineWidth = 1;\
+ ctx.beginPath();\
+ for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\
+   ctx.moveTo(x,zero_y);\
+   ctx.lineTo(x,0);\
+ };\
+ ctx.stroke();\
+ ctx.closePath();\
+ if( xminor > 1){\
+  ctx.lineWidth = 0.5;\
+  ctx.beginPath();\
+  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+minor_opacity+\")\";\
+  var minor_step_x = step_x / xminor;\
+  var nx;\
+  for(var x = zero_x+snor_x; x < xsize;x = x + step_x){\
+    num = 1;\
+    for(var p = 1 ; p < xminor ; p++){\
+     nx = x + num*minor_step_x;\
+     ctx.moveTo(nx,zero_y);\
+     ctx.lineTo(nx,0);\
+     num++;\
+    };\
+  };\
+  ctx.stroke();\
+  ctx.closePath();\
+  ctx.beginPath();\
+  ctx.lineWidth = 2;\
+  ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\
+  for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\
+   ctx.moveTo(x,zero_y);ctx.lineTo(x,zero_y - 12);\
+  };\
+  for(var x = zero_x+snor_x ; x < xsize;x = x + minor_step_x){\
+   ctx.moveTo(x,zero_y);ctx.lineTo(x,zero_y - 6);\
+  };\
+  ctx.stroke();\
+  ctx.closePath();\
+  ctx.lineWidth = 0.5;\
+ };\
+ xmin = xstart - (xmajor*(zero_x+snor_x)/step_x);\
+ if( ystart != ymin){\
+  snor_y = 0.1*ysize;\
+ }\
+ else\
+ {\
+  snor_y = 0;\
+  ystart = ymin;\
+ };\
+ ctx.lineWidth = 2;\
+ ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\
+ ctx.beginPath();\
+ ctx.moveTo(zero_x,zero_y);\
+ ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.25*snor_y);\
+ ctx.lineTo(zero_x + 0.1*snor_y,zero_y - 0.5*snor_y);\
+ ctx.lineTo(zero_x - 0.1*snor_y,zero_y - 0.75*snor_y);\
+ ctx.lineTo(zero_x,zero_y - snor_y);\
+ ctx.stroke();\
+ ctx.closePath();\
+ ctx.beginPath();\
+ ctx.lineWidth = 1;\
+ num = ystart;\
+ var step_y = ymajor*(zero_y - snor_y)/(ymax - ystart);\
+ for(var y = zero_y - snor_y ; y > 0; y = y - step_y){\
+  ctx.moveTo(zero_x,y);\
+  ctx.lineTo(xsize,y);\
+  ctx.fillText(num,zero_x - ctx.measureText(num+\" \").width,parseInt(y+0.2*font_size));\
+  num = num + ymajor;\
+ };\
+ ctx.stroke();\
+ ctx.closePath();\
+ if( yminor > 1){\
+  ctx.lineWidth = 0.5;\
+  ctx.beginPath();\
+  ctx.strokeStyle = \"rgba(\"+minorcolor+\",\"+minor_opacity+\")\";\
+  var minor_step_y = step_y / yminor;\
+  var ny;\
+  for(var y = 0 ; y < zero_y - snor_y ;y = y + step_y){\
+   num = 1;\
+   for(var p = 1 ;p < yminor;p++){\
+     ny = y + num*minor_step_y;\
+     ctx.moveTo(zero_x,ny);\
+     ctx.lineTo(xsize,ny);\
+     num++;\
+    };\
+  };\
+  ctx.stroke();\
+  ctx.closePath();\
+  ctx.lineWidth = 2;\
+  ctx.beginPath();\
+  ctx.strokeStyle = \"rgba(\"+majorcolor+\",\"+opacity+\")\";\
+  for(var y = zero_y - snor_y ; y > 0 ;y = y - step_y){\
+   ctx.moveTo(zero_x,y);\
+   ctx.lineTo(zero_x+12,y);\
+  };\
+  for(var y = zero_y - snor_y ; y > 0 ;y = y - minor_step_y){\
+   ctx.moveTo(zero_x,y);\
+   ctx.lineTo(zero_x+6,y);\
+  };\
+  ctx.stroke();\
+  ctx.closePath();\
+ };\
+ ymin = ystart - (ymajor*(ysize - zero_y + snor_y)/step_y);\
  if( typeof legend%d  !== 'undefined' ){\
   ctx.globalAlpha = 1.0;\
   var y_offset = 2*font_size;\
@@ -4575,6 +4621,20 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
    ctx.fillText(legend%d[p],x_offset - txt_size, y_offset);\
    y_offset = parseInt(y_offset + 1.5*font_size);\
   };\
+ };\
+ if( typeof xaxislabel !== 'indefined' ){\
+   ctx.fillStyle = \'#000000\';\
+   var txt_size = ctx.measureText(xaxislabel).width + 4 ;\
+   ctx.fillText(xaxislabel,xsize - txt_size, zero_y - 7);\
+ };\
+ if( typeof yaxislabel !== 'indefined'){\
+   ctx.save();\
+   ctx.fillStyle = \'#000000\';\
+   var txt_size = ctx.measureText(yaxislabel).width;\
+   ctx.translate(zero_x+8 + font_size,txt_size+font_size);\
+   ctx.rotate(-0.5*Math.PI);\
+   ctx.fillText(yaxislabel,0,0);\
+   ctx.save();\
  };\
 };\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
