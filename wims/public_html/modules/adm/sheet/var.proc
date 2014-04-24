@@ -16,7 +16,10 @@ wims_nw=deps prcnt empty job class_header data\
 authscoresuspend=!defof class_authscoresuspend in wimshome/log/classes/$wims_class/.def
 !default authscoresuspend=yes
 !setdef wims_authscoresuspend=$authscoresuspend in wimshome/sessions/$wims_session/var.stat
-
+!set severity=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+!set severity=!line $sh+1 of $severity
+!set severity=!words2items $severity
+!setdef wims_severity=$severity in wimshome/sessions/$wims_session/var.stat
 !if $authscoresuspend=yes
  !if $job=suspend
   wims_scorereg=suspend
@@ -44,7 +47,6 @@ authscoresuspend=!defof class_authscoresuspend in wimshome/log/classes/$wims_cla
 !endif
 
 !bound job within read,raw,import,print default read
-
 c=!char 1 of $sh
 !if $c=P or $wims_class=$empty or / isin $sh
  public=P
@@ -59,6 +61,7 @@ c=!char 1 of $sh
 
 !if $public!=P
  !bound sh between integer 1 and 1024 default 0
+
  !if $sh=0
   :badsheet
   error=bad_sheet
@@ -84,6 +87,8 @@ c=!char 1 of $sh
  requires=!getscorerequire sheet=$sh
  scores=!getscore sheet=$sh
  means=!getscoremean sheet=$sh
+ bests=!getscorebest sheet=$sh
+ levels=!getscorelevel sheet=$sh
  !if $sheet_active=$empty
   n=0
  !else
@@ -125,11 +130,13 @@ c=!char 1 of $sh
  !distribute words $sheet_duration into sheet_duration,sheet_year
  sheet_active=1
  n=!recordcnt $data
+
 !endif
 !!setdef wims_sheettitle=$sheet_title in wimshome/sessions/$wims_session/var.stat
 
 maxexo=!recordcnt $data
 !setdef wims_sheetmax=$maxexo in wimshome/sessions/$wims_session/var.stat
+
 !reset exofeedback
 !for e=1 to $maxexo
   redir=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$sh
@@ -137,11 +144,10 @@ maxexo=!recordcnt $data
   !if $e=1
     exofeedback=$redir
   !else
-    exofeedback=$exofeedback;$redir 
-   !endif
+    exofeedback=$exofeedback;$redir
+  !endif
 !next
 !setdef wims_exofeedback=$exofeedback in wimshome/sessions/$wims_session/var.stat
-
 !if $job iswordof print import
  !read $job.proc
 !endif

@@ -11,12 +11,17 @@ av=0
 !!percents in the future
 !! w_$i etc are defined in sheetweights
 !!give an average for all sheets and for the user $uu - even not seen in sequences ??
+
 !for i=1 to $percnt
  perc=!line $i of $percents
- !distribute words $perc into p1,p2,p3
+ !distribute words $perc into p1,p2,p3,p4
  !if $p2!=$empty and $(w_$i)!=$empty
-  !distribute item $[$p1/100],$[$p2/10],$[$p3/100] into x_,y_,z_
-  per=$[$per+($(w_$i))*$(f_$i)]
+  !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+  !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+  !for sev=0 to 2
+     !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+  !next
+   per=$[$per+($(w_$i))*$(ff_$i)]
  !endif
 !next i
 

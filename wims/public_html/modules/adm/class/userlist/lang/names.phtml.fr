@@ -14,8 +14,8 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Liste des exercices enregistrés
 !set name_transfer=Transférer ses activités des autres classes
 
-!set name_thsheet=No,Titre,Points<br />requis,Poids,Points<br />cumulés,%,Qualité,Sévérité,Note,\
- Meilleur %, Nombre d'essais,Dernier résultat
+!!!set name_thsheet=No,Titre,Points requis,Poids,Points cumulés,%,Qualité,Règle de calcul,Note,\
+ Taux de réussite, Nombre d'essais,Dernier résultat,Niveau d'acquisition
 !set name_minmax=min/moy/max de la classe&nbsp;
 
 !set name_manualscore=Notes attribuées par l'enseignant
@@ -23,25 +23,27 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set name_manual_notes=globale,enseign.,auto
 !set name_examnote=Notes d'examens
 
-!set name_severitylevels=Niveaux de sévérité des feuilles de travail
-!set name_formula=No,Poids,Niveau
+!set name_severitylevels=Règles de calcul des feuilles de travail
+!set name_formula=No,Poids,Règles de calcul
 !set name_sheetstatut=en préparation,active,périmée,cachée
 
-!distribute items Examen,Feuille,Exercice,Début,Notes,Session,Fait,équiv.\
+!distribute items Examen,Feuille,Exercice,Début,Notes,Session,Pourcentage des points cumulés,équiv.\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
-!set name_formula_comment=Vous pouvez définir les niveaux de sévérité et les poids des feuilles de \
+!set name_formula_comment=Vous pouvez définir les règles de calcul et les poids des feuilles de \
 travail dans le tableau suivant. Ici, Q est relatif à la note de qualité, \
-C au nombre de points cumulés, B aux n meilleures notes obtenues si 10n est \
-le nombre de points requis. Vous pouvez regarder l'aide pour plus de détails.\
+vous pouvez choisir I parmi les trois indicateurs suivants : I0 relatif\
+au nombre de points cumulés, I1 relatif à la moyenne des n meilleures notes obtenues si 10n est \
+le nombre de points requis et I2 relatif au minimum des n meilleures notes précédentes.\
+Vous pouvez regarder l'aide pour plus de détails.\
 Les notes seront calculées sur
 !set name_formula2=!nosubst Notes calculées sur $scoremax
-!set name_pickup=Sélectionnez les feuilles pour<br />montrer les résultats par feuille&nbsp;
+!set name_pickup=Sélectionnez les feuilles pour montrer les résultats par feuille.
 !set name_warning= Vous avez soumis une requête illégale.
 
-!set name_click=Cliquez sur un nom pour voir le détail de son travail.
-!set name_affi=la qualité,le travail effectué,les notes
+!set name_click=Vous pouvez aussi cliquer sur un nom pour voir le détail de son travail
+!set name_affi=la qualité,le pourcentage des points cumulés,les notes, le taux de réussite sur les meilleures notes, le niveau d'acquisition
 !set name_workdetail=Détail du travail de
 !set name_activesession=Ce participant a une session d'examen active&nbsp;
 
@@ -65,7 +67,10 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_percentagegot=Pourcentage des points cumulés
 !set name_qualitygot=Qualité du travail calculée sur un maximum de 10
 !set name_percentagedone=Pourcentage de travail effectué
-!set name_post=Afficher
+!set name_percentagebest=Taux de réussite sur les meilleures notes
+
+!set name_post=faites afficher
+!set name_Post=Afficher
 
 !if $job iswordof userprop teacher
   !distribute items Changer,Numéro d'inscription,Commentaires,URL d'une photo,Variables (techniques),\

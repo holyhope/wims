@@ -25,42 +25,75 @@ $name_title_showsheet
 !else
 <p>$name_click $wims_name_or
 $name_post
+</p>
+<div class="wimscenter">
    !set wims_ref_class=wims_button
-    !if $job_affi=qualite
+    !if $job_affi=quality
+     <span class="wims_button disabled"> $(name_affi[1])</span>
      !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
      !set wims_ref_class=wims_button
      !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
-    !endif
-    !if $job_affi=points
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
      !set wims_ref_class=wims_button
-      !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
+    !endif
+    !if $job_affi=points or $job_affi=notes
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     <span class="wims_button disabled"> $(name_affi[2])</span>
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
     !endif
     !if $job_affi=best
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     <span class="wims_button disabled"> $(name_affi[4])</span>
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job_affi=level&job=showsheet&numshowsheet=$numshowsheet $(name_affi[5])
+    !endif
+    !if $job_affi=level
+     !href cmd=reply&job_affi=quality&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
      !set wims_ref_class=wims_button
       !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+     !set wims_ref_class=wims_button
+      !href cmd=reply&job_affi=best&job=showsheet&numshowsheet=$numshowsheet $(name_affi[4])
+      <span class="wims_button disabled"> $(name_affi[5])</span>
     !endif
-</p>
+</div>
+
 !set wims_ref_class=wims_button
  !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
  $table_header
- !bound job_affi within points,qualite, best default points
+ !bound job_affi within points,quality, best, level default points
  !if $job_affi=points
   !let sign=%
   !set sign1=100
+  !set sign2=1
+  !set pos=1
   <caption>$name_percentagegot</caption>
  !endif
- !if $job_affi=qualite
+ !if $job_affi=quality
    !let sign=$empty
    !set sign1=10
+   !set sign2=1
    <caption>$name_qualitygot</caption>
+   !set pos=2
  !endif
  !if $job_affi=best
   !let sign=%
   !set sign1=100
+  !set sign2=1
+  !set pos=3
    <caption>$name_percentagebest</caption>
-  !endif
+ !endif
+ !if $job_affi=level
+  !let sign=$empty
+  !set sign1=10
+  !set sign2=10
+  !set pos=4
+   <caption>$(wims_name_thsheet[13])</caption>
+ !endif
  !if $job_affi=
   !let sign=%
   !set sign1=100
@@ -93,74 +126,57 @@ $name_post
    !endif
   </td>
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
-   !if $job_affi=points
-     !let t=!word 1 of $tot
+   !let t=!word $pos of $tot
+     !let tot_0=$[$tot_0+$t]
      !if $t!=0
-      !read adm/class/colors $[ceil($t/10)]
+      !read adm/class/colors $[ceil(10*$t/$sign1)]
       <td style=$style_note>
-      $t %
+      $[ceil(10*$t)/10/$sign2] $sign
+      !increase nonzero_0
      !else
       <td>--
      !endif
      </td>
-     !let tot_0=$[$tot_0+$t]
-    !if $t!=0
-     !increase nonzero_0
+    !if $job_affi=points
+      !let tmp=!getscore user=$uu sheet=$numshowsheet
     !endif
-    !let tmp=!getscore user=$uu sheet=$numshowsheet
+    !if $job_affi=quality
+      !let tmp=!getscoremean user=$uu sheet=$numshowsheet
+    !endif
+    !if $job_affi=best
+      !let tmp=!getscorebest user=$uu sheet=$numshowsheet
+    !endif
+    !if $job_affi=level
+      !let tmp=!getscorelevel user=$uu sheet=$numshowsheet
+    !endif
     !for k=1 to $nbexo
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
       !endif
-      !let div=!word $k of $require
-      !if $div!=0
-       !let t=$[rint($t/$div*10000)/100]
-      !else
-       !let t=100
+      !if $job_affi iswordof points best
+        !let div=!word $k of $require
+        !if $div!=0
+         !let t=$[rint($t/$div*10000)/100]
+        !else
+         !let t=100
+        !endif
       !endif
       !if $t>0
-       !read adm/class/colors $[ceil($t/10)]
+       !read adm/class/colors $[ceil(10*$t/$sign1)]
        <td style=$style_note>
-       $t %
+       $t $sign
        !let tot_$k=$[$(tot_$k)+$t]
       !else
        <td>--
       !endif
       </td>
     !next k
-   !else
-     !let t=!word 2 of $tot
-     !let tot_0=$[$tot_0+$t]
-     !read adm/class/colors $[ceil($t)]
-     !if $t!=0
-      <td style=$style_note>
-      $t
-      !increase nonzero_0
-     !else
-      <td>--
-     !endif
-     </td>
-     !let tmp=!getscoremean user=$uu sheet=$numshowsheet
-    !for k=1 to $nbexo
-      !let t=!word $k of $tmp
-      !if $t!=0
-       !increase nonzero_$k
-       !read adm/class/colors $[ceil($t)]
-       <td style=$style_note>
-       $t
-      !else
-       <td>--
-      !endif
-      </td>
-      !let tot_$k=$[$(tot_$k)+$t]
-    !next k
-   !endif
   </tr>
  !next m
  $table_hdtr<th>$name_classAverage</th>
- !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
- <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
+ !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1/$sign2]
+ <td style=$style_note>$[rint($tot_0/$usercnt*10)/10/$sign2]$sign</td>
  !for j=1 to $nbexo
   !if $(tot_$j)>0
    !read adm/class/colors $[ceil($(tot_$j)/$usercnt*10/$sign1)]
@@ -173,8 +189,8 @@ $name_post
  </tr>
  !if $nonzero_0>0
   $table_hdtr<th>$name_posAverage</th>
-   !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1)]
-   <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
+   !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1/$sign2)]
+   <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10/$sign2]$sign </td>
   !for j=1 to $nbexo
     !if $(nonzero_$j)>0
       !read adm/class/colors $[ceil($(tot_$j)/$(nonzero_$j)*10/$sign1)]

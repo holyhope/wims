@@ -110,7 +110,11 @@ $sheet_title
  !else
   $name_scoreclose
  !endif
-
+ !set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+ !set sev=!line $sh + 1 of $sevlist
+ !reset s ss
+ !set ss=!word 3 of $sev
+ !bound ss between integer 0 and 2 default 0
  <div class="wims_sheet">
  <ul class="wims_sheet_list">
  !let wims_exotitle=$empty
@@ -119,6 +123,8 @@ $sheet_title
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
+  !set best=!word $i of $bests
+  !set level=!word $i of $levels
   !set dep=!row $i of $deps
   !set dep=!trim $dep
   !set wims_exotitle=!append line $ti to $wims_exotitle
@@ -127,8 +133,18 @@ $sheet_title
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
-    <span class="small">$name_score
-    $[$mean]/10.</span>
+   <span class="small">
+   $(wims_name_thsheet[7]): $[$mean]/10,
+   !if $ss=0
+     $(wims_name_thsheet[5]): $[100*$got/$require]%,
+   !endif
+   !if $ss=1
+     $(wims_name_thsheet[10]): $[10*$best]%
+   !endif
+   !if $ss=2
+     $(wims_name_thsheet[13]): $[$level]/10
+   !endif
+   </span>
    !endif
   !else
    <span class="wims_warning">$ti</span>, $de

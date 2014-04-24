@@ -192,9 +192,12 @@
 	wims_name_add_sequence,\
 	wims_name_readen
 
- !set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
+ !!!set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo, calidad \
 	$[$wims_homeref_mean]/10.
+!set wims_name_thsheet=Número,título,puntos requeridos,peso,puntos obtenidos,%,Calidad,severidad,nota,\
+  Best scores,Number of tries,Last result, Acquired level
+
  !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, perteneciendo a
  !if _exam isin $session
   !distribute items Otros ejercicios del examen,\

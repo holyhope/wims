@@ -14,9 +14,10 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
 !for i=1 to $totsheets
  !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !set k_=!line $i of $defaultformula
- !distribute word $k_ into w$i,s$i
+ !distribute word $k_ into w$i,s$i,ss$i
  !default w$i=1
  !default s$i=2
+ !default ss$i=0
  !distribute line $t_ into a_,b_,c_,d_
  !set a_=!char 1 of $a_
  !set S_=!item $a_+1 of $name_sheetstatut
@@ -25,21 +26,9 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
  <td>$c_</td><td>$S_</td>
  <td><input size="5" name="w$i" value="$(w$i)" /></td>
  <td>
-!! this list must be compatible with the list in scripts/adm/class/sheetweights
- !formselect s$i list 0,1,2,3,4,5,6,7,8,9,10,11,12,13 prompt max(C,Q),\
-C,\
-C*Q^0.3,\
-C*Q^0.5,\
-C*Q,\
-C^2*Q,\
-(C*Q)^2,\
-max(B,Q),\
-B,\
-B*Q^0.3,\
-B*Q^0.5,\
-B*Q,\
-B^2*Q,\
-(B*Q)^2
+ !set formula_list=!record 0 of adm/class/sheetformula
+ !formselect s$i list 0,1,2,3,4,5,6 prompt $formula_list
+ !formselect ss$i list 0,1,2 prompt I0,I1,I2
  </td></tr>
 !next i
 !for i=1 to $totexams
@@ -65,4 +54,3 @@ $table_end
 !formend
 
 !reset formula
-

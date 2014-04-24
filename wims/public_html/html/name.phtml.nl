@@ -193,9 +193,11 @@
  wims_name_readen
 
  !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op.
- !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
+ !!!set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br />Gemiddelde score \
 	$[$wims_homeref_mean]/10.
+ !set wims_name_thsheet=No,Titel,Vereist,Weging,Punten verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
+ Best scores,Number of tries,Last result, Acquired level
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session
   !distribute items Andere opgaven uit deze overhoring,\

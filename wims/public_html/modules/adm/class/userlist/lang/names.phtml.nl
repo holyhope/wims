@@ -14,8 +14,8 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set wims_name_reg_ex=Lijst van oefeningen
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
-!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
- Best scores,Number of tries,Last result
+!!!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
+ Best scores,Number of tries,Last result, Acquired level
 !set name_minmax=min/gem/max van deze klas
 
 !set name_manualscore=Handmatig ingevoerde cijfers
@@ -38,7 +38,7 @@ De cijfers worden berekend met maximum =
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen.
-!set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers
+!set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers,la moyenne des meilleures notes requises
 !set name_workdetail=Detail van het werk van
 !set name_activesession=Deze student heeft een nog actieve proefwerk sessie
 
@@ -61,7 +61,10 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !set name_percentagegot=Percentage van de verkregen punten
 !set name_qualitygot=Kwaliteit berekend over een maximum van 10
 !set name_percentagedone=Percentage van het afgeronde werk
-!set name_post=Laat zien&nbsp;:
+!set name_percentagebest=Moyenne des meilleures notes requises
+
+!set name_post=laat zien&nbsp;:
+!set name_Post=Laat zien&nbsp;:
 
 !if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
@@ -110,7 +113,6 @@ kan dus niet worden overgezet van
   !set name_delete=!nosubst Zeker weten de <b><em>$name_student1</em></b>\
      uit deze klas verwijderd moet worden ?
 !endif
-
 !if $job=csv
   !distribute lines Hier is het bestand\
     dat kan worden geopend met een spreadsheet programma.\

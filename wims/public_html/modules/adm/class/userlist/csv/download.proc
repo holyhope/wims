@@ -64,15 +64,17 @@ good=$good $av
   se=
   e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
   !for ee=1 to $e
+    seq=sheet$(i)_exo_$(ee)_Q
+    se0=sheet$(i)_exo_$(ee)_I0
     se1=sheet$(i)_exo_$(ee)_I1
     se2=sheet$(i)_exo_$(ee)_I2
-    se3=sheet$(i)_exo_$(ee)_I3
-    se=$se $se1 $se2 $se3
+    se=$se $seq $se0 $se1 $se2
     name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
     name=!line 5 of $name
+    name_$se0=$name Q
+    name_$se0=$name I0 (%)
     name_$se1=$name I1 (%)
     name_$se2=$name I2
-    name_$se3=$name I3 (%)
   !next
   !if sheetexo$i iswordof $dl
     dl=!replace word sheetexo$i by $se in $dl
@@ -162,10 +164,14 @@ $dl3$dl5\
   !for i=1 to $sheetcnttot
    !if sheet$i isitemof $dl and $i isitemof $activesh
     p_=!line $i of $percents
-    !distribute words $p_ into p1,p2,p3
+    !distribute words $p_ into p1,p2,p3,p4
     !if $p2!=$empty
 ###f_$i is defined by var.proc.weights
-     !distribute item $[$p1/100],$[$p2/10],$[$p3/100] into x_,y_
+     !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+     !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+     !for sev=0 to 2
+       !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+     !next
      user_sheet$i=$[rint(100*$scoremax*$(f_$i))/100]
     !else
      user_sheet$i=0
@@ -180,9 +186,11 @@ $dl3$dl5\
       dd_=!getscorerequire user=$uu sheet=$i work=$k_
       m_=!getscoremean user=$uu sheet=$i work=$k_
       b_=!getscorebest user=$uu sheet=$i work=$k_
-      user_sheet$(i)_exo_$(k_)_I1=$[ceil(100*$d_/$dd_)]
-      user_sheet$(i)_exo_$(k_)_I2=$[$m_]
-      user_sheet$(i)_exo_$(k_)_I3=$[ceil(100*$b_/$dd_)]
+      l_=!getscorelevel user=$uu sheet=$i work=$k_
+      user_sheet$(i)_exo_$(k_)_Q=$[$m_]
+      user_sheet$(i)_exo_$(k_)_I0=$[ceil(100*$d_/$dd_)]
+      user_sheet$(i)_exo_$(k_)_I1=$[ceil(100*$b_/$dd_)]
+      user_sheet$(i)_exo_$(k_)_I2=$[$l_]
     !next k_
    !endif
   !next

@@ -55,7 +55,7 @@
       !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5_
     !endif
   !endif
- !endif 
+ !endif
 !endif
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
@@ -101,9 +101,25 @@ $module_title
  !if $wims_homeref_scorestat=yes and $wims_exodep!=pending
   !if $wims_scorereg!=suspend
    !set wims_homeref_req=!getscorerequire sheet=$wims_sheet work=$wims_exo
-   !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
    !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
-   !set wims_name_score=!singlespace $wims_name_score
+   !set wims_homeref_last=!getscorelast sheet=$wims_sheet work=$wims_exo
+   !set wims_name_score=$(wims_name_thsheet[7]): $[$wims_homeref_mean]/10
+   !if $(wims_severity[3])=2
+     !set wims_homeref_level=!getscorelevel sheet=$wims_sheet work=$wims_exo
+     !set wims_name_score=$wims_name_score<br />I3: $wims_homeref_level/10
+     !! -$(wims_name_thsheet[13])
+   !else
+     !if $(wims_severity[3])=1
+       !set wims_homeref_best=!getscorebest sheet=$wims_sheet work=$wims_exo
+       !set wims_name_score=$wims_name_score<br />I2: $[10*$wims_homeref_best] %
+       !!$(wims_name_thsheet[10])
+     !else
+       !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
+       !set wims_name_score=$wims_name_score<br />I0: $[ceil(100*$wims_homeref_got/$wims_homeref_req)]%
+       !!$(wims_name_thsheet[5])
+
+     !endif
+   !endif
    !set 4_=!append line score,0,$wims_name_score to $4_
    !if $wims_authscoresuspend!=no
     !set wims_rm_0=!append line scoreclose2,1,module=adm/sheet&sh=$wims_sheet&exo=$wims_exo&job=suspend to $wims_rm_0
