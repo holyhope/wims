@@ -1,0 +1,64 @@
+  !set dir=wimshome/public_html/bases/sys/domain/domain
+  !set dom=!lookup domain in wimshome/public_html/bases/sys/domain/domain
+  <ul>
+  !for a in $dom
+  <li>
+    !set t_dom=!lookup $a in $dir
+    !lookup $a in $dir.$lang
+    ($a)
+    <ul>
+       !for t in $t_dom
+       <li>
+        !lookup $t in $dir.$lang
+$ ($t)
+        !set t2=!lookup $t in $dir
+        !if $t2!=$empty
+          <ul>
+          !for t3 in $t2
+           <li>
+           !lookup $t3 in $dir.$lang
+$ ($t3)
+           !set t4=!lookup $t3 in $dir
+           !if $t4!=$empty
+            <ul>
+            !for t5 in $t4
+              <li>
+                !lookup $t5 in $dir.$lang
+$ ($t5)
+               !set t6=!lookup $t5 in $dir
+               !if $t6!=empty
+                 <ul>
+                 !for t7 in $t6
+                   <li>
+                  !lookup $t7 in $dir.$lang
+$ ($t7)
+                  !set t8=!lookup $t7 in $dir
+                  !if $t8!=empty
+                     <ul>
+                      !for t9 in $t8
+                     <li>
+                   !lookup $t9 in $dir.$lang
+$ ($t9)
+                     </li>
+                     !next
+                     </ul>
+                   !endif
+                 !next
+                 </ul>
+               !endif
+              </li>
+            !next
+           </ul>
+           !endif
+         </li>
+          !next
+          </ul>
+        !endif
+     !next
+     </ul>
+     </li>
+ !next
+ </ul>
+ <pre>
+ !record 0 of wimshome/public_html/bases/sys/domain/domain.$modu_lang
+ </pre>
