@@ -81,9 +81,9 @@ WIMS_CHECK_FUNC(gethostname)
 
 fun=socket
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_$fun" = no; then 
+if test "$ac_cv_func_$fun" = no; then
   AC_CHECK_LIB([socket], [$fun])
-  if test "$ac_cv_lib_$fun" = no; then 
+  if test "$ac_cv_lib_$fun" = no; then
     AC_CHECK_LIB([socket], [$fun], [], [], [-lnsl])
     WIMS_FAIL($fun, $ac_cv_lib_$fun)
   fi
@@ -91,12 +91,12 @@ fi
 
 fun=inet_ntoa
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_$fun" = no; then 
+if test "$ac_cv_func_$fun" = no; then
   AC_CHECK_LIB([socket], [$fun], [], [], [-lnsl])
 fi
 fun=inet_aton
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_$fun" = no; then 
+if test "$ac_cv_func_$fun" = no; then
   AC_CHECK_LIB([resolv], [$fun])
 fi
 NETLIBS=$LIBS
