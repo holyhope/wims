@@ -14,9 +14,11 @@ $name_title_getraw
 !mexec getraw.sh
 </pre>
 !endif
-
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
-part_list,1,cmd=resume\
 to $wims_menu_items
-
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line part_list,1,cmd=resume\
+to $wims_menu_items
 !read adm/class/getnextuser $wims_class,$getraw,getraw,getraw
+
+!endif

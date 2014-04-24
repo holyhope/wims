@@ -279,6 +279,10 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  to $wims_menu_items
 !endif
 
+!if $wims_user!=supervisor
+ !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ to $wims_menu_items
+!endif
 !if $wims_user=supervisor
  !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
