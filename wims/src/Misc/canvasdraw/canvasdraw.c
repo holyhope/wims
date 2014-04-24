@@ -138,7 +138,7 @@ int main(int argc, char *argv[]){
     int translate_y = 0;
     int clickfillmarge = 20;
     int animation_type = 9; /* == object type curve in drag library */
-    int use_input_xy = FALSE;
+    int use_input_xy = 0;
     size_t string_length = 0;
     double stroke_opacity = 0.8;
     double fill_opacity = 0.8;
@@ -860,6 +860,19 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x = 1;var snap_y = 1;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
 	break;
+	case USERTEXTAREA_XY:
+	/*
+	@ usertextarea_xy
+	@ keyword 
+	@ to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
+	@ if set two textareas are added to the document<br />(one for x-values , one for y-values) 
+	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
+	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+	@ user drawings will not zoom on zooming (or pan on panning) 
+	*/
+	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
+	use_input_xy = 2;
+	break;
 	case USERINPUT_XY:
 	/*
 	@ userinput_xy
@@ -871,12 +884,12 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
 	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
-	use_input_xy = TRUE;
+	use_input_xy = 1;
 	break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>circle</li><li>circles</li><li>arrow</li><li>arrows</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrows</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
@@ -886,7 +899,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ use command "debug" to view the output of javascript funcion read_canvas();
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
-	@ may be combined with keyword 'userinput_xy'
+	@ may be combined with keyword 'userinput_xy' or 
 	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
@@ -927,6 +940,22 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 		add_js_segments(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"polyline") == 0 ){
+		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		if( use_input_xy > 0 ){
+		    add_textarea_polyline(js_include_file);
+		    if( use_input_xy == 2 ){
+		        add_textarea_xy(js_include_file,canvas_root_id);
+		    }
+		    else
+		    {
+		        add_input_xy(js_include_file,canvas_root_id);
+		    }
+		}
+		add_js_polyline(js_include_file,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
 	    else
 	    if( strcmp(draw_type,"segments") == 0 ){
@@ -4103,6 +4132,33 @@ draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,str
  return;\
 };");
     break;
+    case DRAW_POLYLINE:/* user for userdraw : draw lines through points */
+fprintf(js_include_file,"\n<!-- draw polyline -->\n\
+draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+ ctx.save();\
+ if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ ctx.clearRect(0,0,xsize,ysize);\
+ ctx.beginPath();\
+ for(var p = 0 ; p < x_points.length-1 ; p++ ){\
+  ctx.moveTo(x_points[p],y_points[p]);\
+  ctx.lineTo(x_points[p+1],y_points[p+1]);\
+ }\
+ ctx.closePath();\
+ ctx.stroke();\
+ ctx.fillStyle =\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ for(var p = 0 ; p < x_points.length ; p++ ){\
+  ctx.beginPath();\
+  ctx.arc(x_points[p],y_points[p],line_width,0,2*Math.PI,false);\
+  ctx.closePath();ctx.fill();ctx.stroke();\
+ };\
+ ctx.restore();\
+ return;\
+};");
+    break;
     
     case DRAW_SEGMENTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw segments -->\n\
@@ -5507,6 +5563,7 @@ int get_token(FILE *infile){
 	*status="status",
 	*snaptogrid="snaptogrid",
 	*userinput_xy="userinput_xy",
+	*usertextarea_xy="usertextarea_xy",
 	*sgraph="sgraph";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -6099,6 +6156,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);
 	return USERINPUT_XY;
+	}
+	if( strcmp(input_type, usertextarea_xy) == 0 ){
+	free(input_type);
+	return USERTEXTAREA_XY;
 	}
 	if( strcmp(input_type, sgraph) == 0 ){
 	free(input_type);

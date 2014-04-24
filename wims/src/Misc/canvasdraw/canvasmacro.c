@@ -14,6 +14,7 @@ void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int pr
 void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_width, int radius , char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
+void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head);
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity);
@@ -25,11 +26,13 @@ void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int fontsize,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y);
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
+void add_textarea_polyline(FILE *js_include_file);
 void add_input_crosshair(FILE *js_include_file,int num);
 void add_input_arrow(FILE *js_include_file,int num);
 void add_input_xy(FILE *js_include_file, int canvas_root_id);
 void add_input_xyr(FILE *js_include_file, int canvas_root_id);
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
+void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
 /* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 
@@ -441,6 +444,67 @@ function canvas_remove(x,y){\
  }\
 };",draw_type,num,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
 
+}
+void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
+var canvas_rect;\
+var cnt = 0;\
+var line_width = %d;\
+var stroke_color = \"%s\";\
+var stroke_opacity = %f;\
+var use_dashed = %d;\
+var dashtype0 = %d;\
+var dashtype1 = %d;\
+function user_draw(evt){\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var x = evt.clientX - canvas_rect.left;\
+ var y = evt.clientY - canvas_rect.top;\
+ var lu = userdraw_x.length;\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ if( use_snap_to_grid == 1 ){\
+  x = snap_to_x(x);\
+  y = snap_to_y(y);\
+ };\
+ if( evt.which == 1 ){\
+  userdraw_x[lu] = x;userdraw_y[lu] = y;\
+  if( cnt == 0 ){\
+   user_drag(evt);\
+   cnt = 1;\
+  }\
+  else\
+  {\
+    cnt = 0;\
+    draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  }\
+ }\
+ else\
+ {\
+  canvas_remove(x,y);\
+ }\
+};\
+function user_drag(evt){\
+ if( cnt == 0){\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var x = evt.clientX - canvas_rect.left;\
+  var y = evt.clientY - canvas_rect.top;\
+  if( use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+   y = snap_to_y(y);\
+  };\
+  var lu = userdraw_x.length;\
+  if( lu > 0 ){\
+   userdraw_x[lu - 1] = x; userdraw_y[lu - 1] = y;\
+   draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  };\
+ }\
+};\
+function canvas_remove(x,y){\
+ if( confirm(\"remove line ?\" )){\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  userdraw_x = [];userdraw_y = [];cnt = 1;\
+  return;\
+ }\
+};",draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
@@ -1606,11 +1670,27 @@ function use_mouse_coordinates(){\
 };",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 
 }
-/* adds 2 inputfields (x:y) and 'ok' button */
+/* 
+adds 2 inputfields (x:y) and 'ok' button 
+these are used for user drawing with inputfields...
+*/
+
+void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
+fprintf(js_include_file,"\n<!-- begin add_area_xy -->\n\
+var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var label_x = \"x\";var label_y = \"y\";\
+if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
+if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+userinput_xy_div.innerHTML=\"<table style=\'border:1px solid black;background-color:#ffffa0\' ><tr><td><em>\"+label_x+\"</em></td><td><em>\"+label_y+\"</em></td><td><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></td></tr><tr><td><textarea rows='5' cols='2' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td><textarea rows='5' cols='2' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td>&nbsp;</td></tr></table>\";\
+var update_button = document.getElementById(\"update_button\");\
+update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
+}
+
 void add_input_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xy -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='2' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='2' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/></span> \";\
+var label_x = \"x\";var label_y = \"y\";\
+userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
 }
@@ -1619,7 +1699,7 @@ update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_x1y1x2y2 -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='2' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;'/> : <input type='text' size='2' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='2' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='2' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
+userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;'/> : <input type='text' size='6' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
 }
@@ -1628,11 +1708,12 @@ update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id
 void add_input_xyr(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xyr -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>Center : ( <input type='text' size='2' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='2' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='2' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
+userinput_xy_div.innerHTML=\"<span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
 }
 
+/* draw circle(s) / point(s) via 3 inputfields */
 void add_input_circle(FILE *js_include_file,int type,int num){
 /* 
 type = 0 : a point ...radius is fixed 
@@ -1677,7 +1758,7 @@ function user_redraw(){\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
  };};",type,num,num);
 }
-
+/* draw crosshairs via inputfields x/y */
 void add_input_crosshair(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_crosshair -->\n\
 function user_redraw(){\
@@ -1703,7 +1784,8 @@ function user_redraw(){\
 };",num);
 }
 
-void add_input_arrow(FILE *js_include_file,int num){/* read X/Y inputfield and add a single segment */
+/* draw arrows via inputfields x/y */
+void add_input_arrow(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_arrow -->\n\
 function user_redraw(){\
   var add_x1 = document.getElementById(\"userinput_x1\").value;\
@@ -1734,8 +1816,34 @@ function user_redraw(){\
 };",num);
 }
 
+/* draw polyline via inputfields x/y */
 
-void add_input_segment(FILE *js_include_file,int num){/* read X/Y inputfield and add a single segment */
+void add_textarea_polyline(FILE *js_include_file){
+fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields or textareas -->\n\
+function user_redraw(){\
+ var add_x = document.getElementById(\"userinput_x\").value;\
+ var lx = add_x.length;\
+ if( lx > 0 ){\
+  add_x = add_x.split('\\n');\
+  var add_y = (document.getElementById(\"userinput_y\").value).split('\\n');\
+  lx = add_x.length;\
+  ly = add_y.length;\
+  if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
+  var start = 0;var p = 0;\
+  if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
+  while(add_x[p]){\
+   if( isNaN(add_x[p] - 1) || isNaN(add_y[p] - 1) ){alert(\"illegal input on line \"+p);return;}\
+   userdraw_x[start] = x2px(add_x[p]);\
+   userdraw_y[start] = y2px(add_y[p]);\
+   start++;p++;if(p>100){alert(\"hmmmm\");return;};\
+  };\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  cnt = 1;\
+ }\
+};");
+}
+/* draw segment(s) via inputfields x/y */
+void add_input_segment(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_segment -->\n\
 function user_redraw(){\
   var add_x1 = document.getElementById(\"userinput_x1\").value;\
@@ -1765,6 +1873,7 @@ function user_redraw(){\
  }\
 };",num);
 }
+
 void *my_newmem(size_t size){
 	void	*p;
 	if ((p = malloc(size +1)) == NULL){canvas_error("canvasdraw: ran out of memory\n");}

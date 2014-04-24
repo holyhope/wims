@@ -130,7 +130,8 @@
 #define STATUS		133 
 #define SNAPTOGRID	134
 #define USERINPUT_XY	135
-#define SGRAPH		136
+#define USERTEXTAREA_XY	136
+#define SGRAPH		137
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -167,6 +168,7 @@
 #define DRAG_EXTERNAL_IMAGE	33
 #define DRAW_DIAMONDFILL	34
 #define DRAW_SGRAPH	35
+#define DRAW_POLYLINE	36
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1
