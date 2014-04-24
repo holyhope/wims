@@ -128,35 +128,63 @@ $wims_name_part_list ($usercnt)
   </div>
 <p>
    $wims_name_or $name_post
-   !if $job_affi=notes
-    !href cmd=reply&job_affi=qualite $(name_affi[1])
-    ,
+   !if $job_affi=notes or $job_affi=$empty
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=quality $(name_affi[1])
+    !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=points $(name_affi[2])
-    ,
+    <span class="wims_button disabled"> $(name_affi[3])</span>
+    !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=best $(name_affi[4])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=level $(name_affi[5])
    !endif
-   !if $job_affi=qualite
-     !href cmd=reply&job_affi=notes $(name_affi[3])
-,
-     !href cmd=reply&job_affi=points $(name_affi[2])
-,
+   !if $job_affi=quality
+    <span class="wims_button disabled"> $(name_affi[1])</span>
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=points $(name_affi[2])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=notes $(name_affi[3])
+    !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=best $(name_affi[4])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=level $(name_affi[5])
    !endif
    !if $job_affi=points
-     !href cmd=reply&job_affi=notes $(name_affi[3])
-,
-     !href cmd=reply&job_affi=qualite $(name_affi[1])
-,
-     !href cmd=reply&job_affi=best $(name_affi[4])
-    !endif
-    !if $job_affi=best
-     !href cmd=reply&job_affi=qualite $(name_affi[1])
-,
-     !href cmd=reply&job_affi=points $(name_affi[2])
-,
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=quality $(name_affi[1])
+     <span class="wims_button disabled"> $(name_affi[2])</span>
+    !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=notes $(name_affi[3])
-
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=best $(name_affi[4])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=level $(name_affi[5])
    !endif
+   !if $job_affi=best
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=quality $(name_affi[1])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=points $(name_affi[2])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=notes $(name_affi[3])
+    <span class="wims_button disabled"> $(name_affi[4])</span>
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=level $(name_affi[5])
+   !endif
+
+  !if $job_affi=level
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=quality $(name_affi[1])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=points $(name_affi[2])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=notes $(name_affi[3])
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job_affi=best $(name_affi[4])
+    <span class="wims_button disabled"> $(name_affi[1])</span>
+   !endif
+
 . </p>
 <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
@@ -174,7 +202,7 @@ $wims_name_part_list ($usercnt)
   !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
   !let tmp=!values v for v=1 to $tmp
   !let showsheet=!listintersect $showsheet and $tmp
-  !if $job_affi=qualite
+  !if $job_affi=quality
    <caption>$name_qualitygot</caption>
   !endif
   !if $job_affi=points
@@ -299,11 +327,21 @@ $wims_name_part_list ($usercnt)
      </td>
    !else
     !set p_=!line $j of $percents
-    !distribute words $p_ into p1,p2,p3
+    !distribute words $p_ into p1,p2,p3,p4
     !if $job_affi=notes
      !if $p2!=$empty
-      !distribute item $[$p1/100],$[$p2/10],$[$p3/100] into x_,y_,z_
-      !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+      !set sev=!line $j of $defaultformula
+      !distribute word $(sev) into w_$j,s,ss
+      !bound s between integer 0 and 6 default 2
+      !bound ss between integer 0 and 2 default 0
+      !set f_$j=!item $s+1 of $formula_list
+      !set f_$j=!replace internal I by I$ss in $(f_$j)
+      !distribute item $[$p1/100],$[$p2/10],$[$p3/100], $[p4/10] into x0_,y_,x1_,x2_
+      !set ff_$j=!mathsubst Q=$y_ in $(f_$j)
+      !for sev=0 to 2
+         !set ff_$j=!mathsubst I$sev=$(x$(sev)_) in $(ff_$j)
+      !next
+      !set p_=$[rint(100*$scoremax*$(ff_$j))/100]
      !else
       !set p_=0
      !endif
@@ -315,7 +353,7 @@ $wims_name_part_list ($usercnt)
      !endif
       </td>
     !else
-     !if qualite iswordof $job_affi
+     !if quality iswordof $job_affi
       !set p_=$p2
       !if $p_>0
        !read adm/class/colors $[ceil($p_)]
@@ -340,6 +378,16 @@ $wims_name_part_list ($usercnt)
       !if $p_>0
        !read adm/class/colors $[ceil($p_/10)]
        <td style=$style_note>$p_ %
+      !else
+       <td>--
+      !endif
+       </td>
+     !endif
+     !if level iswordof $job_affi
+      !set p_=$p4
+      !if $p_>0
+       !read adm/class/colors $[ceil($p_/10)]
+       <td style=$style_note>$p_
       !else
        <td>--
       !endif

@@ -251,14 +251,11 @@ void calc_getscorelevel(char *p)
  * score mean best level
  * as follows
  * score=100*cumulative_points/required_points) (< 100)
- * mean = quality (<10)
- * best= 10*(required/10 best_scores)/required_points (< 100)
- * level= minimum of the required/10 best_scores (< 10)
+ * mean=quality (<10)
+ * best=10*(required/10 best_scores)/required_points (< 100)
+ * level=minimum of the required/10 best_scores (< 10)
  */
-/*!distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/10] into z0_,y_,z1_,z2_
 
- !distribute words $perc into p1,p2,p3,p4
-*/
  void calc_getscorepercent(char *p)
 {
   int i,j,jend;
