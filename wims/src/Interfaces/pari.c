@@ -15,25 +15,25 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Interface gp to wims */
+/* Interface gp to wims */
 
 /* This program is now limited to pari version 2.??. */
 
 /*************** Customization: change values hereafter ****************/
 
-	/* gp prompt string */
+/* gp prompt string */
 #define gpprompt "\n? "
-	/* This is the good bye string of gp, signaling end of output. */
+/* This is the good bye string of gp, signaling end of output. */
 #define goodbyestring "Good bye!"
-	/* This is PARI home page. To be kept up to date. */
+/* This is PARI home page. To be kept up to date. */
 #define homepage "http://pari.math.u-bordeaux.fr/"
-	/* String to tell the program to quit. */
+/* String to tell the program to quit. */
 #define quitstring "\nquit\n"
-	/* The way to print a string in the program. */
+/* The way to print a string in the program. */
 #define stringprinter "print(\"%s\")\n"
-	/* limit of input/output file sizes */
+/* limit of input/output file sizes */
 int fsizelim=131072;
-int precision=28; 	/* default */
+int precision=28; /* default */
 
 char *nameofcmd="gp";
 char *gprcenv="GPRC";
@@ -79,15 +79,15 @@ alias(parisolve,solve)\n\
 struct {
     char *wname;    char *defaultval;    char *gpset;
 } setups[]={
-      {"w_pari_precision",	"20",	"\\p "},
-      {"w_pari_serieslength",	"8",	"\\ps "}
+      {"w_pari_precision", "20", "\\p "},
+      {"w_pari_serieslength", "8", "\\ps "}
 };
 
-	/* names which are not allowed */
+/* names which are not allowed */
 char *illegal[]={
 };
 
-	/* name parts which are not allowed */
+/* name parts which are not allowed */
 char *illpart[]={
     "plot", "write", "help"
 };
@@ -100,66 +100,65 @@ char *illpart[]={
 
 int pariray=0;
 
-	/* check for security violations in command string */
+/* check for security violations in command string */
 void check_parm(char *pm)
 {
     char *p;
     for(p=pm;*p!=0;p++) {
-	  /* Underscore replacement */
-	if(*p=='_') {*p='K'; continue;}
-	  /* no escape commands. */
-	if(*p!='\n') continue;
-	while(*p!=0 && isspace(*p)) p++;
-	if(*p=='\\' && *(p+1)!='\\' && *(p+1)!='v' && *(p+1)!='p') *p='.';
-	if(*p=='\\') p++;
+/* Underscore replacement */
+      if(*p=='_') {*p='K'; continue;}
+/* no escape commands. */
+      if(*p!='\n') continue;
+      while(*p!=0 && isspace(*p)) p++;
+      if(*p=='\\' && *(p+1)!='\\' && *(p+1)!='v' && *(p+1)!='p') *p='.';
+      if(*p=='\\') p++;
     }
     find_illegal(pm);
 }
 
-	/* process and print gp output */
+/* process and print gp output */
 void output(char *p)
 {
     int i,n;
     char *pp, *pe, *pt;
-    
     if(pariray) {puts(p); return;}
     pp=strstr(p,gpprompt); if(pp==NULL) return;
     pe=strstr(pp,goodbyestring);
     if(pe>=pp) *pe=0;
     while(pp!=NULL) {
-	pp++;
-	pe=strstr(pp,gpprompt);
-	if(pe>=pp) *pe=0;
-	pp=strchr(pp,'\n');
-	if(pp==NULL) {
-	    emptyline:
-	    puts(""); pp=pe; continue;
-	}
-	pp++; n=strlen(pp);
-	if(n==0) goto emptyline;
-		/* make every output one-line */
-	for(i=0;i<n;i++) {
-	    if(*(pp+i)=='\n') {
-		if(*(pp+i+1)!='%') *(pp+i)=' ';
-		else {*(pp+i)=0; break;}
-	    }
-	}
-	  /* strip leading and trailing spaces */
-	while(isspace(*pp) && pp<pe) pp++;
-	pt=pp+strlen(pp)-1;
-	while(isspace(*pt) && pt>pp) *pt--=0;
-	  /* remove parentheses of matrix output */
-	if(memcmp(pp,"Mat(",4)==0 && *pt==')' && find_matching(pp+4,')')==pt) {
-	    *(pt--)=0; pp+=4;
-	}
-	if(memcmp(pp,"Vecsmall(",9)==0 && *pt==')' && find_matching(pp+9,')')==pt) {
-	    *(pt--)=0; pp+=9;
-	}
-	if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
-	    *(pt--)=0; pp++;
-	}
-	strip_zeros(pp);
-	puts(pp); pp=pe;
+      pp++;
+      pe=strstr(pp,gpprompt);
+      if(pe>=pp) *pe=0;
+      pp=strchr(pp,'\n');
+      if(pp==NULL) {
+          emptyline:
+          puts(""); pp=pe; continue;
+      }
+      pp++; n=strlen(pp);
+      if(n==0) goto emptyline;
+/* make every output one-line */
+      for(i=0;i<n;i++) {
+          if(*(pp+i)=='\n') {
+            if(*(pp+i+1)!='%') *(pp+i)=' ';
+            else {*(pp+i)=0; break;}
+          }
+      }
+/* strip leading and trailing spaces */
+      while(isspace(*pp) && pp<pe) pp++;
+      pt=pp+strlen(pp)-1;
+      while(isspace(*pt) && pt>pp) *pt--=0;
+/* remove parentheses of matrix output */
+      if(memcmp(pp,"Mat(",4)==0 && *pt==')' && find_matching(pp+4,')')==pt) {
+          *(pt--)=0; pp+=4;
+      }
+      if(memcmp(pp,"Vecsmall(",9)==0 && *pt==')' && find_matching(pp+9,')')==pt) {
+          *(pt--)=0; pp+=9;
+      }
+      if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
+          *(pt--)=0; pp++;
+      }
+      strip_zeros(pp);
+      puts(pp); pp=pe;
     }
 }
 
@@ -169,9 +168,9 @@ void about(void)
 
     prepabout("\\v\nquit\n",outputfname,NULL);
     if(readabout()>0) {
-	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
-	strip_trailing_spaces(aboutbuf);
-	printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
+      p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
+      strip_trailing_spaces(aboutbuf);
+      printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }
 
@@ -183,14 +182,14 @@ char *dynsetup(char *ptr, char *end)
     snprintf(ptr,end-ptr,"\nsetrand(%u);\n",seed&(0x7FFFFFFF));
     ptr+=strlen(ptr);
     for(i=0;i<SETUP_NO;i++) {
-	p=getenv(setups[i].wname);
-	if(p!=NULL) for(pp=p;*pp;pp++) if(!isspace(*pp) && !isalnum(*pp)) p="";
-	if(p==NULL || *p==0) p=setups[i].defaultval;
-	snprintf(ptr,end-ptr,"%s%s\n",setups[i].gpset,p);
-	ptr+=strlen(ptr);
-	if(strstr(setups[i].wname,"pari_precision")!=NULL)
-	  precision=atoi(p);
-	if(precision<0) precision=-precision;
+      p=getenv(setups[i].wname);
+      if(p!=NULL) for(pp=p;*pp;pp++) if(!isspace(*pp) && !isalnum(*pp)) p="";
+      if(p==NULL || *p==0) p=setups[i].defaultval;
+      snprintf(ptr,end-ptr,"%s%s\n",setups[i].gpset,p);
+      ptr+=strlen(ptr);
+      if(strstr(setups[i].wname,"pari_precision")!=NULL)
+        precision=atoi(p);
+      if(precision<0) precision=-precision;
     }
     if(pariray) snprintf(ptr,end-ptr,"\\e0\n");
     else snprintf(ptr,end-ptr,"\\e1\n");
@@ -208,6 +207,6 @@ int main(int argc,char *argv[])
     prepare1();
     setenv("GPTMPDIR",tmp_dir,1);
     run();
-    return 0;    
+    return 0;
 }
 

@@ -15,17 +15,17 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Interface maxima to wims */
+/* Interface maxima to wims */
 
 /*************** Customization: change values hereafter ****************/
 
-	/* limit of input/output file sizes */
+/* limit of input/output file sizes */
 #define fsizelim 131072
-	/* This string tells maxima to exit. */
+/* This string tells maxima to exit. */
 #define quitstring "\nquit();\n"
-	/* The way to print a string in the program. */
+/* The way to print a string in the program. */
 #define stringprinter "\"%s\";\n"
-	/* This is maxima home page. To be kept up to date. */
+/* This is maxima home page. To be kept up to date. */
 #define homepage "http://maxima.sourceforge.net/"
 
 char *nameofcmd="maxima";
@@ -54,22 +54,22 @@ nolabels:true; kill(labels);\n\
 ";
 
 struct {
-    char *wname;    char *defaultval;	char *setname;
+    char *wname; char *defaultval; char *setname;
 } setups[]={
-	{"w_maxima_precision",	"20",	"fpprec"}
+      {"w_maxima_precision", "20", "fpprec"}
 };
 
-	/* names which are not allowed */
+/* names which are not allowed */
 char *illegal[]={
       "system","describe","example",
       "save","fassave","stringout","batcon",
       "batcount","cursordisp",
       "direc","readonly","with_stdout","pscom",
       "demo","ttyintfun","bug"
-      
+
 };
 
-	/* name parts which are not allowed */
+/* name parts which are not allowed */
 char *illpart[]={
     "file", "debug", "plot", "load", "store", "batch"
 };
@@ -81,16 +81,16 @@ char *illpart[]={
 #include "common.h"
 #include "common.c"
 
-	/* check for security violations in command string */
+/* check for security violations in command string */
 void check_parm(char *pm)
 {
     char *s, *pp;
     int l;
-	  /* Underscore replacement */
+/* Underscore replacement */
     for(pp=strchr(pm,'_'); pp!=NULL; pp=strchr(pp+1,'_')) *pp='K';
-    	/* '?' escapes to Lisp commands. */
+/* '?' escapes to Lisp commands. */
     if(strchr(pm,'?')!=NULL) {
-	  fprintf(stderr,"Illegal under WIMS.\n"); exit(1);
+        fprintf(stderr,"Illegal under WIMS.\n"); exit(1);
     }
     for(s=pm;*s;s++) *s=tolower(*s);
     strip_trailing_spaces(pm); l=strlen(pm);
@@ -107,27 +107,27 @@ char *find_prompt(char *p, char t)
     if(*p==0 || (pp>=p && *pp==0)) return NULL;
     add=3;
     do {
-	pp=strstr(pp+1,"\n("); 
-	if(!pp) break;
-	c=pp[2]; add=3;
-	if(c=='\%') {	/* backward compatibility */
-	    add++; c=pp[3];
-	    if(c=='i') c='C';
-	    if(c=='o') c='D';
-	}
+      pp=strstr(pp+1,"\n(");
+      if(!pp) break;
+      c=pp[2]; add=3;
+      if(c=='\%') { /* backward compatibility */
+          add++; c=pp[3];
+          if(c=='i') c='C';
+          if(c=='o') c='D';
+      }
     }
     while(c!=t);
     pt=pp;
     if(pp!=NULL) {
-	pp+=add; while(isdigit(*pp)) pp++;
-	if(*pp!=')') goto redo;
-	pp++;
+      pp+=add; while(isdigit(*pp)) pp++;
+      if(*pp!=')') goto redo;
+      pp++;
     }
     if(pt!=NULL && t=='D') pt=pp;
     return pt;
 }
 
-	/* process and print maxima output */
+/* process and print maxima output */
 void output(char *p)
 {
     int i,n;
@@ -135,35 +135,35 @@ void output(char *p)
 
     pp=find_prompt(p,'C');
     while(pp!=NULL) {
-	pe=find_prompt(pp+1,'C'); pp=find_prompt(pp,'D');
-	if(pp==NULL) return;
-	if(pe!=NULL && pp>=pe) goto emptyline;
-	if(pe==NULL) pe=pp+strlen(pp); else *pe++=0;
-	if(pp>=pe) {
-	    emptyline:
-	    puts(""); pp=pe; continue;
-	}
-	n=strlen(pp); if(n==0) goto emptyline;
-		/* make every output one-line */
-	for(i=0;i<n;i++) {
-	    if(*(pp+i)=='\n' || *(pp+i)=='\%') *(pp+i)=' ';
-	    else *(pp+i)=tolower(*(pp+i));
-	}
-	  /* strip leading and trailing spaces */
-	while(isspace(*pp) && pp<pe) pp++;
-	pt=pp+strlen(pp)-1;
-	while(isspace(*pt) && pt>pp) *pt--=0;
-	if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
-	    *(pt--)=0; pp++;
-	}
-	for(pt=strchr(pp,'b');pt!=NULL; pt=strchr(pt+1,'b')) {
-	    if(pt>pp && isdigit(*(pt-1)) && 
-	       (*(pt+1)=='-' || isdigit(*(pt+1)))) {
-		if(*(pt+1)=='0' && !isdigit(*(pt+2))) ovlstrcpy(pt,pt+2);
-		else *pt='E';
-	    }
-	}
-	puts(pp); pp=pe;
+      pe=find_prompt(pp+1,'C'); pp=find_prompt(pp,'D');
+      if(pp==NULL) return;
+      if(pe!=NULL && pp>=pe) goto emptyline;
+      if(pe==NULL) pe=pp+strlen(pp); else *pe++=0;
+      if(pp>=pe) {
+          emptyline:
+          puts(""); pp=pe; continue;
+      }
+      n=strlen(pp); if(n==0) goto emptyline;
+/* make every output one-line */
+      for(i=0;i<n;i++) {
+          if(*(pp+i)=='\n' || *(pp+i)=='\%') *(pp+i)=' ';
+          else *(pp+i)=tolower(*(pp+i));
+      }
+/* strip leading and trailing spaces */
+      while(isspace(*pp) && pp<pe) pp++;
+      pt=pp+strlen(pp)-1;
+      while(isspace(*pt) && pt>pp) *pt--=0;
+      if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
+          *(pt--)=0; pp++;
+      }
+      for(pt=strchr(pp,'b');pt!=NULL; pt=strchr(pt+1,'b')) {
+          if(pt>pp && isdigit(*(pt-1)) &&
+             (*(pt+1)=='-' || isdigit(*(pt+1)))) {
+            if(*(pt+1)=='0' && !isdigit(*(pt+2))) ovlstrcpy(pt,pt+2);
+            else *pt='E';
+          }
+      }
+      puts(pp); pp=pe;
     }
 }
 
@@ -175,17 +175,17 @@ void about(void)
 /*    printf("<a href=\"%s\">Maxima</a>",homepage); return; */
     prepabout("build_info();\n" quitstring,outputfname,NULL);
     if(readabout()>0) {
-	for(p=aboutbuf; *p; p=find_word_start(find_word_end(p))) {
-	    if(strncasecmp(p,"Maxima",strlen("Maxima"))==0) {
-		p2=find_word_start(find_word_end(p));
-		if(strncmp(p2,"restarted",9)!=0) break;
-	    }
-	}
-	for(p2=p;*p2 && *p2!='\n' && !isdigit(*p2);p2++);
-	if(isdigit(*p2)) pp=find_word_end(p2);
-	else for(i=0, pp=p;i<2;i++) pp=find_word_end(find_word_start(pp));
-	*pp=0;
-	if(*p!=0) printf("<a href=\"%s\">%s</a>",homepage,p);
+      for(p=aboutbuf; *p; p=find_word_start(find_word_end(p))) {
+          if(strncasecmp(p,"Maxima",strlen("Maxima"))==0) {
+            p2=find_word_start(find_word_end(p));
+            if(strncmp(p2,"restarted",9)!=0) break;
+          }
+      }
+      for(p2=p;*p2 && *p2!='\n' && !isdigit(*p2);p2++);
+      if(isdigit(*p2)) pp=find_word_end(p2);
+      else for(i=0, pp=p;i<2;i++) pp=find_word_end(find_word_start(pp));
+      *pp=0;
+      if(*p!=0) printf("<a href=\"%s\">%s</a>",homepage,p);
     }
 }
 
@@ -194,14 +194,14 @@ char *dynsetup(char *ptr, char *end)
     int i;
     char *p, *pp;
     for(i=0;i<SETUP_NO;i++) {
-	p=getenv(setups[i].wname);
-	if(p!=NULL) for(pp=p;*pp;pp++) if(!isspace(*pp) && !isalnum(*pp)) p="";
-	if(p==NULL || *p==0) p=setups[i].defaultval;
-	snprintf(ptr,end-ptr,"%s:%s;\n",setups[i].setname,p);
-	ptr+=strlen(ptr);
-	if(strstr(setups[i].wname,"maxima_precision")!=NULL)
-	  precision=atoi(p);
-	if(precision<0) precision=-precision;
+      p=getenv(setups[i].wname);
+      if(p!=NULL) for(pp=p;*pp;pp++) if(!isspace(*pp) && !isalnum(*pp)) p="";
+      if(p==NULL || *p==0) p=setups[i].defaultval;
+      snprintf(ptr,end-ptr,"%s:%s;\n",setups[i].setname,p);
+      ptr+=strlen(ptr);
+      if(strstr(setups[i].wname,"maxima_precision")!=NULL)
+        precision=atoi(p);
+      if(precision<0) precision=-precision;
     }
     return ptr;
 }
@@ -210,6 +210,6 @@ int main(int argc,char *argv[])
 {
     prepare1();
     run();
-    return 0;    
+    return 0;
 }
 
