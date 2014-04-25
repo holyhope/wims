@@ -114,7 +114,7 @@ char *mathname_split(char *p)
       c++; goto beg;
     }
     for(i=mathname_no-1;
-      i>=0 && 
+      i>=0 &&
       (strncmp(p,mathname[i].name,strlen(mathname[i].name))!=0
       || mathname[i].style==RM_PREFIX);
       i--);
@@ -123,19 +123,19 @@ char *mathname_split(char *p)
       j=strlen(mathname[i].name);
       goto gotit;
     }
-    for(i=0;i<rm_uservars && 
+    for(i=0;i<rm_uservars &&
       strncmp(rm_uservar[i],p,strlen(rm_uservar[i]));i++);
     if(i<rm_uservars) {
       type=RM_VAR;
       j=strlen(rm_uservar[i]); goto gotit;
     }
-    for(i=0;i<rm_userfns && 
+    for(i=0;i<rm_userfns &&
       strncmp(p,rm_userfn[i],strlen(rm_userfn[i]));i++);
     if(i<rm_userfns) {
       type=RM_FN;
       j=strlen(rm_userfn[i]); goto gotit;
     }
-    return NULL;    
+    return NULL;
 }
 
 int __replace_badchar (char *p, char *old, char *new)
@@ -143,14 +143,14 @@ int __replace_badchar (char *p, char *old, char *new)
   char *p1 ;
   while((p1=strstr(p,old))!=NULL) {
     string_modify(p,p1,p1+strlen(old),"%s",new);
-    cnt++; 
+    cnt++;
   }
   return cnt ;
 }
 
 /* translate |x| into abs(x)*/
 int __replace_abs ( char *p )
-{  
+{
     char *p1, *p2 ;
     while((p1=strchr(p,'|'))!=NULL) {
       p2=find_matching(p1+1,'|');
@@ -162,7 +162,7 @@ int __replace_abs ( char *p )
 
 /* signs: translate ++, +-, -+, ... into one sign. */
 void __replace_plusminus ( char *p )
-{ 
+{
    char *p1, *p2;
    for(p1=p;*p1!=0;p1++) {
      int sign, redundant;
@@ -207,7 +207,7 @@ void __treat_decimal(char *p)
 
 /* replace new-lines, tabs, " */
 void __replace_space(char *p)
-{ 
+{
  char *p1 ;
  for(p1=p;*p1!=0; p1++) {
     if(*p1=='\\' || isspace(*p1)) *p1=' ';// replace \ and all spaces by a simple space -
@@ -215,10 +215,10 @@ void __replace_space(char *p)
   }
 }
 
-    /* Error-tolerante raw math translation routine 
+    /* Error-tolerante raw math translation routine
      * Translate error-laden raw math into machine-understandable form.
-     * do nothing if there is some { or \\ 
-     */ 
+     * do nothing if there is some { or \\
+     */
 void rawmath(char *p)
 {
     char *p1, *p2, *p3, *p4;
@@ -236,7 +236,7 @@ void rawmath(char *p)
     if (__replace_badchar(p,"²", "^2 ")) flatpower=1;
     if (__replace_badchar(p,"³", "^3 ")) flatpower=1;
     unmatch=__replace_abs(p);
-    __replace_plusminus(p) ; 
+    __replace_plusminus(p) ;
     __replace_space(p);
     __treat_decimal(p);
     if (rawmath_easy) return;
@@ -322,12 +322,12 @@ void rawmath(char *p)
           switch(mathname[i].style) {
             case RM_FN:
               goto fnname1;
-            
+
             case RM_VAR:
               p1=p2;p2=p3; goto add_star;
-            
+
             case RM_PREFIX:
-              if(*p3!='c' && *p3!='s' && *p3!='t' && 
+              if(*p3!='c' && *p3!='s' && *p3!='t' &&
              *p3!='C' && *p3!='S' && *p3!='T') break;
               ambiguous=1;
               ovlstrcpy(p2,p3); p1--; continue;
@@ -353,7 +353,7 @@ void rawmath(char *p)
         ambig: p1=p2;p2=p3;
         if(strlen(buf)>1) {
           for(p3=buf;*p3!=0 && !myisdigit(*p3);p3++);
-          if(*p3!=0 && flatpower!=0) flatpower=1; 
+          if(*p3!=0 && flatpower!=0) flatpower=1;
           else {
             unknown=1;
             force_setvar("wims_warn_rawmath_parm",buf);
@@ -387,9 +387,9 @@ void rawmath(char *p)
 }
 
  /*  replace < and > by html code if htmlmath_gtlt=yes - is only used in deduc - not documented*/
-void __replace_htmlmath_gtlt (char *p) 
+void __replace_htmlmath_gtlt (char *p)
 {   char *pp;
-    char *p1=getvar("htmlmath_gtlt"); 
+    char *p1=getvar("htmlmath_gtlt");
     if(p1!=NULL && strcmp(p1,"yes")==0) {
       for(pp=strchr(p,'<'); pp!=NULL; pp=strchr(pp+1,'<'))
       string_modify(p,pp,pp+1,"&lt;");
@@ -398,7 +398,7 @@ void __replace_htmlmath_gtlt (char *p)
    }
 }
 
-/* exponents or indices : 
+/* exponents or indices :
  *  all digits or + or - following a ^ or _ are considered as in exponent/subscript
  *  expression with ( ) following a ^ or _ are  considered as in exponent/subscript
  *  the parenthesis are suppressed except in case of exponent and only digits.
@@ -407,7 +407,7 @@ void __replace_exponent(char *p, int n)
 {
    char *p1;
    char *SUPBEG, *SUPEND;
-   if (n) { SUPBEG = "<sup>"; SUPEND = "</sup>";} 
+   if (n) { SUPBEG = "<sup>"; SUPEND = "</sup>";}
    else { SUPBEG = "^{"; SUPEND = "}";}
 
     for(p1=strchr(p,'^');p1!=NULL;p1=strchr(p1+1,'^')) {
@@ -416,14 +416,13 @@ void __replace_exponent(char *p, int n)
         p3 = p2 = find_word_start(p1+1);
         if(*p2=='+' || *p2=='-') p2++;
         p2 = find_word_start(p2);
-        /* 
-    	    jm.evers 31.1.2014
-    	    add '}' to recognized parenthesis in exponent
-    	    !mathmlmath 2 \cdot x^{3} will now produce correct exponent...
-    	    !mathmlmath should convert LaTeX input into correct MathML 
-        */
+/* jm.evers 31.1.2014
+ * add '}' to recognized parenthesis in exponent
+ * !mathmlmath 2 \cdot x^{3} will now produce correct exponent...
+ * !mathmlmath should convert LaTeX input into correct MathML
+ */
         if(*p2=='(' || *p2 == '{') { /* ^[+-]( */
-    	    if(*p2 == '('){ p2 = find_matching(p2+1,')');}else { if(*p2 == '{'){ p2 = find_matching(p2+1,'}');}}
+             if(*p2 == '('){ p2 = find_matching(p2+1,')');}else { if(*p2 == '{'){ p2 = find_matching(p2+1,'}');}}
             /* no matching ')' : p2 = end of line; otherwise just after ')' */
             if (p2==NULL) p2=p+strlen(p); else p2++;
             /* ^( followed by any number of digits/letters, up to p2
@@ -431,7 +430,7 @@ void __replace_exponent(char *p, int n)
             /* do we remove parentheses containing exponent group ? */
             if (*p3=='(') for(pp=p3+1;pp<p2-1;pp++) {
                 if(!isalnum(*pp)) {
-                    /* not a digit/letter. Remove (). */ 
+                    /* not a digit/letter. Remove (). */
                     p3++;*(p2-1)=0;break;
                 }
                 /* x^(2), parentheses not removed */
@@ -469,7 +468,7 @@ void __replace_subscript(char *p, int n)
 {
    char *p1, *p2;
    char *SUBBEG, *SUBEND;
-   if (n) {SUBBEG = "<sub>"; SUBEND = "</sub>";} 
+   if (n) {SUBBEG = "<sub>"; SUBEND = "</sub>";}
    else {SUBBEG = "_{"; SUBEND = "}";}
    for(p1=strchr(p,'_');p1!=NULL;p1=strchr(p1+1,'_')) {
      char buff[256];
@@ -485,7 +484,7 @@ void __replace_subscript(char *p, int n)
 
 /* get rid of 1*.. ..*1  exemple : 1 * x, x/1 */
 void __replace_getrid1 (char *p)
-{   char *p1, *p2, *p3 ; 
+{   char *p1, *p2, *p3 ;
     for(p1=p;*p1;p1++) {
       if(*p1!='1') continue;
       if(myisdigit(*(p1+1)) || *(p1+1)=='.' ||
@@ -493,12 +492,12 @@ void __replace_getrid1 (char *p)
       p2=find_word_start(p1+1);
       if(p1>p+2 && (*(p1-1)=='-' || *(p1-1)=='+')) {
         for(p3=p1-2; p3>p && isspace(*p3); p3--);
-        if(p3>p+1 && (*p3=='E' || *p3=='e')) { /* ??? */ 
+        if(p3>p+1 && (*p3=='E' || *p3=='e')) { /* ??? */
         p3--; while(p3>p && isspace(*p3)) p3--;
         if(myisdigit(*p3) || *p3=='.') continue;
         }
       }
-      if(p1==p) p3="+"; 
+      if(p1==p) p3="+";
       else for(p3=p1-1;p3>p && isspace(*p3);p3--);
       if(*p2=='*' && *p3!='/') {/* delete 1 if 1* or /1 */
         ovlstrcpy(p1,p2+1);continue;
@@ -529,21 +528,21 @@ void __replace_getridstar (char *p)
   }
 }
 
-/* <=, >=, ->, =>, <=> 
+/* <=, >=, ->, =>, <=>
  * if int n != 0, use html code, else use tex code */
 
 void __replace_arrow ( char *p, int n)
 {   char *p1, *p2, *m_prefix;
     if (n) m_prefix="$m_"; else m_prefix="\\";
-    
+
     for(p1=strstr(p,"&lt;="); p1!=NULL; p1=strstr(p1+1,"&lt;=")) {
-      if(*(p1+5)!='&' && *(p1+5)!='=') 
+      if(*(p1+5)!='&' && *(p1+5)!='=')
         string_modify(p,p1,p1+5, "%sle",m_prefix);
       else {
           for(p2=p1+5; *p2=='='; p2++);
           if(strncmp(p2,"&gt;",4)==0) {
-            if(p2>p1+5) { string_modify(p,p1,p2+4,"%sLongleftrightarrow",m_prefix);} 
-            else { string_modify(p,p1,p2+4,"%sLeftrightarrow",m_prefix);} 
+            if(p2>p1+5) { string_modify(p,p1,p2+4,"%sLongleftrightarrow",m_prefix);}
+            else { string_modify(p,p1,p2+4,"%sLeftrightarrow",m_prefix);}
           }
           else { string_modify(p,p1,p2,"%sLongleftarrow",m_prefix);}
       }
@@ -583,7 +582,7 @@ void __replace_italics (char *p, int n)
      ITBEG = "" ; ITtBEG = "";
      ITEND = ""; ITtEND = "";
   }
-  
+
   for(p1=p;*p1;p1++) {
     if(*p1=='<') {
         p1=strchr(p1,'>'); if(p1==NULL) break; //recognize an html tag < >
@@ -619,7 +618,7 @@ void __replace_italics (char *p, int n)
 void __replace_mathvar(char *p,int n)
 { char *p1, *p2, *p3;
   char *EXPBEG, *EXPEND, *EXPBEGMINUS, *SUBBEG, *SUBEND, *m_prefix;
-  
+
   if ( n ) {
      EXPBEG = " &times; 10<sup>";
      EXPBEGMINUS = " &times; 10<sup>-";
@@ -638,8 +637,8 @@ void __replace_mathvar(char *p,int n)
   for (p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
     char buf[MAX_LINELEN+1];
     /* if the variable is preceded by \ do nothing - in fact this should not arrive
-    */ 
-    if (p1>p && *(p1-1) == '\\' ) break ; 
+    */
+    if (p1>p && *(p1-1) == '\\' ) break ;
     p2 = find_mathvar_end(p1);
         if (p1 == p2) break;
     memmove(buf,p1,p2-p1);buf[p2-p1]=0;
@@ -687,7 +686,7 @@ void __replace_mathvar(char *p,int n)
   }
 }
 
-/* translate raw math expression coming from calculators into best html way 
+/* translate raw math expression coming from calculators into best html way
  * if int n != 0, use html code, else use tex code */
 void __htmlmath(char *p,int n)
 {
@@ -706,14 +705,14 @@ void __htmlmath(char *p,int n)
    strip_trailing_spaces(p);
 }
 
-void htmlmath(char *p) 
+void htmlmath(char *p)
 {
  __htmlmath(p,1) ;
 }
 
 /* if mathml is closed, it will be just htmlmath*/
 
-void mathmlmath(char *p) 
-{ 
+void mathmlmath(char *p)
+{
     if (mathalign_base == 2) { __htmlmath(p,0) ; mathml(p,1);} else { __htmlmath(p,1) ;}
 }

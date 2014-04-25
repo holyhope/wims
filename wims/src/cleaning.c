@@ -15,35 +15,35 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Only miscellaneous cleanup routines remain.
-	 * The regular session cleaner has been moved to wimslogd. */
+/* Only miscellaneous cleanup routines remain.
+ * The regular session cleaner has been moved to wimslogd. */
 
 void cleantmpdir(void)
 {
     char buf[MAX_LINELEN+1], *p1, *p2;
-    
+
     accessfile(buf,"r","%s/exec.pid",tmp_dir);
     for(p1=find_word_start(buf); *p1; p1=find_word_start(p2)) {
-	p2=find_word_end(p1); if(*p2) *p2++=0;
-	kill(atoi(p1),SIGKILL);
+     p2=find_word_end(p1); if(*p2) *p2++=0;
+     kill(atoi(p1),SIGKILL);
     }
-    if(strstr(tmp_dir,"sessions/")!=NULL && 
+    if(strstr(tmp_dir,"sessions/")!=NULL &&
        (strstr(tmp_debug,"yes")==NULL || checkhost(manager_site)<1)) {
-	if(remove_tree(tmp_dir)) {
-	    call_ssh("bin/ch..root cleantmpdir 2>/dev/null");
-	    remove_tree(tmp_dir);
-	}
+     if(remove_tree(tmp_dir)) {
+         call_ssh("bin/ch..root cleantmpdir 2>/dev/null");
+         remove_tree(tmp_dir);
+     }
     }
     else {
-	mkfname(buf,"%s/exec.pid",tmp_dir);
-	unlink(buf);
-	if(strstr(tmp_dir,"sessions/")!=NULL) {
-	    chmod(tmp_dir,S_IRUSR|S_IWUSR|S_IXUSR);
-	}
+     mkfname(buf,"%s/exec.pid",tmp_dir);
+     unlink(buf);
+     if(strstr(tmp_dir,"sessions/")!=NULL) {
+         chmod(tmp_dir,S_IRUSR|S_IWUSR|S_IXUSR);
+     }
     }
 }
 
-	/* remove pid tag */
+/* remove pid tag */
 void delete_pid(void)
 {
     char buf[MAX_FNAME+1],pbuf[32];

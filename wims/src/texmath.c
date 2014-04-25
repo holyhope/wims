@@ -48,7 +48,7 @@ void tprint(char *s,...)
     char buf[MAX_LINELEN+1];
 
     va_start(vp,s); vsnprintf(buf,sizeof(buf),s,vp); va_end(vp);
-    if(strlen(buf)+strlen(texmathbuf)>=MAX_LINELEN) 
+    if(strlen(buf)+strlen(texmathbuf)>=MAX_LINELEN)
       user_error("cmd_output_too_long");
     strcat(texmathbuf,buf);
 }
@@ -205,7 +205,7 @@ struct {
 char *find_term_end(char *p)
 {
     char *pp;
-    pp=p; 
+    pp=p;
     if(*pp==',' || *pp==';' || *pp=='=' || *pp=='<') pp++;
     while(*pp=='+' || *pp=='-' || *pp=='=' || *pp=='>') pp++;
     for(;*pp;pp++) {
@@ -213,7 +213,7 @@ char *find_term_end(char *p)
         case '(': pp=find_matching(pp+1,')'); goto loopend;
         case '[': pp=find_matching(pp+1,']'); goto loopend;
 /*     case '{': pp=find_matching(pp+1,'}'); goto loopend;*/
-          
+
         case 0:
         case '<':
         case '>':
@@ -254,7 +254,7 @@ char *find_factor_end(char *p)
         case '(': pp=find_matching(pp+1,')'); goto loopend;
         case '[': pp=find_matching(pp+1,']'); goto loopend;
 /*    case '{': pp=find_matching(pp+1,'}'); goto loopend;*/
-        
+
         case 0:
         case '<':
         case '>':
@@ -268,7 +268,7 @@ char *find_factor_end(char *p)
         case '-':
         case '*':
         case '/': return pp;
-    
+
         case '^': {
           while(*(pp+1)=='+' || *(pp+1)=='-') pp++;
           goto loopend;
@@ -289,7 +289,7 @@ int term_cnt(char *p)
 {
     char *pe, *pp;
     int i;
-    
+
     pe=p+strlen(p);
     for(i=0,pp=p;pp<pe;pp=find_term_end(pp),i++);
     return i;
@@ -307,14 +307,14 @@ void putnumber(char *p)
      while (*pp == '0' || *pp == '+') pp++;
      tprint("%s \\times 10^{%s%s}", p, sgn, pp);
  }
- 
+
 /* Print a variable name ; transform abc475 in abc_475 */
 void putvar(char *p)
 {
     char vbuf[1024];
     char *pp, *p2;
     int i;
-    
+
     vbuf[0]=0;
     if(*(p+1)==0) {tprint("%c",*p); return;}
     for(pp=p;isalpha(*pp);pp++);
@@ -338,7 +338,7 @@ int fsort(const void *p1, const void *p2)
 {
     struct afactor *t1, *t2;
     int i1,i2;
-    
+
     t1=*(struct afactor **) p1; t2=*(struct afactor **) p2;
     i1=t1->type; i2=t2->type;
     if(i1>type_var) i1=type_var; if(i2>type_var) i2=type_var;
@@ -350,17 +350,17 @@ void t_oneterm(char *p, int num)
     int sign, fcnt, s, i, dentype, rel;
     char *pp, *pe, *pt;
     struct afactor factors[MAX_FACTORS];
-    struct afactor *numerator[MAX_FACTORS], 
-      *denominator[MAX_FACTORS], 
+    struct afactor *numerator[MAX_FACTORS],
+      *denominator[MAX_FACTORS],
       *neutral[MAX_FACTORS];
     int numcnt,dencnt,neucnt;
 /* interpret some arrows */
     rel=0; switch(*p) {
       case '<': {
-        rel++; p++; if(*p!='=') {tprint(" < "); break;} // < 
+        rel++; p++; if(*p!='=') {tprint(" < "); break;} // <
         do p++; while(*p=='=');
         if(*p!='>') {tprint("\\le ");break;} // <= , <===
-        else {tprint("\\iff ");p++; break;} // <==> 
+        else {tprint("\\iff ");p++; break;} // <==>
       }
       case '>': {
         rel++; p++; if(*p!='=') {tprint(" > "); rel=1; break;} // >
@@ -388,7 +388,7 @@ void t_oneterm(char *p, int num)
     for(fcnt=0, pp=p; fcnt<MAX_FACTORS && *pp; fcnt++, pp=pe) {
       s=1;
       while(*pp=='*' || *pp=='/') {
-        if(*pp=='/') s=-1; 
+        if(*pp=='/') s=-1;
         pp++;
       }
       factors[fcnt].side=s;
@@ -409,7 +409,7 @@ void t_oneterm(char *p, int num)
           if(i==1) { /* remove parentheses */
               for(;pp<pt && fcnt<MAX_FACTORS;pp=pe2,fcnt++) {
                 ss=s; while(*pp=='*' || *pp=='/') {
-                    if(*pp=='/') ss=-1; 
+                    if(*pp=='/') ss=-1;
                     pp++;
                 }
                 factors[fcnt].side=ss;
@@ -428,7 +428,7 @@ void t_oneterm(char *p, int num)
       }
     }
     bailout:
-/* decide if the factor is of type numeric, integer, poly, transcend or variable 
+/* decide if the factor is of type numeric, integer, poly, transcend or variable
 *  (see priorities)
 */
     for(i=0;i<fcnt;i++) {
@@ -442,7 +442,7 @@ void t_oneterm(char *p, int num)
       if(*pp=='(') {
         factors[i].type=type_poly; continue; //there exists a parenthesis
       }
-      pt=strchr(pp,'('); 
+      pt=strchr(pp,'(');
       if(pt!=NULL && pt<pe) factors[i].type=type_transcend; //??
       else factors[i].type=type_var;  // variable in other cases
     }
@@ -462,12 +462,12 @@ void t_oneterm(char *p, int num)
     if(neucnt>0) qsort(neutral,neucnt,sizeof(neutral[0]),fsort);
     if(sign>0 && num>0 && rel==0) tprint(" +");
     if(sign<0) tprint(" -");
-    if(fcnt<1) tprint("1 "); // no factors why 1 - don't remove the 1 if [1,2;3,4], the 1 is useful? 
+    if(fcnt<1) tprint("1 "); // no factors why 1 - don't remove the 1 if [1,2;3,4], the 1 is useful?
     if(dencnt>0) {
       tprint(" {");
       if(numcnt==0) tprint(" 1"); // no numerator ? will write {1 over denominator}
       else {/* numerator */
-        if(numcnt==1 && *numerator[0]->beg=='(' && 
+        if(numcnt==1 && *numerator[0]->beg=='(' &&
            find_matching(numerator[0]->beg+1,')')==(numerator[0]->end)-1) {
           *(numerator[0]->end-1)=0;
           t_onestring(numerator[0]->beg+1);
@@ -476,7 +476,7 @@ void t_oneterm(char *p, int num)
         else for(i=0; i<numcnt; i++) t_onefactor(numerator[i],i);
       }
       tprint(" \\over ");      /* Now denominator */
-      if(dencnt==1 && *denominator[0]->beg=='(' && 
+      if(dencnt==1 && *denominator[0]->beg=='(' &&
         find_matching(denominator[0]->beg+1,')')==(denominator[0]->end)-1) {
          *(denominator[0]->end-1)=0;
          t_onestring(denominator[0]->beg+1);
@@ -493,7 +493,7 @@ void t_exponential(char *pp)
 {
     char *pe, *pt;
     int t=0;
-    
+
     while(*pp && strchr("!'\"",*pp)!=NULL) {
       tprint("%c",*pp); pp++;
     }
@@ -537,7 +537,7 @@ void t_onefactor(struct afactor *fb, int num)
                 case '[': pt=find_matching(pt+1,']'); break;
                 case '{': pt=find_matching(pt+1,'}'); break;
                 case '|': pt=find_matching(pt+1,'|'); break;
-                
+
                 case ',':
                 case ';': goto out;
               }
@@ -569,7 +569,7 @@ void t_onefactor(struct afactor *fb, int num)
           goto expon;
         }
     }
-    tprint(" \\left%c",lp); 
+    tprint(" \\left%c",lp);
     snprintf(rpbuf,sizeof(rpbuf),"\\right%c ",rp2); rp=rpbuf;
     paren: p++;pe=find_matching(p,rp2); *pe=0;
     t_onestring(p); tprint(rp); pe++; goto expon;
@@ -652,7 +652,7 @@ void t_onestring(char *p)
 /* replace \pmatrix{  } by latex syntax \begin{pmatrix} .. \end{pmatrix} */
 
 void _replace_matrix ( char *p , char *s_mat1, char *s_mat2 )
-{ char pbuf[MAX_LINELEN]; 
+{ char pbuf[MAX_LINELEN];
   while ( (p = strstr(p,s_mat1)) )
   { char *p2 = find_matching(p+strlen(s_mat1),'}');
     long len = p2-p-strlen(s_mat1);
@@ -667,7 +667,7 @@ void _replace_matrix ( char *p , char *s_mat1, char *s_mat2 )
 void texmath(char *p)
 {
     char *pp;
-    _replace_matrix (p,"\\matrix{","matrix"); 
+    _replace_matrix (p,"\\matrix{","matrix");
     _replace_matrix (p,"\\pmatrix{","pmatrix");
     if(strpbrk(p,"{}\\")!=NULL) return;
     for(pp=strstr(p,"!="); pp; pp=strstr(pp+1,"!=")) {

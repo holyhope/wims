@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* html form simplification routines */
+/* html form simplification routines */
 
 #define MAX_MENU_ITEMS 256
 
@@ -23,10 +23,10 @@ enum {
     FORM_SELECT, FORM_RADIO, FORM_BAR, FORM_CHECKBOX
 };
 
-	/* Produces <select> and <option>s.
-	 * Parameter string: name from n1 to n2 [prompt plist]
-	 * or name, list slist [prompt plist]
-	 * Using script to do this is too slow. */
+/* Produces <select> and <option>s.
+ * Parameter string: name from n1 to n2 [prompt plist]
+ * or name, list slist [prompt plist]
+ * Using script to do this is too slow. */
 void _form_menus(char *p,int kind)
 {
     char *n, *li, *pp, *val, *p0, *p1, *p2, *pc, *s, *pfre="";
@@ -39,45 +39,45 @@ void _form_menus(char *p,int kind)
     pp=find_word_end(n);
     if(*pp!=0) *(pp++)=0;
     else {
-	 syntax: module_error("syntax_error"); return;
+      syntax: module_error("syntax_error"); return;
     }
     li=find_word_start(pp); pp=find_word_end(li);
     if(*pp!=0) *(pp++)=0; else goto syntax;
     itemcnt=0;
     if(strcmp(li,"from")==0) {
-	 p1=find_word_start(pp);
-	 p2=wordchr(p1,"to"); if(p2==NULL || p2<=p1) goto syntax;
-	 *(p2-1)=0; p2=find_word_start(p2+strlen("to"));
-	 pp=wordchr(p2,"prompt"); if(pp!=NULL) *(pp-1)=0;
-	 i1=evalue(p1); i2=evalue(p2);
-	 if(i1<-100000000 || i1>100000000 || i2<-100000000 || i2>100000000)
-	   goto syntax;
-	 if(i2<i1) return;
-	 if(i2>i1+MAX_MENU_ITEMS-1) i2=i1+MAX_MENU_ITEMS-1;
-	 itemcnt=i2-i1+1;
-	 type=0;
+      p1=find_word_start(pp);
+      p2=wordchr(p1,"to"); if(p2==NULL || p2<=p1) goto syntax;
+      *(p2-1)=0; p2=find_word_start(p2+strlen("to"));
+      pp=wordchr(p2,"prompt"); if(pp!=NULL) *(pp-1)=0;
+      i1=evalue(p1); i2=evalue(p2);
+      if(i1<-100000000 || i1>100000000 || i2<-100000000 || i2>100000000)
+        goto syntax;
+      if(i2<i1) return;
+      if(i2>i1+MAX_MENU_ITEMS-1) i2=i1+MAX_MENU_ITEMS-1;
+      itemcnt=i2-i1+1;
+      type=0;
     }
     else {
-	 if(strcmp(li,"list")==0) {
-	    p1=find_word_start(pp);
-	    pp=wordchr(p1,"prompt"); if(pp!=NULL && pp>p1) *(pp-1)=0;
-	    ovlstrcpy(vbuf,p1);substit(vbuf);
-	    itemcnt=cutitems(vbuf,vlist,MAX_MENU_ITEMS);
-	    type=1;
-	 }
-	 else goto syntax;
+      if(strcmp(li,"list")==0) {
+         p1=find_word_start(pp);
+         pp=wordchr(p1,"prompt"); if(pp!=NULL && pp>p1) *(pp-1)=0;
+         ovlstrcpy(vbuf,p1);substit(vbuf);
+         itemcnt=cutitems(vbuf,vlist,MAX_MENU_ITEMS);
+         type=1;
+      }
+      else goto syntax;
     }
     for(i=0;i<itemcnt;i++) plist[i]=NULL;
     if(pp!=NULL) {
-	 p1=find_word_start(pp+strlen("prompt"));
-	 ovlstrcpy(pbuf,p1);substit(pbuf);
-	 cutitems(pbuf,plist,MAX_MENU_ITEMS);
+      p1=find_word_start(pp+strlen("prompt"));
+      ovlstrcpy(pbuf,p1);substit(pbuf);
+      cutitems(pbuf,plist,MAX_MENU_ITEMS);
     }
     ovlstrcpy(nbuf,n);substit(nbuf);
     if(kind==FORM_SELECT) {
-	 char *pp;
-	 pp=getvar("wims_formselect_switch"); if(pp==NULL) pp="";
-	 output("<select %s name=\"%s\" id=\"%s\">\n",pp,nbuf,nbuf);
+      char *pp;
+      pp=getvar("wims_formselect_switch"); if(pp==NULL) pp="";
+      output("<select %s name=\"%s\" id=\"%s\">\n",pp,nbuf,nbuf);
     }
     if(kind==FORM_BAR) {
       s=getvar("wims_ref_class");
@@ -88,51 +88,51 @@ void _form_menus(char *p,int kind)
     }
     val=getvar(nbuf);if(val==NULL) val="";
     for(i=0;i<itemcnt;i++) {
-	 if(type==0) {
-	    snprintf(buf,sizeof(buf),"%d",i+i1);
-	    p0=buf;
-	 }
-	 else p0=vlist[i];
-	 if(*find_word_start(p0)==0) continue;
-	 if(plist[i]==NULL) plist[i]=p0;
-	 if(*val!=0 &&
-	   (strcmp(p0,val)==0 ||
-	    ( (kind==FORM_SELECT || kind==FORM_CHECKBOX)
-	     && itemchr(val,p0)!=NULL))) {
-	    if(kind==FORM_SELECT) pc=" selected=\"selected\"";
-	    else pc=" checked=\"checked\"";
-	 }
-	 else pc="";
-	 s=getvar("wims_ref_class");
+      if(type==0) {
+         snprintf(buf,sizeof(buf),"%d",i+i1);
+         p0=buf;
+      }
+      else p0=vlist[i];
+      if(*find_word_start(p0)==0) continue;
+      if(plist[i]==NULL) plist[i]=p0;
+      if(*val!=0 &&
+        (strcmp(p0,val)==0 ||
+         ( (kind==FORM_SELECT || kind==FORM_CHECKBOX)
+          && itemchr(val,p0)!=NULL))) {
+         if(kind==FORM_SELECT) pc=" selected=\"selected\"";
+         else pc=" checked=\"checked\"";
+      }
+      else pc="";
+      s=getvar("wims_ref_class");
      if(s!=NULL && *s!=0 && !isspace(*s)) {
        snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
      }
      else { pfrb[0]=0; pfre=""; }
-	 switch(kind) {
-	    case FORM_SELECT:
-	    output("<option value=\"%s\"%s>%s</option>\n",p0,pc,plist[i]);
-	    break;
+      switch(kind) {
+         case FORM_SELECT:
+         output("<option value=\"%s\"%s>%s</option>\n",p0,pc,plist[i]);
+         break;
 
-	    case FORM_RADIO:
-	    output("%s<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-		   pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
-	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
-	    _output_("\n");
-	    break;
+         case FORM_RADIO:
+         output("%s<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+             pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
+         if(i<itemcnt-1 && itemcnt>2) _output_(",");
+         _output_("\n");
+         break;
 
-	    case FORM_CHECKBOX:
-	    output("%s<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-		   pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
-	    if(i<itemcnt-1 && itemcnt>2) _output_(",");
-	    _output_("\n");
-	    break;
+         case FORM_CHECKBOX:
+         output("%s<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+             pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
+         if(i<itemcnt-1 && itemcnt>2) _output_(",");
+         _output_("\n");
+         break;
 
-	    case FORM_BAR:
-	    output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
-		   nbuf,nbuf,i,p0,pc);
-	    break;
+         case FORM_BAR:
+         output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
+             nbuf,nbuf,i,p0,pc);
+         break;
 
-	 }
+      }
     }
     setvar("wims_formradio_class","");
     if(kind==FORM_SELECT) _output_("</select>");

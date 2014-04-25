@@ -31,7 +31,7 @@ int instex_ready(char *p, char *n)
 {
     int i;
     char *cl, buf[MAX_LINELEN+1];
-    
+
     if(strlen(p)>=124) return 0;
     cl=getvar("instex_color"); if(cl!=NULL && *cl!=0) return 0;
     mystrncpy(buf,p,sizeof(buf)); tex_nospace(buf);
@@ -70,7 +70,7 @@ int __gototex (char *p, char *f, int ts)
       ovlstrcpy(buf,p);
       instex_style="$$";
       if(!ts) texmath(buf);
-         /* ts=0 but there is some computer matrix to transform 
+         /* ts=0 but there is some computer matrix to transform
           * done by texmath, but it does much more as replacing strings in tmathfn
           * OK if buf contains " math computer-syntax" ; if not, the result may be bad
         */
@@ -89,7 +89,7 @@ int __gototex (char *p, char *f, int ts)
       // }
       }
       /* send to mathml */
-      if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ;return 1; } 
+      if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ;return 1; }
 /* end if mathml option in case ts=1 or "computer matrix" */
 
 /* creating images*/
@@ -103,10 +103,10 @@ int __gototex (char *p, char *f, int ts)
       else {
         instex_usedynamic=1; exec_instex(buf); instex_usedynamic=0;
       }
-      instex_style=""; 
+      instex_style="";
       if(alignbak[0]) setvar("ins_align",alignbak);
       *p=0; return 0;
-} 
+}
 
     /* Intelligent insertion of math formulas, kernel */
 void __insmath(char *p)
@@ -116,7 +116,7 @@ void __insmath(char *p)
 
     ovlstrcpy(buf,p); strip_trailing_spaces(buf); singlespace(buf);
     p1=getvar("insmath_slashsubst");
-    if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf); // substitute backslash parameters 
+    if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf); // substitute backslash parameters
     f=instex_check_static(buf); //decide if image already exists
     substit(buf);//substitute the variables
     /* here replace .. by , : i=1 .. 5 -> i=1, 5 !*/
@@ -129,7 +129,7 @@ void __insmath(char *p)
     /* decide if it should be tex */
     ts=0; if(strchr(buf,'\\') || strchr(buf,'}')) ts=1;
     /* if not and if variable insmath_rawmath is there, do rawmath */
-    rawmathready=0; 
+    rawmathready=0;
     if(!ts) { /* not tex, looking if rawmath is asked */
       pp=getvar("insmath_rawmath");
       if(pp!=NULL && strstr(pp,"yes")!=NULL) {
@@ -141,7 +141,7 @@ void __insmath(char *p)
          _replace_matrix (buf,"\\pmatrix{","pmatrix");
     }
 /* if ts=1 (it should be a tex formula)  or if there is a [ ,  ; ] matrix */
-    if(ts || 
+    if(ts ||
       (strchr(buf,'[')!=NULL && (strchr(buf,',')!=NULL || strchr(buf,';')!=NULL))) {
        if(__gototex(buf, f, ts)) return;
     }
@@ -153,16 +153,16 @@ void __insmath(char *p)
     for(pp=find_mathvar_start(buf); *pp; pp=find_mathvar_start(pe)) {
       pe=find_mathvar_end(pp); n=pe-pp;
       /* non alpha variable or too short or too long to be interpreted as tnames */
-      if(!isalpha(*pp) || n<3 || n>16) continue; 
+      if(!isalpha(*pp) || n<3 || n>16) continue;
       memmove(nbuf,pp,n); nbuf[n]=0;
       if(wordchr(tnames,nbuf)!=NULL) { if(__gototex(buf, f, 0)) return;}
-      /* find sqrt int integrate sum prod product Int Sum Prod conj abs, 
+      /* find sqrt int integrate sum prod product Int Sum Prod conj abs,
        * so must be texmath interpretated ; after going to tex, return in any case
        */
     }
-/* look for  /  to interpretate as quotients - 
- * extend the version by accepting something else than ( 
-*/  
+/* look for  /  to interpretate as quotients -
+ * extend the version by accepting something else than (
+*/
     //for(pp=strchr(buf,'/'); pp!=NULL && *find_word_start(pp+1)!='('; pp=strchr(pp+1,'/'));
     pp=strchr(buf,'/');
     if(pp!=NULL){ if( __gototex(buf,f,0)) return;} /* so a/4 can be reinterpreted as {a over 4 } ; transform also 5/(x+1) */
@@ -220,8 +220,8 @@ void _mathlogic(char *p, void _put(char *pp))
         p4++; p5=find_matching(p4,')');
         if(*p5!=')') continue;
         *p5=0; *p2=0; p2=p5+1;
-        
-        
+
+
         continue;
       }
       for(i=0;i<andorlangcnt;i++) if(strncmp(p1,andor[i],p2-p1)==0) break;
@@ -240,7 +240,7 @@ void insmath(char *p)
     if(!outputing) goto end;
     pt=getvar("insmath_logic");
     if(pt==NULL || strstr(pt,"yes")==NULL) {
-      __insmath(p); 
+      __insmath(p);
       end: *p=0; return;
     }
     _mathlogic(p,__insmath);

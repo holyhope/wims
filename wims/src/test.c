@@ -15,13 +15,13 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Testing file for wims.
-	 * It contains a routine exec_test() for testing 
-	 * purposes during development. Not documented, and don't
-	 * touch this in usual modules. */
+/* Testing file for wims.
+ * It contains a routine exec_test() for testing
+ * purposes during development. Not documented, and don't
+ * touch this in usual modules. */
 
-	/* No automatic substitution is done when this 
-	 * routine is called. */
+/* No automatic substitution is done when this
+ * routine is called. */
 void exec_test(char *p)
 {
     if(!trusted_module()) module_error("not_trusted");

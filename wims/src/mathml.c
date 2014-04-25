@@ -1,4 +1,4 @@
-/*    Copyright (C) 2012 WIMSDEV 
+/*    Copyright (C) 2012 WIMSDEV
  *    This file is part of the WIMS package.
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -44,21 +44,21 @@ int mathml(char *p, int option ){
           char mml_buffer[MAX_LINELEN+1];
           sprintf(mml_buffer, "%d", MAX_LINELEN);// int --> char
           // setting --tex-size argument to wims_mathml.cc
-          char mathml_tex_size[64];//this should be a string like "250%" 
+          char mathml_tex_size[64];//this should be a string like "250%"
           int texsize_list[]={20,30,50,70,90,100,120,130,150,180,220,300};
           // analogue to  mathfonts.c but now we talk %  and we could make any amount of changes
-          // not limited by font-size !! 
-          // when math_with_gifs is removed from wims, we can rethink / improve this 
+          // not limited by font-size !!
+          // when math_with_gifs is removed from wims, we can rethink / improve this
           int idx = 6;
           int use_js_zoom = 0; // default js-zoom in mathml if disabled
           // enable via adm/light
-          // next code is stolen from wims.c 
+          // next code is stolen from wims.c
           if(getvar("useropts") != NULL || getvar("wims_useropts") != NULL){
             char *u;
             u = getvar("useropts"); // set via adm/light or via cookie?
             if(u == NULL || *u == 0){ u=getvar("wims_useropts");} // wims_user? look into def file
             if(u != NULL && *u != 0){
-                if(myisdigit(u[0])){ //2 digit code : 12,22,32,...,92  [tex_size mathalignbase] 
+                if(myisdigit(u[0])){ //2 digit code : 12,22,32,...,92  [tex_size mathalignbase]
                   idx = u[0] - '0';
                   if(idx < 0 || idx > 11){ idx = 6; } // the default value 120%
                 }
@@ -80,14 +80,14 @@ int mathml(char *p, int option ){
           // !set disable_zoom=yes
           // if not set: disable_zoom="no"; see config.c
           if( strcmp( getvar("disable_zoom") , "yes" ) == 0 ){
-    	    use_js_zoom = 0;
+             use_js_zoom = 0;
           }
           // now write the "char" 200% into variable "mathml_tex_size"
           snprintf(mathml_tex_size,sizeof(mathml_tex_size),"%d%%",texsize_list[idx]);
           // int --> char : added % sign (needed for mathml) [%% = escaped %]
           if(mathml_tex_size == NULL || strlen(mathml_tex_size) == 0 ){ // this should not happen
-            sprintf(mathml_tex_size,"%s","120%"); 
-            // if it goes wrong we set 120% 
+            sprintf(mathml_tex_size,"%s","120%");
+            // if it goes wrong we set 120%
             // default in itex2MML was 110% : but we thought it was too small... ?
           }
           char zoom[2];
@@ -114,7 +114,7 @@ int mathml(char *p, int option ){
           }
           else
           {
-    	    int status;
+             int status;
             FILE *stream;
             close(my_pipe[1]);  // close the write end of the pipe in the parent
             stream = fdopen (my_pipe[0], "r");
@@ -125,29 +125,29 @@ int mathml(char *p, int option ){
             if (option == 1) {
                 *p=0;
                 while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
-            	    if(strcmp(buffer,"ERROR") != 0){
-            		mystrncpy(p, buffer, MAX_LINELEN-1);
-            	    }
+                     if(strcmp(buffer,"ERROR") != 0){
+                      mystrncpy(p, buffer, MAX_LINELEN-1);
+                     }
                     else // ERROR close stream; close pipe; wait for clean exit
                     {
-        		fclose (stream); // do not know if this is really needed... but it won't hurt ?
-        		close(my_pipe[0]);
-        		waitpid(pid, &status, 0);
-                	mathalign_base=1; // go to insmath with gifs
-                	return 0;
+                  fclose (stream); // do not know if this is really needed... but it won't hurt ?
+                  close(my_pipe[0]);
+                  waitpid(pid, &status, 0);
+                     mathalign_base=1; // go to insmath with gifs
+                     return 0;
                     }
                 }
             }
             else // this will probably not used ? remove it ?
             {
-        	while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
-        	    if(strcmp(buffer,"ERROR") != 0){
-        		output("%s", buffer);
-        	    }
+             while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
+                 if(strcmp(buffer,"ERROR") != 0){
+                  output("%s", buffer);
+                 }
                     else
                     {
-                	mathalign_base=1;
-                	return 0;
+                     mathalign_base=1;
+                     return 0;
                     }
                 }
             }

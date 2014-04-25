@@ -15,12 +15,12 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* This should be a rather independent routine, which are 
-	 * used to interface an outside mathematical encyclopedia. */
+/* This should be a rather independent routine, which are
+ * used to interface an outside mathematical encyclopedia. */
 
 void exec_href(char *p);
 
-	/* internal encyclopedia version */
+/* internal encyclopedia version */
 /* void pedia_wims(char *p)
 {
     char *s, *c, *t, buf[MAX_LINELEN+1];
@@ -29,25 +29,25 @@ void exec_href(char *p);
     t="target=wims_ref"; c="module=adm/enc.$module_language";
     s=getvar(ro_name[ro_module]);
     if(s!=NULL && strncmp(s,"adm/enc.",strlen("adm/enc."))==0) {
-	c="cmd=reply"; t="";
+     c="cmd=reply"; t="";
     }
     else {
-	s=getvar(ro_name[ro_session]);
-	if(s!=NULL && strstr(s,"_dico")!=NULL) t="";
+     s=getvar(ro_name[ro_session]);
+     if(s!=NULL && strstr(s,"_dico")!=NULL) t="";
     }
     setvar("wims_dico_lookup",p);
     snprintf(buf,MAX_LINELEN,"%s %s&job=search&dom=math&search=$wims_dico_lookup %s",
-	     t, c, p);
+          t, c, p);
     mystrncpy(r,ref_name,MAX_LINELEN);
     if(pedia_address!=NULL && *pedia_address!=0) {
-	mystrncpy(ref_name,pedia_address,MAX_LINELEN);
+     mystrncpy(ref_name,pedia_address,MAX_LINELEN);
     }
     exec_href(buf);
     mystrncpy(ref_name,r,MAX_LINELEN);
 }
 */
 
-	/* this is the (only) public routine in this file. */
+     /* this is the (only) public routine in this file. */
 void pedia(char *p)
 {
 
@@ -55,6 +55,4 @@ void pedia(char *p)
     force_setvar("wims_pedia_parm",p);
     phtml_put_base("pedia.phtml",1);
     *p=0;
-    
 }
-

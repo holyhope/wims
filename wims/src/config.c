@@ -29,42 +29,41 @@ int SUBST_LIMIT=16;
 int GOTO_LIMIT=500000;
         /* Limit for instex, insplot, insPLOT. */
 int INS_LIMIT=500;
-	/* Limit for frames in an animation. */
+/* Limit for frames in an animation. */
 int ANIM_LIMIT=400;
-	/* module log file length */
+/* module log file length */
 int MODULE_LOG_LIMIT=102400;
-	/* general log file length */
+/* general log file length */
 int GEN_LOG_LIMIT=1024000;
-	/* number of old log files */
+/* number of old log files */
 int OLD_LOG_FILES=2;
 
-	/* Resource limits */
-int threshold1=150;	/* First load shreshold */
-int threshold2=300;	/* Second load shreshold */
-int ispriority=0;	/* whether the connection is from priority sites */
+/* Resource limits */
+int threshold1=150; /* First load shreshold */
+int threshold2=300; /* Second load shreshold */
+int ispriority=0; /* whether the connection is from priority sites */
 
-	/* sessions not accessed more than these seconds will be erased. */
+/* sessions not accessed more than these seconds will be erased. */
 int idle_time=5400;
-	/* non-class sessions not accessed more than these seconds will be erased. */
+/* non-class sessions not accessed more than these seconds will be erased. */
 int idle_time2=2400;
-	/* first-time sessions not accessed more than these seconds will be erased. */
+/* first-time sessions not accessed more than these seconds will be erased. */
 int idle_time3=900;
 
-int rafalvl=10; 	/* anti-rapidfire severity */
+int rafalvl=10; /* anti-rapidfire severity */
 
-	/* Explanation: two real numbers a,b such that
-	 * |a+b|>|a-b|*compare_precision
-	 * will be considered equal in !ifvalue comparisons. */
+/* Explanation: two real numbers a,b such tha * |a+b|>|a-b|*compare_precision
+ * will be considered equal in !ifvalue comparisons. */
 int DEFAULT_COMPARE_PRECISION=10000;
-	/* Precision of printing (hence of all evaluations). */
+/* Precision of printing (hence of all evaluations). */
 int DEFAULT_PRINT_PRECISION=8;
-	/* Defaults for instex, insplot, etc. */
+/* Defaults for instex, insplot, etc. */
 char *DEFAULT_INS_FORMAT="gif";
 char *DEFAULT_ANIM_FORMAT="gif";
 char *DEFAULT_INS_DENSITY="100x100";
 char *DEFAULT_INSPLOT_FONT="small";
 
-	/* gnuplot intermediate graphics format */
+/* gnuplot intermediate graphics format */
 char *gnuplot_format="gif";
 
   /* electronic address of site manager. */
@@ -96,7 +95,7 @@ char *show_ip="yes";
 char *busyhours="";
   /* Presentation theme */
 char *theme="standard";
-  /* directory of session files */	
+  /* directory of session files */
 char session_dir[MAX_FNAME+1], s2_dir[MAX_FNAME+1];
   /* standardised header model for modules' output. Will be stored
    * into the variable $wims_html_header. If the theme contains
@@ -155,26 +154,26 @@ char *ref_file="wims_ref.phtml";
 char *insdraw_processor="insdraw..processor";
 char *insplot_processor="insplot..processor";
 char *tex2gif="bin/tex..gif";
-char *priority="";		/* IPs of priority sites */
+char *priority=""; /* IPs of priority sites */
 char *texgif_fontdir="w/texgif";
 char *texgif_texheader="mathfonts/header";
-char *bgcolor="#E8E8E8";	/* page background color */
-char *bgimg="";			/* page background image file */
-char *pagecss="-theme-";		/* style sheet file */
-char *theme_icon="default";		/* icon */
-char *usecookie="no";		/* whether to send cookies to anon requests */
-char *mail_opt="";		/* !mailto options */
-char nodeip[256]="";		/* ip of cluster node if relevant */
-char temp_log[MAX_FNAME+1];	/* temp log file name */
-	/* 0: low; 1: high; 2: MathML */
-int mathalign_base=0;		/* Not use <sup> for middle alignment */
-char *disable_zoom="no"; 	/* yes/no:  default zooming allowed (if enabled via "useropts")  */
+char *bgcolor="#E8E8E8"; /* page background color */
+char *bgimg="";  /* page background image file */
+char *pagecss="-theme-";  /* style sheet file */
+char *theme_icon="default";  /* icon */
+char *usecookie="no";  /* whether to send cookies to anon requests */
+char *mail_opt="";  /* !mailto options */
+char nodeip[256]="";  /* ip of cluster node if relevant */
+char temp_log[MAX_FNAME+1]; /* temp log file name */
+ /* 0: low; 1: high; 2: MathML */
+int mathalign_base=0;  /* Not use <sup> for middle alignment */
+char *disable_zoom="no";  /* yes/no:  default zooming allowed (if enabled via "useropts")  */
 int spec_font=0; /* choose of some fonts*/
  /* special font can be configured in log/wims.conf with variable special_font*/
 char *special_font="letter-spacing:0.3em;line-height:2.7em;word-spacing:0.8em;";
-int backup_hour=-1;		/* Hour for daily backup; -1 means no backup. */
-int site_accounting=0;		/* whether accounting should be activated */
-int examlog_limit=7;		/* number of logged exam sessions for each student */
+int backup_hour=-1; /* Hour for daily backup; -1 means no backup. */
+int site_accounting=0; /* whether accounting should be activated */
+int examlog_limit=7; /* number of logged exam sessions for each student */
 
   /* Automatic module update */
 char *mu_auto="none";
@@ -437,13 +436,13 @@ void main_configure(void)
     accessfile(buf,"r","../tmp/log/myip");
     *find_word_end(buf)=0;
     if(buf[0]) {
-	snprintf(nodeip,sizeof(nodeip),"%s",buf);
-	snprintf(temp_log,sizeof(temp_log),"%s.%s",TEMP_LOG_FILE,nodeip);
-	force_setvar("wims_priv_nodeip",nodeip);
+     snprintf(nodeip,sizeof(nodeip),"%s",buf);
+     snprintf(temp_log,sizeof(temp_log),"%s.%s",TEMP_LOG_FILE,nodeip);
+     force_setvar("wims_priv_nodeip",nodeip);
     }
     else {
-	nodeip[0]=0;
-	snprintf(temp_log,sizeof(temp_log),"%s",TEMP_LOG_FILE);
+     nodeip[0]=0;
+     snprintf(temp_log,sizeof(temp_log),"%s",TEMP_LOG_FILE);
     }
 }
 
@@ -452,51 +451,51 @@ struct {
     int *rval;
 } resource_table[]={
 #ifdef RLIMIT_CPU
-      {RLIMIT_CPU,	&rlimit_cpu},
+      {RLIMIT_CPU, &rlimit_cpu},
 #endif
 #ifdef RLIMIT_FSIZE
-      {RLIMIT_FSIZE, 	&rlimit_fsize},
+      {RLIMIT_FSIZE,  &rlimit_fsize},
 #endif
 #ifdef RLIMIT_AS
-      {RLIMIT_AS,	&rlimit_as},
+      {RLIMIT_AS, &rlimit_as},
 #endif
 #ifdef RLIMIT_DATA
-      {RLIMIT_DATA,	&rlimit_data},
+      {RLIMIT_DATA, &rlimit_data},
 #endif
 #ifdef RLIMIT_STACK
-      {RLIMIT_STACK,	&rlimit_stack},
+      {RLIMIT_STACK, &rlimit_stack},
 #endif
 #ifdef RLIMIT_CORE
-      {RLIMIT_CORE,	&rlimit_core},
+      {RLIMIT_CORE, &rlimit_core},
 #endif
 #ifdef RLIMIT_RSS
-      {RLIMIT_RSS,	&rlimit_rss},
+      {RLIMIT_RSS, &rlimit_rss},
 #endif
 #ifdef RLIMIT_NPROC
-      {RLIMIT_NPROC,	&rlimit_nproc},
+      {RLIMIT_NPROC, &rlimit_nproc},
 #endif
 #ifdef RLIMIT_NOFILE
-      {RLIMIT_NOFILE,	&rlimit_nofile},
+      {RLIMIT_NOFILE, &rlimit_nofile},
 #endif
 #ifdef RLIMIT_MEMLOCK
-      {RLIMIT_MEMLOCK,	&rlimit_memlock}
+      {RLIMIT_MEMLOCK, &rlimit_memlock}
 #endif
 };
 #define RESOURCE_NO (sizeof(resource_table)/sizeof(resource_table[0]))
 
-	/* set system resource limits */
+/* set system resource limits */
 void set_rlimits(void)
 {
     int i;
     struct rlimit rlim;
 
     for(i=0;i<RESOURCE_NO;i++) {
-	rlim.rlim_cur=rlim.rlim_max=*(resource_table[i].rval);
-	setrlimit(resource_table[i].rname,&rlim);
-	if(resource_table[i].rname==RLIMIT_CPU) {
-	    setvar("wims_cpu_limit",int2str(rlim.rlim_max));
-	    initalarm();
-	}
+     rlim.rlim_cur=rlim.rlim_max=*(resource_table[i].rval);
+     setrlimit(resource_table[i].rname,&rlim);
+     if(resource_table[i].rname==RLIMIT_CPU) {
+         setvar("wims_cpu_limit",int2str(rlim.rlim_max));
+         initalarm();
+     }
     }
 }
 
@@ -505,7 +504,7 @@ struct {
     int is_integer;
     void *default_value;
 } module_default[]={
-      {"anim_format",		0, &DEFAULT_ANIM_FORMAT},
+      {"anim_format",  0, &DEFAULT_ANIM_FORMAT},
       {"gnuplot_format",	0, &gnuplot_format},
       {"ins_anim_limit",	1, &ANIM_LIMIT},
       {"ins_density",		0, &DEFAULT_INS_DENSITY},
@@ -697,54 +696,54 @@ void module_index(void)
 	    case mode_popup: {
 		if(strstr(s,"popup")==NULL) goto nomode;
 		else break;
-	    }
-	    case mode_raw: {
-		if(strstr(s,"raw")==NULL) goto nomode;
-		else break;
-	    }
-	    default: break;
-	}
+         }
+         case mode_raw: {
+          if(strstr(s,"raw")==NULL) goto nomode;
+          else break;
+         }
+         default: break;
+     }
     }
-    	/* test for existence of some special files in module's directory */
+/* test for existence of some special files in module's directory */
     for(i=0;i<MODSPEC_NO;i++) {
-	if(ftest(mkfname(NULL,"%s/%s.phtml",module_prefix,module_special_file[i]))
-	   ==is_file) {
-	    snprintf(buf,sizeof(buf),"module_has_%s",module_special_file[i]);
-	    setvar(buf,"yes");
-	}
+     if(ftest(mkfname(NULL,"%s/%s.phtml",module_prefix,module_special_file[i]))
+        ==is_file) {
+         snprintf(buf,sizeof(buf),"module_has_%s",module_special_file[i]);
+         setvar(buf,"yes");
+     }
     }
     p=getvar("module_language"); if(p==NULL || *p==0) setvar("module_language","en");
     setvar("module_has_about","yes"); /* now we have default about.phtml */
-	/* Set var_def */
+/* Set var_def */
     p=getvar("module_vardef");
     if(p!=NULL && *p!=0) mystrncpy(var_def_file,p,sizeof(var_def_file));
     p=getvar("module_wims_version"); if(p!=NULL && *p!=0) {
-	v1=atof(p); v2=atof(wims_version);
-	if(finite(v1) && finite(v2) &&
-	   (v1>v2 || (v1==v2 && strcmp(find_word_start(p),wims_version)>0))) {
-	    setvar("module_wims_version",p);
-	    setvar("wims_version",wims_version);
-	    module_error("antidated_version");
-	}
+     v1=atof(p); v2=atof(wims_version);
+     if(finite(v1) && finite(v2) &&
+        (v1>v2 || (v1==v2 && strcmp(find_word_start(p),wims_version)>0))) {
+         setvar("module_wims_version",p);
+         setvar("wims_version",wims_version);
+         module_error("antidated_version");
+     }
     }
     if(isdevelmodule) {
-	p=getvar("module_scoring");
-	if(p==NULL || strcasecmp(p,"yes")!=0) isdevelmodule=0;
+     p=getvar("module_scoring");
+     if(p==NULL || strcasecmp(p,"yes")!=0) isdevelmodule=0;
     }
 }
 
 #endif
 
-	/* Set up a unique job identity as a 4-bytes integer */
+/* Set up a unique job identity as a 4-bytes integer */
 unsigned long create_job_ident(void)
 {
 /* unsigned long it; // 64-bit compatibility: take away _long_ */
     unsigned long it;
     int i;
-    	/* Is this enough to guarantee uniqueness? */
+/* Is this enough to guarantee uniqueness? */
 
     it=(nowtime<<16)+(getpid()&0xffff);
-    	/* The encryption is very simple. */
+/* The encryption is very simple. */
     it=it^0x5a3c9671;
     for(i=0;i<MAX_SESRANDOM;i++) sesrandomtab[i]=random();
     /* ensure that the result will be a 4-bytes integer gives random problem on 32 bits
@@ -752,7 +751,7 @@ unsigned long create_job_ident(void)
     return it & 0xffffffff;
 }
 
-	/* Setup a job identifier */
+/* Setup a job identifier */
 void set_job_ident(void)
 {
     unsigned long l,r;
@@ -766,7 +765,7 @@ void set_job_ident(void)
     var_noexport=0;
 }
 
-	/* define the variable $wims_html_header */
+/* define the variable $wims_html_header */
 void define_html_header(void)
 {
   char *expir, *sp, *cp, *ladirection, *mp;
@@ -779,82 +778,82 @@ void define_html_header(void)
     noc=0;
     cp=getvar("wims_expire"); if(cp!=NULL) goto css;
     if(!robot_access && cmd_type==cmd_intro && isclassmodule) {
-	sp=getvar("special_parm"); if(sp==NULL) sp="";
-	if(strcmp(sp,".nocache.")==0) {
-	    force_setvar("special_parm",""); noc=1;
-	}
-	if(!noc) {
-	    mp=getvar(ro_name[ro_module]);
-	    if(mp!=NULL && strncmp(mp,"devel/",strlen("devel/"))==0) noc=1;
-	}
+     sp=getvar("special_parm"); if(sp==NULL) sp="";
+     if(strcmp(sp,".nocache.")==0) {
+         force_setvar("special_parm",""); noc=1;
+     }
+     if(!noc) {
+         mp=getvar(ro_name[ro_module]);
+         if(mp!=NULL && strncmp(mp,"devel/",strlen("devel/"))==0) noc=1;
+     }
     }
     if(mode==mode_default) {
-	if(!robot_access && (cmd_type!=cmd_intro || noc)) {
-	    if(html_call) {
-		/* expiration in 1 day for html call. */
-		t=nowtime+(long) 24*3600; expir=ctime(&t);
-		nocache="";
-	    }
-	    else expir="1 Jan 1990";
-	}
-	else {
-	    /* expiration in 10 days for robot access or intro page. */
-	    t=nowtime+(long) 10*24*3600; expir=ctime(&t); nocache="";
-	}
-	snprintf(ebuf,sizeof(ebuf),"%s",expir); strip_trailing_spaces(ebuf);
-	snprintf(buf,sizeof(buf),
-		 "<meta http-equiv=\"expires\" content=\"%s\" />\n%s",ebuf,nocache);
-	setvar("wims_expire",buf);
+     if(!robot_access && (cmd_type!=cmd_intro || noc)) {
+         if(html_call) {
+/* expiration in 1 day for html call. */
+          t=nowtime+(long) 24*3600; expir=ctime(&t);
+          nocache="";
+         }
+         else expir="1 Jan 1990";
+     }
+     else {
+/* expiration in 10 days for robot access or intro page. */
+         t=nowtime+(long) 10*24*3600; expir=ctime(&t); nocache="";
+     }
+     snprintf(ebuf,sizeof(ebuf),"%s",expir); strip_trailing_spaces(ebuf);
+     snprintf(buf,sizeof(buf),
+           "<meta http-equiv=\"expires\" content=\"%s\" />\n%s",ebuf,nocache);
+     setvar("wims_expire",buf);
     }
     css: setvar("wims_CSS","");
     cp=getvar("wims_css");
     ladirection=getvar("wims_main_dirn");
     if (strcmp(ladirection,"ltr")==0) ladirection="";
     if(!robot_access && cp!=NULL && *cp!=0 && strstr(cp,"---")==NULL) {
-	char *nbuf;
-	cp=find_word_start(cp);
-	if(strchr(cp,'/')==NULL) {
-	    char *pc, *th, *ti; int st=0;
-	    pc=getvar("wims_class");
-	    if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
-		 nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
-		 th=getvar("class_theme");ti=getvar("class_theme_icon") ;
-		 if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
-		 if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
-	    }
-	    else {/* Il faut peut-être changer là aussi pour direction */
-		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
-		th=getvar("wims_theme");
-		ti=getvar("wims_theme_icon");
-	    }
-	    if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
-		  if(th==NULL || *th==0) th="default";
-		  nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
-	    }
-	    if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
-	    }
-	    else {
-	     th=getvar("wims_theme");
-	     nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
-		}
-		if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
-	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
+     char *nbuf;
+     cp=find_word_start(cp);
+     if(strchr(cp,'/')==NULL) {
+         char *pc, *th, *ti; int st=0;
+         pc=getvar("wims_class");
+         if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
+           nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
+           th=getvar("class_theme");ti=getvar("class_theme_icon") ;
+           if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
+           if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
+         }
+         else {/* Il faut peut-être changer là aussi pour direction */
+          nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
+          th=getvar("wims_theme");
+          ti=getvar("wims_theme_icon");
+         }
+         if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
+            if(th==NULL || *th==0) th="default";
+            nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
+         }
+         if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
+         }
+         else {
+          th=getvar("wims_theme");
+          nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
+          }
+          if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
+           if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
 %s\n\
 --></style>",tmplbuf); }
-		  else {
-		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
+            else {
+            snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
 <link href=\"gifs/themes/%s/icon-min.css\" rel=\"stylesheet\" type=\"text/css\" />",nbuf,ti);
-		 }
-		setvar("wims_CSS",buf);
-	    }
-	    else {
-	
-	    }
-	    if (th) {
-	       nbuf=mkfname(NULL,"html/themes/%s/htmlheader.phtml",th) ;
-	       if (readfile(nbuf,tmplbuf,sizeof(tmplbuf))) html_header=nbuf ;
-	    }
-	  }
+           }
+          setvar("wims_CSS",buf);
+         }
+         else {
+
+         }
+         if (th) {
+            nbuf=mkfname(NULL,"html/themes/%s/htmlheader.phtml",th) ;
+            if (readfile(nbuf,tmplbuf,sizeof(tmplbuf))) html_header=nbuf ;
+         }
+       }
     }
     if(readfile(html_header,buf,sizeof(buf))) setvar("wims_html_header",buf);
 }
@@ -863,16 +862,16 @@ void setsesdir(char *d)
 {
     char buf[MAX_FNAME+1];
     if(strstr(d,parent_dir_string)!=NULL) {
-	force_setvar("wims_session",robot_session);
-	mystrncpy(buf,robot_session,sizeof(buf));
-	mkfname(session_dir,"../tmp");
-	mkfname(s2_dir,"../tmp");
+     force_setvar("wims_session",robot_session);
+     mystrncpy(buf,robot_session,sizeof(buf));
+     mkfname(session_dir,"../tmp");
+     mkfname(s2_dir,"../tmp");
     }
     else {
-	force_setvar("wims_session",d);
-	snprintf(buf,sizeof(buf),"%s/%s",SESSION_BASE,d);
-	mkfname(session_dir,"../%s",SESSION_BASE);
-	/* mkfname(s2_dir,"../%s",S2_BASE); */
+     force_setvar("wims_session",d);
+     snprintf(buf,sizeof(buf),"%s/%s",SESSION_BASE,d);
+     mkfname(session_dir,"../%s",SESSION_BASE);
+/* mkfname(s2_dir,"../%s",S2_BASE); */
     }
     force_setvar("wims_sesdir",buf);
 }
