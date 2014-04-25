@@ -18,10 +18,10 @@
  /* This program generates cyclic code from a polynomial
   * defined over a prime field.
   * It does not check whether the polynomial is primitive or irreducible.
-  * Accepted parameter: 3 words. 
+  * Accepted parameter: 3 words.
   * Word 1: field characteristics, limited to 2,3,5,7.
   * Word 2: The polynomial coefficients (except the leading one, from
-					 lower degree to higher)
+     lower degree to higher)
   * Word 3: The starting status (starting from the first bit).
   */
 
@@ -38,7 +38,7 @@ void errorquit(char *msg)
     fprintf(stderr,"%s\n",msg); exit(1);
 }
 
-	/* Points to the end of the word */
+/* Points to the end of the word */
 char *find_word_end(char *p)
 {
     int i;
@@ -46,7 +46,7 @@ char *find_word_end(char *p)
     return p;
 }
 
-	/* Strips leading spaces */
+/* Strips leading spaces */
 char *find_word_start(char *p)
 {
     int i;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     char pbuf[1024];
     int i,j,k;
     double dt;
-    
+
     parm=getenv("wims_exec_parm");
     if(parm==NULL || *parm==0) errorquit("no_parameter");
     snprintf(pbuf,sizeof(pbuf),"%s",parm);
@@ -77,16 +77,15 @@ int main(int argc, char *argv[])
     if(dt>=(double) MAX_LENGTH) errorquit("length_overflow");
     length=dt-1-degree;
     for(i=0;i<degree;i++) {
-	c1=*(p1+i); c2=*(p2+i);
-	if(!isdigit(c1) || c1>=ch+'0') errorquit("bad_polynomial");
-	if(!isdigit(c2) || c2>=ch+'0') errorquit("bad_chain");
-	poly[i]=ch-(c1-'0'); chain[i]=c2-'0';
+      c1=*(p1+i); c2=*(p2+i);
+      if(!isdigit(c1) || c1>=ch+'0') errorquit("bad_polynomial");
+      if(!isdigit(c2) || c2>=ch+'0') errorquit("bad_chain");
+      poly[i]=ch-(c1-'0'); chain[i]=c2-'0';
     }
     for(i=0;i<length;i++) {
-	for(j=k=0;j<degree;k+=poly[j]*chain[j],j++);
-	k%=ch; printf("%d",k);
-	memmove(chain,chain+1,degree-1); chain[degree-1]=k;
+      for(j=k=0;j<degree;k+=poly[j]*chain[j],j++);
+      k%=ch; printf("%d",k);
+      memmove(chain,chain+1,degree-1); chain[degree-1]=k;
     }
     return 0;
 }
-

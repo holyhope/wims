@@ -15,12 +15,12 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* This special program selects words composed by
-	 * selected characters, each selected character being used
-	 * at most once in the word */
+/* This special program selects words composed by
+ * selected characters, each selected character being used
+ * at most once in the word */
 
-	/* Selected characters are entered by the env var 'oncechar'.
-	 * Words entered by stdin. Output to stdout. */
+/* Selected characters are entered by the env var 'oncechar'.
+ * Words entered by stdin. Output to stdout. */
 
 #include "../wims.h"
 #include "../Lib/basicstr.c"
@@ -32,10 +32,10 @@ char selbuf[256];
 int getword(void)
 {
     int t,c;
-    
+
     do c=getchar(); while(isspace(c));
     for(t=0; t<MAX_WORDLEN && isalnum(c); t++, c=getchar()) wbuf[t]=c;
-    wbuf[t]=0; return c;    
+    wbuf[t]=0; return c;
 }
 
 void checkword(void)
@@ -44,8 +44,8 @@ void checkword(void)
     char *p, *pt;
     memmove(sbuf,selbuf,sizeof(sbuf));
     for(p=wbuf; *p; p++) {
-	pt=strchr(sbuf,*p); if(pt==NULL) return;
-	else *pt=' ';
+      pt=strchr(sbuf,*p); if(pt==NULL) return;
+      else *pt=' ';
     }
     printf("%s\n",wbuf);
 }
@@ -54,13 +54,13 @@ int main(int argc, char *argv[])
 {
     int c;
     char *p;
-    
+
     p=getenv("oncechar"); if(p==NULL || *p==0) return 0;
     snprintf(selbuf,sizeof(selbuf),"%s",p);
-    for(p=selbuf; *p; p++) 
+    for(p=selbuf; *p; p++)
       if(isspace(*p) || strchr("^?*.${}[]()\\",*p)!=NULL) ovlstrcpy(p,p+1);
     do{
-	c=getword(); checkword();
+      c=getword(); checkword();
     }
     while(c!=EOF);
     return 0;

@@ -80,19 +80,19 @@ static int get_point(double *x, double *y)
       if (div>XDIV) break;
       found=0;
       for (i=0; i<=XDIV-div; i++)
-	for (j=0; j<=YDIV-div; j++)
-	  if (xr[i][j]==0)
-	    {
-	      found=1;
-	      mdiv=div;
-	      mi=i;
-	      mj=j;
-	      break;
-	    }
+      for (j=0; j<=YDIV-div; j++)
+        if (xr[i][j]==0)
+          {
+            found=1;
+            mdiv=div;
+            mi=i;
+            mj=j;
+            break;
+          }
       if (!found) break;
       for (i=0; i<XDIV-div; i++)
-	for (j=0; j<YDIV-div; j++)
-	  nr[i][j]=(xr[i][j]+xr[i][j+1]+xr[i+1][j]+xr[i+1][j+1]) ? 1 : 0;
+      for (j=0; j<YDIV-div; j++)
+        nr[i][j]=(xr[i][j]+xr[i][j+1]+xr[i+1][j]+xr[i+1][j+1]) ? 1 : 0;
       memcpy(xr, nr, sizeof(nr));
       div++;
     }
@@ -137,9 +137,9 @@ static double get_dt(void)
       xp=fabs(dx(x, y));
       yp=fabs(dy(x, y));
       if (xp*dt>XSTEP)
-	dt=XSTEP/xp;
+      dt=XSTEP/xp;
       if (yp*dt>YSTEP)
-	dt=YSTEP/yp;
+      dt=YSTEP/yp;
     }
   return dt*0.5; /* for precision */
 }
@@ -171,25 +171,25 @@ static int do_loop(double x0, double y0, double dt)
       ly=y;
       count=0;
       while (count<MAXCOUNT)
-	{
-	  count++;
-	  xa[0]=x;
-	  ya[0]=y;
-	  for (i=1; i<=4; i++)
-	    {
-	      xa[i]=xa[0]+dx(xa[i-1], ya[i-1])*dt;
-	      ya[i]=ya[0]+dy(xa[i-1], ya[i-1])*dt;
-	    }
-	  x=(xa[1]+2.0*xa[2]+xa[3]-xa[4])*(1/3.0);
-	  y=(ya[1]+2.0*ya[2]+ya[3]-ya[4])*(1/3.0);
-	  if (transx(x)!=px) break;
-	  if (transy(y)!=py) break;
-	}
+      {
+        count++;
+        xa[0]=x;
+        ya[0]=y;
+        for (i=1; i<=4; i++)
+          {
+            xa[i]=xa[0]+dx(xa[i-1], ya[i-1])*dt;
+            ya[i]=ya[0]+dy(xa[i-1], ya[i-1])*dt;
+          }
+        x=(xa[1]+2.0*xa[2]+xa[3]-xa[4])*(1/3.0);
+        y=(ya[1]+2.0*ya[2]+ya[3]-ya[4])*(1/3.0);
+        if (transx(x)!=px) break;
+        if (transy(y)!=py) break;
+      }
       if (dt>0 && steps==1)
-	dir_angle=atan2(y-y0, x-x0);
+      dir_angle=atan2(y-y0, x-x0);
       gdImageLine(img,
-		    lrint((lx-XMIN)*gxden), height-1-lrint((ly-YMIN)*gyden),
-		    lrint((x-XMIN)*gxden), height-1-lrint((y-YMIN)*gyden), black);
+                lrint((lx-XMIN)*gxden), height-1-lrint((ly-YMIN)*gyden),
+                lrint((x-XMIN)*gxden), height-1-lrint((y-YMIN)*gyden), black);
     }
   return steps;
 }
@@ -207,18 +207,18 @@ static void draw_main(double dt)
       step1=do_loop(x0, y0, dt);
       step2=do_loop(x0, y0, -dt);
       if (step1>=MIN_STEP+1 && step2>=MIN_STEP) /* draw an arrow */
-	{
-	  px0=lrint((x0-XMIN)/(XMAX-XMIN)*width);
-	  py0=lrint((y0-YMIN)/(YMAX-YMIN)*height);
-	  px1=px0+lrint(ARROW_LEN*cos(dir_angle));
-	  py1=py0+lrint(ARROW_LEN*sin(dir_angle));
-	  px2=px1-lrint(ARROW_LEN*cos(dir_angle-ARROW_ANGLE));
-	  py2=py1-lrint(ARROW_LEN*sin(dir_angle-ARROW_ANGLE));
-	  px3=px1-lrint(ARROW_LEN*cos(dir_angle+ARROW_ANGLE));
-	  py3=py1-lrint(ARROW_LEN*sin(dir_angle+ARROW_ANGLE));
-	  gdImageLine(img, px1, height-1-py1, px2, height-1-py2, black);
-	  gdImageLine(img, px1, height-1-py1, px3, height-1-py3, black);
-	}
+      {
+        px0=lrint((x0-XMIN)/(XMAX-XMIN)*width);
+        py0=lrint((y0-YMIN)/(YMAX-YMIN)*height);
+        px1=px0+lrint(ARROW_LEN*cos(dir_angle));
+        py1=py0+lrint(ARROW_LEN*sin(dir_angle));
+        px2=px1-lrint(ARROW_LEN*cos(dir_angle-ARROW_ANGLE));
+        py2=py1-lrint(ARROW_LEN*sin(dir_angle-ARROW_ANGLE));
+        px3=px1-lrint(ARROW_LEN*cos(dir_angle+ARROW_ANGLE));
+        py3=py1-lrint(ARROW_LEN*sin(dir_angle+ARROW_ANGLE));
+        gdImageLine(img, px1, height-1-py1, px2, height-1-py2, black);
+        gdImageLine(img, px1, height-1-py1, px3, height-1-py3, black);
+      }
     }
   while (get_point(&x0, &y0)>=0);
 }
@@ -226,20 +226,20 @@ static void draw_main(double dt)
 void show_usage(void)
 {
   fprintf(stderr,
-	  "Usage: drawode [arguments...]\n\n"
-	  "Arguments:\n"
-	  " -h            Help\n"
-	  " -o <fname>    Set output file name\n"
-	  " -w <width>    Set width\n"
-	  " -l <height>   Set height\n"
-	  " -s <size>     Set width and height\n"
-	  " -f <num>      Set function number\n"
-	  " -p <params>   Set parameters (comma separated)\n"
-	  "\nValid function numbers:\n"
-	  " 0             x'=y y'=x(x+y)+ax+by\n"
-	  " 1             x'=ax+by y'=bx+ay\n"
-	  " 2             x'=ax+by y'=cx+dy\n"
-	  );
+        "Usage: drawode [arguments...]\n\n"
+        "Arguments:\n"
+        " -h            Help\n"
+        " -o <fname>    Set output file name\n"
+        " -w <width>    Set width\n"
+        " -l <height>   Set height\n"
+        " -s <size>     Set width and height\n"
+        " -f <num>      Set function number\n"
+        " -p <params>   Set parameters (comma separated)\n"
+        "\nValid function numbers:\n"
+        " 0             x'=y y'=x(x+y)+ax+by\n"
+        " 1             x'=ax+by y'=bx+ay\n"
+        " 2             x'=ax+by y'=cx+dy\n"
+        );
 }
 
 void read_params(const char *args)
@@ -274,36 +274,36 @@ int main(int argc, char **argv)
     switch (c)
       {
       case 'h':
-	show_usage();
-	return 0;
-	break;
+        show_usage();
+        return 0;
+        break;
       case 'v':
-	fprintf(stderr, "DrawODE version 1.0\n");
-	return 0;
-	break;
+        fprintf(stderr, "DrawODE version 1.0\n");
+        return 0;
+        break;
       case 'o':
-	out_fname=optarg;
-	break;
+        out_fname=optarg;
+        break;
       case 'w':
-	width=atoi(optarg);
-	break;
+        width=atoi(optarg);
+        break;
       case 'l':
-	height=atoi(optarg);
-	break;
+        height=atoi(optarg);
+        break;
       case 's':
-	width=height=atoi(optarg);
-	break;
+        width=height=atoi(optarg);
+        break;
       case 'f':
-	func_num=atoi(optarg);
-	if (func_num<0 || func_num>=nfunc)
-	  {
-	    fprintf(stderr, "Invalid function number %d (max %d).\n", func_num, nfunc-1);
-	    return 1;
-	  }
-	break;
+        func_num=atoi(optarg);
+        if (func_num<0 || func_num>=nfunc)
+        {
+          fprintf(stderr, "Invalid function number %d (max %d).\n", func_num, nfunc-1);
+          return 1;
+        }
+        break;
       case 'p':
-	read_params(optarg);
-	break;
+        read_params(optarg);
+        break;
       }
 
   if (out_fname==NULL)

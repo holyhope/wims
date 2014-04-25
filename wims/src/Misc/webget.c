@@ -42,7 +42,7 @@ void errorquit(char *msg)
     fprintf(stderr,"%s: %s\n",msg,strerror(errno)); exit(1);
 }
 
-	/* Points to the end of the word */
+/* Points to the end of the word */
 char *find_word_end(char *p)
 {
     int i;
@@ -50,7 +50,7 @@ char *find_word_end(char *p)
     return p;
 }
 
-	/* Strips leading spaces */
+/* Strips leading spaces */
 char *find_word_start(char *p)
 {
     int i;
@@ -58,7 +58,7 @@ char *find_word_start(char *p)
     return p;
 }
 
-	/* Secured execution */
+/* Secured execution */
 void secure(char *host)
 {
     char *p1, *p2, *p3, buf[MAX_LINELEN+1];
@@ -72,15 +72,15 @@ void secure(char *host)
     if(l<=0 || l>MAX_LINELEN) return;
     buf[l]=0;
     for(p1=find_word_start(buf);*p1;p1=find_word_start(p2)) {
-	p2=find_word_end(p1); if(*p2) *p2++=0;
-	p3=strstr(host,p1); if(p3==NULL) continue;
-	if((p3==host || *(p3-1)=='.') && *(p3+strlen(p1))==0) return;
+      p2=find_word_end(p1); if(*p2) *p2++=0;
+      p3=strstr(host,p1); if(p3==NULL) continue;
+      if((p3==host || *(p3-1)=='.') && *(p3+strlen(p1))==0) return;
     }
     exit(1);  /* unauthorized sites refused. */
 }
 
-	/* open a TCP/IP socket with host/port
-	 * returns the file descriptor for the socket */
+/* open a TCP/IP socket with host/port
+ * returns the file descriptor for the socket */
 int net_connect(char *host)
 {
     struct hostent *hp;
@@ -95,7 +95,7 @@ int net_connect(char *host)
     sin.sin_port=htons(port);
     sin.sin_family = hp->h_addrtype;
     if(connect(soc,(struct sockaddr *)&sin,sizeof(sin))<0) {
-	close(soc); errorquit("connect() error");
+      close(soc); errorquit("connect() error");
     }
     return soc;
 }
@@ -104,8 +104,8 @@ int gethttps(char *host)
 {
     char buf[65536];
     char *tp;
-    
-    tp=getenv("tmp_dir"); if(tp!=NULL && *tp!=0) tmpdir=tp;    
+
+    tp=getenv("tmp_dir"); if(tp!=NULL && *tp!=0) tmpdir=tp;
     snprintf(tfname,sizeof(tfname),"%s/https.tmp",tmpdir);
     snprintf(buf,sizeof(buf),"\
 mkdir -p %s\n\
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     char *parm, *pt, *p1, *p2, *p3, *p4, *dp, *pre;
     char nbuf[4096], *pp1, *pp2;
     char c;
-    
+
     parm=getenv("wims_exec_parm");
     if(parm==NULL || *parm==0) errorquit("no_parameter");
     snprintf(pbuf,sizeof(pbuf),"%s",parm);
@@ -131,47 +131,47 @@ int main(int argc, char *argv[])
     outf=stdout; pp1=getenv("w_webget_output");
     pp2=getenv("session_dir");
     if(pp1!=NULL && strstr(pp1,"..")==NULL && isalnum(*pp1) && pp2!=NULL) {
-	snprintf(nbuf,sizeof(nbuf),"%s/%s",pp2,pp1);
-	outf=fopen(nbuf,"w"); if(outf==NULL) outf=stdout;
+      snprintf(nbuf,sizeof(nbuf),"%s/%s",pp2,pp1);
+      outf=fopen(nbuf,"w"); if(outf==NULL) outf=stdout;
     }
     dp=getenv("w_webget_option");
-    if(dp!=NULL && strstr(dp,"direct")!=NULL) {	/* direct get */
-	p1=getenv("w_webget_host");
-	p2=getenv("w_webget_port");
-	if(p1==NULL || p2==NULL) errorquit("incomplete_request");
-	port=atoi(p2);
-	soc=net_connect(p1); if(soc==-1) return 1;
-	c=' '; for(p3=parm; *p3; p3++) {
-	    if(*p3=='\n' && c!='\r') (void)write(soc,"\r",1);
-	    (void)write(soc,p3,1); c=*p3;
-	}
-	(void)write(soc,"\r\n\r\n",4);
-	pt=getenv("w_module");
-	if(pt==NULL || *pt==0 || strncmp(pt,"adm/",4)==0 ) {  /* File to post? */
-	    pt=getenv("w_webget_post"); if(pt!=NULL && *pt!=0) {
-		FILE *f;
-		char buf[4096];
-		size_t l;
-		f=fopen(pt,"r"); if(f!=NULL) {
-		    do {
-			l=fread(buf,1,sizeof(buf),f);
-			if(l>0 && l<=sizeof(buf)) (void)write(soc,buf,l);
-		    } while(l==sizeof(buf));
-		    fclose(f);
-		}
-	    }
-	}
-	if(strstr(dp,"normalread")!=NULL) goto read;
-	charcnt=0;
-	while(read(soc,pbuf,1)>0 && charcnt<10240) {
-	    fputc(pbuf[0],outf); charcnt++;
-	}
-	close(soc);
-	return 0;
+    if(dp!=NULL && strstr(dp,"direct")!=NULL) { /* direct get */
+      p1=getenv("w_webget_host");
+      p2=getenv("w_webget_port");
+      if(p1==NULL || p2==NULL) errorquit("incomplete_request");
+      port=atoi(p2);
+      soc=net_connect(p1); if(soc==-1) return 1;
+      c=' '; for(p3=parm; *p3; p3++) {
+          if(*p3=='\n' && c!='\r') (void)write(soc,"\r",1);
+          (void)write(soc,p3,1); c=*p3;
+      }
+      (void)write(soc,"\r\n\r\n",4);
+      pt=getenv("w_module");
+      if(pt==NULL || *pt==0 || strncmp(pt,"adm/",4)==0 ) {  /* File to post? */
+          pt=getenv("w_webget_post"); if(pt!=NULL && *pt!=0) {
+            FILE *f;
+            char buf[4096];
+            size_t l;
+            f=fopen(pt,"r"); if(f!=NULL) {
+                do {
+                  l=fread(buf,1,sizeof(buf),f);
+                  if(l>0 && l<=sizeof(buf)) (void)write(soc,buf,l);
+                } while(l==sizeof(buf));
+                fclose(f);
+            }
+          }
+      }
+      if(strstr(dp,"normalread")!=NULL) goto read;
+      charcnt=0;
+      while(read(soc,pbuf,1)>0 && charcnt<10240) {
+          fputc(pbuf[0],outf); charcnt++;
+      }
+      close(soc);
+      return 0;
     }
     if(strncasecmp(p1,"http://",strlen("http://"))==0) p1+=strlen("http://");
     else if(strncasecmp(p1,"https://",strlen("https://"))==0) {
-	https=1; p1+=strlen("https://");
+      https=1; p1+=strlen("https://");
     }
     p3=strchr(p1,'/'); if(p3==NULL) p3="";
     else {*p3++=0; while(*p3=='/') p3++;}
@@ -181,28 +181,28 @@ int main(int argc, char *argv[])
     snprintf(tbuf,sizeof(tbuf),"GET %s%s HTTP/1.0\r\n%s\r\n\
 Host: %s\r\n\
 %s\r\n\r\n",
-	     pre,p3,cheater1,p1,cheater2);
+           pre,p3,cheater1,p1,cheater2);
     p4=strchr(p1,':'); if(p4==NULL) {
-	if(https) port=443; else port=80;
+      if(https) port=443; else port=80;
     }
     else {*p4++=0; port=atoi(p4);}
     if(https) {
-	soc=gethttps(p1); goto read;
+      soc=gethttps(p1); goto read;
     }
     soc=net_connect(p1);
     (void)write(soc,tbuf,strlen(tbuf));
-    	/* header */
+/* header */
     read: if(soc==-1) return 1;
     c=-1;
     while(read(soc,pbuf,1)>0) {
-	if(pbuf[0]=='\r') continue;
-	fputc(pbuf[0],stderr);
-	if((c=='\n') && (pbuf[0]=='\n')) break; else c=pbuf[0];
+      if(pbuf[0]=='\r') continue;
+      fputc(pbuf[0],stderr);
+      if((c=='\n') && (pbuf[0]=='\n')) break; else c=pbuf[0];
     }
-    	/* body */
+/* body */
     charcnt=0;
     while(read(soc,pbuf,1)>0 && charcnt<MAX_WEBGETFLEN) {
-	fputc(pbuf[0],outf); charcnt++;
+      fputc(pbuf[0],outf); charcnt++;
     }
     close(soc);
     if(outf!=stdout) fclose(outf);

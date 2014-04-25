@@ -15,8 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* This is an internal program,
-	 * used to show statistics of frequentation, module by module. */
+/* This is an internal program,
+ * used to show statistics of frequentation, module by module. */
 
 #include "../wims.h"
 
@@ -40,13 +40,13 @@ void *xmalloc(size_t n)
     void *p;
     p=malloc(n);
     if(p==NULL) {
-	printf("Malloc failure.\n");
-	exit(1);
+      printf("Malloc failure.\n");
+      exit(1);
     }
     return p;
 }
 
-	/* Points to the end of the word */
+/* Points to the end of the word */
 char *find_word_end(char *p)
 {
     int i;
@@ -54,7 +54,7 @@ char *find_word_end(char *p)
     return p;
 }
 
-	/* Strips leading spaces */
+/* Strips leading spaces */
 char *find_word_start(char *p)
 {
     int i;
@@ -62,30 +62,30 @@ char *find_word_start(char *p)
     return p;
 }
 
-	/* Find first occurrence of word */
+/* Find first occurrence of word */
 char *wordchr(char *p, char *w)
 {
     char *r;
 
-    for(r=strstr(p,w);r!=NULL && 
-	( (r>p && !isspace(*(r-1))) || (!isspace(*(r+strlen(w))) && *(r+strlen(w))!=0) );
-	r=strstr(r+1,w));
+    for(r=strstr(p,w);r!=NULL &&
+      ( (r>p && !isspace(*(r-1))) || (!isspace(*(r+strlen(w))) && *(r+strlen(w))!=0) );
+      r=strstr(r+1,w));
     return r;
 }
 
-	/* find a variable in a string (math expression).
-	 * Returns the pointer or NULL. */
+/* find a variable in a string (math expression).
+ * Returns the pointer or NULL. */
 char *varchr(char *p, char *v)
 {
     char *pp; int n=strlen(v);
     for(pp=strstr(p,v); pp!=NULL; pp=strstr(pp+1,v)) {
-	if((pp==p || !isalnum(*(pp-1))) &&
-	   (!isalnum(*(pp+n)) || *(pp+n)==0)) break;
+      if((pp==p || !isalnum(*(pp-1))) &&
+         (!isalnum(*(pp+n)) || *(pp+n)==0)) break;
     }
     return pp;
 }
 
-	/* strip trailing spaces; return string end. */
+/* strip trailing spaces; return string end. */
 char *strip_trailing_spaces(char *p)
 {
     char *pp;
@@ -97,14 +97,14 @@ char *strip_trailing_spaces(char *p)
 void getlangs(void)
 {
     char *p;
-    
+
     langs=getenv("w_wims_site_languages"); if(langs==NULL) langs="";
     for(p=langs;strlen(p)>=2 && languagecnt<MAX_LANGS;
-	p=find_word_start(find_word_end(p))) {
-	if(!isalpha(*p) || !isalpha(*(p+1))) continue;
-	memmove(language[languagecnt],p,2);
-	language[languagecnt][2]=0;
-	languagecnt++;
+      p=find_word_start(find_word_end(p))) {
+      if(!isalpha(*p) || !isalpha(*(p+1))) continue;
+      memmove(language[languagecnt],p,2);
+      language[languagecnt][2]=0;
+      languagecnt++;
     }
 }
 
@@ -114,30 +114,30 @@ int onefile(char *name)
     char *buf, *p, *pe, *p2, *p3;
     long int len,len2;
     int s,i,j,k,t,u;
-    
+
     f=fopen(name,"r"); if(f==NULL) return 0;
     fseek(f,0,SEEK_END);len=ftell(f);
     if(len<=0 || len>MAX_FLEN) return 0;
     fseek(f,0,SEEK_SET);buf=xmalloc(len+1);
     len2=fread(buf,1,len,f);
     if(len2<=0 || len2>len) {
-	free(buf); return 0;
+      free(buf); return 0;
     }
     buf[len2]=0; fclose(f); s=t=u=0;
     for(p=buf;p!=NULL && p<buf+len2;p=pe) {
-	p=find_word_start(p); pe=strchr(p,'\n');
-	if(pe!=NULL) *pe++=0;
-	p2=find_word_end(p);
-	if(*p2!=0) *p2++=0;
-	p2=find_word_start(p2);
-	p3=find_word_start(find_word_end(p2));
-	*find_word_end(p3)=0;
-	if(*p!=0) i=atoi(p); else i=0;
-	if(*p2!=0) j=atoi(p2); else j=0;
-	if(*p3!=0) k=atoi(p3); else k=0;
-	if(t==0 && i<mstart) mstart=i;
-	if(i>=start && i<=end) {s+=j; u+=k;}
-	t=1;
+      p=find_word_start(p); pe=strchr(p,'\n');
+      if(pe!=NULL) *pe++=0;
+      p2=find_word_end(p);
+      if(*p2!=0) *p2++=0;
+      p2=find_word_start(p2);
+      p3=find_word_start(find_word_end(p2));
+      *find_word_end(p3)=0;
+      if(*p!=0) i=atoi(p); else i=0;
+      if(*p2!=0) j=atoi(p2); else j=0;
+      if(*p3!=0) k=atoi(p3); else k=0;
+      if(t==0 && i<mstart) mstart=i;
+      if(i>=start && i<=end) {s+=j; u+=k;}
+      t=1;
     }
     reqs+=s; sites+=u;
     if(modtype==3) return u;
@@ -148,44 +148,44 @@ void onemodule(char *mod)
 {
     char ibuf[MAX_LINELEN+5];
     int i,k,sum;
-    
+
     sum=reqs=sites=0;mstart=end;
     k=onefile(mod);sum+=k;
     for(i=0;i<languagecnt;i++) {
-	snprintf(ibuf,sizeof(ibuf),"%s.%s",mod,language[i]);
-	k=onefile(ibuf);sum+=k;
-	count[i]=k;
+      snprintf(ibuf,sizeof(ibuf),"%s.%s",mod,language[i]);
+      k=onefile(ibuf);sum+=k;
+      count[i]=k;
     }
     if(modtype!=2) tcount=sum;
     else {
-	if(sites>0) tcount=(double) (100*reqs/sites+0.5);
-	else tcount=0;
+      if(sites>0) tcount=(double) (100*reqs/sites+0.5);
+      else tcount=0;
     }
 }
-	
+
 int main()
 {
     char mmbuf[MAX_LINELEN+1];
     char *p1, *p2, *pp;
     int i;
-    
+
     mlist=getenv("ll");
     if(mlist==NULL || *mlist==0) return 1;
     pp=getenv("start"); if(pp==NULL || *pp==0) return 1;
     start=atoi(pp);
     pp=getenv("end"); if(pp==NULL || *pp==0) return 1;
     end=atoi(pp);
-    pp=getenv("w_module_type"); 
+    pp=getenv("w_module_type");
     if(pp==NULL || (*pp!='2' && *pp!='3')) modtype=1; else modtype=*pp-'0';
     getlangs();
     for(p1=find_word_start(mlist);*p1!=0 && !isspace(*p1); p1=find_word_start(p2)) {
-	p2=find_word_end(p1);
-	if(p2-p1>MAX_LINELEN) continue;
-	memmove(mmbuf,p1,p2-p1);mmbuf[p2-p1]=0;
-	onemodule(mmbuf);
-	printf("%d %d %s",tcount,mstart,mmbuf);
-	for(i=0;i<languagecnt;i++) printf(" %d",count[i]);
-	printf("\n");
+      p2=find_word_end(p1);
+      if(p2-p1>MAX_LINELEN) continue;
+      memmove(mmbuf,p1,p2-p1);mmbuf[p2-p1]=0;
+      onemodule(mmbuf);
+      printf("%d %d %s",tcount,mstart,mmbuf);
+      for(i=0;i<languagecnt;i++) printf(" %d",count[i]);
+      printf("\n");
     }
     return 0;
 }

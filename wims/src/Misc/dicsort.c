@@ -15,15 +15,15 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Sort dictionary */
+/* Sort dictionary */
 
 /*************** Customization: change values hereafter ****************/
 
-	/* limit of dictionary entries */
+/* limit of dictionary entries */
 #define entrylim 512*1024
-	/* limit of dictionary length */
-#define diclim	32*1024*1024
-	/* separation character */
+/* limit of dictionary length */
+#define diclim 32*1024*1024
+/* separation character */
 char sepchar=':', grpchar=0;
 
 /***************** Nothing should need change hereafter *****************/
@@ -52,7 +52,7 @@ void *xmalloc(size_t n)
     return p;
 }
 
-	/* Points to the end of the word */
+/* Points to the end of the word */
 char *find_word_end(char *p)
 {
     int i;
@@ -60,7 +60,7 @@ char *find_word_end(char *p)
     return p;
 }
 
-	/* Strips leading spaces */
+/* Strips leading spaces */
 char *find_word_start(char *p)
 {
     int i;
@@ -68,7 +68,7 @@ char *find_word_start(char *p)
     return p;
 }
 
-	/* strip trailing spaces; return string end. */
+/* strip trailing spaces; return string end. */
 char *strip_trailing_spaces(char *p)
 {
     char *pp;
@@ -90,48 +90,48 @@ void sortdic(void)
     qsort(entry,entrycount,sizeof(entry[0]),compare);
 }
 
-	/* modify a string. Bufferlen must be ast least MAX_LINELEN */
+/* modify a string. Bufferlen must be ast least MAX_LINELEN */
 void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
-    
+
     va_start(vp,good);
     vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
-      return;	/* this is an error situation. */
+      return; /* this is an error situation. */
     strcat(buf,bad_end);
     ovlstrcpy(bad_beg,buf);
 }
 
-	/* change all spaces into ' ', and collapse multiple occurences */
+/* change all spaces into ' ', and collapse multiple occurences */
 void singlespace(char *p)
 {
     char *pp, *p2;
     for(pp=p;*pp;pp++) {
-	if(!isspace(*pp)) continue;
-	if(leaveline) {
-	    if(*pp==13) ovlstrcpy(pp,pp+1);
-	    if(*pp=='\n') {
-		pp++;
-		gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-		if(p2>pp) ovlstrcpy(pp,p2); pp--;
-	    }
-	    else {
-		pp++; if(!isspace(*pp) || *pp=='\n') continue;
-		goto gopt;
-	    }
-	}
-	else {
-	    if(*pp!=' ') *pp=' ';
-	    pp++; if(!isspace(*pp)) continue;
-	    for(p2=pp;isspace(*p2);p2++);
-	    ovlstrcpy(pp,p2); pp--;
-	}
+      if(!isspace(*pp)) continue;
+      if(leaveline) {
+          if(*pp==13) ovlstrcpy(pp,pp+1);
+          if(*pp=='\n') {
+            pp++;
+            gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
+            if(p2>pp) ovlstrcpy(pp,p2); pp--;
+          }
+          else {
+            pp++; if(!isspace(*pp) || *pp=='\n') continue;
+            goto gopt;
+          }
+      }
+      else {
+          if(*pp!=' ') *pp=' ';
+          pp++; if(!isspace(*pp)) continue;
+          for(p2=pp;isspace(*p2);p2++);
+          ovlstrcpy(pp,p2); pp--;
+      }
     }
 }
 
-	/* Prepare dictionary */
+/* Prepare dictionary */
 void prepare_dic(void)
 {
     int i;
@@ -148,14 +148,14 @@ void prepare_dic(void)
     if(flen>0 && flen<diclim) dicbuf[flen]=0;
     else return;
     for(i=0,p1=dicbuf;p1!=NULL && *p1!=0 && i<entrylim;p1=p2) {
-	p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
-	pp=strchr(p1,sepchar); if(pp==NULL) continue;
-	*pp++=0;
-	strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-	singlespace(p1);
-	p1=find_word_start(p1); pp=find_word_start(pp);
-	if(*p1==0) continue;
-	entry[i].original=p1; entry[i].replace=pp; i++;
+      p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
+      pp=strchr(p1,sepchar); if(pp==NULL) continue;
+      *pp++=0;
+      strip_trailing_spaces(p1); strip_trailing_spaces(pp);
+      singlespace(p1);
+      p1=find_word_start(p1); pp=find_word_start(pp);
+      if(*p1==0) continue;
+      entry[i].original=p1; entry[i].replace=pp; i++;
     }
     entrycount=i;
 }
@@ -171,23 +171,23 @@ void output(void)
     strcat(dicname,".sorted");
     f=fopen(dicname,"w"); if(f==NULL) return;
     for(i=0;i<entrycount;i++) {
-	if(i>0 && strcmp(entry[i].original,entry[i-1].original)==0
-	   && strcmp(entry[i].replace,entry[i-1].replace)==0)
-	  continue;
-	if(grpchar!=0) {
-	    if(i>0 && strcmp(entry[i].original,entry[i-1].original)==0)
-	      fprintf(f,"%c%s",grpchar, entry[i].replace);
-	    else {
-		if(i>0) fprintf(f,"\n");
-		fprintf(f,"%s%c%s",entry[i].original,sepchar,entry[i].replace);
-		ocount++;
-	    }
-	    
-	}
-	else {
-	    fprintf(f,"%s%c%s\n",entry[i].original,sepchar,entry[i].replace);
-	    ocount++;
-	}
+      if(i>0 && strcmp(entry[i].original,entry[i-1].original)==0
+         && strcmp(entry[i].replace,entry[i-1].replace)==0)
+        continue;
+      if(grpchar!=0) {
+          if(i>0 && strcmp(entry[i].original,entry[i-1].original)==0)
+            fprintf(f,"%c%s",grpchar, entry[i].replace);
+          else {
+            if(i>0) fprintf(f,"\n");
+            fprintf(f,"%s%c%s",entry[i].original,sepchar,entry[i].replace);
+            ocount++;
+          }
+
+      }
+      else {
+          fprintf(f,"%s%c%s\n",entry[i].original,sepchar,entry[i].replace);
+          ocount++;
+      }
     }
     if(grpchar!=0) fprintf(f,"\n");
     fclose(f);
@@ -197,15 +197,15 @@ int main(int argc, char *argv[])
 {
     char *ss, *gr;
     if(argc<2) return -1;
-    
+
     ss=getenv("dicsort_separator");
     if(ss!=NULL && *ss!=0) sepchar=*ss;
     gr=getenv("dicsort_grouping");
     if(gr!=NULL && *gr!=0) grpchar=*gr;
     snprintf(dicname,sizeof(dicname)-128,"%s",argv[1]); prepare_dic();
     if(argc>2) {
-	snprintf(suffixname,sizeof(suffixname),"%s",argv[2]);
-	suffix_dic(suffixname); hassuffix=1;
+      snprintf(suffixname,sizeof(suffixname),"%s",argv[2]);
+      suffix_dic(suffixname); hassuffix=1;
     }
     else suffixname[0]=hassuffix=0;
     sortdic(); output();

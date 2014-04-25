@@ -15,14 +15,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Versatile translation according to a dictionary */
+/* Versatile translation according to a dictionary */
 
 /*************** Customization: change values hereafter ****************/
 
-	/* limit of dictionary entries */
+/* limit of dictionary entries */
 #define entrylim 32768
-	/* limit of dictionary length */
-#define diclim	1024*1024
+/* limit of dictionary length */
+#define diclim 1024*1024
 
 /***************** Nothing should need change hereafter *****************/
 
@@ -55,8 +55,8 @@ int compare(int i1, const char *s2)
     else return k;
 }
 
-	/* searches a list. Returns index if found, -1 if nomatch. 
-	 * Uses binary search, list must be sorted. */
+/* searches a list. Returns index if found, -1 if nomatch.
+ * Uses binary search, list must be sorted. */
 int search_list(struct entry *list, int items, size_t item_size, const char *str)
 {
     int i1,i2,j,k,t,t1;
@@ -69,16 +69,16 @@ int search_list(struct entry *list, int items, size_t item_size, const char *str
     j=items-1; k=list[j].original[0]-c; if(k==0) k=compare(j,str);
     if(k==0) return j;
     if(k>0) for(i1=0,i2=j;i2>i1+1;) {
-	j=i1+(i2-i1)/2;
-	k=list[j].original[0]-c; if(k==0) k=compare(j,str);
-	if(k==0) goto more;
-	if(k>0) {i2=j; continue;}
-	if(k<0) {i1=j; continue;}	
+      j=i1+(i2-i1)/2;
+      k=list[j].original[0]-c; if(k==0) k=compare(j,str);
+      if(k==0) goto more;
+      if(k>0) {i2=j; continue;}
+      if(k<0) {i1=j; continue;}
     }
     if(k>0) {j--;k=compare(j,str);}
     more:
     if((t=list[j].earlier)<0) {
-	if(k==0) return j; else return -1;
+      if(k==0) return j; else return -1;
     }
     if(compare(t,str)!=0) return -1;
     for(j=t1=t,k=0;j<items && list[j].earlier==t1 && (k=compare(j,str))<=0; j++)
@@ -86,43 +86,43 @@ int search_list(struct entry *list, int items, size_t item_size, const char *str
     return t;
 }
 
-	/* change all spaces into ' ', and collapse multiple occurences */
+/* change all spaces into ' ', and collapse multiple occurences */
 void singlespace(char *p)
 {
     char *pp, *p2;
     for(pp=p;*pp;pp++) {
-	if(!isspace(*pp)) continue;
-	if(leaveline) {
-	    if(*pp==13) ovlstrcpy(pp,pp+1);
-	    if(*pp=='\n') {
-		pp++;
-		gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-		if(p2>pp) ovlstrcpy(pp,p2); pp--;
-	    }
-	    else {
-		pp++; if(!isspace(*pp) || *pp=='\n') continue;
-		goto gopt;
-	    }
-	}
-	else {
-	    if(*pp!=' ') *pp=' ';
-	    if(!isspace(*(pp+1))) continue;
-	    for(pp++,p2=pp;isspace(*p2);p2++);
-	    ovlstrcpy(pp,p2); pp--;
-	}
+      if(!isspace(*pp)) continue;
+      if(leaveline) {
+          if(*pp==13) ovlstrcpy(pp,pp+1);
+          if(*pp=='\n') {
+            pp++;
+            gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
+            if(p2>pp) ovlstrcpy(pp,p2); pp--;
+          }
+          else {
+            pp++; if(!isspace(*pp) || *pp=='\n') continue;
+            goto gopt;
+          }
+      }
+      else {
+          if(*pp!=' ') *pp=' ';
+          if(!isspace(*(pp+1))) continue;
+          for(pp++,p2=pp;isspace(*p2);p2++);
+          ovlstrcpy(pp,p2); pp--;
+      }
     }
 }
 
 #include "suffix.c"
 
-	/* Prepare dictionary */
+/* Prepare dictionary */
 void prepare_dic(char *fname)
 {
     int i,l;
     FILE *dicf;
     char *p1, *p2, *pp;
     long int flen;
-    
+
     entrycount=0;
     dicf=fopen(fname,"r"); if(dicf==NULL) return;
     fseek(dicf,0,SEEK_END);flen=ftell(dicf); fseek(dicf,0,SEEK_SET);
@@ -132,35 +132,35 @@ void prepare_dic(char *fname)
     if(flen>0 && flen<diclim) dicbuf[flen]=0;
     else return;
     for(i=0,p1=dicbuf;p1!=NULL && *p1!=0 && i<entrylim;p1=p2) {
-	p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
-	pp=strchr(p1,':'); if(pp==NULL) continue;
-	*pp++=0;
-	strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-	singlespace(p1);
-	p1=find_word_start(p1); pp=find_word_start(pp);
-	if(*p1==0) continue;
-	if(has_digits==0) {
-	    char *p;
-	    for(p=p1;*p!=0 && p<pp && !isdigit(*p);p++);
-	    if(isdigit(*p)) has_digits=1;
-	}
-	entry[i].original=(unsigned char*)p1; 
-        entry[i].replace=(unsigned char*)pp; 
-	entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
-	if(i>0) {
-	    int l1,l2;
-	    l1=entry[i-1].earlier; if(l1>=0) l2=entry[l1].olen;
-	    else {l2=entry[i-1].olen;l1=i-1;}
-	    if(l>l2 && isspace(p1[l2])
-	       && strncmp((char*)entry[l1].original,p1,l2)==0) 
-	      entry[i].earlier=entry[i-1].earlier=l1;
-	}
-	i++;
+      p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
+      pp=strchr(p1,':'); if(pp==NULL) continue;
+      *pp++=0;
+      strip_trailing_spaces(p1); strip_trailing_spaces(pp);
+      singlespace(p1);
+      p1=find_word_start(p1); pp=find_word_start(pp);
+      if(*p1==0) continue;
+      if(has_digits==0) {
+          char *p;
+          for(p=p1;*p!=0 && p<pp && !isdigit(*p);p++);
+          if(isdigit(*p)) has_digits=1;
+      }
+      entry[i].original=(unsigned char*)p1;
+      entry[i].replace=(unsigned char*)pp;
+      entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
+      if(i>0) {
+          int l1,l2;
+          l1=entry[i-1].earlier; if(l1>=0) l2=entry[l1].olen;
+          else {l2=entry[i-1].olen;l1=i-1;}
+          if(l>l2 && isspace(p1[l2])
+             && strncmp((char*)entry[l1].original,p1,l2)==0)
+            entry[i].earlier=entry[i-1].earlier=l1;
+      }
+      i++;
     }
     entrycount=i;
 }
 
-	/* now make the translation. */
+/* now make the translation. */
 void translate(char *p)
 {
     char *p1, *p2, *pp;
@@ -169,35 +169,35 @@ void translate(char *p)
     if(entrycount<=0 && suffixcnt<=0) return;
     snprintf(outbuf,sizeof(outbuf),"%s",p);
     for(p1=find_word_start(outbuf);
-	p1!=NULL && p1-outbuf<MAX_LINELEN && *p1!=0;
-	p1=p2) {
-	p2=find_word_end(p1);
-	for(pp=p1;pp<p2 && 
-	    ((!has_digits && isalpha(*pp)) ||
-	     (has_digits && isalnum(*pp)) || (*pp&128)!=0 ||
-	     strchr("_",*pp)!=NULL);pp++);
-	p2=find_word_start(p2);
-	if(pp==p1 || 
-	   (has_digits==0 && isdigit(*pp)) || 
-	   (*pp!=0 && !isspace(*pp) && strchr(",.?!/;",*pp)==NULL)) continue;
-	t=search_list(entry,entrycount,sizeof(entry[0]),p1);
-	if(t<0) {
-	    switch(unknown_type) {
-		case unk_leave: break;
-		case unk_delete: {
-		    ovlstrcpy(p1,find_word_start(pp)); p2=p1;
-		    break;
-		}
-		case unk_replace: {
-		    string_modify(outbuf,p1,pp,unkbuf);
-		    p2=find_word_start(p1+strlen(unkbuf));
-		}
-	    }
-	    continue;
-	}
-	string_modify(outbuf,p1,p1+strlen((char*)entry[t].original),
-		      (char*)entry[t].replace);
-	p2=find_word_start(p1+strlen((char*)entry[t].replace));
+      p1!=NULL && p1-outbuf<MAX_LINELEN && *p1!=0;
+      p1=p2) {
+      p2=find_word_end(p1);
+      for(pp=p1;pp<p2 &&
+          ((!has_digits && isalpha(*pp)) ||
+           (has_digits && isalnum(*pp)) || (*pp&128)!=0 ||
+           strchr("_",*pp)!=NULL);pp++);
+      p2=find_word_start(p2);
+      if(pp==p1 ||
+         (has_digits==0 && isdigit(*pp)) ||
+         (*pp!=0 && !isspace(*pp) && strchr(",.?!/;",*pp)==NULL)) continue;
+      t=search_list(entry,entrycount,sizeof(entry[0]),p1);
+      if(t<0) {
+          switch(unknown_type) {
+            case unk_leave: break;
+            case unk_delete: {
+                ovlstrcpy(p1,find_word_start(pp)); p2=p1;
+                break;
+            }
+            case unk_replace: {
+                string_modify(outbuf,p1,pp,unkbuf);
+                p2=find_word_start(p1+strlen(unkbuf));
+            }
+          }
+          continue;
+      }
+      string_modify(outbuf,p1,p1+strlen((char*)entry[t].original),
+                  (char*)entry[t].replace);
+      p2=find_word_start(p1+strlen((char*)entry[t].replace));
     }
     snprintf(p,MAX_LINELEN,"%s",outbuf);
 }

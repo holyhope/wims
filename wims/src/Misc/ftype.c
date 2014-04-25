@@ -15,11 +15,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Check type of a file */
+/* Check type of a file */
 
 /*************** Customization: change values hereafter ****************/
 
-	/* limit of data buffers */
+/* limit of data buffers */
 #define buflim 1024*1024*16
 
 /***************** Nothing should need change hereafter *****************/
@@ -38,7 +38,7 @@ void *xmalloc(size_t n)
     return p;
 }
 
-	/* get the file */
+/* get the file */
 void prepare_file(void)
 {
     FILE *f;
@@ -68,24 +68,24 @@ int main(int argc, char *argv[])
     snprintf(filename,sizeof(filename)-128,"%s",p);
     prepare_file();
     for(p=filebuf;p<filebuf+filelen;p++) {
-	if((*p>=0 && *p<=6) || (127&*p)<=1) 
-	    {ftype="binary"; goto fin;}
+      if((*p>=0 && *p<=6) || (127&*p)<=1)
+          {ftype="binary"; goto fin;}
     }
     for(p=strchr(filebuf,'<'); p!=NULL; p=strchr(p,'<')) {
-	p++;
-	if((strncasecmp(p,"body",4)==0 && !isalnum(*(p+4))) ||
-	   (strncasecmp(p,"html",4)==0 && !isalnum(*(p+4))) ||
-	   (strncasecmp(p,"img",3)==0 && isspace(*(p+3))) ||
-	   strncasecmp(p,"p>",2)==0 ||
-	   strncasecmp(p,"/a>",3)==0) {
-	    ftype="html"; goto fin;
-	}
+      p++;
+      if((strncasecmp(p,"body",4)==0 && !isalnum(*(p+4))) ||
+         (strncasecmp(p,"html",4)==0 && !isalnum(*(p+4))) ||
+         (strncasecmp(p,"img",3)==0 && isspace(*(p+3))) ||
+         strncasecmp(p,"p>",2)==0 ||
+         strncasecmp(p,"/a>",3)==0) {
+          ftype="html"; goto fin;
+      }
     }
     if(strstr(filebuf,"\\begin{")!=NULL ||
        strstr(filebuf,"\\end{")!=NULL ||
        (strchr(filebuf,'$')!=NULL && strchr(filebuf,'\\')!=NULL &&
-	strchr(filebuf,'{')!=NULL)) {
-	ftype="latex"; goto fin;
+      strchr(filebuf,'{')!=NULL)) {
+      ftype="latex"; goto fin;
     }
     fin: printf("%s",ftype);
     return 0;
