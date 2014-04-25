@@ -41,7 +41,7 @@ int start_varcnt=0;
 int step_defined=0;
 int embedcnt=0;
 char *badpar=NULL;
-char *mdef;	/* external definition */
+char *mdef; /* external definition */
 char *format="html";
 
 int ao[256];
@@ -61,7 +61,7 @@ char outfname[1024];
 #include "outexec.c"
 #include "process.c"
 
-enum {t_tit, t_head, t_def, t_wims, t_form, t_main, t_plot, t_hint, 
+enum {t_tit, t_head, t_def, t_wims, t_form, t_main, t_plot, t_hint,
       t_ans, t_choi, t_cond, t_cond2, t_sol, t_feedback, t_help, t_step, t_latex};
 
 struct {
@@ -69,57 +69,57 @@ struct {
     int  type, parmcnt;
     void (*processor)(char *p[MAX_PARM]);
 } directives[]={
-      {"answer",	t_ans ,5,	p_answer},
-      {"author",	t_head,1,	p_author},
-      {"choice",	t_choi,5,	p_choice},
-      {"complex",	t_def ,2,	p_complex},
-      {"computeanswer",	t_head,1,	p_computeanswer},
-      {"condition",	t_cond,4,	p_condition},
-      {"conditions",	t_cond2,1,	p_conditions},
-      {"credits",		t_def ,2,	p_credits},
-      {"css",		t_head,1,	p_css},
-      {"else",		t_def,0,	p_else},
-      {"email",		t_head,1,	p_email},
-      {"endif",		t_def,0,	p_endif},
-      {"endwhile",	t_def,0,	p_endwhile},
-      {"feedback",	t_feedback,2,   p_feedback},
-      {"for",		t_def,1,	p_for},
-      {"format",	t_form,1,	empty},
-      {"function",	t_def ,2,	p_func},
-      {"help",		t_help,1,	p_help},
-      {"hint",		t_hint,1,	p_hint},
-      {"if",		t_def,1,	p_if},
-      {"int",		t_def ,2,	p_int},
-      {"integer",	t_def ,2,	p_int},
-      {"language",	t_head,1,	p_language},
-      {"latex",	    t_latex, 1,	p_latex},
-      {"matrix",	t_def ,2,	p_matrix},
-      {"mdef",		t_def, 2,	p_mdef},
-      {"next",		t_def,0,	p_next},
-      {"nextstep",	t_step, 1,	p_nextstep},
-      {"parameter",	t_def ,2,	p_parm},
-      {"plot",		t_plot,3,	p_plot},
-      {"precision",	t_head,1,	p_precision},
-      {"range",		t_head,1,	p_range},
-      {"rational",	t_def ,2,	p_rational},
-      {"real",		t_def ,2,	p_real},
-      {"reply",		t_ans ,5,	p_answer},
-      {"solution",	t_sol, 1,	p_solution},
-      {"statement",	t_main,1,	p_statement},
-      {"steps",		t_step, 1,	p_steps},
-      {"text",		t_def ,2,	p_text},
-      {"title",		t_tit ,1,	empty},
-      {"title_ca",	t_head ,1,	p_title_ca},
-      {"title_cn",	t_head ,1,	p_title_cn},
-      {"title_en",	t_head ,1,	p_title_en},
-      {"title_es",	t_head ,1,	p_title_es},
-      {"title_fr",	t_head ,1,	p_title_fr},
-      {"title_it",	t_head ,1,	p_title_it},
-      {"title_nl",	t_head ,1,	p_title_nl},
-      {"title_si",	t_head ,1,	p_title_si},
-      {"variable",	t_def ,2,	p_parm},
-      {"while",		t_def,1,	p_while},
-      {"wims",		t_wims,1,	p_wims}
+      {"answer", t_ans ,5, p_answer},
+      {"author", t_head,1, p_author},
+      {"choice", t_choi,5, p_choice},
+      {"complex", t_def ,2, p_complex},
+      {"computeanswer", t_head,1, p_computeanswer},
+      {"condition", t_cond,4, p_condition},
+      {"conditions", t_cond2,1, p_conditions},
+      {"credits",  t_def ,2, p_credits},
+      {"css",  t_head,1, p_css},
+      {"else",  t_def,0, p_else},
+      {"email", t_head,1, p_email},
+      {"endif", t_def,0, p_endif},
+      {"endwhile", t_def,0, p_endwhile},
+      {"feedback", t_feedback,2,   p_feedback},
+      {"for",  t_def,1, p_for},
+      {"format", t_form,1, empty},
+      {"function", t_def ,2, p_func},
+      {"help",  t_help,1, p_help},
+      {"hint",  t_hint,1, p_hint},
+      {"if",  t_def,1, p_if},
+      {"int",  t_def ,2, p_int},
+      {"integer", t_def ,2, p_int},
+      {"language", t_head,1, p_language},
+      {"latex",     t_latex, 1, p_latex},
+      {"matrix", t_def ,2, p_matrix},
+      {"mdef",  t_def, 2, p_mdef},
+      {"next",  t_def,0, p_next},
+      {"nextstep", t_step, 1, p_nextstep},
+      {"parameter", t_def ,2, p_parm},
+      {"plot",  t_plot,3, p_plot},
+      {"precision", t_head,1, p_precision},
+      {"range",  t_head,1, p_range},
+      {"rational", t_def ,2, p_rational},
+      {"real",  t_def ,2, p_real},
+      {"reply",  t_ans ,5, p_answer},
+      {"solution", t_sol, 1, p_solution},
+      {"statement", t_main,1, p_statement},
+      {"steps",  t_step, 1, p_steps},
+      {"text",  t_def ,2, p_text},
+      {"title",  t_tit ,1, empty},
+      {"title_ca", t_head ,1, p_title_ca},
+      {"title_cn", t_head ,1, p_title_cn},
+      {"title_en", t_head ,1, p_title_en},
+      {"title_es", t_head ,1, p_title_es},
+      {"title_fr", t_head ,1, p_title_fr},
+      {"title_it", t_head ,1, p_title_it},
+      {"title_nl", t_head ,1, p_title_nl},
+      {"title_si", t_head ,1, p_title_si},
+      {"variable", t_def ,2, p_parm},
+      {"while",  t_def,1, p_while},
+      {"wims",  t_wims,1, p_wims}
 };
 
 #define dir_no (sizeof(directives)/sizeof(directives[0]))
@@ -130,206 +130,206 @@ struct {
 } define[MAX_DEFINE];
 int define_no, title_no=-1, statement_no=-1;
 
-	/* Debug output */
+/* Debug output */
 void debug(void)
 {
     int i,j,n;
     for(i=0;i<define_no;i++) {
-	printf("%s:	",directives[define[i].type].name);
-	n=directives[define[i].type].parmcnt;
-	for(j=0;j<n;j++) {
-	    printf("%s",define[i].parm[j]);
-	    if(j<n-1) printf(", ");
-	}
-	printf("\n");
+      printf("%s:	",directives[define[i].type].name);
+      n=directives[define[i].type].parmcnt;
+      for(j=0;j<n;j++) {
+          printf("%s",define[i].parm[j]);
+          if(j<n-1) printf(", ");
+      }
+      printf("\n");
     }
 }
 
-	/* get one input file */
+/* get one input file */
 long int getinp(char fname[])
 {
     FILE *input;
     long int siz;
     int i;
-    
+
     input=fopen(fname,"r");
     if(input==NULL) return 0;
     fseek(input,0L,SEEK_END); siz=ftell(input);
     if(siz<=0 || siz>=MAX_FLEN) {
-	fclose(input);
-	if(siz==0) return 0; else return -1;
+      fclose(input);
+      if(siz==0) return 0; else return -1;
     }
     fseek(input,0L,SEEK_SET);
     inpbuf=xmalloc(siz+10);
     siz=fread(inpbuf,1,siz,input); fclose(input);
     if(siz<=0) return -1;
     inpend=inpbuf+siz; *inpend=0;
-    for(i=0;i<siz;i++) 
+    for(i=0;i<siz;i++)
       if(inpbuf[i]==13 || (inpbuf[i]>=0 && inpbuf[i]<=6)) inpbuf[i]=' ';
     return siz;
 }
 
-	/* Processes input file */
+/* Processes input file */
 void process(void)
 {
     char *p, *pe, *pp;
     int i,j;
-    
+
     for(p=inpbuf,define_no=0;define_no<MAX_DEFINE && p<inpend;p++) {
-	if(*p!='\\' && *p!='{' && (*p>6 || *p<0)) continue;
-	if(*p>0 && *p<=6) {
-	    pe=""; switch(*p) {
-		case elsechar: pe="else"; break;
-		case endifchar: pe="endif"; break;
-		case nextchar: pe="next"; break;
-		case whilechar: pe="endwhile"; break;
-	    }
-	    define[define_no].tag=posttag;
-	    define[define_no++].type=
-	      search_list(directives,dir_no,sizeof(directives[0]),pe);
-	    continue;
-	}
-	if(*p=='{') {
-	    if((p=find_matching(p+1,'}'))==NULL) error("Unmatched parentheses???");
-	    continue;
-	}
-	p++;
-	for(pe=p;isalnum(*pe) || *pe=='_'; pe++);
-	pp=find_word_start(pe);
-	if(*pp!='{') {
-	    if(pp>p) p=pp-1;
-	    continue;
-	}
-	/*c=*pe; */*pe=0;
-	i=search_list(directives,dir_no,sizeof(directives[0]),p);
-	if(i<0) {
-	    if(wordchr(mdef,p)!=NULL) {
-		pe=find_matching(pp+1,'}'); if(pe==NULL) error("Unmatched parentheses?");
-		*pe=0;define[define_no].type=
-		  search_list(directives,dir_no,sizeof(directives[0]),"mdef");
-		replace_newline(pp+1);
-		define[define_no].tag=posttag;
-		define[define_no].parm[0]=p;
-		define[define_no].parm[1]=pp+1;
-		define_no++; p=pe;
-		continue;
-	    }
-	    if((p=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
-	    continue;
-	}
-	define[define_no].type=i;
-	define[define_no].tag=posttag;
-	for(j=0;j<MAX_PARM && j<directives[i].parmcnt;j++,pp=find_word_start(pe+1)) {
-	    if(j>0 && *pp!='{') break;
-	    if((pe=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
-	    *pe=0; replace_newline(pp+1);
-	    define[define_no].parm[j]=pp+1;
-	}
-	for(;j<MAX_PARM;j++) define[define_no].parm[j]="";
-	switch(directives[i].type) {
-	    case t_tit: {
-		title_no=define_no; break;
-	    }
-	    case t_ans: {
-		if(aocnt<256) ao[aocnt++]=t_ans;
-		answercnt++; goto checkeq;
-	    }
-	    case t_step: {
-		if(step_defined) error("Multiple definition of steps.");
-		step_defined=1;	break;
-	    }
-	    case t_def: {
-		char *pt;
-		if(directives[i].parmcnt<2) {
-		    char *pt2, *pt3;
-		    pt=find_word_start(pe+1); pt3="";
-		    if(*pt!='{') pt2=pt;
-		    else {
-			*pt=' '; pt2=find_matching(pt,'}');
-			if(pt2==NULL) error("Unmatched parentheses?");
-			pt3=find_word_start(pt2+1);
-		    }
-		    if(strcmp(directives[i].name,"if")==0) {
-			if(*pt3=='{') {
-			    *pt2=elsechar; *pt3=' ';
-			    pt2=find_matching(pt3,'}');
-			    if(pt2==NULL) error("Unmatched parentheses?");
-			}
-			*pt2=endifchar;
-		    }
-		    else {
-			if(strcmp(directives[i].name,"while")==0) *pt2=whilechar;
-			else {
-			    varcnt++; *pt2=nextchar;
-			}
-		    }
-		    break;
-		}
-		varcnt++;
-		checkeq:
-		if(*(define[define_no].parm[1])==0 && 
-		   (pt=strchr(define[define_no].parm[0],'='))!=NULL) {
-		    if(*(pt-1)==':') *(pt-1)=0;
-		    *pt=0; define[define_no].parm[1]=pt+1;
-		}
-		break;
-	    }
-	    case t_choi: {
-		if(aocnt<256) ao[aocnt++]=t_choi;
-		choicecnt++; break;
-	    }
-	    case t_cond: {
-		conditioncnt++; break;
-	    }
-	    case t_main: {
-		if(posttag) error("Multiple definition of statement.");
-		posttag=1; if(prevarcnt<0) prevarcnt=varcnt;
-		statement_no=define_no; break;
-	    }
-	    case t_plot: {
-		has_plot=1; break;
-	    }
-	    case t_form: {
-		char *s=define[define_no].parm[0];
-		s=find_word_start(s);*find_word_end(s)=0;
-		if(strcasecmp(s,"html")==0) format="html";
-		if(strcasecmp(s,"tex")==0) format="tex";
-		break;
-	    }
-	    case t_feedback: {
-		feedbackcnt++; break;
-	    }
-	}
-	define_no++; p=pe;
+      if(*p!='\\' && *p!='{' && (*p>6 || *p<0)) continue;
+      if(*p>0 && *p<=6) {
+          pe=""; switch(*p) {
+            case elsechar: pe="else"; break;
+            case endifchar: pe="endif"; break;
+            case nextchar: pe="next"; break;
+            case whilechar: pe="endwhile"; break;
+          }
+          define[define_no].tag=posttag;
+          define[define_no++].type=
+            search_list(directives,dir_no,sizeof(directives[0]),pe);
+          continue;
+      }
+      if(*p=='{') {
+          if((p=find_matching(p+1,'}'))==NULL) error("Unmatched parentheses???");
+          continue;
+      }
+      p++;
+      for(pe=p;isalnum(*pe) || *pe=='_'; pe++);
+      pp=find_word_start(pe);
+      if(*pp!='{') {
+          if(pp>p) p=pp-1;
+          continue;
+      }
+/*c=*pe; */*pe=0;
+      i=search_list(directives,dir_no,sizeof(directives[0]),p);
+      if(i<0) {
+          if(wordchr(mdef,p)!=NULL) {
+            pe=find_matching(pp+1,'}'); if(pe==NULL) error("Unmatched parentheses?");
+            *pe=0;define[define_no].type=
+              search_list(directives,dir_no,sizeof(directives[0]),"mdef");
+            replace_newline(pp+1);
+            define[define_no].tag=posttag;
+            define[define_no].parm[0]=p;
+            define[define_no].parm[1]=pp+1;
+            define_no++; p=pe;
+            continue;
+          }
+          if((p=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
+          continue;
+      }
+      define[define_no].type=i;
+      define[define_no].tag=posttag;
+      for(j=0;j<MAX_PARM && j<directives[i].parmcnt;j++,pp=find_word_start(pe+1)) {
+          if(j>0 && *pp!='{') break;
+          if((pe=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
+          *pe=0; replace_newline(pp+1);
+          define[define_no].parm[j]=pp+1;
+      }
+      for(;j<MAX_PARM;j++) define[define_no].parm[j]="";
+      switch(directives[i].type) {
+          case t_tit: {
+            title_no=define_no; break;
+          }
+          case t_ans: {
+            if(aocnt<256) ao[aocnt++]=t_ans;
+            answercnt++; goto checkeq;
+          }
+          case t_step: {
+            if(step_defined) error("Multiple definition of steps.");
+            step_defined=1; break;
+          }
+          case t_def: {
+            char *pt;
+            if(directives[i].parmcnt<2) {
+                char *pt2, *pt3;
+                pt=find_word_start(pe+1); pt3="";
+                if(*pt!='{') pt2=pt;
+                else {
+                  *pt=' '; pt2=find_matching(pt,'}');
+                  if(pt2==NULL) error("Unmatched parentheses?");
+                  pt3=find_word_start(pt2+1);
+                }
+                if(strcmp(directives[i].name,"if")==0) {
+                  if(*pt3=='{') {
+                      *pt2=elsechar; *pt3=' ';
+                      pt2=find_matching(pt3,'}');
+                      if(pt2==NULL) error("Unmatched parentheses?");
+                  }
+                  *pt2=endifchar;
+                }
+                else {
+                  if(strcmp(directives[i].name,"while")==0) *pt2=whilechar;
+                  else {
+                      varcnt++; *pt2=nextchar;
+                  }
+                }
+                break;
+            }
+            varcnt++;
+            checkeq:
+            if(*(define[define_no].parm[1])==0 &&
+               (pt=strchr(define[define_no].parm[0],'='))!=NULL) {
+                if(*(pt-1)==':') *(pt-1)=0;
+                *pt=0; define[define_no].parm[1]=pt+1;
+            }
+            break;
+          }
+          case t_choi: {
+            if(aocnt<256) ao[aocnt++]=t_choi;
+            choicecnt++; break;
+          }
+          case t_cond: {
+            conditioncnt++; break;
+          }
+          case t_main: {
+            if(posttag) error("Multiple definition of statement.");
+            posttag=1; if(prevarcnt<0) prevarcnt=varcnt;
+            statement_no=define_no; break;
+          }
+          case t_plot: {
+            has_plot=1; break;
+          }
+          case t_form: {
+            char *s=define[define_no].parm[0];
+            s=find_word_start(s);*find_word_end(s)=0;
+            if(strcasecmp(s,"html")==0) format="html";
+            if(strcasecmp(s,"tex")==0) format="tex";
+            break;
+          }
+          case t_feedback: {
+            feedbackcnt++; break;
+          }
+      }
+      define_no++; p=pe;
     }
 }
 
-	/* Output one category */
+/* Output one category */
 void _out(int typ)
 {
     int i, t;
     for(i=0;i<define_no;i++) {
-	t=define[i].type;
-	if(directives[t].type!=typ) continue;
-	if(typ==t_def && define[i].tag!=deftag) continue;
-	directives[t].processor(define[i].parm);
+      t=define[i].type;
+      if(directives[t].type!=typ) continue;
+      if(typ==t_def && define[i].tag!=deftag) continue;
+      directives[t].processor(define[i].parm);
     }
 }
 
-	/* Output the result */
+/* Output the result */
 void output(void)
 {
     int i,k;
-    	/* no statement, nothing to do */
+/* no statement, nothing to do */
     if(statement_no<0) error("No statement defined.");
     outf=fopen(outfname,"w"); if(outf==NULL) error("Unable to open output file.");
     if(title_no>=0 && *(define[title_no].parm[0])!=0) {
-	char *p=define[title_no].parm[0];
-	if(strlen(p)>MAX_TITLEN) *(p+MAX_TITLEN)=0;
-	fprintf(outf,"!set title=%s\n",p);
+      char *p=define[title_no].parm[0];
+      if(strlen(p)>MAX_TITLEN) *(p+MAX_TITLEN)=0;
+      fprintf(outf,"!set title=%s\n",p);
     }
     else {
-	fprintf(outf,"!set title=No title\n");
+      fprintf(outf,"!set title=No title\n");
     }
     fprintf(outf,"!if $wims_read_parm!=$empty\n\
  !goto $wims_read_parm\n\
@@ -337,13 +337,13 @@ void output(void)
     fprintf(outf,"oef2wims_version=%s\n",VERSION);
     _out(t_head);
     if(aocnt>0) {
-	int i;
-	fprintf(outf,"\nansorder=");
-	for(i=0;i<aocnt;i++) {
-	    if(ao[i]==t_ans) fprintf(outf,"r");
-	    else fprintf(outf,"c");
-	    if(i<aocnt-1) fprintf(outf,",");
-	}	
+      int i;
+      fprintf(outf,"\nansorder=");
+      for(i=0;i<aocnt;i++) {
+          if(ao[i]==t_ans) fprintf(outf,"r");
+          else fprintf(outf,"c");
+          if(i<aocnt-1) fprintf(outf,",");
+      }
     }
     if(prevarcnt<varcnt) post=varcnt-prevarcnt; else post=0;
     fprintf(outf,"\n\
@@ -366,11 +366,11 @@ val5=$confparm4\n\n\
 !if $status=waiting\n\
  !exit\n\
 !endif\n\n",varcnt+1,prevarcnt,post,answercnt,choicecnt,
-	    conditioncnt,feedbackcnt,format);
+          conditioncnt,feedbackcnt,format);
     varcnt=start_varcnt; deftag=0;
     _out(t_def);
     _out(t_step);
-/*    _out(t_wims);	*/
+/*    _out(t_wims); */
     _out(t_plot);
     answercnt=1; _out(t_ans);
     choicecnt=1; _out(t_choi);
@@ -381,14 +381,14 @@ val5=$confparm4\n\n\
     _out(t_sol);
     _out(t_latex);
     fprintf(outf,"\n!goto stat\n");
-	/* second run to output execution codes */
+/* second run to output execution codes */
     p_statement(NULL);
     p_hint(NULL);
     p_help(NULL);
     p_solution(NULL);
     p_latex(NULL);
     if(post) {
-	fprintf(outf,"\n!exit\n\n:postdef\n"); _out(t_def);
+      fprintf(outf,"\n!exit\n\n:postdef\n"); _out(t_def);
     }
     fprintf(outf,"\n!exit\n\n:feedback\n");
     _out(t_feedback);
@@ -396,9 +396,9 @@ val5=$confparm4\n\n\
     _out(t_cond2); conditioncnt=1; _out(t_cond);
     fprintf(outf,"\n!exit\n\n:stat\nvsavelist=");
     for(k=0,i=1;i<prevars;i++) {
-	if(param[i].save==0) continue;
-	if(k>0) fprintf(outf,","); k++;
-	fprintf(outf,"%d",i);
+      if(param[i].save==0) continue;
+      if(k>0) fprintf(outf,","); k++;
+      fprintf(outf,"%d",i);
     }
     fprintf(outf,"\nembedcnt=%d\n",embedcnt);
     fclose(outf);
@@ -411,17 +411,17 @@ int main(int argc, char *argv[])
     substitute=substit;
     if(argc<=1) return 0; /* no input file */
     if(argc==2 && strcmp(argv[1],"table")==0) {
-	if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;
-	if(verify_order(specialfn, specialfn_no, sizeof(specialfn[0]))) return -1;
-	puts("Table orders OK."); return 0;
+      if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;
+      if(verify_order(specialfn, specialfn_no, sizeof(specialfn[0]))) return -1;
+      puts("Table orders OK."); return 0;
     }
     if(argc>2) snprintf(outfname,sizeof(outfname),"%s",argv[2]);
     else {
-	char *fe;
-	snprintf(outfname,sizeof(outfname)-10,"%s",argv[1]);
-	fe=outfname+strlen(outfname)-strlen(".oef");
-	if(strcasecmp(fe,".oef")==0) *fe=0;
-	strcat(fe,".def");
+      char *fe;
+      snprintf(outfname,sizeof(outfname)-10,"%s",argv[1]);
+      fe=outfname+strlen(outfname)-strlen(".oef");
+      if(strcasecmp(fe,".oef")==0) *fe=0;
+      strcat(fe,".def");
     }
     mdef=getenv("oef2wims_mdef"); if(mdef==NULL) mdef="";
     printf("%s..",argv[1]);
