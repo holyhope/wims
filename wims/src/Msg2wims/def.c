@@ -17,39 +17,39 @@
 
 int dollar_subst=1;
 
-	/* variable substitution. buffer p must have MAX_LINELEN */
+/* variable substitution. buffer p must have MAX_LINELEN */
 void subst(char *p)
 {
     char *pp, *pe;
 
     for(pp=p;pp-p<MAX_LINELEN && *pp; pp++) {
-	if(*pp=='	') *pp=' ';
-	if(*pp=='\n') *pp='	';
-	if(*pp=='$' && dollar_subst) {
-	    string_modify(p,pp,pp+1,"&#36;");
-	    pp++; continue;
-	}
-	if(*pp=='!' && isalnum(*(pp+1)) && dollar_subst) {
-	    string_modify(p,pp,pp+1,"&#33;");
-	    pp++; continue;
-	}
-	if(*pp!='\\') continue;
-	if(*(pp+1)=='\\') {
-	    pp++; continue;
-	}
-	if(!isalpha(*(pp+1))) continue;
-	for(pe=pp+1;isalnum(*pe) || *pe=='_'; pe++);
-	if(pe-pp<MAX_NAMELEN && *pe=='[') {
-	    char *pt;
-	    pt=find_matching(pe+1,']'); if(pt!=NULL && pt-pe<MAX_LINELEN) {
-		string_modify(p,pt+1,pt+1,")");
-		string_modify(p,pp,pp+1,"$(m_");
-	    }
-	    else goto nobrack;
-	}
-	else {
-	    nobrack: string_modify(p,pp,pp+1,"$m_");
-	}
+      if(*pp=='	') *pp=' ';
+      if(*pp=='\n') *pp='	';
+      if(*pp=='$' && dollar_subst) {
+          string_modify(p,pp,pp+1,"&#36;");
+          pp++; continue;
+      }
+      if(*pp=='!' && isalnum(*(pp+1)) && dollar_subst) {
+          string_modify(p,pp,pp+1,"&#33;");
+          pp++; continue;
+      }
+      if(*pp!='\\') continue;
+      if(*(pp+1)=='\\') {
+          pp++; continue;
+      }
+      if(!isalpha(*(pp+1))) continue;
+      for(pe=pp+1;isalnum(*pe) || *pe=='_'; pe++);
+      if(pe-pp<MAX_NAMELEN && *pe=='[') {
+          char *pt;
+          pt=find_matching(pe+1,']'); if(pt!=NULL && pt-pe<MAX_LINELEN) {
+            string_modify(p,pt+1,pt+1,")");
+            string_modify(p,pp,pp+1,"$(m_");
+          }
+          else goto nobrack;
+      }
+      else {
+          nobrack: string_modify(p,pp,pp+1,"$m_");
+      }
     }
 }
 
@@ -61,38 +61,38 @@ int prepcnt;
 void putval(char *p, char *name, int ptype)
 {
     switch(ptype) {
-	case pt_int: {
-	    fprintf(outf,"%sm_%s=$[rint(%s)]\n",setpre,name,p);
-	    break;
-	}
-	case pt_real: {
-	    fprintf(outf,"%sm_%s=$[%s]\n",setpre,name,p);
-	    break;
-	}
-	case pt_func: {
-	    fprintf(outf,"%sm_%s=!rawmath %s \n",setpre,name,p);
-	    break;
-	}
-	case pt_complex: {
-	    fprintf(outf,"%st_=!rawmath %s \n%st_=!exec pari print($t_)\n\
+      case pt_int: {
+          fprintf(outf,"%sm_%s=$[rint(%s)]\n",setpre,name,p);
+          break;
+      }
+      case pt_real: {
+          fprintf(outf,"%sm_%s=$[%s]\n",setpre,name,p);
+          break;
+      }
+      case pt_func: {
+          fprintf(outf,"%sm_%s=!rawmath %s \n",setpre,name,p);
+          break;
+      }
+      case pt_complex: {
+          fprintf(outf,"%st_=!rawmath %s \n%st_=!exec pari print($t_)\n\
 %sm_%s=!mathsubst I=i in $t_\n",
-		    setpre,p,setpre,setpre,name);
-	    break;
-	}
-	case pt_matrix: {
-	    fprintf(outf,"%stmp=!trim %s \n\
+                setpre,p,setpre,setpre,name);
+          break;
+      }
+      case pt_matrix: {
+          fprintf(outf,"%stmp=!trim %s \n\
 %sm_%s=!translate internal $	$ to ; in $tmp\n",setpre,p,setpre,name);
-	    break;
-	}
-	case pt_rat: {
-	    fprintf(outf,"%st_=!rawmath %s \n%sm_%s=!exec pari print($t_)\n",
-		    setpre,p,setpre,name);
-	    break;
-	}
-	default: {
-	    fprintf(outf,"%sm_%s=%s\n\n",setpre,name,p);
-	    break;
-	}
+          break;
+      }
+      case pt_rat: {
+          fprintf(outf,"%st_=!rawmath %s \n%sm_%s=!exec pari print($t_)\n",
+                setpre,p,setpre,name);
+          break;
+      }
+      default: {
+          fprintf(outf,"%sm_%s=%s\n\n",setpre,name,p);
+          break;
+      }
     }
 }
 
@@ -104,30 +104,30 @@ void parm(char *p[MAX_PARM], int ptype)
     setpre="!set ";
     p[0]=find_word_start(p[0]);
     if(*p[0]=='\\') p[0]++;
-    	/* bad name */
+/* bad name */
     if(!isalpha(*p[0])) return;
     strip_trailing_spaces(p[0]);
     for(pp=p[0];*pp;pp++) if(!isalnum(*pp) && *pp!='_') {
-	/* bad name and security risk */
-	if(!isspace(*pp)) return;
-	ovlstrcpy(pp,pp+1); pp--;
+/* bad name and security risk */
+      if(!isspace(*pp)) return;
+      ovlstrcpy(pp,pp+1); pp--;
     }
     p[1]=find_word_start(p[1]);
     snprintf(vbuf,sizeof(vbuf),"%s",p[1]); subst(vbuf);
     fprintf(outf,"\n");
     if((pp=strparchr(vbuf,'?'))!=NULL && pp[1]!='?' && check_compare(vbuf)) {
-	char buf[MAX_LINELEN+1];
-	p2=strparchr(pp,':'); *pp++=0; if(p2!=NULL) *p2++=0;
-	snprintf(buf,sizeof(buf),"%s",vbuf);
-	prepcnt=0; fprintf(outf,"!ifval %s \n",vbuf);
-	snprintf(buf,sizeof(buf),"%s",pp);
-	parmprep(buf, ptype); putval(buf,p[0],ptype);
-	if(p2!=NULL) {
-	    snprintf(buf,sizeof(buf),"%s",p2);
-	    fprintf(outf,"!else\n");
-	    parmprep(buf, ptype); putval(buf,p[0],ptype);
-	}
-	fprintf(outf,"!endif\n");return;
+      char buf[MAX_LINELEN+1];
+      p2=strparchr(pp,':'); *pp++=0; if(p2!=NULL) *p2++=0;
+      snprintf(buf,sizeof(buf),"%s",vbuf);
+      prepcnt=0; fprintf(outf,"!ifval %s \n",vbuf);
+      snprintf(buf,sizeof(buf),"%s",pp);
+      parmprep(buf, ptype); putval(buf,p[0],ptype);
+      if(p2!=NULL) {
+          snprintf(buf,sizeof(buf),"%s",p2);
+          fprintf(outf,"!else\n");
+          parmprep(buf, ptype); putval(buf,p[0],ptype);
+      }
+      fprintf(outf,"!endif\n");return;
     }
     prepcnt=0; parmprep(vbuf, ptype);
     putval(vbuf,p[0],ptype);
@@ -150,16 +150,16 @@ struct {
     char *name;
     void (*processor) (char *p[MAX_PARM]);
 } ptype[]={
-    {"complex",		p_complex},
-    {"function",	p_func},
-    {"int",		p_int},
-    {"integer",		p_int},
-    {"matrix",		p_matrix},
-    {"parameter",	p_parm},
-    {"rational",	p_rational},
-    {"real",		p_real},
-    {"text",		p_text},
-    {"variable",	p_parm}
+    {"complex",  p_complex},
+    {"function", p_func},
+    {"int",  p_int},
+    {"integer",  p_int},
+    {"matrix",  p_matrix},
+    {"parameter", p_parm},
+    {"rational", p_rational},
+    {"real",  p_real},
+    {"text",  p_text},
+    {"variable", p_parm}
 };
 
 #define ptypeno (sizeof(ptype)/sizeof(ptype[0]))
