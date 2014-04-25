@@ -23,22 +23,22 @@ void vimg_init (void)
     vimgf=NULL;
     if(vimgfilename[0]==0) vimgf=stdout;
     else {
-	p=getenv("flydraw_filebase");
-	if(p!=NULL && *p!=0) {	/* secured execution */
-	    if(vimgfilename[0]=='/' || strstr(vimgfilename,"..")!=NULL) goto init_fail;
-	    for(p1=vimgfilename;*p1;p1++)
-	      if(!isalnum(*p1) && !isspace(*p1) && strchr("~_-/.",*p1)==NULL) goto init_fail;
-	    p1=getenv("w_wims_session");
-	    if(p1!=NULL && *p1!=0) {
-		snprintf(namebuf,sizeof(namebuf),"../s2/%s/%s",p1,vimgfilename);
-		vimgf=fopen(namebuf,"w");
-	    }
-	    else goto init_fail;
-	}
-	else vimgf=fopen(vimgfilename,"w");
+      p=getenv("flydraw_filebase");
+      if(p!=NULL && *p!=0) { /* secured execution */
+          if(vimgfilename[0]=='/' || strstr(vimgfilename,"..")!=NULL) goto init_fail;
+          for(p1=vimgfilename;*p1;p1++)
+            if(!isalnum(*p1) && !isspace(*p1) && strchr("~_-/.",*p1)==NULL) goto init_fail;
+          p1=getenv("w_wims_session");
+          if(p1!=NULL && *p1!=0) {
+            snprintf(namebuf,sizeof(namebuf),"../s2/%s/%s",p1,vimgfilename);
+            vimgf=fopen(namebuf,"w");
+          }
+          else goto init_fail;
+      }
+      else vimgf=fopen(vimgfilename,"w");
     }
     if(vimgf==NULL) {
-init_fail:	vimg_enable=0; return;
+init_fail: vimg_enable=0; return;
     }
     x1=xstart; y1=ystart;
     x2=sizex/xscale+xstart;
@@ -66,7 +66,7 @@ init_fail:	vimg_enable=0; return;
   0\nENDSEC\n\
   0\nSECTION\n  2\nBLOCKS\n  0\nENDSEC\n\
   0\nSECTION\n  2\nENTITIES\n",
-	    x1,y1,x2,y2, x1,y1,x2,y2);
+     x1,y1,x2,y2, x1,y1,x2,y2);
     vimg_ready=1;
 }
 
@@ -81,25 +81,25 @@ void vimg_arc (double x0,double y0, double rx, double ry,double a1, double a2)
 {
     double mx,my,ratio;
     if(rx==ry) {
-	fprintf(vimgf,"  0\nARC\n  8\n1\n  10\n%f\n  20\n%f\n  40\n%f\n\
+      fprintf(vimgf,"  0\nARC\n  8\n1\n  10\n%f\n  20\n%f\n  40\n%f\n\
   50\n%f\n51\n%f\n",x0,y0,rx,a1,a2);
-	return;
+      return;
     }
     if(rx>ry) {mx=rx;my=0;ratio=ry/rx;}
     else {mx=0;my=ry;ratio=rx/ry;}
     fprintf(vimgf,"  0\nELLIPSE\n  10\n%f\n  20\n%f\n\
   11\n%f\n  21\n%f\n  40\n%f\n  41\n%f\n  42\n%f\n",
-	    x0,y0,mx,my,ratio,
-	    a1*3.14159265/180,a2*3.14159265/180);
-    
+          x0,y0,mx,my,ratio,
+          a1*3.14159265/180,a2*3.14159265/180);
+
 }
 
 void vimg_ellipse (double x0, double y0, double rx, double ry)
 {
     if(rx==ry) {
-	fprintf(vimgf,"  0\nCIRCLE\n  8\n1\n  10\n%f\n  20\n%f\n\
+      fprintf(vimgf,"  0\nCIRCLE\n  8\n1\n  10\n%f\n  20\n%f\n\
   40\n%f\n",x0,y0,rx);
-	return;
+      return;
     }
     else vimg_arc (x0,y0,rx,ry,0,360);
 }
@@ -107,7 +107,7 @@ void vimg_ellipse (double x0, double y0, double rx, double ry)
 void vimg_line (double x1,double y1,double x2,double y2)
 {
     fprintf(vimgf,"  0\nLINE\n  8\n1\n10\n%f\n  20\n%f\n  11\n%f\n  21\n%f\n",
-	   x1,y1,x2,y2);
+         x1,y1,x2,y2);
 }
 
 void vimg_polyline (double xy[], int cnt, int closed)
@@ -115,8 +115,8 @@ void vimg_polyline (double xy[], int cnt, int closed)
     int i;
     fprintf(vimgf,"  0\nPOLYLINE\n  70\n%d\n",closed);
     for(i=0;i<2*cnt;i++,i++) {
-	fprintf(vimgf,"  0\nVERTEX\n  8\n1\n  10\n%f\n  20\n%f\n",
-		xy[i],xy[i+1]);
+      fprintf(vimgf,"  0\nVERTEX\n  8\n1\n  10\n%f\n  20\n%f\n",
+            xy[i],xy[i+1]);
     }
     fprintf(vimgf,"  0\nSEQEND\n");
 }

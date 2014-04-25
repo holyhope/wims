@@ -15,13 +15,13 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* It is this routine which uses print_precision. */
+/* It is this routine which uses print_precision. */
 void float2str(double d, char *p)
 {
     char buf[64], *pp;
     int i;
     if(d==0) {
-	ovlstrcpy(p,"0"); return;
+      ovlstrcpy(p,"0"); return;
     }
     i=10; /* simple precision cookup */
     snprintf(buf,sizeof(buf),"%%.%dg",i);
@@ -30,9 +30,9 @@ void float2str(double d, char *p)
     if(pp>p) ovlstrcpy(p,pp);
 }
 
-	/* substitute variable names by their environment strings
-	 * The buffer pointed to by p must have enough space
-	 * (defined by MAX_LINELEN). */
+/* substitute variable names by their environment strings
+ * The buffer pointed to by p must have enough space
+ * (defined by MAX_LINELEN). */
 char *substit(char *p)
 {
     char *pp, *pe;
@@ -41,17 +41,17 @@ char *substit(char *p)
 
     pe=strchr(p,'"'); if(pe!=NULL) l=pe-p; else l=MAX_LINELEN;
     for(pp=find_name_start(p); *pp!=0 && pp-p<l;
-	pp=find_name_start(pe)) {
-	pe=find_name_end(pp);
-	if((pp>p && !isspace(*(pp-1)) && *(pp-1)!=',') ||
-	   (*pe!=0 && !isspace(*pe) && *pe!=',')) continue;
-	memmove(namebuf,pp,pe-pp); namebuf[pe-pp]=0;
-	i=search_list(nametab,nametab_no,sizeof(nametab[0]),namebuf);
-	if(i<0) continue;
-	if(nametab[i].type==t_prep && preptab[nametab[i].serial].typ==p_font) 
-	  break;
-	if(nametab[i].type==t_color) 
-	  string_modify(p,pp,pe,colortab[nametab[i].serial].def);
+      pp=find_name_start(pe)) {
+      pe=find_name_end(pp);
+      if((pp>p && !isspace(*(pp-1)) && *(pp-1)!=',') ||
+         (*pe!=0 && !isspace(*pe) && *pe!=',')) continue;
+      memmove(namebuf,pp,pe-pp); namebuf[pe-pp]=0;
+      i=search_list(nametab,nametab_no,sizeof(nametab[0]),namebuf);
+      if(i<0) continue;
+      if(nametab[i].type==t_prep && preptab[nametab[i].serial].typ==p_font)
+        break;
+      if(nametab[i].type==t_color)
+        string_modify(p,pp,pe,colortab[nametab[i].serial].def);
     }
     return p;
 }
@@ -60,4 +60,3 @@ double evalue(char *p)
 {
     return strevalue(p);
 }
-    

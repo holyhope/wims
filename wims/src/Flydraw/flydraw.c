@@ -33,16 +33,16 @@ int tranged=0;
 double xscale=1,yscale=1,xstart=0,ystart=0;
 double tstart=0,tend=1,tstep=100,plotjump=200;
 double animstep=0;
-double matrix[]={1,0,0,1};	/* transformation matrix */
-int transform=0;		/* transformation indicator */
-double transx=0,transy=0;	/* translation vector */
+double matrix[]={1,0,0,1}; /* transformation matrix */
+int transform=0;  /* transformation indicator */
+double transx=0,transy=0; /* translation vector */
 int lstep=4;
 ev_variable vartab[MAX_VARS];
 char varnamebuf[MAX_VARNAMEBUF], *varnameptr=varnamebuf;
 int varcnt;
-int vimg=0;			/* 0: no vector image output.
-				 * 1: DXF vector output. */
-int vimg_enable=0;		/* 0: disable. 1: enable. */
+int vimg=0; /* 0: no vector image output.
+             * 1: DXF vector output. */
+int vimg_enable=0; /* 0: disable. 1: enable. */
 int vimg_ready=0;
 FILE *vimgf=NULL;
 double scale_buf[MAX_PARMS];
@@ -70,11 +70,11 @@ double matrix18[] = {1,0,0,1};
 double matrix19[] = {1,0,0,1};
 #define JC_NB_MATRICES 19
 /* la matrice fixant le systeme de coordonnees "mathematiques" dans l'image */
-double *matrices_pavage[] ={ matrix, 
-				matrix01,matrix02,matrix03,matrix04,matrix05,matrix06,matrix07,matrix08,matrix09,
-				matrix10,matrix11,matrix12,matrix13,matrix14,matrix15,matrix16,matrix17,matrix18,matrix19
+double *matrices_pavage[] ={ matrix,
+        matrix01,matrix02,matrix03,matrix04,matrix05,matrix06,matrix07,matrix08,matrix09,
+        matrix10,matrix11,matrix12,matrix13,matrix14,matrix15,matrix16,matrix17,matrix18,matrix19
 
-}; 
+};
 /** les vecteurs suivants sont initialises par la commande setvector numvector,u_1,u_2 */
 /** ils sont remis a zero par resetvector numvector */
 double vector[] = {0,0};
@@ -98,14 +98,14 @@ double vector17[] = {0,0};
 double vector18[] = {0,0};
 double vector19[] = {0,0};
 
-double *vecteurs_pavage[] ={ vector, 
-				vector01,vector02,vector03,vector04,vector05,vector06,vector07,vector08,vector09,
-				vector10,vector11,vector12,vector13,vector14,vector15,vector16,vector17,vector18,vector19
-}; 
+double *vecteurs_pavage[] ={ vector,
+         vector01,vector02,vector03,vector04,vector05,vector06,vector07,vector08,vector09,
+         vector10,vector11,vector12,vector13,vector14,vector15,vector16,vector17,vector18,vector19
+};
 
 /** les coordonnees du parallelograme de pavage = coordonnees "mathematiques" du parallelogramme contenant l'image a recopier **/
 /** on place ces coorodonnes avec setparallelogram xs,ys,xu,yu,xv,yu **/
-/* xs,ys=coordonnees math du point 0,0, 
+/* xs,ys=coordonnees math du point 0,0,
  * xu,yu coordonnees math de l'horizontale
  * xv,yv coordonnees math de la verticale
  * ces coordonnees sont remises a leur valeur par defaut par resetparallelogram
@@ -115,15 +115,15 @@ double parallogram_fonda[]={0,0,100,0,0,100};
 
 /**** Fin modifs JC Fev 06 ******/
 
-	/* Write the image */
+/* Write the image */
 void output(void)
 {
     FILE *out;
 
     if(!image) return;
     if(imagefilename[0]) {
-	out=fopen(imagefilename,"wb");
-	if(out!=NULL) {gdImageGif(image,out); fclose(out); }
+      out=fopen(imagefilename,"wb");
+      if(out!=NULL) {gdImageGif(image,out); fclose(out); }
     }
     else gdImageGif(image,stdout);
     saved=1;
@@ -140,7 +140,7 @@ void process(void)
     char buf[MAX_LINELEN+1];
     int c;
     do {
-	c=ggetline(buf); obj_main(buf);
+      c=ggetline(buf); obj_main(buf);
     }
     while(c!=EOF);
 }
@@ -155,10 +155,10 @@ int main(int argc, char *argv[])
     substitute=substit;
     ev_varcnt=&varcnt; ev_var=vartab;
     if(argc==2 && strcasecmp(argv[1],"table")==0) {
-	if(verify_tables()) {
-	    printf("Table disorder.\n"); return 1;
-	}
-	printf("Table orders OK.\n"); return 0;
+      if(verify_tables()) {
+          printf("Table disorder.\n"); return 1;
+      }
+      printf("Table orders OK.\n"); return 0;
     }
     vartab[0].name="animstep"; vartab[0].value=0;
     varcnt=1;
