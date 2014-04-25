@@ -1670,10 +1670,6 @@ function use_mouse_coordinates(){\
 };",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 
 }
-/* 
-adds 2 inputfields (x:y) and 'ok' button 
-these are used for user drawing with inputfields...
-*/
 
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_area_xy -->\n\
@@ -1686,31 +1682,41 @@ var update_button = document.getElementById(\"update_button\");\
 update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
 }
 
+/* 
+adds 2 inputfields (x:y) and 'ok' | 'nok' button 
+these are used for user drawing with inputfields...
+*/
 void add_input_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xy -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var label_x = \"x\";var label_y = \"y\";\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/></span> \";\
+userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
-update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
+var delete_button = document.getElementById(\"delete_button\");\
+update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
-/* adds 4 inputfields (x1:y1) --- (x2:y2) and 'ok' button */
+/* adds 4 inputfields (x1:y1) --- (x2:y2) and 'ok' + 'nok' button */
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_x1y1x2y2 -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;'/> : <input type='text' size='6' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
+userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;'/> : <input type='text' size='6' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
-update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
+var delete_button = document.getElementById(\"delete_button\");\
+update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
-/* adds 3 inputfields Center (x:y) Radius rand 'ok' button */
+/* adds 3 inputfields Center (x:y) Radius r and 'ok'+'nok' buttons */
 void add_input_xyr(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xyr -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></span> \";\
+userinput_xy_div.innerHTML=\"<span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
-update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
+var delete_button = document.getElementById(\"delete_button\");\
+update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
 /* draw circle(s) / point(s) via 3 inputfields */
@@ -1722,15 +1728,28 @@ num = 1 : a single point / circle
 num = 2 : multiple points / circles
 */
 fprintf(js_include_file,"\n<!-- begin add_input_circle -->\n\
-function user_redraw(){\
+function user_redraw(t){\
+ var type = %d;\
+ var num = %d;\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 1;\
+  userdraw_x.splice(lu,1);\
+  userdraw_y.splice(lu,1);\
+  if(type == 1){\
+    userdraw_radius.splice(lu,1);\
+  };\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+  return;\
+ };\
  var add_x = document.getElementById(\"userinput_x\").value;\
  if( add_x.length > 0 ){\
   var add_y = document.getElementById(\"userinput_y\").value;\
   if( isNaN(add_x - 1) || isNaN(add_y - 1 ) ){alert(\"illegal input \\nI am expecting a single point (x:y) \");return;}\
   var lu = userdraw_x.length;\
-  if( %d == 2 ){\
+  if( type == 2 ){\
    var add_r = document.getElementById(\"userinput_r\").value;if( isNaN(add_r - 1) ){alert(\"illegal radius input \");return;}\
-   if( %d == 1 ){\
+   if( num == 1 ){\
    userdraw_radius[0] = parseInt(Math.abs(xsize*(add_r)/(xmax - xmin)));\
    }\
    else\
@@ -1743,7 +1762,7 @@ function user_redraw(){\
   {\
     userdraw_radius[lu] = userdraw_radius[0];\
   };\
-  if( %d == 1 ){\
+  if( num == 1 ){\
   userdraw_x[0] = x2px(add_x);\
   userdraw_y[0] = y2px(add_y);\
   }\
@@ -1756,12 +1775,12 @@ function user_redraw(){\
   document.getElementById(\"userinput_x\").value=\"\";document.getElementById(\"userinput_y\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
- };};",type,num,num);
+ };};",type,num);
 }
 /* draw crosshairs via inputfields x/y */
 void add_input_crosshair(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_crosshair -->\n\
-function user_redraw(){\
+function user_redraw(t){\
  var add_x = document.getElementById(\"userinput_x\").value;\
  if( add_x.length > 0 ){\
   var add_y = document.getElementById(\"userinput_y\").value;\
@@ -1787,7 +1806,7 @@ function user_redraw(){\
 /* draw arrows via inputfields x/y */
 void add_input_arrow(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_arrow -->\n\
-function user_redraw(){\
+function user_redraw(t){\
   var add_x1 = document.getElementById(\"userinput_x1\").value;\
  if( add_x1.length > 0 ){\
   var add_y1 = document.getElementById(\"userinput_y1\").value;\
@@ -1820,7 +1839,13 @@ function user_redraw(){\
 
 void add_textarea_polyline(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields or textareas -->\n\
-function user_redraw(){\
+function user_redraw(t){\
+ if( t == -1 ){\
+ var lu = userdraw_x.length - 1;\
+ userdraw_x.splice(lu,1);\
+ userdraw_y.splice(lu,1);\
+ draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);cnt = 1;return;\
+ };\
  var add_x = document.getElementById(\"userinput_x\").value;\
  var lx = add_x.length;\
  if( lx > 0 ){\
@@ -1845,8 +1870,15 @@ function user_redraw(){\
 /* draw segment(s) via inputfields x/y */
 void add_input_segment(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_segment -->\n\
-function user_redraw(){\
-  var add_x1 = document.getElementById(\"userinput_x1\").value;\
+function user_redraw(t){\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 2;\
+  userdraw_x.splice(lu,2);\
+  userdraw_y.splice(lu,2);\
+  draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  return;\
+ };\
+ var add_x1 = document.getElementById(\"userinput_x1\").value;\
  if( add_x1.length > 0 ){\
   var add_y1 = document.getElementById(\"userinput_y1\").value;\
   var add_x2 = document.getElementById(\"userinput_x2\").value;\
@@ -1870,7 +1902,7 @@ function user_redraw(){\
   document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
- }\
+ };\
 };",num);
 }
 
