@@ -20,7 +20,7 @@ if [ $test -gt 0 ]; then
   echo "motd -- 1"
  else
   diff -bBq $classdir/$w_nei/.motd .motd >/dev/null || echo "motd -- 2"
- fi 
+ fi
 fi
 
 if [ $w_it_exocnt -gt 0 ]; then

@@ -10,4 +10,3 @@ rm -f score/supervisor >/dev/null
 m=`cat score/* 2>/dev/null | grep -c .`
 n=`cat noscore/* 2>/dev/null | grep -c .`
 echo "$m $n"
-

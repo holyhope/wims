@@ -2,7 +2,7 @@
 $name_neighbor_relation $name_with <span class="wims_emph">$nei_description</span> (<span class="wims_emph">$nei_institution</span>)\
 ($wims_name_nameteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
-<b>$name_neighbor_relation. </b> 
+<b>$name_neighbor_relation. </b>
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
@@ -29,19 +29,19 @@ $name_neighbor_relation $name_with <span class="wims_emph">$nei_description</spa
 <p>
 $name_accept
 !formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
-<input type="submit" value="$wims_name_tosave" /> 
+<input type="submit" value="$wims_name_tosave" />
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
 
 </p>
-!formend 
+!formend
 !endif
 
 
 !if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
    all isitemof $nei_sup,$nei_part
- <p><b>$name_info </b> 
+ <p><b>$name_info </b>
  &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=import $wims_name_help
@@ -55,7 +55,7 @@ $name_accept
 
 !if  $nei isitemof $n_sup
 <p>
-<b>$name_declaration.</b> 
+<b>$name_declaration.</b>
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=share $wims_name_help
@@ -82,14 +82,14 @@ $name_accept
  $name_sharealready <span="wims_emph">$nei_description</span>&nbsp;:<ul>
  !for r in $sharelist
   !if $(sharing_$r)=$nei
-   <li><b><em>$(name_$r)</em></b>. 
+   <li><b><em>$(name_$r)</em></b>.
    !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
 . &nbsp;
 !set wims_ref_class=wims_button_help
    !href cmd=help&special_parm=stopshare $wims_name_help
    </li>
   !endif
- !next r 
+ !next r
  </ul>
 !endif
  </li>
@@ -97,7 +97,7 @@ $name_accept
 <li>
  !form reply
  <input type="hidden" name="changeshare" value="yes" />
-$name_chooseres: 
+$name_chooseres:
 &nbsp;
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=sharable $wims_name_help
@@ -106,7 +106,7 @@ $name_chooseres:
  !set sh=!replace internal , by , $$name_ in $$name_$sharablelist
  !formcheckbox mksharable list $sharablelist prompt $sh
  <input type="submit" value="$wims_name_tosave" />
- 
+
 !formend
 !if $nsharable!=$empty
 <br /><span class="wims_warning">$wims_name_warning</span>: $name_warning_authorized
