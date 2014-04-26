@@ -7,4 +7,3 @@ window.open("$wims_ref_name?wims_window=new&module=adm/enc.$lang&session=$(wims_
 </script>
 
 !changeto wimshome/public_html/modules/adm/enc.$lang/welcome.phtml
-

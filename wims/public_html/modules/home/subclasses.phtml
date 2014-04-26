@@ -27,7 +27,7 @@
 !else
       !set u_=$wims_user
 !endif
-     
+
 !if $subclass1=$empty
   !goto end
 !endif
@@ -56,7 +56,7 @@
      !set alreadyseen=!append item $c to $alreadyseen
      !set sub_=!record 0 of wimshome/log/classes/$c/courses
      !set sub_cnt=!linecnt $sub_
-     !if $sub_cnt>0 
+     !if $sub_cnt>0
        <ul><!--2-->
       !for k_ =1 to $sub_cnt
        !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
@@ -70,7 +70,7 @@
         !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
         <li>
         <span class="wims_classes_direct_course">
-        !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
+        !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3])
        ($(CL_Name[4]))
         </span>
         </li>
@@ -78,7 +78,7 @@
        </li>
       !next k_
        </ul><!end--2-->
-      !endif sub_cnt>0 
+      !endif sub_cnt>0
         !if $c=$wims_class
          !goto end
         !endif

@@ -15,7 +15,7 @@ V_cls = Virtuele klaslokalen
 wims_name_n_participant = Studenten bereik
 wims_name_n_supervisor = Docenten bereik
 wims_name_mail = Schrijf naar de docent
-wims_name_pref = Instellingen 
+wims_name_pref = Instellingen
 wims_name_ref = Bezoekers
 wims_name_stat = Serverstatistieken
 
@@ -69,13 +69,13 @@ U_clickhere = Klik hier
 U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
 name_gotosupervise=Neem contact op met de server administrator om ook andere klassen als supervisor te bezoeken.
- 
+
 SU_greet = !nosubst Welkom, $wims_firstname $wims_lastname!<br/>\
 Welkom op de Onderhouds pagina van uw klas.<br/>
 SU_Bhome = Terug naar de supervisor pagina
 SU_log = supervisor login
-SU_exp1 = Deze klas is verlopen op:  
-SU_exp2 = 
+SU_exp1 = Deze klas is verlopen op:
+SU_exp2 =
 
 SU_nosheet = Uw klas heeft nog geen lesmateriaal ter beschikking.
 SU_shlist = Lesmateriaal van de klas
@@ -85,7 +85,7 @@ SU_nopartconnected=Er is op dit moment geen student ingelogd
 SU_numpartconnected=!nosubst Er zijn op dit moment $wims_numpartconnected student(en) ingelogd
 U_supconnected=Uw docent is ingelogd.
 
-wims_name_SE_list = Leerlingen en cijfers 
+wims_name_SE_list = Leerlingen en cijfers
 wims_name_n_participant = Zo zien leerlingen deze pagina
 
 wims_name_SE_mod = Bericht van de dag
@@ -117,4 +117,3 @@ CL_otherNames = Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 !set name_dep = Je cijfer voor deze oefening moet verbeterd worden
 !set name_dep2 = voor dat je deze oefening mag proberen.
 !set name_dep3 = terug naar het werkblad.
-

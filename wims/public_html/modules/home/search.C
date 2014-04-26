@@ -42,7 +42,7 @@ gotlim=1000
 gotm=!words2lines $gotm
 gotm=!line 1 to $gotlim2 of $gotm
 gotcnt=!linecnt $gotm
- 
+
 translator_switch=leaveline
 dictionary=$basedir/title
 gott=!exec translator $gotm
