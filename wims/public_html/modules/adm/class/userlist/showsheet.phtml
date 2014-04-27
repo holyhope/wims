@@ -122,7 +122,7 @@ $name_post
   <td>
    !href cmd=reply&job=getuser&getuser=$uu $name_student1
    !if $uu isitemof $wims_connectedlogin
-    <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px;" alt="connect"/>
+    <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px;" alt="connect" />
    !endif
   </td>
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
@@ -151,6 +151,7 @@ $name_post
     !endif
     !for k=1 to $nbexo
       !let t=!word $k of $tmp
+      !let try=!getscoretry user=$uu sheet=$numshowsheet work=$k
       !if $t!=0
        !increase nonzero_$k
       !endif
@@ -162,7 +163,7 @@ $name_post
          !let t=100
         !endif
       !endif
-      !if $t>0
+      !if $try>0
        !read adm/class/colors $[ceil(10*$t/$sign1)]
        <td style=$style_note>
        $t $sign
