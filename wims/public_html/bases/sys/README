@@ -3,14 +3,14 @@ WIMS' search engine and als
 
 WIMS' search engine works in two stages:
 
-1) update of index files when server data is changed (module added...), 
+1) update of index files when server data is changed (module added...),
    typically once a day.
 2) use of index files at each user's request to find some activities
 
 
-Here are some details : 
+Here are some details :
 
-1) update of index files       
+1) update of index files
 ===========================
 A series of scripts creates a set of auxiliary files (generally
 stored in ~/public_html/bases/sys/, see description further down) and
@@ -20,17 +20,17 @@ a list of "keywords" (stored in ~/public_html/bases/site/).
 created on earlier stages are used in subsequent stages). In general
 the whole process is run by the script ~/bin/mkindex.
 
-* Firstly a series of 3 perl scripts (mkdomain, mkwgrp, modindclass), 
-that ~/bin/mkindex.sh calls via ~/public_html/bases/sys/mkindex.sh : 
+* Firstly a series of 3 perl scripts (mkdomain, mkwgrp, modindclass),
+that ~/bin/mkindex calls via ~/public_html/bases/sys/mkindex.sh :
 
 - the programm ~/public_html/bases/sys/mkdomain.pl creates the lists
   of domains from the graph in domain/domain with its translations
   (domain/domain.$lang) and in json format (english) to be used for
   completion in modtool properties ; create also the domain/domaindic.xx
   to be used as a dictionnary in modind and in the search engine
- 
+
 - the perl program ~/public_html/bases/sys/mkwgrp.pl reads the INDEX
-  files of all the modules on the site and generates 
+  files of all the modules on the site and generates
 
   - keywords (in format .json) to be used for completion in the search
     engine)
@@ -55,9 +55,9 @@ that ~/bin/mkindex.sh calls via ~/public_html/bases/sys/mkindex.sh :
 Be careful : to be used as dictionary, must be sorted by the command
   bin/dicsort (for example for domaindic).
 
-* Secondly the binary program "modind" (compiled from ~/src/Misc/modind.c) reads 
+* Secondly the binary program "modind" (compiled from ~/src/Misc/modind.c) reads
 
-  -- the INDEX files of all the modules on the site 
+  -- the INDEX files of all the modules on the site
   -- the auxiliary files in ~/public_html/bases/sys/ (see description
      below)
 
@@ -79,7 +79,7 @@ Be careful : to be used as dictionary, must be sorted by the command
   ~/public_html/bases/sys/sheet and do the same type of works.
 
 
-2) use of index files       
+2) use of index files
 ===========================
 The script ~/public_html/modules/home/search.proc (called by the
 "Search" form) reads the lists above, do the actual search in such
@@ -109,8 +109,8 @@ feature in the corresponding language is disabled.
 
   In version < 4.05c, if there is no file words.$lang, the file
   suffix.$lang was not used (correction in Misc/translator.c to check
-  in other situations). 
-  The group words were badly treated when the words were already in 
+  in other situations).
+  The group words were badly treated when the words were already in
   the title, properties, etc. because of
   some option unknown_type=unk_delete in modind.c but it has other consequences
   so it is not the situation.
@@ -129,7 +129,7 @@ Files
 =====
 
 words.xx : correct misprints in the search words
-(used both by "mkindex" and "search.proc"). 
+(used both by "mkindex" and "search.proc").
 
 E.g. if the file words.en contains the line
 
@@ -152,7 +152,7 @@ Note: the file words.en is used by the module tool/wcalc.en (see
 =====================
 
 suffix.xx : process common suffixes in the search words
-(used both by "mkindex" and "search.proc"). 
+(used both by "mkindex" and "search.proc").
 
 E.g. if the file suffix.en contains the line
 
@@ -188,9 +188,9 @@ modules containing the word "geometry").
 
 The "wgrp" files are now generated from the modules' keywords by the
 script ~/public_html/bases/sys/mkwgrp.pl : whenever a module contains
-multiple words keywords, such keywords are added to the wgrp files. 
+multiple words keywords, such keywords are added to the wgrp files.
 
-E.g. tool/algebra/smallgroup.fr/INDEX contains the keyword 
+E.g. tool/algebra/smallgroup.fr/INDEX contains the keyword
 
 keywords=group, finite group, order, subgroup, conjugacy class, center, normal subgroup, subgroup lattice
 
@@ -211,7 +211,7 @@ NOTE: problems when the strings contains the apostrophe "'"
 
 domaindic.xx
 
-use the files domain/domain.xx to replace the "langugage" domain in the
+use the files domain/domain.xx to replace the "language" domain in the
   english/technic way.
 
 =====================
@@ -219,7 +219,7 @@ use the files domain/domain.xx to replace the "langugage" domain in the
 indignore.xx : ignored words
 (used by "mkindex")
 
-All the words listed in the file are ignored by the search engine. 
+All the words listed in the file are ignored by the search engine.
 
 =====================
 
@@ -228,7 +228,7 @@ abuse.xx : swearwords to be ignored by the search engine
 
 =====================
 
-andor.xx : conjunctions ("and", "or") to be ignored by the 
+andor.xx : conjunctions ("and", "or") to be ignored by the
 search engine
 
 The file andor.xx is mentioned in src/insmath.c (processing logic
@@ -254,7 +254,7 @@ As this is an exercise module it is indexed in the lists A.$lang (All)
 and X.$lang (eXercise).
 
 This is a multilanguage module (main language "en", translation
-language "it"). 
+language "it").
 
 The index file contains the following (nonempty) lines
 
@@ -290,8 +290,8 @@ translated module (1002 resp 2004). --> HELP there is no A.cn file!!
 The files A.en contains the following lines related to this module.
 
 ?2 or ?4 is the ranking
-It is a weight -- see name of variable in modind.c -- 
-giving more importance to the title words : 4 if the word appears 
+It is a weight -- see name of variable in modind.c --
+giving more importance to the title words : 4 if the word appears
 in the module title, 2 otherwise
 
 2d:1003?2                           from description and description_it
@@ -303,7 +303,7 @@ combinazione:1003?2		    from description_it
 combinazione lineare:1003?2	    from keywords + wgrp.en
 gang:1003?2  			    from author
 levelh4:1003?2			    from level=h4 (and so on)
-levelh5:1003?2			    
+levelh5:1003?2
 levelh6:1003?2
 levelu1:1003?2
 levelu2:1003?2
@@ -312,8 +312,8 @@ linear algebra:1003?2		    from keywords
 linear combination:1003?2	    from keywords
 lineare:1003?2			    from description_it
 shoot:1003?4			    from title
-vector:1003?4                       from title + description 
-				    (vectors --> vector because of 
+vector:1003?4                       from title + description
+				    (vectors --> vector because of
 				    directive "sr:r" in suffix.en)
 vettore:1003?2			    from keywords_it
 xiao:1003?2			    from author
@@ -343,7 +343,7 @@ linear combination:1003?2
 lineare:1003?2
 shoot:1003?4
 vector:1003?4
-vectors:1003?2			        no corresponding in A.en because 
+vectors:1003?2			        no corresponding in A.en because
                                         of directive in suffix.en
 vettore:1003?2
 xiao:1003?2
@@ -356,9 +356,9 @@ related to this module.
 
 E.g. A.nl
 
-2d:					
+2d:
 algebraisch:			directive "algebra:algebraisch" in words.nl
-bersaglio:			
+bersaglio:
 clicking:			directive "click:clicking" in words.nl
 combinaison:			"combination:combinaison" in words.nl
 combinazione:
@@ -432,12 +432,12 @@ Be careful (MC: I know, I hope it is better now with the example): keywords have
   title, description. They are not all of them in the "completion list"
   but can be written and found by the search engine.
 
-  
+
 
 Technical things about modind.c (ER. just to avoid forgetting work in progress)
 ===============================
 
-The tasks done are in order : 
+The tasks done are in order :
 
 - prep() : * replaces if possible the default language list (defined at top of file)
              by the list of languages installed on the server.
@@ -452,31 +452,31 @@ The tasks done are in order :
 
 
 
-Extracting information from one module for a given language (function onemodule) : 
+Extracting information from one module for a given language (function onemodule) :
 
 - write author,description,language,etc. information in each corresponding file
   bases/site2/author|description|language|...
 
-- normalizes data (suppress uppercase, accents, apostrophe, plural) 
-  according to dictionary domaindic, then maindic with suffix, to get normalized 
+- normalizes data (suppress uppercase, accents, apostrophe, plural)
+  according to dictionary domaindic, then maindic with suffix, to get normalized
   author, description, title, etc.
   This is done in the loop for(i=0;i<trcnt;i++){...}
 
-- transforms the (normalized) title into words (change commas to spaces) 
+- transforms the (normalized) title into words (change commas to spaces)
   and for each word, appends it with weight 4 using function appenditem.
   the variables are the word itself, the current language treated, the serial number of module,
-  the weight=4, and the module language. 
+  the weight=4, and the module language.
 
-- put every information other than title (description, keywords, foreign titles, author...) 
+- put every information other than title (description, keywords, foreign titles, author...)
   in a buffer, transforms it into words and appends this as above except than weight=2.
 
 - the 2 preceeding points (treatment of title and other info) are repeated with the difference
-  that the transformation into words is replaced by a translation : 
+  that the transformation into words is replaced by a translation :
   the commas are kept, but some usual words are deleted.
-  BUG ? : Another difference is that part of "other information than title" is missing, 
+  BUG ? : Another difference is that part of "other information than title" is missing,
           for instance the foreign titles, require, author.
 
-ER : I don't know why the process is repeated : should look at appenditem 
+ER : I don't know why the process is repeated : should look at appenditem
 to see where it is appended, maybe the second time is somewhere else.
 
 
