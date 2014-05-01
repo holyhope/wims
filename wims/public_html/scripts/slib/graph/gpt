@@ -50,7 +50,7 @@ slib_height=!exec pari slib_n=$slib_n;slib_niveau=Mat([$slib_niveau]);slib_k=sli
 slib_width =!exec pari slib_niveau=Mat([$slib_niveau]); vecmax(vector($slib_height,i, sum(j=1,$slib_n, slib_niveau[i,j])))
 
 #hauteur des paraboles sur lesquelles sont mis les points
-slib_listeb= !values ($slib_width/2+1-x)*0.98111111/$slib_width for x= 1 to $[ceil($slib_width/2)] 
+slib_listeb= !values ($slib_width/2+1-x)*0.98111111/$slib_width for x= 1 to $[ceil($slib_width/2)]
 slib_listeb =!makelist x,-x for x in $slib_listeb
 slib_niveau =!exec pari slib_niveau=Mat([$slib_niveau]); matrix($slib_height,$slib_n,i,j,slib_niveau[i,j])
 slib_position= !exec pari matrix($slib_n,2)
@@ -67,13 +67,13 @@ slib_sign=1
 	slib_total=$[$slib_total]
 		!if $slib_total=1
 					slib_sign=$[-$slib_sign]
-		!endif	
+		!endif
 
 	slib_dist= $[round($slib_width/$slib_total)]
 	!for slib_j = 1 to $slib_n
 		slib_pt=!item $slib_j of $slib_ligne
 		!if $slib_pt <>0
-			!advance slib_test		
+			!advance slib_test
 			slib_bb=!item $[($slib_test)*$slib_dist] of $slib_listeb
 			slib_position=!replace internal line number $slib_j by $[$slib_i-1], $[$slib_sign*$slib_bb*$slib_i*($slib_height -$slib_i)] in $slib_position
 		!endif

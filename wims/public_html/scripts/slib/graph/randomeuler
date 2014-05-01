@@ -26,14 +26,14 @@ slib_euler=$slib_S
 		!if $slib_bonsom <> $empty
 			 slib_a = !randitem  $slib_bonsom
 		!else
-			!goto end	 
+			!goto end
 		!endif
 		slib_u=!translate internal  $\
 $ to ; in $slib_u
 		slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
 		slib_u=!translate internal  ; to $\
 $  in $slib_u
-		slib_euler=$slib_euler, $slib_a	
+		slib_euler=$slib_euler, $slib_a
 		slib_S=$slib_a
 !next slib_k
 
@@ -45,11 +45,11 @@ $ to ; in $slib_u
 		slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
 		slib_euler=$slib_euler, $slib_a
 		slib_S=$slib_a
-	!next slib_a	
-!endif	
+	!next slib_a
+!endif
 :end
 
-	
+
 slib_m=!itemcnt $slib_euler
 
 slib_u = !nonempty lines $slib_u

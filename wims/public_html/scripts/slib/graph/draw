@@ -6,13 +6,13 @@ slib_author=Bernadette, Perrin-Riou
 slib_example=[0,0,1;0,0,1;1,1,0],red,blue, [A,B,C],[1,3,green;3,2,purple],html\
  [0,0,1,1;0,0,1,1;1,1,0,1;1,1,1,0],red,blue,,[1,3,2,green]\
  [0,0,1,1;0,0,1,1;1,1,0,1;1,1,1,0],red,blue,,[1,3,2,green],html
-slib_require=pari 
+slib_require=pari
 !exit
 
 :proc
 slib_color1=
 slib_color2=
-slib_names = 
+slib_names =
 !distribute item $wims_read_parm into slib_G,slib_color1, slib_color2,slib_names,slib_path,slib_option
 slib_path=!declosing $slib_path
 slib_path = !translate internal  ;  to $\
@@ -24,7 +24,7 @@ slib_cnt_path=!linecnt $slib_path
 	slib_path_color$slib_i= !declosing $(slib_path_color$slib_i)
 	slib_path$slib_i=!item 1 to -2 of $slib_path_prov
 	slib_path$slib_i = !nospace $(slib_path$slib_i)
-!next slib_i		
+!next slib_i
 slib_G=!declosing $slib_G
 
 slib_G=!translate internal  ;  to  $\
@@ -34,7 +34,7 @@ slib_GG=!translate internal  $\
 $  to ; in $slib_G
 
 
-slib_or=!exec pari Mat([$slib_GG])==Mat([$slib_GG])~ 
+slib_or=!exec pari Mat([$slib_GG])==Mat([$slib_GG])~
 
 slib_names=!declosing $slib_names
 slib_color1=!declosing $slib_color1
@@ -51,7 +51,7 @@ slib_n=!itemcnt $slib_n
 !next slib_i
 slib_dessin = xrange -1.5,1.5\
 yrange -1.5,1.5
-!for slib_i=1 to $slib_n 
+!for slib_i=1 to $slib_n
 	slib_name =!item $slib_i of $slib_names
 	slib_dessin=$slib_dessin\
 	disk $(slib_COS$slib_i),$(slib_SIN$slib_i), 6,$slib_color1\
@@ -61,13 +61,13 @@ yrange -1.5,1.5
 			slib_r=!line $slib_i of $slib_G
 			slib_u=!item $slib_j of $slib_r
 			!if $slib_u=1
-				slib_couleur=$slib_color2	
+				slib_couleur=$slib_color2
 				!for slib_k=1 to $slib_cnt_path
 					!if $slib_i,$slib_j isin $(slib_path$slib_k) or $slib_j,$slib_i isin $(slib_path$slib_k)
-						slib_couleur=$(slib_path_color$slib_k)						
-						!break 
-					!endif		
-				!next slib_k		
+						slib_couleur=$(slib_path_color$slib_k)
+						!break
+					!endif
+				!next slib_k
 				!if $slib_i<>$slib_j
 					slib_dessin=$slib_dessin\
 line $(slib_COS$slib_i),$(slib_SIN$slib_i),$(slib_COS$slib_j),$(slib_SIN$slib_j),$slib_couleur
@@ -76,7 +76,7 @@ line $(slib_COS$slib_i),$(slib_SIN$slib_i),$(slib_COS$slib_j),$(slib_SIN$slib_j)
 ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_couleur
 				!endif
 			!endif
-		!next slib_j	
+		!next slib_j
 	!else
 		!for slib_j=1 to $slib_n
 			slib_r=!line $slib_i of $slib_G
@@ -88,7 +88,7 @@ ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_cou
 						slib_couleur=$(slib_path_color$slib_k)
 						!break
 					!endif
-				!next slib_k	
+				!next slib_k
 				!if $slib_i<>$slib_j
 					slib_dessin=$slib_dessin\
 arrow $(slib_COS$slib_i),$(slib_SIN$slib_i), $[($(slib_COS$slib_i)-$(slib_COS$slib_j))/2+$(slib_COS$slib_j)],$[($(slib_SIN$slib_i)-$(slib_SIN$slib_j))/2+$(slib_SIN$slib_j)],10,$slib_color2\
@@ -98,10 +98,10 @@ line $(slib_COS$slib_i),$(slib_SIN$slib_i),$[$(slib_COS$slib_j)],$(slib_SIN$slib
 ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_couleur
 				!endif
 			!endif
-		!next slib_j	
+		!next slib_j
 	!endif
-!next slib_i	
-					
+!next slib_i
+
 
 slib_out= $slib_dessin
 

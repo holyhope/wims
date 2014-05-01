@@ -20,7 +20,7 @@ slib_f=33
 !!slib_k=0.6
 !!slib_f=33
 
-slib_Z0=-1 
+slib_Z0=-1
 slib_Z1=-1000
 
 slib_name_vertex=!getopt name_vertex in $slib_options
@@ -35,7 +35,7 @@ slib_angle=!text select uvw, in $slib_angle
 slib_option_face=!getopt face in $slib_options
 slib_option_edge=!getopt edge in $slib_options
 
-!default slib_option_face=1	
+!default slib_option_face=1
 !default slib_option_edge=0
 !default slib_option_vertex=1
 !default slib_angle=u v w
@@ -45,7 +45,7 @@ slib_tool=!declosing $slib_tool
 
 !default slib_tool=
 
-### option pour les couleurs des faces ? 
+### option pour les couleurs des faces ?
 
  slib_fichier=$wims_nowseconds.zir
 
@@ -73,7 +73,7 @@ slib_edge=!nonempty line $slib_edge
 slib_face=!line $[$slib_H+$slib_vertex_cnt+1] to $[$slib_H+$slib_vertex_cnt+$slib_face_cnt] of $slib_polyedre
 slib_face=!nonempty line $slib_face
 
-prg=!exec pari centre(F) = 0.001*round(1000*sum(j=1,#F,F[j])/#F) ; 
+prg=!exec pari centre(F) = 0.001*round(1000*sum(j=1,#F,F[j])/#F) ;
 slib_polyedre_vertex=
 slib_v_d=
 !for slib_na=1 to $slib_vertex_cnt
@@ -116,7 +116,7 @@ slib_adj=!items2lines $slib_adj
     slib_ed=
     !for slib_f=1 to $slib_face_cnt
       slib_fo= !nospace $(slib_p_edge[$slib_e;2,1])
-      slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]), 
+      slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]),
      !if ,$(slib_p_edge[$slib_e;]), isin $slib_tmp or ,$slib_fo, isin $slib_tmp
         slib_ed= !append item $[$slib_f+$slib_vertex_cnt] to $slib_ed
      !endif
@@ -157,5 +157,3 @@ $slib_e_d
 slib_out=!items2words $slib_out
 !readproc slib/geo3D/CaR $slib_out,$slib_options
 slib_out=$slib_out
- 
-

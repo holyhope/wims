@@ -13,13 +13,13 @@ slib_require=pari
 :proc
 
 !distribute items $wims_read_parm into slib_polyedre,slib_options
- 
+
 !reset slib_vertex, slib_face, slib_edge
 !!********** Traitement des options
 slib_k=0.7
 slib_f=33
 
-slib_Z0=-1 
+slib_Z0=-1
 slib_Z1=-1000
 
 
@@ -34,7 +34,7 @@ slib_angle=!text select uvw, in $slib_angle
 !!slib_option_face=!getopt face in $slib_options
 !!slib_option_edge=!getopt edge in $slib_options
 
-!default slib_option_face=1	
+!default slib_option_face=1
 !default slib_option_edge=0
 !default slib_option_vertex=1
 !default slib_angle=u v w
@@ -44,7 +44,7 @@ slib_tool=!declosing $slib_tool
 
 !default slib_tool=
 
-### option pour les couleurs des faces ? 
+### option pour les couleurs des faces ?
 
  slib_fichier=$wims_nowseconds.zir
 
@@ -208,7 +208,7 @@ slib_polyedre_segments=
 !if $slib_edge >0
   !for slib_nb=1 to $slib_edge_cnt
     slib_r=!line $slib_nb of $slib_edge
-    slib_lien1=!word 1 of $slib_r 
+    slib_lien1=!word 1 of $slib_r
     slib_lien2=!word 2 of $slib_r
     slib_polyedre_segments=$slib_polyedre_segments\
 <Segment name="$slib_compteur" $(slib_name1_edge[$slib_nb]) n="$slib_compteur" $(slib_show_edge[$slib_nb]) from="$[$slib_compteur_init+$slib_lien1]" to="$[$slib_compteur_init+$slib_lien2]"></Segment>
@@ -223,12 +223,12 @@ $slib_polyedre_segments
 $slib_polyedre_segments
 !endif
 
-!!********** code de dessin des faces 
+!!********** code de dessin des faces
 slib_polyedre_face=
 !if $slib_face>0
   !for slib_nc=1 to $slib_face_cnt
     slib_r=!line $slib_nc of $slib_face
-    slib_nbcotes=!word 1 of $slib_r 
+    slib_nbcotes=!word 1 of $slib_r
     slib_sommetscote=
     !for slib_ns=1 to $slib_nbcotes
       slib_numerosommetscote=!word $[1+$slib_ns] of $slib_r
@@ -254,7 +254,7 @@ slib_fin= </Objects>\
 
 !readproc oef/togetfile.proc $slib_fichier append\
 $slib_fin
- 
+
 slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_fichier
 
 slib_out=<object id="CaR" type="application/x-java-applet;jpi-version=1.4" \

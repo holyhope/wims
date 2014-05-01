@@ -18,8 +18,8 @@ slib_atom=
 !default slib_cnt=0
 slib_cnt= $[$slib_cnt +1]
 
-Préliminaires : mettre dans un fichier la correspondance 
-atome couleur, rayon. 
+Préliminaires : mettre dans un fichier la correspondance
+atome couleur, rayon.
 !for slib_a in label,scale,box,bonds,bgcolor,bondcolor,format,width,height
   slib_$slib_a=!getopt $slib_a in $slib_option
 !next slib_a
@@ -50,7 +50,7 @@ slib_data= !replace internal , by . in $slib_data
    slib_n=!charcnt $slib_l
    slib_nom=!char 1 to 6 of $slib_l
    slib_nom = !nospace $slib_nom
-   !if $slib_nom iswordof HETATM ATOM  
+   !if $slib_nom iswordof HETATM ATOM
      slib_atom=!char 13 to 14 of $slib_l
      slib_L =!char 32 to 54 of $slib_l
      slib_L = $slib_atom $slib_L
@@ -78,7 +78,7 @@ slib_nbliens=!linecnt $slib_liens
 !for slib_nb=1 to $slib_nbliens
    slib_r=!line $slib_nb of $slib_liens
    slib_cnt_r=!itemcnt $slib_r
-   slib_lien1=!item 1 of $slib_r 
+   slib_lien1=!item 1 of $slib_r
    slib_lien2=!item 2 to -1 of $slib_r
    slib_lien2=!items2words $slib_lien2
    slib_r1=!line $slib_lien1 of $slib_atomes

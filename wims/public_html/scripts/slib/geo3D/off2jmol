@@ -13,7 +13,7 @@ slib_data = $wims_read_parm
 !distribute items $wims_read_parm into slib_data,slib_fas,slib_color
 
 slib_out=
-slib_fas=!declosing $slib_fas 
+slib_fas=!declosing $slib_fas
 !distribute items 1,1,1 into slib_ss,slib_aa,slib_ff
 !distribute items $slib_fas into slib_SS,slib_AA,slib_FF
 
@@ -70,8 +70,8 @@ slib_face=!nonempty line $slib_face
 !for slib_nb=1 to $slib_A_cnt
    slib_r=!line $slib_nb of $slib_arete
    slib_cnt_r=!itemcnt $slib_r
-   slib_lien1=!word 1 of $slib_r 
-   slib_lien2=!word 2 to -1 of $slib_r   
+   slib_lien1=!word 1 of $slib_r
+   slib_lien2=!word 2 to -1 of $slib_r
    slib_r1=!line $[1+$slib_lien1] of $slib_out
    slib_r2=!line $[1+$slib_lien2] of $slib_out
    slib_coord1=!singlespace $slib_r1
@@ -99,7 +99,7 @@ slib_Face=
    !for slib_j=2 to $[$slib_triangle_cnt]
      slib_coord=!line $[$(slib_triangle[$slib_j])+1] of $slib_sommet
      slib_coord=!singlespace $slib_coord
-     slib_coord=!words2items $slib_coord 
+     slib_coord=!words2items $slib_coord
      slib_centerface=$slib_centerface + [$slib_coord]
    !next
    slib_centerface=!exec pari 1.*($slib_centerface)/($slib_triangle_cnt-1*1.0)
@@ -108,14 +108,14 @@ slib_Face=
    slib_out=!append line $slib_FF$slib_f $slib_centerface to $slib_out
 !next
 slib_hide=
-slib_option=$slib_option define $slib_SS ({$slib_Sommet}); select ($slib_SS); 
+slib_option=$slib_option define $slib_SS ({$slib_Sommet}); select ($slib_SS);
 !if $slib_ss!=0
   slib_option=$slib_option color atoms $(slib_color[1]); select none;
 !else
   slib_hide=!append item $slib_SS to $slib_hide
 !endif
 
-slib_option=$slib_option define $slib_AA ({$slib_Arete});select ($slib_AA); 
+slib_option=$slib_option define $slib_AA ({$slib_Arete});select ($slib_AA);
 !if $slib_aa!=0
   slib_option=$slib_option color atoms $(slib_color[2]); select none;
 !else

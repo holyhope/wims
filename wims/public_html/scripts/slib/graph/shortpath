@@ -37,7 +37,7 @@ slib_precedent=!values $slib_s for x = 1 to $slib_n
  slib_pi = !nonempty items $slib_pi
 
 !for slib_i = 1 to $slib_n
-  !if $slib_i != $slib_s 
+  !if $slib_i != $slib_s
 # 1. On trouve un sommet satisfaisant
     !distribute items $[($slib_bp+1)*$slib_n],0,0 into slib_x,slib_y,slib_z
     !for slib_j = 1 to $slib_n
@@ -58,7 +58,7 @@ slib_precedent=!values $slib_s for x = 1 to $slib_n
     !else
         slib_sommet = $slib_z
     !endif
- 
+
     slib_S = $slib_S,$slib_sommet
 # 2. On modifie le vecteur pi
    !for slib_j = 1 to $slib_n
@@ -73,10 +73,10 @@ slib_precedent=!values $slib_s for x = 1 to $slib_n
           slib_x = $[min($slib_u,$[$slib_v+$slib_w])]
           !if ($slib_w != 0) and ($slib_j notitemof $slib_S)
             slib_y = 1
-            !if $slib_x = $[$slib_v+$slib_w] 
-              slib_precedent =  !replace item number $slib_j by $slib_sommet in $slib_precedent
+            !if $slib_x = $[$slib_v+$slib_w]
+              slib_precedent = !replace item number $slib_j by $slib_sommet in $slib_precedent
             !endif
-          !endif       
+          !endif
         !else
           slib_x = $[$slib_v+$slib_w]
           !if ($slib_w != 0) and ($slib_j notitemof $slib_S)

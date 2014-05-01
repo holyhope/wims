@@ -22,7 +22,7 @@ slib_f=33
 !!slib_k=0.6
 !!slib_f=33
 
-slib_Z0=-1 
+slib_Z0=-1
 slib_Z1=-1000
 !!slib_centre_rot=0.5,0.5,0.5
 
@@ -38,12 +38,12 @@ slib_option_face=!getopt face in $slib_options
 slib_option_edge=!getopt edge in $slib_options
 
 
-!default slib_option_face=1	
+!default slib_option_face=1
 !default slib_option_edge=0
 !default slib_option_vertex=1
 !default slib_angle=u v w
 
-### option pour les couleurs des faces ? 
+### option pour les couleurs des faces ?
  slib_randint=!randint 1000,2000
  slib_fichier=$wims_nowseconds$slib_randint.zir
 
@@ -212,7 +212,7 @@ slib_test=$[min($slib_vertex_cnt,130)]
     slib_xyz=!mathsubst s$slib_c=sin($slib_c) in $slib_xyz
     !next
     slib_xyz=!replace internal E- by *0* in $slib_xyz
-  
+
 slib_xy=$(slib_xyz[1])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1))),$(slib_xyz[2])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1)))
     slib_polyedre_vertex=$slib_polyedre_vertex\
 <Point name="$slib_compteur" $(slib_name1_vertex[$slib_na]) n="$slib_compteur" $(slib_show_vertex[$slib_na]) x="($(slib_xy[1]))" y="($(slib_xy[2]))"  fixed="true"></Point>
@@ -242,7 +242,7 @@ $slib_polyedre_vertex
     slib_xyz=!mathsubst s$slib_c=sin($slib_c) in $slib_xyz
     !next
     slib_xyz=!replace internal E- by *0* in $slib_xyz
-  
+
 slib_xy=$(slib_xyz[1])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1))),$(slib_xyz[2])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1)))
     slib_polyedre_vertex=$slib_polyedre_vertex\
 <Point name="$slib_compteur" $(slib_name1_vertex[$slib_na]) n="$slib_compteur" $(slib_show_vertex[$slib_na]) x="($(slib_xy[1]))" y="($(slib_xy[2]))"  fixed="true"></Point>
@@ -262,7 +262,7 @@ slib_polyedre_segments=
 !if $slib_edge >0
   !for slib_nb=1 to $slib_edge_cnt
     slib_r=!line $slib_nb of $slib_edge
-    slib_lien1=!word 1 of $slib_r 
+    slib_lien1=!word 1 of $slib_r
     slib_lien2=!word 2 of $slib_r
     slib_polyedre_segments=$slib_polyedre_segments\
 <Segment name="$slib_compteur" $(slib_name1_edge[$slib_nb]) n="$slib_compteur" $(slib_show_edge[$slib_nb]) from="$[$slib_compteur_init+$slib_lien1]" to="$[$slib_compteur_init+$slib_lien2]"></Segment>
@@ -277,12 +277,12 @@ $slib_polyedre_segments
 $slib_polyedre_segments
 !endif
 
-!!********** code de dessin des faces 
+!!********** code de dessin des faces
 slib_polyedre_face=
 !if $slib_face>0
   !for slib_nc=1 to $slib_face_cnt
     slib_r=!line $slib_nc of $slib_face
-    slib_nbcotes=!wordcnt $slib_r 
+    slib_nbcotes=!wordcnt $slib_r
     slib_sommetscote=
     !for slib_ns=1 to $slib_nbcotes
       slib_numerosommetscote=!word $slib_ns of $slib_r

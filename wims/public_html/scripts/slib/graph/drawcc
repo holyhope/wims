@@ -20,7 +20,7 @@ slib_point=!item 4 to -1 of $wims_read_parm
 !if $(slib_point[-1]) iswordof url html raw
   slib_option=$(slib_point[-1])
   slib_point=$(slib_point[1..-2])
-!endif  
+!endif
 slib_H=!declosing $slib_H
 slib_H=!translate internal  ;  to  $\
 $  in $slib_H
@@ -32,14 +32,14 @@ slib_color=!declosing $slib_color
 !default slib_color=blue,red,green, magenta, brown, purple,gold
 !distribute items $slib_color  into slib_color1, slib_color2, slib_color3, slib_color4, slib_color5, slib_color6,slib_color7
 
-slib_or=!exec pari Mat([$slib_HH])==Mat([$slib_HH])~ 
+slib_or=!exec pari Mat([$slib_HH])==Mat([$slib_HH])~
 slib_names=!declosing $slib_names
 slib_n=!line 1 of $slib_H
 slib_n=!itemcnt $slib_n
 !default slib_names=!values slib_i for slib_i=1  to $slib_n
 slib_vertex= !values x for x=1 to $slib_n
 !default slib_point= $slib_vertex
-slib_liste = 
+slib_liste =
 slib_cnt = 0
 slib_matrix=
 slib_out=
@@ -76,7 +76,7 @@ yrange -1.5,1.5
 	text black, 1.3*cos(2*pi*$slib_k/$slib_n ),1.3*sin(2*pi*$slib_k/$slib_n ), medium ,$slib_name
 	slib_r=!line $slib_k of $slib_H
 		!if $slib_or=1
-			!for slib_j   in $slib_h				
+			!for slib_j   in $slib_h
 				slib_u=!item $slib_j of $slib_r
 				!if $slib_u=1
 					!if $slib_k<>$slib_j
@@ -87,7 +87,7 @@ line cos(2*pi*$slib_k/$slib_n),sin(2*pi*$slib_k/$slib_n), cos(2*pi*$slib_j/$slib
 ellipse cos(2*pi*$slib_i/$slib_n )*1.25,sin(2*pi*$slib_i/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
 					!endif
 				!endif
-			!next slib_j	
+			!next slib_j
 		!else
 			!for slib_j=1 to $slib_n
 				slib_r=!line $slib_k of $slib_H
@@ -102,12 +102,12 @@ line cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ),cos(2*pi*$slib_j/$sli
 ellipse cos(2*pi*$slib_k/$slib_n )*1.25,sin(2*pi*$slib_k/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
 					!endif
 				!endif
-			!next slib_j	
-		!endif	
-	!next slib_k	
-!next slib_i		
+			!next slib_j
+		!endif
+	!next slib_k
+!next slib_i
 
-			
+
 slib_out= $slib_dessin
 
 !if url iswordof $slib_option or html iswordof $slib_option

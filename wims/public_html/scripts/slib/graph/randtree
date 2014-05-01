@@ -5,7 +5,7 @@ slib_author=Bernadette, Perrin-Riou
 
 slib_example= 5,3,3,,perfect middle\
 12,2,4,[A,B,C,D],point html
- 
+
 !exit
 
 :proc
@@ -42,15 +42,15 @@ slib_milieu =0,-1
 		slib_position_prov=$(slib_A$slib_i),$[-$(slib_height$slib_i)]
 		slib_position = !append line  $slib_position_prov to $slib_position
 		!if $slib_cnt > $[$slib_N] or $slib_sizey > $slib_Sizey
-		!else	
-#choix des fils (position et nombre : la position est-elle intéressante pour un arbre non binaire ? )	
+		!else
+#choix des fils (position et nombre : la position est-elle intéressante pour un arbre non binaire ? )
 			slib_c=!item $slib_k  of $slib_noeud
 			!if perfect iswordof of $slib_option or $slib_c = 1
 				slib_a =!item 1 to $slib_s of $slib_choix1
 			!else
 				slib_a =!shuffle $slib_choix
 				slib_a=!item 1 to $slib_s of $slib_a
-			!endif	
+			!endif
 			slib_Li =
 			!for slib_j = 1 to $slib_s
 				slib_b=!item $slib_j of $slib_a
@@ -61,30 +61,30 @@ slib_milieu =0,-1
 					slib_height$slib_jj= $[$(slib_height$slib_i)+1]
 #la hauteur de l'arbre
 					slib_sizey=$[max($slib_sizey, $(slib_height$slib_jj))]
-# Ne sert à rien ? 				
+# Ne sert à rien ?
 					slib_cnt$(slib_height$slib_jj)=$[$(slib_cnt$(slib_height$slib_jj))+1]
 #on rajoute une ligne pour le fils
 					slib_G =!append line $slib_jj to $slib_G
 #nombre de sommets
 					slib_cnt = $[$slib_cnt +1]
-				!else 
+				!else
 					slib_jj=sentinelle
 				!endif
 #on rajoute le fils sur la ligne du père, rien s'il n'y a rien à cette position
 				slib_Li =!append item $slib_jj to $slib_Li
-#le calcul suivant sert pour le dessin. Faut-il le mettre ici ? 			
+#le calcul suivant sert pour le dessin. Faut-il le mettre ici ?
 				!if $slib_b <> 0
 #position
 					slib_A$slib_jj=$[$(slib_A$slib_i)+($slib_j-($slib_s+1)/2)*$(slib_width$slib_i)]
 #calcul de la largeur donnée au sommet $slib_jj pour ses fils éventuels
-					slib_width$slib_jj=$[$(slib_width$slib_i)/min($slib_s,$slib_s+1)]	
+					slib_width$slib_jj=$[$(slib_width$slib_i)/min($slib_s,$slib_s+1)]
 					slib_milieu_prov=$[($(slib_A$slib_i)+2*$(slib_A$slib_jj))/3],$[-($(slib_height$slib_i) +2*$(slib_height$slib_jj))/3]
 			 		slib_milieu = !append line $slib_milieu_prov to $slib_milieu
 				!endif
-			!next slib_j	
+			!next slib_j
 #on met la ligne $slib_k définitive
-  		slib_G = !replace line number $slib_k by $slib_L,$slib_Li in $slib_G	
-		!endif	
+  		slib_G = !replace line number $slib_k by $slib_L,$slib_Li in $slib_G
+		!endif
   !endif
 !next slib_k
 
@@ -94,7 +94,7 @@ yrange $[-$slib_Sizey-0.5],-0.5\
 linewidth 2
 slib_cnt =!linecnt $slib_G
 
-!for slib_k= 1 to $slib_cnt 
+!for slib_k= 1 to $slib_cnt
 	slib_u =!line $slib_k of $slib_G
 	slib_i=!item 1 of $slib_u
 	slib_position_prov=!line $slib_k of $slib_position
@@ -104,14 +104,14 @@ slib_cnt =!linecnt $slib_G
 			slib_position_prov1=!line $slib_j of $slib_position
 			slib_dessin = !append line line  $slib_position_prov,$slib_position_prov1, $slib_color1\
 			 to $slib_dessin
-#on coupe les segments au milieu pour mettre un cercle et éventuellement du texte			
+#on coupe les segments au milieu pour mettre un cercle et éventuellement du texte
 			!if middle iswordof $slib_option
 				slib_milieu_prov=!line $slib_j of $slib_milieu
 				slib_dessin = !append line disk $slib_milieu_prov,30,white\
-circle $slib_milieu_prov, 30,$slib_color3 to $slib_dessin	
+circle $slib_milieu_prov, 30,$slib_color3 to $slib_dessin
 			!endif
 		!endif
-	!next slib_j		
+	!next slib_j
 	!if point iswordof $slib_option
 		slib_dessin =!append line disk $slib_position_prov,30,white\
 	  circle $slib_position_prov,30,$slib_color2 to $slib_dessin
@@ -120,7 +120,7 @@ circle $slib_milieu_prov, 30,$slib_color3 to $slib_dessin
 		slib_textk=!item $slib_k of $slib_text
 		slib_dessin =!append line text black,$slib_position_prov, medium,$slib_textk to $slib_dessin
 	!endif
-!next slib_k	
+!next slib_k
 
 slib_out=$slib_dessin
 
