@@ -53,7 +53,7 @@ typelangue_en=$typelangue
 !exec pari $pari_header
 
 
-####################### 
+#######################
 ###INITIALISATION
 
 ### set "all" possible scores zero
@@ -139,9 +139,9 @@ yourlist$output=
    ob=$($type)
    !if $(M_objet[2]) issametext segment
      obcnt=!itemcnt $ob1
-     !if $obcnt>=5   
-       ob=     
-     !endif 
+     !if $obcnt>=5
+       ob=
+     !endif
    !endif
    yourlist$output = !append line $ob to $(yourlist$output)
    !reset type M_objet
@@ -184,7 +184,7 @@ yourlist1=$yourlist11
         !if ($(ligne1[5]) issametext and $u=4) or $(ligne1[2]) iswordof $(w_ARC[2]) or ($(ligne1[5]) notsametext \
           and (($(ligne1[2]) notwordof $(w_ARC[3]) or $u>3)))
           !if $(ligne1[$u]) notsametext
-            b=!positionof item $(ligne1[$u]) in $your_name         
+            b=!positionof item $(ligne1[$u]) in $your_name
             ligneb=!line $b of $yourlist_name
             lignebb=!replace internal = by , in $ligneb
             ligneb1=!line $b of $yourlist1
@@ -195,7 +195,7 @@ yourlist1=$yourlist11
         !endif
         !if ($(ligne1[5]) issametext and $(ligne1[2]) notwordof $(w_ARC[3]) and $u=3)
           !if $(ligne1[$u]) notsametext
-            b=!positionof item $(ligne1[$u]) in $your_name         
+            b=!positionof item $(ligne1[$u]) in $your_name
             ligneb=!line $b of $yourlist_name
             lignebb=!replace internal = by , in $ligneb
             ligneb1=!line $b of $yourlist1
@@ -204,7 +204,7 @@ yourlist1=$yourlist11
             !endif
           !endif
         !endif
-     !next   
+     !next
   !endif
   vartemp=!lower $(ligne1[2])
   vartemp=!deaccent $vartemp
@@ -216,7 +216,7 @@ yourlist1=$yourlist11
         yourlist1=!replace line number $li by $ligneb&&point,$(ligne1[$u]) in $yourlist1
       !endif
    !next
-  !endif 
+  !endif
 !next li
 #### on relit encore pour récupérer des intersections
 
@@ -264,7 +264,7 @@ js_fix=
   name=!item 1 of $ob1
   type=!item 2 of $ob1
   !if [ notin $ob
-    js_fix = !append line setFixed('$name',true) to $js_fix 
+    js_fix = !append line setFixed('$name',true) to $js_fix
     ob1=!getopt $name in $yourlist_name
     ob1=!item 2 to -1 of $ob1
     !if $type isitemof point,vector
@@ -301,10 +301,10 @@ yourggb=
   type=!item 2 of $ob1
   type=!lower $type
   type=!getopt $type in $typelangue
-  !if $type issametext segment  
+  !if $type issametext segment
     obcnt=!itemcnt $ob1
-    !if $obcnt>5   
-       ob=     
+    !if $obcnt>5
+       ob=
     !endif
   !endif
   !if $type issametext polygon
@@ -346,7 +346,7 @@ yourggb=
 yourlistformal=
 !for a = 1 to $ynamecnt
   ob=!line $a of $yourggb1
-  M_objet=!replace internal = by , in $ob  
+  M_objet=!replace internal = by , in $ob
   !if ]] isin $(M_objet)
     M_objet=!replace internal [ by , in $(M_objet)
     M_objet=!replace internal ] by  in $(M_objet)
@@ -364,9 +364,9 @@ yourlistformal=
     type1=$type
     !if $type notwordof polygon or $cn<=3
       !for u = 1 to $cn
-        !if $(M_objet[2+$u]) notsametext      
+        !if $(M_objet[2+$u]) notsametext
           typeu=!positionof item $(M_objet[2+$u]) in $your_name
-          !if $typeu issametext 
+          !if $typeu issametext
             typeu=numeric
           !else
             !!typeu=!line $typeu of $yourlist_name
@@ -375,7 +375,7 @@ yourlistformal=
             typeu=$(your_type[$typeu])
           !endif
           type=$type $typeu
-        !endif                  
+        !endif
       !next
       test=!text select 012345678 in $[$(M_objet[5])]
       !if $test=$(M_objet[5])] and $[$(M_objet[5])] <=8 and $type1 iswordof polygon
@@ -386,7 +386,7 @@ yourlistformal=
          type=$type point $cn
        !endif
     !endif
-    type=!nospace $type formal     
+    type=!nospace $type formal
     yourlistformal = !append line $($type) to $yourlistformal
   !else
      yourlistformal = !append line $ob to $yourlistformal
@@ -503,7 +503,7 @@ mylist2orig=$mylist2
    ligne_num=abs(arg((x_$(ligne[6])-x_$(ligne[5])+i*(y_$(ligne[6])-y_$(ligne[5])))/(x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3]))))*180/pi-$(ligne[1]))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $vartemp iswordof anglegeom 
+  !if $vartemp iswordof anglegeom
 ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[4])+i*(y_$(ligne[3])-y_$(ligne[4])))))*180/pi-abs($(ligne[1])))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
@@ -524,14 +524,14 @@ ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4]
      mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof circle
-    test = !text remove 0123456789. in $(ligne[4]) 
+    test = !text remove 0123456789. in $(ligne[4])
     !if $test=$empty
      ligne_num=eq_$(ligne[1]):(x-x_$(ligne[3]))^2 +(y-y_$(ligne[3]))^2=($(ligne[4]))^2
     !else
      ligne_num=eq_$(ligne[1]):(x-x_$(ligne[3]))^2 +(y-y_$(ligne[3]))^2=(x_B-x_A)^2 + (y_B-y_A)^2
     !endif
     mylist2=!replace line number $p by $ligne_num in $mylist2
-  !endif 
+  !endif
 !next
 
 #### données présentes dans l'applet
@@ -561,7 +561,7 @@ my_name= !column 1 of $mylist_name
 mylistformal=
 !for a = 1 to $mylist1_cnt
   ob=!line $a of $mylist1
-  M_objet=!replace internal = by , in $ob  
+  M_objet=!replace internal = by , in $ob
   !if ]] isin $(M_objet)
     M_objet=!replace internal [ by , in $(M_objet)
     M_objet=!replace internal ] by  in $(M_objet)
@@ -576,18 +576,18 @@ mylistformal=
   !if $type!=
     cn = !itemcnt $M_objet
     !for lll = 1 to $[$cn]
-     !if $(M_objet[$lll]) issametext 
-       M_objet=!replace internal item number $lll by ?? in $M_objet             
+     !if $(M_objet[$lll]) issametext
+       M_objet=!replace internal item number $lll by ?? in $M_objet
      !endif
     !next
     cn = $[$cn-2]
     !if $type notwordof polygon or $cn<=3
       !for u = 1 to $cn
         !reset typeu
-        !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??      
+        !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??
           typeu=!positionof item $(M_objet[2+$u]) in $my_name
           ## il peut ne pas exister si défini par eq_c .
-          !if $typeu issametext 
+          !if $typeu issametext
             typeu=numeric
           !else
             typeu=!line $typeu of $mylist11
@@ -596,26 +596,26 @@ mylistformal=
             vartemp=!deaccent $vartemp
             typeu=!getopt $vartemp in $typelangue
             !default typeu=point
-            !if $typeu iswordof center 
+            !if $typeu iswordof center
               typeu=point
             !endif
-          !endif 
+          !endif
         !endif
         !if $(M_objet[2+$u]) issametext ??
           typeu= _
         !endif
-        type=$type $typeu              
+        type=$type $typeu
       !next
      !else
        !if $cn <=8
          type=$type point $cn
        !endif
-    !endif 
+    !endif
     type=!nospace $type formal
     ligne=$($type)
-    !if $ligne notsametext 
+    !if $ligne notsametext
       mylistformal = !append line $ligne to $mylistformal
-    !else 
+    !else
       mylistformal = !append line $ob to $mylistformal
     !endif
   !else
@@ -628,7 +628,7 @@ mylist1=!replace internal ?? by in $mylist1
 ###FORMAL CONDITION
 ## j'avais mis une liste "déjà utilisée", puis j'ai commenté. A voir
 ##Cela évitait qu'un nom serve plusieurs fois.
-# pour les conditions formelles, il faudrait un passage supplémentaire : 
+# pour les conditions formelles, il faudrait un passage supplémentaire :
 ## faire auparavant les calculs correspondants de manière à avoir pour mylist
 ##les informations numériques
 used_list=
@@ -644,7 +644,7 @@ displaylist1=
   cond=!line $p of $mylist1
   display=!line $p of $mylist1display
   display=!declosing $display
-  !if $display notsametext 
+  !if $display notsametext
     display2=$display
   !else
     display2=$mobj2
@@ -658,13 +658,13 @@ displaylist1=
   !!type2 est le type de l'objet en anglais
   type2=!getopt $type in $typelangue
   !!si l'auteur a déjà mis en anglais, on fait type2=$type
-  !if $type2 issametext 
+  !if $type2 issametext
      type2=$type
   !endif
   obj=!item 3 to -1 of $cond
   obj=!nospace $obj
   !if $obj$name issametext
-  ###on interdit à l'auteur de l'exercice de ne pas suffisamment définir les objets : 
+  ###on interdit à l'auteur de l'exercice de ne pas suffisamment définir les objets :
   ###il faut donner soit le nom, soit une indication de définition.
     Test=bad $i
     !exit
@@ -716,10 +716,10 @@ $ in $yobj1
           result=$display2 <span class="oef_indgood">$w_yes</span>
           !if $output=coord
            result=$result ($yobj2)
-          !endif 
+          !endif
           mscr2=1
         !else
-          !for r = 1 to $ycnt  
+          !for r = 1 to $ycnt
            !if $klaar=0
             ob=!word $r of $obj
             !if $ob isin $yobj
@@ -729,7 +729,7 @@ $ in $yobj1
               result=$display2 <span class="oef_indgood">$w_yes</span>
               !if $output=coord
                 result=$result  ($yobj2)
-              !endif 
+              !endif
               mscr2=1
              !endif
             !endif
@@ -767,7 +767,7 @@ $ in $yobj1
               result=$display2 <span class="oef_indgood">$w_yes</span>
               mscr2=1
             !else
-              result=$display2 <span class="oef_indpartial">$w_uname ($yobj2)</span> 
+              result=$display2 <span class="oef_indpartial">$w_uname ($yobj2)</span>
               mscr2=0.5
             !endif
           !endif
@@ -797,7 +797,7 @@ $ in $yobj1
 !else
     displaylist1=$displaylist1\
 
-!!!! laisser la ligne vide précédente    
+!!!! laisser la ligne vide précédente
  !endif
   mscr=!append item $mscr2 to $mscr
 !next p
@@ -858,7 +858,7 @@ displaylist2=
         cond=!replace internal v_$(name) by ($coord) in $cond
       !endif
       !if $type isitemof point,vector
-        cond=!replace internal x_$(name) by ($(coord[1])) in $cond 
+        cond=!replace internal x_$(name) by ($(coord[1])) in $cond
         cond=!replace internal y_$(name) by ($(coord[2])) in $cond
       !endif
     !if $type=line
@@ -870,23 +870,23 @@ displaylist2=
     !endif
     !if $type=circle
       cond=!replace internal R_$(name) by ($[($(coord[4])/(2*$(coord[1])))^2+($(coord[5])/(2*$(coord[2])))^2-$(coord[6])]) in $cond
-      cond=!replace internal x_$(name) by ($[-$(coord[4])/(2*$(coord[1]))]) in $cond 
+      cond=!replace internal x_$(name) by ($[-$(coord[4])/(2*$(coord[1]))]) in $cond
       cond=!replace internal y_$(name) by ($[-$(coord[5])/(2*$(coord[2]))]) in $cond
     !endif
     !if $type isitemof $conic
-        cond=!replace internal x2_$(name) by ($(coord[1])) in $cond 
-        cond=!replace internal y2_$(name) by ($(coord[2])) in $cond 
-        cond=!replace internal xy_$(name) by ($(coord[3])) in $cond 
-        cond=!replace internal yx_$(name) by ($(coord[3])) in $cond 
-        cond=!replace internal x_$(name) by ($(coord[4])) in $cond 
-        cond=!replace internal y_$(name) by ($(coord[5])) in $cond 
-        cond=!replace internal cst_$(name) by ($(coord[6])) in $cond 
+        cond=!replace internal x2_$(name) by ($(coord[1])) in $cond
+        cond=!replace internal y2_$(name) by ($(coord[2])) in $cond
+        cond=!replace internal xy_$(name) by ($(coord[3])) in $cond
+        cond=!replace internal yx_$(name) by ($(coord[3])) in $cond
+        cond=!replace internal x_$(name) by ($(coord[4])) in $cond
+        cond=!replace internal y_$(name) by ($(coord[5])) in $cond
+        cond=!replace internal cst_$(name) by ($(coord[6])) in $cond
         cond=!replace internal cstt_$(name) by ($(coord[6])) in $cond
         !if eq_ isin $cond
           cond=!replace internal == by = in $cond
           cond=!replace internal = by %% in $cond
           cond=!replace internal : by , in $cond
-         !if eq_$(name) issametext $(cond[1]) or $(cond[1]) issametext eq_ 
+         !if eq_$(name) issametext $(cond[1]) or $(cond[1]) issametext eq_
             my=$(cond[2..-1])
             my=!replace internal %% by , in $my
             !if $(my[1])$(my[2]) notsametext
@@ -905,7 +905,7 @@ displaylist2=
     !endif
     !next n
     cond1=$cond1\
-    $cond 
+    $cond
   !next m
 
   cond=!lines2words $cond1
@@ -913,7 +913,7 @@ displaylist2=
   !if eq_ isin $cond
     cond=0==1
   !endif
-  ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ?? 
+  ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ??
   #### il faudrait remplacer les && (et les ||) par des lignes (commencant par &&), remplacer les lignes où il y a ==
   ### par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
 
@@ -943,7 +943,7 @@ Mscr=
 !for k = 1 to $mylist_cnt
    mem=!line $k of $memory
    ligne=!line $(mem[2]) of $(displaylist$(mem[1]))
-   !if $ligne notsametext 
+   !if $ligne notsametext
      Displaylist=!append line $ligne to $Displaylist
    !endif
    mscr2=!item $(mem[2]) of $mscr
@@ -1013,7 +1013,7 @@ msg=<span class="oef_indbad">
       diareply$i=good
     !endif
 !endif
-####cela n'allait pas: il faut que diareply=good simplement si $score=1  
+####cela n'allait pas: il faut que diareply=good simplement si $score=1
 freegot=$[$freegot+$score]
 msg=<br />$msg</span>
 
@@ -1025,7 +1025,7 @@ $feed\
 $yourggb\
 $js_fix\
 language=$ggblang
-#### On ne fait afficher que les points nouveaux 
+#### On ne fait afficher que les points nouveaux
  yourlistnew$output =
  !for p = 1 to $ynamecnt
   u = !item $p of $your_name
@@ -1033,7 +1033,7 @@ language=$ggblang
   !if $u issametext
     u=!line $p of $(yourlist$output)
     yourlistnew$output = !append line $u to $(yourlistnew$output)
-  !endif 
+  !endif
   !reset u
 !next
 

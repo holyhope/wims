@@ -77,15 +77,15 @@ $ny,$nx,$width,$height
 <script type="text/javascript">
 /*<![CDATA[*/
 var fl_clic$i=false;
-var tableurl$i=Array() ; var table$i=Array() ; 
+var tableurl$i=Array() ; var table$i=Array() ;
 !for t=1 to $nb_im
   tableurl$i[$t]='$(Zurl[$(scramble[$t])])'
   table$i[$t]=$(scramble[$t])
-!next 
+!next
 var nb_clic$i=0
 function click$i(n)
-{ 
-  if (!fl_clic$i) //pour mémoriser le 1er click.. 
+{
+  if (!fl_clic$i) //pour mémoriser le 1er click..
      {
       fl_clic$i=true;
       n_memo$i=n;
@@ -99,20 +99,20 @@ function click$i(n)
         fl_clic$i=false;
         if(n != n_memo$i){ nb_clic$i ++}
         for(var x=1;x<=$nx;x++) {
-          for(var y=1;y<=$ny;y++) { 
+          for(var y=1;y<=$ny;y++) {
             document.getElementById('img$(i)_' + x + '_' + y).innerHTML=tableurl$i[x + (y-1)*($nx)];
           }
        }
     }
 }
-function sendanswer$i() 
-  { var reply=table$i[1] ; var replyurl=tableurl$i[1] ; 
+function sendanswer$i()
+  { var reply=table$i[1] ; var replyurl=tableurl$i[1] ;
      if (nb_clic$i < 1 ) {document.getElementById('oefvar$i').value=''}
      else {
        for (var t = 2 ; t <= $nb_im ; t ++){
          reply = reply + ',' + table$i[t] ;
          replyurl = replyurl + ',' + tableurl$i[t] ;
-       } 
+       }
        document.getElementById('oefvar$i').value=reply + ';' + replyurl + ';' + nb_clic$i
      }
   }

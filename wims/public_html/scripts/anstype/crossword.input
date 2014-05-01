@@ -50,7 +50,7 @@ $ in $def
   !set col_cnt=!sort numeric item $col_cnt, $col
   !set col_cnt=!item 2 of $col_cnt
 !next j
-!if $dir = 2 
+!if $dir = 2
   !set MotCT=$empty
   !for a = 1 to $col_cnt
     !set V =!column $a of $MotC
@@ -106,8 +106,8 @@ $ in $def
   !next
 !next
 !for k = 1 to $ligne_cnt
-  !for j = 1 to $col_cnt 
-    !if  $(MotC[$k;$j]) != $empty 
+  !for j = 1 to $col_cnt
+    !if  $(MotC[$k;$j]) != $empty
      !set js=!append line table[$[$k+$ligne_cnt*$j]]=1; to $js
     !else
      !set js=!append line table[$[$k+$ligne_cnt*$j]]=0; to $js
@@ -118,7 +118,7 @@ $ in $def
 !set def=!embraced randitem $def
 !reset defH defV
 !set listemotV=!select $listemot where V isin column 1
-!set listemotH=!select $listemot where H isin column 1 
+!set listemotH=!select $listemot where H isin column 1
 !set def=!rows2lines $def
 !set listemotV_cnt=!linecnt $listemotV
 !set listemotH_cnt=!linecnt $listemotH
@@ -182,9 +182,9 @@ $ in $def
     }
    }
  }
- !else 
+ !else
   function showdef(n)
-  { 
+  {
    for (var j=1 ; j <= $cnt ;j++) {
     var defV = document.getElementById('V' + j);
     if (defV) { if (j==n) { pos_auto('v');}}
@@ -202,7 +202,7 @@ $ in $def
     if (defV) {
       defV.style.color ='black';
       if (j==n) {defV.style.color = 'green'; pos_auto('v');}
-      
+
     }
     var defH=document.getElementById('H' + j)
     if (defH) {
@@ -219,7 +219,7 @@ $js
 var table2=Array();
 $ends
 
-function sendanswer() 
+function sendanswer()
   { var test=0;
     var reply='';
        for (var t = 1 ; t <= $ligne_cnt ; t ++){
@@ -242,7 +242,7 @@ var H ='gifs/arrows/right1.32.gif' ;
 function posfleche(k,j) {
   if (sens=='v'){ var k1 = k+1 ; if(table[k1 + $ligne_cnt * j]==1){newposr= k1 ; newposc=j ;}
   }
-  else { var j1=j+1 ; 
+  else { var j1=j+1 ;
     if(table[k + $ligne_cnt * j1]==1){newposr=k ; newposc=j1}
   };
   //if(fleche==H){sens='v';fleche=V;} else {sens='h'; fleche=H;}
@@ -267,7 +267,7 @@ return true;
 //    document.getElementById('FF').src=fleche;
 //   return true;
 //   }
-   
+
  function position() {
    fleche = document.getElementById('FF').src ;
    if(fleche.substring(fleche.length-20,fleche.length)==H.substring(H.length-20,H.length)){ sens="v"; fleche=V;} else { sens="h"; fleche=H;}
@@ -288,7 +288,7 @@ return true;
 <table class="cw_grille">
 !for k = 1 to $ligne_cnt
 <tr>
-  !for j = 1 to $col_cnt 
+  !for j = 1 to $col_cnt
     !if  $(MotC[$k;$j]) = $empty
      <td class="cw_black"><div id="case_$(k)_$(j)"></div></td>
     !else
