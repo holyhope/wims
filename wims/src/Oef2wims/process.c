@@ -481,7 +481,7 @@ val%d=!mathsubst I=i in $t_\n",p,n);
       }
       case pt_matrix: {
           fprintf(outf,"tmp=!trim %s\n\
-val%d=!translate internal $      \\\n$ to ;; in $tmp\n",p,n);
+val%d=!translate internal $	\\\n$ to ;; in $tmp\n",p,n);
           break;
       }
       case pt_rat: {
