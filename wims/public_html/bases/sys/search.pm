@@ -6,7 +6,10 @@ use Encode;
 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent','treate_dict', 'treate_language');
+our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent',
+  'treate_dict', 'treate_language', 'dictionnary', 'reverse_dic');
+
+sub canonify { my ($w)=@_; treate_accent(lc($w)) }
 
 sub treate_dict { my ($file) = @_;
    my %ref = ( ) ; my $ref=\%ref; my $text;
@@ -20,11 +23,27 @@ sub treate_dict { my ($file) = @_;
    my @L = sortuniq(split("\n",$text));
    for my $l (@L) {
      my @la=split(":", $l) ;
-     $ref{$la[0]}=$la[1] if ($la[1]);
+     $ref{canonify($la[0])}=$la[1] if ($la[1]);
     }
    }
   close IN;
  %ref;
+}
+
+sub dictionnary { my ($file, @words)=@_;
+  my %dic=treate_dict($file) ;
+  my $dic=\%dic;
+  my @W=();
+  if (@words) {
+   for my $w (@words) {
+    next if !($w);
+    for my $ww (split(',', $w)) {
+     if ( $dic{canonify($ww)} ) { push @W, $dic{canonify($ww)} ; };
+     }
+   }
+   sortuniq ( @W )
+   }
+   @W;
 }
 
 sub treate_accent {my ($txt) = @_;
@@ -99,3 +118,24 @@ sub treate_language {
  }
 split(' ', $site_language) ;
 }
+
+sub reverse_dic { my @liste=@_;
+  my %ref = ( ) ; my $ref=\%ref;
+  for my $file (@liste) {
+   open IN, "$file";
+   while (<IN>) {
+    next if ($_ =~ /^#/);
+    my $text= $_ ; $text=~ s/\n//;
+    my @text=split(":", $text);
+    my $t=$text[0]; $t=~ s/\n//;
+    my @L= split(",",$text[1]);
+    for my $a (@L) {
+     if ($ref{$a}) {  $ref{$a}.= "," . $t ; }
+     else { $ref{$a} = $t ; }
+    }
+   }
+   close IN;
+  }
+  %ref
+}
+
