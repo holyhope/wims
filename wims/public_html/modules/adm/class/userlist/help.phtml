@@ -7,4 +7,37 @@
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
 
+!set list=max(I,Q)\
+I\
+I*Q^0.3\
+I*Q^0.5\
+I*Q\
+I^2*Q
+!set wims_backslash_insmath=yes
+
 !read lang/help.phtml.$moduclass_lang
+
+!for rule=1 to 6
+ !set r=$(list[$rule;])
+<table class="wimsborder">
+<caption> $rule : \($(list[$rule;])\)</caption>
+<tr>
+  <th></th>
+   !for ih = 0 to 10
+   <th>$ih</th>
+   !next
+   </tr>
+   !for qh=0 to 10
+
+   <tr><th>$qh</th>
+  !for ih = 0 to 10
+   <td>
+   !set r1=!mathsubst I=$[$ih/10] in $r
+   !set r1=!mathsubst Q=$[$qh/10] in $r1
+    $[ceil(100*$r1)/10]
+   </td>
+   !next
+</tr>
+!next
+</table>
+!next
