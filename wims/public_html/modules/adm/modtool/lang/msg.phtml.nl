@@ -5,7 +5,7 @@
 !if empty_data iswordof $error
  !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
 
- Vul het definitieveld 
+ Vul het definitieveld
  <span class="tt wims_warning">$(tmp_$(empty_data)</span>
  van uw module in.
  !exit
@@ -61,7 +61,7 @@
 !endif
 
 !if symlink iswordof $error
- De module code kan niet worden gekopieerd, omdat deze 
+ De module code kan niet worden gekopieerd, omdat deze
  symbolische links bevat.
  !exit
 !endif
