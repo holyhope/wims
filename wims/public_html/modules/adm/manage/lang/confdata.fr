@@ -241,6 +241,28 @@ free
 Ce module est le point d'entrée du site.
 Vous ne devez pas le changer à moins que vous n'ayez créé votre propre module d'entrée.
 
+:appearances site_languages wims_site_languages
+Langues présentées*
+free
+
+
+Langues disponibles:
+ca (Catalan),
+cn (Chinois gb),
+de (Allemand),
+en (Anglais),
+es (Espagnol),
+fr (Français),
+it (Italien),
+nl (Néerlandais),
+si (Slovénien),
+tw (Chinois gib5).
+
+Mettre la liste des langues séparées par des espaces.
+<p>
+L'ordre de la liste est important : les langues mises en premier
+ seront utilisées en priorité.
+</p>
 :tech idle_time
 Délai avant qu'une session de classes soit détruite.
 choice
@@ -340,26 +362,13 @@ Longueur maximale des fichiers de log des modules. Cette limite est utilisée par
 fichiers de log généraux seconaires, aussi, ce nombre a un sens même
 si la sauvegarde des fichiers logs des modules est désactivée
 
-:housekeep mu_auto
-Méthode de mise à jour
+:housekeep site_accounting
+Logs d'activité
 choice
-none,check,install,update,all
-Méthode de mise à jour automatique quotidienne. <dl>
-<dt><code class="tt">none</code>
-   <dd>Désactive la mise à jour automatique
-<dt><code class="tt">check</code>
-   <dd>Vérifie ce qui doit être mise à jour et envoie un mail
-   à l'administrateur (c'est-à-dire vous). N'installe pas de modules
-   ni ne les met à jour.
-<dt><code class="tt">install</code>
-   <dd>Installe les nouveaux modules mais ne met pas à jour les
-   modules existants.
-<dt><code class="tt">update</code>
-   <dd>Met à jour les modules existants mais n'installe pas de nouveaux modules.
-   Cela vous permet de bénificier des corrections de bogues.
-<dt><code class="tt">all</code>
-   <dd>Installe les nouveaux modules et met à jour les modules existants
-</dl>
+0,1; $wims_name_no,$wims_name_yes
+Active ou désactive les logs d'activité journalière.
+Il est nécessaire de l'activer pour les statistiques d'activité du site ainsi que pour les activités générales de
+temps de connexion des classes.
 
 :housekeep mu_download_site
 Site de téléchargement de mise à jour des modules
@@ -580,13 +589,26 @@ yes,no;$wims_name_yes,$wims_name_no
 Les comptes de log doivent être activés
  pour que les statistiques puissent être montrées.
 
-:housekeep site_accounting
-Logs d'activité
+:housekeep mu_auto
+Méthode de mise à jour
 choice
-0,1; $wims_name_no,$wims_name_yes
-Active ou désactive les logs d'activité journalière.
-Il est nécessaire de l'activer pour les statistiques d'activité du site ainsi que pour les activités générales de
-temps de connexion des classes.
+none,check,install,update,all
+Méthode de mise à jour automatique quotidienne. <dl>
+<dt><code class="tt">none</code>
+   <dd>Désactive la mise à jour automatique
+<dt><code class="tt">check</code>
+   <dd>Vérifie ce qui doit être mise à jour et envoie un mail
+   à l'administrateur (c'est-à-dire vous). N'installe pas de modules
+   ni ne les met à jour.
+<dt><code class="tt">install</code>
+   <dd>Installe les nouveaux modules mais ne met pas à jour les
+   modules existants.
+<dt><code class="tt">update</code>
+   <dd>Met à jour les modules existants mais n'installe pas de nouveaux modules.
+   Cela vous permet de bénificier des corrections de bogues.
+<dt><code class="tt">all</code>
+   <dd>Installe les nouveaux modules et met à jour les modules existants
+</dl>
 
 :misc site_description wims_site_description
 Description du site
@@ -608,28 +630,6 @@ Le but principal est d'améliorer le référencement par les robots des moteurs de 
 <p>
 Les modules ont accès à ce texte par la variable
 $$wims_site_keywords.
-</p>
-
-:appearances site_languages wims_site_languages
-Langues présentées*
-free
-
-Langues disponibles:
-ca (Catalan),
-cn (Chinois gb),
-de (Allemand),
-en (Anglais),
-es (Espagnol),
-fr (Français),
-it (Italien),
-nl (Néerlandais),
-si (Slovénien),
-tw (Chinois gib5).
-
-Mettre la liste des langues séparées par des espaces.
-<p>
-L'ordre de la liste est important : les langues mises en premier
- seront utilisées en priorité.
 </p>
 
 :appearances site_manager wims_site_manager
@@ -845,3 +845,14 @@ Commande d'accès à QRencode
 free
 
 QRencode permet de rèaliser les QRcode sur le serveur.
+
+:tech classification
+Possibilité pour un enseignant de classifier les exercices OEF.
+choice
+no,yes;$wims_name_no,$wims_name_yes
+Si vous activez cette possibilité, il sera possible aux enseignants d'une
+classe de mettre des mots clés libres ou selon une taxonomie à des exercices afin
+d'améliorer les moteurs de recherche. Vous devez vous mettre en contact avec
+l'association WIMS EDU
+referencement@wimsedu.info
+pour que ces données puissent être ensuite exploitées.

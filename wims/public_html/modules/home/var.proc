@@ -3,7 +3,10 @@
 !if robot isin $session
  !exit
 !endif
-
+!set classification_open=!defof classification_open in wimshome/log/wims.conf
+!if $classification_open=yes
+  !setdef wims_classification_open=yes in wimshome/sessions/$wims_session/var.stat
+!endif
 !if $wims_user=supervisor or $wims_supconnectshowed=yes
  !readproc adm/whoconnect
 !endif

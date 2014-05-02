@@ -157,6 +157,16 @@
   !reset exoprev exonext
 !endif
 
+!if $special_parm4=$empty
+ !if $cmd!=intro and $cmd!=help and $module!=home and \
+	../adm/ notin ../$module and \
+	(../devel/ notin ../$module or $wims_devel_modules iswordof open) \
+	and oef isin $module_category and $wims_classification_open=yes and ../devel/ notin ../$module
+   !set 1_=!append line ,0,\
+   classification,4,module=adm/tool/classification&refdir=$module&iniparm=$wims_homeref_parm,test to $1_
+ !endif
+!endif
+
 !set wims_rm_0=$1_
 
 !set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
