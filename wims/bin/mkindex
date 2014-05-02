@@ -3,7 +3,7 @@
 #	This script do many things (should be cleaned)
 #  - update sheets from example class (will be indexed after)
 #  - indexes wims server resources (modules, sheets).
-#  - with option "withoef", do something counting oef exercises, 
+#  - with option "withoef", do something counting oef exercises,
 #        make a list of oef (module,name_exofile) in bases/site/oef/
 #        does not seem to be yet in use - take Changelog
 #  - make slib index
@@ -313,3 +313,8 @@ if [ `which strfile` ]; then
  fi
  touch $FORTUNE/test ; echo "yes" >  $FORTUNE/test
 fi
+
+# cleanup the *.bin in score
+cd $CLASSES
+echo "cleanup classes"
+find . -type f -name "*.bin" -exec rm -v "{}" ";" 1>/dev/null
