@@ -1,0 +1,60 @@
+!! Give answers in this file.
+!readdef $refdirbase_/$refdir0/$exo
+
+<div id="classifications">
+!! Tab links
+<ul>
+  !for t=1 to $ref_list_cnt
+    !set tt=$(ref_list[$t])
+    <li><a href="#$tt">$(name_$tt)</a></li>
+  !next
+</ul>
+
+!for t=1 to $ref_list_cnt
+   !set tt=$(ref_list[$t])
+   <fieldset class="property_fields blockcenter" id="$tt">
+
+     !if $tt iswordof commoncore
+       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address[$t])">$tt</a>
+     !endif
+     !if $tt=keywords
+      !set wims_ref_class=float_right wims_button_help
+      !set wims_target=wims_internal
+       !href cmd=help $tt
+     !endif
+     !set ref_$(tt)_cnt=!itemcnt $(ref_$tt[;1])
+     !set ref1_$(tt)=!lines2rows $(ref_$(tt))
+     !if  $(ref_$(tt)_cnt)>0
+      !for j = 1 to $(ref_$(tt)_cnt)
+       !if $(ref1_$tt[$j;1])!=$empty
+        !set key=$(ref1_$(tt)[$j;1])
+        !if $tt issametext commoncore
+         !set key=!lookup $key in lang/commoncore.$lang
+        !endif
+        !if $tt issametext unisciel
+         !set link1=!replace internal : by _ in $key
+         !set link=!lookup $link1 in lang/unisciel.fr
+         !set key=$link
+        !endif
+        !if $tt issametext keywords
+         !set key1=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
+         !default key1=$key
+         !set key=$key1
+        !endif
+       !endif
+         <div class="box">$key
+         !set evl=!declosing $(ref1_$(tt)[$j;2])
+          <ul><li>
+           $(name_prompt[1]) ($[-$(evl[1])])
+           </li><li>
+           $(name_prompt[3]) ($(evl[2]))
+           </li>
+          </ul>
+         </div>
+       !next
+     !else
+       <div class="box">$name_no_keyword</div>
+     !endif
+     </fieldset>
+!next
+</div>
