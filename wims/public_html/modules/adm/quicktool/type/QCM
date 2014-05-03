@@ -6,7 +6,7 @@
 \text{incomplete_answer_text=}
 \text{option=}
 \matrix{question=}
-\matrix{explication=}
+\matrix{explication=xxx}
 \matrix{rep=}
 \text{CNT_choix= }
 \matrix{CHOIX=}
@@ -26,7 +26,7 @@
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
  \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
  \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+     \text{rab_inst1= . isin \inst_audio or \packs= ?
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
      \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
    }
@@ -41,18 +41,15 @@
   \text{ligne=wims(upper \expl)}
   \text{ligne=wims(text select ABCDEFGHIJKLMNOPQRSTUVWXYZ in \ligne)}
   \if{\ligne issametext and \expl notsametext }{
-  \matrix{explication = \explication ;
-  }
+  \matrix{explication = \explication;}
   \integer{debut = 2}
  }
  \if{\ligne issametext and \expl issametext }{
-  \matrix{explication = \explication ;
-  }
+  \matrix{explication = \explication;}
   \integer{debut = 3}
   }
   \if{\ligne notsametext}{
-     \matrix{explication = \explication
-  \expl}
+     \matrix{explication = \explication;\expl}
   \integer{debut = 3}
  }
   \integer{cnt_choix=rows(\QUEST)-\debut}
@@ -71,7 +68,7 @@
    \text{H = wims(nospace \QUEST[\debut;])}
    \text{cnt_c=items(\H)}
    \text{Rep = }
-   \for{ k = 1 to \cnt_c}{ 
+   \for{ k = 1 to \cnt_c}{
      \text{Rep = \Rep, position(\H[\k],\mix)}
    }
    \text{Rep = wims(sort items wims(nonempty items \Rep))}
@@ -104,6 +101,8 @@ wims(makelist x for x = \N*\u -\N+1 to \N*\u)}
 
 \text{nstep=\STEPS[1;]}
 \text{TEST=}
+\text{explication=\explication[2..-1;]}
+
 text{testexp=wims(rows2lines \explication)}
 text{testexp=wims(lines2items \testexp)}
 text{testexp=wims(items2words \testexp)}
@@ -144,14 +143,14 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="oef_indgood">\good_answer_text</span>}
          \if{\answer_given=yes}{
          <br /> \qcm_prompt2 <span class="oef_indgood">\CHOIX[\h;\rep[\h;]]</span>}
-      \if{\explication[\h;] notsametext }{<br />\explication[\h;]}     
+      \if{\explication[\h;] notsametext }{<br />\explication[\h;]}
      </div>
    }
    { \if{ r \h isitemof \nstep}{
       <div class="question">
    <ol>
       \for{s=1 to \CNT_choix[\h]}{ <li>\embed{reply \h , \s}</li> }
-      </ol>
+   </ol>
       </div>
       }
    }
@@ -211,7 +210,7 @@ text{testexp=wims(nospace \testexp)}
    \text{test2 = wims(listcomplement \REP[\H;] in \CHOIX[\H;\rep[\H;]])}
    \text{test3 = wims(listcomplement \CHOIX[\H;\rep[\H;]] in \REP[\H;])}
   %%% \integer{test4=items(\REP[\H;]) - items(\CHOIX[\H;])}
-   \text{test_cnt=\test1, items(\test2),items(\test3)}    
+   \text{test_cnt=\test1, items(\test2),items(\test3)}
    \integer{cnt_juste= \test_cnt[1]+\test_cnt[2]+\test_cnt[3] =0 ? \cnt_juste + 1}
    \matrix{TEST=\TEST
    \test_cnt}
@@ -222,7 +221,7 @@ test2  nombre de réponses dites justes et en fait fausses
 test3  nombre de réponses dites fausses et en fait justes
 
 totalement justes : test1=0, test2=0 test3=0
-partiellement justes : 
+partiellement justes :
 
 \real{v=\cnt_juste/\CNT[\step-1;\N]}
 
