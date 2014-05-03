@@ -32,14 +32,15 @@ $name_intro
             !if $(ref1_$tt[$j;1])!=$empty
               !set key=$(ref1_$(tt)[$j;1])
               !if $tt issametext commoncore
-                !set key1=!lookup $key in wimshome/public_html/bases/sys/taxonomy/commoncore.$lang
+                !set key1=!lookup $key in $taxodir/commoncore.$lang
+
                 !set link1=!replace internal . by / in $key
                 !set link=$(ref_address[$t])/$(link1)
                 !set key=$key1
               !endif
               !if $tt issametext unisciel
                 !set link1=!replace internal : by _ in $key
-                !set link=!lookup $link1 in wimshome/public_html/bases/sys/taxonomy/unisciel.$lang
+                !set link=!lookup $link1 in $taxodir/unisciel.$lang
                 !default link = $key
                 !set key=$link
               !endif
@@ -81,7 +82,7 @@ $name_intro
     !else
        <a class="float_right wims_button_help" target="wims_external" href="$(ref_address[$t])">$wims_name_help</a>
        <p>$name_selectkeyword</p>
-       !read keywords/$tt.phtml.$lang
+       !read keywords/$tt.$lang.phtml
     !endif
     </div>
   </fieldset>
