@@ -36,10 +36,11 @@ $table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
  </td><td>Elke fout wordt extra zwaar bestraft.</td></tr>
 $table_end
 
-Remark : For level 0 and 1, if the quality of points is less than 1 for an 
-exercise, the percentage of points obtained
-become 0% for this exercise when x is computed ; if the quality of points is betwwen 1 and 2, 
-the percentage of points obtained for this exercise is divided by 2
-when x is computed.
+En niveau 0 et 1, si la note de qualité est 
+inférieure à 1 pour un exercice, le pourcentage de points acquis
+est mis à 0% pour cet exercice lors du calcul de I ;
+si la note de qualité est comprise entre 1 et 2,
+le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de I.
+
 
 

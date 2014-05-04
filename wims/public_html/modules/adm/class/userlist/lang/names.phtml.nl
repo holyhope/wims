@@ -62,7 +62,7 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !set name_percentagegot=Percentage van de verkregen punten
 !set name_qualitygot=Kwaliteit berekend over een maximum van 10
 !set name_percentagedone=Percentage van het afgeronde werk
-!set name_percentagebest=Moyenne des meilleures notes requises
+!set name_percentagebest=Gemiddelde van de beste scores
 
 !set name_post=laat zien&nbsp;:
 !set name_Post=Laat zien&nbsp;:
@@ -71,7 +71,7 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\
    Login bij externe authentificatie,Inschrijving,Beheer,\
-   Compulsory\
+   Verplicht\
    into name_change,name_regnum,name_comments,name_photourl,name_vars,\
   name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
   name_userprop_warning
