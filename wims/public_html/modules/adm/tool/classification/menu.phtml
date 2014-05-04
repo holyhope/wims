@@ -31,27 +31,24 @@ $name_intro
           !for j = 1 to $(ref_$(tt)_cnt)
             !if $(ref1_$tt[$j;1])!=$empty
               !set key=$(ref1_$(tt)[$j;1])
-              !if $tt issametext commoncore
-                !set key1=!lookup $key in $taxodir/commoncore.$lang
-
-                !set link1=!replace internal . by / in $key
-                !set link=$(ref_address[$t])/$(link1)
-                !set key=$key1
-              !endif
-              !if $tt issametext unisciel
-                !set link1=!replace internal : by _ in $key
-                !set link=!lookup $link1 in $taxodir/unisciel.$lang
-                !default link = $key
-                !set key=$link
-              !endif
+              !reset fullkey
               !if $tt issametext keywords
-                !set key1=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
-                !default key1=$key
-                !set key=$key1
+                !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
+                !default fullkey=$key
               !endif
-            !endif
+              !if $tt iswordof commoncore unisciel
+                !set keycut=!replace internal _ by , in $key
+                !set keycutcnt=!itemcnt $keycut
+                !set asc=$(keycut[1])_$(keycut[2])
+                !set fullkey=!lookup $asc in $taxodir/$tt.fr
+                !for s=3 to $keycutcnt
+                  !set asc=$(asc)_$(keycut[$s])
+                  !set keyasc=!lookup $asc in $taxodir/$tt.fr
+                  !set fullkey=$fullkey > $keyasc
+                !next
+              !endif
             <li>
-          $key<br/>
+          <span class="small">$fullkey</span><br/>
           !set evl=!declosing $(ref1_$(tt)[$j;2])
             !set wims_ref_class=wims_formradio
             !formradio f_$(tt)_$j list -1,0,1 prompt \
@@ -59,6 +56,7 @@ $name_intro
               $(name_prompt[2]),\
               $(name_prompt[3]) ($(evl[2])),
             </li>
+            !endif
           !next
         </ul>
       </div>

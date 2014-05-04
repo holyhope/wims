@@ -28,21 +28,23 @@
       !for j = 1 to $(ref_$(tt)_cnt)
        !if $(ref1_$tt[$j;1])!=$empty
         !set key=$(ref1_$(tt)[$j;1])
-        !if $tt issametext commoncore
-         !set key=!lookup $key in $taxodir/commoncore.$lang
-        !endif
-        !if $tt issametext unisciel
-         !set link1=!replace internal : by _ in $key
-         !set link=!lookup $link1 in $taxodir/unisciel.fr
-         !set key=$link
-        !endif
+        !reset fullkey
         !if $tt issametext keywords
-         !set key1=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
-         !default key1=$key
-         !set key=$key1
+          !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
+          !default fullkey=$key
         !endif
-       !endif
-         <div class="box">$key
+        !if $tt iswordof commoncore unisciel
+          !set keycut=!replace internal _ by , in $key
+          !set keycutcnt=!itemcnt $keycut
+          !set asc=$(keycut[1])_$(keycut[2])
+          !set fullkey=!lookup $asc in $taxodir/$tt.fr
+          !for s=3 to $keycutcnt
+            !set asc=$(asc)_$(keycut[$s])
+            !set keyasc=!lookup $asc in $taxodir/$tt.fr
+            !set fullkey=$fullkey > $keyasc
+          !next
+        !endif
+         <div class="box"><span class="small">$fullkey</span>
          !set evl=!declosing $(ref1_$(tt)[$j;2])
           <ul><li>
            $(name_prompt[1]) ($[-$(evl[1])])
@@ -51,6 +53,7 @@
            </li>
           </ul>
          </div>
+        !endif
        !next
      !else
        <div class="box">$name_no_keyword</div>
