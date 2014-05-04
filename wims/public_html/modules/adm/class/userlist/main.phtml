@@ -184,15 +184,17 @@ $wims_name_part_list ($usercnt)
     !href cmd=reply&job_affi=best $(name_affi[4])
     <span class="wims_button disabled">$(name_affi[5])</span>
    !endif
-
-. </p>
+</p>
+<p>$name_click
+ $name_filter
+ <input name="varfilter" value="$varfilter" />
+  </p>
 <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
   </div>
-
 !formend
  !endif
- <p>$name_click</p>
+
 !endif
  !reset table_center
  $table_header
@@ -255,6 +257,12 @@ $wims_name_part_list ($usercnt)
  !for i=1 to $usercnt
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
+  !if $varfilter_!=$empty
+    !set var_filter=!defof user__$(varfilter_[1]) in  wimshome/log/classes/$wims_class/.users/$uu
+    !if $var_filter notitemof $(varfilter_[2..-1])
+      !goto enduser
+    !endif
+   !endif
   !set UU=!hex $uu
   $table_tr
   <td>
@@ -336,7 +344,7 @@ $wims_name_part_list ($usercnt)
       !bound ss between integer 0 and 2 default 0
       !set f_$j=!item $s+1 of $formula_list
       !set f_$j=!replace internal I by I$ss in $(f_$j)
-      !distribute item $[$p1/100],$[$p2/10],$[$p3/100], $[p4/10] into x0_,y_,x1_,x2_
+      !distribute item $[$p1/100],$[$p2/10],$[$p3/100], $[$p4/100] into x0_,y_,x1_,x2_
       !set ff_$j=!mathsubst Q=$y_ in $(f_$j)
       !for sev=0 to 2
          !set ff_$j=!mathsubst I$sev=$(x$(sev)_) in $(ff_$j)
@@ -384,9 +392,9 @@ $wims_name_part_list ($usercnt)
        </td>
      !endif
      !if level iswordof $job_affi
-      !set p_=$p4
+      !set p_=$[$p4/10]
       !if $p_>0
-       !read adm/class/colors $[ceil($p_/10)]
+       !read adm/class/colors $[ceil($p_)]
        <td style=$style_note>$p_
       !else
        <td>--
@@ -404,6 +412,7 @@ $wims_name_part_list ($usercnt)
    !endif
   !next j
   </tr>
+:enduser
  !next i
  !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
 	$[rint(100*$mean_tea/$usercnt)/100],\

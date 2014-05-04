@@ -1,7 +1,7 @@
 # Variable calculations should be done in this file.
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang
-!readproc  adm/whoconnect
+!readproc adm/whoconnect
 wims_prefix=class user tmp n sharing sharable
 !read adm/class/authchars
 max_sheet=64
@@ -25,6 +25,10 @@ picto=<img src="gifs/picto.gif" alt="picto" />
 
 !if $cmd=help
  !exit
+!endif
+!if $varfilter!=$empty
+  varfilter_=!replace internal = by , in $varfilter
+  varfilter_=!lines2rows $varfilter_
 !endif
 
 !if $wims_user!=supervisor

@@ -37,7 +37,8 @@ De cijfers worden berekend met maximum =
 !set name_pickup=Kies een werkblad<br />om het gemiddelde cijfer per<br />werkblad te laten zien:
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
-!set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen.
+!set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
+!set name_filter=or filter according to a technical variable (student properties)
 !set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers,la moyenne des meilleures notes requises
 !set name_workdetail=Detail van het werk van
 !set name_activesession=Deze student heeft een nog actieve proefwerk sessie

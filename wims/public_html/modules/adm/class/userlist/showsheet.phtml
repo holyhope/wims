@@ -23,7 +23,8 @@ $name_title_showsheet
 !if $usercnt==0
  $name_noyetparticipant
 !else
-<p>$name_click $wims_name_or
+<p>$name_click
+ $wims_name_or
 $name_post
 </p>
 <div class="wimscenter">
@@ -62,8 +63,6 @@ $name_post
     !endif
 </div>
 
-!set wims_ref_class=wims_button
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
  $table_header
  !bound job_affi within points,quality, best, level default points
  !if $job_affi=points
@@ -118,6 +117,12 @@ $name_post
  !for m=1 to $usercnt
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
+  !if $varfilter_!=$empty
+    !set var_filter=!defof user__$(varfilter_[1]) in  wimshome/log/classes/$wims_class/.users/$uu
+    !if $var_filter notitemof $(varfilter_[2..-1])
+      !goto enduser
+    !endif
+   !endif
   $table_tr
   <td>
    !href cmd=reply&job=getuser&getuser=$uu $name_student1
@@ -174,6 +179,7 @@ $name_post
       </td>
     !next k
   </tr>
+:enduser
  !next m
  $table_hdtr<th>$name_classAverage</th>
  !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1/$sign2]
@@ -205,6 +211,10 @@ $name_post
   </tr>
  !endif
 $table_end
+!set wims_ref_class=wims_button
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
+!set wims_ref_class=wims_button
+!href cmd=reply&job_affi=notes $wims_name_back2
 
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
