@@ -431,7 +431,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
   !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
    !if $t=r
     defaultest=!getopt default in $(replyoption$(cnt$t))
-    !if $defaultest=$empty
+    !if $defaultest=$empty and $(replytype$(cnt$t)) notwordof radio checkbox
      wims_form_lock=!append line if($form_.reply$(cnt$t).value.length==0) return emptyfield(); to $wims_form_lock
     !endif
    !else
