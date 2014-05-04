@@ -10,7 +10,8 @@ my %hash=();
 my $hash=\%hash;
 my @base=("log/referencement");
 my $dirout="public_html/bases/classification/src";
-for my $f (glob("$base/*/*/*/*")) {
+for my $dir (@base) {
+ for my $f (glob("$dir/*/*/*/*")) {
   my @f1=split('/', $f);
   my $id="$f1[2]/$f1[3]/$f1[4]\&exo=$f1[5]";
   open (IN, "$f");
@@ -25,7 +26,7 @@ for my $f (glob("$base/*/*/*/*")) {
        if ($hash{$t0}{$id}) {  $hash{$t0}{$id}.= "," . $b1 }
         else { $hash{$t0}{$id}= $b1};
      }
-   }
+    }
   }
  }
 }
