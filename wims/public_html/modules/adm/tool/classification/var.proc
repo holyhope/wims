@@ -2,13 +2,14 @@
 !set taxodir=wimshome/public_html/bases/sys/taxonomy
 !set refdirbase=$wims_home/log/referencement
 !set refdirbase_=wimshome/log/referencement
-!set refdir0=!replace internal . by , in $refdir
+!set refdir0=$refdir
 !set refdir0=$(refdir0[1])
 !set refdir0_=!replace internal / by , in $refdir0
 
 !set refdirbase1=$refdirbase/$(refdir0_[1])
 !set refdirbase2=$refdirbase1/$(refdir0_[2])
 !set refdirbase3=$refdirbase2/$(refdir0_[3])
+
 !read getparm $iniparm exo
 !! pour l'instant on prend le premier exo s'il y en a plusieurs
 exocnt=!itemcnt $(get_exo)
