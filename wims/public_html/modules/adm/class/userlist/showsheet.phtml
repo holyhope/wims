@@ -108,12 +108,12 @@ $name_post
   <th class="small">
   !set wims_ref_title=$t_
   !href cmd=new&module=$m_&$n_ $name_Exercise $j
-!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a>
   </th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
  </tr>
+ !set trueusercnt=0
  !for m=1 to $usercnt
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
@@ -123,6 +123,7 @@ $name_post
       !goto enduser
     !endif
    !endif
+  !increase trueusercnt
   $table_tr
   <td>
    !href cmd=reply&job=getuser&getuser=$uu $name_student1
@@ -182,12 +183,12 @@ $name_post
 :enduser
  !next m
  $table_hdtr<th>$name_classAverage</th>
- !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1/$sign2]
- <td style=$style_note>$[rint($tot_0/$usercnt*10)/10/$sign2]$sign</td>
+ !read adm/class/colors $[ceil($tot_0/$trueusercnt*10)/$sign1/$sign2]
+ <td style=$style_note>$[rint($tot_0/$trueusercnt*10)/10/$sign2]$sign</td>
  !for j=1 to $nbexo
   !if $(tot_$j)>0
-   !read adm/class/colors $[ceil($(tot_$j)/$usercnt*10/$sign1)]
-   <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign
+   !read adm/class/colors $[ceil($(tot_$j)/$trueusercnt*10/$sign1)]
+   <td style=$style_note>$[rint($(tot_$j)/$trueusercnt*10)/10]$sign
   !else
    <td>--
   !endif
