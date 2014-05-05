@@ -12,8 +12,8 @@
   l=!record $k of wimshome/log/classes/$wims_class/.userlist
   !distribute item $l into f,l,id
   !if $id!=$user
-   listiduser=!append item $id to $listiduser    
-   n=$f $l 
+   listiduser=!append item $id to $listiduser
+   n=$f $l
    listnameuser=!append item $n to $listnameuser
   !endif
  !next k
@@ -30,12 +30,12 @@
  !writefile wimshome/log/classes/$wims_class/$file $motd
  !if $user isin $file
   !writefile wimshome/log/classes/$wims_class/motd/.$user
- !endif 
+ !endif
  !if $listuser!=$empty and $user!=$empty
   !for id in $listuser
    !writefile wimshome/log/classes/$wims_class/motd/$id $motd
    !writefile wimshome/log/classes/$wims_class/motd/.$id
-  !next id 
+  !next id
  !endif
  !reset job,user,action,listuser
 !endif
