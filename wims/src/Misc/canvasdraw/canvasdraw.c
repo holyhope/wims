@@ -220,7 +220,30 @@ int main(int argc, char *argv[]){
 fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block\"><span id=\"tooltip_placeholder%d\" style=\"display:none\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
-fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\nvar xsize = %d;var ysize = %d;var canvas_div = document.getElementById(\"canvas_div%d\");create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};function x2px(x){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);};function y2px(y){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);};function px2x(px){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;};function px2y(py){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;};function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};var x_strings = null;var y_strings = null;var use_pan_and_zoom = 0;var use_snap_to_grid = 0;var xstart = 0;var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
+var xsize = %d;\
+var ysize = %d;\
+var canvas_div = document.getElementById(\"canvas_div%d\");\
+create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
+function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
+function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(logbase);var x_min = Math.log(xmin)/Math.log(logbase);var x_in = Math.log(x)/Math.log(logbase);return (x_in + x_min )*xsize/(x_max - x_min);};}\
+function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(logbase);var x_min = Math.log(xmin)/Math.log(logbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(logbase,x_out);};}\
+function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(logbase);var y_min = Math.log(ymin)/Math.log(logbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(logbase,y_out);};}\
+function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(logbase);var y_min = Math.log(ymin)/Math.log(logbase);var y_in = Math.log(y)/Math.log(logbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
+function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
+function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
+function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
+function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
+function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};\
+var logbase = 10;\
+var use_xlogscale = 0;\
+var use_ylogscale = 0;\
+var x_strings = null;\
+var y_strings = null;\
+var use_pan_and_zoom = 0;\
+var use_snap_to_grid = 0;\
+var xstart = 0;\
+var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
 add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
@@ -1525,6 +1548,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ see commands "xaxis" or "xaxistext", "yaxis" or "yaxistext" to set tailormade values on axis (the used font is set by command fontfamily; default '12px Ariel')
 	 @ see command "legend" to set a legend for the graph ;<br />use command "fontsize" to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
 	*/
+	    if( js_function[DRAW_YLOGSCALE] == 1 ){canvas_error("only one grid type is allowed...");}
 	    if( js_function[DRAW_GRID] != 1 ){ js_function[DRAW_GRID] = 1;}
 	    for(i=0;i<4;i++){
 		switch(i){
@@ -2469,6 +2493,15 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case STATUS:
 	    fprintf(js_include_file,"\nstatus=\"waiting\";\n");
 	    break;
+	case LOGBASE:
+	/*
+	@ logbase number
+	@ sets the logbase number
+	@ default value 10
+	@ use together with commands xlogscale,ylogscale
+	*/
+	    fprintf(js_include_file,"logbase=%d;",(int)(get_real(infile,1)));
+	    break;
 	case XLOGSCALE:
 	/*
 	    @xlogscale g,xmajor,xminor
@@ -2476,6 +2509,38 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    break;
 	case YLOGSCALE:
+	/*
+	 @ ylogscale xmajor,xminor,majorcolor,minorcolor
+	 @ the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+	 @ xmajor is the major step on the x-axis; xminor is the divisor for the x-step
+	 @ the linewidth is set using command 'linewidth int'
+	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+	 @ default logbase number = 10 ... when needed , set the logbase number with command 'logbase number'
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul> 
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
+	 @ note: keyword 'snaptogrid' may not lead to the desired result...
+	*/
+	/* draw_ylogscale = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity) */
+	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
+	    if( js_function[DRAW_YLOGSCALE] != 1 ){ js_function[DRAW_YLOGSCALE] = 1;}
+	    for(i=0;i<4;i++){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* xmajor */
+		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
+		    case 2: stroke_color = get_color(infile,0); break;
+		    case 3: fill_color = get_color(infile,1); 
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
+			tmp_buffer = my_newmem(string_length+1);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
+		        fprintf(js_include_file,"use_ylogscale=1;snap_x = %f;snap_y = logbase;",double_data[0]/int_data[0]);
+			add_to_buffer(tmp_buffer);
+		        break;
+		    default:break;
+		}
+	    }
 	    break;
 	case XYLOGSCALE:
 	default:sync_input(infile);
@@ -2494,15 +2559,22 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
     snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
   }
   /* add global variables / contants */
-  fprintf(js_include_file,"\n<!-- some extra global stuff -->\n\
-  var precision = %d;var xmin=%.*f;var xmax=%.*f;var ymin=%.*f;\
-  var ymax=%.*f;var xmin_start=xmin;var xmax_start=xmax;\
-  var ymin_start=ymin;var ymax_start=xmax;var zoom_increment = (xmax - xmin)/20;\
-  var pan_x_increment = (xmax - xmin)/20;var pan_y_increment = (ymax - ymin)/20;\
+  fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\
+  var precision = %d;var xmin=%f;var xmax=%f;var ymin=%f;\
+  var ymax=%f;var xmin_start=xmin;var xmax_start=xmax;\
+  var ymin_start=ymin;var ymax_start=xmax;\
+  var zoom_x_increment=0;var zoom_y_increment=0;\
+  var pan_x_increment=0;var pan_y_increment=0;\
+  if(use_ylogscale == 0 ){\
+   zoom_x_increment = (xmax - xmin)/20;zoom_y_increment = (xmax - xmin)/20;pan_x_increment = (xmax - xmin)/20;pan_y_increment = (ymax - ymin)/20;\
+  }else{\
+   zoom_x_increment = (xmax - xmin)/20;\
+   pan_x_increment = (xmax - xmin)/20;\
+  };\
   function start_canvas%d(type){\
    switch(type){\
-    case 0:xmin = xmin + zoom_increment;ymin = ymin + zoom_increment;xmax = xmax - zoom_increment;ymax = ymax - zoom_increment;break;\
-    case 1:xmin = xmin - zoom_increment;ymin = ymin - zoom_increment;xmax = xmax + zoom_increment;ymax = ymax + zoom_increment;break;\
+    case 0:xmin = xmin + zoom_x_increment;ymin = ymin + zoom_y_increment;xmax = xmax - zoom_x_increment;ymax = ymax - zoom_y_increment;break;\
+    case 1:xmin = xmin - zoom_x_increment;ymin = ymin - zoom_y_increment;xmax = xmax + zoom_x_increment;ymax = ymax + zoom_y_increment;break;\
     case 2:xmin = xmin - pan_x_increment;ymin = ymin ;xmax = xmax - pan_x_increment;ymax = ymax;break;\
     case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\
     case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\
@@ -2518,7 +2590,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   start_canvas%d(22);\
  };\n\
 <!-- end wims_canvas_function -->\n\
-wims_canvas_function%d();\n",precision,decimals,xmin,decimals,xmax,decimals,ymin,decimals,ymax,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
+wims_canvas_function%d();\n",precision,xmin,xmax,ymin,ymax,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
 /* done writing the javascript include file */
 fclose(js_include_file);
 
@@ -5391,6 +5463,95 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
+case DRAW_YLOGSCALE:
+fprintf(js_include_file,"\n<!-- draw ylogscale -->\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,use_axis_numbering,xmajor,xminor){\n\
+ var obj;\n\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
+ }\n\
+ else\n\
+ {\n\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
+ };\n\
+ var ctx = obj.getContext(\"2d\");\n\
+ ctx.clearRect(0,0,xsize,ysize);\
+ ctx.save();\n\
+ if( typeof xaxislabel !== 'undefined' ){\
+ ctx.save();\
+ ctx.font = \"italic \"+font_size+\"px Ariel\";\
+ var corr =  ctx.measureText(xaxislabel).width;\
+ ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+ ctx.restore();\
+ };\
+ if( typeof yaxislabel !== 'undefined' ){\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  var corr =  ctx.measureText(yaxislabel).width;\
+  ctx.translate(2*font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ if(use_axis_numbering == 1){ctx.font = font_family;}\
+ ctx.lineWidth = line_width;\n\
+ var y_min = Math.log(ymin)/Math.log(logbase);\
+ var y_max = Math.log(ymax)/Math.log(logbase);\
+ var y_step = parseInt( Math.abs(ysize / (y_max - y_min)) );\n\
+ var x_min = 0;var x_max = xsize;var y_s;var y_e;\
+ for(var p = y_min; p <= y_max ; p++){\n\
+  num = Math.pow(logbase,p);\n\
+  for(var i = 1 ; i < logbase ; i++){\n\
+   y_e = y2px(i*num);\n\
+   if( i == 1 ){\
+    ctx.lineWidth = line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+    if( use_axis_numbering == 1){\
+     ctx.fillText(logbase+'^'+p.toFixed(0),0,y_e + 0.5*font_size);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   ctx.beginPath();\n\
+   ctx.moveTo(x_min,y_e);\n\
+   ctx.lineTo(x_max,y_e);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  };\n\
+ };\n\
+ var stepx = Math.abs(x2px(xmajor) - x2px(0));\
+ var minor_step = stepx / xminor;\
+ var prec = Math.log(precision)/Math.log(10);\
+ var xtxt;var corr;var flip = 0;\
+ for(var x = 0 ; x < xsize ; x = x + stepx){\
+  ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+  ctx.lineWidth = line_width;\n\
+  ctx.beginPath();\n\
+  ctx.moveTo(x,ysize);\n\
+  ctx.lineTo(x,0);\n\
+  ctx.stroke();\n\
+  ctx.closePath();\n\
+  if( use_axis_numbering == 1){\
+   xtxt = (px2x(x)).toFixed(prec);\
+   corr = 0.5*(ctx.measureText(xtxt).width);\
+   if(flip == 0 ){flip = 1;ctx.fillText( xtxt,x - corr ,ysize - 0.2*font_size );}else{\
+   flip = 0;ctx.fillText( xtxt,x - corr ,ysize - 1.2*font_size );};\
+  };\
+  for(var dx = 1 ; dx < xminor ; dx++){\
+   ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   ctx.lineWidth = 0.2*line_width;\n\
+   ctx.beginPath();\n\
+   ctx.moveTo(x+dx*minor_step,ysize - font_size);\
+   ctx.lineTo(x+dx*minor_step,0);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  }\
+ }\
+ ctx.restore();\n\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+
+    break;
     default:break;
    }
   }
@@ -6169,4 +6330,5 @@ int get_token(FILE *infile){
 	ungetc(c,infile);
 	return 0;
 }
+
 
