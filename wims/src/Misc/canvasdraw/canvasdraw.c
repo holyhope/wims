@@ -226,16 +226,17 @@ var ysize = %d;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
-function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(logbase);var x_min = Math.log(xmin)/Math.log(logbase);var x_in = Math.log(x)/Math.log(logbase);return (x_in + x_min )*xsize/(x_max - x_min);};}\
-function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(logbase);var x_min = Math.log(xmin)/Math.log(logbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(logbase,x_out);};}\
-function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(logbase);var y_min = Math.log(ymin)/Math.log(logbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(logbase,y_out);};}\
-function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(logbase);var y_min = Math.log(ymin)/Math.log(logbase);var y_in = Math.log(y)/Math.log(logbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
+function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
+function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
+function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
+function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
 function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
 function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
 function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
 function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};\
-var logbase = 10;\
+var xlogbase = 10;\
+var ylogbase = 10;\
 var use_xlogscale = 0;\
 var use_ylogscale = 0;\
 var x_strings = null;\
@@ -2493,20 +2494,57 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case STATUS:
 	    fprintf(js_include_file,"\nstatus=\"waiting\";\n");
 	    break;
-	case LOGBASE:
+	case XLOGBASE:
 	/*
-	@ logbase number
-	@ sets the logbase number
+	@ xlogbase number
+	@ sets the logbase number for the x-axis
 	@ default value 10
-	@ use together with commands xlogscale,ylogscale
+	@ use together with commands xlogscale / xylogscale
 	*/
-	    fprintf(js_include_file,"logbase=%d;",(int)(get_real(infile,1)));
+	    fprintf(js_include_file,"xlogbase=%d;",(int)(get_real(infile,1)));
+	    break;
+	case YLOGBASE:
+	/*
+	@ ylogbase number
+	@ sets the logbase number for the y-axis
+	@ default value 10
+	@ use together with commands ylogscale / xylogscale
+	*/
+	    fprintf(js_include_file,"ylogbase=%d;",(int)(get_real(infile,1)));
 	    break;
 	case XLOGSCALE:
 	/*
-	    @xlogscale g,xmajor,xminor
-	    @create a log grid in xrange 
+	 @ xlogscale ymajor,yminor,majorcolor,minorcolor
+	 @ the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+	 @ ymajor is the major step on the y-axis; yminor is the divisor for the y-step
+	 @ the linewidth is set using command 'linewidth int'
+	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul> 
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
+	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
+	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
+	    if( js_function[DRAW_XLOGSCALE] != 1 ){ js_function[DRAW_XLOGSCALE] = 1;}
+	    for(i=0;i<4;i++){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* xmajor */
+		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
+		    case 2: stroke_color = get_color(infile,0); break;
+		    case 3: fill_color = get_color(infile,1); 
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
+			tmp_buffer = my_newmem(string_length+1);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
+		        fprintf(js_include_file,"use_xlogscale=1;snap_y = %f;snap_x = xlogbase;",double_data[0]/int_data[0]);
+			add_to_buffer(tmp_buffer);
+		        break;
+		    default:break;
+		}
+	    }
 	    break;
 	case YLOGSCALE:
 	/*
@@ -2515,15 +2553,15 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ xmajor is the major step on the x-axis; xminor is the divisor for the x-step
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
-	 @ default logbase number = 10 ... when needed , set the logbase number with command 'logbase number'
+	 @ default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
 	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
-	 @ note: keyword 'snaptogrid' may not lead to the desired result...
+	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
-	/* draw_ylogscale = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity) */
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
 	    if( js_function[DRAW_YLOGSCALE] != 1 ){ js_function[DRAW_YLOGSCALE] = 1;}
 	    for(i=0;i<4;i++){
@@ -2535,7 +2573,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
 			tmp_buffer = my_newmem(string_length+1);
 		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering,double_data[0],int_data[0]);
-		        fprintf(js_include_file,"use_ylogscale=1;snap_x = %f;snap_y = logbase;",double_data[0]/int_data[0]);
+		        fprintf(js_include_file,"use_ylogscale=1;snap_x = %f;snap_y = ylogbase;",double_data[0]/int_data[0]);
 			add_to_buffer(tmp_buffer);
 		        break;
 		    default:break;
@@ -2543,6 +2581,36 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    }
 	    break;
 	case XYLOGSCALE:
+	/*
+	 @ xylogscale majorcolor,minorcolor
+	 @ the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+	 @ the linewidth is set using command 'linewidth int'
+	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number' and/or 'ylogbase number'
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul> 
+	 @ note: the complete canvas will be used for the 'log paper'
+	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
+	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
+	*/
+	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
+	    if( js_function[DRAW_XYLOGSCALE] != 1 ){ js_function[DRAW_XYLOGSCALE] = 1;}
+	    for(i=0;i<2;i++){
+		switch(i){
+		    case 0: stroke_color = get_color(infile,0); break;
+		    case 1: fill_color = get_color(infile,1); 
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering);
+			tmp_buffer = my_newmem(string_length+1);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,use_axis_numbering);
+		        fprintf(js_include_file,"use_xlogscale=1;use_ylogscale=1;snap_x = xlogbase;snap_y = ylogbase;");
+			add_to_buffer(tmp_buffer);
+		        break;
+		    default:break;
+		}
+	    }
+	break;
 	default:sync_input(infile);
 	break;
     }
@@ -5462,7 +5530,179 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
  return;\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
+case DRAW_XYLOGSCALE:
+fprintf(js_include_file,"\n<!-- draw xylogscale -->\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,use_axis_numbering){\n\
+ var obj;\n\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
+ }\n\
+ else\n\
+ {\n\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
+ };\n\
+ var ctx = obj.getContext(\"2d\");\n\
+ ctx.clearRect(0,0,xsize,ysize);\
+ ctx.save();\n\
+ if( typeof xaxislabel !== 'undefined' ){\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  var corr =  ctx.measureText(xaxislabel).width;\
+  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+  ctx.restore();\
+ };\
+ if( typeof yaxislabel !== 'undefined' ){\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  var corr = ctx.measureText(yaxislabel).width;\
+  ctx.translate(2*font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ if(use_axis_numbering == 1){ctx.font = font_family;}\
+ ctx.lineWidth = line_width;\n\
+ var x_min = Math.log(xmin)/Math.log(xlogbase);\
+ var x_max = Math.log(xmax)/Math.log(xlogbase);\
+ var y_min = Math.log(ymin)/Math.log(ylogbase);\
+ var y_max = Math.log(ymax)/Math.log(ylogbase);\
+ var x_e;var y_e;var num;var corr;var xtxt;var ytxt;\
+ for(var p = x_min; p <= x_max ; p++){\n\
+  num = Math.pow(xlogbase,p);\n\
+  for(var i = 1 ; i < xlogbase ; i++){\n\
+   x_e = x2px(i*num);\n\
+   if( i == 1 ){\
+    ctx.lineWidth = line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+    if( use_axis_numbering == 1){\
+      xtxt = xlogbase+'^'+p.toFixed(0);\
+      corr = 0.5*(ctx.measureText(xtxt).width);\
+      ctx.fillText(xtxt,x_e - corr,ysize - 4);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   ctx.beginPath();\n\
+   ctx.moveTo(x_e,0);\n\
+   ctx.lineTo(x_e,ysize);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  };\n\
+ };\n\
+ for(var p = y_min; p <= y_max ; p++){\n\
+  num = Math.pow(ylogbase,p);\n\
+  for(var i = 1 ; i < ylogbase ; i++){\n\
+   y_e = y2px(i*num);\n\
+   if( i == 1 ){\
+    ctx.lineWidth = line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+    if( use_axis_numbering == 1){\
+     ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   ctx.beginPath();\n\
+   ctx.moveTo(0,y_e);\n\
+   ctx.lineTo(xsize,y_e);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  };\n\
+ };\n\
+ ctx.restore();\
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
 
+case DRAW_XLOGSCALE:
+fprintf(js_include_file,"\n<!-- draw xlogscale -->\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,use_axis_numbering,ymajor,yminor){\n\
+ var obj;\n\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
+ }\n\
+ else\n\
+ {\n\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
+ };\n\
+ var ctx = obj.getContext(\"2d\");\n\
+ ctx.clearRect(0,0,xsize,ysize);\
+ ctx.save();\n\
+ if( typeof xaxislabel !== 'undefined' ){\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  var corr =  ctx.measureText(xaxislabel).width;\
+  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+  ctx.restore();\
+ };\
+ if( typeof yaxislabel !== 'undefined' ){\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  var corr = ctx.measureText(yaxislabel).width;\
+  ctx.translate(2*font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ if(use_axis_numbering == 1){ctx.font = font_family;}\
+ ctx.lineWidth = line_width;\n\
+ var x_min = Math.log(xmin)/Math.log(xlogbase);\
+ var x_max = Math.log(xmax)/Math.log(xlogbase);\
+ var y_min = 0;var y_max = ysize;var x_e;var corr;\
+ var xtxt;var ytxt;var num;\
+ for(var p = x_min; p <= x_max ; p++){\n\
+  num = Math.pow(xlogbase,p);\n\
+  for(var i = 1 ; i < xlogbase ; i++){\n\
+   x_e = x2px(i*num);\n\
+   if( i == 1 ){\
+    ctx.lineWidth = line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+    if( use_axis_numbering == 1){\
+      xtxt = xlogbase+'^'+p.toFixed(0);\
+      corr = 0.5*(ctx.measureText(xtxt).width);\
+      ctx.fillText(xtxt,x_e - corr,ysize - 4);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   ctx.beginPath();\n\
+   ctx.moveTo(x_e,0);\n\
+   ctx.lineTo(x_e,ysize);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  };\n\
+ };\n\
+ var stepy = Math.abs(y2px(ymajor) - y2px(0));\
+ var minor_step = stepy / yminor;\
+ var prec = Math.log(precision)/Math.log(10);\
+ var flip = 0;\
+ for(var y = 0 ; y < ysize ; y = y + stepy){\
+  ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+  ctx.lineWidth = line_width;\n\
+  ctx.beginPath();\n\
+  ctx.moveTo(0,y);\n\
+  ctx.lineTo(xsize,y);\n\
+  ctx.stroke();\n\
+  ctx.closePath();\n\
+  if( use_axis_numbering == 1){\
+   ytxt = (px2y(y)).toFixed(prec);\
+   ctx.fillText( ytxt,0 ,y + 0.5*font_size );\
+  };\
+  for(var dy = 1 ; dy < yminor ; dy++){\
+   ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   ctx.lineWidth = 0.2*line_width;\n\
+   ctx.beginPath();\n\
+   ctx.moveTo(font_size,y+dy*minor_step);\
+   ctx.lineTo(xsize,y+dy*minor_step);\n\
+   ctx.stroke();\n\
+   ctx.closePath();\n\
+  };\
+ };\
+ ctx.restore();\n\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
 case DRAW_YLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw ylogscale -->\n\
 draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,use_axis_numbering,xmajor,xminor){\n\
@@ -5495,27 +5735,26 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
  };\
  if(use_axis_numbering == 1){ctx.font = font_family;}\
  ctx.lineWidth = line_width;\n\
- var y_min = Math.log(ymin)/Math.log(logbase);\
- var y_max = Math.log(ymax)/Math.log(logbase);\
- var y_step = parseInt( Math.abs(ysize / (y_max - y_min)) );\n\
- var x_min = 0;var x_max = xsize;var y_s;var y_e;\
+ var y_min = Math.log(ymin)/Math.log(ylogbase);\
+ var y_max = Math.log(ymax)/Math.log(ylogbase);\
+ var x_min = 0;var x_max = xsize;var y_s;var y_e;var num;\
  for(var p = y_min; p <= y_max ; p++){\n\
-  num = Math.pow(logbase,p);\n\
-  for(var i = 1 ; i < logbase ; i++){\n\
+  num = Math.pow(ylogbase,p);\n\
+  for(var i = 1 ; i < ylogbase ; i++){\n\
    y_e = y2px(i*num);\n\
    if( i == 1 ){\
     ctx.lineWidth = line_width;\n\
     ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
     if( use_axis_numbering == 1){\
-     ctx.fillText(logbase+'^'+p.toFixed(0),0,y_e + 0.5*font_size);\
+     ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\
     };\
    }else{\
     ctx.lineWidth = 0.2*line_width;\n\
     ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
    };\
    ctx.beginPath();\n\
-   ctx.moveTo(x_min,y_e);\n\
-   ctx.lineTo(x_max,y_e);\n\
+   ctx.moveTo(0,y_e);\n\
+   ctx.lineTo(xsize,y_e);\n\
    ctx.stroke();\n\
    ctx.closePath();\n\
   };\n\
@@ -5546,12 +5785,14 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
    ctx.lineTo(x+dx*minor_step,0);\n\
    ctx.stroke();\n\
    ctx.closePath();\n\
-  }\
- }\
+  };\
+ };\
  ctx.restore();\n\
 };\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 
     break;
+
+
     default:break;
    }
   }
@@ -5693,7 +5934,8 @@ int get_token(FILE *infile){
 	*dotfill="dotfill",
 	*gridfill="gridfill",
 	*imagefill="imagefill",
-	*logbase="logbase",
+	*xlogbase="xlogbase",
+	*ylogbase="ylogbase",
 	*xlogscale="xlogscale",
 	*ylogscale="ylogscale",
 	*xylogscale="xylogscale",
@@ -6209,9 +6451,13 @@ int get_token(FILE *infile){
 	free(input_type);
 	return YLOGSCALE;
 	}
-	if( strcmp(input_type, logbase) == 0 ){
+	if( strcmp(input_type, xlogbase) == 0 ){
 	free(input_type);
-	return LOGBASE;
+	return XLOGBASE;
+	}
+	if( strcmp(input_type, ylogbase) == 0 ){
+	free(input_type);
+	return YLOGBASE;
 	}
 	if( strcmp(input_type, intooltip) == 0 ){
 	free(input_type);

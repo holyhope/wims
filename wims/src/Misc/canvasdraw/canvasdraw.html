@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Thu Apr 24 22:20:40 CEST 2014)</h3></center>
+<center><h3>Implemented canvasdraw commands (Tue May  6 08:46:48 CEST 2014)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -1401,9 +1401,136 @@
 	    
 </ul>
 	    
-<li><span style="color:red">xlogscale g,xmajor,xminor
+<li><span style="color:red"> xlogbase number
 </span><ul>
-<li><span style="color:blue;font-size:0.8em">create a log grid in xrange
+<li><span style="color:blue;font-size:0.8em"> sets the logbase number for the x-axis
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default value 10
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use together with commands xlogscale / xylogscale
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> ylogbase number
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> sets the logbase number for the y-axis
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default value 10
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use together with commands ylogscale / xylogscale
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> xlogscale ymajor,yminor,majorcolor,minorcolor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> ymajor is the major step on the y-axis; yminor is the divisor for the y-step
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the linewidth is set using command 'linewidth int'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'xrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> attention: keyword 'snaptogrid' may not lead to the desired result...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> ylogscale xmajor,xminor,majorcolor,minorcolor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> xmajor is the major step on the x-axis; xminor is the divisor for the x-step
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the linewidth is set using command 'linewidth int'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> attention: keyword 'snaptogrid' may not lead to the desired result...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> xylogscale majorcolor,minorcolor
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the linewidth is set using command 'linewidth int'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number' and/or 'ylogbase number'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: the complete canvas will be used for the 'log paper'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: command 'mouse color,fontsize' will show the real values in the logpaper.<br /> <li><span style="color:blue;font-size:0.8em"> note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> attention: keyword 'snaptogrid' may not lead to the desired result...
 </span></li>
 	    
 </ul>

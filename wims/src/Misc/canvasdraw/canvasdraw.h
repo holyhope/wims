@@ -102,7 +102,7 @@
 #define XYLOGSCALE	105
 #define XLOGSCALE	106
 #define YLOGSCALE	107
-#define LOGBASE		108
+#define XLOGBASE	108
 #define INTOOLTIP	109
 #define REPLYFORMAT	110
 #define VIDEO		111
@@ -132,6 +132,7 @@
 #define USERINPUT_XY	135
 #define USERTEXTAREA_XY	136
 #define SGRAPH		137
+#define YLOGBASE	138
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -170,6 +171,8 @@
 #define DRAW_SGRAPH	35
 #define DRAW_POLYLINE	36
 #define DRAW_YLOGSCALE	37
+#define DRAW_XLOGSCALE	38
+#define DRAW_XYLOGSCALE	39
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1
