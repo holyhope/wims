@@ -5560,13 +5560,17 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
   ctx.fillText(yaxislabel,0,0);\
   ctx.restore();\
  };\
- if(use_axis_numbering == 1){ctx.font = font_family;}\
  ctx.lineWidth = line_width;\n\
  var x_min = Math.log(xmin)/Math.log(xlogbase);\
  var x_max = Math.log(xmax)/Math.log(xlogbase);\
  var y_min = Math.log(ymin)/Math.log(ylogbase);\
  var y_max = Math.log(ymax)/Math.log(ylogbase);\
- var x_e;var y_e;var num;var corr;var xtxt;var ytxt;\
+ var xmarge;var ymarge;var x_e;var y_e;var num;var corr;var xtxt;var ytxt;\
+ if(use_axis_numbering == 1){\
+  ctx.font = font_family;\
+  xmarge = ctx.measureText(ylogbase+'^'+y_max.toFixed(0)+' ').width;\
+  ymarge = parseInt(1.5*font_size);\
+ }else{xmarge = 0;ymarge = 0;}\
  for(var p = x_min; p <= x_max ; p++){\n\
   num = Math.pow(xlogbase,p);\n\
   for(var i = 1 ; i < xlogbase ; i++){\n\
@@ -5574,7 +5578,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
    if( i == 1 ){\
     ctx.lineWidth = line_width;\n\
     ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
-    if( use_axis_numbering == 1){\
+    if( use_axis_numbering == 1 && p > x_min){\
       xtxt = xlogbase+'^'+p.toFixed(0);\
       corr = 0.5*(ctx.measureText(xtxt).width);\
       ctx.fillText(xtxt,x_e - corr,ysize - 4);\
@@ -5583,11 +5587,13 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
     ctx.lineWidth = 0.2*line_width;\n\
     ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
    };\
-   ctx.beginPath();\n\
-   ctx.moveTo(x_e,0);\n\
-   ctx.lineTo(x_e,ysize);\n\
-   ctx.stroke();\n\
-   ctx.closePath();\n\
+   if( x_e >= xmarge ){\
+    ctx.beginPath();\n\
+    ctx.moveTo(x_e,0);\n\
+    ctx.lineTo(x_e,ysize - ymarge);\n\
+    ctx.stroke();\n\
+    ctx.closePath();\n\
+   };\
   };\n\
  };\n\
  for(var p = y_min; p <= y_max ; p++){\n\
@@ -5597,7 +5603,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
    if( i == 1 ){\
     ctx.lineWidth = line_width;\n\
     ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
-    if( use_axis_numbering == 1){\
+    if( use_axis_numbering == 1 && p > y_min){\
      ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\
     };\
    }else{\
@@ -5605,7 +5611,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
     ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
    };\
    ctx.beginPath();\n\
-   ctx.moveTo(0,y_e);\n\
+   ctx.moveTo(xmarge,y_e);\n\
    ctx.lineTo(xsize,y_e);\n\
    ctx.stroke();\n\
    ctx.closePath();\n\
