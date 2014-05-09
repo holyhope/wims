@@ -1,45 +1,63 @@
-// 3/5/2008 version 0.02 [added item 10]
-// 18/5/2008 version 0.03 [added item 11]
-// 19/5/2008 version 0.04 [added item 12,13,14,15]
-// 12/2012 version 0.05 [added item 16...26]
-// this is all very premature !!! The naming needs to be adapted to f1,f2...f20
+/* 
+ 3/5/2008 version 0.02 [added item 10]
+ 18/5/2008 version 0.03 [added item 11]
+ 19/5/2008 version 0.04 [added item 12,13,14,15]
+ 12/2012 version 0.05 [added item 16...26]
+ 5/2014 version 0.06 [ added item 27,28]
+ this is all very premature !!! The naming needs to be adapted to f1,f2...f20
 
-//  1 science(t)	checks scientific notation 4e+4 --> 4*10^4		: returns modified t or "error"
-//  2 check_o(t)	checks letter o instead of number 0			: returns 0 or 1 (0=error,1=success)		
-//  3 check_f(t)	checks parenthesis usage in functions sin()		: returns 0 or 1	
-//  4 check_x(t)	checks usage of x as multiplication *			: returns 0 or 1
-//  5 specialroot(t)	converts sqrt[a](b) to b^(1/a)				: returns modified t or "error"
-//  6 speciallog(t)	converts log[a](b) to log(b)/(log(a))			: returns modified t or "error"
-//  7 nthroot(t)	converts root(b,a) to b^(1/a)				: returns modified t or "error"
-//  8 check_log_NaN(t)	checks negative numbers in log				: returns 0 or 1
-//  9 check_sqrt_NaN(t)	checks negative numbers in sqrt				: returns 0 or 1
-// 10 normalize(t)	converts accents to letters without...			: returns modified t or "error"
-// 11 prefix(t)		converts SI prefixes to powers of 10			: returns modified t or "error"
-// 12 check_s2(t)	checks and corrects powers 10^01,10^0.1			: returns modified t or "error"
-// 13 arrows(t,arg1,arg2,arg3) 
-//	t is answer ; if needed "t" will be corrected for special sqrt[] and log[] syntax
-// 	arg1=switch:
-// 		arg1=0	: converts ascii arrows to unified "->"
-// 		arg1=1	: converts ascii arrows to unified "\u2192"
-// 		arg1=2	: returns no arrows ,just the text after the last arrow
-// 		arg1=3	: returns no arrows...the answer is an array 
-// 		arg1=4	: returns the answer ,checks on all steps if arg2 and "=" are present
-// 	arg2=x	: variable name in needed ($varlist?)
-// 	arg3=3	: amount -if any- of arrows...
-//
-// 14 keywords(t)	convert all keywords to  ' and '			: returns modified t or "error"
-// 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
-// 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
-// 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
-// 18 make_description(list,cnt) converts wims item list into javascript array size "cnt" : returns array(cnt)
-// 19 myConfirm(txt,reply,server,session,module,counter,color) will send answer to server...or not
-// 20 nospace(string) returns string without spaces
-// 21 singlespace(string) returns  string with multiple spaces collapsed (including trailing spaces; eg trim) 
-// 22 word2items(string) returns itemlist (not a js-array ) 1 2 3 -> 1,2,3 
-// 23 rawmath(string) returns modified string 4x -> 4*x  ; 4sin(3pi) -> 4*sin(3*pi)
-// 24 words2string(words,separator) returs modified string 1 2 3 --> 1:2:3 or 1@2@3 
-// 25 wordcnt(string) || wordcount(string) returns amount of words " A   B  ABC     " = 3  [a space is not a word]
-// 26 is_text(string) returns 0 if number are present in text
+  1 science(t)	checks scientific notation 4e+4 --> 4*10^4		: returns modified t or "error"
+  2 check_o(t)	checks letter o instead of number 0			: returns 0 or 1 (0=error,1=success)		
+  3 check_f(t)	checks parenthesis usage in functions sin()		: returns 0 or 1	
+  4 check_x(t)	checks usage of x as multiplication *			: returns 0 or 1
+  5 specialroot(t)	converts sqrt[a](b) to b^(1/a)				: returns modified t or "error"
+  6 speciallog(t)	converts log[a](b) to log(b)/(log(a))			: returns modified t or "error"
+  7 nthroot(t)	converts root(b,a) to b^(1/a)				: returns modified t or "error"
+  8 check_log_NaN(t)	checks negative numbers in log				: returns 0 or 1
+  9 check_sqrt_NaN(t)	checks negative numbers in sqrt				: returns 0 or 1
+ 10 normalize(t)	converts accents to letters without...			: returns modified t or "error"
+ 11 prefix(t)		converts SI prefixes to powers of 10			: returns modified t or "error"
+ 12 check_s2(t)	checks and corrects powers 10^01,10^0.1			: returns modified t or "error"
+ 13 arrows(t,arg1,arg2,arg3) 
+	t is answer ; if needed "t" will be corrected for special sqrt[] and log[] syntax
+ 	arg1=switch:
+ 		arg1=0	: converts ascii arrows to unified "->"
+ 		arg1=1	: converts ascii arrows to unified "\u2192"
+ 		arg1=2	: returns no arrows ,just the text after the last arrow
+ 		arg1=3	: returns no arrows...the answer is an array 
+ 		arg1=4	: returns the answer ,checks on all steps if arg2 and "=" are present
+ 	arg2=x	: variable name in needed ($varlist?)
+ 	arg3=3	: amount -if any- of arrows...
+
+ 14 keywords(t)	convert all keywords to  ' and '			: returns modified t or "error"
+ 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
+ 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
+ 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
+ 18 make_description(list,cnt) converts wims item list into javascript array size "cnt" : returns array(cnt)
+ 19 myConfirm(txt,reply,server,session,module,counter,color) will send answer to server...or not
+ 20 nospace(string) returns string without spaces
+ 21 singlespace(string) returns  string with multiple spaces collapsed (including trailing spaces; eg trim) 
+ 22 word2items(string) returns itemlist (not a js-array ) 1 2 3 -> 1,2,3 
+ 23 rawmath(string) returns modified string 4x -> 4*x  ; 4sin(3pi) -> 4*sin(3*pi)
+ 24 words2string(words,separator) returs modified string 1 2 3 --> 1:2:3 or 1@2@3 
+ 25 wordcnt(string) || wordcount(string) returns amount of words " A   B  ABC     " = 3  [a space is not a word]
+ 26 is_text(string) returns 0 if number are present in text
+ 27 shuffle(array) : returns randomized array
+ 28 randint(x1,x2) : returns random integer between x1 and x2
+*/
+
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    };
+    return array;
+};
+
+function randint(min,max){return Math.floor(Math.random()*(max-min+1)+min);};
+
 
 function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
