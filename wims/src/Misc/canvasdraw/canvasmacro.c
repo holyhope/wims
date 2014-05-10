@@ -26,7 +26,9 @@ void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int fontsize,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y);
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
+void add_textarea_line(FILE *js_include_file,int num);
 void add_textarea_polyline(FILE *js_include_file);
+void add_textarea_polygon(FILE *js_include_file);
 void add_input_crosshair(FILE *js_include_file,int num);
 void add_input_arrow(FILE *js_include_file,int num);
 void add_input_xy(FILE *js_include_file, int canvas_root_id);
@@ -603,9 +605,12 @@ var stroke_opacity = %f;\
 var use_dashed = %d;\
 var dashtype0 = %d;\
 var dashtype1 = %d;\
-var click_cnt=0;\
-var radius = new Array();\
+var x0,y0;\
 function user_draw(evt){\
+ var lu = userdraw_x.length;\
+ if( lu != 0 && lu%%2 == 0){\
+  draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ }\
  var y = evt.clientY - canvas_rect.top;\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
@@ -614,22 +619,16 @@ function user_draw(evt){\
    x = snap_to_x(x);\
    y = snap_to_y(y);\
   };\
-  if( xy_cnt != 0 && xy_cnt%%2 == 0){\
-   draw_circles(context_userdraw,userdraw_x,userdraw_y,radius,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
-   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-   click_cnt = 0;\
-  };\
   if( evt.which == 1 ){\
-   if(click_cnt == 0){\
-    if(num == 1){ userdraw_x[0] = x;userdraw_y[0] = y;radius[0] = line_width;xy_cnt=1;} else {userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;radius[xy_cnt] = line_width; xy_cnt++; }\
-    click_cnt = 1;\
+   if( lu%%2 == 0){\
+    x0 = x;y0 = y;\
+    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
+    draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
     user_drag(evt);\
    }\
    else\
    {\
-    click_cnt = 0;\
-    userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;radius[xy_cnt] = line_width;xy_cnt++;\
-    draw_circles(context_userdraw,userdraw_x,userdraw_y,radius,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
     draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
    }\
   }\
@@ -643,17 +642,19 @@ function user_drag(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
+ var lu = userdraw_x.length;\
  if( use_snap_to_grid == 1 ){\
-  x = snap_to_x(x);\
-  y = snap_to_y(y);\
+   x = snap_to_x(x);\
+   y = snap_to_y(y);\
  };\
- if(click_cnt == 1 ){\
+ if( lu%%2 != 0 ){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  userdraw_x[xy_cnt] = x;\
-  userdraw_y[xy_cnt] = y;\
-  radius[xy_cnt] = line_width;\
-  draw_circles(context_userdraw,userdraw_x,userdraw_y,radius,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
-  draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+  draw_circles(context_userdraw,[x],[y],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+  draw_lines(context_userdraw,[x0,x],[y0,y],line_width,stroke_color,stroke_opacity);\
+  if( lu > 0){\
+   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  }\
  }\
 };\
 function canvas_remove(x,y){\
@@ -670,9 +671,7 @@ function canvas_remove(x,y){\
      {\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
-     xy_cnt--;\
-     if(xy_cnt < 2){xy_cnt = 0;click_cnt = 0;userdraw_x = [];userdraw_y = [];return;};\
-     draw_circles(context_userdraw,userdraw_x,userdraw_y,radius,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+     if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
      draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
     }\
     return;\
@@ -1835,8 +1834,82 @@ function user_redraw(t){\
 };",num);
 }
 
-/* draw polyline via inputfields x/y */
+/* draw polygon via inputfields x/y */
+void add_textarea_polygon(FILE *js_include_file){
+fprintf(js_include_file,"\n<!-- begin polygon via inputfields or textareas -->\n\
+function user_redraw(t){\
+ if( t == -1 ){\
+ var lu = userdraw_x.length - 1;\
+ userdraw_x.splice(lu,1);\
+ userdraw_y.splice(lu,1);\
+ draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+ cnt = 1; return;\
+ };\
+ var add_x = document.getElementById(\"userinput_x\").value;\
+ var lx = add_x.length;\
+ if( lx > 0 ){\
+  add_x = add_x.split('\\n');\
+  var add_y = (document.getElementById(\"userinput_y\").value).split('\\n');\
+  lx = add_x.length;\
+  ly = add_y.length;\
+  if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
+  var start = 0;var p = 0;\
+  if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
+  while(add_x[p]){\
+   if( isNaN(add_x[p] - 1) || isNaN(add_y[p] - 1) ){alert(\"illegal input on line \"+p);return;}\
+   userdraw_x[start] = x2px(add_x[p]);\
+   userdraw_y[start] = y2px(add_y[p]);\
+   start++;p++;if(p>100){alert(\"hmmmm\");return;};\
+  };\
+  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+  cnt = 1;\
+ }\
+};");
+}
+/* draw line via inputfields x/y */
+void add_textarea_line(FILE *js_include_file,int num){
+fprintf(js_include_file,"\n<!-- begin line via inputfields or textareas -->\n\
+function user_redraw(t){\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 2;\
+  userdraw_x.splice(lu,2);\
+  userdraw_y.splice(lu,2);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
+  return;\
+ };\
+ var add_x1 = document.getElementById(\"userinput_x1\").value;\
+ if( add_x1.length > 0 ){\
+  var add_y1 = document.getElementById(\"userinput_y1\").value;\
+  var add_x2 = document.getElementById(\"userinput_x2\").value;\
+  var add_y2 = document.getElementById(\"userinput_y2\").value;\
+  if( isNaN(add_x1 - 1) ||  isNaN(add_y1 - 1)  || isNaN(add_x2 - 1) ||  isNaN(add_y2 - 1) ){alert(\"illegal input\");return;}\
+  if( %d == 2 ){\
+    var s = userdraw_x.length;\
+    userdraw_x[s] = x2px(add_x1);\
+    userdraw_y[s] = y2px(add_y1);\
+    userdraw_x[s+1] = x2px(add_x2);\
+    userdraw_y[s+1] = y2px(add_y2);\
+  }\
+  else\
+  {\
+   userdraw_x[0] = x2px(add_x1);\
+   userdraw_y[0] = y2px(add_y1);\
+   userdraw_x[1] = x2px(add_x2);\
+   userdraw_y[1] = y2px(add_y2);\
+  };\
+  document.getElementById(\"userinput_x1\").value=\"\";document.getElementById(\"userinput_y1\").value=\"\";\
+  document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
+ };\
+};",num);
+}
 
+
+/* draw polyline via inputfields x/y */
 void add_textarea_polyline(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields or textareas -->\n\
 function user_redraw(t){\
@@ -1844,7 +1917,9 @@ function user_redraw(t){\
  var lu = userdraw_x.length - 1;\
  userdraw_x.splice(lu,1);\
  userdraw_y.splice(lu,1);\
- draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);cnt = 1;return;\
+ context_userdraw.clearRect(0,0,xsize,ysize);\
+ draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ cnt = 1;return;\
  };\
  var add_x = document.getElementById(\"userinput_x\").value;\
  var lx = add_x.length;\
@@ -1875,6 +1950,7 @@ function user_redraw(t){\
   var lu = userdraw_x.length - 2;\
   userdraw_x.splice(lu,2);\
   userdraw_y.splice(lu,2);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   return;\
  };\
