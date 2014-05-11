@@ -1121,7 +1121,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
-		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if( use_input_xy == 1 ){
+		    add_textarea_line(js_include_file,1);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
 	    }
 	    else
 	    if( strcmp(draw_type,"lines") == 0 ){
@@ -1129,16 +1132,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
-		if( use_input_xy > 0 ){
+		if( use_input_xy == 1 ){
 		    add_textarea_line(js_include_file,2);
-		    if( use_input_xy == 2 ){
-			add_textarea_xy(js_include_file,canvas_root_id);
-		    }
-		    else
-		    {
-			add_input_x1y1x2y2(js_include_file,canvas_root_id);
-			/* add_input_xy(js_include_file,canvas_root_id); */
-		    }
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 	    }
 	    else

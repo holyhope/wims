@@ -1806,7 +1806,15 @@ function user_redraw(t){\
 void add_input_arrow(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_arrow -->\n\
 function user_redraw(t){\
-  var add_x1 = document.getElementById(\"userinput_x1\").value;\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 2;\
+  userdraw_x.splice(lu,2);\
+  userdraw_y.splice(lu,2);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  return;\
+ };\
+ var add_x1 = document.getElementById(\"userinput_x1\").value;\
  if( add_x1.length > 0 ){\
   var add_y1 = document.getElementById(\"userinput_y1\").value;\
   var add_x2 = document.getElementById(\"userinput_x2\").value;\
@@ -1842,6 +1850,7 @@ function user_redraw(t){\
  var lu = userdraw_x.length - 1;\
  userdraw_x.splice(lu,1);\
  userdraw_y.splice(lu,1);\
+ context_userdraw.clearRect(0,0,xsize,ysize);\
  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
  cnt = 1; return;\
  };\
@@ -1874,7 +1883,6 @@ function user_redraw(t){\
   var lu = userdraw_x.length - 2;\
   userdraw_x.splice(lu,2);\
   userdraw_y.splice(lu,2);\
-  context_userdraw.clearRect(0,0,xsize,ysize);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
   return;\
