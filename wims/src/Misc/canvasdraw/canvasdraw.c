@@ -182,8 +182,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li>
-	<li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
 	*/
 	switch(type){
 	case END:
@@ -2775,7 +2774,7 @@ int toupper(int c){
 char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' )  && ( c != ';')){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) && ( c != ';' ) ){
 	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
 	if( c == '#' ){
 	    is_hex = 1;
@@ -2786,7 +2785,7 @@ char *get_color(FILE *infile , int last){
 	}
     }
     if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' || c == ';'){ done = TRUE; line_number++; }
+    if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
     if( c == EOF ){finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -2822,13 +2821,13 @@ char *get_color(FILE *infile , int last){
 char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char  temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ';' )){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') ){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...repeat command to fit string");break;}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' || c == ';') { done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n') { done = TRUE; line_number++; }
     if( c == EOF ) {
 	finished = 1;
 	if( last != 1 ){ canvas_error("expected more arguments");}
@@ -2843,13 +2842,13 @@ char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 f
 char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',') && ( c != ';' )){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',')){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...will cut it off");break;}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
-    if( c == '\n' || c == ';') { line_number++; }
+    if( ( c == '\n' || c == EOF) && last == 0){canvas_error("expecting more arguments in command");} 
+    if( c == '\n') { line_number++; }
     if( c == EOF ) {finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -2971,7 +2970,7 @@ double get_double(FILE *infile , int orientation , int last){  /* last = 0 : mor
     }
 }
 void canvas_error(char *msg){
-    fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number,msg);
+    fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number-1,msg);
     finished = 1;
     exit(EXIT_SUCCESS);
 }
