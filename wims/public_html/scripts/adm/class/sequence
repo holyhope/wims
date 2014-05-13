@@ -24,37 +24,39 @@
    !href cmd=reply&job=delete&seq=$i $wims_name_erase
    !endif
    </div>
+   <ul class="wims_work_list">
    !set dcnt=!itemcnt $obj_
    !for i_=1 to $dcnt
     !distribute word $(obj_[$i_]) into type,num
     !if $type=c
       !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
       !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_,bidon,bidon,de_
-      <div class="wims_doc_item">
+      <li class="wims_doc_item">
         !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
       ($(wims_name_status[$o_+1]))
-      <div class="wims_doc_desc">$de_</div></div>
+       <div class="wims_doc_desc">$de_</div>
+      </li>
      !reset s_,t_,bidon,bidon,bidon,o_
     !endif
     !if $type=doc
      !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.docindex
      !distribute lines $d_ into s_,t_,ti_,de_,o_
-     <div class="wims_doc_item">
+     <li class="wims_doc_item">
         !href module=$s_&$t_&seq=$i&name=$wims_name_sequence $ti_
-     ($(wims_name_status[$o_+1])) 
+     ($(wims_name_status[$o_+1]))
       <div class="wims_doc_desc">$de_</div>
-     </div>
+     </li>
      !reset s_,t_,ti_,de_,o_
      !endif
     !endif
     !if $type=sheet
      !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
      !distribute lines $s_ into a_,t_,ti,de_
-     <div class="wims_sheet_item">
+     <li class="wims_sheet_item">
        !href module=adm/sheet&sh=$num&seq=$i $ti
     ($(wims_name_shstatus[$a_+1]))
     <div class="wims_sheet_desc">$de_</div>
-    </div>
+    </li>
     !reset a_,t_,ti,de_
     !endif
     !if $type=vote
@@ -70,15 +72,16 @@
    !if $type=exam
      !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
      !distribute lines $e_ into a_,ex_,du_,t_,de_
-    <div class="wims_exam_item">
+    <li class="wims_exam_item">
      !href module=adm/class/exam&exam=$num&seq=$i $t_
      ($(wims_name_shstatus[$a_+1]))
       <div class="wims_exam_desc">$de_</div>
-      </div>
+      </li>
      !reset  a_,ex_,du_,nb_,t_,de_
    !endif
-   
+
    !reset s_ v_ d_ e_
   !next i_
+</ul>
   </fieldset>
 
