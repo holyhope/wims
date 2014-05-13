@@ -1670,15 +1670,21 @@ function use_mouse_coordinates(){\
 
 }
 
+/* 
+add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined) 
+add two buttons: OK and NOK (OK draws; NOK will delete last item pair from userdraw_x / userdraw_y array's
+*/
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
-fprintf(js_include_file,"\n<!-- begin add_area_xy -->\n\
+fprintf(js_include_file,"\n<!-- begin add_textarea_xy -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-userinput_xy_div.innerHTML=\"<table style=\'border:1px solid black;background-color:#ffffa0\' ><tr><td><em>\"+label_x+\"</em></td><td><em>\"+label_y+\"</em></td><td><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></td></tr><tr><td><textarea rows='5' cols='2' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td><textarea rows='5' cols='2' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td>&nbsp;</td></tr></table>\";\
+userinput_xy_div.innerHTML=\"<table style=\'border:1px solid black;background-color:#ffffa0\' ><tr><td><em>\"+label_x+\"</em></td><td><em>\"+label_y+\"</em></td><td><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></td></tr><tr><td><textarea rows='5' cols='2' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td><textarea rows='5' cols='2' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td>&nbsp;</td></tr></table>\";\
 var update_button = document.getElementById(\"update_button\");\
-update_button.addEventListener(\"mousedown\",user_redraw,false);",canvas_root_id);
+var delete_button = document.getElementById(\"delete_button\");\
+update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
 /* 
@@ -1718,6 +1724,8 @@ update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;}
 delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
+/* THESE JS-FUNCTIONS COULD BE MADE LESS COPY & PASTE "PROGRAMMING" */
+
 /* draw circle(s) / point(s) via 3 inputfields */
 void add_input_circle(FILE *js_include_file,int type,int num){
 /* 
@@ -1741,21 +1749,19 @@ function user_redraw(t){\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
   return;\
  };\
- var add_x = document.getElementById(\"userinput_x\").value;\
- if( add_x.length > 0 ){\
-  var add_y = document.getElementById(\"userinput_y\").value;\
-  if( isNaN(add_x - 1) || isNaN(add_y - 1 ) ){alert(\"illegal input \\nI am expecting a single point (x:y) \");return;}\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
+ if( add_x != null && add_y != null ){\
   var lu = userdraw_x.length;\
   if( type == 2 ){\
-   var add_r = document.getElementById(\"userinput_r\").value;if( isNaN(add_r - 1) ){alert(\"illegal radius input \");return;}\
+   var add_r = safe_aval( document.getElementById(\"userinput_r\").value );if( add_r == null ){alert(\"illegal radius input \");return;}\
    if( num == 1 ){\
-   userdraw_radius[0] = parseInt(Math.abs(xsize*(add_r)/(xmax - xmin)));\
+    userdraw_radius[0] = parseInt(Math.abs(xsize*(add_r)/(xmax - xmin)));\
    }\
    else\
    {\
     userdraw_radius[lu] = parseInt(Math.abs(xsize*(add_r)/(xmax - xmin)));\
    };\
-   document.getElementById(\"userinput_r\").value=\"\";\
   }\
   else\
   {\
@@ -1771,19 +1777,27 @@ function user_redraw(t){\
     userdraw_y[lu] = y2px(add_y);\
     xy_cnt++;\
   };\
-  document.getElementById(\"userinput_x\").value=\"\";document.getElementById(\"userinput_y\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
- };};",type,num);
+ };\
+ return;\
+};",type,num);
 }
 /* draw crosshairs via inputfields x/y */
 void add_input_crosshair(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_crosshair -->\n\
 function user_redraw(t){\
- var add_x = document.getElementById(\"userinput_x\").value;\
- if( add_x.length > 0 ){\
-  var add_y = document.getElementById(\"userinput_y\").value;\
-  if( isNaN(add_x - 1) || isNaN(add_y - 1 ) ){alert(\"illegal input \\nI am expecting a single point (x:y) \");return;}\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 1;\
+  userdraw_x.splice(lu,1);\
+  userdraw_y.splice(lu,1);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_crosshairs(context_userdraw,userdraw_x,userdraw_y,line_width,crosshair_size,stroke_color,stroke_opacity,0,0,0,[0,0]);\
+  return;\
+ };\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
+ if( add_x != null && add_y != null ){\
   var lu = userdraw_x.length;\
   if( %d == 1 ){\
    userdraw_x[0] = x2px(add_x);\
@@ -1795,10 +1809,10 @@ function user_redraw(t){\
     userdraw_y[lu] = y2px(add_y);\
     xy_cnt++;\
   };\
-  document.getElementById(\"userinput_x\").value=\"\";document.getElementById(\"userinput_y\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_crosshairs(context_userdraw,userdraw_x,userdraw_y,line_width,crosshair_size,stroke_color,stroke_opacity,0,0,0,[0,0]);\
  };\
+ return;\
 };",num);
 }
 
@@ -1814,12 +1828,11 @@ function user_redraw(t){\
   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
   return;\
  };\
- var add_x1 = document.getElementById(\"userinput_x1\").value;\
- if( add_x1.length > 0 ){\
-  var add_y1 = document.getElementById(\"userinput_y1\").value;\
-  var add_x2 = document.getElementById(\"userinput_x2\").value;\
-  var add_y2 = document.getElementById(\"userinput_y2\").value;\
-  if( isNaN(add_x1 - 1) ||  isNaN(add_y1 - 1)  || isNaN(add_x2 - 1) ||  isNaN(add_y2 - 1) ){alert(\"illegal input\");return;}\
+ var add_x1 = safe_eval( document.getElementById(\"userinput_x1\").value );\
+ var add_y1 = safe_eval( document.getElementById(\"userinput_y1\").value );\
+ var add_x2 = safe_eval( document.getElementById(\"userinput_x2\").value );\
+ var add_y2 = safe_eval( document.getElementById(\"userinput_y2\").value );\
+ if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
   if( %d == 2 ){\
     var s = userdraw_x.length;\
     userdraw_x[s] = x2px(add_x1);\
@@ -1834,47 +1847,13 @@ function user_redraw(t){\
    userdraw_x[1] = x2px(add_x2);\
    userdraw_y[1] = y2px(add_y2);\
   };\
-  document.getElementById(\"userinput_x1\").value=\"\";document.getElementById(\"userinput_y1\").value=\"\";\
-  document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
  };\
+ return;\
 };",num);
 }
 
-/* draw polygon via inputfields x/y */
-void add_textarea_polygon(FILE *js_include_file){
-fprintf(js_include_file,"\n<!-- begin polygon via inputfields or textareas -->\n\
-function user_redraw(t){\
- if( t == -1 ){\
- var lu = userdraw_x.length - 1;\
- userdraw_x.splice(lu,1);\
- userdraw_y.splice(lu,1);\
- context_userdraw.clearRect(0,0,xsize,ysize);\
- draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
- cnt = 1; return;\
- };\
- var add_x = document.getElementById(\"userinput_x\").value;\
- var lx = add_x.length;\
- if( lx > 0 ){\
-  add_x = add_x.split('\\n');\
-  var add_y = (document.getElementById(\"userinput_y\").value).split('\\n');\
-  lx = add_x.length;\
-  ly = add_y.length;\
-  if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
-  var start = 0;var p = 0;\
-  if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
-  while(add_x[p]){\
-   if( isNaN(add_x[p] - 1) || isNaN(add_y[p] - 1) ){alert(\"illegal input on line \"+p);return;}\
-   userdraw_x[start] = x2px(add_x[p]);\
-   userdraw_y[start] = y2px(add_y[p]);\
-   start++;p++;if(p>100){alert(\"hmmmm\");return;};\
-  };\
-  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
-  cnt = 1;\
- }\
-};");
-}
 /* draw line via inputfields x/y */
 void add_textarea_line(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin line via inputfields or textareas -->\n\
@@ -1887,12 +1866,11 @@ function user_redraw(t){\
   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
   return;\
  };\
- var add_x1 = document.getElementById(\"userinput_x1\").value;\
- if( add_x1.length > 0 ){\
-  var add_y1 = document.getElementById(\"userinput_y1\").value;\
-  var add_x2 = document.getElementById(\"userinput_x2\").value;\
-  var add_y2 = document.getElementById(\"userinput_y2\").value;\
-  if( isNaN(add_x1 - 1) ||  isNaN(add_y1 - 1)  || isNaN(add_x2 - 1) ||  isNaN(add_y2 - 1) ){alert(\"illegal input\");return;}\
+ var add_x1 = safe_eval( document.getElementById(\"userinput_x1\").value );\
+ var add_y1 = safe_eval( document.getElementById(\"userinput_y1\").value );\
+ var add_x2 = safe_eval( document.getElementById(\"userinput_x2\").value );\
+ var add_y2 = safe_eval( document.getElementById(\"userinput_y2\").value );\
+ if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
   if( %d == 2 ){\
     var s = userdraw_x.length;\
     userdraw_x[s] = x2px(add_x1);\
@@ -1907,12 +1885,10 @@ function user_redraw(t){\
    userdraw_x[1] = x2px(add_x2);\
    userdraw_y[1] = y2px(add_y2);\
   };\
-  document.getElementById(\"userinput_x1\").value=\"\";document.getElementById(\"userinput_y1\").value=\"\";\
-  document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
-  context_userdraw.clearRect(0,0,xsize,ysize);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
  };\
+ return;\
 };",num);
 }
 
@@ -1922,32 +1898,32 @@ void add_textarea_polyline(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields or textareas -->\n\
 function user_redraw(t){\
  if( t == -1 ){\
- var lu = userdraw_x.length - 1;\
- userdraw_x.splice(lu,1);\
- userdraw_y.splice(lu,1);\
- context_userdraw.clearRect(0,0,xsize,ysize);\
- draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
- cnt = 1;return;\
+  var lu = userdraw_x.length - 1;\
+  userdraw_x.splice(lu,1);\
+  userdraw_y.splice(lu,1);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  cnt = 1;return;\
  };\
- var add_x = document.getElementById(\"userinput_x\").value;\
- var lx = add_x.length;\
- if( lx > 0 ){\
-  add_x = add_x.split('\\n');\
-  var add_y = (document.getElementById(\"userinput_y\").value).split('\\n');\
-  lx = add_x.length;\
-  ly = add_y.length;\
-  if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
+ if(add_x != null && add_y != null ){\
+  add_x = add_x.split('\\n');add_y = add_y.split('\\n');\
+  var lx = add_x.length;\
+  var ly = add_y.length;\
+  if( lx != ly){ if( lx > ly ){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
   var start = 0;var p = 0;\
   if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
   while(add_x[p]){\
-   if( isNaN(add_x[p] - 1) || isNaN(add_y[p] - 1) ){alert(\"illegal input on line \"+p);return;}\
    userdraw_x[start] = x2px(add_x[p]);\
    userdraw_y[start] = y2px(add_y[p]);\
    start++;p++;if(p>100){alert(\"hmmmm\");return;};\
   };\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   cnt = 1;\
- }\
+ };\
+ return;\
 };");
 }
 /* draw segment(s) via inputfields x/y */
@@ -1962,12 +1938,11 @@ function user_redraw(t){\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   return;\
  };\
- var add_x1 = document.getElementById(\"userinput_x1\").value;\
- if( add_x1.length > 0 ){\
-  var add_y1 = document.getElementById(\"userinput_y1\").value;\
-  var add_x2 = document.getElementById(\"userinput_x2\").value;\
-  var add_y2 = document.getElementById(\"userinput_y2\").value;\
-  if( isNaN(add_x1 - 1) ||  isNaN(add_y1 - 1)  || isNaN(add_x2 - 1) ||  isNaN(add_y2 - 1) ){alert(\"illegal input\");return;}\
+ var add_x1 = safe_eval( document.getElementById(\"userinput_x1\").value );\
+ var add_y1 = safe_eval( document.getElementById(\"userinput_y1\").value );\
+ var add_x2 = safe_eval( document.getElementById(\"userinput_x2\").value );\
+ var add_y2 = safe_eval( document.getElementById(\"userinput_y2\").value );\
+ if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
   if( %d == 2 ){\
     var s = userdraw_x.length;\
     userdraw_x[s] = x2px(add_x1);\
@@ -1982,12 +1957,48 @@ function user_redraw(t){\
    userdraw_x[1] = x2px(add_x2);\
    userdraw_y[1] = y2px(add_y2);\
   };\
-  document.getElementById(\"userinput_x1\").value=\"\";document.getElementById(\"userinput_y1\").value=\"\";\
-  document.getElementById(\"userinput_x2\").value=\"\";document.getElementById(\"userinput_y2\").value=\"\";\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
  };\
+ return;\
 };",num);
+}
+
+/* draw polygon via 2 textarea's x/y : split into lines ! */
+void add_textarea_polygon(FILE *js_include_file){
+fprintf(js_include_file,"\n<!-- begin polygon via inputfields or textareas -->\n\
+function user_redraw(t){\
+ if( t == -1 ){\
+  var lu = userdraw_x.length - 1;\
+  userdraw_x.splice(lu,1);\
+  userdraw_y.splice(lu,1);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+  cnt = 1; return;\
+ };\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
+ if( add_x != null && add_y != null ){\
+  var lx = add_x.length;\
+  if( lx > 0 ){\
+   add_x = add_x.split('\\n');\
+   add_y = add_y.split('\\n');\
+   lx = add_x.length;\
+   ly = add_y.length;\
+   if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
+   var start = 0;var p = 0;\
+   if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
+   while(add_x[p]){\
+    userdraw_x[start] = x2px(add_x[p]);\
+    userdraw_y[start] = y2px(add_y[p]);\
+    start++;p++;if(p>100){alert(\"hmmmm\");return;};\
+   };\
+   draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+   cnt = 1;\
+  };\
+ };\
+ return;\
+};");
 }
 
 void *my_newmem(size_t size){

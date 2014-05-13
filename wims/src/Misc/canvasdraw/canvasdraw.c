@@ -182,7 +182,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &amp;euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
 	*/
 	switch(type){
 	case END:
@@ -893,9 +893,11 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
-	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
-	use_input_xy = 2;
-	break;
+	    if(use_tooltip == TRUE){canvas_error("usertextarea_xy can not be combined with intooltip command");}
+	    if( use_input_xy == 1 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
+	    fprintf(js_include_file,"function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};");
+	    use_input_xy = 2;
+	    break;
 	case USERINPUT_XY:
 	/*
 	@ userinput_xy
@@ -903,12 +905,15 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ to be used in combination with command "userdraw object_type,color"
 	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values) 
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
+	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
 	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
-	if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
-	use_input_xy = 1;
-	break;
+	    if(use_tooltip == TRUE){canvas_error("userinput_xy can not be combined with intooltip command");}
+	    /* add simple eval check to avoid code injection with unprotected eval(string) */
+	    fprintf(js_include_file,"function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};");
+	    use_input_xy = 1;
+	    break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
@@ -5722,7 +5727,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
  };\n\
  var stepy = Math.abs(y2px(ymajor) - y2px(0));\
  var minor_step = stepy / yminor;\
- for(var y = 0 ; y < ysize - xmarge ; y = y + stepy){\
+ for(var y = 0 ; y < ysize - stepy ; y = y + stepy){\
   ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
   ctx.lineWidth = line_width;\n\
   ctx.beginPath();\n\
@@ -5821,7 +5826,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
  var minor_step = stepx / xminor;\
  var prec = Math.log(precision)/Math.log(10);\
  var xtxt;var corr;var flip = 0;\
- for(var x = xmarge ; x < xsize ; x = x + stepx){\
+ for(var x = stepx ; x < xsize ; x = x + stepx){\
   ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
   ctx.lineWidth = line_width;\n\
   ctx.beginPath();\n\
