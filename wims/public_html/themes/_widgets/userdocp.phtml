@@ -14,18 +14,16 @@
 
 !if $dpcnt>0
  <!-- _widgets/userdocp.phtml -->
- <table class="wims_user_docp_table">
+ <ul class="wims_user_docp">
   !for i=1 to $dpcnt
    !set s_=!line $i of $dps_list
    !set t_=!line $i of $dpt_list
    !set w_=!line $i of $dpw_list
-   <tr class="wims_user_docp">
-    <td class="wims_user_doc_type">$wims_name_doc</td>
-    <td colspan="3">
+   <li>
+    <span class="wims_user_doc_type">$wims_name_doc</span>
      !href module=$s_&$t_&wksheet=$w_ $(dpti_list[$i;])
-    </td>
-   </tr>
+   </li>
   !next i
- </table>
+ </ul>
  <!-- end _widgets/userdocp.phtml -->
 !endif
