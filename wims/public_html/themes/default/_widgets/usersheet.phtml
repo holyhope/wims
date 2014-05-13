@@ -3,17 +3,16 @@
 
 !if $n>0
  <!-- _widgets/usersheet.phtml -->
- <ul class="wims_work_list">
+ <table class="wims_user_sheet_table">
   !for i=1 to $n
    !set se=!item $i of $aclist
    !distribute lines $(s_$se) into ac,t_,ti,de
-   <li class="wims_sheet_item">
-    <span class="wims_user_sheet_type">$wims_name_Sheet $se.</span>
-    <span class="wims_user_sheet_desc">
+   <tr class="wims_user_sheet">
+    <td class="wims_user_sheet_type">$wims_name_Sheet $se. </td>
+    <td class="wims_user_sheet_desc">
      !href module=adm/sheet&sh=$se $ti
-    </span>
-    <div class="wims_user_info">
-     <span class="wims_user_sheet_expire">
+    </td>
+    <td class="wims_user_sheet_expire">
      !if $ac>=2
       $U_expired
      !else
@@ -21,9 +20,10 @@
        !read misc/expire.phtml.$lang $t_
       !endif
      !endif
-    </span>
+    </td>
     !set pe=!line $se of $percents
     !distribute words $pe into p1,p2,p3,p4
+    <td class="wims_user_sheet_score">
      !if $p1!=$empty
         !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
         !set ff_$se=!mathsubst Q=$y_ in $(f_$se)
@@ -42,16 +42,15 @@
      !else
       &nbsp;
      !endif
-    <span>
+    </td><td>
      !if showshweight iswordof $class_option
       ($wims_name_coeff
       !line $i of $wlist
       )
      !endif
-    </span>
-    </div>
-   </li>
+    </td>
+   </tr>
   !next i
- </ul>
+ </table>
  <!-- end _widgets/usersheet.phtml -->
 !endif
