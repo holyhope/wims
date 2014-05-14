@@ -13,7 +13,8 @@
  !set class_scorecolor=!replace internal orange by $(colorhexa[5]) in $class_scorecolor
  !set class_scorecolor=!replace internal yellow by $(colorhexa[8]) in $class_scorecolor
  !set class_scorecolor=!replace internal green by $(colorhexa[10]) in $class_scorecolor
- !set style_note="background-color:$(class_scorecolor[$t0_+1]);font-weight:bold;text-align:center;border;solid 1px;"
+ !set style_note="background-color:$(class_scorecolor[$t0_+1]);" class="wims_style_score"
+
 !else
  !let t_=!charcnt $t0_
  !if $t_>1 or ($t_=1 and $t0_>0)
@@ -21,8 +22,9 @@
  !else
   !let t_=0
  !endif
- !set style_note="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;"
+ !set style_note="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);" class="wims_style_score"
 !!  $t2_
+!! FIXME should not be there : calculation of score in case of livret :
   !if $wims_scoreview>=0 and $t_>0
    !set output_note=$[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
   !else
