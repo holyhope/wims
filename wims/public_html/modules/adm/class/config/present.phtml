@@ -1,5 +1,22 @@
 !!!### language independant
 !set wims_form_method=file
+!for cl in bgcolor,ref_menucolor,ref_button_bgcolor,ref_menucolor,\
+  ref_button_bgcolor,ref_button_color,ref_button_help_color,ref_button_help_bgolor
+  !default class_$cl=$(wims_$cl)
+  !!for compatibility
+  !set class_$cl=!replace internal white by #FFFFFF in $(class_$cl)
+  !set class_$cl=!replace internal red by #FF0000 in $(class_$cl)
+  !set class_$cl=!replace internal orange by #FFA500 in $(class_$cl)
+  !set class_$cl=!replace internal yellow by #FFFF00 in $(class_$cl)
+  !set class_$cl=!replace internal green by #00FF00 in $(class_$cl)
+!next
+!!why is it different ???
+ !default class_refcolor=$(wims_ref_bgcolor)
+ !set class_refcolor=!replace internal white by #FFFFFF in $(class_refcolor)
+  !set class_refcolor=!replace internal red by #FF0000 in $(class_refcolor)
+  !set class_refcolor=!replace internal orange by #FFA500 in $(class_refcolor)
+  !set class_refcolor=!replace internal yellow by #FFFF00 in $(class_refcolor)
+  !set class_refcolor=!replace internal green by #00FF00 in $(class_refcolor)
 !form reply
 <input type="hidden" name="up_job" value="present" />
 <fieldset class="property_fields blockcenter">
@@ -20,8 +37,9 @@
    <div class="field box halfwidth">
      <label for="pr_bgcolor">$name_background_color</label>
 !set wims_ref_class=wims_button_help float_right
+
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-     <input size="10" name="pr_bgcolor" id="pr_bgcolor" value="$class_bgcolor" />
+     <input size="10" name="pr_bgcolor" id="pr_bgcolor" value="$class_bgcolor" type="color" />
     </div>
     <div class="field box halfwidth">
      <label for="pr_bgimg">$name_image</label>
@@ -34,49 +52,51 @@
      <label for="pr_refcolor">$name_menu_color</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-     <input size="10" name="pr_refcolor" id="pr_refcolor" value="$class_refcolor" />
+     <input size="10" name="pr_refcolor" id="pr_refcolor" value="$class_refcolor" type="color" />
      </div>
      <div class="field box halfwidth">
       <label for="pr_ref_menucolor">$name_refmenu_color</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-      <input size="10" name="pr_ref_menucolor" id="pr_ref_menucolor" value="$class_ref_menucolor" />
+      <input size="10" name="pr_ref_menucolor" id="pr_ref_menucolor" value="$class_ref_menucolor" type="color" />
    </div>
 
    <div class="field box halfwidth">
       <label for="pr_ref_button_bgcolor">$name_button_bgcolor</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-       <input size="10" name="pr_ref_button_bgcolor" id="pr_ref_button_bgcolor" value="$class_ref_button_bgcolor" />
+       <input size="10" name="pr_ref_button_bgcolor" id="pr_ref_button_bgcolor" value="$class_ref_button_bgcolor" type="color" />
      </div>
      <div class="field box halfwidth">
       <label for="pr_ref_button_color">$name_button_color</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-      <input size="10" name="pr_ref_button_color" id="pr_ref_button_color" value="$class_ref_button_color" />
+      <input size="10" name="pr_ref_button_color" id="pr_ref_button_color" value="$class_ref_button_color" type="color" />
    </div>
 
    <div class="field box halfwidth">
      <label for="pr_ref_button_help_bgcolor">$name_button_help_bgcolor</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-     <input size="10" name="pr_ref_button_help_bgcolor" id="pr_ref_button_help_bgcolor" value="$class_ref_button_help_bgcolor" />
+     <input size="10" name="pr_ref_button_help_bgcolor" id="pr_ref_button_help_bgcolor" value="$class_ref_button_help_bgcolor" type="color" />
    </div>
    <div class="field box halfwidth">
      <label for="pr_ref_button_help_color">$name_button_help_color</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
-       <input size="10" name="pr_ref_button_help_color" id="pr_ref_button_help_color" value="$class_ref_button_help_color" />
+!default class_ref_button_help_color=$wims_ref_button_help_color
+       <input size="10" name="pr_ref_button_help_color" id="pr_ref_button_help_color" value="$class_ref_button_help_color" type="color" />
    </div>
 
    <div class="field box">
      <label for="">$name_colorscore</label>
      <br />
+!read adm/class/colors
   !for col=1 to 11
-     <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])" />
+     <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])" type="color" />
   !next col
    </div>
-
+!!debug $(class_scorecolor)
    <div class="field box halfwidth">
      <label for="pr_theme">$name_theme</label>
 !set wims_ref_class=wims_button_help float_right

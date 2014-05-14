@@ -1,10 +1,19 @@
+
+!set colorhexa=#FFFFFF,#FF0000,#FF0000,#FF0000,#FFA500,#FFA500,#FFA500,#FFFF00,#FFFF00,#00FF00,#00FF00
 !distribute line $wims_read_parm into t0_,t1_,t2_
+ !set class_scorecolor=!nonempty items $class_scorecolor
 !if livret notin $module
  !if $class_scorecolor=$empty
   !set class_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
-  !default class_scorecolor=,red,red,red,orange,orange,orange,yellow,yellow,green,green
+  !set class_scorecolor=!nonempty items $class_scorecolor
+  !default class_scorecolor=$colorhexa
  !endif
- !set style_note="background-color: $(class_scorecolor[$t0_+1]);font-weight:bold;text-align:center;border;solid 1px;"
+ !set class_scorecolor=!replace internal white by $(colorhexa[1]) in $class_scorecolor
+ !set class_scorecolor=!replace internal red by $(colorhexa[2]) in $class_scorecolor
+ !set class_scorecolor=!replace internal orange by $(colorhexa[5]) in $class_scorecolor
+ !set class_scorecolor=!replace internal yellow by $(colorhexa[8]) in $class_scorecolor
+ !set class_scorecolor=!replace internal green by $(colorhexa[10]) in $class_scorecolor
+ !set style_note="background-color:$(class_scorecolor[$t0_+1]);font-weight:bold;text-align:center;border;solid 1px;"
 !else
  !let t_=!charcnt $t0_
  !if $t_>1 or ($t_=1 and $t0_>0)
