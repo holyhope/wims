@@ -37,7 +37,11 @@
   !if $wims_user=supervisor
     !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $1_
   !else
-     !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $1_
+     !if $wims_user=anonymous
+       !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $1_
+     !else
+       !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $1_
+     !endif
   !endif
 !endif
 
@@ -66,7 +70,7 @@
   !else
    !ifval $ckstep=$cksteps-2
     !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
-   !else 
+   !else
     !ifval $ckstep=$cksteps-1
      !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>
     !endif
