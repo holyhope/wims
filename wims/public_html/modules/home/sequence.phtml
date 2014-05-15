@@ -90,7 +90,16 @@
        )
       !endif
    </span><!--wims_user_sheet_score-->
-  <div class="wims_sheet_desc"> $de </div><!--wims_sheet_desc-->
+    <div class="wims_sheet_desc">
+       !set cut=!detag $de
+        !set cut=!char 1 to 120 of $cut
+        !set cutcnt=!wordcnt $cut
+        !word 1 to $[$cutcnt-1] of $cut
+       !if $cut!=$empty
+        ...
+      !endif
+  </div><!--wims_sheet_desc-->
+
   </li><!--wims_sheet_item-->
   !reset a_,t_,ti,de
     !endif
