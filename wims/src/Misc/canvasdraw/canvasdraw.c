@@ -972,15 +972,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"polyline") == 0 ){
 		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
 		if(reply_format < 1){reply_format = 11;}
-		if( use_input_xy > 0 ){
-		    add_textarea_polyline(js_include_file);
-		    if( use_input_xy == 2 ){
-		        add_textarea_xy(js_include_file,canvas_root_id);
-		    }
-		    else
-		    {
-		        add_input_xy(js_include_file,canvas_root_id);
-		    }
+		if( use_input_xy == 1 ){
+		    add_input_polyline(js_include_file);
+		    add_input_xy(js_include_file,canvas_root_id);
 		}
 		add_js_polyline(js_include_file,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
@@ -1092,15 +1086,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format < 1){reply_format = 2;}
 		add_js_poly(js_include_file,-1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
-		if( use_input_xy > 0 ){
-		    add_textarea_polygon(js_include_file);
-		    if( use_input_xy == 2 ){
-			add_textarea_xy(js_include_file,canvas_root_id);
-		    }
-		    else
-		    {
-			add_input_xy(js_include_file,canvas_root_id);
-		    }
+		if( use_input_xy == 2 ){
+		  add_textarea_polygon(js_include_file);
+		  add_textarea_xy(js_include_file,canvas_root_id);
 		}
 	    }
 	    else 
@@ -1125,7 +1113,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
-		    add_textarea_line(js_include_file,1);
+		    add_input_line(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 	    }
@@ -1136,7 +1124,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format < 1){reply_format = 11;}
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
-		    add_textarea_line(js_include_file,2);
+		    add_input_line(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 	    }

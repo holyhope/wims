@@ -26,8 +26,8 @@ void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int fontsize,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y);
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
-void add_textarea_line(FILE *js_include_file,int num);
-void add_textarea_polyline(FILE *js_include_file);
+void add_input_line(FILE *js_include_file,int num);
+void add_input_polyline(FILE *js_include_file);
 void add_textarea_polygon(FILE *js_include_file);
 void add_input_crosshair(FILE *js_include_file,int num);
 void add_input_arrow(FILE *js_include_file,int num);
@@ -1738,12 +1738,12 @@ fprintf(js_include_file,"\n<!-- begin add_input_circle -->\n\
 function user_redraw(t){\
  var type = %d;\
  var num = %d;\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 1;\
-  userdraw_x.splice(lu,1);\
-  userdraw_y.splice(lu,1);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 0){\
+  userdraw_x.splice(lu-1,1);\
+  userdraw_y.splice(lu-1,1);\
   if(type == 1){\
-    userdraw_radius.splice(lu,1);\
+    userdraw_radius.splice(lu-1,1);\
   };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
@@ -1752,7 +1752,6 @@ function user_redraw(t){\
  var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
  var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
  if( add_x != null && add_y != null ){\
-  var lu = userdraw_x.length;\
   if( type == 2 ){\
    var add_r = safe_aval( document.getElementById(\"userinput_r\").value );if( add_r == null ){alert(\"illegal radius input \");return;}\
    if( num == 1 ){\
@@ -1787,10 +1786,10 @@ function user_redraw(t){\
 void add_input_crosshair(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_crosshair -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 1;\
-  userdraw_x.splice(lu,1);\
-  userdraw_y.splice(lu,1);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 0){\
+  userdraw_x.splice(lu-1,1);\
+  userdraw_y.splice(lu-1,1);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_crosshairs(context_userdraw,userdraw_x,userdraw_y,line_width,crosshair_size,stroke_color,stroke_opacity,0,0,0,[0,0]);\
   return;\
@@ -1798,7 +1797,6 @@ function user_redraw(t){\
  var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
  var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
  if( add_x != null && add_y != null ){\
-  var lu = userdraw_x.length;\
   if( %d == 1 ){\
    userdraw_x[0] = x2px(add_x);\
    userdraw_y[0] = y2px(add_y);\
@@ -1820,10 +1818,10 @@ function user_redraw(t){\
 void add_input_arrow(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_arrow -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 2;\
-  userdraw_x.splice(lu,2);\
-  userdraw_y.splice(lu,2);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 1 ){\
+  userdraw_x.splice(lu-2,2);\
+  userdraw_y.splice(lu-2,2);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
   return;\
@@ -1835,10 +1833,10 @@ function user_redraw(t){\
  if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
   if( %d == 2 ){\
     var s = userdraw_x.length;\
-    userdraw_x[s] = x2px(add_x1);\
-    userdraw_y[s] = y2px(add_y1);\
-    userdraw_x[s+1] = x2px(add_x2);\
-    userdraw_y[s+1] = y2px(add_y2);\
+    userdraw_x[lu] = x2px(add_x1);\
+    userdraw_y[lu] = y2px(add_y1);\
+    userdraw_x[lu+1] = x2px(add_x2);\
+    userdraw_y[lu+1] = y2px(add_y2);\
   }\
   else\
   {\
@@ -1855,13 +1853,13 @@ function user_redraw(t){\
 }
 
 /* draw line via inputfields x/y */
-void add_textarea_line(FILE *js_include_file,int num){
-fprintf(js_include_file,"\n<!-- begin line via inputfields or textareas -->\n\
+void add_input_line(FILE *js_include_file,int num){
+fprintf(js_include_file,"\n<!-- begin line via inputfields  -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 2;\
-  userdraw_x.splice(lu,2);\
-  userdraw_y.splice(lu,2);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 1){\
+  userdraw_x.splice(lu-2,2);\
+  userdraw_y.splice(lu-2,2);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,1,0,0);\
   return;\
@@ -1872,11 +1870,10 @@ function user_redraw(t){\
  var add_y2 = safe_eval( document.getElementById(\"userinput_y2\").value );\
  if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
   if( %d == 2 ){\
-    var s = userdraw_x.length;\
-    userdraw_x[s] = x2px(add_x1);\
-    userdraw_y[s] = y2px(add_y1);\
-    userdraw_x[s+1] = x2px(add_x2);\
-    userdraw_y[s+1] = y2px(add_y2);\
+    userdraw_x[lu] = x2px(add_x1);\
+    userdraw_y[lu] = y2px(add_y1);\
+    userdraw_x[lu+1] = x2px(add_x2);\
+    userdraw_y[lu+1] = y2px(add_y2);\
   }\
   else\
   {\
@@ -1894,46 +1891,37 @@ function user_redraw(t){\
 
 
 /* draw polyline via inputfields x/y */
-void add_textarea_polyline(FILE *js_include_file){
-fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields or textareas -->\n\
+void add_input_polyline(FILE *js_include_file){
+fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 1;\
-  userdraw_x.splice(lu,1);\
-  userdraw_y.splice(lu,1);\
-  context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-  cnt = 1;return;\
- };\
- var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
- var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
+ var lu = userdraw_x.length;\n\
+ if( t == -1 && lu > 0){\
+  userdraw_x.splice(lu-1,1);\n\
+  userdraw_y.splice(lu-1,1);\n\
+  context_userdraw.clearRect(0,0,xsize,ysize);\n\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
+  cnt = 1;return;\n\
+ };\n\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\n\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\n\
  if(add_x != null && add_y != null ){\
-  add_x = add_x.split('\\n');add_y = add_y.split('\\n');\
-  var lx = add_x.length;\
-  var ly = add_y.length;\
-  if( lx != ly){ if( lx > ly ){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
-  var start = 0;var p = 0;\
-  if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
-  while(add_x[p]){\
-   userdraw_x[start] = x2px(add_x[p]);\
-   userdraw_y[start] = y2px(add_y[p]);\
-   start++;p++;if(p>100){alert(\"hmmmm\");return;};\
-  };\
-  context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-  cnt = 1;\
- };\
- return;\
+  userdraw_x[lu] = x2px(add_x);\n\
+  userdraw_y[lu] = y2px(add_y);\n\
+  context_userdraw.clearRect(0,0,xsize,ysize);\n\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
+  cnt = 1;\n\
+ };\n\
+ return;\n\
 };");
 }
 /* draw segment(s) via inputfields x/y */
 void add_input_segment(FILE *js_include_file,int num){
 fprintf(js_include_file,"\n<!-- begin add_input_segment -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 2;\
-  userdraw_x.splice(lu,2);\
-  userdraw_y.splice(lu,2);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 1){\
+  userdraw_x.splice(lu-2,2);\
+  userdraw_y.splice(lu-2,2);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   return;\
@@ -1966,37 +1954,32 @@ function user_redraw(t){\
 
 /* draw polygon via 2 textarea's x/y : split into lines ! */
 void add_textarea_polygon(FILE *js_include_file){
-fprintf(js_include_file,"\n<!-- begin polygon via inputfields or textareas -->\n\
+fprintf(js_include_file,"\n<!-- begin polygon via 2 textareas x / y -->\n\
 function user_redraw(t){\
- if( t == -1 ){\
-  var lu = userdraw_x.length - 1;\
-  userdraw_x.splice(lu,1);\
-  userdraw_y.splice(lu,1);\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 0){\
+  userdraw_x.splice(lu-1,1);\
+  userdraw_y.splice(lu-1,1);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
   cnt = 1; return;\
  };\
- var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
- var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
- if( add_x != null && add_y != null ){\
-  var lx = add_x.length;\
-  if( lx > 0 ){\
-   add_x = add_x.split('\\n');\
-   add_y = add_y.split('\\n');\
-   lx = add_x.length;\
-   ly = add_y.length;\
-   if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
-   var start = 0;var p = 0;\
-   if( userdraw_x.length > 0 ){ start = userdraw_x.length } else { userdraw_x = [];userdraw_y = []; };\
-   while(add_x[p]){\
-    userdraw_x[start] = x2px(add_x[p]);\
-    userdraw_y[start] = y2px(add_y[p]);\
-    start++;p++;if(p>100){alert(\"hmmmm\");return;};\
-   };\
-   draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
-   cnt = 1;\
-  };\
+ var add_x_values = (document.getElementById(\"userinput_x\").value).split('\\n');\
+ var add_y_values = (document.getElementById(\"userinput_y\").value).split('\\n');\
+ var lx = add_x_values.length;\
+ var ly = add_y_values.length;\
+ if( lx != ly){ if(lx > ly){alert(\'x/y mismatch\\ntoo few y-values\');return}else{alert(\'x/y mismatch\\ntoo many y-values\');return}};\
+ var add_x;var add_y;\
+ for(var p = 0 ; p < lx ; p++){\
+  add_x = safe_eval( add_x_values[p] );\
+  add_y = safe_eval( add_y_values[p] );\
+  if( add_x == null || add_y == null ){return;};\
+  userdraw_x[lu+p] = x2px(add_x);\
+  userdraw_y[lu+p] = y2px(add_y);\
+  if(p>100){alert(\"hmmmm\");return;};\
  };\
+ draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+ cnt = 1;\
  return;\
 };");
 }
