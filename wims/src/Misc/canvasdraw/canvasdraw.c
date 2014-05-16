@@ -642,7 +642,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    /* draw path :  closed & optional filled */
     		decimals = find_number_of_digits(precision);
-		string_length = snprintf(NULL,0,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\"));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family);
 		click_cnt++;reset();
 	    break;
@@ -2539,7 +2538,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
-	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
@@ -2555,9 +2554,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
 		    case 2: stroke_color = get_color(infile,0); break;
 		    case 3: fill_color = get_color(infile,1); 
-			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0]);
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 			tmp_buffer = my_newmem(string_length+1);
-		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0]);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 		        fprintf(js_include_file,"use_xlogscale=1;snap_y = %f;snap_x = xlogbase;",double_data[0]/int_data[0]);
 			add_to_buffer(tmp_buffer);
 		        break;
@@ -2573,7 +2572,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
-	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
@@ -2589,9 +2588,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
 		    case 2: stroke_color = get_color(infile,0); break;
 		    case 3: fill_color = get_color(infile,1); 
-			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0]);
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 			tmp_buffer = my_newmem(string_length+1);
-		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0]);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 		        fprintf(js_include_file,"use_ylogscale=1;snap_x = %f;snap_y = ylogbase;",double_data[0]/int_data[0]);
 			add_to_buffer(tmp_buffer);
 		        break;
@@ -2620,9 +2619,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		switch(i){
 		    case 0: stroke_color = get_color(infile,0); break;
 		    case 1: fill_color = get_color(infile,1); 
-			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering);
+			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,precision);
 			tmp_buffer = my_newmem(string_length+1);
-		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering);
+		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,precision);
 		        fprintf(js_include_file,"use_xlogscale=1;use_ylogscale=1;snap_x = xlogbase;snap_y = ylogbase;");
 			add_to_buffer(tmp_buffer);
 		        break;
@@ -5551,7 +5550,7 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
     break;
 case DRAW_XYLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering){\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,precision){\n\
  var obj;\n\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
@@ -5651,7 +5650,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
 
 case DRAW_XLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xlogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor){\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor,precision){\n\
  var obj;\n\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
@@ -5754,7 +5753,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
     break;
 case DRAW_YLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw ylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor){\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor,precision){\n\
  var obj;\n\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
