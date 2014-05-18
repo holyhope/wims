@@ -971,7 +971,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"polyline") == 0 ){
 		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format < 1){reply_format = 23;}
 		if( use_input_xy == 1 ){
 		    add_input_polyline(js_include_file);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -2321,7 +2321,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ replyformat number
 	@ default values should be fine !
 	@ use command "debug" to check return values of javascript function read_canvas();
-	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = retruns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</ul>
+	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
 	*/
 	 reply_format = (int) get_real(infile,1);
@@ -3112,7 +3112,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 21 = return verbatim coordinates (x1:y1) (x2:y2)...(x_n:y_n)
 22 = array : x1,y1,x2,y2,x3,y3,x4,y4...x_n,y_n
     x/y in  xrange / yrange coordinate system
-
+23 = answertype for a polyline : remove multiple occurences  due to reclick on a point to create next polyline segment 
 */
 
 
@@ -3929,6 +3929,58 @@ function read_canvas(){\
 };\
 this.read_canvas = read_canvas;\n\
 <!-- end function 22 read_canvas() -->");
+    break;
+    case 23: fprintf(js_include_file,"\
+\n<!-- begin function 23 read_canvas() default 5 px marge -->\n\
+function read_canvas(){\
+ if( userdraw_x.length < 2){alert(\"nothing drawn...\");return;}\
+ var reply_x = new Array();var reply_y = new Array();var p = 0;\
+ var lu = userdraw_x.length;\
+ if( lu != userdraw_y.length ){ alert(\"x / y mismatch !\");return;}\
+ var marge = 5;\
+ reply_x[p] = px2x(userdraw_x[0]);reply_y[p] = px2y(userdraw_y[0]);p++;\
+ for(var i = 0; i < lu - 1 ; i++ ){\
+  if( (userdraw_x[i] < (userdraw_x[i+1] + marge)) && (userdraw_x[i] > (userdraw_x[i+1] - marge)) ){\
+   if( (userdraw_y[i] < (userdraw_y[i+1] + marge)) && (userdraw_y[i] > (userdraw_y[i+1] - marge)) ){\
+    reply_x[p] = px2x(userdraw_x[i]);reply_y[p] = px2y(userdraw_y[i]);\
+    if( isNaN(reply_x[p]) || isNaN(reply_y[p]) ){ alert(\"hmmmm ?\");return; };\
+    p++;\
+   };\
+  };\
+ };\
+ if( document.getElementById(\"canvas_input0\")){\
+  var p = 0;var input_reply = new Array();\
+  if( document.getElementById(\"canvas_input0\")){\
+   var t = 0;\
+   while(document.getElementById(\"canvas_input\"+t)){\
+    if( ! document.getElementById(\"canvas_input\"+t).getAttribute(\"readonly\")){\
+     input_reply[p] = document.getElementById(\"canvas_input\"+t).value;\
+     p++;\
+    };\
+    t++;\
+   };\
+  };\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+input_reply;\
+  }\
+ }\
+ else\
+ {\
+  if( typeof userdraw_text != 'undefined' ){\
+   return reply_x+\"\\n\"+reply_y+\"\\n\"+userdraw_text;\
+  }\
+  else\
+  {\
+   return reply_x+\"\\n\"+reply_y;\
+  };\
+ };\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 23 read_canvas() -->");
     break;
 
     default: canvas_error("hmmm unknown replyformat...");break;
