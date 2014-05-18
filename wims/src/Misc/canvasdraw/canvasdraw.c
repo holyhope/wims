@@ -101,7 +101,6 @@ int main(int argc, char *argv[]){
     int use_axis_numbering = FALSE;
     int line_width = 1;
     int decimals = 2;
-    int debug = 0;
     int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate */
     int use_userdraw = FALSE; /* flag to indicate user interaction: incompatible with "drag & drop" code !! */
     int drag_type = -1;/* 0,1,2 : xy,x,y */
@@ -923,7 +922,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
 	@ use command "dashed" and/or "dashtype int,int" to trigger dashing 
-	@ use command "debug" to view the output of javascript funcion read_canvas();
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
 	@ may be combined with keyword 'userinput_xy' or 
@@ -2300,27 +2298,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    snprintf(tmp_buffer,string_length,"draw_setpixel(%s,\"%s\",%.2f,%d);\n",double_xy2js_array(double_data,i,decimals),stroke_color,stroke_opacity,pixelsize);
 	    add_to_buffer(tmp_buffer);
 	    break;
-	case DEBUG:
-	/*
-	@ debug
-	@ keyword, no arguments
-	@ use as first command (before 'size')
-	@ will show a few buttons to read_canvas(); read_mathml(); and read_dragdrop();
-	@ only to be used in a single canvasdraw instance <br />or in case of multiple canvasdraw images , only the last image
-	*/
-	debug = 1;
-	fprintf(stdout,"\n\
-<!-- THIS IS JUST FOR DEBUGGING ANSWER TYPES IN A SINGLE CANVASDRAW INSTANCE -->\n\
-<input type=\"button\" onclick=\"javascript:alert(read_canvas());\" value=\"read_canvas()\" />\n\
-<input type=\"button\" onclick=\"javascript:alert(read_mathml());\" value=\"read_mathml()\" />\n\
-<input type=\"button\" onclick=\"javascript:alert(read_dragdrop());\" value=\"read_dragdrop()\" />\n");
-	done = TRUE;
-
 	case REPLYFORMAT:
 	/*
 	@ replyformat number
 	@ default values should be fine !
-	@ use command "debug" to check return values of javascript function read_canvas();
 	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
 	*/
@@ -2392,7 +2373,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
 	@ no combinations with other reply_types allowed, for now
-	@ if command 'debug' is set, 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
+	@ if interactive, 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
 	*/
 	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
 
@@ -2405,41 +2386,41 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	      case 3: int_data[3] = get_real(infile,0);break;/* hours */
 	      case 4: int_data[4] = get_real(infile,0);break;/* minutes */
 	      case 5: int_data[5] = get_real(infile,0);break;/* seconds */
-	      case 6: 
-	      int_data[6] = get_real(infile,0);if(int_data[6] < 0 || int_data[6] > 2){canvas_error("hourglass can be 0,1 or 2");}break;/* type hourglass */
+	      case 6: int_data[6] = get_real(infile,0);if(int_data[6] < 0 || int_data[6] > 2){canvas_error("hourglass can be 0,1 or 2");}break;/* type hourglass */
 	      case 7: int_data[7] = (int)(get_real(infile,0));/* interactive 0,1,2*/
-	    		switch(int_data[7]){
-	    		 default:break;
-	    		 case 1 :if(clock_cnt == 0){
-	    			    if( reply_format == 0 ){
+	        switch(int_data[7]){
+		    case 0:break;
+	    	    case 1:if(clock_cnt == 0){
+	    			if( reply_format == 0 ){
 	    			     reply_format = 18; /* user sets clock */
-	    			     string_length = snprintf(NULL,0,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    			    /* string_length = snprintf(NULL,0,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			     check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			     add_to_buffer(tmp_buffer);
-				    }
-				    else
-				    {
-				     canvas_error("interactive clock may not be used together with other reply_types...");
-			    	    }
-			          }
-			          if(debug == 1 ){
-			            fprintf(stdout,"<br /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S-\" /><br />",clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt);
-			          }
-			          break;
-			 case 2 :if( reply_format == 0 ){
-				    reply_format = 19; /* "onclick */
-				    fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
-			    	 }
-			    	 else
-			    	 {
-			    	  if( reply_format != 19){
+	    			    */
+				     fprintf(js_include_file,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    			}
+				else
+				{
+				    canvas_error("interactive clock may not be used together with other reply_types...");
+			    	}
+			        fprintf(stdout,"<br /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S-\" /><br />",clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt);
+			     }
+		    break;
+		    case 2:if( reply_format == 0 ){
+				reply_format = 19; /* "onclick */
+				fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
+			    }
+			    else
+			    {
+			    	if( reply_format != 19){
 			    	   canvas_error("clickable clock(s) may not be used together with other reply_types...");
-			    	  }
 			    	 }
-			    	 break;
-			}
-			break;
+			    }
+		     break;
+		     default: canvas_error("interactive must be set 0,1 or 2");break;
+		}
+		break;
 		case 8: 
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
@@ -6046,7 +6027,6 @@ int get_token(FILE *infile){
 	*floodfill="floodfill",
 	*filltoborder="filltoborder",
 	*clickfill="clickfill",
-	*debug="debug",
 	*setpixel="setpixel",
 	*pixels="pixels",
 	*pixelsize="pixelsize",
@@ -6584,10 +6564,6 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, replyformat) == 0 ){
 	free(input_type);
 	return REPLYFORMAT;
-	}
-	if( strcmp(input_type, debug) == 0 ){
-	free(input_type);
-	return DEBUG;
 	}
 	if( strcmp(input_type, pixelsize) == 0 ){
 	free(input_type);

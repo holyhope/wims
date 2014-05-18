@@ -110,7 +110,6 @@
 #define FLOODFILL	113
 #define FILLTOBORDER	114
 #define CLICKFILL	115
-#define DEBUG		116
 #define SETPIXEL	117
 #define PIXELS		118
 #define PIXELSIZE	119
