@@ -240,7 +240,8 @@ var use_ylogscale = 0;\
 var x_strings = null;\
 var y_strings = null;\
 var use_pan_and_zoom = 0;\
-var use_snap_to_grid = 0;\
+var x_use_snap_to_grid = 0;\
+var y_use_snap_to_grid = 0;\
 var xstart = 0;\
 var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
@@ -877,9 +878,27 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ snaptogrid
 	 @ keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
-	 @ if xminor / yminor is defined, the drawing will snap to xminor/yminor <br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	 @ if xminor / yminor is defined, the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nuse_snap_to_grid = 1;var snap_x = 1;var snap_y = 1;\nfunction snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));;};\n");
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;var snap_x = 1;var snap_y = 1;function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\n");
+	break;
+	case XSNAPTOGRID:
+	/*
+	 @ xsnaptogrid
+	 @ keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ in case of userdraw the drawn points will snap to xmajor grid
+	 @ if xminor / yminor is defined, the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	*/
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;var snap_x = 1;if (typeof snap_y === 'undefined') { var snap_y = 1;};var snap_y = 1;function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\n");
+	break;
+	case YSNAPTOGRID:
+	/*
+	 @ ysnaptogrid
+	 @ keyword (no arguments rewquired) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ in case of userdraw the drawn points will snap to ymajor grid
+	 @ if xminor / yminor is defined, the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	*/
+	fprintf(js_include_file,"\ny_use_snap_to_grid = 1;if (typeof snap_x === 'undefined') { var snap_x = 1;};var snap_y = 1;\nfunction snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\n");
 	break;
 	case USERTEXTAREA_XY:
 	/*
@@ -6047,6 +6066,8 @@ int get_token(FILE *infile){
 	*video="video",
 	*status="status",
 	*snaptogrid="snaptogrid",
+	*xsnaptogrid="xsnaptogrid",
+	*ysnaptogrid="ysnaptogrid",
 	*userinput_xy="userinput_xy",
 	*usertextarea_xy="usertextarea_xy",
 	*sgraph="sgraph";
@@ -6637,6 +6658,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, snaptogrid) == 0 ){
 	free(input_type);
 	return SNAPTOGRID;
+	}
+	if( strcmp(input_type, xsnaptogrid) == 0 ){
+	free(input_type);
+	return XSNAPTOGRID;
+	}
+	if( strcmp(input_type, ysnaptogrid) == 0 ){
+	free(input_type);
+	return YSNAPTOGRID;
 	}
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);

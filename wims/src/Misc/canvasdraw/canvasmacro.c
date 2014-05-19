@@ -61,8 +61,10 @@ function user_draw(evt){\
  y0 = evt.clientY - canvas_rect.top;\
  if(y0 < ysize + 1){\
   x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x0 = snap_to_x(x0);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y0 = snap_to_y(y0);\
   };\
   if(evt.which == 1){\
@@ -90,8 +92,10 @@ function user_drag(evt){\
     canvas_rect = canvas_userdraw.getBoundingClientRect();\
     y1 = evt.clientY - canvas_rect.top;\
     x1 = evt.clientX - canvas_rect.left;\
-    if( use_snap_to_grid == 1 ){\
+    if( x_use_snap_to_grid == 1 ){\
      x0 = snap_to_x(x0);\
+    };\
+    if( y_use_snap_to_grid == 1 ){\
      y0 = snap_to_y(y0);\
     };\
     userdraw_radius[xy_cnt] = parseInt(Math.sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) ));\
@@ -137,8 +141,10 @@ function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
   x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
   y = snap_to_y(y);\
  };\
  var x1,y1,x2,y2;\
@@ -220,8 +226,10 @@ function user_draw(evt){\
  y0 = evt.clientY - canvas_rect.top;\
  if( y0  < ysize + 1 ){\
   x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x0 = snap_to_x(x0);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y0 = snap_to_y(y0);\
   };\
   if( evt.which == 1 ){\
@@ -253,8 +261,10 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   y1 = evt.clientY - canvas_rect.top;\
   x1 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
   x1 = snap_to_x(x1);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
   y1 = snap_to_y(y1);\
   };\
   userdraw_x[xy_cnt] = x1;\
@@ -325,8 +335,10 @@ function user_draw(evt){\
  y = evt.clientY - canvas_rect.top;\
  if( y < ysize + 1 ){\
   x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   if( evt.which == 1){\
@@ -362,8 +374,10 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   x = evt.clientX - canvas_rect.left;\
   y = evt.clientY - canvas_rect.top;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
@@ -408,8 +422,10 @@ function user_draw(evt){\
  if( y < ysize + 1 ){\
   var lu = userdraw_x.length;\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   if(evt.which == 1){\
@@ -463,8 +479,10 @@ function user_draw(evt){\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
   x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
   y = snap_to_y(y);\
  };\
  if( evt.which == 1 ){\
@@ -489,8 +507,10 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   var y = evt.clientY - canvas_rect.top;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   var lu = userdraw_x.length;\
@@ -529,8 +549,10 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   if( evt.which == 1 ){\
@@ -557,8 +579,10 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
  };\
  if( lu%%2 != 0 ){\
@@ -615,8 +639,10 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   if( evt.which == 1 ){\
@@ -643,8 +669,10 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
  };\
  if( lu%%2 != 0 ){\
@@ -707,8 +735,10 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_grid == 1 ){\
+  if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
   };\
   if( evt.which == 1 ){\
@@ -734,8 +764,10 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
    x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
    y = snap_to_y(y);\
  };\
  if( lu%%2 != 0 ){\
@@ -826,8 +858,10 @@ function user_drag(evt){\
   temp_y[xy_cnt] = evt.clientY - canvas_rect.top;\
   if( temp_y[xy_cnt] < ysize + 1){\
    temp_x[xy_cnt] = evt.clientX - canvas_rect.left;\
-   if( use_snap_to_grid == 1 ){\
+   if( x_use_snap_to_grid == 1 ){\
     temp_x[xy_cnt] = snap_to_x(temp_x[xy_cnt]);\
+   };\
+   if( y_use_snap_to_grid == 1 ){\
     temp_y[xy_cnt] = snap_to_y(temp_y[xy_cnt]);\
    };\
    xy_cnt++;\
@@ -1172,8 +1206,10 @@ var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
  y_txt = evt.clientY - canvas_rect.top;\
  x_txt = evt.clientX - canvas_rect.left;\
- if( use_snap_to_grid == 1 ){\
+ if( x_use_snap_to_grid == 1 ){\
    x_txt = snap_to_x(x_txt);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
    y_txt = snap_to_y(y_txt);\
  };\
  return;\
