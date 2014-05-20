@@ -1448,12 +1448,14 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
     obj_type = 15== animated point on curve
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
-function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family){\
+function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix){\
  this.text = text || 0;\
  this.font_size = font_size || 12;\
  if( font_family.indexOf('px') > 0 ){this.font_family = font_family;}else{this.font_family = this.font_size+'px Ariel';};\
  this.use_rotate = use_rotate || 0;\
  this.angle = angle*(Math.PI/180) || 0;\
+ this.use_affine = use_affine || 0;\
+ this.affine_matrix = affine_matrix || [1,0,0,1,0,0];\
  this.click_cnt = click_cnt || 1;\
  this.onclick = onclick || 0;\
  this.direction = direction || 0;\
@@ -1499,6 +1501,9 @@ Shape.prototype.draw = function(ctx)\
  var y_c = y2px(0);\
  ctx.translate(x_c,y_c);\
  ctx.rotate(this.angle);ctx.translate(-x_c,-y_c);};\
+ if( this.use_affine == 1 ){\
+  ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
+ };\
  ctx.beginPath();\
  switch(this.type){\
   case 1: ctx.rect(this.x[0], this.y[0], this.x[1]-this.x[0], this.y[2] - this.y[0]);break;\

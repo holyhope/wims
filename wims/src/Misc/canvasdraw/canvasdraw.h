@@ -134,6 +134,8 @@
 #define USERTEXTAREA_XY	138
 #define SGRAPH		139
 #define YLOGBASE	140
+#define AFFINE		141
+#define KILLAFFINE	142
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
