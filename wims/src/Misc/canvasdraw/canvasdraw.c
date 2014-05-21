@@ -49,7 +49,6 @@ int 	y2px(double y);
 double 	px2x(int x);
 double 	px2y(int y);
 double	get_real(FILE *infile,int last); /* read a values; calculation and symbols allowed */
-double  get_double(FILE *infile , int orientation , int last); /*the same as get_real(): but for an unknown amount of data args*/
 char    *str_replace ( const char *word, const char *sub_word, const char *rep_word );
 char 	*get_color(FILE *infile,int last); /* read hex-color or colorname -> hex */
 char	*get_string(FILE *infile,int last); /* get the string at theend of a command */
@@ -735,24 +734,31 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	 @ rays color,xc,yc,x1,y1,x2,y2,x3,y3...x_n,y_n
 	 @ draw rays in color 'color' and center (xc:yc)
-	 @ may be set draggable or onclick (the complete object, not an indiviual ray !)
+	 @ may be set draggable or onclick (every individual ray)
 	*/
 	    stroke_color=get_color(infile,0);
-	    i=0;
-	    while( ! done ){     /* get next until EOL*/
-		if(i > MAX_INT - 1){canvas_error("to much rays in argument: repeat command multiple times to fit");}
-		if( i > 3){
-		    double_data[i++] = double_data[0];
-		    double_data[i++] = double_data[1];
+	    fill_color = stroke_color;
+	    double_data[0] = get_real(infile,0);/* xc */
+	    double_data[1] = get_real(infile,0);/* yc */
+	    i=2;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("in command rays to many points / rays in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
 		}
-		for(c=0; c<=1 ;c++){ /* switch x2px / y2px */
-		    double_data[i++]= get_double(infile,c,1);
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
 		}
+	    fprintf(js_include_file,"/* double_data[%d] = %f */\n",i,double_data[i]);
+		i++;
 	    }
-    	    decimals = find_number_of_digits(precision);
-	    for(c=0; c<i;c = c+4){
+	    
+	    if( i%2 != 0 ){canvas_error("in command rays: unpaired x or y value");} 
+	    decimals = find_number_of_digits(precision);	    
+	    for(c=2; c<i;c = c+2){
 		click_cnt++;
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c+2],decimals,double_data[0],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
 	    }
 	    reset();
 	    break;
@@ -1657,8 +1663,8 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ b : Skews the drawings horizontally
 	 @ c : Skews the drawings vertically
 	 @ d : Scales the drawings vertically
-	 @ tx: Moves the the drawings horizontally in pixels !
-	 @ ty: Moves the the drawings vertically in pixels !
+	 @ tx: Moves the drawings horizontally in pixels !
+	 @ ty: Moves the drawings vertically in pixels !
 	*/
 	    for(i = 0 ; i<6;i++){
 		switch(i){
@@ -2936,72 +2942,6 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
      y = atof(tmp);
     }
     return y;
-}
-
-double get_double(FILE *infile , int orientation , int last){  /* last = 0 : more arguments ; last=1 final argument */
-/* orientation=0 : x-values ...  orientation=1 :y-values */
-    int c;
-    int i = 0;
-    int found_calc = 0; /* signal user input like : 2*pi/3 */
-    char tmp[MAX_INT];
-    double dx;
-    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
-	if( c != ' '){/* no spaces in numbers */
-	    if(canvas_iscalculation(c) != 0 ){
-		found_calc = 1;
-		c = tolower(c);
-	    }
-	    tmp[i]=c;
-	    i++;
-	    if( i > MAX_INT-1){canvas_error("number too large");}
-	}
-    }
-    if( c == '\n' || c == EOF || c == ';' ){
-	if( last == 0 ){canvas_error("expecting more arguments");}
-	if( c == EOF ){finished = TRUE;}
-	done = TRUE; 
-	/*return 0; */
-    }
-    tmp[i]='\0';
-    
-    if( strlen(tmp) == 0 || i == 0){ 
-	if( orientation == 0 ){
-	    canvas_error("expected a x-value \n e.g. a number in x-range / y-range coordinate system\nbut found nothing !!");
-	}
-	else
-	{
-	    canvas_error("expected a y-value \n e.g. a number in x-range / y-range coordinate system\nbut found nothing !!");
-	}
-    }
-    if( found_calc == 1 ){ /* use libmatheval to calculate 2*pi/3 */
-	void *f = evaluator_create(tmp);
-	assert(f);
-	if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ");}
-	dx = evaluator_evaluate_x(f, 1);
-	evaluator_destroy(f);
-    }
-    else
-    {
-	dx = atof(tmp); /* no pi/e/sin(2*pi/3) found : will use atof to convert inputstring  to float */
-    }
-    if( c == '\n' || c == ';') { line_number++; }
-    if( c != EOF ) {
-	if( c == '\n' || c ==';') {
-	    done = TRUE;
-	}
-    }
-    else
-    {
-	finished = TRUE;
-    }
-    if( (done == TRUE || finished == TRUE) && last != 1 ){ canvas_error("expected more arguments");}
-    if(orientation == 0){
-	return x2px( dx ); /* convert to pixels according xrange */
-    }
-    else
-    {
-	return y2px( dx );/* convert to pixels according yrange */
-    }
 }
 void canvas_error(char *msg){
     fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number-1,msg);
@@ -6004,9 +5944,11 @@ int get_token(FILE *infile){
 	*zoom="zoom",
 	*grid="grid",
 	*hline="hline",
+	*dhline="dhline",
 	*drag="drag",
 	*horizontalline="horizontalline",
 	*vline="vline",
+	*dvline="dvline",
 	*verticalline="verticalline",
 	*triangle="triangle",
 	*ftriangle="ftriangle",
@@ -6436,6 +6378,16 @@ int get_token(FILE *infile){
 	use_dashed = TRUE;
 	free(input_type);
 	return LINE;
+	}
+	if( strcmp(input_type, dvline) == 0 ){
+	use_dashed = TRUE;
+	free(input_type);
+	return VLINE;
+	}
+	if( strcmp(input_type, dhline) == 0 ){
+	use_dashed = TRUE;
+	free(input_type);
+	return HLINE;
 	}
 	if( strcmp(input_type, frect) == 0 || strcmp(input_type, frectangle) == 0 ){
 	use_filled = TRUE;
