@@ -136,6 +136,7 @@
 #define YLOGBASE	140
 #define AFFINE		141
 #define KILLAFFINE	142
+#define LEVELCURVE	143
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

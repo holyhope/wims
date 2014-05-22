@@ -1229,6 +1229,27 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	    if( strstr(get_string(infile,1),"point") != 0 ){animation_type = 15;}else{canvas_error("the only animation type (for now) is \"point\"...");}
 	    break;
+	case LEVELCURVE:
+	/*
+	@levelcurve color,expression in x/y,l1,l2,...
+	@Draws (pixel) level curves for expression, with levels l1, l2,...
+	@Take care : the arrays for holding the javascript data are limited in size !!
+	*/
+	    stroke_color = get_color(infile,0);
+	    char *fun1 = get_string_argument(infile,0);
+	    if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
+	    i = 0;
+	    done = FALSE;
+	    while( !done ){
+	     double_data[i] = get_real(infile,1);
+	     i++;
+	    }
+	    for(c = 0 ; c < i; c++){
+	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+	     click_cnt++;
+	    }
+	    reset();
+	    break;
 	case CURVE:
 	/*
 	 @curve color,formula(x)
@@ -1244,7 +1265,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		char *fun1 = get_string_argument(infile,0);
 		char *fun2 = get_string_argument(infile,1);
 	        if( strlen(fun1) == 0 || strlen(fun2) == 0 ){canvas_error("parametric functions are NOT OK !");}
-		use_parametric = FALSE;
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,animation_type,eval_parametric(xsize,ysize,fun1,fun2,xmin,xmax,ymin,ymax,tmin,tmax,plot_steps,precision),2*line_width,2*line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
     		click_cnt++;
     	    }
@@ -1256,7 +1276,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
     		click_cnt++;
 	    }
-	    animation_type = 9;/* rest to curve plotting without animation */
+	    animation_type = 9;/* reset to curve plotting without animation */
 	    reset();
 	    break;
 	case FLY_TEXT:
@@ -5932,6 +5952,7 @@ int get_token(FILE *infile){
 	*dcurve="dcurve",
 	*plot="plot",
 	*dplot="dplot",
+	*levelcurve="levelcurve",
 	*fontsize="fontsize",
 	*fontcolor="fontcolor",
 	*axis="axis",
@@ -6263,6 +6284,7 @@ int get_token(FILE *infile){
 	return CURVE;
 	}
 	if( strcmp(input_type, dcurve) == 0 ){
+	use_dashed = TRUE;
 	free(input_type);
 	return CURVE;
 	}
@@ -6271,8 +6293,13 @@ int get_token(FILE *infile){
 	return CURVE;
 	}
 	if( strcmp(input_type, dplot) == 0 ){
+	use_dashed = TRUE;
 	free(input_type);
 	return CURVE;
+	}
+	if( strcmp(input_type, levelcurve) == 0 ){
+	free(input_type);
+	return LEVELCURVE;
 	}
 	if( strcmp(input_type, plotsteps) == 0 ){
 	free(input_type);
