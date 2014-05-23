@@ -1232,10 +1232,13 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case LEVELCURVE:
 	/*
 	@levelcurve color,expression in x/y,l1,l2,...
-	@Draws (pixel) level curves for expression, with levels l1, l2,...
-	@Take care : the arrays for holding the javascript data are limited in size !!
+	@draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
+	@the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
+	@every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
+	@note : the arrays for holding the javascript data are limited in size
+	@note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
 	*/
-	    stroke_color = get_color(infile,0);
+	    fill_color = get_color(infile,0);
 	    char *fun1 = get_string_argument(infile,0);
 	    if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
 	    i = 0;

@@ -38,7 +38,6 @@ void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
 /* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
-
 /* ............. */
  
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
@@ -1289,19 +1288,20 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     void *f;
     double x;
     double y;
-    int X;
+    int xv;
     int i = 0;
     int xstep =(int)(xsize/plotsteps);
+    if( xstep == 0 ){canvas_error("zero step in plot curve...");}
     double a = (xmax - xmin)/xsize;
     f = evaluator_create(fun);
     assert (f);
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
     /* we supply the true x/y values...draw_curve() will convert these (x:y) to pixels : used for pan/scale */
-    double xydata[MAX_BUFFER];/* hmmm */
+    double xydata[MAX_BUFFER+1];/* hmmm */
     int lim_ymin =(int)( ymin - 4*abs(ymin));
     int lim_ymax =(int)( ymax + 4*abs(ymax));
-    for ( X = 0 ;X < xsize ; X = X+xstep ){
-	x = (double) (X*a + xmin);
+    for ( xv = 0 ;xv < xsize ; xv = xv+xstep ){
+	x = (double) (xv*a + xmin);
 	if( i < MAX_BUFFER - 2){
 	    y = evaluator_evaluate_x(f, x);
 	    if(y < lim_ymax && y > lim_ymin ){
@@ -1317,40 +1317,38 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     evaluator_destroy(f);
     return double_xy2js_array(xydata,i,find_number_of_digits(precision));
 }
-/* plot levelcurve */
+/* plot a very primitive (!) levelcurve : not to be compared with "flydraw levelcurve" */
 char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int plotsteps,int precision,double level){
     void *f = evaluator_create(fun);
     assert (f);
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
     int xv;int yv;
-    double a = (xmax - xmin)/xsize;
-    double b = (ymax - ymin)/ysize;
+    double a = (double)((xmax - xmin)/xsize);
+    double b = (double)((ymax - ymin)/ysize);
     double x;double y;double r;
-    int xstep =(int)(xsize/plotsteps);
-    int ystep =(int)(ysize/plotsteps);
-    int lim_xmin =(int)( xmin - 4*abs(xmin));
-    int lim_xmax =(int)( xmax + 4*abs(xmax));
-    int lim_ymin =(int)( ymin - 4*abs(ymin));
-    int lim_ymax =(int)( ymax + 4*abs(ymax));
-    double xydata[MAX_BUFFER];
+    double xydata[MAX_BUFFER+1];
     int i = 0;double diff;
-    for( yv = 0 ;yv < ysize ; yv = yv+ystep ){
+    ymin = ymin - 1;
+    xmin = xmin - 1;
+    ymax = ymax + 1;
+    xmax = xmax + 1;
+    for( yv = 0 ;yv < ysize ; yv++ ){
 	y = (double) (yv*b + ymin);
-	if( y < lim_ymax && y > lim_ymin ){
-	    for ( xv = 0 ;xv < xsize ; xv = xv+xstep ){
+	if( y < ymax && y > ymin ){
+	    for ( xv = 0 ;xv < xsize ; xv++ ){
 		x = (double) (xv*a + xmin);
-		if( x < lim_xmax && x > lim_xmin ){
+		if( x < xmax && x > xmin ){
 		    if( i < MAX_BUFFER - 2){
 			r = evaluator_evaluate_x_y(f, x,y);
-			diff = r - level;
-			if(diff < 0.1 && diff > -0.1){
+			diff = r - level ;
+			if(diff < 0.1 && diff > -0.1 ){
 			    xydata[i++] = x;
 			    xydata[i++] = y;
 			}
 		    }
 		    else
 		    {
-			canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps or some other means to reduce the amount of data... ");
+			canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps, decrease image size...\nor some other means to reduce the amount of data... ");
 		    }
 		}
 	    }
@@ -1367,6 +1365,7 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     double t;
     int i = 0;
     double tstep = (tmax-tmin)/plotsteps;
+    if( tstep == 0 ){canvas_error("zero step in parametric curve...");}
     fx = evaluator_create(fun1);
     fy = evaluator_create(fun2);
     assert(fx);
@@ -1375,7 +1374,7 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     char *names[] = { "t" };
     double values[1]; 
     /* we supply the true x/y values...draw_curve() will convert these (x:y) to pixels : used for pan/scale */
-    double xydata[MAX_BUFFER];/* hmmm */
+    double xydata[MAX_BUFFER+1];/* hmmm */
     double x; /* real x-values */
     double y; /* real y-values */
     int lim_ymin =(int)( ymin - 4*abs(ymin));
@@ -1414,13 +1413,13 @@ char *double_xy2js_array(double xy[],int len,int decimals){
     for(i = 0; i < len;i = i + 2){ /*  x_points[] */
 	if(i == len - 2){sprintf(tmp, "%.*f",decimals, xy[i]);}else{sprintf(tmp, "%.*f,",decimals,xy[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
-	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \n ");}
+	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce your image size or plotsteps ");}
     }
     strncat(temp,"],[",3); /* close js x_values array and start new */
     for(i = 1; i < len;i = i + 2){ /* y_points */
 	if(i == len - 1){ sprintf(tmp, "%.*f",decimals,xy[i]);}else{sprintf(tmp, "%.*f,",decimals,xy[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
-	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \n");}
+	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce your image size or plotsteps");}
     }
     strncat(temp,"]",1);
     string=(char *)my_newmem(sizeof(temp));
@@ -1442,13 +1441,13 @@ char *xy2js_array(int xy[],int len){
     for(i = 0; i < len;i = i + 2){ /*  x_points[] */
 	if(i == len - 2){sprintf(tmp, "%d", xy[i]);}else{sprintf(tmp, "%d,", xy[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
-	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \n ");}
+	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce image size or plotsteps ");}
     }
     strncat(temp,"],[",3); /* close js x_values array and start new */
     for(i = 1; i < len;i = i + 2){ /* y_points */
 	if(i == len - 1){ sprintf(tmp, "%d", xy[i]);}else{sprintf(tmp, "%d,", xy[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
-	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \n");}
+	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data\nreduce image size or plotsteps \n");}
     }
     strncat(temp,"]",1);
     string=(char *)my_newmem(sizeof(temp));
@@ -1470,7 +1469,7 @@ char *data2js_array(int data[],int len){
     for(i = 0; i < len; i++){ 
 	if(i == len - 1){sprintf(tmp, "%d", data[i]);}else{sprintf(tmp, "%d,", data[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
-	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \n ");}
+	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce image size or plotsteps ");}
     }
     strncat(temp,"]",1);
     string=(char *)my_newmem(sizeof(temp));
@@ -1570,7 +1569,7 @@ Shape.prototype.draw = function(ctx)\
   case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
   case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
-  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],1,1 );};break;\
+  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   default: alert(\"draw primitive unknown\");break;\
  };\
  if(this.use_filled == 1){ ctx.fill();}\
