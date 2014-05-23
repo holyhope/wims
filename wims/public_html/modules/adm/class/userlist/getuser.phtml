@@ -8,7 +8,7 @@ $name_workdetail
 !if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $name_student1
  !if $getuser isitemof $wims_connectedlogin
-  <img src="gifs/themes/$wims_theme_icon/connected.png" style="text-width:15px;" alt="connect" />
+  <img src="gifs/themes/$wims_theme_icon/connected.png" style="text-width:15px;" alt="connected" />
  !endif
 !else
  $name_student1
@@ -184,9 +184,11 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    <br />
    $(wims_name_thsheet[4]): $A_, $(wims_name_thsheet[8]):
    !lowercase $(f_$n_)
+!!global note
   !if $(min_$n_)<$scoremax
     <br />$name_minmax: $(min_$n_)/$(mean_$n_)/$(max_$n_)
    !endif
+!!
    <div class="float_right">
     $(wims_name_thsheet[9]): $p_ / $scoremax.
     <br />
@@ -271,7 +273,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   </tr>
  !next j
  $table_end
- :next
+:next
 !next i
 
 !if $exologs!=$empty
