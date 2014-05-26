@@ -30,12 +30,13 @@ $wims_name_account_property\
   !endif
   !if $user_supervisable=yes
     <div class="field box">
-     <label for="up_supervise">$name_gestion</label>
     !if $type_class iswordof 2 4
       !if $wims_user=supervisor
+      <label for="up_supervise">$name_gestion</label>
       <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
       <div class="formHelp"><span class="tt">$wims_class/1, ... </span></div>
       !else
+      $name_gestion
       <input readonly="readonly" size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise" />
       !endif
     !else
@@ -44,12 +45,13 @@ $wims_name_account_property\
       !else
         !set superv=no
       !endif
+      <label for="superv">$name_gestion</label>
 !set wims_ref_class=wims_formradio
      !formradio superv list yes,no prompt $wims_name_yes, $wims_name_no
      !set up_firstname=$user_firstname
      !set up_lastname=$user_lastname
-     </div>
     !endif
+    </div>
   !endif
 !endif
 !if $user_supervisable=yes and $getuser!=$wims_realuser and $type_class notwordof 2 4

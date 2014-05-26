@@ -70,14 +70,14 @@ replace_=
   external_auth,agreecgu
  !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
    l_=!singlespace $(up_$n)
-  !if $(up_$n)!=$empty and $(up_$n)!=$(user_$n)
-   l_=!singlespace $(up_$n)
-   !if $l_ issametext
-    l_=
-   !endif
-   !if $n iswordof participate supervise
-    l_=!words2items $l_
-    l__=
+   !if $(up_$n)!=$empty and $(up_$n)!=$(user_$n)
+    l_=!singlespace $(up_$n)
+    !if $l_ issametext
+     l_=
+    !endif
+    !if $n iswordof participate supervise
+     l_=!words2items $l_
+     l__=
      !for a_ in $l_
        part_=!text select 1234567890/ in $a_
        part_test=!replace internal / by , in $part_
@@ -90,21 +90,21 @@ replace_=
      !else
         l_=!listuniq $l__
      !endif
-   !else
-    l_=!replace , by &#44; in $l_
-    l_=!replace < by &lt; in $l_
+    !else
+     l_=!replace , by &#44; in $l_
+     l_=!replace < by &lt; in $l_
     l_=!translate internal "#*!$$ to $.....$ in $l_
-   !endif
-   !if $n iswordof comments photourl
+    !endif
+    !if $n iswordof comments photourl
      l_=!char 1 to 5000 of $l_
-   !else
+    !else
       !if $n iswordof participate supervise
         l_=!char 1 to 500 of $l_
       !else
         l_=!char 1 to 40 of $l_
       !endif
-   !endif
-   replace_=!append line !set user_$n=$l_ to $replace_
+    !endif
+    replace_=!append line !set user_$n=$l_ to $replace_
   !endif
  !endif
 !next n
@@ -151,6 +151,7 @@ replace_=
   !setdef !set user_courses=$user_courses in wimshome/log/classes/$wims_class/.users/$uu
   change=!listunion $change and $uu
  !else
+  !!change up_participate here
   up_participate=!listunion $user_participate and $up_class
   shclass=!defof sharing_user in wimshome/log/classes/$up_class/neighbors
   !default shclass=$up_class

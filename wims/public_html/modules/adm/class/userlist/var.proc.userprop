@@ -32,21 +32,26 @@
   error=bad_classpass
   !exit
  !endif
- 
+
  up_password=
  replacelist=regnum,comments,photourl,email,external_auth,supervise
   !for r in $replacelist
     !default up_$r=$(user_$r)
   !next
- !if $wims_user=supervisor or ($wims_realuser!=supervisor and $wims_realuser!=$empty)
-  !if $superv=no 
-   !set up_supervise=!listcomplement $wims_class in $user_supervise
-  !else
-   !set up_supervise=!listuniq $wims_class, $(user_supervise)
-  !endif
-  !if $up_supervise=$empty
+  !if $wims_user=supervisor or ($wims_realuser!=supervisor and $wims_realuser!=$empty)
+   !if $superv=no
+    !set up_supervise=!listcomplement $wims_class in $up_supervise
+   !else
+     !if $wims_user=supervisor and $wims_realuser!=supervisor
+!!not administrator of the portail
+       !set up_supervise=!listuniq $wims_class, $(user_supervise)
+     !else
+       !set up_supervise=!listuniq $(up_supervise)
+     !endif
+   !endif
+   !if $up_supervise=$empty
      up_supervise=noclass
-  !endif
+   !endif
   !!reset superv
  !endif
 
