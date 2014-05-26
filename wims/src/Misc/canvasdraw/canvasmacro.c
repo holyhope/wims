@@ -1322,35 +1322,27 @@ char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,doub
     void *f = evaluator_create(fun);
     assert (f);
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
-    int xv;int yv;
-    double a = (double)((xmax - xmin)/xsize);
-    double b = (double)((ymax - ymin)/ysize);
-    double x;double y;double r;
+    double a = (double)((xmax - xmin)/plotsteps);
+    double b = (double)((ymax - ymin)/plotsteps);
+    double x;double y;double diff;
     double xydata[MAX_BUFFER+1];
-    int i = 0;double diff;
+    int i = 0;
     ymin = ymin - 1;
     xmin = xmin - 1;
     ymax = ymax + 1;
     xmax = xmax + 1;
-    for( yv = 0 ;yv < ysize ; yv++ ){
-	y = (double) (yv*b + ymin);
-	if( y < ymax && y > ymin ){
-	    for ( xv = 0 ;xv < xsize ; xv++ ){
-		x = (double) (xv*a + xmin);
-		if( x < xmax && x > xmin ){
-		    if( i < MAX_BUFFER - 2){
-			r = evaluator_evaluate_x_y(f, x,y);
-			diff = r - level ;
-			if(diff < 0.1 && diff > -0.1 ){
-			    xydata[i++] = x;
-			    xydata[i++] = y;
-			}
-		    }
-		    else
-		    {
-			canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps, decrease image size...\nor some other means to reduce the amount of data... ");
-		    }
+    for( x = xmin ;x < xmax ; x = x + a ){
+	for ( y = ymin ;y < ymax ; y = y + b ){
+	    if( i < MAX_BUFFER - 2){
+		diff = level - evaluator_evaluate_x_y(f, x,y);
+		if(diff < 0.1 && diff > -0.1){
+		    xydata[i++] = x;
+		    xydata[i++] = y;
 		}
+	    }
+	    else
+	    {
+		canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps, decrease image size...\nor some other means to reduce the amount of data... ");
 	    }
 	}
     }
@@ -1405,9 +1397,9 @@ char *double_xy2js_array(double xy[],int len,int decimals){
     int xy[] is already checked for errors or overflow in "get_real()" 
     just to be sure we double check the size of "temp" 
 */
-    char temp[MAX_BUFFER], *string;
+    char temp[2*MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
-    memset(temp,'\0',MAX_BUFFER);/* clear memory */
+    memset(temp,'\0',2*MAX_BUFFER);/* clear memory */
     int i;int space_left;
     temp[0] = '[';/* start js-array */
     for(i = 0; i < len;i = i + 2){ /*  x_points[] */
@@ -1569,7 +1561,7 @@ Shape.prototype.draw = function(ctx)\
   case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
   case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
-  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
+  case 16: alert(this.x.length);for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   default: alert(\"draw primitive unknown\");break;\
  };\
  if(this.use_filled == 1){ ctx.fill();}\

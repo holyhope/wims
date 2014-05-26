@@ -127,7 +127,7 @@ int main(int argc, char *argv[]){
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
     int arrow_head = 8; /* size in px*/
     int crosshair_size = 10; /* size in px*/
-    int plot_steps = 150; 
+    int plot_steps = 250; 
     int found_size_command = 0;
     int click_cnt = 1;
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
@@ -2705,8 +2705,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   }
   /* add global variables / contants */
   fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\
-  var precision = %d;var xmin=%f;var xmax=%f;var ymin=%f;\
-  var ymax=%f;var xmin_start=xmin;var xmax_start=xmax;\
+  var precision = %d;var xmin_start=xmin;var xmax_start=xmax;\
   var ymin_start=ymin;var ymax_start=xmax;\
   var zoom_x_increment=0;var zoom_y_increment=0;\
   var pan_x_increment=0;var pan_y_increment=0;\
@@ -2732,10 +2731,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
    try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\
    %s\
   };\
-  start_canvas%d(22);\
  };\n\
 <!-- end wims_canvas_function -->\n\
-wims_canvas_function%d();\n",precision,xmin,xmax,ymin,ymax,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
+wims_canvas_function%d();\n",precision,canvas_root_id,buffer,canvas_root_id);
 /* done writing the javascript include file */
 fclose(js_include_file);
 
