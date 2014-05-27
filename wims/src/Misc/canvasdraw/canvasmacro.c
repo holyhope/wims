@@ -1291,7 +1291,7 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     int xv;
     int i = 0;
     int xstep =(int)(xsize/plotsteps);
-    if( xstep == 0 ){canvas_error("zero step in plot curve...");}
+    if( xstep == 0 ){xstep = 1;}
     double a = (xmax - xmin)/xsize;
     f = evaluator_create(fun);
     assert (f);
@@ -1357,7 +1357,7 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     double t;
     int i = 0;
     double tstep = (tmax-tmin)/plotsteps;
-    if( tstep == 0 ){canvas_error("zero step in parametric curve...");}
+    if( tstep == 0 ){canvas_error("zero step for t variable : reduce plotsteps or inrease trange");}
     fx = evaluator_create(fun1);
     fy = evaluator_create(fun2);
     assert(fx);
@@ -1561,7 +1561,7 @@ Shape.prototype.draw = function(ctx)\
   case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
   case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
-  case 16: alert(this.x.length);for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
+  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   default: alert(\"draw primitive unknown\");break;\
  };\
  if(this.use_filled == 1){ ctx.fill();}\

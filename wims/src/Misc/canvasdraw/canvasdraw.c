@@ -99,6 +99,7 @@ int main(int argc, char *argv[]){
     int use_parametric = FALSE;/* will be reset after parametric plotting */
     int use_axis = FALSE;
     int use_axis_numbering = FALSE;
+    int use_pan_and_zoom = FALSE;
     int line_width = 1;
     int decimals = 2;
     int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate */
@@ -222,6 +223,7 @@ fprintf(stdout,"<!-- include actual object code via include file -->\n<script ty
 fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var xsize = %d;\
 var ysize = %d;\
+var precision = 100;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
@@ -1979,6 +1981,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    fprintf(js_include_file,"use_pan_and_zoom = 1;");
+	    use_pan_and_zoom = TRUE;
 	    if( js_function[DRAW_ZOOM_BUTTONS] != 1 ){ js_function[DRAW_ZOOM_BUTTONS] = 1;}
 	    /* we use BG_CANVAS (0) */
 	    stroke_color = get_color(infile,1);
@@ -2703,9 +2706,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
     tmp_buffer = my_newmem(26);
     snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
   }
-  /* add global variables / contants */
+  if( use_pan_and_zoom == TRUE ){
+  /* in case of zooming ... */
   fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\
-  var precision = %d;var xmin_start=xmin;var xmax_start=xmax;\
+  precision = %d;var xmin_start=xmin;var xmax_start=xmax;\
   var ymin_start=ymin;var ymax_start=xmax;\
   var zoom_x_increment=0;var zoom_y_increment=0;\
   var pan_x_increment=0;var pan_y_increment=0;\
@@ -2731,9 +2735,20 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
    try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\
    %s\
   };\
+  start_canvas%d(333);\
  };\n\
 <!-- end wims_canvas_function -->\n\
-wims_canvas_function%d();\n",precision,canvas_root_id,buffer,canvas_root_id);
+wims_canvas_function%d();\n",precision,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
+  }
+  else
+  {
+  /* no zoom, just add buffer */
+  fprintf(js_include_file,"\n<!-- add buffer -->\n\
+  %s\
+ };\n\
+<!-- end wims_canvas_function -->\n\
+wims_canvas_function%d();\n",buffer,canvas_root_id);
+  }
 /* done writing the javascript include file */
 fclose(js_include_file);
 
