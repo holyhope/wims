@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Helaas, maar het maken en/of veranderen van een werkblad is voorbehouden aan de supervisor van een klas  
+ Helaas, maar het maken en/of veranderen van een werkblad is voorbehouden aan de supervisor van een klas
  !exit
 !endif
 
@@ -41,7 +41,7 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
 !if $error=not_secure
 Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  !if $sec=$empty
-  Verboden toegang. 
+  Verboden toegang.
   U hebt geen veilige ip-adressen gedefinieerd. U kunt de sitemanager vragen dit te regelen.
  !else
   Verboden toegang.
@@ -91,7 +91,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  <p>
  <span class="tt">$worktest</span>
  </p>
- <b>Opmerking</b>. 
+ <b>Opmerking</b>.
  Deze handeling moet eigenlijk niet worden uitgevoerd in een actieve klas !.
  En is bedoeld voor "test klassen"
  !exit
@@ -101,7 +101,13 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken.
 Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
 
-Wilt U doorgaan?
+!if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
+ Wilt U doorgaan?
   <div class="wimscenter">
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
@@ -123,17 +129,17 @@ Weet U zeker dat U het werkblad nummer $sheet ($title) wilt verwijderen?
 !if prep_expire=$error
 Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
  !item $expmon of $months
- $expyear. 
+ $expyear.
  U wilt het <b>nu</b> laten verlopen?
 
   <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
- . </div><b>Opmerking.</b> 
+ . </div><b>Opmerking.</b>
  Uw studenten kunnen niet doorgaan met werken aan een verlopen werkblad.
  Maar hun reeds behaalde cijfers worden uiteraard bewaard (en worden dus ook
- verwerkt in de statistieken) en U kunt ze altijd later nog bestuderen. 
+ verwerkt in de statistieken) en U kunt ze altijd later nog bestuderen.
  !exit
 !endif
 
@@ -152,7 +158,7 @@ to $wims_menu_items
  <p class="wimscenter"><input type="submit" value="$wims_name_send" />
  </p>
 !formend
- <span class="wims_warning">$wims_name_warning</span>. 
+ <span class="wims_warning">$wims_name_warning</span>.
  Voer geen "corrupte code" handmatig in ; het risico
  bestaat dat het werkblad onbruikbaar wordt.
 

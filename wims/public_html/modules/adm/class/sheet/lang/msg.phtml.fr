@@ -1,5 +1,5 @@
 !set wims_module_log=error: $error
-
+$wims_module_log
 !if not_supervisor=$error
  Désolé, mais l'opération de préparation / modification d'une feuille de travail est réservée aux enseignants enregistrés d'une classe.
  !exit
@@ -100,7 +100,8 @@
 
  <p class="tt">$worktest</p>
 
- <b>Remarque</b>. Cette action ne doit être prise que si c'est une classe de test. N'allez pas plus loin si les participants sont vos vrais élèves&nbsp;!
+ <b>Remarque</b>. Cette action ne doit être effectuée que si c'est une classe de test.
+ N'allez pas plus loin si les participants sont vos vrais élèves&nbsp;!
  !exit
 !endif
 
@@ -108,6 +109,12 @@
  Vous demandez d'activer la feuille $sheet, c'est-à-dire de la rendre accessible aux participants de la classe. <br />
  Veuillez noter qu'une feuille active n'est pas modifiable sans être désactivée préalablement, et la désactivation de la feuille entraîne la
  suppression de l'ensemble des scores sur la feuille, si elle n'est pas interdite par la situation.
+ !if $test_expire!=$empty
+  <div class="wims_warning">
+   La date d'expiration de la feuille est antérieure à la date d'aujourd'hui, elle
+   sera mise à la date d'expiration de votre classe.
+  </div>
+ !endif
  <p>
  Voulez-vous continuer ?
  </p>

@@ -100,7 +100,13 @@
 !if prep_activate=$error
  您要求運作作業清單  $sheet ，亦即讓作業清單被課程參與者存取。<br />
  請注意，一旦作業清單運作後，您就無法再修改清單。您確定要繼續？
-  <div class="wimscenter">
+!if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
+   <div class="wimscenter">
  !href cmd=reply&job=activate  運作清單
  。&nbsp;&nbsp;
  !href cmd=resume  放棄運作

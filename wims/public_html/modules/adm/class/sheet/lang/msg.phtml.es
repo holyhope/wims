@@ -61,7 +61,7 @@
 !endif
 
 !if $error=sheet_in_exam
- Imposible desactivar esta hoja, porque tiene exámenes 
+ Imposible desactivar esta hoja, porque tiene exámenes
  basados en su contenido.
  !exit
 !endif
@@ -71,7 +71,7 @@
  a trabajar en ella!
 
  !if share iswordof $confirmed
-  Además la hoja la comparten otras clases, que pueden estar trabajando en ella 
+  Además la hoja la comparten otras clases, que pueden estar trabajando en ella
   y tener puntuaciones también. Por tanto está prohibido desactivarla.
   !exit
  !endif
@@ -86,19 +86,25 @@
  <p>
  <span class="tt">$worktest</span>
  </p>
- <b>Nota</b>. Esta acción no debe realizarse salvo si se trata de una clase de 
+ <b>Nota</b>. Esta acción no debe realizarse salvo si se trata de una clase de
  pruebas. ¡No siga adelante si los participantes son sus verdaderos alumnos!
  !exit
 !endif
 
 !if prep_activate=$error
- Ha solicitado activar la hoja de trabajo $sheet, es decir, hacerla 
+ Ha solicitado activar la hoja de trabajo $sheet, es decir, hacerla
  accesible a los participantes de la clase. <p>
- Por favor tenga en cuenta que, una vez activada una hoja de trabajo, no 
- puede ser modificada sin previamente desactivarla, y la desactivación de 
- la hoja conlleva la pérdida de las puntuaciones que se han conseguido en 
- el trabajo en la misma, si dicha desactivación no está prohibida 
+ Por favor tenga en cuenta que, una vez activada una hoja de trabajo, no
+ puede ser modificada sin previamente desactivarla, y la desactivación de
+ la hoja conlleva la pérdida de las puntuaciones que se han conseguido en
+ el trabajo en la misma, si dicha desactivación no está prohibida
  por la situación.
+ !if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
  <p>
  ¿Desea continuar?
  </p>
@@ -129,19 +135,19 @@
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </div><b>Nota.</b> Sus estudiantes no pueden continuar trabajando en una hoja
- que ha expirado. Pero las puntuaciones anteriores se conservarán (y se tomarán en 
+ que ha expirado. Pero las puntuaciones anteriores se conservarán (y se tomarán en
  cuenta en las estadísticas), y puede seguir consultándolas.
  !exit
 !endif
 
 !if prep_putsource=$error
  Si tiene el fichero fuente de una hoja de trabajo guardada anteriormente, puede
- insertarlo directamente en la hoja actual, copiando estos 
- fuentes en la ventana siguiente, y pulsando después el botón 
+ insertarlo directamente en la hoja actual, copiando estos
+ fuentes en la ventana siguiente, y pulsando después el botón
  <span class="wims_button disabled">$wims_name_send</span>Enviar</span>.
  También puede utilizar este formulario para insertar los fuentes de una
  hoja pública por el proceso de copiar y pegar.
- 
+
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 

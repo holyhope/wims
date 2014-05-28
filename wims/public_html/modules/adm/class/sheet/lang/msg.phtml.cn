@@ -93,9 +93,15 @@
 !endif
 
 !if prep_activate=$error
-你想要激活页面 $sheet. 
-激活页面后, 它就能被班级的所有参加者看到. 一旦被激活, 
-你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
+你想要激活页面 $sheet.
+激活页面后, 它就能被班级的所有参加者看到. 一旦被激活,
+你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数.
+!if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
  <p>
 要继续吗?
 </p>
@@ -132,7 +138,7 @@
 
 !if prep_putsource=$error
 如果你有已保存的源码, 你可将这段源码插入当前页, 只需将这段源码复制入以下窗口,
-再点击按钮 <span class="wims_button disabled">$wims_name_send</span>. 
+再点击按钮 <span class="wims_button disabled">$wims_name_send</span>.
 这个表也允许你用切割-复制的形式插入公开作业页的源码.
 
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
@@ -144,7 +150,7 @@ to $wims_menu_items
  <p class="wimscenter"><input type="submit" value="$wims_name_send" />
  </p>
 !formend
- <span class="wims_warning">$wims_name_warning</span>. 
+ <span class="wims_warning">$wims_name_warning</span>.
  不要修改页面的源码, 这样可能使你的整个作业页无法使用.
  !exit
 !endif

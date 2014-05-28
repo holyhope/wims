@@ -99,11 +99,17 @@
 
 !if prep_activate=$error
  Heu demanat activar el full $sheet, és a dir, fer-lo
- accessible als participants de la classe. 
+ accessible als participants de la classe.
  Tingueu en compte que un full actiu no pot ser modificat sense
  desactivar-lo prèviament, i la desactivació del full provoca
  l'eliminació de totes les puntuacions en el full, si això no
  està prohibit per la situació.
+ !if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
  <p>
  Voleu continuar?
  </p>
@@ -143,7 +149,7 @@
 !if prep_putsource=$error
  Si teniu el codi d'un full prèviament guardat, podeu inserir-lo
  en el full actual, copiant aquest codi a la finestra de sota,
- a continuació, feu clic al botó <span class="wims_button disabled">$wims_name_send</span>. 
+ a continuació, feu clic al botó <span class="wims_button disabled">$wims_name_send</span>.
  També podeu utilitzar aquest
  formulari per a inserir el codi d'un full públic amb copiar i enganxar.
 
@@ -156,7 +162,7 @@ to $wims_menu_items
  <p class="wimscenter"><input type="submit" value="$wims_name_send" />
  </p>
 !formend
- <span class="wims_warning">$wims_name_warning</span>. 
+ <span class="wims_warning">$wims_name_warning</span>.
  No inseriu un fitxer de codi modificat&nbsp;! Us arrisqueu
  a fer el vostre full inservible.
  !exit

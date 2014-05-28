@@ -34,7 +34,7 @@
 !endif
 
 !if no_title=$error
- Per registrare un corso &egrave; necessario inserire il titolo. 
+ Per registrare un corso &egrave; necessario inserire il titolo.
  Correggere.
  !exit
 !endif
@@ -65,11 +65,11 @@
   !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes, $(wims_name_actionlist[3])
   &nbsp;&nbsp;
   !set wims_ref_class=wims_button
-  !href cmd=resume $wims_name_no, $wims_name_giveup 
+  !href cmd=resume $wims_name_no, $wims_name_giveup
  </p>
  <p>
  <b>Prima di continuare, è per lo meno consigliabile di chiedere ai docenti
- delle classi che le condividono di fare un backup del proprio corso!</b> Si 
+ delle classi che le condividono di fare un backup del proprio corso!</b> Si
  fa però presente che in caso di problemi, che potrebbero verificarsi anche
  dopo mesi, sarete obbligati a ripristinare questo backup e alla configurazione
  PRIMA della disattivazione, perdendo così tutti i risultati registrati DOPO,
@@ -85,11 +85,11 @@
 !endif
 
 !if $error=non_empty_activities
- <p>Stai per disattivare il test $sheet, mentre alcuni studenti hanno 
+ <p>Stai per disattivare il test $sheet, mentre alcuni studenti hanno
  già cominciato a lavorarci!</p>
 
  !if share iswordof $confirmed
-  <p>Inoltre, il test è condiviso con altri corsi, dove pure gli 
+  <p>Inoltre, il test è condiviso con altri corsi, dove pure gli
   studenti potrebbero aver già cominciato a lavorare. Pertanto
   non è possibile disattivarlo.</p>
   !exit
@@ -105,11 +105,11 @@
  </p>
  Elenco degli studenti che hanno già cominciato a lavorare su questo
  test di autovalutazione:
- 
+
  <p><span class="tt">$worktest</span></p>
 
  <b>Nota</b>. Questa operazione è vivamente sconsigliata a meno che questo
- non sia un corso di prova. Si consiglia di fermarsi ora se si sta 
+ non sia un corso di prova. Si consiglia di fermarsi ora se si sta
  parlando di un corso con studenti <em>veri</em>.
  !exit
 !endif
@@ -119,8 +119,14 @@
  accessibile agli studenti.
  Ricordiamo che un test in corso non &egrave; pi&ugrave; modificabile, ma
  occorre prima disattivarlo (in questo caso tutti i punteggi acquisiti dagli
- studenti saranno cancellati). 
- <p>
+ studenti saranno cancellati).
+!if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
+  <p>
  Continuare?
  </p>
  <p class="wimscenter">
@@ -157,7 +163,7 @@
  </div>
  <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su un test
  terminato. I voti fin qui acquisiti vengono conservati (e le statistiche
- ne tengono conto) e possono essere consultati dal 
+ ne tengono conto) e possono essere consultati dal
  docente in qualsiasi momento.</p>
  !exit
 !endif
@@ -166,10 +172,10 @@
  <p>
  Se si &egrave; provveduto in precedenza a salvare su file
  le istruzioni Wims, &egrave; possibile inserire i comandi
- e salvarli cliccando su <span class="wims_button disabled">$wims_name_send</span>. 
+ e salvarli cliccando su <span class="wims_button disabled">$wims_name_send</span>.
  </p>
  <p>
- &Egrave; anche possibile inserire 
+ &Egrave; anche possibile inserire
  il sorgente di un test pubblico mediante copia&amp;incolla.
  </p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
@@ -179,9 +185,9 @@ to $wims_menu_items
  <input type="hidden" name="job" value="putsource" /><p class="wimscenter">
  <textarea cols="55" rows="10" name="source">$source</textarea></p>
  <p class="wimscenter"><input type="submit" value="$wims_name_send" /></p>
- 
+
 !formend
- <span class="wims_warning">$wims_name_warning</span>. 
+ <span class="wims_warning">$wims_name_warning</span>.
  Non inserire file di istruzioni modificate. Potrebbero
  essere inutilizzabili dal server.
  !exit

@@ -56,7 +56,7 @@ Strange, but  I do not find the exercise series to modify !!
   You must ask the webmaster to deactivate the worksheet for you.
   !exit
  !endif
- Deactivating this worksheet may disrupted neighboring classes. 
+ Deactivating this worksheet may disrupted neighboring classes.
  This action is therefore <b>strongly discouraged</b>.
  <p> Do you still want to deactivate the worksheet?</p>
  <p style="text-align:center">
@@ -84,7 +84,7 @@ Strange, but  I do not find the exercise series to modify !!
  started to work on it!
  <p>
   !if share iswordof $confirmed
-   Moreover, the worksheet is shared with other classes where there may be scores too. 
+   Moreover, the worksheet is shared with other classes where there may be scores too.
    It is therefore not allowed to deactivate it.
    !exit
   !endif
@@ -109,8 +109,14 @@ Strange, but  I do not find the exercise series to modify !!
 !if prep_activate=$error
  You want to activate worksheet $sheet.
  <p>By activating a worksheet, you make it visible to the participants of the class.  Once activated,
- a worksheet cannot be modified, unless deactivated first. However, deactiviting an activated 
+ a worksheet cannot be modified, unless deactivated first. However, deactiviting an activated
  worksheet will result in losing the scores and grades of the participants.</p>
+ !if $test_expire!=$empty
+  <div class="wims_warning">
+   The expiration date of the sheet is previous to today, it will be
+   updated at the expiration date of your class.
+  </div>
+ !endif
  <p>Do you want to continue?</p>
  <p style="text-align:center">
   !set wims_ref_class=wims_button
@@ -154,7 +160,7 @@ Strange, but  I do not find the exercise series to modify !!
 !if prep_putsource=$error
  If you have saved the source code of a worksheet previously, you can insert this code
  into the current worksheet, by copying this code into the window below,
- then clicking on the button <span class="wims_button disabled">$wims_name_send</span>. 
+ then clicking on the button <span class="wims_button disabled">$wims_name_send</span>.
  You may also insert the
  source code of a public worksheet by cutting and pasting.
 <p>
@@ -166,9 +172,9 @@ to $wims_menu_items
   <textarea cols="55" rows="10" name="source">$source</textarea>
   </p>
   <p class="wimscenter"><input type="submit" value="$wims_name_send" /></p>
- 
+
 !formend
- <span class="wims_warning">$wims_name_warning</span>. 
+ <span class="wims_warning">$wims_name_warning</span>.
  It is advised not to modify the source code of the worksheet as it may abort the
  worksheet.
  !exit
@@ -186,7 +192,7 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2 
+ $name_expiration1 ($l_date). $name_expiration2
  <p>
   !href cmd=resume $wims_name_back2
   ($wims_name_sheetmanagement)
