@@ -145,6 +145,7 @@
         Download center,\
 	    Syntax,\
         Meaning,\
+        Indexation,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\
@@ -166,7 +167,7 @@
 	wims_name_Scoring,wims_name_Scoringhelp,\
 	wims_name_require,wims_name_server_time,wims_name_datamodule,\
 	wims_name_devwims,wims_name_publish_center,wims_name_download_center,\
-	wims_name_Syntax,wims_name_Meaning
+	wims_name_Syntax,wims_name_Meaning,wims_name_Indexation
 
 
 !! **** Class Relative Names ***
