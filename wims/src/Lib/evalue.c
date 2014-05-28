@@ -20,9 +20,9 @@
 #define NAN log(-1)
 #endif
 
-	/* Only two decimal points, less than 1 million.
-	 * No check of buffer length which should be at least 12.
-	 * returns the end of buffer. */
+    /* Only two decimal points, less than 1 million.
+     * No check of buffer length which should be at least 12.
+     * returns the end of buffer. */
 char *moneyprint(char *p, double s)
 {
     char *p1, *p2, buf[16];
@@ -35,9 +35,9 @@ char *moneyprint(char *p, double s)
     for(*p1--=t1%10+'0',t1/=10;t1>0;*p1--=t1%10+'0',t1/=10);
     p2=buf+11;
     if(t2) {
-	*p2++='.';
-	*p2++=t2/10+'0'; t2%=10;
-	if(t2) *p2++=t2+'0';
+      *p2++='.';
+      *p2++=t2/10+'0'; t2%=10;
+      if(t2) *p2++=t2+'0';
     }
     p1++; *p2=0; memmove(p,p1,p2-p1+1); p+=p2-p1;
     return p;
@@ -45,9 +45,10 @@ char *moneyprint(char *p, double s)
 
 /* #define RAND_BUF_SIZE 4096
 static char rand_buf[RAND_BUF_SIZE];
-*/	/* The trouble here is that httpd does not initialize 
-	 * the variable RANDOM. 
-	 * So I use time (microseconds) to get a quick solution. */
+*/
+/* The trouble here is that httpd does not initialize
+     * the variable RANDOM.
+     * So I use time (microseconds) to get a quick solution. */
 void init_random(void)
 {
     int r;
@@ -59,7 +60,7 @@ void init_random(void)
     srandom(r);
 }
 
-	/* gives a double random number between 0 and m */
+/* gives a double random number between 0 and m */
 double drand(double m)
 {
     double r;
@@ -67,8 +68,8 @@ double drand(double m)
     return (r/(double) RAND_MAX)*m;
 }
 
-	/* gives a random integer between 0 and n.
-	 * n maybe floating, but will be rounded */
+/* gives a random integer between 0 and n.
+ * n maybe floating, but will be rounded */
 double irand(double n)
 {
     int  end,r;
@@ -76,10 +77,10 @@ double irand(double n)
     if(n>0) end=n; else end=-n;
     r=(double) random()*end/RAND_MAX;
     if(r==n) r--;
-    if(n>0) return r; else return -r;    
+    if(n>0) return r; else return -r;
 }
 
-	/* sign of d */
+/* sign of d */
 double sign(double d)
 {
     if(d==0) return 0;
@@ -87,7 +88,7 @@ double sign(double d)
     else return 1;
 }
 
-	/* rounding to integer: problem with half-way rounding */
+/* rounding to integer: problem with half-way rounding */
 double myround(double d)
 {
     long int t;
@@ -95,33 +96,33 @@ double myround(double d)
     return t;
 }
 
-	/* log of base 2 */
+/* log of base 2 */
 double mylog2(double d)
 {
     return log(d)/log(2);
 }
 
-	/* sec */
+/* sec */
 double sec(double d)
-{	return 1/cos(d);	}
+{    return 1/cos(d);}
 
-	/* csc */
+/* csc */
 double csc(double d)
-{	return 1/sin(d);	}
+{    return 1/sin(d);}
 
-	/* cotangent function */
+/* cotangent function */
 double cotan(double d)
 {
     return 1/tan(d);
 }
 
-	/* hyperbolic cotangent */
+/* hyperbolic cotangent */
 double cotanh(double d)
 {
     return 1/tanh(d);
 }
 
-	/* factorial of an integer */
+/* factorial of an integer */
 double factorial(double d)
 {
     int i,n; double t;
@@ -132,13 +133,13 @@ double factorial(double d)
     return t;
 }
 
-	/* binomial coefficient */
+/* binomial coefficient */
 double binomial(double d1,double d2)
 {
     return factorial(d1)/(factorial(d2)*factorial(d1-d2));
 }
 
-	/* max and min */
+/* max and min */
 double max(double d1, double d2)
 {
     if(!finite(d1) || !finite(d2)) return NAN;
@@ -150,7 +151,7 @@ double min(double d1, double d2)
     if(d1<d2) return d1; else return d2;
 }
 
-	/* gcd and lcm, not really checking errors. */
+/* gcd and lcm, not really checking errors. */
 double gcd(double n1, double n2)
 {
     unsigned long long int l1, l2, ll;
@@ -159,11 +160,11 @@ double gcd(double n1, double n2)
        n1>1E18 || n2>1E18) return NAN;
     l1=n1; l2=n2;
     if(l1<l2) {
-	ll=l1;l1=l2;l2=ll;
+      ll=l1;l1=l2;l2=ll;
     }
     if(l1==0) return NAN;
     while(l2>0) {
-	ll=l2;l2=l1%l2;l1=ll;
+      ll=l2;l2=l1%l2;l1=ll;
     }
     return l1;
 }
@@ -287,19 +288,19 @@ void set_evalue_pointer(char *p)
     evalue_pt=p;
 }
 
-	/* get position of name in nametable */
+/* get position of name in nametable */
 int eval_getpos(char *name)
 {
     return search_list(evalname,evalname_no,sizeof(evalname[0]),name);
 }
 
-	/* set value to name */
+/* set value to name */
 void eval_setval(int pos, double v)
 {
     if(pos>=0 && pos<evalname_no) evalname[pos].val=v;
 }
 
-	/* get string pointer (after evaluation) */
+/* get string pointer (after evaluation) */
 char *get_evalue_pointer(void)
 {
     return evalue_pt;
@@ -311,128 +312,126 @@ double _evalue(int ord)
     int i,k;
     char buf[32];
 
-    
+
     if(evalue_error) return NAN;
     d=0;
     while(*evalue_pt=='+') evalue_pt++;
     if(*evalue_pt==0) return 0; /* empty string */
     switch(*evalue_pt) {
-	case '(':
-	evalue_pt++; d=_evalue(')');goto vld;
-	case '|':
-	if(ord=='|') {
-	    evalue_pt++; return 0;
-	}
-	evalue_pt++; d=fabs(_evalue('|'));goto vld;
-	case '-':
-	evalue_pt++; d=-_evalue(6);goto vld;
+      case '(':
+       evalue_pt++; d=_evalue(')');goto vld;
+      case '|':
+       if(ord=='|') {
+        evalue_pt++; return 0;
+       }
+       evalue_pt++; d=fabs(_evalue('|'));goto vld;
+      case '-':
+       evalue_pt++; d=-_evalue(6);goto vld;
     }
-    if((128&*evalue_pt)!=0) {
-	k=(*evalue_pt)&255; evalue_pt++;
-	if(k>=130 && k<140) {
-	    i=(k-130)*200; k=(*evalue_pt)&255; evalue_pt++;
-	    if(k<33 || k>=233) goto badeval;
-	    i+=k-33; if(i<0 || i>=evalname_no) goto badeval;
-	    goto ename;
-	}
-	if(k>=140 && k<150) {
-	    i=(k-140)*200; k=(*evalue_pt)&255; evalue_pt++;
-	    if(k<33 || k>=233) goto badeval;
-	    if(ev_var==NULL || ev_varcnt==NULL) goto badeval;
-	    i+=k-33; if(i<0 || i>=*ev_varcnt) goto badeval;
-	    goto vname;
-	}
-	evalue_pt++; goto badeval;
+    if((128&*evalue_pt)!=0) {/* special character */
+      k=(*evalue_pt)&255; evalue_pt++;
+      if(k>=130 && k<140) {
+          i=(k-130)*200; k=(*evalue_pt)&255; evalue_pt++;
+          if(k<33 || k>=233) goto badeval;
+          i+=k-33; if(i<0 || i>=evalname_no) goto badeval;
+          goto ename;
+      }
+      if(k>=140 && k<150) {
+          i=(k-140)*200; k=(*evalue_pt)&255; evalue_pt++;
+          if(k<33 || k>=233) goto badeval;
+          if(ev_var==NULL || ev_varcnt==NULL) goto badeval;
+          i+=k-33; if(i<0 || i>=*ev_varcnt) goto badeval;
+          goto vname;
+      }
+      evalue_pt++; goto badeval;
     }
     if(*evalue_pt=='.' || myisdigit(*evalue_pt))
-	{d=strtod(evalue_pt,&evalue_pt);goto binary;}
+      {d=strtod(evalue_pt,&evalue_pt);goto binary;}
     for(i=0;myisalnum(*(evalue_pt+i)) && i<16; i++)
       buf[i]=*(evalue_pt+i);
     buf[i]=0; evalue_pt+=i;
     if(i==0) goto badeval;
     if(ev_varcnt!=NULL && ev_var!=NULL && *ev_varcnt>0)
       for(i=0;i<*ev_varcnt;i++) {
-	  if(strcmp(buf,ev_var[i].name)==0) {
-	      vname: d=ev_var[i].value; goto vld;
-	  }
+        if(strcmp(buf,ev_var[i].name)==0) {
+            vname: d=ev_var[i].value; goto vld;
+        }
       }
     i=search_list(evalname,evalname_no,sizeof(evalname[0]),buf);
-    ename: if(i>=0) switch(evalname[i].type) {
-	case 0: {
-	    d=evalname[i].val;
-	    if(evalname[i].f1!=NULL) {
-		if(d==0) d=NAN; if(d==1) d=HUGE_VAL;
-	    }
-	    break;
-	}
-	case 1: {
-	    if(*evalue_pt!='(') return NAN;
-	    evalue_pt++;
-	    d=evalname[i].f1(_evalue(')')); break;
-	}
-	case 2: {
-	    double parm1,parm2;
-	    if(*evalue_pt!='(') return NAN;
-	    evalue_pt++;
-	    parm1=_evalue(',');parm2=_evalue(')');
-	    d=evalname[i].f2(parm1,parm2); break;
-	}
-	default: {	/* This is impossible. */
-	    return NAN;
-	}
+    ename: if(i>=0) switch(evalname[i].type) { /* evaluation of expressions */
+      case 0: {
+          d=evalname[i].val;
+          if(evalname[i].f1!=NULL) {
+            if(d==0) d=NAN; if(d==1) d=HUGE_VAL;
+          }
+          break;
+      }
+      case 1: {
+          if(*evalue_pt!='(') return NAN;
+          evalue_pt++;
+          d=evalname[i].f1(_evalue(')')); break;/* evaluation of function */
+      }
+      case 2: {
+          double parm1,parm2;
+          if(*evalue_pt!='(') return NAN;
+          evalue_pt++;
+          parm1=_evalue(',');parm2=_evalue(')');
+          d=evalname[i].f2(parm1,parm2); break;
+      }
+      default: {      /* This is impossible. */
+          return NAN;
+      }
     }
     else {
-	badeval: evalue_error=-1; return NAN;
+      badeval: evalue_error=-1; return NAN;
     }
   vld:
     if(evalue_error) return NAN;
-  binary:
+  binary: /*evaluation des expressions */
     if(*evalue_pt=='!') {
-	evalue_pt++; d=factorial(d);
+      evalue_pt++; d=factorial(d);
     }
-    if(*evalue_pt==ord) {evalue_pt++;goto ok;}
-    if(*evalue_pt==0 || 
+    if(*evalue_pt==ord) {evalue_pt++;goto ok;}/* */
+    if(*evalue_pt==0 || /* chaine de caractere finie*/
        (ord<10 && (*evalue_pt==',' || *evalue_pt==';' || *evalue_pt==')'
-		   || *evalue_pt=='|')))
+               || *evalue_pt=='|')))
        goto ok;
     switch(*evalue_pt) {
-		case '+':
-			if(ord<=8) break;
-			evalue_pt++; d+=_evalue(8);goto vld;
-		case '-':
-			if(ord<=8) break;
-			evalue_pt++; d-=_evalue(8);goto vld;
-		case '*':
-			if(ord<=6) break;
-			evalue_pt++; d*=_evalue(6);goto vld;
-		case '/':
-			if(ord<=6) break;
-			evalue_pt++; dd=_evalue(6);
-	    		if(dd==0) {evalue_error=10;return NAN;}
-			d/=dd;goto vld;
-	case '%': {
-	    int di, ddi;
-	    if(ord<=6) break;
-	    evalue_pt++; dd=_evalue(6);
-	    if(dd==0) {evalue_error=10;return NAN;}
-	    di=d; ddi=dd; d=di%ddi;goto vld;
-	}
-	case '^': {
-	    if(ord<5) break;
-	    evalue_pt++; d=pow(d,_evalue(5));goto vld;
-	}
-	default : {
-	    /*if(ord<=6) break;
-	    d*=_evalue(6);goto vld;*/
-	    return NAN;
-	}
+      case '+':
+        if(ord<=8) break;
+        evalue_pt++; d+=_evalue(8);goto vld;
+      case '-':
+        if(ord<=8) break;
+        evalue_pt++; d-=_evalue(8);goto vld;
+      case '*':
+        if(ord<=6) break;
+        evalue_pt++; d*=_evalue(6);goto vld;
+      case '/':
+        if(ord<=6) break;
+        evalue_pt++; dd=_evalue(6);
+        if(dd==0) {evalue_error=10;return NAN;}
+            d/=dd;goto vld;
+      case '%': {
+        int di, ddi;
+        if(ord<=6) break;
+        evalue_pt++; dd=_evalue(6);
+        if(dd==0) {evalue_error=10;return NAN;}
+          di=d; ddi=dd; d=di%ddi;goto vld;
+      }
+      case '^': {
+       if(ord<5) break;
+       evalue_pt++; d=pow(d,_evalue(5));goto vld;
+      }
+      default : {
+          return NAN;
+      }
     }
     ok: return d;
 }
 
-	/* substitute variable names by their environment strings
-	 * The buffer pointed to by p must have enough space
-	 * (defined by MAX_LINELEN). */
+/* substitute variable names by their environment strings
+ * The buffer pointed to by p must have enough space
+ * (defined by MAX_LINELEN). */
 char *_substit(char *p)
 {
     return p;
@@ -440,11 +439,11 @@ char *_substit(char *p)
 
 char *(*substitute) (char *p)=_substit;
 
-	/* evalue a string to double */
+/* evalue a string to double */
 double strevalue(char *p)
 {
     char buf[MAX_LINELEN+1];
-    
+
     if(p==NULL) return 0;
     mystrncpy(buf,p,sizeof(buf));
     substitute(buf); nospace(buf);
@@ -454,37 +453,42 @@ double strevalue(char *p)
     return _evalue(10);
 }
 
-	/* compile an expression for faster evaluation
-	 * returns -1 if cannot be compiled.
-	 * else returns the number of compilations. */
+/* compile an expression for faster evaluation
+ * returns -1 if cannot be compiled.
+ * else returns the number of compilations.
+ */
 int evalue_compile(char *p)
 {
     char *p1, *p2, *pe, name[256], buf[8];
     int i,k;
-    
+
     k=0;
     for(p1=p; *p1; p1++) if((128&*p1)!=0) return -1;
     nospace(p);
     for(p1=find_mathvar_start(p); *p1; p1=find_mathvar_start(pe)) {
-	pe=find_mathvar_end(p1);
-	if(!myisalpha(*p1)) continue;
-	p2=pe; if(p2-p1>16) continue;
-	memmove(name,p1,p2-p1); name[p2-p1]=0;
-	if(ev_varcnt!=NULL && ev_var!=NULL && *ev_varcnt>0) {
-	    for(i=0;i<*ev_varcnt && strcmp(name,ev_var[i].name)!=0;i++);
-	    if(i<*ev_varcnt && i<2000) {
-		buf[0]=i/200+140; buf[1]=i%200+33; buf[2]=0;
-		string_modify(p,p1,p2,"%s",buf);
-		pe=p1+2; k++; continue;
-	    }
-	}
-	i=search_list(evalname,evalname_no,sizeof(evalname[0]),name);
-	if(i>=0 && i<2000) {
-	    buf[0]=i/200+130; buf[1]=i%200+33; buf[2]=0;
-	    string_modify(p,p1,p2,"%s",buf);
-	    pe=p1+2; k++; continue;
-	}
+      pe=find_mathvar_end(p1);
+      if(!myisalpha(*p1)) continue;
+      p2=pe; if(p2-p1>16) continue;
+      memmove(name,p1,p2-p1); name[p2-p1]=0;
+/* replace the variables by a number
+ * at most 2000 variables on two characters :
+ * variable: 140 <= integer <150,  number between 33 and 233
+ * function: 130 <= integer < 140, number between 33 and 233
+ */
+    if(ev_varcnt!=NULL && ev_var!=NULL && *ev_varcnt>0) {
+        for(i=0;i<*ev_varcnt && strcmp(name,ev_var[i].name)!=0;i++);
+        if(i<*ev_varcnt && i<2000) {
+        buf[0]=i/200+140; buf[1]=i%200+33; buf[2]=0;
+        string_modify(p,p1,p2,"%s",buf);
+        pe=p1+2; k++; continue;
+        }
     }
-    return k;
+    i=search_list(evalname,evalname_no,sizeof(evalname[0]),name);
+    if(i>=0 && i<2000) {
+        buf[0]=i/200+130; buf[1]=i%200+33; buf[2]=0;
+        string_modify(p,p1,p2,"%s",buf);
+        pe=p1+2; k++; continue;
+    }
+  }
+  return k;
 }
-
