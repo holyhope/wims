@@ -43,8 +43,9 @@ sub one {my ($a, $taxo)=@_;
   $vu{$a} = 1;
   my ($amod) = $a;
   my ($T) = '<li class="closed">';
+  print "$a\n" if (!$tit{$a});
   $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>
-<label for=\"$amod\">$tit{$a}</label> <span class=\"small hidden\">($a)</span>";
+<label for=\"$amod\">$tit{$a}</label><span class=\"small hidden\">($a)</span>";
   if ($desc{$a}) {
     $T .="<ul>";
     for my $b (sortuniq (split ',', $desc{$a})) { $T .= one($b, $taxo) };
