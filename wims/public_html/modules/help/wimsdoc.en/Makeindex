@@ -7,7 +7,7 @@ cd ..
 rm -f *.tmp
 for i in $dd
 do
-  for j in var exec jump string vardef ins html random loop datafile file
+  for j in var exec jump string vardef ins html random loop datafile file adm
   do
     t=`grep +$j+ cmd/$i.phtml`
     if [ ! -z "$t" ]; then echo $i >>tmp.$j.tmp; fi
@@ -26,6 +26,7 @@ ddd_random=`cat tmp.random.tmp | tr '\n' ','`
 ddd_loop=`cat tmp.loop.tmp | tr '\n' ','`
 ddd_datafile=`cat tmp.datafile.tmp | tr '\n' ','`
 ddd_file=`cat tmp.file.tmp | tr '\n' ','`
+ddd_adm=`cat tmp.adm.tmp | tr '\n' ','`
 
 cat <<1 >Findex
 cmdf_all=!char 1 to -2 of $ddd_all
@@ -40,6 +41,7 @@ cmdf_random=!char 1 to -2 of $ddd_random
 cmdf_loop=!char 1 to -2 of $ddd_loop
 cmdf_datafile=!char 1 to -2 of $ddd_datafile
 cmdf_file=!char 1 to -2 of $ddd_file
+cmdf_adm=!char 1 to -2 of $ddd_adm
 1
 
 rm -f *.tmp
