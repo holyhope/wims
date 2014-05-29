@@ -19,7 +19,9 @@ $name_title_showsheet
 . </p>
  !goto end
 !endif
-
+!if $varfilter!=$empty
+  !set name_classAverage=$name_groupAverage
+!endif
 !if $usercnt==0
  $name_noyetparticipant
 !else
@@ -119,7 +121,7 @@ $name_post
   !distribute items $uu into lastname,firstname,uu
   !if $varfilter_!=$empty
     !reset var_filter_test
-!read testfilter $var_filter\
+!read testfilter $uu\
 $varfilter_
     !if $var_filter_test!=1
       !goto enduser
