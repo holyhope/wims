@@ -1,0 +1,28 @@
+!! test if test_id satisfies the condition given in test_filter
+!! one of the line must be filled
+!! need the external variable $userdir
+!!output : var_filter_test
+!reset var_filter_test
+
+!set test_filter_=!line 2 to -1 of $wims_read_parm
+!set test_id=!line 1 of $wims_read_parm
+!set test_filter_cnt=!linecnt $test_filter_
+
+!for u=1 to $test_filter_cnt
+   !set testf=1
+   !set sel=$(test_filter_[$u;])
+   !set sel_cnt=!itemcnt $(test_filter_[$u;])
+   !for j=1 to $sel_cnt
+     !set sel1=!replace internal = by , in $(sel[$j])
+     !set user__$(sel1[1])=!defof user__$(sel1[1]) in wimshome/$userdir/$test_id
+     !if $(user__$(sel1[1])) issametext $(sel1[2])
+       !set testf=!append item 1 to $testf
+     !else
+       !set testf=!append item 0 to $testf
+     !endif
+   !next j
+   !if 0 notin $testf
+     !set var_filter_test=1
+   !endif
+   !reset user__$(sel1[1])
+!next u

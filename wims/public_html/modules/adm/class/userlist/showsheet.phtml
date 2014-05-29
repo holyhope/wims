@@ -118,8 +118,10 @@ $name_post
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
   !if $varfilter_!=$empty
-    !set var_filter=!defof user__$(varfilter_[1]) in wimshome/$userdir/$uu
-    !if $var_filter notitemof $(varfilter_[2..-1])
+    !reset var_filter_test
+!read testfilter $var_filter\
+$varfilter_
+    !if $var_filter_test!=1
       !goto enduser
     !endif
    !endif

@@ -3,12 +3,13 @@
 $wims_institutionname
 
 !header1
-<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 
-!if $cmd=help
- !read lang/help.phtml.$moduclass_lang
- !goto end
-!endif
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+!! not useful ???
+!!!if $cmd=help
+ !! !read lang/help.phtml
+!! !goto end
+!!!endif
 
 !if $job!=$empty and $job!=sheets
  !read $job.phtml
@@ -186,7 +187,9 @@ $wims_name_part_list ($usercnt)
 </p>
 <p>$name_click
  $name_filter
- <input name="varfilter" value="$varfilter" />
+ <textarea name="varfilter">$varfilter</textarea>
+ !set wims_ref_class=wims_button_help float_right
+ !href cmd=help&special_parm=filter $wims_name_help
   </p>
 <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
@@ -257,8 +260,10 @@ $wims_name_part_list ($usercnt)
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
   !if $varfilter_!=$empty
-    !set var_filter=!defof user__$(varfilter_[1]) in wimshome/$userdir/$uu
-    !if $var_filter notitemof $(varfilter_[2..-1])
+    !reset var_filter_test
+    !read testfilter $uu\
+$varfilter_
+    !if $var_filter_test!=1
       !goto enduser
     !endif
   !endif

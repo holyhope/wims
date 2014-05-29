@@ -27,8 +27,13 @@ picto=<img src="gifs/picto.gif" alt="picto" />
  !exit
 !endif
 !if $varfilter!=$empty
-  varfilter_=!replace internal = by , in $varfilter
-  varfilter_=!lines2rows $varfilter_
+   !reset varfilter_
+   !set varfilter_cnt=!linecnt $varfilter
+   !for v=1 to $varfilter_cnt
+    var_line=!singlespace $(varfilter[$v;])
+    var_line =!replace $ $ by , in $var_line
+    varfilter_=!append line $var_line to $varfilter_
+  !next
 !endif
 
 !if $wims_user!=supervisor

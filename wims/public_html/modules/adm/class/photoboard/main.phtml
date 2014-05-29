@@ -14,38 +14,30 @@ $module_title
 $name_intro
 
 !form reply
-<input type="hidden" name="job" value="all" />  
+<input type="hidden" name="job" value="all" />
 <div class="wimscenter wimsform"><input type="submit" name="reg" value="$wims_name_tosave" /></div>
 
-<fieldset>
-<legend>$name_menu
-</legend>
 $name_expert
-&nbsp;
-&nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help $wims_name_help
-
-
-<table class="wimscenter">
-<tr><td>
 !default job=$job
-!set wims_ref_class=wims_formradio
-!formcheckbox job list filter prompt $name_filter
-</td><td><textarea name="variable" cols="20" rows="3">$variable</textarea>
-</td></tr>
-<tr><td>
-!formcheckbox job list login prompt $name_loginlist
- </td><td>  
+<fieldset class="property_fields blockcenter">
+ <legend>$name_menu</legend>
+ <div class="field box">
+ !set wims_ref_class=wims_formradio
+ !formcheckbox job list filter prompt $name_filter
+ <textarea name="variable" cols="20" rows="3">$variable</textarea>
+ </div>
+ <div class="field box">
+ !formcheckbox job list login prompt $name_loginlist
    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
-   </td></tr>
-   </table>
+</div>
 
-</fieldset>  
+</fieldset>
 
 !formend
 !goto end
-!endif 
+!endif
 
 !if $photourl_exists=0
  <p class="wimscenter"> $name_nophoto</p>
@@ -61,7 +53,7 @@ $name_expert
   <td style="width:120px;">
   !if $(u[4])!=
     !href module=adm/class/userlist&job=getuser&getuser=$(u[1]) <img border="0" width="120px" src="$(u[4])" alt="$(u[2]) $(u[3])" />
-    <br />$(u[2]) $(u[3]) 
+    <br />$(u[2]) $(u[3])
   !else
      !href module=adm/class/userlist&job=getuser&getuser=$(u[1]) $(u[2]) $(u[3])
   !endif
@@ -75,7 +67,7 @@ $name_expert
   !endif
   !endif
   !reset u
-!next 
+!next
 </table>
 
 !if $cmd=reply
