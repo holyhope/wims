@@ -8,7 +8,9 @@
 Media\
 Media de las notas positivas\
 Media global\
-into name_classAverage,name_Average,name_posAverage,name_globalaverage
+Group average\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
 
 !set name_partdeleted=Participantes borrados
 !set wims_name_reg_ex=Lista de los ejercicios grabados

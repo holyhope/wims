@@ -8,7 +8,9 @@
 Gemiddelde\
 Gemiddelde van alle positieve cijfers\
 Totaal gemiddelde\
-into name_classAverage,name_Average,name_posAverage,name_globalaverage
+Group average\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
+name_groupAverage
 
 !set name_partdeleted=Verwijderde studenten
 !set wims_name_reg_ex=Lijst van oefeningen
