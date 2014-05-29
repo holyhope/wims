@@ -2,7 +2,7 @@
 !set sp2=$special_parm2
 !bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
 	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,\
-	authtype,topscores,external_auth\
+	authtype,authtype2,topscores,external_auth\
 	default $
 
 !if $sp2=$empty
@@ -338,6 +338,13 @@ esami. Tali esami registrazioni sono visibili solo al docente.
 
 :authtype
 !read help/$lang/authentification.phtml
+!exit
+
+:authtype2
+<p>
+<span class="tt wims_code_words">class_connections</span>:
+Se si utilizza lo script <span class="tt">index.php</span> standard, la variable <span class="tt">class_connections</span> deve contenere il valore <span class="tt">+phpidp/available+</span>. Possono essere impostati più valori (separati da spazi). Per una migliore configurazione di questa variabile si veda anche la pagina <span class="bold">$wims_name_config_otherserver</span>.
+</p>
 !exit
 
 :modtoolchg
