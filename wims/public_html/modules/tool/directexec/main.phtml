@@ -1,5 +1,5 @@
 
-!distribute items $sw,$sw into  sw_1,sw_2
+!distribute items $sw,$sw into sw_1,sw_2
 
 !if $sw=pari
   !set sw_1=gp
@@ -61,6 +61,12 @@
   !endif
   !if $sw=canvasdraw
    $swout
+   !goto after
+  !endif
+  !if $sw=jmol
+   !set swout1=!lines2rows $swout
+   !readproc slib/chemistry/jmolshow $swout1,200,200,white,,
+   $slib_out
    !goto after
   !endif
 <pre style="font-weight:bold;font-family:Courier New,Courier,mono;overflow:auto;color:blue;">

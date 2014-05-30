@@ -40,6 +40,12 @@ src1=!replace internal &#36; by $$$$ in $src
  !goto execout
 !endif
 
+!if $sw=jmol
+ swout=$src1
+ !goto execout
+!endif
+
+
 !if $sw=insmath
  wims_backslash_insmath=yes
  swout=\($src1\)
@@ -47,7 +53,9 @@ src1=!replace internal &#36; by $$$$ in $src
 !endif
 
 !if $sw=canvasdraw
+
  swout=!exec canvasdraw $src1
+
  !goto execout
 !endif
 
