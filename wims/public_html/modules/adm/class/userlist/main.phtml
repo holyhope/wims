@@ -126,8 +126,14 @@ $wims_name_part_list ($usercnt)
   !next i
   !formselect showsheet list $ash prompt $tmp
   </div>
-<p>
+  <p>
    $wims_name_or $name_post
+   !else
+  !form reply
+  $name_Post
+  <p>
+ !endif
+
    !if $job_affi=notes or $job_affi=$empty
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=quality $(name_affi[1])
@@ -195,8 +201,6 @@ $wims_name_part_list ($usercnt)
   <input type="submit" value="$wims_name_Show" />
   </div>
 !formend
- !endif
-
 !endif
  !reset table_center
  $table_header
