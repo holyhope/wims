@@ -48,6 +48,27 @@ for a in $(seq $#) ; do opt=$1;
     mv -f tmp/mathjax-MathJax-* public_html/scripts/js/mathjax
     rm -rf public_html/scripts/js/mathjax_tmp
  fi
+ if [ "$opt" = "--jmol" ] ; then
+  echo "load jmol"
+    vJmol=Jmol-14.0.13-binary
+    vjmol=jmol-14.0.13
+    cd tmp
+    wget http://downloads.sourceforge.net/project/jmol/Jmol/Version%2014.0/Version%2014.0.13/$vJmol.zip
+    unzip $vJmol
+    cd $vjmol;
+    unzip jsmol.zip
+    rm -f $jsmol.zip
+    cd $dir
+    if [ -d "public_html/java/jmol/j2s" ] ; then
+      mv public_html/java/jmol/j2s public_html/java/jmol/j2s_tmp
+    fi
+    mv -f tmp/$vjmol/jsmol/j2s public_html/java/jmol/j2s
+    cp tmp/$vjmol/jsmol/JSmol.min.js public_html/java/jmol/
+    cp tmp/$vjmol/jsmol/js/Jmol2.js public_html/java/jmol/
+    rm -rf tmp/$vjmol
+    rm -rf public_html/java/jmol/j2s_tmp
+ fi
+
  if [ "$opt" = "--modules" ] ; then
     echo "load modules"
     src/wims_modules.pl
