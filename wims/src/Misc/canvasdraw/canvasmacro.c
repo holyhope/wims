@@ -1,4 +1,6 @@
 void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id);
+void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size);
+
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
 char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int xsteps,int precision);
@@ -36,6 +38,9 @@ void add_input_xy(FILE *js_include_file, int canvas_root_id);
 void add_input_xyr(FILE *js_include_file, int canvas_root_id);
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
+
+void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
+
 /* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 /* ............. */
@@ -1282,7 +1287,6 @@ function user_text(evt){\
 }
 
 
-
 /* GNU libmatheval library for evaluating mathematical functions. */
 char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int plotsteps,int precision){
     void *f;
@@ -1751,6 +1755,29 @@ function use_mouse_coordinates(){\
 };",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 
 }
+void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size){
+fprintf(js_include_file,"\n<!-- begin command add_trace_js_mouse on trace_canvas -->\n\
+function use_mouse_coordinates(){\
+ var trace_canvas = create_canvas%d(%d,xsize,ysize);\
+ var trace_context = trace_canvas.getContext(\"2d\");\
+ var canvas_rect = (trace_canvas).getBoundingClientRect();\
+ var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ userinput_xy_div.innerHTML=\"<span>x = <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:lightgreen;' />y = <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
+ trace_canvas.addEventListener(\"mousemove\",trace%d,false);\
+ trace_canvas.addEventListener(\"touchmove\",trace%d,false);\
+ function eval_jsmath(x){var y = eval(%s);return y};\
+ function trace%d(evt){\
+  var x = px2x(evt.clientX - canvas_rect.left);\
+  var y = eval_jsmath(x);\
+  if(isNaN(y)){return;};\
+  trace_context.clearRect(0,0,xsize,ysize);\
+  draw_crosshairs(trace_context,[x2px(x)],[y2px(y)],%d,%d,\"%s\",%f,0,0,0,[0,0]);\
+  document.getElementById(\"userinput_x\").value = x;\
+  document.getElementById(\"userinput_y\").value = y;\
+ };\
+ return;\
+};",canvas_root_id,canvas_cnt,canvas_root_id,canvas_root_id,canvas_root_id,jsmath,canvas_root_id,line_width,crosshair_size,stroke_color,stroke_opacity);
+}
 
 /* 
 add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined) 
@@ -1769,10 +1796,20 @@ update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;}
 delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
+void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath){
+fprintf(js_include_file,"\n<!-- begin add_calc_y -->\n\
+function eval_jsmath(x){var y = eval(%s);return y};\
+var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+userinput_xy_div.innerHTML=\"<span>x = <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' />y = <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
+var update_button = document.getElementById(\"update_button\");\
+update_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"userinput_x\").value;var y_value = eval_jsmath(x_value);document.getElementById(\"userinput_y\").value = y_value;var canvas = create_canvas%d(123,xsize,ysize);var ctx = canvas.getContext(\"2d\");draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;},false);\n",jsmath,canvas_root_id,canvas_root_id);
+}
+
 /* 
 adds 2 inputfields (x:y) and 'ok' | 'nok' button 
 these are used for user drawing with inputfields...
 */
+
 void add_input_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xy -->\n\
 var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\

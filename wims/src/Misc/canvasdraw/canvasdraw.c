@@ -139,7 +139,7 @@ int main(int argc, char *argv[]){
     int translate_y = 0;
     int clickfillmarge = 20;
     int animation_type = 9; /* == object type curve in drag library */
-    int use_input_xy = 0;
+    int use_input_xy = 0; /* 1= input fields 2= textarea 3=calc y value*/
     size_t string_length = 0;
     double stroke_opacity = 0.8;
     double fill_opacity = 0.8;
@@ -1255,6 +1255,33 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    reset();
 	    break;
+	case TRACE_JSMATH:
+	/*
+	 @trace_jsmath some_javascript_math_function
+	 @will use a crosshair to trace the jsmath curve
+	 @two inputfields will display the current x/y-values (approximated)
+	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
+	 @example: trace_jsmath Math.pow(x,2)+4*x+16
+	 @example: trace_jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
+	 @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	*/
+	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
+	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
+	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
+
+	    break;
+	case JSMATH:
+	/*
+	    @jsmath some_javascript_math_function
+	    @will calculate an y-value from a userinput x-value and draws a crosshairs on these coordinates.
+	    @example: jsmath Math.pow(x,2)+4*x+16
+	    @example: jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
+	    @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	*/
+	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
+	    break;
 	case CURVE:
 	/*
 	 @curve color,formula(x)
@@ -2038,6 +2065,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ mouse color,fontsize
 	 @ will display the cursor coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
 	*/
+	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
 	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
 	    stroke_color = get_color(infile,0);
 	    font_size = (int) (get_real(infile,1));
@@ -2052,7 +2080,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    @ the canvas will be displayed in a tooltip on 'link_text'
 	    @ the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link test will alos be shown with this bgcolor.
 	    */
-	    if(use_input_xy == TRUE){canvas_error("intooltip can not be combined with userinput_xy command");}
+	    if(use_input_xy != FALSE ){canvas_error("intooltip can not be combined with userinput_xy command");}
 	    use_tooltip = TRUE;
 	    tooltip_text = get_string(infile,1);
 	    if(strstr(tooltip_text,"\"") != 0 ){ tooltip_text = str_replace(tooltip_text,"\"","'"); }
@@ -6093,6 +6121,8 @@ int get_token(FILE *infile){
 	*ysnaptogrid="ysnaptogrid",
 	*userinput_xy="userinput_xy",
 	*usertextarea_xy="usertextarea_xy",
+	*jsmath="jsmath",
+	*trace_jsmath="trace_jsmath",
 	*sgraph="sgraph";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -6725,6 +6755,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, sgraph) == 0 ){
 	free(input_type);
 	return SGRAPH;
+	}
+	if( strcmp(input_type, jsmath) == 0 ){
+	free(input_type);
+	return JSMATH;
+	}
+	if( strcmp(input_type, trace_jsmath) == 0 ){
+	free(input_type);
+	return TRACE_JSMATH;
 	}
 	free(input_type);
 	ungetc(c,infile);

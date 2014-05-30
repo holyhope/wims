@@ -137,6 +137,8 @@
 #define AFFINE		141
 #define KILLAFFINE	142
 #define LEVELCURVE	143
+#define JSMATH		144
+#define TRACE_JSMATH	145
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -189,7 +191,7 @@
 #define EXTERNAL_IMAGE_CANVAS 8
 #define CLOCK_CANVAS	9
 #define ANIMATE_CANVAS	10
-
+#define TRACE_CANVAS	11
 #ifndef STD_H
 #define STD_H
 
