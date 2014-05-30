@@ -3,25 +3,50 @@
 !endif
 
 slib_author=Yves, Noël; Bernadette, Perrin-Riou
-
 slib_comment=
 !!exemple à changer ensuite mais sert de test.
-slib_example=data/molecule_pdb/reseau1.pdb\
-data/molecule_pdb/xeo2f2.pdb\
-datamodule/chemistry/mol2D.fr/data/60_18_4.mol
+slib_example=data/molecule_pdb/reseau1.pdb,150,100,white,spin on;,,HTML5\
+data/molecule_pdb/xeo2f2.pdb,100,100,,,1\
+datamodule/chemistry/mol2D.fr/data/60_18_4.mol,,,,select all;wireframe 0.05;select none;,2\
+@CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-],,,,select all;wireframe 0.05;select none;,3\
+@caffeine,,,,select all;wireframe 0.05;select none;,4
 !exit
 
 :proc
-!distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_color,slib_script
-!set slib_appletdir=java/jmol
+!distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_color,slib_script,slib_id,slib_type
 
-!default slib_xsize=500
-!default slib_ysize=400
+!reset slib_initout
+
+!default slib_id=0
+
+!if $slib_id=0
+ !read slib/chemistry/jmolshow_init
+ !set slib_initout=$slib_out
+!endif
+
+!! already defined by slib/chemistry/jmolshow_init (mandatory)
+!!set slib_appletdir=java/jmol
+
+!set slib_target=jmolApplet_$slib_id
+!default slib_type=HTML5
+!default slib_xsize=200
+!default slib_ysize=200
 !default slib_color=white
 !set slib_file=!replace internal $	$ by $\
 $ in $slib_file
 !set slib_file=\
 $slib_file
+   !if __&#36; isin __$slib_file
+   !set slib_file=!char 6 to -1 of $slib_file
+   !set dollar=1
+   !goto begin
+   !endif
+!set egal==
+   !if __$egal isin __$slib_file or __@ isin __$slib_file
+   !set slib_file=!char 2 to -1 of $slib_file
+   !set dollar=1
+   !goto begin
+   !endif
 
 !set slib_file=!replace internal ; by $\
 \$ in $slib_file
@@ -45,6 +70,7 @@ $slib_temp
 !if DisablePopupMenu notin $slib_script
   slib_DisablePopupMenu=set DisablePopupMenu TRUE;
 !endif
+  slib_DisablePopupMenu=set DisablePopupMenu FALSE;
 
 !if hover notin $slib_script
   slib_hover= hover off;
@@ -59,21 +85,50 @@ $temp
     !reset slib_script
 !endif
 !if $slib_script!=
-  slib_script=+'$slib_script'
+  slib_script='$slib_script'
 !endif
 !if $slib_script_file!=
   slib_script_file=jmolScriptWait('script $slib_script_file;');
 !endif
 
-!set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script>\
+!set slib_out=$slib_initout\
 <script type="text/javascript">\
-/*<![CDATA[*/\
-      jmolInitialize('$slib_appletdir','JmolApplet.jar');\
-      jmolSetAppletColor('$slib_color');\
-   var jscr='load $slib_file;';\
-    jscr= jscr +'selectionhalos on;select none;set picking off; set frank on;$slib_DisablePopupMenu $slib_hover';\
-    jscr=jscr $slib_script;\
-    jmolApplet([$slib_xsize,$slib_ysize],jscr);\
-    $slib_script_file\
+/*<![CDATA[*/
+!if $dollar==1
+    !set slib_out=$slib_out\
+var jscr$slib_id='set loadFormat "http://cactus.nci.nih.gov/chemical/structure/%FILE/file?format=sdf&get3d=True";load =$slib_file;';
+!else
+    !set slib_out=$slib_out\
+var jscr$slib_id='load $slib_file;';
+!endif
+    !set slib_out=$slib_out\
+    jscr$slib_id= jscr$slib_id +'selectionhalos on;select none;set picking off; set frank on;$slib_DisablePopupMenu $slib_hover';\
+var $slib_target ; \
+var Info$slib_id = {\
+	width: $slib_xsize,\
+	height: $slib_ysize,\
+	debug: false,\
+	color: "$slib_color",\
+	addSelectionOptions: false,\
+	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/jsmol.php",\
+	use: "$slib_type",\
+	j2sPath: "$slib_appletdir/j2s",\
+	jarPath: "$slib_appletdir",\
+	jarFile: "JmolAppletSigned.jar",\
+	isSigned: true,\
+	memoryLimit: 512,\
+	readyFunction: jmol_isReady,\
+	script: jscr$slib_id,\
+	disableJ2SLoadMonitor: false,\
+  disableInitialConsole: true\
+};\
+\
+$slib_target = Jmol.getApplet("$slib_target", Info$slib_id);
+!if $slib_script!=$empty
+ !set slib_out=$slib_out\
+ Jmol.script($slib_target,$slib_script);
+!endif
+!set slib_out=$slib_out\
+\
 /*]]>*/\
 </script>

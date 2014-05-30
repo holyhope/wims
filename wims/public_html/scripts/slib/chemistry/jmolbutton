@@ -1,8 +1,14 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-
-slib_author=Yves, Noël; Bernadette, Perrin-Riou
+slib_title=Button in Jmol
+slib_parms=3\
+,Jmol script\
+OK,text\
+,id (optional)
+slib_author=Yves Noël et Bernadette Perrin-Riou
+slib_out=applet code for inserting jmol button
+slib_comment=
 
 slib_example=select all;color atoms blue; select none,Bleu
 !exit
@@ -10,12 +16,9 @@ slib_example=select all;color atoms blue; select none,Bleu
 :proc
 !distribute items $wims_read_parm into slib_script,slib_text,slib_id
 !default slib_text=OK
+!default slib_id=0
 
-!if $slib_id!=
-  slib_id=,'$slib_id'
-!endif
-slib_out=<script type="text/javascript">\
-/*<![CDATA[*/\
-    jmolButton('$slib_script','$slib_text'$slib_id);\
-/*]]>*/\
+slib_id=jmolApplet_$slib_id
+slib_out=<script language="javascript" type="text/javascript">\
+    Jmol.jmolButton($slib_id,'$slib_script','$slib_text','$slib_id');\
 </script>

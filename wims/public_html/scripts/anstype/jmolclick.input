@@ -1,12 +1,17 @@
 !set ans_require=jmol
-!reset nbsel, appletdir,nosel,Inputsize
+!reset nbsel, appletdir,nosel,Inputsize,appletType
 !read lang/jmolclick.phtml.$lang
 
+!set appletType=!getopt type in $(replyoption$i)
+!set jmol_targ=!getopt target in $(replyoption$i)
 !set appletdir=!getopt applet in $(replyoption$i)
 !if $appletdir issametext imagedir
   !set appletdir=$imagedir
 !endif
+!default appletType=HTML5
 !default appletdir=java/jmol
+!default jmol_targ=0
+!set jmol_target=jmolApplet_$jmol_targ
 !set anstype=yes
 !set anstyle=dprompt
 !set oef_js_submit=finalise()
@@ -16,14 +21,12 @@
 !!########################
 !!########################
 
-
 !set nbsel=!getopt nb_select in $(replyoption$i)
 
 !!############################
 
 !default nbsel=0
 !!#### pas de message d'erreur si nbsel=0
-
 !set nosel=!getopt noselect in $(replyoption$i)
 !set nosel=!replace internal $	$ by = in $nosel
 !default nosel=(none)
@@ -76,6 +79,7 @@ $ in $inputsize
 !default Inputsize=400,400
 
 !for j=0 to 2
+ !set ans_sc$j=!trim  $(ans_sc$j)
   !if .spt__  isin $(ans_sc$j)__ and __data isin __$(ans_sc$j)
     !set temp=!record 0 of $(ans_sc$j)
     !set file0=!replace internal / by , in $(ans_sc$j)
@@ -122,8 +126,10 @@ $ by ||| in $Rg
   !set red=red
 !endif
 <input type="hidden" name="reply$i" id="Clickjmolreply" value="" />
-<script type="text/javascript" src="$appletdir/Jmol.js"></script>
-
+!if $jmol_targ=0
+<script type="text/javascript" src="$appletdir/JSmol.min.js"></script>
+<script type="text/javascript" src="$appletdir/Jmol2.js"></script>
+!endif
 <script type="text/javascript">
 /*<![CDATA[*/
 function finalise(){
@@ -134,15 +140,15 @@ var selbad='';
  var  nbselected=0;
  var ch=analysesel();
  if(ch!=''){
-  jmolScriptWait('select '+ch+' ;');
-  var nbselected = jmolGetPropertyAsArray('AtomInfo',ch).length;
+ // jmolScriptWait('select '+ch+' ;');
+  Jmol.script($jmol_target,'select '+ch+' ;');
+  var nbselected = Jmol.getPropertyAsArray($jmol_target,'AtomInfo',ch).length;
   var tabrep=new Array()
 tab_rg= new Array($rg);
 //alert(tab_rg.join()+'     '+ch)
 for(irep=0;irep<tab_rg.length;irep++){
   tabrep=analyserep(ch,tab_rg[irep],'$nbsel');
   if(score<=tabrep[3]){
-//alert(tabrep.join())
    selgood=tabrep[0];
    selbad=tabrep[1];
    selforget=tabrep[2];
@@ -153,7 +159,7 @@ for(irep=0;irep<tab_rg.length;irep++){
 }
   sc_in_out=affich_rep(selgood,selbad,selforget);
 
-  var orient=jmolSaveOrientation()
+  var orient=Jmol.saveOrientation($jmol_target)
   orient=orient.replace(/1\.0/,"0")
   document.getElementById('Clickjmolreply').value=score+'\n'+ feedback +'\n'+sc_in_out+'\n'+orient;
   //alert (document.getElementById('Clickjmolreply').value) ;
@@ -178,13 +184,13 @@ for(irep=0;irep<tab_rg.length;irep++){
 }
 
 function analyse(inout,nbsel) {
- var atingood = jmolGetPropertyAsArray('AtomInfo',inout[0]);
- var atoutgood = jmolGetPropertyAsArray('AtomInfo',inout[0]);
+ var atingood = Jmol.getPropertyAsArray($jmol_target,'AtomInfo',inout[0]);
+ var atoutgood = Jmol.getPropertyAsArray($jmol_target,'AtomInfo',inout[0]);
 
 }
 
 function analysesel(arg,arg2) {
- var atsel = jmolGetPropertyAsArray('AtomInfo','((selected) and not ($nosel))');
+ var atsel = Jmol.getPropertyAsArray($jmol_target,'AtomInfo','((selected) and not ($nosel))');
  if(atsel.length>0){
   var chaine='({'+atsel[0]._ipt;
   for(at=1;at<atsel.length;at++){
@@ -198,17 +204,17 @@ function analysesel(arg,arg2) {
 }
 
 function analyserep(repetu,repgood,nbsel){
- yy=jmolScriptWait('print ('+repgood+')');
+ yy=Jmol.scriptWait($jmol_target,'print ('+repgood+')');
  var tyy=new Array()
  tyy=yy.split(",");
  repgood2=tyy[tyy.length-1];
  if(repgood2.substr(0,2)=="({"){repgood=repgood2.substr(0,repgood2.length-1)}
  var atominfo=new Array()
- atomgood=jmolGetPropertyAsArray("atominfo", repgood);
- atometu=jmolGetPropertyAsArray("atominfo", repetu);
- atom_good=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND ("+repetu+"))");
- atom_bad=jmolGetPropertyAsArray("atominfo", "(("+repetu+") AND (NOT ("+repgood+")))");
- atom_forget=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND (NOT ("+repetu+")))");
+ atomgood=Jmol.getPropertyAsArray($jmol_target,"atominfo", repgood);
+ atometu=Jmol.getPropertyAsArray($jmol_target,"atominfo", repetu);
+ atom_good=Jmol.getPropertyAsArray($jmol_target,"atominfo", "(("+repgood+") AND ("+repetu+"))");
+ atom_bad=Jmol.getPropertyAsArray($jmol_target,"atominfo", "(("+repetu+") AND (NOT ("+repgood+")))");
+ atom_forget=Jmol.getPropertyAsArray($jmol_target,"atominfo", "(("+repgood+") AND (NOT ("+repetu+")))");
 natgood=atomgood.length;
 if ($nbsel>0) { natgood=nbsel}
 nat_good=atom_good.length;
@@ -260,33 +266,67 @@ function affich_rep(selgood,selbad,selforget){
 </script>
 
 !if $ans_file0!=$empty
-   !set ans_0=jmolScriptWait('script $ans_file0;');
+   !set ans_sc0=script "$ans_file0";
 !endif
 !if $ans_file1!=$empty
-   !set ans_1=jmolScriptWait('script $ans_file1;');
+   !set ans_sc1=script "$ans_file1";
 !endif
+
+!set oef_applet_option=$Inputsize\
+$file\
+$ans_sc0\
+$ans_sc2
+   !if __@ isin __$file
+   !set file=!char 2 to -1 of $file
+   !set dollar=1
+   !set appletType=HTML5
+   !endif
 <script type="text/javascript">
 /*<![CDATA[*/
-      jmolInitialize('$appletdir','JmolApplet.jar');
-      jmolSetAppletColor('white');
-      jmolSetCallback("PickCallback", 'jmolscript:pic={atomIndex = _atomPicked}; if(pic.selected==1){select selected and not pic and not {$nosel}}else{select selected or ( pic and not {$nosel})};message "";')
-
+function mycallback(){
+Jmol.script($jmol_target,'pic={atomIndex = _atomPicked}; if(pic.selected==1){select selected and not pic and not {$nosel}}else{select selected or ( pic and not {$nosel})};message "";')
+}
+var s = document.location.search;
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " is ready")
+}
+var Info = {
+	width: $xsize,
+	height: $ysize,
+	debug: false,
+	color: "white",
+	addSelectionOptions: false,
+	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/jsmol.php",
+	use: "$appletType",
+	j2sPath: "$appletdir/j2s",
+	jarPath: "$appletdir",
+	jarFile: "JmolApplet.jar",
+	isSigned: false,
+	memoryLimit: 512,
+	readyFunction: jmol_isReady,
+	disableJ2SLoadMonitor: false,
+  disableInitialConsole: true
+}
+Jmol.getApplet("$jmol_target", Info)
 var sc0='$ans_sc0';
 var sc1='$ans_sc1';
+!if $dollar==1
+ var jscr='set loadFormat "http://cactus.nci.nih.gov/chemical/structure/%FILE/file?format=sdf&get3d=True";load =$file;';
+!else
 var jscr='load $file;';
+!endif
     jscr= jscr +'selectionhalos on;select none; color selectionHalos blue;';
-    jscr= jscr +'set frank on;set DisablePopupMenu TRUE; hover off; \n';
-    jscr= jscr +'set picking;\n';
+    jscr= jscr +'set antialiasdisplay on; \n';
+    jscr= jscr +'set frank on;set DisablePopupMenu TRUE;hover off; \n';
+    jscr= jscr +'set picking;console off;\n';
+    jscr= jscr +'set pickcallback "mycallback";\n';
     jscr= jscr +'function getnosel(){\n';
-    jscr= jscr +' varnosel={$nosel};\n'
-    jscr= jscr +' return @varnosel ;\n'
+    jscr= jscr +' varnosel={$nosel};\n';
+    jscr= jscr +' return @varnosel ;\n';
     jscr= jscr +'}\n';
-var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
-    $ans_0
-    $ans_1
+    jscr= jscr + sc0;
+    jscr= jscr + sc1;
+Jmol.script($jmol_target,jscr);
 /*]]>*/
 </script>
-
 !!#####
-
-
