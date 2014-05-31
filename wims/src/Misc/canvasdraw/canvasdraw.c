@@ -127,7 +127,7 @@ int main(int argc, char *argv[]){
     int js_function[MAX_JS_FUNCTIONS]; /* javascript functions include objects on demand basis : only once per object type */
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
     int arrow_head = 8; /* size in px*/
-    int crosshair_size = 10; /* size in px*/
+    int crosshair_size = 5; /* size in px*/
     int plot_steps = 250; 
     int found_size_command = 0;
     int click_cnt = 1;
@@ -1260,25 +1260,33 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @trace_jsmath some_javascript_math_function
 	 @will use a crosshair to trace the jsmath curve
 	 @two inputfields will display the current x/y-values (approximated)
+	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
 	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
 	 @example: trace_jsmath Math.pow(x,2)+4*x+16
 	 @example: trace_jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
 	 @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	 @can not be combined with commands 'mouse color,fontsize' and 'intooltip tip_text'
 	*/
-	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
-	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
 	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
+	    if(use_tooltip == TRUE){canvas_error("trace_jsmath can not be combined with command 'tooltip':it uses the same 'tooltip div' placeholeder");};
 	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
-
+	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
 	    break;
 	case JSMATH:
 	/*
 	    @jsmath some_javascript_math_function
 	    @will calculate an y-value from a userinput x-value and draws a crosshairs on these coordinates.
+	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
 	    @example: jsmath Math.pow(x,2)+4*x+16
 	    @example: jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
 	    @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	    @can not be combined with commands 'mouse color,fontsize' and 'intooltip tip_text'
 	*/
+	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
+	    if(use_tooltip == TRUE){canvas_error("trace_jsmath can not be combined with command 'tooltip':it uses the same 'tooltip div' placeholeder");};
+	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
 	    break;
