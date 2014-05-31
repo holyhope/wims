@@ -1771,6 +1771,7 @@ var update_button = document.getElementById(\"update_button\");\
 update_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"userinput_x\").value;\
 var y_value = eval_jsmath(x_value);\
 document.getElementById(\"userinput_y\").value = y_value;\
+if(isNaN(y_value)){return;};\
 var canvas = create_canvas%d(123,xsize,ysize);\
 var ctx = canvas.getContext(\"2d\");\
 draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;},false);\n",jsmath,canvas_root_id,canvas_root_id);
@@ -1788,18 +1789,20 @@ function use_mouse_coordinates(){\
  if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
  var trace_canvas = create_canvas%d(%d,xsize,ysize);\
  var trace_context = trace_canvas.getContext(\"2d\");\
- var canvas_rect = (trace_canvas).getBoundingClientRect();\
  var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  userinput_xy_div.innerHTML=\"<span>\"+label_x+\" : <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
  trace_canvas.addEventListener(\"mousemove\",trace%d,false);\
  trace_canvas.addEventListener(\"touchmove\",trace%d,false);\
- function eval_jsmath(x){var y = eval(%s);return y};\
+ function eval_jsmath(x){ return eval(%s); };\
  function trace%d(evt){\
-  var x = px2x(evt.clientX - canvas_rect.left);\
+  var canvas_rect = (trace_canvas).getBoundingClientRect();\
+  var x_px = evt.clientX - canvas_rect.left;\
+  var x = px2x(x_px);\
   var y = eval_jsmath(x);\
   if(isNaN(y)){return;};\
+  var y_px = y2px(y);\
   trace_context.clearRect(0,0,xsize,ysize);\
-  draw_crosshairs(trace_context,[x2px(x)],[y2px(y)],%d,%d,\"%s\",%f,0,0,0,[0,0]);\
+  draw_crosshairs(trace_context,[x_px],[y_px],%d,%d,\"%s\",%f,0,0,0,[0,0]);\
   document.getElementById(\"userinput_x\").value = x;\
   document.getElementById(\"userinput_y\").value = y;\
  };\
