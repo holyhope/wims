@@ -95,7 +95,18 @@
      <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])" type="color" />
   !next col
    </div>
-!!debug $(class_scorecolor)
+   <div class="field box">
+     <label for="">$name_coloract</label>
+     <br />
+ !set actcolor_list=color,sheet,exam,doc,vote
+ !set name_actcolor=$name_act_color,$name_sheetss,$name_exam, $wims_name_docs,$name_vote
+ !set actcolor_cnt=!itemcnt $actcolor_list
+ !default class_actcolor=#000000,#CCCCFF,#99CCFF,#9999FF,#6666FF
+  !for col=1 to $actcolor_cnt
+   $(name_actcolor[$col])
+     <input size="5" name="pr_actcolor$col" value="$(class_actcolor[$col])" type="color" />
+  !next col
+   </div>
    <div class="field box halfwidth">
      <label for="pr_theme">$name_theme</label>
 !set wims_ref_class=wims_button_help float_right

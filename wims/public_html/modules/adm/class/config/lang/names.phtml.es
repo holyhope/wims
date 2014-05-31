@@ -17,6 +17,7 @@ name_sheets
 	name_user,name_seq,name_livret,name_competence,name_vote,\
 	name_cdt,name_sup,name_forum,name_forum_mesg
 
+!set name_act_color=Text color
 !distribute item mensajes del día,\
 	ejercicios,hojas de trabajo,exámenes,documentos,participantes\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
@@ -509,10 +510,13 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Color de fondo de los botones de ayuda \
    Color del texto en los botones de ayuda \
    Connection link\
+   Text color\
+   Colors in the presentation of activities\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
-   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,\
+   name_button_help_color,name_connectlink,name_act_color,name_coloract
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
 <br />(lorsque <span class="tt wims_code_words">$name_css</span>  est sur <span class="tt wims_code_words">class</span>)&nbsp;:

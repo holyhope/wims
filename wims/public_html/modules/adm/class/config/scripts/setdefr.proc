@@ -10,6 +10,14 @@ pr_sccolor=$empty
  pr_sccolor=$pr_sccolor,$tmp
 !next ttt
 pr_sccolor=!item 2 to -1 of $pr_sccolor
+pr_actcolor=$empty
+actcolor=#000,#CCF,#9CF,#99F,#66F
+!for ttt=1 to 5
+  tmp=!word 1 of $(pr_actcolor$ttt)
+  tmp=!item 1 of $tmp
+  !default tmp=$(actcolor[$ttt])
+  pr_actcolor=!append item $tmp to $pr_actcolor
+!next ttt
 !setdef !set class_logo=$pr_logo\
 !set class_logoside=$pr_logoside\
 !set class_homepage=$pr_homepage\
@@ -25,6 +33,7 @@ pr_sccolor=!item 2 to -1 of $pr_sccolor
 !set class_theme_icon=$pr_theme_icon\
 !set class_css=$pr_css\
 !set class_scorecolor=$pr_sccolor\
+!set class_actcolor=$pr_actcolor\
 in wimshome/log/classes/$wims_class/.def
 pr_cssfile=!trim $pr_cssfile
 !writefile wimshome/log/classes/$wims_class/css $pr_cssfile
