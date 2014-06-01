@@ -139,6 +139,7 @@
 #define LEVELCURVE	143
 #define JSMATH		144
 #define TRACE_JSMATH	145
+#define SETLIMITS	146
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

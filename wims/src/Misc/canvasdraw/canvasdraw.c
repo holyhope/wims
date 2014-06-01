@@ -2004,6 +2004,18 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    precision = (int) (get_real(infile,1));
 	    break;
+	case SETLIMITS:
+	/*
+	    @setlimits 
+	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
+	    @may be used for inputfield based zooming / panning
+	    @note:the input value will not be checked on validity 
+	*/
+	    add_setlimits(js_include_file,canvas_root_id);
+	    /* add_setlimits provides 'fprintf(js_include_file,"use_pan_and_zoom = 1;");' */
+	    use_pan_and_zoom = TRUE;
+	    done = TRUE;
+	    break;
 	case ZOOM:
 	/*
 	 @ zoom button_color
@@ -6131,6 +6143,7 @@ int get_token(FILE *infile){
 	*usertextarea_xy="usertextarea_xy",
 	*jsmath="jsmath",
 	*trace_jsmath="trace_jsmath",
+	*setlimits="setlimits",
 	*sgraph="sgraph";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -6771,6 +6784,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, trace_jsmath) == 0 ){
 	free(input_type);
 	return TRACE_JSMATH;
+	}
+	if( strcmp(input_type, setlimits) == 0 ){
+	free(input_type);
+	return SETLIMITS;
 	}
 	free(input_type);
 	ungetc(c,infile);

@@ -1,5 +1,6 @@
 void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id);
 void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size);
+void add_setlimits(FILE *js_include_file, int canvas_root_id);
 
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
@@ -1827,7 +1828,25 @@ update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;}
 delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
 }
 
+/*
 
+*/
+void add_setlimits(FILE *js_include_file, int canvas_root_id){
+fprintf(js_include_file,"\n<!-- begin add_setlimits -->\n\
+use_pan_and_zoom = 1;\n\
+var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
+userinput_xy_div.innerHTML= \"<span>xmin = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> xmax = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />ymin = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> ymax = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
+var setlimit_button = document.getElementById(\"set_limits\");\
+function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};\
+function set_limits(e){\
+xmin = safe_eval(document.getElementById('userinput_xmin').value);\
+xmax = safe_eval(document.getElementById('userinput_xmax').value);\
+ymin = safe_eval(document.getElementById('userinput_ymin').value);\
+ymax = safe_eval(document.getElementById('userinput_ymax').value);\
+if(xmin > xmax || ymin > ymax){alert(\"your limits are not correct...\");return;}\
+try{start_canvas%d(1234)}catch(e){};try{dragstuff.Zoom(xmin,xmax,ymin,ymax)}catch(e){};return;};\
+setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false);",canvas_root_id,canvas_root_id);
+}
 /* 
 adds 2 inputfields (x:y) and 'ok' | 'nok' button 
 these are used for user drawing with inputfields...
