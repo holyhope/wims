@@ -15,11 +15,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* type=1: user. type=2: module. type=3: internal. */
+/* type=1: user. type=2: module. type=3: internal. */
 void _error(char *msg, int type)
 {
     fprintf(stderr,"%s\n",msg);
-    exit(type);    
+    exit(type);
 }
 
 void _error1(char *msg) {_error(msg,1);}
@@ -29,4 +29,3 @@ void _error3(char *msg) {_error(msg,1);}
 void (*error1) (char *msg)=_error1;
 void (*error2) (char *msg)=_error2;
 void (*error3) (char *msg)=_error3;
-

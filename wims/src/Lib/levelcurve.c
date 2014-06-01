@@ -41,7 +41,7 @@ static int _getlevel(leveldata *ld, int x, int y)
 {
     double dd;
     int i;
-    
+
     eval_setval(ld->xevpos,lc_scalex(ld,x));
     eval_setval(ld->yevpos,lc_scaley(ld,y));
     set_evalue_error(0); set_evalue_pointer(ld->fn); dd=_evalue(10);
@@ -53,16 +53,16 @@ static void lc_replacexy(leveldata *ld)
 {
     char *pp;
     for(pp=varchr(ld->fn,ld->xname);pp!=NULL;pp=varchr(pp,ld->xname)) {
-	string_modify(ld->fn,pp,pp+strlen(ld->xname),EV_X);
-	pp+=strlen(EV_X);
+      string_modify(ld->fn,pp,pp+strlen(ld->xname),EV_X);
+      pp+=strlen(EV_X);
     }
     for(pp=varchr(ld->fn,ld->yname);pp!=NULL;pp=varchr(pp,ld->yname)) {
-	string_modify(ld->fn,pp,pp+strlen(ld->yname),EV_Y);
-	pp+=strlen(EV_Y);
+      string_modify(ld->fn,pp,pp+strlen(ld->yname),EV_Y);
+      pp+=strlen(EV_Y);
     }
 }
 
-	/* produces level curve data. Returns non-zero if error. */
+/* produces level curve data. Returns non-zero if error. */
 int levelcurve(leveldata *ld)
 {
     int xx,yy,xi,yi,xsteps,ysteps;
@@ -70,7 +70,7 @@ int levelcurve(leveldata *ld)
     short int l1[LEVELSIZE_LIM+16], l2[LEVELSIZE_LIM+16];
     short int l3[LEVELGRAIN_LIM+2][LEVELGRAIN_LIM+2];
     char f[MAX_LINELEN+1];
-    
+
     ld->datacnt=0;
     if(ld->fn==NULL || *(ld->fn)==0 || ld->levelcnt<1) return 1;
     if(ld->grain<1) ld->grain=4;
@@ -93,33 +93,33 @@ int levelcurve(leveldata *ld)
     for(yy=yi=0;yi<ysteps;yy+=ld->grain,yi++) l2[yi]=_getlevel(ld,0,yy);
     l2[ysteps]=l2[ysteps-1];
     for(xi=1,xx=ld->grain;xi<xsteps && ld->datacnt<LEVELPOINT_LIM;xx+=ld->grain,xi++) {
-	memmove(l1,l2,(ysteps+1)*sizeof(short int));
-	for(yi=yy=0;yi<ysteps;yy+=ld->grain,yi++) l2[yi]=_getlevel(ld,xx,yy);
-	l2[ysteps]=l2[ysteps-1];
-	for(yi=0;yi<ysteps && ld->datacnt<LEVELPOINT_LIM;yi++)
-	  if(l1[yi]!=l1[yi+1] || l1[yi]!=l2[yi] || l1[yi]!=l2[yi+1]) {
-	      for(x=0,xt=(xi-1)*ld->grain;x<=ld->grain;x++,xt++)
-		for(y=0,yt=yi*ld->grain;y<=ld->grain;y++,yt++) {
-		    if(x==0 && y==0) {l3[x][y]=l1[yi]; continue;}
-		    if(x==0 && y==ld->grain) {l3[x][y]=l1[yi+1]; continue;}
-		    if(x==ld->grain && y==0) {l3[x][y]=l2[yi]; continue;}
-		    if(x==ld->grain && y==ld->grain) {l3[x][y]=l2[yi+1]; continue;}
-		    l3[x][y]=_getlevel(ld,xt,yt);
-		}
-	      for(x=0,xt=(xi-1)*ld->grain;x<ld->grain;x++,xt++)
-		for(y=0,yt=yi*ld->grain;y<ld->grain;y++,yt++) {
-		    i=l3[x][y];
-		    if((i!=l3[x][y+1] || i!=l3[x+1][y]) && 
-		       ld->datacnt<LEVELPOINT_LIM && 
-		       (i!=l3[x][y+1] || ld->datacnt==0 ||
-			l3[x+1][y+1]==l3[x+1][y] ||
-			ld->xdata[ld->datacnt-1]!=xt ||
-			ld->ydata[ld->datacnt-1]!=yt-1)) {
-			ld->xdata[ld->datacnt]=xt;
-			ld->ydata[ld->datacnt++]=yt;
-		    }
-		}
-	  }
+      memmove(l1,l2,(ysteps+1)*sizeof(short int));
+      for(yi=yy=0;yi<ysteps;yy+=ld->grain,yi++) l2[yi]=_getlevel(ld,xx,yy);
+      l2[ysteps]=l2[ysteps-1];
+      for(yi=0;yi<ysteps && ld->datacnt<LEVELPOINT_LIM;yi++)
+        if(l1[yi]!=l1[yi+1] || l1[yi]!=l2[yi] || l1[yi]!=l2[yi+1]) {
+            for(x=0,xt=(xi-1)*ld->grain;x<=ld->grain;x++,xt++)
+            for(y=0,yt=yi*ld->grain;y<=ld->grain;y++,yt++) {
+                if(x==0 && y==0) {l3[x][y]=l1[yi]; continue;}
+                if(x==0 && y==ld->grain) {l3[x][y]=l1[yi+1]; continue;}
+                if(x==ld->grain && y==0) {l3[x][y]=l2[yi]; continue;}
+                if(x==ld->grain && y==ld->grain) {l3[x][y]=l2[yi+1]; continue;}
+                l3[x][y]=_getlevel(ld,xt,yt);
+            }
+            for(x=0,xt=(xi-1)*ld->grain;x<ld->grain;x++,xt++)
+            for(y=0,yt=yi*ld->grain;y<ld->grain;y++,yt++) {
+                i=l3[x][y];
+                if((i!=l3[x][y+1] || i!=l3[x+1][y]) &&
+                   ld->datacnt<LEVELPOINT_LIM &&
+                   (i!=l3[x][y+1] || ld->datacnt==0 ||
+                  l3[x+1][y+1]==l3[x+1][y] ||
+                  ld->xdata[ld->datacnt-1]!=xt ||
+                  ld->ydata[ld->datacnt-1]!=yt-1)) {
+                  ld->xdata[ld->datacnt]=xt;
+                  ld->ydata[ld->datacnt++]=yt;
+                }
+            }
+        }
     }
     return 0;
 }

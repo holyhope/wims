@@ -15,9 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* directory manipulation routines. */
+/* directory manipulation routines. */
 
-	/* remove a tree */
+/* remove a tree */
 int remove_tree(char *dirname)
 {
     DIR *sdir;
@@ -26,34 +26,34 @@ int remove_tree(char *dirname)
 
     sdir=opendir(dirname);
     if(sdir==NULL) {   /* Cannot open session directory. */
-	return -1;
+      return -1;
     }
     while((f=readdir(sdir))!=NULL) {
-	char fname[MAX_LINELEN+1];
-	if(strcmp(".",f->d_name)==0 || strcmp("..",f->d_name)==0) continue;
-	snprintf(fname,sizeof(fname),"%s/%s",dirname,f->d_name);
-	if(lstat(fname,&dst)) continue;
-	if(S_ISDIR(dst.st_mode)) remove_tree(fname);
-	else remove(fname);
+      char fname[MAX_LINELEN+1];
+      if(strcmp(".",f->d_name)==0 || strcmp("..",f->d_name)==0) continue;
+      snprintf(fname,sizeof(fname),"%s/%s",dirname,f->d_name);
+      if(lstat(fname,&dst)) continue;
+      if(S_ISDIR(dst.st_mode)) remove_tree(fname);
+      else remove(fname);
     }
     closedir(sdir);
-    if(rmdir(dirname)<0) {	/* Cannot remove directory. */
-	return -1;
+    if(rmdir(dirname)<0) { /* Cannot remove directory. */
+      return -1;
     }
     return 0;
 }
 
-	/* recursively generate a directory structure */
+/* recursively generate a directory structure */
 void mkdirs(char *s)
 {
     struct stat st;
     if(stat(s,&st)==-1) {
-	if(strrchr(s,'/')!=NULL) {
-	    char buf[MAX_FNAME+1];
-	    mystrncpy(buf,s,sizeof(buf));
-	    *strrchr(buf,'/')=0; mkdirs(buf);
-	}
-	mkdir(s,S_IRWXU|S_IRWXG|S_IRWXO);
+      if(strrchr(s,'/')!=NULL) {
+          char buf[MAX_FNAME+1];
+          mystrncpy(buf,s,sizeof(buf));
+          *strrchr(buf,'/')=0; mkdirs(buf);
+      }
+      mkdir(s,S_IRWXU|S_IRWXG|S_IRWXO);
     }
 }
 
