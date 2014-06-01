@@ -92,7 +92,7 @@ void referer_log(void)
     r=strchr(refstr,'#'); if(r!=NULL) *r=0;
     for(r=refstr;r<refstr+strlen(refstr);r++) {
       if(*r=='%' && *(r+1)=='7' && *(r+2)=='E') {
-        *r='~'; strcpy(r+1,r+3);
+        *r='~'; ovlstrcpy(r+1,r+3);
       }
     }
     snprintf(tmplbuf,sizeof(tmplbuf),"%s %s %s\11%s",

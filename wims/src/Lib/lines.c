@@ -700,7 +700,7 @@ void reaccent(char *p)
       sp--; ap=strchr(reaccentl,*sp); if(ap==NULL) {sp++; continue;}
       k=ap-reaccentl;
       c=reaccentab[k*strlen(reaccents)+i];
-      if(c!=*sp) {*sp=c; strcpy(sp+1,sp+2);}
+      if(c!=*sp) {*sp=c; ovlstrcpy(sp+1,sp+2);}
       else sp++;
     }
 }
