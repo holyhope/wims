@@ -133,7 +133,6 @@ int main(int argc, char *argv[]){
     int click_cnt = 1;
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
-    int use_mouse_coordinates = FALSE;
     double angle = 0.0;
     int translate_x = 0;
     int translate_y = 0;
@@ -1267,9 +1266,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	 @can not be combined with commands 'mouse color,fontsize' and 'intooltip tip_text'
 	*/
-	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
-	    if(use_tooltip == TRUE){canvas_error("trace_jsmath can not be combined with command 'tooltip':it uses the same 'tooltip div' placeholeder");};
-	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
@@ -1284,9 +1280,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	    @can not be combined with commands 'mouse color,fontsize' and 'intooltip tip_text'
 	*/
-	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
-	    if(use_tooltip == TRUE){canvas_error("trace_jsmath can not be combined with command 'tooltip':it uses the same 'tooltip div' placeholeder");};
-	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
 	    break;
@@ -2085,10 +2078,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ mouse color,fontsize
 	 @ will display the cursor coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
 	*/
-	    if(use_mouse_coordinates == TRUE){canvas_error("trace_jsmath can not be combined with command 'mouse'");}
-	    use_mouse_coordinates = TRUE; /* will add & call function "use_mouse_coordinates(){}" in current_canvas /current_context */
 	    stroke_color = get_color(infile,0);
 	    font_size = (int) (get_real(infile,1));
+	    tmp_buffer = my_newmem(26);
+	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
 	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity);
 	    break;
 	case INTOOLTIP:
@@ -2749,11 +2742,6 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
   if( reply_format > 0 ){ add_read_canvas(reply_format);}
-  /* using mouse coordinate display ? */
-  if( use_mouse_coordinates == TRUE ){
-    tmp_buffer = my_newmem(26);
-    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
-  }
   if( use_pan_and_zoom == TRUE ){
   /* in case of zooming ... */
   fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\

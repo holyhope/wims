@@ -1784,14 +1784,17 @@ draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0
 */
 void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size){
 fprintf(js_include_file,"\n<!-- begin command add_trace_js_mouse on trace_canvas -->\n\
-function use_mouse_coordinates(){\
+function use_trace_jsmath(){\
  var label_x = \"x\";var label_y = \"y\";\
  if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
  if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
  var trace_canvas = create_canvas%d(%d,xsize,ysize);\
  var trace_context = trace_canvas.getContext(\"2d\");\
  var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
- userinput_xy_div.innerHTML=\"<span>\"+label_x+\" : <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
+ var trace_div = document.createElement('div');\
+ trace_div.id = \"trace_div\";\
+ userinput_xy_div.appendChild(trace_div);\
+ trace_div.innerHTML = \"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
  trace_canvas.addEventListener(\"mousemove\",trace%d,false);\
  trace_canvas.addEventListener(\"touchmove\",trace%d,false);\
  function eval_jsmath(x){ return eval(%s); };\
@@ -1808,7 +1811,7 @@ function use_mouse_coordinates(){\
   document.getElementById(\"userinput_y\").value = y;\
  };\
  return;\
-};",canvas_root_id,canvas_cnt,canvas_root_id,canvas_root_id,canvas_root_id,jsmath,canvas_root_id,line_width,crosshair_size,stroke_color,stroke_opacity);
+};use_trace_jsmath();",canvas_root_id,canvas_cnt,canvas_root_id,canvas_root_id,canvas_root_id,jsmath,canvas_root_id,line_width,crosshair_size,stroke_color,stroke_opacity);
 }
 
 /* 
@@ -1834,8 +1837,12 @@ delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;
 void add_setlimits(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_setlimits -->\n\
 use_pan_and_zoom = 1;\n\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
-userinput_xy_div.innerHTML= \"<span>xmin = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> xmax = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />ymin = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> ymax = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
+function use_setlimits(){\
+var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var setlim_div = document.createElement('div');\
+setlim_div.id = \"setlim\";\
+userinput_xy_div.appendChild(setlim_div);\
+setlim_div.innerHTML=\"<span>xmin = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> xmax = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />ymin = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> ymax = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
 var setlimit_button = document.getElementById(\"set_limits\");\
 function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};\
 function set_limits(e){\
@@ -1845,7 +1852,8 @@ ymin = safe_eval(document.getElementById('userinput_ymin').value);\
 ymax = safe_eval(document.getElementById('userinput_ymax').value);\
 if(xmin > xmax || ymin > ymax){alert(\"your limits are not correct...\");return;}\
 try{start_canvas%d(1234)}catch(e){};try{dragstuff.Zoom(xmin,xmax,ymin,ymax)}catch(e){};return;};\
-setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false);",canvas_root_id,canvas_root_id);
+setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false);\
+};use_setlimits();",canvas_root_id,canvas_root_id);
 }
 /* 
 adds 2 inputfields (x:y) and 'ok' | 'nok' button 
