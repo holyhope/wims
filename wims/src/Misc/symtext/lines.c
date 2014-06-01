@@ -76,13 +76,18 @@ void _tolinux(char *p)
 
 /* optimized and secure strcpy */
 
-void mystrncpy(char *dest, char *src, int lim)
+/* copies src to dest, at most lim bytes. Error if more than
+   MAX_LINELEN chars would be copied, including final \0. */
+
+void mystrncpy(char *dest, const char *src, size_t lim)
 {
-    int i;
-    i=strlen(src);
-    if(i<0 || (i>=lim && i>=MAX_LINELEN)) error1("cmd_output_too_long");
-    if(i>=lim) i=lim-1;
-    memmove(dest,src,i); dest[i]=0;
+      if (lim)
+      {
+        size_t i = strlen(src);
+        if (i >= lim) i = lim-1;
+        if (i >= MAX_LINELEN) error1("cmd_output_too_long");
+        memmove(dest,src,i); dest[i]=0;
+      }
 }
 
 /* find matching parenthesis.
@@ -690,13 +695,13 @@ void reaccent(char *p)
     int i, k;
     if(*p==0) return;
     for(sp=p+1; *sp; sp++) {
-	ap=strchr(reaccents,*sp); if(ap==NULL) continue;
-	i=ap-reaccents;
-	sp--; ap=strchr(reaccentl,*sp); if(ap==NULL) {sp++; continue;}
-	k=ap-reaccentl;
-	c=reaccentab[k*strlen(reaccents)+i];
-	if(c!=*sp) {*sp=c; ovlstrcpy(sp+1,sp+2);}
-	else sp++;
+      ap=strchr(reaccents,*sp); if(ap==NULL) continue;
+      i=ap-reaccents;
+      sp--; ap=strchr(reaccentl,*sp); if(ap==NULL) {sp++; continue;}
+      k=ap-reaccentl;
+      c=reaccentab[k*strlen(reaccents)+i];
+      if(c!=*sp) {*sp=c; ovlstrcpy(sp+1,sp+2);}
+      else sp++;
     }
 }
 
