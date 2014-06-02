@@ -4,12 +4,12 @@
  !set wims_html_header=!append line $oefcss to $wims_html_header
 !endif
 !!test pour ne charger les javascripts de l'editeur que dans le mode brut et lorsqu'on ne teste pas
-!if $mode=raw and  $oef_test notsametext yes and $level<7 
+!if $mode=raw and  $oef_test notsametext yes and $level<7
  !read header_js.phtml
  !set wims_html_header=!append line $header_js_editor to $wims_html_header
 !endif
 !if $modtoolhelp=yes or ($cmd=help and $special_parm iswordof examples)
- !set wims_show_liste=!makelist wims_show x for x=1 to 3
+ !set wims_show_liste=!makelist wims_show x for x=1 to 5
  !set wims_show_liste=!nospace $wims_show_liste
  !for id in wims_show,$wims_show_liste
    !read js/edit_area.phtml $id wimsoef
@@ -55,7 +55,7 @@
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$modu_lang 
+ !read lang/msg.phtml.$modu_lang
  </div>
  <p>
  !href cmd=reply&level=1 $name_correction.
@@ -82,7 +82,7 @@ normalmode,1,cmd=reply&mode=normal&level=1\
 rawmode,1,cmd=reply&rawinp=yes&level=1\
 filemode,1,cmd=reply&mode=file&level=1\
  to $wims_menu_items
- 
+
 !set wims_menu_items=!append line othermethods,0,$wims_name_othermethods\
 Createqcm,1,module=adm/auth/createqcm\
 Confia2qcm,1,module=adm/auth/confia2qcm\
