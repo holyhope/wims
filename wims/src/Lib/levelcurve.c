@@ -44,7 +44,7 @@ static int _getlevel(leveldata *ld, int x, int y)
 
     eval_setval(ld->xevpos,lc_scalex(ld,x));
     eval_setval(ld->yevpos,lc_scaley(ld,y));
-    set_evalue_error(0); set_evalue_pointer(ld->fn); dd=_evalue(10);
+    dd=checked_eval(ld->fn);
     for(i=0;i<ld->levelcnt && dd>ld->levels[i];i++);
     return i;
 }
@@ -99,15 +99,15 @@ int levelcurve(leveldata *ld)
       for(yi=0;yi<ysteps && ld->datacnt<LEVELPOINT_LIM;yi++)
         if(l1[yi]!=l1[yi+1] || l1[yi]!=l2[yi] || l1[yi]!=l2[yi+1]) {
             for(x=0,xt=(xi-1)*ld->grain;x<=ld->grain;x++,xt++)
-            for(y=0,yt=yi*ld->grain;y<=ld->grain;y++,yt++) {
+              for(y=0,yt=yi*ld->grain;y<=ld->grain;y++,yt++) {
                 if(x==0 && y==0) {l3[x][y]=l1[yi]; continue;}
                 if(x==0 && y==ld->grain) {l3[x][y]=l1[yi+1]; continue;}
                 if(x==ld->grain && y==0) {l3[x][y]=l2[yi]; continue;}
                 if(x==ld->grain && y==ld->grain) {l3[x][y]=l2[yi+1]; continue;}
                 l3[x][y]=_getlevel(ld,xt,yt);
-            }
+              }
             for(x=0,xt=(xi-1)*ld->grain;x<ld->grain;x++,xt++)
-            for(y=0,yt=yi*ld->grain;y<ld->grain;y++,yt++) {
+              for(y=0,yt=yi*ld->grain;y<ld->grain;y++,yt++) {
                 i=l3[x][y];
                 if((i!=l3[x][y+1] || i!=l3[x+1][y]) &&
                    ld->datacnt<LEVELPOINT_LIM &&
@@ -118,7 +118,7 @@ int levelcurve(leveldata *ld)
                   ld->xdata[ld->datacnt]=xt;
                   ld->ydata[ld->datacnt++]=yt;
                 }
-            }
+              }
         }
     }
     return 0;

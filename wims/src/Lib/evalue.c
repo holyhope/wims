@@ -439,6 +439,13 @@ char *_substit(char *p)
 
 char *(*substitute) (char *p)=_substit;
 
+double checked_eval( char* p)
+{
+    set_evalue_error(0);
+    set_evalue_pointer(p);
+    return _evalue(10);
+}
+
 /* evalue a string to double */
 double strevalue(char *p)
 {
@@ -447,11 +454,10 @@ double strevalue(char *p)
     if(p==NULL) return 0;
     mystrncpy(buf,p,sizeof(buf));
     substitute(buf); nospace(buf);
-    if(check_parentheses(buf,0)) return NAN;
-    set_evalue_error(0);
-    set_evalue_pointer(buf);
-    return _evalue(10);
+    if(check_parentheses(buf,0)) {return NAN;}
+    return checked_eval(buf);
 }
+
 
 /* compile an expression for faster evaluation
  * returns -1 if cannot be compiled.
@@ -492,3 +498,93 @@ int evalue_compile(char *p)
   }
   return k;
 }
+
+/* add evaluator (Dominique Bernardi june 2014)
+In addition to the general evaluation functions, there is a simple mean
+to evaluate standard functions with at most four variables
+named "x", "y", "s" and "t". The simplest one is
+
+double eval_simple (char *p, double x, double y, double s, double t);
+
+which does exactly that. In case of multiple evaluation of the same function
+for different values of the variable(s), it is possible to speed up a bit
+the evaluation by "precompiling" the string to be evaluated.
+This precompilation is done by
+
+eval_struct* eval_create (char *p);
+
+which returns a newly allocated pointer to something. One can use
+this pointer in functions like
+
+eval_x, eval_t, eval_x_y
+
+When the struct is no longer useful, one can reclaim the memory it used with
+
+void eval_destroy (eval_struct *q);
+
+*/
+
+void _aux (char *q, char *varn, char *subst, int *v)
+{
+  char *pp;
+  for(pp=varchr(q,varn); pp; pp=varchr(pp,varn))
+    {
+      string_modify(q,pp,pp+strlen(varn),"%s",subst);
+      pp+=strlen(subst);
+    }
+  *v = eval_getpos(subst);
+}
+
+eval_struct * eval_create (char *in_p)
+{
+  eval_struct *p = malloc (sizeof(eval_struct));
+  char *q = malloc(MAX_LINELEN+1);
+  strncpy (q, in_p, MAX_LINELEN);
+  _aux (q, "x", EV_X, &p->x);
+  _aux (q, "y", EV_Y, &p->y);
+  _aux (q, "s", EV_S, &p->s);
+  _aux (q, "t", EV_T, &p->t);
+  evalue_compile(q);
+  p->texte = q;
+  return p;
+}
+
+double eval_multiple (eval_struct *p, double x, double y, double s, double t)
+{
+  eval_setval(p->x,x);
+  eval_setval(p->y,y);
+  eval_setval(p->s,s);
+  eval_setval(p->t,t);
+  return checked_eval(p->texte);
+}
+/* non yet useful
+double eval_simple (char *p, double x, double y, double s, double t)
+{
+  eval_struct *q = eval_create (p);
+  double r = eval (q, x, y, s, t);
+  eval_destroy(q);
+  return r;
+}
+
+*/
+
+double eval_x (eval_struct *p, double x)
+{
+  eval_setval(p->x,x);
+  return checked_eval(p->texte);
+}
+
+double eval_t (eval_struct *p, double t)
+{
+  eval_setval(p->t,t);
+  return checked_eval(p->texte);
+}
+
+double eval_x_y (eval_struct *p, double x, double y)
+{
+  eval_setval(p->x,x);
+  eval_setval(p->y,y);
+  return checked_eval(p->texte);
+}
+
+void eval_destroy(eval_struct *q) {free (q->texte); free (q);}

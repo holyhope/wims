@@ -1555,7 +1555,7 @@ void calc_solve(char *p)
     pp=p; old=0;
     for(v=start; v<=stop; v+=step, old=dd) {
      eval_setval(pos,v);
-     set_evalue_error(0); set_evalue_pointer(buf); dd=_evalue(10);
+     dd=checked_eval(buf);
      if(v==start) continue;
      if(!finite(old) || !finite(dd) || (old>0 && dd>0) || (old<0 && dd<0))
        continue;
@@ -1563,7 +1563,7 @@ void calc_solve(char *p)
      v1=v-step; v2=v; d1=old; d2=dd;
      for(i=0;i<30;i++) {
          v3=(v1+v2)/2; eval_setval(pos,v3);
-         set_evalue_error(0); set_evalue_pointer(buf); d3=_evalue(10);
+         d3=checked_eval(buf);
          if(!finite(d3)) goto next;
          if((d1>0 && d3>0) || (d1<0 && d3<0)) {d1=d3; v1=v3;}
          else {d2=d3; v2=v3;}
@@ -1655,7 +1655,7 @@ void _values(char *p, int type)
      else eval_setval(pos,forstruct.list[i]);
      eval_setval(posr,v0);
      for(k=0; k<fcnt; k++) {
-         set_evalue_error(0); set_evalue_pointer(f[k]); dd=_evalue(10);
+         dd=checked_eval(f[k]);
          switch(type) {
           case 1: { /* values */
               float2str(dd,vbuf);

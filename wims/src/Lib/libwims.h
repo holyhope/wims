@@ -151,13 +151,14 @@ double gcd(double n1, double n2);
 double lcm(double n1, double n2);
 int eval_getpos(char *name);            /* get position of name in nametable */
 void eval_setval(int pos, double v);    /* set value to name */
-void set_evalue_pointer(char *p);       /* prepare pointer for evaluation */
-char *get_evalue_pointer(void);         /* get string pointer (after evaluation) */
-double _evalue(int ord);
-double strevalue(char *p);              /* evalue a string to double */
+/*void set_evalue_pointer(char *p); */      /* prepare pointer for evaluation */
+/* char *get_evalue_pointer(void); */        /* get string pointer (after evaluation) */
+/* double _evalue(int ord);*/
+double strevalue(char *p);              /* evalue a string to double after checking it*/
+double checked_eval (char* p);  /* evalue a string to double */
 char *(*substitute) (char *p);
-int get_evalue_error(void);
-void set_evalue_error(int e);
+/* int get_evalue_error(void);
+void set_evalue_error(int e);*/
 int get_evalcnt(void);
 char *get_evalname(int i);
 int get_evaltype(int i);
@@ -168,6 +169,18 @@ int search_evaltab(char *p);
  * else returns the number of compilations.
  */
 int evalue_compile(char *p);
+typedef struct eval_struct {char *texte; int x; int y; int s; int t;} eval_struct;
+eval_struct * eval_create (char *in_p); /* speed up the evaluation by
+  "precompiling" the string to be evaluated.*/
+/* evaluate standard functions with at most four variables named
+ * "x", "y", "s" and "t"
+ */
+
+double eval_x (eval_struct *p, double x); /* evaluate standard function in x*/
+double eval_t (eval_struct *p, double t); /* evaluate standard function in t*/
+double eval_x_y (eval_struct *p, double x, double y); /* evaluate standard function in x and y*/
+double eval_multiple (eval_struct *p, double x, double y, double s, double t);
+void eval_destroy (eval_struct *q); /* reclaim the memory */
 
 /* math.c */
 char *find_mathvar_start(char *p);  /* Points to the start of a mathematics variable (or number) */
