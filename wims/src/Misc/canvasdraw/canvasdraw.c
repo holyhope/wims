@@ -9,32 +9,11 @@
 * No warrenty whatsoever							*
 *********************************************************************************
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <time.h> /* use for random id's */
-#include <math.h>
-/*
-#include <ctype.h>
-11/2013
-removed: FreeBSD 9.0 / 9.1 C-lib bug...in chroot it will result in: Undefined symbol "_ThreadRuneLocale" implemented own versions of tolower() / toupper()
-Clang is fine (FreeBSD 10.0)
-*/
-
-/*
-in case svgdraw is in ~/src/Misc/svgdraw
-#include "../svgdraw/include/matheval.h"
-*/
-#include "include/matheval.h"
-#include <assert.h>
+#include "../../Lib/libwims.h"
 #include "canvasdraw.h"
-#include<sys/stat.h>
-
-/* needed for gettimeofday */
-#include <sys/time.h>
+#include <assert.h>
 #include "canvasmacro.c"
+
 /******************************************************************************
 **  Internal Functions
 ******************************************************************************/
@@ -2866,7 +2845,7 @@ avoid the use of ctypes.h for tolower() toupper();
 it gives trouble in FreeBSD 9.0 / 9.1 when used in a chroot environment (C library bug) : Undefined symbol "_ThreadRuneLocale"
 Upper case -> Lower case : c = c - 'A'+ 'a';
 Lower case ->  Upper case  c = c + 'A'  - 'a';
-*/
+
 int tolower(int c){
  if(c <= 'Z'){
   if (c >= 'A'){
@@ -2882,7 +2861,7 @@ int toupper(int c){
  }
  return c;
 }
-
+*/
 char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
@@ -3003,11 +2982,11 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     tmp[i]='\0';
     if( strlen(tmp) == 0 ){canvas_error("expected a number , but found nothing !!");}
     if( found_calc == 1 ){ /* use libmatheval to calculate 2*pi/3 */
-     void *f = evaluator_create(tmp);
+     void *f = eval_create(tmp);
      assert(f);if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
-     y = evaluator_evaluate_x(f, 1);
+     y = eval_x(f, 1);
      /* if function is bogus; y = 1 : so no core dumps */
-     evaluator_destroy(f);
+     eval_destroy(f);
     }
     else
     {

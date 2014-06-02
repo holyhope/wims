@@ -6,7 +6,7 @@ canvasdraw_home=$(wims_home)/src/Misc/canvasdraw
 matheval_home=$(canvasdraw_home)/libmatheval-1.1.8
 cc=@CC@
 cflags=-O2 -Wall
-ldflags= -lm -L$(canvasdraw_home)/lib -lmatheval
+ldflags= -lm -L../../Lib -lwims
 STRIP=strip
 public_script=$(wims_home)/public_html/bin/canvasdraw
 all:canvasdraw
@@ -20,7 +20,6 @@ distclean:
 	cd $(matheval_home); make clean; cd $(canvasdraw_home)
 
 canvasdraw:canvasdraw.c canvasdraw.h
-	cd $(matheval_home) && ./configure --prefix=$(canvasdraw_home) --enable-static --disable-shared && make && make install && make clean && cd $(canvasdraw_home)
 	$(cc) $(cflags) canvasdraw.c $(ldflags) -o canvasdraw
 	$(STRIP) canvasdraw
 	chmod a+x canvasdraw

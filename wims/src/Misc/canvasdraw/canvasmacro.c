@@ -1298,7 +1298,7 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     int xstep =(int)(xsize/plotsteps);
     if( xstep == 0 ){xstep = 1;}
     double a = (xmax - xmin)/xsize;
-    f = evaluator_create(fun);
+    f = eval_create(fun);
     assert (f);
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
     /* we supply the true x/y values...draw_curve() will convert these (x:y) to pixels : used for pan/scale */
@@ -1308,7 +1308,7 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     for ( xv = 0 ;xv < xsize ; xv = xv+xstep ){
 	x = (double) (xv*a + xmin);
 	if( i < MAX_BUFFER - 2){
-	    y = evaluator_evaluate_x(f, x);
+	    y = eval_x(f, x);
 	    if(y < lim_ymax && y > lim_ymin ){
 		xydata[i++] = x;
 	    	xydata[i++] = y;
@@ -1319,12 +1319,12 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
 	    canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps or some other means to reduce the amount of data... ");
 	}
     }
-    evaluator_destroy(f);
+    eval_destroy(f);
     return double_xy2js_array(xydata,i,find_number_of_digits(precision));
 }
 /* plot a very primitive (!) levelcurve : not to be compared with "flydraw levelcurve" */
 char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int plotsteps,int precision,double level){
-    void *f = evaluator_create(fun);
+    void *f = eval_create(fun);
     assert (f);
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
     double a = (double)((xmax - xmin)/plotsteps);
@@ -1339,7 +1339,7 @@ char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,doub
     for( x = xmin ;x < xmax ; x = x + a ){
 	for ( y = ymin ;y < ymax ; y = y + b ){
 	    if( i < MAX_BUFFER - 2){
-		diff = level - evaluator_evaluate_x_y(f, x,y);
+		diff = level - eval_x_y(f, x,y);
 		if(diff < 0.1 && diff > -0.1){
 		    xydata[i++] = x;
 		    xydata[i++] = y;
@@ -1351,7 +1351,7 @@ char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,doub
 	    }
 	}
     }
-    evaluator_destroy(f);
+    eval_destroy(f);
     return double_xy2js_array(xydata,i,find_number_of_digits(precision));
 }
 
@@ -1363,13 +1363,11 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     int i = 0;
     double tstep = (tmax-tmin)/plotsteps;
     if( tstep == 0 ){canvas_error("zero step for t variable : reduce plotsteps or inrease trange");}
-    fx = evaluator_create(fun1);
-    fy = evaluator_create(fun2);
+    fx = eval_create(fun1);
+    fy = eval_create(fun2);
     assert(fx);
     assert(fy);
     if( fx == NULL || fy == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
-    char *names[] = { "t" };
-    double values[1];
     /* we supply the true x/y values...draw_curve() will convert these (x:y) to pixels : used for pan/scale */
     double xydata[MAX_BUFFER+1];/* hmmm */
     double x; /* real x-values */
@@ -1378,10 +1376,9 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     int lim_ymax =(int)( ymax + 4*abs(ymax));
     for( t = tmin ;t <= tmax ; t = t + tstep ){
 	if( i < MAX_BUFFER - 2 ){
-	    values[0] = t;
-	    y = evaluator_evaluate(fy, 1, names, values);
+	    y = eval_t(fy, t);
 	    if(y > lim_ymin && y < lim_ymax){
-		x = evaluator_evaluate(fx, 1, names, values);
+		x = eval_t(fx, t);
 	    	xydata[i++] = x;
 		xydata[i++] = y;
 	    }
@@ -1391,8 +1388,8 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
 	    canvas_error("\nYour curve plotting produces too many data \n Use less plotsteps or some other means to reduce the amount of data... ");
 	}
     }
-    evaluator_destroy(fx);
-    evaluator_destroy(fy);
+    eval_destroy(fx);
+    eval_destroy(fy);
     return double_xy2js_array(xydata,i,find_number_of_digits(precision));
 }
 
