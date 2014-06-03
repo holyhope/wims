@@ -2,7 +2,7 @@ function Position(x, y)
 {
   this.X = x;
   this.Y = y;
-  
+
   this.Add = function(val)
   {
     var newPos = new Position(this.X, this.Y);
@@ -15,7 +15,7 @@ function Position(x, y)
     }
     return newPos;
   };
-  
+
   this.Subtract = function(val)
   {
     var newPos = new Position(this.X, this.Y);
@@ -28,41 +28,41 @@ function Position(x, y)
     }
     return newPos;
   };
-  
+
   this.Min = function(val)
   {
     var newPos = new Position(this.X, this.Y);
     if(val === null)
       return newPos;
-    
+
     if(!isNaN(val.X) && this.X > val.X)
       newPos.X = val.X;
     if(!isNaN(val.Y) && this.Y > val.Y)
       newPos.Y = val.Y;
-    
+
     return newPos;
   };
-  
+
   this.Max = function(val)
   {
     var newPos = new Position(this.X, this.Y);
     if(val === null)
       return newPos;
-    
+
     if(!isNaN(val.X) && this.X < val.X)
       newPos.X = val.X;
     if(!isNaN(val.Y) && this.Y < val.Y)
       newPos.Y = val.Y;
-    
+
     return newPos;
   };
-  
+
   this.Bound = function(lower, upper)
   {
     var newPos = this.Max(lower);
     return newPos.Min(upper);
   };
-  
+
   this.Check = function()
   {
     var newPos = new Position(this.X, this.Y);
@@ -72,7 +72,7 @@ function Position(x, y)
       newPos.Y = 0;
     return newPos;
   };
-  
+
   this.Apply = function(element)
   {
     if(typeof(element) == "string")
@@ -145,7 +145,7 @@ function getEventTarget(e)
 function absoluteCursorPostion(eventObj)
 {
   eventObj = eventObj ? eventObj : window.event;
-  
+
   if(isNaN(window.scrollX))
     return new Position(eventObj.clientX + document.documentElement.scrollLeft + document.body.scrollLeft,
       eventObj.clientY + document.documentElement.scrollTop + document.body.scrollTop);
@@ -159,7 +159,7 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     element = document.getElementById(element);
   if(element === null)
       return;
-  
+
   if(lowerBound !== null && upperBound !== null)
   {
     var temp = lowerBound.Min(upperBound);
@@ -172,47 +172,47 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
   var dragging = false;
   var listening = false;
   var disposed = false;
-  
+
   function dragStart(eventObj)
   {
     if(dragging || !listening || disposed) return;
     dragging = true;
-    
+
     if(startCallback !== null)
       startCallback(eventObj, element);
-    
+
     cursorStartPos = absoluteCursorPostion(eventObj);
-    
+
     elementStartPos = new Position(parseInt(element.style.left,10), parseInt(element.style.top,10));
-   
+
     elementStartPos = elementStartPos.Check();
-    
+
     hookEvent(document, "mousemove", dragGo);
     hookEvent(document, "mouseup", dragStopHook);
-    
+
     return cancelEvent(eventObj);
   }
-  
+
   function dragGo(eventObj)
   {
     if(!dragging || disposed) return;
-    
+
     var newPos = absoluteCursorPostion(eventObj);
     newPos = newPos.Add(elementStartPos).Subtract(cursorStartPos);
     newPos = newPos.Bound(lowerBound, upperBound);
     newPos.Apply(element);
     if(moveCallback !== null)
       moveCallback(newPos, element);
-        
+
     return cancelEvent(eventObj);
   }
-  
+
   function dragStopHook(eventObj)
   {
     dragStop();
     return cancelEvent(eventObj);
   }
-  
+
   function dragStop()
   {
     if(!dragging || disposed) return;
@@ -224,7 +224,7 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
       endCallback(element);
     dragging = false;
   }
-  
+
   this.Dispose = function()
   {
     if(disposed) return;
@@ -238,33 +238,33 @@ function dragObject(element, attachElement, lowerBound, upperBound, startCallbac
     endCallback = null;
     disposed = true;
   };
-  
+
   this.StartListening = function()
   {
     if(listening || disposed) return;
     listening = true;
     hookEvent(attachElement, "mousedown", dragStart);
   };
-  
+
   this.StopListening = function(stopCurrentDragging)
   {
     if(!listening || disposed) return;
     unhookEvent(attachElement, "mousedown", dragStart);
     listening = false;
-    
+
     if(stopCurrentDragging && dragging)
       dragStop();
   };
-  
+
   this.IsDragging = function(){ return dragging; };
   this.IsListening = function() { return listening; };
   this.IsDisposed = function() { return disposed; };
-  
+
   if(typeof(attachElement) == "string")
     attachElement = document.getElementById(attachElement);
   if(attachElement === null)
     attachElement = element;
-    
+
   if(!attachLater)
     this.StartListening();
 }

@@ -36,13 +36,13 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_italics_button'
 		});
-		
+
 		this.toolbar.addButton(names["Bold"],function(){
 			this.wrapSelection('<strong>','</strong>');
 		},{
 			id: 'markdown_bold_button'
 		});
-		
+
 		this.toolbar.addButton(names["Link"],function(){
 			var selection = this.getSelection();
 			var response = prompt(names["Enter_Link_URL"],'http://');
@@ -52,7 +52,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_link_external_button'
 		});
-		
+
 		/*this.toolbar.addButton(names["Image"],function(){
 			var selection = this.getSelection();
 			afficherHud('hud_video_intro');
@@ -63,7 +63,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_image_button'
 		});*/
-		
+
 		this.toolbar.addButton(names["Image"],function(){
 			var selection = this.getSelection();
 			//afficherHud('hud_video_intro');
@@ -75,31 +75,31 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_image_button'
 		});
-		
+
 		this.toolbar.addButton(names["Heading"],function(){
-			this.wrapSelection('\n<h2>','</h2>');
+			this.wrapSelection('\n<h2 class="wims_docu">','</h2>');
 		},{
 			id: 'markdown_heading_button'
 		});
-		
+
 		this.toolbar.addButton(names["Unordered_List"],function(){
 			this.wrapSelection('\n<ul>\n <li>','\n </li>\n</ul>');
 		},{
 			id: 'markdown_unordered_list_button'
 		});
-		
+
 		this.toolbar.addButton(names["Ordered_List"],function(){
 			this.wrapSelection('\n<ol>\n <li>','\n </li>\n</ol>');
 		},{
 			id: 'markdown_ordered_list_button'
 		});
-		
+
 		this.toolbar.addButton(names["List_item"],function(){
 			this.wrapSelection('<li>\n','\n </li>');
 		},{
 			id: 'markdown_ordered_list_button'
 		});
-		
+
 		this.toolbar.addButton(names["wims_link"],function(){
 		 var selection = this.getSelection();
 			var response = prompt(names["Enter_link_name"],'');
@@ -116,7 +116,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_link_internal_button'
 		});
-		
+
 		this.toolbar.addButton(names["wims_href"],function(){
 		 var selection = this.getSelection();
 			var response = prompt(names["Enter_href_name"],'');

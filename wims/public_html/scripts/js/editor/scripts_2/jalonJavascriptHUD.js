@@ -3,7 +3,7 @@ var hudActif = false;
 
 function DOM_HUD() {
 	if (navigateurEstIncompatible()) return false;
-	
+
 	// ajout du div overlay à la fin du body
 	var overlay = document.createElement("div");
 	overlay.setAttribute('id', 'overlay');
@@ -69,18 +69,18 @@ function masquerOverlayVideoIntro() {
 
 function hudCreerElement(lElement, lTitre, lLangue, lFeedbackObject, lElementWidth) { // Ajout de la class hud_element aux nodes qui ont un id
 	if (hudObjetEstValide(lElement)) {
-		
+
 		// ajout de la classe et stockage d'un object de feedback different de l'element (si fourni)
 		addClassName(lElement, 'hud_element');
 		lElement.hudFeedbackObject = lFeedbackObject;
 		if (lElementWidth) { lElement.style.width = lElementWidth; }
                 desactiverAutocomplete(lElement);
-		
+
 		// creation et ajout du titre
 		h = document.createElement("h3");
 		h.appendChild(document.createTextNode(lTitre));
 		lElement.insertBefore(h, lElement.firstChild);
-		
+
 		// creation et ajout de la zone de boutons et du bouton annuler
 		boutons = document.createElement("div");
 		boutons.setAttribute('id', lElement.id+'_hud_boutons');
@@ -92,7 +92,7 @@ function hudCreerElement(lElement, lTitre, lLangue, lFeedbackObject, lElementWid
 function hudAjouterBouton(lType, lElement, lTitre, lName, lLangue, lImg, lAction, lAppend, lOnClick) { // Ajout d'un bouton (annuler, enregistrer...) + stockage des objets
 	if (hudObjetEstValide(lElement)) {
 		boutons = document.getElementById(lElement.id+'_hud_boutons');
-		
+
                 imgPath = 'images_css/boutons/'+lLangue+'/'+lImg;
                 if (lType == 'IMAGE') {
                         bouton = createImageLink(imgPath, "hudBoutonsAction(this)", lTitre, lAppend);
@@ -172,8 +172,8 @@ if(z==1){
        hudFocus1erChamps(element);
 	 }
 	 z=1;
-	   
-	   
+
+
 }
 
 function hudFocus1erChamps(obj) {
@@ -213,7 +213,7 @@ function hudCentrerElement(element) { // centrage d'un element
 	x = (x >= positionDocVisible().x ? x : positionDocVisible().x);
 	y = (y >= positionDocVisible().y ? y : positionDocVisible().y);
 	element.style.left = x+'px';
-        element.style.top  = y+'px';	
+        element.style.top  = y+'px';
 }
 var k=0;
 function hudAfficherOverlay() {
@@ -246,12 +246,12 @@ function _prepareIE(height, overflow){
 	var body = document.getElementsByTagName('body')[0];
 	body.style.height = height;
 	body.style.overflow = overflow;
-	
+
 	var html = document.getElementsByTagName('html')[0];
 	html.style.height = height;
-	html.style.overflow = overflow; 
-}	
-	
+	html.style.overflow = overflow;
+}
+
 
 // LOAD *******************************************************************************************************
 

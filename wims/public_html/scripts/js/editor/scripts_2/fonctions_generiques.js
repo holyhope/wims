@@ -1,6 +1,6 @@
 //Ensemble de Fonctions génériques :
 
-// Actuliste : 
+// Actuliste :
 function actuliste(liste, indice) {
 	var mytool_array = liste.split("-");
 	var n2 = mytool_array.length;
@@ -13,7 +13,7 @@ function actuliste(liste, indice) {
 	//var n=chaine.length;
 }
 
-// parcoursTab : 
+// parcoursTab :
 function parcoursTab(instructionwims, indice) {
 	if (instructionwims != "\\") {
 		//var mytool_array=instructionwims.split("\\");
@@ -81,9 +81,9 @@ function afficheaide(langue) {
 	if (langue == "undefined") langue = version;
 	if (langue == "eng") version = "eng";
 	if (langue == "fr") version = "fr";
-	
+
 	var text="";
-	
+
     switch(instructionsss)
 	{
 	case oefcommand :
@@ -122,10 +122,10 @@ function afficheaide(langue) {
     case anstype :
 		text = anstypefun(instruction);
 		break;
-	
+
 	}
 	div_aide.innerHTML = "<h3 style='display:inline-block;margin-top:0;'>" + instruction + "</h3><div class='description'>" + text + "</div>";
-	
+
 }
 
 function funcname() {
@@ -167,7 +167,7 @@ switch(instructionsss)
     case anstype :
 		titre_bd= anstypename;
 		break;
-	
+
 	}
 }
 //enregistrer() :

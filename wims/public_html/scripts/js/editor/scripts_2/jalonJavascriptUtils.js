@@ -106,12 +106,12 @@ function createSpacer() {
 
 function sauvegarderValeursElementsForm(obj) {
 	elementsForm = chercherElementsDeFormulaire(obj);
-	
+
 	for (i=0; i<elementsForm.length; i++) { // boucle sur les elements pour sauvegarder leur valeur
 		elementForm		= elementsForm[i];
 		elementTagName	= elementForm.tagName.toLowerCase();
-		elementType		= elementForm.type;	
-		
+		elementType		= elementForm.type;
+
 		if (elementType == 'textarea' || elementType == 'text') { // textarea ou text  => on prend la "value"
 			elementForm.valueDepart = elementForm.value;
 		} else if (elementType == 'checkbox' || elementType == 'radio') { // checkbox ou radio  => on prend la "checked"
@@ -124,12 +124,12 @@ function sauvegarderValeursElementsForm(obj) {
 
  function restaurerValeursElementsForm(obj) {
 	elementsForm = chercherElementsDeFormulaire(obj);
-	
+
 	for (i=0; i<elementsForm.length; i++) { // boucle sur les elements pour restaurer leur valeur
 		elementForm		= elementsForm[i];
 		elementTagName	= elementForm.tagName.toLowerCase();
-		elementType		= elementForm.type;	
-		
+		elementType		= elementForm.type;
+
 		if (elementType == 'textarea' || elementType == 'text') { // textarea ou text  => on prend la "value"
 			elementForm.value = elementForm.valueDepart;
 		} else if (elementType == 'checkbox' || elementType == 'radio') { // checkbox ou radio  => on prend la "checked"
@@ -173,7 +173,7 @@ function getDimensions(element) {
     els.visibility = originalVisibility;
     return {width: originalWidth, height: originalHeight};
   }
-  
+
 function getDisplay(element) {
 	element = $(element);
 	var value = element.style['display'];
@@ -253,7 +253,7 @@ function lancerRequeteAjax(url, http_vars, method, selector, obj) {
 			url = url+"?"+	http_vars;
 			http_vars = "";
 		}
-		req.onreadystatechange = function() { 
+		req.onreadystatechange = function() {
 			processReponseAjax(req, selector, obj);
 		}
 		req.open(method, url, true);
@@ -268,7 +268,7 @@ function processReponseAjax(req, selector, obj) {
 		selector.call("", req.responseText, obj, (req.status != 200));
     }
 }
-  
+
 
 /* CORRECTION TRANSPARENCE PNG DANS IE6 ******************************************************************************************/
 
@@ -276,7 +276,7 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 {
    var arVersion = navigator.appVersion.split("MSIE")
    var version = parseFloat(arVersion[1])
-   if ((version >= 5.5) && (document.body.filters)) 
+   if ((version >= 5.5) && (document.body.filters))
    {
       for(var i=0; i<document.images.length; i++)
       {
@@ -286,19 +286,19 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
             var imgID = (img.id) ? "id='" + img.id + "' " : ""
             var imgClass = (img.className) ? "class='" + img.className + "' " : ""
             var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
-            var imgStyle = "display:inline-block;" + img.style.cssText 
+            var imgStyle = "display:inline-block;" + img.style.cssText
             if (img.align == "left") imgStyle = "float:left;" + imgStyle
             if (img.align == "right") imgStyle = "float:right;" + imgStyle
             if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
             var strNewHTML = "<span " + imgID + imgClass + imgTitle
             + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
             + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-            + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" 
+            + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>"
             img.outerHTML = strNewHTML
             i = i-1
          }
       }
-   }    
+   }
 }
 
 /* RECUPERATION PARAMETRES GET *****************************************************************************************/
