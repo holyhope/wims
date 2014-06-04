@@ -1,7 +1,7 @@
 void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id);
 void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size);
 void add_setlimits(FILE *js_include_file, int canvas_root_id);
-
+void add_safe_eval(FILE *js_include_file);
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
 char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int xsteps,int precision);
@@ -45,7 +45,7 @@ void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
 /* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 /* ............. */
-
+ 
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var num = %d;\
@@ -716,9 +716,9 @@ function canvas_remove(x,y){\
 }
 
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
-/*
+/* 
 constants in draw_arrows() ... for this moment: var type = 1;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
-
+ 
 */
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var canvas_rect;\
@@ -980,7 +980,7 @@ function tooltip%d_show(){\
  }\
 };\n</script>\n<!-- end command intooltip %d -->\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,tooltip_text,canvas_root_id,bgcolor,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 
-}
+} 
 
 /*
 #define BG_CANVAS 0 may be used for floodfill
@@ -1356,7 +1356,8 @@ char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,doub
 }
 
 /* plot parametric function */
-char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,double xmax,double ymin,double ymax, double tmin,double tmax,int plotsteps,int precision){
+char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,double xmax,double ymin,double ymax,        
+ double tmin,double tmax,int plotsteps,int precision){
     void *fx;
     void *fy;
     double t;
@@ -1379,7 +1380,7 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
 	    y = eval_t(fy, t);
 	    if(y > lim_ymin && y < lim_ymax){
 		x = eval_t(fx, t);
-	    	xydata[i++] = x;
+		xydata[i++] = x;
 		xydata[i++] = y;
 	    }
 	}
@@ -1394,10 +1395,10 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
 }
 
 char *double_xy2js_array(double xy[],int len,int decimals){
- /*
-    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8]
-    int xy[] is already checked for errors or overflow in "get_real()"
-    just to be sure we double check the size of "temp"
+ /* 
+    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8] 
+    int xy[] is already checked for errors or overflow in "get_real()" 
+    just to be sure we double check the size of "temp" 
 */
     char temp[2*MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
@@ -1422,10 +1423,10 @@ char *double_xy2js_array(double xy[],int len,int decimals){
 }
 
 char *xy2js_array(int xy[],int len){
- /*
-    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8]
-    int xy[] is already checked for errors or overflow in "get_real()"
-    just to be sure we double check the size of "temp"
+ /* 
+    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8] 
+    int xy[] is already checked for errors or overflow in "get_real()" 
+    just to be sure we double check the size of "temp" 
 */
     char temp[MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
@@ -1450,17 +1451,17 @@ char *xy2js_array(int xy[],int len){
 }
 
 char *data2js_array(int data[],int len){
- /*
-    1,2,3,4,5,6,7,8 --> [1,2,3,4,5,6,7,8]
-    int data[] is already checked for errors or overflow in "get_real()"
-    just to be sure we double check the size of "temp"
+ /* 
+    1,2,3,4,5,6,7,8 --> [1,2,3,4,5,6,7,8] 
+    int data[] is already checked for errors or overflow in "get_real()" 
+    just to be sure we double check the size of "temp" 
 */
     char temp[MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
     memset(temp,'\0',MAX_BUFFER);/* clear memory */
     int i;int space_left;
     temp[0] = '[';/* start js-array */
-    for(i = 0; i < len; i++){
+    for(i = 0; i < len; i++){ 
 	if(i == len - 1){sprintf(tmp, "%d", data[i]);}else{sprintf(tmp, "%d,", data[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
 	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce image size or plotsteps ");}
@@ -1474,15 +1475,15 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
 /* in drag& drop / onclick library:
     obj_type = 1 == rect
     obj_type = 2 == point / points (do not scale with zoom)
-    obj_type = 3 == ellipse
+    obj_type = 3 == ellipse 
     obj_type = 4 == polyline / segment /line / vline / hline
     obj_type = 5 == closed path (polygon)
     obj_type = 6 == roundrect
     obj_type = 7 == crosshair / crosshairs
     obj_type = 8 == arrow
     obj_type = 9 == curve
-    obj_type = 10== arrow2
-    obj_type = 11== parallel  (no drag or onclick)
+    obj_type = 10== arrow2 
+    obj_type = 11== parallel  (no drag or onclick) 
     obj_type = 12== arc
     obj_type = 13== circle (will scale on zoom)
     obj_type = 14== text (will not scale or pan on zoom)
@@ -1751,28 +1752,61 @@ function use_mouse_coordinates(){\
   current_context.fillText(m_data,0,%d);\
  };\
 };",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
-
 }
-/*
+/* to avoid easy js-code injection...but may be it's a real problem ? */
+void add_safe_eval(FILE *js_include_file){
+fprintf(js_include_file," \nfunction safe_eval(exp){\
+ if(exp.indexOf('^') != -1){\
+  exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig,\"pow($1, $2)\");\
+ };\
+ var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;\
+ var valid = true;\
+ exp = exp.replace(reg,function($0){\
+  if(Math.hasOwnProperty($0)){\
+   return \"Math.\"+$0;\
+  }\
+  else\
+  {\
+   valid = false;\
+  }\
+ }\
+ );\
+ if( !valid ){\
+  alert(\"hmmm \"+exp+\" ?\"); exp = null;\
+ }\
+ else\
+ {\
+  try{ exp = eval(exp); } catch(e){alert(\"Invalid arithmetic expression\"); exp = null;};\
+ };\
+ return exp;\
+};");
+}
+
+/* 
 adds inputfield for x-value: returns the js-calculated y-value after click on 'OK' button
 draws a non-configurable crosshair on this calculated location
 */
 void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath){
 fprintf(js_include_file,"\n<!-- begin add_calc_y -->\n\
-function eval_jsmath(x){var y = eval(%s);return y};\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+function add_calc_y(){\
+function eval_jsmath(x){return eval(%s);};\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var calc_div = document.createElement('div');\
+calc_div.id = \"calc_div\";\
+tooltip_div.appendChild(calc_div);\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-userinput_xy_div.innerHTML=\"<span>\"+label_x+\" : <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' />&nbsp;\"+ label_y+\" : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
-var update_button = document.getElementById(\"update_button\");\
-update_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"userinput_x\").value;\
+calc_div.innerHTML=\"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='text-align:center;color:blue;background-color:orange;' />&nbsp;\"+ label_y+\" : <input type='text' size='6' value='' id='calc_output_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
+var calc_button = document.getElementById(\"calc_button\");\
+calc_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"calc_input_x\").value;\
 var y_value = eval_jsmath(x_value);\
-document.getElementById(\"userinput_y\").value = y_value;\
+document.getElementById(\"calc_output_y\").value = y_value;\
 if(isNaN(y_value)){return;};\
 var canvas = create_canvas%d(123,xsize,ysize);\
 var ctx = canvas.getContext(\"2d\");\
-draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;},false);\n",jsmath,canvas_root_id,canvas_root_id);
+draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;},false);\
+};add_calc_y();",jsmath,canvas_root_id,canvas_root_id);
 }
 /*
  x-value of the mouse will be used to calculate via javascript the corresponding y-value using the verbatim js-math function
@@ -1787,13 +1821,13 @@ function use_trace_jsmath(){\
  if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
  var trace_canvas = create_canvas%d(%d,xsize,ysize);\
  var trace_context = trace_canvas.getContext(\"2d\");\
- var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  var trace_div = document.createElement('div');\
  trace_div.id = \"trace_div\";\
- userinput_xy_div.appendChild(trace_div);\
- trace_div.innerHTML = \"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='userinput_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
- trace_canvas.addEventListener(\"mousemove\",trace%d,false);\
- trace_canvas.addEventListener(\"touchmove\",trace%d,false);\
+ tooltip_div.appendChild(trace_div);\
+ trace_div.innerHTML = \"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='trace_input_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
+ canvas_div.addEventListener(\"mousemove\",trace%d,false);\
+ canvas_div.addEventListener(\"touchmove\",trace%d,false);\
  function eval_jsmath(x){ return eval(%s); };\
  function trace%d(evt){\
   var canvas_rect = (trace_canvas).getBoundingClientRect();\
@@ -1804,28 +1838,48 @@ function use_trace_jsmath(){\
   var y_px = y2px(y);\
   trace_context.clearRect(0,0,xsize,ysize);\
   draw_crosshairs(trace_context,[x_px],[y_px],%d,%d,\"%s\",%f,0,0,0,[0,0]);\
-  document.getElementById(\"userinput_x\").value = x;\
-  document.getElementById(\"userinput_y\").value = y;\
+  document.getElementById(\"trace_input_x\").value = x;\
+  document.getElementById(\"trace_input_y\").value = y;\
  };\
  return;\
 };use_trace_jsmath();",canvas_root_id,canvas_cnt,canvas_root_id,canvas_root_id,canvas_root_id,jsmath,canvas_root_id,line_width,crosshair_size,stroke_color,stroke_opacity);
 }
 
-/*
-add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined)
+/* 
+add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined) 
 add two buttons: OK and NOK (OK draws; NOK will delete last item pair from userdraw_x / userdraw_y array's
 */
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_textarea_xy -->\n\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+function add_textarea_xy(){\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var textarea_div = document.createElement('div');\
+textarea_div.id = \"textarea_div\";\
+tooltip_div.appendChild(textarea_div);\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-userinput_xy_div.innerHTML=\"<table style=\'border:1px solid black;background-color:#ffffa0\' ><tr><td><em>\"+label_x+\"</em></td><td><em>\"+label_y+\"</em></td><td><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></td></tr><tr><td><textarea rows='5' cols='2' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td><textarea rows='5' cols='2' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' ></textarea></td><td>&nbsp;</td></tr></table>\";\
-var update_button = document.getElementById(\"update_button\");\
-var delete_button = document.getElementById(\"delete_button\");\
-update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
-delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
+textarea_div.innerHTML=\"\
+<table style=\'border:1px solid black;background-color:#ffffa0\' >\
+<tr>\
+ <td><input id='textarea_ok_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/></td>\
+ <td><input id='textarea_nok_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></td>\
+</tr>\
+<tr>\
+ <td><em>\"+label_x+\"</em></td>\
+ <td><em>\"+label_y+\"</em></td>\
+</tr>\
+<tr>\
+ <td><textarea rows='5' cols='2' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' ></textarea></td>\
+ <td><textarea rows='5' cols='2' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' ></textarea></td>\
+</tr>\
+</table>\";\
+var textarea_ok_button = document.getElementById(\"textarea_ok_button\");\
+var textarea_nok_button = document.getElementById(\"textarea_nok_button\");\
+textarea_ok_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
+textarea_nok_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);\
+return;\
+};add_textarea_xy();",canvas_root_id);
 }
 
 /*
@@ -1835,11 +1889,11 @@ void add_setlimits(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_setlimits -->\n\
 use_pan_and_zoom = 1;\n\
 function use_setlimits(){\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var setlim_div = document.createElement('div');\
-setlim_div.id = \"setlim\";\
-userinput_xy_div.appendChild(setlim_div);\
-setlim_div.innerHTML=\"<span>xmin = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> xmax = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />ymin = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> ymax = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
+setlim_div.id = \"setlim_div\";\
+tooltip_div.appendChild(setlim_div);\
+setlim_div.innerHTML=\"<br /><span>xmin = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> xmax = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />ymin = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> ymax = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
 var setlimit_button = document.getElementById(\"set_limits\");\
 function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};\
 function set_limits(e){\
@@ -1852,50 +1906,65 @@ try{start_canvas%d(1234)}catch(e){};try{dragstuff.Zoom(xmin,xmax,ymin,ymax)}catc
 setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false);\
 };use_setlimits();",canvas_root_id,canvas_root_id);
 }
-/*
-adds 2 inputfields (x:y) and 'ok' | 'nok' button
+/* 
+adds 2 inputfields (x:y) and 'ok' | 'nok' button 
 these are used for user drawing with inputfields...
 */
 
 void add_input_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xy -->\n\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+function add_input_xy(){\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var input_xy_div = document.createElement('div');\
+input_xy_div.id = \"input_xy_div\";\
+tooltip_div.appendChild(input_xy_div);\
 var label_x = \"x\";var label_y = \"y\";\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+input_xy_div.innerHTML=\"<br /><span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
-delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);\
+};add_input_xy();",canvas_root_id);
 }
 
 /* adds 4 inputfields (x1:y1) --- (x2:y2) and 'ok' + 'nok' button */
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_x1y1x2y2 -->\n\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>( <input type='text' size='6' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;'/> : <input type='text' size='6' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+function add_input_x1y1x2y2(){\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var input_x1y1x2y2_div = document.createElement('div');\
+input_x1y1x2y2_div.id = \"input_x1y1x2y2_div\";\
+tooltip_div.appendChild(input_x1y1x2y2_div);\
+input_x1y1x2y2_div.innerHTML=\"<br /><span><b>( <input type='text' size='6' value='' id='userinput_x1' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y1' style='text-align:center;color:blue;background-color:orange;' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y2' style='text-align:center;color:blue;background-color:orange;'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;' /></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
-delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);\
+};add_input_x1y1x2y2();",canvas_root_id);
 }
 
 /* adds 3 inputfields Center (x:y) Radius r and 'ok'+'nok' buttons */
 void add_input_xyr(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xyr -->\n\
-var userinput_xy_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-userinput_xy_div.innerHTML=\"<span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+function add_input_xyr(){\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var input_xyr_div = document.createElement('div');\
+input_xyr_div.id = \"input_xyr_div\";\
+tooltip_div.appendChild(input_xyr_div);\
+input_xyr_div.innerHTML=\"<br /><span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
-delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);",canvas_root_id);
+delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;},false);\
+};add_input_xyr();",canvas_root_id);
 }
 
 /* THESE JS-FUNCTIONS COULD BE MADE LESS COPY & PASTE "PROGRAMMING" */
 
 /* draw circle(s) / point(s) via 3 inputfields */
 void add_input_circle(FILE *js_include_file,int type,int num){
-/*
-type = 0 : a point ...radius is fixed
+/* 
+type = 0 : a point ...radius is fixed 
 type = 1 : a circle ... read inputfield userinput_r
 num = 1 : a single point / circle
 num = 2 : multiple points / circles
@@ -1919,7 +1988,7 @@ function user_redraw(t){\
  var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
  if( add_x != null && add_y != null ){\
   if( type == 2 ){\
-   var add_r = safe_aval( document.getElementById(\"userinput_r\").value );if( add_r == null ){alert(\"illegal radius input \");return;}\
+   var add_r = safe_eval( document.getElementById(\"userinput_r\").value );if( add_r == null ){alert(\"illegal radius input \");return;}\
    if( num == 1 ){\
     userdraw_radius[0] = parseInt(Math.abs(xsize*(add_r)/(xmax - xmin)));\
    }\
@@ -2124,8 +2193,15 @@ fprintf(js_include_file,"\n<!-- begin polygon via 2 textareas x / y -->\n\
 function user_redraw(t){\
  var lu = userdraw_x.length;\
  if( t == -1 && lu > 0){\
+  if( lu < 3 ){\
+   userdraw_x = [];\
+   userdraw_y = [];\
+  }\
+  else\
+  {\
   userdraw_x.splice(lu-1,1);\
   userdraw_y.splice(lu-1,1);\
+  };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
   cnt = 1; return;\
@@ -2173,7 +2249,7 @@ int find_number_of_digits(int i){
 }
 /* change this when colornames / numbers are added to struct */
 #define NUMBER_OF_COLORNAMES	140
-struct {
+struct { 
     char *hex;
     char *name;
     char *rgb;

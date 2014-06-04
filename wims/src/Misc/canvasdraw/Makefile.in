@@ -3,7 +3,6 @@
 
 wims_home=`pwd | awk -F/src '{ print $$1 }'`
 canvasdraw_home=$(wims_home)/src/Misc/canvasdraw
-matheval_home=$(canvasdraw_home)/libmatheval-1.1.8
 cc=@CC@
 cflags=-O2 -Wall
 ldflags= -lm -L../../Lib -lwims
@@ -17,7 +16,6 @@ clean:
 distclean:
 	rm -f $(canvasdraw_home)/canvasdraw
 	rm $(wims_home)/public_html/bin/canvasdraw
-	cd $(matheval_home); make clean; cd $(canvasdraw_home)
 
 canvasdraw:canvasdraw.c canvasdraw.h
 	$(cc) $(cflags) canvasdraw.c $(ldflags) -o canvasdraw

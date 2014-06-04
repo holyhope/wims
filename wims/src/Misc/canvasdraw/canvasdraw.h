@@ -126,7 +126,7 @@
 #define YLABEL		130
 #define LEGENDCOLORS	131
 #define ANIMATE		132
-#define STATUS		133
+#define STATUS		133 
 #define SNAPTOGRID	134
 #define XSNAPTOGRID	135
 #define YSNAPTOGRID	136
