@@ -80,6 +80,8 @@ int main(int argc, char *argv[]){
     int use_axis = FALSE;
     int use_axis_numbering = FALSE;
     int use_pan_and_zoom = FALSE;
+    int use_js_math = FALSE; /* if true add js-function to convert math_function --> javascript math_function */
+    int use_js_plot = FALSE; /* if true , let js-engine plot the curve */
     int line_width = 1;
     int decimals = 2;
     int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate */
@@ -224,6 +226,7 @@ var y_strings = null;\
 var use_pan_and_zoom = 0;\
 var x_use_snap_to_grid = 0;\
 var y_use_snap_to_grid = 0;\
+var use_jsmath = 0;\
 var xstart = 0;\
 var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
@@ -1232,33 +1235,67 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    reset();
 	    break;
-	case TRACE_JSMATH:
+	case TRACE_JSCURVE:
 	/*
-	 @trace_jsmath some_javascript_math_function
+	 @trace_jscurve some_math_function
 	 @will use a crosshair to trace the jsmath curve
 	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
 	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
 	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
-	 @example: trace_jsmath Math.pow(x,2)+4*x+16
-	 @example: trace_jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
-	 @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+	    if( use_js_math == FALSE){
+		add_to_js_math(js_include_file);
+		use_js_math = TRUE;
+	    }
 	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
 	    break;
 	case JSMATH:
 	/*
-	    @jsmath some_javascript_math_function
+	    @jsmath some_math_function
 	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
 	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
-	    @example: jsmath Math.pow(x,2)+4*x+16
-	    @example: jsmath Math.sin(Math.pow(x,Math.Pi))+Math.sqrt(x)
-	    @no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	    @example: jsmath sin(x^2)
+	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    if( use_js_math == FALSE){
+		add_to_js_math(js_include_file);
+		use_js_math = TRUE;
+	    }
 	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
 	    break;
+	case JSCURVE:
+	/*
+	 @jscurve color,formula(x)
+	 @your function will be plotted by the javascript engine of the client browser.
+	 @use parenthesis and rawmath : use 2*x in stead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
+	 @no validity check is done by wims.
+	 @zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
+	 @use command 'trace_jscurve formula(x)` for tracing
+	 @use commmand 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
+	 @can not be set draggable / onclick (yet)
+	 @commands plotjump / plotstep are not active for 'jscurve' 
+	*/
+	    stroke_color = get_color(infile,0);
+	    if( use_js_math == FALSE){/* add this stuff only once...*/
+		add_to_js_math(js_include_file);
+		use_js_math = TRUE;
+	    }
+	    if( use_js_plot == FALSE){
+		use_js_plot = TRUE;
+		add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
+	    }
+	    temp = get_string_argument(infile,1);
+	    string_length = snprintf(NULL,0,  "jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+use_js_plot,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    snprintf(tmp_buffer,string_length,"jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+use_js_plot,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    add_to_buffer(tmp_buffer);
+	    use_js_plot++; /* we need to create multiple canvasses, so we may zoom and pan ?? */
+
+	break;
 	case CURVE:
 	/*
 	 @curve color,formula(x)
@@ -1978,6 +2015,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    @setlimits 
 	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
 	    @may be used for inputfield based zooming / panning
+	    @use command xlabel / ylabel to change text from xmin to 'xlabel'min etc
 	    @note:the input value will not be checked on validity 
 	*/
 	    add_setlimits(js_include_file,canvas_root_id);
@@ -6085,8 +6123,10 @@ int get_token(FILE *infile){
 	*userinput_xy="userinput_xy",
 	*usertextarea_xy="usertextarea_xy",
 	*jsmath="jsmath",
-	*trace_jsmath="trace_jsmath",
+	*trace_jscurve="trace_jscurve",
 	*setlimits="setlimits",
+	*jscurve="jscurve",
+	*jsplot="jsplot",
 	*sgraph="sgraph";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -6724,9 +6764,13 @@ int get_token(FILE *infile){
 	free(input_type);
 	return JSMATH;
 	}
-	if( strcmp(input_type, trace_jsmath) == 0 ){
+	if( strcmp(input_type, trace_jscurve) == 0 ){
 	free(input_type);
-	return TRACE_JSMATH;
+	return TRACE_JSCURVE;
+	}
+	if( strcmp(input_type, jscurve) == 0  ||  strcmp(input_type, jsplot) == 0 ){
+	free(input_type);
+	return JSCURVE;
 	}
 	if( strcmp(input_type, setlimits) == 0 ){
 	free(input_type);
