@@ -1617,7 +1617,7 @@ tooltip_div.appendChild(calc_div);\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-calc_div.innerHTML=\"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='text-align:center;color:blue;background-color:orange;' />&nbsp;\"+ label_y+\" : <input type='text' size='6' value='' id='calc_output_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
+calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='text-align:center;color:blue;background-color:orange;' />&nbsp;\"+ label_y+\" : <input type='text' size='6' value='' id='calc_output_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
 var calc_button = document.getElementById(\"calc_button\");\
 calc_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"calc_input_x\").value;\
 var y_value = eval_jsmath(x_value);\
@@ -1646,7 +1646,7 @@ function use_trace_jsmath(){\
  var trace_div = document.createElement('div');\
  trace_div.id = \"trace_div\";\
  tooltip_div.appendChild(trace_div);\
- trace_div.innerHTML = \"<br /><span>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='trace_input_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
+ trace_div.innerHTML = \"<br /><span style='font-style:italic;font-size:10px'>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='trace_input_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
  canvas_div.addEventListener(\"mousemove\",trace,false);\
  canvas_div.addEventListener(\"touchmove\",trace,false);\
  var fun = to_js_math(\"%s\");\
@@ -1744,7 +1744,7 @@ var input_xy_div = document.createElement('div');\
 input_xy_div.id = \"input_xy_div\";\
 tooltip_div.appendChild(input_xy_div);\
 var label_x = \"x\";var label_y = \"y\";\
-input_xy_div.innerHTML=\"<br /><span><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+input_xy_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'><b>( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
@@ -1776,7 +1776,7 @@ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_xyr_div = document.createElement('div');\
 input_xyr_div.id = \"input_xyr_div\";\
 tooltip_div.appendChild(input_xyr_div);\
-input_xyr_div.innerHTML=\"<br /><span><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+input_xyr_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='text-align:center;color:blue;background-color:orange;' /> : <input type='text' size='6' value='' id='userinput_y' style='text-align:center;color:blue;background-color:orange;' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='text-align:center;color:blue;background-color:orange;' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
