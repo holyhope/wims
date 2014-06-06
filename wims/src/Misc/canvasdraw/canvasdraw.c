@@ -2518,6 +2518,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]
 	@ type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
 	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2,[space]<br />default colours: clock 0,0,60,4,35,45,1,2,,,,,<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,white,white,black,yellow
+	@ if you don't want a seconds hand (or minutes...), just make it invisible by using the background color of the hourglass...
 	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
 	@ no combinations with other reply_types allowed, for now
@@ -3473,7 +3474,7 @@ function read_canvas(){\
   {\
    return reply+\"\\n\"+input_reply;\
   }\
- };\
+ }\
  else\
  {\
   if( typeof userdraw_text != 'undefined' ){\
@@ -5496,9 +5497,9 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.save();\
  this.type = type || 0;\
  this.interaction = interaction || 0;\
- this.H = H || parseInt(110*(Math.random()));\
- this.M = M || parseInt(590*(Math.random()));\
- this.S = S || parseInt(590*(Math.random()));\
+ this.H = H;\
+ this.M = M;\
+ this.S = S;\
  this.xc = xc || xsize/2;\
  this.yc = yc || ysize/2;\
  this.radius = radius || xsize/4;\
@@ -5542,7 +5543,8 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  break;\
  case 1:\
  for(var p= 1; p <= 12 ; p++){ angle = (p - 3) * (Math.PI * 2) / 12;x1 = 0.9*this.radius*Math.cos(angle);y1 = 0.9*this.radius*Math.sin(angle);clock_ctx.fillText(p, x1, y1);};break;\
- case 2:for(var p= 1; p <= 12 ; p++){ angle = (p - 3) * (Math.PI * 2) / 12;x1 = 1.1*this.radius*Math.cos(angle);y1 = 1.1*this.radius*Math.sin(angle);clock_ctx.fillText(p, x1, y1);};\
+ case 2:\
+ for(var p= 1; p <= 12 ; p++){ angle = (p - 3) * (Math.PI * 2) / 12;x1 = 0.8*this.radius*Math.cos(angle);y1 = 0.8*this.radius*Math.sin(angle);clock_ctx.fillText(p, x1, y1);};\
  clock_ctx.beginPath();\
  for(var p = 1; p <= 12 ; p++){\
   angle_cos = this.radius*(Math.cos(p * (Math.PI * 2) / 12));\
