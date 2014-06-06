@@ -20,13 +20,9 @@ wims_prefix=class user tmp
 !if  / isin $wims_deposit or .. isin $wims_deposit
   !exit
 !endif
-	style=!record 0 of style.css
-    wims =!record 0 of wims.sty
-    fichier_test=!record 0 of fichier_test.tex
-    !filewrite getfile/style.css $style
-    !filewrite getfile/wims.sty $wims
-    !filewrite getfile/fichier_test.tex  $fichier_test
-
+!sh cp modules/$module/fichier_test.tex $wims_home/$wims_sesdir/getfile/ ; \
+    cp modules/$module/style.css $wims_home/$wims_sesdir/getfile/ ;\
+    cp modules/$module/wims.sty $wims_home/$wims_sesdir/getfile/
 
 !if $wims_deposit!=noname.file and $wims_deposit!=$empty
   !sh cd $wims_home/$wims_sesdir\
@@ -36,12 +32,9 @@ wims_prefix=class user tmp
 !endif
 
 !ifval $exemple=1
-    style=!record 0 of style.css
-    wims =!record 0 of wims.sty
-    fichier_test=!record 0 of fichier_test.tex
-    !filewrite wimshome/$wims_sesdir/latex2wims/style.css $style
-    !filewrite wimshome/$wims_sesdir/latex2wims/wims.sty $wims
-    !filewrite wimshome/$wims_sesdir/latex2wims/fichier_test.tex  $fichier_test
+    !sh cp modules/$module/fichier_test.tex $wims_home/$wims_sesdir/latex2wims/ ; \
+    cp modules/$module/style.css $wims_home/$wims_sesdir/latex2wims/ ;\
+    cp modules/$module/wims.sty $wims_home/$wims_sesdir/latex2wims/
     !!!reset exemple
 !endif
 
@@ -116,7 +109,7 @@ Document dans le compte Modtool
         docfile=doc/$subdoc/files
       !endif
       !sh rm -r $docdir/doc/$subdoc/* ; mkdir -p $docdir/doc/$subdoc/src; mkdir -p $docdir/doc/srctex
-!! inutile de passer par le repertoire provisoire - latex2wims envoyait directement des ficiers dans 
+!! inutile de passer par le repertoire provisoire - latex2wims envoyait directement des ficiers dans
 
       dir=$wims_home/$wims_sesdir/latex2wims/
 !!!forget about that by using just src2def : --author=$auth_name1 --email=$auth_email --verbose=1
@@ -144,7 +137,7 @@ Document dans le compte Modtool
       images=!singlespace $images
       !sh mkdir -p $docdir/doc/$subdoc/$docfiles\
        for a in $images ; do cp $wims_home/$wims_sesdir/latex2wims/$$a $docdir/doc/$doc/$docfiles/$$a ; done
-!!now src2def make latex2wims       
+!!now src2def make latex2wims
        !sh cd $docdir \
        src2def 2>/dev/null
    !else
