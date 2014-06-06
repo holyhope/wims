@@ -1,0 +1,93 @@
+!read adm/language lang/names.phtml
+!set list_out=svg, mol,pdb
+!set listoptionsvg=a,C,u,d
+!set promptoptionsvg=$name_promptoptionsvg
+!set listoptiongeneral=
+!set data_=!rows2lines $data_
+!default format_out=svg
+
+<div class="wims_intro">
+$name_intro
+</div>
+!default type=1
+!form reply
+ <fieldset class="property_fields blockcenter">
+  <legend>$name_method</legend>
+  <div class="field box">
+   !set wims_ref_class=wims_button_help float_right
+   !href cmd=help&special_parm=data $wims_name_help
+   !formradio type list 2 prompt $name_database
+   !set wims_form_method=file
+   <div class="formHelp">$name_database_help</div>
+   <textarea cols="50" rows="5" name="database" id="database"
+    placeholder="caffeine,nom_fichier">$data_</textarea>
+  </div>
+  !if $test=$empty
+    <div class="field box">
+$name_warning_obabel
+   </div>
+  !else
+   <div class="field box">
+    !formradio type list 0 prompt $name_conversion1
+    !set wims_form_method=file
+    <input type="file" name="wims_deposit" />
+   </div>
+   <div class="field box">
+    !formradio type list 1 prompt $name_conversion_smile
+  ,
+   !set wims_ref_class=wims_button_help float_right
+   !href cmd=help&special_parm=data $wims_name_help
+   <label for="data">$name_data</label>
+   !set wims_form_method=file
+   <div class="formHelp">$name_database_help</div>
+   <div class="wimscenter">
+    <textarea cols="50" rows="5" name="data" id="data"
+    placeholder="CCO,ethanol">$data_</textarea>
+    </div>
+    !endif test
+  </div>
+ </fieldset>
+ <fieldset class="property_fields blockcenter">
+  <legend>$name_format_out</legend>
+  <div class="field box">
+    <label for="format_out0">$name_format</label>
+    !set wims_ref_class=wims_formradio
+    !formcheckbox format_out list $list_out
+   </div>
+  <div class="field box">
+   !default optionD=--gen2D
+   <label for="optionD0">$name_option_dim</label>
+   !formradio optionD list --gen2D,--gen3D prompt 2D,3D
+   !set wims_ref_class=wims_button_help float_right
+   !href cmd=help&special_parm=option_dim $wims_name_help
+  </div>
+ </fieldset>
+ <fieldset class="property_fields blockcenter">
+  <legend> $name_option_svg</legend>
+  <div class="field box">
+    <label for="optionsvg0">$name_output</label>
+    !set wims_ref_class=wims_formradio
+    !formcheckbox optionsvg list $listoptionsvg prompt $promptoptionsvg
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=option_svg $wims_name_help
+  </div>
+  <div class="field box">
+    <label for="height">$name_height</label>
+    <input name="height" value="$height" id="height" />
+  </div>
+ </fieldset>
+ <fieldset class="property_fields blockcenter">
+  <legend>Enregistrement</legend>
+   <div class="field box">
+    !formcheckbox save list 1 prompt $wims_name_tosave
+    <label for="smod">$name_savemodule</label>
+    !formselect smod list ?????,$list_module
+    !set wims_ref_class=wims_button_help float_right
+    !href cmd=help&special_parm=save $wims_name_help
+  </div>
+  <div class="field box center wimsform">
+    !set wims_ref_class=wims_button
+    <input type="submit" value="$wims_name_send" />
+  </div>
+ </fieldset>
+!formend
