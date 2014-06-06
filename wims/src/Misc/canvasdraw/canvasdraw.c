@@ -4966,6 +4966,9 @@ var axis_color = \"rgba(\"+axis_color+\",\"+stroke_opacity+\")\";\
 ctx.font = font_family;\
 var xstep = xsize*xmajor/(xmax - xmin);\
 var ystep = ysize*ymajor/(ymax - ymin);\
+var z_x=1;var z_y=1;\
+if(xstep < 20){z_x=parseFloat(20/xstep);xstep = 20;};\
+if(ystep < 20){z_y=parseFloat(20/ystep);ystep = 20;};\
 var x2step = xstep / xminor;\
 var y2step = ystep / yminor;\
 var zero_x;var zero_y;var f_x;var f_y;\
@@ -5094,12 +5097,13 @@ if( use_axis == 1 ){\
   {\
    corr=0;skip = 1;cnt = px2x(zero_x);\
    prec = Math.log(precision)/(Math.log(10));\
+   var y_basis = parseInt(zero_y+(1.4*f_x*font_size));\
    for( var p = zero_x ; p < xsize ; p = p+xstep){\
     if(skip == 0 ){\
-      disp_cnt = cnt.toFixed(prec);\
+      disp_cnt = (z_x*cnt).toFixed(prec);\
       corr = ctx.measureText(disp_cnt).width;\
       skip = parseInt(1.2*corr/xstep);\
-      ctx.fillText(disp_cnt,p-0.5*corr,parseInt(zero_y+(1.4*f_x*font_size)));\
+      ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
     }\
     else\
     {\
@@ -5110,10 +5114,10 @@ if( use_axis == 1 ){\
    cnt = px2x(zero_x);skip = 1;\
    for( var p = zero_x ; p > 0 ; p = p-xstep){\
     if(skip == 0 ){\
-     disp_cnt = cnt.toFixed(prec);\
+     disp_cnt = (z_x*cnt).toFixed(prec);\
      corr = ctx.measureText(disp_cnt).width;\
      skip = parseInt(1.2*corr/xstep);\
-     ctx.fillText(disp_cnt,p-0.5*corr,parseInt(zero_y+(1.4*f_x*font_size)));\
+     ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
     }\
     else\
     {\
@@ -5139,7 +5143,7 @@ if( use_axis == 1 ){\
    for( var p = zero_y ; p < ysize ; p = p+ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
-     disp_cnt = cnt.toFixed(prec);\
+     disp_cnt = (z_y*cnt).toFixed(prec);\
      if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
      ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
     }\
@@ -5153,7 +5157,7 @@ if( use_axis == 1 ){\
    for( var p = zero_y ; p > 0 ; p = p-ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
-     disp_cnt = cnt.toFixed(prec);\
+     disp_cnt = (z_y*cnt).toFixed(prec);\
      if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
      ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
     }\
