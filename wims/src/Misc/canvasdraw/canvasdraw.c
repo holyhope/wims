@@ -945,7 +945,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    stroke_color = get_color(infile,1);
 	    if( strcmp(draw_type,"point") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
-		if(reply_format < 1 ){reply_format = 8;}
+		if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,1);
@@ -956,7 +956,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"points") == 0 ){
 	        if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
-	        if(reply_format < 1 ){reply_format = 8;}
+	        if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,2);
@@ -968,7 +968,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"segment") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
@@ -978,7 +978,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"polyline") == 0 ){
 		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
-		if(reply_format < 1){reply_format = 23;}
+		if(reply_format == 0){reply_format = 23;}
 		if( use_input_xy == 1 ){
 		    add_input_polyline(js_include_file);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -989,7 +989,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"segments") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
@@ -999,7 +999,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"circle") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
-		if(reply_format < 1){reply_format = 10;}
+		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,2,1);
@@ -1010,7 +1010,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"circles") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
-		if(reply_format < 1){reply_format = 10;}
+		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
 		add_js_circles(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ 
@@ -1021,7 +1021,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"crosshair") == 0 ){
 		if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
-		if(reply_format < 1){reply_format = 8;}
+		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
 		if(use_input_xy == 1){ 
@@ -1032,7 +1032,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"crosshairs") == 0 ){
 		if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
-		if(reply_format < 1){reply_format = 8;}
+		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
 		if(use_input_xy == 1){ 
@@ -1043,35 +1043,35 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"freehandline") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 6;}
+		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandlines") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 6;}
+		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"path") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 6;}
+		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"paths") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 6;}
+		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrows") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,2);
@@ -1081,7 +1081,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"arrows2") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
@@ -1091,7 +1091,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"arrow2") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
@@ -1101,7 +1101,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"arrow") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
@@ -1111,7 +1111,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if(strcmp(draw_type,"polygon") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,-1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 2 ){
 		  add_textarea_polygon(js_include_file);
@@ -1122,14 +1122,14 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if(strncmp(draw_type,"poly",4) == 0){
 		if(strlen(draw_type) < 5){canvas_error("use command \"userdraw poly[3-9],color\" eg userdraw poly6,blue");}
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,(int) (draw_type[4]-'0'),draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if(strcmp(draw_type,"triangle") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1137,7 +1137,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"line") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_line(js_include_file,1);
@@ -1148,7 +1148,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"lines") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
-		if(reply_format < 1){reply_format = 11;}
+		if(reply_format == 0){reply_format = 11;}
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_line(js_include_file,2);
@@ -1158,35 +1158,35 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    else
 	    if( strcmp(draw_type,"rects") == 0){
 		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,2,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrects") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,2,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"rect") == 0){
 		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,1,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrect") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
-		if(reply_format < 1){reply_format = 2;}
+		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,1,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"text") == 0){
 		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
-		if(reply_format < 1){reply_format = 17;}
+		if(reply_format == 0){reply_format = 17;}
 		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1537,7 +1537,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			     note: all other reply types will include a reading of elements with id='mathml'+p)
 			     */
 			    if(strstr(temp,"mathml0") != NULL){
-			     if(reply_format < 1 ){reply_format = 16;} /* no other reply type is defined */
+			     if(reply_format == 0 ){reply_format = 16;} /* no other reply type is defined */
 			    }
 			    break;
 		    default:break;
@@ -1878,7 +1878,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			    int_data[7] = int_data[5] - int_data[3];/* sheight & height (if not scaling )*/
 			    if( drag_type > -1 ){
 				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
-				if(reply_format < 1 ){reply_format = 20;}
+				if(reply_format == 0 ){reply_format = 20;}
 				string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
 				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);			    
@@ -1936,7 +1936,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 8: URL = get_string(infile,1);
 			    if( drag_type > -1 ){
 				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
-				if(reply_format < 1 ){reply_format = 20;}
+				if(reply_format == 0 ){reply_format = 20;}
 			        string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
 				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
@@ -1993,7 +1993,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    default: break;
 		}
 	    }
-	    if(reply_format < 1 ){reply_format = 15;}
+	    if(reply_format == 0 ){reply_format = 15;}
 	    reset();
 	    break;
 	case TEXTAREA:
@@ -2019,7 +2019,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    default: break;
 		}
 	    }
-	    if(reply_format < 1 ){reply_format = 15;}
+	    if(reply_format == 0 ){reply_format = 15;}
 	    reset();
 	    break;
 	case MOUSE_PRECISION:
@@ -2469,6 +2469,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case REPLYFORMAT:
 	/*
 	@ replyformat number
+	@ use number=-1 to deactivate the js-function read_canvas()
 	@ default values should be fine !
 	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
