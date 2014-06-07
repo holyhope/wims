@@ -23,7 +23,7 @@ void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_widt
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
-void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head);
+void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,int type, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head);
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity);
 void add_js_paths(FILE *js_include_file,int num,char *draw_type,int line_width, int closed_path,char *stroke_color,double stroke_opacity,int use_filled, char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_poly(FILE *js_include_file,int num,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -717,9 +717,9 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
-void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
+void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,int type, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
 /* 
-constants in draw_arrows() ... for this moment: var type = 1;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
+constants in draw_arrows() ... for this moment: ;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
  
 */
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
@@ -733,7 +733,8 @@ var dashtype0 = %d;\
 var dashtype1 = %d;\
 var arrow_head = %d;\
 var x0,y0;\
-var type = 1;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
+var type = %d;\
+var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
 function user_draw(evt){\
  var lu = userdraw_x.length;\
  if( lu != 0 && lu%%2 == 0){\
@@ -807,7 +808,7 @@ function canvas_remove(x,y){\
    }\
   }\
  }\
-};",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,arrow_head);
+};",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,arrow_head,type);
 
 }
 
@@ -1289,265 +1290,6 @@ function user_text(evt){\
 
 }
 
-void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
-/* in drag& drop / onclick library:
-    obj_type = 1 == rect
-    obj_type = 2 == point / points (do not scale with zoom)
-    obj_type = 3 == ellipse 
-    obj_type = 4 == polyline / segment /line / vline / hline
-    obj_type = 5 == closed path (polygon)
-    obj_type = 6 == roundrect
-    obj_type = 7 == crosshair / crosshairs
-    obj_type = 8 == arrow
-    obj_type = 9 == curve
-    obj_type = 10== arrow2 
-    obj_type = 11== parallel  (no drag or onclick) 
-    obj_type = 12== arc
-    obj_type = 13== circle (will scale on zoom)
-    obj_type = 14== text (will not scale or pan on zoom)
-    obj_type = 15== animated point on curve
-    obj_type = 16== pixels
-*/
-fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
-function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix){\
- this.text = text || 0;\
- this.font_size = font_size || 12;\
- if( font_family.indexOf('px') > 0 ){this.font_family = font_family;}else{this.font_family = this.font_size+'px Ariel';};\
- this.use_rotate = use_rotate || 0;\
- this.angle = angle*(Math.PI/180) || 0;\
- this.use_affine = use_affine || 0;\
- this.affine_matrix = affine_matrix || [1,0,0,1,0,0];\
- this.click_cnt = click_cnt || 1;\
- this.onclick = onclick || 0;\
- this.direction = direction || 0;\
- this.type = type || 1;\
- this.xorg = x;\
- this.yorg = y;\
- this.x = [x.length];\
- this.y = [x.length];\
- this.w = [x.length];\
- this.h = [x.length];\
- for(var p=0;p<x.length;p++){\
-  this.x[p] = x2px(x[p]);\
-  this.y[p] = y2px(y[p]);\
-  if( p > w.length){\
-    this.w[p] = w[0];\
-    this.h[p] = h[0];\
-  }\
-  else\
-  {\
-    this.w[p] = w[p];\
-    this.h[p] = h[p];\
-  }\
- };\
- this.line_width = line_width || 30;\
- this.stroke_opacity = stroke_opacity || 1.0;\
- this.stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\" || '#FF0000';\
- this.fill_opacity = fill_opacity || 1.0;\
- this.fill_color = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\" || '#FF0000';\
- this.use_filled = use_filled || 0;\
- this.use_dashed = use_dashed || 0;\
- this.dashtype0 = dashtype0 || 4;\
- this.dashtype1 = dashtype1 || 4;\
-};\
-Shape.prototype.draw = function(ctx)\
-{\
- ctx.lineWidth = this.line_width;\
- ctx.strokeStyle = this.stroke_color;\
- ctx.fillStyle = this.fill_color;\
- ctx.lineJoin = \"round\";\
- ctx.save();\
- if(this.use_rotate == 1){\
- var x_c = x2px(0);\
- var y_c = y2px(0);\
- ctx.translate(x_c,y_c);\
- ctx.rotate(this.angle);ctx.translate(-x_c,-y_c);};\
- if( this.use_affine == 1 ){\
-  ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
- };\
- ctx.beginPath();\
- switch(this.type){\
-  case 1: ctx.rect(this.x[0], this.y[0], this.x[1]-this.x[0], this.y[2] - this.y[0]);break;\
-  case 2: ctx.arc(this.x[0],this.y[0],this.w[0],0,2*Math.PI,false);break;\
-  case 3: var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.beginPath();ctx.moveTo(this.x[0], this.y[0] - h);ctx.bezierCurveTo(this.x[0] + w, this.y[0] - h,this.x[0] + w, this.y[0] + h,this.x[0],this.y[0] + h);ctx.bezierCurveTo(this.x[0] - w, this.y[0] + h,this.x[0] - w, this.y[0] - h,this.x[0], this.y[0] - h);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); }; ctx.closePath();break;\
-  case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
-  case 5: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
-  case 6: var w = this.x[1] - this.x[0];var h = this.y[1] - this.y[0];var r = this.w[0];ctx.beginPath();ctx.moveTo(this.x[0] + r, this.y[0]);ctx.lineTo(this.x[0] + w - r, this.y[0]);ctx.quadraticCurveTo(this.x[0] + w, this.y[0], this.x[0] + w, this.y[0] + r);ctx.lineTo(this.x[0] + w, this.y[0] + h - r);ctx.quadraticCurveTo(this.x[0] + w, this.y[0] + h, this.x[0] + w - r, this.y[0] + h);ctx.lineTo(this.x[0] + r, this.y[0] + h);ctx.quadraticCurveTo(this.x[0], this.y[0] + h, this.x[0], this.y[0] + h - r);ctx.lineTo(this.x[0], this.y[0] + r);ctx.quadraticCurveTo(this.x[0], this.y[0], this.x[0] + r, this.y[0]);ctx.closePath();break;\
-  case 7: ctx.moveTo(this.x[0]-this.w[0],this.y[0]-this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]+this.h[0]);ctx.moveTo(this.x[0]-this.w[0],this.y[0]+this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]-this.h[0]);break;\
-  case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.restore();ctx.save();dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();};break;\
-  case 9: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length - 1;p++){if( Math.abs(this.y[p] - this.y[p-1]) < ysize && Math.abs(this.y[p+1] - this.y[p]) < ysize ){ctx.lineTo(this.x[p],this.y[p]);}else{ctx.moveTo(this.x[p],this.y[p]);};};break;\
-  case 10: var dx;var dy;var len;ctx.restore();ctx.save();dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],-1*this.w[0]);ctx.lineTo(-1*this.w[0],this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],-0.5*this.w[0]);ctx.lineTo(this.w[0], 0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
-  case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
-  case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.w[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};break;\
-  case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
-  case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
-  case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
-  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
-  default: alert(\"draw primitive unknown\");break;\
- };\
- if(this.use_filled == 1){ ctx.fill();}\
- if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};\
- ctx.stroke();\
- ctx.restore();\
-};\
-Shape.prototype.contains = function(mx, my){\
- var marge = 2*this.line_width;\
- switch(this.type){\
-  case 1: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
-  case 2: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < this.w[p] + marge ){return p;break;};};break;\
-  case 3: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
-  case 4: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
-  case 6: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
-  case 7: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.w[p] <= mx) && (this.x[p] + this.w[p] >= mx) &&  (this.y[p] - this.h[p] <= my) && (this.y[p] + this.h[p] >= my) ){return p;};};break;\
-  case 8: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
-  case 9: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
-  case 11: break;\
-  case 12: break;\
-  case 13: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
-  case 14: for(var p = 0 ; p < this.x.length; p++ ){if(this.y[p] < my + 0.5*(this.font_size) && this.y[p] > my - 0.5*(this.font_size)){var w = parseInt(0.8*(this.font_size)*((this.text).length));if(this.x[p] < mx + w && this.x[p] > mx - w ){ return p;break;};};};break;\
-  default: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
- };\
- return -1;\
-};\
-var reply = [];\
-\
-function CanvasState(canvas,container_div){\
- this.canvas = canvas;\
- this.width = canvas.width;\
- this.height = canvas.height;\
- var ctx = canvas.getContext(\"2d\");\
- this.ctx = ctx;\
- this.valid = false;\
- this.shapes = [];\
- this.moved = [];\
- this.dragging = false;\
- this.selection = null;\
- var myState = this;\
- container_div.addEventListener( 'mouseup'    , function(e){myState.dragging = false;}, true);\
- container_div.addEventListener( 'mousemove'  , mousemove,false);\
- container_div.addEventListener( 'mousedown'  , mousedown,false);\
- container_div.addEventListener( 'touchend'   , function(e) {myState.dragging = false;}, true);\
- container_div.addEventListener( 'selectstart', function(e) { e.preventDefault(); return false; }, false);\
- container_div.addEventListener( 'touchstart' , mousedown,false);\
- container_div.addEventListener( 'touchmove'  , mousemove,false);\
- function mousedown(e){\
-  var mouse = myState.getMouse(e);\
-  var mx = mouse.x;\
-  var my = mouse.y;\
-  if( use_pan_and_zoom == 1 && my > ysize - 15){\
-   check_zoom_or_pan(mx);\
-  }\
-  else\
-  {\
-   var shapes = myState.shapes;\
-   var l = shapes.length;\
-   var chk = -1;\
-   for(var i=0;i<l;i++){\
-    chk = shapes[i].contains(mx, my);\
-    if ( chk != -1 ){\
-     if( myState.moved[shapes[i].click_cnt] != 1){\
-      myState.moved[shapes[i].click_cnt] = 1;\
-      myState.x_start = shapes[i].x[chk];\
-      myState.y_start = shapes[i].y[chk];\
-     };\
-     var org_line_width = shapes[i].line_width;\
-     var org_font_family = shapes[i].font_family;\
-     var org_stroke_opacity = shapes[i].stroke_opacity;\
-     myState.chk = chk;\
-     myState.selection = shapes[i];\
-     myState.valid = false;\
-     switch(shapes[i].onclick){\
-      case 0: myState.dragging = false;break;\
-      case 1: myState.selection.line_width = 3*org_line_width;myState.selection.font_family = \"bold italic \"+myState.selection.font_size+\"px Courier\";myState.dragging = false;myState.draw();reply[0] = myState.selection.click_cnt;myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\
-      case 2: myState.dragging = true;break;\
-      default:break;\
-     };\
-     return;\
-    };\
-   };\
-  };\
-  myState.selection = null;\
-  myState.valid = true;\
-  return;\
- };\
- function mousemove(e){\
-  if(myState.dragging){\
-   var mouse = myState.getMouse(e);\
-   var dx=mouse.x - myState.selection.x[myState.chk];\
-   var dy=mouse.y - myState.selection.y[myState.chk];\
-   switch(myState.selection.direction){\
-    case 0: myState.selection = move(myState.selection,dx,dy);break;\
-    case 1: myState.selection = move(myState.selection,dx,0);break;\
-    case 2: myState.selection = move(myState.selection,0,dy); break;\
-   };\
-   reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\\n\";\
-   myState.valid = false;\
-  };\
- };\
- function check_zoom_or_pan(x){\
-  var key = -1;\
-  for(p = 15 ; p < 106 ; p = p+15){\
-    key++;\
-    if(x > xsize - p){start_canvas%d(key);return;}\
-  }\
-  return;\
- };\
- this.interval = 30;\
- setInterval(function() { myState.draw(); }, myState.interval);\
-};\
-CanvasState.prototype.addShape = function(shape){\
- this.shapes.push(shape);\
- this.valid = false;\
-};\
-CanvasState.prototype.clear = function(){\
- this.ctx.clearRect(0, 0, this.width, this.height);\
-};\
-CanvasState.prototype.draw = function(){\
- if(this.valid == false ){\
-  var shapes = this.shapes;\
-  this.clear();\
-  var l = shapes.length;var shape;\
-  for(var i = 0; i < l; i++){\
-   shape = shapes[i];\
-   shape.draw(this.ctx);\
-  };\
-  this.valid = true;\
- }\
-};\
-CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
- (this.ctx).clearRect(0,0,this.width,this.height);\
- for(var i = 0; i < this.shapes.length ; i++){\
-  for(var p = 0 ; p < this.shapes[i].x.length;p++){\
-   this.shapes[i].x[p] = x2px(this.shapes[i].xorg[p]);\
-   this.shapes[i].y[p] = y2px(this.shapes[i].yorg[p]);\
-  }\
-  this.valid = false;\
-  this.shapes[i].draw(this.ctx);\
- };\
- reply = new Array();\
-};\
-CanvasState.prototype.getMouse = function(e){\
-var element = this.canvas, offsetX = 0,offsetY = 0;\
-while( ( element = element.offsetParent) ){\
-offsetX += element.offsetLeft;\
-offsetY += element.offsetTop;\
-}\
-var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
-var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
- return {x: mx, y: my};\
-};\
-function read_dragdrop(){\
-var moved_objects = [];var c = 0;\
-for(var p=0 ; p<reply.length ; p++){\
-if(reply[p]){moved_objects[c] = reply[p];c++}\
-}\
-return moved_objects;\
-};\
-this.read_dragdrop = read_dragdrop;\
-var obj = create_canvas%d(%d,xsize,ysize);\
-var container_div = document.getElementById(\"canvas_div%d\");\
-var dragstuff = new CanvasState(obj,container_div);",canvas_root_id,ANIMATE_CANVAS,canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id);
-}
 
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin command mouse on current canvas -->\n\
@@ -2475,3 +2217,262 @@ struct {
  };
 
 
+void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
+/* in drag& drop / onclick library:
+    obj_type = 1 == rect
+    obj_type = 2 == point / points (do not scale with zoom)
+    obj_type = 3 == ellipse 
+    obj_type = 4 == polyline / segment /line / vline / hline
+    obj_type = 5 == closed path (polygon)
+    obj_type = 6 == roundrect
+    obj_type = 7 == crosshair / crosshairs
+    obj_type = 8 == arrow
+    obj_type = 9 == curve
+    obj_type = 10== arrow2 
+    obj_type = 11== parallel  (no drag or onclick) 
+    obj_type = 12== arc
+    obj_type = 13== circle (will scale on zoom)
+    obj_type = 14== text (will not scale or pan on zoom)
+    obj_type = 15== animated point on curve
+    obj_type = 16== pixels
+*/
+fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
+function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix){\
+ this.text = text || 0;\
+ this.font_size = font_size || 12;\
+ if( font_family.indexOf('px') > 0 ){this.font_family = font_family;}else{this.font_family = this.font_size+'px Ariel';};\
+ this.use_rotate = use_rotate || 0;\
+ this.angle = angle*(Math.PI/180) || 0;\
+ this.use_affine = use_affine || 0;\
+ this.affine_matrix = affine_matrix || [1,0,0,1,0,0];\
+ this.click_cnt = click_cnt || 1;\
+ this.onclick = onclick || 0;\
+ this.direction = direction || 0;\
+ this.type = type || 1;\
+ this.xorg = x;\
+ this.yorg = y;\
+ this.x = [x.length];\
+ this.y = [x.length];\
+ this.w = [x.length];\
+ this.h = [x.length];\
+ for(var p=0;p<x.length;p++){\
+  this.x[p] = x2px(x[p]);\
+  this.y[p] = y2px(y[p]);\
+  if( p > w.length){\
+    this.w[p] = w[0];\
+    this.h[p] = h[0];\
+  }\
+  else\
+  {\
+    this.w[p] = w[p];\
+    this.h[p] = h[p];\
+  }\
+ };\
+ this.line_width = line_width || 30;\
+ this.stroke_opacity = stroke_opacity || 1.0;\
+ this.stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\" || '#FF0000';\
+ this.fill_opacity = fill_opacity || 1.0;\
+ this.fill_color = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\" || '#FF0000';\
+ this.use_filled = use_filled || 0;\
+ this.use_dashed = use_dashed || 0;\
+ this.dashtype0 = dashtype0 || 4;\
+ this.dashtype1 = dashtype1 || 4;\
+};\
+Shape.prototype.draw = function(ctx)\
+{\
+ ctx.lineWidth = this.line_width;\
+ ctx.strokeStyle = this.stroke_color;\
+ ctx.fillStyle = this.fill_color;\
+ ctx.lineJoin = \"round\";\
+ ctx.save();\
+ if(this.use_rotate == 1){\
+ var x_c = x2px(0);\
+ var y_c = y2px(0);\
+ ctx.translate(x_c,y_c);\
+ ctx.rotate(this.angle);ctx.translate(-x_c,-y_c);};\
+ if( this.use_affine == 1 ){\
+  ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
+ };\
+ ctx.beginPath();\
+ switch(this.type){\
+  case 1: ctx.rect(this.x[0], this.y[0], this.x[1]-this.x[0], this.y[2] - this.y[0]);break;\
+  case 2: ctx.arc(this.x[0],this.y[0],this.w[0],0,2*Math.PI,false);break;\
+  case 3: var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.beginPath();ctx.moveTo(this.x[0], this.y[0] - h);ctx.bezierCurveTo(this.x[0] + w, this.y[0] - h,this.x[0] + w, this.y[0] + h,this.x[0],this.y[0] + h);ctx.bezierCurveTo(this.x[0] - w, this.y[0] + h,this.x[0] - w, this.y[0] - h,this.x[0], this.y[0] - h);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); }; ctx.closePath();break;\
+  case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
+  case 5: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
+  case 6: var w = this.x[1] - this.x[0];var h = this.y[1] - this.y[0];var r = this.w[0];ctx.beginPath();ctx.moveTo(this.x[0] + r, this.y[0]);ctx.lineTo(this.x[0] + w - r, this.y[0]);ctx.quadraticCurveTo(this.x[0] + w, this.y[0], this.x[0] + w, this.y[0] + r);ctx.lineTo(this.x[0] + w, this.y[0] + h - r);ctx.quadraticCurveTo(this.x[0] + w, this.y[0] + h, this.x[0] + w - r, this.y[0] + h);ctx.lineTo(this.x[0] + r, this.y[0] + h);ctx.quadraticCurveTo(this.x[0], this.y[0] + h, this.x[0], this.y[0] + h - r);ctx.lineTo(this.x[0], this.y[0] + r);ctx.quadraticCurveTo(this.x[0], this.y[0], this.x[0] + r, this.y[0]);ctx.closePath();break;\
+  case 7: ctx.moveTo(this.x[0]-this.w[0],this.y[0]-this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]+this.h[0]);ctx.moveTo(this.x[0]-this.w[0],this.y[0]+this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]-this.h[0]);break;\
+  case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.restore();ctx.save();dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();};break;\
+  case 9: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length - 1;p++){if( Math.abs(this.y[p] - this.y[p-1]) < ysize && Math.abs(this.y[p+1] - this.y[p]) < ysize ){ctx.lineTo(this.x[p],this.y[p]);}else{ctx.moveTo(this.x[p],this.y[p]);};};break;\
+  case 10: var dx;var dy;var len;ctx.restore();ctx.save();dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],-1*this.w[0]);ctx.lineTo(-1*this.w[0],this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],-0.5*this.w[0]);ctx.lineTo(this.w[0], 0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
+  case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
+  case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.w[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
+  case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
+  case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
+  case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
+  case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
+  default: alert(\"draw primitive unknown\");break;\
+ };\
+ if(this.use_filled == 1){ ctx.fill();}\
+ if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};\
+ ctx.stroke();\
+ ctx.restore();\
+};\
+Shape.prototype.contains = function(mx, my){\
+ var marge = 2*this.line_width;\
+ switch(this.type){\
+  case 1: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
+  case 2: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < this.w[p] + marge ){return p;break;};};break;\
+  case 3: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
+  case 4: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
+  case 6: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
+  case 7: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.w[p] <= mx) && (this.x[p] + this.w[p] >= mx) &&  (this.y[p] - this.h[p] <= my) && (this.y[p] + this.h[p] >= my) ){return p;};};break;\
+  case 8: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
+  case 9: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
+  case 11: break;\
+  case 12: break;\
+  case 13: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
+  case 14: for(var p = 0 ; p < this.x.length; p++ ){if(this.y[p] < my + 0.5*(this.font_size) && this.y[p] > my - 0.5*(this.font_size)){var w = parseInt(0.8*(this.font_size)*((this.text).length));if(this.x[p] < mx + w && this.x[p] > mx - w ){ return p;break;};};};break;\
+  default: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
+ };\
+ return -1;\
+};\
+var reply = [];\
+\
+function CanvasState(canvas,container_div){\
+ this.canvas = canvas;\
+ this.width = canvas.width;\
+ this.height = canvas.height;\
+ var ctx = canvas.getContext(\"2d\");\
+ this.ctx = ctx;\
+ this.valid = false;\
+ this.shapes = [];\
+ this.moved = [];\
+ this.dragging = false;\
+ this.selection = null;\
+ var myState = this;\
+ container_div.addEventListener( 'mouseup'    , function(e){myState.dragging = false;}, true);\
+ container_div.addEventListener( 'mousemove'  , mousemove,false);\
+ container_div.addEventListener( 'mousedown'  , mousedown,false);\
+ container_div.addEventListener( 'touchend'   , function(e) {myState.dragging = false;}, true);\
+ container_div.addEventListener( 'selectstart', function(e) { e.preventDefault(); return false; }, false);\
+ container_div.addEventListener( 'touchstart' , mousedown,false);\
+ container_div.addEventListener( 'touchmove'  , mousemove,false);\
+ function mousedown(e){\
+  var mouse = myState.getMouse(e);\
+  var mx = mouse.x;\
+  var my = mouse.y;\
+  if( use_pan_and_zoom == 1 && my > ysize - 15){\
+   check_zoom_or_pan(mx);\
+  }\
+  else\
+  {\
+   var shapes = myState.shapes;\
+   var l = shapes.length;\
+   var chk = -1;\
+   for(var i=0;i<l;i++){\
+    chk = shapes[i].contains(mx, my);\
+    if ( chk != -1 ){\
+     if( myState.moved[shapes[i].click_cnt] != 1){\
+      myState.moved[shapes[i].click_cnt] = 1;\
+      myState.x_start = shapes[i].x[chk];\
+      myState.y_start = shapes[i].y[chk];\
+     };\
+     var org_line_width = shapes[i].line_width;\
+     var org_font_family = shapes[i].font_family;\
+     var org_stroke_opacity = shapes[i].stroke_opacity;\
+     myState.chk = chk;\
+     myState.selection = shapes[i];\
+     myState.valid = false;\
+     switch(shapes[i].onclick){\
+      case 0: myState.dragging = false;break;\
+      case 1: myState.selection.line_width = 3*org_line_width;myState.selection.font_family = \"bold italic \"+myState.selection.font_size+\"px Courier\";myState.dragging = false;myState.draw();reply[0] = myState.selection.click_cnt;myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\
+      case 2: myState.dragging = true;break;\
+      default:break;\
+     };\
+     return;\
+    };\
+   };\
+  };\
+  myState.selection = null;\
+  myState.valid = true;\
+  return;\
+ };\
+ function mousemove(e){\
+  if(myState.dragging){\
+   var mouse = myState.getMouse(e);\
+   var dx=mouse.x - myState.selection.x[myState.chk];\
+   var dy=mouse.y - myState.selection.y[myState.chk];\
+   switch(myState.selection.direction){\
+    case 0: myState.selection = move(myState.selection,dx,dy);break;\
+    case 1: myState.selection = move(myState.selection,dx,0);break;\
+    case 2: myState.selection = move(myState.selection,0,dy); break;\
+   };\
+   reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\\n\";\
+   myState.valid = false;\
+  };\
+ };\
+ function check_zoom_or_pan(x){\
+  var key = -1;\
+  for(p = 15 ; p < 106 ; p = p+15){\
+    key++;\
+    if(x > xsize - p){start_canvas%d(key);return;}\
+  }\
+  return;\
+ };\
+ this.interval = 30;\
+ setInterval(function() { myState.draw(); }, myState.interval);\
+};\
+CanvasState.prototype.addShape = function(shape){\
+ this.shapes.push(shape);\
+ this.valid = false;\
+};\
+CanvasState.prototype.clear = function(){\
+ this.ctx.clearRect(0, 0, this.width, this.height);\
+};\
+CanvasState.prototype.draw = function(){\
+ if(this.valid == false ){\
+  var shapes = this.shapes;\
+  this.clear();\
+  var l = shapes.length;var shape;\
+  for(var i = 0; i < l; i++){\
+   shape = shapes[i];\
+   shape.draw(this.ctx);\
+  };\
+  this.valid = true;\
+ }\
+};\
+CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
+ (this.ctx).clearRect(0,0,this.width,this.height);\
+ for(var i = 0; i < this.shapes.length ; i++){\
+  for(var p = 0 ; p < this.shapes[i].x.length;p++){\
+   this.shapes[i].x[p] = x2px(this.shapes[i].xorg[p]);\
+   this.shapes[i].y[p] = y2px(this.shapes[i].yorg[p]);\
+  }\
+  this.valid = false;\
+  this.shapes[i].draw(this.ctx);\
+ };\
+ reply = new Array();\
+};\
+CanvasState.prototype.getMouse = function(e){\
+var element = this.canvas, offsetX = 0,offsetY = 0;\
+while( ( element = element.offsetParent) ){\
+offsetX += element.offsetLeft;\
+offsetY += element.offsetTop;\
+}\
+var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
+var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
+ return {x: mx, y: my};\
+};\
+function read_dragdrop(){\
+var moved_objects = [];var c = 0;\
+for(var p=0 ; p<reply.length ; p++){\
+if(reply[p]){moved_objects[c] = reply[p];c++}\
+}\
+return moved_objects;\
+};\
+this.read_dragdrop = read_dragdrop;\
+var obj = create_canvas%d(%d,xsize,ysize);\
+var container_div = document.getElementById(\"canvas_div%d\");\
+var dragstuff = new CanvasState(obj,container_div);",canvas_root_id,ANIMATE_CANVAS,canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id);
+}
