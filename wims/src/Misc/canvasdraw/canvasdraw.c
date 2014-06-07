@@ -924,7 +924,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrows</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
@@ -1072,9 +1072,29 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if(strcmp(draw_type,"arrows") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
-		add_js_arrows(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		add_js_arrows(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,2);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
+	    }
+	    else
+	    if(strcmp(draw_type,"arrows2") == 0 ){
+		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_arrows(js_include_file,2,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		if(use_input_xy == 1){ 
+		    add_input_arrow(js_include_file,1);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
+	    }
+	    else
+	    if(strcmp(draw_type,"arrow2") == 0 ){
+		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
+		if(reply_format < 1){reply_format = 11;}
+		add_js_arrows(js_include_file,1,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		if(use_input_xy == 1){ 
+		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 	    }
@@ -1082,7 +1102,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if(strcmp(draw_type,"arrow") == 0 ){
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format < 1){reply_format = 11;}
-		add_js_arrows(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
+		add_js_arrows(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
@@ -1329,12 +1349,12 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ text fontcolor,x,y,font,text_string
 	@ font may be described by keywords : giant,huge,normal,small,tiny
-	@ use command 'fontsize' to increase base fontsize for the keywords 
+	@ use command 'fontsize' to increase base fontsize for these keywords 
 	@ may be set "onclick" or "drag xy"
 	@ backwards compatible with flydraw
 	@ unicode supported: text red,0,0,huge,\\u2232
-	@ use command 'string' and 'fontfamily' for a more fine grained control over html5 canvas text element
-	@ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+	@ use command 'string' combined with 'fontfamily' for a more fine grained control over html5 canvas text element
+	@ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case reset 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
 	*/
 	    for(i = 0; i < 5 ;i++){
 		switch(i){
@@ -1368,7 +1388,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 4: 
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%d,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,0,0,temp,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();break;
 		    default:break;
 		}
@@ -1383,7 +1403,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ backwards compatible with flydraw
 	 @ unicode supported: textup red,0,0,huge,\\u2232
 	 @ use command 'stringup' and 'fontfamily' for a more fine grained control over html5 canvas text element
-	 @ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case rested 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
+	 @ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case reset 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
 	*/
 	    if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}	
 	    for(i = 0; i<5 ;i++){
@@ -1480,7 +1500,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3: decimals = find_number_of_digits(precision);
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%d,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,0,0,temp,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();break;
 			    break;
 		    default:break;
@@ -4605,10 +4625,9 @@ draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,
  ctx.lineWidth = line_width;\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.lineCap = \"round\";\
- ctx.save();\
  var x1,y1,x2,y2,dx,dy,len;\
  for(var p = 0 ; p < x_points.length - 1 ; p = p +2){\
-   ctx.restore();ctx.save();\
+   ctx.save();\
    x1 = x_points[p];y1 = y_points[p];x2 = x_points[p+1];y2 = y_points[p+1];dx = x2 - x1;dy = y2 - y1;\
    len = Math.sqrt(dx*dx+dy*dy);\
    ctx.translate(x2,y2);\
@@ -4625,8 +4644,8 @@ draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,
    ctx.lineTo(-1*arrow_head, 0.5*arrow_head);\
    ctx.closePath();\
    ctx.fill();\
+   ctx.restore();\
    if( type == 2 ){\
-     ctx.restore();\
      ctx.save();\
      ctx.translate(x1,y1);\
      ctx.rotate(Math.atan2(-dy,-dx));\
@@ -4637,6 +4656,7 @@ draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,
      ctx.closePath();\
      ctx.stroke();\
      ctx.fill();\
+     ctx.restore();\
    }\
   }\
   ctx.restore();\
@@ -4938,7 +4958,7 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
    ctx.translate(zero_x+8 + font_size,txt_size+font_size);\
    ctx.rotate(-0.5*Math.PI);\
    ctx.fillText(yaxislabel,0,0);\
-   ctx.save();\
+   ctx.restore();\
  };\
 };\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
@@ -5944,10 +5964,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
  };\
  ctx.restore();\n\
 };\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
-
     break;
-
-
     default:break;
    }
   }
@@ -6786,5 +6803,4 @@ int get_token(FILE *infile){
 	ungetc(c,infile);
 	return 0;
 }
-
 
