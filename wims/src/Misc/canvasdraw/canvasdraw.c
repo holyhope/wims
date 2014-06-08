@@ -1973,6 +1973,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ input x,y,size,editable,value
 	 @ to set inputfield "readonly", use editable = 0 
 	 @ only active inputfields (editable = 1) will be read with read_canvas();
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status' 
 	 @ may be further controlled by "inputstyle" (inputcss is not yet implemented...)
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
 	*/
@@ -2000,6 +2001,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	/* 
 	 @ textarea x,y,cols,rows,readonly,value
 	 @ may be further controlled by "inputstyle"
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status' 
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
 	*/
 	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}	
@@ -2649,7 +2651,16 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    reset();
 	break;
 	case STATUS:
-	    fprintf(js_include_file,"\nstatus=\"waiting\";\n");
+	/*
+	@status
+	@keyword
+	@alernative keyword: nostatus
+	@used to override the effects of "status=done" in wims (answer.phtml)
+	@affects inputfields / textarea's in canvasimage and all userdraw based commands
+	@e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims status variable' is set to 'done'
+	*/
+	
+	    fprintf(js_include_file,"\nwims_status=\"waiting\";\n");
 	    break;
 	case XLOGBASE:
 	/*
@@ -5482,7 +5493,7 @@ input.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
 input.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px;\"+style);\
 input.setAttribute(\"size\",size);\
 input.setAttribute(\"value\",value);\
-if( readonly == 0 ){ input.setAttribute(\"readonly\",\"readonly\");};\
+if( readonly == 0 || wims_status == \"done\" ){ input.setAttribute(\"readonly\",\"readonly\");if( wims_status == \"done\" ){input.setAttribute(\"value\",\"\");};};\
 canvas_div.appendChild(input);};");
     break;
     
@@ -5495,7 +5506,8 @@ textarea.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
 textarea.setAttribute(\"style\",\"position:absolute;left:\"+x+\"px;top:\"+y+\"px;\"+style);\
 textarea.setAttribute(\"cols\",cols);\
 textarea.setAttribute(\"rows\",rows);\
-textarea.innerHTML = value;\
+textarea.value = value;\
+if( readonly == 0 || wims_status == \"done\" ){ textarea.setAttribute(\"readonly\",\"readonly\");if( wims_status == \"done\" ){textarea.value=\"\";};};\
 canvas_div.appendChild(textarea);};");
     break;
     
@@ -6141,6 +6153,7 @@ int get_token(FILE *infile){
 	*animate="animate",
 	*video="video",
 	*status="status",
+	*nostatus="nostatus",
 	*snaptogrid="snaptogrid",
 	*xsnaptogrid="xsnaptogrid",
 	*ysnaptogrid="ysnaptogrid",
@@ -6756,7 +6769,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return TRANSPARENT;
 	}
-	if( strcmp(input_type, status) == 0 ){
+	if( strcmp(input_type, status) == 0 || strcmp(input_type, nostatus) == 0 ){
 	free(input_type);
 	return STATUS;
 	}
