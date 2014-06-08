@@ -74,15 +74,22 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
   if(reply[0].length == 0 ){setAlarm(r1);return;};show = show + "</ol>";
   myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 }
-!if $wims_user=supervisor and $inputs<0
+!if $wims_user=supervisor
  <!-- only visible for supervisor : to fill inputfields called myinput_n not default on this page, but stored in some variable -->
- !set ans=!lines2items $(answer$n)
- !set s = !itemcnt $ans
- function putanswer(){var input_type=['myinput','mathml','canvas_input'];for( var i=0; i < input_type.length ;i++){ if(document.getElementById( input_type[i]+0 )){var ans = new Array();ans = make_description("$ans",$s);var p = 0;var r = 0;while( document.getElementById( input_type[i]+p) ){if( ! document.getElementById(input_type[i]+p).getAttribute("readonly")){document.getElementById(input_type[i]+p).value = ans[r];r++;};p++;};};};}
+    !set a_items=!itemcnt $(answer$n)
+    !if $a_items != $[floor($inputs)]
+	!set use_lines=1
+    !else
+	!set use_lines=0
+    !endif
+    !if $inputs<0
+	!set ans=!lines2items $(answer$n)
+	!set s = !itemcnt $ans
+	function putanswer(){var input_type=['myinput','mathml','canvas_input'];for( var i=0; i < input_type.length ;i++){ if(document.getElementById( input_type[i]+0 )){var ans = new Array();ans = make_description("$ans",$s);var p = 0;var r = 0;while( document.getElementById( input_type[i]+p) ){if( ! document.getElementById(input_type[i]+p).getAttribute("readonly")){document.getElementById(input_type[i]+p).value = ans[r];r++;};p++;};};};}
+    !endif
 !endif
 //]]>
 </script>
-
 <table id="exercise" class="exercise" ><!-- begin table id=exercise -->
     <tr>
     <td class="exercise_t">
@@ -105,12 +112,6 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
         			$(description[1])&nbsp;$m_rightarrow&nbsp;<textarea id="myinput0" class="schaersvoorde_textarea" cols="$cols" rows="$rows">$(reply$n)</textarea>&nbsp;$ex1
 			    !endif
 			!else
-			    !set a_items=!itemcnt $(answer$n)
-		    	    !if $a_items != $[floor($inputs)]
-				!set use_lines=1
-			    !else
-				!set use_lines=0
-			    !endif
 			    <ul class="vlist">
 			    !for p=1 to $inputs
 				<li>
@@ -133,9 +134,20 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
 		</table>
 	    !else
 		<ul class="vlist"><!-- this "span" line-height / font-size is related to schaersvoorde.css : "schaersvoorde_input" class font-size -->
-		!for p=1 to $inputs
-		    <li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p])</span><input type="text" id="myinput$[$p-1]" value="" size="$cols" class="schaersvoorde_input" /></li>
-		!next p
+		!if $wims_user=supervisor
+		    !for p=1 to $inputs
+			!if $use_lines=1
+			    !set deelantwoord=!line $p of $(answer$n)
+			!else
+			    !set deelantwoord=!item $p of $(answer$n)
+			!endif
+			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p]) $m_rightarrow </span><input type="text" id="myinput$[$p-1]" value="$deelantwoord" size="$cols" class="schaersvoorde_input" /></li>
+		    !next p
+		!else
+		    !for p=1 to $inputs
+			<li><span style="font-size:14pt;text-align:left;line-height:26px;">$(description[$p]) $m_rightarrow </span><input type="text" id="myinput$[$p-1]" value="" size="$cols" class="schaersvoorde_input" /></li>
+		    !next p
+		!endif
 		</ul>
 	    !endif
 	!else
@@ -239,12 +251,6 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
 	!else
 	    !if $inputs > 1
 	    <td class="exercise_t" id="use_inputs">
-	        !set a_items=!itemcnt $(answer$n)
-		!if $a_items != $[floor($inputs)]
-	            !set use_lines=1
-		!else
-	    	    !set use_lines=0
-		!endif
 		<table class="zebra_table_h2">
 		!for p=1 to $inputs
 		    !if $wims_user=supervisor
