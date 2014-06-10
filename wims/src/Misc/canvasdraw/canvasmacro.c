@@ -2403,6 +2403,8 @@ function CanvasState(canvas,container_div){\
    var mouse = myState.getMouse(e);\
    var dx=mouse.x - myState.selection.x[myState.chk];\
    var dy=mouse.y - myState.selection.y[myState.chk];\
+   if( x_use_snap_to_grid == 1){ dx = snap_to_x(dx);};\
+   if( y_use_snap_to_grid == 1){ dy = snap_to_x(dy);};\
    switch(myState.selection.direction){\
     case 0: myState.selection = move(myState.selection,dx,dy);break;\
     case 1: myState.selection = move(myState.selection,dx,0);break;\

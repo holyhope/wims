@@ -217,6 +217,9 @@ function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
 function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
 function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};\
+var x_use_snap_to_grid = 0;var y_use_snap_to_grid = 0;var snap_x = 1;var snap_y = 1;\
+function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\
+function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\
 var xlogbase = 10;\
 var ylogbase = 10;\
 var use_xlogscale = 0;\
@@ -224,8 +227,6 @@ var use_ylogscale = 0;\
 var x_strings = null;\
 var y_strings = null;\
 var use_pan_and_zoom = 0;\
-var x_use_snap_to_grid = 0;\
-var y_use_snap_to_grid = 0;\
 var use_jsmath = 0;\
 var xstart = 0;\
 var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
@@ -872,7 +873,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if xminor / yminor is defined, the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;var snap_x = 1;var snap_y = 1;function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\n");
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;");
 	break;
 	case XSNAPTOGRID:
 	/*
@@ -881,7 +882,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to xmajor grid
 	 @ if xminor is defined, the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;var snap_x = 1;if (typeof snap_y === 'undefined') { var snap_y = 1;};var snap_y = 1;function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\n");
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 0;");
 	break;
 	case YSNAPTOGRID:
 	/*
@@ -890,7 +891,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ in case of userdraw the drawn points will snap to ymajor grid
 	 @ if yminor is defined, the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
-	fprintf(js_include_file,"\ny_use_snap_to_grid = 1;if (typeof snap_x === 'undefined') { var snap_x = 1;};var snap_y = 1;\nfunction snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\n");
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 0;y_use_snap_to_grid = 1;");
 	break;
 	case USERTEXTAREA_XY:
 	/*
@@ -2083,6 +2084,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ drag [x][y][xy]
 	 @ the next object will be draggable in x / y / xy direction
 	 @ the displacement can be read by 'javascript:read_dragdrop();'
+	 @ use keywordd 'snaptogrid' , 'xsnaptogrid' or 'ysnaptogrid' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images. 
 	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
