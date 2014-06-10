@@ -2340,132 +2340,155 @@ Shape.prototype.contains = function(mx, my){\
 var reply = [];\
 \
 function CanvasState(canvas,container_div){\
- this.canvas = canvas;\
- this.width = canvas.width;\
- this.height = canvas.height;\
- var ctx = canvas.getContext(\"2d\");\
- this.ctx = ctx;\
- this.valid = false;\
- this.shapes = [];\
- this.moved = [];\
- this.dragging = false;\
- this.selection = null;\
- var myState = this;\
- container_div.addEventListener( 'mouseup'    , function(e){myState.dragging = false;}, true);\
- container_div.addEventListener( 'mousemove'  , mousemove,false);\
- container_div.addEventListener( 'mousedown'  , mousedown,false);\
- container_div.addEventListener( 'touchend'   , function(e) {myState.dragging = false;}, true);\
- container_div.addEventListener( 'selectstart', function(e) { e.preventDefault(); return false; }, false);\
- container_div.addEventListener( 'touchstart' , mousedown,false);\
- container_div.addEventListener( 'touchmove'  , mousemove,false);\
+ this.canvas = canvas;\n\
+ this.width = canvas.width;\n\
+ this.height = canvas.height;\n\
+ var ctx = canvas.getContext(\"2d\");\n\
+ this.ctx = ctx;\n\
+ this.valid = false;\n\
+ this.shapes = [];\n\
+ this.moved = [];\n\
+ this.dragging = false;\n\
+ this.selection = null;\n\
+ var myState = this;\n\
+ container_div.addEventListener( 'mouseup'    , mouseup,false);\n\
+ container_div.addEventListener( 'mousemove'  , mousemove,false);\n\
+ container_div.addEventListener( 'mousedown'  , mousedown,false);\n\
+ container_div.addEventListener( 'touchend'   , mouseup,false);\n\
+ container_div.addEventListener( 'selectstart', function(e) { e.preventDefault(); return false; }, false);\n\
+ container_div.addEventListener( 'touchstart' , mousedown,false);\n\
+ container_div.addEventListener( 'touchmove'  , mousemove,false);\n\
  function mousedown(e){\
-  var mouse = myState.getMouse(e);\
-  var mx = mouse.x;\
-  var my = mouse.y;\
+  var mouse = myState.getMouse(e);\n\
+  var mx = mouse.x;\n\
+  var my = mouse.y;\n\
   if( use_pan_and_zoom == 1 && my > ysize - 15){\
-   check_zoom_or_pan(mx);\
+   check_zoom_or_pan(mx);\n\
   }\
   else\
   {\
-   var shapes = myState.shapes;\
-   var l = shapes.length;\
-   var chk = -1;\
+   var shapes = myState.shapes;\n\
+   var l = shapes.length;\n\
+   var chk = -1;\n\
    for(var i=0;i<l;i++){\
-    chk = shapes[i].contains(mx, my);\
+    chk = shapes[i].contains(mx, my);\n\
     if ( chk != -1 ){\
      if( myState.moved[shapes[i].click_cnt] != 1){\
-      myState.moved[shapes[i].click_cnt] = 1;\
-      myState.x_start = shapes[i].x[chk];\
-      myState.y_start = shapes[i].y[chk];\
-     };\
-     var org_line_width = shapes[i].line_width;\
-     var org_font_family = shapes[i].font_family;\
-     var org_stroke_opacity = shapes[i].stroke_opacity;\
-     myState.chk = chk;\
-     myState.selection = shapes[i];\
-     myState.valid = false;\
+      myState.moved[shapes[i].click_cnt] = 1;\n\
+      myState.x_start = shapes[i].x[chk];\n\
+      myState.y_start = shapes[i].y[chk];\n\
+     };\n\
+     var org_line_width = shapes[i].line_width;\n\
+     var org_font_family = shapes[i].font_family;\n\
+     var org_stroke_opacity = shapes[i].stroke_opacity;\n\
+     myState.chk = chk;\n\
+     myState.selection = shapes[i];\n\
+     myState.valid = false;\n\
      switch(shapes[i].onclick){\
-      case 0: myState.dragging = false;break;\
-      case 1: myState.selection.line_width = 3*org_line_width;myState.selection.font_family = \"bold italic \"+myState.selection.font_size+\"px Courier\";myState.dragging = false;myState.draw();reply[0] = myState.selection.click_cnt;myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\
-      case 2: myState.dragging = true;break;\
-      default:break;\
-     };\
-     return;\
+      case 0: myState.dragging = false;break;\n\
+      case 1: myState.selection.line_width = 3*org_line_width;myState.selection.font_family = \"bold italic \"+myState.selection.font_size+\"px Courier\";myState.dragging = false;myState.draw();reply[0] = myState.selection.click_cnt;myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\n\
+      case 2: myState.dragging = true;break;\n\
+      default:break;\n\
+     };\n\
+     return;\n\
+    };\n\
+   };\n\
+  };\n\
+  myState.selection = null;\n\
+  myState.valid = true;\n\
+  return;\n\
+ };\n\
+ function mouseup(e){;\n\
+  if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1){\
+   var mouse = myState.getMouse(e);\n\
+   var dx=mouse.x;\n\
+   var dy=mouse.y;\n\
+   if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1 ){ \
+    dx = snap_to_x(dx) - myState.selection.x[myState.chk];\
+    dy = snap_to_x(dy) - myState.selection.y[myState.chk];\
+   }else{\
+    if( x_use_snap_to_grid == 1 ){ \
+     dx = snap_to_x(dx) - myState.selection.x[myState.chk];\
+     dy = 0;\
+    }else{\
+     dx = 0;\
+     dy = snap_to_x(dy) - myState.selection.y[myState.chk];\
     };\
    };\
+   switch(myState.selection.direction){\n\
+    case 0: myState.selection = move(myState.selection,dx,dy);break;\n\
+    case 1: myState.selection = move(myState.selection,dx,0);break;\n\
+    case 2: myState.selection = move(myState.selection,0,dy); break;\n\
+   };\n\
   };\
-  myState.selection = null;\
-  myState.valid = true;\
-  return;\
- };\
- function mousemove(e){\
+  reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\";\n\
+  myState.dragging = false;\n\
+  myState.valid = false;\n\
+ };\n\
+ function mousemove(e){\n\
   if(myState.dragging){\
    var mouse = myState.getMouse(e);\
    var dx=mouse.x - myState.selection.x[myState.chk];\
    var dy=mouse.y - myState.selection.y[myState.chk];\
-   if( x_use_snap_to_grid == 1){ dx = snap_to_x(dx);};\
-   if( y_use_snap_to_grid == 1){ dy = snap_to_x(dy);};\
-   switch(myState.selection.direction){\
-    case 0: myState.selection = move(myState.selection,dx,dy);break;\
+   switch(myState.selection.direction){    case 0: myState.selection = move(myState.selection,dx,dy);break;\
     case 1: myState.selection = move(myState.selection,dx,0);break;\
     case 2: myState.selection = move(myState.selection,0,dy); break;\
    };\
-   reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\\n\";\
    myState.valid = false;\
   };\
  };\
  function check_zoom_or_pan(x){\
-  var key = -1;\
+  var key = -1;\n\
   for(p = 15 ; p < 106 ; p = p+15){\
-    key++;\
+    key++;\n\
     if(x > xsize - p){start_canvas%d(key);return;}\
   }\
-  return;\
- };\
- this.interval = 30;\
- setInterval(function() { myState.draw(); }, myState.interval);\
-};\
+  return;\n\
+ };\n\
+ this.interval = 30;\n\
+ setInterval(function() { myState.draw(); }, myState.interval);\n\
+};\n\
 CanvasState.prototype.addShape = function(shape){\
- this.shapes.push(shape);\
- this.valid = false;\
-};\
+ this.shapes.push(shape);\n\
+ this.valid = false;\n\
+};\n\
 CanvasState.prototype.clear = function(){\
- this.ctx.clearRect(0, 0, this.width, this.height);\
-};\
+ this.ctx.clearRect(0, 0, this.width, this.height);\n\
+};\n\
 CanvasState.prototype.draw = function(){\
  if(this.valid == false ){\
-  var shapes = this.shapes;\
-  this.clear();\
-  var l = shapes.length;var shape;\
+  var shapes = this.shapes;\n\
+  this.clear();\n\
+  var l = shapes.length;var shape;\n\
   for(var i = 0; i < l; i++){\
-   shape = shapes[i];\
-   shape.draw(this.ctx);\
-  };\
-  this.valid = true;\
+   shape = shapes[i];\n\
+   shape.draw(this.ctx);\n\
+  };\n\
+  this.valid = true;\n\
  }\
-};\
+};\n\
 CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
- (this.ctx).clearRect(0,0,this.width,this.height);\
+ (this.ctx).clearRect(0,0,this.width,this.height);\n\
  for(var i = 0; i < this.shapes.length ; i++){\
   for(var p = 0 ; p < this.shapes[i].x.length;p++){\
-   this.shapes[i].x[p] = x2px(this.shapes[i].xorg[p]);\
-   this.shapes[i].y[p] = y2px(this.shapes[i].yorg[p]);\
+   this.shapes[i].x[p] = x2px(this.shapes[i].xorg[p]);\n\
+   this.shapes[i].y[p] = y2px(this.shapes[i].yorg[p]);\n\
   }\
-  this.valid = false;\
-  this.shapes[i].draw(this.ctx);\
- };\
- reply = new Array();\
-};\
+  this.valid = false;\n\
+  this.shapes[i].draw(this.ctx);\n\
+ };\n\
+ reply = new Array();\n\
+};\n\
 CanvasState.prototype.getMouse = function(e){\
-var element = this.canvas, offsetX = 0,offsetY = 0;\
+var element = this.canvas, offsetX = 0,offsetY = 0;\n\
 while( ( element = element.offsetParent) ){\
-offsetX += element.offsetLeft;\
-offsetY += element.offsetTop;\
+offsetX += element.offsetLeft;\n\
+offsetY += element.offsetTop;\n\
 }\
-var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
-var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
- return {x: mx, y: my};\
-};\
+var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\n\
+var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\n\
+ return {x: mx, y: my};\n\
+};\n\
 function read_dragdrop(){\
 var moved_objects = [];var c = 0;\
 for(var p=0 ; p<reply.length ; p++){\
