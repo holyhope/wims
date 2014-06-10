@@ -2253,6 +2253,8 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ gridfill x0,y0,dx,dy,color
 	@ x0,y0 in xrange / yrange
 	@ distances dx,dy in pixels
+	@ a draggable object may snap_to_grid (using keywords xysnaptogrid,xsnaprogrid, ysnaptogrid)
+	@ userdraw object may snap_to_grid
 	*/
 	    if( js_function[DRAW_GRIDFILL] != 1 ){ js_function[DRAW_GRIDFILL] = 1;}
 	    for(i=0;i<5;i++){
@@ -2262,7 +2264,6 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 2: int_data[2] = (int) (get_real(infile,0)); break; /* dx pixel */
 		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* dy pixel*/
 		    case 4: stroke_color = get_color(infile,1);
-		    /* draw_gridfill(ctx,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize) */
 		    string_length = snprintf(NULL,0,  "draw_gridfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 		    snprintf(tmp_buffer,string_length,"draw_gridfill(%d,%d,%d,%d,%d,%d,\"%s\",%.2f,%d,%d);\n",STATIC_CANVAS,int_data[0],int_data[1],int_data[2],int_data[3],line_width,stroke_color,stroke_opacity,xsize,ysize);
@@ -4225,9 +4226,9 @@ draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,y
  };\
  var ctx = obj.getContext(\"2d\");\
  var x,y;\
+ snap_x = dx;snap_y = dy;\
  ctx.save();\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
- snap_x = dx;snap_y = dy;\
  for( x = x0 ; x < xsize+dx ; x = x + dx ){\
     ctx.moveTo(x,y0);\
     ctx.lineTo(x,ysize);\
