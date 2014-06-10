@@ -2399,27 +2399,29 @@ function CanvasState(canvas,container_div){\
   return;\n\
  };\n\
  function mouseup(e){;\n\
-  if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1){\
-   var mouse = myState.getMouse(e);\n\
-   var dx=mouse.x;\n\
-   var dy=mouse.y;\n\
-   if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1 ){ \
-    dx = snap_to_x(dx) - myState.selection.x[myState.chk];\
-    dy = snap_to_x(dy) - myState.selection.y[myState.chk];\
-   }else{\
-    if( x_use_snap_to_grid == 1 ){ \
+  if(myState.selection.onclick == 2 ){\
+   if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1){\
+    var mouse = myState.getMouse(e);\n\
+    var dx=mouse.x;\n\
+    var dy=mouse.y;\n\
+    if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1 ){ \
      dx = snap_to_x(dx) - myState.selection.x[myState.chk];\
-     dy = 0;\
+     dy = snap_to_y(dy) - myState.selection.y[myState.chk];\
     }else{\
-     dx = 0;\
-     dy = snap_to_x(dy) - myState.selection.y[myState.chk];\
+     if( x_use_snap_to_grid == 1 ){ \
+      dx = snap_to_x(dx) - myState.selection.x[myState.chk];\
+      dy = 0;\
+     }else{\
+      dx = 0;\
+      dy = snap_to_y(dy) - myState.selection.y[myState.chk];\
+     };\
     };\
+    switch(myState.selection.direction){\n\
+     case 0: myState.selection = move(myState.selection,dx,dy);break;\n\
+     case 1: myState.selection = move(myState.selection,dx,0);break;\n\
+     case 2: myState.selection = move(myState.selection,0,dy); break;\n\
+    };\n\
    };\
-   switch(myState.selection.direction){\n\
-    case 0: myState.selection = move(myState.selection,dx,dy);break;\n\
-    case 1: myState.selection = move(myState.selection,dx,0);break;\n\
-    case 2: myState.selection = move(myState.selection,0,dy); break;\n\
-   };\n\
   };\
   reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\";\n\
   myState.dragging = false;\n\
