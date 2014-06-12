@@ -8,10 +8,11 @@
 
 /* this is generaly a fieldset class */
 .property_fields{
+    position: relative;
     margin-top:1em;
     margin-bottom:1em;
     max-width:900px;
-    padding:0.5em 0;
+    padding:.5em 0;
     /*Background-image is here to lighten background color */
     background-image: -moz-linear-gradient(top,  rgba(255,255,255,0.7) 0%, rgba(255, 255, 255, 0.9) 48%, rgba(255,255,255,0.4) 100%); /* FF3.6+ */
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(48%,rgba(255, 255, 255, 0.9)), color-stop(100%,rgba(255,255,255,0.4))); /* Chrome,Safari4+ */
@@ -22,9 +23,9 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ffffff', endColorstr='#66ffffff',GradientType=0 ); /* IE6-9 */
 }
 
-.property_fields .field {
-	margin: 0;
-}
+/*.property_fields .field {
+	margin: auto;
+}*/
 
 .property_fields .actions,.property_fields .wimsform{
     padding:0.5em;
@@ -32,33 +33,23 @@
 }
 
 .property_fields .box{
-    padding: 1em 0.4em; /*0.4em seems max for Chrome 2-columns layout */
+    padding: .4em; /*.4em seems max for Chrome 2-columns layout */
     border:1px solid #CFCFCF;
-    margin-bottom:1px;
+    /*margin-bottom:1px;*/
+    line-height:1.2em;
 }
 
 .box div, .box input, .box textarea, .box select{
     margin-left:1em;
 }
 
-.fullwidth{
-    /*box-sizing: border-box;*/
-    min-width:95%;
-    clear: both;
-}
-
-.halfwidth{
-    width:50%;
-    box-sizing: content-box;
-    min-width: 380px;
-    /*float: left;*/
-    vertical-align: top;
-}
 .property_fields .halfwidth{
-    display: inline-block;
-    min-height:2.5em;
-    width:48%;/*We can't put 50% here because of white spaces between inline-blocks.
-    display:flex will solve that soon...*/
+    /*display: inline-block;
+    vertical-align: middle;*/
+    float:left;
+    /*min-width: 380px;*/
+    /*min-height could be suppressed when all browsers will render welle "flexbox"*/
+    min-height:4em;
 }
 
 .property_fields .field:nth-child(even){
@@ -121,3 +112,25 @@ input[type="color"]{
   min-width:0;
   font-weight:normal;
 }
+
+
+
+/* Small screens */
+@media only screen and (max-width: 40em) {
+    .property_fields .halfwidth, .halfwidth{
+        width:auto;
+        display:block;
+        min-width: 0;
+    }
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+
+/* Medium screens */
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+    .property_fields .halfwidth{
+        min-width: 310px;
+    }
+} /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+
+/* Large screens */
+@media only screen and (min-width: 64.063em) { } /* min-width 1025px, large screens */
+

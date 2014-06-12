@@ -17,11 +17,12 @@
 !form reply
 <fieldset class="property_fields blockcenter">
  <legend>$title</legend>
+ <ul class="flex_box">
 !for i=1 to $confcnt
  !set r_=!record $i of lang/confdata.$modu_lang
  !set t_=!word 1 of $r_
  !if $catname isitemof $t_
-   <div class="field box halfwidth">
+   <li class="field box halfwidth">
   !distribute lines $r_ into a_,b_,c_,e_,f_
   !distribute words $a_ into t_,n_,N_
   !set D_=$($n_)
@@ -62,7 +63,7 @@ $ in $e_
   <div class="formHelp">
     $f_
   </div>
-  </div>
+  </li>
  !endif
 !next i
  <div class="wimscenter actions">
