@@ -18,7 +18,7 @@ $name_exo0
 !endif
 
 !if $step>=3
-    !if $type<=1 
+    !if $type<=1
       <li class="wims_emph">$(name_help$type$ext)</li>
     !else
      !if $ext=2
@@ -29,7 +29,7 @@ $name_exo0
    !endif
   !if $step>=3 and $ext=1
   <li>
-  $name_else 
+  $name_else
    !formcheckbox erase list yes prompt <b>$name_erase</b>
   </li>
    !if $step>=4
@@ -41,11 +41,11 @@ $name_exo0
      !if ($type >= $p and $type<=1) or $type=$p
       !set titre=$(name_description$t)
       !set titre=!line 1 of $titre
-      !set titre=!replace internal , by &##44; in $titre
+      !set titre=!replace internal , by &#44; in $titre
       !set tindex=!append item $titre to $tindex
       !set lex=!append item $t to $lex
      !endif
-    !next 
+    !next
  !formselect end list 0,$lex prompt choisir,$tindex
   </li>
  !endif
@@ -64,9 +64,9 @@ $name_exo0
 
 !if $step=1
 </ol>
-<ul><li>  
+<ul><li>
    !formradio wims_deposit_old list 0 prompt $wims_name_download
-   <input type="file" name="wims_deposit" /> 
+   <input type="file" name="wims_deposit" />
    !if $already!=
      $name_already
      !formradio wims_deposit_old list $already
@@ -112,7 +112,7 @@ $name_exo0
      $dessin
      !set imgsrc=$ins_url
   !else
-    <input type="image" name="click" src="$imgsrc" border="1" /> 
+    <input type="image" name="click" src="$imgsrc" border="1" />
   !endif
 </td><td>
   !if $test=nosize and $begin>=1
@@ -125,12 +125,12 @@ $name_exo0
       <span class="wims_warning">$wims_name_warning</span>.
       !if $test iswordof nolegend
         $name_nolegend
-      !endif  
+      !endif
       !if $test=noclick
        $name_noclick
       !endif
    !endif
-    <div style="padding:50px;"> 
+    <div style="padding:50px;">
    !if $ext iswordof 2
       !set readonly=readonly="readonly"
    !else

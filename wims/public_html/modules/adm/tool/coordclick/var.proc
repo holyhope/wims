@@ -1,5 +1,6 @@
 !default wims_firstname=$wims_devfirstname
 !default wims_lastname=$wims_devlastname
+
 !!$wims_sesdir a mettre partout y a t-il quelque chose pour s2
 !read lang/names.phtml.fr
 !set limit=50
@@ -7,6 +8,8 @@
 !default ext=1
 javaoption=$javatype
 !default javaoption=circle
+javaoutput=!getopt free in $(javaoutput)
+
 !if $end=1
  !goto end
 !endif
@@ -47,14 +50,14 @@ javaoption=$javatype
     step=!linecnt $data
     test_ext=!line 2 of $data
     test_extcnt=!itemcnt $test_ext
-    test_extcnt2=!listintersect test_ext and $list_curve
+    test_extcnt2=!listintersect $test_ext and $list_curve
     !if ($test_extcnt=3 and $type=1) or ($type<2 and $(test_ext[2]) isitemof $list_curve) \
        or ($type=2 and $test_extcnt2=$empty)
       data=!line 1 of $data
       step=3
       !goto 2
     !endif
-    !if $step=0 
+    !if $step=0
       step=1
       !goto 1
     !endif
@@ -94,7 +97,7 @@ javaoption=$javatype
      mkdir -p getfile\
      mkdir -p $sesdir\
      mv user-deposit $sesdir/$wims_deposit
-   !endif 
+   !endif
    !increase step
  !endif step=1
 :2
@@ -167,9 +170,21 @@ dessin=!append line fcircle $click_x,$click_y,10,black to $dessin
      !if $type=1
 dessin=!append line arrow $click_x,$click_y to $dessin
      !endif
-    !if $type iswordof 1 2
+     !if $type iswordof 1 2
       !increase ext
-    !endif
+        !if $type iswordof 2
+    dessin_p=!append line fcircle $click_x,$click_y,5,red to $dessin_p
+    !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+       !set insdraw_filebase=!listuniq $insdraw_filebase
+      !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+      $dessin\
+      $dessin_p
+      !sh cd $wims_home/\
+     cp s2/$wims_session/$ins_filename sessions/$wims_session/getfile/click/$ins_filename
+
+ !set imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$ins_filename
+        !endif
+     !endif
    !else
      data=!append item $click_x,$click_y to $data
      !if $type iswordof 1
@@ -179,8 +194,6 @@ dessin=!append item $click_x,$click_y,10,black to $dessin
  !insdraw $dessin
  !set imgsrc=$ins_filename
      !endif
-
-     
      !reset legend
      ext=1
     !endif ext <=1
@@ -192,10 +205,11 @@ dessin=!append item $click_x,$click_y,10,black to $dessin
      test=noclick
    !endif
   !endif legend
-!endif
+!endif cmd=reply
+
 !if $step >= $limit
   end=1
-!endif 
+!endif
 
 :end
 
