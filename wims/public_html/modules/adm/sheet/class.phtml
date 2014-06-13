@@ -116,7 +116,7 @@ $sheet_title
  !set ss=!word 3 of $sev
  !bound ss between integer 0 and 2 default 0
  <div class="wims_sheet">
- <ul class="wims_sheet_list">
+ <ol class="wims_sheet_list">
  !let wims_exotitle=$empty
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
@@ -128,26 +128,29 @@ $sheet_title
   !set dep=!row $i of $deps
   !set dep=!trim $dep
   !set wims_exotitle=!append line $ti to $wims_exotitle
-  <li>$i.
+  <li class="wims_exo_item">
+    <span class="wims_sheet_id">$i.</span>
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
-, <span class="wims_work_desc">$de</span>
-   !if $require>0
-   <span class="small">
-   $(wims_name_thsheet[7]): $[$mean]/10,
-   !if $ss=0
-     $(wims_name_thsheet[5]): $[100*$got/$require]%,
-   !endif
-   !if $ss=1
-     $(wims_name_thsheet[10]): $[10*$best]%
-   !endif
-   !if $ss=2
-     $(wims_name_thsheet[13]): $[$level]/10
-   !endif
-   </span>
-   !endif
+   , <span class="wims_work_desc">$de</span>
+   <div class="wims_user_info">
+     !if $require>0
+       <span class="wims_style_score small">
+       $(wims_name_thsheet[7]): $[$mean]/10,
+       !if $ss=0
+         $(wims_name_thsheet[5]): $[100*$got/$require]%,
+       !endif
+       !if $ss=1
+         $(wims_name_thsheet[10]): $[10*$best]%
+       !endif
+       !if $ss=2
+         $(wims_name_thsheet[13]): $[$level]/10
+       !endif
+       </span>
+      !endif
+    </div>
   !else
-   <span class="wims_warning">$ti</span>, $de
+   <span class="wims_warning">$ti</span>, <span class="wims_work_desc">$de</span>
    !if $require>0
     <span class="small">($name_score2)</span>
    !endif
@@ -168,7 +171,7 @@ $sheet_title
  !let wims_exotitle=!lines2items $wims_exotitle
  !setdef wims_exotitle=$wims_exotitle\
 wims_sheettitle=$sheet_title in wimshome/sessions/$wims_session/var.stat
- </ul>
+ </ol>
  </div>
 !endif
 
