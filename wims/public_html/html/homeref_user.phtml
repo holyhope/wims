@@ -106,17 +106,17 @@ $module_title
    !set wims_name_score=$(wims_name_thsheet[7]): $[$wims_homeref_mean]/10
    !if $(wims_severity[3])=2
      !set wims_homeref_level=!getscorelevel sheet=$wims_sheet work=$wims_exo
-     !set wims_name_score=$wims_name_score<br />I3: $wims_homeref_level/10
-     !! -$(wims_name_thsheet[13])
+     !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[13]): $wims_homeref_level/10
+     !! I1
    !else
      !if $(wims_severity[3])=1
        !set wims_homeref_best=!getscorebest sheet=$wims_sheet work=$wims_exo
-       !set wims_name_score=$wims_name_score<br />I2: $[10*$wims_homeref_best] %
-       !!$(wims_name_thsheet[10])
+       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[10]): $[10*$wims_homeref_best] %
+       !!I2
      !else
        !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
-       !set wims_name_score=$wims_name_score<br />I0: $[ceil(100*$wims_homeref_got/$wims_homeref_req)]%
-       !!$(wims_name_thsheet[5])
+       !set wims_name_score=$wims_name_score<br />$(wims_name_thsheet[5]): $[ceil(100*$wims_homeref_got/$wims_homeref_req)]%
+       !!I0
 
      !endif
    !endif
