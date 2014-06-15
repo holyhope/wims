@@ -235,6 +235,27 @@ free
 This module is the entry point of the site. You should not change this
 unless you have designed and put up your own home module.
 
+:appearances site_languages wims_site_languages
+Supported languages*
+free
+
+Available languages:
+ca (Catalan),
+cn (Chinese gb),
+de (German),
+en (English),
+es (Spanish),
+fr (French),
+it (Italian),
+nl (Dutch),
+si (Slovenian),
+tw (Chinese gib5).
+
+List them separated by white spaces.
+<p>
+The order of your listing is important: languages listed first will get more priority.
+</p>
+
 :tech idle_time
 Delay before an idle class session is killed
 choice
@@ -256,8 +277,9 @@ Usually an active user will touch his session at least once every 10 minutes, un
 working on a very hard exercise (a fairly rare case). If killing the
 session of the latter will result in huge frustration, such activities
 are less important when they are not in a virtual class.
-<p>This delay only applies to sessions without authentication. It cannot be bigger than delay for class sessions.</p>
-
+<p>
+This delay only applies to sessions without authentication. It cannot be bigger than delay for class sessions.
+</p>
 :tech idle_time3
 Delay before an idle first-created session is killed
 choice
@@ -280,11 +302,10 @@ For example, if your system's mail command supports this, you can use
 <code class="tt">-a "User-Agent: WIMS"</code> to add a User-Agent header to the mail sent
 out by wims. Some providers require this to accept mails.
 </p>
-
 :security manager_https
 Site maintenance must use https connection*
 choice
-0,1;no (0),yes (1)
+0,1;$wims_name_no,$wims_name_yes
 Whenever possible, choose https connection to increase security.
 An intrusion to your server as webmaster represents a great danger to your installation!
 <p>WIMS is compatible with https. All you have to do is to configure your
@@ -303,8 +324,8 @@ An intrusion to your server as webmaster represents a great danger to your insta
 <p>
 If you put a `*' to this field, the next time you will not be
 able to use this online maintenance tool (and you can be sure that nobody
-else will).</p>
-
+else will).
+</p>
 :software maxima_command
 Command name for Maxima
 free
@@ -315,7 +336,7 @@ if Maxima is installed in a usual way with the starting executable in PATH.
 :log module_log
 Log individual module informations
 choice
-1,0;yes (1),no (0)
+1,0;$wims_name_no,$wims_name_yes
 Many WIMS modules define their own log informations.
 If you want to see these module informations, you can activate this (see also the definition of
 module log file lengths).
@@ -330,26 +351,12 @@ Length limit of module log files.
  There are some secondary general log files who also use this limit,
   so even if module log is set to no, this number still makes sense.
 
-:housekeep mu_auto
-Module update method
+:housekeep site_accounting
+Activity accounting
 choice
-none,check,install,update,all
-Method of automatic daily module update.
-<dl>
-<dt><code class="tt">none</code>
-   <dd>Disable automatic module update.
-<dt><code class="tt">check</code>
-   <dd>Check what should be updated, and send a mail to webmaster (that
-   is, you). Do not install or update anything.
-<dt><code class="tt">install</code>
-   <dd>Install new modules, but not update existing modules.
-<dt><code class="tt">update</code>
-   <dd>Update existing modules, but not install new modules. <br />
-   This will let you benefit from bug fixes, as well as suffer from
-   newly introduced ones.
-<dt><code class="tt">all</code>
-   <dd>Install new modules and update existing ones.
-</dl>
+0,1;$wims_name_yes,$wims_name_no
+Enable or disable daily activity accounting.
+This is necessary for site activity statistics, as well as for virtual class connection time accounting.
 
 :housekeep mu_download_site
 Download site for module update
@@ -361,7 +368,8 @@ Known mirror sites:
 $help_downloadsites
 </pre>
 <p>If you choose automatic module update with very small delay (0 or 1 day),
-you should set the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.</p>
+you should set the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
+</p>
 
 :housekeep mu_publish_site
 $wims_name_publish_center
@@ -386,7 +394,6 @@ your delay.
 If you choose a very small number here (0 or 1), you should set
 the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
 </p>
-
 :housekeep mu_zone
 Zones for automatic module update
 free
@@ -395,6 +402,8 @@ Limit the automatic module update to the given zones.
 <code class="tt">all</code> means everything.
 <p>
 Possible choices of zones: <dl>
+<dt><code class="tt">K</code>
+    <dd>Kindergarten (you can fine-tune with K1 K2 K3)
 <dt><code class="tt">E</code>
     <dd>Elementary school materials (you can fine-tune with E1 E2 E3 E4 E5 E6)
 <dt><code class="tt">H</code>
@@ -406,7 +415,7 @@ Possible choices of zones: <dl>
 <dt><code class="tt">tool</code>
     <dd>Online tools and helpers.
 </dl>
-<p>
+</p><p>
 You can put several zones in this field, separated by white spaces.
 
 :housekeep mu_cat
@@ -421,9 +430,9 @@ Some choices of categories (non-exhaustive): <dl>
 <dt><code class="tt">cs</code>
     <dd>Computer science.
 </dl>
-<p>
+<p><p>
 You can put several categories in this field, separated by white spaces.
-
+</p>
 :log old_log_files
 Number of old log files*
 int
@@ -543,7 +552,8 @@ The available stylesheet (css) files are in
 If you want more stylesheets, you can put new css files into this directory.
 </p>
 <p>If you choose css=<code class="tt">-theme-</code>, the stylesheet of the current theme
-will be used. No stylesheet will be loaded if css=<code class="tt">----</code>.</p>
+will be used. No stylesheet will be loaded if css=<code class="tt">----</code>.
+</p>
 
 :resources rlimit_cpu
 Processing time allowance in seconds*
@@ -553,28 +563,44 @@ If a user request needs more time than this amount to process, the computation w
 It is useless to increase this number too much, because in normal
 circumstances few internet users will wait more than a few dozens of
 seconds for a page.
-<p>This is also a very important security measure to check denial-of-service attacks.</p>
+<p>
+This is also a very important security measure to check denial-of-service attacks.
+</p>
 
 :appearances show_author wims_show_author
 Show author names in search results
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Do you want the author names to show up behind each module in the search results?
 
 :appearances show_stat wims_show_stat
 Show site usage statistics
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Log accounting must be activated before statistics can be shown.
 <p>To activate log accounting, you should run log/account.sh once every early
 morning, by putting it into crontab.</p>
 
-:housekeep site_accounting
-Activity accounting
+:housekeep mu_auto
+Module update method
 choice
-0,1; no, yes
-Enable or disable daily activity accounting.
-This is necessary for site activity statistics, as well as for virtual class connection time accounting.
+none,check,install,update,all
+Method of automatic daily module update.
+<dl>
+<dt><code class="tt">none</code>
+   <dd>Disable automatic module update.
+<dt><code class="tt">check</code>
+   <dd>Check what should be updated, and send a mail to webmaster (that
+   is, you). Do not install or update anything.
+<dt><code class="tt">install</code>
+   <dd>Install new modules, but not update existing modules.
+<dt><code class="tt">update</code>
+   <dd>Update existing modules, but not install new modules. <br />
+   This will let you benefit from bug fixes, as well as suffer from
+   newly introduced ones.
+<dt><code class="tt">all</code>
+   <dd>Install new modules and update existing ones.
+</dl>
 
 :misc site_description wims_site_description
 Site description
@@ -599,25 +625,6 @@ search engines).
 Modules will also have access to this text via the variable
 $$wims_site_keywords.
 </p>
-
-:appearances site_languages wims_site_languages
-Supported languages*
-free
-
-Available languages:
-ca (Catalan),
-cn (Chinese gb),
-de (German),
-en (English),
-es (Spanish),
-fr (French),
-it (Italian),
-nl (Dutch),
-si (Slovenian),
-tw (Chinese gib5).
-
-List them separated by white spaces.
-<p>The order of your listing is important: languages listed first will get more priority.</p>
 
 :appearances site_manager wims_site_manager
 Your email address*
@@ -695,7 +702,7 @@ as well as data file for participant works. So do not set it too small.
 :misc usecookie wims_usecookie
 Cookie for anonymous visitors
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 If you choose `yes', the server will send cookies to anonymous visitors, which helps tracking the user.
 <p>
 Note that cookies are not mandatory: even if
@@ -709,7 +716,7 @@ eliminating unnecessary session creations.
 :log show_ip
 Show userIP to supervisor in class logfile
 choice
-yes,no;yes,no
+yes,no;$wims_name_yes,$wims_name_no
 if no, supervisor cannot see IP in logfile.
 
 :software scilab_command

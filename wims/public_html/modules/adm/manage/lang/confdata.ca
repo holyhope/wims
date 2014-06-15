@@ -23,8 +23,8 @@ pages. Helps for making the site better referenced and better known, but
 you need Apache 1.3 or up to get this to work correctly.
 <p>
 If you have just updated Apache httpd and if you have trouble with unknown
-addresses when you activate this feature,
-run the script <code class="tt">bin/apache-config</code>.
+addresses when you activate this feature, run the script
+<code class="tt">bin/apache-config</code>.
 </p>
 :tech aliased_getfile
 Réécriture de l'adresse des fichiers téléchargés
@@ -60,7 +60,7 @@ Format des animations dynamiques*
 choice
 gif, mng
 Format d'images pour les animations dynamiques.
-Il n'y a que deux possibilités: <code class="tt">gif</code> ou <code class="tt">mng</code>.
+Il n'y a que deux possibilités : <code class="tt">gif</code> ou <code class="tt">mng</code>.
 Cependant, la plupart des navigateurs actuellement utilisés n'est pas capable d'afficher des animations mng en ligne.
 
 :graphics default_texposition
@@ -68,7 +68,7 @@ Default formula position / MathML
 choice
 0,1,2; low,high,MathML
 TeX formulas are small graphics files that are middle-aligned with respect to the text line.
-<p> There is an ancient middle-alignment bug from the beginning days of
+<p>There is an ancient middle-alignment bug from the beginning days of
 Netscape, which aligns the middle of the picture against the base line of
 the text. This of course makes the formulas appear too low, and WIMS patches
 it by raising a bit the formulas. </p>
@@ -76,9 +76,9 @@ it by raising a bit the formulas. </p>
 browsers, the patch makes the formulas too high with respect to text. This
 parameter allows you to choose whether or not to activate the patch by
 default. Note that users can define their own preferences. </p>
-<p>The parameter can be used also to activate MathML translation. </p>
-<p>If you change this value, do not think of your own browser, but of those of
-your average users!</p>
+<p>The parameter can be used also to activate MathML translation.</p>
+<p>If you change this value, do not think of your own browser,
+but of those of your average users!</p>
 
 :tech cgi_name
 Nom du programme cgi principal!
@@ -98,7 +98,7 @@ int
 0,1000
 
 :class class_regpass wims_class_regpass
-Droits de création des classes virtuelles
+Droit de création des classes virtuelles
 free
 
 Ce paramètre définit les droits de création d'une classe virtuelle
@@ -114,7 +114,7 @@ les définitions suivantes sont possibles :
  Le site vérifiera que cette adresse email est valide.
 <dt><code class="tt">passwd ******</code><dd>L'utilisateur doit entrer un mot de passe
 pour avoir l'autorisation de créer une classe. Vous devez entrer le mot de passe
-comme le second mot du paramètre (en remplaement de `<code class="tt">******</code>')
+comme le second mot du paramètre (en remplaement de <code class="tt">******</code>)
 et communiquer le mot de passe à ceux voulant créer une classe.
 <dt>Noms d'hôtes ou numéros IP<dd>
  Seules les personnes se connectant à partir des postes définis
@@ -241,6 +241,29 @@ free
 Ce module est le point d'entrée du site.
 Vous ne devez pas le changer à moins que vous n'ayez créé votre propre module d'entrée.
 
+:appearances site_languages wims_site_languages
+Langues présentées*
+free
+
+
+Langues disponibles:
+ca (Catalan),
+cn (Chinois gb),
+de (Allemand),
+en (Anglais),
+es (Espagnol),
+fr (Français),
+it (Italien),
+nl (Néerlandais),
+si (Slovénien),
+tw (Chinois gib5).
+
+Mettre la liste des langues séparées par des espaces.
+<p>
+L'ordre de la liste est important : les langues mises en premier
+ seront utilisées en priorité.
+</p>
+
 :tech idle_time
 Délai avant qu'une session de classes soit détruite.
 choice
@@ -274,7 +297,6 @@ Si une session est créée sans être utilisée pendant cette durée en secondes, ell
 <p>
 Ce délai ne s'applique qu'aux sessions sans authentification.
 Créer une session sans l'utiliser est en général dû aux robots internet.
-
 </p><p>
 Ce temps ne peut être plus grand que celui choisi pour les
 sessions anonymes.
@@ -340,26 +362,13 @@ Longueur maximale des fichiers de log des modules. Cette limite est utilisée par
 fichiers de log généraux seconaires, aussi, ce nombre a un sens même
 si la sauvegarde des fichiers logs des modules est désactivée
 
-:housekeep mu_auto
-Méthode de mise à jour
+:housekeep site_accounting
+Logs d'activité
 choice
-none,check,install,update,all
-Méthode de mise à jour automatique quotidienne. <dl>
-<dt><code class="tt">none</code>
-   <dd>Désactive la mise à jour automatique
-<dt><code class="tt">check</code>
-   <dd>Vérifie ce qui doit être mise à jour et envoie un mail
-   à l'administrateur (c'est-à-dire vous). N'installe pas de modules
-   ni ne les met à jour.
-<dt><code class="tt">install</code>
-   <dd>Installe les nouveaux modules mais ne met pas à jour les
-   modules existants.
-<dt><code class="tt">update</code>
-   <dd>Met à jour les modules existants mais n'installe pas de nouveaux modules.
-   Cela vous permet de bénificier des corrections de bogues.
-<dt><code class="tt">all</code>
-   <dd>Installe les nouveaux modules et met à jour les modules existants
-</dl>
+0,1; $wims_name_no,$wims_name_yes
+Active ou désactive les logs d'activité journalière.
+Il est nécessaire de l'activer pour les statistiques d'activité du site ainsi que pour les activités générales de
+temps de connexion des classes.
 
 :housekeep mu_download_site
 Site de téléchargement de mise à jour des modules
@@ -393,7 +402,7 @@ et corrigés pendant le délai.
 Zones mises à jour automatiquement
 free
 
-La mise à jour automatique des modules est limitée aux zones indiquées.
+La mise à jour auto des modules est limitée aux zones indiquées.
 <code class="tt">all</code> signifie que toutes les zones sont concernées.
 <p>
 Choix possibles de zones: <dl>
@@ -448,7 +457,8 @@ free
 
 Accès autorisé meme si le serveur est très chargé.
 Les connexions venant de ces sites ne seront pas refusées quand
-la charge du serveur est au dessus du seuil. $sitehelp
+la charge du serveur est au dessus du seuil.
+$sitehelp
 
 :appearances page_bgcolor wims_bgcolor
 Couleur de fond principale
@@ -459,8 +469,8 @@ Utilisez un nom de couleur ou, mieux, un code hexadecimal #rrvvbb
  (voir les <a href="http://www.w3schools.com/HTML/html_colornames.asp">standards html</a>).
 
 :appearances page_bgimg wims_bgimg
-Image de fond des pages
-color
+Image de fond
+free
 
 Une mosaique sera appliquée en arrière-plan.
 Tapez une URL valide.<br/>
@@ -480,14 +490,14 @@ exercises are allowed. Choosing the value of 0 or less for this severity will
 disable this measure.
 
 :appearances ref_bgcolor wims_ref_bgcolor
-Couleur de fond des tables
+Couleur de fond des menus
 color
 
 Couleur de fond des menus des modules administratifs
 Mettre un nom de couleur ou le code hexadecimal #rrvvbb.
 
 :appearances ref_menucolor wims_ref_menucolor
-Couleur des liens dans les menus et les tables
+Couleur des liens des menus
 color
 
 La couleur des liens des menus.
@@ -562,15 +572,17 @@ computation will be cut off and an error message will be sent back.
 It is useless to increase this number too much, because in normal
 circumstances few internet users will wait more than a few dozens of
 seconds for a page.
-<p>This is also a very important security measure to check
-denial-of-service attacks.</p>
+<p>
+This is also a very important security measure to check
+denial-of-service attacks.
+</p>
 
 :appearances show_author wims_show_author
 Affichage des noms d'auteurs
 choice
 yes,no;$wims_name_yes,$wims_name_no
 Montrer les noms des auteurs dans le moteur de recherche
-Selectionnez <code class="tt">oui</code> si vous désirez que les noms d'auteurs soient affichés
+Sélectionnez <code class="tt">oui</code> si vous désirez que les noms d'auteurs soient affichés
  dans les résultats du moteur de recherche
 
 :appearances show_stat wims_show_stat
@@ -580,13 +592,27 @@ yes,no;$wims_name_yes,$wims_name_no
 Les comptes de log doivent être activés
  pour que les statistiques puissent être montrées.
 
-:housekeep site_accounting
-Logs d'activité
+:housekeep mu_auto
+Méthode de mise à jour
 choice
-0,1; $wims_name_no,$wims_name_yes
-Active ou désactive les logs d'activité journalière.
-Il est nécessaire de l'activer pour les statistiques d'activité du site ainsi que pour les activités générales de
-temps de connexion des classes.
+none,check,install,update,all
+Méthode de mise à jour automatique quotidienne.
+<dl>
+<dt><code class="tt">none</code>
+   <dd>Désactive la mise à jour automatique
+<dt><code class="tt">check</code>
+   <dd>Vérifie ce qui doit être mise à jour et envoie un mail
+   à l'administrateur (c'est-à-dire vous). N'installe pas de modules
+   ni ne les met à jour.
+<dt><code class="tt">install</code>
+   <dd>Installe les nouveaux modules mais ne met pas à jour les
+   modules existants.
+<dt><code class="tt">update</code>
+   <dd>Met à jour les modules existants mais n'installe pas de nouveaux modules.
+   Cela vous permet de bénificier des corrections de bogues.
+<dt><code class="tt">all</code>
+   <dd>Installe les nouveaux modules et met à jour les modules existants
+</dl>
 
 :misc site_description wims_site_description
 Description du site
@@ -598,6 +624,7 @@ afin d'informer les robots internet.
 Les modules ont accès à ce texte par la variable
 $$wims_site_description.
 </p>
+
 :misc site_keywords site_keywords wims_site_keywords
 Mots-clés du site
 free
@@ -608,28 +635,6 @@ Le but principal est d'améliorer le référencement par les robots des moteurs de 
 <p>
 Les modules ont accès à ce texte par la variable
 $$wims_site_keywords.
-</p>
-
-:appearances site_languages wims_site_languages
-Langues présentées*
-free
-
-Langues disponibles:
-ca (Catalan),
-cn (Chinois gb),
-de (Allemand),
-en (Anglais),
-es (Espagnol),
-fr (Français),
-it (Italien),
-nl (Néerlandais),
-si (Slovénien),
-tw (Chinois gib5).
-
-Mettre la liste des langues séparées par des espaces.
-<p>
-L'ordre de la liste est important : les langues mises en premier
- seront utilisées en priorité.
 </p>
 
 :appearances site_manager wims_site_manager
@@ -844,4 +849,15 @@ Par exemple, http://validator.w3.org/check
 Commande d'accès à QRencode
 free
 
-QRencode permet de rèaliser les QRcode sur le serveur.
+QRencode permet de créer les QRcode sur le serveur.
+
+:tech classification_open
+Possibilité pour un enseignant de classifier les exercices OEF.
+choice
+no,yes;$wims_name_no,$wims_name_yes
+Si vous activez cette possibilité, il sera possible aux enseignants d'une
+classe de mettre des mots clés libres ou selon une taxonomie à des exercices afin
+d'améliorer les moteurs de recherche. Vous devez vous mettre en contact avec
+l'association WIMS EDU
+referencement@wimsedu.info
+pour que ces données puissent être ensuite exploitées.

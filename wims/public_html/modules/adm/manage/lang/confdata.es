@@ -20,10 +20,11 @@ yes,no;$wims_name_yes,$wims_name_no
 Set to yes if you want internet robots to see some WIMS contents as html
 pages. Helps for making the site better referenced and better known, but
 you need Apache 1.3 or up to get this to work correctly.
-<p>If you have just updated Apache httpd and if you have trouble with unknown
-addresses when you activate this feature,
-run the script <span class="tt">bin/apache-config</span>.</p>
-
+<p>
+If you have just updated Apache httpd and if you have trouble with unknown
+addresses when you activate this feature, run the script
+<code class="tt">bin/apache-config</code>.
+</p>
 :tech aliased_getfile
 getfile address rewriting
 choice
@@ -32,24 +33,25 @@ Activating this allows you to get correct file names when downloading
 wims-generated files: backup archives, student data in virtual classes, some
 image files, etc. Otherwise all file downloads will default to the name
 "wims.cgi" which has to be manually corrected when you save the file.
-<p>You may get into trouble downloading if your Apache httpd is not correctly
-configured. In this case, say "no".</p>
-
+<p>
+You may get into trouble downloading if your Apache httpd is not correctly
+configured. In this case, say "no".
+</p>
 :housekeep backup_hour
 Hour of daily backup
 choice
 -1,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22; none,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22
-This is the hour when daily data backup will take place. Choose an hour where
-the server is not busy, or pick none (-1) to disable daily backup.
+This is the hour when daily data backup will take place.
+Choose an hour where the server is not busy, or pick none (-1) to disable daily backup.
 
 :resources busyhours wims_busyhours
 Busy hours of the server
 free
 
 You can list here the hours during which the server is most likely to be busy.
-Some activities such as local module publication will be prohibited during 
+Some activities such as local module publication will be prohibited during
 such periods. Give a list of words composed of two digits: for example,
-<p>"08 09 13 14".</p>
+<code class="tt">08 09 13 14</code>.
 
 :graphics default_anim_format ins_format
 Format of dynamic animations*
@@ -63,29 +65,27 @@ are unable to show inline mng animations.
 Default formula position / MathML
 choice
 0,1,2; low,high,MathML
-TeX formulas are small graphics files that are middle-aligned with respect to
-the text line. <p>
-There is an ancient middle-alignment bug from the beginning days of
+TeX formulas are small graphics files that are middle-aligned with respect to the text line.
+<p>There is an ancient middle-alignment bug from the beginning days of
 Netscape, which aligns the middle of the picture against the base line of
 the text. This of course makes the formulas appear too low, and WIMS patches
-it by raising a bit the formulas. <p>
-However, recent browsers no longer carry this alignment bug. And for these
+it by raising a bit the formulas. </p>
+<p>However, recent browsers no longer carry this alignment bug. And for these
 browsers, the patch makes the formulas too high with respect to text. This
 parameter allows you to choose whether or not to activate the patch by
-default. Note that users can define their own preferences. <p>
-The parameter can be used also to activate MathML translation.
-<p>
-If you change this value, do not think of your own browser, but of those of
-your average users!
+default. Note that users can define their own preferences. </p>
+<p>The parameter can be used also to activate MathML translation.</p>
+<p>If you change this value, do not think of your own browser,
+but of those of your average users!</p>
 
 :tech cgi_name
 Name of the main cgi program!
 free
 
-You can change this name only if you have correctly aliased things in the
-configuration file of your httpd. For example, if you have run the script
-in <span class="tt">bin/apache-config</span>,
-you may try the names <span class="tt">index.html</span> or <span class="tt">wims.html</span>.
+You can change this name only if you have correctly aliased things in the configuration file of your httpd.
+For example, if you have run the script
+in <code class="tt">bin/apache-config</code>,
+you may try the names <code class="tt">index.html</code> or <code class="tt">wims.html</code>.
 <p>
 Do not change this if you do not know what you are doing! If you make it
 wrong, you will have to manually recover your config.
@@ -104,28 +104,27 @@ classes. It contains 3 comma-separated fields, defining respectively the
 access right for creating individual classes, class groups and institution
 portals. For each field, the following definitions are possible.
 <dl>
-<dt><span class="tt">all</span><dd>Every one can create classes.
-<dt><span class="tt">deny</span><dd>Nobody is allowed to create classes.
-<dt><span class="tt">email</span><dd>Every one can create classes, as long as he/she submits
+<dt><code class="tt">all</code><dd>Every one can create classes.
+<dt><code class="tt">deny</code><dd>Nobody is allowed to create classes.
+<dt><code class="tt">email</code><dd>Every one can create classes, as long as he/she submits
 his/her working email address. The site will check the effectiveness of this
 email address.
-<dt><span class="tt">passwd ******</span><dd>The user must enter a password to access the
+<dt><code class="tt">passwd ******</code><dd>The user must enter a password to access the
 creation of classes. You can define the password as the second word
-of the parameter (in replacement of `<span class="tt">******</span>' above), and
+of the parameter (in replacement of <code class="tt">******</code> above), and
 communicate the password to those who you allow to create classes.
 <dt>Host names or IP numbers<dd>
  Only people connecting from the defined hosts will be allowed to create
 classes.
 $sitehelp
 </dl>
-Please notice that the webmaster (that is, you) always has the right to
-create virtual classes of any kind.
+Please notice that the webmaster (that is, you) always has the right to create virtual classes of any kind.
 
 :class class_quota wims_class_quota
 Disk quota for virtual classes in Meg
 int
 1,1000
-This is the limit of disk space usage for each virtual class on the server.
+This is the limit of disk space usage for each virtual class.
 If a virtual class' disk space use reaches or exceeds this number in Megabytes,
 the supervisor's homepage will get locked.
 
@@ -146,58 +145,58 @@ int
 Format of dynamic graphics*
 choice
 gif, jpeg, png
-Sorry for png advocates, but gif is the most compatible format, especially
-if you can install softwares producing compressed gif files. The second
-choice is jpeg. png still have some compatibility problems. <p>
-Note also that animated graphics format is not affected by this setting.
+Sorry for png advocates, but gif is the most compatible format
+especially if you can install softwares producing compressed gif files.
+The second choice is jpeg. png still have some compatibility problems.
+<p>Note also that animated graphics format is not affected by this setting.</p>
 
 :security,misc devel_modules
 Access policy for modules under development
 choice
 open,close
-If set to close, modules under development cannot be accessed without
-authentication. In particular exercises cannot be inserted into a
-worksheet of a class since a participant is not authenticated as modtool 
-developper.
+If set to <code class="tt">close</code>, modules under development cannot be accessed without authentication.
+In particular exercises cannot be inserted into a
+worksheet of a class since a participant is not authenticated as modtool developper.
 <p>
-It is highly recommended that you choose <span class="tt">close</span>, in order
+It is highly recommended that you choose <code class="tt">close</code>, in order
 to avoid future problems. Module developers should be encouraged to
 publish their modules into local space in order to make them usable by others.
-
+</p>
 :class examlog_limit
 Limit of registered exam sessions for each participant
 int
 0,100
-Please note that this is site-wide limitation, setups of individual classes
-cannot exceed this limit. Registers of exam details may take up a lot of
-disk space, so if this limit is too high, some very active classes may run
+Please note that this is site-wide limitation.
+Setups of individual classes cannot exceed this limit.
+Registers of exam details may take up a lot of disk space,
+so if this limit is too high, some very active classes may run
 into disk quota problems.
 <p>
 If you set this limit to 0 or negative, no exam detail will be registered in
 any virtual class.
-
+</p>
 :tech tmp_debug wims_tmp_debug
 Debugging mode
 choice
 yes,no;$wims_name_yes,$wims_name_no
-Turning on debugging mode allows some basic information to be shown at the
-bottom of most pages, when the query is from localhost.
+Turning on debugging mode allows some basic information to be shown
+at the bottom of most pages, when the query is from localhost.
 At the same time, the temporary session directory
 (located down tmp/sessions/) will be conserved for examination. For
 development use, as well as for troubleshooting the installation.
 
 :graphics default_insplot_font insplot_font
-Font size of dynamic plot
+Font size of dynamic plot (gnuplot)
 choice
 small,medium,large
-This font size affects dynamic plots generated by gnuplot. Individual modules
-may change this setting.
+This font size affects dynamic plots generated by gnuplot.
+Individual modules may change this setting.
 
 :doc doc_quota wims_class_quota
 Disk quota for Documents in Meg
 int
 1,1000
-This is the limit of disk space usage for each interactive document on the server.
+This is the limit of disk space usage for each interactive document.
 If a document's disk space use reaches or exceeds this number in Megabytes,
 further modification of the document will no longer be allowed.
 
@@ -210,8 +209,8 @@ int
 Command name for GAP
 free
 
-GAP is a group theoretic calculator used by WIMS. If you install it in a
-directory according to its instructions, with an executable gap.sh within
+GAP is a group theoretic calculator used by WIMS.
+If you install it in a directory according to its instructions, with an executable gap.sh within
 usual PATH, you do not need to touch this.
 
 :log general_log_limit
@@ -236,63 +235,79 @@ free
 This module is the entry point of the site. You should not change this
 unless you have designed and put up your own home module.
 
+:appearances site_languages wims_site_languages
+Supported languages*
+free
+
+Available languages:
+ca (Catalan),
+cn (Chinese gb),
+de (German),
+en (English),
+es (Spanish),
+fr (French),
+it (Italian),
+nl (Dutch),
+si (Slovenian),
+tw (Chinese gib5).
+
+List them separated by white spaces.
+<p>
+The order of your listing is important: languages listed first will get more priority.
+</p>
+
 :tech idle_time
 Delay before an idle class session is killed
 choice
 600,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
-Reducing this may increase performance but slow visitors will find their
-sessions expired. Usually an active
-user will touch his session at least once every 10 minutes, unless he is
+Reducing this may increase performance but slow visitors will find their sessions expired.
+Usually an active user will touch his session at least once every 10 minutes, unless he is
 working on a very hard exercise (a fairly rare case). However, killing the
 session of the latter will result in huge frustration. So be careful!
 <p>
 If exams will be carried out on your installation, please note that this
-delay should exceed the time allowance of any exam sheet.
+delay should exceed the time allowance of any exam sheet.</p>
 
 :tech idle_time2
 Delay before an idle anonymous session is killed
 choice
 600,900,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,15 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
-Reducing this may increase performance but slow visitors will find their
-sessions expired. Usually an active
-user will touch his session at least once every 10 minutes, unless he is
+Reducing this may increase performance but slow visitors will find their sessions expired.
+Usually an active user will touch his session at least once every 10 minutes, unless he is
 working on a very hard exercise (a fairly rare case). If killing the
 session of the latter will result in huge frustration, such activities
 are less important when they are not in a virtual class.
 <p>
-This delay only applies to sessions without authentication. It cannot be
-bigger than delay for class sessions.
-
+This delay only applies to sessions without authentication. It cannot be bigger than delay for class sessions.
+</p>
 :tech idle_time3
 Delay before an idle first-created session is killed
 choice
 300,360,480,600,720,900,1200,1800,2400,3600,7200;5 min,6 min,8 min,10 min,12 min,15 min,20 min, 30 min, 40 min, 1 hour,2 hours, 2 hours
-If one creates a session without reusing it during this amount of seconds,
-the newly-created session will be removed.
+If one creates a session without reusing it during this amount of seconds, the newly-created session will be removed.
 <p>
 This delay only applies to sessions without authentication. Creating a
 session without reusing it is usually a behavior of internet robots.
+</p><p>
+This delay cannot be bigger than that for idle anonymous sessions.
 </p>
-<p>This delay cannot be bigger than that for idle anonymous sessions.</p>
-
 :tech mail_opt
 Options for !mailto command
 free
 
-Add options to the system command "mail" when using the !mailto command. See
-the sytem's mail manual for details of possible options.
+Add options to the system command "mail" when using the !mailto command.
+See the sytem's mail manual for details of possible options.
 <p>
-For example, if your system's mail command supports this, you can use 
-<span class="tt">-a "User-Agent: WIMS"</span> to add a User-Agent header to the mail sent
+For example, if your system's mail command supports this, you can use
+<code class="tt">-a "User-Agent: WIMS"</code> to add a User-Agent header to the mail sent
 out by wims. Some providers require this to accept mails.
-
+</p>
 :security manager_https
 Site maintenance must use https connection*
 choice
 0,1;no (0),yes (1)
-Whenever possible, choose https connection to increase security. An
-intrusion to your server as webmaster represents a great danger to your
-installation!
+Whenever possible, choose https connection to increase security.
+An intrusion to your server as webmaster represents a great danger to your installation!
 <p>WIMS is compatible with https. All you have to do is to configure your
 httpd so that it accepts https requests.</p>
 
@@ -300,73 +315,61 @@ httpd so that it accepts https requests.</p>
 Site maintenance connections must come from a site with this IP*!
 free
 
-You may put here several IP numbers. Partial numbers such as 134.59.10. are
-accepted, but be aware that the more there are allowed sites, the more will be
-your security risks. The most secure site is 127.0.0.1
-(localhost). In any case, choose only site(s) you can trust. An
-intrusion to your server as webmaster represents a great danger to your
-installation!
+You may put here several IP numbers.
+Partial numbers such as 134.59.10. are accepted, but be aware that the more there are allowed sites,
+the more will be your security risks.
+The most secure site is 127.0.0.1 (localhost).
+In any case, choose only site(s) you can trust.
+An intrusion to your server as webmaster represents a great danger to your installation!
 <p>
 If you put a `*' to this field, the next time you will not be
 able to use this online maintenance tool (and you can be sure that nobody
 else will).
-
+</p>
 :software maxima_command
-Command name of Maxima
+Command name for Maxima
 free
 
-You do not need to change this if Maxima is installed in a usual way with the
-starting exercutable in PATH.
-
+You do not need to change this
+if Maxima is installed in a usual way with the starting executable in PATH.
 
 :log module_log
 Log individual module informations
 choice
 1,0;yes (1),no (0)
-Many WIMS modules define their own log informations. If you want to see
-these module informations, you can activate this (see also the definition of
-module log file lengths). Attention however that these
-log files will end up by using up a fair amount of disk spaces, as there are
-hundreds of logging modules.
+Many WIMS modules define their own log informations.
+If you want to see these module informations, you can activate this (see also the definition of
+module log file lengths).
+Attention however that these log files will end up by using up a fair amount of disk spaces,
+as there are hundreds of logging modules.
 
 :log module_log_limit
 Length limit (in bytes) of module log files
 int
 0,102400000
-Length limit of module log files. There are some secondary general log files
-who also use this limit, so even if module log is set to no, this number
-still makes sense.
+Length limit of module log files.
+ There are some secondary general log files who also use this limit,
+  so even if module log is set to no, this number still makes sense.
 
-:housekeep mu_auto
-Module update method
+:housekeep site_accounting
+Activity accounting
 choice
-none,check,install,update,all
-Method of automatic daily module update. <dl>
-<dt><span class="tt">none</span>
-   <dd>Disable automatic module update.
-<dt><span class="tt">check</span>
-   <dd>Check what should be updated, and send a mail to webmaster (that
-   is, you). Do not install or update anything.
-<dt><span class="tt">install</span>
-   <dd>Install new modules, but not update existing modules.
-<dt><span class="tt">update</span>
-   <dd>Update existing modules, but not install new modules. <br />
-   This will let you benefit from bug fixes, as well as suffer from
-   newly introduced ones.
-<dt><span class="tt">all</span>
-   <dd>Install new modules and update existing ones.
-</dl>
+0,1; no, yes
+Enable or disable daily activity accounting.
+This is necessary for site activity statistics, as well as for virtual class connection time accounting.
 
 :housekeep mu_download_site
 Download site for module update
 checkbox
 $mu_downloadsites
-Choose a download site for module update. Known mirror sites:
+Choose a download site for module update.
+Known mirror sites:
 <pre>
 $help_downloadsites
-</pre> <p>
-If you choose automatic module update with very small delay (0 or 1 day),
-you should set the download site to the primary mirror <span class="tt">$(mu_sites[1])</span>.
+</pre>
+<p>If you choose automatic module update with very small delay (0 or 1 day),
+you should set the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
+</p>
 
 :housekeep mu_publish_site
 $wims_name_publish_center
@@ -381,35 +384,38 @@ $help_publishsites
 Delay in automatic module update
 choice
 0,1,2,4,7,10,15,20,30,50,100
-The number of days between the publication of a module and the update by
-this site.
+The number of days between the publication of a module and the update by this site.
 <p>
 Choosing a bigger value here will allow you to reduce the risk of getting
 new bugs, because the latter will hopefully be discovered and corrected during
 your delay.
+</p>
 <p>
 If you choose a very small number here (0 or 1), you should set
-the download site to the primary mirror <span class="tt">$(mu_sites[1])</span>.
-
+the download site to the primary mirror <code class="tt">$(mu_sites[1])</code>.
+</p>
 :housekeep mu_zone
 Zones for automatic module update
 free
 
-Limit the automatic module update to the given zones. "all" means everything.
+Limit the automatic module update to the given zones.
+<code class="tt">all</code> means everything.
 <p>
 Possible choices of zones: <dl>
-<dt><span class="tt">E</span>
+<dt><code class="tt">K</code>
+    <dd>Kindergarten (you can fine-tune with K1 K2 K3)
+<dt><code class="tt">E</code>
     <dd>Elementary school materials (you can fine-tune with E1 E2 E3 E4 E5 E6)
-<dt><span class="tt">H</span>
+<dt><code class="tt">H</code>
     <dd>Middle school materials (you can fine-tune with H1 H2 H3 H4 H5 H6)
-<dt><span class="tt">U</span>
+<dt><code class="tt">U</code>
     <dd>University teaching materials (you can fine-tune with U1 U2 U3 U4 U5)
-<dt><span class="tt">Lang</span>
+<dt><code class="tt">Lang</code>
     <dd>Foreign language-learning materials
-<dt><span class="tt">tool</span>
+<dt><code class="tt">tool</code>
     <dd>Online tools and helpers.
 </dl>
-<p>
+</p><p>
 You can put several zones in this field, separated by white spaces.
 
 :housekeep mu_cat
@@ -419,42 +425,42 @@ free
 Limit the automatic module update to the given categories. "all" means everything.
 <p>
 Some choices of categories (non-exhaustive): <dl>
-<dt><span class="tt">math</span> resp. <span class="tt">physics chemistry language</span> etc.
+<dt><code class="tt">math</code> resp. <code class="tt">physics chemistry language</code> etc.
     <dd>Corresponding disciplines.
-<dt><span class="tt">cs</span>
+<dt><code class="tt">cs</code>
     <dd>Computer science.
 </dl>
-<p>
+<p><p>
 You can put several categories in this field, separated by white spaces.
-
+</p>
 :log old_log_files
 Number of old log files*
 int
 0,20
-This is the number of rotated old log files. Increasing this number will give
-you more historic information, while proportionally increase disk space use.
+This is the number of rotated old log files.
+Increasing this number will give you more historic information, while proportionally increase disk space use.
 
 :software pari_command
 Command name for PARI/GP
 free
 
-PARI/GP is a number-theoretic calculator used by many WIMS modules. If you
-follow its installation procedure with binary executable within usual PATH,
+PARI/GP is a number-theoretic calculator used by many WIMS modules.
+If you follow its installation procedure with binary executable within usual PATH,
 you do not need to touch this.
 
 :resources priority
 Sites with connection priority
 free
 
-Connections from these sites will not be refused when server load is above
-threshold. $sitehelp
+Connections from these sites will not be refused when server load is above threshold.
+$sitehelp
 
 :appearances page_bgcolor wims_bgcolor
 Page background color
-free
+color
 
-Background color of most WIMS pages. Use a color name or #rrggbb
-hexadecimal code (see html standard for detail).
+Background color of most WIMS pages.
+Use a color name or #rrggbb hexadecimal code (see html standard for detail).
 
 :appearances page_bgimg wims_bgimg
 Page background image file
@@ -464,30 +470,28 @@ Background image file (tile) for most WIMS pages. You may use any valid URL.
 Take also a look in the directory public_html/gifs/bg which contains
 some pre-defined background files. These files can be referenced simply by
 their names, without any directory prefix.
-<p>
-Here is the list of such directly usable background image files:
-<p><span class="tt">$bgimgs</span>
+<p>Here is the list of such directly usable background image files:</p>
+<pre>$bgimgs</pre>
 
 :tech,misc rafale_level
 Anti-rapidfire severity
 int
 0,100
-Rapid-fire requests of exercises without serious attempts to resolve them
-will generate errors. This is one of the anti-cheating measures of the system.
+Rapid-fire requests of exercises without serious attempts to resolve them will generate errors.
+This is one of the anti-cheating measures of the system.
 Higher severity level results in more requirements in time before new
-exercises are allowed. Choosing the value of 0 or less for this severity will
-disable this measure.
+exercises are allowed. Choosing the value of 0 or less for this severity will disable this measure.
 
 :appearances ref_bgcolor wims_ref_bgcolor
 Table background color
-free
+color
 
 Background color appearing in head menus and many WIMS administration
 modules. Use a color name or #rrggbb hexadecimal code (see html standard for
 detail).
 
 :appearances ref_menucolor wims_ref_menucolor
-Link color in menus and reference table. 
+Link color in menus and reference table.
 free
 
 You can choose the color menu link  here.
@@ -518,7 +522,7 @@ This is possible only for "new themes", it does not work perfectly for default t
 
 :appearances ref_button_help_color wims_ref_button_help_color
 Help button color
-free
+color
 
 You can choose the color of the text of most of help link buttons here.
 This is possible only for "new themes", it does not work perfectly for default theme.
@@ -528,16 +532,15 @@ Presentation theme
 choice
 $themelist
 You can choose the presentation theme here.
-<span class="tt">default</span> is the original theme.
-The theme <span class="tt">standard</span> allows a more configurable css style and icon theme.
+<code class="tt">default</code> is the original theme.
+ The theme <code class="tt">standard</code> allows a more configurable css style and icon theme.
 
 :appearances theme_icon wims_theme_icon
 Icon theme
 choice
 $iconlist
-You can choose the icon presentation theme here. This is possible only
-for "new themes", so not for default theme.
-
+You can choose the icon presentation theme here.
+This is possible only for "new themes", so not for default theme.
 
 :appearances css wims_css
 Style sheet
@@ -545,23 +548,25 @@ choice
 $csslist
 The style sheet affects almost all pages of the site.
 <p>
-The available stylesheet (css) files are in 
-<span class="tt">public_html/html/css/$lang</span>. If you
-want more stylesheets, you can put new css files into this directory.
+The available stylesheet (css) files are in
+<code class="tt">public_html/html/css/$lang</code>.
+If you want more stylesheets, you can put new css files into this directory.
 </p>
-<p>If you choose css=<span class="tt">-theme-</span>, the stylesheet of the current theme
-will be used. No stylesheet will be loaded if css=<span class="tt">----</span>.</p>
+<p>If you choose css=<code class="tt">-theme-</code>, the stylesheet of the current theme
+will be used. No stylesheet will be loaded if css=<code class="tt">----</code>.
+</p>
 
 :resources rlimit_cpu
 Processing time allowance in seconds*
 int
 1,10000
-If a user request needs more time than this amount to process, the
-computation will be cut off and an error message will be sent back.
+If a user request needs more time than this amount to process, the computation will be cut off and an error message will be sent back.
 It is useless to increase this number too much, because in normal
 circumstances few internet users will wait more than a few dozens of
 seconds for a page.
-<p>This is also a very important security measure to check denial-of-service attacks.</p>
+<p>
+This is also a very important security measure to check denial-of-service attacks.
+</p>
 
 :appearances show_author wims_show_author
 Show author names in search results
@@ -606,13 +611,13 @@ search engines).
 Supported languages*
 free
 
-Available languages: 
+Available languages:
 ca (Catalan),
 cn (Chinese gb),
 de (German),
 en (English),
 es (Spanish),
-fr (French), 
+fr (French),
 it (Italian),
 nl (Dutch),
 si (Slovenian),
