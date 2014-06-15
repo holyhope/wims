@@ -393,9 +393,10 @@ Cuaderno de textos\
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
 !if config isin $module or $module=home
- !distribute line Página principal de configuración\
+ !distribute line $wims_name_config\
+ Página principal de configuración\
 Gestión de la estructura\
-into wims_name_config, wims_name_struct
+into wims_name_configb, wims_name_config,wims_name_struct
 !endif
 
 !set wims_name_save=Copias de seguridad y recuperación
