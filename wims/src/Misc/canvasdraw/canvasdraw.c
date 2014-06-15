@@ -28,10 +28,10 @@ int 	x2px(double x);
 int 	y2px(double y);
 double 	px2x(int x);
 double 	px2y(int y);
-double	get_real(FILE *infile,int last); /* read a values; calculation and symbols allowed */
+double	get_real(FILE *infile,int last); /* read a value; calculation and symbols allowed */
 char    *str_replace ( const char *word, const char *sub_word, const char *rep_word );
 char 	*get_color(FILE *infile,int last); /* read hex-color or colorname -> hex */
-char	*get_string(FILE *infile,int last); /* get the string at theend of a command */
+char	*get_string(FILE *infile,int last); /* get the string at the end of a command */
 char	*get_string_argument(FILE *infile,int last); /* the same, but with "comma" as  separator */
 char 	*convert_hex2rgb(char *hexcolor);
 void 	add_read_canvas(int reply_format);
@@ -185,7 +185,7 @@ int main(int argc, char *argv[]){
 	    @size width,height
 	    @set canvas size in pixels
 	    @mandatory first command
-	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0)
+	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = TRUE;
 	    xsize = (int)(abs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
@@ -2074,7 +2074,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ keyword, no arguments
 	 @ if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
 	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
-	 @ NOTE: not all objects  may be set clickable
+	 @ NOTE: not all objects may be set clickable
 	*/
 
 	    onclick = 1;
@@ -2084,6 +2084,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ drag [x][y][xy]
 	 @ the next object will be draggable in x / y / xy direction
 	 @ the displacement can be read by 'javascript:read_dragdrop();'
+	 @ the answer is  : object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the place of the draggable object in your script.<br />Only draggable object will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
 	 @ use keywordd 'snaptogrid' , 'xsnaptogrid' or 'ysnaptogrid' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
 	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!

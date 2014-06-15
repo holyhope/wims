@@ -2215,9 +2215,9 @@ function CanvasState(canvas,container_div){\
       case 2: myState.selection = move(myState.selection,0,dy); break;\
      };\
     };\
+    reply[myState.selection.click_cnt] = myState.selection.click_cnt+\":\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\":\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk]);\
    };\
-   reply[myState.selection.click_cnt] = \"object number=\"+myState.selection.click_cnt+\" moved  from (\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\") to (\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk])+\")\";\
-   myState.valid = false;\
+   myState.valid = true;\
   };\
   myState.dragging = false;\
  };\
@@ -2226,9 +2226,11 @@ function CanvasState(canvas,container_div){\
    var mouse = myState.getMouse(e);\
    var dx=mouse.x - myState.selection.x[myState.chk];\
    var dy=mouse.y - myState.selection.y[myState.chk];\
-   switch(myState.selection.direction){    case 0: myState.selection = move(myState.selection,dx,dy);break;\
+   switch(myState.selection.direction){\
+    case 0: myState.selection = move(myState.selection,dx,dy);break;\
     case 1: myState.selection = move(myState.selection,dx,0);break;\
     case 2: myState.selection = move(myState.selection,0,dy); break;\
+    default:break;\
    };\
    myState.valid = false;\
   };\
