@@ -3,32 +3,35 @@
 
 !if $n>0
  <!-- _widgets/usersheet.phtml -->
+
+
+<div class="wims_seq">
+  <div class="wims_title_seq">$wims_name_sheet:</div>
+
  !set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
  <ul class="wims_work_list">
   !for i=1 to $n
-   !set se=!item $i of $aclist
-   !distribute lines $(s_$se) into ac,t_,ti,de
-   <li class="wims_sheet_item">
-    <span class="wims_user_sheet_type">$wims_name_Sheet $se.</span>
-    <span class="wims_user_sheet_desc">
-     !href module=adm/sheet&sh=$se $ti
-    </span>
-    !if showshweight iswordof $class_option
-        <span class=".wims_sheet_weight small">
-        $wims_name_coeff $(w_$se)
-        </span>
-    !endif
-     !if $ac>=2
-      <span class="wims_user_sheet_expire small">
-      $U_expired
-       </span>
-     !else
-      !if showshexpire iswordof $class_option
-      <span class="wims_user_sheet_expire small">
-       !read misc/expire.phtml.$lang $t_
+    !set se=!item $i of $aclist
+    !distribute lines $(s_$se) into ac,t_,ti,de
+    <li class="wims_sheet_item">
+      <span class="wims_user_sheet_type">$wims_name_Sheet $se.</span>
+      <span class="wims_user_sheet_title">
+        !href module=adm/sheet&sh=$se $ti
       </span>
-      !endif
-     !endif
+      <ul class="wims_sheet_info">
+        !if showshweight iswordof $class_option
+          <li class=".wims_sheet_weight small">$wims_name_coeff $(w_$se)</li>
+        !endif
+        !if $ac>=2
+          <li class="wims_user_sheet_expire small">$U_expired</li>
+        !else
+          !if showshexpire iswordof $class_option
+            <li class="wims_user_sheet_expire small">
+              !read misc/expire.phtml.$lang $t_
+            </li>
+          !endif
+        !endif
+      </ul>
 
     <div class="wims_user_info">
     !set pe=!line $se of $percents
@@ -55,5 +58,6 @@
    </li>
   !next i
  </ul>
+</div>
  <!-- end _widgets/usersheet.phtml -->
 !endif
