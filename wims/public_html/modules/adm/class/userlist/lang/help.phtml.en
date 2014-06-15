@@ -1,11 +1,13 @@
 
-!if $special_parm!=$empty
+!if $special_parm!=$empty and $special_parm_!=$empty
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
 
-!read adm/title.phtml 3\
+!read adm/title.phtml 1\
 \
 Severity levels of worksheets
+
+!if $wims_user=supervisor or $special_parm=$empty
 <p>
 The server computes some averages for each sheet of each participant on each
 sheet: the  percentage I0 of points obtained with respect to the number 10*n of points
@@ -15,6 +17,8 @@ together with the quality Q of points obtained on the exercises of the worksheet
  Here are the formulas for the computation of the grades, according
  to the teacher choice (severity level and indicator I).
 </p>
+
+!reset table_center
 $table_header
 $table_hdtr<th>Level</th><th>Formula</th><th>Explanation</th></tr>
 $table_tr<td>0</td><td>$scoremax max(x,y)
@@ -40,3 +44,36 @@ exercise, the percentage of points obtained
 become 0% for this exercise when x is computed ; if the quality of points is betwwen 1 and 2,
 the percentage of points obtained for this exercise is divided by 2
 when I is computed.
+
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif
+

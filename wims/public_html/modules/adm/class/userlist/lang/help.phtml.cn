@@ -1,17 +1,20 @@
 
-!if $special_parm!=$empty
+!if $special_parm!=$empty and $special_parm_!=$empty
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
 
-!read adm/title.phtml 3\
+!read adm/title.phtml 1\
 \
 ×÷ÒµÒ³µÄÑÏÀ÷¶È
+!if $wims_user=supervisor or $special_parm=$empty
 <p>
 ¶ÔÓÚÃ¿¸ö²Î¼ÓÕßÔÚÃ¿¸ö×÷ÒµÒ³ÉÏµÄ¹¤×÷, ·şÎñÆ÷¼ÆËãÁ½¸öÆ½¾ùÖµ:
 Ò»¸öÊÇÊµ¼ÊµÃ·Ö¹ØÓÚÓ¦µÃ·ÖµÄ°Ù·Ö±È, ÁíÒ»¸öÊÇÒ³ÃæÁ·Ï°µÄµÃ·ÖÖÊÁ¿.
 Éè x ÊÇ°Ù·ÖÊı, y ÊÇÖÊÁ¿, Á½Õß¾ùÈ¡ 0 Óë 1 Ö®¼äµÄÖµ.
 Ôò¼ÆËã×ÜÆÀ·ÖµÄ¹«Ê½ÈçÏÂËùÊ¾.
 </p>
+
+!reset table_center
 $table_header
 $table_hdtr<th>ÑÏÀ÷¶È</th><th>¹«Ê½</th><th>½âÊÍ</th></tr>
 $table_tr<td>0</td><td>$scoremax max(x,y)
@@ -30,8 +33,39 @@ $table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
  </td><td>ÈÎºÎ´íÎó¶¼±»ÑÏ³Í.</td></tr>
 $table_end
 
-×¢Òâ : ¶ÔÓÚÑÏÀ÷¶È 0 Óë 1, Èç¹ûÒ»¸öÁ·Ï°µÄÖÊÁ¿·ÖĞ¡ÓÚ 1, 
+×¢Òâ : ¶ÔÓÚÑÏÀ÷¶È 0 Óë 1, Èç¹ûÒ»¸öÁ·Ï°µÄÖÊÁ¿·ÖĞ¡ÓÚ 1,
 ÄÇÃ´ÔÚ¼ÆËã x Ê±Õâ¸öÁ·Ï°µÄµÃ·Ö°Ù·ÖÂÊ±ä³É 0% ;
 Èç¹ûÖÊÁ¿·ÖÔÚ 1 Óë 2 Ö®¼ä,
 ÄÇÃ´ÔÚ¼ÆËã x Ê±Õâ¸öÁ·Ï°µÄµÃ·Ö°Ù·ÖÂÊ±»³ıÒÔ 2.
 
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif

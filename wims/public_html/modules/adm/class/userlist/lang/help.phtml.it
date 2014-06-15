@@ -1,11 +1,12 @@
 
-!if $special_parm!=$empty
+!if $special_parm!=$empty and $special_parm_!=$empty
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
 
 !read adm/title.phtml 1\
 \
 Calcolo dei voti nei test di autovalutazione (livello di severità)
+!if $wims_user=supervisor or $special_parm=$empty
 <p>
 Il server calcola i voti a partire da due indicatori:
 <ul>
@@ -39,7 +40,39 @@ $table_tr<td>5</td><td>$\($scoremax * $(list[6;])\)
  </td><td></td></tr>
 $table_end
 
-Nota: Per i livelli 0 e 1, se l'indice di qualità per un esercizio è inferiore 
-a 1, nel calcolo di I per questo esercizio la percentuale di completamento è 
+Nota: Per i livelli 0 e 1, se l'indice di qualità per un esercizio è inferiore
+a 1, nel calcolo di I per questo esercizio la percentuale di completamento è
 impostata a 0%; se la qualità è tra 1 e 2, nel calcolo di I la percentuale
 effettiva è dimezzata.
+
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif

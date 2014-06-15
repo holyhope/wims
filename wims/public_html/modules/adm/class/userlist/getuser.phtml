@@ -119,8 +119,11 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   </span>
  !endif
  </th></tr>
- $table_hdtr<th>$(wims_name_thsheet[1])</th><th>$(wims_name_thsheet[2])</th><th>$(wims_name_thsheet[9])/$scoremax
- </th></tr>
+ $table_hdtr
+  <th>$(wims_name_thsheet[1])</th>
+  <th>$(wims_name_thsheet[2])</th>
+  <th>$(wims_name_thsheet[9])/$scoremax</th>
+ </tr>
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
@@ -155,6 +158,9 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   !set a_=!word $k of $v_
   !set S_=$[$S_+$a_]
  !next k
+ !set sw=!line $[$n_+1] of $shweights
+ !set sw=!word 3 of $sw
+ !default sw=0
  !if $S_<=0
   !goto next
  !endif
@@ -166,7 +172,11 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !endif
  <a id="sheet$n_"></a>
  <br class="spacer" />
-  !set nb_indic=5
+  !if $wims_user=supervisor
+    !set nb_indic=5
+  !else
+    !set nb_indic=3
+  !endif
   !set P_=!line $n_ of $percents
  !distribute words $P_ into p1,p2,p3,p4
   !if $p2!=$empty
@@ -177,13 +187,15 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !next
    !set p_=$[ceil(10*$scoremax*$(ff_$n_))/10]
   !endif
-
  $table_header$table_hdtr<th colspan="$[$nb_indic+5]" style="text-align:left">
  !if $p2!=$empty
    !href module=adm/sheet&sh=$n_ $hat
    <br />
-   $(wims_name_thsheet[4]): $A_, $(wims_name_thsheet[8]):
-   !lowercase $(f_$n_)
+   $(wims_name_thsheet[4]): $A_
+   $(wims_name_thsheet[8])
+   !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=$n_ $wims_name_help
+   !!!lowercase $(f_$n_)
 !!global note
   !if $(min_$n_)<$scoremax
     <br />$name_minmax: $(min_$n_)/$(mean_$n_)/$(max_$n_)
@@ -193,14 +205,21 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
     $(wims_name_thsheet[9]): $p_ / $scoremax.
     <br />
     $(wims_name_thsheet[7]): $p2/10
+    !if $wims_user=supervisor or $sw=0
         <br />
    !! $(wims_name_thsheet[5])
-    I0: $p1%,
-
+     $(wims_name_thsheet[5]): $p1%,
+    !endif
+    !if $wims_user=supervisor or $sw=1
+    <br />
    !! $(wims_name_thsheet[10])
-    I1: $p3%;
+    $(wims_name_thsheet[10]): $p3%;
+    !endif
+    !if $wims_user=supervisor or $sw=2
+    <br />
    !! $(wims_name_thsheet[13])
-    I2: $[$p4/10]/10
+    $(wims_name_thsheet[13]): $[$p4/10]/10
+    !endif
  !else
   !href module=adm/sheet&sh=$n_ $hat
  !endif
@@ -208,16 +227,21 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  $table_hdtr
      <th>$(wims_name_thsheet[1])</th><th>$(wims_name_thsheet[2])</th>
      <th>$(wims_name_thsheet[3])</th><th>$(wims_name_thsheet[4])</th>
-!!cumul
-!!     <th>$(wims_name_thsheet[5])</th>
+
 !!qualite
      <th>$(wims_name_thsheet[7])</th>
+    !if $wims_user=supervisor or $sw=0
 !!I0: percentage work (related to cumul)
-    <th>I0: $(wims_name_thsheet[5])</th>
+    <th>$(wims_name_thsheet[5])</th>
+    !endif
+    !if $wims_user=supervisor or $sw=1
 !!I1: best percentage
-     <th>I1: $(wims_name_thsheet[10])</th>
+     <th>$(wims_name_thsheet[10])</th>
+    !endif
+    !if $wims_user=supervisor or $sw=2
 !!I2: level
-     <th>I2: $(wims_name_thsheet[13])</th>
+     <th>$(wims_name_thsheet[13])</th>
+    !endif
 !!last
      <th>$(wims_name_thsheet[12])</th>
 !!number try
@@ -245,20 +269,26 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
 !!   !read adm/class/colors $[ceil(10*$d_/$(req_))]
 !!   <td style=$style_note>$d_</td>
 !!percentage
-   !if $(req_)>0
-    !read adm/class/colors $[ceil(10*$d_/$(req_))]
+   !if $wims_user=supervisor or $sw=0
+    !if $(req_)>0
+     !read adm/class/colors $[ceil(10*$d_/$(req_))]
      <td style=$style_note>$[round(100*$d_/$(req_))]%</td>
-   !else
+    !else
      <td>--</td>
+    !endif
    !endif
+   !if $wims_user=supervisor or $sw=1
 !!best percentage
    !set best=!getscorebest user=$getuser sheet=$n_ work=$j
    !read adm/class/colors $[ceil(10*$best/$req_)]
    <td style=$style_note>$[round($[$best*100/$req_])]%</td>
+   !endif
+   !if $wims_user=supervisor or $sw=2
 !!level
    !set level=!getscorelevel user=$getuser sheet=$n_ work=$j
    !read adm/class/colors $[min(ceil($level+0.1),10)]
    <td style=$style_note>$level</td>
+   !endif
 !!last
    !set last=!getscorelast user=$getuser sheet=$n_ work=$j
    !read adm/class/colors $[ceil($last)]

@@ -1,11 +1,13 @@
 
-!if $special_parm!=$empty
+!if $special_parm!=$empty and $special_parm_!=$empty
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
 
 !read adm/title.phtml 1\
 \
-Niveaux de sévérité des feuilles de travail
+Règle de calcul des feuilles de travail
+
+!if $wims_user=supervisor or $special_parm=$empty
 <p>
 Le serveur calcule les moyennes pour chaque feuille de trois indicateurs
 du travail de chaque participant : le quotient I0 des points cumulés
@@ -21,7 +23,7 @@ le pourcentage de points acquis pour cet exercice est divisé par 2 lors du calcu
 
 </p><p>
 Voici les formules possibles permettant de calculer la note de la feuille,
-suivant les choixs fixé par l'enseignant (règle de calcul et indicateur I).
+suivant les choix fixés par l'enseignant (règle de calcul et indicateur I).
 </p>
 
 !reset table_center
@@ -42,3 +44,35 @@ $table_tr<td>4</td><td>\($scoremax*$(list[5;])\)
 $table_tr<td>5</td><td>$\($scoremax*$(list[6;])\)
  </td><td></td></tr>
 $table_end
+
+!else
+Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
+de la note.
+Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+<ul>
+<li>
+!if $help_sw=0
+  le quotient I des points cumulés par le nombre de points demandés 10*n
+!endif
+!if $help_sw=1
+la moyenne I des n meilleures notes,
+!endif
+!if $help_sw=2
+ le minimum I des n meilleures notes
+!endif
+</li>
+<li>
+la qualité Q des points obtenus sur les exercices.
+</li>
+</ul>
+
+Si la note de qualité est inférieure à 1 pour un exercice,
+I est mis à 0 pour cet exercice  ;
+si la note de qualité est comprise entre 1 et 2,
+I est divisé par 2 lors du calcul de la note de la feuille.
+
+</p><p>
+Ces moyennes sont ramenées entre 0 et 1 et
+ la note de la feuille est calculée comme
+\($scoremax * $(list[$help_level+1;]) \)
+!endif
