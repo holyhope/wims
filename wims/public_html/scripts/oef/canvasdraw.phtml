@@ -1,25 +1,30 @@
-
-
 !if $wims_read_parm=$empty
  !exit
 !endif
+
 !set pp=!trim $wims_read_parm
 !set pp=!replace internal \\ by ///?/?/?/// in $pp
 !set pp=!replace internal \ by $$m_ in $pp
 !set pp=!replace internal ///?/?/?/// by \\ in $pp
 !set s_=!line 1 of $pp
+
 !set test=!text remove ,0123456789 in $s_
 !set testcnt=!itemcnt $s_
 !if $test notsametext $empty or $s_=$empty or $testcnt!=2
   !exit
 !endif
+
 !set pp=!line 2 to -1 of $pp
 !set pp=!translate internal $	$ to $\
 $ in $pp
 !set pp=!trim $pp
+!!need a space at the end
+!set pp=!rows2lines $pp$ $
 
 !set canvasdraw_out=!exec canvasdraw\
 size $s_\
 $pp
+
+!set $canvasdraw_out= !replace internal , by in $canvasdraw_out
 
 $canvasdraw_out
