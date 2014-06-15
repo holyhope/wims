@@ -6,7 +6,7 @@
 !set wims_ref_anchor=#searchform
 
 <div class="search_box wims_widget_box medium_size" id="searchform">
-	!set wims_form_method=post
+    !set wims_form_method=post
     !form new
     <input type="hidden" name="module" value="home"/>
 
@@ -14,29 +14,29 @@
     !read adm/search_engine/search_accessright.phtml
   !endif
 
-	<div class="title_box">
-		<h2>$name_search_all</h2>
-		<div class="aide_recherche">
-		 !set wims_ref_class=wims_button_help
-		!href module=adm/light&phtml=search_engine.phtml.$lang $wims_name_help
-		</div>
-		<br class="clearall"/>
-	</div>
+    <div class="title_box">
+        <h2>$name_search_all</h2>
+        <div class="aide_recherche">
+         !set wims_ref_class=wims_button_help
+         !href module=adm/light&phtml=search_engine.phtml.$lang $wims_name_help
+        </div>
+        <br class="clearall"/>
+    </div>
 
-		<ul class="box_content">
-			<li class="inline">
-				<input type="search" size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete"/>
-			</li>
-			<li class="inline">
-			 !formselect search_category list $slist prompt $plist
-			</li>
-			<li class="inline">
-			!default search_lang=$lang
-			!set L_language=!words2items $wims_site_languages
-			!formselect search_lang list $L_language
-			</li>
-			<li class="inline"><input type="submit" value="$N_Search"/></li>
-		</ul>
+    <ul class="box_content">
+        <li class="inline">
+            <input type="search" size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete"/>
+        </li>
+        <li class="inline">
+         !formselect search_category list $slist prompt $plist
+        </li>
+        <li class="inline">
+        !default search_lang=$lang
+        !set L_language=!words2items $wims_site_languages
+        !formselect search_lang list $L_language
+        </li>
+        <li class="inline"><input type="submit" value="$N_Search"/></li>
+    </ul>
 !formend
 
 <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
