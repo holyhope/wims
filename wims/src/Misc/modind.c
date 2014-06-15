@@ -16,7 +16,7 @@
  */
 
 /*  This is an internal program,
- * used to index modules for search engine. 
+ * used to index modules for search engine.
  */
 
 #include "../wims.h"
@@ -90,7 +90,7 @@ char *acctab="ÁÈËÍÎ˙˘˚¸·‡‚‰„ÛÚÙˆıÌÏÔÓÒ˝«…» À⁄Ÿ€‹¡¿¬√ƒ”“‘÷’ÕÃœŒ—›",
      *deatab="ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY";
 
 /*  fold known accented letters to unaccented, other strange characters to space
- *  apostrophe is among the exceptions to be kept (important for multi-word expressions) 
+ *  apostrophe is among the exceptions to be kept (important for multi-word expressions)
  */
 void deaccent(char *p)
 {
@@ -544,7 +544,7 @@ void onemodule(const char *name, int serial, int lind)
 
     if(module_index(name)) return;
     towords(indbuf[i_category]);
-/*   list the categories (among A=all,X=eXercise,O,D,...) corresponding 
+/*   list the categories (among A=all,X=eXercise,O,D,...) corresponding
  *   to this module
  */
     for(i=catcnt=0;i<catno && catcnt<16;i++) {
@@ -579,7 +579,7 @@ void onemodule(const char *name, int serial, int lind)
           indbuf[i_title], buf);
 
 /*   Normalize the information of trlist, using dictionary
- *  -- bases/sys/domain.xx without suffix translation (--> english version) 
+ *  -- bases/sys/domain.xx without suffix translation (--> english version)
  */
     entrycount=dentrycount; dicbuf=ddicbuf;
     memmove(entry,dentry,dentrycount*sizeof(entry[0]));
@@ -592,7 +592,7 @@ void onemodule(const char *name, int serial, int lind)
     translate(indbuf[trlist[i]]);
     }
 /*   Normalize the information, using dictionary
- *   bases/sys/words.xx with suffix translation 
+ *   bases/sys/words.xx with suffix translation
  */
     entrycount=mentrycount; dicbuf=mdicbuf;
     memmove(entry,mentry,mentrycount*sizeof(entry[0]));
@@ -621,7 +621,7 @@ void onemodule(const char *name, int serial, int lind)
 
 /*   this time the dictionary is the group dictionary  sys/wgrp/wgrp
  *   with a g (groupdic), not an m (maindic) . see below main, suffix, group.
- *   and delete unknown ?? and translate  
+ *   and delete unknown ?? and translate
  */
     entrycount=gentrycount; dicbuf=gdicbuf;
     memmove(entry,gentry,gentrycount*sizeof(entry[0]));
@@ -746,7 +746,7 @@ void onesheet(int serial, int lind)
     fprintf(titf,"%d:%s\n",serial,sindbuf[s_title]);
     fprintf(descf,"%d:%s\n",serial,sindbuf[s_description]);
     fprintf(remf,"%d:%s\n",serial,sindbuf[s_information]);
-    
+
     entrycount=dentrycount; dicbuf=ddicbuf;
     memmove(entry,dentry,dentrycount*sizeof(entry[0]));
     unknown_type=unk_leave;
@@ -757,7 +757,7 @@ void onesheet(int serial, int lind)
     singlespace(sindbuf[trlist[i]]);
     translate(sindbuf[trlist[i]]);
     }
-    
+
     entrycount=mentrycount; dicbuf=mdicbuf;
     memmove(entry,mentry,mentrycount*sizeof(entry[0]));
     unknown_type=unk_leave;
@@ -811,7 +811,7 @@ void sheets(void)
     int i,j;
     char mdic[MAX_LINELEN+1], sdic[MAX_LINELEN+1], gdic[MAX_LINELEN+1], ddic[MAX_LINELEN+1];
     char buf[MAX_LINELEN+1];
-    
+
     for(j=0;j<langcnt;j++) {
     snprintf(buf,sizeof(buf),"%s/index/title.%s",sheetdir,lang[j]);
     titf=fopen(buf,"w");
