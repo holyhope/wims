@@ -198,7 +198,7 @@
 	$[$wims_homeref_req] punten. <br />Gemiddelde score \
 	$[$wims_homeref_mean]/10.
  !set wims_name_thsheet=No,Titel,Vereist,Weging,Punten verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
- Best scores,Number of tries,Last result, Acquired level
+ Best scores,Number of tries,Last result, Acquired
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session
   !distribute items Andere opgaven uit deze overhoring,\
