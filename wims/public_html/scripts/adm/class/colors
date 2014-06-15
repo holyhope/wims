@@ -13,7 +13,18 @@
  !set class_scorecolor=!replace internal orange by $(colorhexa[5]) in $class_scorecolor
  !set class_scorecolor=!replace internal yellow by $(colorhexa[8]) in $class_scorecolor
  !set class_scorecolor=!replace internal green by $(colorhexa[10]) in $class_scorecolor
- !set style_note="background-color:$(class_scorecolor[$t0_+1]);" class="wims_style_score"
+
+ !set style_note="color:$(class_scorecolor[$t0_+1]);
+
+ !if $(class_scorecolor[$t0_+1]) = #FFFFFF
+    !set style_note=$style_note;color:#666;border-color:#666;
+ !else
+    !set style_note=$style_note;color:$(class_scorecolor[$t0_+1]);border-color:$(class_scorecolor[$t0_+1]);
+ !endif
+
+ !set style_note=$style_note" class="wims_sheet_score"
+
+
 
 !else
  !let t_=!charcnt $t0_
