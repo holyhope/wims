@@ -48,22 +48,12 @@
    !endif
    !if $type=sheet
      !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
+     !set sevlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
      !distribute lines $s_ into a_,t_,ti,de
      !if $a_>=1 and $a_<=2
-     <li class="wims_sheet_item">
-       !href module=adm/sheet&sh=$num&seq=$i $ti
-       <div class="wims_user_info">
-    <span class="wims_user_sheet_expire"><!--wims_user_sheet_expire-->
-      !if $a_>=2
-        $U_expired
-      !else
-       !if showshexpire iswordof $class_option
-        !read misc/expire.phtml.$lang $t_
-       !endif
-      !endif
-    </span><!--wims_user_sheet_expire-->
       !set formula_list=!record 0 of adm/class/sheetformula
       !set scoremax=!line 1 of $sevlist
+      !default scoremax=10
       !set sev_$num=!line $num + 1 of $sevlist
       !distribute word $(sev_$num) into w_$num,s,ss
       !bound s between integer 0 and 6 default 2
@@ -71,30 +61,44 @@
       !set f_$num=!item $s+1 of $formula_list
       !set f_$num=!replace internal I by I$ss in $(f_$num)
       !set pe=!line $num of $percents
-      !distribute words $pe into p1,p2,p3,p4
-      !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
-      <span class="wims_style_score">
-       !if $p1!=$empty
-        !set ff_$num=!mathsubst Q=$y_ in $(f_$num)
-        !for sev=0 to 2
-         !set ff_$num=!mathsubst I$sev=$(x$(sev)_) in $(ff_$num)
-        !next
-        $(wims_name_thsheet[9]): $[ceil(10*$(ff_$num))/10]
+      !set try=!getscoretry sheet=$num
+       !set try=!text select 123456789 in $try
+     <li class="wims_sheet_item">
+       !href module=adm/sheet&sh=$num&seq=$i $ti
+       !if showshweight iswordof $class_option
+        <span class="wims_style_coeff small">
+        $wims_name_coeff $(w_$num)
+        </span>
+       !endif
+      !if $a_>=2
+        <span class="wims_user_sheet_expire small"><!--wims_user_sheet_expire-->
+        $U_expired
+        </span><!--wims_user_sheet_expire-->
+      !else
+       !if showshexpire iswordof $class_option
+        <span class="wims_user_sheet_expire small"><!--wims_user_sheet_expire-->
+        !read misc/expire.phtml.$lang $t_
+        </span><!--wims_user_sheet_expire-->
+       !endif
+      !endif
+       <div class="wims_user_info">
+      !if $try!=$empty
+         !distribute words $pe into p1,p2,p3,p4
+         !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+         !set ff_$num=!mathsubst Q=$y_ in $(f_$num)
+         !for sev=0 to 2
+          !set ff_$num=!mathsubst I$sev=$(x$(sev)_) in $(ff_$num)
+         !next
+         <span class="wims_style_score">
+         $(wims_name_thsheet[9]): $[ceil($scoremax*$(ff_$num))/10]/$scoremax
 !!       $(wims_name_thsheet[5]): $p1%,
 !!       $(wims_name_thsheet[7]): $[$p2]/10,
 !!       $(wims_name_thsheet[10]): $p3%,
 !!       $(wims_name_thsheet[13]): $[$p4/10]/10
-      !else
-        &nbsp;
+         </span><!--wims_user_sheet_score-->
       !endif
-      !if showshweight iswordof $class_option
-       ($wims_name_coeff
-        !line $i of $wlist
-       )
-      !endif
-   </span><!--wims_user_sheet_score-->
- </div>
-    <div class="wims_sheet_desc">
+  </div>
+  <div class="wims_sheet_desc">
        !set cut=!detag $de
        !set lim=140
         !set cut=!char 1 to $lim of $cut
@@ -109,7 +113,7 @@
         !if $cutchar=$lim
         ...
         !endif
-  </div><!--wims_sheet_desc-->
+   </div><!--wims_sheet_desc-->
 
   </li><!--wims_sheet_item-->
   !reset a_,t_,ti,de
