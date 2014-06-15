@@ -10,15 +10,15 @@
 !set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
 !set TI=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
 
-<fieldset id="wims_seq_$i" class="wims_seq">
-<legend>$TI $i</legend>
+<div id="wims_seq_$i" class="wims_seq">
 <div class="wims_title_seq">
+  <span class="wims_seq_id">$TI $i:</span>
   <span class="wims_title_item">$tis_</span>
   <span class="wims_comment_item">$cos_</span>
 </div>
+<ul class="wims_work_list">
 
 !set dcnt=!itemcnt $obj_
-<ul class="wims_work_list">
 !for i_=1 to $dcnt
   !distribute word $(obj_[$i_]) into type,num
   !if $type=c
@@ -154,4 +154,4 @@
   !reset s_ v_ d_ e_
 !next i_
 </ul>
-</fieldset>
+</div>
