@@ -208,10 +208,10 @@ var precision = 100;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
-function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
+function x2px(x){if(use_xlogscale == 0 ){return parseInt(x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin));}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
 function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
 function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
-function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
+function y2px(y){if(use_ylogscale == 0){return parseInt(-1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin));}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
 function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
 function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
@@ -2343,9 +2343,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 				add_js_filltoborder(js_include_file,canvas_root_id);
 			   }
 			   decimals = find_number_of_digits(precision);
-			   string_length = snprintf(NULL,0,  "filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
+			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			   snprintf(tmp_buffer,string_length,"filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
@@ -2373,9 +2374,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 				add_js_floodfill(js_include_file,canvas_root_id);
 			   }
 			   decimals = find_number_of_digits(precision);/*floodfill(interaction,x,y,[R,G,B,A]) */
-			   string_length = snprintf(NULL,0,  "floodfill(0,%.*f,%.*f,[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
+			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
+			   string_length = snprintf(NULL,0,  "setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
 			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			   snprintf(tmp_buffer,string_length,"floodfill(0,%.*f,%.*f,[%s,%d]);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
+			   snprintf(tmp_buffer,string_length,"setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
@@ -2406,7 +2408,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    js_function[DRAW_FLOODFILL] = 1;
 	    add_js_floodfill(js_include_file,canvas_root_id);
 	 }
-	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
+	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
 	 add_read_canvas(1);
 	break;
 	case SETPIXEL:
