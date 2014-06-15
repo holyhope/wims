@@ -67,7 +67,7 @@ $wims_CSS
 
 body.main_body {
     background-color: $wims_ref_bgcolor;
-    color: $wims_textcolor;
+    /*color: $wims_textcolor;*/
 }
 
 a:link {color:$wims_link_color;}
@@ -108,7 +108,8 @@ table.wimstable th a{
 .wimstable caption,
 .oeftitle,
 .wims_docu_title,
-.wimsbody #wims_title .wims_title {
+.wimsbody #wims_title .wims_title,
+.wims_title_seq {
     background-color: $wims_ref_bgcolor;
     color: $wims_ref_menucolor;
 }
@@ -127,7 +128,10 @@ table.wimstable th a{
 .container h4{  background-color:$wims_ref_bgcolor; color:$wims_ref_button_color;}
 #menu_pendant,#menu_html { background-color:$wims_ref_bgcolor;  color:$wims_ref_button_color;}
 #menu_avant,#menu_apres {  background-color:$wims_ref_button_bgcolor; color:$wims_ref_button_color;}*/
-.infobulle{ background-color: $wims_ref_button_bgcolor;  color: $wims_ref_button_color;}
+.infobulle{ 
+  background-color: $wims_ref_button_bgcolor;
+  color: $wims_ref_button_color;
+}
 
 /*.topmenuitem a { color: $wims_ref_menucolor;}
 .menuitem a { color: $wims_ref_menucolor;}*/
@@ -170,14 +174,19 @@ body.main_body .wims_button_help{
   background-color:$wims_ref_button_help_bgcolor;
   color:$wims_ref_button_help_color;
 }
-.wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item{
- color:$(class_actcolor[1])
-}
-.wims_sheet_item {background-color:$(class_actcolor[2])}
-.wims_exam_item  {background-color:$(class_actcolor[3])}
-.wims_doc_item   {background-color:$(class_actcolor[4])}
-.wims_vote_item  {background-color:$(class_actcolor[5])}
-.wims_exo_item   {background-color:$(class_actcolor[6])}
+
+!if $(class_actcolor) != $empty
+  .wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item{
+   color:$(class_actcolor[1]);
+  }
+
+  .wims_sheet_item {background-color:$(class_actcolor[2]);}
+  .wims_exam_item  {background-color:$(class_actcolor[3]);}
+  .wims_doc_item   {background-color:$(class_actcolor[4]);}
+  .wims_vote_item  {background-color:$(class_actcolor[5]);}
+  .wims_exo_item   {background-color:$(class_actcolor[6]);}
+!endif
+
 </style>
 
 <!--end $wims_theme/htmlheader.phtml-->
