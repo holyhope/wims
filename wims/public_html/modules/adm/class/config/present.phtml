@@ -98,13 +98,13 @@
    <div class="field box">
      <label for="">$name_coloract</label>
      <br />
- !set actcolor_list=color,sheet,exam,doc,vote
- !set name_actcolor=$name_act_color,$name_sheetss,$name_exam, $wims_name_docs,$name_vote
+ !set actcolor_list=color,sheet,exam,doc,vote,exo
+ !set name_actcolor=$name_act_color,$name_sheets,$name_exam, $wims_name_docs,$name_vote,$wims_name_exercises
  !set actcolor_cnt=!itemcnt $actcolor_list
- !default class_actcolor=#000000,#CCCCFF,#99CCFF,#9999FF,#6666FF
+ !default class_actcolor=#000000,#CCCCFF,#99CCFF,#9999FF,#6666FF,#FFFFFF
   !for col=1 to $actcolor_cnt
-   $(name_actcolor[$col])
-     <input size="5" name="pr_actcolor$col" value="$(class_actcolor[$col])" type="color" />
+     <input size="5" id="pr_actcolor$col" name="pr_actcolor$col" value="$(class_actcolor[$col])" type="color" />
+  <label for="pr_actcolor$col">$(name_actcolor[$col])</label>
   !next col
    </div>
    <div class="field box halfwidth">
