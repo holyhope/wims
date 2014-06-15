@@ -8,7 +8,7 @@
 !distribute items Zoeken,\
 		Werk,Terug naar het Werk,\
 		WIMS Home,Intro/Config,Help,Wat is dit,\
-		Introductie,\
+		Introductie,Close,\
 		Sluit dit venster,Terug,\
 		Website manager,Auteur van deze pagina,Auteurs van deze pagina's,\
 		Vertaald door,Exit,\
@@ -40,7 +40,7 @@
 		Inloggen,\
 		Cijfers,\
 		Mijn cijfers,\
-		Proefwerk,\
+		Proefwerk,Exams,\
 		Browse,\
 		Terug naar het menu,\
 		Eind datum,\
@@ -57,7 +57,7 @@
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
-	wims_name_titleintro,\
+	wims_name_titleintro,wims_name_Close,\
 	wims_name_back,wims_name_back2,\
 	wims_name_manager,wims_name_author,wims_name_authors,\
 	wims_name_translatedby,wims_name_exit,\
@@ -69,9 +69,9 @@
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_account,wims_name_Enter,\
-	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
+	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example,wims_name_Vote,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
+	wims_name_Example,wims_name_Vote,wims_name_Votes,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
 	wims_name_cas_logout,wims_name_credits,wims_name_mod_new
 
 !! **** Menuprof Names ***
@@ -84,7 +84,7 @@
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
     wims_name_faq, wims_name_dochelp,\
-    wims_name_Infos,
+    wims_name_Infos
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
