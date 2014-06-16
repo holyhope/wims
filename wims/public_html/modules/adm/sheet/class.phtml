@@ -25,7 +25,7 @@ $sheet_title
 !let tmp=!record $sh of wimshome/log/classes/$wims_class/livret/sheetindex.rc
 !if $class_showlivret=yes and $tmp!=$empty
  <div class="wims_sheet_desc">
-  $name_skillbullet : $tmp
+  $name_skillbullet $tmp
  </div>
 !endif
 !!expiration date in a variable
@@ -116,7 +116,7 @@ $sheet_title
  !set ss=!word 3 of $sev
  !bound ss between integer 0 and 2 default 0
  <div class="wims_sheet">
-  <div class="wims_title_seq">$wims_name_sheet_exos:</div>
+  <div class="wims_title_seq">$wims_name_Exercices</div>
  <ol class="wims_sheet_list">
  !let wims_exotitle=$empty
  !for i=1 to $n
@@ -133,7 +133,7 @@ $sheet_title
     <span class="wims_sheet_id">$i.</span>
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
-   , <span class="wims_work_desc">$de</span>
+ <span class="wims_work_desc">$de</span>
    <div class="wims_user_info">
      !if $require>0
        <span class="wims_sheet_score small">
