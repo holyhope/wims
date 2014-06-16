@@ -13,42 +13,45 @@
 !read adm/search_engine/search_accessright.phtml
 !endif
 
- <div class="wimscenter wims_search_engine">
   <ul class="inline">
-  <li>
-   $name_search_engine
-  </li><li>
- !set wims_ref_class=wims_button_help
-!href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
-  </li></ul>
- <ul class="inline">
- <li>
- <input type="submit" value="$N_Search" />
- <br />
-  <input size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete" />
- </li>
- <li>
- !formselect search_category list $slist prompt $plist
- <br />
-!!-- choice -->  
-!default search_and=no
-!formselect search_and list yes,no prompt $name_search_and
-!!-- choice -->
-</li>
-<li>
- !!-- language -->  
-!set L_language=!words2items $wims_site_languages
-!formselect search_lang list $L_language
-  !!-- end language -->
- </li>
-</ul>
+    <li>$name_search_engine</li>
+    <li>
+    !set wims_ref_class=wims_button_help
+    !href module=adm/light&phtml=search_engine.phtml.$lang $name_search_help
+    </li>
+  </ul>
+  <ul class="inline">
+    <li>
+      <input size="25"
+             type="search"
+             name="search_keywords"
+             value="$search_keywords"
+             class="wims_home_form multicomplete"
+             placeholder="Entrez un mot-clé"
+             results="5"
+             autosave="search_keywords"
+             required /><button class="wims_button" type="submit" class="icon-search" >$N_Search</button> 
+    </li>
+    <li>
+      !!-- categories -->  
+      !formselect search_category list $slist prompt $plist
+
+      !!-- search type -->  
+      !default search_and=no
+      !formselect search_and list yes,no prompt $name_search_and
+
+      !!-- language -->  
+      !set L_language=!words2items $wims_site_languages
+      !formselect search_lang list $L_language
+    </li>
+  </ul>
 </div>
 
 !formend
 
 <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
 
-</div> 
+
 <!-- end adm/search_engine/form.phtml -->
 !set srchl=$search_keywords
 !reset search_category, search_keywords
