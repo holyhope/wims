@@ -48,7 +48,7 @@ $table_end
 !else
 Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
 de la note.
-Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+On calcule la moyenne pour votre travail pour :
 <ul>
 <li>
 !if $help_sw=0
@@ -61,18 +61,24 @@ la moyenne I des n meilleures notes,
  le minimum I des n meilleures notes
 !endif
 </li>
+!if $help_level>0
 <li>
 la qualité Q des points obtenus sur les exercices.
 </li>
+!endif
 </ul>
-
+!if $help_level>0
 Si la note de qualité est inférieure à 1 pour un exercice,
 I est mis à 0 pour cet exercice  ;
 si la note de qualité est comprise entre 1 et 2,
 I est divisé par 2 lors du calcul de la note de la feuille.
 
+!else
+ Cependant, si vous avez eu trop d'échecs, cette note peut diminuer.
+ Demandez à votre enseignant.
+!endif
 </p><p>
 Ces moyennes sont ramenées entre 0 et 1 et
  la note de la feuille est calculée comme
-\($scoremax * $(list[$help_level+1;]) \)
+<span class="bold">$scoremax $(list[$help_level+1;])</span>
 !endif

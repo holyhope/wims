@@ -159,8 +159,10 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   !set S_=$[$S_+$a_]
  !next k
  !set sw=!line $[$n_+1] of $shweights
+ !set q=!word 2 of $sw
  !set sw=!word 3 of $sw
  !default sw=0
+ !default q=2
  !if $S_<=0
   !goto next
  !endif
@@ -175,7 +177,13 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   !if $wims_user=supervisor
     !set nb_indic=5
   !else
-    !set nb_indic=3
+    !if $q!=1
+      !set nb_indic=3
+    !else
+      !set nb_indic=2
+    !endif
+  !endif
+
   !endif
   !set P_=!line $n_ of $percents
  !distribute words $P_ into p1,p2,p3,p4
@@ -192,9 +200,9 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !href module=adm/sheet&sh=$n_ $hat
    <br />
    $(wims_name_thsheet[4]): $A_
-   $(wims_name_thsheet[8])
+   <br />
    !set wims_ref_class=wims_button_help
-   !href cmd=help&special_parm=$n_ $wims_name_help
+   !href cmd=help&special_parm=$n_ $(wims_name_thsheet[8])
    !!!lowercase $(f_$n_)
 !!global note
   !if $(min_$n_)<$scoremax
@@ -202,21 +210,24 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !endif
 !!
    <div class="float_right">
+!!!FIXME should put a list ?
     $(wims_name_thsheet[9]): $p_ / $scoremax.
-    <br />
-    $(wims_name_thsheet[7]): $p2/10
+     <br />
+    !if $wims_user=supervisor or $q!=1
+      $(wims_name_thsheet[7]): $p2/10
+      <br />
+    !endif
     !if $wims_user=supervisor or $sw=0
-        <br />
    !! $(wims_name_thsheet[5])
-     $(wims_name_thsheet[5]): $p1%,
+     $(wims_name_thsheet[5]): $p1%
+     <br />
     !endif
     !if $wims_user=supervisor or $sw=1
-    <br />
    !! $(wims_name_thsheet[10])
-    $(wims_name_thsheet[10]): $p3%;
+     $(wims_name_thsheet[10]): $p3%
+     <br />
     !endif
     !if $wims_user=supervisor or $sw=2
-    <br />
    !! $(wims_name_thsheet[13])
     $(wims_name_thsheet[13]): $[$p4/10]/10
     !endif
@@ -227,9 +238,10 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  $table_hdtr
      <th>$(wims_name_thsheet[1])</th><th>$(wims_name_thsheet[2])</th>
      <th>$(wims_name_thsheet[3])</th><th>$(wims_name_thsheet[4])</th>
-
+     !if $wims_user=supervisor or $$q!=1
 !!qualite
-     <th>$(wims_name_thsheet[7])</th>
+      <th>$(wims_name_thsheet[7])</th>
+     !endif
     !if $wims_user=supervisor or $sw=0
 !!I0: percentage work (related to cumul)
     <th>$(wims_name_thsheet[5])</th>
@@ -258,18 +270,20 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !set makelist=!makelist <td>--</td> for j=1 to $nb_indic
    !replace , by in $makelist
   !else
+   !if $wims_user=supervisor or $q!=1
   !!quality
-   !set d_=!getscorequality user=$getuser sheet=$n_ work=$j
-   !default d_=0
-   !read adm/class/colors $[ceil($d_)]
-    <td style=$style_note>$d_</td>
+    !set d_=!getscorequality user=$getuser sheet=$n_ work=$j
+    !default d_=0
+    !read adm/class/colors $[ceil($d_)]
+     <td style=$style_note>$d_</td>
+   !endif
 !!cumul
-   !set d_=!getscore user=$getuser sheet=$n_ work=$j
-   !default d_=0
+    !if $wims_user=supervisor or $sw=0
+     !set d_=!getscore user=$getuser sheet=$n_ work=$j
+     !default d_=0
 !!   !read adm/class/colors $[ceil(10*$d_/$(req_))]
 !!   <td style=$style_note>$d_</td>
 !!percentage
-   !if $wims_user=supervisor or $sw=0
     !if $(req_)>0
      !read adm/class/colors $[ceil(10*$d_/$(req_))]
      <td style=$style_note>$[round(100*$d_/$(req_))]%</td>
@@ -285,9 +299,9 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
    !endif
    !if $wims_user=supervisor or $sw=2
 !!level
-   !set level=!getscorelevel user=$getuser sheet=$n_ work=$j
-   !read adm/class/colors $[min(ceil($level+0.1),10)]
-   <td style=$style_note>$level</td>
+    !set level=!getscorelevel user=$getuser sheet=$n_ work=$j
+    !read adm/class/colors $[min(ceil($level+0.1),10)]
+    <td style=$style_note>$level</td>
    !endif
 !!last
    !set last=!getscorelast user=$getuser sheet=$n_ work=$j
@@ -297,7 +311,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
 
 !endif try
 !!try
-  <td>
+   <td>
     $try
    </td>
   </tr>
