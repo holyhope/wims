@@ -24,6 +24,7 @@ javaoutput=!getopt free in $(javaoutput)
   !exit
 !endif
 # how to detect the need to compute?
+
 !if $cmd=reply
  error=
  compute=
@@ -103,11 +104,11 @@ javaoutput=!getopt free in $(javaoutput)
 :2
  !if $step>=2
   !if $erase=yes
-   !if $type=0
+   !if $type iswordof 0 2
     dessin=!line 1 to -2 of $dessin
    !else
     dessin=!line 1 to -3 of $dessin
-   !endif type=0
+   !endif type
    data=!line 1 to -2 of $data
    !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
    step=$[max($[$step-1],2)]
@@ -173,7 +174,7 @@ dessin=!append line arrow $click_x,$click_y to $dessin
      !if $type iswordof 1 2
       !increase ext
         !if $type iswordof 2
-    dessin_p=!append line fcircle $click_x,$click_y,5,red to $dessin_p
+    dessin_p=!append line circle $click_x,$click_y,5,red to $dessin_p
     !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
        !set insdraw_filebase=!listuniq $insdraw_filebase
       !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
@@ -181,7 +182,6 @@ dessin=!append line arrow $click_x,$click_y to $dessin
       $dessin_p
       !sh cd $wims_home/\
      cp s2/$wims_session/$ins_filename sessions/$wims_session/getfile/click/$ins_filename
-
  !set imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$ins_filename
         !endif
      !endif
@@ -233,3 +233,4 @@ $exo
  !endif
 !endif
 !reset click_x click_y erase javaoutput
+
