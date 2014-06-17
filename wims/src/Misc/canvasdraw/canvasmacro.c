@@ -1105,11 +1105,17 @@ function use_mouse_coordinates(){\
  };\
 };",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 }
-/* to avoid easy js-code injection...but may be it's a real problem ? */
+/* to avoid easy js-code injection...but is it a real problem ? */
 void add_safe_eval(FILE *js_include_file){
 fprintf(js_include_file," \nfunction safe_eval(exp){\
  if(exp.indexOf('^') != -1){\
-  exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig,\"pow($1, $2)\");\
+  exp = exp.replace(/[a-zA-Z]/g,' ');\
+  exp = exp.replace(/\\*10\\^-/g,'e-');\
+  exp = exp.replace(/\\*10\\^/g,'e+');\
+  exp = exp.replace(/10\\^-/g,'1e-');exp = exp.replace(/10\\^/g,'1e+');\
+  exp = eval(exp);\
+  if(isNaN(exp)){alert(\"invalid input\\ntry just a real number \\ne.g. no calculations...\");return null;}\
+  return exp;\
  };\
  var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;\
  var valid = true;\
@@ -1142,6 +1148,7 @@ void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath){
 fprintf(js_include_file,"\n<!-- begin add_calc_y -->\n\
 use_jsmath=1;\
 function add_calc_y(){\
+if( wims_status == \"done\" ){return;};\
 var fun = to_js_math(\"%s\");\
 function eval_jsmath(x){return parseFloat(eval(fun));};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
@@ -1171,6 +1178,7 @@ void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,
 fprintf(js_include_file,"\n<!-- begin command add_trace_jsmath  trace_canvas -->\n\
 use_jsmath=1;\
 function use_trace_jsmath(){\
+if( wims_status == \"done\" ){return;};\
  var label_x = \"x\";var label_y = \"y\";\
  if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
  if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
@@ -1208,6 +1216,7 @@ add two buttons: OK and NOK (OK draws; NOK will delete last item pair from userd
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_textarea_xy -->\n\
 function add_textarea_xy(){\
+if( wims_status == \"done\" ){return;};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var textarea_div = document.createElement('div');\
 textarea_div.id = \"textarea_div\";\
@@ -1245,6 +1254,7 @@ void add_setlimits(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_setlimits -->\n\
 use_pan_and_zoom = 1;\n\
 function use_setlimits(){\
+if( wims_status == \"done\" ){return;};\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
@@ -1254,7 +1264,6 @@ setlim_div.id = \"setlim_div\";\
 tooltip_div.appendChild(setlim_div);\
 setlim_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'>\"+label_x+\"min = <input type='text' size='4' value='\"+xmin+\"' id='userinput_xmin' style='text-align:center;color:blue;background-color:orange;' /> \"+label_x+\"max = <input type='text' size='4' value='\"+xmax+\"' id='userinput_xmax' style='text-align:center;color:blue;background-color:orange;' /><br />\"+label_y+\"min = <input type='text' size='4' value='\"+ymin+\"' id='userinput_ymin' style='text-align:center;color:blue;background-color:orange;' /> \"+label_y+\"max = <input type='text' size='4' value='\"+ymax+\"' id='userinput_ymax' style='text-align:center;color:blue;background-color:orange;' /><br /><input id='set_limits' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;' />\";\
 var setlimit_button = document.getElementById(\"set_limits\");\
-function safe_eval(exp){if(exp.indexOf('^') != -1){exp = exp.replace(/\\s*(.*)\\^\\s*(.*)/ig, \"pow($1, $2)\");};var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\\[\\]\"'!&<>^\\\\?:])/ig;var valid = true;exp = exp.replace(reg,function($0){if (Math.hasOwnProperty($0)){return \"Math.\"+$0;}else{valid = false;};});if (!valid){alert(\"hmmm \"+exp+\" ?\"); exp = null;}else{try { exp = eval(exp); } catch (e) {alert(\"Invalid arithmetic expression\"); exp = null;};};return exp;};\
 function set_limits(e){\
 xmin = safe_eval(document.getElementById('userinput_xmin').value);\
 xmax = safe_eval(document.getElementById('userinput_xmax').value);\
@@ -1273,6 +1282,7 @@ these are used for user drawing with inputfields...
 void add_input_xy(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xy -->\n\
 function add_input_xy(){\
+if( wims_status == \"done\" ){return;};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_xy_div = document.createElement('div');\
 input_xy_div.id = \"input_xy_div\";\
@@ -1290,6 +1300,7 @@ delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_x1y1x2y2 -->\n\
 function add_input_x1y1x2y2(){\
+if( wims_status == \"done\" ){return;};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_x1y1x2y2_div = document.createElement('div');\
 input_x1y1x2y2_div.id = \"input_x1y1x2y2_div\";\
@@ -1306,6 +1317,7 @@ delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;
 void add_input_xyr(FILE *js_include_file, int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin add_input_xyr -->\n\
 function add_input_xyr(){\
+if( wims_status == \"done\" ){return;};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_xyr_div = document.createElement('div');\
 input_xyr_div.id = \"input_xyr_div\";\

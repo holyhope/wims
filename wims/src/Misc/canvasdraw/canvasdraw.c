@@ -37,7 +37,7 @@ char 	*convert_hex2rgb(char *hexcolor);
 void 	add_read_canvas(int reply_format);
 void	make_js_include(int canvas_root_id);
 void	check_string_length(int length);/* checks if the length of string argument of command is correct */
-FILE 	*js_include_file;
+FILE 	*js_include_file; 
 FILE	*get_file(int *line_number, char **filename);
 FILE 	*infile;    /* will be stdin */
 /******************************************************************************
@@ -55,7 +55,7 @@ double ymax = 320.0;
 double tmax = 2;
 double tmin = -2;
 /* flag to indicate parsing of line status */
-int done = FALSE;
+int done = FALSE; 
 int type; /* eg command number */
 int onclick = 0;/* 0 = noninteractive ; 1 = onclick ; 2 = draggable*/
 int use_affine = FALSE;
@@ -80,6 +80,7 @@ int main(int argc, char *argv[]){
     int use_axis = FALSE;
     int use_axis_numbering = FALSE;
     int use_pan_and_zoom = FALSE;
+    int use_safe_eval = FALSE; /* if true, add just once : js function to evaluate userinput values for plotting etc */
     int use_js_math = FALSE; /* if true add js-function to convert math_function --> javascript math_function */
     int use_js_plot = FALSE; /* if true , let js-engine plot the curve */
     int line_width = 1;
@@ -110,11 +111,12 @@ int main(int argc, char *argv[]){
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
     int arrow_head = 8; /* size in px*/
     int crosshair_size = 5; /* size in px*/
-    int plot_steps = 250;
+    int plot_steps = 250; 
     int found_size_command = 0;
     int click_cnt = 1;
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
+    int legend_cnt = -1; /* to allow multiple legends to be used, for multiple piecharts etc  */
     double angle = 0.0;
     int translate_x = 0;
     int translate_y = 0;
@@ -127,10 +129,10 @@ int main(int argc, char *argv[]){
     char *URL = "http://localhost/images";
     memset(buffer,'\0',MAX_BUFFER);
     void *tmp_buffer = "";
-
+    
     /* default writing a unzipped js-include file into wims getfile directory */
     char *w_wims_session = getenv("w_wims_session");
-    if(  w_wims_session == NULL || *w_wims_session == 0 ){
+    if(  w_wims_session == NULL || *w_wims_session == 0 ){ 
 	canvas_error("Hmmm, your wims environment does not exist...\nCanvasdraw should be used within wims.");
     }
     int L0=strlen(w_wims_session) + 21;
@@ -140,10 +142,10 @@ int main(int argc, char *argv[]){
     int result = mkdir(getfile_dir, S_IRWXU | S_IRWXG | S_IRWXO);
     if( result == 0 || errno == EEXIST ){
      umask(process_mask); /* be sure to set correct permission */
-     char *w_session = getenv("w_session");
+     char *w_session = getenv("w_session"); 
      int L1 = (int) (strlen(w_session)) + find_number_of_digits(canvas_root_id) + 48;
     char *getfile_cmd = my_newmem(L1); /* create memory to fit string precisely */
-     snprintf(getfile_cmd,L1,"wims.cgi?session=%s&cmd=getfile&special_parm=%d.js",w_session,canvas_root_id);/* extension ".gz" is MANDATORY for webserver */
+     snprintf(getfile_cmd,L1,"wims.cgi?session=%s&cmd=getfile&special_parm=%d.js",w_session,canvas_root_id);/* extension ".gz" is MANDATORY for webserver */	
     /* write the include tag to html page:<script type="text/javascript" src="wims.cgi?session=%s&cmd=getfile&special_parm=11223344_js"></script> */
     /* now write file into getfile dir*/
     char *w_wims_home = getenv("w_wims_home"); /* "/home/users/wims" : we need absolute path for location */
@@ -163,7 +165,7 @@ int main(int argc, char *argv[]){
 	done = FALSE;
 	/*
 	@canvasdraw
-	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
+	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
 	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &amp;euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
 	*/
 	switch(type){
@@ -194,7 +196,7 @@ int main(int argc, char *argv[]){
 	    xmin = 0;xmax = xsize;
 	    ymin = 0;ymax = ysize;
 
-/*
+/* 
  The sequence in which stuff is finally printed is important !!
  for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
 */
@@ -236,7 +238,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case XRANGE:
 	/*
 	@ xrange xmin,xmax
-	@ if not given: 0,xsize (eg in pixels)
+	@ if not given: 0,xsize (eg in pixels) 
 	*/
 	    for(i = 0 ; i<2; i++){
 		switch(i){
@@ -303,7 +305,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ crosshair x,y,color
 	@ draw a single crosshair point at (x;y) in color 'color'
-	@ use command 'crosshairsize int' and / or 'linewidth int'  to adjust
+	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<3;i++){
@@ -323,7 +325,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ crosshairs color,x1,y1,x2,y2,...,x_n,y_n
 	@ draw multiple crosshair points at given coordinates in color 'color'
-	@ use command 'crosshairsize int' and / or 'linewidth int'  to adjust
+	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
 	@ may be set draggable / onclick individually (!)
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -351,9 +353,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ point x,y,color
 	@ draw a single point at (x;y) in color 'color'
-	@ use command 'linewidth int'  to adjust size
+	@ use command 'linewidth int'  to adust size
 	@ may be set draggable / onclick
-	@ will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming)
+	@ will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming) 
 	*/
     	    for(i=0;i<3;i++){
     		switch(i){
@@ -372,7 +374,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ points color,x1,y1,x2,y2,...,x_n,y_n
 	@ draw multiple points at given coordinates in color 'color'
-	@ use command 'linewidth int' to adjust size
+	@ use command 'linewidth int'  to adust size
 	@ may be set draggable / onclick individually (!)
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -389,7 +391,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		}
 		i++;
 	    }
-	    decimals = find_number_of_digits(precision);
+	    decimals = find_number_of_digits(precision);	    
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
 		click_cnt++;
@@ -451,9 +453,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			double_data[5] = (double_data[13] - double_data[11]) /(double_data[12] - double_data[10]);
 			/* q */
 			double_data[6] = double_data[11] - ((double_data[13] - double_data[11]) /(double_data[12] - double_data[10]))*double_data[10];
-
+			
 			/*xmin,m*xmin+q,xmax,m*xmax+q*/
-
+			
 			    double_data[1] = (double_data[5])*(xmin)+(double_data[6]);
 			    double_data[3] = (double_data[5])*(xmax)+(double_data[6]);
 			    double_data[0] = xmin;
@@ -467,7 +469,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		}
 	    }
 	    break;
-	case HLINE:
+	case HLINE: 
 	/*
 	@ hline x,y,color
 	@ draw a horizontal line through point (x:y) in color 'color'
@@ -631,7 +633,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
 		click_cnt++;reset();
 	    break;
-	case ARC:
+	case ARC: 
 	/*
 	 @ arc xc,yc,width,height,start_angle,end_angle,color
 	 @ can not be set "onclick" or "drag xy"
@@ -649,8 +651,8 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    /* in Shape library:
 			x[0] = x[1] = xc
 			y[0] = y[1] = yc
-			w[0] = w[1] = radius = width = height
-			h[0] = start_angle ; h[1] = end_engle
+			w[0] = w[1] = radius = width = height  
+			h[0] = start_angle ; h[1] = end_engle 
 		    */
     			decimals = find_number_of_digits(precision);
     			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],int_data[0],int_data[0],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
@@ -662,17 +664,17 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case ELLIPSE:
 	/*
 	@ ellipse xc,yc,radius_x,radius_y,color
-	@ a ellipse with center xc/yc in x/y-range
+	@ a ellipse with center xc/yc in x/y-range 
 	@ radius_x and radius_y are in pixels
 	@ may be set draggable / onclick
-	@ will shrink / expand on zoom out / zoom in
+	@ will shrink / expand on zoom out / zoom in 
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
 		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
 		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
 		    case 2:double_data[2] = get_real(infile,0);break; /* rx -> px  */
-		    case 3:double_data[3] = get_real(infile,0);break; /* ry -> px  */
+		    case 3:double_data[3] = get_real(infile,0);break; /* ry -> px  */ 
 		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,3,[%.*f],[%.*f],[%.*f],[%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
@@ -684,7 +686,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case DASHTYPE:
 	/*
 	@ dashtype int ,int
-	@ When dashed is set, the objects will be drawn with this dashtype
+	@ When dashed is set, the objects will be drawn with this dashtyp
 	@ default value "dashtype 2,2"
 	*/
 	    for(i=0;i<2;i++){
@@ -700,7 +702,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
 	@ use command 'fillcolor color' to set the fillcolor
 	@ may be set draggable / onclick
-	@ will shrink / expand on zoom out / zoom in
+	@ will shrink / expand on zoom out / zoom in 
 	*/
     	    for(i=0;i<4;i++){
     		switch(i){
@@ -738,9 +740,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    fprintf(js_include_file,"/* double_data[%d] = %f */\n",i,double_data[i]);
 		i++;
 	    }
-
-	    if( i%2 != 0 ){canvas_error("in command rays: unpaired x or y value");}
-	    decimals = find_number_of_digits(precision);
+	    
+	    if( i%2 != 0 ){canvas_error("in command rays: unpaired x or y value");} 
+	    decimals = find_number_of_digits(precision);	    
 	    for(c=2; c<i;c = c+2){
 		click_cnt++;
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
@@ -793,10 +795,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		}
     	    }
     	    break;
-	case PARALLEL:
+	case PARALLEL: 
 	/*
 	 @ parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
-	 @ can not be set "onclick" or "drag xy"
+	 @ can not be set "onclick" or "drag xy" 
 	*/
 	    for( i = 0;i < 8; i++ ){
 		switch(i){
@@ -819,7 +821,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case TRIANGLE:
 	/*
 	 @triangle x1,y1,x2,y2,x3,y3,color
-	 @may be set draggable / onclick
+	 @may be set draggable / onclic
 	*/
     	    for(i=0;i<7;i++){
     		switch(i){
@@ -841,7 +843,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case LATTICE:
 	/*
 	 @lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
-	 @can not be set "onclick" or "drag xy"
+	 @can not be set "onclick" or "drag xy" 
 	*/
 	    if( js_function[DRAW_LATTICE] != 1 ){ js_function[DRAW_LATTICE] = 1;}
 	    for( i = 0; i<9; i++){
@@ -896,30 +898,30 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERTEXTAREA_XY:
 	/*
 	@ usertextarea_xy
-	@ keyword
+	@ keyword 
 	@ to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
-	@ if set two textareas are added to the document<br />(one for x-values , one for y-values)
+	@ if set two textareas are added to the document<br />(one for x-values , one for y-values) 
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
-	@ user drawings will not zoom on zooming (or pan on panning)
+	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
 	    if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
-	    add_safe_eval(js_include_file);
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    use_input_xy = 2;
 	    break;
 	case USERINPUT_XY:
 	/*
 	@ userinput_xy
-	@ keyword
+	@ keyword 
 	@ to be used in combination with command "userdraw object_type,color"
-	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
+	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values) 
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
 	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
 	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
-	@ user drawings will not zoom on zooming (or pan on panning)
+	@ user drawings will not zoom on zooming (or pan on panning) 
 	*/
 	    /* add simple eval check to avoid code injection with unprotected eval(string) */
 	    if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
-	    add_safe_eval(js_include_file);
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    use_input_xy = 1;
 	    break;
 	case USERDRAW:
@@ -927,14 +929,14 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ userdraw object_type,color
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text. This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
-	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
+	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
 	@ note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
-	@ use command "dashed" and/or "dashtype int,int" to trigger dashing
+	@ use command "dashed" and/or "dashtype int,int" to trigger dashing 
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
-	@ may be combined with keyword 'userinput_xy' or
+	@ may be combined with keyword 'userinput_xy' or 
 	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
@@ -948,7 +950,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,1);
 		    add_input_xy(js_include_file,canvas_root_id);
 		}
@@ -959,7 +961,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	        if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 	        if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,2);
 		    add_input_xy(js_include_file,canvas_root_id);
 		}
@@ -970,7 +972,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -991,7 +993,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -1002,7 +1004,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,2,1);
 		    add_input_xyr(js_include_file,canvas_root_id);
 		}
@@ -1014,7 +1016,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
 		add_js_circles(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,2,2);
 		    add_input_xyr(js_include_file,canvas_root_id);
 		}
@@ -1025,7 +1027,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_crosshair(js_include_file,1);
 		    add_input_xy(js_include_file,canvas_root_id);
 		}
@@ -1036,7 +1038,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_crosshair(js_include_file,2);
 		    add_input_xy(js_include_file,canvas_root_id);
 		}
@@ -1045,28 +1047,28 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if(strcmp(draw_type,"freehandline") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 6;}
-		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandlines") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 6;}
-		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"path") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 6;}
-		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"paths") == 0 ){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 6;}
-		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
@@ -1074,7 +1076,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -1084,7 +1086,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,2,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -1094,7 +1096,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -1104,7 +1106,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_ARROWS] != 1 ){ js_function[DRAW_ARROWS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_arrows(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
-		if(use_input_xy == 1){
+		if(use_input_xy == 1){ 
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
@@ -1119,7 +1121,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		  add_textarea_xy(js_include_file,canvas_root_id);
 		}
 	    }
-	    else
+	    else 
 	    if(strncmp(draw_type,"poly",4) == 0){
 		if(strlen(draw_type) < 5){canvas_error("use command \"userdraw poly[3-9],color\" eg userdraw poly6,blue");}
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
@@ -1127,14 +1129,14 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		add_js_poly(js_include_file,(int) (draw_type[4]-'0'),draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    if(strcmp(draw_type,"triangle") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    if( strcmp(draw_type,"line") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
@@ -1163,21 +1165,21 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		add_js_rect(js_include_file,2,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    if( strcmp(draw_type,"roundrects") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,2,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    if( strcmp(draw_type,"rect") == 0){
 		if( js_function[DRAW_RECTS] != 1 ){ js_function[DRAW_RECTS] = 1;}
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,1,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    if( strcmp(draw_type,"roundrect") == 0){
 		if( js_function[DRAW_ROUNDRECTS] != 1 ){ js_function[DRAW_ROUNDRECTS] = 1;}
 		if(reply_format == 0){reply_format = 2;}
@@ -1186,12 +1188,12 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    else
 	    if( strcmp(draw_type,"text") == 0){
-		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}
+		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
 		if(reply_format == 0){reply_format = 17;}
 		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
-	    else
+	    else 
 	    {
 		canvas_error("unknown drawtype or typo? ");
 	    }
@@ -1261,7 +1263,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @trace_jscurve some_math_function
 	 @will use a crosshair to trace the jsmath curve
 	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
-	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
 	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
 	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
@@ -1277,7 +1279,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	    @jsmath some_math_function
 	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
-	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields   
 	    @example: jsmath sin(x^2)
 	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
@@ -1298,7 +1300,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @use command 'trace_jscurve formula(x)` for tracing
 	 @use commmand 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
 	 @can not be set draggable / onclick (yet)
-	 @commands plotjump / plotstep are not active for 'jscurve'
+	 @commands plotjump / plotstep are not active for 'jscurve' 
 	*/
 	    stroke_color = get_color(infile,0);
 	    if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -1339,7 +1341,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    {
 		stroke_color = get_color(infile,0);
 	        char *fun1 = get_string_argument(infile,1);
-		if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
+		if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}	
     		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
     		click_cnt++;
 	    }
@@ -1350,7 +1352,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ text fontcolor,x,y,font,text_string
 	@ font may be described by keywords : giant,huge,normal,small,tiny
-	@ use command 'fontsize' to increase base fontsize for these keywords
+	@ use command 'fontsize' to increase base fontsize for these keywords 
 	@ may be set "onclick" or "drag xy"
 	@ backwards compatible with flydraw
 	@ unicode supported: text red,0,0,huge,\\u2232
@@ -1386,7 +1388,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 				}
 			    }
 			    break; /* font_size ! */
-		    case 4:
+		    case 4: 
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
@@ -1400,13 +1402,13 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ textup fontcolor,x,y,font,text_string
 	 @ can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
 	 @ font may be described by keywords : giant,huge,normal,small,tiny
-	 @ use command 'fontsize' to increase base fontsize for the keywords
+	 @ use command 'fontsize' to increase base fontsize for the keywords 
 	 @ backwards compatible with flydraw
 	 @ unicode supported: textup red,0,0,huge,\\u2232
 	 @ use command 'stringup' and 'fontfamily' for a more fine grained control over html5 canvas text element
 	 @ Avoid  mixing old flydraw commands 'text' 'textup' with new canvasdraw commands 'string' stringup'<br />If the fontfamily was set completely like "fontfamily italic 24px Ariel".<br />In that case reset 'fontfamily' to something lke 'fontfamily Ariel' before the old flydraw commands.
 	*/
-	    if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}
+	    if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;}	
 	    for(i = 0; i<5 ;i++){
 		switch(i){
 		    case 0: font_color = get_color(infile,0);break;/* name or hex color */
@@ -1436,7 +1438,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 				}
 			    }
 			    break; /* font_size ! */
-		    case 4:
+		    case 4: 
 		    decimals = find_number_of_digits(precision);
 		    temp = get_string_argument(infile,1);
 		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_translate,translate_x,translate_y);
@@ -1460,8 +1462,8 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    font_family = get_string(infile,1);
 	    break;
 	case STRINGUP:
-	/*
-	 @ stringup color,x,y,rotation_degrees,the text string
+	/* 
+	 @ stringup color,x,y,rotation_degrees,the text string 
 	 @ can <b>not</b> be set "onclick" or "drag xy" (because of translaton matrix...mouse incompatible)
 	 @ unicode supported: stringup red,0,0,45,\\u2232
 	 @ use a command like 'fontfamily bold 34px Courier' <br />to set fonts on browser that support font change
@@ -1487,11 +1489,11 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    reset();
 	    break;
 	case STRING:
-	/*
+	/* 
 	 @ string color,x,y,the text string
 	 @ may be set "onclick" or "drag xy"
 	 @ unicode supported: string red,0,0,\\u2232
-	 @ use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change
+	 @ use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change 
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
@@ -1511,11 +1513,11 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case MATHML:
 	/*
 	@ mathml x1,y1,x2,y2,mathml_string
-	@ mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2)
+	@ mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2) 
 	@ can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
-	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br />attention: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();"
+	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br />attention: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();" 
 	@ If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
-
+	
 	*/
 	    if( js_function[DRAW_XML] != 1 ){ js_function[DRAW_XML] = 1;}
 	    for(i=0;i<5;i++){
@@ -1525,15 +1527,15 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 2: int_data[2]=x2px(get_real(infile,0)) - int_data[0];break; /* width in x/y-range coord system -> pixel width */
 		    case 3: int_data[3]=y2px(get_real(infile,0)) - int_data[1];break; /* height in x/y-range coord system  -> pixel height */
 		    case 4: decimals = find_number_of_digits(precision);
-			    if(onclick == 1 ){ onclick = click_cnt;click_cnt++;}
+			    if(onclick == 1 ){ onclick = click_cnt;click_cnt++;} 
 			    temp = get_string(infile,1);
 			    if( strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'"); }
 			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
 			    add_to_buffer(tmp_buffer);
-			    /*
-			     in case inputs are present , trigger adding the read_mathml()
+			    /* 
+			     in case inputs are present , trigger adding the read_mathml() 
 			     if no other reply_format is defined
 			     note: all other reply types will include a reading of elements with id='mathml'+p)
 			     */
@@ -1549,11 +1551,11 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case HTTP:
 	/*
 	 @http x1,y1,x2,y2,http://some_adress.com
-	 @an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2)
+	 @an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2) 
 	 @do not use interactivity (or mouse) if the mouse needs to be active in the iframe
 	 @can not be 'set onclick' or 'drag xy'
 	*/
-	    if( js_function[DRAW_HTTP] != 1 ){ js_function[DRAW_HTTP] = 1;}
+	    if( js_function[DRAW_HTTP] != 1 ){ js_function[DRAW_HTTP] = 1;}	
 	    for(i=0;i<5;i++){
 		switch(i){
 		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x in x/y-range coord system -> pixel width */
@@ -1578,7 +1580,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ all tags are allowed
 	 @ can be set onclick <br />(dragging not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
 	 @ if inputfields are incorporated  (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_canvas(); <br />If other inputfields (command input / command textarea) or userdraw is performed, these values will NOT be read as well.
-
+	 
 	 note: uses the same code as 'mathml'
 	*/
 	    break;
@@ -1612,10 +1614,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    fprintf(js_include_file,"y_strings = [\"%s\"];\n ",temp);
 	    use_axis_numbering = 1;
 	    break;
-
+	 
 	case AXIS_NUMBERING:
 	/*
-	    @ axisnumbering
+	    @ axisnumbering 
 	    @ keyword, no aguments required
 	*/
 	    use_axis_numbering = 1;
@@ -1635,7 +1637,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ not very versatile.
 	 @ example:<br />size 400,400<br />xrange 0,10000<br />yrange 0,100<br />sgraph 9000,50,100,10,4,4,grey,blue<br />userinput_xy<br />linewidth 2<br />userdraw segments,red
 	*/
-	    if( js_function[DRAW_SGRAPH] != 1 ){ js_function[DRAW_SGRAPH] = 1;}
+	    if( js_function[DRAW_SGRAPH] != 1 ){ js_function[DRAW_SGRAPH] = 1;}	
 	    for(i = 0 ; i < 8 ;i++){
 	        switch(i){
 	    	    case 0:double_data[0] = get_real(infile,0);break;
@@ -1736,12 +1738,12 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ keyword : resets the transformation matrix to 1,0,0,1,0,0
 	*/
 	    use_affine = FALSE;
-	    snprintf(affine_matrix,14,"[1,0,0,1,0,0]");
+	    snprintf(affine_matrix,14,"[1,0,0,1,0,0]");    
 	    break;
 	case AFFINE:
 	/*
 	 @affine a,b,c,d,tx,ty
-	 @ defines a transformation matrix for subsequent objects
+	 @ defines a transformation matrix for subsequent objects 
 	 @ use keyword 'killaffine' to end the transformation
 	 @ note 1: only 'draggable' / 'noclick' objects can be transformed.
 	 @ note 2: do not use 'onclick' or 'drag xy' with tranformation objects : the mouse coordinates do not get transformed (yet)
@@ -1764,7 +1766,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			use_affine = TRUE;
 			string_length = snprintf(NULL,0,"[%.2f,%.2f,%.2f,%.2f,%d,%d] ",double_data[0],double_data[1],double_data[2],double_data[3],int_data[0],int_data[1]);
 		        check_string_length(string_length);affine_matrix = my_newmem(string_length+1);
-			snprintf(affine_matrix,string_length,"[%.2f,%.2f,%.2f,%.2f,%d,%d] ",double_data[0],double_data[1],double_data[2],double_data[3],int_data[0],int_data[1]);
+			snprintf(affine_matrix,string_length,"[%.2f,%.2f,%.2f,%.2f,%d,%d] ",double_data[0],double_data[1],double_data[2],double_data[3],int_data[0],int_data[1]);    
 		    break;
 		    default: break;
 		}
@@ -1794,8 +1796,8 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
 	case FILLED:
 	/*
-	@ keyword "filled"
-	@ the next 'fillable' object (only) will be filled
+	@ keyword "filled" 
+	@ the next 'fillable' object (only) will be filled 
 	@ use command "fillcolor color" to set fillcolor
 	@ use command "opacity 0-255,0-255" to set stroke and fill-opacity
 	@ use command "fill x,y,color" or "floodfill x,y,color" to fill the space around (x;y) with color <br />pixel operation implemented in javascript: use with care !
@@ -1824,7 +1826,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	    stroke_color = get_color(infile,1);
 	    break;
-	case BGIMAGE:
+	case BGIMAGE: 
 	/*
 	 @bgimage image_location
 	 @use an image as background .<br />(we use the background of 'canvas_div' )
@@ -1833,7 +1835,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	URL = get_string(infile,1);
 	fprintf(js_include_file,"<!-- set background image to canvas div -->\ncanvas_div.style.backgroundImage = \"url(%s)\";canvas_div.style.backgroundSize = \"%dpx %dpx\";\n",URL,xsize,ysize);
 	    break;
-	case BGCOLOR:
+	case BGCOLOR: 
 	/*
 	 @bgcolor colorname or #hex
 	 @use this color as background of the "div" containing the canvas(es)
@@ -1858,10 +1860,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ copy x,y,x1,y1,x2,y2,[filename URL]
 	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
 	@ If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
-	@ [filename] is the URL of the image
+	@ [filename] is the URL of the image	
 	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
 	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
-	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent 
 
 	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 	draw_external_image(canvas_type,URL,sx,sy,swidth,sheight,x,y,width,height,drag_drop){
@@ -1882,7 +1884,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 				if(reply_format == 0 ){reply_format = 20;}
 				string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
 				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
+				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);			    
 				drag_type = -1;
 				ext_img_cnt++;
 			    }
@@ -1908,7 +1910,7 @@ context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 img 	Specifies the image, canvas, or video element to use
 sx 	The x coordinate where to start clipping : x1 = int_data[0]
 sy 	The y coordinate where to start clipping : x2 = int_data[1]
-swidth 	The width of the clipped image : int_data[2] - int_data[0]
+swidth 	The width of the clipped image : int_data[2] - int_data[0] 
 sheight The height of the clipped image : int_data[3] - int_data[1]
 x 	The x coordinate where to place the image on the canvas : dx1 = int_data[4]
 y 	The y coordinate where to place the image on the canvas : dy1 = int_data[5]
@@ -1918,11 +1920,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case COPYRESIZED:
 	/*
 	@ copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
-	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range
+	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range 
 	@ If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
 	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
 	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
-	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent 
 	*/
 	    for(i = 0 ; i<9;i++){
 		switch(i){
@@ -1970,22 +1972,22 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    input_style = get_string(infile,1);
 	    break;
 	case INPUT:
-	/*
+	/* 
 	 @ input x,y,size,editable,value
-	 @ to set inputfield "readonly", use editable = 0
+	 @ to set inputfield "readonly", use editable = 0 
 	 @ only active inputfields (editable = 1) will be read with read_canvas();
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />Override this by keyword 'status'
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status' 
 	 @ may be further controlled by "inputstyle" (inputcss is not yet implemented...)
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
 	*/
-	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}
+	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}	
 	    for(i = 0 ; i<5;i++){
 		switch(i){
 		    case 0: int_data[0]=x2px(get_real(infile,0));break;/* x in px */
 		    case 1: int_data[1]=y2px(get_real(infile,0));break;/* y in px */
 		    case 2: int_data[2]=abs( (int)(get_real(infile,0)));break; /* size */
 		    case 3: if( get_real(infile,1) >0){int_data[3] = 1;}else{int_data[3] = 0;};break; /* readonly */
-		    case 4:
+		    case 4: 
 			    temp = get_string_argument(infile,1);
 			    string_length = snprintf(NULL,0,  "draw_inputs(%d,%d,%d,%d,%d,%d,\"%s\",\"%s\");\n",canvas_root_id,input_cnt,int_data[0],int_data[1],int_data[2],int_data[3],input_style,temp);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
@@ -1999,13 +2001,13 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    reset();
 	    break;
 	case TEXTAREA:
-	/*
+	/* 
 	 @ textarea x,y,cols,rows,readonly,value
 	 @ may be further controlled by "inputstyle"
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />Override this by keyword 'status'
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status' 
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
 	*/
-	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}
+	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}	
 	    for(i = 0 ; i<6;i++){
 		switch(i){
 		    case 0: int_data[0]=x2px(get_real(infile,0));break; /* x in px */
@@ -2035,12 +2037,13 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    break;
 	case SETLIMITS:
 	/*
-	    @setlimits
+	    @setlimits 
 	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
 	    @may be used for inputfield based zooming / panning
 	    @use command xlabel / ylabel to change text from xmin to 'xlabel'min etc
-	    @note:the input value will not be checked on validity
+	    @note:the input value will not be checked on validity 
 	*/
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    add_setlimits(js_include_file,canvas_root_id);
 	    /* add_setlimits provides 'fprintf(js_include_file,"use_pan_and_zoom = 1;");' */
 	    use_pan_and_zoom = TRUE;
@@ -2053,7 +2056,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ giving six 15x15pixel 'active' rectangle areas<br />(for x,leftarrow,rightarrow,uparrow,downarrow and a '-' and a '+' sign ) for zooming and/or panning of the image
 	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
 	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
-	 @ command 'opacity' may be used to set stroke_opacity of 'buttons
+	 @ command 'opacity' may be used to set stroke_opacity of 'buttons 
 	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
 	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
@@ -2073,10 +2076,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ onclick
 	 @ keyword, no arguments
 	 @ if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
-	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
+	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked. 
 	 @ NOTE: not all objects may be set clickable
 	*/
-
+	    
 	    onclick = 1;
 	    break;
 	case DRAG:
@@ -2086,16 +2089,16 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the displacement can be read by 'javascript:read_dragdrop();'
 	 @ the answer is  : object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the place of the draggable object in your script.<br />Only draggable object will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
 	 @ use keywordd 'snaptogrid' , 'xsnaptogrid' or 'ysnaptogrid' to switch from free to discrete movement
-	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
+	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images. 
 	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    temp = get_string(infile,1);
-	    if(strstr(temp,"xy") != NULL ){
+	    if(strstr(temp,"xy") != NULL ){ 
 		drag_type = 0;
 	    }
 	    else
 	    {
-		if(strstr(temp,"x") != NULL ){
+		if(strstr(temp,"x") != NULL ){ 
 		    drag_type = 1;
 		}
 		else
@@ -2159,7 +2162,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 3: int_data[3] = (int) (get_real(infile,0)); break; /* height pixel height */
 		    case 4: int_data[4] = (int) (get_real(infile,0)); if(int_data[4] != TRUE){int_data[4] = FALSE;} break; /* loop boolean */
 		    case 5: int_data[5] = (int) (get_real(infile,0)); if(int_data[5] != TRUE){int_data[5] = FALSE;} break; /* visible boolean */
-		    case 6:
+		    case 6: 
 		    temp = get_string(infile,1);
 		    if( strstr(temp,".mp3") != 0 ){ temp = str_replace(temp,".mp3","");}
 		    if( strstr(temp,".ogg") != 0 ){ temp = str_replace(temp,".ogg","");}
@@ -2328,7 +2331,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case FILLTOBORDER:
 	/*
 	@ filltoborder x,y,bordercolor,color
-	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color'
+	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color' 
 	@ any other color will not act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
 	@ NOTE: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
@@ -2487,30 +2490,33 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case LEGENDCOLORS:
 	/*
 	@ legendcolors color1:color2:color3:...:color_n
-	@ will be used to colour a legend
+	@ will be used to colour a legend: use this command after the legend command ! e.g.<br />legend test1:test2:test3<br />legendcolors blue:red:orange<br />
 	@ make sure the number of colours match the number of legend items
-	@ command 'legend' in case of 'piechart' and 'barchart' will use these colours per default (no need to specify 'legendcolors'
+	@ command 'legend' in case of 'piechart' and 'barchart' will use these colours per default (no need to specify 'legendcolors' 
 	*/
+	    if(legend_cnt == -1){canvas_error("use command \"legend\" before command \"legendcolors\" ! ");}
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var legendcolors%d = [\"%s\"];",canvas_root_id,temp);
+	    fprintf(js_include_file,"var legendcolors%d = [\"%s\"];",legend_cnt,temp);
 	    break;
 	case LEGEND:
 	/*
 	@ legend string1:string2:string3....string_n
 	@ will be used to create a legend for a graph
-	@ also see command 'piechart'
+	@ also see command 'piechart'	
+	@ will use the same colors per default as used in the graphs : use command 'legendcolors' to override the default
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var legend%d = [\"%s\"];",canvas_root_id,temp);
+	    legend_cnt++; /* attention :starts with -1 : it will be used in piechart etc */
+	    fprintf(js_include_file,"var legend%d = [\"%s\"];",legend_cnt,temp);
 	    break;
 	case XLABEL:
 	/*
 	@ xlabel some_string
 	@ will be used to create a label for the x-axis (label is in quadrant I)
 	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
-	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
 	*/
 	    temp = get_string(infile,1);
 	    fprintf(js_include_file,"var xaxislabel = \"%s\";",temp);
@@ -2518,9 +2524,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case YLABEL:
 	/*
 	@ ylabel some_string
-	@ will be used to create a (vertical) label for the y-axis (label is in quadrant I)
+	@ will be used to create a (vertical) label for the y-axis (label is in quadrant I) 
 	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
-	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4) 
 	*/
 	    temp = get_string(infile,1);
 	    fprintf(js_include_file,"var yaxislabel = \"%s\";",temp);
@@ -2535,7 +2541,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ also see command 'piechart'
 	@ multiple linegraphs may be used in a single plot
 	@ <ul><li>use command 'strokecolor' before command 'linegraph' to set the color of this graph</li><li>use command 'linewidth' before command 'linegraph' to set linewidth of this graph</li><li>use command 'dashed' before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command 'dashtype' before command 'linegraph' to set the type of dashing of the graph</li></ul>
-	*/
+	*/    
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
 	    fprintf(js_include_file,"var linegraph_%d = [\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%s\"];",linegraph_cnt,stroke_color,line_width,use_dashed,dashtype[0],dashtype[1],temp);
@@ -2599,7 +2605,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		     default: canvas_error("interactive must be set 0,1 or 2");break;
 		}
 		break;
-		case 8:
+		case 8: 
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
@@ -2620,7 +2626,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ may only to be used together with command 'grid'
 	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
 	@ use command 'legend' to provide an optional legend in right-top-corner
-	@ also see command 'piechart'
+	@ also see command 'piechart'	
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -2636,9 +2642,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ example data+colorlist : 132:red:23565:green:323:black:234324:orange:23434:yellow:2543:white
 	@ the number of colors must match the number of data.
 	@ use command "opacity 0-255,0-255" to adjust fill_opacity of colours
-	@ use command "legend string1:string2:...:string_n" to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...
+	@ use command "legend string1:string2:...:string_n" to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...<br />use command 'fontfamily' to set the font of the legend. 
 	*/
-	    if( js_function[DRAW_PIECHART] != 1 ){ js_function[DRAW_PIECHART] = 1;}
+	    if( js_function[DRAW_PIECHART] != 1 ){ js_function[DRAW_PIECHART] = 1;}	
 	    for(i=0;i<5;i++){
 		switch(i){
 		    case 0: int_data[0] = x2px(get_real(infile,0)); break; /* x */
@@ -2646,9 +2652,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 2: int_data[2] = (int)(get_real(infile,1));break;/* radius*/
 		    case 3: temp = get_string(infile,1);
 			    if( strstr( temp, ":" ) != 0 ){ temp = str_replace(temp,":","\",\"");}
-			    string_length = snprintf(NULL,0,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,font_size,font_family);
+			    string_length = snprintf(NULL,0,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,legend_cnt,font_family);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			    snprintf(tmp_buffer,string_length,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,font_size,font_family);
+			    snprintf(tmp_buffer,string_length,"draw_piechart(%d,%d,%d,%d,[\"%s\"],%.2f,%d,\"%s\");\n",PIECHART,int_data[0],int_data[1],int_data[2],temp,fill_opacity,legend_cnt,font_family);
 			    add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
@@ -2665,7 +2671,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@affects inputfields / textarea's in canvasimage and all userdraw based commands
 	@e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims status variable' is set to 'done'
 	*/
-
+	
 	    fprintf(js_include_file,"\nwims_status=\"waiting\";\n");
 	    break;
 	case XLOGBASE:
@@ -2694,11 +2700,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
-	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
 	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
@@ -2709,7 +2715,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 0: double_data[0] = get_real(infile,0);break; /* xmajor */
 		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
 		    case 2: stroke_color = get_color(infile,0); break;
-		    case 3: fill_color = get_color(infile,1);
+		    case 3: fill_color = get_color(infile,1); 
 			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 			tmp_buffer = my_newmem(string_length+1);
 		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
@@ -2728,11 +2734,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
-	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
 	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
@@ -2743,7 +2749,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 0: double_data[0] = get_real(infile,0);break; /* xmajor */
 		    case 1: int_data[0] = (int) (get_real(infile,0));break; /* xminor */
 		    case 2: stroke_color = get_color(infile,0); break;
-		    case 3: fill_color = get_color(infile,1);
+		    case 3: fill_color = get_color(infile,1); 
 			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
 			tmp_buffer = my_newmem(string_length+1);
 		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%f,%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,double_data[0],int_data[0],precision);
@@ -2761,11 +2767,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the linewidth is set using command 'linewidth int'
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number' and/or 'ylogbase number'
-	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
+	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul> 
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')  
 	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
@@ -2774,7 +2780,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    for(i=0;i<2;i++){
 		switch(i){
 		    case 0: stroke_color = get_color(infile,0); break;
-		    case 1: fill_color = get_color(infile,1);
+		    case 1: fill_color = get_color(infile,1); 
 			string_length = snprintf(NULL,0,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,precision);
 			tmp_buffer = my_newmem(string_length+1);
 		        snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,\"%s\",\"%s\",%.2f,%.2f,%d,\"%s\",\"%s\",%d,%d); ",canvas_root_id,GRID_CANVAS,line_width,stroke_color,fill_color,stroke_opacity,fill_opacity,font_size,font_family,font_color,use_axis_numbering,precision);
@@ -2788,9 +2794,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	default:sync_input(infile);
 	break;
     }
-  }
+  } 
   /* we are done parsing script file */
-
+  
   /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable shapes / objects  ! */
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
@@ -2803,7 +2809,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   var zoom_x_increment=0;var zoom_y_increment=0;\
   var pan_x_increment=0;var pan_y_increment=0;\
   if(use_ylogscale == 0 ){\
-   zoom_x_increment = (xmax - xmin)/20;zoom_y_increment = (xmax - xmin)/20;pan_x_increment = (xmax - xmin)/20;pan_y_increment = (ymax - ymin)/20;\
+   zoom_x_increment = (xmax - xmin)/20;zoom_y_increment = (ymax - ymin)/20;pan_x_increment = (xmax - xmin)/20;pan_y_increment = (ymax - ymin)/20;\
   }else{\
    zoom_x_increment = (xmax - xmin)/20;\
    pan_x_increment = (xmax - xmin)/20;\
@@ -2889,12 +2895,12 @@ char *str_replace(const char *str, const char *old, const char *new){
 	    count++;
 	    retlen = p - str + strlen(p) + count * (newlen - oldlen);
 	}
-    }
+    } 
     else
     {
 	retlen = strlen(str);
     }
-
+    
     if ((ret = malloc(retlen + 1)) == NULL){
 	ret = NULL;
 	canvas_error("string argument is NULL");
@@ -2928,7 +2934,7 @@ char *get_color(FILE *infile , int last){
 	    i++;
 	}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
     if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
     if( c == EOF ){finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
@@ -2970,7 +2976,7 @@ char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 f
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...repeat command to fit string");break;}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");} 
     if( c == '\n') { done = TRUE; line_number++; }
     if( c == EOF ) {
 	finished = 1;
@@ -2991,7 +2997,7 @@ char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments 
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...will cut it off");break;}
     }
-    if( ( c == '\n' || c == EOF) && last == 0){canvas_error("expecting more arguments in command");}
+    if( ( c == '\n' || c == EOF) && last == 0){canvas_error("expecting more arguments in command");} 
     if( c == '\n') { line_number++; }
     if( c == EOF ) {finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
@@ -3009,14 +3015,14 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     char tmp[MAX_INT];
     while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
      if( c != ' ' ){
-     /*
-     libmatheval will segfault when for example: "xrange -10,+10" or "xrange -10,10+" is used
+     /* 
+     libmatheval will segfault when for example: "xrange -10,+10" or "xrange -10,10+" is used 
      We will check after assert() if it's a NULL pointer...and exit program via :
      canvas_error("I'm having trouble parsing your \"expression\" ");
      */
-      if( i == 0 &&  c == '+' ){
+      if( i == 0 &&  c == '+' ){ 
        continue;
-      }
+      } 
       else
       {
        if(canvas_iscalculation(c) != 0){
@@ -3029,7 +3035,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
      }
      if( i > MAX_INT - 1){canvas_error("number too large");}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");} 
     if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
     if( c == EOF ){done = TRUE ; finished = 1;}
     tmp[i]='\0';
@@ -3111,7 +3117,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
     y1,y2,y3,y4....y_n
     r1,r2,r3,r4....r_n
 
-    x/y in pixels
+    x/y in pixels 
     r in pixels
 
 4 = x1,x2,x3,x4....x_n
@@ -3130,7 +3136,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
     ....
     Zx1,Zx2,Zx3,Zx4....Zx_n
     Zy1,Zy2,Zy3,Zy4....Zy_n
-
+    
     x/y in pixels
 
 6 = Ax1,Ax2,Ax3,Ax4....Ax_n
@@ -3144,20 +3150,20 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
     Zy1,Zy2,Zy3,Zy4....Zy_n
 
     x/y in  xrange / yrange coordinate system
-
+    
 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n
-
+    
     x/y in pixels
 
 8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n
-
+    
     x/y in  xrange / yrange coordinate system
 
-9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n
+9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n    
 
     x/y in pixels
 
-10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n
+10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n    
 
     x/y in  xrange / yrange coordinate system
 
@@ -3167,7 +3173,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
      Dx1,Dy1,Dx2,Dy2
      ......
      Zx1,Zy1,Zx2,Zy2
-
+     
     x/y in  xrange / yrange coordinate system
 
 12 = Ax1,Ay1,Ax2,Ay2
@@ -3176,7 +3182,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
      Dx1,Dy1,Dx2,Dy2
      ......
      Zx1,Zy1,Zx2,Zy2
-
+     
     x/y in pixels
 
 13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2
@@ -3198,7 +3204,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 21 = return verbatim coordinates (x1:y1) (x2:y2)...(x_n:y_n)
 22 = array : x1,y1,x2,y2,x3,y3,x4,y4...x_n,y_n
     x/y in  xrange / yrange coordinate system
-23 = answertype for a polyline : remove multiple occurences  due to reclick on a point to create next polyline segment
+23 = answertype for a polyline : remove multiple occurences  due to reclick on a point to create next polyline segment 
 */
 
 
@@ -3206,7 +3212,7 @@ void add_read_canvas(int type_reply){
 /* just 1 reply type allowed */
 switch(type_reply){
 /*  TO DO
-!!!!  NEED TO SIMPLIFY !!!!
+!!!!  NEED TO SIMPLIFY !!!!  
 answers may have:
 x-values,y-values,r-values,input-fields,mathml-inputfields,text-typed answers
 */
@@ -3375,9 +3381,9 @@ function read_canvas(){\
 this.read_canvas = read_canvas;\n\
 <!-- end function 4 read_canvas() -->");
     break;
-    /*
-	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][]
-	used for userdraw multiple paths
+    /* 
+	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
+	used for userdraw multiple paths 
     */
     case 5: fprintf(js_include_file,"\
 \n<!-- begin function 5 read_canvas() -->\n\
@@ -3425,9 +3431,9 @@ function read_canvas(){\
 this.read_canvas = read_canvas;\n\
 <!-- end function 5 read_canvas() -->");
     break;
-    /*
-	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][]
-	used for userdraw multiple paths
+    /* 
+	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
+	used for userdraw multiple paths 
     */
     case 6: fprintf(js_include_file,"\
 \n<!-- begin function 6 read_canvas() -->\n\
@@ -4075,14 +4081,14 @@ this.read_canvas = read_canvas;\n\
 }
 
 
-/*
- add drawfunction :
+/* 
+ add drawfunction : 
  - functions used by userdraw_primitives (circle,rect,path,triangle...)
  - things not covered by the drag&drop library (static objects like parallel, lattice ,gridfill , imagefill)
  - grid / mathml
  - will not scale or zoom in
  - will not be filled via pixel operations like fill / floodfill / filltoborder / clickfill
- - is printed directly into 'js_include_file'
+ - is printed directly into 'js_include_file' 
 */
 
 void add_javascript_functions(int js_functions[],int canvas_root_id){
@@ -4187,9 +4193,9 @@ draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,dragg
   canvas_bg_div.style.backgroundPosition= sx+\"px \"+sy+\"px\";\
   canvas_bg_div.style.backgroundImage = \"url(\" + URL + \")\";\
  };\
-};",canvas_root_id);
+};",canvas_root_id);    
     break;
-
+    
     case DRAW_ZOOM_BUTTONS: /* 6 rectangles 15x15 px  forbidden zone for drawing : y < ysize - 15*/
 fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
 draw_zoom_buttons = function(canvas_type,color,opacity){\
@@ -4214,7 +4220,7 @@ draw_zoom_buttons = function(canvas_type,color,opacity){\
  ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
  ctx.stroke();\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
-
+    
     break;
     case DRAW_GRIDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw gridfill -->\n\
@@ -4244,7 +4250,7 @@ draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,y
  ctx.restore();\
  return;};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-
+    
     case DRAW_IMAGEFILL:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw imagefill -->\n\
 draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
@@ -4286,7 +4292,7 @@ draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
  return;\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-
+    
     case DRAW_DOTFILL:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw dotfill -->\n\
 draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize){\
@@ -4361,7 +4367,7 @@ draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,strok
  return;\
  }",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-
+    
     case DRAW_HATCHFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
 draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
@@ -4443,7 +4449,7 @@ draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_op
  return;\
 };");
     break;
-
+    
     case DRAW_SEGMENTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw segments -->\n\
 draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
@@ -4464,7 +4470,7 @@ draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_op
   return;\
  };");
     break;
-
+    
     case DRAW_LINES:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw lines -->\n\
 function calc_line(x1,x2,y1,y2){\
@@ -4576,7 +4582,7 @@ draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_
  }\
  ctx.restore();\
 };");
-    break;
+    break; 
 
     case DRAW_ELLIPSES:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw ellipses -->\n\
@@ -4630,7 +4636,7 @@ draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,
  ctx.restore();\
  return;\
 };");
-
+    
     break;
     case DRAW_ARROWS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw arrows -->\n\
@@ -4705,9 +4711,9 @@ draw_video = function(canvas_root_id,x,y,w,h,URL){\
  video.appendChild(src);\
  video.load();\
  return;\
-};");
+};");    
     break;
-
+    
     case DRAW_AUDIO:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw audio -->\n\
 draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
@@ -4737,7 +4743,7 @@ draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
  return;\
 };");
     break;
-
+    
     case DRAW_HTTP:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw http -->\n\
 draw_http = function(canvas_root_id,x,y,w,h,URL){\
@@ -4752,7 +4758,7 @@ draw_http = function(canvas_root_id,x,y,w,h,URL){\
  return;\
 };");
     break;
-
+    
     case DRAW_XML:
 fprintf(js_include_file,"\n<!-- draw xml -->\n\
 draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
@@ -4776,7 +4782,7 @@ draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
 );
     break;
     case DRAW_SGRAPH:
-/*
+/* 
  xstart = given
  ystart = given
  sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily)
@@ -5226,7 +5232,7 @@ if( typeof linegraph_0 !== 'undefined' ){\
   if(line_name[2] == \"1\"){\
    var d1 = parseInt(line_name[3]);\
    var d2 = parseInt(line_name[4]);\
-   if(ctx.setLineDash){ ctx.setLineDash(d1,d2); } else { ctx.mozDash = [d1,d2];};\
+   if(ctx.setLineDash){ ctx.setLineDash([d1,d2]); } else { ctx.mozDash = [d1,d2];};\
   }\
   else\
   {\
@@ -5280,16 +5286,16 @@ if( typeof barchart%d  !== 'undefined' ){\
   ctx.closePath();\
  };\
 };\
-if( typeof legend%d  !== 'undefined' ){\
+if( typeof legend0  !== 'undefined' ){\
  ctx.globalAlpha = 1.0;\
  ctx.font = \"bold \"+font_size+\"px Ariel\";\
  var y_offset = 2*font_size;\
  var txt;var txt_size;\
  var x_offset = xsize - 2*font_size;\
- var l_length = legend%d.length;\
- if( typeof legendcolors%d !== 'undefined' ){\
+ var l_length = legend0.length;\
+ if( typeof legendcolors0 !== 'undefined' ){\
   for(var p = 0 ; p < l_length ; p++){\
-    barcolor[p] = legendcolors%d[p];\
+    barcolor[p] = legendcolors0[p];\
   };\
  }else{\
   if( barcolor.length == 0 ){\
@@ -5300,20 +5306,20 @@ if( typeof legend%d  !== 'undefined' ){\
  };\
  for(var p = 0; p < l_length; p++){\
   ctx.fillStyle = barcolor[p];\
-  txt = legend%d[p];\
+  txt = legend0[p];\
   txt_size = ctx.measureText(txt).width;\
-  ctx.fillText(legend%d[p],x_offset - txt_size, y_offset);\
+  ctx.fillText(legend0[p],x_offset - txt_size, y_offset);\
   y_offset = parseInt(y_offset + 1.5*font_size);\
  };\
 };\
 ctx.restore();\
 return;\
-};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-
+    
     case DRAW_PIECHART:
 fprintf(js_include_file,"\n<!-- draw piechars -->\n\
-function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fill_opacity,font_size,font_family){\
+function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fill_opacity,legend_cnt,font_family){\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
  }\
@@ -5324,6 +5330,7 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
  var ld = data_color_list.length;\
  var sum = 0;\
  var idx = 0;\
+ var font_size = parseInt(font_family.replace(/[^0-9\\.]+/g, \"\"));\
  var colors = new Array();\
  var data = new Array();\
  for(var p = 0;p < ld; p = p + 2){\
@@ -5349,24 +5356,25 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
   ctx.closePath();\
   angle_end  = angle_end + angle;\
  };\
- if( typeof legend%d  !== 'undefined' ){\
+ if(typeof legend0 !== 'undefined'){\
+  var legenda = eval(\"legend\"+legend_cnt);\
   ctx.globalAlpha = 1.0;\
-  ctx.font = font_size+\"px \"+font_family;\
+  ctx.font = font_family;\
   var y_offset = font_size; \
   var x_offset = 0;\
   var txt;var txt_size;\
   for(var p = 0; p < idx; p++){\
    ctx.fillStyle = colors[p];\
-   txt = legend%d[p];\
+   txt = legenda[p];\
    txt_size = ctx.measureText(txt).width;\
    if( x_center + radius + txt_size > xsize ){ x_offset =  x_center + radius + txt_size - xsize;} else { x_offset = 0; };\
-   ctx.fillText(legend%d[p],x_center + radius - x_offset, y_center - radius + y_offset);\
+   ctx.fillText(txt,x_center + radius - x_offset, y_center - radius + y_offset);\
    y_offset = parseInt(y_offset + 1.5*font_size);\
   };\
  };\
  ctx.restore();\
-};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
-
+};",canvas_root_id,canvas_root_id,canvas_root_id);
+    
     break;
     case DRAW_ARCS:
 fprintf(js_include_file,"\n<!-- draw arcs -->\n\
@@ -5415,7 +5423,7 @@ draw_arc = function(canvas_type,xc,yc,r,start,end,line_width,stroke_color,stroke
  }\
  ctx.restore();\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
-
+    
     break;
     case DRAW_TEXTS:
 fprintf(js_include_file,"\n<!-- draw text -->\n\
@@ -5439,7 +5447,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
   }\
   else\
   {\
-   ctx.font = \"+font_size+'px '+font_family \";\
+   ctx.font = font_family;\
   };\
   ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
   if(angle2 != 0){\
@@ -5452,7 +5460,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
  ctx.restore();\
  return;\
  };",canvas_root_id,canvas_root_id,canvas_root_id);
-
+    
     break;
     case DRAW_CURVE:
 fprintf(js_include_file,"\n<!-- draw curve -->\n\
@@ -5489,7 +5497,7 @@ draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color
  ctx.restore();\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
-
+    
     case DRAW_INPUTS:
 fprintf(js_include_file,"\n<!-- draw input fields -->\n\
 draw_inputs = function(root_id,input_cnt,x,y,size,readonly,style,value){\
@@ -5502,7 +5510,7 @@ input.setAttribute(\"value\",value);\
 if( readonly == 0 || wims_status == \"done\" ){ input.setAttribute(\"readonly\",\"readonly\");if( wims_status == \"done\" ){input.setAttribute(\"value\",\"\");};};\
 canvas_div.appendChild(input);};");
     break;
-
+    
     case DRAW_TEXTAREAS:
 fprintf(js_include_file,"\n<!-- draw text area inputfields -->\n\
 draw_textareas = function(root_id,input_cnt,x,y,cols,rows,readonly,style,value){\
@@ -5516,7 +5524,7 @@ textarea.value = value;\
 if( readonly == 0 || wims_status == \"done\" ){ textarea.setAttribute(\"readonly\",\"readonly\");if( wims_status == \"done\" ){textarea.value=\"\";};};\
 canvas_div.appendChild(textarea);};");
     break;
-
+    
 case DRAW_PIXELS:
 fprintf(js_include_file,"\n<!-- draw pixel -->\n\
 draw_setpixel = function(x,y,color,opacity,pixelsize){\
@@ -5682,161 +5690,161 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
     break;
 case DRAW_XYLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,precision){\n\
- var obj;\n\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
- }\n\
- else\n\
- {\n\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
- };\n\
- var ctx = obj.getContext(\"2d\");\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,precision){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
- ctx.save();\n\
+ ctx.save();\
  var xmarge;var ymarge;var x_e;var y_e;var num;var corr;var xtxt;var ytxt;\
- var x_min = Math.log(xmin)/Math.log(xlogbase);\n\
- var x_max = Math.log(xmax)/Math.log(xlogbase);\n\
- var y_min = Math.log(ymin)/Math.log(ylogbase);\n\
- var y_max = Math.log(ymax)/Math.log(ylogbase);\n\
+ var x_min = Math.log(xmin)/Math.log(xlogbase);\
+ var x_max = Math.log(xmax)/Math.log(xlogbase);\
+ var y_min = Math.log(ymin)/Math.log(ylogbase);\
+ var y_max = Math.log(ymax)/Math.log(ylogbase);\
  if(use_axis_numbering == 1){\
-  ctx.font = font_family;\n\
-  xmarge = ctx.measureText(ylogbase+'^'+y_max.toFixed(0)+' ').width;\n\
-  ymarge = parseInt(1.5*font_size);\n\
-  ctx.save();\n\
-  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\n\
-  ctx.rect(0,0,xmarge,ysize);\n\
-  ctx.rect(0,ysize-ymarge,xsize,ysize);\n\
-  ctx.fill();\n\
-  ctx.restore();\n\
- }else{xmarge = 0;ymarge = 0;};\n\
+  ctx.font = font_family;\
+  xmarge = ctx.measureText(ylogbase+'^'+y_max.toFixed(0)+' ').width;\
+  ymarge = parseInt(1.5*font_size);\
+  ctx.save();\
+  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\
+  ctx.rect(0,0,xmarge,ysize);\
+  ctx.rect(0,ysize-ymarge,xsize,ysize);\
+  ctx.fill();\
+  ctx.restore();\
+ }else{xmarge = 0;ymarge = 0;};\
  if( typeof xaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr =  ctx.measureText(xaxislabel).width;\n\
-  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\n\
-  ctx.restore();\n\
- };\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr =  ctx.measureText(xaxislabel).width;\
+  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+  ctx.restore();\
+ };\
  if( typeof yaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr = ctx.measureText(yaxislabel).width;\n\
-  ctx.translate(xmarge+font_size,corr+font_size);\n\
-  ctx.rotate(-0.5*Math.PI);\n\
-  ctx.fillText(yaxislabel,0,0);\n\
-  ctx.restore();\n\
- };\n\
- ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
- ctx.lineWidth = line_width;\n\n\
- for(var p = x_min; p <= x_max ; p++){\n\
-  num = Math.pow(xlogbase,p);\n\n\
-  for(var i = 1 ; i < xlogbase ; i++){\n\
-   x_e = x2px(i*num);\n\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr = ctx.measureText(yaxislabel).width;\
+  ctx.translate(xmarge+font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+ ctx.lineWidth = line_width;\
+ for(var p = x_min; p <= x_max ; p++){\
+  num = Math.pow(xlogbase,p);\
+  for(var i = 1 ; i < xlogbase ; i++){\
+   x_e = x2px(i*num);\
    if( i == 1 ){\
-    ctx.lineWidth = line_width;\n\n\
-    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\n\
-    if( use_axis_numbering == 1 && p > x_min){\
-      xtxt = xlogbase+'^'+p.toFixed(0);\n\
-      corr = 0.5*(ctx.measureText(xtxt).width);\n\
-      ctx.fillText(xtxt,x_e - corr,ysize - 4);\n\
-    };\n\
-   }else{\
-    ctx.lineWidth = 0.2*line_width;\n\n\
-    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\n\
-   };\n\
-   if( x_e >= xmarge ){\
-    ctx.beginPath();\n\
-    ctx.moveTo(x_e,0);\n\
-    ctx.lineTo(x_e,ysize - ymarge);\n\n\
-    ctx.stroke();\n\
-    ctx.closePath();\n\
-   };\
-  };\n\
- };\n\
- for(var p = y_min; p <= y_max ; p++){\n\
-  num = Math.pow(ylogbase,p);\n\
-  for(var i = 1 ; i < ylogbase ; i++){\n\
-   y_e = y2px(i*num);\n\
-   if( i == 1 ){\n\
-    ctx.lineWidth = line_width;\n\
+    ctx.lineWidth = line_width;\
     ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
-    if( use_axis_numbering == 1 && p > y_min){\n\
-     ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\n\
-    };\n\
-   }else{\n\
-    ctx.lineWidth = 0.2*line_width;\n\
-    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\n\
-   };\n\
-   ctx.beginPath();\n\
-   ctx.moveTo(xmarge,y_e);\n\
-   ctx.lineTo(xsize,y_e);\n\
-   ctx.stroke();\n\
-   ctx.closePath();\n\
-  };\n\
- };\n\
+    if( use_axis_numbering == 1 && p > x_min){\
+      xtxt = xlogbase+'^'+p.toFixed(0);\
+      corr = 0.5*(ctx.measureText(xtxt).width);\
+      ctx.fillText(xtxt,x_e - corr,ysize - 4);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   if( x_e >= xmarge ){\
+    ctx.beginPath();\
+    ctx.moveTo(x_e,0);\
+    ctx.lineTo(x_e,ysize - ymarge);\
+    ctx.stroke();\
+    ctx.closePath();\
+   };\
+  };\
+ };\
+ for(var p = y_min; p <= y_max ; p++){\
+  num = Math.pow(ylogbase,p);\
+  for(var i = 1 ; i < ylogbase ; i++){\
+   y_e = y2px(i*num);\
+   if( i == 1 ){\
+    ctx.lineWidth = line_width;\
+    ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
+    if( use_axis_numbering == 1 && p > y_min){\
+     ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\
+    };\
+   }else{\
+    ctx.lineWidth = 0.2*line_width;\
+    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
+   };\
+   ctx.beginPath();\
+   ctx.moveTo(xmarge,y_e);\
+   ctx.lineTo(xsize,y_e);\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+ };\
  ctx.restore();\
 };",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 
 case DRAW_XLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xlogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor,precision){\n\
- var obj;\n\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
- }\n\
- else\n\
- {\n\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
- };\n\
- var ctx = obj.getContext(\"2d\");\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor,precision){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
- ctx.save();\n\
- ctx.lineWidth = line_width;\n\
+ ctx.save();\
+ ctx.lineWidth = line_width;\
  var prec = Math.log(precision)/Math.log(10);\
  var x_min = Math.log(xmin)/Math.log(xlogbase);\
  var x_max = Math.log(xmax)/Math.log(xlogbase);\
  var y_min = 0;var y_max = ysize;var x_e;var corr;\
  var xtxt;var ytxt;var num;var xmarge;var ymarge;\
  if(use_axis_numbering == 1){\
-  ctx.font = font_family;\n\
-  xmarge = ctx.measureText(ymax.toFixed(prec)+' ').width;\n\
-  ymarge = parseInt(1.5*font_size);\n\
-  ctx.save();\n\
-  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\n\
-  ctx.rect(0,0,xmarge,ysize);\n\
-  ctx.rect(0,ysize-ymarge,xsize,ysize);\n\
-  ctx.fill();\n\
-  ctx.restore();\n\
- }else{xmarge = 0;ymarge = 0;};\n\
+  ctx.font = font_family;\
+  xmarge = ctx.measureText(ymax.toFixed(prec)+' ').width;\
+  ymarge = parseInt(1.5*font_size);\
+  ctx.save();\
+  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\
+  ctx.rect(0,0,xmarge,ysize);\
+  ctx.rect(0,ysize-ymarge,xsize,ysize);\
+  ctx.fill();\
+  ctx.restore();\
+ }else{xmarge = 0;ymarge = 0;};\
  if( typeof xaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr =  ctx.measureText(xaxislabel).width;\n\
-  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\n\
-  ctx.restore();\n\
- };\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr =  ctx.measureText(xaxislabel).width;\
+  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+  ctx.restore();\
+ };\
  if( typeof yaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr = ctx.measureText(yaxislabel).width;\n\
-  ctx.translate(xmarge+font_size,corr+font_size);\n\
-  ctx.rotate(-0.5*Math.PI);\n\
-  ctx.fillText(yaxislabel,0,0);\n\
-  ctx.restore();\n\
- };\n\
- ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
- ctx.lineWidth = line_width;\n\n\
- for(var p = x_min; p <= x_max ; p++){\n\
-  num = Math.pow(xlogbase,p);\n\
-  for(var i = 1 ; i < xlogbase ; i++){\n\
-   x_e = x2px(i*num);\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr = ctx.measureText(yaxislabel).width;\
+  ctx.translate(xmarge+font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+ ctx.lineWidth = line_width;\
+ for(var p = x_min; p <= x_max ; p++){\
+  num = Math.pow(xlogbase,p);\
+  for(var i = 1 ; i < xlogbase ; i++){\
+   x_e = x2px(i*num);\
    if( i == 1 ){\
-     ctx.lineWidth = line_width;\n\
+     ctx.lineWidth = line_width;\
      ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
     if( use_axis_numbering == 1 && p > x_min ){\
       xtxt = xlogbase+'^'+p.toFixed(0);\
@@ -5844,127 +5852,127 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
       ctx.fillText(xtxt,x_e - corr,ysize - 4);\
     };\
    }else{\
-    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.lineWidth = 0.2*line_width;\
     ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
    };\
    if( x_e >= xmarge ){\
-    ctx.beginPath();\n\
-    ctx.moveTo(x_e,0);\n\
-    ctx.lineTo(x_e,ysize - ymarge);\n\n\
-    ctx.stroke();\n\
-    ctx.closePath();\n\
+    ctx.beginPath();\
+    ctx.moveTo(x_e,0);\
+    ctx.lineTo(x_e,ysize - ymarge);\
+    ctx.stroke();\
+    ctx.closePath();\
    };\
   };\
- };\n\
+ };\
  var stepy = Math.abs(y2px(ymajor) - y2px(0));\
  var minor_step = stepy / yminor;\
  for(var y = 0 ; y < ysize - stepy ; y = y + stepy){\
   ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
-  ctx.lineWidth = line_width;\n\
-  ctx.beginPath();\n\
-  ctx.moveTo(xmarge,y);\n\
-  ctx.lineTo(xsize,y);\n\
-  ctx.stroke();\n\
-  ctx.closePath();\n\
+  ctx.lineWidth = line_width;\
+  ctx.beginPath();\
+  ctx.moveTo(xmarge,y);\
+  ctx.lineTo(xsize,y);\
+  ctx.stroke();\
+  ctx.closePath();\
   if( use_axis_numbering == 1){\
    ytxt = (px2y(y)).toFixed(prec);\
    ctx.fillText( ytxt,0 ,y + 0.5*font_size );\
   };\
   for(var dy = 1 ; dy < yminor ; dy++){\
    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
-   ctx.lineWidth = 0.2*line_width;\n\
-   ctx.beginPath();\n\
+   ctx.lineWidth = 0.2*line_width;\
+   ctx.beginPath();\
    ctx.moveTo(xmarge,y+dy*minor_step);\
-   ctx.lineTo(xsize,y+dy*minor_step);\n\
-   ctx.stroke();\n\
-   ctx.closePath();\n\
+   ctx.lineTo(xsize,y+dy*minor_step);\
+   ctx.stroke();\
+   ctx.closePath();\
   };\
  };\
- ctx.restore();\n\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+ ctx.restore();\
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
 case DRAW_YLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw ylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor,precision){\n\
- var obj;\n\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\n\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\n\
- }\n\
- else\n\
- {\n\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\n\
- };\n\
- var ctx = obj.getContext(\"2d\");\n\
+draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor,precision){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
- ctx.save();\n\
- ctx.lineWidth = line_width;\n\
+ ctx.save();\
+ ctx.lineWidth = line_width;\
  var y_min = Math.log(ymin)/Math.log(ylogbase);\
  var y_max = Math.log(ymax)/Math.log(ylogbase);\
  var x_min = 0;var x_max = xsize;var y_s;var y_e;var num;\
  if(use_axis_numbering == 1){\
-  ctx.font = font_family;\n\
-  xmarge = ctx.measureText(ylogbase+\"^\"+y_max.toFixed(0)+' ').width;\n\
-  ymarge = 2*font_size;\n\
-  ctx.save();\n\
-  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\n\
-  ctx.rect(0,0,xmarge,ysize);\n\
-  ctx.rect(0,ysize-ymarge,xsize,ysize);\n\
-  ctx.fill();\n\
-  ctx.restore();\n\
- }else{xmarge = 0;ymarge = 0;};\n\
+  ctx.font = font_family;\
+  xmarge = ctx.measureText(ylogbase+\"^\"+y_max.toFixed(0)+' ').width;\
+  ymarge = 2*font_size;\
+  ctx.save();\
+  ctx.fillStyle=\"rgba(255,215,0,0.2)\";\
+  ctx.rect(0,0,xmarge,ysize);\
+  ctx.rect(0,ysize-ymarge,xsize,ysize);\
+  ctx.fill();\
+  ctx.restore();\
+ }else{xmarge = 0;ymarge = 0;};\
  if( typeof xaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr =  ctx.measureText(xaxislabel).width;\n\
-  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\n\
-  ctx.restore();\n\
- };\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr =  ctx.measureText(xaxislabel).width;\
+  ctx.fillText(xaxislabel,xsize - 1.5*corr,ysize - 2*font_size);\
+  ctx.restore();\
+ };\
  if( typeof yaxislabel !== 'undefined' ){\
-  ctx.save();\n\
-  ctx.font = \"italic \"+font_size+\"px Ariel\";\n\
-  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
-  corr = ctx.measureText(yaxislabel).width;\n\
-  ctx.translate(xmarge+font_size,corr+font_size);\n\
-  ctx.rotate(-0.5*Math.PI);\n\
-  ctx.fillText(yaxislabel,0,0);\n\
-  ctx.restore();\n\
- };\n\
- ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\n\
- ctx.lineWidth = line_width;\n\n\
- for(var p = y_min; p <= y_max ; p++){\n\
-  num = Math.pow(ylogbase,p);\n\
-  for(var i = 1 ; i < ylogbase ; i++){\n\
-   y_e = y2px(i*num);\n\
+  ctx.save();\
+  ctx.font = \"italic \"+font_size+\"px Ariel\";\
+  ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+  corr = ctx.measureText(yaxislabel).width;\
+  ctx.translate(xmarge+font_size,corr+font_size);\
+  ctx.rotate(-0.5*Math.PI);\
+  ctx.fillText(yaxislabel,0,0);\
+  ctx.restore();\
+ };\
+ ctx.fillStyle = \"rgba(\"+font_color+\",\"+major_opacity+\")\";\
+ ctx.lineWidth = line_width;\
+ for(var p = y_min; p <= y_max ; p++){\
+  num = Math.pow(ylogbase,p);\
+  for(var i = 1 ; i < ylogbase ; i++){\
+   y_e = y2px(i*num);\
    if( i == 1 ){\
-    ctx.lineWidth = line_width;\n\
+    ctx.lineWidth = line_width;\
     ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
     if( use_axis_numbering == 1 && p > y_min){\
      ctx.fillText(ylogbase+'^'+p.toFixed(0),0,y_e);\
     };\
    }else{\
-    ctx.lineWidth = 0.2*line_width;\n\
+    ctx.lineWidth = 0.2*line_width;\
     ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
    };\
-   ctx.beginPath();\n\
-   ctx.moveTo(xmarge,y_e);\n\
-   ctx.lineTo(xsize,y_e);\n\
-   ctx.stroke();\n\
-   ctx.closePath();\n\
-  };\n\
- };\n\
+   ctx.beginPath();\
+   ctx.moveTo(xmarge,y_e);\
+   ctx.lineTo(xsize,y_e);\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+ };\
  var stepx = Math.abs(x2px(xmajor) - x2px(0));\
  var minor_step = stepx / xminor;\
  var prec = Math.log(precision)/Math.log(10);\
  var xtxt;var corr;var flip = 0;\
  for(var x = stepx ; x < xsize ; x = x + stepx){\
   ctx.strokeStyle=\"rgba(\"+major_color+\",\"+major_opacity+\")\";\
-  ctx.lineWidth = line_width;\n\
-  ctx.beginPath();\n\
-  ctx.moveTo(x,ysize-ymarge);\n\
-  ctx.lineTo(x,0);\n\
-  ctx.stroke();\n\
-  ctx.closePath();\n\
+  ctx.lineWidth = line_width;\
+  ctx.beginPath();\
+  ctx.moveTo(x,ysize-ymarge);\
+  ctx.lineTo(x,0);\
+  ctx.stroke();\
+  ctx.closePath();\
   if( use_axis_numbering == 1){\
    xtxt = (px2x(x)).toFixed(prec);\
    corr = 0.5*(ctx.measureText(xtxt).width);\
@@ -5973,16 +5981,16 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
   };\
   for(var dx = 1 ; dx < xminor ; dx++){\
    ctx.strokeStyle=\"rgba(\"+minor_color+\",\"+minor_opacity+\")\";\
-   ctx.lineWidth = 0.2*line_width;\n\
-   ctx.beginPath();\n\
+   ctx.lineWidth = 0.2*line_width;\
+   ctx.beginPath();\
    ctx.moveTo(x+dx*minor_step,ysize - ymarge);\
-   ctx.lineTo(x+dx*minor_step,0);\n\
-   ctx.stroke();\n\
-   ctx.closePath();\n\
+   ctx.lineTo(x+dx*minor_step,0);\
+   ctx.stroke();\
+   ctx.closePath();\
   };\
  };\
- ctx.restore();\n\
-};\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+ ctx.restore();\
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     default:break;
    }
@@ -6581,7 +6589,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	use_filled = TRUE;
 	return ELLIPSE;
-	}
+	}	
 	if( strcmp(input_type, blink) == 0 ){
 	free(input_type);
 	return BLINK;
@@ -6697,15 +6705,15 @@ int get_token(FILE *infile){
 	if( strcmp(input_type,floodfill) == 0 || strcmp(input_type,fill) == 0 ){
 	free(input_type);
 	return FLOODFILL;
-	}
+	}	
 	if( strcmp(input_type,filltoborder) == 0 ){
 	free(input_type);
 	return FILLTOBORDER;
-	}
+	}	
 	if( strcmp(input_type,clickfill) == 0 ){
 	free(input_type);
 	return CLICKFILL;
-	}
+	}	
 	if( strcmp(input_type, replyformat) == 0 ){
 	free(input_type);
 	return REPLYFORMAT;
