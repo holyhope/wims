@@ -1,0 +1,10 @@
+!if ($wims_sheet>0 or P isin $wims_sheet) and $cmd=reply and $module_score!=$empty
+ !if $wims_exo>1
+  !set wims_ref_class=wims_button
+  !href module=home&directworksheet=$wims_sheet.$[$wims_exo-1] $wims_name_previousseries
+ !endif
+ !if $wims_exo<$wims_sheetmax
+  !set wims_ref_class=wims_button
+  !href module=home&directworksheet=$wims_sheet.$[$wims_exo+1] $wims_name_nextseries
+ !endif
+!endif
