@@ -34,7 +34,7 @@ char 	*get_color(FILE *infile,int last); /* read hex-color or colorname -> hex *
 char	*get_string(FILE *infile,int last); /* get the string at the end of a command */
 char	*get_string_argument(FILE *infile,int last); /* the same, but with "comma" as  separator */
 char 	*convert_hex2rgb(char *hexcolor);
-void 	add_read_canvas(int reply_format);
+void 	add_read_canvas(int reply_format,int precision);
 void	make_js_include(int canvas_root_id);
 void	check_string_length(int length);/* checks if the length of string argument of command is correct */
 FILE 	*js_include_file; 
@@ -210,10 +210,10 @@ var precision = 100;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
-function x2px(x){if(use_xlogscale == 0 ){return parseInt(x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin));}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
+function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
 function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
 function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
-function y2px(y){if(use_ylogscale == 0){return parseInt(-1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin));}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
+function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
 function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
 function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
@@ -2032,6 +2032,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    @ precision int
 	    @ 10 = 1 decimal ; 100 = 2 decimals etc
 	    @ may be used / changed before every object
+	    @ the last precision value will be used for read_canvas()...if needed 
 	*/
 	    precision = (int) (get_real(infile,1));
 	    break;
@@ -2413,7 +2414,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    add_js_floodfill(js_include_file,canvas_root_id);
 	 }
 	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
-	 add_read_canvas(1);
+	 add_read_canvas(1,precision);
 	break;
 	case SETPIXEL:
 	/*
@@ -2482,6 +2483,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ replyformat number
 	@ use number=-1 to deactivate the js-function read_canvas()
 	@ default values should be fine !
+	@ the last value for 'precision int' will be used to calculate  the reply coordinates, if needed (read_canvas();)
 	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
 	*/
@@ -2800,7 +2802,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable shapes / objects  ! */
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
-  if( reply_format > 0 ){ add_read_canvas(reply_format);}
+  if( reply_format > 0 ){ add_read_canvas(reply_format,precision);}
   if( use_pan_and_zoom == TRUE ){
   /* in case of zooming ... */
   fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\
@@ -3208,8 +3210,9 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 */
 
 
-void add_read_canvas(int type_reply){
+void add_read_canvas(int type_reply,int precision){
 /* just 1 reply type allowed */
+
 switch(type_reply){
 /*  TO DO
 !!!!  NEED TO SIMPLIFY !!!!  
@@ -3259,6 +3262,7 @@ this.read_canvas = read_canvas;\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply_x[p] = px2x(userdraw_x[p]);\
   reply_y[p] = px2y(userdraw_y[p]);\
@@ -3297,7 +3301,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 2 read_canvas() -->");
+<!-- end function 2 read_canvas() -->",precision);
     break;
     case 3: fprintf(js_include_file,"\
 \n<!-- begin function 3 read_canvas() -->\n\
@@ -3341,6 +3345,7 @@ this.read_canvas = read_canvas;\n\
 \n<!-- begin function 4 read_canvas() -->\n\
 function read_canvas(){\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply_x[p] = px2x(userdraw_x[p]);\
   reply_y[p] = px2y(userdraw_y[p]);\
@@ -3379,7 +3384,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 4 read_canvas() -->");
+<!-- end function 4 read_canvas() -->",precision);
     break;
     /* 
 	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][] 
@@ -3442,6 +3447,7 @@ function read_canvas(){\
  var reply = \"\";\
  var tmp_x = new Array();\
  var tmp_y = new Array();\
+ precision = %d;\
  for(p = 0 ; p < userdraw_x.length; p++){\
   tmp_x = userdraw_x[p];\
   tmp_y = userdraw_y[p];\
@@ -3487,7 +3493,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 6 read_canvas() -->");
+<!-- end function 6 read_canvas() -->",precision);
     break;
     case 7: fprintf(js_include_file,"\
 \n<!-- begin function 7 read_canvas() -->\n\
@@ -3538,6 +3544,7 @@ this.read_canvas = read_canvas;\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply[p] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]);\
   p++;\
@@ -3575,7 +3582,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 8 read_canvas() -->");
+<!-- end function 8 read_canvas() -->",precision);
     break;
     case 9: fprintf(js_include_file,"\
 \n<!-- begin function 9 read_canvas() -->\n\
@@ -3626,6 +3633,7 @@ this.read_canvas = read_canvas;\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply[p] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]) +\":\" + userdraw_radius[p];\
   p++;\
@@ -3663,13 +3671,14 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 10 read_canvas() -->");
+<!-- end function 10 read_canvas() -->",precision);
     break;
     case 11: fprintf(js_include_file,"\
 \n<!-- begin function 11 read_canvas() -->\n\
 function read_canvas(){\
  var reply = \"\";\
  var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply = reply + px2x(userdraw_x[p]) +\",\" + px2y(userdraw_y[p]) +\",\" + px2x(userdraw_x[p+1]) +\",\" + px2y(userdraw_y[p+1]) +\"\\n\" ;\
   p = p+2;\
@@ -3707,7 +3716,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 11 read_canvas() -->");
+<!-- end function 11 read_canvas() -->",precision);
     break;
     case 12: fprintf(js_include_file,"\
 \n<!-- begin function 12 read_canvas() -->\n\
@@ -3759,6 +3768,7 @@ this.read_canvas = read_canvas;\n\
 function read_canvas(){\
  var reply = new Array();\
  var p = 0;var i = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply[i] = px2x(userdraw_x[p]) +\":\" + px2y(userdraw_y[p]) +\":\" + px2x(userdraw_x[p+1]) +\":\" + px2y(userdraw_y[p+1]);\
   p = p+2;i++;\
@@ -3796,7 +3806,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 13 read_canvas() -->");
+<!-- end function 13 read_canvas() -->",precision);
     break;
     case 14: fprintf(js_include_file,"\
 \n<!-- begin function 14 read_canvas() -->\n\
@@ -3920,6 +3930,7 @@ this.read_canvas = read_canvas;\n\
     case 20: fprintf(js_include_file,"\
 \n<!-- begin function 20 read_canvas() -->\n\
 function read_canvas(){\
+ precision = %d;\
  var len  = ext_drag_images.length;\
  var reply = new Array(len);\
  for(var p = 0 ; p < len ; p++){\
@@ -3929,13 +3940,14 @@ function read_canvas(){\
  return reply;\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 20 read_canvas() -->");
+<!-- end function 20 read_canvas() -->",precision);
     break;
     case 21: fprintf(js_include_file,"\
 \n<!-- begin function 21 read_canvas() -->\n\
 function read_canvas(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  var reply_coord = new Array();var p = 0;\
+ precision = %d;\
  while(userdraw_x[p]){\
   reply_coord[p] = \"(\"+px2x(userdraw_x[p])+\":\"+px2y(userdraw_y[p])+\")\";\
   p++;\
@@ -3973,21 +3985,20 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 21 read_canvas() -->");
+<!-- end function 21 read_canvas() -->",precision);
     break;
     case 22: fprintf(js_include_file,"\
 \n<!-- begin function 22 read_canvas() -->\n\
 function read_canvas(){\
  var reply = new Array();\
- var p = 0;\
+ var lu = userdraw_x.length;\
+ if(lu == 0){alert(\"nothing drawn...\");return;};\
  var idx = 0;\
- while(userdraw_x[p]){\
-  reply[idx] = px2x(userdraw_x[p]);\
-  idx++;\
-  reply[idx] = px2y(userdraw_y[p]);\
-  idx++;p++;\
+ precision = %d;\
+ for(var p = 0 ; p < lu ; p++){\
+  reply[idx] = px2x(userdraw_x[p]);idx++;\
+  reply[idx] = px2y(userdraw_y[p]);idx++;\
  };\
- if(p == 0){alert(\"nothing drawn...\");return;};\
  if( document.getElementById(\"canvas_input0\") ){\
   var p = 0;var input_reply = new Array();\
   if( document.getElementById(\"canvas_input0\")){\
@@ -4020,7 +4031,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 22 read_canvas() -->");
+<!-- end function 22 read_canvas() -->",precision);
     break;
     case 23: fprintf(js_include_file,"\
 \n<!-- begin function 23 read_canvas() default 5 px marge -->\n\
@@ -4030,6 +4041,7 @@ function read_canvas(){\
  if( lu != userdraw_y.length ){ alert(\"x / y mismatch !\");return;}\
  var reply_x = new Array();var reply_y = new Array();\
  var marge = 5;var p = 0;\
+ precision = %d;\
  for(var i = 0; i < lu - 1 ; i++ ){\
   if( Math.abs(userdraw_x[i] - userdraw_x[i+1])){\
    reply_x[p] = px2x(userdraw_x[i]);reply_y[p] = px2y(userdraw_y[i]);\
@@ -4070,7 +4082,7 @@ function read_canvas(){\
  };\
 };\
 this.read_canvas = read_canvas;\n\
-<!-- end function 23 read_canvas() -->");
+<!-- end function 23 read_canvas() -->",precision);
     break;
 
     default: canvas_error("hmmm unknown replyformat...");break;
