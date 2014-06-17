@@ -1501,21 +1501,21 @@ void add_input_polyline(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields -->\n\
 function user_redraw(t){\
  var lu = userdraw_x.length;\n\
+ cnt = 1;\
  if( t == -1 && lu > 0){\
   userdraw_x.splice(lu-1,1);\n\
   userdraw_y.splice(lu-1,1);\n\
   context_userdraw.clearRect(0,0,xsize,ysize);\n\
   draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
-  cnt = 1;return;\n\
+  return;\n\
  };\n\
  var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\n\
  var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\n\
  if(add_x != null && add_y != null ){\
-  userdraw_x[lu] = x2px(add_x);\n\
-  userdraw_y[lu] = y2px(add_y);\n\
+  userdraw_x.push(x2px(add_x));\n\
+  userdraw_y.push(y2px(add_y));\n\
   context_userdraw.clearRect(0,0,xsize,ysize);\n\
   draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
-  cnt = 1;\n\
  };\n\
  return;\n\
 };");

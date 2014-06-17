@@ -4026,19 +4026,17 @@ this.read_canvas = read_canvas;\n\
 \n<!-- begin function 23 read_canvas() default 5 px marge -->\n\
 function read_canvas(){\
  if( userdraw_x.length < 2){alert(\"nothing drawn...\");return;}\
- var reply_x = new Array();var reply_y = new Array();var p = 0;\
  var lu = userdraw_x.length;\
  if( lu != userdraw_y.length ){ alert(\"x / y mismatch !\");return;}\
- var marge = 5;\
- reply_x[p] = px2x(userdraw_x[0]);reply_y[p] = px2y(userdraw_y[0]);p++;\
+ var reply_x = new Array();var reply_y = new Array();\
+ var marge = 5;var p = 0;\
  for(var i = 0; i < lu - 1 ; i++ ){\
-  if( (userdraw_x[i] < (userdraw_x[i+1] + marge)) && (userdraw_x[i] > (userdraw_x[i+1] - marge)) ){\
-   if( (userdraw_y[i] < (userdraw_y[i+1] + marge)) && (userdraw_y[i] > (userdraw_y[i+1] - marge)) ){\
-    reply_x[p] = px2x(userdraw_x[i]);reply_y[p] = px2y(userdraw_y[i]);\
-    if( isNaN(reply_x[p]) || isNaN(reply_y[p]) ){ alert(\"hmmmm ?\");return; };\
-    p++;\
-   };\
+  if( Math.abs(userdraw_x[i] - userdraw_x[i+1])){\
+   reply_x[p] = px2x(userdraw_x[i]);reply_y[p] = px2y(userdraw_y[i]);\
+   if( isNaN(reply_x[p]) || isNaN(reply_y[p]) ){ alert(\"hmmmm ?\");return; };\
+   p++;\
   };\
+  reply_x[p] = px2x(userdraw_x[lu-1]);reply_y[p] = px2y(userdraw_y[lu-1]);\
  };\
  if( document.getElementById(\"canvas_input0\")){\
   var p = 0;var input_reply = new Array();\
