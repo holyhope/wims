@@ -1,4 +1,4 @@
-!set size=50
+
 !set swlist=coq, gap, graphviz, m2, maxima, octave, pari, povray, geogebra
 !set swname=COQ, Gap, Graphviz, Macaulay 2, Maxima, Octave, PARI/GP, Povray, GeoGebra
 !set year=!char 1 to 4 of $wims_now
@@ -34,7 +34,7 @@
     <legend>$wims_name_General</legend>
     <div class="field box">
       <label for="">$wims_name_Address</label>
-      <div class="wims_fname">
+      <span class="wims_fname">
         !if $title!=$empty and $modreq!=.new
           $modreq&nbsp;
           !set wims_ref_class=wims_button
@@ -46,15 +46,15 @@
           !set modreq=.new
           !read scripts/addressform.phtml nook
         !endif
-      </div>
+      </span>
     </div>
     <div class="field box">
       <label for="i_title">$wims_name_title</label>
-      <input size="$size" name="i_title" id="i_title" value="$i_title" />
+      <input type="text" name="i_title" id="i_title" value="$i_title" />
     </div>
     <div class="field box">
       <label for="i_description">$wims_name_Description</label>
-      <input size="$size" name="i_description" id="i_description" value="$i_description" />
+      <input type="text" name="i_description" id="i_description" value="$i_description" />
     </div>
     <div class="field box">
       <label for="i_label">$wims_name_Type</label>
@@ -67,7 +67,7 @@
       <label for="i_domain">$wims_name_Domain</label>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=domain $wims_name_help
-      <input size="$size" name="i_domain" id="i_domain" class="multicomplete" value="$i_domain" />
+      <input type="text" name="i_domain" id="i_domain" class="multicomplete" value="$i_domain" />
       <script type="text/javascript">
         /*<![CDATA[*/
            var tags =
@@ -81,7 +81,7 @@
       <label for="i_keywords">$wims_name_Keywords</label>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=keywords $wims_name_help
-      <input size="$size" name="i_keywords" id="i_keywords" value="$i_keywords" />
+      <input type="text" name="i_keywords" id="i_keywords" value="$i_keywords" />
     </div>
     <div class="field box">
       <label for="i_level">$wims_name_Levels</label>
@@ -108,35 +108,35 @@
       !href cmd=help&special_parm=namewriting $wims_name_help
       !default i_author=!words2items $auth_name
       !set i_author=!nonempty items $i_author
-      <input type="text" size="$size" name="i_author" id="i_author" value="$i_author" />
+      <input type="text" name="i_author" id="i_author" value="$i_author" />
       <div class="formHelp tt">$wims_name_firstname,$wims_name_lastname</div>
     </div>
     <div class="field box halfwidth">
       <label for="i_address">$wims_name_auth_email</label>
       !default i_address=$auth_email
-      <input type="text" size="$size" name="i_address" id="i_address" value="$i_address" />
+      <input type="text" name="i_address" id="i_address" value="$i_address" />
       <div class="formHelp tt">&nbsp;</div>
     </div>
     <div class="field box halfwidth">
       <label for="i_maintainer">$wims_name_Maintainer</label>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=maintainer $wims_name_help
-      <input type="text" size="$size" name="i_maintainer" id="i_maintainer" value="$i_maintainer" />
+      <input type="text" name="i_maintainer" id="i_maintainer" value="$i_maintainer" />
       <div class="formHelp tt">$wims_name_firstname, $wims_name_lastname</div>
     </div>
     <div class="field box halfwidth">
       <label for="i_maintainer_address">$wims_name_email</label>
-      <input type="text" size="$size" name="i_maintainer_address" id="i_maintainer_address" value="$i_maintainer_address" />
+      <input type="text" name="i_maintainer_address" id="i_maintainer_address" value="$i_maintainer_address" />
       <div class="formHelp tt">$wims_name_Maintainer</div>
     </div>
     <div class="field box halfwidth">
       <label for="i_translator">$wims_name_Translator</label>
-      <input type="text" size="$size" name="i_translator" id="i_translator" value="$i_translator" />
+      <input type="text" name="i_translator" id="i_translator" value="$i_translator" />
       <div class="formHelp tt">$wims_name_firstname, $wims_name_lastname</div>
     </div>
     <div class="field box halfwidth">
       <label for="i_translator_address">$wims_name_tr_email</label>
-      <input type="text" size="$size" name="i_translator_address" id="i_translator_address" value="$i_translator_address" />
+      <input type="text" name="i_translator_address" id="i_translator_address" value="$i_translator_address" />
     </div>
   </fieldset>
   </div>
@@ -170,7 +170,7 @@
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=version $wims_name_help
       !default i_version=1.00
-      <input type="text" size="6" name="i_version" id="i_version" value="$i_version" />
+      <input type="text" class="small_input" name="i_version" id="i_version" value="$i_version" />
       <div class="formHelp">$name_increment</div>
     </div>
     <div class="field box halfwidth">
@@ -178,7 +178,7 @@
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=wimsversion $wims_name_help
       !default i_wims_version=$wims_version
-      <input type="text" size="6" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />
+      <input type="text" class="small_input" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />
     </div>
     <div class="field box fullwidth">
       <label for="i_require">$wims_name_require</label><br/>
@@ -189,7 +189,7 @@
       <label for="i_data">$wims_name_datamodule</label>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=datamodule $wims_name_help
-      <input size="$size" name="i_data" id="i_data" value="$i_data" />
+      <input type="text" name="i_data" id="i_data" value="$i_data" />
     </div>
     <div class="field box">
       <label for="i_copyright">$wims_name_Copyright</label>
