@@ -46,33 +46,34 @@ impostata a 0%; se la qualità è tra 1 e 2, nel calcolo di I la percentuale
 effettiva è dimezzata.
 
 !else
-Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
-de la note.
-Pour chacun des indicateurs suivants, on calcule la moyenne pour votre travail pour :
+Per questo test di autovalutazione, il docente ha scelto il seguente
+metodo di calcolo del voto. Se per un esercizio il numero di punti 
+richiesti è 10*n si considerano i seguenti indicatori:
 <ul>
 <li>
 !if $help_sw=0
-  le quotient I des points cumulés par le nombre de points demandés 10*n
+  il rapporto I tra i punti ottenuti e n,
 !endif
 !if $help_sw=1
-la moyenne I des n meilleures notes,
+  la media I degli n voti migliori,
 !endif
 !if $help_sw=2
- le minimum I des n meilleures notes
+  il minimo I degli n voti migliori
 !endif
 </li>
 <li>
-la qualité Q des points obtenus sur les exercices.
+  l'indice di qualità Q dei punti ottenuti relativamente all'esercizio.
 </li>
 </ul>
-
-Si la note de qualité est inférieure à 1 pour un exercice,
-I est mis à 0 pour cet exercice  ;
-si la note de qualité est comprise entre 1 et 2,
-I est divisé par 2 lors du calcul de la note de la feuille.
-
+<p> 
+Se l'indice di qualità Q è inferiore a 1 per un esercizio, allora si
+prende il valore 0 per I relativamente a tale esercizio; se l'indice
+di qualità Q è compresa tra 1 e 2, allora I viene diviso per 2 nel
+calcolo del voto del test.
 </p><p>
-Ces moyennes sont ramenées entre 0 et 1 et
- la note de la feuille est calculée comme
+Di questi indicatori si calcolano le medie (pesate) su tutto il test.
+</p><p>
+Tali medie sono normalizzate a un numero tra 0 e 1, dopo di che
+per il calcolo del voto del test è applicata la formula
 \($scoremax * $(list[$help_level+1;]) \)
 !endif
