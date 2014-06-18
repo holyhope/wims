@@ -6,54 +6,54 @@
 
 !! **** Default Names ***
 !distribute items Buscar,\
-		Al trabajo,Volver al trabajo,\
-		Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,\
-		Introducción,\
-		Cerrar esta ventana,Atrás,\
-		Administrador del sitio,Autor de la página,Autores de la página,\
-		Traducido por,Salir,\
-		Ayuda de WIMS,Referencias,\
-		Foro de discusión,Foro,\
-		Hoja de trabajo,Herramientas,\
-		Copiar a Modtool,\
-		Imprimir,\
-		Importar a su clase,\
-		Versión imprimible,\
-		Otro nuevo,\
-		(Ir en la) zona prueba,\
-		Actualizar esta página,\
-		Guardar,\
-		si,\
-		no,\
-		Cargar a distancia,\
-		Enviar,\
-		Detalles,\
-		Mostrar,\
-		Corregir,\
-		¡Atención!,\
-		¡Felicidades!,\
-		o,\
-		Explicaciones,\
-		Ejercicio,\
-		Hoja,\
-		Cuenta,\
-		Entrar,\
-		Notas,\
-		Notas,\
-		Examen,\
-		Recorrer el sitio,\
-		Volver al menú,\
-		Fecha de expiración,\
-		Error,\
-		Série suivante,Série précédente,\
-		Example,\
-		Encuesta,\
-		Conditions générales d'utilisation,\
-		Besoin d'aide ?,\
-		Bravo!,\
-		Déconnexion CAS,\
-        Credits,\
-        Lo nuevo,\
+Al trabajo,Volver al trabajo,\
+Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,\
+Introducción,\
+Cerrar esta ventana,Atrás,\
+Administrador del sitio,Autor de la página,Autores de la página,\
+Traducido por,Salir,\
+Ayuda de WIMS,Referencias,\
+Foro de discusión,Foro,\
+Hoja de trabajo,Herramientas,\
+Copiar a Modtool,\
+Imprimir,\
+Importar a su clase,\
+Versión imprimible,\
+Otro nuevo,\
+(Ir en la) zona prueba,\
+Actualizar esta página,\
+Guardar,\
+si,\
+no,\
+Cargar a distancia,\
+Enviar,\
+Detalles,\
+Mostrar,\
+Corregir,\
+¡Atención!,\
+¡Felicidades!,\
+o,\
+Explicaciones,\
+Ejercicio,\
+Hoja,\
+Cuenta,\
+Entrar,\
+Notas,\
+Notas,\
+Examen,\
+Recorrer el sitio,\
+Volver al menú,\
+Fecha de expiración,\
+Error,\
+Série suivante,Série précédente,\
+Example,\
+Encuesta,\
+Conditions générales d'utilisation,\
+Besoin d'aide ?,\
+Bravo!,\
+Déconnexion CAS,\
+Credits,\
+Lo nuevo,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -76,10 +76,10 @@
 
 !! **** Menuprof Names ***
 !distribute items Classes, Search,\
-		Creation, Samples,\
-		Exercices, Helps,\
-		FAQ, Help docs,\
-		Informations,\
+Creation, Samples,\
+Exercices, Helps,\
+FAQ, Help docs,\
+Informations,\
 	into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
@@ -88,12 +88,12 @@
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
-		Indicar, en su sitio,\
-		Encubrir estas opciones, \
-		Permaenlace, Lector exportable,\
-		copiar y pegar, el vínculo, el código, o, en un correo electrónico,\
-		para, solamente,\
-		el config actual,\
+Indicar, en su sitio,\
+Encubrir estas opciones, \
+Permaenlace, Lector exportable,\
+copiar y pegar, el vínculo, el código, o, en un correo electrónico,\
+para, solamente,\
+el config actual,\
 	into wims_name_this_module, wims_name_this_exercice,\
 	wims_name_display,wims_name_on_your_site,\
 	wims_name_mask_this,\
@@ -114,38 +114,39 @@
 
 !! **** Module About Names ***
 !distribute items Nombre,\
-        À propos des icones,\
-		Información sobre este módulo,\
-		Información sobre este ejercicio,\
-		dirección,\
-		Vínculo para marca-página,\
-		Descripción,\
-		Versión,\
-		Versión WIMS requerida,\
-		Lengua,\
-		Autor,\
-		Maintainer,\
-		Traductor,\
-		Esto es un módulo de,\
-		Servidor Interactivo Multifunciones en la Red,\
-		Derechos de autor,\
-		Palabras clave,\
-		Correo electrónico del traductor,\
-		Correo electrónico del autor,\
-		Dominio,\
-		Tipo,\
-		Nivel(x),\
-		Mecanismo de puntuación,\
-		ejercicio/recreación,\
-		Programas informáticos de apoyo necesarios,\
-		Server Time,\
-		Data module,\
-		Developped on WIMS,\
-		Publication center,\
-        Download center,\
-	    Syntax,\
-        Meaning,\
-        Indexation,\
+À propos des icones,\
+Información sobre este módulo,\
+Información sobre este ejercicio,\
+dirección,\
+Vínculo para marca-página,\
+Descripción,\
+Versión,\
+Versión WIMS requerida,\
+Lengua,\
+Autor,\
+Maintainer,\
+Traductor,\
+General,\
+Esto es un módulo de,\
+Servidor Interactivo Multifunciones en la Red,\
+Derechos de autor,\
+Palabras clave,\
+Correo electrónico del traductor,\
+Correo electrónico del autor,\
+Dominio,\
+Tipo,\
+Nivel(x),\
+Mecanismo de puntuación,\
+ejercicio/recreación,\
+Programas informáticos de apoyo necesarios,\
+Server Time,\
+Data module,\
+Developped on WIMS,\
+Publication center,\
+Download center,\
+Syntax,\
+Meaning,\
+Indexation,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\
@@ -159,6 +160,7 @@
 	wims_name_Author,\
 	wims_name_Maintainer,\
 	wims_name_Translator,\
+	wims_name_General,\
 	wims_name_This_is_a_module,\
 	wims_name_WIMS_subtitle,\
 	wims_name_Copyright,wims_name_Keywords,\
@@ -173,15 +175,15 @@
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,Insertar en una hoja de trabajo,Insérer comme aide dans une feuille,\
-		Escribir al profesor, Salir,\
-		El registro de notas es cerrado.,\
-		Ha suspendido el registro de notas.,\
-		Activar el registro, suspender el registro,\
-		Usted es el profesor de la clase,\
-		Registrar los detalles de este ejercicio,\
-		Página de gestión de la hoja de trabajo,\
-		Añadir una secuencia,\
-		Vu \
+Escribir al profesor, Salir,\
+El registro de notas es cerrado.,\
+Ha suspendido el registro de notas.,\
+Activar el registro, suspender el registro,\
+Usted es el profesor de la clase,\
+Registrar los detalles de este ejercicio,\
+Página de gestión de la hoja de trabajo,\
+Añadir una secuencia,\
+Vu \
 	into wims_name_class_home,wims_name_add,wims_name_addh\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\

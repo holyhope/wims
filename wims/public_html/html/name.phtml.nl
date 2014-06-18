@@ -6,54 +6,54 @@
 
 !! **** Default Names ***
 !distribute items Zoeken,\
-		Werk,Terug naar het Werk,\
-		WIMS Home,Intro/Config,Help,Wat is dit,\
-		Introductie,Close,\
-		Sluit dit venster,Terug,\
-		Website manager,Auteur van deze pagina,Auteurs van deze pagina's,\
-		Vertaald door,Exit,\
-		WIMS Help,Referentie,\
-		Message board,Forums,\
-		Werkblad,Hulpmiddelen,\
-		Kopieer naar Modtool,\
-		Print,\
-		Importeer in uw eigen klas,\
-		Printbare versie,\
-		Opnieuw,\
-		Ga naar,\
-		Vernieuwen,\
-		Opslaan,\
-		Ja,\
-		Nee,\
-		Download,\
-		Sturen,\
-		Details,\
-		Laat zien,\
-		Bewerken,\
-		Attentie,\
-		Gefeliciteerd,\
-		of ,\
-		Uileg,\
-		Oefening,\
-		Werkblad,\
-		Account,\
-		Inloggen,\
-		Cijfers,\
-		Mijn cijfers,\
-		Proefwerk,Exams,\
-		Browse,\
-		Terug naar het menu,\
-		Eind datum,\
-		Fout,\
-		Volgende serie,Vorige serie,\
-		Voorbeeld,\
-		Enquete,\
-		Algemene voorwaarden,\
-		Hulp nodig ?,\
-		Bravo !,\
-		CAS uitloggen,\
-		Met dank aan,\
-		Nieuwste,\
+Werk,Terug naar het Werk,\
+WIMS Home,Intro/Config,Help,Wat is dit,\
+Introductie,Close,\
+Sluit dit venster,Terug,\
+Website manager,Auteur van deze pagina,Auteurs van deze pagina's,\
+Vertaald door,Exit,\
+WIMS Help,Referentie,\
+Message board,Forums,\
+Werkblad,Hulpmiddelen,\
+Kopieer naar Modtool,\
+Print,\
+Importeer in uw eigen klas,\
+Printbare versie,\
+Opnieuw,\
+Ga naar,\
+Vernieuwen,\
+Opslaan,\
+Ja,\
+Nee,\
+Download,\
+Sturen,\
+Details,\
+Laat zien,\
+Bewerken,\
+Attentie,\
+Gefeliciteerd,\
+of ,\
+Uileg,\
+Oefening,\
+Werkblad,\
+Account,\
+Inloggen,\
+Cijfers,\
+Mijn cijfers,\
+Proefwerk,Exams,\
+Browse,\
+Terug naar het menu,\
+Eind datum,\
+Fout,\
+Volgende serie,Vorige serie,\
+Voorbeeld,\
+Enquete,\
+Algemene voorwaarden,\
+Hulp nodig ?,\
+Bravo !,\
+CAS uitloggen,\
+Met dank aan,\
+Nieuwste,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -76,10 +76,10 @@
 
 !! **** Menuprof Names ***
 !distribute items Klassen, Zoeken,\
-		Aanmaken, Voorbeelden,\
-		Oefeningen, Help,\
-		FAQ, Help documenten,\
-		Informations,\
+Aanmaken, Voorbeelden,\
+Oefeningen, Help,\
+FAQ, Help documenten,\
+Informations,\
 	into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
@@ -88,12 +88,12 @@
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
-	Installeer,op uw site,\
-	Verberg deze opties,\
-	Permanente link, embed,\
-	knip en plak, deze link, deze code, of, in een email,\
-	voor, enkel,\
-	deze configuratie,\
+Installeer,op uw site,\
+Verberg deze opties,\
+Permanente link, embed,\
+knip en plak, deze link, deze code, of, in een email,\
+voor, enkel,\
+deze configuratie,\
     into wims_name_this_module, wims_name_this_exercice,\
     wims_name_display,wims_name_on_your_site,\
     wims_name_mask_this,\
@@ -114,38 +114,39 @@
 
 !! **** Module About Names ***
 !distribute items Naam,\
-	    Info over iconen,\
-	    Module Informatie,\
-	    Informatie over deze oefening,\
-	    Adres,\
-	    Link voor bookmark,\
-	    Omschrijving,\
-	    Versie,\
-	    Vereiste WIMS versie,\
-	    Taal,\
-	    Schrijver,\
-	    Maintainer,\
-	    Vertaler,\
-	    Dit is een module van,\
-	    WWW Interactive Multipurpose Server,\
-	    Copyright,\
-	    Zoektermen,\
-	    Emailadres vertaler,\
-	    Emailadres auteur,\
-	    Onderwerp,\
-	    Soort,\
-	    Niveau(s),\
-	    Scorings mechanisme,\
-	    oefening / ontspanning,\
-	    Hulp software vereist,\
-	    Server tijd,\
-	    Data module,\
-	    Ontwikkeld op WIMS,\
-	    Publicatie centrum,\
-	    Download centrum,\
-	    Syntax,\
-	    Uitleg,\
-	    Indexation,\
+Info over iconen,\
+Module Informatie,\
+Informatie over deze oefening,\
+Adres,\
+Link voor bookmark,\
+Omschrijving,\
+Versie,\
+Vereiste WIMS versie,\
+Taal,\
+Schrijver,\
+Maintainer,\
+Vertaler,\
+General,\
+Dit is een module van,\
+WWW Interactive Multipurpose Server,\
+Copyright,\
+Zoektermen,\
+Emailadres vertaler,\
+Emailadres auteur,\
+Onderwerp,\
+Soort,\
+Niveau(s),\
+Scorings mechanisme,\
+oefening / ontspanning,\
+Hulp software vereist,\
+Server tijd,\
+Data module,\
+Ontwikkeld op WIMS,\
+Publicatie centrum,\
+Download centrum,\
+Syntax,\
+Uitleg,\
+Indexation,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\
@@ -159,6 +160,7 @@
 	wims_name_Author,\
 	wims_name_Maintainer,\
 	wims_name_Translator,\
+	wims_name_General,\
 	wims_name_This_is_a_module,\
 	wims_name_WIMS_subtitle,\
 	wims_name_Copyright,wims_name_Keywords,\
