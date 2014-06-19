@@ -1,5 +1,5 @@
 #define canvas_iscalculation(x) ( ((x&~32)>='A' && (x&~32)<='Z') || ( x == '/' ) || (x == '*') || (x == '+') || x == '-' || x == '^' || x == '(' || x == ')' )
-#define MAX_INT		64
+#define MAX_INT		128
 #define MAX_BUFFER 16384
 #define MAX_COLOR_STRING	32
 #define MAX_JS_FUNCTIONS 64

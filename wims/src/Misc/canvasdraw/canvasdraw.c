@@ -1634,8 +1634,8 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	 @ sgraph xstart,ystart,xmajor,ymajor,xminor,yminor,majorgrid_color,minorgrid_color
 	 @ primitive implementation of a 'broken scale' graph...
-	 @ not very versatile.
-	 @ example:<br />size 400,400<br />xrange 0,10000<br />yrange 0,100<br />sgraph 9000,50,100,10,4,4,grey,blue<br />userinput_xy<br />linewidth 2<br />userdraw segments,red
+	 @ not very versatile: only usable in combination with userdraw <br />eg no other objects will obey this "coordinate system"<br />if you want to place an object into this coordinate system, be aware that 10% or 20% of xsize and/or ysize is 'lost'.<br />Use these "formulas" to recalculate the virtual coordinates:<br />factor=0.8 in case xstart != xmin (or ystart != ymin)<br />factor=0.9 in case xstart = xmin (or ystart = ymin)<br />px_x_point = ((factor*xsize)/(xmax - xstart))*(x_point - xmax)+xsize<br />x_recalculated = px*(xmax - xmin)/xsize + $xmin<br />px_y_point = -1*factor*y_point*ysize/(ymax - ystart) + ymax*factor*ysize/(ymax - ystart)<br />y_recalculated = ymax - py*(ymax - ymin)/ysize<br />
+	 @ example:<br />size 400,400<br />xrange 0,10000<br />yrange 0,100<br />sgraph 9000,50,100,10,4,4,grey,blue<br />userinput_xy<br />linewidth 2<br />userdraw segments,red 
 	*/
 	    if( js_function[DRAW_SGRAPH] != 1 ){ js_function[DRAW_SGRAPH] = 1;}	
 	    for(i = 0 ; i < 8 ;i++){
@@ -4804,12 +4804,8 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
  ctx.font = fontfamily;\
  var minor_opacity = 0.8*opacity;\
  ctx.clearRect(0,0,xsize,ysize);\
- var d_x =  1.8*font_size;\
- var d_y =  ctx.measureText(\"+ymax+\").width;\
- var dx = xsize / (xmax - xmin);\
- var dy = ysize / (ymax - ymin);\
- var zero_x = d_y + dx;\
- var zero_y = ysize - dy - d_x;\
+ var zero_x = 0.1*xsize;\
+ var zero_y = 0.9*ysize;\
  var snor_x;\
  if( xstart != xmin){\
   snor_x = 0.1*xsize;\
@@ -4839,18 +4835,18 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
  var num = xstart;\
  var flipflop = 1;\
  var step_x = xmajor*(xsize - zero_x - snor_x)/(xmax - xstart);\
+ var txtsize;var txt_marge=step_x - 5;\
  for(var x = zero_x+snor_x ; x < xsize;x = x + step_x){\
-   if( 0.5*ctx.measureText(num).width > step_x ){\
-    if( flipflop == 1 ){flipflop = 0;}else{flipflop = 1;};\
-   };\
-   if( flipflop == 1){\
-    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+font_size);\
-   }\
-   else\
-   {\
-    ctx.fillText(num,x - 0.5*ctx.measureText(num).width,zero_y+2*font_size);\
-   }\
-   num = num + xmajor;\
+  txtsize = ctx.measureText(num).width;\
+  if( txtsize > txt_marge ){if( flipflop == 1 ){flipflop = 0;}else{flipflop = 1;};};\
+  if( flipflop == 1){\
+   ctx.fillText(num,x - 0.5*txtsize,zero_y+font_size);\
+  }\
+  else\
+  {\
+   ctx.fillText(num,x - 0.5*txtsize,zero_y+2*font_size);\
+  }\
+  num = num + xmajor;\
  };\
  ctx.stroke();\
  ctx.closePath();\
