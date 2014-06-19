@@ -71,10 +71,11 @@
 !if prep_erase=$error
  Do you really want to erase this exam #$exam ($title)?
   <div class="wimscenter">
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </div>
+  </div>
  !exit
 !endif
 
@@ -127,7 +128,7 @@
 !if active_exam=$error
    Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
  !exit
-!endif 
+!endif
 
 !if $error=prep_noexercise
   The content of the exercise $exo of the exam is empty. Try again.

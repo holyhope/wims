@@ -13,8 +13,10 @@ $name_erase
  <span class="tt wims_fname">$file</span>? <br />
  <span class="small">($flen $name_bytes, $facc, $name_last $fdat)</span>
   <p class="wimscenter" style="font-weight:bold;">³É¼ <font size="+2">
+  !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=reply&job=fs $wims_name_no
  </font> </p> <hr />
  !goto end2
@@ -38,12 +40,12 @@ $name_erase
 !endif
 
 !if $flen>$MAX
- <span class="wims_fname">$file</span> ($flen $name_bytes) 
- $name_toolong 
+ <span class="wims_fname">$file</span> ($flen $name_bytes)
+ $name_toolong
 
  !goto end
 !endif
- 
+
 !set wims_form_method=post
 !form reply
 <input type="hidden" name="job" value="file" />
@@ -71,7 +73,7 @@ $name_erase
 !href cmd=reply&job=file&job2=download $name_download
  &nbsp;
 !if $modifok=yes
-!set wims_ref_class=wims_button
+!set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=file&job2=erase $wims_name_erase
  &nbsp;
 !endif

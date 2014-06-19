@@ -20,14 +20,14 @@
   !default bst_num=10
   !let tmp=!date -d '1 month ago' '+%Y%m%d'
   !default bst_since=$tmp
-  <input type="text" name="bst_num" value="$bst_num" size="4" />$name_bestcumul 
+  <input type="text" name="bst_num" value="$bst_num" size="4" />$name_bestcumul
   <input type="text" name="bst_since" value="$bst_since" size="7" />
   <span class="small">$name_format</span> <span class="tt wims_">yyyymmdd</span>.
   <input type="hidden" name="job" value="bestclass" />
   <input type="submit" value="$wims_name_refresh" />
 
  !formend
- </div> 
+ </div>
 
 
 !if $sccnt>0
@@ -46,7 +46,7 @@ $table_hdtr
  $table_tr
  <td class="small">$t_<br />$d_</td>
  <td>
- !set wims_ref_class=wims_button
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
 &nbsp;
 !set wims_ref_class=wims_button
@@ -75,7 +75,7 @@ $table_hdtr
 <th>$name_created<br /><span class="tt wims_code_words">yyyymmdd</span></th>
 <th>$name_expire<br /><span class="tt wims_code_words">yyyymmdd</span></th>
 <th>$name_load<sup>[1]</sup></th>
-<th>$name_part</th> 
+<th>$name_part</th>
 !for i=1 to $clcnt
  !set l=!line $i of $classes
  !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
@@ -83,7 +83,7 @@ $table_hdtr
  $table_tr
  <td class="small">$t_<br />$d_</td>
  <td>
- !set wims_ref_class=wims_button
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
 &nbsp;
 !set wims_ref_class=wims_button
@@ -102,7 +102,7 @@ $table_hdtr
 !next i
 $table_end
 !endif
-<div class="wimscenter"><b>[1]</b> <i>"$name_load" $name_cumul_student 
+<div class="wimscenter"><b>[1]</b> <i>"$name_load" $name_cumul_student
 !read date.phtml $bst_since,notime
 .</i></div>
 <div class="wimscenter">

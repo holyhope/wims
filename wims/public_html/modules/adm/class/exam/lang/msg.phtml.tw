@@ -80,13 +80,14 @@
 !if prep_erase=$error
  Do you really want to erase this exam #$exam ($title)?
   <div class="wimscenter">
+!set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase Yes; erase
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume No; abandon
- .</div>
+ </div>
  !exit
 !endif
- 
+
 !if prep_expire=$error
  This exam #$exam ($title) expires normally expires on $expday
  !item $expmon of $months
@@ -135,5 +136,5 @@
 !if active_exam=$error
    Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
  !exit
-!endif 
+!endif
 

@@ -62,15 +62,16 @@
 !if prep_erase=$error
  你是否真的要删除本试卷 #$exam ($title)?
   <div class="wimscenter">
+  !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </div>
  !exit
 !endif
 
 !if prep_expire=$error
- 本试卷 #$exam ($title) 将于 $expday 
+ 本试卷 #$exam ($title) 将于 $expday
  !item $expmon of $months
  $expyear 失效. 你要它现在就失效吗?
   <div class="wimscenter">
@@ -83,8 +84,8 @@
 !endif
 
 !if prep_putsource=$error
- 如果你有以前保存的考试源文件, 
- 你可以把这个源文件复制到下面窗口里, 
+ 如果你有以前保存的考试源文件,
+ 你可以把这个源文件复制到下面窗口里,
  再点击 `发送' 按钮以把它插入当前班级.
  <p>
  否则,
@@ -114,7 +115,7 @@
 !if active_exam=$error
    这个考试已被激活, 不能再修改. 因此不能改动其中的练习.
  !exit
-!endif 
+!endif
 
 !if $error=prep_noexercise
   考试的练习 $exo 的内容是空的. 请再试.

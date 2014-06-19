@@ -2,7 +2,7 @@
 
 !if not_supervisor=$error
 Helaas, maar het maken of modificeren van een proefwerk
-is voorbehouden aan de docent van een klas. 
+is voorbehouden aan de docent van een klas.
  !exit
 !endif
 
@@ -20,15 +20,15 @@ uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
 !endif
 
 !if bad_exam=$error
-Uw proefwerk nummer is helaas niet geldig...een bug in de software? 
+Uw proefwerk nummer is helaas niet geldig...een bug in de software?
  !exit
 !endif
 
 !if $error=simuchange
-    De status van dit proefwerk heeft U net veranderd.<br />Klik 
+    De status van dit proefwerk heeft U net veranderd.<br />Klik
  !href cmd=reply&job=scorereg hier
  om deze simulatie correct af te sluiten.
- !exit                                                                                                                                     
+ !exit
 !endif
 
 !if already_registered=$error
@@ -50,7 +50,7 @@ Jij mag het proefwerk dus niet meer overdoen.
 !endif
 
 !if no_title=$error
-U wilt een proefwerk registreren zonder een naam ? 
+U wilt een proefwerk registreren zonder een naam ?
 niet verstandig. Fout of manipulatie ?
  !exit
 !endif
@@ -70,10 +70,11 @@ Wilt U doorgaan?
 !if prep_erase=$error
 Wil U werkelijk het proefwerk nummer $exam ($title) verwijderen?
   <div class="wimscenter">
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </div>
+  </div>
  !exit
 !endif
 
@@ -85,10 +86,10 @@ Dit proefwerk nummer $exam ($title) zou verlopen zijn op $expday
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </div><b>Opmerking.</b> 
+ . </div><b>Opmerking.</b>
  Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen proefwerk.<br />
 Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
-(en ook statistisch verwerkt, zodat deze resultaten altijd nog kunnen worden bekeken) 
+(en ook statistisch verwerkt, zodat deze resultaten altijd nog kunnen worden bekeken)
  !exit
 !endif
 
@@ -107,9 +108,9 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
 
 !if active_exam=$error
     Helaas, maar dit proefwerk is aktief en daardoor niet meer te veranderen.<br />
-    We kunnen dus ook niets aan de opgenomen oefeningen meer wijzigen. 
+    We kunnen dus ook niets aan de opgenomen oefeningen meer wijzigen.
  !exit
-!endif 
+!endif
 
 !if $error=prep_noexercise
     De oefening $exo uit dit proefwerk is leeg. Probeer opnieuw.

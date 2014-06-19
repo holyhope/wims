@@ -70,8 +70,9 @@
 !if prep_erase=$error
  ¿Confirma que quiere borrar este examen #$exam ($title)?
   <div class="wimscenter">
+  !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </div>
  !exit
