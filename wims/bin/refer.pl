@@ -23,7 +23,7 @@ for my $dir (@base) {
      my @b=split(',',$a);
      my $b1=$b[0]; my $b2=$b[-1]; $b2=~ s/\n//;
      if (($b2) && $b2 >= 1) {
-       if ($hash{$t0}{$id}) {  $hash{$t0}{$id}.= "," . $b1 }
+       if ($hash{$t0}{$id}) { $hash{$t0}{$id}.= "," . $b1 }
         else { $hash{$t0}{$id}= $b1};
      }
     }
