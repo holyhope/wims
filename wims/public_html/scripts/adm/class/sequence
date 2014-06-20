@@ -2,25 +2,21 @@
    !default j=1
    !set seq_=!record $j of wimshome/log/classes/$wims_class/seq/.sequence$i
    !distribute line $seq_ into tis_,cos_,obj_,o_
-   <fieldset id="wims_seq_$i" class="wims_seq">
-   <legend>$sequence_Title $i</legend>
-   <div class="wims_title_seq">
-   <span class="wims_title_item">
-   $tis_</span>
-   <span class="wims_comment_item">
-   $cos_
-   </span>
-   !if $wims_user=supervisor
+   <div id="wims_seq_$i" class="wims_seq">
+      <div class="wims_title_seq">
+       <span class="wims_seq_id">$sequence_Title $i</span>
+       <span class="wims_title_item">$tis_</span>
+     </div>
+    <div class="wims_comment_item">$cos_
+  !if $wims_user=supervisor
       ($(wims_name_status[$o_+1]))&nbsp;
    !set wims_ref_class=wims_button_help
    !href module=adm/class/sequence&job=addseq&seq=$i $wims_name_change
    !if $i>1
-     &nbsp;
      !set wims_ref_class=wims_button_help
      !href cmd=reply&job=moveup&moveup=$i $wims_name_up
    !endif
-   &nbsp;
-   !set wims_ref_class=wims_button_help
+   !set wims_ref_class=wims_button_help wims_warning
    !href cmd=reply&job=delete&seq=$i $wims_name_erase
    !endif
    </div>
@@ -65,7 +61,8 @@
      <div class="wims_vote_item">
       !href module=adm/vote&job=read&vote=$num&seq=$i $t_
      ($(wims_name_status[$a_+1]))
-      <div class="wims_vote_desc">$de_</div></div>
+      <div class="wims_vote_desc">$de_</div>
+      </li>
      !endif
      !reset a_,t_,ti,de_
    !endif
@@ -83,5 +80,5 @@
    !reset s_ v_ d_ e_
   !next i_
 </ul>
-  </fieldset>
+</div>
 
