@@ -1295,6 +1295,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @jscurve color,formula(x)
 	 @your function will be plotted by the javascript engine of the client browser.
 	 @use parenthesis and rawmath : use 2*x in stead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
+	 @Attention : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
 	 @no validity check is done by wims.
 	 @zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
 	 @use command 'trace_jscurve formula(x)` for tracing

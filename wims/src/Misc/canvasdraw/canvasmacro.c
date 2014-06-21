@@ -1153,7 +1153,7 @@ fprintf(js_include_file,"\n<!-- begin add_calc_y -->\n\
 use_jsmath=1;\
 function add_calc_y(){\
 if( wims_status == \"done\" ){return;};\
-var fun = to_js_math(\"%s\");\
+var fun = to_js_math(\"%s\");if(fun == null){return;};\
 function eval_jsmath(x){return parseFloat(eval(fun));};\
 var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var calc_div = document.createElement('div');\
@@ -1195,7 +1195,7 @@ if( wims_status == \"done\" ){return;};\
  trace_div.innerHTML = \"<br /><span style='font-style:italic;font-size:10px'>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='text-align:center;color:blue;background-color:lightgreen;' />\"+label_y+\" : <input type='text' size='6' value='' id='trace_input_y' style='text-align:center;color:blue;background-color:lightgreen;' readonly' /></span> \";\
  canvas_div.addEventListener(\"mousemove\",trace,false);\
  canvas_div.addEventListener(\"touchmove\",trace,false);\
- var fun = to_js_math(\"%s\");\
+ var fun = to_js_math(\"%s\");if(fun == null){return;};\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
  function trace(evt){\
   var canvas_rect = (trace_canvas).getBoundingClientRect();\
@@ -1615,7 +1615,7 @@ var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0
  var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
- var fun = to_js_math(f);\
+ var fun = to_js_math(f);if(fun == null){return;};\
  ctx.lineWidth = linewidth;\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\
@@ -1640,37 +1640,44 @@ void add_to_js_math(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin to_js_math() -->\n\
 var to_js_math = function(math_fun){\
  var infun=[\"sqrt\",\"^\",\"asin\",\"acos\",\"atan\",\"log\",\"pi\",\"abs\",\"sin\",\"cos\",\"tan\",\"e\"];\
- var outfun=[\"Math.sqrt\",\"Math.pow\",\"Math.asin\",\"Math.acos\",\"Math.atan\",\"Math.log,\",\"(3.14159265358979)\",\"Math.abs\",\"Math.sin\",\"Math.cos\",\"Math.tan\",\"(2.718281828459045)\"];\
- var len = infun.length;var in_fun;var In_Fun;var out_fun;\
+ var outfun=[\"Math.sqrt\",\"Math.pow\",\"Math.asin\",\"Math.acos\",\"Math.atan\",\"Math.log\",\"(3.14159265358979)\",\"Math.abs\",\"Math.sin\",\"Math.cos\",\"Math.tan\",\"(2.718281828459045)\"];\
+ var len = infun.length;var in_fun;var In_Fun;var out_fun;var w_cnt;\
  for(var p=0 ; p < len ; p++){\
-  in_fun = infun[p];In_Fun = in_fun.toUpperCase();out_fun = outfun[p];\
-  if(math_fun.indexOf(in_fun) > -1){\
+  in_fun = infun[p];In_Fun = in_fun.toUpperCase();out_fun = outfun[p];w_cnt=0;\
+  if(math_fun.indexOf(in_fun) != -1){\
    if(in_fun == \"^\"){\
     var tab = [];var small_trick = \"___small_trick___\";\
-    while (math_fun.indexOf(\"(\") > -1){\
+    while (math_fun.indexOf(\"(\") != -1){\
      math_fun = math_fun.replace(/(\\([^\\(\\)]*\\))/g, function(m, t){tab.push(t);return (small_trick + (tab.length - 1));});\
+     w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\
     };\
-    tab.push(math_fun);\
-    math_fun = small_trick + (tab.length - 1);\
-    while (math_fun.indexOf(small_trick) > -1){\
+    tab.push(math_fun);w_cnt = 0;math_fun = small_trick + (tab.length - 1);\
+    while (math_fun.indexOf(small_trick) != -1){\
      math_fun = math_fun.replace(new RegExp(small_trick + \"(\\\\d+)\", \"g\"), function(m, d){return tab[d].replace(/(\\w*)\\^(\\w*)/g, out_fun+\"($1,$2)\");});\
+     w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\
     };\
    }\
    else\
    {\
-    while( math_fun.indexOf(in_fun) > -1 ){\
+    while( math_fun.indexOf(in_fun) != -1 ){\
      math_fun = math_fun.replace(in_fun,out_fun);\
      math_fun = math_fun.replace(in_fun,In_Fun);\
+     w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\
     };\
    };\
   };\
- };\
- for(var p=0 ; p < len ; p++){\
-  in_fun = infun[p];In_Fun = in_fun.toUpperCase();\
-  math_fun = math_fun.replace(In_Fun,in_fun);\
- };\
- return math_fun;\
-};");
+ };\n\
+ for(var p=0 ; p < len ; p++){\n\
+  in_fun = infun[p];In_Fun = in_fun.toUpperCase();w_cnt = 0;\n\
+  if(math_fun.indexOf(In_Fun) != -1 ){\n\
+   while(math_fun.indexOf(In_Fun) != -1){\n\
+    math_fun = math_fun.replace(In_Fun,in_fun);\n\
+    w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\n\
+   };\n\
+  };\n\
+ };\n\
+ return math_fun;\n\
+};\n");
 }
 
 
