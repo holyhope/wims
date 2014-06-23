@@ -2240,6 +2240,8 @@ function CanvasState(canvas,container_div){\
     };\
     reply[myState.selection.click_cnt] = myState.selection.click_cnt+\":\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\":\"+px2x(myState.selection.x[myState.chk])+\":\"+px2y(myState.selection.y[myState.chk]);\
    };\
+   myState.valid = false;\
+   myState.draw();\
    myState.valid = true;\
   };\
   myState.dragging = false;\

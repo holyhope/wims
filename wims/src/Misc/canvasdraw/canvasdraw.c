@@ -112,7 +112,7 @@ int main(int argc, char *argv[]){
     int arrow_head = 8; /* size in px*/
     int crosshair_size = 5; /* size in px*/
     int plot_steps = 250; 
-    int found_size_command = 0;
+    int found_size_command = 0; /* 1 = found size ; 2 = found xrange; 3 = found yrange*/
     int click_cnt = 1;
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]){
 /* while more lines to process */
 
     while(!finished){
-	if(line_number>1 && found_size_command == FALSE){canvas_error("command \"size xsize,ysize\" needs to come first ! ");}
+	if(line_number>1 && found_size_command == 0){canvas_error("command \"size xsize,ysize\" needs to come first ! ");}
 	type = get_token(infile);
 	done = FALSE;
 	/*
@@ -189,7 +189,7 @@ int main(int argc, char *argv[]){
 	    @mandatory first command
 	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
-	    found_size_command = TRUE;
+	    found_size_command = 1;
 	    xsize = (int)(abs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
 	    ysize = (int)(abs(round(get_real(infile,1))));
 	    /* sometimes we want xrange / yrange to be in pixels...without telling x/y-range */
@@ -249,6 +249,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    if(xmin >= xmax){canvas_error(" xrange is not OK : xmin &lt; xmax !\n");}
 	    fprintf(js_include_file,"var xmin = %f;var xmax = %f;",xmin,xmax);
+	    found_size_command++;
 	    break;
 	case YRANGE:
 	/*
@@ -264,6 +265,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    if(ymin >= ymax){canvas_error(" yrange is not OK : ymin &lt; ymax !\n");}
 	    fprintf(js_include_file,"var ymin = %f;var ymax = %f;",ymin,ymax);
+	    found_size_command++;
 	    break;
 	case TRANGE:
 	/*
@@ -1294,6 +1296,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	 @jscurve color,formula(x)
 	 @your function will be plotted by the javascript engine of the client browser.
+	 @use only basic math in your curve:<br /> sqrt,^,asin,acos,atan,log,pi,abs,sin,cos,tan,e
 	 @use parenthesis and rawmath : use 2*x in stead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
 	 @Attention : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
 	 @no validity check is done by wims.
@@ -1506,6 +1509,32 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();break;
+			    break;
+		    default:break;
+		}
+	    }
+	    break;
+	case CENTERSTRING:
+	/* 
+	 @ centerstring color,y-value,the text string
+	 @ draw a string centered on the canvas at y = y-value
+	 @ can not set "onclick" or "drag xy" (...)
+	 @ unicode supported: centerstring red,5,\\u2232
+	 @ use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change 
+	*/
+	    if( js_function[DRAW_CENTERSTRING] != 1 ){ js_function[DRAW_CENTERSTRING] = 1;}
+	    for(i=0;i<3;i++){
+		switch(i){
+		    case 0: stroke_color = get_color(infile,0);break;/* name or hex color */
+		    case 1: double_data[0] = get_real(infile,0);break; /* y in xrange*/
+		    case 2: temp = get_string_argument(infile,1);
+			    /* draw_text = function(canvas_type,y,font_family,stroke_color,stroke_opacity,text) */
+			    decimals = find_number_of_digits(precision);
+			    string_length = snprintf(NULL,0,
+			    "draw_centerstring(%d,%.*f,\"%s\",\"%s\",%.2f,\"%s\");\n",canvas_root_id,decimals,double_data[0],font_family,stroke_color,stroke_opacity,temp);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_centerstring(%d,%.*f,\"%s\",\"%s\",%.2f,\"%s\");\n",canvas_root_id,decimals,double_data[0],font_family,stroke_color,stroke_opacity,temp);
+			    add_to_buffer(tmp_buffer);
 			    break;
 		    default:break;
 		}
@@ -2799,7 +2828,16 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
     }
   } 
   /* we are done parsing script file */
-  
+  /* check if xrange / yrange was set explicit ... or use xmin=0 xmax=xsize ymin=0 ymax=ysize : Quadrant I */
+  if( found_size_command == 1 ){
+    fprintf(js_include_file,"var xmin = 0;var xmax = %d;var ymin = 0;var ymax = %d",xsize,ysize);
+  }
+  else
+  {
+    if( found_size_command != 3 ){
+     canvas_error("Please specify bothe xrange and yrange ...");
+    }
+  }
   /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable shapes / objects  ! */
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
@@ -5432,6 +5470,27 @@ draw_arc = function(canvas_type,xc,yc,r,start,end,line_width,stroke_color,stroke
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     
     break;
+    case DRAW_CENTERSTRING:
+fprintf(js_include_file,"\n<!-- draw centerstring -->\n\
+draw_centerstring = function(canvas_type,y,font_family,stroke_color,stroke_opacity,text){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ ctx.font = font_family;\
+ ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ var stringwidth = ctx.measureText(text).width;\
+ var x = parseInt((xsize - stringwidth)/2);if( x < 0 ){x = 0;};\
+ ctx.fillText(text,x,y2px(y));\
+return;\
+};",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
     case DRAW_TEXTS:
 fprintf(js_include_file,"\n<!-- draw text -->\n\
 draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_translate,vector){\
@@ -5467,7 +5526,6 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
  ctx.restore();\
  return;\
  };",canvas_root_id,canvas_root_id,canvas_root_id);
-    
     break;
     case DRAW_CURVE:
 fprintf(js_include_file,"\n<!-- draw curve -->\n\
@@ -6185,7 +6243,8 @@ int get_token(FILE *infile){
 	*setlimits="setlimits",
 	*jscurve="jscurve",
 	*jsplot="jsplot",
-	*sgraph="sgraph";
+	*sgraph="sgraph",
+	*centerstring="centerstring";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -6829,6 +6888,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, jscurve) == 0  ||  strcmp(input_type, jsplot) == 0 ){
 	free(input_type);
 	return JSCURVE;
+	}
+	if( strcmp(input_type, centerstring) == 0 ){
+	free(input_type);
+	return CENTERSTRING;
 	}
 	if( strcmp(input_type, setlimits) == 0 ){
 	free(input_type);
