@@ -2337,24 +2337,11 @@ var dragstuff = new CanvasState(obj,container_div);",canvas_root_id,ANIMATE_CANV
 
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command filltoborder -->\n\
-filltoborder_cnt = 200;\
 filltoborder = function(x,y,bordercolor,color){\
  x = x2px(x);\
  y = y2px(y);\
- var canvas;\
- var ctx;\
- suitable_canvases = [4,5,1,0];\
- var c_id;var found = -1;\
- for( var p = 0 ; p < 5; p++ ){\
-  c_id = suitable_canvases[p];\
-  if( document.getElementById(\"wims_canvas%d\"+c_id) ){\
-   canvas = document.getElementById(\"wims_canvas%d\"+c_id);\
-   found = c_id;\
-   break;\
-  };\
- };\
- if( found == -1 ){alert(\"Something is very wrong...\\nNo suitable canvas found for filling operation!!\");return;}\
- ctx = canvas.getContext(\"2d\");ctx.save();\
+ var canvas = document.getElementById(\"wims_canvas%d\"+4);\
+ var ctx = canvas.getContext(\"2d\");ctx.save();\
  var image = ctx.getImageData(0, 0, xsize, ysize);\
  var imageData = image.data;\
  var pixelStack = [[x, y]];\
@@ -2373,10 +2360,10 @@ filltoborder = function(x,y,bordercolor,color){\
   imageData[pixelPos+3] = color.a;\
  };\
  function _comparePixel(px2){\
-  return (px1.r === px2.r && px1.g === px2.g && px1.b === px2.b && px1.a === px2.a);\
+  return (px1.r === px2.r && px1.g === px2.g && px1.b === px2.b);\
  };\
  function _checkBorder(px2){\
-  return (bordercolor.r === px2.r && bordercolor.g === px2.g && bordercolor.b === px2.b && bordercolor.a === px2.a);\
+  return (bordercolor.r === px2.r && bordercolor.g === px2.g && bordercolor.b === px2.b);\
  };\
  px1 = _getPixel(((y * xsize) + x) * 4);\
  bordercolor = {\
@@ -2394,20 +2381,21 @@ filltoborder = function(x,y,bordercolor,color){\
  if( _comparePixel(color) ) { return true; }\
  while (pixelStack.length) {\
   newPos = pixelStack.pop();\
-  pixelPos = (newPos[1]*xsize + newPos[0]) * 4;\
-  while(newPos[1]-- >= 0 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
+  x = newPos[0];y = newPos[1];\
+  pixelPos = (y*xsize + x) * 4;\
+  while(y-- >= 0 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
    pixelPos -= xsize * 4;\
   }\
   pixelPos += xsize * 4;\
-  ++newPos[1];\
+  ++y;\
   found_left_border = false;\
   found_right_border = false;\
-  while( newPos[1]++ < ysize-1 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
+  while( y++ < ysize-1 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
    _setPixel(pixelPos);\
-   if( newPos[0] > 0 ){\
+   if( x > 0 ){\
     if( _comparePixel(_getPixel(pixelPos - 4)) ){\
     if( !found_left_border ){\
-     pixelStack.push( [newPos[0] - 1, newPos[1]] );\
+     pixelStack.push( [x - 1, y] );\
      found_left_border = true;\
     }\
    }\
@@ -2415,10 +2403,10 @@ filltoborder = function(x,y,bordercolor,color){\
      found_left_border = false;\
     }\
    }\
-   if( newPos[0] < xsize-1 ){\
+   if( x < xsize-1 ){\
     if( _comparePixel(_getPixel(pixelPos + 4)) ){\
      if( !found_right_border){\
-      pixelStack.push( [newPos[0] + 1, newPos[1]] );\
+      pixelStack.push( [x + 1, y] );\
       found_right_border = true;\
      }\
     }\
@@ -2429,97 +2417,94 @@ filltoborder = function(x,y,bordercolor,color){\
    pixelPos += xsize * 4;\
   }\
  }\
- var _canvas = create_canvas%d(filltoborder_cnt,xsize,ysize);\
- filltoborder_cnt++;\
- var _ctx = _canvas.getContext(\"2d\");\
- _ctx.putImageData(image, 0, 0);\
+ ctx.putImageData(image, 0, 0);\
  ctx.restore();\
-};",canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id);
 
 }
 void add_js_floodfill(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command floodfill -->\n\
-floodfill = function(interaction,xs,ys,color){\n\
- var canvas = document.getElementById(\"wims_canvas%d%d\");\n\
- if( ! canvas ){ return; };\n\
+floodfill = function(interaction,xs,ys,color){\
+ var canvas = document.getElementById(\"wims_canvas%d%d\");\
+ if( ! canvas ){ return; };\
  var ctx = canvas.getContext(\"2d\");\
- ctx.save();\n\
- if(interaction == 1 ){\n\
-  if( ys > ysize - 15){return;}\n\
- }\n\
- else\n\
- {\n\
-  xs = x2px(xs);\n\
-  ys = y2px(ys);\n\
- };\n\
- var image = ctx.getImageData(0, 0, xsize, ysize);\n\
- var imageData = image.data;\n\
- var pixelStack = [[xs, ys]];\n\
- var px1;\n\
- var newPos;\n\
- var pixelPos;\n\
- var found_left_border;\n\
- var found_right_border;\n\
- function _getPixel(pixelPos){\n\
-  return {r:imageData[pixelPos], g:imageData[pixelPos+1], b:imageData[pixelPos+2], a:imageData[pixelPos+3]};\n\
- };\n\
- function _setPixel(pixelPos){\n\
-  imageData[pixelPos] = color.r;\n\
-  imageData[pixelPos+1] = color.g;\n\
-  imageData[pixelPos+2] = color.b;\n\
-  imageData[pixelPos+3] = color.a;\n\
- };\n\
- function _comparePixel(px2){\n\
-  return (px1.r === px2.r && px1.g === px2.g && px1.b === px2.b && px1.a === px2.a);\n\
- };\n\
- px1 = _getPixel(((ys * xsize) + xs) * 4);\n\
- color = {\n\
-  r: parseInt(color[0], 10),\n\
-  g: parseInt(color[1], 10),\n\
-  b: parseInt(color[2], 10),\n\
-  a: parseInt(color[3] || 255, 10)\n\
- };\n\
- if( _comparePixel(color) ) { return true; }\n\
- while (pixelStack.length) {\n\
-  newPos = pixelStack.pop();\n\
-  xs = newPos[0];ys = newPos[1];\n\
-  pixelPos = (ys*xsize + xs) * 4;\n\
-  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos))){\n\
-   pixelPos -= xsize * 4;\n\
-  }\n\
-  pixelPos += xsize * 4;\n\
-  ++ys;\n\
-  found_left_border = false;\n\
-  found_right_border = false;\n\
-  while( ys++ < ysize-1 && _comparePixel(_getPixel(pixelPos)) ){\n\
-   _setPixel(pixelPos);\n\
-   if( xs > 0 ){\n\
-    if( _comparePixel(_getPixel(pixelPos - 4)) ){\n\
-    if( !found_left_border ){\n\
-     pixelStack.push( [xs - 1, ys] );\n\
-     found_left_border = true;\n\
-    }\n\
-   }\n\
-   else if( found_left_border ){\n\
-     found_left_border = false;\n\
-    }\n\
-   }\n\
-   if( xs < xsize-1 ){\n\
-    if( _comparePixel(_getPixel(pixelPos + 4)) ){\n\
-     if( !found_right_border){\n\
-      pixelStack.push( [xs + 1, ys] );\n\
-      found_right_border = true;\n\
-     }\n\
-    }\n\
-    else if(found_right_border){\n\
-      found_right_border = false;\n\
-     }\n\
-    }\n\
-   pixelPos += xsize * 4;\n\
-  }\n\
- };\n\
- ctx.putImageData(image, 0, 0);\n\
- ctx.restore();\n\
+ ctx.save();\
+ if(interaction == 1 ){\
+  if( ys > ysize - 15){return;}\
+ }\
+ else\
+ {\
+  xs = x2px(xs);\
+  ys = y2px(ys);\
+ };\
+ var image = ctx.getImageData(0, 0, xsize, ysize);\
+ var imageData = image.data;\
+ var pixelStack = [[xs, ys]];\
+ var px1;\
+ var newPos;\
+ var pixelPos;\
+ var found_left_border;\
+ var found_right_border;\
+ function _getPixel(pixelPos){\
+  return {r:imageData[pixelPos], g:imageData[pixelPos+1], b:imageData[pixelPos+2], a:imageData[pixelPos+3]};\
+ };\
+ function _setPixel(pixelPos){\
+  imageData[pixelPos] = color.r;\
+  imageData[pixelPos+1] = color.g;\
+  imageData[pixelPos+2] = color.b;\
+  imageData[pixelPos+3] = color.a;\
+ };\
+ function _comparePixel(px2){\
+  return (px1.r === px2.r && px1.g === px2.g && px1.b === px2.b && px1.a === px2.a);\
+ };\
+ px1 = _getPixel(((ys * xsize) + xs) * 4);\
+ color = {\
+  r: parseInt(color[0], 10),\
+  g: parseInt(color[1], 10),\
+  b: parseInt(color[2], 10),\
+  a: parseInt(color[3] || 255, 10)\
+ };\
+ if( _comparePixel(color) ) { return true; }\
+ while (pixelStack.length) {\
+  newPos = pixelStack.pop();\
+  xs = newPos[0];ys = newPos[1];\
+  pixelPos = (ys*xsize + xs) * 4;\
+  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos))){\
+   pixelPos -= xsize * 4;\
+  }\
+  pixelPos += xsize * 4;\
+  ++ys;\
+  found_left_border = false;\
+  found_right_border = false;\
+  while( ys++ < ysize-1 && _comparePixel(_getPixel(pixelPos)) ){\
+   _setPixel(pixelPos);\
+   if( xs > 0 ){\
+    if( _comparePixel(_getPixel(pixelPos - 4)) ){\
+    if( !found_left_border ){\
+     pixelStack.push( [xs - 1, ys] );\
+     found_left_border = true;\
+    }\
+   }\
+   else if( found_left_border ){\
+     found_left_border = false;\
+    }\
+   }\
+   if( xs < xsize-1 ){\
+    if( _comparePixel(_getPixel(pixelPos + 4)) ){\
+     if( !found_right_border){\
+      pixelStack.push( [xs + 1, ys] );\
+      found_right_border = true;\
+     }\
+    }\
+    else if(found_right_border){\
+      found_right_border = false;\
+     }\
+    }\
+   pixelPos += xsize * 4;\
+  }\
+ };\
+ ctx.putImageData(image, 0, 0);\
+ ctx.restore();\
 };",canvas_root_id,DRAG_CANVAS);
 
 }

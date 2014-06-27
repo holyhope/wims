@@ -2380,9 +2380,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 			   }
 			   decimals = find_number_of_digits(precision);
 			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
-			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},5000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},5000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
@@ -5079,8 +5079,8 @@ if(ystep < 20){z_y=parseFloat(20/ystep);ystep = 20;};\
 var x2step = xstep / xminor;\
 var y2step = ystep / yminor;\
 var zero_x;var zero_y;var f_x;var f_y;\
-if(xmin < 0 ){zero_x = x2px(0);f_x = 1;}else{zero_x = x2px(xmin);f_x = -1;}\
-if(ymin < 0 ){zero_y = y2px(0);f_y = 1;}else{zero_y = y2px(ymin);f_y = -1;}\
+if(xmin < 0 ){zero_x = x2px(0);f_x = -1;}else{zero_x = x2px(xmin);f_x = 1;}\
+if(ymin < 0 ){zero_y = y2px(0);f_y = -1;}else{zero_y = y2px(ymin);f_y = 1;}\
 ctx.beginPath();\
 ctx.lineWidth = line_width;\
 ctx.strokeStyle = stroke_color;\
@@ -5202,9 +5202,10 @@ if( use_axis == 1 ){\
   }\
   else\
   {\
-   corr=0;skip = 1;cnt = px2x(zero_x);\
+   skip = 1;cnt = px2x(zero_x);\
    prec = Math.log(precision)/(Math.log(10));\
-   var y_basis = parseInt(zero_y+(1.4*f_x*font_size));\
+   var y_basis;\
+   if(f_y == 1){ y_basis = ysize }else{ y_basis = zero_y + 1.4*font_size;};\
    for( var p = zero_x ; p < xsize ; p = p+xstep){\
     if(skip == 0 ){\
       disp_cnt = (z_x*cnt).toFixed(prec);\
@@ -5246,34 +5247,36 @@ if( use_axis == 1 ){\
   }\
   else\
   {\
-   corr = 0;cnt = px2y(zero_y);skip = 1;\
+   if(f_x == 1){ corr = tics_length; }\
+   cnt = px2y(zero_y);skip = 1;\
    for( var p = zero_y ; p < ysize ; p = p+ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
      disp_cnt = (z_y*cnt).toFixed(prec);\
-     if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
-     ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
+     if(f_x == -1 ){ corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
+     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
     }\
     else\
     {\
      skip--;\
     };\
     cnt = cnt - ymajor;\
-   }\
+   };\
    corr = 0;cnt = px2y(zero_y);skip = 1;\
+   if(f_x == 1){ corr = tics_length; }\
    for( var p = zero_y ; p > 0 ; p = p-ystep){\
     if(skip == 0 ){\
      skip = parseInt(1.4*font_size/ystep);\
      disp_cnt = (z_y*cnt).toFixed(prec);\
-     if(f_y == 1){corr = 2 + tics_length + ctx.measureText(disp_cnt).width;}\
-     ctx.fillText(disp_cnt,parseInt(zero_x - corr),parseInt(p+(0.4*font_size)));\
+     if(f_x == -1 ){corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
+     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
     }\
     else\
     {\
      skip--;\
     };\
     cnt = cnt + ymajor;\
-   }\
+   };\
   };\
  };\
  ctx.strokeStyle = stroke_color;\
@@ -5381,7 +5384,7 @@ return;\
     break;
     
     case DRAW_PIECHART:
-fprintf(js_include_file,"\n<!-- draw piechars -->\n\
+fprintf(js_include_file,"\n<!-- draw piecharts -->\n\
 function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fill_opacity,legend_cnt,font_family){\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
