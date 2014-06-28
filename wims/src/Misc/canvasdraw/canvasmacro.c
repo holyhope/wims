@@ -700,7 +700,7 @@ function user_draw(evt){\
  }\
  else\
  {\
-  userdraw_x = [];userdraw_y = [];context_userdraw.clearRect(0,0,xsize,ysize);return;\  
+  userdraw_x = [];userdraw_y = [];context_userdraw.clearRect(0,0,xsize,ysize);return;\
  };\
 };\
 function user_drag(evt){ return evt; };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);

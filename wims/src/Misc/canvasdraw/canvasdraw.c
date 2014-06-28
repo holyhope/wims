@@ -211,10 +211,10 @@ var precision = 100;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
-function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
-function px2x(px){if(use_xlogscale == 0 ){return px*(xmax - xmin)/xsize + xmin;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
-function px2y(py){if(use_ylogscale == 0 ){return ymax - py*(ymax - ymin)/ysize;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
-function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
+function x2px(x){if(use_xlogscale == 0 ){return parseFloat(x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin));}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
+function px2x(px){if(use_xlogscale == 0 ){return parseFloat(px*(xmax - xmin)/xsize + xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
+function px2y(py){if(use_ylogscale == 0 ){return parseFloat(ymax - py*(ymax - ymin)/ysize);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
+function y2px(y){if(use_ylogscale == 0){return parseFloat(-1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin));}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
 function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
 function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
@@ -5066,9 +5066,6 @@ ctx.font = font_family;\
 var barcolor = new Array();\
 var xstep = xsize*xmajor/(xmax - xmin);\
 var ystep = ysize*ymajor/(ymax - ymin);\
-var z_x=1;var z_y=1;\
-if(xstep < 20){z_x=parseFloat(20/xstep);xstep = 20;};\
-if(ystep < 20){z_y=parseFloat(20/ystep);ystep = 20;};\
 var x2step = xstep / xminor;\
 var y2step = ystep / yminor;\
 var zero_x;var zero_y;var f_x;var f_y;\
@@ -5276,7 +5273,7 @@ if( use_axis_numbering == 1 ){\
   var y_basis;if(f_y == 1){ y_basis = ysize }else{ y_basis = zero_y + 1.4*font_size;};\
   for( var p = zero_x ; p < xsize ; p = p+xstep){\
    if(skip == 0 ){\
-    disp_cnt = (z_x*cnt).toFixed(prec);\
+    disp_cnt = cnt.toFixed(prec);\
     corr = ctx.measureText(disp_cnt).width;\
     skip = parseInt(1.2*corr/xstep);\
     ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
@@ -5290,7 +5287,7 @@ if( use_axis_numbering == 1 ){\
   cnt = px2x(zero_x);skip = 1;\
   for( var p = zero_x ; p > 0 ; p = p-xstep){\
    if(skip == 0 ){\
-    disp_cnt = (z_x*cnt).toFixed(prec);\
+    disp_cnt = cnt.toFixed(prec);\
     corr = ctx.measureText(disp_cnt).width;\
     skip = parseInt(1.2*corr/xstep);\
     ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
@@ -5320,7 +5317,7 @@ if( use_axis_numbering == 1 ){\
   for( var p = zero_y ; p < ysize ; p = p+ystep){\
    if(skip == 0 ){\
     skip = parseInt(1.4*font_size/ystep);\
-    disp_cnt = (z_y*cnt).toFixed(prec);\
+    disp_cnt = cnt.toFixed(prec);\
     if(f_x == -1 ){ corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
    }\
@@ -5335,7 +5332,7 @@ if( use_axis_numbering == 1 ){\
   for( var p = zero_y ; p > 0 ; p = p-ystep){\
    if(skip == 0 ){\
     skip = parseInt(1.4*font_size/ystep);\
-    disp_cnt = (z_y*cnt).toFixed(prec);\
+    disp_cnt = cnt.toFixed(prec);\
     if(f_x == -1 ){corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
    }\
