@@ -116,6 +116,7 @@ int main(int argc, char *argv[]){
     int click_cnt = 1;
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
+    int barchart_cnt = 0; /* identifier for command 'barchart' ; multiple charts may be plotted in a single plot*/
     int legend_cnt = -1; /* to allow multiple legends to be used, for multiple piecharts etc  */
     double angle = 0.0;
     int translate_x = 0;
@@ -929,7 +930,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
@@ -1139,6 +1140,30 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
+	    if( strcmp(draw_type,"hline") == 0 ){
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_hlines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"hlines") == 0 ){
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_hlines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"vline") == 0 ){
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_hlines(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
+	    if( strcmp(draw_type,"vlines") == 0 ){
+		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_hlines(js_include_file,4,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	    }
+	    else
 	    if( strcmp(draw_type,"line") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
@@ -2572,12 +2597,29 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ use command 'legend' to provide an optional legend in right-top-corner
 	@ also see command 'piechart'
 	@ multiple linegraphs may be used in a single plot
+	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	@ <ul><li>use command 'strokecolor' before command 'linegraph' to set the color of this graph</li><li>use command 'linewidth' before command 'linegraph' to set linewidth of this graph</li><li>use command 'dashed' before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command 'dashtype' before command 'linegraph' to set the type of dashing of the graph</li></ul>
 	*/    
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
 	    fprintf(js_include_file,"var linegraph_%d = [\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%s\"];",linegraph_cnt,stroke_color,line_width,use_dashed,dashtype[0],dashtype[1],temp);
 	    linegraph_cnt++;
+	    reset();
+	    break;
+	case BARCHART:
+	/*
+	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
+	@ will be used to create a legend for bar graph
+	@ may only to be used together with command 'grid'
+	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+	@ use command 'legend' to provide an optional legend in right-top-corner
+	@ also see command 'piechart'
+	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
+	    fprintf(js_include_file,"var barchart_%d = [\"%s\"];",barchart_cnt,temp);
+	    barchart_cnt++;
 	    reset();
 	    break;
 	case CLOCK:
@@ -2650,20 +2692,6 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		default:break;
 	     }
 	    }
-	    break;
-	case BARCHART:
-	/*
-	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
-	@ will be used to create a legend for bar graph
-	@ may only to be used together with command 'grid'
-	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
-	@ use command 'legend' to provide an optional legend in right-top-corner
-	@ also see command 'piechart'	
-	*/
-	    temp = get_string(infile,1);
-	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
-	    fprintf(js_include_file,"var barchart%d = [\"%s\"];",canvas_root_id,temp);
-	    reset();
 	    break;
 	case PIECHART:
 	/*
@@ -5104,28 +5132,34 @@ if( typeof linegraph_0 !== 'undefined' ){\
  };\
  ctx.restore();\
 };\
-if( typeof barchart%d  !== 'undefined' ){\
+if( typeof barchart_0  !== 'undefined' ){\
  ctx.save();\
- var bar_x = new Array();\
- var bar_y = new Array();\
- var lb = barchart%d.length;\
- var idx = 0;\
- for( var p = 0 ; p < lb ; p = p + 3 ){\
-  bar_x[idx] = x2px(barchart%d[p]);\
-  bar_y[idx] = y2px(barchart%d[p+1]);\
-  barcolor[idx] = barchart%d[p+2];\
-  idx++;\
- };\
- var dx = parseInt(0.6*xstep);\
- ctx.globalAlpha = fill_opacity;\
- for( var p = 0; p < idx ; p++ ){\
-  ctx.beginPath();\
-  ctx.strokeStyle = barcolor[p];\
-  ctx.fillStyle = barcolor[p];\
-  ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
-  ctx.fill();\
-  ctx.stroke();\
-  ctx.closePath();\
+ var i = 0;\
+ var bar_name = eval('barchart_'+i);\
+ while ( typeof bar_name !== 'undefined' ){\
+  var bar_x = new Array();\
+  var bar_y = new Array();\
+  var lb = bar_name.length;\
+  var idx = 0;\
+  for( var p = 0 ; p < lb ; p = p + 3 ){\
+   bar_x[idx] = x2px(bar_name[p]);\
+   bar_y[idx] = y2px(bar_name[p+1]);\
+   barcolor[idx] = bar_name[p+2];\
+   idx++;\
+  };\
+  var dx = parseInt(0.25*xstep);\
+  ctx.globalAlpha = fill_opacity;\
+  for( var p = 0; p < idx ; p++ ){\
+   ctx.beginPath();\
+   ctx.strokeStyle = barcolor[p];\
+   ctx.fillStyle = barcolor[p];\
+   ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
+   ctx.fill();\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+  i++;\
+  try{ bar_name = eval('barchart_'+i); }catch(e){ break; }\
  };\
  ctx.restore();\
 };\
@@ -5346,7 +5380,7 @@ if( typeof legend0  !== 'undefined' ){\
  ctx.restore();\
 };\
 return;\
-};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+};",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     
     case DRAW_PIECHART:

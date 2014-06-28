@@ -23,6 +23,7 @@ void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_widt
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
+void add_js_hlines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,int type, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head);
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity);
 void add_js_paths(FILE *js_include_file,int num,char *draw_type,int line_width, int closed_path,char *stroke_color,double stroke_opacity,int use_filled, char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -659,6 +660,53 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
+/* 
+num=1 single horizontal line 
+num=2 multiple horizontal lines
+num=3 single vertical line
+num=4 multiple vertical lines
+*/
+void add_js_hlines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
+var canvas_rect;\
+var num = %d;\
+var line_width = %d;\
+var stroke_color = \"%s\";\
+var stroke_opacity = %f;\
+var use_dashed = %d;\
+var dashtype0 = %d;\
+var dashtype1 = %d;\
+var x0,y0;\
+function user_draw(evt){\
+ if( evt.which == 1 ){\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var y = evt.clientY - canvas_rect.top;\
+  var x = evt.clientX - canvas_rect.left;\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+  var lu = userdraw_x.length;\
+  switch(num){\
+   case 1: userdraw_x[0] = x;userdraw_x[1] = xmax;userdraw_y[0] = y; userdraw_y[1] = y;break;\
+   case 2: userdraw_x[lu] = x;userdraw_x[lu+1] = xmax;userdraw_y[lu] = y;userdraw_y[lu+1] = y;break;\
+   case 3: userdraw_x[0] = x;userdraw_x[1] = x;userdraw_y[0] = y; userdraw_y[1] = ymax;break;\
+   case 4: userdraw_x[lu] = x;userdraw_x[lu+1] = x;userdraw_y[lu] = y;userdraw_y[lu+1] = ymax;break;\
+  };\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ }\
+ else\
+ {\
+  userdraw_x = [];userdraw_y = [];context_userdraw.clearRect(0,0,xsize,ysize);return;\  
+ };\
+};\
+function user_drag(evt){ return evt; };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
+}
+
+
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var canvas_rect;\
@@ -696,13 +744,13 @@ function user_draw(evt){\
    {\
     if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
     draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-   }\
+   };\
   }\
   else\
   {\
    canvas_remove(x,y);\
-  }\
- }\
+  };\
+ };\
 };\
 function user_drag(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
