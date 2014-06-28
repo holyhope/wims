@@ -42,11 +42,39 @@ void add_input_xy(FILE *js_include_file, int canvas_root_id);
 void add_input_xyr(FILE *js_include_file, int canvas_root_id);
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
-
+void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
 
 /* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 /* ............. */
+
+
+
+void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
+fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
+draw_zoom_buttons = function(){\
+ var obj;var canvas_type =%d;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.font =\"18px Ariel\";\
+ ctx.textAlign = \"right\";\
+ ctx.fillStyle=\"rgba(\"+%s+\",\"+%f+\")\";\
+ ctx.fillText(\"+\",xsize,ysize);\
+ ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
+ ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
+ ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
+ ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
+ ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
+ ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
+ ctx.stroke();\
+};\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);    
+}
  
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\

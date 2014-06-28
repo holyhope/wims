@@ -211,8 +211,8 @@ var canvas_div = document.getElementById(\"canvas_div%d\");\
 create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
 function x2px(x){if(use_xlogscale == 0 ){return x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
-function px2x(px){if(use_xlogscale == 0 ){return (Math.round((px*(xmax - xmin)/xsize + xmin)*precision))/precision;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
-function px2y(py){if(use_ylogscale == 0 ){return (Math.round((ymax -py*(ymax - ymin)/ysize)*precision))/precision;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
+function px2x(px){if(use_xlogscale == 0 ){return px*(xmax - xmin)/xsize + xmin;}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
+function px2y(py){if(use_ylogscale == 0 ){return ymax - py*(ymax - ymin)/ysize;}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
 function y2px(y){if(use_ylogscale == 0){return -1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
 function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
 function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
@@ -1724,7 +1724,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    }
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
 		    /* set snap_x snap_y values in pixels */
-		    fprintf(js_include_file,"snap_x = %f;snap_y = %f\n;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
+		    fprintf(js_include_file,"snap_x = %f;snap_y = %f;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
 /* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
 
 		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
@@ -2089,18 +2089,15 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
 	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
 	 @ command 'opacity' may be used to set stroke_opacity of 'buttons 
+	 @ NOTE: use command 'zoom' at the end of your script code (the same is true for commanmd 'mouse') 
 	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
 	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    fprintf(js_include_file,"use_pan_and_zoom = 1;");
 	    use_pan_and_zoom = TRUE;
-	    if( js_function[DRAW_ZOOM_BUTTONS] != 1 ){ js_function[DRAW_ZOOM_BUTTONS] = 1;}
-	    /* we use BG_CANVAS (0) */
 	    stroke_color = get_color(infile,1);
-	    string_length = snprintf(NULL,0," draw_zoom_buttons(%d,\"%s\",%f);",BG_CANVAS,stroke_color,stroke_opacity);
-	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    snprintf(tmp_buffer,MAX_BUFFER-1,"draw_zoom_buttons(%d,\"%s\",%f);",BG_CANVAS,stroke_color,stroke_opacity);
-	    add_to_buffer(tmp_buffer);
+	    /* we use BG_CANVAS (0) */
+	    add_zoom_buttons(js_include_file,canvas_root_id,stroke_color,stroke_opacity);
 	    done = TRUE;
 	    break;
 	case ONCLICK:
@@ -2151,6 +2148,8 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	/*
 	 @ mouse color,fontsize
 	 @ will display the cursor coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
+
 	*/
 	    stroke_color = get_color(infile,0);
 	    font_size = (int) (get_real(infile,1));
@@ -4262,33 +4261,6 @@ draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,dragg
  };\
 };",canvas_root_id);    
     break;
-    
-    case DRAW_ZOOM_BUTTONS: /* 6 rectangles 15x15 px  forbidden zone for drawing : y < ysize - 15*/
-fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
-draw_zoom_buttons = function(canvas_type,color,opacity){\
- var obj;\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
- }\
- else\
- {\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\
- };\
- var ctx = obj.getContext(\"2d\");\
- ctx.font =\"18px Ariel\";\
- ctx.textAlign = \"right\";\
- ctx.fillStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
- ctx.fillText(\"+\",xsize,ysize);\
- ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
- ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
- ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
- ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
- ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
- ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
- ctx.stroke();\
-};",canvas_root_id,canvas_root_id,canvas_root_id);
-    
-    break;
     case DRAW_GRIDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw gridfill -->\n\
 draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize){\
@@ -5053,16 +5025,8 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
     case DRAW_GRID:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw grid -->\n\
 draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
-var obj;\
-if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
- obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
-}\
-else\
-{\
- obj = create_canvas%d(canvas_type,xsize,ysize);\
-};\
-var ctx = obj.getContext(\"2d\");\
-ctx.clearRect(0,0,xsize,ysize);\
+var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{obj = create_canvas%d(canvas_type,xsize,ysize);};\
+var ctx = obj.getContext(\"2d\");ctx.clearRect(0,0,xsize,ysize);\
 if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
 ctx.save();\
 if( use_translate == 1 ){ctx.translate(vector[0],vector[1]);};\
@@ -5071,6 +5035,7 @@ var stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
 ctx.fillStyle = \"rgba(\"+font_color+\",\"+1.0+\")\";\
 var axis_color = \"rgba(\"+axis_color+\",\"+stroke_opacity+\")\";\
 ctx.font = font_family;\
+var barcolor = new Array();\
 var xstep = xsize*xmajor/(xmax - xmin);\
 var ystep = ysize*ymajor/(ymax - ymin);\
 var z_x=1;var z_y=1;\
@@ -5100,6 +5065,70 @@ for(var p = zero_y ; p > 0; p = p - ystep){\
  ctx.moveTo(0,p);\
  ctx.lineTo(xsize,p);\
 };\
+if( typeof linegraph_0 !== 'undefined' ){\
+ ctx.save();\
+ ctx.globalAlpha = 1.0;\
+ var i = 0;\
+ var line_name = eval('linegraph_'+i);\
+ while ( typeof line_name !== 'undefined' ){\
+  ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
+  ctx.lineWidth = parseInt(line_name[1]);\
+  if(line_name[2] == \"1\"){\
+   var d1 = parseInt(line_name[3]);\
+   var d2 = parseInt(line_name[4]);\
+   if(ctx.setLineDash){ ctx.setLineDash([d1,d2]); } else { ctx.mozDash = [d1,d2];};\
+  }\
+  else\
+  {\
+  if(ctx.setLineDash){ctx.setLineDash = null;}\
+  if(ctx.mozDash){ctx.mozDash = null;}\
+  };\
+  var data_x = new Array();\
+  var data_y = new Array();\
+  var lb = line_name.length;\
+  var idx = 0;\
+  for( var p = 5 ; p < lb ; p = p + 2 ){\
+   data_x[idx] = x2px(line_name[p]);\
+   data_y[idx] = y2px(line_name[p+1]);\
+   idx++;\
+  };\
+  for( var p = 0; p < idx ; p++){\
+   ctx.beginPath();\
+   ctx.moveTo(data_x[p],data_y[p]);\
+   ctx.lineTo(data_x[p+1],data_y[p+1]);\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+  i++;\
+  try{ line_name = eval('linegraph_'+i); }catch(e){ break; }\
+ };\
+ ctx.restore();\
+};\
+if( typeof barchart%d  !== 'undefined' ){\
+ ctx.save();\
+ var bar_x = new Array();\
+ var bar_y = new Array();\
+ var lb = barchart%d.length;\
+ var idx = 0;\
+ for( var p = 0 ; p < lb ; p = p + 3 ){\
+  bar_x[idx] = x2px(barchart%d[p]);\
+  bar_y[idx] = y2px(barchart%d[p+1]);\
+  barcolor[idx] = barchart%d[p+2];\
+  idx++;\
+ };\
+ var dx = parseInt(0.6*xstep);\
+ ctx.globalAlpha = fill_opacity;\
+ for( var p = 0; p < idx ; p++ ){\
+  ctx.beginPath();\
+  ctx.strokeStyle = barcolor[p];\
+  ctx.fillStyle = barcolor[p];\
+  ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
+  ctx.fill();\
+  ctx.stroke();\
+  ctx.closePath();\
+ };\
+ ctx.restore();\
+};\
 if( typeof xaxislabel !== 'undefined' ){\
  ctx.save();\
  ctx.font = \"italic \"+font_size+\"px Ariel\";\
@@ -5110,7 +5139,7 @@ if( typeof xaxislabel !== 'undefined' ){\
 if( typeof yaxislabel !== 'undefined' ){\
  ctx.save();\
  ctx.font = \"italic \"+font_size+\"px Ariel\";\
- corr =  ctx.measureText(yaxislabel).width;\
+ var corr =  ctx.measureText(yaxislabel).width;\
  ctx.translate(zero_x+tics_length + font_size,corr+font_size);\
  ctx.rotate(-0.5*Math.PI);\
  ctx.fillText(yaxislabel,0,0);\
@@ -5119,6 +5148,7 @@ if( typeof yaxislabel !== 'undefined' ){\
 ctx.stroke();\
 ctx.closePath();\
 if( use_axis == 1 ){\
+ ctx.save();\
  ctx.beginPath();\
  ctx.strokeStyle = stroke_color;\
  ctx.lineWidth = 0.6*line_width;\
@@ -5185,174 +5215,108 @@ if( use_axis == 1 ){\
  };\
  ctx.stroke();\
  ctx.closePath();\
- if( use_axis_numbering == 1 ){\
-  var shift = zero_y+2*font_size;var flip=0;var skip=0;var corr;var cnt;var disp_cnt;var prec;\
-  if( x_strings != null ){\
-   var f = 1.4;\
-   var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
-   for(var p = 0 ; p < len ; p = p+2){\
-     var x_nums = x2px(eval(x_strings[p]));\
-     var x_text = x_strings[p+1];\
-     corr = ctx.measureText(x_text).width;\
-     skip = 1.2*corr/xstep;\
-     if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
-     if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
-     ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
+ ctx.restore();\
+};\
+if( use_axis_numbering == 1 ){\
+ ctx.save();\
+ ctx.fillColor = axis_color;\
+ ctx.font = font_family;\
+ var shift = zero_y+2*font_size;var flip=0;var skip=0;var corr;var cnt;var disp_cnt;var prec;\
+ if( x_strings != null ){\
+  var f = 1.4;\
+  var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
+  for(var p = 0 ; p < len ; p = p+2){\
+   var x_nums = x2px(eval(x_strings[p]));\
+   var x_text = x_strings[p+1];\
+   corr = ctx.measureText(x_text).width;\
+   skip = 1.2*corr/xstep;\
+   if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
+   if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
+   ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
+  };\
+ }\
+ else\
+ {\
+  skip = 1;cnt = px2x(zero_x);\
+  prec = Math.log(precision)/(Math.log(10));\
+  var y_basis;if(f_y == 1){ y_basis = ysize }else{ y_basis = zero_y + 1.4*font_size;};\
+  for( var p = zero_x ; p < xsize ; p = p+xstep){\
+   if(skip == 0 ){\
+    disp_cnt = (z_x*cnt).toFixed(prec);\
+    corr = ctx.measureText(disp_cnt).width;\
+    skip = parseInt(1.2*corr/xstep);\
+    ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
    }\
-  }\
-  else\
-  {\
-   skip = 1;cnt = px2x(zero_x);\
-   prec = Math.log(precision)/(Math.log(10));\
-   var y_basis;\
-   if(f_y == 1){ y_basis = ysize }else{ y_basis = zero_y + 1.4*font_size;};\
-   for( var p = zero_x ; p < xsize ; p = p+xstep){\
-    if(skip == 0 ){\
-      disp_cnt = (z_x*cnt).toFixed(prec);\
-      corr = ctx.measureText(disp_cnt).width;\
-      skip = parseInt(1.2*corr/xstep);\
-      ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
-    }\
-    else\
-    {\
-     skip--;\
-    };\
-    cnt = cnt + xmajor;\
+   else\
+   {\
+    skip--;\
    };\
-   cnt = px2x(zero_x);skip = 1;\
-   for( var p = zero_x ; p > 0 ; p = p-xstep){\
-    if(skip == 0 ){\
-     disp_cnt = (z_x*cnt).toFixed(prec);\
-     corr = ctx.measureText(disp_cnt).width;\
-     skip = parseInt(1.2*corr/xstep);\
-     ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
-    }\
-    else\
-    {\
-     skip--;\
-    };\
-    cnt = cnt - xmajor;\
-   };\
+   cnt = cnt + xmajor;\
   };\
-  if( y_strings != null ){\
-   var len = y_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"yaxis number unpaired:  text missing ! \");return;};\
-   for(var p = 0 ; p < len ; p = p+2){\
-    var y_nums = y2px(eval(y_strings[p]));\
-    var y_text = y_strings[p+1];\
-    var f = 1.4;\
-    corr = 2 + tics_length + ctx.measureText(y_text).width;\
-    if( corr > zero_x){corr = parseInt(zero_x+2); }\
-    ctx.fillText(y_text,zero_x - corr,y_nums);\
+  cnt = px2x(zero_x);skip = 1;\
+  for( var p = zero_x ; p > 0 ; p = p-xstep){\
+   if(skip == 0 ){\
+    disp_cnt = (z_x*cnt).toFixed(prec);\
+    corr = ctx.measureText(disp_cnt).width;\
+    skip = parseInt(1.2*corr/xstep);\
+    ctx.fillText(disp_cnt,p-0.5*corr,y_basis);\
+   }\
+   else\
+   {\
+    skip--;\
    };\
-  }\
-  else\
-  {\
-   if(f_x == 1){ corr = tics_length; }\
-   cnt = px2y(zero_y);skip = 1;\
-   for( var p = zero_y ; p < ysize ; p = p+ystep){\
-    if(skip == 0 ){\
-     skip = parseInt(1.4*font_size/ystep);\
-     disp_cnt = (z_y*cnt).toFixed(prec);\
-     if(f_x == -1 ){ corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
-     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
-    }\
-    else\
-    {\
-     skip--;\
-    };\
-    cnt = cnt - ymajor;\
-   };\
-   corr = 0;cnt = px2y(zero_y);skip = 1;\
-   if(f_x == 1){ corr = tics_length; }\
-   for( var p = zero_y ; p > 0 ; p = p-ystep){\
-    if(skip == 0 ){\
-     skip = parseInt(1.4*font_size/ystep);\
-     disp_cnt = (z_y*cnt).toFixed(prec);\
-     if(f_x == -1 ){corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
-     ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
-    }\
-    else\
-    {\
-     skip--;\
-    };\
-    cnt = cnt + ymajor;\
-   };\
+   cnt = cnt - xmajor;\
   };\
  };\
- ctx.strokeStyle = stroke_color;\
- ctx.lineWidth = 2;\
- ctx.beginPath();\
- ctx.rect(0,0,xsize,ysize);\
- ctx.closePath();\
+ if( y_strings != null ){\
+  var len = y_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"yaxis number unpaired:  text missing ! \");return;};\
+  for(var p = 0 ; p < len ; p = p+2){\
+   var y_nums = y2px(eval(y_strings[p]));\
+   var y_text = y_strings[p+1];\
+   var f = 1.4;\
+   corr = 2 + tics_length + ctx.measureText(y_text).width;\
+   if( corr > zero_x){corr = parseInt(zero_x+2); }\
+   ctx.fillText(y_text,zero_x - corr,y_nums);\
+  };\
+ }\
+ else\
+ {\
+  if(f_x == 1){ corr = tics_length; }\
+  cnt = px2y(zero_y);skip = 1;\
+  for( var p = zero_y ; p < ysize ; p = p+ystep){\
+   if(skip == 0 ){\
+    skip = parseInt(1.4*font_size/ystep);\
+    disp_cnt = (z_y*cnt).toFixed(prec);\
+    if(f_x == -1 ){ corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
+    ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
+   }\
+   else\
+   {\
+    skip--;\
+   };\
+   cnt = cnt - ymajor;\
+  };\
+  corr = 0;cnt = px2y(zero_y);skip = 1;\
+  if(f_x == 1){ corr = tics_length; }\
+  for( var p = zero_y ; p > 0 ; p = p-ystep){\
+   if(skip == 0 ){\
+    skip = parseInt(1.4*font_size/ystep);\
+    disp_cnt = (z_y*cnt).toFixed(prec);\
+    if(f_x == -1 ){corr = parseInt(zero_x - (2 + tics_length + ctx.measureText(disp_cnt).width));};\
+    ctx.fillText(disp_cnt,parseInt(corr),parseInt(p+(0.4*font_size)));\
+   }\
+   else\
+   {\
+    skip--;\
+   };\
+   cnt = cnt + ymajor;\
+  };\
+ };\
  ctx.stroke();\
-};\
-if( typeof linegraph_0 !== 'undefined' ){\
  ctx.restore();\
- ctx.save();\
- ctx.globalAlpha = 1.0;\
- var i = 0;\
- var line_name = eval('linegraph_'+i);\
- while ( typeof line_name !== 'undefined' ){\
-  ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
-  ctx.lineWidth = parseInt(line_name[1]);\
-  if(line_name[2] == \"1\"){\
-   var d1 = parseInt(line_name[3]);\
-   var d2 = parseInt(line_name[4]);\
-   if(ctx.setLineDash){ ctx.setLineDash([d1,d2]); } else { ctx.mozDash = [d1,d2];};\
-  }\
-  else\
-  {\
-  if(ctx.setLineDash){ctx.setLineDash = null;}\
-  if(ctx.mozDash){ctx.mozDash = null;}\
-  };\
-  var data_x = new Array();\
-  var data_y = new Array();\
-  var lb = line_name.length;\
-  var idx = 0;\
-  for( var p = 5 ; p < lb ; p = p + 2 ){\
-   data_x[idx] = x2px(line_name[p]);\
-   data_y[idx] = y2px(line_name[p+1]);\
-   idx++;\
-  };\
-  for( var p = 0; p < idx ; p++){\
-   ctx.beginPath();\
-   ctx.moveTo(data_x[p],data_y[p]);\
-   ctx.lineTo(data_x[p+1],data_y[p+1]);\
-   ctx.stroke();\
-   ctx.closePath();\
-  };\
-  i++;\
-  try{ line_name = eval('linegraph_'+i); }catch(e){ break; }\
- };\
-};\
-var barcolor = new Array();\
-if( typeof barchart%d  !== 'undefined' ){\
- ctx.restore();\
- ctx.save();\
- ctx.globalAlpha = 1.0;\
- var bar_x = new Array();\
- var bar_y = new Array();\
- var lb = barchart%d.length;\
- var idx = 0;\
- for( var p = 0 ; p < lb ; p = p + 3 ){\
-  bar_x[idx] = x2px(barchart%d[p]);\
-  bar_y[idx] = y2px(barchart%d[p+1]);\
-  barcolor[idx] = barchart%d[p+2];\
-  idx++;\
- };\
- var dx = parseInt(0.6*xstep);\
- ctx.globalAlpha = fill_opacity;\
- for( var p = 0; p < idx ; p++ ){\
-  ctx.beginPath();\
-  ctx.strokeStyle = barcolor[p];\
-  ctx.fillStyle = barcolor[p];\
-  ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
-  ctx.fill();\
-  ctx.stroke();\
-  ctx.closePath();\
- };\
 };\
 if( typeof legend0  !== 'undefined' ){\
+ ctx.save();\
  ctx.globalAlpha = 1.0;\
  ctx.font = \"bold \"+font_size+\"px Ariel\";\
  var y_offset = 2*font_size;\
@@ -5363,7 +5327,9 @@ if( typeof legend0  !== 'undefined' ){\
   for(var p = 0 ; p < l_length ; p++){\
     barcolor[p] = legendcolors0[p];\
   };\
- }else{\
+ }\
+ else\
+ {\
   if( barcolor.length == 0 ){\
    for(var p = 0 ; p < l_length ; p++){\
     barcolor[p] = stroke_color;\
@@ -5377,8 +5343,8 @@ if( typeof legend0  !== 'undefined' ){\
   ctx.fillText(legend0[p],x_offset - txt_size, y_offset);\
   y_offset = parseInt(y_offset + 1.5*font_size);\
  };\
+ ctx.restore();\
 };\
-ctx.restore();\
 return;\
 };",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
