@@ -39,6 +39,7 @@ symtext,Texte,outil avancé d'identification de textes\
 units,Nombre avec unité, pour la physique\
 vector,Vecteur,comparaison numérique des composantes\
 wlist,Liste de mots,\
+time,Mémoire
 
 
 !set namelist=Types de base,Types spécifiques ou avancés
@@ -48,7 +49,7 @@ wlist,Liste de mots,\
 
 Un exercice OEF peut accepter les réponses
 des utilisateurs de manière très variée. Outre le choix multiple ou la réponse libre,
-on trouve de nombreuses autres possibilités. 
+on trouve de nombreuses autres possibilités.
 La réponse donnée par l'utilisateur est analysée selon la nature du type.
 D'autre part, il est possible d'afficher des
 !href cmd=help&special_parm=feedback commentaires ciblés
@@ -58,7 +59,7 @@ avertir d'une erreur typique par exemple).
 <a id="freestyle"></a>
 Actuellement, jusqu'à $answerlim réponses simultanées peuvent être demandées dans
 un exercice sous l'implémentation actuelle. <p>
-La syntaxe est la suivante (les 3 derniers champs sont optionnels) : 
+La syntaxe est la suivante (les 3 derniers champs sont optionnels) :
 </p>
 <pre>
 \answer{Texte}{\reponse}{type=...}{option=...}{weight=...}
@@ -107,7 +108,7 @@ Chaque réponse peut prendre indépendamment l'un des types suivants.
 !read help/$lang/embedans.phtml
 
 <h3>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
-<a id="weight"></a> 
+<a id="weight"></a>
 Il permet d'imposer un poids aux questions posées.
 <p>
 Exemple :
@@ -116,9 +117,9 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
 <p>
-Le niveau de sévérité  sera aussi pris en compte lors du 
+Le niveau de sévérité  sera aussi pris en compte lors du
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
-par le niveau de sévérité. 
+par le niveau de sévérité.
 </p><p>
 Il est possible de mettre des variables dans <span class="tt wims_code_words">weight</span>
 dans la mesure où elles sont définies avant le <span class="tt wims_code_variable">\statement</span>.
@@ -133,9 +134,9 @@ Exemple :
 
 <h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  <a id="option"></a>
- Dans le cas de plusieurs options, elles sont séparées par des espaces. 
+ Dans le cas de plusieurs options, elles sont séparées par des espaces.
  Par exemple, <span class="tt wims_code_words">option=default noanalyzeprint</span>
- 
+
 Les options possibles à la suite d'une instruction <span class="tt wims_code_variable">\answer</span>
 ou <span class="tt wims_code_variable">\condition</span> sont
 <ul>
@@ -146,7 +147,7 @@ qui remplace.
 <li>
 <span class="tt wims_code_words">option=split</span> : Dans le cas d'une réponse dont
 le type est <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> ou <span class="tt wims_code_words">mark</span>, la notation
-tient compte des réponses justes, même si elles ne le sont pas toutes. 
+tient compte des réponses justes, même si elles ne le sont pas toutes.
 </li>
 <li>
 <span class="tt wims_code_words">option=nonstop</span> : Dans le cas d'un exercice à étapes, les questions
@@ -154,14 +155,14 @@ suivantes sont posées même en cas de réponses fausses.
 </li>
 <li>
 <span class="tt wims_code_words">option=noanalyzeprint</span> : Le texte automatique d'analyse de réponses n'est
-pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable.
 Cela est utile dans certains types comme le type <span class="tt wims_code_words">mark</span> où le texte automatique
-est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée.
 Seul le score subsiste.
 </li><li>
-A la suite d'une instruction <span class="tt wims_code_words">condition</span>, 
+A la suite d'une instruction <span class="tt wims_code_words">condition</span>,
 <span class="tt wims_code_words">option=hide</span> : La condition sera utilisée pour l'analyse
-de la réponse mais ne sera pas  affichée. 
+de la réponse mais ne sera pas  affichée.
 </li>
 </ul>
 D'autres options sont utilisables dans des types particuliers de réponses.
@@ -177,7 +178,7 @@ auparavant, la réponse à cette question sera stockée dans cette variable.
 Cette variable peut ensuite être utilisée pour implémenter des conditions de
 test. Le score de l'exercice est alors calculé selon le nombre de conditions
 de test qui sont satisfaites, au lieu du nombre de réponses qui coïncident
-avec les bonnes réponses. 
+avec les bonnes réponses.
 </p><p>
 Jusqu'à $condlim conditions simultanées peuvent être définies dans
 un exercice, sous l'implémentation actuelle. Seules les réponses numériques
@@ -200,7 +201,7 @@ $table_tr<td class="tt wims_code_words">\rep1>=0 and \rep1<=1</td>
 $table_tr<td class="tt wims_code_words">\rep1=1 or \rep1=3 or \rep1=5</td>
     <td>Bon si <span class="tt wims_code_words">rep1</span> est 1, 3 ou 5.</td></tr>
 $table_tr<td class="tt wims_code_words">(\rep1)*(\rep2)=6 and (\rep1)+(\rep2)=5</td>
-    <td>Bon si <span class="tt wims_code_words">rep1</span> et <span class="tt wims_code_words">rep2</span> sont les deux racines 
+    <td>Bon si <span class="tt wims_code_words">rep1</span> et <span class="tt wims_code_words">rep2</span> sont les deux racines
     du polynôme x<sup>2</sup>-5x+6.</td></tr>
 $table_tr<td class="tt wims_code_words">sin(\rep1)=0</td>
     <td>Bon si <span class="tt wims_code_words">rep1</span> est un multiple de $m_pi.</td></tr>
