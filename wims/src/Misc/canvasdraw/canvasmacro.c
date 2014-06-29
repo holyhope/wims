@@ -17,7 +17,7 @@ char *double_xy2js_array(double xy[],int len,int decimals);
 int find_number_of_digits(int i);
 int x2px(double x);
 int y2px(double y);
-void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity);
+void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type);
 void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_width, int radius , char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -1162,10 +1162,16 @@ function user_text(evt){\
 
 }
 
+/* 
 
-void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity){
+type = 0 : x-values only [command mousex]
+type = 1 : y-values only [command mousey]
+type = 2 : (x:y) 	 [command mouse]
+*/
+void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type){
 fprintf(js_include_file,"\n<!-- begin command mouse on current canvas -->\n\
 function use_mouse_coordinates(){\
+ var type = %d;\
  var current_canvas = create_canvas%d(%d,xsize,ysize);\
  var current_context = current_canvas.getContext(\"2d\");\
  current_context.clearRect(0,0,xsize,ysize);\
@@ -1176,14 +1182,20 @@ function use_mouse_coordinates(){\
   var canvas_rect = (current_canvas).getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   var y = evt.clientY - canvas_rect.top;\
-  var m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";\
+  var m_data;\
+  switch(type){\
+   case 0: m_data = \"x = \"+(px2x(x)).toFixed(prec);break;\
+   case 1: m_data = \"y = \"+(px2y(y)).toFixed(prec);break;\
+   case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
+   default:break;\
+  };\
   var s = parseInt(0.8*%d*(m_data.toString()).length);\
   current_context.font = \"%dpx Ariel\";\
   current_context.fillStyle = \"rgba(%s,%f)\";\
   current_context.clearRect(0,0,s,1.2*%d);\
   current_context.fillText(m_data,0,%d);\
  };\
-};",canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
+};",type,canvas_root_id,MOUSE_CANVAS,canvas_root_id,canvas_root_id,precision,canvas_root_id,font_size,font_size,stroke_color,stroke_opacity,font_size,font_size);
 }
 /* to avoid easy js-code injection...but is it a real problem ? */
 void add_safe_eval(FILE *js_include_file){

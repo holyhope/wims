@@ -142,6 +142,9 @@
 #define SETLIMITS	146
 #define JSCURVE		147
 #define CENTERSTRING	148
+#define MOUSEX		149
+#define MOUSEY		150
+
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

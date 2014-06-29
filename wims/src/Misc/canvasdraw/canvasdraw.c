@@ -2169,10 +2169,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ NOT IMPLEMETED -YET
 	*/
 	    break;
-	case MOUSE:
+	case MOUSEX:
 	/*
-	 @ mouse color,fontsize
-	 @ will display the cursor coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ mousex color,fontsize
+	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
 	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
 
 	*/
@@ -2180,7 +2180,33 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    font_size = (int) (get_real(infile,1));
 	    tmp_buffer = my_newmem(26);
 	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
-	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity);
+	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,0);
+	    break;
+	case MOUSEY:
+	/*
+	 @ mousey color,fontsize
+	 @ will display the cursor y-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
+
+	*/
+	    stroke_color = get_color(infile,0);
+	    font_size = (int) (get_real(infile,1));
+	    tmp_buffer = my_newmem(26);
+	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
+	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,1);
+	    break;
+	case MOUSE:
+	/*
+	 @ mouse color,fontsize
+	 @ will display the cursor (x:y) coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
+
+	*/
+	    stroke_color = get_color(infile,0);
+	    font_size = (int) (get_real(infile,1));
+	    tmp_buffer = my_newmem(26);
+	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
+	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,2);
 	    break;
 	case INTOOLTIP:
 	    /*
@@ -5129,37 +5155,6 @@ if( typeof linegraph_0 !== 'undefined' ){\
  };\
  ctx.restore();\
 };\
-if( typeof barchart_0  !== 'undefined' ){\
- ctx.save();\
- var i = 0;\
- var bar_name = eval('barchart_'+i);\
- while ( typeof bar_name !== 'undefined' ){\
-  var bar_x = new Array();\
-  var bar_y = new Array();\
-  var lb = bar_name.length;\
-  var idx = 0;\
-  for( var p = 0 ; p < lb ; p = p + 3 ){\
-   bar_x[idx] = x2px(bar_name[p]);\
-   bar_y[idx] = y2px(bar_name[p+1]);\
-   barcolor[idx] = bar_name[p+2];\
-   idx++;\
-  };\
-  var dx = parseInt(0.25*xstep);\
-  ctx.globalAlpha = fill_opacity;\
-  for( var p = 0; p < idx ; p++ ){\
-   ctx.beginPath();\
-   ctx.strokeStyle = barcolor[p];\
-   ctx.fillStyle = barcolor[p];\
-   ctx.rect(bar_x[p]-0.5*dx,bar_y[p],dx,zero_y - bar_y[p]);\
-   ctx.fill();\
-   ctx.stroke();\
-   ctx.closePath();\
-  };\
-  i++;\
-  try{ bar_name = eval('barchart_'+i); }catch(e){ break; }\
- };\
- ctx.restore();\
-};\
 if( typeof xaxislabel !== 'undefined' ){\
  ctx.save();\
  ctx.font = \"italic \"+font_size+\"px Ariel\";\
@@ -5312,7 +5307,7 @@ if( use_axis_numbering == 1 ){\
  }\
  else\
  {\
-  if(f_x == 1){ corr = tics_length; }\
+  if(f_x == 1){ corr = 1.5*tics_length; }\
   cnt = px2y(zero_y);skip = 1;\
   for( var p = zero_y ; p < ysize ; p = p+ystep){\
    if(skip == 0 ){\
@@ -5328,7 +5323,7 @@ if( use_axis_numbering == 1 ){\
    cnt = cnt - ymajor;\
   };\
   corr = 0;cnt = px2y(zero_y);skip = 1;\
-  if(f_x == 1){ corr = tics_length; }\
+  if(f_x == 1){ corr = 1.5*tics_length; }\
   for( var p = zero_y ; p > 0 ; p = p-ystep){\
    if(skip == 0 ){\
     skip = parseInt(1.4*font_size/ystep);\
@@ -5373,6 +5368,40 @@ if( typeof legend0  !== 'undefined' ){\
   txt_size = ctx.measureText(txt).width;\
   ctx.fillText(legend0[p],x_offset - txt_size, y_offset);\
   y_offset = parseInt(y_offset + 1.5*font_size);\
+ };\
+ ctx.restore();\
+};\
+if( typeof barchart_0  !== 'undefined' ){\
+ ctx.save();\
+ var num_barcharts = 0;\
+ var bar_name = eval('barchart_0');\
+ while( typeof bar_name !== 'undefined' ){\
+    try{ bar_name = eval('barchart_'+num_barcharts);num_barcharts++;}catch(e){break;};\
+ };\
+ var bar_width = parseInt(0.8*xstep/(num_barcharts));\
+ for(var i=0 ; i< num_barcharts ; i++){\
+  bar_name = eval('barchart_'+i);\
+  var bar_x = new Array();\
+  var bar_y = new Array();\
+  var lb = bar_name.length;\
+  var idx = 0;\
+  var dx = parseInt(0.5*i*bar_width);\
+  for( var p = 0 ; p < lb ; p = p + 3 ){\
+   bar_x[idx] = x2px(bar_name[p]);\
+   bar_y[idx] = y2px(bar_name[p+1]);\
+   barcolor[idx] = bar_name[p+2];\
+   idx++;\
+  };\
+  ctx.globalAlpha = fill_opacity;\
+  ctx.beginPath();\
+  for( var p = 0; p < idx ; p++ ){\
+   ctx.strokeStyle = barcolor[p];\
+   ctx.fillStyle = barcolor[p];\
+   ctx.rect(bar_x[p]-0.4*xstep+dx,bar_y[p],bar_width,zero_y - bar_y[p]);\
+  };\
+  ctx.fill();\
+  ctx.stroke();\
+  ctx.closePath();\
  };\
  ctx.restore();\
 };\
@@ -6103,6 +6132,8 @@ int get_token(FILE *infile){
 	*audioobject="audioobject",
 	*style="style",
 	*mouse="mouse",
+	*mousex="mousex",
+	*mousey="mousey",
 	*userdraw="userdraw",
 	*highlight="highlight",
 	*http="http",
@@ -6456,6 +6487,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, mouse) == 0 ){
 	free(input_type);
 	return MOUSE;
+	}
+	if( strcmp(input_type, mousex) == 0 ){
+	free(input_type);
+	return MOUSEX;
+	}
+	if( strcmp(input_type, mousey) == 0 ){
+	free(input_type);
+	return MOUSEY;
 	}
 	if( strcmp(input_type, mouseprecision) == 0 ){
 	free(input_type);
