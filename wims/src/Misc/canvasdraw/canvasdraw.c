@@ -201,7 +201,7 @@ int main(int argc, char *argv[]){
  The sequence in which stuff is finally printed is important !!
  for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
 */
-fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block\"><span id=\"tooltip_placeholder%d\" style=\"display:none\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
+fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
 fprintf(js_include_file,"var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
@@ -2671,6 +2671,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case CLOCK:
 	/*
 	@ clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]
+	@ use command 'opacity stroke-opacity,fill-opacity' to adjust foreground (stroke) and background (fill) transparency
 	@ type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
 	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2,[space]<br />default colours: clock 0,0,60,4,35,45,1,2,,,,,<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,white,white,black,yellow
 	@ if you don't want a seconds hand (or minutes...), just make it invisible by using the background color of the hourglass...
@@ -2726,6 +2727,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		}
 		break;
 		case 8: 
+			fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f",fill_opacity,stroke_opacity);
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
@@ -5676,6 +5678,7 @@ var clock_canvas = create_canvas%d(%d,xsize,ysize);\
 var clock_ctx = clock_canvas.getContext(\"2d\");\
 var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color,bg_color,fg_color){\
  clock_ctx.save();\
+ clock_ctx.globalAlpha = clock_bg_opacity;\
  this.type = type || 0;\
  this.interaction = interaction || 0;\
  this.H = H;\
@@ -5703,6 +5706,7 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  clock_ctx.textBaseline = 'middle';\
  var angle;var x1,y1,x2,y2;\
  var angle_cos;var angle_sin;\
+ clock_ctx.globalAlpha = clock_fg_opacity;\
  switch(type){\
  case 0:clock_ctx.beginPath();\
  for(var p = 1; p <= 12 ; p++){\
