@@ -1184,8 +1184,8 @@ function use_mouse_coordinates(){\
   var y = evt.clientY - canvas_rect.top;\
   var m_data;\
   switch(type){\
-   case 0: m_data = \"x = \"+(px2x(x)).toFixed(prec);break;\
-   case 1: m_data = \"y = \"+(px2y(y)).toFixed(prec);break;\
+   case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
+   case 1: m_data = \" \"+(px2y(y)).toFixed(prec)+\" \"+unit_y;break;\
    case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
    default:break;\
   };\

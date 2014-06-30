@@ -232,7 +232,9 @@ var y_strings = null;\
 var use_pan_and_zoom = 0;\
 var use_jsmath = 0;\
 var xstart = 0;\
-var ystart = 0",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+var ystart = 0;\
+var unit_x=\" \";\
+var unit_y=\" \";",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
 add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
@@ -2169,6 +2171,24 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ NOT IMPLEMETED -YET
 	*/
 	    break;
+	case XUNIT:
+	/*
+	 @ xunit some_unit_for_x-values
+	 @ unicode allowed (no html code)
+	 @ use together with command mousex
+	 @ will display the cursor x-coordinate 'unit'
+	*/
+	    fprintf(js_include_file,"unit_x = \"%s\";",get_string(infile,1));
+	    break;
+	case YUNIT:
+	/*
+	 @ yunit some_unit_for_y-values
+	 @ unicode allowed (no html code)
+	 @ use together with command mousex
+	 @ will display the cursor y-coordinate 'unit'
+	*/
+	    fprintf(js_include_file,"unit_y = \"%s\";",get_string(infile,1));
+	    break;
 	case MOUSEX:
 	/*
 	 @ mousex color,fontsize
@@ -2616,7 +2636,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    break;
 	case LINEGRAPH: /* scheme: var linegraph_0 = [ 'stroke_color','line_width','use_dashed' ,'dashtype0','dashtype1','x1','y1',...,'x_n','y_n'];*/
 	/*
-	@ linegraph x1:y1;x2:y2...x_n:y;2
+	@ linegraph x1:y1;x2:y2...x_n:y_n
 	@ will plot your data in a graph
 	@ may only to be used together with command 'grid'
 	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
@@ -5094,9 +5114,9 @@ var xstep = xsize*xmajor/(xmax - xmin);\
 var ystep = ysize*ymajor/(ymax - ymin);\
 var x2step = xstep / xminor;\
 var y2step = ystep / yminor;\
-var zero_x;var zero_y;var f_x;var f_y;\
-if(xmin < 0 ){zero_x = x2px(0);f_x = -1;}else{zero_x = x2px(xmin);f_x = 1;}\
-if(ymin < 0 ){zero_y = y2px(0);f_y = -1;}else{zero_y = y2px(ymin);f_y = 1;}\
+var zero_x = x2px(0);;var zero_y = y2px(0);var f_x;var f_y;\
+if(xmin < 0 ){ f_x = -1;}else{ f_x = 1;}\
+if(ymin < 0 ){ f_y = -1;}else{ f_y = 1;}\
 ctx.beginPath();\
 ctx.lineWidth = line_width;\
 ctx.strokeStyle = stroke_color;\
@@ -5115,45 +5135,6 @@ for(var p = zero_y ; p < ysize; p = p + ystep){\
 for(var p = zero_y ; p > 0; p = p - ystep){\
  ctx.moveTo(0,p);\
  ctx.lineTo(xsize,p);\
-};\
-if( typeof linegraph_0 !== 'undefined' ){\
- ctx.save();\
- ctx.globalAlpha = 1.0;\
- var i = 0;\
- var line_name = eval('linegraph_'+i);\
- while ( typeof line_name !== 'undefined' ){\
-  ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
-  ctx.lineWidth = parseInt(line_name[1]);\
-  if(line_name[2] == \"1\"){\
-   var d1 = parseInt(line_name[3]);\
-   var d2 = parseInt(line_name[4]);\
-   if(ctx.setLineDash){ ctx.setLineDash([d1,d2]); } else { ctx.mozDash = [d1,d2];};\
-  }\
-  else\
-  {\
-  if(ctx.setLineDash){ctx.setLineDash = null;}\
-  if(ctx.mozDash){ctx.mozDash = null;}\
-  };\
-  var data_x = new Array();\
-  var data_y = new Array();\
-  var lb = line_name.length;\
-  var idx = 0;\
-  for( var p = 5 ; p < lb ; p = p + 2 ){\
-   data_x[idx] = x2px(line_name[p]);\
-   data_y[idx] = y2px(line_name[p+1]);\
-   idx++;\
-  };\
-  for( var p = 0; p < idx ; p++){\
-   ctx.beginPath();\
-   ctx.moveTo(data_x[p],data_y[p]);\
-   ctx.lineTo(data_x[p+1],data_y[p+1]);\
-   ctx.stroke();\
-   ctx.closePath();\
-  };\
-  i++;\
-  try{ line_name = eval('linegraph_'+i); }catch(e){ break; }\
- };\
- ctx.restore();\
 };\
 if( typeof xaxislabel !== 'undefined' ){\
  ctx.save();\
@@ -5249,7 +5230,6 @@ if( use_axis_numbering == 1 ){\
  ctx.font = font_family;\
  var shift = zero_y+2*font_size;var flip=0;var skip=0;var corr;var cnt;var disp_cnt;var prec;\
  if( x_strings != null ){\
-  var f = 1.4;\
   var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
   for(var p = 0 ; p < len ; p = p+2){\
    var x_nums = x2px(eval(x_strings[p]));\
@@ -5299,7 +5279,6 @@ if( use_axis_numbering == 1 ){\
   for(var p = 0 ; p < len ; p = p+2){\
    var y_nums = y2px(eval(y_strings[p]));\
    var y_text = y_strings[p+1];\
-   var f = 1.4;\
    corr = 2 + tics_length + ctx.measureText(y_text).width;\
    if( corr > zero_x){corr = parseInt(zero_x+2); }\
    ctx.fillText(y_text,zero_x - corr,y_nums);\
@@ -5402,6 +5381,45 @@ if( typeof barchart_0  !== 'undefined' ){\
   ctx.fill();\
   ctx.stroke();\
   ctx.closePath();\
+ };\
+ ctx.restore();\
+};\
+if( typeof linegraph_0 !== 'undefined' ){\
+ ctx.save();\
+ ctx.globalAlpha = 1.0;\
+ var i = 0;\
+ var line_name = eval('linegraph_'+i);\
+ while ( typeof line_name !== 'undefined' ){\
+  ctx.strokeStyle = 'rgba('+line_name[0]+','+stroke_opacity+')';\
+  ctx.lineWidth = parseInt(line_name[1]);\
+  if(line_name[2] == \"1\"){\
+   var d1 = parseInt(line_name[3]);\
+   var d2 = parseInt(line_name[4]);\
+   if(ctx.setLineDash){ ctx.setLineDash([d1,d2]); } else { ctx.mozDash = [d1,d2];};\
+  }\
+  else\
+  {\
+  if(ctx.setLineDash){ctx.setLineDash = null;}\
+  if(ctx.mozDash){ctx.mozDash = null;}\
+  };\
+  var data_x = new Array();\
+  var data_y = new Array();\
+  var lb = line_name.length;\
+  var idx = 0;\
+  for( var p = 5 ; p < lb ; p = p + 2 ){\
+   data_x[idx] = x2px(line_name[p]);\
+   data_y[idx] = y2px(line_name[p+1]);\
+   idx++;\
+  };\
+  for( var p = 0; p < idx ; p++){\
+   ctx.beginPath();\
+   ctx.moveTo(data_x[p],data_y[p]);\
+   ctx.lineTo(data_x[p+1],data_y[p+1]);\
+   ctx.stroke();\
+   ctx.closePath();\
+  };\
+  i++;\
+  try{ line_name = eval('linegraph_'+i); }catch(e){ break; }\
  };\
  ctx.restore();\
 };\
@@ -6294,7 +6312,9 @@ int get_token(FILE *infile){
 	*jsplot="jsplot",
 	*sgraph="sgraph",
 	*title="title",
-	*centerstring="centerstring";
+	*centerstring="centerstring",
+	*xunit="xunit",
+	*yunit="yunit";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -6954,6 +6974,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, setlimits) == 0 ){
 	free(input_type);
 	return SETLIMITS;
+	}
+	if( strcmp(input_type, xunit) == 0 ){
+	free(input_type);
+	return XUNIT;
+	}
+	if( strcmp(input_type, yunit) == 0 ){
+	free(input_type);
+	return YUNIT;
 	}
 	free(input_type);
 	ungetc(c,infile);
