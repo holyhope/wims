@@ -21,12 +21,20 @@
  !read lang/msg.phtml.$moduclass_lang
  </div>
 !endif
-
 !read $job.phtml
-!if $job!=home
- !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
- to $wims_menu_items
- !if $job notwordof read creat and $reg_title$vote_title!=$empty and $reg_src$vote_src!=$empty
+!if $job notwordof home
+ !if $job!=getsource
+  !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
+   to $wims_menu_items
+  !if $vote_src!=$empty
+    !set wims_menu_items=!append line source,1,cmd=renew&job=getsource&vote=$vote\
+   to $wims_menu_items
+   !endif
+ !else
+   !set wims_menu_items=!append line back2,1,cmd=resume&job=edit&vote=$vote\
+   to $wims_menu_items
+ !endif
+ !if $job notwordof read creat getsource and $reg_title$vote_title!=$empty and $reg_src$vote_src!=$empty
    !set wims_menu_items=!append line test,1,cmd=reply&job=read\
    to $wims_menu_items
  !endif
