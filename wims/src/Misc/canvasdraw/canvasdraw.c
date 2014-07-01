@@ -2703,13 +2703,13 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			     add_to_buffer(tmp_buffer);
 	    			    */
-				     fprintf(js_include_file,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+				     fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			}
 				else
 				{
 				    canvas_error("interactive clock may not be used together with other reply_types...");
 			    	}
-			        fprintf(stdout,"<br /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M-\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><input type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S-\" /><br />",clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt,clock_cnt);
+			        fprintf(stdout,"<p style=\"text-align:center\"><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H-\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M-\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S-\" /></p>",input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt);
 			     }
 		    break;
 		    case 2:if( reply_format == 0 ){
@@ -2727,7 +2727,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		}
 		break;
 		case 8: 
-			fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f",fill_opacity,stroke_opacity);
+			fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f;",fill_opacity,stroke_opacity);
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
@@ -4027,11 +4027,20 @@ function read_canvas(){\
  var reply = new Array();\
  var name;\
  var t = true;\
+ var h;var m;var s;\
  while(t){\
-  try{ name = eval('clocks'+p);\
-  reply[p] = parseInt((name.H+name.M/60+name.S/3600)%%12)+\":\"+parseInt((name.M + name.S/60)%%60)+\":\"+(name.S)%%60;p++}catch(e){t=false;};\
+  try{\
+   name = eval('clocks'+p);\
+   h = name.H;m = name.M;s = name.S;\
+   if(s < 0){s = 60 + s;m = m - 1;};\
+   if(m < 0){m = 60 + m;h = h - 1;};\
+   if(h < 0){h = 12 + h;};\
+   h = parseInt((h+m/60+s/3600)%%12);m = parseInt((m + s/60)%%60);s = parseInt(s%%60);\
+   reply[p] = h+\":\"+m+\":\"+s;\
+   p++;\
+  }catch(e){t=false;};\
  };\
- if( p == 0){alert(\"clock(s) not modified...\");return;}\
+ if( p == 0 ){alert(\"clock(s) not modified...\");return;}\
  return reply;\
 };\
 this.read_canvas = read_canvas;\n\
@@ -5678,12 +5687,16 @@ var clock_canvas = create_canvas%d(%d,xsize,ysize);\
 var clock_ctx = clock_canvas.getContext(\"2d\");\
 var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color,bg_color,fg_color){\
  clock_ctx.save();\
+ clock_ctx.clearRect(xc-radius,yc-radius,xc+radius,yc+radius);\
  clock_ctx.globalAlpha = clock_bg_opacity;\
  this.type = type || 0;\
  this.interaction = interaction || 0;\
  this.H = H;\
  this.M = M;\
  this.S = S;\
+ if(this.S == -1){this.S = 59;this.M = this.M - 1;};\
+ if(this.M == -1){this.M = 59;this.H = this.H - 1;};\
+ if(this.H == -1){this.H = 11;};\
  this.xc = xc || xsize/2;\
  this.yc = yc || ysize/2;\
  this.radius = radius || xsize/4;\
