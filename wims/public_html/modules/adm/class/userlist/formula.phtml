@@ -22,13 +22,14 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
  !set a_=!char 1 of $a_
  !set S_=!item $a_+1 of $name_sheetstatut
 
- $table_tr<td style="text-align:right">$i</td>
+ $table_tr<td>$i</td>
  <td>$c_</td><td>$S_</td>
  <td><input size="5" name="w$i" value="$(w$i)" /></td>
  <td>
  !set formula_list=!record 0 of adm/class/sheetformula
  !formselect s$i list 0,1,2,3,4,5,6 prompt $formula_list
- !formselect ss$i list 0,1,2 prompt I0,I1,I2
+ I=
+!formselect ss$i list 0,1,2 prompt I0,I1,I2
  </td></tr>
 !next i
 !for i=1 to $totexams
@@ -39,7 +40,7 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
  !set c_=!line 4 of $t_
  !set S_=!item $a_+1 of $name_sheetstatut
 
- $table_tr<td style="text-align:right">$name_Exam $i</td>
+ $table_tr<td>$name_Exam $i</td>
  <td>$c_</td><td>$S_</td>
  <td><input size="5" name="ew$i" value="$(ew$i)" /></td>
  <td>--</td>

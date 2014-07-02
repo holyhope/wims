@@ -11,15 +11,16 @@ Règle de calcul des feuilles de travail
 <p>
 Le serveur calcule les moyennes pour chaque feuille de trois indicateurs
 du travail de chaque participant : le quotient I0 des points cumulés
-par le nombre de points demandés 10*n, la moyenne I1 des n meilleures notes,
-le minimum $I2 des n meilleures notes
+par le nombre de points demandés 10*n, la moyenne I1 des n meilleures notes
+(niveau de réussite),
+le minimum $I2 des n meilleures notes (niveau d'acquisition)
 ainsi que la qualité Q des points obtenus sur les exercices
 de la feuille ramenés à des valeurs entre 0 et 1.
 
 Si la note de qualité est inférieure à 1 pour un exercice,
-le pourcentage de points acquis est mis à 0% pour cet exercice lors du calcul de I ;
+le pourcentage de points cumulés est mis à 0% pour cet exercice lors du calcul de I ;
 si la note de qualité est comprise entre 1 et 2,
-le pourcentage de points acquis pour cet exercice est divisé par 2 lors du calcul de I.
+le pourcentage de points cumulés pour cet exercice est divisé par 2 lors du calcul de I.
 
 </p><p>
 Voici les formules possibles permettant de calculer la note de la feuille,
@@ -30,10 +31,10 @@ suivant les choix fixés par l'enseignant (règle de calcul et indicateur I).
 $table_header
 $table_hdtr<th>Règle</th><th>Formule</th><th>$wims_name_Explanations</th></tr>
 $table_tr<td>0</td><td> \($scoremax * $(list[1;]) \)
- </td><td>maximum entre points acquis et qualité.</td></tr>
+ </td><td>maximum entre l'indicateur choisi et qualité.</td></tr>
 $table_tr<td>1</td><td> \($scoremax *$(list[2;]) \)
  </td><td>La qualité n'est pas prise en compte. Vous avez la note maximale
- lorsque tous les points demandés sont acquis.</td></tr>
+ lorsque l'indicateur choisi est maximal.</td></tr>
 $table_tr<td>2</td><td>\($scoremax*$(list[3;])\)
  </td><td>La qualité n'a que peu d'effet sur la note.</td></tr>
 $table_tr<td>3</td><td>\($scoremax*$(list[4;])\)
@@ -55,10 +56,10 @@ On calcule la moyenne pour votre travail pour :
   le quotient I des points cumulés par n,
 !endif
 !if $help_sw=1
-la moyenne I des n meilleures notes,
+la moyenne I des n meilleures notes (niveau de réussite),
 !endif
 !if $help_sw=2
- le minimum I des n meilleures notes,
+ le minimum I des n meilleures notes (niveau d'acquisition),
 !endif
 </li>
 !if $help_level>0
