@@ -1,5 +1,5 @@
 \language{en}
 \author{XIAO, Gang}
-\email{xiao@unice.fr}
+\email{qualite@wimsedu.info}
 \computeanswer{no}
 \format{html}

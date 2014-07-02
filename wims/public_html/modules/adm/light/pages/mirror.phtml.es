@@ -10,7 +10,8 @@
 
 !! Put every definition in ONE LINE!!
 !let module_author	=XIAO, Gang
-!let module_address	=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title	=Réplicas públicas
 !let module_description	=lista de sitios WIMS accesibles al público.
 !let module_version	=2.08
@@ -27,7 +28,7 @@
 !! Possible categories: exercise, tool, dictionary, course, recreation.
 !let module_category	=adm
 
-!! En: elementary school. Hn: high school. Un: undergrad. 
+!! En: elementary school. Hn: high school. Un: undergrad.
 !! G: graduate. R: research.
 !! E1,...,E6; H1...,H6; U1,...,U4; G; R
 !let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
@@ -75,7 +76,7 @@ $ in $l_
  Aquí están los otros sitios WIMS que se sabe que están abiertos al
  público general. Si usa normalmente WIMS en su trabajo, le sugerimos
  que añada a sus Favoritos al menos una de estas direcciones.
- 
+
  $table_header
  $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br />en que funciona</th><th>Comentarios</th></tr>
  !for i_=1 to $n
@@ -104,7 +105,7 @@ por favor
 wims mirror
 .
 <p>
-WIMS se puede 
+WIMS se puede
 !href module=adm/light&phtml=download.phtml.$lang descargar
  gratuitamente,
 y puede instalarse sobre sistemas operativos Linux.

@@ -144,7 +144,7 @@
 
 !!********* Link #8 : "Author(s)"
 
-!if $module_author!=$empty and @ isin $module_address
+!if $module_author!=$empty and (@ isin $module_address or $module_address=$empty)
  !read namewriting.phtml $module_author
  !set module_address=!replace internal ; by , in $module_address
  !set wims_homeref_author_num=$script_cnt
@@ -155,8 +155,17 @@
  !endif
  !set 4_=
  !for ad=1 to $wims_homeref_author_num
-   !if $(module_address[$ad])!= and @ isin $(module_address[$ad])
-    !set 4__=!mailurl $(module_address[$ad]) $(script_out[$ad])\
+   !set adreplace=$(module_address[$ad])
+   !if $adreplace=$empty
+      !set adreplace=$module_maintainer_address
+   !endif
+   !if $adreplace!= and @ isin $adreplace
+!!!#### xiao treatment - should disappear when modules are republished
+     !if xiao isin $adreplace
+       !set adreplace=qualite@wimsedu.info
+     !endif
+!!!####
+     !set 4__=!mailurl $adreplace $(script_out[$ad])\
 WIMS $module_title [$module_language]
    !else
      !set 4__=$(script_out[$ad])

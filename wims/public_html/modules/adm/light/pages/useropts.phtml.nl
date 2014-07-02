@@ -1,6 +1,7 @@
 !!INDEX
 !let module_author=XIAO, Gang
-!let module_address=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title=Setup your preferences for WIMS
 !let module_description=define preferences for wims
 !let module_version=1.00
@@ -32,7 +33,7 @@
 !endif
 
 !set zoom=!char 3 of $useropts
-    
+
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Op deze pagina kan het uiterlijk van de WIMS sessie worden aangepast.
@@ -58,12 +59,12 @@ Wiskundige formules:<br />
     </p>
     Als de bovenstaande formule niet correct is afgebeeld, kan er gebruik worden gemaakt van een andere
     <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>
-    </a> 
+    </a>
     of gebruik de server in de afstelling "wiskunde met plaatjes".
 !set wims_ref_class=wims_button
 <p class="wimscenter">
    !href cmd=resume&useropts=$arg Gebruik Wiskunde met plaatjes
-</p> 
+</p>
 </li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
@@ -87,7 +88,7 @@ Wiskundige formules:<br />
     Gebruik ook inzoomen per muisklik.
   !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-   !set zoom=0 
+   !set zoom=0
    &nbsp;
 !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
@@ -117,7 +118,7 @@ Grootte van wiskundige symbolen en formules.
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
-  Griekse Letters $m_alpha, $m_pi. Wiskundige uitdrukking 
+  Griekse Letters $m_alpha, $m_pi. Wiskundige uitdrukking
   !let ins_align=middle
 !! we need to force dynamic insertion
   !set pw=2
@@ -144,7 +145,7 @@ Positie van de formules. Als de uitdrukking
 </ul>
 
 !if $wims_user=$empty
-Als alles correct is afgesteld, maak dan van 
+Als alles correct is afgesteld, maak dan van
  <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
  title="WIMS">deze link</a>
   een bookmark , zodat ook bij een volgend bezoek aan deze server deze instellingen worden gebruikt.

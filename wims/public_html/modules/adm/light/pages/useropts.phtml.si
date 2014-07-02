@@ -1,6 +1,7 @@
 !!INDEX
 !let module_author=XIAO, Gang
-!let module_address=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title=Nastavitve WIMS
 !let module_description=osebna nastavitev lastnosti za WIMS
 !let module_version=1.00
@@ -32,7 +33,7 @@
 !endif
 
 !set zoom=!char 3 of $useropts
-    
+
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Ta stran vam omogoèa nastavitev dela s stre¾nikom WIMS po va¹ih ¾eljah.
@@ -58,12 +59,12 @@ Mathematical formulas.
     </p>
     If the formula is not correctly displayed, you can use another
     <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>
-    </a> 
+    </a>
     or use the serveur with "math with images".
 !set wims_ref_class=wims_button
 <p class="wimscenter">
    !href cmd=resume&useropts=$arg Math with images
-</p> 
+</p>
 </li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
@@ -87,12 +88,12 @@ Mathematical formulas.
   Use zoom on formulas by mouse click.
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!set zoom=0 
+!set zoom=0
    &nbsp;
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
-    Currently, you use the server with "Math with images". If you have a suitable 
+    Currently, you use the server with "Math with images". If you have a suitable
     <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>, you may also use MathML.
 <p class="wimscenter">
 !set arg=!nospace $texsize 2
@@ -101,7 +102,7 @@ Mathematical formulas.
 </p>
 
 </li><li>
-Velikost matematiènih simbolov. 
+Velikost matematiènih simbolov.
 !let ts1=!eval $texsize-1
 !let ts2=!eval $texsize+1
 !if $ts1<1
@@ -116,7 +117,7 @@ Velikost matematiènih simbolov.
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
-  Gr¹ke èrke $m_alpha, $m_pi. <br />Matematièni izrazi 
+  Gr¹ke èrke $m_alpha, $m_pi. <br />Matematièni izrazi
   !let ins_align=middle
 !! we need to force dynamic insertion
   !set pw=2
@@ -128,11 +129,11 @@ Velikost matematiènih simbolov.
 Polo¾aj formul. Èe se izraz
   !insmath (x+y)/(x^$pw + y^2)
   !if $texalign=1
-   izri¹e previsoko, ga 
+   izri¹e previsoko, ga
    !href cmd=resume&useropts=$(texsize)0$useropt2 s klikom
    zni¾ate.
   !else
-   izri¹e prenizko, ga 
+   izri¹e prenizko, ga
    !href cmd=resume&useropts=$(texsize)1$useropt2 s klikom
    zvi¹ate.
   !endif

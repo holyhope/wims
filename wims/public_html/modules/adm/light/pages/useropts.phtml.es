@@ -1,6 +1,7 @@
 !!INDEX
 !let module_author=XIAO, Gang
-!let module_address=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title=Configuración de preferencias para WIMS
 !let module_description=define tus preferencias en WIMS
 !let module_version=1.00
@@ -37,7 +38,7 @@
  !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
 !endif
 
-    
+
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 Esta página le permite cambiar las preferencias de su sesión de trabajo
@@ -63,16 +64,16 @@ en WIMS.
 </h2>
 <p>
 Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisation de MathML (à condition que votre navigateur le supporte).</p>
-    Voici quelques exemples : 
+    Voici quelques exemples :
     <ul>
       <li>
-       Letras griegas. 
+       Letras griegas.
           <pre>
            !insmath alpha != pi
           </pre>
       </li>
       <li>
-       Expresiones matemáticas 
+       Expresiones matemáticas
        !let ins_align=middle
     !! we need to force dynamic insertion
        !set pw=2
@@ -81,7 +82,7 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
        </pre>
       </li>
       <li>
-       Una desigualdad: 
+       Una desigualdad:
         <pre>
          !insmath | a + b | <= epsilon + 123.45
         </pre>
@@ -90,19 +91,19 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
 
 !if $texalign=2
   <p>
-  The server is currently set to MathML if you have a suitable browser. 
+  The server is currently set to MathML if you have a suitable browser.
     If the formula is not correctly displayed, you can use another
     <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
     browser
-    </a> 
+    </a>
     or use the serveur with "math with images".
     </p>
     <ul>
      <li>
-     Modifier le mode d'affichage : 
+     Modifier le mode d'affichage :
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font Math with images
-      
+
       !set arg=!nospace $texsize 2
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font MathML
@@ -133,15 +134,15 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
 !else
  <p>
-    Currently, you use the server with "Math with images". If you have a suitable 
+    Currently, you use the server with "Math with images". If you have a suitable
     <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
     browser
-    </a>, 
+    </a>,
     you may also use MathML.
  </p>
 
  <ul>
-  <li>Modifier le mode d'affichage : 
+  <li>Modifier le mode d'affichage :
    !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$(arg)0$font Mode image
 
@@ -183,10 +184,10 @@ Position of the formulas. If the expression
 
 <h2>Accessibilité</h2>
 
-<p>Vous pouvez régler l'espacement des lettres et des mots 
+<p>Vous pouvez régler l'espacement des lettres et des mots
     !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
-    
+
     !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espacé
 </p><p>

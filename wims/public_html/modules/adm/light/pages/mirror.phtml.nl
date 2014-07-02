@@ -10,9 +10,10 @@
 
 !! Put every definition in ONE LINE!!
 !let module_author	=XIAO, Gang
-!let module_address	=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title	=Mirrors
-!let module_description	=lijst van WIMS mirrors. 
+!let module_description	=lijst van WIMS mirrors.
 !let module_version	=2.08
 !let module_wims_version=2.08
 
@@ -27,7 +28,7 @@
 !! Possible categories: exercise, tool, dictionary, course, recreation.
 !let module_category	=adm
 
-!! En: elementary school. Hn: high school. Un: undergrad. 
+!! En: elementary school. Hn: high school. Un: undergrad.
 !! G: graduate. R: research.
 !! E1,...,E6; H1...,H6; U1,...,U4; G; R
 !let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
@@ -71,7 +72,7 @@ $ in $l_
  </p>
 !else
     Hier is een lijst met WIMS servers die open staan voor publiek.
-    Bij regelmatig WIMS gebruik en geen eigen server, is het verstandig een bookmark 
+    Bij regelmatig WIMS gebruik en geen eigen server, is het verstandig een bookmark
     van deze adressen lijst te maken.
  $table_header
  $table_hdtr<th>Website</th>
@@ -107,10 +108,10 @@ deze lijst, schrijf een email naar de
 wims mirror
 .
 <p>
-WIMS is vrije software en kan gratis worden 
+WIMS is vrije software en kan gratis worden
 !href module=adm/light&phtml=download.phtml.$lang verkregen
 en geinstalleerd alle op GNU/Linux systemen.
-Lees het <a href="README">README</a> bestand in de download directory voor 
+Lees het <a href="README">README</a> bestand in de download directory voor
 meer details mbt de installatie.
 </p>
 !tail

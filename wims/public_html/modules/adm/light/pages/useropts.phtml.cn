@@ -1,6 +1,7 @@
 !!INDEX
 !let module_author=XIAO, Gang
-!let module_address=xiao@unice.fr
+!let module_address	=
+!let module_maintainer_address=wimsdev@groupes.renater.fr
 !let module_title=设置 WIMS 的个人喜好
 !let module_description =设置 WIMS 的个人喜好
 !let module_version =1.00
@@ -32,7 +33,7 @@
 !endif
 
 !set zoom=!char 3 of $useropts
-    
+
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 本页是用于修改你在 WIMS 作业过程中的个人喜好的.
@@ -59,12 +60,12 @@
     </p>
     如果此公式不能正确显示, 你可以换用其它
     <a onmouseover="return Tip($tip)"><span class="wims_emph">浏览器</span>
-    </a> 
+    </a>
     或使用把数学公式化为图像的服务器.
 !set wims_ref_class=wims_button
 <p class="wimscenter">
    !href cmd=resume&useropts=$arg 以图像显示数学公式
-</p> 
+</p>
 </li><li>
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
@@ -88,12 +89,12 @@
   通过鼠标点击对公式缩放.
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!set zoom=0 
+!set zoom=0
    &nbsp;
 !set wims_ref_class=wims_button
 !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
 !else
-    目前你使用的是把数学公式表成图像的服务器. 如果你有合适的 
+    目前你使用的是把数学公式表成图像的服务器. 如果你有合适的
     <a onmouseover="return Tip($tip)"><span class="wims_emph">浏览器</span></a>, 你可以使用 MathML.
 <p class="wimscenter">
 !set arg=!nospace $texsize 2
@@ -117,7 +118,7 @@
 !set wims_ref_class=wims_button
     !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
   <p>
-希腊字母 $m_alpha, $m_pi. 数学公式 
+希腊字母 $m_alpha, $m_pi. 数学公式
   !let ins_align=middle
 !! 你需要强制动态插入
   !set pw=2

@@ -236,7 +236,11 @@ for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done
 
 #oef/qcm
 # generate exercises in directory oef/$lang/qcm
-for i in fr en cn nl ; do cd $OEF/$i/qcm ; $OEF/mkindex $WIMS_HOME ; done
+for i in fr en cn nl ; do
+  cd $OEF/$i/qcm ;
+  touch $OEF/$i/qcm/src/cpp/qcm.cpp;
+  $OEF/mkindex $WIMS_HOME ;
+done
 
 # generate exercises in example class
 cd $CLASSES
