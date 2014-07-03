@@ -36,11 +36,6 @@ XSIZE=300
 YSIZE=300
 xsize=300
 ysize=300
-!if $useropts=$empty
-    use_mathml=$wims_texalign
-!else
-    use_mathml=!char 2 of $useropts
-!endif
 # if set to 1: multiplechoice wih images
 multiimage=0
 #counts dynamic inserted images: usage "ins_attr=name=insert$imagecnt" is empoyed by DHTML
@@ -50,6 +45,7 @@ imagecnt=0
 # where at the beginning of each exercise: maxscore=1
 # if the answer is 100% good, after several tries:
 # modulescore=$[$modulescore + $maxscore]
+!bound use_mathml within 0,1 default 1
 !bound mathview within 0,1,2,3,4,5 default 4
 !bound viewlogo within 0,1 default 0
 !bound mytexsize within -4,-3,-2,-1,0,+1,+2,+3,+4 default +2
