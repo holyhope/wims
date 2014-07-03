@@ -5,27 +5,26 @@ $wims_institutionname
 $classname\
 $cdt_title
 
-<div class="wimscenter" "font-size:large; font-weight:bold;>
+<div class="wimscenter" "style="font-size:large; font-weight:bold;">
  $name_worktodo
  !if $jour_begin!=$jour_end
   $name_between <span class="wims_emph">$name_date</span>
   $name_and <span class="wims_emph">$name_date2</span>
  !else
-  $name_for 
+  $name_for
   <span class="wims_emph">$name_date</span>
  !endif
-</div> 
+</div>
 
 !if $nbligne=0
-<p>
+ <p>
  $name_nowork $name_date.
  </p>
  !goto end
 !endif
 
- !!let table_border=1
  $table_header
- $table_hdtr 
+ $table_hdtr
   <th>$name_for</th>
   !if no isin $cdt_supervise
    <th>$name_discipline</th>
@@ -37,10 +36,10 @@ $cdt_title
    !let don=!line $i of $list
    !distribute item $don into todo,date,dir,matiere
    !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$dir
-   !read wimshome/log/classes/$dir/cdt/def/$date 
+   !read wimshome/log/classes/$dir/cdt/def/$date
    !let no=!positionof item $todo in $date_todo
    <td>
-    !read adm/lang/datemenu.phtml.$moduclass_lang 5,$todo 
+    !read adm/lang/datemenu.phtml.$moduclass_lang 5,$todo
    </td>
    !if no isin $cdt_supervise
     <td>$matiere</td>

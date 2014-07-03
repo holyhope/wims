@@ -5,20 +5,18 @@ $wims_institutionname
 $classname\
 $cdt_title
 
-<div class="wimscenter">
- <span style="font-weight:bold;font-size:Large">
+<div class="wimscenter" style="font-weight:bold;font-size:Large">
  !if $jour_begin!=$empty
   $name_between <span class="wims_emph">$name_date</span>
   !if $jour_begin!=$jour_end
    $name_and <span class="wims_emph">$name_date2</span>
   !endif
  !endif
- </span>
 </div>
 
 
 !if $cdt_nbdate=0
- $name_noinfo1
+ $name_noinfo1.
  !goto end
 !else
  !if $nbligne=0
@@ -30,7 +28,7 @@ $cdt_title
   !goto end
  !endif
 !endif
-</p>
+
  !let table_border=1
  $table_header
  $table_hdtr
@@ -47,14 +45,15 @@ $cdt_title
   !let file=wimshome/log/classes/$file/cdt/def/$jour
   !read $file
   !let nbtodo=!itemcnt $date_todo
+  !let snbtodo=$[max(1,$nbtodo)]
   <tr class="$(table_colors[$i%2+1])">
-   <td rowspan="$nbtodo">
+   <td rowspan="$snbtodo">
     !read adm/lang/datemenu.phtml.$moduclass_lang 5,$jour
    </td>
    !if no isin $cdt_supervise
-    <td rowspan="$nbtodo">$matiere</td>
+    <td rowspan="$snbtodo">$matiere</td>
    !endif
-   <td rowspan="$nbtodo" valign="top">
+   <td rowspan="$snbtodo" valign="top">
     !read $file content
    </td>
    !if $nbtodo>0
