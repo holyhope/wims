@@ -16,6 +16,14 @@
  */
 
 #include <errno.h>
+/* bug in gdImageFillToBorder */
+void gdImageFillToBorder1 (gdImagePtr im, int x, int y, int border, int color)
+{
+   int pp=x;
+   if(pp>=image->sx) pp=image->sx-1;
+   if(pp<0) pp=0;
+   gdImageFillToBorder(im,pp,y,border,color);
+}
 
 /* File opening: with security */
 FILE *open4read(char *n)
@@ -364,7 +372,7 @@ void obj_ellipse(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder(image,pm->p[0],pm->p[1],
+      gdImageFillToBorder1(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -379,7 +387,7 @@ void obj_circle(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder(image,pm->p[0],pm->p[1],
+      gdImageFillToBorder1(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -396,7 +404,7 @@ void obj_fill(objparm *pm)
 void obj_fillb(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
-    gdImageFillToBorder(image,pm->p[0],pm->p[1],pm->color[0],pm->color[1]);
+    gdImageFillToBorder1(image,pm->p[0],pm->p[1],pm->color[0],pm->color[1]);
 }
 
 gdImagePtr himg;
