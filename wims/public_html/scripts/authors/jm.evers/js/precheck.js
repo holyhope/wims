@@ -474,7 +474,7 @@ function arrows(t,arg1,arg2,arg3){
 	a1=ascii_arrows[s];
 	while(t.indexOf(a1) != -1){
 	    t=t.replace(a1,'@');total_arrows++;
-	    trouble++;if(trouble>100){setAlarm(t+"<br>"+r20);t="error";return t;}
+	    trouble++;if(trouble>100){setAlarm(t+"<br />"+r20);t="error";return t;}
 	}
     }
     
@@ -556,7 +556,7 @@ function arrows(t,arg1,arg2,arg3){
 	for(s=0;s<total_arrows-1;s++){
 	    a1=arrow_array[s];a1=a1.replace(/[\s\r\n\ ]/g,'');
 	    a2=arrow_array[s+1];a2=a2.replace(/[\s\r\n\ ]/g,'');
-	    if(a1 == a2){setAlarm(r33+"<br>"+a1+" \u2192 "+a2);t="error";return t;}
+	    if(a1 == a2){setAlarm(r33+"<br />"+a1+" \u2192 "+a2);t="error";return t;}
 	    if(a1.indexOf(arg2) == -1 && a1.indexOf('=') == -1){setAlarm(r30+" : "+a1);t="error";return t;}
 	}
 	if(arg2){
@@ -569,7 +569,7 @@ function arrows(t,arg1,arg2,arg3){
 	}
 	t=t.replace(/@/g,' -> ');return t;
     }
-    setAlarm("syntax error in function <br> arrows(t,arg1,arg2,arg3)<br> t is answer <br> arg1=switch, arg1=0: converts ascii arrows to unified \"->\" <br> arg1=1 : converts ascii arrows to unified \"\u2192\" <br> arg1=2 : returns no arrows ,just the text after the last arrow<br> arg1=3 : returns no arrows...the answer is an array <br> arg1=4 : returns the answer ,checks on all steps<br> arg2=variable name<br>arg3=amount if any of arrows...");
+    setAlarm("syntax error in function <br /> arrows(t,arg1,arg2,arg3)<br /> t is answer <br /> arg1=switch, arg1=0: converts ascii arrows to unified \"->\" <br /> arg1=1 : converts ascii arrows to unified \"\u2192\" <br /> arg1=2 : returns no arrows ,just the text after the last arrow<br /> arg1=3 : returns no arrows...the answer is an array <br /> arg1=4 : returns the answer ,checks on all steps<br /> arg2=variable name<br />arg3=amount if any of arrows...");
 }
 
 function is_text(t){
