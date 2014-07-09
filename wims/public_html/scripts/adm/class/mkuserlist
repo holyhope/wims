@@ -19,7 +19,7 @@ reset class_lvl
  !if $typename iswordof level program
   !exit
  !endif
- 
+
  !if $typename issametext course
   class_parent=!defof class_parent in wimshome/log/classes/$uclass/.def
   !if $class_parent!=$empty
@@ -31,7 +31,7 @@ reset class_lvl
    !endif
   !endif
   clist=$uclass
-  
+
  !else
   !if / isin $uclass
    class_lvl=!translate internal / to , in $uclass
@@ -93,7 +93,7 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
    !if $user_external_auth!=$empty
      userline_external=$user_external_auth:$u
    !endif
-   
+
    !if $typename=course
     !readdef wimshome/log/classes/$uclass/.users/$u
     !if $user_class!=$empty
@@ -103,14 +103,14 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
      !endif
     !endif
    !else
-   
+
     !if $supclass=$uclass or $uclass isitemof $user_participate
      !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline
      !if $userline_external!=$empty
        !appendfile wimshome/log/classes/$uclass/.userlist_external.raw $userline_external
      !endif
    !endif
-    
+
     !if $supclass!=$uclass
      !appendfile wimshome/log/classes/$supclass/.userlist.raw $userline
      !if $userline_external!=$empty
@@ -123,11 +123,11 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
        !endif
      !endif
     !endif
-   
+
    !endif
-  
+
   !endif
-  
+
  !next u
 !next N
 

@@ -12,7 +12,7 @@ wims_helper=chapter=3
      m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.userlist_external
      !if $m_test=$wims_user
        user_auth=$wims_external_auth
-     !else 
+     !else
        m_test=!defof user_supervisable in  wimshome/log/classes/$wims_superclass/.users/$wims_realuser
        !if $m_test=yes
         m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.teacherlist_external
@@ -36,7 +36,7 @@ wims_helper=chapter=3
 !if $auth_method isitemof $auth_method_list
 !! in case of auth_method=cas, is it right that we have $user_auth=$empty here ??
 !!
-!! !! I think these lines were wrong: not needed and breaking reguser 
+!! !! I think these lines were wrong: not needed and breaking reguser
 !! !! by supervisor
 !!  !if $idp_method=php
 !!    !default user_auth=$wims_user
@@ -49,9 +49,9 @@ wims_helper=chapter=3
   !endif
 ## define wims login
   !reset login_method
-  !if $idp_method=ldap 
+  !if $idp_method=ldap
 !!define login_method
-    !read adm/class/initldap 
+    !read adm/class/initldap
   !endif
   !if $wims_user=supervisor and $auth_method isitemof $auth_method_list and $auth_user=$empty
     !if $search!=$empty
@@ -158,7 +158,7 @@ wims_helper=chapter=3
    !exit
   !endif
  !endif
- 
+
  participants=!recordcnt wimshome/log/classes/$class/.userlist
  classe=$class_limit\
 $participants\
@@ -350,7 +350,7 @@ $class_type
   up_lastname=$lastn
   up_email=$email
  !else
-  !read adm/class/idp_$idp_method 
+  !read adm/class/idp_$idp_method
   firstn=$up_firstname
   lastn=$up_lastname
   email=$up_email
