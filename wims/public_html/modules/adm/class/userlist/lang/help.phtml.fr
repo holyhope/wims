@@ -9,22 +9,61 @@ Règle de calcul des feuilles de travail
 
 !if $wims_user=supervisor or $special_parm=$empty
 <p>
-Le serveur calcule les moyennes pour chaque feuille de trois indicateurs
-du travail de chaque participant : le quotient I0 des points cumulés
-par le nombre de points demandés 10*n, la moyenne I1 des n meilleures notes
-(niveau de réussite),
-le minimum $I2 des n meilleures notes (niveau d'acquisition)
-ainsi que la qualité Q des points obtenus sur les exercices
-de la feuille ramenés à des valeurs entre 0 et 1.
+Le serveur calcule pour chaque exercice trois indicateurs du
+ travail de chaque participant : l'indicateur de cumul (\(i_0)),
+ l'indicateur de réussite (\(i_1)) et l'indicateur d'acquisition
+ \((i_2)).
+Pour expliquer le calcul des différents indicateurs, supposons que le nombre
+de points requis sur un exercice est \(10n\) où n est un entier et que
+l'élève a fait cet exercice p fois avec les scores \(x_1, x_2, x_3, ..., x_p\)
+(nombres entre 0 et 10).
+</p><ul>
+<li>L'indicateur de qualité est la moyenne pondérée et incrémentale des
+scores. Cet indicateur est corrigé en tenant compte des essais sans
+tentative de réponse.
+</li><li>
+L'indicateur de cumul \((i_0)) est la somme des scores plafonnée à \(10n\)
+quotienté par \(10n\) : \(i0=min(x_1+...+x_p, 10*n)/(10*n)).
+Il est affiché dans les résultats de l'élève comme un pourcentage.
+</li><li>
+Notons \(y_1\leq y_2\leq ... \leq y_p\) les scores ordonnés par ordre
+décroissant.
 
-Si la note de qualité est inférieure à 1 pour un exercice,
-le pourcentage de points cumulés est mis à 0% pour cet exercice lors du calcul de I ;
-si la note de qualité est comprise entre 1 et 2,
-le pourcentage de points cumulés pour cet exercice est divisé par 2 lors du calcul de I.
-
+L'indicateur de réussite (\(i_1)) est la moyenne des n meilleurs scores,
+ramené à 1
+ \(i_1 = (y_1+...+y_n)/(n*10)) si le nombre p de scores obtenus est supérieur à n
+ et
+ \(i_1 = (y_1+...+y_p)/(n*10)) si
+le nombre p de scores obtenus est inférieur à \(n).
+Il est affiché ensuite comme un pourcentage.
+</li><li>
+L'indicateur d'acquisition (\(i_2)) est le plus petit des n meilleurs scores :
+\(i_2 = 0) si le nombre p de scores obtenus est inférieur à \(n\)
+et \(i_2= y_n\) si \(p\geq n\).
+</li></ul>
+<p>
+Par exemple, si n=2 et si les scores sont 7, 5 et 3 alors i1= 1 (100%),
+i2=0.6 (60%) et a=5.
 </p><p>
-Voici les formules possibles permettant de calculer la note de la feuille,
-suivant les choix fixés par l'enseignant (règle de calcul et indicateur I).
+Pour chaque feuille, le serveur calcule ensuite la moyenne pondérée
+(\(Q, I_0, I_1, I_2)) sur tous
+les exercices de la feuille des indicateurs correspondants.
+</p><p>
+Si la note de qualité est inférieure à 1 pour un exercice,
+l'indicateur \(i) utilisé pour le calcul de chacun des indicateurs \(I)
+est mis à 0 pour cet exercice ;
+si la note de qualité est comprise entre 1 et 2,
+l'indicateur  \(i) utilisé pour le calcul de chacun des indicateurs \(I)
+ est divisé par 2.
+</p><p>
+Les valeurs de \(Q, I_0, I_1, I_2\) sont données sur chaque feuille
+dans la page de suivi individuel des étudiants.
+</p><p>
+Le serveur calcule alors la note de la feuille suivant une règle de
+calcul que vous définissez (vous pouvez choisir la règle et l'indicateur
+I utilisé parmi \(I_0, I_1, I_2)).
+
+Voici les formules possibles :
 </p>
 
 !reset table_center
@@ -48,38 +87,53 @@ $table_end
 
 !else
 Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
-de la note. Le nombre de points requis est 10*n.
-On calcule la moyenne pour votre travail pour :
+de la note. Le nombre de points requis est \(10n\).
+On calcule la moyenne pondérée I sur les exercices de la feuille de :
 <ul>
 <li>
 !if $help_sw=0
-  le quotient I des points cumulés par n,
+  \(i\) : la somme des scores plafonnée à \(10n\)
+quotienté par \(10n\) (indicateur de cumul)
 !endif
 !if $help_sw=1
-la moyenne I des n meilleures notes (niveau de réussite),
+ la moyenne i des n meilleures scores (niveau de réussite) :
+ Si vos scores sont  \(y_1\leq y_2\leq ... \leq y_p \) ordonnés par ordre
+décroissant :
+ \(i  = (y_1+...+y_n)/(10n)\) si le nombre \(p\) de scores obtenus est supérieur à \(n\)
+ et
+ \(i = (y_1+...+y_p)/(10n)) si le nombre \(p\) de scores obtenus est inférieur à \(n\).
 !endif
 !if $help_sw=2
- le minimum I des n meilleures notes (niveau d'acquisition),
+ le minimum i des n meilleures notes (niveau d'acquisition) :
+ si vos scores sont  \(y_1\leq y_2\leq ... \leq y_p \) ordonnés par ordre
+décroissant :
+  \(i  = O\) tant que le nombre p de scores obtenus est inférieur à \(n) et
+ et ensuite
+ \(i = y_n/10).
 !endif
 </li>
 !if $help_level>0
 <li>
-la qualité Q des points obtenus sur les exercices.
+la qualité \(q\) des points obtenus sur les exercices qui est
+une moyenne pondérée et incrémentale des scores.
 </li>
 !endif
 </ul>
+La note de la feuille est calculée à partir des moyennes pondérées
+\(I) et \(Q) des \(i) et de \(q) calculées pour chaque exercice.
 !if $help_level>0
 Si la note de qualité est inférieure à 1 pour un exercice,
-I est mis à 0 pour cet exercice  ;
+l'indicateur i
+est mis à 0 pour cet exercice ;
 si la note de qualité est comprise entre 1 et 2,
-I est divisé par 2 lors du calcul de la note de la feuille.
+l'indicateur i est divisé par 2.
 
 !else
  Cependant, si vous avez eu trop d'échecs, cette note peut diminuer.
  Demandez à votre enseignant.
 !endif
 </p><p>
-Ces moyennes sont ramenées entre 0 et 1 et
- la note de la feuille est calculée comme
+
+ La note de la feuille est calculée comme
 <span class="bold">$scoremax $(list[$help_level+1;])</span>
 !endif
