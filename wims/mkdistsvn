@@ -96,14 +96,15 @@ javadir=public_html/scripts/authors/jm.evers/applets
 done
 
 echo "**Copy themes/css.css and delete the css compressor..."
-compressor=yuicompressor-2.4.7.jar
+compressor=yuicompressor-2.4.8.jar
+compressorlink=yuicompressor
 themes="standard default Nikaia pommier"
 cd $wims_dir
 css_dir=public_html/themes
  for a in $themes ; do
   cp -r $css_dir/$a/css.css $target/wims/$css_dir/$a
  done
- rm $target/wims/$css_dir/$compressor ;
+ rm $target/wims/$css_dir/$compressor ; rm $target/wims/$css_dir/$compressorlink
 
 echo "** Archiving WIMS package..."
 cd $target/wims ; tar -czf ../wims-$version.tgz .
