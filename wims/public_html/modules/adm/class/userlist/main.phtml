@@ -36,7 +36,7 @@ $wims_name_part_list ($usercnt)
  !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
 !!##  the administrator at the level of the portal or the creator of the class can add a teacher to
 !!##  the list of teachers of his class
-!if ($wims_typename=group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
+!if ($wims_typename iswordof group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
  !default wims_superclass=$wims_class
  !set teacherlist=!record 0 of wimshome/log/classes/$wims_superclass/.teacherlist
  !set teachercnt=!linecnt $teacherlist
@@ -46,7 +46,7 @@ $wims_name_part_list ($usercnt)
   &nbsp;
  !endif
 !!## only the administrator has the right to add a teacher to the superclass
- !if $wims_typename=group and $wims_supertype=2
+ !if $wims_typename iswordof group and $wims_supertype=2
   !set wims_ref_class=wims_button
   !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
    &nbsp;
@@ -91,8 +91,9 @@ $wims_name_part_list ($usercnt)
     !href module=adm/class/sequence&job=config $wims_name_config
  </p>
  !endif
+ !!test inutile ?
  !if $usercnt > 0
-  !if $activecnt+$eactivecnt>1
+  !if $activecnt+$eactivecnt>=1
 
   !form reply
   <input type="hidden" name="job" value="sheets" />
@@ -128,12 +129,6 @@ $wims_name_part_list ($usercnt)
   </div>
   <p>
    $wims_name_or $name_post
-   !else
-  !form reply
-  $name_Post
-  <p>
- !endif
-
    !if $job_affi=notes or $job_affi=$empty
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=quality $(name_affi[1])
@@ -178,8 +173,7 @@ $wims_name_part_list ($usercnt)
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=level $(name_affi[5])
    !endif
-
-  !if $job_affi=level
+   !if $job_affi=level
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=quality $(name_affi[1])
     !set wims_ref_class=wims_button
@@ -191,7 +185,13 @@ $wims_name_part_list ($usercnt)
     <span class="wims_button disabled">$(name_affi[5])</span>
    !endif
 </p>
-<p>$name_click
+ !else
+  !form reply
+ !endif
+<p>
+ !if $wims_typename notwordof group portal
+  $name_click
+ !endif
  $name_filter
  <textarea name="varfilter">$varfilter</textarea>
  !set wims_ref_class=wims_button_help float_right
@@ -204,20 +204,22 @@ $wims_name_part_list ($usercnt)
 !endif
  !reset table_center
  $table_header
- !if $job_affi=notes
+ !if $wims_typename notwordof group portal
+  !if $job_affi=notes
   <caption>$name_formula2</caption>
- !else
-  !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-  !let tmp=!values v for v=1 to $tmp
-  !let showsheet=!listintersect $showsheet and $tmp
-  !if $job_affi=quality
+  !else
+   !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+   !let tmp=!values v for v=1 to $tmp
+   !let showsheet=!listintersect $showsheet and $tmp
+   !if $job_affi=quality
    <caption>$name_qualitygot</caption>
-  !endif
-  !if $job_affi=points
+   !endif
+   !if $job_affi=points
    <caption>$name_percentagedone</caption>
-  !endif
-  !if $job_affi=best
+   !endif
+   !if $job_affi=best
    <caption>$name_percentagebest</caption>
+   !endif
   !endif
  !endif
  !if $manual>0 and $job_affi=notes
@@ -243,6 +245,9 @@ $wims_name_part_list ($usercnt)
   <th class="manual_notes small">$(name_manual_notes[3])</th>
  !else
   $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+  !if $wims_typename iswordof group portal
+    !goto endgroup
+ !endif
   !if $job_affi=notes
    <th class="average">$name_Average</th>
   !endif
@@ -257,6 +262,7 @@ $wims_name_part_list ($usercnt)
    !endif
   !next j
  !endif
+ :endgroup
  </tr>
  !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
  !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
@@ -279,6 +285,9 @@ $varfilter_
     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
    !endif
   </td>
+  !if $wims_typename iswordof group portal
+    !goto enduser
+  !endif
   !readproc adm/class/userscore
   !if $manual>0 and $job_affi=notes
    !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
@@ -314,6 +323,10 @@ $varfilter_
     !endif
    !endif
   !else
+   !if $wims_typename iswordof group portal
+   </tr>
+    !goto enduser
+   !endif
    !if $job_affi=notes
     !if $per>0
      !read adm/class/colors $[ceil($per*10/$scoremax)]
@@ -422,6 +435,10 @@ $varfilter_
   </tr>
 :enduser
  !next i
+ !if $wims_typename iswordof group portal
+   </table>
+    !goto end
+ !endif
  !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
 	$[rint(100*$mean_tea/$usercnt)/100],\
 	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
