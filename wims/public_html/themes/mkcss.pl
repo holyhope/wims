@@ -33,7 +33,6 @@ for my $f (glob("*/*.css.template")) {
 sub treate { my ($c)= @_ ;
   if ($c) {
   open(INN, $c);
-  print $c . "\n";
   my $text = <INN> ;
   close(INN) ;
   "\n/*! from $c */\n$text" ;
