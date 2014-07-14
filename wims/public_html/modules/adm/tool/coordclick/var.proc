@@ -175,9 +175,10 @@ dessin=!append line arrow $click_x,$click_y to $dessin
       !increase ext
         !if $type iswordof 2
     dessin_p=!append line circle $click_x,$click_y,5,red to $dessin_p
-    !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
-       !set insdraw_filebase=!listuniq $insdraw_filebase
-      !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+    !set insdraw_filebase=!append item $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+    !set insdraw_filebase=!listuniq $insdraw_filebase
+    !set insdraw_filebase=!items2words $insdraw_filebase
+    !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
       $dessin\
       $dessin_p
       !sh cd $wims_home/\

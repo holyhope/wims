@@ -95,13 +95,12 @@ $name_exo0
 
  !distribute item alt="Click",1,form click into ins_attr,ins_border,ins_tag
 
-  <table class="wimsnoborder wimscenter"><tr><td style="width:50px; height-min:50px;text-align:top;">
+  <ul><li style="display: inline-block;vertical-align:top;max-width:$[max($(insdraw_size[1])+4,300)]px">
   !if $step>=3
     !if $type=2 and $ext=2
      $(name_point$type$ext)
       !read zone.phtml
-  </td></tr>
-  </table>
+  </li></ul>
       !exit
     !endif
        $(name_point$type$ext)
@@ -115,7 +114,7 @@ $name_exo0
   !else
     <input type="image" name="click" src="$imgsrc" border="1" />
   !endif
-</td><td>
+</li><li style="display: inline-block;vertical-align:top; padding-left:5em;">
   !if $test=nosize and $begin>=1
    <span class="wims_warning">$wims_name_warning</span>. $name_nosize
   !endif
@@ -131,7 +130,6 @@ $name_exo0
        $name_noclick
       !endif
    !endif
-    <div style="padding:50px;">
    !if $ext iswordof 2
       !set readonly=readonly="readonly"
    !else
@@ -143,13 +141,12 @@ $name_exo0
       !if $type=2 and $ext=1
         !formradio javatype list $list_curve prompt $name_list_curve
       !endif
-    </div>
    !if $data!=
      <pre style="text-align:left;">$data</pre>
    !endif
   !endif
-  </td></tr>
-  </table>
+  </li>
+</ul>
 !if $type!=2 or $ext=1
  <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_send" />
