@@ -15,7 +15,7 @@ dl=!replace word allscores by allscore in $dl
 dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
 dl_tmp=$dl
-basic=login lastname firstname password email regnum comments photourl participate supervise external_auth vars
+basic=login lastname firstname password email regnum comments photourl participate supervise supervisable external_auth vars
 sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
 sh=
@@ -119,7 +119,7 @@ dl2=!translate , to $sep in $dl2
 !endif
 tit=!replace , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
-!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,external_auth
+!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
 !for n in $dl_var
@@ -141,7 +141,7 @@ $dl3$dl5\
 
 !for u=1 to $usercnt
  !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
-     user_external_auth,user_supervise,user_participate
+     user_external_auth,user_supervise,user_participate,user_supervisable
  !for n in $dl_v
    !reset user__$n
  !next
