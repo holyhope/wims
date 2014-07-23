@@ -249,6 +249,15 @@ $name_inscription4:
             <label for="user_auth">$wims_name_Login ($name_external)</label>
            <input size="16" name="user_auth" id="user_auth" value="$user_auth" />
           </div>
+          !set ct=!defof class_type in wimshome/log/classes/$class/.def
+        !if $wims_user=supervisor and $class=$wims_class and $ct iswordof 2 4
+         <div class="field box">
+          <label for="utype">$name_accounttype</label>
+          !default utype=0
+          !set wims_ref_class=wims_formradio
+          !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
+         </div>
+        !endif
           <div class="wimscenter wimsform">
             <input type="submit" value="$wims_name_tosave" />
           </div>
