@@ -26,17 +26,17 @@
 !set name_result=Results of the survey
 !set name_content=Content
 !set name_creation= Creation of a vote.
-!set name_edition=Edition of a vote.
+!set name_edition=Editing a vote.
 !set name_remaining=remaining free places
 !set name_untitled=Untitled
 !set name_showresult=Show result
 !set name_nowritable=you cannot modify the vote when it is active. Here is the source:
-!set name_novotant=Aucun vote
-!set name_notenough=Pas assez de votants pour publier la liste
-!set name_showlist=Résultats par question
-!set name_showglobal=Résultats globaux
-!set name_showlistbystudent=Résultats par votants
-!set name_showstudentbyitem=Liste par choix
+!set name_novotant=No replies yet
+!set name_notenough=Need more replies in order to show the list
+!set name_showlist=List by question
+!set name_showglobal=Global results
+!set name_showlistbystudent=List by students
+!set name_showstudentbyitem=List by choices
 
 !distribute lines Your class has no vote yet.\
 Please verify with your supervisor.\
@@ -107,12 +107,19 @@ into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
  !readproc adm/lang/sheetexam.phtml.$lang
 !endif
 
-!set name_yourvariable=!nosubst Le nom de la variable correspondant à ce questionnaire \
-  que vous avez choisi est <span class="tt wims_code_variable">$namevar</span>
-!set name_accessvar_instr=!nosubst <strong>Utilisation dans un examen ou dans une feuille</strong>: \
-dans une feuille ou un examen actif, dans <span class="tt wims_code_words">$(name_shinfo[6])</span>, sélectionnez \
- <span class="tt wims_code_words">$(name_allowtype[3])</span> et écrivez \
-<span class="tt wims_code_variable">\$namevar</span> (y compris <span class="tt wims_code_variable">\</span>).
+!set name_yourvariable=!nosubst The name of the variable that you have chosen \
+  for this vote is <span class="tt wims_code_variable">$namevar</span>
+!set name_accessvar_instr=!nosubst <strong>Usage with exams and worksheets</strong>: \
+configuring an active worksheet or exam, as <span class="tt wims_code_words">$(name_shinfo[6])</span> choose \
+ <span class="tt wims_code_words">$(name_allowtype[3])</span> and write \
+<span class="tt wims_code_variable">\$namevar</span> (including \
+<span class="tt wims_code_variable">\</span>). The variable \
+<span class="tt wims_code_variable">list_vote$vote</span> is also \
+available to select students for some of the activites of the class, \
+e.g. it can be used in the list of participant to show the students \
+who choose a particular session (e.g. \
+<span class="tt wims_code_variable">list_vote$vote=1</span> \
+to show the students who choose session 1 in this vote, ... and so on).
 
 !set name_group_instr=!nosubst <strong>Utilisation dans la classe</strong>: vous pouvez filtrer \
 les participants selon cette variable pour certaines activités de la classe.
