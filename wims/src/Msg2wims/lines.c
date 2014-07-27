@@ -15,7 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /* line input / output / translation routines
- * and error routines */
+ * and error routines
+ */
 
 #include <stdarg.h>
 
@@ -90,7 +91,7 @@ void collapse_item(char *p, int n)
     else ovlstrcpy(p,pp+1);
 }
 
-/* modify a string. Bufferlen must be ast least MAX_LINELEN */
+/* modify a string. Bufferlen must be at least MAX_LINELEN */
 void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];

@@ -1,4 +1,4 @@
-/*2010-08-20 
+/*2010-08-20
 
 Modify the output to wims
 Rename it in crossword.c
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **  into a symmetrical grid than into a non-symmetrical grid,
 **  so NODEMAX must be increased (say with 1000) to get better results.
 */
- 
+
 /* Configuring parameters */
 
 #define TIMEMAX		(10*60-15)	/* 10 minute limit		*/
@@ -202,8 +202,8 @@ int x, y;
       if (!ISCHAR(d->grid[x-1]) && ISCHAR(d->grid[x+1])) cnt++;
       if (!ISCHAR(d->grid[x-GRIDMAX]) && ISCHAR(d->grid[x+GRIDMAX])) cnt++;
     }
-  printf("%s seqnr:%d level:%d/%d score:%f numword:%d/%d numchar:%d numconn:%d\n", 
-         elapsedstr(), d->seqnr, d->firstlevel, d->lastlevel, d->score, d->numword, 
+  printf("%s seqnr:%d level:%d/%d score:%f numword:%d/%d numchar:%d numconn:%d\n",
+         elapsedstr(), d->seqnr, d->firstlevel, d->lastlevel, d->score, d->numword,
          cnt, d->numchar, d->numconn);
 #endif
 
@@ -234,13 +234,13 @@ int x, y;
 #else
 # if WIMS==1
   int sizex, sizey ; sizex=0 ;  sizey=0;
-      for (y=1; y<GRIDMAX; y++) { 
-       for (x=1; x<GRIDMAX; x++) { 
+      for (y=1; y<GRIDMAX; y++) {
+       for (x=1; x<GRIDMAX; x++) {
          if (ISCHAR(d->grid[x+y*GRIDMAX])) { if (x > sizex) sizex = x ; }
        }
       }
-      for (x=1; x<GRIDMAX-1; x++) { 
-       for (y=1; y<GRIDMAX-1; y++) { 
+      for (x=1; x<GRIDMAX-1; x++) {
+       for (y=1; y<GRIDMAX-1; y++) {
          if (ISCHAR(d->grid[x+y*GRIDMAX])) { if (y > sizey) sizey = y ; }
        }
       }
@@ -249,7 +249,7 @@ int x, y;
         if (!ISCHAR(d->grid[x+y*GRIDMAX]) && x <sizex ){ printf(",");}
         else {
         if (ISCHAR(d->grid[x+y*GRIDMAX])){
-         printf ("%c", d->grid[x+y*GRIDMAX]+BASE); 
+         printf ("%c", d->grid[x+y*GRIDMAX]+BASE);
          if (x <sizex) printf(",") ;
         }
        }
@@ -264,7 +264,7 @@ int x, y;
         printf ("%c", d->grid[x+y*GRIDMAX]+BASE);
       else
         printf("-");
-#endif 
+#endif
 #endif
 
 
@@ -383,7 +383,7 @@ node **prev, *next;
 
 /*
 ** The next two routines test if a given word can be placed in the grid.
-** If a new character will be adjecent to an existing character, check
+** If a new character will be adjacent to an existing character, check
 ** if the newly formed character pair exist in the wordlist (it doesn't
 ** matter where).
 */
@@ -413,7 +413,7 @@ int l;
     if (ISSTAR(*p))
       continue; /* Skip stars */
     if (!ISCHAR(grid[-GRIDMAX]) && !ISCHAR(grid[+GRIDMAX]))
-      continue; /* No adjecent chars */
+      continue; /* No adjacent chars */
 
     if (ISFREE(grid[-GRIDMAX]))
       l = links2[*p][grid[+GRIDMAX]];
@@ -474,11 +474,11 @@ int l;
 /*
 ** The next two routines will place a given word in the grid. These routines
 ** also performs several sanity checks to make sure the new grid is worth
-** it to continue with. If a newly placed character is adjecent to an 
+** it to continue with. If a newly placed character is adjacent to an
 ** existing character, then that pair must be part of a word that can
 ** be physically placed. If multiple character pairs exist, then no check
 ** is done to determine if those words (of which the pairs are part) can
-** be adjecent. That is done later as these grids are not counted against
+** be adjacent. That is done later as these grids are not counted against
 ** NODEMAX.
 */
 
@@ -512,7 +512,7 @@ struct link *ld;
     if (ISSTAR(*p))
       continue; /* Skip stars */
     if (!ISCHAR(grid[-GRIDMAX]) && !ISCHAR(grid[+GRIDMAX]))
-      continue; /* No adjecent chars */
+      continue; /* No adjacent chars */
 
     if (ISFREE(grid[-GRIDMAX])) {
       d->adjxy [newnumadj] = xy;
@@ -624,7 +624,7 @@ struct link *ld;
     if (ISSTAR(*p))
       continue; /* Skip stars */
     if (!ISCHAR(grid[-1]) && !ISCHAR(grid[+1]))
-      continue; /* No adjecent chars */
+      continue; /* No adjacent chars */
 
     if (ISFREE(grid[-1])) {
       d->adjxy [newnumadj] = xy;
@@ -826,7 +826,7 @@ int hasplace, hasfree;
     }
 
     /* Locate word fragments (just one word please) */
-    hasplace = 0; 
+    hasplace = 0;
     hasfree = 0;
     for (xy=level2xy[level],grid=d->grid+xy,attr=d->attr+xy;
          !ISBORDER(*attr);
@@ -890,7 +890,7 @@ int hasplace, hasfree;
     }
 
     /* Update hotspot */
-    if (!hasfree) 
+    if (!hasfree)
       d->firstlevel = level+1;
   }
 }
@@ -909,9 +909,9 @@ int i;
     d=todonode = NULL;
     for (i=SCOREMAX-1; i>=0; i--)
       if (scores[i]) {
-        if (todonode == NULL) 
+        if (todonode == NULL)
           d=todonode=scores[i];
-        else 
+        else
           d->next = scores[i];
         while (d->next) d=d->next;
         scores[i] = NULL;
@@ -933,9 +933,9 @@ int i;
     elapsedtime();
 
 #if DEBUG
-    fprintf(stderr, "%s word:%2d score:%f level:%2d/%2d node:%4d/%4d/%4d hash:%3d/%3d\n", 
-            elapsedstr(), solution.numword, solution.score, 
-            solution.firstlevel, solution.lastlevel, numscan, numnode, 
+    fprintf(stderr, "%s word:%2d score:%f level:%2d/%2d node:%4d/%4d/%4d hash:%3d/%3d\n",
+            elapsedstr(), solution.numword, solution.score,
+            solution.firstlevel, solution.lastlevel, numscan, numnode,
             realnumnode, hashtst, hashhit);
     if (flg_dump) dump_grid (&solution);
 #endif
