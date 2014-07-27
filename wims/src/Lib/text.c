@@ -45,7 +45,8 @@ void text_common(char *p)
 
 /* Returns a mask string composed of '0's and '1's, where
  * '0' means corresponding positions of buf[0] and buf[1] are
- * equal. */
+ * equal.
+ */
 void text_compare(char *p)
 {
     int min,max, i;
@@ -107,6 +108,15 @@ void text_diff(char *p)
  * Positions corresponding to '0's are filled by space.
  * Fill stops at the end of buf[0]. If buf[1] is
  * too short, it is reused from the start.
+ * FIXME: using 0 as a mask gives a bug
+ */
+/*
+   @@ !text expand abcdef mask 01
+   @@ a b c d e f
+   @@ !text expand abcdef mask 011
+   @@ ab cd e
+   @@ !text expand abcdefg using 101110
+   @@ a bcd e fg
  */
 void text_expand(char *p)
 {
@@ -125,6 +135,10 @@ void text_expand(char *p)
  * replacing only mask-effective chars.
  * The resulting string is as long as buf[1], and the replacement
  * stops when chars buf[0] has run out.
+ */
+/*
+  @@ !text insert abcefg into hijkl mask 10100
+  @@ aibkl
  */
 void text_insert(char *p)
 {
@@ -182,7 +196,12 @@ void text_interact(char *p)
 }
 
 /* returns a mask string composed of '0's and '1's, where
- * '0' means corresponding char in buf[1] appears in buf[0]. */
+ * '0' means corresponding char in buf[1] appears in buf[0].
+ */
+/*
+   @@ !text mark a in abcaefa
+   @@ 001001
+ */
 void text_mark(char *p)
 {
     int i, n;

@@ -1250,7 +1250,9 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
     ovlstrcpy(pm->str,p); return 0;
 }
 
-/* Execute a command. Returns 0 if OK. */
+/* Create the struct objparm pm corresponding to the objparm p
+ * Execute a command. Returns 0 if OK.
+ */
 int obj_main(char *p)
 {
     int i;
@@ -1271,6 +1273,7 @@ int obj_main(char *p)
     if(strlen(p)==1 || (strlen(p)==2 && isdigit(*(p+1)))) {
       setvar(p,evalue(pp)); return 0;
     }
+/* search the number of the object */
     i=search_list(objtab,obj_no,sizeof(objtab[0]),name);
     if(i<0) {
       error("bad_cmd"); return 1;
