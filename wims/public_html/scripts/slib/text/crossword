@@ -53,7 +53,7 @@ slib_word_cnt=!linecnt $slib_word
 
 slib_test_char=!lines2words $slib_word
 !! let the empty character at the end of the line
-slib_test_char=!text expand $slib_test_char using 0
+slib_test_char=!text expand $slib_test_char using 10
 slib_test_char=!words2items $slib_test_char
 slib_pb=!listintersect -,_ and $slib_test_char
 !if $slib_pb!=$empty
@@ -69,7 +69,10 @@ slib_pb=!listintersect -,_ and $slib_test_char
 
 !set slib_file=!randint 1000
 !set slib_file=cw_$wims_nowseconds$slib_file
-
+!if $slib_word issametext $empty
+  slib_out=
+  !exit
+!endif
 !readproc oef/togetfile.proc $slib_file new\
 $slib_word
 
