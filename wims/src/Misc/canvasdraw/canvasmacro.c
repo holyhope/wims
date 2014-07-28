@@ -5,6 +5,7 @@ void add_safe_eval(FILE *js_include_file);
 void add_to_js_math(FILE *js_include_file);
 void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
 void add_jsplot(FILE *js_include_file,int canvas_root_id);
+void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,char *type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity);
 
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
@@ -31,7 +32,8 @@ void add_js_poly(FILE *js_include_file,int num,char *draw_type,int line_width,ch
 void add_js_rect(FILE *js_include_file,int num,int roundrect,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_floodfill(FILE *js_include_file,int canvas_root_id);
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
-void add_js_text(FILE *js_include_file,int canvas_root_id,int fontsize,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y);
+void add_js_arc(FILE *js_include_file,int canvas_root_id,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
+void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity);
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
 void add_input_line(FILE *js_include_file,int num);
@@ -255,8 +257,6 @@ var dashtype1 = %d;\
 var num = %d;\
 var use_rotate = 0;\
 var angle = 0;\
-var use_translate = 0;\
-var vector=[0,0];\
 var closed_path = 1;\
 var clickcnt = 0;\
 xy_cnt = 0;\
@@ -282,11 +282,11 @@ function user_draw(evt){\
    {\
     clickcnt = 0;\
     if(roundrect == 0 ){\
-     draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+     draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
     }\
     else\
     {\
-     draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+     draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
     }\
     if( num != 1 ){ xy_cnt++; }else{xy_cnt--;}\
    }\
@@ -312,11 +312,11 @@ function user_drag(evt){\
   userdraw_y[xy_cnt] = y1;\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   if( roundrect == 0 ){\
-   draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+   draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
   }\
   else\
   {\
-   draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+   draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
   };\
  };\
 };\
@@ -336,11 +336,11 @@ function canvas_remove(x,y){\
      context_userdraw.clearRect(0,0,xsize,ysize);\
      if(xy_cnt < 2){xy_cnt = 0;click_cnt = 0;userdraw_x = [];userdraw_y = [];return;};\
      if( roundrect == 0 ){\
-      draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+      draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
      }\
      else\
      {\
-      draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+      draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
      }\
      return;\
     };\
@@ -387,7 +387,7 @@ function user_draw(evt){\
     if( x - marge < userdraw_x[0] && x + marge > userdraw_x[0]){\
      if( y - marge < userdraw_y[0] && y + marge > userdraw_y[0]){\
       userdraw_x.splice(xy_cnt,1);userdraw_y.splice(xy_cnt,1);\
-      draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+      draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
       done = 1;return;\
      };\
     };\
@@ -395,7 +395,7 @@ function user_draw(evt){\
    else\
    {\
     if( xy_cnt == num - 1){\
-     draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+     draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
      done = 1;return;\
     };\
    };\
@@ -423,7 +423,7 @@ function user_drag(evt){\
   };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;\
-  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector);\
+  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
  }\
 }\
 function canvas_remove(x,y){\
@@ -818,7 +818,7 @@ var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
 function user_draw(evt){\
  var lu = userdraw_x.length;\
  if( lu != 0 && lu%%2 == 0){\
-  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
  }\
  var y = evt.clientY - canvas_rect.top;\
  if( y < ysize + 1){\
@@ -839,7 +839,7 @@ function user_draw(evt){\
    else\
    {\
     if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
-    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
    }\
   }\
   else\
@@ -861,9 +861,9 @@ function user_drag(evt){\
  };\
  if( lu%%2 != 0 ){\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_arrows(context_userdraw,[x0,x],[y0,y],arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  draw_arrows(context_userdraw,[x0,x],[y0,y],arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
   if( lu > 0){\
-    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
   }\
  }\
 };\
@@ -882,7 +882,7 @@ function canvas_remove(x,y){\
       userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
      }\
      if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
-     draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector,type,use_rotate,angle,use_translate,vector);\
+     draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0],type,use_rotate,angle,0,[1,0,0,1,0,0]);\
     }\
     return;\
    }\
@@ -1065,8 +1065,50 @@ function tooltip%d_show(){\
 
 } 
 
+void add_js_arc(FILE *js_include_file,int canvas_root_id,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin userdraw \"arc\" on final canvas -->\n\
+function user_draw(evt){\
+ var canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var x,xc,x1,x2,y,yc,y1,y2,lu;\
+ if(evt.which == 1){\
+  x = evt.clientX - canvas_rect.left;\
+  y = evt.clientY - canvas_rect.top;\
+  if( x_use_snap_to_grid == 1 ){x = snap_to_x(x);};\
+  if( y_use_snap_to_grid == 1 ){y = snap_to_y(y);};\
+  lu = userdraw_x.push(x);userdraw_y.push(y);\
+  if( lu != 0 && lu%%3 == 0){\
+   context_userdraw.clearRect(0,0,xsize,ysize);\
+   for(var p = 0 ; p < lu; p = p + 3){\
+     xc = userdraw_x[p];\
+     yc = userdraw_y[p];\
+     x1 = userdraw_x[p+1];\
+     x2 = userdraw_x[p+2];\
+     y1 = userdraw_y[p+1];\
+     y2 = userdraw_y[p+2];\
+     draw_userarc(context_userdraw,xc,yc,x1,y1,x2,y2,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d);\
+   };\
+  }\
+  else\
+  {\
+   if( lu%%3 == 2 ){\
+    draw_segments(context_userdraw,[userdraw_x[lu-2],userdraw_x[lu-1]],[userdraw_y[lu-2],userdraw_y[lu-1]],%d,\"%s\",%.2f,1,2,2,0,0,0,[0,0]);\
+    return;\
+   };\
+  };\
+ }\
+ else\
+ {\
+  if( confirm(\"remove drawing ?\") ){\
+   context_userdraw.clearRect(0,0,xsize,ysize);userdraw_x = [];userdraw_y = [];return;\
+  };\
+ };\
+};\
+function user_drag(evt){ return; };",line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,line_width,stroke_color,stroke_opacity
+);
+}
 
-void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity,int use_rotate,int angle,int use_translate,int translate_x,int translate_y){
+
+void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin command userdraw text -->\n\
 canvas_div.addEventListener(\"keydown\",user_text,false);\
 var context_userdraw = canvas_userdraw.getContext(\"2d\");\
@@ -1167,6 +1209,7 @@ function user_text(evt){\
 type = 0 : x-values only [command mousex]
 type = 1 : y-values only [command mousey]
 type = 2 : (x:y) 	 [command mouse]
+type = 3 : degrees	 [command mouse_degree]
 */
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type){
 fprintf(js_include_file,"\n<!-- begin command mouse on current canvas -->\n\
@@ -1187,6 +1230,7 @@ function use_mouse_coordinates(){\
    case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
    case 1: m_data = \" \"+(px2y(y)).toFixed(prec)+\" \"+unit_y;break;\
    case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
+   case 3: m_data = \" \"+( ( Math.atan( ((xmax - xmin)*(px2y(y))) / ((ymax - ymin)*(px2x(x))) ) )/(Math.PI/180) ).toFixed(prec)+\" \\u00B0 \";break;\
    default:break;\
   };\
   var s = parseInt(0.8*%d*(m_data.toString()).length);\
@@ -1230,6 +1274,60 @@ fprintf(js_include_file," \nfunction safe_eval(exp){\
  };\
  return exp;\
 };");
+}
+/*
+add slider
+*/
+void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,char *type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity){
+fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
+function add_slider_%d(){\
+if( wims_status == \"done\" ){return;};\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var x_value = %f;\
+var y_value = %f;\
+var slider_type = \"%s\";\
+var slider_label =\"%s\";\
+var slider_fillcolor = \"%s\";\
+var slider_strokecolor = \"%s\";\
+var slider_linewidth = \"%d\";\
+var slider_canvas = document.createElement(\"canvas\");\
+slider_canvas.id = \"slider_canvas%d\";\
+var br = document.createElement(\"BR\");\
+tooltip_div.appendChild(slider_canvas);\
+tooltip_div.appendChild(br);\
+var slider_width = %d;\
+var slider_height = %d;\
+var slider_center = %d;\
+var slider_radius = 0.2*slider_height;\
+var slider_opacity = %f;\
+slider_canvas.width = slider_width;\
+slider_canvas.height = slider_height;\
+var canvas_rect = (slider_canvas).getBoundingClientRect();\
+var slider_ctx = slider_canvas.getContext(\"2d\");\
+slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\
+slider_ctx.fillStyle = \"rgba(\"+slider_fillcolor+\",\"+slider_opacity+\")\";\
+slider_ctx.lineWidth = slider_linewidth;\
+slider_ctx.beginPath();\
+slider_ctx.arc(10,slider_center,slider_radius,0,2*Math.PI,false);\
+slider_ctx.moveTo(10,slider_center);\
+slider_ctx.lineTo(slider_width-10,slider_center);\
+slider_ctx.closePath();\
+slider_ctx.fill();\
+slider_ctx.stroke();\
+slider_canvas.addEventListener(\"mousemove\",slider,false);\
+function slider(evt){\
+ slider_ctx.clearRect(0,0,slider_width,slider_height);\
+ var x = evt.clientX - canvas_rect.left;\
+ slider_ctx.beginPath();\
+ slider_ctx.arc(x,slider_center,slider_radius,0,2*Math.PI,false);\
+ slider_ctx.moveTo(10,slider_center);\
+ slider_ctx.lineTo(slider_width-10,slider_center);\
+ slider_ctx.closePath();\
+ slider_ctx.fill();\
+ slider_ctx.stroke();\
+ return;\
+};\
+};add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,v1,v2,type,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,slider_cnt);
 }
 
 /* 
@@ -1521,7 +1619,7 @@ function user_redraw(t){\
   userdraw_x.splice(lu-2,2);\
   userdraw_y.splice(lu-2,2);\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
   return;\
  };\
  var add_x1 = safe_eval( document.getElementById(\"userinput_x1\").value );\
@@ -1544,7 +1642,7 @@ function user_redraw(t){\
    userdraw_y[1] = y2px(add_y2);\
   };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector);\
+  draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
  };\
  return;\
 };",num);
@@ -1592,24 +1690,24 @@ function user_redraw(t){\
 void add_input_polyline(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polyline_segment via inputfields -->\n\
 function user_redraw(t){\
- var lu = userdraw_x.length;\n\
+ var lu = userdraw_x.length;\
  cnt = 1;\
  if( t == -1 && lu > 0){\
-  userdraw_x.splice(lu-1,1);\n\
-  userdraw_y.splice(lu-1,1);\n\
-  context_userdraw.clearRect(0,0,xsize,ysize);\n\
-  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
-  return;\n\
- };\n\
- var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\n\
- var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\n\
+  userdraw_x.splice(lu-1,1);\
+  userdraw_y.splice(lu-1,1);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  return;\
+ };\
+ var add_x = safe_eval( document.getElementById(\"userinput_x\").value );\
+ var add_y = safe_eval( document.getElementById(\"userinput_y\").value );\
  if(add_x != null && add_y != null ){\
-  userdraw_x.push(x2px(add_x));\n\
-  userdraw_y.push(y2px(add_y));\n\
-  context_userdraw.clearRect(0,0,xsize,ysize);\n\
-  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\n\
- };\n\
- return;\n\
+  userdraw_x.push(x2px(add_x));\
+  userdraw_y.push(y2px(add_y));\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_polyline(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ };\
+ return;\
 };");
 }
 /* draw segment(s) via inputfields x/y */
@@ -1666,7 +1764,7 @@ function user_redraw(t){\
   userdraw_y.splice(lu-1,1);\
   };\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+  draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,0,[1,0,0,1,0,0]);\
   cnt = 1; return;\
  };\
  var add_x_values = (document.getElementById(\"userinput_x\").value).split('\\n');\
@@ -1683,7 +1781,7 @@ function user_redraw(t){\
   userdraw_y[lu+p] = y2px(add_y);\
   if(p>100){alert(\"hmmmm\");return;};\
  };\
- draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector);\
+ draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,0,[1,0,0,1,0,0]);\
  cnt = 1;\
  return;\
 };");
@@ -1754,17 +1852,17 @@ var to_js_math = function(math_fun){\
     };\
    };\
   };\
- };\n\
- for(var p=0 ; p < len ; p++){\n\
-  in_fun = infun[p];In_Fun = in_fun.toUpperCase();w_cnt = 0;\n\
-  if(math_fun.indexOf(In_Fun) != -1 ){\n\
-   while(math_fun.indexOf(In_Fun) != -1){\n\
-    math_fun = math_fun.replace(In_Fun,in_fun);\n\
-    w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\n\
-   };\n\
-  };\n\
- };\n\
- return math_fun;\n\
+ };\
+ for(var p=0 ; p < len ; p++){\
+  in_fun = infun[p];In_Fun = in_fun.toUpperCase();w_cnt = 0;\
+  if(math_fun.indexOf(In_Fun) != -1 ){\
+   while(math_fun.indexOf(In_Fun) != -1){\
+    math_fun = math_fun.replace(In_Fun,in_fun);\
+    w_cnt++;if(w_cnt>1000){alert(\"hmmm \"+math_fun+\" ?\\nUse command plot for more complex math functions...\");return null;};\
+   };\
+  };\
+ };\
+ return math_fun;\
 };\n");
 }
 
@@ -2200,14 +2298,14 @@ Shape.prototype.draw = function(ctx)\
  switch(this.type){\
   case 1: ctx.rect(this.x[0], this.y[0], this.x[1]-this.x[0], this.y[2] - this.y[0]);break;\
   case 2: ctx.arc(this.x[0],this.y[0],this.w[0],0,2*Math.PI,false);break;\
-  case 3: var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.beginPath();ctx.moveTo(this.x[0], this.y[0] - h);ctx.bezierCurveTo(this.x[0] + w, this.y[0] - h,this.x[0] + w, this.y[0] + h,this.x[0],this.y[0] + h);ctx.bezierCurveTo(this.x[0] - w, this.y[0] + h,this.x[0] - w, this.y[0] - h,this.x[0], this.y[0] - h);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); }; ctx.closePath();break;\
+  case 3: ctx.save();var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.scale(1,h/w);ctx.beginPath();ctx.arc(this.x[0], w/h*this.y[0], w, 0, 2 * Math.PI);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); };ctx.closePath();ctx.stroke();ctx.restore();break;\
   case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
   case 5: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
   case 6: var w = this.x[1] - this.x[0];var h = this.y[1] - this.y[0];var r = this.w[0];ctx.beginPath();ctx.moveTo(this.x[0] + r, this.y[0]);ctx.lineTo(this.x[0] + w - r, this.y[0]);ctx.quadraticCurveTo(this.x[0] + w, this.y[0], this.x[0] + w, this.y[0] + r);ctx.lineTo(this.x[0] + w, this.y[0] + h - r);ctx.quadraticCurveTo(this.x[0] + w, this.y[0] + h, this.x[0] + w - r, this.y[0] + h);ctx.lineTo(this.x[0] + r, this.y[0] + h);ctx.quadraticCurveTo(this.x[0], this.y[0] + h, this.x[0], this.y[0] + h - r);ctx.lineTo(this.x[0], this.y[0] + r);ctx.quadraticCurveTo(this.x[0], this.y[0], this.x[0] + r, this.y[0]);ctx.closePath();break;\
   case 7: ctx.moveTo(this.x[0]-this.w[0],this.y[0]-this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]+this.h[0]);ctx.moveTo(this.x[0]-this.w[0],this.y[0]+this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]-this.h[0]);break;\
-  case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.restore();ctx.save();dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();};break;\
+  case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();};break;\
   case 9: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length - 1;p++){if( Math.abs(this.y[p] - this.y[p-1]) < ysize && Math.abs(this.y[p+1] - this.y[p]) < ysize ){ctx.lineTo(this.x[p],this.y[p]);}else{ctx.moveTo(this.x[p],this.y[p]);};};break;\
-  case 10: var dx;var dy;var len;ctx.restore();ctx.save();dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],-1*this.w[0]);ctx.lineTo(-1*this.w[0],this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],-0.5*this.w[0]);ctx.lineTo(this.w[0], 0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
+  case 10: var dx;var dy;var len;ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],-1*this.w[0]);ctx.lineTo(-1*this.w[0],this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],-0.5*this.w[0]);ctx.lineTo(this.w[0], 0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
   case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
   case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.w[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
   case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
@@ -2425,14 +2523,14 @@ var dragstuff = new CanvasState(obj,container_div);",canvas_root_id,ANIMATE_CANV
 
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command filltoborder -->\n\
-filltoborder = function(x,y,bordercolor,color){\
- x = x2px(x);\
- y = y2px(y);\
+filltoborder = function(xs,ys,bordercolor,color){\
+ var xs = x2px(xs);\
+ var ys = y2px(ys);\
  var canvas = document.getElementById(\"wims_canvas%d\"+4);\
  var ctx = canvas.getContext(\"2d\");ctx.save();\
  var image = ctx.getImageData(0, 0, xsize, ysize);\
  var imageData = image.data;\
- var pixelStack = [[x, y]];\
+ var pixelStack = [[xs, ys]];\
  var px1;\
  var newPos;\
  var pixelPos;\
@@ -2453,7 +2551,7 @@ filltoborder = function(x,y,bordercolor,color){\
  function _checkBorder(px2){\
   return (bordercolor.r === px2.r && bordercolor.g === px2.g && bordercolor.b === px2.b);\
  };\
- px1 = _getPixel(((y * xsize) + x) * 4);\
+ px1 = _getPixel(((ys * xsize) + xs) * 4);\
  bordercolor = {\
   r: parseInt(bordercolor[0], 10),\
   g: parseInt(bordercolor[1], 10),\
@@ -2469,21 +2567,21 @@ filltoborder = function(x,y,bordercolor,color){\
  if( _comparePixel(color) ) { return true; }\
  while (pixelStack.length) {\
   newPos = pixelStack.pop();\
-  x = newPos[0];y = newPos[1];\
-  pixelPos = (y*xsize + x) * 4;\
-  while(y-- >= 0 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
+  xs = newPos[0];ys = newPos[1];\
+  pixelPos = (ys*xsize + xs) * 4;\
+  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos)) && ! _checkBorder(_getPixel(pixelPos))){\
    pixelPos -= xsize * 4;\
   }\
   pixelPos += xsize * 4;\
-  ++y;\
+  ++ys;\
   found_left_border = false;\
   found_right_border = false;\
-  while( y++ < ysize-1 && ( ! _checkBorder(_getPixel(pixelPos))) ){\
+  while( ys++ < ysize-1 &&  _comparePixel(_getPixel(pixelPos)) && ! _checkBorder(_getPixel(pixelPos)) ){\
    _setPixel(pixelPos);\
-   if( x > 0 ){\
+   if( xs > 0 ){\
     if( _comparePixel(_getPixel(pixelPos - 4)) ){\
     if( !found_left_border ){\
-     pixelStack.push( [x - 1, y] );\
+     pixelStack.push( [xs - 1, ys] );\
      found_left_border = true;\
     }\
    }\
@@ -2491,10 +2589,10 @@ filltoborder = function(x,y,bordercolor,color){\
      found_left_border = false;\
     }\
    }\
-   if( x < xsize-1 ){\
+   if( xs < xsize-1 ){\
     if( _comparePixel(_getPixel(pixelPos + 4)) ){\
      if( !found_right_border){\
-      pixelStack.push( [x + 1, y] );\
+      pixelStack.push( [xs + 1, ys] );\
       found_right_border = true;\
      }\
     }\

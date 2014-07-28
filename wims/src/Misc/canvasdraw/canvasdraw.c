@@ -60,7 +60,6 @@ int type; /* eg command number */
 int onclick = 0;/* 0 = noninteractive ; 1 = onclick ; 2 = draggable*/
 int use_affine = FALSE;
 int use_rotate = FALSE;
-int use_translate = FALSE;
 int use_filled = FALSE;
 int use_dashed = FALSE; /* dashing not natively supported in firefox  , for now... */
 char buffer[MAX_BUFFER];/* contains js-functions with arguments ... all other basic code is directly printed into js-include file */
@@ -105,8 +104,9 @@ int main(int argc, char *argv[]){
     int reply_format = 0;
     int input_cnt = 0;
     int ext_img_cnt = 0;
+    int slider_cnt = 0;
     int font_size = 12;
-    int dashtype[2] = { 2 , 2 };
+    int dashtype[2] = { 4 , 4 };
     int js_function[MAX_JS_FUNCTIONS]; /* javascript functions include objects on demand basis : only once per object type */
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
     int arrow_head = 8; /* size in px*/
@@ -119,8 +119,6 @@ int main(int argc, char *argv[]){
     int barchart_cnt = 0; /* identifier for command 'barchart' ; multiple charts may be plotted in a single plot*/
     int legend_cnt = -1; /* to allow multiple legends to be used, for multiple piecharts etc  */
     double angle = 0.0;
-    int translate_x = 0;
-    int translate_y = 0;
     int clickfillmarge = 20;
     int animation_type = 9; /* == object type curve in drag library */
     int use_input_xy = 0; /* 1= input fields 2= textarea 3=calc y value*/
@@ -215,8 +213,8 @@ function x2px(x){if(use_xlogscale == 0 ){return parseFloat(x*xsize/(xmax - xmin)
 function px2x(px){if(use_xlogscale == 0 ){return parseFloat(px*(xmax - xmin)/xsize + xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
 function px2y(py){if(use_ylogscale == 0 ){return parseFloat(ymax - py*(ymax - ymin)/ysize);}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_out = y_max +py*(y_min - y_max)/(ysize);return Math.pow(ylogbase,y_out);};};\
 function y2px(y){if(use_ylogscale == 0){return parseFloat(-1*y*ysize/(ymax - ymin) + ymax*ysize/(ymax - ymin));}else{var y_max = Math.log(ymax)/Math.log(ylogbase);var y_min = Math.log(ymin)/Math.log(ylogbase);var y_in = Math.log(y)/Math.log(ylogbase);return (y_max - y_in)*ysize/(y_max - y_min);};};\
-function scale_x_radius(rx){return parseInt(x2px(rx) - x2px(0));};\
-function scale_y_radius(ry){return parseInt(y2px(ry) - y2px(0));};\
+function scale_x_radius(rx){return rx*xsize/(xmax - xmin);};\
+function scale_y_radius(ry){return ry*ysize/(ymax - ymin);};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
 function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
 function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};\
@@ -515,7 +513,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
 	case SQUARE:
 	/*
-	@ square x,y,side,color
+	@ square x,y,side (px) ,color
 	@ draw a square with left top corner (x:y) with side 'side' in color 'color'
 	@ use command 'fsquare x,y,side,color' for a filled square
 	@ use command/keyword  'filled' before command 'square x,y,side,color'
@@ -524,14 +522,15 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
-		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
-		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
-		    case 2:double_data[2] = get_real(infile,0);
-			   double_data[3] = double_data[2];
-			   break; /* x-values */
-		    case 3:stroke_color = get_color(infile,1);/* name or hex color */
+		    case 0:double_data[0] = get_real(infile,0);break; /* x1-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y1-values */
+		    case 2:double_data[2] = (int) (get_real(infile,0));break; /* width in px */
+		    case 3:
+			stroke_color = get_color(infile,1);/* name or hex color */
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			double_data[3] = double_data[0] + (xmax - xmin)*double_data[2]/xsize;
+			double_data[4] = double_data[1] + -1*(ymax - ymin)*double_data[2]/ysize;
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[3],decimals,double_data[3],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[4],decimals,double_data[4],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();
 			break;
 		}
@@ -553,6 +552,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
 		    case 4:int_data[0] = (int) (get_real(infile,0));break; /* radius value in pixels */
 		    case 5:stroke_color = get_color(infile,1);/* name or hex color */
+			/* ensure no inverted roundrect is produced... */
+			if( double_data[0] > double_data[2] ){double_data[4] = double_data[0];double_data[0] = double_data[2];double_data[2] = double_data[4];}
+			if( double_data[3] > double_data[1] ){double_data[4] = double_data[1];double_data[1] = double_data[3];double_data[3] = double_data[4];}	
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();
@@ -856,16 +858,16 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 0: int_data[0] = x2px(get_real(infile,0));break; /* x0-values  -> x-pixels*/
 		    case 1: int_data[1] = y2px(get_real(infile,0));break; /* y0-values  -> y-pixels*/
 		    case 2: int_data[2] = (int) (get_real(infile,0));break; /* x1-values  -> x-pixels*/
-		    case 3: int_data[3] = (int) (get_real(infile,0));break; /* y1-values  -> y-pixels*/
+		    case 3: int_data[3] = (int) -1*(get_real(infile,0));break; /* y1-values  -> y-pixels*/
 		    case 4: int_data[4] = (int) (get_real(infile,0));break; /* x2-values  -> x-pixels*/
-		    case 5: int_data[5] = (int) (get_real(infile,0));break; /* y2-values  -> y-pixels*/
+		    case 5: int_data[5] = (int) -1*(get_real(infile,0));break; /* y2-values  -> y-pixels*/
 		    case 6: int_data[6] = (int) (get_real(infile,0));break; /* n1-values */
 		    case 7: int_data[7] = (int) (get_real(infile,0));break; /* n2-values */
 		    case 8: stroke_color=get_color(infile,1);
     			decimals = find_number_of_digits(precision);
-			string_length = snprintf(NULL,0,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,[%d,%d]);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+			string_length = snprintf(NULL,0,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix);
 			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			snprintf(tmp_buffer,string_length,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,[%d,%d]);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+			snprintf(tmp_buffer,string_length,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix);
 			add_to_buffer(tmp_buffer);
 		    break;
 		    default:break;
@@ -955,6 +957,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,1);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -966,6 +969,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	        if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 	        if(reply_format == 0 ){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,1,2);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -977,6 +981,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
@@ -987,6 +992,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( strcmp(draw_type,"polyline") == 0 ){
 		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
 		if(reply_format == 0){reply_format = 23;}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if( use_input_xy == 1 ){
 		    add_input_polyline(js_include_file);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -998,6 +1004,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
 		if(reply_format == 0){reply_format = 11;}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_segment(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
@@ -1009,6 +1016,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,2,1);
 		    add_input_xyr(js_include_file,canvas_root_id);
@@ -1021,6 +1029,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 10;}
 		/* 9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n in x/y-range */
 		add_js_circles(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_circle(js_include_file,2,2);
 		    add_input_xyr(js_include_file,canvas_root_id);
@@ -1032,6 +1041,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,1,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_crosshair(js_include_file,1);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -1043,6 +1053,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 8;}
 		/* 7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n in x/y-range */
 		add_js_crosshairs(js_include_file,2,draw_type,line_width,crosshair_size ,stroke_color,stroke_opacity);
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){ 
 		    add_input_crosshair(js_include_file,2);
 		    add_input_xy(js_include_file,canvas_root_id);
@@ -1054,6 +1065,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"freehandlines") == 0 ){
@@ -1061,6 +1073,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"path") == 0 ){
@@ -1068,6 +1081,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"paths") == 0 ){
@@ -1075,6 +1089,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 6;}
 		add_js_paths(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);   
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrows") == 0 ){
@@ -1085,6 +1100,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_arrow(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrows2") == 0 ){
@@ -1095,6 +1111,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrow2") == 0 ){
@@ -1105,6 +1122,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"arrow") == 0 ){
@@ -1115,13 +1133,15 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_arrow(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if(strcmp(draw_type,"polygon") == 0){
 		if( js_function[DRAW_PATHS] != 1 ){ js_function[DRAW_PATHS] = 1;}
 		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,-1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
-		if( use_input_xy == 2 ){
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){
 		  add_textarea_polygon(js_include_file);
 		  add_textarea_xy(js_include_file,canvas_root_id);
 		}
@@ -1133,6 +1153,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,(int) (draw_type[4]-'0'),draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if(strcmp(draw_type,"triangle") == 0){
@@ -1140,30 +1161,39 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_poly(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"hline") == 0 ){
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_hlines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"hlines") == 0 ){
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_hlines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"vline") == 0 ){
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_hlines(js_include_file,3,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"vlines") == 0 ){
 		if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
 		add_js_hlines(js_include_file,4,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"line") == 0 ){
@@ -1175,6 +1205,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_line(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"lines") == 0 ){
@@ -1186,6 +1217,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    add_input_line(js_include_file,2);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"rects") == 0){
@@ -1193,6 +1225,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,2,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrects") == 0){
@@ -1200,6 +1233,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,2,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"rect") == 0){
@@ -1207,6 +1241,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,1,0,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    if( strcmp(draw_type,"roundrect") == 0){
@@ -1214,13 +1249,24 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(reply_format == 0){reply_format = 2;}
 		add_js_rect(js_include_file,1,1,draw_type,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"arc") == 0){
+		if( js_function[DRAW_USERARC] != 1 ){ js_function[DRAW_USERARC] = 1;} 	
+		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
+		if(reply_format == 0){reply_format = 17;}
+		add_js_arc(js_include_file,canvas_root_id,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
 	    if( strcmp(draw_type,"text") == 0){
 		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
 		if(reply_format == 0){reply_format = 17;}
-		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity,use_rotate,angle,use_translate,translate_x,translate_y);
+		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else 
 	    {
@@ -1472,9 +1518,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 4: 
 		    decimals = find_number_of_digits(precision);
 		    temp = get_string_argument(infile,1);
-		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_translate,translate_x,translate_y);
+		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_translate,translate_x,translate_y);
+		    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
 		    add_to_buffer(tmp_buffer);
 		    break;
 		    default:break;
@@ -1509,9 +1555,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3: double_data[0] = get_real(infile,0);break;/* rotation */
 		    case 4: decimals = find_number_of_digits(precision);
 			    temp = get_string_argument(infile,1);
-			    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_translate,translate_x,translate_y);
+			    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_affine,affine_matrix);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,[%d,%d]);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_translate,translate_x,translate_y);
+			    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,%.2f,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,font_family,font_color,stroke_opacity,double_data[0],temp,use_rotate,angle,use_affine,affine_matrix);
 			    add_to_buffer(tmp_buffer);
 			    break;
 		    default:break;
@@ -1536,7 +1582,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
 			click_cnt++;reset();break;
-			    break;
 		    default:break;
 		}
 	    }
@@ -1688,6 +1733,31 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	    use_axis = TRUE;
 	    break;
+	case SLIDER:
+	/*
+	@ slider start_value,end_value,width,height,type,label
+	@ NO INTEGRATION WITH OBJECTS...YET
+	@ type: x,y,angle
+	@ label: some slider text
+	@ use fillcolor for slider ball
+	@ use strokecolor for slider bar
+	@ use opacity (only fill opacity will be used) to set transparency
+	@ the slider will be draw in the 'tooltip div' : so incompatible with command tooltip ; setlimits etc
+	*/
+	    for(i=0; i<6 ; i++){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* start value */
+		    case 1: double_data[1] = get_real(infile,0);break; /* end value */
+		    case 2: int_data[0] = (int)(get_real(infile,0));break; /* width */
+		    case 3: int_data[1] = (int)(get_real(infile,0));break; /* height */
+		    case 4: temp = get_string_argument(infile,0);break; /* type : x,y,angle */
+		    case 5: /* some string */
+		    add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],temp,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity);
+		    slider_cnt++;
+		    break;
+		}
+	    }
+	    break;
 	case SGRAPH:
 	/*
 	 @ sgraph xstart,ystart,xmajor,ymajor,xminor,yminor,majorgrid_color,minorgrid_color
@@ -1752,11 +1822,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
 		    /* set snap_x snap_y values in pixels */
 		    fprintf(js_include_file,"snap_x = %f;snap_y = %f;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
-/* draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){ */
-
-		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,[%d,%d],%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,translate_x,translate_y,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
 		    add_to_buffer(tmp_buffer);
 		    break;
 		}
@@ -1785,9 +1853,6 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @
 	*/
 	    use_rotate = TRUE;
-	    use_translate = TRUE;
-	    translate_x = x2px(0);
-	    translate_y = y2px(0);
 	    angle = get_real(infile,1);
 	    break;
 	case KILLAFFINE:
@@ -1810,8 +1875,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	 @ b : Skews the drawings horizontally
 	 @ c : Skews the drawings vertically
 	 @ d : Scales the drawings vertically
-	 @ tx: Moves the drawings horizontally in pixels !
-	 @ ty: Moves the drawings vertically in pixels !
+	 @ tx: Moves the drawings horizontally in xrange coordinate system
+	 @ ty: Moves the drawings vertically in yrange coordinate system 
+	 @ the data precision is 2 decimals (printf : %2.f)
 	*/
 	    for(i = 0 ; i<6;i++){
 		switch(i){
@@ -1819,13 +1885,13 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 1: double_data[1] = get_real(infile,0);break;
 		    case 2: double_data[2] = get_real(infile,0);break;
 		    case 3: double_data[3] = get_real(infile,0);break;
-		    case 4: int_data[0] = (int)(get_real(infile,0));break;
-		    case 5: int_data[1] = (int)(get_real(infile,1));
+		    case 4: double_data[4] = get_real(infile,0);break;
+		    case 5: double_data[5] = get_real(infile,1);
 			use_affine = TRUE;
-			string_length = snprintf(NULL,0,"[%.2f,%.2f,%.2f,%.2f,%d,%d] ",double_data[0],double_data[1],double_data[2],double_data[3],int_data[0],int_data[1]);
+			string_length = snprintf(NULL,0,     "[%.2f,%.2f,%.2f,%.2f,%.2f,%.2f] ",double_data[0],double_data[1],double_data[2],double_data[3],double_data[4]*xsize/(xmax - xmin),-1*double_data[5]*ysize/(ymax - ymin));
 		        check_string_length(string_length);affine_matrix = my_newmem(string_length+1);
-			snprintf(affine_matrix,string_length,"[%.2f,%.2f,%.2f,%.2f,%d,%d] ",double_data[0],double_data[1],double_data[2],double_data[3],int_data[0],int_data[1]);    
-		    break;
+			snprintf(affine_matrix,string_length,"[%.2f,%.2f,%.2f,%.2f,%.2f,%.2f] ",double_data[0],double_data[1],double_data[2],double_data[3],double_data[4]*xsize/(xmax - xmin),-1*double_data[5]*ysize/(ymax - ymin));    
+			break;
 		    default: break;
 		}
 	    }
@@ -1834,16 +1900,29 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	 killtranslation
 	*/
+	    use_affine = FALSE;
+	    snprintf(affine_matrix,14,"[1,0,0,1,0,0]");    
 	    break;
 	case TRANSLATION:
 	/*
 	 @translation tx,ty
-	 @
+	 @will translate the next object tx in xrange and ty in yrange
+	 @uase command 'killtranstation' to end the command
 	*/
-	    use_translate = TRUE;
-	    translate_x = get_real(infile,0);
-	    translate_y = get_real(infile,1);
-	    break;
+	    for(i = 0 ; i<2;i++){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break;
+		    case 1: double_data[1] = get_real(infile,1);
+			use_affine = TRUE;
+			string_length = snprintf(NULL,0, "[1,0,0,1,%.2f,%.2f] ",double_data[0]*xsize/(xmax - xmin),-1*double_data[1]*ysize/(ymax - ymin));
+		        check_string_length(string_length);affine_matrix = my_newmem(string_length+1);
+			snprintf(affine_matrix,string_length,"[1,0,0,1,%.2f,%.2f] ",double_data[0]*xsize/(xmax - xmin),-1*double_data[1]*ysize/(ymax - ymin));
+			break;
+		    default: break;
+		}
+	    }
+	break;
+
 	case DASHED:
 	/*
 	@ keyword "dashed"
@@ -2189,11 +2268,55 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	*/
 	    fprintf(js_include_file,"unit_y = \"%s\";",get_string(infile,1));
 	    break;
+	case MOUSE_DISPLAY:
+	/*
+	 @display x|y|xy|degree,color,fontsize
+	 @will display the mouse cursor coordinates as x-only,y-only,(x:y) or the angle in degrees
+	 @just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
+	*/
+	temp = get_string_argument(infile,0);
+	if(strstr(temp,"degree") != NULL){
+	    int_data[0] = 3;
+	}else{
+	    if( strstr(temp,"xy") != NULL ){
+		int_data[0] = 2;
+	    }else{
+		if( strstr(temp,"y") != NULL ){
+		    int_data[0] = 1;
+		}else{
+		    if( strstr(temp,"x") != NULL ){
+			int_data[0] = 0;
+		    }else{
+			int_data[0] = 2;
+		    }	
+		}
+	    }
+	}	
+	stroke_color = get_color(infile,0);
+	font_size = (int) (get_real(infile,1));
+	tmp_buffer = my_newmem(26);
+	snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
+	add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,int_data[0]);
+	break;
+	case MOUSE_DEGREE:
+	/*
+	 @ mouse_degree color,fontsize
+	 @ will display the angle in degrees between (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ The angle is positive in QI and QIII and the angle value is negative in QII and QIV
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom') 
+
+	*/
+	    stroke_color = get_color(infile,0);
+	    font_size = (int) (get_real(infile,1));
+	    tmp_buffer = my_newmem(26);
+	    snprintf(tmp_buffer,25,"use_mouse_coordinates();\n");add_to_buffer(tmp_buffer);
+	    add_js_mouse(js_include_file,MOUSE_CANVAS,canvas_root_id,precision,stroke_color,font_size,stroke_opacity,3);
+	    break;
 	case MOUSEX:
 	/*
 	 @ mousex color,fontsize
 	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom') 
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -2206,7 +2329,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	/*
 	 @ mousey color,fontsize
 	 @ will display the cursor y-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom') 
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom') 
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -2450,9 +2573,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 			   }
 			   decimals = find_number_of_digits(precision);
 			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
-			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},5000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},5000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],bgcolor,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
@@ -3211,7 +3334,6 @@ void add_to_buffer(char *tmp){
 void reset(){
  if(use_filled == TRUE){use_filled = FALSE;}
  if(use_dashed == TRUE){use_dashed = FALSE;}
- if(use_translate == TRUE){use_translate = FALSE;}
  if(use_rotate == TRUE){use_rotate = FALSE;}
  onclick = 0;
 }
@@ -4528,9 +4650,9 @@ draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_
     break;
     case DRAW_CIRCLES:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw circles -->\n\
-draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  for(var p = 0 ; p < x_points.length ; p++ ){\
@@ -4548,9 +4670,9 @@ draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,str
     break;
     case DRAW_POLYLINE:/* user for userdraw : draw lines through points */
 fprintf(js_include_file,"\n<!-- draw polyline -->\n\
-draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -4576,9 +4698,9 @@ draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_op
     
     case DRAW_SEGMENTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw segments -->\n\
-draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -4609,10 +4731,10 @@ function calc_line(x1,x2,y1,y2){\
  var Y2 = y1 + (xsize - x1)*(y2 - y1)/(x2 - x1);\
  return [0,Y1,xsize,Y2];\
 };\
-draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  var line = new Array(4);\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -4632,8 +4754,8 @@ draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opaci
 
     case DRAW_CROSSHAIRS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw crosshairs  -->\n\
-draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_translate,vector){\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -4661,9 +4783,9 @@ draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,strok
 
     case DRAW_RECTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw rects -->\n\
-draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_translate,vector){\
+draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle = \"rgba('+stroke_color+','+stroke_opacity+')\";\
@@ -4682,9 +4804,9 @@ draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opaci
 
     case DRAW_ROUNDRECTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw round rects -->\n\
-draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  var x,y,w,h,r;\
@@ -4710,7 +4832,7 @@ draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_
 
     case DRAW_ELLIPSES:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw ellipses -->\n\
-draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4721,7 +4843,7 @@ draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,s
  };\
  var ctx = obj.getContext(\"2d\");\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  var cx,cy,ry,rx;\
  ctx.lineWidth = line_width;\
@@ -4743,9 +4865,9 @@ draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,s
 
     case DRAW_PATHS: /*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw paths -->\n\
-draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
  ctx.lineJoin = \"round\";\
@@ -4764,9 +4886,9 @@ draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,
     break;
     case DRAW_ARROWS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw arrows -->\n\
-draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_translate,vector){\
+draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -5109,12 +5231,12 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
 
     case DRAW_GRID:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw grid -->\n\
-draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_translate,vector,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
+draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
 var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{obj = create_canvas%d(canvas_type,xsize,ysize);};\
 var ctx = obj.getContext(\"2d\");ctx.clearRect(0,0,xsize,ysize);\
 if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
 ctx.save();\
-if( use_translate == 1 ){ctx.translate(vector[0],vector[1]);};\
+if( use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
 if( use_rotate == 1 ){ctx.translate(x2px(0),y2px(0));ctx.rotate(angle*Math.PI/180);ctx.translate(-1*(x2px(0)),-1*(y2px(0)));};\
 var stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
 ctx.fillStyle = \"rgba(\"+font_color+\",\"+1.0+\")\";\
@@ -5499,52 +5621,61 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
     break;
     case DRAW_ARCS:
 fprintf(js_include_file,"\n<!-- draw arcs -->\n\
-draw_arc = function(canvas_type,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
- var obj;\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
- }\
- else\
- {\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\
- };\
- var ctx = obj.getContext(\"2d\");\
+draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
- if( use_translate == 1 ){ctx.translate(vector[0],vector[1]);};\
+ if( use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
  if( use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
  if(end < start){var tmp = end;end = start;start=tmp;};\
- start=360-start;\
- end=360-end;\
+ start = 360 - start;\
+ end = 360 - end;\
  ctx.lineWidth = line_width;\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
+ ctx.beginPath();\
+ ctx.moveTo(xc,yc);\
+ ctx.arc(xc, yc, r, start*(Math.PI / 180), end*(Math.PI / 180),true);\
+ ctx.lineTo(xc,yc);\
+ ctx.closePath();\
  if( use_filled == 1 ){\
-  ctx.beginPath();\
-  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
-  var x1 = xc + r*Math.cos(Math.PI*start/180);\
-  var y1 = yc + r*Math.sin(Math.PI*start/180);\
-  var x2 = xc + r*Math.cos(Math.PI*end/180);\
-  var y2 = yc + r*Math.sin(Math.PI*end/180);\
-  ctx.beginPath();\
-  ctx.moveTo(x1,y1);\
-  ctx.lineTo(xc,yc);\
-  ctx.moveTo(xc,yc);\
-  ctx.lineTo(x2,y2);\
-  ctx.closePath();\
-  ctx.arc(xc, yc, r, start*(Math.PI / 180), end*(Math.PI / 180),true);\
   ctx.fill();\
-  ctx.stroke();\
- }\
- else\
- {\
-    ctx.beginPath();\
-    ctx.arc(xc, yc, r, start*(Math.PI / 180), end*(Math.PI / 180),true);\
-    ctx.stroke();\
-    ctx.closePath();\
- }\
+ };\
+ ctx.stroke();\
  ctx.restore();\
-};",canvas_root_id,canvas_root_id,canvas_root_id);
+};");
     
+    break;
+    case DRAW_USERARC:
+/*      rot = Math.PI-end + rot;*/
+fprintf(js_include_file,"\n<!-- draw arc -->\n\
+draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
+ ctx.save();\n\
+ if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\n\
+ ctx.lineWidth = line_width;\n\
+ ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\n\
+ ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\n\
+ var end = find_angle(xc,yc,x1,y1,x2,y2);\n\
+ var r = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));var rot;\n\
+ if( y2 < y1 ){rot = find_angle(xc,yc,x2,yc,x2,y2);};\n\
+ if( y1 < y2 ){rot = find_angle(xc,yc,x1,yc,x1,y1);};\n\
+ if( x1 > xc && x2 > xc ){rot = 2*Math.PI - rot;};\n\
+  if( x1 < xc && x2 < xc ){rot = Math.PI - rot;};\n\
+ ctx.translate(xc,yc);\n\
+ ctx.rotate(rot);\n\
+ ctx.beginPath();\n\
+ ctx.arc(0,0,r,0,end,false);\n\
+ ctx.lineTo(0,0);\n\
+ ctx.closePath();\n\
+ ctx.fill();\n\
+ ctx.stroke();\n\
+ ctx.restore();\n\
+};\n\
+function find_angle(xc,yc,x1,y1,x2,y2){\
+ var a = Math.sqrt(Math.pow(xc-x1,2)+Math.pow(yc-y1,2));\n\
+ var b = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\n\
+ var c = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));\n\
+ return Math.acos((b*b+a*a-c*c)/(2*b*a));\n\
+};");
     break;
     case DRAW_CENTERSTRING:
 fprintf(js_include_file,"\n<!-- draw centerstring -->\n\
@@ -5569,7 +5700,7 @@ return;\
     break;
     case DRAW_TEXTS:
 fprintf(js_include_file,"\n<!-- draw text -->\n\
-draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_translate,vector){\
+draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_affine,affine_matrix){\
   var obj;\
   if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
    obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5581,7 +5712,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
   var ctx = obj.getContext(\"2d\");\
   if(angle2 == 0 && angle != 0){\
    ctx.save();\
-   if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+   if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
    if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
   };\
   if( font_family.indexOf('px') != null ){\
@@ -5605,7 +5736,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
     break;
     case DRAW_CURVE:
 fprintf(js_include_file,"\n<!-- draw curve -->\n\
-draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,use_rotate,angle,use_translate,vector){\
+draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5616,7 +5747,7 @@ draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color
  };\
  var ctx = obj.getContext(\"2d\");\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.beginPath();ctx.lineWidth = line_width;\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -5796,7 +5927,7 @@ break;
 
 case DRAW_LATTICE:
 fprintf(js_include_file,"\n<!-- draw lattice -->\n\
-draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_translate,vector){\
+draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5807,7 +5938,7 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
  };\
  var ctx = obj.getContext(\"2d\");\
  ctx.save();\
- if(use_translate == 1 ){ctx.translate(vector[0],vector[1]);}\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.fillStyle =\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -6169,6 +6300,8 @@ int get_token(FILE *infile){
 	*mouse="mouse",
 	*mousex="mousex",
 	*mousey="mousey",
+	*mouse_display="display",
+	*mouse_degree="mouse_degree",
 	*userdraw="userdraw",
 	*highlight="highlight",
 	*http="http",
@@ -6254,7 +6387,6 @@ int get_token(FILE *infile){
 	*opacity="opacity",
 	*transparent="transparent",
 	*fill="fill",
-	*slider="slider",
 	*point="point",
 	*points="points",
 	*linewidth="linewidth",
@@ -6331,7 +6463,8 @@ int get_token(FILE *infile){
 	*title="title",
 	*centerstring="centerstring",
 	*xunit="xunit",
-	*yunit="yunit";
+	*yunit="yunit",
+	*slider="slider";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -6533,6 +6666,14 @@ int get_token(FILE *infile){
 	free(input_type);
 	return MOUSEY;
 	}
+	if( strcmp(input_type, mouse_degree) == 0 ){
+	free(input_type);
+	return MOUSE_DEGREE;
+	}
+	if( strcmp(input_type, mouse_display) == 0 ){
+	free(input_type);
+	return MOUSE_DISPLAY;
+	}
 	if( strcmp(input_type, mouseprecision) == 0 ){
 	free(input_type);
 	return MOUSE_PRECISION;
@@ -6593,6 +6734,7 @@ int get_token(FILE *infile){
 	}
 	if( strcmp(input_type, darrow) == 0 ){
 	free(input_type);
+	use_dashed = TRUE;
 	return ARROW;
 	}
 	if( strcmp(input_type, darrow2) == 0 ){

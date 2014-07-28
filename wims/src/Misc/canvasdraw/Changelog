@@ -298,13 +298,22 @@ or search keywords 'html5' 'canvas' om leiden mirror
         - reverted some correction mechanism for grid / axisnumbering when zooming out...need to rething 
         - changed command 'barchart' : now "unlimited" barchart commands will be plotted in a single graph.
 -29/6	- added mousex / mousey commands : just show x or y values of mouse coordinates
--30/6	- corrected command 'linegraph'
-	- added 'margin-left:auto;margin-right:auto' to canvas_div
-	- added 'margin-bottom:4px' to tooltip_placeholder_div
-	- added fill/stroke opacity to js clock
--1/7	- corrected typo in 'clock'
-	- corrected read_canvas() replyformat 18 : reading user modified clock values H:M:S could be negative...
--2/7	- layout of [H+] [M+] [S+] and [H-] [M-] [S-] buttons in analogue interactive clock 
+-25/7	Thanks to Marina:
+	- corrected affine : tx/ty now in x/y-range
+	- removed internal variable used by 'translate' and moved to generic 'affine matrix'
+	  the translation_tx being affine_matrix[4]
+	  the translation_ty being affine_matrix[5]
+	  Changed several functions: new flaws in javascript may be introduced.
+	- corrected command 'square x,y,side px,color'
+	- corrected 'filltoborder' and 'floodfill' ... it should / could work now
+remark:  hatchfill/dotfill/diamondfill are not the same as flydraw...I've  not understood the flydraw filling correctly...
+	 to imitate flydraw's filling is too much work ... for both browser js-engine and me ... 
+	- corrected missing dashing of 'arrow' 'arrow2'
+	- corrected command 'lattice' (hope it's ok now)
+-26/7	- corrected a few flaws introduced by internal changing from 'translation' to 'affine'    
+-27/7	- corrected command 'square' ...
+	- corrected command 'roundrect' : no inverted roundrect possible
+	- corrected command 'ellipse' : switched from Beziercurve to arc-method. Should now be a true ellipse
 
 
 

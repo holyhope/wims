@@ -144,8 +144,11 @@
 #define CENTERSTRING	148
 #define MOUSEX		149
 #define MOUSEY		150
-#define XUNIT		151
-#define YUNIT		152
+#define MOUSE_DEGREE	151
+#define MOUSE_DISPLAY	152
+#define XUNIT		153
+#define YUNIT		154
+
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -186,6 +189,7 @@
 #define DRAW_XLOGSCALE	37
 #define DRAW_XYLOGSCALE	38
 #define DRAW_CENTERSTRING 39
+#define DRAW_USERARC	40
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1
