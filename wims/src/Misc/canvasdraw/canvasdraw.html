@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Fri Jul 25 10:21:36 CEST 2014)</h3></center>
+<center><h3>Implemented canvasdraw commands (Wed Jul 30 15:02:58 CEST 2014)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -171,7 +171,7 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> square x,y,side,color
+<li><span style="color:red"> square x,y,side (px) ,color
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> draw a square with left top corner (x:y) with side 'side' in color 'color'
 </span></li>
@@ -1121,13 +1121,13 @@
 	    
 <li><span style="color:red"> precision int
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> 10 = 1 decimal ; 100 = 2 decimals etc
+<li><span style="color:blue;font-size:0.8em"> 1 = no decimals ; 10 = 1 decimal ; 100 = 2 decimals etc
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be used / changed before every object
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the last precision value will be used for read_canvas()...if needed
+<li><span style="color:blue;font-size:0.8em"> In case of user interaction (like 'userdraw') this value will be used to determine the amount of decimals in the reply / answer
 </span></li>
 	    
 </ul>
@@ -1198,6 +1198,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> the displacement can be read by 'javascript:read_dragdrop();'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the precision (default 2 decimals) in the student reply may be set with command 'precision'.<br />Use this 'precision' command before this command 'drag x|y|xy' !
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> the answer is : object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the place of the draggable object in your script.<br />Only draggable object will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
@@ -1552,6 +1555,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> default values should be fine !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'precision [0,1,10,100,1000,10000...]' before command 'replyformat' to set the desired number of decimals in the student reply / drawing
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> the last value for 'precision int' will be used to calculate the reply coordinates, if needed (read_canvas();)
