@@ -33,7 +33,6 @@ int tranged=0;
 double xscale=1,yscale=1,xstart=0,ystart=0;
 double tstart=0,tend=1,tstep=100,plotjump=200;
 double animstep=0;
-double matrix[]={1,0,0,1}; /* transformation matrix */
 int transform=0;  /* transformation indicator */
 double transx=0,transy=0; /* translation vector */
 int lstep=4;
@@ -49,59 +48,17 @@ double scale_buf[MAX_PARMS];
 /***** Les modifs a JC Fev 06 *****/
 /** les matrices suivantes sont initialisees par la commande setmatrix nummatrix,a11,a12,a21,a22 */
 /** elles sont remises a l'unite par resetmatrix nummatrix */
-double matrix01[] = {1,0,0,1};
-double matrix02[] = {1,0,0,1};
-double matrix03[] = {1,0,0,1};
-double matrix04[] = {1,0,0,1};
-double matrix05[] = {1,0,0,1};
-double matrix06[] = {1,0,0,1};
-double matrix07[] = {1,0,0,1};
-double matrix08[] = {1,0,0,1};
-double matrix09[] = {1,0,0,1};
-double matrix10[] = {1,0,0,1};
-double matrix11[] = {1,0,0,1};
-double matrix12[] = {1,0,0,1};
-double matrix13[] = {1,0,0,1};
-double matrix14[] = {1,0,0,1};
-double matrix15[] = {1,0,0,1};
-double matrix16[] = {1,0,0,1};
-double matrix17[] = {1,0,0,1};
-double matrix18[] = {1,0,0,1};
-double matrix19[] = {1,0,0,1};
+typedef double matrice[4];
 #define JC_NB_MATRICES 19
 /* la matrice fixant le systeme de coordonnees "mathematiques" dans l'image */
-double *matrices_pavage[] ={ matrix,
-        matrix01,matrix02,matrix03,matrix04,matrix05,matrix06,matrix07,matrix08,matrix09,
-        matrix10,matrix11,matrix12,matrix13,matrix14,matrix15,matrix16,matrix17,matrix18,matrix19
-
-};
+matrice matrices_pavage[JC_NB_MATRICES+1];
+#define matrix matrices_pavage[0]
+typedef double vecteur[2];
+vecteur vecteurs_pavage[JC_NB_MATRICES+1];
+#define vector vecteurs_pavage[0]
 /** les vecteurs suivants sont initialises par la commande setvector numvector,u_1,u_2 */
 /** ils sont remis a zero par resetvector numvector */
-double vector[] = {0,0};
-double vector01[] = {0,0};
-double vector02[] = {0,0};
-double vector03[] = {0,0};
-double vector04[] = {0,0};
-double vector05[] = {0,0};
-double vector06[] = {0,0};
-double vector07[] = {0,0};
-double vector08[] = {0,0};
-double vector09[] = {0,0};
-double vector10[] = {0,0};
-double vector11[] = {0,0};
-double vector12[] = {0,0};
-double vector13[] = {0,0};
-double vector14[] = {0,0};
-double vector15[] = {0,0};
-double vector16[] = {0,0};
-double vector17[] = {0,0};
-double vector18[] = {0,0};
-double vector19[] = {0,0};
 
-double *vecteurs_pavage[] ={ vector,
-         vector01,vector02,vector03,vector04,vector05,vector06,vector07,vector08,vector09,
-         vector10,vector11,vector12,vector13,vector14,vector15,vector16,vector17,vector18,vector19
-};
 
 /** les coordonnees du parallelograme de pavage = coordonnees "mathematiques" du parallelogramme contenant l'image a recopier **/
 /** on place ces coorodonnes avec setparallelogram xs,ys,xu,yu,xv,yu **/
@@ -131,7 +88,33 @@ void output(void)
 
 #include "lines.c"
 #include "nametab.c"
-#include "evalue.c"
+
+/* substitute variable names by their environment strings
+ * The buffer pointed to by p must have enough space
+ * (defined by MAX_LINELEN). */
+char *substit(char *p)
+{
+    char *pp, *pe;
+    char namebuf[MAX_NAMELEN+1];
+    int i, l;
+
+    pe=strchr(p,'"'); if(pe!=NULL) l=pe-p; else l=MAX_LINELEN;
+    for(pp=find_name_start(p); *pp!=0 && pp-p<l;
+      pp=find_name_start(pe)) {
+      pe=find_name_end(pp);
+      if((pp>p && !isspace(*(pp-1)) && *(pp-1)!=',') ||
+         (*pe!=0 && !isspace(*pe) && *pe!=',')) continue;
+      memmove(namebuf,pp,pe-pp); namebuf[pe-pp]=0;
+      i=search_list(nametab,nametab_no,sizeof(nametab[0]),namebuf);
+      if(i<0) continue;
+      if(nametab[i].type==t_prep && preptab[nametab[i].serial].typ==p_font)
+        break;
+      if(nametab[i].type==t_color)
+        string_modify(p,pp,pe,colortab[nametab[i].serial].def);
+    }
+    return p;
+}
+
 #include "vimg.c"
 #include "objects.c"
 
@@ -151,6 +134,8 @@ int verify_tables(void) {
 
 int main(int argc, char *argv[])
 {
+  int i; for (i = 0; i <= JC_NB_MATRICES; i++)
+	   matrices_pavage [i][0] = matrices_pavage[i][3] = 1;
     error1=error; error2=error; error3=error;
     substitute=substit;
     ev_varcnt=&varcnt; ev_var=vartab;

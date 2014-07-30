@@ -19,11 +19,17 @@
 /* bug in gdImageFillToBorder */
 void gdImageFillToBorder1 (gdImagePtr im, int x, int y, int border, int color)
 {
-   int pp=x;
-   if(pp>=image->sx) pp=image->sx-1;
-   if(pp<0) pp=0;
-   gdImageFillToBorder(im,pp,y,border,color);
+   if(x>=image->sx) x=image->sx-1; if(x<0) x=0;
+   if(y>=image->sy) y=image->sy-1; if(y<0) y=0;
+   gdImageFillToBorder(im,x,y,border,color);
 }
+
+void gdImageFillToBorder2 (gdImagePtr im, int x, int y, int border, int color)
+{
+   if(x>=image->sx || x<0 || y>=image->sy || y<0) return;
+   gdImageFillToBorder(im,x,y,border,color);
+}
+
 
 /* File opening: with security */
 FILE *open4read(char *n)
@@ -372,7 +378,7 @@ void obj_ellipse(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder1(image,pm->p[0],pm->p[1],
+      gdImageFillToBorder2(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -387,7 +393,7 @@ void obj_circle(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder1(image,pm->p[0],pm->p[1],
+      gdImageFillToBorder2(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -782,11 +788,11 @@ void _obj_plot(objparm *pm,int dash)
     for(i=j=0;i<=tstep;i++) {
       if(n==1) {
           if(tranged) t=tstart+i*v; else t=xstart+i*v;
-          eval_setval(varpos,t); dc[0]=t; dc[1]=evalue(p1);
+          eval_setval(varpos,t); dc[0]=t; dc[1]=strevalue(p1);
       }
       else {
           t=tstart+i*v; eval_setval(varpos,t);
-          dc[0]=evalue(p1); dc[1]=evalue(p2);
+          dc[0]=strevalue(p1); dc[1]=strevalue(p2);
       }
       if(!finite(dc[0]) || !finite(dc[1])) ic[0]=ic[1]=-BOUND;
       else scale(dc,ic,1);
@@ -846,7 +852,7 @@ void obj_levelcurve(objparm *pm)
       if(n>LEVEL_LIM+1) n=LEVEL_LIM+1;
       for(i=0;i<n-1;i++) {
           fnd_item(pm->str,i+2,tc);
-          d=evalue(tc);
+          d=strevalue(tc);
           if(finite(d)) ld->levels[i]=d; else ld->levels[i]=0;
       }
       ld->levelcnt=n-1;
@@ -1191,7 +1197,7 @@ int calc_color(char *p, struct objtab *o)
     char buf[MAX_LINELEN+1];
     for(k=0;k<3;k++) {
       fnd_item(p,k+1,buf);
-      cc[k]=evalue(buf);
+      cc[k]=strevalue(buf);
     }
     collapse_item(p,3);
     if(cc[0]==-1 && cc[1]==-1 && cc[2]==-255) {
@@ -1231,7 +1237,7 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
     for(j=0, p1=buf; j<pm->pcnt; j++, p1=p2) {
       p2=find_item_end(p1); if(*p2) *p2++=0;
       p1=find_word_start(p1);
-      if(*p1) pm->pd[j]=evalue(p1); else pm->pd[j]=0;
+      if(*p1) pm->pd[j]=strevalue(p1); else pm->pd[j]=0;
       if(!finite(pm->pd[j])) {
           if(j<o->required_parms) return -1;
           else {pm->pd[j]=0;break;}
@@ -1271,7 +1277,7 @@ int obj_main(char *p)
       *(pp++)=0; pp=find_word_start(pp);
     }
     if(strlen(p)==1 || (strlen(p)==2 && isdigit(*(p+1)))) {
-      setvar(p,evalue(pp)); return 0;
+      setvar(p,strevalue(pp)); return 0;
     }
 /* search the number of the object */
     i=search_list(objtab,obj_no,sizeof(objtab[0]),name);

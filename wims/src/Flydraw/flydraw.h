@@ -38,6 +38,4 @@
 #define BOUND	(MAX_SIZE*10)
 #define exec_prefix_char '#'
 
-	/* evalue.c */
-double evalue(char *p);
 
