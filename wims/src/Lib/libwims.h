@@ -67,8 +67,9 @@ char *strip_trailing_spaces(char *p);      /* strip trailing spaces; return stri
  * Returns 0 if order is OK, -1 otherwise.
  */
 int verify_order(void *list, int items, size_t item_size);
-        /* searches a list. Returns index if found, -1 if nomatch.
- * Uses binary search, list must be sorted. */
+/* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
+ * Uses binary search, list must be sorted.
+ */
 int search_list(void *list, int items, size_t item_size, const char *str);
 unsigned int linenum(char *p);             /* Returns number of lines in string p */
 unsigned int itemnum(char *p);             /* Returns number of items in the list p, comma separated */
@@ -81,7 +82,8 @@ char *fnd_char(char *p, int n, char bf[]); /* find n-th char in string p */
 char *fnd_row(char *p, int n, char bf[]);  /* find n-th row in a matrix p */
 /* Separate items in the string p, end each item with 0,
  * and store item pointers in parm[]. Does not parse past max.
- * Returns the number of fields. */
+ * Returns the number of fields.
+ */
 int separate_item(char *p, char *parm[], int max);
 int separate_line(char *p, char *parm[], int max);
 int separate_word(char *p, char *parm[], int max);
@@ -210,23 +212,14 @@ typedef struct {
 int levelcurve(leveldata *ld);      /* produces level curve data. Returns non-zero if error. */
 
 /* My accelerated definitions. */
-#define myisdigit(x) (x>='0' && x<='9')
-#define myisalpha(x) ((x&~32)>='A' && (x&~32)<='Z')
-#define myisalnum(x) (myisalpha(x) || myisdigit(x))
-#define myisupper(x) (x>='A' && x<='Z')
-#define myislower(x) (x>='a' && x<='z')
-#define myislspace(x) (x==' ' || x=='\t')
-#define myisspace(x) (x==' ' || x=='\t' || x=='\n' || x=='\r')
-
-/* should put parenthesis around x
-#define myisdigit(x) ((x)>='0' && x<='9')
+#define myisdigit(x) ((x)>='0' && (x)<='9')
 #define myisalpha(x) (((x)&~32)>='A' && ((x)&~32)<='Z')
 #define myisalnum(x) (myisalpha(x) || myisdigit(x))
 #define myisupper(x) ((x)>='A' && (x)<='Z')
 #define myislower(x) ((x)>='a' && (x)<='z')
 #define myislspace(x) ((x)==' ' || (x)=='\t')
 #define myisspace(x) ((x)==' ' || (x)=='\t' || (x)=='\n' || (x)=='\r')
-*/
+
 /*ou
 inline int myisdigit(char x) { return x>='0' && x<='9'; }
 */
