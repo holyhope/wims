@@ -73,31 +73,20 @@ char *find_word_end(char *p)
     return p;
 }
 
-	/* searches a list. Returns index if found, -1 if nomatch. 
-	 * Uses binary search, list must be sorted. */
+/* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
+ * Uses binary search, list must be sorted. */
+
 int search_list(void *list, int items, size_t item_size, const char *str)
 {
-    int i1,i2,j,k;
-    char **p;
-    char c;
-    
-    if(items<=0) return -1;
-    j=0; c=*str;
-    p=list;
-    k=**p-c; if(k==0) k=strcmp(*p,str);
-    if(k==0) return k; if(k>0) return -1;
-    p=list+(items-1)*item_size; 
-    k=**p-c; if(k==0) k=strcmp(*p,str);
-    if(k==0) return items-1; if(k<0) return -1;
-    for(i1=0,i2=items-1;i2>i1+1;) {
-	j=i1+(i2-i1)/2;
-	p=list+(j*item_size);
-	k=**p-c; if(k==0) k=strcmp(*p,str);
-	if(k==0) return j;
-	if(k>0) {i2=j; continue;}
-	if(k<0) {i1=j; continue;}	
-    }
-    return -1;
+ int i = 0;
+ while (items > 0)
+   {
+     int m = items / 2, j = i + m;
+     int k = strcmp(*(char **)(list + j * item_size), str);
+     if (k == 0) return j;
+     if (k > 0) items = m; else {i = j + 1; items -= (m + 1);}
+   }
+ return ~i;
 }
 
 	/* get the content of a file, and store in buf. */
@@ -105,7 +94,7 @@ int getfile(char *fname, unsigned char **buf)
 {
     FILE *f;
     long l, l2;
-    
+
     f=fopen(fname,"r"); if(f==NULL) return -1;
     fseek(f,0,SEEK_END); l=ftell(f); fseek(f,0,SEEK_SET);
     if(l>FILE_LENGTH_LIMIT || l<=0) {

@@ -20,7 +20,6 @@
 
 #include "basicstr.c"
 
-
 #define int_buf_size 40
 
 /* this is rapid. Output string will be erased at the next call. */
@@ -343,31 +342,20 @@ int verify_order(void *list, int items, size_t item_size)
     return 0;
 }
 
-/* searches a list. Returns index if found, -1 if nomatch.
+/* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
  * Uses binary search, list must be sorted. */
+
 int search_list(void *list, int items, size_t item_size, const char *str)
 {
-    int i1,i2,j,k;
-    char **p;
-    char c;
-
-    if(items<=0) return -1;
-    j=0; c=*str;
-    p=list;
-    k=**p-c; if(k==0) k=strcmp(*p,str);
-    if(k==0) return k; if(k>0) return -1;
-    p=list+(items-1)*item_size;
-    k=**p-c; if(k==0) k=strcmp(*p,str);
-    if(k==0) return items-1; if(k<0) return ~items;
-    for(i1=0,i2=items-1;i2>i1+1;) {
-      j=(i2+i1)/2;
-      p=list+(j*item_size);
-      k=**p-c; if(k==0) k=strcmp(*p,str);
-      if(k==0) return j;
-      if(k>0) {i2=j; continue;}
-      if(k<0) {i1=j; continue;}
-    }
-    return ~i2;
+ int i = 0;
+ while (items > 0)
+   {
+     int m = items / 2, j = i + m;
+     int k = strcmp(*(char **)(list + j * item_size), str);
+     if (k == 0) return j;
+     if (k > 0) items = m; else {i = j + 1; items -= (m + 1);}
+   }
+ return ~i;
 }
 
 /* Returns number of lines in string p */
