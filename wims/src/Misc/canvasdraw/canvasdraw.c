@@ -166,7 +166,8 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &amp;euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();
+	The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximium precision...the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &amp;euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
 	*/
 	switch(type){
 	case END:
@@ -935,7 +936,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
@@ -1254,11 +1255,18 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
-	    if( strcmp(draw_type,"arc") == 0){
-		if( js_function[DRAW_USERARC] != 1 ){ js_function[DRAW_USERARC] = 1;} 	
+	    if( strcmp(draw_type,"arcs") == 0){
 		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
-		if(reply_format == 0){reply_format = 17;}
-		add_js_arc(js_include_file,canvas_root_id,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(reply_format == 0){reply_format = 25;}
+		add_js_arc(js_include_file,canvas_root_id,2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"arc") == 0){
+		if( js_function[DRAW_SEGMENTS] != 1 ){ js_function[DRAW_SEGMENTS] = 1;}
+		if(reply_format == 0){reply_format = 25;}
+		add_js_arc(js_include_file,canvas_root_id,1,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -2557,6 +2565,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    break;
 		}
 	    }
+	    reset();
 	break;
 	case FILLTOBORDER:
 	/*
@@ -2584,8 +2593,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
-		    }
-	        }
+		}
+	    }
+	    reset();
 	break;
 	case FLOODFILL:
 	/*
@@ -2615,8 +2625,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 			   add_to_buffer(tmp_buffer);
 			   break;
 		    default:break;
-		    }
-	        }
+		}
+	    }
+	    reset();
 	break;
 	case CLICKFILLMARGE:
 	    clickfillmarge = (int) (get_real(infile,1));
@@ -2644,6 +2655,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 }
 	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
 	 add_read_canvas(1,reply_precision);
+	 reset();
 	break;
 	case SETPIXEL:
 	/*
@@ -2706,6 +2718,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 	    snprintf(tmp_buffer,string_length,"draw_setpixel(%s,\"%s\",%.2f,%d);\n",double_xy2js_array(double_data,i,decimals),stroke_color,stroke_opacity,pixelsize);
 	    add_to_buffer(tmp_buffer);
+	    reset();
 	    break;
 	case REPLYFORMAT:
 	/*
@@ -2714,7 +2727,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ default values should be fine !
 	@ use command 'precision [0,1,10,100,1000,10000...]' before command 'replyformat' to set the desired number of decimals in the student reply / drawing
 	@ the last value for 'precision int' will be used to calculate  the reply coordinates, if needed (read_canvas();)
-	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>replyformat 24 = read all inputfield values: even those set 'readonly'</li></ul>
+	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>replyformat 24 = read all inputfield values: even those set 'readonly'</li><li>format 25 = angle1,angle2...angle_n : will return the radius (one or many) of the user drawn circle segment in degrees </li><li>format 26 = rad1,rad2...rad_n : will return the radius (one or many) of the user drawn circle segment in radians </li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
 	*/
 	 reply_format = (int) get_real(infile,1);
@@ -3453,6 +3466,8 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
     x/y in  xrange / yrange coordinate system
 23 = answertype for a polyline : remove multiple occurences  due to reclick on a point to create next polyline segment 
 24 = read all inputfield values: even those set 'readonly'
+25 = return all userdrawn arcs in degrees: 
+26 = return all userdrawn arcs in radians: 
 */
 
 
@@ -4377,6 +4392,36 @@ function read_canvas(){\
 };\
 this.read_canvas = read_canvas;\n\
 <!-- end function 24 read_canvas() -->");
+    break;
+    case 25:
+    fprintf(js_include_file,"\n<!-- begin function 25 read_canvas() : angle(s) in degrees-->\n\
+function read_canvas(){\
+ if( userdraw_radius.length < 1){alert(\"nothing drawn...\");return;}\
+ var lu = userdraw_radius.length;\
+ var prec = %d;\
+ var angle_reply = new Array(lu);\
+ for(var p = 0 ; p < lu ; p++){\
+  angle_reply[p] = (Math.round(prec*180*(userdraw_radius[p])/Math.PI))/prec;\
+ };\
+ return angle_reply;\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 25 read_canvas() -->",reply_precision);
+    break;
+    case 26:
+    fprintf(js_include_file,"\n<!-- begin function 25 read_canvas() : angle(s) in radians-->\n\
+function read_canvas(){\
+ if( userdraw_radius.length < 1){alert(\"nothing drawn...\");return;}\
+ var lu = userdraw_radius.length;\
+ var prec = %d;\
+ var angle_reply = new Array(lu);\
+ for(var p = 0 ; p < lu ; p++){\
+  angle_reply[p] = (Math.round(prec*(userdraw_radius[p])))/prec;\
+ };\
+ return angle_reply;\
+};\
+this.read_canvas = read_canvas;\n\
+<!-- end function 25 read_canvas() -->",reply_precision);
     break;
     default: canvas_error("hmmm unknown replyformat...");break;
 }
@@ -5674,38 +5719,6 @@ draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity
  ctx.restore();\
 };");
     
-    break;
-    case DRAW_USERARC:
-/*      rot = Math.PI-end + rot;*/
-fprintf(js_include_file,"\n<!-- draw arc -->\n\
-draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
- ctx.save();\n\
- if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\n\
- ctx.lineWidth = line_width;\n\
- ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\n\
- ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\n\
- var end = find_angle(xc,yc,x1,y1,x2,y2);\n\
- var r = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));var rot;\n\
- if( y2 < y1 ){rot = find_angle(xc,yc,x2,yc,x2,y2);};\n\
- if( y1 < y2 ){rot = find_angle(xc,yc,x1,yc,x1,y1);};\n\
- if( x1 > xc && x2 > xc ){rot = 2*Math.PI - rot;};\n\
-  if( x1 < xc && x2 < xc ){rot = Math.PI - rot;};\n\
- ctx.translate(xc,yc);\n\
- ctx.rotate(rot);\n\
- ctx.beginPath();\n\
- ctx.arc(0,0,r,0,end,false);\n\
- ctx.lineTo(0,0);\n\
- ctx.closePath();\n\
- ctx.fill();\n\
- ctx.stroke();\n\
- ctx.restore();\n\
-};\n\
-function find_angle(xc,yc,x1,y1,x2,y2){\
- var a = Math.sqrt(Math.pow(xc-x1,2)+Math.pow(yc-y1,2));\n\
- var b = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\n\
- var c = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));\n\
- return Math.acos((b*b+a*a-c*c)/(2*b*a));\n\
-};");
     break;
     case DRAW_CENTERSTRING:
 fprintf(js_include_file,"\n<!-- draw centerstring -->\n\

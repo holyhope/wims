@@ -32,7 +32,7 @@ void add_js_poly(FILE *js_include_file,int num,char *draw_type,int line_width,ch
 void add_js_rect(FILE *js_include_file,int num,int roundrect,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_floodfill(FILE *js_include_file,int canvas_root_id);
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
-void add_js_arc(FILE *js_include_file,int canvas_root_id,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
+void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity);
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
@@ -1065,7 +1065,7 @@ function tooltip%d_show(){\
 
 } 
 
-void add_js_arc(FILE *js_include_file,int canvas_root_id,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
+void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"arc\" on final canvas -->\n\
 function user_draw(evt){\
  var canvas_rect = canvas_userdraw.getBoundingClientRect();\
@@ -1078,6 +1078,7 @@ function user_draw(evt){\
   lu = userdraw_x.push(x);userdraw_y.push(y);\
   if( lu != 0 && lu%%3 == 0){\
    context_userdraw.clearRect(0,0,xsize,ysize);\
+   userdraw_radius = [];\
    for(var p = 0 ; p < lu; p = p + 3){\
      xc = userdraw_x[p];\
      yc = userdraw_y[p];\
@@ -1099,14 +1100,63 @@ function user_draw(evt){\
  else\
  {\
   if( confirm(\"remove drawing ?\") ){\
-   context_userdraw.clearRect(0,0,xsize,ysize);userdraw_x = [];userdraw_y = [];return;\
+   context_userdraw.clearRect(0,0,xsize,ysize);userdraw_x = [];userdraw_y = [];userdraw_radius = [];return;\
   };\
  };\
 };\
-function user_drag(evt){ return; };",line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,line_width,stroke_color,stroke_opacity
-);
+function user_drag(evt){ return; };\
+draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
+ ctx.save();\n\
+ if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\n\
+ ctx.lineWidth = line_width;\n\
+ ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\n\
+ ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\n\
+ var alpha = find_angle(xc,yc,x1,y1,x2,y2);\n\
+ if( %d == 1 ){userdraw_radius[0] = alpha;ctx.clearRect(0,0,xsize,ysize);}else{userdraw_radius.push(alpha);};\
+ var r = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\n\
+ var start;var tmp;var beta;\n\
+ if( x1 > x2 ){\n\
+  tmp = x2; x2 = x1 ; x1 = tmp;\n\
+  tmp = y2; y2 = y1 ; y1 = tmp;\n\
+ };\n\
+ if( y1 < yc ){\n\
+  beta = find_angle(xc,yc,x1,yc,x1,y1);\n\
+   if( x1 < xc ){\n\
+    start = Math.PI + beta;\n\
+   }\n\
+   else\n\
+   {\n\
+    start = 2*Math.PI - beta;\n\
+   }\n\
+ }\n\
+ else\n\
+ {\n\
+  beta = find_angle(xc,yc,x2,yc,x2,y2);\n\
+  if(x2 > xc){\n\
+   start = beta;\n\
+  }\n\
+  else\n\
+  {\n\
+   start = Math.PI - beta;\n\
+  }\n\
+ };\n\
+ ctx.translate(xc,yc);\n\
+ ctx.rotate(start);\n\
+ ctx.beginPath();\n\
+ ctx.arc(0,0,r,0,alpha,false);\n\
+ ctx.lineTo(0,0);\n\
+ ctx.closePath();\n\
+ ctx.fill();\n\
+ ctx.stroke();\n\
+ ctx.restore();\n\
+};\n\
+function find_angle(xc,yc,x1,y1,x2,y2){\
+ var a = Math.sqrt(Math.pow(xc-x1,2)+Math.pow(yc-y1,2));\n\
+ var b = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\n\
+ var c = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));\n\
+ return Math.acos((b*b+a*a-c*c)/(2*b*a));\n\
+};\n",line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,line_width,stroke_color,stroke_opacity,num);
 }
-
 
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin command userdraw text -->\n\
@@ -2700,3 +2750,4 @@ filltoborder = function(xs,ys,bordercolor,color){\n\
 };",canvas_root_id);
 
 }
+
