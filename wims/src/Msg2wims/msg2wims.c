@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
- /* This program translates oef format exercises into wims internal data format. */
+ /* This program translates doc format into wims internal data format. */
 
 #define MAX_TITLEN  40
 #define MAX_PROMPTLEN 32
@@ -58,7 +58,7 @@ void get_inf(char *fname)
     fseek(inf,0,SEEK_END); l=ftell(inf); fseek(inf,0,SEEK_SET);
     if(l<=0) bailout(0,0,"");
     inbuf=xmalloc(l+16);
-    l=fread(inbuf,1,l,inf); 
+    l=fread(inbuf,1,l,inf);
     if(l<=0) bailout(0,0,"error opening input file");
     else inbuf[l]=0;
     fclose(inf); inlen=l;
@@ -76,13 +76,13 @@ void open_outf(char *fname)
 void process_formula(char *p)
 {
     char *p3, bf[MAX_LINELEN+1];
-    
+
     if(strlen(p)>=MAX_LINELEN)
       bailout(inlen,0,"formula too long");
     while((p3=strstr(p,"&lt;"))!=NULL) memmove(p3," <  ",4);
     while((p3=strstr(p,"&gt;"))!=NULL) memmove(p3," >  ",4);
     for(p3=strchr(p,'\n'); p3!=NULL; p3=strchr(p3,'\n')) *p3=' ';
-    snprintf(bf,sizeof(bf),"%s",p); 
+    snprintf(bf,sizeof(bf),"%s",p);
     if(strchr(bf,'\\')==NULL && strchr(bf,'}')==NULL && strlen(bf)>2) {
       for(p3=strstr(bf,".."); p3!=NULL; p3=strstr(p3,"..")) {
           if(*(p3+2)=='.' || *(p3+2)==',') {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
           case '$': fputs("&#36;",outf); break;
           case '!': fputs("&#33;",outf); break;
           case ':': fputs("&#58;",outf); break;
-          
+
           case elsechar: {
             if(primcnt>0) fputs("\n!else\n",outf);
             else fputc(*p,outf);
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
             else fputc(*p,outf);
             break;
           }
-/* lines begining by > are in small; italics and pre  */          
+/* lines begining by > are in small; italics and pre  */
           case '\n': {
             if(*(p+1)=='>') {
                 pre: p++; fputs("\n<i><small><pre wrap>",outf);
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
             if(*(p+1)=='>') goto pre;
             break;
           }
-          
+
           case '<': {
             char *p2;
             if(tend>p || (!isalpha(*(p+1)) && *(p+1)!='!')) {
@@ -176,10 +176,10 @@ int main(int argc, char *argv[])
             tend=p2;
             fputc(*p, outf); break;
           }
-/* interpretation of variables */    
+/* interpretation of variables */
           case '\\': {
             char *pe;
-            p++; 
+            p++;
             if(isalpha(*p)) {
                 if(primcnt>0) {
                   pe=doccheck(p);
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
             }
             break;
           }
-          
+
           default: fputc(*p,outf); break;
       }
     }
