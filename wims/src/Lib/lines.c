@@ -694,7 +694,7 @@ void reaccent(char *p)
 }
 
 /* modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
+void string_modify1(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     int ln, le;

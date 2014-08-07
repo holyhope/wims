@@ -99,7 +99,7 @@ void singlespace(char *p);  /* change all spaces into ' ', and collapse multiple
 void deaccent(char *p);     /* fold accented letters to unaccented */
 void reaccent(char *p);     /* compose accented letters using symbols */
 /* modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...);
+extern void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...);
 long int filelength(char *fn,...);
 int catfile(FILE *outf, char *fn,...);
 char *fnd_position;

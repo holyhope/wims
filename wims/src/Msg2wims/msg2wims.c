@@ -26,7 +26,6 @@
 #define endifchar '\002'
 #define nextchar '\003'
 #define whilechar '\004'
-#define string_modify string_modify2
 
 #include "../Lib/libwims.h"
 
@@ -98,6 +97,7 @@ int main(int argc, char *argv[])
 {
     char *p, *p1, *p2, *tend;
 
+    string_modify=string_modify2;
     substitute=substit;
     if(argc==2 && strcmp(argv[1],"table")==0) {
 /*if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;*/

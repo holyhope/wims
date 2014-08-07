@@ -30,3 +30,4 @@
 
 #include "levelcurve.c"
 
+void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;

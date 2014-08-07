@@ -113,7 +113,10 @@ void singlespace(char *p);         /* change all spaces into ' ', and collapse m
 void deaccent(char *p);            /* fold accented letters to unaccented */
 void reaccent(char *p);            /* compose accented letters using symbols */
 /* modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...);
+extern void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...);
+void string_modify1(char *start, char *bad_beg, char *bad_end, char *good,...);
+void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...);
+
 long int filelength(char *fn,...);
 int catfile(FILE *outf, char *fn,...);
 #ifdef libwims

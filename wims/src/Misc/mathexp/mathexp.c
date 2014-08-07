@@ -82,11 +82,13 @@ void parm()
     objline[0]=pp; reqtype=p;
 }
 
+void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;
+
 int main()
 {
     char *p;
     int i;
-    
+
     error1=error; error2=error; error3=error;
     p=getenv("wims_exec_parm");
     if(p==NULL || *p==0) error("No input data.");

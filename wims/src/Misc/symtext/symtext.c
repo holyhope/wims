@@ -345,6 +345,7 @@ int verify_tables(void)
 
     return 0;
 }
+void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;
 
 int main(int argc, char *argv[])
 {
