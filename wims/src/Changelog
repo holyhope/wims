@@ -4,6 +4,7 @@ log is accessible from SVN repository at http://sourcesup.cru.fr/projects/wimsde
 
 Author abbreviations:
 BPR	= Bernadette Perrin-Riou
+DB      = Dominique Bernardi
 ER	= Eric Reyssat
 FG	= Fabrice Guerimand
 GK	= Georges Khaznadar
@@ -14,6 +15,30 @@ MC	= Marina Cazzola
 OB  = Olivier Bado
 RM	= Régine Mangeard
 
+---------------------------------------------------------------------------
+wims.4.07e [r??]
+2014-08-07 (DB) The string_modify() routine declared in libwims.h had two implementations,
+  one in Lib/lines.c and the other in Msg2wims/lines.c. The second one was called string_modify2
+  and substituted to the first one when appropriate using the preprocessor directive
+     #define string_modify string_modify2
+  Now the standard implementation is named string_modify1 and the alternative string_modify2 as before.
+  They are both called as string_modify() via a function pointer.
+  This pointer and the two functions are declared in libwims.h.
+  The clients of the wims library can call string_modify(), which invokes string_modify1().
+  Other programs (like Msg2wims) must define the pointer like this:
+     void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,) = string_modify2;
+  (or string_modify1 as the case may be).
+2014-08-03: clean search_list - it is now the same in the three occurences. (DB)
+2014-08-03: fix bug in src/wims_modules.pl
+2014-07-30: clean flydraw.c - fix gdImageFillToBorder : replace by gdImageFillToBorder1 which
+ do nothing if the point is outside the image.
+---------------------------------------------------------------------------
+wims.4.07d [r8030]
+
+2014-07-09: fix trouble with - in names (case of external_auth) with csv
+
+html improvments
+2014-07-03: add css class : wims_instruction
 ---------------------------------------------------------------------------
 wims.4.07c [r7975]
 2014-06-17:
