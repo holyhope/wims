@@ -23,9 +23,8 @@
 #define buflim 1024*1024*16
 
 /***************** Nothing should need change hereafter *****************/
-
 #include "../wims.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 #include "../hmname.c"
 
 char fn1[1024]="", fn2[1024]="";
@@ -54,30 +53,32 @@ struct {
 
 #define backtransno (sizeof(backtrans)/sizeof(backtrans[0]))
 
-void *xmalloc(size_t n)
+/*void *xmalloc(size_t n)
 {
     void *p;
     p=malloc(n);
     if(p==NULL) exit(1);
     return p;
 }
+*/
 
 /* Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Strips leading spaces */
-char *find_word_start(char *p)
+/*char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 char *find_tag_end(char *p)
 {
     char *pp, *old;
@@ -109,7 +110,7 @@ char *find_tag(char *p, char *tag)
     return p+strlen(p);
 }
 
-/* modify a string. Bufferlen must be ast least MAX_LINELEN */
+/* modify a string. Bufferlen must be ast least MAX_LINELEN
 void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
@@ -123,6 +124,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     strcat(buf,bad_end);
     ovlstrcpy(bad_beg,buf);
 }
+*/
 
 void cutamp(char *p)
 {
