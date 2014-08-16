@@ -16,9 +16,10 @@
  */
 
 /* these are patches for rawmath.c */
+/*
 char *getvar(char *p) {return NULL;}
 void setvar(char *p, char *v) {return;}
-
+*/
 char *exec_if(char *p)
 {
     char *p1, *p2, *p3, *p4, *p5, *p6, *pp;
