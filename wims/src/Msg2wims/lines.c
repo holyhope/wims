@@ -21,9 +21,10 @@
 #include <stdarg.h>
 
 /* these are patches for rawmath.c */
+/*
 char *getvar(char *p) {return NULL;}
 void setvar(char *p, char *v) {return;}
-
+*/
 void error(char *p)
 {
     fprintf(stderr,"%s\n",p);
@@ -66,21 +67,23 @@ char *find_tag_end(char *p)
 }
 
 /* Points to the end of a name */
+/*non utilise dans Msg2wims
 char *find_name_end(char *p)
 {
     int i;
     for(i=0;isalnum(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Find the beginning of a name */
+/*non utilise dans Msg2wims
 char *find_name_start(char *p)
 {
     int i;
     for(i=0; !isalpha(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 void collapse_item(char *p, int n)
 {
     int i;
