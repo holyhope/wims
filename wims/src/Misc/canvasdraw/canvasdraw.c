@@ -58,10 +58,12 @@ double tmin = -2;
 int done = FALSE; 
 int type; /* eg command number */
 int onclick = 0;/* 0 = noninteractive ; 1 = onclick ; 2 = draggable*/
+int slider = 0;/* slider=1 : x-values ; slider=2 : y-values;slider=3 angle values */
 int use_affine = FALSE;
 int use_rotate = FALSE;
 int use_filled = FALSE;
 int use_dashed = FALSE; /* dashing not natively supported in firefox  , for now... */
+
 char buffer[MAX_BUFFER];/* contains js-functions with arguments ... all other basic code is directly printed into js-include file */
 
 /******************************************************************************
@@ -319,7 +321,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 1: double_data[1] = get_real(infile,0);break; /* y */
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     			click_cnt++;reset();
     			break;
 		    default:break;
@@ -349,7 +351,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    decimals = find_number_of_digits(precision);
     	    for(c=0 ; c < i-1 ; c = c+2){
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		click_cnt++;
 	    }
 	    reset();
@@ -368,7 +370,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 1: double_data[1] = get_real(infile,0);break; /* y */
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
 		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    click_cnt++;break;
 		    default: break;
 		}
@@ -398,7 +400,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    decimals = find_number_of_digits(precision);	    
 	    for(c = 0 ; c < i-1 ; c = c+2){
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		click_cnt++;
 	    }
 	    reset();
@@ -417,7 +419,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3: double_data[3]= get_real(infile,0);break; /* y2-values */
 		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 			break;
 		    default: break;
@@ -468,7 +470,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			}
 		    }
 		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    click_cnt++;reset();
 		    break;
 		}
@@ -488,7 +490,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
 		    double_data[3] = double_data[1];
 		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    click_cnt++;reset();
 		    break;
 		}
@@ -507,7 +509,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 2: stroke_color=get_color(infile,1);/* name or hex color */
 			double_data[2] = double_data[0];
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 		    break;
 		}
@@ -532,7 +534,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			decimals = find_number_of_digits(precision);
 			double_data[3] = double_data[0] + (xmax - xmin)*double_data[2]/xsize;
 			double_data[4] = double_data[1] + -1*(ymax - ymin)*double_data[2]/ysize;
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[3],decimals,double_data[3],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[4],decimals,double_data[4],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[3],decimals,double_data[3],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[4],decimals,double_data[4],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 			break;
 		}
@@ -558,7 +560,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			if( double_data[0] > double_data[2] ){double_data[4] = double_data[0];double_data[0] = double_data[2];double_data[2] = double_data[4];}
 			if( double_data[3] > double_data[1] ){double_data[4] = double_data[1];double_data[1] = double_data[3];double_data[3] = double_data[4];}	
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 	            break;
 		}
@@ -580,7 +582,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
 		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[2],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[3],decimals,double_data[3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[2],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[3],decimals,double_data[3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 			break;
 		}
@@ -610,7 +612,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    /* draw path : not closed & not filled */
     	    decimals = find_number_of_digits(precision);
-	    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+	    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 	    click_cnt++;reset();
 	    break;
 	case POLY:
@@ -639,7 +641,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    /* draw path :  closed & optional filled */
     		decimals = find_number_of_digits(precision);
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		click_cnt++;reset();
 	    break;
 	case ARC: 
@@ -664,7 +666,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 			h[0] = start_angle ; h[1] = end_engle 
 		    */
     			decimals = find_number_of_digits(precision);
-    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],int_data[0],int_data[0],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],int_data[0],int_data[0],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     			reset();
 	            break;
 		}
@@ -686,7 +688,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3:double_data[3] = get_real(infile,0);break; /* ry -> px  */ 
 		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,3,[%.*f],[%.*f],[%.*f],[%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,3,[%.*f],[%.*f],[%.*f],[%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 		    break;
 		}
@@ -720,7 +722,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* radius in 'dx' xrange*/
     		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 		    break;
 		}
@@ -754,7 +756,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    decimals = find_number_of_digits(precision);	    
 	    for(c=2; c<i;c = c+2){
 		click_cnt++;
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 	    }
 	    reset();
 	    break;
@@ -774,7 +776,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
     		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;
 			reset();
 			break;
@@ -798,7 +800,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
     		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
 			break;
     		}
@@ -820,7 +822,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 6: int_data[0] = (int) (get_real(infile,0));break; /* n  */
 		    case 7: stroke_color=get_color(infile,1);/* name or hex color */
     		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,11,[%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f],[%d,%d,%d],[%d,%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[4],decimals,double_data[1],decimals,double_data[3],decimals,double_data[5],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,11,[%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f],[%d,%d,%d],[%d,%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[4],decimals,double_data[1],decimals,double_data[3],decimals,double_data[5],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    click_cnt++;reset();
 		    break;
 		    default: break;
@@ -842,7 +844,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		    case 5: double_data[5] = get_real(infile,0);break; /* y */
     		    case 6: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
-    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,6,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,6,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     			click_cnt++;reset();
     			break;
     		    default: break;
@@ -1338,7 +1340,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	     i++;
 	    }
 	    for(c = 0 ; c < i; c++){
-	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 	     click_cnt++;
 	    }
 	    reset();
@@ -1421,7 +1423,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		char *fun1 = get_string_argument(infile,0);
 		char *fun2 = get_string_argument(infile,1);
 	        if( strlen(fun1) == 0 || strlen(fun2) == 0 ){canvas_error("parametric functions are NOT OK !");}
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,animation_type,eval_parametric(xsize,ysize,fun1,fun2,xmin,xmax,ymin,ymax,tmin,tmax,plot_steps,precision),2*line_width,2*line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,animation_type,eval_parametric(xsize,ysize,fun1,fun2,xmin,xmax,ymin,ymax,tmin,tmax,plot_steps,precision),2*line_width,2*line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     		click_cnt++;
     	    }
 	    else
@@ -1429,7 +1431,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		stroke_color = get_color(infile,0);
 	        char *fun1 = get_string_argument(infile,1);
 		if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}	
-    		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix);
+    		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     		click_cnt++;
 	    }
 	    animation_type = 9;/* reset to curve plotting without animation */
@@ -1478,7 +1480,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 4: 
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();break;
 		    default:break;
 		}
@@ -1590,7 +1592,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 3: decimals = find_number_of_digits(precision);
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();break;
 		    default:break;
 		}
@@ -1745,12 +1747,18 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    break;
 	case SLIDER:
 	/*
-	@ slider start_value,end_value,width,height,type,label
-	@ NO INTEGRATION WITH OBJECTS...YET
-	@ type: x,y,angle
+	@ slider start_value,end_value,width px,height px,type,label
+	@ type: xy,x,y,angle
+	@ use commmand 'slider' before any draggable/clickable object.
+	@ amount of sliders is not limited.
+	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value' 
+	@ type=angle: for all objects in radians<br />except command 'arc', which should be in degrees !
+	@ type=xy: will produce a 2D 'slider' [rectangle width x heigh px] in your web page
+	@ every draggable object may have it's own slider (no limit in amount of sliders)
 	@ label: some slider text
 	@ use fillcolor for slider ball
 	@ use strokecolor for slider bar
+	@ use fontfamily / fontcolor to set used fonts
 	@ use opacity (only fill opacity will be used) to set transparency
 	@ the slider will be draw in the 'tooltip div' : so incompatible with command tooltip ; setlimits etc
 	*/
@@ -1760,13 +1768,43 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 1: double_data[1] = get_real(infile,0);break; /* end value */
 		    case 2: int_data[0] = (int)(get_real(infile,0));break; /* width */
 		    case 3: int_data[1] = (int)(get_real(infile,0));break; /* height */
-		    case 4: temp = get_string_argument(infile,0);break; /* type : x,y,angle */
-		    case 5: /* some string */
-		    add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],temp,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity);
+		    case 4: temp = get_string_argument(infile,0); /* type : x,y,angle */
+		    if(strstr(temp,"xy")!= NULL){
+		     slider = 4;
+		    }
+		    else
+		    {
+		     if(strstr(temp,"x") != NULL){
+		      slider = 1;
+		     }
+		     else
+		     {
+		      if(strstr(temp,"y") != NULL){
+		       slider = 2;
+		      }
+		      else
+		      {
+		       if(strstr(temp,"angle") != NULL){
+		        slider = 3;
+		       }
+		       else
+		       { 
+		        canvas_error("slider types may be : x , y , xy , angle");
+		       }		      
+		      }
+		     }
+		    }
+		    break;
+		    case 5: /* some string used for slider description  */
 		    slider_cnt++;
+		    if(slider == 4){
+		     add_xyslider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color);
+		    }else{
+		     add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color);
+		    }
 		    break;
 		}
-	    }
+	     }
 	    break;
 	case SGRAPH:
 	/*
@@ -1860,10 +1898,10 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case ROTATE:
 	/*
 	 @rotate rotation_angle
-	 @
+	 @angle in degrees
 	*/
 	    use_rotate = TRUE;
-	    angle = get_real(infile,1);
+	    angle = -1*(get_real(infile,1));/* -1 : to be compatible with Flydraw... */
 	    break;
 	case KILLAFFINE:
 	/*
@@ -3355,6 +3393,7 @@ void reset(){
  if(use_filled == TRUE){use_filled = FALSE;}
  if(use_dashed == TRUE){use_dashed = FALSE;}
  if(use_rotate == TRUE){use_rotate = FALSE;}
+ slider = 0;
  onclick = 0;
 }
 

@@ -5,8 +5,7 @@ void add_safe_eval(FILE *js_include_file);
 void add_to_js_math(FILE *js_include_file);
 void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
 void add_jsplot(FILE *js_include_file,int canvas_root_id);
-void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,char *type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity);
-
+void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color);
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
 char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int xsteps,int precision);
@@ -1104,7 +1103,17 @@ function user_draw(evt){\
   };\
  };\
 };\
-function user_drag(evt){ return; };\
+function user_drag(evt){ \
+ var x2 = evt.clientX - canvas_rect.left;\
+ var y2 = evt.clientY - canvas_rect.top;\
+ var len = userdraw_x.length;\
+ var xc = userdraw_x[len-2];\
+ var yc = userdraw_y[len-2];\
+ var x1 = userdraw_x[len-1];\
+ var y1 = userdraw_y[len-1];\
+ draw_userarc(context_userdraw,xc,yc,x1,y1,x2,y2,1,\"255,0,0\",0.6,\"255,255,0\",0.6,0,2,2);\
+ return;\
+};\
 draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
  ctx.save();\n\
  if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\n\
@@ -1328,57 +1337,133 @@ fprintf(js_include_file," \nfunction safe_eval(exp){\
 /*
 add slider
 */
-void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,char *type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity){
+void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color){
 fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
 function add_slider_%d(){\
-if( wims_status == \"done\" ){return;};\
-var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-var x_value = %f;\
-var y_value = %f;\
-var slider_type = \"%s\";\
-var slider_label =\"%s\";\
-var slider_fillcolor = \"%s\";\
-var slider_strokecolor = \"%s\";\
-var slider_linewidth = \"%d\";\
-var slider_canvas = document.createElement(\"canvas\");\
-slider_canvas.id = \"slider_canvas%d\";\
-var br = document.createElement(\"BR\");\
-tooltip_div.appendChild(slider_canvas);\
-tooltip_div.appendChild(br);\
-var slider_width = %d;\
-var slider_height = %d;\
-var slider_center = %d;\
-var slider_radius = 0.2*slider_height;\
-var slider_opacity = %f;\
-slider_canvas.width = slider_width;\
-slider_canvas.height = slider_height;\
-var canvas_rect = (slider_canvas).getBoundingClientRect();\
-var slider_ctx = slider_canvas.getContext(\"2d\");\
-slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\
-slider_ctx.fillStyle = \"rgba(\"+slider_fillcolor+\",\"+slider_opacity+\")\";\
-slider_ctx.lineWidth = slider_linewidth;\
-slider_ctx.beginPath();\
-slider_ctx.arc(10,slider_center,slider_radius,0,2*Math.PI,false);\
-slider_ctx.moveTo(10,slider_center);\
-slider_ctx.lineTo(slider_width-10,slider_center);\
-slider_ctx.closePath();\
-slider_ctx.fill();\
-slider_ctx.stroke();\
-slider_canvas.addEventListener(\"mousemove\",slider,false);\
-function slider(evt){\
- slider_ctx.clearRect(0,0,slider_width,slider_height);\
- var x = evt.clientX - canvas_rect.left;\
- slider_ctx.beginPath();\
- slider_ctx.arc(x,slider_center,slider_radius,0,2*Math.PI,false);\
- slider_ctx.moveTo(10,slider_center);\
- slider_ctx.lineTo(slider_width-10,slider_center);\
- slider_ctx.closePath();\
- slider_ctx.fill();\
- slider_ctx.stroke();\
- return;\
-};\
-};add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,v1,v2,type,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,slider_cnt);
+ if( wims_status == \"done\" ){return;};\n\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
+ var slider_type = %d;\n\
+ var span = document.createElement(\"span\");\n\
+ span.style= \"font:%s;color:%s\";\n\
+ var title = document.createTextNode(\" %s \");\n\
+ var br = document.createElement(\"br\");\n\
+ span.appendChild(title);\n\
+ span.appendChild(br);\n\
+ tooltip_div.appendChild(span);\n\
+ var slider_fillcolor = \"%s\";\n\
+ var slider_strokecolor = \"%s\";\n\
+ var slider_linewidth = \"%d\";\n\
+ var slider_canvas = document.createElement(\"canvas\");\n\
+ slider_canvas.id = \"slider_canvas%d\";\n\
+ tooltip_div.appendChild(slider_canvas);\n\
+ br = document.createElement(\"br\");\n\
+ tooltip_div.appendChild(br);\n\
+ var slider_width = %d;\n\
+ var slider_height = %d;\n\
+ var slider_center = %d;\n\
+ var slider_radius = 4*slider_linewidth;\n\
+ var slider_opacity = %f;\n\
+ slider_canvas.width = slider_width;\n\
+ slider_canvas.height = slider_height;\n\
+ var canvas_rect = (slider_canvas).getBoundingClientRect();\n\
+ var slider_ctx = slider_canvas.getContext(\"2d\");\n\
+ slider_ctx.font = \"%s\";\n\
+ slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\n\
+ slider_ctx.fillStyle = \"rgba(\"+slider_fillcolor+\",\"+slider_opacity+\")\";\n\
+ slider_ctx.lineWidth = slider_linewidth;\n\
+ slider_ctx.beginPath();\n\
+ slider_ctx.arc(10,slider_center,slider_radius,0,2*Math.PI,false);\n\
+ slider_ctx.moveTo(10,slider_center);\n\
+ slider_ctx.lineTo(slider_width-10,slider_center);\n\
+ slider_ctx.closePath();\n\
+ slider_ctx.fill();\n\
+ slider_ctx.stroke();\n\
+ slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\n\
+function slider_%d(evt){\
+ var value_1 = %f;\n\
+ var value_2 = %f;\n\
+ slider_ctx.clearRect(0,0,slider_width,slider_height);\n\
+ var x = evt.clientX - canvas_rect.left;\n\
+ var value = x*(value_2 - value_1)/slider_width + value_1;\n\
+ slider_ctx.beginPath();\n\
+ slider_ctx.arc(x,slider_center,slider_radius,0,2*Math.PI,false);\n\
+ slider_ctx.moveTo(10,slider_center);\n\
+ slider_ctx.lineTo(slider_width-10,slider_center);\n\
+ slider_ctx.closePath();\n\
+ slider_ctx.fill();\n\
+ slider_ctx.stroke();\n\
+ dragstuff.Slide( [value] , %d );\n\
+ return;\n\
+ };\n\
+};\n\
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt);
 }
+
+/*
+add xyslider
+*/
+void add_xyslider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color){
+fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
+function add_slider_%d(){\
+ if( wims_status == \"done\" ){return;};\n\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
+ var slider_type = %d;\n\
+ var span = document.createElement(\"span\");\n\
+ span.style= \"font:%s;color:%s\";\n\
+ var title = document.createTextNode(\" %s \");\n\
+ var br = document.createElement(\"br\");\n\
+ span.appendChild(title);\n\
+ span.appendChild(br);\n\
+ tooltip_div.appendChild(span);\n\
+ var slider_fillcolor = \"%s\";\n\
+ var slider_strokecolor = \"%s\";\n\
+ var slider_linewidth = \"%d\";\n\
+ var slider_canvas = document.createElement(\"canvas\");\n\
+ slider_canvas.id = \"slider_canvas%d\";\n\
+ tooltip_div.appendChild(slider_canvas);\n\
+ br = document.createElement(\"br\");\n\
+ tooltip_div.appendChild(br);\n\
+ var slider_width = %d;\n\
+ var slider_height = %d;\n\
+ var slider_center = %d;\n\
+ var slider_radius = 4*slider_linewidth;\n\
+ var slider_opacity = %f;\n\
+ slider_canvas.width = slider_width;\n\
+ slider_canvas.height = slider_height;\n\
+ var canvas_rect = (slider_canvas).getBoundingClientRect();\n\
+ var slider_ctx = slider_canvas.getContext(\"2d\");\n\
+ slider_ctx.font = \"%s\";\n\
+ slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\n\
+ slider_ctx.fillStyle = \"rgba(\"+slider_fillcolor+\",\"+slider_opacity+\")\";\n\
+ slider_ctx.lineWidth = slider_linewidth;\n\
+ slider_ctx.beginPath();\n\
+ slider_ctx.arc(10,slider_center,slider_radius,0,2*Math.PI,false);\n\
+ slider_ctx.closePath();\n\
+ slider_ctx.fill();\n\
+ slider_ctx.rect(0,0,slider_width,slider_height);\n\
+ slider_ctx.stroke();\n\
+ slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\n\
+function slider_%d(evt){\
+ var value_1 = %f;\n\
+ var value_2 = %f;\n\
+ slider_ctx.clearRect(0,0,slider_width,slider_height);\n\
+ var x = evt.clientX - canvas_rect.left;\n\
+ var y = evt.clientY - canvas_rect.top;\
+ var value_x = x*(value_2 - value_1)/slider_width + value_1;\n\
+ var value_y = y*(value_2 - value_1)/slider_height + value_1;\n\
+ slider_ctx.beginPath();\n\
+ slider_ctx.arc(x,y,slider_radius,0,2*Math.PI,false);\n\
+ slider_ctx.closePath();\n\
+ slider_ctx.fill();\n\
+ slider_ctx.rect(0,0,slider_width,slider_height);\n\
+ slider_ctx.stroke();\n\
+ dragstuff.Slide( [value_x,1-1*value_y] , %d );\n\
+ return;\n\
+ };\n\
+};\n\
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt);
+}
+
 
 /* 
 adds inputfield for x-value: returns the js-calculated y-value after click on 'OK' button
@@ -2289,7 +2374,9 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
 if( typeof dragdrop_precision == 'undefined' ){var dragdrop_precision = 100;};\
-function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix){\
+function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt){\
+ this.slider = slider || 0;\
+ this.slider_cnt = slider_cnt || 0;\
  this.text = text || 0;\
  this.font_size = font_size || 12;\
  if( font_family.indexOf('px') > 0 ){this.font_family = font_family;}else{this.font_family = this.font_size+'px Ariel';};\
@@ -2525,16 +2612,42 @@ CanvasState.prototype.draw = function(){\
   };\
   this.valid = true;\
  }\
-};\
+};\n\
+CanvasState.prototype.Slide = function(slider_value,slider_count){\n\
+ var what;var len = this.shapes.length;var shape;\n\
+ for(var i = 0; i < len ; i++){\n\
+  if( this.shapes[i] ){\n\
+   shape = this.shapes[i];\n\
+   if( shape.slider != 0 ){\n\
+    if(shape.slider_cnt == slider_count ){\n\
+     what = shape.slider;\n\
+     len = shape.x.length;\n\
+     reply[shape.click_cnt] = shape.click_cnt+\":\"+slider_value;\n\
+     switch(what){\n\
+      case 1: for(var p = 0 ; p < len ; p++){shape.x[p] = x2px(shape.xorg[p] + slider_value[0]);};break;\n\
+      case 2: for(var p = 0 ; p < len ; p++){shape.y[p] = y2px(shape.yorg[p] + slider_value[0]);};break;\n\
+      case 3: if(shape.type == 12){shape.h[1] = slider_value[0];}else{shape.use_rotate = 1;shape.angle = slider_value[0];}break;\n\
+      case 4: for(var p = 0 ; p < len ; p++){shape.x[p] = x2px(shape.xorg[p] + slider_value[0]);shape.y[p] = y2px(shape.yorg[p] + slider_value[1]);};break;\n\
+      default:break;\n\
+     };\n\
+    };\n\
+   };\n\
+   this.valid = false;\n\
+   shape.draw(this.ctx);\n\
+  };\n\
+ };\n\
+};\n\
 CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
  (this.ctx).clearRect(0,0,this.width,this.height);\
- for(var i = 0; i < this.shapes.length ; i++){\
-  for(var p = 0 ; p < this.shapes[i].x.length;p++){\
-   this.shapes[i].x[p] = x2px(this.shapes[i].xorg[p]);\
-   this.shapes[i].y[p] = y2px(this.shapes[i].yorg[p]);\
+ var len = this.shapes.length;var shape;\n\
+ for(var i = 0; i < len ; i++){\
+  shape = this.shapes[i];\n\
+  for(var p = 0 ; p < shape.x.length;p++){\
+   shape.x[p] = x2px(shape.xorg[p]);\
+   shape.y[p] = y2px(shape.yorg[p]);\
   }\
   this.valid = false;\
-  this.shapes[i].draw(this.ctx);\
+  shape.draw(this.ctx);\
  };\
  reply = new Array();\
 };\
