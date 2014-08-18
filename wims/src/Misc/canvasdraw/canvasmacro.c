@@ -1067,14 +1067,17 @@ function tooltip%d_show(){\
 
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"arc\" on final canvas -->\n\
+var canvas_rect = canvas_userdraw.getBoundingClientRect();\n\
 function user_draw(evt){\
- var canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x,xc,x1,x2,y,yc,y1,y2,lu;\
+ var num = %d;\
+ var x,xc,x1,x2,y,yc,y1,y2;var lu = userdraw_x.length;\
+ if( num == 1 && lu == 3 ){ userdraw_x = [];userdraw_y = [];userdraw_radius = [];};\
  if(evt.which == 1){\
   x = evt.clientX - canvas_rect.left;\
   y = evt.clientY - canvas_rect.top;\
   if( x_use_snap_to_grid == 1 ){x = snap_to_x(x);};\
   if( y_use_snap_to_grid == 1 ){y = snap_to_y(y);};\
+  if(num == 1 && lu == 3){userdraw_x = [];userdraw_y = [];userdraw_radius = [];};\
   lu = userdraw_x.push(x);userdraw_y.push(y);\
   if( lu != 0 && lu%%3 == 0){\
    context_userdraw.clearRect(0,0,xsize,ysize);\
@@ -1088,13 +1091,6 @@ function user_draw(evt){\
      y2 = userdraw_y[p+2];\
      draw_userarc(context_userdraw,xc,yc,x1,y1,x2,y2,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d);\
    };\
-  }\
-  else\
-  {\
-   if( lu%%3 == 2 ){\
-    draw_segments(context_userdraw,[userdraw_x[lu-2],userdraw_x[lu-1]],[userdraw_y[lu-2],userdraw_y[lu-1]],%d,\"%s\",%.2f,1,2,2,0,0,0,[0,0]);\
-    return;\
-   };\
   };\
  }\
  else\
@@ -1105,14 +1101,17 @@ function user_draw(evt){\
  };\
 };\
 function user_drag(evt){ \
- var x2 = evt.clientX - canvas_rect.left;\
- var y2 = evt.clientY - canvas_rect.top;\
- var len = userdraw_x.length;\
- var xc = userdraw_x[len-2];\
- var yc = userdraw_y[len-2];\
- var x1 = userdraw_x[len-1];\
- var y1 = userdraw_y[len-1];\
- draw_userarc(context_userdraw,xc,yc,x1,y1,x2,y2,1,\"255,0,0\",0.6,\"255,255,0\",0.6,0,2,2);\
+ var lu = userdraw_x.length;\
+ if( (lu+1)%%3 == 0) {\
+  var x2 = evt.clientX - canvas_rect.left;\
+  var y2 = evt.clientY - canvas_rect.top;\
+  var xc = userdraw_x[lu-2];\
+  var yc = userdraw_y[lu-2];\
+  var x1 = userdraw_x[lu-1];\
+  var y1 = userdraw_y[lu-1];\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_userarc(context_userdraw,xc,yc,x1,y1,x2,y2,1,\"255,0,0\",0.6,\"255,255,0\",0.4,0,2,2);\
+ };\
  return;\
 };\
 draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
@@ -1165,7 +1164,7 @@ function find_angle(xc,yc,x1,y1,x2,y2){\
  var b = Math.sqrt(Math.pow(xc-x2,2)+Math.pow(yc-y2,2));\
  var c = Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));\
  return Math.acos((b*b+a*a-c*c)/(2*b*a));\
-};",line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,line_width,stroke_color,stroke_opacity,num);
+};",num,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,num);
 }
 
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity){

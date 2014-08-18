@@ -2322,7 +2322,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case MOUSE_DISPLAY:
 	/*
 	 @display x|y|xy|degree,color,fontsize
-	 @will display the mouse cursor coordinates as x-only,y-only,(x:y) or the angle in degrees
+	 @will display the mouse cursor coordinates as x-only,y-only,(x:y) or the angle in degrees<br />(angle between x-axis;(0:0);(x:y)
 	 @just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
 	temp = get_string_argument(infile,0);
@@ -2352,7 +2352,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case MOUSE_DEGREE:
 	/*
 	 @ mouse_degree color,fontsize
-	 @ will display the angle in degrees between (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ will display the angle in degrees between x-axis, (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using default fontfamily Ariel
 	 @ The angle is positive in QI and QIII and the angle value is negative in QII and QIV
 	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom') 
 
