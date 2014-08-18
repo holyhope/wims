@@ -16,6 +16,7 @@
  */
  /* line input / output / translation routines
   * and error routines */
+#include "flydraw.h"
 
 void error(char *p)
 {

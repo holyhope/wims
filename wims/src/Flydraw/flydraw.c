@@ -20,7 +20,6 @@
   * fits tightly in the cadre. libgd is required. */
 
 #include "flydraw.h"
-#include "../Lib/libwims.h"
 
 char imagefilename[1024];
 char vimgfilename[1024];
@@ -48,17 +47,10 @@ double scale_buf[MAX_PARMS];
 /***** Les modifs a JC Fev 06 *****/
 /** les matrices suivantes sont initialisees par la commande setmatrix nummatrix,a11,a12,a21,a22 */
 /** elles sont remises a l'unite par resetmatrix nummatrix */
-typedef double matrice[4];
-#define JC_NB_MATRICES 19
+
 /* la matrice fixant le systeme de coordonnees "mathematiques" dans l'image */
 matrice matrices_pavage[JC_NB_MATRICES+1];
-#define matrix matrices_pavage[0]
-typedef double vecteur[2];
 vecteur vecteurs_pavage[JC_NB_MATRICES+1];
-#define vector vecteurs_pavage[0]
-/** les vecteurs suivants sont initialises par la commande setvector numvector,u_1,u_2 */
-/** ils sont remis a zero par resetvector numvector */
-
 
 /** les coordonnees du parallelograme de pavage = coordonnees "mathematiques" du parallelogramme contenant l'image a recopier **/
 /** on place ces coorodonnes avec setparallelogram xs,ys,xu,yu,xv,yu **/
@@ -86,12 +78,13 @@ void output(void)
     saved=1;
 }
 
-#include "lines.c"
-#include "nametab.c"
+/*#include "flylines.c"*/
+/*#include "nametab.c"*/
 
 /* substitute variable names by their environment strings
  * The buffer pointed to by p must have enough space
- * (defined by MAX_LINELEN). */
+ * (defined by MAX_LINELEN).
+ */
 char *substit(char *p)
 {
     char *pp, *pe;
@@ -115,8 +108,8 @@ char *substit(char *p)
     return p;
 }
 
-#include "vimg.c"
-#include "objects.c"
+/*#include "vimg.c"*/
+/*#include "objects.c"*/
 
 void process(void)
 {

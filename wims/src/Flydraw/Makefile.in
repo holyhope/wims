@@ -13,7 +13,14 @@ defines=@DEFINES@
 rpath=
 lopt=$(libpath) $(libs)
 language=fr cn ca
+flyobjects=flylines.o nametab.o vimg.o objects.o
+
+#nametab.o
+
 all: nametab.c flydraw
+
+%.o: %.c
+	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean:
 	rm -f flydraw
@@ -23,8 +30,9 @@ distclean:
 	for i in $(language) en ; do rm -f ../../public_html/scripts/help/$$i/flydraw.phtml ; done
 	rm -f Makefile
 
-flydraw: *.c *.h htmldoc.sh commands commands.* ../Lib/libwims.*
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) flydraw.c $(lopt) -o flydraw
+
+flydraw: $(flyobjects) *.h htmldoc.sh commands commands.* ../Lib/libwims.*
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(flyobjects) flydraw.c $(lopt) -o flydraw
 	$(STRIP) flydraw
 	./flydraw table
 	cp flydraw ../../other/bin/flydraw

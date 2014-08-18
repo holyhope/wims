@@ -14,7 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
+#include "flydraw.h"
 #include <errno.h>
 /* bug in gdImageFillToBorder */
 void gdImageFillToBorder1 (gdImagePtr im, int x, int y, int border, int color)
