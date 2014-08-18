@@ -2615,14 +2615,14 @@ CanvasState.prototype.draw = function(){\
  }\
 };\
 CanvasState.prototype.Slide = function(slider_value,slider_count){\
- var what;var len = this.shapes.length;var shape;\
+ var what;var len = this.shapes.length;var shape;var lu;\
  for(var i = 0; i < len ; i++){\
   if( this.shapes[i] ){\
    shape = this.shapes[i];\
    if( shape.slider != 0 ){\
     if(shape.slider_cnt == slider_count ){\
      what = shape.slider;\
-     len = shape.x.length;\
+     lu = shape.x.length;\
      reply[shape.click_cnt] = shape.click_cnt+\":\"+slider_value;\
      switch(what){\
       case 1: for(var p = 0 ; p < len ; p++){shape.x[p] = x2px(shape.xorg[p] + slider_value[0]);};break;\

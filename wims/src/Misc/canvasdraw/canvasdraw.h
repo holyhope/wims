@@ -148,7 +148,7 @@
 #define MOUSE_DISPLAY	152
 #define XUNIT		153
 #define YUNIT		154
-
+#define KILLSLIDER	155
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

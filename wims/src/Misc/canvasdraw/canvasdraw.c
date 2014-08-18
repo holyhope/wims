@@ -1733,25 +1733,34 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case AXIS_NUMBERING:
 	/*
 	    @ axisnumbering 
-	    @ keyword, no aguments required
+	    @ keyword, no arguments required
 	*/
 	    use_axis_numbering = 1;
 	    break;
 	case AXIS:
 	/*
 	    @ axis
-	    @ keyword, no aguments required
+	    @ keyword, no arguments required
 
 	*/
 	    use_axis = TRUE;
+	    break;
+	case KILLSLIDER:
+	/*
+	 @ killslider
+	 @ keyword, no arguments required
+	 @ ends grouping of object under a preciously defined slider
+	*/
+	    slider = 0;
 	    break;
 	case SLIDER:
 	/*
 	@ slider start_value,end_value,width px,height px,type,label
 	@ type: xy,x,y,angle
-	@ use commmand 'slider' before any draggable/clickable object.
+	@ use commmand 'slider' before draggable/clickable objects.
+	@ a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
 	@ amount of sliders is not limited.
-	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value' 
+	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value'
 	@ type=angle: for all objects in radians<br />except command 'arc', which should be in degrees !
 	@ type=xy: will produce a 2D 'slider' [rectangle width x heigh px] in your web page
 	@ every draggable object may have it's own slider (no limit in amount of sliders)
@@ -3393,8 +3402,7 @@ void reset(){
  if(use_filled == TRUE){use_filled = FALSE;}
  if(use_dashed == TRUE){use_dashed = FALSE;}
  if(use_rotate == TRUE){use_rotate = FALSE;}
- slider = 0;
- onclick = 0;
+   onclick = 0;
 }
 
 
@@ -6546,7 +6554,8 @@ int get_token(FILE *infile){
 	*centerstring="centerstring",
 	*xunit="xunit",
 	*yunit="yunit",
-	*slider="slider";
+	*slider="slider",
+	*killslider="killslider";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -7014,6 +7023,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, slider) == 0 ){
 	free(input_type);
 	return SLIDER;
+	}
+	if( strcmp(input_type, killslider) == 0 ){
+	free(input_type);
+	return KILLSLIDER;
 	}
 	if( strcmp(input_type, copy) == 0 ){
 	free(input_type);
