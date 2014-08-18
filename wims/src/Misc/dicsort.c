@@ -29,7 +29,8 @@ char sepchar=':', grpchar=0;
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
+
 
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
@@ -44,6 +45,7 @@ int entrycount;
 int nocase=0, hassuffix=0, leaveline=0;
 int entrycount, ocount;
 
+/*
 void *xmalloc(size_t n)
 {
     void *p;
@@ -51,25 +53,25 @@ void *xmalloc(size_t n)
     if(p==NULL) exit(1);
     return p;
 }
-
+*/
 /* Points to the end of the word */
-char *find_word_end(char *p)
+/*char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Strips leading spaces */
-char *find_word_start(char *p)
+/*char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* strip trailing spaces; return string end. */
-char *strip_trailing_spaces(char *p)
+char *strip_trailing_spaces2(char *p)
 {
     char *pp;
     if(*p==0) return p;
@@ -90,8 +92,8 @@ void sortdic(void)
     qsort(entry,entrycount,sizeof(entry[0]),compare);
 }
 
-/* modify a string. Bufferlen must be ast least MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
+/* modify a string. Bufferlen must be at least MAX_LINELEN */
+void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
@@ -105,7 +107,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 }
 
 /* change all spaces into ' ', and collapse multiple occurences */
-void singlespace(char *p)
+void singlespace2(char *p)
 {
     char *pp, *p2;
     for(pp=p;*pp;pp++) {
@@ -151,8 +153,8 @@ void prepare_dic(void)
       p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
       pp=strchr(p1,sepchar); if(pp==NULL) continue;
       *pp++=0;
-      strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-      singlespace(p1);
+      strip_trailing_spaces2(p1); strip_trailing_spaces2(pp);
+      singlespace2(p1);
       p1=find_word_start(p1); pp=find_word_start(pp);
       if(*p1==0) continue;
       entry[i].original=p1; entry[i].replace=pp; i++;

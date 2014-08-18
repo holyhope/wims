@@ -93,7 +93,7 @@ void check_parm(char *pm)
         fprintf(stderr,"Illegal under WIMS.\n"); exit(1);
     }
     for(s=pm;*s;s++) *s=tolower(*s);
-    strip_trailing_spaces(pm); l=strlen(pm);
+    strip_trailing_spaces2(pm); l=strlen(pm);
     if(l>0 && pm[l-1]!=';') strcat(pm,";");
     find_illegal(pm);
 }
@@ -153,7 +153,7 @@ void output(char *p)
       while(isspace(*pp) && pp<pe) pp++;
       pt=pp+strlen(pp)-1;
       while(isspace(*pt) && pt>pp) *pt--=0;
-      if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
+      if(*pp=='[' && *pt==']' && find_matching2(pp+1,']')==pt) {
           *(pt--)=0; pp++;
       }
       for(pt=strchr(pp,'b');pt!=NULL; pt=strchr(pt+1,'b')) {

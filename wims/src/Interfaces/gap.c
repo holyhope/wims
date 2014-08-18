@@ -62,7 +62,7 @@ void check_parm(char *pm)
     char *pp; int l;
 /* Underscore replacement */
     for(pp=strchr(pm,'_'); pp!=NULL; pp=strchr(pp+1,'_')) *pp='K';
-    strip_trailing_spaces(pm); l=strlen(pm);
+    strip_trailing_spaces2(pm); l=strlen(pm);
     if(l>0 && pm[l-1]!=';') strcat(pm,";");
     find_illegal(pm);
 }

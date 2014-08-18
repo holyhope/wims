@@ -110,8 +110,8 @@ char *find_tag(char *p, char *tag)
     return p+strlen(p);
 }
 
-/* modify a string. Bufferlen must be ast least MAX_LINELEN
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
+/* modify a string. Bufferlen must be at least MAX_LINELEN */
+void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
@@ -124,7 +124,6 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     strcat(buf,bad_end);
     ovlstrcpy(bad_beg,buf);
 }
-*/
 
 void cutamp(char *p)
 {

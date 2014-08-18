@@ -15,11 +15,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-    /* Computes class connection count (unit: student-minutes) */
+/* Computes class connection count (unit: student-minutes) */
 
 #include "../wimsdef.h"
 #include "../includes.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 
     /* The maximal number of sessions within one day */
 #define MAX_SESSIONS (128*1024)
@@ -45,6 +45,7 @@ struct cls {
 } cls[MAX_CLASSES];
 int clscnt;
 
+/*
 void *xmalloc(size_t n)
 {
     void *p;
@@ -54,23 +55,25 @@ void *xmalloc(size_t n)
     }
     return p;
 }
-
+*/
     /* Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
     /* Strips leading spaces */
+/*
 char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
     /* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
 {
@@ -103,7 +106,8 @@ void accessfile(char *content, char *type, char *s,...)
     fclose(f);
 }
 
-    /* returns -1 if error */
+/* returns -1 if error */
+/*
 long int filelength(char *fn,...)
 {
     char buf[4096];
@@ -116,9 +120,9 @@ long int filelength(char *fn,...)
     l=stat(buf,&st); if(l) return -1;
     return st.st_size;
 }
-
+*/
     /* recursively generate a directory structure */
-void mkdirs(char *s)
+void mkdirs2(char *s)
 {
     struct stat st;
     char *buf;
@@ -126,7 +130,7 @@ void mkdirs(char *s)
     if(strrchr(s,'/')!=NULL) {
         buf=xmalloc(strlen(s)+1);
         ovlstrcpy(buf,s); *strrchr(buf,'/')=0;
-        mkdirs(buf); free(buf);
+        mkdirs2(buf); free(buf);
     }
     mkdir(s,-1);
     }
@@ -207,13 +211,13 @@ void output(void)
     p=getenv("ccsum_outdir"); if(p==NULL || *p==0) return;
     for(i=0;i<sescnt;i++) {
     snprintf(dbuf,sizeof(dbuf),"%s/%d",p,ses[i].cl);
-    mkdirs(dbuf);
+    mkdirs2(dbuf);
     snprintf(buf,sizeof(buf),"%s.%02d:%02d %d\n",
          datestr,ses[i].start/60,ses[i].start%60,ses[i].cnt);
     accessfile(buf,"a","%s/%s",dbuf,ses[i].u);
     }
     snprintf(dbuf,sizeof(dbuf),"%s/bydate/%.4s",p,datestr);
-    mkdirs(dbuf);
+    mkdirs2(dbuf);
     snprintf(dbuf+strlen(dbuf),sizeof(dbuf)-strlen(dbuf),"/%.2s",datestr+4);
     t=0;
     qsort(cls,clscnt,sizeof(cls[0]),clscmp);

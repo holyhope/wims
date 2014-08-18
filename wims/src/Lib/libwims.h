@@ -29,6 +29,7 @@
 #define random genrand_int31
 #define srandom init_genrand
 long int genrand_int31(void);
+void init_genrand(unsigned long s);
 
 /* errors.c */
 void (*error1) (char *msg);
@@ -126,6 +127,8 @@ int catfile(FILE *outf, char *fn,...);
  extern char *fnd_position;
  extern char *fnd_nextpos;
 #endif
+
+extern char *acctab, *deatab;
 
 /* evalue.c */
 #define EV_S "EVLS"

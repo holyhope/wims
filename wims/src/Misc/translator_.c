@@ -26,8 +26,6 @@
 
 /***************** Nothing should need change hereafter *****************/
 
-#include "../Lib/basicstr.c"
-
 
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
@@ -57,7 +55,7 @@ int compare(int i1, const char *s2)
 
 /* searches a list. Returns index if found, -1 if nomatch.
  * Uses binary search, list must be sorted. */
-int search_list(struct entry *list, int items, size_t item_size, const char *str)
+int search_list2(struct entry *list, int items, size_t item_size, const char *str)
 {
     int i1,i2,j,k,t,t1;
     unsigned char c;
@@ -81,13 +79,14 @@ int search_list(struct entry *list, int items, size_t item_size, const char *str
       if(k==0) return j; else return -1;
     }
     if(compare(t,str)!=0) return -1;
-    for(j=t1=t,k=0;j<items && list[j].earlier==t1 && (k=compare(j,str))<=0; j++)
+    for(j=t1=t,k=0;j<items && list[j].earlier==t1 && (k=compare(j,str))<=0; j++) {
       if(k==0) t=j;
+    }
     return t;
 }
 
 /* change all spaces into ' ', and collapse multiple occurences */
-void singlespace(char *p)
+void singlespace2(char *p)
 {
     char *pp, *p2;
     for(pp=p;*pp;pp++) {
@@ -135,8 +134,8 @@ void prepare_dic(char *fname)
       p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
       pp=strchr(p1,':'); if(pp==NULL) continue;
       *pp++=0;
-      strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-      singlespace(p1);
+      strip_trailing_spaces2(p1); strip_trailing_spaces2(pp);
+      singlespace2(p1);
       p1=find_word_start(p1); pp=find_word_start(pp);
       if(*p1==0) continue;
       if(has_digits==0) {
@@ -180,7 +179,7 @@ void translate(char *p)
       if(pp==p1 ||
          (has_digits==0 && isdigit(*pp)) ||
          (*pp!=0 && !isspace(*pp) && strchr(",.?!/;",*pp)==NULL)) continue;
-      t=search_list(entry,entrycount,sizeof(entry[0]),p1);
+      t=search_list2(entry,entrycount,sizeof(entry[0]),p1);
       if(t<0) {
           switch(unknown_type) {
             case unk_leave: break;
@@ -189,13 +188,13 @@ void translate(char *p)
                 break;
             }
             case unk_replace: {
-                string_modify(outbuf,p1,pp,unkbuf);
+                string_modify3(outbuf,p1,pp,unkbuf);
                 p2=find_word_start(p1+strlen(unkbuf));
             }
           }
           continue;
       }
-      string_modify(outbuf,p1,p1+strlen((char*)entry[t].original),
+      string_modify3(outbuf,p1,p1+strlen((char*)entry[t].original),
                   (char*)entry[t].replace);
       p2=find_word_start(p1+strlen((char*)entry[t].replace));
     }

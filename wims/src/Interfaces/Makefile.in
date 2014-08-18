@@ -6,6 +6,7 @@ cc=@CC@
 cflags=@CFLAGS@ -Wall
 LDFLAGS=@LDFLAGS@
 CPPFLAGS=@CPPFLAGS@
+lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 
 defines=@DEFINES@
 static=
@@ -19,13 +20,13 @@ progs=$(progstatic) $(progdynamic)
 all: $(progs) install
 
 clean:
-	rm -f $(progs) *.o yacasheader.c 
+	rm -f $(progs) *.o yacasheader.c
 
 distclean: clean
 	cd $(PUBDIR); rm -f $(progs)
 	rm -f Makefile
 
-%.o: %.c common.h common.c yacasheader.c 
+%.o: %.c common.h common.c yacasheader.c
 	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -c $<
 
 install: $(progs)
@@ -33,20 +34,20 @@ install: $(progs)
 	cp $(progs) $(PUBDIR)
 
 m2: m2.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) m2.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) m2.o $(SETENV_OBJS) $(lopt) -o $@
 octave: octave.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) octave.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) octave.o $(SETENV_OBJS) $(lopt) -o $@
 gap: gap.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) gap.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) gap.o $(SETENV_OBJS) $(lopt) -o $@
 
 pari: pari.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) pari.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) $(static) pari.o $(SETENV_OBJS) $(lopt) -o $@
 maxima: maxima.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) maxima.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) $(static) maxima.o $(SETENV_OBJS) $(lopt) -o $@
 scilab: scilab.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) scilab.o $(SETENV_OBJS) -lm -o $@
+	$(cc) $(cflags) $(LDFLAGS) $(static) scilab.o $(SETENV_OBJS) $(lopt) -o $@
 
 yacasheader.c: yacasheader.tab yacasheader.sh
 	./yacasheader.sh
 yacas: yacas.o yacasheader.c $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(SETENV_OBJS) -lm -o yacas
+	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(SETENV_OBJS) $(lopt) -o yacas

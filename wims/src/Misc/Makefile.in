@@ -155,7 +155,7 @@ shortpath: shortpath.c
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 oncechar: oncechar.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) oncechar.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) oncechar.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 cryptarith: cryptarith.c
@@ -181,7 +181,7 @@ Plouffe: Plouffe.c
 	rm -f $(PUBDIR)/$@; cp $@ $(PUBDIR)
 
 translator: translator.c suffix.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) translator.c @STATIC_LIB@ -o translator
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) translator.c $(lopt) @STATIC_LIB@ -o translator
 	$(STRIP) translator
 	cp translator $(PUBDIR)
 
@@ -215,11 +215,11 @@ chroot: chroot.c
 #################################################
 
 dicsort: dicsort.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) dicsort.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) dicsort.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modind: modind.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modind.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modind.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modstat: modstat.c
@@ -227,7 +227,7 @@ modstat: modstat.c
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 ccsum: ccsum.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ccsum.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ccsum.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 

@@ -16,7 +16,7 @@
  */
 
 /* dvi 2 gif driver, tex standard */
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 
 void error(char *s)
 {
@@ -24,6 +24,7 @@ void error(char *s)
     exit(1);
 }
 
+/*
 void *xmalloc(size_t n)
 {
     void *p;
@@ -31,7 +32,7 @@ void *xmalloc(size_t n)
     if(p==NULL) error("Malloc failure.");
     return p;
 }
-
+*/
 unsigned long int texint(void *bp, int l)
 {
     unsigned long int o, t;
@@ -58,24 +59,28 @@ long int texintsigned(void *bp, int l)
 }
 
 	/* Strips leading spaces */
+/*
 char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p); p++,i++);
     return p;
 }
-
-	/* Points to the end of the word */
+*/
+/* Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
+*/
 
 /* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
  * Uses binary search, list must be sorted. */
 
+/*
 int search_list(void *list, int items, size_t item_size, const char *str)
 {
  int i = 0;
@@ -88,7 +93,7 @@ int search_list(void *list, int items, size_t item_size, const char *str)
    }
  return ~i;
 }
-
+*/
 	/* get the content of a file, and store in buf. */
 int getfile(char *fname, unsigned char **buf)
 {
@@ -155,6 +160,7 @@ int call_sh(char *s,...)
 }
 
 	/* recursively generate a directory structure */
+/*
 void mkdirs(char *s)
 {
     struct stat st;
@@ -168,4 +174,5 @@ void mkdirs(char *s)
 	mkdir(s,-1);
     }
 }
+*/
 

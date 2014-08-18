@@ -20,7 +20,7 @@
  */
 
 #include "../wims.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 
 #define MAX_LANGS    MAX_LANGUAGES
 #define MAX_MODULES    65536
@@ -75,6 +75,7 @@ int modcnt;
 
 char *mlist;
 
+/*
 void *xmalloc(size_t n)
 {
     void *p;
@@ -85,14 +86,16 @@ void *xmalloc(size_t n)
     }
     return p;
 }
+*/
 
-char *acctab="çéèêëúùûüáàâäãóòôöõíìïîñıÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ",
-     *deatab="ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY";
-
+/*
+char *acctab="çéèêëúùûüáàâäãóòôöõíìïîñıÿÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ",
+     *deatab="ceeeeuuuuaaaaaoooooiiiinyyCEEEEUUUUAAAAAOOOOOIIIINY";
+*/
 /*  fold known accented letters to unaccented, other strange characters to space
  *  apostrophe is among the exceptions to be kept (important for multi-word expressions)
  */
-void deaccent(char *p)
+void deaccent2(char *p)
 {
     char *sp;
     char *v;
@@ -112,23 +115,25 @@ void towords(char *p)
 }
 
 /*  Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /*  Strips leading spaces */
+/*
 char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /*  Find first occurrence of word */
-char *wordchr(char *p, char *w)
+char *wordchr2(char *p, char *w)
 {
     char *r;
 
@@ -141,7 +146,7 @@ char *wordchr(char *p, char *w)
 /*  find a variable in a string (math expression).
  * Returns the pointer or NULL.
  */
-char *varchr(char *p, char *v)
+/*char *varchr(char *p, char *v)
 {
     char *pp; int n=strlen(v);
     for(pp=strstr(p,v); pp!=NULL; pp=strstr(pp+1,v)) {
@@ -150,9 +155,9 @@ char *varchr(char *p, char *v)
     }
     return pp;
 }
-
+*/
 /*  strip trailing spaces; return string end. */
-char *strip_trailing_spaces(char *p)
+char *strip_trailing_spaces2(char *p)
 {
     char *pp;
     if(*p==0) return p;
@@ -203,7 +208,7 @@ void detag(char *p)
 }
 
 /*  modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
+void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
@@ -211,7 +216,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     va_start(vp,good);
     vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
-      return;
+      return; /* this is an error situation. */
     strcat(buf,bad_end);
     ovlstrcpy(bad_beg,buf);
 }
@@ -222,7 +227,7 @@ void comma(char *p)
 {
     char *pp;
     for(pp=strchr(p,','); pp; pp=strchr(pp+1,','))
-      string_modify(p,pp,pp+1,", ");
+      string_modify3(p,pp,pp+1,", ");
 }
 
 void _getdef(char buf[], char *name, char value[])
@@ -240,7 +245,7 @@ void _getdef(char buf[], char *name, char value[])
     if(p3 <= p2) continue;
     snprintf(value,MAX_LINELEN,"%s",p2);
     if(p3!=NULL && p3-p2<MAX_LINELEN) value[p3-p2]=0;
-    strip_trailing_spaces(value);
+    strip_trailing_spaces2(value);
     break;
     }
 }
@@ -468,12 +473,12 @@ int sheet_index(int serial)
     i++,p1=p2) {
     p2=strchr(p1,'\n');
     if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-    p1=find_word_start(p1); strip_trailing_spaces(p1);
+    p1=find_word_start(p1); strip_trailing_spaces2(p1);
     snprintf(sindbuf[i],MAX_LINELEN,"%s",p1);
     }
     p2=strstr(p1,"\n:"); if(p2==NULL) p2=p1+strlen(p1);
     else *p2=0;
-    p1=find_word_start(p1); strip_trailing_spaces(p1);
+    p1=find_word_start(p1); strip_trailing_spaces2(p1);
     for(p2=p1;*p2;p2++) if(*p2=='\n') *p2=' ';
     ovlstrcpy(sindbuf[s_information],p1);
     return 0;
@@ -491,8 +496,8 @@ void appenditem(char *word, int lind, int serial, int weight, char *l)
     FILE *f;
 
     if(!isalnum(*word) || (ll=strlen(word))<2 ||
-       wordchr(taken,word)!=NULL ||
-       wordchr(ignore[lind],word)!=NULL ||
+       wordchr2(taken,word)!=NULL ||
+       wordchr2(ignore[lind],word)!=NULL ||
        takenlen>=MAX_LINELEN-ll-16)
       return;
     if(ll==2 && (!isdigit(word[0]) || !isalpha(word[1]))) return;
@@ -548,7 +553,7 @@ void onemodule(const char *name, int serial, int lind)
  *   to this module
  */
     for(i=catcnt=0;i<catno && catcnt<16;i++) {
-    if(wordchr(indbuf[i_category],cat[i].name)!=NULL)
+    if(wordchr2(indbuf[i_category],cat[i].name)!=NULL)
       categories[catcnt++]=cat[i].typ;
     }
     if(catcnt==0) return;
@@ -573,7 +578,7 @@ void onemodule(const char *name, int serial, int lind)
 /*   add module's information in html page for robots  */
     snprintf(buf,sizeof(buf),"%s",indbuf[i_description]);
     for(pp=strchr(buf,','); pp; pp=strchr(pp,','))
-      string_modify(buf,pp,pp+1,"&#44;");
+      string_modify3(buf,pp,pp+1,"&#44;");
     if(strcmp(module_language,lang[lind])==0)
       fprintf(robotf,"%s ,%s,%s,%s,%s\n",name,module_language,name,
           indbuf[i_title], buf);
@@ -586,9 +591,9 @@ void onemodule(const char *name, int serial, int lind)
     unknown_type=unk_leave;
     for(i=0;i<trcnt;i++) {
     detag(indbuf[trlist[i]]);
-    deaccent(indbuf[trlist[i]]);
+    deaccent2(indbuf[trlist[i]]);
     comma(indbuf[trlist[i]]);
-    singlespace(indbuf[trlist[i]]);
+    singlespace2(indbuf[trlist[i]]);
     translate(indbuf[trlist[i]]);
     }
 /*   Normalize the information, using dictionary
@@ -720,8 +725,8 @@ void sappenditem(char *word, int lind, int serial, int weight)
     char *p;
 
     if(!isalnum(*word) || (ll=strlen(word))<2 ||
-       wordchr(taken,word)!=NULL ||
-       wordchr(ignore[lind],word)!=NULL ||
+       wordchr2(taken,word)!=NULL ||
+       wordchr2(ignore[lind],word)!=NULL ||
        takenlen>=MAX_LINELEN-ll-16)
       return;
     if(ll==2 && (!isdigit(word[0]) || !isalpha(word[1]))) return;
@@ -752,9 +757,9 @@ void onesheet(int serial, int lind)
     unknown_type=unk_leave;
     for(i=0;i<trcnt;i++) {
     detag(sindbuf[trlist[i]]);
-    deaccent(sindbuf[trlist[i]]);
+    deaccent2(sindbuf[trlist[i]]);
     comma(sindbuf[trlist[i]]);
-    singlespace(sindbuf[trlist[i]]);
+    singlespace2(sindbuf[trlist[i]]);
     translate(sindbuf[trlist[i]]);
     }
 

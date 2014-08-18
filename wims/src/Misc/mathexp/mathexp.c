@@ -38,7 +38,7 @@ int regexcnt=0;
 
 #include "tables.c"
 #include "errors.c"
-#include "lines.c"
+#include "../../Lib/lines.c"
 #include "basic.c"
 #include "extract.c"
 #include "type.c"

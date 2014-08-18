@@ -17,15 +17,17 @@
 
 /* This special program selects words composed by
  * selected characters, each selected character being used
- * at most once in the word */
+ * at most once in the word
+ */
 
 /* Selected characters are entered by the env var 'oncechar'.
- * Words entered by stdin. Output to stdout. */
+ * Words entered by stdin. Output to stdout.
+ */
 
 #include "../wims.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 #define MAX_WORDLEN 1023
-
+#include "../mydebug.c"
 char wbuf[MAX_WORDLEN+1];
 char selbuf[256];
 

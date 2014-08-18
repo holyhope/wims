@@ -35,16 +35,17 @@ int sufcomp(int t, const unsigned char *s2)
     int k;
 
     for(k=0;k<suf[t].olen && k<sufwordlen
-    && suf[t].original[k]==s2[sufwordlen-k-1];k++);
+      && suf[t].original[k]==s2[sufwordlen-k-1];k++);
     if(k>=suf[t].olen) {
-    if(sufwordlen>k) return -1; else return 0;
+      if(sufwordlen>k) return -1; else return 0;
     }
     else return suf[t].original[k]-s2[sufwordlen-k-1];
 }
 
 /* searches a list. Returns index if found, -1 if nomatch.
  * This routine is faster than naive one by one comparisons,
- * and is especially suited for large lists. */
+ * and is especially suited for large lists.
+ */
 int suffix_list(void *list, int items, size_t item_size, const unsigned char *str)
 {
     int i1,i2,j,k,t,v;
@@ -56,19 +57,19 @@ int suffix_list(void *list, int items, size_t item_size, const unsigned char *st
     j=items-1; k=sufcomp(j,str);
     if(k==0) return j;
     if(k>0) for(i1=0,i2=j;i2>i1+1;) {
-    j=i1+(i2-i1)/2; k=sufcomp(j,str);
-    if(k==0) return j;
-    if(k>0) {i2=j; continue;}
-    if(k<0) {i1=j; continue;}
+      j=i1+(i2-i1)/2; k=sufcomp(j,str);
+      if(k==0) return j;
+      if(k>0) {i2=j; continue;}
+      if(k<0) {i1=j; continue;}
     }
     if(k>0 && j>0) j--;
     backcheck:
     v=j;for(t=0;t<suf[j].olen && t<sufwordlen
-    && suf[j].original[t]==str[sufwordlen-t-1];t++);
+      && suf[j].original[t]==str[sufwordlen-t-1];t++);
     if(t<sufminlen) return -1; if(t>=suf[j].olen) return j;
     for(j--,c=str[sufwordlen-1],d=str[sufwordlen-t];
-    j>=0 && suf[j].original[0]==c && suf[j].olen>t
-    && suf[j].original[t-1]==d;j--);
+      j>=0 && suf[j].original[0]==c && suf[j].olen>t
+      && suf[j].original[t-1]==d;j--);
     if(j>=0 && suf[j].original[0]==c &&
        strncmp((char*)suf[j].original,(char*)suf[v].original,suf[j].olen)==0)
       return j;
@@ -95,8 +96,8 @@ void suffix_dic(char *sdicname)
     p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
     pp=strchr(p1,':'); if(pp==NULL) continue;
     *pp++=0;
-    strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-    singlespace(p1);
+    strip_trailing_spaces2(p1); strip_trailing_spaces2(pp);
+    singlespace2(p1);
     p1=find_word_start(p1); pp=find_word_start(pp);
     if(*p1==0) continue;
     suf[i].original=(unsigned char*)p1; suf[i].olen=l=strlen(p1);
@@ -117,18 +118,18 @@ void suffix_translate(char *p)
     int t;
 
     for(p1=find_word_start(p);
-    p1!=NULL && p1-p<MAX_LINELEN && *p1!=0;
-    p1=p2) {
-    if(!isalpha(*p1)) {p2=p1+1; continue;}
-    for(p2=p1;isalpha(*p2);p2++);
-    if(*p2!=0 && strchr(" ,.?!'\"\n`:;()[]{}<>",*p2)==NULL) continue;
-    sufwordlen=p2-p1;
-    t=suffix_list(suf,suffixcnt,sizeof(suf[0]),(unsigned char*)p1);
-    if(t<0) continue;
-    string_modify(p,p2-suf[t].olen,p2,(char*)suf[t].replace);
-    p2=p2-suf[t].olen+strlen((char*)suf[t].replace);
-    }
-    p[MAX_LINELEN]=0;
+      p1!=NULL && p1-p<MAX_LINELEN && *p1!=0;
+      p1=p2) {
+       if(!isalpha(*p1)) {p2=p1+1; continue;}
+       for(p2=p1;isalpha(*p2);p2++);
+       if(*p2!=0 && strchr(" ,.?!'\"\n`:;()[]{}<>",*p2)==NULL) continue;
+       sufwordlen=p2-p1;
+       t=suffix_list(suf,suffixcnt,sizeof(suf[0]),(unsigned char*)p1);
+       if(t<0) continue;
+       string_modify3(p,p2-suf[t].olen,p2,(char*)suf[t].replace);
+       p2=p2-suf[t].olen+strlen((char*)suf[t].replace);
+     }
+     p[MAX_LINELEN]=0;
 }
 
 void suffix(char *p, char *sdicname)

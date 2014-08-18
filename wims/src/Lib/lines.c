@@ -18,7 +18,13 @@
 
 #include <stdarg.h>
 
-#include "basicstr.c"
+/* copy of possibly overlapping strings, to replace strcpy which is not guaranteed in this case
+   and indeed produces errors particularly on 64 bits computers */
+
+void ovlstrcpy(char *dest, char *src)
+{
+  memmove(dest, src, strlen(src)+1);
+}
 
 #define int_buf_size 40
 

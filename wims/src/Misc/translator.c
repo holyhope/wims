@@ -29,7 +29,7 @@
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
-#include "../Lib/basicstr.c"
+#include "../Lib/libwims.h"
 
 char *inpbuf, outbuf[2*(MAX_LINELEN+1)];
 char *dicbuf;
@@ -48,14 +48,14 @@ int unknown_type=unk_delete;
 int nocase=0,leaveline=0,fromfile=0;
 char *unknown, unkbuf[1024];
 
-void *xmalloc(size_t n)
+/*void *xmalloc(size_t n)
 {
     void *p;
     p=malloc(n);
     if(p==NULL) exit(1);
     return p;
 }
-
+*/
 /* Exit without translating anything */
 void escape(void)
 {
@@ -63,23 +63,26 @@ void escape(void)
 }
 
 /* Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Strips leading spaces */
+/*
 char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
+*/
 
 /* strip trailing spaces; return string end. */
-char *strip_trailing_spaces(char *p)
+char *strip_trailing_spaces2(char *p)
 {
     char *pp;
     if(*p==0) return p;
@@ -98,7 +101,7 @@ int compare(int i1, const char *s2)
 
 /* searches a list. Returns index if found, -1 if nomatch.
  * Uses binary search, list must be sorted. */
-int search_list(struct entry *list, int items, size_t item_size, const char *str)
+int search_list2(struct entry *list, int items, size_t item_size, const char *str)
 {
     int i1,i2,j,k,t,t1;
     unsigned char c;
@@ -129,7 +132,7 @@ int search_list(struct entry *list, int items, size_t item_size, const char *str
 }
 
 /* modify a string. Bufferlen must be ast least 2*MAX_LINELEN */
-void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
+void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
     va_list vp;
@@ -143,7 +146,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 }
 
 /* change all spaces into ' ', and collapse multiple occurences */
-void singlespace(char *p)
+void singlespace2(char *p)
 {
     char *pp, *p2;
     for(pp=p;*pp;pp++) {
@@ -205,8 +208,8 @@ void prepare_dic(void)
       p2=strchr(p1+1,'\n'); if(p2>p1) *p2++=0;
       pp=strchr(p1,':'); if(pp==NULL) continue;
       *pp++=0;
-      strip_trailing_spaces(p1); strip_trailing_spaces(pp);
-      singlespace(p1);
+      strip_trailing_spaces2(p1); strip_trailing_spaces2(pp);
+      singlespace2(p1);
       p1=find_word_start(p1); pp=find_word_start(pp);
       if(*p1==0) continue;
       if(has_digits==0) {
@@ -215,7 +218,7 @@ void prepare_dic(void)
           if(isdigit(*p)) has_digits=1;
       }
       entry[i].original=(unsigned char*)p1;
-        entry[i].replace=(unsigned char*)pp;
+      entry[i].replace=(unsigned char*)pp;
       entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
       if(i>0) {
           int l1,l2;
@@ -248,7 +251,7 @@ void translate(void)
       if(pp==p1 ||
          (has_digits==0 && isdigit(*pp)) ||
          (*pp!=0 && !isspace(*pp) && strchr(",.?!/;",*pp)==NULL)) continue;
-      t=search_list(entry,entrycount,sizeof(entry[0]),p1);
+      t=search_list2(entry,entrycount,sizeof(entry[0]),p1);
       if(t<0) {
           switch(unknown_type) {
             case unk_leave: break;
@@ -257,13 +260,13 @@ void translate(void)
                 break;
             }
             case unk_replace: {
-                string_modify(outbuf,p1,pp,unkbuf);
+                string_modify3(outbuf,p1,pp,unkbuf);
                 p2=find_word_start(p1+strlen(unkbuf));
             }
           }
           continue;
       }
-      string_modify(outbuf,p1,p1+strlen((char*)entry[t].original),
+      string_modify3(outbuf,p1,p1+strlen((char*)entry[t].original),
                   (char*)entry[t].replace);
       p2=find_word_start(p1+strlen((char*)entry[t].replace));
     }
@@ -316,7 +319,7 @@ int main()
       }
       if(p2<=p1) return 0;
       memmove(outbuf,p1,p2-p1); outbuf[p2-p1]=0;
-      singlespace(outbuf);
+      singlespace2(outbuf);
       s=getenv("w_suffix_dictionary");
       if(s!=NULL && *s!=0) suffix(outbuf,s);
       translate();

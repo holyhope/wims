@@ -16,7 +16,6 @@
  */
 
 /* Common routines in interfaces */
-#include "../Lib/basicstr.c"
 
 #define ch_root "bin/ch..root"
 
@@ -51,6 +50,7 @@ void output(char *p);
 void about(void);
 char *dynsetup(char *p, char *end);
 
+/*
 void *xmalloc(size_t n)
 {
     void *p;
@@ -61,9 +61,9 @@ void *xmalloc(size_t n)
     }
     return p;
 }
-
+*/
 /* strip trailing spaces; return string end. */
-char *strip_trailing_spaces(char *p)
+char *strip_trailing_spaces2(char *p)
 {
     char *pp;
     if(*p==0) return p;
@@ -72,23 +72,25 @@ char *strip_trailing_spaces(char *p)
 }
 
 /* Points to the end of the word */
+/*
 char *find_word_end(char *p)
 {
     int i;
     for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Strips leading spaces */
+/*
 char *find_word_start(char *p)
 {
     int i;
     for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
-
+*/
 /* Find first occurrence of word */
-char *wordchr(char *p, char *w)
+char *wordchr2(char *p, char *w)
 {
     char *r;
 
@@ -99,7 +101,8 @@ char *wordchr(char *p, char *w)
     return r;
 }
 
-         /* Returns the pointer or NULL. */
+/* Returns the pointer or NULL. */
+/*
 char *varchr(char *p, char *v)
 {
         char *pp; int n=strlen(v);
@@ -109,9 +112,9 @@ char *varchr(char *p, char *v)
         }
         return pp;
 }
-
+*/
 /* find matching parenthesis */
-char *find_matching(char *p, char c)
+char *find_matching2(char *p, char c)
 {
     char *pp;
     int parenth, brak, brace;
@@ -138,6 +141,7 @@ char *find_matching(char *p, char c)
 /* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
  * Uses binary search, list must be sorted. */
 
+/*
 int search_list(void *list, int items, size_t item_size, const char *str)
 {
  int i = 0;
@@ -150,6 +154,7 @@ int search_list(void *list, int items, size_t item_size, const char *str)
    }
  return ~i;
 }
+*/
 
 /* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
@@ -206,7 +211,7 @@ void addpid(int pid)
     snprintf(pidbuf,sizeof(pidbuf),"%u",pid);
     accessfile(buf,"r",pidfname); l=strlen(buf);
     if(l>=MAX_LINELEN-64) return;
-    if(wordchr(buf,pidbuf)==NULL) {
+    if(wordchr2(buf,pidbuf)==NULL) {
       snprintf(buf+l,sizeof(buf)-l," %s",pidbuf);
       accessfile(buf,"w",pidfname);
     }
@@ -218,7 +223,7 @@ void rmpid(int pid)
     char buf[MAX_LINELEN+1], pidbuf[32], *p;
     snprintf(pidbuf,sizeof(pidbuf),"%u",pid);
     accessfile(buf,"r",pidfname);
-    p=wordchr(buf,pidbuf);
+    p=wordchr2(buf,pidbuf);
     if(p!=NULL) {
       ovlstrcpy(p,find_word_start(find_word_end(p)));
       accessfile(buf,"w",pidfname);

@@ -227,7 +227,7 @@ char *mkfname(char buf[], char *s,...)
     return p;
 }
 
-#include "lines.c"
+#include "../../Lib/lines.c"
 #include "translate.c"
 #include "match.c"
 #include "compile.c"

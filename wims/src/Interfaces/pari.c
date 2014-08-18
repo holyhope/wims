@@ -148,13 +148,13 @@ void output(char *p)
       pt=pp+strlen(pp)-1;
       while(isspace(*pt) && pt>pp) *pt--=0;
 /* remove parentheses of matrix output */
-      if(memcmp(pp,"Mat(",4)==0 && *pt==')' && find_matching(pp+4,')')==pt) {
+      if(memcmp(pp,"Mat(",4)==0 && *pt==')' && find_matching2(pp+4,')')==pt) {
           *(pt--)=0; pp+=4;
       }
-      if(memcmp(pp,"Vecsmall(",9)==0 && *pt==')' && find_matching(pp+9,')')==pt) {
+      if(memcmp(pp,"Vecsmall(",9)==0 && *pt==')' && find_matching2(pp+9,')')==pt) {
           *(pt--)=0; pp+=9;
       }
-      if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
+      if(*pp=='[' && *pt==']' && find_matching2(pp+1,']')==pt) {
           *(pt--)=0; pp++;
       }
       strip_zeros(pp);
@@ -169,7 +169,7 @@ void about(void)
     prepabout("\\v\nquit\n",outputfname,NULL);
     if(readabout()>0) {
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
-      strip_trailing_spaces(aboutbuf);
+      strip_trailing_spaces2(aboutbuf);
       printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }

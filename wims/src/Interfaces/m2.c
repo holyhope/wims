@@ -117,7 +117,7 @@ void about(void)
     cmdparm=""; prepabout(quitstring,"/dev/null",outputfname);
     if(readabout()>0) {
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
-      strip_trailing_spaces(aboutbuf);
+      strip_trailing_spaces2(aboutbuf);
       printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }

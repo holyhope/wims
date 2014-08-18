@@ -174,7 +174,7 @@ void DVI_fnt_def(int p)
     if(pass==1) {
 	fdensity=(double) density*((double) s/d);
 	if(loadfont(fname, c, fdensity, wfont+fontcnt)==NULL) {
-	    if(loadfont("cmr10",0,fdensity,wfont+fontcnt)==NULL) 
+	    if(loadfont("cmr10",0,fdensity,wfont+fontcnt)==NULL)
 	      error("Font panick: even cmr10 cannot be found.");
 	    else fprintf(stderr,"Font %s not found; replace by cmr10.\n",fname);
 	}
@@ -228,7 +228,7 @@ void DVI_xxx(int p)
 {
     int i, t;
     char *pp, buf[1024];
-    
+
     t=texint(dviptr+1,p);
     if(pass<2 || t>1000) {dviptr+=t+p; return;}
     memmove(buf,dviptr+1+1,t); buf[t]=0;
@@ -246,7 +246,7 @@ void dvi(void)
 {
     unsigned char cc, *startpoint;
     char namebuf[1024];
-    
+
     snprintf(namebuf,sizeof(namebuf),"%s/texgif.dvi",tmpdir);
     dvilen=getfile(namebuf,&dvibuf);
     if(dvilen<=0) error("dvi file not found.");
@@ -275,46 +275,46 @@ printf("dvi file: num=%d, den=%d, ratio=%f, mag=%d, density=%d\n",
 		case dvi_set1: case dvi_set2: case dvi_set3:
 		case dvi_set4: DVI_set(*dviptr-dvi_set1+1); break;
 		case dvi_set_rule: DVI_set_rule(); break;
-		
+
 		case dvi_put1: case dvi_put2: case dvi_put3:
 		case dvi_put4: DVI_put(*dviptr-dvi_put1+1); break;
 		case dvi_put_rule: DVI_put_rule(); break;
-		
+
 		case dvi_nop: DVI_nop(); break;
 		case dvi_bop: DVI_bop(); break;
 		case dvi_eop: DVI_eop(); break;
 		case dvi_push: DVI_push(); break;
 		case dvi_pop: DVI_pop(); break;
-		
+
 		case dvi_right1: case dvi_right2: case dvi_right3:
 		case dvi_right4: DVI_move(&d_h, *dviptr-dvi_right1+1); break;
-		
+
 		case dvi_w0: case dvi_w1: case dvi_w2: case dvi_w3:
 		case dvi_w4: DVI_move2(&d_h, &d_w, *dviptr-dvi_w0); break;
 		case dvi_x0: case dvi_x1: case dvi_x2: case dvi_x3:
 		case dvi_x4: DVI_move2(&d_h, &d_x, *dviptr-dvi_x0); break;
-	
+
 		case dvi_down1: case dvi_down2: case dvi_down3:
 		case dvi_down4: DVI_move(&d_v, *dviptr-dvi_down1+1); break;
-		
+
 		case dvi_y0: case dvi_y1: case dvi_y2: case dvi_y3:
 		case dvi_y4: DVI_move2(&d_v, &d_y, *dviptr-dvi_y0); break;
 		case dvi_z0: case dvi_z1: case dvi_z2: case dvi_z3:
 		case dvi_z4: DVI_move2(&d_v, &d_z, *dviptr-dvi_z0); break;
-		
+
 		case dvi_fnt1: case dvi_fnt2: case dvi_fnt3:
 		case dvi_fnt4: DVI_fnt_num(*dviptr-dvi_fnt1+1); break;
-		
+
 		case dvi_xxx1: case dvi_xxx2: case dvi_xxx3:
 		case dvi_xxx4: DVI_xxx(*dviptr-dvi_xxx1+1); break;
-		
+
 		case dvi_fnt_def1: case dvi_fnt_def2: case dvi_fnt_def3:
 		case dvi_fnt_def4: DVI_fnt_def(*dviptr-dvi_fnt_def1+1); break;
-		
+
 		case dvi_pre: error("Bad dvi file: pre within file.");
 		case dvi_post: DVI_post(); break;
 		case dvi_post_post: DVI_post_post(); break;
-		
+
 		default: error("Bad dvi file: unknown command.");
 	    }
 	}

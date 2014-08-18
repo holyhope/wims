@@ -39,6 +39,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include "../wimsdef.h"
+#include "../Lib/libwims.h"
 
 #define parmlim (MAX_LINELEN+256)
 #define inputlim (512*1024)
