@@ -16,6 +16,7 @@
  */
 
 /* tex 2 gif translator, image manipulating routines */
+#include "texgif.h"
 
 gdImagePtr image=NULL;
 int color_white, color_black, color_bounder;
@@ -91,7 +92,7 @@ void makecolor(char *p)
 {
     int t, r,g,b;
     char *p2;
-    
+
     p=find_word_start(p); r=g=b=0;
     p2=strchr(p,',');
     if(p2==NULL) {  /* color name */

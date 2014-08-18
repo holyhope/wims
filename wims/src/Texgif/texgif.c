@@ -18,6 +18,7 @@
 /* tex 2 gif translator */
 
 #include "texgif.h"
+
 char *progname;
 char *tmpdir="/tmp";
 char *fontdir="/tmp";
@@ -38,13 +39,13 @@ enum {tt_plain, tt_latex};
 int textype=tt_plain;
 char *texname="tex";
 
-#include "basic.c"
-#include "colors.c"
-#include "tfm.c"
-#include "gf.c"
-#include "font.c"
-#include "image.c"
-#include "dvi.c"
+/*#include "basic.c"*/
+/*#include "colors.c"*/
+/*#include "tfm.c"*/
+/*#include "gf.c"*/
+/*#include "font.c"*/
+/*#include "image.c"*/
+/*#include "dvi.c"*/
 
 void checktextype(char *p)
 {

@@ -16,7 +16,8 @@
  */
 
 /* dvi 2 gif driver, tex standard */
-#include "../Lib/libwims.h"
+
+#include "texgif.h"
 
 void error(char *s)
 {

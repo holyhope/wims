@@ -16,14 +16,9 @@
  */
 
 /* dvi 2 gif driver, tfm loader */
+#include "texgif.h"
 
-struct tfm {
-    int bc, ec;
-    int checksum, designsize;
-    struct f {
-	int32_t w,h,d;
-    } f[256];
-} tfm;
+struct tfm tfm;
 
 short int tfmhd[12];
 

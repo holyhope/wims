@@ -16,6 +16,7 @@
  */
 
 /* tex 2 gif translator, font loader */
+#include "texgif.h"
 
 void mf2font(char *fontname, int density)
 {
@@ -32,9 +33,9 @@ FONT *loadfont(char *fname, int checksum, int density, FONT *ft)
     long int l,l2;
     FILE *f;
     int newfont;
-    
+
     newfont=0;
-    for(cc=fname; isalnum(*cc); cc++); 
+    for(cc=fname; isalnum(*cc); cc++);
     if(*cc!=0) error("Bad font name.");
     snprintf(namebuf,sizeof(namebuf),"%s/%d/%s.font",fontdir,density,fname);
     f=fopen(namebuf,"r"); if(f==NULL) {

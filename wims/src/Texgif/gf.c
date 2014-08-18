@@ -16,6 +16,31 @@
  */
 
 /* dvi 2 gif driver, gf font loader and processor */
+#include "texgif.h"
+
+#define gf_paint_0	0
+#define gf_paint1	64
+#define gf_paint2	65
+#define gf_paint3	66
+#define gf_boc		67
+#define gf_boc1		68
+#define gf_eoc		69
+#define gf_skip0	70
+#define gf_skip1	71
+#define gf_skip2	72
+#define gf_skip3	73
+#define gf_new_row_0	74
+#define gf_xxx1		239
+#define gf_xxx2		240
+#define gf_xxx3		241
+#define gf_xxx4		242
+#define gf_yyy		243
+#define gf_no_op	244
+#define gf_char_loc	245
+#define gf_char_loc0	246
+#define gf_pre		247
+#define gf_post		248
+#define gf_post_post	249
 
 int g;
 FONTHEADER *fh;
@@ -123,13 +148,11 @@ void GF_post_post(void)
     g=gfbuflen; chswitch=0;
 }
 
-#include "gfcmd.c"
-
 void loadgf(char *fname, int density)
 {
     int len;
     char namebuf[128];
-    
+
     snprintf(namebuf,sizeof(namebuf),"%s/texgf.%dgf",tmpdir,density);
     len=getfile(namebuf,&gfbuf);
     if(len<=0) {
@@ -164,7 +187,7 @@ void gf2font(char *fontname,int density)
     unsigned char cc;
     char namebuf[1024];
     char tmpname[1024];
-    
+
     if((gfbuf[0]&255)!=gf_pre || (gfbuf[1]&255)!=131) return;
     g=3+(gfbuf[2]&255);
     if(gfbuflen<=g) return;
@@ -194,7 +217,7 @@ void gf2font(char *fontname,int density)
 	    case gf_xxx3:	GF_xxx(3); break;
 	    case gf_xxx4:	GF_xxx(4); break;
 	    case gf_yyy:	GF_yyy(); break;
-	    
+
 	    default: break;
 	}
     }
