@@ -211,7 +211,7 @@ var xsize = %d;\
 var ysize = %d;\
 var precision = 100;\
 var canvas_div = document.getElementById(\"canvas_div%d\");\
-create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
+var create_canvas%d = function(canvas_type,size_x,size_y){var cnv;if(document.getElementById(\"wims_canvas%d\"+canvas_type)){ cnv = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{try{ cnv = document.createElement(\"canvas\"); }catch(e){alert(\"Your browser does not support HTML5 CANVAS:GET FIREFOX !\");return;};canvas_div.appendChild(cnv);};cnv.width = size_x;cnv.height = size_y;cnv.style.top = 0;cnv.style.left = 0;cnv.style.position = \"absolute\";cnv.id = \"wims_canvas%d\"+canvas_type;return cnv;};\
 function findPosX(i){ var obj = i;var curleft = 0;if(obj.offsetParent){while(1){curleft += obj.offsetLeft;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.x){curleft += obj.x;};};return curleft;};function findPosY(i){var obj = i;var curtop = 0;if(obj.offsetParent){while(1){curtop += obj.offsetTop;if(!obj.offsetParent){break;};obj = obj.offsetParent;};}else{if(obj.y){curtop += obj.y;};};return curtop;};\
 function x2px(x){if(use_xlogscale == 0 ){return parseFloat(x*xsize/(xmax - xmin) - xsize*xmin/(xmax - xmin));}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_in = Math.log(x)/Math.log(xlogbase);return x_in*xsize/(x_max - x_min) - xsize*x_min/(x_max - x_min);};};\
 function px2x(px){if(use_xlogscale == 0 ){return parseFloat(px*(xmax - xmin)/xsize + xmin);}else{var x_max = Math.log(xmax)/Math.log(xlogbase);var x_min = Math.log(xmin)/Math.log(xlogbase);var x_out = x_min +px*(x_max - x_min)/(xsize);return Math.pow(xlogbase,x_out);};};\
@@ -221,7 +221,8 @@ function scale_x_radius(rx){return rx*xsize/(xmax - xmin);};\
 function scale_y_radius(ry){return ry*ysize/(ymax - ymin);};\
 function distance(x1,y1,x2,y2){return parseInt(Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) ));};\
 function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
-function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;}return obj;};\
+function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;};return obj;};\
+function slide(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = x2px(obj.xorg[p] + dx);obj.y[p] = y2px(obj.yorg[p] + dy);};return obj;};\
 var x_use_snap_to_grid = 0;var y_use_snap_to_grid = 0;var snap_x = 1;var snap_y = 1;\
 function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\
 function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\
@@ -648,7 +649,9 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	 @ arc xc,yc,width,height,start_angle,end_angle,color
 	 @ can not be set "onclick" or "drag xy"
-	 @ attention: width == height == radius in pixels)
+	 @ attention: width == height == radius in pixels
+	 @ will not zoom in or zoom out (because radius is given in pixels an not in x/y-system !). Panning will work
+	 @ use command 'angle' for scalable angle
 	*/
 	    for(i=0;i<7;i++){
 		switch(i){
@@ -672,6 +675,29 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		}
 	    }
 	    break;
+	case ANGLE: 
+	/*
+	 @ angle xc,yc,width,start_angle,end_angle,color
+	 @ width is in x-range
+	 @ will zoom in/out
+	 @ if size is controlled by command 'slider' use radians to set limits of slider.
+	*/
+	    for(i=0;i<7;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);break; /* width in pixels ! */
+		    case 3:double_data[3] = get_real(infile,0);break; /* start angle in degrees */
+		    case 4:double_data[4] = get_real(infile,0);break; /* end angle in degrees */
+		    case 5:stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,17,[%.*f,%.*f],[%.*f,%.*f],[%.*f,%.*f],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[2],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+    			reset();
+	            break;
+		}
+	    }
+	    break;
+
 	case ELLIPSE:
 	/*
 	@ ellipse xc,yc,radius_x,radius_y,color
@@ -1761,7 +1787,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
 	@ amount of sliders is not limited.
 	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value'
-	@ type=angle: for all objects in radians<br />except command 'arc', which should be in degrees !
+	@ type=angle: for all objects in radians<br />(except command 'arc', which should be in degrees...use command 'angle' if radians are needed ! )
 	@ type=xy: will produce a 2D 'slider' [rectangle width x heigh px] in your web page
 	@ every draggable object may have it's own slider (no limit in amount of sliders)
 	@ label: some slider text
@@ -4567,7 +4593,7 @@ function setxy(evt){\
 
     case DRAW_EXTERNAL_IMAGE:
 fprintf(js_include_file,"\n<!-- draw external images -->\n\
-draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\
+var draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\
  var image = new Image();\
  image.src = URL;\
  var canvas_bg_div = document.getElementById(\"canvas_div%d\");\
@@ -4592,7 +4618,7 @@ draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,dragg
     break;
     case DRAW_GRIDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw gridfill -->\n\
-draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize){\
+var draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,ysize){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4621,7 +4647,7 @@ draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsize,y
     
     case DRAW_IMAGEFILL:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw imagefill -->\n\
-draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
+var draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4663,7 +4689,7 @@ draw_imagefill = function(canvas_type,x0,y0,URL,xsize,ysize){\
     
     case DRAW_DOTFILL:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw dotfill -->\n\
-draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize){\
+var draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4691,7 +4717,7 @@ draw_dotfill = function(canvas_type,x0,y0,dx,dy,radius,color,opacity,xsize,ysize
 
     case DRAW_DIAMONDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
-draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
+var draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
   var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4738,7 +4764,7 @@ draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,strok
     
     case DRAW_HATCHFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw hatch fill -->\n\
-draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
+var draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_opacity,xsize,ysize){\
   var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4772,7 +4798,7 @@ draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,stroke_
     break;
     case DRAW_CIRCLES:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw circles -->\n\
-draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -4792,7 +4818,7 @@ draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color,str
     break;
     case DRAW_POLYLINE:/* user for userdraw : draw lines through points */
 fprintf(js_include_file,"\n<!-- draw polyline -->\n\
-draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -4820,7 +4846,7 @@ draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,stroke_op
     
     case DRAW_SEGMENTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw segments -->\n\
-draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -4853,7 +4879,7 @@ function calc_line(x1,x2,y1,y2){\
  var Y2 = y1 + (xsize - x1)*(y2 - y1)/(x2 - x1);\
  return [0,Y1,xsize,Y2];\
 };\
-draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  var line = new Array(4);\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
@@ -4876,7 +4902,7 @@ draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opaci
 
     case DRAW_CROSSHAIRS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw crosshairs  -->\n\
-draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
+var draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
@@ -4905,7 +4931,7 @@ draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,strok
 
     case DRAW_RECTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw rects -->\n\
-draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -4926,7 +4952,7 @@ draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opaci
 
     case DRAW_ROUNDRECTS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw round rects -->\n\
-draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
+var draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -4954,7 +4980,7 @@ draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_
 
     case DRAW_ELLIPSES:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw ellipses -->\n\
-draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
+var draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -4987,7 +5013,7 @@ draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_color,s
 
     case DRAW_PATHS: /*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw paths -->\n\
-draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
+var draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -5008,7 +5034,7 @@ draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_color,
     break;
     case DRAW_ARROWS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw arrows -->\n\
-draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_affine,affine_matrix){\
+var draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
@@ -5058,7 +5084,7 @@ draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_color,
 
     case DRAW_VIDEO:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw video -->\n\
-draw_video = function(canvas_root_id,x,y,w,h,URL){\
+var draw_video = function(canvas_root_id,x,y,w,h,URL){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var video_div = document.createElement(\"div\");\
  canvas_div.appendChild(video_div);\
@@ -5084,7 +5110,7 @@ draw_video = function(canvas_root_id,x,y,w,h,URL){\
     
     case DRAW_AUDIO:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw audio -->\n\
-draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
+var draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var audio_div = document.createElement(\"div\");\
  canvas_div.appendChild(audio_div);\
@@ -5114,7 +5140,7 @@ draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
     
     case DRAW_HTTP:/* not  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw http -->\n\
-draw_http = function(canvas_root_id,x,y,w,h,URL){\
+var draw_http = function(canvas_root_id,x,y,w,h,URL){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var http_div = document.createElement(\"div\");\
  var iframe = document.createElement(\"iframe\");\
@@ -5129,7 +5155,7 @@ draw_http = function(canvas_root_id,x,y,w,h,URL){\
     
     case DRAW_XML:
 fprintf(js_include_file,"\n<!-- draw xml -->\n\
-draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
+var draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var xml_div = document.createElement(\"div\");\
  canvas_div.appendChild(xml_div);\
@@ -5156,7 +5182,7 @@ draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
  sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily)
 */
 fprintf(js_include_file,"\n<!-- draw sgraph -->\n\
-draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity,font_size){\
+var draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity,font_size){\
  var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{ obj = create_canvas%d(canvas_type,xsize,ysize);};\
  var ctx = obj.getContext(\"2d\");\
  ctx.font = fontfamily;\
@@ -5353,7 +5379,7 @@ draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorco
 
     case DRAW_GRID:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw grid -->\n\
-draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
+var draw_grid%d = function(canvas_type,precision,stroke_opacity,xmajor,ymajor,xminor,yminor,tics_length,line_width,stroke_color,axis_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype0,dashtype1,font_color,fill_opacity){\
 var obj;if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){obj = document.getElementById(\"wims_canvas%d\"+canvas_type);}else{obj = create_canvas%d(canvas_type,xsize,ysize);};\
 var ctx = obj.getContext(\"2d\");ctx.clearRect(0,0,xsize,ysize);\
 if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -5743,7 +5769,7 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
     break;
     case DRAW_ARCS:
 fprintf(js_include_file,"\n<!-- draw arcs -->\n\
-draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+var draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
  ctx.save();\
  if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
  if( use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
@@ -5769,7 +5795,7 @@ draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity
     break;
     case DRAW_CENTERSTRING:
 fprintf(js_include_file,"\n<!-- draw centerstring -->\n\
-draw_centerstring = function(canvas_type,y,font_family,stroke_color,stroke_opacity,text){\
+var draw_centerstring = function(canvas_type,y,font_family,stroke_color,stroke_opacity,text){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5790,7 +5816,7 @@ return;\
     break;
     case DRAW_TEXTS:
 fprintf(js_include_file,"\n<!-- draw text -->\n\
-draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_affine,affine_matrix){\
+var draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_opacity,angle2,text,use_rotate,angle,use_affine,affine_matrix){\
   var obj;\
   if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
    obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5826,7 +5852,7 @@ draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stroke_o
     break;
     case DRAW_CURVE:
 fprintf(js_include_file,"\n<!-- draw curve -->\n\
-draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
+var draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -5862,7 +5888,7 @@ draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_color
     
     case DRAW_INPUTS:
 fprintf(js_include_file,"\n<!-- draw input fields -->\n\
-draw_inputs = function(root_id,input_cnt,x,y,size,readonly,style,value){\
+var draw_inputs = function(root_id,input_cnt,x,y,size,readonly,style,value){\
 var canvas_div = document.getElementById(\"canvas_div\"+root_id);\
 var input = document.createElement(\"input\");\
 input.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
@@ -5875,7 +5901,7 @@ canvas_div.appendChild(input);};");
     
     case DRAW_TEXTAREAS:
 fprintf(js_include_file,"\n<!-- draw text area inputfields -->\n\
-draw_textareas = function(root_id,input_cnt,x,y,cols,rows,readonly,style,value){\
+var draw_textareas = function(root_id,input_cnt,x,y,cols,rows,readonly,style,value){\
 var canvas_div = document.getElementById(\"canvas_div\"+root_id);\
 var textarea = document.createElement(\"textarea\");\
 textarea.setAttribute(\"id\",\"canvas_input\"+input_cnt);\
@@ -5889,7 +5915,7 @@ canvas_div.appendChild(textarea);};");
     
 case DRAW_PIXELS:
 fprintf(js_include_file,"\n<!-- draw pixel -->\n\
-draw_setpixel = function(x,y,color,opacity,pixelsize){\
+var draw_setpixel = function(x,y,color,opacity,pixelsize){\
  var canvas = create_canvas%d(10,xsize,ysize);\
  var d = 0.5*pixelsize;\
  var ctx = canvas.getContext(\"2d\");\
@@ -6017,7 +6043,7 @@ break;
 
 case DRAW_LATTICE:
 fprintf(js_include_file,"\n<!-- draw lattice -->\n\
-draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
+var draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -6058,7 +6084,7 @@ draw_lattice = function(canvas_type,line_width,x0,y0,dx1,dy1,dx2,dy2,n1,n2,fill_
     break;
 case DRAW_XYLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,precision){\
+var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,precision){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -6158,7 +6184,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
 
 case DRAW_XLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw xlogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor,precision){\
+var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,ymajor,yminor,precision){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -6261,7 +6287,7 @@ draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opac
     break;
 case DRAW_YLOGSCALE:
 fprintf(js_include_file,"\n<!-- draw ylogscale -->\n\
-draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor,precision){\
+var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_opacity,minor_opacity,font_size,font_family,font_color,use_axis_numbering,xmajor,xminor,precision){\
  var obj;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -6555,7 +6581,8 @@ int get_token(FILE *infile){
 	*xunit="xunit",
 	*yunit="yunit",
 	*slider="slider",
-	*killslider="killslider";
+	*killslider="killslider",
+	*angle="angle";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -7236,6 +7263,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, yunit) == 0 ){
 	free(input_type);
 	return YUNIT;
+	}
+	if( strcmp(input_type, angle) == 0 ){
+	free(input_type);
+	return ANGLE;
 	}
 	free(input_type);
 	ungetc(c,infile);

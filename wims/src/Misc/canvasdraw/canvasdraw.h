@@ -149,6 +149,7 @@
 #define XUNIT		153
 #define YUNIT		154
 #define KILLSLIDER	155
+#define ANGLE		156
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
