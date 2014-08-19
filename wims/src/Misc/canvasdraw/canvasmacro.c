@@ -1380,7 +1380,7 @@ function add_slider_%d(){\
  slider_ctx.closePath();\
  slider_ctx.fill();\
  slider_ctx.stroke();\
- slider_canvas.addEventListener(\"mousedown\",slider_%d,false);\
+ slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
 function slider_%d(evt){\
  var value_1 = %f;\
  var value_2 = %f;\
@@ -2642,7 +2642,7 @@ CanvasState.prototype.Slide = function(slider_value,slider_count){\
      switch(what){\
       case 1: slide(shape,slider_value[0],0);break;\
       case 2: slide(shape,0,slider_value[0]);break;\
-      case 3: if(shape.type == 12){shape.h[1] = slider_value[0];}else{shape.use_rotate = 1;shape.angle = slider_value[0];}break;\
+      case 3: if(shape.type == 12 || shape.type == 17){shape.h[1] = -180*slider_value[0]/Math.PI;}else{shape.use_rotate = 1;shape.angle = slider_value[0];};break;\
       case 4: slide(shape,slider_value[0],slider_value[1]);break;\
       default:break;\
      };\
