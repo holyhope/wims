@@ -1380,7 +1380,7 @@ function add_slider_%d(){\
  slider_ctx.closePath();\
  slider_ctx.fill();\
  slider_ctx.stroke();\
- slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
+ slider_canvas.addEventListener(\"mousedown\",slider_%d,false);\
 function slider_%d(evt){\
  var value_1 = %f;\
  var value_2 = %f;\
@@ -1421,6 +1421,7 @@ function add_slider_%d(){\
  span.appendChild(br);\
  tooltip_div.appendChild(span);\
  var slider_fillcolor = \"%s\";\
+ var slider_click = 0;\
  var slider_strokecolor = \"%s\";\
  var slider_linewidth = \"%d\";\
  var slider_canvas = document.createElement(\"canvas\");\
@@ -1447,27 +1448,32 @@ function add_slider_%d(){\
  slider_ctx.closePath();\
  slider_ctx.rect(0,0,slider_width,slider_height);\
  slider_ctx.stroke();\
- slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
-function slider_%d(evt){\
- var value_1 = %f;\
- var value_2 = %f;\
- var canvas_rect = (slider_canvas).getBoundingClientRect();\
- slider_ctx.clearRect(0,0,slider_width,slider_height);\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
- var value_x = x*(value_2 - value_1)/slider_width + value_1;\
- var value_y = y*(value_2 - value_1)/slider_height + value_1;\
- slider_ctx.beginPath();\
- slider_ctx.arc(x,y,slider_radius,0,2*Math.PI,false);\
- slider_ctx.fill();\
- slider_ctx.rect(0,0,slider_width,slider_height);\
- slider_ctx.closePath();\
- slider_ctx.stroke();\
- dragstuff.Slide( [value_x,1-1*value_y] , %d );\
- return;\
+ slider_canvas.addEventListener(\"mousemove\",sliderdrag_%d,false);\
+ slider_canvas.addEventListener(\"mousedown\",sliderclick_%d,false);\
+function sliderdrag_%d(evt){\
+ if(slider_click == 1){\
+  var value_1 = %f;\
+  var value_2 = %f;\
+  var canvas_rect = (slider_canvas).getBoundingClientRect();\
+  slider_ctx.clearRect(0,0,slider_width,slider_height);\
+  var x = evt.clientX - canvas_rect.left;\
+  var y = evt.clientY - canvas_rect.top;\
+  var value_x = x*(value_2 - value_1)/slider_width + value_1;\
+  var value_y = y*(value_2 - value_1)/slider_height + value_1;\
+  slider_ctx.beginPath();\
+  slider_ctx.arc(x,y,slider_radius,0,2*Math.PI,false);\
+  slider_ctx.fill();\
+  slider_ctx.rect(0,0,slider_width,slider_height);\
+  slider_ctx.closePath();\
+  slider_ctx.stroke();\
+  dragstuff.Slide( [value_x,1-1*value_y] , %d );\
  };\
 };\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt);
+function sliderclick_%d(evt){\
+  if(slider_click == 1){slider_click = 0;}else{slider_click = 1;};\
+};\
+};\
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt,slider_cnt);
 }
 
 
