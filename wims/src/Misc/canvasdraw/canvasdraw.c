@@ -1343,6 +1343,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case ANIMATE:
 	/*
 	 @animate type
+	 @REMOVED : this should be done with a slider
 	 @type may be "point" (nothing else , yet...)
 	 @the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
 	 @will animate a point on the next plot/curve command
@@ -2923,7 +2924,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			     add_to_buffer(tmp_buffer);
 	    			    */
-				     fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+				     fprintf(js_include_file,"var set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			}
 				else
 				{
@@ -6281,7 +6282,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
  ctx.lineWidth = line_width;\
  var y_min = Math.log(ymin)/Math.log(ylogbase);\
  var y_max = Math.log(ymax)/Math.log(ylogbase);\
- var x_min = 0;var x_max = xsize;var y_s;var y_e;var num;\
+ var x_min = 0;var x_max = xsize;var y_s;var y_e;var num;var xmarge;var ymarge;\
  if(use_axis_numbering == 1){\
   ctx.font = font_family;\
   xmarge = ctx.measureText(ylogbase+\"^\"+y_max.toFixed(0)+' ').width;\

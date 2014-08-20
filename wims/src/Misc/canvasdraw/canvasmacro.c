@@ -55,7 +55,7 @@ void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsiz
 
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
-draw_zoom_buttons = function(){\
+var draw_zoom_buttons = function(){\
  var obj;var canvas_type =%d;\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
@@ -1114,7 +1114,7 @@ function user_drag(evt){ \
  };\
  return;\
 };\
-draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
+var draw_userarc = function(ctx,xc,yc,x1,y1,x2,y2,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1){\
  ctx.save();\
  if( use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
  ctx.lineWidth = line_width;\
@@ -2600,7 +2600,7 @@ function CanvasState(canvas,container_div){\
  };\
  function check_zoom_or_pan(x){\
   var key = -1;\
-  for(p = 15 ; p < 106 ; p = p+15){\
+  for(var p = 15 ; p < 106 ; p = p+15){\
     key++;\
     if(x > xsize - p){start_canvas%d(key);return;}\
   }\
@@ -2707,7 +2707,7 @@ read_dragdrop = dragstuff.read_dragdrop;",canvas_root_id,canvas_root_id,DRAG_CAN
 
 void add_js_floodfill(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command floodfill -->\n\
-floodfill = function(interaction,xs,ys,color){\
+var floodfill = function(interaction,xs,ys,color){\
  var canvas = document.getElementById(\"wims_canvas%d%d\");\
  if( ! canvas ){ return; };\
  var ctx = canvas.getContext(\"2d\");\
@@ -2794,7 +2794,7 @@ floodfill = function(interaction,xs,ys,color){\
 
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command filltoborder -->\n\
-filltoborder = function(xs,ys,bordercolor,color){\
+var filltoborder = function(xs,ys,bordercolor,color){\
  var xs = x2px(xs);\
  var ys = y2px(ys);\
  var canvas = document.getElementById(\"wims_canvas%d\"+4);\
