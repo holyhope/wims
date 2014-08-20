@@ -2462,7 +2462,7 @@ Shape.prototype.draw = function(ctx)\
   case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
   case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
-  case 15: var animate_canvas = create_canvas%d(%d,xsize,ysize);var animate_ctx = animate_canvas.getContext(\"2d\");animate_ctx.moveTo(this.x[0], this.y[0]);animate_ctx.strokeStyle = this.stroke_color;animate_ctx.fillStyle = this.fill_color;animate_ctx.lineWidth = this.line_width;var p=0;var X = this.x;var Y = this.y;var fps=10;var W = this.w[0];var W2 = 0.5*W;use_filled = true;function animate(){animate_ctx.fillRect(X[p]-W2,Y[p]-W2,W,W);setTimeout(function(){requestAnimationFrame(animate);}, 1000 / fps);p++;if(p == X.length - 1){p = 0;animate_ctx.clearRect(0,0,xsize,ysize);};};animate();break;\
+  case 15: break;\
   case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   case 17: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = scale_x_radius(this.w[0]);ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
   default: alert(\"draw primitive unknown\");break;\
@@ -2677,7 +2677,7 @@ var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.d
 var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
  return {x: mx, y: my};\
 };\
-function read_dragdrop(){\
+CanvasState.prototype.read_dragdrop = function(){\
  var moved_objects = new Array();\
  var c = 0;\
  for(var p = 0 ; p < reply.length ; p++){\
@@ -2688,10 +2688,10 @@ function read_dragdrop(){\
  }\
  return moved_objects;\
 };\
-this.read_dragdrop = read_dragdrop;\
 var obj = create_canvas%d(%d,xsize,ysize);\
 var container_div = document.getElementById(\"canvas_div%d\");\
-var dragstuff = new CanvasState(obj,container_div);",canvas_root_id,ANIMATE_CANVAS,canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id);
+var dragstuff = new CanvasState(obj,container_div);\
+read_dragdrop = dragstuff.read_dragdrop;",canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id);
 }
 
 /*
