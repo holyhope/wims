@@ -1800,7 +1800,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	@ use strokecolor for slider bar
 	@ use fontfamily / fontcolor to set used fonts
 	@ use opacity (only fill opacity will be used) to set transparency
-	@ the slider will be draw in the 'tooltip div' : so incompatible with command tooltip ; setlimits etc
+	@ the slider canvas will be added to the 'tooltip div' : so incompatible with command tooltip ; setlimits etc
 	*/
 	    for(i=0; i<6 ; i++){
 		switch(i){
@@ -1808,7 +1808,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 1: double_data[1] = get_real(infile,0);break; /* end value */
 		    case 2: int_data[0] = (int)(get_real(infile,0));break; /* width */
 		    case 3: int_data[1] = (int)(get_real(infile,0));break; /* height */
-		    case 4: temp = get_string_argument(infile,0); /* type : x,y,angle */
+		    case 4: temp = get_string_argument(infile,0); /* type : xy,x,y,angle */
 		    if(strstr(temp,"xy")!= NULL){
 		     slider = 4;
 		    }
