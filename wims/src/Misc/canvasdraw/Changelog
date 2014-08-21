@@ -338,4 +338,28 @@ remark:  hatchfill/dotfill/diamondfill are not the same as flydraw...I've  not u
 -20/8	- added 'use strict'; to js-include [just to make sure the js-code is "properly written"
 	  hope this works for all browsers...tested on FreeBSD Opera/Firefox/Seamonkey/Chrome
 	- removed 'animate' from dragstuff library : this should be done with a kind of slider...TO DO !!  
-	
+-21/8	- added x/y-tics in command 'grid xmajor,ymajor,color,xminor,yminor,tics-size,axiscolor'  case of command 'xaxis' or 'yaxis'
+          if the grid does not match the xaxis values:strings there will be extra tics
+          for example:
+size 800,200
+xrange -1,7
+yrange -1,1
+axis
+opacity 200,150
+fontfamily bold 14px Ariel
+xaxis 0:0:1:1:2:2:3:3:4:4:5:5:6:6:0.5*pi:\u03c0/2:pi:\u03c0:1.5*pi:3\u03c0/2:2*pi:2\u03c0:3*pi:3\u03c0:4*pi:4\u03c0 
+grid 1,1,grey,4,4,10,blue
+fillcolor white
+circle 0,0,200,red
+slider 0,2*pi,200,40,angle,use slider to rotate point P
+linewidth 2
+segment 0,0,1,0,orange
+filled
+fillcolor yellow
+angle 0,0,0.3,0,0,green
+linewidth 4
+point 1,0,orange
+fontfamily italic 24px Courier
+string black,0.9,0.1,P
+userdraw segment,orange
+zoom blue

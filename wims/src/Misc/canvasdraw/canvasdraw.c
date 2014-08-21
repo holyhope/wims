@@ -5488,10 +5488,13 @@ if( use_axis == 1 ){\
 if( use_axis_numbering == 1 ){\
  ctx.save();\
  ctx.fillColor = axis_color;\
+ ctx.strokeStyle = axis_color;\
+ ctx.lineWidth = 2*line_width;\
  ctx.font = font_family;\
  var shift = zero_y+2*font_size;var flip=0;var skip=0;var corr;var cnt;var disp_cnt;var prec;\
  if( x_strings != null ){\
   var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
+  ctx.beginPath();\
   for(var p = 0 ; p < len ; p = p+2){\
    var x_nums = x2px(eval(x_strings[p]));\
    var x_text = x_strings[p+1];\
@@ -5500,7 +5503,10 @@ if( use_axis_numbering == 1 ){\
    if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
    if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
    ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
+   ctx.moveTo(x_nums,zero_y - tics_length);\
+   ctx.lineTo(x_nums,zero_y + tics_length);\
   };\
+  ctx.closePath();\
  }\
  else\
  {\
@@ -5537,13 +5543,17 @@ if( use_axis_numbering == 1 ){\
  };\
  if( y_strings != null ){\
   var len = y_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"yaxis number unpaired:  text missing ! \");return;};\
+  ctx.beginPath();\
   for(var p = 0 ; p < len ; p = p+2){\
    var y_nums = y2px(eval(y_strings[p]));\
    var y_text = y_strings[p+1];\
    corr = 2 + tics_length + ctx.measureText(y_text).width;\
    if( corr > zero_x){corr = parseInt(zero_x+2); }\
-   ctx.fillText(y_text,zero_x - corr,y_nums);\
+   ctx.fillText(y_text,zero_x - corr,y_nums + 0.5*font_size);\
+   ctx.moveTo(zero_x - tics_length,y_nums);\
+   ctx.lineTo(zero_x + tics_length,y_nums);\
   };\
+  ctx.closePath();\
  }\
  else\
  {\
