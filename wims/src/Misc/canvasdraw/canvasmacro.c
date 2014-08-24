@@ -5,8 +5,9 @@ void add_safe_eval(FILE *js_include_file);
 void add_to_js_math(FILE *js_include_file);
 void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
 void add_jsplot(FILE *js_include_file,int canvas_root_id);
-void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color);
-void add_xyslider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color);
+void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display);
+void add_slider_display(FILE *js_include_file, int canvas_root_id,int precision,int font_size,char *font_color,double stroke_opacity);
+void add_xyslider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display);
 void *my_newmem(size_t size);
 void canvas_error(char *msg);
 char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,double ymax,int xsteps,int precision);
@@ -1334,11 +1335,45 @@ fprintf(js_include_file," \nfunction safe_eval(exp){\
  return exp;\
 };");
 }
+
+/* 
+add display of slider value in mouse context 
+use_slider_display = 1 : x or x/y
+use_slider_display = 2 : angle in degrees
+use_slider_display = 3 : angle in radians
+*/
+void add_slider_display(FILE *js_include_file,int canvas_root_id,int precision,int font_size,char *font_color,double stroke_opacity){
+fprintf(js_include_file,"<!-- begin add_slider_display -->\n\
+function show_slider_value(value,use_slider_display){\
+ var current_canvas = create_canvas%d(%d,xsize,ysize);\
+ var current_context = current_canvas.getContext(\"2d\");\
+ current_context.clearRect(0,0,xsize,ysize);\
+ var prec = Math.log(%d)/(Math.log(10));\
+ var string;\
+ if(value.length == 2){\
+  string = \" \"+value[0].toFixed(prec)+\" \"+unit_x+\":\"+value[1].toFixed(prec)+\" \"+unit_y;\
+ }else{\
+  if(use_slider_display == 2){\
+   value[0] = value[0]*180/Math.PI;\
+   string = \" \"+value[0].toFixed(prec)+\"\\u00B0\";\
+  }else{\
+   if(use_slider_display == 3){\
+    string = \" \"+value[0].toFixed(prec)+\"\\u03C0 rad\";\
+   };\
+  };\
+ };\
+ var s = parseInt(1.2*%d*(string).length);\
+ current_context.font = \"%dpx Ariel\";\
+ current_context.strokeStyle = \"rgba(%s,%.2f)\";\
+ current_context.clearRect(0,0,s,1.2*%d);\
+ current_context.fillText(string,0,%d);\
+};\n",canvas_root_id,MOUSE_CANVAS,precision,font_size,font_size,font_color,stroke_opacity,font_size,font_size);
+}
 /*
 add slider
 return value is array : value[0] is the actual value between value_1 and value_2
 */
-void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color){
+void add_slider(FILE *js_include_file,int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display){
 fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
 function add_slider_%d(){\
  if( wims_status == \"done\" ){return;};\
@@ -1396,10 +1431,11 @@ function slider_%d(evt){\
  slider_ctx.fill();\
  slider_ctx.stroke();\
  dragstuff.Slide( [value] , %d );\
+ if(%d != 0 ){show_slider_value([value],%d);}\
  return;\
  };\
 };\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt);
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
 }
 
 
@@ -1407,7 +1443,7 @@ add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_col
 add xyslider
  return value is array : value[0] is the actual x-value between value_1 and value_2, value[1] is y-value between value_1 and value_2
 */
-void add_xyslider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color){
+void add_xyslider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display){
 fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
 function add_slider_%d(){\
  if( wims_status == \"done\" ){return;};\
@@ -1467,13 +1503,14 @@ function sliderdrag_%d(evt){\
   slider_ctx.closePath();\
   slider_ctx.stroke();\
   dragstuff.Slide( [value_x,1-1*value_y] , %d );\
+  if(%d != 0 ){show_slider_value([value_x,value_y],%d);}\
  };\
 };\
 function sliderclick_%d(evt){\
   if(slider_click == 1){slider_click = 0;}else{slider_click = 1;};\
 };\
 };\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt,slider_cnt);
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt,slider_cnt);
 }
 
 

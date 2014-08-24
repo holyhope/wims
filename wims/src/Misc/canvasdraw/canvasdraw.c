@@ -125,6 +125,7 @@ int main(int argc, char *argv[]){
     int clickfillmarge = 20;
     int animation_type = 9; /* == object type curve in drag library */
     int use_input_xy = 0; /* 1= input fields 2= textarea 3=calc y value*/
+    int use_slider_display = 0; /* in case of a slider, should we display it's value ?*/
     size_t string_length = 0;
     double stroke_opacity = 0.8;
     double fill_opacity = 0.8;
@@ -1788,11 +1789,12 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	/*
 	@ slider start_value,end_value,width px,height px,type,label
 	@ type: xy,x,y,angle
+	@ if a value display is desired, use<br />type:xy display,x display,y display,angle radian,angle degree
+	@ is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
 	@ use commmand 'slider' before draggable/clickable objects.
 	@ a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
 	@ amount of sliders is not limited.
 	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value'
-	@ type=angle: for all objects in radians
 	@ type=xy: will produce a 2D 'slider' [rectangle width x heigh px] in your web page
 	@ every draggable object may have it's own slider (no limit in amount of sliders)
 	@ label: some slider text
@@ -1809,38 +1811,57 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		    case 2: int_data[0] = (int)(get_real(infile,0));break; /* width */
 		    case 3: int_data[1] = (int)(get_real(infile,0));break; /* height */
 		    case 4: temp = get_string_argument(infile,0); /* type : xy,x,y,angle */
-		    if(strstr(temp,"xy")!= NULL){
+		    /* xy display*/
+		    if(strstr(temp,"xy")!= 0){
 		     slider = 4;
 		    }
 		    else
 		    {
-		     if(strstr(temp,"x") != NULL){
+		     if(strstr(temp,"x") != 0){
 		      slider = 1;
 		     }
 		     else
 		     {
-		      if(strstr(temp,"y") != NULL){
+		      if(strstr(temp,"y") != 0){
 		       slider = 2;
 		      }
 		      else
 		      {
-		       if(strstr(temp,"angle") != NULL){
+		       if(strstr(temp,"angle") != 0){ /* angle diplay radian */
 		        slider = 3;
 		       }
 		       else
-		       { 
+		       {
 		        canvas_error("slider types may be : x , y , xy , angle");
-		       }		      
+		       }
 		      }
 		     }
+		    }
+		    if(strstr(temp,"display")!=0){
+		     use_slider_display = 1; /* show x xy values in canvas window */
+		    }
+		    else
+		    {
+		     if(strstr(temp,"degree")!= 0){
+		      use_slider_display = 2; /* show angle values in canvas window */
+		     }
+		     else
+		     {
+		      if(strstr(temp,"radian")!=0){
+		       use_slider_display = 3; /* show radian values in canvas window */
+		      }
+		     }
+		    }
+		    if(use_slider_display != 0 && slider_cnt == 0){ /*add just once the display js-code */
+		     add_slider_display(js_include_file,canvas_root_id,precision,font_size,font_color,stroke_opacity);
 		    }
 		    break;
 		    case 5: /* some string used for slider description  */
 		    slider_cnt++;
 		    if(slider == 4){
-		     add_xyslider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color);
+		     add_xyslider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display );
 		    }else{
-		     add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color);
+		     add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display);
 		    }
 		    break;
 		}
@@ -2361,26 +2382,25 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    break;
 	case MOUSE_DISPLAY:
 	/*
-	 @display x|y|xy|degree,color,fontsize
+	 @display x|y|xy|degree|,color,fontsize
 	 @will display the mouse cursor coordinates as x-only,y-only,(x:y) or the angle in degrees<br />(angle between x-axis;(0:0);(x:y)
 	 @just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
 	temp = get_string_argument(infile,0);
-	if(strstr(temp,"degree") != NULL){
-	    int_data[0] = 3;
+	if( strstr(temp,"xy") != NULL ){
+	    int_data[0] = 2;
 	}else{
-	    if( strstr(temp,"xy") != NULL ){
-		int_data[0] = 2;
+	    if( strstr(temp,"y") != NULL ){
+		int_data[0] = 1;
 	    }else{
-		if( strstr(temp,"y") != NULL ){
-		    int_data[0] = 1;
-		}else{
-		    if( strstr(temp,"x") != NULL ){
-			int_data[0] = 0;
+		if( strstr(temp,"x") != NULL ){
+		    int_data[0] = 0;
+		    if(strstr(temp,"degree") != NULL){
+			int_data[0] = 3;
 		    }else{
 			int_data[0] = 2;
-		    }	
-		}
+		    }
+		}	
 	    }
 	}	
 	stroke_color = get_color(infile,0);
@@ -4516,7 +4536,7 @@ function drag_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,dra
   if( x0 < 1 ){ x0 = 0; };if( y0 < 1 ){ y0 = 0; };if( sx < 1 ){ sx = 0; };if( sy < 1 ){ sy = 0; };\
   if( width < 1 ){ width = image.width; };if( height < 1 ){ height = image.height; };\
   if( swidth < 1 ){ swidth = image.width; };if( sheight < 1 ){ sheight = image.height; };\
-  img = new Array(10);\
+  var img = new Array(10);\
   img[0] = draggable;img[1] = image;img[2] = sx;img[3] = sy;img[4] = swidth;img[5] = sheight;\
   img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;\
   ext_drag_images[idx] = img;\
