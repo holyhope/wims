@@ -83,7 +83,7 @@ void p_css(char *p[MAX_PARM])
     char vbuf_css[MAX_LINELEN+1];
     if(p==NULL) return;
     snprintf(vbuf_css,sizeof(vbuf_css),"%s",p[0]); subst(vbuf_css);
-      fprintf(outf,"oefcss=%s\n",vbuf_css);
+    fprintf(outf,"oefcss=%s\n",vbuf_css);
 }
 
 void p_credits(char *p[MAX_PARM])
