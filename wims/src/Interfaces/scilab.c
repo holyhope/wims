@@ -18,13 +18,14 @@
 /* Interface Scilab to wims */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
 /* limit of input/output file sizes */
-#define fsizelim 131072
+int fsizelim=131072;
 /* This string tells scilab to exit. */
-#define quitstring "\nquit\n"
+char *quitstring="\nquit\n";
 /* The way to print a string in the program. */
-#define stringprinter "\"%s\"\n"
+char *stringprinter="\"%s\"\n";
 /* This is scilab home page. To be kept up to date. */
 #define homepage "http://www.scilab.org/"
 /* String to search for answers */
@@ -47,15 +48,17 @@ struct {
 char *illegal[]={
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "scilab"
-#include "common.h"
-#include "common.c"
+char *progname="scilab";
 
 /* check for security violations in command string */
 void check_parm(char *p)

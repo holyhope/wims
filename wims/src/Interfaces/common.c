@@ -16,7 +16,7 @@
  */
 
 /* Common routines in interfaces */
-
+#include "common.h"
 #define ch_root "bin/ch..root"
 
 int mypid;

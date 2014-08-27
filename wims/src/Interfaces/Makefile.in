@@ -10,7 +10,7 @@ lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 
 defines=@DEFINES@
 static=
-SETENV_OBJS=@SETENV_OBJS@
+SETENV_OBJS=@SETENV_OBJS@ common.o
 STRIP=@STRIP@
 
 progstatic=pari yacas maxima scilab
@@ -26,7 +26,7 @@ distclean: clean
 	cd $(PUBDIR); rm -f $(progs)
 	rm -f Makefile
 
-%.o: %.c common.h common.c yacasheader.c
+%.o: %.c common.h
 	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -c $<
 
 install: $(progs)
@@ -49,5 +49,5 @@ scilab: scilab.o $(SETENV_OBJS)
 
 yacasheader.c: yacasheader.tab yacasheader.sh
 	./yacasheader.sh
-yacas: yacas.o yacasheader.c $(SETENV_OBJS)
+yacas: yacasheader.c yacas.o $(SETENV_OBJS)
 	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(SETENV_OBJS) $(lopt) -o yacas

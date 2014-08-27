@@ -18,25 +18,27 @@
 /* Interface gap to wims */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
-/* limit of input/output file sizes */
-#define fsizelim 131072
 /* gap prompt string */
 #define gapprompt "gap> "
 /* This string tells gap to exit. */
-#define quitstring "\nquit;\n"
+char *quitstring="\nquit;\n";
 /* The way to print a string in the program. */
-#define stringprinter "Print(\"%s\\n\");\n"
+char *stringprinter="Print(\"%s\\n\");\n";
 /* This is GAP home page. To be kept up to date. */
 #define homepage "http://www-gap.dcs.st-and.ac.uk/~gap"
 
-char *nameofcmd="gap.sh -T -n";
+/* limit of input/output file sizes */
+int fsizelim=131072;
 int precision=20; /* default */
+
+char *nameofcmd="gap.sh -T -n";
 char header[]="\n\
 ";
 
 struct {
-    char *wname;    char *defaultval;
+    char *wname; char *defaultval;
 } setups[]={
 };
 
@@ -45,16 +47,18 @@ char *illegal[]={
       "Reread","Process","Exec","Filename","SaveWorkspace"
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
     "File", "Path", "Read", "To"
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "gap"
-#include "common.h"
-#include "common.c"
+char *progname="gap";
 
 /* check for security violations in command string */
 void check_parm(char *pm)

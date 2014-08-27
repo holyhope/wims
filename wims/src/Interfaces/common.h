@@ -44,6 +44,35 @@
 #define parmlim (MAX_LINELEN+256)
 #define inputlim (512*1024)
 #define SETUP_NO (sizeof(setups)/sizeof(setups[0]))
-#define illegal_no (sizeof(illegal)/sizeof(illegal[0]))
-#define illpart_no (sizeof(illpart)/sizeof(illpart[0]))
+extern int illegal_no;
+extern int illpart_no;
+extern char *stringprinter;
+extern char *quitstring;
 
+/* from common.c */
+void find_illegal(char *p);
+char *find_matching2(char *p, char c);
+void strip_zeros(char *p);
+void prepabout(char *cmd, char *outf, char *errf);
+int readabout(void);
+char *strip_trailing_spaces2(char *p);
+extern char aboutbuf[aboutlen];
+extern char outputfname[256], *tmp_dir;
+extern unsigned int seed; /* random seed value */
+void prepare1(void);
+void run(void);
+
+extern char *progname;
+extern char *illpart[];
+
+/* from pari.c */
+extern char *illegal[];
+extern int precision, fsizelim;
+extern char header[];
+extern char *nameofcmd;
+
+/* from scilab.c */
+extern int must_chroot;
+
+/* from yacas.c */
+extern char *cmdparm;

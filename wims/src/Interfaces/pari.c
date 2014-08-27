@@ -20,6 +20,7 @@
 /* This program is now limited to pari version 2.??. */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
 /* gp prompt string */
 #define gpprompt "\n? "
@@ -28,9 +29,9 @@
 /* This is PARI home page. To be kept up to date. */
 #define homepage "http://pari.math.u-bordeaux.fr/"
 /* String to tell the program to quit. */
-#define quitstring "\nquit\n"
+char *quitstring="\nquit\n";
 /* The way to print a string in the program. */
-#define stringprinter "print(\"%s\")\n"
+char *stringprinter="print(\"%s\")\n";
 /* limit of input/output file sizes */
 int fsizelim=131072;
 int precision=28; /* default */
@@ -77,7 +78,7 @@ alias(parisolve,solve)\n\
 ";
 
 struct {
-    char *wname;    char *defaultval;    char *gpset;
+    char *wname; char *defaultval; char *gpset;
 } setups[]={
       {"w_pari_precision", "20", "\\p "},
       {"w_pari_serieslength", "8", "\\ps "}
@@ -87,16 +88,18 @@ struct {
 char *illegal[]={
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
     "plot", "write", "help"
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "pari"
-#include "common.h"
-#include "common.c"
+char *progname="pari";
 
 int pariray=0;
 

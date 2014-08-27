@@ -18,18 +18,19 @@
 /* Interface Macaulay2 to wims */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
-/* limit of input/output file sizes */
-#define fsizelim 131072
 /* This string tells m2 to exit. */
-#define quitstring "\nexit;\n"
+char *quitstring="\nexit;\n";
 /* The way to print a string in the program. */
-#define stringprinter "print(\"%s\");\n"
+char *stringprinter="print(\"%s\");\n";
 /* This is m2 home page. To be kept up to date. */
 #define homepage "http://www.math.uiuc.edu/Macaulay2/"
+/* limit of input/output file sizes */
+int fsizelim=131072;
+int precision=20; /* default */
 
 char *nameofcmd="M2";
-int precision=20; /* default */
 char header[]="Thing#{Standard,BeforePrint} = toString; \
 scan(methods {Standard,AfterPrint}, (a,b) -> installMethod(a,b,identity));\
 ";
@@ -49,15 +50,19 @@ char *illegal[]={
       "<<", "close"
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "m2"
-#include "common.h"
-#include "common.c"
+char *progname="m2";
+
+/*#include "common.c"*/
 
 /* check for security violations in command string */
 void check_parm(char *pm)

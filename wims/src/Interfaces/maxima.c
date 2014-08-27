@@ -18,13 +18,15 @@
 /* Interface maxima to wims */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
 /* limit of input/output file sizes */
-#define fsizelim 131072
+int fsizelim=131072;
 /* This string tells maxima to exit. */
-#define quitstring "\nquit();\n"
+char *quitstring="\nquit();\n";
+char *aboutquitstring="build_info();" "\nquit();\n";
 /* The way to print a string in the program. */
-#define stringprinter "\"%s\";\n"
+char *stringprinter="\"%s\";\n";
 /* This is maxima home page. To be kept up to date. */
 #define homepage "http://maxima.sourceforge.net/"
 
@@ -69,17 +71,19 @@ char *illegal[]={
 
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
     "file", "debug", "plot", "load", "store", "batch"
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
 #define linebyline "\n(%i"
-#define progname "maxima"
-#include "common.h"
-#include "common.c"
+char *progname="maxima";
 
 /* check for security violations in command string */
 void check_parm(char *pm)
@@ -173,7 +177,7 @@ void about(void)
     int i;
 
 /*    printf("<a href=\"%s\">Maxima</a>",homepage); return; */
-    prepabout("build_info();\n" quitstring,outputfname,NULL);
+    prepabout(aboutquitstring,outputfname,NULL);
     if(readabout()>0) {
       for(p=aboutbuf; *p; p=find_word_start(find_word_end(p))) {
           if(strncasecmp(p,"Maxima",strlen("Maxima"))==0) {

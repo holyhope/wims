@@ -18,16 +18,17 @@
 /* Interface Yacas to wims */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
 /* This is yacas home page. To be kept up to date. */
 #define homepage "http://yacas.sourceforge.net/"
 /* String to tell the program to quit. */
-#define quitstring "\nquit\n"
+char *quitstring="\nquit\n";
 /* The way to print a string in the program. */
-#define stringprinter "\"%s\"\n"
+char *stringprinter="\"%s\"\n";
 /* limit of input/output file sizes */
 int fsizelim=131072;
-int precision=20;  /* default */
+int precision=20; /* default */
 
 char *inprompt="\nIn>";
 char *outprompt="Out>";
@@ -49,17 +50,19 @@ char *illegal[]={
       "MakeFunctionPlugin"
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
  /* name parts which are not allowed */
  /* 11/3/2013 add "@" and "ConcatStrings" */
 char *illpart[]={
     "File", "Load", "Plot","ConcatStrings" ,"@"
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "yacas"
-#include "common.h"
-#include "common.c"
+char *progname="yacas";
 
  /* check for security violations in command string */
 void check_parm(char *pm)

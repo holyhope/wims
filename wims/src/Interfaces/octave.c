@@ -21,13 +21,14 @@
  * write to .octave.history even with the -H switch. */
 
 /*************** Customization: change values hereafter ****************/
+#include "common.h"
 
 /* limit of input/output file sizes */
-#define fsizelim 131072
+int fsizelim=131072;
 /* This string tells octave to exit. */
-#define quitstring "\nquit\n"
+char *quitstring="\nquit\n";
 /* The way to print a string in the program. */
-#define stringprinter "\"%s\"\n"
+char *stringprinter="\"%s\"\n";
 /* This is octave home page. To be kept up to date. */
 #define homepage "http://www.gnu.org/software/octave/"
 /* String to search for answers */
@@ -76,16 +77,18 @@ char *illegal[]={
       "glob","tilde_expand","pclose","popen2","waitpid",
 };
 
+int illegal_no=(sizeof(illegal)/sizeof(illegal[0]));
+
 /* name parts which are not allowed */
 char *illpart[]={
     "file", "debug", "plot"
 };
 
+int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
+
 /***************** Nothing should need change hereafter *****************/
 
-#define progname "octave"
-#include "common.h"
-#include "common.c"
+char *progname="octave";
 
 /* check for security violations in command string */
 void check_parm(char *p)
