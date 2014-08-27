@@ -44,7 +44,7 @@ char *primitive_dir="docu/primitives";
 void internal_warn(char *p)
 {}
 
-#include "lines.c"
+#include "msglines.c"
 #include "compare.c"
 #include "def.c"
 #include "doc.c"

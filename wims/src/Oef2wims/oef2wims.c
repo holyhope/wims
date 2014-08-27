@@ -56,7 +56,7 @@ struct {
 char *inpbuf, *inpend;
 char outfname[1024];
 
-#include "lines.c"
+#include "oeflines.c"
 #include "compare.c"
 #include "outexec.c"
 #include "process.c"
