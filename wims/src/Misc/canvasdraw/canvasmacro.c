@@ -54,57 +54,59 @@ void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsiz
 
 void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width){
 fprintf(js_include_file,"\n<!-- user draw inputfields -->\n\
-var canvas_rect;\n\
-var input_cnt = %d;\n\
-var start_input_cnt = input_cnt;\n\
-function user_drag(evt){return;}\n\
-function user_draw(evt){\n\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\n\
- var x = evt.clientX - canvas_rect.left;\n\
- var y = evt.clientY - canvas_rect.top;\n\
- if( x_use_snap_to_grid == 1 ){\n\
-  x = snap_to_x(x);\n\
- };\n\
- if( y_use_snap_to_grid == 1 ){\n\
-  y = snap_to_y(y);\n\
- };\n\
+var canvas_rect;\
+var input_cnt = %d;\
+var start_input_cnt = input_cnt;\
+function user_drag(evt){return;}\
+function user_draw(evt){\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var x = evt.clientX - canvas_rect.left;\
+ var y = evt.clientY - canvas_rect.top;\
+ if( x_use_snap_to_grid == 1 ){\
+  x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
+  y = snap_to_y(y);\
+ };\
  var num = %d;var inputs;var marge = 20;\
- if(evt.which == 1){\n\
-  var inputs;var xi;var yi;var wi;var hi;\n\
-  var div_x = findPosX(canvas_div);\n\
-  var div_y = findPosY(canvas_div);\n\
-  var found = 0;\n\
-  if( start_input_cnt < input_cnt){\n\
-   for(var p = start_input_cnt ; p < input_cnt ; p++ ){\n\
-    inputs = document.getElementById(\"canvas_input\"+p);\n\
-    xi = findPosX(inputs) - div_x;\n\
-    yi = findPosY(inputs) - div_y;\n\
-    wi = marge + inputs.clientWidth;\n\
-    hi = marge + inputs.clientHeight;\n\
-    if( x > xi - marge && x < xi + wi && y > yi - hi && y < yi + marge ){\n\
-     found = 1;\n\
-    };\n\
-   };\n\
-  };\n\
-  if( found == 0 ){\n\
+ if(evt.which == 1){\
+  var inputs;var xi;var yi;var wi;var hi;\
+  var div_x = findPosX(canvas_div);\
+  var div_y = findPosY(canvas_div);\
+  var found = 0;\
+  if( start_input_cnt < input_cnt){\
+   for(var p = start_input_cnt ; p < input_cnt ; p++ ){\
+    inputs = document.getElementById(\"canvas_input\"+p);\
+    xi = findPosX(inputs) - div_x;\
+    yi = findPosY(inputs) - div_y;\
+    wi = marge + inputs.clientWidth;\
+    hi = marge + inputs.clientHeight;\
+    if( x > xi - marge && x < xi + wi && y > yi - hi && y < yi + marge ){\
+     found = 1;\
+    };\
+   };\
+  };\
+  if( found == 0 ){\
    if( num == 1 ){\
-    inputs = document.getElementById(\"canvas_input\"+start_input_cnt);\n\
+    inputs = document.getElementById(\"canvas_input\"+start_input_cnt);\
     try{canvas_div.removeChild(inputs);}catch(e){};\
     input_cnt = 0;\
-   };\n\
-   draw_inputs(%d,input_cnt,x,y,%d,1,\"%s\",\"?\");\n\
-   input_cnt++;\n\
-  };\n\
- }\n\
- else\n\
- {\n\
-  for(var p = start_input_cnt ; p < input_cnt; p++){\n\
-   inputs = document.getElementById(\"canvas_input\"+p);\n\
-   try{canvas_div.removeChild(inputs);}catch(e){};\n\
-  };\n\
+   };\
+   userdraw_x.push(x);userdraw_y.push(y);\
+   draw_inputs(%d,input_cnt,x,y,%d,1,\"%s\",\"?\");\
+   input_cnt++;\
+  };\
+ }\
+ else\
+ {\
+  for(var p = start_input_cnt ; p < input_cnt; p++){\
+   inputs = document.getElementById(\"canvas_input\"+p);\
+   try{canvas_div.removeChild(inputs);}catch(e){};\
+  };\
+  userdraw_x = [];userdraw_y = [];\
   input_cnt = start_input_cnt;\
- };\n\
-};\n",input_cnt,num,canvas_root_id,line_width,input_style);
+ };\
+};",input_cnt,num,canvas_root_id,line_width,input_style);
 }
 
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
