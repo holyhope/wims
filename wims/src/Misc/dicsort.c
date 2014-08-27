@@ -28,9 +28,9 @@ char sepchar=':', grpchar=0;
 
 /***************** Nothing should need change hereafter *****************/
 
+#include "suffix.h"
 #include "../wims.h"
 #include "../Lib/libwims.h"
-
 
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
@@ -161,8 +161,6 @@ void prepare_dic(void)
     }
     entrycount=i;
 }
-
-#include "suffix.c"
 
 void output(void)
 {

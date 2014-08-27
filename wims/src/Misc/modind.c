@@ -21,6 +21,8 @@
 
 #include "../wims.h"
 #include "../Lib/libwims.h"
+#include "translator_.h"
+#include "suffix.h"
 
 #define MAX_LANGS    MAX_LANGUAGES
 #define MAX_MODULES    65536
@@ -269,10 +271,8 @@ void getdef(char *fname, char *name, char value[])
     free(buf);
 }
 
-#include "translator_.c"
+char *mdicbuf, *gdicbuf, *ddicbuf, *gentry, *mentry, *dentry;
 
-char *mdicbuf, *gdicbuf, *ddicbuf;
-char gentry[sizeof(entry)], mentry[sizeof(entry)], dentry[sizeof(entry)];
 int gentrycount, mentrycount, dentrycount;
 
 /*  Preparation of data */
@@ -865,6 +865,9 @@ void sheets(void)
 
 int main()
 {
+    gentry=xmalloc(entry_size);
+    dentry=xmalloc(entry_size);
+    mentry=xmalloc(entry_size);
     prep();
     if(modcnt>0) modules();
     clean();

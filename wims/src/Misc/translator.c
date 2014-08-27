@@ -27,7 +27,7 @@
 #define sourcelim 16*1024*1024
 
 /***************** Nothing should need change hereafter *****************/
-
+#include "suffix.h"
 #include "../wims.h"
 #include "../Lib/libwims.h"
 
@@ -131,7 +131,7 @@ int search_list2(struct entry *list, int items, size_t item_size, const char *st
     return t;
 }
 
-/* modify a string. Bufferlen must be ast least 2*MAX_LINELEN */
+/* modify a string. Bufferlen must be at least MAX_LINELEN */
 void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
 {
     char buf[MAX_LINELEN+1];
@@ -171,8 +171,6 @@ void singlespace2(char *p)
       }
     }
 }
-
-#include "suffix.c"
 
 /* Prepare dictionary */
 void prepare_dic(void)

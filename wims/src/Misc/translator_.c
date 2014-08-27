@@ -18,7 +18,10 @@
 /* Versatile translation according to a dictionary */
 
 /*************** Customization: change values hereafter ****************/
-
+#include "suffix.h"
+#include "../Lib/libwims.h"
+#include "../wimsdef.h"
+#include "translator_.h"
 /* limit of dictionary entries */
 #define entrylim 32768
 /* limit of dictionary length */
@@ -29,15 +32,9 @@
 
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
-struct entry {
-    unsigned char *original, *replace;
-    int olen,earlier;
-} entry[entrylim];
+struct entry entry[entrylim];
 int entrycount;
-
-enum {
-    unk_delete, unk_leave, unk_replace
-};
+int entry_size=sizeof(entry);
 
 int has_digits=0;
 int unknown_type=unk_delete;
@@ -111,8 +108,6 @@ void singlespace2(char *p)
       }
     }
 }
-
-#include "suffix.c"
 
 /* Prepare dictionary */
 void prepare_dic(char *fname)

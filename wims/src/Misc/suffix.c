@@ -15,6 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "../Lib/libwims.h"
+#include "suffix.h"
+
 #define suflim    256
 #define sufbuflim 102400
 

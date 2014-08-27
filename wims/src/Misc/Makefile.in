@@ -180,8 +180,8 @@ Plouffe: Plouffe.c
 	$(STRIP) $@
 	rm -f $(PUBDIR)/$@; cp $@ $(PUBDIR)
 
-translator: translator.c suffix.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) translator.c $(lopt) @STATIC_LIB@ -o translator
+translator: suffix.o translator.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) translator.c suffix.o  $(lopt) @STATIC_LIB@ -o translator
 	$(STRIP) translator
 	cp translator $(PUBDIR)
 
@@ -214,12 +214,12 @@ chroot: chroot.c
 
 #################################################
 
-dicsort: dicsort.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) dicsort.c $(lopt) -o $@
+dicsort: suffix.o dicsort.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) suffix.o dicsort.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
-modind: modind.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modind.c $(lopt) -o $@
+modind: suffix.o translator_.o modind.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) suffix.o translator_.o modind.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modstat: modstat.c
