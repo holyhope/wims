@@ -22,7 +22,7 @@ void (*error1) (char *msg);
 void (*error2) (char *msg);
 void (*error3) (char *msg);
 
-/* lines.c */
+/* liblines.c */
 char *int2str(int i);
 void *xmalloc(size_t n);
 int msleep(int ms);        /* millisecond sleeper */
