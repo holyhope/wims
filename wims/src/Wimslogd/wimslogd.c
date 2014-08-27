@@ -59,7 +59,7 @@ int cwdtype;
 enum {dir_home, dir_class, dir_session, dir_module};
 
 #include "fork.c"
-#include "lines.c"
+#include "wimslogdlines.c"
 #include "cache.c"
 #include "files.c"
 #include "socket.c"
