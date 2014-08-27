@@ -169,8 +169,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...) 
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)<li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();
-	The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximium precision...the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.<br />example:<br />size 200,200;xrange -5,5;yrange -5,5;hline 0,0,black;vline 0,0,black<br />plot red,sin(x)<br />drag xy<br />html 0,0,5,-5, &amp;euro; <br />lines green,2,0,2,-2,-2,2,-2,0;rectangle 1,1,4,4,purple;frectangle -1,-1,-4,-4,yellow</li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li></ul>
 	*/
 	switch(type){
 	case END:
@@ -750,7 +749,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
     		switch(i){
     		    case 0: double_data[0] = get_real(infile,0);break; /* x */
     		    case 1: double_data[1] = get_real(infile,0);break; /* y */
-    		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* radius in 'dx' xrange*/
+    		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* for zoom in/out : radius in 'dx' xrange*/
     		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
@@ -969,7 +968,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again. 
@@ -1308,6 +1307,22 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if( js_function[DRAW_TEXTS] != 1 ){ js_function[DRAW_TEXTS] = 1;} 	
 		if(reply_format == 0){reply_format = 17;}
 		add_js_text(js_include_file,canvas_root_id,font_size,font_family,font_color,stroke_opacity);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"inputs") == 0){
+		if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;} 	
+		if(reply_format == 0){reply_format = 15;}
+		add_js_inputs(js_include_file,canvas_root_id,2,input_cnt,input_style,line_width);
+		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"input") == 0){
+		if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;} 	
+		if(reply_format == 0){reply_format = 15;}
+		add_js_inputs(js_include_file,canvas_root_id,1,input_cnt,input_style,line_width);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -2208,6 +2223,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case BUTTON:
 	/*
 	 button x,y,value
+	 does nothing : from svgdraw
 	*/
 	break;
 	case INPUTSTYLE:

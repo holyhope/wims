@@ -19,6 +19,7 @@ char *double_xy2js_array(double xy[],int len,int decimals);
 int find_number_of_digits(int i);
 int x2px(double x);
 int y2px(double y);
+void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width);
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type);
 void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_width, int radius , char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -47,12 +48,64 @@ void add_input_xyr(FILE *js_include_file, int canvas_root_id);
 void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
-
-/* prints to stdout : should be last */
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
-/* ............. */
 
 
+
+void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width){
+fprintf(js_include_file,"\n<!-- user draw inputfields -->\n\
+var canvas_rect;\n\
+var input_cnt = %d;\n\
+var start_input_cnt = input_cnt;\n\
+function user_drag(evt){return;}\n\
+function user_draw(evt){\n\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\n\
+ var x = evt.clientX - canvas_rect.left;\n\
+ var y = evt.clientY - canvas_rect.top;\n\
+ if( x_use_snap_to_grid == 1 ){\n\
+  x = snap_to_x(x);\n\
+ };\n\
+ if( y_use_snap_to_grid == 1 ){\n\
+  y = snap_to_y(y);\n\
+ };\n\
+ var num = %d;var inputs;var marge = 20;\
+ if(evt.which == 1){\n\
+  var inputs;var xi;var yi;var wi;var hi;\n\
+  var div_x = findPosX(canvas_div);\n\
+  var div_y = findPosY(canvas_div);\n\
+  var found = 0;\n\
+  if( start_input_cnt < input_cnt){\n\
+   for(var p = start_input_cnt ; p < input_cnt ; p++ ){\n\
+    inputs = document.getElementById(\"canvas_input\"+p);\n\
+    xi = findPosX(inputs) - div_x;\n\
+    yi = findPosY(inputs) - div_y;\n\
+    wi = marge + inputs.clientWidth;\n\
+    hi = marge + inputs.clientHeight;\n\
+    if( x > xi - marge && x < xi + wi && y > yi - hi && y < yi + marge ){\n\
+     found = 1;\n\
+    };\n\
+   };\n\
+  };\n\
+  if( found == 0 ){\n\
+   if( num == 1 ){\
+    inputs = document.getElementById(\"canvas_input\"+start_input_cnt);\n\
+    try{canvas_div.removeChild(inputs);}catch(e){};\
+    input_cnt = 0;\
+   };\n\
+   draw_inputs(%d,input_cnt,x,y,%d,1,\"%s\",\"?\");\n\
+   input_cnt++;\n\
+  };\n\
+ }\n\
+ else\n\
+ {\n\
+  for(var p = start_input_cnt ; p < input_cnt; p++){\n\
+   inputs = document.getElementById(\"canvas_input\"+p);\n\
+   try{canvas_div.removeChild(inputs);}catch(e){};\n\
+  };\n\
+  input_cnt = start_input_cnt;\
+ };\n\
+};\n",input_cnt,num,canvas_root_id,line_width,input_style);
+}
 
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
@@ -1201,7 +1254,7 @@ function user_drag(evt){\
 return;\
 };\
 function user_text(evt){\
- var kc = evt.keyCode;\
+ var kc = evt.keyCode;var w;\
  if( kc== 8 || kc == 27 || kc == 46 ){\
   if(typing == 1 ){\
     w = context_userdraw.measureText(txt).width;\
@@ -1249,9 +1302,10 @@ function user_text(evt){\
   {\
    if(kc == 13 ){\
     w = context_userdraw.measureText(txt).width;\
+    if(w < 1){alert(\"nothing typed...try again\");return;};\
     context_userdraw.clearRect(x_txt,y_txt-font_size,w,font_size);\
     context_userdraw.fillText(txt,x_txt,y_txt);\
-    userdraw_text[txt_cnt] = x_txt+\":\"+y_txt+\":\"+txt;\
+    userdraw_text[txt_cnt] = Math.round(x_txt)+\":\"+Math.round(y_txt)+\":\"+txt;\
     txt=\"\";\
     w = 0;\
     txt_cnt++;\
