@@ -87,7 +87,7 @@
   /* directory containing log files */
 #define log_dir "../log"
 #define class_base "../log/classes"
-  /* What should indicate that a file name given by the user 
+  /* What should indicate that a file name given by the user
    * would allow him to go upstairs in the directory tree?
    * We shouldn't use "../", otherwise the user may just specify
    * ".." as name and go upstairs one step. */
@@ -128,54 +128,6 @@ typedef struct {
     LINE_STRUCT *lines;
     FOR_STACK *for_stack;
 } WORKING_FILE;
-
-struct {
-    char *name;
-    char *font;
-} charname[]={
-    {"en","iso-8859-1"},
-      {"fr","iso-8859-1"},
-      {"es","iso-8859-1"},
-      {"cn","gb2312"},
-      {"de","iso-8859-1"},
-      {"it","iso-8859-1"},
-      {"nl","iso-8859-1"},
-      {"si","iso-8859-2"},
-      {"ar","iso-8859-6"},
-      {"tw","big5"},
-      {"pt","iso-8859-1"},
-      {"ca","iso-8859-1"},
-      {"pt","iso-8859-1"},
-      {"ru","iso-8859-5"},
-      {"ty","iso-8859-13"}
-};
-
-#define charname_no (sizeof(charname)/sizeof(charname[0]))
-
-/* left to right   or   right to left   writing */
-struct {
-    char *name;
-    char *dirn;
-} dirnname[]={
-    {"en","ltr"},
-      {"fr","ltr"},
-      {"es","ltr"},
-      {"cn","ltr"},
-      {"de","ltr"},
-      {"it","ltr"},
-      {"nl","ltr"},
-      {"si","ltr"},
-      {"ar","rtl"},   
-      {"tw","ltr"},
-      {"pt","ltr"},
-      {"ca","ltr"},
-      {"pt","ltr"},
-      {"ru","ltr"},
-      {"ty","ltr"}
-      
-};
-
-#define dirnname_no (sizeof(dirnname)/sizeof(dirnname[0]))
 
 	/* var.c */
 char *getvar(char *name);
