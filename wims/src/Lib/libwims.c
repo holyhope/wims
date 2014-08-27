@@ -20,7 +20,7 @@
 #include "libwims.h"
 #include "mt19937ar.c"
 #include "errors.c"
-#include "lines.c"
+#include "liblines.c"
 #include "evalue.c"
 /* #include "compare.c" */
 #include "math.c"

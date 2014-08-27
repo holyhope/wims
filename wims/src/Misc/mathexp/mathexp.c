@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Mathematical expression manipulations for WIMS */
+/* Mathematical expression manipulations for WIMS */
 
 #include "mathexp.h"
 #include "../../Lib/libwims.h"
@@ -37,8 +37,6 @@ struct {
 int regexcnt=0;
 
 #include "tables.c"
-#include "errors.c"
-#include "../../Lib/lines.c"
 #include "basic.c"
 #include "extract.c"
 #include "type.c"
@@ -82,13 +80,13 @@ void parm()
     objline[0]=pp; reqtype=p;
 }
 
-void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;
+/*void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;*/
 
 int main()
 {
     char *p;
     int i;
-
+    string_modify=string_modify1;
     error1=error; error2=error; error3=error;
     p=getenv("wims_exec_parm");
     if(p==NULL || *p==0) error("No input data.");

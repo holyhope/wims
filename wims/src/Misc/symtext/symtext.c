@@ -34,6 +34,7 @@
 const char *codechar="_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 #include "symtext.h"
+#include "../../Lib/liblines.c"
 
 struct block blockbuf[MAX_BLOCKS];
 int nextblock;
@@ -227,7 +228,7 @@ char *mkfname(char buf[], char *s,...)
     return p;
 }
 
-#include "../../Lib/lines.c"
+
 #include "translate.c"
 #include "match.c"
 #include "compile.c"
