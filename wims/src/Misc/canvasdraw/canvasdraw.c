@@ -2398,8 +2398,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    break;
 	case MOUSE_DISPLAY:
 	/*
-	 @display x|y|xy|degree|,color,fontsize
-	 @will display the mouse cursor coordinates as x-only,y-only,(x:y) or the angle in degrees<br />(angle between x-axis;(0:0);(x:y)
+	 @display x|y|xy|degree|radius,color,fontsize
+	 @will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color' !!<br />or the angle in degrees ( rhe angle between x-axis;(0:0);(x:y)
+	 @use commands 'xunit' and / or 'yunit' to add the units to the mouse values
 	 @just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
 	temp = get_string_argument(infile,0);
@@ -2411,14 +2412,19 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    }else{
 		if( strstr(temp,"x") != NULL ){
 		    int_data[0] = 0;
+		}else{
 		    if(strstr(temp,"degree") != NULL){
 			int_data[0] = 3;
 		    }else{
-			int_data[0] = 2;
+			if(strstr(temp,"radius") != NULL){
+			    int_data[0] = 4;
+		        }else{
+			    int_data[0] = 2;
+			}
 		    }
-		}	
+		}
 	    }
-	}	
+	}
 	stroke_color = get_color(infile,0);
 	font_size = (int) (get_real(infile,1));
 	tmp_buffer = my_newmem(26);
@@ -5221,7 +5227,7 @@ var draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,maj
  ctx.clearRect(0,0,xsize,ysize);\
  var zero_x = 0.1*xsize;\
  var zero_y = 0.9*ysize;\
- var snor_x;\
+ var snor_x;var snor_y;\
  if( xstart != xmin){\
   snor_x = 0.1*xsize;\
  }\
