@@ -210,6 +210,8 @@ fprintf(js_include_file,"\
 \"use strict\";\n\
 var read_dragdrop;\
 var read_canvas;\
+var set_clock;\
+var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var xsize = %d;\
 var ysize = %d;\
@@ -985,7 +987,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    }
 	    reply_precision = precision;
 	    use_userdraw = TRUE;
-	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nvar userdraw_x = new Array();var userdraw_y = new Array();var userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
+	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nuserdraw_x = new Array();userdraw_y = new Array();userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
 	    draw_type = get_string_argument(infile,0);
 	    stroke_color = get_color(infile,1);
 	    if( strcmp(draw_type,"point") == 0 ){
@@ -2773,7 +2775,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    js_function[DRAW_FLOODFILL] = 1;
 	    add_js_floodfill(js_include_file,canvas_root_id);
 	 }
-	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;var userdraw_x = new Array();var userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
+	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;userdraw_x = new Array();userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
 	 add_read_canvas(1,reply_precision);
 	 reset();
 	break;
@@ -2966,18 +2968,18 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			     add_to_buffer(tmp_buffer);
 	    			    */
-				     fprintf(js_include_file,"var set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+				     fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
 	    			}
 				else
 				{
 				    canvas_error("interactive clock may not be used together with other reply_types...");
 			    	}
-			        fprintf(stdout,"<p style=\"text-align:center\"><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><br /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S&minus;\" /></p>",input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt);
 			     }
+			    fprintf(stdout,"<p style=\"text-align:center\"><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><br /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S&minus;\" /></p>",input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt);
 		    break;
 		    case 2:if( reply_format == 0 ){
 				reply_format = 19; /* "onclick */
-				fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
+				fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
 			    }
 			    else
 			    {
@@ -2990,13 +2992,15 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		}
 		break;
 		case 8: 
-			fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f;",fill_opacity,stroke_opacity);
+			if(clock_cnt == 0 ){ /* set opacity's just once .... it should be a argument to clock() , for now it's OK */
+			    fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f;",fill_opacity,stroke_opacity);
+			}
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
-			string_length = snprintf(NULL,0,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+			string_length = snprintf(NULL,0,"var clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
 	    		check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			snprintf(tmp_buffer,string_length,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+			snprintf(tmp_buffer,string_length,"var clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
 			add_to_buffer(tmp_buffer);
 			clock_cnt++;
 			break;
@@ -4323,6 +4327,7 @@ read_canvas = function(){\
  return reply[0];\
 };\n\
 <!-- end function 19 read_canvas() -->");
+    break;
     case 20: fprintf(js_include_file,"\
 \n<!-- begin function 20 read_canvas() -->\n\
 read_canvas = function(){\
@@ -5980,8 +5985,8 @@ fprintf(js_include_file,"\n<!-- begin command clock -->\n\
 var clock_canvas = create_canvas%d(%d,xsize,ysize);\
 var clock_ctx = clock_canvas.getContext(\"2d\");\
 var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color,bg_color,fg_color){\
+ clock_ctx.clearRect(xc - radius,yc - radius,2*radius,2*radius);\
  clock_ctx.save();\
- clock_ctx.clearRect(xc-radius,yc-radius,xc+radius,yc+radius);\
  clock_ctx.globalAlpha = clock_bg_opacity;\
  this.type = type || 0;\
  this.interaction = interaction || 0;\
