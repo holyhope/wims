@@ -15,13 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-enum{
-    exp_number, exp_variable,
-    exp_paren, exp_matrix, exp_set, exp_fn, 
-    exp_exp, exp_muldiv, exp_cupcap, exp_add,
-    exp_eq, exp_ineq, exp_not, exp_and, exp_or, exp_imply,
-    exp_comma, exp_quantifier
-};
+#include "mathexp.h"
 
 char *typenames[]={
     "number", "variable",
@@ -31,12 +25,7 @@ char *typenames[]={
       "comma","quantifier"
 };
 
-typedef struct op {
-    char *name;
-    int lvl;
-} op;
-
-struct op oppunct[]={
+op oppunct[]={
     {"(",	exp_paren},
     {"[",	exp_matrix},
     {"{",	exp_set},
@@ -62,9 +51,9 @@ struct op oppunct[]={
     {",",	exp_comma},
     {";",	exp_comma},
 };
-#define oppunctno (sizeof(oppunct)/sizeof(oppunct[0]))
+int oppunctno=(sizeof(oppunct)/sizeof(oppunct[0]));
 
-struct op opalpha[]={
+op opalpha[]={
     {"cup",	exp_cupcap},
     {"cap",	exp_cupcap},
     {"and",	exp_and},
@@ -75,12 +64,9 @@ struct op opalpha[]={
     {"exist",	exp_quantifier},
     {"exists",	exp_quantifier},
 };
-#define opalphano (sizeof(opalpha)/sizeof(opalpha[0]))
+int opalphano=(sizeof(opalpha)/sizeof(opalpha[0]));
 
-struct {
-    char *name;
-    int lvl1, lvl2;
-} exptype[]={
+ex exptype[]={
 	{"addition",	exp_add, exp_add},
 	{"algexp",	0, exp_add},
         {"and",		exp_and, exp_and},
@@ -106,5 +92,6 @@ struct {
         {"variable",	exp_variable, exp_variable},
         {"variables",	exp_variable, exp_variable},
 };
-#define exptypeno (sizeof(exptype)/sizeof(exptype[0]))
+
+int exptypeno=(sizeof(exptype)/sizeof(exptype[0]));
 

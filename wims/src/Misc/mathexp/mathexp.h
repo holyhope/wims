@@ -29,3 +29,53 @@
 #define MAX_REGEX	16
 
 
+enum{
+    exp_number, exp_variable,
+    exp_paren, exp_matrix, exp_set, exp_fn,
+    exp_exp, exp_muldiv, exp_cupcap, exp_add,
+    exp_eq, exp_ineq, exp_not, exp_and, exp_or, exp_imply,
+    exp_comma, exp_quantifier
+};
+
+extern char *typenames[];
+
+typedef struct op {
+    char *name;
+    int lvl;
+} op;
+
+typedef struct ex {
+    char *name;
+    int lvl1, lvl2;
+} ex;
+
+extern op oppunct[];
+extern op opalpha[];
+extern ex exptype[];
+extern int oppunctno, opalphano, exptypeno;
+
+typedef struct regex{
+    char *srcreg;
+    regex_t cmpreg;
+    int isvar;
+} regex;
+extern regex regexchk[];
+
+int checkregex(char *p);
+void error(char *msg);
+void getregex(char *p);
+
+extern int regexcnt;
+int _type(char *p, int commas[], int *commacnt);
+
+int objlinecnt, thisobjline, thislinelen;
+int expl1, expl2;
+char *reqtype;
+int logdir, linelogdir;
+char *objline[MAX_OBJLINES];
+
+int nocomma;
+void req_cut(void);
+void req_extract(void);
+void req_not(void);
+void req_type(void);

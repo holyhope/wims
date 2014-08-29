@@ -14,10 +14,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "../../Lib/libwims.h"
+#include "mathexp.h"
 
-
-
-	/* the type of an expression, with cutpoints */
+/* the type of an expression, with cutpoints */
 void req_type(void)
 {
     int i,l;

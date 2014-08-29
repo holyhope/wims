@@ -29,18 +29,9 @@ int logdir, linelogdir;
 char *fnd_position;
 char *fnd_nextpos;
 
-struct {
-    char *srcreg;
-    regex_t cmpreg;
-    int isvar;
-} regexchk[MAX_REGEX];
-int regexcnt=0;
+regex regexchk[MAX_REGEX];
 
-#include "tables.c"
-#include "basic.c"
-#include "extract.c"
-#include "type.c"
-#include "not.c"
+int regexcnt=0;
 
 struct {
     char *name;
@@ -79,8 +70,6 @@ void parm()
     p=find_word_start(pp); pp=find_word_end(p); if(*pp) *pp++=0;
     objline[0]=pp; reqtype=p;
 }
-
-/*void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;*/
 
 int main()
 {
