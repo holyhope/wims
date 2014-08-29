@@ -26,10 +26,6 @@ void error(char *p)
 /* Get a line in a stored working file.
  * Buffer length is always MAX_LINELEN. */
 
-/* 1/2012
-J.M. Evers
-Added ';' as additional command seperator
-*/
 int ggetline(char buf[])
 {
     int c;

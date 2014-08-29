@@ -17,14 +17,14 @@ all: texgif
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean::
-	rm -f texgif
+	rm -f *.o texgif
 	rm -fR test/texg* test/[0-9]*
 
 distclean: clean
 	rm -f $(wims_home)/public_html/bin/tex..gif
 	rm -f Makefile
 
-texgif: *.c colors.c *.h $(texgifobjects)
+texgif: *.h $(texgifobjects)
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(texgifobjects) texgif.c -lgd $(lopt) -o texgif
 	$(STRIP) texgif
 	cp texgif $(wims_home)/public_html/bin/tex..gif

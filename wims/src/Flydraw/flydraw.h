@@ -64,7 +64,8 @@ int tranged;
 extern int vimg_enable,vimg_ready;
 extern FILE *vimgf;
 extern char vimgfilename[1024], imagefilename[1024];
-double parallogram_fonda[];
+double parallogram_fonda[6];
+char *substit(char *p);
 void output(void);
 /* from wimg.c */
 void vimg_init (void);

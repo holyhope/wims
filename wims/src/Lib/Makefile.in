@@ -17,7 +17,7 @@ static: libwims.a
 %.o: %.c
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
-libwims.o: *.c libwims.h 
+libwims.o: *.c libwims.h
 	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -Dlibwims -c libwims.c
 
 libwims.a: libwims.o $(SETENV_OBJS)
@@ -26,7 +26,7 @@ libwims.a: libwims.o $(SETENV_OBJS)
 	cp $@ $(wims_home)/lib
 
 clean::
-	rm -f libwims.so libwims.a libwims.o 2>/dev/null
+	rm -f libwims.so libwims.a *.o 2>/dev/null
 
 distclean::
 	rm -f libwims.so libwims.a libwims.o 2>/dev/null

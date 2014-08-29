@@ -15,9 +15,10 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
- /* This file is a temporary patch to tex eps files with extra borders.
-  * It cuts the borders in the resulting gif file, so that the font
-  * fits tightly in the cadre. libgd is required. */
+/* This file is a temporary patch to tex eps files with extra borders.
+ * It cuts the borders in the resulting gif file, so that the font
+ * fits tightly in the cadre. libgd is required.
+ */
 
 #include "flydraw.h"
 
@@ -44,25 +45,22 @@ int vimg_enable=0; /* 0: disable. 1: enable. */
 int vimg_ready=0;
 FILE *vimgf=NULL;
 double scale_buf[MAX_PARMS];
-/***** Les modifs a JC Fev 06 *****/
-/** les matrices suivantes sont initialisees par la commande setmatrix nummatrix,a11,a12,a21,a22 */
-/** elles sont remises a l'unite par resetmatrix nummatrix */
-
-/* la matrice fixant le systeme de coordonnees "mathematiques" dans l'image */
+/* les matrices suivantes sont initialisees par la commande setmatrix nummatrix,a11,a12,a21,a22
+ * elles sont remises a l'unite par resetmatrix nummatrix
+ * la matrice fixant le systeme de coordonnees "mathematiques" dans l'image
+ */
 matrice matrices_pavage[JC_NB_MATRICES+1];
 vecteur vecteurs_pavage[JC_NB_MATRICES+1];
 
-/** les coordonnees du parallelograme de pavage = coordonnees "mathematiques" du parallelogramme contenant l'image a recopier **/
-/** on place ces coorodonnes avec setparallelogram xs,ys,xu,yu,xv,yu **/
-/* xs,ys=coordonnees math du point 0,0,
+/* les coordonnees du parallelograme de pavage = coordonnees "mathematiques"
+ * du parallelogramme contenant l'image a recopier on place ces coorodonnes
+ * avec setparallelogram xs,ys,xu,yu,xv,yu
+ * xs,ys=coordonnees math du point 0,0,
  * xu,yu coordonnees math de l'horizontale
  * xv,yv coordonnees math de la verticale
  * ces coordonnees sont remises a leur valeur par defaut par resetparallelogram
  */
-/** TODO serait-ce un moyen de definir la brush ?? **/
 double parallogram_fonda[]={0,0,100,0,0,100};
-
-/**** Fin modifs JC Fev 06 ******/
 
 /* Write the image */
 void output(void)
@@ -77,9 +75,6 @@ void output(void)
     else gdImageGif(image,stdout);
     saved=1;
 }
-
-/*#include "flylines.c"*/
-/*#include "nametab.c"*/
 
 /* substitute variable names by their environment strings
  * The buffer pointed to by p must have enough space
@@ -107,9 +102,6 @@ char *substit(char *p)
     }
     return p;
 }
-
-/*#include "vimg.c"*/
-/*#include "objects.c"*/
 
 void process(void)
 {
