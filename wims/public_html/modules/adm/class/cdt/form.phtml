@@ -4,12 +4,7 @@
   !reset job
   !formselect job list work,todo prompt $name_done,$name_todo 
   $name_between
-  !let jyear=!char 1 to 4 of $jour_begin
-  !let jmonth=!char 5 to 6 of $jour_begin
-  !let jday=!char 7 to 8 of $jour_begin
-!!  !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
   !let v=!values v for v=1 to 31
-!!  !read adm/date.phtml
   !let creyear=!char 1 to 4 of $class_creation
   !let expyear=!char 1 to 4 of $class_expiration
   !if $(cdt_ltmonth)!=$empty
@@ -21,11 +16,11 @@
   !endif
   !read adm/lang/datemenu.phtml.$moduclass_lang 1,jday,jmonth,jyear
   $name_and
-  !if $jyear2=$empty or $jyear2=0 
-   !let jyear2=!char 1 to 4 of $wims_now
-   !let jmonth2=!char 5 to 6 of $wims_now
-   !let jday2=!char 7 to 8 of $wims_now
-  !endif
+!!  !if $jyear2=$empty or $jyear2=0 
+!!   !let jyear2=!char 1 to 4 of $wims_now
+!!   !let jmonth2=!char 5 to 6 of $wims_now
+!!   !let jday2=!char 7 to 8 of $wims_now
+!!  !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
   !let v1=!values v for v=$creyear to $expyear
   !read adm/lang/datemenu.phtml.$moduclass_lang 4,jday2,jmonth2,jyear2
