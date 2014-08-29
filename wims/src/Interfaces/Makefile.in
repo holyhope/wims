@@ -20,7 +20,7 @@ progs=$(progstatic) $(progdynamic)
 all: $(progs) install
 
 clean:
-	rm -f $(progs) *.o yacasheader.c
+	rm -f $(progs) *.o
 
 distclean: clean
 	cd $(PUBDIR); rm -f $(progs)
@@ -47,7 +47,5 @@ maxima: maxima.o $(SETENV_OBJS)
 scilab: scilab.o $(SETENV_OBJS)
 	$(cc) $(cflags) $(LDFLAGS) $(static) scilab.o $(SETENV_OBJS) $(lopt) -o $@
 
-yacasheader.c: yacasheader.tab yacasheader.sh
-	./yacasheader.sh
-yacas: yacasheader.c yacas.o $(SETENV_OBJS)
+yacas: yacas.o $(SETENV_OBJS)
 	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(SETENV_OBJS) $(lopt) -o yacas
