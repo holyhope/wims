@@ -26,4 +26,4 @@ knippen en plakken in uw eigen klas importeren.
 !distribute items leerniveau,tijdsduur \
 into name_level,name_duration
 
-!set name_skillbullet=Competenties binnen dit/deze rapport(en)
+!set name_skillbullet=Competenties voor deze periode

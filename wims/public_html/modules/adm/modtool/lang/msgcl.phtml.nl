@@ -203,9 +203,9 @@ moet de naam te beginnen met <span class="tt wims_code_words">doc</span>.
 !exit
 
 :domain_keyword
- The fields <span class="wims_label">$wims_name_Domain</span> or
- <span class="wims_label">$wims_name_Keywords</span> have not been filled.
- Thanks to modify
+ De volgende velden <span class="wims_label">$wims_name_Domain</span> of 
+ <span class="wims_label">$wims_name_Keywords</span> zijn nog niet volledig ingevuld.
+ Graag aanvullen.
 !href cmd=reply&jobreq=index $wims_name_properties
- of the module $mod and read the helps.
+ van de module $mod en lees de help pagina's.
 !exit

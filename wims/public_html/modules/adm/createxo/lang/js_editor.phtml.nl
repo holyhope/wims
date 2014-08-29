@@ -1,5 +1,5 @@
 !distribute lines Kies een andere lijst\
-Javascripts ondersteuning is hierbij noodzakelijk.\
+Javascript ondersteuning is hierbij noodzakelijk.\
 Lijst met instructies\
 Hoe gebruikt ik deze interactieve editor\
 Kies een lijst met instructies :\

@@ -140,20 +140,18 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   om dit recht te trekken.
  !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
  door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
- !set name_warning_domain=!nosubst You should check the properties of the module and\
-     use domains and keywords which are in the helps of the field\
-     <span class="wims_label">$wims_name_Domain</span> and \
+ !set name_warning_domain=!nosubst Het domein en de zoektermen van de module moeten nog worden gecontrolleerd.\ 
+     Dus <span class="wims_label">$wims_name_Domain</span> en \
      <span class="wims_label">$wims_name_Keywords</span>. \
-     If none of them is convenient, you could help us by sending your propositions to
-  !set name_warning_domain2=!nosubst Click on the field help\
-     <span class="wims_label">$wims_name_Domain</span> or\
-     <span class="wims_label">$wims_name_Keywords</span> to find the list
-  !set name_warning_keywords=!nosubst To improve the referencement of public modules,\
-   check the domains and keywords (see the field helps\
-   <span class="wims_label">$wims_name_Domain</span> and \
+     Als niets van toepassing is op uw module, stuur ons dan een voorstel voor een nieuw domein etc.
+  !set name_warning_domain2=!nosubst Klik op de help voor \
+     <span class="wims_label">$wims_name_Domain</span> of\
+     <span class="wims_label">$wims_name_Keywords</span> voor de beschikbare lijst.
+  !set name_warning_keywords=!nosubst Voor verbetering van de zoektermen, zie ook \
+   <span class="wims_label">$wims_name_Domain</span> en \
    <span class="wims_label">$wims_name_Keywords</span>),\
-   use the technical english versions.\
-   You could help us by sending new propositions for domains and keywords to
+   gebruik hiervoor de technische engelse versie.\
+   Stuur uw bijdrage voor domeinen en / of zoektermen naar 
 
 !endif
 

@@ -7,10 +7,10 @@
 
  See http://jsperf.com/vanilla-js-ftw-jquery-vs-js
  Where vanilla javascript is on average 5 - 10 times faster than JQuery...
- In general clients / students should use modern / up-to-date html5 capable browsers...and not only for something like 
+ In general, clients / students should use modern / up-to-date html5 capable browsers...and not only for something like 
  756922 operations/second : document.body.appendChild(document.createElement("p")); 
  in stead of 
- 70330  operation/second  : $("body").append("<p/>");
+ 70330  operations/second  : $("body").append("<p/>");
 */
 
 /*

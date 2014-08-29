@@ -36,8 +36,8 @@ Verwijder eerst enkele items alvorens verder te gaan met dit werkblad.
 !if already_exist=$error
 Het werk dat U wilt toevoegen bestaat reeds in het werkblad $test .<br />
 U kunt beter niet een zelfde oefening meerdere keren onder dezelfde
-parameters in een werkblad opnemen. <p>
-Verander eerst enkele parameters van de oefening voordat U verder gaat. <p>
+parameters in een werkblad opnemen. <br />
+Verander eerst enkele parameters van de oefening voordat U verder gaat. <br />
 Of wilt U soms dat leerlingen deze sommen vaker maken?...verhoog dan gewoon het vereiste
 punten aantal voor deze sommen. 
 !exit

@@ -126,6 +126,5 @@ op basis van deze variabele voor een aantal activiteiten in de klas filteren
 !set name_model=Model
 !set name_nextstep=Volgende stap
 
-!set name_getsource=This is the source code. The code written between the \
-  two rows of `*'; can be copied into$ an empty vote (use the clipboard) to create a\
-  new vote with the same content.
+!set name_getsource=Dit is de bron code. De tekst tussen de twee rijen `*' \
+kan worden gekopieerd (clipboard) in een lege 'stemming' met dezelfde inhoud.

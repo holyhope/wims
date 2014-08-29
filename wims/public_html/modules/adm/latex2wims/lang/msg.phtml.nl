@@ -11,8 +11,8 @@ U moet de naam van een bestaand document binnen uw Modtool account opgegeven.
 !endif
 
 !if principal iswordof $error
- Selecteer het [main] hoofbestand.<br />
- Dit moet een geldig latex  .tex bestand zijn.
+ Selecteer het [main] hoofdbestand.<br />
+ Dit moet een geldig latex  *.tex bestand zijn.
  !reset error
 !endif
 
