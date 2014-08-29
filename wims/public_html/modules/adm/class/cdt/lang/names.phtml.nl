@@ -90,5 +90,3 @@ name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
 
 !set name_warning1=Als er geen tweede datum is opgegeven wordt alles gebaseerd op de eerst opgegeven datum.
 
-!set name_date=!nosubst $jyear/$jmonth/$jday
-!set name_date2=!nosubst $jyear2/$jmonth2/$jday2

@@ -5,12 +5,20 @@ $wims_institutionname
 $classname\
 $cdt_title
 
-<div class="wimscenter" style="font-weight:bold;font-size:Large">
- !if $jour_begin!=$empty
-  $name_between <span class="wims_emph">$name_date</span>
-  !if $jour_begin!=$jour_end
-   $name_and <span class="wims_emph">$name_date2</span>
-  !endif
+<div class="wimscenter" style="font-weight:bold;">
+ $name_worktodo
+ !if $jour_begin!=$jour_end
+  $name_between <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
+  $name_and <span class="wims_emph">
+    !read date.phtml $jour_end,notime
+  </span>
+ !else
+  $name_for
+  <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
  !endif
 </div>
 

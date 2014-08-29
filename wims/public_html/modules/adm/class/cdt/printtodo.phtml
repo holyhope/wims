@@ -8,17 +8,23 @@ $cdt_title
 <div class="wimscenter" "style="font-size:large; font-weight:bold;">
  $name_worktodo
  !if $jour_begin!=$jour_end
-  $name_between <span class="wims_emph">$name_date</span>
-  $name_and <span class="wims_emph">$name_date2</span>
+  $name_between <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
+  $name_and <span class="wims_emph">
+    !read date.phtml $jour_end,notime
+  </span>
  !else
   $name_for
-  <span class="wims_emph">$name_date</span>
+  <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
  !endif
 </div>
 
 !if $nbligne=0
  <p>
- $name_nowork $name_date.
+ $name_nowork.
  </p>
  !goto end
 !endif

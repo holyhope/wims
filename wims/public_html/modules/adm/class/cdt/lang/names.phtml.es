@@ -88,5 +88,3 @@ name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
 !set name_warning1=Si no escriben una segunda fecha, efectuarán \
 una investigación sobre la primera fecha.
 
-!set name_date=!nosubst $jday/$jmonth/$jyear
-!set name_date2=!nosubst $jday2/$jmonth2/$jyear2

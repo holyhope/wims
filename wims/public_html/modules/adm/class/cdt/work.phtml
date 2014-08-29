@@ -6,15 +6,18 @@ $classname\
 $cdt_title
 
 <div class="wimscenter" style="font-weight:bold;">
- !if $jour_begin!=$empty
+ $name_done
+ !if $jour_begin!=$jour_end
   $name_between <span class="wims_emph">
-  !read date.phtml $jour_begin,notime
+    !read date.phtml $jour_begin,notime
   </span>
-  !if $jour_begin!=$jour_end
-   $name_and <span class="wims_emph">
-   !read date.phtml $jour_end,notime
-   </span>
-  !endif
+  $name_and <span class="wims_emph">
+    !read date.phtml $jour_end,notime
+  </span>
+ !else
+  <span class="wims_emph">
+    !read date.phtml $jour_begin,notime
+  </span>
  !endif
 </div>
 
