@@ -11,18 +11,22 @@ STRIP=@STRIP@
 rpath=
 libtype=static
 lopt=-L../../lib -lwims -lm $(rpath)
+objects=msglines.o compare.o def.o doc.o sp.o
 
 all: msg2wims
 
+%.o: %.c
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
 clean:
-	rm -f msg2wims 2>/dev/null
+	rm -f msg2wims *.o 2>/dev/null
 
 distclean:
-	rm -f msg2wims $(wims_home/bin/msg2wims $(wims_home)/public_html/bin/msg2wims 2>/dev/null
+	rm -f msg2wims $(wims_home)/bin/msg2wims $(wims_home)/public_html/bin/msg2wims 2>/dev/null
 	rm -f Makefile
 
-msg2wims: *.c ../Oef2wims/sp.c ../Lib/libwims.*
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) msg2wims.c $(lopt) -o msg2wims
+msg2wims: $(objects) ../Lib/libwims.*
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(objects) msg2wims.c $(lopt) -o msg2wims
 	./msg2wims table
 	$(STRIP) msg2wims
 	cp msg2wims $(wims_home)/bin

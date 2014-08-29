@@ -15,6 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "../Lib/libwims.h"
+
 char *bufprep(char *p)
 {
 /*  singlespace(p); strip_trailing_spaces(p); return find_word_start(p); */

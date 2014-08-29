@@ -19,6 +19,8 @@
  */
 
 #include <stdarg.h>
+#include "../Lib/libwims.h"
+#include "oef2wims.h"
 
 /* critical error situation */
 void error(char *s)
@@ -139,11 +141,11 @@ void repsubst(char *p)
 }
 
 
- /* find matching parenthesis.
-     * The entrance point should be after the opening
-     * parenthesis.
-     * Returns NULL if unmatched.
-*/
+/* find matching parenthesis.
+ * The entrance point should be after the opening
+ * parenthesis.
+ * Returns NULL if unmatched.
+ */
 char *find_matching2(char *p, char c)
 {
     char *pp, *pp2, *ppar,*pbrk, *pbrc;
@@ -206,9 +208,9 @@ char *find_matching2(char *p, char c)
 }
 
 /* Check whether parentheses are balanced in a given string.
-  * Returns 0 if OK.
-  * style=0: simple check. style<>0: strong check.
-*/
+ * Returns 0 if OK.
+ * style=0: simple check. style<>0: strong check.
+ */
 int checkparentheses(char *p, int style)
 {
     int i,j,k;

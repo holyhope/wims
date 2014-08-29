@@ -17,17 +17,14 @@
 
  /* This program translates doc format into wims internal data format. */
 
-#define MAX_TITLEN  40
-#define MAX_PROMPTLEN 32
-#define MAX_PARM    6
-#define MAX_PARAM   256
+#define MAX_TITLEN  60
+
+#define MAX_PARM    10
+#define MAX_PARAM   1024
 #define MAX_DEFINE  1024
-#define elsechar '\001'
-#define endifchar '\002'
-#define nextchar '\003'
-#define whilechar '\004'
 
 #include "../Lib/libwims.h"
+#include "msg2wims.h"
 
 struct {
     char *name;
@@ -43,11 +40,6 @@ char *primitive_dir="docu/primitives";
 
 void internal_warn(char *p)
 {}
-
-#include "msglines.c"
-#include "compare.c"
-#include "def.c"
-#include "doc.c"
 
 void get_inf(char *fname)
 {

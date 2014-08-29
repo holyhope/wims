@@ -16,10 +16,13 @@
  */
 
  /* Document processing primitives. */
+#include "../Lib/libwims.h"
+#include "msg2wims.h"
 
 char primbuf[MAX_LINELEN+1];
 char *primitive[256];
-int  primcnt;
+int primcnt, prepcnt;
+
 
 char *prim_if(char *p)
 {
@@ -75,18 +78,18 @@ char *prim_for(char *p)
     }
 */    fprintf(outf," \n!for m_%s \n",find_word_start(buf));
     *p4=nextchar;
-    return p3+1;    
+    return p3+1;
 }
 
-      /* check whether the name is a document primitive. */
+/* check whether the name is a document primitive. */
 /* for the moment, only \def \define  if for while or as in "msg2wims_primitives"
 description of primitive must be in primitive_dir="docu/primitives"*/
 char *doccheck(char *p)
 {
     char *pe, *pl, *pv, *pp, namebuf[128], parbuf[8192];
     int i, k, t;
-    
-    for(pe=p, i=0; isalnum(*pe) && i<sizeof(namebuf)-1; pe++, i++) 
+
+    for(pe=p, i=0; isalnum(*pe) && i<sizeof(namebuf)-1; pe++, i++)
       namebuf[i]=*pe;
     namebuf[i]=0; pe=find_word_start(pe);
     k=search_list(primitive,primcnt,sizeof(primitive[0]),namebuf);

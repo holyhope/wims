@@ -14,18 +14,18 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
-enum {pt_int, pt_rat, pt_real, pt_complex, pt_func, pt_text, pt_matrix};
+#include "../Lib/libwims.h"
+#include "oef2wims.h"
 int prepcnt;
 int ex_statement=0, ex_hint=0, ex_help=0, ex_solution=0, ex_latex=0;
+
+
+char vbuf_latex[MAX_LINELEN+1];
+const size_t MAX_KEY_LEN=128;
 char vbuf_statement[MAX_LINELEN+1];
 char vbuf_hint[MAX_LINELEN+1];
 char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
-char vbuf_latex[MAX_LINELEN+1];
-const size_t MAX_KEY_LEN=128;
-
-#include "sp.c"
 
 /* empty processor, template. */
 void empty(char *p[MAX_PARM]) {}
@@ -95,8 +95,6 @@ void p_credits(char *p[MAX_PARM])
     singlespace(vbuf_credits);
     fprintf(outf,"credits=%s\n\n", vbuf_credits);
 }
-
-/* */
 
 void p_wims(char *p[MAX_PARM])
 {

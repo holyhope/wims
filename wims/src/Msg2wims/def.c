@@ -15,6 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "../Lib/libwims.h"
+#include "msg2wims.h"
+
 int dollar_subst=1;
 
 /* variable substitution. buffer p must have MAX_LINELEN */
@@ -52,11 +55,6 @@ void subst(char *p)
       }
     }
 }
-
-enum {pt_int, pt_rat, pt_real, pt_complex, pt_func, pt_text, pt_matrix};
-int prepcnt;
-
-#include "sp.c"
 
 void putval(char *p, char *name, int ptype)
 {

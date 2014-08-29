@@ -18,19 +18,17 @@
  /* This program translates oef format exercises into wims internal data format. */
 
 #define MAX_TITLEN  60
-#define MAX_PROMPTLEN 40
+
 #define MAX_PARM    10
 #define MAX_PARAM   1024
 #define MAX_DEFINE  1024
 #define MAX_FLEN 199999
-#define elsechar '\001'
-#define endifchar '\002'
-#define nextchar '\003'
-#define whilechar '\004'
+
 #define VERSION "3.22"
-#define executed_str "__EXECUTED_1692754_EXERCISE__"
+
 
 #include "../Lib/libwims.h"
+#include "oef2wims.h"
 
 FILE *outf;
 int choicecnt=0, answercnt=0, feedbackcnt=0, varcnt=0, conditioncnt=0, condans=0, has_plot=0;
@@ -47,19 +45,10 @@ char *format="html";
 int ao[256];
 int aocnt=0;
 
-struct {
-    char *name;
-    int serial;
-    short int type, save;
-} param[MAX_PARAM+32];
+struct param param[MAX_PARAM+32];
 
 char *inpbuf, *inpend;
 char outfname[1024];
-
-#include "oeflines.c"
-#include "compare.c"
-#include "outexec.c"
-#include "process.c"
 
 enum {t_tit, t_head, t_def, t_wims, t_form, t_main, t_plot, t_hint,
       t_ans, t_choi, t_cond, t_cond2, t_sol, t_feedback, t_help, t_step, t_latex};

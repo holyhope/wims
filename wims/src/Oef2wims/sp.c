@@ -14,6 +14,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "../Lib/libwims.h"
+#include "sp.h"
 
 char *setpre="";
 
@@ -288,10 +290,7 @@ void sp_wims(char *p, int ptype)
       fprintf(outf,"%stmp%d=!%s\n\n",setpre,prepcnt,p);
 }
 
-struct {
-    char *name;
-    void (*processor)(char *p, int ptype);
-} specialfn[]={
+struct specialfn specialfn[]={
       {"asis",  sp_asis},
       {"canvasdraw", sp_canvasdraw},
       {"column", sp_column},
@@ -332,7 +331,7 @@ struct {
       {"wims",  sp_wims},
       {"yacas", sp_yacas}
 };
-#define specialfn_no (sizeof(specialfn)/sizeof(specialfn[0]))
+int specialfn_no=(sizeof(specialfn)/sizeof(specialfn[0]));
 
 /* This routine treats special functions */
 void parmprep(char *p,int ptype)
