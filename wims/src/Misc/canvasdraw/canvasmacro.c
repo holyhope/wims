@@ -1341,13 +1341,13 @@ function use_mouse_coordinates(){\
   var canvas_rect = (current_canvas).getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   var y = evt.clientY - canvas_rect.top;\
-  var m_data;var l = userdraw_x.length;\
+  var m_data = \"\";var l = userdraw_x.length;\
   switch(type){\
    case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
    case 1: m_data = \" \"+(px2y(y)).toFixed(prec)+\" \"+unit_y;break;\
    case 2: m_data = \"(\"+(px2x(x)).toFixed(prec)+\":\"+(px2y(y)).toFixed(prec)+\")\";break;\
    case 3: m_data = \" \"+( ( Math.atan( ((xmax - xmin)*(px2y(y))) / ((ymax - ymin)*(px2x(x))) ) )/(Math.PI/180) ).toFixed(prec)+\" \\u00B0 \";break;\
-   case 4: if( l > 0){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
+   case 4: if( l > 0 ){ m_data = \" R = \"+((xmax - xmin)*(distance(x,y,userdraw_x[l-1],userdraw_y[l-1]))/xsize).toFixed(prec)+\" \"+unit_x;};break;\
    default:break;\
   };\
   var s = parseInt(0.8*%d*(m_data.toString()).length);\
