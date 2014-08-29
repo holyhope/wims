@@ -9,7 +9,10 @@
   !goto $r_
 !endif
 
-!distribute items $wims_read_parm into r_,parm_day,parm_month,parm_year
+!distribute items $wims_read_parm into r_,parm_day,parm_month,parm_year,parm_dday,parm_dmonth,parm_dyear
+!let $parm_day=$[$($parm_day)]
+!let $parm_month=$[$($parm_month)]
+!let $parm_year=$[$($parm_year)]
 
 !goto $r_
 :1
@@ -27,7 +30,7 @@
 :4
 !formselect $parm_day list 0,$v prompt ---,$v
 !formselect $parm_month from 0 to 12 prompt ---,$months
-!formselect $parm_year list 0,$v1 prompt ---,$v1
+!formselect $parm_year list 0,$v1 prompt ---,$v1 default
 !exit
 
 :5

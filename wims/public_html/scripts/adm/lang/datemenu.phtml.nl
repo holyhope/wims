@@ -10,6 +10,10 @@
 !endif
 
 !distribute items $wims_read_parm into r_,parm_day,parm_month,parm_year
+  !let jyear=!char 1 to 4 of $jour_begin
+  !let jmonth=!char 5 to 6 of $jour_begin
+  !let jday=!char 7 to 8 of $jour_begin
+
 
 !goto $r_
 :1
