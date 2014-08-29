@@ -13,8 +13,8 @@
 Universite de Nice
 France
 en fr cn it es nl
-XIAO, Gang
-xiao@unice.fr
+BADO, Olivier
+bado@unice.fr
 Sitio principal de WIMS
 :wims.cse-institute.org/
 CSE Institute
