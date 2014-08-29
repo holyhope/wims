@@ -4,7 +4,13 @@
  preliminary version of jqmath written with some jquery (grrrr)
  when wims-integration is finished, 
  I will rewrite jqmath , removing all JQuery !...the most used useless js-glue-library 
-  
+
+ See http://jsperf.com/vanilla-js-ftw-jquery-vs-js
+ Where vanilla javascript is on average 5 - 10 times faster than JQuery...
+ In general clients / students should use modern / up-to-date html5 capable browsers...and not only for something like 
+ 756922 operations/second : document.body.appendChild(document.createElement("p")); 
+ in stead of 
+ 70330  operation/second  : $("body").append("<p/>");
 */
 
 /*
