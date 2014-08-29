@@ -9,32 +9,9 @@
  !exit
 !endif
 
-!if $cdt_nbdate<$max_defaffi
- firstdate=!filelist $wims_home/log/classes/$wims_class/cdt/src
- firstdate=!word 1 of $firstdate
- jour_begin=!char 1 to 8 of $firstdate
- !default jour_begin=$class_creation
- jour_end=$class_expiration
-!else
- j=!char 7 to 8 of $wims_now
- m=!char 5 to 6 of $wims_now
- y=!char 1 to 4 of $wims_now
- !if $m=1
-  m=12
-  y=$[$y-1]
- !else
-  m=$[($m-1)+100]
-  m=!char 2 to 3 of $m
- !endif
- jour_begin=$y$m$j
- jour_end=$wims_now
-!endif
-jday=!char 7 to 8 of $jour_begin
-jmonth=!char 5 to 6 of $jour_begin
-jyear=!char 1 to 4 of $jour_begin
-jday2=!char 7 to 8 of $jour_end
-jmonth2=!char 5 to 6 of $jour_end
-jyear2=!char 1 to 4 of $jour_end
+jour_begin=$class_creation
+jour_end=!char 1 to 8 of $wims_now
+
 !if $cdt_supervise!=yes
  class_parent=!text select 0123456789/ in $class_parent
  courses=!record 0 of wimshome/log/classes/$wims_class/courses
@@ -45,7 +22,15 @@ jyear2=!char 1 to 4 of $jour_end
  courses=!text select 0123456789, in $courses
  courses=!items2lines $courses
 !endif
+
 list=!mexec proc/mkwork.sh
 nbligne=!linecnt $list
+
+!if $cdt_nbdate>$max_defaffi
+ list=!line -$max_defaffi to -1 of $list
+ nbligne=!linecnt $list
+ jour_begin=$(list[1;1])
+!endif
+
 job=work
 
