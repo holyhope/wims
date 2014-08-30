@@ -1217,7 +1217,7 @@ void exec_instex(char *p)
     grouped_ins=0;
 }
 
-    /* patches the gnuplot integer division (mis)feature. */
+/* patches the gnuplot integer division (mis)feature. */
 void gnuplot_patch(char *p,int oneline)
 {
     char *pp;
@@ -1237,8 +1237,9 @@ void gnuplot_patch(char *p,int oneline)
       for(pp=p;*pp!=0;pp++) if(*pp==';' || *pp=='\n') *pp=' ';
 }
 
-    /* This is to disable pipe in the gnuplot plotting function.
-     * We do not allow ' followed by < . */
+/* This is to disable pipe in the gnuplot plotting function.
+ * We do not allow ' followed by < .
+ */
 void prepare_insplot_parm(char *p)
 {
     int i,j,multanim; char *pp, *s;
@@ -1320,7 +1321,7 @@ void prepare_insplot_parm(char *p)
     setenv("ins_anim_delay",int2str(d*100),1);
 }
 
-    /* Insert dynamic 2d plot */
+/* Insert dynamic 2d plot */
 void exec_insplot(char *p)
 {
     char *fmt;
