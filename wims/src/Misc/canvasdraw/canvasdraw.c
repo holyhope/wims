@@ -204,14 +204,15 @@ int main(int argc, char *argv[]){
  for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
 */
 fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
-fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n");
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
-fprintf(js_include_file,"\
+fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n\
 \"use strict\";\n\
+<!-- these variables and functions must be global -->\n\
 var read_dragdrop;\
 var read_canvas;\
 var set_clock;\
-var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\
+var clear_draw_area;\
+var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var xsize = %d;\
 var ysize = %d;\
@@ -2222,11 +2223,14 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    }
 	    reset();
 	    break;
-	case BUTTON:
+	case CLEARBUTTON:
 	/*
-	 button x,y,value
-	 does nothing : from svgdraw
+	 @clearbutton value
+	 @adds a button to clear the userdraw canvas with text 'value'
+	 @uses the tooltip placeholder div element: may not be used with command 'intooltip'
+	 @use command 'inputstyle' to style the button...  
 	*/
+	    add_clear_button(js_include_file,canvas_root_id,input_style,get_string(infile,1));
 	break;
 	case INPUTSTYLE:
 	/*
@@ -6521,7 +6525,7 @@ int get_token(FILE *infile){
 	*mathml="mathml",
 	*html="html",
 	*input="input",
-	*button="button",
+	*clearbutton="clearbutton",
 	*inputstyle="inputstyle",
 	*textarea="textarea",
 	*trange="trange",
@@ -7067,9 +7071,9 @@ int get_token(FILE *infile){
 	free(input_type);
 	return BLINK;
 	}
-	if( strcmp(input_type, button) == 0){
+	if( strcmp(input_type, clearbutton) == 0){
 	free(input_type);
-	return BUTTON;
+	return CLEARBUTTON;
 	}
 	if( strcmp(input_type, translation) == 0 ||  strcmp(input_type, translate) == 0  ){
 	free(input_type);

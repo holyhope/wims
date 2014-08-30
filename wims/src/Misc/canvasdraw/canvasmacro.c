@@ -19,6 +19,7 @@ char *double_xy2js_array(double xy[],int len,int decimals);
 int find_number_of_digits(int i);
 int x2px(double x);
 int y2px(double y);
+void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text);
 void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width);
 void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int precision,char *stroke_color,int font_size,double stroke_opacity,int type);
 void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -2105,6 +2106,30 @@ var to_js_math = function(math_fun){\
  };\
  return math_fun;\
 };\n");
+}
+
+void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
+fprintf(js_include_file,"\n<!-- add clear button -->\n\
+clear_draw_area = function(){\
+ var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\n\
+ var context_userdraw = canvas_userdraw.getContext(\"2d\");\n\
+ if(confirm(\"remove all drawings ? \")){\n\
+  context_userdraw.clearRect(0,0,xsize,ysize);\n\
+  userdraw_x = [];userdraw_y = [];userdraw_radius = [];\n\
+  return;\n\
+ };\n\
+};\n\
+function add_clear_button(){\n\
+ var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ var button = document.createElement('input');\n\
+ button.type = \"button\";\n\
+ button.style = \"%s\";\n\
+ button.value = \"%s\";\n\
+ button.setAttribute(\"onclick\",\"clear_draw_area()\");\n\
+ tooltip_placeholder_div.appendChild(button);\n\
+};\
+add_clear_button();\n\
+",canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text);
 }
 
 

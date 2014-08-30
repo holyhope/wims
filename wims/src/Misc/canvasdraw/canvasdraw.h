@@ -71,7 +71,7 @@
 #define RESTART		72
 #define FILLCOLOR	73
 #define CUBE		74
-#define BUTTON		75
+#define CLEARBUTTON	75
 #define ONCLICK		76
 #define CROSSHAIR	77
 #define CROSSHAIRS	78
