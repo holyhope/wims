@@ -25,15 +25,6 @@ void error(char *s)
     exit(1);
 }
 
-/*
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) error("Malloc failure.");
-    return p;
-}
-*/
 unsigned long int texint(void *bp, int l)
 {
     unsigned long int o, t;
@@ -59,43 +50,7 @@ long int texintsigned(void *bp, int l)
     return o;
 }
 
-	/* Strips leading spaces */
-/*
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p); p++,i++);
-    return p;
-}
-*/
-/* Points to the end of the word */
-/*
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-
-/* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
- * Uses binary search, list must be sorted. */
-
-/*
-int search_list(void *list, int items, size_t item_size, const char *str)
-{
- int i = 0;
- while (items > 0)
-   {
-     int m = items / 2, j = i + m;
-     int k = strcmp(*(char **)(list + j * item_size), str);
-     if (k == 0) return j;
-     if (k > 0) items = m; else {i = j + 1; items -= (m + 1);}
-   }
- return ~i;
-}
-*/
-	/* get the content of a file, and store in buf. */
+/* get the content of a file, and store in buf. */
 int getfile(char *fname, unsigned char **buf)
 {
     FILE *f;
@@ -142,8 +97,9 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     }
 }
 
-	/* system(), but with variable parms
-	 * Uses sh to execute command. */
+/* system(), but with variable parms
+ * Uses sh to execute command.
+ */
 int call_sh(char *s,...)
 {
     va_list vp;
@@ -159,21 +115,4 @@ int call_sh(char *s,...)
     t=execredirected("sh",NULL,NULL,NULL,parmbuf);
     sync(); return t;
 }
-
-	/* recursively generate a directory structure */
-/*
-void mkdirs(char *s)
-{
-    struct stat st;
-    char *buf;
-    if(stat(s,&st)==-1) {
-	if(strrchr(s,'/')!=NULL) {
-	    buf=xmalloc(strlen(s)+1);
-	    ovlstrcpy(buf,s); *strrchr(buf,'/')=0;
-	    mkdirs(buf); free(buf);
-	}
-	mkdir(s,-1);
-    }
-}
-*/
 

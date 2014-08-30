@@ -19,7 +19,8 @@
 
 /* Return value: -1 if no condition is met.
  * n>0 for the line of condition meeting the click.
- * empty if condition has error. */
+ * empty if condition has error.
+ */
 
 /***************** Nothing should need change hereafter *****************/
 
@@ -258,7 +259,7 @@ int oneline(char *p)
     return test(p1)^rev;
 }
 
-/* Returns the number of line matching the click coordinates */
+/* Returns the number of lines matching the click coordinates */
 int main()
 {
     char *p, *p2, *p3;

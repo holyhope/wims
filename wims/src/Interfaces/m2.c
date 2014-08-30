@@ -62,8 +62,6 @@ int illpart_no=(sizeof(illpart)/sizeof(illpart[0]));
 
 char *progname="m2";
 
-/*#include "common.c"*/
-
 /* check for security violations in command string */
 void check_parm(char *pm)
 {

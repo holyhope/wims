@@ -45,31 +45,6 @@ int entrycount;
 int nocase=0, hassuffix=0, leaveline=0;
 int entrycount, ocount;
 
-/*
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) exit(1);
-    return p;
-}
-*/
-/* Points to the end of the word */
-/*char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-/* Strips leading spaces */
-/*char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
 /* strip trailing spaces; return string end. */
 char *strip_trailing_spaces2(char *p)
 {

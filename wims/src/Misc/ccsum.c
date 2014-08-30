@@ -21,15 +21,15 @@
 #include "../includes.h"
 #include "../Lib/libwims.h"
 
-    /* The maximal number of sessions within one day */
+/* The maximal number of sessions within one day */
 #define MAX_SESSIONS (128*1024)
-    /* The maximal number of classes within one day */
+/* The maximal number of classes within one day */
 #define MAX_CLASSES 8192
-    /* At least these minutes will be counted for each session */
+/* At least these minutes will be counted for each session */
 #define MIN_CONNECT 2
-    /* Add this number of minutes to each session */
+/* Add this number of minutes to each session */
 #define MIN_ADD 1
-    /* Accounting discontinues after this number of idle minutes */
+/* Accounting discontinues after this number of idle minutes */
 #define MAX_LAPSE 15
 
 struct {
@@ -45,36 +45,7 @@ struct cls {
 } cls[MAX_CLASSES];
 int clscnt;
 
-/*
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) {
-    fprintf(stderr,"Malloc failure."); exit(1);
-    }
-    return p;
-}
-*/
-    /* Points to the end of the word */
-/*
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-    /* Strips leading spaces */
-/*
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-    /* Read/write to a file with variable parms to print filename */
+/* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
@@ -106,22 +77,7 @@ void accessfile(char *content, char *type, char *s,...)
     fclose(f);
 }
 
-/* returns -1 if error */
-/*
-long int filelength(char *fn,...)
-{
-    char buf[4096];
-    va_list vp;
-    struct stat st;
-    int l;
-
-    va_start(vp,fn);
-    vsnprintf(buf,sizeof(buf),fn,vp); va_end(vp);
-    l=stat(buf,&st); if(l) return -1;
-    return st.st_size;
-}
-*/
-    /* recursively generate a directory structure */
+/* recursively generate a directory structure */
 void mkdirs2(char *s)
 {
     struct stat st;

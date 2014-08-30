@@ -77,23 +77,6 @@ int modcnt;
 
 char *mlist;
 
-/*
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) {
-    printf("Malloc failure.\n");
-    exit(1);
-    }
-    return p;
-}
-*/
-
-/*
-char *acctab="çéèêëúùûüáàâäãóòôöõíìïîñıÿÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ",
-     *deatab="ceeeeuuuuaaaaaoooooiiiinyyCEEEEUUUUAAAAAOOOOOIIIINY";
-*/
 /*  fold known accented letters to unaccented, other strange characters to space
  *  apostrophe is among the exceptions to be kept (important for multi-word expressions)
  */
@@ -116,24 +99,6 @@ void towords(char *p)
     for(pp=p;*pp;pp++) if(!isalnum(*pp) && strchr("&$+*",*pp)==0) *pp=' ';
 }
 
-/*  Points to the end of the word */
-/*
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-/*  Strips leading spaces */
-/*
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
 /*  Find first occurrence of word */
 char *wordchr2(char *p, char *w)
 {
@@ -145,19 +110,6 @@ char *wordchr2(char *p, char *w)
     return r;
 }
 
-/*  find a variable in a string (math expression).
- * Returns the pointer or NULL.
- */
-/*char *varchr(char *p, char *v)
-{
-    char *pp; int n=strlen(v);
-    for(pp=strstr(p,v); pp!=NULL; pp=strstr(pp+1,v)) {
-    if((pp==p || !isalnum(*(pp-1))) &&
-       (!isalnum(*(pp+n)) || *(pp+n)==0)) break;
-    }
-    return pp;
-}
-*/
 /*  strip trailing spaces; return string end. */
 char *strip_trailing_spaces2(char *p)
 {

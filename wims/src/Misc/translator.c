@@ -48,38 +48,11 @@ int unknown_type=unk_delete;
 int nocase=0,leaveline=0,fromfile=0;
 char *unknown, unkbuf[1024];
 
-/*void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) exit(1);
-    return p;
-}
-*/
 /* Exit without translating anything */
 void escape(void)
 {
     printf("%s",inpbuf); exit(0);
 }
-
-/* Points to the end of the word */
-/*
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-/* Strips leading spaces */
-/*
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
 
 /* strip trailing spaces; return string end. */
 char *strip_trailing_spaces2(char *p)
@@ -100,7 +73,8 @@ int compare(int i1, const char *s2)
 }
 
 /* searches a list. Returns index if found, -1 if nomatch.
- * Uses binary search, list must be sorted. */
+ * Uses binary search, list must be sorted.
+ */
 int search_list2(struct entry *list, int items, size_t item_size, const char *str)
 {
     int i1,i2,j,k,t,t1;

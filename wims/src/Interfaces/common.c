@@ -50,18 +50,6 @@ void output(char *p);
 void about(void);
 char *dynsetup(char *p, char *end);
 
-/*
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) {
-      fprintf(stderr, "%s: Malloc failure.\n",progname);
-      exit(1);
-    }
-    return p;
-}
-*/
 /* strip trailing spaces; return string end. */
 char *strip_trailing_spaces2(char *p)
 {
@@ -71,24 +59,7 @@ char *strip_trailing_spaces2(char *p)
     return pp;
 }
 
-/* Points to the end of the word */
-/*
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
-/* Strips leading spaces */
-/*
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-*/
+
 /* Find first occurrence of word */
 char *wordchr2(char *p, char *w)
 {
@@ -101,18 +72,6 @@ char *wordchr2(char *p, char *w)
     return r;
 }
 
-/* Returns the pointer or NULL. */
-/*
-char *varchr(char *p, char *v)
-{
-        char *pp; int n=strlen(v);
-        for(pp=strstr(p,v); pp!=NULL; pp=strstr(pp+1,v)) {
-          if((pp==p || (!isalnum(*(pp-1)) && *(pp-1)!='_')) &&
-             ((!isalnum(*(pp+n)) && *(pp+n)!='_') || *(pp+n)==0)) break;
-        }
-        return pp;
-}
-*/
 /* find matching parenthesis */
 char *find_matching2(char *p, char c)
 {
@@ -137,24 +96,6 @@ char *find_matching2(char *p, char c)
     if(*pp!=c) return NULL;
     return pp;
 }
-
-/* searches a list. Returns index if found, (-1-index of insertion) if nomatch.
- * Uses binary search, list must be sorted. */
-
-/*
-int search_list(void *list, int items, size_t item_size, const char *str)
-{
- int i = 0;
- while (items > 0)
-   {
-     int m = items / 2, j = i + m;
-     int k = strcmp(*(char **)(list + j * item_size), str);
-     if (k == 0) return j;
-     if (k > 0) items = m; else {i = j + 1; items -= (m + 1);}
-   }
- return ~i;
-}
-*/
 
 /* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
