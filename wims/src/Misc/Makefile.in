@@ -41,6 +41,9 @@ all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword money
 
 maintainer:: java
 
+%.o: %.c
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
 	-cp $@/src/$@ $(OTHERDIR)
@@ -163,18 +166,17 @@ cryptarith: cryptarith.c
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 ftype: ftype.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ftype.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ftype.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 cyclicode: cyclicode.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cyclicode.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cyclicode.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 curvecomp: curvecomp.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) curvecomp.c -lm -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) curvecomp.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
-
 Plouffe: Plouffe.c
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) Plouffe.c -lm -o $@
 	$(STRIP) $@
@@ -223,7 +225,7 @@ modind: suffix.o translator_.o modind.c
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 modstat: modstat.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modstat.c -o $@
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modstat.c $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 ccsum: ccsum.c

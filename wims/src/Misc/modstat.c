@@ -19,7 +19,7 @@
  * used to show statistics of frequentation, module by module. */
 
 #include "../wims.h"
-
+#include "../Lib/libwims.h"
 #define MAX_FLEN 102400
 #define MAX_LANGS   16
 char mbuf[MAX_LINELEN+1];
@@ -34,65 +34,6 @@ char language[MAX_LANGS][4];
 int start,end,mstart,mend,modtype,reqs,sites;
 int languagecnt=0;
 int count[MAX_LANGS],tcount;
-
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) {
-      printf("Malloc failure.\n");
-      exit(1);
-    }
-    return p;
-}
-
-/* Points to the end of the word */
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-
-/* Strips leading spaces */
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-
-/* Find first occurrence of word */
-char *wordchr(char *p, char *w)
-{
-    char *r;
-
-    for(r=strstr(p,w);r!=NULL &&
-      ( (r>p && !isspace(*(r-1))) || (!isspace(*(r+strlen(w))) && *(r+strlen(w))!=0) );
-      r=strstr(r+1,w));
-    return r;
-}
-
-/* find a variable in a string (math expression).
- * Returns the pointer or NULL. */
-char *varchr(char *p, char *v)
-{
-    char *pp; int n=strlen(v);
-    for(pp=strstr(p,v); pp!=NULL; pp=strstr(pp+1,v)) {
-      if((pp==p || !isalnum(*(pp-1))) &&
-         (!isalnum(*(pp+n)) || *(pp+n)==0)) break;
-    }
-    return pp;
-}
-
-/* strip trailing spaces; return string end. */
-char *strip_trailing_spaces(char *p)
-{
-    char *pp;
-    if(*p==0) return p;
-    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
-    return pp;
-}
 
 void getlangs(void)
 {

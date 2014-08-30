@@ -25,18 +25,11 @@
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
+#include "../Lib/libwims.h"
 
 char filename[1024]="";
 char *filebuf;
 int filelen=0;
-
-void *xmalloc(size_t n)
-{
-    void *p;
-    p=malloc(n);
-    if(p==NULL) exit(1);
-    return p;
-}
 
 /* get the file */
 void prepare_file(void)

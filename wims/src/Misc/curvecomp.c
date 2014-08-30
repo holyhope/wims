@@ -49,6 +49,8 @@
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
+#include "../Lib/libwims.h"
+
 char curve1[2*MAX_LINELEN+2], curve2[2*MAX_LINELEN+2];
 int bx[2], by[2];
 int tol=default_tolerance;
@@ -67,14 +69,6 @@ int Min(int x,int y) {if(x>y) return y; else return x;}
 int Max(int x,int y) {if(x<y) return y; else return x;}
 
 int listbuf[pointlim*2], listcnt;
-
-/* Strips leading spaces */
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
-}
 
 void reverse(struct cv *cvbuf, int cnt)
 {

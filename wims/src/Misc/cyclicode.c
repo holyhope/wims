@@ -26,7 +26,7 @@
   */
 
 #include "../wims.h"
-
+#include "../Lib/libwims.h"
 #define MAX_DEGREE 256
 #define MAX_LENGTH 1024000
 
@@ -36,22 +36,6 @@ char poly[MAX_DEGREE], chain[MAX_DEGREE];
 void errorquit(char *msg)
 {
     fprintf(stderr,"%s\n",msg); exit(1);
-}
-
-/* Points to the end of the word */
-char *find_word_end(char *p)
-{
-    int i;
-    for(i=0;!isspace(*p) && *p!=0 && i<MAX_LINELEN; p++,i++);
-    return p;
-}
-
-/* Strips leading spaces */
-char *find_word_start(char *p)
-{
-    int i;
-    for(i=0; isspace(*p) && i<MAX_LINELEN; p++,i++);
-    return p;
 }
 
 int main(int argc, char *argv[])
