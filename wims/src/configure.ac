@@ -256,8 +256,7 @@ AC_CONFIG_FILES([Flydraw/Makefile
                  Misc/authors/jm.evers/applets/Makefile
                  Module/Makefile
                  Module/drawode/Makefile
-                 Msg2wims/Makefile
-                 Oef2wims/Makefile
+                 OefMsg2wims/Makefile
                  Wimsd/Makefile
                  Wimslogd/Makefile
                  Texgif/Makefile
