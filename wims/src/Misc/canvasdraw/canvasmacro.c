@@ -2111,9 +2111,9 @@ var to_js_math = function(math_fun){\
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
 fprintf(js_include_file,"\n<!-- add clear button -->\n\
 clear_draw_area = function(){\
- var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\n\
- var context_userdraw = canvas_userdraw.getContext(\"2d\");\n\
  if(confirm(\"remove all drawings ? \")){\n\
+  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\n\
+  var context_userdraw = canvas_userdraw.getContext(\"2d\");\n\
   context_userdraw.clearRect(0,0,xsize,ysize);\n\
   userdraw_x = [];userdraw_y = [];userdraw_radius = [];\n\
   return;\n\
