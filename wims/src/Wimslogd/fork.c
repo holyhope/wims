@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-		/* fork management */
+/* fork management */
 
 #define MAX_FORK 1024
 #define MAX_DELAY 1500	/* At most these seconds of execution */
@@ -39,12 +39,12 @@ void addfork(pid_t pid, int type)
     forkcnt++;
 }
 
-	/* forklist management */
-void forkman(int kz) 
+/* forklist management */
+void forkman(int kz)
 {
     int delay, i, t, st;
     time_t now;
-    delay=MAX_DELAY; 
+    delay=MAX_DELAY;
     if(forkcnt>=MAX_FORK/2) delay=delay/5;
     if(forkcnt*4>=MAX_FORK*3) delay=delay/4;
     now=time(NULL);
@@ -65,7 +65,7 @@ void wait_children(void)
     do {
 	now=time(NULL);
 	for(i=0; i<forkcnt; i++) {
-	    if(forklist[i].type && forklist[i].t < now-MAX_DELAY) break;	    
+	    if(forklist[i].type && forklist[i].t < now-MAX_DELAY) break;
 	}
 	if(i>=forkcnt) return;
 	sleep(1);

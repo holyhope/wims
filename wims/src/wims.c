@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* Web mathematical exerciser */
+/* Web exerciser */
 
 #define WEBMATH 1
 #include "Lib/libwims.h"
@@ -46,7 +46,7 @@ struct {
 
 #define charname_no (sizeof(charname)/sizeof(charname[0]))
 
-/* left to right   or   right to left   writing */
+/* left to right or right to left writing */
 struct {
     char *name;
     char *dirn;
@@ -244,7 +244,8 @@ int wims_sheet=0,wims_exo=0;
 char *default_form_method="post";
 
  /* Je suis maintenant oblige de passer a l'anglais
-  * pour la langue de defaut. */
+  * pour la langue de defaut.
+  */
 char lang[16]="en";
 char available_lang[MAX_LANGUAGES][4]={"en","fr"};
 int available_lang_no=2;
@@ -252,11 +253,13 @@ char pre_language[4]="";
 char *protocol="http"; /* http or https */
 
  /* check for coordinate input. This will mean that
-  * the request is manual, but not robot. */
+  * the request is manual, but not robot.
+  */
 int coord_input=0;
 
- /* These are readonly environment variable names */
- /* special parm used for special cmds (getins, etc). */
+/* These are readonly environment variable names
+ * special parm used for special cmds (getins, etc).
+ */
 char *ro_name[]={
       "cmd" ,
       "empty",
@@ -291,8 +294,9 @@ enum {
 }COMMANDS;
 #define CMD_NO (sizeof(commands)/sizeof(commands[0]))
 
- /* stat=0: saved variables */
- /* all names starting with wims_priv_ are also internal. */
+/* stat=0: saved variables
+ * all names starting with wims_priv_ are also internal.
+ */
 struct {
     char *name; int stat;
 } internal_name[]={
@@ -377,8 +381,7 @@ char *httpd_vars[]={
 };
 #define HTTPD_VAR_NO (sizeof(httpd_vars)/sizeof(httpd_vars[0]))
 
-/* security: these variables will not be visible to
- * child processes */
+/* security: these variables will not be visible to child processes */
 char *unsetvars[]={
  "DOCUMENT_ROOT","SERVER_SIGNATURE","SERVER_SOFTWARE",
       "UNIQUE_ID","HTTP_KEEP_ALIVE","SSL_SESSION_ID"
@@ -733,7 +736,8 @@ void parse_query_string(int len, int type)
       if(*pt) continue;
       if(strcmp(p1,"wims_deposit")!=0) _tolinux(p);
 /* This is a restriction:
- * Every parameter must have matching parentheses. */
+ * Every parameter must have matching parentheses.
+ */
       if(parenth==-1 && strncmp(p1,"freepar_",strlen("freepar_"))!=0
          && strcmp(p1,"wims_deposit")!=0
          && check_parentheses(p,1)) parenth=v;
@@ -970,7 +974,8 @@ Content-length: %ld\r\n\r\n",mime,l);
 }
 
 /* This is run only when manually invoking the program.
- * Verifies the orderedness of various list tables. */
+ * Verifies the orderedness of various list tables.
+ */
 int verify_tables(void)
 {
     if(verify_order(calc_routine,CALC_FN_NO,sizeof(calc_routine[0]))) return -1;
@@ -1140,8 +1145,7 @@ int main(int argc, char *argv[], char *envp[])
 {
     char *p, homebuf[MAX_FNAME+1], lbuf[32];
     int inlen=0;
-/*    int mfd;
-*/
+/*    int mfd; */
     error1=user_error; error2=module_error; error3=internal_error;
     class_dir[0]=0;
     substitute=substit; buffer_init(); var_init();
@@ -1190,11 +1194,11 @@ int main(int argc, char *argv[], char *envp[])
 
     main_configure();
     checklogd();
-/*    mfd=shm_open(SHM_NAME,O_RDONLY,-1);
-    if(mfd==-1) internal_error("Unable to find shared memory.");
-    shmptr=mmap(0,SHM_SIZE,PROT_READ,MAP_SHARED,mfd,0);
-    if(shmptr==MAP_FAILED) internal_error("Shared memory failure.");
-*/
+/* mfd=shm_open(SHM_NAME,O_RDONLY,-1);
+ * if(mfd==-1) internal_error("Unable to find shared memory.");
+ * shmptr=mmap(0,SHM_SIZE,PROT_READ,MAP_SHARED,mfd,0);
+ * if(shmptr==MAP_FAILED) internal_error("Shared memory failure.");
+ */
     getppid(); /* this is the first sysmask trigger, must be after checklogd() */
     predetermine_language();
     /* modify a few rlimits for 64-bit processors */

@@ -93,7 +93,7 @@ int mathml(char *p, int option ){
           char zoom[2];
           snprintf(zoom, 2 ,"%d",use_js_zoom);// int --> char : "0" or "1"
           char *argv[]={"wims_mathml","--use-zoom",zoom,"--tex-size",mathml_tex_size,"--max-mml-size",mml_buffer,"--tex-string",p,NULL};
-          /* This is the child process. Close other end first. */
+/* This is the child process. Close other end first. */
           close(my_pipe[0]);
           dup2(my_pipe[1], 1);  // send stdout to the pipe
           dup2(my_pipe[1], 2);  // send stderr to the pipe
@@ -121,24 +121,24 @@ int mathml(char *p, int option ){
             char buffer[MAX_LINELEN+1];
             // make buffer filled with 'zero/null'
             memset(buffer,'\0',MAX_LINELEN);//bzero(buffer,maxsize);
-            /* read output from program line by line*/
+/* read output from program line by line */
             if (option == 1) {
                 *p=0;
                 while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
                      if(strcmp(buffer,"ERROR") != 0){
                       mystrncpy(p, buffer, MAX_LINELEN-1);
                      }
-                    else // ERROR close stream; close pipe; wait for clean exit
+                    else /* ERROR close stream; close pipe; wait for clean exit */
                     {
-                  fclose (stream); // do not know if this is really needed... but it won't hurt ?
+                  fclose (stream); /* do not know if this is really needed... but it won't hurt ? */
                   close(my_pipe[0]);
                   waitpid(pid, &status, 0);
-                     mathalign_base=1; // go to insmath with gifs
+                     mathalign_base=1; /* go to insmath with gifs */
                      return 0;
                     }
                 }
             }
-            else // this will probably not used ? remove it ?
+            else /* this will probably not used ? remove it ? */
             {
              while ( fgets(buffer, MAX_LINELEN, stream) != NULL ){
                  if(strcmp(buffer,"ERROR") != 0){

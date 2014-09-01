@@ -15,9 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-		/* Caches and its management */
+/* Caches and its management */
 
-	/* General information of an exercise. Size: 10 bytes. */
+/* General information of an exercise. Size: 10 bytes. */
 typedef struct exodata {
     unsigned short int num;
     float weight, require;
@@ -49,17 +49,18 @@ struct sheetcache {
 } sheetcache[MAX_SHEETCACHE];
 int sheetcaches;
 
- 	/* searches a list. Returns index if found, -1 if nomatch. 
-	 * Uses binary search, list must be sorted. */
+ /* searches a list. Returns index if found, -1 if nomatch.
+  * Uses binary search, list must be sorted.
+  */
 int search_data(void *list, int items, size_t item_size, unsigned short int t)
 {
     int i1,i2,j,k;
     unsigned short int *p;
-    
+
     if(items<=0) return -1;
     j=0; p=list; k=*p-t;
     if(k==0) return k; if(k>0) return -1;
-    p=list+(items-1)*item_size; 
+    p=list+(items-1)*item_size;
     k=*p-t; if(k==0) return items-1; if(k<0) return ~items;
     for(i1=0,i2=items-1;i2>i1+1;) {
 	j=(i2+i1)/2;
@@ -67,12 +68,12 @@ int search_data(void *list, int items, size_t item_size, unsigned short int t)
 	k=*p-t;
 	if(k==0) return j;
 	if(k>0) {i2=j; continue;}
-	if(k<0) {i1=j; continue;}	
+	if(k<0) {i1=j; continue;}
     }
     return ~i2;
 }
 
-	/* remove old cache items */
+/* remove old cache items */
 void cleancache(void)
 {
     int i;
@@ -96,7 +97,7 @@ void cleancache(void)
     }
 }
 
-	/* Locate the cache number of a class */
+/* Locate the cache number of a class */
 struct classdata *getclasscache(char *cl)
 {
     int i,j,k,l,m,n, oldest;
@@ -126,7 +127,7 @@ struct classdata *getclasscache(char *cl)
     classcache[classcaches++].ptr=cd;
     snprintf(cd->name,sizeof(cd->name),"%s",cl);
     cd->start=time(NULL); cd->exocnt=0;
-	/* Now get the exo data */
+/* Now get the exo data */
     accessfile(buf,"r","sheets/.require");
     for(i=k=0,p1=buf; *p1; i++,p1=p2) {
 	p2=strchr(p1,'\n'); if(p2) *p2++=0; else p2=p1+strlen(p1);
@@ -134,9 +135,9 @@ struct classdata *getclasscache(char *cl)
 	    q2=find_word_end(q1); if(*q2) *q2++=0;
 	    cd->exos[k].num=(i<<8)+j;cd->exos[k].require=atof(q1);
 	    cd->exos[k].weight=0;
-	    k++;	    
+	    k++;
 	}
-	
+
     }
     if(k>=MAX_CLASSEXOS) return NULL;
     cd->exocnt=k; cd->examstart=k; cd->modif=0;
@@ -178,12 +179,12 @@ struct classdata *getclasscache(char *cl)
     return cd;
 }
 // misprint ?? sheetdata ?? does not seem to be used.
-	/* prepare cache for a sheet */
+/* prepare cache for a sheet */
 struct sheetata *getsheetcache(char *cl, char *sh)
 {
-    
-    
-    
+
+
+
     return NULL;
 }
 

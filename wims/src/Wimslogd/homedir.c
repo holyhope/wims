@@ -14,10 +14,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-	/* Routines to update home directory. */
+/* Routines to update home directory. */
 
-	/* The following directories will be relocatable. */
-	/* Clusterable directories (log, backup) should be avoided. */
+/* The following directories will be relocatable.
+ * Clusterable directories (log, backup) should be avoided.
+ */
 char *putlist[]={
     "public_html/modules","public_html/modules/devel",
       "public_html/modules/local",

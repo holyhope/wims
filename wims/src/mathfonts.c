@@ -34,7 +34,7 @@ rightbrace7,rightbrace8,rightbrace9,rightbrace10,rightbrace11,rightbrace12,";
 /* These are temporary definitions. */
 char *mathfont_dir="mathfonts";
 
-  /* tex font size list */
+/* tex font size list */
 int texsize_list[]={63,69,76,83,91,100,109,120,131,144,158,173};
 int texbasesize=6; /* defaults to 109 */
 int usertexsize=-1; /* non-negative if defined */
@@ -59,7 +59,7 @@ void fix_tex_size(void)
     setenv("texgif_density",buf,1);
 }
 
-  /* takes math font image file string */
+/* takes math font image file string */
 char *mathfont(char *fontname)
 {
     char buf1[MAX_LINELEN+1],buf2[MAX_LINELEN+1];

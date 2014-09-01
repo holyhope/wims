@@ -49,7 +49,8 @@ void float2str(double d, char *p)
 
 /* substitute variable names by their environment strings
  * The buffer pointed to by p must have enough space
- * (defined by MAX_LINELEN). */
+ * (defined by MAX_LINELEN).
+ */
 char *substit(char *p)
 {
     char *pp, *p2, *ev;
@@ -176,7 +177,8 @@ int for_getvar(char *p)
 
 /* If bufp=NULL then numeric. Else string-wise.
  * returns 0 if success,
- * -1 if syntax error, 1 if bad values */
+ * -1 if syntax error, 1 if bad values
+ */
 int cutfor(char *p, char *bufp)
 {
     char *eqp, *fromp, *top, *stepp, *inp;

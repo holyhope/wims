@@ -14,8 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-	/* line input / output / translation routines
-	 * and error routines */
+/* line input / output / translation routines
+ * and error routines
+ */
 
 int exec_wait;
 
@@ -34,7 +35,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
 	if(inf!=NULL) (void)freopen(inf,"r",stdin);
 	if(outf!=NULL) (void)freopen(outf,"w",stdout);
 	if(errf!=NULL) (void)freopen(errf,"w",stderr);
-		/* This is to patch LinuxPPC uid wrapping 
+		/* This is to patch LinuxPPC uid wrapping
 		 * for scripts */
 	t=0; if(strchr(cmdf,'/')) {
 	    FILE *tf;
@@ -67,8 +68,9 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     }
 }
 
-	/* my system(), but with variable parms
-	 * More secure than system(), and direct fork. */
+/* my system(), but with variable parms
+ * More secure than system(), and direct fork.
+ */
 int call_ssh(int wait,char *s,...)
 {
     va_list vp;
@@ -121,7 +123,7 @@ int call_ssh(int wait,char *s,...)
     return execredirected(cmdf,inf,outf,errf,arg);
 }
 
-	/* Read/write to a file with variable parms to print filename */
+/* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
@@ -154,8 +156,9 @@ void accessfile(char *content, char *type, char *s,...)
     fclose(f);
 }
 
-	/* system(), but with variable parms
-	 * Uses sh to execute command. */
+/* system(), but with variable parms
+ * Uses sh to execute command.
+ */
 int call_sh(int wait,char *s,...)
 {
     va_list vp;
@@ -180,7 +183,7 @@ void debug(char *p,...)
     char lbuf[MAX_LINELEN+1];
     char *pp;
     va_list vp;
-    
+
     snprintf(lbuf,sizeof(lbuf),"%s: ",nowstr);
     pp=lbuf+strlen(lbuf);
     va_start(vp,p);
@@ -188,6 +191,6 @@ void debug(char *p,...)
     va_end(vp);
     pp=strchr(lbuf,'\n'); if(pp) *pp=0;
     strip_trailing_spaces(lbuf); strcat(lbuf,"\n");
-    accessfile(lbuf,"a",debugfile);    
+    accessfile(lbuf,"a",debugfile);
 }
 

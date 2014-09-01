@@ -488,7 +488,7 @@ void t_oneterm(char *p, int num)
     for(i=0;i<neucnt;i++) t_onefactor(neutral[i],i+dencnt);
 }
 
-    /* put exponential */
+/* put exponential */
 void t_exponential(char *pp)
 {
     char *pe, *pt;
@@ -678,7 +678,7 @@ void texmath(char *p)
     for(pp=p; *pp; pp++) {
     if(isspace(*pp)) {ovlstrcpy(pp,pp+1); pp--;}
     }
-    /* replace ** by ^  see __replace_badchar(p,"**", "^");*/
+/* replace ** by ^  see __replace_badchar(p,"**", "^");*/
     for(pp=strstr(p,"**"); pp!=NULL; pp=strstr(pp,"**")) {
       *pp='^'; ovlstrcpy(pp+1,pp+2);
     }

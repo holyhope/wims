@@ -68,7 +68,7 @@ enum {dir_home, dir_class, dir_session, dir_module};
 #include "housekeep.c"
 #include "homedir.c"
 
-	/* check whether there is anything to execute */
+/* check whether there is anything to execute */
 void logexec(void)
 {
     struct stat st;
@@ -129,8 +129,9 @@ void parms(void)
     if(site_accounting>0) setenv("site_accounting","yes",1);
 }
 
-	/* This is run only when manually invoking the program.
-	 * Verifies the orderedness of various list tables. */
+/* This is run only when manually invoking the program.
+ * Verifies the orderedness of various list tables.
+ */
 int verify_tables(void)
 {
     if(verify_order(cmdlist,cmdcnt,sizeof(cmdlist[0]))) return -1;

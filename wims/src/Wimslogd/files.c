@@ -20,7 +20,7 @@
 enum{is_file, is_dir, is_exec, is_fifo, is_socket, is_unknown};
 struct stat ftst;
 
-	/* A simple front-end of stat(). */
+/* A simple front-end of stat(). */
 int ftest(char *fname)
 {
     if(strstr(fname,"..")!=NULL) return -1; /* parent directory not allowed */
@@ -35,7 +35,7 @@ int ftest(char *fname)
     return is_unknown;
 }
 
-	/* read the content of a file */
+/* read the content of a file */
 void readfile(char *fname, char buf[], long int buflen)
 {
     int fd, st;
@@ -50,8 +50,9 @@ void readfile(char *fname, char buf[], long int buflen)
     buf[lc]=0; _tolinux(buf); return;
 }
 
-	/* datafile structure: number of records.
-	 * tag=1 if direct access */
+/* datafile structure: number of records.
+ * tag=1 if direct access
+ */
 unsigned int datafile_recordnum(char *p)
 {
     char *pp, buf[MAX_FILELEN+1];
@@ -59,11 +60,11 @@ unsigned int datafile_recordnum(char *p)
 
     readfile(p,buf,sizeof(buf));
     if(buf[0]!=tag_string[1]) i=0; else i=1;
-    for(pp=strstr(buf,tag_string); pp!=NULL; i++, pp=strstr(pp+1,tag_string)); 
+    for(pp=strstr(buf,tag_string); pp!=NULL; i++, pp=strstr(pp+1,tag_string));
     return i;
 }
 
-	/* datafile structure: find record n, starting from 1 */
+/* datafile structure: find record n, starting from 1 */
 char *datafile_fnd_record(char *p, int n, char bf[])
 {
     char *pp, *p2, buf[MAX_FILELEN+1];

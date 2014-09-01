@@ -45,7 +45,7 @@ struct scorehigh hscore[MAX_CLASSEXOS];
 #define oldexo scoreheader.exo
 #define oldsession scoreheader.session
 
-     /* one line of score. */
+/* one line of score. */
 void scoreline(struct classdata *cd, char *l)
 {
     int i,sheet,exo,num;
@@ -128,7 +128,7 @@ unsigned int _cuttime(char ends[], char starts[], unsigned int startn)
     return startn+t;
 }
 
-     /* Gather exam score. */
+/* Gather exam score. */
 void examscorecalc(struct classdata *cd, char *uname)
 {
     struct scoredata *thiscore;
@@ -218,7 +218,7 @@ void examscorecalc(struct classdata *cd, char *uname)
     }
 }
 
-     /* calculate score from raw data, core routine. */
+/* calculate score from raw data, core routine. */
 void rawscorecalc(struct classdata *cd, char *uname)
 {
     int i;
@@ -359,8 +359,9 @@ void cmd_getscore(char *p)
      if(score>cd->exos[i].require) score=cd->exos[i].require;
      if(score>0 && stry>0) {
          snew=uscore[i].new; if(uscore[i].hint>0) snew++;
-        /* here we give up to 1 time unsuccessful tries.
-         * Together with a premium of 5 uncounted tries. */
+/* here we give up to 1 time unsuccessful tries.
+ * Together with a premium of 5 uncounted tries.
+ */
          if(snew<stry*2+5) tt=1;
          else tt=(double) (snew-4)/(2*stry); /* tt>=1 */
          ts=(1-pow(oldfactor,stry))/(1-oldfactor);

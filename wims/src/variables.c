@@ -74,7 +74,8 @@ FILE *fopen_session_var_file(char read_or_write[])
 }
 
 /* Open a module file, read only, with name checking.
- * returns NULL if error. */
+ * returns NULL if error.
+ */
 int read_module_file(char *fname)
 {
     char nbuf[MAX_FNAME+1];
@@ -200,7 +201,8 @@ void robot_doubt(void)
 }
 
 /* User has changed module within an operation.
- * Probably due to robot access. */
+ * Probably due to robot access.
+ */
 void bad_module(void)
 {
     char *p;
@@ -218,7 +220,8 @@ int session_exists(char *s)
 }
 
 /* Check the validity of session number .
- * returns 0 if OK, else -1. */
+ * returns 0 if OK, else -1.
+ */
 int check_session(void)
 {
     char tbuf[MAX_LINELEN+1], vbuf[MAX_LINELEN+1];
@@ -490,7 +493,8 @@ void set_module_prefix(void)
     p=getvar(ro_name[ro_module]);
     if(p==NULL || *p==0) user_error("no_module_name");
 /* security measure: we should not allow users to go back to
- * parent directories. */
+ * parent directories.
+ */
     if(strstr(p,parent_dir_string)!=NULL) user_error("wrong_module");
     if(strncmp(p,"classes/",strlen("classes/"))==0) isclassmodule=1;
     if(strncmp(p,"devel/",strlen("devel/"))==0) isdevelmodule=1;

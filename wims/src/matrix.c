@@ -15,8 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* Subroutines to process matrices */
-/* messages: inconsistent_columns */
+/* Subroutines to process matrices
+ * messages: inconsistent_columns
+ */
 
 /* Translate error-laden raw matrix input into a standard form. */
 void rawmatrix(char *p)

@@ -253,7 +253,7 @@ void access_log(char *c)
     if(sess==NULL) sess="----------";
     p=getvar(ro_name[ro_module]);
     if(p==NULL || *p==0) p="-";
-      /* limit module name to 40 chars */
+/* limit module name to 40 chars */
     i=strlen(p); if(i>40) p+=i-40;
     if(robot_access) {
      agent=getenv("HTTP_USER_AGENT"); if(agent==NULL) agent="-";
@@ -294,7 +294,7 @@ void mail_log(char *c)
     if(sess==NULL) sess="----------";
     p=getvar(ro_name[ro_module]);
     if(p==NULL || *p==0) p="-";
-      /* limit module name to 40 chars */
+/* limit module name to 40 chars */
     i=strlen(p); if(i>40) p+=i-40;
     s=strchr(sess,'_'); if(s==NULL) s=sess+strlen(sess);
     if(s<sess+4) s=sess; else s=s-4;
@@ -399,14 +399,14 @@ void bringuplogd(void)
     struct stat st;
     pid_t pid;
 
-    /* need to update wimslogd? */
+/* need to update wimslogd? */
     if(stat(newlogd,&st)==0) {
      if((S_IXUSR&st.st_mode)!=0 && st.st_size>40000 && st.st_size<200000)
        call_ssh("mv %s %s",newlogd,arg[0]);
      else call_ssh("rm -f %s",newlogd);
     }
     pid=fork(); if(pid) return;     /* parent */
-     /* double fork to escape sysmask orphan. */
+/* double fork to escape sysmask orphan. */
     pid=fork(); if(pid) {     /* secondary parent */
      snprintf(tmplbuf,sizeof(tmplbuf),"%u",pid);
      mkdirs("../tmp/log");

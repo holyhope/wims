@@ -39,7 +39,8 @@ char *relation_type[]={
 
 /* Compares two string. Returns 1 if yes, 0 if no, -1 if error.
  * In fact, -1 will occur only if module_error() is modified to
- * return instead of abort. */
+ * return instead of abort.
+ */
 /* TODO: quoted string. */
 int compare(char *p, int numeric, int lvl)
 {

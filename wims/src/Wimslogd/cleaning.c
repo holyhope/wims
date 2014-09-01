@@ -15,11 +15,12 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* This file contains a routine to do housekeeping:
-	 * it erases obsolete session directories.
-	 * Regular checkup every 10 minutes or so. */
+/* This file contains a routine to do housekeeping:
+ * it erases obsolete session directories.
+ * Regular checkup every 10 minutes or so.
+ */
 
-	/* internal */
+/* internal */
 void _cleaning(char *di,int hardcheck)
 {
     DIR *sdir_base;
@@ -43,7 +44,7 @@ void _cleaning(char *di,int hardcheck)
 		return;
 	    }
 	}
-	    /* remove idle session. */
+/* remove idle session. */
 	else {
 	    struct stat fst;
 	    char fbuf[4096],cbuf[MAX_LINELEN+1];
@@ -116,16 +117,16 @@ void _cleaning(char *di,int hardcheck)
     closedir(sdir_base);
 }
 
-	/* Clean obsolete session directories. */
+/* Clean obsolete session directories. */
 void cleaning(int withmain)
 {
     struct stat lastclean_stat;
     pid_t pid;
     char lastclean_name[MAX_FNAME+1];
     FILE *lastclean;
-    	/* Active only if idle_time>0 */
+/* Active only if idle_time>0 */
     if(idle_time<=0) return;
-    	/* when is last clean? */
+/* when is last clean? */
     if(lastcleantime>nowtime-300) return;
     mystrncpy(lastclean_name,"tmp/log/lastclean",sizeof(lastclean_name));
     if(stat(lastclean_name,&lastclean_stat)==0 &&
@@ -138,7 +139,7 @@ void cleaning(int withmain)
     _cleaning("s2",2);
     _cleaning("tmp/sessions",0);
     _cleaning("chroot/tmp/sessions",0);
-    	/* touch lastclean file */
+/* touch lastclean file */
     lastclean=fopen(lastclean_name,"w"); fclose(lastclean);
     lastcleantime=nowtime;
     snprintf(lastclean_name,sizeof(lastclean_name),"%s/trap.check",tmpd);

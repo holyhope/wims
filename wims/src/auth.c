@@ -22,7 +22,8 @@ void set_module_prefix(void);
 
 /* check machine load. 2-threshold system.
  * Threshold 1: anonymous new session refused.
- * Threshold 2: New session and anonymous request refused. */
+ * Threshold 2: New session and anonymous request refused.
+ */
 void check_load(int th)
 {
     int load, pload;

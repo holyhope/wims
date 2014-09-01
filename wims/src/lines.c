@@ -1103,8 +1103,9 @@ nothing:
     value[0]=0; return;
 }
 
-      /* Get variable definition from a file.
-       * Result stored in buffer value of length MAX_LINELEN. */
+/* Get variable definition from a file.
+ * Result stored in buffer value of length MAX_LINELEN.
+ */
 void getdef(char *fname, char *name, char value[])
 {
     char buf[MAX_LINELEN+1], tbuf[MAX_LINELEN+1], nbuf[MAX_NAMELEN+1];
@@ -1151,7 +1152,7 @@ void _setdef(char buf[], char *name, char *value)
     _setdef_changed++;
 }
 
-      /* Set variable definition to a file. */
+/* Set variable definition to a file. */
 void setdef(char *fname, char *name)
 {
     char buf[MAX_LINELEN+1];
@@ -1178,8 +1179,9 @@ void setdef(char *fname, char *name)
     if(_setdef_changed) accessfile(buf,"w","%s",fname);
 }
 
-      /* check whether connecting host is part of given list.
-       * Returns 0 if no, 1 if yes. */
+/* check whether connecting host is part of given list.
+ * Returns 0 if no, 1 if yes.
+ */
 int checkhost(char *hlist)
 {
     char buf[MAX_LINELEN+1];
@@ -1213,13 +1215,14 @@ int checkhost(char *hlist)
     return 0;
 }
 
-      /* return 1 if a word of bf2 is a substring of host.
-       * Like checkhost, but with time check.
-       * The content of bf2[] is destroyed. */
+/* return 1 if a word of bf2 is a substring of host.
+ * Like checkhost, but with time check.
+ * The content of bf2[] is destroyed.
+ */
 int checkhostt(char bf2[])
 {
     char *p1, *p2, *p3;
-      /* compare with starting time */
+/* compare with starting time */
     for(p1=strchr(bf2,'>'); p1!=NULL; p1=strchr(p1+1,'>')) {
       if(p1>bf2 && !isspace(*(p1-1))) continue;
       p3=find_word_start(++p1); p2=find_word_end(p3);
@@ -1228,7 +1231,7 @@ int checkhostt(char bf2[])
       if(strncmp(nowstr,p3,14)<0) return 0;
       ovlstrcpy(p1-1,p2); p1-=2;
     }
-      /* compare with ending time */
+/* compare with ending time */
     for(p1=strchr(bf2,'<'); p1!=NULL; p1=strchr(p1+1,'<')) {
       if(p1>bf2 && !isspace(*(p1-1))) continue;
       p3=find_word_start(++p1); p2=find_word_end(p3);
@@ -1241,7 +1244,7 @@ int checkhostt(char bf2[])
     return checkhost(p1);
 }
 
-      /* bad identification */
+/* bad identification */
 void bad_ident(void)
 {
     if(cookiegot[0]!=0) {
@@ -1266,7 +1269,7 @@ void instex_flush(void)
     instex_src[0]=instex_fname[0]=0; instex_cnt=0;
 }
 
-      /* put last.phtml */
+/* put last.phtml */
 void putlastout(void)
 {
     int t;
@@ -1277,7 +1280,7 @@ void putlastout(void)
 
 struct sockaddr_un sun;
 
-      /* returns >=0 if OK. */
+/* returns >=0 if OK. */
 
 int kerneld(char *p, int bufsize)
 {

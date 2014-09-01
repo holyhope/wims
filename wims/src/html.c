@@ -26,7 +26,8 @@ enum {
 /* Produces <select> and <option>s.
  * Parameter string: name from n1 to n2 [prompt plist]
  * or name, list slist [prompt plist]
- * Using script to do this is too slow. */
+ * Using script to do this is too slow.
+ */
 void _form_menus(char *p,int kind)
 {
     char *n, *li, *pp, *val, *p0, *p1, *p2, *pc, *s, *pfre="";

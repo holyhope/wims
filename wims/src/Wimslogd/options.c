@@ -22,7 +22,7 @@ char opt_module[MAX_FNAME+1];
 char opt_session[MAX_CLASSLEN+1];
 char opt_user[MAX_FNAME+1];
 
-	/* returns -1 if error */
+/* returns -1 if error */
 int options(void)
 {
     int i;

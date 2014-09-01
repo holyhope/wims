@@ -14,7 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-	/* Routines to write log files. */
+/* Routines to write log files. */
 
 char llbuf[4*MAX_LINELEN+4], *llptr;
 char *linetab[MAX_LOGLINES];
@@ -114,7 +114,7 @@ rm -f %s*.bb",
 	llptr+=strlen(llptr);
     }
     if(namebuf[0]) onelogfile(namebuf);
-    free(logbuf); 
+    free(logbuf);
     exit(0);
 }
 

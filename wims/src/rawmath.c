@@ -67,7 +67,8 @@ char *rm_uservar[MAX_LINELEN+1],*rm_userfn[MAX_LINELEN+1];
 int  rm_uservars,rm_userfns;
 
 /* add user-defined variables and function names,
- * internal, only called by rawmath(). */
+ * internal, only called by rawmath().
+ */
 void getuservar(void)
 {
     char *p1, *p2, *p;
@@ -182,10 +183,10 @@ void __replace_plusminus ( char *p )
 }
 
 /* dangling decimal points
-4. --> 4.0  4.x -> 4.0x
-.5 -> 0.5
-another treatment is done in insmath (will replace .. by , )
-*/
+ * 4. --> 4.0  4.x -> 4.0x
+ * .5 -> 0.5
+ * another treatment is done in insmath (will replace .. by , )
+ */
 void __treat_decimal(char *p)
 { char *p1 ;
   for(p1=strchr(p,'.'); p1!=NULL; p1=strchr(p1+1,'.')) {
@@ -215,17 +216,17 @@ void __replace_space(char *p)
   }
 }
 
-    /* Error-tolerante raw math translation routine
-     * Translate error-laden raw math into machine-understandable form.
-     * do nothing if there is some { or \\
-     */
+/* Error-tolerante raw math translation routine
+ * Translate error-laden raw math into machine-understandable form.
+ * do nothing if there is some { or \\
+ */
 void rawmath(char *p)
 {
     char *p1, *p2, *p3, *p4;
     char warnbuf[1024];
     int ambiguous=0,unknown=0,flatpower=0,badprec=0,unmatch=0;// for warning
 
-    /* looks like a TeX source : do nothing */
+/* looks like a TeX source : do nothing */
     if( (strchr(p,'\\')!=NULL || strchr(p,'{')!=NULL)) return;
     if(strchr(p,'^')==NULL) flatpower=-1;
     if(strlen(p)>=MAX_LINELEN) {*p=0; return;}
@@ -241,7 +242,7 @@ void rawmath(char *p)
     __treat_decimal(p);
     if (rawmath_easy) return;
 
-        /* Principal translation: justapositions to multiplications */
+/* Principal translation: justapositions to multiplications */
     if(strstr(p,"^1/")!=NULL) badprec=1;
     getuservar();
     for(p1=p;*p1;p1++) {
@@ -269,7 +270,7 @@ void rawmath(char *p)
         if(i>=0 && get_evaltype(i)>0) {
           fnname1:
           p1=p2;p2=p3;
-        /*fnname:*/
+/*fnname:*/
           if(*p2 && *p2!='(' && *p2!='*' && *p2!='/') {
             char hatbuf[MAX_LINELEN+1];
             hatbuf[0]=')'; hatbuf[1]=0;
@@ -349,7 +350,7 @@ void rawmath(char *p)
           string_modify(p,p1,p2,"%s",buf);
           p1--; continue;
         }
-         /* unknown name */
+/* unknown name */
         ambig: p1=p2;p2=p3;
         if(strlen(buf)>1) {
           for(p3=buf;*p3!=0 && !myisdigit(*p3);p3++);
@@ -386,7 +387,9 @@ void rawmath(char *p)
     }
 }
 
- /*  replace < and > by html code if htmlmath_gtlt=yes - is only used in deduc - not documented*/
+ /* replace < and > by html code if htmlmath_gtlt=yes
+  * is only used in deduc - not documented
+  */
 void __replace_htmlmath_gtlt (char *p)
 {   char *pp;
     char *p1=getvar("htmlmath_gtlt");
@@ -402,7 +405,8 @@ void __replace_htmlmath_gtlt (char *p)
  *  all digits or + or - following a ^ or _ are considered as in exponent/subscript
  *  expression with ( ) following a ^ or _ are  considered as in exponent/subscript
  *  the parenthesis are suppressed except in case of exponent and only digits.
- *  if int n != 0, use html code, else use tex code */
+ *  if int n != 0, use html code, else use tex code
+ */
 void __replace_exponent(char *p, int n)
 {
    char *p1;
@@ -435,9 +439,10 @@ void __replace_exponent(char *p, int n)
                 }
                 /* x^(2), parentheses not removed */
             }
-            /* p3: start of word after ^ */
-            /* matching parentheses from exponent group. : f^(4) 4-derivative */
-            /* don't  ignore / remove a leading + sign in exponent group : Cu^+ */
+/* p3: start of word after ^
+ * matching parentheses from exponent group. : f^(4) 4-derivative
+ * don't  ignore / remove a leading + sign in exponent group : Cu^+
+ */
         } else { /* ^[+-] */
             char *ptt=p2;
             p2=find_word_start(find_mathvar_end(p2));
@@ -447,16 +452,18 @@ void __replace_exponent(char *p, int n)
                 p2t=find_matching(p2+1,')'); if(p2t!=NULL) p2=p2t+1;
                 /* FIXME: what if no matching ) ? */
             }
-            /* ^[+-]var(...): p2 points after closing ')' */
-            /* FIXME: I don't think this 'else' branch is sensible. One
-             * should NOT accept x^b(c+1) as meaning x^[b(c+1)]. I would
-             * remove it altogether. */
+/* ^[+-]var(...): p2 points after closing ')'
+ * FIXME: I don't think this 'else' branch is sensible. One
+ * should NOT accept x^b(c+1) as meaning x^[b(c+1)]. I would
+ * remove it altogether.
+ */
         }
-        /* p1 points at ^ before exponent group */
-        /* p2 points at end of exponent group */
-        /* p3 = exponent group (sometimes stripped, without parentheses) */
-
-        /* truncate string p at p2 [ c = char deleted by truncation ] */
+/* p1 points at ^ before exponent group
+ * p2 points at end of exponent group
+ * p3 = exponent group (sometimes stripped, without parentheses)
+ *
+ * truncate string p at p2 [ c = char deleted by truncation ]
+ */
         c = *p2;if(c!=0) *p2++=0;
         /* replace ^<exponent group>. Add back missing character 'c' */
         string_modify(p,p1,p2, "%s%s%s%c",SUPBEG,p3,SUPEND,c);
@@ -529,7 +536,8 @@ void __replace_getridstar (char *p)
 }
 
 /* <=, >=, ->, =>, <=>
- * if int n != 0, use html code, else use tex code */
+ * if int n != 0, use html code, else use tex code
+ */
 
 void __replace_arrow ( char *p, int n)
 {   char *p1, *p2, *m_prefix;
@@ -571,7 +579,7 @@ void __replace_arrow ( char *p, int n)
 
 /* why <tt> is used sometimes ? replace single characters by italics one
  * is it useful in mathml ?
-*/
+ */
 void __replace_italics (char *p, int n)
 { char *p1, *p2, *p3, pbuf[16];
   char *ITBEG, *ITEND, *ITtBEG, *ITtEND;
@@ -614,7 +622,8 @@ void __replace_italics (char *p, int n)
 
 /* float (1.2 E-03) : 3E+021 -> 3 × 10^{21} - 3E-21 -> 3 × 10^{-21}
  * or replace variable name (alpha)
- * if int n != 0, use html code, else use tex code */
+ * if int n != 0, use html code, else use tex code
+ */
 void __replace_mathvar(char *p,int n)
 { char *p1, *p2, *p3;
   char *EXPBEG, *EXPEND, *EXPBEGMINUS, *SUBBEG, *SUBEND, *m_prefix;
@@ -636,15 +645,16 @@ void __replace_mathvar(char *p,int n)
   }
   for (p1=find_mathvar_start(p);*p1!=0;p1=find_mathvar_start(p2)) {
     char buf[MAX_LINELEN+1];
-    /* if the variable is preceded by \ do nothing - in fact this should not arrive
-    */
+/* if the variable is preceded by \ do nothing
+ * in fact this should not arrive
+ */
     if (p1>p && *(p1-1) == '\\' ) break ;
     p2 = find_mathvar_end(p1);
         if (p1 == p2) break;
     memmove(buf,p1,p2-p1);buf[p2-p1]=0;
 
     if(myisdigit(buf[0])) {
-            /* number : 3E+021 -> 3 x 10^{21} - 3E-21 -> 3 x 10^{-21} */
+/* number : 3E+021 -> 3 x 10^{21} - 3E-21 -> 3 x 10^{-21} */
         int k = 1, minus = 0;
 
 /* see putnumber in texmath.c*/
@@ -659,8 +669,9 @@ void __replace_mathvar(char *p,int n)
         string_modify(p,p2,p2, EXPEND);
         p2 += strlen(EXPEND);
     } else {
-            /* alphabetic name, replace greek letters and symbols in hmname*/
-            /* not done in texmath.c*/
+/* alphabetic name, replace greek letters and symbols in hmname
+ * not done in texmath.c
+ */
         int i = search_list(hmname,hmname_no,sizeof(hmname[0]),buf);
         char *n, *r;
         if(i<0) { /* not in list */
@@ -687,7 +698,8 @@ void __replace_mathvar(char *p,int n)
 }
 
 /* translate raw math expression coming from calculators into best html way
- * if int n != 0, use html code, else use tex code */
+ * if int n != 0, use html code, else use tex code
+ */
 void __htmlmath(char *p,int n)
 {
     if(!rawmath_easy) { rawmath_easy=1; rawmath(p); rawmath_easy=0;}

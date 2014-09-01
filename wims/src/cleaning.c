@@ -16,7 +16,8 @@
  */
 
 /* Only miscellaneous cleanup routines remain.
- * The regular session cleaner has been moved to wimslogd. */
+ * The regular session cleaner has been moved to wimslogd.
+ */
 
 void cleantmpdir(void)
 {

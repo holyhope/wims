@@ -1170,7 +1170,7 @@ void _exec_ins(char *p, char *script_name,char *format)
     animated_ins=0;
 }
 
-    /* instex: dynamically insert tex outputs */
+/* instex: dynamically insert tex outputs */
 void exec_instex(char *p)
 {
     char *ts, *tc, *f, *mh, buf[MAX_FNAME+1];
@@ -1180,8 +1180,9 @@ void exec_instex(char *p)
     }
     f=instex_check_static(p); substit(p);
     if(f==NULL) {
-    /* Use static instex if there is no real substitution
-     * and the source file is not in sessions directory. */
+/* Use static instex if there is no real substitution
+ * and the source file is not in sessions directory.
+ */
       calc_instexst(p); if(outputing) _output_(p);
       return;
     }
@@ -1232,7 +1233,7 @@ void gnuplot_patch(char *p,int oneline)
     }
     for(pp=strchr(p,'^');pp!=NULL;pp=strchr(pp+1,'^'))
       string_modify(p,pp,pp+1,"**");
-        /* disallow new lines and ';' */
+/* disallow new lines and ';' */
     if(oneline)
       for(pp=p;*pp!=0;pp++) if(*pp==';' || *pp=='\n') *pp=' ';
 }
@@ -1247,17 +1248,17 @@ void prepare_insplot_parm(char *p)
     char setbuf[MAX_LINELEN+10],buf[MAX_LINELEN+1];
 
     j=strlen(p);
-      /* pipe in plot command */
+/* pipe in plot command */
     for(i=0;i<j;i++) {
       if(*(p+i)!='\'' && *(p+i)!='"') continue;
       pp=find_word_start(p+i+1); if(*pp=='<') module_error("illegal_plot_cmd");
     }
     gnuplot_patch(p,1);
-    /* multiplot */
+/* multiplot */
     multanim=0;
     pp=getvar("insplot_split");
     if(pp!=NULL) i=linenum(pp); else i=0;
-    /* arbitrary limit: 16 multiplots */
+/* arbitrary limit: 16 multiplots */
     if(i>16) i=16;
     if(i>1) {
       char tbuf[MAX_LINELEN*(i+1)+100], bbuf[MAX_LINELEN+1];
@@ -1280,7 +1281,7 @@ void prepare_insplot_parm(char *p)
     setenv("insplot_source",tbuf,1);
     if(varchr(tbuf,"s")!=NULL) multanim=1;
     }
-    /* no illegal chaining */
+/* no illegal chaining */
     pp=getvar("insplot_font"); if(pp!=NULL) {
       for(s=pp;s<pp+MAX_LINELEN && *s;s++)
       if(*s==';' || *s=='\n' || *s==' ') *s=0;
@@ -1304,7 +1305,7 @@ void prepare_insplot_parm(char *p)
       setenv("insplot_set",setbuf,1);
     }
     else setenv("insplot_set","",1);
-      /* frames of animation */
+/* frames of animation */
     pp=getvar("ins_anim_frames");
     if(pp!=NULL) i=evalue(pp); else i=1;
     if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1; if(i<1) i=1;
@@ -1314,7 +1315,7 @@ void prepare_insplot_parm(char *p)
     setvar("ins_anim_frames","");
     if(i>1) {setvar("ins_animation","yes");animated_ins=1;}
     else setvar("ins_animation","no");
-      /* delay of animation */
+/* delay of animation */
     pp=getvar("ins_anim_delay");
     if(pp!=NULL) d=evalue(pp); else d=0;
     if(d>=10) d=10; if(d<0) d=0;
@@ -1351,7 +1352,7 @@ void exec_insplot3d(char *p)
     unsetenv("multiplot");setvar("insplot_split","");
 }
 
-    /* Insert dynamic gif draw. The parm preparation is specific to fly. */
+/* Insert dynamic gif draw. The parm preparation is specific to fly. */
 void exec_insdraw(char *p)
 {
     char *pp, *fmt;
@@ -1364,7 +1365,7 @@ void exec_insdraw(char *p)
 /*    calc_tolower(p);*/
     fmt=getvar("ins_format"); if(fmt==NULL || *fmt==0) fmt=DEFAULT_INS_FORMAT;
     while((pp=wordchr(p,"output"))!=NULL) memmove(pp,"zqkwfx",6);
-      /* frames of animation */
+/* frames of animation */
     pp=getvar("ins_anim_frames");
     if(pp!=NULL) i=evalue(pp); else i=1;
     if(i>=ANIM_LIMIT) i=ANIM_LIMIT-1; if(i<1) i=1;
@@ -1374,7 +1375,7 @@ void exec_insdraw(char *p)
     setvar("ins_anim_frames","");
     if(i>1) {setvar("ins_animation","yes");animated_ins=1;}
     else setvar("ins_animation","no");
-      /* delay of animation */
+/* delay of animation */
     pp=getvar("ins_anim_delay");
     if(pp!=NULL) d=evalue(pp); else d=0;
     if(d>=10) d=10; if(d<0) d=0;
@@ -1484,7 +1485,7 @@ void exec_bound(char *p)
     }
 }
 
-    /* detrust the module. */
+/* detrust the module. */
 void exec_detrust(char *p)
 {    untrust|=1; *p=0; }
 
@@ -1510,7 +1511,7 @@ void exec_warn(char *p)
     *p=0; return;
 }
 
-    /* write an error message. */
+/* write an error message. */
 void exec_msg(char *p)
 {
     char *p1,*p2, buf[64], *l;
@@ -1553,7 +1554,7 @@ struct {
 
 #define distr_cmd_no (sizeof(distr_cmd)/sizeof(distr_cmd[0]))
 
-    /* distribute a number of lines, items, etc. into a list of vars. */
+/* distribute a number of lines, items, etc. into a list of vars. */
 void exec_distribute(char *p)
 {
     int i,k,n;
@@ -1588,7 +1589,7 @@ void exec_distribute(char *p)
     }
 }
 
-    /* reset variables */
+/* reset variables */
 void exec_reset(char *p)
 {
     char *p1, *p2;
@@ -1600,7 +1601,7 @@ void exec_reset(char *p)
     }
 }
 
-    /* exchange the values of two variables */
+/* exchange the values of two variables */
 void exec_exchange(char *p)
 {
     char buf[MAX_LINELEN+1],b1[MAX_LINELEN+1],b2[MAX_LINELEN+1];
@@ -1624,7 +1625,7 @@ void exec_exchange(char *p)
     setvar(b1,pb); setvar(b2,buf);
 }
 
-    /* Send a mail */
+/* Send a mail */
 void exec_mailto(char *p)
 {
     char *p1,*p2,*pp;
@@ -1644,13 +1645,13 @@ void exec_mailto(char *p)
     *p=0;
 }
 
-    /* Generates a user error. Internal and undocumented. */
+/* Generates a user error. Internal and undocumented. */
 void exec_usererror(char *p)
 {
     if(trusted_module()) user_error(p);
 }
 
-    /* stop output. */
+/* stop output. */
 void exec_directout(char *p)
 {
     if(outputing || !trusted_module()) return;
@@ -1909,7 +1910,7 @@ MYFUNCTION exec_routine[]={
 };
 #define EXEC_FN_NO (sizeof(exec_routine)/sizeof(exec_routine[0]))
 
-    /* internal: to skip the content of a false if/while. */
+/* internal: to skip the content of a false if/while. */
 static void _skip_contents(int isif)
 {
     char buf[MAX_NAMELEN+8], *p1;
@@ -1958,7 +1959,7 @@ static void _skip_contents(int isif)
     }
 }
 
-    /* Execute a command defined by !. Returns 0 if OK. */
+/* Execute a command defined by !. Returns 0 if OK. */
 void exec_main(char *p)
 {
     int i,j;
@@ -1977,7 +1978,7 @@ void exec_main(char *p)
     if(i<0) {
       setvar(error_data_string,p); module_error("bad_cmd");
     }
-    /* called from !readdef, no right other than set; bail out */
+/* called from !readdef, no right other than set; bail out */
     execnt++;
     if((untrust&4)!=0 && (j=(exec_routine[i].tag&0xffff))!=EXEC_SET) {
       tbuf2[0]=0; exec_exit(tbuf2);

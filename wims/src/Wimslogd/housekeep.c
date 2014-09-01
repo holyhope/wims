@@ -15,12 +15,12 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Daily housekeeping jobs. */
+/* Daily housekeeping jobs. */
 void housekeep(void)
 {
     char fname[1024];
     FILE *keeplog;
-    
+
     if(strncmp(keepdate,nowstr,8)==0) return;
     snprintf(fname,sizeof(fname),"%s/keepdate",tmpd);
     keeplog=fopen(fname,"r");
@@ -35,12 +35,12 @@ void housekeep(void)
     call_ssh(0,"bin/housekeep.daily &>%s/housekeep.log",tmpd);
 }
 
-	/* module update */
+/* module update */
 void modupdate(void)
 {
     char fname[1024];
     FILE *muplog;
-    
+
     if(strncmp(mupdate,nowstr,8)==0) return;
     snprintf(fname,sizeof(fname),"%s/mupdate",tmpd);
     muplog=fopen(fname,"r");
@@ -55,11 +55,11 @@ void modupdate(void)
     call_ssh(0,"bin/modupdate.auto &>%s/modupdate.log",tmpd);
 }
 
-	/* Daily backup. */
+/* Daily backup. */
 void backup(void)
 {
     FILE *backlog;
-    
+
     if(strncmp(backdate,nowstr,8)==0) return;
     backlog=fopen("backup/backdate","r");
     if(backlog==NULL) goto dobackup;

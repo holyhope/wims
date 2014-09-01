@@ -16,7 +16,8 @@
  */
 
 /* This is part of wims source.
- * This file does computations and output. */
+ * This file does computations and output.
+ */
 
 int _sort_numeric, _sort_nocase;
 typedef struct SORT_STRUCT {char *str; double val; int serial;} SORT_STRUCT;
@@ -180,9 +181,10 @@ void _get_exec_error(char *errorfname, char *cmdname)
     }
 }
 
-/* execute an external program */
-/* The output of the external program should be put into
- * a file session_directory/session/cmd.tmp. */
+/* execute an external program
+ * The output of the external program should be put into
+ * a file session_directory/session/cmd.tmp.
+ */
 void calc_exec(char *p)
 {
     int i,j,k;
@@ -206,7 +208,8 @@ void calc_exec(char *p)
 /* Specifying parent directory in command name is of course
  * prohibited.
  * The module developper cannot start from root, for bin_dir
- * will be prefixed to cmd. */
+ * will be prefixed to cmd.
+ */
     if(strstr(namebuf,parent_dir_string)!=NULL) {
      setvar(error_data_string,namebuf); module_error("illegal_cmd");
      *p=0; return;
@@ -284,7 +287,8 @@ void calc_exec(char *p)
 }
 
 /* execute external program in the module directory.
- * For privileged modules only */
+ * For privileged modules only
+ */
 void calc_mexec(char *p)
 {
     char *public_bin;
@@ -293,7 +297,8 @@ void calc_mexec(char *p)
      module_error("not_trusted"); *p=0; return;
     }
 /* The following is useless, because mexec content is often given
- * by variables */
+ * by variables
+ */
 /*    if(strstr(p,PARENT_DIR_STRING)!=NULL) {
      setvar("wims_error_data",p);
      module_error("illegal_fname"); *p=0; return;
@@ -385,7 +390,8 @@ void calc_evalsubst(char *p)
 }
 
 /* Nothing needs to be done in the function;
- * substitution is done or not by tag in the structure. */
+ * substitution is done or not by tag in the structure.
+ */
 void calc_subst(char *p)
 {
 }
@@ -529,7 +535,7 @@ void calc_randperm(char *p)
     }
     if(n>MAX_RANDPERM) n=MAX_RANDPERM;
     for(i=0;i<n;i++) table[i]=i;
-     /* Uniformity of this algorithm is easy to show by induction. */
+/* Uniformity of this algorithm is easy to show by induction. */
     for(i=0;i<n-1;i++) {
      j=irand(n-i)+i; if(j==i) continue;
      k=table[i]; table[i]=table[j]; table[j]=k;
@@ -1399,8 +1405,7 @@ void calc_detag(char *p)
     }
 }
 
-/* prepare a string to be inserted into a form input
- * or textarea as is */
+/* prepare a string to be inserted into a form input or textarea as is */
 void calc_reinput(char *p)
 {
     char *p1;

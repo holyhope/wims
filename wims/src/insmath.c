@@ -183,7 +183,7 @@ char *andor[]={"and","or","not","is","isnot"};
 char *andorlang[andorcnt], andorlangbuf[1024];
 int andorlangcnt=-1;
 
-    /* Processing logic statements in math formulas */
+/* Processing logic statements in math formulas */
 void _mathlogic(char *p, void _put(char *pp))
 {
     char *p1, *p2, *ps;
@@ -233,7 +233,7 @@ void _mathlogic(char *p, void _put(char *pp))
     ps=find_word_start(ps); if(*ps) _put(ps);
 }
 
-    /* Intelligent insertion of math formulas */
+/* Intelligent insertion of math formulas */
 void insmath(char *p)
 {
     char *pt;

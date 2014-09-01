@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-     /* Routines treating user scores. */
+/* Routines treating user scores. */
 
 double oldfactor=0.85;     /* quality factor, should remain stable. */
 
@@ -96,7 +96,8 @@ char score_user[256];
 
 /* Uniformed treatment of score command parameters
  * format: class=? user=? sheet=? work=?
- * all are optional. */
+ * all are optional.
+ */
 void _scoreparm(char *p)
 {
     int i;
@@ -153,7 +154,7 @@ void _scoreparm(char *p)
 
 /* gather score: relatif to some of the
  *  user class work sheet exam
- *    dtype can be require weight score mean remain best last level try
+ *  dtype can be require weight score mean remain best last level try
  */
 
 void _getscore(char *p,int dtype)
@@ -165,8 +166,7 @@ void _getscore(char *p,int dtype)
     _scoreparm(p);
     if(*score_class==0 || *score_user==0) return;
     if(getscoreuser(score_class,score_user)<0) return;
-/*  2^8 no_sheet + no_exo_in_the_sheet so limit no_exo to 2^8
-*/
+/*  2^8 no_sheet + no_exo_in_the_sheet so limit no_exo to 2^8 */
     for(i=osh=0,p1=p;i<scorecnt && p1-p<MAX_LINELEN-32;i++) {
      sh=(rscore[i].num>>8)+1; if(sh<1 || sh>MAX_SHEETS) break;
      if(score_sheet!=0) {
@@ -274,7 +274,8 @@ void calc_getscorelevel(char *p)
     tot=mean=totb=totl=totw=0; jend=sheetstart[i]+shexocnt[i];
     for(j=sheetstart[i];j<jend;j++) {
 /* if mean<1 then ignore score.
- * if mean<2 then half score. */
+ * if mean<2 then half score.
+ */
       if(rscore[j].mean>=1) {
         double dt=rscore[j].score;
         float db=rscore[j].best;
@@ -325,7 +326,8 @@ int getsheetstatus(char *classe, int sheet)
 }
 
 /* return 1 if a word of bf2 is a substring of host.
- * Content of bf2 is destroyed. */
+ * Content of bf2 is destroyed.
+ */
 int _subword(char bf2[])
 {
   char *p1, *p2;
@@ -369,7 +371,7 @@ int _getscorestatus(char *classe, int sheet)
     accessfile(nbuf,"r","%s/%s/.E%d",class_base,classe,sheet);
     if(nbuf[0]=='#') return 1;
   }
-  /* Global restriction data */
+/* Global restriction data */
   accessfile(nbuf,"r","%s/%s/.security",class_base,classe);
   if(nbuf[0]) {
     _getdef(nbuf,"allow",gbuf);
@@ -380,7 +382,7 @@ int _getscorestatus(char *classe, int sheet)
       return 0;
   }
 
-  /* Sheet restriction data */
+/* Sheet restriction data */
   if(isexam || score_isexam) es="E"; else es="";
   accessfile(nbuf,"r","%s/%s/.%s%d",class_base,classe,es,sheet);
   if(*find_word_start(nbuf)==0) return 1;
@@ -433,7 +435,7 @@ void exam_currscore(int esh)
   int i;
 
   for(i=0;i<MAX_EXOS;i++) exam_scoredata[i]=-1000;
-  /* session_prefix is not yet defined here */
+/* session_prefix is not yet defined here */
   s=getvar("wims_session"); if(s==NULL || *s==0) return;
   mystrncpy(pb,s,sizeof(pb));
   p=strchr(pb,'_'); if(p!=NULL) *p=0;
@@ -479,7 +481,8 @@ void calc_examscore(char *p)
 }
 
 /* check score dependency.
- * returns 1 if requirements are met. */
+ * returns 1 if requirements are met.
+ */
 int _depcheck(char *ds, struct scoreresult *rs, int ecnt)
 {
   char *p1, *p2, *p3, *p4, *pp;

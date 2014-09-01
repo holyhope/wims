@@ -371,7 +371,8 @@ char *getvar(char *vname)
 }
 
 /* Search variables with numeric subscripts, from beg to end.
- * Store result to pbuf. Returns number of variables found. */
+ * Store result to pbuf. Returns number of variables found.
+ */
 int varsuite(char *stem, int beg, int end, char *pbuf[], int pbuflen)
 {
     int i,t,l,v;
