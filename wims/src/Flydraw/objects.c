@@ -19,15 +19,21 @@
 /* bug in gdImageFillToBorder */
 void gdImageFillToBorder1 (gdImagePtr im, int x, int y, int border, int color)
 {
-   if(x>=image->sx) x=image->sx-1; if(x<0) x=0;
-   if(y>=image->sy) y=image->sy-1; if(y<0) y=0;
+   if(x>=im->sx) x=im->sx-1; if(x<0) x=0;
+   if(y>=im->sy) y=im->sy-1; if(y<0) y=0;
    gdImageFillToBorder(im,x,y,border,color);
 }
 
 void gdImageFillToBorder2 (gdImagePtr im, int x, int y, int border, int color)
 {
-   if(x>=image->sx || x<0 || y>=image->sy || y<0) return;
+   if(x>=im->sx || x<0 || y>=im->sy || y<0) return;
    gdImageFillToBorder(im,x,y,border,color);
+}
+
+void gdImageFill2 (gdImagePtr im, int x, int y, int color)
+{
+   if(x>=im->sx || x<0 || y>=im->sy || y<0) return;
+   gdImageFill(im,x,y,color);
 }
 
 
@@ -403,7 +409,7 @@ void obj_circle(objparm *pm)
 void obj_fill(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
-    gdImageFill(image,pm->p[0],pm->p[1],pm->color[0]);
+    gdImageFill2(image,pm->p[0],pm->p[1],pm->color[0]);
 }
 
 /* flood fill to border*/
@@ -470,7 +476,7 @@ void obj_hatchfill(objparm *pm)
       case 3: gdImageLine(himg,ax/2,0,ax/2,ay-1,c); break;
     }
     gdImageSetTile(image,himg);
-    gdImageFill(image,pm->p[0],pm->p[1],gdTiled);
+    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -485,7 +491,7 @@ void obj_gridfill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,ny/2,nx-1,ny/2,c); gdImageLine(himg,nx/2,0,nx/2,ny-1,c);
     gdImageSetTile(image,himg);
-    gdImageFill(image,pm->p[0],pm->p[1],gdTiled);
+    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -500,7 +506,7 @@ void obj_diafill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,0,nx-1,ny-1,c); gdImageLine(himg,0,ny-1,nx-1,0,c);
     gdImageSetTile(image,himg);
-    gdImageFill(image,pm->p[0],pm->p[1],gdTiled);
+    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -515,7 +521,7 @@ void obj_dotfill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageSetPixel(himg,nx/2,ny/2,c);
     gdImageSetTile(image,himg);
-    gdImageFill(image,pm->p[0],pm->p[1],gdTiled);
+    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
