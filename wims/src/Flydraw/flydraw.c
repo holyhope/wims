@@ -26,15 +26,15 @@ char imagefilename[1024];
 char vimgfilename[1024];
 int sizex, sizey, saved;
 gdImagePtr image=NULL, brushimg=NULL, tileimg=NULL, wimg=NULL;
-int brushed=0,tiled=0,styled=0,width=1, savew=1, wcolor=-1;
-int color_white,color_black,color_bounder;
+int brushed=0, tiled=0, styled=0, width=1, savew=1, wcolor=-1;
+int color_white, color_black, color_bounder, color_frame;
 int linecnt=-100000;
 int tranged=0;
-double xscale=1,yscale=1,xstart=0,ystart=0;
-double tstart=0,tend=1,tstep=100,plotjump=200;
+double xscale=1, yscale=1, xstart=0, ystart=0;
+double tstart=0, tend=1, tstep=100, plotjump=200;
 double animstep=0;
 int transform=0;  /* transformation indicator */
-double transx=0,transy=0; /* translation vector */
+double transx=0, transy=0; /* translation vector */
 int lstep=4;
 ev_variable vartab[MAX_VARS];
 char varnamebuf[MAX_VARNAMEBUF], *varnameptr=varnamebuf;
@@ -70,9 +70,9 @@ void output(void)
     if(!image) return;
     if(imagefilename[0]) {
       out=fopen(imagefilename,"wb");
-      if(out!=NULL) {gdImageGif(image,out); fclose(out); }
+      if(out!=NULL) {gdImageGif(image, out); fclose(out); }
     }
-    else gdImageGif(image,stdout);
+    else gdImageGif(image, stdout);
     saved=1;
 }
 

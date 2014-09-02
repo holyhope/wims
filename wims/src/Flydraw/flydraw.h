@@ -44,8 +44,8 @@
 extern int linecnt, varcnt;
 extern ev_variable vartab[];
 extern char varnamebuf[MAX_VARNAMEBUF], *varnameptr;
-extern gdImagePtr image, wimg,tileimg,brushimg;
-extern int brushed,tiled,styled,savew, wcolor, transform;
+extern gdImagePtr image, wimg, tileimg, brushimg;
+extern int brushed, tiled, styled, savew, wcolor, transform;
 typedef double matrice[4];
 #define JC_NB_MATRICES 19
 extern matrice matrices_pavage[JC_NB_MATRICES+1];
@@ -54,14 +54,14 @@ typedef double vecteur[2];
 extern vecteur vecteurs_pavage[JC_NB_MATRICES+1];
 #define vector vecteurs_pavage[0];
 extern double scale_buf[MAX_PARMS];
-extern double transx,transy; /* translation vector */
-extern double xscale,yscale,xstart,ystart;
+extern double transx, transy; /* translation vector */
+extern double xscale, yscale, xstart, ystart;
 extern int sizex, sizey, saved;
-extern int color_white,color_black,color_bounder,lstep;
+extern int color_white, color_black, color_bounder, color_frame, lstep;
 extern int width;
-extern double tend, tstart, tstep, plotjump,animstep;
+extern double tend, tstart, tstep, plotjump, animstep;
 int tranged;
-extern int vimg_enable,vimg_ready;
+extern int vimg_enable, vimg_ready;
 extern FILE *vimgf;
 extern char vimgfilename[1024], imagefilename[1024];
 double parallogram_fonda[6];
@@ -70,9 +70,9 @@ void output(void);
 /* from wimg.c */
 void vimg_init (void);
 void vimg_close (void);
-void vimg_arc (double x0,double y0, double rx, double ry,double a1, double a2);
+void vimg_arc (double x0, double y0, double rx, double ry, double a1, double a2);
 void vimg_ellipse (double x0, double y0, double rx, double ry);
-void vimg_line (double x1,double y1,double x2,double y2);
+void vimg_line (double x1, double y1, double x2, double y2);
 void vimg_polyline (double xy[], int cnt, int closed);
 void vimg_rect (double x1, double y1, double x2, double y2);
 void vimg_plotstart (void);
@@ -95,14 +95,14 @@ int ggetline(char buf[]);
 
 /* from nametab.c */
 enum {t_prep,t_color,t_obj};
-typedef struct objparm{ int p[MAX_PARMS]; double pd[MAX_PARMS]; int pcnt,color[2],fill;
-char str[MAX_LINELEN+1],font[16]; } objparm;
+typedef struct objparm{ int p[MAX_PARMS]; double pd[MAX_PARMS]; int pcnt, color[2], fill;
+char str[MAX_LINELEN+1], font[16]; } objparm;
 enum {p_and,p_from,p_to,p_thru,p_center,p_color,p_font,
   p_diameter,p_radius,p_width,p_height };
 
 extern struct preptab { char *name;int typ; } preptab[];
 extern struct objtab {
- char *name;int required_parms,color_pos,fill_tag,subst;
+ char *name;int required_parms, color_pos, fill_tag, subst;
  void (*routine) (objparm *pm); } objtab[];
 
 extern struct colortab {char *name;char *def;} colortab[];

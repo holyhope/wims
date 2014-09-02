@@ -111,6 +111,7 @@ void obj_size(objparm *pm)
       color_white=gdImageColorAllocate(image,255,255,255);
       color_black=gdImageColorAllocate(image,0,0,0);
       color_bounder=gdImageColorAllocate(image,1,2,3);
+      color_frame=gdImageColorAllocate(image,254,254,254);
     }
 }
 
@@ -120,7 +121,7 @@ void obj_new(objparm *pm)
     if(image) {
       gdImageDestroy(image);image=NULL;
     }
-    if(pm->pcnt>=2) obj_size(pm);
+    if(pm->pcnt>=2) { obj_size(pm); gdImageRectangle(image,0,0,sizex-1,sizey-1,color_frame);}
     else sizex=sizey=0;
     saved=0;
 }
