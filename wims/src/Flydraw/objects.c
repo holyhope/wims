@@ -17,20 +17,14 @@
 #include "flydraw.h"
 #include <errno.h>
 /* bug in gdImageFillToBorder */
-void gdImageFillToBorder1 (gdImagePtr im, int x, int y, int border, int color)
-{
-   if(x>=im->sx) x=im->sx-1; if(x<0) x=0;
-   if(y>=im->sy) y=im->sy-1; if(y<0) y=0;
-   gdImageFillToBorder(im,x,y,border,color);
-}
 
-void gdImageFillToBorder2 (gdImagePtr im, int x, int y, int border, int color)
+void patchgdImageFillToBorder (gdImagePtr im, int x, int y, int border, int color)
 {
    if(x>=im->sx || x<0 || y>=im->sy || y<0) return;
    gdImageFillToBorder(im,x,y,border,color);
 }
 
-void gdImageFill2 (gdImagePtr im, int x, int y, int color)
+void patchgdImageFill (gdImagePtr im, int x, int y, int color)
 {
    if(x>=im->sx || x<0 || y>=im->sy || y<0) return;
    gdImageFill(im,x,y,color);
@@ -385,7 +379,7 @@ void obj_ellipse(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder2(image,pm->p[0],pm->p[1],
+      patchgdImageFillToBorder(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -400,7 +394,7 @@ void obj_circle(objparm *pm)
     if(pm->fill) {
       gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,
                color_bounder);
-      gdImageFillToBorder2(image,pm->p[0],pm->p[1],
+      patchgdImageFillToBorder(image,pm->p[0],pm->p[1],
                       color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
@@ -410,14 +404,14 @@ void obj_circle(objparm *pm)
 void obj_fill(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
-    gdImageFill2(image,pm->p[0],pm->p[1],pm->color[0]);
+    patchgdImageFill(image,pm->p[0],pm->p[1],pm->color[0]);
 }
 
 /* flood fill to border*/
 void obj_fillb(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
-    gdImageFillToBorder1(image,pm->p[0],pm->p[1],pm->color[0],pm->color[1]);
+    patchgdImageFillToBorder(image,pm->p[0],pm->p[1],pm->color[0],pm->color[1]);
 }
 
 gdImagePtr himg;
@@ -477,7 +471,7 @@ void obj_hatchfill(objparm *pm)
       case 3: gdImageLine(himg,ax/2,0,ax/2,ay-1,c); break;
     }
     gdImageSetTile(image,himg);
-    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
+    patchgdImageFill(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -492,7 +486,7 @@ void obj_gridfill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,ny/2,nx-1,ny/2,c); gdImageLine(himg,nx/2,0,nx/2,ny-1,c);
     gdImageSetTile(image,himg);
-    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
+    patchgdImageFill(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -507,7 +501,7 @@ void obj_diafill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,0,nx-1,ny-1,c); gdImageLine(himg,0,ny-1,nx-1,0,c);
     gdImageSetTile(image,himg);
-    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
+    patchgdImageFill(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
@@ -522,7 +516,7 @@ void obj_dotfill(objparm *pm)
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageSetPixel(himg,nx/2,ny/2,c);
     gdImageSetTile(image,himg);
-    gdImageFill2(image,pm->p[0],pm->p[1],gdTiled);
+    patchgdImageFill(image,pm->p[0],pm->p[1],gdTiled);
     gdImageDestroy(himg);
     if(tiled) gdImageSetTile(image,tileimg);
 }
