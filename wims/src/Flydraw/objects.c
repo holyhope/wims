@@ -152,10 +152,11 @@ void obj_line(objparm *pm)
 
 void _obj_arrow(objparm *pm, int twoside)
 {
-    int l,ii[6],xx,yy;
+    int l,xx,yy;
+    gdPoint ii[3];
     double dx,dy,length,dd[6];
     scale(pm->pd,pm->p,2);
-    xx=ii[0]=pm->p[2];yy=ii[1]=pm->p[3];
+    xx=ii[0].x=pm->p[2];yy=ii[0].y=pm->p[3];
     l=pm->pd[4];if(l<0) l=0; if(l>200) l=200;
     scale2(pm->pd[0]-pm->pd[2],pm->pd[1]-pm->pd[3],&dx,&dy);
     length=sqrt(dx*dx+dy*dy);
@@ -164,15 +165,15 @@ void _obj_arrow(objparm *pm, int twoside)
     #define fat 0.27
     dd[2]=dd[0]+dd[1]*fat; dd[3]=dd[1]-dd[0]*fat;
     dd[4]=dd[0]-dd[1]*fat; dd[5]=dd[1]+dd[0]*fat;
-    ii[2]=rint(dd[2])+ii[0]; ii[3]=rint(dd[3])+ii[1];
-    ii[4]=rint(dd[4])+ii[0]; ii[5]=rint(dd[5])+ii[1];
-    gdImageFilledPolygon(image,(gdPointPtr) ii,3,pm->color[0]);
-    xx=rint(dd[0])+ii[0];yy=rint(dd[1])+ii[1];
+    ii[1].x=rint(dd[2])+ii[0].x; ii[1].y=rint(dd[3])+ii[0].y;
+    ii[2].x=rint(dd[4])+ii[0].x; ii[2].y=rint(dd[5])+ii[0].y;
+    gdImageFilledPolygon(image, ii,3,pm->color[0]);
+    xx=rint(dd[0])+ii[0].x;yy=rint(dd[1])+ii[0].y;
     if(twoside) {
-      ii[0]=pm->p[0]; ii[1]=pm->p[1];
-      ii[2]=-rint(dd[2])+ii[0]; ii[3]=-rint(dd[3])+ii[1];
-      ii[4]=-rint(dd[4])+ii[0]; ii[5]=-rint(dd[5])+ii[1];
-      gdImageFilledPolygon(image,(gdPointPtr) ii,3,pm->color[0]);
+      ii[0].x=pm->p[0]; ii[0].y=pm->p[1];
+      ii[1].x=-rint(dd[2])+ii[0].x; ii[1].y=-rint(dd[3])+ii[0].y;
+      ii[2].x=-rint(dd[4])+ii[0].x; ii[2].y=-rint(dd[5])+ii[0].y;
+      gdImageFilledPolygon(image, ii,3,pm->color[0]);
     }
     stem: if(pm->fill)
       gdImageDashedLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);

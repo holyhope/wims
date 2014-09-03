@@ -132,9 +132,9 @@ int widthcolor(int w, int color)
       case 10:
       case 11:
       case 12: {
-          int pl[]={0,sh, sh,0, e-sh,0, e,sh,
-              e,e-sh, e-sh,e, sh,e, 0,e-sh};
-          gdImageFilledPolygon(wimg,(gdPointPtr) pl,8,fg);
+          gdPoint pl[]={{0,sh}, {sh,0}, {e-sh,0}, {e,sh},
+              {e,e-sh}, {e-sh,e}, {sh,e}, {0,e-sh}};
+          gdImageFilledPolygon(wimg, pl,8,fg);
           break;
       }
       default: {
