@@ -14,6 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "libwims.h"
 
 char t_buf[4][MAX_LINELEN+1];
 char maskbuf[MAX_LINELEN+1];

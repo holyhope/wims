@@ -17,6 +17,7 @@
 /* line input / output routines */
 
 #include <stdarg.h>
+#include "libwims.h"
 
 /* copy of possibly overlapping strings, to replace strcpy which is not guaranteed in this case
    and indeed produces errors particularly on 64 bits computers */

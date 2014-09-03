@@ -120,13 +120,8 @@ void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...);
 
 long int filelength(char *fn,...);
 int catfile(FILE *outf, char *fn,...);
-#ifdef libwims
- char *fnd_position;
- char *fnd_nextpos;
-#else
- extern char *fnd_position;
- extern char *fnd_nextpos;
-#endif
+extern char *fnd_position;
+extern char *fnd_nextpos;
 
 extern char *acctab, *deatab;
 
@@ -138,13 +133,11 @@ extern char *acctab, *deatab;
 typedef struct ev_variable{
     char *name; double value;
 } ev_variable;
-#ifdef LIBWIMS
- int *ev_varcnt=NULL;
- ev_variable *ev_var=NULL;
-#else
- extern int *ev_varcnt;
- extern ev_variable *ev_var;
-#endif
+
+extern int *ev_varcnt;
+extern ev_variable *ev_var;
+
+
 char *moneyprint(char *p, double s);
 double factorial(double d);
 void init_random(void);

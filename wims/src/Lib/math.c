@@ -16,7 +16,7 @@
  */
 
 /* Subroutines to manipulate math expressions */
-
+#include "libwims.h"
 
 /* Points to the start of a mathematics variable (or number) */
 char *find_mathvar_start(char *p)
