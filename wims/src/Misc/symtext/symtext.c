@@ -34,7 +34,6 @@
 const char *codechar="_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 #include "symtext.h"
-#include "../../Lib/liblines.c"
 
 struct block blockbuf[MAX_BLOCKS];
 int nextblock;
@@ -47,17 +46,6 @@ struct poolstruct poolbuf[MAX_POOLS];
 int nextpool;
 
 int options;
-#define op_nocase    (1<<0)
-#define op_deaccent  (1<<1)
-#define op_reaccent  (1<<2)
-#define op_nopunct   (1<<3)
-#define op_nomath    (1<<4)
-#define op_noparenth (1<<5)
-#define op_nocs      (1<<6)
-#define op_noquote   (1<<7)
-#define op_matchall  (1<<8)
-#define op_alphaonly (1<<9)
-#define op_alnumonly (1<<10)
 
 char cmdbuf[256], stbuf[MAX_LINELEN+1], textbuf[MAX_LINELEN+1];
 char wbuf[MAX_LINELEN+1];
@@ -66,7 +54,7 @@ char defbuf[MAX_LINELEN+1];
 char style[MAX_NAMELEN+1];
 char styledir[MAX_FNAME+1];
 char optionbuf[1024];
-char outbuf[4096];
+char outbuf[OUTSIZE];
 char *outptr, *wptr;
 int debug;
 
@@ -99,11 +87,6 @@ void error(char *msg,...)
     va_end(vp);
     printf("ERROR\n%s\n",buf);
     exit(1);
-}
-
-void _error(char *msg)
-{
-    error(msg);
 }
 
 /* read-in a file into buffer. Use open() and read().
@@ -228,11 +211,6 @@ char *mkfname(char buf[], char *s,...)
     return p;
 }
 
-
-#include "translate.c"
-#include "match.c"
-#include "compile.c"
-
 void getparms(void)
 {
     char *p, *p2, *p3, lbuf[8];
@@ -346,7 +324,6 @@ int verify_tables(void)
 
     return 0;
 }
-void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;
 
 int main(int argc, char *argv[])
 {
@@ -361,7 +338,7 @@ int main(int argc, char *argv[])
       }
       else return 1;
     }
-    error1=error2=_error; debug=0;
+    debug=0;
     wptr=wbuf; wbuf[0]=0;
     getparms();
     Mnext=Mbuf; Mcnt=0;

@@ -15,29 +15,17 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	/* Versatile translation according to a dictionary */
+/* Versatile translation according to a dictionary */
+
+#include "symtext.h"
 
 char inpbuf[MAX_LINELEN+1], troutbuf[2*MAX_LINELEN+2];
-struct entry {
-    unsigned char *original, *replace;
-    int olen,earlier;
-} entry[MAX_DICENTRIES];
+struct entry entry[MAX_DICENTRIES];
 int entrycount=0;
 
-struct dic {
-    char name[MAX_FNAME+1];
-    char unknown[256];
-    char *buf;
-    int unknown_type;
-    int start;
-    int len;
-} dic[MAX_DICS];
+struct dic dic[MAX_DICS];
 int diccnt;
 int transdic, macrodic;
-
-enum {
-    unk_delete, unk_leave, unk_replace
-};
 
 int compare(struct entry *e, const char *s2)
 {
@@ -47,7 +35,7 @@ int compare(struct entry *e, const char *s2)
     else return k;
 }
 
-	/* searches a list. Returns index if found, -1 if nomatch. 
+	/* searches a list. Returns index if found, -1 if nomatch.
 	 * Uses binary search, list must be sorted. */
 int search_dic(struct entry *list, int items, size_t item_size, const char *str)
 {
@@ -65,7 +53,7 @@ int search_dic(struct entry *list, int items, size_t item_size, const char *str)
 	k=list[j].original[0]-c; if(k==0) k=compare(list+j,str);
 	if(k==0) goto more;
 	if(k>0) {i2=j; continue;}
-	if(k<0) {i1=j; continue;}	
+	if(k<0) {i1=j; continue;}
     }
     if(k>0) {j--;k=compare(list+j,str);}
     more:
@@ -73,14 +61,12 @@ int search_dic(struct entry *list, int items, size_t item_size, const char *str)
 	if(k==0) return j; else return -1;
     }
     if(compare(entry+t,str)!=0) return -1;
-    for(j=t1=t,k=0;j<items+(list-entry) && entry[j].earlier==t1 && (k=compare(entry+j,str))<=0; j++) 
+    for(j=t1=t,k=0;j<items+(list-entry) && entry[j].earlier==t1 && (k=compare(entry+j,str))<=0; j++)
       if(k==0) t=j;
     return t-(list-entry);
 }
 
-#include "suffix.c"
-
-	/* Prepare dictionary */
+/* Prepare dictionary */
 struct dic *prepare_dic(char *fname)
 {
     int i,l;
@@ -89,7 +75,7 @@ struct dic *prepare_dic(char *fname)
     char *p1, *p2, *pp;
     char tbuf[256], buf[MAX_LINELEN+1];
     long int flen;
-    
+
     if(diccnt>=MAX_DICS) error("too_many_dictionaries");
     thisdic=dic+diccnt; diccnt++;
     thisdic->len=0;
@@ -117,14 +103,14 @@ struct dic *prepare_dic(char *fname)
 	  error("duplication_in_dictionary %s: %s.\n",
 		fname,p1);
 	entry[i].original=(unsigned char*)p1;
-        entry[i].replace=(unsigned char*)pp; 
+        entry[i].replace=(unsigned char*)pp;
 	entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
 	if(i>0) {
 	    int l1,l2;
 	    l1=entry[i-1].earlier; if(l1>=0) l2=entry[l1].olen;
 	    else {l2=entry[i-1].olen;l1=i-1;}
 	    if(l>l2 && isspace(p1[l2])
-	       && strncmp((char*)entry[l1].original,p1,l2)==0) 
+	       && strncmp((char*)entry[l1].original,p1,l2)==0)
 	      entry[i].earlier=entry[i-1].earlier=l1;
 	}
 	i++;
@@ -147,7 +133,7 @@ struct dic *prepare_dic(char *fname)
     return thisdic;
 }
 
-	/* make the translation. */
+/* make the translation. */
 void _translate(char *p, int i)
 {
     char *p1, *p2, *pp;

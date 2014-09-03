@@ -32,10 +32,8 @@
 #include <signal.h>
 #include <time.h>
 
-#include "lines.h"
+#include "../../Lib/libwims.h"
 
-	/* Maximum of string length. */
-#define MAX_LINELEN (40*1024-1)
 	/* Maximum of blocks. Limited to sizeof(short). */
 #define MAX_BLOCKS	8192
 	/* Maximum of pools. Limited to sizeof(short). */
@@ -87,5 +85,90 @@ typedef struct poolstruct {
     listtype *tag;		/* level tags for recursion */
 } poolstruct;
 
+/* from translate.c */
+extern struct entry {
+    unsigned char *original, *replace;
+    int olen,earlier;
+} entry[];
+
+int search_dic(struct entry *list, int items, size_t item_size, const char *str);
+
+extern struct dic {
+    char name[MAX_FNAME+1];
+    char unknown[256];
+    char *buf;
+    int unknown_type;
+    int start;
+    int len;
+} dic[MAX_DICS];
+enum {
+    unk_delete, unk_leave, unk_replace
+};
+int transdic, macrodic;
+int diccnt;
+struct dic *prepare_dic(char *fname);
+int getdic(char *dicname);
+
+/*from symtext.c */
+
+extern char styledir[], defbuf[];
+char *mkfname(char buf[], char *s,...);
+extern int debug;
+int nextpool, nexttag;
+extern poolstruct poolbuf[MAX_POOLS];
+extern block blockbuf[MAX_BLOCKS];
+#define OUTSIZE 4096
+extern char *outptr, *wptr, outbuf[OUTSIZE];
+extern listtype tagbuf[MAX_BLOCKS];
+extern int nextblock, nextlist;
+extern char wbuf[MAX_LINELEN+1];
+extern listtype listbuf[MAX_LISTS];
+extern int options;
+#define op_nocase    (1<<0)
+#define op_deaccent  (1<<1)
+#define op_reaccent  (1<<2)
+#define op_nopunct   (1<<3)
+#define op_nomath    (1<<4)
+#define op_noparenth (1<<5)
+#define op_nocs      (1<<6)
+#define op_noquote   (1<<7)
+#define op_matchall  (1<<8)
+#define op_alphaonly (1<<9)
+#define op_alnumonly (1<<10)
+void error(char *msg,...);
+void _getdef(char buf[], char *name, char value[]);
+/* from match.c */
+int mt_string(struct block *blk, char *start, int level);
+int mt_permpick(struct block *blk, char *start, int level);
+int mt_m(struct block *blk, char *start, int level);
+int mt_neg(struct block *blk, char *start, int level);
+int mt_dic(struct block *blk, char *start, int level);
+int mt_w(struct block *blk, char *start, int level);
+int mt_wild(struct block *blk, char *start, int level);
+int mt_out(struct block *blk, char *start, int level);
+int mt_nomatch(struct block *blk, char *start, int level);
+
+/* from suffix.c */
+extern int suffixcnt;
+void suffix_translate(char *p);
+void _translate(char *p, int i);
+void suffix_dic(char *sdicname);
+
+/* from compile.c */
+void strfold(char *p);
+extern struct builtin {
+    char *name;
+    void (*fn) (char *p, struct block *blk, int next);
+} builtin[];
+void compile(char *p);
+
+extern int builtincnt, Mcnt;
+extern char Mbuf[MAX_LINELEN+1];
+extern char *Mnext;
+
+/* from match.c */
+int match(char *p);
 #endif
+
+
 

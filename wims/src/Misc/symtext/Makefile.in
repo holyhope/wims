@@ -9,20 +9,25 @@ CPPFLAGS=@CPPFLAGS@
 defines=@DEFINES@
 rpath=@RPATH@
 STRIP=@STRIP@
-#lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
-lopt=-lm $(rpath)
+lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
+
+symobjects=compile.o match.o suffix.o translate.o symtext.o
+
+%.o: %.c *.h
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
 all:: symtext
 
 clean::
-	rm -f symtext
+	rm -f *.o symtext
 
 distclean:
-	rm -f symtext
+	rm -f *.o symtext
 	cd $(wims_home)/public_html/bin; rm -f symtext 2>/dev/null; cd ../../src/Misc/symtext
 	rm -f Makefile
 
-symtext: *.c *.h
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(lopt) -o symtext symtext.c
+symtext: $(symobjects)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(lopt) $(symobjects) -o symtext
 	./symtext -t
 	$(STRIP) $@
 	cp $@ $(wims_home)/public_html/bin
