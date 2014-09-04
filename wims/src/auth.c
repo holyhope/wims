@@ -48,16 +48,16 @@ void check_load(int th)
     p1=find_word_start(loadavg); p2=find_word_end(p1);*p2=0;
     dload=atof(p1);
     if(robot_access &&
-       (!finite(dload) || dload>1000 || dload<0 || dload*200>threshold1))
+       (!isfinite(dload) || dload>1000 || dload<0 || dload*200>threshold1))
       goto refuse;
-    if(!finite(dload) || dload<=0 || dload>1000) goto repcheck; /* unreasonable */
+    if(!isfinite(dload) || dload<=0 || dload>1000) goto repcheck; /* unreasonable */
 /* very small 1 min load average */
     if(dload*200<threshold1) goto repcheck;
     if(dload*50>threshold2) goto refuse;
     p1=find_word_start(p2+1); /* go to second average: 5 min. */
     *find_word_end(p1)=0;
     dload=atof(p1);
-    if(!finite(dload) || dload<=0 || dload>1000) goto repcheck; /* unreasonable */
+    if(!isfinite(dload) || dload<=0 || dload>1000) goto repcheck; /* unreasonable */
     load=dload*100;
     snprintf(buf,sizeof(buf),"%d",load);
     setvar("wims_server_load",buf);

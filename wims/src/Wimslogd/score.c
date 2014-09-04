@@ -67,7 +67,7 @@ void scoreline(struct classdata *cd, char *l)
     thiscore=uscore+num;
     thishscore=hscore+num;
     if(strcmp(pm[4],"score")==0) {
-     score=atof(pm[5]); if(!finite(score)) score=0;
+     score=atof(pm[5]); if(!isfinite(score)) score=0;
      if(score>10) score=10; if(score<-10) score=-10;
 
      if(strcmp(pm[1],oldsession)==0 &&   /* measure to prohibit simultaneous scoring. */
@@ -318,7 +318,7 @@ void cmd_getscore(char *p)
     }
     if(cutwords(p,cut,3)==3) {
      thissheet=atoi(cut[0]); thisexo=atoi(cut[1]); thisscore=atof(cut[2]);
-     if(!finite(thisscore)) thisscore=0;
+     if(!isfinite(thisscore)) thisscore=0;
      if(thisscore<-10) thisscore=-10;
      if(thisscore>10) thisscore=10;
     }

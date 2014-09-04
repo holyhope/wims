@@ -129,7 +129,7 @@ int getvalue(char *p, int n)
       p=find_word_start(p);
       if(*p==0) break;
       v[t]=strevalue(p);
-      if(!finite(v[t])) exit(-1);
+      if(!isfinite(v[t])) exit(-1);
     }
     return t;
 }

@@ -527,7 +527,7 @@ void calc_randperm(char *p)
     else {
      v=evalue(pp); n=v; type=0;
     }
-    if(n==1 && !finite(v)) {ovlstrcpy(p,pp); goto shorder;}
+    if(n==1 && !isfinite(v)) {ovlstrcpy(p,pp); goto shorder;}
     if(n<=0) {*p=0; return;}
     if(n==1 && type==0) {
      ovlstrcpy(p,"1");
@@ -1562,14 +1562,14 @@ void calc_solve(char *p)
      eval_setval(pos,v);
      dd=checked_eval(buf);
      if(v==start) continue;
-     if(!finite(old) || !finite(dd) || (old>0 && dd>0) || (old<0 && dd<0))
+     if(!isfinite(old) || !isfinite(dd) || (old>0 && dd>0) || (old<0 && dd<0))
        continue;
      if(dd==0 && v<stop) continue;
      v1=v-step; v2=v; d1=old; d2=dd;
      for(i=0;i<30;i++) {
          v3=(v1+v2)/2; eval_setval(pos,v3);
          d3=checked_eval(buf);
-         if(!finite(d3)) goto next;
+         if(!isfinite(d3)) goto next;
          if((d1>0 && d3>0) || (d1<0 && d3<0)) {d1=d3; v1=v3;}
          else {d2=d3; v2=v3;}
      }

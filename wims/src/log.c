@@ -172,7 +172,7 @@ void user_log(char *c)
        char *s;
        s=getvar("module_score");
        if(s==NULL || *s==0) return;
-       sc=atof(s); if(!finite(sc)) {sc=0; return;}
+       sc=atof(s); if(!isfinite(sc)) {sc=0; return;}
        snprintf(cbuf,sizeof(cbuf),"score %s",s);
        cc=cbuf;
     }

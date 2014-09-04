@@ -719,7 +719,7 @@ void module_index(void)
     if(p!=NULL && *p!=0) mystrncpy(var_def_file,p,sizeof(var_def_file));
     p=getvar("module_wims_version"); if(p!=NULL && *p!=0) {
      v1=atof(p); v2=atof(wims_version);
-     if(finite(v1) && finite(v2) &&
+     if(isfinite(v1) && isfinite(v2) &&
         (v1>v2 || (v1==v2 && strcmp(find_word_start(p),wims_version)>0))) {
          setvar("module_wims_version",p);
          setvar("wims_version",wims_version);

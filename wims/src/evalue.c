@@ -27,7 +27,7 @@ void float2str(double d, char *p)
     if(d==0) {
      ovlstrcpy(p,"0"); return;
     }
-    if(!finite(d)) { /* isinf, isnan possibly not available */
+    if(!isfinite(d)) { /* isinf, isnan possibly not available */
      if (d == d) ovlstrcpy(p, (d > 0)? "Inf": "-Inf"); else ovlstrcpy(p,"NaN");
      return;
     }
@@ -201,7 +201,7 @@ int cutfor(char *p, char *bufp)
      for(i=0, inp=bp; i<MAX_VALUE_LIST && inp!=NULL; inp=top) {
          top=strparchr(inp,','); if(top) *top++=0;
          if(bufp==NULL) {
-          d=evalue(inp); if(finite(d)) forstruct.list[i++]=d;
+          d=evalue(inp); if(isfinite(d)) forstruct.list[i++]=d;
           else return 1;
          }
          else {
@@ -231,7 +231,7 @@ int cutfor(char *p, char *bufp)
     }
     forstruct.from=evalue(fromp);
     if(for_getvar(p)) return -1;
-    if(!finite(forstruct.from+forstruct.to+forstruct.step)) return 1;
+    if(!isfinite(forstruct.from+forstruct.to+forstruct.step)) return 1;
     else return 0;
 }
 

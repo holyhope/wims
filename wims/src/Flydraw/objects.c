@@ -796,7 +796,7 @@ void _obj_plot(objparm *pm,int dash)
           t=tstart+i*v; eval_setval(varpos,t);
           dc[0]=strevalue(p1); dc[1]=strevalue(p2);
       }
-      if(!finite(dc[0]) || !finite(dc[1])) ic[0]=ic[1]=-BOUND;
+      if(!isfinite(dc[0]) || !isfinite(dc[1])) ic[0]=ic[1]=-BOUND;
       else scale(dc,ic,1);
       if(vimg_enable) vimg_plot1 (scale_buf[0],scale_buf[1]);
       if(j==0) {
@@ -855,7 +855,7 @@ void obj_levelcurve(objparm *pm)
       for(i=0;i<n-1;i++) {
           fnd_item(pm->str,i+2,tc);
           d=strevalue(tc);
-          if(finite(d)) ld->levels[i]=d; else ld->levels[i]=0;
+          if(isfinite(d)) ld->levels[i]=d; else ld->levels[i]=0;
       }
       ld->levelcnt=n-1;
     }
@@ -1240,7 +1240,7 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
       p2=find_item_end(p1); if(*p2) *p2++=0;
       p1=find_word_start(p1);
       if(*p1) pm->pd[j]=strevalue(p1); else pm->pd[j]=0;
-      if(!finite(pm->pd[j])) {
+      if(!isfinite(pm->pd[j])) {
           if(j<o->required_parms) return -1;
           else {pm->pd[j]=0;break;}
       }

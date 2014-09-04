@@ -1445,7 +1445,7 @@ void exec_bound(char *p)
      *p2=0;p2=find_word_start(p3);
      if(*p1==0 || *p2==0) goto syntax;
      d1=evalue(p1);d2=evalue(p2);
-     if(!finite(d1) || !finite(d2) ||
+     if(!isfinite(d1) || !isfinite(d2) ||
        abs(d1)>(double)(1E10) || abs(d2)>(double)(1E10)) goto syntax;
      if(d1>d2) {
         dd=d1;d1=d2;d2=dd;

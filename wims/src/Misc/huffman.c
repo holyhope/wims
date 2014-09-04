@@ -133,7 +133,7 @@ void getparm(char *p)
       for(p2=p1; *p2 && strchr(",;",*p2)==NULL; p2++);
       if(*p2) *p2++=0;
       d1=strevalue(p1);
-      if(!finite(d1) || d1<0) {
+      if(!isfinite(d1) || d1<0) {
           char buf[256];
           snprintf(buf,sizeof(buf),"Bad data: %s",p1);
           error(buf);

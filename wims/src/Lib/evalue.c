@@ -143,12 +143,12 @@ double binomial(double d1,double d2)
 /* max and min */
 double max(double d1, double d2)
 {
-    if(!finite(d1) || !finite(d2)) return NAN;
+    if(!isfinite(d1) || !isfinite(d2)) return NAN;
     if(d1<d2) return d2; else return d1;
 }
 double min(double d1, double d2)
 {
-    if(!finite(d1) || !finite(d2)) return NAN;
+    if(!isfinite(d1) || !isfinite(d2)) return NAN;
     if(d1<d2) return d1; else return d2;
 }
 
@@ -157,7 +157,7 @@ double gcd(double n1, double n2)
 {
     unsigned long long int l1, l2, ll;
     n1=abs(n1); n2=abs(n2);
-    if(!finite(n1) || !finite(n2) || n1<0 || n2<0 ||
+    if(!isfinite(n1) || !isfinite(n2) || n1<0 || n2<0 ||
        n1>1E18 || n2>1E18) return NAN;
     l1=n1; l2=n2;
     if(l1<l2) {
