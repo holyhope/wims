@@ -1533,7 +1533,7 @@ void calc_solve(char *p)
 {
     char *pp, *fp, *forp;
     char buf[MAX_LINELEN+1], vbuf[MAX_LINELEN+1];
-    double v, dd, start, stop, step, old, v1, v2, v3, d1, d2, d3;
+    double v, dd, start, stop, step, old, v1, v2, v3, d1, d3;
     int i, pos;
 
     forp=wordchr(p,"for");
@@ -1565,13 +1565,13 @@ void calc_solve(char *p)
      if(!isfinite(old) || !isfinite(dd) || (old>0 && dd>0) || (old<0 && dd<0))
        continue;
      if(dd==0 && v<stop) continue;
-     v1=v-step; v2=v; d1=old; d2=dd;
+     v1=v-step; v2=v; d1=old;
      for(i=0;i<30;i++) {
          v3=(v1+v2)/2; eval_setval(pos,v3);
          d3=checked_eval(buf);
          if(!isfinite(d3)) goto next;
          if((d1>0 && d3>0) || (d1<0 && d3<0)) {d1=d3; v1=v3;}
-         else {d2=d3; v2=v3;}
+         else {v2=v3;}
      }
      float2str(v3,vbuf); if(pp-p+strlen(vbuf)<MAX_LINELEN-1) {
          if(pp>p) *pp++=','; ovlstrcpy(pp,vbuf);
@@ -1628,7 +1628,7 @@ void _values(char *p, int type)
          pp=getvar("recursion_start");
          if(pp==NULL || *pp==0) v0=0;
          else {
-          v0=evalue(pp); if(!finite(v0)) return;
+          v0=evalue(pp); if(!isfinite(v0)) return;
          }
          break;
      }
