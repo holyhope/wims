@@ -15,8 +15,107 @@ MC	= Marina Cazzola
 OB  = Olivier Bado
 RM	= Régine Mangeard
 
+
 ---------------------------------------------------------------------------
 wims.4.07e [r??]
+translation have been done, keywords has been completed.
+2014-09-04 [r8169]: replace script shell for testing permissions
+(deprecated and not portable) by perl script.
+2014-09-03 [r8163]:
+    eliminating three type-punning pointer dereferenciation in flydraw
+2014-08: delete include the *.c except in wims.c and wimslogd.c
+ clean the c funcions which are unuseful or twice
+ delete some files unused as insplot.c
+2014-09-03 [r8159] change limit in MAX_LINELEN for compatibility with symtext
+2014-09-02 [r8158], [r8156] etc:
+ add invisible frame to prevent "color leak" on the vertical right
+ add patch for bug in gd2.0.1
+2014-08-30 [r8148]:
+ put Msg2wims and Oef2wims in the same directory (some files ar in common).
+2014-08-30 [r8147]:
+  use -lwims for curvecomp.c, cyclicode.c, ftype.c, odstat.c;
+  delete some functions :
+ - xmalloc, find_word_end, find_word_begin are defined in Lib/liblines.c
+ - wordchr, varchr, strip_trailing_spaces are not used in modstat.c
+2014-08-30 [r8146] schaersvoorde:
+   added command 'clearbutton button_text' to remove all userbased drawings
+   in canvasdraw
+2014-08-29 [r8142] guerimand: improve dates in htmlform, use it in adm/class/cdt:
+[minor] script show actual values in htmlform
+2014-08-29 [r8141] guerimand: save second date in cdt search
+2014-08-29 [r8140] guerimand: fix print version of cdt
+2014-08-29 [r8139] guerimand:
+  use of script date.phtml instead of local processus in cdt
+2014-08-29 [r8138] guerimand:
+  show last data in cdt at the beginning
+2014-08-29 [r8137]: clean inclusion of *.c Misc/mathexp, Msg2wims, Oef2wims
+2014-08-29 [r8133] guerimand:
+  reset table_center for all the module class/cdt (background compatibility)
+2014-08-28 [r8130] schaersvoorde:
+   canvasdraw : corrected newly introduced problems with command 'clock' [use strict]
+2014-08-28 [r8129] schaersvoorde:
+   canvasdraw : added keyword 'radius' to command 'display x|y|xy|degree|radius,color,fontsize'
+2014-08-28 [r8128] guerimand:
+   show usercnt in userlist
+2014-08-27 [r8127] schaersvoorde:
+  canvasdraw : added default reply format for 'userdraw input'
+2014-08-27 [r8124]:
+   change name: Wimslogd/lines.c -> Wimslogd/wimslogdlines.c
+2014-08-27 [r8123]:
+  clean dicsort, modind, translator (no more include .c).
+ (suffix.c was inside the three programs).
+2014-08-27 [r8122]
+ change name: Lib/lines.c -> Lib/liblines.c
+  - in Misc/mathexp use -lwims
+2014-08-27 [r8121]:
+  clean src/wims.h (no more definition, only declarations).
+2014-08-27 [r8120]:
+  clean Interfaces (no more include .c except for yacasheader.c)
+2014-08-27 [r8119]:
+  fix adm/light languages when the file in pages is not of the form xx.$lang
+2014-08-27 [r8118]:
+   M /trunk/wims/public_html/scripts/slib/draw/repere
+fix slib/draw/repere : the grid did not always go through the origin
+2014-08-27 [r8116] schaersvoorde:
+ canvasdraw : added command 'userdraw input,color' and  'userdraw inputs,color'
+ corrected 'userdraw text,color' [use strict]
+2014-08-24 [r8114] schaersvoorde:
+  removed unused js-file jm.evers/js/walterzorn.js
+2014-08-24 [r8112] schaersvoorde:
+  canvasdraw: modified slider syntax
+2014-08-21 [r8110] schaersvoorde:
+  canvasdraw: added extra tics in case of commands 'xaxis' 'yaxis'
+2014-08-19 [r8107] schaersvoorde:
+  canvasdraw : corrected rotation cludge [radians vs degrees] with slider type 'angle'
+2014-08-19 [r8106] schaersvoorde:
+  canvasdraw : slider xy ergonomics...
+2014-08-19 [r8105] schaersvoorde:
+   canvasdraw : improved response speed of slider;
+   added command 'angle x,y,width,start,end,color'
+   as alternative to flydraw compatible command 'arc'
+2014-08-18 [r8103]:
+   clean Texgif
+2014-08-18 [r8102]:
+  clean Flydraw
+2014-08-18 [r8101] schaersvoorde:
+  added keyword 'killslider'... a slider may adjust several different
+   objects...until keyword 'killslider' or next 'slider'
+2014-08-18 [r8100]:
+  clean the c code :
+  - change the name of some functions similar but different to keep code equivalent to the old one (strip_trailing_spaces find_matching mkdirs singlespace deaccent wordchr string_modify search_list)
+  - delete #include "../Lib/basicstr.c", comment functions which are at the same time in Lib and in some other file.c and add
+  lopt=-L$(wims_home)/lib -lwims -lm $(rpath) in the Makefile
+  (in Interfaces, Misc/oncechar, Misc/translator, Misc/dicsort, Misc/modind, Misc/ccsum, Texgif/texgif.c)
+2014-08-18 [r8099] schaersvoorde:
+  canvasdraw : corrected javascript error in 'userdraw arc,color'
+2014-08-17 [r8097] schaersvoorde:
+  canvasdraw :added command 'slider'
+2014-08-16 [r8096]:
+  delete unuseful routines in Oef2wims/outexec.c
+2014-08-16 [r8095]:
+  delet routines set_var get_var find_name_start find_name_end not used in Msg2wims and Oef2wims
+2014-08-16 [r8094]:
+  use libwims for functions find_word_start find_word_begin xmalloc and delete them in html2msg
 2014-08-07 (DB) The string_modify() routine declared in libwims.h had two implementations,
   one in Lib/lines.c and the other in Msg2wims/lines.c. The second one was called string_modify2
   and substituted to the first one when appropriate using the preprocessor directive
