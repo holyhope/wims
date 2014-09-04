@@ -43,14 +43,18 @@ $module_title
      <br />
      <input type="radio" name="job" $ch_class value="class" id="job3" />
      <label for="job3">$name_classpasswd</label>
-     <div class="formHelp"> $name_warning1.</div>
+     <div class="formHelp">$name_warning1.</div>
    </div>
  !else
     <fieldset class="property_fields halfwidth blockcenter">
      <legend>
-      $(name_$(job)passwd)
-      !if $job=part
-       <span class="tt">$part</span>
+      !if $class_type>0 and $job=class
+       $(name_$(job)passwdt)
+      !else
+       $(name_$(job)passwdt)
+       !if $job=part
+        <span class="tt">$part</span>
+       !endif
       !endif
       </legend>
       <input type="hidden" name="job" value="$job" />
