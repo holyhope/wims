@@ -18,10 +18,11 @@
 /* Web exerciser */
 
 #define WEBMATH 1
-#include "Lib/libwims.h"
-#include "wims.h"
 #include <sys/socket.h>
 #include <sys/un.h>
+
+#include "Lib/libwims.h"
+#include "wims.h"
 
 struct {
     char *name;
