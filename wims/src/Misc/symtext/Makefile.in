@@ -14,7 +14,7 @@ lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 symobjects=compile.o match.o suffix.o translate.o symtext.o
 
 %.o: %.c *.h
-	$(cc) -o $@ $(cflags) $(defines) -c $<
+	$(cc) -o $@ $(cflags) $(defines) $(lopt) -c $<
 
 all:: symtext
 
@@ -27,7 +27,7 @@ distclean:
 	rm -f Makefile
 
 symtext: $(symobjects)
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(lopt) $(symobjects) -o symtext
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(symobjects) $(lopt) -o symtext
 	./symtext -t
 	$(STRIP) $@
 	cp $@ $(wims_home)/public_html/bin
