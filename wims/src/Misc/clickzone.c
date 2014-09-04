@@ -24,8 +24,8 @@
 
 /***************** Nothing should need change hereafter *****************/
 
-#include "../Lib/libwims.h"
 #include <gd.h>
+#include "../Lib/libwims.h"
 
 #define VLEN 1024
 

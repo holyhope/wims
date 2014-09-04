@@ -18,8 +18,9 @@
 	/* Mathematical expression manipulations for WIMS, header declarations */
 
 /* #include "../../Lib/libwims.h" */
-#include "../../wims.h"
+
 #include <regex.h>
+#include "../../wims.h"
 
 	/* maximal number of object lines */
 #define MAX_OBJLINES	2048

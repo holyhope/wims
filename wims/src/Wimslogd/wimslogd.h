@@ -17,11 +17,11 @@
 
 		/* student score management, definitions */
 
-#include "../Lib/libwims.h"
-#include "../wims.h"
 #include <utime.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include "../Lib/libwims.h"
+#include "../wims.h"
 
 	/* how many seconds in a minute? */
 #define MINLENGTH 47

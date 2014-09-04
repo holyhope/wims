@@ -17,11 +17,11 @@
 
 /* http dawmon for WIMS */
 
-#include "../wims.h"
 #include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "../wims.h"
 
 #if !HAVE_SOCKLEN_T
 typedef size_t socklen_t;
@@ -138,7 +138,7 @@ int net_connect(int port)
     struct sockaddr_in sin;
     int soc, vrai;
 
-    if ((soc = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
+    if ((soc = socket(AF_INET, SOCK_STREAM, 0)) == -1)
       errorquit("socket() error");
     if(setsockopt(soc, SOL_SOCKET, SO_REUSEADDR, &vrai, sizeof(vrai)) == -1)
       errorquit("setsockopt() error");
@@ -160,7 +160,7 @@ void putfile(char *fname,int soc)
     char cbuf[MAX_LINELEN+1];
     struct stat st;
     FILE *f;
-    
+
     if(fname[strlen(fname)-1]=='/')
       snprintf(namebuf,sizeof(namebuf),"%sindex.html",fname);
     else snprintf(namebuf,sizeof(namebuf),"%s",fname);
@@ -246,7 +246,7 @@ void onereq(int soc)
     snprintf(buf2,sizeof(buf2),"%d",sport);
     setenv("SERVER_PORT",buf2,1);
     for(; *parms; parms=p) {
-	p=strchr(parms,'\n'); 
+	p=strchr(parms,'\n');
 	if(p==NULL) p=parms+strlen(parms);
 	else {
 	    if(*(p-1)=='\r') *(p-1)=0;
@@ -261,10 +261,10 @@ void onereq(int soc)
 	    if(strcmp(parms,"CONTENT_LENGTH")==0 ||
 	       strcmp(parms,"CONTENT_TYPE")==0) {
 		snprintf(buf2,sizeof(buf2),"%s",parms);
-		setenv(buf2,pp,1);	    
+		setenv(buf2,pp,1);
 	    }
 	    snprintf(buf2,sizeof(buf2),"HTTP_%s",parms);
-	    setenv(buf2,pp,1);	    
+	    setenv(buf2,pp,1);
 	}
     }
     setenv("REMOTE_ADDR",inet_ntoa(saddr.sin_addr),1);
@@ -273,7 +273,7 @@ void onereq(int soc)
 
     snprintf(buf2,sizeof(buf2),".%s",query_url);
     execl(buf2,buf2,NULL);
-    
+
     /* fclose(fout); fclose(fin); */ close(soc); exit(0);
 }
 
@@ -281,7 +281,7 @@ void serve(int soc)
 {
     int newsoc;
     socklen_t slen=sizeof(saddr);
-    
+
     wait:
     alarm(WIMSD_TICK);
     newsoc=accept(soc,(struct sockaddr *)&saddr, &slen);
@@ -325,7 +325,7 @@ Run bin/wrapuid as root to set things up correctly.\n"); exit(1);
     }
 */    setreuid(geteuid(),getuid());setregid(getegid(),getgid());
     sock=net_connect(sport);
-    
+
     serve(sock);
     close(sock); return 0;
 }

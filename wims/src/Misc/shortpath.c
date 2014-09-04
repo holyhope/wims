@@ -23,12 +23,13 @@
 #define MAX_DIM 10 /* dimension limit */
 #define MAX_SHORT 20 /* limit of registered shortest paths */
 
-#include "../config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include "../config.h"
 
 int  pointcnt,dimension,first,last,count,shortcnt;
 /* style = 0: loop to the start

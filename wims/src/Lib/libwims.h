@@ -222,3 +222,7 @@ int levelcurve(leveldata *ld);      /* produces level curve data. Returns non-ze
 /*ou
 inline int myisdigit(char x) { return x>='0' && x<='9'; }
 */
+
+#ifndef isfinite
+# define isfinite(x) (finite(x))
+#endif

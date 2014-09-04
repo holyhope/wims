@@ -17,8 +17,6 @@
 
 /* dvi 2 gif driver, header file */
 
-#include "config.h"
-#include "../Lib/libwims.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -30,6 +28,8 @@
 #include <sys/wait.h>
 #include <ctype.h>
 #include <gd.h>
+#include "config.h"
+#include "../Lib/libwims.h"
 
 /*#define MAX_LINELEN		16383 */
 #define FILE_LENGTH_LIMIT	(1*1024*1024)

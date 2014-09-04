@@ -20,11 +20,11 @@
   * present.
   * Page fetched can only be sent to stdout. */
 
-#include "../wims.h"
 #include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "../wims.h"
 char *cheater1="User-Agent: WIMS-webget";
 char *cheater2="Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, image/png, */*\r\n\
 Accept-Encoding: gzip\r\n\

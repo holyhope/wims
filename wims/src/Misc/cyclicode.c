@@ -27,6 +27,7 @@
 
 #include "../wims.h"
 #include "../Lib/libwims.h"
+
 #define MAX_DEGREE 256
 #define MAX_LENGTH 1024000
 

@@ -23,7 +23,6 @@
 
 /******** Nothing to modify below ***************/
 
-#include "../config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -38,6 +37,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+#include "../config.h"
 #include "../wimsdef.h"
 #include "../Lib/libwims.h"
 
