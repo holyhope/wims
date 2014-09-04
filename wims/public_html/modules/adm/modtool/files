@@ -1,6 +1,7 @@
 
 mdir=$devdir/$mod
-files=!sh find $mdir -type f \! -perm +100 | sed 's!^$mdir/!!' | sort
+files=!sh findnoexec $mdir
+
 ff=!words2items $files
 files=
 !for f in $ff
@@ -12,4 +13,3 @@ files=
 !next f
 
 !read scripts/getdesc $mod
-
