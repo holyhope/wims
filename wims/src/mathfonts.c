@@ -83,7 +83,6 @@ char *mathfont(char *fontname)
     }
     else {/* interpret font with at least two caracters as \RR \calB - only outside of math environment
     not useful in mathml*/
-#ifdef CASE_INSENSITIVE_FS
      char *underscore;
      fix_tex_size(); underscore="";
          {
@@ -102,11 +101,7 @@ char *mathfont(char *fontname)
      if(*underscore && stat(buf1,&st)!=0)
        snprintf(buf1,sizeof(buf1),"%s/%d/%s.gif",
              mathfont_dir,current_tex_size,fontname);
-#else
-     fix_tex_size();
-     snprintf(buf1,sizeof(buf1),"%s/%d/%s.gif",
-           mathfont_dir,current_tex_size,fontname);
-#endif
+
      if(stat(buf1,&st)!=0) return NULL;
      snprintf(buf2,sizeof(buf2),",%s,",fontname);
      if(strstr(middle_fonts,buf2)!=NULL)
