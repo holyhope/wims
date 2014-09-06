@@ -254,6 +254,7 @@ AC_CONFIG_FILES([Flydraw/Makefile
                  Misc/canvasdraw/Makefile
                  Misc/whirlgif/Makefile
                  Misc/authors/jm.evers/applets/Makefile
+		 Misc/applets/Makefile
                  Module/Makefile
                  Module/drawode/Makefile
                  OefMsg2wims/Makefile
