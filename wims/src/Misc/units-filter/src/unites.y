@@ -626,7 +626,7 @@ void printUnit(optiontype option, string unit, int tolerance){
   free(codedunit);
 }
 
-mpq_class round_mpc(const mpq_class & x);
+mpz_class round_mpc(const mpq_class & x);
 
 void printValue(optiontype option, yystype result, int s){
   char val[128],exp[128], *i, *j, *indexE;
@@ -701,7 +701,7 @@ void printValue(optiontype option, yystype result, int s){
 
 double trunc(double x);
 
-mpq_class round_mpc(const mpq_class & x){
+mpz_class round_mpc(const mpq_class & x){
   /**
    * computes a rounded multiprecision integer from the input data
    * this may be valid only for positive inputs.
