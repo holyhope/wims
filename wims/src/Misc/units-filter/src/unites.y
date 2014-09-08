@@ -31,7 +31,7 @@ using namespace std;
 /*     int signif; */
 /*     int pcent; /\* percent tolerance *\/ */
 /*   } yystype; */
-  
+
   class yystype{
   public:
     int i;
@@ -67,8 +67,8 @@ using namespace std;
     o<<"] ";
     return o;
   }
-  
-#define YYSTYPE yystype 
+
+#define YYSTYPE yystype
 
  extern FILE * yyin;
 
@@ -261,7 +261,7 @@ valeur_mixte : valeur spc valeur_mixte {
   $$=$1; $$.maxmultip=$1.multip;
   for(i=0; i < BU_LAST; i++){
     if ($1.base[i] != $3.base[i]) yyerror ("wanted unit not homogeneous");
-  }  
+  }
   $$.wanted_multip=$3.multip;
   $$.wanted_unit=$3.s;
 }
@@ -272,11 +272,11 @@ style : unite {$$=$1;}
 
 valeur : decimal spc unite {$$=$3; $$.val=val_decimal; $$.signif=0; $$.pcent=0; $$.v=$1.v;}
 | decimal spc unite Signif {
-  $$=$3; $$.val=val_decimal; 
+  $$=$3; $$.val=val_decimal;
   $$.signif=val_int; $$.pcent=0;
 }
 | decimal spc unite PlusminPC {
-  $$=$3; $$.val=val_decimal; 
+  $$=$3; $$.val=val_decimal;
   $$.pcent=val_int; $$.signif=0;
 }
 ;
@@ -284,30 +284,30 @@ valeur : decimal spc unite {$$=$3; $$.val=val_decimal; $$.signif=0; $$.pcent=0; 
 sans_unite :decimal {
   int i;
   $$=$1;
-  $$.val=val_decimal; 
-  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
-  $$.multip=1.0; 
+  $$.val=val_decimal;
+  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];}
+  $$.multip=1.0;
   $$.signif=0; $$.pcent=0;
   $$.wanted_unit="";
 }
 | decimal Signif {
   int i;
   $$=$1;
-  $$.val=val_decimal; 
-  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
-  $$.multip=1.0; 
+  $$.val=val_decimal;
+  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];}
+  $$.multip=1.0;
   $$.signif=val_int; $$.pcent=0;
 }
 | decimal PlusminPC {
   int i;
   $$=$1;
-  $$.val=val_decimal; 
-  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
-  $$.multip=1.0; 
+  $$.val=val_decimal;
+  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];}
+  $$.multip=1.0;
   $$.signif=0; $$.pcent=val_int;
 }
 ;
- 
+
 spc : /*rien*/
 |SPC
 ;
@@ -315,12 +315,12 @@ spc : /*rien*/
 unite : unite suiv_unit{
   int index;
   $$.unite = TU_LAST; /* unité non renseignée */
-  strncpy(buffer,$1.s,MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($1.s)); 
+  strncpy(buffer,$1.s,MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-strlen($1.s));
   free($1.s); free($2.s);
   $$.s=strdup(buffer);
   for(index=0; index< BU_LAST; index++){
-    $$.base[index] = $1.base[index]+$2.base[index] ; 
+    $$.base[index] = $1.base[index]+$2.base[index] ;
   }
   $$.multip = $1.multip*$2.multip;
 }
@@ -328,21 +328,21 @@ unite : unite suiv_unit{
 ;
 
 suiv_unit : point prim_unit{
-  $$=$2; strncpy(buffer,".",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-1); 
+  $$=$2; strncpy(buffer,".",MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-1);
   free($2.s);
   $$.s=strdup(buffer);
 }
 | BARRE prim_unit{
   int index;
-  $$=$2; 
+  $$=$2;
   $$.multip = 1/ $$.multip;
-  strncpy(buffer,"/",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-1); 
+  strncpy(buffer,"/",MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-1);
   free($2.s);
   $$.s=strdup(buffer);
   for(index=0; index< BU_LAST; index++){
-    $$.base[index] *= -1; 
+    $$.base[index] *= -1;
   }
 }
 ;
@@ -350,33 +350,33 @@ suiv_unit : point prim_unit{
 point : POINT
 ;
 
-prim_unit1 : 
+prim_unit1 :
 Um base_unite {
   $$=$2;
-  strncpy(buffer,"m",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-1); 
+  strncpy(buffer,"m",MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-1);
   free($2.s);
-  $$.s = strdup(buffer); $$.multip*=1e-3; 
+  $$.s = strdup(buffer); $$.multip*=1e-3;
 }
 | UT base_unite {
   $$=$2;
-  strncpy(buffer,"T",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-1); 
+  strncpy(buffer,"T",MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-1);
   free($2.s);
   $$.s = strdup(buffer); $$.multip*=1e12;
 }
 | Uh base_unite {
   $$=$2;
-  strncpy(buffer,"h",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-1); 
+  strncpy(buffer,"h",MAXBUF);
+  strncat(buffer,$2.s,MAXBUF-1);
   free($2.s);
   $$.s = strdup(buffer); $$.multip*=1e2;
 }
 |  prefixe base_unite {
   $$=$2;
-  strncpy(buffer, $1.s,MAXBUF); 
+  strncpy(buffer, $1.s,MAXBUF);
   strncat(buffer, $2.s, MAXBUF-strlen($1.s));
-  free($1.s); free($2.s);$$.s=strdup(buffer); 
+  free($1.s); free($2.s);$$.s=strdup(buffer);
   $$.multip*=$1.multip;
   }
 | base_unite {
@@ -391,7 +391,7 @@ prim_unit : prim_unit1 puissance01 {
   $$.i=$2.i;
   strncpy(buffer, $1.s,MAXBUF);
   if ($2.i!=1){
-    strncat(buffer, "^%d",MAXBUF-strlen($1.s)); 
+    strncat(buffer, "^%d",MAXBUF-strlen($1.s));
     sprintf(buffer2, buffer, $2.i);
   }
   else strncpy(buffer2,buffer,MAXBUF);
@@ -422,8 +422,8 @@ decimal : INT {$$.val=val_decimal;}
 | INT EE INT {val_decimal=atoi($1.v); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal;}
 ;
 
-prefixe : 
-PP {$$.multip=1.0; char c=$$.s[0]; 
+prefixe :
+PP {$$.multip=1.0; char c=$$.s[0];
  switch (c){
  case 'y' : $$.multip = 1e-24; break;
  case 'z' : $$.multip = 1e-21; break;
@@ -447,47 +447,47 @@ PP {$$.multip=1.0; char c=$$.s[0];
 }
 ;
 
-base_unite :  
+base_unite :
 Uh {$$.unite=TUh; $$.s = strdup("h"); $$.multip=unites[$$.unite].multiplicateur;}
 | Umin {$$.unite=TUmin;  $$.multip=unites[$$.unite].multiplicateur;}
 | Um {$$.unite=TUm; $$.s = strdup("m"); $$.multip=unites[$$.unite].multiplicateur;}
 | Ug {$$.unite=TUg;  $$.multip=unites[$$.unite].multiplicateur;}
 | Us {$$.unite=TUs;  $$.multip=unites[$$.unite].multiplicateur;}
-| UA { $$.unite = TUA;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UK { $$.unite = TUK;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Umol { $$.unite = TUmol;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Ucd { $$.unite = TUcd;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UHz { $$.unite = TUHz;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UN { $$.unite = TUN;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UPa { $$.unite = TUPa;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UA { $$.unite = TUA;  $$.multip=unites[$$.unite].multiplicateur;}
+| UK { $$.unite = TUK;  $$.multip=unites[$$.unite].multiplicateur;}
+| Umol { $$.unite = TUmol;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ucd { $$.unite = TUcd;  $$.multip=unites[$$.unite].multiplicateur;}
+| UHz { $$.unite = TUHz;  $$.multip=unites[$$.unite].multiplicateur;}
+| UN { $$.unite = TUN;  $$.multip=unites[$$.unite].multiplicateur;}
+| UPa { $$.unite = TUPa;  $$.multip=unites[$$.unite].multiplicateur;}
 | UJ { $$.unite = TUJ;  $$.multip=unites[$$.unite].multiplicateur;}
-| UT { $$.unite = TUT; $$.s = strdup("T"); $$.multip=unites[$$.unite].multiplicateur;}  
-| UW { $$.unite = TUW;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UC { $$.unite = TUC;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UV { $$.unite = TUV;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Uohm { $$.unite = TUohm;  $$.multip=unites[$$.unite].multiplicateur;}  
-| US { $$.unite = TUS;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UF { $$.unite = TUF;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UWb { $$.unite = TUWb;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UH { $$.unite = TUH;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Ulm { $$.unite = TUlm;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Ulx { $$.unite = TUlx;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UBq { $$.unite = TUBq;  $$.multip=unites[$$.unite].multiplicateur;}  
-| UGy { $$.unite = TUGy;  $$.multip=unites[$$.unite].multiplicateur;}  
-| USv { $$.unite = TUSv;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Urad { $$.unite = TUrad;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Usr { $$.unite = TUsr;  $$.multip=unites[$$.unite].multiplicateur;}  
-| Uda { $$.unite = TUda;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Uma { $$.unite = TUma;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Usa { $$.unite = TUsa;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Uangs { $$.unite = TUangs;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Ubarn { $$.unite = TUbarn;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Uare { $$.unite = TUare;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Ul { $$.unite = TUl;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Ut { $$.unite = TUt;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Ubar { $$.unite = TUbar;  $$.multip=unites[$$.unite].multiplicateur;} 
-| UeV { $$.unite = TUeV;  $$.multip=unites[$$.unite].multiplicateur;} 
-| Uuam { $$.unite = TUuam;  $$.multip=unites[$$.unite].multiplicateur;} 
+| UT { $$.unite = TUT; $$.s = strdup("T"); $$.multip=unites[$$.unite].multiplicateur;}
+| UW { $$.unite = TUW;  $$.multip=unites[$$.unite].multiplicateur;}
+| UC { $$.unite = TUC;  $$.multip=unites[$$.unite].multiplicateur;}
+| UV { $$.unite = TUV;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uohm { $$.unite = TUohm;  $$.multip=unites[$$.unite].multiplicateur;}
+| US { $$.unite = TUS;  $$.multip=unites[$$.unite].multiplicateur;}
+| UF { $$.unite = TUF;  $$.multip=unites[$$.unite].multiplicateur;}
+| UWb { $$.unite = TUWb;  $$.multip=unites[$$.unite].multiplicateur;}
+| UH { $$.unite = TUH;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ulm { $$.unite = TUlm;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ulx { $$.unite = TUlx;  $$.multip=unites[$$.unite].multiplicateur;}
+| UBq { $$.unite = TUBq;  $$.multip=unites[$$.unite].multiplicateur;}
+| UGy { $$.unite = TUGy;  $$.multip=unites[$$.unite].multiplicateur;}
+| USv { $$.unite = TUSv;  $$.multip=unites[$$.unite].multiplicateur;}
+| Urad { $$.unite = TUrad;  $$.multip=unites[$$.unite].multiplicateur;}
+| Usr { $$.unite = TUsr;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uda { $$.unite = TUda;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uma { $$.unite = TUma;  $$.multip=unites[$$.unite].multiplicateur;}
+| Usa { $$.unite = TUsa;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uangs { $$.unite = TUangs;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ubarn { $$.unite = TUbarn;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uare { $$.unite = TUare;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ul { $$.unite = TUl;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ut { $$.unite = TUt;  $$.multip=unites[$$.unite].multiplicateur;}
+| Ubar { $$.unite = TUbar;  $$.multip=unites[$$.unite].multiplicateur;}
+| UeV { $$.unite = TUeV;  $$.multip=unites[$$.unite].multiplicateur;}
+| Uuam { $$.unite = TUuam;  $$.multip=unites[$$.unite].multiplicateur;}
 ;
 
 
@@ -537,12 +537,12 @@ void test_verbeux(){
       printf(")\n");
     }
     else {
-      if (result.i!=1) 
-	cout <<  result.s << " (" << result.multip*result.val 
-		  << " " << unites[result.unite].nom << ")^{" << result.i 
+      if (result.i!=1)
+	cout <<  result.s << " (" << result.multip*result.val
+		  << " " << unites[result.unite].nom << ")^{" << result.i
 		  << "}\n";
-      else 
-	cout << result.s << " " << result.multip*result.val 
+      else
+	cout << result.s << " " << result.multip*result.val
 		  << " " << unites[result.unite].nom << "\n";
     }
   }
@@ -596,7 +596,7 @@ void printUnit(optiontype option, string unit, int tolerance){
   if(isUTF8) {
     RECODE_OUTER outer = recode_new_outer (true);
     RECODE_REQUEST request = recode_new_request (outer);
-    recode_scan_request (request, "latin1..utf8"); 
+    recode_scan_request (request, "latin1..utf8");
     codedunit=strdup(recode_string(request,unit.c_str()));
   } else {
     codedunit=strdup(unit.c_str());
@@ -654,7 +654,7 @@ void printValue(optiontype option, yystype result, int s){
   for (int i=1;i<s;i++) powten/=10;
   mpz_class r=round_mpc(value/powten);
   value=r*powten;
-  if (s<=1){ 
+  if (s<=1){
     snprintf(buf,sizeof(buf),"%1.0e", value.get_d() );
   } else {
     snprintf(buf,sizeof(buf),"%1.*e", s-1,value.get_d() );
@@ -805,11 +805,11 @@ int main(int argc, char * argv[]){
   // environmental option take precedence on command-line options
 
   optiontype option=option_default;
-  
+
   int ch;
   while (-1 != (ch=getopt(argc,argv,optstr))){
     switch(ch){
-    case 's': 
+    case 's':
       option=option_s;
       break;
     case 'o':
@@ -818,7 +818,7 @@ int main(int argc, char * argv[]){
     case 'l':
       option=option_l;
       break;
-    default: 
+    default:
       break;
     }
   }
@@ -834,7 +834,7 @@ int main(int argc, char * argv[]){
 
   // environmental option take precedence on command-line options
   switch(option){
-  case option_s: 
+  case option_s:
     count_signif=1;
     sortie_normalisee();
     return 0;
@@ -844,7 +844,7 @@ int main(int argc, char * argv[]){
     sortie_texte(option);
     return 0;
     break;
-  default: 
+  default:
     break;
   }
   /*test_verbeux();*/

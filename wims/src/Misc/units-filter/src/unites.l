@@ -1,7 +1,7 @@
 /* -*- coding: iso-8859-1 -*- */
 %option noyywrap
 %option c++
-     
+
    #include <stdlib.h>
    #include "unites.h"
 
