@@ -14,7 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#include "../../Lib/libwims.h"
+
 #include "mathexp.h"
 
 int nopart=0, nonesting=0, nocomma=0, nocoord=0, _estart;

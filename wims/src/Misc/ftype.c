@@ -24,7 +24,6 @@
 
 /***************** Nothing should need change hereafter *****************/
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
 
 char filename[1024]="";

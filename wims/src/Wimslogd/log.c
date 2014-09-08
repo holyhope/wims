@@ -16,6 +16,8 @@
  */
 /* Routines to write log files. */
 
+#include "wimslogd.h"
+
 char llbuf[4*MAX_LINELEN+4], *llptr;
 char *linetab[MAX_LOGLINES];
 int loglinecnt;

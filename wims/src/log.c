@@ -15,6 +15,10 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /* Routines to write log files. */
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#include "wims.h"
 
 char logbuf[4*(MAX_LINELEN+1)];
 char *logp=logbuf;

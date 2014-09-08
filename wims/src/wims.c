@@ -17,11 +17,6 @@
 
 /* Web exerciser */
 
-#define WEBMATH 1
-#include <sys/socket.h>
-#include <sys/un.h>
-
-#include "Lib/libwims.h"
 #include "wims.h"
 
 struct {
@@ -94,17 +89,10 @@ int debug=0;
 
 char class_dir[MAX_FNAME+1]; /* directory name of this class */
 
-struct {
-    char *name;
-    char *value;
-} user_variable[MAX_VAR_NUM];
+struct user_variable user_variable[MAX_VAR_NUM];
 int user_var_no;
 
-struct VAR_DEF {
-    char *name;
-    short int beg,end;
-    char allow, log_num, defined_in_parm, unused_padding;
-} var_def[MAX_VAR_NUM];
+struct VAR_DEF var_def[MAX_VAR_NUM];
 int defined_var_total;
 
 /* Destinated to module error messages */
@@ -132,7 +120,7 @@ int  deplen=0; /* length of deposit */
 int confset=0; /* set to 1 if setvar for config */
 
 /* Operating mode: default, popup, raw, etc. */
-enum {mode_default, mode_popup, mode_raw} NAME_MODES;
+
 int mode=mode_default;
 
 /* Switch; notice subroutines wherether we are outputing. */
@@ -231,31 +219,31 @@ char *var_str; /* malloc'ed buffer to hold translated query_string */
 /* buffer to hold module's variable definition file, malloc'ed. */
 char *var_def_buf;
 
- /* job_identifier is even a reserved variable name */
+/* job_identifier is even a reserved variable name */
 char job_identifier[32];
 
-  /* site manager definition IPv4 IPv6*/
+/* site manager definition IPv4 IPv6*/
 char *manager_site="127.0.0.1 ::1";
 int   manager_https=0;
 
- /* sheet and exercise information */
+/* sheet and exercise information */
 int wims_sheet=0,wims_exo=0;
 
- /* Form method: get or post */
+/* Form method: get or post */
 char *default_form_method="post";
 
- /* Je suis maintenant oblige de passer a l'anglais
-  * pour la langue de defaut.
-  */
+/* Je suis maintenant oblige de passer a l'anglais
+ * pour la langue de defaut.
+ */
 char lang[16]="en";
 char available_lang[MAX_LANGUAGES][4]={"en","fr"};
 int available_lang_no=2;
 char pre_language[4]="";
 char *protocol="http"; /* http or https */
 
- /* check for coordinate input. This will mean that
-  * the request is manual, but not robot.
-  */
+/* check for coordinate input. This will mean that
+ * the request is manual, but not robot.
+ */
 int coord_input=0;
 
 /* These are readonly environment variable names
@@ -277,30 +265,21 @@ char *ro_name[]={
       "wims_window",
       "worksheet"
 };
-enum {
-    ro_cmd, ro_empty, ro_lang, ro_module, ro_session, ro_special_parm,
-      ro_special_parm2, ro_special_parm3, ro_special_parm4, ro_useropts, ro_wsession, ro_subsession, ro_win, ro_worksheet
-} RO_NAMES;
-#define RO_NAME_NO (sizeof(ro_name)/sizeof(ro_name[0]))
+
+int RO_NAME_NO=(sizeof(ro_name)/sizeof(ro_name[0]));
 
 int cmd_type;
 char *commands[]={
     "intro" , "new" , "renew" , "reply" , "config" , "hint" , "help" ,
       "resume", "next", "getins", "getframe", "getfile", "close", "ref"
 };
-enum {
-    cmd_intro, cmd_new, cmd_renew, cmd_reply, cmd_config, cmd_hint, cmd_help,
-      cmd_resume, cmd_next, cmd_getins, cmd_getframe, cmd_getfile, cmd_close,
-      cmd_ref
-}COMMANDS;
-#define CMD_NO (sizeof(commands)/sizeof(commands[0]))
+
+int CMD_NO=(sizeof(commands)/sizeof(commands[0]));
 
 /* stat=0: saved variables
  * all names starting with wims_priv_ are also internal.
  */
-struct {
-    char *name; int stat;
-} internal_name[]={
+struct internal_name internal_name[]={
       {"accessright", 1}, /* right to access commercial resources */
       {"caller", 1}, /* caller session */
       {"check", 1}, /* for exam check use */
@@ -360,7 +339,7 @@ struct {
       {"useropts", 1}, /* user options */
       {"writable", 1}, /* writable variables in user file, words */
 };
-#define INTERNAL_NAME_NO (sizeof(internal_name)/sizeof(internal_name[0]))
+int INTERNAL_NAME_NO=(sizeof(internal_name)/sizeof(internal_name[0]));
 
 char *httpd_vars[]={
       "HTTP_ACCEPT",
@@ -389,7 +368,6 @@ char *unsetvars[]={
 };
 #define unsetvarcnt (sizeof(unsetvars)/sizeof(unsetvars[0]))
 
-enum {httpd_apache, httpd_wims};
 int httpd_type=httpd_apache;
 
 char *remote_addr=""; /* storing for performance */
@@ -399,29 +377,6 @@ char ref_name[2048], ref_base[2048];
 
 void put_special_page(char *pname);
 void useropts(void);
-
-#include "lines.c"
-#include "var.c"
-#include "config.c"
-#include "cleaning.c"
-#include "files.c"
-#include "pedia.c"
-#include "evalue.c"
-#include "test.c"
-#include "compare.c"
-#include "html.c"
-#include "mathml.c"
-#include "texmath.c"
-#include "rawmath.c"
-#include "insmath.c"
-#include "matrix.c"
-#include "score.c"
-#include "calc.c"
-#include "exec.c"
-#include "auth.c"
-#include "variables.c"
-#include "exam.c"
-#include "log.c"
 
 /* Make certain httpd variables readable by modules */
 void take_httpd_vars(void)
@@ -559,7 +514,7 @@ void manager_check(void)
       p=getenv("HTTPS");
       if(p==NULL || strcmp(p,"on")!=0) goto mend;
     }
- /* IPv4 IPv6*/
+/* IPv4 IPv6*/
     if(strcmp(remote_addr,"127.0.0.1")==0 || strcmp(remote_addr,"::1")==0) {
       int port, port2;
       char tester[128];

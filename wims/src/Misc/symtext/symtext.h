@@ -18,20 +18,9 @@
 #ifndef SYMTEXT_H
 #define SYMTEXT_H 1
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <math.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <signal.h>
 #include <time.h>
 
+#include "../../includes.h"
 #include "../../Lib/libwims.h"
 
 	/* Maximum of blocks. Limited to sizeof(short). */

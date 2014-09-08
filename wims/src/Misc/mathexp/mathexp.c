@@ -18,7 +18,6 @@
 /* Mathematical expression manipulations for WIMS */
 
 #include "mathexp.h"
-#include "../../Lib/libwims.h"
 
 char parmbuf[MAX_LINELEN+1];
 char *objline[MAX_OBJLINES];

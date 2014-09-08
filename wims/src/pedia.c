@@ -17,6 +17,7 @@
 
 /* This should be a rather independent routine, which are
  * used to interface an outside mathematical encyclopedia. */
+#include "wims.h"
 
 void exec_href(char *p);
 

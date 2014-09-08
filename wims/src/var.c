@@ -16,6 +16,7 @@
  */
 
 /* Low-level variable management routines. */
+#include "wims.h"
 
 #define VARBUF_LEN (256*1024)
 #define VARBUF_NUM 16
@@ -47,7 +48,7 @@ char *exportvars[]={
       "user",
       "version",
 };
-#define exportvarcnt (sizeof(exportvars)/sizeof(exportvars[0]))
+int exportvarcnt=(sizeof(exportvars)/sizeof(exportvars[0]));
 
 struct vartab {
     char *name, *val;
@@ -327,8 +328,6 @@ void unsetvar(char *vname)
     i=search_list(mainvartab,mainvarcnt,sizeof(mainvartab[0]),vname);
     if(i>=0) _setvar_(mainvartab+i,NULL);
 }
-
-#include "mathfonts.c"
 
 /* Get a variable's value. */
 char *_getvar(char *vname)

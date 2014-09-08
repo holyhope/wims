@@ -18,6 +18,7 @@
 /* This is part of wims source.
  * This file does computations and output.
  */
+#include "wims.h"
 
 int _sort_numeric, _sort_nocase;
 typedef struct SORT_STRUCT {char *str; double val; int serial;} SORT_STRUCT;
@@ -2059,12 +2060,6 @@ void calc_checkdata(char *p)
     }
 }
 
-typedef struct {
-    char *name;
-    int tag;
-    void (*routine) (char *p);
-} MYFUNCTION;
-
 /* tag!=0 if we don't want automatic substit(). */
 MYFUNCTION calc_routine[]={
       {"TeXmath", 0, texmath},
@@ -2274,5 +2269,5 @@ MYFUNCTION calc_routine[]={
       {"wordstolines", 0,      words2lines},
       {"wordstolist", 0,      words2items}
 };
-#define CALC_FN_NO (sizeof(calc_routine)/sizeof(calc_routine[0]))
+int CALC_FN_NO=(sizeof(calc_routine)/sizeof(calc_routine[0]));
 

@@ -16,6 +16,8 @@
  */
 /* routines to process variables */
 
+#include "wims.h"
+
 char *computed_var_start; /* pointer to read-in var def file */
 int session_var_ready=0;
 char last_host[32]="";

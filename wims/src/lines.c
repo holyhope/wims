@@ -14,9 +14,15 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+
 /* line input / output / translation routines
  * and error routines
  */
+#include <utime.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#include "wims.h"
 
 int is_class_module=0;
 
@@ -40,8 +46,9 @@ int lastftype;
 char outbuf[8192];
 char *outptr;
 
-  /* These modules can execute private programs.
-   * adm/ modules are always trusted, so need no definition here. */
+/* These modules can execute private programs.
+ * adm/ modules are always trusted, so need no definition here.
+ */
 char *trusted_modules="";
             /* bit 0: module is not trusted.
              * bit 1: file in wimshome.
@@ -51,7 +58,6 @@ int untrust=0;  /* non-zero if user detrusts the module. */
 
 int error_status=0;
 char pidbuf[32];
-#include <utime.h>
 
 void delete_pid(void);
 
@@ -150,7 +156,6 @@ void nametoolong(char *p)
     module_error("file_name_too_long");
 }
 
-enum{is_file, is_dir, is_exec, is_fifo, is_socket, is_unknown};
 off_t ftest_size;
 
       /* A simple front-end of stat(). */
@@ -868,13 +873,7 @@ void create_pid(void)
     }
 }
 
-struct {
-    char cmd[MAX_EXEC_NAME+1];
-    unsigned int fd1, fd2;
-    int pipe_stdin[2];
-    int pipe_stdout[2];
-    int pipe_stderr[2];
-} mxtab[MAX_MULTIEXEC];
+struct mxtab mxtab[MAX_MULTIEXEC];
 int mxno=0;
 
 int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])

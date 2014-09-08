@@ -17,10 +17,9 @@
 /* line input / output / translation routines
  * and error routines
  */
+#include "wimslogd.h"
 
 int exec_wait;
-
-void accessfile(char *content, char *type, char *s,...);
 
 int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
 {

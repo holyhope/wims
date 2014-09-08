@@ -25,6 +25,8 @@ CRYPTLIB=@CRYPTLIB@
 lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 
 wimsd=@BUILD_WIMSD@
+wimsobjects=auth.o calc.o cleaning.o compare.o config.o evalue.o exam.o exec.o files.o html.o insmath.o lines.o log.o mathfonts.o mathml.o matrix.o pedia.o rawmath.o score.o texmath.o test.o var.o variables.o wims.o
+
 
 all:: lib$(libtype) progs setupwims mkindex
 allwims:: lib$(libtype) progs setupwims
@@ -37,9 +39,11 @@ distconfig: configure.in
 	autoconf
 	autoheader
 
+%.o: %.c
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
 clean::
-	rm -f wims wims.o Common/*.o 2>/dev/null
-	rm -f Common/*.o
+	rm -f wims *.o Common/*.o 2>/dev/null
 	cd Wimsd; make clean
 	cd Wimslogd; make clean
 	cd Lib; make clean
@@ -105,11 +109,8 @@ distclean::
 	find . -name Makefile | xargs rm -f
 	find .. -name .wimshome | xargs rm -f
 
-wims.o: *.c *.h
-	$(cc) $(cflags) $(CPPFLAGS) $(defs) -c wims.c
-
-wims: wims.o Lib/libwims.o
-	$(cc) $(LDFLAGS) -o wims Lib/libwims.o wims.o $(lopt)
+wims: $(wimsobjects) Lib/libwims.o
+	$(cc) $(LDFLAGS) Lib/libwims.o $(wimsobjects) $(lopt) -o wims
 	$(STRIP) wims
 	./wims table
 

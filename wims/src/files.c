@@ -15,6 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "wims.h"
+
 void secure_exec(void);
 
 int fwrite_calls=0; /* number of files */

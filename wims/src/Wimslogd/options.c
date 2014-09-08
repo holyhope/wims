@@ -16,6 +16,7 @@
  */
 
 /* daemon option processing */
+#include "wimslogd.h"
 
 char opt_class[MAX_CLASSLEN+1];
 char opt_module[MAX_FNAME+1];

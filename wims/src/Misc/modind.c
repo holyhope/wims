@@ -19,7 +19,6 @@
  * used to index modules for search engine.
  */
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
 #include "translator_.h"
 #include "suffix.h"

@@ -10,9 +10,9 @@ lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 
 defines=@DEFINES@
 static=
-SETENV_OBJS=@SETENV_OBJS@ common.o
+SETENV_OBJS=@SETENV_OBJS@
 STRIP=@STRIP@
-
+commonobj= common.o
 progstatic=pari yacas maxima scilab
 progdynamic=gap octave m2
 progs=$(progstatic) $(progdynamic)
@@ -33,19 +33,19 @@ install: $(progs)
 	$(STRIP) $(progs)
 	cp $(progs) $(PUBDIR)
 
-m2: m2.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) m2.o $(SETENV_OBJS) $(lopt) -o $@
-octave: octave.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) octave.o $(SETENV_OBJS) $(lopt) -o $@
-gap: gap.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) gap.o $(SETENV_OBJS) $(lopt) -o $@
+m2: m2.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) m2.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
+octave: octave.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) octave.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
+gap: gap.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) gap.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
 
-pari: pari.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) pari.o $(SETENV_OBJS) $(lopt) -o $@
-maxima: maxima.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) maxima.o $(SETENV_OBJS) $(lopt) -o $@
-scilab: scilab.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) scilab.o $(SETENV_OBJS) $(lopt) -o $@
+pari: pari.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) $(static) pari.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
+maxima: maxima.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) $(static) maxima.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
+scilab: scilab.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) $(static) scilab.o $(commonobj) $(SETENV_OBJS) $(lopt) -o $@
 
-yacas: yacas.o $(SETENV_OBJS)
-	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(SETENV_OBJS) $(lopt) -o yacas
+yacas: yacas.o $(commonobj) $(SETENV_OBJS)
+	$(cc) $(cflags) $(LDFLAGS) $(static) yacas.o $(commonobj) $(SETENV_OBJS) $(lopt) -o yacas

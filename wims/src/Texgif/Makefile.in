@@ -9,7 +9,7 @@ CPPFLAGS=@CPPFLAGS@
 defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
-texgifobjects=basic.o colors.o tfm.o gf.o font.o image.o dvi.o
+O=basic.o colors.o tfm.o gf.o font.o image.o dvi.o texgif.o
 
 all: texgif
 
@@ -24,8 +24,8 @@ distclean: clean
 	rm -f $(wims_home)/public_html/bin/tex..gif
 	rm -f Makefile
 
-texgif: *.h $(texgifobjects)
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(texgifobjects) texgif.c -lgd $(lopt) -o texgif
+texgif: *.h $(O)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(O) -lgd $(lopt) -o texgif
 	$(STRIP) texgif
 	cp texgif $(wims_home)/public_html/bin/tex..gif
 

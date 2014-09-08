@@ -17,8 +17,6 @@
 
 /* Computes class connection count (unit: student-minutes) */
 
-#include "../wimsdef.h"
-#include "../includes.h"
 #include "../Lib/libwims.h"
 
 /* The maximal number of sessions within one day */

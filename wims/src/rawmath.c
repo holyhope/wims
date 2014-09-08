@@ -14,18 +14,79 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "wims.h"
 
 /* internal variable */
 int rawmath_easy=0;
 
-#include "hmname.c"
+struct hmname hmname[]={
+      {"CC",		"", ""},
+      {"Delta",		"", ""},
+      {"Gamma",		"", ""},
+      {"Inf",		"$(m_infty)","\\infty"},
+      {"Lambda",	"", ""},
+      {"NN",		"", ""},
+      {"Omega",		"", ""},
+      {"Phi",		"", ""},
+      {"Pi",		"", ""},
+      {"Psi",		"", ""},
+      {"QQ",		"",""},
+      {"RR",		"",""},
+      {"Sigma",		"",""},
+      {"Xi",		"",""},
+      {"ZZ",		"",""},
+      {"alpha",		"", ""},
+      {"beta",		"", ""},
+      {"cap",		"",""},
+      {"chi",		"",""},
+      {"cup",		"",""},
+      {"delta",		"",""},
+      {"div",		"&divide;", "&divide;"},
+      {"divide",	"&divide;","&divide;"},
+      {"epsilon",	"$(m_varepsilon)","\\varepsilon"},
+      {"eta",		"",""},
+      {"exist",		"$(m_exists)","\\exists"},
+      {"exists",	"", ""},
+      {"forall",	"",""},
+      {"gamma",		"",""},
+      {"in",		"",""},
+      {"inf",		"$(m_infty)","\\infty"},
+      {"infinity",	"$(m_infty)","\\infty"},
+      {"infty",		"",""},
+      {"intersect",	"$(m_cap)", "\\cap"},
+      {"intersection",	"$(m_cap)", "\\cap"},
+      {"iota",		"",""},
+      {"kappa",		"",""},
+      {"lambda",	"", ""},
+      {"mu",		"",""},
+      {"nabla",		"",""},
+      {"neq",		"",""},
+      {"nu",		"",""},
+      {"omega",		"",""},
+      {"pi",		"",""},
+      {"pm",		"",""},
+      {"psi",		"",""},
+      {"rho",		"",""},
+      {"sigma",		"",""},
+      {"subset",	"", ""},
+      {"subseteq",	"",""},
+      {"tau",		"",""},
+      {"theta",		"",""},
+      {"times",		"&times;", "\\times"},
+      {"union",		"$(m_cup)", "\\cup"},
+      {"varepsilon",	"",""},
+      {"varphi",	"", ""},
+      {"x",		"","x"},
+      {"xi",	"",""},
+      {"y",		"","y"},
+      {"z",		"","z"},
+      {"zeta",	"",""},
+};
+int hmname_no=(sizeof(hmname)/sizeof(hmname[0]));
+
 enum {RM_UNKNOWN, RM_FN, RM_VAR, RM_PREFIX};
 
-struct {
-    char *name;
-    int style;
-    char *replace;
-} mathname[]={
+struct mathname mathname[]={
       {"Arc",     RM_PREFIX, "arc"},
       {"Arg",     RM_PREFIX, "arg"},
       {"Ci",      RM_FN,        ""},
@@ -61,7 +122,7 @@ struct {
       {"z",       RM_VAR,       ""},
       {"zeta",    RM_FN,        ""},
 };
-#define mathname_no (sizeof(mathname)/sizeof(mathname[0]))
+int mathname_no=(sizeof(mathname)/sizeof(mathname[0]));
 char rm_vbuf[MAX_LINELEN+1],rm_fbuf[MAX_LINELEN+1];
 char *rm_uservar[MAX_LINELEN+1],*rm_userfn[MAX_LINELEN+1];
 int  rm_uservars,rm_userfns;

@@ -19,6 +19,8 @@
  * The regular session cleaner has been moved to wimslogd.
  */
 
+#include "wims.h"
+
 void cleantmpdir(void)
 {
     char buf[MAX_LINELEN+1], *p1, *p2;

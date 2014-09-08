@@ -20,7 +20,7 @@
 #define MAX_LINES 64
 #define MAX_CHARS 32
 
-#include "../wims.h"
+#include "../includes.h"
 
 char basetab[MAX_LINES][MAX_CHARS];
 int carry[MAX_LINES][MAX_CHARS+8];

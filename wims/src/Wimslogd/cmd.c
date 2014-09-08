@@ -14,6 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "wimslogd.h"
 
 /* daemon command processing */
 
@@ -64,10 +65,7 @@ void cmd_recordcnt(char *p)
     snprintf(textbuf+3,16,"%d",datafile_recordnum(p1));
 }
 
-struct {
-    char *name;
-    void (*routine) (char *p);
-} cmdlist[]={
+struct cmdlist cmdlist[]={
         {"forkcnt",    cmd_forklist},
         {"forkcount",    cmd_forklist},
         {"forklist",    cmd_forklist},
@@ -82,7 +80,7 @@ struct {
         {"scorelog",    cmd_scorelog},
         {"test",    cmd_test},
 };
-#define cmdcnt (sizeof(cmdlist)/sizeof(cmdlist[0]))
+int cmdcnt=(sizeof(cmdlist)/sizeof(cmdlist[0]));
 
 void cmd(void)
 {

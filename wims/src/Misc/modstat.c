@@ -18,10 +18,10 @@
 /* This is an internal program,
  * used to show statistics of frequentation, module by module. */
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
+
 #define MAX_FLEN 102400
-#define MAX_LANGS   16
+#define MAX_LANGS MAX_LANGUAGES /*#define MAX_LANGS   16*/
 char mbuf[MAX_LINELEN+1];
 char mbase[MAX_LINELEN+1];
 char indexfile[MAX_LINELEN+1];

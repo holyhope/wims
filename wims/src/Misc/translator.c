@@ -27,9 +27,8 @@
 #define sourcelim 16*1024*1024
 
 /***************** Nothing should need change hereafter *****************/
-#include "suffix.h"
-#include "../wims.h"
 #include "../Lib/libwims.h"
+#include "suffix.h"
 
 char *inpbuf, outbuf[2*(MAX_LINELEN+1)];
 char *dicbuf;

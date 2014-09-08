@@ -16,6 +16,7 @@
  */
 
 /* fork management */
+#include "wimslogd.h"
 
 #define MAX_FORK 1024
 #define MAX_DELAY 1500	/* At most these seconds of execution */

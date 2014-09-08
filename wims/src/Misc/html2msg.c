@@ -23,9 +23,10 @@
 #define buflim 1024*1024*16
 
 /***************** Nothing should need change hereafter *****************/
-#include "../wims.h"
+
 #include "../Lib/libwims.h"
-#include "../hmname.c"
+
+#define hmsame "\\CC\\Delta\\Gamma\\Lambda\\NN\\Omega\\Phi\\Pi\\Psi\\QQ\\RR\\Sigma\\Xi\\ZZ\\alpha\\beta\\cap\\chi\\cup\\delta\\div\\eta\\exists\\forall\\gamma\\in\\infty\\iota\\kappa\\lambda\\mu\\nabla\\nu\\omega\\pi\\pm\\psi\\rho\\sigma\\subset\\subseteq\\tau\\theta\\times\\varepsilon\\varphi\\xi\\zeta\\"
 
 char fn1[1024]="", fn2[1024]="";
 char mathbuf[MAX_LINELEN+1];

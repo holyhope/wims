@@ -14,8 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "wims.h"
 
-    /* automatic selection of math rendering method */
+/* automatic selection of math rendering method */
 
 void exec_instex(char *p);
 void calc_instexst(char *p);

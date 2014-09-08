@@ -18,6 +18,7 @@
 /* Subroutines to process matrices
  * messages: inconsistent_columns
  */
+#include "wims.h"
 
 /* Translate error-laden raw matrix input into a standard form. */
 void rawmatrix(char *p)

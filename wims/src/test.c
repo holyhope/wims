@@ -22,6 +22,8 @@
 
 /* No automatic substitution is done when this
  * routine is called. */
+
+#include "wims.h"
 void exec_test(char *p)
 {
     if(!trusted_module()) module_error("not_trusted");

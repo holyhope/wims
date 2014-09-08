@@ -17,20 +17,9 @@
 
 /* Caches and its management */
 
-/* General information of an exercise. Size: 10 bytes. */
-typedef struct exodata {
-    unsigned short int num;
-    float weight, require;
-} exodata;
+#include "wimslogd.h"
 
-struct classdata {
-    char name[MAX_CLASSLEN+1];
-    time_t start, last, modif;
-    int exocnt, examcnt, examstart, access;
-    struct exodata exos[MAX_CLASSEXOS];
-    char ctbuf[CTBUFLEN];
-    short int ctptr[MAX_EXOS];
-} classdata[MAX_CLASSCACHE];
+struct classdata classdata[MAX_CLASSCACHE];
 
 struct classcache {
     struct classdata *ptr;

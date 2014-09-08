@@ -15,8 +15,10 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-    /* this is part of wims server source.
-     * This file does execution commands. */
+/* this is part of wims server source.
+ * This file does execution commands.
+ */
+#include "wims.h"
 
 static void _skip_contents(int isif);
 
@@ -1067,7 +1069,7 @@ void count_insert(void)
 int animated_ins=0;
 int grouped_ins=0;
 
-    /* generic insertion */
+/* generic insertion */
 void _exec_ins(char *p, char *script_name,char *format)
 {
     char *s, *b, *at, *tag, *tag2, *al, *fmt, *mh;
@@ -1529,10 +1531,7 @@ void exec_msg(char *p)
     *p=0;
 }
 
-struct {
-    char *name;
-    int (*routine) (char *p, char *list[], int max);
-} distr_cmd[]={
+struct distr_cmd distr_cmd[]={
       {"char",      NULL},
       {"charof",    NULL},
       {"chars",     NULL},
@@ -1552,7 +1551,7 @@ struct {
       {"wordsof",   cutwords}
 };
 
-#define distr_cmd_no (sizeof(distr_cmd)/sizeof(distr_cmd[0]))
+int distr_cmd_no=(sizeof(distr_cmd)/sizeof(distr_cmd[0]));
 
 /* distribute a number of lines, items, etc. into a list of vars. */
 void exec_distribute(char *p)
@@ -1908,7 +1907,7 @@ MYFUNCTION exec_routine[]={
       {"wordstolist",EXEC_STRING|EXEC_SUBST|EXEC_USECALC,words2items},
       {"writefile", EXEC_DIR|EXEC_SUBST,    filewrite},
 };
-#define EXEC_FN_NO (sizeof(exec_routine)/sizeof(exec_routine[0]))
+int EXEC_FN_NO=(sizeof(exec_routine)/sizeof(exec_routine[0]));
 
 /* internal: to skip the content of a false if/while. */
 static void _skip_contents(int isif)

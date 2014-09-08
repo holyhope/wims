@@ -19,6 +19,7 @@
  * it erases obsolete session directories.
  * Regular checkup every 10 minutes or so.
  */
+#include "wimslogd.h"
 
 /* internal */
 void _cleaning(char *di,int hardcheck)

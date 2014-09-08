@@ -15,8 +15,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /* subroutines for texmath */
+#include "wims.h"
 
-        /* Careful! increasing this number risks stack overflow. */
+/* Careful! increasing this number risks stack overflow. */
 #define MAX_FACTORS 256
 
 enum {
@@ -93,12 +94,7 @@ void tex_int(char *p) {  _tex_sums(p,"int",1); }
 void tex_sum(char *p) {  _tex_sums(p,"sum",0); }
 void tex_prod(char *p) { _tex_sums(p,"prod",0);}
 
-struct {
-    char *name;
-    int expind;
-    char *left, *right;
-    void (*routine) (char *p);
-} tmathfn[]={
+struct tmathfn tmathfn[]={
       {"Arg",      1,  "\\rm{Arg}",      "\\right)"},
       {"Int",      2,  "","",        tex_int},
       {"Prod",     2,  "","",        tex_prod},
@@ -146,11 +142,9 @@ struct {
       {"th",       1,  "\\rm{th}",      "\\right)"}
 };
 
-#define tmathfn_no (sizeof(tmathfn)/sizeof(tmathfn[0]))
+int tmathfn_no=(sizeof(tmathfn)/sizeof(tmathfn[0]));
 
-struct {
-    char *name, *tex;
-} tmathvar[]={
+struct tmathvar tmathvar[]={
       {"CC",      "\\mathbb{C}"},
       {"Delta",   "\\Delta"},
       {"Gamma",   "\\Gamma"},
@@ -198,7 +192,7 @@ struct {
       {"zeta",   "\\zeta"}
 };
 
-#define tmathvar_no (sizeof(tmathvar)/sizeof(tmathvar[0]))
+int tmathvar_no=(sizeof(tmathvar)/sizeof(tmathvar[0]));
 
 
 /* find the end of an additive term. */

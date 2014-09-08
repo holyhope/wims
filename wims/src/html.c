@@ -16,6 +16,7 @@
  */
 
 /* html form simplification routines */
+#include "wims.h"
 
 #define MAX_MENU_ITEMS 256
 

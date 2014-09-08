@@ -56,17 +56,6 @@ char commbuf[BUFFERLEN+1];
 char *textptr;
 
 int cwdtype;
-enum {dir_home, dir_class, dir_session, dir_module};
-
-#include "fork.c"
-#include "wimslogdlines.c"
-#include "cache.c"
-#include "files.c"
-#include "socket.c"
-#include "log.c"
-#include "cleaning.c"
-#include "housekeep.c"
-#include "homedir.c"
 
 /* check whether there is anything to execute */
 void logexec(void)

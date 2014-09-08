@@ -14,10 +14,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#include "wimslogd.h"
 
 /* File manipulation */
 
-enum{is_file, is_dir, is_exec, is_fifo, is_socket, is_unknown};
 struct stat ftst;
 
 /* A simple front-end of stat(). */
@@ -91,4 +91,3 @@ char *datafile_fnd_record(char *p, int n, char bf[])
     mystrncpy(bf,pp,MAX_LINELEN);
     end: return bf;
 }
-

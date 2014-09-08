@@ -15,12 +15,15 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-      /* This file contains various configuration routines for wims. */
+/* This file contains various configuration routines for wims. */
 
-        /* Limitations are essentially for security reasons:
-         * to curb attacks by resource exhaustion of the server. */
+/* Limitations are essentially for security reasons:
+ * to curb attacks by resource exhaustion of the server.
+ */
 
-        /* maximal length of any module's variable definition file. */
+#include "wims.h"
+
+/* maximal length of any module's variable definition file. */
 int VAR_DEF_LENGTH_LIMIT=50000;
         /* maximal nesting level of substitutions. */
 int SUBST_LIMIT=16;
@@ -66,15 +69,15 @@ char *DEFAULT_INSPLOT_FONT="small";
 /* gnuplot intermediate graphics format */
 char *gnuplot_format="gif";
 
-  /* electronic address of site manager. */
+/* electronic address of site manager. */
 char *site_manager="wims@$httpd_HTTP_HOST";
-  /* Main configure file, this name cannot be configured! */
+/* Main configure file, this name cannot be configured! */
 char *config_file="../log/wims.conf";
 char PATH[512];  /* directory settings */
 #ifdef MACOSX
- char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/sw/bin:/usr/bin/X11:/usr/X11R6/bin";
+ char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/sw/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin";
 #else
- char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R6/bin:/opt/teTeX/bin";
+ char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin";
 #endif
 char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima";
@@ -132,25 +135,27 @@ char *ref_button_help_color="white";
 char *ref_button_bgcolor="#666666";
   /* button color */
 char *ref_button_color="white";
-  /* module log disabled by default */
+/* module log disabled by default */
 int modlog=0;
-  /* name of the variable definition file for every module.
-   * It is this file which defines the presence of the module.
-   * Better do not make it configurable. */
+/* name of the variable definition file for every module.
+ * It is this file which defines the presence of the module.
+* Better do not make it configurable.
+*/
 char var_def_file[256];
-  /* name of variable init file. Processed only when cmd=new or renew. */
+/* name of variable init file. Processed only when cmd=new or renew. */
 char *var_init_file="var.init";
-  /* name of variable calculation file. Parsed at each call. */
+/* name of variable calculation file. Parsed at each call. */
 char *main_var_proc_file="var.proc";
-  /* name of the main (programmable) html file. */
+/* name of the main (programmable) html file. */
 char *html_file="main.phtml";
-  /* Introduction page name */
+/* Introduction page name */
 char *intro_file="intro.phtml";
-  /* Reference page */
+/* Reference page */
 char *ref_file="wims_ref.phtml";
-  /* script to process different inserts.
-   * The two consecutive points in the name prohibits ordinary
-   * user execution of the script. */
+/* script to process different inserts.
+ * The two consecutive points in the name prohibits ordinary
+ * user execution of the script.
+ */
 char *insdraw_processor="insdraw..processor";
 char *insplot_processor="insplot..processor";
 char *tex2gif="bin/tex..gif";
@@ -211,12 +216,6 @@ int class_limit=200; /* limit of number of classes */
 int user_limit=5000; /* limit of total number of registered users */
 int class_user_limit=300; /* limit of users in one class */
 int forum_limit=100;  /* Limit of message boards */
-
-typedef struct {
-    char *name;
-    int is_integer;
-    void  *address;
-} CONFIG_DATA;
 
 CONFIG_DATA main_config[]={
       {"PATH",			0, &commonpath},
@@ -298,7 +297,7 @@ CONFIG_DATA main_config[]={
       {"vlink_color",		0, &vlink_color},
       {"workfile_limit",	1, &WORKFILE_LIMIT}
 };
-#define MAIN_CONFIG_NO (sizeof(main_config)/sizeof(main_config[0]))
+int MAIN_CONFIG_NO=(sizeof(main_config)/sizeof(main_config[0]));
 
 	/* processes the list of languages supported on the site */
 void language_list(void)
@@ -650,15 +649,14 @@ char *modindex[]={
       "version",
       "wims_version",
 };
-#define MODINDEX_NO (sizeof(modindex)/sizeof(modindex[0]))
+int MODINDEX_NO=(sizeof(modindex)/sizeof(modindex[0]));
+
 char *module_special_file[]={
     "intro","help"
 };
 #define MODSPEC_NO (sizeof(module_special_file)/sizeof(module_special_file[0]))
 
-#ifdef WEBMATH
-
-	/* read and treat module's INDEX file */
+/* read and treat module's INDEX file */
 void module_index(void)
 {
     char buf[MAX_NAMELEN+1], ind_buf[MAX_LINELEN+1];
@@ -731,8 +729,6 @@ void module_index(void)
      if(p==NULL || strcasecmp(p,"yes")!=0) isdevelmodule=0;
     }
 }
-
-#endif
 
 /* Set up a unique job identity as a 4-bytes integer */
 unsigned long create_job_ident(void)

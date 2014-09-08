@@ -15,6 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "wims.h"
+
 /* fonts which should have align=middle */
 char *middle_fonts=",y,beta,eta,mu,phi,rho,varphi,psi,\
 le,leq,ge,geq,pm,ne,neq,\

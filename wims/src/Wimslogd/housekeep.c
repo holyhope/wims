@@ -16,6 +16,9 @@
  */
 
 /* Daily housekeeping jobs. */
+
+#include "wimslogd.h"
+
 void housekeep(void)
 {
     char fname[1024];

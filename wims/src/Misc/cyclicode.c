@@ -25,7 +25,6 @@
   * Word 3: The starting status (starting from the first bit).
   */
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
 
 #define MAX_DEGREE 256

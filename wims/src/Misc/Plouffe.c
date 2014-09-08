@@ -39,7 +39,7 @@ char *post_msg[lang_no]={
 
 /***************** Nothing should need change hereafter *****************/
 
-#include "../wims.h"
+#include "../includes.h"
 
 char *parm;
 

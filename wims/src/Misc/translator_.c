@@ -20,7 +20,6 @@
 /*************** Customization: change values hereafter ****************/
 #include "suffix.h"
 #include "../Lib/libwims.h"
-#include "../wimsdef.h"
 #include "translator_.h"
 /* limit of dictionary entries */
 #define entrylim 32768

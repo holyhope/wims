@@ -24,7 +24,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "../wims.h"
+#include "../includes.h"
+#include "../wimsdef.h"
+
 char *cheater1="User-Agent: WIMS-webget";
 char *cheater2="Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, image/png, */*\r\n\
 Accept-Encoding: gzip\r\n\

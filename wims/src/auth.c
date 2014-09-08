@@ -16,6 +16,7 @@
  */
 
 /* This file contains user authentification routines */
+#include "wims.h"
 
 void refuse_log(int th);
 void set_module_prefix(void);

@@ -16,6 +16,7 @@
  */
 
 #include <utime.h>
+#include "wims.h"
 
 /* Subroutines to process examinations */
 

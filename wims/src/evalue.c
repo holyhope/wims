@@ -15,6 +15,8 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "wims.h"
+
 void calc_itemof(char *p);
 void calc_rowof(char *p);
 void calc_columnof(char *p);
@@ -156,14 +158,7 @@ char *substit(char *p)
     too_long: user_error("cmd_output_too_long"); return NULL;
 }
 
-enum {for_in, for_from};
-struct {
-    char var[MAX_NAMELEN+1];
-    int type;
-    double list[MAX_VALUE_LIST];
-    char *pos[MAX_VALUE_LIST];
-    double from, to, step;
-} forstruct;
+struct forstruct forstruct;
 
 int for_getvar(char *p)
 {

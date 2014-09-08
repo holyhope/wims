@@ -17,18 +17,6 @@
 
 #include "libwims.h"
 
-/*
-#include "mt19937ar.c"
-#include "errors.c"
-#include "liblines.c"
-#include "evalue.c"
-#include "math.c"
-#include "dir.c"
-#include "text.c"
-
-#include "levelcurve.c"
-*/
-
 void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *good,...)=string_modify1;
 
 char *fnd_position;

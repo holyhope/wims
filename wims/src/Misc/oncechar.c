@@ -24,8 +24,8 @@
  * Words entered by stdin. Output to stdout.
  */
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
+
 #define MAX_WORDLEN 1023
 char wbuf[MAX_WORDLEN+1];
 char selbuf[256];

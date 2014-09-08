@@ -28,7 +28,6 @@
 #include <sys/wait.h>
 #include <ctype.h>
 #include <gd.h>
-#include "config.h"
 #include "../Lib/libwims.h"
 
 /*#define MAX_LINELEN		16383 */

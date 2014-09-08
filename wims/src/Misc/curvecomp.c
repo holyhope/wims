@@ -48,7 +48,6 @@
 
 /***************** Nothing should need change hereafter *****************/
 
-#include "../wims.h"
 #include "../Lib/libwims.h"
 
 char curve1[2*MAX_LINELEN+2], curve2[2*MAX_LINELEN+2];

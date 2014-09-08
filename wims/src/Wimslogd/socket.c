@@ -16,6 +16,7 @@
  */
 
 /* WIMS log daemon, socket routines */
+#include "wimslogd.h"
 
 void errorquit(char *p)
 {
@@ -64,10 +65,6 @@ void sockok(char *p)
 {
     snprintf(textbuf,BUFFERLEN-16,"OK\n%s",p);
 }
-
-#include "options.c"
-#include "score.c"
-#include "cmd.c"
 
 void answer(int fh)
 {

@@ -16,6 +16,8 @@
  */
 /* Routines to update home directory. */
 
+#include "wimslogd.h"
+
 /* The following directories will be relocatable.
  * Clusterable directories (log, backup) should be avoided.
  */

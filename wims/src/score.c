@@ -16,6 +16,7 @@
  */
 
 /* Routines treating user scores. */
+#include "wims.h"
 
 double oldfactor=0.85;     /* quality factor, should remain stable. */
 
