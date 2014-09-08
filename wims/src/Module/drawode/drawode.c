@@ -255,7 +255,7 @@ void read_params(const char *args)
       args=p+1;
       i++;
     }
-  if (! finite(values[i]))
+  if (! isfinite(values[i]))
     {
       fprintf(stderr, "Invalid parameter value.\n");
       exit(1);
