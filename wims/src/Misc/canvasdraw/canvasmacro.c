@@ -69,20 +69,18 @@ function user_draw(evt){\
  if( y_use_snap_to_grid == 1 ){\
   y = snap_to_y(y);\
  };\
- var num = %d;var inputs;var marge = 20;\
+ var num = %d;var inputs;\
  if(evt.which == 1){\
   var inputs;var xi;var yi;var wi;var hi;\
-  var div_x = findPosX(canvas_div);\
-  var div_y = findPosY(canvas_div);\
   var found = 0;\
   if( start_input_cnt < input_cnt){\
    for(var p = start_input_cnt ; p < input_cnt ; p++ ){\
     inputs = document.getElementById(\"canvas_input\"+p);\
-    xi = findPosX(inputs) - div_x;\
-    yi = findPosY(inputs) - div_y;\
-    wi = marge + inputs.clientWidth;\
-    hi = marge + inputs.clientHeight;\
-    if( x > xi - marge && x < xi + wi && y > yi - hi && y < yi + marge ){\
+    xi = findPosX(inputs) - canvas_rect.left;\
+    yi = findPosY(inputs) - canvas_rect.top;\
+    wi = 4 + inputs.clientWidth;\
+    hi = 4 + inputs.clientHeight;\
+    if( x > xi - wi && x < xi + wi && y > yi - hi && y < yi + hi ){\
      found = 1;\
     };\
    };\
