@@ -74,11 +74,7 @@ char *site_manager="wims@$httpd_HTTP_HOST";
 /* Main configure file, this name cannot be configured! */
 char *config_file="../log/wims.conf";
 char PATH[512];  /* directory settings */
-#ifdef MACOSX
- char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/sw/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin";
-#else
- char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin";
-#endif
+char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin:/usr/local/texbin";
 char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima";
 char *pari_command="gp -f -q -p 150000";
