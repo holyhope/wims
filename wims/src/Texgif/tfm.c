@@ -48,7 +48,7 @@ void loadtfm(char *fname)
     call_sh("cp `kpsewhich %s.tfm` %s",fname,tmpdir);
     len=getfile(namebuf,&tfmbuf); unlink(namebuf);
     if(len<0) {
-	error("Error reading tfm file.");
+	texgif_error("Error reading tfm file.");
     }
     for(i=0;i<12;i++) tfmhd[i]=texint(tfmbuf+2*i,2);
     tfm.bc=tfmbc; tfm.ec=tfmec;

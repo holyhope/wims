@@ -64,7 +64,7 @@ void process_formula(char *p)
 {
     char *p3, bf[MAX_LINELEN+1];
 
-    if(strlen(p)>=MAX_LINELEN) error("formula too long");
+    if(strlen(p)>=MAX_LINELEN) oef_error("formula too long");
     while((p3=strstr(p,"&lt;"))!=NULL) memmove(p3," <  ",4);
     while((p3=strstr(p,"&gt;"))!=NULL) memmove(p3," >  ",4);
     for(p3=strchr(p,'\n'); p3!=NULL; p3=strchr(p3,'\n')) *p3=' ';

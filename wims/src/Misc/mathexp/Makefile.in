@@ -8,7 +8,7 @@ CPPFLAGS=@CPPFLAGS@
 defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
-objects=tables.o basic.o extract.o type.o not.o mathexp.o
+O=tables.o basic.o extract.o type.o not.o mathexp.o
 all:: mathexp
 
 %.o: %.c
@@ -22,7 +22,7 @@ distclean:
 	cd $(wims_home)/public_html/bin; rm -f mathexp 2>/dev/null; cd ../../src/Misc/mathexp
 	rm -f Makefile
 
-mathexp: $(objects)
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(objects) $(lopt) -o mathexp
+mathexp: $(O)
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(O) $(lopt) -o mathexp
 	$(STRIP) $@
 	cp $@ $(wims_home)/public_html/bin

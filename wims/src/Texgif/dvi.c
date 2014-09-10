@@ -132,7 +132,7 @@ void DVI_bop(void)
 	minx=pagedata[pageptr].minx;
 	maxy=pagedata[pageptr].maxy;
 	miny=pagedata[pageptr].miny;
-	if(maxx<=minx || maxy<=miny) error("Empty page.");
+	if(maxx<=minx || maxy<=miny) texgif_error("Empty page.");
 	createimage(maxx-minx,maxy-miny);
 	currentcolor=color_black;
 	p=getenv("w_instex_color");
@@ -145,7 +145,7 @@ void DVI_nop(void) {}
 int DVI_put(int p)
 {
     int cc, ct, x1, x2, y1, y2;
-    if(d_f<0) error("Bad dvi: trying to put non-existing font.");
+    if(d_f<0) texgif_error("Bad dvi: trying to put non-existing font.");
     if(p==0) cc=*dviptr; else cc=texint(dviptr+1,p);
     dviptr+=p;
     if(cc<wfont[d_f].bc || cc>wfont[d_f].ec) return -1;
@@ -210,7 +210,7 @@ void DVI_fnt_num(int p)
     if(p==0) fnum=*dviptr-171; else fnum=texint(dviptr+1,p);
     dviptr+=p;
     for(d_f=0; d_f<fontcnt && wfont[d_f].num!=fnum; d_f++);
-    if(d_f>=fontcnt) error("Bad dvi: using font before defining it.");
+    if(d_f>=fontcnt) texgif_error("Bad dvi: using font before defining it.");
 }
 
 void DVI_fnt_def(int p)
@@ -221,20 +221,20 @@ void DVI_fnt_def(int p)
     double fratio;
     union { unsigned long c; char C[4]; } U;
 
-    if(fontcnt>=FONT_NUMBER_LIMIT) error("Font number exceeded design capacity.");
+    if(fontcnt>=FONT_NUMBER_LIMIT) texgif_error("Font number exceeded design capacity.");
     fnum=texint(++dviptr,p); dviptr+=p;
     for (i = 0; i <= 3; i++) U.C[i] = dviptr[i];
     c=U.c; dviptr+=4;
     s=texint(dviptr,4); dviptr+=4;
     d=texint(dviptr,4); dviptr+=4;
     a=*dviptr++; l=*dviptr++;
-    if(a+l>1000 || a+l<1) error("Bad dvi: bad font name.");
+    if(a+l>1000 || a+l<1) texgif_error("Bad dvi: bad font name.");
     memmove(fname,dviptr,a+l); fname[a+l]=0; dviptr+=a+l-1;
     if(pass==1) {
 	fdensity=(double) density*((double) s/d);
 	if(loadfont(fname, c, fdensity, wfont+fontcnt)==NULL) {
 	    if(loadfont("cmr10",0,fdensity,wfont+fontcnt)==NULL)
-	      error("Font panick: even cmr10 cannot be found.");
+	      texgif_error("Font panick: even cmr10 cannot be found.");
 	    else fprintf(stderr,"Font %s not found; replace by cmr10.\n",fname);
 	}
 	wfont[fontcnt].num=fnum;
@@ -247,7 +247,7 @@ void DVI_fnt_def(int p)
 
 void DVI_push(void)
 {
-    if(dvistackptr>=DVI_STACK_LIMIT) error("dvi stack overflow.");
+    if(dvistackptr>=DVI_STACK_LIMIT) texgif_error("dvi stack overflow.");
     dvistack[dvistackptr].h=d_h;
     dvistack[dvistackptr].v=d_v;
     dvistack[dvistackptr].w=d_w;
@@ -259,7 +259,7 @@ void DVI_push(void)
 
 void DVI_pop(void)
 {
-    if(dvistackptr<=0) error("Bad dvi file: dvi stack underflow.");
+    if(dvistackptr<=0) texgif_error("Bad dvi file: dvi stack underflow.");
     dvistackptr--;
     d_h=dvistack[dvistackptr].h;
     d_v=dvistack[dvistackptr].v;
@@ -306,10 +306,10 @@ void dvi(void)
 
     snprintf(namebuf,sizeof(namebuf),"%s/texgif.dvi",tmpdir);
     dvilen=getfile(namebuf,&dvibuf);
-    if(dvilen<=0) error("dvi file not found.");
+    if(dvilen<=0) texgif_error("dvi file not found.");
     dviptr=dvibuf; fontcnt=0;
     if(*dviptr++!=dvi_pre || *dviptr++!=2) {
-	/* baddvi: */ error("Bad dvi file header.");
+	/* baddvi: */ texgif_error("Bad dvi file header.");
     }
     num=texint(dviptr,4); dviptr+=4;
     den=texint(dviptr,4); dviptr+=4;
@@ -368,11 +368,11 @@ printf("dvi file: num=%d, den=%d, ratio=%f, mag=%d, density=%d\n",
 		case dvi_fnt_def1: case dvi_fnt_def2: case dvi_fnt_def3:
 		case dvi_fnt_def4: DVI_fnt_def(*dviptr-dvi_fnt_def1+1); break;
 
-		case dvi_pre: error("Bad dvi file: pre within file.");
+		case dvi_pre: texgif_error("Bad dvi file: pre within file.");
 		case dvi_post: DVI_post(); break;
 		case dvi_post_post: DVI_post_post(); break;
 
-		default: error("Bad dvi file: unknown command.");
+		default: texgif_error("Bad dvi file: unknown command.");
 	    }
 	}
     }

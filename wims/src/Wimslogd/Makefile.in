@@ -10,7 +10,7 @@ defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L../../lib -lwims -lm
 
-wimslogdobjects=cache.o cleaning.o cmd.o files.o fork.o homedir.o housekeep.o log.o options.o socket.o wimslogdlines.o score.o wimslogd.o
+O=cache.o cleaning.o cmd.o files.o fork.o homedir.o housekeep.o log.o options.o socket.o wimslogdlines.o score.o wimslogd.o
 
 all: wimslogd
 
@@ -25,8 +25,8 @@ distclean:
 	rm -f $(wims_home)/bin/wimslogd
 	rm -f Makefile
 
-wimslogd: $(wimslogdobjects)
-	$(cc) $(LDFLAGS) $(defines) $(wimslogdobjects) $(lopt) -o wimslogd
+wimslogd: $(O)
+	$(cc) $(LDFLAGS) $(defines) $(O) $(lopt) -o wimslogd
 	$(STRIP) wimslogd
 	rm -f $(wims_home)/tmp/log/wimslogd.pid $(wims_home)/sessions/.wimslogd
 	cp wimslogd $(wims_home)/tmp/log/wimslogd.new

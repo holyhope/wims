@@ -7,7 +7,7 @@
 #define MAX_PARAM   1024
 
 extern int inlen, primserial, prepcnt;
-void error(char *s);
+void msg_error(char *s);
 void subst(char *p);
 void bailout(int i1, int i2, char *msg);
 char *substit(char *p);

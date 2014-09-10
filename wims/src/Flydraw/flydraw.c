@@ -121,7 +121,6 @@ int main(int argc, char *argv[])
 {
   int i; for (i = 0; i <= JC_NB_MATRICES; i++)
 	   matrices_pavage [i][0] = matrices_pavage[i][3] = 1;
-    error1=error; error2=error; error3=error;
     substitute=substit;
     ev_varcnt=&varcnt; ev_var=vartab;
     if(argc==2 && strcasecmp(argv[1],"table")==0) {

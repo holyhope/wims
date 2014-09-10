@@ -9,7 +9,7 @@ CPPFLAGS=@CPPFLAGS@
 ranlib=@RANLIB@
 defines=@DEFINES@
 SETENV_OBJS=@SETENV_OBJS@
-libobjects=dir.o errors.o evalue.o levelcurve.o liblines.o math.o text.o mt19937ar.o libwims.o
+O=dir.o evalue.o levelcurve.o liblines.o math.o text.o mt19937ar.o libwims.o
 
 all: libwims.a
 
@@ -18,8 +18,8 @@ static: libwims.a
 %.o: %.c
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
-libwims.a: $(libobjects) $(SETENV_OBJS)
-	ar rc $@ $(libobjects) $(SETENV_OBJS)
+libwims.a: $(O) $(SETENV_OBJS)
+	ar rc $@ $(O) $(SETENV_OBJS)
 	$(ranlib) $@
 	cp $@ $(wims_home)/lib
 

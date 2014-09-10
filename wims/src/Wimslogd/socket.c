@@ -20,7 +20,7 @@
 
 void errorquit(char *p)
 {
-    error(p); exit(1);
+    wimslogd_error(p); exit(1);
 }
 
 void opensock(void)

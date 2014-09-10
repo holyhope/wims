@@ -156,7 +156,7 @@ void loadgf(char *fname, int density)
     snprintf(namebuf,sizeof(namebuf),"%s/texgf.%dgf",tmpdir,density);
     len=getfile(namebuf,&gfbuf);
     if(len<=0) {
-	error("Metafont failed.");
+	texgif_error("Metafont failed.");
     }
     gfbuflen=len;
 }

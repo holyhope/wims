@@ -42,4 +42,4 @@ extern struct specialfn {
 
 extern int specialfn_no;
 extern int prepcnt;
-void error(char *s);
+void (*sp_error)(char *s);

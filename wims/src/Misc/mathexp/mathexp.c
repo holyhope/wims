@@ -75,7 +75,6 @@ int main()
     char *p;
     int i;
     string_modify=string_modify1;
-    error1=error; error2=error; error3=error;
     p=getenv("wims_exec_parm");
     if(p==NULL || *p==0) error("No input data.");
     snprintf(parmbuf,sizeof(parmbuf),"%s",p);

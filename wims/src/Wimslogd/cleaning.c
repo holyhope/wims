@@ -36,12 +36,12 @@ void _cleaning(char *di,int hardcheck)
 	snprintf(session_name,sizeof(session_name),"%s/%s",
 		 di,ses->d_name);
 	if(lstat(session_name,&session_stat)) {
-	    error("wimslog cleaning(): session stat failure.");
+	    wimslogd_error("wimslog cleaning(): session stat failure.");
 	    return;
 	}
 	if(!S_ISDIR(session_stat.st_mode)) { /* not a directory: remove it. */
 	    if(remove(session_name)<0) {
-		error("wimslogd cleaning(): unable to chase squatter file.");
+		wimslogd_error("wimslogd cleaning(): unable to chase squatter file.");
 		return;
 	    }
 	}

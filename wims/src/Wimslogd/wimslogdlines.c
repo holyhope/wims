@@ -172,7 +172,7 @@ int call_sh(int wait,char *s,...)
     return execredirected(abuf[0],NULL,NULL,NULL,abuf);
 }
 
-void error(char *msg)
+void wimslogd_error(char *msg)
 {
     fprintf(stderr,"%s %s\n",nowstr, msg);
 }

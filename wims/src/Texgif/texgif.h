@@ -57,7 +57,7 @@ extern double blacker;
 extern int basedensity, density, compressratio, wrapexec, currentcolor, fontcnt;
 extern FONT wfont[FONT_NUMBER_LIMIT];
 /* from basic.c */
-void error(char *s);
+void texgif_error(char *s);
 int call_sh(char *s,...);
 int getfile(char *fname, unsigned char **buf);
 unsigned long int texint(void *bp, int l);

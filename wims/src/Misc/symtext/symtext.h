@@ -124,7 +124,7 @@ extern int options;
 #define op_matchall  (1<<8)
 #define op_alphaonly (1<<9)
 #define op_alnumonly (1<<10)
-void error(char *msg,...);
+void sym_error(char *msg,...);
 void _getdef(char buf[], char *name, char value[]);
 /* from match.c */
 int mt_string(struct block *blk, char *start, int level);

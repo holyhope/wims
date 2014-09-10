@@ -36,7 +36,7 @@ FONT *loadfont(char *fname, int checksum, int density, FONT *ft)
 
     newfont=0;
     for(cc=fname; isalnum(*cc); cc++);
-    if(*cc!=0) error("Bad font name.");
+    if(*cc!=0) texgif_error("Bad font name.");
     snprintf(namebuf,sizeof(namebuf),"%s/%d/%s.font",fontdir,density,fname);
     f=fopen(namebuf,"r"); if(f==NULL) {
 	renewfont: mf2font(fname,density);
@@ -47,7 +47,7 @@ FONT *loadfont(char *fname, int checksum, int density, FONT *ft)
     if(l<=0 || l>FILE_LENGTH_LIMIT) return NULL;
     fcache=xmalloc(l+16);
     l2=fread(fcache,1,l,f); if(l2!=l) {
-	error("Error reading font file.");
+	texgif_error("Error reading font file.");
     }
     memmove(&ft->checksum,fcache,sizeof(int));
     memmove(&ft->designsize,fcache+sizeof(int),sizeof(int));
@@ -61,7 +61,7 @@ FONT *loadfont(char *fname, int checksum, int density, FONT *ft)
     if(checksum!=ft->checksum && checksum!=0 && ft->checksum!=0) {
 	if(newfont) {
 	    fprintf(stderr,"%08X != %08X\n",checksum, ft->checksum);
-	    error("Font checksum discord.");
+	    texgif_error("Font checksum discord.");
 	}
 	free(fcache); unlink(namebuf); goto renewfont;
     }

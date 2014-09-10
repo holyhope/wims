@@ -24,7 +24,7 @@ extern struct param {
     short int type, save;
 } param[];
 
-void error(char *s);
+void oef_error(char *s);
 void subst(char *p);
 void repsubst(char *p);
 void replace_newline(char *p);

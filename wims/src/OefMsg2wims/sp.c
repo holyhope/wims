@@ -351,7 +351,7 @@ void parmprep(char *p,int ptype)
           }
           pn=pp; pp=p2+1; p2=find_matching(pp,')');
           if(p2==NULL) {
-            error("unmatched_parentheses");
+            sp_error("unmatched_parentheses");
             pp=p2; continue;
           }
           i=search_list(specialfn,specialfn_no,sizeof(specialfn[0]),namebuf);

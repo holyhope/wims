@@ -104,12 +104,12 @@ void suffix_dic(char *sdicname)
           k=strcmp((char*)suf[i-1].original,p1);
           if(k>0) {
             pp=strrchr(sdicname,'/'); if(pp==NULL) pp=sdicname; else pp++;
-            error("unsorted_dictionary %s: %s > %s.\n",
+            sym_error("unsorted_dictionary %s: %s > %s.\n",
                   pp,suf[i-1].original,p1);
           }
           if(k==0) {
             pp=strrchr(sdicname,'/'); if(pp==NULL) pp=sdicname; else pp++;
-            error("duplication_in_dictionary %s: %s.\n",pp,p1);
+            sym_error("duplication_in_dictionary %s: %s.\n",pp,p1);
           }
       }
       suf[i].original=(unsigned char*)p1; suf[i].olen=l=strlen(p1);

@@ -76,7 +76,7 @@ struct dic *prepare_dic(char *fname)
     char tbuf[256], buf[MAX_LINELEN+1];
     long int flen;
 
-    if(diccnt>=MAX_DICS) error("too_many_dictionaries");
+    if(diccnt>=MAX_DICS) sym_error("too_many_dictionaries");
     thisdic=dic+diccnt; diccnt++;
     thisdic->len=0;
     thisdic->start=entrycount;
@@ -97,10 +97,10 @@ struct dic *prepare_dic(char *fname)
 	p1=find_word_start(p1); pp=find_word_start(pp);
 	if(*p1==0) continue;
 	if(i>entrycount && compare(entry+i-1,p1)>0)
-	  error("unsorted_dictionary %s: %s > %s.\n",
+	  sym_error("unsorted_dictionary %s: %s > %s.\n",
 		fname,entry[i-1].original,p1);
 	if(i>entrycount && strcmp((char*)entry[i-1].original,p1)==0)
-	  error("duplication_in_dictionary %s: %s.\n",
+	  sym_error("duplication_in_dictionary %s: %s.\n",
 		fname,p1);
 	entry[i].original=(unsigned char*)p1;
         entry[i].replace=(unsigned char*)pp;

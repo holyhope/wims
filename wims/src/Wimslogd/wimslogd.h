@@ -146,7 +146,7 @@ int ftest(char *fname);
 enum{is_file, is_dir, is_exec, is_fifo, is_socket, is_unknown};
 
 /* from wimslogdlines.c */
-void error(char *msg);
+void wimslogd_error(char *msg);
 extern int commsock, answerlen, debugging;
 extern char commbuf[BUFFERLEN+1];
 #define textbuf (commbuf+sizeof(int))

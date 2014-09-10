@@ -77,7 +77,7 @@ struct poolstruct *getpool(struct block *blk)
 {
     struct poolstruct *pl;
 
-    if(nextpool>=MAX_POOLS) error("pool_overflow");
+    if(nextpool>=MAX_POOLS) sym_error("pool_overflow");
     pl=poolbuf+nextpool;
     pl->lastpool=blk->pool;
     blk->pool=nextpool; nextpool++;
@@ -90,14 +90,14 @@ struct poolstruct *getpool(struct block *blk)
 void putpool(struct poolstruct *pl)
 {
     nextpool--;
-    if(nextpool!=pl-poolbuf) error("internal_error pool leaking");
+    if(nextpool!=pl-poolbuf) sym_error("internal_error pool leaking");
     blockbuf[pl->block].pool=pl->lastpool;
 }
 
 int mt_this(struct block *blk, char *start, int level)
 {
     int r;
-    if(level > MAX_LEVELS) error("level_overflow %.20s",start);
+    if(level > MAX_LEVELS) sym_error("level_overflow %.20s",start);
     start=find_word_start(start);
     if(debug>=2) fprintf(stderr,"lvl=%d. Checking against block %d for %.10s.\n",level,(int)(blk-blockbuf),start);
     r = blk->fn(blk,start,level);
@@ -115,7 +115,7 @@ int mt_next(struct block *blk, char *start, int level)
           next=npool[currnpool].nextblock; currnpool=npool[currnpool].last;
       }
       while (next==-2 && currnpool>0);
-      if(next==-2) error("internal_error npool disorder");
+      if(next==-2) sym_error("internal_error npool disorder");
       if(debug>=3) fprintf(stderr,"Calling macro %d: next=%d.\n",
                        (int)(blk-blockbuf),next);
     }
@@ -304,7 +304,7 @@ int mt_permpick(struct block *blk, char *start, int level)
     if(pl==poolbuf || pl->dirty>0) {
       pl=getpool(blk); newpool=1;
       n=pl->len=blk->len;
-      if(nexttag + n >= MAX_BLOCKS) error("tag_overflow");
+      if(nexttag + n >= MAX_BLOCKS) sym_error("tag_overflow");
       pl->tag=tagbuf+nexttag; nexttag+=n;
     }
     if(pl->ind1==0 && pl->ind2==0) {
@@ -350,7 +350,7 @@ int mt_nomatch(struct block *blk, char *start, int level)
 
 void getnpool(int b)
 {
-    if(nextnpool>=MAX_POOLS) error("npool_overflow");
+    if(nextnpool>=MAX_POOLS) sym_error("npool_overflow");
     npool[nextnpool].nextblock=b;
     npool[nextnpool].last=currnpool;
     currnpool=nextnpool;
@@ -359,7 +359,7 @@ void getnpool(int b)
 
 void putnpool(void)
 {
-    if(nextnpool<=0) error("npool_underflow");
+    if(nextnpool<=0) sym_error("npool_underflow");
     nextnpool--;
 }
 

@@ -23,7 +23,7 @@ char maskbuf[MAX_LINELEN+1];
 void _text_cut(char *p, char *w)
 {
     char *p1, *p2;
-    p1=wordchr(p,w); if(p1==NULL) error2("syntax_error");
+    p1=wordchr(p,w); if(p1==NULL) error("syntax_error");
     *p1=0; p2=find_word_start(p1+strlen(w));
     ovlstrcpy(t_buf[0],p); ovlstrcpy(t_buf[1],p2);
     strip_trailing_spaces(t_buf[0]);
@@ -164,22 +164,22 @@ void text_interact(char *p)
     int i,j1,j2,k,l,l2,n;
 
     table=wordchr(p,"table");
-    if(table==NULL) error2("syntax_error");
+    if(table==NULL) error("syntax_error");
     *table=0; strip_trailing_spaces(p);
     table=find_word_start(table+strlen("table"));
     snprintf(t_buf[2],MAX_LINELEN,"%s",table);
     _text_cut(p,"and");
     strip_trailing_spaces(t_buf[2]); substitute(t_buf[2]);
     n=linenum(t_buf[2])-1;
-    if(n>=MAX_TLEN) error2("text_bad_table");
+    if(n>=MAX_TLEN) error("text_bad_table");
     p2=strchr(t_buf[2],'\n'); if(p2!=NULL) *p2++=0;
-    if(strlen(t_buf[2])!=n) error2("text_bad_table");
+    if(strlen(t_buf[2])!=n) error("text_bad_table");
     dline=t_buf[2];
     for(i=0,p1=p2;i<n;i++,p1=p2) {
-      if(p1==NULL) error2("text_bad_table");
+      if(p1==NULL) error("text_bad_table");
       p2=strchr(p1,'\n');
       if(p2!=NULL) *p2++=0;
-      if(strlen(p1)!=n) error2("text_bad_table");
+      if(strlen(p1)!=n) error("text_bad_table");
       tline[i]=p1;
     }
     l=strlen(t_buf[0]); l2=strlen(t_buf[1]); if(l2<l) l=l2;
@@ -403,10 +403,10 @@ void text(char *p)
     char c,cc;
     char buf[MAX_LINELEN+1];
     p1=find_word_start(p); p2=find_word_end(p1);
-    if(p2<=p1 || *p2==0) error2("syntax_error");
+    if(p2<=p1 || *p2==0) error("syntax_error");
     *p2=0;
     i=search_list(text_proc,TEXT_PROC_NO,sizeof(text_proc[0]),p1);
-    if(i<0) error2("syntax_error");
+    if(i<0) error("syntax_error");
     snprintf(buf,sizeof(buf),"%s",find_word_start(p2+1));
     if((text_proc[i].tag&1)!=0 && (p1=wordchr(buf,"mask"))!=NULL) {
       *p1=0; strip_trailing_spaces(buf);

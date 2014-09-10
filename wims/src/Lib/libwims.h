@@ -31,10 +31,11 @@
 long int genrand_int31(void);
 void init_genrand(unsigned long s);
 
-/* errors.c */
+/* errors.c
 void (*error1) (char *msg);
 void (*error2) (char *msg);
 void (*error3) (char *msg);
+*/
 
 /* liblines.c */
 char *int2str(int i);
@@ -222,6 +223,10 @@ int levelcurve(leveldata *ld);      /* produces level curve data. Returns non-ze
 /*ou
 inline int myisdigit(char x) { return x>='0' && x<='9'; }
 */
+
+/* from libwims.c */
+void error(char *msg);
+
 
 #ifndef isfinite
 # define isfinite(x) (finite(x))

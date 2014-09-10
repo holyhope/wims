@@ -88,7 +88,7 @@ void process_formula(char *p)
 int main(int argc, char *argv[])
 {
     char *p, *p1, *p2, *tend;
-
+    sp_error=msg_error;
     string_modify=string_modify2;
     substitute=substit;
     if(argc==2 && strcmp(argv[1],"table")==0) {
@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
                 fputc(*p,outf); break;
             }
             p2=find_tag_end(p);
-            if(!*p2) {error("open_tag"); p2--;}
+            if(!*p2) {msg_error("open_tag"); p2--;}
             tend=p2;
             fputc(*p, outf); break;
           }

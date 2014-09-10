@@ -134,8 +134,6 @@ int main(int argc, char *argv[])
     uid_t myid;
     int /*mfd,*/rsock,mincnt;
     char buf[MAX_LINELEN+1];
-
-    error1=error; error2=error; error3=error;
     forkcnt=0; exec_wait=1; mincnt=0;
     classcaches=sheetcaches=0;
     (void)freopen("/dev/null","r",stdin);
@@ -199,9 +197,9 @@ int main(int argc, char *argv[])
 	    FD_ZERO(&rset); FD_SET(commsock,&rset);
 	    t=select(commsock+1,&rset,NULL,NULL,&tv);
 	    if(t==0) {forkman(0); continue;}
-	    if(t<0) {error("select() error."); continue;}
+	    if(t<0) {wimslogd_error("select() error."); continue;}
 	    rsock=accept(commsock,NULL,NULL);
-	    if(rsock==-1) {error("accept() error."); continue;}
+	    if(rsock==-1) {wimslogd_error("accept() error."); continue;}
 	    answer(rsock);
 	}
 	forkman(1);

@@ -77,7 +77,7 @@ struct {
 #define cmdcnt (sizeof(cmdlist)/sizeof(cmdlist[0]))
 int cmd;
 
-void error(char *msg,...)
+void sym_error(char *msg,...)
 {
     va_list vp;
     char buf[1024];
@@ -103,7 +103,7 @@ char *readfile(char *fname, char buf[], long int buflen)
     l=st.st_size; if(l<0) return NULL;
     if(l>=buflen) {
      if(buflen<MAX_LINELEN) l=buflen-1;
-     else error("file_too_long %s",fname);
+     else sym_error("file_too_long %s",fname);
     }
     fd=open(fname,O_RDONLY); if(fd==-1) return NULL;
     if(buf==NULL) bf=xmalloc(l+8); else {bf=buf;if(l==0) {t=1; l=buflen-1;}}
@@ -187,7 +187,7 @@ void _getdef(char buf[], char *name, char value[])
      p2++;p3=strchr(p2,'\n'); if(p3==NULL) p3=p2+strlen(p2);
      p2=find_word_start(p2);
      if(p2>p3) goto nothing;
-     if(p3-p2>=MAX_LINELEN) error("string_too_long def %s",name);
+     if(p3-p2>=MAX_LINELEN) sym_error("string_too_long def %s",name);
      memmove(value,p2,p3-p2); value[p3-p2]=0;
      strip_trailing_spaces(value); return;
     }
@@ -207,7 +207,7 @@ char *mkfname(char buf[], char *s,...)
     va_start(vp,s);
     vsnprintf(p,MAX_FNAME,s,vp);
     va_end(vp);
-    if(strlen(p)>=MAX_FNAME-1) error("name_too_long %.20s",p);
+    if(strlen(p)>=MAX_FNAME-1) sym_error("name_too_long %.20s",p);
     return p;
 }
 
@@ -239,7 +239,7 @@ void getparms(void)
     }
     i=search_list(cmdlist,cmdcnt,sizeof(cmdlist[0]),cmdbuf);
     if(i>=0) cmd=cmdlist[i].value;
-    else error("bad_command %.20s",cmdbuf);
+    else sym_error("bad_command %.20s",cmdbuf);
     snprintf(cmdparm,sizeof(cmdparm),"%s",p2);
 
     options=0;
@@ -272,7 +272,7 @@ void getparms(void)
              }
              if(styledir[0]==0) {      /* check default */
                 snprintf(styledir,sizeof(styledir),"%s/symtext/%s/%s/def",defaultdir,lbuf,style);
-                if(stat(styledir,&st)) error("style_not_found %s",style);
+                if(stat(styledir,&st)) sym_error("style_not_found %s",style);
              }
           }
       }

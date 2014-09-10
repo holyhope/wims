@@ -18,7 +18,7 @@
   * and error routines */
 #include "flydraw.h"
 
-void error(char *p)
+void fly_error(char *p)
 {
     fprintf(stderr,"%s %d\n",p,linecnt);
 }
@@ -106,7 +106,7 @@ int widthcolor(int w, int color)
     if(wimg!=NULL) gdImageDestroy(wimg);
     wimg=gdImageCreate(w,w);
     if(wimg==NULL) {
-      error("width_creation_failure"); return color;
+      fly_error("width_creation_failure"); return color;
     }
     bg=gdImageColorAllocate(wimg,255,255,255);
     gdImageColorTransparent(wimg,bg);

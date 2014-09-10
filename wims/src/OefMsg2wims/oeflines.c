@@ -18,12 +18,11 @@
  * and error routines
  */
 
-#include <stdarg.h>
 #include "../Lib/libwims.h"
 #include "oef2wims.h"
 
 /* critical error situation */
-void error(char *s)
+void oef_error(char *s)
 {
     /* fputs(s,stderr); */
     if(badpar!=NULL) {

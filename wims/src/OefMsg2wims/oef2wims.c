@@ -179,7 +179,7 @@ void process(void)
           continue;
       }
       if(*p=='{') {
-          if((p=find_matching(p+1,'}'))==NULL) error("Unmatched parentheses???");
+          if((p=find_matching(p+1,'}'))==NULL) oef_error("Unmatched parentheses???");
           continue;
       }
       p++;
@@ -193,7 +193,7 @@ void process(void)
       i=search_list(directives,dir_no,sizeof(directives[0]),p);
       if(i<0) {
           if(wordchr(mdef,p)!=NULL) {
-            pe=find_matching(pp+1,'}'); if(pe==NULL) error("Unmatched parentheses?");
+            pe=find_matching(pp+1,'}'); if(pe==NULL) oef_error("Unmatched parentheses?");
             *pe=0;define[define_no].type=
               search_list(directives,dir_no,sizeof(directives[0]),"mdef");
             replace_newline(pp+1);
@@ -203,14 +203,14 @@ void process(void)
             define_no++; p=pe;
             continue;
           }
-          if((p=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
+          if((p=find_matching(pp+1,'}'))==NULL) oef_error("Unmatched parentheses?");
           continue;
       }
       define[define_no].type=i;
       define[define_no].tag=posttag;
       for(j=0;j<MAX_PARM && j<directives[i].parmcnt;j++,pp=find_word_start(pe+1)) {
           if(j>0 && *pp!='{') break;
-          if((pe=find_matching(pp+1,'}'))==NULL) error("Unmatched parentheses?");
+          if((pe=find_matching(pp+1,'}'))==NULL) oef_error("Unmatched parentheses?");
           *pe=0; replace_newline(pp+1);
           define[define_no].parm[j]=pp+1;
       }
@@ -224,7 +224,7 @@ void process(void)
             answercnt++; goto checkeq;
           }
           case t_step: {
-            if(step_defined) error("Multiple definition of steps.");
+            if(step_defined) oef_error("Multiple definition of steps.");
             step_defined=1; break;
           }
           case t_def: {
@@ -235,14 +235,14 @@ void process(void)
                 if(*pt!='{') pt2=pt;
                 else {
                   *pt=' '; pt2=find_matching(pt,'}');
-                  if(pt2==NULL) error("Unmatched parentheses?");
+                  if(pt2==NULL) oef_error("Unmatched parentheses?");
                   pt3=find_word_start(pt2+1);
                 }
                 if(strcmp(directives[i].name,"if")==0) {
                   if(*pt3=='{') {
                       *pt2=elsechar; *pt3=' ';
                       pt2=find_matching(pt3,'}');
-                      if(pt2==NULL) error("Unmatched parentheses?");
+                      if(pt2==NULL) oef_error("Unmatched parentheses?");
                   }
                   *pt2=endifchar;
                 }
@@ -271,7 +271,7 @@ void process(void)
             conditioncnt++; break;
           }
           case t_main: {
-            if(posttag) error("Multiple definition of statement.");
+            if(posttag) oef_error("Multiple definition of statement.");
             posttag=1; if(prevarcnt<0) prevarcnt=varcnt;
             statement_no=define_no; break;
           }
@@ -310,8 +310,8 @@ void output(void)
 {
     int i,k;
 /* no statement, nothing to do */
-    if(statement_no<0) error("No statement defined.");
-    outf=fopen(outfname,"w"); if(outf==NULL) error("Unable to open output file.");
+    if(statement_no<0) oef_error("No statement defined.");
+    outf=fopen(outfname,"w"); if(outf==NULL) oef_error("Unable to open output file.");
     if(title_no>=0 && *(define[title_no].parm[0])!=0) {
       char *p=define[title_no].parm[0];
       if(strlen(p)>MAX_TITLEN) *(p+MAX_TITLEN)=0;
@@ -396,7 +396,7 @@ val5=$confparm4\n\n\
 int main(int argc, char *argv[])
 {
     int t;
-    error1=error; error2=error; error3=error;
+    sp_error=oef_error;
     substitute=substit;
     if(argc<=1) return 0; /* no input file */
     if(argc==2 && strcmp(argv[1],"table")==0) {
@@ -415,10 +415,10 @@ int main(int argc, char *argv[])
     mdef=getenv("oef2wims_mdef"); if(mdef==NULL) mdef="";
     printf("%s..",argv[1]);
     t=getinp(argv[1]);
-    if(t<0) error("Source file bad or too long.");
-    if(t==0) error("Empty source file.");
-    if(checkparentheses(inpbuf,1)!=0) error("Unmatched parentheses");
-    outf=fopen(outfname,"w"); if(outf==NULL) error("Unable to open output file.");
+    if(t<0) oef_error("Source file bad or too long.");
+    if(t==0) oef_error("Empty source file.");
+    if(checkparentheses(inpbuf,1)!=0) oef_error("Unmatched parentheses");
+    outf=fopen(outfname,"w"); if(outf==NULL) oef_error("Unable to open output file.");
     fclose(outf); remove(outfname);
     vbuf_statement[0]=vbuf_hint[0]=vbuf_help[0]=vbuf_solution[0]=0;
     param[1].name="imagedir";param[1].type=pt_text;

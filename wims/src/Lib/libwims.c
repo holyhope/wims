@@ -23,3 +23,10 @@ char *fnd_position;
 char *fnd_nextpos;
 int *ev_varcnt=NULL;
 ev_variable *ev_var=NULL;
+
+void error(char *msg)
+{
+    fprintf(stderr,"%s\n",msg);
+    printf("ERROR\n");
+    exit(1);
+}

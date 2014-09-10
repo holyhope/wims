@@ -61,7 +61,7 @@ void tex(void)
     FILE *f;
     long int l;
     src=getenv("texgif_src");
-    if(src==NULL || *src==0) error("No source.");
+    if(src==NULL || *src==0) texgif_error("No source.");
     checktextype(src);
     snprintf(fbuf,sizeof(fbuf),"%s/texgif.tex",tmpdir);
     if(*headerfile) {
@@ -92,11 +92,11 @@ void tex(void)
 \\clearpage}\n\
 \\end{document}\n",texstyle, src, texstyle); fclose(f);
     }
-    if (chdir(tmpdir)) error("chdir failure");
+    if (chdir(tmpdir)) texgif_error("chdir failure");
     parmbuf[0]=texname; parmbuf[1]="texgif"; parmbuf[2]=NULL;
     wrapexec=1;
     execredirected(texname,NULL,NULL,NULL,parmbuf);
-    if (cwd[0] && chdir(cwd)) error("chdir failure");
+    if (cwd[0] && chdir(cwd)) texgif_error("chdir failure");
 }
 
 void parms(void)

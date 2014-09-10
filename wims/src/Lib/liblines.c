@@ -91,7 +91,7 @@ void mystrncpy(char *dest, const char *src, size_t lim)
       {
         size_t i = strlen(src);
         if (i >= lim) i = lim-1;
-        if (i >= MAX_LINELEN) error1("cmd_output_too_long");
+        if (i >= MAX_LINELEN) error("cmd_output_too_long");
         memmove(dest,src,i); dest[i]=0;
       }
 }
@@ -711,7 +711,7 @@ void string_modify1(char *start, char *bad_beg, char *bad_end, char *good,...)
     vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
     ln=strlen(buf); le=strlen(bad_end);
     if(ln+le+(bad_beg-start)>=MAX_LINELEN) {
-      error1("string_too_long"); return;
+      error("string_too_long"); return;
     }
     if(ln!=bad_end-bad_beg) memmove(bad_beg+ln,bad_end,le+1);
     memmove(bad_beg,buf,ln);

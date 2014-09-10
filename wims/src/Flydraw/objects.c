@@ -79,7 +79,7 @@ FILE *open4read(char *n)
       p1=getenv("TMPDIR"); if(p1==NULL || *p1==0) p1=".";
       snprintf(tbuf,sizeof(tbuf),"%s/drawfile_.gif",p1);
       snprintf(sbuf,sizeof(sbuf),"convert %s %s",namebuf,tbuf);
-      if (system(sbuf)) error("system_failed");
+      if (system(sbuf)) fly_error("system_failed");
         f=fopen(tbuf,"r");
     }
     return f;
@@ -96,13 +96,13 @@ void obj_size(objparm *pm)
 {
     sizex=rint(pm->pd[0]); sizey=rint(pm->pd[1]);
     if(sizex<0 || sizey<0 || sizex>MAX_SIZE || sizey>MAX_SIZE) {
-      error("bad_size"); return;
+      fly_error("bad_size"); return;
     }
     if(image!=NULL) {
-      error("size_already_defined"); return;
+      fly_error("size_already_defined"); return;
     }
     image=gdImageCreate(sizex,sizey);
-    if(image==NULL) error("image_creation_failure");
+    if(image==NULL) fly_error("image_creation_failure");
     else {
       color_white=gdImageColorAllocate(image,255,255,255);
       color_black=gdImageColorAllocate(image,0,0,0);
@@ -134,11 +134,11 @@ void obj_existing(objparm *pm)
     pp=find_word_start(pm->str);*find_word_end(pp)=0;
     inf=open4read(pp);
     if(inf==NULL) {
-      error("file_not_exist"); return;
+      fly_error("file_not_exist"); return;
     }
     image=gdImageCreateFromGif(inf); fclose(inf);
     if(image==NULL) {
-      error("bad_gif"); return;
+      fly_error("bad_gif"); return;
     }
     sizex=image->sx; sizey=image->sy;
     saved=0;
@@ -444,7 +444,7 @@ void obj_hatchfill(objparm *pm)
     int nx,ny,ax,ay, dir, c;
     scale(pm->pd,pm->p,1);
     nx=pm->pd[2]; ny=pm->pd[3]; ax=abs(nx); ay=abs(ny);
-    if(nx==0 && ny==0) {error("bad displacement vector"); return;}
+    if(nx==0 && ny==0) {fly_error("bad displacement vector"); return;}
     if((nx>0 && ny>0) || (nx<0 && ny<0)) dir=1; else dir=-1;
     if(ax==0) {ax=100; dir=2;}
     if(ay==0) {ay=100; dir=3;}
@@ -485,7 +485,7 @@ void obj_gridfill(objparm *pm)
     int nx,ny, c;
     scale(pm->pd,pm->p,1);
     nx=pm->pd[2]; ny=pm->pd[3]; nx=abs(nx); ny=abs(ny);
-    if(nx==0 && ny==0) {error("bad grid size"); return;}
+    if(nx==0 && ny==0) {fly_error("bad grid size"); return;}
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,ny/2,nx-1,ny/2,c); gdImageLine(himg,nx/2,0,nx/2,ny-1,c);
     gdImageSetTile(image,himg);
@@ -500,7 +500,7 @@ void obj_diafill(objparm *pm)
     int nx,ny, c;
     scale(pm->pd,pm->p,1);
     nx=pm->pd[2]; ny=pm->pd[3]; nx=abs(nx); ny=abs(ny);
-    if(nx==0 && ny==0) {error("bad grid size"); return;}
+    if(nx==0 && ny==0) {fly_error("bad grid size"); return;}
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageLine(himg,0,0,nx-1,ny-1,c); gdImageLine(himg,0,ny-1,nx-1,0,c);
     gdImageSetTile(image,himg);
@@ -515,7 +515,7 @@ void obj_dotfill(objparm *pm)
     int nx,ny, c;
     scale(pm->pd,pm->p,1);
     nx=pm->pd[2]; ny=pm->pd[3]; nx=abs(nx); ny=abs(ny);
-    if(nx==0 && ny==0) {error("bad grid size"); return;}
+    if(nx==0 && ny==0) {fly_error("bad grid size"); return;}
     c=makehatchimage(nx,ny,pm->p[0],pm->p[1],pm->color[0]);
     gdImageSetPixel(himg,nx/2,ny/2,c);
     gdImageSetTile(image,himg);
@@ -544,7 +544,7 @@ void obj_string(objparm *pm)
     char *pp, *pe, *p2;
     int i;
     pp=pm->str; pe=strchr(pp,','); if(pe==NULL) {
-      error("too_few_parms"); return;
+      fly_error("too_few_parms"); return;
     }
     *pe++=0; pp=find_word_start(pp); *find_word_end(pp)=0;
     pe=find_word_start(pe); strip_trailing_spaces(pe);
@@ -583,11 +583,11 @@ void obj_copy(objparm *pm)
     pp=find_word_start(pm->str);*find_word_end(pp)=0;
     inf=open4read(pp);
     if(inf==NULL) {
-      error("file_not_exist"); return;
+      fly_error("file_not_exist"); return;
     }
     insimg=gdImageCreateFromGif(inf); fclose(inf);
     if(insimg==NULL) {
-      error("bad_gif"); return;
+      fly_error("bad_gif"); return;
     }
     scale(pm->pd,pm->p,1);
     if(pm->pd[2]<0 && pm->pd[3]<0 && pm->pd[4]<0 && pm->pd[5]<0)
@@ -609,11 +609,11 @@ void obj_copyresize(objparm *pm)
     pp=find_word_start(pm->str);*find_word_end(pp)=0;
     inf=open4read(pp);
     if(inf==NULL) {
-      error("file_not_found"); return;
+      fly_error("file_not_found"); return;
     }
     insimg=gdImageCreateFromGif(inf); fclose(inf);
     if(insimg==NULL) {
-      error("bad_gif"); return;
+      fly_error("bad_gif"); return;
     }
     scale(pm->pd+4,pm->p+4,2);
     if(pm->pd[0]<0 && pm->pd[1]<0 && pm->pd[2]<0 && pm->pd[3]<0)
@@ -636,11 +636,11 @@ void obj_setbrush(objparm *pm)
 
     pp=find_word_start(pm->str); *find_word_end(pp)=0;
     inf=open4read(pp); if(inf==NULL) {
-      error("file_not_found"); return;
+      fly_error("file_not_found"); return;
     }
     insimg=gdImageCreateFromGif(inf); fclose(inf);
     if(insimg==NULL) {
-      error("bad_gif"); return;
+      fly_error("bad_gif"); return;
     }
     if(pm->fill) {
       gdImageSetTile(image,insimg); tiled=1; tileimg=insimg;
@@ -669,7 +669,7 @@ void obj_setstyle(objparm *pm)
 {
     int i,t;
     t=pm->pcnt/3; if(t<=0) {
-      error("too_few_parms"); return;
+      fly_error("too_few_parms"); return;
     }
     for(i=0;i<t;i++) {
       if(pm->pd[3*i]<0 || pm->pd[3*i+1]<0 || pm->pd[3*i+2]<0)
@@ -701,7 +701,7 @@ void obj_interlace(objparm *pm)
 /* set linewidth */
 void obj_linewidth(objparm *pm)
 {
-    if(pm->pd[0]<1 || pm->pd[0]>255) error("bad_parms");
+    if(pm->pd[0]<1 || pm->pd[0]>255) fly_error("bad_parms");
     else width=pm->pd[0];
 }
 
@@ -745,7 +745,7 @@ void obj_tstep(objparm *pm)
     int dd;
     dd=pm->pd[0];
     if(dd<3) {
-      error("bad_step"); return;
+      fly_error("bad_step"); return;
     }
     if(dd>2000) dd=2000;
     tstep=dd;
@@ -771,7 +771,7 @@ void _obj_plot(objparm *pm,int dash)
 
     n=itemnum(pm->str);
     if(n<1) {
-      error("bad_parms"); return;
+      fly_error("bad_parms"); return;
     }
     fnd_item(pm->str,1,p1); fnd_item(pm->str,2,p2);
     if(n==1 && !tranged) v=sizex/xscale/tstep;
@@ -884,7 +884,7 @@ void obj_linecount(objparm *pm)
 /* marks end of execution */
 void obj_end(objparm *pm)
 {
-    error("successful_end_of_execution");
+    fly_error("successful_end_of_execution");
 }
 
 /* output */
@@ -978,7 +978,7 @@ void obj_setmatrix(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_matrix_number");
+    fly_error("bad_matrix_number");
     return;
   }
   matrices_pavage[nummatrix][0] = pm->pd[1];
@@ -992,7 +992,7 @@ void obj_resetmatrix(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_matrix_number");
+    fly_error("bad_matrix_number");
     return;
   }
   matrices_pavage[nummatrix][0] = 1;
@@ -1006,7 +1006,7 @@ void obj_setvector(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_vector_number");
+    fly_error("bad_vector_number");
     return;
   }
   vecteurs_pavage[nummatrix][0] = pm->pd[1];
@@ -1018,7 +1018,7 @@ void obj_resetvector(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_vector_number");
+    fly_error("bad_vector_number");
     return;
   }
   vecteurs_pavage[nummatrix][0] = 0;
@@ -1030,7 +1030,7 @@ void obj_settransform(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_vector_number");
+    fly_error("bad_vector_number");
     return;
   }
   matrices_pavage[nummatrix][0] = pm->pd[1];
@@ -1047,7 +1047,7 @@ void obj_resettransform(objparm *pm)
 {
   int nummatrix = (int) (pm->pd[0]);
   if((nummatrix < 1) ||(nummatrix>JC_NB_MATRICES)) {
-    error("bad_vector_number");
+    fly_error("bad_vector_number");
     return;
   }
   vecteurs_pavage[nummatrix][0] = 0;
@@ -1117,11 +1117,11 @@ void obj_multicopy(objparm *pm)
 
     inf=open4read(pp);
     if(inf==NULL) {
-      error("file_not_exist"); return;
+      fly_error("file_not_exist"); return;
     }
     insimg=gdImageCreateFromGif(inf); fclose(inf);
     if(insimg==NULL) {
-      error("bad_gif"); return;
+      fly_error("bad_gif"); return;
     }
 
 /* On recupere les numeros des matrices/vecteurs a faire agir,
@@ -1286,16 +1286,16 @@ int obj_main(char *p)
 /* search the number of the object */
     i=search_list(objtab,obj_no,sizeof(objtab[0]),name);
     if(i<0) {
-      error("bad_cmd"); return 1;
+      fly_error("bad_cmd"); return 1;
     }
     if(image==NULL && (objtab[i].color_pos || objtab[i].required_parms>2)) {
-      error("image_not_defined"); return 1;
+      fly_error("image_not_defined"); return 1;
     }
     ovlstrcpy(tbuf2,pp);
     if(objtab[i].color_pos || objtab[i].routine==obj_setstyle) {
       substit(tbuf2);
     }
-    if(parse_parms(tbuf2,&pm,objtab+i)!=0) error("bad_parms");
+    if(parse_parms(tbuf2,&pm,objtab+i)!=0) fly_error("bad_parms");
     else objtab[i].routine(&pm);
     return 0;
 }

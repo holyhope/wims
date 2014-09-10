@@ -29,7 +29,6 @@
 #include <gdfontl.h>
 #include <gdfontg.h>
 
-#include "../config.h"
 #include "../Lib/libwims.h"
 
 #define MAX_PARMS   8192
@@ -83,7 +82,7 @@ void vimg_plotend (void);
 /* from flylines.c */
 char *find_name_start(char *p);
 char *find_name_end(char *p);
-void error(char *p);
+void fly_error(char *p);
 void scale(double dbuf[], int ibuf[], int cnt);
 /* scale without displacement */
 void scale2(double xin, double yin, double *xout, double *yout);

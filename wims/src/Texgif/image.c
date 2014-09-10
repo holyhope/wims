@@ -34,10 +34,10 @@ int getcolor(int r, int g, int b)
 
 void createimage(int xsize, int ysize)
 {
-    if(xsize<=0 || ysize<=0) error("Bad image size.");
-    if(xsize*ysize>IMAGE_SIZE_LIMIT) error("Image size too big.");
+    if(xsize<=0 || ysize<=0) texgif_error("Bad image size.");
+    if(xsize*ysize>IMAGE_SIZE_LIMIT) texgif_error("Image size too big.");
     image=gdImageCreate(xsize,ysize);
-    if(image==NULL) error("Image creation failure");
+    if(image==NULL) texgif_error("Image creation failure");
     color_white=gdImageColorAllocate(image,255,255,255);
     color_black=gdImageColorAllocate(image,0,0,0);
     color_bounder=gdImageColorAllocate(image,1,2,3);
@@ -56,7 +56,7 @@ void saveimage()
     ff=outfile; while(isspace(*ff)) ff++;
     for(; *outfile && *outfile!='\n';outfile++);
     if(*outfile) *outfile++=0;
-    outf=fopen(ff,"w"); if(outf==NULL) error("unable to create gif output.");
+    outf=fopen(ff,"w"); if(outf==NULL) texgif_error("unable to create gif output.");
     printf("Output to %s.\n",ff);
     if(compressratio==1) gdImageGif(image,outf);
     else {

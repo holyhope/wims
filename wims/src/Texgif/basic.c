@@ -19,7 +19,7 @@
 
 #include "texgif.h"
 
-void error(char *s)
+void texgif_error(char *s)
 {
     fprintf(stderr,"%s: %s\n",progname, s);
     exit(1);
@@ -79,11 +79,11 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     pid=fork(); if(pid==-1) return -1;
     if(!pid) {	/* child */
 	if(inf!=NULL && freopen(inf,"r",stdin) == NULL)
-          error("freopen failure");
+          texgif_error("freopen failure");
 	if(outf!=NULL && freopen(outf,"w",stdout))
-          error("freopen failure");
+          texgif_error("freopen failure");
 	if(errf!=NULL && freopen(errf,"w",stderr))
-          error("freopen failure");
+          texgif_error("freopen failure");
 	if(wrapexec) {
 	    setreuid(getuid(),getuid());setregid(getgid(),getgid());
 	}

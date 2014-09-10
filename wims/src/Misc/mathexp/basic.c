@@ -17,13 +17,6 @@
 
 #include "mathexp.h"
 
-void error(char *msg)
-{
-    fprintf(stderr,"%s\n",msg);
-    printf("ERROR\n");
-    exit(1);
-}
-
 void strcompress(char *src, char *dest)
 {
     char *p1, *p2;

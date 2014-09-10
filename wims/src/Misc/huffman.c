@@ -51,12 +51,6 @@ int indcnt;
 int radix;
 double entropy, avelen;
 
-void error(char *msg)
-{
-    fprintf(stderr,"%s\n",msg);
-    printf("ERROR\n");
-    exit(1);
-}
 
 int indcmp(const void *p1, const void *p2)
 {
@@ -162,7 +156,6 @@ int main()
     char *p;
     int r;
 
-    error1=error; error2=error; error3=error;
     p=getenv("w_huffman_radix");
     if(p==NULL || *p==0) p=getenv("huffman_radix");
     if(p==NULL || *p==0) radix=2;

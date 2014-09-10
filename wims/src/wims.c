@@ -1102,7 +1102,7 @@ int main(int argc, char *argv[], char *envp[])
     char *p, homebuf[MAX_FNAME+1], lbuf[32];
     int inlen=0;
 /*    int mfd; */
-    error1=user_error; error2=module_error; error3=internal_error;
+
     class_dir[0]=0;
     substitute=substit; buffer_init(); var_init();
 /* WIMS internal locale is always C. */

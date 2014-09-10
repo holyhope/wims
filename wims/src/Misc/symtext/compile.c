@@ -117,7 +117,7 @@ void isolate_punct(char *p)
       *p2++=*p1;
       if(p1[1] && !myisspace(p1[1])) *p2++=' ';
     }
-    if(p2>=buf+MAX_LINELEN) error("string_too_long");
+    if(p2>=buf+MAX_LINELEN) sym_error("string_too_long");
     *p2=0;
     snprintf(p,MAX_LINELEN,"%s",buf);
 }
@@ -166,7 +166,7 @@ char *find_atom_end(char *p)
     if(*p=='[') {
       pp=find_matching(p+1,']');
       if(pp!=NULL) return pp+1;
-      else error("unmatched_parentheses %.20s",p);
+      else sym_error("unmatched_parentheses %.20s",p);
     }
     return find_word_end(p);
 }
@@ -187,10 +187,10 @@ void macro_trans(char *p)
     repcnt=start=0; pt=p;
     recalc:
     repcnt++;
-    if(repcnt>=MAX_BLOCKS) error("macro_level_overflow %.20s",p);
+    if(repcnt>=MAX_BLOCKS) sym_error("macro_level_overflow %.20s",p);
     for(i=start, pp=find_atom_start(pt); i<MAX_BLOCKS && *pp; pp=next_atom(pp), i++)
       atoms[i]=pp;
-    if(i>=MAX_BLOCKS-1) error("block_overflow %.20s",p);
+    if(i>=MAX_BLOCKS-1) sym_error("block_overflow %.20s",p);
     atoms[i]=pp+strlen(pp);
     for(k=0;k<i;k++) {
       pp=atoms[k]; switch(*pp) {
@@ -208,13 +208,13 @@ void macro_trans(char *p)
                 if(m==0) m=1;
                 snprintf(tbuf,sizeof(tbuf),"%s",pp);
                 _translate(tbuf,macrodic);
-                if(tbuf[0]==0) error("bad_macro %.50s",pp);
+                if(tbuf[0]==0) sym_error("bad_macro %.50s",pp);
                 for(p1=strchr(tbuf,'@'); p1; p1=strchr(p1,'@')) {
                   for(p2=p1+1;isdigit(*p2) || *p2=='-';p2++);
-                  if(p2==p1+1 || p2>p1+6) error("syntax_error %.20s",p1);
+                  if(p2==p1+1 || p2>p1+6) sym_error("syntax_error %.20s",p1);
                   memmove(vbuf,p1,p2-p1); vbuf[p2-p1]=0;
                   n=atoi(vbuf+1);
-                  if(n<=0 || n>m) error("wrong_parmcnt macro %.50s",pp);
+                  if(n<=0 || n>m) sym_error("wrong_parmcnt macro %.50s",pp);
                   string_modify(tbuf,p1,p2,atom2[n-1]);
                 }
                 n=strlen(tbuf); if(n<MAX_LINELEN) {
@@ -227,19 +227,19 @@ void macro_trans(char *p)
           }
           case '_': {
             pe=find_word_end(pp);
-            if(pe-pp>MAX_NAMELEN) error("name_too_long %.20s",pp);
+            if(pe-pp>MAX_NAMELEN) sym_error("name_too_long %.20s",pp);
             memmove(tbuf,pp,pe-pp); tbuf[pe-pp]=0;
             _translate(tbuf,macrodic);
             if(tbuf[0]==0) break;
             pt1=pp; pt2=find_atom_end(pt1); min=k;
             for(p1=strchr(tbuf,'@'); p1; p1=strchr(p1,'@')) {
                 for(p2=p1+1;isdigit(*p2) || *p2=='-';p2++);
-                if(p2==p1+1 || p2>p1+6) error("syntax_error %.20s",p1);
+                if(p2==p1+1 || p2>p1+6) sym_error("syntax_error %.20s",p1);
                 memmove(vbuf,p1,p2-p1); vbuf[p2-p1]=0;
                 n=atoi(vbuf+1);
-                if(n<-4 || n==0 || n>4) error("bad_macro %.20s",atoms[k]);
+                if(n<-4 || n==0 || n>4) sym_error("bad_macro %.20s",atoms[k]);
                 n+=k;
-                if(n<0 || n>=i) error("bad_macro_position %.20s",atoms[k]);
+                if(n<0 || n>=i) sym_error("bad_macro_position %.20s",atoms[k]);
                 p3=find_atom_end(atoms[n]);
                 if(p3>pt2) pt2=p3;
                 if(atoms[n]<pt1) {min=n;pt1=atoms[n];}
@@ -260,7 +260,7 @@ char *add2cp(char *p)
     char *pp, *p1, *p2, buf[MAX_LINELEN+1];
     int l;
     snprintf(buf,sizeof(buf),"%s",p); strfold(buf); l=strlen(buf);
-    if((cpnext-cpbuf)+l>=MAX_LINELEN) error("string_too_long");
+    if((cpnext-cpbuf)+l>=MAX_LINELEN) sym_error("string_too_long");
     pp=cpnext; memmove(pp,buf,l+1); cpnext+=l+1;
     if(!noaddw) for(p1=find_word_start(buf); *p1; p1=find_word_start(p2)) {
       p2=find_word_end(p1); l=p2-p1;
@@ -301,7 +301,7 @@ void cp_cutline(char *p, struct block *blk, int next)
       if(*p1) l++;
       p2=strparchr(p1,'[');
       if(p2!=NULL) p3=find_matching(p2+1,']');
-      if(p3==NULL) error("unmatched_parentheses %.20s",p);
+      if(p3==NULL) sym_error("unmatched_parentheses %.20s",p);
       if(p2!=NULL && p2>p1) l++;
       p3++;
     } while(p2!=NULL);
@@ -310,7 +310,7 @@ void cp_cutline(char *p, struct block *blk, int next)
       return;
     }
     idx=start=nextblock; nextblock+=l-1; end=nextblock;
-    if(nextblock > MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(nextblock > MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     for(p1=find_word_start(p); *p1; p1=find_word_start(p3)) {
       p2=strparchr(p1,'[');
       if(p2==NULL) p2=p1+strlen(p1);
@@ -355,20 +355,20 @@ void _permpick(char *p, int n, struct block *blk, int next, char delim)
     char *pp, *pe;
 
     idx=nextblock; nextblock+=n;
-    if(nextblock > MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(nextblock > MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     blk->len=n;
     blk->sublock=idx;
     blk->fn=mt_permpick;
     blk->lcnt=clist.lcnt;
     blk->nextblock=next;
-    if(nextlist+n > MAX_LISTS) error("list_overflow %.20s",p);
+    if(nextlist+n > MAX_LISTS) sym_error("list_overflow %.20s",p);
     blk->listlen=listbuf+nextlist; nextlist+=n;
     for(i=t=0; i<clist.lcnt; i++) {
       blk->listlen[i]=clist.listlen[i];
       blk->lists[i]=listbuf+nextlist+t;
       t+=clist.listlen[i];
     }
-    if(nextlist+t > MAX_LISTS) error("list_overflow %.20s",p);
+    if(nextlist+t > MAX_LISTS) sym_error("list_overflow %.20s",p);
     memmove(listbuf+nextlist,clist.list,t*sizeof(listtype));
     nextlist+=t;
     for(i=0, pp=find_word_start(p);i<n;i++,idx++,pp=find_word_start(pe)) {
@@ -407,8 +407,8 @@ void cp_aperm(char *p, struct block *blk, int next)
     listtype ltab[MAX_BLOCKS];
     listtype len;
 
-    n=objnum(p,','); if(n<4) error("wrong_parmcnt ins %.20s",p);
-    if(n>=MAX_BLOCKS/2) error("block_overflow %.20s",p);
+    n=objnum(p,','); if(n<4) sym_error("wrong_parmcnt ins %.20s",p);
+    if(n>=MAX_BLOCKS/2) sym_error("block_overflow %.20s",p);
     clist.lcnt=1; len=2*n-5; clist.listlen=&len;
     for(i=0;i<n-2;i++) ltab[2*i]=-2;
     for(i=0;i<n-4;i++) ltab[2*i+1]=0;
@@ -425,10 +425,10 @@ void cp_apick(char *p, struct block *blk, int next)
     listtype ltab[MAX_BLOCKS];
     listtype len;
 
-    n=objnum(p,','); if(n<4) error("wrong_parmcnt ins %.20s",p);
-    if(n>=MAX_BLOCKS/2) error("block_overflow %.20s",p);
+    n=objnum(p,','); if(n<4) sym_error("wrong_parmcnt ins %.20s",p);
+    if(n>=MAX_BLOCKS/2) sym_error("block_overflow %.20s",p);
     p1=find_item_end(p); if(*p1) *p1++=0;
-    t=atoi(p); if(t<=0 || t>n-3) error("syntax_error ins %.20s",p);
+    t=atoi(p); if(t<=0 || t>n-3) sym_error("syntax_error ins %.20s",p);
     clist.lcnt=1; len=2*t-1; clist.listlen=&len;
     for(i=0;i<t;i++) ltab[2*i]=-2;
     for(i=0;i<t-1;i++) ltab[2*i+1]=0;
@@ -443,12 +443,12 @@ void cp_dic(char *p, struct block *blk, int next)
     int i, n;
     char *p1, *p2;
     n=objnum(p,',');
-    if(n!=1) error("wrong_parmcnt dic %.20s",p);
+    if(n!=1) sym_error("wrong_parmcnt dic %.20s",p);
     p1=find_word_start(p); p2=find_word_end(p1);
     if(*p2) *p2++=0;
     p2=find_word_start(p2);
     i=getdic(p1);
-    if(i<0) error("bad_dictionary %.20s",p1);
+    if(i<0) sym_error("bad_dictionary %.20s",p1);
     noaddw=3;
     blk->string=add2cp(p2);
     noaddw=0;
@@ -466,7 +466,7 @@ void cp_dperm(char *p, struct block *blk, int next)
 
     clist.lcnt=2; clist.listlen=len; clist.list=ltab;
     n=objnum(p,',');
-    if(n!=4) error("wrong_parmcnt dperm %.20s",p);
+    if(n!=4) sym_error("wrong_parmcnt dperm %.20s",p);
     _permpick(p,n,blk,blk-blockbuf,',');
 }
 
@@ -476,8 +476,8 @@ void cp_ins(char *p, struct block *blk, int next)
     listtype ltab[MAX_BLOCKS];
     listtype len;
 
-    n=objnum(p,','); if(n<3) error("wrong_parmcnt ins %.20s",p);
-    if(n>=MAX_BLOCKS/2) error("block_overflow %.20s",p);
+    n=objnum(p,','); if(n<3) sym_error("wrong_parmcnt ins %.20s",p);
+    if(n>=MAX_BLOCKS/2) sym_error("block_overflow %.20s",p);
     clist.lcnt=1; len=2*n-2; clist.listlen=&len;
     for(i=1;i<n;i++) ltab[2*i-2]=i;
     for(i=1;i<len;i+=2) ltab[i]=-12;
@@ -495,7 +495,7 @@ void cp_iperm(char *p, struct block *blk, int next)
 
     clist.lcnt=2; clist.listlen=len; clist.list=ltab;
     n=objnum(p,',');
-    if(n!=3) error("wrong_parmcnt iperm %.20s",p);
+    if(n!=3) sym_error("wrong_parmcnt iperm %.20s",p);
     _permpick(p,n,blk,blk-blockbuf,',');
 }
 
@@ -504,19 +504,19 @@ void cp_m(char *p, struct block *blk, int next)
     int i, idx;
     char buf[MAX_LINELEN+1];
 
-    i=objnum(p,','); if(i!=1) error("wrong_parmcnt m %.20s",p);
+    i=objnum(p,','); if(i!=1) sym_error("wrong_parmcnt m %.20s",p);
     blk->fn=mt_m;
     blk->string=NULL;
     blk->len=1;
     blk->nextblock=next;
     p=find_word_start(p);singlespace(p);strip_trailing_spaces(p);
     for(i=0;i<Mcnt && strcmp(p,Mind[i].Mptr)!=0;i++);
-    if(nextblock >= MAX_BLOCKS-2) error("block_overflow %.20s",p);
+    if(nextblock >= MAX_BLOCKS-2) sym_error("block_overflow %.20s",p);
     if(i<Mcnt) blk->sublock=Mind[i].blkptr;
     else {
       i=strlen(p);
-      if(Mnext-Mbuf+i >= MAX_LINELEN-1) error("Mbuf_overflow %.20s",p);
-      if(Mcnt >= MAX_BLOCKS) error("Mind_overflow %.20s",p);
+      if(Mnext-Mbuf+i >= MAX_LINELEN-1) sym_error("Mbuf_overflow %.20s",p);
+      if(Mcnt >= MAX_BLOCKS) sym_error("Mind_overflow %.20s",p);
       Mind[Mcnt].Mptr=Mnext; Mind[Mcnt].blkptr=nextblock;
       Mcnt++;
       memcpy(Mnext,p,i+1); Mnext+=i+1;
@@ -532,11 +532,11 @@ void cp_neg(char *p, struct block *blk, int next)
     int n, idx;
     char buf[MAX_LINELEN+1];
     n=objnum(p,','); if(n==0) n=1;
-    if(n>1) error("wrong_parmcnt neg %.20s",p);
+    if(n>1) sym_error("wrong_parmcnt neg %.20s",p);
     blk->fn=mt_neg;
     blk->len=1;
     blk->nextblock=next;
-    if(nextblock >= MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(nextblock >= MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     idx=nextblock; blk->sublock=idx; nextblock++;
     snprintf(buf,sizeof(buf),"%s",p);
     cp_cutline(buf,blockbuf+idx,blk-blockbuf);
@@ -557,13 +557,13 @@ void _pick(char *p, struct block *blk, int next, int type)
     char *p1;
 
     n=objnum(p,','); n--;
-    if(n<2) error("wrong_parmcnt pick %.20s",p);
-    if(n>=MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(n<2) sym_error("wrong_parmcnt pick %.20s",p);
+    if(n>=MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     p1=strparchr(p,','); *p1++=0;
     p=find_word_start(p); v=0;
     if(*p=='-') {p++; type-=5;}
     else if(*p=='+') {v=2; p++;}
-    t=atoi(p); if(t<1 || t>MAX_PICKS || t>n) error("bad_pickcnt %.20s",p);
+    t=atoi(p); if(t<1 || t>MAX_PICKS || t>n) sym_error("bad_pickcnt %.20s",p);
     clist.lcnt=1; len=t+v; clist.listlen=&len;
     for(i=0;i<t;i++) ltab[i]=type;
     if(v) {ltab[i++]=-6; ltab[i]=-5;}
@@ -576,7 +576,7 @@ void cp_out(char *p, struct block *blk, int next)
     char buf[MAX_LINELEN+1];
     char *p1;
     int n, idx;
-    n=objnum(p,','); if(n!=2) error("wrong_parmcnt out %.20s",p);
+    n=objnum(p,','); if(n!=2) sym_error("wrong_parmcnt out %.20s",p);
     p1=strparchr(p,','); if(p1) *p1++=0; else p1=p+strlen(p);
     p=find_word_start(p); *find_word_end(p)=0;
     noaddw=3;
@@ -585,7 +585,7 @@ void cp_out(char *p, struct block *blk, int next)
     blk->len=strlen(blk->string);
     blk->fn=mt_out;
     blk->nextblock=next;
-    if(nextblock >= MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(nextblock >= MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     idx=nextblock; blk->sublock=idx; nextblock++;
     snprintf(buf,sizeof(buf),"%s",p1);
     cp_cutline(buf,blockbuf+idx,blk-blockbuf);
@@ -603,7 +603,7 @@ void cp_perm(char *p, struct block *blk, int next)
     listtype len;
 
     n=objnum(p,','); if(n==0) n=1;
-    if(n>=MAX_BLOCKS) error("block_overflow %.20s",p);
+    if(n>=MAX_BLOCKS) sym_error("block_overflow %.20s",p);
     clist.lcnt=1; len=n; clist.listlen=&len;
     for(i=0;i<n;i++) ltab[i]=-2;
     clist.list=ltab;
@@ -638,12 +638,12 @@ void cp_wild(char *p, struct block *blk, int next)
 {
     int n, min, max;
     char *pp, *pe;
-    n=objnum(p,','); if(n!=1) error("wrong_parmcnt wild %.20s\n",p);
+    n=objnum(p,','); if(n!=1) sym_error("wrong_parmcnt wild %.20s\n",p);
     blk->string="";
     max=min=0;
     for(pp=find_word_start(p); *pp; pp=find_word_start(pe)) {
       pe=find_word_end(pp);
-      if(pp[0]!='*') error("syntax_error wild %.20s\n",p);
+      if(pp[0]!='*') sym_error("syntax_error wild %.20s\n",p);
       if(pp[1]!='*') {
           min++; continue;
       }
@@ -692,7 +692,7 @@ void cp_oneblock(char *p, struct block *blk, int next)
       if(*pe==':') {
           *pe++=0;
           i=search_list(builtin,builtincnt,sizeof(builtin[0]),p);
-          if(i<0) error("unknown_cmd %.20s",p);
+          if(i<0) sym_error("unknown_cmd %.20s",p);
           builtin[i].fn(pe,blk,next);
           blk->nextblock=next;
           return;

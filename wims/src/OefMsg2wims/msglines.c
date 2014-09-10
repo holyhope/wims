@@ -18,18 +18,18 @@
  * and error routines
  */
 
-#include <stdarg.h>
+/*#include <stdarg.h>*/
 #include "../Lib/libwims.h"
 #include "msg2wims.h"
 
-void error(char *p)
+void msg_error(char *p)
 {
     fprintf(stderr,"%s\n",p);
 }
 
 void bailout(int i1, int i2, char *msg)
 {
-    if(*msg) error(msg);
+    if(*msg) msg_error(msg);
     printf("%d %d",i1,i2); exit(0);
 }
 
