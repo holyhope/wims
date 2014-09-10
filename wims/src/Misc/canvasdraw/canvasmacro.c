@@ -50,6 +50,7 @@ void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
+void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,int num,char *input_style,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1);
 
 
 
@@ -1704,6 +1705,39 @@ try{start_canvas%d(1234)}catch(e){};try{dragstuff.Zoom(xmin,xmax,ymin,ymax)}catc
 setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false);\
 };use_setlimits();",canvas_root_id,canvas_root_id);
 }
+
+void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,int num,char *input_style,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin add_input_jsfunction -->\n\
+function clear_jsfunction(id){\
+ try{\
+  var canvas_plot = document.getElementById(\"wims_canvas%d\"+id);\n\
+  var canvas_plot_ctx = canvas_plot.getContext(\"2d\");\n\
+  if( confirm(\"clear function plot?\") ){\
+   canvas_plot_ctx.clearRect(0,0,xsize,ysize);\n\
+   document.getElementById('canvas_input%d').value = \"\";\n\
+  };\n\
+  return;\n\
+ }catch(e){alert(\"nothing to remove...\");};\n\
+ return;\n\
+};\n\
+function add_input_jsfunction(){\
+ var num = %d;\n\
+ var canvas_plot_id = %d;\n\
+ if( wims_status == \"done\" ){return;};\n\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
+ var input_jsfunction_div = document.createElement('div');\n\
+ input_jsfunction_div.id = \"input_jsfunction_div\";\n\
+ tooltip_div.appendChild(input_jsfunction_div);\n\
+ if( typeof xaxislabel == 'undefined' ){xaxislabel = \"function\";}\
+ input_jsfunction_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'><b>\"+xaxislabel+\" : <input type='text' size='16' value='' id='canvas_input%d' style='%s' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\n\
+ var update_button = document.getElementById(\"update_button\");\n\
+ var delete_button = document.getElementById(\"delete_button\");\n\
+ update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,document.getElementById('canvas_input%d').value,%d,'%s',%.2f,%d,%d,%d);return;},false);\
+ delete_button.addEventListener(\"mousedown\",function(e){clear_jsfunction(canvas_plot_id);return;},false);\n\
+};add_input_jsfunction();",canvas_root_id,input_cnt,num,USERDRAW_JSPLOT,canvas_root_id,input_cnt,input_style,input_cnt,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
+}
+
+
 /* 
 adds 2 inputfields (x:y) and 'ok' | 'nok' button 
 these are used for user drawing with inputfields...
@@ -2041,7 +2075,7 @@ var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0
  var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
- var fun = to_js_math(f);if(fun == null){return;};\
+ var fun = to_js_math(f);if(fun == null){alert(\"hmmm...\"+f);return;};\
  ctx.lineWidth = linewidth;\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\

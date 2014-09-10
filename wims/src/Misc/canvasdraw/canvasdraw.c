@@ -968,6 +968,31 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    use_input_xy = 1;
 	    break;
+	case USERINPUT_FUNCTION:
+	/*
+	@ userinput_function
+	@ keyword
+	@ if set , a inputfield will be added to the page
+	@ the userinput value will be plotted in the canvas
+	@ this value may be read with 'read_canvas()'. <br />for do it yourself js-scripters : If this is the first inputfield in the script, it's id is canvas_input0
+	@ use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
+	@ incompatible with command 'intooltip link_text_or_image' : it uses the tooltip div for adding the inputfield
+	*/
+	    if( js_function[DRAW_JSFUNCTION] != 1 ){ 
+	     js_function[DRAW_JSFUNCTION] = 1;
+	     if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
+	     add_input_jsfunction(js_include_file,canvas_root_id,1,input_style,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	     input_cnt++;
+	    }
+	    if( use_js_math == FALSE){/* add this stuff only once...*/
+	     add_to_js_math(js_include_file);
+	     use_js_math = TRUE;
+	    }
+	    if( use_js_plot == FALSE){
+	     use_js_plot = TRUE;
+	     add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
+	    }
+	    break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
@@ -1329,7 +1354,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
-	    else 
+	    else
 	    {
 		canvas_error("unknown drawtype or typo? ");
 	    }
@@ -2227,6 +2252,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	/*
 	 @clearbutton value
 	 @adds a button to clear the userdraw canvas with text 'value'
+	 @normally userdraw primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
 	 @uses the tooltip placeholder div element: may not be used with command 'intooltip'
 	 @use command 'inputstyle' to style the button...  
 	*/
@@ -6625,6 +6651,7 @@ int get_token(FILE *infile){
 	*xsnaptogrid="xsnaptogrid",
 	*ysnaptogrid="ysnaptogrid",
 	*userinput_xy="userinput_xy",
+	*userinput_function="userinput_function",
 	*usertextarea_xy="usertextarea_xy",
 	*jsmath="jsmath",
 	*trace_jscurve="trace_jscurve",
@@ -7283,6 +7310,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);
 	return USERINPUT_XY;
+	}
+	if( strcmp(input_type, userinput_function) == 0 ){
+	free(input_type);
+	return USERINPUT_FUNCTION;
 	}
 	if( strcmp(input_type, usertextarea_xy) == 0 ){
 	free(input_type);

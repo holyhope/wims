@@ -150,6 +150,7 @@
 #define YUNIT		154
 #define KILLSLIDER	155
 #define ANGLE		156
+#define USERINPUT_FUNCTION 157
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -190,6 +191,7 @@
 #define DRAW_XLOGSCALE	37
 #define DRAW_XYLOGSCALE	38
 #define DRAW_CENTERSTRING 39
+#define DRAW_JSFUNCTION	40
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1
@@ -204,6 +206,7 @@
 #define ANIMATE_CANVAS	10
 #define TRACE_CANVAS	11
 #define JSPLOT_CANVAS	12
+#define USERDRAW_JSPLOT 13
 
 #ifndef STD_H
 #define STD_H
