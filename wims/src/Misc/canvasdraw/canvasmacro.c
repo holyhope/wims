@@ -1728,7 +1728,7 @@ function add_input_jsfunction(){\
  var input_jsfunction_div = document.createElement('div');\n\
  input_jsfunction_div.id = \"input_jsfunction_div\";\n\
  tooltip_div.appendChild(input_jsfunction_div);\n\
- if( typeof xaxislabel == 'undefined' ){xaxislabel = \"function\";}\
+ if( typeof xaxislabel == 'undefined' ){var xaxislabel = \"function\";}\
  input_jsfunction_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'><b>\"+xaxislabel+\" : <input type='text' size='16' value='' id='canvas_input%d' style='%s' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\n\
  var update_button = document.getElementById(\"update_button\");\n\
  var delete_button = document.getElementById(\"delete_button\");\n\
