@@ -2946,10 +2946,12 @@ var floodfill = function(interaction,xs,ys,color){\
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id){
 fprintf(js_include_file,"\n<!-- begin command filltoborder -->\n\
 var filltoborder = function(xs,ys,bordercolor,color){\
- var xs = x2px(xs);\
- var ys = y2px(ys);\
- var canvas = document.getElementById(\"wims_canvas%d\"+4);\
- var ctx = canvas.getContext(\"2d\");ctx.save();\
+ var canvas = document.getElementById(\"wims_canvas%d%d\");\
+ if( ! canvas ){ return; };\
+ var ctx = canvas.getContext(\"2d\");\
+ ctx.save();\
+ xs = x2px(xs);\
+ ys = y2px(ys);\
  var image = ctx.getImageData(0, 0, xsize, ysize);\
  var imageData = image.data;\
  var pixelStack = [[xs, ys]];\
@@ -2968,37 +2970,37 @@ var filltoborder = function(xs,ys,bordercolor,color){\
   imageData[pixelPos+3] = color.a;\
  };\
  function _comparePixel(px2){\
-  return (px1.r === px2.r && px1.g === px2.g && px1.b === px2.b);\
+  return (px2.r === px1.r && px2.g === px1.g && px2.b === px1.b );\
  };\
- function _checkBorder(px2){\
-  return (bordercolor.r === px2.r && bordercolor.g === px2.g && bordercolor.b === px2.b);\
+ function _compareBorder(px2){\
+  return (bordercolor.r !== px2.r && bordercolor.g !== px2.g && bordercolor.b !== px2.b );\
  };\
  px1 = _getPixel(((ys * xsize) + xs) * 4);\
- bordercolor = {\
-  r: parseInt(bordercolor[0], 10),\
-  g: parseInt(bordercolor[1], 10),\
-  b: parseInt(bordercolor[2], 10),\
-  a: parseInt(bordercolor[3] || 255, 10)\
- };\
  color = {\
   r: parseInt(color[0], 10),\
   g: parseInt(color[1], 10),\
   b: parseInt(color[2], 10),\
   a: parseInt(color[3] || 255, 10)\
  };\
+ bordercolor = {\
+  r: parseInt(bordercolor[0], 10),\
+  g: parseInt(bordercolor[1], 10),\
+  b: parseInt(bordercolor[2], 10),\
+  a: parseInt(bordercolor[3] || 255, 10)\
+ };\
  if( _comparePixel(color) ) { return true; }\
  while (pixelStack.length) {\
   newPos = pixelStack.pop();\
   xs = newPos[0];ys = newPos[1];\
   pixelPos = (ys*xsize + xs) * 4;\
-  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos)) ){\
+  while(ys-- >= 0 && _comparePixel(_getPixel(pixelPos))){\
    pixelPos -= xsize * 4;\
   }\
   pixelPos += xsize * 4;\
   ++ys;\
   found_left_border = false;\
   found_right_border = false;\
-  while( ys++ < ysize-1 &&  _comparePixel(_getPixel(pixelPos)) && ! _checkBorder(_getPixel(pixelPos)) ){\
+  while( ys++ < ysize-1 && ( _comparePixel(_getPixel(pixelPos))  || _compareBorder(_getPixel(pixelPos))) ){\
    _setPixel(pixelPos);\
    if( xs > 0 ){\
     if( _comparePixel(_getPixel(pixelPos - 4)) ){\
@@ -3024,10 +3026,10 @@ var filltoborder = function(xs,ys,bordercolor,color){\
     }\
    pixelPos += xsize * 4;\
   }\
- }\
+ };\
  ctx.putImageData(image, 0, 0);\
  ctx.restore();\
-};",canvas_root_id);
+};",canvas_root_id,DRAG_CANVAS);
 
 }
 
