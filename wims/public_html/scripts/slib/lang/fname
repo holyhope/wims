@@ -10,15 +10,18 @@ en,girl,3\
 nl,boy girl,5
 !exit
 
-!! third parm to get many first name distinct in one tim (FG)
+!! third parm to get many firstname distinct in one time (FG)
 !! Maj french fname by Jérémy Lebas
 
 :proc
+!!should be calculate from the list ?
+slib_bound=35
 
 slib_test=!itemcnt $wims_read_parm
 !if $slib_test=3
  !distribute item $wims_read_parm into slib_lang,slib_genre,slib_nb
- !bound slib_genre within boy,girl default boy
+ slib_genre=!singlespace $slib_genre
+ !bound slib_genre within boy, girl, boy girl, girl boy default boy
  slib_langs=!words2items $wims_site_languages
  !bound slib_lang within $slib_langs default en
 !else
@@ -39,7 +42,7 @@ slib_test=!itemcnt $wims_read_parm
   !endif
  !next slib_l
 !endif
-!bound slib_nb between 1 and 10 default 1
+!bound slib_nb between 1 and $slib_bound default 1
 !default slib_genre=!randitem boy,girl
 !if $lang iswordof fr nl
  !default slib_lang=$lang
@@ -57,9 +60,9 @@ slib_test=!itemcnt $wims_read_parm
  Rudy, Romuald, Clément, Erwan, Hugo, Olivier, Thibault, Nicolas, Medhi, Valentin, Alan, Baptiste, Ambroise, Alexandre, \
  Dorian, Axel, Logan, Noam, Adem, Alric, Alexandre, Anthony, Quentin, Alexandre, Laurent, Pierre, Jayson, Remy, Aymen, Cyril, \
  Maxime, Magomed, Yannis, Louis, Sébastien, Thibault, Steven, Thomas, Mike, Nathan, Alexis, Quentin, Sébastien, Thomas,\
- Hind, pablo, Alexy, Rim, Enzo, Pierre, Guillaume, Benjamin, Jérémy, Jimmy, Thomas, Prasanth, Daniel, Théo, Ruben, Matthieu, \
+ Hind, Pablo, Alexy, Rim, Enzo, Pierre, Guillaume, Benjamin, Jérémy, Jimmy, Thomas, Prasanth, Daniel, Théo, Ruben, Matthieu, \
  Paul, Francis, Florian, Clément, Théo, Nour-El-Houda, Sofiane, Rayane, Kevin, Téo, Yoan, Damien, Kevin, Christian, Kain, Hugo, \
- Anthony, Deniz, Ludovic, Olivier, Romain, cedric, Thomas, William, Levi, Lorenzo, Jonathan, Joachim, Gaël, Bilal, Jérémy, Raphaël, Florent,\
+ Anthony, Deniz, Ludovic, Olivier, Romain, Cedric, Thomas, William, Levi, Lorenzo, Jonathan, Joachim, Gaël, Bilal, Jérémy, Raphaël, Florent,\
  Marvin, Wajdi, Florian, Matteo, Nassim, Hamza, Fabian, Idris, Allan, Marwanne, Abdoulla, Thomas, Lilian, Faycel, Sébastien, Johan, Kevin, Benjamin, Thomas, Akromat, Diye, Majdi, Medhi,\
  Christopher, Thomas, Walid
 
@@ -74,7 +77,7 @@ slib_test=!itemcnt $wims_read_parm
  Charlotte, Marine, Sandy, Chloé, Doris, Erika, Marion, Lola, Chavely, Myriam, Elisa, Manuela, Isabelle, Fanny, Amandine, Elisa, Maia, \
  Jade, Christel, Barbara, Jade, Maissa, Eva, Julie, Elsa, Melissa, Andrea, Carla, Mariama, Esther, Elise, Loane, Laurie, Anna, Manoa, \
  Elena, Léonie, Célia, Chloé, Romane, Salomé, Pauline, Setareh, Aurélia, Marine, Cherrine, Vanessa, Ornella, Charlotte, Christelle, \
- Victoria, Noémie, Laurie, Juliette, Marion, Lena, laura, Emilie, Anne-Laure, Claire, Imen, Nina, Andrea, Clémentine, Laëtitia, Lory, \
+ Victoria, Noémie, Laurie, Juliette, Marion, Lena, Laura, Emilie, Anne-Laure, Claire, Imen, Nina, Andrea, Clémentine, Laëtitia, Lory, \
  Ophélie, Cathy, Paula, Margot, Célia, Estelle, Jade, Melody, Amira, Inès, Inès, Sarah, Kaouthar, Nausica, Jacqueline,Lina, Maeva, Lizie, \
  Marissa, Noemie, Alessia, Marie, Luana, Rhita, Marion, Melissa, Kelly, Erika, Océane, Yasmina, Clélia, \
  Noellia, Allison, Amel, Alicia, Maeva, Camille, Alexia, Inès, Christina, Iris, Cynthia, Inès
@@ -82,28 +85,45 @@ slib_test=!itemcnt $wims_read_parm
 
 !if $slib_lang=nl
 
- slib_boy=Jan,Piet,Klaas,Gerard,Jonny,Sjonnie,Wim,Henk,\
- willem,Willem-Jan,Koos,Paul,Robin,Bart,Dani,Edgar,Jacob,Willem,\
- Mohammed,Ali,Joost,Johan,Karel,Martin,Hans,Frederik,Bennie,Benno,\
- Freddy,Jelmer,Rinus,Marinus,Roderick,Simon,Anton,Ton,Tom,Nico
+ slib_boy=Jan,Piet,Klaas,Gerard,Jonny,\
+ Sjonnie,Wim,Henk,Willem,Willem-Jan,\
+ Koos,Paul,Robin,Bart,Dani,\
+ Edgar,Jacob,Willem,Mohammed,Ali,\
+ Joost,Johan,Karel,Martin,Hans,\
+ Frederik,Bennie,Benno,Freddy,Jelmer,\
+ Rinus,Marinus,Roderick,Simon,Anton,\
+ Ton,Tom,Nico
 
- slib_girl=Marlies,Marloes,Anna,Hanna,Johanna,Aaltje,Mariska,\
- Roelie,Joke,Ellie,Elli,Evelien,Vera,Kristel,Christel,Chantal,\
- Loeki,Aafke,Marijke,Petra,Olga,Sien,Jo,Karlijn,Katinka,Bonnie,Carolien,\
- Anita,Hedwig,Karen,Karin,Koosje,Rosa,Lidwina,Astrid,Lenie,Lena,Maria,Eva,Marijke,\
- Anneke,Alie
+ slib_girl=Marlies,Marloes,Anna,Hanna,Johanna,\
+  Aaltje,Mariska,Roelie,Joke,Ellie,\
+  Elli,Evelien,Vera,Kristel,Christel,\
+  Chantal, Loeki,Aafke,Marijke,Petra,\
+  Olga,Sien,Jo,Karlijn,Katinka,\
+  Bonnie,Carolien, Anita,Hedwig,Karen,\
+  Karin,Koosje,Rosa,Lidwina,Astrid,\
+  Lenie,Lena,Maria,Eva,Marijke,\
+  Anneke,Alie
 !endif
 
-!default slib_boy=Andrew, Bill, Charles, David, \
- Edwin, George, Harry, Henry, Jack, James, John, \
- Mark, Michael, Peter, \
- Richard, Robert, Ronald, Thomas, William
+!default slib_boy=Andrew, Anthony, Bill, Brian, Charles,\
+ Charlie, Christopher,Daniel, David,  Donald,\
+ Edward, Edwin, George, Harry, Henry,\
+ Jack, Jacob, James, Jason, Jeff,\
+ John, Joseph, Kenneth, Kevin, Mark,\
+ Michael, Oliver, Oscar, Paul, Peter,\
+ Richard, Robert, Ronald, Steven, Thomas, William
 
-!default slib_girl=Alice, Anna, Catherine, \
- Diana, Elisabeth, Jane, Linda, \
- Marguerite, Marilyn, Mary, Nancy, \
- Rose, \
- Victoria, Virginia
+
+!default slib_girl=Alice, Amelia, Anna, Ava, Barbara,\
+ Betty, Carol, Catherine, Deborah, Diana,\
+ Donna, Dorothy, Elisabeth, Emily, Helen,\
+ Isla, Isabella, Jane, Jennifer, Jessica,\
+ Karen, Kimberly, Laura, Linda,  Lisa,\
+ Margaret, Marguerite, Maria, Marilyn, Mary,\
+ Mia, Michelle, Nancy, Patricia, Olivia,\
+ Rose, Ruth, Sarah, Sandra, Sharon,\
+ Sophie, Susan, Victoria, Virginia
+
 
 slib_out=$empty
 !if girl iswordof $slib_genre
@@ -115,3 +135,4 @@ slib_out=$empty
 slib_out=!listuniq $slib_out
 slib_out=!shuffle $slib_out
 slib_out=!item 1 to $slib_nb of $slib_out
+
