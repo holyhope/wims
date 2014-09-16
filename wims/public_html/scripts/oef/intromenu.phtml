@@ -113,6 +113,16 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  <label for="scoredelay">$name_chrono:</label>
  <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
 </div>
+!set translation_language=!getdef translation_language in INDEX
+!if $translation_language!=$empty
+  !set translation_language=$module_language,$translation_language
+  !set translation_language=!words2items $translation_language
+  !set translation_language=!sort items $translation_language
+  <div class="field">
+   <label for="lang_choice">$wims_name_Language:</label>
+   !formradio lang_choice list $translation_language
+  </div>
+!endif
 !!!FIXME should test if there is an introhook
 <table class="field introhook">
 !read introhook.phtml
