@@ -58,7 +58,8 @@
 #define DATAFIELD_LIMIT 16384
 /* temporary log file */
 #define TEMP_LOG_FILE "../log/temp.log"
-
+/* max required points */
+#define MAX_REQUIRE 1000
 /* Tag string for randfile */
 #define tag_string "\n:"
 

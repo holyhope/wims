@@ -35,9 +35,9 @@ struct scoreheader {
 struct scoredata uscore[MAX_CLASSEXOS];
 
 struct scoreresult tscore[MAX_CLASSEXOS];
-/*FIXME  256 : should be linked tot the max of the cd->exos[num].require /10 */
+
 typedef struct scorehigh {
-    float best, high[256];
+    float best, high[MAX_REQUIRE/10];
 } scorehigh;
 
 struct scorehigh hscore[MAX_CLASSEXOS];
@@ -304,8 +304,7 @@ void cmd_getscore(char *p)
     char *cut[4];
     int i, sheet, exo, snew, stry, thissheet, thisexo;
     double score, score2, slast, quality, tt, ts, thisscore;
-    float shigh[10];
-    float sbest=0;
+    struct scorehigh s;
     float slevel=0;
 
     if(cwdtype!=dir_class) {
@@ -335,10 +334,10 @@ void cmd_getscore(char *p)
      score=uscore[i].user; stry=uscore[i].try;
      score2=uscore[i].user2;
      slast=uscore[i].last;
-     sbest=uscore[i].best;
+     s.best=uscore[i].best;
      slevel=uscore[i].level;
      { int k;
-      for (k = 0; 10*k < cd->exos[i].require; k++) { shigh[k] = hscore[i].high[k]; }
+      for (k = 0; 10*k < cd->exos[i].require; k++) { s.high[k] = hscore[i].high[k]; }
      }
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
@@ -350,10 +349,10 @@ void cmd_getscore(char *p)
          tscore[i].mean=stry*2+uscore[i].hint;
          tscore[i].last=slast;
          tscore[i].try=stry;
-         tscore[i].best=sbest;
-         hscore[i].best=sbest;
+         tscore[i].best=s.best;
+         hscore[i].best=s.best;
          {int k;
-           for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=shigh[k]; }
+           for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=s.high[k]; }
          }
          tscore[i].level=slevel;
          continue;
@@ -370,14 +369,14 @@ void cmd_getscore(char *p)
          quality=score2/(ts*tt);
      }
      else {
-       score=quality=slast=stry=sbest=slevel=0;
-       {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { shigh[k]=0;} }
+       score=quality=slast=stry=s.best=slevel=0;
+       {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { s.high[k]=0;} }
      }
      tscore[i].score=score; tscore[i].mean=quality;
      tscore[i].last=slast;
      tscore[i].try=stry;
-     tscore[i].best=sbest;
-     hscore[i].best=sbest;
+     tscore[i].best=s.best;
+     hscore[i].best=s.best;
      tscore[i].level=slevel;
      }
     answerlen=cd->exocnt*sizeof(tscore[0]);
