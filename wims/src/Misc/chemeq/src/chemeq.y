@@ -11,7 +11,7 @@
 #include <sstream>
 
   int yylex();
-  int yyerror(char * msg);
+  int yyerror(const char * msg);
 
 typedef struct{
   int i, d; /* integer numerator, denominator */
@@ -25,7 +25,7 @@ typedef struct{
   std::string s;
 } yystype;
 
-#define YYSTYPE yystype 
+#define YYSTYPE yystype
 
 /* variables globales */
 
@@ -63,7 +63,7 @@ typedef struct{
 %%
 
 /* les règles */
-but : chcompose { 
+but : chcompose {
   result=$1;
   isequation=1;
 }
@@ -78,7 +78,7 @@ chcompose : chc {$$=$1;}
   $1.cq->addChemeq($5.cq);
   $$=$1;
 }
-| chcompose spc01 AntiCompose spc01 chc { 
+| chcompose spc01 AntiCompose spc01 chc {
   $1.cq->subChemeq($5.cq);
   $$=$1;
 }
@@ -143,7 +143,7 @@ molecs : Int spc01 molec {
   $$.m->nombre($1.i,$1.d);
 }
 | molec{
-  $$ = $1; 
+  $$ = $1;
 }
 ;
 
@@ -178,7 +178,7 @@ charge : Plus {$$.i=1;}
 ;
 
 groupe : Lpar composition Rpar {
-  $$=$2; 
+  $$=$2;
 }
 ;
 
@@ -210,7 +210,7 @@ molecularite : /*rien*/{
   $$.i=1;
 }
 | Int {
-  $$=$1; 
+  $$=$1;
 }
 ;
 
@@ -226,7 +226,7 @@ int yylex(){
 
 /* le programme lui-même */
 
-inline int yyerror(char * msg){
+inline int yyerror(const char * msg){
   fprintf(stderr, "ERROR %s at %d\n ", msg, position);
   exit(1);
 }
@@ -283,7 +283,7 @@ int main(int argc, char * argv[]){
   if (envinput !=NULL){
     std::istringstream iss(envinput);
     thelexer= new yyFlexLexer (&iss);
-  } 
+  }
   yyparse();
 
   bool wantedlatex=(strchr(asked,'l')!=NULL);
