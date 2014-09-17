@@ -38,8 +38,6 @@
 #define MAX_READNEST 20
 /* number of cached working files */
 #define MAX_MCACHE 32
-/* max languages on a site, hard limit */
-#define MAX_LANGUAGES 32
 /* max sort items. */
 #define MAX_SORT_ITEM 5000
 /* max randperm() items. Should be compatible to MAX_LINELEN. */
