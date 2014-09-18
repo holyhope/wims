@@ -22,7 +22,7 @@
 
 static void _skip_contents(int isif);
 
-    /* common routine for the two if's. */
+/* common routine for the two if's. */
 static void _exec_if_while(char *p, int numerical, int isif)
 {
     if(compare(p,numerical,0)==0) _skip_contents(isif); /* skip if false */
@@ -36,7 +36,7 @@ void exec_if(char *p)
     _exec_if_while(p,0,1);
 }
 
-    /* 'if' numerical. */
+/* 'if' numerical. */
 void exec_ifval(char *p)
 {
     _exec_if_while(p,1,1);
@@ -52,13 +52,13 @@ void _exec_while(char *p, int numerical)
     _exec_if_while(p,numerical,0);
 }
 
-    /* 'while' non-numerical (unless comparisons are < or >, etc.) */
+/* 'while' non-numerical (unless comparisons are < or >, etc.) */
 void exec_while(char *p)
 {
     _exec_while(p,0);
 }
 
-    /* 'while' numerical. */
+/* 'while' numerical. */
 void exec_whileval(char *p)
 {
     _exec_while(p,1);
@@ -76,7 +76,7 @@ void exec_endwhile(char *p)
     if(executed_gotos>=GOTO_LIMIT) module_error("too_many_gotos");
 }
 
-    /* Should provide a method to stop infinite loop. */
+/* Should provide a method to stop infinite loop. */
 void exec_goto(char *p)
 {
     char lbuf[MAX_NAMELEN+17];
@@ -108,22 +108,23 @@ void exec_goto(char *p)
     return;
 */}
 
-    /* 'else' with or without 'if'.
-     * Philosophy: we implement a loosely checked grammar.
-     * We cannot check 'if' grammar if we want to use 'goto'
-     * together with 'if'. */
+/* 'else' with or without 'if'.
+ * Philosophy: we implement a loosely checked grammar.
+ * We cannot check 'if' grammar if we want to use 'goto'
+ * together with 'if'.
+ */
 void exec_else(char *p)
 {
     _skip_contents(1); return;
 }
 
-    /* 'endif': nothing needs to be done here. */
+/* 'endif': nothing needs to be done here. */
 void exec_endif(char *p)
 {
     return;
 }
 
-    /* find out the end of a for loop */
+/* find out the end of a for loop */
 void goto_for_end(void)
 {
     int inner;
@@ -147,7 +148,7 @@ void goto_for_end(void)
     }
 }
 
-    /* for */
+/* for */
 void exec_for(char *p)
 {
     char *p1, *p2, *p3;
@@ -216,7 +217,7 @@ void exec_for(char *p)
     goto syntax;
 }
 
-    /* break a for loop */
+/* break a for loop */
 void exec_break(char *p)
 {
     FOR_STACK *stk;
@@ -229,7 +230,7 @@ void exec_break(char *p)
     *p=0; return;
 }
 
-    /* next */
+/* next */
 void exec_next(char *p)
 {
     double v1, v2, step;
@@ -268,8 +269,9 @@ void exec_next(char *p)
     *p=0; return;
 }
 
-    /* Execution of a file in the module directory,
-     * only for trusted modules. */
+/* Execution of a file in the module directory,
+ * only for trusted modules.
+ */
 void exec_mexec(char *p)
 {
     direct_exec=1;
@@ -277,7 +279,7 @@ void exec_mexec(char *p)
     direct_exec=0;
 }
 
-    /* call shell. */
+/* call shell. */
 void _exec_ex(char *p, char *arg0, char *arg1, int n)
 {
     char *abuf[8];
@@ -296,23 +298,23 @@ void _exec_ex(char *p, char *arg0, char *arg1, int n)
     execredirected(abuf[0],NULL,NULL,errorfname,abuf);
 }
 
-    /* call shell. */
+/* call shell. */
 void exec_sh(char *p)
 {
     _exec_ex(p,"sh","-c",2);
 }
 
-    /* call perl. */
+/* call perl. */
 void exec_perl(char *p)
 {
     _exec_ex(p,"perl","-e",2);
 }
 
-    /* file should not be cached */
+/* file should not be cached */
 void exec_nocache(char *p)
 {    m_file.nocache|=1; *p=0; }
 
-    /* Read another file. */
+/* Read another file. */
 void exec_read(char *p)
 {
     WORKING_FILE save;
@@ -348,7 +350,7 @@ void exec_read(char *p)
     setvar("wims_read_parm",parmsave);
 }
 
-    /* read a variable processing file */
+/* read a variable processing file */
 void exec_readproc(char *p)
 {
     int o=outputing; outputing=0; exec_read(p); outputing=o;
@@ -363,7 +365,7 @@ void exec_defread(char *p)
     exec_read(p); untrust=t; outputing=o;
 }
 
-    /* Change to another file (no return) */
+/* Change to another file (no return) */
 void exec_changeto(char *p)
 {
     m_file.linepointer=m_file.linecnt;
@@ -372,7 +374,7 @@ void exec_changeto(char *p)
 
 int header_executed=0, tail_executed=0;
 
-    /* internal routine: get other language versions */
+/* internal routine: get other language versions */
 void other_langs(void)
 {
     int i,j,k;
@@ -422,7 +424,7 @@ void other_langs(void)
     end: setvar("wims_otherlangs",listbuf); otherlangs_got=1;
 }
 
-    /* Standardised reference to wims home */
+/* Standardised reference to wims home */
 void exec_homeref(char *p)
 {
     char *ref, *user;
@@ -440,7 +442,7 @@ void exec_homeref(char *p)
     phtml_put_base(ref,0); tail_executed=1;
 }
 
-    /* Standardised header menu */
+/* Standardised header menu */
 void exec_headmenu(char *p)
 {
     char *ref, *user;
@@ -458,7 +460,7 @@ void exec_headmenu(char *p)
     phtml_put_base(ref,0); header_executed=1;
 }
 
-    /* uniformized title */
+/* uniformized title */
 void exec_title(char *p)
 {
     char *s;
@@ -473,7 +475,7 @@ void exec_title(char *p)
     phtml_put_base(title_page,0);
 }
 
-    /* standardized html tail */
+/* standardized html tail */
 void exec_tail(char *p)
 {
     if(!outputing || tail_executed) {
@@ -504,7 +506,7 @@ document.body.appendChild(script);\
 }/*]]>*/</script>\n");
 }
 
-   /* standardized header */
+/* standardized header */
 void _header(char *p, int option)
 {
     char *s1, *s2, hbuf[MAX_LINELEN+1], *ws="", *ws2="", *bo, *ol;
@@ -664,7 +666,7 @@ void _httpfollow(char b1[], char *wn, int new)
     mystrncpy(b1,qbuf,MAX_LINELEN);
 }
 
-    /* Restart with a new module, using http code 302. */
+/* Restart with a new module, using http code 302. */
 void exec_restart(char *p)
 {
     char buf[MAX_LINELEN+1], *rfn, buf2[MAX_LINELEN+1];
@@ -697,7 +699,7 @@ void exec_restart(char *p)
 */    delete_pid(); exit(0);
 }
 
-    /* extract target tag from parm string. */
+/* extract target tag from parm string. */
 void href_find_target(char *p)
 {
     char *pp, *pe,buf1[MAX_LINELEN+1];
@@ -740,8 +742,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
     }
 }
 
-
-    /* Create href to wims requests. subst() is not done. */
+/* Create href to wims requests. subst() is not done. */
 void exec_href(char *p)
 {
     char *s, st[128], sti[128], stc[128], stt[128], *p1, *p2, *p3, *wn="";
@@ -857,7 +858,7 @@ void exec_href(char *p)
     setvar("wims_ref_title","");
 }
 
-    /* Create form refering to the page. */
+/* Create form refering to the page. */
 void exec_form(char *p)
 {
     char *s, *p1, *p2, *a, *m, *opt, st[128], *wn="";
@@ -932,8 +933,9 @@ void exec_form(char *p)
    }
 }
 
-    /* Creat link to trap robot access, an internal command
-     * which should not be documented */
+/* Creat link to trap robot access, an internal command
+ * which should not be documented
+ */
 void exec_robottrap(char *p)
 {
     char buf[MAX_LINELEN+1];
@@ -943,7 +945,7 @@ void exec_robottrap(char *p)
     _output_("<div class='wimstrap'>");exec_href(buf); _output_("<span></span></a></div>");
 }
 
-    /* set definitions in a file. Trusted modules only. */
+/* set definitions in a file. Trusted modules only. */
 void exec_setdef(char *p)
 {
     char *p1, *pp;
@@ -960,7 +962,7 @@ void exec_setdef(char *p)
     setdef(p1,pp);
 }
 
-    /* Set a variable. */
+/* Set a variable. */
 void exec_set(char *name)
 {
     char *p, *defn, *parm;
@@ -972,7 +974,7 @@ void exec_set(char *name)
     *p=0; defn=find_word_start(p+1);
     *find_word_end(name)=0;
     mystrncpy(namebuf,find_word_start(name),sizeof(namebuf));
-        /* we allow substit in names, to implement array */
+    /* we allow substit in names, to implement array */
     substit(namebuf); *find_word_end(namebuf)=0;
     if(*defn!=calc_prefix_char) {
     /* substitute by default */
@@ -1003,7 +1005,7 @@ void exec_set(char *name)
     setvar(namebuf,tbuf2);
 }
 
-    /* set but do not overwrite. */
+/* set but do not overwrite. */
 void exec_default(char *p)
 {
     char *start, *end, c, *pp;
@@ -1019,20 +1021,20 @@ void exec_default(char *p)
     *end=c; exec_set(p);
 }
 
-    /* Does nothing; just a comment. */
+/* Does nothing; just a comment. */
 void exec_comment(char *p)
 {
     return;
 }
 
-    /* Exit the file under interpretation */
+/* Exit the file under interpretation */
 void exec_exit(char *p)
 {
     m_file.linepointer=m_file.linecnt;
     return;
 }
 
-    /* output a file. Undocumented. Aliases:
+/* output a file. Undocumented. Aliases:
      * getfile, outfile, fileout */
 void exec_getfile(char *p)
 {
@@ -1059,7 +1061,7 @@ void exec_getfile(char *p)
     else output("<a href=\"%s\"></a>",url);
 }
 
-    /* internal */
+/* internal */
 void count_insert(void)
 {
     insert_no++;
@@ -1339,7 +1341,7 @@ void exec_insplot(char *p)
     unsetenv("multiplot"); setvar("insplot_split","");
 }
 
-    /* Insert dynamic 3d plot */
+/* Insert dynamic 3d plot */
 void exec_insplot3d(char *p)
 {
     char *fmt;
