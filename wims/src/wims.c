@@ -1097,6 +1097,28 @@ void buffer_init(void)
     }
 }
 
+/**
+ * runs the test suite, to check whether the documented commands of modtool
+ * behave properly.
+ * @param prefix path to the proc file to process
+ * @param p      name of the proc file to proceed
+ * @param vars a list of var names to print.
+ **/
+void test_suite(char *prefix, char *p, char *vars){
+  char *v, *nextv;
+  mystrncpy(module_prefix, prefix, sizeof(module_prefix));
+  exec_read(p);
+  nextv=vars;
+  while (*nextv!='\0'){
+    v=find_word_start(nextv);
+    nextv=find_word_end(v);
+    if (*nextv != '\0'){
+      *nextv++='\0';
+    }
+    printf("%s\n", getvar(v));
+  }
+}
+
 int main(int argc, char *argv[], char *envp[])
 {
     char *p, homebuf[MAX_FNAME+1], lbuf[32];
@@ -1120,6 +1142,17 @@ int main(int argc, char *argv[], char *envp[])
       }
       if(strcasecmp(argv[1],"defaults")==0) {
           config_defaults(); return 0;
+      }
+      if(strcasecmp(argv[1],"test")==0) {
+	/* launches a test suite */
+	if (argc < 5) {
+	  printf("Not enough arguments to launch a test; usage:\n");
+	  printf("wims test path_to_file name_of_proc_file 'var1 var2 ...'\n\n");
+	  printf("the file at path_to_file/name_of_proc_file will be evaluated by wims for\nexec commands, then the values of var1, var2, ... will be printed\nin the standard output, one per line.\n");
+	  return 1;
+	}
+	test_suite(argv[2], argv[3], argv[4]);
+	return 0;
       }
     }
     p=getenv("SERVER_SOFTWARE"); if(p!=NULL && strcasecmp(p,"WIMS")==0)

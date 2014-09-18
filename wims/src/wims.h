@@ -256,6 +256,7 @@ extern struct distr_cmd { char *name; int (*routine) (char *p, char *list[], int
   } distr_cmd[];
 extern int distr_cmd_no;
 void exec_tail(char *p);
+void exec_read(char *p);
 
 /* from files.c */
 void secure_exec(void);
