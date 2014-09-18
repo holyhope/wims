@@ -314,7 +314,31 @@ void exec_perl(char *p)
 void exec_nocache(char *p)
 {    m_file.nocache|=1; *p=0; }
 
-/* Read another file. */
+/*
+ * Read another file.
+ * Read a file in order to perform tests.
+ * Relevant global variables:
+ * - m_file, a WORKING_FILE structure (should be restored to its original
+ *   value at the end of the procedure)
+ * - untrust, an integer (should be restored to its original
+ *   value at the end of the procedure)
+ * - outputing, an integer; its value is juste read.
+ * - readnest, an integer, which is incremented during the function
+ *   and decremented when it finishes.
+ * Relevant global variables used in subprograms:
+ * - module_prefix, a const char * which will be preprended before
+ *   the filename, (see lines.c, label = openit).
+ * Relevant wims_environment parameters:
+ * - wims_read_parm  (should be restored to its original
+ *   value at the end of the procedure)
+ * - wims_trustfile: this parameter is only read.
+ * Important procedures called by this one:
+ * - phtml_put(char*, int)
+ * - var_proc(char*, int)
+ * - module_error(const char*)
+ * @param p pointer to the filename, possibly followed by parameters
+ */
+
 void exec_read(char *p)
 {
     WORKING_FILE save;
