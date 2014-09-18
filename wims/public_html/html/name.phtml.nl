@@ -27,12 +27,13 @@ Ja,\
 Nee,\
 Download,\
 Sturen,\
+Start,\
 Details,\
 Laat zien,\
 Bewerken,\
 Attentie,\
 Gefeliciteerd,\
-of ,\
+of,\
 Uileg,\
 Oefening,\
 Werkblad,\
@@ -66,7 +67,7 @@ Nieuwste,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
+	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_start,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_account,wims_name_Enter,\
 	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\

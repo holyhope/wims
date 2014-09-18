@@ -27,6 +27,7 @@ yes,\
 no,\
 Download,\
 Send,\
+Start,\
 Detail,\
 Show,\
 Edit,\
@@ -66,7 +67,7 @@ Credits,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
+	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_start,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_account,wims_name_Enter,\
 	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\
@@ -91,7 +92,7 @@ Informations,\
 Display,on your site,\
 Mask these options,\
 Permalink, Embeddable player,\
-copy and paste, this link, the code, or, in an email,\
+Copy and paste, this link, the code, or, in an email,\
 for, only,\
 current setup,\
 	into wims_name_this_module, wims_name_this_exercice,\
@@ -101,7 +102,6 @@ current setup,\
 	wims_name_copy_and_paste,wims_name_the_link,wims_name_the_code,wims_name_or,wims_name_in_a_mail,\
 	wims_name_for,wims_name_only,\
 	wims_name_this_config
-
 
 !set wims_name_Share = Share
 !set wims_name_to_embed_it = to embed it
@@ -194,7 +194,7 @@ Indexation,\
 	wims_name_exolog,\
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence,\
- 	wims_name_readen
+	wims_name_readen
 
 !! !set wims_name_score=!nosubst 您已完成 $[$wims_homeref_req] 作業的\
 	$[$wims_homeref_got] 。 <br/>平均分數 \
@@ -323,14 +323,15 @@ wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 !endif
 
 !distribute line New document\
-New  sheet\
+New worksheet\
 New exam\
 New class\
 New vote\
 New exercise\
 Class exercises\
+Sheet exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
-wims_name_add_exo,wims_name_classexo
+wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
 !!! for documents
 
@@ -350,27 +351,28 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line Document\
-hiden,visible\
+Documents \
+hidden,visible\
 Title\
 Reorganize in sequences\
 Insert into$ the class\
 Create a new document\
-Draft document\
+Test document\
 Status\
 Insert\
 準備中, 運作中, 已到期,Expired+Hidden\
  neither read nor write,read but not write,read and write\
  編號\
-into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number
 
  !distribute line Add a date\
-   Add file\
-   Add work\
-   Configure\
-   Restore\
-   Agenda\
+Add a file\
+Add homework\
+Configure\
+Abandon\
+Agenda\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
 
@@ -398,8 +400,8 @@ wims_name_Docstatus,wims_name_number
 !if config isin $module or $module=home
  !distribute line $wims_name_config\
  Main configuration page\
- Structure management\
-into wims_name_configb, wims_name_struct,wims_name_config
+Structure management\
+into wims_name_configb,wims_name_config,wims_name_struct
 !endif
 
 !set wims_name_save= Backup and restoration
@@ -418,7 +420,7 @@ wims_name_login,wims_name_chzone
 !distribute line Statistics on students'work\
 Global evaluation of participants\
 Change the severity level\
-Other marks given\
+Other grades given\
 Spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
