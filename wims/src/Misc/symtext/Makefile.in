@@ -12,10 +12,10 @@ STRIP=@STRIP@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 
 O=compile.o match.o suffix.o translate.o symtext.o
-
+H=../Lib/libwims.h ../../config.h ../../includes.h ../../wimsdef.h
 all:: symtext
 
-%.o: %.c *.h
+%.o: %.c *.h $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean::

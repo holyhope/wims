@@ -12,6 +12,7 @@ rpath=
 libtype=static
 NETLIBS=@NETLIBS@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 
 publicbin=curvecomp cyclicode ftype oncechar shortpath webget
 Publicbin=$(publicbin) Plouffe clickzone html2msg huffman translator wrap chroot voronoi
@@ -41,7 +42,7 @@ all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword money
 
 maintainer:: java
 
-%.o: %.c
+%.o: %.c $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 chemeq units-filter::
@@ -157,24 +158,24 @@ shortpath: shortpath.c
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) shortpath.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
-oncechar: oncechar.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) oncechar.c $(lopt) -o $@
+oncechar: oncechar.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) oncechar.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 cryptarith: cryptarith.c
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cryptarith.c -lm -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
-ftype: ftype.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ftype.c $(lopt) -o $@
+ftype: ftype.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ftype.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
-cyclicode: cyclicode.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cyclicode.c $(lopt) -o $@
+cyclicode: cyclicode.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) cyclicode.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
-curvecomp: curvecomp.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) curvecomp.c $(lopt) -o $@
+curvecomp: curvecomp.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) curvecomp.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 Plouffe: Plouffe.c
@@ -187,13 +188,13 @@ translator: suffix.o translator.o
 	$(STRIP) translator
 	cp translator $(PUBDIR)
 
-html2msg: html2msg.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) html2msg.c $(lopt) -o html2msg
+html2msg: html2msg.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) html2msg.o $(lopt) -o html2msg
 	$(STRIP) html2msg
 	cp html2msg $(PUBDIR)
 
-huffman : huffman.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) huffman.c $(lopt) -o $@
+huffman : huffman.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) huffman.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 
@@ -219,17 +220,17 @@ modind: suffix.o translator_.o modind.o
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) suffix.o translator_.o modind.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
-modstat: modstat.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modstat.c $(lopt) -o $@
+modstat: modstat.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) modstat.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
-ccsum: ccsum.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ccsum.c $(lopt) -o $@
+ccsum: ccsum.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) ccsum.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
-exostat: exostat.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) exostat.c $(lopt) -o $@
+exostat: exostat.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) exostat.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
@@ -238,13 +239,13 @@ exostat: exostat.c
 #	$(STRIP) $@
 #	cp $@ $(OTHERDIR)
 
-phtmltext: phtmltext.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) phtmltext.c $(lopt) -o $@
+phtmltext: phtmltext.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) phtmltext.o $(lopt) -o $@
 	$(STRIP) $@
 	cp $@ $(BINDIR)
 
-clickzone: clickzone.c
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) clickzone.c $(lopt) -lgd -o $@
+clickzone: clickzone.o
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) clickzone.o $(lopt) -lgd -o $@
 	$(STRIP) $@
 	cp $@ $(PUBDIR)
 

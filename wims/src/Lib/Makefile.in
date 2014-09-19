@@ -10,12 +10,13 @@ ranlib=@RANLIB@
 defines=@DEFINES@
 SETENV_OBJS=@SETENV_OBJS@
 O=dir.o evalue.o levelcurve.o liblines.o math.o text.o mt19937ar.o libwims.o
+H=libwims.h ../config.h ../includes.h ../wimsdef.h
 
 all: libwims.a
 
 static: libwims.a
 
-%.o: %.c
+%.o: %.c $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 libwims.a: $(O) $(SETENV_OBJS)

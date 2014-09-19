@@ -13,10 +13,10 @@ libtype=static
 lopt=-L../../lib -lwims -lm $(rpath)
 oefO=oeflines.o compare.o outexec.o process.o sp.o oef2wims.o
 msgO=msglines.o compare.o def.o doc.o sp.o msg2wims.o
-
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 all: oef2wims msg2wims
 
-%.o: %.c
+%.o: %.c *.h $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean:

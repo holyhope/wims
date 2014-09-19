@@ -14,10 +14,11 @@ rpath=
 lopt=$(libpath) $(libs)
 language=fr cn ca
 O=flylines.o nametab.o vimg.o objects.o flydraw.o
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 
 all: nametab.c flydraw
 
-%.o: %.c
+%.o: %.c *.h $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean:

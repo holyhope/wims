@@ -20,7 +20,6 @@
 
 #include <time.h>
 
-#include "../../includes.h"
 #include "../../Lib/libwims.h"
 
 	/* Maximum of blocks. Limited to sizeof(short). */

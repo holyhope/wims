@@ -11,10 +11,11 @@ STRIP=@STRIP@
 lopt=-L../../lib -lwims -lm
 
 O=cache.o cleaning.o cmd.o files.o fork.o homedir.o housekeep.o log.o options.o socket.o wimslogdlines.o score.o wimslogd.o
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 
 all: wimslogd
 
-%.o: %.c wimslogd.h ../wimsdef.h ../Lib/libwims.h
+%.o: %.c $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean:

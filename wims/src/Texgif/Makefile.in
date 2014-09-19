@@ -10,10 +10,10 @@ defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 O=basic.o colors.o tfm.o gf.o font.o image.o dvi.o texgif.o
-
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 all: texgif
 
-%.o: %.c
+%.o: %.c *.h $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean::
@@ -24,7 +24,7 @@ distclean: clean
 	rm -f $(wims_home)/public_html/bin/tex..gif
 	rm -f Makefile
 
-texgif: *.h $(O)
+texgif: $(O)
 	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) $(defines) $(O) -lgd $(lopt) -o texgif
 	$(STRIP) texgif
 	cp texgif $(wims_home)/public_html/bin/tex..gif

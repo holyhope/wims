@@ -16,6 +16,7 @@ commonobj= common.o
 progstatic=pari yacas maxima scilab
 progdynamic=gap octave m2
 progs=$(progstatic) $(progdynamic)
+H=../Lib/libwims.h ../config.h ../includes.h ../wimsdef.h
 
 all: $(progs) install
 
@@ -26,7 +27,7 @@ distclean: clean
 	cd $(PUBDIR); rm -f $(progs)
 	rm -f Makefile
 
-%.o: %.c common.h
+%.o: %.c common.h $(H)
 	$(cc) -o $@ $(cflags) $(CPPFLAGS) $(defines) -c $<
 
 install: $(progs)

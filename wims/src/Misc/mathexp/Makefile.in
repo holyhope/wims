@@ -9,9 +9,10 @@ defines=@DEFINES@
 STRIP=@STRIP@
 lopt=-L$(wims_home)/lib -lwims -lm $(rpath)
 O=tables.o basic.o extract.o type.o not.o mathexp.o
+H=../../Lib/libwims.h ../../config.h ../../includes.h ../../wimsdef.h
 all:: mathexp
 
-%.o: %.c
+%.o: %.c $(H)
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean::
