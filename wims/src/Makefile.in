@@ -25,7 +25,7 @@ CRYPTLIB=@CRYPTLIB@
 lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 
 wimsd=@BUILD_WIMSD@
-wimsobjects=auth.o calc.o cleaning.o compare.o config.o evalue.o exam.o exec.o files.o html.o insmath.o lines.o log.o mathfonts.o mathml.o matrix.o pedia.o rawmath.o score.o texmath.o test.o var.o variables.o wims.o
+O=auth.o calc.o cleaning.o compare.o config.o evalue.o exam.o exec.o files.o html.o insmath.o lines.o log.o mathfonts.o mathml.o matrix.o pedia.o rawmath.o score.o texmath.o test.o var.o variables.o wims.o
 
 
 all:: lib$(libtype) progs setupwims mkindex
@@ -39,7 +39,7 @@ distconfig: configure.in
 	autoconf
 	autoheader
 
-%.o: %.c
+%.o: %.c *.h
 	$(cc) -o $@ $(cflags) $(defines) -c $<
 
 clean::
@@ -109,8 +109,8 @@ distclean::
 	find . -name Makefile | xargs rm -f
 	find .. -name .wimshome | xargs rm -f
 
-wims: *.h $(wimsobjects) Lib/libwims.o
-	$(cc) $(LDFLAGS) Lib/libwims.o $(wimsobjects) $(lopt) -o wims
+wims: $(O) Lib/libwims.o
+	$(cc) $(LDFLAGS) Lib/libwims.o $(O) $(lopt) -o wims
 	$(STRIP) wims
 	./wims table
 
