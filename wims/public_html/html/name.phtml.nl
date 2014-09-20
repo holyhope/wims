@@ -6,27 +6,27 @@
 
 !! **** Default Names ***
 !distribute items Zoeken,\
-Werk,Terug naar het Werk,\
-WIMS Home,Intro/Config,Help,Wat is dit,\
-Introductie,Close,\
+Werk,Terug naar het werk,\
+WIMS hoofdpagina,Intro/Configuratie,Help,Over deze module,\
+Introductie,Sluiten,\
 Sluit dit venster,Terug,\
-Website manager,Auteur van deze pagina,Auteurs van deze pagina's,\
+Site manager,Schrijver van deze pagina,Schrijvers van deze pagina,\
 Vertaald door,Exit,\
-WIMS Help,Referentie,\
-Message board,Forums,\
+WIMS Help,Referenties,\
+Message board,Forum,\
 Werkblad,Hulpmiddelen,\
-Kopieer naar Modtool,\
-Print,\
-Importeer in uw eigen klas,\
-Printbare versie,\
-Opnieuw,\
-Ga naar,\
-Vernieuwen,\
+kopieer naar Modtool,\
+Printen,\
+Importeren naar klas,\
+Printbare Versie,\
+Nog een keer,\
 Opslaan,\
-Ja,\
-Nee,\
-Download,\
-Sturen,\
+Verversen,\
+Bewaren,\
+ja,\
+nee,\
+Downloaden,\
+Versturen,\
 Start,\
 Details,\
 Laat zien,\
@@ -34,24 +34,24 @@ Bewerken,\
 Attentie,\
 Gefeliciteerd,\
 of,\
-Uileg,\
+Uitleg,\
 Oefening,\
-Werkblad,\
+Werkbladen,\
 Account,\
 Inloggen,\
-Cijfers,\
-Mijn cijfers,\
-Proefwerk,Exams,\
-Browse,\
+Cijfer,\
+Myn cijfers,\
+Examen,Examens,\
+Andere browsing methodes,\
 Terug naar het menu,\
 Eind datum,\
 Fout,\
 Volgende serie,Vorige serie,\
 Voorbeeld,\
-Enquete,\
+Stem,Stemmen,\
 Algemene voorwaarden,\
-Hulp nodig ?,\
-Bravo !,\
+Hulp nodig?,\
+Bravo!,\
 CAS uitloggen,\
 Met dank aan,\
 Nieuwste,\
@@ -479,3 +479,6 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module isitemof home,adm/class/sheet,adm/class/exam
  !set wims_name_actionlist=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 !endif
+
+
+
