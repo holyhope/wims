@@ -939,6 +939,51 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	*/
 	fprintf(js_include_file,"\nx_use_snap_to_grid = 0;y_use_snap_to_grid = 1;");
 	break;
+	case USERINPUT:
+	/*
+	 @ userinput function | textarea | inputfield
+	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
+	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
+	 @ function may be used any time (e.g. without userdraw)
+	*/
+	    temp = get_string_argument(infile,1);
+	    if(strstr(temp,"function") != 0  || strstr(temp,"curve") != 0  || strstr(temp,"plot") != 0 ){
+	     if( js_function[DRAW_JSFUNCTION] != 1 ){ 
+	      js_function[DRAW_JSFUNCTION] = 1;
+	      if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
+	      add_input_jsfunction(js_include_file,canvas_root_id,1,input_style,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	      input_cnt++;
+	     }
+	     if( use_js_math == FALSE){/* add this stuff only once...*/
+	      add_to_js_math(js_include_file);
+	      use_js_math = TRUE;
+	     }
+	     if( use_js_plot == FALSE){
+	      use_js_plot = TRUE;
+	      add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
+	     }
+	    }
+	    else
+	    {
+	     if(strstr(temp,"inputfield") != 0 ){
+	      if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
+	      if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	      use_input_xy = 1;
+	     }
+	     else
+	     {
+	      if(strstr(temp,"textarea") != 0 ){
+	       if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
+	       if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	       use_input_xy = 2;
+	      }
+	      else
+	      {
+	        canvas_error("userinput argument may be \"function,inputfield,textarea\"");
+	      }
+	     }
+	    }
+	    break;
 	case USERTEXTAREA_XY:
 	/*
 	@ usertextarea_xy
@@ -3208,10 +3253,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
   else
   {
     if( found_size_command != 3 ){
-     canvas_error("Please specify bothe xrange and yrange ...");
+     canvas_error("Please specify both xrange and yrange ...");
     }
   }
-  /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable shapes / objects  ! */
+  /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable/clickable shapes / objects  ! */
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
   if( reply_format > 0 ){ add_read_canvas(reply_format,reply_precision);}
@@ -6653,6 +6698,7 @@ int get_token(FILE *infile){
 	*userinput_xy="userinput_xy",
 	*userinput_function="userinput_function",
 	*usertextarea_xy="usertextarea_xy",
+	*userinput="userinput",
 	*jsmath="jsmath",
 	*trace_jscurve="trace_jscurve",
 	*setlimits="setlimits",
@@ -7318,6 +7364,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, usertextarea_xy) == 0 ){
 	free(input_type);
 	return USERTEXTAREA_XY;
+	}
+	if( strcmp(input_type, userinput) == 0 ){
+	free(input_type);
+	return USERINPUT;
 	}
 	if( strcmp(input_type, sgraph) == 0 ){
 	free(input_type);

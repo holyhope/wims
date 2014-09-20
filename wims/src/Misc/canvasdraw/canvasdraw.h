@@ -151,6 +151,7 @@
 #define KILLSLIDER	155
 #define ANGLE		156
 #define USERINPUT_FUNCTION 157
+#define USERINPUT	158
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
