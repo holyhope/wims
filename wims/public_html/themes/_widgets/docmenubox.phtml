@@ -3,7 +3,7 @@
  <div id="wimsmenubox" class="footer">
   <div class="wimsmenu">
    <div class="menuitem">
-    !href cmd=reply&job=source $n_source0 
+    !href cmd=reply&job=source $n_source0
    </div>
   </div>
  </div>
@@ -17,10 +17,11 @@
     !read $oneitem properties,1,cmd=reply&job=prop
     !!href cmd=reply&job=prop $n_properties
    </div>
-
-   <div class="menuitem">
-    !read $oneitem doch_upload,1,cmd=reply&job=file
-   </div>
+   !if $job!=file
+     <div class="menuitem">
+     !read $oneitem doch_upload,1,cmd=reply&job=file
+     </div>
+   !endif
   !endif
 
   !if $wims_developer!=$empty and COPYING isin $module_copyright
@@ -60,7 +61,7 @@
      <div class="menuitem">
       !read $oneitem source,1,cmd=reply&job=exosource&block=$startblock
      </div>
-    !endif 
+    !endif
    !endif
   !endif
  </div><!--end of wimsmenu-->
