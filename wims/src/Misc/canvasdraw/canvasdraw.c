@@ -9,23 +9,20 @@
 * No warrenty whatsoever							*
 *********************************************************************************
 */
-
-#include "../../Lib/libwims.h"
 #include "canvasdraw.h"
-#include <assert.h>
-#include "canvasmacro.c"
 
 /******************************************************************************
 **  Internal Functions
 ******************************************************************************/
 void	add_to_buffer(char *tmp); /* add tmp_buffer to the buffer */
 void	sync_input(FILE *infile);/* proceed with inputfile */
-void	canvas_error(char *msg);
 void 	add_javascript_functions(int js_functions[], int canvas_root_id);
 void	reset();/* reset some global variables like "use_filled" , "use_dashed" */
 int	get_token(FILE *infile); /* read next char until EOL*/
+/*
 int 	x2px(double x);
 int 	y2px(double y);
+*/
 double 	px2x(int x);
 double 	px2y(int y);
 double	get_real(FILE *infile,int last); /* read a value; calculation and symbols allowed */
