@@ -122,6 +122,10 @@ do
  du -ks $cls > $cls/.du
 done;
 
+# cleanup the *.bin in score
+cd $WIMS_HOME/log/classes
+find . -type f -name "*.bin" -exec rm -v "{}" ";" 1>/dev/null
+
 # check if all compulsory directories are here (only in non example classes)
 cd $WIMS_HOME/log/classes
 list=`find [0-9][0-9][0-9][0-9][0-9]* -type d -maxdepth 0` ;
