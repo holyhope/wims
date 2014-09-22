@@ -1,3 +1,17 @@
+!if _filter_ isitemof $listuser
+  filter=yes
+  listuser=!listcomplement _filter_ in $listuser
+  !if $varfilter!=$empty
+    !reset varfilter_
+    !set varfilter_cnt=!linecnt $varfilter
+    !for v=1 to $varfilter_cnt
+      var_line=!singlespace $(varfilter[$v;])
+      var_line =!replace $ $ by , in $var_line
+      varfilter_=!append line $var_line to $varfilter_
+    !next
+  !endif
+!endif
+
 !if $user!=$empty
  !read adm/class/userdef classes,$wims_class,$user
  !defread $userdef
@@ -15,6 +29,14 @@
    listiduser=!append item $id to $listiduser
    n=$f $l
    listnameuser=!append item $n to $listnameuser
+  !endif
+  !if $filter=yes
+    !reset var_filter_test
+    !read adm/class/testfilter $id\
+$varfilter_
+   !if $var_filter_test=1
+     listuser=!append item $id to $listuser
+   !endif
   !endif
  !next k
  listuser=!listintersect $listuser and $listiduser

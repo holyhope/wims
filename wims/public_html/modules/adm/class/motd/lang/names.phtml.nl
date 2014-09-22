@@ -33,3 +33,5 @@ set name_alertmsg=Spoed bericht
 !set name_walertmsg=Schrijf een spoed bericht
 !set name_Introalertmsg=!nosubst Schrijf een spoed berichtje aan $user_firstname $user_lastname (geen links of html tags toegestaan; maximale bericht lengte $alertmsg_limit karakters).
 !set name_usermultisession=Meerdere sessies op in deze klas
+
+!set name_filter=Filter according to a technical variable (student properties)

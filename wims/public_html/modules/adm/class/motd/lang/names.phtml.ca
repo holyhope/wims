@@ -33,3 +33,5 @@ set name_alertmsg=Message d'alerte
 !set name_walertmsg=Ecrire une alerte
 !set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $user_firstname $user_lastname (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
 !set name_usermultisession=Plusieurs sessions ouvertes
+
+!set name_filter=Filter according to a technical variable (student properties)
