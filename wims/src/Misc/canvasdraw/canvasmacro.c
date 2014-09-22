@@ -132,9 +132,9 @@ var draw_zoom_buttons = function(){\
  ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
  ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
  ctx.stroke();\
-};\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);    
+};\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);
 }
- 
+
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var num = %d;\
@@ -716,8 +716,8 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
-/* 
-num=1 single horizontal line 
+/*
+num=1 single horizontal line
 num=2 multiple horizontal lines
 num=3 single vertical line
 num=4 multiple vertical lines
@@ -854,9 +854,8 @@ function canvas_remove(x,y){\
 }
 
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,int type, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
-/* 
+/*
 constants in draw_arrows() ... for this moment: ;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
- 
 */
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var canvas_rect;\
@@ -1119,7 +1118,7 @@ function tooltip%d_show(){\
  }\
 };\n</script>\n<!-- end command intooltip %d -->\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,tooltip_text,canvas_root_id,bgcolor,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 
-} 
+}
 
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"arc\" on final canvas -->\n\
@@ -1320,7 +1319,7 @@ function user_text(evt){\
 
 }
 
-/* 
+/*
 
 type = 0 : x-values only [command mousex]
 type = 1 : y-values only [command mousey]
@@ -1393,8 +1392,8 @@ fprintf(js_include_file," \nfunction safe_eval(exp){\
 };");
 }
 
-/* 
-add display of slider value in mouse context 
+/*
+add display of slider value in mouse context
 use_slider_display = 1 : x or x/y
 use_slider_display = 2 : angle in degrees
 use_slider_display = 3 : angle in radians
@@ -1571,7 +1570,7 @@ add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_col
 }
 
 
-/* 
+/*
 adds inputfield for x-value: returns the js-calculated y-value after click on 'OK' button
 draws a non-configurable crosshair on this calculated location
 */
@@ -1640,8 +1639,8 @@ if( wims_status == \"done\" ){return;};\
 };use_trace_jsmath();",canvas_root_id,canvas_cnt,canvas_root_id,jsmath,line_width,crosshair_size,stroke_color,stroke_opacity);
 }
 
-/* 
-add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined) 
+/*
+add a table with 2 textarea's labeled 'x' 'y' ( or 'xlabel' 'ylabel' if defined)
 add two buttons: OK and NOK (OK draws; NOK will delete last item pair from userdraw_x / userdraw_y array's
 */
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id){
@@ -1738,8 +1737,8 @@ function add_input_jsfunction(){\
 }
 
 
-/* 
-adds 2 inputfields (x:y) and 'ok' | 'nok' button 
+/*
+adds 2 inputfields (x:y) and 'ok' | 'nok' button
 these are used for user drawing with inputfields...
 */
 
@@ -1798,8 +1797,8 @@ delete_button.addEventListener(\"mousedown\",function(e){user_redraw(-1);return;
 
 /* draw circle(s) / point(s) via 3 inputfields */
 void add_input_circle(FILE *js_include_file,int type,int num){
-/* 
-type = 0 : a point ...radius is fixed 
+/*
+type = 0 : a point ...radius is fixed
 type = 1 : a circle ... read inputfield userinput_r
 num = 1 : a single point / circle
 num = 2 : multiple points / circles
@@ -2233,7 +2232,7 @@ char *eval_levelcurve(int xsize,int ysize,char *fun,double xmin,double xmax,doub
 }
 
 /* plot parametric function */
-char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,double xmax,double ymin,double ymax,        
+char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,double xmax,double ymin,double ymax,
  double tmin,double tmax,int plotsteps,int precision){
     void *fx;
     void *fy;
@@ -2272,10 +2271,10 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
 }
 
 char *double_xy2js_array(double xy[],int len,int decimals){
- /* 
-    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8] 
-    int xy[] is already checked for errors or overflow in "get_real()" 
-    just to be sure we double check the size of "temp" 
+ /*
+    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8]
+    int xy[] is already checked for errors or overflow in "get_real()"
+    just to be sure we double check the size of "temp"
 */
     char temp[2*MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
@@ -2300,10 +2299,10 @@ char *double_xy2js_array(double xy[],int len,int decimals){
 }
 
 char *xy2js_array(int xy[],int len){
- /* 
-    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8] 
-    int xy[] is already checked for errors or overflow in "get_real()" 
-    just to be sure we double check the size of "temp" 
+ /*
+    1,2,3,4,5,6,7,8 --> [1,3,5,7],[2,4,6,8]
+    int xy[] is already checked for errors or overflow in "get_real()"
+    just to be sure we double check the size of "temp"
 */
     char temp[MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
@@ -2328,17 +2327,17 @@ char *xy2js_array(int xy[],int len){
 }
 
 char *data2js_array(int data[],int len){
- /* 
-    1,2,3,4,5,6,7,8 --> [1,2,3,4,5,6,7,8] 
-    int data[] is already checked for errors or overflow in "get_real()" 
-    just to be sure we double check the size of "temp" 
+ /*
+    1,2,3,4,5,6,7,8 --> [1,2,3,4,5,6,7,8]
+    int data[] is already checked for errors or overflow in "get_real()"
+    just to be sure we double check the size of "temp"
 */
     char temp[MAX_BUFFER], *string;
     char *tmp = my_newmem(16);/* <= 9999999999999999  */
     memset(temp,'\0',MAX_BUFFER);/* clear memory */
     int i;int space_left;
     temp[0] = '[';/* start js-array */
-    for(i = 0; i < len; i++){ 
+    for(i = 0; i < len; i++){
 	if(i == len - 1){sprintf(tmp, "%d", data[i]);}else{sprintf(tmp, "%d,", data[i]);}
 	space_left = (int) (sizeof(temp) - strlen(temp) - strlen(tmp) - 1);
 	if( space_left > 0 ){ strncat(temp,tmp,space_left - 1);}else{canvas_error("can not parse integer to js-array:\nYour curve plotting produces too many data \nreduce image size or plotsteps ");}
@@ -2367,7 +2366,7 @@ int find_number_of_digits(int i){
 }
 /* change this when colornames / numbers are added to struct */
 #define NUMBER_OF_COLORNAMES	140
-struct { 
+struct {
     char *hex;
     char *name;
     char *rgb;
@@ -2520,15 +2519,15 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
 /* in drag& drop / onclick library:
     obj_type = 1 == rect
     obj_type = 2 == point / points (do not scale with zoom)
-    obj_type = 3 == ellipse 
+    obj_type = 3 == ellipse
     obj_type = 4 == polyline / segment /line / vline / hline
     obj_type = 5 == closed path (polygon)
     obj_type = 6 == roundrect
     obj_type = 7 == crosshair / crosshairs
     obj_type = 8 == arrow
     obj_type = 9 == curve
-    obj_type = 10== arrow2 
-    obj_type = 11== parallel  (no drag or onclick) 
+    obj_type = 10== arrow2
+    obj_type = 11== parallel  (no drag or onclick)
     obj_type = 12== arc : radius is in pixels , so no zooming in/out
     obj_type = 13== circle (will scale on zoom)
     obj_type = 14== text (will not scale or pan on zoom)
