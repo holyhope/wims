@@ -903,8 +903,8 @@ function canvas_remove(x,y){\
 void add_js_paths(FILE *js_include_file,int num,char *draw_type,int line_width, int closed_path,char *stroke_color,double stroke_opacity,int use_filled, char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var path_cnt = 0;\
-temp_x = [];\
-temp_y = [];\
+var temp_x = [];\
+var temp_y = [];\
 var num = %d;\
 xy_cnt=0;\
 var line_width = %d;\
@@ -919,7 +919,7 @@ var dashtype1 = %d;\
 var closed_path = 0;\
 var click_cnt=0;\
 var x0,y0;\
-canvas_rect = canvas_userdraw.getBoundingClientRect();\
+var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
  if(evt.which == 1 ){\
   if( click_cnt == 0 ){\
