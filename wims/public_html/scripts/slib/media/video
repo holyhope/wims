@@ -2,11 +2,10 @@
  !goto proc
 !endif
 
-
-
 slib_author=Bernadette, Perrin-Riou
 
-slib_example=\imagedir/exemple.flv
+slib_example=[ogg="\imagedir/exemple.ogg" mp4="http://xxx"],,poster="gifs/logo.gif"\
+[ogg="http://url_for_ogg" mp4="url_for_mp4", webm="url_for_webm]\
 
 !exit
 
@@ -14,39 +13,36 @@ slib_example=\imagedir/exemple.flv
 !!!if ...adm/ isin ...$module or .. isin $wims_read_parm or !!$wims_read_parm=$empty
 !! !exit
 !!!endif
+!reset slib_out
+!set slib_Type=mp4,webm,ogg,flv
 
 !distribute items $wims_read_parm into slib_media,slib_option,slib_option2
+!default slib_option2=poster="gifs/wims_logo.png"
+!set slib_media=!declosing $slib_media
+!set slib_media=!items2words $slib_media
 
-!default slib_option=height="240" width="320" autostart="false"
-
-slib_option2 = !getopt option in $slib_option2
-
-
-slib_mod = $module_category
-slib_mod = !items2words $slib_mod
-!if imagedir iswordof $slib_option2
-  !if document iswordof $slib_mod
-    slib_image_dir=$Docdir/$doc/files
-  !else
-    slib_adresse=$imagedir
+!for slib_type in $slib_Type
+  !reset slib_media_$slib_type
+  slib_media_$slib_type=!getopt $slib_type in $(slib_media)
+  slib_media_$slib_type=!replace internal $	$ by = in $(slib_media_$slib_type)
+  !if $(slib_media_$slib_type)!=
+    !set slib_out=!append line <source src="$(slib_media_$slib_type)" type="video/$slib_type" />\
+    to $slib_out
   !endif
-!endif
-!default slib_adresse=flash
-
-slib_media=!words2items $slib_media
-!if rename iswordof $slib_option2
-   slib_media=!rename $slib_media
-!endif
-
-slib_media=!replace internal , by | in $slib_media
-slib_media=!nospace $slib_media
-
-!if http notin $slib_media
- !set wims_http=!replace internal /wims.cgi by in $wims_ref_name
- !set slib_media=$wims_http/$slib_media
-!endif
-
-slib_out=<object type="application/x-shockwave-flash" data="flash/player_flv_maxi.swf" $slib_option>\
+!next
+!if $slib_out=$empty or $(slib_media_flv)!=$empty
+ !if $slib_media_flv=$empty
+   slib_media_flv=$slib_media
+ !endif
+  slib_out=<object type="application/x-shockwave-flash" data="flash/player_flv_maxi.swf" $slib_option>\
 <param name="movie" value="flash/player_flv_maxi.swf" />\
 <param name="allowFullScreen" value="true" />\
-<param name="FlashVars" value="flv=$slib_media" /></object>\
+<param name="FlashVars" value="flv=$slib_media_flv" /></object>
+ !exit
+!endif
+!default slib_option=preload="auto" height="320" width="600" controls="controls" style="width:50 %;padding:15px;margin:0px;border:5px solid black; border-radius:15px; box-shadow:10px 10px 5px gray; box-sizing: border-box;"
+slib_option=$slib_option $slib_option2
+slib_out=<video $slib_option>\
+ $slib_out\
+ Your browser does not support HTML5 : Download <a href="$slib_media_mp4">vidéo</a>.\
+</video>
