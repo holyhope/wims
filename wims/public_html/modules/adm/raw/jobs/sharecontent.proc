@@ -1,6 +1,6 @@
 # ShareContent :
 # Partage le contenu (exercices pour le moment) d'une classe $qclass avec la classe $data1, a condition que les 2 classes soient liees a $rclass
-# $option va contenir le type de contenu ‡ partager
+# $option va contenir le type de contenu √† partager
 
 !default option=exo
 
@@ -20,7 +20,7 @@ qclass=$data1
 !readdef $classdeffile
   
 !if $class_type>1
-  # on ne partage du contenu que si la destination est une simple classe
+  # on ne partage du contenu que si la destination est une classe simple ou une sous-classe.
   error=class $qclass is a superclass
   !exit
 !endif
@@ -56,6 +56,7 @@ qclass=$data1
 
 
   # On remplace ensuite ce dossier par un lien vers le contenu a partager de la 1ere classe.
+# TODO : ici il faudrait rendre ces liens relatifs plutot qu'absolus, pour plus de perenit√©.
 
   log=!sh ln -s $src_class_dir/src/ $wims_class_dir/src \
   ln -s $src_class_dir/def/ $wims_class_dir/def \
@@ -87,7 +88,7 @@ neighbors_src=wimshome/log/classes/$src_class/neighbors
 	!endif
 !next t
 
-# puis on dÈfinit des parametres generaux
+# puis on d√©finit des parametres generaux
 n_sup = !defof n_sup in $neighbors_src
 !if $n_sup !=$empty
 	n_sup=$n_sup,
