@@ -155,6 +155,7 @@
 #define ANGLE		156
 #define USERINPUT_FUNCTION 157
 #define USERINPUT	158
+#define HALFLINE	159
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -196,6 +197,7 @@
 #define DRAW_XYLOGSCALE	38
 #define DRAW_CENTERSTRING 39
 #define DRAW_JSFUNCTION	40
+#define DRAW_DEMILINES	41
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1
@@ -254,6 +256,7 @@ void add_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,int pr
 void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_circles(FILE *js_include_file,int num,char *draw_type, int line_width, int radius , char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
+void add_js_demilines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_hlines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1);
@@ -266,8 +269,10 @@ void add_js_floodfill(FILE *js_include_file,int canvas_root_id);
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity);
+/* these should  be harmonized via switch key !!*/
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
+void add_input_demiline(FILE *js_include_file,int num);
 void add_input_line(FILE *js_include_file,int num);
 void add_input_polyline(FILE *js_include_file);
 void add_textarea_polygon(FILE *js_include_file);

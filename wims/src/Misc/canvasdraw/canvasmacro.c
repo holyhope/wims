@@ -669,6 +669,97 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
+void add_js_demilines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
+var canvas_rect;\
+var num = %d;\
+var line_width = %d;\
+var stroke_color = \"%s\";\
+var stroke_opacity = %f;\
+var use_dashed = %d;\
+var dashtype0 = %d;\
+var dashtype1 = %d;\
+var x0,y0;\
+function user_draw(evt){\
+ var lu = userdraw_x.length;\
+ if( lu != 0 && lu%%2 == 0){\
+  draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ }\
+ var y = evt.clientY - canvas_rect.top;\
+ if( y < ysize + 1){\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var x = evt.clientX - canvas_rect.left;\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+  if( evt.which == 1 ){\
+   if( lu%%2 == 0){\
+    x0 = x;y0 = y;\
+    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
+    draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+    user_drag(evt);\
+   }\
+   else\
+   {\
+    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
+    draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+   }\
+  }\
+  else\
+  {\
+   canvas_remove(x,y);\
+  }\
+ }\
+};\
+function user_drag(evt){\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var x = evt.clientX - canvas_rect.left;\
+ var y = evt.clientY - canvas_rect.top;\
+ var lu = userdraw_x.length;\
+ if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+ };\
+ if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+ };\
+ if( lu%%2 != 0 ){\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+  draw_circles(context_userdraw,[x],[y],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+  draw_demilines(context_userdraw,[x0,x],[y0,y],line_width,stroke_color,stroke_opacity);\
+  if( lu > 0){\
+   draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  }\
+ }\
+};\
+function canvas_remove(x,y){\
+ var marge = 10*line_width;\
+ for(var p = 0;p < userdraw_x.length ; p++){\
+  if(userdraw_x[p] < x + marge && userdraw_x[p] > x - marge ){\
+   if(userdraw_y[p] < y + marge && userdraw_y[p] > y - marge ){\
+    if( confirm(\"remove line ?\" )){\
+     context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
+     if( p%%2 == 0 ){\
+      userdraw_x.splice(p,2);userdraw_y.splice(p,2);\
+     }\
+     else\
+     {\
+      userdraw_x.splice(p-1,2);userdraw_y.splice(p-1,2);\
+     }\
+     if(userdraw_x.length < 2){ userdraw_x = [];userdraw_y = [];return;};\
+     draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+    }\
+    return;\
+   }\
+  }\
+ }\
+};",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
+}
+
+
 /*
 num=1 single horizontal line
 num=2 multiple horizontal lines
@@ -714,6 +805,7 @@ function user_draw(evt){\
 };\
 function user_drag(evt){ return evt; };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
+
 
 
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
@@ -805,6 +897,7 @@ function canvas_remove(x,y){\
  }\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
+
 
 void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,int type, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1,int arrow_head){
 /*
@@ -1974,6 +2067,44 @@ function user_redraw(t){\
 };",num);
 }
 
+/* draw demilines(s) via inputfields x/y */
+void add_input_demiline(FILE *js_include_file,int num){
+fprintf(js_include_file,"\n<!-- begin add_input_segment -->\n\
+function user_redraw(t){\
+ var lu = userdraw_x.length;\
+ if( t == -1 && lu > 1){\
+  userdraw_x.splice(lu-2,2);\
+  userdraw_y.splice(lu-2,2);\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+  return;\
+ };\
+ var add_x1 = safe_eval( document.getElementById(\"userinput_x1\").value );\
+ var add_y1 = safe_eval( document.getElementById(\"userinput_y1\").value );\
+ var add_x2 = safe_eval( document.getElementById(\"userinput_x2\").value );\
+ var add_y2 = safe_eval( document.getElementById(\"userinput_y2\").value );\
+ if( add_x1 != null && add_y1 != null && add_x2 != null && add_y2 != null ){\
+  if( %d == 2 ){\
+    var s = userdraw_x.length;\
+    userdraw_x[s] = x2px(add_x1);\
+    userdraw_y[s] = y2px(add_y1);\
+    userdraw_x[s+1] = x2px(add_x2);\
+    userdraw_y[s+1] = y2px(add_y2);\
+  }\
+  else\
+  {\
+   userdraw_x[0] = x2px(add_x1);\
+   userdraw_y[0] = y2px(add_y1);\
+   userdraw_x[1] = x2px(add_x2);\
+   userdraw_y[1] = y2px(add_y2);\
+  };\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
+ };\
+ return;\
+};",num);
+}
+
 /* draw polygon via 2 textarea's x/y : split into lines ! */
 void add_textarea_polygon(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin polygon via 2 textareas x / y -->\n\
@@ -2482,6 +2613,7 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
     obj_type = 15== animated point on curve
     obj_type = 16== pixels
     obj_type = 17== new arc [command angle] :radius in x-range, so will scale on zooming in/out
+    obj_type = 18== halfline
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
 if( typeof dragdrop_precision == 'undefined' ){var dragdrop_precision = 100;};\
@@ -2563,6 +2695,7 @@ Shape.prototype.draw = function(ctx)\
   case 15: break;\
   case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   case 17: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = scale_x_radius(this.w[0]);ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
+  case 18: ctx.moveTo(this.x[0], this.y[0]);ctx.lineTo(this.x[1],this.y[1]);break;\
   default: alert(\"draw primitive unknown\");break;\
  };\
  if(this.use_filled == 1){ ctx.fill();}\
@@ -2577,14 +2710,20 @@ Shape.prototype.contains = function(mx, my){\
   case 2: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < this.w[p] + marge ){return p;break;};};break;\
   case 3: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
   case 4: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
+  case 5: break;\
   case 6: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
   case 7: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.w[p] <= mx) && (this.x[p] + this.w[p] >= mx) &&  (this.y[p] - this.h[p] <= my) && (this.y[p] + this.h[p] >= my) ){return p;};};break;\
   case 8: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
   case 9: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
+  case 10: break;\
   case 11: break;\
   case 12: break;\
   case 13: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
   case 14: for(var p = 0 ; p < this.x.length; p++ ){if(this.y[p] < my + 0.5*(this.font_size) && this.y[p] > my - 0.5*(this.font_size)){var w = parseInt(0.8*(this.font_size)*((this.text).length));if(this.x[p] < mx + w && this.x[p] > mx - w ){ return p;break;};};};break;\
+  case 15: break;\
+  case 16: break;\
+  case 17: break;\
+  case 18: var diff;var q;var r;if(((this.x[1] - this.x[0]) != 0) && ((this.y[1]-this.y[0]) != 0)){r = (this.y[1]-this.y[0])/(this.x[1]-this.x[0]);q = this.y[0] - (r)*(this.x[0]);diff = distance_to_line(r,q,mx,my);}else{if((this.y[1]-this.y[0])!= 0){diff = Math.abs(this.x[0] - mx);}else{diff = Math.abs(this.y[0] - my);};};if( diff  < marge ){ return 0;};break;\
   default: for(var p = 0 ; p < this.x.length; p++ ){if( (this.x[p] - this.line_width <= mx) && (this.x[p] + this.w[p] + this.line_width >= mx) &&  (this.y[p] - this.line_width <= my) && (this.y[p] + this.h[p] +this.line_width  >= my) ){return p;};};break;\
  };\
  return -1;\

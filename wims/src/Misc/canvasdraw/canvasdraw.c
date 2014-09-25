@@ -481,6 +481,67 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		}
 	    }
 	    break;
+	case HALFLINE:
+	/*
+	@ demiline x1,y1,x2,y2,color
+	@ alternative : halfline
+	@ draws a halfline starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex)
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++){
+		switch(i){
+		    case 0: double_data[0]= get_real(infile,0);break; /* x-values */
+		    case 1: double_data[1]= get_real(infile,0);break; /* y-values */
+		    case 2: double_data[10]= get_real(infile,0);break; /* x-values */
+		    case 3: double_data[11]= get_real(infile,0);break; /* y-values */
+		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
+		    if(double_data[0] == double_data[10]){ /* vertical halfline */
+			if(double_data[1] < double_data[11]){
+			 double_data[3] = ymax + 1000;
+			}
+			else
+			{
+			 double_data[3] = ymin - 1000;
+			}
+			double_data[2] = double_data[0]; 
+		    }
+		    else
+		    { /* horizontal halfline*/
+		     if( double_data[1] == double_data[11] ){
+		      if( double_data[0] < double_data[10] ){
+		        double_data[2] = xmax + 1000; /* halfline to the right */
+		      }
+		      else
+		      {
+		        double_data[2] = xmin - 1000; /* halfline to the left */
+		      }
+		      double_data[3] = double_data[1];
+		     }
+		     else
+		     {
+		      /* any other halfline */
+		      /* slope */
+		      double_data[12] = (double_data[11] - double_data[1])/(double_data[10] - double_data[0]);
+		      /* const */
+		      double_data[13] = double_data[1] - double_data[12]*double_data[0];
+		      if( double_data[0] < double_data[10] ){
+		       double_data[2] = double_data[2] + 1000;
+		      }
+		      else
+		      {
+		       double_data[2] = double_data[2] - 1000;
+		      }
+		      double_data[3] = double_data[12]*double_data[2] + double_data[13];
+		     }
+		    }    
+		    decimals = find_number_of_digits(precision);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,18,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		    click_cnt++;reset();
+		    break;
+		}
+	    }
+	
+	    break;
 	case HLINE:
 	/*
 	@ hline x,y,color
@@ -1038,7 +1099,7 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
@@ -1320,6 +1381,30 @@ add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_line(js_include_file,2);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"demilines") == 0 || strcmp(draw_type,"demilines") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_DEMILINES] != 1 ){ js_function[DRAW_DEMILINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_demilines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if( use_input_xy == 1 ){
+		    add_input_demiline(js_include_file,2);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		}
+		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"demiline") == 0 || strcmp(draw_type,"demilines") == 0 ){
+		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
+		if( js_function[DRAW_DEMILINES] != 1 ){ js_function[DRAW_DEMILINES] = 1;}
+		if(reply_format == 0){reply_format = 11;}
+		add_js_demilines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+		if( use_input_xy == 1 ){
+		    add_input_demiline(js_include_file,1);
 		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
@@ -5014,6 +5099,34 @@ var draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  };");
     break;
 
+    case DRAW_DEMILINES:/*  used for userdraw */
+fprintf(js_include_file,"\n<!-- draw demilines -->\n\
+function find_inf_point(x1,y1,x2,y2){\
+ if(x1<x2+2 && x1>x2-2){if(y1<y2){return [x1,y1,x1,ysize];}else{return [x1,0,x1,y1];};};\
+ var rc = (y2 - y1)/(x2 - x1);var q = y1 - (x1)*rc;\
+ if( x1 < x2 ){ return [x1,y1,xsize,rc*xsize+q];}else{return [x1,y1,0,q];};\
+};\
+var draw_demilines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+ ctx.save();\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ var pair = new Array(4);\
+ for(var p = 0 ; p < x_points.length ; p = p+2 ){\
+  pair = find_inf_point(x_points[p],y_points[p],x_points[p+1],y_points[p+1]);\
+  ctx.beginPath();\
+  ctx.moveTo(pair[0],pair[1]);\
+  ctx.lineTo(pair[2],pair[3]);\
+  ctx.closePath();\
+  ctx.stroke();\
+  }\
+  ctx.restore();\
+  return;\
+ };");
+    break;
+
     case DRAW_CROSSHAIRS:/*  used for userdraw */
 fprintf(js_include_file,"\n<!-- draw crosshairs  -->\n\
 var draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix){\
@@ -6708,7 +6821,9 @@ int get_token(FILE *infile){
 	*yunit="yunit",
 	*slider="slider",
 	*killslider="killslider",
-	*angle="angle";
+	*angle="angle",
+	*halfline="halfline",
+	*demiline="demiline";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -7401,6 +7516,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, angle) == 0 ){
 	free(input_type);
 	return ANGLE;
+	}
+	if( strcmp(input_type, halfline) == 0 || strcmp(input_type, demiline) == 0  ){
+	free(input_type);
+	return HALFLINE;
 	}
 	free(input_type);
 	ungetc(c,infile);
