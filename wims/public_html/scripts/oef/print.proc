@@ -42,7 +42,11 @@ test_print=0
  question_$i=
  e_=!item $i of $exo
  name_$i=$e_
- title_$i=!defof title_$lang in $(class_header)def/$e_.def
+ !if $lang_choice!=$empty
+   title_$i=!defof title_$lang_choice in $(class_header)def/$e_.def
+ !else
+   title_$i=!defof title_$lang in $(class_header)def/$e_.def
+ !endif
  !if $(title_$i)=$empty
    title_$i=!defof title in $(class_header)def/$e_.def
  !endif
