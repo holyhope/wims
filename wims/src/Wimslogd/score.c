@@ -21,7 +21,7 @@
 
 double oldfactor=0.85;  /* quality factor, should remain stable. */
 
-     /* User score information of an exercise. Size: 16 bytes. */
+     /* User score information of an exercise. Size: 28 bytes. */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
     float user, user2, last, best, level;
@@ -280,6 +280,7 @@ void getscore(struct classdata *cd, char *user)
     for(i=0;i<3;i++) non[i]=stat(buf[i],st+i);
     if(non[0] && non[1]) {
      memset(uscore,0,sizeof(uscore[0])*cnt);
+     memset(hscore,0,sizeof(hscore[0])*cnt);
      memset(&scoreheader,0,sizeof(scoreheader));
      return;
     }
