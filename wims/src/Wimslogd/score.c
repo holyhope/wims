@@ -24,7 +24,7 @@ double oldfactor=0.85;  /* quality factor, should remain stable. */
      /* User score information of an exercise. Size: 28 bytes. */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
-    float user, user2, last, best, level;
+    float user, user2, last, best, level, high[MAX_REQUIRE/10];
 } scoredata;
 
 struct scoreheader {
@@ -35,12 +35,6 @@ struct scoreheader {
 struct scoredata uscore[MAX_CLASSEXOS];
 
 struct scoreresult tscore[MAX_CLASSEXOS];
-
-typedef struct scorehigh {
-    float best, high[MAX_REQUIRE/10];
-} scorehigh;
-
-struct scorehigh hscore[MAX_CLASSEXOS];
 
 #define oldraf scoreheader.raf
 #define oldsheet scoreheader.sheet
@@ -53,7 +47,6 @@ void scoreline(struct classdata *cd, char *l)
     int i,sheet,exo,num;
     char *pm[16];
     struct scoredata *thiscore;
-    struct scorehigh *thishscore;
     float score;
 
     i=cutwords(l,pm,8); if(i<6) return;
@@ -67,7 +60,6 @@ void scoreline(struct classdata *cd, char *l)
     num=search_data(cd->exos,cd->exocnt,sizeof(exodata),((sheet-1)<<8)+(exo-1));
     if(num<0) return;
     thiscore=uscore+num;
-    thishscore=hscore+num;
     if(strcmp(pm[4],"score")==0) {
      score=atof(pm[5]); if(!isfinite(score)) score=0;
      if(score>10) score=10; if(score<-10) score=-10;
@@ -83,21 +75,20 @@ void scoreline(struct classdata *cd, char *l)
         {
           int k, j = 0;
           for (k = 0; 10*k < cd->exos[num].require; k++) {
-           if (thishscore->high[k] < thishscore->high[j]) j = k;
+           if (thiscore->high[k] < thiscore->high[j]) j = k;
           }
-          if (thishscore->high[j] < score) {
-            thishscore->best +=score-thishscore->high[j];
-            thishscore->high[j] = score;
+          if (thiscore->high[j] < score) {
+            thiscore->best +=score-thiscore->high[j];
+            thiscore->high[j] = score;
           }
         }
-        thiscore->best=thishscore->best;
 /* find the minimum of the required best scores */
         {
          int k, j = 0 ;
          for (k = 0; 10*k < cd->exos[num].require; k++) {
-           if (thishscore->high[k] < thishscore->high[j]) j = k;
+           if (thiscore->high[k] < thiscore->high[j]) j = k;
          }
-         thiscore->level=thishscore->high[j];
+         thiscore->level=thiscore->high[j];
         }
         if(thiscore->try<60000) thiscore->try++;
         oldsheet=oldexo=0;
@@ -229,7 +220,6 @@ void rawscorecalc(struct classdata *cd, char *uname)
     char namebuf[MAX_FNAME+1];
 
     memset(uscore,0,sizeof(uscore[0])*cd->exocnt);
-    memset(hscore,0,sizeof(hscore[0])*cd->exocnt);
     memset(&scoreheader,0,sizeof(scoreheader));
     for(i=0;i<cd->exocnt;i++) uscore[i].num=cd->exos[i].num;
     snprintf(namebuf,sizeof(namebuf),"score/%s",uname);
@@ -280,7 +270,6 @@ void getscore(struct classdata *cd, char *user)
     for(i=0;i<3;i++) non[i]=stat(buf[i],st+i);
     if(non[0] && non[1]) {
      memset(uscore,0,sizeof(uscore[0])*cnt);
-     memset(hscore,0,sizeof(hscore[0])*cnt);
      memset(&scoreheader,0,sizeof(scoreheader));
      return;
     }
@@ -304,8 +293,7 @@ void cmd_getscore(char *p)
     struct classdata *cd;
     char *cut[4];
     int i, sheet, exo, snew, stry, thissheet, thisexo;
-    double score, score2, slast, quality, tt, ts, thisscore;
-    struct scorehigh s;
+    double score, score2, slast, quality, tt, ts, thisscore, sbest;
     float slevel=0;
 
     if(cwdtype!=dir_class) {
@@ -335,11 +323,8 @@ void cmd_getscore(char *p)
      score=uscore[i].user; stry=uscore[i].try;
      score2=uscore[i].user2;
      slast=uscore[i].last;
-     s.best=uscore[i].best;
+     sbest=uscore[i].best;
      slevel=uscore[i].level;
-     { int k;
-      for (k = 0; 10*k < cd->exos[i].require; k++) { s.high[k] = hscore[i].high[k]; }
-     }
      if(sheet==thissheet && exo==thisexo) {
          score+=thisscore; stry++;
          score2*=oldfactor; score2+=thisscore;
@@ -350,11 +335,7 @@ void cmd_getscore(char *p)
          tscore[i].mean=stry*2+uscore[i].hint;
          tscore[i].last=slast;
          tscore[i].try=stry;
-         tscore[i].best=s.best;
-         hscore[i].best=s.best;
-         {int k;
-           for (k = 0; 10*k < cd->exos[i].require; k++) { hscore[i].high[k]=s.high[k]; }
-         }
+         tscore[i].best=sbest;
          tscore[i].level=slevel;
          continue;
      }
@@ -370,14 +351,12 @@ void cmd_getscore(char *p)
          quality=score2/(ts*tt);
      }
      else {
-       score=quality=slast=stry=s.best=slevel=0;
-       {int k; for (k = 0; 10*k < cd->exos[i].require; k++) { s.high[k]=0;} }
+       score=quality=slast=stry=sbest=slevel=0;
      }
      tscore[i].score=score; tscore[i].mean=quality;
      tscore[i].last=slast;
      tscore[i].try=stry;
-     tscore[i].best=s.best;
-     hscore[i].best=s.best;
+     tscore[i].best=sbest;
      tscore[i].level=slevel;
      }
     answerlen=cd->exocnt*sizeof(tscore[0]);
