@@ -105,7 +105,7 @@ deze configuratie,\
 
 !set wims_name_Share = delen
 !set wims_name_to_embed_it = opnemen
-!set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefenening.
+!set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefening.
 
 !! the following sentences can be changed according to language if needed
 !set wims_name_display1=!nosubst $wims_name_this_module $wims_name_Share
@@ -125,7 +125,7 @@ Versie,\
 Vereiste WIMS versie,\
 Taal,\
 Schrijver,\
-Maintainer,\
+Schrijv,\
 Vertaler,\
 General,\
 Dit is een module van,\
@@ -148,7 +148,7 @@ Publicatie centrum,\
 Download centrum,\
 Syntax,\
 Uitleg,\
-Indexation,\
+Indexatie,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\
@@ -202,7 +202,7 @@ Indexation,\
 	$[$wims_homeref_req] punten. <br />Gemiddelde score \
 	$[$wims_homeref_mean]/10.
  !set wims_name_thsheet=No,Titel,Vereist,Weging,Punten verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
- Best scores,Number of tries,Last result, Acquired
+ &nbsp;Hoogste scores&nbsp;,&nbsp;Aantal pogingen&nbsp;,&nbsp;Laatste resultaat&nbsp;,&nbsp;Verkregen&nbsp;
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session
   !distribute items Andere opgaven uit deze overhoring,\

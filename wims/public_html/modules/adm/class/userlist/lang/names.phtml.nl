@@ -8,7 +8,7 @@
 Gemiddelde\
 Gemiddelde van alle positieve cijfers\
 Totaal gemiddelde\
-Group average\
+Groep gemiddelde\
 into name_classAverage,name_Average,name_posAverage,name_globalaverage,\
 name_groupAverage
 
@@ -16,8 +16,8 @@ name_groupAverage
 !set wims_name_reg_ex=Lijst van oefeningen
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
-!!!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
- Best scores,Number of tries,Last result, Acquired level
+!!!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen, % , Kwaliteit , Moeilijkheidsgraad , Cijfer ,\
+ Hoogste cijfers, Aantal pogingen, Laatste resultaat, Vereiste niveau 
 !set name_minmax=min/gem/max van deze klas
 
 !set name_manualscore=Handmatig ingevoerde cijfers
@@ -40,8 +40,8 @@ De cijfers worden berekend met maximum =
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
-!set name_filter=or filter according to a technical variable (student properties)
-!set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers,la moyenne des meilleures notes requises
+!set name_filter= of filter a.h.v. een technische variabele (student eigenschappen)
+!set name_affi=&nbsp;kwaliteit&nbsp;,&nbsp;afgerond werk&nbsp;,&nbsp;cijfers&nbsp;,&nbsp;gemiddelde van de hoogste scores&nbsp;
 !set name_workdetail=Detail van het werk van
 !set name_activesession=Deze student heeft een nog actieve proefwerk sessie
 
