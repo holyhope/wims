@@ -22,7 +22,6 @@
 #include "../Lib/libwims.h"
 #include "../wimsdef.h"
 
-#define MAX_EXAMS       32
 #define MAX_SCORE      512*1024
 
 typedef struct {

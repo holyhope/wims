@@ -43,6 +43,8 @@
 #define MAX_EXOS 64
 /* max number of sheets; not modifiable */
 #define MAX_SHEETS 64
+/* max number of exams; for the moment not used except in Misc/exostat */
+#define MAX_EXAMS 32
 /* max length of data files: records, activities, definitions. */
 #define MAX_FILELEN (2048*1024-1)
 /* max number of filewrite calls in one request */

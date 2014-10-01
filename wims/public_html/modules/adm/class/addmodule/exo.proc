@@ -1,6 +1,7 @@
 !! add exercise in a sheet
 
-max_exo=64
+max_exos=!defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
 title_limit=50
 desc_limit=255
 
@@ -53,7 +54,7 @@ desc_limit=255
   !exit
  !endif
  picksheet=$[floor($picksheet)]
- !if $picksheet=NaN or $picksheet<1 or $picksheet>min(64,$sheettot)
+ !if $picksheet=NaN or $picksheet<1 or $picksheet>min($max_sheets,$sheettot)
   error=bad_sheet
   !exit
  !endif
@@ -64,7 +65,7 @@ desc_limit=255
   !exit
  !endif
  exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
- !if $exocnt>=$max_exo
+ !if $exocnt>=$max_exos
   error=too_many_exos
   !exit
  !endif
@@ -81,7 +82,7 @@ desc_limit=255
   !if NaN isin $weight
    weight=0
   !endif
-  !bound require between 0,1000 default 0
+  !bound require between 0,$[10*$require_limit] default 0
   !bound weight between 0,10 default 0
  !endif
  !for i=1 to $exocnt

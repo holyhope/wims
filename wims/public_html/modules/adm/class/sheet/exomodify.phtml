@@ -28,7 +28,15 @@
  !if $activetest <= 0
       <div class="field box">
         <label for="mod_require">$name_pointsasked</label>
-        <input size="4" name="mod_require" id="mod_require" value="$require_" />
+        <select name="mod_require" id="mod_require">
+       !for i=0 to $require_limit
+        !if $i=$[$require_/10]
+         <option value="$[10*$i]" selected="selected">$[10*$i]</option>
+        !else
+          <option value="$[10*$i]">$[10*$i]</option>
+        !endif
+       !next
+        </select>
       </div>
       <div class="field box">
         <label for="mod_weight">$name_weight</label>

@@ -1,4 +1,6 @@
 !read adm/class/classlang names.phtml
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
+max_exos=!defof MAX_EXOS in wimshome/public_html/bases/sys/define.conf
 
 wims_prefix=class user tmp n sharing sharable
 !if $wims_class=$empty or $wims_user=$empty
@@ -13,8 +15,8 @@ wims_prefix=class user tmp n sharing sharable
 !bound job within log,llist,list,check,examcheck default list
 sdir=$wims_home/$wims_sesdir
 cdir=$wims_home/log/classes/$wims_class
-!bound $logsheet between integer 1 and 64 default $
-!bound $logexo between integer 1 and 64 default $
+!bound $logsheet between integer 1 and $max_sheets default $
+!bound $logexo between integer 1 and $max_exos default $
 
 !if $job=log
  !if $logsheet>0 and $logexo>0
@@ -32,7 +34,7 @@ cdir=$wims_home/log/classes/$wims_class
     rename_l=!line $l of $rename_list
     rename_l=!replace internal : by , in $rename_l
     rename_l=!replace internal ? by \? in $rename_l
-    !sh perl -np -i -e 's:$(rename_l[2]):$(rename_l[1]):g' $cdir/exolog/$checkuser/$wimsnow-$wims_session-$logsheet.$logexo 
+    !sh perl -np -i -e 's:$(rename_l[2]):$(rename_l[1]):g' $cdir/exolog/$checkuser/$wimsnow-$wims_session-$logsheet.$logexo
   !next
  !else
   job=llist

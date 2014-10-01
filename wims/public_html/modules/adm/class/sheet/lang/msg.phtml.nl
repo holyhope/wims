@@ -28,7 +28,7 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
 !endif
 
 !if bad_maxsheet=$error
- The number of worksheets is limited to $max_sheet. You may not create another worksheet.
+ The number of worksheets is limited to $max_sheets. You may not create another worksheet.
  !exit
 !endif
 

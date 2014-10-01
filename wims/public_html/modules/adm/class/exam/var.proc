@@ -11,7 +11,7 @@ sh=!itemcnt $asheets
  !exit
 !endif
 
-max_exam=32
+max_exam=!defof MAX_EXAMS in wimshome/public_html/bases/sys/define.conf
 title_limit=80
 desc_limit=4000
 etitle_limit=100
@@ -29,7 +29,7 @@ wims_helper=chapter=3
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
 
-!if $class_expiration=$empty 
+!if $class_expiration=$empty
  !defread wimshome/log/classes/$wims_class/.def
  !if $wims_superclass!=$empty
   class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
@@ -229,7 +229,7 @@ awk 'length($$1)==18{if($$3==1){print "no";exit};}' $$list;
    allow_parm=none
   !endif
   !if $allowtype=select
-   allow_parm=$IPlist 
+   allow_parm=$IPlist
   !endif
   !for c in $setclass
    !writefile wimshome/log/classes/$c/.E$exam $allow_parm

@@ -28,18 +28,18 @@
 !endif
 
 !if too_many_exos=$error
- La hoja de trabajo $picksheet ya contiene el máximo de elementos ($max_exo). 
+ La hoja de trabajo $picksheet ya contiene el máximo de elementos ($max_exos).
  Elimine alguno antes de poder insertar más en ella.
  !exit
 !endif
 
 !if already_exist=$error
  El trabajo que quiere añadir ya existe en la hoja de trabajo $test.
- No debe referenciar el mismo ejercicio con los mismos parámetros 
+ No debe referenciar el mismo ejercicio con los mismos parámetros
  iniciales dos veces en la misma hoja de trabajo. <p>
- Por favor, cambie los parámetros del ejercicio antes de insertarlo en una 
+ Por favor, cambie los parámetros del ejercicio antes de insertarlo en una
  hoja de trabajo. <p>
- Si quiere que sus estudiantes repitan el trabajo de los ejercicios, 
+ Si quiere que sus estudiantes repitan el trabajo de los ejercicios,
  puede incrementar el número de puntos requeridos.
  !exit
 !endif

@@ -2,11 +2,16 @@
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang names.phtml
 
-max_sheet=64
+max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
 title_limit=80
 desc_limit=4000
 etitle_limit=100
 edesc_limit=400
+require_limit=!defof MAX_REQUIRE in wimshome/public_html/bases/sys/define.conf
+#### for transitional periode
+require_limit=200
+####
+require_limit=$[$require_limit/10]
 wims_prefix=class user tmp n sharing sharable
 srcname=wimshome/$wims_sesdir/home_sheet.src
 wims_helper=chapter=3
@@ -60,7 +65,7 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
      error=toolate
    !endif
 !endif
-!if $sheet>$max_sheet
+!if $sheet>$max_sheets
  error=bad_maxsheet
  !exit
 !endif
@@ -379,7 +384,7 @@ $ in $iniparm
 !endif
 #####
    !bound mod_weight between 0 and 10 default 0
-   !bound mod_require between 0 and 1000 default 0
+   !bound mod_require between 0 and $[10*$require_limit] default 0
    mod_title=!singlespace $mod_title
    mod_desc=!singlespace $mod_desc
    mod_comment=!singlespace $mod_comment

@@ -1,22 +1,22 @@
 !set wims_module_log=error: $error
 
 !if no_pick=$error
-Kies eerst een  
- !href cmd=resume werkblad 
+Kies eerst een
+ !href cmd=resume werkblad
  voor U op de <span class="wims_button disabled">$wims_name_Insert</span> drukt...
  !exit
 !endif
 
 !if not_supervisor=$error
 Helaas, maar het veranderen van een werkblad is alleen toegestaan voor docenten van een klas.
- 
+
  !exit
 !endif
 
 !if no_sheet=$error
-Uw klas heeft -nog- geen werkbladen in voorbereiding .<br /> 
+Uw klas heeft -nog- geen werkbladen in voorbereiding .<br />
 Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactiveerd werkblad</b>.
- 
+
  !href module=adm/class/sheet&sheet=$[$sheettot+1] Maak een nieuw Werkblad
 ?
  !exit
@@ -28,7 +28,7 @@ Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactive
 !endif
 
 !if too_many_exos=$error
-Het werkblad $picksheet heeft het maximum van $max_exo items reeds bereikt
+Het werkblad $picksheet heeft het maximum van $max_exos items reeds bereikt
 Verwijder eerst enkele items alvorens verder te gaan met dit werkblad.
  !exit
 !endif
@@ -39,7 +39,7 @@ U kunt beter niet een zelfde oefening meerdere keren onder dezelfde
 parameters in een werkblad opnemen. <br />
 Verander eerst enkele parameters van de oefening voordat U verder gaat. <br />
 Of wilt U soms dat leerlingen deze sommen vaker maken?...verhoog dan gewoon het vereiste
-punten aantal voor deze sommen. 
+punten aantal voor deze sommen.
 !exit
 !endif
 
@@ -49,7 +49,7 @@ punten aantal voor deze sommen.
 !endif
 
 !if $error=not_exo
-    De module kan niet worden toegevoegd aan het werkblad: het is geen module met oefeningen! 
+    De module kan niet worden toegevoegd aan het werkblad: het is geen module met oefeningen!
  !exit
 !endif
 
