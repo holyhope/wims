@@ -31,7 +31,7 @@ char 	*get_color(FILE *infile,int last); /* read hex-color or colorname -> hex *
 char	*get_string(FILE *infile,int last); /* get the string at the end of a command */
 char	*get_string_argument(FILE *infile,int last); /* the same, but with "comma" as  separator */
 char 	*convert_hex2rgb(char *hexcolor);
-void 	add_read_canvas(int reply_format,int reply_precision);
+void 	add_read_canvas(int canvas_root_id,int reply_format,int reply_precision);
 void	make_js_include(int canvas_root_id);
 void	check_string_length(int length);/* checks if the length of string argument of command is correct */
 FILE 	*js_include_file;
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li></ul>Note: for now just <b>one interactive</b> instance of canvasdraw is allowed <br />[e.g. using command 'userdraw' and function javascript:read_canvas()]<br />Aim is to allow multiple interactive instances of canvasdraw to exist in a single page (this will however call for a much more 'object oriented approach' and decent javascript programming...)
 	*/
 	switch(type){
 	case END:
@@ -200,17 +200,22 @@ int main(int argc, char *argv[]){
  The sequence in which stuff is finally printed is important !!
  for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
 */
-fprintf(stdout,"\n<script type=\"text/javascript\">var wims_status = \"$status\";</script>\n<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
-fprintf(stdout,"<!-- include actual object code via include file -->\n<script type=\"text/javascript\" src=\"%s\"></script>\n",getfile_cmd);
+fprintf(stdout,"\n<script type=\"text/javascript\">\
+if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
+if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
+if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
+canvas_scripts.push(\"%d\");</script>\n\
+<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\n",canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
+fprintf(stdout,"<!-- include actual object code via include file -->\n<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,getfile_cmd);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n\
 \"use strict\";\n\
 <!-- these variables and functions must be global -->\n\
-var read_dragdrop;\
-var read_canvas;\
+var read_dragdrop%d;\
+var read_canvas%d;\
 var set_clock;\
 var clear_draw_area;\
-var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
+var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
 var xsize = %d;\
 var ysize = %d;\
 var precision = 100;\
@@ -241,9 +246,10 @@ var use_jsmath = 0;\
 var xstart = 0;\
 var ystart = 0;\
 var unit_x=\" \";\
-var unit_y=\" \";",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
-add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
+  add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
+
 	    break;
 	case XRANGE:
 	/*
@@ -2499,7 +2505,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
 	 @ NOTE: not all objects may be set clickable
 	*/
-
+	    fprintf(js_include_file,"use_dragdrop_reply = true;");
 	    onclick = 1;
 	    break;
 	case DRAG:
@@ -2527,8 +2533,9 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    	    drag_type = 2;
 	        }
 	    }
-	    fprintf(js_include_file,"var dragdrop_precision = %d;",precision);
+	    fprintf(js_include_file,"dragdrop_precision = %d;use_dragdrop_reply = true;",precision);
 	    onclick = 2;
+	
 	    /* if(use_userdraw == TRUE ){canvas_error("\"drag & drop\" may not be combined with \"userdraw\" or \"pan and zoom\" \n");} */
 	    break;
 	case BLINK:
@@ -2933,7 +2940,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    add_js_floodfill(js_include_file,canvas_root_id);
 	 }
 	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;userdraw_x = new Array();userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
-	 add_read_canvas(1,reply_precision);
+	 add_read_canvas(canvas_root_id,1,reply_precision);
 	 reset();
 	break;
 	case SETPIXEL:
@@ -3002,7 +3009,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case REPLYFORMAT:
 	/*
 	@ replyformat number
-	@ use number=-1 to deactivate the js-function read_canvas()
+	@ use number=-1 to deactivate the js-functions read_canvas() and read_dragdrop()
 	@ default values should be fine !
 	@ use command 'precision [0,1,10,100,1000,10000...]' before command 'replyformat' to set the desired number of decimals in the student reply / drawing
 	@ the last value for 'precision int' will be used to calculate  the reply coordinates, if needed (read_canvas();)
@@ -3338,10 +3345,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
      canvas_error("Please specify both xrange and yrange ...");
     }
   }
+
   /* if needed, add generic draw functions (grid / xml etc) to buffer : these are no draggable/clickable shapes / objects  ! */
   add_javascript_functions(js_function,canvas_root_id);
    /* add read_canvas() etc functions if needed */
-  if( reply_format > 0 ){ add_read_canvas(reply_format,reply_precision);}
+  if( reply_format > 0 ){ add_read_canvas(canvas_root_id,reply_format,reply_precision);}
   if( use_pan_and_zoom == TRUE ){
   /* in case of zooming ... */
   fprintf(js_include_file,"\n<!-- some extra global stuff : need to rethink panning and zooming !!! -->\n\
@@ -3753,7 +3761,7 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 */
 
 
-void add_read_canvas(int type_reply,int reply_precision){
+void add_read_canvas(int canvas_root_id,int type_reply,int reply_precision){
 /* just 1 reply type allowed */
 fprintf(js_include_file,"\
 \n<!-- begin set_reply_precision() -->\n\
@@ -3778,8 +3786,8 @@ answers may have:
 x-values,y-values,r-values,input-fields,mathml-inputfields,text-typed answers
 */
     case 1: fprintf(js_include_file,"\
-\n<!-- begin function 1 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 1 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  set_reply_precision();\
  if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
@@ -3813,11 +3821,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 1 read_canvas() -->");
+<!-- end function 1 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 2: fprintf(js_include_file,"\
-\n<!-- begin function 2 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 2 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  set_reply_precision();\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
@@ -3859,11 +3867,11 @@ read_canvas = function(){\
   };\
  };\
 };\n\
-<!-- end function 2 read_canvas() -->",reply_precision);
+<!-- end function 2 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 3: fprintf(js_include_file,"\
-\n<!-- begin function 3 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 3 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  set_reply_precision();\
  if( document.getElementById(\"canvas_input0\") || document.getElementById(\"mathml0\") ){\
@@ -3897,11 +3905,11 @@ read_canvas = function(){\
   }\
  }\
 };\n\
-<!-- end function 3 read_canvas() -->");
+<!-- end function 3 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 4: fprintf(js_include_file,"\
-\n<!-- begin function 4 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 4 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var prec = %d;\
  var reply_x = new Array();var reply_y = new Array();var p = 0;\
  while(userdraw_x[p]){\
@@ -3941,15 +3949,15 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 4 read_canvas() -->",reply_precision);
+<!-- end function 4 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     /*
 	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][]
 	used for userdraw multiple paths
     */
     case 5: fprintf(js_include_file,"\
-\n<!-- begin function 5 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 5 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  set_reply_precision();\
  var p = 0;\
  var reply = \"\";\
@@ -3991,15 +3999,15 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 5 read_canvas() -->");
+<!-- end function 5 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     /*
 	attention: we reset userdraw_x / userdraw_y  : because  userdraw_x = [][] userdraw_y = [][]
 	used for userdraw multiple paths
     */
     case 6: fprintf(js_include_file,"\
-\n<!-- begin function 6 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 6 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var p = 0;\
  var reply = \"\";\
  var tmp_x = new Array();\
@@ -4049,11 +4057,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 6 read_canvas() -->",reply_precision);
+<!-- end function 6 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 7: fprintf(js_include_file,"\
-\n<!-- begin function 7 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 7 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  set_reply_precision();\
  var reply = new Array();\
  var p = 0;\
@@ -4093,11 +4101,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 7 read_canvas() -->");
+<!-- end function 7 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 8: fprintf(js_include_file,"\
-\n<!-- begin function 8 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 8 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var reply = new Array();\
  var p = 0;\
  var prec = %d;\
@@ -4137,11 +4145,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 8 read_canvas() -->",reply_precision);
+<!-- end function 8 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 9: fprintf(js_include_file,"\
-\n<!-- begin function 9 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 9 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  set_reply_precision();\
  var reply = new Array();\
  var p = 0;\
@@ -4181,11 +4189,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 9 read_canvas() -->");
+<!-- end function 9 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 10: fprintf(js_include_file,"\
-\n<!-- begin function 10 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 10 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var reply = new Array();\
  var p = 0;\
  var prec = %d;\
@@ -4225,11 +4233,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 10 read_canvas() -->",reply_precision);
+<!-- end function 10 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 11: fprintf(js_include_file,"\
-\n<!-- begin function 11 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 11 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var reply = \"\";\
  var p = 0;\
  var prec = %d;\
@@ -4269,11 +4277,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 11 read_canvas() -->",reply_precision);
+<!-- end function 11 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 12: fprintf(js_include_file,"\
-\n<!-- begin function 12 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 12 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  set_reply_precision();\
  var reply = \"\";\
  var p = 0;\
@@ -4314,11 +4322,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 12 read_canvas() -->");
+<!-- end function 12 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 13: fprintf(js_include_file,"\
-\n<!-- begin function 13 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 13 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var reply = new Array();\
  var p = 0;var i = 0;\
  var prec = %d;\
@@ -4358,11 +4366,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 13 read_canvas() -->",reply_precision);
+<!-- end function 13 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 14: fprintf(js_include_file,"\
-\n<!-- begin function 14 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 14 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  set_reply_precision();\
  var reply = new Array();\
  var p = 0;var i = 0;\
@@ -4402,11 +4410,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 14 read_canvas() -->");
+<!-- end function 14 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 15: fprintf(js_include_file,"\
-\n<!-- begin function 15  read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 15  read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var input_reply = new Array();\
  var p = 0;\
  if( document.getElementById(\"canvas_input0\")){\
@@ -4427,7 +4435,7 @@ read_canvas = function(){\
   return input_reply;\
  };\
 };\n\
-<!-- end function 15 read_canvas() -->");
+<!-- end function 15 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 16: fprintf(js_include_file,"\
 \n<!-- begin function 16 read_mathml() -->\n\
@@ -4446,16 +4454,16 @@ this.read_mathml = read_mathml;\n\
 <!-- end function 16 read_mathml() -->");
     break;
     case 17:  fprintf(js_include_file,"\
-\n<!-- begin function 17 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 17 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  if( userdraw_text.length == 0){alert(\"no text typed...\");return;}\
  return userdraw_text;\
 };\n\
-<!-- end function 17 read_canvas() -->");
+<!-- end function 17 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 18: fprintf(js_include_file,"\
-\n<!-- begin function 18 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 18 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var p = 0;\
  var reply = new Array();\
  var name;\
@@ -4476,18 +4484,18 @@ read_canvas = function(){\
  if( p == 0 ){alert(\"clock(s) not modified...\");return;}\
  return reply;\
 };\n\
-<!-- end function 18 read_canvas() -->");
+<!-- end function 18 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 19: fprintf(js_include_file,"\
-\n<!-- begin function 19 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 19 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  return reply[0];\
 };\n\
-<!-- end function 19 read_canvas() -->");
+<!-- end function 19 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 20: fprintf(js_include_file,"\
-\n<!-- begin function 20 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 20 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var prec = %d;\
  var len  = ext_drag_images.length;\
  var reply = new Array(len);\
@@ -4497,11 +4505,11 @@ read_canvas = function(){\
  };\
  return reply;\
 };\n\
-<!-- end function 20 read_canvas() -->",reply_precision);
+<!-- end function 20 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 21: fprintf(js_include_file,"\
-\n<!-- begin function 21 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 21 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  if( userdraw_x.length == 0){alert(\"nothing drawn...\");return;}\
  var reply_coord = new Array();var p = 0;\
  var prec = %d;\
@@ -4541,11 +4549,11 @@ read_canvas = function(){\
   };\
  };\
 };\n\
-<!-- end function 21 read_canvas() -->",reply_precision);
+<!-- end function 21 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 22: fprintf(js_include_file,"\
-\n<!-- begin function 22 read_canvas() -->\n\
-read_canvas = function(){\
+\n<!-- begin function 22 read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var reply = new Array();\
  var lu = userdraw_x.length;\
  if(lu == 0){alert(\"nothing drawn...\");return;};\
@@ -4586,11 +4594,11 @@ read_canvas = function(){\
   }\
  };\
 };\n\
-<!-- end function 22 read_canvas() -->",reply_precision);
+<!-- end function 22 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 23: fprintf(js_include_file,"\
-\n<!-- begin function 23 read_canvas() default 5 px marge -->\n\
-read_canvas = function(){\
+\n<!-- begin function 23 read_canvas%d() default 5 px marge -->\n\
+read_canvas%d = function(){\
  if( userdraw_x.length < 2){alert(\"nothing drawn...\");return;}\
  var lu = userdraw_x.length;\
  if( lu != userdraw_y.length ){ alert(\"x / y mismatch !\");return;}\
@@ -4636,11 +4644,11 @@ read_canvas = function(){\
   };\
  };\
 };\n\
-<!-- end function 23 read_canvas() -->",reply_precision);
+<!-- end function 23 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 24: fprintf(js_include_file,"\n\
-<!-- begin function 24  read_canvas() -->\n\
-read_canvas = function(){\
+<!-- begin function 24  read_canvas%d() -->\n\
+read_canvas%d = function(){\
  var input_reply = new Array();\
  var p = 0;\
  if( document.getElementById(\"canvas_input0\")){\
@@ -4651,11 +4659,11 @@ read_canvas = function(){\
   return input_reply;\
  };\
 };\n\
-<!-- end function 24 read_canvas() -->");
+<!-- end function 24 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 25:
-    fprintf(js_include_file,"\n<!-- begin function 25 read_canvas() : angle(s) in degrees-->\n\
-read_canvas = function(){\
+    fprintf(js_include_file,"\n<!-- begin function 25 read_canvas%d() : angle(s) in degrees-->\n\
+read_canvas%d = function(){\
  if( userdraw_radius.length < 1){alert(\"nothing drawn...\");return;}\
  var lu = userdraw_radius.length;\
  var prec = %d;\
@@ -4665,11 +4673,11 @@ read_canvas = function(){\
  };\
  return angle_reply;\
 };\n\
-<!-- end function 25 read_canvas() -->",reply_precision);
+<!-- end function 25 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 26:
-    fprintf(js_include_file,"\n<!-- begin function 26 read_canvas() : angle(s) in radians-->\n\
-read_canvas = function(){\
+    fprintf(js_include_file,"\n<!-- begin function 26 read_canvas%d() : angle(s) in radians-->\n\
+read_canvas%d = function(){\
  if( userdraw_radius.length < 1){alert(\"nothing drawn...\");return;}\
  var lu = userdraw_radius.length;\
  var prec = %d;\
@@ -4679,11 +4687,11 @@ read_canvas = function(){\
  };\
  return angle_reply;\
 };\n\
-<!-- end function 26 read_canvas() -->",reply_precision);
+<!-- end function 26 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     case 27:
-    fprintf(js_include_file,"\n<!-- begin function 27 read_canvas()  : inputfield(s) location and their values : -->\n\
-read_canvas = function(){\
+    fprintf(js_include_file,"\n<!-- begin function 27 read_canvas%d()  : inputfield(s) location and their values : -->\n\
+read_canvas%d = function(){\
  var lu = userdraw_x.length;\
  if( lu < 1){alert(\"nothing drawn...\");return;}\
  set_reply_precision();\
@@ -4693,7 +4701,7 @@ read_canvas = function(){\
  };\
  return reply;\
 };\n\
-<!-- end function 27 read_canvas() -->",reply_precision);
+<!-- end function 27 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     default: canvas_error("hmmm unknown replyformat...");break;
 }

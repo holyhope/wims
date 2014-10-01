@@ -390,4 +390,40 @@ zoom blue
 -11/9	-tried to improve 'filltoborder x,y,bordercolor,fillcolor'
 -20/9	-added userinput function | input | textarea as alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
 -22/9	-corrected missing js-variable declaration in 'userdraw path(s) ' [use strict] 
--25/9	-added command 'demiline x1,y1,x2,y2,color` and commands 'userdraw demiline,color' 'userdraw demilines,color'	
+-25/9	-added command 'demiline x1,y1,x2,y2,color` and commands 'userdraw demiline,color' 'userdraw demilines,color'
+-1/10	-multiple interactive canvasdraw scripts in a single page may now work correctly in replying the userdrawarrays and the drag&drop data..
+	 
+	 The native read_canvas() and read_dragdrop() are now linked to the 'canvas_root_id' and a global
+	 array 'canvas_scripts' will keep track of the canvas_root_id number of scripts included in the page.
+	 In the C-program, the local functions will be called 'read_canvas%d()' with '%d' is the random 'canvas_root_id'
+	 
+	 A special version of 'read_canvas()' and 'read_dragdrop()' should be included in the web page, something like this:
+	  <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes -->
+	  function read_canvas(){
+	   var script_len = canvas_scripts.length;
+	   var draw_reply = "";
+	   var found_result = false;
+	   for(var p = 0 ; p < script_len ; p++){
+	    var fun = eval("read_canvas"+canvas_scripts[p]);
+	    if( typeof fun === 'function'){
+	     var result = fun();
+	     if( result  && result.length != 0){
+	      if(script_len == 1 ){ return result;};
+	      found_result = true;
+	      draw_reply = draw_reply + result + "\n";
+	     };
+	    };
+	   };
+	   if( found_result ){
+	    return draw_reply;
+	   }
+	   else
+	   {
+	    return null;
+	   };
+	  };
+	  <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes --> 
+	  function read_dragdrop(){var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if(script_len == 1 ){ return result;};found_result = true;dragdrop_reply = dragdrop_reply + result +"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};
+
+	 
+	  	

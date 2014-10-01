@@ -2594,7 +2594,7 @@ struct colors colors[]={
  };
 int NUMBER_OF_COLORNAMES=(sizeof(colors)/sizeof(colors[0]));
 
-void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id){
+void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
 /* in drag& drop / onclick library:
     obj_type = 1 == rect
     obj_type = 2 == point / points (do not scale with zoom)
@@ -2915,6 +2915,7 @@ var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.do
  return {x: mx, y: my};\
 };\
 CanvasState.prototype.read_dragdrop = function(){\
+ if( wims_status == \"done\" || use_dragdrop_reply == -1 ){return null;};\
  var moved_objects = new Array();\
  var c = 0;\
  for(var p = 0 ; p < reply.length ; p++){\
@@ -2928,7 +2929,7 @@ CanvasState.prototype.read_dragdrop = function(){\
 var obj = create_canvas%d(%d,xsize,ysize);\
 var container_div = document.getElementById(\"canvas_div%d\");\
 var dragstuff = new CanvasState(obj,container_div);\
-read_dragdrop = dragstuff.read_dragdrop;",canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id);
+read_dragdrop%d = dragstuff.read_dragdrop;",canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id,canvas_root_id);
 }
 
 /*

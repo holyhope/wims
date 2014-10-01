@@ -22,20 +22,26 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator  -->
+"use strict";
+ <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes --> 
+ function read_canvas(){var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if(script_len == 1 ){ return result;}found_result = true;draw_reply = draw_reply + result + "\n";};};};if( found_result ){return draw_reply;}else{return null;};};
+ <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes --> 
+ function read_dragdrop(){var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if(script_len == 1 ){ return result;};found_result = true;dragdrop_reply = dragdrop_reply + result +"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};
 !if $inputs <0
     !if $goback=1
 	!set r=!nospace $(reply$n)
-	function refill(){var hi="$r";if(hi.length !=0 ){hi = hi.split(',');for( var i=0; i<hi.length; i++){try{document.getElementById("myinput"+i).value = hi[i];}catch(e){}};};}
+ function refill(){var hi="$r";if(hi.length !=0 ){hi = hi.split(',');for( var i=0; i<hi.length; i++){try{document.getElementById("myinput"+i).value = hi[i];}catch(e){}};};}
     !endif
 !endif
-    <!-- do not use "' in description -->
-var descr_list="$description";var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
-function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var reply = new Array();var tmp_show;
+ <!-- do not use "' in description -->
+ var descr_list="$description";var descr_cnt = 30;var description = make_description(descr_list,descr_cnt);function dontknow(){myConfirm('$dontknow','?','$wims_ref_name','$session','$module','$counter','$nok_send_color');}
+ function sendanswer(){
+  var input;var show="<ul>";var inputfieldnumber = 0;var reply = new Array();var tmp_show;
   <!-- MathView java input applet -->
   if(document.getElementById("MathView")){input=document.getElementById("MathView").getLinear();input = input+'';if( input.length == 0){setAlarm(r1+"\ 1");return;};if( input.length > 100){setAlarm(r2); return;};if(input.indexOf('error')!=-1){setAlarm(input);return;};if(input.indexOf(',') != -1){setAlarm(r4);return;};if(check_f(input) == 0){return;}if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;};input = science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};show = input;if( show.indexOf('>') != 0 || show.indexOf('>') ){show=show.replace(/\>=/g,'&ge;');show=show.replace(/\<=/g,'&le;');show=show.replace(/\>/g,'&gt;');show=show.replace(/\</g,'&lt;');};
-  !if $convert_root=0
+ !if $convert_root=0
    input = arrows(input,$my_arrows,"","");if(input == "error"){return;};input = nthroot(input);if(input ==" error"){return;};if(input.indexOf("[") !=- 1){if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;};};if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;};};if( input.indexOf("[") !=-1){setAlarm(r13);return;};};
-  !endif
+ !endif
    input = input.replace(/#/g,' ');reply[inputfieldnumber] = input;inputfieldnumber = 1;
   };
   <!-- InvulGrid ruitjespapier applet -->
@@ -66,12 +72,24 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
    !endif
    if(check_f(input) == 0){return;}if(check_o(input) == 0){return;};if(check_log_NaN(input) == 0){return;}if(check_sqrt_NaN(input) == 0){return;};input=science(input);if(input == "error"){return;};if(check_x(input) == 0){return;};tmp_show = input;if( input.indexOf("[") !=- 1 ){;if(input.indexOf("sqrt[") != -1){input = specialroot(input);if(input == "error"){return;};};if(input.indexOf("log[") != -1){input = speciallog(input);if(input == "error"){return;};};if(input.indexOf("[") != -1){setAlarm(r13);return;};};input = input.replace(/#/g,' ');if(p>99){break;};reply[inputfieldnumber] = input;if( tmp_show.indexOf('<') != -1 || tmp_show.indexOf('>') != -1 ){if( input.indexOf('=>') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&gt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&gt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&ge;&nbsp;2]</span>");return;};if( input.indexOf('=<') != -1){setAlarm("<span style=\'color:red;size:300%\'>x&nbsp;=&lt;&nbsp;2</span><br /><span style=\'color:green;size:300%\'>x&nbsp;&lt;= &nbsp;2&nbsp;&nbsp;&nbsp;[x&nbsp;&le;&nbsp;2]</span>");return;};tmp_show=tmp_show.replace(/\>=/g,'&ge;');tmp_show=tmp_show.replace(/\<=/g,'&le;');tmp_show=tmp_show.replace(/\>/g,'&gt;');tmp_show=tmp_show.replace(/\</g,'&lt;');};show = show + "<li>"+description[inputfieldnumber] + "&nbsp;:&nbsp;" + tmp_show + "</li>";inputfieldnumber++;p++;if(p>100){setAlarm(r2);dontknow();};};
   };
-  <!-- CanvasDraw : try  read_canvas() from canvasdraw ; read_mathml() is already covered -->
-  try{ canvas_reply = read_canvas();if (canvas_reply.length == 0){setAlarm(r1+" "+parseInt(i+1));return;};show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + canvas_reply + "</li>";reply[inputfieldnumber] = canvas_reply;inputfieldnumber++;}catch(e){}
-  <!-- CanvasDraw : try  read_dragdrop() from canvasdraw ; read_mathml() is already covered -->
-   try{ canvas_reply = read_dragdrop();for( var p = 0 ; p < canvas_reply.length ; p++){input = canvas_reply[p];if (input.length == 0){setAlarm(r1+" "+parseInt(i+1));return;};show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + input + "</li>";reply[inputfieldnumber] = input;inputfieldnumber++;};}catch(e){};
+  if( typeof canvas_scripts !== 'undefined' ){
+   <!-- CanvasDraw : try  read_canvas() from canvasdraw ; read_mathml() is already covered -->
+   var canvas_reply = read_canvas();
+   if(canvas_reply != null ){
+     show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + canvas_reply + "</li>";
+     reply[inputfieldnumber] = canvas_reply;
+     inputfieldnumber++;
+   }
+   <!-- CanvasDraw : try  read_dragdrop() from canvasdraw ; read_mathml() is already covered -->
+   var dragdrop_reply = read_dragdrop();
+   if(dragdrop_reply != null ){
+     show = show + "<li>" + description[inputfieldnumber] + "&nbsp;:&nbsp;"  + dragdrop_reply + "</li>";
+     reply[inputfieldnumber] = dragdrop_reply;
+     inputfieldnumber++;
+   }
+  }
   <!-- finally ... -->
-  if(reply[0].length == 0 ){setAlarm(r1);return;};show = show + "</ol>";
+  if(typeof reply[0] === 'undefined' ){setAlarm(r1+" $counter");return;};show = show + "</ol>";
   myConfirm(show,reply,'$wims_ref_name','$session','$module','$counter','$ok_send_color');
 }
 !if $wims_user=supervisor
@@ -189,9 +207,9 @@ function sendanswer(){var input;var show="<ul>";var inputfieldnumber = 0;var rep
         </tr>
 	<tr>
         !endif
-	<td class="exercise_c" id="object$n">
+	<th class="exercise_t" id="object$n">
 	    $(object$n)
-	</td>
+	</th>
     !endif
 !endif
 
