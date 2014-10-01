@@ -20,24 +20,23 @@
 */
 
 #include "../Lib/libwims.h"
+#include "../wimsdef.h"
 
-#define MAX_EXO        64
-#define MAX_SHEET      64
-#define MAX_EXAM       32
+#define MAX_EXAMS       32
 #define MAX_SCORE      512*1024
 
 typedef struct {
     short int dure,score;
     long int next;
-} scoredata;
-scoredata scores[MAX_SCORE];
+} statscoredata;
+statscoredata scores[MAX_SCORE];
 int sccnt=0;
 
 typedef struct {
     int newcnt,scorecnt,lasttime,firstscore,lastscore;
     char lastnew[12];
-} exodata;
-exodata shdata[MAX_SHEET*MAX_EXO],examdata[MAX_EXAM*MAX_EXO];
+} statexodata;
+statexodata shdata[MAX_SHEETS*MAX_EXOS],examdata[MAX_EXAMS*MAX_EXOS];
 
 /* cid: combined index of difficulty */
 double scsum, scavg, scdeviat, scmin, scmax, cid;
@@ -60,7 +59,7 @@ void oneline(char *p, char *typ)
 {
     int i, sh, ex, t;
     char *data[64];
-    exodata *tab;
+    statexodata *tab;
     char *pp, *pe;
     for(i=0, pp=find_word_start(p); i<9  && *pp; pp=find_word_start(pe),i++) {
       pe=find_word_end(pp); if(*pe) *pe++=0;
@@ -68,14 +67,14 @@ void oneline(char *p, char *typ)
     }
     if(i<6) return;
     sh=atoi(data[2]); ex=atoi(data[3]);
-    if(sh<=0 || ex<=0 || ex>MAX_EXO || strlen(data[1])>10) return;
+    if(sh<=0 || ex<=0 || ex>MAX_EXOS || strlen(data[1])>10) return;
     if(data[0][0]=='E') {
-      tab=examdata; data[0]++; if(sh>MAX_EXAM) return;
+      tab=examdata; data[0]++; if(sh>MAX_EXAMS) return;
     }
     else {
-      tab=shdata; if(sh>MAX_SHEET) return;
+      tab=shdata; if(sh>MAX_SHEETS) return;
     }
-    tab+=(sh-1)*MAX_EXO+(ex-1);
+    tab+=(sh-1)*MAX_EXOS+(ex-1);
     t=str2time(data[0]); if(t==-1) return;
     if(strstr(data[4],"new")!=NULL) {
       if(strcmp(typ,"score")==0 &&
@@ -184,7 +183,7 @@ void multiuser(char *dirname, char *user)
   }
 }
 
-void stati(exodata *dat)
+void stati(statexodata *dat)
 {
     int i,j;
     double s,d;
@@ -231,7 +230,7 @@ void  outsheetexo (int i, int flag)
 %4.0f %4.0f %5.2f %5.2f \
 %5.2f %4.1f %5.2f %5.1f \
 %5.2f %5.2f %4.1f\n",
-             i/MAX_EXO+1,i%MAX_EXO+1,
+             i/MAX_EXOS+1,i%MAX_EXOS+1,
              shdata[i].newcnt, shdata[i].scorecnt,
              scsum, dursum,
              scavg, duravg,
@@ -242,7 +241,7 @@ void  outsheetexo (int i, int flag)
 %.0f,%.0f,%.2f,%.2f,\
 %.2f,%.1f,%.2f,%.1f,\
 %.2f,%.2f,%.1f;",
-             i/MAX_EXO+1,i%MAX_EXO+1,
+             i/MAX_EXOS+1,i%MAX_EXOS+1,
              shdata[i].newcnt, shdata[i].scorecnt,
              scsum, dursum,
              scavg, duravg,
@@ -263,7 +262,7 @@ void outexamexo (int i)
 %4.0f %4.0f %5.2f %5.2f \
 %5.2f %4.1f %5.2f %5.1f \
 %5.2f %5.2f %4.1f\n",
-             i/MAX_EXO+1,i%MAX_EXO+1,
+             i/MAX_EXOS+1,i%MAX_EXOS+1,
              examdata[i].newcnt, examdata[i].scorecnt,
              scsum, dursum,
              scavg, duravg,
@@ -275,8 +274,8 @@ void outexamexo (int i)
 void output(void)
 {
     int i;
-    for(i=0;i<MAX_SHEET*MAX_EXO;i++) { outsheetexo(i, 0);}
-    for(i=0;i<MAX_EXAM*MAX_EXO;i++) { outexamexo(i);}
+    for(i=0;i<MAX_SHEETS*MAX_EXOS;i++) { outsheetexo(i, 0);}
+    for(i=0;i<MAX_EXAMS*MAX_EXOS;i++) { outexamexo(i);}
 }
 
 int main()
@@ -309,9 +308,9 @@ int main()
       if( sh==NULL || *sh==0 ) { output(); }
       else {
          int s=atoi(sh);
-         s=(s-1)*MAX_EXO;
+         s=(s-1)*MAX_EXOS;
          int i;
-         for(i=s;i < s + MAX_EXO;i++) {
+         for(i=s;i < s + MAX_EXOS;i++) {
          outsheetexo(i, 1);
          }
        };
