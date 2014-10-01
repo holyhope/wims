@@ -1,3 +1,5 @@
+max_votes=64
+max_parms=64
 !if $wims_class=$empty or $wims_user=$empty
  error=not_class
  !exit
@@ -16,7 +18,7 @@ votedir=wimshome/log/$Votedir
 userfile=$userdef
 !read adm/class/classlang names.phtml
 
-!bound vote between integer 1 and 64 default 0
+!bound vote between integer 1 and $max_votes default 0
 
 
 !default gstep=0
@@ -56,7 +58,7 @@ editjobs=creat,guided,edit,reg,erase,preview,csv,getsource
 !endif
 
 !read tabletheme
-!for i=1 to 64
+!for i=1 to $max_votes
  m_parm$i=$(parm$i)
 !next i
 
@@ -67,7 +69,7 @@ votecnt=!recordcnt $votedir/.votes
 !endif
 !if $job=creat
    !reset gstep
- !if $votecnt>=64
+ !if $votecnt>=$max_votes
   error=too_many_votes
   !exit
  !else
