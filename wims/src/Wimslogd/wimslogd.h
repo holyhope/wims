@@ -105,7 +105,7 @@ extern int options(void);
 extern char opt_user[MAX_FNAME+1];
 void cmd(void);
 
-/* from score.c */
+/* from wimslogdscore.c */
 void cmd_getscore(char *p);
 void cmd_scorelog(char *p);
 
@@ -127,21 +127,21 @@ extern char keepdate[32];
 extern char nowstr[64];
 extern char mupdate[32], backdate[32];
 extern int GEN_LOG_LIMIT, MODULE_LOG_LIMIT, OLD_LOG_FILES;
+
 /* from fork.c */
 extern int forkcnt;
 void addfork(pid_t pid, int type);
 void forkman(int kz);
 void wait_children(void);
 void dispatch_log(void);
+
 /*from files.c */
-/* read the content of a file */
-void readfile(char *fname, char buf[], long int buflen);
+void readfile(char *fname, char buf[], long int buflen); /* read the content of a file */
 /* datafile structure: number of records.
  * tag=1 if direct access
  */
 unsigned int datafile_recordnum(char *p);
-/* datafile structure: find record n, starting from 1 */
-char *datafile_fnd_record(char *p, int n, char bf[]);
+char *datafile_fnd_record(char *p, int n, char bf[]); /* datafile structure: find record n, starting from 1 */
 int ftest(char *fname);
 enum{is_file, is_dir, is_exec, is_fifo, is_socket, is_unknown};
 
