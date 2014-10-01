@@ -2,57 +2,8 @@
 //<![CDATA[
 <!-- no validator  -->
 "use strict";
- function read_canvas(){
-  if( typeof canvas_scripts === 'undefined' ){ return null;}
-  var script_len = canvas_scripts.length;
-  var draw_reply = new Array();var idx=0;var found_result = false;
-  for(var p = 0 ; p < script_len ; p++){
-   var fun = eval("read_canvas"+canvas_scripts[p]);
-   if( typeof fun === 'function'){
-    var result = fun();
-    if( result  && result.length != 0){
-     if( script_len == 1 ){return result;}
-     found_result = true;
-     draw_reply[idx] = result;
-     idx++;
-    }
-   }
-  }
-  if( found_result ){
-   return draw_reply;
-  }
-  else
-  {
-   return null;
-  }
- }
-
- function read_dragdrop(){
-  if( typeof canvas_scripts === 'undefined' ){ return null;}
-  var script_len = canvas_scripts.length;
-  var dragdrop_reply = new Array();var idx = 0;var found_result = false;
-  for(var p = 0 ; p < script_len ; p++){
-   var fun = eval("read_dragdrop"+canvas_scripts[p]);
-   if(typeof fun === 'function'){
-    var result = fun();
-    if( result && result.length != 0 ){
-     if( script_len == 1 ){return result;}
-     found_result = true;
-     dragdrop_reply[idx] = result;
-     idx++;
-    }
-   }
-  }
-  if( found_result ){
-   return dragdrop_reply;
-  }
-  else
-  {
-   return null;
-  }
- }
-
-
+ function read_canvas(){if( typeof canvas_scripts === 'undefined' ){ return null;};var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if( script_len == 1 ){return result;};found_result = true;draw_reply = draw_reply +"["+p+"]="+result+"\n";};};};if( found_result ){return draw_reply;}else{return null;};};
+ function read_dragdrop(){if( typeof canvas_scripts === 'undefined' ){ return null;};var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if( script_len == 1 ){return result;};found_result = true;dragdrop_reply = dragdrop_reply+"["+p+"]="+result+"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};
 !if $goback=1
     !set r=!nospace $(reply$n)
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
