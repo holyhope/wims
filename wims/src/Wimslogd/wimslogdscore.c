@@ -21,7 +21,7 @@
 
 double oldfactor=0.85;  /* quality factor, should remain stable. */
 
-     /* User score information of an exercise. Size: 28 bytes. */
+     /* User score information of an exercise. */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
     float user, user2, last, best, level, high[MAX_REQUIRE/10];
@@ -72,26 +72,17 @@ void scoreline(struct classdata *cd, char *l)
          thiscore->user2*=oldfactor;
          thiscore->user2+=score;
          thiscore->last=score;
-        {
-          int k, j = 0;
-          for (k = 0; 10*k < cd->exos[num].require; k++) {
-           if (thiscore->high[k] < thiscore->high[j]) j = k;
-          }
-          if (thiscore->high[j] < score) {
-            thiscore->best +=score-thiscore->high[j];
-            thiscore->high[j] = score;
-          }
-        }
-/* find the minimum of the required best scores */
-        {
-         int k, j = 0 ;
-         for (k = 0; 10*k < cd->exos[num].require; k++) {
-           if (thiscore->high[k] < thiscore->high[j]) j = k;
-         }
-         thiscore->level=thiscore->high[j];
-        }
-        if(thiscore->try<60000) thiscore->try++;
-        oldsheet=oldexo=0;
+	 if (thiscore->high[0] < score)
+	   {
+	     int k;
+	     thiscore->best += (score - thiscore->high[0]);
+	     for (k = 1; 10*k < cd->exos[num].require && thiscore->high[k] < score; k++)
+	       thiscore->high[k-1] = thiscore->high[k];
+	     thiscore->high[k-1] = score;
+	     thiscore->level=thiscore->high[0];
+	   }
+	 if(thiscore->try<60000) thiscore->try++;
+	 oldsheet=oldexo=0;
      }
     }
     else {
