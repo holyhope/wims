@@ -18,7 +18,7 @@
 /* student score management */
 
 #include "wimslogd.h"
-
+#define MAX_TRY 60000
 double oldfactor=0.85;  /* quality factor, should remain stable. */
 
      /* User score information of an exercise. */
@@ -81,19 +81,19 @@ void scoreline(struct classdata *cd, char *l)
 	     thiscore->high[k-1] = score;
 	     thiscore->level=thiscore->high[0];
 	   }
-	 if(thiscore->try<60000) thiscore->try++;
+	 if(thiscore->try<MAX_TRY) thiscore->try++;
 	 oldsheet=oldexo=0;
      }
     }
     else {
      if(strcmp(pm[4],"rafale")==0) { /* rafale punishment */
-         if(strncmp(pm[0],oldraf[3],13)==0 && thiscore->new<60000) thiscore->new++;
+         if(strncmp(pm[0],oldraf[3],13)==0 && thiscore->new<MAX_TRY) thiscore->new++;
          memmove(oldraf[1],oldraf[0],sizeof(oldraf[0])*7);
          mystrncpy(oldraf[0],pm[0],sizeof(oldraf[0]));
      }
      if(strcmp(pm[4],"resume")!=0 && strcmp(pm[4],"rafale")!=0) {
          if(strcmp(pm[4],"hint")==0) thiscore->hint++;
-         else if(thiscore->new<60000) thiscore->new++;
+         else if(thiscore->new<MAX_TRY) thiscore->new++;
      }
      mystrncpy(oldsession,pm[1],sizeof(oldsession));
      oldsheet=sheet; oldexo=exo;
