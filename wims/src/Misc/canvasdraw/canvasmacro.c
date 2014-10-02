@@ -1168,12 +1168,13 @@ function tooltip%d_show(){\
 
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"arc\" on final canvas -->\n\
-var canvas_rect = canvas_userdraw.getBoundingClientRect();\n\
+var canvas_rect;\
 function user_draw(evt){\
  var num = %d;\
  var x,xc,x1,x2,y,yc,y1,y2;var lu = userdraw_x.length;\
  if( num == 1 && lu == 3 ){ userdraw_x = [];userdraw_y = [];userdraw_radius = [];};\
  if(evt.which == 1){\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
   x = evt.clientX - canvas_rect.left;\
   y = evt.clientY - canvas_rect.top;\
   if( x_use_snap_to_grid == 1 ){x = snap_to_x(x);};\
@@ -1204,6 +1205,7 @@ function user_draw(evt){\
 function user_drag(evt){ \
  var lu = userdraw_x.length;\
  if( (lu+1)%%3 == 0) {\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x2 = evt.clientX - canvas_rect.left;\
   var y2 = evt.clientY - canvas_rect.top;\
   var xc = userdraw_x[lu-2];\
