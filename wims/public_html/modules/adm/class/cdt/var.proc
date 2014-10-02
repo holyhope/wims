@@ -32,10 +32,14 @@ wims_trustfile=primitives.phtml
  !read $job.proc
 !endif
 
-jyear=!char 1 to 4 of $jour_begin
-jmonth=!char 5 to 6 of $jour_begin
-jday=!char 7 to 8 of $jour_begin
-jyear2=!char 1 to 4 of $jour_end
-jmonth2=!char 5 to 6 of $jour_end
-jday2=!char 7 to 8 of $jour_end
+!if $jour_begin!=$empty
+    jyear=!char 1 to 4 of $jour_begin
+    jmonth=!char 5 to 6 of $jour_begin
+    jday=!char 7 to 8 of $jour_begin
+!endif
+!if $jour_end!=$empty
+    jyear2=!char 1 to 4 of $jour_end
+    jmonth2=!char 5 to 6 of $jour_end
+    jday2=!char 7 to 8 of $jour_end
+!endif
 
