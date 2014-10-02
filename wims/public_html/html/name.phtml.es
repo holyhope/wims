@@ -186,7 +186,7 @@ Registrar los detalles de este ejercicio,\
 Página de gestión de la hoja de trabajo,\
 Añadir una secuencia,\
 Vu \
-	into wims_name_class_home,wims_name_add,wims_name_addh\
+	into wims_name_class_home,wims_name_add,wims_name_addh,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
