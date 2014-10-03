@@ -40,7 +40,7 @@ Werkbladen,\
 Account,\
 Inloggen,\
 Cijfer,\
-Myn cijfers,\
+Mijn cijfers,\
 Examen,Examens,\
 Andere browsing methodes,\
 Terug naar het menu,\
