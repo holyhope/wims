@@ -127,9 +127,14 @@ search_adresse=search_keywords="$search_keywords"
   k_=!deaccent $k_
   l_=[
   e_==
+##limitation of the number of tests (20 for 32 bits in version <= 4.08)
+  !reset partial_test
   !if f isvarof $k_ or g isvarof $k_ or x isvarof $k_ or y isvarof $k_ or\
     z isvarof $k_ or b isvarof $k_ or c isvarof $k_ or i isvarof $k_ or\
-    ^ isin $k_ or / isin $k_ or $e_ isin $k_ or\
+    ^ isin $k_ or / isin $k_ or $e_ isin $k_
+    partial_test=1
+  !endif
+  !if $partial_test=1 or\
     .0 isin $k_ or .1 isin $k_ or .2 isin $k_ or .3 isin $k_ or\
     .4 isin $k_ or .5 isin $k_ or .6 isin $k_ or .7 isin $k_ or\
     .8 isin $k_ or .9 isin $k_ or $l_ isin $k_
