@@ -8,38 +8,65 @@ slib_wims_version=4.01
 
 :proc
 slib_out=
-!reset slib_text,slib_color,slib_width,slib_height,slib_option
+
+!reset slib_text,slib_color,slib_width,slib_height,slib_option,bubbleOpts,slib_stylesheet,slib_tripos
 !distribute items $wims_read_parm into slib_text,slib_color,slib_width,slib_height,slib_option
-!default slib_width=250
-!default slib_height=$[$slib_width/3]
+
+slib_width=$[$slib_width]
+!!default slib_height=$[$slib_width/3]
+slib_height=$[$slib_height]
+!if $slib_width>0
+    slib_width=width:$(slib_width)px;
+!else
+    !reset slib_width
+!endif
+!if $slib_height>0
+    slib_height=height:$(slib_height)px;
+!else
+    !reset slib_height
+!endif
+
 !default slib_color=antiquewhite
+slib_tripos=!getopt triangle in $slib_option
+!default slib_tripos=btm-left
+slib_num=!getopt number in $slib_option
+!default slib_num=!randint 1,1000
 slib_text=!declosing $slib_text
 
-slib_p=$[$slib_width]
-slib_q=$[$slib_height]
-slib_ajust=30
-slib_t=$[($slib_p-3*$slib_ajust)/2]
-taille de la minipage
-
-!!slib_text=!replace internal &#36;&#36; by $$$$$ in $slib_text
-
-!read oef/teximg.phtml \begin{minipage}{$slib_t pt}\centering{ $slib_text }\end{minipage}
-
-slib_dialog=$ins_filename
-!if rectangle iswordof $slib_option
- slib_out=xrange -20,$slib_width\
-  yrange -20,$slib_height\
-  frectangle 0,0,$slib_width,$slib_height,$slib_color\
-  ftriangle -20,-20,0,$slib_t,0,0,$slib_color\
-  copy ($slib_width-$[$slib_p])/2+$slib_ajust,($slib_height+$slib_q/2)/2,-1,-1,-1,-1,$slib_dialog
-!else
-slib_out=xrange -10,$slib_width\
-  yrange -10,$slib_height\
-  fellipse $slib_width/2,$slib_height/2,$[$slib_p],$[$slib_q],$slib_color\
-  ftriangle -10,-10,($slib_width-$[$slib_p])/2,$slib_height/2,($slib_width-$[$slib_p])/2+$slib_ajust,$slib_height/2-10,$slib_color\
-  copy ($slib_width-$[$slib_p])/2+$slib_ajust,($slib_height+$slib_q/2)/2,-1,-1,-1,-1,$slib_dialog
+!if rectangle notwordof $slib_option
+ bubbleOpts=$bubbleOpts round
+ !if btm-right iswordof $slib_tripos
+    slib_tripos=btm-right-in
+ !endif
 !endif
-!set insdraw_size=$slib_width,$slib_height
-!insdraw $slib_out
 
-slib_out=<img src="$ins_url" alt="" />
+!if border iswordof $slib_option
+ bubbleOpts=$bubbleOpts border
+!endif
+
+!if noshadow notwordof $slib_option
+ bubbleOpts=$bubbleOpts shadow
+!endif
+
+slib_stylesheet = <style type="text/css">\
+#bubble_$slib_num{background-color: $slib_color;}\
+#bubble_$slib_num.triangle:not(.btm-left):after{border-top-color:   $slib_color;}\
+#bubble_$slib_num.triangle.left-in:after{       border-right-color: $slib_color;}\
+#bubble_$slib_num.triangle.btm-left:after{      border-left-color:  $slib_color;}\
+#bubble_$slib_num.triangle.btm-left-in:after{   border-left-color:  $slib_color;}\
+#bubble_$slib_num.triangle.btm-right-in:after{  border-right-color: $slib_color;}\
+#bubble_$slib_num.triangle.btm-right:after{     border-right-color: $slib_color;}\
+#bubble_$slib_num.triangle.right-in:after{      border-left-color:  $slib_color;}\
+</style>
+
+
+slib_out=$slib_stylesheet\
+<div id="bubble_$slib_num" class="inline talk-bubble triangle $slib_tripos $bubbleOpts"\
+style="$slib_width$slib_height">\
+    <div class="talktext">\
+     <p>$slib_text</p>\
+    </div>\
+ </div>
+
+
+
