@@ -9,7 +9,7 @@ slib_wims_version=4.09a
 :proc
 slib_out=
 
-!reset slib_text,slib_color,slib_width,slib_height,slib_option,bubbleOpts,slib_stylesheet,slib_tripos
+!reset slib_text,slib_color,slib_width,slib_height,slib_option,bubbleOpts,slib_stylesheet,slib_tripos,slib_hw
 !distribute items $wims_read_parm into slib_text,slib_color,slib_width,slib_height,slib_option
 
 slib_width=$[$slib_width]
@@ -23,6 +23,9 @@ slib_height=$[$slib_height]
     slib_height=height:$(slib_height)px;
 !else
     !reset slib_height
+!endif
+!if $slib_width$slib_height!=$empty
+   slib_hw=style="$slib_width$slib_height"
 !endif
 
 !default slib_color=antiquewhite
@@ -58,10 +61,8 @@ slib_stylesheet = <style type="text/css">\
 #bubble_$slib_num.triangle.right-in:after{      border-left-color:  $slib_color;}\
 </style>
 
-
 slib_out=$slib_stylesheet\
-<div id="bubble_$slib_num" class="inline talk-bubble triangle $slib_tripos $bubbleOpts"\
-style="$slib_width$slib_height">\
+<div id="bubble_$slib_num" class="inline talk-bubble triangle $slib_tripos $bubbleOpts" $slib_hw>\
     <div class="talktext">\
      <p>$slib_text</p>\
     </div>\
