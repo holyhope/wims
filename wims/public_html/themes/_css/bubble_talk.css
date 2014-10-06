@@ -11,7 +11,7 @@
 **/
 
 /*** Availables options for "talk-bubble" : 
-* .triangle : puts a triangle indicating from where comes the speaker. Must be positioned in on of these position : 
+* triangle : puts a triangle indicating from where comes the speaker. Must be positioned in on of these position : 
   ** left-top
   ** left-in
   ** btm-left
@@ -20,43 +20,63 @@
   ** btm-right-in
   ** right-in
   ** right-top
-* .border : an 8px border around bubble
-* .round : rounded borders
-* .shadow : a light shadow around bubble
+* border : an 8px border around bubble
+* round  : rounded borders
+* shadow : a light shadow around bubble
 
 *****************************/
 
 
-/** Talk Bubble Color : */
-.talk-bubble {
-  background-color: lightyellow;
+/***************
+ example of OEF if you want to test it : 
+****************
+
+\text{A1=slib(text/balloon [Abracadabra ],,200)}
+\text{B1=slib(text/balloon [Que vaut \(\frac{1}{2}\) de 6 ? ],lightblue,400,100,
+rectangle noshadow triangle=btm-left)}
+
+\text{A2=slib(text/balloon [Abracadabra ],red,,,triangle=btm-right)}
+\text{B2=slib(text/balloon [Que vaut \(\frac{1}{2}\) de 6 ? ],lightblue,200,100,
+rectangle border triangle=right-in)}
+
+\statement{
+<div>\A1 \B1</div>
+<div>\A2 \B2</div>
 }
+
+*********************/
 
 /* talk bubble Main class */
 .talk-bubble {
-  margin: 40px;
+  margin: 0 20px 20px 20px;
   /*display: inline-block;*/
   position: relative;
   /*width: 200px;*/
   height: auto;
-}
-.talk-bubble.border{
-  border: 8px solid #666;
-}
-.talk-bubble.round{
-  border-radius: 30px;
-}
-.talk-bubble.shadow{
-  box-shadow: 8px 4px 5px 0 #ccc;
-  margin-bottom: 10px;
+  background-color: lightyellow;
 }
 
-/* Triangle placed top left flush. */
-.triangle.border.left-top:before {
+/* optional styles : border round shadow */
+.talk-bubble.border{
+  border: 8px solid #666;
+  margin: 0 30px 30px 30px;
+}
+.talk-bubble.round{ border-radius: 30px;}
+.talk-bubble.shadow{
+  box-shadow: 8px 4px 5px 0 #ccc;
+  /*margin-bottom: 10px;*/
+}
+
+/* Optional : a triangle indicating who's speaking direction */
+.triangle:before, .triangle:after {
   content: ' ';
   position: absolute;
   width: 0;
   height: 0;
+}
+
+/* Triangle placed top left flush. */
+.triangle.border.left-top:before {
   left: -40px;
   right: auto;
   top: -8px;
@@ -65,23 +85,15 @@
   border-color: #666 transparent transparent transparent;
 }
 .triangle.left-top:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: -20px;
   right: auto;
-  top: 0px;
+  top: 0;
   bottom: auto;
   border: 22px solid transparent;
 }
 
 /* Right triangle, left side slightly down */
 .triangle.border.left-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: -40px;
   right: auto;
   top: 30px;
@@ -90,10 +102,6 @@
   border-color: #666 #666 transparent transparent;
 }
 .triangle.left-in:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: -20px;
   right: auto;
   top: 38px;
@@ -103,10 +111,6 @@
 
 /* Triangle, placed bottom left side slightly in*/
 .triangle.border.btm-left:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: -8px;
   right: auto;
   top: auto;
@@ -115,11 +119,7 @@
   border-color: transparent transparent transparent #666;
 }
 .triangle.btm-left:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 0px;
+  left: 0;
   right: auto;
   top: auto;
   bottom: -20px;
@@ -128,10 +128,6 @@
 
 /* Triangle, placed bottom left side slightly in*/
 .triangle.border.btm-left-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: 30px;
   right: auto;
   top: auto;
@@ -140,10 +136,6 @@
   border-color: #666 transparent transparent #666;
 }
 .triangle.btm-left-in:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: 38px;
   right: auto;
   top: auto;
@@ -153,10 +145,6 @@
 
 /* Triangle, placed bottom right side slightly in*/
 .triangle.border.btm-right-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: 30px;
   bottom: -40px;
@@ -164,10 +152,6 @@
   border-color: #666 #666 transparent transparent;
 }
 .triangle.btm-right-in:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: 38px;
   bottom: -20px;
@@ -189,10 +173,6 @@
 
 /* Triangle, placed bottom right side slightly in*/
 .triangle.border.btm-right:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: -8px;
   bottom: -40px;
@@ -200,22 +180,14 @@
   border-color: #666 #666 transparent transparent;
 }
 .triangle.btm-right:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
-  right: 0px;
+  right: 0;
   bottom: -20px;
   border: 12px solid transparent;
 }
 
 /* Triangle, right side slightly down*/
 .triangle.border.right-in:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: -40px;
   top: 30px;
@@ -224,10 +196,6 @@
   border-color: #666 transparent transparent #666;
 }
 .triangle.right-in:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: -20px;
   top: 38px;
@@ -237,10 +205,6 @@
 
 /* Triangle placed top right flush. */
 .triangle.border.right-top:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: -40px;
   top: -8px;
@@ -249,13 +213,9 @@
   border-color: #666 transparent transparent transparent;
 }
 .triangle.right-top:after{
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
   left: auto;
   right: -20px;
-  top: 0px;
+  top: 0;
   bottom: auto;
   border: 20px solid transparent;
 }
