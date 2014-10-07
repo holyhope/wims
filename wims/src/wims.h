@@ -48,6 +48,14 @@
 #define OUTPUT_LENGTH_LIMIT (1024*1024)
   /* limit of items in value lists */
 #define MAX_VALUE_LIST 2048
+/* We fix a limit for the number of goto's (or for jumps) executed,
+ * in order to avoid infinite loop or DOS attack.
+ */
+#define GOTO_LIMIT 500000
+/* maximal nesting level of substitutions. */
+#define SUBST_LIMIT 16
+/* Limit for instex, insplot, insPLOT. */
+#define INS_LIMIT 500
 /* file to hold last output */
 #define lastout "last.html"
 /* Access policy configuration file */
@@ -199,12 +207,12 @@ extern char temp_log[MAX_FNAME+1]; /* temp log file name */
 extern char *cgi_name;
 extern int idle_time, idle_time2, idle_time3, OLD_LOG_FILES, GEN_LOG_LIMIT, MODULE_LOG_LIMIT;
 extern int backup_hour, site_accounting, examlog_limit;
-extern int GOTO_LIMIT, ANIM_LIMIT;
+extern int ANIM_LIMIT;
 extern char *header_menu, *insplot_processor;
 extern char *home_referer, *home_referer_user, *header_menu_supervisor,
    *header_menu_user, *home_referer_supervisor, *title_page, *html_file;
 extern char *aliased_cgi, *insdraw_processor, *mail_opt;
-extern int INS_LIMIT, mathalign_base ;
+extern int mathalign_base ;
 unsigned long create_job_ident(void);
 void module_index(void);
 extern char *module_about_file, *main_var_proc_file, *var_init_file, *special_font;
@@ -435,7 +443,6 @@ void phtml_put_base(char *fname,int cache);
 void set_module_prefix(void);
 extern int ispriority;
 extern char *sed_prog, *tr_prog, *tex2gif;
-extern int SUBST_LIMIT;
 void get_static_session_var(void);
 void parse_ro_names(void);
 int var_def_name(char *n, int v);

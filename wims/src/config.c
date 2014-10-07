@@ -25,13 +25,6 @@
 
 /* maximal length of any module's variable definition file. */
 int VAR_DEF_LENGTH_LIMIT=50000;
-        /* maximal nesting level of substitutions. */
-int SUBST_LIMIT=16;
-        /* We fix a limit for the number of goto's (or for jumps) executed,
-         * in order to avoid infinite loop or DOS attack. */
-int GOTO_LIMIT=500000;
-        /* Limit for instex, insplot, insPLOT. */
-int INS_LIMIT=500;
 /* Limit for frames in an animation. */
 int ANIM_LIMIT=400;
 /* module log file length */
@@ -81,51 +74,52 @@ char *pari_command="gp -f -q -p 150000";
 char *scilab_command="scilab -nwni";
 char *QRencode_command="qrencode -o";
 
-  /* default languages */
+/* default languages */
 char site_langbuf[]="en fr cn es it nl";
 char *site_languages=site_langbuf;
-  /* Statistics shows up? */
+/* Statistics shows up? */
 char *show_stat="no";
-  /* Author names show up in search result? */
+/* Author names show up in search result? */
 char *show_author="no";
-  /* Show user IP adress to supervisor */
+/* Show user IP adress to supervisor */
 char *show_ip="yes";
-  /* busy hours definition */
+/* busy hours definition */
 char *busyhours="";
-  /* Presentation theme */
+/* Presentation theme */
 char *theme="standard";
-  /* directory of session files */
+/* directory of session files */
 char session_dir[MAX_FNAME+1], s2_dir[MAX_FNAME+1];
-  /* standardised header model for modules' output. Will be stored
-   * into the variable $wims_html_header. If the theme contains
-   * a file 'head.phtml', html_header will be defined by the address
-   * of this file  in subroutine define_html_header */
+/* standardised header model for modules' output. Will be stored
+ * into the variable $wims_html_header. If the theme contains
+ * a file 'head.phtml', html_header will be defined by the address
+ * of this file  in subroutine define_html_header
+ */
 char *html_header="html/header.phtml";
-  /* standardised about table for modules */
+/* standardised about table for modules */
 char *module_about_file="html/module_about";
-  /* title definition page */
+/* title definition page */
 char *title_page="title.phtml";
-  /* stardardised header menu bar, to be included in module pages
-   * via command !headmenu */
+/* stardardised header menu bar, to be included in module pages
+ * via command !headmenu */
 char *header_menu="headmenu.phtml";
 char *header_menu_user="headmenu_user.phtml";
 char *header_menu_supervisor="headmenu_supervisor.phtml";
-  /* standardised referer to wims home, to be included in
-   * module pages via command !homeref */
+/* standardised referer to wims home, to be included in
+ * module pages via command !homeref */
 char *home_referer="homeref.phtml";
 char *home_referer_user="homeref_user.phtml";
 char *home_referer_supervisor="homeref_supervisor.phtml";
-  /* background color in standard reference tables */
+/* background color in standard reference tables */
 char *ref_bgcolor="#777777";
-  /* link color */
+/* link color */
 char *link_color="#004077";
-  /* vlink color */
+/* vlink color */
 char *vlink_color="#004077";
-  /* link color in standard reference tables */
+/* link color in standard reference tables */
 char *ref_menucolor="white";
-  /* background help button color */
+/* background help button color */
 char *ref_button_help_bgcolor="green";
-  /* background help button color */
+/* background help button color */
 char *ref_button_help_color="white";
   /* button background color */
 char *ref_button_bgcolor="#666666";
@@ -176,7 +170,7 @@ int backup_hour=-1; /* Hour for daily backup; -1 means no backup. */
 int site_accounting=0; /* whether accounting should be activated */
 int examlog_limit=7; /* number of logged exam sessions for each student */
 
-  /* Automatic module update */
+/* Automatic module update */
 char *mu_auto="none";
 char *mu_cat="all";
 char *mu_delay="3";
@@ -185,19 +179,20 @@ char *mu_zone="all";
 char *mu_download_site="unice,wimsedu";
 char *mu_publish_site="unice";
 
-  /* keywords destinated to robots */
+/* keywords destinated to robots */
 char *site_keywords="interactive mathematics, interactive math, server side interactivity";
 char *site_description="interactive exercises, online calculators and plotters, mathematical recreation and games";
 
-  /* class and document authorization */
+/* class and document authorization */
 int class_quota=100;
 int superclass_quota=100;
 int doc_quota=32;
 char *class_regpass="email,email,deny";
 char *doc_regpass="";
 
-  /* Where to find programs; if your httpd sets /bin:/usr/bin in PATH,
-   * this should be OK. */
+/* Where to find programs; if your httpd sets /bin:/usr/bin in PATH,
+ * this should be OK.
+ */
 char *sed_prog="sed";
 char *tr_prog="tr";
 char *awk_prog="awk";
