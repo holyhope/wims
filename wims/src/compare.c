@@ -147,7 +147,7 @@ int compare(char *p, int numeric, int lvl)
      }
      case 3: { /* atomic comparison */
          if(r<100) { /* textual comparison */
-          char buf1[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
+          static char buf1[MAX_LINELEN+1], buf2[MAX_LINELEN+1];
           while(r1>p1 && myisspace(r1[-1])) r1--;
           memmove(buf1,p1,r1-p1); buf1[r1-p1]=0;
           r2=find_word_start(r2);
