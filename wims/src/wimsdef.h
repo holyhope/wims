@@ -58,10 +58,11 @@
 #define LINE_LIMIT 16384
 /* size of cached datafields */
 #define DATAFIELD_LIMIT 16384
-/* temporary log file */
-#define TEMP_LOG_FILE "../log/temp.log"
 /* max required points */
 #define MAX_REQUIRE 1000
+
+/* temporary log file */
+#define TEMP_LOG_FILE "../log/temp.log"
 /* Tag string for randfile */
 #define tag_string "\n:"
 
@@ -80,8 +81,5 @@ typedef struct scoreresult {
     unsigned short int num, pad;
     float require, weight, score, mean, last, try, best, level;
 } scoreresult;
-
-
-
 
 #endif

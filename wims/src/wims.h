@@ -44,9 +44,9 @@
 #define MAX_RANDPERM 2000
 /* Number of session random numbers */
 #define MAX_SESRANDOM 64
-  /* Limit of output length. This can be configured. */
+/* Limit of output length. This can be configured. */
 #define OUTPUT_LENGTH_LIMIT (1024*1024)
-  /* limit of items in value lists */
+/* limit of items in value lists */
 #define MAX_VALUE_LIST 2048
 /* We fix a limit for the number of goto's (or for jumps) executed,
  * in order to avoid infinite loop or DOS attack.
