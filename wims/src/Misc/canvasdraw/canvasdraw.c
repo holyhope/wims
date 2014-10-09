@@ -99,6 +99,7 @@ int main(int argc, char *argv[]){
     char *input_style = "";
     char *flytext = "";
     char *affine_matrix = "[1,0,0,1,0,0]";
+    char *function_label = "f(x)=";
     int pixelsize = 1;
     int reply_format = 0;
     int input_cnt = 0;
@@ -1010,13 +1011,23 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
 	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
 	 @ function may be used any time (e.g. without userdraw)
+	 @ use command "functionlabel some_string" to define the inputfield text : default value "f(x)="
+	 @ use command 'strokecolor some_color' to adjust the plot / functionlabel color
+	 @ the userinput for the function will be corrected by a simple 'rawmath' implementation...
 	*/
 	    temp = get_string_argument(infile,1);
 	    if(strstr(temp,"function") != 0  || strstr(temp,"curve") != 0  || strstr(temp,"plot") != 0 ){
 	     if( js_function[DRAW_JSFUNCTION] != 1 ){
+	      add_rawmath(js_include_file);/* add simple rawmath routine to correct user input of function */
 	      js_function[DRAW_JSFUNCTION] = 1;
 	      if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	      add_input_jsfunction(js_include_file,canvas_root_id,1,input_style,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	      add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	      input_cnt++;
+	     }
+	     else 
+	     {
+	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
+	      fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	      input_cnt++;
 	     }
 	     if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -1078,11 +1089,15 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    use_input_xy = 1;
 	    break;
+	case FUNCTION_LABEL:
+	    function_label = get_string_argument(infile,1);
+	    break;
 	case USERINPUT_FUNCTION:
 	/*
 	@ userinput_function
 	@ keyword
 	@ if set , a inputfield will be added to the page
+	@ repeat keyword for more function input fields
 	@ the userinput value will be plotted in the canvas
 	@ this value may be read with 'read_canvas()'. <br />for do it yourself js-scripters : If this is the first inputfield in the script, it's id is canvas_input0
 	@ use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
@@ -1090,8 +1105,15 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	*/
 	    if( js_function[DRAW_JSFUNCTION] != 1 ){
 	     js_function[DRAW_JSFUNCTION] = 1;
+	     add_rawmath(js_include_file);
 	     if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	     add_input_jsfunction(js_include_file,canvas_root_id,1,input_style,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	     add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	     input_cnt++;
+	    }
+	    else 
+	    {
+	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
+	     fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	     input_cnt++;
 	    }
 	    if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -6833,7 +6855,8 @@ int get_token(FILE *infile){
 	*killslider="killslider",
 	*angle="angle",
 	*halfline="halfline",
-	*demiline="demiline";
+	*demiline="demiline",
+	*functionlabel="functionlabel";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -7530,6 +7553,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, halfline) == 0 || strcmp(input_type, demiline) == 0  ){
 	free(input_type);
 	return HALFLINE;
+	}
+	if( strcmp(input_type, functionlabel) == 0 ){
+	free(input_type);
+	return FUNCTION_LABEL;
 	}
 	free(input_type);
 	ungetc(c,infile);

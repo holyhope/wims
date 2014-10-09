@@ -1753,35 +1753,80 @@ setlimit_button.addEventListener(\"mousedown\",function(e){set_limits();},false)
 };use_setlimits();",canvas_root_id,canvas_root_id);
 }
 
-void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,int num,char *input_style,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1){
+
+void add_rawmath(FILE *js_include_file){
+fprintf(js_include_file,"\n<!-- begin add_rawmath() -->\n\
+function rawmath(i){\
+ i=i.toLowerCase();\
+ i=i.replace(/\\ /g,\"\");i=i.replace(/\\*\\*/g,\"^\");\
+ if(i.indexOf(\"e+\")!=-1){i=i.replace(\"e+\",\"*10^\");};\
+ if(i.indexOf(\"e-\")!=-1){i=i.replace(\"e-\",\"*10^-\");};\
+ i=i.replace(/\\*\\*/g,\"*\");\
+ if(i.charAt(0)==\"*\"){i=i.substring(1,i.length);};\
+ var fun=[\"asin\",\"acos\",\"atan\",\"sin\",\"cos\",\"tan\",\"log\",\"ln\",\"pi\",\"e\",\"x\",\"y\"];\
+ var cons=[\"pi\",\"e\",\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\"];\
+ var cntl = 0;var cntr = 0;\
+ var len = i.length;\
+ for( var p = 0;p < len; p++){\
+  if(i.charAt(p) == '('){cntl++;}\
+  if(i.charAt(p) == ')'){cntr++;}\
+ };\
+ if(cntl != cntr){i = i+')';};\
+ for(var p = 0; p < 12 ; p++){\
+  for(var d = 0; d < 12 ; d++){\
+   while(i.indexOf(cons[d]+\"\"+fun[p])!=-1){\
+    i = i.replace(cons[d]+\"\"+fun[p],cons[d]+\"*\"+fun[p]);\
+   };\
+   while(i.indexOf(fun[p]+\"\"+cons[d])!=-1){\
+    i = i.replace(fun[p]+\"\"+cons[d],fun[p]+\"*\"+cons[d]);\
+   };\
+  };\
+ };\
+ if(i.indexOf(\"(\")!=-1){\
+  for(var p = 0;p < 12; p++){\
+   if(i.indexOf(cons[p]+\"(\")!=-1){\
+    i = i.replace(cons[p]+\"(\",cons[p]+\"*(\");\
+   };\
+   if(i.indexOf(\")\"+cons[p])!=-1){\
+    i = i.replace(\")\"+cons[p],\")*\"+cons[p]);\
+   };\
+  };\
+  i = i.replace(/\\)\\(/g,\")*(\");\
+ };\
+ return i;\
+}\n");
+}
+void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin add_input_jsfunction -->\n\
-function clear_jsfunction(id){\
+function clear_jsfunction(canvas_plot_id,input_field){\
  try{\
-  var canvas_plot = document.getElementById(\"wims_canvas%d\"+id);\n\
-  var canvas_plot_ctx = canvas_plot.getContext(\"2d\");\n\
+  var canvas_plot = document.getElementById(\"wims_canvas%d\"+canvas_plot_id);\
+  var canvas_plot_ctx = canvas_plot.getContext(\"2d\");\
   if( confirm(\"clear function plot?\") ){\
-   canvas_plot_ctx.clearRect(0,0,xsize,ysize);\n\
-   document.getElementById('canvas_input%d').value = \"\";\n\
-  };\n\
-  return;\n\
- }catch(e){alert(\"nothing to remove...\");};\n\
+   canvas_plot_ctx.clearRect(0,0,xsize,ysize);\
+   document.getElementById(input_field).value = \"\";\
+  };\
+  return;\
+ }catch(e){alert(e+\"nothing to remove...\");};\
  return;\n\
 };\n\
-function add_input_jsfunction(){\
- var num = %d;\n\
- var canvas_plot_id = %d;\n\
- if( wims_status == \"done\" ){return;};\n\
- var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\n\
- var input_jsfunction_div = document.createElement('div');\n\
- input_jsfunction_div.id = \"input_jsfunction_div\";\n\
- tooltip_div.appendChild(input_jsfunction_div);\n\
- if( typeof xaxislabel == 'undefined' ){var xaxislabel = \"function\";}\
- input_jsfunction_div.innerHTML=\"<br /><span style='font-style:italic;font-size:10px'><b>\"+xaxislabel+\" : <input type='text' size='16' value='' id='canvas_input%d' style='%s' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\n\
- var update_button = document.getElementById(\"update_button\");\n\
- var delete_button = document.getElementById(\"delete_button\");\n\
- update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,document.getElementById('canvas_input%d').value,%d,'%s',%.2f,%d,%d,%d);return;},false);\
- delete_button.addEventListener(\"mousedown\",function(e){clear_jsfunction(canvas_plot_id);return;},false);\n\
-};add_input_jsfunction();",canvas_root_id,input_cnt,num,USERDRAW_JSPLOT,canvas_root_id,input_cnt,input_style,input_cnt,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
+function add_input_jsfunction(input_cnt,input_style,input_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1){\
+ var canvas_plot_id = %d+input_cnt;\
+ var input_field = \"canvas_input\"+input_cnt;\
+ var update_button_id = \"update_button\"+input_cnt;\
+ var delete_button_id = \"delete_button\"+input_cnt;\
+ if( wims_status == \"done\" ){return;};\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ var input_jsfunction_div = document.createElement('div');\
+ input_jsfunction_div.id = \"input_jsfunction_div\"+input_cnt;\
+ tooltip_div.appendChild(input_jsfunction_div);\
+ input_jsfunction_div.innerHTML=\"<br /><br /><span style='font-style:italic;font-size:10px;color:rgb(\"+stroke_color+\")'><b>\"+input_label+\" <input type='text' size='16' value='' id='\"+input_field+\"' style='\"+input_style+\"' /></b><input id='\"+update_button_id+\"' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='\"+delete_button_id+\"' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+ var update_button = document.getElementById(update_button_id);\
+ var delete_button = document.getElementById(delete_button_id);\
+ update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,rawmath(document.getElementById(input_field).value),line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);return;},false);\
+ delete_button.addEventListener(\"mousedown\",function(e){clear_jsfunction(canvas_plot_id,input_field);return;},false);\
+};\n\
+add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",%.2f,%d,%d,%d);\n",canvas_root_id,USERDRAW_JSPLOT,canvas_root_id,input_cnt,input_style,input_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
 

@@ -156,6 +156,7 @@
 #define USERINPUT_FUNCTION 157
 #define USERINPUT	158
 #define HALFLINE	159
+#define FUNCTION_LABEL	160
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -212,7 +213,7 @@
 #define ANIMATE_CANVAS	10
 #define TRACE_CANVAS	11
 #define JSPLOT_CANVAS	12
-#define USERDRAW_JSPLOT 13
+#define USERDRAW_JSPLOT 13 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
 
 #ifndef STD_H
 #define STD_H
@@ -284,7 +285,7 @@ void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
-void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,int num,char *input_style,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1);
-
+void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1);
+void add_rawmath(FILE *js_include_file);
 extern int NUMBER_OF_COLORNAMES;
 extern struct colors { char *hex; char *name; char *rgb; } colors[];
