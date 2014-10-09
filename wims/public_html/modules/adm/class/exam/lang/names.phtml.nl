@@ -42,10 +42,10 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam2=!nosubst Er zijn in't totaal $stries proefwerk pogingen beschikbaar.
 
 !set name_exam3=!nosubst Deze proefwerk sessie is be&euml;indigd met $tried pogingen,
-!set name_exam4=!nosubst Dit was proefwerk poging nummer $tried ,
-!set name_exam6=!nosubst En er zijn nu nog $tryremain poging(en) beschikbaar.
+!set name_exam4=!nosubst Dit was proefwerk poging <strong>nummer $tried</strong> ,
+!set name_exam6=!nosubst En er zijn nu nog <strong>$tryremain</strong> poging(en) beschikbaar.
 
-!set name_exam9=!nosubst Dit proefwerk mag maximaal $sdure min. in beslag nemen.\
+!set name_exam9=!nosubst Dit proefwerk mag maximaal <strong>$sdure min.</strong> in beslag nemen.\
 Wanneer een opgave wordt aangeklikt,
  
 !set name_simulation=Dit proefwerk verloopt in simulatie mode. Het werkt precies zo als het echte proefwerk, \

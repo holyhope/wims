@@ -46,10 +46,10 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam2=!nosubst Puede registrar hasta $stries puntuaciones en este examen.
 !set name_exam3=!nosubst Ya ha terminado su sesión de examen con $tried ensayos,
-!set name_exam4=!nosubst Ya lo ha intentado $tried veces,
-!set name_exam6=!nosubst Y todavía puede hacer $tryremain nuevos intentos.
+!set name_exam4=!nosubst Ya lo ha intentado <strong>$tried veces</strong>,
+!set name_exam6=!nosubst Y todavía puede hacer <strong>$tryremain</strong> nuevos intentos.
 
-!set name_exam9=!nosubst Tiene $sdure minutos para trabajar en el examen.
+!set name_exam9=!nosubst Tiene <strong>$sdure minutos</strong> para trabajar en el examen.
      Cuando pulse en un ejercicio de los anteriores,
 
 !set name_simulation=Este examen está en modo simulación. Funciona exactamente igual
