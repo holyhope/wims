@@ -33,7 +33,7 @@
 /* length limit for public_html/bin executable names */
 #define MAX_EXEC_NAME 31
 /* max level of nested fors */
-#define MAX_FOR_LEVEL 12
+#define MAX_FOR_LEVEL 42
 /* max nested read; to avoid infinite loop */
 #define MAX_READNEST 20
 /* number of cached working files */

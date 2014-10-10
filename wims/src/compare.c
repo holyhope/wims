@@ -211,7 +211,7 @@ int compare(char *p, int numeric, int lvl)
          }
      }
     }
-    internal_error("compare(): this should never happen.");
+    //internal_error("compare(): this should never happen.");
     return -1;
 }
 
