@@ -1771,7 +1771,7 @@ function rawmath(i){\
   if(i.charAt(p) == '('){cntl++;}\
   if(i.charAt(p) == ')'){cntr++;}\
  };\
- if(cntl != cntr){i = i+')';};\
+ if(cntl != cntr){alert(\"unmatched parenthesis !!\");return null;};\
  for(var p = 0; p < 12 ; p++){\
   for(var d = 0; d < 12 ; d++){\
    while(i.indexOf(cons[d]+\"\"+fun[p])!=-1){\
@@ -2205,7 +2205,8 @@ var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0
  var ctx = obj.getContext(\"2d\");\
  ctx.clearRect(0,0,xsize,ysize);\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
- var fun = to_js_math(f);if(fun == null){alert(\"hmmm...\"+f);return;};\
+ var fun = to_js_math(f);if(fun == null){alert(\"Syntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi)) \");return;};\
+ try{ parseFloat( eval_jsmath( px2x(0) ) );}catch(e){alert(\"\\nSyntax Error...\\nAttention : try use very precise notation !\\nlike :\\n6*(0.25)^(1.23)\\n1/(sin(5*x))\\n(3*x+4)/(x^(2*pi))\");return;};\
  ctx.lineWidth = linewidth;\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash =[dashtype0,dashtype1];}};\
@@ -2229,6 +2230,7 @@ var jsplot = function(canvas_type,f,linewidth,color,opacity,use_dashed,dashtype0
 void add_to_js_math(FILE *js_include_file){
 fprintf(js_include_file,"\n<!-- begin to_js_math() -->\n\
 var to_js_math = function(math_fun){\
+ if(math_fun == null){return;};\
  var infun=[\"sqrt\",\"^\",\"asin\",\"acos\",\"atan\",\"log\",\"pi\",\"abs\",\"sin\",\"cos\",\"tan\",\"e\"];\
  var outfun=[\"Math.sqrt\",\"Math.pow\",\"Math.asin\",\"Math.acos\",\"Math.atan\",\"Math.log\",\"(3.14159265358979)\",\"Math.abs\",\"Math.sin\",\"Math.cos\",\"Math.tan\",\"(2.718281828459045)\"];\
  var len = infun.length;var in_fun;var In_Fun;var out_fun;var w_cnt;\

@@ -1,5 +1,4 @@
-/*
-27/7/2013 version 0.01
+/*27/7/2013 version 0.01
 "Inspired" by FLY program: http://martin.gleeson.com/fly
 *********************************************************************************
 * J.M. Evers 7/2013								*
@@ -414,6 +413,34 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
+	case SEGMENTS:
+	/*
+	@ segments color,x1,y1,x2,y2,...,x_n,y_n
+	@ draw multiple segments at given coordinates in color 'color'
+	@ use command 'linewidth int'  to adust size
+	@ may be set draggable / onclick individually (!)
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		click_cnt++;
 	    }
 	    reset();
@@ -6697,6 +6724,7 @@ int get_token(FILE *infile){
 	*lattice="lattice",
 	*parallel="parallel",
 	*segment="segment",
+	*segments="segments",
 	*dsegment="dsegment",
 	*seg="seg",
 	*bgimage="bgimage",
@@ -6960,6 +6988,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, line) == 0 ){
 	free(input_type);
 	return LINE;
+	}
+	if( strcmp(input_type, segments) == 0 ){
+	free(input_type);
+	return SEGMENTS;
 	}
 	if( strcmp(input_type, seg) == 0 ||  strcmp(input_type, segment) == 0 ){
 	free(input_type);

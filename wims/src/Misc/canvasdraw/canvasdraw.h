@@ -157,6 +157,7 @@
 #define USERINPUT	158
 #define HALFLINE	159
 #define FUNCTION_LABEL	160
+#define SEGMENTS	161
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
