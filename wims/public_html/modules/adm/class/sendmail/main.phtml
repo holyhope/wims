@@ -178,13 +178,20 @@ $list_noemail
    !reset u
  !next
  !set cnt=!linecnt $list_teacher
+ !if $job!=all
+  !set msgmod=$msg\
+\
+#######\
+Send : $(list_user[;2])\
+#######\
+
  !for l_ =1 to $cnt
    !set u=!line $l_ of $list_teacher
    !if $(u[4])!=
      !set us=$(u[4])
      !mailto $mailheader\
    [WIMS $wims_classname] $subject\
- $msg\
+ $msgmod\
  \
 
    !endif
