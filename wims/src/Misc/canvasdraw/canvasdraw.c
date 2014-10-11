@@ -206,7 +206,11 @@ if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
 if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
 if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
 canvas_scripts.push(\"%d\");</script>\n\
-<!-- canvasdraw div and tooltip placeholder, if needed -->\n<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div><div id=\"tooltip_placeholder_div%d\" style=\"display:block;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\n",canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
+<!-- canvasdraw div and tooltip placeholder, if needed -->\n\
+<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\">\
+<span id=\"tooltip_placeholder%d\" style=\"display:none;\">\n</span>\
+</div>\n",canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
 fprintf(stdout,"<!-- include actual object code via include file -->\n<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,getfile_cmd);
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n\
 \"use strict\";\n\
@@ -850,9 +854,38 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 			click_cnt++;reset();
-		    break;
+			break;
+		    default : break;
 		}
 	    }
+	    break;
+
+	case CIRCLES:
+	/*
+	@ circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
+	@ Attention r = radius in x-range (!)
+	@ use command 'fillcolor color' to set the fillcolor
+	@ may be set draggable / onclick (individually)
+	@ will shrink / expand on zoom out / zoom in
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=1;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		switch (i%3){
+		 case 1:double_data[i-1] = get_real(infile,0);break; /* x */
+		 case 2:double_data[i-1] = get_real(infile,0);break; /* y */
+		 case 0:double_data[i-1] = get_real(infile,1);break; /* r */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+3){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[c+2],double_data[c+2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
 	    break;
 	case RAYS:
 	/*
@@ -883,6 +916,37 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	    for(c=2; c<i;c = c+2){
 		click_cnt++;
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+	    }
+	    reset();
+	    break;
+
+	case ARROWS:
+	/*
+	@ arrows color,head (px),x1,y1,x2,y2...x_n,y_n
+	@ draw single headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
+	@ use command 'linewidth int' to adjust thickness of the arrow
+	@ may be set draggable / onclick individually
+	*/
+	fprintf(js_include_file,"\n<!-- FOUND ARROWS --> \n");
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    arrow_head = (int) get_real(infile,0);/* h */
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
 	    }
 	    reset();
 	    break;
@@ -3524,12 +3588,14 @@ char *str_replace(const char *str, const char *old, const char *new){
 char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
+    char not_allowed[10] = "0123456789";
     while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) && ( c != ';' ) ){
 	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
 	if( c == '#' ){
 	    is_hex = 1;
 	}
 	if( c != ' '){
+	    if( is_hex == 0 ){if(strchr(not_allowed,c) != 0){canvas_error("found something like a number...but is should have been a colour or #hex color number...<br />Do not use R,G,B !!! ");}}
 	    temp[i]=tolower(c);
 	    i++;
 	}
@@ -3556,16 +3622,14 @@ char *get_color(FILE *infile , int last){
     {
         string = (char *)my_newmem(sizeof(temp));
 	snprintf(string,sizeof(temp),"%s",temp);
-	for( i = 0; i <= NUMBER_OF_COLORNAMES ; i++ ){
+	for( i = 0; i < NUMBER_OF_COLORNAMES ; i++ ){
 	    if( strcmp( colors[i].name , string ) == 0 ){
 		return colors[i].rgb;
 	    }
 	}
+	canvas_error("I was expecting a color name or hexnumber...but found nothing.");
     }
-    /* not found...return error */
-    free(string);string = NULL;
-    canvas_error("I was expecting a color name or hexnumber...but found nothing.");
-    return NULL;
+    return "0,0,255";
 }
 
 char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 final argument */
@@ -3613,22 +3677,19 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     int c,i=0,found_calc = 0;
     double y;
     char tmp[MAX_INT];
+    /* these things are 'allowed functions' : *,^,+,-,/,(,),e,arc,cos,tan,pi,log,ln */
+    char allowed[21] = "earcostanpilog+-/^()";/* assuming these are allowed stuff in a 'number'*/
+    char not_allowed[17] = "#bdfghjkmquvwxyz";/* avoid segmentation faults in a "atof()" and "wims eval" */
     while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
      if( c != ' ' ){
-     /*
-     libmatheval will segfault when for example: "xrange -10,+10" or "xrange -10,10+" is used
-     We will check after assert() if it's a NULL pointer...and exit program via :
-     canvas_error("I'm having trouble parsing your \"expression\" ");
-     */
       if( i == 0 &&  c == '+' ){
        continue;
       }
       else
       {
-       if(canvas_iscalculation(c) != 0){
-        found_calc = 1;
-        c = tolower(c);
-       }
+       c = tolower(c);
+       if( strchr(not_allowed,c) != 0 ){canvas_error("found a character not associated with a number...");}
+       if( strchr(allowed,c) != 0 ){found_calc = 1;}/* hand the string over to wims eval() */
        tmp[i] = c;
        i++;
       }
@@ -3640,7 +3701,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     if( c == EOF ){done = TRUE ; finished = 1;}
     tmp[i]='\0';
     if( strlen(tmp) == 0 ){canvas_error("expected a number , but found nothing !!");}
-    if( found_calc == 1 ){ /* use libmatheval to calculate 2*pi/3 */
+    if( found_calc == 1 ){ /* use wims eval to calculate 2*pi/3 */
      void *f = eval_create(tmp);
      assert(f);if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
      y = eval_x(f, 1);
@@ -3653,6 +3714,8 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     }
     return y;
 }
+
+
 void canvas_error(char *msg){
     fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number-1,msg);
     finished = 1;
@@ -6752,6 +6815,7 @@ int get_token(FILE *infile){
 	*darrow="darrow",
 	*arrow2="arrow2",
 	*darrow2="darrow2",
+	*arrows="arrows",
 	*zoom="zoom",
 	*grid="grid",
 	*hline="hline",
@@ -6804,6 +6868,7 @@ int get_token(FILE *infile){
 	*points="points",
 	*linewidth="linewidth",
 	*circle="circle",
+	*circles="circles",
 	*fcircle="fcircle",
 	*disk="disk",
 	*comment="#",
@@ -7148,10 +7213,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return FONTCOLOR;
 	}
-	if( strcmp(input_type, arrow) == 0 ){
-	free(input_type);
-	return ARROW;
-	}
 	if( strcmp(input_type, arrow2) == 0 ){
 	free(input_type);
 	return ARROW2;
@@ -7165,6 +7226,14 @@ int get_token(FILE *infile){
 	free(input_type);
 	use_dashed = TRUE;
 	return ARROW2;
+	}
+	if( strcmp(input_type, arrows) == 0 ){
+	free(input_type);
+	return ARROWS;
+	}
+	if( strcmp(input_type, arrow) == 0 ){
+	free(input_type);
+	return ARROW;
 	}
 	if( strcmp(input_type, zoom) == 0 ){
 	free(input_type);
@@ -7248,6 +7317,10 @@ int get_token(FILE *infile){
 	use_filled = TRUE;
 	free(input_type);
 	return RECT;
+	}
+	if( strcmp(input_type, circles) == 0 ){
+	free(input_type);
+	return CIRCLES;
 	}
 	if( strcmp(input_type, fcircle) == 0  ||  strcmp(input_type, disk) == 0 ){
 	use_filled = TRUE;

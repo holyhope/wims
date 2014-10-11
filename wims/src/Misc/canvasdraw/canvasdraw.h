@@ -1,7 +1,5 @@
 #include <assert.h>
 #include "../../Lib/libwims.h"
-
-#define canvas_iscalculation(x) ( ((x&~32)>='A' && (x&~32)<='Z') || ( x == '/' ) || (x == '*') || (x == '+') || x == '-' || x == '^' || x == '(' || x == ')' )
 #define MAX_INT		128
 #define MAX_BUFFER 16384
 #define MAX_COLOR_STRING	32
@@ -158,6 +156,8 @@
 #define HALFLINE	159
 #define FUNCTION_LABEL	160
 #define SEGMENTS	161
+#define ARROWS		162
+#define CIRCLES		163
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

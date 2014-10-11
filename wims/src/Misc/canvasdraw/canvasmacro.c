@@ -2648,16 +2648,16 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
     obj_type = 1 == rect
     obj_type = 2 == point / points (do not scale with zoom)
     obj_type = 3 == ellipse
-    obj_type = 4 == polyline / segment /line / vline / hline
+    obj_type = 4 == polyline / segment / segments /line / vline / hline
     obj_type = 5 == closed path (polygon)
     obj_type = 6 == roundrect
     obj_type = 7 == crosshair / crosshairs
-    obj_type = 8 == arrow
+    obj_type = 8 == arrow / arrows
     obj_type = 9 == curve
     obj_type = 10== arrow2
     obj_type = 11== parallel  (no drag or onclick)
     obj_type = 12== arc : radius is in pixels , so no zooming in/out
-    obj_type = 13== circle (will scale on zoom)
+    obj_type = 13== circle / circles (will scale on zoom)
     obj_type = 14== text (will not scale or pan on zoom)
     obj_type = 15== animated point on curve
     obj_type = 16== pixels
@@ -2739,7 +2739,7 @@ Shape.prototype.draw = function(ctx)\
   case 10: var dx;var dy;var len;ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],-1*this.w[0]);ctx.lineTo(-1*this.w[0],this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],-0.5*this.w[0]);ctx.lineTo(this.w[0], 0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
   case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
   case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
-  case 13: ctx.arc(this.x[0],this.y[0],scale_x_radius(this.w[0]),0,2*Math.PI,false);break;\
+  case 13: for(var p = 0; p < this.x.length; p++){ ctx.arc(this.x[p],this.y[p],scale_x_radius(this.w[p]),0,2*Math.PI,false);};break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
   case 15: break;\
   case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
