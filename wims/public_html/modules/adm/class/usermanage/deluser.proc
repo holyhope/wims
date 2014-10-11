@@ -1,0 +1,12 @@
+!read adm/class/userisinclass $wims_class,$deluser
+!if yes notin $script_reply
+ !reset deluser,job
+ error=bad_usercls
+ !exit
+!endif
+!if $deluser!=$empty
+ !read adm/class/deluser $deluser
+!else
+ job=
+!endif
+

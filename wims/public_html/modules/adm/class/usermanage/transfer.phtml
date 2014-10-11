@@ -1,0 +1,60 @@
+!read adm/title.phtml 1\
+$classname\
+$name_title_transfer
+
+<div class="wimscenter">
+ !href cmd=reply&job=getuser&getuser=$getuser $name_student1
+ (<span class="tt">$getuser</span>)
+</div>
+
+!if $error=no_reccourse
+ <span class="wims_warning">$wims_name_Error</span>. $name_error1
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+.
+ 
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <span class="wims_warning">$wims_name_Error</span>. $name_error2
+  !exit
+ !else
+  $name_activities
+  <hr />
+  <pre class="small">
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre>
+  <hr /><div class="wimscenter">
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass $name_merge
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass $name_replace
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
+  </div>
+  !goto endd
+ !endif
+!endif
+
+$name_totransfer
+
+$table_header
+$table_hdtr<th>$wims_name_course</th>
+<th>$wims_name_action</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c $name_merge
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c $name_replace
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c $name_show
+!next c
+$table_end
+
+:endd
+!read lang/names.phtml.$moduclass_lang transfer
+

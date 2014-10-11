@@ -1,0 +1,13 @@
+
+!if $wims_user!=supervisor
+ !exit
+!endif
+
+!read var.proc.userexam
+!if $eremain=$empty
+ !exit
+!endif
+
+!sh rm -Rf $wims_home/sessions/$esession*
+job=getuser
+!read var.proc.getuser
