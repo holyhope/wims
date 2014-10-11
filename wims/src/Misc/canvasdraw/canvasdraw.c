@@ -3588,7 +3588,7 @@ char *str_replace(const char *str, const char *old, const char *new){
 char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
-    char not_allowed[10] = "0123456789";
+    const char *not_allowed = "0123456789";
     while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) && ( c != ';' ) ){
 	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
 	if( c == '#' ){
@@ -3678,8 +3678,8 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     double y;
     char tmp[MAX_INT];
     /* these things are 'allowed functions' : *,^,+,-,/,(,),e,arc,cos,tan,pi,log,ln */
-    char allowed[21] = "earcostanpilog+-/^()";/* assuming these are allowed stuff in a 'number'*/
-    char not_allowed[17] = "#bdfghjkmquvwxyz";/* avoid segmentation faults in a "atof()" and "wims eval" */
+    const char *allowed = "earcostanpilog+-/^()";/* assuming these are allowed stuff in a 'number'*/
+    const char *not_allowed = "#bdfghjkmquvwxyz";/* avoid segmentation faults in a "atof()" and "wims eval" */
     while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
      if( c != ' ' ){
       if( i == 0 &&  c == '+' ){
