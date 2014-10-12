@@ -32,59 +32,23 @@ $wims_name_part_list ($usercnt)
  !endif
  !goto end
 !endif
- <div class="wimscenter">
- !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
-!!##  the administrator at the level of the portal or the creator of the class can add a teacher to
-!!##  the list of teachers of his class
-!if ($wims_typename iswordof group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
- !default wims_superclass=$wims_class
-!! 11/10/2014 passage dans le module usermanage
-!! !set teacherlist=!record 0 of wimshome/log/classes/$wims_superclass/.teacherlist
-!! !set teachercnt=!linecnt $teacherlist
-!! !if $teachercnt>0
-!!  !set wims_ref_class=wims_button
-!!  !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
-!!  &nbsp;
-!! !endif
-!!## only the administrator has the right to add a teacher to the superclass
- !if $wims_typename iswordof group and $wims_supertype=2
-  !set wims_ref_class=wims_button
-  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
-   &nbsp;
- !endif
-!endif wims_typename=group etc
+
+<div class="wimscenter">
 !set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
 !if $usercnt==0
- $name_noyetparticipant
- !if $typen!=level
- &nbsp;
- !set wims_ref_class=wims_button
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
-&nbsp;
- !endif
- !set wims_ref_class=wims_button
- !href cmd=reply&job=csv $wims_name_csv
- </div>
+    $name_noyetparticipant
+    !if $typen!=level
+        &nbsp;
+	!set wims_ref_class=wims_button
+	!href module=adm/class/reguser&step=1 $wims_name_addstudent
+	&nbsp;
+    !endif
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job=csv $wims_name_csv
+    </div>
 !else -- $usercnt>0
-!!## it is dangerous to register directly a student in a level
-!! suppression le 11/10/2014 mis dans usermanage
-!! !if $typen!=level
-!! !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
-!! !set deleted=!trim $deleted
-!! &nbsp;
-!! !set wims_ref_class=wims_button
-!!  !href module=adm/class/reguser&step=1 $wims_name_addstudent
-!! &nbsp;
-!! !endif
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
-
-!! suppression le 11/10/2014 mis dans usermanage
-!! !if $deleted!=$empty
-!!  &nbsp;
-!! !set wims_ref_class=wims_button
-!!  !href cmd=reply&job=recover $name_partdeleted
-!! !endif
  </div>
  !if $seq_cnt=0
  <p>
