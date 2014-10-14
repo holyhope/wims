@@ -3678,7 +3678,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     double y;
     char tmp[MAX_INT];
     /* these things are 'allowed functions' : *,^,+,-,/,(,),e,arc,cos,tan,pi,log,ln */
-    const char *allowed = "earcostanpilog+-/^()";/* assuming these are allowed stuff in a 'number'*/
+    const char *allowed = "earcostanpilog*+-/^()";/* assuming these are allowed stuff in a 'number'*/
     const char *not_allowed = "#bdfghjkmquvwxyz";/* avoid segmentation faults in a "atof()" and "wims eval" */
     while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
      if( c != ' ' ){
