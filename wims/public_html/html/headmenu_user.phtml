@@ -40,7 +40,9 @@
      !if $wims_user=anonymous
        !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $1_
      !else
-       !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $1_
+       !if _exam notin $wims_session
+         !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $1_
+       !endif
      !endif
   !endif
 !endif
