@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !distribute line Moyenne de la classe\
 Moyenne\
 Moyenne des notes positives\
@@ -74,7 +77,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_post=faites afficher
 !set name_Post=Afficher
 
-!if $job iswordof userprop teacher
+!if $job iswordof userprop teacher userlist
   !distribute items Changer,Numéro d'inscription,Commentaires,URL d'une photo,Variables (techniques),\
   Mot de passe de la classe,Entrez le mot de passe d'inscription de participant,\
   Identifiant externe,Accès d'élève, Accès de gestion,\

@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !distribute line Gemiddelde van deze klas\
 Gemiddelde\
 Gemiddelde van alle positieve cijfers\
@@ -69,7 +72,7 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !set name_post=laat zien&nbsp;:
 !set name_Post=Laat zien&nbsp;:
 
-!if $job iswordof userprop teacher
+!if $job iswordof userprop teacher userlist
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\
    Login bij externe authentificatie,Inschrijving,Beheer,\

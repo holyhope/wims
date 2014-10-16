@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !distribute line Average of the class\
 Average\
 Average of positive scores\
@@ -69,7 +72,7 @@ added any sequences. Therefore no score can be displayed.
 !set name_post=display
 !set name_Post=Display
 
-!if $job iswordof userprop teacher
+!if $job iswordof userprop teacher userlist
   !distribute items Change,Registration number,Comments,Photo url, (technical) Variables,\
   Class password,Enter the password for participant registration,\
   Login for external authentification,Inscription,Gestion,\

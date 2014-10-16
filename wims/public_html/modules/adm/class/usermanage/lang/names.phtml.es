@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !distribute line Media de la clase\
 Media\
 Media de las notas positivas\
@@ -68,7 +71,7 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !set name_post=mostrar
 !set name_Post=Mostrar
 
-!if $job iswordof userprop teacher
+!if $job iswordof userprop teacher userlist
   !distribute items Cambiar,Número de inscripción,Comentarios,URL de una fotografía,Variables (técnicas),\
   Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes,\
   Login for external authentification,Inscription,Gestion,\

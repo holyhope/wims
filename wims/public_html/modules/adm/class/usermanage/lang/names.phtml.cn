@@ -1,7 +1,8 @@
 !set lang_exists=yes
 
-!set name_student1=!nosubst $lastname, $firstname
-!set name_student2=!nosubst $firstname $lastname
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !if $wims_read_parm!=
  !goto $wims_read_parm
 !endif
@@ -74,7 +75,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_post=显示
 !set name_Post=显示
 
-!if $job iswordof userprop teacher
+!if $job iswordof userprop teacher userlist
   !distribute items 修改,注册号,注解,照片的url,变量 (技术的),\
   班级口令,输入参加者注册的口令,\
   外部验证的登录,注册,管理,\
