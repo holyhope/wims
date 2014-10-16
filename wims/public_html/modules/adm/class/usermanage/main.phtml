@@ -32,22 +32,6 @@ $wims_name_part_list ($usercnt)
 !endif
 
 
-!! define wims_menu_items for all job
-
-!set wims_menu_items=!append line sendmail,1,module=adm/class/sendmail\
-photoboard,1,module=adm/class/photoboard\
-part_list,1,module=adm/class/usermanage\
- to $wims_menu_items
-!if $typen!=level
- !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
-to $wims_menu_items
-!endif
-
-!! disconnected for a few time
-!!!set wims_menu_items=!append line csv,1,cmd=reply&job=csv\
-!! ,0,\
-!!to $wims_menu_items
-
 !tail
 
 !reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,passcheck

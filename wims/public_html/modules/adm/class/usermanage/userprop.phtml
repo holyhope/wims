@@ -121,17 +121,21 @@ $wims_name_account_property\
 
 
 !if $wims_user=supervisor
- !set wims_menu_items=!append line Score1,1,cmd=reply&job=getuser&getuser=$getuser\
-to $wims_menu_items
- !set wims_menu_items=!append line workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
- delprep,1,cmd=reply&job=delprep&delprep=$getuser\
- part_list,1,cmd=resume\
+ !set wims_menu_items=!append line delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
+,0,\
 to $wims_menu_items
 
 !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
 
+ !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
+,0,\
+part_list,1,cmd=resume\
+to $wims_menu_items
+
 !else
- !set wims_menu_items=!append line class_home,1,module=home\
+ !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
+class_home,1,module=home\
 to $wims_menu_items
 !endif
 
