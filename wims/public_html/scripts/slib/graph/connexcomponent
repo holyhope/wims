@@ -20,21 +20,21 @@ $   to ; in $slib_G
 slib_n=!exec pari slib_N=Mat([$slib_G]);matsize(slib_N)[1]
 
 slib_dstx=!exec pari {slib_N=Mat([$slib_G]);\
-	slib_P=vector($slib_n,slib_i,-1);\
-	slib_P[$slib_point]=0;\
-	slib_modif=1;\
-	while(slib_modif,\
-  		slib_modif=0;\
- 		 for(slib_i=1,$slib_n,\
-    		for(slib_j=1,$slib_n,\
-     			 if(slib_N[slib_i,slib_j]*(slib_P[slib_i]+1),\
-       				 if((slib_P[slib_j]+1),\
-         				 if(slib_P[slib_j]>slib_P[slib_i]+1, slib_P[slib_j]=slib_P[slib_i]+1;slib_modif=1),\
-          				slib_P[slib_j]=slib_P[slib_i]+1; slib_modif=1);\
-          		);\
-   			);\
- 		 );\
-	);\
+    slib_P=vector($slib_n,slib_i,-1);\
+    slib_P[$slib_point]=0;\
+    slib_modif=1;\
+    while(slib_modif,\
+          slib_modif=0;\
+          for(slib_i=1,$slib_n,\
+            for(slib_j=1,$slib_n,\
+                  if(slib_N[slib_i,slib_j]*(slib_P[slib_i]+1),\
+                        if((slib_P[slib_j]+1),\
+                          if(slib_P[slib_j]>slib_P[slib_i]+1, slib_P[slib_j]=slib_P[slib_i]+1;slib_modif=1),\
+                          slib_P[slib_j]=slib_P[slib_i]+1; slib_modif=1);\
+                  );\
+               );\
+          );\
+    );\
 print(slib_P)}
 
 slib_cc=!exec pari {slib_P=Vec([$slib_dstx]);\

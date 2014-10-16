@@ -32,24 +32,23 @@ slib_debut=1
 slib_D=$slib_out
 
 !if -1 notin $slib_D
-	!goto end
+    !goto end
 !endif
 slib_D=!translate internal  ; to $\
 $  in $slib_D
 !for slib_c=$slib_debut to $slib_n
-	slib_ligne=!line $slib_c of $slib_D
-	!if -1 isin $slib_ligne
-		slib_J=!positionof item -1 in $slib_ligne
-		!for slib_JJ in $slib_J
-			slib_G=!exec pari slib_N=Mat([$slib_G]);slib_N[$slib_c,$slib_JJ]=1;slib_N[$slib_JJ,$slib_c]=1;slib_N
-		!next slib_JJ
-		slib_debut=$[$slib_c+1]
-		!goto debut
-	!endif
+    slib_ligne=!line $slib_c of $slib_D
+    !if -1 isin $slib_ligne
+        slib_J=!positionof item -1 in $slib_ligne
+        !for slib_JJ in $slib_J
+            slib_G=!exec pari slib_N=Mat([$slib_G]);slib_N[$slib_c,$slib_JJ]=1;slib_N[$slib_JJ,$slib_c]=1;slib_N
+        !next slib_JJ
+        slib_debut=$[$slib_c+1]
+        !goto debut
+    !endif
 !next slib_c
-	
+
 :end
 
 slib_out=$slib_G
 
-					

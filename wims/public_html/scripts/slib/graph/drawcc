@@ -44,67 +44,67 @@ slib_cnt = 0
 slib_matrix=
 slib_out=
 !for slib_i  in $slib_point
-	!if $slib_i notin $slib_liste
-		!read slib/graph/connexcomponent  [$slib_HH], $slib_i
-		slib_liste = !append item $slib_out to $slib_liste
-		slib_matrix = !append line $slib_out to $slib_matrix
-		!advance slib_cnt
-		slib_out=
-	!endif
+    !if $slib_i notin $slib_liste
+        !read slib/graph/connexcomponent  [$slib_HH], $slib_i
+        slib_liste = !append item $slib_out to $slib_liste
+        slib_matrix = !append line $slib_out to $slib_matrix
+        !advance slib_cnt
+        slib_out=
+    !endif
 !next slib_i
 slib_point2 = !listcomplement of $slib_liste in $slib_vertex
 
 !for slib_i  in $slib_point2
-	!if $slib_i notin $slib_liste
-		!read slib/graph/connexcomponent  [$slib_HH], $slib_i
-		slib_liste = !append item $slib_out to $slib_liste
-		slib_matrix = !append line $slib_out to $slib_matrix
-		!advance slib_cnt
-	!endif
+    !if $slib_i notin $slib_liste
+        !read slib/graph/connexcomponent  [$slib_HH], $slib_i
+        slib_liste = !append item $slib_out to $slib_liste
+        slib_matrix = !append line $slib_out to $slib_matrix
+        !advance slib_cnt
+    !endif
 !next slib_i
 
 
 slib_dessin = xrange -1.5,1.5\
 yrange -1.5,1.5
 !for slib_i=1 to $slib_cnt
-	slib_color$slib_i= !declosing $(slib_color$slib_i)
-	slib_h=!line $slib_i of $slib_matrix
-	!for slib_k in $slib_h
-		slib_name =!item $slib_k of $slib_names
-		slib_dessin=$slib_dessin\
-		disk cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ), 6,$(slib_color$slib_i)\
-	text black, 1.3*cos(2*pi*$slib_k/$slib_n ),1.3*sin(2*pi*$slib_k/$slib_n ), medium ,$slib_name
-	slib_r=!line $slib_k of $slib_H
-		!if $slib_or=1
-			!for slib_j   in $slib_h
-				slib_u=!item $slib_j of $slib_r
-				!if $slib_u=1
-					!if $slib_k<>$slib_j
-						slib_dessin=$slib_dessin\
+    slib_color$slib_i= !declosing $(slib_color$slib_i)
+    slib_h=!line $slib_i of $slib_matrix
+    !for slib_k in $slib_h
+        slib_name =!item $slib_k of $slib_names
+        slib_dessin=$slib_dessin\
+        disk cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ), 6,$(slib_color$slib_i)\
+    text black, 1.3*cos(2*pi*$slib_k/$slib_n ),1.3*sin(2*pi*$slib_k/$slib_n ), medium ,$slib_name
+    slib_r=!line $slib_k of $slib_H
+        !if $slib_or=1
+            !for slib_j   in $slib_h
+                slib_u=!item $slib_j of $slib_r
+                !if $slib_u=1
+                    !if $slib_k<>$slib_j
+                        slib_dessin=$slib_dessin\
 line cos(2*pi*$slib_k/$slib_n),sin(2*pi*$slib_k/$slib_n), cos(2*pi*$slib_j/$slib_n ),sin(2*pi*$slib_j/$slib_n ),$(slib_color$slib_i)
-					!else
-						slib_dessin=$slib_dessin\
+                    !else
+                        slib_dessin=$slib_dessin\
 ellipse cos(2*pi*$slib_i/$slib_n )*1.25,sin(2*pi*$slib_i/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
-					!endif
-				!endif
-			!next slib_j
-		!else
-			!for slib_j=1 to $slib_n
-				slib_r=!line $slib_k of $slib_H
-				slib_u=!item $slib_j of $slib_r
-				!if $slib_u=1
-					!if $slib_k<>$slib_j
-						slib_dessin=$slib_dessin\
+                    !endif
+                !endif
+            !next slib_j
+        !else
+            !for slib_j=1 to $slib_n
+                slib_r=!line $slib_k of $slib_H
+                slib_u=!item $slib_j of $slib_r
+                !if $slib_u=1
+                    !if $slib_k<>$slib_j
+                        slib_dessin=$slib_dessin\
 arrow $[cos(2*pi*$slib_k/$slib_n )],$[sin(2*pi*$slib_k/$slib_n)], $[(cos(2*pi*$slib_k/$slib_n )-cos(2*pi*$slib_j/$slib_n ))/2+cos(2*pi*$slib_j/$slib_n )],$[(sin(2*pi*$slib_k/$slib_n )-sin(2*pi*$slib_j/$slib_n ))/2+sin(2*pi*$slib_j/$slib_n )],10,$(slib_color$slib_i)\
 line cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ),cos(2*pi*$slib_j/$slib_n ),sin(2*pi*$slib_j/$slib_n ),$(slib_color$slib_i)
-					!else
-						slib_dessin=$slib_dessin\
+                    !else
+                        slib_dessin=$slib_dessin\
 ellipse cos(2*pi*$slib_k/$slib_n )*1.25,sin(2*pi*$slib_k/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
-					!endif
-				!endif
-			!next slib_j
-		!endif
-	!next slib_k
+                    !endif
+                !endif
+            !next slib_j
+        !endif
+    !next slib_k
 !next slib_i
 
 
