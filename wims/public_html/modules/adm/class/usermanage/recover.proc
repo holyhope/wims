@@ -3,12 +3,12 @@
  !sh cd $wims_home/$userdir; mv -f .$getuser $getuser 2>/dev/null
  !read adm/class/mkuserlist
  !defread wimshome/$userdir/$getuser
- job=getuser
+ job=userlist
  lastname=$user_lastname
  firstname=$user_firstname
  wims_module_log=recover $getuser
  wims_class_log=Recover user $getuser by $wims_realuser
- !changeto var.proc.getuser
+ !restart module=adm/class/usermanage
 !endif
 
 del=!sh cd $wims_home/$userdir; ls .[a-zA-Z0-9]* 2>/dev/null
