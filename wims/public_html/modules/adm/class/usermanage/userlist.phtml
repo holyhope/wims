@@ -7,7 +7,6 @@
 
 !! display table of participant with usual information
 
-!!ATTENTION : fichier de langue touche . Seul le français est touche il faudra repercuter.
 !!ATTENTION : il faut faire un tableau different en fonction du niveau de structure de la classe d'appel (portail, superclass, etc...) reflechir à ce que l'on affiche.
 
 !if $usercnt=0
@@ -52,9 +51,10 @@
 $varfilter_
 	!endif
 	!if $(var_filter_test)=1 or $varfilter_=$empty
-          !set UU=!hex $uu
+!!          !set UU=!hex $uu
           !reset user_exists,user_email,user_regnum,user_external_auth,user_comments
-          !readproc wimshome/log/classes/$wims_superclass/.users/$uu
+	  !readproc adm/class/userdef classes,$wims_class,$uu
+          !readdef $userdef
 	  $table_tr
              <td>
 		!href cmd=reply&job=userprop&getuser=$uu $name_studentloc
@@ -85,6 +85,8 @@ to $wims_menu_items
  !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
 to $wims_menu_items
 !endif
+!endif
+
 
 !! disconnected for a few time 
 !!!set wims_menu_items=!append line csv,1,cmd=reply&job=csv\
