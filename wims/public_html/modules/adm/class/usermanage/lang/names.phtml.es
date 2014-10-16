@@ -117,7 +117,7 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst ¿Está seguro de que quiere dar de baja a  <b><em>$lastname, $firstname</em></b> de su clase?
+  !set name_delete=!nosubst ¿Está seguro de que quiere dar de baja a  <b><em>$name_studentloc</em></b> de su clase?
 !endif
 
 !if $job=csv

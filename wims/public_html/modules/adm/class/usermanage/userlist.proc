@@ -1,5 +1,20 @@
 !! display list of participant in the class
 
+
+!if $varfilter!=$empty
+   !reset varfilter_
+   !set varfilter_cnt=!linecnt $varfilter
+   !for v=1 to $varfilter_cnt
+    var_line=!singlespace $(varfilter[$v;])
+    var_line =!replace $ $ by , in $var_line
+    varfilter_=!append line $var_line to $varfilter_
+  !next
+  !set name_classAverage=$name_groupAverage
+!endif
+
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+
 !!## it is dangerous to register directly a student in a level
 !if $typen!=level
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null

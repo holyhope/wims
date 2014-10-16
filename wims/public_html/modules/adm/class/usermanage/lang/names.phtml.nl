@@ -116,7 +116,7 @@ kan dus niet worden overgezet van
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst Zeker weten de <b><em>$name_student1</em></b>\
+  !set name_delete=!nosubst Zeker weten de <b><em>$name_studentloc</em></b>\
      uit deze klas verwijderd moet worden ?
 !endif
 !if $job=csv

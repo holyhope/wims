@@ -24,18 +24,6 @@ picto=<img src="gifs/picto.gif" alt="picto" />
  !exit
 !endif
 
-!if $varfilter!=$empty
-   !reset varfilter_
-   !set varfilter_cnt=!linecnt $varfilter
-   !for v=1 to $varfilter_cnt
-    var_line=!singlespace $(varfilter[$v;])
-    var_line =!replace $ $ by , in $var_line
-    varfilter_=!append line $var_line to $varfilter_
-  !next
-  !set name_classAverage=$name_groupAverage
-!endif
-
-
 !if $wims_user!=supervisor
  !reset deluser,formula,getraw,delprep
  !bound job within userprop default userprop
@@ -45,23 +33,7 @@ picto=<img src="gifs/picto.gif" alt="picto" />
 !endif
 !read adm/class/classlang
 
-!!wims_module_log=$job
-!if $job=teacher
- !changeto $job.proc
-!endif
+wims_module_log=$job
+!changeto $job.proc
 
-
-usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
-
-job=!word 1 of $job
-!if $job iswordof getuser delprep deluser transfer
- logname=$getuser$getraw$delprep$deluser
- !read adm/class/userdef classes,$wims_class,$logname
- !defread $userdef
-!endif
-
-!if $job!=$empty
- wims_module_log=$job
- !read $job.proc
-!endif
 
