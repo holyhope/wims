@@ -1181,6 +1181,12 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	    use_input_xy = 1;
 	    break;
 	case FUNCTION_LABEL:
+	/*
+	 @ functionlabel 'some string'
+	 @ default value "f(x)="
+	 @ no mathml allowed (just ascii string)
+	 @ if needed, use before every command 'userinput function | inputfield | textarea'
+	*/
 	    function_label = get_string_argument(infile,1);
 	    break;
 	case USERINPUT_FUNCTION:
@@ -3127,7 +3133,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ default values should be fine !
 	@ use command 'precision [0,1,10,100,1000,10000...]' before command 'replyformat' to set the desired number of decimals in the student reply / drawing
 	@ the last value for 'precision int' will be used to calculate  the reply coordinates, if needed (read_canvas();)
-	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>replyformat 24 = read all inputfield values: even those set 'readonly'</li><li>format 25 = angle1,angle2...angle_n : will return the radius (one or many) of the user drawn circle segment in degrees </li><li>format 26 = rad1,rad2...rad_n : will return the radius (one or many) of the user drawn circle segment in radians </li><li>27 = return (only) userdraw inputfields array: x1:y1:text1,x2:y2:text2...</li></ul>
+	@ choose<ul><li>1 = x1,x2,x3,x4....x_n<br />y1,y2,y3,y4....y_n<br /><br />x/y in pixels</li><li>2 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br /> x/y in xrange / yrange coordinate system<br /></li><li>3 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in pixels <br />  r in pixels</li><li>4 = x1,x2,x3,x4....x_n<br />  y1,y2,y3,y4....y_n<br />  r1,r2,r3,r4....r_n<br />  x/y in xrange / yrange coordinate system<br />  r in pixels</li><li>5 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in pixels<br /></li><li>6 = Ax1,Ax2,Ax3,Ax4....Ax_n<br />  Ay1,Ay2,Ay3,Ay4....Ay_n<br />  Bx1,Bx2,Bx3,Bx4....Bx_n<br />  By1,By2,By3,By4....By_n<br />  Cx1,Cx2,Cx3,Cx4....Cx_n<br />  Cy1,Cy2,Cy3,Cy4....Cy_n<br />  ....<br />  Zx1,Zx2,Zx3,Zx4....Zx_n<br />  Zy1,Zy2,Zy3,Zy4....Zy_n<br />  x/y in xrange / yrange coordinate system<br /></li><li>7 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in pixels</li><li>8 = x1:y1,x2:y2,x3:y3,x4:y4...x_n:y_n<br />  x/y in xrange / yrange coordinate system</li><li>9 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in pixels</li><li>10 = x1:y1:r1,x2:y2:r2,x3:y3:r3,x4:y4:r3...x_n:y_n:r_n<br />  x/y in xrange / yrange coordinate system</li><li>11 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />   Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in xrange / yrange coordinate system</li><li>12 = Ax1,Ay1,Ax2,Ay2<br />   Bx1,By1,Bx2,By2<br />Cx1,Cy1,Cx2,Cy2<br />   Dx1,Dy1,Dx2,Dy2<br />   ......<br />   Zx1,Zy1,Zx2,Zy2<br />  x/y in pixels</li><li>13 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2,Cx1:Cy1:Cx2:Cy2,Dx1:Dy1:Dx2:Dy2, ... ,Zx1:Zy1:Zx2:Zy2<br />  x/y in xrange / yrange coordinate system</li><li>14 = Ax1:Ay1:Ax2:Ay2,Bx1:By1:Bx2:By2....Zx1:Zy1:Zx2:Zy2<br />  x/y in pixels</li><li>15 = reply from inputfields,textareas<br />  reply1,reply2,reply3,...,reply_n</li><li>16 = mathml input fields </li><li>17 = read "userdraw text,color" only (x1:y1:text1,x2:y2:text2...x_n:y_n:text_n</li><li>18 = read_canvas() will read all interactive clocks in H1:M1:S1,H2:M2:S2...Hn:Mn:Sn</li><li>19 = read_canvas() will return the object number of marked / clicked object (clock)<br />analogue to (shape library) onclick command </li><li>21 = (x1:y1) (x2:y2) ... (x_n:y_n)<br />verbatim coordinate return</li>22 = returns an array .... reply[0]=x1 reply[1]=y1 reply[2]=x2 reply[3]=y2 ... reply[n-1]=x_n reply[n]=y_n<br />  x/y in xrange / yrange coordinate system</li><li>replyformat 23 : can only be used for drawtype 'polyline'<br />a typical click sequence in drawtype polyline isx1,y1,x2,y2,x2,y2,x3,y3,x3,y3.....,x(n-1),y(n-1),x(n-1),y(n-1),xn,yn --replyformat 23--> x1,y1,x2,y2,x3,y3,.....x(n-1),y(n-1),xn,yn multiple occurences will be filtered out.The reply will be in x-y-range (xreply \\n yreply)</li><li>replyformat 24 = read all inputfield values: even those set 'readonly'</li><li>format 25 = angle1,angle2...angle_n : will return the radius (one or many) of the user drawn circle segment in degrees </li><li>format 26 = rad1,rad2...rad_n : will return the radius (one or many) of the user drawn circle segment in radians </li><li>27 = return (only) userdraw inputfields array: x1:y1:text1,x2:y2:text2...</li><li>28 = x1,y1,r1,x2,y2,r2...x_n,y_n,r_n <br />x / y / r in  xrange / yrange coordinate system: may be used to reinput into command 'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'<br /> will not return anything else (e.g. no inputfields , text etc)</li></ul>
 	@ note to 'userdraw text,color' : the x / y-values are in pixels ! (this to avoid too lengthy calculations in javascript...)
 	*/
 	 reply_format = (int) get_real(infile,1);
@@ -3666,7 +3672,11 @@ char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments 
     if( c == EOF ) {finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
+/*    
+    17.10.2014 removed (question Perrin)
+    may cause some unwanted effects...
     if( strlen(temp) == 0 ){ canvas_error("expected a word or string (without comma) , but found nothing !!");}
+*/
     string=(char *)my_newmem(sizeof(temp));
     snprintf(string,sizeof(temp),"%s",temp);
     done = TRUE;
@@ -3872,6 +3882,10 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
 25 = return all userdrawn arcs in degrees:
 26 = return all userdrawn arcs in radians:
 27 = return (only) userdraw inputfields array: x1:y1:text1,x2:y2:text2...
+28 = x1,y1,r1,x2,y2,r2...x_n,y_n,r_n
+    x/y/r in  xrange / yrange coordinate system: may be used to reinput into command 
+    'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'
+    will not return anything else (e.g. no inputfields , text etc)
 */
 
 
@@ -4816,6 +4830,26 @@ read_canvas%d = function(){\
  return reply;\
 };\n\
 <!-- end function 27 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+    break;
+    case 28:
+    fprintf(js_include_file,"\n<!-- begin function 28 read_canvas%d() -->\n\
+read_canvas%d = function(){\
+ var prec = %d;\
+ var reply = new Array();var p = 0;\
+ var idx = 0;\
+ while(userdraw_x[p]){\
+  reply[idx] = (Math.round(prec*(px2x(userdraw_x[p]))))/prec;\
+  idx++;\
+  reply[idx] = (Math.round(prec*(px2y(userdraw_y[p]))))/prec;\
+  idx++;\
+  reply[idx] = (Math.round(prec*(px2x(userdraw_radius[p]) - px2x(0))))/prec;\
+  idx++;\
+  p++;\
+ };\
+ if( p == 0){alert(\"nothing drawn...\");return;}\
+ return reply;\
+};\n\
+<!-- end function 4 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
     break;
     default: canvas_error("hmmm unknown replyformat...");break;
 }
