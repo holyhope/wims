@@ -12,12 +12,6 @@ Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld.
  !exit
 !endif
 
-!if bad_classpass=$error
-Helaas, U hebt niet het juiste wachtwoord ingevuld.
-U kunt dus de gegevens niet wijzigen. 
- !exit
-!endif
-
 !if no_login iswordof $error
 De opgestuurde data moeten wel een kolom bevatten met de 
 loginnaam van de student.

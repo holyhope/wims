@@ -14,12 +14,6 @@
  !exit
 !endif
 
-!if bad_classpass=$error
- Lo sentimos pero no ha introducido la contraseña correcta de la clase.
- No está autorizado a cambiar la información sobre los participantes.
- !exit
-!endif
-
 !if no_login iswordof $error
  Los datos que ha enviado deben tener obligatoriamente una columna
  correspondiente a los identificadores de usuario de los participantes.
