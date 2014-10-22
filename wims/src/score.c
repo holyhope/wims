@@ -78,7 +78,8 @@ int getscoreuser(char *classe, char *user)
     for(;osh<sh && osh<MAX_SHEETS;osh++) sheetstart[osh]=i;
     s+=rscore[i].require*rscore[i].weight;
   }
-  if(osh>0) scoresum[osh-1]=s; totsheets=osh;
+  if(osh>0) scoresum[osh-1]=s;
+  totsheets=osh;
   for(j=0;j<totsheets-1;j++) shexocnt[j]=sheetstart[j+1]-sheetstart[j];
   shexocnt[totsheets-1]=i-sheetstart[totsheets-1];
   examstart=i; examcnt=scorecnt-examstart;
