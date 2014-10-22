@@ -37,13 +37,22 @@
 #define MAX_CLASSLEN 31
 /* max length of session name */
 #define MAX_SESSIONLEN 23
-/* max number of exercises in a class (sheets and exams) */
+/* max number of exercises in a class (sheets and exams)
+ * if it is greater than MAX_EXOS * MAX_SHEETS + MAX_EXAMS,
+ * the limitation is not useful
+ */
 #define MAX_CLASSEXOS 2048
+/* MAX_EXOS and MAX_SHEETS are not modifiable:
+ * look at 0xFF00 in Wimslogd/cache.c, Wimslogd/wimslogdscore.c
+ * look at  >>8 in Wimslogd/wimslogdscore.c, score.c
+ * look at 255 in score.c, 256 in variables.c
+ * it must be also less than 99 (see exam.c)
+ */
 /* max number of exercises in a sheet or exam; not modifiable */
 #define MAX_EXOS 64
 /* max number of sheets; not modifiable */
 #define MAX_SHEETS 64
-/* max number of exams; for the moment not used except in Misc/exostat */
+/* max number of exams; not used except in Misc/exostat and in adm modules */
 #define MAX_EXAMS 32
 /* max length of data files: records, activities, definitions. */
 #define MAX_FILELEN (2048*1024-1)

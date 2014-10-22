@@ -21,12 +21,18 @@
 #define MAX_TRY 60000
 double oldfactor=0.85;  /* quality factor, should remain stable. */
 
-     /* User score information of an exercise. */
+/* User score information of an exercise.
+ * size in bytes : 28 + 4*MAX_REQUIRE/10
+ * information to change if struct scoredata changes
+ */
 typedef struct scoredata {
     unsigned short int num, new, try, hint;
     float user, user2, last, best, level, high[MAX_REQUIRE/10];
 } scoredata;
 
+/* size in bytes: 200
+ * information to change if scoreheader changes
+ */
 struct scoreheader {
     char raf[8][20];
     int sheet, exo;
@@ -225,6 +231,10 @@ void rawscorecalc(struct classdata *cd, char *uname)
     examscorecalc(cd,uname);
 }
 
+/* size of the file *.bin:
+ * 200 + (28+4*MAX_REQUIRE/10)*(number_exos_in_sheets + number_exams)
+ * information to change if struct scoredata or scoreheader change
+ */
 void savescorebin(struct classdata *cd, char *uname)
 {
     int fd, cnt;
