@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_lastname $user_firstname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
+
 !distribute line Gemiddelde van deze klas\
 Gemiddelde\
 Gemiddelde van alle positieve cijfers\
@@ -81,14 +84,14 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !endif
 
 !if $job=examcheck
- !set name_title_examcheck=!nosubst Proefwerk details van $user_lastname, $user_firstname
+ !set name_title_examcheck=!nosubst Proefwerk details van $name_studentloc
  !set name_no_exampart=Deze student heeft nog geen volledig proefwerk gemaakt.
  !set name_no_exampart=Hier staan alle proefwerk sessies van deze student.\
  Klik op een oefening om de inhoud te bekijken.
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br />(in onbewerkte data)
+  !set name_title_getraw=!nosubst Alle details van $name_studentloc<br />(in onbewerkte data)
   !goto end
 !endif
 
@@ -113,7 +116,7 @@ kan dus niet worden overgezet van
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst Zeker weten de <b><em>$name_student1</em></b>\
+  !set name_delete=!nosubst Zeker weten de <b><em>$name_studentloc</em></b>\
      uit deze klas verwijderd moet worden ?
 !endif
 !if $job=csv

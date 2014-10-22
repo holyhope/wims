@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+
 !distribute line Povpreèje uèilnice\
 Povpreèje\
 Povpreèje pozitivnih rezultatov\
@@ -81,13 +84,13 @@ sequences. So no score can appear.
 !endif
 
 !if $job=examcheck
- !set name_title_examcheck=!nosubst Podrobnosti izpita uporabnika $user_lastname, $user_firstname
+ !set name_title_examcheck=!nosubst Podrobnosti izpita uporabnika $name_studentloc
  !set name_no_exampart=Ta uporabnik ¹e ni opravljal nobenega izpita.
  !set name_exampart=Tu je seznam izpitov, ki jih je opravljal ta uporabnik. Kliknite na ime vaje za podrobnosti.
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Podrobnosti dela uporabnika z imenom $firstname, $lastname<br />(neobdelani podatki)
+  !set name_title_getraw=!nosubst Podrobnosti dela uporabnika z imenom $name_studentloc<br />(neobdelani podatki)
   !goto end
 !endif
 
@@ -115,7 +118,7 @@ sequences. So no score can appear.
 
 !if $job=delprep
   !set name_delete=!nosubst AAli res ¾elite izbrisati uporabnika z imenom \
-    <b><em>$firstname $lastname</em></b> iz va¹e uèilnice?
+    <b><em>$name_studentloc</em></b> iz va¹e uèilnice?
 !endif
 !if $job=csv
   !distribute lines Datoteko\

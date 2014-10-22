@@ -4,8 +4,8 @@
  !goto $wims_read_parm
 !endif
 
-!set name_studentloc=!nosubst $user_firstname $user_lastname
-!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
+!set name_studentloc=!nosubst $user_lastname $user_firstname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
 
 !set name_partdeleted=Participantes borrados
 !set name_click=Pulse sobre un nombre para ver los detalles de su trabajo

@@ -1,8 +1,12 @@
 !set lang_exists=yes
 
+
 !if $wims_read_parm!=
  !goto $wims_read_parm
 !endif
+
+!set name_studentloc=!nosubst $user_firstname $user_lastname
+!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
 
 !set classname=<span class="wims_emph">$wims_classname</span>\
  de <span class="wims_emph">$wims_institutionname</span>
@@ -86,14 +90,14 @@ seqüència. Així que no poden aparèixer resultats.
 !endif
 
 !if $job=examcheck
- !set name_title_examcheck=!nosubst Detalls d'exàmens fets per $user_lastname, $user_firstname
+ !set name_title_examcheck=!nosubst Detalls d'exàmens fets per $name_studentloc
  !set name_no_exampart=Aquest participant encara no ha fet cap examen.
  !set name_exampart=Aquestes són les sessions d'examen realitzades per aquest participant. Feu clic a \
   exercici per veure el seu contingut.
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Detall del treball de $lastname, $firstname<br />(en dades detallades)
+  !set name_title_getraw=!nosubst Detall del treball de $name_studentloc<br />(en dades detallades)
   !goto end
 !endif
 
@@ -120,7 +124,7 @@ a la classe actual i no es possible la transferència
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst Esteu segurs que voleu eliminar <b><em>$lastname, $firstname</em></b>\
+  !set name_delete=!nosubst Esteu segurs que voleu eliminar <b><em>$name_studentloc</em></b>\
 de la vostra classe ?
 !endif
 !if $job=csv

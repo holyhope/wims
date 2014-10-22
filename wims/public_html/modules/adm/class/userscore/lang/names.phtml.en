@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_lastname $user_fistname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
+
 !distribute line Average of the class\
 Average\
 Average of positive scores\
@@ -81,14 +84,14 @@ added any sequences. Therefore no score can be displayed.
 !endif
 
 !if $job=examcheck
- !set name_title_examcheck=!nosubst Exam details by $user_lastname, $user_firstname
+ !set name_title_examcheck=!nosubst Exam details by $name_studentloc
  !set name_no_exampart=This participant has not yet done any exam.
  !set name_exampart=  Here are the exam sessions done by this participant. Click on an exercise \
   to see its content.
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Detail of the work of $name_student1 <br />(in raw data)
+  !set name_title_getraw=!nosubst Detail of the work of $name_studentloc <br />(in raw data)
   !goto end
 !endif
 
@@ -115,7 +118,7 @@ added any sequences. Therefore no score can be displayed.
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_student1</em></b>\
+  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_studentloc</em></b>\
      from your class?
 !endif
 !if $job=csv

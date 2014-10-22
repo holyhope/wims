@@ -4,6 +4,9 @@
  !goto $wims_read_parm
 !endif
 
+!set name_studentloc=!nosubst $user_lastname $user_firstname
+!set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
+
 !distribute line Media de la clase\
 Media\
 Media de las notas positivas\
@@ -80,14 +83,14 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !endif
 
 !if $job=examcheck
- !set name_title_examcheck=!nosubst Detalles de los exámenes hechos por $user_lastname, $user_firstname
+ !set name_title_examcheck=!nosubst Detalles de los exámenes hechos por $name_studentloc
  !set name_no_exampart=Este participante no ha realizado aún ningún examen.
  !set name_exampart=Sesiones de examen efectuadas por este participante (pulse sobre un \
   ejercicio para ver su contenido):
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Detalles del trabajo de $name_student1 <br />(datos en bruto)
+  !set name_title_getraw=!nosubst Detalles del trabajo de $name_studentloc <br />(datos en bruto)
   !goto end
 !endif
 
@@ -114,7 +117,7 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !endif
 
 !if $job=delprep
-  !set name_delete=!nosubst ¿Está seguro de que quiere dar de baja a  <b><em>$lastname, $firstname</em></b> de su clase?
+  !set name_delete=!nosubst ¿Está seguro de que quiere dar de baja a  <b><em>$name_studentloc</em></b> de su clase?
 !endif
 
 !if $job=csv

@@ -235,7 +235,7 @@ $wims_name_part_list ($usercnt)
  !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
  !for i=1 to $usercnt
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
-  !distribute items $uu into lastname,firstname,uu
+  !distribute items $uu into user_lastname,user_firstname,uu
   !if $varfilter_!=$empty
     !reset var_filter_test
     !read adm/class/testfilter $uu\
@@ -247,7 +247,7 @@ $varfilter_
   !set UU=!hex $uu
   $table_tr
   <td>
-   !href cmd=reply&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_student1
+   !href cmd=reply&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_studentloc
    !if $uu isitemof $wims_connectedlogin
     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
    !endif
