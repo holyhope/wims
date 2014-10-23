@@ -68,6 +68,7 @@ int getscoreuser(char *classe, char *user)
     }
     else internal_error("getscoreuser(): communication error with wimslogd.");
   }
+/* 3 is here the length of "OK " */
   pp=scorebuf+sizeof(int)+3; rscore=(struct scoreresult *) pp;
   scorecnt=(i-sizeof(int)-3)/sizeof(scoreresult);
   if(scorecnt>MAX_CLASSEXOS) module_error("too_many_exercises");
