@@ -52,7 +52,7 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
 	}
 	t=strlen(buf);
 	snprintf(buf+t,sizeof(buf)-t,"\n	%s\n",strerror(errno));
-	accessfile(buf,"a","%s/exec.fail",tmpd);
+	wlogdaccessfile(buf,"a","%s/exec.fail",tmpd);
 	exit(127);
     }
     else {	/* parent */
@@ -123,7 +123,7 @@ int call_ssh(int wait,char *s,...)
 }
 
 /* Read/write to a file with variable parms to print filename */
-void accessfile(char *content, char *type, char *s,...)
+void wlogdaccessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
     char buf[MAX_LINELEN+1];
@@ -190,6 +190,6 @@ void debug(char *p,...)
     va_end(vp);
     pp=strchr(lbuf,'\n'); if(pp) *pp=0;
     strip_trailing_spaces(lbuf); strcat(lbuf,"\n");
-    accessfile(lbuf,"a",debugfile);
+    wlogdaccessfile(lbuf,"a",debugfile);
 }
 

@@ -152,7 +152,7 @@ extern char commbuf[BUFFERLEN+1];
 #define textbuf (commbuf+sizeof(int))
 void debug(char *p,...);
 extern char *textptr;
-void accessfile(char *content, char *type, char *s,...);
+void wlogdaccessfile(char *content, char *type, char *s,...);
 int call_ssh(int wait,char *s,...);
 int call_sh(int wait,char *s,...);
 extern int exec_wait;

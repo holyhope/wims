@@ -99,7 +99,7 @@ void _cleaning(char *di,int hardcheck)
 	       session_stat.st_mtime<nowtime+anti_time) continue;
 	    snprintf(fbuf,sizeof(fbuf),"%s/var.stat",session_name);
 	    if(stat(fbuf,&fst)==0) continue;
-	    accessfile(cbuf,"r","%s/var",session_name);
+	    wlogdaccessfile(cbuf,"r","%s/var",session_name);
 	    if(cbuf[0]==0) goto remove;	/* no var file */
 	    pp=strstr(cbuf,"\nw_wims_ismanager=");
 	    if(pp!=NULL) {

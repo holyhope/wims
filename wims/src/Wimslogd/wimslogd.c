@@ -176,12 +176,12 @@ int main(int argc, char *argv[])
     startdate=nowday;
     fflush(NULL);
     starttime=nowtime; startmin=lastmin=thismin;
-    accessfile(qbuf,"r","log/cquota/lim.host");
-    accessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
-    accessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then it is a cluster child */
+    wlogdaccessfile(qbuf,"r","log/cquota/lim.host");
+    wlogdaccessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
+    wlogdaccessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then it is a cluster child */
     if(strstr(buf,"yes")!=NULL) {	/* register my real IP */
-	accessfile(nodeipbuf,"r","/etc/myip");
-	accessfile(nodeipbuf,"w","tmp/log/myip");
+	wlogdaccessfile(nodeipbuf,"r","/etc/myip");
+	wlogdaccessfile(nodeipbuf,"w","tmp/log/myip");
     }
     do {
 	fd_set rset;
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 	if(getpid()!=mypid) return 0;	/* leaked child */
 	if(stat(debugfile,&st)==0 && st.st_size<MAX_DEBUGLENGTH) debugging=1;
 	else debugging=0;
-	accessfile(loadavg,"r","/proc/loadavg");
+	wlogdaccessfile(loadavg,"r","/proc/loadavg");
 	for(selectcnt=0; selectcnt<100; selectcnt++) {
 	    tv.tv_sec=0; tv.tv_usec=50000; /* a pause every 50 ms. */
 	    FD_ZERO(&rset); FD_SET(commsock,&rset);
@@ -208,18 +208,18 @@ int main(int argc, char *argv[])
 	mincnt++; /* if(mincnt>MAX_MIN) return 0; Refreshment. */
 	if(nowday!=startdate) return 0; /* Daily refreshment. */
 	lastmin=thismin;
-        accessfile(buf,"r",pidfile); strip_trailing_spaces(buf);
+        wlogdaccessfile(buf,"r",pidfile); strip_trailing_spaces(buf);
 	if(strcmp(buf,pidstr)!=0) {	/* wrong pid: abandon. */
 	    wait_children();
 	    return 0;
 	}
 
 	if(getpid()!=mypid) return 0;	/* leaked child */
-	accessfile(qbuf,"r","log/cquota/lim.host");
-	accessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
+	wlogdaccessfile(qbuf,"r","log/cquota/lim.host");
+	wlogdaccessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
 	cleancache();
 	if((thismin%127)==6) homedir();	/* update home directory setup */
-	accessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then no housekeeping */
+	wlogdaccessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then no housekeeping */
 	if(strstr(buf,"yes")==NULL) {
 	    dispatch_log();
 	    if((thismin%2)==1) local();

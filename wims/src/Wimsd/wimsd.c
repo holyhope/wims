@@ -94,7 +94,7 @@ char *find_word_start(char *p)
 }
 
 	/* Read/write to a file with variable parms to print filename */
-void accessfile(char *content, char *type, char *s,...)
+void wimsdaccessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
     char buf[MAX_LINELEN+1];
@@ -176,7 +176,7 @@ void putfile(char *fname,int soc)
     for(p=strchr(namebuf,'/'); p!=NULL; p=strchr(p+1,'/')) {
 	*p=0; snprintf(buf,sizeof(buf),"%s/.htaccess",namebuf); *p='/';
 	if(stat(cbuf,&st)==0) {
-	    accessfile(cbuf,"r","%s",buf);
+	    wimsdaccessfile(cbuf,"r","%s",buf);
 	    if(strstr(cbuf,"deny from all")!=NULL) badreq();
 	}
     }

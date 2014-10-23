@@ -117,7 +117,7 @@ struct classdata *getclasscache(char *cl)
     snprintf(cd->name,sizeof(cd->name),"%s",cl);
     cd->start=time(NULL); cd->exocnt=0;
 /* Now get the exo data */
-    accessfile(buf,"r","sheets/.require");
+    wlogdaccessfile(buf,"r","sheets/.require");
     for(i=k=0,p1=buf; *p1; i++,p1=p2) {
 	p2=strchr(p1,'\n'); if(p2) *p2++=0; else p2=p1+strlen(p1);
 	for(j=0,q1=find_word_start(p1); *q1 && k<MAX_CLASSEXOS; j++,q1=find_word_start(q2)) {
@@ -130,7 +130,7 @@ struct classdata *getclasscache(char *cl)
     }
     if(k>=MAX_CLASSEXOS) return NULL;
     cd->exocnt=k; cd->examstart=k; cd->modif=0;
-    accessfile(buf,"r","sheets/.weight");
+    wlogdaccessfile(buf,"r","sheets/.weight");
     for(i=k=0,p1=buf; *p1; i++,p1=p2) {
 	p2=strchr(p1,'\n'); if(p2) *p2++=0; else p2=p1+strlen(p1);
 	for(j=0,q1=find_word_start(p1); *q1 && k<MAX_CLASSEXOS; j++,q1=find_word_start(q2)) {
@@ -143,7 +143,7 @@ struct classdata *getclasscache(char *cl)
 	}
     }
     if(stat("exams/.exams",&st)==0) cd->modif=st.st_mtime; else return cd;
-    accessfile(buf,"r","exams/.exams");
+    wlogdaccessfile(buf,"r","exams/.exams");
     if(buf[0]==0) return cd;
     if(buf[0]==':') p1=buf-1; else p1=strstr(buf,"\n:");
     for(n=m=0,k=cd->exocnt; p1 && k<MAX_CLASSEXOS && m<MAX_EXOS; p1=p2,m++) {

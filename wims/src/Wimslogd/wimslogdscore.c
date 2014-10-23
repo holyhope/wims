@@ -383,7 +383,7 @@ void cmd_scorelog(char *p)
     getscore(cd,opt_user);
     p=find_word_start(p); strip_trailing_spaces(p);
     snprintf(buf,sizeof(buf),"%s\n",p);
-    accessfile(buf,"a","score/%s",opt_user);
+    wlogdaccessfile(buf,"a","score/%s",opt_user);
     if(myisdigit(*p)) scoreline(cd,p);
     savescorebin(cd,opt_user);
 }
