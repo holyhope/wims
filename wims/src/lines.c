@@ -50,10 +50,10 @@ char *outptr;
  * adm/ modules are always trusted, so need no definition here.
  */
 char *trusted_modules="";
-            /* bit 0: module is not trusted.
-             * bit 1: file in wimshome.
-             * bit 2: readdef or file in writable directory.
-             */
+/* bit 0: module is not trusted.
+  * bit 1: file in wimshome.
+  * bit 2: readdef or file in writable directory.
+  */
 int untrust=0;  /* non-zero if user detrusts the module. */
 
 int error_status=0;
@@ -61,7 +61,7 @@ char pidbuf[32];
 
 void delete_pid(void);
 
-      /* Internal use only */
+/* Internal use only */
 void _debug(char *s,...)
 {
     va_list vp;
@@ -75,7 +75,7 @@ void _debug(char *s,...)
 }
 
 
-      /* HTTP response header for non-processed CGI interface */
+/* HTTP response header for non-processed CGI interface */
 void nph_header(int code)
 {
     char *cstr;
@@ -120,7 +120,7 @@ void internal_warn(char msg[])
     accessfile(buf,"a","%s/internal_error.log",log_dir);
 }
 
-  /* Internal error: panic and forget about requester. */
+/* Internal error: panic and forget about requester. */
 void internal_error(char msg[])
 {
     if(error_status<2) {
@@ -158,7 +158,7 @@ void nametoolong(char *p)
 
 off_t ftest_size;
 
-      /* A simple front-end of stat(). */
+/* A simple front-end of stat(). */
 int ftest(char *fname)
 {
     if(strcmp(fname,lastftest)==0) return lastftype;
@@ -178,7 +178,7 @@ int ftest(char *fname)
 
 char fnbuf[MAX_FNAME+1];
 
-      /* make a filename and check length */
+/* make a filename and check length */
 char *mkfname(char buf[], char *s,...)
 {
     va_list vp;
@@ -200,7 +200,7 @@ void sysmask_trigger(char *s)
     stat(buf,&st);
 }
 
-      /* read-in a file into buffer. Use open() and read().
+/* read-in a file into buffer. Use open() and read().
        * Return buffer address which will be malloc'ed if buf=NULL. */
 char *readfile(char *fname, char buf[], long int buflen)
 {
@@ -232,7 +232,7 @@ char *readfile(char *fname, char buf[], long int buflen)
     bf[lc]=0; _tolinux(bf); return bf;
 }
 
-      /* Get a line in a stored working file.
+/* Get a line in a stored working file.
        * Buffer length is always MAX_LINELEN. */
 int wgetline(char buf[], size_t buflen, WORKING_FILE *f)
 {
@@ -262,7 +262,7 @@ int get_cached_file(char *name)
     return -1;
 }
 
-      /* Open a work file. Returns 0 if OK. */
+/* Open a work file. Returns 0 if OK. */
 int open_working_file(WORKING_FILE *f, char *fname)
 {
     char *p, *q;
@@ -324,7 +324,7 @@ int open_working_file(WORKING_FILE *f, char *fname)
     mfilecnt++; return 0;
 }
 
-      /* close an earlier opened working file */
+/* close an earlier opened working file */
 void close_working_file(WORKING_FILE *f, int cache)
 {
     f->linepointer=f->l=0;
@@ -358,8 +358,9 @@ void nested_error(char msg[])
     delete_pid(); exit(1);
 }
 
-      /* Send an error message to requester and exit.
-       * This is for user errors, language-sensitive. */
+/* Send an error message to requester and exit.
+ * This is for user errors, language-sensitive.
+ */
 void user_error(char msg[])
 {
     char erfname[MAX_FNAME+1];
@@ -386,8 +387,9 @@ Bad installation.");
 
 void module_error_log(char msg[]);
 
-      /* Messages for module errors. English only. */
-      /* This is really rudimentary for the time being. */
+/* Messages for module errors. English only.
+ * This is really rudimentary for the time being.
+ */
 void module_error(char msg[])
 {
     int send=0;
@@ -471,8 +473,9 @@ void output(char *s,...)
     output0(buf);
 }
 
-     /* read in tmpf in tmp directory, and places in p.
-      * Maximal length: MAX_LINELEN. */
+/* read in tmpf in tmp directory, and places in p.
+ * Maximal length: MAX_LINELEN.
+ */
 void read_tmp_file(char *p, const char *fname)
 {
     char *name, *pp;
@@ -499,8 +502,9 @@ void read_tmp_file(char *p, const char *fname)
     }
 }
 
-      /* verify whether the module is trusted.
-       * Returns 1 if yes, 0 if no. -1 for error. */
+/* verify whether the module is trusted.
+ * Returns 1 if yes, 0 if no. -1 for error.
+ */
 int trusted_module(void)
 {
     char *modname, *w, buf[MAX_LINELEN+1];
@@ -528,17 +532,18 @@ int trusted_module(void)
     return _trusted=0;
 }
 
-      /* file should be in the module directory, but
-       * it may also be somewhere else.
-       * buf[] requires MAX_FNAME+1 length.
-       * Returns 0 if found. */
+/* file should be in the module directory, but
+ * it may also be somewhere else.
+ * buf[] requires MAX_FNAME+1 length.
+ * Returns 0 if found.
+ */
 int find_module_file(char *fname, char buf[], int mode)
 {
     char *p, dtest[32];
 
     fname=find_word_start(fname);
     if(*fname==0) return -1;
-      /* Name checking: no directory backtracing. */
+/* Name checking: no directory backtracing. */
     if(strstr(fname,parent_dir_string)!=NULL) {
       setvar(error_data_string,fname); module_error("illegal_fname");
       return -1;
@@ -583,17 +588,19 @@ isexec:
     return 0;
 }
 
-      /* check whether a file is user-submitted */
-      /* This is deprecated because of the wimshome/ method. */
+/* check whether a file is user-submitted
+ * This is deprecated because of the wimshome/ method.
+ */
 /* int user_file(char *name) {
     if(name[0]=='/' || name[0]=='.' ||
        strstr(name,"classes/")!=NULL ||
        strstr(name,"forums/")!=NULL ||
        strstr(name,"sessions/")!=NULL ||
        strstr(name,"doc/")!=NULL) return 1; else return 0;
-} */
+}
+ */
 
-      /* returns 1 if violation */
+/* returns 1 if violation */
 int datafile_check(char *name) {
     if((untrust&255)==0) return 0;
     if(strncmp(name,"data/",strlen("data/"))==0) return 0;
@@ -602,7 +609,7 @@ int datafile_check(char *name) {
     return 1;
 }
 
-      /* returns 0 if success */
+/* returns 0 if success */
 void readdatafile(char *name)
 {
     char *pp;
@@ -627,8 +634,9 @@ char *_nextdata(char *p)
     else return p+strlen(p);
 }
 
-      /* datafile structure: number of records.
-       * tag=1 if direct access */
+/* datafile structure: number of records.
+ * tag=1 if direct access
+ */
 unsigned int datafile_recordnum(char *p)
 {
     char nbuf[MAX_LINELEN+1], *pp;
@@ -650,7 +658,7 @@ unsigned int datafile_recordnum(char *p)
     return ret;
 }
 
-      /* datafile structure: find record n, starting from 1 */
+/* datafile structure: find record n, starting from 1 */
 char *datafile_fnd_record(char *p, int n, char bf[])
 {
     char nbuf[MAX_LINELEN+1], *pp, *p2;
@@ -705,8 +713,9 @@ invl:
     return (c1-'0')*16+c2-'0';
 }
 
-      /* Converts back http escaped chars, slight. Does not check buffer length.
-       * Returns converted string length. */
+/* Converts back http escaped chars, slight. Does not check buffer length.
+ * Returns converted string length.
+ */
 int _http2env(char outs[], char ins[])
 {
     int j,k,l;
@@ -716,7 +725,7 @@ int _http2env(char outs[], char ins[])
           k--;continue;
       }
       if(ins[j]=='%') {
-            /* skip Carriage-Return. */
+/* skip Carriage-Return. */
           if(ins[j+1]=='0' && (ins[j+2]=='d' || ins[j+2]=='D')) {
             j+=2; k--; continue;
           }
@@ -729,8 +738,9 @@ int _http2env(char outs[], char ins[])
     return k;
 }
 
-      /* Converts back http escaped chars. Does not check buffer length.
-       * Returns converted string length. */
+/* Converts back http escaped chars. Does not check buffer length.
+ * Returns converted string length.
+ */
 int http2env(char outs[], char ins[])
 {
     int j,k,l;
@@ -740,7 +750,7 @@ int http2env(char outs[], char ins[])
           k--;continue;
       }
       if(ins[j]=='%') {
-            /* skip Carriage-Return. */
+/* skip Carriage-Return. */
           if(ins[j+1]=='0' && (ins[j+2]=='d' || ins[j+2]=='D')) {
             j+=2; k--; continue;
           }
@@ -759,9 +769,10 @@ int http2env(char outs[], char ins[])
     return k;
 }
 
-      /* translate a string to http querystring style.
-       * '&' is not translated.
-       * Buffer p must be at least MAX_LINELEN. */
+/* translate a string to http querystring style.
+ * '&' is not translated.
+ * Buffer p must be at least MAX_LINELEN.
+ */
 void tohttpquery(char *p)
 {
     char trlist[]="	()[]{}+-*^|/\"\'!:;,<>\n";
@@ -784,7 +795,7 @@ void tohttpquery(char *p)
     }
 }
 
-      /* substitute backslash parameters. Internal use only. */
+/* substitute backslash parameters. Internal use only. */
 void slashsubst(char *p)
 {
     char *p1, *p2, *pt, *pp, namebuf[128];
@@ -804,7 +815,7 @@ void slashsubst(char *p)
     }
 }
 
-      /* two alarm handlers. */
+/* two alarm handlers. */
 void alarm1(int s)
 {
     if(killpid>0 && kill(killpid,SIGKILL)) module_error("timeup");
@@ -844,7 +855,7 @@ void forkalarm(void)
     alarm(limtimex-curr+1);
 }
 
-      /* create pid tag */
+/* create pid tag */
 void create_pid(void)
 {
     char buf[MAX_FNAME+1], pbuf[256], obuf[MAX_FNAME+1];
@@ -854,14 +865,14 @@ void create_pid(void)
     if(robot_access || *session_prefix==0) return;
     if(cmd_type==cmd_getframe) return;
     mkfname(buf,"%s/.pid",s2_prefix);
-            /* another process running? */
+/* another process running? */
     if(readfile(buf,pbuf,sizeof(pbuf))!=NULL) {
       mkfname(obuf,"/proc/%s",pbuf);
       if(stat(obuf,&dst)==0) user_error("double_click");
     }
     snprintf(pidbuf,sizeof(pidbuf),"%u",getpid());
     accessfile(pidbuf,"w","%s",buf);
-      /* Touch session time */
+/* Touch session time */
     if(strstr(session_prefix,"sessions/")==NULL) return;
     ub.actime=ub.modtime=nowtime;
     utime(session_prefix,&ub);
@@ -888,8 +899,9 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
       return -100;
     }
     lastdatafile[0]=lastftest[0]=0;
-    fflush(NULL);      /* flush all output streams before forking
-                   * otherwise they will be doubled */
+    fflush(NULL); /* flush all output streams before forking
+                   * otherwise they will be doubled
+                   */
     pid=fork(); if(pid==-1) return -1;
     if(!pid) {      /* child */
       char buf[MAX_LINELEN+1]; int k;
@@ -904,8 +916,8 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
           if(outf!=NULL) (void)freopen(outf,"w",stdout);
           if(errf!=NULL) (void)freopen(errf,"w",stderr);
       }
-            /* This is to patch LinuxPPC uid wrapping
-             * for scripts */
+/* This is to patch LinuxPPC uid wrapping
+ * for scripts */
       t=0; if(strchr(cmdf,'/')) {
           int tf;
           char tbuf[16];
@@ -941,8 +953,9 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     }
 }
 
-      /* preparation for resident execution.
-       * Returns 1 if already up, otherwise 0. */
+/* preparation for resident execution.
+ * Returns 1 if already up, otherwise 0.
+ */
 int multiexec(char *cmd, char **abuf)
 {
     char *p;
@@ -977,8 +990,9 @@ int multiexec(char *cmd, char **abuf)
     return 1;
 }
 
-      /* my system(), but with variable parms
-       * More secure than system(), and direct fork. */
+/* my system(), but with variable parms
+ * More secure than system(), and direct fork.
+ */
 int call_ssh(char *s,...)
 {
     va_list vp;
@@ -1031,7 +1045,7 @@ int call_ssh(char *s,...)
     return execredirected(cmdf,inf,outf,errf,arg);
 }
 
-      /* Read/write to a file with variable parms to print filename */
+/* Read/write to a file with variable parms to print filename */
 void accessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
@@ -1055,8 +1069,9 @@ void accessfile(char *content, char *type, char *s,...)
     (void)write(fd,content,strlen(content)); close(fd);
 }
 
-      /* system(), but with variable parms
-       * Uses sh to execute command. */
+/* system(), but with variable parms
+ * Uses sh to execute command.
+ */
 int call_sh(char *s,...)
 {
     va_list vp;
