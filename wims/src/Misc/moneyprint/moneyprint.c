@@ -32,10 +32,15 @@ Modified : using only 10^ in powers
 (e+8 -> *10^8 ; e-8 -> *10^-8)
 Extra syntax error signal (using more than 1 'e')
 
+27/2014
+Modified avoiding truncating of numbers like 15.625 --> 16.62
+
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #define MAX_DIGITS 32
 #define MAX_CONV 32
 
@@ -78,6 +83,8 @@ int main( int argc , char *argv[]){
     int length= 0;
     int i = 0;
     int pow10 = 0;
+    double correction = 1/(pow(10,DECIMALS+6)); /* a reasonable guess...to avoid truncating 15.625 --> 16.63 */
+    double ascii_number; 
     input = argv[1];
     ptr = strtok(input,",");
     while( ptr != NULL){
@@ -118,7 +125,7 @@ int main( int argc , char *argv[]){
 		if( pow10 > 0 ){
 		    pow10++;
 		    if( pow10 > 4 ){ /*  *10^ = 4 chars */ 
-			exponent[idx2]=word[i];
+			exponent[idx2] = word[i];
 			idx2++;
 		    }
 		}
@@ -139,23 +146,31 @@ int main( int argc , char *argv[]){
         }
         exponent[idx2] = '\0';
         number[idx1] = '\0';
+        ascii_number = atof(number);
+        if( ascii_number > 0 ){
+    	    ascii_number = ascii_number + correction;
+        }
+        else
+        {
+            ascii_number = ascii_number - correction; 
+        }
 	if( powE == 1 || pow10> 0 ){
     	    if(cnt > 1){
-		fprintf( stdout , ",%.*f*10^%s" , DECIMALS , atof(number) , exponent );
+		fprintf( stdout , ",%.*f*10^%s" , DECIMALS , ascii_number , exponent );
 	    }
 	    else
 	    {
-		fprintf( stdout , "%.*f*10^%s" , DECIMALS , atof(number) , exponent );
+		fprintf( stdout , "%.*f*10^%s" , DECIMALS , ascii_number , exponent );
 	    }
 	}
 	else
 	{
 	    if(cnt > 1 ){
-		fprintf( stdout , ",%.*f" , DECIMALS , atof(number));	
+		fprintf( stdout , ",%.*f" , DECIMALS , ascii_number);	
 	    }
 	    else
 	    {
-		fprintf( stdout , "%.*f" , DECIMALS , atof(number));	
+		fprintf( stdout , "%.*f" , DECIMALS , ascii_number);	
 	    }
 	}
 	cnt++;
