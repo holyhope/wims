@@ -158,6 +158,8 @@
 #define SEGMENTS	161
 #define ARROWS		162
 #define CIRCLES		163
+#define ARROWS2		164
+
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

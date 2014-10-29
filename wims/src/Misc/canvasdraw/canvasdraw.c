@@ -320,7 +320,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	case CROSSHAIRSIZE:
 	/*
 	@ crosshairsize int
-	@ default 10 (px)
+	@ default 8 (px)
 	*/
 	    crosshair_size = (int) (get_real(infile,1));
 	    break;
@@ -927,7 +927,6 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
 	@ use command 'linewidth int' to adjust thickness of the arrow
 	@ may be set draggable / onclick individually
 	*/
-	fprintf(js_include_file,"\n<!-- FOUND ARROWS --> \n");
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
 	    arrow_head = (int) get_real(infile,0);/* h */
@@ -996,6 +995,35 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canv
     		}
     	    }
     	    break;
+	case ARROWS2:
+	/*
+	@ arrows2 color,head (px),x1,y1,x2,y2...x_n,y_n
+	@ draw double headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
+	@ use command 'linewidth int' to adjust thickness of the arrows
+	@ may be set draggable / onclick individually
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    arrow_head = (int) get_real(infile,0);/* h */
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
 	case PARALLEL:
 	/*
 	 @ parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
@@ -5452,8 +5480,8 @@ var draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_co
      ctx.rotate(Math.atan2(-dy,-dx));\
      ctx.beginPath();\
      ctx.moveTo(0,0);\
-     ctx.lineTo(-1*arrow_head,-0.5*arrow_head);\
-     ctx.lineTo(-1*arrow_head, 0.5*arrow_head);\
+     ctx.lineTo(-1*arrow_head,-0.4*arrow_head);\
+     ctx.lineTo(-1*arrow_head, 0.4*arrow_head);\
      ctx.closePath();\
      ctx.stroke();\
      ctx.fill();\
@@ -6850,6 +6878,7 @@ int get_token(FILE *infile){
 	*arrow2="arrow2",
 	*darrow2="darrow2",
 	*arrows="arrows",
+	*arrows2="arrows2",
 	*zoom="zoom",
 	*grid="grid",
 	*hline="hline",
@@ -7260,6 +7289,10 @@ int get_token(FILE *infile){
 	free(input_type);
 	use_dashed = TRUE;
 	return ARROW2;
+	}
+	if( strcmp(input_type, arrows2) == 0 ){
+	free(input_type);
+	return ARROWS2;
 	}
 	if( strcmp(input_type, arrows) == 0 ){
 	free(input_type);
