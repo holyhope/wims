@@ -2273,24 +2273,24 @@ var to_js_math = function(math_fun){\
 }
 
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
-fprintf(js_include_file,"\n<!-- add clear button -->\n\
+fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
- if(confirm(\"remove all drawings ? \")){\n\
-  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\n\
-  var context_userdraw = canvas_userdraw.getContext(\"2d\");\n\
-  context_userdraw.clearRect(0,0,xsize,ysize);\n\
-  userdraw_x = [];userdraw_y = [];userdraw_radius = [];\n\
-  return;\n\
- };\n\
-};\n\
-function add_clear_button(){\n\
+ if(confirm(\"remove all drawings ? \")){\
+  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
+  var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  userdraw_x = [];userdraw_y = [];userdraw_radius = [];\
+  return;\
+ };\
+};\
+function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
- var button = document.createElement('input');\n\
- button.type = \"button\";\n\
- button.style = \"%s\";\n\
- button.value = \"%s\";\n\
- button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\n\
- tooltip_placeholder_div.appendChild(button);\n\
+ var button = document.createElement('input');\
+ button.type = \"button\";\
+ button.style = \"%s\";\
+ button.value = \"%s\";\
+ button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\
+ tooltip_placeholder_div.appendChild(button);\
 };\
 add_clear_button();\n\
 ",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text,canvas_root_id);
