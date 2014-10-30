@@ -2274,7 +2274,7 @@ var to_js_math = function(math_fun){\
 
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
 fprintf(js_include_file,"\n<!-- add clear button -->\n\
-clear_draw_area = function(){\
+clear_draw_area%d = function(){\
  if(confirm(\"remove all drawings ? \")){\n\
   var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\n\
   var context_userdraw = canvas_userdraw.getContext(\"2d\");\n\
@@ -2289,11 +2289,11 @@ function add_clear_button(){\n\
  button.type = \"button\";\n\
  button.style = \"%s\";\n\
  button.value = \"%s\";\n\
- button.setAttribute(\"onclick\",\"clear_draw_area()\");\n\
+ button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\n\
  tooltip_placeholder_div.appendChild(button);\n\
 };\
 add_clear_button();\n\
-",canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text);
+",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text,canvas_root_id);
 }
 
 
@@ -2654,7 +2654,7 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
     obj_type = 7 == crosshair / crosshairs
     obj_type = 8 == arrow / arrows
     obj_type = 9 == curve
-    obj_type = 10== arrow2
+    obj_type = 10== arrow2 / arrows2
     obj_type = 11== parallel  (no drag or onclick)
     obj_type = 12== arc : radius is in pixels , so no zooming in/out
     obj_type = 13== circle / circles (will scale on zoom)
@@ -2736,7 +2736,7 @@ Shape.prototype.draw = function(ctx)\
   case 7: ctx.moveTo(this.x[0]-this.w[0],this.y[0]-this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]+this.h[0]);ctx.moveTo(this.x[0]-this.w[0],this.y[0]+this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]-this.h[0]);break;\
   case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();};break;\
   case 9: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length - 1;p++){if( Math.abs(this.y[p] - this.y[p-1]) < ysize && Math.abs(this.y[p+1] - this.y[p]) < ysize ){ctx.lineTo(this.x[p],this.y[p]);}else{ctx.moveTo(this.x[p],this.y[p]);};};break;\
-  case 10: var dx;\nvar dy;\nvar len;\nctx.save();\nif(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);\n}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];\n};\n};\ndx = this.x[1] - this.x[0];\ndy = this.y[1] - this.y[0];\nlen = Math.sqrt(dx*dx+dy*dy);\nctx.translate(this.x[1],this.y[1]);\nctx.rotate(Math.atan2(dy,dx));\nctx.beginPath();\nctx.moveTo(0,0);\nctx.lineTo(-len,0);\nctx.closePath();\nctx.stroke();\nctx.beginPath();\nctx.moveTo(0,0);\nctx.lineTo(-1*this.w[0],0.5*this.w[0]);\nctx.lineTo(-1*this.w[0],-0.5*this.w[0]);\nctx.closePath();\nctx.lineCap = \"round\";\nctx.fill();\nctx.restore();\nctx.save();\nctx.translate(this.x[0],this.y[0]);\nctx.rotate(Math.atan2(dy,dx));\nctx.beginPath();\nctx.moveTo(0,0);\nctx.lineTo(this.w[0],0.4*this.w[0]);\nctx.lineTo(this.w[0],-0.4*this.w[0]);\nctx.closePath();\nctx.lineCap = \"round\";\nctx.fill();\n break;\n\
+  case 10: var dx;var dy;var len;ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],0.5*this.w[0]);ctx.lineTo(-1*this.w[0],-0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],0.4*this.w[0]);ctx.lineTo(this.w[0],-0.4*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
   case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
   case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
   case 13: for(var p = 0; p < this.x.length; p++){ ctx.arc(this.x[p],this.y[p],scale_x_radius(this.w[p]),0,2*Math.PI,false);};break;\

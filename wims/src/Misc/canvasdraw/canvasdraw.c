@@ -218,7 +218,7 @@ fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdra
 var read_dragdrop%d;\
 var read_canvas%d;\
 var set_clock;\
-var clear_draw_area;\
+var clear_draw_area%d;\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
 var xsize = %d;\
@@ -251,7 +251,7 @@ var use_jsmath = 0;\
 var xstart = 0;\
 var ystart = 0;\
 var unit_x=\" \";\
-var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
 /* default add the drag code : nearly always used ...*/
   add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 
