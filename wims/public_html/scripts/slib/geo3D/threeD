@@ -4,6 +4,7 @@
 slib_title=ThreeD Applet
 
 slib_author=Bernadette, Perrin-Riou
+slib_example=v 0 0 0;v 1 0 0;v 1 1 0;v 0 1 0;v 0 0 1;v 1 0 1;v 1 1 1;v 0 1 1;f 1 2 3 4;f 5 6 7 8;l 1 5;l 2 6;l 3 7;l 4 8\
 
 !exit
 
@@ -13,7 +14,8 @@ slib_author=Bernadette, Perrin-Riou
 slib_cnt= $[$slib_cnt +1]
 slib_data = !item 1 of $wims_read_parm
 slib_option= !item -1 of $wims_read_parm
-
+slib_data=!replace internal ; by $\
+$ in $slib_data
 !for slib_a in scale,width,height,rotinx,rotiny
   slib_$slib_a=!getopt $slib_a in $slib_option
 !next slib_a
