@@ -92,11 +92,10 @@ int main(int argc, char *argv[])
     string_modify=string_modify2;
     substitute=substit;
     if(argc==2 && strcmp(argv[1],"table")==0) {
-/*if(verify_order(directives, dir_no, sizeof(directives[0]))) return -1;*/
       if(verify_order(specialfn, specialfn_no, sizeof(specialfn[0]))) return -1;
       puts("Table orders OK."); return 0;
     }
-/*  is defined in public_html/scripts/docu/mkindex now for example */
+/* is defined in public_html/scripts/docu/mkindex and in public_html/modules/adm/doc/var.proc */
     p=getenv("w_msg2wims_primitives"); if(p!=NULL) {
       snprintf(primbuf,sizeof(primbuf),"%s",p);
       for(p=primbuf; *p; p++) if(!isalnum(*p)) *p=' ';
@@ -218,4 +217,3 @@ int main(int argc, char *argv[])
     outlen=ftell(outf);  fclose(outf); bailout(inlen,outlen,"");
     return 0;
 }
-
