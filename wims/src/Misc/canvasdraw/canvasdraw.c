@@ -1158,7 +1158,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case SNAPTOGRID:
 	/*
 	 @ snaptogrid
-	 @ keyword (no arguments required) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ keyword (no arguments required)
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor / yminor is defined, the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
@@ -1168,7 +1168,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case XSNAPTOGRID:
 	/*
 	 @ xsnaptogrid
-	 @ keyword (no arguments required) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ keyword (no arguments required) 
 	 @ in case of userdraw the drawn points will snap to xmajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor is defined, the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
@@ -1178,7 +1178,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case YSNAPTOGRID:
 	/*
 	 @ ysnaptogrid
-	 @ keyword (no arguments required) needs to be defined before command 'userdraw' and after command 'grid'
+	 @ keyword (no arguments required) 
 	 @ in case of userdraw the drawn points will snap to ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if yminor is defined, the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
