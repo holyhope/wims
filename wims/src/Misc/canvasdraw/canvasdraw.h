@@ -162,7 +162,8 @@
 #define LINES		165
 #define RECTS		166
 #define HALFLINES	167
-
+#define HLINES		168
+#define VLINES		169
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1

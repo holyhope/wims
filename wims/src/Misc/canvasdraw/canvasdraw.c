@@ -719,10 +719,38 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
+	case HLINES:
+	/*
+	@ hlines color,x1,y1,x2,y2,...
+	@ draw horizontal lines through points (x1:y1)...(xn:yn) in color 'color'
+	@ may be set draggable / onclick individually
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[c+1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
 	case VLINE:
 	/*
 	@ vline x,y,color
-	@ draw a vertical line through point (x:y) in color 'color'
+	@ draw a vertical line through point (x1:y1)...(xn:yn) in color 'color'
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<3;i++) {
@@ -737,6 +765,33 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    break;
 		}
 	    }
+	    break;
+	case VLINES:
+	/*
+	@ vlines color,x1,y1,x2,y2....
+	@ draw vertical lines through points (x1:y1) in color 'color'
+	@ may be set draggable / onclick individually
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
 	    break;
 	case SQUARE:
 	/*
@@ -3233,7 +3288,7 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@ multiple areas may be coloured
 	@ the coloured areas can be removed (changed to "bgcolor") by  middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
 	@ the answer will be read as the (x:y) click coordinates per coloured area
-	@ background color of main div may be set by using command "bgcolor color"
+	@ background color of main div may be set by using command "bgcolos color"
 	@ may not be combined with command "userdraw"
 	@ NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
 	*/
@@ -7177,6 +7232,8 @@ int get_token(FILE *infile){
 	*demilines="demilines",
 	*halfline="halfline",
 	*demiline="demiline",
+	*hlines="hlines",
+	*vlines="vlines",
 	*functionlabel="functionlabel";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -7269,6 +7326,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, parallel) == 0 ){
 	free(input_type);
 	return PARALLEL;
+	}
+	if( strcmp(input_type, hlines) == 0 ){
+	free(input_type);
+	return HLINES;
+	}
+	if( strcmp(input_type, vlines) == 0 ){
+	free(input_type);
+	return VLINES;
 	}
 	if( strcmp(input_type, hline) == 0 ||  strcmp(input_type, horizontalline) == 0 ){
 	free(input_type);
