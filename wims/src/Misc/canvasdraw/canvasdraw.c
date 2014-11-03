@@ -728,7 +728,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case RECT:
 	/*
 	@ rect x1,y1,x2,y2,color
-	@ use command 'rect x1,y1,x2,y2,color' for a filled rectangle
+	@ use command 'frect x1,y1,x2,y2,color' for a filled rectangle
 	@ use command/keyword  'filled' before command 'rect x1,y1,x2,y2,color'
 	@ use command 'fillcolor color' before 'frect' to set the fill colour.
 	@ may be set draggable / onclick
@@ -746,6 +746,36 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			break;
 		}
 	    }
+	    break;
+
+	case RECTS:
+	/*
+	@ rects color,x1,y1,x2,y2,.....
+	@ use command 'frect color,x1,y1,x2,y2,.....' for a filled rectangle
+	@ use command/keyword  'filled' before command 'rects color,x1,y1,x2,y2,....'
+	@ use command 'fillcolor color' before 'frects' to set the fill colour.
+	@ may be set draggable / onclick individually
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+2],decimals,double_data[c],decimals,double_data[c+1],decimals,double_data[c+1],decimals,double_data[c+3],decimals,double_data[c+3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
 	    break;
 	case POLYLINE:
 	/*
@@ -6983,6 +7013,8 @@ int get_token(FILE *infile){
 	*frectangle="frectangle",
 	*square="square",
 	*fsquare="fsquare",
+	*rects="rects",
+	*frects="frects",
 	*dline="dline",
 	*arc="arc",
 	*filledarc="filledarc",
@@ -7413,6 +7445,15 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, lines) == 0 ){
 	free(input_type);
 	return LINES;
+	}
+	if( strcmp(input_type, frects) == 0 ){
+	free(input_type);
+	use_filled = TRUE;
+	return RECTS;
+	}
+	if( strcmp(input_type, rects) == 0 ){
+	free(input_type);
+	return RECTS;
 	}
 	if( strcmp(input_type, rect) == 0  ||  strcmp(input_type, rectangle) == 0 ){
 	free(input_type);

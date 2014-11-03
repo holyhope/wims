@@ -2645,7 +2645,7 @@ int NUMBER_OF_COLORNAMES=(sizeof(colors)/sizeof(colors[0]));
 
 void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
 /* in drag& drop / onclick library:
-    obj_type = 1 == rect
+    obj_type = 1 == rect / rects
     obj_type = 2 == point / points (do not scale with zoom)
     obj_type = 3 == ellipse
     obj_type = 4 == polyline / segment / segments /line / vline / hline
@@ -2726,8 +2726,10 @@ Shape.prototype.draw = function(ctx)\
   ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
  };\
  ctx.beginPath();\
- switch(this.type){\
-  case 1: ctx.rect(this.x[0], this.y[0], this.x[1]-this.x[0], this.y[2] - this.y[0]);break;\
+ switch(this.type){\n\
+  case 1: for(var p = 0 ; p < this.x.length;p = p+4){\n\
+    ctx.rect(this.x[p], this.y[p], this.x[p+1]-this.x[p], this.y[p+2] - this.y[p]);\n\
+  };break;\n\
   case 2: ctx.arc(this.x[0],this.y[0],this.w[0],0,2*Math.PI,false);break;\
   case 3: ctx.save();var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.scale(1,h/w);ctx.beginPath();ctx.arc(this.x[0], w/h*this.y[0], w, 0, 2 * Math.PI);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); };ctx.closePath();ctx.stroke();ctx.restore();break;\
   case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
