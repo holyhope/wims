@@ -1161,7 +1161,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required)
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if xminor / yminor is defined, the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	 @ if xminor / yminor is defined,(use keyword 'axis' to activate the minor steps) the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
 	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;");
 	break;
@@ -1171,7 +1171,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required) 
 	 @ in case of userdraw the drawn points will snap to xmajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if xminor is defined, the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	 @ if xminor is defined (use keyword 'axis' to activate xminor), the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
 	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 0;");
 	break;
@@ -1181,7 +1181,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required) 
 	 @ in case of userdraw the drawn points will snap to ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if yminor is defined, the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	 @ if yminor is defined (use keyword 'axis' to activate yminor), the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
 	fprintf(js_include_file,"\nx_use_snap_to_grid = 0;y_use_snap_to_grid = 1;");
 	break;
@@ -1601,7 +1601,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
-	    if( strcmp(draw_type,"demilines") == 0 || strcmp(draw_type,"demilines") == 0 ){
+	    if( strcmp(draw_type,"demilines") == 0 || strcmp(draw_type,"halflines") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_DEMILINES] != 1 ){ js_function[DRAW_DEMILINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
@@ -1613,7 +1613,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
 	    else
-	    if( strcmp(draw_type,"demiline") == 0 || strcmp(draw_type,"demilines") == 0 ){
+	    if( strcmp(draw_type,"demiline") == 0 || strcmp(draw_type,"halfline") == 0 ){
 		if( js_function[DRAW_CIRCLES] != 1 ){ js_function[DRAW_CIRCLES] = 1;}
 		if( js_function[DRAW_DEMILINES] != 1 ){ js_function[DRAW_DEMILINES] = 1;}
 		if(reply_format == 0){reply_format = 11;}
