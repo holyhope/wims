@@ -49,11 +49,18 @@
  * it must be also less than 99 (see exam.c)
  */
 /* max number of exercises in a sheet or exam; not modifiable */
-#define MAX_EXOS 64
+#define MAX_EXOS 70
 /* max number of sheets; not modifiable */
 #define MAX_SHEETS 64
 /* max number of exams; not used except in Misc/exostat and in adm modules */
 #define MAX_EXAMS 32
+/* max number of votes */
+#define MAX_VOTES 64
+/* max numbers of replies in OEF */
+#define MAX_OEFREPLIES 100
+/* max numbers of choices in OEF */
+#define MAX_OEFCHOICES 30
+
 /* max length of data files: records, activities, definitions. */
 #define MAX_FILELEN (2048*1024-1)
 /* max number of filewrite calls in one request */

@@ -9,8 +9,9 @@ wims_nr=wims_sesrandom
 wims_trustfile=oef/embed.phtml oef/special.phtml oef/togetfile.proc
 slib/circuits/draw slib/circuits/drawcomp slib/circuits/range\
 slib/circuits/comppos
-
-!distribute item 100,30,10,40 into answerlim,choicelim,condlim,promptlim
+answerlim=!defof MAX_OEFREPLIES in wimshome/public_html/bases/sys/define.conf
+choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
+!distribute item 10,40 into condlim,promptlim
 !bound mode within raw,file,model default $
 !read tabletheme
 
@@ -205,7 +206,7 @@ slib/circuits/comppos
    list_mod=!words2items $list_mod
    list_mod_oef=
    !for a in $list_mod
-     category = !module category devel/$wims_developer/$a  
+     category = !module category devel/$wims_developer/$a
     !if oef isin $category
        list_mod_oef=!append item $a to $list_mod_oef
     !endif
@@ -342,12 +343,12 @@ slib/circuits/comppos
 !endif
 
 !if $level=4
- !if $catmodule1 != 
+ !if $catmodule1 !=
   catmodule=devel/$wims_developer/$catmodule1
   !reset catmodule1
  !endif
- 
- existing_new=!replace internal .oef by in $file_name_src 
+
+ existing_new=!replace internal .oef by in $file_name_src
  !set existing_new=!text select ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_1234567890 in $existing_new
  !if $existing_new != $empty
   existing=$existing_new
@@ -363,7 +364,7 @@ slib/circuits/comppos
    !reset test_common
    test_common=!defof common_images in wimshome/public_html/modules/$catmodule/var.proc
    !if $test_common!=$empty
-    !if $test_common notwordof no yes 
+    !if $test_common notwordof no yes
       wims_exec_error=!append word imagedir=$test_common to $wims_exec_error
     !else
      !if $test_common iswordof no or $test_common=$empty

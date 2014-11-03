@@ -17,7 +17,6 @@
 /* routines to process variables */
 
 #include "wims.h"
-
 char *computed_var_start; /* pointer to read-in var def file */
 int session_var_ready=0;
 char last_host[32]="";
@@ -29,6 +28,14 @@ char *header_var_name[]={
 };
 #define HEADER_VAR_NO (sizeof(header_var_name)/sizeof(header_var_name[0]))
 
+struct special_name {char *name; int value;} special_name[]={
+  {"MAX_EXOS",MAX_EXOS},
+  {"MAX_OEFCHOICES",MAX_OEFCHOICES},
+  {"MAX_OEFREPLIES",MAX_OEFREPLIES},
+  {"MAX_SHEETS",MAX_SHEETS},
+  {"MAX_VOTES",MAX_VOTES},
+};
+int special_name_no=(sizeof(special_name)/sizeof(special_name[0]));
 char *var_allow[]={
     "deny" , "init" , "config" ,
       "reply", "any", "help"
@@ -660,11 +667,14 @@ int var_def_name(char *n, int v)
      illegal: setvar("wims_bad_name",n);
      module_error("illegal_name");
     }
+
     if(*q=='[') {
      *q++=0; r=find_matching(q,']');
      if(r==NULL) goto illegal;
-     *r=0; j=atoi(q);
-     if(j<1) j=1; if(j>MAX_VAR_NUM) j=MAX_VAR_NUM;
+     *r=0; int i;
+      for(i=0;i<special_name_no && strcmp(q, special_name[i].name)!=0; i++);
+      if(i<special_name_no) j=special_name[i].value; else j=atoi(q);
+      if(j<1) j=1; if(j>MAX_VAR_NUM) j=MAX_VAR_NUM;
      var_def[v].beg=1; var_def[v].end=j;
      return j;
     }

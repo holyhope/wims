@@ -62,40 +62,25 @@ variable=!trim $variable
    filter=all
  !endif
  !for lu =1 to $cnt
-  test=1
   TEST=
   us_=!record $lu of $file
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
   !if $filter=all
    !if $loginlist_!=all and $login notitemof $loginlist_
-     test=0
+     TEST=0
    !endif
   !else
    !if ($login isitemof $loginlist_) or $loginlist_=all
-    !for u=1 to $filter_cnt
-     test=1
-     sel=$(filter[$u;])
-     sel_cnt=!itemcnt $(filter[$u;])
-     !for j=1 to $sel_cnt
-      sel1=!replace internal = by , in $(sel[$j])
-       !if $(user__$(sel1[1])) issametext $(sel1[2])
-         test=!append item 1 to $test
-       !else
-         test=!append item 0 to $test
-       !endif
-     !next j
-     !if 0 notin $test
-      TEST=1
-     !endif
-     !reset user__$(sel1[1])
-   !next u
+     !read adm/class/testfilter $login\
+$filter
+    TEST=$var_filter_test
   !else
-   test=0
+   TEST=0
   !endif
  !endif
 :OK
-  !if 0 notin $test or $TEST=1
+  !if $TEST=1
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_!=
      list_user=!append line $login,$l_name_,$f_name_,$aim_ to $list_user
