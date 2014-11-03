@@ -22,7 +22,7 @@
 char *getvar(char *p) {return NULL;}
 void setvar(char *p, char *v) {return;}
 */
-char *exec_if(char *p)
+char *_exec_if(char *p, int type)
 {
     char *p1, *p2, *p3, *p4, *p5, *p6, *pp;
     char buf[MAX_LINELEN+1];
@@ -34,7 +34,10 @@ char *exec_if(char *p)
     for(pp=strchr(buf,'\\'); pp!=NULL; pp=strchr(pp+1,'\\')) {
       if(isalnum(*(pp+1))) string_modify(buf,pp,pp+1,"$m_");
     }
-    fprintf(outf," \n!if %s \n$()",buf);
+    switch(type) {
+          case 0: fprintf(outf,"\n!if %s \n$()",buf); break;
+          case 1: fprintf(outf,"\n!ifval %s \n$()",buf);
+    }
     p5=find_word_start(p4+1);
     if(*p5=='{' && (p6=find_matching(p5+1,'}'))!=NULL) {
       *p4=elsechar; *p5=' '; *p6=endifchar;
@@ -42,6 +45,8 @@ char *exec_if(char *p)
     else *p4=endifchar;
     return p3+1;
 }
+char *exec_if(char *p) {return _exec_if(p,0);}
+char *exec_ifval(char *p) {return _exec_if(p,1);}
 
 char *exec_for(char *p)
 {
@@ -119,6 +124,13 @@ void out_exec(char *s1, char *s2)
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
             pt=exec_if(p+2); if(pt>p+2) {p=pt-1;ps=pt;}
+            continue;
+          }
+/* ifval */
+          if(strncmp(p+1,"ifval",5)==0 && *find_word_start(p+6)=='{') {
+            char *pt;
+            *p=0; fprintf(outf,"%s",ps); p++; ps=p;
+            pt=exec_if(p+5); if(pt>p+5) {p=pt-1;ps=pt;}
             continue;
           }
 /* canvasdraw */

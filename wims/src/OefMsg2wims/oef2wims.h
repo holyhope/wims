@@ -58,7 +58,7 @@ void p_text(char *p[MAX_PARM]);
 void p_matrix(char *p[MAX_PARM]);
 void p_parm(char *p[MAX_PARM]);
 void p_if(char *p[MAX_PARM]);
-
+void p_ifval(char *p[MAX_PARM]);
 void p_else(char *p[MAX_PARM]);
 void p_endif(char *p[MAX_PARM]);
 void p_endwhile(char *p[MAX_PARM]);

@@ -78,6 +78,7 @@ struct {
       {"help",  t_help,1, p_help},
       {"hint",  t_hint,1, p_hint},
       {"if",  t_def,1, p_if},
+      {"ifval",  t_def,1, p_ifval},
       {"int",  t_def ,2, p_int},
       {"integer", t_def ,2, p_int},
       {"language", t_head,1, p_language},
@@ -238,7 +239,7 @@ void process(void)
                   if(pt2==NULL) oef_error("Unmatched parentheses?");
                   pt3=find_word_start(pt2+1);
                 }
-                if(strcmp(directives[i].name,"if")==0) {
+                if(strcmp(directives[i].name,"if")==0 || strcmp(directives[i].name,"ifval")==0) {
                   if(*pt3=='{') {
                       *pt2=elsechar; *pt3=' ';
                       pt2=find_matching(pt3,'}');

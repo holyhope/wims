@@ -556,14 +556,19 @@ void p_parm(char *p[MAX_PARM])
     parm(p,pt_real);
 }
 
-void p_if(char *p[MAX_PARM])
+void _p_if(char *p[MAX_PARM], int type)
 {
     char vbuf[MAX_LINELEN+1];
     snprintf(vbuf,sizeof(vbuf),"%s",p[0]); subst(vbuf);
     if(deftag) repsubst(vbuf);
     prepcnt=0; parmprep(vbuf, pt_real);
-    fprintf(outf,"!if %s \n",vbuf);
+    switch(type) {
+          case 0: fprintf(outf,"!if %s \n",vbuf); break;
+          case 1: fprintf(outf,"!ifval %s \n",vbuf);
+    }
 }
+void p_if(char *p[MAX_PARM]) { return _p_if(p, 0);}
+void p_ifval(char *p[MAX_PARM]) { return _p_if(p, 1);}
 
 void p_else(char *p[MAX_PARM])
 {

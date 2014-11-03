@@ -27,8 +27,8 @@ choice 2, reply 2, reply 3
 choice 3
 }</pre>
 
-l'exercice sera présenté en trois étapes, la première proposant 
-un choix multiple (choice 1) et une réponse de type <span class="tt wims_code_words">reply</span>  (reply 1), 
+l'exercice sera présenté en trois étapes, la première proposant
+un choix multiple (choice 1) et une réponse de type <span class="tt wims_code_words">reply</span>  (reply 1),
 la seconde proposant un choix multiple et deux réponses de type <span class="tt wims_code_words">reply</span>, etc.
 <p>
 
@@ -42,16 +42,16 @@ proposées et sont donc considérées comme fausses.
 <p>
 Le numéro de l'étape en cours est accessible dans le champ <span class="tt wims_code_words">statement</span>
 dans la variable
-<span class="tt wims_code_variable">\step</span> qui prend donc successivement les valeurs 
+<span class="tt wims_code_variable">\step</span> qui prend donc successivement les valeurs
  1,2,... à mesure que l'utilisateur avances dans ses réponses.
 <p>
 
-Pour faire des exercices dynamiques à plusieurs étapes 
+Pour faire des exercices dynamiques à plusieurs étapes
 (étapes variant selon les réponses de l'étudiant), vous pouvez utiliser
-la commande <span class="tt wims_code_variable">\nextstep{...}</span>. L'argument de 
+la commande <span class="tt wims_code_variable">\nextstep{...}</span>. L'argument de
 <span class="tt wims_code_variable">\nextstep</span> est semblable à celui de <span class="tt wims_code_variable">\steps</span> mais seule la première
 ligne est effective. Elle n'est utile que si cet argument est une variable qui change
-après avec les définitions de paramètres après soumission. 
+après avec les définitions de paramètres après soumission.
 L'exercice s'arrête quand le contenu de <span class="tt wims_code_variable">\nextstep</span>  est vide.
 <p>
 Dans tous les cas, une seule déclaration parmi <span class="tt wims_code_variable">\steps</span> ou <span class="tt wims_code_variable">\nextstep</span>
@@ -64,13 +64,14 @@ Commandes disponibles:
 <pre>
 \if{condition}{contenu conditionnel}
 \if{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
+\ifval{condition}{contenu conditionnel}
+\ifval{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
 \for{var=n1 to n2}{contenu_de_la_boucle}
-\while{condition}{contenu_de_la_boucle}  (uniquement dans l'environnement principal)
+\while{condition}{contenu_de_la_boucle} (uniquement dans l'environnement principal)
 </pre>
-
-Les commandes de branchements conditionnels et de boucles peuvent être utilisées  
+Les commandes de branchements conditionnels et de boucles peuvent être utilisées
 dans l'environnement principal ou (sauf pour <span class="tt wims_code_words">while</span>)
-à l'intérieur de l'énoncé (<span class="tt wims_code_words">statement</span>), d'une aide (<span class="tt wims_code_words">hint</span>), 
+à l'intérieur de l'énoncé (<span class="tt wims_code_words">statement</span>), d'une aide (<span class="tt wims_code_words">hint</span>),
 d'une solution (<span class="tt wims_code_words">solution</span>), d'un feedback (<span class="tt wims_code_words">feedback</span>).
 Lorsque ces commandes sont dans l'environnement principal, elles n'affectent
 que la définition de paramètres.
@@ -106,7 +107,7 @@ Syntaxe générale : <span class="tt wims_code_words">\special{$special_parm2 <i>p
 
 <h3>Fichiers source prétraités</h3>
 
-Cette fonctionnalité n'est pas disponible pour Createxo. Vous pouvez 
+Cette fonctionnalité n'est pas disponible pour Createxo. Vous pouvez
 l'utiliser si vous écrivez des exercices OEF (et Deductio) sous Modtool.
 <p>
 Elle vous permet d'inclure des parties de codes communes dans plusieurs fichiers OEF.
@@ -116,8 +117,8 @@ pré-source, chacun différant des autres par quelques définitions de macros.
 Pour utiliser cette possibilité, un sous-répertoire cpp/ doit être créée sous src. Y mettre
 les fichiers de pré-source d'extension .cpp. Dans ces fichiers, vous pouvez ajouter
 des directives cpp comme <span class="tt wims_code_words">#include</span>,
-<span class="tt wims_code_words">#define</span> ou 
-<span class="tt wims_code_words">#if</span>. (Veuillez vous référer aux 
+<span class="tt wims_code_words">#define</span> ou
+<span class="tt wims_code_words">#if</span>. (Veuillez vous référer aux
 manuels cpp et aux spécifications c pour les détails de la syntaxe.)
 </p><p>
 La première ligne du fichier cpp doit définir une liste de cibles (targets), dans le format
@@ -125,16 +126,16 @@ La première ligne du fichier cpp doit définir une liste de cibles (targets), dan
 target=targ1 targ2 targ3 ...
 </pre>
 Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
-(l'extension .oef sera donc ajoutée aux noms de sortie). Lors de la génération du fichier 
+(l'extension .oef sera donc ajoutée aux noms de sortie). Lors de la génération du fichier
 cible <em>targ1.oef</em>, une macro <em>TARGET_targ1</em> est définie.
 Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 <pre>
-#if defined TARGET_targ1 
+#if defined TARGET_targ1
  \title{Exercise 1}
  \integer{v1=3}
  \text{t1=this is target 1}
 #endif
-#if defined TARGET_targ2 
+#if defined TARGET_targ2
  \title{Exercise 2}
  \integer{v1=5}
  \text{t1=this is target 2}
@@ -148,7 +149,7 @@ Les fichiers <span class="tt wims_code_words">include</span> doivent également ê
 #include "common.inc"
 </pre>
 va insérer le contenu de common.inc dans le fichier généré OEF.
-Veuillez noter que pour des raisons de sécurité, il est interdit de 
+Veuillez noter que pour des raisons de sécurité, il est interdit de
 spécifier des répertoires de fichiers include.
 <p>
 Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
@@ -157,10 +158,10 @@ les commandes contenant ces textes par des commentaires C (<span class="tt wims_
 </p>
 
 <div class="wims_warning">
-<span class="wims_warning">$wims_name_warning</span> : Dans les commandes commençant par # comme dans 
-<span class="tt">#include</span>, le caractère <span class="tt">#</span> doit être le 
+<span class="wims_warning">$wims_name_warning</span> : Dans les commandes commençant par # comme dans
+<span class="tt">#include</span>, le caractère <span class="tt">#</span> doit être le
 premier caractère de la ligne. Il ne faut pas non plus utiliser
-<span class="tt">#</span> comme caractère de commentaires. 
+<span class="tt">#</span> comme caractère de commentaires.
 </div>
 
 <h3>Environnement dans un exercice</h3>
@@ -168,7 +169,7 @@ La variable spéciale  <span class="tt wims_code_variable">\oefenv</span> est uti
 (si elle n'est pas redéfinie dans l'exercice).
 <p>
 Pour l'instant, le seul contenu possible de cette variable est le mot
-``debug''. Ce mot apparaît à l'intérieur de <span class="tt wims_code_variable">\oefenv</span> 
+``debug''. Ce mot apparaît à l'intérieur de <span class="tt wims_code_variable">\oefenv</span>
 dans les situations suivantes.
 </p>
 <ol>
@@ -178,11 +179,11 @@ dans les situations suivantes.
 </li>
 </ol>
 Dans ces cas, la bonne réponse apparaît par défaut dans les champs de réponse
-si vous le demandez, vous permettant de voir ce que l'exercice attend comme 
+si vous le demandez, vous permettant de voir ce que l'exercice attend comme
 réponse sans avoir besoin de remplir vous-même les champs.
 <p>
 Vous pouvez ajouter des informations de débogage à l'intérieur de votre exercice
-en utilisant des conditions comme 
+en utilisant des conditions comme
 </p>
 <pre>
 \if{debug iswordof \oefenv}{informations de débogage à ajouter ici}
