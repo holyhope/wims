@@ -82,8 +82,8 @@ int main(int argc, char *argv[]){
     int use_js_plot = FALSE; /* if true , let js-engine plot the curve */
     int line_width = 1;
     int decimals = 2;
-    int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate */
-    int use_userdraw = FALSE; /* flag to indicate user interaction: incompatible with "drag & drop" code !! */
+    int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate.May be redefined before every object */
+    int use_userdraw = FALSE; /* flag to indicate user interaction */
     int drag_type = -1;/* 0,1,2 : xy,x,y */
     int use_tooltip = FALSE;
     char *tooltip_text = "Click here";
@@ -104,28 +104,28 @@ int main(int argc, char *argv[]){
     int input_cnt = 0;
     int ext_img_cnt = 0;
     int slider_cnt = 0;
-    int font_size = 12;
-    int dashtype[2] = { 4 , 4 };
+    int font_size = 12;/* this may lead to problems when using something like "fontfamily Italic 24px Ariel" the "font_size" value is not substituted into fontfamily !! */ 
+    int dashtype[2] = { 4 , 4 }; /* just line_px and space_px : may have more arguments...if needed in future*/
     int js_function[MAX_JS_FUNCTIONS]; /* javascript functions include objects on demand basis : only once per object type */
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
-    int arrow_head = 8; /* size in px*/
+    int arrow_head = 8; /* size in px needed for arrow based  userdraw:  "userdraw arrow,color" */
     int crosshair_size = 5; /* size in px*/
-    int plot_steps = 250;
-    int found_size_command = 0; /* 1 = found size ; 2 = found xrange; 3 = found yrange*/
-    int click_cnt = 1;
+    int plot_steps = 250;/* the js-arrays with x_data_points and y_data_points will have size 250 each: use with care !!! use jscurve when precise plots are required  */
+    int found_size_command = 0; /* 1 = found size ; 2 = found xrange; 3 = found yrange :just to flag an error message */
+    int click_cnt = 1; /* counter to identify the "onclick" ojects */
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
     int barchart_cnt = 0; /* identifier for command 'barchart' ; multiple charts may be plotted in a single plot*/
     int legend_cnt = -1; /* to allow multiple legends to be used, for multiple piecharts etc  */
     int reply_precision = 100; /* used for precision of student answers / drawings */
     double angle = 0.0;
-    int clickfillmarge = 20;
-    int animation_type = 9; /* == object type curve in drag library */
+    int clickfillmarge = 20; /* in pixels : if the 'remove click' is within this marge, the filling is removed */
+    int animation_type = 9; /* REMOVED == object type curve in drag library */
     int use_input_xy = 0; /* 1= input fields 2= textarea 3=calc y value*/
     int use_slider_display = 0; /* in case of a slider, should we display it's value ?*/
-    size_t string_length = 0;
-    double stroke_opacity = 0.8;
-    double fill_opacity = 0.8;
+    size_t string_length = 0; /* measure the size of the user input fly-string */
+    double stroke_opacity = 0.8; /* use some opacity as default */
+    double fill_opacity = 0.8;/* use some opacity as default */
     char *URL = "http://localhost/images";
     memset(buffer,'\0',MAX_BUFFER);
     void *tmp_buffer = "";
@@ -633,7 +633,71 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    break;
 		}
 	    }
-	
+	    break;
+	case HALFLINES:
+	/*
+	@ demilines color,x1,y1,x2,y2,....
+	@ alternative : halflines
+	@ draws halflines starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex) etc etc
+	@ may be set draggable / onclick indiviually
+	*/
+	    stroke_color=get_color(infile,0);
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		if( double_data[c] == double_data[c+2] ){ /* vertical line*/
+		    if(double_data[c+1] < double_data[c+3]){ /* upright halfline */
+			double_data[c+3] = ymax + 1000;
+		    }
+		    else
+		    {
+		     double_data[c+3] = ymin - 1000;/* descending halfline */
+		    }
+		}
+		else
+		{
+		    if( double_data[c+1] == double_data[c+3] ){ /* horizontal line */
+		        if(double_data[c] < double_data[c+2] ){ /* halfline to the right */
+		    	    double_data[c+2] = xmax+100;
+		    	}
+		    	else
+		    	{
+		    	    double_data[c+2] = xmin-1000; /* halfline to the right */
+		    	}
+		    }
+		    else
+		    {
+			/* m */
+			double m = (double_data[c+3] - double_data[c+1]) /(double_data[c+2] - double_data[c]);
+			/* q */
+			double q = double_data[c+1] - ((double_data[c+3] - double_data[c+1]) /(double_data[c+2] - double_data[c]))*double_data[c];
+			if(double_data[c] < double_data[c+2]){ /* to the right */
+			    double_data[c+2] = xmax+1000; /* 1000 is needed for dragging...otherwise it's just segment */
+			    double_data[c+3] = (m)*(double_data[c+2])+(q);
+			}
+			else
+			{ /* to the left */
+			    double_data[c+2] = xmin - 1000;
+			    double_data[c+3] = (m)*(double_data[c+2])+(q);
+			}
+		    }
+		}
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,18,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
 	    break;
 	case HLINE:
 	/*
@@ -7109,6 +7173,8 @@ int get_token(FILE *infile){
 	*slider="slider",
 	*killslider="killslider",
 	*angle="angle",
+	*halflines="halflines",
+	*demilines="demilines",
 	*halfline="halfline",
 	*demiline="demiline",
 	*functionlabel="functionlabel";
@@ -7833,6 +7899,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, angle) == 0 ){
 	free(input_type);
 	return ANGLE;
+	}
+	if( strcmp(input_type, halflines) == 0 || strcmp(input_type, demilines) == 0  ){
+	free(input_type);
+	return HALFLINES;
 	}
 	if( strcmp(input_type, halfline) == 0 || strcmp(input_type, demiline) == 0  ){
 	free(input_type);
