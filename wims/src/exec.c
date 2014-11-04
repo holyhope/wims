@@ -1664,7 +1664,7 @@ void exec_mailto(char *p)
     for(pp=p1;*pp;pp++) if(*pp=='"' || *pp=='\n') *pp=' ';
     accessfile(p2,"w","%s/mail.body",tmp_dir);
     wrapexec=1;
-    call_sh("mail %s -s \" %s \" %s <%s/mail.body; chmod og-rwx %s/mail.body",
+    call_sh("mail %s -s \" %s \n\" %s <%s/mail.body; chmod og-rwx %s/mail.body",
         mail_opt, p1,p,tmp_dir,tmp_dir);
     mail_log(p);
     *p=0;
