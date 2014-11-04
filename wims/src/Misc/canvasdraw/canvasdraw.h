@@ -164,6 +164,8 @@
 #define HALFLINES	167
 #define HLINES		168
 #define VLINES		169
+#define ROUNDRECTS	170
+#define BEZIER		171
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -206,6 +208,7 @@
 #define DRAW_CENTERSTRING 39
 #define DRAW_JSFUNCTION	40
 #define DRAW_DEMILINES	41
+#define DRAW_BEZIER	42
 
 #define BG_CANVAS	0
 #define STATIC_CANVAS	1

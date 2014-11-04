@@ -799,7 +799,6 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	@ draw a square with left top corner (x:y) with side 'side' in color 'color'
 	@ use command 'fsquare x,y,side,color' for a filled square
 	@ use command/keyword  'filled' before command 'square x,y,side,color'
-	@ use command 'fillcolor color' before 'fsquare' to set the fill colour.
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<5;i++){
@@ -823,7 +822,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	@ roundrect x1,y1,x2,y2,radius,color
 	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
 	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
-	@ use command 'fillcolor color' before 'froundrect' to set the fill colour.
+	@ fillcolor will be identical to 'color'
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<6;i++){
@@ -844,12 +843,43 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+	case ROUNDRECTS:
+	/*
+	@ roundrects color,radius,x11,y11,x12,y12,x21,y21,x22,y22
+	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+	@ may be set draggable / onclick individually
+	*/
+
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    int_data[0] = (int) (get_real(infile,0)); /* radius value in pixels */
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		/* ensure no inverted roundrect is produced... */
+		if( double_data[c] > double_data[c+2] ){double_data[c+4] = double_data[c];double_data[c] = double_data[c+2];double_data[c+2] = double_data[c+4];}
+		if( double_data[c+3] > double_data[c+1] ){double_data[c+4] = double_data[c+1];double_data[c+1] = double_data[c+3];double_data[c+3] = double_data[c+4];}
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		click_cnt++;
+	    }
+	    reset();
+	    break;
 	case RECT:
 	/*
 	@ rect x1,y1,x2,y2,color
 	@ use command 'frect x1,y1,x2,y2,color' for a filled rectangle
 	@ use command/keyword  'filled' before command 'rect x1,y1,x2,y2,color'
-	@ use command 'fillcolor color' before 'frect' to set the fill colour.
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<5;i++){
@@ -899,7 +929,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case POLYLINE:
 	/*
 	@ polyline color,x1,y1,x2,y2...x_n,y_n
-	@ alternatives:<br />polylines color,x1,y1,x2,y2...x_n,y_n<br />brokenline color,x1,y1,x2,y2...x_n,y_n<br />brokenlines color,x1,y1,x2,y2...x_n,y_n
+	@ alternatives:<br />path color,x1,y1,x2,y2...x_n,y_n<br />polylines color,x1,y1,x2,y2...x_n,y_n<br />brokenline color,x1,y1,x2,y2...x_n,y_n<br />brokenlines color,x1,y1,x2,y2...x_n,y_n
 	@ draw a broken line interconnected between all points (not closed)
 	@ equivalent to flydraw command "line color,x1,y1,x2,y2...x_n,y_n"
 	@ use command "segments color,x1,y1,x2,y2...x_n,y_n" for not interconnected line segments.
@@ -1297,9 +1327,37 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			string_length = snprintf(NULL,0,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix);
 			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 			snprintf(tmp_buffer,string_length,"draw_lattice(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",%.2f,\"%s\",%.2f,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_rotate,angle,use_affine,affine_matrix);
-			add_to_buffer(tmp_buffer);
-		    break;
+			add_to_buffer(tmp_buffer);break;
 		    default:break;
+		}
+	    }
+	    reset();
+	    break;
+	case BEZIER:
+	/*
+	@bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
+	@draw a bezier curve between points, starting from (x_start:y_start)
+	@can not be dragged or set onclick
+	*/
+	    if( js_function[DRAW_BEZIER] != 1 ){ js_function[DRAW_BEZIER] = 1;}
+	    decimals = find_number_of_digits(precision);
+	    for(i = 0 ; i < 9; i++){
+	        switch(i){
+	    	    case 0: stroke_color = get_color(infile,0);break;
+		    case 1: double_data[0] = get_real(infile,0);break;/* start x */
+		    case 2: double_data[1] = get_real(infile,0);break;/* start y */
+		    case 3: double_data[2] = get_real(infile,0);break;/*The x-coordinate of the first Bézier control point */
+	    	    case 4: double_data[3] = get_real(infile,0);break;/*The y-coordinate of the first Bézier control point */
+		    case 5: double_data[4] = get_real(infile,0);break;/*The x-coordinate of the second Bézier control point */
+	    	    case 6: double_data[5] = get_real(infile,0);break;/*The y-coordinate of the second Bézier control point */
+		    case 7: double_data[6] = get_real(infile,0);break;/*The x-coordinate of the Bézier end point */
+		    case 8: double_data[7] = get_real(infile,1);/*The y-coordinate of the Bézier end point */
+			string_length = snprintf(NULL,0,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
+			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			snprintf(tmp_buffer,string_length,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
+			add_to_buffer(tmp_buffer);
+			break;
+		    default: break;
 		}
 	    }
 	    reset();
@@ -5186,7 +5244,32 @@ function setxy(evt){\
  };\
 };",canvas_root_id);
     break;
-
+    case DRAW_BEZIER:
+fprintf(js_include_file,"\n<!-- draw bezier curve -->\n\
+var draw_bezier = function(canvas_type,linewidth,xy_points,fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
+ var obj;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.save();\
+ ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.lineWidth = linewidth;\
+ if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
+ if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
+ ctx.beginPath();\
+ ctx.moveTo(x2px(xy_points[0]),y2px(xy_points[1]));\
+ ctx.bezierCurveTo(x2px(xy_points[2]),y2px(xy_points[3]),x2px(xy_points[4]),y2px(xy_points[5]),x2px(xy_points[6]),y2px(xy_points[7]));\
+ if(use_filled == 1){ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();}\
+ ctx.stroke();\
+ ctx.restore();\
+};\n",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
     case DRAW_EXTERNAL_IMAGE:
 fprintf(js_include_file,"\n<!-- draw external images -->\n\
 var draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\
@@ -7115,6 +7198,7 @@ int get_token(FILE *infile){
 	*yrange="yrange",
 	*rangex="rangex",
 	*rangey="rangey",
+	*path="path",
 	*polyline="polyline",
 	*polylines="polylines",
 	*brokenline="brokenline",
@@ -7168,6 +7252,7 @@ int get_token(FILE *infile){
 	*killtranslation="killtranslation",
 	*killtranslate="killtranslate",
 	*onclick="onclick",
+	*roundrects="roundrects",
 	*roundrect="roundrect",
 	*froundrect="froundrect",
 	*roundrectangle="roundrectangle",
@@ -7234,6 +7319,7 @@ int get_token(FILE *infile){
 	*demiline="demiline",
 	*hlines="hlines",
 	*vlines="vlines",
+	*bezier="bezier",
 	*functionlabel="functionlabel";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
@@ -7569,7 +7655,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return FONTFAMILY;
 	}
-	if( strcmp(input_type, polyline) == 0 || strcmp(input_type, polylines) == 0 || strcmp(input_type, brokenline) == 0  || strcmp(input_type, brokenlines) == 0  ){
+	if( strcmp(input_type, path) == 0 ||  strcmp(input_type, polyline) == 0 || strcmp(input_type, polylines) == 0 || strcmp(input_type, brokenline) == 0  || strcmp(input_type, brokenlines) == 0  ){
 	free(input_type);
 	return POLYLINE;
 	}
@@ -7589,6 +7675,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, rect) == 0  ||  strcmp(input_type, rectangle) == 0 ){
 	free(input_type);
 	return RECT;
+	}
+	if( strcmp(input_type, roundrects) == 0 ){
+	free(input_type);
+	return ROUNDRECTS;
 	}
 	if( strcmp(input_type, roundrect) == 0  ||  strcmp(input_type, roundrectangle) == 0 ){
 	free(input_type);
@@ -7887,6 +7977,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, ylabel) == 0  ){
 	free(input_type);
 	return YLABEL;
+	}
+	if( strcmp(input_type, bezier) == 0  ){
+	free(input_type);
+	return BEZIER;
 	}
 	if( strcmp(input_type, animate) == 0  ){
 	free(input_type);
