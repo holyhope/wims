@@ -45,9 +45,12 @@ cat $file | cut -d"," -f3 | sort | uniq
     !set mailheader=!nosubst $us -- -f $wims_site_manager
   !endif
   !for us in $save_list
+
+!! the blank line is compulsory
     !mailto $mailheader\
 [WIMS $wims_servername] $save_subject\
-$save_msg
+$save_msg\
+
 
   !next us
 !endif
