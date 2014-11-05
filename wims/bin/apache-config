@@ -39,8 +39,7 @@ Please first install Apache (>=1.3).
 @
  exit
 fi
-conffile=`$httpdname -V | grep SERVER_CONFIG_FILE | awk -F'=' '{print $2}' \
- | tr -d ' "'`
+conffile=`$httpdname -V | grep SERVER_CONFIG_FILE | awk -F'=' '{print $2}'  | tr -d ' "'`
 confdir=`dirname $conffile`
 if [ -z "$confdir" ]; then
  cat <<@
@@ -123,9 +122,14 @@ cat >>$tmpfile <<@
   AddHandler cgi-script .cgi
 @
 
-vtest=`echo $vtest | grep 'pache/1\.2'`
-if [ ! -z "$vtest" ]; then
- cat >>$tmpfile <<@
+# $vtest looks like "Server version: Apache/X.Y.Z (Unix)"
+# $vmajor will be XY
+
+vmajor=`echo $vtest | grep 'pache' | perl -pe 's/.*pache\/([\d]+).([\d]+).*/$1$2/'`
+
+# Apache version == 1.2
+if [ "$vmajor" = "12" ]; then
+  cat >>$tmpfile <<@
   ScriptAlias /wims/wims.cgi $wimshome/public_html/wims.cgi
   ScriptAlias /wims/wims.html $wimshome/public_html/wims.cgi
   ScriptAlias /wims/index.html $wimshome/public_html/wims.cgi
@@ -134,8 +138,9 @@ if [ ! -z "$vtest" ]; then
   ScriptAlias /wims/wims.jpeg $wimshome/public_html/wims.cgi
   ScriptAlias /wims/wims.jpg $wimshome/public_html/wims.cgi
 @
-else	# newer versions of Apache
- cat >>$tmpfile <<@
+# newer versions of Apache
+else
+  cat >>$tmpfile <<@
   ScriptAliasMatch ^/~wims/wims\.(.*) $wimshome/public_html/wims.cgi
   ScriptAliasMatch ^/wims/wims\.(.*) $wimshome/public_html/wims.cgi
   ScriptAliasMatch ^/~wims/index\.(.*) $wimshome/public_html/wims.cgi
@@ -147,18 +152,27 @@ else	# newer versions of Apache
   ScriptAlias /wims/....\.cgi $wimshome/public_html/wims.cgi
 @
 fi
+
+# Apache version >= 2.4
+if [ "$vmajor" -ge "24" ]; then
+  require_line="Require all granted"
+# Older Apache versions
+else
+  require_line="allow from all"
+fi
+
 cat >>$tmpfile <<@
   Alias /wims $wimshome/public_html
   Alias /~wims $wimshome/public_html
 
   <Directory $wimshome/public_html>
-  Options FollowSymLinks ExecCGI -Indexes
-  AllowOverride All
-  allow from all
+    Options +FollowSymLinks +ExecCGI -Indexes
+    AllowOverride All
+    $require_line
   </Directory>
   <Directory $wimshome/public_html/modules>
-  Options FollowSymLinks
-  AllowOverride Limit
+    Options FollowSymLinks
+    AllowOverride Limit
   </Directory>
 
 ###### $endl! ######
