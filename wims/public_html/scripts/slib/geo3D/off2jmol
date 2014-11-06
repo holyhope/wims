@@ -114,15 +114,17 @@ slib_face=!nonempty line $slib_face
    slib_center_arete=!items2words $slib_center_arete
    slib_Arete=!append word $[$slib_nb+$slib_S_cnt-1] to $slib_Arete
    !if $slib_aa!=0
-     slib_connect=!append line connect ({$[$slib_lien1]}) ({$[$slib_lien2]}); $slib_color_arete; to $slib_connect
+     slib_connect=!append line connect ({$[$slib_lien1]}) ({$[$slib_lien2]});\
+     select ({$[$slib_lien1] $[$slib_lien2]}); $slib_color_arete; select none;\
+     to $slib_connect
    !endif
    slib_out=!append line $slib_BAA $slib_center_arete to $slib_out
 !next slib_nb
 !if $slib_aa!=0
   slib_connect=select $slib_SS;\
 $slib_connect\
-wireframe $slib_wireframe;\
-select none;
+select all;wireframe $slib_wireframe;select none;
+
 !endif
 cnt=0
 slib_Face=
@@ -201,6 +203,8 @@ $[$slib_S_cnt+$slib_F_cnt+$slib_A_cnt]\
 \
 $slib_out
 !else
+  !default slib_randint=!randint 1..100
+  !increase slib_randint
   slib_file_xyz=file_$wims_nowseconds$slib_randint.xyz
   !readproc oef/togetfile.proc $slib_file_xyz new\
 $[$slib_S_cnt+$slib_F_cnt+$slib_A_cnt]\
