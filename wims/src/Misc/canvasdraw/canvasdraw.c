@@ -166,8 +166,8 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li></ul>
-	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />Use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul></ul>
+	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	*/
 	switch(type){
 	case END:
@@ -238,8 +238,9 @@ function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/
 function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;};return obj;};\
 function slide(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = x2px(obj.xorg[p] + dx);obj.y[p] = y2px(obj.yorg[p] + dy);};return obj;};\
 var x_use_snap_to_grid = 0;var y_use_snap_to_grid = 0;var snap_x = 1;var snap_y = 1;\
+var use_snap_to_points = 0;\
 function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\
-function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\
+function snap_to_y(y){return y2px(snap_y*(Math.round((px2y(y))/snap_y)));};\n\
 var xlogbase = 10;\
 var ylogbase = 10;\
 var use_xlogscale = 0;\
@@ -338,7 +339,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
     			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    			click_cnt++;reset();
+    			if(onclick > 0){click_cnt++;}
+    			/* click_cnt++ */
+    			reset();
     			break;
 		    default:break;
 		}
@@ -368,7 +371,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
     	    for(c=0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,7,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],crosshair_size,crosshair_size,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -387,7 +391,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
 		    decimals = find_number_of_digits(precision);
 		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		    click_cnt++;break;
+		    /* click_cnt++; */
+		    if(onclick > 0){click_cnt++;}
+		    break;
 		    default: break;
 		}
 	    }
@@ -417,7 +423,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+		/* click_cnt++; */
+		if(onclick > 0){click_cnt++;}
 	    }
 	    reset();
 	    break;
@@ -445,7 +452,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+4){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++;*/
 	    }
 	    reset();
 	    break;
@@ -464,7 +472,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
 			break;
 		    default: break;
 		}
@@ -515,7 +525,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    }
 		    decimals = find_number_of_digits(precision);
 		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		    click_cnt++;reset();
+		    if(onclick > 0){click_cnt++;}
+		    /* click_cnt++;*/
+		    reset();
 		    break;
 		}
 	    }
@@ -570,7 +582,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    }
 		}
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -629,7 +642,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    }    
 		    decimals = find_number_of_digits(precision);
 		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,18,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		    click_cnt++;reset();
+    		    if(onclick > 0){click_cnt++;}
+		    /* click_cnt++; */
+		    reset();
 		    break;
 		}
 	    }
@@ -695,7 +710,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    }
 		}
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,18,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -714,7 +730,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    double_data[3] = double_data[1];
 		    decimals = find_number_of_digits(precision);
 		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		    click_cnt++;reset();
+    		    if(onclick > 0){click_cnt++;}
+		    /* click_cnt++; */
+		    reset();
 		    break;
 		}
 	    }
@@ -743,7 +761,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,xmin,decimals,xmax,decimals,double_data[c+1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -761,7 +780,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			double_data[2] = double_data[0];
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+    			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
 		    break;
 		}
 	    }
@@ -789,7 +810,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c],decimals,ymin,decimals,ymax,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -812,14 +834,16 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			double_data[3] = double_data[0] + (xmax - xmin)*double_data[2]/xsize;
 			double_data[4] = double_data[1] + -1*(ymax - ymin)*double_data[2]/ysize;
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[3],decimals,double_data[3],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[4],decimals,double_data[4],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
 			break;
 		}
 	    }
 	    break;
 	case ROUNDRECT:
 	/*
-	@ roundrect x1,y1,x2,y2,radius,color
+	@ roundrect x1,y1,x2,y2,radius in px,color
 	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
 	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
 	@ fillcolor will be identical to 'color'
@@ -838,15 +862,17 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			if( double_data[3] > double_data[1] ){double_data[4] = double_data[1];double_data[1] = double_data[3];double_data[3] = double_data[4];}
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
 	            break;
 		}
 	    }
 	    break;
 	case ROUNDRECTS:
 	/*
-	@ roundrects color,radius,x11,y11,x12,y12,x21,y21,x22,y22
-	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+	@ roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
+	@ for filled roundrects use command/keyword  'filled' before command
 	@ may be set draggable / onclick individually
 	*/
 
@@ -871,7 +897,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		if( double_data[c] > double_data[c+2] ){double_data[c+4] = double_data[c];double_data[c] = double_data[c+2];double_data[c+2] = double_data[c+4];}
 		if( double_data[c+3] > double_data[c+1] ){double_data[c+4] = double_data[c+1];double_data[c+1] = double_data[c+3];double_data[c+3] = double_data[c+4];}
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -891,7 +918,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[2],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[3],decimals,double_data[3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
 			break;
 		}
 	    }
@@ -922,7 +951,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+4){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,1,[%.*f,%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f,%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+2],decimals,double_data[c],decimals,double_data[c+1],decimals,double_data[c+1],decimals,double_data[c+3],decimals,double_data[c+3],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -955,7 +985,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    /* draw path : not closed & not filled */
     	    decimals = find_number_of_digits(precision);
 	    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-	    click_cnt++;reset();
+	    if(onclick > 0){click_cnt++;}
+	    /* click_cnt++;*/
+	    reset();
 	    break;
 	case POLY:
 	/*
@@ -984,7 +1016,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    /* draw path :  closed & optional filled */
     		decimals = find_number_of_digits(precision);
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,i,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;reset();
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
+		reset();
 	    break;
 	case ARC:
 	/*
@@ -1056,7 +1090,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 4:stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,3,[%.*f],[%.*f],[%.*f],[%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
 		    break;
 		}
 	    }
@@ -1090,7 +1126,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
 			break;
 		    default : break;
 		}
@@ -1120,7 +1158,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+3){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[c+2],double_data[c+2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -1151,8 +1190,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    if( i%2 != 0 ){canvas_error("in command rays: unpaired x or y value");}
 	    decimals = find_number_of_digits(precision);
 	    for(c=2; c<i;c = c+2){
-		click_cnt++;
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[c],decimals,double_data[1],decimals,double_data[c+1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		/* click_cnt++; */
+	        if(onclick > 0){click_cnt++;}
 	    }
 	    reset();
 	    break;
@@ -1182,7 +1222,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+4){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+	        if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -1203,7 +1244,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;
+	    		if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
 			reset();
 			break;
     		}
@@ -1227,7 +1269,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
 			break;
     		}
     	    }
@@ -1257,7 +1301,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+4){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,10,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		click_cnt++;
+	        if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
+		
 	    }
 	    reset();
 	    break;
@@ -1278,7 +1324,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 7: stroke_color=get_color(infile,1);/* name or hex color */
     		    decimals = find_number_of_digits(precision);
 		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,11,[%.*f,%.*f,%.*f],[%.*f,%.*f,%.*f],[%d,%d,%d],[%d,%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[4],decimals,double_data[1],decimals,double_data[3],decimals,double_data[5],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-		    click_cnt++;reset();
+		    if(onclick > 0){click_cnt++;}
+		    /* click_cnt++*/;
+		    reset();
 		    break;
 		    default: break;
 		}
@@ -1287,7 +1335,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case TRIANGLE:
 	/*
 	 @triangle x1,y1,x2,y2,x3,y3,color
-	 @may be set draggable / onclic
+	 @may be set draggable / onclick
 	*/
     	    for(i=0;i<7;i++){
     		switch(i){
@@ -1300,7 +1348,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 6: stroke_color = get_color(infile,1);/* name or hex color */
     			decimals = find_number_of_digits(precision);
     			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,6,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    			click_cnt++;reset();
+    			if(onclick > 0){click_cnt++;}
+    			/* click_cnt++;*/
+    			reset();
     			break;
     		    default: break;
     		}
@@ -1362,10 +1412,33 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+	case SNAPTOPOINTS:
+	/*
+	@ snaptopoints x1,y1,x2,y2,x3,y3....
+	@ a userdraw object will snap to these points.
+	@ a draggable object (use command "drag  x|y|xy") will snap to the clossed of these points when dragged (mouseup)
+	@ other options: use keyword "snaptogrid", "xsnaptogrid" or "ysnaptogrid" 
+	*/
+	    i = 0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    fprintf(js_include_file,"\nuse_snap_to_points = 1;\nfunction find_min_diff(x,y,X,Y){var diff = 100000000;var chk;var idx = 0;for(var p = 0 ; p < %d ; p++){chk = distance(x,y,X[p],Y[p]);if( chk  < diff ){ diff = chk; idx = p;};};return idx;};\n\\nfunction snap_to_points(x,y){x = px2x(x); y = px2y(y);var points = [%s];var xpoints = points[0];var ypoints = points[1];var idx = find_min_diff(x,y,xpoints,ypoints);x = xpoints[idx];y = ypoints[idx];return [x2px(x),y2px(y)];};\n",(int) (0.5*i),double_xy2js_array(double_data,i,decimals));
+	break;
 	case SNAPTOGRID:
 	/*
 	 @ snaptogrid
 	 @ keyword (no arguments required)
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given grid when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor / yminor is defined,(use keyword 'axis' to activate the minor steps) the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
@@ -1376,6 +1449,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	/*
 	 @ xsnaptogrid
 	 @ keyword (no arguments required) 
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given x-grid values when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to xmajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor is defined (use keyword 'axis' to activate xminor), the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
@@ -1386,6 +1460,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	/*
 	 @ ysnaptogrid
 	 @ keyword (no arguments required) 
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given y-grid values when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to ymajor grid
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if yminor is defined (use keyword 'axis' to activate yminor), the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
@@ -1521,6 +1596,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
+	@ only a single object_type is allowed (in this canvasdraw version)
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
@@ -1965,7 +2041,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    for(c = 0 ; c < i; c++){
 	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-	     click_cnt++;
+	     if(onclick > 0){click_cnt++;}
+	     /* click_cnt++; */
 	    }
 	    reset();
 	    break;
@@ -2048,7 +2125,6 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		char *fun2 = get_string_argument(infile,1);
 	        if( strlen(fun1) == 0 || strlen(fun2) == 0 ){canvas_error("parametric functions are NOT OK !");}
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,animation_type,eval_parametric(xsize,ysize,fun1,fun2,xmin,xmax,ymin,ymax,tmin,tmax,plot_steps,precision),2*line_width,2*line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    		click_cnt++;
     	    }
 	    else
 	    {
@@ -2056,9 +2132,9 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	        char *fun1 = get_string_argument(infile,1);
 		if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
     		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,%d,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,animation_type,eval(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    		click_cnt++;
 	    }
-	    animation_type = 9;/* reset to curve plotting without animation */
+	    if(onclick > 0){click_cnt++;}
+    	    /* click_cnt++; */
 	    reset();
 	    break;
 	case FLY_TEXT:
@@ -2105,7 +2181,10 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,"null",use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();break;
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/ 
+			reset();
+			break;
 		    default:break;
 		}
 	    }
@@ -2217,7 +2296,10 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
 			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			click_cnt++;reset();break;
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
+			break;
 		    default:break;
 		}
 	    }
@@ -2266,13 +2348,13 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 2: int_data[2]=x2px(get_real(infile,0)) - int_data[0];break; /* width in x/y-range coord system -> pixel width */
 		    case 3: int_data[3]=y2px(get_real(infile,0)) - int_data[1];break; /* height in x/y-range coord system  -> pixel height */
 		    case 4: decimals = find_number_of_digits(precision);
-			    if(onclick == 1 ){ onclick = click_cnt;click_cnt++;}
 			    temp = get_string(infile,1);
 			    if( strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'"); }
-			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
+			    string_length = snprintf(NULL,0,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick,click_cnt,stroke_color,stroke_opacity);
 			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick);
+			    snprintf(tmp_buffer,string_length,"draw_xml(%d,%d,%d,%d,%d,\"%s\",%d,%d,\"%s\",%.2f);\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp,onclick,click_cnt,stroke_color,stroke_opacity);
 			    add_to_buffer(tmp_buffer);
+			    if(onclick == 1 ){click_cnt++;}
 			    /*
 			     in case inputs are present , trigger adding the read_mathml()
 			     if no other reply_format is defined
@@ -2917,9 +2999,10 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	/*
 	 @ onclick
 	 @ keyword, no arguments
-	 @ if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
+	 @ if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
-	 @ NOTE: not all objects may be set clickable
+	 @ onclick and drag x|y|xy may be combined (although a single object can not be onclick and draggable) 
+	 @ NOTE: not all objects may be set onclick
 	*/
 	    fprintf(js_include_file,"use_dragdrop_reply = true;");
 	    onclick = 1;
@@ -2930,8 +3013,11 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	 @ the next object will be draggable in x / y / xy direction
 	 @ the displacement can be read by 'javascript:read_dragdrop();'
 	 @ the precision (default 2 decimals) in the student reply may be set with command 'precision'.<br />Use this 'precision' command before this command 'drag x|y|xy' !
-	 @ the answer is  : object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the place of the draggable object in your script.<br />Only draggable object will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
-	 @ use keywordd 'snaptogrid' , 'xsnaptogrid' or 'ysnaptogrid' to switch from free to discrete movement
+	 @ 'onclick' and 'drag x|y|xy' may be combined (for different objects: a single object can either be onclick or drag , not both )
+	 @ 'multi_objects' will be numbered in the given x/y-sequence (example: points red,0,0,1,1,2,2,3,3 : point (0:0) is object_number 1)
+	 @ attention: static objects and 'onclick/drag' objects of the same type (like point,circle,etc) with the same coordinates (e.g. objects that overlap) will give problems in the 'recognition algorithm')<br />in this example<br /><em>linewidth 4<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>the blue point will not be recognised as draggable !<br /><em>linewidth 4<br />drag xy<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>both points will be recognised
+	 @ the answer is  : drag_or_onclick_object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the sequence number of the draggable &amp; onclick objects in your script.<br />Only draggable & onclick objects will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
+	 @ use keyword 'snaptogrid' , 'xsnaptogrid' , 'ysnaptogrid' or command 'snaptopoints x1,y1,x2,y2,...' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
 	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
@@ -4067,7 +4153,7 @@ void reset(){
  if(use_filled == TRUE){use_filled = FALSE;}
  if(use_dashed == TRUE){use_dashed = FALSE;}
  if(use_rotate == TRUE){use_rotate = FALSE;}
-   onclick = 0;
+ onclick = 0;
 }
 
 
@@ -5782,8 +5868,8 @@ var draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_co
      ctx.stroke();\
      ctx.fill();\
      ctx.restore();\
-   }\
-  }\
+   };\
+  };\
   ctx.restore();\
   return;\
 };");
@@ -5830,8 +5916,8 @@ var draw_audio = function(canvas_root_id,x,y,w,h,loop,visible,URL1,URL2){\
  audio_div.appendChild(audio);\
  audio.setAttribute(\"style\",\"width:\"+w+\"px;height:\"+h+\"px\");\
  audio.autobuffer = true;\
- if(visible == 1 ){ audio.controls = true;audio.autoplay = false;}else{ audio.controls = false;audio.autoplay = true;}\
- if(loop == 1 ){ audio.loop = true;}else{ audio.loop = false;}\
+ if(visible == 1 ){ audio.controls = true;audio.autoplay = false;}else{ audio.controls = false;audio.autoplay = true;};\
+ if(loop == 1 ){ audio.loop = true;}else{ audio.loop = false;};\
  var src1 = document.createElement(\"source\");\
  src1.type = \"audio/ogg\";\
  src1.src = URL1;\
@@ -5862,15 +5948,21 @@ var draw_http = function(canvas_root_id,x,y,w,h,URL){\
 
     case DRAW_XML:
 fprintf(js_include_file,"\n<!-- draw xml -->\n\
-var draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick){\
+var draw_xml = function(canvas_root_id,x,y,w,h,mathml,onclick,click_cnt,stroke_color,stroke_opacity){\
  var canvas_div = document.getElementById(\"canvas_div\"+canvas_root_id);\
  var xml_div = document.createElement(\"div\");\
  canvas_div.appendChild(xml_div);\
  xml_div.innerHTML = mathml;\
+ xml_div.style.color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(onclick != 0){\
   xml_div.onclick = function(){\
-   reply[0] = onclick;\
-   alert(\"send \"+onclick+\" ?\");\
+  reply[0] = click_cnt;\
+  };\
+  xml_div.onmouseover = function(){\
+  xml_div.style.color = \"red\";\
+  };\
+  xml_div.onmouseout = function(){\
+  xml_div.style.color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
   };\
  };\
  xml_div.style.position = \"absolute\";\
@@ -5936,7 +6028,7 @@ var draw_sgraph = function(canvas_type,precision,xmajor,ymajor,xminor,yminor,maj
   else\
   {\
    ctx.fillText(num,x - 0.5*txtsize,zero_y+2*font_size);\
-  }\
+  };\
   num = num + xmajor;\
  };\
  ctx.stroke();\
@@ -7296,6 +7388,7 @@ int get_token(FILE *infile){
 	*snaptogrid="snaptogrid",
 	*xsnaptogrid="xsnaptogrid",
 	*ysnaptogrid="ysnaptogrid",
+	*snaptopoints="snaptopoints",
 	*userinput_xy="userinput_xy",
 	*userinput_function="userinput_function",
 	*usertextarea_xy="usertextarea_xy",
@@ -7995,10 +8088,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return STATUS;
 	}
-	if( strcmp(input_type, snaptogrid) == 0 ){
-	free(input_type);
-	return SNAPTOGRID;
-	}
 	if( strcmp(input_type, xsnaptogrid) == 0 ){
 	free(input_type);
 	return XSNAPTOGRID;
@@ -8006,6 +8095,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, ysnaptogrid) == 0 ){
 	free(input_type);
 	return YSNAPTOGRID;
+	}
+	if( strcmp(input_type, snaptogrid) == 0 ){
+	free(input_type);
+	return SNAPTOGRID;
+	}
+	if( strcmp(input_type, snaptopoints) == 0 ){
+	free(input_type);
+	return SNAPTOPOINTS;
 	}
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);

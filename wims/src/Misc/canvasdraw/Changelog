@@ -456,4 +456,20 @@ zoom blue
        - added command "roundrects color,radius,x1,y1,x2,y2,...."
        - added alernative to command "polyline" : "path color,x1,y1,x2,y2,...."
        - added command "bezier color,xs,ys,x1,y1,x2,y2,x3,y3"
-       
+5/11   - added experimental command "snaptopoints x1,y1,x2,y2,..." 
+	 only implemented in command "userdraw arrow(s),color"
+size 400,400
+xrange -10,10
+yrange -10,10
+linewidth 3
+point 0,0,blue
+points red,-6,0,-3,3,0,6,3,3,6,0,3,-3,0,-6,-3,-3
+snaptopoints 0,0,-6,0,-3,3,0,6,3,3,6,0,3,-3,0,-6,-3,-3
+linewidth 2
+arrowhead 10
+#userdraw arrows2,blue
+userdraw arrow,blue
+
+6/11	- corrected dragging (dragging was missing...) of closed polygon (triangle etc)
+	- added "snaptopoints" to userdraw primitives and drag&onclick library
+	- "click_cnt" counter (to identify the object in reply) only incremented when 'onclick' and / or "drag x|y|xy" is set.

@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Tue Nov  4 10:32:51 CET 2014)</h3></center>
+<center><h3>Implemented canvasdraw commands (Thu Nov  6 12:39:00 CET 2014)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -10,10 +10,10 @@
 <li><span style="color:blue;font-size:0.8em">will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li></ul>
+<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul></ul>
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />Use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
+<li><span style="color:blue;font-size:0.8em">If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
 </span></li>
 	    
 </ul>
@@ -265,7 +265,7 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> roundrect x1,y1,x2,y2,radius,color
+<li><span style="color:red"> roundrect x1,y1,x2,y2,radius in px,color
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
 </span></li>
@@ -281,9 +281,9 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> roundrects color,radius,x11,y11,x12,y12,x21,y21,x22,y22
+<li><span style="color:red"> roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+<li><span style="color:blue;font-size:0.8em"> for filled roundrects use command/keyword 'filled' before command
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
@@ -513,7 +513,7 @@
 	    
 <li><span style="color:red">triangle x1,y1,x2,y2,x3,y3,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em">may be set draggable / onclic
+<li><span style="color:blue;font-size:0.8em">may be set draggable / onclick
 </span></li>
 	    
 </ul>
@@ -535,9 +535,25 @@
 	    
 </ul>
 	    
+<li><span style="color:red"> snaptopoints x1,y1,x2,y2,x3,y3....
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> a userdraw object will snap to these points.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> a draggable object (use command "drag x|y|xy") will snap to the clossed of these points when dragged (mouseup)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> other options: use keyword "snaptogrid", "xsnaptogrid" or "ysnaptogrid"
+</span></li>
+	    
+</ul>
+	    
 <li><span style="color:red"> snaptogrid
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> a draggable object (use command "drag x|y|xy") will snap to the given grid when dragged (mouseup)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to xmajor / ymajor grid
@@ -556,6 +572,9 @@
 <li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> a draggable object (use command "drag x|y|xy") will snap to the given x-grid values when dragged (mouseup)
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to xmajor grid
 </span></li>
 	    
@@ -570,6 +589,9 @@
 <li><span style="color:red"> ysnaptogrid
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> a draggable object (use command "drag x|y|xy") will snap to the given y-grid values when dragged (mouseup)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to ymajor grid
@@ -689,6 +711,9 @@
 	    
 <li><span style="color:red"> userdraw object_type,color
 </span><ul>
+<li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed (in this canvasdraw version)
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 </span></li>
 	    
@@ -1484,13 +1509,16 @@
 <li><span style="color:blue;font-size:0.8em"> keyword, no arguments
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if the next object is clicked, it's 'object sequence number' in fly script is returned <br /> by javascript:read_canvas();
+<li><span style="color:blue;font-size:0.8em"> if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> NOTE: not all objects may be set clickable
+<li><span style="color:blue;font-size:0.8em"> onclick and drag x|y|xy may be combined (although a single object can not be onclick and draggable)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> NOTE: not all objects may be set onclick
 </span></li>
 	    
 </ul>
@@ -1506,10 +1534,19 @@
 <li><span style="color:blue;font-size:0.8em"> the precision (default 2 decimals) in the student reply may be set with command 'precision'.<br />Use this 'precision' command before this command 'drag x|y|xy' !
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the answer is : object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the place of the draggable object in your script.<br />Only draggable object will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
+<li><span style="color:blue;font-size:0.8em"> 'onclick' and 'drag x|y|xy' may be combined (for different objects: a single object can either be onclick or drag , not both )
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> use keywordd 'snaptogrid' , 'xsnaptogrid' or 'ysnaptogrid' to switch from free to discrete movement
+<li><span style="color:blue;font-size:0.8em"> 'multi_objects' will be numbered in the given x/y-sequence (example: points red,0,0,1,1,2,2,3,3 : point (0:0) is object_number 1)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> attention: static objects and 'onclick/drag' objects of the same type (like point,circle,etc) with the same coordinates (e.g. objects that overlap) will give problems in the 'recognition algorithm')<br />in this example<br /><em>linewidth 4<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>the blue point will not be recognised as draggable !<br /><em>linewidth 4<br />drag xy<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>both points will be recognised
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the answer is : drag_or_onclick_object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the sequence number of the draggable &amp; onclick objects in your script.<br />Only draggable & onclick objects will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use keyword 'snaptogrid' , 'xsnaptogrid' , 'ysnaptogrid' or command 'snaptopoints x1,y1,x2,y2,...' to switch from free to discrete movement
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.

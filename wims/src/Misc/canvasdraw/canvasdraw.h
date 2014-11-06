@@ -166,6 +166,7 @@
 #define VLINES		169
 #define ROUNDRECTS	170
 #define BEZIER		171
+#define SNAPTOPOINTS	172
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
