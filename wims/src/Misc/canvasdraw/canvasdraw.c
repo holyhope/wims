@@ -1099,9 +1099,10 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    break;
 	case DASHTYPE:
 	/*
-	@ dashtype int ,int
-	@ When dashed is set, the objects will be drawn with this dashtyp
-	@ default value "dashtype 2,2"
+	@ dashtype line_width_px,space_width_px
+	@ When dashed is set, the objects will be drawn with this dashtype
+	@ default value "dashtype 2,2" e.g. 2px line and 2px space
+	@ html5 canvas specification supports more arguments (dashing schemes) ... but not all modern browsers are yet capable
 	*/
 	    for(i=0;i<2;i++){
 		switch(i){
@@ -1432,7 +1433,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		i++;
 	    }
 	    decimals = find_number_of_digits(precision);
-	    fprintf(js_include_file,"\nuse_snap_to_points = 1;\nfunction find_min_diff(x,y,X,Y){var diff = 100000000;var chk;var idx = 0;for(var p = 0 ; p < %d ; p++){chk = distance(x,y,X[p],Y[p]);if( chk  < diff ){ diff = chk; idx = p;};};return idx;};\n\\nfunction snap_to_points(x,y){x = px2x(x); y = px2y(y);var points = [%s];var xpoints = points[0];var ypoints = points[1];var idx = find_min_diff(x,y,xpoints,ypoints);x = xpoints[idx];y = ypoints[idx];return [x2px(x),y2px(y)];};\n",(int) (0.5*i),double_xy2js_array(double_data,i,decimals));
+	    fprintf(js_include_file,"\nuse_snap_to_points = 1;\nfunction find_min_diff(x,y,X,Y){var diff = 100000000;var chk;var idx = 0;for(var p = 0 ; p < %d ; p++){chk = distance(x,y,X[p],Y[p]);if( chk  < diff ){ diff = chk; idx = p;};};return idx;};\nfunction snap_to_points(x,y){x = px2x(x); y = px2y(y);var points = [%s];var xpoints = points[0];var ypoints = points[1];var idx = find_min_diff(x,y,xpoints,ypoints);x = xpoints[idx];y = ypoints[idx];return [x2px(x),y2px(y)];};\n",(int) (0.5*i),double_xy2js_array(double_data,i,decimals));
 	break;
 	case SNAPTOGRID:
 	/*
@@ -1440,6 +1441,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required)
 	 @ a draggable object (use command "drag  x|y|xy") will snap to the given grid when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
+	 @ if no grid is defined ,points will snap to every integer xrange/yrange value. (eg snap_x=1,snap_y=1)
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor / yminor is defined,(use keyword 'axis' to activate the minor steps) the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
@@ -1451,6 +1453,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required) 
 	 @ a draggable object (use command "drag  x|y|xy") will snap to the given x-grid values when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to xmajor grid
+	 @ if no grid is defined ,points will snap to every integer xrange value. (eg snap_x=1)
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if xminor is defined (use keyword 'axis' to activate xminor), the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
@@ -1462,6 +1465,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ keyword (no arguments required) 
 	 @ a draggable object (use command "drag  x|y|xy") will snap to the given y-grid values when dragged (mouseup)
 	 @ in case of userdraw the drawn points will snap to ymajor grid
+	 @ if no grid is defined ,points will snap to every integer yrange value. (eg snap_y=1)
 	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 	 @ if yminor is defined (use keyword 'axis' to activate yminor), the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
 	*/
@@ -1606,7 +1610,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	@ use command "dashed" and/or "dashtype int,int" to trigger dashing
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
-	@ may be combined with keyword 'userinput_xy' or
+	@ may be combined with keyword 'userinput_xy' 
 	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
@@ -4071,7 +4075,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     char tmp[MAX_INT];
     /* 
      these things are 'allowed functions' : *,^,+,-,/,(,),e,arc,cos,tan,pi,log,ln,sqrt,abs 
-     but thereshould be a better way to avoid segfaults !
+     but there should be a better way to avoid segfaults !
     */
     const char *allowed = "earcostanpilogqb*+-/^()";/* assuming these are allowed stuff in a 'number'*/
     const char *not_allowed = "#dfhjkmuvwxyz{}[]%&~!$";/* avoid segmentation faults in a "atof()" and "wims eval" */
@@ -4112,7 +4116,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
 
 
 void canvas_error(char *msg){
-    fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number-1,msg);
+    fprintf(stdout,"\n</script><hr /><span style=\"color:red\">FATAL syntax error:line %d : %s</span><hr />",line_number,msg);
     finished = 1;
     exit(EXIT_SUCCESS);
 }
