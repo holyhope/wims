@@ -257,6 +257,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
   add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 
 	    break;
+
 	case XRANGE:
 	/*
 	@ xrange xmin,xmax
@@ -273,6 +274,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    fprintf(js_include_file,"var xmin = %f;var xmax = %f;",xmin,xmax);
 	    found_size_command++;
 	    break;
+
 	case YRANGE:
 	/*
 	@ yrange ymin,ymax
@@ -289,6 +291,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    fprintf(js_include_file,"var ymin = %f;var ymax = %f;",ymin,ymax);
 	    found_size_command++;
 	    break;
+
 	case TRANGE:
 	/*
 	@ trange tmin,tmax
@@ -304,6 +307,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    if(tmin >= tmax ){canvas_error(" trange is not OK : tmin &lt; tmax!\n");}
 	    break;
+
 	case LINEWIDTH:
 	/*
 	@ linewidth int
@@ -311,13 +315,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	*/
 	    line_width = (int) (get_real(infile,1));
 	    break;
-	case ARROWHEAD:
-	/*
-	@ arrowhead int
-	@ default 8 (pixels)
-	*/
-	    arrow_head = (int) (get_real(infile,1));
-	    break;
+
 	case CROSSHAIRSIZE:
 	/*
 	@ crosshairsize int
@@ -325,6 +323,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	*/
 	    crosshair_size = (int) (get_real(infile,1));
 	    break;
+
 	case CROSSHAIR:
 	/*
 	@ crosshair x,y,color
@@ -347,6 +346,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
 	case CROSSHAIRS:
 	/*
 	@ crosshairs color,x1,y1,x2,y2,...,x_n,y_n
@@ -376,6 +376,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case POINT:
 	/*
 	@ point x,y,color
@@ -399,6 +400,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case POINTS:
 	/*
 	@ points color,x1,y1,x2,y2,...,x_n,y_n
@@ -428,6 +430,85 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
+	case CIRCLE:
+	/*
+	@ circle xc,yc,width (2*r in pixels),color
+	@ use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
+	@ use command 'fillcolor color' to set the fillcolor
+	@ may be set draggable / onclick
+	@ will shrink / expand on zoom out / zoom in
+	*/
+    	    for(i=0;i<4;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* for zoom in/out : radius in 'dx' xrange*/
+    		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
+			break;
+		    default : break;
+		}
+	    }
+	    break;
+
+	case CIRCLES:
+	/*
+	@ circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
+	@ Attention r = radius in x-range (!)
+	@ use command 'fillcolor color' to set the fillcolor
+	@ may be set draggable / onclick (individually)
+	@ will shrink / expand on zoom out / zoom in
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=1;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		switch (i%3){
+		 case 1:double_data[i-1] = get_real(infile,0);break; /* x */
+		 case 2:double_data[i-1] = get_real(infile,0);break; /* y */
+		 case 0:double_data[i-1] = get_real(infile,1);break; /* r */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+3){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[c+2],double_data[c+2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
+	    }
+	    reset();
+	    break;
+
+	case SEGMENT:
+	/*
+	@ segment x1,y1,x2,y2,color
+	@ draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<5;i++) {
+		switch(i){
+		    case 0: double_data[0]= get_real(infile,0);break; /* x1-values */
+		    case 1: double_data[1]= get_real(infile,0);break; /* y1-values */
+		    case 2: double_data[2]= get_real(infile,0);break; /* x2-values */
+		    case 3: double_data[3]= get_real(infile,0);break; /* y2-values */
+		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
+			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++; */
+			reset();
+			break;
+		    default: break;
+		}
+	    }
+	    break;
+
 	case SEGMENTS:
 	/*
 	@ segments color,x1,y1,x2,y2,...,x_n,y_n
@@ -457,29 +538,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
-	case SEGMENT:
-	/*
-	@ segment x1,y1,x2,y2,color
-	@ draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
-	@ may be set draggable / onclick
-	*/
-	    for(i=0;i<5;i++) {
-		switch(i){
-		    case 0: double_data[0]= get_real(infile,0);break; /* x1-values */
-		    case 1: double_data[1]= get_real(infile,0);break; /* y1-values */
-		    case 2: double_data[2]= get_real(infile,0);break; /* x2-values */
-		    case 3: double_data[3]= get_real(infile,0);break; /* y2-values */
-		    case 4: stroke_color=get_color(infile,1);/* name or hex color */
-			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,4,[%.*f,%.*f],[%.*f,%.*f],[30,30],[30,30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			if(onclick > 0){click_cnt++;}
-			/* click_cnt++; */
-			reset();
-			break;
-		    default: break;
-		}
-	    }
-	    break;
+
 	case LINE:
 	/*
 	@ line x1,y1,x2,y2,color
@@ -532,6 +591,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
 	case LINES:
 	/*
 	@ lines color,x1,y1,x2,y2...x_n-1,y_n-1,x_n,y_n
@@ -587,6 +647,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case HALFLINE:
 	/*
 	@ demiline x1,y1,x2,y2,color
@@ -649,6 +710,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
 	case HALFLINES:
 	/*
 	@ demilines color,x1,y1,x2,y2,....
@@ -715,6 +777,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case HLINE:
 	/*
 	@ hline x,y,color
@@ -766,6 +829,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case VLINE:
 	/*
 	@ vline x,y,color
@@ -787,6 +851,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
 	case VLINES:
 	/*
 	@ vlines color,x1,y1,x2,y2....
@@ -815,6 +880,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case SQUARE:
 	/*
 	@ square x,y,side (px) ,color
@@ -841,67 +907,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
-	case ROUNDRECT:
-	/*
-	@ roundrect x1,y1,x2,y2,radius in px,color
-	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
-	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
-	@ fillcolor will be identical to 'color'
-	@ may be set draggable / onclick
-	*/
-	    for(i=0;i<6;i++){
-		switch(i){
-		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
-		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
-		    case 2:double_data[2] = get_real(infile,0);break; /* x-values */
-		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
-		    case 4:int_data[0] = (int) (get_real(infile,0));break; /* radius value in pixels */
-		    case 5:stroke_color = get_color(infile,1);/* name or hex color */
-			/* ensure no inverted roundrect is produced... */
-			if( double_data[0] > double_data[2] ){double_data[4] = double_data[0];double_data[0] = double_data[2];double_data[2] = double_data[4];}
-			if( double_data[3] > double_data[1] ){double_data[4] = double_data[1];double_data[1] = double_data[3];double_data[3] = double_data[4];}
-    			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			if(onclick > 0){click_cnt++;}
-			/* click_cnt++;*/
-			reset();
-	            break;
-		}
-	    }
-	    break;
-	case ROUNDRECTS:
-	/*
-	@ roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
-	@ for filled roundrects use command/keyword  'filled' before command
-	@ may be set draggable / onclick individually
-	*/
 
-	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
-	    int_data[0] = (int) (get_real(infile,0)); /* radius value in pixels */
-	    fill_color = stroke_color;
-	    i=0;
-	    while( ! done ){     /* get next item until EOL*/
-		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
-		if(i%2 == 0 ){
-		    double_data[i] = get_real(infile,0); /* x */
-		}
-		else
-		{
-		    double_data[i] = get_real(infile,1); /* y */
-		}
-		i++;
-	    }
-	    decimals = find_number_of_digits(precision);
-	    for(c = 0 ; c < i-1 ; c = c+4){
-		/* ensure no inverted roundrect is produced... */
-		if( double_data[c] > double_data[c+2] ){double_data[c+4] = double_data[c];double_data[c] = double_data[c+2];double_data[c+2] = double_data[c+4];}
-		if( double_data[c+3] > double_data[c+1] ){double_data[c+4] = double_data[c+1];double_data[c+1] = double_data[c+3];double_data[c+3] = double_data[c+4];}
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    		if(onclick > 0){click_cnt++;}
-		/* click_cnt++; */
-	    }
-	    reset();
-	    break;
 	case RECT:
 	/*
 	@ rect x1,y1,x2,y2,color
@@ -956,6 +962,69 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
+	case ROUNDRECT:
+	/*
+	@ roundrect x1,y1,x2,y2,radius in px,color
+	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
+	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+	@ fillcolor will be identical to 'color'
+	@ may be set draggable / onclick
+	*/
+	    for(i=0;i<6;i++){
+		switch(i){
+		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
+		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
+		    case 2:double_data[2] = get_real(infile,0);break; /* x-values */
+		    case 3:double_data[3] = get_real(infile,0);break; /* y-values */
+		    case 4:int_data[0] = (int) (get_real(infile,0));break; /* radius value in pixels */
+		    case 5:stroke_color = get_color(infile,1);/* name or hex color */
+			/* ensure no inverted roundrect is produced... */
+			if( double_data[0] > double_data[2] ){double_data[4] = double_data[0];double_data[0] = double_data[2];double_data[2] = double_data[4];}
+			if( double_data[3] > double_data[1] ){double_data[4] = double_data[1];double_data[1] = double_data[3];double_data[3] = double_data[4];}
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+			if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
+	            break;
+		}
+	    }
+	    break;
+
+	case ROUNDRECTS:
+	/*
+	@ roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
+	@ for filled roundrects use command/keyword  'filled' before command
+	@ may be set draggable / onclick individually
+	*/
+
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    int_data[0] = (int) (get_real(infile,0)); /* radius value in pixels */
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 0 ; c < i-1 ; c = c+4){
+		/* ensure no inverted roundrect is produced... */
+		if( double_data[c] > double_data[c+2] ){double_data[c+4] = double_data[c];double_data[c] = double_data[c+2];double_data[c+2] = double_data[c+4];}
+		if( double_data[c+3] > double_data[c+1] ){double_data[c+4] = double_data[c+1];double_data[c+1] = double_data[c+3];double_data[c+3] = double_data[c+4];}
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,6,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+2],decimals,double_data[c+1],decimals,double_data[c+3],int_data[0],int_data[0],int_data[0],int_data[0],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+    		if(onclick > 0){click_cnt++;}
+		/* click_cnt++; */
+	    }
+	    reset();
+	    break;
 	case POLYLINE:
 	/*
 	@ polyline color,x1,y1,x2,y2...x_n,y_n
@@ -993,7 +1062,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	/*
 	@ poly color,x1,y1,x2,y2...x_n,y_n
 	@ draw closed polygon
-	@ use command 'fpoly' to fill it, use command 'fillcolor color' to set the fill color
+	@ use command 'fpoly' to fill it
 	@ may be set draggable / onclick
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1111,59 +1180,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	break;
-	case CIRCLE:
-	/*
-	@ circle xc,yc,width (2*r in pixels),color
-	@ use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
-	@ use command 'fillcolor color' to set the fillcolor
-	@ may be set draggable / onclick
-	@ will shrink / expand on zoom out / zoom in
-	*/
-    	    for(i=0;i<4;i++){
-    		switch(i){
-    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
-    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
-    		    case 2: double_data[2] = px2x((get_real(infile,0))/2) - px2x(0);break; /* for zoom in/out : radius in 'dx' xrange*/
-    		    case 3: stroke_color = get_color(infile,1);/* name or hex color */
-    			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],double_data[2],double_data[2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-			if(onclick > 0){click_cnt++;}
-			/* click_cnt++;*/
-			reset();
-			break;
-		    default : break;
-		}
-	    }
-	    break;
 
-	case CIRCLES:
-	/*
-	@ circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
-	@ Attention r = radius in x-range (!)
-	@ use command 'fillcolor color' to set the fillcolor
-	@ may be set draggable / onclick (individually)
-	@ will shrink / expand on zoom out / zoom in
-	*/
-	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
-	    fill_color = stroke_color;
-	    i=1;
-	    while( ! done ){     /* get next item until EOL*/
-		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
-		switch (i%3){
-		 case 1:double_data[i-1] = get_real(infile,0);break; /* x */
-		 case 2:double_data[i-1] = get_real(infile,0);break; /* y */
-		 case 0:double_data[i-1] = get_real(infile,1);break; /* r */
-		}
-		i++;
-	    }
-	    decimals = find_number_of_digits(precision);
-	    for(c = 0 ; c < i-1 ; c = c+3){
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,13,[%.*f],[%.*f],[%.3f],[%.3f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[c+2],double_data[c+2],line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-    		if(onclick > 0){click_cnt++;}
-		/* click_cnt++; */
-	    }
-	    reset();
-	    break;
 	case RAYS:
 	/*
 	 @ rays color,xc,yc,x1,y1,x2,y2,x3,y3...x_n,y_n
@@ -1198,6 +1215,39 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    reset();
 	    break;
 
+	case ARROWHEAD:
+	/*
+	@ arrowhead int
+	@ default 8 (pixels)
+	*/
+	    arrow_head = (int) (get_real(infile,1));
+	    break;
+
+	case ARROW:
+	/*
+	@ arrow x1,y1,x2,y2,h,color
+	@ draw a single headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
+	@ use command 'linewidth int' to adjust thickness of the arrow
+	@ may be set draggable / onclick
+	*/
+    	    for(i=0;i<6;i++){
+    		switch(i){
+    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
+    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
+    		    case 2: double_data[2] = get_real(infile,0);break; /* x */
+    		    case 3: double_data[3] = get_real(infile,0);break; /* y */
+    		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
+    		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
+    			decimals = find_number_of_digits(precision);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+	    		if(onclick > 0){click_cnt++;}
+			/* click_cnt++;*/
+			reset();
+			break;
+    		}
+    	    }
+    	    break;
+
 	case ARROWS:
 	/*
 	@ arrows color,head (px),x1,y1,x2,y2...x_n,y_n
@@ -1228,30 +1278,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
-	case ARROW:
-	/*
-	@ arrow x1,y1,x2,y2,h,color
-	@ draw a single headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
-	@ use command 'linewidth int' to adjust thickness of the arrow
-	@ may be set draggable / onclick
-	*/
-    	    for(i=0;i<6;i++){
-    		switch(i){
-    		    case 0: double_data[0] = get_real(infile,0);break; /* x */
-    		    case 1: double_data[1] = get_real(infile,0);break; /* y */
-    		    case 2: double_data[2] = get_real(infile,0);break; /* x */
-    		    case 3: double_data[3] = get_real(infile,0);break; /* y */
-    		    case 4: arrow_head = (int) get_real(infile,0);break;/* h */
-    		    case 5: stroke_color = get_color(infile,1);/* name or hex color */
-    			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,8,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%d,%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[2],decimals,double_data[1],decimals,double_data[3],arrow_head,arrow_head,arrow_head,arrow_head,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-	    		if(onclick > 0){click_cnt++;}
-			/* click_cnt++;*/
-			reset();
-			break;
-    		}
-    	    }
-    	    break;
+
 	case ARROW2:
 	/*
 	@ arrow2 x1,y1,x2,y2,h,color
@@ -1277,6 +1304,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		}
     	    }
     	    break;
+
 	case ARROWS2:
 	/*
 	@ arrows2 color,head (px),x1,y1,x2,y2...x_n,y_n
@@ -1308,6 +1336,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
+
 	case PARALLEL:
 	/*
 	 @ parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
@@ -1333,6 +1362,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    break;
+
 	case TRIANGLE:
 	/*
 	 @triangle x1,y1,x2,y2,x3,y3,color
@@ -1357,6 +1387,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		}
     	    }
 	    break;
+
 	case LATTICE:
 	/*
 	 @lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
@@ -1384,219 +1415,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	    break;
-	case BEZIER:
-	/*
-	@bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
-	@draw a bezier curve between points, starting from (x_start:y_start)
-	@can not be dragged or set onclick
-	*/
-	    if( js_function[DRAW_BEZIER] != 1 ){ js_function[DRAW_BEZIER] = 1;}
-	    decimals = find_number_of_digits(precision);
-	    for(i = 0 ; i < 9; i++){
-	        switch(i){
-	    	    case 0: stroke_color = get_color(infile,0);break;
-		    case 1: double_data[0] = get_real(infile,0);break;/* start x */
-		    case 2: double_data[1] = get_real(infile,0);break;/* start y */
-		    case 3: double_data[2] = get_real(infile,0);break;/*The x-coordinate of the first Bézier control point */
-	    	    case 4: double_data[3] = get_real(infile,0);break;/*The y-coordinate of the first Bézier control point */
-		    case 5: double_data[4] = get_real(infile,0);break;/*The x-coordinate of the second Bézier control point */
-	    	    case 6: double_data[5] = get_real(infile,0);break;/*The y-coordinate of the second Bézier control point */
-		    case 7: double_data[6] = get_real(infile,0);break;/*The x-coordinate of the Bézier end point */
-		    case 8: double_data[7] = get_real(infile,1);/*The y-coordinate of the Bézier end point */
-			string_length = snprintf(NULL,0,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
-			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			snprintf(tmp_buffer,string_length,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
-			add_to_buffer(tmp_buffer);
-			break;
-		    default: break;
-		}
-	    }
-	    reset();
-	    break;
-	case SNAPTOPOINTS:
-	/*
-	@ snaptopoints x1,y1,x2,y2,x3,y3....
-	@ a userdraw object will snap to these points.
-	@ a draggable object (use command "drag  x|y|xy") will snap to the clossed of these points when dragged (mouseup)
-	@ other options: use keyword "snaptogrid", "xsnaptogrid" or "ysnaptogrid" 
-	*/
-	    i = 0;
-	    while( ! done ){     /* get next item until EOL*/
-		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
-		if(i%2 == 0 ){
-		    double_data[i] = get_real(infile,0); /* x */
-		}
-		else
-		{
-		    double_data[i] = get_real(infile,1); /* y */
-		}
-		i++;
-	    }
-	    decimals = find_number_of_digits(precision);
-	    fprintf(js_include_file,"\nuse_snap_to_points = 1;\nfunction find_min_diff(x,y,X,Y){var diff = 100000000;var chk;var idx = 0;for(var p = 0 ; p < %d ; p++){chk = distance(x,y,X[p],Y[p]);if( chk  < diff ){ diff = chk; idx = p;};};return idx;};\nfunction snap_to_points(x,y){x = px2x(x); y = px2y(y);var points = [%s];var xpoints = points[0];var ypoints = points[1];var idx = find_min_diff(x,y,xpoints,ypoints);x = xpoints[idx];y = ypoints[idx];return [x2px(x),y2px(y)];};\n",(int) (0.5*i),double_xy2js_array(double_data,i,decimals));
-	break;
-	case SNAPTOGRID:
-	/*
-	 @ snaptogrid
-	 @ keyword (no arguments required)
-	 @ a draggable object (use command "drag  x|y|xy") will snap to the given grid when dragged (mouseup)
-	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
-	 @ if no grid is defined ,points will snap to every integer xrange/yrange value. (eg snap_x=1,snap_y=1)
-	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if xminor / yminor is defined,(use keyword 'axis' to activate the minor steps) the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
-	*/
-	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;");
-	break;
-	case XSNAPTOGRID:
-	/*
-	 @ xsnaptogrid
-	 @ keyword (no arguments required) 
-	 @ a draggable object (use command "drag  x|y|xy") will snap to the given x-grid values when dragged (mouseup)
-	 @ in case of userdraw the drawn points will snap to xmajor grid
-	 @ if no grid is defined ,points will snap to every integer xrange value. (eg snap_x=1)
-	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if xminor is defined (use keyword 'axis' to activate xminor), the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
-	*/
-	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 0;");
-	break;
-	case YSNAPTOGRID:
-	/*
-	 @ ysnaptogrid
-	 @ keyword (no arguments required) 
-	 @ a draggable object (use command "drag  x|y|xy") will snap to the given y-grid values when dragged (mouseup)
-	 @ in case of userdraw the drawn points will snap to ymajor grid
-	 @ if no grid is defined ,points will snap to every integer yrange value. (eg snap_y=1)
-	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
-	 @ if yminor is defined (use keyword 'axis' to activate yminor), the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
-	*/
-	fprintf(js_include_file,"\nx_use_snap_to_grid = 0;y_use_snap_to_grid = 1;");
-	break;
-	case USERINPUT:
-	/*
-	 @ userinput function | textarea | inputfield
-	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
-	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
-	 @ function may be used any time (e.g. without userdraw)
-	 @ use command "functionlabel some_string" to define the inputfield text : default value "f(x)="
-	 @ use command 'strokecolor some_color' to adjust the plot / functionlabel color
-	 @ the userinput for the function will be corrected by a simple 'rawmath' implementation...
-	*/
-	    temp = get_string_argument(infile,1);
-	    if(strstr(temp,"function") != 0  || strstr(temp,"curve") != 0  || strstr(temp,"plot") != 0 ){
-	     if( js_function[DRAW_JSFUNCTION] != 1 ){
-	      add_rawmath(js_include_file);/* add simple rawmath routine to correct user input of function */
-	      js_function[DRAW_JSFUNCTION] = 1;
-	      if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	      add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
-	      input_cnt++;
-	     }
-	     else 
-	     {
-	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
-	      fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
-	      input_cnt++;
-	     }
-	     if( use_js_math == FALSE){/* add this stuff only once...*/
-	      add_to_js_math(js_include_file);
-	      use_js_math = TRUE;
-	     }
-	     if( use_js_plot == FALSE){
-	      use_js_plot = TRUE;
-	      add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
-	     }
-	    }
-	    else
-	    {
-	     if(strstr(temp,"inputfield") != 0 ){
-	      if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
-	      if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
-	      use_input_xy = 1;
-	     }
-	     else
-	     {
-	      if(strstr(temp,"textarea") != 0 ){
-	       if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
-	       if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
-	       use_input_xy = 2;
-	      }
-	      else
-	      {
-	        canvas_error("userinput argument may be \"function,inputfield,textarea\"");
-	      }
-	     }
-	    }
-	    break;
-	case USERTEXTAREA_XY:
-	/*
-	@ usertextarea_xy
-	@ keyword
-	@ to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
-	@ if set two textareas are added to the document<br />(one for x-values , one for y-values)
-	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
-	@ user drawings will not zoom on zooming (or pan on panning)
-	*/
-	    if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
-	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
-	    use_input_xy = 2;
-	    break;
-	case USERINPUT_XY:
-	/*
-	@ userinput_xy
-	@ keyword
-	@ to be used in combination with command "userdraw object_type,color"
-	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
-	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
-	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
-	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
-	@ user drawings will not zoom on zooming (or pan on panning)
-	*/
-	    /* add simple eval check to avoid code injection with unprotected eval(string) */
-	    if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
-	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
-	    use_input_xy = 1;
-	    break;
-	case FUNCTION_LABEL:
-	/*
-	 @ functionlabel 'some string'
-	 @ default value "f(x)="
-	 @ no mathml allowed (just ascii string)
-	 @ if needed, use before every command 'userinput function | inputfield | textarea'
-	*/
-	    function_label = get_string_argument(infile,1);
-	    break;
-	case USERINPUT_FUNCTION:
-	/*
-	@ userinput_function
-	@ keyword
-	@ if set , a inputfield will be added to the page
-	@ repeat keyword for more function input fields
-	@ the userinput value will be plotted in the canvas
-	@ this value may be read with 'read_canvas()'. <br />for do it yourself js-scripters : If this is the first inputfield in the script, it's id is canvas_input0
-	@ use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
-	@ incompatible with command 'intooltip link_text_or_image' : it uses the tooltip div for adding the inputfield
-	*/
-	    if( js_function[DRAW_JSFUNCTION] != 1 ){
-	     js_function[DRAW_JSFUNCTION] = 1;
-	     add_rawmath(js_include_file);
-	     if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	     add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
-	     input_cnt++;
-	    }
-	    else 
-	    {
-	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
-	     fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
-	     input_cnt++;
-	    }
-	    if( use_js_math == FALSE){/* add this stuff only once...*/
-	     add_to_js_math(js_include_file);
-	     use_js_math = TRUE;
-	    }
-	    if( use_js_plot == FALSE){
-	     use_js_plot = TRUE;
-	     add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
-	    }
-	    break;
+
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
@@ -1989,6 +1808,201 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    reset();
 	break;
+
+
+	case SNAPTOPOINTS:
+	/*
+	@ snaptopoints x1,y1,x2,y2,x3,y3....
+	@ a userdraw object will snap to these points.
+	@ a draggable object (use command "drag  x|y|xy") will snap to the clossed of these points when dragged (mouseup)
+	@ other options: use keyword "snaptogrid", "xsnaptogrid" or "ysnaptogrid" 
+	*/
+	    i = 0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    fprintf(js_include_file,"\nuse_snap_to_points = 1;\nfunction find_min_diff(x,y,X,Y){var diff = 100000000;var chk;var idx = 0;for(var p = 0 ; p < %d ; p++){chk = distance(x,y,X[p],Y[p]);if( chk  < diff ){ diff = chk; idx = p;};};return idx;};\nfunction snap_to_points(x,y){x = px2x(x); y = px2y(y);var points = [%s];var xpoints = points[0];var ypoints = points[1];var idx = find_min_diff(x,y,xpoints,ypoints);x = xpoints[idx];y = ypoints[idx];return [x2px(x),y2px(y)];};\n",(int) (0.5*i),double_xy2js_array(double_data,i,decimals));
+	break;
+
+	case SNAPTOGRID:
+	/*
+	 @ snaptogrid
+	 @ keyword (no arguments required)
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given grid when dragged (mouseup)
+	 @ in case of userdraw the drawn points will snap to xmajor / ymajor grid
+	 @ if no grid is defined ,points will snap to every integer xrange/yrange value. (eg snap_x=1,snap_y=1)
+	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
+	 @ if xminor / yminor is defined,(use keyword 'axis' to activate the minor steps) the drawing will snap to xminor and yminor<br />use only even dividers in x/y-minor...for example<br />snaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	*/
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 1;");
+	break;
+
+	case XSNAPTOGRID:
+	/*
+	 @ xsnaptogrid
+	 @ keyword (no arguments required) 
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given x-grid values when dragged (mouseup)
+	 @ in case of userdraw the drawn points will snap to xmajor grid
+	 @ if no grid is defined ,points will snap to every integer xrange value. (eg snap_x=1)
+	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
+	 @ if xminor is defined (use keyword 'axis' to activate xminor), the drawing will snap to xminor <br />use only even dividers in x-minor...for example<br />xsnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	*/
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 1;y_use_snap_to_grid = 0;");
+	break;
+
+	case YSNAPTOGRID:
+	/*
+	 @ ysnaptogrid
+	 @ keyword (no arguments required) 
+	 @ a draggable object (use command "drag  x|y|xy") will snap to the given y-grid values when dragged (mouseup)
+	 @ in case of userdraw the drawn points will snap to ymajor grid
+	 @ if no grid is defined ,points will snap to every integer yrange value. (eg snap_y=1)
+	 @ if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
+	 @ if yminor is defined (use keyword 'axis' to activate yminor), the drawing will snap to yminor <br />use only even dividers in y-minor...for example<br />ysnaptogrid<br />axis<br />grid 2,1,grey,4,4,7,red<br /> will snap on x=0, x=0.5, x=1, x=1.5 ....<br /> will snap on y=0, y=0.25 y=0.5 y=0.75 ...<br />
+	*/
+	fprintf(js_include_file,"\nx_use_snap_to_grid = 0;y_use_snap_to_grid = 1;");
+	break;
+
+	case USERINPUT:
+	/*
+	 @ userinput function | textarea | inputfield
+	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
+	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
+	 @ function may be used any time (e.g. without userdraw)
+	 @ use command "functionlabel some_string" to define the inputfield text : default value "f(x)="
+	 @ use command 'strokecolor some_color' to adjust the plot / functionlabel color
+	 @ the userinput for the function will be corrected by a simple 'rawmath' implementation...
+	*/
+	    temp = get_string_argument(infile,1);
+	    if(strstr(temp,"function") != 0  || strstr(temp,"curve") != 0  || strstr(temp,"plot") != 0 ){
+	     if( js_function[DRAW_JSFUNCTION] != 1 ){
+	      add_rawmath(js_include_file);/* add simple rawmath routine to correct user input of function */
+	      js_function[DRAW_JSFUNCTION] = 1;
+	      if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
+	      add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	      input_cnt++;
+	     }
+	     else 
+	     {
+	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
+	      fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	      input_cnt++;
+	     }
+	     if( use_js_math == FALSE){/* add this stuff only once...*/
+	      add_to_js_math(js_include_file);
+	      use_js_math = TRUE;
+	     }
+	     if( use_js_plot == FALSE){
+	      use_js_plot = TRUE;
+	      add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
+	     }
+	    }
+	    else
+	    {
+	     if(strstr(temp,"inputfield") != 0 ){
+	      if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
+	      if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	      use_input_xy = 1;
+	     }
+	     else
+	     {
+	      if(strstr(temp,"textarea") != 0 ){
+	       if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
+	       if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	       use_input_xy = 2;
+	      }
+	      else
+	      {
+	        canvas_error("userinput argument may be \"function,inputfield,textarea\"");
+	      }
+	     }
+	    }
+	    break;
+
+	case USERTEXTAREA_XY:
+	/*
+	@ usertextarea_xy
+	@ keyword
+	@ to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
+	@ if set two textareas are added to the document<br />(one for x-values , one for y-values)
+	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
+	@ user drawings will not zoom on zooming (or pan on panning)
+	*/
+	    if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	    use_input_xy = 2;
+	    break;
+
+	case USERINPUT_XY:
+	/*
+	@ userinput_xy
+	@ keyword
+	@ to be used in combination with command "userdraw object_type,color"
+	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
+	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
+	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
+	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+	@ user drawings will not zoom on zooming (or pan on panning)
+	*/
+	    /* add simple eval check to avoid code injection with unprotected eval(string) */
+	    if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	    use_input_xy = 1;
+	    break;
+
+	case FUNCTION_LABEL:
+	/*
+	 @ functionlabel 'some string'
+	 @ default value "f(x)="
+	 @ no mathml allowed (just ascii string)
+	 @ if needed, use before every command 'userinput function | inputfield | textarea'
+	*/
+	    function_label = get_string_argument(infile,1);
+	    break;
+
+	case USERINPUT_FUNCTION:
+	/*
+	@ userinput_function
+	@ keyword
+	@ if set , a inputfield will be added to the page
+	@ repeat keyword for more function input fields
+	@ the userinput value will be plotted in the canvas
+	@ this value may be read with 'read_canvas()'. <br />for do it yourself js-scripters : If this is the first inputfield in the script, it's id is canvas_input0
+	@ use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
+	@ incompatible with command 'intooltip link_text_or_image' : it uses the tooltip div for adding the inputfield
+	*/
+	    if( js_function[DRAW_JSFUNCTION] != 1 ){
+	     js_function[DRAW_JSFUNCTION] = 1;
+	     add_rawmath(js_include_file);
+	     if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
+	     add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	     input_cnt++;
+	    }
+	    else 
+	    {
+	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
+	     fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	     input_cnt++;
+	    }
+	    if( use_js_math == FALSE){/* add this stuff only once...*/
+	     add_to_js_math(js_include_file);
+	     use_js_math = TRUE;
+	    }
+	    if( use_js_plot == FALSE){
+	     use_js_plot = TRUE;
+	     add_jsplot(js_include_file,canvas_root_id); /* this plots the function on JSPLOT_CANVAS */
+	    }
+	    break;
+
 	case PLOTSTEPS:
 	    /*
 	     @ plotsteps a_number
@@ -2012,75 +2026,6 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @example usage: x/y-axis text
 	*/
 	    font_color = get_color(infile,1);
-	    break;
-	case ANIMATE:
-	/*
-	 @animate type
-	 @REMOVED : this should be done with a slider
-	 @type may be "point" (nothing else , yet...)
-	 @the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
-	 @will animate a point on the next plot/curve command
-	 @the curve will not be draw
-	 @moves repeatedly from xmin to xmax
-	*/
-	    if( strstr(get_string(infile,1),"point") != 0 ){animation_type = 15;}else{canvas_error("the only animation type (for now) is \"point\"...");}
-	    break;
-	case LEVELCURVE:
-	/*
-	@levelcurve color,expression in x/y,l1,l2,...
-	@draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
-	@the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
-	@every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
-	@note : the arrays for holding the javascript data are limited in size
-	@note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
-	*/
-	    fill_color = get_color(infile,0);
-	    char *fun1 = get_string_argument(infile,0);
-	    if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
-	    i = 0;
-	    done = FALSE;
-	    while( !done ){
-	     double_data[i] = get_real(infile,1);
-	     i++;
-	    }
-	    for(c = 0 ; c < i; c++){
-	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
-	     if(onclick > 0){click_cnt++;}
-	     /* click_cnt++; */
-	    }
-	    reset();
-	    break;
-	case TRACE_JSCURVE:
-	/*
-	 @trace_jscurve some_math_function
-	 @will use a crosshair to trace the jsmath curve
-	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
-	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
-	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
-	*/
-	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
-	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
-	    if( use_js_math == FALSE){
-		add_to_js_math(js_include_file);
-		use_js_math = TRUE;
-	    }
-	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
-	    break;
-	case JSMATH:
-	/*
-	    @jsmath some_math_function
-	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
-	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-	    @example: jsmath sin(x^2)
-	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
-	*/
-	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
-	    if( use_js_math == FALSE){
-		add_to_js_math(js_include_file);
-		use_js_math = TRUE;
-	    }
-	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
 	    break;
 	case JSCURVE:
 	/*
@@ -2111,8 +2056,8 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    snprintf(tmp_buffer,string_length,"jsplot(%d,\"%s\",%d,\"%s\",%.2f,%d,%d,%d); ",JSPLOT_CANVAS+use_js_plot,temp,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    add_to_buffer(tmp_buffer);
 	    use_js_plot++; /* we need to create multiple canvasses, so we may zoom and pan ?? */
-
 	break;
+
 	case CURVE:
 	/*
 	 @curve color,formula(x)
@@ -2141,6 +2086,98 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     	    /* click_cnt++; */
 	    reset();
 	    break;
+
+	case LEVELCURVE:
+	/*
+	@levelcurve color,expression in x/y,l1,l2,...
+	@draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
+	@the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
+	@every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
+	@note : the arrays for holding the javascript data are limited in size
+	@note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
+	*/
+	    fill_color = get_color(infile,0);
+	    char *fun1 = get_string_argument(infile,0);
+	    if( strlen(fun1) == 0 ){canvas_error("function is NOT OK !");}
+	    i = 0;
+	    done = FALSE;
+	    while( !done ){
+	     double_data[i] = get_real(infile,1);
+	     i++;
+	    }
+	    for(c = 0 ; c < i; c++){
+	     fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,16,%s,[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,eval_levelcurve(xsize,ysize,fun1,xmin,xmax,ymin,ymax,plot_steps,precision,double_data[c]),line_width,line_width,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+	     if(onclick > 0){click_cnt++;}
+	     /* click_cnt++; */
+	    }
+	    reset();
+	    break;
+
+	case BEZIER:
+	/*
+	@bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
+	@draw a bezier curve between points, starting from (x_start:y_start)
+	@can not be dragged or set onclick
+	*/
+	    if( js_function[DRAW_BEZIER] != 1 ){ js_function[DRAW_BEZIER] = 1;}
+	    decimals = find_number_of_digits(precision);
+	    for(i = 0 ; i < 9; i++){
+	        switch(i){
+	    	    case 0: stroke_color = get_color(infile,0);break;
+		    case 1: double_data[0] = get_real(infile,0);break;/* start x */
+		    case 2: double_data[1] = get_real(infile,0);break;/* start y */
+		    case 3: double_data[2] = get_real(infile,0);break;/*The x-coordinate of the first Bézier control point */
+	    	    case 4: double_data[3] = get_real(infile,0);break;/*The y-coordinate of the first Bézier control point */
+		    case 5: double_data[4] = get_real(infile,0);break;/*The x-coordinate of the second Bézier control point */
+	    	    case 6: double_data[5] = get_real(infile,0);break;/*The y-coordinate of the second Bézier control point */
+		    case 7: double_data[6] = get_real(infile,0);break;/*The x-coordinate of the Bézier end point */
+		    case 8: double_data[7] = get_real(infile,1);/*The y-coordinate of the Bézier end point */
+			string_length = snprintf(NULL,0,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
+			check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			snprintf(tmp_buffer,string_length,"draw_bezier(%d,%d,[%f,%f,%f,%f,%f,%f,%f,%f],\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.2f,%d,%s);",STATIC_CANVAS,line_width,double_data[0],double_data[1],double_data[2],double_data[3],double_data[4],double_data[5],double_data[6],double_data[7],fill_color,fill_opacity,stroke_color,stroke_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,use_affine,affine_matrix);
+			add_to_buffer(tmp_buffer);
+			break;
+		    default: break;
+		}
+	    }
+	    reset();
+	    break;
+
+	case TRACE_JSCURVE:
+	/*
+	 @trace_jscurve some_math_function
+	 @will use a crosshair to trace the jsmath curve
+	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
+	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
+	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	*/
+	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
+	    if( use_js_math == FALSE){
+		add_to_js_math(js_include_file);
+		use_js_math = TRUE;
+	    }
+	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
+	    break;
+
+	case JSMATH:
+	/*
+	    @jsmath some_math_function
+	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
+	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	    @example: jsmath sin(x^2)
+	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	*/
+	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
+	    if( use_js_math == FALSE){
+		add_to_js_math(js_include_file);
+		use_js_math = TRUE;
+	    }
+	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
+	    break;
+
+
 	case FLY_TEXT:
 	/*
 	@ text fontcolor,x,y,font,text_string
@@ -2710,6 +2747,19 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	break;
 
+	case ANIMATE:
+	/*
+	 @animate type
+	 @REMOVED : this should be done with a slider
+	 @type may be "point" (nothing else , yet...)
+	 @the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
+	 @will animate a point on the next plot/curve command
+	 @the curve will not be draw
+	 @moves repeatedly from xmin to xmax
+	*/
+	    if( strstr(get_string(infile,1),"point") != 0 ){animation_type = 15;}else{canvas_error("the only animation type (for now) is \"point\"...");}
+	    break;
+
 	case DASHED:
 	/*
 	@ keyword "dashed"
@@ -2735,6 +2785,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ use command "onclick" : when the object receives a userclick it will increase it's linewidth
 	*/
 	    break;
+
 	case FILLCOLOR:
 	/*
 	@ fillcolor colorname or #hex
@@ -2743,6 +2794,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	*/
 	    fill_color = get_color(infile,1);
 	    break;
+
 	case STROKECOLOR:
 	/*
 	@ strokecolor colorname or #hex
@@ -2750,6 +2802,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	*/
 	    stroke_color = get_color(infile,1);
 	    break;
+
 	case BGIMAGE:
 	/*
 	 @bgimage image_location
@@ -2759,6 +2812,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	URL = get_string(infile,1);
 	fprintf(js_include_file,"<!-- set background image to canvas div -->\ncanvas_div.style.backgroundImage = \"url(%s)\";canvas_div.style.backgroundSize = \"%dpx %dpx\";\n",URL,xsize,ysize);
 	    break;
+
 	case BGCOLOR:
 	/*
 	 @bgcolor colorname or #hex
@@ -2779,6 +2833,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    fprintf(js_include_file,"<!-- set background color of canvas div -->\ncanvas_div.style.backgroundColor = \"%s\";canvas_div.style.opacity = %f;\n",bgcolor,fill_opacity);
 	    break;
+
 	case COPY:
 	/*
 	@ copy x,y,x1,y1,x2,y2,[filename URL]
@@ -3714,8 +3769,8 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	@keyword
 	@alernative keyword: nostatus
 	@used to override the effects of "status=done" in wims (answer.phtml)
-	@affects inputfields / textarea's in canvasimage and all userdraw based commands
-	@e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims status variable' is set to 'done'
+	@affects 'readonly' in inputfields / textarea's in canvasimage and all userdraw based commands
+	@e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims $status variable' is set to 'done'
 	*/
 
 	    fprintf(js_include_file,"\nwims_status=\"waiting\";\n");
@@ -5297,6 +5352,19 @@ function dragxy(evt){\
   var s_img = ext_drag_images[selected_image];\
   s_img[6] = evt.clientX - external_canvas_rect.left + xoff;\
   s_img[7] = evt.clientY - external_canvas_rect.top + yoff;\
+  if( use_snap_to_points == 1){\
+   var img_xy = snap_to_points(s_img[6],s_img[7]);\
+   s_img[6] = img_xy[0];s_img[7] = img_xy[1];\
+  }\
+  else\
+  {\
+   if( x_use_snap_to_grid == 1 ){\
+    s_img[6] = snap_to_x(s_img[6]);\
+   };\
+   if( y_use_snap_to_grid == 1 ){\
+    s_img[7] = snap_to_x(s_img[7]);\
+   };\
+  };\
   ext_drag_images[selected_image] = s_img;\
   external_ctx.clearRect(0,0,xsize,ysize);\
   for(var i = 0; i <= ext_image_cnt ; i++){\
