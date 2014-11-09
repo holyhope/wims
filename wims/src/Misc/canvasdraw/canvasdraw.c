@@ -105,6 +105,7 @@ int main(int argc, char *argv[]){
     int ext_img_cnt = 0;
     int slider_cnt = 0;
     int font_size = 12;/* this may lead to problems when using something like "fontfamily Italic 24px Ariel" the "font_size" value is not substituted into fontfamily !! */ 
+    int fly_font_size = 12; /*fly_font_size is relative to this... */
     int dashtype[2] = { 4 , 4 }; /* just line_px and space_px : may have more arguments...if needed in future*/
     int js_function[MAX_JS_FUNCTIONS]; /* javascript functions include objects on demand basis : only once per object type */
     for(i=0;i<MAX_JS_FUNCTIONS;i++){js_function[i]=0;}
@@ -2196,32 +2197,32 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 2: double_data[1] = get_real(infile,0);break; /* y */
 		    case 3: fly_font = get_string_argument(infile,0);
 			    if(strcmp(fly_font,"giant") == 0){
-				font_size = (int)(font_size + 24);
+				fly_font_size = (int)(font_size + 24);
 			    }
 			    else
 			    {
 				if(strcmp(fly_font,"huge") == 0){
-				    font_size = (int)(font_size + 14);
+				    fly_font_size = (int)(font_size + 14);
 				}
 				else
 				{
 				    if(strcmp(fly_font,"large") == 0){
-					font_size = (int)(font_size + 6);
+					fly_font_size = (int)(font_size + 6);
 					}
 					else
 					{
 					    if(strcmp(fly_font,"small") == 0){
-						font_size = (int)(font_size - 4);
-						if(font_size<0){font_size = 8;}
+						fly_font_size = (int)(font_size - 4);
+						if(fly_font_size<0){fly_font_size = 8;}
 					}
 				    }
 				}
 			    }
-			    break; /* font_size ! */
+			    break; 
 		    case 4:
 			temp = get_string_argument(infile,1);
 			decimals = find_number_of_digits(precision);
-			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,font_size,"null",use_affine,affine_matrix,slider,slider_cnt);
+			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,14,[%.*f],[%.*f],[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,0,0,0,0,use_rotate,angle,temp,fly_font_size,"null",use_affine,affine_matrix,slider,slider_cnt);
 			if(onclick > 0){click_cnt++;}
 			/* click_cnt++;*/ 
 			reset();
@@ -2249,34 +2250,34 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 2: int_data[1] = y2px(get_real(infile,0));break; /* y */
 		    case 3: fly_font = get_string_argument(infile,0);
 			    if(strcmp(fly_font,"giant") == 0){
-				font_size = (int)(font_size + 24);
+				fly_font_size = (int)(font_size + 24);
 			    }
 			    else
 			    {
 				if(strcmp(fly_font,"huge") == 0){
-				    font_size = (int)(font_size + 14);
+				    fly_font_size = (int)(font_size + 14);
 				}
 				else
 				{
 				    if(strcmp(fly_font,"large") == 0){
-					font_size = (int)(font_size + 6);
+					fly_font_size = (int)(font_size + 6);
 					}
 					else
 					{
 					    if(strcmp(fly_font,"small") == 0){
-						font_size = (int)(font_size - 4);
-						if(font_size<0){font_size = 8;}
+						fly_font_size = (int)(font_size - 4);
+						if(fly_font_size<0){fly_font_size = 8;}
 					}
 				    }
 				}
 			    }
-			    break; /* font_size ! */
+			    break;
 		    case 4:
 		    decimals = find_number_of_digits(precision);
 		    temp = get_string_argument(infile,1);
-		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,"null",font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
+		    string_length = snprintf(NULL,0,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],fly_font_size,"null",font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],font_size,"null",font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
+		    snprintf(tmp_buffer,string_length,"draw_text(%d,%d,%d,%d,\"%s\",\"%s\",%.2f,90,\"%s\",%d,%.2f,%d,%s);\n",STATIC_CANVAS,int_data[0],int_data[1],fly_font_size,"null",font_color,stroke_opacity,temp,use_rotate,angle,use_affine,affine_matrix);
 		    add_to_buffer(tmp_buffer);
 		    break;
 		    default:break;
