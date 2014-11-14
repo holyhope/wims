@@ -91,7 +91,10 @@ $temp
   slib_script_file=jmolScriptWait('script $slib_script_file;');
 !endif
 
+!set slib_css=<style type="text/css">.wims_jmol {width:$(slib_xsize)px}</style>
 !set slib_out=$slib_initout\
+$slib_css\
+<div class="wims_jmol" id="wims_jmol$slib_id">\
 <script type="text/javascript">\
 /*<![CDATA[*/
 !if $dollar==1
@@ -131,4 +134,7 @@ $slib_target = Jmol.getApplet("$slib_target", Info$slib_id);
 !set slib_out=$slib_out\
 \
 /*]]>*/\
-</script>
+</script>\
+</div>
+
+!!debug $slib_out
