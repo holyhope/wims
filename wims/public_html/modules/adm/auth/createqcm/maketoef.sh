@@ -35,7 +35,8 @@ cat <<@ >>$w_toefoutput
 
 @
 
-. $file >>$w_toefoutput
+. ./$file >>$w_toefoutput
+rm ./$file
 
 rm -rf $w_wims_home/sessions/$w_wims_session/getfile 
 
