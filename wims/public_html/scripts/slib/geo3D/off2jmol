@@ -10,15 +10,17 @@ slib_example=8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 
 :proc
 
 !reset slib_aa slib_ss slib_ff slib_Baa slib_Bff slib_fas slib_out slib_connect slib_script0 slib_hide slib_option
-!reset slib_Sommet slib_Face slib_Arete slib_Plan slib_color_sommet slib_color_face slib_color_arete
-
+!reset slib_Sommet slib_Face slib_Arete slib_Plan slib_color_sommet slib_color_face slib_color_arete slib_distance
+!set slib_listcolor=[0,0,255],red,blue,black,green,orange,purple,grey,brown
 !distribute items $wims_read_parm into slib_data,slib_fas,slib_color,slib_width,slib_option
 
 slib_fas=!declosing $slib_fas
 slib_button=!declosing $slib_button
 slib_data=!replace internal ; by $\
 $ in $slib_data
-
+!if distance iswordof $slib_option
+  !set slib_distance=1
+!endif
 !distribute items 1,1,1,1,1 into slib_ss,slib_aa,slib_ff,slib_Baa,slib_Bff
 !distribute items $slib_fas into slib_SS,slib_AA,slib_FF,slib_BAA,slib_BFF
 slib_width=!declosing $slib_width
@@ -97,6 +99,8 @@ slib_face=!nonempty line $slib_face
 !next slib_na
 
 !!********** code de dessin des arêtes
+slib_length_cnt=0
+!reset slib_Length
 
 !for slib_nb=1 to $slib_A_cnt
    slib_r=!line $slib_nb of $slib_arete
@@ -110,21 +114,36 @@ slib_face=!nonempty line $slib_face
    slib_coord1=!words2items $slib_coord1
    slib_coord2=!singlespace $slib_r2
    slib_coord2=!words2items $slib_coord2
+   !if $slib_distance=1
+     slib_length=$[1/1000*rint(1000*(($(slib_coord1[2])-($(slib_coord2[2])))^2 + ($(slib_coord1[3])-$(slib_coord2[3]))^2+($(slib_coord1[4])-$(slib_coord2[4]))^2))]
+     slib_l=!positionof item $slib_length in $slib_Length
+     !if $slib_l=0 or $slib_l=$empty
+       slib_Length=!append item $slib_length to $slib_Length
+       !increase slib_length_cnt
+       slib_l=$slib_length_cnt
+     !endif
+   !endif
    slib_center_arete=!exec pari 0.5*([$(slib_coord1[2]),$(slib_coord1[3]),$(slib_coord1[4])] + [$(slib_coord2[2]),$(slib_coord2[3]),$(slib_coord2[4])])
    slib_center_arete=!items2words $slib_center_arete
    slib_Arete=!append word $[$slib_nb+$slib_S_cnt-1] to $slib_Arete
    !if $slib_aa!=0
-     slib_connect=!append line connect ({$[$slib_lien1]}) ({$[$slib_lien2]}); to $slib_connect
+    slib_lien=!sort numeric item $[$slib_lien1], $[$slib_lien2]
+     slib_connect=!append line connect ({$(slib_lien[1])}) ({$(slib_lien[2])}); to $slib_connect
      !if $slib_color_arete!=$empty
-       slib_connect=!append line select ({$[$slib_lien1] $[$slib_lien2]}); $slib_color_arete; select none;\
+        slib_connect=!append line select ({$(slib_lien[1]) $(slib_lien[2])}); $slib_color_arete; select none;\
      to $slib_connect
+     !else
+       !if $slib_distance=1
+         slib_connect=!append line select ({$(slib_lien[1]) $(slib_lien[2])}); color bonds $(slib_listcolor[$slib_l]);select none;\
+     to $slib_connect
+       !endif
      !endif
    !endif
    slib_out=!append line $slib_BAA $slib_center_arete to $slib_out
 !next slib_nb
+
 !if $slib_aa!=0
-  slib_connect=select $slib_SS;\
-$slib_connect\
+  slib_connect=$slib_connect\
 select all;wireframe $slib_wireframe;select none;
 
 !endif
@@ -188,8 +207,6 @@ select $slib_BFF; $slib_color_Bface; select none;
 slib_hide=!replace internal , by $ or $ $  in hide $slib_hide;
 
 slib_script=$slib_Plan\
-select all;spacefill $slib_spacefill;\
-select none;\
 set disablepopupmenu False;\
 set antialiasdisplay on;\
 connect (*)(*) delete;\
@@ -197,13 +214,12 @@ $slib_define\
 $slib_connect\
 $slib_script0\
 $slib_hide\
-select all;spacefill $slib_spacefill;\
-select none;\
+select all;spacefill $slib_spacefill;select none;
 
 
 slib_script=!lines2words $slib_script
 
-!if html notwordof $slib_option
+!if url notwordof $slib_option
   slib_out=[$slib_script],\
 $[$slib_S_cnt+$slib_F_cnt+$slib_A_cnt]\
 \
@@ -224,4 +240,3 @@ $slib_script
   slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file_spt,\
 $wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file_xyz
 !endif
-

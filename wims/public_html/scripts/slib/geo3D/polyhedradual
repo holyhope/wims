@@ -26,7 +26,7 @@ slib_Z1=-1000
 slib_name_vertex=!getopt name_vertex in $slib_options
 slib_name_face=!getopt name_face in $slib_options
 slib_name_edge=!getopt name_edge in $slib_options
-
+slib_format=!getopt format in $slib_options
 
 slib_angle=!getopt angle in $slib_options
 slib_angle=!declosing $slib_angle
@@ -39,6 +39,10 @@ slib_option_edge=!getopt edge in $slib_options
 !default slib_option_edge=0
 !default slib_option_vertex=1
 !default slib_angle=u v w
+slib_0=0
+!if off isin $slib_format
+  slib_0=1
+!endif
 
 slib_tool=!getopt tool in $slib_options
 slib_tool=!declosing $slib_tool
@@ -52,7 +56,7 @@ slib_tool=!declosing $slib_tool
 
 !!********** Lecture des données polyedre
 
-slib_polyedre=!record  0 of data/polyedre_off/$slib_polyedre.off
+slib_polyedre=!record 0 of data/polyedre_off/$slib_polyedre.off
 
 slib_H=1
 slib_u=!line 1 of $slib_polyedre
@@ -118,7 +122,7 @@ slib_adj=!items2lines $slib_adj
       slib_fo= !nospace $(slib_p_edge[$slib_e;2,1])
       slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]),
      !if ,$(slib_p_edge[$slib_e;]), isin $slib_tmp or ,$slib_fo, isin $slib_tmp
-        slib_ed= !append item $[$slib_f+$slib_vertex_cnt] to $slib_ed
+        slib_ed= !append item $[$slib_f+$slib_vertex_cnt-$slib_0] to $slib_ed
      !endif
     !next
     slib_e_d=!append line l $slib_ed to $slib_e_d
@@ -130,7 +134,7 @@ slib_f_d=
    slib_fd=
    !for slib_f=1 to $slib_face_cnt
       slib_ff= $(slib_p_face[$slib_f;2..-1])
-      !if $[$slib_na-1] isitemof  $slib_ff
+      !if $[$slib_na-1] isitemof $slib_ff
         slib_fd=!append item $[$slib_f] to $slib_fd
       !endif
      !next
@@ -140,15 +144,16 @@ slib_f_d=
 
 !for slib_na=1 to $slib_vertex_cnt
     slib_l=!line $slib_na of $slib_vertex
-    slib_vertex=!replace line number  $slib_na by v $slib_l in $slib_vertex
+    slib_vertex=!replace line number $slib_na by v $slib_l in $slib_vertex
 !next
-!for slib_nb=1 to $slib_edge_cnt
-    slib_edge=!replace line number  $slib_nb by l $(slib_p_edge[$slib_nb;]) in $slib_edge
-!next
-!for slib_nb=1 to $slib_face_cnt
-    slib_face=!replace line number  $slib_nb by f $(slib_p_face[$slib_nb;2..-1]) in $slib_face
-!next
-slib_out=$slib_vertex\
+!if off notin $slib_format
+  !for slib_nb=1 to $slib_edge_cnt
+    slib_edge=!replace line number $slib_nb by l $(slib_p_edge[$slib_nb;]) in $slib_edge
+  !next
+  !for slib_nb=1 to $slib_face_cnt
+    slib_face=!replace line number $slib_nb by f $(slib_p_face[$slib_nb;2..-1]) in $slib_face
+  !next
+  slib_out=$slib_vertex\
 $slib_edge\
 $slib_face\
 $slib_v_d\
@@ -156,4 +161,23 @@ $slib_e_d
 
 slib_out=!items2words $slib_out
 !readproc slib/geo3D/CaR $slib_out,$slib_options
+
+!else
+  slib_e_d_cnt=!linecnt $slib_e_d
+  slib_v_d_cnt=!linecnt $slib_v_d
+  slib_out=#\
+$[$slib_vertex_cnt+$slib_v_d_cnt] $slib_face_cnt $[$slib_e_d_cnt+$slib_edge_cnt] \
+$slib_vertex\
+$slib_v_d\
+$slib_p_face\
+$slib_e_d\
+$slib_edge
+
+  slib_out=!replace internal , by $ $ in $slib_out
+  slib_out=!replace internal ; by $\
+$ in $slib_out
+  slib_out=!replace internal l by in $slib_out
+  slib_out=!replace internal v by in $slib_out
+!endif
+
 slib_out=$slib_out
