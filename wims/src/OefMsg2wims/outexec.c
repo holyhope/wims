@@ -142,8 +142,6 @@ void out_exec(char *s1, char *s2)
             if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
             if(pe2 && *pp2=='{' && *pe2=='}') {
                 pp++; pp2++; *p=*pe=*pe2=0;
-                while((pt=strstr(pp2,"$val1/"))!=NULL)
-                  ovlstrcpy(pt,pt+strlen("$val1/"));
                 fprintf(outf,"%s \n\
 !read oef/canvasdraw.phtml %s \\\n%s \n$()", ps,pp,pp2);
                 ps=p=pe2; ps++; continue;
