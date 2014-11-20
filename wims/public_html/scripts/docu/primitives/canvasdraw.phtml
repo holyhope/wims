@@ -15,17 +15,23 @@ $ in $parms
 
 !set ppm=!replace internal $	$ by $\
 $ in $ppm
-!if copy isin $ppm or imagefill isin $ppm
+!if copy isin $ppm or imagefill isin $ppm or bgimage isin $ppm
   !set line_cnt=!linecnt $ppm
   !for l_=1 to $line_cnt
     !set line=!line $l_ of $ppm
-    !if copy isin $line or imagefill isin $line
+    !if copy isin $line or imagefill isin $line or bgimage isin $line
       !set im=!item -1 of $line
+      !if bgimage isin $line
+        !set im=!word -1 of $im
+        !set line=bgimage \filedir/$im
+      !else
+         line=$(line[1..-2]),\filedir/$im
+      !endif
       !if / notin $im
-        !set ppm=!replace line number $l_ by $(line[1..-2]),\filedir/$im in $ppm
+        !set ppm=!replace line number $l_ by $line in $ppm
       !endif
     !endif
-   !next
+  !next
 !endif
 
 !for pm in ppm, sx, sy
