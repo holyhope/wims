@@ -13,13 +13,26 @@ $ in $parms
  !set ppm=!item 3 to -1 of $parms
 !endif
 
-!set ppm=!replace internal datamodule by modules/data in $ppm
+!set ppm=!replace internal $	$ by $\
+$ in $ppm
+
+!if copy isin $ppm
+  !set line_cnt=!linecnt $ppm
+  !for l_=1 to $line_cnt
+    !set line=!line $l_ of $ppm
+    !if copy isin $line
+      !set im=!item -1 of $line
+      !if / notin $im
+        !set ppm=!replace line number $l_ by $(line[1..-2]),\filedir/$im in $ppm
+      !endif
+    !endif
+   !next
+!endif
 
 !for pm in ppm, sx, sy
  !set $pm=!slashsubst $($pm)
 !next pp
-!set ppm=!replace internal $	$ by $\
-$ in $ppm
+
 !set pp=!trim $ppm
 
 !set pp=!line 1 to -1 of $pp
