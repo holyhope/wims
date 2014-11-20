@@ -102,9 +102,15 @@ doc=!trim $doc
 wims_priv_thisdoc=$docdir/$doc
 !if $doc!=$empty
   !readdef $docdir/.def
-### common_files can be yes now
- m_filedir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
- #####what is filelink ?
+  docdir1= !replace internal /doc by in $(docdir)
+  common_files=!defof common_files in $docdir1/var.proc
+### common_files can be yes now or the address of a datamodule
+  !if datamodule isin $common_files
+    m_filedir=!replace datamodule by modules/data in $common_files
+  !else
+    m_filedir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
+  !endif
+ #####what is filelink : create a link to doc in the session
  !if ($filelink!=$Docdir/$doc and $common_files!=yes) or ($filelink!=$Docdir and $common_files=yes)
   !if $common_files!=yes
     filelink=$Docdir/$doc

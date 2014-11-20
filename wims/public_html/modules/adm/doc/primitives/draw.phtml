@@ -33,13 +33,24 @@ $ in $ppm
   !set ins_anim_loop  =!item 3 of $a
  !endif
 !endif
-!readproc $docdir/doc/.def
-!if $common_files=yes
-  !set doc_=
-!else
- !set doc_=$doc/
+!readproc $docdir/.def
+!! only in case that we come from adm/doc to read common_images
+!! already read in other case
+!if /doc isin $(docdir)
+  !set docdir1= !replace internal /doc by in $(docdir)
+  !readdef $docdir1/var.proc
 !endif
-!set insdraw_filebase=$docdir/$(doc_)files
+!! end only
+!if $common_files=yes
+  !set doc_=$docdir/files
+!else
+  !if $common_files=$empty or $common_files=no
+    !set doc_=$docdir/$doc/files
+  !else
+    !set doc_=!replace datamodule by modules/data in $common_files
+  !endif
+!endif
+!set insdraw_filebase=$(doc_)
 !set insdraw_size=$sx,$sy
 !set ins_align=middle
 !insdraw $pp
