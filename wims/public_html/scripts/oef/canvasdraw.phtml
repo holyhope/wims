@@ -19,11 +19,11 @@
 !set pp=!translate internal $	$ to $\
 $ in $pp
 
-!if copy isin $pp
+!if copy isin $pp or imagefill isin $pp
   !set line_cnt=!linecnt $pp
   !for l_=1 to $line_cnt
     !set line=!line $l_ of $pp
-    !if copy isin $line
+    !if copy isin $line or imagefill isin $line
       !set im=!item -1 of $line
       !if / notin $im
         !set pp=!replace line number $l_ by $(line[1..-2]),$imagedir/$im in $pp
