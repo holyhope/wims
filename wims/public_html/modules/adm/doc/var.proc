@@ -103,7 +103,9 @@ wims_priv_thisdoc=$docdir/$doc
 !if $doc!=$empty
   !readdef $docdir/.def
   docdir1= !replace internal /doc by in $(docdir)
-  common_files=!defof common_files in $docdir1/var.proc
+  docadm=1
+  !read $docdir1/var.proc
+  !reset docadm
 ### common_files can be yes now or the address of a datamodule
   !if datamodule isin $common_files
     m_filedir=!replace datamodule by modules/data in $common_files
