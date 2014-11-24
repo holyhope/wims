@@ -3,8 +3,8 @@
 !endif
 
 slib_require=pari
-slib_example=8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 -1;4 6 4 0 2;4 5 1 0 4;4 7 5 4 6;4 1 3 2 0;4 3 7 6 2;4 7 3 1 5;0 1;0 2;0 4;1 3;1 5;2 3;2 6;3 7;4 5;4 6;5 7;6 7,[SS,AA,FF,butA,butF],[brown,,blue]\
-8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 -1;4 6 4 0 2;4 5 1 0 4;4 7 5 4 6;4 1 3 2 0;4 3 7 6 2;4 7 3 1 5;0 1;0 2;0 4;1 3;1 5;2 3;2 6;3 7;4 5;4 6;5 7;6 7,[SS,AA,FF,butA,butF],[brown,,blue],[0.03,0.06],html
+slib_example=8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 -1;4 6 4 0 2;4 5 1 0 4;4 7 5 4 6;4 1 3 2 0;4 3 7 6 2;4 7 3 1 5;0 1;0 2;0 4;1 3;1 5;2 3;2 6;3 7;4 5;4 6;5 7;6 7,[SS,AA,FF],[brown,,blue]\
+8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 -1;4 6 4 0 2;4 5 1 0 4;4 7 5 4 6;4 1 3 2 0;4 3 7 6 2;4 7 3 1 5;0 1;0 2;0 4;1 3;1 5;2 3;2 6;3 7;4 5;4 6;5 7;6 7,[SS,AA,FF,butA,butF],[brown,,blue],[0.03,0.06],url
 !exit
 
 :proc
@@ -110,7 +110,6 @@ slib_connect=function c_a(tab,col){\
 };
 !for slib_nb=1 to $slib_A_cnt
    slib_r=!line $slib_nb of $slib_arete
-
    slib_cnt_r=!itemcnt $slib_r
    slib_lien1=!word 1 of $slib_r
    slib_lien2=!word 2 to -1 of $slib_r
@@ -129,22 +128,23 @@ slib_connect=function c_a(tab,col){\
        slib_l=$slib_length_cnt
      !endif
    !endif
-   slib_center_arete=!exec pari 0.5*([$(slib_coord1[2]),$(slib_coord1[3]),$(slib_coord1[4])] + [$(slib_coord2[2]),$(slib_coord2[3]),$(slib_coord2[4])])
-   slib_center_arete=!items2words $slib_center_arete
-   slib_Arete=!append word $[$slib_nb+$slib_S_cnt-1] to $slib_Arete
+   !if $slib_Baa!=0
+     slib_center_arete=!exec pari 0.5*([$(slib_coord1[2]),$(slib_coord1[3]),$(slib_coord1[4])] + [$(slib_coord2[2]),$(slib_coord2[3]),$(slib_coord2[4])])
+     slib_center_arete=!items2words $slib_center_arete
+     slib_Arete=!append word $[$slib_nb+$slib_S_cnt-1] to $slib_Arete
+     slib_out=!append line $slib_BAA $slib_center_arete to $slib_out
+   !endif
    !if $slib_aa!=0
       slib_lien=!sort numeric item $[$slib_lien1], $[$slib_lien2]
       !if $slib_color_arete!=$empty and $slib_distance!=1
         slib_connect1=!append item ({$(slib_lien[1]) $(slib_lien[2])}) \
-        to $slib_connect1
+          to $slib_connect1
       !endif
-     !if $slib_distance=1
+      !if $slib_distance=1
         slib_connect_$slib_l=!append item ({$(slib_lien[1]) $(slib_lien[2])}) \
            to $(slib_connect_$slib_l)
-       !endif
      !endif
    !endif
-   slib_out=!append line $slib_BAA $slib_center_arete to $slib_out
 !next slib_nb
 !if $slib_connect1!=$empty
    slib_connect=!append line c_a([$slib_connect1],"$slib_color_arete");\
@@ -169,11 +169,11 @@ slib_Face=
    slib_triangle=!words2items $slib_plan
    slib_triangle_cnt=!itemcnt $slib_triangle
    !if $slib_ff!=0
-   !for slib_j=3 to $[$slib_triangle_cnt-1]
-     slib_Plan=!append line draw uu$cnt $slib_color_face $(slib_color2[3]) ({$(slib_triangle[2])}) ({$(slib_triangle[$slib_j])}) ({$(slib_triangle[$slib_j+1])});\
-      to $slib_Plan
-     !increase cnt
-   !next
+    !for slib_j=3 to $[$slib_triangle_cnt-1]
+      slib_Plan=!append line draw uu$cnt $slib_color_face $(slib_color2[3]) ({$(slib_triangle[2])}) ({$(slib_triangle[$slib_j])}) ({$(slib_triangle[$slib_j+1])});\
+       to $slib_Plan
+      !increase cnt
+    !next
    !endif
    slib_centerface=[0,0,0]
    !for slib_j=2 to $[$slib_triangle_cnt]
@@ -182,44 +182,43 @@ slib_Face=
      slib_coord=!words2items $slib_coord
      slib_centerface=$slib_centerface + [$slib_coord]
    !next
-   slib_centerface=!exec pari 1.*($slib_centerface)/($slib_triangle_cnt-1*1.0)
-   slib_centerface=!items2words $slib_centerface
-   slib_Face=!append word $[$slib_f+$slib_A_cnt+$slib_S_cnt-1] to $slib_Face
-   slib_out=!append line $slib_BFF $slib_centerface to $slib_out
+   !if $slib_Bff!=0
+     slib_centerface=!exec pari 1.*($slib_centerface)/($slib_triangle_cnt-1*1.0)
+     slib_centerface=!items2words $slib_centerface
+     slib_out=!append line $slib_BFF $slib_centerface to $slib_out
+     slib_Face=!append word $[$slib_f+$slib_A_cnt+$slib_S_cnt-1] to $slib_Face
+   !endif
 !next
 
 slib_define=define $slib_SS ({$slib_Sommet});
 slib_script0=!append line select $slib_SS; $slib_color_sommet;spacefill $slib_spacefill; select none;\
   to $slib_script0
 
-slib_define=$slib_define \
-define $slib_BAA ({$slib_Arete});
-
 !if $slib_Baa!=0
+  slib_define=$slib_define \
+define $slib_BAA ({$slib_Arete});
   !if $slib_color_Barete!=0
     slib_script0=$slib_script0\
 select $slib_BAA; $slib_color_Barete; select none;
-  !endif
-!else
-  slib_hide=!append item $slib_BAA to $slib_hide
+  !else
+    slib_hide=!append item $slib_BAA to $slib_hide
+ !endif
 !endif
 
 !if $slib_aa=0
  !reset slib_connect
 !endif
-
-slib_define=$slib_define\
-define $slib_BFF ({$slib_Face});
-
 !if $slib_Bff!=0
+  slib_define=$slib_define\
+define $slib_BFF ({$slib_Face});
   !if $slib_color_Bface!=$empty
    slib_script0=$slib_script0\
 select $slib_BFF; $slib_color_Bface; select none;
+  !else
+    slib_hide=!append item $slib_BFF to $slib_hide
+    slib_hide=!replace internal , by $ or $ $  in hide $slib_hide;
   !endif
-!else
-  slib_hide=!append item $slib_BFF to $slib_hide
 !endif
-slib_hide=!replace internal , by $ or $ $  in hide $slib_hide;
 
 slib_script=$slib_Plan\
 set disablepopupmenu False;\
@@ -231,9 +230,13 @@ $slib_script0\
 $slib_hide\
 select all;spacefill $slib_spacefill;select none;
 
-
+!if $slib_Bff=0
+  slib_F_cnt=0
+!endif
+!if $slib_Baa=0
+  slib_A_cnt=0
+!endif
 slib_script=!lines2words $slib_script
-
 !if url notwordof $slib_option
   slib_out=[$slib_script],\
 $[$slib_S_cnt+$slib_F_cnt+$slib_A_cnt]\
@@ -247,7 +250,6 @@ $slib_out
 $[$slib_S_cnt+$slib_F_cnt+$slib_A_cnt]\
 \
 $slib_out
-
   slib_file_spt=file_$slib_randint.spt
   !readproc oef/togetfile.proc $slib_file_spt new\
 $slib_script
