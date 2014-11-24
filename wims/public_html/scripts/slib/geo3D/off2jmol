@@ -11,16 +11,18 @@ slib_example=8 6 12; 1 1 1;1 1 -1; 1 -1 1; 1 -1 -1;-1 1 1;-1 1 -1;-1 -1 1;-1 -1 
 
 !reset slib_aa slib_ss slib_ff slib_Baa slib_Bff slib_fas slib_out slib_connect slib_script0 slib_hide slib_option
 !reset slib_Sommet slib_Face slib_Arete slib_Plan slib_color_sommet slib_color_face slib_color_arete slib_distance
-!set slib_listcolor=[0,0,255],red,blue,black,green,orange,purple,grey,brown
+!set slib_listcolor=[0,255,0],[255,0,0],[0,0,255],black, orange,purple,grey,brown,yellow
 !distribute items $wims_read_parm into slib_data,slib_fas,slib_color,slib_width,slib_option
-
 slib_fas=!declosing $slib_fas
 slib_button=!declosing $slib_button
 slib_data=!replace internal ; by $\
 $ in $slib_data
+slib_data=!replace internal  $	$ by $\
+$ in $slib_data
 !if distance iswordof $slib_option
   !set slib_distance=1
 !endif
+
 !distribute items 1,1,1,1,1 into slib_ss,slib_aa,slib_ff,slib_Baa,slib_Bff
 !distribute items $slib_fas into slib_SS,slib_AA,slib_FF,slib_BAA,slib_BFF
 slib_width=!declosing $slib_width
@@ -50,7 +52,7 @@ slib_wireframe=$(slib_width[2])
 !endif
 
 slib_color=!declosing $slib_color
-!!!default slib_color=red,yellow,green
+
 !!********** Lecture des données off
 
 slib_off=$slib_data
@@ -79,7 +81,7 @@ slib_face=!nonempty line $slib_face
   slib_color_sommet=color atoms $(slib_color[1])
 !endif
 !if $(slib_color[2])!=$empty
-  slib_color_arete=color bonds $(slib_color[2])
+  slib_color_arete=$(slib_color[2])
 !endif
 !if $(slib_color[3])!=$empty
   slib_color_face=color $(slib_color[3])
@@ -101,7 +103,11 @@ slib_face=!nonempty line $slib_face
 !!********** code de dessin des arêtes
 slib_length_cnt=0
 !reset slib_Length
-
+slib_connect=function c_a(tab,col){\
+  for(var i=1;i<=tab.size;i++){\
+    arete=tab[@i];select arete;connect (arete);color bonds @col;\
+  }\
+};
 !for slib_nb=1 to $slib_A_cnt
    slib_r=!line $slib_nb of $slib_arete
 
@@ -127,26 +133,35 @@ slib_length_cnt=0
    slib_center_arete=!items2words $slib_center_arete
    slib_Arete=!append word $[$slib_nb+$slib_S_cnt-1] to $slib_Arete
    !if $slib_aa!=0
-    slib_lien=!sort numeric item $[$slib_lien1], $[$slib_lien2]
-     slib_connect=!append line connect ({$(slib_lien[1])}) ({$(slib_lien[2])}); to $slib_connect
-     !if $slib_color_arete!=$empty
-        slib_connect=!append line select ({$(slib_lien[1]) $(slib_lien[2])}); $slib_color_arete; select none;\
-     to $slib_connect
-     !else
-       !if $slib_distance=1
-         slib_connect=!append line select ({$(slib_lien[1]) $(slib_lien[2])}); color bonds $(slib_listcolor[$slib_l]);select none;\
-     to $slib_connect
+      slib_lien=!sort numeric item $[$slib_lien1], $[$slib_lien2]
+      !if $slib_color_arete!=$empty and $slib_distance!=1
+        slib_connect1=!append item ({$(slib_lien[1]) $(slib_lien[2])}) \
+        to $slib_connect1
+      !endif
+     !if $slib_distance=1
+        slib_connect_$slib_l=!append item ({$(slib_lien[1]) $(slib_lien[2])}) \
+           to $(slib_connect_$slib_l)
        !endif
      !endif
    !endif
    slib_out=!append line $slib_BAA $slib_center_arete to $slib_out
 !next slib_nb
+!if $slib_connect1!=$empty
+   slib_connect=!append line c_a([$slib_connect1],"$slib_color_arete");\
+ to $slib_connect
+!endif
+!for slib_l = 1 to $slib_length_cnt
+  !if $(slib_connect_$slib_l)!=$empty
+    slib_connect=!append line c_a([$(slib_connect_$slib_l)],"$(slib_listcolor[$slib_l])");\
+    to $slib_connect
+  !endif
+!next
 
 !if $slib_aa!=0
   slib_connect=$slib_connect\
 select all;wireframe $slib_wireframe;select none;
-
 !endif
+
 cnt=0
 slib_Face=
 !for slib_f = 1 to $slib_F_cnt

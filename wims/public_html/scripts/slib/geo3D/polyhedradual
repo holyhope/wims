@@ -171,13 +171,17 @@ $slib_vertex\
 $slib_v_d\
 $slib_p_face\
 $slib_e_d\
-$slib_edge
+$slib_edge\
+
 
   slib_out=!replace internal , by $ $ in $slib_out
   slib_out=!replace internal ; by $\
 $ in $slib_out
   slib_out=!replace internal l by in $slib_out
   slib_out=!replace internal v by in $slib_out
+  slib_out=$slib_out\
+$slib_vertex_cnt,$[$slib_vertex_cnt+$slib_v_d_cnt],$[$slib_vertex_cnt+$slib_v_d_cnt+$slib_face_cnt],$[$slib_vertex_cnt+$slib_v_d_cnt+ $slib_face_cnt +$slib_e_d_cnt], $[$slib_vertex_cnt+$slib_v_d_cnt+ $slib_face_cnt + $slib_edge_cnt+$slib_e_d_cnt]
+
 !endif
 
 slib_out=$slib_out
