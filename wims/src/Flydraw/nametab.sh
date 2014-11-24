@@ -56,11 +56,15 @@ circle		t_obj	3,1,0,3,	obj_circle
 comment		t_obj	0,0,0,0,	obj_comment
 copy		t_obj	6,0,0,0,	obj_copy
 copyresized	t_obj	8,0,0,0,	obj_copyresize
+crosshair	t_obj	2,1,0,1,	obj_crosshair
+crosshairs	t_obj	2,-1,0,1,	obj_crosshairs
+crosshairsize	t_obj	1,0,0,0,	obj_crosshairsize
 curve		t_obj	0,-1,0,1,	obj_plot
 dashedline	t_obj	4,1,0,1,	obj_dline
 dashedlines	t_obj	4,-1,0,1,	obj_dlines
 dashline	t_obj	4,1,0,1,	obj_dline
 dashlines	t_obj	4,-1,0,1,	obj_dlines
+dashsegment	t_obj	4,1,0,1,	obj_dline
 diafill		t_obj	4,1,1,0,	obj_diafill
 diamondfill	t_obj	4,1,1,0,	obj_diafill
 disk		t_obj	3,1,1,0,	obj_circle
@@ -70,6 +74,7 @@ dlines		t_obj	4,-1,0,1,	obj_dlines
 dhline		t_obj	2,1,-1,1,	obj_hline
 dotfill		t_obj	4,1,1,0,	obj_dotfill
 dplot		t_obj	0,-1,0,1,	obj_dplot
+dsegment	t_obj	4,1,0,1,	obj_dline
 dvline		t_obj	2,1,-1,1,	obj_vline
 ellipse		t_obj	4,1,0,3,	obj_ellipse
 existing	t_obj	0,0,0,0,	obj_existing
@@ -131,6 +136,7 @@ pointfill	t_obj	4,1,1,0,	obj_dotfill
 points		t_obj	2,-1,0,1,	obj_points
 poly		t_obj	4,-1,0,3,	obj_poly
 polygon		t_obj	4,-1,0,3,	obj_poly
+polyline	t_obj	4,-1,0,3,	obj_lines
 print		t_obj	2,-1,0,0,	obj_string
 range		t_obj	4,0,0,0,	obj_range
 rangex		t_obj	2,0,0,0,	obj_xrange

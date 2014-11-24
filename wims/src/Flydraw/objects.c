@@ -310,6 +310,26 @@ void obj_rays(objparm *pm)
                           scale_buf[i],scale_buf[i+1]);
     }
 }
+/* crosshair */
+void obj_crosshair(objparm *pm)
+{
+    scale(pm->pd,pm->p,2);
+    gdImageLine(image,pm->p[0]+width2,pm->p[1]+width2,pm->p[0]-width2,pm->p[1]-width2,pm->color[0]);
+    gdImageLine(image,pm->p[0]-width2,pm->p[1]+width2,pm->p[0]+width2,pm->p[1]-width2,pm->color[0]);
+}
+/* crosshairs */
+
+void obj_crosshairs(objparm *pm)
+{
+    int i, n;
+    n=(pm->pcnt)/2;
+    scale(pm->pd,pm->p,n);
+    for(i=0;i<2*n;i+=2) {
+      gdImageLine(image,pm->p[i]+width2,pm->p[i+1]+width2,pm->p[i]-width2,pm->p[i+1]-width2,pm->color[0]);
+      gdImageLine(image,pm->p[i]-width2,pm->p[i+1]+width2,pm->p[i]+width2,pm->p[i+1]-width2,pm->color[0]);
+   }
+}
+
 
 /* segments */
 void obj_lines(objparm *pm)
@@ -703,6 +723,13 @@ void obj_linewidth(objparm *pm)
 {
     if(pm->pd[0]<1 || pm->pd[0]>255) fly_error("bad_parms");
     else width=pm->pd[0];
+}
+
+/* set crosshairsize */
+void obj_crosshairsize(objparm *pm)
+{
+    if(pm->pd[0]<1 || pm->pd[0]>255) fly_error("bad_parms");
+    else width2=pm->pd[0];
 }
 
 /* set x range */

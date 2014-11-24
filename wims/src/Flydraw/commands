@@ -1,7 +1,7 @@
 :affine a,b,c,d,tx,ty
 
  Make an affine transformation for the subsequent objects: (x;y) -> [a,b;c,d](x;y)+(tx;ty).
-:animate fra,del,rep 
+:animate fra,del,rep
 
  This command is only available for WIMS OEF and doc, and MUST appear on the first line. Set up animation for fra frames, with del seconds between frames, and rep repetitions (rep=0 means infinite repetition).<br> Frame control is done via two variables: <tt>animstep</tt> (integer) going from 1 to frame count, and <tt>s</tt> going from 0 to 1.
 :animstep n
@@ -20,7 +20,7 @@
 
  Circle of center (x,y) and diameter d (in pixels).
 :comment
- 
+
  Does nothing.
 :copy x,y,x1,y1,x2,y2,[filename]
  insert
@@ -28,6 +28,16 @@
 :copyresized x1,y1,x2,y2,dx1,dy1,dx2,dy2,[filename]
 
  Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename], possibly resized, to the region of (dx1,dy1) to (dx2,dy2). If x1=y1=x2=y2=-1, the whole [filename] is copied and resized.
+:crosshair x1,y1,[color]
+
+ draw a crosshair point at (x1,y1)
+:crosshairs [color], x1,y1,x2,y2,...
+
+ draw multiple crosshair points at given coordinates (x1,y1), (x2,y2), ...
+:crosshairsize w
+
+ Set crosshair size to w (in pixels).
+
 :darrow x1,y1,x2,y2,l,[color]
  dasharrow dashedarrow
  Dashed arrow (x1,y1)- - ->(x2,y2), where l is the length (in pixels) of arrowhead.
@@ -40,8 +50,8 @@ dashedhorizontalline dashhorizontalline hdline horizontaldashedline
 :diamondfill x,y,nx,ny,[color]
  diafill
  Flood fill the region containing (x,y) with the same original color by double hatching (parallel lines), (nx,ny) being the horizontal and vertical distance between adjacent lines (in pixels).
-:dline x1,y1,x2,y2,[color]
- dashedline dashline
+:dsegment x1,y1,x2,y2,[color]
+ dashsegment
  Dashed line segment (x1,y1)---(x2,y2).
 :dlines [color],x1,y1,x2,y2,x3,y3...
  dashedlines dashlines
@@ -115,14 +125,11 @@ dashedhorizontalline dashhorizontalline hdline horizontaldashedline
 :levelstep n
 
  Set the number of pixel steps in levelcurve plotting. Between 1 and 16, defaults to 4.
-:line x1,y1,x2,y2,[color]
- seg segment
- Line segment (x1,y1)---(x2,y2).
 :linear a,b,c,d
 
  Make a linear transformation for the subsequent objects: (x;y) -> [a,b;c,d](x;y).
 :lines [color],x1,y1,x2,y2,x3,y3...
-
+ polyline
  n line segments (x1,y1)---(x2,y2)---(x3,y3)...
 :linewidth w
 
@@ -184,6 +191,10 @@ Reset n-th linear, affine transformation and n-th translation to initial values 
 :rotation d
  rotate
  Make a rotation of degree d counter-clockwise (centered at (0,0)), for the subsequent objects.
+:segment x1,y1,x2,y2,[color]
+ seg line
+ Line segment (x1,y1)---(x2,y2).
+
 :setbrush [filename]
 
  Use the image [filename] as a brush for all line draws.

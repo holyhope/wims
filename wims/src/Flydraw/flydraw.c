@@ -26,7 +26,7 @@ char imagefilename[1024];
 char vimgfilename[1024];
 int sizex, sizey, saved;
 gdImagePtr image=NULL, brushimg=NULL, tileimg=NULL, wimg=NULL;
-int brushed=0, tiled=0, styled=0, width=1, savew=1, wcolor=-1;
+int brushed=0, tiled=0, styled=0, width=1, savew=1, wcolor=-1, width2=4;
 int color_white, color_black, color_bounder, color_frame;
 int linecnt=-100000;
 int tranged=0;

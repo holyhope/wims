@@ -57,7 +57,7 @@ extern double transx, transy; /* translation vector */
 extern double xscale, yscale, xstart, ystart;
 extern int sizex, sizey, saved;
 extern int color_white, color_black, color_bounder, color_frame, lstep;
-extern int width;
+extern int width, width2;
 extern double tend, tstart, tstep, plotjump, animstep;
 int tranged;
 extern int vimg_enable, vimg_ready;
