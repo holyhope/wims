@@ -962,7 +962,7 @@ void obj_rotation(objparm *pm)
     transform=1;
 }
 
-/* Set affine transformation */
+/* Set linear transformation */
 void obj_linear(objparm *pm)
 {
     int i;
@@ -970,13 +970,13 @@ void obj_linear(objparm *pm)
     transform=1;
 }
 
-/* Set affine transformation */
+/* Set translation transformation */
 void obj_translation(objparm *pm)
 {
     transx=pm->pd[0]; transy=pm->pd[1];
 }
 
-/* Set affine transformation */
+/* kill affine transformation */
 void obj_killaffine(objparm *pm)
 {
     matrix[0]=matrix[3]=1;
@@ -984,7 +984,7 @@ void obj_killaffine(objparm *pm)
     transform=0;
 }
 
-/* Set affine transformation */
+/* kill affine transformation */
 void obj_killlinear(objparm *pm)
 {
     matrix[0]=matrix[3]=1;
@@ -992,7 +992,7 @@ void obj_killlinear(objparm *pm)
     transform=0;
 }
 
-/* Set affine transformation */
+/* kill affine transformation */
 void obj_killtranslation(objparm *pm)
 {
     transx=transy=0;
