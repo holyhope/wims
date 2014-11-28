@@ -99,6 +99,7 @@ dl=!replace word exams by $ex in $dl
 dl=!replace word manuals by $ma in $dl
 dl=!words2items $dl
 dl=!listuniq $dl
+
 good=!words2items $good
 dl=!listintersect $dl and $good
 dl=!nospace $dl
@@ -178,10 +179,16 @@ scoremax=!line 1 of $s
   !for i=1 to $sheetcnt
    !if sheet$i isitemof $dl
     p_=!line $i of $percents
-    !distribute words $p_ into p1,p2
+!! cfr r7612-r7638 for adm/class/userscore
+!!   and r7638-r7664
+    !distribute words $p_ into p1,p2,p3,p4
     !if $p2!=$empty
-     !distribute item $[$p1/100],$[$p2/10] into x_,y_
-     user_sheet$i=$[rint(100*$scoremax*$(f_$i))/100]
+     !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+     !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+     !for sev=0 to 2
+       !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+     !next
+     user_sheet$i=$[rint(100*$scoremax*$(ff_$i))/100]
     !else
      user_sheet$i=0
     !endif
