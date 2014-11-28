@@ -154,7 +154,7 @@ s=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!line 1 of $s
 !default scoremax=20
 
-!read scripts/sheetweights
+!read adm/class/sheetweights
 
 class_superclass=!defof class_superclass in $classdeffile
 #Le dossier des etudiants se situe toujours dans la superclasse
@@ -171,7 +171,7 @@ class_superclass=!defof class_superclass in $classdeffile
  !defread $users_dir/$user_login
  !if $scores=yes
   uu=$user_login
-  !read scripts/userscore $user_login
+  !read adm/class/userscore $user_login
   user_average1=$per
   user_average2=$(manual_$user_login)
   !if average0 isitemof $dl
@@ -180,11 +180,16 @@ class_superclass=!defof class_superclass in $classdeffile
   !for i=1 to $sheetcnt
    !if sheet$i isitemof $dl
     p_=!line $i of $percents
-    !distribute words $p_ into p1,p2
+!! cfr r7612-r7638 for adm/class/userscore
+!!   and r7638-r7664
+    !distribute words $p_ into p1,p2,p3,p4
     !if $p2!=$empty
-     !distribute item $[$p1/100],$[$p2/10] into x_,y_
-     user_sheet$i=$[rint(100*$scoremax*$(f_$i))/100]
-
+     !distribute item $[$p1/100],$[$p2/10],$[$p3/100],$[$p4/100] into x0_,y_,x1_,x2_
+     !set ff_$i=!mathsubst Q=$y_ in $(f_$i)
+     !for sev=0 to 2
+       !set ff_$i=!mathsubst I$sev=$(x$(sev)_) in $(ff_$i)
+     !next
+     user_sheet$i=$[rint(100*$scoremax*$(ff_$i))/100]
     !else
      user_sheet$i=0
     !endif
