@@ -69,7 +69,7 @@ for my $lang (@site_lang) {
    open LI, $dom_templ;
    while (<LI>) { my @m=split(":\n",$_);
      for my $a (@m) { $a =~ s/_/ /g;
-     push @KEYWORDS, treate_group($a) };
+     push @KEYWORDS, split(",", treate_group($a)) };
    }
    close LI;
    };
@@ -80,7 +80,7 @@ for my $lang (@site_lang) {
        while (<LI>) { s /,/\n/g; s /:/\n/g; s /\n+/\n/g;
        my @m=split("\n",$_);
      for my $a (@m) { $a =~ s/_/ /g;
-     push @KEYWORDS, treate_group($a) };
+        push @KEYWORDS, split(",", treate_group($a)) };
    }
    close LI;
    };
@@ -104,7 +104,7 @@ for my $lang (@site_lang) {
  next if !(-e "$ddir/domain.$lang");
  my %dom = treate_dict ("$ddir/domain.$lang");
  while ( my ($key, $value) = each(%dom) ) {
-   push @ALL, lc(treate_accent($value)) ;}
+   push @ALL, split(",", lc(treate_accent($value))) ;}
  out("keywords/list.$lang", join(",",sortuniq(@list)));
  out("$outputkeywords/keywords.$lang.json",
      "[\"" . join("\",\n\"",sortuniq(@ALL) ) . "\"]"

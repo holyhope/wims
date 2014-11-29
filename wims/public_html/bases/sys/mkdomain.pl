@@ -64,10 +64,12 @@ for my $la ( @site_lang) {
    $key=~ s/_/ /g;
    if ($value) {
      ##push @D_reverse, lc(treate_accent($value)) . ":$key|" . lc(treate_accent($value));
-     push @D_reverse, lc(treate_accent($value)) . ":$key";
+     for my $v (split(',', lc(treate_accent($value)))) {
+       push @D_reverse,  $v . ":$key";
+     }
    }
    $value=~ s/'/ /g;
-   push @D_lang, lc($value);
+   push @D_lang, split(',',lc($value));
  };
  out("$dir/domain.$la.tmp", join("\n",sortuniq(@D)) . "\n");
  out("$dir/domaindic.$la.tmp", join("\n",sortuniq(@D_reverse)) . "\n");
