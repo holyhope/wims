@@ -8,6 +8,12 @@ stepdiag=bad
    reply$i=$(saverep$i)
   !endif
   r_=!trim $(reply$i)
+  !if $r_=$empty
+    default_$i=!getopt default in $(replyoption$i)
+    !if $(default_$i)!=$empty
+      r_=$(default_$i)
+    !endif
+  !endif
   !if $(replytype$i)!=code
    reply$i=$r_
   !endif
