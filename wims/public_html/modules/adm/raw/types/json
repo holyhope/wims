@@ -302,7 +302,7 @@ i=0
  !advance i 
  
  !if $i<$list_cnt
-  !shortout \
+  !shortout ,\
   
  !endif
 
@@ -320,6 +320,9 @@ data_scores =!replace internal ; by , in $data_scores
 data_scores =!replace internal NaN by "NaN" in $data_scores
 data_scores = [[$data_scores]]
 data_scores =!replace internal ,] by ] in $data_scores
+
+percents=!replace internal $\
+$ by "],[" in $percents
 
 !shortout "titles":["$tit"],\
 "longtitles":[$dl3],\
