@@ -12,7 +12,7 @@ ticket = !replace internal & by $\
 $ in $module_init_parm
 module_init_parm=!replace &ticket=.* by in $module_init_parm
 type= !getopt type in $ticket
-ticket = !getopt ticket in $ticket  
+ticket = !getopt ticket in $ticket
 !if $ticket != $empty
    url = $wims_ref_name?module=adm/class/classes&$module_init_parm
    !read adm/codeurl $url
@@ -25,10 +25,21 @@ ticket = !getopt ticket in $ticket
       auth_user=!line 2 of $response
       auth_user=!lowercase $auth_user
       auth_test=OK
+   !else
+      !if authenticationFailure notin $response
+!!! answer to serviceValidate (xml)
+        !set auth_user=!detag $response
+        !set auth_user=!nonempty lines $auth_user
+        !set auth_user=!line 1 of  $auth_user
+        !set auth_user=!nospace $auth_user
+        !set auth_user=!lowercase $auth_user
+        !set auth_test=OK
+      !else
+        error=bad_cas_connexion
+        !exit
+      !endif
    !endif
 !endif
 auth_user_orig=$auth_user
 auth_error=$wims_exec_error
 wims_exec_error=
-
-!!serviceValidate
