@@ -1,14 +1,14 @@
 !set lang_exists=yes
 
 !read adm/lang/sheetexam.phtml.$modu_lang
-!set name_from=from
+!set name_from=van
 !set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear
 !set name_student2=Dit werkblad is verlopen. Er kan nog wel aan\
  worden gewerkt, maar de behaalde cijfers worden niet meer geregistreerd.
 !set name_student3= Dit werkblad mag op dit moment nog niet worden ingezien.\
 Neem desgewenst contact op met je docent.
-!set name_student5=Score registration has been closed by your supervisor.\
-You can still work on the sheet.
+!set name_student5=De score registratie is uitgezet door je docent.\
+Maar je kunt natuurlijk wel oefenen met het werkblad.
 
 !set name_score=!nosubst $[$got] uit $[$require] punten behaald, kwaliteit
 !set name_score2=!nosubst ($[$require] punten vereist).
