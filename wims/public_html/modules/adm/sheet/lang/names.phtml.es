@@ -7,6 +7,8 @@
  trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.
 !set name_student3= Por el momento no está autorizado a consultar el contenido de esta hoja.\
   Por favor contacte con su profesor.
+!set name_student5=Score registration has been closed by your supervisor.\
+You can still work on the sheet.
 
 !set name_score=!nosubst $[$got] de $[$require] puntos obtenidos, calidad
 !set name_score2=!nosubst $[$require] puntos exigidos.
