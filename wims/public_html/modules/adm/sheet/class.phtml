@@ -31,6 +31,11 @@ $sheet_title
 !!expiration date in a variable
 !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.$sh
 
+!if $expir_user=none
+  <span class="wims_warning">$wims_name_warning</span>.
+  <p id="name_student5">$name_student5</p>
+ !goto none
+!endif
 !if $expir_user!=
   !if \ isin $expir_user
    !set expir_user=!replace internal \ by in $expir_user
@@ -62,7 +67,7 @@ $sheet_title
   !read adm/date.phtml
   !set expmon=!item $expmon of $months
   !set fromdate=$name_from $expday $expmon $expyear$exphour
-!endif
+ !endif
 !default sheet_expiration_user=$sheet_expiration
 !if $sheet_expiration_user!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration_user
@@ -77,7 +82,7 @@ $sheet_title
  <p id="name_student1">$name_student1$exphour
  .</p>
 !endif
-
+:none
 !if $sheet_active=2
  <span class="wims_warning">$wims_name_warning</span>.
  <p id="name_student2">$name_student2</p>
