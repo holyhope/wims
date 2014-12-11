@@ -21,7 +21,7 @@ for cls in $clist; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
        email=`awk -F'=' '$1=="!set user_email" {print $2; exit}' ./$t`
-       if [ -z "$email" ]; then
+       if [ -n "$email" ]; then
         echo  "$cls,$supv,$email" >> $main/.IND2a
        fi
      done
@@ -34,7 +34,7 @@ for cls in $clist; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
        email=`awk -F'=' '$1=="!set user_email" {print $2; exit}' ./$t`
-       if [ -z "$email" ]; then
+       if [ -n "$email" ]; then
         echo  "$cls,$supv,$email" >> $main/.IND4a
        fi
      done
