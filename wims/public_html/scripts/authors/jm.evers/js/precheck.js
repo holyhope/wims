@@ -98,7 +98,7 @@ function myConfirm(txt,reply,server,session,module,counter,color){
     document.getElementById('alarmtext').style.left = w+'px';
     document.getElementById('alarmtext').style.display = "block";
     window.scrollTo(w,h-120);
-    document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input type=\"button\" id=\"schaersvoorde_confirm_ok_button\" value="+r45+" onclick=\"javascript:document.getElementById(\'schaersvoorde_exercise\').setAttribute(\'style\',\'background-color:"+color+"\');document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\';\" />&nbsp;&nbsp;<input type=\"button\" id=\"schaersvoorde_confirm_nok_button\" value="+r46+" onclick=\"javascript:resetAlarm()\" \>"
+    document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input type=\"button\" id=\"schaersvoorde_confirm_ok_button\" value="+r45+" onclick=\"javascript:document.getElementById(\'schaersvoorde_exercise\').setAttribute(\'style\',\'background-color:"+color+"\');if(xcalc_window != null ){ xcalc_window.close();};document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\';\" />&nbsp;&nbsp;<input type=\"button\" id=\"schaersvoorde_confirm_nok_button\" value="+r46+" onclick=\"javascript:resetAlarm()\" \>"
 }
 
 function resetAlarm(){

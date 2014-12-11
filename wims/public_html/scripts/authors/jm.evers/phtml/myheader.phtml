@@ -5,7 +5,8 @@
 <script type="text/javascript">
 //<![CDATA[
 <!-- no validator -->
-    var stickit=0;
+    var stickit = 0;
+    var xcalc_window = null;
     function showimage() {MijnVenster1=window.open("$wims_ref_name?&session=$session&module=$module&cmd=getins&special_parm=insert-1.gif", "", "scrollbars=1,width=640,height=480,left=0,top=0");MijnVenster1.focus();}
     function showScribble(){if(stickit == 0){stickit=1;document.getElementById('stickit_area').style.display = "block";}else{stickit=0;document.getElementById('stickit_area').style.display = "none";}}
 !if $time=1
@@ -117,17 +118,17 @@
 	    </a>
 	!endif
 	!if $scribbling=1
-	    <a onclick="javascrip:showScribble();" onmouseover="return escape('Post-It Memo')" >
+	    <a onclick="javascript:showScribble();" onmouseover="return escape('Post-It Memo')" >
 		<img src="$gifdir/pencil.png" style="width:50;height:70;border:0px;vertical-align:top" alt="scribling" />
 	    </a>
 	!endif
 	!if $calculator=2
-	    <a onclick="window.open('$htmldir/mathcalc.html','xcalc','width=265px,height=400px,left=0px,top=0px')">
+	    <a onclick="xcalc_window = window.open('$htmldir/mathcalc.html','xcalc','width=265px,height=400px,left=0px,top=0px')">
 		<img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 	    </a>
 	!else
 	    !if $calculator=1
-		<a onclick="window.open('$htmldir/basicalc.html','xcalc','width=240px,height=240px,left=0px,top=0px')">
+		<a onclick="xcalc_window = window.open('$htmldir/basicalc.html','xcalc','width=240px,height=240px,left=0px,top=0px')">
 		    <img src="$gifdir/xcalc.png" style="border:0px;;vertical-align:top" alt="xcalc" />
 		</a>
 	    !endif
