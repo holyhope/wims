@@ -11,7 +11,7 @@
 !!###traitement des options (qui se trouvent dans \embed)
 !set oef_applet_option=!replace internal $	$ by $\
 $ in $inputsize
-!!debug $oef_applet_option
+
 !set oef_applet_option=!replace internal ; by $\
 $ in $oef_applet_option
 !set oef_applet_option=!nonempty lines $oef_applet_option
@@ -84,13 +84,13 @@ $ in $oef_applet_option
       wims_svg$i.appendChild(obj$cmt);\
       to $applet_parm
     !else
-      !if $w iswordof return_all_objects background_color
-       !set $w=$l
-       !if $l=yes
+      !if $w iswordof return_all_objects background_color colors
+        !set $w=$l
+        !if $l=yes
          !set $w=1
-       !endif
-     !else
-      !if $w iswordof copy
+        !endif
+      !else
+       !if $w iswordof copy
         !set image=$(l[3])
         !set l1=!nospace $(l[1..2])
         !set applet_image=!append line \
@@ -103,6 +103,10 @@ $ in $oef_applet_option
    !endif
   !endif
 !next
+!if $colors!=$empty
+   !set colors=!makelist "x" for x in $colors
+!endif
+!set click_color=!append item $colors to $click_color
 
 !default background_color=green
 !default oef_applet_option=xrange 0,10\

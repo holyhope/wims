@@ -170,7 +170,7 @@ sg_tot=!listcomplement $g_tot in $r_tot
      !set applet_parm_initg=!append line $tmp\
     wims_svg_g$i.appendChild(obj$cmt); to $applet_parm_initg
     !else
-     !if $w iswordof return_all_objects background_color
+     !if $w iswordof return_all_objects background_color colors
        !set $w=$l
      !else
       !if $w iswordof copy
@@ -187,6 +187,10 @@ sg_tot=!listcomplement $g_tot in $r_tot
    !endif
   !endif
 !next
+!if $colors!=$empty
+   !set colors=!makelist "x" for x in $colors
+!endif
+!set click_color=!append item $colors to $click_color
 
 !default stroke_opacity=0.99
 !default fill_opacity=0.99
