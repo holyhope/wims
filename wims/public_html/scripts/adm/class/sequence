@@ -18,7 +18,14 @@
    !endif
    !set wims_ref_class=wims_button_help wims_warning
    !href cmd=reply&job=delete&seq=$i $wims_name_erase
+   !if $o_=1
+    !set wims_ref_class=wims_button_help
+    !href cmd=reply&job=changeopt&seq=$i&option=0 $(wims_name_actionlist[4])
+   !else
+    !set wims_ref_class=wims_button_help
+    !href cmd=reply&job=changeopt&seq=$i&option=1 $(wims_name_actionlist[5])
    !endif
+  !endif
    </div>
    <ul class="wims_work_list">
    !set dcnt=!itemcnt $obj_
