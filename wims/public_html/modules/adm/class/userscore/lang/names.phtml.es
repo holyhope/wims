@@ -96,16 +96,6 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 
 !set name_direct_score=lista y notas en directo
 
-!if $job=recover
-  !set name_empty= No se ha dado de baja a ningún participante de esta clase.
-  !set name_click=Pulse sobre un identificador de usuario (login) \
-     para volver a incluir al participante en la clase.
-!endif
-
-!if $job=delprep
-  !set name_delete=!nosubst ¿Está seguro de que quiere dar de baja a  <b><em>$name_studentloc</em></b> de su clase?
-!endif
-
 !if $job=csv
   !distribute lines  Este es el fichero\
     que puede descargar y abrir con su hoja de cálculo\

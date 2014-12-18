@@ -97,15 +97,6 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 
 !set name_direct_score=ruwe cijfer lijst
 
-!if $job=recover
-  !set name_empty=Er is geen verwijderde student in deze klas.
-  !set name_click=Klik op de loginnaam om het account te herstellen.
-!endif
-
-!if $job=delprep
-  !set name_delete=!nosubst Zeker weten de <b><em>$name_studentloc</em></b>\
-     uit deze klas verwijderd moet worden ?
-!endif
 !if $job=csv
   !distribute lines Hier is het bestand\
     dat kan worden geopend met een spreadsheet programma.\
