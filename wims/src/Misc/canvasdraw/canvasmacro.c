@@ -5,96 +5,6 @@
 char *data2js_array(int data[],int len);
 char *xy2js_array(int xy[],int len);
 */
-
-
-void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width){
-fprintf(js_include_file,"\n<!-- user draw inputfields -->\n\
-var canvas_rect;\
-var input_cnt = %d;\
-var start_input_cnt = input_cnt;\
-function user_drag(evt){return;}\
-function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
-  x = xy[0];y = xy[1];\
- }\
- else\
- {\
-  if( x_use_snap_to_grid == 1 ){\
-   x = snap_to_x(x);\
-  };\
-  if( y_use_snap_to_grid == 1 ){\
-   y = snap_to_y(y);\
-  };\
- };\
- var num = %d;var inputs;\
- if(evt.which == 1){\
-  var inputs;var xi;var yi;var wi;var hi;\
-  var found = 0;\
-  if( start_input_cnt < input_cnt){\
-   for(var p = start_input_cnt ; p < input_cnt ; p++ ){\
-    inputs = document.getElementById(\"canvas_input\"+p);\
-    xi = findPosX(inputs) - canvas_rect.left;\
-    yi = findPosY(inputs) - canvas_rect.top;\
-    wi = 4 + inputs.clientWidth;\
-    hi = 4 + inputs.clientHeight;\
-    if( x > xi - wi && x < xi + wi && y > yi - hi && y < yi + hi ){\
-     found = 1;\
-    };\
-   };\
-  };\
-  if( found == 0 ){\
-   if( num == 1 ){\
-    inputs = document.getElementById(\"canvas_input\"+start_input_cnt);\
-    try{canvas_div.removeChild(inputs);}catch(e){};\
-    input_cnt = 0;\
-   };\
-   userdraw_x.push(x);userdraw_y.push(y);\
-   draw_inputs(%d,input_cnt,x,y,%d,1,\"%s\",\"?\");\
-   input_cnt++;\
-  };\
- }\
- else\
- {\
-  for(var p = start_input_cnt ; p < input_cnt; p++){\
-   inputs = document.getElementById(\"canvas_input\"+p);\
-   try{canvas_div.removeChild(inputs);}catch(e){};\
-  };\
-  userdraw_x = [];userdraw_y = [];\
-  input_cnt = start_input_cnt;\
- };\
-};",input_cnt,num,canvas_root_id,line_width,input_style);
-}
-
-void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
-fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
-var draw_zoom_buttons = function(){\
- var obj;var canvas_type =%d;\
- if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
-  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
- }\
- else\
- {\
-  obj = create_canvas%d(canvas_type,xsize,ysize);\
- };\
- var ctx = obj.getContext(\"2d\");\
- ctx.font =\"18px Ariel\";\
- ctx.textAlign = \"right\";\
- ctx.fillStyle=\"rgba(\"+%s+\",\"+%f+\")\";\
- ctx.fillText(\"+\",xsize,ysize);\
- ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
- ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
- ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
- ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
- ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
- ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
- ctx.stroke();\
-};\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);
-}
-
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var num = %d;\
@@ -198,6 +108,159 @@ function canvas_remove(x,y){\
  }\
 };",draw_type,num,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
 }
+
+
+/*  function draw_circles(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);*/
+void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
+fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
+var num = %d;\
+userdraw_radius[0] = %d;\
+var line_width = %d;\
+var stroke_color = \"%s\";\
+var stroke_opacity = %f;\
+var use_filled = %d;\
+var fill_color = \"%s\";\
+var fill_opacity = %f;\
+var use_dashed = %d;\
+var dashtype1 = %d;\
+var dashtype0 = %d;\
+var x0,y0,x1,y1;\
+var canvas_rect;\
+function user_draw(evt){\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ y0 = evt.clientY - canvas_rect.top;\
+ if(y0 < ysize + 1){\
+  x0 = evt.clientX - canvas_rect.left;\
+  if( use_snap_to_points == 1 ){\
+   var xy = snap_to_points(x0,y0);\
+   x0 = xy[0];y0 = xy[1];\
+  }\
+  else\
+  {\
+   if( x_use_snap_to_grid == 1 ){\
+    x0 = snap_to_x(x0);\
+   };\
+   if( y_use_snap_to_grid == 1 ){\
+    y0 = snap_to_y(y0);\
+   };\
+  };\
+  if(evt.which == 1){\
+    userdraw_x[xy_cnt] = x0;\
+    userdraw_y[xy_cnt] = y0;\
+    userdraw_radius[xy_cnt] = line_width;\
+    if( num != 1 ){ xy_cnt++; }else{context_userdraw.clearRect(0,0,xsize,ysize);};\
+    draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+  }\
+  else\
+  {\
+    canvas_remove(x0,y0);\
+  };\
+ };\
+};\
+function user_drag(evt){ return;};\
+function canvas_remove(x,y){\
+ var marge = 4*line_width;\
+ for(var p = 0;p < userdraw_x.length ; p++){\
+  if(userdraw_x[p] < x + marge && userdraw_x[p] > x - marge ){\
+   if(userdraw_y[p] < y + marge && userdraw_y[p] > y - marge ){\
+    userdraw_x.splice(p,1);userdraw_y.splice(p,1);\
+    context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
+    draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+    return;\
+   };\
+  };\
+ };\
+};",draw_type,num,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
+}
+
+void add_js_inputs(FILE *js_include_file,int canvas_root_id,int num,int input_cnt,char *input_style,int line_width){
+fprintf(js_include_file,"\n<!-- user draw inputfields -->\n\
+var canvas_rect;\
+var input_cnt = %d;\
+var start_input_cnt = input_cnt;\
+function user_drag(evt){return;}\
+function user_draw(evt){\
+ canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var x = evt.clientX - canvas_rect.left;\
+ var y = evt.clientY - canvas_rect.top;\
+ if( use_snap_to_points == 1 ){\
+  var xy = snap_to_points(x,y);\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ var num = %d;var inputs;\
+ if(evt.which == 1){\
+  var inputs;var xi;var yi;var wi;var hi;\
+  var found = 0;\
+  if( start_input_cnt < input_cnt){\
+   for(var p = start_input_cnt ; p < input_cnt ; p++ ){\
+    inputs = document.getElementById(\"canvas_input\"+p);\
+    xi = findPosX(inputs) - canvas_rect.left;\
+    yi = findPosY(inputs) - canvas_rect.top;\
+    wi = 4 + inputs.clientWidth;\
+    hi = 4 + inputs.clientHeight;\
+    if( x > xi - wi && x < xi + wi && y > yi - hi && y < yi + hi ){\
+     found = 1;\
+    };\
+   };\
+  };\
+  if( found == 0 ){\
+   if( num == 1 ){\
+    inputs = document.getElementById(\"canvas_input\"+start_input_cnt);\
+    try{canvas_div.removeChild(inputs);}catch(e){};\
+    input_cnt = 0;\
+   };\
+   userdraw_x.push(x);userdraw_y.push(y);\
+   draw_inputs(%d,input_cnt,x,y,%d,1,\"%s\",\"?\");\
+   input_cnt++;\
+  };\
+ }\
+ else\
+ {\
+  for(var p = start_input_cnt ; p < input_cnt; p++){\
+   inputs = document.getElementById(\"canvas_input\"+p);\
+   try{canvas_div.removeChild(inputs);}catch(e){};\
+  };\
+  userdraw_x = [];userdraw_y = [];\
+  input_cnt = start_input_cnt;\
+ };\
+};",input_cnt,num,canvas_root_id,line_width,input_style);
+}
+
+void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity){
+fprintf(js_include_file,"\n<!-- draw zoom buttons -->\n\
+var draw_zoom_buttons = function(){\
+ var obj;var canvas_type =%d;\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.font =\"18px Ariel\";\
+ ctx.textAlign = \"right\";\
+ ctx.fillStyle=\"rgba(\"+%s+\",\"+%f+\")\";\
+ ctx.fillText(\"+\",xsize,ysize);\
+ ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
+ ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
+ ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
+ ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
+ ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
+ ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
+ ctx.stroke();\
+};\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);
+}
+
 
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on currect active canvas -->\n\
@@ -506,76 +569,6 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
 }
 
-/*  function draw_circles(ctx,x_points,y_points,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);*/
-void add_js_points(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
-fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var num = %d;\
-var canvas_rect;\
-userdraw_radius[0] = %d;\
-var line_width = %d;\
-var stroke_color = \"%s\";\
-var stroke_opacity = %f;\
-var use_filled = %d;\
-var fill_color = \"%s\";\
-var fill_opacity = %f;\
-var use_dashed = %d;\
-var dashtype0 = %d;\
-var dashtype1 = %d;\
-function user_drag(evt){return;};\
-function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1 ){\
-  var lu = userdraw_x.length;\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
-   x = xy[0];y = xy[1];\
-  }\
-  else\
-  {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
-  };\
-  if(evt.which == 1){\
-   if( num == 1 ){\
-   userdraw_x[0] = x;\
-   userdraw_y[0] = y;\
-   }\
-   else\
-   {\
-   userdraw_x[lu] = x;\
-   userdraw_y[lu] = y;\
-   userdraw_radius[lu] = userdraw_radius[0];\
-   };\
-   context_userdraw.clearRect(0,0,xsize,ysize);\
-   draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
-  }\
-  else\
-  {\
-  canvas_remove(x,y);\
-  }\
- }\
-};\
-function canvas_remove(x,y){\
- var marge = 4*line_width;\
- for(var p = 0;p < userdraw_x.length ; p++){\
-  if(userdraw_x[p] < x + marge && userdraw_x[p] > x - marge ){\
-   if(userdraw_y[p] < y + marge && userdraw_y[p] > y - marge ){\
-    userdraw_x.splice(p,1);userdraw_y.splice(p,1);\
-    context_userdraw = null;context_userdraw = canvas_userdraw.getContext(\"2d\");context_userdraw.clearRect(0,0,xsize,ysize);\
-    draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
-    return;\
-   }\
-  }\
- }\
-};",draw_type,num,radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
-
-}
 void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var canvas_rect;\
@@ -2427,6 +2420,10 @@ var to_js_math = function(math_fun){\
 }
 
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
+/* 25/11/2014 added clearing of reply array
+all members will be set to 0 eg reply[0] = 0 , reply[1] = 0 ...
+hope this does not interfere with existing work... 
+*/
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
  if(confirm(\"remove all drawings ? \")){\
@@ -2434,6 +2431,9 @@ clear_draw_area%d = function(){\
   var context_userdraw = canvas_userdraw.getContext(\"2d\");\
   context_userdraw.clearRect(0,0,xsize,ysize);\
   userdraw_x = [];userdraw_y = [];userdraw_radius = [];\
+  for(var p = 0;p < reply.length; p++){\
+   reply[p] = 0;\
+  };\
   return;\
  };\
 };\
@@ -2817,6 +2817,17 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
     obj_type = 16== pixels
     obj_type = 17== new arc [command angle] :radius in x-range, so will scale on zooming in/out
     obj_type = 18== halfline
+    
+    
+    arc
+x[0] = x[1] = xc = double_data[0]                                                               
+y[0] = y[1] = yc = double_data[1]                                                               
+w[0] = width = int_data[0]                                                                      
+w[1] = height = int_data[1]                                                                     
+h[0] = start_angle = double_data[2]                                                             
+h[1] = end_angle = double_data[3]  
+      myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\
+
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
 if( typeof dragdrop_precision == 'undefined' ){var dragdrop_precision = 100;};\
@@ -2830,8 +2841,9 @@ function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,
  this.angle = angle*(Math.PI/180) || 0;\
  this.use_affine = use_affine || 0;\
  this.affine_matrix = affine_matrix || [1,0,0,1,0,0];\
- this.click_cnt = click_cnt || 1;\
+ this.click_cnt = click_cnt || 0;\
  this.onclick = onclick || 0;\
+ if(this.onclick == 1 ){reply[click_cnt] = 0;};\
  this.direction = direction || 0;\
  this.type = type || 1;\
  this.xorg = x;\
@@ -2854,6 +2866,7 @@ function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,
   }\
  };\
  this.line_width = line_width || 30;\
+ this.org_line_width = line_width || 30;\
  this.stroke_opacity = stroke_opacity || 1.0;\
  this.stroke_color = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\" || '#FF0000';\
  this.fill_opacity = fill_opacity || 1.0;\
@@ -2882,7 +2895,7 @@ Shape.prototype.draw = function(ctx)\
  ctx.beginPath();\
  switch(this.type){\
   case 1: for(var p = 0 ; p < this.x.length;p = p+4){ctx.rect(this.x[p], this.y[p], this.x[p+1]-this.x[p], this.y[p+2] - this.y[p]);};break;\
-  case 2: ctx.arc(this.x[0],this.y[0],this.w[0],0,2*Math.PI,false);break;\
+  case 2: ctx.arc(this.x[0],this.y[0],0.5*this.w[0],0,2*Math.PI,false);break;\
   case 3: ctx.save();var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.scale(1,h/w);ctx.beginPath();ctx.arc(this.x[0], w/h*this.y[0], w, 0, 2 * Math.PI);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); };ctx.closePath();ctx.stroke();ctx.restore();break;\
   case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
   case 5: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
@@ -2892,7 +2905,7 @@ Shape.prototype.draw = function(ctx)\
   case 9: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length - 1;p++){if( Math.abs(this.y[p] - this.y[p-1]) < ysize && Math.abs(this.y[p+1] - this.y[p]) < ysize ){ctx.lineTo(this.x[p],this.y[p]);}else{ctx.moveTo(this.x[p],this.y[p]);};};break;\
   case 10: var dx;var dy;var len;ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[1] - this.x[0];dy = this.y[1] - this.y[0];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[1],this.y[1]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*this.w[0],0.5*this.w[0]);ctx.lineTo(-1*this.w[0],-0.5*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill();ctx.restore();ctx.save();ctx.translate(this.x[0],this.y[0]);ctx.rotate(Math.atan2(dy,dx));ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(this.w[0],0.4*this.w[0]);ctx.lineTo(this.w[0],-0.4*this.w[0]);ctx.closePath();ctx.lineCap = \"round\";ctx.fill(); break;\
   case 11: var x1 = this.x[0];var y1 = this.y[0];var x2 = this.x[1];var y2 = this.y[1];var dx = this.x[2];var dy = this.y[2];var n  = this.w[0];for(var p = 0 ; p < n ; p++ ){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();x1 = x1 + dx;y1 = y1 + dy;x2 = x2 + dx;y2 = y2 + dy;ctx.closePath();};break;\
-  case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = this.w[0];ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
+  case 12: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.w[1]));ctx.scale(1,h/w);ctx.arc(this.x[0], w/h*this.y[0], w,start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); };ctx.stroke();ctx.restore();break;\
   case 13: for(var p = 0; p < this.x.length; p++){ ctx.arc(this.x[p],this.y[p],scale_x_radius(this.w[p]),0,2*Math.PI,false);};break;\
   case 14: ctx.font = this.font_family ;ctx.fillText(this.text,this.x[0],this.y[0]);break;\
   case 15: break;\
@@ -2971,15 +2984,18 @@ function CanvasState(canvas,container_div){\
       myState.x_start = shapes[i].x[chk];\
       myState.y_start = shapes[i].y[chk];\
      };\
-     var org_line_width = shapes[i].line_width;\
-     var org_font_family = shapes[i].font_family;\
-     var org_stroke_opacity = shapes[i].stroke_opacity;\
      myState.chk = chk;\
      myState.selection = shapes[i];\
      myState.valid = false;\
      switch(shapes[i].onclick){\
       case 0: myState.dragging = false;break;\
-      case 1: myState.selection.line_width = 3*org_line_width;myState.selection.font_family = \"bold italic \"+myState.selection.font_size+\"px Courier\";myState.dragging = false;myState.draw();reply[0] = myState.selection.click_cnt;myState.selection.line_width = org_line_width;myState.selection.font_family = org_font_family;break;\
+      case 1: \
+       if( reply[myState.selection.click_cnt] == 0 ){\
+        myState.selection.line_width = 3*(myState.selection.org_line_width);\
+        reply[myState.selection.click_cnt] = 1;\
+       }else{ reply[myState.selection.click_cnt] = 0;myState.selection.line_width = myState.selection.org_line_width;};\
+       myState.dragging = false;myState.draw();\
+       break;\
       case 2: myState.dragging = true;break;\
       default:break;\
      };\
@@ -3027,10 +3043,10 @@ function CanvasState(canvas,container_div){\
      };\
     };\
     reply[myState.selection.click_cnt] = myState.selection.click_cnt+\":\"+px2x(myState.x_start)+\":\"+px2y(myState.y_start)+\":\"+(Math.round(dragdrop_precision*(px2x(myState.selection.x[myState.chk]))))/dragdrop_precision+\":\"+(Math.round(dragdrop_precision*(px2y(myState.selection.y[myState.chk]))))/dragdrop_precision;\
+    myState.valid = false;\
+    myState.draw();\
+    myState.valid = true;\
    };\
-   myState.valid = false;\
-   myState.draw();\
-   myState.valid = true;\
   };\
   myState.dragging = false;\
  };\
@@ -3142,7 +3158,7 @@ CanvasState.prototype.read_dragdrop = function(){\
 var obj = create_canvas%d(%d,xsize,ysize);\
 var container_div = document.getElementById(\"canvas_div%d\");\
 var dragstuff = new CanvasState(obj,container_div);\
-read_dragdrop%d = dragstuff.read_dragdrop;",canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id,canvas_root_id);
+read_dragdrop%d = dragstuff.read_dragdrop;\n",canvas_root_id,canvas_root_id,DRAG_CANVAS,canvas_root_id,canvas_root_id);
 }
 
 /*

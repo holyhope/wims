@@ -80,6 +80,7 @@ int main(int argc, char *argv[]){
     int use_safe_eval = FALSE; /* if true, add just once : js function to evaluate userinput values for plotting etc */
     int use_js_math = FALSE; /* if true add js-function to convert math_function --> javascript math_function */
     int use_js_plot = FALSE; /* if true , let js-engine plot the curve */
+    int print_drag_params_only_once = FALSE;/* avoid multiple useless identical lines about javascript precision and use_dragdrop */
     int line_width = 1;
     int decimals = 2;
     int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate.May be redefined before every object */
@@ -113,7 +114,7 @@ int main(int argc, char *argv[]){
     int crosshair_size = 5; /* size in px*/
     int plot_steps = 250;/* the js-arrays with x_data_points and y_data_points will have size 250 each: use with care !!! use jscurve when precise plots are required  */
     int found_size_command = 0; /* 1 = found size ; 2 = found xrange; 3 = found yrange :just to flag an error message */
-    int click_cnt = 1; /* counter to identify the "onclick" ojects */
+    int click_cnt = 0; /*counter to identify the "onclick" ojects ; 0 is first object set onclick: reply[click_cnt]=1 when clicked ; otherwise reply[click_cnt]=0 ; click_cnt is only increased when another object is set  again */
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
     int barchart_cnt = 0; /* identifier for command 'barchart' ; multiple charts may be plotted in a single plot*/
@@ -253,7 +254,8 @@ var use_jsmath = 0;\
 var xstart = 0;\
 var ystart = 0;\
 var unit_x=\" \";\
-var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
+var unit_y=\" \";\
+var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,EXTERNAL_IMAGE_CANVAS);
 /* default add the drag code : nearly always used ...*/
   add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 
@@ -272,7 +274,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    if(xmin >= xmax){canvas_error(" xrange is not OK : xmin &lt; xmax !\n");}
-	    fprintf(js_include_file,"var xmin = %f;var xmax = %f;",xmin,xmax);
+	    fprintf(js_include_file,"var xmin = %f;var xmax = %f;\n",xmin,xmax);
 	    found_size_command++;
 	    break;
 
@@ -289,7 +291,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		}
 	    }
 	    if(ymin >= ymax){canvas_error(" yrange is not OK : ymin &lt; ymax !\n");}
-	    fprintf(js_include_file,"var ymin = %f;var ymax = %f;",ymin,ymax);
+	    fprintf(js_include_file,"var ymin = %f;var ymax = %f;\n",ymin,ymax);
 	    found_size_command++;
 	    break;
 
@@ -392,7 +394,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
     		    case 1: double_data[1] = get_real(infile,0);break; /* y */
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
 		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],0.5*line_width,line_width,0.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    /* click_cnt++; */
 		    if(onclick > 0){click_cnt++;}
 		    break;
@@ -425,7 +427,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	    }
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%d],[%d],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],line_width,line_width,line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],0.5*line_width,line_width,0.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		/* click_cnt++; */
 		if(onclick > 0){click_cnt++;}
 	    }
@@ -1094,7 +1096,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	/*
 	 @ arc xc,yc,width,height,start_angle,end_angle,color
 	 @ can not be set "onclick" or "drag xy"
-	 @ attention: width == height == radius in pixels
+	 @ attention: width in height in x/y-range 
 	 @ will not zoom in or zoom out (because radius is given in pixels an not in x/y-system !). Panning will work
 	 @ use command 'angle' for scalable angle
 	*/
@@ -1102,19 +1104,21 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		switch(i){
 		    case 0:double_data[0] = get_real(infile,0);break; /* x-values */
 		    case 1:double_data[1] = get_real(infile,0);break; /* y-values */
-		    case 2:int_data[0] = (int)(get_real(infile,0));break; /* width in pixels ! */
-		    case 3:int_data[1] = (int)(get_real(infile,0));break; /* height in pixels ! */
-		    case 4:double_data[2] = get_real(infile,0);break; /* start angle in degrees */
-		    case 5:double_data[3] = get_real(infile,0);break; /* end angle in degrees */
+		    case 2:double_data[2] = get_real(infile,0);break; /* width x-range no pixels ! */
+		    case 3:double_data[3] = get_real(infile,0);break; /* height y-range no pixels ! */
+		    case 4:double_data[4] = get_real(infile,0);break; /* start angle in degrees */
+		    case 5:double_data[5] = get_real(infile,0);break; /* end angle in degrees */
 		    case 6:stroke_color = get_color(infile,1);/* name or hex color */
 		    /* in Shape library:
-			x[0] = x[1] = xc
-			y[0] = y[1] = yc
-			w[0] = w[1] = radius = width = height
-			h[0] = start_angle ; h[1] = end_engle
+			x[0] = x[1] = xc = double_data[0]
+			y[0] = y[1] = yc = double_data[1]
+			w[0] = width = double_data[2]
+			w[1] = height = double_data[3]
+			h[0] = start_angle = double_data[4]
+			h[1] = end_angle = double_data[5]
 		    */
     			decimals = find_number_of_digits(precision);
-    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%d,%d],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],int_data[0],int_data[0],decimals,double_data[2],decimals,double_data[3],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+    			fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,12,[%.*f,%.*f],[%.*f,%.*f],[%.*f,%.*f],[%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
     			reset();
 	            break;
 		}
@@ -2692,6 +2696,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	/*
 	 @affine a,b,c,d,tx,ty
 	 @ defines a transformation matrix for subsequent objects
+	 @ images drawn by setting skew params a &amp; d will be very different from Flydraw's "affine a,b,c,d,e,tx,ty" !!  
 	 @ use keyword 'killaffine' to end the transformation
 	 @ note 1: only 'draggable' / 'noclick' objects can be transformed.
 	 @ note 2: do not use 'onclick' or 'drag xy' with tranformation objects : the mouse coordinates do not get transformed (yet)
@@ -2702,7 +2707,7 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	 @ d : Scales the drawings vertically
 	 @ tx: Moves the drawings horizontally in xrange coordinate system
 	 @ ty: Moves the drawings vertically in yrange coordinate system
-	 @ the data precision is 2 decimals (printf : %2.f)
+	 @ the data precision may be set by preceding command "precision int"
 	*/
 	    for(i = 0 ; i<6;i++){
 		switch(i){
@@ -2713,9 +2718,10 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 4: double_data[4] = get_real(infile,0);break;
 		    case 5: double_data[5] = get_real(infile,1);
 			use_affine = TRUE;
-			string_length = snprintf(NULL,0,     "[%.2f,%.2f,%.2f,%.2f,%.2f,%.2f] ",double_data[0],double_data[1],double_data[2],double_data[3],double_data[4]*xsize/(xmax - xmin),-1*double_data[5]*ysize/(ymax - ymin));
+			decimals = find_number_of_digits(precision);
+			string_length = snprintf(NULL,0,     "[%.*f,%.*f,%.*f,%.*f,%.*f,%.*f] ",decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4]*xsize/(xmax - xmin),decimals,-1*double_data[5]*ysize/(ymax - ymin));
 		        check_string_length(string_length);affine_matrix = my_newmem(string_length+1);
-			snprintf(affine_matrix,string_length,"[%.2f,%.2f,%.2f,%.2f,%.2f,%.2f] ",double_data[0],double_data[1],double_data[2],double_data[3],double_data[4]*xsize/(xmax - xmin),-1*double_data[5]*ysize/(ymax - ymin));
+			snprintf(affine_matrix,string_length,"[%.*f,%.*f,%.*f,%.*f,%.*f,%.*f] ",decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4]*xsize/(xmax - xmin),decimals,-1*double_data[5]*ysize/(ymax - ymin));
 			break;
 		    default: break;
 		}
@@ -2739,15 +2745,15 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 0: double_data[0] = get_real(infile,0);break;
 		    case 1: double_data[1] = get_real(infile,1);
 			use_affine = TRUE;
-			string_length = snprintf(NULL,0, "[1,0,0,1,%.2f,%.2f] ",double_data[0]*xsize/(xmax - xmin),-1*double_data[1]*ysize/(ymax - ymin));
+			decimals = find_number_of_digits(precision);
+			string_length = snprintf(NULL,0, "[1,0,0,1,%.*f,%.*f] ",decimals,double_data[0]*xsize/(xmax - xmin),decimals,-1*double_data[1]*ysize/(ymax - ymin));
 		        check_string_length(string_length);affine_matrix = my_newmem(string_length+1);
-			snprintf(affine_matrix,string_length,"[1,0,0,1,%.2f,%.2f] ",double_data[0]*xsize/(xmax - xmin),-1*double_data[1]*ysize/(ymax - ymin));
+			snprintf(affine_matrix,string_length,"[1,0,0,1,%.*f,%.*f] ",decimals,double_data[0]*xsize/(xmax - xmin),decimals,-1*double_data[1]*ysize/(ymax - ymin));
 			break;
 		    default: break;
 		}
 	    }
 	break;
-
 	case ANIMATE:
 	/*
 	 @animate type
@@ -2838,15 +2844,15 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 	case COPY:
 	/*
 	@ copy x,y,x1,y1,x2,y2,[filename URL]
+	@ The image may be "bitmap" or "SVG"
 	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
 	@ If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
 	@ [filename] is the URL of the image
 	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
-	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
-	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
-
-	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-	draw_external_image(canvas_type,URL,sx,sy,swidth,sheight,x,y,width,height,drag_drop){
+	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
+	@ if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+	@ 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
+	@ you may draw / userdraw / drag other stuff on top of an "imported" image
 	*/
 	    for(i = 0 ; i<7;i++){
 		switch(i){
@@ -2859,33 +2865,41 @@ var unit_y=\" \";",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,x
 		    case 6: URL = get_string(infile,1);
 			    int_data[6] = int_data[4] - int_data[2];/* swidth & width (if not scaling )*/
 			    int_data[7] = int_data[5] - int_data[3];/* sheight & height (if not scaling )*/
-			    if( drag_type > -1 ){
-				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
-				if(reply_format == 0 ){reply_format = 20;}
-				string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
-				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,1);
-				drag_type = -1;
-				ext_img_cnt++;
+			    if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
+			    int_data[9] = click_cnt;
+			    if( drag_type > -1 ){/* e.g. we are dragging images x/y/xy */
+				 if( reply_format == 0 ){ reply_format = 20; }
+				 int_data[8] = 2;/* drag & drop */
 			    }
 			    else
 			    {
-				if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
-				/*
-				draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\n\
-				*/
-				string_length = snprintf(NULL,0,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7]);
-				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-				snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7]);
+				if( onclick == 1  ){
+			    	    reply_format = 20;
+			    	    int_data[8] = 1; /* onclick will be reset using 'void reset()'*/
+				    click_cnt++; /* will also be used in dragstuff ! */
+				}
+				else
+				{
+				    int_data[8] = 0; /* just static image */
+				}
 			    }
+/*
+function draw_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,ext_img_cnt,resizable,draggable,click_cnt)
+*/
+			    string_length = snprintf(NULL,0,  "draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,0,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,0,%d,%d);\n",URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
+			    drag_type = -1; /* reset the drag_type indicator */
+			    ext_img_cnt++;
+			    onclick=0;
 			    add_to_buffer(tmp_buffer);
 			    break;
 		    default: break;
 		}
 	    }
-	    reset();
 	    break;
 /*
+HTML5 specs:
 context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 img 	Specifies the image, canvas, or video element to use
 sx 	The x coordinate where to start clipping : x1 = int_data[0]
@@ -2900,11 +2914,15 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case COPYRESIZED:
 	/*
 	@ copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
+	@ The image may be "bitmap" or "SVG"
 	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range
+	@ (dx1:dy1) must be left top corner; (dx2 :dy2) must be right bottom corner of inserted image
 	@ If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
-	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
-	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
-	@ if you want to draw / userdraw  on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+	@ URL is normal URL of network reachable image file location<br />(as seen from public_html-root or network reachable 'http://some_server/my_images/test.gif'<br />(eg no special wims paths are searched !!)
+	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
+	@ if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+	@ 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
+	@ you may draw / userdraw / drag stuff on top of an "imported" image
 	*/
 	    for(i = 0 ; i<9;i++){
 		switch(i){
@@ -2917,27 +2935,47 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 		    case 6: int_data[6] = x2px(get_real(infile,0));break;/* dx2 */
 		    case 7: int_data[7] = y2px(get_real(infile,0));break;/* dy2 */
 		    case 8: URL = get_string(infile,1);
-			    if( drag_type > -1 ){
-				if( js_function[DRAG_EXTERNAL_IMAGE] != 1 ){ js_function[DRAG_EXTERNAL_IMAGE] = 1;}
-				if(reply_format == 0 ){reply_format = 20;}
-			        string_length = snprintf(NULL,0,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
-				check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-				snprintf(tmp_buffer,string_length,"drag_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,1);
-				drag_type = -1;
-				ext_img_cnt++;
+			    /* flag error when wrong diagonal:  copyresized -1,-1,-1,-1,0,0,7,7,testfig.gif */
+			    if( int_data[7] < int_data[5] || int_data[6] < int_data[4]){
+		    		canvas_error("in copyresized , use:<br />left top corner (dx1:dy1) and right bottom corner (dx2:dy2) ! ");
+			    }
+			    int_data[2] = abs(int_data[2] - int_data[0]);/* swidth */
+			    int_data[3] = abs(int_data[3] - int_data[1]);/* sheight */
+			    int_data[6] = abs(int_data[6] - int_data[4]);/* width */
+			    int_data[7] = abs(int_data[7] - int_data[5]);/* height */
+			    if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
+			    int_data[9] = click_cnt;
+			    if( drag_type > -1 ){/* e.g. we are dragging images x/y/xy */
+				 if( reply_format == 0 ){ reply_format = 20; }
+				 int_data[8] = 2;/* drag & drop */
 			    }
 			    else
 			    {
-				if( js_function[DRAW_EXTERNAL_IMAGE] != 1 ){ js_function[DRAW_EXTERNAL_IMAGE] = 1;}
-			        string_length = snprintf(NULL,0,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7]);
-			        check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			        snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,0);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7]);
+				if( onclick == 1  ){
+			    	    reply_format = 20;
+			    	    int_data[8] = 1; /* onclick will be reset using 'void reset()'*/
+				    click_cnt++; /* will also be used in dragstuff ! */
+				}
+				else
+				{
+				    int_data[8] = 0; /* just static image */
+				}
 			    }
+/*
+(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,resizable,draggable,click_cnt)
+URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
+*/
+			    string_length = snprintf(NULL,0,  "draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,1,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    snprintf(tmp_buffer,string_length,"draw_external_image(\"%s\",%d,%d,%d,%d,%d,%d,%d,%d,%d,1,%d,%d);\n",URL,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
+			    drag_type = -1; /* reset the drag_type indicator */
+			    ext_img_cnt++;
+			    onclick=0;
 			    add_to_buffer(tmp_buffer);
+			    break;
 		    default: break;
 		}
 	    }
-	    reset();
 	    break;
 	case CLEARBUTTON:
 	/*
@@ -3095,9 +3133,12 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	    	    drag_type = 2;
 	        }
 	    }
-	    fprintf(js_include_file,"dragdrop_precision = %d;use_dragdrop_reply = true;",precision);
+	    /* assuming all drag&drop coordinates the same precision: so set only once */
+	    if( print_drag_params_only_once == FALSE ){
+	     fprintf(js_include_file,"dragdrop_precision = %d;use_dragdrop_reply = true;\n",precision);
+	     print_drag_params_only_once = TRUE;
+	    }
 	    onclick = 2;
-	
 	    /* if(use_userdraw == TRUE ){canvas_error("\"drag & drop\" may not be combined with \"userdraw\" or \"pan and zoom\" \n");} */
 	    break;
 	case BLINK:
@@ -5317,9 +5358,11 @@ int i;
 for(i = 0 ; i < MAX_JS_FUNCTIONS; i++){
  if( js_functions[i] == 1){
     switch(i){
-    case DRAG_EXTERNAL_IMAGE:
+    case DRAW_EXTERNAL_IMAGE:
+/* the external_canvas is already created: it needs to be FIRST in order to do some drawing onto it 
+ draw_external_image(URL,int_data[2],int_data[3],int_data[6],int_data[7],int_data[0],int_data[1],int_data[6],int_data[7],ext_img_cnt,int_data[8],int_data[9]);
+*/
 fprintf(js_include_file,"\n<!-- drag external images --->\n\
-var external_canvas = create_canvas%d(7,xsize,ysize);\
 var external_ctx = external_canvas.getContext(\"2d\");\
 var external_canvas_rect = external_canvas.getBoundingClientRect();\
 canvas_div.addEventListener(\"mousedown\",setxy,false);\
@@ -5328,17 +5371,29 @@ canvas_div.addEventListener(\"mousemove\",dragxy,false);\
 var selected_image = null;\
 var ext_image_cnt = 0;\
 var ext_drag_images = new Array();\
-function drag_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,draggable){\
+function draw_external_image(URL,sx,sy,swidth,sheight,x0,y0,width,height,idx,resizable,draggable,click_cnt){\
  ext_image_cnt = idx;\
+ if(draggable == 1 ){\
+  reply[click_cnt] = 0;\
+ };\
  var image = new Image();\
  image.src = URL;\
  image.onload = function(){\
-  if( x0 < 1 ){ x0 = 0; };if( y0 < 1 ){ y0 = 0; };if( sx < 1 ){ sx = 0; };if( sy < 1 ){ sy = 0; };\
-  if( width < 1 ){ width = image.width; };if( height < 1 ){ height = image.height; };\
-  if( swidth < 1 ){ swidth = image.width; };if( sheight < 1 ){ sheight = image.height; };\
-  var img = new Array(10);\
+  if( sx < 1 ){ sx = 0; };\
+  if( sy < 1 ){ sy = 0; };\
+  if( swidth < 1 ){swidth = image.width;};\
+  if( sheight < 1 ){sheight = image.height;};\
+  if( width < 1 ){width = image.width;};\
+  if( height < 1 ){height = image.height;};\
+  if( resizable == 0 ){\
+   if( swidth > image.width ){ swidth = image.width; };\
+   if( sheight > image.height){ sheight = image.height;};\
+   if( width > image.width ){ width = image.width; };\
+   if( height > image.height){ height = image.height;};\
+  };\
+  var img = new Array(11);\
   img[0] = draggable;img[1] = image;img[2] = sx;img[3] = sy;img[4] = swidth;img[5] = sheight;\
-  img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;\
+  img[6] = x0;img[7] = y0;img[8] = width;img[9] = height;img[10] = click_cnt;\
   ext_drag_images[idx] = img;\
   external_ctx.drawImage(img[1],img[2],img[3],img[4],img[5],img[6],img[7],img[8],img[9]);\
  };\
@@ -5380,18 +5435,37 @@ function setxy(evt){\
   var yoff = (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);\
   var xm = evt.clientX - external_canvas_rect.left + xoff;\
   var ym = evt.clientY - external_canvas_rect.top + yoff;\
+  var img;\
   for(var p = 0 ; p <= ext_image_cnt ; p++){\
-   var img = ext_drag_images[p];\
-   if( img[0] == 1 ){\
-    var w = img.width;\
-    var h = img.height;\
-    if( xm > img[6] && xm < img[6] + img[4]){\
-     if( ym > img[7] && ym < img[7] + img[5]){\
-      img[6] = xm;\
-      img[7] = ym;\
-      ext_drag_images[p] = img;\
-      selected_image = p;\
-      dragxy(evt);\
+   if( ext_drag_images[p] ){\
+    img = ext_drag_images[p];\
+    if( img[0] != 0 ){\
+     if( xm > img[6] && xm < img[6] + img[8]){\
+      if( ym > img[7] && ym < img[7] + img[9]){\
+       if( img[0] == 1){\
+        if( reply[img[10]] == 1 ){\
+         reply[img[10]] = 0;external_ctx.strokeStyle = '#ffffff';\
+        }\
+        else\
+        {\
+         reply[img[10]] = 1;external_ctx.strokeStyle = '#00ff00';\
+        };\
+        external_ctx.lineWidth = 6;\
+        external_ctx.beginPath();\
+        external_ctx.rect(img[6],img[7],img[8],img[9]);\
+        external_ctx.closePath();\
+        external_ctx.stroke();\
+        return;\
+       }\
+       else\
+       {\
+        img[6] = xm;\
+        img[7] = ym;\
+        ext_drag_images[p] = img;\
+        selected_image = p;\
+        dragxy(evt);\
+       };\
+      };\
      };\
     };\
    };\
@@ -5401,7 +5475,7 @@ function setxy(evt){\
  {\
   selected_image = null;\
  };\
-};",canvas_root_id);
+};");
     break;
     case DRAW_BEZIER:
 fprintf(js_include_file,"\n<!-- draw bezier curve -->\n\
@@ -5428,31 +5502,6 @@ var draw_bezier = function(canvas_type,linewidth,xy_points,fill_color,fill_opaci
  ctx.stroke();\
  ctx.restore();\
 };\n",canvas_root_id,canvas_root_id,canvas_root_id);
-    break;
-    case DRAW_EXTERNAL_IMAGE:
-fprintf(js_include_file,"\n<!-- draw external images -->\n\
-var draw_external_image = function(URL,sx,sy,swidth,sheight,x0,y0,width,height,draggable){\
- var image = new Image();\
- image.src = URL;\
- var canvas_bg_div = document.getElementById(\"canvas_div%d\");\
- image.onload = function(){\
-  if( x0 < 1 ){ x0 = 0; };\
-  if( y0 < 1 ){ y0 = 0; };\
-  if( sx < 1 ){ sx = 0; };\
-  if( sy < 1 ){ sy = 0; };\
-  if( width < 1 ){ width = image.width;};\
-  if( height < 1 ){ height = image.height;};\
-  if( swidth < 1 ){ swidth = image.width;};\
-  if( sheight < 1 ){ sheight = image.height;};\
-  var ml = x0 - sx;\
-  var mh = y0 - sy;\
-  canvas_bg_div.style.backgroundPosition= \"left \"+ml+\"px top \"+mh+\"px\";\
-  canvas_bg_div.style.backgroundSize = width+\"px \"+height+\"px\";\
-  canvas_bg_div.style.backgroundRepeat = \"no-repeat\";\
-  canvas_bg_div.style.backgroundPosition= sx+\"px \"+sy+\"px\";\
-  canvas_bg_div.style.backgroundImage = \"url(\" + URL + \")\";\
- };\
-};",canvas_root_id);
     break;
     case DRAW_GRIDFILL:/* not used for userdraw */
 fprintf(js_include_file,"\n<!-- draw gridfill -->\n\
@@ -5802,13 +5851,13 @@ var draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- ctx.strokeStyle = \"rgba('+stroke_color+','+stroke_opacity+')\";\
+ ctx.strokeStyle = 'rgba('+stroke_color+','+stroke_opacity+')';\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];}};\
  for(var p = 0 ; p < x_points.length ; p = p + 2){\
   ctx.beginPath();\
   ctx.rect(x_points[p],y_points[p],x_points[p+1]-x_points[p],y_points[p+1]-y_points[p]);\
   ctx.closePath();\
-  if(use_filled == 1 ){ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";ctx.fill();}\
+  if(use_filled == 1 ){ctx.fillStyle = 'rgba('+fill_color+','+fill_opacity+')';ctx.fill();}\
   ctx.stroke();\
  };\
  ctx.restore();\

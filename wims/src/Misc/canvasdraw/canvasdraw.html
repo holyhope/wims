@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Thu Nov  6 12:39:00 CET 2014)</h3></center>
+<center><h3>Implemented canvasdraw commands (Sun Dec  7 16:28:34 CET 2014)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -55,13 +55,6 @@
 <li><span style="color:red"> linewidth int
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> default 1
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red"> arrowhead int
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> default 8 (pixels)
 </span></li>
 	    
 </ul>
@@ -128,15 +121,34 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> segments color,x1,y1,x2,y2,...,x_n,y_n
+<li><span style="color:red"> circle xc,yc,width (2*r in pixels),color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> draw multiple segments between points (x1:y1)--(x2:y2).....and... (x_n-1:y_n-1)--(x_n:y_n) in color 'color'
+<li><span style="color:blue;font-size:0.8em"> use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> Attention r = radius in x-range (!)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick (individually)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
 </span></li>
 	    
 </ul>
@@ -147,6 +159,19 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> segments color,x1,y1,x2,y2,...,x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw multiple segments between points (x1:y1)--(x2:y2).....and... (x_n-1:y_n-1)--(x_n:y_n) in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
 </span></li>
 	    
 </ul>
@@ -265,32 +290,6 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> roundrect x1,y1,x2,y2,radius in px,color
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> fillcolor will be identical to 'color'
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red"> roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> for filled roundrects use command/keyword 'filled' before command
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
-</span></li>
-	    
-</ul>
-	    
 <li><span style="color:red"> rect x1,y1,x2,y2,color
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> use command 'frect x1,y1,x2,y2,color' for a filled rectangle
@@ -313,6 +312,32 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' before 'frects' to set the fill colour.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> roundrect x1,y1,x2,y2,radius in px,color
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command/keyword 'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> fillcolor will be identical to 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> for filled roundrects use command/keyword 'filled' before command
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
@@ -344,7 +369,7 @@
 <li><span style="color:blue;font-size:0.8em"> draw closed polygon
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> use command 'fpoly' to fill it, use command 'fillcolor color' to set the fill color
+<li><span style="color:blue;font-size:0.8em"> use command 'fpoly' to fill it
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
@@ -357,7 +382,7 @@
 <li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> attention: width == height == radius in pixels
+<li><span style="color:blue;font-size:0.8em"> attention: width in height in x/y-range
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> will not zoom in or zoom out (because radius is given in pixels an not in x/y-system !). Panning will work
@@ -397,44 +422,15 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> dashtype int ,int
+<li><span style="color:red"> dashtype line_width_px,space_width_px
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> When dashed is set, the objects will be drawn with this dashtyp
+<li><span style="color:blue;font-size:0.8em"> When dashed is set, the objects will be drawn with this dashtype
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> default value "dashtype 2,2"
+<li><span style="color:blue;font-size:0.8em"> default value "dashtype 2,2" e.g. 2px line and 2px space
 </span></li>
 	    
-</ul>
-	    
-<li><span style="color:red"> circle xc,yc,width (2*r in pixels),color
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red"> circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> Attention r = radius in x-range (!)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick (individually)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
+<li><span style="color:blue;font-size:0.8em"> html5 canvas specification supports more arguments (dashing schemes) ... but not all modern browsers are yet capable
 </span></li>
 	    
 </ul>
@@ -449,15 +445,9 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> arrows color,head (px),x1,y1,x2,y2...x_n,y_n
+<li><span style="color:red"> arrowhead int
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> draw single headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> default 8 (pixels)
 </span></li>
 	    
 </ul>
@@ -471,6 +461,19 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> arrows color,head (px),x1,y1,x2,y2...x_n,y_n
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> draw single headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
 </span></li>
 	    
 </ul>
@@ -525,12 +528,42 @@
 	    
 </ul>
 	    
-<li><span style="color:red">bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
+<li><span style="color:red"> userdraw object_type,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em">draw a bezier curve between points, starting from (x_start:y_start)
+<li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed (in this canvasdraw version)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">can not be dragged or set onclick
+<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "filled", "opacity int,int" and "fillcolor color" to trigger coloured filling of fillable objects
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "dashed" and/or "dashtype int,int" to trigger dashing
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be combined with onclick or drag xy of other components of flyscript objects (although not very usefull...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> may be combined with keyword 'userinput_xy'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 </span></li>
 	    
 </ul>
@@ -559,6 +592,9 @@
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to xmajor / ymajor grid
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> if no grid is defined ,points will snap to every integer xrange/yrange value. (eg snap_x=1,snap_y=1)
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 </span></li>
 	    
@@ -578,6 +614,9 @@
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to xmajor grid
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> if no grid is defined ,points will snap to every integer xrange value. (eg snap_x=1)
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
 </span></li>
 	    
@@ -595,6 +634,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> in case of userdraw the drawn points will snap to ymajor grid
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if no grid is defined ,points will snap to every integer yrange value. (eg snap_y=1)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> if you do not want a visible grid, but you only want a 'snaptogrid' with some value...define this grid with opacity 0.
@@ -709,46 +751,6 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> userdraw object_type,color
-</span><ul>
-<li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed (in this canvasdraw version)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command "filled", "opacity int,int" and "fillcolor color" to trigger coloured filling of fillable objects
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command "dashed" and/or "dashtype int,int" to trigger dashing
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be combined with onclick or drag xy of other components of flyscript objects (although not very usefull...)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> may be combined with keyword 'userinput_xy' or
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
-</span></li>
-	    
-</ul>
-	    
 <li><span style="color:red"> plotsteps a_number
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> default 150
@@ -775,82 +777,6 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">example usage: x/y-axis text
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red">animate type
-</span><ul>
-<li><span style="color:blue;font-size:0.8em">REMOVED : this should be done with a slider
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">type may be "point" (nothing else , yet...)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">will animate a point on the next plot/curve command
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">the curve will not be draw
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">moves repeatedly from xmin to xmax
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red">levelcurve color,expression in x/y,l1,l2,...
-</span><ul>
-<li><span style="color:blue;font-size:0.8em">draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">note : the arrays for holding the javascript data are limited in size
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red">trace_jscurve some_math_function
-</span><ul>
-<li><span style="color:blue;font-size:0.8em">will use a crosshair to trace the jsmath curve
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">two inputfields will display the current x/y-values (numerical evaluation by javascript)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">use linewidth,strokecolor,crosshairsize to adjust the corsshair.
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
-</span></li>
-	    
-</ul>
-	    
-<li><span style="color:red">jsmath some_math_function
-</span><ul>
-<li><span style="color:blue;font-size:0.8em">will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">example: jsmath sin(x^2)
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em">the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 </span></li>
 	    
 </ul>
@@ -904,6 +830,70 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">may be set draggable / onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">levelcurve color,expression in x/y,l1,l2,...
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">note : the arrays for holding the javascript data are limited in size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">draw a bezier curve between points, starting from (x_start:y_start)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">can not be dragged or set onclick
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">trace_jscurve some_math_function
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">will use a crosshair to trace the jsmath curve
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">two inputfields will display the current x/y-values (numerical evaluation by javascript)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use linewidth,strokecolor,crosshairsize to adjust the corsshair.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">jsmath some_math_function
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">example: jsmath sin(x^2)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 </span></li>
 	    
 </ul>
@@ -1236,6 +1226,9 @@
 <li><span style="color:blue;font-size:0.8em"> defines a transformation matrix for subsequent objects
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> images drawn by setting skew params a &amp; d will be very different from Flydraw's "affine a,b,c,d,e,tx,ty" !!
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> use keyword 'killaffine' to end the transformation
 </span></li>
 	    
@@ -1266,7 +1259,7 @@
 <li><span style="color:blue;font-size:0.8em"> ty: Moves the drawings vertically in yrange coordinate system
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the data precision is 2 decimals (printf : %2.f)
+<li><span style="color:blue;font-size:0.8em"> the data precision may be set by preceding command "precision int"
 </span></li>
 	    
 </ul>
@@ -1277,6 +1270,28 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">uase command 'killtranstation' to end the command
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red">animate type
+</span><ul>
+<li><span style="color:blue;font-size:0.8em">REMOVED : this should be done with a slider
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">type may be "point" (nothing else , yet...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">will animate a point on the next plot/curve command
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">the curve will not be draw
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">moves repeatedly from xmin to xmax
 </span></li>
 	    
 </ul>
@@ -1353,6 +1368,9 @@
 	    
 <li><span style="color:red"> copy x,y,x1,y1,x2,y2,[filename URL]
 </span><ul>
+<li><span style="color:blue;font-size:0.8em"> The image may be "bitmap" or "SVG"
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
 </span></li>
 	    
@@ -1365,29 +1383,47 @@
 <li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if you want to draw / userdraw on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+<li><span style="color:blue;font-size:0.8em"> if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> you may draw / userdraw / drag other stuff on top of an "imported" image
 </span></li>
 	    
 </ul>
 	    
 <li><span style="color:red"> copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
 </span><ul>
+<li><span style="color:blue;font-size:0.8em"> The image may be "bitmap" or "SVG"
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> (dx1:dy1) must be left top corner; (dx2 :dy2) must be right bottom corner of inserted image
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
+<li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(as seen from public_html-root or network reachable 'http://some_server/my_images/test.gif'<br />(eg no special wims paths are searched !!)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valuid for the next image<br />draggable / non-draggable images may be mixed
+<li><span style="color:blue;font-size:0.8em"> if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if you want to draw / userdraw on an "imported" image, make sure it is transparent.<br />for example GNUPlot: set terminal gif transparent
+<li><span style="color:blue;font-size:0.8em"> if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> you may draw / userdraw / drag stuff on top of an "imported" image
 </span></li>
 	    
 </ul>
@@ -2083,10 +2119,10 @@
 <li><span style="color:blue;font-size:0.8em">used to override the effects of "status=done" in wims (answer.phtml)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">affects inputfields / textarea's in canvasimage and all userdraw based commands
+<li><span style="color:blue;font-size:0.8em">affects 'readonly' in inputfields / textarea's in canvasimage and all userdraw based commands
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims status variable' is set to 'done'
+<li><span style="color:blue;font-size:0.8em">e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims $status variable' is set to 'done'
 </span></li>
 	    
 </ul>

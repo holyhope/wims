@@ -198,8 +198,7 @@
 #define DRAW_LINES	28
 #define DRAW_PIECHART	29
 #define DRAW_CLOCK	30
-#define DRAW_EXTERNAL_IMAGE	31
-#define DRAG_EXTERNAL_IMAGE	32
+#define DRAW_EXTERNAL_IMAGE	32
 #define DRAW_DIAMONDFILL	33
 #define DRAW_SGRAPH	34
 #define DRAW_POLYLINE	35
@@ -211,20 +210,19 @@
 #define DRAW_DEMILINES	41
 #define DRAW_BEZIER	42
 
-#define BG_CANVAS	0
-#define STATIC_CANVAS	1
-#define MOUSE_CANVAS	2
-#define GRID_CANVAS	3
-#define DRAG_CANVAS	4
-#define DRAW_CANVAS	5
-#define TEXT_CANVAS	6
-#define EXTERNAL_DRAG_CANVAS 7
-#define EXTERNAL_IMAGE_CANVAS 8
-#define CLOCK_CANVAS	9
-#define ANIMATE_CANVAS	10
-#define TRACE_CANVAS	11
-#define JSPLOT_CANVAS	12
-#define USERDRAW_JSPLOT 13 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
+#define EXTERNAL_IMAGE_CANVAS 0 /* this is created first !!! in order to draw on it */
+#define BG_CANVAS	1
+#define STATIC_CANVAS	2
+#define MOUSE_CANVAS	3
+#define GRID_CANVAS	4
+#define DRAG_CANVAS	5
+#define DRAW_CANVAS	6
+#define TEXT_CANVAS	7
+#define CLOCK_CANVAS	8
+#define ANIMATE_CANVAS	9
+#define TRACE_CANVAS	10
+#define JSPLOT_CANVAS	11
+#define USERDRAW_JSPLOT 12 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
 
 #ifndef STD_H
 #define STD_H

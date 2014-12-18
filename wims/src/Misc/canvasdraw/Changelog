@@ -476,4 +476,52 @@ userdraw arrow,blue
 	- added "xsnaptogrid,ysnaptogrid,snaptogrid,snaptopoints" to dragging of 'external images'
 9/11	- fixed bug of increasing font_size when using multiple 'text' commands [perrin]	
 	- changed output "function distance()" from integer to floating point. (slightly better in case of snaptopoints)
-	
+22/11	- joined draw_external_images and drag_external_images
+	  image operations are now performed on a "real canvas" and no longer on a "canvas_div"
+23/11	- solved issue with drawing onto external images: now a empty 'external_image' canvas is created first / per default...
+          (even if there is no external image imported)
+          The image may be of type BITMAP and SVG
+        - synchronised size of point / points with flydraw
+          now "linewidth 1" is almost invisible, just as in 'flydraw'...that is a clear improvement :) 
+        - corrected command 'arc' : switched from width/height (width and height may now be different) in pixels to width / heigth in x/y-range
+          analogue to command 'ellipse' 
+
+-24/11	-corrected syntax-flaw in js-function draw_rects() ; both stroke_color and fill_color were not correctly defined
+	 and thus reset to "0,0,0"
+	-again tried to fix copy/copyresized (grrr)
+-25/11  -added "onclick" to external images (via commands copy / copyresized)
+	 see canvassdraw.html for possible usage and limitations
+-7/12	-onclick objects may now be of any type (eg external images ,via copy /copyresized or any other canvas 'object')
+-16/12	-corrected 'userdraw points,color' erase/redraw bug (using 'clearbutton buttontxt')
+	-fixed bug when onclick external images were mixed with static external images
+	-simplified onclick things in external images
+
+
+###############################################################################################################################	 
+        
+JM.EVERS
+do not -yet- synchronise with school servers or leiden mirror !!
+
+this version will break current exo's:
+
+command 'linewidth' : increase linewidth -due to synchronisation with flydraw...- in case of commands "point" ,"points" and "userdraw point,color"
+
+command 'arc'
+./H1/geometry/hoeken-1.nl/exos/exo2:arc 5,0,60,60,0,$hoek,green\
+./H1/geometry/hoeken-1.nl/exos/exo3:		    arc=arc 0,0,40,40,0,$hoek,red
+./H1/geometry/hoeken-1.nl/exos/exo4:	    arc=arc 0,0,60,60,0,$hoek,red
+./H1/geometry/hoeken-1.nl/exos/exo9:    filledarc $xb,$yb,40,40,$t,$[$t+$hoek],green\
+./H1/geometry/hoeken-1.nl/exos/exo10:filledarc 0,0,20,20,$start,$eind,red\
+./H1/geometry/hoeken-1.nl/exos/exo16:filledarc 0,0,20,20,$start,$eind,red\
+./H1/geometry/hoeken-1.nl/exos/exo17:filledarc 0,0,$r,$r,$start,$eind,red\
+./H1/geometry/hoeken-1.nl/exos/exo18:filledarc $xs2,$ys2,$r,$r,$eind,$[$eind+$hoek],green\
+./H1/geometry/hoeken-1.nl/exos/exo1:	    arc=arc 0,0,80,80,0,$hoek1,red
+./H1/geometry/hoeken-1.nl/exos/exo20:arc 5,0,6,6,0,$hoek,green\
+./H1/number/oppervlak-1.nl/exos/exo11:    # arc xc,yc,width,height,start_angle,end_angle,color
+./H1/number/oppervlak-1.nl/exos/exo12:filledarc 0,0,78,78,0,$waarde1,black\
+./H4/financialmath/economie-3.nl/exos/exo18:filledarc 0,0,$r,$r,0,72,blue\
+./H4/financialmath/economie-3.nl/exos/exo19:filledarc 0,0,200,200,288,360,red\
+
+command 'drag' ('onclick / drag' object counter now starts at 0 !) 
+./H1/number/verhoudingen-2.nl/exos/exo13 (index change: line = (ans[p]).split(':');idx = line[0];/* was idx = line[0] - 1; */)
+        
