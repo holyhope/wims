@@ -10,6 +10,15 @@ $wims_name_account_property\
 
 !read adm/class/initclass $wims_class
 !set inplen=40
+
+!! ----- permet de transférer les scores d'un user provenant d'une classe en partage dans un groupement ou entre des cours d'un même portail
+ !if $wims_user=supervisor and $wims_supertype iswordof 2 4
+  !readproc adm/gateway/transfer $getuser test
+  !if $transfer_test>0
+   !href module=adm/class/usermanage&job=transfer&getuser=$getuser $name_transfer
+  !endif
+ !endif
+
 !form reply
 <input type="hidden" name="job" value="userprop" />
 <input type="hidden" name="getuser" value="$getuser" />

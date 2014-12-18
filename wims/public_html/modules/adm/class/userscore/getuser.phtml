@@ -31,13 +31,13 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
-!! ----- TODO : Il faut reflechir au placement de ce lien ici ou seulement dans usermanage.
- !if $wims_user=supervisor and $wims_supertype iswordof 2 4
-  !readproc adm/gateway/transfer $getuser test
-  !if $transfer_test>0
-   !href module=adm/class/usermanage&job=transfer&getuser=$getuser $name_transfer
-  !endif
- !endif
+!! ----- transférer dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
+!! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
+!!  !readproc adm/gateway/transfer $getuser test
+!!  !if $transfer_test>0
+!!   !href module=adm/class/usermanage&job=transfer&getuser=$getuser $name_transfer
+!!  !endif
+!! !endif
 !endif
 
  <br class="spacer" />

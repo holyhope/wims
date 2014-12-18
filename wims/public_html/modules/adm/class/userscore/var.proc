@@ -42,7 +42,7 @@ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
  !bound job within getuser,userprop,examcheck,getraw default getuser
  getuser=$wims_user
 !else
-  !bound job within getuser,userprop,examcheck,getraw,examcheck,userexam,userexamclose,showsheet,csv,formula,sheets,$empty default $empty
+  !bound job within getuser,userprop,examcheck,getraw,userexam,userexamclose,showsheet,csv,formula,sheets,$empty default $empty
 !endif
 
 !if $cmd=reply && $job=examcheck
@@ -152,7 +152,7 @@ eactivecnt=!itemcnt $activexams
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 
 job=!word 1 of $job
-!if $job iswordof getuser getraw delprep deluser userexam userexamclose transfer
+!if $job iswordof getuser getraw delprep deluser userexam userexamclose
  logname=$getuser$getraw$delprep$deluser
  !read adm/class/userdef classes,$wims_class,$logname
  !defread $userdef

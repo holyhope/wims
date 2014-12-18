@@ -17,7 +17,7 @@ name_groupAverage
 
 !set name_partdeleted=Participants supprimés
 !set wims_name_reg_ex=Liste des exercices enregistrés
-!set name_transfer=Transférer ses activités des autres classes
+!!set name_transfer=Transférer ses activités des autres classes
 
 !set name_minmax=min/moy/max de la classe&nbsp;
 
@@ -94,21 +94,6 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_direct_score=liste et notes en direct
 
-!if $job=transfer
-   !set name_title_transfer=Transférer les activités
-   !distribute items Joindre, Remplacer,Examiner\
-   into name_merge, name_replace,name_show
-
- !set name_error1=Le participant n'est pas inscrit dans un cours correspondant\
-     à la classe actuelle, ce qui empêche le transfert depuis
- !set name_error2=Erreur d'identifiant des classes. \
-    Fausse manoeuvre ou bogue du logiciel ?
-!set name_activities=!nosubst Détail des activités dans $i (limité à 1000 lignes).
-!set name_totransfer=Voici les autres cours dans lesquels le participant a eu des activités.\
-  Cliquez sur une action pour les transférer.
-
-!endif
-
 !if $job=recover
   !set name_empty=Il n'y a pas de participant supprimé dans cette classe.
   !set name_click=Cliquez sur un nom de login pour remettre le participant dans la classe.
@@ -151,13 +136,3 @@ de votre classe ?
 :end
 !exit
 
-:transfer
-<b>Remarques</b>. <ol>
-<li>"$name_merge" veut dire mettre ensemble les activités venant des deux cours.</li>
-<li>"$name_replace" veut dire que les activités de l'autre cours vont écraser
-celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.</li>
-<li>Les scores des examens et des activités non comptées sont toujours joints.</li>
-<li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.</li>
-<li>Après l'action ($name_merge ou $name_replace), les registres d'activités du participant dans
-l'autre cours seront effacés.</li>
-</ol>

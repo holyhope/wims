@@ -22,7 +22,7 @@ name_groupAverage
 
 !set name_partdeleted=被删的参加者
 !set wims_name_reg_ex=记录练习表
-!set name_transfer=从其它班级转移他的活动
+!!set name_transfer=从其它班级转移他的活动
 
 !!!set name_thsheet=系列号,名称,分数<br />要求,权重,分数<br />得到,%,质量,严厉度,得分,\
   最高分,尝试次数,最新结果,取得的严厉度
@@ -99,17 +99,6 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_direct_score= 直接得分表
 
-!if $job=transfer
-   !set name_title_transfer=的活动转移
-   !distribute items 合并, 替换, 检查\
-   into name_merge, name_replace,name_show
- !set name_error1=参加者没有在当前班级里注册过以下要转移的课程
- !set name_error2=<b>错误</b> 班级名称错. 由于操作错误或软件漏洞?
- !set name_activities=!nosubst 第 $i 行的活动详情 (限1000行).
- !set name_totransfer=这里是参加者有活动的其它课程. 点击一个动作以转移
-
-!endif
-
 !if $job=recover
   !set name_empty=这个班级里没有被删的参加者.
   !set name_click=在登录名上点击以恢复此用户.
@@ -150,12 +139,4 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 :end
 !exit
 
-:transfer
-<b>说明</b>. <ol>
-<li>"$name_merge"意为把两个课程的活动放在一起.</li>
-<li>"$name_replace"意为其它课程的活动将替代此课程的活动. 仅当前者非空时才发生.</li>
-<li>考试记录以及不计分的活动总是被合并的.</li>
-<li>练习或考试的详情记录不被转移.</li>
-<li>在$name_merge或$name_replace后, 参加者在其它课程的记录将被清除.</li>
-</ol>
 

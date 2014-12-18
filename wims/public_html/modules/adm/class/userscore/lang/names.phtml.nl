@@ -17,7 +17,7 @@ name_groupAverage
 
 !set name_partdeleted=Verwijderde studenten
 !set wims_name_reg_ex=Lijst van oefeningen
-!set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
+!!set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
 !!!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen, % , Kwaliteit , Moeilijkheidsgraad , Cijfer ,\
  Hoogste cijfers, Aantal pogingen, Laatste resultaat, Vereiste niveau 
@@ -97,19 +97,6 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 
 !set name_direct_score=ruwe cijfer lijst
 
-!if $job=transfer
-   !set name_title_transfer=Verplaatsen van activiteiten
-   !distribute items Samenvoegen, Vervangen,Bekijken\
-   into name_merge, name_replace,name_show
-!set name_error1=Deze student is niet geregistreerd bij de andere cursus en\
-kan dus niet worden overgezet van
- !set name_error2=<b>Fout</b> in de klas identificatie. Verkeerde handeling of een software fout?
- !set name_activities=!nosubst Details van de aktiviteiten in $i (beperkt tot 1000 regels).
- !set name_totransfer=Hier staan de andere cursussen waarin deze student werk heeft uitgevoerd.\
- Klik om het werk over te hevelen
-
-!endif
-
 !if $job=recover
   !set name_empty=Er is geen verwijderde student in deze klas.
   !set name_click=Klik op de loginnaam om het account te herstellen.
@@ -150,15 +137,4 @@ kan dus niet worden overgezet van
 !set name_topten=!nosubst Top $class_topscores van deze klas
 :end
 !exit
-
-:transfer
-<b>Opmerkingen</b>. <ol>
-<li>"$name_merge" wil zeggen : het samenvoegen van de activiteiten van twee cursussen.</li>
-<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten
-in deze cursus vervangen.</li>
-<li>Proefwerk cijfers en alle niet_scorende activiteiten worden altijd samengevoegd.</li>
-<li>De verbatim opgeslagen proefwerk &amp; oefeningen worden niet overgezet.</li>
-<li>Na de handeling ($name_merge of $name_replace), worden deze gegevens van de
-student in de andere cursus gewist.</li>
-</ol>
 

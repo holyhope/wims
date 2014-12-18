@@ -17,7 +17,7 @@ name_groupAverage
 
 !set name_partdeleted=Participantes borrados
 !set wims_name_reg_ex=Lista de los ejercicios grabados
-!set name_transfer=Transferir sus actividades desde otras clases
+!!set name_transfer=Transferir sus actividades desde otras clases
 
 !set name_minmax=mín/media/máx de la clase&nbsp;
 
@@ -96,20 +96,6 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 
 !set name_direct_score=lista y notas en directo
 
-!if $job=transfer
-   !set name_title_transfer=Transferencia de las actividades
-   !distribute items Unir, Sustituir,Examinar\
-   into name_merge, name_replace,name_show
- !set name_error1=El participante no está inscrito en ningún curso que corresponda\
-     a la clase actual y que pueda recibir la transferencia desde
- !set name_error2=<b>Error</b> de identificador de las clases. \
-    Falsa maniobra o error del programa informático ?
-!set name_activities=!nosubst Detalle de las actividades en $i (limitado a 1000 líneas).
-!set name_totransfer=Estos son los otros cursos en los que ha realizado actividades el participante.\
-  Pulse sobre una acción para hacer la transferencia.
-
-!endif
-
 !if $job=recover
   !set name_empty= No se ha dado de baja a ningún participante de esta clase.
   !set name_click=Pulse sobre un identificador de usuario (login) \
@@ -154,13 +140,3 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 :end
 !exit
 
-:transfer
-<b>Notas</b>. <ol>
-<li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.</li>
-<li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar
-completamente las de este. La sustitución no se realizará si el primero está vacío.</li>
-<li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.</li>
-<li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.</li>
-<li>Después de la operación (de unir o sustituir), se borrarán los registros de las
-actividades del participante en el otro curso.</li>
-</ol>

@@ -23,7 +23,7 @@ name_groupAverage
 
 !set name_partdeleted=Participants suprimits
 !set wims_name_reg_ex=Llista d'exercicis registrats
-!set name_transfer=Transferir activitats de les altres classes
+!!set name_transfer=Transferir activitats de les altres classes
 
 !!!set name_thsheet=No,Títol,Punts<br />demanats,Pes,Punts<br />obtinguts,%,Qualitat,Severitat,Nota,\
   Millors noteses,Nombre d'intents,Darrer resultat,Nivell adquirit
@@ -103,21 +103,6 @@ seqüència. Així que no poden aparèixer resultats.
 
 !set name_direct_score=llista i notes directament
 
-!if $job=transfer
-   !set name_title_transfer=Transferir les activitats
-   !distribute items Adjuntar,Reemplaçar,Examinar\
-   into name_merge, name_replace,name_show
-
- !set name_error1=El participant no està registrat en un curs corresponent\
-a la classe actual i no es possible la transferència
- !set name_error2=<b>Error</b> d'identificació de classes. Moviment en fals o error de programari?
-
-!set name_activities=!nosubst  Detall de l'activitat a $i (limitat a 1000 línies).
-!set name_totransfer=Aquests són els altres cursos en els que el participant ha actuat.\
-  Cliqueu sobre una acció per transferir les seves activitats
-
-!endif
-
 !if $job=recover
   !set name_empty=No hi ha cap participar suprimit en aquesta classe.
   !set name_click= Cliqueu sobre un nom d'usuari per restaurar el participant a la classe.
@@ -160,13 +145,3 @@ de la vostra classe ?
 :end
 !exit
 
-:transfer
-<b>Notes</b>. <ol>
-<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.</li>
-<li>"$name_replace" significa que les activitats dels altres cursos substituiran
-les d'aquest curs. La substitució no es produirà si el primer és buit.</li>
-<li>Les notes dels exàmens i les activitats no comptades van sempre unides.</li>
-<li>El registre dels detalls d'exercicis o exàmens no és transferible.</li>
-<li>Després de l'acció ("$name_merge" o "$name_replace"), els registres de les
-activitats del participant en els altres cursos seran eliminats.</li>
-</ol>

@@ -17,7 +17,7 @@ name_groupAverage
 
 !set name_partdeleted=Studenti esclusi
 !set wims_name_reg_ex=Elenco degli esercizi salvati
-!set name_transfer=Importa la sua attività da altro corso
+!!set name_transfer=Importa la sua attività da altro corso
 
 !!!set name_thsheet=Numero,Titolo,Punti<br />richiesti,Peso,Punti<br />ottenuti,%,Media,Severità,Voto,\
   Best scores,Number of tries,Last result,Acquired level
@@ -107,20 +107,6 @@ dei voti manuali)
 
 !set name_direct_score=torna alla visualizzazione dei dati
 
-!if $job=transfer
-   !set name_title_transfer=Trasferisci l'attività di
-   !distribute items Unisci, Sostituisci,Verifica\
-   into name_merge, name_replace,name_show
-
- !set name_error1=L'utente non è iscritto a nessun corso corrispondente \
-     al cours attuale, e ciò impedisce il trasferimento dei dati
- !set name_error2=Errore di codice corso. Wrong manoeuvre or bug of the software?
-!set name_activities=!nosubst Dettaglio dell'attività in $i (massimo 1000 righe).
-!set name_totransfer=Questi sono i corsi in cui lo studente ha svolto attività. Clicca su\
-una opzione per trasferire i dati in questo corso.
-
-!endif
-
 !if $job=recover
   !set name_empty=Non è stato escluso alcuno studente.
   !set name_click= Selezionare il login dello studente da reinserire.
@@ -163,15 +149,3 @@ una opzione per trasferire i dati in questo corso.
 :end
 !exit
 
-:transfer
-<b>Note</b>. <ol>
-<li>"$name_merge" significa che sono unite le attività dei due corsi.</li>
-<li>"$name_replace" significa che le attività dell'altro corso sostiuiscono
-quelle registrate per questo (questo è possibile sole se le prime non sono
-vuote).</li>
-<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono
-sempre unite.</li>
-<li>La registrazione di dettagli degli esercizi non sono trasferiti.</li>
-<li>Dopo aver effettuato il trasferimento (sia come "$name_merge" che come
-"$name_replace"), i dati dello studente nell'altro corso sono azzerati.</li>
-</ol>
