@@ -15,78 +15,26 @@ dl=!replace word allscores by allscore in $dl
 dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
 dl_tmp=$dl
-basic=login lastname firstname password email regnum comments photourl participate supervise supervisable external_auth vars
-sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-sheetcnt=!itemcnt $activesh
-sh=
-!for i in $activesh
- sh=$sh sheet$i
- l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
- name=!line 3 of $l
- name_sheet$i=$quote$name$quote
-!next i
-good=$basic $sh
 
-examcnttot=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
-examcnt=!itemcnt $activexams
-ex=
-!for i in $activexams
- ex=$ex exam$i
- l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
- name=!line 4 of $l
- name_exam$i=$quote$name$quote
-!next i
-good=$good $ex
-
-ma=
-l=!record 1 of wimshome/log/classes/$wims_class/.grades
-l=!line 2 of $l
-!for i=1 to $gcnt
- ma=$ma manual$i
- name=!item $i+2 of $l
- name_manual$i=$quote$name$quote
-!next i
-good=$good $ma
-
-av=
-!if $sheetcnt+$examcnt>0 and $gcnt>0
- av=$av average0
-!endif
-!if $sheetcnt+$examcnt>0
- av=$av average1
-!endif
-!if $gcnt>0
- av=$av average2
-!endif
-good=$good $av
-
-!for i in $activesh
-  se=
-  e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
-  !for ee=1 to $e
-    seq=sheet$(i)_exo_$(ee)_Q
-    se0=sheet$(i)_exo_$(ee)_I0
-    se1=sheet$(i)_exo_$(ee)_I1
-    se2=sheet$(i)_exo_$(ee)_I2
-    se=$se $seq $se0 $se1 $se2
-    name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
-    name=!line 5 of $name
-    name_$se0=$name Q
-    name_$se0=$name I0 (%)
-    name_$se1=$name I1 (%)
-    name_$se2=$name I2
-  !next
-  !if sheetexo$i iswordof $dl
-    dl=!replace word sheetexo$i by $se in $dl
-    dl=!replace word sheetexo$i by  in $dl
-    good=$good $se
-  !endif
-!next
+!readproc csv/keyword.proc
+tmp=!items2words $se
+good=$basic $av $sh $ex $ma $tmp
 
 dl=!replace word averages by $av in $dl
 dl=!replace word sheets by $sh in $dl
 dl=!replace word exams by $ex in $dl
 dl=!replace word manuals by $ma in $dl
+!if sheetexos isin $dl
+ dl=!replace word sheetexos by $se in $dl
+!else
+  !for i in $activesh
+    !if sheetexo$i iswordof $dl
+      dl=!replace word sheetexo$i by $(se[$i]) in $dl
+      dl=!replace word sheetexo$i by  in $dl
+    !endif
+  !next i
+!endif
+se=!items2words $se
 
 dl=!words2items $dl
 dl=!listuniq $dl
@@ -138,6 +86,7 @@ scores=no
 !read csvnames
 !writefile $fname $tit\
 $dl3$dl5\
+
 
 !for u=1 to $usercnt
  !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
@@ -208,6 +157,7 @@ $dl3$dl5\
  !endif
  !appendfile $fname $dl2$dl4
 !next u
+
 
 infile=spreadsheet.$csvformat
 outfile=$fbase.$csvformat

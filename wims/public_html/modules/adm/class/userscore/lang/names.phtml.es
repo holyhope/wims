@@ -124,6 +124,9 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 
 
   !set name_deposit=!nosubst  El fichero de hoja de cálculo <span class="tt">$wims_deposit</span> ha sido reconocido correctamente.
+  !set name_indicateur=Indicateur
+  !set name_otherkeyword=Other keyword
+  !set name_all=All
 !endif
 
 !set name_topten=!nosubst Top $class_topscores de las medias de la clase

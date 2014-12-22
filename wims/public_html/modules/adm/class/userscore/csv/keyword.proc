@@ -1,0 +1,70 @@
+
+!! list of basic keyword
+basic=login lastname firstname password email regnum comments photourl participate supervise supervisable external_auth vars
+!! list of active sheet
+sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+sheetcnt=!itemcnt $activesh
+sh=
+shexo=
+!for i in $activesh
+ sh=$sh sheet$i
+ shexo=$shexo sheetexo$i
+ l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ name=!line 3 of $l
+ name_sheet$i=$quote$name$quote
+!next i
+
+!! list of active exam
+examcnttot=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+examcnt=!itemcnt $activexams
+ex=
+!for i in $activexams
+ ex=$ex exam$i
+ l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ name=!line 4 of $l
+ name_exam$i=$quote$name$quote
+!next i
+
+!! list of manual score
+ma=
+l=!record 1 of wimshome/log/classes/$wims_class/.grades
+l=!line 2 of $l
+!for i=1 to $gcnt
+ ma=$ma manual$i
+ name=!item $i+2 of $l
+ name_manual$i=$quote$name$quote
+!next i
+
+!! add or not keyword for average
+av=
+!if $sheetcnt+$examcnt>0 and $gcnt>0
+ av=$av average0
+!endif
+!if $sheetcnt+$examcnt>0
+ av=$av average1
+!endif
+!if $gcnt>0
+ av=$av average2
+!endif
+
+
+
+!! add keyword for sheetexo information
+  se=
+!for i in $activesh
+  e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !for ee=1 to $e
+    seq=sheet$(i)_exo_$(ee)_Q
+    se0=sheet$(i)_exo_$(ee)_I0
+    se1=sheet$(i)_exo_$(ee)_I1
+    se2=sheet$(i)_exo_$(ee)_I2
+    tmp=$seq $se0 $se1 $se2
+    se=!append item $tmp to $se
+    name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
+    name=!line 5 of $name
+    name_$se0=$name Q
+    name_$se0=$name I0 (%)
+    name_$se1=$name I1 (%)
+    name_$se2=$name I2
+  !next ee 
+!next i

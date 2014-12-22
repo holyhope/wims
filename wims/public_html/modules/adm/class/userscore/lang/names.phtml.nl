@@ -123,6 +123,9 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
 
   !set name_deposit=!nosubst Spreadsheet bestand <span class="tt">$wims_deposit</span> met succes verwerkt.
+  !set name_indicateur=Indicateur
+  !set name_otherkeyword=Other keyword
+  !set name_all=All
 !endif
 
 !set name_topten=!nosubst Top $class_topscores van deze klas
