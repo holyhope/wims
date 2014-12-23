@@ -95,14 +95,14 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
   !goto end
 !endif
 
-!set name_direct_score=ruwe cijfer lijst
+!set name_direct_score=ruwe cijferlijst
 
 !if $job=csv
   !distribute lines Hier is het bestand\
     dat kan worden geopend met een spreadsheet programma.\
     Student informatie is aangepast\
     Nieuwe studenten toegevoegd\
-    Het toevoegen van nieuwe studenten is mislukt : er is geenv geheugenruimte meer beschikbaar.\
+    Het toevoegen van nieuwe studenten is mislukt : er is geen geheugenruimte meer beschikbaar.\
     Student informatie is niet aangepast omdat de cijfers zijn geupload.\
     Server berekende cijfers (de gemiddelden en werkblad/proefwerk scores) zijn niet aangepast : deze kunnen niet worden veranderd.\
     Niet aangepaste gegevens over verwijderde studenten \
@@ -123,9 +123,9 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
 
   !set name_deposit=!nosubst Spreadsheet bestand <span class="tt">$wims_deposit</span> met succes verwerkt.
-  !set name_indicateur=Indicateur
-  !set name_otherkeyword=Other keyword
-  !set name_all=All
+  !set name_indicateur=Indicatie
+  !set name_otherkeyword=Andere zoekterm
+  !set name_all=Alles
 !endif
 
 !set name_topten=!nosubst Top $class_topscores van deze klas
