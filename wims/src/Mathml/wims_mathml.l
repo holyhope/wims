@@ -32,7 +32,7 @@ int wims_mathml_env_start = 0;
 int wims_mathml_rowposn = 0;
 int wims_mathml_displaymode = 0;
 
-%} 
+%}
 %%
 %{ if (wims_mathml_rowposn==1) wims_mathml_rowposn=0;
    if (wims_mathml_rowposn==2) wims_mathml_rowposn=1;
@@ -54,7 +54,7 @@ int wims_mathml_displaymode = 0;
 
 
 "^"            return SUP;
-"_"            return SUB; 
+"_"            return SUB;
 "{"[\t\r\n ]*"}"   return EMPTYMROW;
 "{"            {wims_mathml_rowposn = 2; if(wims_mathml_inoptarg[wims_mathml_optarg_ind] != 0) wims_mathml_inoptarg[wims_mathml_optarg_ind]++; return MROWOPEN;}
 "}"            {if(wims_mathml_inoptarg[wims_mathml_optarg_ind] != 0) wims_mathml_inoptarg[wims_mathml_optarg_ind]--; return MROWCLOSE;}
@@ -281,8 +281,8 @@ int wims_mathml_displaymode = 0;
 "\\Mu"     |
 "\\Nu"    |
 "\\Rho"   |
-"\\Tau"  | 
-"\\mho"  | 
+"\\Tau"  |
+"\\mho"  |
 "\\Omega"     {yylval=wims_mathml_copy2(yytext, ";"); if (yylval != wims_mathml_empty_string) yylval[0]='&'; return MI;}
 
 "\\Upsilon" |
@@ -308,7 +308,7 @@ int wims_mathml_displaymode = 0;
 
 "\\longrightarrow"  {yylval=wims_mathml_copy_string("&longrightarrow;"); return MOL;}
 
-"\\Longrightarrow"  {yylval=wims_mathml_copy_string("&#x27F6"); return MOL;}
+"\\Longrightarrow"  {yylval=wims_mathml_copy_string("&#x27F9;"); return MOL;}
 
 "\\leftarrow"   {yylval=wims_mathml_copy_string("&leftarrow;"); return MOL;}
 
@@ -815,8 +815,8 @@ int wims_mathml_displaymode = 0;
 "\\widevec"   {return WIDEVEC;}
 "\\limits"  {/* Ignore  */ ;}
 
-"\\overrightarrow"	  {yylval = wims_mathml_copy_string("&rightarrow;"); 	 return OVERARROW;} 
-"\\overleftarrow"         {yylval = wims_mathml_copy_string("&leftarrow;"); 	 return OVERARROW;} 
+"\\overrightarrow"	  {yylval = wims_mathml_copy_string("&rightarrow;"); 	 return OVERARROW;}
+"\\overleftarrow"         {yylval = wims_mathml_copy_string("&leftarrow;"); 	 return OVERARROW;}
 "\\overleftrightarrow" 	  {yylval = wims_mathml_copy_string("&leftrightarrow;"); return OVERARROW;}
 "\\overrightharpoonup"    {yylval = wims_mathml_copy_string("&#x21C0"); 	 return OVERARROW;}
 "\\overrightharpoondown"  {yylval = wims_mathml_copy_string("&#x21C1"); 	 return OVERARROW;}
@@ -834,15 +834,15 @@ int wims_mathml_displaymode = 0;
 "\\dddot"      {return DDDOT;}
 "\\ddddot"      {return DDDDOT;}
 
-"\\tilde"       {return TILDE;} 
+"\\tilde"       {return TILDE;}
 "\\widetilde"   {return WIDETILDE;}
 
 
-"\\check"       {return CHECK;} 
+"\\check"       {return CHECK;}
 "\\widecheck"   {return WIDECHECK;}
 
 
-"\\hat"       {return HAT;} 
+"\\hat"       {return HAT;}
 "\\widehat"   {return WIDEHAT;}
 
 "\\underset"     {return UNDER;}
@@ -948,7 +948,7 @@ int wims_mathml_displaymode = 0;
 
 "\\rowopts"    {return ROWOPTS;}
 
-"\\cellopts"   {return CELLOPTS;} 
+"\\cellopts"   {return CELLOPTS;}
 
 "\\rowspan"     {BEGIN(ATTRIBUTELIST); return ROWSPAN;}
 
@@ -1619,7 +1619,7 @@ int wims_mathml_displaymode = 0;
     strncat(H," rowlines=\"",11);
     int found = 0;
     for( p = 0; p < yyleng ; p++){
-	if( strlen(C) < (len - 8) && strlen(M) < (len - 8)){ 
+	if( strlen(C) < (len - 8) && strlen(M) < (len - 8)){
 	/* in case of trouble...array M[len] or C[len] will be too small */
 	    found = 0;
 	    switch( yytext[p] ){
@@ -1633,7 +1633,7 @@ int wims_mathml_displaymode = 0;
 		default  : found = 1;break;
 	    }
 	    if( found == 0 ){
-		if( yytext[p+1] != ':' && yytext[p+1] != '|' && 
+		if( yytext[p+1] != ':' && yytext[p+1] != '|' &&
 		    yytext[p-1] != ':' && yytext[p-1] != '|' ){
 			strncat(M," none ",6);
 			strncat(H," none ",6);
@@ -1645,7 +1645,7 @@ int wims_mathml_displaymode = 0;
     strncat(C,"\" ",2);
     strncat(M,"\" ",2);
     strncat(H,"\" ",2);
-    
+
     yylval=wims_mathml_copy3(C,M,H);
     return TEX_OPTIONS;
   }
@@ -1718,7 +1718,7 @@ int wims_mathml_displaymode = 0;
 \{[^\}]*?\}  {yylval=wims_mathml_copy_string(yytext+1); if ((yyleng > 1) && (yylval != wims_mathml_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
 }
 
-<INT1>{ 
+<INT1>{
 "\{"      {return ST;}
 "\}"      {BEGIN(INT2); return END;}
 [0-9]+    {yylval=wims_mathml_copy_string_extra(yytext, 1); if (yyleng && (yylval != wims_mathml_empty_string)) { yylval[yyleng]=yylval[yyleng-1]; yylval[yyleng-1]='.'; yylval[yyleng+1]='\0'; } return INTONE;}
