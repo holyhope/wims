@@ -288,10 +288,10 @@ int wims_mathml_displaymode = 0;
 "\\Upsilon" |
 "\\Upsi" {yylval=wims_mathml_copy_string("&Upsi;"); return MI;}
 
-"\\iff" |
-"\\Longleftrightarrow"  {yylval=wims_mathml_copy_string("&iff;"); return MOL;}
-
+"\\iff" {yylval=wims_mathml_copy_string("&iff;"); return MOL;}
+"\\Longleftrightarrow"  {yylval=wims_mathml_copy_string("&#x27FA;"); return MOL;}
 "\\Leftrightarrow"  {yylval=wims_mathml_copy_string("&Leftrightarrow;"); return MOL;}
+"\\longleftrightarrow" {yylval=wims_mathml_copy_string("&#x27F7;"); return MOL;}
 
 "\\impliedby" |
 "\\Leftarrow"   {yylval=wims_mathml_copy_string("&Leftarrow;"); return MOL;}
