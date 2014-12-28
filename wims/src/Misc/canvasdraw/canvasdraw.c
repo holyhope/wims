@@ -3459,6 +3459,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case FILLTOBORDER:
 	/*
 	@ filltoborder x,y,bordercolor,color
+	@ WILL NOT WORK CORRECTLY, YET !!!
 	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color'
 	@ any other color will not act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
