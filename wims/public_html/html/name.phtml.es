@@ -8,7 +8,7 @@
 !distribute items Buscar,\
 Al trabajo,Volver al trabajo,\
 Página inicial de WIMS,Introducción/Configuración,Ayuda,Acerca de,\
-Introducción,\
+Introducción,Cerrar,\
 Cerrar esta ventana,Atrás,\
 Administrador del sitio,Autor de la página,Autores de la página,\
 Traducido por,Salir,\
@@ -36,19 +36,19 @@ Corregir,\
 o,\
 Explicaciones,\
 Ejercicio,\
-Hoja,\
+Hoja,Hoja,\
 Cuenta,\
 Entrar,\
 Notas,\
 Notas,\
-Examen,\
+Examen,Examens,\
 Recorrer el sitio,\
 Volver al menú,\
 Fecha de expiración,\
 Error,\
 Série suivante,Série précédente,\
 Example,\
-Encuesta,\
+Encuesta,Encuesta\
 Conditions générales d'utilisation,\
 Besoin d'aide ?,\
 Bravo!,\
@@ -58,7 +58,7 @@ Lo nuevo,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
-	wims_name_titleintro,\
+	wims_name_titleintro,wims_name_Close,\
 	wims_name_back,wims_name_back2,\
 	wims_name_manager,wims_name_author,wims_name_authors,\
 	wims_name_translatedby,wims_name_exit,\
@@ -69,10 +69,10 @@ Lo nuevo,\
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_start,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_account,wims_name_Enter,\
-	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Sheets,wims_name_account,wims_name_Enter,\
+	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example,wims_name_Vote,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
+	wims_name_Example,wims_name_Vote,wims_name_Votes,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
 	wims_name_cas_logout,wims_name_credits,wims_name_mod_new
 
 !! **** Menuprof Names ***
@@ -85,7 +85,7 @@ Informations,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
     wims_name_faq, wims_name_dochelp,\
-    wims_name_Infos,
+    wims_name_Infos
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
@@ -330,8 +330,9 @@ Nueva clase \
 Nuevo cuestionario \
 Nuevo ejercicio \
 Ejercicios de la clase \
+Exercices de la feuille&nbsp\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
-wims_name_add_exo,wims_name_classexo
+wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
 !!! para documentos  en particular...
 
@@ -351,6 +352,7 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line Documento\
+Documento\
 ocultado, visible \
 Título \
 Reorganización por secuencias \
@@ -362,7 +364,7 @@ Insertar\
 En preparación,Activo,Expirado,Expirado+Oculto\
 ni leer ni escribir en,leer pero no escribir en,leer y escribir en\
 Número\
-into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number
 

@@ -4,10 +4,11 @@
  !exit
 !endif
 
+!! **** Default Names ***
 !distribute items 搜索,\
 开始工作,返回工作,\
 WIMS主页,介绍/配置,帮助,关于本模块/练习,\
-介绍,\
+介绍,Fermer,\
 关闭本窗口,返回,\
 网站管理员,网页作者,网页作者,\
 翻译者,退出,\
@@ -35,26 +36,26 @@ WIMS 使用说明,参考资料,论坛,论坛,\
 作业页,\
 帐户,\
 进入,\
-得分,\
+得分,得分,\
 我的分数,\
 考试,\
 其它浏览方法,\
 返回菜单,\
-失效日期,\
+失效日期,失效日期,\
 错误,\
 下一个系列,上一个系列,\
 例,\
 投票,\
 使用条件,\
 需要帮助吗 ?,\
-很好!,\
+很好!,很好!,\
 CAS 退出登录,\
 参与创作人员,\
 新增内容,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
-	wims_name_titleintro,\
+	wims_name_titleintro,wims_name_Close,\
 	wims_name_back,wims_name_back2,\
 	wims_name_manager,wims_name_author,wims_name_authors,\
 	wims_name_translatedby,wims_name_exit,\
@@ -63,12 +64,12 @@ CAS 退出登录,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
+	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_start,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_account,wims_name_Enter,\
-	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Sheets,wims_name_account,wims_name_Enter,\
+	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_Examens,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example,wims_name_Vote,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
+	wims_name_Example,wims_name_Vote,wims_name_Votes,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
 	wims_name_cas_logout,wims_name_credits,wims_name_mod_new
 
 !! **** Menuprof Names ***
@@ -221,7 +222,6 @@ CAS 退出登录,\
   一旦超过此极限, 班级管理将被锁定!
 
  !set wims_name_chseries=!nosubst 记录对系列 $(special_parm4[2]) 页 $(special_parm4[1]) 的修改
-
 !endif
 
 !!!if adm/class isin $module or adm/manage isin $module
@@ -327,10 +327,11 @@ wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 创建新的投票/登记\
 新练习\
 班级练习\
+Exercices de la feuille\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
-wims_name_add_exo,wims_name_classexo
+wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
-!!! for documents
+!!! for documents...
 
 !distribute item WIMS,班级,文件,向上,前一个,后一个,历史,重新装入,\
     互动版,打印版,\
@@ -348,6 +349,7 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line 文件\
+Documents\
 隐藏,可见\
 标题\
 系列重组\
@@ -359,7 +361,7 @@ wims_name_add_exo,wims_name_classexo
 正在准备中,已激活, 已过期, 过期且隐藏\
 既不能读也不能写,能读不能写,能读能写\
 编号\
-into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number
 
@@ -397,7 +399,7 @@ wims_name_Docstatus,wims_name_number
  !distribute line $wims_name_config\
  主配置页\
 结构管理\
-into wims_name_configb,wims_name_config, wims_name_struct
+into wims_name_configb,wims_name_config,wims_name_struct
 !endif
 
 !set wims_name_save=备份与恢复
@@ -453,7 +455,8 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 创建练习(createxo)\
 Quicktool\
 Latex2wims\
-   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
+Imageclick\
+   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_coordclick
 
 !distribute line 激活 html 编辑器\
 停止 html 编辑器\
