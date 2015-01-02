@@ -94,9 +94,10 @@ if [ -d cpp ]; then
   test=`grep -E '^[[:blank:]]*#[[:blank:]]*include' $i \
 	| grep -E -v '^[[:blank:]]*#[[:blank:]]*include[[:blank:]]*"[[:alnum:]_]+.inc"'`
   if [ ! -z "$test" ]; then
-   echo $i: include violation.
+   echo $i: include violation. $test
    list=
   fi
+## perl -pi -e "s/#TARGET\s*\((\w+)\s*\)/defined TARGET_\1 /g" $i
   $LL tr '\r' '\n' <$i | sed "s/'/\&#39;/g" | grep . | awk 'BEGIN {l=0}; {l++}; l>1 {print}' >cpp.tmp
   for j in $list
   do
