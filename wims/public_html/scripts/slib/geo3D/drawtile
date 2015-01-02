@@ -242,6 +242,15 @@ slib_out2=$slib_out
   !readproc oef/togetfile.proc tmp2_$slib_id new\
 $slib_out
 
+!!slib_rotation=moveto 0.0 { 722 -692 2 36.12}  100.0 0.0 0.0  {0 0 0} 3.08 {0 0 0} 0 0 0 3.0 0.0 0.0;
 
 !reset slib_vertex slib_edge slib_edge_cnt slib_face slib_face_cnt slib_arete slib_vertex_cnt slib_data slib_out
-!readproc slib/chemistry/jmolshow $(slib_out2[2]),$slib_sizex,$slib_sizey,white,script "$(slib_out2[1])";zoom 120;rotate 20 20 20,$slib_id
+!readproc slib/chemistry/jmolshow $(slib_out2[2]),$slib_sizex,$slib_sizey,white,script "$(slib_out2[1])";zoom 120;$slib_rotation,$slib_id
+
+
+!exit
+
+moveto /* time, axisAngle */ 0.0 { 722 -692 2 36.12} /* zoom, translation
+*/  100.0 0.0 0.0  /* center, rotationRadius */ {0 0 0} 3.08 /* navigation
+center, translation, depth */ {0 0 0} 0 0 0 /* cameraDepth, cameraX,
+cameraY */  3.0 0.0 0.0;
