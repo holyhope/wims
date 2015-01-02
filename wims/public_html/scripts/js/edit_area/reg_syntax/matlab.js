@@ -1,22 +1,11 @@
 
-editAreaLoader.load_syntax['octave'] = {
+editAreaLoader.load_syntax['matlab'] = {
     'QUOTEMARKS' : {1: ' " '}
    ,'COMMENT_SINGLE' : {1 : '\\'}
 	,'COMMENT_MULTI' : {'/\*' : '\*/'}
 	,'KEYWORD_CASE_SENSITIVE' : true
 	,'KEYWORDS' : {
-	 'octstatement' : ['function', 'break', 'case', 'catch', 'classdef', 'continue', 'else', 'elseif', 'end', 'for',
-'function', 'global', 'if', 'otherwise', 'parfor', 'persistent', 'return', 'spmd', 'switch', 'try', 'while','error',
-'eye' , 'diag' , 'repmat' , 'reshape' , 'strvcat' , 'all' , 'any' , 'find' , 'linspace' , 'logspace' , 'mean' , 'sum' ,
-'ind2sub' , 'sub2ind' , 'fopen' , 'fclose' , 'fscanf' , 'fprintf' ,
-'fread' , 'fwrite' , 'disp' , 'input','do','until','endif','endfunction','endwhile',
-'printf','case','switch','otherwise']
-	 ,'octmath' : ['length' , 'size' , 'ones' , 'zeros' , 'rand' ,
-'log' , 'log2' , 'log10' , 'exp' , 'sqrt' , 'sin' , 'cos' , 'tan' ,
-'asin' , 'acos' , 'atan' , 'abs' , 'ceil' , 'floor' , 'round' ,
-'fix' , 'power' , 'atan2' , 'mod' , 'true' , 'false' , 'pi' ,
-'Inf' , 'NaN', 'min', 'max',
-'gt','lt','amp','abs','acos','acosh','acot','acoth','acsc','acsch',
+	 'matlab' : ['gt','lt','gt','lt','amp','abs','acos','acosh','acot','acoth','acsc','acsch',
 'all','angle','ans','any','asec','asech','asin','asinh','atan','atan2','atanh','auread',
 'auwrite','axes','axis','balance','bar','bessel','besselk','bessely','beta',
 'betainc','betaln','blanks','bone','break','brighten','capture','cart2pol',
@@ -32,7 +21,7 @@ editAreaLoader.load_syntax['octave'] = {
 'dlmwrite','dmperm','dot','drawnow','echo','eig','ellipj','ellipke','else','elseif',
 'end','engClose','engEvalString','engGetFull','engGetMatrix','engOpen',
 'engOutputBuffer','engPutFull','engPutMatrix','engSetEvalCallback',
-'engSetEvalTimeout','engWinInit','eps','erf','erfc','erfcx','erfinv',
+'engSetEvalTimeout','engWinInit','eps','erf','erfc','erfcx','erfinv','error',
 'errorbar','etime','etree','eval','exist','exp','expint','expm','expo','eye','fclose',
 'feather','feof','ferror','feval','fft','fft2','fftshift','fgetl','fgets','figure',
 'fill','fill3','filter','filter2','find','findstr','finite','fix','flag','fliplr',
@@ -81,21 +70,7 @@ editAreaLoader.load_syntax['octave'] = {
 'uimenu','uiputfile','unix','unwrap','upper','vander','ver','version','view',
 'viewmtx','waitforbuttonpress','waterfall','wavread','wavwrite','what',
 'whatsnew','which','while','white','whitebg','who','whos','wilkinson','wk1read',
-'stderr','stdout','plot','set','wk1write','xlabel','xor','ylabel','zeros',
-'zlabel','zoom','system','lsode','endfor','error','ones','oneplot','__gnuplot_set__']
-	 ,'octfunction' : ['betacdf', 'empirical_rnd', 'laplace_inv', 'stdnormal_cdf', 'betainv',
-'expcdf', 'laplace_pdf', 'stdnormal_inv', 'betapdf', 'expinv', 'laplace_rnd',
- 'stdnormal_pdf', 'betarnd', 'exppdf', 'logistic_cdf', 'stdnormal_rnd',
- 'binocdf', 'exprnd', 'logistic_inv', 'tcdf', 'binoinv', 'binopdf', 'finv',
-'logistic_rnd', 'tpdf', 'binornd', 'fpdf', 'logncdf', 'trnd', 'cauchy_cdf',
-'frnd', 'logninv', 'unidcdf', 'cauchy_inv', 'gamcdf', 'lognpdf', 'unidinv',
-'cauchy_pdf', 'gaminv', 'lognrnd', 'unidpdf', 'cauchy_rnd', 'gampdf', 'nbincdf',
-'unidrnd', 'chi2cdf', 'gamrnd', 'nbininv', 'unifcdf', 'chi2inv', 'geocdf', 'nbinpdf',
-'unifinv', 'chi2pdf', 'geoinv', 'nbinrnd', 'unifpdf', 'chi2rnd', 'geopdf', 'normcdf',
-'unifrnd', 'discrete_cdf', 'geornd', 'norminv', 'wblcdf', 'discrete_inv', 'hygecdf',
-'normpdf', 'wblinv', 'discrete_pdf', 'hygeinv', 'normrnd', 'wblpdf', 'discrete_rnd',
-'hygepdf', 'poisscdf', 'wblrnd', 'empirical_cdf', 'hygernd', 'poissinv', 'wienrnd',
-'empirical_inv', 'kolmogorov_smirnov_cdf', 'poisspdf', 'empirical_pdf', 'laplace_cdf', 'poissrnd']
+'wk1write','xlabel','xor','ylabel','zeros','zlabel','zoom']
 	 }
 	 ,'OPERATORS' :[
 		'*', '+', '-', '/', '^', ':=', '<', '=', '>'
@@ -107,9 +82,7 @@ editAreaLoader.load_syntax['octave'] = {
 		'COMMENTS': 'color: #0000CD;'
 		,'QUOTESMARKS': 'color: #6381F8;'
 		,'KEYWORDS' : {
-			'octstatement' : 'color: #3399FF;'
-			,'octfunction' : 'color: #FF3A6E;'
-			,    'octmath' : 'color: #0000AA;'
+			'scilab' : 'color: #3399FF;'
 			}
 		,'OPERATORS' : 'color: #CD00CD;'
 		,'DELIMITERS' : 'color: #60CA00;'

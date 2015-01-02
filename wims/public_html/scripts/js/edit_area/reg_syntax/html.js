@@ -3,7 +3,8 @@
 */
 
 editAreaLoader.load_syntax["html"] = {
-	'COMMENT_SINGLE' : {}
+	'DISPLAY_NAME' : 'HTML'
+	,'COMMENT_SINGLE' : {}
 	,'COMMENT_MULTI' : {'<!--' : '-->'}
 	,'QUOTEMARKS' : {1: "'", 2: '"'}
 	,'KEYWORD_CASE_SENSITIVE' : false
@@ -45,6 +46,6 @@ editAreaLoader.load_syntax["html"] = {
 			,'tags': 'color: #E62253;'
 			,'doctype': 'color: #8DCFB5;'
 			,'test': 'color: #00FF00;'
-		}	
-	}		
+		}
+	}
 };
