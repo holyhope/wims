@@ -13,5 +13,5 @@ rm -f $oefname >/dev/null
 rm -fR $oefname $logd/images/$wims_exec_parm >/dev/null
 
 cd modules/classes/$w_lang
-src2def oef
+src2def oef >/dev/null
 
