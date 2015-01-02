@@ -7,42 +7,42 @@ use strict;
 
 ### for "editor"
 my %name ;
-$name{'explanation'}{'fr'}="Explication" ; 
+$name{'explanation'}{'fr'}="Explication" ;
 $name{'example'}{'fr'}="Exemple" ;
 $name{'special'}{'fr'}="Méthodes spéciales<br>(énoncé)";
 $name{'syntax'}{'fr'}="Syntaxe";
 $name{'slib'}{'fr'}='SLIB';
-$name{'anstype'}{'fr'}='Types de réponses' ; 
+$name{'anstype'}{'fr'}='Types de réponses' ;
 
-$name{'explanation'}{'en'}="Explanation" ; 
+$name{'explanation'}{'en'}="Explanation" ;
 $name{'example'}{'en'}="Example" ;
 $name{'special'}{'en'}="Special method<br>(statement)";
 $name{'syntax'}{'en'}="Syntax";
 $name{'slib'}{'en'}='SLIB';
 $name{'anstype'}{'en'}='Answer types' ;
 
-$name{'explanation'}{'cn'}="Explanation" ; 
+$name{'explanation'}{'cn'}="Explanation" ;
 $name{'example'}{'cn'}="Example" ;
 $name{'special'}{'cn'}="Special method<br>(statement)";
 $name{'syntax'}{'cn'}="Syntax";
 $name{'slib'}{'cn'}='SLIB';
 $name{'anstype'}{'cn'}='Answer types' ;
 
-$name{'explanation'}{'nl'}="Explanation" ; 
+$name{'explanation'}{'nl'}="Explanation" ;
 $name{'example'}{'nl'}="Example" ;
 $name{'special'}{'nl'}="Special method<br>(statement)";
 $name{'syntax'}{'nl'}="Syntax";
 $name{'slib'}{'nl'}='SLIB';
-$name{'anstype'}{'nl'}='Answer types' ; 
+$name{'anstype'}{'nl'}='Answer types' ;
 
-$name{'explanation'}{'it'}="Spiegazione" ; 
+$name{'explanation'}{'it'}="Spiegazione" ;
 $name{'example'}{'it'}="Esempio" ;
 $name{'special'}{'it'}="Metodi speciali<br>(enunciato)";
 $name{'syntax'}{'it'}="Sintassi";
 $name{'slib'}{'it'}='SLIB';
-$name{'anstype'}{'it'}='Tipi di risposte' ; 
+$name{'anstype'}{'it'}='Tipi di risposte' ;
 
-$name{'explanation'}{'ca'}="Explicació" ; 
+$name{'explanation'}{'ca'}="Explicació" ;
 $name{'example'}{'ca'}="Exemple" ;
 $name{'special'}{'ca'}="Mètodes especials<br>(enunciat)";
 $name{'syntax'}{'ca'}="Sintaxi";
@@ -58,30 +58,30 @@ my $helpdir="public_html/scripts/help";
 my @Lang=('en','fr','cn','nl','it','ca') ;
 
 system(`mkdir -p $DOSSIER`) ;
-my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
+my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ;
 
 ### for "editor"
 my (%Begin, %End) ;
-$Begin{'if'}= "  " ; 
-$End{'if'}= "  " ; 
-$Begin{'oefparm0'}= '\\\\' ; 
+$Begin{'if'}= "  " ;
+$End{'if'}= "  " ;
+$Begin{'oefparm0'}= '\\\\' ;
 $End{'oefparm0'}= "\{  =  \}" ;
-$Begin{'oefcommand'}= '\\\\' ; 
+$Begin{'oefcommand'}= '\\\\' ;
 $End{'oefcommand'}= "\{  \}" ;
 $Begin{'anstype'}='' ;
 $End{'anstype'}='' ;
 ##$Begin{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
 ##$End{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
 for my $tag ("oefparm4") {
-   $Begin{$tag}= "" ; 
+   $Begin{$tag}= "" ;
    $End{$tag}= "\(  \)" ;
 }
 for my $tag ("oefparm2", "oefparm3") {
-   $Begin{$tag}= " " ; 
+   $Begin{$tag}= " " ;
    $End{$tag}= " " ;
 }
 for my $tag ( "oefparm1") {
-   $Begin{$tag}= "" ; 
+   $Begin{$tag}= "" ;
    $End{$tag}= "" ;
 }
 
@@ -90,12 +90,12 @@ for my $tag ("oefparm5") {
    $End{$tag}= "" ;
 }
 
-$Begin{'slib'}= "slib(" ; 
+$Begin{'slib'}= "slib(" ;
 $End{'slib'}= " )" ;
 
-my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip") ; 
+my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip", "codefill") ;
 for my $tag (@phtml) {
-   $Begin{$tag}= "\\special\{" ; 
+   $Begin{$tag}= "\\special\{" ;
    $End{$tag}= " \}" ;
 }
 ### end for "editor"
@@ -141,7 +141,7 @@ my $EDIT_AERA_OEF_end = "}
 			,'iff' : 'color: #FF00FF;'
 			,'slib' : 'color: #60CA33;'
 			,'anstype' : 'color: #3399FF;'
-			,'special' : 'color: #3399FF;' 
+			,'special' : 'color: #3399FF;'
 			}
 		,'OPERATORS' : 'color: #FF00FF;'
 		,'DELIMITERS' : 'color: #60CA00;'
@@ -191,18 +191,18 @@ my $debut_wims=1;
 my $EDIT_AERA_OEF=$EDIT_AERA_OEF_begin ;
 my $EDIT_AERA=$EDIT_AERA_begin ;
 
-for my $lang (@Lang) { 
+for my $lang (@Lang) {
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
    slib($lang) ;
    for my $t (@table) { tableau($t,$lang) ; }
    phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
    $EDIT_AERA_OEF .= "\n, \'special\' : \n[ \'\\embed\', \'\\special{" . join ("\', '\\special{", @phtml) . "\']" if ($lang =~ /en/) ;
-   anstype($lang) ; 
+   anstype($lang) ;
 
 };
 $EDIT_AERA_OEF .=$EDIT_AERA_OEF_end ;
 if ($debut_wims==1) {$EDIT_AERA .= "\n" ; $debut_wims=0 } else {$EDIT_AERA .= "\n," };
-$EDIT_AERA .= " \'wimscommand' : \n[ \' " . join ("\', \'", wimscommand($DOSSIER_wims)) . "']"; 
+$EDIT_AERA .= " \'wimscommand' : \n[ \' " . join ("\', \'", wimscommand($DOSSIER_wims)) . "']";
 
 $EDIT_AERA .=$EDIT_AERA_end ;
 out( "$DOSSIER_edit_area/wimsoef.js",  $EDIT_AERA_OEF) ;
@@ -220,7 +220,7 @@ sub anstype { my ($lang)=@_ ;
       my $t1 = $L[0] ; $t1=~ s/\|/,/ ;
       my @ta=split(',',$t1) ;
       if ($ta[1]) {@t=split(' ',$ta[1]) ; } else {@t=($L[0])};
-      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . (($L[2]) ? $L[2]: '')); $HELP{$tag}=$ta[0] ;} 
+      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . (($L[2]) ? $L[2]: '')); $HELP{$tag}=$ta[0] ;}
      }
    }
  close IN ;
@@ -229,7 +229,7 @@ sub anstype { my ($lang)=@_ ;
    my $var=join ("$End{'anstype'}\',\'$Begin{'anstype'}", sort keys(%HASH)) ;
    $Text .="var anstype = [ '$Begin{'anstype'}$var$End{'anstype'}' ];\n" ;
    for my $tag (keys(%HASH)){
-     $text .= begin_js("$Begin{'anstype'}$tag$End{'anstype'}") 
+     $text .= begin_js("$Begin{'anstype'}$tag$End{'anstype'}")
            . title_js($tag,'title')
            . middle_js($HASH{$tag},'out', $lang)
            . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++>></a>") ;
@@ -237,7 +237,7 @@ sub anstype { my ($lang)=@_ ;
    $Text .= function_js($text,'anstype') ;
    $EDIT_AERA_OEF .= "\n, \'anstype\' : \n[ \' type=" . join ("\', 'type=", sort keys(%HASH)) . "\']"  if $lang=~/en/ ;
    out ("$DOSSIER/$lang/anstype" . "_bd\.js", $Text) ;
-  
+
 }
 
 sub slib {my ($lang)= @_ ;
@@ -251,10 +251,10 @@ for my $file (glob("$slibdir/*/*")) {
  my $text=''; my $tag='';
  my $filehelp="$slibdirhelp/$file" ;
  if (!open(IN, "$filehelp")) { $filehelp="$slibdirhelp/en/$file"; }
- if (!open(IN, "$filehelp")) { $filehelp="$slibdir/$file"; } 
+ if (!open(IN, "$filehelp")) { $filehelp="$slibdir/$file"; }
  for my $fff ("$slibdir/$file",$filehelp) {
-   open (IN, ("$fff")); 
-   while (<IN>) {my $line=$_; 
+   open (IN, ("$fff"));
+   while (<IN>) {my $line=$_;
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
      $tag=$1;
@@ -267,10 +267,10 @@ for my $file (glob("$slibdir/*/*")) {
        $HASH{$tag}{$file}=$line ;
      }
      } else {
-       next if !($tag) ; 
+       next if !($tag) ;
        if ($tag=~/parms/) {
         chomp $line ;
-        next if ($line) ; 
+        next if ($line) ;
         my @parm=split(",", $line) ;
         if (($parm[1]) && ($parm[1] =~ s/\\//)) {
           $HASH{$tag}{$file}.= cleanup3($parm[1]) . ",";
@@ -282,7 +282,7 @@ for my $file (glob("$slibdir/*/*")) {
        }
        else {
          $HASH{$tag}{$file} .= cleanup($line);
-         $tag='' if !($line=~/\\$/) ; 
+         $tag='' if !($line=~/\\$/) ;
        }
      }
    }
@@ -292,7 +292,7 @@ for my $file (glob("$slibdir/*/*")) {
  $tag='';
  }
  my $var=join ("$End{'slib'}\',\'$Begin{'slib'}", @list_keyword) ;
- $Text .="var slib = [ '$Begin{'slib'}$var$End{'slib'}' ];\n" ; 
+ $Text .="var slib = [ '$Begin{'slib'}$var$End{'slib'}' ];\n" ;
  my $text='' ;
  for my $file (@list_keyword) {
   next if !($HASH{'title'}{$file}) ;
@@ -301,19 +301,19 @@ for my $file (glob("$slibdir/*/*")) {
   for my $ex (@examples) {
     next if !($ex) ;
     $example .="<div class=\"title\">$name{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code>" ;
-  } 
-  
-  $text.=begin_js("$Begin{'slib'}$file$End{'slib'}") 
+  }
+
+  $text.=begin_js("$Begin{'slib'}$file$End{'slib'}")
            . title_js($HASH{'title'}{$file},'title')
            . syntax_js("<font color=\"red\">slib($file</font> " . ($HASH{'parms'}{$file}  ? $HASH{'parms'}{$file} : '') . " <font color=\"red\">)</font>",$lang)
            . middle_js($HASH{'out'}{$file},'out',$lang)
            . middle1_js (cleanup($example),'',$lang)
            . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&special_parm=slib&+slibdet=$file#slib\">++>></a>") ;
- $text =cleanup2($text) ; 
+ $text =cleanup2($text) ;
  }
  $Text .= function_js($text,'slib') ;
   out ("$DOSSIER/$lang/slib" . "_bd\.js",$Text) ;
-  if ($lang=~/en/) { 
+  if ($lang=~/en/) {
     if ($debut_oef==1) { $EDIT_AERA_OEF .= "\n" ; $debut_oef=0 } else {$EDIT_AERA_OEF .= "\n," };
   $EDIT_AERA_OEF .= "\'slib\' : \n[ \'" . join ("\', '", @list_keyword) . "\']"   ;
   }
@@ -325,18 +325,18 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   example       => {},
   signification => {},
   syntaxe => {},
-  ) ; 
+  ) ;
  my $text='';
  my $tag='';
  my $Text="var specialname= '$name{'special'}{$lang}';\n";
  for my $meth (@file) {
-    open (IN, "$dir/$meth.phtml"); 
+    open (IN, "$dir/$meth.phtml");
     while (<IN>) {my $line=$_;
     next if !($line) ;
     if ($line =~ /^:/) {
     chomp $line;
        $tag=$line; $tag=~ s/://;
-    } 
+    }
     else
     {
      $HASH{$tag}{$meth} .= cleanup($line) . "\\n" ;
@@ -347,13 +347,13 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
  ### cas particulier
  my $meth='embed';
  my $embd='\\\\embed{r  }' ;
-   open (IN, "$helpdir/$lang/embedans.phtml"); 
+   open (IN, "$helpdir/$lang/embedans.phtml");
     while (<IN>) {my $line=$_;
     next if !($line) ;
     if ($line =~ /^:/) {
     chomp $line;
        $tag=$line; $tag=~ s/://;
-    } 
+    }
     else
     {
      $HASH{$tag}{$meth} .= cleanup($line) . "\\n" ;
@@ -361,7 +361,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   }
   close IN ;
   $Text .= "var special= [ '$embd', '\\\\special{$var }'];\n" ;
-  $text = begin_js("$embd") 
+  $text = begin_js("$embd")
         . syntax_js("\\\\embed{r i, option }",$lang)
         . (($HASH{'signification'}{$meth}) ? middle_js($HASH{'signification'}{$meth},'title',$lang) : '')
         . (($HASH{'example'}{$meth}) ? middle1_js ($HASH{'example'}{$meth},'title',$lang) : '')
@@ -369,11 +369,11 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   ## fin cas particulier embed
   for my $meth (@phtml) {
    $text .= begin_js("\\\\special{$meth }")
-           . syntax_js("\\\\special{$meth }",$lang) 
+           . syntax_js("\\\\special{$meth }",$lang)
            . (($HASH{'signification'}{$meth}) ? middle_js($HASH{'signification'}{$meth},'title',$lang ) : '')
            . (($HASH{'example'}{$meth}) ? middle1_js ($HASH{'example'}{$meth},'title',$lang) : '')
            . end_js("") ;
-    
+
   }
   $Text .= function_js($text,'special') ;
   out ("$DOSSIER/$lang/$f" . "_bd\.js",$Text) ;
@@ -384,17 +384,17 @@ sub tableau { my ($file, $lang) = @_ ;
 ### mettre $file à la place ensuite
   my $file1="$helpdir/$lang/$file";
   my $cities=$file ;
-  if ($file =~ /if/){ $cities .= 'f' } ; 
+  if ($file =~ /if/){ $cities .= 'f' } ;
   my @list_keyword;
   my @List_keyword;
   my $text='';
 ##bug s'il n'y a pas de documentation
   open (IN, $file1);
   my $cnt=0 ;my $nl;
-  my $Text = '' ; 
+  my $Text = '' ;
   while (<IN>) { my $line=$_;
    chomp $line ;
-   next if !($line) ; 
+   next if !($line) ;
    if ($line =~ s /^://) {
      $cnt ++ ;
      if ($cnt == 1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
@@ -410,10 +410,10 @@ sub tableau { my ($file, $lang) = @_ ;
      $nl=0;
      }
      else  {
-       next if $cnt<3 ; if ($line =~ /^(\d)/) { my $arg=$1 ; next }  
+       next if $cnt<3 ; if ($line =~ /^(\d)/) { my $arg=$1 ; next }
        $nl ++ ;
        $line = cleanup($line); if ($line =~ /help=/) { $line = '' ;}
-       if ($nl==1 && !($file=~/oefcommand/)){ 
+       if ($nl==1 && !($file=~/oefcommand/)){
          if ($line) { $text .= syntax_js($line,$lang) ; }
         }
         else {
@@ -424,7 +424,7 @@ sub tableau { my ($file, $lang) = @_ ;
   close IN ;
   	 $text .= end_js("") ;
   my $var=join ("$End{$file}\', \'$Begin{$file}", @list_keyword) ;
-  $Text .="var $cities= [ \'$Begin{$file}$var$End{$file}\' ];\n" 
+  $Text .="var $cities= [ \'$Begin{$file}$var$End{$file}\' ];\n"
   . function_js($text,$cities) ;
   out ("$DOSSIER/$lang/$cities" . "_bd\.js",$Text) ;
    if ($lang=~/en/){
@@ -440,13 +440,13 @@ sub tableau { my ($file, $lang) = @_ ;
 
 sub wimscommand { my ($d) = @_;
   my @wimslist = () ;
-  for my $file (glob("$d/*")) { 
+  for my $file (glob("$d/*")) {
     $file =~ s,$d/,, ;
     $file =~ s,.phtml,, ;
     push @wimslist, $file ;
   }
   push @wimslist, ("endif","next","else") ;
-  @wimslist ; 
+  @wimslist ;
 }
 ### subroutine for "editor"
 sub begin_js {my ($t)= @_ ;
@@ -489,10 +489,10 @@ sub cleanup { my ($txt)=@_ ;
   $txt=~ s/\\\b/&#92;/g ;
   $txt=~ s/\\\(/&#92;(/g ;
   $txt=~ s/\\\)/&#92;)/g ;
-  $txt=~ s,\\,\\\\,g ; 
+  $txt=~ s,\\,\\\\,g ;
   $txt=~ s/'/\\'/g ;
   $txt=~ s/\n/ /g ;
-  return $txt ; 
+  return $txt ;
 }
 sub cleanup2 {my ($txt)=@_ ;
   $txt=~ s/\\\\ / /g if ($txt) ;
@@ -530,7 +530,7 @@ $TEXT =~ s/<table[^>]*>/\\begin{table}\\begin{tabular}{*{1}{p{30mm}}|*{1}{p{50mm
 $TEXT =~ s/<\/table>/\\\\ \\hline \\end{tabular} \\end{table}/g;
 $TEXT =~ s/\$table_tr/\\\\\\hline /g;
 $TEXT =~ s/\$table_hdtr/\\\\ \\hline/g;
-$TEXT =~ s/\$table_header/\\begin{table}\\begin{tabular}{*{1}{p{30mm}}|*{1}{p{50mm}|}|*{1}{p{50mm}|}}\\hline/g ; 
+$TEXT =~ s/\$table_header/\\begin{table}\\begin{tabular}{*{1}{p{30mm}}|*{1}{p{50mm}|}|*{1}{p{50mm}|}}\\hline/g ;
 $TEXT =~ s/\$table_end/\\end{tabular}\\end{table}/g;
 #$TEXT =~ s/<caption>/\\caption\{ /g;
 #$TEXT =~ s/<\/caption>/\}\n /g;
@@ -563,12 +563,12 @@ $TEXT =~ s/<\/pre>/\\end{verbatim}/g;
 $TEXT =~ s/\n{3,}/\n\n/g;
 $TEXT =~ s/<a[^>]+>([^<]+)<\/a>/\\url{$1}/g;
 
-$TEXT ; 
+$TEXT ;
 }
 
 sub out { my ($bloc, $text) = @_ ;
-  open  (OUT, ">$bloc") || die "peut pas créer $bloc"; 
-  print OUT "<!-- Automatically generated by bin/oefdoc.pl -->\n" . $text ; close OUT ; 
+  open  (OUT, ">$bloc") || die "peut pas créer $bloc";
+  print OUT "<!-- Automatically generated by bin/oefdoc.pl -->\n" . $text ; close OUT ;
 }
 
 sub sortuniq {
