@@ -1,4 +1,3 @@
-!!##language independant
 !set wims_form_method=post
 !read adm/title.phtml 1\
 $classname\
@@ -9,6 +8,7 @@ $name_severitylevels
 $name_formula_comment
 <input size="5" name="maxscore" value="$scoremax" />.
 $table_header
+<caption>$wims_name_Sheets</caption>
 $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_Status</th>
   <th>$(name_formula[2])</th><th>$(name_formula[3])</th></tr>
 !for i=1 to $totsheets
@@ -32,6 +32,11 @@ $table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_St
 !formselect ss$i list 0,1,2 prompt I0,I1,I2
  </td></tr>
 !next i
+$table_end
+$table_header
+<caption>$wims_name_Examens</caption>
+$table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_Status</th>
+  <th>$(name_formula[2])</th><th>$(name_formula[3])</th></tr>
 !for i=1 to $totexams
  !set ew$i=!line $i of $examweights
  !default ew$i=1
