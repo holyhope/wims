@@ -1,8 +1,25 @@
 Modifications for wims : add wimsoef wims wimsdata gp
 
+**** v 0.8.2 ****
+- Change back to remove the speed optimization for highlight process introduced in 0.8.1 that has too much bugs
+- Syntax name are no more stored in language files but in syntax files. Thoses display names will be used only if the compressor tools is used, otherwise syntax code is displayed
+- Activate word-wrap feature for opera > 9.6
+- Bug fix: Selection wasn't corretcly remembered between file tabs
+- Bug fix: [2886499] Page up and page Down action are no more executed if Alt touch is pressed
+- Bug fix: [2887118] UTF-8 encoded URLs return wrong base URL
+- Bug fix: [2851936] Unresolved reference to isIE in elements_functions.js
+- Bug fix: [2886836] get_IE_selection bug when closed...
+- bug fix: JavaScript error when switching to fullscreen (https://sourceforge.net/projects/editarea/forums/forum/556921/topic/3388824)
+- Bug fix (but not applicable due to change back) : [2854519, 2854642, 2792217, 2834579 ] Desynchronisation occcured with <, > and & characters
+
+**** v 0.8.1.1 ****
+- Fix bug of frequent syntax desynchronisation when the first character of the textarea was highlighted
+- In unload now check that parent.editareaLoader still exists before calling it
+- Now consider that gecko and webkit based browser are valid browsers (but I won't test them all)
+
 **** v 0.8.1 ****
 - Improved speed of text highlighting process for huge file. Now we try to only insert or delete the changed caracters inside DOM text node instead of refreshing the whole area. (3 time faster in firefox)
-- Greatly improved speed of line-height management in word-wrap context 
+- Greatly improved speed of line-height management in word-wrap context
 - Add java syntax (thanks to Dawson Goodell)
 - Use faster regexp for matching quoted strings
 - Bug fix: if a highlighted quote or comment string contains cariage return, editing text on one of the lines was causin a highlight desynchronisation
@@ -15,7 +32,7 @@ Modifications for wims : add wimsoef wims wimsdata gp
 **** v 0.8 ****
 - Word-wrap is now supported (except for opera...). The new init() option is 'word_wrap' to set to 'true' (default is false). A new button appears in the default toolbar (button_code: 'word_wrap' )
 - We can now clearly see the selected text
-- Add Internet explorer 8 support (but sadly I must use IE7 emulate mode in iframe due to a bug with tabulation width not beeing resized in IE's textarea) 
+- Add Internet explorer 8 support (but sadly I must use IE7 emulate mode in iframe due to a bug with tabulation width not beeing resized in IE's textarea)
 - Add Safari 4 support
 - Add Chrome 2 support
 - Better support of Opera 9.6
@@ -29,7 +46,7 @@ Modifications for wims : add wimsoef wims wimsdata gp
 - Bug fix: Template.html was not valid XHTML
 - Bug fix: The checked attribute of the toogle button was not defined in xhtml syntax
 - Bug fix: If the editArea was loaded on a page related to a domain which was itself an iframe comming from another domain a JS error was thrown on load
-- Bug fix: When EditArea is used to replace a textarea which has style="visibility:hidden;", switching off EditArea would throw an error under IE 
+- Bug fix: When EditArea is used to replace a textarea which has style="visibility:hidden;", switching off EditArea would throw an error under IE
 
 **** v 0.7.3 ****
 - Add Finnish transaltion (thanks to Janne Mäntyharju)
@@ -43,9 +60,9 @@ Modifications for wims : add wimsoef wims wimsdata gp
 - add support for bonEcho browser
 
 **** v 0.7.2.2 ****
-- Fix bug regression introduced in 0.7.2 that make IE7 not working 
-- add Esperento translation (thanks to Olivier)  
-- add Coldfusion syntax (thanks to Max Leynov) 
+- Fix bug regression introduced in 0.7.2 that make IE7 not working
+- add Esperento translation (thanks to Olivier)
+- add Coldfusion syntax (thanks to Max Leynov)
 
 **** v 0.7.2.1 ****
 - fix bug for firefox rendering of highlighted lines that doesn't begin with a tab
@@ -70,7 +87,7 @@ Modifications for wims : add wimsoef wims wimsdata gp
 
 **** v 0.7.1 ****
 - released under both LGPL and Apache license (you can use the one you prefer)
-- it's now possible to get a readonly mode: 
+- it's now possible to get a readonly mode:
 	* new EditAreaLoader.init()'s option: "is_editable": true/false
 	* Possibility to switch edition mode by using the execCommand function: editAreaLoader.execCommand('editor_id', 'set_editable', !editAreaLoader.execCommand('editor_id', 'is_editable'));
 - Added Ruby syntax (thanks to Patrice De Saint Steban)
@@ -83,12 +100,12 @@ Modifications for wims : add wimsoef wims wimsdata gp
 
 
 **** v 0.7.0.1 ****
-- in multiple file mode, it's now possible to cancel the 'EA_file_close_callback' function. if the callback return false, the edited file won't be closed 
+- in multiple file mode, it's now possible to cancel the 'EA_file_close_callback' function. if the callback return false, the edited file won't be closed
 - bug fix: if no syntax was defined in the main init() function in multifile mode, the first time the text was not highlighted
 
 
 **** v 0.7 ****
-- it's now possible to edit multiple files into one instance of EditArea. This (sponsored by Jupiter) feature comes with: 
+- it's now possible to edit multiple files into one instance of EditArea. This (sponsored by Jupiter) feature comes with:
 	* new EditAreaLoader.init()'s option: "is_multi_files": true
 	* new editAreaLoader's functions: editAreaLoader.getCurrentFile(editArea_id), editAreaLoader.getFile(editArea_id, file_id), editAreaLoader.getAllFiles(editArea_id), editAreaLoader.openFile(editArea_id, file_infos), editAreaLoader.closeFile(editArea_id, file_id), editAreaLoader.setFileEditedMode(editArea_id, file_id, edited_mode)
 	* new callabacks: EA_file_switch_on_callback, EA_file_switch_off_callback, EA_file_close_callback
@@ -102,7 +119,7 @@ Modifications for wims : add wimsoef wims wimsdata gp
 - bug fix: parenthesis matching was not working correctly if there where an "<" between parenthesis
 
 **** v 0.6.7 ****
-- add a new plugin that allow the user to change the syntax definition in use. It adds a select in the toolbar. - plugin name to add to the plugin list: "syntax_selection". - plugin name to add to the toolbar list: "syntax_selection". - possible parameter to add to EditAreaLoader.init(): 
+- add a new plugin that allow the user to change the syntax definition in use. It adds a select in the toolbar. - plugin name to add to the plugin list: "syntax_selection". - plugin name to add to the toolbar list: "syntax_selection". - possible parameter to add to EditAreaLoader.init():
 "syntax_selection_allow": (String) define a list separated by "," of possible language syntax to use (eg: "php,js,python,html")
 - add Croatian translation (HR) (thanks to Ivan Vucica and Davor Cihlar)
 - add BASIC, Brainf*ck, C, C++ and Pascal syntax definition files (thanks to Ivan Vucica and Davor Cihlar)
@@ -144,7 +161,7 @@ Note: v 0.6.5 and v 0.6.6 have been private release (change log is regrouped in 
 
 **** v 0.6.3 ****
 - allow to use non monospace font using the font_family init option. Firefox get smaller tabulation with non monospace fonts. IE doesn't change the tabulation width and Opera doesn't take this option into account... new default font-familly: 'verdana,monospace'
-- add fullscreen option in the toolbar and as an init() option. 
+- add fullscreen option in the toolbar and as an init() option.
 - if the based textarea has a width (or height) in '%', EditArea will get the same '%' width (or  height), allowing EditArea to be resized in the same time than the window.
 - add many callback possibility: submit_callback, EA_load_callback, EA_unload_callback, EA_init_callback, EA_toggle_on_callback, EA_toggle_off_callback, EA_delete_callback (see documentation for more information)
 - bug fix: when toggling from textarea to editarea, IE was almost of the time not keeping the selection
@@ -254,7 +271,7 @@ IMPROVEMENTS:
 - There is now a waiting screen when toggling on the highlight syntax (but it can't be an animated one, even gif are not animated due to CPU load)
 - All supported browsers can now change font-size
 
-BUG FIXES: 
+BUG FIXES:
 - Sometimes while using the "toggle editor" button to turn of the editor, the standard textarea was expanded to the full size of the textarea content.
 - When resizing the area the selection was lost
 - Allow translation for some forgotten hard-coded word (the "move" button for search popup, and "font size", and keys word in help panel).
