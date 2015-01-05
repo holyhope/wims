@@ -149,7 +149,19 @@ to $wims_html_header
   </span>
   &nbsp;
  !else
-  <p class="name_serie_exo">$name_serie_exo</p>
+  <div class="oef_serie_exo spacer">$name_serie_exo
+   <div class="wims_serie_bar inline">
+    <ul>
+    !for j=1 to $[$reply_cnt]
+      <li class="wims_exo_done" title="$j">$j</li>
+    !next
+      <li class="wims_exo_todo" title="$j">$[$reply_cnt+1]</li>
+    !for j=$[$reply_cnt+2] to $qnum
+      <li title="$j">$j</li>
+    !next
+    </ul>
+  </div>
+</div>
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_renew
   <span class="oef_serie_renew">
@@ -170,8 +182,19 @@ to $wims_html_header
  <div id="oef_actions">
 
  !if $status!=$empty
-  <p class="oef_serie_exo2">$name_serie_exo2</p>
-  <p class="oef_buttons">
+  <div class="oef_serie_exo2 spacer">$name_serie_exo2
+   <div class="wims_serie_bar inline">
+     <ul>
+     !for j=1 to $[$reply_cnt]
+      <li class="wims_exo_done" title="$j"></li>
+     !next
+     !for j=$[$reply_cnt+1] to $qnum
+      <li title="$j">>$j</li>
+     !next
+     </ul>
+   </div>
+  </div>
+  <div class="oef_buttons">
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_nextexo
   !href cmd=next <span class="oef_serie_nextexo">$name_serie_nextexo</span>
@@ -179,8 +202,8 @@ to $wims_html_header
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_renew
   !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
-  </p>
-  <p class="oef_serie_new2">$name_serie_new2</p>
+  </div>
+  <div class="oef_serie_new2">$name_serie_new2</div>
 
  !else
   !if $qnum>1
