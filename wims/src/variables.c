@@ -29,6 +29,7 @@ char *header_var_name[]={
 #define HEADER_VAR_NO (sizeof(header_var_name)/sizeof(header_var_name[0]))
 
 struct special_name {char *name; int value;} special_name[]={
+  {"MAX_EXAMS",MAX_EXAMS},
   {"MAX_EXOS",MAX_EXOS},
   {"MAX_OEFCHOICES",MAX_OEFCHOICES},
   {"MAX_OEFREPLIES",MAX_OEFREPLIES},
@@ -1388,7 +1389,7 @@ void save_session_vars(void)
           if(cmd_type==cmd_new || cmd_type==cmd_renew) unlink(buf);
           exolog(buf);
          }
-     }
+      }
     }
     if(var_def_buf) free(var_def_buf);
 }
