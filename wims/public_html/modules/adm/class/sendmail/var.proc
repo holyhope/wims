@@ -1,6 +1,10 @@
 !read adm/class/classlang names.phtml
 
 !bound job within all,filter,login,select default all
+!if $job notwordof login select
+  !reset loginlist
+!endif
+
 job=!items2words $job
 aim=email
 
@@ -15,11 +19,9 @@ aim=email
 !if $cmd=resume
   !reset list_user list_noemail error
 !endif
-!!!if $confirm!=$empty or $reg= or $abandon!=$empty or $msg issametext
-!! !goto end
-!!!endif
- list_user=
- list_noemail=
+
+list_user=
+list_noemail=
 !default job=all
 
 rac=wimshome/log/classes/$wims_class
@@ -47,31 +49,32 @@ variable=!trim $variable
 !!!set list_user=
 !!!set list_noemail=
 
- !if filter iswordof $job
-  !if $variable!=$empty
-    filter_cnt=!linecnt $variable
-    filter=
-    !for v=1 to $filter_cnt
-     line=!singlespace $(variable[$v;])
-     line =!replace $ $ by , in $line
-     filter=!append line $line to $filter
-    !next
-  !endif
- !endif
- !if $filter=$empty
+!if filter iswordof $job
+   !if $variable!=$empty
+     filter_cnt=!linecnt $variable
+     !reset filter
+     !for v=1 to $filter_cnt
+       line=!singlespace $(variable[$v;])
+       line =!replace $ $ by , in $line
+       filter=!append line $line to $filter
+     !next
+   !endif
+!endif
+!if $filter=$empty and $job notwordof select login
    filter=all
- !endif
- !for lu =1 to $cnt
+!endif
+!for lu =1 to $cnt
   TEST=
   us_=!record $lu of $file
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
-  !if $filter=all
-   !if $loginlist_!=all and $login notitemof $loginlist_
-     TEST=0
-   !endif
+  !if $filter=all or $filter=$empty
+    !if $loginlist_=all or $login isitemof $loginlist_ or $filter=all
+      TEST=1
+      !goto OK
+    !endif
   !else
-   !if ($login isitemof $loginlist_) or $loginlist_=all
+    !if ($login isitemof $loginlist_) or $loginlist_=all or ($filter!=all and $filter!=$empty)
      !read adm/class/testfilter $login\
 $filter
     TEST=$var_filter_test
