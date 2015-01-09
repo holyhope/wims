@@ -6,11 +6,14 @@
   !set wims_rm_0 = $wims_rm_0\
 classexo,1,module=classes/$lang&special_parm=.nocache.\
 modtool,1,module=adm/modtool
-
-    !if $class_type=2
+  !set exologs=!filelist -r $wims_home/log/classes/$wims_class/exolog/supervisor
+  !if $exologs!=$empty
+    !set wims_rm_0 = $wims_rm_0\
+save_ex,1,module=adm/class/exolog&job=list
+  !endif
+  !if $class_type=2
       !set wims_rm_0 = $wims_rm_0\
 add_class,1,module=adm/class/regclass
 
-    !endif
-
+  !endif
 !endif

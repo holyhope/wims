@@ -8,3 +8,4 @@ grep "#define MAX_EXAMS" wimsdef.h | awk -F'#define MAX_EXAMS' ' {print "MAX_EXA
 grep "#define MAX_VOTES" wimsdef.h | awk -F'#define MAX_VOTES' ' {print "MAX_VOTES="$2 ; exit}'
 grep "#define MAX_OEFCHOICES" wimsdef.h | awk -F'#define MAX_OEFCHOICES' ' {print "MAX_OEFCHOICES="$2 ; exit}'
 grep "#define MAX_OEFREPLIES" wimsdef.h | awk -F'#define MAX_OEFREPLIES' ' {print "MAX_OEFREPLIES="$2 ; exit}'
+echo "DEBUG_MODULE=qualite@wimsedu.info"

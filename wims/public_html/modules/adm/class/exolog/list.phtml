@@ -5,17 +5,25 @@
 !endif
 
 $name_click
+!if $wims_user=supervisor
+ $name_bug
+!endif
 
 !read tabletheme
 
 $table_header
 $table_hdtr
 <th class="small">$wims_name_date</th>
+!if $checkuser!=supervisor
 <th class="small">$wims_name_Sheet</th>
+!else
+  <th class="small">$wims_name_Module</th>
+!endif
 <th class="small">$wims_name_Exercise</th>
 <th class="small">$name_Step</th>
 <th class="small">$wims_name_Score1</th>
 <th>$wims_name_title</th>
+<th>$wims_name_action</th>
 </tr>
 !for i=1 to $exologcnt
  !set l=!line $i of $exolog2
@@ -28,6 +36,18 @@ $table_hdtr
  !set p_=!recordcnt wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
  !set V_=!record $E_ of wimshome/log/classes/$wims_class/sheets/.sheet$S_
  !distribute lines $V_ into a,a,a,a,T_,D_
+ !default T_=!getdef w_title in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !if $wims_user=supervisor and $checkuser=supervisor
+   !set S_=!getdef w_module in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !set E_=!getdef w_exo in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !set M_=!getdef w_email in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+   !if xiao isin M_
+     !set M_=$DEBUG_MOD
+   !else
+     !set CC_=$DEBUG_MOD
+   !endif
+ !endif
+ !default T_=$S_
  !if $T_!=$empty
   $table_tr<td>
   !href target=wims_check module=$module&job=check&checkuser=$checkuser&logcheck=$l_&checkstep=1 $d_
@@ -37,12 +57,28 @@ $table_hdtr
   <td>$s_</td>
   <td>$T_ <span class="small">$D_
   !if $wims_user=supervisor
-   !getfile exolog/$l_ source
+   !getfile exolog/$l_ $name_source
   !endif
-  </span></td></tr>
+   </span>
+   </td><td>
+   !if $wims_user=supervisor
+   !!set source=!record 0 to -1 of $source
+   !!mailto $DEBUG_MOD\
+  !![qualite] $S_\
+  !! :$source
+   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S_&cc=$CC_">$name_sendmail</a>.
+    !endif
+   !endif
+   !if $checkuser=$wims_user
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job=erase&source=exolog/$checkuser/$l_ $wims_name_erase
+   !endif
+  </td></tr>
  !endif
 !next i
 $table_end
 
-!set wims_menu_items=!append line myscore,1,module=adm/class/userlist&job=getuser&getuser=$checkuser\
+!if $checkuser!=supervisor
+  !set wims_menu_items=!append line myscore,1,module=adm/class/userlist&job=getuser&getuser=$checkuser\
 to $wims_menu_items
+!endif

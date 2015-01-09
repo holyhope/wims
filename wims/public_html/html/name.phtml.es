@@ -185,7 +185,8 @@ Usted es el profesor de la clase,\
 Registrar los detalles de este ejercicio,\
 Página de gestión de la hoja de trabajo,\
 Añadir una secuencia,\
-Vu \
+Vu,\
+Details of tested exercises,\
 	into wims_name_class_home,wims_name_add,wims_name_addh,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
@@ -195,14 +196,13 @@ Vu \
 	wims_name_exolog,\
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence,\
-	wims_name_readen
+        wims_name_readen,\
+        wims_name_save_ex
 
  !!!set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
-	$[$wims_homeref_req] puntos en este trabajo, calidad \
-	$[$wims_homeref_mean]/10.
+	$[$wims_homeref_req] puntos en este trabajo, calidad $[$wims_homeref_mean]/10.
 !set wims_name_thsheet=Número,título,puntos requeridos,peso,puntos obtenidos,%,Calidad,severidad,nota,\
   Best scores,Number of tries,Last result, Acquired
-
  !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, perteneciendo a
  !if _exam isin $session
   !distribute items Otros ejercicios del examen,\
@@ -334,9 +334,10 @@ Exercices de la feuille&nbsp\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
-!!! para documentos  en particular...
+!!! for documents...
 
-!distribute items WIMS,Clase,Docs,Arriba,Atras,Sig.,Hist.,Recargar,\
+!distribute items WIMS,Clase,Docs,Arriba,\
+        Atras,Sig.,Hist.,Recargar,\
 	Versión interactiva,Versión para imprimir,\
 	Volver a doc.,Ayuda,Acerca de,\
 	Depósito de archivos,\
@@ -383,6 +384,7 @@ Cuaderno de textos\
 !set wims_name_nameteacher=Profesor
 !set wims_name_teacher=Cuentas de profesores
 !set wims_name_addteacher=Nueva cuenta de profesor
+!set wims_name_addparticipant=New participant account
 !set wims_name_modteacher=Propiedades del profesor
 !set wims_name_delteacher=Borrar a un profesor
 !set wims_name_student=Cuentas de alumnos
@@ -402,7 +404,7 @@ Cuaderno de textos\
  !distribute line $wims_name_config\
  Página principal de configuración\
 Gestión de la estructura\
-into wims_name_configb, wims_name_config,wims_name_struct
+into wims_name_configb,wims_name_config,wims_name_struct
 !endif
 
 !set wims_name_save=Copias de seguridad y recuperación

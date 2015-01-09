@@ -166,6 +166,9 @@
    Indexation,4,module=adm/tool/classification&refdir=$module&iniparm=$wims_homeref_parm,test to $1_
  !endif
 !endif
+!if $module_score!=$empty and $wims_class_exolog>0 and E notin $wims_sheet
+  !set 1_=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $1_
+!endif
 
 !set wims_rm_0=$1_
 

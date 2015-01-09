@@ -1382,15 +1382,16 @@ void save_session_vars(void)
      else {
          ll=getvar("wims_class_exolog");
          sh=getvar("wims_sheet"); ex=getvar("wims_exo");
-         if(ll!=NULL && atoi(ll)>0 &&
-            sh!=NULL && *sh!=0 && ex!=NULL && *ex!=0) {
-          char buf[MAX_FNAME+1];
-          mkfname(buf,"%s/exolog.%s.%s",session_prefix,sh,ex);
-          if(cmd_type==cmd_new || cmd_type==cmd_renew) unlink(buf);
-          exolog(buf);
+         if(ll!=NULL && atoi(ll)>0) {
+           char buf[MAX_FNAME+1];
+           if(sh!=NULL && *sh!=0 && ex!=NULL && *ex!=0){
+             mkfname(buf,"%s/exolog.%s.%s",session_prefix,sh,ex);
+           }
+           else { mkfname(buf,"%s/exolog",session_prefix);}
+           if(cmd_type==cmd_new || cmd_type==cmd_renew) unlink(buf);
+           exolog(buf);
          }
       }
     }
     if(var_def_buf) free(var_def_buf);
 }
-

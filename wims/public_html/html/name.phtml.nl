@@ -186,6 +186,7 @@ Indexatie,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
  Gezien\
+ Details of tested exercises,\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -195,12 +196,11 @@ Indexatie,\
  wims_name_exolog,\
  wims_name_sheetmanagement,\
  wims_name_add_sequence,\
- wims_name_readen
+ wims_name_readen,\
+ wims_name_save_ex
 
- !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op.
- !!!set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
-	$[$wims_homeref_req] punten. <br />Gemiddelde score \
-	$[$wims_homeref_mean]/10.
+  !!!set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
+	$[$wims_homeref_req] punten. <br />Gemiddelde score $[$wims_homeref_mean]/10.
  !set wims_name_thsheet=No,Titel,Vereist,Weging,Punten verkregen,%,Kwaliteit,Moeilijkheidsgraad,Cijfer,\
  &nbsp;Hoogste scores&nbsp;,&nbsp;Aantal pogingen&nbsp;,&nbsp;Laatste resultaat&nbsp;,&nbsp;Verkregen&nbsp;
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
@@ -330,12 +330,14 @@ Nieuwe klas\
 Nieuwe enquete\
 Nieuwe oefening\
 Oefeningen van deze klas\
+Sheet Exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
-wims_name_add_exo,wims_name_classexo
+wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
-!!! for documents en particulier..
+!!! for documents...
 
-!distribute item WIMS,Klas,Docs,Up,Vorige,Volgende,Hist.,Vernieuwen,\
+!distribute item WIMS,Klas,Docs,Up,\
+        Vorige,Volgende,Hist.,Vernieuwen,\
 	Interactieve versie,Printbare versie,\
 	Terug naar doc,Help,Info,\
 	Bestand opsturen,\
@@ -351,6 +353,7 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line Document\
+Document\
 Onzichtbaar,Zichtbaar\
 Titel\
 Reorganiseren\
@@ -362,7 +365,7 @@ Toevoegen\
 Nog niet klaar voor gebruik, Actief, Verlopen, Verlopen+Onzichtbaar\
 niet lezen en niet schrijven,alleen lezen,lezen en schrijven\
 Nummer\
-into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
 wims_name_Docstatus,wims_name_number
 
@@ -401,7 +404,7 @@ wims_name_Docstatus,wims_name_number
  !distribute line $wims_name_config\
  Hoofdpagina klassen onderhoud\
  Instituut administratie\
-into wims_name_configb, wims_name_struct,wims_name_config
+into wims_name_configb,wims_name_config,wims_name_struct
 !endif
 
 !set wims_name_save=Backup en herstel
@@ -479,6 +482,3 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module isitemof home,adm/class/sheet,adm/class/exam
  !set wims_name_actionlist=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 !endif
-
-
-
