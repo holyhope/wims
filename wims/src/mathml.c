@@ -16,13 +16,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #include "wims.h"
-
+int disable_mathml;
 int mathml(char *p, int option ){
     if (strlen(p)==0) return 1 ;
     if( mathalign_base <= 1){
       internal_error(" why is wims trying mathml()?\n");
       return 0; // go to insmath with gifs
     }
+    if( disable_mathml==1 || atoi(getvar("disable_mathml"))==1) return 0;
     if(strlen(p) > MAX_LINELEN ){ // too big ? probably too big for gifs as well ; but error signalling is better in gif-methods
       mathalign_base = 1;// 0 or 1 position of tex_gifs
       return 0; // go to insmath with gifs
@@ -41,7 +42,7 @@ int mathml(char *p, int option ){
       pid = fork();
       if (pid == (pid_t) 0){
           // this buffer should probably be set to 0.5 * MAX_LINELEN : mathml is very big !
-          // if output mathml string larger ;ERROR will be signaled by wims_matml.
+          // if output mathml string larger ;ERROR will be signaled by wims_mathml.
           char mml_buffer[MAX_LINELEN+1];
           sprintf(mml_buffer, "%d", MAX_LINELEN);// int --> char
           // setting --tex-size argument to wims_mathml.cc

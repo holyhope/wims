@@ -563,6 +563,7 @@ void module_configure(void)
     setenv("texgif_texheader",texgif_texheader,1);
     setvar("wims_texsize","0");
     setvar("disable_zoom","0");
+    setvar("disable_mathml","0");
     confset=0;
 }
 

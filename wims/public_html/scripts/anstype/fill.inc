@@ -43,11 +43,11 @@ $ in $input_rg
  !set input_rg=$g_
 !else
  !if keeporder notwordof $wims_fill_option
-   !set input_rg=!lines2items $input_rg 
+   !set input_rg=!lines2items $input_rg
  !else
  !!on vérifie que la bonne réponse est bien dans la liste, si non on la rajoute
    !set input_rg2=!lines2items $input_rg
-   !set input_rg=!line 2 to -1  of $input_rg 
+   !set input_rg=!line 2 to -1  of $input_rg
    !set l_=!listcomplement $input_rg in $input_rg2
    !if $l_!=$empty
      !set input_rg=$l_,$input_rg
@@ -87,7 +87,7 @@ $ in $input_rg
 !set vertical=text-top
 !set fill_namelist=!append item $fillcnt to $fill_namelist
 $sup1<img style="width:1px; height:$[$fill_sy+4]px;vertical-align:$vertical;" src="gifs/transparent.gif" alt="transparent" /><a id="fill$fillcnt">
-<img style="width:$[ceil($sizei/$sizej)*$fill_sx]px;height:$[($fill_sy*$sizej)+4]px;vertical-align:$vertical;" 
+<img style="width:$[ceil($sizei/$sizej)*$fill_sx]px;height:$[($fill_sy*$sizej)+4]px;vertical-align:$vertical;"
   src="gifs/transparent.gif" alt="transparent" /></a>$sup2
 <input type="hidden" name="reply$i" value="" />
 !reset inputsize

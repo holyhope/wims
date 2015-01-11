@@ -212,7 +212,7 @@ extern char *header_menu, *insplot_processor;
 extern char *home_referer, *home_referer_user, *header_menu_supervisor,
    *header_menu_user, *home_referer_supervisor, *title_page, *html_file;
 extern char *aliased_cgi, *insdraw_processor, *mail_opt;
-extern int mathalign_base ;
+extern int mathalign_base;
 unsigned long create_job_ident(void);
 void module_index(void);
 extern char *module_about_file, *main_var_proc_file, *var_init_file, *special_font;
