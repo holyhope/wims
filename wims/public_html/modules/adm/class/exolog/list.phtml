@@ -41,10 +41,10 @@ $table_hdtr
    !set S_=!getdef w_module in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
    !set E_=!getdef w_exo in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
    !set M_=!getdef w_email in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
-   !if xiao isin M_
-     !set M_=$DEBUG_MOD
+   !if xiao isin $M_
+     !set M_=$DEBUG_MODULE
    !else
-     !set CC_=$DEBUG_MOD
+     !set CC_=$DEBUG_MODULE
    !endif
  !endif
  !default T_=$S_
@@ -63,10 +63,10 @@ $table_hdtr
    </td><td>
    !if $wims_user=supervisor
    !!set source=!record 0 to -1 of $source
-   !!mailto $DEBUG_MOD\
-  !![qualite] $S_\
-  !! :$source
-   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S_&cc=$CC_">$name_sendmail</a>.
+   !!mailto $DEBUG_MODULE\
+!![qualite] $S_\
+!! :$source
+   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S_&body=&cc=$CC_">$name_sendmail</a>.
     !endif
    !endif
    !if $checkuser=$wims_user
