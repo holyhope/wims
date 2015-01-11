@@ -11,6 +11,6 @@ into name_Step,name_number
 
 !set name_source=source
 !set name_sendmail=Bug?
-!set name_bug=If you think the exercise is bugged, thanks to send a mail by clicking\
-on the button <span class="wims_button disabled">$name_sendmail</span> and joining the file\
-<span class="wims_button disabled">$name_source</span>.
+!set name_bug=Als je denkt dat er een foutje in deze oefening zit, stuur dan een email \
+<span class="wims_button disabled">$name_sendmail</span> en voeg dit bestand \
+<span class="wims_button disabled">$name_source</span> toe.

@@ -80,7 +80,7 @@ Nieuwste,\
 Aanmaken, Voorbeelden,\
 Oefeningen, Help,\
 FAQ, Help documenten,\
-Informations,\
+Informatie,\
 	into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
@@ -186,7 +186,7 @@ Indexatie,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
  Gezien\
- Details of tested exercises,\
+ Details van gemaakte oefeningen,\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -330,7 +330,7 @@ Nieuwe klas\
 Nieuwe enquete\
 Nieuwe oefening\
 Oefeningen van deze klas\
-Sheet Exercises\
+Werkblad oefeningen\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
