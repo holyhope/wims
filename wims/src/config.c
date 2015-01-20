@@ -163,6 +163,7 @@ char temp_log[MAX_FNAME+1]; /* temp log file name */
  /* 0: low; 1: high; 2: MathML */
 int mathalign_base=0;  /* Not use <sup> for middle alignment */
 char *disable_zoom="no";  /* yes/no:  default zooming allowed (if enabled via "useropts")  */
+char *disable_mathml="no";
 int spec_font=0; /* choose of some fonts*/
  /* special font can be configured in log/wims.conf with variable special_font*/
 char *special_font="letter-spacing:0.3em;line-height:2.7em;word-spacing:0.8em;";
