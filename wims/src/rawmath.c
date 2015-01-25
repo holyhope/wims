@@ -481,8 +481,7 @@ void __replace_exponent(char *p, int n)
         p3 = p2 = find_word_start(p1+1);
         if(*p2=='+' || *p2=='-') p2++;
         p2 = find_word_start(p2);
-/* jm.evers 31.1.2014
- * add '}' to recognized parenthesis in exponent
+/* add '}' to recognized parenthesis in exponent
  * !mathmlmath 2 \cdot x^{3} will now produce correct exponent...
  * !mathmlmath should convert LaTeX input into correct MathML
  */
@@ -787,10 +786,10 @@ void htmlmath(char *p)
 
 void mathmlmath(char *p)
 {
-    /*  
-     if force_mathml variable is set to "yes", do not (never) use 'htmlmath' in output, 
-     so command: !mathmlmath some_LaTeX_string will produce mathml (mathml \input inputfields may be included)
-     4/2013 jm.evers 
+    /*
+     if force_mathml variable is set to "yes", do not (never) use 'htmlmath'
+     in output, so command: !mathmlmath some_LaTeX_string will produce mathml
+     (mathml \input inputfields may be included)
     */
     if( strcmp( getvar("force_mathml"),"yes") == 0 ){ mathalign_base = 2;mathml(p,1);return; }
     if (mathalign_base == 2) { __htmlmath(p,0) ; mathml(p,1);} else { __htmlmath(p,1) ;}
