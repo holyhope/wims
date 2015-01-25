@@ -787,5 +787,11 @@ void htmlmath(char *p)
 
 void mathmlmath(char *p)
 {
+    /*  
+     if force_mathml variable is set to "yes", do not (never) use 'htmlmath' in output, 
+     so command: !mathmlmath some_LaTeX_string will produce mathml (mathml \input inputfields may be included)
+     4/2013 jm.evers 
+    */
+    if( strcmp( getvar("force_mathml"),"yes") == 0 ){ mathalign_base = 2;mathml(p,1);return; }
     if (mathalign_base == 2) { __htmlmath(p,0) ; mathml(p,1);} else { __htmlmath(p,1) ;}
 }

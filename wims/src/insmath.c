@@ -90,6 +90,9 @@ int __gototex (char *p, char *f, int ts)
       // }
       }
       /* send to mathml */
+      if( strcmp( getvar("force_mathml") , "yes" ) == 0 ){/* override math-with-gifs */
+       mathalign_base = 2;
+      }
       if (mathalign_base == 2 && mathml(buf,0)) { *p=0 ;return 1; }
 /* end if mathml option in case ts=1 or "computer matrix" */
 

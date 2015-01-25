@@ -565,6 +565,11 @@ void module_configure(void)
     setvar("wims_texsize","0");
     setvar("disable_zoom","0");
     setvar("disable_mathml","0");
+    setvar("force_mathml","0"); 
+    /* if 'force_mathml=yes' , a check should be done on the value of 'disable_mathml'. 
+       so it's not fool-proof. 
+       jm.evers 1/2015
+    */
     confset=0;
 }
 
