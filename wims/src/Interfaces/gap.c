@@ -27,7 +27,7 @@ char *quitstring="\nquit;\n";
 /* The way to print a string in the program. */
 char *stringprinter="Print(\"%s\\n\");\n";
 /* This is GAP home page. To be kept up to date. */
-#define homepage "http://www-gap.dcs.st-and.ac.uk/~gap"
+#define homepage "http://www.gap-system.org/"
 
 /* limit of input/output file sizes */
 int fsizelim=131072;
