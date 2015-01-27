@@ -1,5 +1,4 @@
-!!!### language independant
-!!
+
 !read adm/class/classlang names.phtml
 wims_prefix=class user tmp
 !default activeexo=10
@@ -186,7 +185,7 @@ deactivate=yes
   test=!sh cd $wims_home/log/classes/$wims_class/;\
 list=`ls noscore | grep -v supervisor`;\
 cd noscore;\
-awk 'length($$1)==18{if($$3==1){print "no";exit};}' $$list;
+awk 'length($$1)==18{if($$3==$exam){print "no";exit};}' $$list;
   !if no isin $test
    deactivate=score
   !endif
