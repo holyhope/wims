@@ -78,10 +78,12 @@ Asignaturas\
 En clase\
 Dado el\
 No hay trabajo que hacer para el\
+Insérer une ressource de la classe\
 into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
 name_work,name_nb_date,name_todo2,name_workdone,name_session,\
 name_character,name_noinfo1,name_noinfo2,name_noinfo3,\
-name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
+name_Day,name_discipline,name_inclass,name_giventhe,name_nowork,\
+name_help_add
 
 !set name_workfor=$name_work $name_for
 

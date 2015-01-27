@@ -11,7 +11,7 @@ $cdt_subtitle
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$moduclass_lang 
+ !read lang/msg.phtml.$moduclass_lang
  </div>
 !endif
 
@@ -32,7 +32,7 @@ $cdt_subtitle
 !read adm/lang/datemenu.phtml.$moduclass_lang 1,jday,jmonth,jyear
 </div>
 <div>
-$name_nb_date: 
+$name_nb_date:
 <select  name="nbredevoir" onchange="submit()">
 !for i=1 to $max_todo
  !if $i=$nbredevoir
@@ -56,8 +56,8 @@ $name_nb_date:
    !read adm/lang/datemenu.phtml.$moduclass_lang 1,dday$i,dmonth$i,dyear$i
    &nbsp;
     !set wims_ref_class=wims_button_help
-    !href target=wims_help cmd=renew&job=helplink&cible=ddesc$i $wims_name_help
-    
+    !href target=wims_help cmd=renew&job=helplink&cible=ddesc$i $name_help_add
+
    <br /><textarea $(wims_id$[$i-1]) rows="6" cols="65" name="ddesc$i">
     !replace internal \( by &#92;( in $(ddesc$i)
    </textarea></td>
@@ -66,7 +66,7 @@ $name_nb_date:
   </td>
  </tr>
  !next i
-</table> 
+</table>
 <hr style="width:40%;" />
 <p class="wimscenter">
 <input type="submit" value="$wims_name_tosave" $wims_on_click/>

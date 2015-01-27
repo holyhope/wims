@@ -13,7 +13,7 @@ $cdt_subtitle
 
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
- </div> 
+ </div>
 
 !endif
 
@@ -33,19 +33,19 @@ $cdt_subtitle
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
 !read adm/lang/datemenu.phtml.$moduclass_lang 1,jday,jmonth,jyear
 </div>
-<div>$name_workdone ( &lt; $desc_limit $name_character) : 
+<div>$name_workdone ( &lt; $desc_limit $name_character) :
 &nbsp;
-    !set wims_ref_class=wims_button_help
-!href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
+!set id0=!getopt id in $wims_id0
+!set wims_ref_class=wims_button_help
+!href target=wims_help cmd=new&module=$module&job=helplink&cible=$id0 $name_help_add
 </div>
-
 <textarea $wims_id0 rows="10" cols="65" name="jdesc" wrap>
 !replace internal \( by &#92;( in $jdesc
 </textarea>
 <hr style="width:40%;" />
 <p class="wimscenter" style="font-weight:bold">$name_worktodo</p>
 
-<div>$name_nb_date: 
+<div>$name_nb_date:
 <select name="nbredevoir" onchange="submit()">
 !for i=0 to $max_todo
  !if $i=$nbredevoir
@@ -67,8 +67,9 @@ $cdt_subtitle
    !read adm/lang/datemenu.phtml.$moduclass_lang 1,dday$i,dmonth$i,dyear$i
    &#58;
    &nbsp;
+    !set id0=!getopt id in $(wims_id$i)
     !set wims_ref_class=wims_button_help
-   !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
+   !href target=wims_help cmd=new&module=$module&job=helplink&cible=$id0 $name_help_add
 <br /><textarea $(wims_id$i) rows="6" cols="65" name="ddesc$i">
 !replace internal \( by &#92;( in $(ddesc$i)
 </textarea>
