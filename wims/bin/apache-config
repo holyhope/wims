@@ -39,6 +39,7 @@ Please first install Apache (>=1.3).
 @
  exit
 fi
+[ -f /etc/apache2/envvars ] && . /etc/apache2/envvars
 conffile=`$httpdname -V | grep SERVER_CONFIG_FILE | awk -F'=' '{print $2}'  | tr -d ' "'`
 confdir=`dirname $conffile`
 if [ -z "$confdir" ]; then
@@ -52,8 +53,12 @@ Please first update your web server to Apache >=1.3.
 fi
 
 case $distro in
- debian) conffile=$confdir/conf.d/wims.conf
- 
+ debian) if [ `lsb_release -c | cut -f2` = "trusty" ];then
+           conffile=$confdir/conf-enabled/wims.conf
+         else
+           conffile=$confdir/conf.d/wims.conf
+         fi
+
  ;;
 esac
 
@@ -94,7 +99,7 @@ startl="WIMS definitions start. Do not alter this line"
 case $distro in
  debian) rm -f $tmpfile
  ;;
- *) awk 'BEGIN {a=1}; 
+ *) awk 'BEGIN {a=1};
 	/'"$startl"'/ {a=0};
 	a==1 {print};
 	/'"$endl"'/ {a=1};' $conffile >$tmpfile
