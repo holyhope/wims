@@ -86,8 +86,14 @@ partielle pour des réponses partiellement correctes.
 $embraced_randitem
 \text{explain=Parmi les affirmations suivantes, lesquelles sont vraies ? Marquez-les.}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
 \integer{truecnt=rows(\datatrue)}
@@ -109,26 +115,28 @@ $embraced_randitem
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
 \text{ans=positionof(1,\ind)}
 \text{list=wims(values x for x=1 to \tot)}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
 
 ::You don't need to modify this in general.
 
-\statement{\explain
-
-<table class="wimsnoborder wimscenter">
+\statement{
+<div class="instruction">
+\explain
+</div>
+<ul style="list-style-type:none">
 \for{i=1 to \tot}{
- <tr><td nowrap>\embed{reply 1,\i}. </td>
- <td>&nbsp;\pick[\i;]</td></tr>
+ <li>
+  \embed{reply 1,\i}. &nbsp;\pick[\i;]
+  </li>
 }
-</table>
+</ul>
 }
 
-:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%
 
 \answer{The reply}{\ans;\list}{type=checkbox}{option=\option}
-

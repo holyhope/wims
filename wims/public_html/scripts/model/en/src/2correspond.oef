@@ -47,6 +47,7 @@ Don't make the labels too small.
 
 :Main data.
 Write one pair of corresponding items per line, separated by a comma.
+$embraced_randitem
 \matrix{data=
 Germany,		Berlin
 Australia,		Canberra
@@ -68,6 +69,15 @@ $embraced_randitem
 \text{explain=Match the countries and their
 capitals.}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+
+\text{accolade=item(1,1 oui,
+2 non)}
+
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
 
 \integer{datacnt=rows(\data)}
@@ -75,10 +85,12 @@ capitals.}
 
 \text{shuf=item(1..\tot,shuffle(\datacnt))}
 \text{data=row(\shuf,\data)}
+\text{data=\accolade=1? wims(embraced randitem \data)}
+
 \text{datal=column(1,\data)}
 \text{datar=column(2,\data)}
 \text{size=\sizev[]x\sizel[]x\sizer}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
 
@@ -89,13 +101,12 @@ The command to show the correspondance table, it is
 
 \statement{\explain
 
-<p class="wimscenter">
+<div class="wimscenter">
 \embed{reply 1,\size}
-</p>
+</div>
 
 }
 
 :%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
 
 \answer{The reply}{\datal;\datar}{type=correspond}
-

@@ -44,9 +44,14 @@ Write the itemss in the correct order, separated by commas.
 Please put the following planets of the solar system into the right order, with
 the closest to the Sun in first position.
 }
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
-
+\text{accolade=wims(word 1 of \accolade)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \integer{datacnt=items(\data)}
 \integer{tot=min(20,min(\tot,\datacnt))}
 \if{\tot<\datacnt}{
@@ -63,7 +68,7 @@ the closest to the Sun in first position.
 ::You don't need to modify this in general.
 
 \statement{\explain
-<p><table border="0"><tr>
+<table class="wimsnoborder"><tr>
 \for{k=1 to \tot}{<td>\embed{r\k,\size}</td>}
 </tr></table>
 }

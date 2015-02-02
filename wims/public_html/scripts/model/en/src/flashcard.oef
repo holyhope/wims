@@ -35,17 +35,25 @@ Only enter a name if you wish to create a separate data file
 </pre>
 In this case the main data will not be taken into consideration.
 otherwise, you need to enter the main data below.
+
 \text{file=}
 
 :Main data.
-Add ?? before and after the words to be hidden in the sentences. 
+Add ?? before and after the words to be hidden in the sentences.
 
 \text{data=The ??black?? cat ate the ??white?? mouse hungrily.
 There's a ??green?? house standing on the ??small?? hill.
 I've got ??red?? and ??blue?? flowers swaying in my garden.
 He looked at the ??young?? boy sadly.}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+
 \integer{N=min(\N,5)}
 \if{\file notsametext}{
   \integer{datacnt=wims(recordcnt \file)}
@@ -69,7 +77,7 @@ wims(record \s of \file)}
 \text{Numero=}
 \text{Texte=}
 \text{cnt=}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=wims(replace internal ' by &#146; in \data)}
 \for{u=1 to \N}{
   \matrix{texte=slib(text/markgroup \data[\u;])}
@@ -89,7 +97,7 @@ wims(record \s of \file)}
 \steps{\STEP}
 \statement{\instruction
 \if{\N=1}{<div class="emptyline"> </div>
-<div class="wimscenter">\for{j=1 to \cnt}{ 
+<div class="wimscenter">\for{j=1 to \cnt}{
    \embed{r 1,\j}
  }</div>
 }{

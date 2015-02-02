@@ -127,6 +127,16 @@ Add the word "split" if you allow a partial score for a
 partially correct answer.
 \text{option=split}
 
+:Options de présentation.
+Ajoutez ici le mot "liste" si vous voulez afficher les objets sous forme de liste
+\text{presentation=}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
 
 \text{prop=randitem(\prop)}
@@ -152,6 +162,21 @@ partially correct answer.
 \text{ind=item(\sh,\ind)}
 \text{tomark=positionof(1,\ind)}
 
+:%% Choix de la presentation : sous forme lineaire par defaut, ou sous forme de liste à puces.
+\if{liste iswordof \presentation}
+{
+ \text{pre=<ul>}
+ \text{separatorL=<li>}
+ \text{separatorR=</li>}
+ \text{post=</ul>}
+}
+{
+ \text{pre=<p>}
+ \text{separatorL=<span>}
+ \text{separatorR=</span>}
+ \text{post=</p>}
+}
+
 :%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
 
 :Text to explain what should be done.
@@ -163,15 +188,18 @@ please select those in the \prop team.
 }
 
 :%% Computations; do not modify
-\text{explain=wims(embraced randitem \explain)}
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{explain=\accolade=1 ?wims(embraced randitem \explain)}
 
 ::You don't need to modify this in general.
 
-\statement{\explain
-<div>
-\for{k=1 to \tot-1}{\embed{r1,\k},}
-\embed{r1,\tot}.
-</div>
+\statement{
+<p>\explain</p>
+\pre
+ \for{k=1 to \tot-1}{\separatorL \embed{r1,\k},\separatorR }
+ \separatorL \embed{r1,\tot}.\separatorR
+\post
 }
 
 :%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5

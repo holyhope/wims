@@ -1,0 +1,58 @@
+type=language
+textarea="data"
+
+:Écrire le mot entendu (enregistrements à fournir).
+
+Un audio est proposé et le texte entendu doit être écrit exactement. Les audio sont
+pris parmi la base d'audio de mots enregistrés de WIMS. Si l'exercice est dans une classe,
+avec une adapatation, il peut être utilisé avec des audios mis dans la classe.
+
+<p>Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+mots à condition qu'ils existent dans la base d'audio (pour vérifier, taper
+swac dans le moteur de recherche et utiliser l'outil proposé).
+</p><p>
+Pour plus de possibilités, utiliser Quicktool.
+</p><p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+
+:\title{Écouter et écrire II}
+:\author{Bernadette, Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+:\credits{}
+:Consigne
+\text{instruction=Ecris le mot entendu, sans faute d'orthographe.}
+
+:Liste d'audio et de mots
+\text{data=nom_audio1,doctor
+nom_audio2,teacher
+nom_audio3,journalist}
+
+:La taille verticale des cases en nombres de caractères.
+\integer{size=12}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+\text{mot=randrow (\data)}
+
+\statement{
+\instruction
+<div class="wimscenter">
+\audio{\imagedir/\mot[1]}
+</div>
+
+<div class="wimscenter">
+ \embed{r1, \size
+ default
+ autocomplete="off"}
+</div>
+}
+\answer{}{\mot[2..-1]}{type=case}

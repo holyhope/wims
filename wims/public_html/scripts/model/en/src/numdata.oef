@@ -24,6 +24,11 @@ with a ':'.) Otherwise the exercise might not be taken back by Createxo.
 :\email{qualite@wimsedu.info}
 :\credits{}
 
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
 :Main data.
 Définir une question par ligne, et séparer les lignes
 par un point-virgule. (Donc les textes eux-mêmes ne peuvent pas contenir
@@ -79,11 +84,12 @@ Le délit de fuite coûte ??6?? point(s) sur le permis.;
 }
 
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{len=}

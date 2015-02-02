@@ -81,11 +81,16 @@ Julie
 
 :Text before the question. html tags allowed, can be empty.
 $embraced_randitem
-\text{pre=Please click on the mistakes in the text below. <p>
+\text{pre=Please click on the mistakes in the text below.
 }
 
 :Text after the question. html tags allowed, can be empty.
 \text{post=}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
 
 :Optional words.
 Add the word "split" to the exercise if you allow a partial score for a
@@ -94,10 +99,11 @@ partially correct answer.
 
 :%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{list=}
@@ -121,14 +127,15 @@ partially correct answer.
  \text{show=\show[]\d,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
+\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
 
 :%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
 
 ::You don't need to modify this in general.
 
-\statement{\pre
-
+\statement{<div>
+\pre
+</div>
 \data[1;]
 \for{k=1 to \qs}{
 \embed{r1,\k} \data[2*\k+1;]

@@ -77,7 +77,37 @@ for when only part of the correct answers have been selected, enter the word 'sp
 
 \text{option=}
 
-:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+:Feedback Général
+Ce texte s'affichera après la réponse de l'apprenant, qu'elle soit juste ou fausse.
+\text{feedback_general=}
+
+:Feedback en cas de bonne réponse
+Ce texte s'affichera après la réponse de l'apprenant, en cas de bonne reponse ou de reponse partielle.
+\text{feedback_bon=}
+
+:Feedback en cas de mauvaise réponse
+Ce texte s'affichera après la réponse de l'apprenant, s'il a coché au moins une mauvaise réponse.
+\text{feedback_mauvais=}
+
+:Mise en aléatoire par des accolades emboitables
+$embraced_randitem
+\text{accolade=item(1,1 oui,
+2 non)}
+
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{empty=}
+\if{\feedback_general != \empty}{
+  \text{feedback_general=<p class="feedback">\feedback_general</p>}
+}
+\if{\feedback_bon != \empty}{
+  \text{feedback_bon=<p class="feedback good_answer">\feedback_bon</p>}
+}
+\if{\feedback_mauvais != \empty}{
+  \text{feedback_mauvais=<p class="feedback bad_answer">\feedback_mauvais</p>}
+}
 
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
@@ -106,8 +136,8 @@ for when only part of the correct answers have been selected, enter the word 'sp
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
-\text{explain=wims(embraced randitem \explain)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 \text{ans=positionof(1,\ind)}
 \text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
 \text{anstype=checkbox iswordof \option?checkbox:radio}
@@ -127,3 +157,6 @@ for when only part of the correct answers have been selected, enter the word 'sp
 
 \answer{The reply}{\ans;\list}{type=\anstype}{option=\option}
 
+\feedback{1=1}{\feedback_general}
+\feedback{\reply1 isitemof \list[\ans]}{\feedback_bon}
+\feedback{\reply1 notitemof \list[\ans]}{\feedback_mauvais}
