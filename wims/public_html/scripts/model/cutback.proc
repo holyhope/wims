@@ -23,11 +23,17 @@ all=$parms,$sps,$statementrec
   !appendfile $output :\$(name$i){$(reply$i)}
   !goto loopend
  !endif
+
  !if $i isitemof $parms
   !if $(menu$i)=$empty
+    !if $(name$i) iswordof $model_asis
+      param_value = asis($(reply$i))
+    !else
+      param_value = $(reply$i)
+    !endif
    !appendfile $output :$(title$i)\
 $(help$i)\
-\$(type$i){$(name$i)=$(reply$i)}\
+\$(type$i){$(name$i)=$param_value}\
 
   !else
    t_=!itemcnt $(menu$i)
