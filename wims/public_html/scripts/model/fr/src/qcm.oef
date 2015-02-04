@@ -240,7 +240,10 @@ Casse-noisette)}
  .enonce{margin-bottom:0}
  .qcm_prompt2{margin-top:.5em}
  img{vertical-align:middle;}
- .q_num, .panel .wims_title{font-size:150%;font-family:Impact, Charcoal, sans-serif}
+ .q_num, .panel .wims_title{
+ font-size:150%;font-family:Impact, Charcoal, sans-serif;
+ color:gray;
+ }
  .feedback{border:1px dashed grey;padding:0.5em;margin:0;}
  .reponse {
    margin: 0 1em;
@@ -251,10 +254,17 @@ Casse-noisette)}
  .panel{
     padding:.5em 1em .5em 1em;
     margin:.5em 0;
-    border:2px solid #c5e5f3;
+    border:1px solid #d8d8d8;
     border-radius:5px;
+    background-color: #f2f2f2;
+ }
+ .panel.callout{
+    border-color:#c5e5f3;
+    border-width:2px;
     \style_question
  }
+ .callout .q_num, .callout .wims_title{color:black;}
+
  .panel .wims_title, .panel .wimscenter{margin-top:-1.2em;}
  ol li{margin-bottom: .5em;list-style: upper-alpha;}
  input[type='checkbox'] { font-size:150%; }
@@ -401,7 +411,11 @@ text{testexp=wims(nospace \testexp)}
 
   \for{h=1 to \etape[\step]}{
  
-   \if{\question[\h;] notsametext }{<div class="panel">}
+   \if{\question[\h;] notsametext }{
+     \if{\h <= \etape[\step] - \N}
+       {<div class="panel">}
+       {<div class="panel callout">}
+    }
 
    \if{(\h <= \etape[\step] - \N or r \h isitemof \nstep) and \question[\h;] notsametext }{
      <div class="enonce">
