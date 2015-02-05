@@ -72,6 +72,7 @@ diskfill	t_obj	4,1,1,0,	obj_dotfill
 dline		t_obj	4,1,0,1,	obj_dline
 dlines		t_obj	4,-1,0,1,	obj_dlines
 dhline		t_obj	2,1,-1,1,	obj_hline
+dpolyline	t_obj	4,-1,0,1,	obj_dlines
 dotfill		t_obj	4,1,1,0,	obj_dotfill
 dplot		t_obj	0,-1,0,1,	obj_dplot
 dsegment	t_obj	4,1,0,1,	obj_dline
