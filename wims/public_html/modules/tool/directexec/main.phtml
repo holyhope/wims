@@ -65,9 +65,9 @@
 <script type="text/javascript">
 //<![CDATA[
 "use strict";
- <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes --> 
+ <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes -->
  function read_canvas(){var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if(script_len == 1 ){ return result;};found_result = true;draw_reply = draw_reply + "["+p+"]="+ result + "\n";};};};if( found_result ){return draw_reply;}else{return null;};};
- <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes --> 
+ <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes -->
  function read_dragdrop(){var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]);if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if(script_len == 1 ){ return result;};found_result = true;dragdrop_reply = dragdrop_reply + "["+p+"]=" + result +"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;};};
 //]]>
 </script>
@@ -115,6 +115,8 @@ $ :
 !set src=!reinput $src
 !set src=!replace internal &amp;#36; by &#36; in $src
 !set src=!replace internal &amp; by & in $src
+
+<br class="spacer" />
 <textarea id="wims_deposit" wrap="off" name="src" cols="100" rows="15">
 $src
 </textarea>
