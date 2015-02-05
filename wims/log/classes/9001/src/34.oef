@@ -3,7 +3,7 @@
 \text{chiffres = wims(makelist x for x = 2 to 10)}
 \text{list = slib(data/random \n,item,\chiffres)}
 \text{op=+,*}
-\integer{c = random(1,2)}
+\integer{c = randint(1..2)}
 \text{opc1 = wims(randitem \op)}
 \text{nb = slib(data/random 3,item,\list)}
 \if{\c = 1}
@@ -11,7 +11,9 @@
    {\text{opc2 = wims(randitem \op)}
     \integer{val = (\nb[1]\opc1\nb[2])\opc2\nb[3]}
    }
-\if{\val isitemof \list}{\text{opc1=*}\text{opc2=*}
+\if{\val isitemof \list}{
+   \text{opc1=*}
+   \text{opc2=*}
     \integer{val = (\nb[1]\opc1\nb[2])\opc2\nb[3]}
    }
 
