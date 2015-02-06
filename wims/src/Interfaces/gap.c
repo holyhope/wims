@@ -136,6 +136,7 @@ char *dynsetup(char *ptr, char *end)
 int main(int argc,char *argv[])
 {
     prepare1();
+    setenv("HOME","/nodir",1);
     run();
     return 0;
 }
