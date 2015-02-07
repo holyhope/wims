@@ -255,14 +255,14 @@ $varfilter_
   !if $wims_typename iswordof group portal
     !goto enduser
   !endif
-  !readproc adm/class/userscore
+  !readproc adm/class/userscore $uu
   !if $manual>0 and $job_affi=notes
    !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
    !if $glob>0
     !read adm/class/colors $[ceil($glob*10/$scoremax)]
     <td style=$style_note>$glob
    !else
-     <td>--
+    <td>--
    !endif
    </td>
    !if $(manual_$UU)>0

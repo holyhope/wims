@@ -1,20 +1,20 @@
 
 # Variables used: defaultformula in adm/class/userlist/var.proc
-# defaultformula in  wimshome/log/classes/$wims_class/sheets/.severity
+!! defaultformula in  wimshome/log/classes/$wims_class/sheets/.severity
 
-# Output variables:
-#
-# f_$i: formula of sheet $i.
-# w_$i: weight of sheet $i.
-# totweight: total sum of weights.
+!! Output variables:
+!!
+!! f_$i: formula of sheet $i.
+!! w_$i: weight of sheet $i.
+!! totweight: total sum of weights.
 
-totweight=0
-totsheets=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
-totexams=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
-examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
-formula_list=!record 0 of adm/class/sheetformula
+!set totweight=0
+!set totsheets=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set totexams=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
+!set formula_list=!record 0 of adm/class/sheetformula
 !for i=1 to $totsheets
- f_=!line $i of $defaultformula
+ !set f_=!line $i of $defaultformula
  !distribute word $f_ into w_$i,s,ss
  !default w_$i=1
  !bound s between integer 0 and 6 default 2
@@ -27,21 +27,20 @@ $$x$(ss)_*$$y_\
 $$x$(ss)_^2*$$y_\
 ($$x$(ss)_*$$y_)^2
 
-f_$i=!record 0 of adm/class/sheetformula
-f_$i=!item $s+1 of $(f_$i)
-f_$i=!replace internal I by I$ss in $(f_$i)
+!set f_$i=!record 0 of adm/class/sheetformula
+!set f_$i=!item $s+1 of $(f_$i)
+!set f_$i=!replace internal I by I$ss in $(f_$i)
  !if $i isitemof $activesh
-  totweight=$[$totweight+$(w_$i)]
+  !set totweight=$[$totweight+$(w_$i)]
  !endif
- s_$i=$s
- ss_$i=$ss
+ !set s_$i=$s
+ !set ss_$i=$ss
 !next i
 
 !for i=1 to $totexams
- ew_$i=!line $i of $examweights
+ !set ew_$i=!line $i of $examweights
  !default ew_$i=1
  !if $i isitemof $activexams
-  totweight=$[$totweight+$(ew_$i)]
+  !set totweight=$[$totweight+$(ew_$i)]
  !endif
 !next i
-
