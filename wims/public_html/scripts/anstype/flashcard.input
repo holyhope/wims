@@ -1,8 +1,7 @@
 !set ans_require=
-!reset option2 option1 nb_form
+!reset option2 option1
 !set anstype=yes
 !set anstyle=mc
-!set nb_form=0
 
 !if $wims_read_parm=def
  !exit
@@ -49,8 +48,7 @@ $ in $input_rg
 
 !default prompt$i=??
 
-!default nb_form=0
-!if $nb_form=0 or $(input_no$i)=$empty
+!if $(input_no$i)=1 or $(input_no$i)=$empty
 <script type="text/javascript">
 /*<![CDATA[*/
 var n$i=$(input_icnt$i);
@@ -105,7 +103,6 @@ function flashcard_on$i(s){
 !endif
 
 !if $(input_no$i)!=$empty and $(input_no$i)<=$(input_icnt$i)
- !increase nb_form
  !if $show=yes
   <div id="flashcard$i$[$(input_no$i)-1]" onclick="flashcard_on$i('$[$(input_no$i)-1]')" $option2>$(input_1[$(input_no$i)])</div>
  !else
@@ -117,7 +114,7 @@ function flashcard_on$i(s){
    <div id="flashcard$i$[$(input_no$i)-1]" onclick="flashcard_on$i('$s_')" $option2>$(input_1[$s_+1])</div>
   !else
   <div id="flashcard$i$[$(input_no$i)-1]" onclick="flashcard_on$i('$s_')" $option2>$(prompt$i)</div>
- !endif
+  !endif
    &nbsp;
  !next
 !endif
