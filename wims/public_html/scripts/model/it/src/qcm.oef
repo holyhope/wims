@@ -26,9 +26,9 @@ Inserire qui le istruzioni comune a tutte le domande dell'esercizio
 \text{instruction=Istruzioni generali: rispondete a tutte le domande della prima serie, inviate, quindi rispondente alle domande della seconda serie.}
 
 :Scelta casuale
-Scrivere "yes" per presentare le domande in ordine casuale.
+Scrivere "si" per presentare le domande in ordine casuale.
 Scrivere "no" per presentarle esattamente nell'ordine in cui ono inserite nel file.
-\text{alea=item(1,yes,no)}
+\text{alea=item(1,si,no)}
 
 :Numero massimo di domande per ogni passo
 WIMS dividerà automaticamente l'esercizio in passi in funzione del numero totale di domande definite e del numero di domande per ogni passo.
@@ -75,8 +75,8 @@ $embraced_randitem
 \text{accolade=item(2, si, no)}
 
 :Mostrare le risposte corrette
-Se "yes", la lista delle risposte corrette sarà mostrata una volta che lo studente ha dato la sua risposta.
-\text{answer_given=item(1, yes, no)}
+Se "si", la lista delle risposte corrette sarà mostrata una volta che lo studente ha dato la sua risposta.
+\text{answer_given=item(1, si, no)}
 
 :Domanda
 <p>Inserire qui la domanda, nel formato seguente: </p>
@@ -84,22 +84,22 @@ Se "yes", la lista delle risposte corrette sarà mostrata una volta che lo studen
 <li>La prima riga è il testo della domanda.</li>
 <li>La riga seguente è un feedback che sarà mostrato dopo la valutazione delle risposte (può essere lasciata vuota).</li>
 <li>La terza riga è l'elenco dei numeri delle righe, nell'elenco che segue, corrispondenti alle risposte corrette, separati da virgole.</li>
-<li>Le righe restanti sono le opzioni per le risposte (sia corrette che non corrette).</li></ol>
+<li>Le righe restanti sono le opzioni per le scelte multiple (corrette e non corrette).</li></ol>
 <div style="border-left:2px solid orange;width:45em;background-color:white;padding:1em .5em;">Esempio: <br/>
 <pre>Titolo della domanda 1
-spiegazione per il feedback che sarà mostrato in caso di risposta non corretta alla domanda 1
-Numero della/delle risposte corrette
-Frase 1
-Frase 2
-Frase 3</pre></div>
+spiegazione che sarà mostrata in caso di risposta non corretta alla domanda 1
+Numeri delle opzioni corrette
+Testo 1
+Testo 2
+Testo 3</pre></div>
 <p>Attenzione: non è possibile utilizzare punti-e-virgola.</p>
 <hr/>
-<p><em>Facultatif :</em> Vous pouvez éventuellement ajouter une premiere ligne qui contiendra des variables permettant d'insérer un titre, une image, du son. (nb : vous devez être dans une classe ou un module pour pouvoir transférer ces fichiers).<br/> Dans ce cas, ce sera la seconde ligne (et non la première) qui représentera l'énoncé, la 3e le feedback, et ainsi de suite....</p>
-Les variables possibles sont : 
+<p><em>Facoltativo:</em> È possibile aggiungere una prima riga che permette di definire variabili che indicano un titolo, una immagine, o un file audio (n.b: per effettuare l'upload di tali file è necessario essere in un modulo o in un corso).<br/> In questo caso, rispetto al formato definito nel caso precedente, il titolo dell'esercizio sarà nella riga 2, l'enunciano nella riga 3 e così via....</p>
+Le variabili utilizzabili sono:
 <ul>
-  <li><code>Qtitle</code> : affiche un titreau début de la question. (par exemple pour indiquer le thème)</li>
-  <li><code>Qimage</code> : si un fichier d'image est indiqué, celle-ci sera affichée au debut de la question. (ne fonctionne que dans un module ou une classe)</li>
-  <li><code>Qaudio</code> : si un fichier son est indiqué, celui-ci sera affichée au debut de la question. (ne fonctionne que dans un module ou une classe. Bugs connus avec Safari)</li>
+  <li><code>Qtitle</code>: titolo della domanda (per esempio per indicare un argomento)</li>
+  <li><code>Qimage</code>: se è indicato il nome di un file immagine, questo file sarà mostrato all'inizio della domanda (funziona solo se l'esercizio è contenuto in un modulo o in un corso)</li>
+  <li><code>Qaudio</code>: se è indicato il nome di un file audio, questo file sarà proposto all'inizio della domanda (funziona solo se l'esercizio è contenuto in un modulo o in un corso. Problemi di visualizzazione con Safari)</li>
   </ul>
 <div style="border-left:2px solid orange;width:45em;background-color:white;padding:1em .5em;">Exemple : <br/>
 <pre>Qtitle="Titre de la question n°2" Qimage="image.jpg" Qaudio="son.mp3"
@@ -276,7 +276,7 @@ Casse-noisette)}
 
 \integer{N = min(\cnt_question,\N)}
 \integer{MAX=min(\N*\MAX,\cnt_question)}
-\text{battage=\alea issametext yes ? shuffle(\data_q,,) :
+\text{battage=\alea issametext si ? shuffle(\data_q,,) :
 \data_q}
 \text{battage=wims(nonempty items \battage)}
 
@@ -443,7 +443,7 @@ text{testexp=wims(nospace \testexp)}
            {<span class="oef_indbad">\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}
            {<span class="oef_indgood">\good_answer_text</span>}
-         \if{\answer_given=yes}{
+         \if{\answer_given=si}{
            <p class="qcm_prompt2"> \qcm_prompt2</p>
            <ul class="oef_indgood">
              \for{s=1 to \CNT_choix[\h]}{
