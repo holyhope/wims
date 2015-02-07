@@ -189,7 +189,7 @@ void about(void)
       if(isdigit(*p2)) pp=find_word_end(p2);
       else for(i=0, pp=p;i<2;i++) pp=find_word_end(find_word_start(pp));
       *pp=0;
-      if(*p!=0) printf("<a href=\"%s\">%s</a>",homepage,p);
+      if(*p!=0) printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,p);
     }
 }
 

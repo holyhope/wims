@@ -220,7 +220,7 @@ void about(void)
 {
     cmdparm="-v"; prepabout("",outputfname,NULL);
     if(readabout()>0)
-      printf("<a href=\"%s\">Yacas %s</a>",homepage,aboutbuf);
+      printf("<a target=\"wims_external\" href=\"%s\" >Yacas %s</a>",homepage,aboutbuf);
 }
 
 char *dynsetup(char *ptr, char *end)

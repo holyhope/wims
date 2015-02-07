@@ -24,6 +24,7 @@
 #define gapprompt "gap> "
 /* This string tells gap to exit. */
 char *quitstring="\nquit;\n";
+char *aboutquitstring="GAPInfo.Version;\nquit;\n";
 /* The way to print a string in the program. */
 char *stringprinter="Print(\"%s\\n\");\n";
 /* This is GAP home page. To be kept up to date. */
@@ -108,17 +109,13 @@ void output(char *p)
 }
 
 void about(void)
-{
-/*    char *p;
-*/
-    printf("<a href=\"%s\">GAP4</a>",homepage); return;
-/*    prepabout(quitstring,outputfname,NULL);
+{    char *p;
+    prepabout(aboutquitstring,outputfname,NULL);
     if(readabout()>0) {
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
       strip_trailing_spaces(aboutbuf);
-      printf("<A HREF=\"%s\">%s</A>",homepage,aboutbuf);
+      printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,aboutbuf);
     }
-*/
 }
 
 char *dynsetup(char *ptr, char *end)
