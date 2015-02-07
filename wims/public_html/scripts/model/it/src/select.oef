@@ -65,10 +65,10 @@ Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
 
 :Mise en aléatoire par des accolades emboitables
 $embraced_randitem
-\text{accolade=item(1,1 oui,
-2 non)}
+\text{accolade=item(1,1 si,
+2 no)}
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
-################
+
 \text{accolade=wims(word 1 of \accolade)}
 
 \text{file=}
@@ -165,7 +165,7 @@ wims(makelist x for x = 1 to \cnt_question)}
 \text{nombre=wims(makelist x for x = 1 to \cnt)}
 %%%%%%%%%%%
 
-\statement{\nopaste <p>\instruction</p>
+\statement{\nopaste <div class="instruction">\instruction</div>
 \preliminaire
   \if{\reading notsametext }{\special{help reading,[à lire]}}
   \if{\image notsametext }{\special{help image,[à regarder]}}
@@ -173,9 +173,9 @@ wims(makelist x for x = 1 to \cnt_question)}
   \if{\step=\first_step}{
     <div class="question">
    \if{\format iswordof flashcard}{
-     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}  
+     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}
     \for{h=1 to \cnt}{
-      \embed{reply 1,\h} 
+      \embed{reply 1,\h}
     }
     </div>
    }
@@ -214,29 +214,29 @@ wims(makelist x for x = 1 to \cnt_question)}
   }
   \if{\pos_rep=under}{
     <div class="question">
-    \for{u = 0 to \quo}{<table border="0">
+    \for{u = 0 to \quo}{<table style="border:none">
     <tr>
-    \for{ v = 1 to \coupure}{<td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+    \for{ v = 1 to \coupure}{<td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-       \if{\coupure*\u+\v <= \cnt}{ 
-         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<sapn style="color:blue;">}
+       \if{\coupure*\u+\v <= \cnt}{
+         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<span style="color:blue;">}
            \texte[\coupure*\u+\v]}{&nbsp;}
           \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</span>}
        </td>
       }
      </tr><tr>
      \for{ v = 1 to \coupure}{
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero
          or \nombre[\coupure*\u+\v] notitemof \Numero}{}
-        <td align="center">
-      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{ 
+        <td style="text-align:center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{
          \embed{\STEP[\position[\nombre[\coupure*\u+\v]]], \size
          \autocompletion}
       }{&nbsp;}
       </td>
      }
-    </tr><tr><td colspan="\coupure"><hr/></td></tr>
+    </tr><tr><td colspan="\coupure"><hr /></td></tr>
        </table> }
 
    </div>

@@ -92,19 +92,25 @@ $embraced_randitem
 $embraced_randitem
 \text{post=}
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 non)}
+
 :%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{words=wims(trim \words)}
 \text{atype=wims(word 1 of \atype)}
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

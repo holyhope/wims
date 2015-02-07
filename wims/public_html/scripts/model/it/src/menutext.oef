@@ -28,10 +28,12 @@ codice dell'esercizio.
 :\credits{}
 
 :Formato delle risposte
-Possibilità: menu, clickfill
-\text{format=menu}
+Possibilità: menu, clickfill, dragfill
+\text{format=item(1,menu,
+	clickfill,
+	dragfill)}
 
-:
+:Dimesione dei riquadri (clickfill, dragfill)
 \text{len=150 x 25}
 :Dati principali.
 Occorre definire una domanda per riga, separando le righe con un punto
@@ -76,12 +78,17 @@ $embraced_randitem
 $embraced_randitem
 \text{post=}
 
-:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
 
+:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+\text{format=wims(word 1 of \format)}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 
@@ -92,12 +99,12 @@ $embraced_randitem
  \text{g=\f[1]}
  \text{f=wims(sort items \f)}
  \text{g1=positionof(\g,\f)}
- \text{good=\format issametext clickfill ?\good\g,:\good\g1,}
+ \text{good=\format iswordof clickfill dragfill ?\good\g,:\good\g1,}
  \text{field=\field\f;}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 
@@ -105,7 +112,9 @@ $embraced_randitem
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{<div>\pre</div>
+\statement{<div class="instruction">
+\pre
+</div>
 \data[1;]
 \for{k=1 to \qs}{
 \embed{r \k,\len} \data[2*\k+1;]

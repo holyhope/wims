@@ -4,14 +4,9 @@ textarea="data explain"
 :Seleziona oggetti che hanno una certa proprietà.
 
 L'esercizio presenta una lista di oggetti i cui è necessario selezionare
-quelli che hanno una certa proprietà indicata nell'esercizio.
-<p>
+quelli che hanno una certa proprietà indicata nell'esercizio.<br/>
 Per costruire un esercizio utilizzando questo modello è sufficiente
-inserire la lista di oggetti e le loro proprietà.
-<p>
-Con una piccola modifica, questo modello può essere adattato per accettare
-oggetti costituiti da immagini.
-<p>
+inserire la lista di oggetti e le loro proprietà.<br/>
 Autore del modello: Gang Xiao <qualite@wimsedu.info>
 
 :%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
@@ -132,6 +127,15 @@ L'opzione <span class="tt wims_code_words">split</span> permette di assegnare un
 parziali, purché senza errori.
 \text{option=split}
 
+:Opzioni di presentazione
+Si può utilizzare la parola chiave "liste" se si vuole che gli oggetti vengano presentati in forma di lista
+\text{presentation=}
+
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
 :%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
 
 \text{prop=randitem(\prop)}
@@ -157,6 +161,21 @@ parziali, purché senza errori.
 \text{ind=item(\sh,\ind)}
 \text{tomark=positionof(1,\ind)}
 
+:%% Choix de la presentation : sous forme lineaire par defaut, ou sous forme de liste à puces.
+\if{liste iswordof \presentation}
+{
+ \text{pre=<ul>}
+ \text{separatorL=<li>}
+ \text{separatorR=</li>}
+ \text{post=</ul>}
+}
+{
+ \text{pre=<p>}
+ \text{separatorL=<span>}
+ \text{separatorR=</span>}
+ \text{post=</p>}
+}
+
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
 :Testo che spiega la scelta che deve essere fatta.
@@ -168,15 +187,18 @@ quelli che hanno giocato nella squadra \prop.
 }
 
 :%% Verifica automatica, da non modificare
-\text{explain=wims(embraced randitem \explain)}
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{explain=\accolade=1 ?wims(embraced randitem \explain)}
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{\explain
-<p>
-\for{k=1 to \tot-1}{\embed{r1,\k},}
-\embed{r1,\tot}.
-<p>
+\statement{
+<p>\explain</p>
+\pre
+ \for{k=1 to \tot-1}{\separatorL \embed{r1,\k},\separatorR }
+ \separatorL \embed{r1,\tot}.\separatorR
+\post
 }
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%

@@ -24,6 +24,11 @@ codice dell'esercizio.
 :\email{qualite@wimsedu.info}
 :\credits{}
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
 :Contenuto effettivo dell'esercizio.
 Inserire una domanda in ogni riga e separare le righe con punti-e-virgola (quindi
 i testi non possono contenere il simbolo ";"). <p>
@@ -78,11 +83,12 @@ Le délit de fuite coûte ??6?? point(s) sur le permis.;
 }
 
 :%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{len=}

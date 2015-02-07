@@ -37,13 +37,13 @@ a risposta libera, e il tipo di risposta richiesto (numerico o testuale)
 Si possono inserire fino a 20 domande in una frase.
 
 Se in una domanda a risposta libera sono possibili più risposte,
-separare le riposte equivalenti (sinonimi) con una barra verticale <tt
-class="wims_code_words">|</tt> (in questo caso la verifica della
+separare le riposte equivalenti (sinonimi) con una barra verticale <span
+class="wims_code_words">|</span> (in questo caso la verifica della
 correttezza della risposta è effettuato utilizzando symtext).
 <p>
 $embraced_randitem
-\text{data=<p>
-Compleare: </p>
+\text{data=
+Compleare: <br/>
 Linux a été créé en l'année
 ??1991??
 par Linus Torvalds qui était un étudiant
@@ -54,12 +54,16 @@ apprentissage sur le système
 de son système sur un newsgroupe, qui était la version
 ??0.02??.
 }
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
 
 :%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
-
+\text{accolade=wims(word 1 of \accolade)}
 \precision{10000}
 \text{data=wims(singlespace \data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 \text{types=}
@@ -102,8 +106,8 @@ de son système sur un newsgroupe, qui était la version
  \text{options=\options,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
+\text{post=\accolade=1 ? wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

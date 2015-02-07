@@ -20,7 +20,7 @@ codice dell'esercizio.
 :\title{Scelta multipla avanzata}
 :\author{Bernadette, Perrin-Riou}
 :\email{bpr@math.u-psud.fr}
-:\credits{}
+:\credits{Immagine di Pfly [CC BY-SA 2.5], via Wikimedia Commons}
 :Istruzioni Generali
 Inserire qui le istruzioni comune a tutte le domande dell'esercizio
 \text{instruction=Istruzioni generali: rispondete a tutte le domande della prima serie, inviate, quindi rispondente alle domande della seconda serie.}
@@ -28,11 +28,11 @@ Inserire qui le istruzioni comune a tutte le domande dell'esercizio
 :Scelta casuale
 Scrivere "yes" per presentare le domande in ordine casuale.
 Scrivere "no" per presentarle esattamente nell'ordine in cui ono inserite nel file.
-\text{alea=yes}
+\text{alea=item(1,yes,no)}
 
 :Numero massimo di domande per ogni passo
 WIMS dividerà automaticamente l'esercizio in passi in funzione del numero totale di domande definite e del numero di domande per ogni passo.
-\text{N=4}
+\text{N=3}
 
 :Numero masimo di passi
 WIMs dividerà automaticamente l'esercizio in passi in funzione del numero totale di domande definite e del numero di domande per ogni passo.
@@ -60,154 +60,165 @@ WIMs dividerà automaticamente l'esercizio in passi in funzione del numero totale
 
 :Stile css per la domanda
 
-\text{style_question=background-color: #FFFFCC;
-color:black;
-margin: 0 1em 0.5em 1em;
-padding: 0.2em;}
+\text{style_question=background-color: #F2F9FC;}
 
 :Stile css per la risposta
 
-\text{style_reponse=background-color: #FFCC99;
-color: black;
-margin: 0 1em;
-padding: 0.2em;}
+\text{style_reponse=background-color: #FFCC99;}
 
 :Percentuale richiesta per procedere al passo successivo (se MAX >1)
 
 \text{percent=0}
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(2, si, no)}
+
+:Mostrare le risposte corrette
+Se "yes", la lista delle risposte corrette sarà mostrata una volta che lo studente ha dato la sua risposta.
+\text{answer_given=item(1, yes, no)}
+
 :Domanda
 <p>Inserire qui la domanda, nel formato seguente: </p>
-
-<ul>
+<ol>
 <li>La prima riga è il testo della domanda.</li>
 <li>La riga seguente è un feedback che sarà mostrato dopo la valutazione delle risposte (può essere lasciata vuota).</li>
 <li>La terza riga è l'elenco dei numeri delle righe, nell'elenco che segue, corrispondenti alle risposte corrette, separati da virgole.</li>
-<li>Le righe restanti sono le opzioni per le risposte (sia corrette che non corrette).</li></ul>
-<p style="border-left:2px solid orange;width:45em;background-color:white;padding-left:1em;">Esempio: <br/><code>Titolo della domanda 1<br/>
-spiegazione per il feedback che sarà mostrato in caso di risposta non corretta alla domanda 1<br/>
-Numero della/delle risposte corrette<br/>
-Frase 1<br/>
-Frase 2<br/>
-Frase 3</code></p>
+<li>Le righe restanti sono le opzioni per le risposte (sia corrette che non corrette).</li></ol>
+<div style="border-left:2px solid orange;width:45em;background-color:white;padding:1em .5em;">Esempio: <br/>
+<pre>Titolo della domanda 1
+spiegazione per il feedback che sarà mostrato in caso di risposta non corretta alla domanda 1
+Numero della/delle risposte corrette
+Frase 1
+Frase 2
+Frase 3</pre></div>
 <p>Attenzione: non è possibile utilizzare punti-e-virgola.</p>
-\text{data1=En quelle année eut lieu la bataille de Marignan ?
+<hr/>
+<p><em>Facultatif :</em> Vous pouvez éventuellement ajouter une premiere ligne qui contiendra des variables permettant d'insérer un titre, une image, du son. (nb : vous devez être dans une classe ou un module pour pouvoir transférer ces fichiers).<br/> Dans ce cas, ce sera la seconde ligne (et non la première) qui représentera l'énoncé, la 3e le feedback, et ainsi de suite....</p>
+Les variables possibles sont : 
+<ul>
+  <li><code>Qtitle</code> : affiche un titreau début de la question. (par exemple pour indiquer le thème)</li>
+  <li><code>Qimage</code> : si un fichier d'image est indiqué, celle-ci sera affichée au debut de la question. (ne fonctionne que dans un module ou une classe)</li>
+  <li><code>Qaudio</code> : si un fichier son est indiqué, celui-ci sera affichée au debut de la question. (ne fonctionne que dans un module ou une classe. Bugs connus avec Safari)</li>
+  </ul>
+<div style="border-left:2px solid orange;width:45em;background-color:white;padding:1em .5em;">Exemple : <br/>
+<pre>Qtitle="Titre de la question n°2" Qimage="image.jpg" Qaudio="son.mp3"
+Énoncé de la Question n°2
+Explication (feedback) affichée en cas de mauvaise réponse à la question n°2
+Numéro(s) de la (des) bonne(s) réponse(s)
+Proposition n°1
+Proposition n°2
+Proposition n°3</pre></div>
+\text{data1=asis(En quelle année eut lieu la bataille de Marignan ?
 Marignan fut la première victoire du jeune roi François Ier, la première année de son règne.
 1
 1515
 1414
 1313
-1616}
+1616)}
 
 :Domanda 2
 
-\text{data2=En 2010, quelle est la ville la plus peuplée au monde ?
-C'est Tokyo, la capitale du Japon (35 millions d'habitants), loin devant Mexico et New York (19 millions d'habitants chacune).
-1
-Tokyo
+\text{data2=asis(En 2014, quelle est la ville la plus peuplée au monde ?
+C'est Tokyo, la capitale du Japon (37,7 millions d'habitants), loin devant les autres (qui ont entre 20 et 24 millions d'habitants). <p class="right">Source <a href="http://www.populationdata.net/index2.php?option=palmares&rid=4&nom=grandes-villes-du-monde" target="_blank">populationdata.net</a></p>
+7
+Beijing
+Karachi
+Manille
 Mexico
 New York
-Beijing}
+Shanghaï
+Tokyo)}
 
 :Domanda 3
 
-\text{data3=Quel est le nom de ce fleuve : <img src="http://upload.wikimedia.org/wikipedia/commons/e/e4/Mekong_River_watershed.png"/>
+\text{data3=asis(Quel est le nom de ce fleuve : <img src="http://upload.wikimedia.org/wikipedia/commons/e/e4/Mekong_River_watershed.png"/>
 Environ 70 millions d'habitants vivent directement dans le bassin versant du Mékong.
 1
 Le Mékong
 Le Yangzi Jiang
 La Volga
-Le Danube}
+Le Danube)}
 
 :Domanda 4
 
-\text{data4=Parmi ces différents peintres, lesquels font partie du mouvement impressionniste ?
+\text{data4=asis(Qtitle="En Peinture"
+Parmi ces différents peintres, lesquels font partie du mouvement impressionniste ?
 Ingres est associé au courant Romantique, et Raphaël à la Renaissance.
 1,3
 Edgar Degas
 Dominique Ingres
 Claude Monet
-Raphaël}
+Raphaël)}
 
 :Domanda 5
 
-\text{data5=Quel est le cri du chameau ?
+\text{data5=asis(Qtitle=ANIMAUX
+Quel est le cri du chameau ?
 Le brairement est le cri de l'âne, le bêlement : celui des moutons et des chèvres.
 1
 Le blatèrement
 Le brairement
-Le bêlement}
+Le bêlement)}
 
 :Domanda 6
 
-\text{data6=Quelle est la formule chimique de la testostérone ?
+\text{data6=asis(Qtitle=Chimie
+Quelle est la formule chimique de la testostérone ?
 C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub> correspond à la caféine, C<sub>3</sub>H<sub>5</sub>N<sub>3</sub>O<sub>9</sub> à la nitroglycérine, et  C<sub>17</sub>H<sub>19</sub>NO<sub>3</sub> la morphine
 4
 C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub>
 C<sub>3</sub>H<sub>5</sub>N<sub>3</sub>O<sub>9</sub>
 C<sub>17</sub>H<sub>19</sub>NO<sub>3</sub>
-C<sub>19</sub>H<sub>28</sub>O<sub>2</sub>}
+C<sub>19</sub>H<sub>28</sub>O<sub>2</sub>)}
 
 :Domanda 7
 
-\text{data7=À partir de quel jour le beaujolais nouveau est-il disponible en vente  ?
+\text{data7=asis(À partir de quel jour le beaujolais nouveau est-il disponible en vente  ?
 Le beaujolais nouveau est un vin de primeur, c'est-à-dire un vin de l'année même, dont la commercialisation est autorisée immédiatement après la fin de la vinification.
 3
 le premier jeudi de Novembre
 le deuxième jeudi de Novembre
 le troisième jeudi de Novembre
-le quatrième jeudi de Novembre}
+le quatrième jeudi de Novembre)}
 
 :Domanda 8
 
-\text{data8=Dans le film  <i>"Rain Man"</i>, quel acteur a un frère autiste surdoué ? 
+\text{data8=asis(Dans le film  <i>"Rain Man"</i>, quel acteur a un frère autiste surdoué ?
 <i>Rain Man</i> est un film américain réalisé par Barry Levinson, sorti en 1989 en France.
 2
 Bruce Willis
 Tom Cruise
-Woody Allen}
+Woody Allen)}
 
 :Domanda 9
 
-\text{data9=Le ski nautique est une discipline olympique depuis 1976.
+\text{data9=asis(Le ski nautique est une discipline olympique depuis 1976.
 L'apparition du ski nautique aux jeux olympiques ne date que de 2004. Toutefois, il avait été sport de démonstration en 1972.
 2
 Vrai
-Faux}
+Faux)}
 
 :Domanda 10
 
-\text{data10=Quel est le premier ballet écrit par Tchaïkovski ? 
+\text{data10=asis(Qtitle=Musique
+Quel est le premier ballet écrit par Tchaïkovski ?
 Le Lac des cygnes a été écrit en 1875 et Casse-noisette en 1891.
 1
 Le Lac des cygnes
-Casse-noisette}
+Casse-noisette)}
 
 :
-
 \language{fr}
 \computeanswer{no}
 \format{html}
-\text{notepad=slib(utilities/notepad Notepad,small)}
-\text{audio_file=no}
-\text{reading_file=no}
-\text{image_file=no}
-\text{video_file=no}
-
 
 \text{format=checkbox}
 
-\text{style_oef=}
-\text{style_css=ol li {list-style: upper-alpha; }}
 \text{paste=yes}
-\text{pos_rep=inside}
-\text{second_step=yes}
-\text{first_step=1}
-\text{answer_given=yes}
+
 \text{option=}
-\text{packs=}
-\text{player=---}
-\text{player_option= autostart="false" loop="false"}
+
 #####################
 
 \text{data_q=\data1!= ? 1:}
@@ -221,112 +232,114 @@ Casse-noisette}
 \text{data_q=\data9!= ? wims(append item 9 to \data_q)}
 \text{data_q=\data10!= ? wims(append item 10 to \data_q)}
 
-
 \integer{cnt_question=items(\data_q)}
 
-\text{autocompletion=\format iswordof case ? autocomplete="off"}
-\text{player=wims(replace internal - by in \player)}
-
-\integer{first_step=\first_step notwordof 0 ? 1}
-\text{option_reaccent=\reaccent!=yes ? noreaccent:}
 \text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
-
-\text{audio=\audio_file notsametext  and  \audio_file notsametext no? 
-<div class="wimscenter">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</div>}
-
-\text{image=\image_file notsametext  and  \image_file notsametext no? 
-wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
-
-\if{\video_file notsametext  and  \video_file notsametext no}{ 
-  \text{video_file=http notin \video_file ? \imagedir/\video_file}
-\text{video=\video_file notsametext ? <a target="wims_external" href="\video_file">[video] </a>}
-}
 
 \text{style = <style type="text/css">
  .enonce{margin-bottom:0}
- .feedback{border:1px dashed grey;padding:0.5em;margin:0;}
- .question {\style_question}
- .question ol{padding:0px 0em 0px 1.5em;margin:0}
- .reponse {\style_reponse}
- .oefstatement{\style_oef}
- 
- .highlight_false{color:red;font-weight:bold;text-decoration:line-through;}
- .highlight{font-weight:bold;}
- .true{color:green;}
- .incomplete{color:navy;}
- \style_css
- </style>
+ .qcm_prompt2{margin-top:.5em}
+ img{vertical-align:middle;}
+ .q_num, .panel .wims_title{
+ font-size:150%;font-family:Impact, Charcoal, sans-serif;
+ color:gray;
  }
+ .feedback{border:1px dashed grey;padding:0.5em;margin:0;}
+ .reponse {
+   margin: 0 1em;
+   padding: .5em;
+   border-radius:5px;
+   \style_reponse
+ }
+ .panel{
+    padding:.5em 1em .5em 1em;
+    margin:.5em 0;
+    border:1px solid #d8d8d8;
+    border-radius:5px;
+    background-color: #f2f2f2;
+ }
+ .panel.callout{
+    border-color:#c5e5f3;
+    border-width:2px;
+    \style_question
+ }
+ .callout .q_num, .callout .wims_title{color:black;}
+
+ .panel .wims_title, .panel .wimscenter{margin-top:-1.2em;}
+ ol li{margin-bottom: .5em;list-style: upper-alpha;}
+ input[type='checkbox'] { font-size:150%; }
+ .strike{text-decoration:line-through;}
+ .oef_indpartial{color:navy;}
+ #answeranalysis{display:none;}
+ </style>
+}
 
 \integer{N = min(\cnt_question,\N)}
 \integer{MAX=min(\N*\MAX,\cnt_question)}
 \text{battage=\alea issametext yes ? shuffle(\data_q,,) :
 \data_q}
 \text{battage=wims(nonempty items \battage)}
-     
-\text{qcm_prompt1=Votre réponse :}
-\text{qcm_prompt2=La(les) bonne(s) réponse(s) :}
-\text{good_answer_text=Bonne réponse}
-\text{bad_answer_text=Mauvaise réponse}
-\text{incomplete_answer_text=Risposta incompleta}
+
 \text{option=\option noanalyzeprint}
 \matrix{question=}
-\matrix{explication=}
+\matrix{explication=xxx}
 \matrix{rep=}
 \text{CNT_choix= }
 \matrix{CHOIX=}
 \text{PRELIMINAIRE=}
+
 \for{i= 1 to \MAX}{
- \text{QUEST=\battage[\i]=1? \data1}
- \text{QUEST=\battage[\i]=2? \data2}
- \text{QUEST=\battage[\i]=3? \data3}
- \text{QUEST=\battage[\i]=4? \data4}
- \text{QUEST=\battage[\i]=5? \data5}
- \text{QUEST=\battage[\i]=6? \data6}
- \text{QUEST=\battage[\i]=7? \data7}
- \text{QUEST=\battage[\i]=8? \data8}
- \text{QUEST=\battage[\i]=9? \data9}
- \text{QUEST=\battage[\i]=10? \data10}
- 
+ \matrix{QUEST=\battage[\i]=1? \data1}
+ \matrix{QUEST=\battage[\i]=2? \data2}
+ \matrix{QUEST=\battage[\i]=3? \data3}
+ \matrix{QUEST=\battage[\i]=4? \data4}
+ \matrix{QUEST=\battage[\i]=5? \data5}
+ \matrix{QUEST=\battage[\i]=6? \data6}
+ \matrix{QUEST=\battage[\i]=7? \data7}
+ \matrix{QUEST=\battage[\i]=8? \data8}
+ \matrix{QUEST=\battage[\i]=9? \data9}
+ \matrix{QUEST=\battage[\i]=10? \data10}
+
  \text{preliminaire_test=\QUEST}
  \text{preliminaire_test=row(1,\preliminaire_test)}
- \text{inst_audio=wims(getopt audio in \preliminaire_test)}
- \text{inst_image=wims(getopt image in \preliminaire_test)}
- \text{inst_title=wims(getopt title in \preliminaire_test)}
- \text{inst_intro=wims(getopt intro in \preliminaire_test)}
- \text{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+ \text{inst_audio=wims(getopt Qaudio in \preliminaire_test)}
+ \text{inst_image=wims(getopt Qimage in \preliminaire_test)}
+ \text{inst_title=wims(getopt Qtitle in \preliminaire_test)}
+ 
  \text{rab_inst=}
- \text{rab_inst=\inst_title notsametext ?\rab_inst<div class="wimscenter">\inst_title</div>}
- \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
- \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt=""/></div>}
+ \text{rab_inst=\inst_title notsametext ?\rab_inst <h2 class="wims_title">\inst_title</h2>}
+ \text{rab_inst=\inst_image notsametext ?\rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
  \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
-       slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
-     \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
-   }
- \text{preliminaire=\test_inst=1  ? \rab_inst:&nbsp;}
- \text{QUEST=\test_inst=1 ? wims(line 2 to -1 of \QUEST)}
-  \matrix{QUEST=\accolade=1 ?wims(embraced randitem \QUEST):\QUEST}
-  \matrix{question = \question
-  \QUEST[1;]}
-  \matrix{PRELIMINAIRE=\PRELIMINAIRE
-  \preliminaire}
-  \text{expl=\QUEST[2;]}
-  \text{ligne=wims(upper \expl)}
-  \text{ligne=wims(text select ABCDEFGHIJKLMNOPQRSTUVWXYZ in \ligne)}
-  \if{\ligne issametext and \expl notsametext }{
-  \matrix{explication = \explication ;
-  }
+     \text{rab_inst1= . isin \inst_audio ?
+       <audio controls>
+        <source src="\imagedir/\inst_audio" type="audio/mpeg">
+        Désolé, votre navigateur est incompatible avec la lecture de fichiers audio.
+       </audio>}
+     \text{rab_inst=\rab_inst <div class="wimscenter audio">\rab_inst1[1;1]</div>}
+ }
+
+ \integer{test_inst=\inst_audio\inst_image\inst_title notsametext ? 1 : 0}
+ \text{preliminaire=\test_inst=1 ? \rab_inst:&nbsp;}
+ \matrix{QUEST=\test_inst=1 ? \QUEST[2..-1;]}
+ \matrix{QUEST=\accolade=1 ?wims(embraced randitem \QUEST):\QUEST}
+ \matrix{question = \question
+\QUEST[1;]}
+ \matrix{PRELIMINAIRE=\PRELIMINAIRE
+\preliminaire}
+
+ \text{expl=\QUEST[2;]}
+ \text{ligne=wims(upper \expl)}
+ \text{ligne=wims(text select ABCDEFGHIJKLMNOPQRSTUVWXYZ in \ligne)}
+ \if{\ligne issametext and \expl notsametext }{
+  \matrix{explication = \explication;}
   \integer{debut = 2}
  }
  \if{\ligne issametext and \expl issametext }{
-  \matrix{explication = \explication ;
-  }
+  \matrix{explication = \explication;}
   \integer{debut = 3}
   }
   \if{\ligne notsametext}{
-     \matrix{explication = \explication
-  \expl}
+     \matrix{explication = \explication;\expl}
   \integer{debut = 3}
  }
   \integer{cnt_choix=rows(\QUEST)-\debut}
@@ -345,7 +358,7 @@ wims(makelist <img src="\imagedir/x " alt=""/> for x in \image_file)}
    \text{H = wims(nospace \QUEST[\debut;])}
    \text{cnt_c=items(\H)}
    \text{Rep = }
-   \for{ k = 1 to \cnt_c}{ 
+   \for{ k = 1 to \cnt_c}{
      \text{Rep = \Rep, position(\H[\k],\mix)}
    }
    \text{Rep = wims(sort items wims(nonempty items \Rep))}
@@ -378,6 +391,8 @@ wims(makelist x for x = \N*\u -\N+1 to \N*\u)}
 
 \text{nstep=\STEPS[1;]}
 \text{TEST=}
+\text{explication=\explication[2..-1;]}
+
 text{testexp=wims(rows2lines \explication)}
 text{testexp=wims(lines2items \testexp)}
 text{testexp=wims(items2words \testexp)}
@@ -390,53 +405,65 @@ text{testexp=wims(nospace \testexp)}
 \conditions{\CONDITION}
 \integer{cnt_juste=0}
 \real{v = 10}
+
 \statement{\nopaste
-\style\instruction
-\if{\reading notsametext }{\special{help reading,[à lire]}}
-\if{\image notsametext }{\special{help image,[à regarder]}}
-\audio\video
- \for{h=1 to \etape[\step]}{
+  \style
+  <div class="instructions">\instruction</div>
+
+  \for{h=1 to \etape[\step]}{
+ 
+   \if{\question[\h;] notsametext }{
+     \if{\h <= \etape[\step] - \N}
+       {<div class="panel">}
+       {<div class="panel callout">}
+    }
+
    \if{(\h <= \etape[\step] - \N or r \h isitemof \nstep) and \question[\h;] notsametext }{
      <div class="enonce">
-     \if{\cnt_step > 1  and \MAX > 1}{\h : } \PRELIMINAIRE[\h;]
-     \question[\h;]</div>
+       \if{\cnt_step > 1  and \MAX > 1}{<span class="q_num">\h :</span>}
+       <span class="preliminaire">\PRELIMINAIRE[\h;]</span>
+       <span class="question">\question[\h;]</span>
+     </div>
    }
+
    \if{\h <= \etape[\step] - \N and \question[\h;] notsametext}{
     <div class="reponse">
-      \qcm_prompt1
+      <span class="qcm_prompt1">\qcm_prompt1</span>
        \for{ a in \REP[\h;]}{
          \if{ \a  isitemof \CHOIX[\h;\rep[\h;]]}{
            \if{\TEST[\h;2]>0 and \TEST[\h;3]=0}{
-           <span class="highlight incomplete">\a</span>}
-           {<span class="highlight true">\a</span>}
+           <span class="oef_indpartial">\a</span>}
+           {<span class="oef_indgood">\a</span>}
            }
          {
-         <span class="highlight_false">\a</span>} - }
-         \if{\TEST[\h;2]>0 and \TEST[\h;3]=0}{
-                   <span class="incomplete">\incomplete_answer_text
-          </span>}
-         \if{\TEST[\h;3]>0}{<span style="color:red">\bad_answer_text</span>}
-         \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
+         <span class="oef_indbad strike">\a</span>} - }
+         \if{\TEST[\h;2]>0 and \TEST[\h;3]=0}
+           {<span class="oef_indpartial">\incomplete_answer_text</span>}
+         \if{\TEST[\h;3]>0}
+           {<span class="oef_indbad">\bad_answer_text</span>}
+         \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}
+           {<span class="oef_indgood">\good_answer_text</span>}
          \if{\answer_given=yes}{
-          <br/> \qcm_prompt2 
-          <ul class="highlight true">
+           <p class="qcm_prompt2"> \qcm_prompt2</p>
+           <ul class="oef_indgood">
              \for{s=1 to \CNT_choix[\h]}{
-               \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>} 
-            }
-          </ul>
+               \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>}
+             }
+           </ul>
          }
-      \if{\explication[\h;] notsametext }{<div class="feedback">\explication[\h;]</div>}     
+         \if{\explication[\h;] notsametext }{<div class="feedback">\explication[\h;]</div>}
      </div>
    }
    { \if{ r \h isitemof \nstep}{
       <div class="question">
-   <ol>
+    <ol>
       \for{s=1 to \CNT_choix[\h]}{ <li><label>\embed{reply \h , \s}</label></li> }
-      </ol>
+    </ol>
       </div>
       }
    }
-     </ol>
+
+   \if{\question[\h;] notsametext }{</div>}
   }
  }
 \answer{}{\REP1;\CHOIX[1;]}{type=\format}{option=\option}
@@ -472,7 +499,7 @@ text{testexp=wims(nospace \testexp)}
    \text{test2 = wims(listcomplement \REP[\H;] in \CHOIX[\H;\rep[\H;]])}
    \text{test3 = wims(listcomplement \CHOIX[\H;\rep[\H;]] in \REP[\H;])}
   %%% \integer{test4=items(\REP[\H;]) - items(\CHOIX[\H;])}
-   \text{test_cnt=\test1, items(\test2),items(\test3)}    
+   \text{test_cnt=\test1, items(\test2),items(\test3)}
    \integer{cnt_juste= \test_cnt[1]+\test_cnt[2]+\test_cnt[3] =0 ? \cnt_juste + 1}
    \matrix{TEST=\TEST
    \test_cnt}
@@ -483,7 +510,7 @@ test2  nombre de réponses dites justes et en fait fausses
 test3  nombre de réponses dites fausses et en fait justes
 
 totalement justes : test1=0, test2=0 test3=0
-partiellement justes : 
+partiellement justes :
 
 \real{v=\cnt_juste/\CNT[\step-1;\N]}
 
@@ -516,7 +543,7 @@ partiellement justes :
 \text{test=wims(lines2items \test)}
 \text{test=wims(items2words \test)}
 \text{test=wims(nospace \test)}
-feedback{1=1}{\explication 
+feedback{1=1}{\explication
    \if{\test notsametext}{
      <div class="reponse"><ol>
       \for{w = 1 to \MAX}{

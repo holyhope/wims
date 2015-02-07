@@ -17,7 +17,7 @@ codice dell'esercizio.
 :%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
 :\title{Nascondi etichette}
 :\author{Bernadette, Perrin-Riou}
-:\email{}
+:\email{bpr@math.u-psud.fr}
 :\credits{}
 :Consigne
 \text{instruction=Cancellare gli aggettivi cliccando sulle etichette.}
@@ -41,7 +41,14 @@ Inserire le frasi contrassegnando con ?? le parole da cancellare.
 La casetta ??verde?? è sulla collina.
 Nel giardino ci sono fiori ??bianchi?? e ??rossi?? }
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
 :%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
+
 \integer{N=min(\N,5)}
 \if{\file notsametext}{
   \integer{datacnt=wims(recordcnt \file)}
@@ -65,7 +72,7 @@ wims(record \s of \file)}
 \text{Numero=}
 \text{Texte=}
 \text{cnt=}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ?wims(embraced randitem \data)}
 \text{data=wims(replace internal ' by &#146; in \data)}
 \for{u=1 to \N}{
   \matrix{texte=slib(text/markgroup \data[\u;])}
@@ -85,11 +92,11 @@ wims(record \s of \file)}
 \steps{\STEP}
 \statement{\instruction
 \if{\N=1}{<div class="emptyline"> </div>
-<div class="wimscenter">\for{j=1 to \cnt}{ 
+<div class="wimscenter">\for{j=1 to \cnt}{
    \embed{r 1,\j}
  }</div>
 }{
- \for{ss=1 to \N}{<p> \ss: </p>
+ \for{ss=1 to \N}{<p> \ss : </p>
  <div class="wimscenter">\for{j=1 to \cnt[\ss]}{
    \embed{r \ss,\j}
  }</div>

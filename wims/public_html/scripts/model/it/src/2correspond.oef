@@ -30,7 +30,6 @@ codice dell'esercizio.
 :\author{Gang, Xiao}
 :\email{qualite@wimsedu.info}
 :\credits{}
-
 :Numero di (coppie di) oggetti da far corrispondere.
 \integer{tot=6}
 
@@ -75,24 +74,31 @@ Russia,			Moscow
 $embraced_randitem
 \text{explain=Associa ad ogni nazione la sua capitale.}
 
-:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
 
+\text{accolade=item(1,1 si,
+2 no)}
+
+:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \integer{datacnt=rows(\data)}
 \integer{tot=\tot>\datacnt?\datacnt}
 
 \text{shuf=item(1..\tot,shuffle(\datacnt))}
 \text{data=row(\shuf,\data)}
+\text{data=\accolade=1? wims(embraced randitem \data)}
+
 \text{datal=column(1,\data)}
 \text{datar=column(2,\data)}
 \text{size=\sizev[]x\sizel[]x\sizer}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-The command to show the correspondance table, it is
-\embed{reply 1,\size}
+Il comando che mostra la corrispondenza, cioè \embed{reply 1,\size}
 
 \statement{\explain
 

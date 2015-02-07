@@ -88,8 +88,14 @@ corrette (altrimenti anche un solo errore porta a una valutazione 0).
 $embraced_randitem
 \text{explain=Quali delle seguenti affermazioni sono vere? Contrassegnarle tutte.}
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
+
 :%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
 \integer{truecnt=rows(\datatrue)}
@@ -111,23 +117,26 @@ $embraced_randitem
 \text{sh=shuffle(\tot)}
 \text{ind=item(\sh,\ind)}
 \text{pick=row(\sh,\pick)}
-\text{pick=wims(embraced randitem \pick)}
+\text{pick=\accolade=1 ? wims(embraced randitem \pick)}
 \text{ans=positionof(1,\ind)}
 \text{list=wims(values x for x=1 to \tot)}
-\text{explain=wims(embraced randitem \explain)}
+\text{explain=\accolade=1 ? wims(embraced randitem \explain)}
 
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{\explain
-
-<table border="0" cellspacing="4">
+\statement{
+<div class="instruction">
+\explain
+</div>
+<ul style="list-style-type:none">
 \for{i=1 to \tot}{
- <tr><td nowrap>\embed{reply 1,\i}.</td>
- <td>&nbsp;\pick[\i;]</td></tr>
+ <li>
+  \embed{reply 1,\i}. &nbsp;\pick[\i;]
+  </li>
 }
-</table>
+</ul>
 }
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5

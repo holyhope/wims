@@ -40,7 +40,7 @@ domanda "??". Ogni campo contiene una lista di parole separate da virgole.
 Allo studente saranno mostrate parole pescate in modo casuale da queste liste
 che andranno a comporre il testo. La prima parola della lista (se non vuota) è la risposta
 esatta da selezionare. Le altre non vanno selezionate.
-<p>
+</p>
 Ogni frase può contenere fino a cento parole "selezionabili"
 $embraced_randitem
 
@@ -86,11 +86,17 @@ des années. ??{Ils,Elle},Elles?? ??ce,se?? ??met,mettent??
 
 :Testo che precede la domanda. Sono permessi comandi html, può essere vuoto.
 $embraced_randitem
-\text{pre=Seleziona le parole sbagliate nel testo francese che segue.
+\text{pre=
+Seleziona le parole sbagliate nel testo francese che segue.
 }
 
 :Testo che segue la domanda. Sono permessi comandi html, può essere vuoto.
 \text{post=}
+
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
 
 :Opzioni dell'esercizio.
 L'opzione <span class="tt wims_code_words">split</span> permette di assegnare un punteggio anche a risposte
@@ -99,10 +105,11 @@ parziali, purché senza errori.
 
 :%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
 
+\text{accolade=wims(word 1 of \accolade)}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=floor(rows(\data)/2)}
 \text{list=}
@@ -126,14 +133,15 @@ parziali, purché senza errori.
  \text{show=\show[]\d,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
+\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
 
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{<div>\pre</div>
-
+\statement{<div>
+\pre
+</div>
 \data[1;]
 \for{k=1 to \qs}{
 \embed{r1,\k} \data[2*\k+1;]

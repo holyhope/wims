@@ -58,6 +58,10 @@ dell'esercizio.
 Il|Art,gatto|N,beve|V,il|Art,latte|N,in|Prep,una|Art,ciotola|N
 Il,gatto|N,beve|V,del,latte|N,in|Prep,una,ciotola|N}
 
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
 
 :%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
 \css{<style type="text/css">
@@ -74,8 +78,10 @@ Il,gatto|N,beve|V,del,latte|N,in|Prep,una,ciotola|N}
   \text{Nature=row(1,\Nature)}
   }{
   \text{data=randomrow(\data)}
-  } 
-\text{data=wims(embraced randitem \data)}
+  }
+\text{accolade=wims(word 1 of \accolade)}
+
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \integer{cnt=items(\data)}
 \integer{Nat_cnt=items(\Nature)}
 \text{phrase=}
@@ -115,7 +121,7 @@ Il,gatto|N,beve|V,del,latte|N,in|Prep,una,ciotola|N}
 
 \statement{\instruction
 <div class="question">\phrase.</div>
-<table>
+<table class="wimsnoborder">
 \for{ s = 1 to \question_cnt}{
   <tr><th>\nom_question[\s]</th><td>\embed{\Step[\s],80 x 30 x \cnt}</td></tr>
 }

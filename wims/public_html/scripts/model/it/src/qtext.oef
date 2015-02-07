@@ -42,6 +42,7 @@ con una barra verticale <span class="tt wims_code_words">|</span>
 (per gli esperti: in questo caso il tipo di risposta è symtext).
 <p>
 $embraced_randitem
+</p>
 \text{data=
 Le début officiel de la Seconde Guerre Mondiale est marqué par
 ??la déclaration de guerre,l'offensive?? de
@@ -76,13 +77,18 @@ $embraced_randitem
 $embraced_randitem
 \text{post=}
 
-:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+:Layout casuale inseribile tra parentesi graffe
+$embraced_randitem
+\text{accolade=item(1,1 si,
+2 no)}
 
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+\text{accolade=wims(word 1 of \accolade)}
 \precision{10000}
 \text{data=wims(singlespace \data)}
 \text{data=wims(nonempty rows \data)}
 \text{data=randomrow(\data)}
-\text{data=wims(embraced randitem \data)}
+\text{data=\accolade=1 ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
 \text{types=}
@@ -125,8 +131,8 @@ $embraced_randitem
  \text{options=\options,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
+\text{pre=\accolade=1 ?wims(embraced randitem \pre)}
+\text{post=\accolade=1 ?wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 
@@ -134,7 +140,9 @@ $embraced_randitem
 
 ::In questa parte non dovrebbe esserci nulla da modificare.
 
-\statement{<div>\pre</div>
+\statement{<div class="instruction">
+\pre
+</div>
 \data[1;]
 \for{k=1 to \qs}{
 \embed{r \k,\lengths[\k]} \data[2*\k+1;]
