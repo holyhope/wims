@@ -1,15 +1,9 @@
-!! to put elsewhere when finished the bar
-!!
-!! it translation to be inserted when applicable
-!! non svolto,non completato,svolto,svolto brillantemente
-!distribute items non travaillé,non réussi,réussi,brillament réussi into wims_name_exo_untry,wims_name_exo_undone,wims_name_exo_done,wims_name_exo_congratulation
-!set bar_scoreexo_limit=9
+!distribute items 9,9 into set bar_scoreexo_limit, exo_bar_quallimit
 
 !read themes/_widgets/user_varsheet.phtml
 
 !if $n>0
  <!-- _widgets/usersheet.phtml -->
-
 
 <div class="wims_seq">
   <div class="wims_title_seq">$wims_name_sheet</div>
@@ -60,46 +54,7 @@
 !!      I2 $(wims_name_thsheet[13]): $[$p4/10]/10
       </div>
      !endif
-!!## bar
-    !set require=!getscorerequire sheet=$se
-    !if I0 isin $(f_$se)
-      !set d_=!getscore sheet=$se
-    !endif
-    !if I1 isin $(f_$se)
-      !set d_=!getscorebest sheet=$se
-    !endif
-    !if I2 isin $(f_$se)
-      !set d_=!getscorelevel sheet=$se
-    !endif
-    !set d_qual=!getscoremean sheet=$se
-    !set nb_exo=!wordcnt $d_
-    !set d_=!words2items $d_
-    !set d_qual=!words2items $d_qual
-    !set require=!words2items $require
-    <div class="wims_score_bar float_right">
-    <ol>
-     !for ii=1 to $nb_exo
-       !set exo_try= !word $ii of $try
-       !ifval 10*$(d_[$ii])/$(require[$ii]) > $bar_scoreexo_limit
-         !if $(d_qual[$ii]) > $exo_bar_limit
-           !set exo_class=wims_exo_done wims_congratulation, $wims_name_exo_congratulation
-         !else
-           !set exo_class=wims_exo_done,$wims_name_exo_done
-         !endif
-      !else
-         !if $exo_try >=1
-           !set exo_class=wims_exo_undone,$wims_name_exo_undone
-         !else
-           !set exo_class=wims_exo_untry,$wims_name_exo_untry
-         !endif
-       !endif
-       <li class="$(exo_class[1])" title="$wims_name_Exercise $ii: $(exo_class[2])">
-             $wims_name_Exercise $ii: $(exo_class[2])
-       </li>
-     !next
-   </ol>
-   </div>
-!!## bar end
+!read themes/_widgets/userbar.phtml $se
    </li>
   !next i
  </ul>
