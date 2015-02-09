@@ -1609,7 +1609,7 @@ function show_slider_value(value,use_slider_display){\
    string = \" \"+value[0].toFixed(prec)+\"\\u00B0\";\
   }else{\
    if(use_slider_display == 3){\
-    string = \" \"+value[0].toFixed(prec)+\"\\u03C0 rad\";\
+    string = \" \"+value[0].toFixed(prec)+\" rad\";\
    };\
   };\
  };\
