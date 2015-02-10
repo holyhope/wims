@@ -23,7 +23,7 @@ $text =~ s|<hr\s+width="(\d+)%"\s*/?/>|<hr style="width:$1%"/>|g;
 ## delete <br/> before table ?
 $text =~ s|<br ?/></table>|</table>|g;
 ## delete multiple <br>
-$text =~ s:(<br ?/>\s*)+:<br/>:g;
+$text =~ s:(<br ?/>\s*)+:<br/>\n:g;
 $text =~ s:</div>\s+</div>:</div>\n</div>:g;
 $text =~ s:</div>\s*<br/>\s*</div>:</div>\n</div>:g;
 close(IN);
