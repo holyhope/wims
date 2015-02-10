@@ -23,7 +23,10 @@ $s_date_out
  !set b=!word 2 of $l
  !if $w=2 and ($search = yes or (search notin $b and query notin $b and cgi notin $b))
   !set totall=$[$totall+1]
-  <li>$a : <a href="http://$b">$b</a></li>
+  !if _http notin $b
+    !set b=http://$b
+  !endif
+  <li>$a : <a href="$b">$b</a></li>
   !set total=$[$total+$a]
  !endif
 !next i
