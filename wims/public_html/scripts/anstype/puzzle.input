@@ -17,6 +17,7 @@
 !set nb_im=$[$nx*$ny]
 !set taille=!replace internal x by , in $inputsize
 !default taille=500,500
+!set taille=$taille,100
 !set cutx=!values $(taille[1])/$nx*x for x=0 to $nx
 !set cuty=!values $(taille[2])/$ny*x for x=0 to $ny
 !set cutx=!exec pari round([$cutx])
@@ -45,11 +46,11 @@
 !next
 !else
  !if text notwordof $(replyoption$i)
-  !set Zurl2=!makelist <img src="$imagedir/x" alt="" /> for x in $image
-  !set Zurl=!makelist <img src="$imagedir/x" alt="" /> for x in $image
+  !set Zurl2=!makelist <img src="$imagedir/x" style="width:$(width)px" alt="" /> for x in $image
+  !set Zurl =!makelist <img src="$imagedir/x" style="width:$(width)px" alt="" /> for x in $image
  !else
   !set Zurl2=!makelist x for x in $image
-  !set Zurl=!makelist x for x in $image
+  !set Zurl =!makelist x for x in $image
  !endif
 !endif
 !set oef_answer_option$i=$Z2\
