@@ -147,7 +147,7 @@ om een bestaand broncode bestand te registreren, kopieer daartoe het bestand in 
 Hier is de code van een bestaande oefening uit uw klas.\
 Deze kan worden veranderd in het onderstaande venster.\
 Hier is de code van uw geimporteerde publieke oefening. U kunt deze desgewenst nog aanpassen in het onderstaande venster.\
-Omdat deze oefening is gebaseerd op een standaard model, probeer de\
+You may test some external programs with the\
 script tester\
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
 
