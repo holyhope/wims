@@ -21,9 +21,9 @@ antigen:
 area:
 arithmetic:aritmética
 arts:
-aylor_expansion:expansión de Taylor
 bacteria:
 barycenter:
+basis:
 bezout_algorithm:relación de Bezout
 bilinear_algebra:
 biochemistry:
@@ -36,6 +36,7 @@ cell_biology:
 cell_cycle:
 cell_differentiation:
 cell_division:
+characteristic_polynomial:
 chemistry:
 chromosome:
 cinematics:
@@ -100,6 +101,7 @@ elementary_mathematics:
 ellipse:elipse
 encryption:
 endomorphism_reduction:
+energy:
 english:
 english_vocabulary:
 entropy:entropía
@@ -227,6 +229,7 @@ optics:
 order:
 organelle:
 organic_chemistry:
+oscillators:
 parabola:parábola
 parametric_curves:curvas paramétricas
 pbsolving:
@@ -262,6 +265,7 @@ quadratic_form:
 quotient_group:
 random:
 random_variable:
+rank:
 rational_number:
 reading:
 real_function:
@@ -295,7 +299,7 @@ symmetric_group:
 symmetry:
 t_cell_receptor:
 tangent:
-taylor_expansion:
+taylor_expansion:expansión de Taylor
 taylor_series:series de Taylor
 technical_language:
 thermodynamics:

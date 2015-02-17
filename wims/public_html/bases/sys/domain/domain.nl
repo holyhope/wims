@@ -23,6 +23,7 @@ arithmetic:Rekenkunde
 arts:Kunst
 bacteria:
 barycenter:
+basis:
 bezout_algorithm:Bezout algoritme
 bilinear_algebra:
 biochemistry:Biochemie
@@ -37,6 +38,7 @@ cell_biology:Celbiologie
 cell_cycle:
 cell_differentiation:
 cell_division:
+characteristic_polynomial:
 chemistry:Chemie
 chromosome:
 cinematics:Bewegingsleer
@@ -101,6 +103,7 @@ elementary_mathematics:Elementaire wiskunde
 ellipse:Ellips
 encryption:
 endomorphism_reduction:
+energy:
 english:Engels
 english_vocabulary:Engelse uitspraak
 entropy:Entropie
@@ -232,6 +235,7 @@ order:
 organelle:
 organic_chemistry:
 organics_chemistry:Organische chemie
+oscillators:
 parabola:Parabolen
 parametric_curves:Parametrische kurves
 pbsolving:
@@ -268,6 +272,7 @@ quadratic_form:
 quotient_group:quotient groep
 random:Willekeurig
 random_variable:Willekeurige variabele
+rank:
 rational_number:Rationeel getal
 reading:Lezen
 real_function:Reeele functie
