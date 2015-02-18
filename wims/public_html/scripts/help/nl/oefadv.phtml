@@ -121,7 +121,6 @@ target=oefening_1 oefening_2 oefening_3 ...
 Deze regel zorgt ervoor dat het cpp systeem in de <em>src directory</em> de volgende OEF scripten aanmaakt:
 oefening_1.oef oefening_2.oef oefening_3.oef ...
 
-
 Wanneer de file <em>oefening_1</em> wordt gegenereerd, het
 predicaat <span class="tt">#TARGET</span> wordt defenieerd als <em>oefening_1</em>.
 (en een macro <em>TARGET_oefening_1</em> wordt eveneens aangemaakt.)
@@ -139,6 +138,21 @@ Hiertoe kan in de cpp code worden vermeld:
 #endif
 </pre>
 zodat de inhoud target afhankelijk kan worden.
+<p>
+The name of the file (in the example,
+<span class="tt wims_code_words">targ1</span>, ...)
+is available by the variable
+<span class="tt wims_code_words">OEFFILE</span>.
+In the following example, the title of the exercise will be
+<span class="tt wims_code_words">oefening_1</span>
+</p>
+<pre>
+#if defined TARGET_oefening_1
+ \title{OEFFILE}
+ \integer{v1=3}
+ \text{t1=dit is target 1}
+#endif
+</pre>
 <p>
 Alle include bestanden met een uitgang <span class="tt">*.inc</span> moeten ook in de directory src/cpp worden geplaatst.
 </p><p>
