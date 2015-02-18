@@ -21,7 +21,7 @@ slib_liste0=!values 0 for x=1 to $slib_n*($slib_n-1)/2 -$slib_m
 slib_liste =!shuffle $slib_liste,$slib_liste0
 slib_G= !exec pari slib_n =$slib_n;slib_ liste =[$slib_liste];\
 slib_M=matrix(slib_n,slib_n,slib_i,slib_j, if(slib_i < slib_j, slib_liste[slib_n*(slib_n-1)/2-(slib_n-slib_i+1)*(slib_n-slib_i)/2 +slib_j-slib_i]));\
-matrix(slib_n,slib_n,slib_i,slib_j,  if(slib_i<slib_j,slib_M[slib_i,slib_j],slib_M[slib_j,slib_i]))
+matrix(slib_n,slib_n,slib_i,slib_j, if(slib_i<slib_j,slib_M[slib_i,slib_j],slib_M[slib_j,slib_i]))
 
 !!On rend le graphe connexe
 slib_debut=1
@@ -34,7 +34,7 @@ slib_D=$slib_out
 !if -1 notin $slib_D
     !goto end
 !endif
-slib_D=!translate internal  ; to $\
+slib_D=!translate internal ; to $\
 $  in $slib_D
 !for slib_c=$slib_debut to $slib_n
     slib_ligne=!line $slib_c of $slib_D

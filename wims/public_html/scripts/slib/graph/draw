@@ -1,4 +1,4 @@
-!if  $wims_read_parm!=slib_header
+!if $wims_read_parm!=slib_header
  !goto proc
 !endif
 
@@ -27,10 +27,10 @@ slib_cnt_path=!linecnt $slib_path
 !next slib_i
 slib_G=!declosing $slib_G
 
-slib_G=!translate internal  ;  to  $\
+slib_G=!translate internal  ;  to $\
 $  in $slib_G
 
-slib_GG=!translate internal  $\
+slib_GG=!translate internal $\
 $  to ; in $slib_G
 
 
@@ -43,7 +43,7 @@ slib_n=!line 1 of $slib_G
 slib_n=!itemcnt $slib_n
 !default slib_color1=blue
 !default slib_color2=blue
-!default slib_names=!values slib_i for slib_i=1  to $slib_n
+!default slib_names=!values slib_i for slib_i=1 to $slib_n
 
 !for slib_i =1 to $slib_n
     slib_COS$slib_i=$[cos(2*pi*$slib_i/$slib_n)]
@@ -70,7 +70,7 @@ yrange -1.5,1.5
                 !next slib_k
                 !if $slib_i<>$slib_j
                     slib_dessin=$slib_dessin\
-line $(slib_COS$slib_i),$(slib_SIN$slib_i),$(slib_COS$slib_j),$(slib_SIN$slib_j),$slib_couleur
+segment $(slib_COS$slib_i),$(slib_SIN$slib_i),$(slib_COS$slib_j),$(slib_SIN$slib_j),$slib_couleur
                 !else
                     slib_dessin=$slib_dessin\
 ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_couleur

@@ -11,12 +11,12 @@ slib_require=pari
 
 :proc
 !reset slib_m, slib_n
-!distribute  item $wims_read_parm into  slib_n, slib_m
+!distribute item $wims_read_parm into slib_n, slib_m
 !default slib_m =!randint $[floor(1.5*$slib_n)], $[2*$slib_n]
 slib_sommet=!values x for x=1 to $slib_n
 slib_u=!exec pari matrix($slib_n,$slib_n,slib_i,slib_j,if(slib_j ==slib_i,slib_i))
 
-slib_u=!translate internal  ; to $\
+slib_u=!translate internal ; to $\
 $  in $slib_u
 slib_S=1
 slib_euler=$slib_S
@@ -24,14 +24,14 @@ slib_euler=$slib_S
     slib_s=!line $slib_S of $slib_u
         slib_bonsom=!listcomplement $slib_s in $slib_sommet
         !if $slib_bonsom <> $empty
-             slib_a = !randitem  $slib_bonsom
+             slib_a = !randitem $slib_bonsom
         !else
             !goto end
         !endif
         slib_u=!translate internal  $\
 $ to ; in $slib_u
-        slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
-        slib_u=!translate internal  ; to $\
+        slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ; slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
+        slib_u=!translate internal ; to $\
 $  in $slib_u
         slib_euler=$slib_euler, $slib_a
         slib_S=$slib_a
@@ -40,9 +40,9 @@ $  in $slib_u
 slib_manquant=!listcomplement $slib_euler in $slib_sommet
 !if $slib_manquant <> $empty
      !for slib_a in $slib_manquant
-         slib_u=!translate internal  $\
+         slib_u=!translate internal $\
 $ to ; in $slib_u
-        slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
+        slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ; slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
         slib_euler=$slib_euler, $slib_a
         slib_S=$slib_a
     !next slib_a
@@ -53,12 +53,12 @@ $ to ; in $slib_u
 slib_m=!itemcnt $slib_euler
 
 slib_u = !nonempty lines $slib_u
-slib_u=!translate internal  $\
+slib_u=!translate internal $\
 $  to ; in $slib_u
 
 
 slib_p = !shuffle $slib_n
-slib_pp =!item  $slib_p of $slib_sommet
+slib_pp =!item $slib_p of $slib_sommet
 slib_euler1=
 !for slib_i in $slib_euler
     slib_pos=!positionof item $slib_i in $slib_p

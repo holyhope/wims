@@ -101,7 +101,7 @@ parallel -0.5,$slib_yrange1,-0.5,$slib_yrange2,1,0, $[$slib_height+2],yellow
         !if $slib_test <> 0
             slib_point1=!line $slib_j of $slib_position
             slib_interm= !exec pari ([$slib_point]+2*[$slib_point1])/3
-            slib_dessin = !append line line $slib_point, $slib_point1, $slib_color1 to $slib_dessin
+            slib_dessin = !append line segment $slib_point, $slib_point1, $slib_color1 to $slib_dessin
             slib_dessin = !append line arrow $slib_point, $slib_interm, 10, $slib_color1 to $slib_dessin
         !endif
     !next slib_j

@@ -40,11 +40,11 @@ slib_milieu =0,-1
     !if $slib_L<>$empty
         slib_i=!item 1 of $slib_L
         slib_position_prov=$(slib_A$slib_i),$[-$(slib_height$slib_i)]
-        slib_position = !append line  $slib_position_prov to $slib_position
+        slib_position = !append line $slib_position_prov to $slib_position
         !if $slib_cnt > $[$slib_N] or $slib_sizey > $slib_Sizey
         !else
 #choix des fils (position et nombre : la position est-elle intéressante pour un arbre non binaire ? )
-            slib_c=!item $slib_k  of $slib_noeud
+            slib_c=!item $slib_k of $slib_noeud
             !if perfect iswordof of $slib_option or $slib_c = 1
                 slib_a =!item 1 to $slib_s of $slib_choix1
             !else
@@ -99,10 +99,10 @@ slib_cnt =!linecnt $slib_G
     slib_i=!item 1 of $slib_u
     slib_position_prov=!line $slib_k of $slib_position
     !for slib_j in $slib_u
-        !if $slib_j  notsametext sentinelle
+        !if $slib_j notsametext sentinelle
 #trace de la droite
             slib_position_prov1=!line $slib_j of $slib_position
-            slib_dessin = !append line line  $slib_position_prov,$slib_position_prov1, $slib_color1\
+            slib_dessin = !append line segment $slib_position_prov,$slib_position_prov1, $slib_color1\
              to $slib_dessin
 #on coupe les segments au milieu pour mettre un cercle et éventuellement du texte
             !if middle iswordof $slib_option
