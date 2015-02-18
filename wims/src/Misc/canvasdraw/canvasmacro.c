@@ -2973,6 +2973,7 @@ function CanvasState(canvas,container_div){\
   }\
   else\
   {\
+   if( wims_status == \"done\"){return null;};\
    var shapes = myState.shapes;\
    var l = shapes.length;\
    var chk = -1;\
@@ -3131,7 +3132,6 @@ CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
   this.valid = false;\
   shape.draw(this.ctx);\
  };\
- reply = new Array();\
 };\
 CanvasState.prototype.getMouse = function(e){\
 var element = this.canvas, offsetX = 0,offsetY = 0;\
