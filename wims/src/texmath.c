@@ -403,7 +403,7 @@ void t_oneterm(char *p, int num)
           if(i==1) { /* remove parentheses */
               for(;pp<pt && fcnt<MAX_FACTORS;pp=pe2,fcnt++) {
                 ss=s; while(*pp=='*' || *pp=='/') {
-                    if(*pp=='/') ss=-1;
+                    if(*pp=='/') ss=-s;
                     pp++;
                 }
                 factors[fcnt].side=ss;
