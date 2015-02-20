@@ -8,5 +8,3 @@ export w_curvecomp_xrange="0,208"\
 export w_curvecomp_yrange="0,220"
 
 $wims_home/src/Misc/curvecomp
-echo "\n"
-exit

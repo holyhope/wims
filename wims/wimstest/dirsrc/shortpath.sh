@@ -10,5 +10,4 @@ test="1,3
 4,5"
 
 export wims_exec_parm=$test
-
 $wims_home/src/Misc/shortpath
