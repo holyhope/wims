@@ -20,12 +20,32 @@ $title
   !set lang_exists=!defof lang_exists in $taxo.$lang.phtml
   !if $lang_exists=yes
     !set script=yes
-   !read $taxo.$lang.phtml
   !endif
 !next
 !if $script=yes
+<div id="taxonomy_list">
+  <ul class="tabs">
+    !for taxo in unisciel, commoncore
+      !set taxo_title=!defof title in $taxo.$lang.phtml
+      <li><a href="#$taxo">$taxo_title</a></li>
+    !next
+  </ul>
+  !for taxo in unisciel, commoncore
+    <div id="$taxo">
+       !read $taxo.$lang.phtml
+     </div>
+  !next
+</div>
  <!-- JS for dynamic tree display -->
 <script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
+ <!-- JS for Tabs display -->
+<script type="text/javascript">
+    /*<![CDATA[*/
+    jQuery(function($$) {
+        $$( "#taxonomy_list" ).tabs();
+      });
+    /*]]>*/
+  </script>
 !endif
 !else
  $name_available
