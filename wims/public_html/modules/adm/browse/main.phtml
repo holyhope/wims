@@ -1,3 +1,28 @@
+!set wims_html_header=!append line <style type="text/css">\
+.wims_formradio, .wims_formradio input{font-size: 80%;}\
+.tree label{font-weight: normal;display:inline;}\
+.tooltip {\
+      position:relative;\
+      cursor:help;\
+}\
+.box p{margin-top:0;}\
+.tooltip:hover::after {\
+       display: block;\
+       position: absolute;\
+       top: 1.2em;\
+       left: 2em;\
+       background: white;\
+       padding: 5px;\
+       border: 1px solid $wims_refcolor;\
+       border-left: 10px solid $wims_ref_bgcolor;\
+       content: attr(title);\
+}\
+</style>\
+<!-- CSS for dynamic tree display -->\
+<link type="text/css" rel="stylesheet" href="scripts/js/tree_JS/tree.css" /> to $wims_html_header
+!set wims_html_header=!append line <script type="text/javascript">\
+        /*<![CDATA[*/ jQuery(function(jq) {jq( "#classifications" ).tabs();}); /*]]>*/\
+      </script> to $wims_html_header
 
 !if robot isin $session
  <html><body $wims_htmlbody>

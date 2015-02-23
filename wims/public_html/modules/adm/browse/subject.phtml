@@ -1,6 +1,7 @@
 !read adm/title.phtml 3\
 $title
 
+
 !if $parm=$empty
  $name_domain
 <div class="wims_widget_box medium_size">
@@ -15,6 +16,17 @@ $title
 !next
 </ul>
 </div>
+!for taxo in unisciel, commoncore
+  !set lang_exists=!defof lang_exists in $taxo.$lang.phtml
+  !if $lang_exists=yes
+    !set script=yes
+   !read $taxo.$lang.phtml
+  !endif
+!next
+!if $script=yes
+ <!-- JS for dynamic tree display -->
+<script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
+!endif
 !else
  $name_available
 !set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
@@ -48,7 +60,6 @@ $title
   !next t
  </ul>
 
-!exit
  $table_header
  !for t in $list
   $table_tr
@@ -89,5 +100,4 @@ $title
    !read graph.phtml $parm
  !endif
 !endif
-
 
