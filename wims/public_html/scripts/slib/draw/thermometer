@@ -52,42 +52,42 @@ line  $slib_range0,$slib_i, 0.5,$slib_i,$slib_tick
 
 !if $slib_type iswordof right
  !set slib_Ticks=$slib_Ticks\
-text $slib_tick,$slib_range0-1,$slib_i+0.3, small, $[$slib_i*10]
+text $slib_tick,$[$slib_range0-1],$slib_i+0.3, small, $[$slib_i*10]
 !endif
 !if $slib_type iswordof left
  !set slib_Ticks=$slib_Ticks\
-text $slib_tick,-$slib_range0-0.4,$slib_i+0.3, small, $[$slib_i*10]
+text $slib_tick,$[-$slib_range0-0.4],$[$slib_i+0.3], small, $[$slib_i*10]
 !endif
 !if $slib_type iswordof leftandright
   !set slib_Ticks=$slib_Ticks\
-text $slib_tick,-$slib_range0-0.5,$slib_i+0.5, large, $slib_i\
-text $slib_tick,$slib_range0-0.2,$slib_i+0.5, large, 0
+text $slib_tick,$[-$slib_range0-0.5],$[$slib_i+0.5], large, $slib_i\
+text $slib_tick,$[$slib_range0-0.2],$[$slib_i+0.5], large, 0
 !endif
 !next slib_i
 !for slib_j=$slib_yrange1+1 to $slib_yrange2-1
  !set slib_ticks=$slib_ticks\
-  line -2,$slib_j+0.5,-0.5,$slib_j+0.5,$slib_tick2\
-  line  0.5,$slib_j+0.5, 2,$slib_j+0.5,$slib_tick2
+  line -2,$[$slib_j+0.5],-0.5,$[$slib_j+0.5],$slib_tick2\
+  line  0.5,$[$slib_j+0.5], 2,$[$slib_j+0.5],$slib_tick2
 !next slib_j
 
 !for slib_j=10*($slib_yrange1) to 10*($slib_yrange2-1)
  !set slib_tickss=$slib_tickss\
-  line -1.5,$[$slib_j/10+0.5],-0.5,$slib_j/10+0.5,$slib_tick3\
-  line  0.5,$[$slib_j/10+0.5], 1.5,$slib_j/10+0.5,$slib_tick3
+  line -1.5,$[$slib_j/10+0.5],-0.5,$[$slib_j/10+0.5],$slib_tick3\
+  line  0.5,$[$slib_j/10+0.5], 1.5,$[$slib_j/10+0.5],$slib_tick3
 !next slib_i
 
 slib_out=\
 transparent white\
  xrange -$slib_xrange,$slib_xrange+0.3\
  yrange $slib_yrange1-0.5,$slib_yrange2\
- text $slib_tick,2,$slib_yrange1+0.5,large,$slib_degree\
+ text $slib_tick,2,$[$slib_yrange1+0.5],large,$slib_degree\
  linewidth 1\
  $slib_tickss\
  $slib_ticks\
  $slib_Ticks\
  linewidth 3\
- rectangle -$slib_xrange,$slib_yrange1-0.2,$slib_xrange,$slib_yrange2,blue\
- polyline grey, -0.5,$slib_yrange1+0.3,-0.5,$slib_yrange2-0.2, 0.5,$slib_yrange2-0.2,0.5,$slib_yrange1+0.3\
+ rectangle -$slib_xrange,$[$slib_yrange1-0.2],$slib_xrange,$slib_yrange2,blue\
+ polyline grey, -0.5,$[$slib_yrange1+0.3],-0.5,$[$slib_yrange2-0.2], 0.5,$[$slib_yrange2-0.2],0.5,$[$slib_yrange1+0.3]\
  trange pi/2 + pi/6,2*pi + pi/2 - pi/6\
  plot $slib_tick4, 0 + 0.6*cos(t), $slib_yrange1 + 0.2 + 0.6/4* sin(t)
 slib_point=$[($slib_yrange1 + ($slib_deg))/2]
