@@ -47,8 +47,8 @@ slib_example=3.5,,,,C,html\
 !set slib_tickss=
 !for slib_i=$slib_yrange1+1 to $slib_yrange2-1
  !set slib_Ticks=$slib_Ticks\
-line -$slib_range0,$slib_i,-0.5,$slib_i,$slib_tick\
-line  $slib_range0,$slib_i, 0.5,$slib_i,$slib_tick
+segment -$slib_range0,$slib_i,-0.5,$slib_i,$slib_tick\
+segment  $slib_range0,$slib_i, 0.5,$slib_i,$slib_tick
 
 !if $slib_type iswordof right
  !set slib_Ticks=$slib_Ticks\
@@ -66,14 +66,14 @@ text $slib_tick,$[$slib_range0-0.2],$[$slib_i+0.5], large, 0
 !next slib_i
 !for slib_j=$slib_yrange1+1 to $slib_yrange2-1
  !set slib_ticks=$slib_ticks\
-  line -2,$[$slib_j+0.5],-0.5,$[$slib_j+0.5],$slib_tick2\
-  line  0.5,$[$slib_j+0.5], 2,$[$slib_j+0.5],$slib_tick2
+  segment -2,$[$slib_j+0.5],-0.5,$[$slib_j+0.5],$slib_tick2\
+  segment  0.5,$[$slib_j+0.5], 2,$[$slib_j+0.5],$slib_tick2
 !next slib_j
 
 !for slib_j=10*($slib_yrange1) to 10*($slib_yrange2-1)
  !set slib_tickss=$slib_tickss\
-  line -1.5,$[$slib_j/10+0.5],-0.5,$[$slib_j/10+0.5],$slib_tick3\
-  line  0.5,$[$slib_j/10+0.5], 1.5,$[$slib_j/10+0.5],$slib_tick3
+  segment -1.5,$[$slib_j/10+0.5],-0.5,$[$slib_j/10+0.5],$slib_tick3\
+  segment  0.5,$[$slib_j/10+0.5], 1.5,$[$slib_j/10+0.5],$slib_tick3
 !next slib_i
 
 slib_out=\
@@ -93,7 +93,7 @@ transparent white\
 slib_point=$[($slib_yrange1 + ($slib_deg))/2]
 slib_out=$slib_out\
  linewidth 1\
- line -0.5,$slib_deg,0.5,$slib_deg,$slib_tick4\
+ segment -0.5,$slib_deg,0.5,$slib_deg,$slib_tick4\
  fill 0,$slib_point,$slib_tick4
 
 !if url iswordof $slib_option or html iswordof $slib_option
