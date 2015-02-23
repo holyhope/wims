@@ -114,7 +114,6 @@ function initTree(el) {
  */
 function treeToggle(el, force) {
 	el = this;
-	
 	while(el != null && (!el.tagName || el.tagName.toLowerCase() != "li")) el = el.parentNode;
 	
 	// Get UL within the LI
@@ -144,13 +143,22 @@ function treeToggle(el, force) {
 }
 
 
-function treeOpen( a, b ){
+function treeOpen(a, b ){
 	removeClass(a,'spanClosed');
 	removeClass(b,'closed');
 }
+
+/*
+ * [Jquery] treeToggleAll : Open/close all tree inside "elem"
+ * elem can be a css id (#ident) or a css class (.classname)
+ * added by obado
+ */
+function treeToggleAll( elem ){
+	$(elem+" .children").toggleClass("closed");
+}
 	
 	
-function treeClose( a, b ){
+function treeClose(a, b ){
 	addClass(a,'spanClosed');
 	addClass(b,'closed');
 }
