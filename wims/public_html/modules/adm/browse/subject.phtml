@@ -1,6 +1,6 @@
 !read adm/title.phtml 3\
 $title
-
+!set list_taxonomy=commoncore,unisciel
 
 !if $parm=$empty
  $name_domain
@@ -16,8 +16,8 @@ $title
 !next
 </ul>
 </div>
-!for taxo in unisciel, commoncore
-  !set lang_exists=!defof lang_exists in $taxo.$lang.phtml
+!for taxo in $list_taxonomy
+  !set lang_exists=!defof lang_exists in $taxo.phtml.$lang
   !if $lang_exists=yes
     !set script=yes
   !endif
@@ -25,14 +25,14 @@ $title
 !if $script=yes
 <div id="taxonomy_list">
   <ul class="tabs">
-    !for taxo in unisciel, commoncore
-      !set taxo_title=!defof title in $taxo.$lang.phtml
+    !for taxo in $list_taxonomy
+      !set taxo_title=!defof title in $taxo.phtml.$lang
       <li><a href="#$taxo">$taxo_title</a></li>
     !next
   </ul>
   !for taxo in unisciel, commoncore
     <div id="$taxo">
-       !read $taxo.$lang.phtml
+       !read $taxo.phtml.$lang
      </div>
   !next
 </div>

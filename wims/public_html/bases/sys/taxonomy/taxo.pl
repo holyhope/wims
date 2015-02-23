@@ -8,7 +8,7 @@ my $LANG='fr';
 ## leave simple quotes
 my $joker='$wims_name_erase';
 #my $outputtaxo='tmp';
-my $outputtaxo='../../modules/adm/browse';
+my $outputtaxo='../../modules/';
 my $ddir='taxonomy';
 my $indexdir="../classification";
 my $module="";
@@ -18,6 +18,7 @@ while ($_ = shift (@ARGV))
   if (/^--lang=(.*)$/) { $LANG = $1; }
   elsif (/^--joker=(.*)$/) { $joker = $1; }
   elsif (/^--module=(.*)$/) { $module = $1; }
+  elsif (/^--output=(.*)$/) { $outputtaxo = "$outputtaxo/$1"; }
 }
 
 taxonomy("unisciel", $LANG, '_','_',);
@@ -41,7 +42,10 @@ sub taxonomy { my ($taxo, $lang, $sep1, $sep2) = @_ ;
    @list=sort keys %desc;
    for my $a (@list) { $T .= one($a, $taxo) ; };
    $T .= "\n</ul>";
-   out("$outputtaxo/$taxo.$lang.phtml", $T);
+   if (!$module) {
+     $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"empty\" value=\"\"/> $joker";
+   }
+   out("$outputtaxo/$taxo.phtml.$lang", $T);
 }
 
 
@@ -53,19 +57,23 @@ sub one {my ($a, $taxo)=@_;
   my ($T) = '<li class="closed">';
   if (!$tit{$a}) { print "$a\n" ; $tit{$a}=$a};
   if (!$ref->{'total'}{$a}) { $ref->{'total'}{$a}=0 } ;
-  $T .= "<span id=\"$amod\">$tit{$a}</span> <span class=\"small hidden\">($a)</span>";
-  if ($ref->{'total'}{$a} >0){
-    $T .= (($module)? "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}."</sup>" : "<strong class'debug'>PROUT</strong>" );
-  }
-  if ($ref->{'text'}{$a} || $desc{$a}){
-    $T .="<ul id=\"list_$amod\">";
-    if ($ref->{'text'}{$a}){
-      $T .=  $ref->{'text'}{$a};
+  if (!$module) {
+       $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
+          . "<label for=\"$amod\">$tit{$a}</label><span class=\"small hidden\">($a)</span>";
+  } else {
+    $T .= "<span id=\"$amod\">$tit{$a}</span> ";
+    if ($ref->{'total'}{$a} >0){
+      $T .= (($module)? "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}
+       ."</sup>" : "<strong class='debug'>PROUT</strong>" );
     }
-    if ($desc{$a}) {
+    if ($ref->{'text'}{$a} || $desc{$a}){
+     $T .="<ul id=\"list_$amod\">";
+     if ($ref->{'text'}{$a}){ $T .=  $ref->{'text'}{$a}; }
+     if ($desc{$a}) {
       for my $b (sortuniq (split ',', $desc{$a})) { $T .= one($b, $taxo) };
-    }
+     }
     $T .= "\n</ul>";
+   }
   }
 #  if ($ref->{'text'}{$a}){ $T .= "\n\n\n</div>";}
   $T . "</li>";
@@ -101,7 +109,7 @@ sub hashresultat { my ($file,@list)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = $a; $b =~ s!/!~!g;
-      $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n!href target=wims_internal module=$a $b\n</li>"
+      $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n!href target=wims_internal module=$a $b\n</li>\n"
     }
     #$ref->{'text'}{$ligne[0]} .= "</ul>";
     $ref->{'num'}{$ligne[0]}=$cnt0 ;
