@@ -11,9 +11,8 @@
  Le contenu d'un examen doit être pris à partir des feuilles activées
  (active ou périmée).
  </p><p>
- Votre classe n'a pas encore de feuille de travail activée. Veuillez définir
- vos feuilles, mettre  le travail dedans puis les activer, avant de définir un
- examen pour la classe.
+ Votre classe n'a pas encore de feuille activée.
+ Commencez donc par créer et activer une feuille.
  </p>
  !exit
 !endif
@@ -81,15 +80,14 @@
 !if prep_expire=$error
  Cet examen numéro $exam ($title) expire normalement le $expday
  !item $expmon of $months
- $expyear. Voulez-vous le rendre périmé dès maintenant?
+ $expyear. Voulez-vous le périmer dès maintenant?
   <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </div><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
- sur un examen périmé. Mais leurs notes antérieures seront conservées
- (et seront prises
- en compte dans les statistiques) et vous pouvez toujours les consulter.
+ . </div><b>Remarque.</b> Vos étudiants ne peuvent pas travailler
+ sur un examen périmé. Mais les notes déjà enregistrées sont conservées,
+ restent visibles et sont prises en compte dans les statistiques.
  !exit
 !endif
 
@@ -104,10 +102,11 @@
     vous partagez vos examens avec une autre classe !
    !endif
   !endif
+  !exit
 !endif
 
 !if active_exam=$error
-   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
+   Désolé, cet examen est activé, donc son contenu n'est plus modifiable.
  !exit
 !endif
 
