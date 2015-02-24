@@ -1,6 +1,6 @@
 !!##preparation of the "bottom menu"
 
-!if _check isin $session or $wims_mode=popup or yes isin $wims_lightpopup
+!if _check isin $session or $wims_mode=popup
  !exit
 !endif
 
@@ -47,7 +47,9 @@
  !else
   !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
  !endif
- !set 1_=!append line $tmp_ to $1_
+ !if yes notin $wims_lightpopup
+    !set 1_=!append line $tmp_ to $1_
+ !endif
  !let wims_menu_items=!append line $tmp_ to $wims_menu_items
  !if $wims_exo>1
   !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
@@ -97,7 +99,9 @@
 !if print isin $job,$job2 or $print!=
   !set 1_=!append line print,3,window.print() to $1_
 !endif
+
 !set wims_rm_1=$1_
+
 :local
 !reset 1_
 !if $wims_developer!=$empty and COPYING isin $module_copyright and ../classes/ notin ../$module
@@ -170,7 +174,22 @@
   !set 1_=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $1_
 !endif
 
-!set wims_rm_0=$1_
+
+!! When in lightpopup mode, only links in whitelist are available
+
+!if yes isin $wims_lightpopup
+    !set whitelist = nextseries,previousseries
+    !set nb_elem=!linecnt $1_
+    !for a=1 to $nb_elem
+        !set element = !line $a of $1_
+        !set id = !item 1 of $element
+        !if $id isitemof $whitelist
+            !set wims_rm_0 = !append line $element to $wims_rm_0
+        !endif
+    !next
+!else
+    !set wims_rm_0=$1_
+!endif
 
 !set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
 :rm2
