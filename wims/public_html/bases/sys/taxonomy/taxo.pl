@@ -61,10 +61,10 @@ sub one {my ($a, $taxo)=@_;
        $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
           . "<label for=\"$amod\">$tit{$a}</label><span class=\"small hidden\">($a)</span>";
   } else {
-    $T .= "<span id=\"$amod\">$tit{$a}</span> ";
+    $T .= "<span id=\"$amod\">$tit{$a}</span> <span class=\"small hidden\">($a)</span> ";
     if ($ref->{'total'}{$a} >0){
       $T .= (($module)? "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}
-       ."</sup>" : "<strong class='debug'>PROUT</strong>" );
+       ."</sup>" : "" );
     }
     if ($ref->{'text'}{$a} || $desc{$a}){
      $T .="<ul id=\"list_$amod\">";
