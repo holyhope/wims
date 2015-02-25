@@ -16,8 +16,10 @@ Lorsque le participant commence un examen, il dispose d'un
 temps limité pour faire tous les exercices de l'examen (temps fixé par l'enseignant
 entre 2mn et 600mn et appelé <span class="wims_emph">durée d'une session d'examen</span>).
 Il n'a pas la possiblité de renouveler un exercice de l'examen ni de désactiver
-l'enregistrement des notes. L'enseignant peut donner la possibilité de recommencer plusieurs fois un examen (paramètre <span class="wims_emph">nombre
-d'essais</span>) : on parle de sessions d'examen. La note à une session d'examen est la moyenne (pondérée) des notes obtenues à chaque exercice. La note finale de l'examen est
+l'enregistrement des notes. L'enseignant peut donner la possibilité de recommencer
+ plusieurs fois un examen (paramètre <span class="wims_emph">nombre
+d'essais</span>) : on parle de sessions d'examen. La note à une session d'examen
+est la moyenne (pondérée) des notes obtenues à chaque exercice. La note finale de l'examen est
 le maximum des notes des différentes sessions d'examen.
 </p><p>
 Les énoncés de chaque exercice obtenu par le participant pendant un examen
@@ -277,8 +279,8 @@ Supposons qu'il soit écrit :
 </p>
 !set h_mn=$[$sdure%60]
 !set h_fin= $[9+$stries*($sdure-$h_mn)/60]
-!set h_fin=$h_fin h $[$h_mn - 20] mn
-!set h_min2=$[$sdure - $sdure/3]
+!set h_fin=$h_fin h $[rint($h_mn - $sdure/2)] mn
+!set h_min2=$[rint($sdure - $sdure/3)]
 <pre>
 $name_exam2
 $name_exam6
@@ -291,8 +293,8 @@ faudra avoir terminé
 les $stries essais avant $h_fin :
 <ul><li>
 
-si vous avez pris 10 mn pour faire le 1er essai et que vous commencez
-votre second essai à 9h15, vous disposerez de $sdure mn pour faire l'examen
+si vous avez pris $[min(10,$sdure)] mn pour faire le 1er essai et que vous commencez
+votre second essai à 9h$[min(10,$sdure)+5], vous disposerez de $sdure mn pour faire l'examen
 au 2ème essai.
 </li><li>
 Si vous avez pris du temps pour faire l'examen aux premiers essais et que

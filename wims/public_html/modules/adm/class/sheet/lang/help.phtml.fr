@@ -2,16 +2,99 @@
  !goto $wims_read_parm
 !endif
 
+:general
+<h2 id="general">Introduction</h2>
+
+<p>
+Une feuille permet de proposer une liste d'exercices WIMS aux élèves.
+L'activité des élèves peut alors être notée et contrôlée.
+</p>
+
+Pour constituer les feuilles de sa classe, on peut
+<ul><li>
+importer des feuilles trouvées grâce au moteur de recherche (cliquez sur
+le titre de la feuille puis sur le lien
+<span class="tt wims_code_words">$wims_name_import</span>)
+et la modifier ensuite éventuellement.
+</li><li>
+créer une nouvelle feuille à partir du lien
+<span class="tt wims_code_words">$wims_name_add_sheet</span>
+puis constituer le contenu de la feuille en insérant un par un
+les exercices trouvés à partir du moteur de recherche ou parmi les exercices
+de sa classe (le lien <span class="tt wims_code_words">$wims_name_add_sheet</span>
+est visible lorsqu'on va travailler sur l'exercice choisi)
+ou insérer un fichier source d'une liste d'exercices trouvé par exemple
+dans un document wims.
+</li></li>
+</ul>
+Les feuilles sont  numérotées dans l'ordre de leur création/insertion dans la classe.
+Il est possible de réorganiser la présentation  des feuilles pour les élèves en utilisant
+le lien <span class="tt wims_code_words">$wims_name_reorder</span>.
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:statut
+<h2 id="statut">Statut d'une feuille</h2>
+Une feuille  peut avoir quatre statuts :
+<span class="wims_emph">
+!replace internal , by ,$ $ in $(wims_name_shstatus).
+</span>
+<p>
+<span class="wims_emph">$(wims_name_shstatus[1]) :</span>
+c'est le statut initial d'une feuille. Dans ce statut, la feuille  n'est pas
+visible des élèves.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[2]) :</span>
+lorsqu'on clique sur
+<span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
+la feuille devient visible par les élèves (ils pourront travailler
+sur les exercices  si aucun paramètre dans le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+ne l'empêche), son contenu
+n'est plus modifiable excepté les titres et les textes d'explication de la feuille et
+des exercices, le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span> ainsi que
+les champs
+<span class="tt wims_code_words">Besoin d'aide</span> des exercices.
+</p><p>
+Du statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
+la feuile  peut passer au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
+ en cliquant sur le bouton
+ <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
+On ne peut pas revenir au statut
+<span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[3]) :</span>
+l'élève peut travailler sur la feuille mais son travail n'est pas comptabilisé.
+</p><p>
+Une fois la feuille périmée, on peut la rendre invisible aux élèves en cliquant sur
+<span class="tt wims_code_words">$(wims_name_actionlist[4])</span>,
+mais on peut aussi la remettre dans le statut
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
 :dependancies
 !read adm/title.phtml 1\
 $(name_shtab[6])
+<p>
+Si l'on met une dépendance des scores sur un exercice, un participant doit
+d'abord acquérir suffisamment de points dans d'autres exercices de la feuille/ </p>
+Le champ <span class="tt wims_code_words">$(name_shtab[6])</span> d'un exercice permet
+de préciser les points que doit acquérir un participant sur d'autres exercices de la feuille
+avant de pouvoir travailler sur celui-ci.
+Par exemple, mettre <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
+sur l'exercice 6 signifie que le participant doit avoir un succès de 50% sur
+l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur
+ les exercices 3, 4, 5 pour pouvoir faire l'exercice 6
 
-Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de
-pouvoir travailler sur celui-ci.
-Par exemple, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
-signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
- 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.
-<br class="spacer" />
+</p>
 !if $wims_read_parm!=$empty
  !exit
 !endif
@@ -33,7 +116,7 @@ Indication sur l'enregistrement des notes.
  et ces mots doivent être séparés les uns des autres par des espaces.
 <p>
 Exemple :
-<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
+<span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
 permet l'enregistrement des notes entre 2 dates et seulement pour les numéros IP commençant
 par <span class="tt wims_code_words"127.0</span>.
 </p>
@@ -65,8 +148,8 @@ $(name_shtab[10])
 On peut indiquer dans ce champ un lien sur un document de WIMS
 ou un exercice de WIMS. Le lien sur cette ressource apparaîtra lorsque le score est
 strictement inférieur à une note fixée (sur 10).
-Le second item est la note limite (sur 10), le premier item est l'adresse sous la forme suivante
-(forme abrégée):
+Le second item est la note limite (sur 10), le premier item est l'adresse
+sous la forme suivante (forme abrégée):
 <ul><li>
 Exercice d'un module public ou document public : <span class="tt wims_address">module=xxx</span>
 (comme dans <span class="wims_button disabled">$wims_name_about</span>).
