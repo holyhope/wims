@@ -5,9 +5,10 @@
 :general
 <h2 id="general">Introduction</h2>
 
+<p>
 Un examen est constitué de séries d'exercices prises parmi les feuilles
 actives ou périmées.
-
+</p><p>
 Lorsque le participant commence un examen, il dispose d'un
 temps limité pour faire tous les exercices de l'examen (temps fixé par l'enseignant
 entre 2mn et 600mn et appelé durée d'une session d'examen).
@@ -16,15 +17,21 @@ l'enregistrement des notes. L'enseignant peut donner
 la possibilité de recommencer plusieurs fois un examen (paramètre nombre
 d'essais) : on parle de session d'examen. La note de l'examen est alors le maximum de
 la moyenn des notesobtenues à chaque essai.
-
+</p><p>
 Les énoncés de chaque exercice obtenu par le participant pendant un examen
 ainsi que les réponses qu'il a données sont enregistrées et visibles par
 le participant et l'enseignant après chaque session d'examen.
-
+</p><p>
+Si vous optez pour l'option <span class="tt wims_code_words">ouvert pour simulation</span>,
+le participant pourra essayer l'examen mais le score n'est pas enregistré et
+les essais ne sont donc pas comptés.
+</p><p>
 Le participant ne peut pas travailler sur un examen périmé.
+</p><p>
 Comme pour une feuille, l'enseignant peut fixer les dates de début et de
 fin d'enregistrement des notes sur l'examen, restreindre l'accès en fixant des
-numéros IP.
+numéros IP ou utiliser une variable technique.
+</p>
 
 !if $wims_read_parm!=$empty
  !exit
@@ -84,14 +91,29 @@ correspond aux postes de 127.0.0.1 jusqu'à 127.0.0.255.
 
 <p>
 Les <span class="wims_emph">heures de coupure</span>
- permettent de faire passer l'examen dans
- des séances différées. Un participant ayant commencé l'examen avant une
- heure de coupure ne peut pas travailler sur une nouvelle session d'examen
- après l'heure de coupure.
- <br />
- Format des heures de coupure: <span class="tt wims_code_words">aaaammjj.hh:mm</span>
- (séparez plusieurs heures de coupure par des espaces).
+permettent de faire passer l'examen dans
+des séances différées. Un participant ayant commencé l'examen avant une
+heure de coupure ne peut pas travailler sur une nouvelle session d'examen
+après l'heure de coupure même s'il n'a pas utilisé tous les essais
+autorisés par l'enseignant.
+</p><p>
+Format des heures de coupure: <span class="tt wims_code_words">aaaammjj.hh:mm</span>
+(séparez plusieurs heures de coupure par des espaces).
 </p>
+
+Exemple : Un premier groupe A de la classe passe l'examen
+entre 9h et 10h le 10/02/2015 et un autre groupe B de la même classe de 10h
+à 11h le même jour.
+<ul><li>
+Mettez <span class="tt">20150210.10:00</span> dans le champ "heures de coupure"
+</li><li>
+Mettez dans le champ enregistrement des notes :
+<span class="tt"> >20150210.9:00 <20150210.12:00</span>
+</li></ul>
+Dans ce cas, le nombre et le titre des différents exercices de l'examen
+sont visibles par tous les élèves de la classe à partir de 9h, un élève qui
+clique sur un exercice de l'examen entre 9h et 10h ne pourra pas ouvrir une nouvelle
+session d'examen après 10h.
 
 !if $wims_read_parm!=$empty
  !exit
@@ -99,7 +121,8 @@ Les <span class="wims_emph">heures de coupure</span>
 
 :variable
 <p id="variable">
-Afin d'individualiser les restrictions d'accès, il est possible de mettre le nom d'une variable.
+Afin d'individualiser les restrictions d'accès, il est possible de mettre le nom d'une
+<span class="wims_emph">variable technique</span>.
 Cette variable doit alors être définie pour chaque participant selon les règles précédentes
 soit manuellement dans les propriétés du compte d'un participant ou par liaison tableur
 (variable technique).
@@ -113,41 +136,45 @@ exemple), il est possible de créer et utiliser un questionnaire en mode guidé
 !endif
 
 :dependency
- <h2 id="dependency">Dépendances des scores</h2>
- <p>
- Les dépendances des scores veulent dire qu'un participant doit
- d'abord acquérir des points dans d'autres exercices de la feuille, avant
-de pouvoir travailler sur celui-ci. Par exemple,
+<h2 id="dependency">Dépendances des scores</h2>
+<p>
+Si l'on met une dépendance des scores sur un exercice, un participant doit
+d'abord acquérir suffisament de points dans d'autres exercices de la feuille d'examen avant
+de pouvoir travailler sur celui-ci. Par exemple, mettre
 <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
-signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
+sur l'exercice 6 signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices
-3,4,5.
- </p>
+3,4,5 pour pouvoir faire l'exercice 6.
+Dans le cas d'un examen, cela est à utiliser avec beaucoup de modération.
+</p>
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :contenu
 
- <h2 id="contenu">Contenu d'un exercice d'examen</h2>
- <p>
+<h2 id="contenu">Contenu d'un exercice d'examen</h2>
+<p>
 Un exercice de l'examen est un exercice d'une feuille de travail ou
 une liste d'exercices existants dans des feuilles de travail (un exercice
 choisi aléatoirement parmi eux sera alors proposé à l'élève).
- </p>
- <p>
-Veuillez choisir parmi les exercices des feuilles de la liste suivante ceux
-que vous voulez prendre pour cet exercice d'examen.
- </p>
+</p><p>
+Veuillez choisir parmi les exercices des feuilles de la liste que vous voyez apparaitre
+ceux que vous voulez prendre pour cet exercice d'examen.
+</p><p>
+Vous pouvez aussi utiliser le lien <span class="tt wims_code_words">$wims_name_addsexo</span>
+pour mettre tous les exercices de la classe (chaque exercice de la classe sera alors
+un exercice de l'examen).
+</p>
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :options
- <h2 id="options">Options</h2>
- <p>
- Une seule option est pour l'instant disponible&nbsp;:
- </p>
+<h2 id="options">Options</h2>
+<p>
+Une seule option est pour l'instant disponible&nbsp;:
+</p>
 <ul>
 <li><span class="tt wims_code_words">autogen</span> veut dire que l'exercice
 est généré automatiquement même si l'utilisateur ne clique pas dessus pour
