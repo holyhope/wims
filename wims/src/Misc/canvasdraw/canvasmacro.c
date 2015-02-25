@@ -1631,7 +1631,7 @@ function add_slider_%d(){\
  var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  var slider_type = %d;\
  var span = document.createElement(\"span\");\
- span.style= \"font:%s;color:%s\";\
+ span.setAttribute(\"style\",\"font:%s;color:%s\");\
  var title = document.createTextNode(\" %s \");\
  var br = document.createElement(\"br\");\
  span.appendChild(title);\
