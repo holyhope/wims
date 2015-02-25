@@ -1,7 +1,11 @@
 !!!### language independant
 !!
 !! Tableau d'information générale de la feuille d'examen
-
+!if $activetest>0
+ !set readonly=readonly="readonly"
+!else
+ !set readonly=
+!endif
 !form reply
  <input type="hidden" name="job" value="text" />
 
@@ -52,7 +56,7 @@
        <label for="duration">$(name_shinfo[9])</label>
        !set wims_ref_class=wims_button_help float_right
        !href target=wims_mhelp cmd=help&special_parm=session $wims_name_help
-       <input size="5" name="duration" id="duration" value="$duration" style="text-align:right;" /> <span class="units">$name_units_duration</span>
+       <input size="5" name="duration" id="duration" value="$duration" style="text-align:right;" $readonly /> <span class="units">$name_units_duration</span>
        <div class="formHelp">$name_desc_duration</div>
   </div>
 
@@ -61,7 +65,7 @@
        <label for="tries">$(name_shinfo[10])</label>
         !set wims_ref_class=wims_button_help float_right
        !href target=wims_mhelp cmd=help&special_parm=session $wims_name_help
-       <input size="5" name="tries" id="tries" value="$stries" />
+       <input size="5" name="tries" id="tries" value="$stries" $readonly/>
        <div class="formHelp">$name_desc_tries &nbsp;</div>
   </div>
 
