@@ -1,7 +1,10 @@
 !if $wims_read_parm!=$empty
  !goto $wims_read_parm
 !endif
-
+!if $job=student
+  !goto student
+ !exit
+!endif
 :general
 <h2 id="general">Introduction</h2>
 
@@ -99,11 +102,11 @@ dans le champ
 <span class="tt wims_code_words">$(name_shinfo[6])</span>).
 Ainsi, si l'examen est prévu pour durer deux
 heures dans la salle machine et que l'enseignant fixe le paramètre de
-durée d'une session d'examen à 90 minutes et le nombre d'essais à 3
+durée d'une session d'examen à 90 mn et le nombre d'essais à 3
 (ce sont les valeurs par défaut), si l'élève finit son premier essai au bout de
-50 minutes, il lui restera encore 120-50=70 minutes et deux essais
-pour essayer d'améliorer sa note. S'il met de nouveau 50 minutes pour la seconde
-session, il ne pourra passer que 20 minutes sur la troisième session.
+50 mn, il lui restera encore 120-50=70 mn et deux essais
+pour essayer d'améliorer sa note. S'il met de nouveau 50 mn pour la seconde
+session, il ne pourra passer que 20 mn sur la troisième session.
 </p><p>
 La note d'examen retenue par WIMS est le maximum des notes obtenues lors de tous
 les essais.
@@ -214,7 +217,8 @@ Après avoir cliqué sur le lien <span class="tt wims_code_words">$wims_name_addex
 veuillez choisir, parmi les exercices de la liste que vous voyez apparaître,
 ceux que vous voulez prendre pour cet exercice d'examen.
 </p><p>
-Vous pouvez aussi utiliser le lien <span class="tt wims_code_words">$wims_name_addsexo</span>
+Vous pouvez aussi utiliser le lien
+<span class="tt wims_code_words">$wims_name_addsexo</span>
 pour mettre tous les exercices de la classe (chaque exercice de la classe
  sera alors un exercice de l'examen).
 </p>
@@ -241,3 +245,68 @@ Formellement déconseillé sauf pour les exercices à correction manuelle.
 !if $wims_read_parm!=$empty
  !exit
 !endif
+
+:student
+Un examen est constitué d'exercices WIMS  qu'il faut faire en un temps
+limité défini par l'enseignant. Contrairement à une feuille WIMS,
+<ul><li>
+il n'est pas possible  de renouveler un exercice de l'examen,
+ni de désactiver l'enregistrement des notes.
+</li><li>
+lorsqu'on clique sur un exercice, l'énoncé apparait dans une autre
+fenêtre du navigateur. Un lien 'Retour à la liste des exercices' permet de
+passer à un autre exercice (il n'est pas nécessaire d'avoir répondu à un exercice
+pour passer à l'exercice suivant de l'examen, l'énoncé obtenu est conservé).
+</li><li>
+pour que les réponses sur un exercice soient prises en compte,
+il faut qu'elles soient envoyées avant que le temps fixé pour faire
+l'examen ne soit écoulé.
+</li></ul>
+
+<p>
+L'enseignant peut donner la possibilité de recommencer plusieurs fois un
+examen. La note d'examen retenue par WIMS est alors le maximum des notes
+obtenues lors de tous les essais. La durée d'un examen correspond à la durée
+maximale d'un essai.
+</p><p>
+Indépendamment de la durée maximale d'un essai, l'enseignant peut fixer la période
+pendant laquelle l'enregistrement des notes sera ouverte.
+</p><p>
+Exemple.
+Supposons qu'il soit écrit :
+</p>
+!set h_mn=$[$sdure%60]
+!set h_fin= $[9+$stries*($sdure-$h_mn)/60]
+!set h_fin=$h_fin h $[$h_mn - 20] mn
+!set h_min2=$[$sdure - $sdure/3]
+<pre>
+$name_exam2
+$name_exam6
+$name_exam9
+$name_exam7
+</pre>
+et que l'enseignant a ouvert l'enregistrement des notes entre 9h et $h_fin.
+Cela signifie que vous pourrez commencer l'examen à partir de 9h et il
+faudra avoir terminé
+les $stries essais avant $h_fin :
+<ul><li>
+
+si vous avez pris 10 mn pour faire le 1er essai et que vous commencez
+votre second essai à 9h15, vous disposerez de $sdure mn pour faire l'examen
+au 2ème essai.
+</li><li>
+Si vous avez pris du temps pour faire l'examen aux premiers essais et que
+vous commencez votre dernier essai $h_min2 mn avant $h_fin, vous n'aurez que
+$h_min2 mn pour refaire l'examen.
+</li></ul>
+<p>
+Pour commencer un second essai, cliquez sur
+<span class="tt wims_code_words">$wims_name_endexam</span>.
+Vous aurez besoin alors de vous reconnecter dans la classe pour faire
+l'examen une seconde fois. Vous pouvez voir le résultat des essais précédents
+ en cliquant sur
+<span class="tt wims_code_words">$wims_name_myscore</span>.
+Une fois dans l'examen, il est conseillé de cliquer sur
+<span class="tt wims_code_words">$wims_name_refresh</span>
+lorsque vous voulez savoir ce qu'il vous reste à faire.
+</p>
