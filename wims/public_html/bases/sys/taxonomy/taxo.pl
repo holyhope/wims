@@ -113,8 +113,6 @@ sub one {my ($a, $taxo)=@_;
     }
     $T .= "\n</ul>";
   }
-
-  # if ($ref->{'text'}{$a}){ $T .= "\n\n\n</div>";}
   $T . "</li>";
 }
 
@@ -144,13 +142,22 @@ sub hashresultat { my ($file,@list)=@_;
     next if (!$ligne[0]);
     my @aa=split(',', $ligne[1]);
     my $cnt0=$#aa+1;
-    #$ref->{'text'}{$ligne[0]} = "<ul class=\"module_list\" >";
     for my $a (@aa) {
       chomp $a;
       my $b = $a; $b =~ s!/!~!g;
-      $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n!href target=wims_internal module=$a $b\n</li>\n"
+      if (-e "../../modules/$a/Extitles") {
+        my %dic=treate_dict("../../modules/$a/Extitles");
+        my @exo= values %dic;
+        $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
+      "!href target=wims_internal module=$a $b\n" .
+      '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
+       . "</li>\n";
+       }
+     else {
+      $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
+      "!href target=wims_internal module=$a $b\n </li>\n";
+     }
     }
-    #$ref->{'text'}{$ligne[0]} .= "</ul>";
     $ref->{'num'}{$ligne[0]}=$cnt0 ;
     $ref->{'total'}{$ligne[0]}=0;
   }
