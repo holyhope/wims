@@ -109,7 +109,7 @@ distclean::
 	find . -name Makefile | xargs rm -f
 	find .. -name .wimshome | xargs rm -f
 
-wims: $(O) Lib/libwims.o
+wims: $(O) Lib/libwims.o libwims
 	$(cc) $(LDFLAGS) Lib/libwims.o $(O) $(lopt) -o wims
 	$(STRIP) wims
 	./wims table
@@ -124,6 +124,9 @@ setupwims:: wims wimslogd
 	ln -s wims ../public_html/wims.cgi
 	../bin/update
 	chmod a+rx ../public_html .
+
+libwims::
+	cd Lib; make all
 
 wimslogd::
 	cd Wimslogd; make all
