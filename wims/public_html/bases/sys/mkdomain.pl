@@ -36,8 +36,8 @@ my @list=listdomain("$dir/domain");
 my %ref= hashdomain("$dir/domain");
 my $ref=\%ref;
 my $TEXT="##generated\n";
-for my $tag (keys %ref) {
-  $TEXT .= "$tag:$ref{$tag}\n" ;
+for my $tag (sort keys %{$ref->{'prev'}}) {
+  $TEXT .= $tag . ":" . $ref->{'prev'}{$tag} . "\n" ;
 }
 
 out("$dir/reversedomain",$TEXT);

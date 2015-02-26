@@ -1,6 +1,7 @@
+
 !read adm/title.phtml 3\
 $title
-!set list_taxonomy=commoncore,unisciel
+!set list_taxonomy=commoncore,unisciel,keywords
 
 !if $parm=$empty
  $name_domain
@@ -30,7 +31,7 @@ $title
       <li><a href="#$taxo">$taxo_title</a></li>
     !next
   </ul>
-  !for taxo in unisciel, commoncore
+  !for taxo in $list_taxonomy
     <div id="$taxo">
        !read $taxo.phtml.$lang
      </div>

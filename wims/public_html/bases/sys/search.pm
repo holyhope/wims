@@ -6,13 +6,14 @@ use Encode;
 
 use Exporter;
 our @ISA = 'Exporter';
-our @EXPORT = ('hashdomain', 'listdomain', 'out','sortuniq', 'treate_accent',
+our @EXPORT = ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_accent',
   'treate_dict', 'treate_language', 'dictionnary', 'reverse_dic');
 
 sub canonify { my ($w)=@_; treate_accent(lc($w)) }
 
 sub treate_dict { my ($file) = @_;
-   my %ref = ( ) ; my $ref=\%ref; my $text;
+   my %ref = ( ) ; my $ref=\%ref;
+   my $text;
    open IN, "$file";
    while (<IN>) {
    $text = $_ ;
@@ -85,6 +86,7 @@ sub listdomain { my ($file)=@_ ;
 ## reversing the domain tree
 
 sub hashdomain { my ($file)=@_;
+ $/ = undef;
  open IN, "$file";
  my %ref = ( ) ; my $ref=\%ref;
  while (<IN>) { my $text=$_ ; $text=~ s/\\\n\s*//g;
@@ -96,8 +98,9 @@ sub hashdomain { my ($file)=@_;
      my @cut=split(":", $line) ;
      if ($cut[1]) {
        my @son=split(',',$cut[1]);
+       $ref->{'next'}{$cut[0]}=$cut[1];
       for my $s (@son) {
-        if ($ref{$s}) { $ref{$s} .= "," . $cut[0]} else {$ref{$s} = $cut[0]}
+        if ($ref->{'prev'}{$s}) { $ref->{'prev'}{$s} .= "," . $cut[0]} else {$ref->{'prev'}{$s} = $cut[0]}
       }
      }
    }
