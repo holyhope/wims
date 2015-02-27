@@ -40,11 +40,20 @@
  !if $local!=yes
   !href cmd=help&special_parm=publish $name_readhelp
   $name_warning0
- <ul>
+!set sysadmin_mail=!getdef sysadmin in wimshome/public_html/bases/sys/publishcenter/$(mu_publish_site[1])
+  <div class="spacer">
+    $name_warning_keywords
+  <ul>
  <li>$wims_name_Domain: <span class="tt">$i_domain</span></li>
- <li>$wims_name_Keywords:<span class="tt">$i_keywords</span></li>
+ <li>$wims_name_Keywords:
+ <span class="tt">$keywordsgood</span>
+  <div>
+  $name_warning_keywords_unknown
+  <div class="tt wims_alertmsg">$keywordsbad</div>
+   $name_warning_keywords2
+  </div>
+ </li>
 </ul>
-!set  sysadmin_mail=!getdef sysadmin in wimshome/public_html/bases/sys/publishcenter/$(mu_publish_site[1])
  !if $dombad!=$empty
    <div class="wims_alertmsg">
     $name_warning_nodomain:
@@ -56,11 +65,11 @@
 [WIMS] keywords domain
    </div>
   !else
-  <div>
-    $name_warning_keywords
-    !mailurl $sysadmin_mail $sysadmin_mail
-  </div>
+    $name_warning_suggestion
+    !mailurl $sysadmin_mail $sysadmin_mail\
+[WIMS] keywords domain
 !endif
+</div>
 $name_warning01
   !form reply
   <input type="hidden" name="confirm" value="yes" />

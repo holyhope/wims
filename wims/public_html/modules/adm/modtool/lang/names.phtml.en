@@ -55,7 +55,6 @@
 !set name_accountchange=Change properties of your developer's account
 !set name_empty=leave the password field empty if you do not want to change it
 !set name_change=Your account password has been changed.
-
 !set name_translation_language=Other languages
 
 !distribute lines Test options\
@@ -85,8 +84,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
  into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubst the public module <span class="wims_mod_title">$otit</span> \
- (<span class="tt wims_fname">$original2</span>) to the\
-  development space, under the address
+ (<span class="tt wims_fname">$original2</span>) to the development space, under the address
 !set name_warning2= Remaning or duplicating a public-address module may lead to\
   duplication of its publication. Please be very careful! <p>\
   If you want to make tests on the module, put it into$ the test zone.</p>
@@ -128,7 +126,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   OK, go ahead\
   The following domains do not exist\
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
-   name_local,name_error,name_emailsend,name_goahead,,name_warning_nodomain
+   name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
 
  !set name_warning0=!nosubst This is a public-address module that should be published.
  !set name_warning01=Please enter your publication identifier.
@@ -136,19 +134,21 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   a new version of an existing module? If you have not, nobody will be upgrading to your new version.
  !set name_warning2= Your module has a local address. It can only be published on the local space of this server. \
    Do you want to continue?
-!set name_warning3=The main advantage of a publication in the local space is to make the module visible by \
+ !set name_warning3=The main advantage of a publication in the local space is to make the module visible by \
   the search engine of the local server.
   !set name_cheat1=!nosubst This module requires  WIMS-$Wver2 or a higher version to run. \
   The module has probably been modified on this server which uses version $wims_version. \
   It is recommended that you update the module's INDEX file.
 
-  !set name_cheat2=If you are SURE of what you are doing, you can cheat the servers\
+
+ !set name_cheat2=If you are SURE of what you are doing, you can cheat the servers\
    into thinking that you are on an older server (a VERY RISKY OPERATION)!
-  !set name_warning_domain=!nosubst You should check the properties of the module and\
+ !set name_warning_domain=!nosubst You should check the properties of the module and\
      use domains and keywords which are in the helps of the field\
      <span class="wims_label">$wims_name_Domain</span> and \
      <span class="wims_label">$wims_name_Keywords</span>. \
      If none of them is convenient, you could help us by sending your propositions to
+
   !set name_warning_domain2=!nosubst Click on the field help\
      <span class="wims_label">$wims_name_Domain</span> or\
      <span class="wims_label">$wims_name_Keywords</span> to find the list
@@ -156,22 +156,29 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    check the domains and keywords (see the field helps\
    <span class="wims_label">$wims_name_Domain</span> and \
    <span class="wims_label">$wims_name_Keywords</span>),\
-   use the technical english versions.\
-   You could help us by sending new propositions for domains and keywords to
+   use the technical english versions.
 
+
+!set name_warning_keywords_unknown=Les mots-clés suivants ne sont pas dans la liste \
+ officielle des mots-clés de WIMS.
+ !set name_warning_keywords2=Seuls les mots-clés officiels seront proposés par\
+ autocomplétion dans le moteur de recherche. Avez-vous vérifié que les mots-clés\
+ que vous proposez n'ont pas leur équivalent dans la liste "officielle" ? Rappelez-vous\
+ que les mots du titre ou de la description du module sont aussi pris en compte par\
+ le moteur de recherche.
+ !set name_warning_suggestion=You could help us by sending new propositions for domains and keywords to
 !endif
 
 !if $job=diff
   !distribute lines No difference found between the development version and the public version on this server.\
   Only part of the numerous differences between the development version and the public version on this server are shown here:\
   Differences between the development version and the public version on this server:\
-  into name_diff1,name_diff2,name_diff3
+into name_diff1,name_diff2,name_diff3
 !endif
 
 !if $job=restore
-
  !set name_warning1=Your file does not look like a module backup file!\
- <p>You can only restore a file downloaded earlier from Modtool. Try again.</p>
+ You can only restore a file downloaded earlier from Modtool. Try again.
 
  !distribute lines  I cannot recognize your file as a module backup. Error in the file!\
    No difference found between the existing module (in your development space) and the backup archives.\
@@ -196,7 +203,6 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
 
 !exit
 :del
-
 Deleted modules are definitely gone.
 !href cmd=reply&jobreq=backup Make a backup
  first!
@@ -206,7 +212,6 @@ referencing your module, these will be broken if the module is deleted.
 Are you sure you want to delete the module
 !!</p> close after the name of the module
 !exit
-
 :delconfirm
  The file
  <span class="tt wims_fname">$fname</span>

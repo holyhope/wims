@@ -13,13 +13,22 @@ i_domain=!nonempty items $i_domain
 i_keywords=!module keywords devel/$auth_login/$mod
 i_keywords=!nonempty items $i_keywords
 
-!reset dombad domgood
+!reset dombad domgood keywordsgood keywordsbad
 !for cd in $i_domain
   check_domain=!lookup $cd in wimshome/public_html/bases/sys/domain/reversedomain
   !if $check_domain =$empty
     dombad=!append item $cd to $dombad
   !else
     domgood=!append item $cd to $domgood
+  !endif
+!next
+
+!for cd in $i_keywords
+  check_domain=!lookup $cd in wimshome/public_html/bases/sys/domain/reversedomain
+  !if $check_domain =$empty
+    keywordsbad=!append item $cd to $keywordsbad
+  !else
+    keywordsgood=!append item $cd to $keywordsgood
   !endif
 !next
 
