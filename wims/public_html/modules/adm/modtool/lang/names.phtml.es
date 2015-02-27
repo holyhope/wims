@@ -147,6 +147,7 @@ de desarrollo bajo la dirección
      <span class="wims_label">$wims_name_Domain</span> and \
      <span class="wims_label">$wims_name_Keywords</span>. \
      If none of them is convenient, you could help us by sending your propositions to
+
   !set name_warning_domain2=!nosubst Click on the field help\
      <span class="wims_label">$wims_name_Domain</span> or\
      <span class="wims_label">$wims_name_Keywords</span> to find the list
@@ -157,6 +158,14 @@ de desarrollo bajo la dirección
    use the technical english versions.\
    You could help us by sending new propositions for domains and keywords to
 
+
+!set name_warning_keywords_unknown=The following keywords are not in the official \
+ list of WIMS keywords.
+ !set name_warning_keywords2=Only official keywords will be proposed using autocompletion\
+ in the search engine. Have you checked that all keywords\
+ you are proposing have no equivalent in the "official" list ? Remember that\
+ all words in the title or description are also taken into account by the search engine.
+ !set name_warning_suggestion=You could help us by sending new propositions for domains and keywords to
 !endif
 
 !if $job=diff
@@ -167,7 +176,6 @@ into name_diff1,name_diff2,name_diff3
 !endif
 
 !if $job=restore
-
  !set name_warning1=Su fichero no tiene el aire de un fichero de protección de un módulo&nbsp;!<p> \
    No pueden restaurar un fichero sino si fue telecargado antes a partir de Modtool. Vuelva a intentar.</p>
 

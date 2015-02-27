@@ -80,8 +80,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
  into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubst de reeds gebubliceerde module <span class="wims_mod_title">$otit</span> \
-  (<span class="tt wims_fname">$original2</span>) naar de\
-  development afdeling, met als adres
+  (<span class="tt wims_fname">$original2</span>) naar de development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <span class="tt wims_fname">test</span> zone.
@@ -140,7 +139,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   om dit recht te trekken.
  !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
  door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
- !set name_warning_domain=!nosubst Het domein en de zoektermen van de module moeten nog worden gecontrolleerd.\ 
+ !set name_warning_domain=!nosubst Het domein en de zoektermen van de module moeten nog worden gecontrolleerd.\
      Dus <span class="wims_label">$wims_name_Domain</span> en \
      <span class="wims_label">$wims_name_Keywords</span>. \
      Als niets van toepassing is op uw module, stuur ons dan een voorstel voor een nieuw domein etc.
@@ -151,8 +150,15 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    <span class="wims_label">$wims_name_Domain</span> en \
    <span class="wims_label">$wims_name_Keywords</span>),\
    gebruik hiervoor de technische engelse versie.\
-   Stuur uw bijdrage voor domeinen en / of zoektermen naar 
+   Stuur uw bijdrage voor domeinen en / of zoektermen naar
 
+!set name_warning_keywords_unknown=The following keywords are not in the official \
+ list of WIMS keywords.
+ !set name_warning_keywords2=Only official keywords will be proposed using autocompletion\
+ in the search engine. Have you checked that all keywords\
+ you are proposing have no equivalent in the "official" list ? Remember that\
+ all words in the title or description are also taken into account by the search engine.
+ !set name_warning_suggestion=You could help us by sending new propositions for domains and keywords to
 !endif
 
 !if $job=diff
