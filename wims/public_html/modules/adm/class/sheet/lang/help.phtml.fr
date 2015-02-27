@@ -80,31 +80,32 @@ mais on peut aussi la remettre dans le statut
 !endif
 
 :dependancies
-!read adm/title.phtml 1\
-$(name_shtab[6])
+<h2 id="dependancies">$(name_shtab[6])</h2>
 <p>
 Si l'on met une dépendance des scores sur un exercice, un participant doit
-d'abord acquérir suffisamment de points dans d'autres exercices de la feuille/ </p>
-Le champ <span class="tt wims_code_words">$(name_shtab[6])</span> d'un exercice permet
-de préciser les points que doit acquérir un participant sur d'autres exercices de la feuille
-avant de pouvoir travailler sur celui-ci.
+d'abord acquérir suffisamment de points dans d'autres exercices de la feuille. </p>
+Le champ <span class="tt wims_code_words">$(name_shtab[6])</span>
+d'un exercice permet de préciser les points que doit acquérir un participant
+sur d'autres exercices de la feuille avant de pouvoir travailler sur celui-ci.
 Par exemple, mettre <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
 sur l'exercice 6 signifie que le participant doit avoir un succès de 50% sur
 l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur
- les exercices 3, 4, 5 pour pouvoir faire l'exercice 6
-
+ les exercices 3, 4, 5 pour pouvoir faire l'exercice 6.
 </p>
+
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :allowtype
+<h2 id="allowtype">Indication sur l'enregistrement des notes.</h2>
 
-!read adm/title.phtml 1\
-Indication sur l'enregistrement des notes.
-
- Dans le mode sélectif, vous pouvez imposer une
- restriction dans le temps pour l'enregistrement des notes en ajoutant des
+Vous pouvez imposer une restriction dans le temps
+ pour l'enregistrement des notes en sélectionnant
+<span class="tt wims_code_words">$(name_allowtype[4])</span>
+ dans le champ
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+et en ajoutant des mots
  mots
  <span class="tt wims_code_words">
 &gt;aaaammjj.hh:mm</span>
@@ -119,6 +120,7 @@ Exemple :
 permet l'enregistrement des notes entre 2 dates et seulement pour les numéros IP commençant
 par <span class="tt wims_code_words"127.0</span>.
 </p>
+
 :variable
 <p>
 Afin d'individualiser les restrictions d'accès, il est possible de mettre
@@ -139,11 +141,12 @@ Si la restriction est un choix du participant (inscription selon certaines dates
 exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
 (voir l'aide correspondante).
 </p>
-!exit
-
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 :feedback
-!read adm/title.phtml 1\
-$(name_shtab[10])
+<h2 id="feedback">$(name_shtab[10])</h2>
+
 On peut indiquer dans ce champ un lien sur un document de WIMS
 ou un exercice de WIMS. Le lien sur cette ressource apparaîtra lorsque le score est
 strictement inférieur à une note fixée (sur 10).
@@ -154,17 +157,20 @@ Exercice d'un module public ou document public : <span class="tt wims_address">m
 (comme dans <span class="wims_button disabled">$wims_name_about</span>).
 </li><li>
 Exercice de la classe : <span class="tt wims_address">module=classes/fr&exo=_nom_fichier_</span>
-où <span class="tt">_nom_fichier_</span> est le nom du fichier de l'exercice (sans l'extension <span class="tt">.oef</span>).
+où <span class="tt">_nom_fichier_</span> est le nom du fichier de l'exercice
+(sans l'extension <span class="tt">.oef</span>).
 </li><li>
 Document de la classe  :
 <span class="tt wims_address">module=adm/doc&doc=c1&+block=_nom_bloc</span>
 </li></ul>
 
-Les paramètres supplémentaires peuvent être ajoutés (voir <span class="wims_button disabled">$wims_name_about</span>)
+Les paramètres supplémentaires peuvent être ajoutés (voir
+<span class="wims_button disabled">$wims_name_about</span>)
 
 Par exemple, dans l'exemple ci-dessous, si la note est inférieure à 5, l'élève sera dirigé
-sur le document de la classe <span class="tt">c2</span>, et plus précisément sur la page correspondant
-au bloc <span class="tt">aaa</span> de ce document.
+sur le document de la classe <span class="tt">c2</span>, et plus précisément
+sur la page correspondant au bloc
+<span class="tt">aaa</span> de ce document.
 
 <pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
 
@@ -186,8 +192,9 @@ n'existait pas.
 Vous pouvez aussi insérer un lien d'aide dans la feuille en sélectionnant d'abord une ressource WIMS
 et en suivant le lien <span  class="wims_button disabled">$wims_name_addh</span> dans le menu de gauche.
 
-
-!exit
+!!if $wims_read_parm!=$empty
+ !exit
+!!endif
 
 :series
 <p>
@@ -197,4 +204,3 @@ et au moins un exercice de chaque type est proposé si le nombre demandé le perme
 Vous avez demandé dans le paramétrage expert que l'ordre ne soit pas aléatoire,
 vous pouvez ici changer l'ordre des exercices d'une série.
 </p>
-!exit
