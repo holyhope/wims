@@ -107,7 +107,7 @@ $ by  </span>$  $ <span style="color:blue">/</span> $ $<span style="text-decorat
   !read anstype/$(replytype$i).input noprompt
  !endif
 !else
- !distribute item oef_indgood,oef_indbad,oef_indforget, oef_indneutral into colorr_good,colorr_bad,colorr_forget, colorr_neutral
+ !distribute item oef_indgood,oef_indbad,oef_indforget, oef_indneutral, oef_empty into colorr_good,colorr_bad,colorr_forget, colorr_neutral, colorr_none
  !set cl=oef_indforget
  !if $t_=c
   !set cl=$(colorr_$(diachoice$i))
@@ -140,6 +140,9 @@ $ by  </span>$  $ <span style="color:blue">/</span> $ $<span style="text-decorat
      !set cl = $colorr_forget
     !else
       !set cl=$colorr_neutral
+    !endif
+    !if $presentgood=0
+      !set cl=colorr_none
     !endif
     !imgrename <span class="$cl">$p_</span>
     !exit
