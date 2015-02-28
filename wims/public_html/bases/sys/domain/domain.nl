@@ -70,6 +70,7 @@ covariance:
 cristallography:Kristallografie
 cryptology:Cryptologie
 curves:Kurves
+cyclic_code:
 cyclic_group:Cyclische groep
 cytokine:
 data_analysis:Data analyse
@@ -81,6 +82,7 @@ derivative:Afgeleide
 descriptive_statistics:Beschrijvende statistiek
 determinant:Determinant
 development_of_lymphocytes:
+diagonalization:
 differentiability:Differentieerbaarheid
 differential_equation:Differentiaal vergelijkingen
 differential_geometry:Differentiaal meetkunde
@@ -123,6 +125,7 @@ factorization:Ontleden
 fc_receptor:
 field:Velden
 financial_mathematics:Financiele wiskunde
+finite_field:
 finite_group:Eindige groepen
 finnish:
 flow_cytometry:
@@ -294,6 +297,7 @@ series:Reeksen
 set_theory:Verzamelingenleer
 signaling_pathway:
 similarities:Overeenkomsten
+simplex_method:
 simulation:Simulatie
 speaking:Praten
 spelling:Spelling

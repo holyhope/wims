@@ -67,6 +67,7 @@ covariance:
 cristallography:
 cryptology:criptología
 curves:curvas
+cyclic_code:
 cyclic_group:
 cytokine:
 data_analysis:datos estadísticos
@@ -78,6 +79,7 @@ derivative:derivadas
 descriptive_statistics:
 determinant:determinante
 development_of_lymphocytes:
+diagonalization:
 differentiability:derivabilidad
 differential_equation:
 differential_equations:ecuaciones diferenciales
@@ -121,6 +123,7 @@ factorization:factorización
 fc_receptor:
 field:cuerpos
 financial_mathematics:
+finite_field:
 finite_group:
 finnish:
 flow_cytometry:
@@ -288,6 +291,7 @@ set_theory:
 sets:conjuntos
 signaling_pathway:
 similarities:
+simplex_method:
 simulation:
 speaking:
 spelling:

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict "vars";
 use strict "subs";
-use search ('hashdomain', 'treate_dict');
+use search ('hashdomain', 'treate_dict', 'sortuniq', 'out');
 
 use locale;
 use warnings;
@@ -140,7 +140,7 @@ sub hashresultat { my ($file,@list)=@_;
   while (<IN>){
     my @ligne=split(':', $_);
     next if (!$ligne[0]);
-    my @aa=split(',', $ligne[1]);
+    my @aa=sortuniq(split(',', $ligne[1]));
     my $cnt0=$#aa+1;
     for my $a (@aa) {
       chomp $a;
@@ -161,7 +161,7 @@ sub hashresultat { my ($file,@list)=@_;
     $ref->{'num'}{$ligne[0]}=$cnt0 ;
     $ref->{'total'}{$ligne[0]}=0;
   }
-  my @modlist=sort keys %tit;
+  my @modlist=sortuniq(keys %tit);
    for my $id (@modlist) {
      my @ok = grep {/^${id}_/} @modlist;
      push @ok, $id;
@@ -171,15 +171,4 @@ sub hashresultat { my ($file,@list)=@_;
      }
    }
    %ref;
-}
-
-sub sortuniq {
-  my $prev = "not $_[0]";
-  grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
-}
-
-
-sub out { my ($bloc, $text) = @_;
-  open  (OUT, ">$bloc") || die "cannot create $bloc";
-  print OUT $text ; close OUT;
 }
