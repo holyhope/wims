@@ -7,7 +7,7 @@ use Encode;
 use Exporter;
 our @ISA = 'Exporter';
 our @EXPORT = ('hashdomain', 'listdomain', 'out', 'sortuniq', 'treate_accent',
-  'treate_dict', 'treate_language', 'dictionnary', 'reverse_dic');
+  'treate_dict', 'treate_language', 'dictionnary', 'reverse_dic', 'canonify');
 
 sub canonify { my ($w)=@_; treate_accent(lc($w)) }
 
