@@ -1,8 +1,7 @@
 
 !read adm/title.phtml 3\
 $title
-!set list_taxonomy=commoncore,unisciel,keywords
-
+!set taxo=keywords
 !if $parm=$empty
  $name_domain
 <div class="wims_widget_box medium_size">
@@ -17,23 +16,18 @@ $title
 !next
 </ul>
 </div>
-!for taxo in $list_taxonomy
-  !set lang_exists=!defof lang_exists in $taxo.phtml.$lang
-  !if $lang_exists=yes
-    !set script=yes
-  !endif
-!next
-!if $script=yes
+!if $script_keywords=yes
 <div id="taxonomy_list">
   <ul class="tabs">
-    !for taxo in $list_taxonomy
-      !set taxo_title=!defof title in $taxo.phtml.$lang
-      <li><a href="#$taxo">$taxo_title</a></li>
+    !for dom in $Tot_dom
+      !set dom_title=!defof title in taxo/$dom.phtml.$lang
+      <li><a href="#$dom">$dom_title</a></li>
     !next
   </ul>
-  !for taxo in $list_taxonomy
-    <div id="$taxo">
-       !read $taxo.phtml.$lang
+
+  !for dom in $Tot_dom
+    <div id="$dom">
+       !read taxo/$dom.phtml.$lang
      </div>
   !next
 </div>
@@ -46,7 +40,7 @@ $title
         $$( "#taxonomy_list" ).tabs();
       });
     /*]]>*/
-  </script>
+</script>
 !endif
 !else
  $name_available

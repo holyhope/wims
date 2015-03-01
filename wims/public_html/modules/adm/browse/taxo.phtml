@@ -1,0 +1,24 @@
+
+<div id="taxonomy_list">
+  <ul class="tabs">
+    !for taxo in $list_taxonomy
+      !set taxo_title=!defof title in $taxo.phtml.$lang
+      <li><a href="#$taxo">$taxo_title</a></li>
+    !next
+  </ul>
+  !for taxo in $list_taxonomy
+    <div id="$taxo">
+       !read $taxo.phtml.$lang
+     </div>
+  !next
+</div>
+ <!-- JS for dynamic tree display -->
+<script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
+ <!-- JS for Tabs display -->
+<script type="text/javascript">
+    /*<![CDATA[*/
+    jQuery(function($$) {
+        $$( "#taxonomy_list" ).tabs();
+      });
+    /*]]>*/
+</script>

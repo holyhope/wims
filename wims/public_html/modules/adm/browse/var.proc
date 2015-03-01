@@ -3,8 +3,10 @@
 !endif
 !read adm/language lang/names.phtml
 
+!set list_taxonomy=commoncore,unisciel
+
 wims_prefix=class user tmp
-!bound job within home,type,subject,level,best,new default home
+!bound job within home,type,subject,level,best,new, taxo default home
 !read tabletheme
 
 search_addr=!nosubst module=home&language=$lang&search_keywords=$key&search_category=$cat&search_and=$search_and&$browse_parm
@@ -20,12 +22,24 @@ browse_parm=browse_job=$job&browse_parm=$parm
 !set dir=$dir/domain
 
 Tot_dom=!lookup domain in $dir
+Tot_dom=!sort items $Tot_dom
 !for d in $Tot_dom
   tot_dom_$d=!lookup $d in $dir
   !for l in  $(tot_dom_$d)
      dom_$l=!lookup $l in $dir
   !next
 !next
+
+!for taxo in $list_taxonomy
+  !set lang_exists=!defof lang_exists in $taxo.phtml.$lang
+  !if $lang_exists=yes
+    !set script_taxo=yes
+  !endif
+!next
+!set lang_exists=!defof lang_exists in keywords.phtml.$lang
+  !if $lang_exists=yes
+    !set script_keywords=yes
+  !endif
 
 !read $job.proc
 
