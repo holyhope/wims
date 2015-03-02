@@ -12,8 +12,7 @@ my $outputtaxo='../../modules/';
 my $ddir='taxonomy';
 my $indexdir="../classification";
 my $sheetdir="../sheet";
-my $module='';
-my $option='';
+my ($module,$option)=('','');
 while ($_ = shift (@ARGV))
 {
   last if (!/^--/);
@@ -176,7 +175,6 @@ sub hashresultat { my ($file, $filesheet)=@_;
       chomp $a;
       my $b = canonify($a);
       if($titsheet{$b}) { $b = $titsheet{$b} } else { $b =~ s!/!~!g;}
-      print $b . "\n";
       $ref->{'sheet'}{$ligne[0]} .="<li class=\"taxo_module\">\n"
    . "!href target=wims_internal module=adm/sheet\&+job=read\&+sh=$a $b\n </li>\n";
       }
