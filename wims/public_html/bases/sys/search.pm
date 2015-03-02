@@ -24,7 +24,7 @@ sub treate_dict { my ($file) = @_;
    my @L = sortuniq(split("\n",$text));
    for my $l (@L) {
      my @la=split(":", $l) ;
-     $ref{canonify($la[0])}=$la[1] if ($la[1]);
+     $ref{canonify($la[0])}=join(':',@la[1..@la-1]) if ($la[1]);
     }
    }
   close IN;
