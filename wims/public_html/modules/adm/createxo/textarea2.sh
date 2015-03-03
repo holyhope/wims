@@ -8,7 +8,7 @@ else
 fi
 content=`sed 's/\&/\&amp;/g;s/</\&lt;/g' 2>/dev/null <$src`
 cat <<@
-<textarea rows="24" wrap="off" 
+<textarea rows="24" class="nowrap"
 name="wims_deposit" id="wims_deposit_id">$content</textarea>
 @
 

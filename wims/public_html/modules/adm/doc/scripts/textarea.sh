@@ -2,7 +2,7 @@
 
 content=`sed 's/\&/\&amp;/g;s/</\&lt;/g' <$w_wims_home/$w_wims_sesdir/doc.src`
 cat <<@
-<textarea cols="70" rows="50" wrap="off"
+<textarea cols="70" rows="50" class="nowrap"
 name="wims_deposit" id="wims_deposit_id">$content</textarea>
 @
 

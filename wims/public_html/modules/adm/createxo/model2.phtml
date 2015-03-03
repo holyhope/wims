@@ -54,7 +54,7 @@ $table_header
   !endif
   </td>
   </tr>
- !else 
+ !else
   !set ta=!append item $i to $ta
  !endif
 !next i
@@ -65,7 +65,7 @@ $table_end
   <div class="field" id="textarea$i" style="text-align:center; padding:10px;">
     <label for="reply$i">$(title$i)</label>
     !set val=!reinput $(val$i)
-    
+
     !if $(name$i) iswordof $model_asis
       !! Check if param value is set as "asis()", so it will not be printed to users
       !set debut=!char 1..4 of $val
@@ -80,11 +80,11 @@ $table_end
       !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
     !endif
     <br />
-    <textarea name="reply$i" id="reply$i" cols="120" rows="10" class="wims_model_textarea"
+    <textarea name="reply$i" id="reply$i" cols="120" rows="10" class="wims_model_textarea
     !if $(type$i) iswordof matrix
-      wrap="off"
+nowrap"
     !endif
-    >$val</textarea>
+    ">$val</textarea>
   </div>
  !next i
 !endif
@@ -96,6 +96,4 @@ $table_end
   !href cmd=reply&level=1 $wims_name_giveup
 </div>
 
-
 !formend
-
