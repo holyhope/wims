@@ -48,7 +48,7 @@ char allang[MAX_LANGS][4]={
 char ignore[MAX_LANGS][MAX_LINELEN+1];
 char mlistfile[MAX_LANGS][256];
 int langcnt;
-FILE *langf, *titf, *descf, *weightf, *robotf, *indf, *listf, *addrf, *serialf, *authorf, *versionf, *remf;
+FILE *langf, *titf, *descf, *weightf, *robotf, *indf, *listf, *addrf, *serialf, *authorf, *versionf, *remf, *titlef;
 
 struct cat {
     char *name;
@@ -702,6 +702,7 @@ void onesheet(int serial, int lind)
     fprintf(titf,"%d:%s\n",serial,sindbuf[s_title]);
     fprintf(descf,"%d:%s\n",serial,sindbuf[s_description]);
     fprintf(remf,"%d:%s\n",serial,sindbuf[s_information]);
+    fprintf(titlef,"%s:%s\n",mod[serial].name,sindbuf[s_title]);
 
     entrycount=dentrycount; dicbuf=ddicbuf;
     memmove(entry,dentry,dentrycount*sizeof(entry[0]));
@@ -785,6 +786,8 @@ void sheets(void)
     remf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/serial.%s",sheetdir,lang[j]);
     serialf=fopen(buf,"w");
+    snprintf(buf,sizeof(buf),"%s/index/tit.%s",sheetdir,lang[j]);
+    titf=fopen(buf,"w");
     snprintf(mdic,sizeof(mdic),"%s/%s.%s",dicdir,maindic,lang[j]);
     snprintf(sdic,sizeof(sdic),"%s/%s.%s",dicdir,suffixdic,lang[j]);
     snprintf(gdic,sizeof(gdic),"%s/%s.%s",dicdir,groupdic,lang[j]);

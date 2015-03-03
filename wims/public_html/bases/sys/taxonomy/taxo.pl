@@ -59,7 +59,7 @@ if ($option) {
  exit;
 }
 ####
-my %titsheet = treate_dict ("$sheetdir/index/title"); my $titsheet=\%titsheet;
+my %titsheet = treate_dict ("$sheetdir/index/tit.$LANG"); my $titsheet=\%titsheet;
 taxonomy("unisciel", $LANG, '_','_',);
 
 my $ccsstitle='CCSS.Math.Content_';
