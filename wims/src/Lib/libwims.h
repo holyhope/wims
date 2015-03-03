@@ -217,8 +217,10 @@ int levelcurve(leveldata *ld);      /* produces level curve data. Returns non-ze
 #define myisalnum(x) (myisalpha(x) || myisdigit(x))
 #define myisupper(x) ((x)>='A' && (x)<='Z')
 #define myislower(x) ((x)>='a' && (x)<='z')
-#define myislspace(x) ((x)==' ' || (x)=='\t')
-#define myisspace(x) ((x)==' ' || (x)=='\t' || (x)=='\n' || (x)=='\r')
+#define myislspace(x) ((x)==' ' || (x)=='\t' || (x)=='\xa0')
+#define myisspace(x) ((x)==' ' || (x)=='\t' || (x)=='\n' || (x)=='\r' )
+#define myismspace(x) ((x)==' ' || (x)=='\t' || (x)=='\n' || (x)=='\r' || (x)=='\xa0')
+
 
 /*ou
 inline int myisdigit(char x) { return x>='0' && x<='9'; }

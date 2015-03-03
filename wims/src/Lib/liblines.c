@@ -615,7 +615,7 @@ void singlespace(char *p)
 void nospace(char *p)
 {
     char *pp, *pt;
-    for(pp=pt=p;*pp;pp++) if(!myisspace(*pp)) *pt++=*pp;
+    for(pp=pt=p;*pp;pp++) if(!myismspace(*pp)) *pt++=*pp;
     *pt=0;
 }
 
