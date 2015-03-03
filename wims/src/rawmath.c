@@ -295,6 +295,7 @@ void rawmath(char *p)
     while(*p1=='+') p1++;
     if(p1>p) ovlstrcpy(p,p1);
     (void)__replace_badchar(p,"**", "^");
+    (void)__replace_badchar(p,"\xa0", " ");
     if (__replace_badchar(p,"²", "^2 ")) flatpower=1;
     if (__replace_badchar(p,"³", "^3 ")) flatpower=1;
     unmatch=__replace_abs(p);
