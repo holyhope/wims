@@ -1,3 +1,4 @@
+!reset inputsize
 !if $wims_read_parm=$empty
  !exit
 !endif
@@ -36,9 +37,7 @@ $ in $parm
        !endif
        !set inputsize_tmp=!nospace $inputsize_tmp
        !set inputsize_tmp=!items2words $inputsize_tmp
-       !if $inputsize_tmp=$empty
-          !set inputsize_tmp=$inputsize
-       !endif
+       !default inputsize_tmp=$inputsize
        !set nbdim=!wordcnt $inputsize_tmp
        !if $nbdim==2
          !distribute words $inputsize_tmp into sizer,sizec

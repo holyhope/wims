@@ -1,0 +1,86 @@
+!reset inputsize
+!set force_mathml=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+!if $wims_read_parm=help
+ !read help/$lang/special/mathmlinput.phtml
+ !exit
+!endif
+!set parm=!replace internal ,	r by $	r in $wims_read_parm
+!set parm=!replace internal $	$ by $\
+$ in $parm
+
+!set code=!item 1 of $parm
+!set code=!declosing $code
+
+!set inputsize=!item 2 to -1 of $parm
+!set parm=!line 2 to -1 of $inputsize
+!set inputsize=!line 1 of $inputsize
+!default inputsize=5
+!set inputsize=!items2words $inputsize
+!set parmcnt=!linecnt $parm
+!set pretext=$code
+
+!reset hlist
+!for j = 1 to $parmcnt
+   !set ld=!line $j of $parm
+   !reset inputsize_tmp
+   !distribute item $ld into n_,inputsize_tmp,display,css
+   !default inputsize_tmp=$inputsize
+   !set reply_tmp=!nospace $n_
+   !set rep_tmp=!replace internal reply by r in $reply_tmp
+   !set n_=!text select 0123456789 in $reply_tmp
+   !set n_=$[$n_]
+   !bound n_ between integer 1 and 100 default $
+   !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
+     range litexp algexp formal equation function
+  !!  !default wims_fill_type=$(replytype$n_)
+    !set embedded=!append item r$n_ to $embedded
+    !set pretext=!replace internal reply$j by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(display)}{0} $ in $pretext
+    !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
+    !set formm=$formm document.forms['replyform'].reply$n_.value=document.getElementById("mathml"+$n_).value;
+    !set nrep=!append item $n_ to $nrep
+   !endif
+!next j
+
+!if $q_form=yes
+<script type="text/javascript">\
+function read_mathml(){\
+$formm\
+ }\
+</script>
+\( $pretext )
+$hlist
+!set oef_js_submit=$oef_js_submit read_mathml();
+!else
+ !distribute item 0ddf00,ff4040 into colorr_good,colorr_bad
+ !set codegood=$code
+ !set codereply=$code
+ !set test=0
+ !for j = 1 to $parmcnt
+     !reset inputsize_tmp
+     !set ld=!line $j of $parm
+     !distribute item $ld into m_,inputsize_tmp,display,css
+     !default inputsize_tmp=$inputsize
+     !set m_=!text select 0123456789 in $m_
+     !set m_=$[$m_]
+     !default reply_$m_=$(reply$m_)
+     !set tt=!word 1 of $(replygood$m_)
+     !if $tt!=?analyze
+       !set cl=$(colorr_$(diareply$m_))
+     !else
+       !set cl=$colorr_ana
+     !endif
+     !if $(diareply$m_)!=good
+       !set test=1
+     !endif
+    !set codereply=!replace internal reply$j by $ \input{$inputsize_tmp}{$m_}{$css;color:#$(colorr_$(diareply$m_))}{$(reply$m_)}{1} $ in $codereply
+    !set codegood=!replace internal reply$j by $ \input{$inputsize_tmp}{$m_}{}{$css;$(replyGood$m_)}{1} $ in $codegood
+ !next j
+
+  \( $codereply \)
+ !if $test=1
+   \( $codegood \)
+ !endif
+!endif
