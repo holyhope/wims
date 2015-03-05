@@ -17,6 +17,12 @@ $ in $parm
 !set inputsize=!item 2 to -1 of $parm
 !set parm=!line 2 to -1 of $inputsize
 !set inputsize=!line 1 of $inputsize
+
+!if noanswer isin $inputsize
+   !set noanswer=1
+   !set inputsize=!item 1 of $inputsize
+!endif
+!set inputsize=!text select 0123456789 in $inputsize
 !default inputsize=5
 !set inputsize=!items2words $inputsize
 !set parmcnt=!linecnt $parm
@@ -54,7 +60,7 @@ $formm\
 $hlist
 !set oef_js_submit=$oef_js_submit read_mathml();
 !else
- !distribute item 0ddf00,ff4040 into colorr_good,colorr_bad
+ !distribute item green,red into colorr_good,colorr_bad
  !set codegood=$code
  !set codereply=$code
  !set test=0
@@ -75,12 +81,14 @@ $hlist
      !if $(diareply$m_)!=good
        !set test=1
      !endif
-    !set codereply=!replace internal reply$j by $ \input{$inputsize_tmp}{$m_}{$css;color:#$(colorr_$(diareply$m_))}{$(reply$m_)}{1} $ in $codereply
-    !set codegood=!replace internal reply$j by $ \input{$inputsize_tmp}{$m_}{}{$css;$(replyGood$m_)}{1} $ in $codegood
+    !set codereply=!replace internal reply$j by $ \special{color=$cl}{$(reply$m_)} $ in $codereply
+    !set codegood=!replace internal reply$j by $ $(replyGood$m_)$ in $codegood
  !next j
+!!debug \( $codereply \)
 
-  \( $codereply \)
- !if $test=1
-   \( $codegood \)
+ !if $test=1 and $noanswer!=1
+   \( $codereply  \quad \quad $codegood\)
+ !else
+   \( $codereply \)
  !endif
 !endif
