@@ -787,7 +787,7 @@ void sheets(void)
     snprintf(buf,sizeof(buf),"%s/index/serial.%s",sheetdir,lang[j]);
     serialf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/index/tit.%s",sheetdir,lang[j]);
-    titf=fopen(buf,"w");
+    titlef=fopen(buf,"w");
     snprintf(mdic,sizeof(mdic),"%s/%s.%s",dicdir,maindic,lang[j]);
     snprintf(sdic,sizeof(sdic),"%s/%s.%s",dicdir,suffixdic,lang[j]);
     snprintf(gdic,sizeof(gdic),"%s/%s.%s",dicdir,groupdic,lang[j]);
