@@ -1,4 +1,4 @@
-slib_script=var $brd = JXG.JSXGraph.initBoard('$jxgbox', {axis:true, boundingbox:[-4,4,4,-4]});\
+slib_script=var $brd = JXG.JSXGraph.initBoard('$jxgbox', {axis:true, boundingbox:[-4,4,4,-4],showCopyright:false});\
   JXG.JSXGraph.freeBoard($brd);\
 var xinit$slib_number = parseFloat('$slib_xinit');\
 var yinit$slib_number = parseFloat('$slib_yinit');\
