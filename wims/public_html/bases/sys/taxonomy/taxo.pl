@@ -44,6 +44,7 @@ if ($option) {
      for my $tt (split(',', $t)) {
       $Tw .= '<li class="closed">';
       my $tt0=$titw->{$tt};
+      if(!$tt0) { $tt0=$tt ; print $tt ."\n" ;};
       $Tw .= "<span id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>\n"
             . "!set key=$tt0\n"
             . '!href $search_addr' . " >>>>\n"
