@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict "vars";
 use strict "subs";
-use search ('hashdomain', 'treate_dict', 'sortuniq', 'out', 'canonify');
+use search ('hashdomain', 'treate_dict', 'sortuniq', 'out', 'canonify', 'reverse_dic');
 
 use locale;
 use warnings;
@@ -12,6 +12,7 @@ my $outputtaxo='../../modules/';
 my $ddir='taxonomy';
 my $indexdir="../classification";
 my $sheetdir="../sheet";
+my $moduledir="../site";
 my ($module,$option)=('','');
 while ($_ = shift (@ARGV))
 {
@@ -61,6 +62,9 @@ if ($option) {
 }
 ####
 my %titsheet = treate_dict ("$sheetdir/index/tit.$LANG"); my $titsheet=\%titsheet;
+#my %titmodule = treate_dict ("$moduledir/tit"); my $titmodule=\%titmodule;
+my %addr = reverse_dic ("$moduledir/addr"); my $addr=\%addr;
+my %titmodule = treate_dict ("$moduledir/title"); my $titmodule=\%titmodule;
 taxonomy("unisciel", $LANG, '_','_',);
 
 my $ccsstitle='CCSS.Math.Content_';
@@ -148,17 +152,19 @@ sub hashresultat { my ($file, $filesheet)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = $a; $b =~ s!/!~!g;
+      if (!$titmodule{$addr{$a}}) { print "$a\n" ; $titmodule{$a}=$a};
+      my $bb= ($titmodule{$addr{$a}}) ? $titmodule{$addr{$a}} . "<span class=\"small hidden\">($b)</span>" : $b;
       if (-e "../../modules/$a/Extitles") {
         my %dic=treate_dict("../../modules/$a/Extitles");
         my @exo= values %dic;
         $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
-      "!href target=wims_internal module=$a $b\n" .
+      "!href target=wims_internal module=$a $bb\n" .
       '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
        . "</li>\n";
        }
      else {
       $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
-      "!href target=wims_internal module=$a $b\n </li>\n";
+      "!href target=wims_internal module=$a $bb\n </li>\n";
      }
     }
     $ref->{'num'}{$ligne[0]}=$cnt0;
@@ -175,7 +181,7 @@ sub hashresultat { my ($file, $filesheet)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = canonify($a);
-      if($titsheet{$b}) { $b = $titsheet{$b} } else { $b =~ s!/!~!g;}
+      if($titsheet{$b}) { $b = $titsheet{$b} . " <span class=\"small hidden\">($b)</span>" } else { $b =~ s!/!~!g;}
       $ref->{'sheet'}{$ligne[0]} .="<li class=\"taxo_module\">\n"
    . "!href target=wims_internal module=adm/sheet\&+job=read\&+sh=$a $b\n </li>\n";
       }

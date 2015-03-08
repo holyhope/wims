@@ -68,14 +68,6 @@ cd $WIMS_HOME
 mkdir -p $KEYWDIR
 cp $BASES/sys/tmp/* $KEYWDIR
 
-### reverse the table of modules/taxonomy
-cd $BASES/classification
-echo "classification"
-./classif.pl
-
-cd $BASES/dic ;
-./mkindex.sh
-
 cd $BASES/sheet
 slist="`find . -name '*.def' | sed 's!^./!!g;s!.def$!!g' | sort`"
 rm -f index/*
@@ -217,6 +209,13 @@ do
   $dicsort $f >>mkindex.log
   mv $f.sorted $f
 done
+
+### create the taxonomy
+cd $BASES
+./mkbrowse
+
+cd $BASES/dic ;
+./mkindex.sh
 
 #slib index
 cd $SLIB
