@@ -2,10 +2,21 @@
  !goto $wims_read_parm
 !endif
 
-:dependancies
-!read adm/title.phtml 1\
-$(name_shtab[6])
+:general
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
+!read lang/help.phtml.fr general
 
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:statut
+!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
+!read lang/help.phtml.fr statut
+
+:dependancies
+<h2 id="dependancies">$(name_shtab[6])</h2>
+<p>
   means that a participant must get
   required scores in other exercises of the worksheet before he/she can do
   this one. For example,
@@ -14,7 +25,7 @@ $(name_shtab[6])
   participant must get 50% success on exercise 1, 30% success on exercise 2,
   and an average of 60% success on exercises 3, 4, 5.
 
-<br class="spacer" />
+</p>
 
 !if $wims_read_parm!=$empty
  !exit
@@ -41,11 +52,11 @@ For example, <span class="tt wims_code_words">
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
 !read lang/help.phtml.fr variable
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :feedback
-!read adm/title.phtml 1\
-$(name_shtab[10])
 !! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
 !read lang/help.phtml.fr feedback
 
