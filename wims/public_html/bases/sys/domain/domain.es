@@ -1,18 +1,23 @@
 2_shape:
 3_shape:
 abelian_group:
+absolute_frequency:
 absolute_value:
 abstract_algebra:álgebra abstracta
 adaptative_immunity:
+addition:
+affine_function:
 affine_geometry:geometría afín
 algebra:álgebra
 algebra_geometry:
 algebraic_geometry:
 algorithmics:
+altitude:
 american_civilisation:
 amino_acid:
 analysis:análisis
 analytic_geometry:geometría analítica
+angle_bisector:
 angles:ángulos
 animal_cell:
 antibody:
@@ -20,17 +25,22 @@ antibody_diversity:
 antigen:
 area:
 arithmetic:aritmética
+arithmetic_sequence:
 arts:
+asymptote:
 bacteria:
 barycenter:
 basis:
+basis_change:
 bezout_algorithm:relación de Bezout
 bilinear_algebra:
+binomial_distribution:
 biochemistry:
 biology:
 body_system:
 botany:
 business_english:
+calculation:
 calculus:cálculo
 cell_biology:
 cell_cycle:
@@ -58,14 +68,19 @@ complex_number:números complejos
 complex_plane:
 complexity:
 conditional_probability:
+cone:
 confidence_interval:
 congruence:congruencia
 conics:cónicas
 continued_fraction:fracción continua
 continuity:continuidad
+convergence:
+coordinates:coordenada
 covariance:
 cristallography:
 cryptology:criptología
+cumulative_frequency:
+curve_fitting:
 curves:curvas
 cyclic_code:
 cyclic_group:
@@ -85,9 +100,12 @@ differential_equation:
 differential_equations:ecuaciones diferenciales
 differential_geometry:
 differential_system:
+dimension:
 dimensional_analysis:
 diophantine_equations:ecuaciones diofantinas
 discrete_mathematics:
+discrete_probability_distribution:
+division:división
 domain:
 dynamic_system:
 dynamics:
@@ -116,6 +134,7 @@ eucaryote:
 euclidean_algorithm:división euclidea
 euclidean_geometry:geometría euclídea
 events:
+expectation:
 exponent:
 exponential:
 factorial:factorial
@@ -137,14 +156,16 @@ french_grammar:
 french_reading:
 french_spelling:
 french_vocabulary:
+function_variation:
 functions:funciones
 gas_mechanics:
 gauss_algorithm:
+gaz_mechanics:
 gcd_lcm:pgcd ppcm
 gene_rearrangement:
 genetics:
 geography:
-geology:
+geometric_sequence:
 geometry:geometría
 german:
 goldbach:Goldbach
@@ -165,8 +186,12 @@ hyperbola:hipérbole
 hyperplane:hiperplanos
 immunoglobulines:
 immunology:
+independent_events:
+independent_random_variables:
 inequalities:desigualdades
+inequations:
 infection:
+inferential_statistics:
 infonet:
 informatics:
 information_theory:
@@ -185,8 +210,11 @@ limit:límites
 line:líneas
 line_equation:
 linear_algebra:álgebra lineal
+linear_differential_equation:
+linear_function:
 linear_maps:alicaciones lineales
 linear_optimisation:
+linear_system:
 linear_systems:sistemas lineales
 lines:líneas
 linguistics:
@@ -200,6 +228,7 @@ lymphoid_organ:
 macrophage:
 magnetism:
 maps:aplicaciones
+markov:
 markov_chains:
 mathematics:
 matrix:matrices
@@ -208,6 +237,7 @@ measurement:
 mechanics:
 medecine:
 median:
+median_line:
 medicinal_chemistry:
 methodical_calculation:
 mhc:
@@ -216,13 +246,17 @@ misc:miscelánea
 mitosis:
 modelling:
 modular_arithmetic:aritmética modular
+multiplication:multiplicación
+multivariable_function:
 music:
 mycology:
 neutrophil:
 nk_cell:
+normal_distribution:
 number:números
 number_theory:
 numbering_system:sistemas de numeración
+numeration:
 numerical_analysis:
 numerical_method:
 ode:ODE
@@ -234,12 +268,15 @@ organelle:
 organic_chemistry:
 oscillators:
 parabola:parábola
+parallelogram:
 parametric_curves:curvas paramétricas
 pbsolving:
 peptide:
 percentage:porcentajes
 percents:
+perimeter:
 permutation:permutación
+perpendicular_bisector:
 pert:
 phagocytosis:
 phonetics:
@@ -249,13 +286,17 @@ physics:
 plane:planos
 plane_equation:
 plant_cell:
+poisson_distribution:
 polar_curves:curvas polares
 polygons:polígonos
 polynomials:polinomios
 prealg:pre-álgebra
 precalc:pre-cálculo
+prediction_interval:
+pression:
 primes:números primos
 primitive:primitivas
+priority_rule:
 probability:probabilidad
 probability_distribution:distribuciones
 probability_space:
@@ -264,7 +305,9 @@ process_engineering:
 programming:
 pronunciation:
 proportionality:proporcionalidad
+pyramid:
 quadratic_form:
+quartile:
 quotient_group:
 random:
 random_variable:
@@ -273,13 +316,16 @@ rational_number:
 reading:
 real_function:
 real_number:números reales
+reasoning:
 receptor:
 rectangles:rectángulos
+recurrence_relation:
 regression:
 relative_number:
 ring:anillos
 roots:raíces
 ruler_and_compass:regla y compás
+sampling:
 scalar_product:
 scheduling:
 sciences:
@@ -290,14 +336,18 @@ series:series
 set_theory:
 sets:conjuntos
 signaling_pathway:
+signdigits:
 similarities:
 simplex_method:
 simulation:
 speaking:
 spelling:
 sports:
+standard_deviation:
 statistical_test:
 statistics:estadística
+subst_integral:
+subtraction:
 surfaces:superficies
 symmetric_group:
 symmetry:
@@ -312,11 +362,16 @@ titration:
 topology:
 toxin:
 transformation_group:
+transition_matrix:
 triangles:triángulos
+trigonometric_circle:
+trigonometric_functions:
 trigonometry:trigonometría
 vaccine:
+variance:
 vector_space:espacios vectoriales
 vectorial_analysis:
+vectorial_geometry:
 vectors:vectores
 vibration:
 virus:
