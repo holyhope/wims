@@ -23,19 +23,23 @@
         <br class="clearall"/>
     </div>
 
-    <ul class="box_content">
+    <ul class="box_content wimscenter">
         <li class="inline">
-            <input type="search" size="20" name="search_keywords" value="$search_keywords" class="wims_home_form multicomplete"/>
+            <input type="search"
+                   size="16"
+                   name="search_keywords"
+                   value="$search_keywords"
+                   class="wims_home_form multicomplete"
+                   placeholder="$name_keywords_enter"
+                   autosave="search_keywords"
+                   results="5"/><button class="wims_button" type="submit">$N_Search</button>
         </li>
         <li class="inline">
-         !formselect search_category list $slist prompt $plist
+          !formselect search_category list $slist prompt $plist
+          !default search_lang=$lang
+          !set L_language=!words2items $wims_site_languages
+          !formselect search_lang list $L_language
         </li>
-        <li class="inline">
-        !default search_lang=$lang
-        !set L_language=!words2items $wims_site_languages
-        !formselect search_lang list $L_language
-        </li>
-        <li class="inline"><input type="submit" value="$N_Search"/></li>
     </ul>
 !formend
 
