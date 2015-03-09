@@ -116,15 +116,15 @@ char *link_color="#004077";
 /* vlink color */
 char *vlink_color="#004077";
 /* link color in standard reference tables */
-char *ref_menucolor="white";
+char *ref_menucolor="#FFFFFF";
 /* background help button color */
-char *ref_button_help_bgcolor="green";
+char *ref_button_help_bgcolor="#008f00";
 /* background help button color */
-char *ref_button_help_color="white";
+char *ref_button_help_color="#FFFFFF";
   /* button background color */
 char *ref_button_bgcolor="#666666";
   /* button color */
-char *ref_button_color="white";
+char *ref_button_color="#FFFFFF";
 /* module log disabled by default */
 int modlog=0;
 /* name of the variable definition file for every module.
