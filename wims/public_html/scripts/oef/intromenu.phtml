@@ -27,9 +27,17 @@
 
 !if $special_parm3!=$empty
  !let tmp=!replace internal ; by $ $ in $special_parm3
- !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,random,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
-  !let t=!getopt $(cle) in $tmp
-  !default $(cle)=$t
+!!!should use the script getparm
+ !set testw=!replace internal ; by $\
+$ in $special_parm3
+ !set testw=!replace internal = by , in  $testw
+ !for cle in exo,qnum,qcmlevel, scoredelay,intro_qcmpresent,intro_presentsol,intro_check,random,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
+  !set testw0=!select $testw where column 1=$cle
+  !set get_$cle=$(testw0[;2..-1])
+  !set get_$cle=!singlespace $(get_$cle)
+  !set get_$cle=!words2items $(get_$cle)
+  !set get_$cle=!listuniq $(get_$(cle))
+   !default $(cle)=$(get_$cle)
  !next cle
  !if $scoredelay=0
   !reset scoredelay
@@ -128,6 +136,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !read introhook.phtml
 </table>
 !if expert iswordof $special_parm2
+   !default intro_check=1,2,3,4
     <fieldset class="oef_expert">
     <legend>$name_expertmenu</legend>
     <div class="field">
@@ -157,7 +166,6 @@ $name_qcm
      !default intro_qcmpresent=4
      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
-    !default intro_check=1,2,3,4
     <div class="field">
      <label>
       !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
