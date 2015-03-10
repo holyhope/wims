@@ -19,6 +19,10 @@ translation_language=!module translation_language $module
 
 #if you change these limits, you have to modify var.def!
 limit_var=2048
+!!does not work because it is not an administrative modules but the limit are here
+!!limit_choice=!getdef MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
+!!limit_reply=!getdef MAX_OEFREPLIES in wimshome/public_html/bases/sys/define.conf
+
 limit_reply=100
 limit_choice=30
 testnum=10
@@ -394,7 +398,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  !if $freetot>0
   freegot=$[$condgot+$freegot+$gotadjust+$precweight*$precgood]
   !if $freegot >= 0
-   freegot=$[(($freegot/$freetot)^(($qcmlevel+1)/2))*$freetot*2]
+   freegot=$[(($freegot/$freetot)^$freepower)*$freetot*2]
   !else
    freegot=$[2*$freegot]
   !endif
