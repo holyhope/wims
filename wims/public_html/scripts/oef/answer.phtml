@@ -7,19 +7,7 @@
 !endif
 !read ./oef/$module_language/answer.phtml
 <div id="answeranalysis">
-<div class="legend oefanswername">$name_answeranalysis.</div>
-<div class="content">
-!if $ansorder!=$empty or $conditioncnt >0
-<table style="border:0">
-!endif
-!distribute item 1,1 into cntr,cntc
-
-!set indgood=<div class="oef_indgood inline">$indgood</div>
-!set indpartial=<div class="oef_indpartial inline">$indpartial</div>
-!set indprec=<div class="oef_indprec inline">$indprec</div>
-!set indbad =<div class="oef_indbad inline">$indbad</div>
-!set condgood=<div class="oef_condgood inline">$condgood</div>
-!set condbad =<div class="oef_condbad inline">$condbad</div>
+<h2 class="legend oefanswername">$name_answeranalysis.</h2>
 
 !for t in $ansorder
  !set i=$(cnt$t)
@@ -29,11 +17,39 @@
  !advance cnt$t
 !next t
 
+<div class="content">
+
+!if $ansorder!=$empty or $conditioncnt >0
+  <table style="border:0;" class="float_left">
+!endif
+
+!distribute item 1,1 into cntr,cntc
+
+!set indgood   =<div class="oef_indgood inline">$indgood</div>
+!set indpartial=<div class="oef_indpartial inline">$indpartial</div>
+!set indprec   =<div class="oef_indprec inline">$indprec</div>
+!set indbad    =<div class="oef_indbad inline">$indbad</div>
+!set condgood  =<div class="oef_condgood inline">$condgood</div>
+!set condbad   =<div class="oef_condbad inline">$condbad</div>
+
+!for t in $ansorder
+ !set i=$(cnt$t)
+ !if $oefsteps=$empty or $t$i isitemof $gotsteps
+  !read oef/answer$t.phtml
+  !! # Here is a whitelist of answer types where color legend must be displayed.
+  !if $(replytype$i) iswordof radio checkbox mark flashcard
+    !set display_oeflegend=yes
+  !endif
+ !endif
+ !advance cnt$t
+!next t
+
 !if $conditioncnt>0
  !if $embedded_bracket!=$empty
   <tr><td style="text-align:left" colspan="2" class="nowrap small">$embedded_bracket</td></tr>
  !endif
 !endif
+
 !for i in $condlist
  !if hide notwordof $(condoption$i)
   <tr><td colspan="2" class="bold">$(condname$i):</td><td>
@@ -41,8 +57,13 @@
   </td></tr>
  !endif
 !next i
+
 !if $ansorder!=$empty or $conditioncnt >0
-</table>
+  </table>
+!endif
+
+!if $display_oeflegend issametext yes
+  !read oef/color_legend.phtml
 !endif
 
 !if $feedbackcnt>0
@@ -59,10 +80,9 @@
 !endif
 
 !if $m_reply_err != $empty
- <pre class="wimswarning">
- $m_reply_err
-</pre>
+ <pre class="wimswarning">$m_reply_err</pre>
 !endif
+    <br class="spacer clearall"/>
   </div>
  </div>
 </div>
