@@ -7,6 +7,7 @@
 :draw,Inclusión de imágenes dinámicas,en los ejercicios.
 :reply,Cómo puede el usuario responder a un ejercicio,(tipos de respuestas).
 :feedback, Comentarios de retroalimentación,sobre los errores típicos en las respuestas.
+:oefspecial,Special methods
 :oefadv,Características avanzadas
 :slib&slib_cmd=help,Library of scripts (slib).
 :command,Liste de commandes

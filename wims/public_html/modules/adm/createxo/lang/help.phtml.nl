@@ -7,6 +7,7 @@
 :draw,Dynamische gegenereerde plaatjes,in de oefeningen
 :reply,Antwoord modellen
 :feedback,Hoe geef ik interactieve feedback,op de antwoorden
+:oefspecial,Special methods
 :oefadv,Geavanceerde mogelijkheden
 :slib&slib_cmd=help,Bibliotheek met routines,(slib)
 :command,Lijst met commando's
