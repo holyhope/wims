@@ -9,6 +9,8 @@
 <div id="answeranalysis">
 <h2 class="legend oefanswername">$name_answeranalysis.</h2>
 
+<div class="content">
+
 !for t in $ansorder
  !set i=$(cnt$t)
  !if $oefsteps=$empty or $t$i isitemof $gotsteps
@@ -17,10 +19,8 @@
  !advance cnt$t
 !next t
 
-<div class="content">
-
 !if $ansorder!=$empty or $conditioncnt >0
-  <table style="border:0;" class="float_left">
+  <table style="border:0;" class="float_left spacer">
 !endif
 
 !distribute item 1,1 into cntr,cntc
@@ -71,12 +71,16 @@
 !endif
 
 !if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $score<10))
- <span class="bold">$name_Solution.</span>
- !if $solution!=$executed_str or $oef2wims_version<3.10
-  $solution
- !else
-  !read $deffile solution
- !endif
+  <div class="wims_widget_box clearall">
+   <div class="title_box"><h3>$name_Solution.</h3></div>
+   <div class="box_content">
+     !if $solution!=$executed_str or $oef2wims_version<3.10
+      $solution
+     !else
+      !read $deffile solution
+     !endif
+   </div>
+  </div>
 !endif
 
 !if $m_reply_err != $empty
