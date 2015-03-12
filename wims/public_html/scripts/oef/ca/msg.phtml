@@ -27,10 +27,22 @@
   Please correct or choose a simpler sentence.
   !exit
  !endif
- !if nocompute iswordof $test or nocomputecomplex iswordof $test
+ !if nocompute iswordof $test
   is not allowed: please carry out the computation yourself, and
   submit the resulting value.
   !exit
+ !endif
+ !if nocomputecomplex iswordof $test
+   is not allowed.
+   Please give the complex number in standard rectangular form
+   <span class="tt"> a + b i </span>
+   where
+   <span class="tt">a</span>
+   and
+   <span class="tt">b</span>
+   are computed, and submit the resulting value (for example,
+    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+   !exit
  !endif
  !if badform iswordof $test
   is not written as required. Please rewrite it in the correct form.
@@ -48,7 +60,7 @@
 !if bad_exo iswordof $error
  !for j=1 to 50
    !if bad_exo $j isin $error
-     !set whichexo=!nosubs (the good answer for the question $j\
+     !set whichexo=!nosubst (the good answer for the question $j\
      <span class="tt">$(replyname$j)</span>\
      is invalid)
      !!goto end_bad
