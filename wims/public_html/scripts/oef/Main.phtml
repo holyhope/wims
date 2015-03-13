@@ -153,11 +153,11 @@ to $wims_html_header
    <div class="wims_serie_bar inline">
     <ul>
     !for j=1 to $[$reply_cnt]
-      <li class="wims_exo_done" title="$j">$j</li>
+      <li class="wims_exo_done" title="$name_exo $j ($wims_name_exo_tried)">$j</li>
     !next
-      <li class="wims_exo_todo" title="$j">$[$reply_cnt+1]</li>
+      <li class="wims_exo_todo" title="$name_exo $j">$[$reply_cnt+1]</li>
     !for j=$[$reply_cnt+2] to $qnum
-      <li title="$j">$j</li>
+      <li title="$name_exo $j ($wims_name_exo_untry)">$j</li>
     !next
     </ul>
   </div>
@@ -183,16 +183,20 @@ to $wims_html_header
 
  !if $status!=$empty
   <div class="oef_serie_exo2 spacer">$name_serie_exo2
-   <div class="wims_serie_bar inline">
-     <ul>
+    <ul class="wims_serie_bar inline">
      !for j=1 to $[$reply_cnt]
-      <li class="wims_exo_done" title="$j"></li>
+      <li class="wims_exo_done" title="$name_exo $j ($wims_name_exo_tried)">$j</li>
      !next
-     !for j=$[$reply_cnt+1] to $qnum
-      <li title="$j">>$j</li>
+
+      <li class="wims_next_exo" title="$name_serie_nextexo">
+       !href cmd=next > $[$reply_cnt+1]
+      </li>
+
+     !for j=$[$reply_cnt+2] to $qnum
+      <li title="$name_exo $j ($wims_name_exo_untry)">$j</li>
      !next
-     </ul>
-   </div>
+    </ul>
+
   </div>
   <div class="oef_buttons">
   !set wims_ref_class=wims_button
@@ -276,8 +280,6 @@ to $wims_html_header
 <!--fin oef main.phtml-->
 !tail
 
-
 !if debug iswordof $m_oefenv
  !reset module_score
 !endif
-
