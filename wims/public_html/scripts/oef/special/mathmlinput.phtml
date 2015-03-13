@@ -43,7 +43,7 @@ $ in $parm
      range litexp algexp formal equation function default
   !!  !default wims_fill_type=$(replytype$n_)
     !set embedded=!append item r$n_ to $embedded
-    !set pretext=!replace internal reply$j by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(display)}{0} $ in $pretext
+    !set pretext=!replace internal reply$n_ by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(display)}{0} $ in $pretext
     !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
     !set formm=$formm document.forms['replyform'].reply$n_.value=document.getElementById("mathml"+$n_).value;
     !set nrep=!append item $n_ to $nrep
@@ -52,9 +52,7 @@ $ in $parm
 
 !if $q_form=yes
 <script type="text/javascript">\
-function read_mathml(){\
-$formm\
- }\
+function read_mathml(){ $formm }\
 </script>
 \( $pretext )
 $hlist
@@ -81,8 +79,8 @@ $hlist
      !if $(diareply$m_)!=good
        !set test=1
      !endif
-    !set codereply=!replace internal reply$j by $ \special{color=$cl}{$(reply$m_)} $ in $codereply
-    !set codegood=!replace internal reply$j by $ $(replyGood$m_)$ in $codegood
+    !set codereply=!replace internal reply$m_ by $ \special{color=$cl}{$(reply$m_)} $ in $codereply
+    !set codegood=!replace internal reply$m_ by $ $(replyGood$m_)$ in $codegood
  !next j
 !!debug \( $codereply \)
 
