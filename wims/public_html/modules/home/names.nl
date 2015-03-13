@@ -58,8 +58,6 @@ U_examcont = Doorgaan met dit proefwerk.
 wims_name_U_oclass = Andere klassen
 wims_name_U_account = Mijn account
 wims_name_coeff = weging
-!distribute items untry,undone,done,congratulations \
-  into wims_name_exo_untry,wims_name_exo_undone,wims_name_exo_done,wims_name_exo_congratulation
 
 U_gotoclass1 = Ga naar een klas als leerling:
 U_gotoclass3 = Ga naar een klas als supervisor:
