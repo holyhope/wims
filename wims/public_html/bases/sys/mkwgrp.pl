@@ -90,6 +90,7 @@ for my $lang (@site_lang) {
 
  my @list=();
  my @ALL=();
+ my @ALL_WIMS=();
  for my $d (@DOMAIN) {
    if ($Domain{$d}) {
     push @ALL, split("\n",$Domain{$d});
@@ -104,9 +105,16 @@ for my $lang (@site_lang) {
  next if !(-e "$ddir/domain.$lang");
  my %dom = treate_dict ("$ddir/domain.$lang");
  while ( my ($key, $value) = each(%dom) ) {
-   push @ALL, split(",", lc(treate_accent($value))) ;}
+   push @ALL, split(",", lc(treate_accent($value)));
+   push @ALL_WIMS, split(",", lc(treate_accent($value)));
+ }
  out("keywords/list.$lang", join(",",sortuniq(@list)));
+##only official keywords
  out("$outputkeywords/keywords.$lang.json",
+     "[\"" . join("\",\n\"",sortuniq(@ALL_WIMS) ) . "\"]"
+);
+##all keywords
+out("$outputkeywords/all.$lang.json",
      "[\"" . join("\",\n\"",sortuniq(@ALL) ) . "\"]"
 );
 
