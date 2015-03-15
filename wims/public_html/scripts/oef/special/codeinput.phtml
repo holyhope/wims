@@ -3,7 +3,7 @@
  !exit
 !endif
 !if $wims_read_parm=help
- !read help/$lang/special/codefill.phtml
+ !read help/$lang/special/codeinput.phtml
  !exit
 !endif
 !set parm=!replace internal ,	r by $	r in $wims_read_parm
@@ -16,6 +16,10 @@ $ in $parm
 !set inputsize=!item 2 to -1 of $parm
 !set parm=!line 2 to -1 of $inputsize
 !set inputsize=!line 1 of $inputsize
+!if noanswer isin $inputsize
+   !set noanswer=1
+   !set inputsize=!item 1 of $inputsize
+!endif
 !default inputsize=1x5
 !set inputsize=!translate x to , in $inputsize
 !set inputsize=!items2words $inputsize
@@ -23,8 +27,8 @@ $ in $parm
 !set parmcnt=!linecnt $parm
 !set pretext=$code
 
-!for j = 1 to $parmcnt
-   !set ld=!line $j of $parm
+!for tt = 1 to $parmcnt
+   !set ld=!line $tt of $parm
    !reset inputsize_tmp
    !if $(ld[1]) isin $pretext
        !set reply_tmp=!nospace $(ld[1])
@@ -54,15 +58,15 @@ $ in $parm
      !endif
 !next
 !if $q_form=yes
-<pre class="oef_codefill">
+<pre class="oef_codeinput">
 $pretext
 </pre>
 !else
- !distribute item 40C040,FF4040 into colorr_good,colorr_bad
+ !distribute item #40C040,#FF4040 into colorr_good,colorr_bad
  !set colorr_ana=C8C8E0
  !set pretext=$code
- !for j = 1 to $parmcnt
-   !set ld=!line $j of $parm
+ !for tt = 1 to $parmcnt
+   !set ld=!line $tt of $parm
    !if $(ld[1]) isin $pretext
        !set m_=!text select 0123456789 in $(ld[1])
        !default reply_$m_=$(reply$m_)
@@ -72,7 +76,7 @@ $pretext
        !else
          !set cl=$colorr_ana
        !endif
-       !set pretext=!replace internal $(ld[1]) by <div class="inline" style="color:#$cl">$(reply_$m_)</div><sup>[$m_]</sup> in $pretext
+       !set pretext=!replace internal $(ld[1]) by <div class="inline" style="color:$cl">$(reply_$m_)</div><sup>[$m_]</sup> in $pretext
        !set replyname$m_=[$m_]
    !endif
  !next
