@@ -2,29 +2,116 @@
  !goto $wims_read_parm
 !endif
 
-:dependancies
-!read adm/title.phtml 1\
-$(name_shtab[6])
+:general
+<h2 id="general">Introduzione</h2>
 
-Lo studente deve acquisire punti da altri esercizi del test,
-prima di poter affrontare questo.
+<p>
+Un test di autovalutazone permette di proporre agli studenti una selezione
+di esercizi.
+In questo modo si può monitorare e valutare l'attività degli studenti.
+</p>
+
+Per costruire un test in un corso è possibile
+<ul><li>
+importare un test di autovalutazione disponibile sul server e visualizzabile
+attraverso il motore di ricerca (cliccare sul
+titolo del test e quindi sul link
+<span class="tt wims_code_words">$wims_name_import</span>)
+e se serve modificarlo.
+</li><li>
+creare un nuovo test a partire dal link
+<span class="tt wims_code_words">$wims_name_add_sheet</span>
+quindi inserire a uno a uno i gli esecizi a partire dal motore 
+di ricerca o a selezionando tra gli esercizi del corso 
+(utilizzando il link <span class="tt wims_code_words">$wims_name_add</span>
+visibile nel menu di sinistra una volta aperto l'esercizio scelto)
+oppure inserire un il codice sorgente del test, salvato da un corso
+precedente o disponibile ad esempio in un documento wims.
+</li></ul>
+I test sono numerati nell'ordine di creazione/inserimento nel corso.
+È possibile riorganizzare la presentazione dei test per gli studenti utilizzando
+il link <span class="tt wims_code_words">$wims_name_reorder</span>.
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:statut
+<h2 id="statut">Stato di un test</h2>
+Un test può essere in 4 diversi stati:
+<span class="wims_emph">
+!replace internal , by ,$ $ in $(wims_name_shstatus).
+</span>
+<p>
+<span class="wims_emph">$(wims_name_shstatus[1]):</span>
+lo stato iniziale del test. In questa fase, il test non è visibile 
+per gli studenti.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[2]):</span>
+una volta che si è cliccato su
+<span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
+il test diventa visibile per gli studenti (che possono lavorare 
+sugli esercizi a meno che qualche parametro del campo
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+non lo impedisca), i contenuti a questo punto
+non sono più modificabili, eccetto i titoli e i testi di presentazione
+del test e dei singoli esercizi, il campo
+<span class="tt wims_code_words">$(name_shinfo[6])</span> e
+i campi
+<span class="tt wims_code_words">Besoin d'aide</span> degli esercizi.
+</p><p>
+Si passa dallo stato
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
+allo stato
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
+cliccando su 
+ <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
+Non è più possibile tornare allo stato
+<span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[3]):</span>
+gli studenti possono ancora lavorare sul test, ma il sistema non tiene
+in alcun conto il lavoro fatto nei calcoli dei punteggi.
+</p><p>
+Una volta che il test è 
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>, 
+si può nascondere il test agli studenti cliccando su
+<span class="tt wims_code_words">$(wims_name_actionlist[4])</span>,
+ma si può anche ritornare allo stato
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+:dependancies
+<h2 id="dependancies">$(name_shtab[6])</h2>
+<p>
+Il campo <span class="tt wims_code_words">$(name_shtab[6])</span>
+di un esercizio permette di precisare i punti che lo studente deve
+acquisire in altri esercizi del test prima di poter lavorare su questo.
+</p><p>
 Per esempio, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> significa che lo studente deve avere un risultato almeno del 50% nell'esercizio 1,
  30% nell'esercizio 2 e una media del 60% negli esercizi 3, 4 e 5.
-<br class="spacer" />
+</p>
+
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :allowtype
-
-!read adm/title.phtml 1\
-Opzioni per la registrazione dei voti
+<h2 id="allowtype">Opzioni per la registrazione dei voti</h2>
 
 È possibile inserire un controllo per limitare la registrazione dei voti
 a determinati periodi e/o a determinate postazioni,
-selezionando &ldquo;limitata ai seguenti IP (e/o orari)&rdquo; e
-utilizzando i seguenti formati<br />
-Per le date:<br />
+selezionando 
+<span class="tt wims_code_words">$(name_allowtype[3])</span>
+ nei campi
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+e utilizzando i seguenti formati
+<p>
+Per le date:
+</p><p>
 <span class="tt wims_code_words">
 &gt;yyyymmdd.hh:mm</span>
 (data e ora di inizio) and/or
@@ -33,28 +120,45 @@ Per le date:<br />
 (data e ora di fine). Queste date devono essere espresse nel fuso orario
 del SERVER, e devono essere separate tramite spazi l'una dall'altra (o da
 eventuali altre istruzioni simili).
-<br />
+</p><p>
 Per le postazioni:
+</p>
 !read help/hosts.phtml
+<p>
+Esempio:
+<span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
+permette la registrazione dei voti tra le due date indicate e solamente per
+connessioni provenienti IP che cominciano con 
+<span class="tt wims_code_words">127.0</span>.
+</p>
 
 :variable
-Utilizzo di variabili
 <p>
 Per indicare le limitazioni di accesso alla registrazione dei voti è possibile
-utilizzare variabili indicandone il nome. Tale variabile deve
+utilizzare variabili indicandone il nome (nell'esempio qui sotto, si puà scrivere 
+<span class="tt wims_code_words">\timelimit</span>).
+Tale variabile deve
 allora essere definita per ciascuno studente secondo le regole indicate
 sopra. Questo può essere fatto manualmente nelle "opzioni account" dello
 studente oppure attraverso l'upload di un file csv (nel campo variabili
 tecniche).
+</p><p>
+Esempio: definire
+<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00</span>
+nel campo "variabili tecniche" nelle opzioni account dello studente.
+Per gli studenti per cui questa variabile è vuota la registrazione
+dei voti è sospesa.
+</p><p>
 Se si vuole lasciare la scelta agli studenti (ad esempio proponendo una
 serie di date), è possibile utilizzare un questionario creato
 da un modello (si vedano le pagine di help corrispondenti).
 </p>
-!exit
-
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 :feedback
-!read adm/title.phtml 1\
-$(name_shtab[10])
+<h2 id="feedback">$(name_shtab[10])</h2>
+
 È possibile impostare in questo campo un link verso un documento
 WIMS o un esercizio WIMS. Tale link apparirà allo studente nel caso in cui
 il punteggio ottenuto è strettamente inferiore al voto indicato (in decimi).
@@ -102,7 +206,12 @@ si vuole inserire e successivamente cliccando sul link
 !exit
 
 :series
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
-!read lang/help.phtml.fr series
-
-!exit
+<p>
+In generale gli esercizi di una serie sono scelti casualmente
+e, se il numero di domande lo permette, viene proposto almeno un esercizio 
+per ciascun tipo.
+</p><p>
+Nella le opzioni avanzate è possibile richiedere che l'ordine non sia casuale
+e qui potete specificare l'ordine in cui devono essere presentati gli esercizi 
+di una serie.
+</p>
