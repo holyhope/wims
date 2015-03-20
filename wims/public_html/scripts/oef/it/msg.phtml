@@ -15,7 +15,7 @@
   !exit
  !endif
  !if lengthoverflow iswordof $test
-  Il codice inserito supera la lunghezza massima inseribile. &Egrave;
+  Il codice inserito supera la lunghezza massima inseribile. È
   necessario riscriverlo.
   !exit
  !endif
@@ -34,15 +34,15 @@
   !exit
  !endif
  !if nocomputecomplex iswordof $test
-   is not allowed.
-   Please give the complex number in standard rectangular form
+   non è accettata.
+   Per favore inserisci il numero complesso nella forma cartesiana standard
    <span class="tt"> a + b i </span>
-   where
+   dove
    <span class="tt">a</span>
-   and
+   e
    <span class="tt">b</span>
-   are computed, and submit the resulting value (for example,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+    sono i risultati dei calcoli richiesti (per esempio,
+    <span class="tt"> -1 + 2 i</span> o <span class="tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -54,7 +54,7 @@
   !exit
  !endif
  !if notunit iswordof $test
-  è solo un numero: occorre specificare l'unit&agrave; di misura.
+  è solo un numero: occorre specificare l'unità di misura.
   !exit
  !endif
   non è comprensibile. Correggere e riproporre la risposta.
@@ -62,8 +62,18 @@
 !endif
 
 !if bad_exo iswordof $error
- A causa di un errore in questo esercizio (la risposta esatta per
- <b>$(replyname$i)</b> non è valida), è impossibile analizzare
+
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubst (la risposta corretta per la domanda $j \
+     <span class="tt">$(replyname$j)</span>
+     non è valida)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ A causa di un errore in questo esercizio, è impossibile analizzare
  l'esattezza della risposta data. Spiacente, ma è necessario cambiare
  esercizio.
  <p>
@@ -79,12 +89,12 @@
 !endif
 
 !if too_many_print iswordof $error
- Your requests for printable versions are excessive.
+ Hai richiesto troppe versioni stampabili.
  !exit
 !endif
 
 !if chemclick_empty_data iswordof $error
- Non è stato selezionato alcun atomo o legame. Consulta l'help on line.
+ Non è stato selezionato alcun atomo o legame. Consulta le istruzioni.
  !exit
 !endif
 
