@@ -15,13 +15,13 @@
    \text{inst_image=wims(getopt image in \preliminaire_test)}
    \text{inst_title=wims(getopt title in \preliminaire_test)}
    \text{inst_intro=wims(getopt intro in \preliminaire_test)}
-   \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+   \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro notsametext ? 1 : 0}
    \text{rab_inst=}
    \text{rab_inst=\inst_title notsametext ?\rab_inst<div class="wimscenter">\inst_title</div>}
    \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
    \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
    \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+     \text{rab_inst1= . isin \inst_audio or \packs= ?
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
      \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
    }
@@ -74,7 +74,7 @@
     \text{spe2=\spe}
     \for{ra =1 to \cnt_rand}{
       \integer{v=\rand[\ra]}
-      \text{spe2=wims(replace item number  \v  by wims(char \v of \mot) in \spe2)}
+      \text{spe2=wims(replace item number \v by wims(char \v of \mot) in \spe2)}
     }
     \text{spe2=wims(nospace wims(items2words \spe2))}
     \text{spec1=\spec1 \spe1}
@@ -168,7 +168,7 @@
 \text{trouV=\format iswordof case raw? } mettre une option
 \statement{\nopaste <div class="instruction">\instruction</div>
   \if{\reading notsametext }{\special{help reading,READING}}
-  \if{\image notsametext }{\special{help image,IMAGES}}
+g\if{\image notsametext }{\special{help image,IMAGES}}
   \audio\video
   <div class="question">
 \if{\format iswordof case raw dragfill clickfill}
@@ -206,7 +206,7 @@
  }
 \if{\format iswordof mark}{
   \for{k = 1 to \cntQ}{
-    \texte[2*\k-1;]  \if{r \k isitemof \nstep}{/
+    \texte[2*\k-1;] \if{r \k isitemof \nstep}{/
       \for{K = 1 to \listeCNT[\k]}{ \embed{\STEP[\k],\K}/}
    }{
        \if{\screply[\k]=1}{<span class="oef_indgood">\repl[\k;]</span>}
@@ -218,7 +218,7 @@
   \texte[2*\cntQ+1;]
 }
   </div>
-  
+
 \if{\choix notsametext and \format=case}{
 <div class="reponse">\choix</div>
 }
@@ -312,7 +312,7 @@
 }
 \text{nstep=}
 \if{\step<=\try}{
-  \for{i=1 to \cntQ}{\text{nstep= \screply[\i]!=1 ? \nstep,r \i}}
+  \for{i=1 to \cntQ}{\text{nstep= \screply[\i]!=1 ? wims(append item r \i to \nstep)}}
 }
 \integer{step1=\step-1}
 \feedback{1=1}{\if{\try > 1}{Vous avez eu besoin de \step1
