@@ -163,6 +163,7 @@ function check_o(t){
 }
 
 function check_f(t){
+    if(t.indexOf('^^') > 0 ){setAlarm(r48);return 0;}
     var alfabet="abcdefghijklmonpqrstuvwxyz";
     var Alfabet="ABCDEFGHIJKLMONPQRSTUVWXYZ";
     t=t.replace(/log\[/g,'#');

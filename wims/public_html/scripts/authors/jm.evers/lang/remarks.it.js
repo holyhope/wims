@@ -45,4 +45,4 @@ var r44="Non hai utilizzato uno dei campi risposta...";
 var r45="SI";
 var r46="NO";
 var r47="Mi aspettavo qualcosa del tipo: abc <br />(tipo testo)";
-
+var r48="You have used two <b>^&nbsp;^</b> symbols in your answer...that must be a typo ?

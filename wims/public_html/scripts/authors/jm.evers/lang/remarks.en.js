@@ -45,4 +45,4 @@ var r44="There is an unused inputfield...";
 var r45="YES";
 var r46="NO";
 var r47="I am expecting a text answer ...";
-
+var r48="You have used two <b>^&nbsp;^</b> symbols in your answer...that must be a typo ?

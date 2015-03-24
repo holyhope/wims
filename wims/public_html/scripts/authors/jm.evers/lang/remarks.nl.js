@@ -45,4 +45,4 @@ var r44="Er is een leeg invulveld...";
 var r45="JA";
 var r46="NEE";
 var r47="Ik verwacht een hier een text antwoord...";
-
+var r48="Je hebt een tweetal <b>^&nbsp;^</b> in je antwoord staan ...dat kan echt niet goed zijn"
