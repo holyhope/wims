@@ -3,14 +3,13 @@
 !endif
 
 slib_author=Yves, Noël; Bernadette, Perrin-Riou
-
+slib_comment=
 !!exemple à changer ensuite mais sert de test.
 slib_example=data/molecule_pdb/reseau1.pdb,150,100,white,spin on;,,HTML5\
 data/molecule_pdb/xeo2f2.pdb,100,100,,,1\
 datamodule/chemistry/mol2D.fr/data/60_18_4.mol,,,,select all;wireframe 0.05;select none;,2\
 @CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-],,,,select all;wireframe 0.05;select none;,3\
 @caffeine,,,,select all;wireframe 0.05;select none;,4
-
 !exit
 
 :proc
@@ -74,7 +73,7 @@ $slib_temp
 !if DisablePopupMenu notin $slib_script
   slib_DisablePopupMenu=set DisablePopupMenu TRUE;
 !endif
-!!  slib_DisablePopupMenu=set DisablePopupMenu FALSE;
+  slib_DisablePopupMenu=set DisablePopupMenu FALSE;
 
 !if hover notin $slib_script
   slib_hover= hover off;
@@ -92,7 +91,7 @@ $temp
   slib_script='$slib_script'
 !endif
 !if $slib_script_file!=
-  slib_script_file=jmolScriptWait('script $slib_script_file;');
+  slib_script='script "$slib_script_file";'
 !endif
 
 !set slib_css=<style type="text/css">.wims_jmol {width:$(slib_xsize)px}</style>
