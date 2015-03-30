@@ -8,5 +8,5 @@ export tmp_dir=$wims_home/wimstest
 #$wims_home/src/Interfaces/octave
 #echo "\n"
 
-export wims_exec_parm="2+4"
+export wims_exec_parm="2^17-1"
 $wims_home/src/Interfaces/octave
