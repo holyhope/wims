@@ -45,5 +45,5 @@ var r44="Un des champs de réponses est inutilisé..";
 var r45="OUI";
 var r46="NON";
 var r47="J&rsquo;espérais quelque chose comme: abc (texte)";
-var r48="You have used two <b>^&nbsp;^</b> symbols in your answer...that must be a typo ?
+var r48="Vous avez utilisé deux symboles <b>^&nbsp;^</b> dans votre réponse, cela doit être une typo ?
 
