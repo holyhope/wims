@@ -15,7 +15,7 @@ my $char="---";
 
 for my $f (glob("*/*.css.template")) {
   my $f1= $f ; $f1 =~ s/.template// ; my $f2 = "$f1.tmp.css" ;
-  my $TEXT ="/*! generated form $f - do not modify directly */\n" ;
+  my $TEXT ="/*! generated from $f - do not modify directly */\n" ;
   open(IN,"$f");
   while (<IN> ) {
    my $line=$_ ;

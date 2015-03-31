@@ -1,0 +1,121 @@
+/**
+  seriebar.css
+  Displays a list of exo (exo done, current exo and exo to do), with an "arrow" style.
+  If you want an "square" style, use "seriebar_squares.css" instead
+    HTML template can look like this :
+    <ul class="wims_serie_bar inline">
+      <li class="wims_exo_done" title="Question 1 (done)">1</li>
+      <li class="wims_exo_todo" title="Question 2 (current)">2</li>
+      <li title="Question 3 (not tried yet)">3</li>
+      <li title="Question 4 (not tried yet)">3</li>
+      [...]
+    </ul>
+**/
+
+#oef_actions .wims_serie_bar{
+    display:block;
+    margin:4px auto;
+    /*font-size:90%;*/
+}
+
+.wims_serie_bar li{
+    display: inline-block;
+    position: relative;
+    /*min-height:1em;*/
+    line-height:1em;
+    min-width:1em;
+    padding:.1em 3px;
+    margin:0;
+    margin-right:.66em;
+    cursor:help;
+}
+
+.wims_serie_bar .wims_next_exo{
+    padding:0;
+    cursor:hand;
+    border:none;
+}
+
+.wims_serie_bar li:after, .wims_serie_bar li:before {
+    left: 100%;
+    /*right:0;*/
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.wims_serie_bar li:after {
+    border-color: transparent;
+    border-width: .5em;
+    margin-top: -.5em;
+}
+.wims_serie_bar li:before {
+    border-color: transparent;
+    border-width: .8em;
+    margin-top: -.8em;
+}
+
+/* lien vers l'exercice suivant */
+.wims_serie_bar li a {
+    display: inline-block;
+    padding:1px .4em;
+    border:2px solid #88b7d5;
+    border-right:none;
+    text-decoration: none;
+    color:white;
+}
+.wims_serie_bar li a:hover{
+    color:rgb(34, 125, 163);
+}
+
+.wims_serie_bar .wims_next_exo:after {
+    left:93%;
+}
+.wims_serie_bar .wims_next_exo:before {
+    border-width: .8em;
+    margin-top: -.8em;
+    left:93%;
+    border-left-color:#88b7d5;
+}
+
+/* Questions not tried */
+.wims_serie_bar li {
+    border: 2px solid #DFDFDF;
+    background-color: lightgrey;
+    color: white;
+}
+.wims_serie_bar li:after {
+    border-left-color: lightgrey;
+}
+.wims_serie_bar li:before {
+    border-left-color: #DFDFDF;
+}
+
+/* Current Question */
+.wims_serie_bar .wims_exo_todo{
+    border-color: #A5D7DE;
+    background-color: rgb(34, 125, 163);
+}
+.wims_serie_bar .wims_exo_todo:after{
+    border-left-color: rgb(34, 125, 163);
+}
+.wims_serie_bar .wims_exo_todo:before {
+    border-left-color: #A5D7DE;
+}
+
+
+/* Questions done */
+.wims_serie_bar .wims_exo_done{
+    border-color: #c2e1f5;
+    background: #88b7d5;
+}
+.wims_serie_bar .wims_exo_done:after{
+    border-left-color: #88b7d5;
+}
+.wims_serie_bar .wims_exo_done:before {
+    border-left-color: #c2e1f5;
+}
