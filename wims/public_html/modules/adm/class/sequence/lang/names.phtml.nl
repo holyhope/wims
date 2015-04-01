@@ -1,7 +1,8 @@
 !set lang_exists=yes
 
-!set module_title=Pedagogische volgorde
-!set module_description=Aanmaken / veranderen van een pedagogisch verantwoorde lesmateriaal volgorde
+!! see index
+!!set module_title=Pedagogische volgorde
+!!set module_description=Aanmaken / veranderen van een pedagogisch verantwoorde lesmateriaal volgorde
 
 !set name_sequence=volgorde
 !set name_addseq= Geef rangnummber voor de intevoegen activiteiten.\

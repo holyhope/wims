@@ -1,7 +1,8 @@
 !set lang_exists=yes
 
-!set module_title=Secuencias pedagógicas
-!set module_description=Preparación/Modificación de secuencias pedagógicas
+!! see index
+!!set module_title=Secuencias pedagógicas
+!!set module_description=Preparación/Modificación de secuencias pedagógicas
 
 !set name_sequence=Secuencia
 !set name_title=Añadir/modificar la secuencia
