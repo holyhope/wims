@@ -1,5 +1,6 @@
 !set lang_exists=yes
-!set module_title=Foto album
+!! see index
+!!set module_title=Foto album
 
 !set name_nophoto=Er zijn geen beschikbare foto's gevonden.
 

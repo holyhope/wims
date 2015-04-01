@@ -1,5 +1,6 @@
 !set lang_exists=yes
-!set module_title=Trombinoscopio
+!! see index
+!!set module_title=Trombinoscopio
 
 !set name_nophoto=No hay fotografías disponibles
 
