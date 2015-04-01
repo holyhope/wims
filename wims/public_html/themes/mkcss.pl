@@ -19,7 +19,7 @@ for my $f (glob("*/*.css.template")) {
   open(IN,"$f");
   while (<IN> ) {
    my $line=$_ ;
-   next if ($line =~ /^#/) ;
+   $line =~ s/#[^\n]+//g ;
    $line =~ s/--- (.*) ---/treate($1)/ge ;
    $TEXT .= $line ;
  }
@@ -31,12 +31,11 @@ for my $f (glob("*/*.css.template")) {
 
 
 sub treate { my ($c)= @_ ;
-  if ($c) {
+  return if ((!$c) || ($c =~ /#/));
   open(INN, $c);
   my $text = <INN> ;
   close(INN) ;
   "\n/*! from $c */\n$text" ;
-  }
 };
 
 
