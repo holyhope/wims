@@ -30,13 +30,14 @@ $table_hdtr
 	t_m2,t_yacas
 !set res=131071
 
-!for sw in pari,maxima,yacas,gap,m2,octave
+!for sw in pari,maxima,octave,gap,yacas,m2
 
  $table_tr<td>$(n_$sw)</td><td>$sw</td>
  <td>$(i_$sw)%</td>
  <td>
  !set wims_ref_class=wims_button_help
  !href cmd=help&help_subject=soft&help_conf=$sw $wims_name_help
+ </td><td>
  !set av=!exec $sw about
  !set av=!trim $av
  !set r_=!exec $sw $(t_$sw)
@@ -44,7 +45,6 @@ $table_hdtr
  !if $sw=m2
   !set r_=!word 3 of $r_
  !endif
-</td><td>
  !if $av!=$empty and $res=$r_
   $wims_name_yes: $av
  !else
