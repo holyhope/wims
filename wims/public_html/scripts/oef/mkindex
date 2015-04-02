@@ -1,7 +1,7 @@
 #! /bin/sh
 
 LL="env LC_COLLATE=POSIX LANG=POSIX LC_CTYPE=fr_FR.UTF-8"
-LL="env LC_ALL=C"
+LL="env LC_ALL=C LC_CTYPE=C LANG=C"
 thisdir=`pwd`
 lastdir=$thisdir
 
@@ -98,7 +98,7 @@ if [ -d cpp ]; then
    list=
   fi
 ## perl -pi -e "s/#TARGET\s*\((\w+)\s*\)/defined TARGET_\1 /g" $i
-  $LL tr '\r' '\n' <$i | sed "s/'/\&#39;/g" | grep . | awk 'BEGIN {l=0}; {l++}; l>1 {print}' >cpp.tmp
+  $LL tr '\r' '\n' <$i | $LL sed "s/'/\&#39;/g" | grep . | awk 'BEGIN {l=0}; {l++}; l>1 {print}' >cpp.tmp
   for j in $list
   do
    if [ ! -f ../$j.$sext ] || [ $i -nt ../$j.$sext ]; then
@@ -110,8 +110,8 @@ if [ -d cpp ]; then
 
 @
     perl -pi -e "s/#TARGET\s*\((\w+)\s*\)/defined TARGET_\1 /g" cpp.tmp
-    cpp -P -C -nostdinc -DTARGET_$j -A"TARGET($j)" -DOEFFILE=$j cpp.tmp | \
-	sed "s/&#39;/'/g" >>../$j.$sext
+    cpp -P -C -nostdinc -DTARGET_$j -A"TARGET($j)" -DOEFFILE=$j -Winvalid-pp-token cpp.tmp | \
+	$LL sed "s/&#39;/'/g" >>../$j.$sext
    fi
   done
   rm -f cpp.tmp
@@ -125,7 +125,7 @@ oef2wims_mdef="oefenv"
 export oef2wims_mdef
 for i in $srcf
 do
- dd=`echo $i | sed 's!\.oef!.def!g'`
+ dd=`echo $i | $LL sed 's!\.oef!.def!g'`
  if [ ! -f $def/$dd ] || [ $src/$i -nt $def/$dd ]; then
   # echo $dd
   rm -f $def/$dd 2>/dev/null
@@ -134,7 +134,7 @@ do
 done
 
 cd $def
-list=`ls *.def 2>/dev/null | sed 's/\.def//g'`
+list=`ls *.def 2>/dev/null | $LL sed 's/\.def//g'`
 cd $thisdir
 if [ -f "INDEX" ]; then
  transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`;
@@ -251,7 +251,7 @@ for f in `ls def/*.def 2>/dev/null`; do
 	/^!/ {next};
 	a > 0 {print};
 	/^:question/ {a=1};
-	' $f | sed 's/\$()//g'`
+	' $f | $LL sed 's/\$()//g'`
  echo "<hr/>
 <h3>$tit</h3>
 $content
