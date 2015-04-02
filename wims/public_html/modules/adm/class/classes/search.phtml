@@ -1,13 +1,15 @@
 
 !if $overflow=yes
+  <label for="keyword">
  !if $keyword = $empty
   $name_research1
   !else
   $name_research2
  !endif
+ </label>
  <div class="wimscenter wimssearch">
  !form reply
- <input size="20" name="keyword" value="$keyword" />
+ <input size="20" name="keyword" value="$keyword" id="keyword"/>
  <input type="submit" value="$wims_name_search" />
 
 !formend
@@ -15,8 +17,10 @@
 !else
  !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
   !form reply
+  <label for="keyword">
   $name_searchclass:
-  <input size="20" name="keyword" value="$keyword" />
+  </label>
+  <input size="20" name="keyword" value="$keyword" id="keyword" />
   <input type="submit" value="$wims_name_search" />
 
 !formend

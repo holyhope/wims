@@ -8,7 +8,11 @@
 !set t_=!item $cc of $titles
 !set w_=!item $cc of $weights
 !default w_=1
-<tr><td style="text-align:right">$wims_name_title=<input size="15" name="title" value="$t_" /></td>
+<tr><td style="text-align:right">
+<label for="">
+$wims_name_title
+</label>
+=<input size="15" name="title" value="$t_" id="title" /></td>
 <td>$name_weight=<input size="3" name="weight" value="$w_" /></td></tr>
 !for u=1 to $ucnt
  !set n_=!item $u of $ulist
@@ -21,13 +25,11 @@
  !endif
  !set f_=!item $u of $flist
  !set l_=!item $u of $llist
- <tr><td>$l_, $f_
- </td><td><input size="6" name="c$u" value="$c_" /></td></tr>
+ <tr><td><label for="c$u">$l_, $f_</label>
+ </td><td><input size="6" name="c$u" value="$c_" id="c$u" /></td></tr>
 !next u
 </table>
 <p class="wimscenter wimsform">
 <input type="submit" name="reg" value="$wims_name_tosave" />
 </p>
 !formend
-
-
