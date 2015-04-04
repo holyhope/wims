@@ -157,15 +157,15 @@ sub hashresultat { my ($file, $filesheet)=@_;
       if (-e "../../modules/$a/Extitles") {
         my %dic=treate_dict("../../modules/$a/Extitles");
         my @exo= values %dic;
+        $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module closed\">\n" .
+        "!href target=wims_internal module=$a $bb\n" .
+        '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
+        . "</li>\n";
+      }
+      else {
         $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
-      "!href target=wims_internal module=$a $bb\n" .
-      '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
-       . "</li>\n";
-       }
-     else {
-      $ref->{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
-      "!href target=wims_internal module=$a $bb\n </li>\n";
-     }
+        "!href target=wims_internal module=$a $bb\n </li>\n";
+      }
     }
     $ref->{'num'}{$ligne[0]}=$cnt0;
     $ref->{'total'}{$ligne[0]}=0;
