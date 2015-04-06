@@ -5,7 +5,8 @@ cd ..
 WIMS_HOME=`pwd`
 if [ -f ../../log/wims.conf ] ; then
  language=`awk -F= '$1=="site_languages" {print $2;exit}' ../../log/wims.conf`
-else
+fi
+if [ -z $language ] ; then
  language="en fr nl it es cn ca si"
 fi
 cd $WIMS_HOME/slib
