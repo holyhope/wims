@@ -93,7 +93,7 @@ for my $tag ("oefparm5") {
 $Begin{'slib'}= "slib(" ;
 $End{'slib'}= " )" ;
 
-my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip", "codefill") ;
+my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip", "codeinput", "imageinput", "mathmlinput") ;
 for my $tag (@phtml) {
    $Begin{$tag}= "\\special\{" ;
    $End{$tag}= " \}" ;
