@@ -110,7 +110,7 @@ if [ -d cpp ]; then
 
 @
     perl -pi -e "s/#TARGET\s*\((\w+)\s*\)/defined TARGET_\1 /g" cpp.tmp
-    cpp -P -C -nostdinc -DTARGET_$j -A"TARGET($j)" -DOEFFILE=$j -Winvalid-pp-token cpp.tmp | \
+    cpp -P -C -nostdinc -DTARGET_$j -A"TARGET($j)" -DOEFFILE=$j cpp.tmp | \
 	$LL sed "s/&#39;/'/g" >>../$j.$sext
    fi
   done
