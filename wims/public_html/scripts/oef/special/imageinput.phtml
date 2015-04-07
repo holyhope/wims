@@ -23,14 +23,14 @@ $ in $parm
 
 !if noanswer isin $option
    !set noanswer=1
-   !set inputsize=!item 1 of $inputsize
 !endif
-
+!set inputsize=!item 1 of $inputsize
 !default inputsize=1x5
 !set inputsize=!translate x to , in $inputsize
 !set inputsize=!items2words $inputsize
 
 !set parmcnt=!linecnt $parm
+!set parm=!sort reverse line $parm
 
 !set sp_imagecss=<style type="text/css">\
 .sp_image {position:relative;display:inline-block;width:$(bigsizex)px;height:$(bigsizey)px;}\
@@ -68,13 +68,13 @@ $ in $parm
     range litexp algexp formal equation function default matrix
    !set embedded=!append item r$n_ to $embedded
    !set sp_imagecss=$sp_imagecss\
-    .sp_image #sp_imageinput$n_{left:$(x_)px;top:$(y_)px;$css}
+    .sp_image #reply$n_{left:$(x_)px;top:$(y_)px;$css}
     !if $nbdim==2
       !set hlist=$hlist\
-<textarea id="sp_imageinput$n_" rows="$sizer" cols="$sizec" name="reply$n_" value="" class="nowrap" /></textarea>
+<textarea id="reply$n_" rows="$sizer" cols="$sizec" name="reply$n_" value="" class="nowrap" /></textarea>
     !else
      !set hlist=$hlist\
-<input id="sp_imageinput$n_" size="$inputsize_tmp" name="reply$n_" value="" />
+<input id="reply$n_" size="$inputsize_tmp" name="reply$n_" value="" />
    !endif
    !set positionlist=!append line $x_,$y_ to $positionlist
    !set nrep=!append item $n_ to $nrep

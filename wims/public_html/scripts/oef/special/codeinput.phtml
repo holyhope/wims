@@ -16,22 +16,33 @@ $ in $parm
 !set inputsize=!item 2 to -1 of $parm
 !set parm=!line 2 to -1 of $inputsize
 !set inputsize=!line 1 of $inputsize
-!if noanswer isin $inputsize
+
+!if noanswer iswordof $inputsize
    !set noanswer=1
-   !set inputsize=!item 1 of $inputsize
 !endif
+!if div iswordof $inputsize
+  !set pre=div
+!else
+  !set pre=pre
+!endif
+!set inputsize=!item 1 of $inputsize
 !default inputsize=1x5
 !set inputsize=!translate x to , in $inputsize
 !set inputsize=!items2words $inputsize
 
 !set parmcnt=!linecnt $parm
-!set pretext=$code
+!set parm=!sort reverse line $parm
+
+!set pretext=!replace internal reply by REPLY in $code
 
 !for tt = 1 to $parmcnt
    !set ld=!line $tt of $parm
+   !set upcase=!uppercase $(ld[1])
    !reset inputsize_tmp
-   !if $(ld[1]) isin $pretext
+   !if $(upcase) isin $pretext
        !set reply_tmp=!nospace $(ld[1])
+       !set i_tmp=!text select 0123456789 in $reply_tmp
+       !read anstype/numeric.default $i_tmp
        !set rep_tmp=!replace internal reply by r in $reply_tmp
        !set embedded=!append item $rep_tmp to $embedded
        !set inputsize_tmp=$(ld[2])
@@ -51,18 +62,18 @@ $ in $parm
          !endif
        !endif
        !if $nbdim==2
-         !set pretext=!replace internal $(ld[1]) by <textarea rows="$sizer" cols="$sizec" name="$reply_tmp" >$($reply_tmp)</textarea> in $pretext
+         !set pretext=!replace internal $upcase by <textarea rows="$sizer" cols="$sizec" name="$reply_tmp" >$($reply_tmp)</textarea> in $pretext
        !else
-         !set pretext=!replace internal $(ld[1]) by <input size="$inputsize_tmp" name="$reply_tmp" value="$($reply_tmp)" /> in $pretext
+         !set pretext=!replace internal $upcase by <input id="$reply_tmp" size="$inputsize_tmp" name="$reply_tmp" value="$($reply_tmp)" /> in $pretext
        !endif
      !endif
 !next
+
 !if $q_form=yes
-<pre class="oef_codeinput">
+<$pre class="oef_codeinput">
 $pretext
-</pre>
+</$pre>
 !else
- !distribute item #40C040,#FF4040 into colorr_good,colorr_bad
  !set colorr_ana=C8C8E0
  !set pretext=$code
  !for tt = 1 to $parmcnt
@@ -72,15 +83,18 @@ $pretext
        !default reply_$m_=$(reply$m_)
        !set tt=!word 1 of $(replygood$m_)
        !if $tt!=?analyze
-         !set cl=$(colorr_$(diareply$m_))
+         !set cl=!nospace oef_ind$(diareply$m_)
+         !if $(precreply$m_)=yes and $(diareply$m_)=bad
+            !set cl=!nospace oef_indpartial
+         !endif
        !else
-         !set cl=$colorr_ana
+         !set cl=oef_empty
        !endif
-       !set pretext=!replace internal $(ld[1]) by <div class="inline" style="color:$cl">$(reply_$m_)</div><sup>[$m_]</sup> in $pretext
+       !set pretext=!replace internal $(ld[1]) by <div class="inline $cl">$(reply_$m_)</div><sup>[$m_]</sup> in $pretext
        !set replyname$m_=[$m_]
    !endif
  !next
-<pre>
+<$pre>
 $pretext
-</pre>
+</$pre>
 !endif

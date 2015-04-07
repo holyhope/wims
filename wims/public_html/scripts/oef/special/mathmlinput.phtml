@@ -18,20 +18,22 @@ $ in $parm
 !set parm=!line 2 to -1 of $inputsize
 !set inputsize=!line 1 of $inputsize
 
-!if noanswer isin $inputsize
+!if noanswer iswordof $inputsize
    !set noanswer=1
-   !set inputsize=!item 1 of $inputsize
 !endif
+!set inputsize=!item 1 of $inputsize
 !set inputsize=!text select 0123456789 in $inputsize
 !default inputsize=5
 !set inputsize=!items2words $inputsize
 
 !set parmcnt=!linecnt $parm
-!set pretext=$code
+!set parm=!sort reverse line $parm
 
-!reset hlist
+!set pretext=!replace internal reply by REPLY in $code
+
 !for tt = 1 to $parmcnt
    !set ld=!line $tt of $parm
+   !set upcase=!uppercase $(ld[1])
    !reset inputsize_tmp
    !distribute item $ld into m_,inputsize_tmp,display,css
    !default inputsize_tmp=$inputsize
@@ -43,8 +45,8 @@ $ in $parm
    !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
      range litexp algexp formal equation function default
     !set embedded=!append item r$n_ to $embedded
-    !set pretext=!replace internal reply$n_ by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(display)}{0} $ in $pretext
-    !set hlist=$hlist<input type="hidden"  "reply$n_" value="" />
+    !set pretext=!replace internal REPLY$n_ by $ \input{$(inputsize_tmp)}{$n_}{$(css)}{$(display)}{0} $ in $pretext
+    !set hlist=$hlist<input type="hidden" name="reply$n_" value="" />
     !set formm=$formm document.forms['replyform'].reply$n_.value=document.getElementById("mathml"+$n_).value;
     !set nrep=!append item $n_ to $nrep
    !endif
@@ -82,10 +84,8 @@ $hlist
     !set codereply=!replace internal reply$m_ by $ \special{color=$cl}{$(reply$m_)} $ in $codereply
     !set codegood=!replace internal reply$m_ by $ $(replyGood$m_)$ in $codegood
  !next tt
-!!debug \( $codereply \)
-
  !if $test=1 and $noanswer!=1
-   \( $codereply  \quad \quad $codegood\)
+   \( $codereply \quad \quad $codegood\)
  !else
    \( $codereply \)
  !endif
