@@ -1,0 +1,95 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+slib_title=Date
+slib_parms=2\
+ ,first date\
+ ,second date
+
+slib_out=number of days between the two dates (written in format ddmmyyyy).
+slib_example=12022013,18082013\
+18082013,12022013\
+12022004,18082004\
+17012012,10092014\
+17012013,10092015\
+01022004,01032004
+!exit
+
+:proc
+on ne tient compte pas des années bissextiles !
+!distribute item $wims_read_parm into slib_date1, slib_date2
+!set slib_day1=!char 1 to 2 of $slib_date1
+!set slib_day2=!char 1 to 2 of $slib_date2
+!set slib_month1=!char 3 to 4 of $slib_date1
+!set slib_month2=!char 3 to 4 of $slib_date2
+!set slib_year1=!char 5 to 8 of $slib_date1
+!set slib_year2=!char 5 to 8 of $slib_date2
+!if $slib_year2 < $slib_year1 or ($slib_year2 = $slib_year1 and $slib_month2 < $slib_month1)\
+  or ($slib_year2 = $slib_year1 and $slib_month2 < $slib_month1 and $slib_day2 < $slib_day1)
+  !exchange slib_day1 and slib_day2
+  !exchange slib_month1 and slib_month2
+  !exchange slib_year1 and slib_year2
+  !set slib_sign=-1
+!else
+  !set slib_sign=1
+!endif
+!set slib_month1=$[$slib_month1]
+!set slib_month2=$[$slib_month2]
+!set slib_month_list=31,27,31,30,31,30,31,31,30,31,30,31
+pour l'instant même année  donc slib_month1 <= $slib_month2
+!if $slib_month1 = $slib_month2
+   !set slib_nb=$[$slib_day2-$slib_day1+1]
+   !if $slib_month1=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
+     !increase slib_nb
+   !endif
+!endif
+!if $slib_month1 < $slib_month2
+  !set slib_nb=$[$(slib_month_list[$slib_month1])-$slib_day1+1]
+  !if $slib_month1=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
+     !increase slib_nb
+  !endif
+  !for slib_j=$slib_month1+1 to $[$slib_month2-1]
+    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
+    !if $slib_j=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
+     !increase slib_nb
+    !endif
+  !next
+  !set slib_nb=$[$slib_nb + $(slib_day2)]
+  !for slib_j=$slib_year1 to $slib_year2 -1
+    !set slib_nb=$[$slib_nb + 365]
+    !if $slib_j%4=0 and $slib_year1%100!=0
+      !increase $slib_nb
+    !endif
+  !next
+!endif
+
+!if $slib_month1 > $slib_month2
+on change d'annee
+  !set slib_nb=$[$(slib_month_list[$slib_month1])-$slib_day1+1]
+  !for slib_j=$slib_month1+1 to 12
+    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
+    !if $slib_j=2 and $slib_year1%4=0 and $slib_year1%100!=0
+     !increase slib_nb
+    !endif
+  !next
+  !for slib_j=1 to $slib_month2-1
+    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
+    !if $slib_j=2 and $[($slib_year1+1)%4]=0 and $[($slib_year1+1)%100]!=0
+     !increase slib_nb
+    !endif
+  !next
+  !set slib_nb=$[$slib_nb + $(slib_day2)]
+  !for slib_j=$slib_year1 to $slib_year2 -1
+    !set slib_nb=$[$slib_nb + 365]
+    !if $slib_j%4=0 and $slib_year1%100!=0
+      !increase $slib_nb
+    !endif
+  !next
+!endif
+
+slib_out=$slib_nb
+!if $slib_sign=-1
+  slib_out=-$slib_out
+!endif
