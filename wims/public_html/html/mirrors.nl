@@ -8,6 +8,7 @@
 # Line 5	Site manager name
 # Line 6	Site manager email
 # Line 7	Comments
+
 :wims.unice.fr/wims/
 Université de Nice
 France
@@ -27,12 +28,6 @@ China
 cn en fr
 CHEN, Zhijie
 zjchen@math.ecnu.edu.cn
-:wims.univ-mrs.fr/wims/
-Université de la Méditerranée
-France
-fr en
-wims@wims.univ-mrs.fr
-wims@wims.univ-mrs.fr
 :wims.auto.u-psud.fr/wims/
 Université Paris-Sud
 France

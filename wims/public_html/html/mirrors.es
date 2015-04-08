@@ -28,19 +28,12 @@ China
 cn en fr
 CHEN, Zhijie
 zjchen@math.ecnu.edu.cn
-:wims.univ-mrs.fr/wims/
-Université de la Méditerranée
-France
-fr en
-wims@wims.univ-mrs.fr
-wims@wims.univ-mrs.fr
 :wims.auto.u-psud.fr/wims/
 Universite Paris-Sud
 France
 fr en cn es it
 wims@wims.auto.u-psud.fr
 wims@wims.auto.u-psud.fr
-
 :wims.matapp.unimib.it/wims/
 Università di Milano--Bicocca
 Italy
