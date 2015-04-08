@@ -203,11 +203,13 @@ int main(int argc, char *argv[]){
  The sequence in which stuff is finally printed is important !!
  for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
 */
-fprintf(stdout,"\n<script type=\"text/javascript\">\
+fprintf(stdout,"\n\
+<script type=\"text/javascript\">\n\
+/*<![CDATA[*/\n\
 if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
 if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
 if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
-canvas_scripts.push(\"%d\");</script>\n\
+canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 <!-- canvasdraw div and tooltip placeholder, if needed -->\n\
 <div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\">\
