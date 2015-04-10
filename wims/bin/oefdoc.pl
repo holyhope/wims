@@ -93,7 +93,7 @@ for my $tag ("oefparm5") {
 $Begin{'slib'}= "slib(" ;
 $End{'slib'}= " )" ;
 
-my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip", "codeinput", "imageinput", "mathmlinput") ;
+my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip", "codeinput", "imageinput", "mathmlinput", "drawinput") ;
 for my $tag (@phtml) {
    $Begin{$tag}= "\\special\{" ;
    $End{$tag}= " \}" ;
@@ -330,6 +330,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
  my $tag='';
  my $Text="var specialname= '$name{'special'}{$lang}';\n";
  for my $meth (@file) {
+  print $meth . "\n";
     open (IN, "$dir/$meth.phtml");
     while (<IN>) {my $line=$_;
     next if !($line) ;
