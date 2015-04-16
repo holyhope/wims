@@ -48,9 +48,10 @@ cp $target/wims/README $target/wims/public_html/README
 echo "** Create configure file using autoconf"
 cd $target/wims/src; autoconf; autoheader
 
-echo "** Remove temporary files"
+echo "** Remove temporary files and wimstest directory"
 rm -Rf *.cache *.log 2>/dev/null
 rm $target/wims/mkdistsvn
+rm -rf $target/wims/wimstest
 find $target/wims -name .DS_Store -exec rm '{}' \;
 find $target/wims -name \._* -exec rm '{}' \;
 
