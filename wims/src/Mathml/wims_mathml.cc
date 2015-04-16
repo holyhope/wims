@@ -3,12 +3,12 @@
     renamed to "wims_mathml"
     Slightly modified for WIMS mathml usage 05/2012
     J.M. Evers, B. Perrin-Riou
-    
+
 */
 
 #include <cstdio>
 #include <string>
-#include "wims_mathml.h" 
+#include "wims_mathml.h"
 
 // these C headers are needed to compile on OpenSuSE Linux (and others?) to use atoi/strlen
 #include <string.h>
@@ -31,7 +31,7 @@ const int set_javascript(){
 }
 const char * read_mathml_id(){
     return wims_mathml_id; // wims_mathml.y will use this in first <mstyle id="read_mathml_id()" ...
-    // the whole mathml-string will get this "id" ; does not interfere (?) with "maction" tag, which is on "sub math level" 
+    // the whole mathml-string will get this "id" ; does not interfere (?) with "maction" tag, which is on "sub math level"
 }
 
 const char * read_fontsize(){ // declared in wims_mathml.h
@@ -39,7 +39,7 @@ const char * read_fontsize(){ // declared in wims_mathml.h
     if(strlen(wims_texfontsize) == 0){snprintf(wims_texfontsize,sizeof(wims_texfontsize),"%s","110%");}
     return wims_texfontsize; // wims_mathml.y will use this in first <mstyle mathsize="read_fontsize()" ...
 }
-// count number of substring occurences 
+// count number of substring occurences
 int count_substrings( const std::string & str , const std::string & obj ) {
     int n = 0;
     std::string ::size_type position = 0;
@@ -139,7 +139,7 @@ int main (int argc, char ** argv)
 			    bDisplay   = false;
 			    continue;
 			}
-			// wims 	
+			// wims
 			if (args == "--use-zoom"){
 			    use_javascript = atoi( argv[arg+1] );
 			    continue;
@@ -205,7 +205,7 @@ int main (int argc, char ** argv)
 	    }
 
 	    // finish the math mode with appropriate $-signs
-	    if( dollarcnt > 2 ){ 
+	    if( dollarcnt > 2 ){
 		bDisplay = true; // use display mode
 		itex="$$" + itex;
 		itex+="$$";
