@@ -62,7 +62,6 @@ if ($option) {
 }
 ####
 my %titsheet = treate_dict ("$sheetdir/index/tit.$LANG"); my $titsheet=\%titsheet;
-#my %titmodule = treate_dict ("$moduledir/tit"); my $titmodule=\%titmodule;
 my %addr = reverse_dic ("$moduledir/addr"); my $addr=\%addr;
 my %titmodule = treate_dict ("$moduledir/title"); my $titmodule=\%titmodule;
 taxonomy("unisciel", $LANG, '_','_',);
@@ -73,7 +72,7 @@ taxonomy ("commoncore", $LANG, '_','_',
  $ccsstitle . '3',$ccsstitle . '4',$ccsstitle . '5',
  $ccsstitle . '6',$ccsstitle . '7',$ccsstitle . 'HS'));
 
-my (%vu,%tit,%desc,$ref,@list);
+my (%vu,%tit,%desc,$ref);
 
 sub taxonomy { my ($taxo, $lang, $sep1, $sep2) = @_ ;
    my ($title, %desc) = hashtaxo("$ddir/$taxo.$lang", $sep1, $sep2);
@@ -84,8 +83,7 @@ sub taxonomy { my ($taxo, $lang, $sep1, $sep2) = @_ ;
    $T .= '<a class="wims_button float_right" onclick="treeToggleAll(\'#tree_'.$taxo.'\');">$name_fold</a>';
    $T .= "\n!set title=$title\n<h2>$title<\/h2>\n";
    $T .= '<ul id="tree_'.$taxo.'" class="tree">';
-   @list=sort keys %desc;
-   for my $a (@list) { $T .= one($a, $taxo) ; };
+   for my $a (sort keys %desc) { $T .= one($a, $taxo) ; };
    $T .= "\n</ul>";
    if (!$module) {
      $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"empty\" value=\"\"/> $joker";
