@@ -55,7 +55,7 @@ Bravo!,\
 CAS uitloggen,\
 Met dank aan,\
 Nieuwste,\
-Give the answer,\
+Geef het antwoord,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -187,7 +187,7 @@ Indexatie,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
  Gezien\
- Details van gemaakte oefeningen,\
+ Details van ingeleverde oefeningen,\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -288,7 +288,7 @@ Indexatie,\
    Terug\
    Wissen\
    Aktie\
-   Hiervoor moet je webbrowser Java ondersteunen.\
+   Gebruikt Java.\
    Datum\
    Toevoegen\
    Verwijderen\
@@ -366,7 +366,7 @@ Maak een nieuw document\
 Bewerk een document\
 Status\
 Toevoegen\
-Nog niet klaar voor gebruik, Actief, Verlopen, Verlopen+Onzichtbaar\
+Nog niet klaar voor gebruik, Actief, Verlopen, Verlopen&amp;Onzichtbaar\
 niet lezen en niet schrijven,alleen lezen,lezen en schrijven\
 Nummer\
 into wims_name_doc,wims_name_Docs,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
