@@ -79,6 +79,9 @@ for a in $(seq $#) ; do opt=$1;
     bin/swac
     cd $dir
  fi
+ if [ "$opt" = "--gcov" ] ; then
+    export CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
+ fi
  shift
 done
 
