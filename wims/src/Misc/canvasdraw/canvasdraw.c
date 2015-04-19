@@ -193,15 +193,16 @@ int main(int argc, char *argv[]){
 	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
-	    xsize = (int)(abs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
-	    ysize = (int)(abs(round(get_real(infile,1))));
+	    /* using fabs : however "xsize == int" : so "xsize = abs( (int) get_real(infile,0))" would be the idea... */
+	    xsize = (int)(fabs(round(get_real(infile,0)))); /* just to be sure that sizes > 0 */
+	    ysize = (int)(fabs(round(get_real(infile,1))));
 	    /* sometimes we want xrange / yrange to be in pixels...without telling x/y-range */
 	    xmin = 0;xmax = xsize;
 	    ymin = 0;ymax = ysize;
 
 /*
  The sequence in which stuff is finally printed is important !!
- for example, when writing a 'include.js" the may not be a "script tag <script>" etc etc
+ for example, when writing a 'include.js" there may not be a "script tag <script>" etc etc
 */
 fprintf(stdout,"\n\
 <script type=\"text/javascript\">\n\

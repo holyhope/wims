@@ -2466,8 +2466,8 @@ char *eval(int xsize,int ysize,char *fun,double xmin,double xmax,double ymin,dou
     if( f == NULL ){canvas_error("I'm having trouble parsing your \"expression\" ") ;}
     /* we supply the true x/y values...draw_curve() will convert these (x:y) to pixels : used for pan/scale */
     double xydata[MAX_BUFFER+1];/* hmmm */
-    int lim_ymin =(int)( ymin - 4*abs(ymin));
-    int lim_ymax =(int)( ymax + 4*abs(ymax));
+    int lim_ymin =(int)( ymin - 4*fabs(ymin));/* 19-4-2015 replacing "abs" by "fabs"*/
+    int lim_ymax =(int)( ymax + 4*fabs(ymax));/* 19-4-2015 replacing "abs" by "fabs"*/
     for ( xv = 0 ;xv < xsize ; xv = xv+xstep ){
 	x = (double) (xv*a + xmin);
 	if( i < MAX_BUFFER - 2){
@@ -2536,8 +2536,8 @@ char *eval_parametric(int xsize,int ysize,char *fun1,char* fun2,double xmin,doub
     double xydata[MAX_BUFFER+1];/* hmmm */
     double x; /* real x-values */
     double y; /* real y-values */
-    int lim_ymin =(int)( ymin - 4*abs(ymin));
-    int lim_ymax =(int)( ymax + 4*abs(ymax));
+    int lim_ymin =(int)( ymin - 4*fabs(ymin));/* 19-4-2015 replacing "abs" by "fabs"*/
+    int lim_ymax =(int)( ymax + 4*fabs(ymax));/* 19-4-2015 replacing "abs" by "fabs"*/
     for( t = tmin ;t <= tmax ; t = t + tstep ){
 	if( i < MAX_BUFFER - 2 ){
 	    y = eval_t(fy, t);
