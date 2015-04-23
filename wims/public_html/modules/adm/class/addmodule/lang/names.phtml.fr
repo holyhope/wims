@@ -17,10 +17,55 @@
 !set name_weight=Poids des points obtenus sur ce travail
 !set name_weight_hint=sert pour le calcul de la moyenne
 !set name_end=!nosubst La ressource <span class="wims_mod_title">$title</span> a été insérée avec succès dans la feuille
+!set name_endallexo=!nosubst $addexo séries d'exercices ont été insérées avec succès dans la feuille <span class="wims_mod_title">$title</span>.
+!set name_endallexo2=!nosubst Les $notadd ressources suivantes n'ont pas pu être insérées car elles existaient déjà : 
 
 !set name_choose_exo=Cette ressource sera insérée comme une nouvelle série d'exercices de la feuille.
+!set name_choose_allexo=!nosubst Chacun des $exocnt exercices du module sera inséré comme une nouvelle série d'exercices de la feuille.
 !set name_choose_helpexo=Cette ressource sera insérée comme une aide pour l'une des séries d'exercices de la feuille lorsque la note est inférieure à
 !set name_choose_series=Cliquez sur le nom de la séries d'exercices à laquelle vous souhaitez ajouter l'aide
 !set name_actualhelp=Aide actuelle
 !set name_series=Séries d'exercices
 !set name_orderchange=Changer l'ordre des exercices
+
+if $job=addallexo
+!! il s'agit d'une copie de la partie intro du fichier oef/lang/names
+ !distribute line Désolé, aucun exercice n'est disponible dans ce module pour l'instant. Revenez plus tard !\
+    Ce module contient en ce moment un seul exercice\
+    Essayez-le.\
+Choisissez parmi les exercices&nbsp;\
+contenant le(s) mot(s)\
+    Une série aura\
+    Niveau de sévérité&nbsp;\
+    Chronomètre&nbsp;\
+    secondes\
+    Nombre de réponses affichées\
+    Donner une solution (si disponible)\
+    Paramétrage simplifié\
+    Paramétrage expert\
+    Sélectionner les titres avec le mot\
+    exercices\
+    Paramétrage des séries d'exercices\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu
+
+ !set namew_datamodule=Ce module a besoin du module de données <span class="tt">$module_data</span> \
+  qui n'est pas installé sur ce serveur. Si vous désirez l'utiliser, \
+  demandez au gestionnaire du site de l'installer.
+
+ !set name_choice=jamais,si la note est non maximale,toujours
+ !set name_qcm=QCM
+ !set name_choice_check=Toujours proposer une bonne réponse.,\
+     Pénalité pour une mauvaise réponse.,\
+     Afficher la bonne réponse.,\
+     Permettre les indications (si disponibles).
+
+ !set name_aleaseries= Proposer les exercices de la série dans l'ordre.
+ !set name_remarkintro1=Après avoir choisi un ou plusieurs exercices, cliquez sur \
+<span class="wims_button disabled">$wims_name_work</span>. Les exercices proposés seront pris aléatoirement parmi vos choix \
+ (ou parmi tous les exercices disponibles si votre choix est vide).
+
+!!leave on one line
+  !set name_remarkintro3=Vous pouvez mettre deux nombres dans le chronomètre, séparés par des virgules sans espaces, le deuxième étant plus grand que le premier. Le premier nombre représente le temps (en secondes) déclenchant la réduction du score, le second représente le temps à partir duquel le score sera 0.
+!endif

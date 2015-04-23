@@ -188,6 +188,7 @@ Indexatie,\
  Lesmateriaal in werkvolgorde,\
  Gezien\
  Details van ingeleverde oefeningen,\
+Insérer tous les exercices dans une feuille de travail\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -198,7 +199,7 @@ Indexatie,\
  wims_name_sheetmanagement,\
  wims_name_add_sequence,\
  wims_name_readen,\
- wims_name_save_ex
+ wims_name_save_ex,wims_name_addallexo
 
   !!!set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br />Gemiddelde score $[$wims_homeref_mean]/10.
