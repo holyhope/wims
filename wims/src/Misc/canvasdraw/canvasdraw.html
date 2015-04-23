@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Thu Apr 23 09:32:24 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Thu Apr 23 10:46:11 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -10,7 +10,7 @@
 <li><span style="color:blue;font-size:0.8em">will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
+<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
@@ -379,7 +379,7 @@
 	    
 <li><span style="color:red"> arc xc,yc,width,height,start_angle,end_angle,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set "onclick" or "drag xy"
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> attention: width in height in x/y-range
@@ -509,7 +509,7 @@
 	    
 <li><span style="color:red"> parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set "onclick" or "drag xy"
 </span></li>
 	    
 </ul>
@@ -523,7 +523,7 @@
 	    
 <li><span style="color:red">lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em">can not be set "onclick" or "drag xy"
+<li><span style="color:blue;font-size:0.8em">can <b>not</b> be set "onclick" or "drag xy"
 </span></li>
 	    
 </ul>
@@ -533,7 +533,7 @@
 <li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed (in this canvasdraw version)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9]</li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
@@ -723,7 +723,7 @@
 <li><span style="color:blue;font-size:0.8em"> math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> user drawings will not zoom on zooming (or pan on panning)
@@ -837,10 +837,10 @@
 <li><span style="color:blue;font-size:0.8em">use command 'trace_jscurve formula(x)` for tracing
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">use commmand 'jsmath formula(x)` for calculating and displaying indiviual points on the curve
+<li><span style="color:blue;font-size:0.8em">use command 'jsmath formula(x)` for calculating and displaying indiviual points on the curve
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">can not be set draggable / onclick (yet)
+<li><span style="color:blue;font-size:0.8em">can <b>not</b> be set draggable / onclick (yet)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">commands plotjump / plotstep are not active for 'jscurve'
@@ -891,7 +891,7 @@
 <li><span style="color:blue;font-size:0.8em">draw a bezier curve between points, starting from (x_start:y_start)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">can not be dragged or set onclick
+<li><span style="color:blue;font-size:0.8em">can <b>not</b> be dragged or set onclick
 </span></li>
 	    
 </ul>
@@ -1072,20 +1072,17 @@
 <li><span style="color:blue;font-size:0.8em">do not use interactivity (or mouse) if the mouse needs to be active in the iframe
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">can not be 'set onclick' or 'drag xy'
+<li><span style="color:blue;font-size:0.8em">can <b>not</b> be 'set onclick' or 'drag xy'
 </span></li>
 	    
 </ul>
 	    
 <li><span style="color:red"> html x1,y1,x2,y2,html_string
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> all tags are allowed
+<li><span style="color:blue;font-size:0.8em"> all tags are allowed<br /> html-code using inputfields could be read using your own javascript-code. Do not use id's like 'canvas_input0' etc.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> can be set onclick <br />(dragging not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
-</span></li>
-	    
-<li><span style="color:blue;font-size:0.8em"> if inputfields are incorporated (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_canvas(); <br />If other inputfields (command input / command textarea) or userdraw is performed, these values will NOT be read as well.
+<li><span style="color:blue;font-size:0.8em"> can be set onclick <br />(however dragging not supported)
 </span></li>
 	    
 </ul>
@@ -1228,7 +1225,7 @@
 <li><span style="color:blue;font-size:0.8em"> if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> can not be set "onclick" or "drag xy"
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set "onclick" or "drag xy"
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> use commands 'xlabel some_string' and/or 'ylabel some_string' to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
@@ -1590,10 +1587,13 @@
 <li><span style="color:blue;font-size:0.8em"> if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> onclick seqeuence numbering starts at '0'.<br />e.g. if there are 6 objects set onclick, the first onclick object will have id-number '0', the last id-number '5'
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> onclick and drag x|y|xy may be combined (although a single object can not be onclick and draggable)
+<li><span style="color:blue;font-size:0.8em"> onclick and drag x|y|xy may be combined (although a single object can <b>not</b> be onclick and draggable at the same time...)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> NOTE: not all objects may be set onclick
@@ -1729,7 +1729,7 @@
 <li><span style="color:blue;font-size:0.8em"> link_text is a single line (span-element)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> link_text may also be an image URL http://some_server/images/my_image.png
+<li><span style="color:blue;font-size:0.8em"> link_text may also be an image URL 'http://some_server/images/my_image.png' or '$module_dir/gifs/my_image.jpg'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> link_text may contain HTML markup
@@ -1738,7 +1738,10 @@
 <li><span style="color:blue;font-size:0.8em"> the canvas will be displayed in a tooltip on 'link_text'
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link test will alos be shown with this bgcolor.
+<li><span style="color:blue;font-size:0.8em"> the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link text will also be shown with this 'bgcolor'.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are thereforthese commands are mutually exclusive.<br />keep this in mind...
 </span></li>
 	    
 </ul>
@@ -1945,7 +1948,7 @@
 <li><span style="color:blue;font-size:0.8em"> A "point" with diameter 1 pixel centeres at (x:y) in xrange / yrange
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> pixels can not be dragged or clicked
+<li><span style="color:blue;font-size:0.8em"> pixels can <b>not</b> be dragged or clicked
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> "pixelsize = 1" may be changed by command "pixelsize int"
@@ -1965,7 +1968,7 @@
 <li><span style="color:blue;font-size:0.8em"> Draw "points" with diameter 1 pixel
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> pixels can not be dragged or clicked
+<li><span style="color:blue;font-size:0.8em"> pixels can <b>not</b> be dragged or clicked
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> "pixelsize = 1" may be changed by command "pixelsize int"
@@ -2120,7 +2123,7 @@
 <li><span style="color:blue;font-size:0.8em"> no combinations with other reply_types allowed, for now
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> if interactive, 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
+<li><span style="color:blue;font-size:0.8em"> if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> NOTE: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
