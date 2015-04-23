@@ -240,11 +240,11 @@
 #endif
 
 void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id);
-void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size);
-void add_setlimits(FILE *js_include_file, int canvas_root_id);
+void add_trace_js_mouse(FILE *js_include_file,int canvas_cnt,int canvas_root_id,char *stroke_color,char *jsmath,int font_size,double stroke_opacity,int line_width,int crosshair_size,char *input_style);
+void add_setlimits(FILE *js_include_file, int canvas_root_id,int font_size,char *input_style);
 void add_safe_eval(FILE *js_include_file);
 void add_to_js_math(FILE *js_include_file);
-void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath);
+void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath,int font_size,char *input_style);
 void add_jsplot(FILE *js_include_file,int canvas_root_id);
 void add_slider(FILE *js_include_file, int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display);
 void add_slider_display(FILE *js_include_file, int canvas_root_id,int precision,int font_size,char *font_color,double stroke_opacity);
@@ -288,13 +288,13 @@ void add_input_polyline(FILE *js_include_file);
 void add_textarea_polygon(FILE *js_include_file);
 void add_input_crosshair(FILE *js_include_file,int num);
 void add_input_arrow(FILE *js_include_file,int num);
-void add_input_xy(FILE *js_include_file, int canvas_root_id);
-void add_input_xyr(FILE *js_include_file, int canvas_root_id);
-void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id);
-void add_textarea_xy(FILE *js_include_file, int canvas_root_id);
+void add_input_xy(FILE *js_include_file, int canvas_root_id,int font_size,char *input_style);
+void add_input_xyr(FILE *js_include_file, int canvas_root_id,int font_size,char *input_style);
+void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id,int font_size,char *input_style);
+void add_textarea_xy(FILE *js_include_file, int canvas_root_id,char *input_style);
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
-void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1);
+void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1,int font_size);
 void add_rawmath(FILE *js_include_file);
 extern int NUMBER_OF_COLORNAMES;
 extern struct colors { char *hex; char *name; char *rgb; } colors[];

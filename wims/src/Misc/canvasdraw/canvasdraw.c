@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
     char *font_color = "#00000";
     char *draw_type = "points";
     char *fly_font = "normal";
-    char *input_style = "";
+    char *input_style = "font-family:Ariel;text-align:center;color:blue;font-size:12px;background-color:orange;";
     char *flytext = "";
     char *affine_matrix = "[1,0,0,1,0,0]";
     char *function_label = "f(x)=";
@@ -168,7 +168,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	*/
 	switch(type){
@@ -1455,7 +1455,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_circle(js_include_file,1,1);
-		    add_input_xy(js_include_file,canvas_root_id);
+		    add_input_xy(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_points(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
 	    }
@@ -1467,7 +1467,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_circle(js_include_file,1,2);
-		    add_input_xy(js_include_file,canvas_root_id);
+		    add_input_xy(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_points(js_include_file,2,draw_type,line_width,line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);
 	    }
@@ -1479,7 +1479,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_segment(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_segments(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
@@ -1490,7 +1490,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if( use_input_xy == 1 ){
 		    add_input_polyline(js_include_file);
-		    add_input_xy(js_include_file,canvas_root_id);
+		    add_input_xy(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_polyline(js_include_file,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
@@ -1502,7 +1502,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_segment(js_include_file,2);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_segments(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
@@ -1514,7 +1514,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_circle(js_include_file,2,1);
-		    add_input_xyr(js_include_file,canvas_root_id);
+		    add_input_xyr(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		add_js_circles(js_include_file,1,draw_type,line_width,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
@@ -1527,7 +1527,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_circle(js_include_file,2,2);
-		    add_input_xyr(js_include_file,canvas_root_id);
+		    add_input_xyr(js_include_file,canvas_root_id,font_size,input_style);
 		}
 	    }
 	    else
@@ -1539,7 +1539,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_crosshair(js_include_file,1);
-		    add_input_xy(js_include_file,canvas_root_id);
+		    add_input_xy(js_include_file,canvas_root_id,font_size,input_style);
 		}
 	    }
 	    else
@@ -1551,7 +1551,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 1){
 		    add_input_crosshair(js_include_file,2);
-		    add_input_xy(js_include_file,canvas_root_id);
+		    add_input_xy(js_include_file,canvas_root_id,font_size,input_style);
 		}
 	    }
 	    else
@@ -1593,7 +1593,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_arrows(js_include_file,2,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){
 		    add_input_arrow(js_include_file,2);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1604,7 +1604,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_arrows(js_include_file,2,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){
 		    add_input_arrow(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1615,7 +1615,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_arrows(js_include_file,1,draw_type,line_width,2,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){
 		    add_input_arrow(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1626,7 +1626,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_arrows(js_include_file,1,draw_type,line_width,1,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],arrow_head);
 		if(use_input_xy == 1){
 		    add_input_arrow(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1638,7 +1638,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){
 		  add_textarea_polygon(js_include_file);
-		  add_textarea_xy(js_include_file,canvas_root_id);
+		  add_textarea_xy(js_include_file,canvas_root_id,input_style);
 		}
 	    }
 	    else
@@ -1698,7 +1698,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_lines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_line(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1710,7 +1710,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_lines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_line(js_include_file,2);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1722,7 +1722,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_demilines(js_include_file,2,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_demiline(js_include_file,2);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1734,7 +1734,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_demilines(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 		if( use_input_xy == 1 ){
 		    add_input_demiline(js_include_file,1);
-		    add_input_x1y1x2y2(js_include_file,canvas_root_id);
+		    add_input_x1y1x2y2(js_include_file,canvas_root_id,font_size,input_style);
 		}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
 	    }
@@ -1822,6 +1822,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ snaptopoints x1,y1,x2,y2,x3,y3....
 	@ a userdraw object will snap to these points.
+	@ the array size (e.g. the number of points) of command 'snaptopoints' is limited by constant MAX_INT (canvasdraw.h)
 	@ a draggable object (use command "drag  x|y|xy") will snap to the clossed of these points when dragged (mouseup)
 	@ other options: use keyword "snaptogrid", "xsnaptogrid" or "ysnaptogrid" 
 	*/
@@ -1886,9 +1887,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
 	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
 	 @ function may be used any time (e.g. without userdraw)
+	 @ multiple 'userinput function' commands may be used.
 	 @ use command "functionlabel some_string" to define the inputfield text : default value "f(x)="
 	 @ use command 'strokecolor some_color' to adjust the plot / functionlabel color
-	 @ the userinput for the function will be corrected by a simple 'rawmath' implementation...
+	 @ use command 'inputstyle some_css' to adjust the inputfields
+	 @ use command 'fontsize int' to adjust the label fonts. (default 12px)
+	 @ the user input for the function will be corrected by a simple 'rawmath' implementation...<br />an error message will be shown if javascript can not interpret the user input
 	*/
 	    temp = get_string_argument(infile,1);
 	    if(strstr(temp,"function") != 0  || strstr(temp,"curve") != 0  || strstr(temp,"plot") != 0 ){
@@ -1896,13 +1900,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	      add_rawmath(js_include_file);/* add simple rawmath routine to correct user input of function */
 	      js_function[DRAW_JSFUNCTION] = 1;
 	      if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	      add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	      add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1],font_size);
 	      input_cnt++;
 	     }
 	     else 
 	     {
 	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
-	      fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	      fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],font_size);
 	      input_cnt++;
 	     }
 	     if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -1944,6 +1948,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if set two textareas are added to the document<br />(one for x-values , one for y-values)
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
 	@ user drawings will not zoom on zooming (or pan on panning)
+	@ use command 'inputstyle some_css' to adjust the inputarea.
+	@ use command 'fontsize int' to adjust the text labels (if needed)
 	*/
 	    if( use_input_xy != 0 ){canvas_error("usertextarea_xy can not be combined with userinput_xy command");}
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
@@ -1960,6 +1966,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
 	@ can not be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
 	@ user drawings will not zoom on zooming (or pan on panning)
+	@ use command 'inputstyle some_css' to adjust the inputarea.
+	@ use command 'fontsize int' to adjust the text labels (if needed)
 	*/
 	    /* add simple eval check to avoid code injection with unprotected eval(string) */
 	    if( use_input_xy != 0 ){canvas_error("userinput_xy can not be combined with usertextarea_xy command");}
@@ -1972,6 +1980,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ functionlabel 'some string'
 	 @ default value "f(x)="
 	 @ no mathml allowed (just ascii string)
+	 @ use command 'fontsize int' to adjust the size
+	 @ use command 'strokecolor colorname' to adjust the labels (individually, if needed)
 	 @ if needed, use before every command 'userinput function | inputfield | textarea'
 	*/
 	    function_label = get_string_argument(infile,1);
@@ -1986,19 +1996,20 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ the userinput value will be plotted in the canvas
 	@ this value may be read with 'read_canvas()'. <br />for do it yourself js-scripters : If this is the first inputfield in the script, it's id is canvas_input0
 	@ use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
+	@ fontsize can be set using command 'fontsize int'
 	@ incompatible with command 'intooltip link_text_or_image' : it uses the tooltip div for adding the inputfield
 	*/
 	    if( js_function[DRAW_JSFUNCTION] != 1 ){
 	     js_function[DRAW_JSFUNCTION] = 1;
 	     add_rawmath(js_include_file);
 	     if(reply_format == 0){reply_format = 24;}/* read canvas_input values */
-	     add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1]);
+	     add_input_jsfunction(js_include_file,canvas_root_id,input_style,function_label,input_cnt,stroke_color,stroke_opacity,line_width,use_dashed,dashtype[0],dashtype[1],font_size);
 	     input_cnt++;
 	    }
 	    else 
 	    {
 	      /* no need to add DRAW_JSFUNCTION , just call it with the parameters */
-	     fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
+	     fprintf(js_include_file,"add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",\"%.2f\",%d,%d,%d,%d);\n",input_cnt,input_style,function_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1],font_size);
 	     input_cnt++;
 	    }
 	    if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -2156,8 +2167,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @trace_jscurve some_math_function
 	 @will use a crosshair to trace the jsmath curve
 	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
-	 @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-	 @use linewidth,strokecolor,crosshairsize to adjust the corsshair.
+	 @default labels 'x' and 'y'<br />use commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' to customize the labels for the input fields
+	 @use commands fontsize and inputstyle to format the fonts for labels and inputfields.
+	 @use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
 	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
@@ -2166,7 +2178,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_to_js_math(js_include_file);
 		use_js_math = TRUE;
 	    }
-	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size);
+	    add_trace_js_mouse(js_include_file,TRACE_CANVAS,canvas_root_id,stroke_color,get_string(infile,1),font_size,stroke_opacity,line_width,crosshair_size,input_style);
 	    break;
 
 	case JSMATH:
@@ -2174,6 +2186,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    @jsmath some_math_function
 	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
 	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	    @use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
 	    @example: jsmath sin(x^2)
 	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
@@ -2182,7 +2195,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_to_js_math(js_include_file);
 		use_js_math = TRUE;
 	    }
-	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1));
+	    add_calc_y(js_include_file,canvas_root_id,get_string(infile,1),font_size,input_style);
 	    break;
 
 
@@ -2515,6 +2528,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if a value display is desired, use<br />type:xy display,x display,y display,angle radian,angle degree
 	@ is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
 	@ use commmand 'slider' before draggable/clickable objects.
+	@ no slider for a math function, these can be traced using command 'trace_jscurve some_function_in_x'
 	@ a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
 	@ amount of sliders is not limited.
 	@ javascript:read_dragdrop(); will return an array with 'object_number:slider_value'
@@ -3072,7 +3086,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @note:the input value will not be checked on validity
 	*/
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
-	    add_setlimits(js_include_file,canvas_root_id);
+	    add_setlimits(js_include_file,canvas_root_id,font_size,input_style);
 	    /* add_setlimits provides 'fprintf(js_include_file,"use_pan_and_zoom = 1;");' */
 	    use_pan_and_zoom = TRUE;
 	    done = TRUE;

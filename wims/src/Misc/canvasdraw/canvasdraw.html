@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Wed Feb 18 11:22:33 CET 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Thu Apr 23 09:32:24 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -10,7 +10,7 @@
 <li><span style="color:blue;font-size:0.8em">will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul></ul>
+<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
@@ -573,6 +573,9 @@
 <li><span style="color:blue;font-size:0.8em"> a userdraw object will snap to these points.
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> the array size (e.g. the number of points) of command 'snaptopoints' is limited by constant MAX_INT (canvasdraw.h)
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> a draggable object (use command "drag x|y|xy") will snap to the clossed of these points when dragged (mouseup)
 </span></li>
 	    
@@ -658,13 +661,22 @@
 <li><span style="color:blue;font-size:0.8em"> function may be used any time (e.g. without userdraw)
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> multiple 'userinput function' commands may be used.
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> use command "functionlabel some_string" to define the inputfield text : default value "f(x)="
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> use command 'strokecolor some_color' to adjust the plot / functionlabel color
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the userinput for the function will be corrected by a simple 'rawmath' implementation...
+<li><span style="color:blue;font-size:0.8em"> use command 'inputstyle some_css' to adjust the inputfields
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize int' to adjust the label fonts. (default 12px)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the user input for the function will be corrected by a simple 'rawmath' implementation...<br />an error message will be shown if javascript can not interpret the user input
 </span></li>
 	    
 </ul>
@@ -684,6 +696,12 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> user drawings will not zoom on zooming (or pan on panning)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'inputstyle some_css' to adjust the inputarea.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize int' to adjust the text labels (if needed)
 </span></li>
 	    
 </ul>
@@ -711,6 +729,12 @@
 <li><span style="color:blue;font-size:0.8em"> user drawings will not zoom on zooming (or pan on panning)
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> use command 'inputstyle some_css' to adjust the inputarea.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize int' to adjust the text labels (if needed)
+</span></li>
+	    
 </ul>
 	    
 <li><span style="color:red"> functionlabel 'some string'
@@ -719,6 +743,12 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> no mathml allowed (just ascii string)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'fontsize int' to adjust the size
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use command 'strokecolor colorname' to adjust the labels (individually, if needed)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> if needed, use before every command 'userinput function | inputfield | textarea'
@@ -744,6 +774,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> use before this command 'userinput_function',<br />commands like 'inputstyle some_css' , 'xlabel some_description' , 'opacity int,int' , 'linewidth int' , 'dashed' and 'dashtype int,int' to modify
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> fontsize can be set using command 'fontsize int'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> incompatible with command 'intooltip link_text_or_image' : it uses the tooltip div for adding the inputfield
@@ -871,10 +904,13 @@
 <li><span style="color:blue;font-size:0.8em">two inputfields will display the current x/y-values (numerical evaluation by javascript)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+<li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />use commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' to customize the labels for the input fields
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">use linewidth,strokecolor,crosshairsize to adjust the corsshair.
+<li><span style="color:blue;font-size:0.8em">use commands fontsize and inputstyle to format the fonts for labels and inputfields.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
@@ -888,6 +924,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em">use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">example: jsmath sin(x^2)
@@ -1125,6 +1164,9 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> use commmand 'slider' before draggable/clickable objects.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> no slider for a math function, these can be traced using command 'trace_jscurve some_function_in_x'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
