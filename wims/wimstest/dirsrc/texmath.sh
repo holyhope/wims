@@ -3,17 +3,20 @@
 wims_home=`pwd`;
 wims_dirtest="$wims_home/wimstest/dirtest";
 
-$wims_home/src/wims test $wims_dirtest texmath 'add2 add2p add3'
-$wims_home/src/wims test $wims_dirtest texmath 'sign doublesign'
-$wims_home/src/wims test $wims_dirtest texmath 'mul div divp muldiv muldivp'
-$wims_home/src/wims test $wims_dirtest texmath 'exp ind num num2 sci'
-$wims_home/src/wims test $wims_dirtest texmath 'matrix matrix2'
-$wims_home/src/wims test $wims_dirtest texmath 'stars names names2 sums'
-$wims_home/src/wims test $wims_dirtest texmath 'relations relationempty relationempty2 relationempty3'
-$wims_home/src/wims test $wims_dirtest texmath 'mixed1 mixed2 mixed3 mixed4 mixed5'
-$wims_home/src/wims test $wims_dirtest texmath 'par stupid warn1ok warn1'
+test="add2 add2p add3
+sign doublesign
+mul div divp muldiv muldivp
+exp ind num num2 sci
+matrix matrix2
+stars names names2 sums
+relations relationempty relationempty2 relationempty3
+mixed1 mixed2 mixed3 mixed4 mixed5
+par stupid warn1ok warn1
+parent"
 
-
+for a in $test; do
+  $wims_home/src/wims test $wims_dirtest texmath $a
+done;
 
 exit
 

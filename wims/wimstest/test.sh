@@ -15,9 +15,9 @@ if [ "$1" ] ; then
   done;
 else
   for i in `ls $wims_dirsrc/*.sh`; do
-   j=`basename $i .sh`; echo "Testing $j...\c"
+   j=`basename $i .sh`; echo "Testing $j... \c"
    $i > $wims_tmp/$j 2>&1
-   if ! cmp $wims_res/$j $wims_tmp/$j; then
+   if ! cmp $wims_tmp/$j $wims_res/$j; then
      diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
      echo "BUG"
    else
