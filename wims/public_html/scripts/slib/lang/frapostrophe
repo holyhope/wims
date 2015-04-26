@@ -6,7 +6,8 @@ slib_author=Gang, XIAO
 
 slib_example= le avion\
  le port\
- de le pain
+ de le pain\
+ de huit
 !exit
 
 :proc
@@ -15,6 +16,7 @@ slib_out=
 !if $slib_inp=$empty
  !exit
 !endif
+slib_haspire=huit
 
 slib_n=!wordcnt $slib_inp
 !for slib_i=1 to $slib_n-1
@@ -31,6 +33,9 @@ slib_n=!wordcnt $slib_inp
  slib_cn=!deaccent $slib_cn
  !if $slib_cn notin aeiouh
   !goto normal
+ !endif
+ !if $slib_cn=h and $slib_n iswordof $slib_haspire
+   !goto normal
  !endif
  !if $slib_w=ce
   slib_out=$(slib_out)cet $
