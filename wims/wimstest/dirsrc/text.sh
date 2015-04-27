@@ -4,7 +4,7 @@ wims_home=`pwd`;
 wims_dirtest="$wims_home/wimstest/dirtest";
 
 test="line item word1 word2
-accent1 accent2 accent3
+accent1 accent2 accent3 accent4
 parent1 parent2
 position1 position2 position3 position4
 detag1
