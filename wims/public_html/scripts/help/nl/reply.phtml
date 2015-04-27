@@ -53,35 +53,38 @@ Bij alle modellen kan
 !href cmd=help&special_parm=feedback feedback
  worden gegeven, als het antwoord van de leerling aan bepaalde condities voldoet.
 
-<p><h4>Multiple choices</h4> <p>
-Een meerkeuze vraag wordt bepaald door een lijst met goede keuzes [1 of meer] 
-en door een lijst met foutieve keuzes.<p>
+<h4>Multiple choices</h4>
+<p>
+Een meerkeuze vraag wordt bepaald door een lijst met goede keuzes [1 of meer]
+en door een lijst met foutieve keuzes.
+</p><p>
 Er kunnen gelijktijdig tot $choicelim meerkeuze vragen worden gesteld in een enkele OEF.
 Het aantal goede of foute keuzes is bijna onbeperkt.
-De enige -instelbare- limiet is de lengte van een variabele binnen WIMS. 
-<p>
-Zie ook 
+De enige -instelbare- limiet is de lengte van een variabele binnen WIMS.
+</p><p>
+Zie ook
 !href cmd=help&special_parm=oef help bij OEF formaat
  voor de syntax bij het meerkeuze vraag type.
-
-<p><h4>Freestyle antwoorden</h4> <p>
+</p>
+<h4>Freestyle antwoorden</h4> <p>
 Een freestyle antwoord [open antwoord] wordt door de leerling zelf ingetypt.
 Er kunnen op deze server gelijktijdig $answerlim freestyle vragen worden gesteld binnen een enkele OEF
-<p>
+</p><p>
 De algemene syntax is als volgt:
+</p>
 <pre>\answer{Tekst}{\antwoord}{type=...}{option=...}{weight=...}</pre>
 
 (de laatste drie velden zijn optioneel)
 <p>
 
 Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het onderstaande types zijn:
-
-!for i=1 to 2
-<b>$(namelist[$i])</b>
- !set n=!linecnt $(typelist$i)
+</p>
+!for k=1 to 2
+<b>$(namelist[$k])</b>
+ !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
-  !set l=!line $j of $(typelist$i)
+  !set l=!line $j of $(typelist$k)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
   !set name=!replace internal | by , in $name
@@ -101,7 +104,7 @@ Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het 
 , in particular with no preliminary processing of the texts. And all the
 symtext options will be understood in this case.
    !endif
-   <p>
+   </p>
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
@@ -114,28 +117,30 @@ symtext options will be understood in this case.
 
 !read help/$lang/embedans.phtml
 <p>
-De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is: <span class="tt wims_code_words">default</span>. 
-Deze antwoord model accepteerd ook nog een extra sleutel <span class="tt wims_code_words">default="default_value"</span>. 
+De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is: <span class="tt wims_code_words">default</span>.
+Deze antwoord model accepteerd ook nog een extra sleutel <span class="tt wims_code_words">default="default_value"</span>.
 Wanneer de leerling een leeg antwoord invult, wordt verder gerekend met de "default_value"
-
+</p>
 <h4>De optionele parameter <span class="tt wims_code_words">weight</span></h4>
 <a id="weight"></a>
 Het is mogelijk de antwoorden binnen een enkele OEF een weging
 mee te geven.
 <p>
-Bijvoorbeeld : 
+Bijvoorbeeld :
+</p>
 <pre>\answer{}{1}{type=numeric}{weight=8}
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
 
 Met de ingestelde moeilijkheidsgraad van de oefening wordt ook rekening gehouden in het geval van vaste percentages.
 
-Er kunnen ook variabelen worden gebruikt als <span class="tt wims_code_words">weight</span>. 
+Er kunnen ook variabelen worden gebruikt als <span class="tt wims_code_words">weight</span>.
 Hierdoor kan het scorings mechanisme verder worden getuned.
-Men kan variabelen in <span class="tt wims_code_words">weight</span> verwerken 
+Men kan variabelen in <span class="tt wims_code_words">weight</span> verwerken
 als deze zijn gedefinieerd voor het <span class="tt wims_code_variable">\statement</span>.
 <p>
 Voorbeeld :
+</p>
 <pre>
 \text{w = \t = 1 ? 1 : 2}
 \answer{}{1}{type=numeric}{weight=\w}
@@ -150,30 +155,30 @@ Voorbeeld :
 De toegestane option parameters voor <span class="tt wims_code_words">\answer</span>
 of <span class="tt wims_code_words">\condition</span> zijn
 <ul>
-<li><span class="tt wims_code_words">option=default</span> : De optie <span class="tt wims_code_words">default</span> is algemeen voor alle vrije antwoorden : 
-Deze optie kan de vorm <span class="tt wims_code_words">default="default_value"</span> hebben. 
+<li><span class="tt wims_code_words">option=default</span> : De optie <span class="tt wims_code_words">default</span> is algemeen voor alle vrije antwoorden :
+Deze optie kan de vorm <span class="tt wims_code_words">default="default_value"</span> hebben.
 Wordt niets ingevuld , is dat de default waarde die zal worden gebruikt.
 </li>
 <li>
-<span class="tt wims_code_words">option=split</span> : By het antwoordtype type = 
-<span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> 
+<span class="tt wims_code_words">option=split</span> : By het antwoordtype type =
+<span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span>
 of <span class="tt wims_code_words">mark</span>,
-wordt er een gedeelde score behaald. 
+wordt er een gedeelde score behaald.
 </li>
 <li>
-<span class="tt wims_code_words">option=nonstop</span> : 
+<span class="tt wims_code_words">option=nonstop</span> :
 In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
 </li>
-<li><span class="tt wims_code_words">option=noanalyzeprint</span> : 
+<li><span class="tt wims_code_words">option=noanalyzeprint</span> :
 Er wordt geen automatische analyse van het antwoord weergegeven.
 De maker van de oefening zal zelf passende feedback moeten formuleren.
 Deze optie is handig bij bepaalde vraag types, zoals <span class="tt wims_code_words">mark</span>
 waarbij automatische textherkenning vaak ontoereikend is.
-Attentie: de analyse van de condities wordt niet weergegeven. 
+Attentie: de analyse van de condities wordt niet weergegeven.
 Alleen de score blijft.
 </li>
 <li>Een optionele parameter bij <span class="tt wims_code_words">condition</span> : <span class="tt wims_code_words">option=hide</span> :
-De conditie wordt gebruikt om te analyseren. 
+De conditie wordt gebruikt om te analyseren.
 En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
 </li>
 </ul>
@@ -202,10 +207,10 @@ Hier zijn enkele voorbeelden:
 (<span class="tt wims_code_variable">\ans1</span> en <span class="tt wims_code_variable">\ans2</span> zijn de ongedefinieerde variabelen.)
 <small>
 Hier staat een
-!href target=wims_mhelp cmd=help&special_parm=if komplete lijst 
+!href target=wims_mhelp cmd=help&special_parm=if komplete lijst
  met condities.
 </small>
-<p>
+</p>
 $table_header
 $table_hdtr<th>Conditie</th><th>betekend</th></tr>
 $table_tr<td><tt class="wims_code_variable">\ans1>=0 and \ans1<=1</tt></td>
@@ -216,8 +221,9 @@ $table_tr<td class="tt wims_code_variable">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)
     <td>Goed als <span class="tt wims_code_variable">ans1</span> en <span class="tt wims_code_variable">ans2</span> de twee wortels zijn van de functie  x<sup>2</sup>-5x+6.</td></tr>
 $table_tr<td class="tt wims_code_variable">sin(\ans1)=0</td>
     <td>Goed als <span class="tt wims_code_variable">ans1</span> een veelvoud is van $m_pi.</td></tr>
-$table_end <p>
-Zie ook de help pagina's over de syntax van de OEF 
+$table_end
+<p>
+Zie ook de help pagina's over de syntax van de OEF
 !href cmd=help&special_parm=oef antwoord modellen
 .
 </p>

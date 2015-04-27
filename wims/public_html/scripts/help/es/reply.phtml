@@ -57,7 +57,7 @@ para advertir de un error típico).
 <h4>Opciones múltiples</h4> <p>
 Una opción múltiple se define dando una lista de opciones correctas
 (una o varias) y otra lista con todas las opciones (las opciones correctas
-se añaden de forma automática). 
+se añaden de forma automática).
 </p><p>
 Se pueden pedir hasta $choicelim opciones múltiples simultáneas en un
 ejercicio, con la implementación actual. El número de opciones correctas
@@ -71,7 +71,7 @@ Ver la
 <a id="freestyle"></a>
 <h4>Respuestas de estilo libre</h4>
 Una respuesta de estilo libre es la que la tiene que escribir el usuario.
-Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el 
+Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el
 mismo ejercicio con la implementación actual. <p>
 La sintaxis es la siguiente:
 <pre>\answer{Texto}{\respuesta}{type=...}{option=...}{weight=...}</pre>
@@ -81,12 +81,12 @@ La sintaxis es la siguiente:
 Cada respuesta libre puede tomar independientemente uno de los siguientes
 tipos:
 </p>
-!for i=1 to 2
- <span class="bold">$(namelist[$i])</span>
- !set n=!linecnt $(typelist$i)
+!for k=1 to 2
+ <span class="bold">$(namelist[$k])</span>
+ !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
-  !set l=!line $j of $(typelist$i)
+  !set l=!line $j of $(typelist$k)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
   !set name=!replace internal | by , in $name
@@ -120,7 +120,7 @@ tipos:
 !read help/$lang/embedans.phtml
 
 <h3>Le paramètre optionnel <span class="tt wims_code_words">weight</span></h3>
-<a id="weight"></a> 
+<a id="weight"></a>
 Il permet d'imposer un poids aux questions posées.
 <br/>
 Exemple :
@@ -128,9 +128,9 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
 
-Le niveau de sévérité  sera aussi pris en compte lors du 
+Le niveau de sévérité  sera aussi pris en compte lors du
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
-par le niveau de sévérité. 
+par le niveau de sévérité.
 
 Il est possible de mettre des variables dans <span class="tt wims_code_words">weight</span>
 dans la mesure où elles sont définies avant le <span class="tt wims_code_variable">\statement</span>.
@@ -144,9 +144,9 @@ Exemple :
 
 <h3>Le paramètre optionnel <span class="tt wims_code_words">option</span></h3>
  <a id="option"></a>
- Dans le cas de plusieurs options, elles sont séparées par des espaces. 
+ Dans le cas de plusieurs options, elles sont séparées par des espaces.
  Par exemple, <span class="tt wims_code_words">option=default noanalyzeprint</span>
- 
+
 Les options possibles à la suite d'une instruction <span class="tt wims_code_variable">\answer</span>
 ou <span class="tt wims_code_variable">\condition</span> sont
 <ul>
@@ -157,20 +157,20 @@ qui remplace.
 <li>
 <span class="tt wims_code_words">option=split</span> : Dans le cas d'une réponse dont
 le type est <span class="tt wims_code_words">correspond</span>, <span class="tt wims_code_words">checkbox</span> ou <span class="tt wims_code_words">mark</span>, la notation
-tient compte des réponses justes, même si elles ne le sont pas toutes. 
+tient compte des réponses justes, même si elles ne le sont pas toutes.
 </li>
 <li>
 <span class="tt wims_code_words">option=nonstop</span> : Dans le cas d'un exercice à étapes, les questions
 suivantes sont posées même en cas de réponses fausses.
 </li>
 <li><span class="tt wims_code_words">option=noanalyzeprint</span> : Le texte automatique d'analyse de réponses n'est
-pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable.
 Cela est utile dans certains types comme le type <span class="tt wims_code_words">mark</span> où le texte automatique
-est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée.
 Seul le score subsiste.</li>
-<li>A la suite d'une instruction <span class="tt wims_code_words">condition</span>, 
+<li>A la suite d'une instruction <span class="tt wims_code_words">condition</span>,
 <span class="tt wims_code_words">option=hide</span> : La condition sera utilisée pour l'analyse
-de la réponse mais ne sera pas  affichée. 
+de la réponse mais ne sera pas  affichée.
 </li>
 </ul>
 D'autres options peuvent être utilisables dans des types particuliers de réponses.
@@ -179,15 +179,15 @@ D'autres options peuvent être utilisables dans des types particuliers de réponse
 <p>
 Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
 se corrijan según condiciones especiales (preguntas con múltiples respuestas
-correctas, ejercicios que pidan ejemplos, respuestas determinadas por 
-desigualdades, etc). Puede hacerse de la siguiente manera: 
+correctas, ejercicios que pidan ejemplos, respuestas determinadas por
+desigualdades, etc). Puede hacerse de la siguiente manera:
 </p><p>
 Si la respuesta correcta a una pregunta libre es una variable indefinida
 hasta ahora,
 la respuesta a esta cuestión se asignará en esa variable. La variable
 puede usarse en adelante para implementar las condiciones de comprobación. La
 puntuación dada al ejercicio se determinará por el número de condiciones
-de comprobación que se satisfagan, en lugar del número de respuestas que 
+de comprobación que se satisfagan, en lugar del número de respuestas que
 coincidan con la respuesta correcta.
 </p><p>
 Se pueden definir hasta $condlim condiciones simultáneas para un ejercicio,
@@ -199,9 +199,9 @@ pueden ser corregidas así. La sintaxis es
 </pre>
 (el último campo es optional).
  <p>
-A continuación presentamos algunos ejemplos de condiciones de comprobación 
-(<span class="tt wims_code_words">\ans1</span> y <span class="tt wims_code_words">\ans2</span> 
-son dos variables indefinidas que aparecen 
+A continuación presentamos algunos ejemplos de condiciones de comprobación
+(<span class="tt wims_code_words">\ans1</span> y <span class="tt wims_code_words">\ans2</span>
+son dos variables indefinidas que aparecen
 en las  definiciones de las respuestas libres, como se describe antes).
 
 !href target=wims_mhelp cmd=help&special_parm=if Lista completa de las relaciones
@@ -213,7 +213,7 @@ $table_tr<td><tt class="wims_code_words">\ans1>=0 and \ans1<=1</tt></td>
 $table_tr<td class="tt wims_code_words">\ans1=1 or \ans1=3 or \ans1=5</td>
     <td>Correcta si <span class="tt wims_code_words">ans1</span> es 1, 3 o 5.</td></tr>
 $table_tr<td class="tt wims_code_words">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</td>
-    <td>Correcta si <span class="tt wims_code_words">ans1</span> y <span class="tt wims_code_words">ans2</span> son las dos 
+    <td>Correcta si <span class="tt wims_code_words">ans1</span> y <span class="tt wims_code_words">ans2</span> son las dos
     raíces del polinomio x<sup>2</sup>-5x+6.</td></tr>
 $table_tr<td class="tt wims_code_words">sin(\ans1)=0</td>
     <td>Correcta si <span class="tt wims_code_words">ans1</span> es un múltiplo de $m_pi.</td></tr>

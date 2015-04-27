@@ -10,28 +10,31 @@ La syntaxe générale de ce type de réponse est :
 \answer{un commentaire}{\rep}{type=numeric}{option=comma}
 </pre>
 où <span class="tt">\rep</span> est la bonne réponse définie auparavant ou une variable n'ayant pas été définie dans le cas où l'on désire analyser soi-même la réponse.
-Ce qui suit ne concerne que le cas d'une variable déjà définie.
+Si <span class="tt">\rep</span>n'a pas été définie, vous devez faire l'analyse vous-même en utilisant les conditions (<span class="tt wims_code_words">\condition</span>).
+Ce qui suit ne concerne que le cas d'une variable déjà définie et ayant une valeur.
 
 <div>
-La valeur numérique attendue est estimée par défaut avec une erreur qui est par défaut relative :
+La valeur numérique attendue est estimée par défaut avec une erreur relative :
 <div class="wimscenter">
- !insmath |\mbox{reponse}-\mbox{bonne_reponse}| \le \frac{max(|\mbox{bonne reponse}|+|\mbox{reponse}|,\frac{1}{\mbox{prec}})}{\mbox{prec}}.
+ !insmath |\mbox{reponse}-\mbox{bonne_reponse}| \le M(prec)
  </div>
+ avec
+ <div class="wimscenter">
+!insmath M(prec)= \frac{max(|\mbox{reponse}|+|\mbox{bonne_reponse}|,\frac{1}{\mbox{prec}})}{\mbox{prec}}
+</div>
 Dans la formule précédente,
 <span class="tt">prec</span> est donnée dans le champ
  <span class="tt wims_code_words">\precision</span>,
  par défaut sa valeur est de 1000.
-Autrement dit, si la réponse
-est à peu près la bonne réponse, le quotient de la différence
-par la bonne réponse (erreur relative) doit être inférieure à
-2/precision.
+Autrement dit, si la réponse est proche de la bonne réponse, le quotient de la différence
+par la bonne réponse (erreur relative) doit être inférieure à 2/prec.
 </div>
 <div>
- Pour qu'une réponse soit considérée comme partiellement bonne, il faut remplacer <span class="tt">prec</span> par
+ Pour qu'une réponse soit considérée comme
+ <span class="oef_indprec"> bonne avec une mauvaise précision</span>, il faut remplacer <span class="tt">prec</span> par
 !insmath \sqrt{prec}.
 </div>
 
-:option
 :option
 Les options possibles sont les suivantes :
 <ul><li><span class="tt wims_code_words">comma</span> :
@@ -41,91 +44,29 @@ que celui donné par l'élève.
 </li><li><span class="tt wims_code_words">absolute</span> :
 la précision est absolue et le calcul d'erreur s'effectue par la relation :
 <div class="wimscenter">
-!insmath ||\mbox{reponse}|-|\mbox{bonne_reponse}||< \frac{2}{\mbox{prec}}.
+!insmath | \mbox{reponse}-\mbox{bonne_reponse}|< \frac{1}{\mbox{prec}}.
 </div>
-Pour une précision partielle, remplacer
-!insmath \frac{2}{\mbox{prec}}
+Pour que la réponse soit considérée comme <span class="oef_indprec">
+bonne avec une mauvaise précision</span>, il faut remplacer
+!insmath \frac{1}{\mbox{prec}}
   par
 !insmath \frac{10}{\mbox{prec}}.
 </li></ul>
 :example
 Un exemple de calcul est proposé pour illustrer les précisions absolues
 et relatives. La valeur numérique exacte attendue est 0.42 et
-la valeur <span class="tt">prec</span> de <span class="tt wims_code_words">precision</span> est égale à 1000.
-On pose
-<div class="wimscenter">
-M(prec)=
-!insmath \frac{max(|\mbox{reponse}|+|\mbox{bonne_reponse}|,\frac{1}{\mbox{prec}})}{\mbox{prec}}
+la valeur <span class="tt">prec</span> du champ <span class="tt wims_code_words">\precision</span> est égale à 1000.
 
-<table class="wimscenter wimsborder">
-<tr>
-  <th>Réponse</th>
-  <th>Analyse précision relative</th>
-  <th>Analyse précision absolue</th>
-<th>
-!insmath |\mbox{reponse}-\mbox{bonne_reponse}|
-</th>
-<th>
-M(prec)
-</th>
-<th>
-!insmath M(\sqrt{\mbox{prec}}\,)
-</th>
-<th>
-!insmath \frac{2}{\mbox{prec}}
-</th>
-<th>
-!insmath \frac{10}{\mbox{prec}}
-</th>
-</tr>
-<tr>
-  <td>0.4192</td>
-  <td class="oef_indgood">bonne réponse</td>
-  <td class="oef_indgood">bonne réponse</td>
-  <td>0.0008</td>
-  <td>0.00084</td>
-  <td>0.02654</td>
-  <td>0.002</td>
-  <td>0.01</td>
-</tr>
-<tr>
-  <td>0.4191</td>
-  <td class="oef_indprec">mauvaise précision</td>
-  <td class="oef_indgood">bonne réponse</td>
-  <td>0.0009</td>
-  <td>0.00084</td>
-  <td>0.02653</td>
-  <td>0.002</td>
-  <td>0.01</td>
-</tr>
-<tr>
-  <td>0.4190</td>
-  <td class="oef_indprec">mauvaise précision</td>
-  <td class="oef_indprec">mauvaise précision</td>
-  <td>0.001</td>
-  <td>0.00084</td>
-  <td>0.02653</td>
-  <td>0.002</td>
-  <td>0.01</td>
-</tr>
-<tr>
-  <td>0.4</td>
-  <td class="oef_indprec">mauvaise précision</td>
-  <td class="oef_indbad">mauvaise réponse</td>
-  <td>0.02</td>
-  <td>0.00082</td>
-  <td>0.02593</td>
-  <td>0.002</td>
-  <td>0.01</td>
-</tr>
-<tr>
-  <td>0.39</td>
-  <td class="oef_indbad">mauvaise réponse</td>
-  <td class="oef_indbad">mauvaise réponse</td>
-  <td>0.03</td>
-  <td>0.00081</td>
-  <td>0.02561</td>
-  <td>0.002</td>
-  <td>0.01</td>
-</tr>
-</table>
+!distribute items bon,faux,mauvaise précision into name_good,name_bad,name_prec
+!set name_header=Réponse,Précision <br />relative,Précision <br />absolue, Différence <br />avec
+!set example=0.42,0.4205,0.4192,0.4191,0.4190,0.4,0.39,500000
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml
+
+!set example=505.42,505.4205,505.4192,505.4191,505.4190,505.4,505.39
+!set nb_ex=!itemcnt $example
+!set precision=1000
+
+!read help/anstype/table_numeric.phtml

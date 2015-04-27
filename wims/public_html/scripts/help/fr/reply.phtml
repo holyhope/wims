@@ -70,12 +70,12 @@ La syntaxe est la suivante (les 3 derniers champs sont optionnels) :
 <p>
 Chaque réponse peut prendre indépendamment l'un des types suivants.
 </p>
-!for i=1 to 2
- <span class="bold">$(namelist[$i])</span>
- !set n=!linecnt $(typelist$i)
+!for k=1 to 2
+ <span class="bold">$(namelist[$k])</span>
+ !set n=!linecnt $(typelist$k)
  <ul>
  !for j=1 to $n
-  !set l=!line $j of $(typelist$i)
+  !set l=!line $j of $(typelist$k)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
   !set name=!replace internal | by , in $name
