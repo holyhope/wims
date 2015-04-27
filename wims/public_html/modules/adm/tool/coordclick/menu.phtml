@@ -1,6 +1,6 @@
 
 !! menu definition file
-!set list_curve=circle,rectangle,polygon
+!set list_curve=circle,rectangle,polygon,brokenline
 !default step=1
 !read lang/names.phtml.fr
 $name_intro
@@ -74,7 +74,7 @@ $name_exo0
    !endif
   </li><li>
   !default type=0
-  !formradio type list 0,1,2 prompt $name_0, $name_1,$name_2
+  !formradio type list 0,1,2,3 prompt $name_0, $name_1,$name_2,$name_3
   </li>
 </ul>
   <p class="wimscenter wimsform">
@@ -97,7 +97,7 @@ $name_exo0
 
   <ul><li style="display: inline-block;vertical-align:top;max-width:$[max($(insdraw_size[1])+4,300)]px">
   !if $step>=3
-    !if $type=2 and $ext=2
+    !if $type iswordof 2 3 and $ext=2
      $(name_point$type$ext)
       !read zone.phtml
   </li></ul>
