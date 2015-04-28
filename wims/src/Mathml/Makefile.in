@@ -31,13 +31,13 @@ lex.yy.o:	lex.yy.c y.tab.c wims_mathml.h
 		$(CC) $(CFLAGS) $(CPPFLAGS) -c -o lex.yy.o lex.yy.c
 
 wims_mathml:	lex.yy.o y.tab.o wims_mathml.cc wims_mathml.h
-		$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -o wims_mathml lex.yy.o y.tab.o wims_mathml.cc
+		$(CXX) $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -o wims_mathml lex.yy.o y.tab.o wims_mathml.cc
 
 universal:
 		CFLAGS='-arch i686 -arch ppc' make all
 
-clean:		
-		$(RM) y.tab.* lex.yy.c wims_mathml *.o *.output *.so *.dll *.sl *.bundle 
+clean:
+		$(RM) y.tab.* lex.yy.c wims_mathml *.o *.output *.so *.dll *.sl *.bundle
 
 install: wims_mathml
 		$(INSTALL) wims_mathml $(BINDIR)
