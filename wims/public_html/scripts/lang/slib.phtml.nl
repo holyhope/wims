@@ -1,17 +1,18 @@
 !set slib_lang_exists=yes 
 !distribute lines Script bibliotheek\
- Output\
- Parameter\
- Parameters\
- Vereiste software\
- Aanvraag door module\
- Aavraag door OEF/Doc\
- Beschikbaere scripten in slib\
- Variabelen lijst van komma-gescheiden items\
- default\
+Output\
+Parameter\
+Parameters\
+Vereiste software\
+Aanvraag door module\
+Aavraag door OEF/Doc\
+Beschikbaere scripten in slib\
+Variabelen lijst van komma-gescheiden items\
+default\
 Het resultaat kan worden gebruikt dmv de variabele\
+All\
 into wims_name_slib,wims_name_Output,wims_name_Parameter,wims_name_Parameters,wims_name_Required_Software,\
-  wims_name_call1,wims_name_call2,wims_name_listslib,wims_name_variable_list,wims_name_default,wims_name_result
+  wims_name_call1,wims_name_call2,wims_name_listslib,wims_name_variable_list,wims_name_default,wims_name_result,wims_name_All
 
 !set wims_name_upto=!nosubst tot en met $slpcnt, komma-gescheiden
 
