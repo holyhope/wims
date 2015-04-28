@@ -101,7 +101,7 @@ int goal;
 void resultest(struct result * res)
 {
 	int tmp;
-	if ((tmp = abs(res->val - goal)) < min)
+	if ((tmp = res->val - goal) < min)
 	{
 		min = tmp;
 		best = res;
@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
 		base[i] = resinit();
 		base[i]->val = atoi(argv[i+2]);
 	}
-	
+
 	printf("Processing ");
 	for (i = 0; i < 6; i++)
 		printf("%d ", base[i]->val);
@@ -178,7 +178,7 @@ int main(int argc, char * argv[])
 		resultest(base[i]);
 
 	compute(base, 6);
-	
+
 	printf("NOTFOUND %d %d\n", best->val, min);
 	dispres(best);
 	exit(0);

@@ -169,12 +169,12 @@ int main(int argc, char * argv[])
 		q->next = p;
 		q = p;
 	}
-	
+
 	printf("Processing ");
 	for (p = results[0]; p; p=p->next)
 		printf("%d ", p->val);
 	printf(". Goal : %d\n", goal);
-	
+
 	/* 1) results composed by 2 base numbers
 	 * = res[0] X res[0] */
 	s = &(results[1]);
@@ -233,10 +233,10 @@ int main(int argc, char * argv[])
 		p = results[i];
 		while (p)
 		{
-			if (abs(p->val-goal)<min)
+			if (p->val-goal<min)
 			{
 				best = p;
-				min = abs(p->val-goal);
+				min = p->val-goal;
 			}
 			if (p->val==goal)
 			{
