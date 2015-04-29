@@ -123,7 +123,7 @@ do
   echo  "" > index.phtml.temp
   cnt_slib_tot=0
 
-  for categorie in `find . -type d | sed 's!^\./!!g' | sort`
+  for categorie in `find . -maxdepth 1 -type d | sed 's!^\./!!g' |  egrep -v '\/\.svn\/'  | sort`
   do
     if [ "$categorie" = "." ];then
       cat_name="\$wims_name_All"
@@ -152,11 +152,13 @@ do
       if [ -n "$tit" ]; then
         #echo $f
         cnt_slib=`expr $cnt_slib + 1`
+        if [ $cnt_slib -ge 1 ]; then
         cat <<@ >>index.phtml.temp
         \$table_tr<td class="tt wims_code_words">$f</td><td>$tit
         !href cmd=\$slib_cmd&special_parm=slib&\$slib_detname=$f\$slib_detailanchor [\$wims_name_detail]
         </td></tr>
 @
+        fi;
         tit=''
       fi
     done
