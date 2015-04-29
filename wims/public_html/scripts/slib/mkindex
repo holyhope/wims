@@ -6,7 +6,7 @@ WIMS_HOME=`pwd`
 if [ -f ../../log/wims.conf ] ; then
  language=`awk -F= '$1=="site_languages" {print $2;exit}' ../../log/wims.conf`
 fi
-if [ -z $language ] ; then
+if [ -z "$language" ] ; then
  language="en fr nl it es cn ca si"
 fi
 cd $WIMS_HOME/slib
@@ -122,9 +122,9 @@ do
    <ul>" > index.phtml.$ll
   echo  "" > index.phtml.temp
   cnt_slib_tot=0
-  
+
   for categorie in `find . -type d | sed 's!^\./!!g' | sort`
-  do 
+  do
     if [ "$categorie" = "." ];then
       cat_name="\$wims_name_All"
     else
@@ -174,7 +174,7 @@ do
 @
   cnt_slib_tot=`expr $cnt_slib_tot + $cnt_slib`
   done
-  
+
   cat <<@ >>index.phtml.$ll
       </ul>
 @
