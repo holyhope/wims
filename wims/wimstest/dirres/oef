@@ -9,13 +9,13 @@ precision=100
 language=fr
 
 ansorder=r,c,r
-varcnt=45
-prevarcnt=44
+varcnt=47
+prevarcnt=46
 postvarcnt=0
 replycnt=2
 choicecnt=1
 conditioncnt=1
-feedbackcnt=0
+feedbackcnt=2
 format=html
 
 val1=$imagedir
@@ -119,110 +119,127 @@ val30=$(tmp0)
 xrange -1 1	yrange -1, 1
 tmp0=$ins_url
 val31=$(tmp0)
-!if a=a
-val32=1
+
+!ifval \a=5
+val32= aa
 !else
-val32=2
+val32=bb
+!endif
+!if a=a
+val33=1
+!else
+val33=2
 !endif
 !ifval 0.5=1/2
-val32=1
+val33=1
 !else
-val32=2
+val33=2
 !endif
-val33=0
-!for val34 =1 to 4
-val33=$val33+$val34
+val34=0
+!for val35 =1 to 4
+val34=$val34+$val35
 !next
 !readproc slib/numeration/ecriturenombre 5678
 tmp0=$slib_out
-val35=$(tmp0)
+val36=$(tmp0)
 tmp0=!random 1, 5
 
-val36=$(tmp0)
+val37=$(tmp0)
 tmp0=!item 1 of 7,8,9
 
-val37=$(tmp0)
+val38=$(tmp0)
 tmp=!nonempty items 1,7,8,9
 
 tmp0=!randitem $tmp
-val38=$(tmp0)
+val39=$(tmp0)
 tmp=!translate internal $	$ to ; in 1,7	8,9
 
 tmp=!row 2 of $tmp
 tmp0=!translate internal $\
 $ to ; in $tmp
-val39=$(tmp0)
+val40=$(tmp0)
 tmp=!translate internal $	$ to ; in 2,1,7	8,9
 
 tmp0=!rowcnt $tmp
-val40=$(tmp0)
+val41=$(tmp0)
 tmp=!translate internal $	$ to ; in 2,1,7	8,9
 
 tmp=!nonempty rows $tmp
 tmp=!randrow $tmp
 tmp0=!translate internal $\
 $ to ; in $tmp
-val41=$(tmp0)
+val42=$(tmp0)
 tmp0=!nonempty items 2,1,7	8,9
 
-val42=$(tmp0)
+val43=$(tmp0)
 tmp=!translate internal $	$ to ; in 1,7	8,9
 
 tmp=!column 2 of $tmp
 tmp0=!translate internal $\
 $ to ; in $tmp
-val43=$(tmp0)
-oefsteps=r1,c1	r2
-nextstep=!nosubst r1,c1	r2
+val44=$(tmp0)
+val45=r2
+oefsteps=r1,$val45	r2
+nextstep=!nosubst r1,$val45	r2
 !readproc oef/steps.proc
 replytype1=numeric
+replyweight1=10
 replyname1=bla
 replygood1=$[1]
 replytype2=numeric
 replyname2=bla
-replygood2=?analyze 44
+replygood2=?analyze 46
+choiceoption1=
+choiceweight1=50
 choicename1=bla
 choicegood1=1;2,3
 choicebad1=
 question=__EXECUTED_1692754_EXERCISE__
+hint=!nosubst  hint $val43
+
+help=__EXECUTED_1692754_EXERCISE__
 
 !goto stat
 
 !exit
 
 :question
-$()	
+$()	$m_special{help toto, aaa}
 !if a=a
-$()	 b=1	
+$()	 b=1
 !else
-$() 	 b=2	
+$() 	 b=2
 !endif
-$()	
+$()
 !if 0.5=1/2
-$()	 b=1	
+$()	 b=1
 !else
-$() 	 b=2	
+$() 	 b=2
 !endif
-$()	a=0	
+$()	a=0
 !for m_j=1 to 4
-$()	a=$val33+$val34	
+$()	a=$val34+$val35
 !next
-$()		
+$()
 !insmath  r^6
-$()	
+$()
 !insmath  \frac{1}{2}
-$()	( parent [ gg ] ) $m_f		
+$()	( parent [ gg ] ) $m_f
 !read oef/embed.phtml r1
-$()	
+$()
 $()
 !exit
 
 :hint
-$()
+$() hint $val43
 $()
 !exit
 
 :help
+$() help $val40
+!if $m_help_subject=toto
+$() toto
+!endif
 $()
 $()
 !exit
@@ -238,13 +255,23 @@ $()
 !exit
 
 :feedback
+!ifval 1=1
+ <div class='oef_feedbacks'> $val42
+$()</div>
+!endif
+!ifval 1=0
+ <div class='oef_feedbacks'> $val43
+$()</div>
+!endif
 
 !exit
 
 :test
+
+condlist=1
 condweight1=10
 
-!ifval $val44=1
+!ifval $val46=1
  condtest1=1
 !else
  condtest1=0
@@ -254,5 +281,5 @@ condname1=bla
 !exit
 
 :stat
-vsavelist=33,34,44
+vsavelist=34,35,40,42,43,46
 embedcnt=1
