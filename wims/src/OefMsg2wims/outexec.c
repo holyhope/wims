@@ -108,33 +108,33 @@ void out_exec(char *s1, char *s2)
       c=*(p+1);
       if(isalnum(c)) {
 /* exit */
-          if(strncmp(p+1,"exit",4)==0 && !isalnum(*(p+5))) {
+          if(strncmp(p+1,"exit",strlen("exit"))==0 && !isalnum(*(p+strlen("exit")+1))) {
             *p=0; fprintf(outf,"%s\n!exit\n",ps); p+=5; ps=p;
             continue;
           }
 /* for */
-          if(strncmp(p+1,"for",3)==0 && *find_word_start(p+4)=='{') {
+          if(strncmp(p+1,"for",strlen("for"))==0 && *find_word_start(p+strlen("for")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
             pt=exec_for(p+3); if(pt>p+3) {p=pt-1;ps=pt;}
             continue;
           }
 /* if */
-          if(strncmp(p+1,"if",2)==0 && *find_word_start(p+3)=='{') {
+          if(strncmp(p+1,"if",strlen("if"))==0 && *find_word_start(p+strlen("if")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
             pt=exec_if(p+2); if(pt>p+2) {p=pt-1;ps=pt;}
             continue;
           }
 /* ifval */
-          if(strncmp(p+1,"ifval",5)==0 && *find_word_start(p+6)=='{') {
+          if(strncmp(p+1,"ifval",strlen("ifval"))==0 && *find_word_start(p+strlen("ifval")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
             pt=exec_if(p+5); if(pt>p+5) {p=pt-1;ps=pt;}
             continue;
           }
 /* canvasdraw */
-          if(strncmp(p+1,"canvasdraw",10)==0 && *find_word_start(p+11)=='{') {
+          if(strncmp(p+1,"canvasdraw",strlen("canvasdraw"))==0 && *find_word_start(p+strlen("canvasdraw")+1)=='{') {
             pe=pp2=pe2="";
             pp=find_word_start(p+11);
             if(*pp) pe=find_matching(pp+1,'}');
@@ -149,7 +149,7 @@ void out_exec(char *s1, char *s2)
           }
 
 /* draw */
-          if(strncmp(p+1,"draw",4)==0 && *find_word_start(p+5)=='{') {
+          if(strncmp(p+1,"draw",strlen("draw"))==0 && *find_word_start(p+strlen("draw")+1)=='{') {
             pe=pp2=pe2="";
             pp=find_word_start(p+5);
             if(*pp) pe=find_matching(pp+1,'}');
@@ -202,7 +202,9 @@ void out_exec(char *s1, char *s2)
                 ps=p=pe2; ps++; continue;
             }
           }
-          if(strncmp(p+1,"embed",5)==0 && *find_word_start(p+6)=='{') {
+/* embed */
+
+          if(strncmp(p+1,"embed",strlen("embed"))==0 && *find_word_start(p+strlen("embed")+1)=='{') {
             pe=pp2=pe2="";
             pp=find_word_start(p+6);
             if(*pp) pe=find_matching(pp+1,'}');
@@ -213,7 +215,7 @@ void out_exec(char *s1, char *s2)
                 ps=p=pe; ps++; embedcnt++; continue;
             }
           }
-          if(strncmp(p+1,"special",7)==0 && *find_word_start(p+8)=='{') {
+          if(strncmp(p+1,"special",strlen("special"))==0 && *find_word_start(p+strlen("special"))=='{') {
             pe=pp2=pe2="";
             pp=find_word_start(p+8);
             if(*pp) pe=find_matching(pp+1,'}');
