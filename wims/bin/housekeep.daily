@@ -115,6 +115,33 @@ for l in `find . -name examlog -type d`; do
  done
 done
 
+# is the class number limit or the user number limit reached ?
+# do it each 01 of month !
+today=`date +%d`
+if [ "$today" -eq "01" ]; then
+ cd $WIMS_HOME/log/classes
+ site_manager=`awk -F'=' '$1=="site_manager" {print $2; exit}' $WIMS_HOME/log/wims.conf`
+ user_limit=`awk -F'=' '$1=="user_limit" {print $2; exit}' $WIMS_HOME/log/wims.conf`
+ if [ -z $user_limit ]; then
+  user_limit=`awk -F'=' '$1=="DF_user_limit" {print $2; exit}' $WIMS_HOME/public_html/bases/sys/defaults.conf`
+ fi
+ class_limit=`awk -F'=' '$1=="class_limit" {print $2; exit}' $WIMS_HOME/log//wims.conf`
+ if [ -z $class_limit ]; then
+  class_limit=`awk -F'=' '$1=="DF_class_limit" {print $2; exit}' $WIMS_HOME/public_html/bases/sys/defaults.conf`
+ fi
+ nclass=`cat .index | wc -l`
+ cl=`awk -F, 'NF>2 {print substr($1,2) "/.userlist"}' .index`
+ nuser=`cat $cl | grep -c '^:'`
+ if [ $class_limit -lt $nclass ] || [ $user_limit -lt $nuser ] ; then
+  mail $w_mail_opt -s "WIMS virtual class limit" "$site_manager" <<@
+
+The server WIMS has reached the limit of classes.
+
+@
+ echo "$today housekeep class_limit or user_limit: $email" >>$WIMS_HOME/log/mail.log
+ fi
+fi
+
 # calculate the size of the classes
 cd $WIMS_HOME/log/classes
 for cls in [0-9]*
