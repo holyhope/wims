@@ -291,7 +291,7 @@ CONFIG_DATA main_config[]={
 };
 int MAIN_CONFIG_NO=(sizeof(main_config)/sizeof(main_config[0]));
 
-	/* processes the list of languages supported on the site */
+/* processes the list of languages supported on the site */
 void language_list(void)
 {
     int i,k;
@@ -301,7 +301,7 @@ void language_list(void)
     i=cutwords(site_languages,lbuf,MAX_LANGUAGES);
     available_lang_no=i;
     for(i=k=0;i<available_lang_no;i++) {
-	if(strlen(lbuf[i])==2) memmove(available_lang[k++],lbuf[i],3);
+      if(strlen(lbuf[i])==2) memmove(available_lang[k++],lbuf[i],3);
     }
     if(k>0) memmove(lang,available_lang[0],3);
 }
@@ -309,7 +309,7 @@ void language_list(void)
 char hostname[256];
 int html_call=0;
 
-	/* determine the http reference name of the server */
+/* determine the http reference name of the server */
 void determine_ref_name(void)
 {
     char *s1, *s2, *p, *pl;
@@ -325,45 +325,45 @@ void determine_ref_name(void)
     if(s2!=NULL) mystrncpy(buf,s2,sizeof(buf));
     else buf[0]=0;
     if(s1!=NULL && *buf=='/') {
-	p=strrchr(buf,'/'); if(p==NULL) p=buf; else *p++=0;
-	if(strcmp(p,cgi_name)!=0 && strlen(p)>4 &&
-	   p[2]=='_' && islower(p[0]) && islower(p[1])) {
-	    pre_language[0]=p[0];pre_language[1]=p[1];pre_language[2]=0;
-	    p[2]=0; setenv("HTTP_ACCEPT_LANGUAGE",p,1); pl=p; p+=3;
-	    s2=strrchr(p,'.'); if(s2!=NULL) {
-		*s2=0; if(strcasecmp(s2+1,"cgi")!=0) html_call=1;
-	    }
-	    s2=p; while((s2=strpbrk(s2,"@~"))!=NULL) *s2='/';
-	    if(strncmp(p,"doc/",4)==0) {
-		char *pd, *pb;
-		pd=p+4;
-		if(*pd) {
-		    pb=strchr(pd,'/');
-		    if(pb) *pb++=0; else pb="main";
-		    setvar("doc",pd); setvar("block",pb); setvar("job","read");
-		}
-		setvar(ro_name[ro_module],mkfname(NULL,"adm/doc.%s",pl));
-	    }
-	    else setvar(ro_name[ro_module],p);
-	    module_defined=1;
-	}
-	p=strchr(buf,'_');
-	if(p!=NULL && p>buf+3 && myislower(*(p-1)) && myislower(*(p-2))
-	   && *(p-3)=='/' && myisalpha(*(p+1))) {
-	    char *pp;
-	    for(pp=p+1; myisalnum(*pp); pp++){};
-	    if(*pp=='/') *(p-3)=0;
-	}
-	snprintf(ref_name,sizeof(ref_name)-2,"http://%s%s/%s",s1,buf,cgi_name);
-	mystrncpy(ref_base,ref_name,sizeof(ref_base)-2);
-	p=strrchr(ref_base,'/');
-	if(p!=NULL) *(p+1)=0;
+      p=strrchr(buf,'/'); if(p==NULL) p=buf; else *p++=0;
+      if(strcmp(p,cgi_name)!=0 && strlen(p)>4 &&
+         p[2]=='_' && islower(p[0]) && islower(p[1])) {
+          pre_language[0]=p[0];pre_language[1]=p[1];pre_language[2]=0;
+          p[2]=0; setenv("HTTP_ACCEPT_LANGUAGE",p,1); pl=p; p+=3;
+          s2=strrchr(p,'.'); if(s2!=NULL) {
+            *s2=0; if(strcasecmp(s2+1,"cgi")!=0) html_call=1;
+          }
+          s2=p; while((s2=strpbrk(s2,"@~"))!=NULL) *s2='/';
+          if(strncmp(p,"doc/",4)==0) {
+            char *pd, *pb;
+            pd=p+4;
+            if(*pd) {
+                pb=strchr(pd,'/');
+                if(pb) *pb++=0; else pb="main";
+                setvar("doc",pd); setvar("block",pb); setvar("job","read");
+            }
+            setvar(ro_name[ro_module],mkfname(NULL,"adm/doc.%s",pl));
+          }
+          else setvar(ro_name[ro_module],p);
+          module_defined=1;
+      }
+      p=strchr(buf,'_');
+      if(p!=NULL && p>buf+3 && myislower(*(p-1)) && myislower(*(p-2))
+         && *(p-3)=='/' && myisalpha(*(p+1))) {
+          char *pp;
+          for(pp=p+1; myisalnum(*pp); pp++){};
+          if(*pp=='/') *(p-3)=0;
+      }
+      snprintf(ref_name,sizeof(ref_name)-2,"http://%s%s/%s",s1,buf,cgi_name);
+      mystrncpy(ref_base,ref_name,sizeof(ref_base)-2);
+      p=strrchr(ref_base,'/');
+      if(p!=NULL) *(p+1)=0;
     }
     else mystrncpy(ref_name,cgi_name,sizeof(ref_name)-1);
     setvar("wims_ref_name",ref_name);
 }
 
-	/* Read and interprete wims configuration file. */
+      /* Read and interprete wims configuration file. */
 void main_configure(void)
 {
     int i;
@@ -373,51 +373,51 @@ void main_configure(void)
     conf_buf=readfile(config_file,NULL,WORKFILE_LIMIT);
     if(conf_buf==NULL) goto fileend;
     e=conf_buf-1; while(e) {
-	p=e+1; e=strchr(p,'\n'); if(e) *e=0;
-	p=find_word_start(p);
-	if(*p==0 || *p==comment_prefix_char) continue; /* empty or comment line */
-	p2=strchr(p,'=');
-	if(p2==NULL) continue; /* syntax error */
-	*p2=0; *find_word_end(p)=0; p2=find_word_start(p2+1);
-	p3=p2+strlen(p2); while(myislspace(p3[-1])) p3--;
-	while(p3[-1]=='\\') p3--; *p3=0;
-	i=search_list(main_config,MAIN_CONFIG_NO,sizeof(main_config[0]),p);
-	if(i<0) continue; /* name non-defined */
-	if(main_config[i].is_integer==1) {
-	    int *ip;
-	    ip=main_config[i].address;
-	    *ip=atoi(p2); if(*ip<0) *ip=0;
-	}
-	else {
-	    char **cp;
-	    cp=main_config[i].address;
-	    *cp=p2;
-	}
+      p=e+1; e=strchr(p,'\n'); if(e) *e=0;
+      p=find_word_start(p);
+      if(*p==0 || *p==comment_prefix_char) continue; /* empty or comment line */
+      p2=strchr(p,'=');
+      if(p2==NULL) continue; /* syntax error */
+      *p2=0; *find_word_end(p)=0; p2=find_word_start(p2+1);
+      p3=p2+strlen(p2); while(myislspace(p3[-1])) p3--;
+      while(p3[-1]=='\\') p3--; *p3=0;
+      i=search_list(main_config,MAIN_CONFIG_NO,sizeof(main_config[0]),p);
+      if(i<0) continue; /* name non-defined */
+      if(main_config[i].is_integer==1) {
+          int *ip;
+          ip=main_config[i].address;
+          *ip=atoi(p2); if(*ip<0) *ip=0;
+      }
+      else {
+          char **cp;
+          cp=main_config[i].address;
+          *cp=p2;
+      }
     }
     fileend:
     setenv("session_base_dir",session_dir,1);
     determine_ref_name();
     language_list();
     for(i=0;i<MAIN_CONFIG_NO;i++) {
-	char **pp;
-	if(main_config[i].is_integer==2) {
-	    pp=main_config[i].address;
-	    setenv(main_config[i].name,*pp,1);
-	}
+      char **pp;
+      if(main_config[i].is_integer==2) {
+          pp=main_config[i].address;
+          setenv(main_config[i].name,*pp,1);
+      }
     }
-    	/* check priority */
+          /* check priority */
     if(priority[0] && checkhost(priority)>0) ispriority=1;
     (void)getcwd(cwdbuf,sizeof(cwdbuf)); setvar("httpd_PWD",cwdbuf);
     setenv("wims_server_base",cwdbuf,1);
     p=strrchr(cwdbuf,'/');
     if(p!=NULL && strcmp(p,"/public_html")==0) {
-	*p=0; snprintf(PATH,sizeof(PATH),"%s/other/bin:%s",cwdbuf,commonpath);
-	force_setvar("wims_home",cwdbuf);
-	*p='/';
+      *p=0; snprintf(PATH,sizeof(PATH),"%s/other/bin:%s",cwdbuf,commonpath);
+      force_setvar("wims_home",cwdbuf);
+      *p='/';
     }
     else {
-	snprintf(PATH,sizeof(PATH),"%s/../other/bin:%s",cwdbuf,commonpath);
-	force_setvar("wims_home",cwdbuf);
+      snprintf(PATH,sizeof(PATH),"%s/../other/bin:%s",cwdbuf,commonpath);
+      force_setvar("wims_home",cwdbuf);
     }
     setenv("PATH",PATH,1);
     p=getvar("httpd_SERVER_SOFTWARE");
@@ -542,23 +542,23 @@ struct {
 };
 #define MODULE_DEFAULT_NO (sizeof(module_default)/sizeof(module_default[0]))
 
-	/* Set defaults for module, and set corresponding variables. */
+/* Set defaults for module, and set corresponding variables. */
 void module_configure(void)
 {
     int i;
     confset=1;
     for(i=0;i<MODULE_DEFAULT_NO;i++) {
-	if(module_default[i].is_integer) {
-	    int j, *jp;
-	    jp=module_default[i].default_value;
-	    j=*jp; if(j<0) j=0;
-	    setvar(module_default[i].name,int2str(j));
-	}
-	else {
-	    char **cp;
-	    cp=module_default[i].default_value;
-	    setvar(module_default[i].name,*cp);
-	}
+      if(module_default[i].is_integer) {
+          int j, *jp;
+          jp=module_default[i].default_value;
+          j=*jp; if(j<0) j=0;
+          setvar(module_default[i].name,int2str(j));
+      }
+      else {
+          char **cp;
+          cp=module_default[i].default_value;
+          setvar(module_default[i].name,*cp);
+      }
     }
     setenv("texgif_fontdir",texgif_fontdir,1);
     setenv("texgif_texheader",texgif_texheader,1);
@@ -664,33 +664,33 @@ void module_index(void)
 
     memmove(var_def_file,default_var_def,strlen(default_var_def)+1);
     ft=readfile(mkfname(NULL,"%s/INDEX",module_prefix),
-		ind_buf,sizeof(ind_buf));
+            ind_buf,sizeof(ind_buf));
     if(ft==NULL) ft=readfile(mkfname(NULL,"%s/index",module_prefix),
-			     ind_buf,sizeof(ind_buf));
+                       ind_buf,sizeof(ind_buf));
     if(ft==NULL) return;
     e=ind_buf-1; indf_len=strlen(ind_buf);
     for(l=0; e<ind_buf+indf_len && e!=NULL ;l++) {
-	p=e+1; e=strchr(p,'\n'); if(e!=NULL) *e=0;
-	strip_trailing_spaces(p); p=find_word_start(p);
-	if(*p==0 || *p==comment_prefix_char) continue; /* empty or comment line */
-	p2=strchr(p,'=');
-	if(p2==NULL) continue; /* syntax error */
-	*p2=0; *find_word_end(p)=0; p2=find_word_start(p2+1);
-	i=search_list(modindex,MODINDEX_NO,sizeof(modindex[0]),p);
-	if(i<0) continue; /* name not in list */
-	snprintf(buf,sizeof(buf),"module_%s",p);
-	setvar(buf,p2);
+      p=e+1; e=strchr(p,'\n'); if(e!=NULL) *e=0;
+      strip_trailing_spaces(p); p=find_word_start(p);
+      if(*p==0 || *p==comment_prefix_char) continue; /* empty or comment line */
+      p2=strchr(p,'=');
+      if(p2==NULL) continue; /* syntax error */
+      *p2=0; *find_word_end(p)=0; p2=find_word_start(p2+1);
+      i=search_list(modindex,MODINDEX_NO,sizeof(modindex[0]),p);
+      if(i<0) continue; /* name not in list */
+      snprintf(buf,sizeof(buf),"module_%s",p);
+      setvar(buf,p2);
     }
     if(mode!=mode_default) {
-	char *s;
-	s=getvar("module_mode");
-	if(s==NULL) {
-	    nomode: mode=mode_default; force_setvar("wims_mode","");
-	}
-	else switch(mode) {
-	    case mode_popup: {
-		if(strstr(s,"popup")==NULL) goto nomode;
-		else break;
+      char *s;
+      s=getvar("module_mode");
+      if(s==NULL) {
+          nomode: mode=mode_default; force_setvar("wims_mode","");
+      }
+      else switch(mode) {
+          case mode_popup: {
+            if(strstr(s,"popup")==NULL) goto nomode;
+            else break;
          }
          case mode_raw: {
           if(strstr(s,"raw")==NULL) goto nomode;

@@ -1144,16 +1144,16 @@ int main(int argc, char *argv[], char *envp[])
           config_defaults(); return 0;
       }
       if(strcasecmp(argv[1],"test")==0) {
-	/* launches a test suite */
-	if (argc < 5) {
-	  printf("Not enough arguments to launch a test; usage:\n");
-	  printf("wims test path_to_file name_of_proc_file 'var1 var2 ...'\n\n");
-	  printf("the file at path_to_file/name_of_proc_file will be evaluated by wims for\nexec commands, then the values of var1, var2, ... will be printed\nin the standard output, one per line.\n");
-	  return 1;
-	}
-	test_suite(argv[2], argv[3], argv[4]);
-	return 0;
-      }
+/* launches a test suite */
+         if (argc < 5) {
+           printf("Not enough arguments to launch a test; usage:\n");
+           printf("wims test path_to_file name_of_proc_file 'var1 var2 ...'\n\n");
+           printf("the file at path_to_file/name_of_proc_file will be evaluated by wims for\nexec commands, then the values of var1, var2, ... will be printed\nin the standard output, one per line.\n");
+           return 1;
+         }
+         test_suite(argv[2], argv[3], argv[4]);
+         return 0;
+       }
     }
     p=getenv("SERVER_SOFTWARE"); if(p!=NULL && strcasecmp(p,"WIMS")==0)
       httpd_type=httpd_wims;
