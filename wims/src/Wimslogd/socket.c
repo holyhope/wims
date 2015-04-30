@@ -45,8 +45,8 @@ void output(int fh)
     (void)write(fh,commbuf,l+sizeof(int));
     close(fh);
     if(debugging) {
-	if(textbuf[0]=='O') debug("%.2s %d bytes.",textbuf,l);
-	else debug("%s",textbuf);
+      if(textbuf[0]=='O') debug("%.2s %d bytes.",textbuf,l);
+      else debug("%s",textbuf);
     }
 }
 
@@ -71,21 +71,21 @@ void answer(int fh)
     int t,l, *ip;
 
     t=read(fh,commbuf,BUFFERLEN-sizeof(int)); if(t<sizeof(int)) {
-	bad: sockerror(3,"Daemon socket read error.");
-	goto end;
+      bad: sockerror(3,"Daemon socket read error.");
+      goto end;
     }
     ip=(int *) commbuf; l=*ip;
     if(l<=0 || l>=BUFFERLEN-sizeof(int)) goto bad;
     while(t<l+sizeof(int)) {
-	struct timeval tv;
-	fd_set rset;
-	int t2;
-	tv.tv_sec=0; tv.tv_usec=20*1000;
-	FD_ZERO(&rset); FD_SET(fh,&rset);
-	if(select(fh+1,&rset,NULL,NULL,&tv)<=0) goto bad;
-	t2=read(fh,commbuf+t,l+sizeof(int)-t);
-	if(t2<=0 || t2>l+sizeof(int)-t) goto bad;
-	t+=t2;
+      struct timeval tv;
+      fd_set rset;
+      int t2;
+      tv.tv_sec=0; tv.tv_usec=20*1000;
+      FD_ZERO(&rset); FD_SET(fh,&rset);
+      if(select(fh+1,&rset,NULL,NULL,&tv)<=0) goto bad;
+      t2=read(fh,commbuf+t,l+sizeof(int)-t);
+      if(t2<=0 || t2>l+sizeof(int)-t) goto bad;
+      t+=t2;
     }
     textbuf[l]=0; textptr=textbuf;
     answerlen=-1;

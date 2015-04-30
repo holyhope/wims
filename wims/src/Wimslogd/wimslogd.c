@@ -27,7 +27,7 @@ char keepdate[32]="0";
 char mupdate[32]="0";
 char backdate[32]="0";
 char loadavg[MAX_LINELEN+1];
-char qbuf[MAX_LINELEN+1]; 	/* quota buffer */
+char qbuf[MAX_LINELEN+1];       /* quota buffer */
 time_t nowtime, starttime, lastcleantime=0;
 time_t thismin, lastmin, startmin;
 struct tm *now;
@@ -38,14 +38,14 @@ pid_t mypid;
 int idle_time=5000;
 int idle_time2=5000;
 int idle_time3=5000;
-int anti_time=3600*24;	/* antidate tolerance */
+int anti_time=3600*24;      /* antidate tolerance */
 int OLD_LOG_FILES=2;
 int GEN_LOG_LIMIT=1024000;
 int MODULE_LOG_LIMIT=102400;
 int backup_hour=-1;
 int site_accounting=0;
 int modupdatetime=0;
-int rshift;	/* shift minute start */
+int rshift;      /* shift minute start */
 int commsock;
 int answerlen;
 int debugging;
@@ -87,7 +87,7 @@ void getnow(void)
     nowday=now->tm_mday; nowwday=now->tm_wday;
     nowmon=now->tm_mon+1; nowyear=now->tm_year+1900;
     snprintf(nowstr,sizeof(nowstr),"%04d%02d%02d.%02d:%02d:%02d",
-	     nowyear,nowmon,nowday,nowhr,nowmin,nowsec);
+           nowyear,nowmon,nowday,nowhr,nowmin,nowsec);
 }
 
 void parms(void)
@@ -98,8 +98,8 @@ void parms(void)
     p=getenv("wimslogd");
     if(p==NULL || *p==0) return;
     for(t=0, p1=find_word_start(p); *p1; p1=find_word_start(p2)) {
-	p2=find_word_end(p1); if(*p2) *p2++=0;
-	parm[t++]=p1;
+      p2=find_word_end(p1); if(*p2) *p2++=0;
+      parm[t++]=p1;
     }
     idle_time=atoi(parm[0]); if(idle_time<=10) idle_time=5000;
     idle_time2=atoi(parm[1]); if(idle_time2<=10) idle_time2=idle_time;
@@ -143,9 +143,9 @@ int main(int argc, char *argv[])
     write(mfd,buf,SHM_SIZE);
     shmptr=mmap(0,SHM_SIZE,PROT_READ|PROT_WRITE,MAP_SHARED,mfd,0);
     if(shmptr==MAP_FAILED) {
-	fprintf(stderr,"wimslogd: mmap() failure. %s\n",
-		strerror(errno));
-	exit(1);
+      fprintf(stderr,"wimslogd: mmap() failure. %s\n",
+            strerror(errno));
+      exit(1);
     }
 */
     verify_tables();
@@ -153,18 +153,18 @@ int main(int argc, char *argv[])
     modupdatetime=(double) random()*350/RAND_MAX;
     rshift=(double) random()*MINLENGTH/RAND_MAX;
     parms();
-    if(getcwd(cwd,sizeof(cwd))==NULL) {	/* directory missing */
-	fprintf(stderr,"wimslogd: getcwd() failure. %s\n",
-		strerror(errno));
-	return 1;
+    if(getcwd(cwd,sizeof(cwd))==NULL) {      /* directory missing */
+      fprintf(stderr,"wimslogd: getcwd() failure. %s\n",
+            strerror(errno));
+      return 1;
     }
     p=strstr(cwd,"/public_html");
     if(p!=NULL && *(p+strlen("/public_html"))==0) {
-	*p=0; if(chdir(cwd)<0) {	/* strong error */
-	    fprintf(stderr,"wimslogd: Unable to change directory. %s\n",
-		    strerror(errno));
-	    return 1;
-	}
+      *p=0; if(chdir(cwd)<0) {      /* strong error */
+          fprintf(stderr,"wimslogd: Unable to change directory. %s\n",
+                strerror(errno));
+          return 1;
+      }
     }
     opensock();
     mypid=getpid();
@@ -179,62 +179,62 @@ int main(int argc, char *argv[])
     wlogdaccessfile(qbuf,"r","log/cquota/lim.host");
     wlogdaccessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
     wlogdaccessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then it is a cluster child */
-    if(strstr(buf,"yes")!=NULL) {	/* register my real IP */
-	wlogdaccessfile(nodeipbuf,"r","/etc/myip");
-	wlogdaccessfile(nodeipbuf,"w","tmp/log/myip");
+    if(strstr(buf,"yes")!=NULL) {      /* register my real IP */
+      wlogdaccessfile(nodeipbuf,"r","/etc/myip");
+      wlogdaccessfile(nodeipbuf,"w","tmp/log/myip");
     }
     do {
-	fd_set rset;
-	struct timeval tv;
-	int t, selectcnt;
+      fd_set rset;
+      struct timeval tv;
+      int t, selectcnt;
 
-	if(getpid()!=mypid) return 0;	/* leaked child */
-	if(stat(debugfile,&st)==0 && st.st_size<MAX_DEBUGLENGTH) debugging=1;
-	else debugging=0;
-	wlogdaccessfile(loadavg,"r","/proc/loadavg");
-	for(selectcnt=0; selectcnt<100; selectcnt++) {
-	    tv.tv_sec=0; tv.tv_usec=50000; /* a pause every 50 ms. */
-	    FD_ZERO(&rset); FD_SET(commsock,&rset);
-	    t=select(commsock+1,&rset,NULL,NULL,&tv);
-	    if(t==0) {forkman(0); continue;}
-	    if(t<0) {wimslogd_error("select() error."); continue;}
-	    rsock=accept(commsock,NULL,NULL);
-	    if(rsock==-1) {wimslogd_error("accept() error."); continue;}
-	    answer(rsock);
-	}
-	forkman(1);
-	getnow();
-	if(thismin==lastmin) continue;
-	mincnt++; /* if(mincnt>MAX_MIN) return 0; Refreshment. */
-	if(nowday!=startdate) return 0; /* Daily refreshment. */
-	lastmin=thismin;
+      if(getpid()!=mypid) return 0;      /* leaked child */
+      if(stat(debugfile,&st)==0 && st.st_size<MAX_DEBUGLENGTH) debugging=1;
+      else debugging=0;
+      wlogdaccessfile(loadavg,"r","/proc/loadavg");
+      for(selectcnt=0; selectcnt<100; selectcnt++) {
+          tv.tv_sec=0; tv.tv_usec=50000; /* a pause every 50 ms. */
+          FD_ZERO(&rset); FD_SET(commsock,&rset);
+          t=select(commsock+1,&rset,NULL,NULL,&tv);
+          if(t==0) {forkman(0); continue;}
+          if(t<0) {wimslogd_error("select() error."); continue;}
+          rsock=accept(commsock,NULL,NULL);
+          if(rsock==-1) {wimslogd_error("accept() error."); continue;}
+          answer(rsock);
+      }
+      forkman(1);
+      getnow();
+      if(thismin==lastmin) continue;
+      mincnt++; /* if(mincnt>MAX_MIN) return 0; Refreshment. */
+      if(nowday!=startdate) return 0; /* Daily refreshment. */
+      lastmin=thismin;
         wlogdaccessfile(buf,"r",pidfile); strip_trailing_spaces(buf);
-	if(strcmp(buf,pidstr)!=0) {	/* wrong pid: abandon. */
-	    wait_children();
-	    return 0;
-	}
+      if(strcmp(buf,pidstr)!=0) {      /* wrong pid: abandon. */
+          wait_children();
+          return 0;
+      }
 
-	if(getpid()!=mypid) return 0;	/* leaked child */
-	wlogdaccessfile(qbuf,"r","log/cquota/lim.host");
-	wlogdaccessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
-	cleancache();
-	if((thismin%127)==6) homedir();	/* update home directory setup */
-	wlogdaccessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then no housekeeping */
-	if(strstr(buf,"yes")==NULL) {
-	    dispatch_log();
-	    if((thismin%2)==1) local();
-	    /* if((thismin%9)==0) */ cleaning(1); 	/* clean up session directories */
-	    if((thismin%5)==0 && nowmin>15) housekeep();	/* daily housekeeping */
-	    if(getpid()!=mypid) return 0;	/* leaked child */
-	    if(nowhr*60+nowmin>modupdatetime && (thismin%17)==11) modupdate();
-	    if(backup_hour>0 && backup_hour<23 && (thismin%17)==3 && nowhr>=backup_hour)
-	      backup();	/* daily backup */
-	    fflush(NULL);
-	    logexec();
-	}
-	else {	/* cluster child */
-	    if((thismin%9)==0) cleaning(0); 	/* clean up session directories */
-	}
+      if(getpid()!=mypid) return 0;      /* leaked child */
+      wlogdaccessfile(qbuf,"r","log/cquota/lim.host");
+      wlogdaccessfile(buf,"r","log/myip"); mystrncpy(ipbuf,find_word_start(buf),sizeof(ipbuf));
+      cleancache();
+      if((thismin%127)==6) homedir();      /* update home directory setup */
+      wlogdaccessfile(buf,"r","tmp/log/wimslogd.relax"); /* if yes then no housekeeping */
+      if(strstr(buf,"yes")==NULL) {
+          dispatch_log();
+          if((thismin%2)==1) local();
+          /* if((thismin%9)==0) */ cleaning(1);       /* clean up session directories */
+          if((thismin%5)==0 && nowmin>15) housekeep();      /* daily housekeeping */
+          if(getpid()!=mypid) return 0;      /* leaked child */
+          if(nowhr*60+nowmin>modupdatetime && (thismin%17)==11) modupdate();
+          if(backup_hour>0 && backup_hour<23 && (thismin%17)==3 && nowhr>=backup_hour)
+            backup();      /* daily backup */
+          fflush(NULL);
+          logexec();
+      }
+      else {      /* cluster child */
+          if((thismin%9)==0) cleaning(0);       /* clean up session directories */
+      }
     }
     while(1==1);
     return 0;

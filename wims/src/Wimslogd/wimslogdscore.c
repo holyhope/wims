@@ -78,17 +78,17 @@ void scoreline(struct classdata *cd, char *l)
          thiscore->user2*=oldfactor;
          thiscore->user2+=score;
          thiscore->last=score;
-	 if (thiscore->high[0] < score)
-	   {
-	     int k;
-	     thiscore->best += (score - thiscore->high[0]);
-	     for (k = 1; 10*k < cd->exos[num].require && thiscore->high[k] < score; k++)
-	       thiscore->high[k-1] = thiscore->high[k];
-	     thiscore->high[k-1] = score;
-	     thiscore->level=thiscore->high[0];
-	   }
-	 if(thiscore->try<MAX_TRY) thiscore->try++;
-	 oldsheet=oldexo=0;
+       if (thiscore->high[0] < score)
+         {
+           int k;
+           thiscore->best += (score - thiscore->high[0]);
+           for (k = 1; 10*k < cd->exos[num].require && thiscore->high[k] < score; k++)
+             thiscore->high[k-1] = thiscore->high[k];
+           thiscore->high[k-1] = score;
+           thiscore->level=thiscore->high[0];
+         }
+       if(thiscore->try<MAX_TRY) thiscore->try++;
+       oldsheet=oldexo=0;
      }
     }
     else {

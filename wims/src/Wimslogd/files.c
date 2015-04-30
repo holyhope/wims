@@ -26,8 +26,8 @@ int ftest(char *fname)
     if(strstr(fname,"..")!=NULL) return -1; /* parent directory not allowed */
     if(stat(fname,&ftst)) return -1;
     if(S_ISREG(ftst.st_mode)) {
-	if((ftst.st_mode&(S_IXUSR|S_IXGRP|S_IXOTH))!=0) return is_exec;
-	else return is_file;
+      if((ftst.st_mode&(S_IXUSR|S_IXGRP|S_IXOTH))!=0) return is_exec;
+      else return is_file;
     }
     if(S_ISDIR(ftst.st_mode)) return is_dir;
     if(S_ISFIFO(ftst.st_mode)) return is_fifo;
@@ -43,7 +43,7 @@ void readfile(char *fname, char buf[], long int buflen)
     buf[0]=0;
     st=ftest(fname); if(st!=is_file) return;
     l=ftst.st_size; if(l<=0) return;
-    if(l>=buflen) l=buflen-1;	/* silent trancation */
+    if(l>=buflen) l=buflen-1;      /* silent trancation */
     fd=open(fname,O_RDONLY); if(fd==-1) return;
     lc=read(fd,buf,l); close(fd);
     if(lc!=l) {buf[0]=0; return;}
@@ -75,16 +75,16 @@ char *datafile_fnd_record(char *p, int n, char bf[])
     readfile(p,buf,sizeof(buf));
     if(buf[0]!=tag_string[1]) i=0; else i=1;
     if(i<n) {
-	for(i++, pp=strstr(buf,tag_string);
-	    i<n && pp!=NULL;
-	    i++, pp=strstr(pp+1,tag_string));
+      for(i++, pp=strstr(buf,tag_string);
+          i<n && pp!=NULL;
+          i++, pp=strstr(pp+1,tag_string));
     }
     else {
-	if(i>n) goto end;
-	pp=buf-1;
+      if(i>n) goto end;
+      pp=buf-1;
     }
     if(pp==NULL) { /* n too big */
-	goto end;
+      goto end;
     }
     if(n>0) pp+=strlen(tag_string); else pp=buf;
     p2=strstr(pp,tag_string); if(p2) *p2=0;

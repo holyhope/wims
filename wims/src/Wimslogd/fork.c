@@ -19,7 +19,7 @@
 #include "wimslogd.h"
 
 #define MAX_FORK 1024
-#define MAX_DELAY 1500	/* At most these seconds of execution */
+#define MAX_DELAY 1500      /* At most these seconds of execution */
 
 struct {
     pid_t pid;
@@ -32,7 +32,7 @@ int forkcnt;
 void addfork(pid_t pid, int type)
 {
     if(forkcnt>=MAX_FORK) {
-	kill(pid,SIGKILL); return;
+      kill(pid,SIGKILL); return;
     }
     forklist[forkcnt].pid=pid;
     forklist[forkcnt].t=time(NULL);
@@ -50,11 +50,11 @@ void forkman(int kz)
     if(forkcnt*4>=MAX_FORK*3) delay=delay/4;
     now=time(NULL);
     for(i=forkcnt-1; i>=0; i--) {
-	if(now-forklist[i].t>delay) kill(forklist[i].pid,SIGKILL);
-	t=waitpid(forklist[i].pid,&st,WNOHANG);
-	if(t==0 || !WIFEXITED(st)) continue;
-	memmove(forklist+i,forklist+i+1,forkcnt-1-i);
-	forkcnt--;
+      if(now-forklist[i].t>delay) kill(forklist[i].pid,SIGKILL);
+      t=waitpid(forklist[i].pid,&st,WNOHANG);
+      if(t==0 || !WIFEXITED(st)) continue;
+      memmove(forklist+i,forklist+i+1,forkcnt-1-i);
+      forkcnt--;
     }
     if(kz) waitpid(-1,NULL,WNOHANG); /* kill zombies */
 }
@@ -64,12 +64,12 @@ void wait_children(void)
     time_t now;
     int i;
     do {
-	now=time(NULL);
-	for(i=0; i<forkcnt; i++) {
-	    if(forklist[i].type && forklist[i].t < now-MAX_DELAY) break;
-	}
-	if(i>=forkcnt) return;
-	sleep(1);
+      now=time(NULL);
+      for(i=0; i<forkcnt; i++) {
+          if(forklist[i].type && forklist[i].t < now-MAX_DELAY) break;
+      }
+      if(i>=forkcnt) return;
+      sleep(1);
     }
     while(1);
 }

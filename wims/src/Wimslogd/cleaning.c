@@ -32,88 +32,88 @@ void _cleaning(char *di,int hardcheck)
     sdir_base=opendir(di);
     if(sdir_base==NULL) return;
     while((ses=readdir(sdir_base))!=NULL) {
-	if(ses->d_name[0]=='.') continue;
-	snprintf(session_name,sizeof(session_name),"%s/%s",
-		 di,ses->d_name);
-	if(lstat(session_name,&session_stat)) {
-	    wimslogd_error("wimslog cleaning(): session stat failure.");
-	    return;
-	}
-	if(!S_ISDIR(session_stat.st_mode)) { /* not a directory: remove it. */
-	    if(remove(session_name)<0) {
-		wimslogd_error("wimslogd cleaning(): unable to chase squatter file.");
-		return;
-	    }
-	}
+      if(ses->d_name[0]=='.') continue;
+      snprintf(session_name,sizeof(session_name),"%s/%s",
+             di,ses->d_name);
+      if(lstat(session_name,&session_stat)) {
+          wimslogd_error("wimslog cleaning(): session stat failure.");
+          return;
+      }
+      if(!S_ISDIR(session_stat.st_mode)) { /* not a directory: remove it. */
+          if(remove(session_name)<0) {
+            wimslogd_error("wimslogd cleaning(): unable to chase squatter file.");
+            return;
+          }
+      }
 /* remove idle session. */
-	else {
-	    struct stat fst;
-	    char fbuf[4096],cbuf[MAX_LINELEN+1];
-	    char *pp;
-	    if(session_stat.st_mtime<nowtime-idle_time ||
-	       session_stat.st_mtime>nowtime+anti_time) {
-		remove:
-		if(remove_tree(session_name)!=0) {
-		    if(strstr(session_name,"chroot")!=NULL) {
-			char tbuf[4096];
-			snprintf(tbuf,sizeof(tbuf),"/%s",session_name);
-			setenv("tmp_dir",tbuf,1);
-			chmod(session_name,
-			      S_IRUSR|S_IWUSR|S_IXUSR|
-			      S_IRGRP|S_IWGRP|S_IXGRP|
-			      S_IROTH|S_IWOTH|S_IXOTH);
-			(void)chdir("public_html");
-			call_ssh(1,"bin/ch..root cleantmpdir");
-			(void)chdir(cwd);
-			chmod(session_name,S_IRUSR|S_IWUSR|S_IXUSR);
-			fprintf(stderr,"%s\n",tbuf);
-		    }
-		    if(remove_tree(session_name)!=0) {
-			fprintf(stderr,"Unable to remove session %s: %s.\n",
-				session_name,strerror(errno));
-		    }
-		}
-		continue;
-	    }
-	    if(hardcheck==2) {
-		char dbuf[MAX_FNAME+1];
-		struct dirent *s2d;
-		struct stat fst;
-		int t;
-		DIR *s2D;
-		snprintf(dbuf,sizeof(dbuf),"%s/%s",sesd,ses->d_name);
-		if(ftest(dbuf)!=is_dir) goto remove;
-		s2D=opendir(session_name);
-		if(sdir_base==NULL) goto remove;
-		while((s2d=readdir(s2D))!=NULL) { /* remove individual files */
-		    snprintf(dbuf,sizeof(dbuf),"%s/%s",session_name,s2d->d_name);
-		    t=stat(dbuf,&fst);
-		    if(t==0 && fst.st_mtime<nowtime-INS_DELAY &&
-		       fst.st_mtime>=nowtime+anti_time) remove(dbuf);
-		}
-		closedir(s2D);
-		continue;
-	    }
-	    if(!hardcheck || strchr(session_name,'_')!=NULL) continue;
-	    if(session_stat.st_mtime>=nowtime-idle_time3 &&
-	       session_stat.st_mtime<nowtime+anti_time) continue;
-	    snprintf(fbuf,sizeof(fbuf),"%s/var.stat",session_name);
-	    if(stat(fbuf,&fst)==0) continue;
-	    wlogdaccessfile(cbuf,"r","%s/var",session_name);
-	    if(cbuf[0]==0) goto remove;	/* no var file */
-	    pp=strstr(cbuf,"\nw_wims_ismanager=");
-	    if(pp!=NULL) {
-		pp+=strlen("\nw_wims_ismanager=");
-		if(*pp>'0' && *pp<='9') continue;
-	    }
-	    if(session_stat.st_mtime<nowtime-idle_time2 ||
-	       session_stat.st_mtime>nowtime+anti_time) goto remove;
-	    if(session_stat.st_mtime<nowtime-idle_time3 &&
-	       strstr(cbuf,"\nwims_new_session=yes\n")!=NULL) goto remove;
-		/* popup session: 50 sec only. */
-	    if(session_stat.st_mtime<nowtime-50 &&
-	       strstr(cbuf,"\nw_wims_mode=popup\n")!=NULL) goto remove;
-	}
+      else {
+          struct stat fst;
+          char fbuf[4096],cbuf[MAX_LINELEN+1];
+          char *pp;
+          if(session_stat.st_mtime<nowtime-idle_time ||
+             session_stat.st_mtime>nowtime+anti_time) {
+            remove:
+            if(remove_tree(session_name)!=0) {
+                if(strstr(session_name,"chroot")!=NULL) {
+                  char tbuf[4096];
+                  snprintf(tbuf,sizeof(tbuf),"/%s",session_name);
+                  setenv("tmp_dir",tbuf,1);
+                  chmod(session_name,
+                        S_IRUSR|S_IWUSR|S_IXUSR|
+                        S_IRGRP|S_IWGRP|S_IXGRP|
+                        S_IROTH|S_IWOTH|S_IXOTH);
+                  (void)chdir("public_html");
+                  call_ssh(1,"bin/ch..root cleantmpdir");
+                  (void)chdir(cwd);
+                  chmod(session_name,S_IRUSR|S_IWUSR|S_IXUSR);
+                  fprintf(stderr,"%s\n",tbuf);
+                }
+                if(remove_tree(session_name)!=0) {
+                  fprintf(stderr,"Unable to remove session %s: %s.\n",
+                        session_name,strerror(errno));
+                }
+            }
+            continue;
+          }
+          if(hardcheck==2) {
+            char dbuf[MAX_FNAME+1];
+            struct dirent *s2d;
+            struct stat fst;
+            int t;
+            DIR *s2D;
+            snprintf(dbuf,sizeof(dbuf),"%s/%s",sesd,ses->d_name);
+            if(ftest(dbuf)!=is_dir) goto remove;
+            s2D=opendir(session_name);
+            if(sdir_base==NULL) goto remove;
+            while((s2d=readdir(s2D))!=NULL) { /* remove individual files */
+                snprintf(dbuf,sizeof(dbuf),"%s/%s",session_name,s2d->d_name);
+                t=stat(dbuf,&fst);
+                if(t==0 && fst.st_mtime<nowtime-INS_DELAY &&
+                   fst.st_mtime>=nowtime+anti_time) remove(dbuf);
+            }
+            closedir(s2D);
+            continue;
+          }
+          if(!hardcheck || strchr(session_name,'_')!=NULL) continue;
+          if(session_stat.st_mtime>=nowtime-idle_time3 &&
+             session_stat.st_mtime<nowtime+anti_time) continue;
+          snprintf(fbuf,sizeof(fbuf),"%s/var.stat",session_name);
+          if(stat(fbuf,&fst)==0) continue;
+          wlogdaccessfile(cbuf,"r","%s/var",session_name);
+          if(cbuf[0]==0) goto remove;      /* no var file */
+          pp=strstr(cbuf,"\nw_wims_ismanager=");
+          if(pp!=NULL) {
+            pp+=strlen("\nw_wims_ismanager=");
+            if(*pp>'0' && *pp<='9') continue;
+          }
+          if(session_stat.st_mtime<nowtime-idle_time2 ||
+             session_stat.st_mtime>nowtime+anti_time) goto remove;
+          if(session_stat.st_mtime<nowtime-idle_time3 &&
+             strstr(cbuf,"\nwims_new_session=yes\n")!=NULL) goto remove;
+            /* popup session: 50 sec only. */
+          if(session_stat.st_mtime<nowtime-50 &&
+             strstr(cbuf,"\nw_wims_mode=popup\n")!=NULL) goto remove;
+      }
     }
     closedir(sdir_base);
 }
@@ -146,7 +146,7 @@ void cleaning(int withmain)
     snprintf(lastclean_name,sizeof(lastclean_name),"%s/trap.check",tmpd);
     if(stat(lastclean_name,&lastclean_stat)==0 &&
        (lastclean_stat.st_mtime<nowtime-3600 ||
-	lastclean_stat.st_mtime>nowtime+anti_time)) unlink(lastclean_name);
+      lastclean_stat.st_mtime>nowtime+anti_time)) unlink(lastclean_name);
     exit(0);
 }
 

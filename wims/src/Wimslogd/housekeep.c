@@ -33,7 +33,7 @@ void housekeep(void)
     dokeep:
     keeplog=fopen(fname,"w");
     if(keeplog!=NULL) {
-	fwrite(nowstr,8,1,keeplog);fclose(keeplog);
+      fwrite(nowstr,8,1,keeplog);fclose(keeplog);
     }
     call_ssh(0,"bin/housekeep.daily &>%s/housekeep.log",tmpd);
 }
@@ -53,7 +53,7 @@ void modupdate(void)
     domup:
     muplog=fopen(fname,"w");
     if(muplog!=NULL) {
-	fwrite(nowstr,8,1,muplog);fclose(muplog);
+      fwrite(nowstr,8,1,muplog);fclose(muplog);
     }
     call_ssh(0,"bin/modupdate.auto &>%s/modupdate.log",tmpd);
 }

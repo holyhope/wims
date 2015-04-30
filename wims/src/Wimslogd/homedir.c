@@ -36,13 +36,13 @@ void homedir(void)
     struct stat st;
     int i,t;
     for(i=0;i<putcnt;i++) {
-	t=stat(putlist[i],&st); if(t || !S_ISDIR(st.st_mode)) continue;
-	snprintf(fname,sizeof(fname),"%s/.wimshome",putlist[i]);
-	wlogdaccessfile(buf,"r","%s",fname);
-	p1=find_word_start(buf); *find_word_end(p1)=0;
-	if(strcmp(p1,cwd)==0) continue;
-	wlogdaccessfile(cwd,"w","%s",fname);
-	chmod(fname,S_IRUSR|S_IWUSR);
+      t=stat(putlist[i],&st); if(t || !S_ISDIR(st.st_mode)) continue;
+      snprintf(fname,sizeof(fname),"%s/.wimshome",putlist[i]);
+      wlogdaccessfile(buf,"r","%s",fname);
+      p1=find_word_start(buf); *find_word_end(p1)=0;
+      if(strcmp(p1,cwd)==0) continue;
+      wlogdaccessfile(cwd,"w","%s",fname);
+      chmod(fname,S_IRUSR|S_IWUSR);
     }
 }
 
