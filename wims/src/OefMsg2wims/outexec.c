@@ -85,6 +85,7 @@ void process_formula(char *p)
     fprintf(outf,"\n!insmath %s\n$()",bf);
 }
 
+
 void out_exec(char *s1, char *s2)
 {
     char *ps, *p, *pp, *pe, *pp2, *pe2, *pt, c;
@@ -109,14 +110,14 @@ void out_exec(char *s1, char *s2)
       if(isalnum(c)) {
 /* exit */
           if(strncmp(p+1,"exit",strlen("exit"))==0 && !isalnum(*(p+strlen("exit")+1))) {
-            *p=0; fprintf(outf,"%s\n!exit\n",ps); p+=5; ps=p;
+            *p=0; fprintf(outf,"%s\n!exit\n",ps); p+=strlen("exit")+1; ps=p;
             continue;
           }
 /* for */
           if(strncmp(p+1,"for",strlen("for"))==0 && *find_word_start(p+strlen("for")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
-            pt=exec_for(p+3); if(pt>p+3) {p=pt-1;ps=pt;}
+            pt=exec_for(p+strlen("for")); if(pt>p+strlen("for")) {p=pt-1;ps=pt;}
             continue;
           }
 /* if */
@@ -130,13 +131,13 @@ void out_exec(char *s1, char *s2)
           if(strncmp(p+1,"ifval",strlen("ifval"))==0 && *find_word_start(p+strlen("ifval")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
-            pt=exec_if(p+5); if(pt>p+5) {p=pt-1;ps=pt;}
+            pt=exec_if(p+strlen("ifval")); if(pt>p+strlen("ifval")) {p=pt-1;ps=pt;}
             continue;
           }
 /* canvasdraw */
           if(strncmp(p+1,"canvasdraw",strlen("canvasdraw"))==0 && *find_word_start(p+strlen("canvasdraw")+1)=='{') {
             pe=pp2=pe2="";
-            pp=find_word_start(p+11);
+            pp=find_word_start(p+strlen("canvasdraw")+1);
             if(*pp) pe=find_matching(pp+1,'}');
             if(pe) pp2=find_word_start(pe+1); else continue;
             if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
@@ -144,14 +145,14 @@ void out_exec(char *s1, char *s2)
                 pp++; pp2++; *p=*pe=*pe2=0;
                 fprintf(outf,"%s \n\
 !read oef/canvasdraw.phtml %s \\\n%s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++; continue;
+                ps=p=pe2; ps++;
             }
           }
 
 /* draw */
           if(strncmp(p+1,"draw",strlen("draw"))==0 && *find_word_start(p+strlen("draw")+1)=='{') {
             pe=pp2=pe2="";
-            pp=find_word_start(p+5);
+            pp=find_word_start(p+strlen("draw")+1);
             if(*pp) pe=find_matching(pp+1,'}');
             if(pe) pp2=find_word_start(pe+1); else continue;
             if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
@@ -206,7 +207,7 @@ void out_exec(char *s1, char *s2)
 
           if(strncmp(p+1,"embed",strlen("embed"))==0 && *find_word_start(p+strlen("embed")+1)=='{') {
             pe=pp2=pe2="";
-            pp=find_word_start(p+6);
+            pp=find_word_start(p+strlen("embed")+1);
             if(*pp) pe=find_matching(pp+1,'}');
             if(pe && *pp=='{' && *pe=='}') {
                 pp++; *p=*pe=0;
@@ -215,9 +216,10 @@ void out_exec(char *s1, char *s2)
                 ps=p=pe; ps++; embedcnt++; continue;
             }
           }
+/* special */
           if(strncmp(p+1,"special",strlen("special"))==0 && *find_word_start(p+strlen("special"))=='{') {
             pe=pp2=pe2="";
-            pp=find_word_start(p+8);
+            pp=find_word_start(p+strlen("special")+1);
             if(*pp) pe=find_matching(pp+1,'}');
             if(pe && *pp=='{' && *pe=='}') {
                 pp++; *p=*pe=0;
