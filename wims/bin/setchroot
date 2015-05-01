@@ -19,5 +19,11 @@ if [ ! "$(id -ru )" = 0 ]; then
  exit
 fi
 
-chown root:root public_html/bin/ch..root
+chk=`uname | grep BSD | tr -d '[:blank:]' | wc -c`
+if [ $chk -gt 0 ] ; then
+# for the happy few using NetBSD,OpenBSD,FreeBSD etc etc
+ chown root:wheel public_html/bin/ch..root
+else
+ chown root:root public_html/bin/ch..root
+fi
 chmod 6755 public_html/bin/ch..root
