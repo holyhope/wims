@@ -156,7 +156,7 @@ double min(double d1, double d2)
 double gcd(double n1, double n2)
 {
     unsigned long long int l1, l2, ll;
-    n1=abs(n1); n2=abs(n2);
+    n1=fabs(n1); n2=fabs(n2);
     if(!isfinite(n1) || !isfinite(n2) || n1<0 || n2<0 ||
        n1>1E18 || n2>1E18) return NAN;
     l1=n1; l2=n2;
