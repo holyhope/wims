@@ -124,7 +124,7 @@ void out_exec(char *s1, char *s2)
           if(strncmp(p+1,"if",strlen("if"))==0 && *find_word_start(p+strlen("if")+1)=='{') {
             char *pt;
             *p=0; fprintf(outf,"%s",ps); p++; ps=p;
-            pt=exec_if(p+2); if(pt>p+2) {p=pt-1;ps=pt;}
+            pt=exec_if(p+2); if(pt>p+strlen("if")) {p=pt-1;ps=pt;}
             continue;
           }
 /* ifval */
@@ -145,7 +145,7 @@ void out_exec(char *s1, char *s2)
                 pp++; pp2++; *p=*pe=*pe2=0;
                 fprintf(outf,"%s \n\
 !read oef/canvasdraw.phtml %s \\\n%s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++;
+                ps=p=pe2; ps++; continue;
             }
           }
 
@@ -217,7 +217,7 @@ void out_exec(char *s1, char *s2)
             }
           }
 /* special */
-          if(strncmp(p+1,"special",strlen("special"))==0 && *find_word_start(p+strlen("special"))=='{') {
+          if(strncmp(p+1,"special",strlen("special"))==0 && *find_word_start(p+strlen("special")+1)=='{') {
             pe=pp2=pe2="";
             pp=find_word_start(p+strlen("special")+1);
             if(*pp) pe=find_matching(pp+1,'}');
