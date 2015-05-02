@@ -717,6 +717,20 @@ void string_modify1(char *start, char *bad_beg, char *bad_end, char *good,...)
     memmove(bad_beg,buf,ln);
 }
 
+/*  modify a string. Bufferlen must be at least MAX_LINELEN */
+void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
+{
+    char buf[MAX_LINELEN+1];
+    va_list vp;
+
+    va_start(vp,good);
+    vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
+    if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
+      return; /* this is an error situation. */
+    strcat(buf,bad_end);
+    ovlstrcpy(bad_beg,buf);
+}
+
 /* returns number of bytes written */
 int catfile(FILE *outf, char *fn,...)
 {

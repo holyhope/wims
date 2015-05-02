@@ -1476,7 +1476,7 @@ void exec_bound(char *p)
      if(*p1==0 || *p2==0) goto syntax;
      d1=evalue(p1);d2=evalue(p2);
      if(!isfinite(d1) || !isfinite(d2) ||
-       abs(d1)>(double)(1E10) || abs(d2)>(double)(1E10)) goto syntax;
+       fabs(d1)>(double)(1E10) || fabs(d2)>(double)(1E10)) goto syntax;
      if(d1>d2) {
         dd=d1;d1=d2;d2=dd;
      }
