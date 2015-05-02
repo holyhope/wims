@@ -101,7 +101,7 @@ int goal;
 void resultest(struct result * res)
 {
 	int tmp;
-	if ((tmp = res->val - goal) < min)
+	if ((tmp = (int)res->val - goal) < min)
 	{
 		min = tmp;
 		best = res;

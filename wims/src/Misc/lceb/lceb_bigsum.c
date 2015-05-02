@@ -233,12 +233,12 @@ int main(int argc, char * argv[])
 		p = results[i];
 		while (p)
 		{
-			if (p->val-goal<min)
+			if (abs((int)p->val-goal)<min)
 			{
 				best = p;
 				min = p->val-goal;
 			}
-			if (p->val==goal)
+			if (abs((int)p->val)==goal)
 			{
 				unsigned int tmp = calc_sum(p);
 				if (tmp > biggestsum)

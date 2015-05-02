@@ -233,7 +233,7 @@ int main(int argc, char * argv[])
 		p = results[i];
 		while (p)
 		{
-			if (p->val-goal<min)
+			if (abs((int)p->val-goal)<min)
 			{
 				best = p;
 				min = p->val-goal;
