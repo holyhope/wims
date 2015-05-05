@@ -330,7 +330,16 @@ char *strip_trailing_spaces(char *p)
     if(pp[1]) pp[1]=0; return pp;
 }
 
-        /* Routines for quick search of item in a list. */
+/*  strip trailing spaces; return string end. */
+char *strip_trailing_spaces2(char *p)
+{
+    char *pp;
+    if(*p==0) return p;
+    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
+    return pp;
+}
+
+/* Routines for quick search of item in a list. */
 
 /* Verify whether a list is well-ordered. For debugging uses.
  * Returns 0 if order is OK, -1 otherwise. */

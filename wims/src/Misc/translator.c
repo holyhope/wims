@@ -53,15 +53,6 @@ void escape(void)
     printf("%s",inpbuf); exit(0);
 }
 
-/* strip trailing spaces; return string end. */
-char *strip_trailing_spaces2(char *p)
-{
-    char *pp;
-    if(*p==0) return p;
-    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
-    return pp;
-}
-
 int compare(int i1, const char *s2)
 {
     int k;
@@ -102,20 +93,6 @@ int search_list2(struct entry *list, int items, size_t item_size, const char *st
       if(k==0) t=j;
     }
     return t;
-}
-
-/* modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
-{
-    char buf[MAX_LINELEN+1];
-    va_list vp;
-
-    va_start(vp,good);
-    vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
-    if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=2*MAX_LINELEN)
-      return; /* this is an error situation. */
-    strcat(buf,bad_end);
-    ovlstrcpy(bad_beg,buf);
 }
 
 /* change all spaces into ' ', and collapse multiple occurences */

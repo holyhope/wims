@@ -44,15 +44,6 @@ int entrycount;
 int nocase=0, hassuffix=0, leaveline=0;
 int entrycount, ocount;
 
-/* strip trailing spaces; return string end. */
-char *strip_trailing_spaces2(char *p)
-{
-    char *pp;
-    if(*p==0) return p;
-    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
-    return pp;
-}
-
 int compare(const void *s1, const void *s2)
 {
     const struct entry *p1, *p2;
@@ -64,20 +55,6 @@ int compare(const void *s1, const void *s2)
 void sortdic(void)
 {
     qsort(entry,entrycount,sizeof(entry[0]),compare);
-}
-
-/* modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
-{
-    char buf[MAX_LINELEN+1];
-    va_list vp;
-
-    va_start(vp,good);
-    vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
-    if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
-      return; /* this is an error situation. */
-    strcat(buf,bad_end);
-    ovlstrcpy(bad_beg,buf);
 }
 
 /* change all spaces into ' ', and collapse multiple occurences */

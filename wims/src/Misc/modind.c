@@ -109,15 +109,6 @@ char *wordchr2(char *p, char *w)
     return r;
 }
 
-/*  strip trailing spaces; return string end. */
-char *strip_trailing_spaces2(char *p)
-{
-    char *pp;
-    if(*p==0) return p;
-    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
-    return pp;
-}
-
 char *find_tag_end(char *p)
 {
     char *pp;
@@ -158,20 +149,6 @@ void detag(char *p)
     if(*p2==0) {*pp=0; return; }
     ovlstrcpy(pp,p2);
     }
-}
-
-/*  modify a string. Bufferlen must be at least MAX_LINELEN */
-void string_modify3(char *start, char *bad_beg, char *bad_end, char *good,...)
-{
-    char buf[MAX_LINELEN+1];
-    va_list vp;
-
-    va_start(vp,good);
-    vsnprintf(buf,sizeof(buf),good,vp); va_end(vp);
-    if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
-      return; /* this is an error situation. */
-    strcat(buf,bad_end);
-    ovlstrcpy(bad_beg,buf);
 }
 
 /* add a space after comma to see end of words */
