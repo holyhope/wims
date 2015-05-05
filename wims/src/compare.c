@@ -14,23 +14,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+
 #include "wims.h"
-
-char *bufprep(char *p)
-{
-/*  singlespace(p); strip_trailing_spaces(p); return find_word_start(p); */
-    nospace(p); return p;
-}
-
-char *parend(char *p)
-{
-    char *pp; int t;
-    t=0; for(pp=p;*pp;pp++) {
-     if(*pp=='(') t++;
-     if(*pp==')') {t--; if(t==0) return pp; if(t<0) return NULL;}
-    }
-    return NULL;
-}
 
 char *relation_type[]={
     "sametext","samecase",

@@ -235,6 +235,7 @@ void set_job_ident(void);
 
 /* from compare.c */
 int compare(char *p, int numeric, int lvl);
+char *bufprep(char *p);
 
 /* from evalue.c */
 double evalue(char *p);

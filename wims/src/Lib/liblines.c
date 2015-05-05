@@ -771,3 +771,19 @@ long int filelength(char *fn,...)
     l=stat(buf,&st); if(l) return -1;
     return st.st_size;
 }
+
+char *parend(char *p)
+{
+    char *pp; int t;
+    t=0; for(pp=p;*pp;pp++) {
+      if(*pp=='(') t++;
+      if(*pp==')') {t--; if(t==0) return pp; if(t<0) return NULL;}
+    }
+    return NULL;
+}
+
+char *bufprep(char *p)
+{
+/*  singlespace(p); strip_trailing_spaces(p); return find_word_start(p); */
+    nospace(p); return p;
+}

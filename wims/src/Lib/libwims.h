@@ -119,6 +119,7 @@ extern void (*string_modify)(char *start, char *bad_beg, char *bad_end, char *go
 void string_modify1(char *start, char *bad_beg, char *bad_end, char *good,...);
 void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...);
 
+char *parend(char *p);
 long int filelength(char *fn,...);
 int catfile(FILE *outf, char *fn,...);
 extern char *fnd_position;
