@@ -31,7 +31,7 @@ char *_prim_if(char *p, int type)
     p2=find_matching(p1+1,'}'); if(p2==NULL) return p;
     p3=find_word_start(p2+1); if(*p3!='{') return p;
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
-    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
+    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); substdoc(buf);
     prepcnt=0; parmprep(buf,pt_text);
     switch(type) {
           case 0: fprintf(outf," \n!if %s \n",buf); break;
@@ -56,7 +56,7 @@ char *prim_while(char *p)
     p2=find_matching(p1+1,'}'); if(p2==NULL) return p;
     p3=find_word_start(p2+1); if(*p3!='{') return p;
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
-    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
+    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); substdoc(buf);
     prepcnt=0; parmprep(buf,pt_text);
     fprintf(outf," \n!while %s \n",buf);
     *p4=whilechar;
@@ -71,7 +71,7 @@ char *prim_for(char *p)
     p2=find_matching(p1+1,'}'); if(p2==NULL) return p;
     p3=find_word_start(p2+1); if(*p3!='{') return p;
     p4=find_matching(p3+1,'}'); if(p4==NULL) return p;
-    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); subst(buf);
+    *p2=0; snprintf(buf,sizeof(buf),"%s",p1+1); substdoc(buf);
     fprintf(outf," \n!for m_%s \n",find_word_start(buf));
     *p4=nextchar;
     return p3+1;

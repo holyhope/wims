@@ -21,7 +21,7 @@
 int dollar_subst=1;
 
 /* variable substitution. buffer p must have MAX_LINELEN */
-void subst(char *p)
+void substdoc(char *p)
 {
     char *pp, *pe;
 
@@ -111,7 +111,7 @@ void parm(char *p[MAX_PARM], int ptype)
       ovlstrcpy(pp,pp+1); pp--;
     }
     p[1]=find_word_start(p[1]);
-    snprintf(vbuf,sizeof(vbuf),"%s",p[1]); subst(vbuf);
+    snprintf(vbuf,sizeof(vbuf),"%s",p[1]); substdoc(vbuf);
     fprintf(outf,"\n");
     if((pp=strparchr(vbuf,'?'))!=NULL && pp[1]!='?' && check_compare(vbuf)) {
       char buf[MAX_LINELEN+1];

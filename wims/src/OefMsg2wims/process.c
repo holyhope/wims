@@ -77,7 +77,6 @@ void p_precision(char *p[MAX_PARM])
     fprintf(outf,"precision=%d\n",pr);
 }
 
-/* ajout de bpr */
 void p_css(char *p[MAX_PARM])
 {
     char vbuf_css[MAX_LINELEN+1];

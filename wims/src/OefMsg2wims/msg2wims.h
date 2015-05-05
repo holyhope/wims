@@ -8,7 +8,7 @@
 
 extern int inlen, primserial, prepcnt;
 void msg_error(char *s);
-void subst(char *p);
+void substdoc(char *p);
 void bailout(int i1, int i2, char *msg);
 char *substit(char *p);
 int _scmp(const void *p1, const void *p2);
