@@ -39,7 +39,7 @@ for my $f (glob("*/*.css.template")) {
  close INN;
  ## remplacement des couleurs oef
  my $colors=\%colors;
- for my $k (keys \%colors) {
+ for my $k (keys $colors) {
    $TEXT =~ s/color: *$k/color:$colors{$k}/g;
  }
  
