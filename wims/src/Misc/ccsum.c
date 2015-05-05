@@ -55,26 +55,25 @@ void accessfile(char *content, char *type, char *s,...)
     vsnprintf(buf,sizeof(buf),s,vp);
     va_end(vp);
     f=fopen(buf,type); if(f==NULL) {
-    if(*type=='r') content[0]=0; return;
+      if(*type=='r') content[0]=0; return;
     }
     switch(*type) {
-    case 'a':
-    case 'w': {
+      case 'a':
+      case 'w': {
         l=strlen(content); fwrite(content,1,l,f); break;
-    }
-    case 'r': {
+      }
+      case 'r': {
         l=fread(content,1,MAX_LINELEN-1,f);
         if(l>0 && l<MAX_LINELEN) content[l]=0;
         else content[0]=0;
         break;
-    }
-    default: {
+      }
+     default: {
         content[0]=0; break;
-    }
+     }
     }
     fclose(f);
 }
-
 /* recursively generate a directory structure */
 void mkdirs2(char *s)
 {
