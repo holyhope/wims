@@ -103,7 +103,7 @@ char *substit(char *p)
     return p;
 }
 
-void process(void)
+void fly_process(void)
 {
     char buf[MAX_LINELEN+1];
     int c;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     varcnt=1;
     if(argc>1) snprintf(imagefilename,sizeof(imagefilename),"%s",argv[1]);
     else imagefilename[0]=0;
-    process();
+    fly_process();
     if(!saved || imagefilename[0]!=0) output();
     if(image) gdImageDestroy(image);
     if(vimg_ready) vimg_close();

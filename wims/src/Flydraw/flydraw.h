@@ -101,7 +101,7 @@ enum {p_and,p_from,p_to,p_thru,p_center,p_color,p_font,
 
 extern struct preptab { char *name;int typ; } preptab[];
 extern struct objtab {
- char *name;int required_parms, color_pos, fill_tag, subst;
+ char *name; int required_parms, color_pos, fill_tag, subst;
  void (*routine) (objparm *pm); } objtab[];
 
 extern struct colortab {char *name;char *def;} colortab[];

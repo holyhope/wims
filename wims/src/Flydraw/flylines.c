@@ -39,14 +39,6 @@ int ggetline(char buf[])
     return c;
 }
 
-double getvar(char *p)
-{
-    int i;
-    for(i=0;i<varcnt && strcmp(p,vartab[i].name)!=0;i++);
-    if(i<varcnt) return vartab[i].value;
-    else return 0;
-}
-
 void setvar(char *p, double v)
 {
     int i;
