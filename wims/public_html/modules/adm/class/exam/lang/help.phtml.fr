@@ -27,15 +27,15 @@ pour passer à l'exercice suivant de l'examen, l'énoncé obtenu est conservé.
 </p><p>
 L'enseignant peut donner la possibilité de recommencer plusieurs fois la totalité de
 l'examen. La note d'examen retenue par WIMS est alors le maximum des notes
-obtenues lors de tous les essais. La durée d'un examen correspond à la durée
-maximale d'un essai.
+obtenues lors de toutes les sessions de l'examen. La durée d'un examen correspond à la durée
+maximale d'une session de l'examen.
 </p><p>
-Indépendamment de la durée maximale d'un essai, l'enseignant peut fixer la période
+Indépendamment de la durée maximale d'une session, l'enseignant peut fixer la période
 pendant laquelle l'enregistrement des notes sera ouverte.
 </p><p>
 Pour que les réponses sur un exercice soient prises en compte,
 il faut qu'elles soient envoyées avant que le temps fixé pour faire
-l'examen ne soit écoulé.
+une session d'examen ne soit écoulé.
 </p>
 !if $tryremain>0 and $stries >1
 <p>
@@ -43,13 +43,12 @@ Exemple.
 Supposons qu'il soit écrit :
 </p>
 !set h_min=$[rint(9*60+$stries*($sdure) - $sdure/2)]
-!set h_fin= $[floor($h_min/60)] h $[$h_min%60] min
-!set h_d2=$[round($sdure - $sdure/3)]
-!set h_min2=$[$sdure - $h_d2]
-!!set h_fin2=  $[floor($h_min2/60)] h $[$h_min2%60] min
-!set d_1=$[min(10,$sdure)]
-!set h_min3=$[floor(9*60+$d_1 + $sdure/2)]
-!set h_3=$[floor($h_min3/60)] h $[$h_min3%60] min
+!set h_fin= $[rint($h_min/60)] h $[$h_min%60] min
+!set h_d2=$[rint($sdure - $sdure/3)]
+!set h_min2=$[min($sdure,$h_d2)]
+!set d_1=$[rint(min(10,$sdure/2))]
+!set h_min3=$[9*60+$d_1]
+!set h_3=$[rint($h_min3/60)] h $[$h_min3%60] min
 <pre>
 $name_exam2
 $name_exam6
@@ -58,20 +57,20 @@ $name_exam7
 </pre>
 et que l'enseignant a ouvert l'enregistrement des notes entre 9h et $h_fin.
 Cela signifie que vous pourrez commencer l'examen à partir de 9h et il
-faudra avoir terminé les $stries essais avant $h_fin :
+faudra avoir terminé les $stries sessions avant $h_fin :
 <ul><li>
-Si vous avez pris $d_1 min pour faire le 1er essai et que vous commencez
-votre second essai à $h_3, vous disposerez de $sdure min pour faire l'examen
-au 2ème essai.
+Si vous avez pris $d_1 min pour faire la 1ère session et que vous commencez
+votre seconde session à $h_3, vous disposerez de $sdure min pour faire la seconde session 
+de l'examen.
 </li><li>
-Si vous commencez votre dernier essai $h_d2 min avant $h_fin, vous n'aurez que
-$h_min2 min pour faire une autre session d'examen.
+Si vous commencez votre dernière session d'examen $h_d2 min avant $h_fin, vous n'aurez que
+$h_min2 min pour faire cette dernière session d'examen.
 </li></ul>
 <p>
-Pour commencer un second essai, cliquez sur
+Pour commencer une autre session d'examen, cliquez sur
 <span class="tt wims_code_words">$wims_name_endexam</span>.
 Vous serez alors déconnecté. Il suffira de vous reconnecter pour recommencer.
-Vous pouvez voir le résultat des essais précédents
+Vous pouvez voir le résultat des sessions précédentes
  en cliquant sur
 <span class="tt wims_code_words">$wims_name_myscore</span>.
 Une fois dans l'examen, il est conseillé de cliquer sur
@@ -98,7 +97,7 @@ l'enregistrement des notes.
 </p><p>
 L'enseignant peut donner la possibilité de recommencer
  plusieurs fois un examen (paramètre <span class="wims_emph">nombre
-d'essais</span>) : on parle de sessions d'examen. La note à une session d'examen
+de sessions autorisées</span>). La note à une session d'examen
 est la moyenne (pondérée) des notes obtenues à chaque exercice. La note finale de l'examen est
 le maximum des notes des différentes sessions d'examen.
 </p><p>
@@ -122,13 +121,13 @@ Les paragraphes suivants présentent en détails les différents paramètres d'un ex
 
 :statut
 <h2 id="statut"> Statut d'un examen</h2>
-Une feuille d'examen peut avoir quatre statuts :
+Un examen peut avoir quatre statuts :
 <span class="wims_emph">
 !replace internal , by ,$ $ in $(wims_name_shstatus).
 </span>
 <p>
 <span class="wims_emph">$(wims_name_shstatus[1]) :</span>
-c'est le statut initial d'une feuille d'examen. Dans ce statut, l'examen n'est pas
+c'est le statut initial d'un examen. Dans ce statut, l'examen n'est pas
 visible des élèves.
 </p><p>
 <span class="wims_emph">$(wims_name_shstatus[2]) :</span>
@@ -152,7 +151,7 @@ On ne peut pas revenir au statut
 <span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
 </p><p>
 <span class="wims_emph">$(wims_name_shstatus[3]) :</span>
-l'élève voit la feuille d'examen, mais n'a accès qu'au titre des exercices,
+l'élève voit l'examen, mais n'a accès qu'au titre des exercices,
 il ne peut plus travailler dessus.
 </p><p>
 Une fois l'examen périmé, on peut le rendre invisible aux élèves en cliquant sur
@@ -166,24 +165,22 @@ mais aussi le remettre dans le statut
 
 :session
 
-<h2 id="duration">Nombre d'essais (sessions) de l'examen et durée des sessions</h2>
+<h2 id="duration">Nombre de sessions de l'examen et durée des sessions</h2>
 
 <p>
 Pendant un examen, le participant n'a pas la possiblité de renouveler
-un exercice de l'examen ni de désactiver l'enregistrement des notes.
-L'enseignant peut donner la possibilité de recommencer plusieurs fois un examen
-ce nombre est le <span class="tt wims_code_words">nombre d'essais autorisés</span>
-fixés par l'enseignant. Un essai correspond à une session d'examen.
+un exercice de l'examen, ni de désactiver l'enregistrement des notes.
+L'enseignant peut donner la possibilité de recommencer un examen un certain nombre de fois ; 
+ce nombre est le <span class="tt wims_code_words">nombre de sessions autorisées</span>
+fixé par l'enseignant. La note d'examen retenue par WIMS est le maximum des notes obtenues 
+lors des différentes sessions de l'examen.
 </p><p>
 La <span class="wims_emph">durée d'une session d'examen</span> est le temps imparti
-à l'élève pour faire la feuille d'examen une fois.
+à l'élève pour faire l'examen une fois. Elle peut être fixée entre 2 min et 600 min.
  Quand l'élève commence l'examen, WIMS fait démarrer le
-chronomètre. A chaque fois que l'élève utilise un nouvel essai, le
-chronomètre repart à zéro. Dès que le chronomètre dépasse la limite de
-durée de session d'examen, l'élève ne peut plus travailler
-sur cet essai d'examen.
-</p><p>
-La durée d'une session d'examen peut être fixé entre 2 min et 600 min.
+chronomètre. A chaque fois que l'élève commence une nouvelle session de l'examen, le
+chronomètre repart à zéro. Dès que le chronomètre dépasse la durée fixée pour 
+une session d'examen, l'élève ne peut plus travailler sur cette session d'examen.
 </p><p>
 <span class="wims_warning">Attention :</span> sur ce serveur, une session non active
 pendant plus de $[floor($idle_time/60)] minutes est automatiquement détruite.
@@ -195,14 +192,11 @@ machine (ce dernier se règle dans le champ
 <span class="tt wims_code_words">$(name_shinfo[6])</span>).
 Ainsi, si l'examen est prévu pour durer deux
 heures dans la salle machine et que l'enseignant fixe le paramètre de
-durée d'une session d'examen à 90 min et le nombre d'essais à 3
-(ce sont les valeurs par défaut), si l'élève finit son premier essai au bout de
-50 min, il lui restera encore 120 - 50 = 70 min et deux essais
+durée d'une session d'examen à 90 min et le nombre de sessions autorisées à 3
+(ce sont les valeurs par défaut), si l'élève finit sa première session au bout de
+50 min, il lui restera encore 120 - 50 = 70 min et deux sessions 
 pour essayer d'améliorer sa note. S'il met de nouveau 50 min pour la seconde
 session, il ne pourra passer que 20 min sur la troisième session.
-</p><p>
-La note d'examen retenue par WIMS est le maximum des notes obtenues lors de tous
-les essais.
 </p>
 !if $wims_read_parm!=$empty
  !exit
@@ -242,15 +236,25 @@ correspond aux postes de 127.0.0.1 jusqu'à 127.0.0.255.
 Le paramétrage du champ  <span class="tt wims_code_words">$(name_shinfo[6])</span>
 reste modifiable lorsque l'examen a le statut <span class="wims_emph">Active.</span>
 </p>
-
+Exemple : si on écrit  dans le champ <span class="tt wims_code_words">$(name_shinfo[6])</span> : <br />
+<20131007.10:30  >20131001.10:00  127.0. <br />
+ les notes seront enregistrées  seulement 
+entre le 1er octobre  2013,  10h et le 7 octobre  2013, 10h30  et uniquement pour 
+les postes dont le numéro IP commence par 127.0.0.
+<p>
+<span class="wims_warning">Attention :</span> 
+les dates d'ouverture et de fermeture de l'examen ne sont pas visibles par les élèves. 
+On peut les écrire dans le champ "Texte d'explication" pour qu'ils soient 
+visibles par les élèves. 
+</p>
 :cutt
 <p>
 Les <span class="wims_emph">heures de coupure</span>
 permettent de faire passer l'examen dans
 des séances différées. Un participant ayant commencé l'examen avant une
 heure de coupure ne peut pas travailler sur une nouvelle session d'examen
-après l'heure de coupure même s'il n'a pas utilisé tous les essais
-autorisés par l'enseignant.
+après l'heure de coupure même s'il n'a pas utilisé tous les sessions 
+autorisées par l'enseignant.
 </p><p>
 Format des heures de coupure :
 <span class="tt wims_code_words">aaaammjj.hh:mm</span>
@@ -320,7 +324,7 @@ Par défaut, le poids est 1.
 </p><p>
 Vous pouvez aussi utiliser le lien
 <span class="tt wims_code_words">$wims_name_addsexo</span>
-pour mettre tous les exercices de la classe (chaque exercice de la classe
+pour mettre tous les exercices d'une feuille (chaque exercice de la feuille 
  sera alors un exercice de l'examen).
 </p><p>
 Vous avez la possibilité de modifier le contenu de l'examen tant que celui-ci a
