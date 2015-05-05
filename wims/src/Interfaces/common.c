@@ -50,16 +50,6 @@ void output(char *p);
 void about(void);
 char *dynsetup(char *p, char *end);
 
-/* strip trailing spaces; return string end. */
-char *strip_trailing_spaces2(char *p)
-{
-    char *pp;
-    if(*p==0) return p;
-    for(pp=p+strlen(p)-1; pp>=p && isspace(*pp); *(pp--)=0);
-    return pp;
-}
-
-
 /* Find first occurrence of word */
 char *wordchr2(char *p, char *w)
 {
