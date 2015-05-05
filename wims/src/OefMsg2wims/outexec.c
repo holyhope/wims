@@ -85,11 +85,70 @@ void process_formula(char *p)
     fprintf(outf,"\n!insmath %s\n$()",bf);
 }
 
+int _matchit3(char **p, char **ps, char *name, int type)
+{
+  char *pp = find_word_start(*p+strlen(name)+1);
+  if(strncmp(*p+1,name,strlen(name))==0 && *pp=='{') {
+    char *pp2, *pe2, *pt;
+    char *pe=find_matching(pp+1,'}');
+    if(pe) pp2=find_word_start(pe+1); else return 1;
+    if(pp2) pe2=find_matching(pp2+1,'}'); else return 1;
+    if(pe2 && *pp2=='{' && *pe2=='}') {
+      pp++; pp2++; **p=*pe=*pe2=0;
+      switch(type) {
+     /* $val1 is $imagedir supprime s'il se trouve dans le code de draw */
+          case 0: while((pt=strstr(pp2,"$val1/"))!=NULL) ovlstrcpy(pt,pt+strlen("$val1/")); break;
+      }
+      fprintf(outf,"%s \n\
+!read oef/%s.phtml %s \\\n%s \n$()", *ps,name,pp,pp2);
+     *ps=*p=pe2; (*ps)++; return 1;
+     }
+  }
+  return 0;
+}
+
+/* deux accolades la deuxième non obligatoire */
+int _matchit2(char **p, char **ps, char *name)
+{
+  char *pp = find_word_start(*p+strlen(name)+1);
+  if(strncmp(*p+1,name,strlen(name))==0 && *pp=='{') {
+    char *pp2, *pe2;
+    char *pe=find_matching(pp+1,'}');
+    if(pe) pp2=find_word_start(pe+1); else return 1;
+    pe2=pe;
+    if(*pp2=='{') {
+      pe2=find_matching(++pp2,'}');
+      if(pe2) *pe2=0;
+    }
+    else pp2="";
+    if(*pp=='{' && *pe=='}') {
+      pp++; **p=*pe=0;
+      fprintf(outf,"%s \n\
+!read oef/%s.phtml %s %s \n$()", *ps,name,pp,pp2);
+      *ps=*p=pe2; (*ps)++; return 1;
+    }
+  }
+  return 0;
+}
+/* une seule accolade  + compteur embedcnt ne fonctionne pas comme avant */
+int _matchit1(char **p, char **ps, char *name)
+{
+  char *pp = find_word_start(*p+strlen(name)+1);
+  if(strncmp(*p+1,name,strlen(name))==0 && *pp=='{') {
+    char *pe=find_matching(pp+1,'}');
+    if(pe && *pp=='{' && *pe=='}') {
+         pp++; **p=*pe=0;
+         fprintf(outf,"%s \n\
+!read oef/%s.phtml %s \n$()", *ps,name,pp);
+         *ps=*p=pe; (*ps)++; embedcnt++; return 1;
+     }
+  }
+  return 0;
+}
 
 void out_exec(char *s1, char *s2)
 {
-    char *ps, *p, *pp, *pe, *pp2, *pe2, *pt, c;
-    char *p2, *p3;
+    char *ps, *p, c, *p2, *p3;
     if(s2) fprintf(outf,"\n!exit\n\n:%s\n$()",s2);
     ps=s1;
     for(p=ps;*p;p++) {
@@ -134,100 +193,12 @@ void out_exec(char *s1, char *s2)
             pt=exec_if(p+strlen("ifval")); if(pt>p+strlen("ifval")) {p=pt-1;ps=pt;}
             continue;
           }
-/* canvasdraw */
-          if(strncmp(p+1,"canvasdraw",strlen("canvasdraw"))==0 && *find_word_start(p+strlen("canvasdraw")+1)=='{') {
-            pe=pp2=pe2="";
-            pp=find_word_start(p+strlen("canvasdraw")+1);
-            if(*pp) pe=find_matching(pp+1,'}');
-            if(pe) pp2=find_word_start(pe+1); else continue;
-            if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
-            if(pe2 && *pp2=='{' && *pe2=='}') {
-                pp++; pp2++; *p=*pe=*pe2=0;
-                fprintf(outf,"%s \n\
-!read oef/canvasdraw.phtml %s \\\n%s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++; continue;
-            }
-          }
-
-/* draw */
-          if(strncmp(p+1,"draw",strlen("draw"))==0 && *find_word_start(p+strlen("draw")+1)=='{') {
-            pe=pp2=pe2="";
-            pp=find_word_start(p+strlen("draw")+1);
-            if(*pp) pe=find_matching(pp+1,'}');
-            if(pe) pp2=find_word_start(pe+1); else continue;
-            if(pp2) pe2=find_matching(pp2+1,'}'); else continue;
-            if(pe2 && *pp2=='{' && *pe2=='}') {
-                pp++; pp2++; *p=*pe=*pe2=0;
-                while((pt=strstr(pp2,"$val1/"))!=NULL)
-                  ovlstrcpy(pt,pt+strlen("$val1/"));
-                fprintf(outf,"%s \n\
-!read oef/draw.phtml %s \\\n%s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++; continue;
-            }
-          }
-/* img */
-          if(strncmp(p+1,"img",strlen("img"))==0 && *find_word_start(p+strlen("img")+1)=='{') {
-            pe=pp2=NULL;
-            pp=find_word_start(p+strlen("img")+1);
-            if(*pp=='{') pe=find_matching(pp+1,'}');
-            if(pe) pp2=find_word_start(pe+1); else continue;
-            pe2=pe;
-            if(*pp2=='{') {
-                pe2=find_matching(++pp2,'}');
-                if(pe2) *pe2=0;
-            }
-            else pp2="";
-            if(*pp=='{' && *pe=='}') {
-                pp++; *p=*pe=0;
-                fprintf(outf,"%s \n\
-!read oef/img.phtml %s %s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++; continue;
-            }
-          }
-/* audio */
-          if(strncmp(p+1,"audio",strlen("audio"))==0 && *find_word_start(p+strlen("audio")+1)=='{') {
-            pe=pp2=NULL;
-            pp=find_word_start(p+strlen("audio")+1);
-            if(*pp=='{') pe=find_matching(pp+1,'}');
-            if(pe) pp2=find_word_start(pe+1); else continue;
-            pe2=pe;
-            if(*pp2=='{') {
-                pe2=find_matching(++pp2,'}');
-                if(pe2) *pe2=0;
-            }
-            else pp2="";
-            if(*pp=='{' && *pe=='}') {
-                pp++; *p=*pe=0;
-                fprintf(outf,"%s \n\
-!read oef/audio.phtml %s %s \n$()", ps,pp,pp2);
-                ps=p=pe2; ps++; continue;
-            }
-          }
-/* embed */
-
-          if(strncmp(p+1,"embed",strlen("embed"))==0 && *find_word_start(p+strlen("embed")+1)=='{') {
-            pe=pp2=pe2="";
-            pp=find_word_start(p+strlen("embed")+1);
-            if(*pp) pe=find_matching(pp+1,'}');
-            if(pe && *pp=='{' && *pe=='}') {
-                pp++; *p=*pe=0;
-                fprintf(outf,"%s \n\
-!read oef/embed.phtml %s \n$()", ps,pp);
-                ps=p=pe; ps++; embedcnt++; continue;
-            }
-          }
-/* special */
-          if(strncmp(p+1,"special",strlen("special"))==0 && *find_word_start(p+strlen("special")+1)=='{') {
-            pe=pp2=pe2="";
-            pp=find_word_start(p+strlen("special")+1);
-            if(*pp) pe=find_matching(pp+1,'}');
-            if(pe && *pp=='{' && *pe=='}') {
-                pp++; *p=*pe=0;
-                fprintf(outf,"%s \n\
-!read oef/special.phtml %s \n$()", ps,pp);
-                ps=p=pe; ps++; embedcnt++; continue;
-            }
-          }
+          if (_matchit2(&p, &ps, "img")) continue;
+          if (_matchit2(&p, &ps, "audio")) continue;
+          if (_matchit1(&p, &ps, "embed")) continue;
+          if (_matchit1(&p, &ps, "special")) continue;
+          if (_matchit3(&p, &ps, "draw",1)) continue;
+          if (_matchit3(&p, &ps, "canvasdraw",0)) continue;
           *p++=0; fprintf(outf,"%s$m_",ps); ps=p; continue;
       }
       if(c=='\\') {
