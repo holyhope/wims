@@ -49,6 +49,9 @@ $ in $parm
    !set rep_tmp=!replace internal reply by r in $reply_tmp
    !set n_=!text select 0123456789 in $reply_tmp
    !set n_=$[$n_]
+   !if debug iswordof $m_oefenv and ?analyze notin $(replygood$n_)
+     !read oef/special/debug.input $n_
+   !endif
    !set inputsize_tmp=!translate x to , in $inputsize_tmp
    !if $(inputsize_tmp[2])=$empty and $(inputsize_tmp[1])!=$empty
        !set inputsize_tmp=1,$inputsize_tmp
@@ -65,16 +68,16 @@ $ in $parm
      !endif
    !endif
    !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
-      range litexp algexp formal equation function default matrix
+      range litexp algexp formal equation function matrix raw default set aset fset
     !set embedded=!append item r$n_ to $embedded
     !set sp_imagecss=$sp_imagecss\
 .sp_image #reply$n_{left:$(x_)px;top:$(y_)px;$css}
     !if $nbdim==2
      !set hlist=$hlist\
-<textarea id="reply$n_" rows="$sizer" cols="$sizec" name="reply$n_" value="" class="nowrap" /></textarea>
+<textarea id="reply$n_" rows="$sizer" cols="$sizec" name="reply$n_" value="$(reply$n_)" class="nowrap" /></textarea>
     !else
      !set hlist=$hlist\
-<input id="reply$n_" size="$inputsize_tmp" name="reply$n_" value="" />
+<input id="reply$n_" size="$inputsize_tmp" name="reply$n_" value="$(reply$n_)" />
     !endif
     !set positionlist=!append line $x_,$y_ to $positionlist
     !set nrep=!append item $n_ to $nrep
@@ -90,7 +93,12 @@ $hlist
 <img src="$imgurl" style="width:$(bigsizex)px;height:$(bigsizey)px;" alt="" />
 </div>
 !else
- !distribute item #0ddf00,#ff4040 into colorr_good,colorr_bad
+ !read themes/$wims_theme/oefcolors
+ !if $oef_indbad=$empty
+   !read themes/oefcolors
+ !endif
+ !distribute item $oef_indbad,$oef_indgood,$oef_indforget, $oef_indpartial, $oef_indprec\
+   into colorr_bad,colorr_good,colorr_forget,colorr_partial,colorr_prec
 !reset hlir hlig
 !set sp_imagecss=<style type="text/css">\
 .sp_image_r {position:relative;display:inline-block;width:$(bigsizex)px;height:$(bigsizey)px;}\
@@ -100,7 +108,7 @@ $hlist
 .sp_image_g {position:relative;display:inline-block;width:$(bigsizex)px;height:$(bigsizey)px;}\
 .sp_image_g span {margin:0;padding:0;position:absolute;}\
 .sp_image_g textarea{margin:0;padding:0;position:absolute;}
-$sizelist
+
 !reset test
 !for tt=1 to $parmcnt
   !set aa=$(nrep[$tt])
@@ -118,13 +126,25 @@ $sizelist
   !endif
   !if $(diareply$tt)!=good
        !set test=1
+  !endif
+  !set tt_=!word 1 of $(replygood$tt)
+  !if $tt_!=?analyze
+    !set cl=$(colorr_$(diareply$tt))
+    !if $(precreply$tt)=yes      
+      !set cl=color:$(colorr_prec)
+    !endif
+    !if $(partialgood$tt)=yes
+      !set cl=color:$(colorr_partial)
      !endif
+   !else
+     !reset cl
+  !endif
 !set sp_imagecss=$sp_imagecss\
-.sp_image_r #sp_imageinput_r$tt {left:$(positionlist[$aa;1])px;top:$(positionlist[$aa;2])px;opacity:$(opai);color:$(colorr_$(diareply$tt))}
+.sp_image_r #sp_imageinput_r$tt {left:$(positionlist[$aa;1])px;top:$(positionlist[$aa;2])px;$cl}
 
 !set sp_imagecss=$sp_imagecss\
-.sp_image_g #sp_imageinput_g$tt {left:$(positionlist[$aa;1])px;top:$(positionlist[$aa;2])px;opacity:$(opai);}
-
+.sp_image_g #sp_imageinput_g$tt {left:$(positionlist[$aa;1])px;top:$(positionlist[$aa;2])px;}
+ !set replyname$tt=[$tt]
 !next tt
 
 $sp_imagecss
@@ -140,5 +160,5 @@ $hlig
 <img src="$imgurl" style="width:$(bigsizex)px; height:$(bigsizey)px" alt="" />
 </div>
   !endif
-
+ 
 !endif

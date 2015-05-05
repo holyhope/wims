@@ -42,7 +42,9 @@ $ in $parm
    !if $(upcase) isin $pretext
        !set reply_tmp=!nospace $(ld[1])
        !set i_tmp=!text select 0123456789 in $reply_tmp
-       !!read anstype/numeric.default $i_tmp
+       !if debug iswordof $m_oefenv and ?analyze notin $(replygood$i_tmp)
+         !read oef/special/debug.input $i_tmp
+       !endif
        !set rep_tmp=!replace internal reply by r in $reply_tmp
        !set embedded=!append item $rep_tmp to $embedded
        !set inputsize_tmp=$(ld[2])
@@ -74,8 +76,11 @@ $ in $parm
 $pretext
 </$pre>
 !else
- !set colorr_ana=C8C8E0
  !set pretext=$code
+ !read themes/$wims_theme/oefcolors
+ !if $oef_indbad=$empty
+   !read themes/oefcolors
+ !endif
  !for tt = 1 to $parmcnt
    !set ld=!line $tt of $parm
    !if $(ld[1]) isin $pretext
@@ -85,6 +90,9 @@ $pretext
        !if $tt!=?analyze
          !set cl=!nospace oef_ind$(diareply$m_)
          !if $(precreply$m_)=yes and $(diareply$m_)=bad
+            !set cl=!nospace oef_indprec
+         !endif
+         !if $(partialgood$m_)=yes
             !set cl=!nospace oef_indpartial
          !endif
        !else

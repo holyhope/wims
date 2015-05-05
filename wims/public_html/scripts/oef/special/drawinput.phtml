@@ -54,6 +54,9 @@ $code
    !set rep_tmp=!replace internal reply by r in $reply_tmp
    !set n_=!text select 0123456789 in $reply_tmp
    !set n_=$[$n_]
+   !if debug iswordof $m_oefenv and ?analyze notin $(replygood$n_)
+     !read oef/special/debug.input $n_
+   !endif
    !set inputsize_tmp=!translate x to , in $inputsize_tmp
    !if $(inputsize_tmp[2])=$empty and $(inputsize_tmp[1])!=$empty
        !set inputsize_tmp=1,$inputsize_tmp
@@ -62,10 +65,10 @@ $code
    !default inputsize_tmp=$inputsize
 
    !if $n_!=$empty and $(replytype$n_) iswordof numeric nocase case atext \
-     range litexp algexp formal equation function default
+     range litexp algexp formal equation function default raw symtext set aset fset
     !set embedded=!append item r$n_ to $embedded
     !increase m__
-    !set codeinput=!append line input $[$x_],$[$y_],$(inputsize_tmp[2]),1, $ $ to $codeinput
+    !set codeinput=!append line input $[$x_],$[$y_],$(inputsize_tmp[2]),1,$(reply$n_)$ $ to $codeinput
     !set hlist=$hlist<input type="hidden" id="oefvar$[$m__]" name="reply$n_" value="" />
     !set oef_js_submit=!append word my_canvasdraw$m__(); to $oef_js_submit
     !set list_$n_=$m__
@@ -91,20 +94,26 @@ $codeinput
 !if $q_form=yes
  $hlist
  !read oef/canvasdraw.phtml $code_ $ $
-
 !else
  !reset code_r
+ !read themes/$wims_theme/oefcolors
+ !if $oef_indbad=$empty
+   !read themes/oefcolors
+ !endif
+ !distribute item $oef_indbad,$oef_indgood,$oef_indforget, $oef_indpartial, $oef_indprec\
+   into colorr_bad, colorr_good, colorr_forget, colorr_partial, colorr_prec
  !for c in $embedded
    !set ii=!replace internal r by in $c
    !set rep$ii=!replace internal $\
 $  by , in $(reply$ii)
    !default reply_$ii=$(reply$ii)
    !set tt=!word 1 of $(replygood$ii)
-   !distribute item #40C040,#FF4040,orange into colorr_good,colorr_bad,colorr_partial
-   !set colorr_ana=#C8C8E0
    !if $tt!=?analyze
     !set cl=$(colorr_$(diareply$ii))
-    !if $(precreply$ii)=yes and $(diareply$ii)=bad
+    !if $(precreply$ii)=yes
+       !set cl=$(colorr_prec)
+    !endif
+    !if $(partialgood$ii)=yes
        !set cl=$(colorr_partial)
     !endif
    !else
@@ -120,6 +129,7 @@ $  by , in $(reply$ii)
    !set code_r=$code_r\
 inputstyle color:$cl;\
 $code_r_,0,$(reply_$ii) $(replyname$ii)
+   !set replyname$m_=[$m_]
  !next
 
 !set code_r_=!nonempty lines $bigsizex,$bigsizey\
