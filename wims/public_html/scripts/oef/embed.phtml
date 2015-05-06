@@ -107,7 +107,8 @@ $ by  </span>$  $ <span style="color:blue">/</span> $ $<span style="text-decorat
   !read anstype/$(replytype$i).input noprompt
  !endif
 !else
- !distribute item oef_indgood, oef_indbad, oef_indforget, oef_indneutral, oef_empty into colorr_good, colorr_bad, colorr_forget, colorr_neutral, colorr_none
+ !distribute item oef_indgood, oef_indbad, oef_indforget, oef_indneutral, oef_empty, oef_indprec, oef_indpartial\
+   into colorr_good, colorr_bad, colorr_forget, colorr_neutral, colorr_none, colorr_prec, colorr_partial
  !set cl=colorr_none
  !if $t_=c
   !set cl=$(colorr_$(diachoice$i))
@@ -159,11 +160,21 @@ $ by  </span>$  $ <span style="color:blue">/</span> $ $<span style="text-decorat
   !if $tt!=?analyze
    !set cl=$(colorr_$(diareply$i))
    !if $(replytype$i) iswordof mark flashcard checkbox
-    !if $inputsize isitemof $ts
-      !set cl = $colorr_good
+    !if $inputsize!=$empty
+      !if $inputsize isitemof $ts
+        !set cl = $colorr_good
+      !else
+        !set cl = $colorr_bad
+     !endif
     !else
-      !set cl = $colorr_bad
-    !endif
+      !set cl=$(colorr_$(diareply$i))
+     !endif
+   !endif
+   !if $(partialgood$i)=yes
+     !set cl=$(colorr_partial)
+   !endif
+   !if $(precreply$i)=yes
+     !set cl=$(colorr_prec)
    !endif
   !else
    !set embedded_analyze=!append item $i to $embedded_analyze
