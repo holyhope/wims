@@ -61,16 +61,18 @@ if ($option) {
  exit;
 }
 ####
+## will not be modified in the subroutines
 my %titsheet = treate_dict ("$sheetdir/index/tit.$LANG"); my $titsheet=\%titsheet;
 my %addr = reverse_dic ("$moduledir/addr"); my $addr=\%addr;
 my %titmodule = treate_dict ("$moduledir/title");my $titmodule=\%titmodule;
+
 taxonomy("unisciel", $LANG, '_','_',);
 
-my $ccsstitle='CCSS.Math.Content_';
-taxonomy ("commoncore", $LANG, '_','_',
- ($ccsstitle . 'K',$ccsstitle . '1',$ccsstitle . '2',
- $ccsstitle . '3',$ccsstitle . '4',$ccsstitle . '5',
- $ccsstitle . '6',$ccsstitle . '7',$ccsstitle . 'HS'));
+## impose order in the list
+my $ccsstitle='CCSS.Math.Content_'; my @list=();
+for my $l ('K','1','2','3','4','5','6','7','HS') { push @list, "$ccsstitle$l" }
+
+taxonomy ("commoncore", $LANG, '_','_',@list);
 
 sub taxonomy { my ($taxo, $lang, $sep1, $sep2,  @list) = @_ ;
    my $vu={}; my $ref;
@@ -97,7 +99,7 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   my @prec=split('_',$a); my $prec0=join('_',@prec[0..$#prec-1]);
   my $amod = $a;
   my $T = '<li class="closed">';
-  if (!$tit->{$a}) { print "$a\n" ; $tit->{$a}=$a};
+  if (!$tit->{$a}) { print "$a" ; $tit->{$a}=$a};
   if (!$ref->{'total'}{$a}) { $ref->{'total'}{$a}=0 } ;
   if (!$module) {
        $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
@@ -178,7 +180,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = canonify($a);
-      if($titsheet{$b}) { $b = $titsheet{$b} . " <span class=\"small hidden\">($b)</span>" } else { $b =~ s!/!~!g;}
+      if($titsheet->{$b}) { $b = $titsheet->{$b} . " <span class=\"small hidden\">($b)</span>" } else { $b =~ s!/!~!g;}
       $ref{'sheet'}{$ligne[0]} .="<li class=\"taxo_module\">\n"
    . "!href target=wims_internal module=adm/sheet\&+job=read\&+sh=$a $b\n </li>\n";
       }
