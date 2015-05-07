@@ -87,7 +87,7 @@ int mathml(char *p, int option ){
           // now write the "char" 200% into variable "mathml_tex_size"
           snprintf(mathml_tex_size,sizeof(mathml_tex_size),"%d%%",texsize_list[idx]);
           // int --> char : added % sign (needed for mathml) [%% = escaped %]
-          if(mathml_tex_size == NULL || strlen(mathml_tex_size) == 0 ){ // this should not happen
+          if(strlen(mathml_tex_size) == 0 ){ // this should not happen
             sprintf(mathml_tex_size,"%s","120%");
             // if it goes wrong we set 120%
             // default in itex2MML was 110% : but we thought it was too small... ?
