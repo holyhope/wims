@@ -63,16 +63,6 @@ char *find_tag_end(char *p)
 */
 }
 
-void collapse_item(char *p, int n)
-{
-    int i;
-    char *pp;
-    if(n<1) return;
-    for(i=1,pp=strchr(p,','); i<n && pp!=NULL; i++,pp=strchr(pp+1,','));
-    if(pp==NULL) *p=0;
-    else ovlstrcpy(p,pp+1);
-}
-
 /* modify a string. Bufferlen must be at least MAX_LINELEN */
 void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...)
 {

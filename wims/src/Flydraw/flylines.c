@@ -68,6 +68,8 @@ char *find_name_start(char *p)
     for(i=0; !isalpha(*p) && i<MAX_LINELEN; p++,i++);
     return p;
 }
+/* on prend les items à partir du n-ieme et on les recopie sur place au debut de la chaine
+de caracteres */
 
 void collapse_item(char *p, int n)
 {
