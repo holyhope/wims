@@ -123,7 +123,7 @@ void singlespace2(char *p)
 }
 
 /* Prepare dictionary */
-void prepare_dic(void)
+static void prepare_dict(void)
 {
     int i,l;
     FILE *dicf;
@@ -257,7 +257,7 @@ int main()
       if(l<=0 || l>sourcelim) return 0; /* too long */
       inpbuf=xmalloc(l+16); (void)fread(inpbuf,1,l,f); fclose(f); inpbuf[l]=0;
     }
-    p1=inpbuf; prepare_dic();
+    p1=inpbuf; prepare_dict();
     if(leaveline) c='\n'; else c=' ';
     do {
       l=strlen(p1);

@@ -85,7 +85,8 @@ void singlespace2(char *p)
 }
 
 /* Prepare dictionary */
-void prepare_dic(void)
+static
+void prepare_dics(void)
 {
     int i;
     FILE *dicf;
@@ -153,7 +154,7 @@ int main(int argc, char *argv[])
     if(ss!=NULL && *ss!=0) sepchar=*ss;
     gr=getenv("dicsort_grouping");
     if(gr!=NULL && *gr!=0) grpchar=*gr;
-    snprintf(dicname,sizeof(dicname)-128,"%s",argv[1]); prepare_dic();
+    snprintf(dicname,sizeof(dicname)-128,"%s",argv[1]); prepare_dics();
     if(argc>2) {
       snprintf(suffixname,sizeof(suffixname),"%s",argv[2]);
       suffix_dic(suffixname); hassuffix=1;
