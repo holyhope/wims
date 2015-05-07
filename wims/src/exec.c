@@ -720,7 +720,7 @@ void exec_restart(char *p)
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
 <html><body><a href=\"%s\">%s</a></body></html>",buf2,buf2,buf2);
     close_working_file(&m_file,0); write_logs();
-    snprintf(buf,sizeof(buf),"%ld",nowtime);
+    snprintf(buf,sizeof(buf),"%ld",(long)nowtime);
 /*    accessfile(buf,"w","%s/restart.time",s2_prefix);
 */    delete_pid(); exit(0);
 }
@@ -1078,10 +1078,10 @@ void exec_getfile(char *p)
     for(p1=url+strlen(url);p1>url && *(p1-1)!='/'; p1--);
     if(good_httpd) snprintf(p1,sizeof(url)+p1-url,
                 "getfile/%s?&+session=%s&+modif=%ld",
-                p,s,nowtime);
+                p,s,(long)nowtime);
     else snprintf(url,sizeof(url),
           "%s?cmd=getfile&+session=%s&+special_parm=%s&+modif=%ld",
-          ref_name,s,p,nowtime);
+          ref_name,s,p,(long)nowtime);
     snprintf(jsbuf,sizeof(jsbuf),jsstr,"wims_file","wims_file");
     if(*prompt) output("<a href=\"%s\">%s</a>\n", url,prompt);
     else output("<a href=\"%s\"></a>",url);
@@ -1167,7 +1167,7 @@ void _exec_ins(char *p, char *script_name,char *format)
     for(p1=url+strlen(url);p1>url && *(p1-1)!='/'; p1--);
     snprintf(p1,sizeof(url)+p1-url,
          "wims.%s?cmd=getins&+session=%s&+special_parm=insert%s-%d.%s&+modif=%ld",
-         fmt,s,mh,insert_no,fmt,nowtime);
+         fmt,s,mh,insert_no,fmt,(long)nowtime);
     if(strchr(ins_alt,'"')!=NULL || strlen(ins_alt)>256) ins_alt[0]=0;
     pt=getvar("wims_ins_alt"); if(pt==NULL) pt="";
     if(ins_alt[0] && strcmp(pt,"none")!=0)
