@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!set module_title=Verander hier de Wachtwoorden
+!!set module_title=Verander hier de Wachtwoorden
 
 !distribute line Welk type wachtwoord\
   Uw persoonlijke login wachtwoord\

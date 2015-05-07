@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!set module_title=Cambio de la contraseña
+!!set module_title=Cambio de la contraseña
 
 !distribute line Elija el tipo de contraseña\
   Su contraseña personal (para entrar en la clase como profesor)\
