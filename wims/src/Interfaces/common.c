@@ -88,6 +88,8 @@ char *find_matching2(char *p, char c)
 }
 
 /* Read/write to a file with variable parms to print filename */
+/* same in Misc/ccsum.c and wlogdaccessfile */
+static
 void accessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
