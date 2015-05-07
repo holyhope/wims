@@ -44,6 +44,8 @@ struct cls {
 int clscnt;
 
 /* Read/write to a file with variable parms to print filename */
+/* same in Interfaces/common.c and wlogdaccessfile */
+static
 void accessfile(char *content, char *type, char *s,...)
 {
     va_list vp;
@@ -89,6 +91,7 @@ void mkdirs2(char *s)
     }
 }
 
+static
 void oneline(char *p)
 {
     char tbuf[8], sbuf[8], ubuf[256], cbuf[64];

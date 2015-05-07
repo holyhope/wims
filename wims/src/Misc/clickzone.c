@@ -227,6 +227,7 @@ int test(char *p)
     exit(-1);
 }
 
+static
 int oneline(char *p)
 {
     char *p1, *p2;

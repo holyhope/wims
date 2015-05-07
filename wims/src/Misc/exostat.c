@@ -54,6 +54,7 @@ int str2time(char *p)
     return hr*3600+min*60+sec;
 }
 
+static
 void oneline(char *p, char *typ)
 {
     int i, sh, ex, t;
