@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!set module_title=Verstuur Email
+!!set module_title=Verstuur Email
 !set name_noemail=Geen van de deelnemers heeft een emailadres opgegeven.
 !set name_noemail2=De volgend deelnemers hebben geen emailadres opgegeven
 !set name_nouser=Er zijn geen deelnemers geselecteerd. Kontroleer de filter instellingen.
