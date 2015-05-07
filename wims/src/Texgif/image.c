@@ -21,6 +21,8 @@
 gdImagePtr image=NULL;
 int color_white, color_black, color_bounder;
 
+/* same in Flydraw/flylines.c */
+
 int getcolor(int r, int g, int b)
 {
     int col;

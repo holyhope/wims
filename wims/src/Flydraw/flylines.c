@@ -80,7 +80,7 @@ void collapse_item(char *p, int n)
     if(pp==NULL) *p=0;
     else ovlstrcpy(p,pp+1);
 }
-
+/* same in Texgif/image.c */
 int getcolor(int r, int g, int b)
 {
     int col;
