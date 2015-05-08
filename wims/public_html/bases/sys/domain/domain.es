@@ -77,8 +77,8 @@ continuity:continuidad
 convergence:
 coordinates:coordenada
 covariance:
-cristallography:
 cryptology:criptología
+cristallography:
 cumulative_frequency:
 curve_fitting:
 curves:curvas

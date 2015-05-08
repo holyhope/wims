@@ -67,8 +67,8 @@ conics:Kegelsneden
 continued_fraction:Rationale getallen
 continuity:Continuiteit
 covariance:
-cristallography:Kristallografie
 cryptology:Cryptologie
+crystallography:Kristallografie
 curves:Kurves
 cyclic_code:
 cyclic_group:Cyclische groep
