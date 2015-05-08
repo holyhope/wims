@@ -68,15 +68,17 @@ test=$mean
   !advance freegot
 !else
   !if $mean<[2*$precision1]
-   precreply$i=yes
-   !advance precgood
+    diareply$i=bad
+    precreply$i=yes
+    !advance precgood
   !else
     !if $mean<$[$precision2]
-     precreply$i=yes
+     partialgood$i=yes
+     diareply$i=good
      freegot=$[$freegot + max(0,1-($mean-$precision1)/($precision2-$precision1))]
     !endif
   !endif
-   diareply$i=bad
+
 !endif
 
 :drawing

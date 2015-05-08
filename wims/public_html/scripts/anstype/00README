@@ -55,15 +55,23 @@ Output variables of the answer processing file:
 	diareply$i	Diagnostics result. Possible values: "good", "bad".
 	precreply$i	If the answer misses the good result just by a
 			problem of precision, put "yes" to this variable and put
-			"bad" to diareply$i.
+			"bad" to diareply$i. In the computation of the score, a coefficient
+			depending on the level is introduced. In thise case, one must
+			not advance freegot at all.
 	partialgood$i	If the answer should be considered as partially good,
 			put "yes" to this variable and put "good" to
-			diareply$i.
+			diareply$i. It has no consequence on the calculation of the real score
+			(use freegot for that).
 	freegot		This is a numerical variable. Its content is incremented
 			by 1 if the answer is 100% OK, none if it is false,
 			or anything between 0 and 1 for partially good answer.
 			It is not recommended to decrement this value, nor to
 			increment it more than 1. The real score is computed using it.
+
+So,
+partialgood$i=yes  + diareply$i=good + freegot advances of a number strictly between 0 et 1
+or
+!advance precgood + diareply$i=bad + fregot=0 + precreply$i=yes
 
 There are also some optional output variables (they can be left empty).
 

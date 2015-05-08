@@ -46,13 +46,19 @@ nbsel=!getopt nb_select in $(replyoption$i)
   !set for_feedback=$selbad
   !goto applet
 !endif
-
-!if $score=10
- diareply$i=good
- !advance freegot
+!!freegot must be advanced between 0 and 1
+score=$[round($score)/10]
+!if $score=1
+   diareply$i=good
+   !advance freegot
 !else
-   diareply$i=bad
-   freegot=$[$freegot+$score]
+   !if $score>0.4
+      diareply$i=good
+      freegot=$[$freegot+$score]
+      partialgood$i=yes
+   !else
+      diareply$i=bad
+   !endif
 !endif
 
 :applet

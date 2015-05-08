@@ -95,11 +95,12 @@ sg_tot=!listcomplement $g_tot in $r_tot
  diareply$i=good
  !advance freegot
 !else
-   diareply$i=bad
   !if $(score[-1])+$(score[-2])>=2
-    !!advance precgood
+    partialgood=yes
     freegot=$[$freegot + 0.5]
-    precreply$i=yes
+    diareply$i=good
+  !else
+    diareply$i=bad
   !endif
 !endif
 
