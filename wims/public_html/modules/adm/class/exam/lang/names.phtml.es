@@ -97,3 +97,7 @@ into name_info,name_content,name_warning
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
   el examen, y tendrá que empezar desde el principio la próxima vez.<br />\
   ¿Seguro que quiere terminarlos?
+
+!set wims_name_cpexam=Copy the contents from an active exam.
+
+!set name_cpexam1=You are about to copy the content of an other active exam into this one. You will be able to modify the contents of this exam until you will activate it
