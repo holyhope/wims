@@ -166,7 +166,7 @@ char *disable_zoom="no";  /* yes/no:  default zooming allowed (if enabled via "u
 char *disable_mathml="no";
 int spec_font=0; /* choose of some fonts*/
  /* special font can be configured in log/wims.conf with variable special_font*/
-char *special_font="letter-spacing:0.3em;line-height:2.7em;word-spacing:0.8em;";
+char *special_font="letter-spacing:0.1em;line-height:2.7em;word-spacing:0.8em;font-family:OpenDyslexic3,OpenDyslexic,sans-serif !important;";
 int backup_hour=-1; /* Hour for daily backup; -1 means no backup. */
 int site_accounting=0; /* whether accounting should be activated */
 int examlog_limit=7; /* number of logged exam sessions for each student */
