@@ -33,7 +33,7 @@ $name_title $exam
  !goto end
 !endif
 
-!if $job=exo or $job=cpsheet
+!if $job=exo or $job=cpsheet or $job=cpexam
  !read $job.phtml
  !goto end
 !endif
@@ -46,7 +46,14 @@ $name_title $exam
 
 :end1
 !if $exocnt=0
- <p>$name_warning</p>
+ <p>$name_warning
+ !set nex=!itemcnt $aexams
+ !if $nex > 0
+  !set wims_ref_class=wims_button_help
+  !href cmd=reply&job=cpexam $wims_name_cpexam
+ !endif
+ </p>
+
 !else
  !read examcontent.phtml
 

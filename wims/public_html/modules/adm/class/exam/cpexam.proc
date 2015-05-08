@@ -1,0 +1,25 @@
+numexam=!listintersect $numexam and $aexams
+!if $numexam=$empty
+ !exit
+!else
+!! it could actually just copy the file, but I think this way is safer
+!! does not copy "comment" and "option": do we need the two fields?
+ nbexo=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$numexam
+ listdon=$empty
+ !for k=1 to $nbexo
+  tmp=!record $k of wimshome/log/classes/$wims_class/exams/.exam$numexam
+  tmpweight=!line 1 of $tmp
+  tmpexo=!line 2 of $tmp
+  tmptitle=!line 3 of $tmp
+  tmpdep=!line 4 of $tmp
+  exodon=:$tmpweight\
+$tmpexo\
+$tmptitle\
+$tmpdep\
+
+ listdon=!append line $exodon to $listdon
+ !next k
+ !appendfile wimshome/log/classes/$wims_class/exams/.exam$exam $listdon
+ !reset job,numexam
+ !read var.proc
+!endif
