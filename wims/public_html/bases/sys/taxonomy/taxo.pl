@@ -60,9 +60,9 @@ if ($option) {
       my $cc='';
       my $tt1=underscore($tt);
       if(defined($refcount->{$tt1})) { $cc="<sup class=\"taxo_nb_elem\">".$refcount->{$tt1}."</sup>" };
-      $Tw .= "<span id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
+      $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
             . "!set key=$tt0\n"
-            . '!href $search_addr' . " >>>>\n"
+            . '!href $search_addr' . " &#128270; \$wims_name_search\n"
             . "<ul id=\"list_$tt\">";
       One($Next{$tt}, $refcount);
       $Tw .= "\n</ul>";
@@ -118,7 +118,7 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
        $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
           . "<label for=\"$amod\">$tit->{$a}</label><span class=\"small hidden\">($a)</span>";
   } else {
-    $T .= "<span id=\"$amod\">$tit->{$a}</span> <span class=\"small hidden\">($a)</span> ";
+    $T .= "<span class=\"tree_icon\" id=\"$amod\">$tit->{$a}</span> <span class=\"small hidden\">($a)</span> ";
     if ($ref->{'total'}{$a} >0){
       $T .= "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}."</sup>";
     }
@@ -170,7 +170,9 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         my %dic=treate_dict("../../modules/$a/Extitles");
         my @exo= values %dic;
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module closed\">\n" .
-        "!href target=wims_internal module=$a $bb\n" .
+        "<span class=\"tree_icon\">$bb</span>\n".
+        "!set wims_ref_class=wims_button\n".
+        "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
         . "</li>\n";
       }
