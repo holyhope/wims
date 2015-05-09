@@ -117,7 +117,7 @@
 #else
     void (*wims_mathml_write) (const char * buffer, unsigned long length) = wims_mathml_default_write;
     void (*wims_mathml_write_mathml) (const char * mathml) = wims_mathml_default_write_mathml;
-#endif 
+#endif
 
  char * wims_mathml_empty_string = "";
 
@@ -634,12 +634,12 @@ closedTerm: array
   $$ = wims_mathml_copy3("<mn>", $1, "</mn>");
   wims_mathml_free_string($1);
 }
-| mo 
+| mo
 | tensor
 | multi
 | mfrac
 | binom
-| msqrt 
+| msqrt
 | mroot
 | raisebox
 | munder
@@ -760,17 +760,17 @@ bigint:  BIGGGINT {
 | BIGINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"300%\" minsize=\"200%\">&Integral;</mo></mtd></mtr></mtable>");
-} 
+}
 | LARGERINT {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy_string("<mtable columnalign=\"center\" rowspacing=\"0.5ex\"><mtr><mtd><mo symmetric=\"true\"  stretchy=\"true\"  maxsize=\"260%\" minsize=\"160%\">&Integral;</mo></mtd></mtr></mtable>");
-}; 
+};
 
 bigdelim: BIG LEFTDELIM {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\">", $2, "</mo>");
   wims_mathml_free_string($2);
-} 
+}
 | BIG RIGHTDELIM {
   $$ = wims_mathml_copy3("<mo maxsize=\"1.2em\" minsize=\"1.2em\">", $2, "</mo>");
   wims_mathml_free_string($2);
@@ -796,7 +796,7 @@ bigdelim: BIG LEFTDELIM {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   wims_mathml_free_string($2);
-} 
+}
 | BIGG RIGHTDELIM {
   $$ = wims_mathml_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   wims_mathml_free_string($2);
@@ -842,7 +842,7 @@ bigdelim: BIG LEFTDELIM {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
   wims_mathml_free_string($2);
-} 
+}
 | BIGGL OTHERDELIM {
   wims_mathml_rowposn = 2;
   $$ = wims_mathml_copy3("<mo maxsize=\"2.4em\" minsize=\"2.4em\">", $2, "</mo>");
@@ -1072,7 +1072,7 @@ input: INPUT {
     			case 4 : strncat(readonly,tmp,1);break;
     			default : break;
     		    }
-		} 
+		}
     	    }
 	}
     }
@@ -1258,9 +1258,9 @@ calletters: calletter {
 };
 
 calletter: CALCHAR {
-  if (*$1 == 'A' 
-  || *$1 == 'C' 
-  || *$1 == 'D' 
+  if (*$1 == 'A'
+  || *$1 == 'C'
+  || *$1 == 'D'
   || *$1 == 'G'
   || *$1 == 'J'
   || *$1 == 'K'
@@ -1359,7 +1359,7 @@ multi: MULTI MROWOPEN subsupList MROWCLOSE closedTerm MROWOPEN subsupList MROWCL
   $$ = wims_mathml_copy2(s1, "</mmultiscripts>");
   wims_mathml_free_string(s1);
   wims_mathml_free_string($3);
-  wims_mathml_free_string($5); 
+  wims_mathml_free_string($5);
 };
 
 subsupList: subsupTerm {
@@ -2289,12 +2289,12 @@ void replace_str(const char *str, const char *old, const char *new){
 	    count++;
 	    retlen = p - str + strlen(p) + count * (newlen - oldlen);
 	}
-    } 
+    }
     else
     {
 	retlen = strlen(str);
     }
-    
+
     if ((ret = malloc(retlen + 1)) == NULL){
 	ret = NULL;
     }
