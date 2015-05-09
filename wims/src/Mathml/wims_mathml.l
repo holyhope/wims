@@ -882,7 +882,8 @@ int wims_mathml_displaymode = 0;
 
 "\\special"	{BEGIN(FINDARG); return SPECIAL;}
 
-"\\color"        {BEGIN(ATTRIBUTELIST); return COLOR;}
+"\\color"  |
+"\\textcolor" {BEGIN(ATTRIBUTELIST); return COLOR;}
 "\\bgcolor"        {BEGIN(ATTRIBUTELIST); return BGCOLOR;}
 
 "\\displaystyle"  {wims_mathml_displaymode=1; wims_mathml_rowposn=2; return DISPLAY;}
