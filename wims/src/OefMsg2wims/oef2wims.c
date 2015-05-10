@@ -121,7 +121,7 @@ struct {
 int define_no, title_no=-1, statement_no=-1;
 
 /* Debug output */
-void debug(void)
+void oef_debug(void)
 {
     int i,j,n;
     for(i=0;i<define_no;i++) {
