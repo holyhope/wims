@@ -1115,7 +1115,8 @@ void test_suite(char *prefix, char *p, char *vars){
     if (*nextv != '\0'){
       *nextv++='\0';
     }
-    printf("%s\n", getvar(v));
+    v=getvar(v);
+    if(v) puts(v); else putchar('\n');
   }
 }
 
