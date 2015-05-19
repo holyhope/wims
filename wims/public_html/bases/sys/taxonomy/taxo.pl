@@ -62,7 +62,7 @@ if ($option) {
       if(defined($refcount->{$tt1})) { $cc="<sup class=\"taxo_nb_elem\">".$refcount->{$tt1}."</sup>" };
       $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
           . "!set key=$tt0\n";
-      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr' . " &#128270; \$wims_name_search\n"; };
+      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&browse_parm=' . $tt1 . " &#128270; \$wims_name_search\n"; };
       $Tw .=  "<ul id=\"list_$tt\">";
       One($Next{$tt}, $refcount);
       $Tw .= "\n</ul>";
@@ -108,7 +108,7 @@ sub taxonomy { my ($taxo, $lang, $sep1, $sep2,  @list) = @_ ;
 
 sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   return "" if (defined($vu->{$a}));
-  $vu->{$a} = 1; 
+  $vu->{$a} = 1;
   my @prec=split('_',$a); my $prec0=join('_',@prec[0..$#prec-1]);
   my $amod = $a;
   my $T = '<li class="closed">';
@@ -164,6 +164,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = $a; $b =~ s!/!~!g;
+      if (!defined($addr{$a})) {print "warning: module $a does not exist on the server\n"; next};
       if (!$titmodule->{$addr{$a}}) { print "$a\n" ; $titmodule->{$a}=$a};
       my $bb= ($titmodule->{$addr{$a}}) ? $titmodule->{$addr{$a}} . "<span class=\"small hidden\">($b)</span>" : $b;
       if (-e "../../modules/$a/Extitles") {
@@ -202,7 +203,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
    $ref{'numsheet'}{$ligne[0]}=$cnt0;
    }
   }
-   my @modlist=sortuniq(keys $tit);
+   my @modlist=sortuniq(keys %{$tit});
    for my $id (@modlist) {
      my @ok = grep {/^${id}_/} @modlist;
      push @ok, $id;
