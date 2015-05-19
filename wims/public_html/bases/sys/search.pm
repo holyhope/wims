@@ -54,6 +54,7 @@ sub treate_accent {my ($txt) = @_;
   $txt =~ s/г/C/g;
   $txt =~ s/[хийк]/E/g;
   $txt =~ s/[лонм]/I/g;
+  $txt =~ s/'/ /g;
   $txt= encode("iso-8859-1",$txt);
   $txt
 }
