@@ -330,7 +330,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
  my $tag='';
  my $Text="var specialname= '$name{'special'}{$lang}';\n";
  for my $meth (@file) {
-  print $meth . "\n";
+  #print $meth . "\n";
     open (IN, "$dir/$meth.phtml");
     while (<IN>) {my $line=$_;
     next if !($line) ;
