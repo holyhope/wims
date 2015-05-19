@@ -10,8 +10,11 @@ defines=@DEFINES@
 
 all:checkmol
 
-checkmol::
-	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) checkmolc.c -o checkmol -lm
+checkmolc.o: checkmolc.c
+	$(cc) $(cflags) $(CPPFLAGS) $(LDFLAGS) -c checkmolc.c
+
+checkmol: checkmolc.o
+	$(cc) $(LDFLAGS) $(cflags) -o checkmol checkmolc.o -lm
 
 clean::
-	rm -f checkmol
+	rm -f checkmol checkmolc.o
