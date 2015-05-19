@@ -19,7 +19,7 @@ else
   for i in `ls $wims_dirsrc/*.sh`; do
    j=`basename $i .sh`; echo "Testing $j... \c"
    $i > $wims_tmp/$j 2>&1
-   if [ "$j" = "oef" ] ; then 
+   if [ "$j" = "oef" ] ; then
      for ii in `ls $wims_dirtest/diroef/*` ; do
       jj=`basename $ii`; echo "Testing $jj... \c"
        if ! cmp $wims_tmp/diroef/$jj $wims_res/diroef/$jj; then
