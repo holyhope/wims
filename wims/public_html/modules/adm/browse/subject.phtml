@@ -2,6 +2,8 @@
 !read adm/title.phtml 3\
 $title
 !set taxo=keywords
+!set cat=A
+
 !if $parm=$empty
  $name_domain
 <div class="wims_widget_box">
@@ -28,6 +30,7 @@ $title
 
   !for dom in $Tot_dom
     <div id="$dom">
+       !set parm=$dom
        !read taxo/$dom.phtml.$lang
      </div>
   !next
