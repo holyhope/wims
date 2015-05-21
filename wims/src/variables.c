@@ -1281,8 +1281,8 @@ void save_parmreg(void)
     s=atoi(sh); if(getscorestatus(getvar("wims_class"),s)==0) return;
     if(strcmp(u,"supervisor")==0) return;
 /* 0.2 is random factor to trigger exercise parm register */
-/*    return;
-*/    if((double) random()>(double) RAND_MAX*0.2) return;
+/*    return;*/
+    if((double) random()>(double) RAND_MAX*0.2) return;
     mkfname(dbuf,"%s/.parmreg",class_dir);
     mkdirs(dbuf); varf=fopen(nbuf,"w"); if(varf==NULL) return;
     _write_var("module_init_parm",varf,1,0);
