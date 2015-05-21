@@ -6,10 +6,9 @@ use Encode qw(encode decode);
 #### for an identifier in a taxo, make the list of the modules
 #### which refers to this identifier
 ####
-
+print "prepare taxonomy files ...";
 for my $f (glob("src/*")) {
   my $f0=$f ; $f0 =~ s/src\///;
-  print $f0 . "\n";
   dicclassification ($f0, ($f));
 }
 
