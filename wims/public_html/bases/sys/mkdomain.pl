@@ -43,7 +43,7 @@ for my $tag (sort keys %{$ref->{'prev'}}) {
 out("$dir/reversedomain",$TEXT);
 
 ## Put in domain/domain.json the sorted list of domains up to third level
-out("$dir/domain.json", domainjson(%ref));
+out("$dir/domain.json", domainjson());
 out("$outputkeywords/keywords.tech.json", keywordsjson(%ref));
 
 ## for languages for which domain.xx exists, construct files
@@ -77,21 +77,16 @@ for my $la ( @site_lang) {
 }
 
 #####################################################
-sub domainjson { my ($ref) = @_ ;
+sub domainjson {
   my @D=();
-  while ( my ($key, $value) = each(%ref) ) {
-    if ( $value =~ /domain\b/ ) { push @D, $key }
-    else {
-      if ($ref{$value}) {
-       if ($ref{$value} =~ /domain\b/) { push @D, $key }
-         else {
-             if ($ref{$ref{$value}}) {
-               if($ref{$ref{$value}} =~ /domain\b/) { push @D, $key; }
-               }
-           }
-       };
-     };
-   }
+  my %dom = treate_dict ("$dir/domain.en");
+  my $dom = \%dom;
+  while ( my ($key, $value) = each(%dom) ) {
+   if (defined $ref->{'prev'}{$key} && $ref->{'prev'}{$key}=~/domain\b/) {
+    if (!$key =~ /zdomain\b/) { push @D, $key };
+    if (defined $ref->{'next'}{$key}) { push @D, split(',', $ref->{'next'}{$key})};
+   };
+ }
 "<!-- generated -->\n['" . join("',\n'", sortuniq(@D)) . "']";
 }
 
