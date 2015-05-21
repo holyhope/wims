@@ -211,6 +211,7 @@ do
 done
 
 ### create the taxonomy
+echo "create taxonomy ..."
 cd $BASES
 ./mkbrowse
 
@@ -218,6 +219,7 @@ cd $BASES/dic ;
 ./mkindex.sh
 
 #slib index
+echo "index slib ..."
 cd $SLIB
 ./mkindex >>mkindex.log
 
@@ -235,6 +237,7 @@ for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done
 
 #oef/qcm
 # generate exercises in directory oef/$lang/qcm
+echo "generate qcm models ..."
 for i in fr en cn nl ; do
   cd $OEF/$i/qcm ;
   touch $OEF/$i/qcm/src/cpp/qcm.cpp;
@@ -250,7 +253,7 @@ for cls in $clist; do
  cd $CLASSES/$cls ;  $OEF/mkindex $WIMS_HOME 2>/dev/null
 done
 
-# compile documents in example class
+echo "compile documents in example classes"
 cd $CLASSES
 clist=`ls -d [1-9][0-9][0-9][0-9]`
 for cls in $clist; do
@@ -262,7 +265,7 @@ for cls in $clist; do
   dlist=`ls`
   if [ ! -d "$dlist" ] ; then
     for doc in $dlist ; do
-      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 1>/dev/null
+      cd $CLASSES/$cls/doc/$doc ; $DOC/mkindex $WIMS_HOME $CLASSES/$cls/doc/$doc 2>/dev/null 1>/dev/null
     done
   fi
  fi
@@ -275,7 +278,7 @@ for doc in $clist; do
   $DOC/mkindex $WIMS_HOME $BASESDOC/$doc 1>/dev/null 2>/dev/null
 done
 
-#oefdocumentation for javascript
+echo " generate oefdocumentation for javascript"
 cd $WIMS_HOME
 bin/oefdoc.pl
 

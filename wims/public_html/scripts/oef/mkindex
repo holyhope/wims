@@ -54,11 +54,11 @@ else
 fi
 
 if [ ! -d $def ]; then
- echo Directory $def not found.
+ echo 1>&2 "Directory $def not found."
  exit;
 fi
 if [ ! -d $src ]; then
- echo Directory $src not found.
+ echo 1>&2 "Directory $src not found."
  exit;
 fi
 
@@ -160,7 +160,7 @@ do
  auth=`grep author def/$i.def | awk -F= '{print $2}'`;
  echo "$i:$auth" >> $exauth
 done
-$wims_home/bin/dicsort $extitles.tmp
+$wims_home/bin/dicsort $extitles.tmp 1>&2
 if [ -s $extitles.tmp.sorted ]; then
  cat $extitles.tmp.sorted >$extitles
  rm -f $extitles.tmp*
