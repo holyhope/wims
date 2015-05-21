@@ -31,7 +31,11 @@ a todos los participantes de la clase, que se mostrará en
 
 set name_alertmsg=Message d'alerte
 !set name_walertmsg=Ecrire une alerte
-!set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $user_firstname $user_lastname (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
+!set name_Introalertmsg=!nosubst Ecrire le message d'alerte pour l'élève $(local_name) (aucun TAG ou balise HTML admis ; limité à $alertmsg_limit caractères).
 !set name_usermultisession=Plusieurs sessions ouvertes
 
 !set name_filter=Filter according to a technical variable (student properties)
+!set name_aloneaction=Action unique
+!set name_grpaction=Action commune sur les élèves sélectionnés
+!set name_erase=Effacer
+!set name_change=Modifier

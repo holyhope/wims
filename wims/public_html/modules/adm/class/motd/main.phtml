@@ -49,20 +49,35 @@ $name_Intro
 
 $name_motd
 !reset table_center
+!form reply
+
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_grpaction</legend>
+ <div class="field box">
+  <input type=hidden name="job" value="groupe">
+  <input type="submit" name="action" value="$name_reactive" $wims_on_click/>
+  <input type="submit" name="action" value="$name_change" $wims_on_click/>
+  <input type="submit" name="action" value="$name_erase" $wims_on_click/>
+  !if $wims_numpartconnected>0
+   <input type="submit" name="action" value="$name_walertmsg" $wims_on_click/>
+  !endif
+ </div>
+</fieldset>
 $table_header
  $table_hdtr
+  <th>Select</th>
   <th>$name_participant</th>
   <th style="width:50%">$name_actualmotd</th>
   <th>$wims_name_Status</th>
   <th>$name_alertmsg</th>
-  <th>$wims_name_action</th>
+  <th>$name_aloneaction</th>
  </tr>
  !for k=1 to $nbuser
   $table_tr
-   !let don=!record $k of wimshome/log/classes/$wims_class/.userlist
-   !distribute item $don into f,l,u
+   !let u=$(listiduser[$k])
+   <td> <input type="checkbox" name="listuser" id="listuser$k" value="$u"/> <label for="listuser$k"></label> </td>
    <td>
-    $l $f
+    $(listnameuser[$k])
     !if $u isitemof $wims_connectedlogin
      <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
     !endif
@@ -76,7 +91,7 @@ $table_header
      $(name_status[1])
     !else
      $(name_status[2])
-     !href cmd=reply&job=reactivate&user=$u $name_reactive
+     !href cmd=reply&job=reactivate&listuser=$u $name_reactive
     !endif
    </td>
    <td>
@@ -92,20 +107,20 @@ $table_header
    </td>
    <td>
    !set wims_ref_class=wims_button
-    !href cmd=reply&job=modif&user=$u $wims_name_change
+    !href cmd=reply&job=modif&listuser=$u $wims_name_change
     &nbsp;
     !set wims_ref_class=wims_button wims_warning
-    !href cmd=reply&job=delete&user=$u $wims_name_erase
+    !href cmd=reply&job=delete&listuser=$u $wims_name_erase
     !if $n<5 and $p!=$empty
      &nbsp;
      !set wims_ref_class=wims_button
-     !href cmd=reply&job=write&user=$u $name_walertmsg
+     !href cmd=reply&job=write&listuser=$u $name_walertmsg
     !endif
    </td>
   </tr>
  !next k
 $table_end
-
+!formend
 :end
 
 !if $job!=$empty and $job!=delete

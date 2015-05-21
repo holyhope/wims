@@ -1,15 +1,8 @@
-!if $user=$empty
+!if $listuser=$empty
  job=$empty
  !exit
 !endif
-!read adm/class/userdef classes,$wims_class,$user
-!defread $userdef
-!read adm/class/userisinclass $wims_class,$user
-!if $script_reply!=yes
- error=bad_user
- !reset job
- !exit
-!endif
-file=motd/$user
-!writefile wimshome/log/classes/$wims_class/motd/.$user
-!reset job,user
+!for user in $listuser
+    !writefile wimshome/log/classes/$wims_class/motd/.$user
+!next user
+!reset job,user,listuser

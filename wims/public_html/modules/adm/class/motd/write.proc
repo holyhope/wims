@@ -1,21 +1,27 @@
-!if $user!=$empty
- !read adm/class/userdef classes,$wims_class,$user
- !defread $userdef
- !read adm/class/userisinclass $wims_class,$user
-!endif
-!if $script_reply!=yes or $user=$empty
-  error=bad_user
-  !reset job
-  !exit
-!endif
+!! TODO gestion d'une liste d'user
 
-pl=!positionof item $user in $wims_connectedlogin
-!if $pl=$empty
+
+!!if $listuser!=$empty
+!! !read adm/class/userdef classes,$wims_class,$user
+!! !defread $userdef
+!! !read adm/class/userisinclass $wims_class,$user
+!!endif
+!!!if $script_reply!=yes or $user=$empty
+!!  error=bad_user
+!!  !reset job
+!!  !exit
+!!endif
+
+listuser=!listintersect $listuser and $wims_connectedlogin
+user=$(listuser[1])
+pl=!positionof item $(listuser[1]) in $wims_connectedlogin
+!if $listuser=$empty
  error=user_notconnected
  job=list
  !reset action
  !exit
 !endif
+
 don=!line $pl of $wims_whoconnect
 ses=!item 4 of $don
 test=!getdef wims_class\
