@@ -85,6 +85,7 @@ void process_formula(char *p)
     fprintf(outf,"\n!insmath %s\n$()",bf);
 }
 
+/* deux accolades obligatoires */
 int _matchit3(char **p, char **ps, char *name, int type)
 {
   char *pp = find_word_start(*p+strlen(name)+1);
@@ -92,8 +93,8 @@ int _matchit3(char **p, char **ps, char *name, int type)
     char *pp2, *pe2, *pt;
     char *pe=find_matching(pp+1,'}');
     if(pe) pp2=find_word_start(pe+1); else return 1;
-    if(pp2) pe2=find_matching(pp2+1,'}'); else return 1;
-    if(pe2 && *pp2=='{' && *pe2=='}') {
+    if(pp2 && *pp2=='{') pe2=find_matching(pp2+1,'}'); else return 1;
+    if(pe2) {
       pp++; pp2++; **p=*pe=*pe2=0;
       switch(type) {
      /* $val1 is $imagedir supprime s'il se trouve dans le code de draw */
@@ -121,27 +122,26 @@ int _matchit2(char **p, char **ps, char *name)
       if(pe2) *pe2=0;
     }
     else pp2="";
-    if(*pp=='{' && *pe=='}') {
-      pp++; **p=*pe=0;
-      fprintf(outf,"%s \n\
+    pp++; **p=*pe=0;
+    fprintf(outf,"%s \n\
 !read oef/%s.phtml %s %s \n$()", *ps,name,pp,pp2);
-      *ps=*p=pe2; (*ps)++; return 1;
-    }
+    *ps=*p=pe2; (*ps)++; return 1;
   }
   return 0;
 }
-/* une seule accolade  + compteur embedcnt ne fonctionne pas comme avant */
+
+/* une seule accolade */
 int _matchit1(char **p, char **ps, char *name)
 {
   char *pp = find_word_start(*p+strlen(name)+1);
   if(strncmp(*p+1,name,strlen(name))==0 && *pp=='{') {
     char *pe=find_matching(pp+1,'}');
-    if(pe && *pp=='{' && *pe=='}') {
-         pp++; **p=*pe=0;
-         fprintf(outf,"%s \n\
+    if(pe) {
+      pp++; **p=*pe=0;
+      fprintf(outf,"%s \n\
 !read oef/%s.phtml %s \n$()", *ps,name,pp);
-         *ps=*p=pe; (*ps)++; embedcnt++; return 1;
-     }
+      *ps=*p=pe; (*ps)++; embedcnt++; return 1;
+    }
   }
   return 0;
 }
