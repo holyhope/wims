@@ -3,10 +3,10 @@
 !set name_intromain=Esta utilidad le permite al administrador del sitio llevar en línea el mantenimiento\
  de la instalación WIMS. El acceso a ella está controlado estrictamente mediante\
  definiciones en el fichero de configuración
- 
+
 !set name_warning_wrongpass=Ha introducido una contraseña errónea.
 !set name_try_wrongpass=Vuelva a intentarlo
-  
+
 !!list
  !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
    Lista de tareas que puede realizar en línea\
@@ -18,6 +18,7 @@
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
 
+!set name_restore_class=Restore a class
 !!help
 
 !set name_warning_help=Por favor use los enlaces de ayuda específicos de los distintos temas de ayuda.
@@ -78,12 +79,12 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   them, or change their ownership.
   !set name_warning2=Importante recomendación de seguridad: por favor compruebe\
    el dueño de los ficheros.
-   
+
  !set name_warning_chroot=If you use wims-chroot distribution, debe ejecutar \
  el guión <span class="tt">bin/setchroot</span> como root.
- !set name_warning_wimsd=If you use wimsd, debe ejecutar el guión <span class="tt">bin/setwimsd</span> como root. 
+ !set name_warning_wimsd=If you use wimsd, debe ejecutar el guión <span class="tt">bin/setwimsd</span> como root.
  !set name_warning_wrapexec=debe ejecutar el guión <span class="tt">bin/setwrapexec</span> como root.\
-   Esto es crucial para la seguridad de su instalación. 
+   Esto es crucial para la seguridad de su instalación.
  !set name_warning3=Estos permisos erróneos constituyen un riesgo de seguridad para su instalación.\
   El problema acaba de ser corregido, pero debe estar alerta y comprobar\
   los permisos de acceso con más frecuencia. Si reaparece el mismo problema,\
@@ -227,7 +228,7 @@ las configuraciones guardadas en el directorio log.
 
 !set name_dynamic=Comprobar las imágenes dinámicas (puede plantearse hacerlo en distintos navegadores)
 !set name_tex=Esta fórmula usa una inserción dinámica escrita en TeX. Debería verse correctamente, a no ser \
- que TeX no esté instalado correctamente en su sistema. 
+ que TeX no esté instalado correctamente en su sistema.
 !set name_size= Puede cambiar la escala de cambio del tamaño de los tipos de letra si aparecen\
  demasiado grandes o demasiado pequeños
 !set name_mathml=This formula uses dynamic MathML. If it does not appear correctly, it is certainly\
@@ -458,3 +459,15 @@ into name_subject,name_message
  !let name_sending=Your message has been send to all Recipient
  !exit
 !endif
+
+!if $job=classrestore
+  !distribute lines Choose the class to restore in the following list\
+  There is no class to restore.\
+into name_restore_choose, name_restore_noclass
+!set name_restore_done=!nosubst La classe $clrestore a été restaurée. Veuillez prévenir\
+l'enseignant que la nouvelle date d'expiration est le $date. Il est déconseillé de refaire\
+cette opération une seconde fois.
+
+  !exit
+!endif
+

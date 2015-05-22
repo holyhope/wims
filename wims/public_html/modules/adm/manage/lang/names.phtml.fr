@@ -17,6 +17,7 @@ Son accès est contrôlé par les définitions du fichier de configuration
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
 
+!set name_restore_class=Restaurer une classe
 !!help
 
 !set name_warning_help=Utiliser les liens d'aide spécifiques pour accéder aux différents sujets d'aide.
@@ -454,3 +455,15 @@ into name_subject,name_message
  !let name_sending=Votre message a été envoyé à tous les destinataires
  !exit
 !endif
+
+!if $job=classrestore
+  !distribute lines Choisir la classe à restaurer dans la liste suivante\
+  Il n'y a pas de classes à restaurer.\
+into name_restore_choose, name_restore_noclass
+!set name_restore_done=!nosubst La classe $clrestore a été restaurée. Veuillez prévenir\
+l'enseignant que la nouvelle date d'expiration est le $date. Il est déconseillé de refaire\
+cette opération une seconde fois.
+
+  !exit
+!endif
+

@@ -1,0 +1,41 @@
+!if $error!=$empty
+  <div class="wims_alertmsg">
+  !read lang/msg.phtml.$modu_lang
+  </div>
+  !exit
+  !reset error
+!endif
+
+!if $stepcl=$empty or $stepcl<1
+  !if $cnt>0
+   $name_restore_choose
+!form reply
+   <ul>
+  !for y in $listyear
+    !for cl in $(listclass$y)
+    <li>
+      !formradio clrestore list $(y)_$cl prompt $cl ($y)
+    </li>
+    !next
+  !next
+ </ul>
+
+     <div class="wimscenter wimsform">
+     <input type="hidden" name="stepcl" value="1" />
+     <input type="submit" name="" value="$wims_name_tosave" />
+     </div>
+!formend
+  !else
+    $name_restore_noclass
+    !reset stepcl
+  !endif
+ !else
+   !if $test!=$empty
+     !exit
+   !endif
+  $name_restore_done $class
+ !reset stepcl clrestore
+ !endif
+
+
+

@@ -19,6 +19,7 @@
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
 
+!set name_restore_class=Restore a class
 !!help
 
 !set name_warning_help=请对不同主题使用不同帮助链接.
@@ -57,7 +58,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 
 !if $job=attrib
   !set title=验证文件的准许权限
-  
+
   !distribute lines  WIMS 是按安全模式设置文件的准入权限.\
    下列文件或目录可被他人读取, 而它们应该是不可读取的:\
    有大量文件或目录可被他人执行, 而它们应该是不可执行的.\
@@ -73,19 +74,19 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
   name_attrib11
-  
+
   !set name_warning1=WIMS目录内不能有属于其他人的文件.\
   你必须检查这些文件的来源, 然后删除它们或改变它们的拥有者.
   !set name_warning2=重要安全提示: 请给文件 <span class="tt">public_html/bin/ch..root</span>,\
   <span class="tt">public_html/bin/wrap..exec</span>, <span class="tt">bin/wimsd</span> 以正确的拥有者.\
   这对安全性十分重要. 为此你应该作为 root 执行 bin/wrapuid.
-  
+
  !set name_warning_chroot=如果你使用 wims-chroot, 你必须以 \
   <span class="tt">root</span> 身份执行脚本 <span class="tt">bin/setchroot</span>.
  !set name_warning_wimsd=如果你使用 wimsd, 你必须以 <span class="tt">root</span> \
-   身份执行脚本 <span class="tt">bin/setwimsd</span>. 
+   身份执行脚本 <span class="tt">bin/setwimsd</span>.
  !set name_warning_wrapexec=你必须以 <span class="tt">root</span> 身份执行脚本 <span class="tt">bin/setwrapexec</span>.\
- 这对于保证你的安装的安全性至关重要. 
+ 这对于保证你的安装的安全性至关重要.
 
  !set name_warning3=这些错误的权限使你的机器有安全隐患. 目前这些问题已被纠正,\
   然而你仍需经常检查准入权限. 如果同类问题再次出现, 你应该检查你的系统是否被入侵过,\
@@ -107,7 +108,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !endif
 
 !if $job=badconf
-  
+
   !set name_warning1=!nosubst 文件 $fname 能被任何人读取!\
   很有可能你的管理员设置或密码已经泄漏.\
   现在你必须修改文件 $fname 的权限, 使它只能被拥有者读取,
@@ -143,7 +144,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set name_search1=本服务器有许多虚拟班. 为寻找一个班级, 请输入一个关键词.
   !set name_search2=还是有太多班级与你的关键词对应. 请给出更精确的关键词.
   !set name_total=!nosubst 这个服务器上有 $nbcls 个班级或班级组.
- 
+
   !if $job2 iswordof modify erase
   !set title=
   !distribute lines 虚拟班级的重要性质:\
@@ -180,10 +181,10 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !distribute lines 设置没有变动过, 因为你并未修改.\
 默认值\
    into name_config,name_default
-     
+
  !set name_updated=!nosubst 文件 <span class="tt">wims.conf</span> 已更新. 你可从文件 <span class="tt">$backdir/wims.conf.old</span>\
   找到旧的配置信息.
-  
+
   !set name_warning=名称上打星号 `*' 的是重要参数. \
 如果你设错了带 `!' 号的参数有可能损坏你的安装.<br />\
 只要删去文件 <span class="tt">log/wims.conf</span> 就能在重启后回到默认配置.\
@@ -194,11 +195,11 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   这里\
   以进行手工模块管理.\
  into name_click,name_backup,name_here,name_manual
- 
+
 !!ressource
 !set name_config_site=以设置网站的准入限制策略.
 
-!!graphics and software 
+!!graphics and software
    !distribute lines 以检验新设置的效果.\
    检验 WIMS 模块使用的计算软件包\
    以检验图形软件\
@@ -211,7 +212,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
    以检验新设置的效果.\
  into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
    name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
- 
+
 
 !set name_warning_program=WIMS 没有找到它的模块中使用的下列软件.\
  这些软件或者没有被安装在系统中 (请安装!), 或者是安装在 WIMS 搜索不到的目录里\
@@ -220,7 +221,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !set name_imagemagick=本系统里没有发现运转中的 ImageMagick.\
  没有这个软件包, 大部分WIMS图形以及动画都将受损.\
  因此在继续进行以前, 建议你一定要把 ImageMagick 安装好.
- 
+
 !set name_dynamic=检验动态图形 (你可在不同的浏览器里执行):
 
 !set name_tex=上面的公式使用了动态 TeX 插入. 应该能正确显示, \
@@ -262,7 +263,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 
 !if $job2=del1
   !set name_warning=你肯定要删除开发者帐户吗
-  
+
  !exit
 !endif
 
@@ -405,7 +406,7 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 
 !if $job=upload
  !set name_warning=为更新服务器的资源, 请把包含资源的光盘或 usb 存储插入计算机,\
-同时在以下的输入区域内找出 "wims-resource.tgz" 或 "wimsres-*.tgz": 
+同时在以下的输入区域内找出 "wims-resource.tgz" 或 "wimsres-*.tgz":
  !set name_need=当上传文件很大时, 你需要有一个高速的连接.
 !exit
 !endif
@@ -440,3 +441,14 @@ into name_subject,name_message
  !let name_sending=你的信息已被发送到所有收件人
  !exit
 !endif
+
+!if $job=classrestore
+  !distribute lines Choose the class to restore in the following list\
+  There is no class to restore.\
+into name_restore_choose, name_restore_noclass
+!set name_restore_done=!nosubst The class $clrestore has been restored. Tell to the \
+its teacher that the new expiration date is the $date. It is disadvised to redo this operation.
+
+  !exit
+!endif
+

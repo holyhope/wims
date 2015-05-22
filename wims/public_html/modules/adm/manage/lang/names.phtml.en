@@ -18,6 +18,7 @@
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
 
+!set name_restore_class=Restore a class
 !!help
 
 !set name_warning_help=Please use specific help links for the various help subjects.
@@ -454,3 +455,14 @@ into name_subject,name_message
  !let name_sending=Your message has been send to all Recipient
  !exit
 !endif
+
+!if $job=classrestore
+  !distribute lines Choose the class to restore in the following list\
+  There is no class to restore.\
+into name_restore_choose, name_restore_noclass
+!set name_restore_done=!nosubst The class $clrestore has been restored. Tell to the \
+its teacher that the new expiration date is the $date. It is disadvised to redo this operation.
+
+  !exit
+!endif
+
