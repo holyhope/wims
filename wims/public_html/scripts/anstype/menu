@@ -1,3 +1,4 @@
+!set name_choose_code=!defof name_choose_code in anstype/menu.input
 select_multiple_check=!getopt multiple in $(replyoption$i)
 !if $(replytype$i)=menu and $select_multiple_check!=
  !changeto anstype/checkbox
@@ -10,6 +11,13 @@ $ to ; in $menulist
 good=!line 1 of $good
 replyGood$i=!item $good of $menulist
 replyGood$i=!replace internal \\( by \( in $(replyGood$i)
+
+!if $(replytype$i)=menu
+  defaultest=!getopt default in $(replyoption$i)
+ !if $(reply$i)=$name_choose_code and $defaultest!=$empty
+   reply$i=$defaultest
+ !endif
+!endif
 
 menucnt=!itemcnt $menulist
 reply$i=!replace internal \\( by \( in $(reply$i)

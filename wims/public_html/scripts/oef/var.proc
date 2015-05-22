@@ -15,6 +15,7 @@ translation_language=!module translation_language $module
  !endif
 !endif
 
+!set name_choose_code=!defof name_choose_code in anstype/menu.input
 !default module_help=popup
 
 #if you change these limits, you have to modify var.def!
@@ -263,12 +264,12 @@ m_oefenv=!replace word debug by $ in $m_oefenv
    reply$i=$r_
   !endif
   default_$i=!getopt default in $(replyoption$i)
-  !if $(default_$i)!=$empty and $r_=$empty
+ !if $(default_$i)!=$empty and ($r_=$empty or ($r_=$name_choose_code and $(replytype$i) iswordof menu))
    reply$i=$(default_$i)
    r_=$(default_$i)
   !endif
   !if $r_=$empty or \
-	($(reply$i)=?????? and $(replytype$i) iswordof menu)
+	($(reply$i)=$name_choose_code and $(replytype$i) iswordof menu)
    !if $oefsteps=$empty or r$i isitemof $gotsteps
     error=empty_data
     !goto end
