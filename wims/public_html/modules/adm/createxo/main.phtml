@@ -8,8 +8,14 @@
  !read header_js.phtml
  !set wims_html_header=!append line $header_js_editor to $wims_html_header
 !endif
-!if $modtoolhelp=yes or ($cmd=help and $special_parm iswordof examples)
+!if $modtoolhelp=yes or ($cmd=help and $special_parm iswordof examples oefspecial)
  !set wims_show_liste=!makelist wims_show x for x=1 to 5
+ !if $special_parm iswordof oefspecial
+   !for y=1 to 3
+    !set wims_show_liste1=!makelist wims_show x $y for x=0 to 10
+    !set wims_show_liste=!append item $wims_show_liste1 to $wims_show_liste
+   !next
+ !endif
  !set wims_show_liste=!nospace $wims_show_liste
  !for id in wims_show,$wims_show_liste
    !read js/edit_area.phtml $id wimsoef
