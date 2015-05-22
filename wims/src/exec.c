@@ -1428,6 +1428,12 @@ void exec_increase(char *p)
     setvar(p1,int2str(atoi(p2)+1)); *p=0;
 }
 
+void exec_setseed(char *p)
+{
+    double d=evalue(p);
+    srandom(d); *p=0;
+}
+
 /* bound a variable */
 void exec_bound(char *p)
 {
@@ -1891,6 +1897,7 @@ MYFUNCTION exec_routine[]={
       {"select",    EXEC_STRING|EXEC_USECALC,calc_select},
       {"set",       EXEC_SET,        exec_set},
       {"setdef",    EXEC_OTHER,        exec_setdef},
+      {"setseed",   EXEC_STRING|EXEC_SUBST,        exec_setseed},
       {"sh",        EXEC_EXEC|EXEC_PROCTOO|EXEC_SUBST,exec_sh},
       {"shortout",  EXEC_JUMP|EXEC_SUBST,    exec_directout},
       {"singlespace",EXEC_STRING|EXEC_SUBST|EXEC_USECALC,singlespace},
