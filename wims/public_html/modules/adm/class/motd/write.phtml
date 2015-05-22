@@ -1,12 +1,17 @@
 <hr style="width:40%" />
 
+!form reply
 !let local_name=!positionof item $user in $listiduser
 !let local_name=$(listnameuser[$(local_name)])
-$name_Introalertmsg
-!form reply
+ $name_Introalertmsg1
+ <br/>
+ !formcheckbox listuser list $wims_connectedlogin prompt $connectedname
+ <br />
+ $name_Introalertmsg2
+ <br />
  <input type="hidden" name="action" value="register" />
  <input type="hidden" name="user" value="$user" />
- <input type="hidden" name="job" value="$job" />
+ <input type="hidden" name="job" value="write" />
  <textarea name="motd" cols="60" rows="5" maxlength="$motd_limit"></textarea>
 
  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" $wims_on_click/></div>
