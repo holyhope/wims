@@ -177,6 +177,12 @@ $class_type
 !distribute lines $classe into limit,participants,password,institution,description,supervisor,smail,cltype
 
 # class password verification.
+classpass_=!defof class_password in wimshome/log/classes/$class/.def
+!if $classpass_=*
+  passverify=ok
+  !goto passclassok
+!endif
+
 !if $step=1 or ($step=$empty and ($wims_user=supervisor or $classpass=$password))
  !if ($class=$wims_class and $wims_user=supervisor) or $classpass=$password
   superclass=!defof class_superclass in wimshome/log/classes/$class/.def
@@ -240,6 +246,7 @@ $class_type
  !exit
 !endif
 
+:passclassok
 !if $step=2
  !read adm/class/authchars
  n=!charcnt $login
