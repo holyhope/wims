@@ -5,23 +5,6 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
  !exit
 !endif
 
-!!if $listuser!=$empty
-!! !read adm/class/userdef classes,$wims_class,$user
-!! !defread $userdef
-!! !read adm/class/userisinclass $wims_class,$user
-!! !if $script_reply!=yes
-!!  error=bad_user
-!!  !reset job
-!!  !exit
-!! !endif
-!!endif
-
-!!if $user!=$empty
-!! file=motd/$user
-!!else
-!! file=.motd
-!!endif
-
 !if $action=register
  !if $listusersave!=$empty
     !for user in $listusersave
