@@ -8,7 +8,7 @@
 \precision{10000}
 
 
-\matrix{questions = question1 
+\matrix{questions = question1
 question2
 question3}
 \matrix{justes = juste1,Juste1
@@ -21,20 +21,23 @@ faux3, Faux3}
 \integer{i = randint(1..3)}
 
 \statement{Code permettant de rendre les questions aléatoires :
-<table class="tt" style="border:2px solid grey;text-align:left ; background-color:lightgrey">
-  <tr><td>
-\\matrix{questions = question1 <br />
-question2<br />
-question3}<br />
-\\matrix{justes = juste1,Juste1<br />
-juste2<br />
-juste3,Juste3,juste 3}<br />
-\\matrix{faux = faux1,Faux1,très faux1<br />
-faux2, Faux2<br />
-faux3, Faux3}<br />
-\\integer{i = randint(1..3)}<br /><br /><br />
-\\statement{\\questions[\\i;] :\\embed{choice1}}<br /><br />
-\\choice{}{\\justes[\\i;]}{\\faux[\\i;]}{option = shuffle noidontknow}<br />
-</td></tr></table>
-<p>\questions[\i;] :\embed{choice1}}
+<div class="spacer">
+\special{expandlines
+\matrix{questions = question1
+question2
+question3}
+\matrix{justes = juste1,Juste1
+juste2
+juste3,Juste3,juste 3}
+\matrix{faux = faux1,Faux1,très faux1
+faux2, Faux2
+faux3, Faux3}
+\integer{i = randint(1..3)}
+
+\statement{\questions[\i;] :\embed{choice1}}
+
+\choice{}{\justes[\i;]}{\faux[\i;]}{option = shuffle noidontknow}
+}
+</div>
+<p>\questions[\i;] :\embed{choice1}</p>}
 \choice{}{\justes[\i;]}{\faux[\i;]}{option = shuffle noidontknow}
