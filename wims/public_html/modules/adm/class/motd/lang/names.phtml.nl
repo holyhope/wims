@@ -35,8 +35,8 @@ alle studenten de klas.
 !set name_Introalertmsg2=(geen links of html tags toegestaan; maximale bericht lengte $alertmsg_limit karakters).
 !set name_usermultisession=Meerdere sessies op in deze klas
 
-!set name_filter=Filter according to a technical variable (student properties)
-!set name_aloneaction=Action unique
-!set name_grpaction=Action commune sur les élèves sélectionnés
-!set name_erase=Effacer
-!set name_change=Modifier
+!set name_filter=Selecteer aan de hand van een technische variabele (student gegevens)
+!set name_aloneaction=Individuele aktie
+!set name_grpaction=Aktie voor geselecteerde studenten)
+!set name_erase=Wissen
+!set name_change=Wijzigen

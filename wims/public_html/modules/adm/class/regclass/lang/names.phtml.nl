@@ -30,7 +30,7 @@
 
 !distribute lines Doorgaan\
 Herhaal deze procedure.\
-Oprichten van een virtuele klas, groep klassen, school of  instituut\
+Oprichten van een virtuele klas, groep klassen, school of instituut\
 Naam van het instituut\
 maximaal\
 minimaal\
@@ -67,7 +67,7 @@ Beveiligde toegang\
 Optioneel\
 Dit is een &eacute;&eacute;nmalige code, en is nergens anders voor te gebruiken !\
 Code van $name_classe\
-External authentification CAS (optional)\
+Externe authentificatie CAS (optioneel)\
  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
 !set name_host=!nosubst Computers van waaruit management mag worden uitgevoerd in de klassen: $name_classe .\

@@ -9,7 +9,7 @@
  <span class="tt wims_code_words">
 &lt;yyyymmdd.hh:mm</span>
  (sluitingstijd). 
- Deze tijden moeten worden aangegeven in de lokale tijd van deze SERVER,
+ Deze tijden moeten worden aangegeven in de lokale tijd van deze server,
  en moeten worden gescheiden door spaties.
  <br />
  Formaat van de tijden <span class="tt wims_code_words">yyyymmdd.hh:mm</span> (bij meerdere opties deze scheiden door spaties).

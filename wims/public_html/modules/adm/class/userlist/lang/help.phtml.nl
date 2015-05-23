@@ -37,12 +37,10 @@ $table_tr<td>6</td><td>$scoremax x<sup>2</sup> y<sup>2</sup>
  </td><td>Elke fout wordt extra zwaar bestraft.</td></tr>
 $table_end
 
-En niveau 0 et 1, si la note de qualité est
-inférieure à 1 pour un exercice, le pourcentage de points acquis
-est mis à 0% pour cet exercice lors du calcul de I ;
-si la note de qualité est comprise entre 1 et 2,
-le pourcentage de réussite pour cet exercice est divisé par 2 lors du calcul de I.
-
+Opmerking : voor niveau 0 en 1, als de kwaliteit van de punten lager is dan 1 voor een oefening,
+wordt het percentage verkregen punten 0% voor deze oefening.
+Als de kwaliteit van de punten ligt tussen 1 en 2  wordt het percentage verkregen punten gehalveerd. 
+!! THIS IS ALL REALLY TOO COMPLICATED FOR NORMAL USAGE !!!!!
 !else
 Pour cette feuille, votre enseignant a choisi le mode de calcul suivant
 de la note.

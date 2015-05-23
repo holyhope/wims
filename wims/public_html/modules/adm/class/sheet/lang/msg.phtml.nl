@@ -28,7 +28,7 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
 !endif
 
 !if bad_maxsheet=$error
- The number of worksheets is limited to $max_sheets. You may not create another worksheet.
+ Het maximum aantal werkbladen is ingesteld op $max_sheets. Er kan geen nieuw werkblad meer worden aangemaakt.
  !exit
 !endif
 
@@ -103,8 +103,7 @@ Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
 
 !if $test_expire!=$empty
   <div class="wims_warning">
-   The expiration date of the sheet is previous to today, it will be
-   updated at the expiration date of your class.
+   De einddatum van het werkblad is verlopen; het wordt nu gezet op de vervaldatum van uw klas.
   </div>
  !endif
  Wilt U doorgaan?
@@ -169,7 +168,7 @@ to $wims_menu_items
 !if prep_modify=$error
  !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !if $modif>$cnt or $modif<1
- Uw verzoek is illegaal.
+ Uw verzoek is niet toegestaan.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !changeto exomodify.phtml $exo

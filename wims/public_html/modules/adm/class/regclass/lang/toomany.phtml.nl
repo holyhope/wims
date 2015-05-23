@@ -2,7 +2,7 @@
 Het aantal klassen op deze WIMS-server <span class="wims_warning">$httpd_HTTP_HOST</span>
 heeft zijn maximum reeds bereikt.
 <br /> 
-Hierdoor is het aanmaken van een nieuwe virtuele ruimte geweigerd
+Hierdoor is het aanmaken van een nieuwe virtuele ruimte geweigerd.
 </p>
 <p>
 U kunt een email sturen naar de

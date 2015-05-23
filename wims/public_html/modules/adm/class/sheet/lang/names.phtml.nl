@@ -11,7 +11,7 @@
 !if $activetest<=0
  !let wims_name_sheetadmin=Werkblad aanmaakpagina
  !set name_title=!nosubst Aanmaken van werkblad $sheet
- !set name_order=Order of the exercises of the series
+ !set name_order=Volgorde van de oefeningen
 !else
  !let wims_name_sheetadmin=Werkblad management
  !set name_title=!nosubst Management van werkblad $sheet

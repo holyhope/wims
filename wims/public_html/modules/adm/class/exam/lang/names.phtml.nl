@@ -97,7 +97,8 @@ er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk pogi
 Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle  \
 random (!) sommen opnieuw doen... <br />Weet je zeker dat je er mee wilt stoppen?
 
-!set wims_name_cpexam=Copy the contents from an active exam.
+!set wims_name_cpexam=Kopieer de inhoud van een geactiveerd proefwerk.
 
-!set name_cpexam1=You are about to copy the content of an other active exam into this one. You will be able to modify the contents of this exam until you will activate it
+!set name_cpexam1=U gaat de inhoud van een ander proefwerk kopieren in dit proefwerk.\
+De inhoud van dit proefwerk kan nog worden veranderd.
 
