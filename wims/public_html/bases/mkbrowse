@@ -4,6 +4,15 @@ cd classification;
 ./classif.pl
 
 cd ../sys;
-taxonomy/taxo.pl --module=1 --output=adm/browse
-taxonomy/taxo.pl --option=1  --output=adm/browse
+
+for a in en fr ; do
+echo $a;
+  taxonomy/taxo.pl --module=1 --output=adm/browse --lang=$a
+echo $a;
+done;
+
+for a in en fr it nl ca es si ; do
+  taxonomy/taxo.pl --option=1  --output=adm/browse --lang=$a
+done;
+
 taxonomy/taxo.pl --output=adm/tool/classification/keywords
