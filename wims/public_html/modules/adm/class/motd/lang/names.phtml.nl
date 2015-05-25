@@ -11,7 +11,6 @@
 !set name_write=Schrijf de mededeling (hyperlinks en html-tags zijn toegestaan)
 !set name_otherstudent=Het bericht is ook bedoeld voor de volgende leeringen
 !set name_reactive=Reactiveren
-!set name_motd=Persoonlijke mededeling voor studenten
 !set name_actualmotd=De actuele mededeling
 
 !set name_participant=Student

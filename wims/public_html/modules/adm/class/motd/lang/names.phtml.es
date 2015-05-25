@@ -11,7 +11,6 @@
 !set name_write=Escribir el mensaje (vínculos y tags HTML se admite)
 !set name_otherstudent=El mensaje se referirá también a los alumnos siguientes
 !set name_reactive=Reactivar
-!set name_motd=Mensaje personalizado de los participantes
 !set name_actualmotd=Mensaje actual
 
 !set name_participant=Alumno
@@ -37,7 +36,7 @@ a todos los participantes de la clase, que se mostrará en
 
 !set name_filter=Filter according to a technical variable (student properties)
 !set name_aloneaction=Action unique
-!set name_grpaction=Action commune sur les élèves sélectionnés
+!set name_grpaction=Action commune sur le message personnel des élèves sélectionnés
 !set name_erase=Effacer
 !set name_change=Modifier
 !set name_all=All
