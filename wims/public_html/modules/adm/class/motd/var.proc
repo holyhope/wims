@@ -18,14 +18,18 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
  !endif
 !else
  !bound job within modif,delete,reactivate,write,groupe default $empty
- !if $user=.CLASS.
-  !reset user
+ !if $listuser=__CLASS__
+  !reset listuser
  !endif
  !if $job=groupe
     !if __ALL__ isitemof $listuser
 	listuser=$listiduser
     !else
-        listuser=!listintersect $listuser and $listiduser
+	!if __FILTER__ isitemof $listuser
+	    !readproc varfilter
+	!else
+            listuser=!listintersect $listuser and $listiduser
+	!endif
     !endif
     !let n=!positionof item $action in $name_reactive,$name_change,$name_erase,$name_walertmsg
     !if $n!=$empty and $listuser!=$empty

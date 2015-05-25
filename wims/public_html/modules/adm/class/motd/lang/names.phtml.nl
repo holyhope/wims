@@ -41,3 +41,6 @@ alle studenten de klas.
 !set name_erase=Wissen
 !set name_change=Wijzigen
 !set name_all=All
+!set name_expert0=Si vous désirez sélectionner certains participants, plusieurs méthodes sont proposées.\
+Cochez la méthode désirée.
+!set name_checked=Les participants sélectionnés dans le tableau ci-dessous
