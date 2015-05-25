@@ -40,3 +40,4 @@ alle studenten de klas.
 !set name_grpaction=Aktie voor geselecteerde studenten)
 !set name_erase=Wissen
 !set name_change=Wijzigen
+!set name_all=All

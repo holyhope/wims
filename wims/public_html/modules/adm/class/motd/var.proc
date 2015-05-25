@@ -22,7 +22,11 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
   !reset user
  !endif
  !if $job=groupe
-    listuser=!listintersect $listuser and $listiduser
+    !if __ALL__ isitemof $listuser
+	listuser=$listiduser
+    !else
+        listuser=!listintersect $listuser and $listiduser
+    !endif
     !let n=!positionof item $action in $name_reactive,$name_change,$name_erase,$name_walertmsg
     !if $n!=$empty and $listuser!=$empty
 	job=!item $n of reactivate,modif,delete,write
