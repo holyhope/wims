@@ -57,10 +57,15 @@ $title
     !next
   </ul>
 
+  !set i = 0
+  !set active_index = 0
   !for dom in $Tot_dom
     <div id="$dom">
-       !!set parm=$dom
        !read taxo/$dom.phtml.$lang
+       !if $parm=$dom
+          !set active_index = $i
+       !endif
+       !increase i
      </div>
   !next
 </div>
@@ -71,7 +76,9 @@ $title
 <script type="text/javascript">
     /*<![CDATA[*/
     jQuery(function($$) {
-        $$( "#taxonomy_list" ).tabs();
+        $$( "#taxonomy_list" ).tabs({
+          active: $active_index
+        });
       });
     /*]]>*/
 </script>
