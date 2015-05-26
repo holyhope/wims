@@ -3,10 +3,11 @@
 !endif
 !read adm/language lang/names.phtml
 
-!set list_taxonomy=unisciel,commoncore
+!set list_taxo=!listfile $module_dir/taxoext
+!set list_taxo=!lines2items $list_taxo
 
 wims_prefix=class user tmp
-!bound job within home,type,subject,level,best,new, taxo default home
+!bound job within home,type,subject,level,best,new,taxo default home
 !read tabletheme
 
 search_addr=!nosubst module=home&language=$lang&search_keywords=$key&search_category=$cat&search_and=$search_and&$browse_parm
@@ -29,11 +30,15 @@ Tot_dom=!sort items $Tot_dom
      dom_$l=!lookup $l in $dir
   !next
 !next
+!reset list_taxonomy
 
-!for taxo in $list_taxonomy
-  !set lang_exists=!defof lang_exists in $taxo.phtml.$lang
-  !if $lang_exists=yes
-    !set script_taxo=yes
+!for taxo in $list_taxo
+  !if .$(lang)__ isin $(taxo)__
+   !set lang_exists=!defof lang_exists in taxoext/$taxo
+   !if $lang_exists=yes
+     !set script_taxo=yes
+     !set list_taxonomy=!append item taxoext/$taxo to $list_taxonomy
+   !endif
   !endif
 !next
 !set lang_exists=!defof lang_exists in keywords.phtml.$lang

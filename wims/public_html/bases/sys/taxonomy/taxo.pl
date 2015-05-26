@@ -88,7 +88,12 @@ my %titsheet = treate_dict ("$sheetdir/index/tit.$LANG"); my $titsheet=\%titshee
 my %addr = reverse_dic ("$moduledir/addr"); my $addr=\%addr;
 my %titmodule = treate_dict ("$moduledir/title");my $titmodule=\%titmodule;
 
-taxonomy("unisciel", $LANG, '_','_',);
+for my $t (glob("$ddir/*.$LANG")) {
+  $t =~ s,$ddir\/,,g;
+  my @t_=split('\.',$t); next if !($t_[1] eq $LANG);
+  next if $t_[0] eq 'commoncore' ;
+  taxonomy($t_[0], $LANG, '_','_',);
+}
 
 ## impose order in the list
 my $ccsstitle='CCSS.Math.Content_'; my @list=();

@@ -36,7 +36,11 @@ exo=$(get_exo[1])
 
 search_lang=fr
 !readdef $refdirbase_/$refdir0/$exo
-!set ref_list=keywords,unisciel,commoncore
+!set ref_list=!listfile $module_dir/keywords
+
+!! should be changed if other languages
+!set ref_list=!replace internal .phtml.fr by in $ref_list
+!set ref_list=!lines2items $ref_list
 !set ref_address=,http://pratic.ens-lyon.fr/projets/meta-LOM-CDM/taxo_edu/taxonomies/,http://www.corestandards.org/Math/Content
 
 !set ref_list_cnt=!itemcnt $ref_list

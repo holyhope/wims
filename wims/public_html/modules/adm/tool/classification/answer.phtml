@@ -6,6 +6,7 @@
 <ul>
   !for t=1 to $ref_list_cnt
     !set tt=$(ref_list[$t])
+    !set name_$tt=!defof title in keywords/$tt.phtml.fr
     <li><a href="#$tt">$(name_$tt)</a></li>
   !next
 </ul>
@@ -33,7 +34,7 @@
           !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
           !default fullkey=$key
         !endif
-        !if $tt iswordof commoncore unisciel
+        !if $tt isitemof $ref_list
           !set keycut=!replace internal _ by , in $key
           !set keycutcnt=!itemcnt $keycut
           !set asc=$(keycut[1])_$(keycut[2])
