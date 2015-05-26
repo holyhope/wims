@@ -57,7 +57,11 @@ if ($option) {
   sub One { my ($t, $refcount) = @_;
     return if (!$t);
     for my $tt (split(',', $t)) {
-      $Tw .= '<li class="closed">';
+      $Tw .= "<li  \n".
+      "!if $tt notitemof \$parm\n".
+      " class=\"closed\"\n".
+      "!endif\n".
+      ">\n";
       my $tt0=$titw->{$tt};
       if(!$tt0) { $tt0=$tt ; # print $tt ."\n" ;
       };
