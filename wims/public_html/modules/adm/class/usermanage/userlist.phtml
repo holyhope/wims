@@ -38,6 +38,8 @@
 		<th>$k</th>
 	    !next k
 	</tr>
+    !readproc adm/class/mkcomment name
+    !let namecomment=$scriptout
     !for i=1 to $usercnt
 	!set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
 	!distribute items $uu into bl,bl,uu
@@ -47,7 +49,7 @@ $varfilter_
 	!endif
 	!if $(var_filter_test)=1 or $varfilter_=$empty
 !!          !set UU=!hex $uu
-          !reset user_exists,user_email,user_regnum,user_external_auth,user_comments
+          !reset user_exists,user_email,user_regnum,user_external_auth,user_comments$namecomment,user_comments
 	  !readproc adm/class/userdef classes,$wims_class,$uu
           !readdef $userdef
 	  $table_tr
@@ -58,9 +60,14 @@ $varfilter_
 	        !endif
 	     </td>
 	     <td>$uu</td>
-             !for k in email,regnum,external_auth,comments
-                 <td> $(user_$(k)) </td>
+             !for k in email,regnum,external_auth
+                 <td> $(user_$(k))</td>
              !next k
+             <td>
+                  !readproc adm/class/mkcomment val
+                  $scriptout
+             </td>
+             
           </tr>
 	!endif
     !next i
