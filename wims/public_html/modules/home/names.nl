@@ -85,7 +85,7 @@ SU_nopartconnected=Er is op dit moment geen student ingelogd
 SU_numpartconnected=!nosubst Er zijn op dit moment $wims_numpartconnected student(en) ingelogd
 U_supconnected=Uw docent is ingelogd.
 
-wims_name_SE_list = Leerlingen en cijfers
+wims_name_SE_list = Leerlingen en cijfers (old)
 wims_name_n_participant = Zo zien leerlingen deze pagina
 
 wims_name_SE_mod = Bericht van de dag

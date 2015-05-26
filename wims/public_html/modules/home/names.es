@@ -89,7 +89,7 @@ SU_Bprogram = Vuelta al programa
 SU_nopartconnected=Aucun participant n'est actuellement connecté
 SU_numpartconnected=!nosubst Il y a actuellement $wims_numpartconnected participant(s) connecté(s)
 
-wims_name_SE_list = Participantes y puntuaciones
+wims_name_SE_list = Participantes y puntuaciones (old)
 wims_name_n_participant = Página inicial para el participante
 wims_name_SE_mod = Mensaje del día
 wims_name_SE_config = Config./Mantenim.
