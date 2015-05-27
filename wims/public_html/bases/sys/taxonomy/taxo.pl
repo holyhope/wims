@@ -66,15 +66,15 @@ if ($option) {
       my $tt0=$titw->{$tt};
       if(!$tt0) { $tt0=$tt ; # print $tt ."\n" ;
       };
-      $chemin .= ",$tt" ;
+      my $chemin1 .= "$chemin,$tt" ;
       my $cc='';
       my $tt1=underscore($tt);
       if(defined($refcount->{$tt1})) { $cc="<sup class=\"taxo_nb_elem\">".$refcount->{$tt1}."</sup>" };
       $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
           . "!set key=$tt0\n";
-      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$tt&browse_domain=$chemin &#128270; \$wims_name_search\n"; };
+      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$chemin1 &#128270; \$wims_name_search\n"; };
       $Tw .=  "<ul id=\"list_$tt\">";
-      One($Next{$tt}, $refcount,$taxo, $chemin);
+      One($Next{$tt}, $refcount,$taxo, $chemin1);
       $Tw .= "\n</ul>";
     }
     $Tw .= "\n</li>";
