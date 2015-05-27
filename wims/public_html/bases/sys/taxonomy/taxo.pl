@@ -37,8 +37,9 @@ sub count { my ($file)=@_ ;
   close INC;
   $refcount
 }
+
 if ($option) {
-  my $refcount= count("$moduledir/A.$LANG");
+ my $refcount= count("$moduledir/A.$LANG");
  ## initialisation, will not change
  my %refw = hashdomain('domain/domain') ; my $refw=\%refw;
  my %titw = treate_dict ("domain/domain.$LANG"); my $titw=\%titw;
@@ -51,10 +52,10 @@ if ($option) {
      . '<a class="wims_button float_right" onclick="treeToggleAll(\'#tree_'.$taxo.'\');">$name_fold</a>'
      . "\n!set title= $titw{$taxo}\n<h2>$titw{$taxo}<\/h2>\n"
      . '<ul id="tree_' .$taxo.'" class="tree">';
-  One ($Next{$taxo}, $refcount,$taxo);
+  One ($Next{$taxo}, $refcount, $taxo, $taxo);
   $Tw .= "\n</ul>";
 
-  sub One { my ($t, $refcount, $taxo) = @_;
+  sub One { my ($t, $refcount, $taxo, $chemin) = @_;
     return if (!$t);
     for my $tt (split(',', $t)) {
       $Tw .= "<li  \n".
@@ -65,14 +66,15 @@ if ($option) {
       my $tt0=$titw->{$tt};
       if(!$tt0) { $tt0=$tt ; # print $tt ."\n" ;
       };
+      $chemin .= ",$tt" ;
       my $cc='';
       my $tt1=underscore($tt);
       if(defined($refcount->{$tt1})) { $cc="<sup class=\"taxo_nb_elem\">".$refcount->{$tt1}."</sup>" };
       $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
           . "!set key=$tt0\n";
-      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$tt&browse_domain=$taxo &#128270; \$wims_name_search\n"; };
+      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$tt&browse_domain=$chemin &#128270; \$wims_name_search\n"; };
       $Tw .=  "<ul id=\"list_$tt\">";
-      One($Next{$tt}, $refcount,$taxo);
+      One($Next{$tt}, $refcount,$taxo, $chemin);
       $Tw .= "\n</ul>";
     }
     $Tw .= "\n</li>";
