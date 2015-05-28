@@ -61,11 +61,11 @@ void _form_menus(char *p,int kind)
     }
     else {
       if(strcmp(li,"list")==0) {
-         p1=find_word_start(pp);
-         pp=wordchr(p1,"prompt"); if(pp!=NULL && pp>p1) *(pp-1)=0;
-         ovlstrcpy(vbuf,p1);substit(vbuf);
-         itemcnt=cutitems(vbuf,vlist,MAX_MENU_ITEMS);
-         type=1;
+        p1=find_word_start(pp);
+        pp=wordchr(p1,"prompt"); if(pp!=NULL && pp>p1) *(pp-1)=0;
+        ovlstrcpy(vbuf,p1);substit(vbuf);
+        itemcnt=cutitems(vbuf,vlist,MAX_MENU_ITEMS);
+        type=1;
       }
       else goto syntax;
     }
@@ -84,17 +84,28 @@ void _form_menus(char *p,int kind)
     if(kind==FORM_BAR) {
       s=getvar("wims_ref_class");
       if(s!=NULL && *s!=0 && !isspace(*s)) {
-       snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
+        snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
       } else { pfrb[0]=0; pfre=""; }
       output("%s<span style=\"font-weight:bold;\">-</span>",pfrb);
     }
     val=getvar(nbuf);if(val==NULL) val="";
+
+    char input_id[128];
+    s = getvar("wims_ref_id");
+    if(s!=NULL && *s!=0 && !isspace(*s)) {
+      strcpy(input_id,s);
+    }
+    else { 
+      strcpy(input_id,nbuf);
+    }      
+
     for(i=0;i<itemcnt;i++) {
       if(type==0) {
-         snprintf(buf,sizeof(buf),"%d",i+i1);
-         p0=buf;
+        snprintf(buf,sizeof(buf),"%d",i+i1);
+        p0=buf;
       }
       else p0=vlist[i];
+
       if(*find_word_start(p0)==0) continue;
       if(plist[i]==NULL) plist[i]=p0;
       if(*val!=0 &&
@@ -105,33 +116,42 @@ void _form_menus(char *p,int kind)
          else pc=" checked=\"checked\"";
       }
       else pc="";
-      s=getvar("wims_ref_class");
-     if(s!=NULL && *s!=0 && !isspace(*s)) {
-       snprintf(pfrb,sizeof(pfrb)," <span class=\"%s\">",s); pfre="</span>";
-     }
-     else { pfrb[0]=0; pfre=""; }
+
+      s = getvar("wims_ref_class");
+      if(s!=NULL && *s!=0 && !isspace(*s)) {
+        char *html_mode;
+        html_mode=getvar("wims_html_mode");
+        if(html_mode==NULL || *html_mode==0 || isspace(*html_mode)) {
+          html_mode="span";
+        }
+        snprintf(pfrb, sizeof(pfrb), "<%s class=\"%s\">", html_mode, s);
+        char pfre[256];
+        snprintf(pfre, sizeof(pfre), "</%s>", html_mode);
+      }
+      else { pfrb[0]=0; pfre=""; }
+
       switch(kind) {
-         case FORM_SELECT:
-         output("<option value=\"%s\"%s>%s</option>\n",p0,pc,plist[i]);
+        case FORM_SELECT:
+         output("<option value=\"%s\"%s>%s</option>\n", p0, pc, plist[i]);
          break;
 
-         case FORM_RADIO:
+        case FORM_RADIO:
          output("%s<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-             pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
+             pfrb,nbuf,input_id,i,p0,pc,input_id,i,plist[i],pfre);
          if(i<itemcnt-1 && itemcnt>2) _output_(",");
          _output_("\n");
          break;
 
-         case FORM_CHECKBOX:
+        case FORM_CHECKBOX:
          output("%s<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-             pfrb,nbuf,nbuf,i,p0,pc,nbuf,i,plist[i],pfre);
+             pfrb,nbuf,input_id,i,p0,pc,input_id,i,plist[i],pfre);
          if(i<itemcnt-1 && itemcnt>2) _output_(",");
          _output_("\n");
          break;
 
-         case FORM_BAR:
-         output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
-             nbuf,nbuf,i,p0,pc);
+        case FORM_BAR:
+         output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>",
+             nbuf,input_id,i,p0,pc);
          break;
 
       }
