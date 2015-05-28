@@ -11,16 +11,16 @@ $wims_institutionname
  !if $wims_user=supervisor
   <p class="wimscenter">($name_presentation)</p>
  !endif
- <p>$desc<p>
+ <div>$desc</div>
 !endif
 
 !if $error!=$empty
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
  </div>
- </p>
+ <p>
  !href module=home $wims_name_back2
-. <p>
+. </p>
  !goto end
 !endif
 
@@ -28,7 +28,7 @@ $wims_institutionname
  $name_empty
 !else
  $table_header
- 
+
  <caption>$name_scoreexam</caption>
   <thead>
    $table_tr
@@ -45,7 +45,7 @@ $wims_institutionname
    $table_tr
     <td>$i</td>
     <td>$ti</td>
-    <td>$we
+    <td>$we</td>
     <td>
       !if $(replied$i)>0
        $(got$i)
@@ -74,7 +74,7 @@ $wims_institutionname
 !else
  !if $timeleft<=0
   $name_timeleft
- 
+
  !endif
  !if $allowtype=simulation
   $name_simulation2
