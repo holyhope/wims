@@ -47,6 +47,9 @@ $code
    !set ld=!line $tt of $parm
    !reset inputsize_tmp
    !distribute item $ld into m_,xy_,inputsize_tmp,css
+   !if $css!=$empty and $tt=1
+     !set codeinputcss=inputstyle $css
+   !endif
    !set xy_=!replace internal x by , in $xy_
    !distribute items $xy_ into x_,y_
    !default inputsize_tmp=$inputsize
@@ -74,7 +77,7 @@ $code
     !set list_$n_=$m__
   !endif
 !next
-
+!default codeinputcss=inputstyle background-color:white;
 !set oef_js_submit=!append word my_canvasdraw(); to $oef_js_submit
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -89,6 +92,7 @@ $code
 </script>
 !set code_=!nonempty lines $bigsizex,$bigsizey\
 $code\
+$codeinputcss\
 $codeinput
 
 !if $q_form=yes
