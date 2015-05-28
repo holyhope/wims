@@ -29,7 +29,9 @@
  !if $oefsteps=$empty or $t$i isitemof $gotsteps
   !read oef/answer$t.phtml
   !! # Here is a whitelist of answer types where color legend must be displayed.
-  !if $(replytype$i) iswordof radio checkbox mark flashcard numeric and ?analyze notin $(replygood$i)
+  !if $(replytype$i) iswordof radio checkbox mark flashcard numeric and ?analyze notin $(replygood$i) \
+     and $wims_isexam<1
+
    !if $(diareply$i)!=good or $(partialgood$i)=yes or $(precreply$i)=yes
     !set display_oeflegend=yes
     !if $(partialgood$i)=yes
