@@ -12,7 +12,7 @@
 !set name_filter= of filter a.h.v. een technische variabele (student eigenschappen)
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
-
+!set wims_name_recover=deleted participant
 
 !if $job iswordof userprop teacher userlist
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
