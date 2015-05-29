@@ -7,12 +7,10 @@
 !set name_studentloc=!nosubst $user_lastname $user_firstname
 !set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
 
-!set name_partdeleted=Verwijderde studenten
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
 !set name_filter= of filter a.h.v. een technische variabele (student eigenschappen)
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
-!set wims_name_recover=deleted participant
 
 !if $job iswordof userprop teacher userlist
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
