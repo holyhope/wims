@@ -15,7 +15,7 @@ $ in $parm
 !set inputsize=!item 2 to -1 of $parm
 !set parm=!line 2 to -1 of $inputsize
 !set inputsize=!line 1 of $inputsize
-
+!set parm=!nonempty lines $parm
 !distribute items $inputsize into bigsize,inputsize,option
 
 !set bigsize=!translate x, to $  $ in $bigsize
@@ -44,6 +44,8 @@ $ in $parm
    !distribute item $ld into m_,xy_,inputsize_tmp,css
    !set xy_=!replace internal x by , in $xy_
    !distribute items $xy_ into x_,y_
+   !set x_=$[round($x_)]
+   !set y_=$[round($y_)]
    !default inputsize_tmp=$inputsize
    !set reply_tmp=!nospace $m_
    !set rep_tmp=!replace internal reply by r in $reply_tmp
@@ -84,7 +86,6 @@ $ in $parm
     !set sizelist=!append line $inputsize_tmp to $sizelist
    !endif
 !next tt
-
 !if $q_form=yes
 $sp_imagecss
 </style>
@@ -130,7 +131,7 @@ $hlist
   !set tt_=!word 1 of $(replygood$tt)
   !if $tt_!=?analyze
     !set cl=$(colorr_$(diareply$tt))
-    !if $(precreply$tt)=yes      
+    !if $(precreply$tt)=yes
       !set cl=color:$(colorr_prec)
     !endif
     !if $(partialgood$tt)=yes
@@ -160,5 +161,5 @@ $hlig
 <img src="$imgurl" style="width:$(bigsizex)px; height:$(bigsizey)px" alt="" />
 </div>
   !endif
- 
+
 !endif
