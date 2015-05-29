@@ -109,13 +109,13 @@ $name_data2<ul>
 !next k
 </li>
 !let list_type=sh,ex,ma,shexo
-!let list_name=$wims_name_sheet,$wims_name_Examen,$name_manualscore,$name_indicateur
+!let list_name=$wims_name_Sheets,$wims_name_Examens,$name_manualscore,$name_indicateur
 !let list_keyword=sheet,exam,manual,sheetexo
 !for t from 1 to 4
     !if $($(list_type[$t]))!=$empty
 	!let tmp=!words2items $($(list_type[$t]))
 	<li>
-	<label><b>$(list_name[$t])</b> : <input type="checkbox" name="csvdownload" id="csvdownload_$(list_keyword[$t])" value="$(list_keyword[$t])s"/><label for="csvdownload_$(list_keyword[$t])">$name_all</label></label>
+	<label><b>$(list_name[$t])</b>: <input type="checkbox" name="csvdownload" id="csvdownload_$(list_keyword[$t])" value="$(list_keyword[$t])s"/><label for="csvdownload_$(list_keyword[$t])">$name_all</label></label>
 	<br>
 	!for k in $tmp
 	    <label><input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label></label>
@@ -131,7 +131,7 @@ $name_data2<ul>
 !next k
 </li>
 !endif
-<li><b>$name_otherkeyword </b>: <input type="text" size="45" name="csvdownload2" value="$csvdownload2" />
+<li><b>$name_otherkeyword</b>: <input type="text" size="45" name="csvdownload2" value="$csvdownload2" />
 </li>
 </ul>
 <input type="submit" value="$wims_name_download" />
