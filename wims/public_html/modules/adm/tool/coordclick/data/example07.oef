@@ -8,19 +8,15 @@ textarea="data"
 :\email{$wims_email}
 :\credits{}
 :$name_instruction
-\text{instruction=$name_instruction11 }
+\text{instruction=$name_instruction07}
+:$name_qu_cnt (<=10):
+\integer{N=4}
+:$name_labelsize
+\text{eti=5}
 :$name_image
 \text{image=$wims_deposit}
-:$name_qu_cnt (<=10)
-\integer{N=4}
-:$name_distractor
-\integer{n=3}
-:$name_labelsize
-\text{eti=150,20}
-:$name_color1
-\text{color=black}
-:$name_help_format1
-\text{format=clickfill}
+:$name_help_format2
+\text{format=nocase}
 
 :$name_data
 $name_help_data
@@ -33,20 +29,17 @@ $name_help_data
 \matrix{coord=\coord}
 \integer{N=min(\N,\N1)}
 \text{etix=\eti[1]}
-\text{etiy=\eti[2]}
+\text{etiy=\eti[2]!=? \eti[2]: 2}
 \text{position=}
 \text{V = shuffle(\N1)}
 \integer{M=max(0,min(\n,\N1-\N))}
 \text{K=\V[1..\N]}
 \text{dessinprelim=copy 0,0,-1,-1,-1,-1,\image}
 \for{k =1 to \N}{
-  \text{dessinprelim=\dessinprelim
-arrow \coord[\K[\k];2],\coord[\K[\k];3],\coord[\K[\k];4],\coord[\K[\k];5],20,\color}
   \text{co=\coord[\K[\k];2,3]}
-  \text{co=\coord[\K[\k];2] < \coord[\K[\k];4] ? pari([\co] - [\etix,\etiy/2]):
-     pari([\co] - [0,\etiy/2])}
+  \text{co=pari([\co] + [-\etix/2,-\etiy/2])}
   \text{position=\position
-r \k,\co[1] x \co[2]}
+reply \k,\co[1] x \co[2]}
 }
 \text{figure = draw(\size
 \dessinprelim)}
@@ -57,7 +50,7 @@ r \k,\co[1] x \co[2]}
 \statement{
 \instruction
 &lt;div class="wimscenter">
-\special{imagefill \figure,\size[1] x \size[2],\etix x \etiy
+\special{imageinput \figure,\size[1] x \size[2],\etix
 \position}
 &lt;/div>
 }
