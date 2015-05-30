@@ -419,18 +419,18 @@ $name_inscription4:
   !default login_wims=$Login
   $name_studentadded
   <span class="tt wims_login">
-  !href module=adm/class/userlist&job=userprop&getuser=$Login $login_wims
+  !href module=adm/class/usermanage&job=userprop&getuser=$Login $login_wims
   </span>.
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
     <p>
     $name_otheractivities
-    !href module=adm/class/userlist&job=transfer&getuser=$login $name_transfer1
+    !href module=adm/class/usermanage&job=transfer&getuser=$login $name_transfer1
     </p>
    !endif
   !endif
-  !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
+  !set wims_menu_items=!append line part_list,1,module=adm/class/usermanage\
  addstudent,1,module=$module&step=1\
  to wims_menu_items
   !goto end
