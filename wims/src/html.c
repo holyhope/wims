@@ -95,9 +95,9 @@ void _form_menus(char *p,int kind)
     if(s!=NULL && *s!=0 && !isspace(*s)) {
       strcpy(input_id,s);
     }
-    else { 
+    else {
       strcpy(input_id,nbuf);
-    }      
+    }
 
     for(i=0;i<itemcnt;i++) {
       if(type==0) {
@@ -105,7 +105,6 @@ void _form_menus(char *p,int kind)
         p0=buf;
       }
       else p0=vlist[i];
-
       if(*find_word_start(p0)==0) continue;
       if(plist[i]==NULL) plist[i]=p0;
       if(*val!=0 &&
@@ -125,7 +124,6 @@ void _form_menus(char *p,int kind)
           html_mode="span";
         }
         snprintf(pfrb, sizeof(pfrb), "<%s class=\"%s\">", html_mode, s);
-        char pfre[256];
         snprintf(pfre, sizeof(pfre), "</%s>", html_mode);
       }
       else { pfrb[0]=0; pfre=""; }
@@ -150,7 +148,7 @@ void _form_menus(char *p,int kind)
          break;
 
         case FORM_BAR:
-         output("<input type=\"radio\" name=\"%s\" id=\"%s\" value=\"%s\"%s/>",
+         output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
              nbuf,input_id,i,p0,pc);
          break;
 
