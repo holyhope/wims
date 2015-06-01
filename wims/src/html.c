@@ -124,6 +124,7 @@ void _form_menus(char *p,int kind)
           html_mode="span";
         }
         snprintf(pfrb, sizeof(pfrb), "<%s class=\"%s\">", html_mode, s);
+        char pfre[256];
         snprintf(pfre, sizeof(pfre), "</%s>", html_mode);
       }
       else { pfrb[0]=0; pfre=""; }
