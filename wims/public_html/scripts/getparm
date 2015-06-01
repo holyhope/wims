@@ -7,11 +7,10 @@
 !set url=$(parmtoread[1])
 !set parmtoread=$(parmtoread[2..-1])
 
-!set testw=!replace internal & by $\
-$ in $url
+!set testw=!replace internal & by ; in $url
 !set testw=!replace internal = by , in $testw
 !for gp in $parmtoread
   !set testw0=!select $testw where column 1=$gp
-  !set get_$gp=!nospace $(testw0[;2..-1])
+  !set get_$gp=!replace internal ; by , in $(testw0[;2..-1])
+  !set get_$gp=!nospace $(get_$gp)
 !next
-
