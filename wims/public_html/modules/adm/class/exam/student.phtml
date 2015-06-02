@@ -93,7 +93,7 @@ $title
 <div class="exam_instructions">
  !if $t_=no
   <p class="examclosed">$name_examclosed</p>
-  !href cmd=reply&job=student $wims_name_refresh
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student to $wims_menu_items
  !else
   <p class="tries">
   !if $stries=1
@@ -133,9 +133,9 @@ $title
     <p class="lasttry">$name_lasttry</p>
    !endif
   !endif
-
+  
   !if $exhausted!=yes
-   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student   \
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
    !if $activeexo<1
