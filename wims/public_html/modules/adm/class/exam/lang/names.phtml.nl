@@ -97,6 +97,7 @@ er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk pogi
 Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle  \
 random (!) sommen opnieuw doen... <br />Weet je zeker dat je er mee wilt stoppen?
 
+!! better to shorten this sentence to e.g. "copy an active exam"
 !set wims_name_cpexam=Kopieer de inhoud van een geactiveerd proefwerk.
 
 !set name_cpexam1=U gaat de inhoud van een ander proefwerk kopieren in dit proefwerk.\
