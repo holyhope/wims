@@ -31,11 +31,10 @@ enum {
  */
 void _form_menus(char *p,int kind)
 {
-    char *n, *li, *pp, *val, *p0, *p1, *p2, *pc, *s, *hmode;
+    char *n, *li, *pp, *val, *p0, *p1, *p2, *pc, *s, *hmode, *name;
     char *vlist[MAX_MENU_ITEMS], *plist[MAX_MENU_ITEMS];
     char nbuf[MAX_LINELEN+1],vbuf[MAX_LINELEN+1],pbuf[MAX_LINELEN+1];
-    char buf[256], pfrb[256], pfre[256];
-    char input_id[128];
+    char buf[256], pfrb[256], pfre[256], input_id[128];
     int i,i1=0,i2,itemcnt,type;
     if(!outputing) return;
     n=find_word_start(p); if(*n==0) return;
@@ -127,29 +126,30 @@ void _form_menus(char *p,int kind)
           snprintf(pfre, sizeof(pfre), "</%s>", hmode);
         }
       }
-
+      switch(kind) {
+        case FORM_RADIO: name="radio"; break;
+        case FORM_CHECKBOX: name="checkbox"; break;
+      }
       switch(kind) {
         case FORM_SELECT:
          output("<option value=\"%s\"%s>%s</option>\n", p0, pc, plist[i]);
          break;
 
         case FORM_RADIO:
-         output("%s<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-             pfrb,nbuf,input_id,i,p0,pc,input_id,i,plist[i],pfre);
-         if(i<itemcnt-1 && itemcnt>2 && (hmode==NULL || *hmode==0)) _output_(",");
-         _output_("\n");
-         break;
-
         case FORM_CHECKBOX:
-         output("%s<input type=\"checkbox\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
-             pfrb,nbuf,input_id,i,p0,pc,input_id,i,plist[i],pfre);
+         if (itemcnt > 2) {
+         output("%s<input type=\"%s\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+             pfrb,name,nbuf,input_id,i+1,p0,pc,input_id,i+1,plist[i],pfre);
+         } else {
+         output("%s<input type=\"%s\" name=\"%s\" id=\"%s\" value=\"%s\"%s/><label for=\"%s\">%s</label>%s",
+             pfrb,name,nbuf,input_id,p0,pc,input_id,plist[i],pfre);
+         }
          if(i<itemcnt-1 && itemcnt>2 && (hmode==NULL || *hmode==0)) _output_(",");
          _output_("\n");
          break;
-
         case FORM_BAR:
          output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
-             nbuf,input_id,i,p0,pc);
+             nbuf,input_id,i+1,p0,pc);
          break;
       }
     }
