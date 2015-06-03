@@ -129,6 +129,7 @@ void _form_menus(char *p,int kind)
       switch(kind) {
         case FORM_RADIO: name="radio"; break;
         case FORM_CHECKBOX: name="checkbox"; break;
+        default: name="";
       }
       switch(kind) {
         case FORM_SELECT:
