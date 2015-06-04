@@ -7,18 +7,18 @@ function speckInit(callback) {
     var tas = document.getElementsByTagName("textarea");
     var found = false;
     for(i=0;i<tas.length;i++) {
-		var ta = tas[i];
-		if (ta.className == "iEdit") {
-		    var editor = new speckEditor();
-		    editor.init(ta, callback);
-		    found = true;
-		}
+        var ta = tas[i];
+        if (ta.className == "iEdit") {
+            var editor = new speckEditor();
+            editor.init(ta, callback);
+            found = true;
+        }
     }
     if (!found) {
         if (callback)
             callback.call();
     }
-	return true;
+    return true;
 };
 
 //Be sure to call speckClose if you are hiding or removing a speck edit
@@ -27,6 +27,22 @@ function speckClose() {
     for(var i in iEdit)
     {
         iEdit[i].iframe.contentWindow.document.designMode = "off";
+    }
+};
+
+/** (re)Opens all specks **/
+function speckOpen() {
+    for(var i in iEdit)
+    {
+        iEdit[i].iframe.contentWindow.document.designMode = "on";
+    }
+};
+
+/** Toggle Html Editor on all specks */
+function speckToggleAll() {
+    for(var i in iEdit)
+    {
+        iEdit[i].toggleMode();
     }
 };
 
@@ -96,40 +112,40 @@ speckEditor.prototype = {
     //Initialize the edit window
     init: function(ta, callback) {
 
-	    this.ta = ta;
+        this.ta = ta;
         this.id = ta.id;
         iEdit[this.id] = this;
 
-	    if (callback)
-	        this.loaded = callback;
+        if (callback)
+            this.loaded = callback;
 
-    	//Get the current width
-    	this.width = this.ta.offsetWidth;
-    	if (this.width == 0)
-        	this.width = parseInt(this.ta.style.width);
+        //Get the current width
+        this.width = this.ta.offsetWidth;
+        if (this.width == 0)
+            this.width = parseInt(this.ta.style.width);
 
         //Get the current height
         this.height = this.ta.offsetHeight;
-    	if (this.height == 0)
-        	this.height = parseInt(this.ta.style.height);
+        if (this.height == 0)
+            this.height = parseInt(this.ta.style.height);
 
         this.ta.style.display = "none";
 
-	    this.container = this.$new("div");
+        this.container = this.$new("div");
 
-	    this.tb = this.$new("div");
-	    this.tb.className = "speckToolbar";
+        this.tb = this.$new("div");
+        this.tb.className = "speckToolbar";
         this.tb.style.width = this.width + "px";
         this.container.appendChild(this.tb);
 
-    	//Add the features
-	    for(var i=0;i<this.features.length;i+=2) {
-	        this.addFeature(this.features[i], this.features[i+1]);
-	    }
+        //Add the features
+        for(var i=0;i<this.features.length;i+=2) {
+            this.addFeature(this.features[i], this.features[i+1]);
+        }
 
         this.ta.style.height = (this.height-32) + "px";
         this.ta.parentNode.replaceChild(this.container, this.ta);
-	    this.container.appendChild(this.ta);
+        this.container.appendChild(this.ta);
 
         this.initEdit();
 
@@ -150,28 +166,28 @@ speckEditor.prototype = {
         content = this.ta.value.replace(/(style|STYLE|Style)=('|").+?('|")/g, function(match){ return match + " save" + match; });
 
         //Write out current content to the iframe window, include edit mode stylesheet
-	    this.iframe.contentWindow.document.open();
-	    //this.iframe.contentWindow.document.write("<html><head><link id='ThemeStyle' href='" + this.editStylePath + "' type='text/css' rel='stylesheet' /></head><body style='background:#fff url();color:#000;'>" + content + "</body></html>");
-	    this.iframe.contentWindow.document.write("<html><head></head><body style='background:#fff url();color:#000;'>" + content + "</body></html>");
-	    this.iframe.contentWindow.document.close();
+        this.iframe.contentWindow.document.open();
+        //this.iframe.contentWindow.document.write("<html><head><link id='ThemeStyle' href='" + this.editStylePath + "' type='text/css' rel='stylesheet' /></head><body style='background:#fff url();color:#000;'>" + content + "</body></html>");
+        this.iframe.contentWindow.document.write("<html><head></head><body style='background:#fff url();color:#000;'>" + content + "</body></html>");
+        this.iframe.contentWindow.document.close();
 
         this.enterDesignMode();
 
-	    return true;
+        return true;
     },
     enterDesignMode: function() {
 
         //Firefox needs a little time for this.
         if (!this.iframe.contentWindow.document.body) {
             var self = this;
-	        setTimeout(function() { self.enterDesignMode(); }, 1);
-	        return;
-	    }
+            setTimeout(function() { self.enterDesignMode(); }, 1);
+            return;
+        }
 
-	    //Turn on design mode
-	    this.iframe.contentWindow.document.designMode = "on";
+        //Turn on design mode
+        this.iframe.contentWindow.document.designMode = "on";
 
-	    this.wysiwyg = true;
+        this.wysiwyg = true;
 
         //call loaded event
         if (this.loaded)
@@ -180,20 +196,20 @@ speckEditor.prototype = {
     addFeature: function(action, text) {
         switch (action) {
             case "formatblock":
-	            this.hBar = this.$new("div");
-	            this.hBar.id = this.id + "Hbar";
+                this.hBar = this.$new("div");
+                this.hBar.id = this.id + "Hbar";
                 this.addBar(this.hBar, "formatblock", this.blockOptions, text);
                 this.container.appendChild(this.hBar);
                 break;
             case "fontname":
-	            this.fBar = this.$new("div");
-	            this.fBar.id = this.id + "Fbar";
+                this.fBar = this.$new("div");
+                this.fBar.id = this.id + "Fbar";
                 this.addBar(this.fBar, "fontname", this.fontOptions, text);
                 this.container.appendChild(this.fBar);
                 break;
             case "fontsize":
-	            this.sBar = this.$new("div");
-	            this.sBar.id = this.id + "Sbar";
+                this.sBar = this.$new("div");
+                this.sBar.id = this.id + "Sbar";
                 this.addBar(this.sBar, "fontsize", this.fontSizes, text);
                 this.container.appendChild(this.sBar);
                 break;
@@ -224,46 +240,46 @@ speckEditor.prototype = {
     },
     addColor: function(action, options, text) {
 
-	    var button = this.getButton(action, text); // this.$new("input");
+        var button = this.getButton(action, text); // this.$new("input");
         var self = this;
         button.onclick = function() { self.showSelect(this); };
 
-	    var bar = this.$new("div");
-	    bar.id = action + "Select";
-	    bar.className = "speckColorBar";
+        var bar = this.$new("div");
+        bar.id = action + "Select";
+        bar.className = "speckColorBar";
         bar.style.width = (this.width - 2) + "px"; //2 is border width
         bar.style.display = "none";
-	    for (var i=0;i<options.length;i++)
-	    {
-		    var option = this.$new("input");
-		    option.val = options[i];
-		    option.type = "button";
-		    option.style.backgroundColor = "#" + option.val;
-		    option.action = action;
-		    option.className = "speckColor";
-    	    option.onclick = function() { self.execCommand(this); };
+        for (var i=0;i<options.length;i++)
+        {
+            var option = this.$new("input");
+            option.val = options[i];
+            option.type = "button";
+            option.style.backgroundColor = "#" + option.val;
+            option.action = action;
+            option.className = "speckColor";
+            option.onclick = function() { self.execCommand(this); };
 
-		    bar.appendChild(option);
-	    }
-	    this.cBar = bar;
+            bar.appendChild(option);
+        }
+        this.cBar = bar;
         button.selectMenuId = bar.id;
         this.tb.appendChild(button);
-	    return true;
+        return true;
     },
     addLinkBar: function(action, text) {
-	    var button = this.getButton(action, text); //this.$new("input");
+        var button = this.getButton(action, text); //this.$new("input");
 
         var self = this;
         button.onclick = function() { self.showSelect(this); };
 
-	    var bar = this.$new("div");
-	    bar.id = action + "linkbar";
-	    bar.className = "speckLinkbar";
+        var bar = this.$new("div");
+        bar.id = action + "linkbar";
+        bar.className = "speckLinkbar";
         bar.style.width = (this.width-2) + "px"; //2 is border width
         bar.style.display = "none";
 
-	    this.linkUrl = this.$new("input");
-	    this.linkUrl.id = this.id + "link";
+        this.linkUrl = this.$new("input");
+        this.linkUrl.id = this.id + "link";
         this.linkUrl.style.width = (this.width - 60) + "px";
         this.linkUrl.value = "http://";
 
@@ -277,36 +293,36 @@ speckEditor.prototype = {
         bar.appendChild(this.linkUrl);
         bar.appendChild(link);
 
-	    this.lBar = bar;
+        this.lBar = bar;
         button.selectMenuId = bar.id;
         this.tb.appendChild(button);
-	    return true;
+        return true;
     },
     addBar: function(bar, action, options, text) {
-	    var button = this.getButton(action, text); //this.$new("input");
+        var button = this.getButton(action, text); //this.$new("input");
         var self = this;
         button.onclick = function() { self.showSelect(this); };
 
-	    bar.className = "speckBar";
+        bar.className = "speckBar";
         bar.style.width = (this.width-2) + "px";
         bar.style.display = "none";
 
-  	    for (var i=0;i<options.length;i+=2)
-	    {
-		    var option = this.$new("input");
-		    option.val = options[i];
-		    option.value = options[i + 1];
-		    option.type = "button";
-		    option.action = action;
-		    option.editor = this.id;
-		    option.className = "speckOption";
-    	    option.onclick = function() { self.execCommand(this) };
+        for (var i=0;i<options.length;i+=2)
+        {
+            var option = this.$new("input");
+            option.val = options[i];
+            option.value = options[i + 1];
+            option.type = "button";
+            option.action = action;
+            option.editor = this.id;
+            option.className = "speckOption";
+            option.onclick = function() { self.execCommand(this) };
 
-		    bar.appendChild(option);
-	    }
+            bar.appendChild(option);
+        }
         button.selectMenuId = bar.id;
         this.tb.appendChild(button);
-	    return true;
+        return true;
     },
     hideSelects: function() {
         var buttons = this.tb.childNodes;
@@ -322,14 +338,14 @@ speckEditor.prototype = {
         this.ta.style.height = (this.height-32) + "px";
     },
     addLinkbar: function() {
-	    this.lBar = this.$new("div");
-	    this.lBar.id = this.id + "linkbar";
-	    this.lBar.className = "speckLinkbar";
+        this.lBar = this.$new("div");
+        this.lBar.id = this.id + "linkbar";
+        this.lBar.className = "speckLinkbar";
         this.lBar.style.width = this.width-10 + "px";
         this.lBar.style.display = "none";
 
-	    this.linkUrl = this.$new("input");
-	    this.linkUrl.id = this.id + "link";
+        this.linkUrl = this.$new("input");
+        this.linkUrl.id = this.id + "link";
         this.linkUrl.style.width = (this.width - 60) + "px";
         this.linkUrl.value = "http://";
 
@@ -353,10 +369,10 @@ speckEditor.prototype = {
         }
     },
     setFocus: function() {
-	    if (this.wysiwyg == true)
-		    this.iframe.contentWindow.focus();
-	    else
-		    this.ta.focus();
+        if (this.wysiwyg == true)
+            this.iframe.contentWindow.focus();
+        else
+            this.ta.focus();
     },
     toggleMode: function() {
         this.hideSelects();
@@ -368,7 +384,24 @@ speckEditor.prototype = {
         }
         else {
             this.ta.style.display = "none";
-    	    this.initEdit(this.ta.value);
+            this.initEdit(this.ta.value);
+            this.wysiwyg = true;
+        }
+    },
+    disable: function() {
+        this.hideSelects();
+        if (this.wysiwyg) {
+            this.html(); //update html
+            this.ta.style.display = "block";
+            this.iframe.style.display = "none";
+            this.wysiwyg = false;
+        }
+    },
+    enable: function() {
+        this.hideSelects();
+        if (!this.wysiwyg) {
+            this.ta.style.display = "none";
+            this.initEdit(this.ta.value);
             this.wysiwyg = true;
         }
     },
@@ -395,18 +428,18 @@ speckEditor.prototype = {
 
         var doc = this.iframe.contentWindow.document;
 
-	    switch (button.action) {
-		    case "createlink":
-		        if (this.linkUrl.value != "") {
+        switch (button.action) {
+            case "createlink":
+                if (this.linkUrl.value != "") {
                     doc.execCommand(button.action, false, this.linkUrl.value);
                     this.toggleLinkbar();
                 }
                 break;
-		    case "formatblock":
-		    case "fontsize":
-		    case "forecolor":
-		    case "fontname":
-		        doc.execCommand(button.action, false, button.val);
+            case "formatblock":
+            case "fontsize":
+            case "forecolor":
+            case "fontname":
+                doc.execCommand(button.action, false, button.val);
                 break;
             case "link":
                 this.toggleLinkbar();
@@ -414,8 +447,8 @@ speckEditor.prototype = {
             case "html":
                 this.toggleMode();
                 break;
-		    default:
-		        doc.execCommand(button.action, false, null);
+            default:
+                doc.execCommand(button.action, false, null);
                 break;
         }
 

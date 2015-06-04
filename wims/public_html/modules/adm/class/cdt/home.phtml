@@ -5,19 +5,20 @@ $wims_institutionname
 $classname\
 $cdt_title
 
-!if $cdt_description!=$empty
- <br />$cdt_description<br />
-!endif
+<div class="wims_content">
+  !if $cdt_description!=$empty
+   <p>$cdt_description</p>
+  !endif
 
-<hr style="width:40%;" />
+  <hr style="width:40%;" />
 
-!if $error!=$empty
- <div class="wims_alertmsg">
- !read lang/msg.phtml.$moduclass_lang
- </div>
-!endif
+  !if $error!=$empty
+    <div class="wims_alertmsg">
+      !read lang/msg.phtml.$moduclass_lang
+    </div>
+  !endif
 
-!read form.phtml
+  !read form.phtml
+</div>
 
 !tail
-

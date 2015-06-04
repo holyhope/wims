@@ -1,25 +1,36 @@
 !set list_activities=$wims_name_Sheet,$wims_name_Examen,$wims_name_doc
 !set list_activities_js=!replace internal ' by \' in $list_activities
 <script type="text/javascript">
+  var iEdit=window.opener.iEdit;
   function addsheet(num,msg){
+    iEdit['$cible'].disable();
     var ta1=window.opener.document.getElementById('$cible');
     ta1.value=ta1.value+' $(list_activities_js[1]) n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
+    iEdit['$cible'].enable();
   }
   function addexam(num,msg){
+    iEdit['$cible'].disable();
     var ta1=window.opener.document.getElementById('$cible');
     ta1.value=ta1.value+' $(list_activities_js[2]) n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fclass%2Fexam&+exam='+num+'}{'+msg+'}';
+    iEdit['$cible'].enable();
   }
   function addfile(msg){
+    iEdit['$cible'].disable();
     var ta1=window.opener.document.getElementById('$cible');
     ta1.value=ta1.value+'\\href{'+msg+'}{'+msg+'}';
+    iEdit['$cible'].enable();
   }
   function adddoc(num,msg){
+    iEdit['$cible'].disable();
     var ta1=window.opener.document.getElementById('$cible');
     ta1.value=ta1.value+' $(list_activities_js[3]) : \\exercise{module=adm%2Fdoc&+job=read&+doc='+num+'}{'+msg+'}';
- }
- function addpdoc(num,msg){
+    iEdit['$cible'].enable();
+  }
+  function addpdoc(num,msg){
+    iEdit['$cible'].disable();
     var ta1=window.opener.document.getElementById('$cible');
     ta1.value=ta1.value+' $(list_activities_js[3]) : \\exercise{module='+num+'}{'+msg+'}';
+    iEdit['$cible'].enable();
   }
 </script>
 !read lang/names.phtml.$moduclass_lang
@@ -53,19 +64,20 @@
   !next i
  </p>
 !endif
+
 !if  $nbdocs+ $nbpdocs >0
 <p>
  $wims_name_Docs:<br />
- !if $nbdocs > 0
+  !if $nbdocs > 0
    !for i=1 to $nbdocs
      !set title_js=!replace internal ' by \' in $(doc_titles[$i])
      !if $title_js!=
    <a href="javascript:adddoc('$(doc_nums[$i])','$title_js');">$(doc_titles[$i])</a> ; &nbsp;
      !endif
    !next i
- !endif
+  !endif
 
-!if $nbpdocs > 0
+ !if $nbpdocs > 0
   !for i=1 to $nbpdocs
     !set title_js=!replace internal ' by \' in $(pdoc_titles[$i])
     !if $title_js!=
