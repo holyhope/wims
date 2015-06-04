@@ -26,9 +26,9 @@ else
 fi
 
 cd $module_dir
-
+if [ "$2" ]; then candidates="$2" ; else
 candidates=`find [A-Zlc]* -name src -type d | sed 's!/src$!!'`
-
+fi
 srctotal=0
 deftotal=0
 for d in $candidates
@@ -43,6 +43,7 @@ do
  if [ "$1" = "test" ]; then
   rm -rf def.orig
   cp -r def def.orig
+  rm -f def/*.def 2>/dev/null
  fi
  src2def >/dev/null 2>&1
  defcnt=`ls def/*.def 2>/dev/null | grep -c '\.def$'`
