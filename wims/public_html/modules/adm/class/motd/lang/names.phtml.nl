@@ -1,6 +1,8 @@
 !set lang_exists=yes
 
 !set name_title=Klas mededeling
+!set name_nomessage=No message defined
+!set name_clicktocreate=Click on "modify" to set one
 !set name_confirm=Verwijderen ?
 !set name_erase1=Verwijder deze algemene mededeling
 !set name_erase2=Verwijder deze persoonlijke mededeling
@@ -11,6 +13,7 @@
 !set name_write=Schrijf de mededeling (hyperlinks en html-tags zijn toegestaan)
 !set name_otherstudent=Het bericht is ook bedoeld voor de volgende leeringen
 !set name_reactive=Reactiveren
+!set name_listusermotd=Personnal messages, by student
 !set name_actualmotd=De actuele mededeling
 
 !set name_participant=Student
@@ -35,6 +38,8 @@ alle studenten de klas.
 !set name_usermultisession=Meerdere sessies op in deze klas
 
 !set name_filter=Selecteer aan de hand van een technische variabele (student gegevens)
+!set name_technical_var=Technical Variable
+
 !set name_aloneaction=Individuele aktie
 !set name_grpaction=Aktie voor geselecteerde studenten)
 !set name_erase=Wissen

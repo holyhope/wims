@@ -6,18 +6,18 @@ $wims_institutionname
 !read js/speckedit.phtml name_deposit
 !header1
 
-
 !read adm/title.phtml 1\
 $classname\
 $name_title
 
+<div class="wims_content">
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$moduclass_lang
+   !read lang/msg.phtml.$moduclass_lang
  </div>
  <p>
- !href module=home $wims_name_class_home
-. </p>
+   !href module=home $wims_name_class_home
+.</p>
  !goto end
 !endif
 
@@ -26,75 +26,105 @@ $name_title
  !goto end
 !endif
 
-$name_Intro
-!href style=student $name_home
-.
-<br />
+<p>
+  $name_Intro
+  !href style=student $name_home
+.</p>
 
-<fieldset class="property_fields halfwidth blockcenter">
- <legend>$name_commun</legend>
- <textarea disabled="disabled" cols="70" rows="9">
-  !record 0 of wimshome/log/classes/$wims_class/.motd
- </textarea>
-  <br/>
-  !set wims_ref_class=wims_button
-    !href cmd=reply&job=modif&user=.CLASS. $wims_name_change
-    &nbsp;
-  !set wims_ref_class=wims_button wims_warning
-    !href cmd=reply&job=delete&user=.CLASS. $wims_name_erase
+<fieldset class="property_fields blockcenter">
+  <legend>$name_commun</legend>
+  <div class="field box">
+    !set motd=!record 0 of wimshome/log/classes/$wims_class/.motd
+    !if $motd=$empty
+      <div style="padding:.5em;background-color:#DFDFDF;color:#444;">
+        <em>$name_nomessage.<br/>
+        $name_clicktocreate.</em>
+      </div>
+    !else
+      <div style="padding:.5em;background-color:white;">
+        $motd
+      </div>
+    !endif
+
+    <div class="wimscenter">
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=modif&user=.CLASS. $wims_name_change
+      &nbsp;
+      !set wims_ref_class=wims_button wims_warning
+      !href cmd=reply&job=delete&user=.CLASS. $wims_name_erase
+    </div>
+  </div>
 </fieldset>
 
-$name_motd
-!reset table_center
 !form reply
-
-<fieldset class="property_fields halfwidth blockcenter">
+<fieldset class="property_fields blockcenter">
  <legend>$name_grpaction</legend>
- $name_expert0
- <p>
-  !set listuser=__CHECK__
-  !set wims_ref_class=wims_formradio
-  !formradio listuser list __ALL__ prompt $name_all
- </p>
- <p>
-  !set wims_ref_class=wims_formradio
-  !formradio listuser list __CHECK__ prompt $name_checked
- </p>
- <p>
-  !set wims_ref_class=wims_formradio
-  !formradio listuser list __FILTER__ prompt $name_filter
-   !set wims_ref_class=wims_button_help float_right
- !href cmd=help&special_parm=filter $wims_name_help
-  <br/>
-  <textarea name="varfilter">$varfilter</textarea>
- </p>
+ <p>$name_expert0</p>
+  <div class="field box">
 
- <div class="field box">
-  <input type=hidden name="job" value="groupe">
+    <ul>
+      !set wims_html_mode= li
+      !set wims_ref_class=wims_formradio
+      !set wims_ref_id=motd_type
+      !set listuser=__CHECK__,__ALL__,__FILTER__
+      !set listuserchoices=$name_all,$name_checked,$name_filter
+      !formradio listuser list $listuser prompt $listuserchoices
+    </ul>
+    <div style="margin-left:4.5em;" id="tech_var">
+      !set wims_ref_class=wims_button_help float_right
+      !href cmd=help&special_parm=filter $wims_name_help
+      <label for="varfilter">$name_technical_var:</label>
+      <textarea name="varfilter" id="varfilter">$varfilter</textarea>
+    </div>
+
+    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
+    !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/ jQuery(function(jq) {
+          jq( "#tech_var" ).hide();
+          jq( "#motd_type3" ).click(function() {
+            jq( "#tech_var" ).slideDown();
+          });
+          jq( "#motd_type1, #motd_type2" ).click(function() {
+            jq( "#tech_var" ).slideUp();
+          });
+        }); /*]]>*/
+      </script>
+    !endif
+
+  </div>
+
+ <div class="wimscenter">
+  <input type="hidden" name="job" value="groupe">
   <input type="submit" name="action" value="$name_reactive" $wims_on_click/>
   <input type="submit" name="action" value="$name_change" $wims_on_click/>
-  <input type="submit" name="action" value="$name_erase" $wims_on_click/>
+  <input type="submit" name="action" value="$name_erase" class="wims_warning" $wims_on_click/>
   !if $wims_numpartconnected>0
-      <input type="submit" name="action" value="$name_walertmsg" $wims_on_click/>
+    <input type="submit" name="action" value="$name_walertmsg" $wims_on_click/>
   !endif
  </div>
 </fieldset>
+
 $table_header
- $table_hdtr
-  <th>Select</th>
-  <th>$name_participant</th>
-  <th style="width:50%">$name_actualmotd</th>
-  <th>$wims_name_Status</th>
-  <th>$name_alertmsg</th>
-  <th>$name_aloneaction</th>
- </tr>
+  <caption>$name_listusermotd</caption>
+  <thead>
+    $table_hdtr
+      <th>Select</th>
+      <th>$name_participant</th>
+      <th style="width:50%">$name_actualmotd</th>
+      <th>$wims_name_Status</th>
+      <th>$name_alertmsg</th>
+      <th>$name_aloneaction</th>
+    </tr>
+  </thead>
+  <tbody>
  !set listuser=$listuser
  !for k=1 to $nbuser
   $table_tr
    !let u=$(listiduser[$k])
    <td> <input type="checkbox" name="listuser" id="listuser$k" value="$u"/> <label for="listuser$k"></label> </td>
    <td>
-    $(listnameuser[$k])
+    <label for="listuser$k">$(listnameuser[$k])</label>
     !if $u isitemof $wims_connectedlogin
      <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
     !endif
@@ -136,6 +166,7 @@ $table_header
    </td>
   </tr>
  !next k
+ </tbody>
 $table_end
 !formend
 :end
@@ -144,6 +175,6 @@ $table_end
   !set wims_menu_items=!append line back2,1,cmd=reply\
  to $wims_menu_items
 !endif
-
+</div>
 !tail
 !reset job

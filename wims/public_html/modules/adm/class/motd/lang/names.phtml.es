@@ -1,6 +1,8 @@
 !set lang_exists=yes
 
 !set name_title=Mensaje del día
+!set name_nomessage=No message defined
+!set name_clicktocreate=Click on "modify" to set one
 !set name_confirm=Confirme la destrucción ?
 !set name_erase1=Borrar el mensaje de la clase
 !set name_erase2=Borrar el mensaje personal de
@@ -11,6 +13,7 @@
 !set name_write=Escribir el mensaje (vínculos y tags HTML se admite)
 !set name_otherstudent=El mensaje se referirá también a los alumnos siguientes
 !set name_reactive=Reactivar
+!set name_listusermotd=Personnal messages, by student
 !set name_actualmotd=Mensaje actual
 
 !set name_participant=Alumno
@@ -35,6 +38,8 @@ a todos los participantes de la clase, que se mostrará en
 !set name_usermultisession=Plusieurs sessions ouvertes
 
 !set name_filter=Filter according to a technical variable (student properties)
+!set name_technical_var=Technical Variable
+
 !set name_aloneaction=Action unique
 !set name_grpaction=Action commune sur le message personnel des élèves sélectionnés
 !set name_erase=Effacer
