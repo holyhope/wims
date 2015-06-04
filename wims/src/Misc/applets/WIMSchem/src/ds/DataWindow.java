@@ -1,10 +1,10 @@
 /*
     Sketch Elements: Chemistry molecular diagram drawing tool.
-    
+
     (c) 2008 Dr. Alex M. Clark
-    
+
     Released as GNUware, under the Gnu Public License (GPL)
-    
+
     See www.gnu.org for details.
 */
 
@@ -38,16 +38,16 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     DataSheetCache cache=null;
     DataTableModel model=null;
     JTable table=null;
-    
+
     ImageIcon mainIcon=null,mainLogo=null;
 
     int unitRowHeight,curRowMag;
-    
-    public DataWindow(String LoadFN) 
+
+    public DataWindow(String LoadFN)
     {
     	super("WIMSchem DataSheet");
 
-	JFrame.setDefaultLookAndFeelDecorated(false); 
+	JFrame.setDefaultLookAndFeelDecorated(false);
 	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 	mainIcon=new ImageIcon(getClass().getResource("/images/MainIcon.png"));
@@ -56,12 +56,12 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	setIconImage(mainIcon.getImage());
 
     	filename=LoadFN;
-	if (filename==null) 
+	if (filename==null)
 	{
 	    ds=new DataSheet();
 	    cache=new DataSheetCache();
 	    ds.appendColumn("Molecule",DataSheet.COLTYPE_MOLECULE,"Molecular structure");
-	} 
+	}
 	else loadDataSheet(filename);
 
 	setLayout(new BorderLayout());
@@ -72,7 +72,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	model=new DataTableModel(ds,cache,this);
 	table=new JTable(model)
 	{
-      	    protected boolean processKeyBinding(KeyStroke ks,KeyEvent e,int condition,boolean pressed) 
+      	    protected boolean processKeyBinding(KeyStroke ks,KeyEvent e,int condition,boolean pressed)
 	    {
 	    	if (ks.getKeyCode()==KeyEvent.VK_ESCAPE) return false;
             	if ((e.getModifiersEx() & e.ALT_DOWN_MASK) != 0) return false;
@@ -88,15 +88,15 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	table.addKeyListener(this);
     	table.setTransferHandler(new TransferTableData(table,model));
-		
+
 	unitRowHeight=table.getRowHeight();
 	updateRowHeight(2);
 
     	add(menubar,BorderLayout.NORTH);
 	add(new JScrollPane(table),BorderLayout.CENTER);
-	
+
 	pack();
-	
+
 	addWindowListener(this);
     }
 
@@ -128,17 +128,17 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    }
 	    cache=new DataSheetCache();
 	}
-	catch (IOException e) 
+	catch (IOException e)
 	{
 	    e.printStackTrace();
 	    JOptionPane.showMessageDialog(null,e.toString(),"Open Failed",JOptionPane.ERROR_MESSAGE);
 	}
-	finally 
+	finally
 	{
 	    try {if (istr!=null) istr.close();} catch (IOException e) {}
 	}
 
-	if (newDS==null) 
+	if (newDS==null)
 	{
 	    ds=new DataSheet(); // blank
 	    replaceTitle();
@@ -147,19 +147,19 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 
 	ds=newDS;
 	setFilename(FN);
-	
+
 	if (model!=null)
 	{
 	    model.setDataSheet(ds,cache);
 	    model.fireTableStructureChanged();
 	}
     }
-    
+
     // assembles the menu items, with appropriate context
     private void createMenuBar()
     {
     	boolean allKeys=true;
-    	
+
     	JMenu menufile=new JMenu("File");
 	menufile.setMnemonic(KeyEvent.VK_F);
 	menufile.add(menuItem("New",KeyEvent.VK_N,null,key('N',InputEvent.CTRL_MASK,allKeys)));
@@ -190,7 +190,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	menuedit.addSeparator();
 	menuedit.add(menuItem("Sheet Summary",KeyEvent.VK_S));
 	menuedit.add(menuItem("Edit Columns",KeyEvent.VK_C));
-	
+
 	JMenu menuview=new JMenu("View");
 	menuview.setMnemonic(KeyEvent.VK_V);
 	menuview.add(menuItem("Single Line",KeyEvent.VK_L,null,key('1',InputEvent.CTRL_MASK,allKeys)));
@@ -209,7 +209,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	menubar.add(Box.createHorizontalGlue());
 	menubar.add(menuhelp);
     }
-    
+
     private KeyStroke key(char key, int mods, boolean really) {return really ? KeyStroke.getKeyStroke(key,mods) : null;}
     private KeyStroke key(int key, int mods, boolean really) {return really ? KeyStroke.getKeyStroke(key,mods) : null;}
 
@@ -239,13 +239,13 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	curRowMag=Mag;
 	table.setRowHeight(unitRowHeight*(curRowMag==2 ? 3 : curRowMag==3 ? 6 : curRowMag==4 ? 12 : 1));
     }
-    
+
     private void setFilename(String FN)
     {
     	filename=FN;
 	replaceTitle();
     }
-    
+
     public void replaceTitle()
     {
 	String title="WIMSchem DataSheet";
@@ -254,7 +254,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	if (ds!=null && ds.getTitle().length()>0) title+=":"+ds.getTitle();
 	setTitle(title);
     }
-    
+
     private void saveCurrent()
     {
     	if (filename==null) return;
@@ -268,7 +268,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
 	catch (IOException e)
 	{
-	    Utils.errmsg("Save Failed",e.toString());
+	    Util.errmsg("Save Failed",e.toString());
 	}
     }
 
@@ -297,17 +297,17 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
     	dispose();
     }
-    
+
     private void fileNew()
     {
 	new DataWindow(null).setVisible(true);
     }
-    
+
     private void fileNewMolecule()
     {
     	new MainWindow(null,false).setVisible(true);
     }
-    
+
     private void fileOpen()
     {
 	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
@@ -317,19 +317,19 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	// !! chooser.setAccessory(new FileMolPreview(chooser));
 	if (chooser.showOpenDialog(this)!=JFileChooser.APPROVE_OPTION) return;
 	String newfn=chooser.getSelectedFile().getPath();
-	
+
 	if (ds.numRows()==0 && !ds.isDirty())
 	    loadDataSheet(newfn); // replace blank with new thing
-	else 
+	else
     	    new DataWindow(newfn).setVisible(true); // pop up a new window
     }
-    
+
     private void fileSave()
     {
     	if (filename==null) {fileSaveAs(); return;}
 	saveCurrent();
     }
-    
+
     private void fileSaveAs()
     {
 	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
@@ -337,33 +337,10 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	chooser.setFileFilter(new FileExtFilter("WIMSchem DataSheets",".xml"));
 	if (chooser.showSaveDialog(this)!=JFileChooser.APPROVE_OPTION) return;
-    
+
     	String fn=chooser.getSelectedFile().getPath();
 	if (chooser.getSelectedFile().getName().indexOf('.')<0) fn=fn+".xml";
-    
-    	File newf=new File(fn);
-    	if (newf.exists())
-	{
-    	    if (JOptionPane.showConfirmDialog(null,
-		"Overwrite existing file ["+newf.getName()+"]?","Save As",
-		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
-	}    	
-    
-    	setFilename(fn);
-	saveCurrent();
-    }
-    
-    private void fileExportSDF()
-    {
-	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
-	chooser.setDragEnabled(false);
-	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-	chooser.setFileFilter(new FileExtFilter("MDL SD files",".sdf"));
-	if (chooser.showSaveDialog(this)!=JFileChooser.APPROVE_OPTION) return;
-    
-    	String fn=chooser.getSelectedFile().getPath();
-	if (chooser.getSelectedFile().getName().indexOf('.')<0) fn=fn+".sdf";
-    
+
     	File newf=new File(fn);
     	if (newf.exists())
 	{
@@ -371,9 +348,32 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 		"Overwrite existing file ["+newf.getName()+"]?","Save As",
 		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
 	}
-	
+
+    	setFilename(fn);
+	saveCurrent();
+    }
+
+    private void fileExportSDF()
+    {
+	JFileChooser chooser=new JFileChooser(System.getenv().get("PWD"));
+	chooser.setDragEnabled(false);
+	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	chooser.setFileFilter(new FileExtFilter("MDL SD files",".sdf"));
+	if (chooser.showSaveDialog(this)!=JFileChooser.APPROVE_OPTION) return;
+
+    	String fn=chooser.getSelectedFile().getPath();
+	if (chooser.getSelectedFile().getName().indexOf('.')<0) fn=fn+".sdf";
+
+    	File newf=new File(fn);
+    	if (newf.exists())
+	{
+    	    if (JOptionPane.showConfirmDialog(null,
+		"Overwrite existing file ["+newf.getName()+"]?","Save As",
+		JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
+	}
+
 	// !! perhaps a warning if there are multiple molecule fields?
-	
+
 	try
 	{
 	    FileOutputStream ostr=new FileOutputStream(fn);
@@ -382,7 +382,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
 	catch (IOException e)
 	{
-	    Utils.errmsg("Export Failed",e.toString());
+	    Util.errmsg("Export Failed",e.toString());
 	}
     }
 
@@ -401,7 +401,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	model.setDataSheet(ds,cache);
 	if (colmod) model.fireTableStructureChanged(); else model.fireTableDataChanged();
     }
-    
+
     private void editRedo()
     {
     	if (!cache.canRedo()) return;
@@ -409,7 +409,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	DataSheet newds=cache.performRedo(ds);
 	boolean colmod=!sameColumns(ds,newds);
 	ds=newds;
-	
+
 	ds.setDirty();
 	replaceTitle();
 	model.setDataSheet(ds,cache);
@@ -420,9 +420,9 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     {
     	DialogEditSummary edsumm=new DialogEditSummary(this,ds);
 	if (!edsumm.execute()) return;
-	
+
 	if (edsumm.resultTitle().equals(ds.getTitle()) && edsumm.resultDescr().equals(ds.getDescription())) return;
-	
+
     	ds.setTitle(edsumm.resultTitle());
 	ds.setDescription(edsumm.resultDescr());
 	ds.setDirty();
@@ -433,14 +433,14 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     {
     	DialogEditColumns edcols=new DialogEditColumns(this,ds);
 	if (!edcols.execute()) return;
-	
+
 	modifyColumns(edcols.resultOldPos(),edcols.resultNewPos(),edcols.resultName(),edcols.resultType(),edcols.resultDescr());
 
 	model.fireTableStructureChanged();
 	ds.setDirty();
 	replaceTitle();
     }
-    
+
     private void addRow()
     {
     	cache.cacheUndo(ds);
@@ -450,11 +450,11 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 
     	// !! currently, the INSERT key initiates an edit event...
 	table.changeSelection(ds.numRows()-1,selcol<0 ? 0 : selcol,false,false);
-	
+
     	ds.setDirty();
 	replaceTitle();
     }
-    
+
     private void deleteRows()
     {
     	if (table.getSelectedRowCount()==0) return;
@@ -475,7 +475,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	if (table.getSelectedRowCount()==0 || ds.numCols()==0) return;
 	int[] rows=table.getSelectedRows(); // (is sorted)
 	if (rows[0]==0) return; // if selected the top one, nop
-	
+
     	cache.cacheUndo(ds);
 
     	for (int n=0;n<rows.length;n++) ds.moveRowUp(rows[n]);
@@ -483,17 +483,17 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	model.fireTableChanged(new TableModelEvent(model));
 	for (int n=0;n<rows.length;n++) table.changeSelection(rows[n]-1,0,n!=0,false);
 	table.setColumnSelectionInterval(0,ds.numCols()-1);
-	
+
     	ds.setDirty();
-    	replaceTitle();	
+    	replaceTitle();
     }
-    
+
     private void moveRowsDown()
     {
     	if (table.getSelectedRowCount()==0 || ds.numCols()==0) return;
 	int[] rows=table.getSelectedRows(); // (is sorted)
 	if (rows[rows.length-1]==ds.numRows()-1) return; // if selected the bottom one, nop
-	
+
     	cache.cacheUndo(ds);
 
     	for (int n=rows.length-1;n>=0;n--) ds.moveRowDown(rows[n]);
@@ -503,16 +503,16 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	table.setColumnSelectionInterval(0,ds.numCols()-1);
 
     	ds.setDirty();
-    	replaceTitle();	
+    	replaceTitle();
     }
 
     private void copyRows()
     {
     	if (table.getSelectedRowCount()==0) return;
     	int[] rn=table.getSelectedRows();
-    
+
     	DataSheet copy=new DataSheet();
-	for (int n=0;n<ds.numCols();n++) 
+	for (int n=0;n<ds.numCols();n++)
 	{
 	    copy.appendColumn(ds.colName(n),ds.colType(n),ds.colDescr(n));
 	}
@@ -521,7 +521,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    copy.appendRow();
 	    for (int j=0;j<ds.numCols();j++) copy.setObject(i,j,ds.getObject(rn[i],j));
 	}
-	
+
 	StringWriter sw=new StringWriter();
 	try
 	{
@@ -535,17 +535,17 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    JOptionPane.showMessageDialog(null,e.toString(),"Copy Failed",JOptionPane.ERROR_MESSAGE);
 	}
     }
-    
+
     private void cutRows()
     {
     	copyRows();
 	deleteRows();
     }
-    
+
     private void pasteRows()
     {
     	String cliptext="";
-    
+
     	try
 	{
     	    Clipboard clip=Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -553,11 +553,11 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    if (contents!=null && contents.isDataFlavorSupported(DataFlavor.stringFlavor))
 		cliptext=(String)contents.getTransferData(DataFlavor.stringFlavor);
 	}
-	catch (UnsupportedFlavorException e) 
+	catch (UnsupportedFlavorException e)
 	{
     	    JOptionPane.showMessageDialog(null,e.toString(),"Clipboard Read Failed",JOptionPane.ERROR_MESSAGE);
 	}
-	catch (IOException e) 
+	catch (IOException e)
 	{
     	    JOptionPane.showMessageDialog(null,e.toString(),"Paste Failed",JOptionPane.ERROR_MESSAGE);
 	}
@@ -572,15 +572,15 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	}
 	catch (IOException e) {e.printStackTrace(); return;}
 
-    	if (paste==null) 
+    	if (paste==null)
 	{
 	    JOptionPane.showMessageDialog(null,
 	    	"Unknown format: must be DataSheet XML or MDL SDF","Paste Failed",JOptionPane.ERROR_MESSAGE);
 	    return;
 	}
-	
+
     	cache.cacheUndo(ds);
-	
+
 	// handle columns first: find mapping index for each, based on name
 	int[] newcolpos=new int[paste.numCols()];
 	for (int i=0;i<paste.numCols();i++)
@@ -589,7 +589,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    for (int j=0;j<ds.numCols();j++) if (ds.colName(j).compareTo(paste.colName(i))==0) {newcolpos[i]=j; break;}
 	    if (newcolpos[i]<0) newcolpos[i]=ds.appendColumn(paste.colName(i),paste.colType(i),paste.colDescr(i));
 	}
-	
+
 	// now paste the new rows
 	for (int i=0;i<paste.numRows();i++)
 	{
@@ -599,26 +599,26 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    	int cn=newcolpos[j];
 		int ptype=paste.colType(j),dtype=ds.colType(j);
 		String strval="";
-		
+
 		if (ptype==DataSheet.COLTYPE_MOLECULE && dtype==DataSheet.COLTYPE_MOLECULE)
 		{
 		    ds.setMolecule(rn,cn,paste.getMolecule(i,j));
 		}
 		else if (ptype==DataSheet.COLTYPE_MOLECULE || dtype==DataSheet.COLTYPE_MOLECULE) {} // not possible
-		else 
+		else
 	    	{
 		    String val="";
 		    if (ptype==DataSheet.COLTYPE_STRING) val=paste.getString(i,j);
 		    else if (ptype==DataSheet.COLTYPE_INTEGER) val=String.valueOf(paste.getInteger(i,j));
 		    else if (ptype==DataSheet.COLTYPE_REAL) val=String.valueOf(paste.getReal(i,j));
 		    else if (ptype==DataSheet.COLTYPE_BOOLEAN) val=paste.getBoolean(i,j) ? "true" : "false";
-		    
+
 		    try
 		    {
 	    		if (dtype==DataSheet.COLTYPE_STRING) ds.setString(rn,cn,val);
 			else if (dtype==DataSheet.COLTYPE_INTEGER) ds.setInteger(rn,cn,new Integer(val).intValue());
 			else if (dtype==DataSheet.COLTYPE_REAL) ds.setReal(rn,cn,new Double(val).doubleValue());
-			else if (dtype==DataSheet.COLTYPE_BOOLEAN) 
+			else if (dtype==DataSheet.COLTYPE_BOOLEAN)
 			    ds.setBoolean(rn,cn,val.toLowerCase().compareTo("true")==0 ? true : false);
 		    }
 		    catch (NumberFormatException e) {} // stays null
@@ -644,13 +644,13 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     private void modifyColumns(int[] OldPos,int[] NewPos,String[] Name,int[] Type,String[] Descr)
     {
     	int sz=OldPos.length;
-	
+
 	// delete those which need to be chopped out
     	for (int n=0;n<sz;n++) if (NewPos[n]<0)
 	{
 	    ds.deleteColumn(OldPos[n]);
 	    for (int i=0;i<sz;i++) if (OldPos[i]>OldPos[n]) OldPos[i]--;
-	    for (int i=n;i<sz-1;i++) 
+	    for (int i=n;i<sz-1;i++)
 	    {
 	    	OldPos[i]=OldPos[i+1];
 		NewPos[i]=NewPos[i+1];
@@ -661,20 +661,20 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    n--;
 	    sz--;
 	}
-	
+
 	// add the new ones
 	for (int n=0;n<sz;n++) if (OldPos[n]<0)
 	{
 	    OldPos[n]=ds.appendColumn(Name[n],Type[n],Descr[n]);
 	}
-	
+
 	// modify any existing content
 	for (int n=0;n<sz;n++)
 	{
 	    ds.changeColumnName(OldPos[n],Name[n],Descr[n]);
 	    ds.changeColumnType(OldPos[n],Type[n],true);
 	}
-	
+
 	// now redefine the column order
 	int[] reord=new int[sz];
 	for (int n=0;n<sz;n++) reord[NewPos[n]]=OldPos[n];
@@ -683,7 +683,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     }
 
     // ------------------ event functions --------------------
-    
+
     public void actionPerformed(ActionEvent e)
     {
     	String cmd=e.getActionCommand();
@@ -721,10 +721,10 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	else if (cmd=="Large Height") updateRowHeight(4);
 	else if (cmd=="About") helpAbout();
     }
-    
+
     public void windowActivated(WindowEvent e) {}
     public void windowClosed(WindowEvent e) {}
-    public void windowClosing(WindowEvent e) 
+    public void windowClosing(WindowEvent e)
     {
     	fileQuit();
     }
@@ -736,15 +736,15 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     public void keyPressed(KeyEvent e) {}
     public void keyReleased(KeyEvent e) {}
     public void keyTyped(KeyEvent e) {}
-    
+
     // Class for allowing molecule, or other table style, data to be dragged into parts of the table.
-    
+
     class TransferTableData extends TransferHandler
     {
 	JTable table;
 	DataTableModel model;
 
-	public TransferTableData(JTable table,DataTableModel model) 
+	public TransferTableData(JTable table,DataTableModel model)
 	{
 	    this.table=table;
 	    this.model=model;
@@ -757,7 +757,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 	    {
 		data=(String)info.getTransferable().getTransferData(DataFlavor.stringFlavor);
 	    }
-	    catch (InvalidDnDOperationException e) 
+	    catch (InvalidDnDOperationException e)
 	    {
 	    	// this is thrown when dragging between different processes; it means we can't actually check the
 		// data here, which is suboptimal, but not the end of the world
@@ -770,7 +770,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	    try
 	    {
 	    	Molecule mol=MoleculeStream.readUnknown(new BufferedReader(new StringReader(data)));
-		if (mol!=null) 
+		if (mol!=null)
 		{
 		    Point pos=info.getDropLocation().getDropPoint();
 		    int col=table.columnAtPoint(pos);
@@ -779,10 +779,10 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 		}
 	    }
 	    catch (IOException e) {}
-	    
+
 	    // see if it is a datasheet fragment
 	    // !!
-	    
+
 	    return false;
 	}
 	public boolean importData(TransferHandler.TransferSupport info)
@@ -801,7 +801,7 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
     	    try
 	    {
 	    	Molecule mol=MoleculeStream.readUnknown(new BufferedReader(new StringReader(data)));
-		if (mol!=null) 
+		if (mol!=null)
 		{
 		    Point pos=info.getDropLocation().getDropPoint();
 		    int row=table.rowAtPoint(pos);
@@ -817,14 +817,14 @@ public class DataWindow extends JFrame implements ActionListener, WindowListener
 		}
 	    }
 	    catch (IOException e) {}
-	    
+
 	    // see if it is a datasheet fragment
 	    // !!
-	    
+
 	    return false;
 	}
     }
-    
+
 }
 
 // Used to allow other classes to notify that the title may need to change.

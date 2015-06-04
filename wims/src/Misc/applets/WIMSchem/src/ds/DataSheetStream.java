@@ -1,10 +1,10 @@
 /*
     Sketch Elements: Chemistry molecular diagram drawing tool.
-    
+
     (c) 2008 Dr. Alex M. Clark
-    
+
     Released as GNUware, under the Gnu Public License (GPL)
-    
+
     See www.gnu.org for details.
 */
 
@@ -17,9 +17,9 @@ import java.util.*;
 
 /*
     Readers and writers of the DataSheet format.
-    
+
     The native format is XML (or at least, the subset of XML used by the TrivialDOM class), and is structured as follows:
-    
+
     	<?xml version="1.0" encoding="UTF-8"?>
     	<DataSheet>
 	    <Summary>
@@ -45,9 +45,9 @@ import java.util.*;
 		</Row>
 	    </Content>
 	</DataSheet>
-	    
+
     All indices are 1-based.
-	    	
+
 */
 
 public class DataSheetStream
@@ -68,7 +68,7 @@ public class DataSheetStream
 	catch (IOException e) {}
     	return ret;
     }
-    
+
     // as above, except this version loses the stream position
     public static boolean examineIsXMLDS(BufferedReader rdr)
     {
@@ -84,7 +84,7 @@ public class DataSheetStream
 	catch (IOException e) {}
 	return false;
     }
-    
+
     // returns true if stream appears to be an MDL SDfile; preserves file position
     public static boolean examineIsMDLSDF(FileInputStream istr)
     {
@@ -118,7 +118,7 @@ public class DataSheetStream
 
    // reading of datasheets from the WIMSchem XML format
 
-    public static DataSheet readXML(InputStream istr) throws IOException 
+    public static DataSheet readXML(InputStream istr) throws IOException
     {
     	return readXML(new BufferedReader(new InputStreamReader(istr)));
     }
@@ -126,11 +126,11 @@ public class DataSheetStream
     {
 	TrivialDOM xml=TrivialDOM.readXML(in);
 
-	if (xml.document().nodeName().compareTo("DataSheet")!=0) 
+	if (xml.document().nodeName().compareTo("DataSheet")!=0)
 	    throw new IOException("Input stream is XML, but the root node is not <DataSheet>.");
-	
+
     	DataSheet ds=new DataSheet();
-	
+
 	// do a precursory check
 	TrivialDOM.Node doc=xml.document(),header=null,content=null,summary=null;
 	for (int n=0;n<doc.numChildren();n++) if (doc.childType(n)==TrivialDOM.TYPE_NODE)
@@ -142,8 +142,8 @@ public class DataSheetStream
 	}
 	if (header==null) throw new IOException("XML document lacks a <Header> element.");
 	if (content==null) throw new IOException("XML document lacks a <Content> element.");
-	
-	int ncols=Utils.safeInt(header.attribute("ncols"),-1),nrows=Utils.safeInt(header.attribute("nrows"),-1);
+
+	int ncols=Util.safeInt(header.attribute("ncols"),-1),nrows=Util.safeInt(header.attribute("nrows"),-1);
 	if (ncols<0 || ncols>5000) throw new IOException("Header@ncols attribute absent or improperly specified.");
 	if (nrows<0) throw new IOException("Header@nrows attribute absent or improperly specified.");
 
@@ -155,7 +155,7 @@ public class DataSheetStream
     	    if (node.nodeName().equals("Title")) ds.setTitle(node.getText());
 	    else if (node.nodeName().equals("Description")) ds.setDescription(node.getText());
 	}
-	
+
 	// put the columns into an array, then create in datasheet
 	String[] colName=new String[ncols],colDescr=new String[ncols];
 	int[] colType=new int[ncols];
@@ -164,7 +164,7 @@ public class DataSheetStream
 	{
 	    TrivialDOM.Node node=header.getChildNode(n);
 	    if (node.nodeName().compareTo("Column")!=0) continue;
-	    int id=Utils.safeInt(node.attribute("id"),0);
+	    int id=Util.safeInt(node.attribute("id"),0);
 	    if (id<1 || id>ncols) throw new IOException("Column@id out of range.");
 	    String strName=node.attribute("name"),strType=node.attribute("type");
 	    if (strName==null) throw new IOException("Column name not specified.");
@@ -176,33 +176,33 @@ public class DataSheetStream
 	    else if (strType.compareTo("real")==0) type=DataSheet.COLTYPE_REAL;
 	    else if (strType.compareTo("boolean")==0) type=DataSheet.COLTYPE_BOOLEAN;
 	    else throw new IOException("Coltype type ["+strType+"] not recognised.");
-	    
+
 	    colName[id-1]=strName;
 	    colType[id-1]=type;
 	    colDescr[id-1]=node.getText();
 	}
 	for (int n=0;n<ncols;n++) if (colName[n]==null) throw new IOException("Column id#"+(n+1)+" is not defined.");
 	for (int n=0;n<ncols;n++) ds.appendColumn(colName[n],colType[n],colDescr[n]);
-	
+
 	// append a row for each claimed case, then fill in the data as it is encountered
 	for (int n=0;n<nrows;n++) ds.appendRow();
 	for (int i=0;i<content.numChildren();i++) if (content.childType(i)==TrivialDOM.TYPE_NODE)
 	{
 	    TrivialDOM.Node row=content.getChildNode(i);
 	    if (row.nodeName().compareTo("Row")!=0) continue;
-	    int rid=Utils.safeInt(row.attribute("id"),0);
+	    int rid=Util.safeInt(row.attribute("id"),0);
 	    if (rid<1 || rid>nrows) throw new IOException("Row@id out of range.");
-	    
+
 	    for (int j=0;j<row.numChildren();j++) if (row.childType(j)==TrivialDOM.TYPE_NODE)
 	    {
 	    	TrivialDOM.Node cell=row.getChildNode(j);
     	    	if (cell.nodeName().compareTo("Cell")!=0) continue;
-		int cid=Utils.safeInt(cell.attribute("id"),0);
+		int cid=Util.safeInt(cell.attribute("id"),0);
 		if (cid<1 || cid>ncols) throw new IOException("Cell@id out of range.");
-		
+
 		String data=cell.getText();
     	    	int type=colType[cid-1];
-		
+
 		if (type==DataSheet.COLTYPE_MOLECULE)
 		{
 		    Molecule mol=null;
@@ -238,20 +238,20 @@ public class DataSheetStream
 		}
 	    }
 	}
-	
+
 	return ds;
     }
 
     // reading of datasheets from the MDL SD file format
 
-    public static DataSheet readSDF(InputStream istr) throws IOException 
+    public static DataSheet readSDF(InputStream istr) throws IOException
     {
     	return readSDF(new BufferedReader(new InputStreamReader(istr)));
     }
     public static DataSheet readSDF(BufferedReader in) throws IOException
     {
     	DataSheet ds=new DataSheet();
-	
+
 	ds.appendColumn("mol",DataSheet.COLTYPE_MOLECULE,"Molecule");
 
 	ArrayList<String> entry=new ArrayList<String>();
@@ -261,17 +261,17 @@ public class DataSheetStream
 	    String line=in.readLine();
 	    if (line==null) break;
 	    if (!line.startsWith("$$$$")) {entry.add(line); continue;}
-	    
+
 	    int rn=ds.appendRow();
-	    
+
 	    StringBuffer sb=new StringBuffer();
 	    int pos=0;
 	    while (pos<entry.size())
 	    {
 	    	line=entry.get(pos);
 		if (line.startsWith("> ")) break;
-		sb.append(line+"\n"); 
-		pos++; 
+		sb.append(line+"\n");
+		pos++;
 	    	if (line.startsWith("M  END")) {break;}
 	    }
 
@@ -279,7 +279,7 @@ public class DataSheetStream
 	    try {mol=MoleculeStream.readMDLMOL(new BufferedReader(new StringReader(sb.toString())));}
 	    catch (IOException e) {} // leave it null
 	    if (mol!=null) ds.setMolecule(rn,0,mol);
-	    
+
 	    for (;pos+2<entry.size();pos+=3)
 	    {
 	    	String key=entry.get(pos),val=entry.get(pos+1);
@@ -289,7 +289,7 @@ public class DataSheetStream
 		z=key.indexOf(">"); if (z<0) continue;
 		key=key.substring(0,z);
 		if (key.length()==0) continue;
-		
+
 		int type=val.length() > 0 ? DataSheet.COLTYPE_STRING : DataSheet.COLTYPE_INTEGER;
 		double dval=0;
 		int ival=0;
@@ -304,7 +304,7 @@ public class DataSheetStream
 		int cn=-1;
 		for (int n=0;n<ds.numCols();n++) if (ds.colName(n).compareTo(key)==0) {cn=n; break;}
 		if (cn<0) cn=ds.appendColumn(key,type,"");
-		
+
 		int curType=ds.colType(cn);
 		if (val.length()==0) ds.setToNull(rn,cn);
 		else if (curType==DataSheet.COLTYPE_STRING) ds.setString(rn,cn,val);
@@ -329,15 +329,15 @@ public class DataSheetStream
 		    else ds.setInteger(rn,cn,ival);
 		}
 	    }
-	 
+
 	    entry.clear();
 	}
-	
+
 	return ds;
     }
 
     // writing of datasheets to the WIMSchem XML format
-    
+
     public static void writeXML(OutputStream ostr,DataSheet ds) throws IOException
     {
 	writeXML(new BufferedWriter(new OutputStreamWriter(ostr)),ds);
@@ -401,9 +401,9 @@ public class DataSheetStream
 
 	TrivialDOM.writeXML(out,xml);
     }
-    
+
     // writing of datasheets to the MDL SD file format
-    
+
     public static void writeSDF(OutputStream ostr,DataSheet ds) throws IOException
     {
 	writeSDF(new BufferedWriter(new OutputStreamWriter(ostr)),ds);
@@ -412,7 +412,7 @@ public class DataSheetStream
     {
     	int molfld=-1;
 	for (int n=0;n<ds.numCols();n++) if (ds.colType(n)==DataSheet.COLTYPE_MOLECULE) {molfld=n; break;}
-	
+
 	for (int i=0;i<ds.numRows();i++)
 	{
 	    if (molfld>=0) if (!ds.isNull(i,molfld))
@@ -422,7 +422,7 @@ public class DataSheetStream
 	    for (int j=0;j<ds.numCols();j++) if (ds.colType(j)!=DataSheet.COLTYPE_MOLECULE && !ds.isNull(i,j))
 	    {
 	    	String line="";
-		
+
 		if (ds.colType(j)==DataSheet.COLTYPE_STRING) line=ds.getString(i,j);
 		else if (ds.colType(j)==DataSheet.COLTYPE_INTEGER) line=String.valueOf(ds.getInteger(i,j));
 		else if (ds.colType(j)==DataSheet.COLTYPE_REAL) line=String.valueOf(ds.getReal(i,j));
@@ -433,19 +433,19 @@ public class DataSheetStream
 		boolean anything=false;
 		for (int n=0;n<bits.length;n++) if (bits[n].length()>0) anything=true;
 		if (!anything) continue;
-		
+
 		out.write("> <"+ds.colName(j)+">\n");
-		for (int n=0;n<bits.length;n++) if (bits[n].length()>0) 
+		for (int n=0;n<bits.length;n++) if (bits[n].length()>0)
 		{
 		    if (bits[n].length()>78) bits[n]=bits[n].substring(0,78); // tuff
 		    out.write(bits[n]+"\n");
 		}
 		out.write("\n");
 	    }
-	    
+
 	    out.write("$$$$\n");
 	}
-	
+
 	out.flush();
     }
 }
