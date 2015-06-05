@@ -50,14 +50,19 @@ $ in $special_parm3
  !endif
 !endif
 
-!if $wims_class!=$empty and $wims_user=supervisor and $special_parm3=$empty
- !distribute line $wims_oefdefault_qnum\
-$wims_oefdefault_qcmlevel\
-$wims_oefdefault_scoredelay\
-$wims_oefdefault_qcmpresent\
-$wims_oefdefault_presentsol\
-$wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check
+!if $wims_class!=$empty and $wims_user=supervisor and ($special_parm3=$empty or intro_expert isin $special_parm3)
+ !default qnum=$wims_oefdefault_qnum
+ !default qcmlevel=$wims_oefdefault_qcmlevel
+ !default scoredelay=$wims_oefdefault_scoredelay
+ !default intro_qcmpresent=$wims_oefdefault_qcmpresent
+ !default intro_presentsol=$wims_oefdefault_presentsol
+ !default intro_check=$wims_oefdefault_check
  !let special_parm2=$special_parm
+ !if ($special_parm3=$empty or intro_expert=yes isin $special_parm3) and ($wims_oefdefault_qcmpresent!=$empty or $wims_oefdefault_presentsol!=$empty or $wims_oefdefault_check!=$empty)
+    !let expert_option=yes
+ !else
+    !let expert_option=no
+ !endif
 !endif
 !reset special_parm3
 
@@ -135,7 +140,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 <table class="field introhook">
 !read introhook.phtml
 </table>
-!if expert iswordof $special_parm2
+!if expert iswordof $special_parm2 or yes isin $expert_option
    !default intro_check=1,2,3,4
     <fieldset class="oef_expert">
     <legend>$name_expertmenu</legend>
@@ -178,7 +183,8 @@ $name_qcm
     </div>
 
     !let tmp=!replace word expert by $ in $special_parm2
-    !set tmp3=!replace internal intro_expert=yes by in $special_parm3
+    !set tmp3=!replace internal intro_expert=yes by $ in $special_parm3
+    !set tmp3=$tmp3 intro_expert=no
     <input type="hidden" name="intro_expert" value="yes" />
 
    !set wims_ref_class=wims_button
@@ -188,9 +194,11 @@ $name_qcm
    </fieldset>
 !else
    !let tmp=$special_parm2 expert
+   !set tmp3=!replace internal intro_expert=no by $ in $special_parm3
+   !set tmp3=$tmp3 intro_expert=yes
    !set wims_ref_class=wims_button
    <p class="oef_intro_buttons">
-    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_expertmenu
    </p>
 !endif
 </div>
