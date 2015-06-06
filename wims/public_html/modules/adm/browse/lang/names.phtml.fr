@@ -11,22 +11,29 @@
 !if $job=subject
   !set title=Parcourir par sujet
   !set name_domain=Veuillez choisir l'un des domaines suivants.
+  !set job_desc=<p>A chaque module pédagogique sont associés des mots-clés. Vous trouverez ci-dessous l'ensemble de ces mot-clés, organisés en arbre.</p>\
+<p>Cependant, les nombres indiqués ne tiennent pas compte des sous-branches. Chaque pastille indique le nombre de modules auxquels le mot-clé correspondant est attribué.</p>
 
   !set name_available=!nosubst Dans le domaine <span class="wims_emph">$name</span>, les sujets suivants\
  sont disponibles.
  !set wims_name_other=Autres domaines
+!endif
 
+!if $job=taxo
+  !set title=Parcourir par taxonomie
+  !set job_desc=<p>Une partie des modules de Wims ont été classifiés dans quelques taxonomies classiques, que vous trouvez ci-dessous.</p>\
+  <p>Ici, les nombres affichés dans les pastilles représentent la somme des modules contenus dans les sous-branches.</p>
 !endif
 
 !if $job=level
  !set title=Parcourir par niveau
  !distribute lines Année\
-   Catégorie\
-   Ecole primaire\
-   Ecole secondaire\
-   Université\
-   3ème cycle\
-   Recherche\
+Catégorie\
+École primaire\
+École secondaire\
+Université\
+3<sup>ème</sup> cycle\
+Recherche\
  into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
  name_research
 
