@@ -28,6 +28,9 @@ exit if (!(grep {$_ eq $LANG} treate_language()));
 
 #### wims keywords
 sub underscore { my ($a)=@_ ; $a=~ s/\_/ /g ; $a; }
+## hack for suffix
+sub suffix { my ($a)=@_ ; $a=~ s/(e|s)\b//; $a; }
+
 sub count { my ($file)=@_ ;
  my $refcount={};
   open INC, "$file";
@@ -69,10 +72,14 @@ if ($option) {
       my $chemin1 .= "$chemin,$tt" ;
       my $cc='';
       my $tt1=underscore($tt);
-      if(defined($refcount->{$tt1})) { $cc="<sup class=\"taxo_nb_elem\">".$refcount->{$tt1}."</sup>" };
+      my $T;
+      if(defined($refcount->{$tt1})) {  $T=$refcount->{$tt1}}
+        else { if (defined($refcount->{suffix($tt1)})) { $T= $refcount->{suffix($tt1)}}};
+      if ($T) { $cc="<sup class=\"taxo_nb_elem\">". $T."</sup>" };
       $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
           . "!set key=$tt0\n";
-      if(defined($refcount->{$tt1})) { $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$chemin1 &#128270; \$wims_name_search\n"; };
+     # if ($T) {$Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$chemin1 &#128270; \$wims_name_search\n";}
+      $Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$chemin1 &#128270; \$wims_name_search\n";
       $Tw .=  "<ul id=\"list_$tt\">";
       One($Next{$tt}, $refcount,$taxo, $chemin1);
       $Tw .= "\n</ul>";
