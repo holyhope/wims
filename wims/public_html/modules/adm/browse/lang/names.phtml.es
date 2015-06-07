@@ -26,7 +26,7 @@
    Universidad\
    3er ciclo\
    Investigación \
- into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
+ into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,\
  name_research
 
 !endif
