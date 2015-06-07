@@ -187,22 +187,39 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
       my $b = $a; $b =~ s!/!~!g;
       if (!defined($addr{$a})) {print "warning: module $a does not exist on the server\n"; next};
       if (!$titmodule->{$addr{$a}}) { print "$a\n" ; $titmodule->{$a}=$a};
-      my $bb= ($titmodule->{$addr{$a}}) ? $titmodule->{$addr{$a}} . "<span class=\"small hidden\">($b)</span>" : $b;
+      my $bb= ($titmodule->{$addr{$a}}) ? $titmodule->{$addr{$a}} . "<span class=\"small hidden\">($b)</span>": $b;
+      my @exo; my $nb=1;
       if (-e "../../modules/$a/Extitles") {
         my %dic=treate_dict("../../modules/$a/Extitles");
-        my @exo= values %dic;
+        @exo= values %dic;
+        $nb=$#exo;
+      };
+      ##jmevers test
+      open INN, "../../modules/$a/INDEX";
+      my $testjm=0;
+      while (<INN>) { $testjm=1 if ($_=~ /authors\/jm.evers\/proc\/var.def/);} close INN;
+      if ($testjm){
+         my @nbexo=`ls ../../modules/$a/exos/exo*`;
+         $nb=$#nbexo+1;
+        ###TODO; creer @exo comme dans le cas OEF (liste des titres des exos)
+      }
+      if (@exo) {
+        $nb=$#exo+1;
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module closed\">\n" .
-        "<span class=\"tree_icon\">$bb</span>\n".
-        "!set wims_ref_class=wims_button\n".
+        "<span class=\"tree_icon\">$bb</span>"
+        . ($nb>1?"<sup class=\"taxo_nb_exo\">$nb</sup>":"" )
+        . "\n!set wims_ref_class=wims_button\n".
         "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
         . "</li>\n";
-        $cntexo += $#exo;
+        $cntexo += $nb ;
       }
       else {
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
-        "!href target=wims_internal module=$a $bb\n </li>\n";
-        $cntexo += 1 ;
+        "!href target=wims_internal module=$a $bb\n"
+        . ($nb>1?"<sup class=\"taxo_nb_exo\">$nb</sup>":"" )
+        . "</li>\n";
+        $cntexo += $nb ;
       }
     }
     $ref{'num'}{$ligne[0]}=$cnt0;
