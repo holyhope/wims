@@ -100,6 +100,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  intro_qcmpresent=8
  intro_presentsol=2
  freepower=2
+ scorepower=1
  random=0
  exocnt=1
  !if $retest=again
@@ -398,20 +399,19 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  !advance reply_cnt
  freetot=$[$creplycnt+$conditioncnt-$conditionned+$weightadjust]
  !if $freetot>0
-  freegot=$[$condgot+$freegot+$gotadjust+$precweight*$precgood]
-  !if $freegot >= 0
-   freegot=$[(($freegot/$freetot)^$freepower)*$freetot*2]
-  !else
-   freegot=$[2*$freegot]
-  !endif
+   freegot=$[$condgot+$freegot+$gotadjust+$precweight*$precgood]
  !else
-  freegot=0
+   freegot=0
  !endif
- !if $cchoicecnt>1 and $qcmgot>0
-  qcmgot=$[$cchoicecnt*($qcmgot/$cchoicecnt)^$qcmpower]
+ alltot=$[$freetot+$cchoicecnt]
+ allgot=$[$freegot+$qcmgot]
+ !if $alltot>0 and $allgot>0
+   allgot=$[($allgot/$alltot)^$freepower*$alltot]
+ !else
+   allgot=0
  !endif
- score_got=$[$score_got+$freegot+$qcmgot]
- score_should=$[$score_should+2*$freetot+1*$cchoicecnt]
+ score_got=$[$score_got+$allgot]
+ score_should=$[$score_should+$alltot]
  status=done
  !if $reply_cnt>=$qnum
   !bound score_got between 0 and $score_should
