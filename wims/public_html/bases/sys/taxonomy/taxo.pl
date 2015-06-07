@@ -130,6 +130,7 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   my $T = '<li class="closed">';
   if (!$tit->{$a}) { print "warning $a has no title" ; $tit->{$a}=$a};
   if (!$ref->{'total'}{$a}) { $ref->{'total'}{$a}=0 } ;
+  if (!$ref->{'totalexo'}{$a}) { $ref->{'totalexo'}{$a}=0 } ;
   if (!$module) {
        $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
           . "<label for=\"$amod\">$tit->{$a}</label> <span class=\"small hidden\">($a)</span>";
@@ -137,6 +138,9 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
     $T .= "<span class=\"tree_icon\" id=\"$amod\">$tit->{$a}</span> <span class=\"small hidden\">($a)</span> ";
     if ($ref->{'total'}{$a} >0){
       $T .= "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}."</sup>";
+    }
+    if ($ref->{'totalexo'}{$a} >0){
+      $T .= "<sup class=\"taxo_nb_exo\">".$ref->{'totalexo'}{$a}."</sup>";
     }
   }
   if ($ref->{'text'}{$a} || $desc->{$a}){
@@ -177,6 +181,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
     next if (!$ligne[0]);
     my @aa=sortuniq(split(',', $ligne[1]));
     my $cnt0=$#aa+1;
+    my $cntexo=0;
     for my $a (@aa) {
       chomp $a;
       my $b = $a; $b =~ s!/!~!g;
@@ -192,14 +197,18 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
         . "</li>\n";
+        $cntexo += $#exo;
       }
       else {
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
         "!href target=wims_internal module=$a $bb\n </li>\n";
+        $cntexo += 1 ;
       }
     }
     $ref{'num'}{$ligne[0]}=$cnt0;
+    $ref{'numexo'}{$ligne[0]}=$cntexo;
     $ref{'total'}{$ligne[0]}=0;
+    $ref{'totalexo'}{$ligne[0]}=0;
   }
   close IN;
   if (-e "$filesheet") {
@@ -225,8 +234,10 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
      push @ok, $id;
      for my $c (@ok) {
       if (!$ref{'num'}{$c}){ $ref{'num'}{$c}=0};
+      if (!$ref{'numexo'}{$c}){ $ref{'numexo'}{$c}=0};
       if (!$ref{'numsheet'}{$c}){ $ref{'numsheet'}{$c}=0};
        $ref{'total'}{$id} += $ref{'num'}{$c} + $ref{'numsheet'}{$c} ;
+       $ref{'totalexo'}{$id} += $ref{'numexo'}{$c} ;
      }
    }
    \%ref;
