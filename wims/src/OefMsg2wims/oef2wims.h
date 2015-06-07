@@ -46,6 +46,7 @@ void p_email(char *p[MAX_PARM]);
 void p_computeanswer(char *p[MAX_PARM]);
 void p_precision(char *p[MAX_PARM]);
 void p_css(char *p[MAX_PARM]);
+void p_keywords(char *p[MAX_PARM]);
 void p_range(char *p[MAX_PARM]);
 void p_language(char *p[MAX_PARM]);
 void p_statement(char *p[MAX_PARM]);

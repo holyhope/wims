@@ -81,6 +81,7 @@ struct {
       {"ifval",  t_def,1, p_ifval},
       {"int",  t_def ,2, p_int},
       {"integer", t_def ,2, p_int},
+      {"keywords",  t_head ,1, p_keywords},
       {"language", t_head,1, p_language},
       {"latex",     t_latex, 1, p_latex},
       {"matrix", t_def ,2, p_matrix},
