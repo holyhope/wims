@@ -188,6 +188,9 @@ $list_noemail
 Send : $(list_user[;2])\
 #######\
 
+ !else
+   !set msgmod=$msg
+ !endif
  !for l_ =1 to $cnt
    !set u=!line $l_ of $list_teacher
    !if $(u[4])!=
@@ -205,6 +208,8 @@ Send : $(list_user[;2])\
 <p>
 $name_participant1
 <pre>$(list_user[;1..2])</pre>
+<hr />
+<pre>$(list_teacher[;1..2])</pre>
 !if $list_noemail notsametext
 $name_participant2
 <pre>
