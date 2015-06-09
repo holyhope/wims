@@ -36,7 +36,7 @@ char *suffixdic=    "sys/suffix";
 char *domaindic=    "sys/domaindic";
 char *ignoredic=    "sys/indignore";
 char *conffile=     "log/wims.conf";
-char *mlistbase=    "list";
+char *mlistbase=    "lists";
 
 char lang[MAX_LANGS][4]={
     "en","fr","cn","es","it","nl","si","ca","pt"
@@ -286,7 +286,7 @@ void prep(void)
     authorf=fopen(buf,"w");
     snprintf(buf,sizeof(buf),"%s/version",outdir);
     versionf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/lists/robot.phtml",outdir);
+    snprintf(buf,sizeof(buf),"%s/%s/robot.phtml",outdir,mlistbase);
     robotf=fopen(buf,"w");
     fclose(addrf); fclose(serialf);
     if(!robotf || !versionf || !authorf || !descf || !titf || !langf) {
@@ -497,8 +497,8 @@ void onemodule(const char *name, int serial, int lind)
  * for french exercises
  */
     for(i=0;i<catcnt;i++) {
-      snprintf(buf,sizeof(buf),"%s/lists/%c.%s",
-         outdir,categories[i],lang[lind]);
+      snprintf(buf,sizeof(buf),"%s/%s/%c.%s",
+         outdir,mlistbase,categories[i],lang[lind]);
       f=fopen(buf,"a");
       if(f!=NULL) {fprintf(f,"%s\n",name); fclose(f);}
     }
