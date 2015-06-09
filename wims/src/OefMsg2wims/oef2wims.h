@@ -41,12 +41,9 @@ void out_exec(char *s1, char *s2);
 /* from process.c */
 void p_answer(char *p[MAX_PARM]);
 void p_choice(char *p[MAX_PARM]);
-void p_author(char *p[MAX_PARM]);
-void p_email(char *p[MAX_PARM]);
 void p_computeanswer(char *p[MAX_PARM]);
 void p_precision(char *p[MAX_PARM]);
 void p_css(char *p[MAX_PARM]);
-void p_keywords(char *p[MAX_PARM]);
 void p_range(char *p[MAX_PARM]);
 void p_language(char *p[MAX_PARM]);
 void p_statement(char *p[MAX_PARM]);
@@ -78,14 +75,7 @@ void p_latex(char *p[MAX_PARM]);
 void p_solution(char *p[MAX_PARM]);
 void p_steps(char *p[MAX_PARM]);
 void p_plot(char *p[MAX_PARM]);
-void p_title_ca(char *p[MAX_PARM]);
-void p_title_cn(char *p[MAX_PARM]);
-void p_title_en(char *p[MAX_PARM]);
-void p_title_es(char *p[MAX_PARM]);
-void p_title_fr(char *p[MAX_PARM]);
-void p_title_it(char *p[MAX_PARM]);
-void p_title_nl(char *p[MAX_PARM]);
-void p_title_si(char *p[MAX_PARM]);
+void p_header(char *p[MAX_PARM]);
 void p_wims(char *p[MAX_PARM]);
 void empty(char *p[MAX_PARM]);
 

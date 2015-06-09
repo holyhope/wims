@@ -1,4 +1,4 @@
-/*    Copyright (C) 1998-2003 XIAO, Gang of Universite de Nice - Sophia Antipolis
+/*  Copyright (C) 1998-2003 XIAO, Gang of Universite de Nice - Sophia Antipolis
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -7,7 +7,7 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
@@ -17,11 +17,11 @@
 
  /* This program translates oef format exercises into wims internal data format. */
 
-#define MAX_TITLEN  60
+#define MAX_TITLEN 60
 
-#define MAX_PARM    10
-#define MAX_PARAM   1024
-#define MAX_DEFINE  1024
+#define MAX_PARM 10
+#define MAX_PARAM 1024
+#define MAX_DEFINE 1024
 #define MAX_FLEN 199999
 
 #define VERSION "3.22"
@@ -50,67 +50,67 @@ struct param param[MAX_PARAM+32];
 char *inpbuf, *inpend;
 char outfname[1024];
 
-enum {t_tit, t_head, t_def, t_wims, t_form, t_main, t_plot, t_hint,
+enum {t_tit, t_head, t_head2, t_lang, t_def, t_wims, t_form, t_main, t_plot, t_hint,
       t_ans, t_choi, t_cond, t_cond2, t_sol, t_feedback, t_help, t_step, t_latex};
 
 struct {
     char *name;
-    int  type, parmcnt;
+    int type, parmcnt;
     void (*processor)(char *p[MAX_PARM]);
 } directives[]={
-      {"answer", t_ans ,5, p_answer},
-      {"author", t_head,1, p_author},
-      {"choice", t_choi,5, p_choice},
-      {"complex", t_def ,2, p_complex},
-      {"computeanswer", t_head,1, p_computeanswer},
-      {"condition", t_cond,4, p_condition},
-      {"conditions", t_cond2,1, p_conditions},
-      {"credits",  t_def ,2, p_credits},
-      {"css",  t_head,1, p_css},
-      {"else",  t_def,0, p_else},
-      {"email", t_head,1, p_email},
-      {"endif", t_def,0, p_endif},
-      {"endwhile", t_def,0, p_endwhile},
-      {"feedback", t_feedback,2,   p_feedback},
-      {"for",  t_def,1, p_for},
-      {"format", t_form,1, empty},
-      {"function", t_def ,2, p_func},
-      {"help",  t_help,1, p_help},
-      {"hint",  t_hint,1, p_hint},
-      {"if",  t_def,1, p_if},
-      {"ifval",  t_def,1, p_ifval},
-      {"int",  t_def ,2, p_int},
-      {"integer", t_def ,2, p_int},
-      {"keywords",  t_head ,1, p_keywords},
-      {"language", t_head,1, p_language},
-      {"latex",     t_latex, 1, p_latex},
-      {"matrix", t_def ,2, p_matrix},
-      {"mdef",  t_def, 2, p_mdef},
-      {"next",  t_def,0, p_next},
+      {"answer", t_ans, 5, p_answer},
+      {"author", t_head2, 1, p_header},
+      {"choice", t_choi, 5, p_choice},
+      {"complex", t_def, 2, p_complex},
+      {"computeanswer", t_head, 1, p_computeanswer},
+      {"condition", t_cond, 4, p_condition},
+      {"conditions", t_cond2, 1, p_conditions},
+      {"credits", t_def, 2, p_credits},
+      {"css", t_head, 1, p_css},
+      {"else", t_def, 0, p_else},
+      {"email", t_head2, 1, p_header},
+      {"endif", t_def, 0, p_endif},
+      {"endwhile", t_def, 0, p_endwhile},
+      {"feedback", t_feedback, 2, p_feedback},
+      {"for", t_def, 1, p_for},
+      {"format", t_form, 1, empty},
+      {"function", t_def, 2, p_func},
+      {"help", t_help, 1, p_help},
+      {"hint", t_hint, 1, p_hint},
+      {"if", t_def, 1, p_if},
+      {"ifval", t_def, 1, p_ifval},
+      {"int", t_def, 2, p_int},
+      {"integer", t_def, 2, p_int},
+      {"keywords", t_head2, 1, p_header},
+      {"language", t_head, 1, p_language},
+      {"latex", t_latex, 1, p_latex},
+      {"matrix", t_def, 2, p_matrix},
+      {"mdef", t_def, 2, p_mdef},
+      {"next", t_def, 0, p_next},
       {"nextstep", t_step, 1, p_nextstep},
-      {"parameter", t_def ,2, p_parm},
-      {"plot",  t_plot,3, p_plot},
-      {"precision", t_head,1, p_precision},
-      {"range",  t_head,1, p_range},
-      {"rational", t_def ,2, p_rational},
-      {"real",  t_def ,2, p_real},
-      {"reply",  t_ans ,5, p_answer},
+      {"parameter", t_def, 2, p_parm},
+      {"plot", t_plot, 3, p_plot},
+      {"precision", t_head, 1, p_precision},
+      {"range", t_head, 1, p_range},
+      {"rational", t_def, 2, p_rational},
+      {"real", t_def, 2, p_real},
+      {"reply", t_ans, 5, p_answer},
       {"solution", t_sol, 1, p_solution},
-      {"statement", t_main,1, p_statement},
-      {"steps",  t_step, 1, p_steps},
-      {"text",  t_def ,2, p_text},
-      {"title",  t_tit ,1, empty},
-      {"title_ca", t_head ,1, p_title_ca},
-      {"title_cn", t_head ,1, p_title_cn},
-      {"title_en", t_head ,1, p_title_en},
-      {"title_es", t_head ,1, p_title_es},
-      {"title_fr", t_head ,1, p_title_fr},
-      {"title_it", t_head ,1, p_title_it},
-      {"title_nl", t_head ,1, p_title_nl},
-      {"title_si", t_head ,1, p_title_si},
-      {"variable", t_def ,2, p_parm},
-      {"while",  t_def,1, p_while},
-      {"wims",  t_wims,1, p_wims}
+      {"statement", t_main, 1, p_statement},
+      {"steps", t_step, 1, p_steps},
+      {"text", t_def, 2, p_text},
+      {"title", t_tit, 1, empty},
+      {"title_ca", t_lang, 1, p_header},
+      {"title_cn", t_lang, 1, p_header},
+      {"title_en", t_lang, 1, p_header},
+      {"title_es", t_lang, 1, p_header},
+      {"title_fr", t_lang, 1, p_header},
+      {"title_it", t_lang, 1, p_header},
+      {"title_nl", t_lang, 1, p_header},
+      {"title_si", t_lang, 1, p_header},
+      {"variable", t_def, 2, p_parm},
+      {"while", t_def, 1, p_while},
+      {"wims", t_wims, 1, p_wims}
 };
 
 #define dir_no (sizeof(directives)/sizeof(directives[0]))
@@ -221,6 +221,10 @@ void process(void)
           case t_tit: {
             title_no=define_no; break;
           }
+          case t_head2: case t_lang: {
+           define[define_no].parm[1]=directives[i].name;
+	       break;
+	      }
           case t_ans: {
             if(aocnt<256) ao[aocnt++]=t_ans;
             answercnt++; goto checkeq;
@@ -326,7 +330,9 @@ void output(void)
  !goto $wims_read_parm\n\
 !endif\n");
     fprintf(outf,"oef2wims_version=%s\n",VERSION);
+    _out(t_head2);
     _out(t_head);
+    _out(t_lang);
     if(aocnt>0) {
       int i;
       fprintf(outf,"\nansorder=");
