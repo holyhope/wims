@@ -8,6 +8,8 @@
 !set name_S=hojas de ejercicios
 !set name_P=herramientas emergentes
 
+!set name_M=module(s)
+
 !if $job=subject
   !set title=Búsqueda por tema
   !set name_domain=Por favor, seleccione una de las siguientes áreas.

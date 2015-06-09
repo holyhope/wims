@@ -8,6 +8,8 @@
 !set name_S=werkbladen
 !set name_P=popup hulpmiddelen
 
+!set name_M=module(s)
+
 !if $job=subject
   !set title=Browsen per onderwerp
   !set name_domain= Kies een van de volgende onderwerpen.

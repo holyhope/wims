@@ -75,7 +75,7 @@ if ($option) {
       my $T;
       if(defined($refcount->{$tt1})) {  $T=$refcount->{$tt1}}
         else { if (defined($refcount->{suffix($tt1)})) { $T= $refcount->{suffix($tt1)}}};
-      if ($T) { $cc="<sup class=\"taxo_nb_elem\">". $T."</sup>" };
+      if ($T) { $cc="<sup class=\"pastille taxo_nb_elem\">". $T."</sup>" };
       $Tw .= "<span class=\"tree_icon\" id=\"$tt\">$tt0</span><span class=\"small hidden\">($tt)</span>$cc\n"
           . "!set key=$tt0\n";
      # if ($T) {$Tw .= '!href $search_addr&parm=' . "$tt&browse_parm=$chemin1 &#128270; \$wims_name_search\n";}
@@ -144,10 +144,10 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   } else {
     $T .= "<span class=\"tree_icon\" id=\"$amod\">$tit->{$a}</span> <span class=\"small hidden\">($a)</span> ";
     if ($ref->{'total'}{$a} >0){
-      $T .= "<sup class=\"taxo_nb_elem\">".$ref->{'total'}{$a}."</sup>";
+      $T .= "<sup class=\"pastille taxo_nb_modules\">".$ref->{'total'}{$a}." \$name_M</sup>";
     }
     if ($ref->{'totalexo'}{$a} >0){
-      $T .= "<sup class=\"taxo_nb_exo\">".$ref->{'totalexo'}{$a}."</sup>";
+      $T .= "<sup class=\"pastille taxo_nb_exo\">".$ref->{'totalexo'}{$a}." \$name_X</sup>";
     }
   }
   if ($ref->{'text'}{$a} || $desc->{$a}){
@@ -214,7 +214,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         $nb=$#exo+1;
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module closed\">\n" .
         "<span class=\"tree_icon\">$bb</span>"
-        . ($nb>1?"<sup class=\"taxo_nb_exo\">$nb</sup>":"" )
+        . ($nb>1?"<sup class=\"pastille taxo_nb_exo\">$nb \$name_X</sup>":"" )
         . "\n!set wims_ref_class=wims_button\n".
         "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
