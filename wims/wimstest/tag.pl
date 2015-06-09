@@ -27,7 +27,7 @@ while (<IN>){
 }
 close IN;
 my @u=extract_tagged ($text ,"<$tag>","</$tag>");
-out("$out/$file",$u[0]);
+out("$out/$file",$u[0] ."\n");
 
 sub out { my ($bloc, $text) = @_ ;
   open  (OUT, ">$bloc") || warn "peut pas créer $bloc";
