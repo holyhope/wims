@@ -120,7 +120,8 @@ sub treate_language {
    }
   close IN;
  }
-split(' ', $site_language) ;
+  $site_language=~  s/,/ /g; $site_language=~  s/ +/ /g;
+  split(' ', $site_language) ;
 }
 
 sub reverse_dic { my @liste=@_;
