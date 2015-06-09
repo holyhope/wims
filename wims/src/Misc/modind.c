@@ -29,6 +29,7 @@ char *moduledir=    "public_html/modules";
 char *sheetdir=     "public_html/bases/sheet";
 char *dicdir=       "public_html/bases";
 char *outdir=       "public_html/bases/site2";
+char *sheetoutdir=  "public_html/bases/sheet/index";
 char *maindic=      "sys/words";
 char *groupdic=     "sys/wgrp/wgrp";
 char *suffixdic=    "sys/suffix";
@@ -213,10 +214,13 @@ void prep(void)
 
     s=getenv("modind_outdir"); if(s!=NULL && *s!=0) outdir=s;
     s=getenv("modind_sheetdir"); if(s!=NULL && *s!=0) sheetdir=s;
+    s=getenv("modind_sheetoutdir"); if(s!=NULL && *s!=0) sheetoutdir=s;
     snprintf(buf,sizeof(buf),"%s/addr",outdir);
     addrf=fopen(buf,"w");
+    if(!addrf) { fprintf(stderr,"modind: error creating output files addr.\n"); exit(1);}
     snprintf(buf,sizeof(buf),"%s/serial",outdir);
     serialf=fopen(buf,"w");
+    if(!serialf) { fprintf(stderr,"modind: error creating output files serial.\n"); exit(1);}
     modcnt=langcnt=0;
 /* take the langs declared in conffile */
     getdef(conffile,"site_languages",buf);
@@ -233,40 +237,39 @@ void prep(void)
     l=strlen(s); if(l<0 || l>100*MAX_LINELEN) exit(1);
     mlist=xmalloc(l+16); ovlstrcpy(mlist,s); old="";
     for(i=0;i<langcnt;i++) {
-    snprintf(buf,sizeof(buf),"%s/%s.%s",dicdir,ignoredic,lang[i]);
-    f=fopen(buf,"r"); if(f==NULL) continue;
-    l=fread(ignore[i],1,MAX_LINELEN,f);fclose(f);
-    if(l<0 || l>=MAX_LINELEN) l=0;
-    ignore[i][l]=0;
+      snprintf(buf,sizeof(buf),"%s/%s.%s",dicdir,ignoredic,lang[i]);
+      f=fopen(buf,"r"); if(f==NULL) continue;
+      l=fread(ignore[i],1,MAX_LINELEN,f);fclose(f);
+      if(l<0 || l>=MAX_LINELEN) l=0;
+      ignore[i][l]=0;
     }
-    for(t=0, p1=find_word_start(mlist);
-    *p1 && modcnt<MAX_MODULES;
-    p1=find_word_start(p2), t++) {
-    p2=find_word_end(p1);
-    l=p2-p1; if(*p2) *p2++=0;
-    fprintf(addrf,"%d:%s\n",t,p1);
-    fprintf(serialf,"%s:%d\n",p1,t);
-    thislang=-1;
+    for(t=0, p1=find_word_start(mlist); *p1 && modcnt<MAX_MODULES;
+        p1=find_word_start(p2), t++) {
+      p2=find_word_end(p1);
+      l=p2-p1; if(*p2) *p2++=0;
+      fprintf(addrf,"%d:%s\n",t,p1);
+      fprintf(serialf,"%s:%d\n",p1,t);
+      thislang=-1;
 /* language is taken from the address */
-    if(l>3 && p1[l-3]=='.') {
+      if(l>3 && p1[l-3]=='.') {
         for(i=0;i<langcnt;i++) if(strcasecmp(lang[i],p1+l-2)==0) break;
         if(i<langcnt) {p1[l-3]=0; thislang=i;}
         else {/*  unknown language, not referenced */
         continue;
         }
-    }
-    if(modcnt>0 && strcmp(old,p1)==0 && thislang>=0) {
+      }
+      if(modcnt>0 && strcmp(old,p1)==0 && thislang>=0) {
         if(mod[modcnt-1].langcnt<langcnt) {
         mod[modcnt-1].langs[mod[modcnt-1].langcnt]=thislang;
         mod[modcnt-1].counts[mod[modcnt-1].langcnt]=t;
         (mod[modcnt-1].langcnt)++;
         }
-    }
-    else {
+     }
+     else {
         mod[modcnt].name=old=p1;
         if(thislang>=0) {
-        mod[modcnt].langs[0]=thislang;
-        mod[modcnt].langcnt=1;
+          mod[modcnt].langs[0]=thislang;
+          mod[modcnt].langcnt=1;
         }
         else mod[modcnt].langcnt=0;
         mod[modcnt].counts[0]=t;
@@ -286,9 +289,9 @@ void prep(void)
     snprintf(buf,sizeof(buf),"%s/lists/robot.phtml",outdir);
     robotf=fopen(buf,"w");
     fclose(addrf); fclose(serialf);
-    if(!robotf || !versionf || !authorf || !descf || !titf || !descf) {
-    fprintf(stderr,"modind: error creating output files.\n");
-    exit(1);
+    if(!robotf || !versionf || !authorf || !descf || !titf || !langf) {
+      fprintf(stderr,"modind: error creating output files.\n");
+      exit(1);
     }
 }
 
@@ -368,18 +371,21 @@ int module_index(const char *name)
     int i,l;
 
     snprintf(fbuf,sizeof(fbuf),"%s/%s/INDEX",moduledir,name);
-    indf=fopen(fbuf,"r"); if(indf==NULL) return -1;
+    indf=fopen(fbuf,"r");
+    if(indf==NULL) {
+      fprintf(stderr,"modind: INDEX of %s not found\n",fbuf); return -1
+    }
     l=fread(ibuf,1,MAX_LINELEN,indf); fclose(indf);
     if(l>0 && l<MAX_LINELEN) ibuf[l]=0; else return -1;
 /* treate all fields in *modindex */
     for(i=0;i<MODINDEX_NO;i++) {
-    _getdef(ibuf,modindex[i],indbuf[i]);
+      _getdef(ibuf,modindex[i],indbuf[i]);
 /*  compatibility precaution */
-    if(indbuf[i][0]==':') indbuf[i][0]='.';
+      if(indbuf[i][0]==':') indbuf[i][0]='.';
     }
     p=find_word_start(indbuf[i_language]);
     if(isalpha(*p) && isalpha(*(p+1))) {
-    memmove(module_language,p,2); module_language[2]=0;
+      memmove(module_language,p,2); module_language[2]=0;
     }
     else ovlstrcpy(module_language,"en");
     return 0;
@@ -397,12 +403,12 @@ int sheet_index(int serial)
     if(l>0 && l<MAX_LINELEN) ibuf[l]=0; else return -1;
     for(i=0;i<SHEETINDEX_NO;i++) sindbuf[i][0]=0;
     for(i=0,p1=find_word_start(ibuf);
-    i<SHEETINDEX_NO-1 && *p1!=':' && *p1!=0;
-    i++,p1=p2) {
-    p2=strchr(p1,'\n');
-    if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-    p1=find_word_start(p1); strip_trailing_spaces2(p1);
-    snprintf(sindbuf[i],MAX_LINELEN,"%s",p1);
+      i<SHEETINDEX_NO-1 && *p1!=':' && *p1!=0;
+      i++,p1=p2) {
+       p2=strchr(p1,'\n');
+       if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
+       p1=find_word_start(p1); strip_trailing_spaces2(p1);
+       snprintf(sindbuf[i],MAX_LINELEN,"%s",p1);
     }
     p2=strstr(p1,"\n:"); if(p2==NULL) p2=p1+strlen(p1);
     else *p2=0;
@@ -491,10 +497,10 @@ void onemodule(const char *name, int serial, int lind)
  * for french exercises
  */
     for(i=0;i<catcnt;i++) {
-    snprintf(buf,sizeof(buf),"%s/lists/%c.%s",
+      snprintf(buf,sizeof(buf),"%s/lists/%c.%s",
          outdir,categories[i],lang[lind]);
-    f=fopen(buf,"a");
-    if(f!=NULL) {fprintf(f,"%s\n",name); fclose(f);}
+      f=fopen(buf,"a");
+      if(f!=NULL) {fprintf(f,"%s\n",name); fclose(f);}
     }
 /*   add serial number and language (resp.title, ...) to corresponding file  */
     fprintf(langf,"%d:%s\n",serial,module_language);
@@ -587,15 +593,15 @@ void onemodule(const char *name, int serial, int lind)
     q=buf+strlen(buf);
     for(p1=find_word_start(buf); (*p1) && (p1 < q) ;
     p1=find_word_start(p2)) {
-    p2=find_word_end(p1);
-    if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
-    if(!isalpha(*p1) ||
+      p2=find_word_end(p1);
+      if(p2!=NULL) *p2++=0; else p2=p1+strlen(p1);
+      if(!isalpha(*p1) ||
        (!isdigit(*(p1+1)) && *(p1+1)!=0) ||
        (*(p1+1)!=0 && *(p1+2)!=0))
       continue;
-    *p1=tolower(*p1);
-    ovlstrcpy(lbuf+strlen("level"),p1);
-    appenditem(lbuf,lind,serial,2,module_language);
+      *p1=tolower(*p1);
+      ovlstrcpy(lbuf+strlen("level"),p1);
+      appenditem(lbuf,lind,serial,2,module_language);
     }
 /*   append total weight of module to weight file site2/weight.xx  */
     fprintf(weightf,"%d:%d\n",serial,tweight);
@@ -747,24 +753,28 @@ void sheets(void)
     char buf[MAX_LINELEN+1];
 
     for(j=0;j<langcnt;j++) {
-    snprintf(buf,sizeof(buf),"%s/index/title.%s",sheetdir,lang[j]);
-    titf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/description.%s",sheetdir,lang[j]);
-    descf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/%s",sheetdir,lang[j]);
-    indf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/list.%s",sheetdir,lang[j]);
-    listf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/weight.%s",sheetdir,lang[j]);
-    weightf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/addr.%s",sheetdir,lang[j]);
-    addrf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/information.%s",sheetdir,lang[j]);
-    remf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/serial.%s",sheetdir,lang[j]);
-    serialf=fopen(buf,"w");
-    snprintf(buf,sizeof(buf),"%s/index/tit.%s",sheetdir,lang[j]);
-    titlef=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/title.%s",sheetoutdir,lang[j]);
+      titf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/description.%s",sheetoutdir,lang[j]);
+      descf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/%s",sheetoutdir,lang[j]);
+      indf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/list.%s",sheetoutdir,lang[j]);
+      listf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/weight.%s",sheetoutdir,lang[j]);
+      weightf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/addr.%s",sheetoutdir,lang[j]);
+      addrf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/information.%s",sheetoutdir,lang[j]);
+      remf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/serial.%s",sheetoutdir,lang[j]);
+      serialf=fopen(buf,"w");
+      snprintf(buf,sizeof(buf),"%s/tit.%s",sheetoutdir,lang[j]);
+      titlef=fopen(buf,"w");
+      if(!titlef || !serialf || !remf || !addrf || !weightf || !listf
+        || !indf || !descf || !titf ) {
+      fprintf(stderr,"modind: error creating output files for sheet %s.\n",sheetoutdir); exit(1);
+    }
     snprintf(mdic,sizeof(mdic),"%s/%s.%s",dicdir,maindic,lang[j]);
     snprintf(sdic,sizeof(sdic),"%s/%s.%s",dicdir,suffixdic,lang[j]);
     snprintf(gdic,sizeof(gdic),"%s/%s.%s",dicdir,groupdic,lang[j]);
