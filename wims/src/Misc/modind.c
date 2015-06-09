@@ -373,7 +373,7 @@ int module_index(const char *name)
     snprintf(fbuf,sizeof(fbuf),"%s/%s/INDEX",moduledir,name);
     indf=fopen(fbuf,"r");
     if(indf==NULL) {
-      fprintf(stderr,"modind: INDEX of %s not found\n",fbuf); return -1
+      fprintf(stderr,"modind: INDEX of %s not found\n",fbuf); return -1;
     }
     l=fread(ibuf,1,MAX_LINELEN,indf); fclose(indf);
     if(l>0 && l<MAX_LINELEN) ibuf[l]=0; else return -1;
