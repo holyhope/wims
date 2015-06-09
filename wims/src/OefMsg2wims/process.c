@@ -19,13 +19,12 @@
 int prepcnt;
 int ex_statement=0, ex_hint=0, ex_help=0, ex_solution=0, ex_latex=0;
 
-
-char vbuf_latex[MAX_LINELEN+1];
 const size_t MAX_KEY_LEN=128;
 char vbuf_statement[MAX_LINELEN+1];
 char vbuf_hint[MAX_LINELEN+1];
 char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
+char vbuf_latex[MAX_LINELEN+1];
 
 /* empty processor, template. */
 void empty(char *p[MAX_PARM]) {}
@@ -144,60 +143,27 @@ void p_statement(char *p[MAX_PARM])
     }
 }
 
-void p_hint(char *p[MAX_PARM])
+void p_gen(int *ex_gen, char vbuf_gen[], char *name_gen, char *p[MAX_PARM])
 {
-    if(ex_hint<0) return;
-    if(ex_hint>0 || p==NULL) {
-      out_exec(vbuf_hint,"hint");
-      ex_hint=-1; return;
+    if(*ex_gen<0) return;
+    if(*ex_gen>0 || p==NULL) {
+      out_exec(vbuf_gen, name_gen);
+      *ex_gen=-1; return;
     }
-    snprintf(vbuf_hint,sizeof(vbuf_hint),"%s",p[0]); subst(vbuf_hint);
-    if(strchr(vbuf_hint,'\\')!=NULL) {
-      fprintf(outf,"hint=%s\n",executed_str);
-      ex_hint=1;
+    snprintf(vbuf_gen,MAX_LINELEN,"%s",p[0]); subst(vbuf_gen);
+    if(strchr(vbuf_gen,'\\')!=NULL) {
+      fprintf(outf,"%s=%s\n", name_gen, executed_str);
+      *ex_gen=1;
     }
     else {
-      singlespace(vbuf_hint);
-      fprintf(outf,"hint=!nosubst %s\n\n", vbuf_hint);
+      singlespace(vbuf_gen);
+      fprintf(outf,"%s=!nosubst %s\n\n", name_gen, vbuf_gen);
     }
 }
 
-void p_help(char *p[MAX_PARM])
-{
-    if(ex_help<0) return;
-    if(ex_help>0 || p==NULL) {
-      out_exec(vbuf_help,"help");
-      ex_help=-1; return;
-    }
-    snprintf(vbuf_help,sizeof(vbuf_help),"%s",p[0]); subst(vbuf_help);
-    if(strchr(vbuf_help,'\\')!=NULL) {
-      fprintf(outf,"help=%s\n",executed_str);
-      ex_help=1;
-    }
-    else {
-      singlespace(vbuf_help);
-      fprintf(outf,"help=!nosubst %s\n\n", vbuf_help);
-    }
-}
-
-void p_solution(char *p[MAX_PARM])
-{
-    if(ex_solution<0) return;
-    if(ex_solution>0 || p==NULL) {
-      out_exec(vbuf_solution,"solution");
-      ex_solution=-1; return;
-    }
-    snprintf(vbuf_solution,sizeof(vbuf_solution),"%s",p[0]);
-    subst(vbuf_solution);
-    if(strchr(vbuf_solution,'\\')!=NULL) {
-      fprintf(outf,"solution=%s\n",executed_str);
-      ex_solution=1;
-    }
-    else {
-      singlespace(vbuf_solution);
-      fprintf(outf,"solution=!nosubst %s\n\n", vbuf_solution);
-    }
-}
+void p_hint(char *p[MAX_PARM]) {p_gen(&ex_hint, vbuf_hint, "hint", p);}
+void p_help(char *p[MAX_PARM]) {p_gen(&ex_help, vbuf_help, "help", p);}
+void p_solution(char *p[MAX_PARM]) {p_gen(&ex_solution, vbuf_solution, "solution", p);}
 
 void p_latex(char *p[MAX_PARM])
 {
