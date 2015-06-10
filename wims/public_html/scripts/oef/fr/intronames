@@ -1,0 +1,55 @@
+!! read also by modules/adm/class/config
+
+!distribute line Désolé, aucun exercice n'est disponible dans ce module pour l'instant. Revenez plus tard !\
+    Ce module contient en ce moment un seul exercice\
+    Essayez-le.\
+Choisissez parmi les exercices&nbsp;\
+contenant le(s) mot(s)\
+    Une série d'exercices aura\
+    Niveau de sévérité&nbsp;\
+    Chronomètre&nbsp;\
+    secondes\
+    Nombre de choix affichés\
+    Donner une solution (si disponible)\
+    Paramétrage simplifié\
+    Paramétrage expert\
+    Sélectionner les titres avec le mot\
+    exercices\
+    Paramétrage\
+    Paramétrage spécifique au module\
+    Paramétrage général\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu,name_module_setup,\
+    name_general_setup
+
+!distribute lines Calcul du score dans un exercice à plusieurs questions\
+Moyenne arithmétique, Pénalisation des erreurs, Pénalisation forte des erreurs\
+Calcul du score dans une série d'exercices\
+uniquement si vous choisissez une série d'au moins deux exercices\
+Moyenne arithmétique, Pénalisation des erreurs, Pénalisation forte des erreurs\
+Pénalité pour une mauvaise précision\
+into name_expower,name_prompt_expower, name_sepower,name_warning_pow,\
+name_prompt_sepower, name_precweight,name_prompt_precweight
+
+!set name_datamodule=Ce module a besoin du module de données <span class="tt">$module_data</span> \
+  qui n'est pas installé sur ce serveur. Si vous désirez l'utiliser, \
+  demandez au gestionnaire du site de l'installer.
+
+!set name_choice=jamais,si la note est non maximale,toujours
+!set name_qcm=QCM (uniquement dans certains types d'exercices)
+!set name_choice_check=Bonne réponse se trouvant toujours parmi les choix proposés.,\
+     Pénalité pour une mauvaise réponse.,\
+     Afficher la bonne réponse.,\
+     Permettre les indications (si disponibles).
+
+ !set name_aleaseries= Proposer les exercices de la série dans l'ordre.
+ !set name_remarkintro1=Après avoir choisi un ou plusieurs exercices, cliquez sur \
+<span class="wims_button disabled">$wims_name_work</span>. Les exercices proposés seront pris aléatoirement parmi vos choix \
+ (ou parmi tous les exercices disponibles si votre choix est vide).
+
+ !if * isin $titlelist
+   !set name_remarkintro2= Les exercices marqués par un * sont en général plus difficiles que les autres.
+ !endif
+!!leave on one line
+  !set name_remarkintro3=Vous pouvez mettre deux nombres dans le chronomètre, séparés par des virgules sans espaces, le deuxième étant plus grand que le premier. Le premier nombre représente le temps (en secondes) déclenchant la réduction du score, le second représente le temps à partir duquel le score sera 0.

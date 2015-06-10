@@ -1,0 +1,58 @@
+!! read also by modules/adm/class/config
+
+ !distribute line Sorry, this module has no available exercise for the time being. Come back later!\
+    This module contains actually only one exercise\
+    Try it.\
+    Choose the exercises\
+    Exercises containing\
+    One series will have\
+    Level of severity\
+    Time limit\
+    seconds\
+    Number of items shown in multiple choices\
+    Give solution (if available)\
+    Simplified menu\
+    Expert menu\
+    Select titles containing word\
+    exercises\
+    Set-up\
+    Specific set-up to the module\
+    General setup\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu,name_module_setup,\
+    name_general_setup
+
+!distribute lines Calcul du score dans un exercice à plusieurs questions\
+Moyenne arithmétique, Pénalisation des erreurs, Pénalisation forte des erreurs\
+Calcul du score dans une série d'exercices\
+uniquement si vous choisissez une série d'au moins deux exercices\
+Moyenne arithmétique, Pénalisation des erreurs, Pénalisation forte des erreurs\
+Pénalité pour une mauvaise précision\
+into name_expower,name_prompt_expower, name_sepower,name_warning_pow,\
+name_prompt_sepower, name_precweight,name_prompt_precweight
+
+!set name_datamodule=This module needs the data module <span class="tt">$module_data</span> \
+   which is not installed on this servor. If you whish to use it, \
+   you must ask to the site maintener to install it.
+
+!set name_choice=never,if the score is not maximal,always
+
+!set name_choice_check=Always contain correct reply,\
+  Penalty for wrong replies in multiple choices.,\
+  Show correct reply.,\
+  Allow hint (when available).
+
+!set name_aleaseries= Propose the exercises of the series in order.
+!set name_remarkintro1=After having selected an exercise from the list,\
+click <span class="wims_button disabled">$wims_name_work</span>. \
+The exercises will be drawn randomly from what you have selected \
+(or otherwise from among all the available exercises if you have not selected a particular one).
+
+
+
+!if * isin $titlelist
+  !set name_remarkintro2=Exercises marked by a * are in general harder than the others.
+!endif
+!!leave on one linew
+ !set name_remarkintro3=You can put two numbers into the time limit, a smaller limit followed by a bigger one, separated by commas, without space. In this case, the first limit starts score reduction, which will go to 0 if the second limit is reached.
