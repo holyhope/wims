@@ -31,7 +31,9 @@
  !set testw=!replace internal ; by $\
 $ in $special_parm3
  !set testw=!replace internal = by , in  $testw
- !for cle in exo,qnum,qcmlevel, scoredelay,intro_qcmpresent,intro_presentsol,intro_check,random,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
+ !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,\
+   intro_check,intro_sepow,intro_expow,intro_precw,random,confparm1,confparm2,confparm3,\
+   confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
   !set testw0=!select $testw where column 1=$cle
   !set get_$cle=$(testw0[;2..-1])
   !set get_$cle=!singlespace $(get_$cle)
@@ -57,8 +59,11 @@ $ in $special_parm3
  !default intro_qcmpresent=$wims_oefdefault_qcmpresent
  !default intro_presentsol=$wims_oefdefault_presentsol
  !default intro_check=$wims_oefdefault_check
+ !default intro_sepow=$wims_oefdefault_sepow
+ !default intro_expow=$wims_oefdefault_expow
+ !default intro_precw=$wims_oefdefault_precw
  !let special_parm2=$special_parm
- !if ($special_parm3=$empty or intro_expert=yes isin $special_parm3) and ($wims_oefdefault_qcmpresent!=$empty or $wims_oefdefault_presentsol!=$empty or $wims_oefdefault_check!=$empty)
+ !if ($special_parm3=$empty or intro_expert=yes isin $special_parm3) and ($wims_oefdefault_qcmpresent$wims_oefdefault_presentsol$wims_oefdefault_check$wims_oefdefault_sepow$wims_oefdefault_expow$wims_oefdefault_precw!=$empty)
     !let expert_option=yes
  !else
     !let expert_option=no
@@ -111,21 +116,32 @@ $ in $special_parm3
   !read oef/select.phtml
  </div>
 !endif
-<div class="field">
+!!!FIXME should test if there is an introhook
+<fieldset class="oef_expert">
+    <legend>$name_module_setup</legend>
+<div class="field introhook">
+<table class="field introhook">
+!read introhook.phtml
+</table>
+</div>
+</fieldset>
+<fieldset class="oef_expert">
+ <legend>$name_general_setup</legend>
+ <div class="field">
  <label for="qnum">$name_oneserie
  !default qnum=1
  !formselect qnum from 1 to 9
  $name_exercises.</label>
-</div>
-<div class="field">
- <label for="qcmlevel">$name_levelseverity:</label>
- !default qcmlevel=3
- !formselect qcmlevel from 1 to 9
-</div>
-<div class="field">
- <label for="scoredelay">$name_chrono:</label>
- <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
-</div>
+ </div>
+ <div class="field">
+  <label for="scoredelay">$name_chrono:</label>
+  <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
+ </div>
+ <div class="field">
+     <label>
+      !formcheckbox random list 0 prompt $name_aleaseries
+     </label>
+ </div>
 !set translation_language=!getdef translation_language in INDEX
 !if $translation_language!=$empty
   !set translation_language=$module_language,$translation_language
@@ -136,17 +152,26 @@ $ in $special_parm3
    !formradio lang_choice list $translation_language
   </div>
 !endif
-!!!FIXME should test if there is an introhook
-<table class="field introhook">
-!read introhook.phtml
-</table>
-!if expert iswordof $special_parm2 or yes isin $expert_option
-   !default intro_check=1,2,3,4
+</fieldset>
+!if expert notwordof $special_parm2 and yes notin $expert_option
+  <fieldset class="oef_expert">
+    <legend>$name_simplifiedmenu</legend>
+  <div class="field">
+  <label for="qcmlevel">$name_levelseverity:</label>
+ !default qcmlevel=3
+ !formselect qcmlevel from 1 to 9
+ </div>
+</fieldset>
+!else
+   !!default intro_check=1,2,3,4
+   !default intro_sepow=1
+   !default intro_expow=1
+   !default intro_precw=1
+   !default intro_presentsol=1
     <fieldset class="oef_expert">
     <legend>$name_expertmenu</legend>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
-     !default intro_presentsol=1
      !formselect intro_presentsol list 0,1,2 prompt $name_choice
     </div>
     <div class="field">
@@ -160,15 +185,29 @@ $ in $special_parm3
      </label>
     </div>
     <div class="field">
-     <label>
-      !formcheckbox random list 0 prompt $name_aleaseries
-     </label>
+     $name_expower:
+     <div>
+      !formradio intro_expow list 1,2,3 prompt $name_prompt_expower
+     </div>
+    </div>
+    <div class="field">
+    $name_sepower:
+      <div>
+      !formradio intro_sepow list 1,2,3 prompt $name_prompt_sepower
+      </div>
+    <div class="formHelp"> $name_warning_pow</div>
+     </div>
+    <div class="field">
+     $name_precweight
+      <div>
+      !formbar intro_precw list 1,2,3
+     </div>
     </div>
 <hr />
 $name_qcm
+!default intro_qcmpresent=4
     <div class="field">
      <label for="intro_qcmpresent">$name_qcmanswer: </label>
-     !default intro_qcmpresent=4
      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
     <div class="field">
@@ -191,6 +230,7 @@ $name_qcm
    <p class="oef_intro_buttons">
     !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu
    </p>
+   </div>
    </fieldset>
 !else
    !let tmp=$special_parm2 expert
@@ -236,7 +276,6 @@ $name_remarkintro1
 <div class="wims_smallremark">
 $name_remarkintro3
 </div>
-
 
 !! very tricky ...
 !reset authorlist

@@ -1,7 +1,11 @@
-!readdef wimshome/log/classes/$wims_class/supervisor
+
 !if $step=$empty
+ !readdef wimshome/log/classes/$wims_class/supervisor
  !bound user_qnum between integer 1 and 9 default 1
  !bound user_qcmlevel between integer 1 and 9 default 3
+ !bound user_sepow between integer 1 and 3 default 1
+ !bound user_expow between integer 1 and 3 default 1
+ !bound user_precw between integer 1 and 3 default 1
  !if $nw_scoredelay!=$empty
   nw_scoredelay=!items2words $nw_scoredelay
   !distribute word $nw_scoredelay into l1,l2
@@ -11,10 +15,11 @@
  !endif
  !bound nw_qcmpresent between integer 2 and 8 default 3
  !bound nw_presentsol between 0 and 2 default 0
- nw_check=!listintersect $nw_check and 1,2,3,4
+  nw_check_=$nw_check1,$nw_check2,$nw_check3,$nw_check4
+  nw_check_=!listintersect $nw_check_ and 1,2,3,4
 !else
  !bound nw_qnum between integer 1 and 9 default $user_qnum
- !bound nw_qcmlevel between 1 and 9 $user_qcmlevel
+ !bound nw_qcmlevel between 1 and 9 default $user_qcmlevel
  !distribute word $nw_scoredelay into l1,l2
  !if $l1!=$empty or $l2!=$empty
   !bound l1 between 1 and 2000
@@ -23,21 +28,38 @@
  !else
   nw_scoredelay=$empty
  !endif
+!!debug $nw_check_ : $nw_check1,$nw_check2,$nw_check3,$nw_check4
  !bound nw_qcmpresent between 2 and 8 default $user_qcmpresent
  !bound nw_presentsol between 0 and 2 default $user_presentsol
- nw_check=!listintersect $nw_check and 1,2,3,4
+ !bound nw_sepow between integer 1 and 3 default $user_sepow
+ !bound nw_expow between integer 1 and 3 default $user_expow
+ !bound nw_precw between integer 1 and 3 default $user_precw
+ !set nw_check_=$nw_check1,$nw_check2,$nw_check3,$nw_check4
+ !set nw_check_=!nonempty items $nw_check_
+ !set nw_check_=!listintersect $nw_check_ and 1,2,3,4
+
  !setdef !set user_qnum=$nw_qnum\
 !set user_qcmlevel=$nw_qcmlevel\
 !set user_scoredelay=$nw_scoredelay\
 !set user_qcmpresent=$nw_qcmpresent\
 !set user_presentsol=$nw_presentsol\
-!set user_check=$nw_check in wimshome/log/classes/$wims_class/supervisor
+!set user_check=$nw_check_\
+!set user_sepow=$nw_sepow\
+!set user_expow=$nw_expow\
+!set user_precw=$nw_precw\
+in wimshome/log/classes/$wims_class/supervisor
+
  !setdef wims_oefdefault_qnum=$nw_qnum\
 wims_oefdefault_qcmlevel=$nw_qcmlevel\
 wims_oefdefault_scoredelay=$nw_scoredelay\
 wims_oefdefault_qcmpresent=$nw_qcmpresent\
 wims_oefdefault_presentsol=$nw_presentsol\
-wims_oefdefault_check=$nw_check in wimshome/sessions/$wims_session/var.stat
- !readdef wimshome/log/classes/$wims_class/supervisor
+wims_oefdefault_check=$nw_check_\
+wims_oefdefault_expow=$nw_expow\
+wims_oefdefault_sepow=$nw_sepow\
+wims_oefdefault_precw=$nw_precw\
+in wimshome/sessions/$wims_session/var.stat
+
+!readdef wimshome/log/classes/$wims_class/supervisor
 
 !endif
