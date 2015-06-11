@@ -1,6 +1,6 @@
 !! display list of participant with usual information
 !! work to do
-!!ATTENTION : il faut faire un tableau different en fonction du niveau de structure de la classe d'appel (portail, superclass, etc...) reflechir Ã  ce que l'on affiche.
+!!ATTENTION : il faut faire un tableau different en fonction du niveau de structure de la classe d'appel (portail, superclass, etc...) reflechir à ce que l'on affiche.
 
 !read adm/title.phtml 1\
 $classname\
@@ -37,7 +37,7 @@ $wims_name_part_list ($usercnt)
 !! ----- displaying table of participant
     $table_header
 	$table_hdtr
-	    !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth,$name_comments
+	    !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth,$name_vars,$name_comments
 		<th>$k</th>
 	    !next k
 	</tr>
@@ -51,10 +51,11 @@ $wims_name_part_list ($usercnt)
 $varfilter_
 	!endif
 	!if $(var_filter_test)=1 or $varfilter_=$empty
-!!          !set UU=!hex $uu
-          !reset user_exists,user_email,user_regnum,user_external_auth,user_comments$namecomment,user_comments
-	  !readproc adm/class/userdef classes,$wims_class,$uu
+!!        !set UU=!hex $uu
+          !reset user_exists,user_email,user_regnum,user_external_auth,user_vars,user_comments$namecomment,user_comments
+	      !readproc adm/class/userdef classes,$wims_class,$uu
           !readdef $userdef
+          !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
 	  $table_tr
              <td>
 		!href cmd=reply&job=userprop&getuser=$uu $name_studentloc
@@ -63,8 +64,8 @@ $varfilter_
 	        !endif
 	     </td>
 	     <td>$uu</td>
-             !for k in email,regnum,external_auth
-                 <td> $(user_$(k))</td>
+             !for k in email,regnum,external_auth,vars
+                 <td>$(user_$(k))</td>
              !next k
              <td>
                   !readproc adm/class/mkcomment val
