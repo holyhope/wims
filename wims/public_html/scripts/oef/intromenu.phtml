@@ -153,15 +153,21 @@ $ in $special_parm3
   </div>
 !endif
 </fieldset>
+<fieldset class="oef_expert">
+  <legend>$name_score_setup</legend>
 !if expert notwordof $special_parm2 and yes notin $expert_option
-  <fieldset class="oef_expert">
-    <legend>$name_simplifiedmenu</legend>
   <div class="field">
   <label for="qcmlevel">$name_levelseverity:</label>
  !default qcmlevel=3
  !formselect qcmlevel from 1 to 9
  </div>
-</fieldset>
+   !let tmp=$special_parm2 expert
+   !set tmp3=!replace internal intro_expert=no by $ in $special_parm3
+   !set tmp3=$tmp3 intro_expert=yes
+   !set wims_ref_class=wims_button
+   <p class="oef_intro_buttons">
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_expertmenu
+   </p>
 !else
    !!default intro_check=1,2,3,4
    !read oef/default
@@ -169,8 +175,14 @@ $ in $special_parm3
    !default intro_expow=1
    !default intro_precw=1
    !default intro_presentsol=1
-    <fieldset class="oef_expert">
-    <legend>$name_expertmenu</legend>
+   !let tmp=!replace word expert by $ in $special_parm2
+    !set tmp3=!replace internal intro_expert=yes by $ in $special_parm3
+    !set tmp3=$tmp3 intro_expert=no
+    <input type="hidden" name="intro_expert" value="yes" />
+   !set wims_ref_class=wims_button
+   <p class="oef_intro_buttons">
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu
+   </p>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
      !formselect intro_presentsol list 0,1,2 prompt $name_choice
@@ -221,29 +233,8 @@ $name_qcm
       !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
      </label>
     </div>
-
-    !let tmp=!replace word expert by $ in $special_parm2
-    !set tmp3=!replace internal intro_expert=yes by $ in $special_parm3
-    !set tmp3=$tmp3 intro_expert=no
-    <input type="hidden" name="intro_expert" value="yes" />
-
-   !set wims_ref_class=wims_button
-   <p class="oef_intro_buttons">
-    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu
-   </p>
-   </div>
-   </fieldset>
-!else
-   !let tmp=$special_parm2 expert
-   !set tmp3=!replace internal intro_expert=no by $ in $special_parm3
-   !set tmp3=$tmp3 intro_expert=yes
-   !set wims_ref_class=wims_button
-   <p class="oef_intro_buttons">
-    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_expertmenu
-   </p>
 !endif
-</div>
-
+</fieldset>
 <div class="oef_intro_buttons">
 	<input type="submit" value="$wims_name_work" />&nbsp;
 	<input type="submit" name="print" value="$name_print" />
