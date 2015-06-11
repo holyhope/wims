@@ -1,3 +1,5 @@
+!! read also by modules/adm/class/config
+
 !distribute line Spiacente, questo modulo non contiene ancora esercizi. Riprovate più tardi.\
  Questo modulo contiene un solo esercizio\
  Provatelo.\
@@ -14,16 +16,28 @@
  Scegli titoli che contengono la parola\
  esercizi\
  Opzioni esercizio\
-into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
-name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
-name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu
+    Opzioni specifiche per il modulo\
+    Opzioni generali\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu,name_module_setup,\
+    name_general_setup
+
+!distribute lines Calcolo del punteggio in esercizi con più domande\
+Media aritmetica,Penalizzazione degli errori,Forte penalizzazione degli errori\
+Calcolo del punteggio nelle serie di esercizi\
+si applica alle serie costituite da almeno due esercizi\
+Media aritmetica,Penalizzazione degli errori,Forte penalizzazione degli errori\
+Penalizzazione per le risposte imprecise\
+into name_expower,name_prompt_expower, name_sepower,name_warning_pow,\
+name_prompt_sepower, name_precweight,name_prompt_precweight
 
  !set name_datamodule=Per utilizzare questo modulo è necessario che sia installato anche il modulo <span class="tt">$module_data</span> \
   che invece non è presente sul server. Se avete necessità, dovete chiedere al \
-  gestore del sito di installare le componenti mancanti.
+  webmaster di installare le componenti mancanti.
 
 !set name_choice=mai,se il punteggio non è massimo,sempre
-
+!set name_qcm=QCM (solamente per alcuni tipi di esercizi)
 !set name_choice_check=Le scelte multiple contengono sempre la risposta giusta.,\
   Le risposte sbagliate nelle scelte multiple sono penalizzate.,\
   Mostra la risposta giusta.,\
@@ -37,8 +51,7 @@ selezionato alcun esercizio, la scelta varierà tra tutti gli \
 esercizi disponibili.
 
 !if * isin $titlelist
-!set name_remarkintro2=Gli esercizi contrassegnati da * sono in generale un po' più \
- difficili degli altri.
+!set name_remarkintro2=Gli esercizi contrassegnati da * sono in generale un po' più difficili degli altri.
 !endif
 !!leave on one line
 !set name_remarkintro3=Come limite di tempo si possono inserire due valori, uno più piccolo seguito da uno più grande. In questo caso, quando si raggiunge il primo limite il punteggio viene ridotto mentre quando si raggiunge il secondo limite, il punteggio viene azzerato.
