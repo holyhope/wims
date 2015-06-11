@@ -1,3 +1,7 @@
+!if $(module_title_$moduclass_lang)!=$empty
+  !set module_title=$(module_title_$moduclass_lang)
+!endif
+
 !read adm/css.phtml
 !read adm/class/classname.phtml $wims_classname\
 $wims_institutionname
@@ -18,7 +22,7 @@ $wims_institutionname
 
 !read adm/title.phtml 1\
 $classname\
-$wims_name_part_list ($usercnt)
+$module_title ($usercnt)
 
 !if $error!=$empty
  <div class="wims_alertmsg">
