@@ -87,8 +87,10 @@
   </div>
 !endif
 </fieldset>
+!default expert_=no
 <fieldset class="oef_expert">
 <legend>$name_simplifiedmenu</legend>
+!formradio expert_ list no prompt $name_simplifiedmenu
 <div class="field">
  <label for="qcmlevel">$name_levelseverity:</label>
  !default qcmlevel=3
@@ -98,6 +100,7 @@
 !default intro_check=1,2,3,4
 <fieldset class="oef_expert">
   <legend>$name_expertmenu</legend>
+  !formradio expert_ list yes prompt $name_expertmenu
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
      !default intro_presentsol=1
@@ -117,6 +120,19 @@
      <label>
       !formcheckbox random list 0 prompt $name_aleaseries
      </label>
+    </div>
+    <div class="field box">
+    $name_expower
+    !formradio intro_expow list 1,2,3 prompt $name_prompt_expower
+    </div>
+    <div class="field box">
+     $name_sepower
+    !formradio intro_sepow list 1,2,3 prompt $name_prompt_sepower
+    <div class="formHelp">$name_warning_pow</div>
+    </div>
+    <div class="field box">
+    $name_precweight
+    !formbar intro_precw list 1,2,3 prompt $name_prompt_precweight
     </div>
 <hr />
 $name_qcm
