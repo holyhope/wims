@@ -93,7 +93,7 @@ Selezionate quelle che volete ripristinare.
  !distribute lines Spiacente, il salvataggio del vostro corso non è andato a buon fine.\
    Ecco il file di backup del vostro corso:\
   Cliccare sul nome per salvare tale file sul vostro computer.\
-  &Egrave; anche possibile fare una selezione delle risorse da salvare nell'elenco seguente: \
+  È anche possibile fare una selezione delle risorse da salvare nell'elenco seguente: \
   Backup selettivo:\
   seleziona risorse\
   e modifica il file di backup già generato.\
@@ -119,7 +119,7 @@ Selezionate quelle che volete ripristinare.
    Esegui un backup del corso\
    Risorse effettivamente presenti nel corso\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Le risorse elimitate con questa procedura non possono più essere ripristinate!
+  !set name_warning_clean=Le risorse eliminate con questa procedura non possono più essere ripristinate!
  !goto commun
 !endif
 
@@ -183,9 +183,10 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   <span class="wims_button disabled">$wims_name_tosave</span></i>)
 
  !set name_warning_authorized=!nosubst La classe <span class="wims_emph">$nei_description</span>\
-  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
-  sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
-  voulez partager des ressources.
+  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes types de ressources \
+  sous peine de confusion. Commencez par  décider quelle classe, parmi celles avec lesquelles vous\
+  voulez partager des ressources, autorise le partage de tel type de ressource\
+  et quelles classes acceptent ce partage.
 
  !distribute lines Relazioni di vicinato\
    non ha dichiarato rapporti di vicinato con il vostro corso\
@@ -318,21 +319,22 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
 !if $job=oefdefault
  !set title=Parametri di default per moduli di esercizi OEF
-  !distribute lines Una sessione contiene\
-   Livello di difficoltà\
-   Limite di tempo\
-   secondi\
-   Numero di risposte multiple da cui scegliere\
-   Dare la soluzione (se disponibile)?\
-   mai,se il punteggio non è massimo,sempre\
-   Le scelte multiple contengono sempre la risposta giusta\
-    Le risposte sbagliate nelle scelte multiple sono penalizzate.\
-   Mostra la risposta giusta.\
-   Mostra suggerimenti (se disponibili).\
-  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
-    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+ !read oef/it/intronames
 
-   !set name_warning=!getdef name_remarkintro3 in oef/$lang/names
+ !distribute lines $name_oneserie\
+   $name_levelseverity\
+   $name_chrono\
+   $name_secondes\
+   $name_qcmanswer\
+   $name_solutiongiven\
+   $name_choice\
+   $(name_choice_check[1])\
+   $(name_choice_check[2])\
+   $(name_choice_check[3])\
+   $(name_choice_check[4])\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcmanswer,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+   !set name_warning=$(name_remarkintro3)
  !goto commun
 !endif
 
@@ -453,7 +455,7 @@ allows you to verify whether there are suspicious activities.
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform,name_config_supconnectshowed
-    !set name_config_exotitleformoption=Nessuno,Titolo dell'esercizio,Numero del test e dell'esercizio,Titolo del test e numero dell'esercizio,Titolo del tset e titolo dell'esercizio nel test
+ !set name_config_exotitleformoption=Nessuno,Titolo dell'esercizio,Numero del test e dell'esercizio,Titolo del test e numero dell'esercizio,Titolo del tset e titolo dell'esercizio nel test
 
 !endif
 
@@ -574,11 +576,10 @@ disponibili.</li>
  <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
  the webmaster</a> to erase it for you.
  </p>
-
  !exit
 
 :clean2
-<p><span class="wims_warning">$wims_name_warning</span>.</p> <ul><li> Questa funzione è disponibile solo in fase di prima configurazione del corso. Una volta che l'attività degli studenti è cominciata non è più possibile eliminare risorse.
+<span class="wims_warning">$wims_name_warning</span>. <ul><li> Questa funzione è disponibile solo in fase di prima configurazione del corso. Una volta che l'attività degli studenti è cominciata non è più possibile eliminare risorse.
 </li><li>
  L'operazione di eliminazione di risorse condivise può essere effettuata
 solo nei corsi che originano la condivisione. Per fare ciò occorre
@@ -670,6 +671,3 @@ degli iscritti, i messaggi del forum e i documenti del corso. È possibile
 fare più backup separati per ognuna di queste risorse.
 </p>
 !exit
-
-
-
