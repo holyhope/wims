@@ -21,16 +21,16 @@ shlist=
    !if 4 isitemof $intro_check
       givehint=1
    !endif
-   !bound intro_expow between 1 and 3 default 1
-   !bound intro_sepow between 1 and 3 default 1
-   !bound intro_precweight between 1 and 3 default 1
+   !bound intro_expow between 1 and 6 default 1
+   !bound intro_sepow between 1 and 6 default 1
+   !bound intro_precw between 0 and 1 default 0.9
    !if $qnum>1
-      scorepower=!item $intro_sepow of 1,1.5,2
+      scorepower=$intro_sepow
    !else
       scorepower=1
    !endif
-   freepower=!item $intro_expow of 1,1.5,2
-   precweight=!item $intro_precw of 0.9,0.5,0.2
+   freepower=$intro_expow
+   precweight=$intro_precw
    intro_check=!listintersect $intro_check and 1,2,3,4
 !!for choice type
    !if 1 isitemof $intro_check

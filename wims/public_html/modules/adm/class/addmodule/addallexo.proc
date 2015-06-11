@@ -82,8 +82,8 @@ exocnt=!itemcnt $exolist
   !if NaN isin $weight
    weight=0
   !endif
-  !bound require between 0,$[10*$require_limit] default 0
-  !bound weight between 0,10 default 0
+  !bound require between 0 and $[10*$require_limit] default 0
+  !bound weight between 0 and 10 default 0
  !endif
 !! vérification des donnees d'execution du module d'exo
  test_transl=!module translation_language $dir
@@ -103,9 +103,9 @@ exocnt=!itemcnt $exolist
  !bound qcmlevel between integer 1 and 9 default $wims_oefdefault_qcmlevel
  !bound intro_qcmpresent between integer 2 and 8 default $wims_oefdefault_qcmpresent
  !bound intro_presentsol between integer 0 and 2 default $wims_oefdefault_presentsol
- !bound intro_expow between integer 1 and 3 default $wims_oefdefault_expow
- !bound intro_sepow between integer 1 and 3 default $wims_oefdefault_sepow
- !bound intro_precw between integer 1 and 3 default $wims_oefdefault_precw
+ !bound intro_expow between 1 and 6 default $wims_oefdefault_expow
+ !bound intro_sepow between 1 and 6 default $wims_oefdefault_sepow
+ !bound intro_precw between 0 and 1 default $wims_oefdefault_precw
 
  intro_check=!listintersect $intro_check and 1,2,3,4
  !bound random within 0,1 default 0
@@ -114,7 +114,7 @@ exocnt=!itemcnt $exolist
   !distribute words $d_ into delay1,delay2
   !bound delay1 between integer 0 and 2000 default 0
   !bound delay2 between integer $delay1 and 2000
-  scoredelay=$delay1 $delay2
+  scoredelay=$delay1,$delay2
  !endif
  iniparm=$empty
  !if $expert_=yes

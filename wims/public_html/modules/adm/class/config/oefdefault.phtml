@@ -12,7 +12,6 @@
    <label for="nw_scoredelay">$name_chrono </label>
    <input size="7" name="nw_scoredelay" id="nw_scoredelay" value="$user_scoredelay" /> $name_secondes.
   </div>
-  </div>
   </fieldset>
   <fieldset class="property_fields blockcenter">
   <legend>$name_simplifiedmenu</legend>
@@ -44,22 +43,23 @@
    $name_prompt4
    !formradio nw_check4 list 4,0 prompt $wims_name_yes,$wims_name_no
    </div>
-!let tmp=!replace word expert by $ in $special_parm2
-    <div class="field box">
+    !let tmp=!replace word expert by $ in $special_parm2
     !set nw_sepow=$user_sepow
     !set nw_expow=$user_expow
     !set nw_precw=$user_precw
+    <div class="field box">
     $name_expower
-    !formradio nw_expow list 1,2,3 prompt $name_prompt_expower
+    !read oef/default
+    !formradio nw_expow list $list_expow prompt $name_prompt_expower
     </div>
     <div class="field box">
      $name_sepower
-    !formradio nw_sepow list 1,2,3 prompt $name_prompt_sepower
+    !formradio nw_sepow list $list_sepow prompt $name_prompt_sepower
     <div class="formHelp">$name_warning_pow</div>
     </div>
     <div class="field box">
     $name_precweight
-    !formbar nw_precw list 1,2,3 prompt $name_prompt_precweight
+    !formbar nw_precw list $list_precw prompt $name_prompt_precweight
     </div>
   <hr />
   $name_qcm
