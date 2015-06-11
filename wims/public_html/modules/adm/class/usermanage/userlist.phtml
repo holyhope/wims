@@ -7,10 +7,9 @@ $classname\
 $wims_name_part_list ($usercnt)
 
 !reset table_center
-
+!set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
 !if $usercnt=0
     <div class="wimscenter">
-    !set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
     $name_noyetparticipant
     !if $typen!=level
         &nbsp;
@@ -77,17 +76,20 @@ $varfilter_
     </table>
 !endif
 
-
 !! define wims_menu_items
 !set wims_menu_items=!append line csv,1,module=adm/class/userscore&job=csv\
 ,0,\
 sendmail,1,module=adm/class/sendmail\
 photoboard,1,module=adm/class/photoboard\
 ,0,\
-Score1,1,module=adm/class/userscore\
-livret,1,module=adm/class/livret\
+to $wims_menu_items
+!if $typen notwordof level portal program group \
+   or ($typen iswordof class and $wims_class=$wims_superclass)
+ !set wims_menu_items=!append line Score1,1,module=adm/class/userscore\
+ livret,1,module=adm/class/livret\
 ,0,\
 to $wims_menu_items
+!endif
 !if $typen!=level
  !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
 to $wims_menu_items
