@@ -52,6 +52,6 @@ for j in $wims_exec ; do
       echo "CHANGE"
      else
       echo "OK"
-      rm -f $wims_tmp/$j.diff;
+      rm -f $wims_tmp/$j.diff; rm $j.html;
      fi
 done
