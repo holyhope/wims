@@ -1,6 +1,11 @@
 
 !! list of basic keyword
-basic=login lastname firstname password email regnum comments photourl participate supervise supervisable external_auth vars
+basic=login lastname firstname password email regnum comments photourl \
+  external_auth vars
+!if $wims_user=supervisor and $typename iswordof portal
+   basic2=supervise supervisable participate
+!endif
+
 !! list of active sheet
 sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
@@ -66,5 +71,5 @@ av=
     name_$se0=$name I0 (%)
     name_$se1=$name I1 (%)
     name_$se2=$name I2
-  !next ee 
+  !next ee
 !next i
