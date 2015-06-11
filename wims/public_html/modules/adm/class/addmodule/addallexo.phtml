@@ -62,6 +62,7 @@
 </fieldset>
 
 !!debut du menu voir intromenu.phtml
+
 <div id="oef_intro_params">
 <h2 class="legend oef_name_menu">$name_menu</h2>
 <fieldset class="oef_expert">
@@ -89,18 +90,20 @@
 </fieldset>
 !default expert_=no
 <fieldset class="oef_expert">
-<legend>$name_simplifiedmenu</legend>
+<legend>$name_score_setup:
 !formradio expert_ list no prompt $name_simplifiedmenu
+</legend>
 <div class="field">
  <label for="qcmlevel">$name_levelseverity:</label>
  !default qcmlevel=3
  !formselect qcmlevel from 1 to 9
 </div>
 </fieldset>
-!default intro_check=1,2,3,4
+!!default intro_check=1,2,3,4
 <fieldset class="oef_expert">
-  <legend>$name_expertmenu</legend>
+  <legend>$name_score_setup:
   !formradio expert_ list yes prompt $name_expertmenu
+  </legend>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
      !default intro_presentsol=1
@@ -121,9 +124,13 @@
       !formcheckbox random list 0 prompt $name_aleaseries
      </label>
     </div>
-!read oef/default
+    !read oef/default
+    !default intro_expow=$($list_expow[1])
+    !default intro_sepow=$($list_sepow[1])
+    !default intro_expow=$($list_precw[1])
     <div class="field box">
     $name_expower
+
     !formradio intro_expow list $list_expow prompt $name_prompt_expower
     </div>
     <div class="field box">
@@ -155,7 +162,6 @@ $name_qcm
     !let tmp=!replace word expert by $ in $special_parm2
     !set tmp3=!replace internal intro_expert=yes by in $special_parm3
     <input type="hidden" name="intro_expert" value="yes" />
-
    </fieldset>
 </div>
  <div class="wimscenter wimsform">
