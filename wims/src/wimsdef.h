@@ -49,7 +49,7 @@
  * it must be also less than 99 (see exam.c)
  */
 /* max number of exercises in a sheet or exam; not modifiable */
-#define MAX_EXOS 70
+#define MAX_EXOS 64
 /* max number of sheets; not modifiable */
 #define MAX_SHEETS 64
 /* max number of exams; not used except in Misc/exostat and in adm modules */
