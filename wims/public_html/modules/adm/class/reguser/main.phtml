@@ -430,7 +430,7 @@ $name_inscription4:
     </p>
    !endif
   !endif
-  !set wims_menu_items=!append line part_list,1,module=adm/class/usermanage\
+  !set wims_menu_items=!append line usermanage,1,module=adm/class/usermanage\
  addstudent,1,module=$module&step=1\
  to wims_menu_items
   !goto end
@@ -478,7 +478,12 @@ $name_inscription4:
 !endif
 
 :end1
+
 !if $wims_user=supervisor
+ !if $step=1
+ !set wims_menu_items=!append line back2,1,module=adm/class/usermanage\
+to $wims_menu_items
+ !endif
  !goto end
 !endif
 
