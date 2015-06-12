@@ -38,6 +38,8 @@ Para elegir su trabajo, tienen una de las posibilidades siguientes
 !set name_text2= Pasar por el motor de investigación
 !set name_text3=Buscar un ejercicio entre
 !set name_text4=Buscar un ejercicio de su cuenta
+!set name_texttaxo= Find an exercise in some taxonomies
+!set name_textsubject= Find an exercise by subject (keywords)
 
 !set name_getsource=Voici le source de cette feuille. Vous pouvez copier ce source (entre les deux lignes composées de `*'; \
 utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement.

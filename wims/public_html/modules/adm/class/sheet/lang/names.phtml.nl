@@ -39,6 +39,8 @@ Voor het selecteren van oefening zijn de volgende opties beschikbaar:
 !set name_text2=Geef een zoekopdracht
 !set name_text3=Zoek naar een oefening met
 !set name_text4=Zoek een oefening uit uw eigen account
+!set name_texttaxo= Find an exercise in some taxonomies
+!set name_textsubject= Find an exercise by subject (keywords)
 
 !set name_getsource=Hier staat de broncode van dit werkblad. U kunt deze kopieren (tussen de twee regels met "****") en hergebruiken voor een ander werkblad.
 
