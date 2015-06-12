@@ -12,7 +12,8 @@ stars names names2 sums
 relations relationempty relationempty2 relationempty3
 mixed1 mixed2 mixed3 mixed4 mixed5
 par stupid warn1ok warn1
-parent"
+parent
+an"
 
 for a in $test; do
   $wims_home/src/wims test $wims_dirtest texmath $a
