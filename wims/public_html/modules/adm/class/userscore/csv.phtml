@@ -167,5 +167,12 @@ $name_data2<ul>
 !formend
 !endif
 
-!set wims_menu_items=!append line back2,1,cmd=resume\
+
+!if $wims_user=supervisor and ($wims_typename iswordof course or \
+($wims_typename iswordof class and $wims_supertype iswordof 0 2))
+  !set wims_menu_items=!append line Score1,1,cmd=resume\
+to $wims_menu_items
+!endif
+
+!set wims_menu_items=!append line usermanage,1,module=adm/class/usermanage\
 to $wims_menu_items
