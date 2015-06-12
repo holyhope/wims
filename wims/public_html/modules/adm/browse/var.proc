@@ -41,6 +41,15 @@ Tot_dom=!sort items $Tot_dom
    !endif
   !endif
 !next
+!! take the english version
+!for taxo in $list_taxo
+   !set tmp=!replace internal . by , in $(taxo)
+   !if $(tmp[1]) notin $list_taxonomy
+     !set script_taxo=yes
+     !set list_taxonomy=!append item taxoext/$(tmp[1]).phtml.en to $list_taxonomy
+   !endif
+!next
+
 !set lang_exists=!defof lang_exists in keywords.phtml.$lang
   !if $lang_exists=yes
     !set script_keywords=yes
