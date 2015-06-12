@@ -109,6 +109,7 @@ $name_data2<ul>
   !if $($bas)!=$empty
    <li>
    !let tmp=!replace password by in $($bas)
+   !let tmp=!replace vars by in $($bas)
    !let tmp=!words2items $tmp
    !for k in $tmp
     <input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label>
@@ -119,6 +120,9 @@ $name_data2<ul>
 !let list_type=sh,ex,ma,shexo
 !let list_name=$wims_name_Sheets,$wims_name_Examens,$name_manualscore,$name_indicateur
 !let list_keyword=sheet,exam,manual,sheetexo
+!if $($(list_type[1]))!=$empty or $($(list_type[2]))!=$empty or $($(list_type[3]))!=$empty or $($(list_type[4]))!=$empty
+ <li><input type="checkbox" name="csvdownload" id="csvdownload_allscore" value="allscore"/><label for="csvdownload_allscore">$name_allscore</label></li>
+!endif
 !for t from 1 to 4
     !if $($(list_type[$t]))!=$empty
 	 !let tmp=!words2items $($(list_type[$t]))

@@ -127,6 +127,7 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
   !set name_indicateur=Indicator
   !set name_otherkeyword=Other keywords (technical variables)
   !set name_all=All
+  !set name_allscore=All score
 !endif
 
 !set name_topten=!nosubst Top $class_topscores de las medias de la clase

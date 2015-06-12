@@ -126,6 +126,7 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
   !set name_indicateur=Indicatie
   !set name_otherkeyword=Andere zoekterm
   !set name_all=Alles
+  !set name_allscore=All score
 !endif
 
 !set name_topten=!nosubst Top $class_topscores van deze klas
