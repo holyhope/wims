@@ -138,7 +138,7 @@ void _form_menus(char *p,int kind)
 
         case FORM_RADIO:
         case FORM_CHECKBOX:
-         if (itemcnt > 2) {
+         if (itemcnt > 1) {
          output("%s<input type=\"%s\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
              pfrb,name,nbuf,input_id,i+1,p0,pc,input_id,i+1,plist[i],pfre);
          } else {
@@ -155,6 +155,7 @@ void _form_menus(char *p,int kind)
       }
     }
     setvar("wims_ref_class","");
+    setvar("wims_ref_id","");
     setvar("wims_html_mode","");
     if(kind==FORM_SELECT) _output_("</select>");
     if(kind==FORM_BAR) output("<span style=\"font-weight:bold;\">+</span>%s",pfre);
