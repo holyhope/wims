@@ -4,10 +4,13 @@
 $classname\
 $wims_name_csv
 
+!if $wims_user=supervisor and ($wims_typename iswordof course or \
+($wims_typename iswordof class and $wims_supertype iswordof 0 2))
 <p class="wimscenter">
 !set wims_ref_class=wims_button
 !href cmd=reply $name_direct_score
 </p>
+!endif
 
 !if $error!=$empty
  <div class="wims_alertmsg">
