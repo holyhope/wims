@@ -467,7 +467,8 @@ void t_oneterm(char *p, int num)
           t_onestring(numerator[0]->beg+1);
           *(numerator[0]->end-1)=')';
         }
-        else for(i=0; i<numcnt; i++) t_onefactor(numerator[i],i);
+        else for(i=0; i<numcnt; i++) {t_onefactor(numerator[i],i);
+	    	if(i<numcnt-1) tprint(" ");} /* add space between factors */
       }
       tprint(" \\over ");      /* Now denominator */
       if(dencnt==1 && *denominator[0]->beg=='(' &&
@@ -476,7 +477,8 @@ void t_oneterm(char *p, int num)
          t_onestring(denominator[0]->beg+1);
          *(denominator[0]->end-1)=')';
       }
-      else for(i=0;i<dencnt;i++) t_onefactor(denominator[i],i);
+      else for(i=0;i<dencnt;i++) {t_onefactor(denominator[i],i);
+			if(i<dencnt-1) tprint(" ");} /* add space between factors */
       tprint("} ");
     }
     for(i=0;i<neucnt;i++) t_onefactor(neutral[i],i+dencnt);
