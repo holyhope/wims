@@ -3,21 +3,7 @@
 wims_home=`pwd`;
 wims_dirtest="$wims_home/wimstest/dirtest";
 
-test="add2 add2p add3
-sign doublesign
-mul div divp muldiv muldivp
-exp ind num num2 sci
-matrix matrix2
-stars names names2 sums
-relations relationempty relationempty2 relationempty3
-mixed1 mixed2 mixed3 mixed4 mixed5
-par stupid warn1ok warn1
-parent
-an"
-
-for a in $test; do
-  $wims_home/src/wims test $wims_dirtest texmath $a
-done;
+$wims_home/src/wims test $wims_dirtest texmath test
 
 exit
 

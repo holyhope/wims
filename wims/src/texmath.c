@@ -481,7 +481,8 @@ void t_oneterm(char *p, int num)
 			if(i<dencnt-1) tprint(" ");} /* add space between factors */
       tprint("} ");
     }
-    for(i=0;i<neucnt;i++) t_onefactor(neutral[i],i+dencnt);
+    for(i=0;i<neucnt;i++) {t_onefactor(neutral[i],i+dencnt);
+	    	if(i<neucnt-1) tprint(" ");} /* add space between factors */
 }
 
 /* put exponential */
@@ -680,5 +681,6 @@ void texmath(char *p)
     }
     if(check_parentheses(p,1)!=0) module_error("unmatched_parentheses");
     texmathbuf[0]=0; t_onestring(p);
+    singlespace(texmathbuf);strip_trailing_spaces(texmathbuf);
     mystrncpy(p,texmathbuf,MAX_LINELEN);
 }
