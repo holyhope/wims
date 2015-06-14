@@ -43,6 +43,32 @@ else
   done
 fi;
 
+#! /bin/sh
+list='append
+commandtext
+evalue
+execution
+hex
+if
+list
+lookup
+matrix
+random record replace
+solve
+sort
+texmath text'
+
+for j in $list ; do
+    $wims_home/src/wims test $wims_dirtest $j test> $wims_tmp/$j 2>&1
+    echo "Testing $j ...";
+     if ! cmp $wims_tmp/$j $wims_res/$j; then
+      diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
+      echo "CHANGE"
+     else
+      echo "OK"; rm -f $wims_tmp/$j.diff;
+     fi
+done
+
 for j in $wims_exec ; do
   echo "Testing $j ...";
   wget "http://127.0.0.1/wims/wims.cgi?module=moduletest&cmd=new&special_parm=$j" -nv -O  $j.html 2&>1
