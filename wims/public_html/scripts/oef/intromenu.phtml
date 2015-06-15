@@ -116,6 +116,14 @@ $ in $special_parm3
   !read oef/select.phtml
  </div>
 !endif
+<div class="formHelp">
+$name_remarkintro1
+</div>
+!if * isin $titlelist
+ <p>
+  $name_remarkintro2
+ </p>
+!endif
 !!test if there is an introhook (works with new modules)
 !readproc introhook.phtml
 !if $introhook_exists!=no
@@ -131,14 +139,17 @@ $ in $special_parm3
 <fieldset class="oef_expert">
  <legend>$name_general_setup</legend>
  <div class="field">
- <label for="qnum">$name_oneserie
+ <label for="qnum">$name_oneserie:</label>
  !default qnum=1
  !formselect qnum from 1 to 9
- $name_exercises.</label>
+ $name_exercises.
  </div>
  <div class="field">
   <label for="scoredelay">$name_chrono:</label>
   <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
+  <div class="formHelp">
+ $name_remarkintro3
+  </div>
  </div>
  <div class="field">
       !formcheckbox random list 0 prompt $name_aleaseries
@@ -189,33 +200,35 @@ $ in $special_parm3
      !formselect intro_presentsol list 0,1,2 prompt $name_choice
     </div>
     <div class="field">
-     <label>
+    !set wims_ref_id=introcheck3
       !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
-     </label>
     </div>
     <div class="field">
-     <label>
+    !set wims_ref_id=introcheck4
       !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
-     </label>
     </div>
     <div class="field">
      $name_expower:
      <div>
-      !formradio intro_expow list $list_expow prompt $name_prompt_expower
+      !formradio intro_expow list $list_expow prompt $(name_prompt_expower[1]) ($(list_expow[1])),\
+      $(name_prompt_expower[2]) ($(list_expow[2])), $(name_prompt_expower[3]) ($(list_expow[3]))
      </div>
     </div>
     <div class="field">
     $name_sepower:
       <div>
-      !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower
-      </div>
-    <div class="formHelp"> $name_warning_pow</div>
+      !formradio intro_sepow list $list_sepow prompt \
+      $(name_prompt_sepower[1]) ($(list_sepow[1])),\
+      $(name_prompt_sepower[2]) ($(list_sepow[2])), $(name_prompt_sepower[3]) ($(list_sepow[3]))
+      <div class="formHelp"> $name_warning_pow</div>
+     </div>
      </div>
     <div class="field">
-     $name_precweight
-      <div>
-      !formbar intro_precw list $list_precw
-     </div>
+     $name_precweight:
+      !formradio intro_precw list $list_precw prompt $list_precw
+      <div class="formHelp">
+      Plus le nombre est petit, plus la pénalité est grande.
+      </div>
     </div>
 <hr />
 $name_qcm
@@ -225,17 +238,16 @@ $name_qcm
      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
     <div class="field">
-     <label>
+    !set wims_ref_id=introcheck1
       !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
-     </label>
     </div>
     <div class="field">
-     <label>
+    !set wims_ref_id=introcheck2
       !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
-     </label>
-    </div>
+     </div>
 !endif
 </fieldset>
+</div>
 <div class="oef_intro_buttons">
 	<input type="submit" value="$wims_name_work" />&nbsp;
 	<input type="submit" name="print" value="$name_print" />
@@ -257,18 +269,6 @@ $name_qcm
 
  !formend
 !endif
-
-$name_remarkintro1
-
-!if * isin $titlelist
- <p>
-  $name_remarkintro2
- </p>
-!endif
-
-<div class="wims_smallremark">
-$name_remarkintro3
-</div>
 
 !! very tricky ...
 !reset authorlist
