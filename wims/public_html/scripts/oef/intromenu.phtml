@@ -11,7 +11,35 @@
 !if robot isin $session
  !changeto content.html
 !endif
-
+!! very tricky ...
+!reset authorlist
+!set dictionary=$module_dir/$(class_header)Exauthors
+!set translator_unknown=delete
+!set exolist_cnt=!itemcnt $exolist
+!for ex = 1 to  $exolist_cnt
+  !if - notin $(exolist[$ex])
+   !set tmp=!exec translator $(exolist[$ex])
+   !set tmp=!replace internal , by $ $ in $tmp
+   !set tmp=!singlespace $tmp
+   !set authorlist=!append item $tmp to $authorlist
+  !endif
+!next
+!set authorlist=!replace internal $translator_unknown by in $authorlist
+!set authorlist=!replace internal ; by , in $authorlist
+!if $authorlist!= and $authorlist notsametext $exolist
+  !set authorlist=!listuniq $authorlist
+  !set tmp=!items2words $module_author
+  !set tmp=!replace internal ; by ,$  in $tmp
+  !set tmp=!singlespace $tmp
+  !set authorlist=!singlespace $authorlist
+  !!set authorlist1=!listcomplement $tmp in $authorlist
+  !set authorlist1=$authorlist
+  !set authorlist_cnt=!itemcnt $authorlist1
+  !set authorlist=!replace internal , by ,$ $ in $authorlist
+  !if $authorlist_cnt > 0
+   <div class="wims_contribute">$name_Contribute $authorlist.</div>
+  !endif
+!endif
 !set test_data=!replace internal data/ by in $module_data
 !set test_data=!defof title in datamodule/$test_data/INDEX
 !if $test_data= and $module_data!=
@@ -116,6 +144,7 @@ $ in $special_parm3
   !read oef/select.phtml
  </div>
 !endif
+
 <div class="formHelp">
 $name_remarkintro1
 </div>
@@ -270,35 +299,13 @@ $name_qcm
  !formend
 !endif
 
-!! very tricky ...
-!reset authorlist
-!set dictionary=$module_dir/$(class_header)Exauthors
-!set translator_unknown=delete
-!set exolist_cnt=!itemcnt $exolist
-!for ex = 1 to  $exolist_cnt
-  !if - notin $(exolist[$ex])
-   !set tmp=!exec translator $(exolist[$ex])
-   !set tmp=!replace internal , by $ $ in $tmp
-   !set tmp=!singlespace $tmp
-   !set authorlist=!append item $tmp to $authorlist
-  !endif
-!next
-!set authorlist=!replace internal $translator_unknown by in $authorlist
-!set authorlist=!replace internal ; by , in $authorlist
-!if $authorlist!= and $authorlist notsametext $exolist
-  !set authorlist=!listuniq $authorlist
-  !set tmp=!items2words $module_author
-  !set tmp=!replace internal ; by ,$  in $tmp
-  !set tmp=!singlespace $tmp
-  !set authorlist=!singlespace $authorlist
-  !!set authorlist1=!listcomplement $tmp in $authorlist
-  !set authorlist1=$authorlist
-  !set authorlist_cnt=!itemcnt $authorlist1
-  !set authorlist=!replace internal , by ,$ $ in $authorlist
-  !if $authorlist_cnt > 0
-   <div class="wims_contribute">$name_Contribute $authorlist.</div>
-  !endif
+!if expert iswordof $special_parm2 or yes isin $expert_option
+<div class="formHelp">
+  $name_remarkseverity
+  !read oef/helpseverity
+</div>
 !endif
+
 
 !if $wims_class!=$empty and $wims_user=supervisor and classes notin $module
     !set wims_menu_items=!append line addallexo,1,module=adm/class/addmodule&job=addallexo&dir=$module&scoring=$module_scoring\
