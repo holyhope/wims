@@ -44,12 +44,20 @@ wims_oefdefault_precw\
   expow,sepow,precw
 !endif
 
-!! calcul du nombre d'exo dans le module.
-exolist=!defof exolist in wimshome/public_html/modules/$smodule/Exindex
+!! calcul du nombre d'exercices 
+!if /////classes/ isin /////$smodule
+    !! adresse du module d'exo d'une classe
+    dir_header=wimshome/log/classes/$wims_class
+!else
+    !! adresse d'un module public ou modtool
+    dir_header=wimshome/public_html/modules/$smodule
+!endif
+exolist=!defof exolist in $dir_header/Exindex
 exolist=!char 17 to -2 of $exolist
-exotitle=!defof titlelist in wimshome/public_html/modules/$smodule/Exindex
+exotitle=!defof titlelist in $dir_header/Exindex
 exotitle=!char 17 to -2 of $exotitle
 exocnt=!itemcnt $exolist
+
 
 !if $step=2
 !! vérification des données de feuille.
@@ -170,5 +178,7 @@ $desc\
  notadd=!itemcnt $listalready
  addexo=$[$exocnt-$notadd]
  wims_module_log=class $class: add  No$[$last-$addexo+1] to No$last to worksheet $picksheet
+ sh=!record $picksheet of wimshome/log/classes/$wims_class/sheets/.sheets
+ title=!line 3 of $sh
 !endif
 
