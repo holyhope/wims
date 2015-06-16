@@ -1,8 +1,8 @@
 !set lang_exists=yes
 
 !set name_title=Klas mededeling
-!set name_nomessage=No message defined
-!set name_clicktocreate=Click on "modify" to set one
+!set name_nomessage=Geen mededeling gedefinieerd.
+!set name_clicktocreate=Klik op "veranderen" voor het aanmaken 
 !set name_confirm=Verwijderen ?
 !set name_erase1=Verwijder deze algemene mededeling
 !set name_erase2=Verwijder deze persoonlijke mededeling
@@ -13,7 +13,7 @@
 !set name_write=Schrijf de mededeling (hyperlinks en html-tags zijn toegestaan)
 !set name_otherstudent=Het bericht is ook bedoeld voor de volgende leeringen
 !set name_reactive=Reactiveren
-!set name_listusermotd=Personnal messages, by student
+!set name_listusermotd=Persoonlijke mededeling
 !set name_actualmotd=De actuele mededeling
 
 !set name_participant=Student
@@ -38,13 +38,12 @@ alle studenten de klas.
 !set name_usermultisession=Meerdere sessies op in deze klas
 
 !set name_filter=Selecteer aan de hand van een technische variabele (student gegevens)
-!set name_technical_var=Technical Variable
+!set name_technical_var=Technische Variabele
 
 !set name_aloneaction=Individuele aktie
 !set name_grpaction=Aktie voor geselecteerde studenten)
 !set name_erase=Wissen
 !set name_change=Wijzigen
-!set name_all=All
-!set name_expert0=Si vous désirez sélectionner certains participants, plusieurs méthodes sont proposées.\
-Cochez la méthode désirée.
-!set name_checked=Les participants sélectionnés dans le tableau ci-dessous
+!set name_all=Allemaal
+!set name_expert0=Er zijn meerdere methodes aanwezig om studenten te selecteren.
+!set name_checked=De geselecteerde studenten staan in de onderstaande tabel

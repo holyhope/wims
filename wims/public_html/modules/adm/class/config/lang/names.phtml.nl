@@ -277,7 +277,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    klas configuratie, lijst met studenten, gemiddelde cijfers, cijfer details, alles behalve klas configuratie\
    Synchroniseren\
    (met de andere klas) van\
-   KIas op de netwerkverbonden server\
+   Klas op de netwerkverbonden server\
    Netwerkverbonden server\
    Onderhoud\
    Verwijder de klas op de verbonden server\

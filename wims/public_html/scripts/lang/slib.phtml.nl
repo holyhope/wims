@@ -10,7 +10,7 @@ Beschikbaere scripten in slib\
 Variabelen lijst van komma-gescheiden items\
 default\
 Het resultaat kan worden gebruikt dmv de variabele\
-All\
+Alles\
 into wims_name_slib,wims_name_Output,wims_name_Parameter,wims_name_Parameters,wims_name_Required_Software,\
   wims_name_call1,wims_name_call2,wims_name_listslib,wims_name_variable_list,wims_name_default,wims_name_result,wims_name_All
 

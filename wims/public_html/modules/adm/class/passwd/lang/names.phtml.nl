@@ -7,7 +7,7 @@
   Een wachtwoord voor een leerling\
   In dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen\
   Het klasse wachtwoord, voor nieuwe leerlingen: het wachtwoord nodig voor het starten van de aanmeldingprocedure in een besloten klas/school.\
-  Password of the class group, that is, the one used by teachers to register in your class\
+  Wachtwoord voor docenten benodigd voor het starten van de aanmeldingsprocedure\
   Geef het oude wachtwoord\
   Geef nu het nieuwe wachtwoord\
   het nieuwe wachtwoord nog een keer\
