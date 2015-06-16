@@ -1,3 +1,4 @@
+!read oef/default
 
 !form reply
 <fieldset class="property_fields blockcenter">
@@ -5,6 +6,7 @@
   <div class="field box">
     <label for="nw_qnum">$name_series</label>
    !set nw_qnum=$user_qnum
+   !set nw_qnum=$(default_choice[1])
    !formselect nw_qnum from 1 to 9
    $wims_name_exercises.
   </div>
@@ -19,6 +21,7 @@
   <div class="field box">
    <label for="nw_qcmlevel">$name_severity</label>
    !set nw_qcmlevel=$user_qcmlevel
+   !default nw_qcmlevel=$(default_choice[2])
    !formselect nw_qcmlevel from 1 to 9
   </div>
   </fieldset>
@@ -27,6 +30,7 @@
   <div class="field box">
    <label for="nw_presentsol">$name_solution</label>
    !set nw_presentsol=$user_presentsol
+   !default nw_presentsol=$(default_choice[3])
    !formselect nw_presentsol list 0,1,2 prompt $name_prompt
   </div>
   <div class="field box">
@@ -47,7 +51,9 @@
     !set nw_sepow=$user_sepow
     !set nw_expow=$user_expow
     !set nw_precw=$user_precw
-    !read oef/default
+    !default nw_sepow=$(list_sepow[1])
+    !default nw_expow=$(list_expow[1])
+    !default nw_precw=$(list_precw[1])
     !set powercnt=!itemcnt $list_expow
    !for j=1 to $powercnt
      !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
@@ -71,7 +77,7 @@
     <div class="field box">
     $name_precweight
     !set wims_ref_class=wims_formradio
-    !formradio nw_precw list $list_precw prompt $list_precw
+    !formradio nw_precw list $list_precw
     <div class="formHelp">
       $name_help_precweight
       </div>
@@ -79,8 +85,9 @@
   <hr />
   $name_qcm
     <div class="field box">
-   <label for="">$name_qcmanswer</label>
+   <label for="nw_qcmpresent">$name_qcmanswer</label>
    !set nw_qcmpresent=$user_qcmpresent
+   !default nw_qcmpresent=$(default_choice[4])
    !formselect nw_qcmpresent list 2,3,4,5,6,7,8
    <br />
    !set wims_ref_class=wims_formradio

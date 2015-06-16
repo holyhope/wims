@@ -11,6 +11,7 @@
 !if robot isin $session
  !changeto content.html
 !endif
+!read oef/default
 
 !!!#### contributions
 !! very tricky ...
@@ -178,7 +179,7 @@ $name_remarkintro1
  <legend>$name_general_setup</legend>
  <div class="field">
  <label for="qnum">$name_oneserie:</label>
- !default qnum=1
+ !default qnum=$(default_choice[1])
  !formselect qnum from 1 to 9
  $name_exercises.
  </div>
@@ -205,6 +206,7 @@ $name_remarkintro1
   !set translation_language=!sort items $translation_language
   <div class="field">
    <label for="lang_choice">$wims_name_Language:</label>
+   !set wims_ref_class=wims_formradio
    !formradio lang_choice list $translation_language
   </div>
 !endif
@@ -214,7 +216,7 @@ $name_remarkintro1
 !if expert notwordof $special_parm2 and yes notin $expert_option
   <div class="field">
   <label for="qcmlevel">$name_levelseverity:</label>
- !default qcmlevel=3
+ !default qcmlevel=$(default_choice[2])
  !formselect qcmlevel from 1 to 9
  </div>
    !let tmp=$special_parm2 expert
@@ -226,17 +228,16 @@ $name_remarkintro1
    </p>
 !else
    !!default intro_check=1,2,3,4
-   !read oef/default
+
    !reset name_prompt_expower2 name_prompt_sepower2
    !set powercnt=!itemcnt $list_expow
    !for j=1 to $powercnt
      !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
      !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
    !next
-   !default intro_sepow=1
-   !default intro_expow=1
-   !default intro_precw=1
-   !default intro_presentsol=1
+   !default intro_sepow=$(list_sepow[1])
+   !default intro_expow=$(list_expow[1])
+   !default intro_precw=$(list_precw[1])
    !let tmp=!replace word expert by $ in $special_parm2
     !set tmp3=!replace internal intro_expert=yes by $ in $special_parm3
     !set tmp3=$tmp3 intro_expert=no
@@ -247,6 +248,7 @@ $name_remarkintro1
    </p>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
+     !default intro_presentsol=$(default_choice[3])
      !formselect intro_presentsol list 0,1,2 prompt $name_choice
     </div>
     <div class="field">
@@ -260,18 +262,21 @@ $name_remarkintro1
     <div class="field">
      $name_expower:
      <div>
+     !set wims_ref_class=wims_formradio
       !formradio intro_expow list $list_expow prompt $name_prompt_expower2
      </div>
     </div>
     <div class="field">
     $name_sepower:
       <div>
+       !set wims_ref_class=wims_formradio
        !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
        <div class="formHelp"> $name_warning_pow</div>
       </div>
      </div>
     <div class="field">
      $name_precweight:
+     !set wims_ref_class=wims_formradio
       !formradio intro_precw list $list_precw
       <div class="formHelp">
       $name_help_precweight
@@ -279,9 +284,10 @@ $name_remarkintro1
     </div>
 <hr />
 $name_qcm
-!default intro_qcmpresent=4
+!default intro_qcmpresent=$(default_choice[4])
     <div class="field">
      <label for="intro_qcmpresent">$name_qcmanswer: </label>
+     !set wims_ref_class=wims_formradio
      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
     <div class="field">

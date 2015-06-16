@@ -60,12 +60,12 @@
 </fieldset>
 
 !!debut du menu voir intromenu.phtml
-
+!read oef/default
 <fieldset class="property_fields blockcenter">
 <legend>$name_general_setup</legend>
 <div class="field box">
  <label for="qnum">$name_oneserie
- !default qnum=1
+ !default qnum=$(default_choice[1])
  !formselect qnum from 1 to 9
  $name_exercises.</label>
 </div>
@@ -97,7 +97,7 @@
 
 <div class="field box">
  <label for="qcmlevel">$name_levelseverity:</label>
- !default qcmlevel=3
+ !default qcmlevel=$(default_choice[2])
  !formselect qcmlevel from 1 to 9
 </div>
 !!default intro_check=1,2,3,4
@@ -108,16 +108,15 @@
   !formradio expert_ list yes prompt $name_expertmenu
     <div class="field box">
      <label for="intro_presentsol">$name_solutiongiven? </label>
-     !default intro_presentsol=1
+     !default intro_presentsol=$(default_choice[3])
      !formselect intro_presentsol list 0,1,2 prompt $name_choice
     </div>
     <div class="field box">
       !formcheckbox intro_check list 3,4 prompt $(name_choice_check[3]),$(name_choice_check[4])
     </div>
-    !read oef/default
     !default intro_expow=$(list_expow[1])
     !default intro_sepow=$(list_sepow[1])
-    !default intro_expow=$(list_precw[1])
+    !default intro_precw=$(list_precw[1])
     !reset name_prompt_expower2 name_prompt_sepower2
    !set powercnt=!itemcnt $list_expow
    !for j=1 to $powercnt
@@ -126,15 +125,18 @@
    !next
     <div class="field box">
       $name_expower<br/>
+      !set wims_ref_class=wims_formradio
       !formradio intro_expow list $list_expow prompt $name_prompt_expower2
     </div>
     <div class="field box">
       $name_sepower<br/>
+       !set wims_ref_class=wims_formradio
       !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
     <div class="formHelp">$name_warning_pow</div>
     </div>
     <div class="field box">
       $name_precweight:
+       !set wims_ref_class=wims_formradio
        !formradio intro_precw list $list_precw prompt $list_precw
        <div class="formHelp">
         $name_help_precweight
@@ -144,7 +146,7 @@
    $name_qcm:
     <div class="field box">
      <label for="intro_qcmpresent">$name_qcmanswer: </label>
-     !default intro_qcmpresent=4
+     !default intro_qcmpresent=$(default_choice[4])
      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
     </div>
     <div class="field box">
