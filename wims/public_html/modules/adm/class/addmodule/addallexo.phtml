@@ -176,10 +176,21 @@
 !! ---------------------------------------- écriture du bilan
 !if $step=2
  !if $addexo>0
-	<p>$name_endallexo.</p>
+	<p>
+	!if $addexo=1
+	    $name_endallexo
+	!else
+	    $name_endallexos
+	.!endif
+	</p>
  !endif
  !if $notadd>0
-  	<p>$name_endallexo2
+  	<p>
+  	!if $notadd=1
+  	    $name_endallexo2
+  	!else
+  	    $name_endallexo2s
+  	!endif
         <ul>
 	!for exo in $listalready
 		!let num=!positionof item $exo in $exolist
