@@ -11,6 +11,8 @@
 !if robot isin $session
  !changeto content.html
 !endif
+
+!!!#### contributions
 !! very tricky ...
 !reset authorlist
 !set dictionary=$module_dir/$(class_header)Exauthors
@@ -133,6 +135,16 @@ $ in $special_parm3
 <input type="hidden" name="module" value="$module" />
 <div id="oef_intro_params">
 <h2 class="legend oef_name_menu">$name_menu</h2>
+<div class="formHelp">
+<div>
+$name_remarkintro1
+</div>
+!if $wims_user=supervisor
+  <div class="wims_alertmsg">
+   $name_remarkallexo
+  </div>
+!endif
+</div>
 !if $exocnt>1
  <div class="field">
   !set special_parm=!trim $special_parm
@@ -145,9 +157,7 @@ $ in $special_parm3
  </div>
 !endif
 
-<div class="formHelp">
-$name_remarkintro1
-</div>
+
 !if * isin $titlelist
  <p>
   $name_remarkintro2
@@ -182,6 +192,11 @@ $name_remarkintro1
  </div>
  <div class="field">
       !formcheckbox random list 0 prompt $name_aleaseries
+  <div class="formHelp">
+    $name_remarkorder1
+  !if $wims_user=supervisor
+    $name_remarkorder2
+  !endif
  </div>
 !set translation_language=!getdef translation_language in INDEX
 !if $translation_language!=$empty
