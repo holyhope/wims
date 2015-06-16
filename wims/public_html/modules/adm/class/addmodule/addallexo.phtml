@@ -16,7 +16,7 @@
 <hr style="width:35%" />
 
 
-!! ------------------------------------- saisie des paramÃ¨tres
+!! ------------------------------------- saisie des paramètres
 !if $step=1
  $name_insert <span class="tt wims_fname">$smodule</span>
 
@@ -72,6 +72,7 @@
 <div class="field box">
  <label for="scoredelay">$name_chrono:</label>
  <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
+ <div class="formHelp">$name_remarkintro3</div>
 </div>
 <div class="field box">
       !formcheckbox random list 0 prompt $name_aleaseries
@@ -114,21 +115,30 @@
       !formcheckbox intro_check list 3,4 prompt $(name_choice_check[3]),$(name_choice_check[4])
     </div>
     !read oef/default
-    !default intro_expow=$($list_expow[1])
-    !default intro_sepow=$($list_sepow[1])
-    !default intro_expow=$($list_precw[1])
+    !default intro_expow=$(list_expow[1])
+    !default intro_sepow=$(list_sepow[1])
+    !default intro_expow=$(list_precw[1])
+    !reset name_prompt_expower2 name_prompt_sepower2
+   !set powercnt=!itemcnt $list_expow
+   !for j=1 to $powercnt
+     !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+     !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+   !next
     <div class="field box">
       $name_expower<br/>
-      !formradio intro_expow list $list_expow prompt $name_prompt_expower
+      !formradio intro_expow list $list_expow prompt $name_prompt_expower2
     </div>
     <div class="field box">
       $name_sepower<br/>
-      !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower
+      !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
     <div class="formHelp">$name_warning_pow</div>
     </div>
     <div class="field box">
-      $name_precweight<br/>
-      !formbar intro_precw list $list_precw prompt $name_prompt_precweight
+      $name_precweight:
+       !formradio intro_precw list $list_precw prompt $list_precw
+       <div class="formHelp">
+        $name_help_precweight
+      </div>
     </div>
     <hr />
    $name_qcm:
@@ -156,13 +166,14 @@
    <input type="hidden" name="job" value="$job" />
  </div>
 !formend
+<div class="formHelp">
+  $name_remarkseverity
+  !read oef/helpseverity
+ </div>
 
-<div class="wims_smallremark">
-$name_remarkintro3
-</div>
 !endif
 
-!! ---------------------------------------- Ã©criture du bilan
+!! ---------------------------------------- écriture du bilan
 !if $step=2
  !if $addexo>0
 	<p>$name_endallexo.</p>

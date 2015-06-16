@@ -11,6 +11,7 @@
     <div class="field box">
    <label for="nw_scoredelay">$name_chrono </label>
    <input size="7" name="nw_scoredelay" id="nw_scoredelay" value="$user_scoredelay" /> $name_secondes.
+  <div class="formHelp">$name_warning</div>
   </div>
   </fieldset>
   <fieldset class="property_fields blockcenter">
@@ -19,7 +20,6 @@
    <label for="nw_qcmlevel">$name_severity</label>
    !set nw_qcmlevel=$user_qcmlevel
    !formselect nw_qcmlevel from 1 to 9
-  </div>
   </div>
   </fieldset>
    <fieldset class="property_fields blockcenter">
@@ -47,19 +47,31 @@
     !set nw_sepow=$user_sepow
     !set nw_expow=$user_expow
     !set nw_precw=$user_precw
+    !read oef/default
+    !set powercnt=!itemcnt $list_expow
+   !for j=1 to $powercnt
+     !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+     !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+   !next
     <div class="field box">
     $name_expower
-    !read oef/default
-    !formradio nw_expow list $list_expow prompt $name_prompt_expower
+    <div>
+    !formradio nw_expow list $list_expow prompt $name_prompt_expower2
+    </div>
     </div>
     <div class="field box">
      $name_sepower
-    !formradio nw_sepow list $list_sepow prompt $name_prompt_sepower
+      <div>
+    !formradio nw_sepow list $list_sepow prompt $name_prompt_sepower2
+    </div>
     <div class="formHelp">$name_warning_pow</div>
     </div>
     <div class="field box">
     $name_precweight
-    !formbar nw_precw list $list_precw prompt $name_prompt_precweight
+    !formradio nw_precw list $list_precw
+    <div class="formHelp">
+      $name_help_precweight
+      </div>
     </div>
   <hr />
   $name_qcm
@@ -80,14 +92,15 @@
     $name_prompt2
    !formradio nw_check2 list 2,0 prompt $wims_name_yes,$wims_name_no
    </div>
-   </div>
    </fieldset>
   <div class="wimscenter wimsform">
    <input type="submit" value="$wims_name_tosave" />
    <input type="hidden" value="1" name="step" />
   </div>
- </fielset>
 
 !formend
 
-<p class="small">$name_warning</p>
+  <div class="formHelp">
+  $name_remarkseverity
+  !read oef/helpseverity
+ </div>

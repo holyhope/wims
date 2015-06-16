@@ -198,6 +198,7 @@ $name_remarkintro1
     $name_remarkorder2
   !endif
  </div>
+ </div>
 !set translation_language=!getdef translation_language in INDEX
 !if $translation_language!=$empty
   !set translation_language=$module_language,$translation_language
@@ -227,6 +228,12 @@ $name_remarkintro1
 !else
    !!default intro_check=1,2,3,4
    !read oef/default
+   !reset name_prompt_expower2 name_prompt_sepower2
+   !set powercnt=!itemcnt $list_expow
+   !for j=1 to $powercnt
+     !set name_prompt_expower2=!append item $(name_prompt_expower[$j]) ($(list_expow[$j])) to $name_prompt_expower2
+     !set name_prompt_sepower2=!append item $(name_prompt_sepower[$j]) ($(list_sepow[$j])) to $name_prompt_sepower2
+   !next
    !default intro_sepow=1
    !default intro_expow=1
    !default intro_precw=1
@@ -237,7 +244,7 @@ $name_remarkintro1
     <input type="hidden" name="intro_expert" value="yes" />
    !set wims_ref_class=wims_button
    <p class="oef_intro_buttons">
-    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu_back
    </p>
     <div class="field">
      <label for="intro_presentsol">$name_solutiongiven? </label>
@@ -254,24 +261,21 @@ $name_remarkintro1
     <div class="field">
      $name_expower:
      <div>
-      !formradio intro_expow list $list_expow prompt $(name_prompt_expower[1]) ($(list_expow[1])),\
-      $(name_prompt_expower[2]) ($(list_expow[2])), $(name_prompt_expower[3]) ($(list_expow[3]))
+      !formradio intro_expow list $list_expow prompt $name_prompt_expower2
      </div>
     </div>
     <div class="field">
     $name_sepower:
       <div>
-      !formradio intro_sepow list $list_sepow prompt \
-      $(name_prompt_sepower[1]) ($(list_sepow[1])),\
-      $(name_prompt_sepower[2]) ($(list_sepow[2])), $(name_prompt_sepower[3]) ($(list_sepow[3]))
-      <div class="formHelp"> $name_warning_pow</div>
-     </div>
+       !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
+       <div class="formHelp"> $name_warning_pow</div>
+      </div>
      </div>
     <div class="field">
      $name_precweight:
-      !formradio intro_precw list $list_precw prompt $list_precw
+      !formradio intro_precw list $list_precw
       <div class="formHelp">
-      Plus le nombre est petit, plus la pénalité est grande.
+      $name_help_precweight
       </div>
     </div>
 <hr />
