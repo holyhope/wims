@@ -26,18 +26,20 @@ else
       jj=`basename $ii`; echo "Testing $jj... \c"
        if ! cmp $wims_tmp/diroef/$jj $wims_res/diroef/$jj; then
          diff -c $wims_res/diroef/$jj $wims_tmp/diroef/$jj > $wims_tmp/diroef/$jj.diff;
-         echo "CHANGE"
+         echo "CHANGE $jj"
        else
-         echo "OK"; rm -f $wims_tmp/diroef/$jj.diff;
+         echo "OK";
+         rm -f $wims_tmp/diroef/$jj.diff;
        fi
      done
    else
-   echo $i
+   echo "Testing $i ... \c"
      if ! cmp $wims_tmp/$j $wims_res/$j; then
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
-      echo "CHANGE"
+      echo "CHANGE $i"
      else
-      echo "OK"; rm -f $wims_tmp/$j.diff;
+      echo "OK";
+      rm -f $wims_tmp/$j.diff;
      fi
    fi
   done
@@ -63,19 +65,20 @@ for j in $list ; do
     echo "Testing $j ...";
      if ! cmp $wims_tmp/$j $wims_res/$j; then
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
-      echo "CHANGE"
+      echo "CHANGE $j"
      else
-      echo "OK"; rm -f $wims_tmp/$j.diff;
+      echo "OK";
+      rm -f $wims_tmp/$j.diff;
      fi
 done
 
 for j in $wims_exec ; do
   echo "Testing $j ...";
-  wget "http://127.0.0.1/wims/wims.cgi?module=moduletest&cmd=new&special_parm=$j" -nv -O  $j.html 2&>1
+  wget "http://127.0.0.1/wims/wims.cgi?module=moduletest&cmd=new&special_parm=$j" -nv -O  $j.html 2>&1
   $wims_home/wimstest/tag.pl --file=$j --out=$wims_tmp
    if ! cmp $wims_tmp/$j $wims_res/$j; then
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
-      echo "CHANGE"
+      echo "CHANGE $j"
      else
       echo "OK"
       rm -f $wims_tmp/$j.diff; rm $j.html;
