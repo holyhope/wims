@@ -59,7 +59,7 @@ Una encuesta puede contener hasta $max_parms campos de elección.
    <li><b>$name_trace</b> : questionnaire anonyme répondant aux mêmes critères que précédemment.
    Cependant il est possible de connaître les réponses effectuées par un participant
    sans pour autant pouvoir identifier ce participant.</li>
-   <li><b>$name_nominative</b> : les réponses de chaque participants peuvent être
+   <li><b>$name_nominative</b> : les réponses de chaque participant peuvent être
    consultées (il n'est pas possible d'utiliser des zones de réponses
    libres dans ce type de questionnaire).</li>
   </ul>
@@ -78,7 +78,8 @@ Una encuesta puede contener hasta $max_parms campos de elección.
  <li><b>$name_result</b> : si les résultats sont $(name_publish)s, les participants peuvent les consulter
  (une fois qu'ils ont voté). Dans le cas contraire, seul l'enseignant de la classe accède aux résultats.</li>
  <li><b>$name_whovote</b> : si la liste des votants est $name_publish2, alors l'enseignant
- et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants).
+ et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants
+ ou que le vote soit nominatif).
  Dans le cas contraire, personne ne peut savoir qui a voté !</li>
 </ul>
  !goto guidedmode
@@ -94,10 +95,13 @@ Plusieurs modes sont possibles :
   un questionnaire en utilisant librement les commandes qui se trouvent dans l'aide.
   </li><li>
 !readproc adm/lang/sheetexam.phtml.$lang
-  <b>$name_accessvar</b> : avec ce formulaire, vous pourreez permettre l'inscription sur des tranches horaires.
+  <b>$name_accessvar</b> : avec ce formulaire, vous pourrez permettre l'inscription sur des tranches horaires.
   La variable technique alors créée vous permettra par exemple de définir un accès individualisé
-  à des feuilles ou à des examens. Pour cela, si vous avez appelé <span class="tt wims_code_variable">ma_variable</span> quand
-  le formulaire vous le demandera, il vous suffira d'écrire <span class="tt wims_code_variable">\ma_variable</span> dans la zone
+  à des feuilles ou à des examens. Pour cela, si vous avez appelé
+  <span class="tt wims_code_variable">ma_variable</span>
+  la variable que le formulaire vous demandera, il vous suffira de sélectionner
+  <span class="tt wims_code_words">$(name_allowtype[3])</span> et d'écrire
+  <span class="tt wims_code_variable">\ma_variable</span> dans la zone
   libre de la feuille ou de l'examen correspondant à <span class="tt wims_code_words">$(name_shinfo[6])</span>.
   </li><li>
   <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
@@ -105,11 +109,12 @@ Plusieurs modes sont possibles :
   de celui-là, vous pourrez ensuite envoyer des mails ou constituer le trombinoscope selon le groupe,
   trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b>
   d'avoir demandé la variable <span class="tt wims_code_variable">var_ma_variable</span>).
-  D'autres utilisations sont en prévision.
+  D'autres utilisations sont prévues.
   </li></ul>
 
-Le nom des variables doit être différent des variables déjà utilisés par WIMS (par exemple,
-ne pas utiliser <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
+Le nom des variables doit être différent des noms de variables déjà utilisés par WIMS (par exemple,
+ne pas utiliser
+<span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
 <span class="tt wims_code_variable">manual1</span>, ...).
 !tail
 !exit
