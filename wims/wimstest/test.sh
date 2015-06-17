@@ -19,7 +19,8 @@ if [ "$1" ] ; then
   done;
 else
   for i in `ls $wims_dirsrc/*.sh`; do
-   j=`basename $i .sh`; echo "Testing $j... \c"
+   j=`basename $i .sh`;
+   echo "Testing $j... \c"
    $i > $wims_tmp/$j 2>&1
    if [ "$j" = "oef" ] ; then
      for ii in `ls $wims_dirtest/diroef/*` ; do
@@ -28,17 +29,16 @@ else
          diff -c $wims_res/diroef/$jj $wims_tmp/diroef/$jj > $wims_tmp/diroef/$jj.diff;
          echo "CHANGE $jj"
        else
-         echo "OK";
+         echo "OK $jj";
          rm -f $wims_tmp/diroef/$jj.diff;
        fi
      done
    else
-   echo "Testing $i ... \c"
      if ! cmp $wims_tmp/$j $wims_res/$j; then
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
-      echo "CHANGE $i"
+      echo "CHANGE $j"
      else
-      echo "OK";
+      echo "OK $j";
       rm -f $wims_tmp/$j.diff;
      fi
    fi
@@ -67,7 +67,7 @@ for j in $list ; do
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
       echo "CHANGE $j"
      else
-      echo "OK";
+      echo "OK $j";
       rm -f $wims_tmp/$j.diff;
      fi
 done
@@ -80,7 +80,7 @@ for j in $wims_exec ; do
       diff -c $wims_res/$j $wims_tmp/$j > $wims_tmp/$j.diff;
       echo "CHANGE $j"
      else
-      echo "OK"
+      echo "OK $j"
       rm -f $wims_tmp/$j.diff; rm $j.html;
      fi
 done
