@@ -12,6 +12,7 @@
  Numero di risposte multiple da cui scegliere\
  Dare la soluzione (se disponibile)\
  Menu semplice\
+ Backup to simplified menu\
  Menu esperti\
  Scegli titoli che contengono la parola\
  esercizi\
@@ -21,7 +22,7 @@
     Opzioni valutazione risposte\
  into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
     name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
-    name_simplifiedmenu,name_expertmenu,name_select,name_exercises,name_menu,name_module_setup,\
+    name_simplifiedmenu,name_simplifiedmenu_back,name_expertmenu,name_select,name_exercises,name_menu,name_module_setup,\
     name_general_setup,name_score_setup
 
 !distribute lines Calcolo del punteggio in esercizi con più domande\
@@ -30,8 +31,9 @@ Calcolo del punteggio nelle serie di esercizi\
 si applica alle serie costituite da almeno due esercizi\
 Media aritmetica,Penalizzazione degli errori,Forte penalizzazione degli errori\
 Penalizzazione per le risposte imprecise\
+Sometimes\
 into name_expower,name_prompt_expower, name_sepower,name_warning_pow,\
-name_prompt_sepower, name_precweight,name_prompt_precweight
+name_prompt_sepower, name_precweight,name_sometimes
 
  !set name_datamodule=Per utilizzare questo modulo è necessario che sia installato anche il modulo <span class="tt">$module_data</span> \
   che invece non è presente sul server. Se avete necessità, dovete chiedere al \
@@ -52,7 +54,22 @@ selezionato alcun esercizio, la scelta varierà tra tutti gli \
 esercizi disponibili.
 
 !if * isin $titlelist
-!set name_remarkintro2=Gli esercizi contrassegnati da * sono in generale un po' più difficili degli altri.
+  !set name_remarkintro2=Gli esercizi contrassegnati da * sono in generale un po' più difficili degli altri.
 !endif
 !!leave on one line
 !set name_remarkintro3=Come limite di tempo si possono inserire due valori, uno più piccolo seguito da uno più grande. In questo caso, quando si raggiunge il primo limite il punteggio viene ridotto mentre quando si raggiunge il secondo limite, il punteggio viene azzerato.
+
+!set name_remarkseverity= Here is a table showing the correspondence \
+between severity levels (simplified menu) and different settings (expert menu).
+
+!set name_remarkallexo=!nosubst I you use the link\
+<span class="wims_button disabled">$wims_name_addallexo</span>,\
+you will be asked later for settings.
+
+!set name_remarkorder1=The order is by default the order you see in the list. \
+It is only relevant if the number of selected exercises equals the number \
+of exercises in the series.
+
+!set name_remarkorder2=You may later change this order after insertion in a worksheet.
+
+!set name_help_precweight=The smaller the number, the harsher the penalty.

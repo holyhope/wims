@@ -199,8 +199,8 @@ Insérer tous les exercices dans une feuille de travail\
 	wims_name_exolog,\
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence,\
-        wims_name_readen,\
-        wims_name_save_ex,wims_name_addallexo
+    wims_name_readen,\
+    wims_name_save_ex,wims_name_addallexo
 
  !!!set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo, calidad $[$wims_homeref_mean]/10.
