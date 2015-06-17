@@ -29,7 +29,7 @@ exit if (!(grep {$_ eq $LANG} treate_language()));
 #### wims keywords
 sub underscore { my ($a)=@_ ; $a=~ s/\_/ /g ; $a; }
 ## hack for suffix
-sub suffix { my ($a)=@_ ; $a=~ s/(e|s)\b//; $a; }
+sub suffix { my ($a)=@_ ; $a=~ s/(e|s|l|r)\b//; $a; }
 
 sub count { my ($file)=@_ ;
  my $refcount={};
