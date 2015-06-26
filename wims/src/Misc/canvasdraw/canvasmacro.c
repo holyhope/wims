@@ -5,6 +5,644 @@
 char *data2js_array(int data[],int len);
 char *xy2js_array(int xy[],int len);
 */
+void add_js_multidraw(FILE *js_include_file,int canvas_root_id,char *draw_types,char *button_style){
+/*
+
+just for the javascript switches():
+point = 0	points =1
+circle = 2 	circles = 3
+line =4 	lines = 5
+segment = 6 	segments = 7
+arrow = 8 	arrows = 9
+triangle = 10 	triangles = 11
+
+*/
+fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
+ var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
+ var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+ var click_cnt = 0;\
+ if(wims_status != \"done\"){\
+  canvas_div.addEventListener(\"mousedown\",user_draw,false);\
+  canvas_div.addEventListener(\"mousemove\",user_drag,false);\
+  canvas_div.addEventListener(\"touchstart\",user_draw,false);\
+  canvas_div.addEventListener(\"touchmove\",user_drag,false);\
+ };\
+ clear_draw_area%d = function(type,name){\
+  if(confirm(\"remove \"+multilabel[name]+\" ?\")){\
+    switch(type){\
+     case 0: context_points.clearRect(0,0,xsize,ysize);points_x = [];points_y = [];break;\
+     case 1: points_x.pop();points_y.pop();draw_points();break;\
+     case 2: context_circles.clearRect(0,0,xsize,ysize);circles_x = [];circles_y = []; multi_radius = [];break;\
+     case 3: circles_x.pop();circles_y.pop(); multi_radius.pop();draw_circles();break;\
+     case 4: context_lines.clearRect(0,0,xsize,ysize);lines_x = [];lines_y = [];break;\
+     case 5: lines_x.pop();lines_y.pop();lines_x.pop();lines_y.pop();draw_lines();break;\
+     case 6: context_segments.clearRect(0,0,xsize,ysize);segments_x = [];segments_y = [];break;\
+     case 7: segments_x.pop();segments_y.pop();segments_x.pop();segments_y.pop();draw_segments();break;\
+     case 8: context_arrows.clearRect(0,0,xsize,ysize);arrows_x = [];arrows_y = [];break;\
+     case 9: arrows_x.pop();arrows_y.pop();arrows_x.pop();arrows_y.pop();draw_arrows();break;\
+     case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
+     case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
+     default:break;\
+    };\
+  };\
+ };\
+ function user_draw(evt){\
+  var canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var y = evt.clientY - canvas_rect.top;\
+  var x = evt.clientX - canvas_rect.left;\
+  switch(userdraw_primitive){\
+   case 0: points(x,y,0,0);break;\
+   case 1: points(x,y,0,1);break;\
+   case 2: circles(x,y,0,0);break;\
+   case 3: circles(x,y,0,1);break;\
+   case 4: lines(x,y,0,0);break;\
+   case 5: lines(x,y,0,1);break;\
+   case 6: segments(x,y,0,0);break;\
+   case 7: segments(x,y,0,1);break;\
+   case 8: arrows(x,y,0,0);break;\
+   case 9: arrows(x,y,0,1);break;\
+   case 10: triangles(x,y,0,0);break;\
+   case 11: triangles(x,y,0,1);break;\
+   default:break;\
+  };\
+ };\
+ function user_drag(evt){\
+  var canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var y = evt.clientY - canvas_rect.top;\
+  var x = evt.clientX - canvas_rect.left;\
+  switch(userdraw_primitive){\
+   case 0: break;\
+   case 1: break;\
+   case 2: circles(x,y,1,0);break;\
+   case 3: circles(x,y,1,1);break;\
+   case 4: lines(x,y,1,0);break;\
+   case 5: lines(x,y,1,1);break;\
+   case 6: segments(x,y,1,0);break;\
+   case 7: segments(x,y,1,1);break;\
+   case 8: arrows(x,y,1,0);break;\
+   case 9: arrows(x,y,1,1);break;\
+   case 10: triangles(x,y,1,0);break;\
+   case 11: triangles(x,y,1,1);break;\
+   default:break;\
+  };\
+ };\
+ var draw_things = [\"%s\"];\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ var inner_html=\"\";\
+ var button_style = \"%s\";\
+ var id_x = \"\";\
+ var id_y = \"\";\
+ var id_r;\
+ for(var p = 0;p < draw_things.length;p++){\
+  var desc;\
+  id_r = 0;\
+  if( multistrokeopacity[p] > 1 ){ multistrokeopacity[p] = (0.0039215*multistrokeopacity[p]).toFixed(2); };\
+  if( multifillopacity[p] > 1 ){ multifillopacity[p] =  (0.0039215*multifillopacity[p]).toFixed(2); };\
+  if( draw_things[p] == 'point' || draw_things[p] == 'points' ){\
+   var canvas_points = create_canvas%d(1000,xsize,ysize);\
+   var context_points = canvas_points.getContext(\"2d\");\
+   context_points.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+   context_points.fillStyle = context_points.strokeStyle;\
+   var points_x = new Array();var points_y = new Array();\
+   var points_snap = multisnaptogrid[p];\
+   if(draw_things[p] == 'point' ){desc = 0;}else{desc = 1;};\
+   id_x = 'input_points_x';id_y = 'input_points_y';\
+  }\
+  else\
+  {\
+   if( draw_things[p] == 'circle' || draw_things[p] == 'circles' ){\
+     var canvas_circles = create_canvas%d(1001,xsize,ysize);\
+     var context_circles = canvas_circles.getContext(\"2d\");\
+     context_circles.lineWidth = multilinewidth[p];\
+     context_circles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+     if(multifill[p] == '1' ){ context_circles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_circles.fillStyle = \"rgba( 255,255,255,0)\"; };\
+     if(multidash[p] == '1' ){ if( context_circles.setLineDash ){context_circles.setLineDash([2,4]);}else{if(context_circles.mozDash){context_circles.mozDash = [2,4]};};};\
+     var circles_x = new Array();var circles_y = new Array();var multi_radius = new Array();\
+     var circles_snap = multisnaptogrid[p];\
+     if( draw_things[p] == 'circle' ){desc = 2;}else{desc = 3;};\
+     id_x = 'input_circles_x';id_y = 'input_circles_y';id_r = 'input_circles_r';\
+   }\
+   else\
+   {\
+     if( draw_things[p] == 'line' || draw_things[p] == 'lines' ){\
+     var canvas_lines = create_canvas%d(1002,xsize,ysize);\
+     var context_lines = canvas_lines.getContext(\"2d\");\
+     context_lines.lineWidth = multilinewidth[p];\
+     context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+     if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
+     var lines_x = new Array();var lines_y = new Array();\
+     var lines_snap = multisnaptogrid[p];\
+     if(draw_things[p] == 'line' ){desc = 4;}else{desc = 5;};\
+     id_x = 'input_lines_x';id_y = 'input_lines_y';\
+    }\
+    else\
+    {\
+     if( draw_things[p] == 'segment' || draw_things[p] == 'segments' ){\
+      var canvas_segments = create_canvas%d(1003,xsize,ysize);\
+      var context_segments =  canvas_segments.getContext(\"2d\");\
+      context_segments.lineWidth = multilinewidth[p];\
+      context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+      if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
+      var segments_x = new Array();var segments_y = new Array();\
+      var segments_snap = multisnaptogrid[p];\
+      if( draw_things[p] == 'segment' ){desc = 6;}else{ desc = 7;};\
+      id_x = 'input_segments_x';id_y = 'input_segments_y';\
+     }\
+     else\
+     {\
+      if( draw_things[p] == 'arrow' || draw_things[p] == 'arrows' ){\
+       var canvas_arrows = create_canvas%d(1004,xsize,ysize);\
+       var context_arrows =  canvas_arrows.getContext(\"2d\");\
+       context_arrows.lineWidth = multilinewidth[p];\
+       context_arrows.lineCap = \"round\";\
+       context_arrows.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+       context_arrows.fillStyle = context_arrows.strokeStyle;\
+       if(multidash[p] == '1' ){ if( context_arrows.setLineDash ){context_arrows.setLineDash([2,4]);}else{if(context_arrows.mozDash){context_arrows.mozDash = [2,4]};};};\
+       var arrows_x = new Array();var arrows_y = new Array();\
+       var arrows_snap = multisnaptogrid[p];\
+       if( draw_things[p] == 'arrow' ){desc = 8;}else{desc = 9;};\
+       id_x = 'input_arrows_x';id_y = 'input_arrows_y';\
+      }\
+      else\
+      {\
+       if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
+        var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
+        var context_triangles = canvas_triangles.getContext(\"2d\");\
+        context_triangles.lineCap = \"round\";\
+        context_triangles.lineWidth = multilinewidth[p];\
+        context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+        if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
+        if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
+        var triangles_x = new Array();var triangles_y = new Array();\
+        var triangles_snap = multisnaptogrid[p];\
+        if( draw_things[p] == 'triangle'){desc = 10;};\
+        if( draw_things[p] == 'triangles'){desc = 11;};\
+        if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};};\
+        if( draw_things[p] == 'parallelogram'){desc = 10;};\
+        if( draw_things[p] == 'parallelograms'){desc = 11;};\
+        id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
+       };\
+      };\
+     };\
+    };\
+   };\
+  };\
+  inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
+  if(multiuserinput[p] == '1'){ \
+   if(desc == 2 || desc == 3){\
+    inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";\
+   }\
+   else\
+   {\
+    if(desc >3 && desc <10){\
+     inner_html+=\"<td><b>(</b><input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\";text-align:center;' /><b>) --- (</b> <input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\";text-align:center;' /> <b>)</b></td>\";\
+    }\
+    else\
+    {\
+     if(desc == 0 || desc == 1 ){\
+     inner_html+=\"<td><b>(</b><input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /><b>:</b> <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' /> <b>)</b></td>\";\
+     }\
+     else\
+     {\
+      if( desc == 10 || desc == 11 ){\
+       inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";\
+      };\
+     };\
+    };\
+   };\
+   inner_html+=\"<td><input type='button' style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
+  }\
+  else\
+  {\
+   inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
+  };\
+ };\
+ tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' style='\"+button_style+\"' value='stop drawing' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+ function x_snap_check(x,snap){\
+  if( snap == 1 ){\
+    return snap_to_x(x);\
+  };\
+  return x;\
+ };\
+ function y_snap_check(y,snap){\
+  if( snap == 1 ){\
+    return snap_to_y(y);\
+  };\
+  return y;\
+ };\
+ function coord_split(coord){if(coord.indexOf(':') > 0 ){return coord.split(':');}else{if(coord.indexOf(';') > 0 ){return coord.split(';');}else{if(coord.indexOf(',') > 0 ){return coord.split(',');}else{alert(coord+'--> X : Y ');return;};};};};\
+ update_draw_area%d = function(desc,id_x,id_y,id_r){\
+ var x1,x2,x3,y1,y2,y3,r,A,B;\
+ x1 = document.getElementById(id_x.id).value;\
+ y1 = document.getElementById(id_y.id).value;\
+ if(desc > 3 && desc < 12){\
+  A = coord_split(x1);B = coord_split(y1);\
+  if(A.length != 2 || B.length != 2){alert(' X : Y ');return;};\
+  x1 = x2px(safe_eval(A[0]));y1 = y2px(safe_eval(A[1]));\
+  x2 = x2px(safe_eval(B[0]));y2 = y2px(safe_eval(B[1]));\
+  if(desc == 10 || desc == 11 ){\
+   r = document.getElementById(id_r.id).value;\
+   A = coord_split(r);\
+   x3 = x2px(safe_eval(A[0]));y3 = y2px(safe_eval(A[1]));\
+  };\
+ }\
+ else\
+ {\
+  x1 = x2px(safe_eval(x1));y1 = y2px( safe_eval(y1));\
+ };\
+ switch(desc){\
+  case 0: points(x1,y1,0,0);break;\
+  case 1: points(x1,y1,0,1);break;\
+  case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
+  case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
+  case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines(2);draw_lines();break;\
+  case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines(lines_x.length);draw_lines();break;\
+  case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
+  case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
+  case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
+  case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
+  case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
+  case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
+  default:break;\
+ };\
+};\n\
+ <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
+ 
+/* 
+ now add specific draw functions according to draw_types 
+ these will be somewhat simpler and less fancy-full than for the 'single object' userdraw command...
+ the 'switch function' in the mouselisteners will probably eat more CPU...so the rest needs to be faster:
+ we don't want to imitate these horribly slow js-libraries like JSXgraph
+*/
+ if( strstr(draw_types,"point") != 0){
+  fprintf(js_include_file,"function points(x,y,event_which,num){\
+   if(event_which == 1){ return; };\
+   if( num == 0 ){\
+     points_x[0] = x_snap_check(x,points_snap);\
+     points_y[0] = y_snap_check(y,points_snap);\
+   }else{\
+    points_x.push(x_snap_check(x,points_snap));\
+    points_y.push(y_snap_check(y,points_snap));\
+   };\
+   draw_points();\
+  };\
+  function draw_points(){\
+   var radius = parseInt(2*(multilinewidth[userdraw_primitive]));\
+   context_points.clearRect(0,0,xsize,ysize);\
+   for(var p = 0 ; p < points_x.length ; p++ ){\
+    context_points.beginPath();\
+    context_points.arc(points_x[p],points_y[p],radius,0,2*Math.PI,false);\
+    context_points.closePath();\
+    context_points.fill();\
+    context_points.stroke();\
+   };\
+  };");
+ }
+ if( strstr(draw_types,"circle") != 0){
+  fprintf(js_include_file,"function circles(x,y,event_which,num){\
+   var last = circles_x.length - 1;\
+   var xc = circles_x[last];\
+   var yc = circles_y[last];\
+   if(event_which == 0){\
+    circles_x.push(x_snap_check(x,circles_snap));circles_y.push(y_snap_check(y,circles_snap));multi_radius.push(4);\
+    click_cnt++;\
+   }\
+   else\
+   {\
+    if( click_cnt == 1 ){\
+     multi_radius[last] = parseInt(Math.sqrt( (x - xc)*(x - xc) + (y - yc)*(y - yc) ));\
+    };\
+   };\
+   if( click_cnt == 2 ){\
+    click_cnt = 0;\
+    circles_x.pop();circles_y.pop();multi_radius.pop();\
+    if( num == 0 ){\
+     last = circles_x.length - 1;xc = circles_x[last];yc = circles_y[last];var r = multi_radius[last];\
+     circles_x = new Array();circles_y = new Array();multi_radius = new Array();\
+     circles_x[0] = x_snap_check(xc,circles_snap);circles_y[0] = y_snap_check(yc,circles_snap);multi_radius[0] = r;\
+    }\
+   };\
+   draw_circles();\
+ };\
+ function draw_circles(){\
+   context_circles.clearRect(0,0,xsize,ysize);\
+   for(var p = 0 ; p < circles_x.length ; p++ ){\
+    context_circles.beginPath();\
+    context_circles.arc(circles_x[p],circles_y[p],multi_radius[p],0,2*Math.PI,false);\
+    context_circles.closePath();\
+    context_circles.fill();\
+    context_circles.stroke();\
+   };\
+   return;\
+ };"); 
+ }
+
+ if( strstr(draw_types,"segment") != 0){
+  fprintf(js_include_file,"function segments(x,y,event_which,num){\
+   var last = segments_x.length - 1;\
+   if(event_which == 0){\
+    if(num == 0){\
+     segments_x[0] = x_snap_check(x,segments_snap);segments_y[0] = y_snap_check(y,segments_snap);\
+    }\
+    else\
+    {\
+     segments_x.push(x_snap_check(x,segments_snap));segments_y.push(y_snap_check(y,segments_snap));\
+    };\
+    click_cnt++;\
+   }\
+   else\
+   {\
+    if( click_cnt == 1 ){\
+     segments_x.push(x_snap_check(x,segments_snap));segments_y.push(y_snap_check(y,segments_snap));\
+     draw_segments();\
+     segments_x.pop();segments_y.pop();\
+    };\
+   };\
+   if( click_cnt == 2 ){\
+    segments_x[last+num] = x_snap_check(x,segments_snap);segments_y[last+num] = y_snap_check(y,segments_snap);\
+    click_cnt = 0;\
+    draw_segments();\
+   };\
+  };\
+  function draw_segments(){\
+   var len = segments_x.length;\
+   if( len%%2 == 0 ){\
+    context_segments.clearRect(0,0,xsize,ysize);\
+    for(var p = 0 ; p < len ; p = p+2 ){\
+     context_segments.beginPath();\
+     context_segments.moveTo(segments_x[p],segments_y[p]);\
+     context_segments.lineTo(segments_x[p+1],segments_y[p+1]);\
+     context_segments.closePath();\
+     context_segments.stroke();\
+    };\
+   };\
+   return;\
+  };");
+ }
+ if( strstr(draw_types,"arrow") != 0){
+  fprintf(js_include_file,"function arrows(x,y,event_which,num){\
+   var last = arrows_x.length - 1;\
+   if(event_which == 0){\
+    if(num == 0){\
+     arrows_x[0] =  x_snap_check(x,arrows_snap);arrows_y[0] = y_snap_check(y,arrows_snap);\
+    }\
+    else\
+    {\
+     arrows_x.push(x_snap_check(x,arrows_snap));arrows_y.push(y_snap_check(y,arrows_snap));\
+    };\
+    click_cnt++;\
+   }\
+   else\
+   {\
+    if( click_cnt == 1 ){\
+     arrows_x.push(x_snap_check(x,arrows_snap));arrows_y.push(y_snap_check(y,arrows_snap));\
+     draw_arrows();\
+     arrows_x.pop();arrows_y.pop();\
+    };\
+   };\
+   if( click_cnt == 2 ){\
+    arrows_x[last+num] = x_snap_check(x,arrows_snap);arrows_y[last+num] = y_snap_check(y,arrows_snap);\
+    click_cnt = 0;\
+    draw_arrows();\
+   };\
+  };\
+  function draw_arrows(){\
+   var len = arrows_x.length;\
+   var x1,y1,x2,y2,dx,dy,h;\
+   if( len%%2 == 0 ){\
+    context_arrows.clearRect(0,0,xsize,ysize);\
+    for(var p = 0 ; p < len ; p = p+2 ){\
+     context_arrows.save();\
+     x1 = arrows_x[p];y1 = arrows_y[p];x2 = arrows_x[p+1];y2 = arrows_y[p+1];dx = x2 - x1;dy = y2 - y1;\
+     h = Math.sqrt(dx*dx+dy*dy);\
+     context_arrows.beginPath();\
+     context_arrows.moveTo(x1,y1);\
+     context_arrows.lineTo(x2,y2);\
+     context_arrows.closePath();\
+     context_arrows.stroke();\
+     context_arrows.translate(x2,y2);\
+     context_arrows.rotate(Math.atan2(dy,dx));\
+     context_arrows.beginPath();\
+     context_arrows.moveTo(0,0);\
+     context_arrows.lineTo(-1*arrow_head,-0.5*arrow_head);\
+     context_arrows.lineTo(-1*arrow_head, 0.5*arrow_head);\
+     context_arrows.closePath();\
+     context_arrows.fill();\
+     context_arrows.stroke();\
+     context_arrows.restore();\
+    };\
+   };\
+  return;\
+ };");
+ }
+
+ 
+ if( strstr(draw_types,"line") != 0){
+  fprintf(js_include_file,"function calc_lines(len){\
+   var marge = 2;\
+   var x = lines_x;var y = lines_y;\
+   lines_x = new Array(len);\
+   lines_y = new Array(len);\
+   var pp;\
+   for(var p = 0 ; p< len ;p = p+2){\
+    pp = p+1;\
+    if(x[p] < x[pp]+marge && x[p] > x[pp]-marge){\
+     lines_x[p] = x[p];lines_x[pp] = x[pp];\
+     lines_y[p] = 0;lines_y[pp] = ysize;\
+    }\
+    else\
+    {\
+     if(y[p] < y[pp]+marge && y[p] > y[pp]-marge){\
+      lines_x[p] = 0;lines_x[pp] = xsize;\
+      lines_y[p] = y[p];lines_y[pp] = y[pp];\
+     }\
+     else\
+     {\
+      lines_x[p] = 0;lines_x[pp] = xsize;\
+      lines_y[p] = y[p] - (x[p])*(y[pp] - y[p])/(x[pp] - x[p]);\
+      lines_y[pp] = y[p] + (xsize - x[p])*(y[pp] - y[p])/(x[pp] - x[p]);\
+     };\
+    };\
+   };\
+   return;\
+  }\
+  function lines(x,y,event_which,num){\
+  var last = lines_x.length - 1;\
+   if(event_which == 0){\
+    if(num == 0){\
+     lines_x[0] = x_snap_check(x,lines_snap);lines_y[0] = y_snap_check(y,lines_snap);\
+    }\
+    else\
+    {\
+     lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
+    };\
+    click_cnt++;\
+   }\
+   else\
+   {\
+    if( click_cnt == 1 ){\
+     lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
+     draw_lines();\
+     lines_x.pop();lines_y.pop();\
+    };\
+   };\
+   if( click_cnt == 2 ){\
+    lines_x[last+num] = x_snap_check(x,lines_snap);lines_y[last+num] = y_snap_check(y,lines_snap);\
+    click_cnt = 0;\
+    if(num == 1){\
+     calc_lines(last+num);\
+    };\
+    draw_lines();\
+   };\
+  };\
+  function draw_lines(){\
+   var len = lines_x.length;\
+   if( len%%2 == 0 ){\
+    context_lines.clearRect(0,0,xsize,ysize);\
+    for(var p = 0 ; p < len ; p = p+2 ){\
+     context_lines.beginPath();\
+     context_lines.moveTo(lines_x[p],lines_y[p]);\
+     context_lines.lineTo(lines_x[p+1],lines_y[p+1]);\
+     context_lines.closePath();\
+     context_lines.stroke();\
+    };\
+   };\
+   return;\
+  };");
+ }
+
+ if( strstr(draw_types,"triangle") != 0 || strstr( draw_types,("poly")) != 0 || strstr( draw_types,("paral")) != 0){
+  int polynum = 3;
+  int parallelogram = 0;
+  if(strstr( draw_types,("poly")) != 0){
+   char *p = draw_types;
+   while( *p ){
+    if( isdigit(*p) ){
+        polynum = atoi(p);
+        break;
+    } else { p++;}}
+  }
+  else
+  {
+   if(strstr( draw_types,"parallel") != 0){
+    parallelogram = 1;
+   }
+  }
+  if( parallelogram == 0 ){
+   fprintf(js_include_file,"var polynum = %d;\
+   function triangles(x,y,event_which,num){\
+    var last = triangles_x.length - 1;\
+    if(event_which == 0){\
+     if(num == 0 && click_cnt == 0){\
+      triangles_x = [];triangles_y = [];\
+      triangles_x[0] = x_snap_check(x,triangles_snap);triangles_y[0] = y_snap_check(y,triangles_snap);\
+     }\
+     else\
+     {\
+      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+     };\
+     click_cnt++;\
+    }\
+    else\
+    {\
+     if( click_cnt < polynum ){\
+      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      draw_triangles();\
+      triangles_x.pop();triangles_y.pop();\
+     };\
+    };\
+    if( click_cnt == polynum ){\
+     triangles_x.pop();triangles_y.pop();\
+     triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+     click_cnt = 0;\
+     draw_triangles();\
+    };\
+   };\
+   function draw_triangles(){\
+    var len = triangles_x.length - 1;\
+    context_triangles.clearRect(0,0,xsize,ysize);\
+    for(var p = 0 ; p < len ; p = p+polynum){\
+     context_triangles.beginPath();\
+     context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
+     for( var m = p+1 ;m < p+polynum ; m++){\
+      context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
+     };\
+     context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
+     context_triangles.closePath();\
+     context_triangles.fill();\
+     context_triangles.stroke();\
+    };\
+    return;\
+   };",polynum);
+  }
+  else
+  {
+  /* need to rething the parallelo gram !!! 26/6/2015 */
+   fprintf(js_include_file,"var polynum = 4;\
+   function triangles(x,y,event_which,num){\
+    var l2 = triangles_x.length;\
+    var l1 = l2 - 1;\
+    var l0 = l2 - 2;\
+    if(event_which == 0){\
+     if(click_cnt == 0){\
+      if(num==0){triangles_x = [];triangles_y = [];};\
+      triangles_x.push(x_snap_check(x));triangles_y.push(y_snap_check(y,triangles_snap));\
+     }\
+     else\
+     {\
+      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      if(click_cnt == 2){\
+       triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
+       triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
+      };\
+     };\
+     click_cnt++;\
+    }\
+    else\
+    {\
+     if(click_cnt > 1 ){\
+      if( click_cnt < 3){\
+       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+       triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
+       triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
+       draw_triangles();\
+       triangles_x.pop();triangles_y.pop();\
+       triangles_x.pop();triangles_y.pop();\
+      };\
+     };\
+    };\
+    if( click_cnt == 3 ){\
+     triangles_x.pop();triangles_y.pop();\
+     triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
+     triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
+     triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+     triangles_x.pop();triangles_y.pop();\
+     click_cnt = 0;\
+     draw_triangles();\
+    };\
+   };\
+   function draw_triangles(){\
+    var len = triangles_x.length - 1;\
+    context_triangles.clearRect(0,0,xsize,ysize);\
+    for(var p = 0 ; p < len ; p = p+polynum){\
+     context_triangles.beginPath();\
+     context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
+     for( var m = p+1 ;m < p+polynum ; m++){\
+      context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
+     };\
+     context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
+     context_triangles.closePath();\
+     context_triangles.fill();\
+     context_triangles.stroke();\
+    };\
+    return;\
+   };");
+  }
+ }
+} /* end 'void add_js_multidraw()' */
+
 void add_js_circles(FILE *js_include_file,int num,char *draw_type,int line_width, int radius ,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
 var num = %d;\
@@ -26,8 +664,15 @@ function user_draw(evt){\
  y0 = evt.clientY - canvas_rect.top;\
  if(y0 < ysize + 1){\
   x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x0,y0);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x0,y0);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x0,y0);\
+   };\
    x0 = xy[0];y0 = xy[1];\
   }\
   else\
@@ -64,8 +709,15 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   y1 = evt.clientY - canvas_rect.top;\
   x1 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x1,y1);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x1,y1);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x1,y1);\
+   };\
    x1 = xy[0];y1 = xy[1];\
   }\
   else\
@@ -131,8 +783,15 @@ function user_draw(evt){\
  y0 = evt.clientY - canvas_rect.top;\
  if(y0 < ysize + 1){\
   x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x0,y0);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x0,y0);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x0,y0);\
+   };\
    x0 = xy[0];y0 = xy[1];\
   }\
   else\
@@ -183,8 +842,15 @@ function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -277,8 +943,15 @@ function user_draw(evt){\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -367,8 +1040,15 @@ function user_draw(evt){\
  y0 = evt.clientY - canvas_rect.top;\
  if( y0  < ysize + 1 ){\
   x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x0,y0);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x0,y0);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x0,y0);\
+   };\
    x0 = xy[0];y0 = xy[1];\
   }\
   else\
@@ -409,8 +1089,15 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   y1 = evt.clientY - canvas_rect.top;\
   x1 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x1,y1);\
+  var xy = new Array(2);\
+  if( use_snap_to_points != 0 ){\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x1,y1);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x1,y1);\
+   };\
    x1 = xy[0];y1 = xy[1];\
   }\
   else\
@@ -490,8 +1177,15 @@ function user_draw(evt){\
  y = evt.clientY - canvas_rect.top;\
  if( y < ysize + 1 ){\
   x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  var xy = new Array(2);\
+  if( use_snap_to_points != 0 ){\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -536,8 +1230,15 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   x = evt.clientX - canvas_rect.left;\
   y = evt.clientY - canvas_rect.top;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -585,8 +1286,15 @@ function user_draw(evt){\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
  canvas_rect = canvas_userdraw.getBoundingClientRect();\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -620,8 +1328,15 @@ function user_drag(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
   var y = evt.clientY - canvas_rect.top;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -669,8 +1384,15 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -706,8 +1428,15 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -773,8 +1502,15 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -810,8 +1546,15 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -880,8 +1623,15 @@ function user_draw(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var y = evt.clientY - canvas_rect.top;\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -933,8 +1683,15 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -970,8 +1727,15 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -1044,9 +1808,16 @@ function user_draw(evt){\
  if( y < ysize + 1){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points == 1 ){\
-    var xy = snap_to_points(x,y);\
-    x = xy[0];y = xy[1];\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
+   x = xy[0];y = xy[1];\
   }\
   else\
   {\
@@ -1080,8 +1851,15 @@ function user_drag(evt){\
  var x = evt.clientX - canvas_rect.left;\
  var y = evt.clientY - canvas_rect.top;\
  var lu = userdraw_x.length;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x,y);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x,y);\
+  };\
   x = xy[0];y = xy[1];\
  }\
  else\
@@ -1310,8 +2088,15 @@ function user_draw(evt){\
   canvas_rect = canvas_userdraw.getBoundingClientRect();\
   x = evt.clientX - canvas_rect.left;\
   y = evt.clientY - canvas_rect.top;\
-  if( use_snap_to_points == 1 ){\
-   var xy = snap_to_points(x,y);\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
    x = xy[0];y = xy[1];\
   }\
   else\
@@ -1431,8 +2216,15 @@ var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
  y_txt = evt.clientY - canvas_rect.top;\
  x_txt = evt.clientX - canvas_rect.left;\
- if( use_snap_to_points == 1 ){\
-  var xy = snap_to_points(x_txt,y_txt);\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x_txt,y_txt);\
+  }\
+  else\
+  {\
+   xy = snap_to_fun(x_txt,y_txt);\
+  };\
   x_txt = xy[0];y_txt = xy[1];\
  }\
  else\
@@ -1555,6 +2347,7 @@ function use_mouse_coordinates(){\
 /* to avoid easy js-code injection...but is it a real problem ? */
 void add_safe_eval(FILE *js_include_file){
 fprintf(js_include_file," \nfunction safe_eval(exp){\
+ exp = exp.replace(/pi/g,'3.14159');\
  if(exp.indexOf('^') != -1){\
   exp = exp.replace(/[a-zA-Z]/g,' ');\
   exp = exp.replace(/\\*10\\^-/g,'e-');\
@@ -1601,7 +2394,7 @@ function show_slider_value(value,use_slider_display){\
  current_context.clearRect(0,0,xsize,ysize);\
  var prec = Math.log(%d)/(Math.log(10));\
  var string;\
- if(value.length == 2){\
+ if(use_slider_display == 1){\
   string = \" \"+value[0].toFixed(prec)+\" \"+unit_x+\":\"+value[1].toFixed(prec)+\" \"+unit_y;\
  }else{\
   if(use_slider_display == 2){\
@@ -1668,25 +2461,32 @@ function add_slider_%d(){\
  slider_ctx.stroke();\
  slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
 function slider_%d(evt){\
- var value_1 = %f;\
- var value_2 = %f;\
- slider_ctx.clearRect(0,0,slider_width,slider_height);\
- var x = evt.clientX - canvas_rect.left;\
- var value = x*(value_2 - value_1)/slider_width + value_1;\
- slider_ctx.beginPath();\
- slider_ctx.arc(x,slider_center,slider_radius,0,2*Math.PI,false);\
- slider_ctx.moveTo(10,slider_center);\
- slider_ctx.lineTo(slider_width-10,slider_center);\
- slider_ctx.rect(0,0,slider_width,slider_height);\
- slider_ctx.closePath();\
- slider_ctx.fill();\
- slider_ctx.stroke();\
- dragstuff.Slide( [value] , %d );\
- if(%d != 0 ){show_slider_value([value],%d);}\
- return;\
- };\
-};\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
+ var value_1 = %f;\n\
+ var value_2 = %f;\n\
+ slider_ctx.clearRect(0,0,slider_width,slider_height);\n\
+ var x_px = evt.clientX - canvas_rect.left;\n\
+ var x;var y;\n\
+ if( slider_type == 1 ){\
+  x = x_px*(value_2 - value_1)/slider_width + value_1;\n\
+  y = 0;\n\
+ }else{\
+  y = x_px*(value_2 - value_1)/slider_width + value_1;\n\
+  x = 0;\n\
+ };\n\
+ slider_ctx.beginPath();\n\
+ slider_ctx.arc(x_px,slider_center,slider_radius,0,2*Math.PI,false);\n\
+ slider_ctx.moveTo(10,slider_center);\n\
+ slider_ctx.lineTo(slider_width-10,slider_center);\n\
+ slider_ctx.rect(0,0,slider_width,slider_height);\n\
+ slider_ctx.closePath();\n\
+ slider_ctx.fill();\n\
+ slider_ctx.stroke();\n\
+ dragstuff.Slide( [x,y] , %d );\n\
+ if(%d != 0 ){show_slider_value([x,y],%d);};\n\
+ return;\n\
+ };\n\
+};\n\
+add_slider_%d();\n",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
 }
 
 
@@ -1743,25 +2543,27 @@ function sliderdrag_%d(evt){\
   var value_2 = %f;\
   var canvas_rect = (slider_canvas).getBoundingClientRect();\
   slider_ctx.clearRect(0,0,slider_width,slider_height);\
-  var x = evt.clientX - canvas_rect.left;\
-  var y = evt.clientY - canvas_rect.top;\
-  var value_x = x*(value_2 - value_1)/slider_width + value_1;\
-  var value_y = y*(value_2 - value_1)/slider_height + value_1;\
+  var x_px = evt.clientX - canvas_rect.left;\
+  var y_px = evt.clientY - canvas_rect.top;\
+  var x = x_px*(value_2 - value_1)/slider_width + value_1;\
+  var y = y_px*(value_2 - value_1)/slider_height + value_1;\
+  x = parseFloat(eval(slider_function%d.x));\n\
+  y = parseFloat(eval(slider_function%d.y));\n\
   slider_ctx.beginPath();\
-  slider_ctx.arc(x,y,slider_radius,0,2*Math.PI,false);\
+  slider_ctx.arc(x_px,y_px,slider_radius,0,2*Math.PI,false);\
   slider_ctx.fill();\
   slider_ctx.rect(0,0,slider_width,slider_height);\
   slider_ctx.closePath();\
   slider_ctx.stroke();\
-  dragstuff.Slide( [value_x,1-1*value_y] , %d );\
-  if(%d != 0 ){show_slider_value([value_x,value_y],%d);}\
+  dragstuff.Slide( [x,y] , %d );\
+  if(%d != 0 ){show_slider_value([x,y],%d);}\
  };\
 };\
 function sliderclick_%d(evt){\
   if(slider_click == 1){slider_click = 0;}else{slider_click = 1;};\
 };\
 };\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt,slider_cnt);
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,canvas_root_id,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt,slider_cnt,use_slider_display,slider_cnt,slider_cnt,slider_cnt);
 }
 
 
@@ -1783,7 +2585,7 @@ tooltip_div.appendChild(calc_div);\
 var label_x = \"x\";var label_y = \"y\";\
 if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
 if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='%s' />&nbsp;\"+ label_y+\" : <input type='text' size='6' value='' id='calc_output_y' style='%s' readonly /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
+calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='%s' />&nbsp;\"+ label_y+\" : <input type='text' size='5' value='' id='calc_output_y' style='%s' readonly /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
 var calc_button = document.getElementById(\"calc_button\");\
 calc_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"calc_input_x\").value;\
 var y_value = eval_jsmath(x_value);\
@@ -1813,7 +2615,7 @@ if( wims_status == \"done\" ){return;};\
  var trace_div = document.createElement('div');\
  trace_div.id = \"trace_div\";\
  tooltip_div.appendChild(trace_div);\
- trace_div.innerHTML = \"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='%s' />\"+label_y+\" : <input type='text' size='6' value='' id='trace_input_y' style='%s' readonly /></span> \";\
+ trace_div.innerHTML = \"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='%s' />\"+label_y+\" : <input type='text' size='5' value='' id='trace_input_y' style='%s' readonly /></span> \";\
  canvas_div.addEventListener(\"mousemove\",trace,false);\
  canvas_div.addEventListener(\"touchmove\",trace,false);\
  var fun = to_js_math(\"%s\");if(fun == null){return;};\
@@ -1991,7 +2793,7 @@ var input_xy_div = document.createElement('div');\
 input_xy_div.id = \"input_xy_div\";\
 tooltip_div.appendChild(input_xy_div);\
 var label_x = \"x\";var label_y = \"y\";\
-input_xy_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'><b>( <input type='text' size='6' value='' id='userinput_x' style='%s' /> : <input type='text' size='6' value='' id='userinput_y' style='%s' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+input_xy_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'><b>( <input type='text' size='5' value='' id='userinput_x' style='%s' /> : <input type='text' size='5' value='' id='userinput_y' style='%s' /> )</b><input id='update_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
@@ -2008,7 +2810,7 @@ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_x1y1x2y2_div = document.createElement('div');\
 input_x1y1x2y2_div.id = \"input_x1y1x2y2_div\";\
 tooltip_div.appendChild(input_x1y1x2y2_div);\
-input_x1y1x2y2_div.innerHTML=\"<br /><span style='font-size:%dpx'><b>( <input type='text' size='6' value='' id='userinput_x1' style='%s' /> : <input type='text' size='6' value='' id='userinput_y1' style='%s' /> ) ----- ( <input type='text' size='6' value='' id='userinput_x2' style='%s' /> : <input type='text' size='6' value='' id='userinput_y2' style='%s'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;' /></span> \";\
+input_x1y1x2y2_div.innerHTML=\"<br /><span style='font-size:%dpx'><b>( <input type='text' size='5' value='' id='userinput_x1' style='%s' /> : <input type='text' size='5' value='' id='userinput_y1' style='%s' /> ) ----- ( <input type='text' size='5' value='' id='userinput_x2' style='%s' /> : <input type='text' size='5' value='' id='userinput_y2' style='%s'/> )</b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;' /></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
@@ -2025,7 +2827,7 @@ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
 var input_xyr_div = document.createElement('div');\
 input_xyr_div.id = \"input_xyr_div\";\
 tooltip_div.appendChild(input_xyr_div);\
-input_xyr_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'><b>Center : ( <input type='text' size='6' value='' id='userinput_x' style='%s' /> : <input type='text' size='6' value='' id='userinput_y' style='%s' /> ) Radius : <input type='text' size='6' value='' id='userinput_r' style='%s' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
+input_xyr_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'><b>Center : ( <input type='text' size='5' value='' id='userinput_x' style='%s' /> : <input type='text' size='5' value='' id='userinput_y' style='%s' /> ) Radius : <input type='text' size='5' value='' id='userinput_r' style='%s' /></b><input id='update_button' type='button' value='OK' onclick='' style='color:red;background-color:lightblue;'/><input id='delete_button' type='button' value='NOK' onclick='' style='color:blue;background-color:red;'/></span> \";\
 var update_button = document.getElementById(\"update_button\");\
 var delete_button = document.getElementById(\"delete_button\");\
 update_button.addEventListener(\"mousedown\",function(e){user_redraw(1);return;},false);\
@@ -3011,12 +3813,19 @@ function CanvasState(canvas,container_div){\
  function mouseup(e){;\
   if(myState.selection != null ){\
    if(myState.selection.onclick == 2 ){\
-    if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1 || use_snap_to_points == 1){\
+    if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1 || use_snap_to_points != 0){\
      var mouse = myState.getMouse(e);\
      var dx=mouse.x;\
      var dy=mouse.y;\
-     if( use_snap_to_points == 1){\
-      var xy = snap_to_points(dx,dy);\
+     if( use_snap_to_points != 0){\
+      var xy = new Array(2);\
+      if(use_snap_to_points == 1 ){\
+       xy = snap_to_points(dx,dy);\
+      }\
+      else\
+      {\
+       xy = snap_to_fun(dx,dy);\
+      };\
       dx = xy[0] - myState.selection.x[myState.chk];\
       dy = xy[1] - myState.selection.y[myState.chk];\
      }\
@@ -3107,11 +3916,8 @@ CanvasState.prototype.Slide = function(slider_value,slider_count){\
      lu = shape.x.length;\
      reply[shape.click_cnt] = shape.click_cnt+\":\"+slider_value;\
      switch(what){\
-      case 1: slide(shape,slider_value[0],0);break;\
-      case 2: slide(shape,0,slider_value[0]);break;\
       case 3: if(shape.type == 12 || shape.type == 17){shape.h[1] = 180*slider_value[0]/Math.PI;}else{shape.use_rotate = 1;shape.angle = -1*slider_value[0];};break;\
-      case 4: slide(shape,slider_value[0],slider_value[1]);break;\
-      default:break;\
+      default:slide(shape,slider_value[0],slider_value[1]);break;\
      };\
     };\
    };\

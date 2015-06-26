@@ -167,6 +167,20 @@
 #define ROUNDRECTS	170
 #define BEZIER		171
 #define SNAPTOPOINTS	172
+#define SLIDER_X	173
+#define SLIDER_Y	174
+#define SNAPTOFUNCTION  175
+#define MULTIDRAW	176
+#define MULTILINEWIDTH	177
+#define MULTISTROKECOLORS	178
+#define MULTISTROKEOPACITY	179
+#define MULTIFILLCOLORS	180
+#define MULTIFILLOPACITY	181
+#define MULTIFILL	182
+#define MULTILABEL	183
+#define MULTIDASH	184
+#define MULTISNAPTOGRID 185
+#define MULTIUSERINPUT  186
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -222,7 +236,7 @@
 #define ANIMATE_CANVAS	9
 #define TRACE_CANVAS	10
 #define JSPLOT_CANVAS	11
-#define USERDRAW_JSPLOT 12 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
+#define USERDRAW_JSPLOT 112 /* USERDRAW_JSPLOT will be increased with every added inputfield... 13,14,14... SHOULD ALWAYS HAVE HIGHEST NUMBER*/
 
 #ifndef STD_H
 #define STD_H
@@ -279,6 +293,7 @@ void add_js_floodfill(FILE *js_include_file,int canvas_root_id);
 void add_js_filltoborder(FILE *js_include_file,int canvas_root_id);
 void add_js_arc(FILE *js_include_file,int canvas_root_id,int num,int line_width,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1);
 void add_js_text(FILE *js_include_file,int canvas_root_id,int font_size,char *font_family,char *font_color,double stroke_opacity);
+void add_js_multidraw(FILE *js_include_file,int canvas_root_id,char *draw_types,char *button_style);
 /* these should  be harmonized via switch key !!*/
 void add_input_circle(FILE *js_include_file,int type,int num);
 void add_input_segment(FILE *js_include_file,int num);
@@ -296,5 +311,6 @@ void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_colo
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1,int font_size);
 void add_rawmath(FILE *js_include_file);
+
 extern int NUMBER_OF_COLORNAMES;
 extern struct colors { char *hex; char *name; char *rgb; } colors[];

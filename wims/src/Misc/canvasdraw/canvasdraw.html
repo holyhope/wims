@@ -2,7 +2,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Thu Apr 23 10:46:11 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Fri Jun 26 08:56:02 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -10,7 +10,7 @@
 <li><span style="color:blue;font-size:0.8em">will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
+<li><span style="color:blue;font-size:0.8em">General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..." </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..." </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em">If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
@@ -256,7 +256,7 @@
 	    
 <li><span style="color:red"> vline x,y,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> draw a vertical line through point (x1:y1)...(xn:yn) in color 'color'
+<li><span style="color:blue;font-size:0.8em"> draw a vertical line through point (x:y) in color 'color'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
@@ -266,7 +266,7 @@
 	    
 <li><span style="color:red"> vlines color,x1,y1,x2,y2....
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> draw vertical lines through points (x1:y1) in color 'color'
+<li><span style="color:blue;font-size:0.8em"> draw vertical lines through points (x1:y1),(x2:y2)... in color 'color'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
@@ -528,9 +528,248 @@
 	    
 </ul>
 	    
+<li><span style="color:red"> multistrokeopacity stroke_opacity_1,stroke_opacity_2...,stroke_opacity_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> float values 0 - 1 or integer values 0 - 255
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all stroke opacity_ will be set by previous 'opacity int,int'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will not check the amount or validity of your input
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multifillopacity fill_opacity_1,fill_opacity_2...,fill_opacity_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> float values 0 - 1 or integer values 0 - 255
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all fill opacity_ will be set by previous 'opacity int,int' and command 'filled'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will not check the amount or validity of your input
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multilabel button_label_1,button_label_2,...button_label_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will not check the amount or validity of your input
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multilinewidth linewidth_1,linewidth_2...,linewidth6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all line width will be set by previous 'linewidth int'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these up to 6 different line widths for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multidash 0,1,1
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', are dashed
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all objects will be set 'not dashed'...<br />unless a generic command 'dashed' was given before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multisnaptogrid 0,1,1
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', will snap to the xy-grid (default 1 in x/y-coordinate system: see command 'snaptogrid')
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all objects will be set 'no snap'...<br />unless a generic command 'snaptogrid' was given before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> commands 'xsnaptogrid', 'ysnaptogrid', 'snaptofunction' and 'snaptopoints x1,y1,x2,y2...' are <b>not</b> supported at this time
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multifill 0,0,1,0,1,0
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> meaning draw objects no. 3 and 5, in the list of command 'multifill', are filled<br />(if the object is fillable...and not a line,segment,arrow or point...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all objects -except point|points- will be set 'not filled'...<br />unless a command 'filled' was given before command 'multifill'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only suitable for draw_primitives like 'circle | circles' , 'triangle | triangles' and 'polygon'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multistrokecolors color_name_1,color_name_2...,color_name_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all colors will be 'stroke_color' , 'stroke_opacity'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multifillcolors color_name_1,color_name_2...,color_name_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if not set all fillcolors (for circle | triangle | poly[3-9] ) will be 'stroke_color' , 'fill_opacity'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multiuserinput 0,1,1,0
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> meaning, when the command 'multidraw' is used <br />multidraw circles,points,lines,triangles<br />objects 'points' and 'lines' may additionally be 'drawn' by direct input (inputfields)<br/>all other objects must be drawn with a mouse
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br />note: R-values will not snap-to-grid
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> in case of a triangle | poly3, three inputfields are provided.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> always use the same sequence as is used for 'multidraw'
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> multidraw obj_type_1,obj_type_2...obj_type_6
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>triangle | triangles <br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />parallelogram | parallelograms </ul>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> it makes no sense using something like "multidraw point,points" ...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten<br />multidraw circle,segment,points</em>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> multidraw is incompatible with command 'tooltip'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\n"<br/>reply[2] = segments_x+":"+segments_y+"\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\n"<br/>reply[4] = lines_x+":"+lines_y+"\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> <em>technical: all 6 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+</span></li>
+	    
+</ul>
+	    
 <li><span style="color:red"> userdraw object_type,color
 </span><ul>
-<li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed (in this canvasdraw version)
+<li><span style="color:blue;font-size:0.8em"> only a single object_type is allowed.
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
@@ -564,6 +803,34 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> snaptofunction some_function_in_x,some_funtion_in_y
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> alternative: snaptofun some_function_in_x,some_funtion_in_y
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the next object will snap to the calculated values
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if you want only modification of y-values,just use: snaptofunction x,5*sin(1/y)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if you want only modification of x-values,just use: snaptofunction 5*sin(1/x),y
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> for now only one instance of 'snaptofunction' is allowed
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use rwamath on your functions: no validity checking is done by wims !
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example:<br />....<br />snaptofunction 5*(cos(x),4*sin(y)<br />linewidth 3<br />userdraw points,blue<br />....<br />
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> example : switching x and y coordinates?<br />snaptofunction y,x
 </span></li>
 	    
 </ul>
@@ -1149,12 +1416,50 @@
 	    
 </ul>
 	    
+<li><span style="color:red"> sliderfunction_x some_function_in_x
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default value "x"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the x-value of the slider object(s) will be calculated with this function.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default is the x-slider value itself
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only used by command 'slider'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> define before a slider command !
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> sliderfunction_y some_function_in_y
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> default value "y"
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the y-value of the slider object(s) will be calculated with this function.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only used by command 'slider'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> define before a slider command !
+</span></li>
+	    
+</ul>
+	    
 <li><span style="color:red"> slider start_value,end_value,width px,height px,type,label
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> type: xy,x,y,angle
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> if a value display is desired, use<br />type:xy display,x display,y display,angle radian,angle degree
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if the translation should be performed using a function, use for type : xy function,x function,y function<br />use commands sliderfunction_x and/or sliderfunction_y before the slider command to define the functions<br />example:<br />sliderfunction_x x^2<br />sliderfunction_y y^2<br />slider -5,5,100,100,xy function,Some_Text<br />...some stuff to slide<br />killslider<br />sliderfunction_x x^2-2<br />slider -15,15,100,10,x function,Some_Other_Text<br />...more stuff to slide<br />killslider<br />... etc
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
@@ -1410,13 +1715,13 @@
 <li><span style="color:blue;font-size:0.8em"> The image may be "bitmap" or "SVG"
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of [filename] to (x,y) in x/y-range
+<li><span style="color:blue;font-size:0.8em"> Insert the region from (x1,y1) to (x2,y2) (in pixels) of a to (x,y) in x/y-range
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> [filename] is the URL of the image
+<li><span style="color:blue;font-size:0.8em"> a is the URL of the image
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)

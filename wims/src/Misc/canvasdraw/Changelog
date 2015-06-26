@@ -516,7 +516,31 @@ userdraw arrow,blue
 	todo: 
 	make font color in generated <span> elements adjustable via command 'strokecolor'
 	make background color in generated <span> elements adjustable via command 'fillcolor'
-	 
+-24/4	added experimental command 'point2point x,y,color1,color2,x-relation_1:y-relation_1: ... : x-relation_n_:y-relation_n
+-28/4	removed point2point... 
+	added argument 'function' to the slider objects.
+	added command 
+	'sliderfunction_x some_operation_on_x'  
+	'sliderfunction_y some_operation_on_y'
+	
+	sliderfunction_x 5*sin(x)
+	slider -5,5,120,10,x function display,some_text
+	frect -3,3,0,0,red
+	
+	added command 'snaptofunction some_fun_x,some_fun_y'
+	
+-17/6   added experimental 'multidraw', allowing multiple drawing primitives in a single canvas image,
+	using buttons to switch drawing primitive...
+	The js-canvas drawfunctions will be different (simpler) compared with the single 'userdraw obj,color' functions
+	(to increase speed of execution)
+	
+        NOT READY: many issues are still unadressed
+-26/6	multi-family of commands are 'finished'
+	multidraw,multidash,multistrokecolors,multifill,multifillcolors,multistrokeopacity,
+	multifillopacity,multiuserinput,multilabel,multilinewidth,multisnaptogrid
+	And yes, these are horrible long command names.
+	When things are more mature and speed is no longer an issue, the 'single userdraw' command will be replaced by multi*
+	
 ###############################################################################################################################	 
         
 FOR JM.EVERS ONLY:
@@ -542,6 +566,6 @@ command 'arc'
 ./H4/financialmath/economie-3.nl/exos/exo18:filledarc 0,0,$r,$r,0,72,blue\
 ./H4/financialmath/economie-3.nl/exos/exo19:filledarc 0,0,200,200,288,360,red\
 
-command 'drag' ('onclick / drag' object counter now starts at 0 !) 
+command 'drag' ('onclick / drag' object counter now starts at 0 !
 ./H1/number/verhoudingen-2.nl/exos/exo13 (index change: line = (ans[p]).split(':');idx = line[0];/* was idx = line[0] - 1; */)
         

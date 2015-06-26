@@ -129,6 +129,8 @@ int main(int argc, char *argv[]){
     double stroke_opacity = 0.8; /* use some opacity as default */
     double fill_opacity = 0.8;/* use some opacity as default */
     char *URL = "http://localhost/images";
+    char *slider_function_x = "x";
+    char *slider_function_y = "y";
     memset(buffer,'\0',MAX_BUFFER);
     void *tmp_buffer = "";
 
@@ -168,7 +170,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	*/
 	switch(type){
@@ -224,6 +226,8 @@ var read_dragdrop%d;\
 var read_canvas%d;\
 var set_clock;\
 var clear_draw_area%d;\
+var update_draw_area%d;\
+var userdraw_primitive;\n\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
 var xsize = %d;\
@@ -258,7 +262,7 @@ var xstart = 0;\
 var ystart = 0;\
 var unit_x=\" \";\
 var unit_y=\" \";\
-var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,EXTERNAL_IMAGE_CANVAS);
+var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,EXTERNAL_IMAGE_CANVAS);
 /* default add the drag code : nearly always used ...*/
   add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 
@@ -839,7 +843,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case VLINE:
 	/*
 	@ vline x,y,color
-	@ draw a vertical line through point (x1:y1)...(xn:yn) in color 'color'
+	@ draw a vertical line through point (x:y) in color 'color'
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<3;i++) {
@@ -861,7 +865,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case VLINES:
 	/*
 	@ vlines color,x1,y1,x2,y2....
-	@ draw vertical lines through points (x1:y1) in color 'color'
+	@ draw vertical lines through points (x1:y1),(x2:y2)... in color 'color'
 	@ may be set draggable / onclick individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1423,11 +1427,212 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    reset();
 	    break;
-
+	
+	case MULTISTROKEOPACITY:
+	/*
+	 @ multistrokeopacity stroke_opacity_1,stroke_opacity_2...,stroke_opacity_6
+	 @ float values 0 - 1 or integer values 0 - 255 
+	 @ use before command 'multidraw'
+	 @ if not set all stroke opacity_ will be set by previous 'opacity int,int'
+	 @ use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ wims will not check the amount or validity of your input
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multistrokeopacity = [\"%s\"];",temp);
+	    break;
+	case MULTIFILLOPACITY:
+	/*
+	 @ multifillopacity fill_opacity_1,fill_opacity_2...,fill_opacity_6
+	 @ float values 0 - 1 or integer values 0 - 255 
+	 @ use before command 'multidraw'
+	 @ if not set all fill opacity_ will be set by previous 'opacity int,int' and command 'filled'
+	 @ use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ wims will not check the amount or validity of your input
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multifillopacity = [\"%s\"];",temp);
+	    break;
+	case MULTILABEL:
+	/*
+	 @ multilabel button_label_1,button_label_2,...button_label_6
+	 @ use before command 'multidraw'
+	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
+	 @ wims will not check the amount or validity of your input
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multilabel = [\"%s\"];",temp);
+	    break;
+	case MULTILINEWIDTH:
+	/*
+	 @ multilinewidth linewidth_1,linewidth_2...,linewidth6
+	 @ use before command 'multidraw'
+	 @ if not set all line width will be set by previous 'linewidth int'
+	 @ use these up to 6 different line widths for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multilinewidth = [\"%s\"];",temp);
+	    break;
+	case MULTIDASH:
+	/*
+	 @ multidash 0,1,1
+	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', are dashed
+	 @ use before command 'multidraw'
+	 @ if not set all objects will be set 'not dashed'...<br />unless a generic command 'dashed' was given before command 'multidraw'
+	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multidash = [\"%s\"];",temp);
+	    reset();/* if command 'dashed' was given...reset to not-dashed */
+	    break;
+	case MULTISNAPTOGRID:
+	/*
+	 @ multisnaptogrid 0,1,1
+	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', will snap to the xy-grid (default 1 in x/y-coordinate system: see command 'snaptogrid')
+	 @ use before command 'multidraw'
+	 @ if not set all objects will be set 'no snap'...<br />unless a generic command 'snaptogrid' was given before command 'multidraw'
+	 @ commands 'xsnaptogrid', 'ysnaptogrid', 'snaptofunction' and 'snaptopoints x1,y1,x2,y2...' are <b>not</b> supported at this time
+	 @ always use the same sequence as is used for 'multidraw'
+	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multisnaptogrid = [\"%s\"];",temp);
+	    reset();/* if command 'dashed' was given...reset to not-dashed */
+	    break;
+	case MULTIFILL:
+	/*
+	 @ multifill 0,0,1,0,1,0
+	 @ meaning draw objects no. 3 and 5, in the list of command 'multifill', are filled<br />(if the object is fillable...and not a line,segment,arrow or point...)
+	 @ use before command 'multidraw'
+	 @ if not set all objects -except point|points-  will be set 'not filled'...<br />unless a command 'filled' was given before command 'multifill'
+	 @ only suitable for draw_primitives like 'circle | circles' , 'triangle | triangles' and 'polygon'
+	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multifill = [\"%s\"];",temp);
+	    break;
+	case MULTISTROKECOLORS:
+	/*
+	 @ multistrokecolors color_name_1,color_name_2...,color_name_6
+	 @ use before command 'multidraw'
+	 @ if not set all colors will be 'stroke_color' , 'stroke_opacity'
+	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    fprintf(js_include_file,"var multistrokecolors = [");
+	    while( ! done ){
+	        temp = get_color(infile,1);
+		fprintf(js_include_file,"\"%s\",",temp);
+	    }
+	    fprintf(js_include_file,"\"0,0,0\"];");/* add black to avoid trouble with dangling comma... */
+	    break;
+	case MULTIFILLCOLORS:
+	/*
+	 @ multifillcolors color_name_1,color_name_2...,color_name_6
+	 @ use before command 'multidraw'
+	 @ if not set all fillcolors (for circle | triangle | poly[3-9] ) will be 'stroke_color' , 'fill_opacity'
+	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
+	 @ always use the same sequence as is used for 'multidraw'
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    fprintf(js_include_file,"var multifillcolors = [");
+	    while( ! done ){
+	        temp = get_color(infile,1);
+		fprintf(js_include_file,"\"%s\",",temp);
+	    }
+	    fprintf(js_include_file,"\"0,0,0\"];");/* add black to avoid trouble with dangling comma... */
+	    break;
+	case MULTIUSERINPUT:
+	/*
+	@ multiuserinput 0,1,1,0
+	@ meaning, when the command 'multidraw' is used <br />multidraw circles,points,lines,triangles<br />objects 'points' and 'lines' may additionally be 'drawn' by direct input (inputfields)<br/>all other objects must be drawn with a mouse
+	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br />note: R-values will not snap-to-grid
+	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
+	@ in case of a triangle | poly3, three inputfields are provided.
+	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
+	@ use before command 'multidraw'
+	@ always use the same sequence as is used for 'multidraw'
+	*/
+	    /* simple rawmath and input check */
+	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    fprintf(js_include_file,"var multiuserinput = [\"%s\"];",temp);
+	    break;
+	case MULTIDRAW:
+	/*
+	 @ multidraw obj_type_1,obj_type_2...obj_type_6
+	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>triangle | triangles <br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />parallelogram | parallelograms </ul>
+	 @ it makes no sense using something like "multidraw point,points" ...
+	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	 @ buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
+	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten<br />multidraw circle,segment,points</em>
+	 @ multidraw is incompatible with command 'tooltip'
+	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
+	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
+	 @ a local function read_canvas%d will read all userbased drawings.The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\\n"<br/>reply[2] = segments_x+":"+segments_y+"\\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\\n"<br/>reply[4] = lines_x+":"+lines_y+"\\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels	 
+	 @ <em>technical: all 6 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+	*/
+	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
+	    use_userdraw = TRUE;
+	    /* LET OP max 6 DRAW PRIMITIVES */
+	    temp = get_string(infile,1);
+	    temp = str_replace(temp,",","\",\"");
+	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives */
+	    fprintf(js_include_file,"\
+	    if( multistrokecolors === undefined ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s'];};\
+	    if( multifillcolors === undefined ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s'];};\
+	    if( multistrokeopacity === undefined ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f'];};\
+	    if( multifillopacity === undefined ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f'];};\
+	    if( multilinewidth === undefined ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d'];};\
+	    if( multifill === undefined ){ var multifill = ['%d','%d','%d','%d','%d','%d'];};\
+	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d'];};\
+	    if( multilabel === undefined ){ var multilabel = [\"%s\"];};\
+	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0'];};\
+	    if( multisnaptogrid == undefined){ var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1];}else{multisnaptogrid = [0,0,0,0,0,0];};};\
+	    var arrow_head = %d;",
+	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
+	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
+	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
+	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
+	    line_width,line_width,line_width,line_width,line_width,line_width,
+	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
+	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
+	    temp,arrow_head);
+	    /* the canvasses range from 1000 ... 1005 */
+	    add_js_multidraw(js_include_file,canvas_root_id,temp,input_style);
+	    reply_precision = precision;
+	    if( reply_format == 0){reply_format = 29;}
+	    reset();/* if command 'filled' / 'dashed' was given...reset all */
+	    break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
-	@ only a single object_type is allowed (in this canvasdraw version)
+	@ only a single object_type is allowed.
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
@@ -1441,7 +1646,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
-		canvas_error("Only one userdraw primitive may be used: read documentation !!");
+		canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");
 	    }
 	    reply_precision = precision;
 	    use_userdraw = TRUE;
@@ -1816,8 +2021,25 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    reset();
 	break;
-
-
+	case SNAPTOFUNCTION:
+	/*
+	@ snaptofunction some_function_in_x,some_funtion_in_y
+	@ alternative: snaptofun some_function_in_x,some_funtion_in_y
+	@ the next object will snap to the calculated values
+	@ if you want only modification of y-values,just use: snaptofunction x,5*sin(1/y)
+	@ if you want only modification of x-values,just use: snaptofunction 5*sin(1/x),y
+	@ for now only one instance of 'snaptofunction' is allowed
+	@ use rwamath on your functions: no validity checking is done by wims !
+	@ example:<br />....<br />snaptofunction 5*(cos(x),4*sin(y)<br />linewidth 3<br />userdraw points,blue<br />....<br />
+	@ example : switching x and y coordinates?<br />snaptofunction y,x
+	*/
+	temp = get_string_argument(infile,0);
+	fprintf(js_include_file,"\nuse_snap_to_points = 2;");
+	if( use_js_math == FALSE){/* add this stuff only once...*/
+	    add_to_js_math(js_include_file); use_js_math = TRUE; 
+	}
+	fprintf(js_include_file,"var snap_fun = {x:to_js_math('%s'),y:to_js_math('%s')};function snap_to_fun(px,py){ var x = px2x(px); var y = px2y(py); return [ x2px(eval(snap_fun.x)) , y2px(eval(snap_fun.y)) ];};",temp,get_string(infile,1));
+	break;
 	case SNAPTOPOINTS:
 	/*
 	@ snaptopoints x1,y1,x2,y2,x3,y3....
@@ -2518,11 +2740,33 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	*/
 	    slider = 0;
 	    break;
+	case SLIDER_X:
+	/*
+	 @ sliderfunction_x some_function_in_x
+	 @ default value "x"
+	 @ the x-value of the slider object(s) will be calculated with this function.
+	 @ default is the x-slider value itself
+	 @ only used by command 'slider'
+	 @ define before a slider command !
+	*/
+	 slider_function_x = get_string(infile,1);
+	break;
+	case SLIDER_Y:
+	 slider_function_y = get_string(infile,1);
+	 /*
+	 @ sliderfunction_y some_function_in_y
+	 @ default value "y"
+	 @ the y-value of the slider object(s) will be calculated with this function.
+	 @ only used by command 'slider'
+	 @ define before a slider command !
+	 */
+	break;
 	case SLIDER:
 	/*
 	@ slider start_value,end_value,width px,height px,type,label
 	@ type: xy,x,y,angle
 	@ if a value display is desired, use<br />type:xy display,x display,y display,angle radian,angle degree
+	@ if the translation should be performed using a function, use for type : xy function,x function,y function<br />use commands sliderfunction_x and/or sliderfunction_y before the slider command to define the functions<br />example:<br />sliderfunction_x x^2<br />sliderfunction_y y^2<br />slider -5,5,100,100,xy function,Some_Text<br />...some stuff to slide<br />killslider<br />sliderfunction_x x^2-2<br />slider -15,15,100,10,x function,Some_Other_Text<br />...more stuff to slide<br />killslider<br />... etc
 	@ is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
 	@ use commmand 'slider' before draggable/clickable objects.
 	@ no slider for a math function, these can be traced using command 'trace_jscurve some_function_in_x'
@@ -2538,6 +2782,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ use opacity (only fill opacity will be used) to set transparency
 	@ the slider canvas will be added to the 'tooltip div' : so incompatible with command tooltip ; setlimits etc
 	*/
+	    slider_cnt++;/* slider starts at 1 */
 	    for(i=0; i<6 ; i++){
 		switch(i){
 		    case 0: double_data[0] = get_real(infile,0);break; /* start value */
@@ -2545,58 +2790,70 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		    case 2: int_data[0] = (int)(get_real(infile,0));break; /* width */
 		    case 3: int_data[1] = (int)(get_real(infile,0));break; /* height */
 		    case 4: temp = get_string_argument(infile,0); /* type : xy,x,y,angle */
-		    /* xy display*/
-		    if(strstr(temp,"xy")!= 0){
-		     slider = 4;
-		    }
-		    else
-		    {
-		     if(strstr(temp,"x") != 0){
-		      slider = 1;
-		     }
-		     else
-		     {
-		      if(strstr(temp,"y") != 0){
-		       slider = 2;
-		      }
-		      else
-		      {
-		       if(strstr(temp,"angle") != 0){ /* angle diplay radian */
-		        slider = 3;
-		       }
-		       else
-		       {
-		        canvas_error("slider types may be : x , y , xy , angle");
-		       }
-		      }
-		     }
-		    }
-		    if(strstr(temp,"display")!=0){
-		     use_slider_display = 1; /* show x xy values in canvas window */
-		    }
-		    else
-		    {
-		     if(strstr(temp,"degree")!= 0){
-		      use_slider_display = 2; /* show angle values in canvas window */
-		     }
-		     else
-		     {
-		      if(strstr(temp,"radian")!=0){
-		       use_slider_display = 3; /* show radian values in canvas window */
-		      }
-		     }
-		    }
-		    if(use_slider_display != 0 && slider_cnt == 0){ /*add just once the display js-code */
-		     add_slider_display(js_include_file,canvas_root_id,precision,font_size,font_color,stroke_opacity);
-		    }
+		    	    if(strstr(temp,"xy")!= 0){
+		    		slider = 4;
+		    	    }
+		    	    else
+		    	    {
+		    		if(strstr(temp,"x") != 0){
+				    slider = 1;
+		    		}
+		    		else
+		    		{
+		    		    if(strstr(temp,"y") != 0){
+		    			slider = 2;
+		    		    }
+		    		    else
+		    		    {
+		    			if(strstr(temp,"angle") != 0){ /* angle diplay radian */
+		        		    slider = 3;
+		    			}
+		    			else
+		    			{
+		        		    canvas_error("slider can be of type: xy,x,y,angle,fun_x:fun_y");
+		    			}
+		    		    }
+		    		}
+		    	    }
+			    if(strstr(temp,"display")!=0){
+		    		use_slider_display = 1; /* show x xy values in canvas window */
+			    }
+			    else
+			    {
+		    		if(strstr(temp,"degree")!= 0){
+		    		    use_slider_display = 2; /* show angle values in canvas window */
+		    		}
+		    		else
+		    		{
+		    		    if(strstr(temp,"radian")!=0){
+		    			use_slider_display = 3; /* show radian values in canvas window */
+		    		    }
+		    		}
+			    }
+			    if(use_slider_display != 0 && slider_cnt == 1){ /*add just once the display js-code */
+		    		add_slider_display(js_include_file,canvas_root_id,precision,font_size,font_color,stroke_opacity);
+			    }
+		    	    if(strstr(temp,"fun")!= 0){
+		    		if( use_js_math == FALSE){/* add this stuff only once...*/
+		    		    add_to_js_math(js_include_file); use_js_math = TRUE; 
+		    		}
+		    		fprintf(js_include_file,"var slider_function%d = {x:to_js_math('%s'),y:to_js_math('%s')};",slider_cnt,slider_function_x,slider_function_y);
+		    		slider_function_x = "x";slider_function_y = "y";/* reset the functions for next slider...*/
+		    	    }
+		    	    else
+		    	    {
+		    		fprintf(js_include_file,"var slider_function%d = {x:'x',y:'y'};",slider_cnt);
+		    		/* we must define these, otherwise 'use stict' will cause an error */
+		    	    }
 		    break;
 		    case 5: /* some string used for slider description  */
-		    slider_cnt++;
-		    if(slider == 4){
-		     add_xyslider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display );
-		    }else{
-		     add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display);
-		    }
+		    	    if(slider == 4){
+		    		add_xyslider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display);
+		    	    }
+		    	    else
+		    	    {
+		    		add_slider(js_include_file,canvas_root_id,double_data[0],double_data[1],int_data[0],int_data[1],slider,get_string_argument(infile,1),slider_cnt,stroke_color,fill_color,line_width,fill_opacity,font_family,font_color,use_slider_display);
+		    	    }
 		    break;
 		}
 	     }
@@ -4390,6 +4647,8 @@ note:if userdraw is combined with inputfields...every "userdraw" based answer wi
     x/y/r in  xrange / yrange coordinate system: may be used to reinput into command 
     'circles color,x1,y1,r1,x2,y2,r2...x_n,y_n,r_n'
     will not return anything else (e.g. no inputfields , text etc)
+29 = mulidraw read : 
+    
 */
 
 
@@ -5353,7 +5612,39 @@ read_canvas%d = function(){\
  if( p == 0){alert(\"nothing drawn...\");return;}\
  return reply;\
 };\n\
-<!-- end function 4 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+<!-- end function 28 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+    break;
+    case 29:
+    fprintf(js_include_file,"\n<!-- begin function 29 read_canvas%d() -->\n\
+function xy_precision(array_x,array_y){\
+ var len = array_x.length;\
+ var x_array = new Array(len);\
+ var y_array = new Array(len);\
+ var prec = %d;\
+ for(var p = 0 ; p < len ; p++ ){\
+  x_array[p] = (Math.round(prec*(px2x(array_x[p]))))/prec;\
+  y_array[p] = (Math.round(prec*(px2y(array_y[p]))))/prec;\
+ };\
+ return x_array+\":\"+y_array;\
+};\n\
+function round_to_pixel(array_r){\
+var len = array_r.length;\
+ for(var p = 0 ; p < len ; p++ ){\
+  array_r[p] = Math.round(array_r[p]);\
+ };\
+ return array_r;\
+};\
+read_canvas%d = function(){\
+ var reply = new Array();\
+ if( points_x && points_x.length > 0 ){reply[0] = xy_precision(points_x,points_y)+\"\\n\"; }else{ reply[0]=\"\\n\"; };\
+ if( circles_x && circles_x.length > 0 ){ reply[1] =xy_precision(circles_x,circles_y)+\":\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
+ if( segments_x && segments_x.length > 0 ){ reply[2] = xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply[2]=\"\\n\"; };\
+ if( arrows_x && arrows_x.length > 0 ){ reply[3] = xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply[3]=\"\\n\"; };\
+ if( lines_x && lines_x.length > 0 ){ reply[4] = xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply[4]=\"\\n\"; };\
+ if( triangles_x && triangles_x.length > 0){ reply[5] = xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply[5]=\"\\n\"; };\
+ return reply;\
+};\n\
+<!-- end function 29 read_canvas%d() -->",canvas_root_id,reply_precision,canvas_root_id,canvas_root_id);
     break;
     default: canvas_error("hmmm unknown replyformat...");break;
 }
@@ -7335,6 +7626,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
  ctx.restore();\
 };",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id);
     break;
+
     default:break;
    }
   }
@@ -7529,6 +7821,8 @@ int get_token(FILE *infile){
 	*xsnaptogrid="xsnaptogrid",
 	*ysnaptogrid="ysnaptogrid",
 	*snaptopoints="snaptopoints",
+	*snaptofunction="snaptofunction",
+	*snaptofun="snaptofun",
 	*userinput_xy="userinput_xy",
 	*userinput_function="userinput_function",
 	*usertextarea_xy="usertextarea_xy",
@@ -7553,7 +7847,20 @@ int get_token(FILE *infile){
 	*hlines="hlines",
 	*vlines="vlines",
 	*bezier="bezier",
-	*functionlabel="functionlabel";
+	*functionlabel="functionlabel",
+	*sliderfunction_x="sliderfunction_x",
+	*sliderfunction_y="sliderfunction_y",
+	*multidraw="multidraw",
+	*multilinewidth="multilinewidth",
+	*multistrokecolors="multistrokecolors",
+	*multifillcolors="multifillcolors",
+	*multistrokeopacity="multistrokeopacity",
+	*multifillopacity="multifillopacity",
+	*multifill="multifill",
+	*multidash="multidash",
+	*multilabel="multilabel",
+	*multiuserinput="multiuserinput",
+	*multisnaptogrid="multisnaptogrid";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -8244,6 +8551,10 @@ int get_token(FILE *infile){
 	free(input_type);
 	return SNAPTOPOINTS;
 	}
+	if( strcmp(input_type, snaptofunction) == 0  || strcmp(input_type, snaptofun) == 0 ){
+	free(input_type);
+	return SNAPTOFUNCTION;
+	}
 	if( strcmp(input_type, userinput_xy) == 0 ){
 	free(input_type);
 	return USERINPUT_XY;
@@ -8308,6 +8619,59 @@ int get_token(FILE *infile){
 	free(input_type);
 	return FUNCTION_LABEL;
 	}
+	if( strcmp(input_type, sliderfunction_x) == 0 ){
+	free(input_type);
+	return SLIDER_X;
+	}
+	if( strcmp(input_type, sliderfunction_y) == 0 ){
+	free(input_type);
+	return SLIDER_Y;
+	}
+	if( strcmp(input_type, multidraw) == 0 ){
+	free(input_type);
+	return MULTIDRAW;
+	}
+	if( strcmp(input_type, multistrokeopacity) == 0 ){
+	free(input_type);
+	return MULTISTROKEOPACITY;
+	}
+	if( strcmp(input_type, multifillopacity) == 0 ){
+	free(input_type);
+	return MULTIFILLOPACITY;
+	}
+	if( strcmp(input_type, multilinewidth) == 0 ){
+	free(input_type);
+	return MULTILINEWIDTH;
+	}
+	if( strcmp(input_type, multistrokecolors) == 0 ){
+	free(input_type);
+	return MULTISTROKECOLORS;
+	}
+	if( strcmp(input_type, multifill) == 0 ){
+	free(input_type);
+	return MULTIFILL;
+	}
+	if( strcmp(input_type, multifillcolors) == 0 ){
+	free(input_type);
+	return MULTIFILLCOLORS;
+	}
+	if( strcmp(input_type, multilabel) == 0 ){
+	free(input_type);
+	return MULTILABEL;
+	}
+	if( strcmp(input_type, multidash) == 0 ){
+	free(input_type);
+	return MULTIDASH;
+	}
+	if( strcmp(input_type, multisnaptogrid) == 0 ){
+	free(input_type);
+	return MULTISNAPTOGRID;
+	}
+	if( strcmp(input_type, multiuserinput) == 0 ){
+	free(input_type);
+	return MULTIUSERINPUT;
+	}
+
 	free(input_type);
 	ungetc(c,infile);
 	return 0;
