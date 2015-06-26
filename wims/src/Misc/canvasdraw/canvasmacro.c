@@ -469,27 +469,9 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    return;\
   }\
   function lines(x,y,event_which,num){\
-  var last = lines_x.length - 1;\
    if(event_which == 0){\
-    if( click_cnt == 0 ){\
-     if(num == 0 ){\
-      lines_x[0] = x_snap_check(x,lines_snap);lines_y[0] = y_snap_check(y,lines_snap);\
-     }\
-     else\
-     {\
-      lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
-     };\
-    }\
-    else\
-    {\
-     if( num == 0 ){\
-      lines_x[1] = x_snap_check(x,lines_snap);lines_y[1] = y_snap_check(y,lines_snap);\
-     }\
-     else\
-     {\
-      lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
-     };\
-    };\
+    if( num == 0 && click_cnt == 0 ){lines_x = [];lines_y = [];};\
+    lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
     click_cnt++;\
    }\
    else\
