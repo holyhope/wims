@@ -175,11 +175,19 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
         if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
         var triangles_x = new Array();var triangles_y = new Array();\
         var triangles_snap = multisnaptogrid[p];\
-        if( draw_things[p] == 'triangle'){desc = 10;};\
-        if( draw_things[p] == 'triangles'){desc = 11;};\
-        if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};};\
-        if( draw_things[p] == 'parallelogram'){desc = 10;};\
-        if( draw_things[p] == 'parallelograms'){desc = 11;};\
+        if( draw_things[p] == 'triangle'){desc = 10;}\
+        else{\
+         if( draw_things[p] == 'triangles'){desc = 11;}\
+         else{\
+          if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
+          else{\
+           if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
+           else{\
+           if( draw_things[p] == 'parallelograms')multiuserinput[p] = 0;{desc = 11;};\
+           };\
+          };\
+         };\
+        };\
         id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
        };\
       };\
@@ -570,7 +578,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
   }
   else
   {
-  /* need to rething the parallelo gram !!! 26/6/2015 */
+  /* need to rethink the parallelogram !!! 26/6/2015 */
    fprintf(js_include_file,"var polynum = 4;\
    function triangles(x,y,event_which,num){\
     var l2 = triangles_x.length;\
@@ -593,8 +601,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
     }\
     else\
     {\
-     if(click_cnt > 1 ){\
-      if( click_cnt < 3){\
+      if(click_cnt > 0 && click_cnt < 3){\
        triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
        triangles_x.push(x_snap_check(triangles_x[l2]-triangles_x[l1] + triangles_x[l0]));\
        triangles_y.push(y_snap_check(triangles_y[l2]-triangles_y[l1] + triangles_y[l0]));\
@@ -602,7 +609,6 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
        triangles_x.pop();triangles_y.pop();\
        triangles_x.pop();triangles_y.pop();\
       };\
-     };\
     };\
     if( click_cnt == 3 ){\
      triangles_x.pop();triangles_y.pop();\
