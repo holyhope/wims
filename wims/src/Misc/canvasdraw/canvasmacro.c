@@ -255,8 +255,8 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
   case 1: points(x1,y1,0,1);break;\
   case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
   case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
-  case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines(2);draw_lines();break;\
-  case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines(lines_x.length);draw_lines();break;\
+  case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines();draw_lines();break;\
+  case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines();draw_lines();break;\
   case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
   case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
   case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
@@ -440,8 +440,8 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
 
  
  if( strstr(draw_types,"line") != 0){
-  fprintf(js_include_file,"function calc_lines(len){\
-   var marge = 2;\
+  fprintf(js_include_file,"function calc_lines(){\
+   var marge = 2;var len = lines_x.length;\
    var x = lines_x;var y = lines_y;\
    lines_x = new Array(len);\
    lines_y = new Array(len);\
@@ -471,12 +471,24 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
   function lines(x,y,event_which,num){\
   var last = lines_x.length - 1;\
    if(event_which == 0){\
-    if(num == 0){\
-     lines_x[0] = x_snap_check(x,lines_snap);lines_y[0] = y_snap_check(y,lines_snap);\
+    if( click_cnt == 0 ){\
+     if(num == 0 ){\
+      lines_x[0] = x_snap_check(x,lines_snap);lines_y[0] = y_snap_check(y,lines_snap);\
+     }\
+     else\
+     {\
+      lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
+     };\
     }\
     else\
     {\
-     lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
+     if( num == 0 ){\
+      lines_x[1] = x_snap_check(x,lines_snap);lines_y[1] = y_snap_check(y,lines_snap);\
+     }\
+     else\
+     {\
+      lines_x.push(x_snap_check(x,lines_snap));lines_y.push(y_snap_check(y,lines_snap));\
+     };\
     };\
     click_cnt++;\
    }\
@@ -489,17 +501,14 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
     };\
    };\
    if( click_cnt == 2 ){\
-    lines_x[last+num] = x_snap_check(x,lines_snap);lines_y[last+num] = y_snap_check(y,lines_snap);\
     click_cnt = 0;\
-    if(num == 1){\
-     calc_lines(last+num);\
-    };\
+    calc_lines();\
     draw_lines();\
    };\
   };\
   function draw_lines(){\
    var len = lines_x.length;\
-   if( len%%2 == 0 ){\
+   if( len %%2 == 0 ){\
     context_lines.clearRect(0,0,xsize,ysize);\
     for(var p = 0 ; p < len ; p = p+2 ){\
      context_lines.beginPath();\
@@ -3903,29 +3912,29 @@ CanvasState.prototype.draw = function(){\
   };\
   this.valid = true;\
  }\
-};\
-CanvasState.prototype.Slide = function(slider_value,slider_count){\
- this.ctx.clearRect(0,0,xsize,ysize);\
- var what;var len = this.shapes.length;var shape;var lu;\
- for(var i = 0; i < len ; i++){\
-  if( this.shapes[i] ){\
-   shape = this.shapes[i];\
-   if( shape.slider != 0 ){\
-    if(shape.slider_cnt == slider_count ){\
-     what = shape.slider;\
-     lu = shape.x.length;\
+};\n\n\n\
+CanvasState.prototype.Slide = function(slider_value,slider_count){\n\
+ this.ctx.clearRect(0,0,xsize,ysize);\n\
+ var what;var len = this.shapes.length;var shape;var lu;\n\
+ for(var i = 0; i < len ; i++){\n\
+  if( this.shapes[i] ){\n\
+   shape = this.shapes[i];\n\
+   if( shape.slider != 0 ){\n\
+    if(shape.slider_cnt == slider_count ){\n\
+     what = shape.slider;\n\
+     lu = shape.x.length;\n\
      reply[shape.click_cnt] = shape.click_cnt+\":\"+slider_value;\
-     switch(what){\
-      case 3: if(shape.type == 12 || shape.type == 17){shape.h[1] = 180*slider_value[0]/Math.PI;}else{shape.use_rotate = 1;shape.angle = -1*slider_value[0];};break;\
-      default:slide(shape,slider_value[0],slider_value[1]);break;\
-     };\
-    };\
-   };\
-   this.valid = false;\
-   shape.draw(this.ctx);\
-  };\
- };\
-};\
+     switch(what){\n\
+      case 3: if(shape.type == 12 || shape.type == 17){shape.h[1] = 180*slider_value[0]/Math.PI;}else{shape.use_rotate = 1;shape.angle = -1*slider_value[0];};break;\n\
+      default:slide(shape,slider_value[0],slider_value[1]);break;\n\
+     };\n\
+    };\n\
+   };\n\
+   this.valid = false;\n\
+   shape.draw(this.ctx);\n\
+  };\n\
+ };\n\
+};\n\
 CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
  (this.ctx).clearRect(0,0,this.width,this.height);\
  var len = this.shapes.length;var shape;\
