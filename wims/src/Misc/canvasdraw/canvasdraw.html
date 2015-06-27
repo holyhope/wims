@@ -1,8 +1,10 @@
 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd"> 
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Fri Jun 26 22:42:39 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Sat Jun 27 12:07:31 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -572,12 +574,18 @@
 	    
 </ul>
 	    
-<li><span style="color:red"> multilabel button_label_1,button_label_2,...button_label_6
+<li><span style="color:red"> multilabel button_label_1,button_label_2,...button_label_6,'stop drawing text'
 </span><ul>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the 'stop drawing' button text will be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="points" for the draw points button).<br />the id of the 'stop drawing' button is "stop_drawing".<br />the id of the "OK" button is"ok_button"</em>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> wims will not check the amount or validity of your input
@@ -747,7 +755,7 @@
 <li><span style="color:blue;font-size:0.8em"> buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten<br />multidraw circle,segment,points</em>
+<li><span style="color:blue;font-size:0.8em"> the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command 'multilabel' for more details)
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> multidraw is incompatible with command 'tooltip'
@@ -759,7 +767,7 @@
 <li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\n"<br/>reply[2] = segments_x+":"+segments_y+"\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\n"<br/>reply[4] = lines_x+":"+lines_y+"\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels
+<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.<br />The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\n"<br/>reply[2] = segments_x+":"+segments_y+"\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\n"<br/>reply[4] = lines_x+":"+lines_y+"\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> <em>technical: all 6 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>

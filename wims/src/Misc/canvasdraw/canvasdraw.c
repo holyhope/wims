@@ -1460,9 +1460,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTILABEL:
 	/*
-	 @ multilabel button_label_1,button_label_2,...button_label_6
+	 @ multilabel button_label_1,button_label_2,...button_label_6,'stop drawing text'
 	 @ use before command 'multidraw'
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
+	 @ the 'stop drawing' button text will be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
+	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="points" for the draw points button).<br />the id of the 'stop drawing' button is "stop_drawing".<br />the id of the "OK" button is"ok_button"</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1589,11 +1591,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ it makes no sense using something like "multidraw point,points" ...
 	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	 @ buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
-	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten<br />multidraw circle,segment,points</em>
+	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command 'multilabel' for more details)
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\\n"<br/>reply[2] = segments_x+":"+segments_y+"\\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\\n"<br/>reply[4] = lines_x+":"+lines_y+"\\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels	 
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\\n"<br/>reply[2] = segments_x+":"+segments_y+"\\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\\n"<br/>reply[4] = lines_x+":"+lines_y+"\\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
 	 @ <em>technical: all 6 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
 	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
@@ -1611,7 +1613,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    if( multilinewidth === undefined ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d'];};\
 	    if( multifill === undefined ){ var multifill = ['%d','%d','%d','%d','%d','%d'];};\
 	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d'];};\
-	    if( multilabel === undefined ){ var multilabel = [\"%s\"];};\
+	    if( multilabel === undefined ){ var multilabel = [\"%s\",\"stop drawing\"];};\
 	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0'];};\
 	    if( multisnaptogrid == undefined){ var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1];}else{multisnaptogrid = [0,0,0,0,0,0];};};\
 	    var arrow_head = %d;",
