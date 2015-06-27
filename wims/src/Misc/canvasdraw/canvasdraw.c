@@ -1464,7 +1464,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ use before command 'multidraw'
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text will be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
-	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="points" for the draw points button).<br />the id of the 'stop drawing' button is "stop_drawing".<br />the id of the "OK" button is"ok_button"</em>
+	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/

@@ -196,7 +196,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
     };\
    };\
   };\
-  inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' id='\"+draw_things[p]+\"' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
+  inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' id='canvasdraw_\"+draw_things[p]+\"' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
   if(multiuserinput[p] == '1'){ \
    if(desc == 2 || desc == 3){\
     inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";\
@@ -219,14 +219,14 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
      };\
     };\
    };\
-   inner_html+=\"<td><input type='button' id='ok_button'  style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
+   inner_html+=\"<td><input type='button' id='canvasdraw_ok_button'  style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
   }\
   else\
   {\
    inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
   };\
  };\
- tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+ tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
  function x_snap_check(x,snap){\
   if( snap == 1 ){\
     return snap_to_x(x);\
