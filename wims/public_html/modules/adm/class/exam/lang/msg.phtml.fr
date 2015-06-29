@@ -1,8 +1,8 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Désolé, mais l'opération de préparation / modification d'une feuille de
- travail est réservée aux enseignants enregistrés d'une classe.
+ Désolé, mais l'opération de préparation / modification d'une feuille d'exercices
+ est réservée aux enseignants enregistrés d'une classe.
  !exit
 !endif
 
@@ -56,12 +56,14 @@
 
 !if prep_activate=$error
  Vous demandez d'activer l'examen $exam, c'est-à-dire de le rendre
- accessible aux participants de la classe. <p>
+ accessible aux participants de la classe. <div class="wims_warning">
  Veuillez noter qu'une fois l'examen activé, vous ne pourrez plus le modifier.
  Voulez-vous continuer&nbsp;?
-  <div class="wimscenter">
+ </div>
+ <div class="wimscenter">
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
- .&nbsp;&nbsp;
+ !set wims_ref_class=wims_button
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </div>
  !exit
@@ -73,12 +75,13 @@
  !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  !set wims_ref_class=wims_button
- !href cmd=resume $wims_name_no; $wims_name_giveup </div>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ </div>
  !exit
 !endif
 
 !if prep_expire=$error
- Cet examen numéro $exam ($title) expire normalement le $expday
+ L'examen numéro $exam ($title) expire normalement le $expday
  !item $expmon of $months
  $expyear. Voulez-vous le périmer dès maintenant?
   <div class="wimscenter">

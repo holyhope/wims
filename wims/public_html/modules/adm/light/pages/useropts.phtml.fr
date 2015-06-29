@@ -139,16 +139,24 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
  </p>
 
  <ul>
-  <li>Modifier le mode d'affichage :
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$(arg)0$font Mode image
+  <li>Modifier le mode d'affichage : toto $useropts=$(arg)0$font
+  !reset secondary
+  !if $useropts=$(arg)0$font
+    !set secondary=$ wims_secondary_button
+  !endif
+  !set wims_ref_class=wims_button$secondary
+  !href cmd=resume&useropts=$(arg)0$font Mode image
 
    !set arg=!nospace $texsize 2
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$(arg)0$font MathML
-  </li>
+   !reset secondary
 
-  <li>
+   !if $useropts=$(arg)0$font
+    !set secondary=$ wims_secondary_button
+   !endif
+   !set wims_ref_class=wims_button$secondary
+     wims_ref_class=$wims_ref_class
+   !href cmd=resume&useropts=$(arg)0$font MathML
+  </li><li>
    Réglage de la taille des symboles.
    !let ts1=!eval $texsize-1
    !let ts2=!eval $texsize+1
@@ -188,7 +196,7 @@ Réglage de la position verticale. Si l'expression
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
 
     !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espacé
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Lecteur dyslexique
 </p><p>
 Le mode espacé est particulièrement adapté dans le cas d'un lecteur dyslexique.</p>
 
