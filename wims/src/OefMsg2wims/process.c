@@ -58,10 +58,12 @@ void p_gen2(char *name_gen, char *p[MAX_PARM])
     if(p==NULL) return;
     snprintf(vbuf_gen,sizeof(vbuf_gen),"%s",p[0]); subst(vbuf_gen);
     singlespace(vbuf_gen);
-    fprintf(outf,"%s=%s\n\n", name_gen, vbuf_gen);
+    fprintf(outf,"%s=%s\n", name_gen, vbuf_gen);
 }
 void p_css(char *p[MAX_PARM]) {p_gen2("oefcss", p);}
 void p_credits(char *p[MAX_PARM]){p_gen2("credits", p);}
+void p_description(char *p[MAX_PARM]){p_gen2("oefdescription", p);}
+void p_observation(char *p[MAX_PARM]){p_gen2("oefobservation", p);}
 
 void p_wims(char *p[MAX_PARM])
 {

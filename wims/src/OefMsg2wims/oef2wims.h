@@ -44,6 +44,8 @@ void p_choice(char *p[MAX_PARM]);
 void p_computeanswer(char *p[MAX_PARM]);
 void p_precision(char *p[MAX_PARM]);
 void p_css(char *p[MAX_PARM]);
+void p_description(char *p[MAX_PARM]);
+void p_observation(char *p[MAX_PARM]);
 void p_range(char *p[MAX_PARM]);
 void p_language(char *p[MAX_PARM]);
 void p_statement(char *p[MAX_PARM]);
