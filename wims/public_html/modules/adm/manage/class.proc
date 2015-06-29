@@ -49,17 +49,19 @@ classcnt=!recordcnt wimshome/log/classes/.index
  !if $save!=$empty
   !bound clexp between integer 19000101 and 24000101
   clpass2=!word 1 of $clpass2
-  !setdef !set class_password=$clpass2\
+  clpass2crypt=!passcrypt $clpass2
+  !setdef !set class_password=$clpass2crypt\
 !set class_expiration=$clexp\
 !set class_secure=$clsecure in wimshome/log/classes/$jobclass/.def
   clpass=!trim $clpass
   !if $clpass!=$empty
-   !setdef !set user_password=$clpass in wimshome/log/classes/$jobclass/supervisor
+   clpasscrypt=!passcrypt $clpass
+   !setdef !set user_password=$clpasscrypt in wimshome/log/classes/$jobclass/supervisor
   !endif
   class_password=$clpass2
   class_expiration=$clexp
   class_secure=$clsecure
-  !reset clexp clsecure clpass clpass2
+  !reset clexp clsecure clpass clpasscrypt clpass2 clpass2crypt
  !endif
 !endif
 
