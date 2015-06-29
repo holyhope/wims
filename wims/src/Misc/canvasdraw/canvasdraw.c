@@ -5627,7 +5627,7 @@ function xy_precision(array_x,array_y){\
   x_array[p] = (Math.round(prec*(px2x(array_x[p]))))/prec;\
   y_array[p] = (Math.round(prec*(px2y(array_y[p]))))/prec;\
  };\
- return x_array+\":\"+y_array;\
+ return x_array+\";\"+y_array;\
 };\n\
 function round_to_pixel(array_r){\
 var len = array_r.length;\
@@ -5639,7 +5639,7 @@ var len = array_r.length;\
 read_canvas%d = function(){\
  var reply = new Array();\
  if( points_x && points_x.length > 0 ){reply[0] = xy_precision(points_x,points_y)+\"\\n\"; }else{ reply[0]=\"\\n\"; };\
- if( circles_x && circles_x.length > 0 ){ reply[1] =xy_precision(circles_x,circles_y)+\":\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
+ if( circles_x && circles_x.length > 0 ){ reply[1] =xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
  if( segments_x && segments_x.length > 0 ){ reply[2] = xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply[2]=\"\\n\"; };\
  if( arrows_x && arrows_x.length > 0 ){ reply[3] = xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply[3]=\"\\n\"; };\
  if( lines_x && lines_x.length > 0 ){ reply[4] = xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply[4]=\"\\n\"; };\
