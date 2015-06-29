@@ -35,6 +35,8 @@ if [ ! -z "$test" ] && [ -d $wims_home/log/classes/$w_wims_class ]; then
  dfindex=$class_header/Dataindex
  exauth=$class_header/Exauthors
  imindex=$class_header/Imindex
+ descindex=$class_header/Descindex
+ obsindex=$class_header/Obsindex
  tmp1=$class_header/tmp1
  tmp2=$class_header/tmp2
  imagedir=$src/images
@@ -48,6 +50,8 @@ else
  exauth=Exauthors
  dfindex=Dataindex
  imindex=Imindex
+ descindex=Descindex
+ obsindex=Obsindex
  tmp1=tmp1
  tmp2=tmp2
  imagedir=images
@@ -144,7 +148,7 @@ titlist=
 titlist1=
 list1=
 rm -f $extitles.tmp
-rm -f $exauth
+rm -f $exauth $descindex $obsindex
 for i in $list
 do
  tit=`awk -F= 'NF>=2 {print $2; exit}' $def/$i.def | $LL tr ',\11' '; '`
@@ -159,6 +163,11 @@ do
  list1="$list1$i,"
  auth=`grep author def/$i.def | awk -F= '{print $2}'`;
  echo "$i:$auth" >> $exauth
+ desc=`grep description def/$i.def | awk -F= '{print $2}'`;
+ if [ ! -z "$desc" ] ; then echo "$i:$desc" >> $descindex ; fi
+ obs=`grep observation def/$i.def | awk -F= '{print $2}'`;
+ if [ ! -z "$obs" ] ; then echo "$i:$obs" >> $obsindex ; fi;
+  obs=""
 done
 $wims_home/bin/dicsort $extitles.tmp 1>&2
 if [ -s $extitles.tmp.sorted ]; then

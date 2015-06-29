@@ -52,23 +52,16 @@ void p_precision(char *p[MAX_PARM])
     if(pr<0 || pr>100000000) return;
     fprintf(outf,"precision=%d\n",pr);
 }
-
-void p_css(char *p[MAX_PARM])
+void p_gen2(char *name_gen, char *p[MAX_PARM])
 {
-    char vbuf_css[MAX_LINELEN+1];
+    char vbuf_gen[MAX_LINELEN+1];
     if(p==NULL) return;
-    snprintf(vbuf_css,sizeof(vbuf_css),"%s",p[0]); subst(vbuf_css);
-    fprintf(outf,"oefcss=%s\n",vbuf_css);
+    snprintf(vbuf_gen,sizeof(vbuf_gen),"%s",p[0]); subst(vbuf_gen);
+    singlespace(vbuf_gen);
+    fprintf(outf,"%s=%s\n\n", name_gen, vbuf_gen);
 }
-
-void p_credits(char *p[MAX_PARM])
-{
-    char vbuf_credits[MAX_LINELEN+1];
-    if(p==NULL) return;
-    snprintf(vbuf_credits,sizeof(vbuf_credits),"%s",p[0]); subst(vbuf_credits);
-    singlespace(vbuf_credits);
-    fprintf(outf,"credits=%s\n\n", vbuf_credits);
-}
+void p_css(char *p[MAX_PARM]) {p_gen2("oefcss", p);}
+void p_credits(char *p[MAX_PARM]){p_gen2("credits", p);}
 
 void p_wims(char *p[MAX_PARM])
 {

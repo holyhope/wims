@@ -67,6 +67,7 @@ struct {
       {"conditions", t_cond2, 1, p_conditions},
       {"credits", t_def, 2, p_credits},
       {"css", t_head, 1, p_css},
+      {"description", t_head2, 1, p_header},
       {"else", t_def, 0, p_else},
       {"email", t_head2, 1, p_header},
       {"endif", t_def, 0, p_endif},
@@ -88,6 +89,7 @@ struct {
       {"mdef", t_def, 2, p_mdef},
       {"next", t_def, 0, p_next},
       {"nextstep", t_step, 1, p_nextstep},
+      {"observation", t_head2, 1, p_header},
       {"parameter", t_def, 2, p_parm},
       {"plot", t_plot, 3, p_plot},
       {"precision", t_head, 1, p_precision},
@@ -223,8 +225,8 @@ void process(void)
           }
           case t_head2: case t_lang: {
            define[define_no].parm[1]=directives[i].name;
-	       break;
-	      }
+          break;
+         }
           case t_ans: {
             if(aocnt<256) ao[aocnt++]=t_ans;
             answercnt++; goto checkeq;
