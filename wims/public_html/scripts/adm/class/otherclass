@@ -8,6 +8,9 @@
  !if $class_type isin 13 and $class_superclass!=$empty
   uplist=!makelist superclass_x_t $U_ for superclass_x_t in $class_superclass
  !endif
+ !if $class_type isin 4 and $CC_ isitemof $user_supervise
+   uplist=!append item $CC_ supervisor to $uplist
+ !endif
  !if $wims_otherclass=$empty
   wims_otherclass=$uplist
   !if / notin $user_participate$user_supervise
