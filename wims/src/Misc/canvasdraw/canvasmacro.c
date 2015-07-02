@@ -16,6 +16,12 @@ segment = 6 	segments = 7
 arrow = 8 	arrows = 9
 triangle = 10 	triangles = 11
 
+28/6/2015:
+the next js-code block (parsing/scanning the multidraw objects array) is -for now- generic, 
+e.g. not responsive to the actual draw_types used.
+
+TODO: examine/parse the *draw_Types and make the js-code accordingly (e.g. specific and not generic)
+
 */
 fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
  var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
@@ -226,7 +232,9 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
   };\
  };\
- tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+ if( wims_status != 'done' ){\
+  tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+ };\
  function x_snap_check(x,snap){\
   if( snap == 1 ){\
     return snap_to_x(x);\
@@ -241,40 +249,40 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
  };\
  function coord_split(coord){if(coord.indexOf(':') > 0 ){return coord.split(':');}else{if(coord.indexOf(';') > 0 ){return coord.split(';');}else{if(coord.indexOf(',') > 0 ){return coord.split(',');}else{alert(coord+'--> X : Y ');return;};};};};\
  update_draw_area%d = function(desc,id_x,id_y,id_r){\
- var x1,x2,x3,y1,y2,y3,r,A,B;\
- x1 = document.getElementById(id_x.id).value;\
- y1 = document.getElementById(id_y.id).value;\
- if(desc > 3 && desc < 12){\
-  A = coord_split(x1);B = coord_split(y1);\
-  if(A.length != 2 || B.length != 2){alert(' X : Y ');return;};\
-  x1 = x2px(safe_eval(A[0]));y1 = y2px(safe_eval(A[1]));\
-  x2 = x2px(safe_eval(B[0]));y2 = y2px(safe_eval(B[1]));\
-  if(desc == 10 || desc == 11 ){\
-   r = document.getElementById(id_r.id).value;\
-   A = coord_split(r);\
-   x3 = x2px(safe_eval(A[0]));y3 = y2px(safe_eval(A[1]));\
+  var x1,x2,x3,y1,y2,y3,r,A,B;\
+  x1 = document.getElementById(id_x.id).value;\
+  y1 = document.getElementById(id_y.id).value;\
+  if(desc > 3 && desc < 12){\
+   A = coord_split(x1);B = coord_split(y1);\
+   if(A.length != 2 || B.length != 2){alert(' X : Y ');return;};\
+   x1 = x2px(safe_eval(A[0]));y1 = y2px(safe_eval(A[1]));\
+   x2 = x2px(safe_eval(B[0]));y2 = y2px(safe_eval(B[1]));\
+   if(desc == 10 || desc == 11 ){\
+    r = document.getElementById(id_r.id).value;\
+    A = coord_split(r);\
+    x3 = x2px(safe_eval(A[0]));y3 = y2px(safe_eval(A[1]));\
+   };\
+  }\
+  else\
+  {\
+   x1 = x2px(safe_eval(x1));y1 = y2px( safe_eval(y1));\
   };\
- }\
- else\
- {\
-  x1 = x2px(safe_eval(x1));y1 = y2px( safe_eval(y1));\
- };\
- switch(desc){\
-  case 0: points(x1,y1,0,0);break;\
-  case 1: points(x1,y1,0,1);break;\
-  case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
-  case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
-  case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines();draw_lines();break;\
-  case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines();draw_lines();break;\
-  case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
-  case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
-  case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
-  case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
-  case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
-  case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
-  default:break;\
- };\
-};\n\
+  switch(desc){\
+   case 0: points(x1,y1,0,0);break;\
+   case 1: points(x1,y1,0,1);break;\
+   case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
+   case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
+   case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines();draw_lines();break;\
+   case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines();draw_lines();break;\
+   case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
+   case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
+   case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
+   case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
+   case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
+   case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
+   default:break;\
+  };\
+ };\n\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
@@ -284,6 +292,9 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
  these will be somewhat simpler and less fancy-full than for the 'single object' userdraw command...
  the 'switch function' in the mouselisteners will probably eat more CPU...so the rest needs to be faster:
  we don't want to imitate these horribly slow js-libraries like JSXgraph
+
+28/6/2015
+TODO: add a selection of the 'generic js-code' from above into these C-code selector parts !
 */
  if( strstr(draw_types,"point") != 0){
   fprintf(js_include_file,"function points(x,y,event_which,num){\

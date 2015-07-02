@@ -1575,6 +1575,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 	@ in case of a triangle | poly3, three inputfields are provided.
 	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
+	@ when exercise if inished (status=done) the buttons will not be shown.<br />To override this default behaviour use command / keyword 'status'
 	@ use before command 'multidraw'
 	@ always use the same sequence as is used for 'multidraw'
 	*/
@@ -5639,7 +5640,7 @@ var len = array_r.length;\
 read_canvas%d = function(){\
  var reply = new Array();\
  if( points_x && points_x.length > 0 ){reply[0] = xy_precision(points_x,points_y)+\"\\n\"; }else{ reply[0]=\"\\n\"; };\
- if( circles_x && circles_x.length > 0 ){ reply[1] =xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
+ if( circles_x && circles_x.length > 0 ){ reply[1] = xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
  if( segments_x && segments_x.length > 0 ){ reply[2] = xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply[2]=\"\\n\"; };\
  if( arrows_x && arrows_x.length > 0 ){ reply[3] = xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply[3]=\"\\n\"; };\
  if( lines_x && lines_x.length > 0 ){ reply[4] = xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply[4]=\"\\n\"; };\
