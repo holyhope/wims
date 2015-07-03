@@ -2772,6 +2772,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if the translation should be performed using a function, use for type : xy function,x function,y function<br />use commands sliderfunction_x and/or sliderfunction_y before the slider command to define the functions<br />example:<br />sliderfunction_x x^2<br />sliderfunction_y y^2<br />slider -5,5,100,100,xy function,Some_Text<br />...some stuff to slide<br />killslider<br />sliderfunction_x x^2-2<br />slider -15,15,100,10,x function,Some_Other_Text<br />...more stuff to slide<br />killslider<br />... etc
 	@ is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
 	@ use commmand 'slider' before draggable/clickable objects.
+	@ drag and drop may be combined with rotation slider<br />for example an arrow rotated by a slider may be placed anywhere (drag&drop)<em>size 300,300<br />xrange -5,5<br />yrange -5,5<br />grid 1,1,grey<br />linewidth 3<br />drag xy<br />fillcolor orange<br />strokecolor blue<br />slider 0,2*pi,250,30,angle degrees,Rotate arrow<br />arrow 2,2,5,5,8,red</em>
 	@ no slider for a math function, these can be traced using command 'trace_jscurve some_function_in_x'
 	@ a slider will affect all draggable objects after the 'slider' command...<br />and can be used to group translate / rotate several objects...<br />until a next 'slider' or keyword 'killslider'
 	@ amount of sliders is not limited.

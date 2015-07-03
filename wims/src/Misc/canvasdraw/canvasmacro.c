@@ -282,7 +282,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
    default:break;\
   };\
- };\n\
+ };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
@@ -2407,11 +2407,11 @@ function show_slider_value(value,use_slider_display){\
   string = \" \"+value[0].toFixed(prec)+\" \"+unit_x+\":\"+value[1].toFixed(prec)+\" \"+unit_y;\
  }else{\
   if(use_slider_display == 2){\
-   value[0] = value[0]*180/Math.PI;\
-   string = \" \"+value[0].toFixed(prec)+\"\\u00B0\";\
+   value[1] = value[1]*180/Math.PI;\
+   string = \" \"+value[1].toFixed(prec)+\"\\u00B0\";\
   }else{\
    if(use_slider_display == 3){\
-    string = \" \"+value[0].toFixed(prec)+\" rad\";\
+    string = \" \"+value[1].toFixed(prec)+\" rad\";\
    };\
   };\
  };\
@@ -2470,31 +2470,31 @@ function add_slider_%d(){\
  slider_ctx.stroke();\
  slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
 function slider_%d(evt){\
- var value_1 = %f;\n\
- var value_2 = %f;\n\
- slider_ctx.clearRect(0,0,slider_width,slider_height);\n\
- var x_px = evt.clientX - canvas_rect.left;\n\
- var x;var y;\n\
+ var value_1 = %f;\
+ var value_2 = %f;\
+ slider_ctx.clearRect(0,0,slider_width,slider_height);\
+ var x_px = evt.clientX - canvas_rect.left;\
+ var x;var y;\
  if( slider_type == 1 ){\
-  x = x_px*(value_2 - value_1)/slider_width + value_1;\n\
-  y = 0;\n\
+  x = x_px*(value_2 - value_1)/slider_width + value_1;\
+  y = 0;\
  }else{\
-  y = x_px*(value_2 - value_1)/slider_width + value_1;\n\
-  x = 0;\n\
- };\n\
- slider_ctx.beginPath();\n\
- slider_ctx.arc(x_px,slider_center,slider_radius,0,2*Math.PI,false);\n\
- slider_ctx.moveTo(10,slider_center);\n\
- slider_ctx.lineTo(slider_width-10,slider_center);\n\
- slider_ctx.rect(0,0,slider_width,slider_height);\n\
- slider_ctx.closePath();\n\
- slider_ctx.fill();\n\
- slider_ctx.stroke();\n\
- dragstuff.Slide( [x,y] , %d );\n\
- if(%d != 0 ){show_slider_value([x,y],%d);};\n\
- return;\n\
- };\n\
-};\n\
+  y = x_px*(value_2 - value_1)/slider_width + value_1;\
+  x = 0;\
+ };\
+ slider_ctx.beginPath();\
+ slider_ctx.arc(x_px,slider_center,slider_radius,0,2*Math.PI,false);\
+ slider_ctx.moveTo(10,slider_center);\
+ slider_ctx.lineTo(slider_width-10,slider_center);\
+ slider_ctx.rect(0,0,slider_width,slider_height);\
+ slider_ctx.closePath();\
+ slider_ctx.fill();\
+ slider_ctx.stroke();\
+ dragstuff.Slide( [x,y] , %d );\
+ if(%d != 0 ){show_slider_value([x,y],%d);};\
+ return;\
+ };\
+};\
 add_slider_%d();\n",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
 }
 
@@ -2556,8 +2556,8 @@ function sliderdrag_%d(evt){\
   var y_px = evt.clientY - canvas_rect.top;\
   var x = x_px*(value_2 - value_1)/slider_width + value_1;\
   var y = y_px*(value_2 - value_1)/slider_height + value_1;\
-  x = parseFloat(eval(slider_function%d.x));\n\
-  y = parseFloat(eval(slider_function%d.y));\n\
+  x = parseFloat(eval(slider_function%d.x));\
+  y = parseFloat(eval(slider_function%d.y));\
   slider_ctx.beginPath();\
   slider_ctx.arc(x_px,y_px,slider_radius,0,2*Math.PI,false);\
   slider_ctx.fill();\
@@ -2766,8 +2766,8 @@ function clear_jsfunction(canvas_plot_id,input_field){\
   };\
   return;\
  }catch(e){alert(e+\"nothing to remove...\");};\
- return;\n\
-};\n\
+ return;\
+};\
 function add_input_jsfunction(input_cnt,input_style,input_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1){\
  var canvas_plot_id = %d+input_cnt;\
  var input_field = \"canvas_input\"+input_cnt;\
@@ -2783,7 +2783,7 @@ function add_input_jsfunction(input_cnt,input_style,input_label,line_width,strok
  var delete_button = document.getElementById(delete_button_id);\
  update_button.addEventListener(\"mousedown\",function(e){jsplot(canvas_plot_id,rawmath(document.getElementById(input_field).value),line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);return;},false);\
  delete_button.addEventListener(\"mousedown\",function(e){clear_jsfunction(canvas_plot_id,input_field);return;},false);\
-};\n\
+};\
 add_input_jsfunction(%d,\"%s\",\"%s\",%d,\"%s\",%.2f,%d,%d,%d);\n",canvas_root_id,USERDRAW_JSPLOT,canvas_root_id,font_size,input_cnt,input_style,input_label,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);
 }
 
@@ -3257,7 +3257,7 @@ function add_clear_button(){\
  button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\
  tooltip_placeholder_div.appendChild(button);\
 };\
-add_clear_button();\n\
+add_clear_button();\
 ",canvas_root_id,canvas_root_id,DRAW_CANVAS,canvas_root_id,input_style,button_text,canvas_root_id);
 }
 
@@ -3695,10 +3695,9 @@ Shape.prototype.draw = function(ctx)\
  ctx.lineJoin = \"round\";\
  ctx.save();\
  if(this.use_rotate == 1){\
-  var x_c = x2px(0);\
-  var y_c = y2px(0);\
-  ctx.translate(x_c,y_c);\
-  ctx.rotate(this.angle);ctx.translate(-x_c,-y_c);\
+  ctx.translate(this.x[0],this.y[0]);\
+  ctx.rotate(this.angle);\
+  ctx.translate(-1*this.x[0],-1*this.y[0]);\
  };\
  if( this.use_affine == 1 ){\
   ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
@@ -3912,29 +3911,32 @@ CanvasState.prototype.draw = function(){\
   };\
   this.valid = true;\
  }\
-};\n\n\n\
-CanvasState.prototype.Slide = function(slider_value,slider_count){\n\
- this.ctx.clearRect(0,0,xsize,ysize);\n\
- var what;var len = this.shapes.length;var shape;var lu;\n\
- for(var i = 0; i < len ; i++){\n\
-  if( this.shapes[i] ){\n\
-   shape = this.shapes[i];\n\
-   if( shape.slider != 0 ){\n\
-    if(shape.slider_cnt == slider_count ){\n\
-     what = shape.slider;\n\
-     lu = shape.x.length;\n\
+};\
+CanvasState.prototype.Slide = function(slider_value,slider_count){\
+ this.ctx.clearRect(0,0,xsize,ysize);\
+ var what;var len = this.shapes.length;var shape;var lu;\
+ for(var i = 0; i < len ; i++){\
+  if( this.shapes[i] ){\
+   shape = this.shapes[i];\
+   if( shape.slider != 0 ){\
+    if(shape.slider_cnt == slider_count ){\
+     what = shape.slider;\
+     lu = shape.x.length;\
      reply[shape.click_cnt] = shape.click_cnt+\":\"+slider_value;\
-     switch(what){\n\
-      case 3: if(shape.type == 12 || shape.type == 17){shape.h[1] = 180*slider_value[0]/Math.PI;}else{shape.use_rotate = 1;shape.angle = -1*slider_value[0];};break;\n\
-      default:slide(shape,slider_value[0],slider_value[1]);break;\n\
-     };\n\
-    };\n\
-   };\n\
-   this.valid = false;\n\
-   shape.draw(this.ctx);\n\
-  };\n\
- };\n\
-};\n\
+     switch(what){\
+      case 3: if(shape.type == 12 || shape.type == 17){\
+       shape.h[1] = 180*slider_value[0]/Math.PI;}\
+       else\
+       {shape.use_rotate = 1;shape.angle = -1*slider_value[1];};break;\
+      default:slide(shape,slider_value[0],slider_value[1]);break;\
+     };\
+    };\
+   };\
+   this.valid = false;\
+   shape.draw(this.ctx);\
+  };\
+ };\
+};\
 CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
  (this.ctx).clearRect(0,0,this.width,this.height);\
  var len = this.shapes.length;var shape;\

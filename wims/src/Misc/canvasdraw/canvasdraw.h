@@ -1,3 +1,5 @@
+#include <math.h>
+#define DEGREE 57.2958
 #include <assert.h>
 #include "../../Lib/libwims.h"
 #define MAX_INT		128
@@ -181,6 +183,8 @@
 #define MULTIDASH	184
 #define MULTISNAPTOGRID 185
 #define MULTIUSERINPUT  186
+#define PROTRACTOR	187
+
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
