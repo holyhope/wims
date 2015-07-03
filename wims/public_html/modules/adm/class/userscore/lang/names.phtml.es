@@ -71,6 +71,10 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
 !set name_post=mostrar
 !set name_Post=Mostrar
 
+!set name_sheetdetail=Click on the header of a column \
+ to have a global view of all the results on all \
+  the exercises of the corresponding sheet.
+
 !if $job iswordof userprop teacher
   !distribute items Cambiar,Número de inscripción,Comentarios,URL de una fotografía,Variables (técnicas),\
   Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes,\

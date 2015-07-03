@@ -20,7 +20,7 @@ name_groupAverage
 !!set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
 !!!set name_thsheet=No,Titel,Vereist,Weging,Punten<br />verkregen, % , Kwaliteit , Moeilijkheidsgraad , Cijfer ,\
- Hoogste cijfers, Aantal pogingen, Laatste resultaat, Vereiste niveau 
+ Hoogste cijfers, Aantal pogingen, Laatste resultaat, Vereiste niveau
 !set name_minmax=min/gem/max van deze klas
 
 !set name_manualscore=Handmatig ingevoerde cijfers
@@ -71,6 +71,10 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 
 !set name_post=laat zien&nbsp;:
 !set name_Post=Laat zien&nbsp;:
+
+!set name_sheetdetail=Click on the header of a column \
+ to have a global view of all the results on all \
+  the exercises of the corresponding sheet.
 
 !if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\

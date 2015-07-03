@@ -109,7 +109,7 @@ $name_post
   !distribute line $e into m_,n_,bidon,bidon,t_
   <th class="small">
   !set wims_ref_title=$t_
-  !href cmd=new&module=$m_&$n_ $name_Exercise $j
+  !href target=wims_internal cmd=new&module=$m_&$n_ $name_Exercise $j
   </th>
   !let tot_$j=0
   !let nonzero_$j=0
@@ -216,12 +216,9 @@ $varfilter_
   </tr>
  !endif
 $table_end
-!set wims_ref_class=wims_button
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
-!set wims_ref_class=wims_button
-!href cmd=reply&job_affi=notes $wims_name_back2
 
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
+refresh,1,cmd=reply&job=showsheet&numshowsheet=$numshowsheet\
 to $wims_menu_items
 :end
 !tail
