@@ -14,7 +14,9 @@ $name_intro
 <ul>
   !for t=1 to $ref_list_cnt
     !set tt=$(ref_list[$t])
-    !set name_$tt=!defof title in keywords/$tt.phtml.fr
+    !if $tt!=keywords
+      !set name_$tt=!defof title in keywords/$tt.phtml.fr
+    !endif
     <li><a href="#$tt">$(name_$tt)</a></li>
   !next
 </ul>
@@ -36,8 +38,7 @@ $name_intro
               !if $tt issametext keywords
                 !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
                 !default fullkey=$key
-              !endif
-              !if $tt iswordof commoncore unisciel
+              !else
                 !set keycut=!replace internal _ by , in $key
                 !set keycutcnt=!itemcnt $keycut
                 !set asc=$(keycut[1])_$(keycut[2])
@@ -68,6 +69,7 @@ $name_intro
     $(name_$(tt)_instruction)
     </p>
      !if $tt issametext keywords
+     !! lit le fichier dans scripts/help
         !read help/keywords.phtml radio
         <p>
          <input type="radio" name="taxon_keywords" id="empty" value=""/>
@@ -79,8 +81,10 @@ $name_intro
         <script type="text/javascript" src="scripts/js/interface/search_engine.js"></script>
         <div class="formHelp">$name_addkeywords</div>
     !else
-       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address[$t])">$wims_name_help</a>
-       <p>$name_selectkeyword</p>
+      !if $(ref_address_$tt)!=$empty
+       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address_$tt)">$wims_name_help</a>
+      !endif
+      <p>$name_selectkeyword</p>
        !read keywords/$tt.phtml.$lang
     !endif
     </div>

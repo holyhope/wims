@@ -6,7 +6,9 @@
 <ul>
   !for t=1 to $ref_list_cnt
     !set tt=$(ref_list[$t])
-    !set name_$tt=!defof title in keywords/$tt.phtml.fr
+    !if $tt!=keywords
+      !set name_$tt=!defof title in keywords/$tt.phtml.fr
+    !endif
     <li><a href="#$tt">$(name_$tt)</a></li>
   !next
 </ul>
@@ -14,15 +16,14 @@
 !for t=1 to $ref_list_cnt
    !set tt=$(ref_list[$t])
    <fieldset class="property_fields blockcenter" id="$tt">
-
-     !if $tt iswordof commoncore
-       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address[$t])">$tt</a>
+     !if $(ref_address_$t)!=$empty
+       <a class="float_right wims_button_help" target="wims_external" href="$(ref_address_$t)">$tt</a>
      !endif
-     !if $tt=keywords
-      !set wims_ref_class=float_right wims_button_help
-      !set wims_target=wims_internal
-       !href cmd=help $tt
-     !endif
+     !!if $tt=keywords
+      !!set wims_ref_class=float_right wims_button_help
+      !!set wims_target=wims_internal
+       !!href cmd=help $tt
+     !!endif
      !set ref_$(tt)_cnt=!itemcnt $(ref_$tt[;1])
      !set ref1_$(tt)=!lines2rows $(ref_$(tt))
      !if  $(ref_$(tt)_cnt)>0
@@ -33,8 +34,7 @@
         !if $tt issametext keywords
           !set fullkey=!lookup $key in wimshome/public_html/bases/sys/domain/domain.$lang
           !default fullkey=$key
-        !endif
-        !if $tt isitemof $ref_list
+        !else
           !set keycut=!replace internal _ by , in $key
           !set keycutcnt=!itemcnt $keycut
           !set asc=$(keycut[1])_$(keycut[2])
