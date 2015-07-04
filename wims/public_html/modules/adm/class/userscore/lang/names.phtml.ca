@@ -1,17 +1,11 @@
 !set lang_exists=yes
 
-
 !if $wims_read_parm!=
  !goto $wims_read_parm
 !endif
 
 !set name_studentloc=!nosubst $user_firstname $user_lastname
 !set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
-
-!set classname=<span class="wims_emph">$wims_classname</span>\
- de <span class="wims_emph">$wims_institutionname</span>
-
-!set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,desembre
 
 !distribute line Mitjana de la classe\
 Mitjana\
@@ -25,32 +19,36 @@ name_groupAverage
 !set wims_name_reg_ex=Llista d'exercicis registrats
 !!set name_transfer=Transferir activitats de les altres classes
 
-!!!set name_thsheet=No,Títol,Punts<br />demanats,Pes,Punts<br />obtinguts,%,Qualitat,Severitat,Nota,\
-  Millors noteses,Nombre d'intents,Darrer resultat,Nivell adquirit
 !set name_minmax=min/mit/max de la classe&nbsp;
 
-!set name_manualscore=Notes atribuides pel professor
+!set name_manualscore=Notes atribuides pel professor;
 !set name_autoscore=Notes enregistrades pel servidor
 !set name_manual_notes=global,prof.,auto
 !set name_examnote=Notes d'exàmens
 
-!set name_severitylevels=Nivell de severitat dels fulls de treball
-!set name_formula=No,Pes,Nivell
-!set name_sheetstatut=prep,actiu,caducat,ocult
+!set name_severitylevels=Regles de càlcul dels fulls de treball
+!set name_formula=No,Pes,Regles de càlcul
+!set name_sheetstatut=s'està preparant,actiu,caducat,ocult
 
-!distribute items Examen,Full,Exercici,Inici,Notes,Sessió,Fet&nbsp;,equiv.\
+!distribute items Examen,Full,Exercici,Inici,Notes,Sessió,Percentatge de punts acumulats,equiv.\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
-!set name_formula_comment=Podeu definir els nivells de severitat i els pesos dels fulls de \
-treball a la taula següent. Les notes seran calculades amb un màxim =
-!set name_formula2=!nosubst Notes calculades sobre un màxim de $scoremax
-!set name_pickup=Seleccioneu els fulls per<br />mostrar els resultats per full&nbsp;
+!set name_formula_comment=Podeu definir les regles de càlcul i els pesos dels fulls de \
+treball a la taula següent. Aquí, Q representa la nota de qualitat, \
+Es pot triar I entre els tres indicadors següents: I0 representa\
+el nombre de punts acumulats, I1 representa la mitjana de les n millors notes obtingudes si 10n és \
+el nombre necessari de punts (nivell d'èxit) i I2 representa el mínim de les n \
+millors notes precedents (nivell d'adquisició).\
+Es pot mirar l'Ajuda per a més detalls. \
+Les notes es calculen sobre
+!set name_formula2=!nosubst Notes calculades sobre $scoremax
+!set name_pickup=Seleccioneu els fulls per mostrar els resultats per full.
 !set name_warning= Heu presentat una sol·licitud il·legal.
 
 !set name_click=Cliqueu sobre un nom per veure amb detall el seu treball
-!set name_filter=o filtrar d'acord a una variable tècnica (propietats dels estudiants)
-!set name_affi=la qualitat,el treball efectuat,les notes,el nivell d'èxit, el nivell d'adquisició
+!set name_filter=Podeu filtrar d'acord a una variable tècnica (propietats dels estudiants)
+!set name_affi=la qualitat,el percentatge de punts acumulats,les notes,el nivell d'èxit, el nivell d'adquisició
 !set name_workdetail=Detall del treball de
 !set name_activesession=Aquest participant té una sessió d'examen activa&nbsp;
 
@@ -59,33 +57,26 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Aquesta classe encara no té cap participant.
 
-!set name_warning_no_sequence=Has activat la reorganització per seqüències, però no has definit cap \
+!set name_warning_no_sequence=Has activat la reorganització per seqüències, però encara no has definit cap \
 seqüència. Així que no poden aparèixer resultats.
-
-!if $manual>0
- !set name_manual_explanation=<b>Explicacions.</b> A les columnes <span class="tt">mitjana</span>, \
- <span class="tt">auto</span> vol dir mitjana\
- de notes calculades a partir de les puntuacions obtingudes en els fulls de treball,\
-  <span class="tt">professor.</span> vol dir mitjana de notes atribuides manualment pel professor. \
-  La note <span class="tt">global</span> es calcula a partir de les altres dues per la fórmula
-!endif
 
 !set name_title_showsheet=!nosubst Detalls del treball en el full $numshowsheet<br />$sh_title
 !set name_percentagegot=Percentatge de punts obtinguts
 !set name_qualitygot=Qualitat del treball calculat sobre un màxim de 10
 !set name_percentagedone=Percentatge de treball efectuat
-!set name_percentagebest=Mitjana de les millors puntuacions requerides
+!set name_percentagebest=Taxa d'èxit sobre les millors notes
 
 !set name_post=mostrar
 !set name_Post=Mostrar
 
-!set name_sheetdetail=Click on the header of a column \
- to have a global view of all the results on all \
-  the exercises of the corresponding sheet.
+!set name_sheetdetail=Podeu clicar a la capçalera de la columna corresponent \
+ al full per obtenir una visió general dels resultats de tots els estudiants\
+ en tots els exercicis del full que heu seleccionat.
+
 !if $job iswordof userprop teacher
   !distribute items Canviar, Número de registre, Comentaris, URL d'una foto, Variables (tècniques),\
-  Contrasenya de la classe,Entreu la contrasenya de registre de participants,\
-  Login per autenticació externa,Inscripció,Gestió,\
+  Contrasenya de la classe,Entreu la contrasenya de registre de participant,\
+  Login per autenticació externa,Accés d'alumne, Accés de gestió,\
    Obligatòria\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
   name_classpassword,name_enterpassword,name_external_auth,name_inscript,name_gestion,\
@@ -96,7 +87,7 @@ seqüència. Així que no poden aparèixer resultats.
 !if $job=examcheck
  !set name_title_examcheck=!nosubst Detalls d'exàmens fets per $name_studentloc
  !set name_no_exampart=Aquest participant encara no ha fet cap examen.
- !set name_exampart=Aquestes són les sessions d'examen realitzades per aquest participant. Feu clic a \
+ !set name_exampart=Aquestes són les sessions d'examen realitzades per aquest participant. Feu clic a un \
   exercici per veure el seu contingut.
  !goto end
 !endif
@@ -107,26 +98,25 @@ seqüència. Així que no poden aparèixer resultats.
 
 !set name_direct_score=llista i notes directament
 
-
 !if $job=csv
   !distribute lines  Aquest és el fitxer\
     que podeu descarregar i obrir amb el vostre programa de full de càlcul preferit.\
-    Informacions dels participants canviades\
-    Nous participants afegits\
+    La informació va ser canviada als següents participants\
+    Participants afegits\
     La incorporació de nous participants s'ha ignorat perquè no hi ha prou espai disponible.\
-    No s'han canviat les informacions dels participants ja que s'han rebut notes.\
-    Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens) s'ignoren en les vostres dades perquè no es poden canviar.\
-    Les dades sobre els participants eliminats es van ignorar\
+    No s'ha canviat la informació dels participants perquè s'han rebut notes.\
+    Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens) no es poden canviar.\
+    Les dades sobre els participants eliminats s'han ignorat\
     Els següents noms d'usuari no es poden afegir, perquè són massa curts\
     Els noms d'usuari següents no existeixen i no poden ser afegits, per informació insuficient/incorrecta en les dades enviades\
     Els noms d'usuari següents no existeixen i no es poden afegir (dades incorrectes o classe plena)\
     Les notes manuals s'emmagatzemen només per a les columnes ja  existents.\
     No hi ha diferència entre les dades enviades i les dades existents a la classe.\
     Revisar les notes\
-    Per $wims_name_download, les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu\
+    Per a baixar les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu\
     Format\
     Columnes\
-    Per $wims_name_send les dades del vostre full de càlcul a la classe, si us plau, especifiqueu\
+    Per pujar les dades del vostre full de càlcul a la classe, si us plau, especifiqueu\
     Fitxer de dades\
     Formats acceptats\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
@@ -134,13 +124,14 @@ seqüència. Així que no poden aparèixer resultats.
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
 
   !set name_deposit=!nosubst El fitxer de full de càlcul <span class="tt">$wims_deposit</span> s'ha reconegut amb èxit.
-  !set name_indicateur=Indicator
-  !set name_otherkeyword=Other keywords (technical variables)
-  !set name_all=All
-  !set name_allscore=All score
+  !set name_indicateur=Indicador&nbsp;
+  !set name_otherkeyword=Variables tècniques&nbsp;
+  !set name_all=Tot
+  !set name_allscore=Totes les notes
 !endif
 
 !set name_topten=!nosubst Millor $class_topscores de les mitjanes de la classe
+
 :end
 !exit
 
