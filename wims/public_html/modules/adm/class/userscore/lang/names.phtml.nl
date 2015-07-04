@@ -72,9 +72,9 @@ en <span class="tt">globaal</span> wordt berekend aan de hand van de formule
 !set name_post=laat zien&nbsp;:
 !set name_Post=Laat zien&nbsp;:
 
-!set name_sheetdetail=Click on the header of a column \
- to have a global view of all the results on all \
-  the exercises of the corresponding sheet.
+!set name_sheetdetail=Klik op een kolom kop \
+voor een overzicht \
+van alle oefeningen met het corresponderende werkblad.
 
 !if $job iswordof userprop teacher
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
