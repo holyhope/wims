@@ -1,14 +1,12 @@
 !set lang_exists=yes
 
-!set levelid=M1,E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
-!set leveldesc=Pàrvuls,P1,P2,P3,P4,P5,P6,ESO1,ESO2,ESO3,ESO4,BAT1,BAT2,U1,U2,U3,U4,U5,Doctorat,Recerca
-!set nblevel=!itemcnt $levelid
+!set name_passsup=contrasenya de professor
 
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
     !set name_classe=grup de classes
-    !set name_sup=professor administrador
+    !set name_sup=de l'administrador
    !else
     !set name_classe=portal del centre
     !set name_sup=de l'administrador
@@ -25,7 +23,6 @@
    !set name_classessss= La $name_classe
    !set name_sup=del professor
 !endif
-
 
 !distribute lines Continuar\
   Tornar a començar l'operació.\
@@ -47,30 +44,32 @@
   !set noright=(Només el gestor del lloc pot fer-ho.
  !endif
  
-!set name_regpolicy=!nosubst L'operació de creació $name_classesss només tindrà èxit si es proporciona\
-   una adreça de correu electrònic vàlida i està disponible en aquest moment.   
+!set name_regpolicy=!nosubst L'operació de crear $name_classesss només tindrà èxit si es proporciona\
+   una adreça de correu electrònic vàlida i està disponible en aquest moment.
+  
 !set name_help1=Aquesta contrasenya us permetrà accedir a la vostra $name_classe en tant\
-  que responsable. Heu de ser els únics que la coneixen.
+  que responsable. Heu de ser l'únic que la coneix.
 
 !set name_help2=La contrasenya $name_classesss serà necessària en el registre\
    dels participants de la classe ; així que podeu difondre-la\
-   entre els vostres estudiants/alumnes. 
+   entre els vostres alumnes. 
   
-!set name_help3= La contrasenya $name_classesss serà necessària en el registre dels professors\
-  $name_classesss ; no s'ha de difondre  als vostres estudiants/alumnes. 
+!set name_help3= La contrasenya $name_classesss serà necessària en el registre\
+ dels professors $name_classesss ; <span class="wims_warning">\
+ no s'ha de difondre als vostres alumnes.</span>
   
-!distribute lines És la data en la que es desarà automàticament la classe.\
+!distribute lines És la data en la que es desarà automàticament la classe. Deixarà de ser accessible.\
    Límit del nombre de participants de la vostra $name_classe\
    Accés segur\
    Opcional\
    Aquest codi s'utilitza només una vegada. No el podeu utilitzar per connectar-vos a la vostra $name_classe&nbsp;!\
    Codi de la vostra $name_classe\
-   External authentification CAS\
+   Autenticació externa CAS\
   into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
 !set name_host=!nosubst Noms dels llocs des dels quals realitzareu operacions sensibles a la vostra $name_classe. \
- Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
- sensible (conseillé). Mettre le mot <span class="tt wims_code_words">all</span> désactivera cette mesure de sécurité.
+ Si no poseu res, s'enviarà un correu electrònic a cada operació \
+ sensible (recomanat). Posar <span class="tt wims_code_words">all</span> desactivarà aquesta mesura de seguretat.
 
-!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
-(fourni par votre ENT par exemple).
+!set name_cas_help=Ompliu aquest camp només si voleu utilitzar l'autenticació externa de tipus CAS\
+(rebuda pel vostre ENT per exemple).
