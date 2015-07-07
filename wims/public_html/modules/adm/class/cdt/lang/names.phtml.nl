@@ -80,7 +80,7 @@ Disciplines\
 In klas\
 Gegeven\
 Er is geen werk opgegeven voor\
-Insert a class activity\
+Voeg een klasse activiteit toe\
 into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
 name_work,name_nb_date,name_todo2,name_workdone,name_session,\
 name_character,name_noinfo1,name_noinfo2,name_noinfo3,\

@@ -439,7 +439,7 @@ wims_name_csv
 
 !if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lijst van alle studenten \
-List of teachers\
+Lijst van alle docenten\
 Cijfers\
 Beeindig deze proefwerk sessie\
 Details van het werk\

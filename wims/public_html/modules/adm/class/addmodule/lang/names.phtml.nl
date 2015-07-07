@@ -17,12 +17,10 @@
 !set name_weight=Het gewicht van de punten
 !set name_weight_hint=deze weging wordt gebruikt voor de berekening van het gemiddelde
 !set name_end=!nosubst De oefening <span class="wims_mod_title">$title</span> is succesvol opgenomen in het werkblad
-!set name_endallexo=!nosubst une série d'exercices a été insérée avec succès dans la feuille <span class="wims_mod_title">$title</span>.
-!set name_endallexos=!nosubst $addexo séries d'exercices ont été insérées avec succès dans la feuille <span class="wims_mod_title">$title</span>.
-!set name_endallexo2s=!nosubst Les $notadd ressources suivantes n'ont pas pu être insérées car elles existaient déjà :
-!set name_endallexo2=!nosubst La ressource suivante n'a pas pu être insérée car elle existait déjà :
-
-
+!set name_endallexo=!nosubst een serie oefeningen is met succes opgenomen in werkblad <span class="wims_mod_title">$title</span>.
+!set name_endallexos=!nosubst $addexo serie oefeningen zijn met succes opgenomen in werkblad <span class="wims_mod_title">$title</span>.
+!set name_endallexo2s=!nosubst De volgende $notadd oefeningen zijn niet opgenomen, omdat deze reeds bestaan:
+!set name_endallexo2=!nosubst De volgende oefening kon niet worden opgenomen, omdat deze reeds bestaat:
 !set name_choose_exo=Wordt toegevoegd aan het werkblad als een nieuwe serie oefeningen
 !set name_choose_helpexo=De ondersteunende oefeningen worden aangeboden als de score voor het werkblad lager is dan
 !set name_choose_series=Klik op de serie oefeningen waarvoor ondersteuning moet worden aangeboden.

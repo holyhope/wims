@@ -504,12 +504,12 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    download een css style bestand\
    Cijfer kleuren (van 0 tot 10) \
    Achtergrondkleur van een knop\
-   Tektkleur van een knop\
+   Tekst kleur van een knop\
    Helpknop achtergrond kleur\
    Helpknop tekst kleur\
    Verbindings link\
-   Text color\
-   Colors in the presentation of activities\
+   Tekst kleur\
+   Kleuren voor presentatie van activiteiten\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
