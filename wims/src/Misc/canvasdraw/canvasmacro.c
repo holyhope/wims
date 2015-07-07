@@ -237,7 +237,7 @@ for(var p = 0;p < draw_things.length;p++){\
   inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";}\
   else{\
   if( desc == 12 ){\
-  inner_html+=\"<td><b>(<input type='text' size='5' value='x1,x2,x3,x4...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='5' value='y1,y2,y3,y4...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";};\
+  inner_html+=\"<td><b>(<input type='text' size='14' value='x1,x2,x3,x4...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='14' value='y1,y2,y3,y4...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";};\
   };\
   };\
   };\
@@ -670,7 +670,7 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
     if(event_which == 0){\
      if(click_cnt == 0){\
       if(num==0){triangles_x = [];triangles_y = [];};\
-      triangles_x.push(x_snap_check(x));triangles_y.push(y_snap_check(y,triangles_snap));\
+      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
      }\
      else\
      {\

@@ -1608,24 +1608,24 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    temp = str_replace(temp,",","\",\"");
 	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives */
 	    fprintf(js_include_file,"\
-	    if( multistrokecolors === undefined ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s'];};\
-	    if( multifillcolors === undefined ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s'];};\
-	    if( multistrokeopacity === undefined ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f'];};\
-	    if( multifillopacity === undefined ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f'];};\
-	    if( multilinewidth === undefined ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d'];};\
-	    if( multifill === undefined ){ var multifill = ['%d','%d','%d','%d','%d','%d'];};\
-	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d'];};\
+	    if( multistrokecolors === undefined ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( multifillcolors === undefined ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( multistrokeopacity === undefined ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
+	    if( multifillopacity === undefined ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
+	    if( multilinewidth === undefined ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( multifill === undefined ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d'];};\
 	    if( multilabel === undefined ){ var multilabel = [\"%s\",\"stop drawing\"];};\
-	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0'];};\
-	    if( multisnaptogrid == undefined){ var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1];}else{multisnaptogrid = [0,0,0,0,0,0];};};\
+	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0','0'];};\
+	    if( multisnaptogrid == undefined){ var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{multisnaptogrid = [0,0,0,0,0,0,0];};};\
 	    var arrow_head = %d;",
-	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
-	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
-	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
-	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
-	    line_width,line_width,line_width,line_width,line_width,line_width,
-	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
-	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
+	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
+	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
+	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
+	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
+	    line_width,line_width,line_width,line_width,line_width,line_width,line_width,
+	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
+	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
 	    temp,arrow_head);
 	    /* the canvasses range from 1000 ... 1005 */
 	    add_js_multidraw(js_include_file,canvas_root_id,temp,input_style);
