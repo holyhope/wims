@@ -24,8 +24,8 @@ es posible filtrar a los participantes según sus valores.
 
 !set name_warning=Van a enviar el mensaje siguiente a los participantes cuya lista sigue.
 
-!distribute items Menu expert,Filtres&nbsp;,Liste de logins&nbsp;,Message&nbsp;,Sujet&nbsp;,Sélection&nbsp;,\
+!distribute items Menu expert,Liste de logins&nbsp;,Message&nbsp;,Sujet&nbsp;,Sélection&nbsp;,\
  Tous les participants\
-into name_menu,name_filter,name_loginlist,name_message,name_subject,name_select,name_allparticipants
+into name_menu,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
 !set name_nosupervisoremail= No indicaron correo electrónico. No les es pues posible enviar un correo electrónico.

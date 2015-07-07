@@ -189,18 +189,20 @@ Página de gestión de la hoja de trabajo,\
 Añadir una secuencia,\
 Vu,\
 Details of tested exercises,\
-Insérer tous les exercices dans une feuille de travail\
-	into wims_name_class_home,wims_name_add,wims_name_addh,\
-	wims_name_wsup,wims_name_visitor,\
-	wims_name_scoreclose,\
-	wims_name_scoresuspend,\
-	wims_name_scorereopen,wims_name_scoreclose2,\
-	wims_name_syou,\
-	wims_name_exolog,\
-	wims_name_sheetmanagement,\
-	wims_name_add_sequence,\
-    wims_name_readen,\
-    wims_name_save_ex,wims_name_addallexo
+Insérer tous les exercices dans une feuille de travail,\
+Participant's view,\
+into wims_name_class_home,wims_name_add,wims_name_addh,\
+   wims_name_wsup,wims_name_visitor,\
+   wims_name_scoreclose,\
+   wims_name_scoresuspend,\
+   wims_name_scorereopen,wims_name_scoreclose2,\
+   wims_name_syou,\
+   wims_name_exolog,\
+   wims_name_sheetmanagement,\
+   wims_name_add_sequence,\
+   wims_name_readen,\
+   wims_name_save_ex,wims_name_addallexo,\
+   wims_name_participantview
 
  !!!set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo, calidad $[$wims_homeref_mean]/10.
@@ -448,9 +450,10 @@ Datos tratados\
 Cuaderno de competencias \
 Next\
 Previous\
+Filters\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
- wims_name_next_participant,wims_name_prev_participant
+ wims_name_next_participant,wims_name_prev_participant,wims_name_filter
 !endif
 
 !if adm/manage isin $module

@@ -1,10 +1,9 @@
 !if $error!=$empty
- <p clas="wims_alertmsg>
+ <p class="wims_alertmsg">
  !read msg.phtml
- </p>
- <p>
+ </p><p>
  !href module=home $wims_name_class_home
-. </p>
+ </p>
  !goto end
 !endif
 
@@ -21,6 +20,12 @@
   !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
     !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
      </div>
+     <div class="field box">
+       <label for="varfilter">$wims_name_filter</label>
+       !set wims_ref_class=wims_button_help float_right
+ !href cmd=help&special_parm=filter $wims_name_help
+       <textarea name="varfilter">$varfilter</textarea>
+     </div>
      <div class="wimscenter wimsform">
       <input type="submit" value="$wims_name_Show" />
      </div>
@@ -30,6 +35,7 @@
 !if $usercnt==0
 $name_noparticipant
 !else
+<p>$name_click</p>
  $table_header
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$name_cnt_exo
@@ -41,7 +47,7 @@ $name_noparticipant
  !next j
  </tr>
  $table_hdtr
- <th></th><th></th><th></th><th></th><th></th>
+ <th colspan="5"></th>
  !for j in $showsheet
  !if $(activ[$j])>0
   <th class="small">$name_cnt_exo</th><th class="small">$name_time</th>
@@ -51,6 +57,14 @@ $name_noparticipant
  !for m=1 to $usercnt
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
+  !if $varfilter_!=$empty
+    !reset var_filter_test
+    !readproc adm/class/testfilter $uu\
+$varfilter_
+    !if $var_filter_test!=1
+      !goto enduser
+    !endif
+  !endif
   !set getraw=$uu
   !readproc raw.proc
   $table_tr
@@ -59,14 +73,15 @@ $name_noparticipant
   </td>
   !for h = 1 to 2*$sheetcnt + 4
     !set h1=$[($h+$h%2)/2-2]
- !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isitemof $showsheet
+    !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isitemof $showsheet
   <td>$(data[$h])</td>
-!endif
+    !endif
   !next
   </tr>
+:enduser
 !next
 $table_end
- <p>$name_click</p>
+
 !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply\
 back2,1,cmd=new\

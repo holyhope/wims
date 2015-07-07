@@ -189,7 +189,8 @@ Indexatie,\
  Lesmateriaal in werkvolgorde,\
  Gezien\
  Details van ingeleverde oefeningen,\
-Insérer tous les exercices dans une feuille de travail\
+ Insérer tous les exercices dans une feuille de travail,\
+ Zo zien studenten deze pagina,\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
@@ -200,7 +201,8 @@ Insérer tous les exercices dans une feuille de travail\
  wims_name_sheetmanagement,\
  wims_name_add_sequence,\
  wims_name_readen,\
- wims_name_save_ex,wims_name_addallexo
+ wims_name_save_ex,wims_name_addallexo,\
+ wims_name_participantview
 
   !!!set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br />Gemiddelde score $[$wims_homeref_mean]/10.
@@ -448,9 +450,10 @@ Verwerkte data\
 Overzicht vaardigheden \
 Volgende\
 Vorige\
+Filters\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
- wims_name_next_participant,wims_name_prev_participant
+ wims_name_next_participant,wims_name_prev_participant,wims_name_filter
 !endif
 
 !if adm/manage isin $module
