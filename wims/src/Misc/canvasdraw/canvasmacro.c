@@ -24,196 +24,196 @@ TODO: examine/parse the *draw_Types and make the js-code accordingly (e.g. speci
 */
 
 fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
- var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
- var context_userdraw = canvas_userdraw.getContext(\"2d\");\
- var click_cnt = 0;\
- if(wims_status != \"done\"){\
-  canvas_div.addEventListener(\"mousedown\",user_draw,false);\
-  canvas_div.addEventListener(\"mousemove\",user_drag,false);\
-  canvas_div.addEventListener(\"touchstart\",user_draw,false);\
-  canvas_div.addEventListener(\"touchmove\",user_drag,false);\
- };\
- clear_draw_area%d = function(type,name){\
-  if(confirm(\"remove \"+multilabel[name]+\" ?\")){\
-    switch(type){\
-     case 0: context_points.clearRect(0,0,xsize,ysize);points_x = [];points_y = [];break;\
-     case 1: points_x.pop();points_y.pop();draw_points();break;\
-     case 2: context_circles.clearRect(0,0,xsize,ysize);circles_x = [];circles_y = []; multi_radius = [];break;\
-     case 3: circles_x.pop();circles_y.pop(); multi_radius.pop();draw_circles();break;\
-     case 4: context_lines.clearRect(0,0,xsize,ysize);lines_x = [];lines_y = [];break;\
-     case 5: lines_x.pop();lines_y.pop();lines_x.pop();lines_y.pop();draw_lines();break;\
-     case 6: context_segments.clearRect(0,0,xsize,ysize);segments_x = [];segments_y = [];break;\
-     case 7: segments_x.pop();segments_y.pop();segments_x.pop();segments_y.pop();draw_segments();break;\
-     case 8: context_arrows.clearRect(0,0,xsize,ysize);arrows_x = [];arrows_y = [];break;\
-     case 9: arrows_x.pop();arrows_y.pop();arrows_x.pop();arrows_y.pop();draw_arrows();break;\
-     case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
-     case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
-     case 12:;context_closedpoly.clearRect(0,0,xsize,ysize);closedpoly_x = [];closedpoly_y = [];break;\
-     default:break;\
-    };\
-  };\
- };\
- function user_draw(evt){\
-  var canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var y = evt.clientY - canvas_rect.top;\
-  var x = evt.clientX - canvas_rect.left;\
-  switch(userdraw_primitive){\
-   case 0: points(x,y,0,0);break;\
-   case 1: points(x,y,0,1);break;\
-   case 2: circles(x,y,0,0);break;\
-   case 3: circles(x,y,0,1);break;\
-   case 4: lines(x,y,0,0);break;\
-   case 5: lines(x,y,0,1);break;\
-   case 6: segments(x,y,0,0);break;\
-   case 7: segments(x,y,0,1);break;\
-   case 8: arrows(x,y,0,0);break;\
-   case 9: arrows(x,y,0,1);break;\
-   case 10: triangles(x,y,0,0);break;\
-   case 11: triangles(x,y,0,1);break;\
-   case 12: closedpoly(x,y,0,0);break;\
+var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
+var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+var click_cnt = 0;\
+if(wims_status != \"done\"){\
+ canvas_div.addEventListener(\"mousedown\",user_draw,false);\
+ canvas_div.addEventListener(\"mousemove\",user_drag,false);\
+ canvas_div.addEventListener(\"touchstart\",user_draw,false);\
+ canvas_div.addEventListener(\"touchmove\",user_drag,false);\
+};\
+clear_draw_area%d = function(type,name){\
+ if(confirm(\"remove \"+multilabel[name]+\" ?\")){\
+  switch(type){\
+   case 0: context_points.clearRect(0,0,xsize,ysize);points_x = [];points_y = [];break;\
+   case 1: points_x.pop();points_y.pop();draw_points();break;\
+   case 2: context_circles.clearRect(0,0,xsize,ysize);circles_x = [];circles_y = []; multi_radius = [];break;\
+   case 3: circles_x.pop();circles_y.pop(); multi_radius.pop();draw_circles();break;\
+   case 4: context_lines.clearRect(0,0,xsize,ysize);lines_x = [];lines_y = [];break;\
+   case 5: lines_x.pop();lines_y.pop();lines_x.pop();lines_y.pop();draw_lines();break;\
+   case 6: context_segments.clearRect(0,0,xsize,ysize);segments_x = [];segments_y = [];break;\
+   case 7: segments_x.pop();segments_y.pop();segments_x.pop();segments_y.pop();draw_segments();break;\
+   case 8: context_arrows.clearRect(0,0,xsize,ysize);arrows_x = [];arrows_y = [];break;\
+   case 9: arrows_x.pop();arrows_y.pop();arrows_x.pop();arrows_y.pop();draw_arrows();break;\
+   case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
+   case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
+   case 12:;context_closedpoly.clearRect(0,0,xsize,ysize);closedpoly_x = [];closedpoly_y = [];break;\
    default:break;\
   };\
  };\
- function user_drag(evt){\
-  var canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var y = evt.clientY - canvas_rect.top;\
-  var x = evt.clientX - canvas_rect.left;\
-  switch(userdraw_primitive){\
-   case 0: break;\
-   case 1: break;\
-   case 2: circles(x,y,1,0);break;\
-   case 3: circles(x,y,1,1);break;\
-   case 4: lines(x,y,1,0);break;\
-   case 5: lines(x,y,1,1);break;\
-   case 6: segments(x,y,1,0);break;\
-   case 7: segments(x,y,1,1);break;\
-   case 8: arrows(x,y,1,0);break;\
-   case 9: arrows(x,y,1,1);break;\
-   case 10: triangles(x,y,1,0);break;\
-   case 11: triangles(x,y,1,1);break;\
-   case 12: closedpoly(x,y,1,0);break;\
-   default:break;\
-  };\
+};\
+function user_draw(evt){\
+ var canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var y = evt.clientY - canvas_rect.top;\
+ var x = evt.clientX - canvas_rect.left;\
+ switch(userdraw_primitive){\
+  case 0: points(x,y,0,0);break;\
+  case 1: points(x,y,0,1);break;\
+  case 2: circles(x,y,0,0);break;\
+  case 3: circles(x,y,0,1);break;\
+  case 4: lines(x,y,0,0);break;\
+  case 5: lines(x,y,0,1);break;\
+  case 6: segments(x,y,0,0);break;\
+  case 7: segments(x,y,0,1);break;\
+  case 8: arrows(x,y,0,0);break;\
+  case 9: arrows(x,y,0,1);break;\
+  case 10: triangles(x,y,0,0);break;\
+  case 11: triangles(x,y,0,1);break;\
+  case 12: closedpoly(x,y,0,0);break;\
+  default:break;\
  };\
- var draw_things = [\"%s\"];\
- var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
- var inner_html=\"\";\
- var button_style = \"%s\";\
- var id_x;\
- var id_y;\
- var id_r;\
- if( multilabel[multilabel.length - 1 ] === undefined ){multilabel[multilabel.length - 1] = 'stop drawing';};\
- for(var p = 0;p < draw_things.length;p++){\
-  var desc;\
-  id_r = 0;\
-  if( multistrokeopacity[p] > 1 ){ multistrokeopacity[p] = (0.0039215*multistrokeopacity[p]).toFixed(2); };\
-  if( multifillopacity[p] > 1 ){ multifillopacity[p] =  (0.0039215*multifillopacity[p]).toFixed(2); };\
-  if( draw_things[p] == 'point' || draw_things[p] == 'points' ){\
-   var canvas_points = create_canvas%d(1000,xsize,ysize);\
-   var context_points = canvas_points.getContext(\"2d\");\
-   context_points.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-   context_points.fillStyle = context_points.strokeStyle;\
-   var points_x = new Array();var points_y = new Array();\
-   var points_snap = multisnaptogrid[p];\
-   if(draw_things[p] == 'point' ){desc = 0;}else{desc = 1;};\
-   id_x = 'input_points_x';id_y = 'input_points_y';\
+};\
+function user_drag(evt){\
+ var canvas_rect = canvas_userdraw.getBoundingClientRect();\
+ var y = evt.clientY - canvas_rect.top;\
+ var x = evt.clientX - canvas_rect.left;\
+ switch(userdraw_primitive){\
+  case 0: break;\
+  case 1: break;\
+  case 2: circles(x,y,1,0);break;\
+  case 3: circles(x,y,1,1);break;\
+  case 4: lines(x,y,1,0);break;\
+  case 5: lines(x,y,1,1);break;\
+  case 6: segments(x,y,1,0);break;\
+  case 7: segments(x,y,1,1);break;\
+  case 8: arrows(x,y,1,0);break;\
+  case 9: arrows(x,y,1,1);break;\
+  case 10: triangles(x,y,1,0);break;\
+  case 11: triangles(x,y,1,1);break;\
+  case 12: closedpoly(x,y,1,0);break;\
+  default:break;\
+ };\
+};\
+var draw_things = [\"%s\"];\
+var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+var inner_html=\"\";\
+var button_style = \"%s\";\
+var id_x;\
+var id_y;\
+var id_r;\
+if( multilabel[multilabel.length - 1 ] === undefined ){multilabel[multilabel.length - 1] = 'stop drawing';};\
+for(var p = 0;p < draw_things.length;p++){\
+ var desc;\
+ id_r = 0;\
+ if( multistrokeopacity[p] > 1 ){ multistrokeopacity[p] = (0.0039215*multistrokeopacity[p]).toFixed(2); };\
+ if( multifillopacity[p] > 1 ){ multifillopacity[p] =  (0.0039215*multifillopacity[p]).toFixed(2); };\
+ if( draw_things[p] == 'point' || draw_things[p] == 'points' ){\
+  var canvas_points = create_canvas%d(1000,xsize,ysize);\
+  var context_points = canvas_points.getContext(\"2d\");\
+  context_points.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+  context_points.fillStyle = context_points.strokeStyle;\
+  var points_x = new Array();var points_y = new Array();\
+  var points_snap = multisnaptogrid[p];\
+  if(draw_things[p] == 'point' ){desc = 0;}else{desc = 1;};\
+  id_x = 'input_points_x';id_y = 'input_points_y';\
+ }\
+ else\
+ {\
+  if( draw_things[p] == 'circle' || draw_things[p] == 'circles' ){\
+   var canvas_circles = create_canvas%d(1001,xsize,ysize);\
+   var context_circles = canvas_circles.getContext(\"2d\");\
+   context_circles.lineWidth = multilinewidth[p];\
+   context_circles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+   if(multifill[p] == '1' ){ context_circles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_circles.fillStyle = \"rgba( 255,255,255,0)\"; };\
+   if(multidash[p] == '1' ){ if( context_circles.setLineDash ){context_circles.setLineDash([2,4]);}else{if(context_circles.mozDash){context_circles.mozDash = [2,4]};};};\
+   var circles_x = new Array();var circles_y = new Array();var multi_radius = new Array();\
+   var circles_snap = multisnaptogrid[p];\
+   if( draw_things[p] == 'circle' ){desc = 2;}else{desc = 3;};\
+   id_x = 'input_circles_x';id_y = 'input_circles_y';id_r = 'input_circles_r';\
   }\
   else\
   {\
-   if( draw_things[p] == 'circle' || draw_things[p] == 'circles' ){\
-     var canvas_circles = create_canvas%d(1001,xsize,ysize);\
-     var context_circles = canvas_circles.getContext(\"2d\");\
-     context_circles.lineWidth = multilinewidth[p];\
-     context_circles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-     if(multifill[p] == '1' ){ context_circles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_circles.fillStyle = \"rgba( 255,255,255,0)\"; };\
-     if(multidash[p] == '1' ){ if( context_circles.setLineDash ){context_circles.setLineDash([2,4]);}else{if(context_circles.mozDash){context_circles.mozDash = [2,4]};};};\
-     var circles_x = new Array();var circles_y = new Array();var multi_radius = new Array();\
-     var circles_snap = multisnaptogrid[p];\
-     if( draw_things[p] == 'circle' ){desc = 2;}else{desc = 3;};\
-     id_x = 'input_circles_x';id_y = 'input_circles_y';id_r = 'input_circles_r';\
-   }\
-   else\
-   {\
-     if( draw_things[p] == 'line' || draw_things[p] == 'lines' ){\
-     var canvas_lines = create_canvas%d(1002,xsize,ysize);\
-     var context_lines = canvas_lines.getContext(\"2d\");\
-     context_lines.lineWidth = multilinewidth[p];\
-     context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-     if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
-     var lines_x = new Array();var lines_y = new Array();\
-     var lines_snap = multisnaptogrid[p];\
-     if(draw_things[p] == 'line' ){desc = 4;}else{desc = 5;};\
-     id_x = 'input_lines_x';id_y = 'input_lines_y';\
+  if( draw_things[p] == 'line' || draw_things[p] == 'lines' ){\
+   var canvas_lines = create_canvas%d(1002,xsize,ysize);\
+   var context_lines = canvas_lines.getContext(\"2d\");\
+   context_lines.lineWidth = multilinewidth[p];\
+   context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+   if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
+   var lines_x = new Array();var lines_y = new Array();\
+   var lines_snap = multisnaptogrid[p];\
+   if(draw_things[p] == 'line' ){desc = 4;}else{desc = 5;};\
+   id_x = 'input_lines_x';id_y = 'input_lines_y';\
+  }\
+  else\
+  {\
+   if( draw_things[p] == 'segment' || draw_things[p] == 'segments' ){\
+    var canvas_segments = create_canvas%d(1003,xsize,ysize);\
+    var context_segments = canvas_segments.getContext(\"2d\");\
+    context_segments.lineWidth = multilinewidth[p];\
+    context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+    if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
+    var segments_x = new Array();var segments_y = new Array();\
+    var segments_snap = multisnaptogrid[p];\
+    if( draw_things[p] == 'segment' ){desc = 6;}else{ desc = 7;};\
+     id_x = 'input_segments_x';id_y = 'input_segments_y';\
     }\
     else\
     {\
-     if( draw_things[p] == 'segment' || draw_things[p] == 'segments' ){\
-      var canvas_segments = create_canvas%d(1003,xsize,ysize);\
-      var context_segments =  canvas_segments.getContext(\"2d\");\
-      context_segments.lineWidth = multilinewidth[p];\
-      context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-      if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
-      var segments_x = new Array();var segments_y = new Array();\
-      var segments_snap = multisnaptogrid[p];\
-      if( draw_things[p] == 'segment' ){desc = 6;}else{ desc = 7;};\
-      id_x = 'input_segments_x';id_y = 'input_segments_y';\
+     if( draw_things[p] == 'arrow' || draw_things[p] == 'arrows' ){\
+      var canvas_arrows = create_canvas%d(1004,xsize,ysize);\
+      var context_arrows =  canvas_arrows.getContext(\"2d\");\
+      context_arrows.lineWidth = multilinewidth[p];\
+      context_arrows.lineCap = \"round\";\
+      context_arrows.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+      context_arrows.fillStyle = context_arrows.strokeStyle;\
+      if(multidash[p] == '1' ){ if( context_arrows.setLineDash ){context_arrows.setLineDash([2,4]);}else{if(context_arrows.mozDash){context_arrows.mozDash = [2,4]};};};\
+      var arrows_x = new Array();var arrows_y = new Array();\
+      var arrows_snap = multisnaptogrid[p];\
+      if( draw_things[p] == 'arrow' ){desc = 8;}else{desc = 9;};\
+      id_x = 'input_arrows_x';id_y = 'input_arrows_y';\
      }\
      else\
      {\
-      if( draw_things[p] == 'arrow' || draw_things[p] == 'arrows' ){\
-       var canvas_arrows = create_canvas%d(1004,xsize,ysize);\
-       var context_arrows =  canvas_arrows.getContext(\"2d\");\
-       context_arrows.lineWidth = multilinewidth[p];\
-       context_arrows.lineCap = \"round\";\
-       context_arrows.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-       context_arrows.fillStyle = context_arrows.strokeStyle;\
-       if(multidash[p] == '1' ){ if( context_arrows.setLineDash ){context_arrows.setLineDash([2,4]);}else{if(context_arrows.mozDash){context_arrows.mozDash = [2,4]};};};\
-       var arrows_x = new Array();var arrows_y = new Array();\
-       var arrows_snap = multisnaptogrid[p];\
-       if( draw_things[p] == 'arrow' ){desc = 8;}else{desc = 9;};\
-       id_x = 'input_arrows_x';id_y = 'input_arrows_y';\
+      if( draw_things[p] == 'closedpoly'){\
+       var canvas_closedpoly = create_canvas%d(1006,xsize,ysize);\
+       var context_closedpoly =  canvas_closedpoly.getContext(\"2d\");\
+       context_closedpoly.lineCap = \"round\";\
+       context_closedpoly.lineWidth = multilinewidth[p];\
+       context_closedpoly.lineCap = \"round\";\
+       context_closedpoly.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+       if(multifill[p] == '1' ){ context_closedpoly.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_closedpoly.fillStyle = \"rgba( 255,255,255,0)\"; };\
+       if(multidash[p] == '1' ){ if( context_closedpoly.setLineDash ){context_closedpoly.setLineDash([2,4]);}else{if(context_closedpoly.mozDash){context_closedpoly.mozDash = [2,4]};};};\
+       var closedpoly_x = new Array();var closedpoly_y = new Array();\
+       var closedpoly_snap = multisnaptogrid[p];\
+       desc = 12;\
+       id_x = 'input_closedpoly_x';id_y = 'input_closedpoly_y';\
       }\
       else\
       {\
-       if( draw_things[p] == 'closedpoly'){\
-        var canvas_closedpoly = create_canvas%d(1006,xsize,ysize);\
-        var context_closedpoly =  canvas_closedpoly.getContext(\"2d\");\
-        context_closedpoly.lineCap = \"round\";\
-        context_closedpoly.lineWidth = multilinewidth[p];\
-        context_closedpoly.lineCap = \"round\";\
-        context_closedpoly.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-        if(multifill[p] == '1' ){ context_closedpoly.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_closedpoly.fillStyle = \"rgba( 255,255,255,0)\"; };\
-        if(multidash[p] == '1' ){ if( context_closedpoly.setLineDash ){context_closedpoly.setLineDash([2,4]);}else{if(context_closedpoly.mozDash){context_closedpoly.mozDash = [2,4]};};};\
-        var closedpoly_x = new Array();var closedpoly_y = new Array();\
-        var closedpoly_snap = multisnaptogrid[p];\
-        desc = 12;\
-        id_x = 'input_closedpoly_x';id_y = 'input_closedpoly_y';\
-       }\
-       else\
-       {\
-        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
-         var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
-         var context_triangles = canvas_triangles.getContext(\"2d\");\
-         context_triangles.lineCap = \"round\";\
-         context_triangles.lineWidth = multilinewidth[p];\
-         context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-         if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
-         if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
-         var triangles_x = new Array();var triangles_y = new Array();\
-         var triangles_snap = multisnaptogrid[p];\
-         if( draw_things[p] == 'triangle'){desc = 10;}\
-         else{\
-          if( draw_things[p] == 'triangles'){desc = 11;}\
-          else{\
-           if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
-           else{\
-            if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
-            else{\
-            if( draw_things[p] == 'parallelograms'){multiuserinput[p] = 0;desc = 11;};\
-            };\
-           };\
-          };\
-         };\
+       if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
+        var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
+        var context_triangles = canvas_triangles.getContext(\"2d\");\
+        context_triangles.lineCap = \"round\";\
+        context_triangles.lineWidth = multilinewidth[p];\
+        context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+        if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
+        if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
+        var triangles_x = new Array();var triangles_y = new Array();\
+        var triangles_snap = multisnaptogrid[p];\
+        if( draw_things[p] == 'triangle'){desc = 10;}\
+        else{\
+        if( draw_things[p] == 'triangles'){desc = 11;}\
+        else{\
+        if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
+        else{\
+        if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
+        else{\
+        if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};\
+        };\
+        };\
+        };\
+        };\
         id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
        };\
       };\
@@ -221,89 +221,97 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
     };\
    };\
   };\
-  inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' id='canvasdraw_\"+draw_things[p]+\"' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
-  if(multiuserinput[p] == '1'){ \
-   if(desc == 2 || desc == 3){\
-    inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";\
-   }\
-   else\
-   {\
-    if(desc >3 && desc <10){\
-     inner_html+=\"<td><b>(</b><input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\";text-align:center;' /><b>) --- (</b> <input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\";text-align:center;' /> <b>)</b></td>\";\
-    }\
-    else\
-    {\
-     if(desc == 0 || desc == 1 ){\
-     inner_html+=\"<td><b>(</b><input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /><b>:</b> <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' /> <b>)</b></td>\";\
-     }\
-     else\
-     {\
-      if( desc == 10 || desc == 11 ){\
-       inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";\
-      };\
-     };\
-    };\
-   };\
-   inner_html+=\"<td><input type='button' id='canvasdraw_ok_button'  style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
-  }\
-  else\
-  {\
-   inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
-  };\
  };\
+ inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' id='canvasdraw_\"+draw_things[p]+\"' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
+ if(multiuserinput[p] == '1'){ \
+  if(desc == 0 || desc == 1 ){\
+  inner_html+=\"<td><b>(</b><input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /><b>:</b> <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' /> <b>)</b></td>\";}\
+  else{\
+  if(desc == 2 || desc == 3){\
+  inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";}\
+  else{\
+  if(desc >3 && desc <10){\
+  inner_html+=\"<td><b>(</b><input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\";text-align:center;' /><b>) --- (</b> <input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\";text-align:center;' /> <b>)</b></td>\";}\
+  else{\
+  if( desc == 10 || desc == 11 ){\
+  inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";}\
+  else{\
+  if( desc == 12 ){\
+  inner_html+=\"<td><b>(<input type='text' size='5' value='x1,x2,x3,x4...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='5' value='y1,y2,y3,y4...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";};\
+  };\
+  };\
+  };\
+  };\
+  inner_html+=\"<td><input type='button' id='canvasdraw_ok_button'  style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
  }\
- if( wims_status != 'done' ){\
-  tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+ else\
+ {\
+  inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
  };\
- function x_snap_check(x,snap){\
-  if( snap == 1 ){\
-    return snap_to_x(x);\
+};\
+if( wims_status != 'done' ){\
+ tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
+};\
+function x_snap_check(x,snap){\
+ if( snap == 1 ){\
+  return snap_to_x(x);\
+ };\
+ return x;\
+};\
+function y_snap_check(y,snap){\
+ if( snap == 1 ){\
+  return snap_to_y(y);\
+ };\
+ return y;\
+};\
+function coord_split(coord){if(coord.indexOf(':') > 0 ){return coord.split(':');}else{if(coord.indexOf(';') > 0 ){return coord.split(';');}else{if(coord.indexOf(',') > 0 ){return coord.split(',');}else{alert(coord+'--> X : Y ');return;};};};};\
+update_draw_area%d = function(desc,id_x,id_y,id_r){\
+ var x1,x2,x3,y1,y2,y3,r,A,B;\
+ x1 = document.getElementById(id_x.id).value;\
+ y1 = document.getElementById(id_y.id).value;\
+ if(desc > 3 && desc < 12){\
+  A = coord_split(x1);B = coord_split(y1);\
+  if(A.length != 2 || B.length != 2){alert(' X : Y ');return;};\
+  x1 = x2px(safe_eval(A[0]));y1 = y2px(safe_eval(A[1]));\
+  x2 = x2px(safe_eval(B[0]));y2 = y2px(safe_eval(B[1]));\
+  if(desc == 10 || desc == 11 ){\
+   r = document.getElementById(id_r.id).value;\
+   A = coord_split(r);\
+   x3 = x2px(safe_eval(A[0]));y3 = y2px(safe_eval(A[1]));\
   };\
-  return x;\
- };\
- function y_snap_check(y,snap){\
-  if( snap == 1 ){\
-    return snap_to_y(y);\
-  };\
-  return y;\
- };\
- function coord_split(coord){if(coord.indexOf(':') > 0 ){return coord.split(':');}else{if(coord.indexOf(';') > 0 ){return coord.split(';');}else{if(coord.indexOf(',') > 0 ){return coord.split(',');}else{alert(coord+'--> X : Y ');return;};};};};\
- update_draw_area%d = function(desc,id_x,id_y,id_r){\
-  var x1,x2,x3,y1,y2,y3,r,A,B;\
-  x1 = document.getElementById(id_x.id).value;\
-  y1 = document.getElementById(id_y.id).value;\
-  if(desc > 3 && desc < 12){\
-   A = coord_split(x1);B = coord_split(y1);\
-   if(A.length != 2 || B.length != 2){alert(' X : Y ');return;};\
-   x1 = x2px(safe_eval(A[0]));y1 = y2px(safe_eval(A[1]));\
-   x2 = x2px(safe_eval(B[0]));y2 = y2px(safe_eval(B[1]));\
-   if(desc == 10 || desc == 11 ){\
-    r = document.getElementById(id_r.id).value;\
-    A = coord_split(r);\
-    x3 = x2px(safe_eval(A[0]));y3 = y2px(safe_eval(A[1]));\
-   };\
-  }\
-  else\
-  {\
+ }\
+ else\
+ {\
+  if( desc < 4 ){\
    x1 = x2px(safe_eval(x1));y1 = y2px( safe_eval(y1));\
   };\
-  switch(desc){\
-   case 0: points(x1,y1,0,0);break;\
-   case 1: points(x1,y1,0,1);break;\
-   case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
-   case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
-   case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines();draw_lines();break;\
-   case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines();draw_lines();break;\
-   case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
-   case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
-   case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
-   case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
-   case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
-   case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
-   case 12: break;\
-   default:break;\
-  };\
  };\
+ switch(desc){\
+  case 0: points(x1,y1,0,0);break;\
+  case 1: points(x1,y1,0,1);break;\
+  case 2: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius[0] = r;circles_x[0] = x1;circles_y[0] = y1;draw_circles();break;\
+  case 3: r = scale_x_radius(safe_eval(document.getElementById(id_r.id).value));multi_radius.push(r);circles_x.push(x1);circles_y.push(y1);draw_circles();break;\
+  case 4: lines_x[0] = x1;lines_x[1] = x2;lines_y[0] = y1;lines_y[1] = y2;calc_lines();draw_lines();break;\
+  case 5: lines_x.push(x1);lines_x.push(x2);lines_y.push(y1);lines_y.push(y2);calc_lines();draw_lines();break;\
+  case 6: segments_x[0] = x1;segments_x[1] = x2;segments_y[0] = y1;segments_y[1] = y2;draw_segments();break;\
+  case 7: segments_x.push(x1);segments_x.push(x2);segments_y.push(y1);segments_y.push(y2);draw_segments();break;\
+  case 8: arrows_x[0] = x1;arrows_x[1] = x2;arrows_y[0] = y1;arrows_y[1] = y2;draw_arrows();break;\
+  case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
+  case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
+  case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
+  case 12:\
+  A = coord_split(x1);B = coord_split(y1);\
+  var plus_len = A.length;if( plus_len != B.length){alert('mismatch between the number of x-values and  y-values');return;};\
+  for(var p = 0 ; p < plus_len ; p++){\
+   x1 = x2px(safe_eval(A[p]));\
+   y1 = y2px(safe_eval(B[p]));\
+   closedpoly_x.push(x1);\
+   closedpoly_y.push(y1);\
+  };\
+  draw_closedpoly();break;\
+  default:break;\
+ };\
+};\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
@@ -547,52 +555,52 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
 
  if( strstr(draw_types,"closedpoly") != 0 ){
   fprintf(js_include_file,"\
-  function check_closed(x1,y1,X,Y){\n\
+  function check_closed(x1,y1,X,Y){\
    var marge=10;\
    var len = X.length-1;\
-   for(var p = 0 ; p < len ; p++){\n\
-    if(x1 < X[p] + marge && x1 > X[p] - marge ){\n\
-     if(y1 < Y[p] + marge && y1 > Y[p] - marge ){\n\
+   for(var p = 0 ; p < len ; p++){\
+    if(x1 < X[p] + marge && x1 > X[p] - marge ){\
+     if(y1 < Y[p] + marge && y1 > Y[p] - marge ){\
       return 1;\
      };\
     };\
    };\
    return 0;\
   };\
-  function closedpoly(x,y,event_which,num){\n\
-   if(event_which == 0){\n\
-    if(click_cnt == 0){\n\
+  function closedpoly(x,y,event_which,num){\
+   if(event_which == 0){\
+    if(click_cnt == 0){\
      closedpoly_x = [];closedpoly_y = [];\
      closedpoly_x[0] = x_snap_check(x,closedpoly_snap);closedpoly_y[0] = y_snap_check(y,closedpoly_snap);\
-    }\n\
-    else\n\
-    {\n\
+    }\
+    else\
+    {\
      closedpoly_x.push(x_snap_check(x,closedpoly_snap));closedpoly_y.push(y_snap_check(y,closedpoly_snap));\
     };\
     click_cnt++;\
-    if( click_cnt > 2 ){\n\
-     if( check_closed(x,y,closedpoly_x,closedpoly_y) == 1){\n\
+    if( click_cnt > 2 ){\
+     if( check_closed(x,y,closedpoly_x,closedpoly_y) == 1){\
       draw_closedpoly();\
       click_cnt = 0;\
      };\
-    }\n\
-   }\n\
-   else\n\
-   {\n\
-    if( click_cnt > 0 ){\n\
+    }\
+   }\
+   else\
+   {\
+    if( click_cnt > 0 ){\
      closedpoly_x.push(x_snap_check(x,closedpoly_snap));closedpoly_y.push(y_snap_check(y,closedpoly_snap));\
      draw_closedpoly();\
      closedpoly_x.pop();closedpoly_y.pop();\
     };\
    };\
   };\
-  function draw_closedpoly(){\n\
+  function draw_closedpoly(){\
    var len = closedpoly_x.length;\
    context_closedpoly.clearRect(0,0,xsize,ysize);\
    var p = 0;\
    context_closedpoly.beginPath();\
    context_closedpoly.moveTo(closedpoly_x[0],closedpoly_y[0]);\
-   for(var p = 1 ; p < len ; p++){\n\
+   for(var p = 1 ; p < len ; p++){\
     context_closedpoly.lineTo(closedpoly_x[p],closedpoly_y[p]);\
    };\
    context_closedpoly.lineTo(closedpoly_x[0],closedpoly_y[0]);\
