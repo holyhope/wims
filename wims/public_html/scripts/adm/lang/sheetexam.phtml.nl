@@ -1,8 +1,7 @@
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
 !distribute items Broncode toevoegen,\
-Zo zien studenten deze pagina,\
 Broncode van het werkblad \
-into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+into wims_name_putsource,wims_name_sheetsource
 
 !distribute items Voeg een oefening toe,\
 Voeg een serie oefeningen toe,\
