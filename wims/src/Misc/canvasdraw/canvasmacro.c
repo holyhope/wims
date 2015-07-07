@@ -15,14 +15,14 @@ line =4 	lines = 5
 segment = 6 	segments = 7
 arrow = 8 	arrows = 9
 triangle = 10 	triangles = 11
-
+closed_polygon	- 12
 28/6/2015:
 the next js-code block (parsing/scanning the multidraw objects array) is -for now- generic, 
 e.g. not responsive to the actual draw_types used.
 
 TODO: examine/parse the *draw_Types and make the js-code accordingly (e.g. specific and not generic)
-
 */
+
 fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
  var canvas_userdraw = create_canvas%d(999,xsize,ysize);\
  var context_userdraw = canvas_userdraw.getContext(\"2d\");\
@@ -48,6 +48,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
      case 9: arrows_x.pop();arrows_y.pop();arrows_x.pop();arrows_y.pop();draw_arrows();break;\
      case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
      case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
+     case 12:;context_closedpoly.clearRect(0,0,xsize,ysize);closedpoly_x = [];closedpoly_y = [];break;\
      default:break;\
     };\
   };\
@@ -69,6 +70,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    case 9: arrows(x,y,0,1);break;\
    case 10: triangles(x,y,0,0);break;\
    case 11: triangles(x,y,0,1);break;\
+   case 12: closedpoly(x,y,0,0);break;\
    default:break;\
   };\
  };\
@@ -89,6 +91,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    case 9: arrows(x,y,1,1);break;\
    case 10: triangles(x,y,1,0);break;\
    case 11: triangles(x,y,1,1);break;\
+   case 12: closedpoly(x,y,1,0);break;\
    default:break;\
   };\
  };\
@@ -172,29 +175,45 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
       }\
       else\
       {\
-       if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
-        var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
-        var context_triangles = canvas_triangles.getContext(\"2d\");\
-        context_triangles.lineCap = \"round\";\
-        context_triangles.lineWidth = multilinewidth[p];\
-        context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-        if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
-        if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
-        var triangles_x = new Array();var triangles_y = new Array();\
-        var triangles_snap = multisnaptogrid[p];\
-        if( draw_things[p] == 'triangle'){desc = 10;}\
-        else{\
-         if( draw_things[p] == 'triangles'){desc = 11;}\
+       if( draw_things[p] == 'closedpoly'){\
+        var canvas_closedpoly = create_canvas%d(1006,xsize,ysize);\
+        var context_closedpoly =  canvas_closedpoly.getContext(\"2d\");\
+        context_closedpoly.lineCap = \"round\";\
+        context_closedpoly.lineWidth = multilinewidth[p];\
+        context_closedpoly.lineCap = \"round\";\
+        context_closedpoly.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+        if(multifill[p] == '1' ){ context_closedpoly.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_closedpoly.fillStyle = \"rgba( 255,255,255,0)\"; };\
+        if(multidash[p] == '1' ){ if( context_closedpoly.setLineDash ){context_closedpoly.setLineDash([2,4]);}else{if(context_closedpoly.mozDash){context_closedpoly.mozDash = [2,4]};};};\
+        var closedpoly_x = new Array();var closedpoly_y = new Array();\
+        var closedpoly_snap = multisnaptogrid[p];\
+        desc = 12;\
+        id_x = 'input_closedpoly_x';id_y = 'input_closedpoly_y';\
+       }\
+       else\
+       {\
+        if( draw_things[p] == 'triangle' || draw_things[p] == 'triangles' || draw_things[p].indexOf('poly') != -1  || draw_things[p].indexOf('para') != -1 ){\
+         var canvas_triangles = create_canvas%d(1005,xsize,ysize);\
+         var context_triangles = canvas_triangles.getContext(\"2d\");\
+         context_triangles.lineCap = \"round\";\
+         context_triangles.lineWidth = multilinewidth[p];\
+         context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+         if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
+         if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
+         var triangles_x = new Array();var triangles_y = new Array();\
+         var triangles_snap = multisnaptogrid[p];\
+         if( draw_things[p] == 'triangle'){desc = 10;}\
          else{\
-          if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
+          if( draw_things[p] == 'triangles'){desc = 11;}\
           else{\
-           if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
+           if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
            else{\
-           if( draw_things[p] == 'parallelograms'){multiuserinput[p] = 0;desc = 11;};\
+            if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
+            else{\
+            if( draw_things[p] == 'parallelograms'){multiuserinput[p] = 0;desc = 11;};\
+            };\
            };\
           };\
          };\
-        };\
         id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
        };\
       };\
@@ -232,6 +251,7 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    inner_html+\"<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\";\
   };\
  };\
+ }\
  if( wims_status != 'done' ){\
   tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
  };\
@@ -280,12 +300,13 @@ fprintf(js_include_file,"\n<!-- begin multidraw  -->\n\
    case 9: arrows_x.push(x1);arrows_x.push(x2);arrows_y.push(y1);arrows_y.push(y2);draw_arrows();break;\
    case 10: triangles_x[0] = x1;triangles_x[1] = x2;triangles_x[2] = x3;triangles_y[0] = y1;triangles_y[1] = y2;triangles_y[2] = y3;draw_triangles();break;\
    case 11: triangles_x.push(x1);triangles_x.push(x2);triangles_x.push(x3);triangles_y.push(y1);triangles_y.push(y2);triangles_y.push(y3);draw_triangles();break;\
+   case 12: break;\
    default:break;\
   };\
  };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
- canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
  
 /* 
  now add specific draw functions according to draw_types 
@@ -524,25 +545,66 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
   };");
  }
 
- if( strstr(draw_types,"triangle") != 0 || strstr( draw_types,("poly")) != 0 || strstr( draw_types,("paral")) != 0){
-  int polynum = 3;
-  int parallelogram = 0;
-  if(strstr( draw_types,("poly")) != 0){
-   char *p = draw_types;
-   while( *p ){
-    if( isdigit(*p) ){
-        polynum = atoi(p);
-        break;
-    } else { p++;}}
-  }
-  else
-  {
-   if(strstr( draw_types,"parallel") != 0){
-    parallelogram = 1;
-   }
-  }
-  if( parallelogram == 0 ){
-   fprintf(js_include_file,"var polynum = %d;\
+ if( strstr(draw_types,"closedpoly") != 0 ){
+  fprintf(js_include_file,"\
+  function check_closed(x1,y1,X,Y){\n\
+   var marge=10;\
+   var len = X.length-1;\
+   for(var p = 0 ; p < len ; p++){\n\
+    if(x1 < X[p] + marge && x1 > X[p] - marge ){\n\
+     if(y1 < Y[p] + marge && y1 > Y[p] - marge ){\n\
+      return 1;\
+     };\
+    };\
+   };\
+   return 0;\
+  };\
+  function closedpoly(x,y,event_which,num){\n\
+   if(event_which == 0){\n\
+    if(click_cnt == 0){\n\
+     closedpoly_x = [];closedpoly_y = [];\
+     closedpoly_x[0] = x_snap_check(x,closedpoly_snap);closedpoly_y[0] = y_snap_check(y,closedpoly_snap);\
+    }\n\
+    else\n\
+    {\n\
+     closedpoly_x.push(x_snap_check(x,closedpoly_snap));closedpoly_y.push(y_snap_check(y,closedpoly_snap));\
+    };\
+    click_cnt++;\
+    if( click_cnt > 2 ){\n\
+     if( check_closed(x,y,closedpoly_x,closedpoly_y) == 1){\n\
+      draw_closedpoly();\
+      click_cnt = 0;\
+     };\
+    }\n\
+   }\n\
+   else\n\
+   {\n\
+    if( click_cnt > 0 ){\n\
+     closedpoly_x.push(x_snap_check(x,closedpoly_snap));closedpoly_y.push(y_snap_check(y,closedpoly_snap));\
+     draw_closedpoly();\
+     closedpoly_x.pop();closedpoly_y.pop();\
+    };\
+   };\
+  };\
+  function draw_closedpoly(){\n\
+   var len = closedpoly_x.length;\
+   context_closedpoly.clearRect(0,0,xsize,ysize);\
+   var p = 0;\
+   context_closedpoly.beginPath();\
+   context_closedpoly.moveTo(closedpoly_x[0],closedpoly_y[0]);\
+   for(var p = 1 ; p < len ; p++){\n\
+    context_closedpoly.lineTo(closedpoly_x[p],closedpoly_y[p]);\
+   };\
+   context_closedpoly.lineTo(closedpoly_x[0],closedpoly_y[0]);\
+   context_closedpoly.closePath();\
+   context_closedpoly.fill();\
+   context_closedpoly.stroke();\
+   return;\
+  };");
+ }
+/* the next : just one type allowed triangel;.poly[3-9],parallelogram */
+ if( strstr(draw_types,"triangle") != 0 ){
+   fprintf(js_include_file,"\
    function triangles(x,y,event_which,num){\
     var last = triangles_x.length - 1;\
     if(event_which == 0){\
@@ -558,13 +620,13 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
     }\
     else\
     {\
-     if( click_cnt < polynum ){\
+     if( click_cnt < 3 ){\
       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
       draw_triangles();\
       triangles_x.pop();triangles_y.pop();\
      };\
     };\
-    if( click_cnt == polynum ){\
+    if( click_cnt == 3 ){\
      triangles_x.pop();triangles_y.pop();\
      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
      click_cnt = 0;\
@@ -574,10 +636,10 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
    function draw_triangles(){\
     var len = triangles_x.length - 1;\
     context_triangles.clearRect(0,0,xsize,ysize);\
-    for(var p = 0 ; p < len ; p = p+polynum){\
+    for(var p = 0 ; p < len ; p = p+3){\
      context_triangles.beginPath();\
      context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
-     for( var m = p+1 ;m < p+polynum ; m++){\
+     for( var m = p+1 ;m < p+3 ; m++){\
       context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
      };\
      context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
@@ -586,16 +648,17 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
      context_triangles.stroke();\
     };\
     return;\
-   };",polynum);
-  }
-  else
-  {
-  /* need to rethink the parallelogram !!! 26/6/2015 */
-   fprintf(js_include_file,"var polynum = 4;\
-   function triangles(x,y,event_which,num){\
-    var l2 = triangles_x.length;\
-    var l1 = l2 - 1;\
-    var l0 = l2 - 2;\
+   };");
+ }
+ else
+ {
+   /* need to rethink the parallelogram !!! 26/6/2015 */
+ if(strstr( draw_types,"parallel") != 0){
+  fprintf(js_include_file,"\
+    function triangles(x,y,event_which,num){\
+     var l2 = triangles_x.length;\
+     var l1 = l2 - 1;\
+     var l0 = l2 - 2;\
     if(event_which == 0){\
      if(click_cnt == 0){\
       if(num==0){triangles_x = [];triangles_y = [];};\
@@ -635,10 +698,10 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
    function draw_triangles(){\
     var len = triangles_x.length - 1;\
     context_triangles.clearRect(0,0,xsize,ysize);\
-    for(var p = 0 ; p < len ; p = p+polynum){\
+    for(var p = 0 ; p < len ; p = p+4){\
      context_triangles.beginPath();\
      context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
-     for( var m = p+1 ;m < p+polynum ; m++){\
+     for( var m = p+1 ;m < p+4 ; m++){\
       context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
      };\
      context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
@@ -648,6 +711,70 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
     };\
     return;\
    };");
+  }
+  else
+  {
+  if( strstr( draw_types,("poly")) != 0 ){
+   char *p = draw_types;
+   int polynum=-1;
+   while( *p ){
+    if( isdigit(*p) ){
+        polynum = atoi(p);
+        break;
+    }
+    else 
+    { 
+	p++;
+    }
+   }
+   if(polynum != -1 ){
+    fprintf(js_include_file,"var polynum = %d;\
+    function triangles(x,y,event_which,num){\
+     var last = triangles_x.length - 1;\
+     if(event_which == 0){\
+      if(num == 0 && click_cnt == 0){\
+       triangles_x = [];triangles_y = [];\
+       triangles_x[0] = x_snap_check(x,triangles_snap);triangles_y[0] = y_snap_check(y,triangles_snap);\
+      }\
+      else\
+      {\
+       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      };\
+      click_cnt++;\
+     }\
+     else\
+     {\
+      if( click_cnt < polynum ){\
+       triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+       draw_triangles();\
+       triangles_x.pop();triangles_y.pop();\
+      };\
+     };\
+     if( click_cnt == polynum ){\
+      triangles_x.pop();triangles_y.pop();\
+      triangles_x.push(x_snap_check(x,triangles_snap));triangles_y.push(y_snap_check(y,triangles_snap));\
+      click_cnt = 0;\
+      draw_triangles();\
+     };\
+    };\
+    function draw_triangles(){\
+     var len = triangles_x.length - 1;\
+     context_triangles.clearRect(0,0,xsize,ysize);\
+     for(var p = 0 ; p < len ; p = p+polynum){\
+      context_triangles.beginPath();\
+      context_triangles.moveTo(triangles_x[p],triangles_y[p]);\
+      for( var m = p+1 ;m < p+polynum ; m++){\
+       context_triangles.lineTo(triangles_x[m],triangles_y[m]);\
+      };\
+      context_triangles.lineTo(triangles_x[p],triangles_y[p]);\
+      context_triangles.closePath();\
+      context_triangles.fill();\
+      context_triangles.stroke();\
+     };\
+     return;\
+    };",polynum);
+    }
+   }
   }
  }
 } /* end 'void add_js_multidraw()' */

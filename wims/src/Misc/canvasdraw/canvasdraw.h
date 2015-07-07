@@ -1,5 +1,3 @@
-#include <math.h>
-#define DEGREE 57.2958
 #include <assert.h>
 #include "../../Lib/libwims.h"
 #define MAX_INT		128

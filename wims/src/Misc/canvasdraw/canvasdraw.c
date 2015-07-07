@@ -1430,11 +1430,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	
 	case MULTISTROKEOPACITY:
 	/*
-	 @ multistrokeopacity stroke_opacity_1,stroke_opacity_2...,stroke_opacity_6
+	 @ multistrokeopacity stroke_opacity_1,stroke_opacity_2,...,stroke_opacity_7
 	 @ float values 0 - 1 or integer values 0 - 255 
 	 @ use before command 'multidraw'
 	 @ if not set all stroke opacity_ will be set by previous 'opacity int,int'
-	 @ use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ use these up to 7 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1445,11 +1445,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIFILLOPACITY:
 	/*
-	 @ multifillopacity fill_opacity_1,fill_opacity_2...,fill_opacity_6
+	 @ multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_7
 	 @ float values 0 - 1 or integer values 0 - 255 
 	 @ use before command 'multidraw'
 	 @ if not set all fill opacity_ will be set by previous 'opacity int,int' and command 'filled'
-	 @ use these up to 6 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ use these up to 7 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1460,7 +1460,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTILABEL:
 	/*
-	 @ multilabel button_label_1,button_label_2,...button_label_6,'stop drawing text'
+	 @ multilabel button_label_1,button_label_2,...,button_label_7,'stop drawing text'
 	 @ use before command 'multidraw'
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text will be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
@@ -1475,10 +1475,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTILINEWIDTH:
 	/*
-	 @ multilinewidth linewidth_1,linewidth_2...,linewidth6
+	 @ multilinewidth linewidth_1,linewidth_2,...,linewidth_7
 	 @ use before command 'multidraw'
 	 @ if not set all line width will be set by previous 'linewidth int'
-	 @ use these up to 6 different line widths for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ use these up to 7 different line widths for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1535,7 +1535,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTISTROKECOLORS:
 	/*
-	 @ multistrokecolors color_name_1,color_name_2...,color_name_6
+	 @ multistrokecolors color_name_1,color_name_2,...,color_name_7
 	 @ use before command 'multidraw'
 	 @ if not set all colors will be 'stroke_color' , 'stroke_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
@@ -1552,9 +1552,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIFILLCOLORS:
 	/*
-	 @ multifillcolors color_name_1,color_name_2...,color_name_6
+	 @ multifillcolors color_name_1,color_name_2,...,color_name_7
 	 @ use before command 'multidraw'
-	 @ if not set all fillcolors (for circle | triangle | poly[3-9] ) will be 'stroke_color' , 'fill_opacity'
+	 @ if not set all fillcolors (for circle | triangle | poly[3-9] | closedpoly ) will be 'stroke_color' , 'fill_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
@@ -1587,8 +1587,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIDRAW:
 	/*
-	 @ multidraw obj_type_1,obj_type_2...obj_type_6
-	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
+	 @ multidraw obj_type_1,obj_type_2...obj_type_7
+	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 	 @ it makes no sense using something like "multidraw point,points" ...
 	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	 @ buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
@@ -1596,8 +1596,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.<br />The proposed output is a 6 item based array with fixed sequence.<br/>reply[0] = points_x+":"+points_y+"\\n"<br/>reply[1] = circles_x+":"+circlespoint_y+":"_multi_radius+"\\n"<br/>reply[2] = segments_x+":"+segments_y+"\\n"<br/>reply[3] = arrows_x+":"+arrows_y+"\\n"<br/>reply[4] = lines_x+":"+lines_y+"\\n"<br/>reply[5] = triangles_x+":"+triangles_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
-	 @ <em>technical: all 6 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The proposed output is a 7 item based array with fixed sequence.<br/>reply[0] = points_x+";"+points_y+"\\n"<br/>reply[1] = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>reply[2] = segments_x+";"+segments_y+"\\n"<br/>reply[3] = arrows_x+";"+arrows_y+"\\n"<br/>reply[4] = lines_x+";"+lines_y+"\\n"<br/>reply[5] = triangles_x+";"+triangles_y+"\\n"<br/>reply[6] = closedpoly_x+";"+closedpoly_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
+	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
+	 @ <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
 	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
@@ -5639,13 +5640,14 @@ var len = array_r.length;\
  return array_r;\
 };\
 read_canvas%d = function(){\
- var reply = new Array();\
+ var reply = new Array(7);\
  if( points_x && points_x.length > 0 ){reply[0] = xy_precision(points_x,points_y)+\"\\n\"; }else{ reply[0]=\"\\n\"; };\
  if( circles_x && circles_x.length > 0 ){ reply[1] = xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
  if( segments_x && segments_x.length > 0 ){ reply[2] = xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply[2]=\"\\n\"; };\
  if( arrows_x && arrows_x.length > 0 ){ reply[3] = xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply[3]=\"\\n\"; };\
  if( lines_x && lines_x.length > 0 ){ reply[4] = xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply[4]=\"\\n\"; };\
  if( triangles_x && triangles_x.length > 0){ reply[5] = xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply[5]=\"\\n\"; };\
+ if( closedpoly_x && closedpoly_x.length > 0){ closedpoly_x.pop();closedpoly_y.pop();reply[6] = xy_precision(closedpoly_x,closedpoly_y)+\"\\n\"; }else{ reply[6]=\"\\n\"; };\
  return reply;\
 };\n\
 <!-- end function 29 read_canvas%d() -->",canvas_root_id,reply_precision,canvas_root_id,canvas_root_id);
