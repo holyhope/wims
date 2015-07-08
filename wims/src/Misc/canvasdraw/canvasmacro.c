@@ -253,13 +253,13 @@ if( wims_status != 'done' ){\
  tooltip_div.innerHTML = \"<table style=''>\"+inner_html+\"<tr><td>&nbsp;</td><td><input type='button' id='canvasdraw_stop_drawing' style='\"+button_style+\"' value='\"+multilabel[multilabel.length - 1]+\"' onclick='javascript:userdraw_primitive=null;' /></td><td>&nbsp;</td></tr></table>\";\
 };\
 function x_snap_check(x,snap){\
- if( snap == 1 ){\
+ if( snap == 1 || snap == 2 ){\
   return snap_to_x(x);\
  };\
  return x;\
 };\
 function y_snap_check(y,snap){\
- if( snap == 1 ){\
+ if( snap == 1 || snap == 3 ){\
   return snap_to_y(y);\
  };\
  return y;\
@@ -3868,7 +3868,7 @@ Shape.prototype.contains = function(mx, my){\
  var marge = 2*this.line_width;\
  switch(this.type){\
   case 1: for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\
-  case 2: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < this.w[p] + marge ){return p;break;};};break;\
+  case 2: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < this.w[p] + 4*marge ){return p;break;};};break;\
   case 3: for(var p = 0 ; p < this.x.length; p++ ){if( Math.abs(distance(this.x[p],this.y[p],mx,my) ) < scale_x_radius(this.w[p]) + marge ){return p;break;};};break;\
   case 4: var diff;var q;var r;for(var p = 0 ; p < this.x.length-1; p = p+2  ){if( ((this.x[p+1] - this.x[p]) != 0)  && ((this.y[p+1]-this.y[p]) != 0) ){r = (this.y[p+1]-this.y[p])/(this.x[p+1]-this.x[p]);q = this.y[p] - (r)*(this.x[p]);diff = distance_to_line(r,q,mx,my);}else{if( (this.y[p+1]-this.y[p]) != 0 ){diff = Math.abs(this.x[p] - mx);}else{diff = Math.abs(this.y[p] - my);};};if( diff  < marge ){ return p;};}; break;\
   case 5: marge = 2*marge;for(var p = 0 ; p < this.x.length; p++ ){if( mx < this.x[p] + marge &&  mx > this.x[p] - marge ){if( my < this.y[p]+marge && my > this.y[p] - marge ){return p;};};};break;\

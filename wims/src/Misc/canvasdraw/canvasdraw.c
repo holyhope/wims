@@ -1433,8 +1433,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multistrokeopacity stroke_opacity_1,stroke_opacity_2,...,stroke_opacity_7
 	 @ float values 0 - 1 or integer values 0 - 255 
 	 @ use before command 'multidraw'
-	 @ if not set all stroke opacity_ will be set by previous 'opacity int,int'
-	 @ use these up to 7 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ if not set all stroke opacity_ will be set by previous command <em>'opacity int,int'</em>
+	 @ use these up to 7 different stroke opacities for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1448,8 +1448,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_7
 	 @ float values 0 - 1 or integer values 0 - 255 
 	 @ use before command 'multidraw'
-	 @ if not set all fill opacity_ will be set by previous 'opacity int,int' and command 'filled'
-	 @ use these up to 7 different stroke opacities for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ if not set all fill opacity_ will be set by previous command <em>'opacity int,int'</em> and keyword <em>'filled'</em>
+	 @ use these up to 7 different stroke opacities for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_y</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1463,7 +1463,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multilabel button_label_1,button_label_2,...,button_label_7,'stop drawing text'
 	 @ use before command 'multidraw'
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
-	 @ the 'stop drawing' button text will be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
+	 @ the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
 	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
@@ -1477,8 +1477,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multilinewidth linewidth_1,linewidth_2,...,linewidth_7
 	 @ use before command 'multidraw'
-	 @ if not set all line width will be set by previous 'linewidth int'
-	 @ use these up to 7 different line widths for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ if not set all line width will be set by a previous command <em>'linewidth int'</em>
+	 @ use these up to 7 different line widths for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1490,9 +1490,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTIDASH:
 	/*
 	 @ multidash 0,1,1
-	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', are dashed
+	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like <em>'multifill points,circle,segments'</em>, are dashed
 	 @ use before command 'multidraw'
-	 @ if not set all objects will be set 'not dashed'...<br />unless a generic command 'dashed' was given before command 'multidraw'
+	 @ if not set all objects will be set 'not dashed'...<br />unless a generic keyword <em>'dashed'</em> was given before command <em>'multidraw'</em>
+	 @ the dash-type is not -yet- adjustable <br />(e.g. command <em>dashtype line_px,space_px</em> will give no control over multidraw objects)
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1505,7 +1506,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTISNAPTOGRID:
 	/*
 	 @ multisnaptogrid 0,1,1
-	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like 'multifill points,circle,segments', will snap to the xy-grid (default 1 in x/y-coordinate system: see command 'snaptogrid')
+	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like <em>'multifill points,circle,segments'</em>, will snap to the xy-grid (default 1 in x/y-coordinate system: see command 'snaptogrid')
+	 @ only the x-values snap_to_grid: <em>multisnaptogrid 0,2,2</em>
+	 @ only the y-values snap_to_grid: <em>multisnaptogrid 0,3,3</em>
+	 @ mixing allowed: <em>multisnaptogrid 1,2,3,0</em> e.g. the first object will snap to the xy-grid, the second draw object will snap to the x-values, the third object will snap to the y-valeus of the grid, the last object may be placed anywhere on the canvas
 	 @ use before command 'multidraw'
 	 @ if not set all objects will be set 'no snap'...<br />unless a generic command 'snaptogrid' was given before command 'multidraw'
 	 @ commands 'xsnaptogrid', 'ysnaptogrid', 'snaptofunction' and 'snaptopoints x1,y1,x2,y2...' are <b>not</b> supported at this time
@@ -1538,7 +1542,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multistrokecolors color_name_1,color_name_2,...,color_name_7
 	 @ use before command 'multidraw'
 	 @ if not set all colors will be 'stroke_color' , 'stroke_opacity'
-	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
+	 @ use these up to 6 colors for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1575,7 +1579,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 	@ in case of a triangle | poly3, three inputfields are provided.
 	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
-	@ when exercise if inished (status=done) the buttons will not be shown.<br />To override this default behaviour use command / keyword 'status'
+	@ when exercise if finished (status=done) the buttons will not be shown.<br />To override this default behaviour use command / keyword 'status'
 	@ use before command 'multidraw'
 	@ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1617,7 +1621,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d'];};\
 	    if( multilabel === undefined ){ var multilabel = [\"%s\",\"stop drawing\"];};\
 	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0','0'];};\
-	    if( multisnaptogrid == undefined){ var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{multisnaptogrid = [0,0,0,0,0,0,0];};};\
+	    if( multisnaptogrid == undefined){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
 	    var arrow_head = %d;",
 	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
 	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
