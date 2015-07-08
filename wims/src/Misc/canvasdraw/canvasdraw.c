@@ -401,7 +401,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
     		    case 1: double_data[1] = get_real(infile,0);break; /* y */
     		    case 2: stroke_color = get_color(infile,1);/* name or hex color */
 		    decimals = find_number_of_digits(precision);
-		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],0.5*line_width,line_width,0.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		    fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[0],decimals,double_data[1],1.5*line_width,line_width,1.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		    /* click_cnt++; */
 		    if(onclick > 0){click_cnt++;}
 		    break;
@@ -434,7 +434,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
-		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],0.5*line_width,line_width,0.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],1.5*line_width,line_width,1.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		/* click_cnt++; */
 		if(onclick > 0){click_cnt++;}
 	    }
