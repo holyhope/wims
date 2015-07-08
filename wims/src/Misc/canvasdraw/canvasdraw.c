@@ -2939,18 +2939,19 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case OPACITY:
 	/*
 	@ opacity 0-255,0-255
-	@
+	@ opacity 0.0 - 1.0,0.0 - 1.0
+	@ first item is stroke opacity, second is fill opacity
 	*/
 	    for(i = 0 ; i<2;i++){
 		switch(i){
-		    case 0: double_data[0]=(int)(get_real(infile,0));break;
-		    case 1: double_data[1]=(int)(get_real(infile,1));break;
+		    case 0: double_data[0]= get_real(infile,0);break;
+		    case 1: double_data[1]= get_real(infile,1);break;
 		    default: break;
 		}
 	    }
-	    if( double_data[0] < 0 || double_data[0] > 255 || double_data[1] < 0 || double_data[1] > 255  ){ canvas_error("opacity [0 - 255] , [0 - 255]");}/* typo or non-RGB ? */
-	    stroke_opacity = (double) (0.0039215*double_data[0]);/* 0.0 - 1.0 */
-	    fill_opacity = (double) (0.0039215*double_data[1]);/* 0.0 - 1.0 */
+	    if( double_data[0] > 255 ||  double_data[1] > 255  ){ canvas_error("opacity [0 - 255] , [0 - 255] ");}/* typo or non-RGB ? */
+	    if( double_data[0] > 1 ){ stroke_opacity = (double) (0.0039215*double_data[0]); }else{ stroke_opacity = double_data[0];} /* 0.0 - 1.0 */
+	    if( double_data[0] > 1 ){ fill_opacity = (double) (0.0039215*double_data[1]); }else{ fill_opacity = double_data[0];} /* 0.0 - 1.0 */
 	    break;
 	case ROTATE:
 	/*
