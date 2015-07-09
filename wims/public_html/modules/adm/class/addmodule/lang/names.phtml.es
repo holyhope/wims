@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !set wims_name_sheetcheck=Compruebe la hoja de trabajo
-!set wims_name_moduback=Vuelta al módulo
+!!set wims_name_moduback=Vuelta al módulo
 
 !set name_choose=Elija la hoja en la cual quiere insertar el elemento de trabajo&nbsp;
 !set name_title=Insertar en una hoja de trabajo

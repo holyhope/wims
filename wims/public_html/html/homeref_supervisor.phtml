@@ -124,13 +124,13 @@
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open) \
 	and exercise isin $module_category
- !set wims_homeref_parm=!replace % by %25 in $module_init_parm
- !set wims_homeref_parm=!replace + by %2B in $wims_homeref_parm
- !set wims_homeref_parm=!replace & by %26 in $wims_homeref_parm
- !set 1_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
- !set 1_=!append line addh,1,module=adm/class/addmodule&job=helpexo&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
-!endif
-!if $wims_user=supervisor and exam notin $session and \
+  !set wims_homeref_parm=!replace % by %25 in $module_init_parm
+  !set wims_homeref_parm=!replace + by %2B in $wims_homeref_parm
+  !set wims_homeref_parm=!replace & by %26 in $wims_homeref_parm
+  !set 1_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
+  !set 1_=!append line addh,1,module=adm/class/addmodule&job=helpexo&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
+ !endif
+ !if $wims_user=supervisor and exam notin $session and \
 	..classes/ notin ..$module and ..adm/ notin ..$module and \
 	..devel/ notin ..$module and \
 	GNU isin $module_copyright and \
@@ -138,10 +138,10 @@
 	$class_importation!=no and\
 	$thisexo!=
   !set 1_=!append line import,1,module=adm/createxo&existing=$thisexo&catmodule=$module to $1_
-!endif
+ !endif
 
 !else
-!! ---------------------------------------------- place pour ajouter le lien vers la modification de serie dans une feuille
+!! ----- place pour ajouter le lien vers la modification de serie dans une feuille
  !if $cmd!=intro and $cmd!=help and $module!=home and \
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
@@ -151,7 +151,12 @@
   !set 1_=!append line chseries,1,module=adm/class/sheet&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm&job=chseries&num=$special_parm4 to $1_
  !endif
 !endif
+
 !set 1_=!append line $wims_menu_items to $1_
+!if $wims_user=supervisor and $cmd!=intro and $cmd!=help and $module!=home and \
+	../adm/ notin ../$module
+  !set 1_=!append line moduback,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+!endif
 !! next exo and prev exo in the menu for supervisor
 !if $wims_user=supervisor and $exoprev$exonext != $empty and $wims_sheet=$empty
    !set 1_=!append line &#8594;,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \

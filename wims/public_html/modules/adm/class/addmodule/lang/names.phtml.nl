@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !set wims_name_sheetcheck=Bekijk dit Werkblad
-!set wims_name_moduback=Terug naar de module
+!!set wims_name_moduback=Terug naar de module
 
 !set name_choose= Kies het werkblad waarin deze oefening moet worden opgenomen
 !set name_title=Voeg een oefening toe aan een Werkblad
