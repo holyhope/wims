@@ -164,7 +164,11 @@ $name_remarkintro1
  </p>
 !endif
 !!test if there is an introhook (works with new modules)
-!readproc introhook.phtml
+!if _classes/ isin _$module
+  !set introhook_exists=no
+!else
+ !readproc introhook.phtml
+!endif
 !if $introhook_exists!=no
 <fieldset class="oef_expert">
     <legend>$name_module_setup</legend>
