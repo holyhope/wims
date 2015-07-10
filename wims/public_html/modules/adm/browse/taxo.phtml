@@ -17,10 +17,15 @@ $title
         <li><a href="#$taxo">$(taxo_title$cnt)</a></li>
       !next
     </ul>
+    !reset cnt
     !for taxo in $list_taxonomy
+      !increase cnt
       <div id="$taxo">
          !read $taxo
-       </div>
+         <div class="wims_credits">
+         <strong>$wims_name_credits:</strong> <a href="$(desctaxo$cnt)" target="_blank">$(desctaxo$cnt)</a>
+        </div>
+      </div>
     !next
   </div>
 </div>
@@ -34,14 +39,3 @@ $title
       });
     /*]]>*/
 </script>
-
-<div class="wims_credits">
-<h2>$wims_name_credits</h2>
-!reset cnt
-!for taxo in $list_taxonomy
- !increase cnt
- <p>
-  $(taxo_title$cnt) : $(desctaxo$cnt)
- </p>
-!next
-</div>

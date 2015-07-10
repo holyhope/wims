@@ -198,10 +198,10 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
       if (!defined($addr{$a})) {print "warning: module $a does not exist on the server\n"; next};
       if (!$titmodule->{$addr{$a}}) { print "$a\n" ; $titmodule->{$a}=$a};
       my $bb= ($titmodule->{$addr{$a}}) ? $titmodule->{$addr{$a}} . "<span class=\"small hidden\">($b)</span>": $b;
-      my @exo; my $nb=1;
+      my @exo; my $nb=1; my %exos_dic;
       if (-e "../../modules/$a/Extitles") {
-        my %dic=treate_dict("../../modules/$a/Extitles");
-        @exo= values %dic;
+        %exos_dic=treate_dict("../../modules/$a/Extitles");
+        @exo= values %exos_dic;
         $nb=$#exo;
       };
       ##jmevers test
@@ -220,8 +220,11 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         . ($nb>1?"<sup class=\"pastille taxo_nb_exo\">$nb \$name_X</sup>":"" )
         . "\n!set wims_ref_class=wims_button\n".
         "!href target=wims_internal module=$a &rArr;\n" .
-        '<ul class="smaller"><li>' . join('</li><li>', @exo) . '</li></ul>'
-        . "</li>\n";
+        '<ul class="smaller">';
+        foreach my $exo_id (keys %exos_dic) {
+          $ref{'text'}{$ligne[0]} .='<li rel="'.$exo_id.'">'.$exos_dic{$exo_id}."</li>\n";
+        }
+        $ref{'text'}{$ligne[0]} .="</ul></li>\n";
         $cntexo += $nb ;
       }
       else {
