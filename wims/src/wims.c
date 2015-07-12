@@ -1161,6 +1161,9 @@ int main(int argc, char *argv[], char *envp[])
     p=getenv("REMOTE_ADDR"); if(p!=NULL) remote_addr=p;
     p=getenv("REMOTE_HOST"); if(p!=NULL) remote_host=p;
     nowtime=time(0); now=localtime(&nowtime);
+/* nowtime contains the seconds elapsed from EPOCH (1970)
+   but tm_year is set to current year-1900.
+ */
     memmove(&Now, now, sizeof(Now)); now=&Now;
     snprintf(nowstr,sizeof(nowstr),"%04d%02d%02d.%02d:%02d:%02d",
            (now->tm_year)+1900,(now->tm_mon)+1,now->tm_mday,

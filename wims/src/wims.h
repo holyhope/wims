@@ -548,7 +548,7 @@ extern int setcookie, forceresume, user_lang, form_access, session_serial;
 extern char *protocol;
 void useropts(void);
 extern char cookiegot[256], cookieset[256];
-extern struct tm *now, Now; /* time of request */
+extern struct tm *now; /* time of request */
 extern int isdevelmodule, defined_var_total, deplen, wims_sheet, wims_exo;
 struct VAR_DEF {
     char *name; short int beg,end;
