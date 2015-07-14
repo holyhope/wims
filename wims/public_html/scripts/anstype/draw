@@ -2,10 +2,15 @@
 rlist=!sort lines $(reply$i)
 !set xysize=!line 1 of $oef_applet_option
 !set replygood$i=!lines2rows $(replygood$i)
-
 !if $wims_read_parm=nocompare
- !set parm3=!line 1 to -1 of $oef_applet_option
- !read oef/canvasdraw.phtml $parm3 $(reply$i)
+  !set reply_cnt=!itemcnt $(reply$i)
+  !if $reply_cnt <= 1
+    !set parm3=!line 1 to -2 of $oef_applet_option
+    !read oef/canvasdraw.phtml $parm3
+   !else
+    !set parm3=!line 1 to -1 of $oef_applet_option
+    !read oef/canvasdraw.phtml $parm3 $(reply$i)
+  !endif
  reply_$i=$canvasdraw_out
 !exit
 !endif
