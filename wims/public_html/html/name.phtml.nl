@@ -129,7 +129,7 @@ Versie,\
 Vereiste WIMS versie,\
 Taal,\
 Schrijver,\
-Schrijv,\
+Administrator,\
 Vertaler,\
 General,\
 Dit is een module van,\
@@ -189,9 +189,9 @@ Indexatie,\
  Bewaar de details van deze oefening,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
- Gezien\
+ Gezien,\
  Details van ingeleverde oefeningen,\
- Insérer tous les exercices dans une feuille de travail,\
+ Voeg alle oefeningen toe aan het werkblad,\
  Zo zien studenten deze pagina,\
  into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
