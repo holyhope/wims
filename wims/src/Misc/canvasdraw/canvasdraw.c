@@ -1637,6 +1637,84 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    if( reply_format == 0){reply_format = 29;}
 	    reset();/* if command 'filled' / 'dashed' was given...reset all */
 	    break;
+	case RULER:
+	/*
+	@ ruler x,y,x-width ,y-height,passive_mode
+	@ x,y are the initial location
+	@ x-width , y-height are the ruler dimensions width &amp; height in xy-coordinate system
+	@ the ruler scale is by definition the x-scale, set by command 'xrange'<br />for example: a ruler x-width of 6 will have a scale ranging from 0 to 6 
+	@ passive_mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use passive_mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
+	@ if combined with a protractor, use replyformat = 32
+	@ only one ruler allowed (for the time being)
+	@ when using command 'zoom' , pay attention to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'ruler' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+	@ usage: first left click on the ruler will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
+	*/
+	    for( i = 0;i < 5; i++ ){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* x-center */
+		    case 1: double_data[1] = get_real(infile,0);break; /* y-center */
+		    case 2: double_data[2] = get_real(infile,0);break; /* x-width */
+		    case 3: double_data[3] = get_real(infile,0);break; /* y-width */
+		    case 4: int_data[0] = (int)(get_real(infile,1)); /* passive mode */
+		    decimals = find_number_of_digits(precision);
+	            add_js_ruler(js_include_file,canvas_root_id,double_data[0],double_data[1],double_data[2],double_data[3],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[0]);
+	            string_length = snprintf(NULL,0,";ruler%d();",canvas_root_id);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,";ruler%d();",canvas_root_id);
+		    add_to_buffer(tmp_buffer);
+		    reply_precision = precision;
+		    /* no reply from ruler if non-interactive */
+		    if( reply_format == 0 && int_data[0] == -1 ){reply_format = 31;}
+		    break;
+		    default: break;
+		}
+	    }
+	    break;
+	case PROTRACTOR:
+	/*
+	 @ protractor x,y,x-width,type,passive_mode,value_display,use_scale
+	 @ x,y are the initial location
+	 @ x-width : give the width in x-coordinate system
+	 @ type = 1 : a triangle range  0 - 180<br />type = 2 : a circle shape 0 - 360<br />to do: degree scale optional
+	 @ passive_mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use passive_mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
+	 @ value_display = 0 : no display of the angle value<br />value_display = 1 : value display in degrees<br />value_display = 2 : value display in radians<br />the display of the angle may cause some hickups in the smooth rotation of the protractor...
+	 @ use_scale = 1 : the protractor will have some scale values printed; use_scale=0 to disable
+	 @ the rotating direction of the mouse around the protractor determines the clockwise/ counter clockwise rotation of the protractor...
+	 @ commands <em>stroke_color | fill_color | linewidth | opacity | font_family</em> will determine the looks of the protractor.
+	 @ default replyformat: reply[0] = x;reply[1] = y;reply[2] = angle_in_radians<br />use commmand 'precision' to set the reply precision.
+	 @ if combined with a ruler, use replyformat = 32
+	 @ command <em>snap_to_grid</em> may be used to assist the pupil at placing the protractor 
+	 @ when using command 'zoom' , pay attention to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'protractor' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+	 @ only one protractor allowed (for the time being)
+	 @ usage: first left click on the protractor will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
+	*/
+	    for( i = 0;i < 7; i++ ){
+		switch(i){
+		    case 0: double_data[0] = get_real(infile,0);break; /* x-center */
+		    case 1: double_data[1] = get_real(infile,0);break; /* y-center */
+		    case 2: double_data[2] = get_real(infile,0);break; /* x-width */
+		    case 3: int_data[0] = (int)(get_real(infile,0));break; /* type */
+		    case 4: int_data[1] = (int)(get_real(infile,0));break; /* passive mode */
+		    case 5: int_data[2] = (int)(get_real(infile,0));break; /* value display */
+		    case 6: int_data[3] = (int)(get_real(infile,1)); /* use scale */
+		    decimals = find_number_of_digits(precision);
+		    if( int_data[2] > 0 ){
+	             add_slider_display(js_include_file,canvas_root_id,precision,font_size,font_color,stroke_opacity);
+	            }
+	            add_js_protractor(js_include_file,canvas_root_id,int_data[0],double_data[0],double_data[1],double_data[2],font_family,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,int_data[2]+1,int_data[3],int_data[1]);
+	            
+	            string_length = snprintf(NULL,0,";protractor%d(); ",canvas_root_id);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,";protractor%d(); ",canvas_root_id);
+		    add_to_buffer(tmp_buffer);
+		    reply_precision = precision;
+		    /* no reply from protractor if non-interactive */
+		    if( reply_format == 0 && int_data[1] == -1 ){reply_format = 30;}
+		    break;
+		    default: break;
+		}
+	    }
+	    break;
 	case USERDRAW:
 	/*
 	@ userdraw object_type,color
@@ -2679,7 +2757,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 			    temp = get_string(infile,1);
 			    if(strstr(temp,"\"") != 0 ){ temp = str_replace(temp,"\"","'");}
 			    string_length = snprintf(NULL,0,"draw_http(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
-			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			    check_string_length(string_length);tmp_buffer = my_newmem(string_length+2);
 			    snprintf(tmp_buffer,string_length,"draw_http(%d,%d,%d,%d,%d,\"%s\");\n",canvas_root_id,int_data[0],int_data[1],int_data[2],int_data[3],temp);
 			    add_to_buffer(tmp_buffer);
 		    break;
@@ -2931,9 +3009,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
 		    /* set snap_x snap_y values in pixels */
 		    fprintf(js_include_file,"snap_x = %f;snap_y = %f;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
-		    string_length = snprintf(NULL,0,  "draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    string_length = snprintf(NULL,0,  ";draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n ",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,"draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
+		    snprintf(tmp_buffer,string_length,";draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n ",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
 		    add_to_buffer(tmp_buffer);
 		    break;
 		}
@@ -5657,6 +5735,45 @@ read_canvas%d = function(){\
 };\n\
 <!-- end function 29 read_canvas%d() -->",canvas_root_id,reply_precision,canvas_root_id,canvas_root_id);
     break;
+    case 30:
+    fprintf(js_include_file,"\n<!-- begin function 30 read_canvas%d() -->\n\
+read_canvas%d = function(){\
+ var reply = new Array(3);\
+ var prec = %d;\
+ reply[0] = (Math.round(prec*(px2x(protractor_data[0]))))/prec;\
+ reply[1] = (Math.round(prec*(px2y(protractor_data[1]))))/prec;\
+ reply[2] = (Math.round(prec*(protractor_data[2])))/prec;\
+ return reply;\
+};\n\
+<!-- end function 30 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+    break;
+    case 31:
+    fprintf(js_include_file,"\n<!-- begin function 31 read_canvas%d() -->\n\
+read_canvas%d = function(){\
+ var reply = new Array(3);\
+ var prec = %d;\
+ reply[0] = (Math.round(prec*(px2x(ruler_data[0]))))/prec;\
+ reply[1] = (Math.round(prec*(px2y(ruler_data[1]))))/prec;\
+ reply[2] = (Math.round(prec*(ruler_data[2])))/prec;\
+ return reply;\
+};\n\
+<!-- end function 31 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+    break;
+    case 32:
+    fprintf(js_include_file,"\n<!-- begin function 32 read_canvas%d() -->\n\
+read_canvas%d = function(){\
+ var reply = new Array(6);\
+ var prec = %d;\
+ reply[0] = (Math.round(prec*(px2x(ruler_data[0]))))/prec;\
+ reply[1] = (Math.round(prec*(px2y(ruler_data[1]))))/prec;\
+ reply[2] = (Math.round(prec*(ruler_data[2])))/prec;\
+ reply[3] = (Math.round(prec*(px2x(protractor_data[0]))))/prec;\
+ reply[4] = (Math.round(prec*(px2y(protractor_data[1]))))/prec;\
+ reply[5] = (Math.round(prec*(protractor_data[2])))/prec;\
+ return reply;\
+};\n\
+<!-- end function 32 read_canvas%d() -->",canvas_root_id,canvas_root_id,reply_precision,canvas_root_id);
+    break;
     default: canvas_error("hmmm unknown replyformat...");break;
 }
  return;
@@ -7871,7 +7988,9 @@ int get_token(FILE *infile){
 	*multidash="multidash",
 	*multilabel="multilabel",
 	*multiuserinput="multiuserinput",
-	*multisnaptogrid="multisnaptogrid";
+	*multisnaptogrid="multisnaptogrid",
+	*protractor="protractor",
+	*ruler="ruler";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -8682,9 +8801,16 @@ int get_token(FILE *infile){
 	free(input_type);
 	return MULTIUSERINPUT;
 	}
+	if( strcmp(input_type, protractor) == 0 ){
+	free(input_type);
+	return PROTRACTOR;
+	}
+	if( strcmp(input_type, ruler) == 0 ){
+	free(input_type);
+	return RULER;
+	}
 
 	free(input_type);
 	ungetc(c,infile);
 	return 0;
 }
-

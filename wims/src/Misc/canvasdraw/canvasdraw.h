@@ -182,6 +182,7 @@
 #define MULTISNAPTOGRID 185
 #define MULTIUSERINPUT  186
 #define PROTRACTOR	187
+#define RULER		188
 
 
 #define DRAW_GRID	0
@@ -313,6 +314,9 @@ void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_colo
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
 void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1,int font_size);
 void add_rawmath(FILE *js_include_file);
+
+void add_js_protractor(FILE *js_include_file,int canvas_root_id,int type,double xcenter,double ycenter,int size,char *font,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int line_width,int diplay_type,int use_scale,int dynamic);
+void add_js_ruler(FILE *js_include_file,int canvas_root_id,double x,double y,double sizex,double sizey,char *font,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int line_width,int dynamic);
 
 extern int NUMBER_OF_COLORNAMES;
 extern struct colors { char *hex; char *name; char *rgb; } colors[];

@@ -4301,3 +4301,531 @@ var filltoborder = function(xs,ys,bordercolor,color){\
 
 }
 
+void add_js_ruler(FILE *js_include_file,
+int canvas_root_id,double x,double y,double sizex,double sizey,char *font,
+char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,
+int line_width,int dynamic){
+ fprintf(js_include_file,"\n<!-- begin command ruler -->\n\
+ var ruler_data = new Array(3);\
+ var ruler%d = function(){\
+  var full = 2*Math.PI;\
+  var once = true;\
+  var canvas = create_canvas%d(3000,xsize,ysize);\
+  var canvas_rect = canvas.getBoundingClientRect();\
+  var ctx = canvas.getContext(\"2d\");\
+  var canvas_temp =  document.createElement(\"canvas\");\
+  var size_x = xsize*(%f)/(xmax - xmin);\
+  var size_y = ysize*(%f)/(ymax - ymin);\
+  var dx = xsize/(xmax - xmin);\
+  var dy = 0.8*ysize/(ymax - ymin);\
+  canvas_temp.width = xsize;\
+  canvas_temp.height = ysize;\
+  var ctx_temp = canvas_temp.getContext(\"2d\");\
+  var xcenter = x2px(%f);\
+  var ycenter = y2px(%f);\
+  var ruler_x = xcenter;\
+  var ruler_y = ycenter;\
+  ctx_temp.font = \"%s\";\
+  ctx_temp.strokeStyle = \"rgba(%s,%f)\";\
+  ctx_temp.fillStyle = \"rgba(%s,%f)\";\
+  ctx_temp.lineWidth = %d;\
+  ctx_temp.save();\
+  if(once){\
+   ctx_temp.beginPath();\
+   ctx_temp.moveTo(ruler_x,ruler_y);\
+   ctx_temp.lineTo(ruler_x+size_x,ruler_y);\
+   ctx_temp.lineTo(ruler_x+size_x,ruler_y-size_y);\
+   ctx_temp.lineTo(ruler_x,ruler_y-size_y);\
+   ctx_temp.lineTo(ruler_x,ruler_y);\
+   ctx_temp.closePath();\
+   ctx_temp.fill();\
+   ctx_temp.stroke();\
+   ctx_temp.fillStyle = ctx_temp.strokeStyle;\
+   var txtsize;\
+   var num = 1;\
+   for(var p = dx ; p < size_x ; p = p+dx){\
+     txtsize = 0.5*(ctx_temp.measureText(num).width);\
+     ctx_temp.fillText(num,ruler_x + p -txtsize,ruler_y - 0.9*dy);\
+     num++;\
+   };\
+   ctx_temp.strokeStyle = \"rgba(0,0,255,0.6)\";\
+   ctx_temp.lineWidth = 2;\
+   for(var p = 0; p < size_x ; p = p+dx){\
+    ctx_temp.beginPath();\
+    ctx_temp.moveTo(ruler_x+p,ruler_y);\
+    ctx_temp.lineTo(ruler_x+p,ruler_y-0.8*dy);\
+    ctx_temp.closePath();\
+    ctx_temp.stroke();\
+   };\
+   ctx_temp.strokeStyle = \"rgba(0,0,255,0.6)\";\
+   ctx_temp.lineWidth = 1;\
+   for(var p = 0; p < size_x ; p = p+0.5*dx){\
+    ctx_temp.beginPath();\
+    ctx_temp.moveTo(ruler_x+p,ruler_y);\
+    ctx_temp.lineTo(ruler_x+p,ruler_y-0.6*dy);\
+    ctx_temp.closePath();\
+    ctx_temp.stroke();\
+   };\
+   ctx_temp.strokeStyle = \"rgba(255,0,0,0.6)\";\
+   ctx_temp.lineWidth = 0.5;\
+   for(var p = 0; p < size_x ; p = p+0.1*dx){\
+    ctx_temp.beginPath();\
+    ctx_temp.moveTo(ruler_x+p,ruler_y);\
+    ctx_temp.lineTo(ruler_x+p,ruler_y-0.4*dy);\
+    ctx_temp.closePath();\
+    ctx_temp.stroke();\
+   };\
+   ctx_temp.drawImage(canvas,ruler_x,ruler_y);\
+   once = false;\
+  }",canvas_root_id,canvas_root_id,sizex,sizey,x,y,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width);
+ 
+ if( dynamic == -1 ){
+ fprintf(js_include_file,"\
+ ctx.drawImage(canvas_temp,0,0);\
+   if(wims_status != \"done\"){\
+    canvas_div.addEventListener( 'mouseup'   , ruler_stop,false);\
+    canvas_div.addEventListener( 'mousedown' , ruler_start,false);\
+    canvas_div.addEventListener( 'mousemove' , ruler_move,false);\
+   };\
+   function ruler_stop(evt){\
+    ruler_data[0] = ruler_x;\
+    ruler_data[1] = ruler_y;\
+    ruler_data[2] = angle;\
+    return;\
+   };\
+   var ruler_click_cnt = 0;\
+   function ruler_start(evt){\
+     canvas_rect = canvas.getBoundingClientRect();\
+     var mouse_y = evt.clientY - canvas_rect.top;\
+     if( mouse_y > ysize - 20 ){return;};\
+     var mouse_x = evt.clientX - canvas_rect.left;\
+     if( mouse_x > ruler_x - 50 && mouse_x < ruler_x + size_x + 50){\
+      if( mouse_y > ruler_y - 50 && mouse_y < ruler_y + size_y + 50){\
+       ruler_click_cnt++;\
+       ruler_move(evt);\
+       return;\
+      };\
+     }else{ruler_click_cnt = 0; return;};\
+   };\
+   var angle = 0;\
+   function ruler_move(evt){\
+    switch(ruler_click_cnt){\
+     case 1:\
+      angle = 0;\
+      canvas_rect = canvas.getBoundingClientRect();\
+      ruler_y = evt.clientY - canvas_rect.top;\
+      if( ruler_y > ysize - 20 ){ruler_y = 0.5*ysize;ruler_x = 0.5*xsize;return;};\
+      ruler_x = evt.clientX - canvas_rect.left;\
+      if( x_use_snap_to_grid == 1 ){\
+       ruler_x = snap_to_x(ruler_x);\
+      };\
+      if( y_use_snap_to_grid == 1 ){\
+       ruler_y = snap_to_y(ruler_y);\
+      };\
+      ctx.clearRect(0,0,xsize,ysize);\
+      ctx.save();\
+      ctx.translate(ruler_x - xcenter,ruler_y - ycenter);\
+      ctx.drawImage(canvas_temp,0,0);\
+      ctx.restore();\
+      break;\
+     case 2:\
+      canvas_rect = canvas.getBoundingClientRect();\
+      var mouse_y = evt.clientY - canvas_rect.top;\
+      var mouse_x = evt.clientX - canvas_rect.left;\
+      angle = find_angle(ruler_x,ruler_y,mouse_x,mouse_y);\
+      if(angle > full){angle = angle - full;};\
+      ctx.clearRect(0,0,xsize,ysize);\
+      ctx.save();\
+      ctx.translate(ruler_x,ruler_y);\
+      ctx.rotate(angle);\
+      ctx.translate( -1*xcenter, -1*ycenter );\
+      ctx.drawImage( canvas_temp,0,0 );\
+      ctx.restore();\
+      break;\
+     case 3:ruler_click_cnt = 0;break;\
+     default:ruler_stop(evt);break;\
+    };\
+   };\
+   function find_angle(xc,yc,x1,y1){\
+    var dx = Math.abs(x1 - xc);\
+    var dy = yc - y1 ;\
+    if( x1 >= xc ){\
+     return -1*Math.atan(dy/dx);\
+    };\
+    if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
+    if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
+   };\
+  };\
+  ruler%d();\n",canvas_root_id);
+ }
+ else
+ {
+  fprintf(js_include_file,"\
+   ctx.clearRect(0,0,xsize,ysize);\
+   ctx.save();\
+   ctx.translate(ruler_x,ruler_y);\
+   ctx.rotate(%d*Math.PI/180);\
+   ctx.translate( -1*xcenter, -1*ycenter );\
+   ctx.drawImage( canvas_temp,0,0 );\
+   ctx.restore();\
+  };\
+  ruler%d();",dynamic,canvas_root_id);
+ }
+}
+
+void add_js_protractor(FILE *js_include_file,int canvas_root_id,int type,double xcenter,double ycenter,int size,char *font,char *stroke_color,double stroke_opacity,char *fill_color,double fill_opacity,int line_width,int display_type,int use_scale,int dynamic){
+
+/*
+use_slider_display = 2 : angle in degrees
+use_slider_display = 3 : angle in radians
+void add_slider_display(FILE *js_include_file,int canvas_root_id,int precision,int font_size,char *font_color,double stroke_opacity){
+fprintf(js_include_file,"<!-- begin add_slider_display -->\n\
+function show_slider_value(value,use_slider_display)
+*/
+
+if( type == 1 ){ /* geodriehoek */
+ fprintf(js_include_file,"\n<!-- begin command protractor type 1 -->\n\
+ var protractor_data = new Array(3);\
+ var protractor%d = function(){\
+  var once = true;\
+  var full = 2*Math.PI;\
+  var canvas = create_canvas%d(2000,xsize,ysize);\
+  var canvas_rect = canvas.getBoundingClientRect();\
+  var ctx = canvas.getContext(\"2d\");\
+  var canvas_temp =  document.createElement(\"canvas\");\
+  var size = parseInt(xsize*(%d)/(xmax - xmin));\
+  canvas_temp.width = xsize;\
+  canvas_temp.height = ysize;\
+  var ctx_temp = canvas_temp.getContext(\"2d\");\
+  var type = %d;\
+  var xcenter = x2px(%f);\
+  var ycenter = y2px(%f);\
+  var half = 0.5*size;\
+  var radius1 = 0.6*half;\
+  var radius2 = 0.65*half;\
+  var radius3 = 0.7*half;\
+  ctx_temp.font = \"%s\";\
+  ctx_temp.strokeStyle = \"rgba(%s,%f)\";\
+  ctx_temp.fillStyle = \"rgba(%s,%f)\";\
+  ctx_temp.lineWidth =%d;\
+  var display_type = %d;\
+  var use_scale = %d;\
+  if( once ){\
+   ctx_temp.clearRect(0,0,canvas_temp.width,canvas_temp.height);\
+   ctx_temp.beginPath();\
+   ctx_temp.moveTo(xcenter-half,ycenter );\
+   ctx_temp.lineTo(xcenter,ycenter-half);\
+   ctx_temp.lineTo(xcenter+half,ycenter);\
+   ctx_temp.lineTo(xcenter-half,ycenter);\
+   ctx_temp.moveTo(xcenter,ycenter );\
+   ctx_temp.lineTo(xcenter+0.5*half,ycenter-0.5*half);\
+   ctx_temp.moveTo(xcenter,ycenter );\
+   ctx_temp.lineTo(xcenter-0.5*half,ycenter-0.5*half);\
+   ctx_temp.moveTo(xcenter,ycenter );\
+   ctx_temp.lineTo(xcenter,ycenter-half);\
+   ctx_temp.closePath();\
+   ctx_temp.fill();\
+   ctx_temp.stroke();\
+   ctx_temp.beginPath();\
+   ctx_temp.arc(xcenter,ycenter,radius1,0,Math.PI,false);\
+   ctx_temp.closePath();\
+   if( use_scale == 1 ){\
+    ctx_temp.fillStyle = ctx_temp.strokeStyle;\
+    var txtsize;\
+    for(var p = 45 ; p < 180;p = p+45){\
+     txtsize = 0.5*(ctx_temp.measureText(p).width);\
+     ctx_temp.fillText(p,xcenter+0.5*half*Math.cos(p*Math.PI/180) - txtsize,ycenter-0.5*half*Math.sin(p*Math.PI/180));\
+    };\
+   };\
+   for(var p = 10 ; p < 180;p = p+10){\
+    ctx_temp.beginPath();\
+    ctx_temp.moveTo(xcenter+radius1*Math.cos(p*Math.PI/180),ycenter-radius1*Math.sin(p*Math.PI/180));\
+    ctx_temp.lineTo(xcenter+radius3*Math.cos(p*Math.PI/180),ycenter-radius3*Math.sin(p*Math.PI/180));\
+    ctx_temp.closePath();\
+    ctx_temp.stroke();\
+   };\
+   for(var p = 0 ; p < 180;p=p+2){\
+    if(p%%10 != 0){\
+     ctx_temp.beginPath();\
+     ctx_temp.moveTo(xcenter+radius1*Math.cos(p*Math.PI/180),ycenter-radius1*Math.sin(p*Math.PI/180));\
+     ctx_temp.lineTo(xcenter+radius2*Math.cos(p*Math.PI/180),ycenter-radius2*Math.sin(p*Math.PI/180));\
+     ctx_temp.closePath();\
+     ctx_temp.stroke();\
+    };\
+   };\
+   ctx_temp.drawImage(canvas,xcenter,ycenter);\
+   ctx_temp.save();\
+   once = false;\
+  };\
+  ",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,display_type,use_scale);
+
+if(dynamic == -1 ){
+ fprintf(js_include_file,"\
+  var protractor_x = xcenter;\
+  var protractor_y = ycenter;\
+  ctx.drawImage(canvas_temp,0,0);\
+  if(wims_status != \"done\"){\
+   canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
+   canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
+   canvas_div.addEventListener( 'mousemove' , protractor_move,false);\
+  };\
+  function protractor_stop(evt){\
+   if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
+   protractor_data[0] = protractor_x;\
+   protractor_data[1] = protractor_y;\
+   protractor_data[2] = angle;\
+   return;\
+  };\
+  var protractor_click_cnt = 0;\
+  function protractor_start(evt){\
+    canvas_rect = canvas.getBoundingClientRect();\
+    var mouse_y = evt.clientY - canvas_rect.top;\
+    if( mouse_y > ysize - 20 ){return;};\
+    var mouse_x = evt.clientX - canvas_rect.left;\
+    if( mouse_x > protractor_x - 50 && mouse_x < protractor_x + size ){\
+     if( mouse_y > protractor_y - 50 && mouse_y < protractor_y + size ){\
+      protractor_click_cnt++;\
+      protractor_move(evt);\
+      return;\
+     };\
+    }else{protractor_click_cnt = 0; return;};\
+  };\
+  var angle = 0;\
+  function protractor_move(evt){\
+   switch(protractor_click_cnt){\
+    case 1:\
+      angle = 0;\
+      canvas_rect = canvas.getBoundingClientRect();\
+      protractor_y = evt.clientY - canvas_rect.top;\
+      if( protractor_y > ysize - 20 ){protractor_y = 0.5*ysize;protractor_x = 0.5*xsize;return;};\
+      protractor_x = evt.clientX - canvas_rect.left;\
+      if( x_use_snap_to_grid == 1 ){\
+       protractor_x = snap_to_x(protractor_x);\
+      };\
+      if( y_use_snap_to_grid == 1 ){\
+       protractor_y = snap_to_y(protractor_y);\
+      };\
+      ctx.clearRect(0,0,xsize,ysize);\
+      ctx.save();\
+      ctx.translate(protractor_x - xcenter,protractor_y - ycenter);\
+      ctx.drawImage(canvas_temp,0,0);\
+      ctx.restore();\
+    break;\
+    case 2:\
+      canvas_rect = canvas.getBoundingClientRect();\
+      var mouse_y = parseInt(evt.clientY - canvas_rect.top);\
+      var mouse_x = parseInt(evt.clientX - canvas_rect.left);\
+      angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
+      ctx.clearRect(0,0,xsize,ysize);\
+      ctx.save();\
+      ctx.translate(protractor_x,protractor_y);\
+      ctx.rotate(angle);\
+      ctx.translate( -1*xcenter, -1*ycenter );\
+      ctx.drawImage( canvas_temp,0,0 );\
+      ctx.restore();\
+      break;\
+    case 3:protractor_click_cnt = 0;break;\
+    default:protractor_stop(evt);\
+   };\
+  };\
+  function find_angle(xc,yc,x1,y1){\
+   var dx = Math.abs(x1 - xc);\
+   var dy = yc - y1 ;\
+   if( x1 >= xc ){\
+    return -1*Math.atan(dy/dx);\
+   };\
+   if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
+   if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
+  };\
+ };\
+ protractor%d();\n\
+",canvas_root_id);
+}
+else
+{
+ fprintf(js_include_file,"\
+  ctx.save();\
+  ctx.translate(xcenter,ycenter);\
+  ctx.rotate(%d*Math.PI/180);\
+  ctx.translate( -1*xcenter, -1*ycenter );\
+  ctx.drawImage( canvas_temp,0,0 );\
+  ctx.restore();\
+ };\
+ protractor%d();\n\
+ ",dynamic,canvas_root_id);
+}
+} /* end type == 1 */
+
+
+if( type == 0 ){
+ fprintf(js_include_file,"\n<!-- begin command protractor type 0 -->\n\
+ var protractor_data = new Array(3);\
+ var protractor%d = function(){\
+  var once = true;\
+  var full = 2*Math.PI;\
+  var canvas = create_canvas%d(2000,xsize,ysize);\
+  var canvas_rect = canvas.getBoundingClientRect();\
+  var ctx = canvas.getContext(\"2d\");\
+  var canvas_temp =  document.createElement(\"canvas\");\
+  var size = parseInt(xsize*(%d)/(xmax - xmin));\
+  canvas_temp.width = xsize;\
+  canvas_temp.height = ysize;\
+  var ctx_temp = canvas_temp.getContext(\"2d\");\
+  var type = %d;\
+  var xcenter = x2px(%f);\
+  var ycenter = y2px(%f);\
+  var half = 0.5*size;\
+  var radius1 = 0.8*half;\
+  var radius2 = 0.9*half;\
+  var radius3 = half;\
+  ctx_temp.font = \"%s\";\
+  ctx_temp.strokeStyle = \"rgba(%s,%f)\";\
+  ctx_temp.fillStyle = \"rgba(%s,%f)\";\
+  ctx_temp.lineWidth =%d;\
+  var display_type = %d;\
+  var use_scale = %d;\
+  if( once ){\
+   ctx_temp.clearRect(0,0,xsize,ysize);\
+   ctx_temp.arc(xcenter,ycenter,radius1,0,2*Math.PI,false);\
+   ctx_temp.arc(xcenter,ycenter,radius2,0,2*Math.PI,false);\
+   ctx_temp.arc(xcenter,ycenter,radius3,0,2*Math.PI,false);\
+   ctx_temp.fill();\
+   ctx_temp.stroke();\
+   if( use_scale == 1 ){\
+    ctx_temp.fillStyle = ctx_temp.strokeStyle;\
+    var txtsize;\
+    for(var p = 0 ; p < 360;p = p+45){\
+     txtsize = 0.5*(ctx_temp.measureText(p).width);\
+     ctx_temp.fillText(p,xcenter+0.6*half*Math.cos(p*Math.PI/180) - txtsize,ycenter-0.6*half*Math.sin(p*Math.PI/180));\
+    };\
+   };\
+   ctx_temp.strokeStyle = \"rgba(255,0,0,0.4)\";\
+   for(var p = 0 ; p < 360;p = p+10){\
+    ctx_temp.beginPath();\
+    ctx_temp.moveTo(xcenter+radius1*Math.cos(p*Math.PI/180),ycenter-radius1*Math.sin(p*Math.PI/180));\
+    ctx_temp.lineTo(xcenter+radius3*Math.cos(p*Math.PI/180),ycenter-radius3*Math.sin(p*Math.PI/180));\
+    ctx_temp.closePath();\
+    ctx_temp.stroke();\
+   };\
+   ctx_temp.strokeStyle = \"rgba(0,0,255,0.4)\";\
+   for(var p = 0 ; p < 360;p=p+2){\
+     ctx_temp.beginPath();\
+     ctx_temp.moveTo(xcenter+radius2*Math.cos(p*Math.PI/180),ycenter-radius2*Math.sin(p*Math.PI/180));\
+     ctx_temp.lineTo(xcenter+radius3*Math.cos(p*Math.PI/180),ycenter-radius3*Math.sin(p*Math.PI/180));\
+     ctx_temp.closePath();\
+     ctx_temp.stroke();\
+   };\
+   ctx_temp.strokeStyle = \"rgba(0,0,0,0.6)\";\
+   for(var p = 0 ; p < 360;p=p+45){\
+     ctx_temp.beginPath();\
+     ctx_temp.moveTo(xcenter,ycenter);\
+     ctx_temp.lineTo(xcenter+radius3*Math.cos(p*Math.PI/180),ycenter-radius3*Math.sin(p*Math.PI/180));\
+     ctx_temp.closePath();\
+     ctx_temp.stroke();\
+   };\
+   ctx_temp.drawImage(canvas,0,0);\
+   ctx_temp.save();\
+   once = false;\
+  };\n",canvas_root_id,canvas_root_id,size,type,xcenter,ycenter,font,stroke_color,stroke_opacity,fill_color,fill_opacity,line_width,display_type,use_scale);
+
+if( dynamic == -1 ){
+ fprintf(js_include_file,"\
+  var protractor_x = xcenter;\
+  var protractor_y = ycenter;\
+  ctx.drawImage(canvas_temp,0,0);\
+  if(wims_status != \"done\"){\
+   canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
+   canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
+   canvas_div.addEventListener( 'mousemove' , protractor_move,false);\
+  };\
+  function protractor_stop(evt){\
+   if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
+   protractor_data[0] = protractor_x;\
+   protractor_data[1] = protractor_y;\
+   protractor_data[2] = angle;\
+   return;\
+  };\
+  var protractor_click_cnt = 0;\
+  function protractor_start(evt){\
+    canvas_rect = canvas.getBoundingClientRect();\
+    var mouse_y = evt.clientY - canvas_rect.top;\
+    if( mouse_y > ysize - 20 ){return;};\
+    var mouse_x = evt.clientX - canvas_rect.left;\
+    if( mouse_x > protractor_x - half && mouse_x < protractor_x + half ){\
+     if( mouse_y > protractor_y - half && mouse_y < protractor_y + half ){\
+      protractor_click_cnt++;\
+      protractor_move(evt);\
+      return;\
+     };\
+    }else{protractor_click_cnt = 0; return;};\
+  };\
+  var angle = 0;\
+  function protractor_move(evt){\
+   switch(protractor_click_cnt){\
+    case 1:\
+      angle = 0;\
+      canvas_rect = canvas.getBoundingClientRect();\
+      protractor_y = evt.clientY - canvas_rect.top;\
+      if( protractor_y > ysize - 20 ){protractor_y = 0.5*ysize;protractor_x = 0.5*xsize;return;};\
+      protractor_x = evt.clientX - canvas_rect.left;\
+      if( x_use_snap_to_grid == 1 ){\
+       protractor_x = snap_to_x(protractor_x);\
+      };\
+      if( y_use_snap_to_grid == 1 ){\
+       protractor_y = snap_to_y(protractor_y);\
+      };\
+      ctx.clearRect(0,0,xsize,ysize);\
+      ctx.save();\
+      ctx.translate(protractor_x - xcenter,protractor_y - ycenter);\
+      ctx.drawImage(canvas_temp,0,0);\
+      ctx.restore();\
+      break;\
+    case 2:\
+     canvas_rect = canvas.getBoundingClientRect();\
+     var mouse_y = evt.clientY - canvas_rect.top;\
+     var mouse_x = evt.clientX - canvas_rect.left;\
+     angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
+     if(angle > full){angle = angle - full;};\
+     ctx.clearRect(0,0,xsize,ysize);\
+     ctx.save();\
+     ctx.translate(protractor_x,protractor_y);\
+     ctx.rotate(angle);\
+     ctx.translate( -1*xcenter, -1*ycenter );\
+     ctx.drawImage( canvas_temp,0,0 );\
+     ctx.restore();\
+     break;\
+    case 3:protractor_click_cnt = 0;break;\
+    default:protractor_stop(evt);\
+   };\
+  };\
+  function find_angle(xc,yc,x1,y1){\
+   var dx = Math.abs(x1 - xc);\
+   var dy = yc - y1 ;\
+   if( x1 >= xc ){\
+    return -1*Math.atan(dy/dx);\
+   };\
+   if(x1 <= xc && y1 <= yc){return Math.PI - Math.atan(-1*dy/dx);};\
+   if(x1 <= xc && y1 >= yc){return Math.PI + Math.atan(dy/dx);};\
+  };\
+ };\
+ protractor%d();\n\
+",canvas_root_id);
+}
+else
+{
+ fprintf(js_include_file,"\
+  ctx.save();\
+  ctx.translate(xcenter,ycenter);\
+  ctx.rotate(%d*Math.PI/180);\
+  ctx.translate( -1*xcenter, -1*ycenter );\
+  ctx.drawImage( canvas_temp,0,0 );\
+  ctx.restore();\
+ };\
+ protractor%d();\
+",dynamic,canvas_root_id);
+} /* end dynamic == -1*/
+
+} /* end type == 0 */
+
+
+}

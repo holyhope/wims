@@ -4,7 +4,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Wed Jul  8 15:37:53 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Wed Jul 15 23:02:19 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -789,6 +789,80 @@
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> ruler x,y,x-width ,y-height,passive_mode
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x,y are the initial location
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> x-width , y-height are the ruler dimensions width &amp; height in xy-coordinate system
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the ruler scale is by definition the x-scale, set by command 'xrange'<br />for example: a ruler x-width of 6 will have a scale ranging from 0 to 6
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> passive_mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use passive_mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if combined with a protractor, use replyformat = 32
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only one ruler allowed (for the time being)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> when using command 'zoom' , pay attention to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'ruler' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> usage: first left click on the ruler will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> protractor x,y,x-width,type,passive_mode,value_display,use_scale
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> x,y are the initial location
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> x-width : give the width in x-coordinate system
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> type = 1 : a triangle range 0 - 180<br />type = 2 : a circle shape 0 - 360<br />to do: degree scale optional
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> passive_mode : use -1 to set the protractor interactive (mouse movement of protractor)<br />use passive_mode = '0&deg; - 360&deg;' to set the protractor with a static angle of some value
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> value_display = 0 : no display of the angle value<br />value_display = 1 : value display in degrees<br />value_display = 2 : value display in radians<br />the display of the angle may cause some hickups in the smooth rotation of the protractor...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> use_scale = 1 : the protractor will have some scale values printed; use_scale=0 to disable
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> the rotating direction of the mouse around the protractor determines the clockwise/ counter clockwise rotation of the protractor...
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> commands <em>stroke_color | fill_color | linewidth | opacity | font_family</em> will determine the looks of the protractor.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> default replyformat: reply[0] = x;reply[1] = y;reply[2] = angle_in_radians<br />use commmand 'precision' to set the reply precision.
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if combined with a ruler, use replyformat = 32
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> command <em>snap_to_grid</em> may be used to assist the pupil at placing the protractor
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> when using command 'zoom' , pay attention to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'protractor' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> only one protractor allowed (for the time being)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> usage: first left click on the protractor will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
 </span></li>
 	    
 </ul>

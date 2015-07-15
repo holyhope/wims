@@ -546,31 +546,28 @@ userdraw arrow,blue
 	This last -duplicated- point is removed from the answer array
 
 -8/7	revert to normal size of a point at 'linewidth = 1' (e.g. differ from ridiculous small point size of flydraw)
-###############################################################################################################################	 
-        
-FOR JM.EVERS ONLY:
-do not -yet- synchronise with school servers or leiden mirror !!
 
-this version will break current exo's:
+-12/7	added 'macro' command 'protractor x,y,x-width,type,passive_mode,value_display 
+	zooming implemented, 
+	left-right rotation with mouse (left click & drag),
+	value display implemented,
+	reply format implemented  (read_canvas())  reply[0] = x;reply[1] = y;reply[2]=angle_in_radians,
+	snaptogrid implementes ( xy | x | y )
+-13/7 	added command macro 'ruler x,y,x-width ,y-height,passive_mode'
+-14/7   comibinations of ruler & protractor
 
-command 'linewidth' : increase linewidth -due to synchronisation with flydraw...- in case of commands "point" ,"points" and "userdraw point,color"
+size 400,400
+xrange -5,10
+yrange -5,10
+hline 0,0,black
+vline 0,0,black
+fillcolor orange
+opacity 255,40
+ruler -4,3,5,1,-1,1
+protractor 2,-2,6,0,-1,1,1
+replyformat 32
+# reply[0]...reply[2] = ruler
+# reply[3]...reply[5] = protractor
 
-command 'arc'
-./H1/geometry/hoeken-1.nl/exos/exo2:arc 5,0,60,60,0,$hoek,green\
-./H1/geometry/hoeken-1.nl/exos/exo3:		    arc=arc 0,0,40,40,0,$hoek,red
-./H1/geometry/hoeken-1.nl/exos/exo4:	    arc=arc 0,0,60,60,0,$hoek,red
-./H1/geometry/hoeken-1.nl/exos/exo9:    filledarc $xb,$yb,40,40,$t,$[$t+$hoek],green\
-./H1/geometry/hoeken-1.nl/exos/exo10:filledarc 0,0,20,20,$start,$eind,red\
-./H1/geometry/hoeken-1.nl/exos/exo16:filledarc 0,0,20,20,$start,$eind,red\
-./H1/geometry/hoeken-1.nl/exos/exo17:filledarc 0,0,$r,$r,$start,$eind,red\
-./H1/geometry/hoeken-1.nl/exos/exo18:filledarc $xs2,$ys2,$r,$r,$eind,$[$eind+$hoek],green\
-./H1/geometry/hoeken-1.nl/exos/exo1:	    arc=arc 0,0,80,80,0,$hoek1,red
-./H1/geometry/hoeken-1.nl/exos/exo20:arc 5,0,6,6,0,$hoek,green\
-./H1/number/oppervlak-1.nl/exos/exo11:    # arc xc,yc,width,height,start_angle,end_angle,color
-./H1/number/oppervlak-1.nl/exos/exo12:filledarc 0,0,78,78,0,$waarde1,black\
-./H4/financialmath/economie-3.nl/exos/exo18:filledarc 0,0,$r,$r,0,72,blue\
-./H4/financialmath/economie-3.nl/exos/exo19:filledarc 0,0,200,200,288,360,red\
+todo: static protractor and ruler (non-interactive)
 
-command 'drag' ('onclick / drag' object counter now starts at 0 !
-./H1/number/verhoudingen-2.nl/exos/exo13 (index change: line = (ans[p]).split(':');idx = line[0];/* was idx = line[0] - 1; */)
-        
