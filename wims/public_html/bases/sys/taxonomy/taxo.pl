@@ -100,7 +100,7 @@ my %titmodule = treate_dict ("$moduledir/title");my $titmodule=\%titmodule;
 for my $t (glob("$ddir/*.$LANG")) {
   $t =~ s,$ddir\/,,g;
   my @t_=split('\.',$t); next if !($t_[1] eq $LANG);
-  next if $t_[0] eq 'commoncore' ;
+  next if $t_[0] eq 'commoncore';
   taxonomy($t_[0], $LANG, '_','_',);
 }
 
@@ -110,7 +110,7 @@ for my $l ('K','1','2','3','4','5','6','7','HS') { push @list, "$ccsstitle$l" }
 
 taxonomy ("commoncore", $LANG, '_','_',@list);
 
-sub taxonomy { my ($taxo, $lang, $sep1, $sep2,  @list) = @_ ;
+sub taxonomy { my ($taxo, $lang, $sep1, $sep2, @list) = @_ ;
    my $vu={}; my $ref; my $desctaxo;
    my ($title, $desc, $tit) = hashtaxo("$ddir/$taxo.$lang", $sep1, $sep2);
    my @title_ = split(',', $title);
@@ -124,7 +124,7 @@ sub taxonomy { my ($taxo, $lang, $sep1, $sep2,  @list) = @_ ;
    $T .= '<ul id="tree_'.$taxo.'" class="tree">';
     if (!@list) { @list=sort keys %{$desc} };
    for my $a (@list) { $T .= one($a, $taxo, $desc, $tit, $ref, $vu); };
-   $T .= "\n</ul>";
+   $T .= "</ul>";
    if (!$module) {
      $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"empty\" value=\"\"/> $joker";
    }
@@ -143,9 +143,9 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   if (!$ref->{'totalexo'}{$a}) { $ref->{'totalexo'}{$a}=0 } ;
   if (!$module) {
        $T .= "<input type=\"radio\" name=\"taxon_$taxo\" id=\"$amod\" value=\"$amod\"/>"
-          . "<label for=\"$amod\">$tit->{$a}</label> <span class=\"small hidden\">($a)</span>";
+          . "<label for=\"$amod\">$tit->{$a}</label><span class=\"small hidden\">($a)</span>";
   } else {
-    $T .= "<span class=\"tree_icon\" id=\"$amod\">$tit->{$a}</span> <span class=\"small hidden\">($a)</span> ";
+    $T .= "<span class=\"tree_icon\" id=\"$amod\">$tit->{$a}</span><span class=\"small hidden\">($a)</span> ";
     if ($ref->{'total'}{$a} >0){
       $T .= "<sup class=\"pastille taxo_nb_modules\">".$ref->{'total'}{$a}." \$name_M</sup>";
     }
@@ -160,7 +160,7 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
     if ($desc->{$a}) {
       for my $b (sortuniq (split ',', $desc->{$a})) { $T .= one($b, $taxo, $desc, $tit, $ref, $vu) };
     }
-    $T .= "\n</ul>";
+    $T .= "</ul>";
   }
   $T . "</li>";
 }
@@ -222,7 +222,8 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller">';
         foreach my $exo_id (keys %exos_dic) {
-          $ref{'text'}{$ligne[0]} .='<li rel="'.$exo_id.'">'.$exos_dic{$exo_id}."</li>\n";
+          ##  $ref{'text'}{$ligne[0]} .='<li rel="'.$exo_id.'">'.$exos_dic{$exo_id}."</li>\n";
+          $ref{'text'}{$ligne[0]} .='<li>'.$exos_dic{$exo_id}."</li>";
         }
         $ref{'text'}{$ligne[0]} .="</ul></li>\n";
         $cntexo += $nb ;
@@ -231,7 +232,7 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         $ref{'text'}{$ligne[0]} .="<li class=\"taxo_module\">\n" .
         "!href target=wims_internal module=$a $bb\n"
         . ($nb>1?"<sup class=\"taxo_nb_exo\">$nb</sup>":"" )
-        . "</li>\n";
+        . "</li>";
         $cntexo += $nb ;
       }
     }
@@ -251,9 +252,9 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
     for my $a (@aa) {
       chomp $a;
       my $b = canonify($a);
-      if($titsheet->{$b}) { $b = $titsheet->{$b} . " <span class=\"small hidden\">($b)</span>" } else { $b =~ s!/!~!g;}
+      if($titsheet->{$b}) { $b = $titsheet->{$b} . "<span class=\"small hidden\">($b)</span>" } else { $b =~ s!/!~!g;}
       $ref{'sheet'}{$ligne[0]} .="<li class=\"taxo_module\">\n"
-   . "!href target=wims_internal module=adm/sheet\&+job=read\&+sh=$a $b\n </li>\n";
+   . "!href target=wims_internal module=adm/sheet\&+job=read\&+sh=$a $b\n</li>";
       }
    $ref{'numsheet'}{$ligne[0]}=$cnt0;
    }
