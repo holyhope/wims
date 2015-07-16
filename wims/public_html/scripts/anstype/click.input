@@ -23,10 +23,16 @@
  !set prompt_=!imgrename $prompt_
  !href cmd=reply&reply$i=~$inputsize $prompt_
 !else
+!! option=shuffle
+!set itemlist=!makelist x for x = 1 to $input_icnt
+!if shuffle iswordof $(replyoption$i)
+ !set itemlist=!shuffle $itemlist
+!endif
  !for i_=1 to $input_icnt
-  !set l_=!item $i_ of $input_rg
+  !set ii_=!item $i_ of $itemlist
+  !set l_=!item $ii_ of $input_rg
   !set l_=!imgrename $l_
-  !href cmd=reply&reply$i=~$i_ $l_
+  !href cmd=reply&reply$i=~$ii_ $l_
   !if $i_<$input_icnt
    ,
   !endif
