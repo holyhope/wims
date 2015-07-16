@@ -230,8 +230,8 @@ sub hashresultat { my ($file, $filesheet, $tit)=@_;
         "!href target=wims_internal module=$a &rArr;\n" .
         '<ul class="smaller">';
         foreach my $exo_id (keys %exos_dic) {
-          $ref{'text'}{$ligne[0]} .='<li rel="'.$exo_id.'">'.$exos_dic{$exo_id}."</li>\n";
-          ##$ref{'text'}{$ligne[0]} .='<li>'.$exos_dic{$exo_id}."</li>\n";
+          ##$ref{'text'}{$ligne[0]} .='<li rel="'.$exo_id.'">'.$exos_dic{$exo_id}."</li>\n";
+          $ref{'text'}{$ligne[0]} .='<li>'.$exos_dic{$exo_id}."</li>\n";
         }
         $ref{'text'}{$ligne[0]} .="</ul></li>\n";
         $cntexo += $nb ;
