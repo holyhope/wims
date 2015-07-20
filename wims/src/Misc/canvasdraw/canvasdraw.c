@@ -1600,7 +1600,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.<br />The proposed output is a 7 item based array with fixed sequence.<br/>reply[0] = points_x+";"+points_y+"\\n"<br/>reply[1] = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>reply[2] = segments_x+";"+segments_y+"\\n"<br/>reply[3] = arrows_x+";"+arrows_y+"\\n"<br/>reply[4] = lines_x+";"+lines_y+"\\n"<br/>reply[5] = triangles_x+";"+triangles_y+"\\n"<br/>reply[6] = closedpoly_x+";"+closedpoly_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 7 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
 	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
 	 @ <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
@@ -5723,14 +5723,14 @@ var len = array_r.length;\
  return array_r;\
 };\
 read_canvas%d = function(){\
- var reply = new Array(7);\
- if( points_x && points_x.length > 0 ){reply[0] = xy_precision(points_x,points_y)+\"\\n\"; }else{ reply[0]=\"\\n\"; };\
- if( circles_x && circles_x.length > 0 ){ reply[1] = xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply[1]=\"\\n\"; };\
- if( segments_x && segments_x.length > 0 ){ reply[2] = xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply[2]=\"\\n\"; };\
- if( arrows_x && arrows_x.length > 0 ){ reply[3] = xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply[3]=\"\\n\"; };\
- if( lines_x && lines_x.length > 0 ){ reply[4] = xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply[4]=\"\\n\"; };\
- if( triangles_x && triangles_x.length > 0){ reply[5] = xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply[5]=\"\\n\"; };\
- if( closedpoly_x && closedpoly_x.length > 0){ closedpoly_x.pop();closedpoly_y.pop();reply[6] = xy_precision(closedpoly_x,closedpoly_y)+\"\\n\"; }else{ reply[6]=\"\\n\"; };\
+ var reply=\" \";\
+ if( points_x && points_x.length > 0 ){reply = reply + xy_precision(points_x,points_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( circles_x && circles_x.length > 0 ){ reply = reply + xy_precision(circles_x,circles_y)+\";\"+round_to_pixel(multi_radius)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( segments_x && segments_x.length > 0 ){ reply = reply +  xy_precision(segments_x,segments_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( arrows_x && arrows_x.length > 0 ){ reply = reply +  xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( lines_x && lines_x.length > 0 ){ reply = reply + xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( triangles_x && triangles_x.length > 0){ reply = reply + xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( closedpoly_x && closedpoly_x.length > 0){ closedpoly_x.pop();closedpoly_y.pop();reply = reply + xy_precision(closedpoly_x,closedpoly_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  return reply;\
 };\n\
 <!-- end function 29 read_canvas%d() -->",canvas_root_id,reply_precision,canvas_root_id,canvas_root_id);
