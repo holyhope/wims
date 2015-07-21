@@ -1399,7 +1399,28 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
     		}
     	    }
 	    break;
-
+	case TRIANGLES:
+	/*
+	 @triangles color,x1,y1,x2,y2,x3,y3,...
+	 @may be set draggable / onclick individually (!)
+	*/
+	    stroke_color = get_color(infile,0);/* name or hex color */
+	    i = 0;
+	    decimals = find_number_of_digits(precision);
+	    while( ! done ){
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		double_data[0] = get_real(infile,0); /* x1 */
+		double_data[1] = get_real(infile,0); /* y1 */
+		double_data[2] = get_real(infile,0); /* x2 */
+		double_data[3] = get_real(infile,0); /* y2 */
+		double_data[4] = get_real(infile,0); /* x3 */
+		double_data[5] = get_real(infile,1); /* y3 */
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,5,%s,[30],[30],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,double_xy2js_array(double_data,6,decimals),line_width,stroke_color,stroke_opacity,stroke_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1],use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		if(onclick > 0){click_cnt++;} 
+		i = i + 6;
+    	    }
+    	    reset();
+	    break;
 	case LATTICE:
 	/*
 	 @lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
@@ -7837,6 +7858,7 @@ int get_token(FILE *infile){
 	*dvline="dvline",
 	*verticalline="verticalline",
 	*triangle="triangle",
+	*triangles="triangles",
 	*ftriangle="ftriangle",
 	*mathml="mathml",
 	*html="html",
@@ -8295,6 +8317,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, triangle) == 0 ){
 	free(input_type);
 	return TRIANGLE;
+	}
+	if( strcmp(input_type, triangles) == 0 ){
+	free(input_type);
+	return TRIANGLES;
 	}
 	if( strcmp(input_type, ftriangle) == 0 ){
 	free(input_type);

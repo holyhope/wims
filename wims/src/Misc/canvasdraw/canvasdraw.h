@@ -183,6 +183,7 @@
 #define MULTIUSERINPUT  186
 #define PROTRACTOR	187
 #define RULER		188
+#define TRIANGLES 	189
 
 
 #define DRAW_GRID	0
