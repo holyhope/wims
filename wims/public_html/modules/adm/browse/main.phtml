@@ -4,6 +4,7 @@
  </body></html>
  !exit
 !endif
+
 !if $job iswordof taxo subject
 !set wims_html_header=!append line <link rel="stylesheet" href="html/themes/_css/browse.css">\
 <style type="text/css">\
@@ -16,23 +17,23 @@
 <link type="text/css" rel="stylesheet" href="scripts/js/tree_JS/tree.css" /> to $wims_html_header
 
 !set wims_html_header=!append line <script type="text/javascript">\
-        /*<![CDATA[*/ jQuery(function(jq) {jq( "#classifications" ).tabs();}); /*]]>*/\
-      </script> to $wims_html_header
+  /*<![CDATA[*/ jQuery(function(jq) {jq( "#classifications" ).tabs();}); /*]]>*/\
+  </script> to $wims_html_header
 !endif
 
 !set wims_html_onload=!append word window.focus(); to $wims_html_onload
-!header1
+!if $job notwordof light
+  !header1
 
-<div id="wims_title"><h1 class="wims_title">
-WWW
-Interactive
-Multipurpose
-Server
-</h1>
-<h2 class="wims_subtitle">
-@ <a href="/">$httpd_HTTP_HOST</a>
-</h2>
-</div>
+  <div id="wims_title">
+    <h1 class="wims_title">
+      WWW Interactive Multipurpose Server
+    </h1>
+    <h2 class="wims_subtitle">
+      @ <a href="/">$httpd_HTTP_HOST</a>
+    </h2>
+  </div>
+!endif
 !read $job.phtml
 
 !if $job!=home
@@ -46,4 +47,6 @@ to $wims_menu_items
 to $wims_menu_items
 !endif
 
-!tail
+!if $job notwordof light
+  !tail
+!endif

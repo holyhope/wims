@@ -10,32 +10,40 @@ $title
 </div>
   <div id="taxonomy_list">
     <ul class="tabs">
+
+      !if $jquery_defined=yes
+        !set view_job = light
+      !else
+        !set view_job = taxo
+      !endif
+
       !for taxo in $list_taxonomy
        !increase cnt
         !set taxo_title$cnt=!defof title in $taxo
         !set desctaxo$cnt=!defof desctaxo in $taxo
-        <li><a href="#$taxo">$(taxo_title$cnt)</a></li>
+        <li>
+          !href module=$module&cmd=new&job=$view_job&parm=$taxo $(taxo_title$cnt)
+        </li>
       !next
     </ul>
-    !reset cnt
-    !for taxo in $list_taxonomy
-      !increase cnt
-      <div id="$taxo">
-         !read $taxo
-         <div class="wims_credits">
-         <strong>$wims_name_credits:</strong> <a href="$(desctaxo$cnt)" target="_blank">$(desctaxo$cnt)</a>
-        </div>
-      </div>
-    !next
   </div>
+  !if $parm!=$empty
+    <div class="taxo_content">
+      !read $parm
+    </div>
+  !endif
+
 </div>
  <!-- JS for dynamic tree display -->
 <script type="text/javascript" src="scripts/js/tree_JS/tree.js"></script>
- <!-- JS for Tabs display -->
-<script type="text/javascript">
-    /*<![CDATA[*/
-    jQuery(function($$) {
-        $$( "#taxonomy_list" ).tabs();
-      });
-    /*]]>*/
-</script>
+
+!if $jquery_defined=yes
+  <!-- JS for Tabs display -->
+  <script type="text/javascript">
+      /*<![CDATA[*/
+      jQuery(function($$) {
+          $$( "#taxonomy_list" ).tabs();
+        });
+      /*]]>*/
+  </script>
+!endif
