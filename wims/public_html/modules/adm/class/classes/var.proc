@@ -73,7 +73,7 @@ listla=
   !if NaN notin $[$c] and $c<10000
    ltest=!defof class_lang in wimshome/log/classes/$c/.def
    !advance excnt
-   !if $ltest=$module_language
+   !if $module_language iswordof $ltest
     laclasses=!append line $l to $laclasses
     !advance lacnt
    !else
@@ -183,7 +183,6 @@ listla=
  !defread wimshome/log/classes/$class/.def
  !!#### la seconde condition pour entrer dans la classe en tant que supervisor :
  !!#### le user est supervisor de cette classe, ou wims_realuser est supervisor ou vide (cas de l'administrateur) ou la classe est la classe test
- 
 
  !if $type=authsupervisor and ($class isitemof $wims_supervise or $wims_realuser=$empty or $wims_realuser=supervisor or /0/ isin $class/)
   !default auth_user=supervisor
@@ -200,4 +199,3 @@ listla=
    !changeto var.auth
  !endif
 !endif
-
