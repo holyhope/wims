@@ -308,6 +308,10 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
    closedpoly_x.push(x1);\
    closedpoly_y.push(y1);\
   };\
+   x1 = x2px(safe_eval(A[0]));\
+   y1 = y2px(safe_eval(B[0]));\
+   closedpoly_x.push(x1);\
+   closedpoly_y.push(y1);\
   draw_closedpoly();break;\
   default:break;\
  };\
