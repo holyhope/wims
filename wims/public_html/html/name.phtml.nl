@@ -42,7 +42,7 @@ Inloggen,\
 Cijfer,\
 Mijn cijfers,\
 Examen,Examens,\
-Andere browsing methodes,\
+Browse,\
 Terug naar het menu,\
 Eind datum,\
 Fout,\
