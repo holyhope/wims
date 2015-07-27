@@ -211,8 +211,8 @@ las configuraciones guardadas en el directorio log.
    disponibilidad\
    No disponible\
    Ejemplo de módulos que dependen de él\
-   Para comprobar los efectos del nuevo ajuste\
    Este software va normalmente incluido en la distribución de WIMS. Quizás  haya fallado su compilación o usted la ha excluido deliberadamente.\
+   Para comprobar los efectos del nuevo ajuste.\
  into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
    name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
 
