@@ -102,7 +102,7 @@ var button_style = \"%s\";\
 var id_x;\
 var id_y;\
 var id_r;\
-if( multilabel[multilabel.length - 1 ] === undefined ){multilabel[multilabel.length - 1] = 'stop drawing';};\
+if( typeof multilabel[multilabel.length - 1 ] === 'undefined' ){multilabel[multilabel.length - 1] = 'stop drawing';};\
 for(var p = 0;p < draw_things.length;p++){\
  var desc;\
  id_r = 0;\
@@ -2141,6 +2141,33 @@ function canvas_remove(x,y){\
   };\
  };\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1);
+}
+
+void add_js_popup(int canvas_root_id,int xsize,int ysize,char *getfile_cmd){
+fprintf(stdout,"\n<!-- begin command popup %d -->\n\
+<script type=\"text/javascript\">\n\
+var popup = window.open('','','width = %dpx, height = %dpx');\n\
+var popupHTML =\"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>\\n<html><head></head>\\n<body><div style='width:%dpx;height:%dpx;position:relative' id='canvas_div%d'></div><div id='tooltip_placeholder_div%d' style='display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;'><span id='tooltip_placeholder%d' style='display:none;'></span></div></body></html>\";\n\
+popup.document.write(popupHTML);\n\
+var s0 = popup.document.createElement(\"script\");\n\
+s0.text=\"var wims_status = window.opener.wims_status; var use_dragdrop_reply = window.opener.use_dragdrop_reply;window.opener.canvas_scripts.push('%d');\";\n\
+popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s0);\n\
+var s1 = popup.document.createElement(\"script\");\n\
+s1.type = \"text/javascript\";\n\
+s1.src = \"%s\"\n\
+popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s1);\n\
+popup.document.close();\n\
+\n</script>\n\
+<!-- end command popup %d -->\n",
+canvas_root_id,
+xsize,ysize,
+xsize,ysize,
+canvas_root_id,
+canvas_root_id,
+canvas_root_id,
+canvas_root_id,
+getfile_cmd,
+canvas_root_id);
 }
 
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize){
@@ -4833,3 +4860,4 @@ else
 
 
 }
+

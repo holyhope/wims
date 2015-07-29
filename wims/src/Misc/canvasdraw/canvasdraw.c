@@ -61,7 +61,7 @@ int use_filled = FALSE;
 int use_dashed = FALSE; /* dashing not natively supported in firefox  , for now... */
 
 char buffer[MAX_BUFFER];/* contains js-functions with arguments ... all other basic code is directly printed into js-include file */
-
+char *getfile_cmd = "";
 /******************************************************************************
 ** Main Program
 ******************************************************************************/
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
     int precision = 100; /* 10 = 1;100=2;1000=3 decimal display for mouse coordinates or grid coordinate.May be redefined before every object */
     int use_userdraw = FALSE; /* flag to indicate user interaction */
     int drag_type = -1;/* 0,1,2 : xy,x,y */
-    int use_tooltip = FALSE;
+    int use_tooltip = -1; /* 1= tooltip 2= popup window*/
     char *tooltip_text = "Click here";
     char *temp = ""; /* */
     char *bgcolor = "";/* used for background of canvas_div ; default is tranparent */
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]){
      umask(process_mask); /* be sure to set correct permission */
      char *w_session = getenv("w_session");
      int L1 = (int) (strlen(w_session)) + find_number_of_digits(canvas_root_id) + 48;
-    char *getfile_cmd = my_newmem(L1); /* create memory to fit string precisely */
+    getfile_cmd = my_newmem(L1); /* create memory to fit string precisely */
      snprintf(getfile_cmd,L1,"wims.cgi?session=%s&cmd=getfile&special_parm=%d.js",w_session,canvas_root_id);/* extension ".gz" is MANDATORY for webserver */
     /* write the include tag to html page:<script type="text/javascript" src="wims.cgi?session=%s&cmd=getfile&special_parm=11223344_js"></script> */
     /* now write file into getfile dir*/
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]){
 /* while more lines to process */
 
     while(!finished){
-	if(line_number>1 && found_size_command == 0){canvas_error("command \"size xsize,ysize\" needs to come first ! ");}
+	if(line_number>1 && found_size_command == 0 && use_tooltip != 2 ){canvas_error("command \"size xsize,ysize\" needs to come first ! ");}
 	type = get_token(infile);
 	done = FALSE;
 	/*
@@ -213,12 +213,19 @@ if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
 if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
 if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
 canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
-<!-- canvasdraw div and tooltip placeholder, if needed -->\n\
+<!-- tooltip and input placeholder  -->\n\
+<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
+",canvas_root_id,canvas_root_id,canvas_root_id);
+
+/* do not include code & placeholder & canvas_div in main html page : the include etc will be in a popup window */
+
+if( use_tooltip != 2){
+ fprintf(stdout,"<!-- canvasdraw div  -->\n\
 <div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
-<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\">\
-<span id=\"tooltip_placeholder%d\" style=\"display:none;\">\n</span>\
-</div>\n",canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id);
-fprintf(stdout,"<!-- include actual object code via include file -->\n<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,getfile_cmd);
+<!-- include actual object code via include file -->\n\
+<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,getfile_cmd);
+}
+/* these must be global...it's all really very poor javascript :( */
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n\
 \"use strict\";\n\
 <!-- these variables and functions must be global -->\n\
@@ -1459,7 +1466,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multistrokeopacity = [\"%s\"];",temp);
@@ -1474,7 +1481,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multifillopacity = [\"%s\"];",temp);
@@ -1489,7 +1496,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multilabel = [\"%s\"];",temp);
@@ -1503,7 +1510,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multilinewidth = [\"%s\"];",temp);
@@ -1518,7 +1525,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multidash = [\"%s\"];",temp);
@@ -1537,7 +1544,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ always use the same sequence as is used for 'multidraw'
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multisnaptogrid = [\"%s\"];",temp);
@@ -1553,7 +1560,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multifill = [\"%s\"];",temp);
@@ -1567,7 +1574,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    fprintf(js_include_file,"var multistrokecolors = [");
 	    while( ! done ){
 	        temp = get_color(infile,1);
@@ -1584,7 +1591,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    fprintf(js_include_file,"var multifillcolors = [");
 	    while( ! done ){
 	        temp = get_color(infile,1);
@@ -1625,7 +1632,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
 	 @ <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
-	    if( use_tooltip == TRUE){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	//    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
 	    use_userdraw = TRUE;
 	    /* LET OP max 6 DRAW PRIMITIVES */
@@ -1633,16 +1640,16 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    temp = str_replace(temp,",","\",\"");
 	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives */
 	    fprintf(js_include_file,"\
-	    if( multistrokecolors === undefined ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( multifillcolors === undefined ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( multistrokeopacity === undefined ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
-	    if( multifillopacity === undefined ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
-	    if( multilinewidth === undefined ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( multifill === undefined ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( multidash === undefined ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( multilabel === undefined ){ var multilabel = [\"%s\",\"stop drawing\"];};\
-	    if( multiuserinput === undefined ){ var multiuserinput= ['0','0','0','0','0','0','0'];};\
-	    if( multisnaptogrid == undefined){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
+	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
+	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
+	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multilabel === 'undefined' ){ var multilabel = [\"%s\",\"stop drawing\"];};\
+	    if( typeof multiuserinput === 'undefined' ){ var multiuserinput= ['0','0','0','0','0','0','0'];};\
+	    if( typeof multisnaptogrid == 'undefined'){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
 	    var arrow_head = %d;",
 	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
 	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
@@ -3643,12 +3650,23 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ link_text may contain HTML markup
 	    @ the canvas will be displayed in a tooltip on 'link_text'
 	    @ the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link text will also be shown with this 'bgcolor'.
-	    @ many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are thereforthese commands are mutually exclusive.<br />keep this in mind...
+	    @ many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are therefor these commands are mutually exclusive.<br />keep this in mind...
 	    */
-	    if(use_input_xy != FALSE ){canvas_error("intooltip can not be combined with userinput_xy command");}
-	    use_tooltip = TRUE;
+	    if(use_input_xy != FALSE ){canvas_error("intooltip can not be combined with userinput_xy or other commands using the tooltip-div...see documentation");}
+	    if( use_tooltip > 0 ){ canvas_error("command 'intooltip' cannot be combined with command 'popup'...");}
 	    tooltip_text = get_string(infile,1);
 	    if(strstr(tooltip_text,"\"") != 0 ){ tooltip_text = str_replace(tooltip_text,"\"","'"); }
+	    use_tooltip = 1;
+	    break;
+	case POPUP:
+	    /*
+	    @ popup
+	    @ keyword (no arguments)
+	    @ if fly-script starts with keyword 'popup', the canvas image will be exclusively in a popup window (xsize px &times; ysize px)
+	    @ if keyword 'popup' is used after command 'size xsize,ysize' the canvas will also be displayed in a popup window with size 'xsize &times; ysize'
+	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup.['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em><br />
+	    */
+	    use_tooltip = 2;
 	    break;
 	case AUDIO:
 	/*
@@ -4387,9 +4405,17 @@ fclose(js_include_file);
 }
 
 /* if using a tooltip, this should always be printed to the *.phtml file, so stdout */
-if(use_tooltip == TRUE){
-  add_js_tooltip(canvas_root_id,tooltip_text,bgcolor,xsize,ysize);
-}
+ if( use_tooltip > 0 ){
+  if( use_tooltip == 1 ){
+   add_js_tooltip(canvas_root_id,tooltip_text,bgcolor,xsize,ysize);
+  }
+  else
+  {
+   if( use_tooltip == 2 ){
+    add_js_popup(canvas_root_id,xsize,ysize,getfile_cmd);
+   }
+  }
+ }
 exit(EXIT_SUCCESS);
 }
 /* end main() */
@@ -7943,6 +7969,7 @@ int get_token(FILE *infile){
 	*ylogscale="ylogscale",
 	*xylogscale="xylogscale",
 	*intooltip="intooltip",
+	*popup="popup",
 	*replyformat="replyformat",
 	*floodfill="floodfill",
 	*filltoborder="filltoborder",
@@ -8598,6 +8625,10 @@ int get_token(FILE *infile){
 	free(input_type);
 	return INTOOLTIP;
 	}
+	if( strcmp(input_type, popup) == 0 ){
+	free(input_type);
+	return POPUP;
+	}
 	if( strcmp(input_type,video) == 0 ){
 	free(input_type);
 	return VIDEO;
@@ -8835,7 +8866,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return RULER;
 	}
-
 	free(input_type);
 	ungetc(c,infile);
 	return 0;

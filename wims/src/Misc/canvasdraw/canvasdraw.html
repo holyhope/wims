@@ -4,7 +4,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Tue Jul 21 09:28:13 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Tue Jul 28 23:08:04 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -2159,7 +2159,23 @@
 <li><span style="color:blue;font-size:0.8em"> the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link text will also be shown with this 'bgcolor'.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are thereforthese commands are mutually exclusive.<br />keep this in mind...
+<li><span style="color:blue;font-size:0.8em"> many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are therefor these commands are mutually exclusive.<br />keep this in mind...
+</span></li>
+	    
+</ul>
+	    
+<li><span style="color:red"> popup
+</span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if fly-script starts with keyword 'popup', the canvas image will be exclusively in a popup window (xsize px &times; ysize px)
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> if keyword 'popup' is used after command 'size xsize,ysize' the canvas will also be displayed in a popup window with size 'xsize &times; ysize'
+</span></li>
+	    
+<li><span style="color:blue;font-size:0.8em"> to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br /> var fun1 = popup.['read_dragdrop'+canvas_scripts[0]];<br /> var fun2 = popup['read_canvas'+canvas_scripts[0]];<br /> popup.close();<br /> return "dragdrop="+fun1()+"\ncanvas="+fun2();<br /> };<br /></em><br />
 </span></li>
 	    
 </ul>

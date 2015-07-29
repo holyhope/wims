@@ -184,7 +184,7 @@
 #define PROTRACTOR	187
 #define RULER		188
 #define TRIANGLES 	189
-
+#define POPUP		190
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
@@ -313,6 +313,7 @@ void add_input_x1y1x2y2(FILE *js_include_file, int canvas_root_id,int font_size,
 void add_textarea_xy(FILE *js_include_file, int canvas_root_id,char *input_style);
 void add_zoom_buttons(FILE *js_include_file,int canvas_root_id,char *stroke_color,double stroke_opacity);
 void add_js_tooltip(int canvas_root_id,char *tooltip_text,char *bgcolor,int xsize,int ysize);
+void add_js_popup(int canvas_root_id,int xsize,int ysize,char *getfile_cmd);
 void add_input_jsfunction(FILE *js_include_file, int canvas_root_id,char *input_style,char *input_label,int input_cnt,char *stroke_color,float stroke_opacity,int line_width,int use_dashed,int dashtype0,int dashtype1,int font_size);
 void add_rawmath(FILE *js_include_file);
 
