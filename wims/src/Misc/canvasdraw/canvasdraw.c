@@ -204,7 +204,6 @@ int main(int argc, char *argv[]){
 
 /*
  The sequence in which stuff is finally printed is important !!
- for example, when writing a 'include.js" there may not be a "script tag <script>" etc etc
 */
 fprintf(stdout,"\n\
 <script type=\"text/javascript\">\n\
@@ -213,18 +212,29 @@ if( typeof wims_status === 'undefined' ){ var wims_status = \"$status\";};\
 if( typeof use_dragdrop_reply === 'undefined' ){ var use_dragdrop_reply = false;};\
 if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};\
 canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
-<!-- tooltip and input placeholder  -->\n\
-<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
-",canvas_root_id,canvas_root_id,canvas_root_id);
+",canvas_root_id);
 
-/* do not include code & placeholder & canvas_div in main html page : the include etc will be in a popup window */
 
 if( use_tooltip != 2){
  fprintf(stdout,"<!-- canvasdraw div  -->\n\
 <div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<!-- tooltip and input placeholder  -->\n\
+<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
+<!-- include actual object code via include file -->\n\
+<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,getfile_cmd);
+}
+else
+{
+/* 
+set canvas_div invisible and do not include placeholder in main html page : 
+the js-include will also be in a popup window...to be shown when wims $status = done  
+*/
+ fprintf(stdout,"<!-- canvasdraw div invisible  -->\n\
+<div tabindex=\"0\" id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <!-- include actual object code via include file -->\n\
 <script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,getfile_cmd);
 }
+
 /* these must be global...it's all really very poor javascript :( */
 fprintf(js_include_file,"\n<!-- begin generated javascript include for canvasdraw -->\n\
 \"use strict\";\n\
@@ -3664,7 +3674,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ keyword (no arguments)
 	    @ if fly-script starts with keyword 'popup', the canvas image will be exclusively in a popup window (xsize px &times; ysize px)
 	    @ if keyword 'popup' is used after command 'size xsize,ysize' the canvas will also be displayed in a popup window with size 'xsize &times; ysize'
-	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup.['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em><br />
+	    @ the popup window will be embedded into the page as a 'normal' image , when 'status=done' ; override with keyword 'nostatus'
+	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em><br />
 	    */
 	    use_tooltip = 2;
 	    break;

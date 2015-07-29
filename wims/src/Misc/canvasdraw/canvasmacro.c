@@ -2146,19 +2146,24 @@ function canvas_remove(x,y){\
 void add_js_popup(int canvas_root_id,int xsize,int ysize,char *getfile_cmd){
 fprintf(stdout,"\n<!-- begin command popup %d -->\n\
 <script type=\"text/javascript\">\n\
-var popup = window.open('','','width = %dpx, height = %dpx');\n\
-var popupHTML =\"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>\\n<html><head></head>\\n<body><div style='width:%dpx;height:%dpx;position:relative' id='canvas_div%d'></div><div id='tooltip_placeholder_div%d' style='display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;'><span id='tooltip_placeholder%d' style='display:none;'></span></div></body></html>\";\n\
-popup.document.write(popupHTML);\n\
-var s0 = popup.document.createElement(\"script\");\n\
-s0.text=\"var wims_status = window.opener.wims_status; var use_dragdrop_reply = window.opener.use_dragdrop_reply;window.opener.canvas_scripts.push('%d');\";\n\
-popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s0);\n\
-var s1 = popup.document.createElement(\"script\");\n\
-s1.type = \"text/javascript\";\n\
-s1.src = \"%s\"\n\
-popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s1);\n\
-popup.document.close();\n\
-\n</script>\n\
-<!-- end command popup %d -->\n",
+if( wims_status != 'done'){\n\
+ var popup = window.open('','','width = %dpx, height = %dpx');\n\
+ var popupHTML =\"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>\\n<html><head></head>\\n<body><div style='width:%dpx;height:%dpx;position:relative' id='canvas_div%d'></div><div id='tooltip_placeholder_div%d' style='display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;'><span id='tooltip_placeholder%d' style='display:none;'></span></div></body></html>\";\n\
+ popup.document.write(popupHTML);\n\
+ var s0 = popup.document.createElement(\"script\");\n\
+ s0.text=\"var wims_status = window.opener.wims_status; var use_dragdrop_reply = window.opener.use_dragdrop_reply;window.opener.canvas_scripts.push('%d');\";\n\
+ popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s0);\n\
+ var s1 = popup.document.createElement(\"script\");\n\
+ s1.type = \"text/javascript\";\n\
+ s1.src = \"%s\"\n\
+ popup.document.getElementsByTagName(\"HEAD\")[0].appendChild(s1);\n\
+ popup.document.close();\n\
+ }else{\n\
+ var canvas_div = document.getElementById('canvas_div%d');\n\
+ canvas_div.style.display='block';\n\
+ };\n\
+ \n</script>\n\
+ <!-- end command popup %d -->\n",
 canvas_root_id,
 xsize,ysize,
 xsize,ysize,
@@ -2167,6 +2172,7 @@ canvas_root_id,
 canvas_root_id,
 canvas_root_id,
 getfile_cmd,
+canvas_root_id,
 canvas_root_id);
 }
 
