@@ -1,67 +1,67 @@
 2_shape:2D
 3_shape:3D
 abelian_group:Abelse groep
-absolute_frequency:
-absolute_value:
+absolute_frequency:absolute frequentie
+absolute_value:absolute waarde
 abstract_algebra:Abstracte algebra
-actions:
-adaptative_immunity:
-addition:
-affine_function:
-affine_geometry:Affiene geometrie
+actions:akties
+adaptative_immunity:adaptief imuunsysteem
+addition:optellen
+affine_function:lineaire vergelijking
+affine_geometry:lineaire geometrie
 algebra:Algebra
 algebra_geometry:Algebra geometrie
 algebraic_geometry:Algebraische geometrie
-algorithmics:Algoritmeleer
-altitude:
-american_civilisation:Amerikaanse civilisatie
-amino_acid:
+algorithmics:Algoritme
+altitude:hoogte
+american_civilisation:Amerikaanse cultuur
+amino_acid:aminozuur
 analysis:Analyse
 analytic_geometry:Analytische geometrie
-anesthetic_drug:
-angle_bisector:
+anesthetic_drug:verdovingsmiddel
+angle_bisector:bisectrice
 angles:Hoeken
-animal_cell:
-antibody:
+animal_cell:dierlijke cel
+antibody:antilichaam
 antibody_diversity:
-antigen:
-antiseptic_drug:
+antigen:antigeen
+antiseptic_drug:antisceptisch middel
 area:Oppervlak
 arithmetic:Rekenkunde
-arithmetic_sequence:
+arithmetic_sequence:rekenkundige rij
 arts:Kunst
-asymptote:
-bacteria:
-barycenter:
-basis:
-basis_change:
+asymptote:asymptoot
+bacteria:bacterien
+barycenter:baycentrum
+basis:basis
+basis_change:basis verandering
 bezout_algorithm:Bezout algoritme
-bilinear_algebra:
-binomial_distribution:
+bilinear_algebra:bilineaire algebra
+binomial_distribution:binomiale verdeling
 biochemistry:Biochemie
 biology:Biologie
 body_system:Lichaam
-bonds:
+bonds:bindingen
 botanics:Plantkunde
-botany:
+botany:plantenkunde
 business_english:Technisch engels
 calc:Rekenen
-calculation:
+calculation:berekening
 calculus:Rekenkunde
 cell_biology:Celbiologie
-cell_cycle:
-cell_death:
-cell_differentiation:
-cell_division:
-characteristic_polynomial:
-chemical_synthesis:
+cell_cycle:cel cyclus
+cell_death:cel dood
+cell_differentiation:cel differentiatie
+cell_division:celdeling
+characteristic_polynomial:veelterm karakteristiek
+chemical_synthesis:chemische synthese
 chemistry:Chemie
-chromosome:
+chromosome:chromosoom
 cinematics:Bewegingsleer
 circle:Cirkel
-circle_equation:
-circles:Cirkel
-civic_education:
+circle_equation:cirkel vergelijking
+circles:Cirkels
+civic_education:algemene ontwikkeling
 class_i:
 class_ii:
 classical_antiquity:Klasieke oudheid
@@ -72,71 +72,71 @@ coding:Programmeren
 combi:Combi
 combination:Combinaties
 combinatorics:Combinatioriek
-common_ancestor:
+common_ancestor:gemeenschappelijke voorouder
 complement_system:
 complementary_subspace:
 complex_analysis:Complexe analyse
 complex_number:Complexe getallen
 complex_plane:Complexe vlak
-complexity:
+complexity:complexiteit
 conditional_probability:Conditionel kansrekening
-cone:
+cone:conus
 confidence_interval:Betrouwbaarheids interval
 congruence:Congruentie
 conics:Kegelsneden
 continued_fraction:Rationale getallen
 continuity:Continuiteit
 continuous_probability_distribution:
-contrast_agent:
-convergence:
-coordinates:
-corporate_finance:
-covariance:
-critical_point:
+contrast_agent:contrast vloeistof
+convergence:convergentie
+coordinates:coordinaten
+corporate_finance:bedrijfseconomie
+covariance:covariantie
+critical_point:kritieke punt
 cryptology:Cryptologie
 crystallography:Kristallografie
 cubic_crystal_system:
-cumulative_distribution:
-cumulative_frequency:
-curve_fitting:
-curves:Kurves
-cyclic_code:
+cumulative_distribution:cumulatieve distributie
+cumulative_frequency:cimulatieve frequentie
+curve_fitting:curve fitting
+curves:curves
+cyclic_code:cyclische code
 cyclic_group:Cyclische groep
-cytokine:
+cytokine:cytokinase
 data_analysis:Data analyse
 data_gestion:Gegevensbeheer
 decimals:Decimalen
 definite_integral:Eindige integralen
-dendritic_cell:
-density:
+dendritic_cell:dendritische cel
+density:dichtheid
 derivative:Afgeleide
 descriptive_statistics:Beschrijvende statistiek
 determinant:Determinant
 development_of_lymphocytes:
-diabete_drug:
+diabete_drug:diabetes medicijn
 diacritical_mark:
 diagonalization:
 differentiability:Differentieerbaarheid
 differential_equation:Differentiaal vergelijkingen
 differential_geometry:Differentiaal meetkunde
 differential_system:Differentiaal systeem
-dimension:
-dimensional_analysis:
+dimension:dimensie
+dimensional_analysis:dimensie analyse
 diophantine_equations:Diophantische vergelijkingen
-dirac_delta_function:
-direction:
+dirac_delta_function:dirac delta functie
+direction:richting
 discrete_mathematics:Discrete wiskunde
-discrete_probability_distribution:
-distance:
+discrete_probability_distribution:discrete waarschijnlijkheidsverdeling
+distance:afstand
 distance_method:
-diversity:
-division:
+diversity:diversiteit
+division:deling
 domain:Domein
-dynamic_system:
+dynamic_system:dynamisch systeem
 dynamics:Dynamica
 earth_sciences:Geografie
 ecology:Ecologie
-economics:
+economics:economie
 electrical_engineering:
 electricity:Electriciteit
 electronics:Electronica
@@ -146,13 +146,13 @@ elementary_calculus:Elementaire calculus
 elementary_geometry:Elementaire geometrie
 elementary_mathematics:Elementaire wiskunde
 ellipse:Ellips
-encryption:
+encryption:encryptie
 endomorphism_reduction:
-energy:
+energy:energie
 english:Engels
 english_vocabulary:Engelse uitspraak
 entropy:Entropie
-equation_systems:
+equation_systems:vergelijkings systeem
 equations:Vergelijkingen
 error_correcting_codes:Fout correctie codes
 error_detection:Fouten signalering
@@ -162,21 +162,21 @@ eucaryote:
 euclidean_algorithm:Euclidisch algoritme
 euclidean_geometry:Euclidische geometrie
 events:Event
-evolution:
-expectation:
+evolution:evolutie
+expectation:verwachting
 exponent:Exponent
 exponential:Exponentieel
-extremum:
-factorial:Factorisaties
+extremum:extreme waarde
+factorial:faculteit
 factorization:Ontleden
 fc_receptor:
 field:Velden
-financial_analysis:
-financial_market:
+financial_analysis:financiele analyse
+financial_market:financiele markt
 financial_mathematics:Financiele wiskunde
-finite_field:
+finite_field:eindige velden
 finite_group:Eindige groepen
-finnish:
+finnish:fins
 flow_cytometry:
 fluid_mechanics:Stromingsleer
 fourier_series:Fourier series
@@ -184,23 +184,23 @@ fourier_transform:Fourier transformatie
 fourier_transforms:Fourier transformaties
 fraction:Breuk
 french:Frans
-french_conjugation:
+french_conjugation:franse vervoegingen
 french_grammar:Franse grammatica
 french_reading:Frans lezen
 french_spelling:Franse spelling
 french_vocabulary:Franse uitspraak
-function_variation:
+function_variation:functie variatie
 functions:Functies
 gas_mechanics:Gas mechanica
-gauss_algorithm:
-gaz_mechanics:
+gauss_algorithm:algorithme van Gauss
+gaz_mechanics:gas mechanica
 gcd_lcm:Gcd
 gene_rearrangement:
 genetics:Genetica
 geography:Geografie
 geology:Geologie
 geom:Geometrie
-geometric_sequence:
+geometric_sequence:geometrisch rij
 geometry:Geometrie
 german:Duits
 goldbach:Goldbach
@@ -216,40 +216,40 @@ histocompatibility:
 histogram:Histogram
 histology:Histologie
 history:Geschiedenis
-homography:
-homology:
+homography:homografie
+homology:homologie
 hyperbola:Hyperbolen
 hyperplane:Hypervlakken
 immunoglobulines:
 immunology:Immunologie
-independent_events:
-independent_random_variables:
+independent_events:onafhankelijke gebeurtenissen
+independent_random_variables:onafhankelijke random variabelen
 inequalities:Ongelijkheden
-inequations:
-infection:
+inequations:ongelijkheden
+infection:infectie
 inferential_statistics:
-infonet:
+infonet:infonet
 informatics:Informatica
 information_theory:Informatie theorie
 innate_immunity:
-inorganic_chemistry:
+inorganic_chemistry:anorganische chemie
 inorganics_chemistry:Anorganische chemie
 integers:Integers
 integral:Integraal
-interferon:
+interferon:interferon
 intervals:Intervallen
-ionisation:
+ionisation:ionisatie
 isometries:Isometrie
 language:Taal
 laplace_transforms:Laplace transformaties
 leucocyte:
 limit:Limiet
 line:Lijn
-line_equation:
-line_integral:
+line_equation:lijn vergelijking
+line_integral:lijn integraal
 linear_algebra:Lineaire algebra
 linear_differential_equation:
-linear_function:
+linear_function:lineaire functie
 linear_maps:Lineaire velden
 linear_optimisation:Lineaire optimalisatie
 linear_system:Lineaire systemen
@@ -257,18 +257,18 @@ lines:Lijnen
 linguistics:Taalwetenschap
 lissajous:Lissajous
 listening:Luisteren
-literal_calculation:
-literature:
+literal_calculation:literaal
+literature:literatuur
 logarithm:Logaritme
 logic:Logica
 lymphocyte:
 lymphoid_organ:
-macrophage:
+macrophage:macrofaag
 magnetism:Magnetisme
-management:
+management:management
 maps:Mappen
 markov_chains:Markov chains
-math_symbols:
+math_symbols:wiskundige symbolen
 mathematics:Wiskunde
 matrix:Matrix
 maximum_parsimony:
@@ -276,77 +276,77 @@ mean:Gemiddelde
 measurement:Meting
 mechanics:Mechanica
 medecine:Medicijn
-median:
-median_line:
-medicinal_chemistry:
+median:mediaan
+median_line:mediaan lijn
+medicinal_chemistry:pharmacologie
 methodical_calculation:Hoofdrekenen
-methodology:
+methodology:methodologie
 mhc:
 microbe:
 misc:Diversen
 mitosis:
-modelling:
+modelling:modellering
 modular_arithmetic:Modulaire rekenkunde
-molecular_biology:
+molecular_biology:moleculaire biologie
 monophyletic_group:
-multiplication:
-multivariable_function:
+multiplication:vermenigvuldigen
+multivariable_function:multivariabele functie
 music:Muziek
 mycology:Mycologie
 neutrophil:
 nk_cell:
-normal_distribution:
-normal_vector:
+normal_distribution:normale verdeling
+normal_vector:normaal vector
 nsaids:
 number:Getal
 number_theory:Getal theory
 numbering_system:Getallen stelsel
-numeration:
-numerical_analysis:
-numerical_method:
+numeration:talstelsel
+numerical_analysis:numerieke analyse
+numerical_method:numerieke methode
 ode:Ode
 operation:Operatie
 operational_research:Operatie onderzoek
 optics:Optica
-order:
+order:voglorde
 organelle:
-organic_chemistry:
+organic_chemistry:organische chemie
 organics_chemistry:Organische chemie
-oscillators:
-pain_drug:
+oscillators:oscillatoren
+pain_drug:pijnstiller
 parabola:Parabolen
-parallelogram:
-parametric_curves:Parametrische kurves
-parametric_surfaces:
+parallelogram:parallelogram
+parametric_curves:Parametrische curves
+parametric_surfaces:parametrische oppervlakken
 pbsolving:
 peptide:
 percentage:Percentages
 percents:Procent
-perimeter:
+perimeter:omtrek
 permutation:Permutaties
-perpendicular_bisector:
+perpendicular_bisector:middelloodlijn
 pert:
 phagocytosis:
 pharmocophore:
 phonetics:Fonetisch
 phylogenetic_tree:
 phylogenetics:Plantengenetica
-physical_education:
+physical_education:natuurkunde onderwijs
 physics:Natuurkunde
 plane:Vlak
-plane_equation:
-plant_cell:
-poisson_distribution:
+plane_equation:vlakvergelijking
+plant_cell:planten cel
+poisson_distribution:poisson verdeling
 polar_curves:Polaire kurves
 polygons:Polygonen
 polynomials:Polynomen
 prealg:Pre-algebra
 precalc:Pre-calculus
-prediction_interval:
+prediction_interval:voorspellings interval
 pression:
 primes:Priemgetallen
 primitive:Primitieve
-priority_rule:
+priority_rule:voorrangsregel
 prob_graph:
 proba:Kansrekening
 probability:Waarschijnlijkheid
@@ -354,67 +354,67 @@ probability_distribution:Kansverdelingen
 probability_generating_function:
 probability_space:Kansdichtheid
 probability_statistics:Waarschijlijkheids rekening
-process_engineering:
+process_engineering:procestechnologie
 programming:Programmeren
 pronunciation:Uitspraak
 proportionality:Proportionaliteit
-pyramid:
-quadratic_form:
-quantile:
-quartile:
+pyramid:pyramide
+quadratic_form:kwadratische vorm
+quantile:kwantiel
+quartile:kwartiel
 quotient_group:quotient groep
 random:Willekeurig
 random_variable:Willekeurige variabele
-random_vector:
+random_vector:willekeurige vector
 range_kernel:
-rank:
+rank:plaats
 rational_number:Rationeel getal
 reading:Lezen
 real_function:Reeele functie
 real_number:Reeele getallen
-reasoning:
-receptor:
+reasoning:redenering
+receptor:ontvanger
 rectangles:Vierkanten
 recurrence_relation:
-regression:
+regression:regressie
 relative_number:Relatief getal
 ring:Ringen
 riskreturn:
 root_tree:
 roots:Wortels
-rotation:
+rotation:rotatie
 ruler_and_compass:Passer en lineaal
 rv_convergence:
-sampling:
-scalar_product:
-scheduling:
+sampling:monstername
+scalar_product:inwendig product
+scheduling:roosteren
 sciences:Wetenschappen
 scientific_notation:Wetenschappelijke notatie
 selection_of_lymphocytes:
 sequence:Rijen
 series:Reeksen
 set_theory:Verzamelingenleer
-signal_processing:
+signal_processing:signaalverwerking
 signaling_pathway:
 signdigits:
 similarities:Overeenkomsten
-simplex_method:
+simplex_method:simplex methode
 simulation:Simulatie
 spatial_skill:
 speaking:Praten
 spelling:Spelling
-sports:
-spreadsheet:
-standard_deviation:
+sports:sport
+spreadsheet:spreadsheet
+standard_deviation:standaard deviatie
 statistical_test:Statistische test
 statistics:Statistiek
-steroid:
+steroid:steroide
 stokes_thm:
 subst_integral:
-subtraction:
+subtraction:aftrekken
 surfaces:Oppervlakken
 symmetric_group:Symmetrie groep
-symmetry:
+symmetry:symmetrie
 t_cell_receptor:
 tangent:Tangent
 tangent_plane:
@@ -423,27 +423,27 @@ taylor_series:Taylor reeks
 technical_language:Technische taal
 thermodynamics:Thermodynamica
 time:Tijd
-titration:
-topology:
-toxin:
+titration:titratie
+topology:topologie
+toxin:gifstof
 transformation_group:Transformatie groep
-transition_matrix:
-translation:
+transition_matrix:transitie matrix
+translation:translatie
 triangles:Driehoeken
-trigonometric_circle:
-trigonometric_functions:
+trigonometric_circle:trigonometrische cirkel
+trigonometric_functions:trigonometrische functies
 trigonometry:Trigoniometrie
-truth_table:
-uniform_distribution:
+truth_table:waarheidstabel
+uniform_distribution:uniforme distributie
 unroot_tree:
 vaccine:
-variance:
+variance:variantie
 vector_space:Vector ruimte
 vectorial_analysis:Vector analyse
-vectorial_geometry:
+vectorial_geometry:vector geometrie
 vectors:Vectoren
 vibration:Vibratie
-virus:
+virus:virus
 vocabulary:Vocabulaire
 volume:Volume
 weaver:Weven
