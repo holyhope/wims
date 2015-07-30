@@ -231,8 +231,9 @@ the js-include will also be in a popup window...to be shown when wims $status = 
 */
  fprintf(stdout,"<!-- canvasdraw div invisible  -->\n\
 <div tabindex=\"0\" id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div id=\"tooltip_placeholder_div%d\" style=\"display:none;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
-<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,getfile_cmd);
+<script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,getfile_cmd);
 }
 
 /* these must be global...it's all really very poor javascript :( */
@@ -1476,7 +1477,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multistrokeopacity = [\"%s\"];",temp);
@@ -1491,7 +1492,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multifillopacity = [\"%s\"];",temp);
@@ -1506,7 +1507,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multilabel = [\"%s\"];",temp);
@@ -1520,7 +1521,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multilinewidth = [\"%s\"];",temp);
@@ -1535,7 +1536,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multidash = [\"%s\"];",temp);
@@ -1554,7 +1555,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ always use the same sequence as is used for 'multidraw'
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multisnaptogrid = [\"%s\"];",temp);
@@ -1570,7 +1571,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
 	    fprintf(js_include_file,"var multifill = [\"%s\"];",temp);
@@ -1584,7 +1585,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    fprintf(js_include_file,"var multistrokecolors = [");
 	    while( ! done ){
 	        temp = get_color(infile,1);
@@ -1601,7 +1602,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
-	    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    fprintf(js_include_file,"var multifillcolors = [");
 	    while( ! done ){
 	        temp = get_color(infile,1);
@@ -1642,7 +1643,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
 	 @ <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
-	//    if( use_tooltip > 0 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
+	//    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
 	    use_userdraw = TRUE;
 	    /* LET OP max 6 DRAW PRIMITIVES */
@@ -3663,7 +3664,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are therefor these commands are mutually exclusive.<br />keep this in mind...
 	    */
 	    if(use_input_xy != FALSE ){canvas_error("intooltip can not be combined with userinput_xy or other commands using the tooltip-div...see documentation");}
-	    if( use_tooltip > 0 ){ canvas_error("command 'intooltip' cannot be combined with command 'popup'...");}
+	    if( use_tooltip == 1 ){ canvas_error("command 'intooltip' cannot be combined with command 'popup'...");}
 	    tooltip_text = get_string(infile,1);
 	    if(strstr(tooltip_text,"\"") != 0 ){ tooltip_text = str_replace(tooltip_text,"\"","'"); }
 	    use_tooltip = 1;
