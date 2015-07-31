@@ -2147,7 +2147,7 @@ void add_js_popup(int canvas_root_id,int xsize,int ysize,char *getfile_cmd){
 fprintf(stdout,"\n<!-- begin command popup %d -->\n\
 <script type=\"text/javascript\">\n\
 if( wims_status != 'done'){\n\
- var popup = window.open('','','width = %dpx, height = %dpx');\n\
+ var popup = window.open('','','toolbar=no,scrollbars=yes,menubar=no,location=no,resizable=yes,top=4,left=4,status=no, width = %dpx, height = %dpx');\n\
  var popupHTML =\"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>\\n<html><head></head>\\n<body><div style='width:%dpx;height:%dpx;position:relative' id='canvas_div%d'></div><div id='tooltip_placeholder_div%d' style='display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;'><span id='tooltip_placeholder%d' style='display:none;'></span></div></body></html>\";\n\
  popup.document.write(popupHTML);\n\
  var s0 = popup.document.createElement(\"script\");\n\
@@ -2165,7 +2165,7 @@ if( wims_status != 'done'){\n\
  \n</script>\n\
  <!-- end command popup %d -->\n",
 canvas_root_id,
-xsize,ysize,
+xsize+40,ysize+40,
 xsize,ysize,
 canvas_root_id,
 canvas_root_id,
