@@ -69,7 +69,7 @@ char *config_file="../log/wims.conf";
 char PATH[512];  /* directory settings */
 char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/texbin:/usr/local/texbin";
 char *gap_command="gap.sh -T -m 64M";
-char *maxima_command="maxima";
+char *maxima_command="maxima -X '--dynamic-space-size 512'";
 char *pari_command="gp -f -q -p 150000";
 char *scilab_command="scilab -nwni";
 char *QRencode_command="qrencode -o";

@@ -199,9 +199,11 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *args)
           setreuid(getuid(),getuid());setregid(getgid(),getgid());
       }
       arg[i++]=cmdf;
-      for(p=abuf; *p && i<1000; i++, p=find_word_start(p2)) {
-          arg[i]=p; p2=find_word_end(p); if(*p2) *p2++=0;
-      }
+      for(p=abuf; *p && i<1000; i++, p=find_word_start(p2))
+        if (*p=='\'')
+         {arg[i]=p2=++p; while(*p2 && *p2!='\'') p2++; if(*p2) *p2++=0;}
+        else
+         { arg[i]=p; p2=find_word_end(p); if(*p2) *p2++=0; }
       arg[i]=NULL;
       if(strchr(arg[0],'/')) execv(arg[0],arg);
       else execvp(arg[0],arg);
