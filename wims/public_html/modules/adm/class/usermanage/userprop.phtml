@@ -131,22 +131,29 @@ $wims_name_account_property
 
 
 !if $wims_user=supervisor
- !set wims_menu_items=!append line delprep,1,cmd=reply&job=delprep&delprep=$getuser\
-scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
-,0,\
+ !set wims_menu_items=!append line part_list,1,cmd=resume\
+ delstudent,1,cmd=reply&job=delprep&delprep=$getuser\
+ addstudent,1,module=adm/class/reguser&step=1\
+ ,0,\
 to $wims_menu_items
 
 !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
 
- !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
-,0,\
-part_list,1,cmd=resume\
+!if $wims_supertype=4 and $wims_typename!=course
+  !! on ne met pas les scores
+ !else
+!set wims_menu_items=!append line \
+  scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
 to $wims_menu_items
-
+ !endif
 !else
- !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
-class_home,1,module=home\
-to $wims_menu_items
+ !if $wims_supertype=4 and $wims_typename!=course
+   !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
+ to $wims_menu_items
+ !endif
+ !set wims_menu_items=!append line class_home,1,module=home\
+ to $wims_menu_items
+
 !endif
 
 !reset reg,abandon
