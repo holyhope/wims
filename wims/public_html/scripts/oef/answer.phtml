@@ -33,7 +33,7 @@
   !else
   !! could have been defined for another reply
    !if $display_noanalyze!=yes
-    !if $(replytype$i) iswordof radio checkbox mark flashcard numeric and ?analyze notin $(replygood$i) \
+    !if ($(replytype$i) iswordof radio checkbox mark flashcard numeric or legend iswordof $(replyoption$i)) and ?analyze notin $(replygood$i) \
      and $wims_isexam<1
 
      !if $(diareply$i)!=good or $(partialgood$i)=yes or $(precreply$i)=yes
@@ -44,7 +44,7 @@
       !if $(precreply$i)=yes
        !default display_precreply=yes
       !endif
-      !if $(replystyle$i)=mc and $(replytype$i) notwordof radio
+      !if ($(replystyle$i)=mc or $(replytype$i) iswordof draw) and $(replytype$i) notwordof radio
        !default display_forget=yes
       !endif
      !endif
