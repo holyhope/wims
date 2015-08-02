@@ -4,7 +4,7 @@
 <html>
 <head></head>
 <body xmlns="http://www.w3.org/1999/xhtml" class="main_body" dir="ltr">
-<center><h3>Implemented canvasdraw commands (Thu Jul 30 00:01:53 CEST 2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (Sun Aug  2 10:19:22 CEST 2015)</h3></center>
 <ul>
 
 <li><span style="color:red">canvasdraw
@@ -768,13 +768,16 @@
 <li><span style="color:blue;font-size:0.8em"> implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 </span></li>
 	    
+<li><span style="color:blue;font-size:0.8em"> additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
+</span></li>
+	    
 <li><span style="color:blue;font-size:0.8em"> it makes no sense using something like "multidraw point,points" ...
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
+<li><span style="color:blue;font-size:0.8em"> buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command 'multilabel' for more details)
@@ -789,13 +792,13 @@
 <li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.<br />The output is always a 7 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\n"<br/>line 3 = segments_x+";"+segments_y+"\n"<br/>line 4 = arrows_x+";"+arrows_y+"\n"<br/>line 5 = lines_x+";"+lines_y+"\n"<br/>line 6 = triangles_x+";"+triangles_y+"\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
+<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.<br />The output is always a 8 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\n"<br/>line 3 = segments_x+";"+segments_y+"\n"<br/>line 4 = arrows_x+";"+arrows_y+"\n"<br/>line 5 = lines_x+";"+lines_y+"\n"<br/>line 6 = triangles_x+";"+triangles_y+"\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\n"<br/>line 8 = text_x+";"+text_y+";"+text"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
 </span></li>
 	    
 <li><span style="color:blue;font-size:0.8em"> attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
 </span></li>
 	    
-<li><span style="color:blue;font-size:0.8em"> <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+<li><span style="color:blue;font-size:0.8em"> <em>technical: all 7 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 </span></li>
 	    
 </ul>

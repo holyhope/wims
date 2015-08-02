@@ -1632,45 +1632,51 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multidraw obj_type_1,obj_type_2...obj_type_7
 	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
+	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
 	 @ it makes no sense using something like "multidraw point,points" ...
 	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-	 @ buttons for changing the obj_type (and incase of 'mutliuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
+	 @ buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command 'multilabel' for more details)
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 7 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 8 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 8 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
 	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
-	 @ <em>technical: all 7 draw primitives will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+	 @ <em>technical: all 7 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
 	//    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
 	    use_userdraw = TRUE;
-	    /* LET OP max 6 DRAW PRIMITIVES */
+	    /* LET OP max 6 DRAW PRIMITIVES + TEXT */
 	    temp = get_string(infile,1);
 	    temp = str_replace(temp,",","\",\"");
-	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives */
+	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives + draw_text */
 	    fprintf(js_include_file,"\
-	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
-	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f'];};\
-	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f'];};\
+	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f'];};\
+	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
 	    if( typeof multilabel === 'undefined' ){ var multilabel = [\"%s\",\"stop drawing\"];};\
-	    if( typeof multiuserinput === 'undefined' ){ var multiuserinput= ['0','0','0','0','0','0','0'];};\
+	    if( typeof multiuserinput === 'undefined' ){ var multiuserinput= ['0','0','0','0','0','0','0','1'];};\
 	    if( typeof multisnaptogrid == 'undefined'){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
-	    var arrow_head = %d;",
-	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
-	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
-	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
-	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
-	    line_width,line_width,line_width,line_width,line_width,line_width,line_width,
-	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
-	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
-	    temp,arrow_head);
-	    /* the canvasses range from 1000 ... 1005 */
+	    var arrow_head = %d;var multifont_color = '%s';var multifont_family = '%s';",
+	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
+	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
+	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
+	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
+	    line_width,line_width,line_width,line_width,line_width,line_width,line_width,line_width,
+	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
+	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
+	    temp,arrow_head,font_color,font_family);
+	    
+	    if(strstr(temp,"text") != NULL){
+	     if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
+	    } 
+
+	    /* the canvasses range from 1000 ... 1007 */
 	    add_js_multidraw(js_include_file,canvas_root_id,temp,input_style);
 	    reply_precision = precision;
 	    if( reply_format == 0){reply_format = 29;}
@@ -5790,6 +5796,7 @@ read_canvas%d = function(){\
  if( lines_x && lines_x.length > 0 ){ reply = reply + xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( triangles_x && triangles_x.length > 0){ reply = reply + xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( closedpoly_x && closedpoly_x.length > 0){ closedpoly_x.pop();closedpoly_y.pop();reply = reply + xy_precision(closedpoly_x,closedpoly_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( text_x && text_x.length > 0){ reply = reply + xy_precision(text_x,text_y)+\";\"+text_abc+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  return reply;\
 };\n\
 <!-- end function 29 read_canvas%d() -->",canvas_root_id,reply_precision,canvas_root_id,canvas_root_id);

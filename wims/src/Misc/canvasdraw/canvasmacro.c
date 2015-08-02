@@ -15,7 +15,8 @@ line =4 	lines = 5
 segment = 6 	segments = 7
 arrow = 8 	arrows = 9
 triangle = 10 	triangles = 11
-closed_polygon	- 12
+polygon = 12
+text = 13
 28/6/2015:
 the next js-code block (parsing/scanning the multidraw objects array) is -for now- generic, 
 e.g. not responsive to the actual draw_types used.
@@ -34,7 +35,7 @@ if(wims_status != \"done\"){\
  canvas_div.addEventListener(\"touchmove\",user_drag,false);\
 };\
 clear_draw_area%d = function(type,name){\
- if(confirm(\"remove \"+multilabel[name]+\" ?\")){\
+ if(confirm(\"delete \"+multilabel[name]+\" ?\")){\
   switch(type){\
    case 0: context_points.clearRect(0,0,xsize,ysize);points_x = [];points_y = [];break;\
    case 1: points_x.pop();points_y.pop();draw_points();break;\
@@ -49,6 +50,7 @@ clear_draw_area%d = function(type,name){\
    case 10:context_triangles.clearRect(0,0,xsize,ysize); triangles_x = [];triangles_y = [];break;\
    case 11:for(var p=0;p<poly_num;p++){triangles_x.pop();triangles_y.pop();};draw_triangles();break;\
    case 12:;context_closedpoly.clearRect(0,0,xsize,ysize);closedpoly_x = [];closedpoly_y = [];break;\
+   case 13:;context_text.clearRect(0,0,xsize,ysize);text_x.pop();text_y.pop();text_abc.pop();draw_text();break;\
    default:break;\
   };\
  };\
@@ -71,6 +73,7 @@ function user_draw(evt){\
   case 10: triangles(x,y,0,0);break;\
   case 11: triangles(x,y,0,1);break;\
   case 12: closedpoly(x,y,0,0);break;\
+  case 13: text(x,y,0,1);break;\
   default:break;\
  };\
 };\
@@ -92,6 +95,7 @@ function user_drag(evt){\
   case 10: triangles(x,y,1,0);break;\
   case 11: triangles(x,y,1,1);break;\
   case 12: closedpoly(x,y,1,0);break;\
+  case 13: break;\
   default:break;\
  };\
 };\
@@ -134,28 +138,28 @@ for(var p = 0;p < draw_things.length;p++){\
   }\
   else\
   {\
-  if( draw_things[p] == 'line' || draw_things[p] == 'lines' ){\
-   var canvas_lines = create_canvas%d(1002,xsize,ysize);\
-   var context_lines = canvas_lines.getContext(\"2d\");\
-   context_lines.lineWidth = multilinewidth[p];\
-   context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-   if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
-   var lines_x = new Array();var lines_y = new Array();\
-   var lines_snap = multisnaptogrid[p];\
-   if(draw_things[p] == 'line' ){desc = 4;}else{desc = 5;};\
-   id_x = 'input_lines_x';id_y = 'input_lines_y';\
-  }\
-  else\
-  {\
-   if( draw_things[p] == 'segment' || draw_things[p] == 'segments' ){\
-    var canvas_segments = create_canvas%d(1003,xsize,ysize);\
-    var context_segments = canvas_segments.getContext(\"2d\");\
-    context_segments.lineWidth = multilinewidth[p];\
-    context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
-    if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
-    var segments_x = new Array();var segments_y = new Array();\
-    var segments_snap = multisnaptogrid[p];\
-    if( draw_things[p] == 'segment' ){desc = 6;}else{ desc = 7;};\
+   if( draw_things[p] == 'line' || draw_things[p] == 'lines' ){\
+    var canvas_lines = create_canvas%d(1002,xsize,ysize);\
+    var context_lines = canvas_lines.getContext(\"2d\");\
+    context_lines.lineWidth = multilinewidth[p];\
+    context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+    if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
+    var lines_x = new Array();var lines_y = new Array();\
+    var lines_snap = multisnaptogrid[p];\
+    if(draw_things[p] == 'line' ){desc = 4;}else{desc = 5;};\
+    id_x = 'input_lines_x';id_y = 'input_lines_y';\
+   }\
+   else\
+   {\
+    if( draw_things[p] == 'segment' || draw_things[p] == 'segments' ){\
+     var canvas_segments = create_canvas%d(1003,xsize,ysize);\
+     var context_segments = canvas_segments.getContext(\"2d\");\
+     context_segments.lineWidth = multilinewidth[p];\
+     context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
+     if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
+     var segments_x = new Array();var segments_y = new Array();\
+     var segments_snap = multisnaptogrid[p];\
+     if( draw_things[p] == 'segment' ){desc = 6;}else{ desc = 7;};\
      id_x = 'input_segments_x';id_y = 'input_segments_y';\
     }\
     else\
@@ -201,20 +205,22 @@ for(var p = 0;p < draw_things.length;p++){\
         if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
         var triangles_x = new Array();var triangles_y = new Array();\
         var triangles_snap = multisnaptogrid[p];\
-        if( draw_things[p] == 'triangle'){desc = 10;}\
-        else{\
-        if( draw_things[p] == 'triangles'){desc = 11;}\
-        else{\
-        if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}\
-        else{\
-        if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}\
-        else{\
-        if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};\
-        };\
-        };\
-        };\
-        };\
+        if( draw_things[p] == 'triangle'){desc = 10;}else{if( draw_things[p] == 'triangles'){desc = 11;}else{if( draw_things[p].indexOf('poly') != -1 ){ if( draw_things[p].indexOf('polys') != -1 ){ desc = 11;}else{desc = 10;};}else{if( draw_things[p] == 'parallelogram'){multiuserinput[p] = 0;desc = 10;}else{if( draw_things[p] == 'parallelograms'){multiuserinput[p] =  0;desc = 11;};};};};};\
         id_x = 'input_triangles_x';id_y = 'input_triangles_y';id_r = 'input_triangles_r';\
+       }\
+       else\
+       {\
+        if( draw_things[p] == 'text' ){\
+         var canvas_text = create_canvas%d(1007,xsize,ysize);\
+         var context_text = canvas_text.getContext(\"2d\");\
+         context_text.font = multifont_family;\
+         context_text.fillStyle = \"rgba(\"+multifont_color+\",\"+multistrokeopacity[p]+\")\";\
+         var text_snap = multisnaptogrid[p];\
+         var text_x = new Array;var text_y = new Array; var text_abc = new Array();\
+         multiuserinput[p] = 1;\
+         id_x = 'input_text_x';id_y = 'input_text_y';id_r = 'input_text_r';\
+         desc = 13;\
+        };\
        };\
       };\
      };\
@@ -225,22 +231,37 @@ for(var p = 0;p < draw_things.length;p++){\
  inner_html+=\"<tr style='background-color:rgba(\"+multistrokecolors[p]+\",0.4)'><td><input type='button' id='canvasdraw_\"+draw_things[p]+\"' style=\"+button_style+\" onclick='javascript:userdraw_primitive=\"+desc+\";click_cnt = 0;' value='\"+multilabel[p]+\"' /></td><td><input type='button' style='\"+button_style+\"' onclick='javascript:clear_draw_area%d(\"+desc+\",\"+p+\");' value='delete' /></td>\";\
  if(multiuserinput[p] == '1'){ \
   if(desc == 0 || desc == 1 ){\
-  inner_html+=\"<td><b>(</b><input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /><b>:</b> <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' /> <b>)</b></td>\";}\
-  else{\
-  if(desc == 2 || desc == 3){\
-  inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";}\
-  else{\
-  if(desc >3 && desc <10){\
-  inner_html+=\"<td><b>(</b><input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\";text-align:center;' /><b>) --- (</b> <input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\";text-align:center;' /> <b>)</b></td>\";}\
-  else{\
-  if( desc == 10 || desc == 11 ){\
-  inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";}\
-  else{\
-  if( desc == 12 ){\
-  inner_html+=\"<td><b>(<input type='text' size='14' value='x1,x2,x3,x4...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='14' value='y1,y2,y3,y4...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";};\
-  };\
-  };\
-  };\
+   inner_html+=\"<td><b>(</b><input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /><b>:</b> <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' /> <b>)</b></td>\";\
+  }\
+  else\
+  {\
+   if(desc == 2 || desc == 3){\
+    inner_html+=\"<td><b>M&nbsp;:&nbsp;(<input type='text' size='5' value='' id='\"+id_x+\"' style='\"+button_style+\"' /> : <input type='text' size='5' value='' id='\"+id_y+\"' style='\"+button_style+\"' />)&nbsp;&nbsp;R</b>&nbsp;:&nbsp;<input type='text' size='3' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></b></td>\";\
+   }\
+   else\
+   {\
+    if(desc >3 && desc <10){\
+     inner_html+=\"<td><b>(</b><input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\";text-align:center;' /><b>) --- (</b> <input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\";text-align:center;' /> <b>)</b></td>\";\
+    }\
+    else\
+    {\
+     if( desc == 10 || desc == 11 ){\
+      inner_html+=\"<td><b>(<input type='text' size='5' value='x1 : y1' id='\"+id_x+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x2 : y2' id='\"+id_y+\"' style='\"+button_style+\"' />) -- (<input type='text' size='5' value='x3 : y3' id='\"+id_r+\"' style='\"+button_style+\"' />)</b></td>\";\
+     }\
+     else\
+     {\
+      if( desc == 12 ){\
+       inner_html+=\"<td><b>(<input type='text' size='8' value='x1,x2...x_n' id='\"+id_x+\"' style='\"+button_style+\"' /> ---- <input type='text' size='8' value='y1,y2...y_n' id='\"+id_y+\"' style='\"+button_style+\"' />)</b></td>\";\
+      }\
+      else\
+      {\
+       if( desc == 13 ){\
+        inner_html+=\"<td><b>(<input type='text' size='4' value='x' id='\"+id_x+\"' style='\"+button_style+\"' /> - <input type='text' size='4' value='y' id='\"+id_y+\"' style='\"+button_style+\"' />)</b><input type='text' size='4' value='' id='\"+id_r+\"' style='\"+button_style+\"' /></td>\";\
+       };\
+      };\
+     };\
+    };\
+   };\
   };\
   inner_html+=\"<td><input type='button' id='canvasdraw_ok_button'  style='\"+button_style+\"' onclick='javascript:update_draw_area%d(\"+desc+\",\"+id_x+\",\"+id_y+\",\"+id_r+\")' value='OK'/ ></td></tr>\";\
  }\
@@ -313,12 +334,13 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
    closedpoly_x.push(x1);\
    closedpoly_y.push(y1);\
   draw_closedpoly();break;\
+  case 13:text_abc.push( document.getElementById(id_r.id).value);text(x2px(safe_eval(x1)),y2px(safe_eval(y1)),0,1);draw_text();break;\
   default:break;\
  };\
 };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
- canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
  
 /* 
  now add specific draw functions according to draw_types 
@@ -329,6 +351,27 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
 28/6/2015
 TODO: add a selection of the 'generic js-code' from above into these C-code selector parts !
 */
+ if( strstr(draw_types,"text") != 0){
+  fprintf(js_include_file,"function text(x,y,event_which,num){\
+   if(event_which == 1){ return; };\
+   if( num == 0 ){\
+    text_x[0] = x_snap_check(x,text_snap);\
+     text_y[0] = y_snap_check(y,text_snap);\
+   }else{\
+    text_x.push(x_snap_check(x,text_snap));\
+    text_y.push(y_snap_check(y,text_snap));\
+   };\
+   text_abc.push(document.getElementById('input_text_r').value);\
+   draw_text();\
+  };\
+  function draw_text(){\
+   context_text.clearRect(0,0,xsize,ysize);\
+   for(var p = 0 ; p < text_x.length ; p++ ){\
+    context_text.fillText(text_abc[p],text_x[p],text_y[p]);\
+   };\
+  };");
+ }
+
  if( strstr(draw_types,"point") != 0){
   fprintf(js_include_file,"function points(x,y,event_which,num){\
    if(event_which == 1){ return; };\
