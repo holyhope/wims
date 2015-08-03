@@ -170,7 +170,7 @@ int main(int argc, char *argv[]){
 	/*
 	@canvasdraw
 	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (in stead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
+	@General syntax <ul><li>The transparency of all objects can be controlled by command 'opacity [0-255],[0,255]'</il><li>a line based object can be controlled by command 'linewidth int'</li><li>a line based object may be dashed by using keyword 'dashed' before the object command.<br />the dashing type can be controled by command 'dashtype int,int'</li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword 'filled' before the object command.<br />The fill colour will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li> all draggable objects may have a slider for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command 'drag x/y/xy'<br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on zoom and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword 'onclick'<br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every "userdraw object,color" may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command 'inputstyle some_css';<br/>the fontsize used for labeling these elements can be controlled by command 'fontsize int' <br />command 'fontfamily' is not active for these elements </li></ul>
 	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command 'replyformat' to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	*/
 	switch(type){
@@ -2404,7 +2404,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @jscurve color,formula(x)
 	 @your function will be plotted by the javascript engine of the client browser.
 	 @use only basic math in your curve:<br /> sqrt,^,asin,acos,atan,log,pi,abs,sin,cos,tan,e
-	 @use parenthesis and rawmath : use 2*x in stead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
+	 @use parenthesis and rawmath : use 2*x instead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
 	 @Attention : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
 	 @no validity check is done by wims.
 	 @zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
@@ -2523,7 +2523,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @default labels 'x' and 'y'<br />use commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' to customize the labels for the input fields
 	 @use commands fontsize and inputstyle to format the fonts for labels and inputfields.
 	 @use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
-	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
@@ -2541,7 +2541,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
 	    @use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
 	    @example: jsmath sin(x^2)
-	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x in stead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( use_js_math == FALSE){
@@ -2821,9 +2821,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ use these x-axis values in stead of default xmin...xmax
+	 @ use these x-axis values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
-	 @ if the 'x-axis words' are to big amd will overlap, a simple alternating offset will be applied
+	 @ if the 'x-axis words' are to big and will overlap, a simple alternating offset will be applied
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
 	 @ example:<br />size 400,400<br />xrange -5*pi,5*pi<br />yrange -100,500<br />axis<br />xaxis -4*pi:-4\\u03c0:-3*pi:-3\\u03c0:-2*pi:-2\\u03c0:-1*pi:-\\u03c0:0:0:pi:\\u03c0:2*pi:2\\u03c01:3*pi:3\\u03c0:4*pi:4\\u03c0<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid pi,1,grey,1,3,6,grey
 	*/
@@ -2838,7 +2838,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
-	 @ use these y-axis values in stead of default ymin...ymax
+	 @ use these y-axis values instead of default ymin...ymax
 	 @ example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
 	*/
 	    temp = get_string(infile,1);
@@ -3051,7 +3051,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 			stroke_color = get_color(infile,1);
 			fill_color = stroke_color;
 		    }
-		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor tickt must be positive !");}
+		    if( double_data[0] <= 0 ||  double_data[1] <= 0 ||  int_data[0] <= 0 ||  int_data[1] <= 0 ){canvas_error("major or minor ticks must be positive !");}
 		    /* set snap_x snap_y values in pixels */
 		    fprintf(js_include_file,"snap_x = %f;snap_y = %f;",double_data[0] / int_data[0],double_data[1] / int_data[1]);
 		    string_length = snprintf(NULL,0,  ";draw_grid%d(%d,%d,%.2f,%.*f,%.*f,%d,%d,%d,%d,\"%s\",\"%s\",%d,\"%s\",%d,%d,%d,%.2f,%d,%s,%d,%d,%d,\"%s\",%.2f);\n ",canvas_root_id,GRID_CANVAS,precision,stroke_opacity,decimals,double_data[0],decimals,double_data[1],int_data[0],int_data[1],int_data[2],line_width,stroke_color,fill_color,font_size,font_family,use_axis,use_axis_numbering,use_rotate,angle,use_affine,affine_matrix,use_dashed,dashtype[0],dashtype[1],font_color,fill_opacity);
@@ -4107,7 +4107,6 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case BARCHART:
 	/*
 	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
-	@ will be used to create a legend for bar graph
 	@ may only to be used together with command 'grid'
 	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
 	@ use command 'legend' to provide an optional legend in right-top-corner
