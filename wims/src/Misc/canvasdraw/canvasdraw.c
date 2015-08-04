@@ -272,7 +272,7 @@ var xlogbase = 10;\
 var ylogbase = 10;\
 var use_xlogscale = 0;\
 var use_ylogscale = 0;\
-var x_strings = null;\
+var x_strings = null;var x_strings_up = null;\
 var y_strings = null;\
 var use_pan_and_zoom = 0;\
 var use_jsmath = 0;\
@@ -2823,14 +2823,29 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use these x-axis values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
-	 @ if the 'x-axis words' are to big and will overlap, a simple alternating offset will be applied
+	 @ if the 'x-axis words' are too big and will overlap, a simple alternating offset will be applied
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
-	 @ example:<br />size 400,400<br />xrange -5*pi,5*pi<br />yrange -100,500<br />axis<br />xaxis -4*pi:-4\\u03c0:-3*pi:-3\\u03c0:-2*pi:-2\\u03c0:-1*pi:-\\u03c0:0:0:pi:\\u03c0:2*pi:2\\u03c01:3*pi:3\\u03c0:4*pi:4\\u03c0<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid pi,1,grey,1,3,6,grey
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr(temp,":") != 0 ){ temp = str_replace(temp,":","\",\"");}
 	    if( strstr(temp,"pi") != 0 ){ temp = str_replace(temp,"pi","(3.1415927)");}/* we need to replace pi for javascript y-value*/
 	    fprintf(js_include_file,"x_strings = [\"%s\"];\n ",temp);
+	    use_axis_numbering = 1;
+	    break;
+	case X_AXIS_STRINGS_UP:
+	/*
+	 @ xaxisup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ the text will be rotated 90&deg; up
+	 @ use these x-axis values instead of default xmin...xmax
+	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ if the 'x-axis words' are too big, they will overlap the graph<br /> (in this case the text will start from ysize upwards)
+	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxisup 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
+	*/
+	    temp = get_string(infile,1);
+	    if( strstr(temp,":") != 0 ){ temp = str_replace(temp,":","\",\"");}
+	    if( strstr(temp,"pi") != 0 ){ temp = str_replace(temp,"pi","(3.1415927)");}/* we need to replace pi for javascript y-value*/
+	    fprintf(js_include_file,"x_strings_up = 1;x_strings = [\"%s\"];\n ",temp);
 	    use_axis_numbering = 1;
 	    break;
 	case Y_AXIS_STRINGS:
@@ -6938,16 +6953,34 @@ if( use_axis_numbering == 1 ){\
  if( x_strings != null ){\
   var len = x_strings.length;if((len/2+0.5)%%2 == 0){ alert(\"xaxis number unpaired:  text missing ! \");return;};\
   ctx.beginPath();\
-  for(var p = 0 ; p < len ; p = p+2){\
-   var x_nums = x2px(eval(x_strings[p]));\
-   var x_text = x_strings[p+1];\
-   corr = ctx.measureText(x_text).width;\
-   skip = 1.2*corr/xstep;\
-   if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
-   if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
-   ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
-   ctx.moveTo(x_nums,zero_y - tics_length);\
-   ctx.lineTo(x_nums,zero_y + tics_length);\
+  if( x_strings_up == null){\
+   for(var p = 0 ; p < len ; p = p+2){\
+    var x_nums = x2px(eval(x_strings[p]));\
+    var x_text = x_strings[p+1];\
+    corr = ctx.measureText(x_text).width;\
+    skip = 1.2*corr/xstep;\
+    if( zero_y+2*font_size > ysize ){shift = ysize - 2*font_size;};\
+    if( skip > 1 ){if(flip == 0 ){flip = 1; shift = shift + font_size;}else{flip = 0; shift = shift - font_size;}};\
+    ctx.fillText(x_text,parseInt(x_nums-0.5*corr),shift);\
+    ctx.moveTo(x_nums,zero_y - tics_length);\
+    ctx.lineTo(x_nums,zero_y + tics_length);\
+   };\
+  }\
+  else\
+  {\
+   for(var p = 0 ; p < len ; p = p+2){\
+    var x_nums = x2px(eval(x_strings[p]));\
+    var x_text = x_strings[p+1];\
+    corr = 2 + tics_length + zero_y + ctx.measureText(x_text).width;\
+    if( corr > ysize ){corr = ysize;};\
+    ctx.save();\
+    ctx.translate(x_nums+0.5*font_size, corr);\
+    ctx.rotate(-1.5708);\
+    ctx.fillText(x_text,0,0);\
+    ctx.restore();\
+    ctx.moveTo(x_nums,zero_y - tics_length);\
+    ctx.lineTo(x_nums,zero_y + tics_length);\
+   };\
   };\
   ctx.closePath();\
  }\
@@ -7997,8 +8030,10 @@ int get_token(FILE *infile){
 	*pixelsize="pixelsize",
 	*clickfillmarge="clickfillmarge",
 	*xaxis="xaxis",
+	*xaxisup="xaxisup",
 	*yaxis="yaxis",
 	*xaxistext="xaxistext",
+	*xaxistextup="xaxistextup",
 	*yaxistext="yaxistext",
 	*piechart="piechart",
 	*legend="legend",
@@ -8686,6 +8721,10 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, xaxis) == 0 || strcmp(input_type, xaxistext) == 0 ){
 	free(input_type);
 	return X_AXIS_STRINGS;
+	}
+	if( strcmp(input_type, xaxisup) == 0 || strcmp(input_type, xaxistextup) == 0 ){
+	free(input_type);
+	return X_AXIS_STRINGS_UP;
 	}
 	if( strcmp(input_type, yaxis) == 0  ||  strcmp(input_type, yaxistext) == 0 ){
 	free(input_type);
