@@ -191,7 +191,7 @@ int main(int argc, char *argv[]){
 	    /*
 	    @size width,height
 	    @set canvas size in pixels
-	    @mandatory first command
+	    @mandatory first command (can only be preceded by keyword 'popup')
 	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
