@@ -2821,8 +2821,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ use these x-axis values instead of default xmin...xmax
+	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big and will overlap, a simple alternating offset will be applied
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
 	*/
@@ -2837,8 +2838,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ xaxisup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ the text will be rotated 90&deg; up
-	 @ use these x-axis values instead of default xmin...xmax
+	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big, they will overlap the graph<br /> (in this case the text will start from ysize upwards)
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxisup 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
 	*/
@@ -2853,7 +2855,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
-	 @ use these y-axis values instead of default ymin...ymax
+	 @ use these y-axis num1...num_n  values instead of default ymin...ymax
+	 @ a javascript error message will flag non-matching value:name pairs
 	 @ example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
 	*/
 	    temp = get_string(infile,1);
@@ -3501,7 +3504,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
 	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
 	 @ command 'opacity' may be used to set stroke_opacity of 'buttons
-	 @ NOTE: use command 'zoom' at the end of your script code (the same is true for commanmd 'mouse')
+	 @ NOTE: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
 	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
 	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
@@ -3665,7 +3668,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mouse color,fontsize
 	 @ will display the cursor (x:y) coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for commanmd 'zoom')
+	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -4123,7 +4126,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
 	@ may only to be used together with command 'grid'
-	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis' and 'yaxis'
+	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis','xaxisup' and 'yaxis'
 	@ use command 'legend' to provide an optional legend in right-top-corner
 	@ also see command 'piechart'
 	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
@@ -6974,7 +6977,7 @@ if( use_axis_numbering == 1 ){\
     corr = 2 + tics_length + zero_y + ctx.measureText(x_text).width;\
     if( corr > ysize ){corr = ysize;};\
     ctx.save();\
-    ctx.translate(x_nums+0.5*font_size, corr);\
+    ctx.translate(x_nums+0.25*font_size, corr);\
     ctx.rotate(-1.5708);\
     ctx.fillText(x_text,0,0);\
     ctx.restore();\
@@ -7104,7 +7107,7 @@ if( typeof barchart_0  !== 'undefined' ){\
  while( typeof bar_name !== 'undefined' ){\
     try{ bar_name = eval('barchart_'+num_barcharts);num_barcharts++;}catch(e){break;};\
  };\
- var bar_width = parseInt(0.8*xstep/(num_barcharts));\
+ var bar_width = parseInt(0.8*x2step/(num_barcharts));\
  for(var i=0 ; i< num_barcharts ; i++){\
   bar_name = eval('barchart_'+i);\
   var bar_x = new Array();\
@@ -7123,7 +7126,7 @@ if( typeof barchart_0  !== 'undefined' ){\
   for( var p = 0; p < idx ; p++ ){\
    ctx.strokeStyle = barcolor[p];\
    ctx.fillStyle = barcolor[p];\
-   ctx.rect(bar_x[p]-0.4*xstep+dx,bar_y[p],bar_width,zero_y - bar_y[p]);\
+   ctx.rect(bar_x[p]-0.4*x2step+dx,bar_y[p],bar_width,zero_y - bar_y[p]);\
   };\
   ctx.fill();\
   ctx.stroke();\
