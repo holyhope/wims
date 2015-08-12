@@ -13,9 +13,9 @@ $wims_name_part_list ($usercnt)
     $name_noyetparticipant
     !if $typen!=level
         &nbsp;
-	!set wims_ref_class=wims_button
-	!href module=adm/class/reguser&step=1 $wims_name_addstudent
-	&nbsp;
+     !set wims_ref_class=wims_button
+    !href module=adm/class/reguser&step=1 $wims_name_addstudent
+&nbsp;
     !endif
 !!    20141016 : deconnecte pour l'instant, attente d'organisation.
 !!    !set wims_ref_class=wims_button
@@ -24,46 +24,46 @@ $wims_name_part_list ($usercnt)
 !else
 !! ------ manage ask for technical variable selection.
     !form reply
-	<p>
- 		$name_filter
-		<textarea name="varfilter">$varfilter</textarea>
- 		!set wims_ref_class=wims_button_help float_right
- 		!href cmd=help&special_parm=filter $wims_name_help
-  	</p>
-	<div class="wimsform wimscenter">
-  		<input type="submit" value="$wims_name_Show" />
-  	</div>
+   <p>
+       $name_filter
+      <textarea name="varfilter">$varfilter</textarea>
+       !set wims_ref_class=wims_button_help float_right
+       !href cmd=help&special_parm=filter $wims_name_help
+   </p>
+   <div class="wimsform wimscenter">
+        <input type="submit" value="$wims_name_Show" />
+   </div>
     !formend
 !! ----- displaying table of participant
     $table_header
-	$table_hdtr
-	    !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth,$name_vars,$name_comments
-		<th>$k</th>
-	    !next k
-	</tr>
+    $table_hdtr
+       !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth,$name_vars,$name_comments
+        <th>$k</th>
+       !next k
+   </tr>
     !readproc adm/class/mkcomment name
     !let namecomment=$scriptout
     !for i=1 to $usercnt
-	!set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
-	!distribute items $uu into bl,bl,uu
-	!if $varfilter_!=$empty
-	    !read adm/class/testfilter $uu\
+   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+   !distribute items $uu into bl,bl,uu
+   !if $varfilter_!=$empty
+       !read adm/class/testfilter $uu\
 $varfilter_
-	!endif
-	!if $(var_filter_test)=1 or $varfilter_=$empty
+   !endif
+   !if $(var_filter_test)=1 or $varfilter_=$empty
 !!        !set UU=!hex $uu
           !reset user_exists,user_email,user_regnum,user_external_auth,user_vars,user_comments$namecomment,user_comments
-	      !readproc adm/class/userdef classes,$wims_class,$uu
+         !readproc adm/class/userdef classes,$wims_class,$uu
           !readdef $userdef
           !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
-	  $table_tr
+     $table_tr
              <td>
-		!href cmd=reply&job=userprop&getuser=$uu $name_studentloc
-	        !if $uu isitemof $wims_connectedlogin
-		    <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
-	        !endif
-	     </td>
-	     <td>$uu</td>
+      !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
+           !if $uu isitemof $wims_connectedlogin
+          <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
+           !endif
+        </td>
+        <td>$uu</td>
              !for k in email,regnum,external_auth,vars
                  <td>$(user_$(k))</td>
              !next k
@@ -72,7 +72,7 @@ $varfilter_
                   $scriptout
              </td>
           </tr>
-	!endif
+   !endif
     !next i
     </table>
 !endif

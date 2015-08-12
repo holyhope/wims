@@ -1,7 +1,6 @@
 !read adm/css.phtml
 !read adm/class/classname.phtml $wims_classname\
 $wims_institutionname
-
 !header1
 
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
@@ -10,8 +9,6 @@ $wims_institutionname
  !! !read lang/help.phtml
 !! !goto end
 !!!endif
-
-!! manage error msg
 
 !if $error!=$empty
  <div class="wims_alertmsg">
@@ -27,8 +24,7 @@ $wims_institutionname
  !read $job.phtml
 !endif
 
-
-!! lien latéraux vers la liste des enseignants
+!! menubox links -> teacher list
 !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
 !!##  the administrator at the level of the portal or the creator of the class can add a teacher to
 !!##  the list of teachers of his class
@@ -51,7 +47,6 @@ to $wims_menu_items
 to $wims_menu_items
  !endif
 !endif wims_typename=group etc
-
 
 !tail
 
