@@ -436,8 +436,9 @@ Actividades globales de los participantes \
 Cambiar el baremo \
 Notas manualmente asignadas \
 Conexión hoja de cálculo \
+Actividades globales\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
-wims_name_csv
+wims_name_csv,wims_name_activity1
 
 !if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lista de los participantes\
@@ -453,9 +454,11 @@ Cuaderno de competencias \
 Next\
 Previous\
 Filters\
+Part. skills assessment\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
- wims_name_next_participant,wims_name_prev_participant,wims_name_filter
+ wims_name_next_participant,wims_name_prev_participant,wims_name_filter,\
+ wims_name_livret1
 !endif
 
 !if adm/manage isin $module
