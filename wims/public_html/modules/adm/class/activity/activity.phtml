@@ -7,35 +7,44 @@
  !goto end
 !endif
 
+!if $user!=$empty
+  !readdef wimshome/log/classes/$wims_class/.users/$user
+  !distribute item $user_lastname,$user_firstname into lastname,firstname
+!endif
 !default name_student=!nosubst $lastname, $firstname
 !readproc var.activity.proc
-!if $showsheet=$empty
+!if $status!=OK
 !form reply
   <input type="hidden" name="job" value="select" />
+  <input type="hidden" name="status" value="OK" />
   <fieldset class="property_fields halfwidth blockcenter">
-      <legend>$name_title</legend>
+      <legend>$name_title
+      !if $user!=$empty
+        ($name_student)
+      !endif
+      </legend>
      <div class="field box">
-     <label for="showsheet">$name_showsheet</label>
-     <br />
-  !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
+       <label for="showsheet">$name_showsheet</label>
+       <br />
+    !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
     !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
-     </div>
-     <div class="field box">
-       <label for="varfilter">$wims_name_filter</label>
-       !set wims_ref_class=wims_button_help float_right
- !href cmd=help&special_parm=filter $wims_name_help
-       <textarea name="varfilter">$varfilter</textarea>
      </div>
      <div class="wimscenter wimsform">
       <input type="submit" value="$wims_name_Show" />
      </div>
+       !read choix.phtml
    </fieldset>
 !formend
 !else
 !if $usercnt==0
 $name_noparticipant
 !else
-<p>$name_click</p>
+!default choice=first
+!default showsheet=$activlist
+!set nbth=4
+!if $user=$empty
+  <p>$name_click</p>
+!endif
  $table_header
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$name_cnt_exo
@@ -43,6 +52,8 @@ $name_noparticipant
  !for j in $showsheet
  !if $(activ[$j])>0
   <th colspan="2" class="small">$wims_name_Sheet $j <br />$(shs_title[$j])<br />($(nbexo$j) $name_exo)</th>
+  !increase nbth
+  !increase nbth
  !endif
  !next j
  </tr>
@@ -57,6 +68,15 @@ $name_noparticipant
  !for m=1 to $usercnt
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
+  !if $choice=first and $m=1
+    !default user=$uu
+     !reset choice
+  !endif
+  !if ($choice=login and $uu isitemof $loginlist) \
+   or ($choice=select and $uu isitemof $select_user)\
+   or $uu=$user\
+   or ($choice=filter and $varfilter_!=$empty)\
+   or ($choice=first and $m=1)
   !if $varfilter_!=$empty
     !reset var_filter_test
     !readproc adm/class/testfilter $uu\
@@ -78,15 +98,35 @@ $varfilter_
     !endif
   !next
   </tr>
+ !!if $m=1
+  $table_tr
+  <td colspan="$[$nbth+1]">
+  !read exobyday.phtml
+  </td></tr>
+!!endif
+!endif
 :enduser
 !next
 $table_end
 
 !endif
-!set wims_menu_items=!append line refresh,1,cmd=reply\
-back2,1,cmd=new\
-Score1,1,module=adm/class/userscore&job_affi=notes\
+
+!if $user!=$empty
+ !distribute item scores,livret1 into sc,li
+ !set parmuser1=&job=getuser&getuser=$user
+ !set parmuser2=&job=user&user=$user
+!else
+ !distribute item Score1,livret into sc,li
+!endif
+!set wims_menu_items=!append line refresh,1,cmd=reply&user=$user\
+back2,1,cmd=new&user=$user\
+$sc,1,module=adm/class/userscore&job_affi=notes$parmuser1\
+$li,1,module=adm/class/livret$parmuser2\
 to $wims_menu_items
+
+!read adm/class/getnextuser $wims_class,$user,activity,user
 
 :end
 !tail
+!reset choice
+

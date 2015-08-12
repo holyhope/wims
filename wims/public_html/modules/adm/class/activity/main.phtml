@@ -8,11 +8,13 @@ $wims_institutionname
  !header
  !changeto help.phtml
 !endif
+!set js=!record 0 of js/chooselist.js
+!set wims_html_header=!append line $js to $wims_html_header
 !header1
 !read adm/title.phtml 1\
 $classname\
 $name_title
-
+!default job=activity
 !if $error!=$empty
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
@@ -26,9 +28,23 @@ to $wims_menu_items
 !endif
 
 !read activity.phtml
+!goto end
 
 :end
-!set wims_menu_items=!append line Score1,1,module=adm/class/userscore\
+!reset parmuser1 parmuser2
+!if $user!=$empty
+ !set parmuser1=&job=getuser&getuser=$user
+ !set parmuser2=&job=user&user=$user
+ !set sc=scores
+ !set li=livret1
+!else
+ !set sc=Score1
+ !set li=livret
+!endif
+
+!set wims_menu_items=!append line $sc,1,module=adm/class/userscore$parmuser1\
+$li,1,module=adm/class/livret$parmuser2\
+back2,1,\
  to $wims_menu_items
 !tail
 

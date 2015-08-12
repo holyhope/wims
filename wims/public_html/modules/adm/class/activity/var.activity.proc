@@ -1,3 +1,4 @@
+showsheet_=!nospace $showheet
 activ=
 sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !bound numshowsheet between integer 1 and $sheetcnt default 1
@@ -22,3 +23,9 @@ usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 !set activlist=!listcomplement $activlist in $listtot
 !set activlist_cnt=!itemcnt $activlist
 
+!if $choice iswordof login filter first
+ !reset select_user
+!endif
+!if $choice iswordof select filter first
+  !reset loginlist
+!endif

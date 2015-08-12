@@ -3,7 +3,6 @@
 fields=typ,sh,exo,newcnt,sccnt,scsum,dursum,scavg,duravg,scmin,durmin,scmax,durmax,scdev,durdev,cid
 wims_prefix=class user tmp n sharing sharable
 !read tabletheme
-
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
@@ -16,8 +15,8 @@ wims_prefix=class user tmp n sharing sharable
     var_line =!replace $ $ by , in $var_line
     varfilter_=!append line $var_line to $varfilter_
   !next
-  !set name_classAverage=$name_groupAverage
 !endif
+!exit
 
 !bound share within yes,no default no
 !if $share=yes
