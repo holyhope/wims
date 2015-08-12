@@ -11,7 +11,7 @@ $wims_name_account_property
 !read adm/class/initclass $wims_class
 !set inplen=40
 
-!! ----- permet de transfÃ©rer les scores d'un user provenant d'une classe en partage dans un groupement ou entre des cours d'un mÃªme portail
+!! ----- permet de transférer les scores d'un user provenant d'une classe en partage dans un groupement ou entre des cours d'un même portail
  !if $wims_user=supervisor and $wims_supertype iswordof 2 4
   !readproc adm/gateway/transfer $getuser test
   !if $transfer_test>0
@@ -70,29 +70,29 @@ $wims_name_account_property
 !if $class_auth=$empty or $wims_user=supervisor
   <div class="field box">
     <label>$wims_name_Password</label>
-	!href module=adm/class/passwd&job=part&part=$getuser $name_change
+    !href module=adm/class/passwd&job=part&part=$getuser $name_change
  </div>
 !endif
 
 <div class="field box">
   <label for="up_lastname">$wims_name_lastname</label>
-	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" />
+  <input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname" />
 </div>
 <div class="field box">
   <label for="up_firstname">$wims_name_firstname</label>
-	<input size="$inplen" name="up_firstname" id="up_firstname" value="$user_firstname" />
+  <input size="$inplen" name="up_firstname" id="up_firstname" value="$user_firstname" />
 </div>
 <div class="field box">
   <label for="up_email">$wims_name_email</label>
-	<input size="$inplen" name="up_email" id="up_email" value="$user_email" />
+  <input size="$inplen" name="up_email" id="up_email" value="$user_email" />
 </div>
 <div class="field box">
   <label for="up_regnum">$name_regnum</label>
-	<input size="$inplen" name="up_regnum" id="up_regnum" value="$user_regnum" />
+  <input size="$inplen" name="up_regnum" id="up_regnum" value="$user_regnum" />
 </div>
 <div class="field box">
   <label for="up_photourl">$name_photourl</label>
-	<input size="$inplen" name="up_photourl" id="up_photourl" value="$user_photourl" />
+  <input size="$inplen" name="up_photourl" id="up_photourl" value="$user_photourl" />
  </div>
 !if $wims_user=supervisor
  <div class="field box">
@@ -102,21 +102,21 @@ $wims_name_account_property
   </div>
   <div class="field box">
     <label for="up_vars">$name_vars</label>
-	<textarea class="nowrap" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea>
+    <textarea class="nowrap" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea>
   </div>
   <div class="field box">
     <label for="up_external_auth">$name_external_auth</label>
-	<input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth" />
-	!set wims_ref_class=wims_button_help float_right
+    <input size="$inplen" name="up_external_auth" id="up_external_auth" value="$user_external_auth" />
+    !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=authentification $wims_name_help
  </div>
 !else
  <div class="field box">
    <label for="passcheck">$name_classpassword</label>
-   	<input size="14" type="password" name="passcheck" id="passcheck" />
-   	<div class="formHelp">
-   	 <span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span>
-   	</div>
+   <input size="14" type="password" name="passcheck" id="passcheck" />
+   <div class="formHelp">
+       <span class="small wims_alertmsg">$name_userprop_warning: $name_enterpassword</span>
+   </div>
  </div>
 !endif
 :end
@@ -126,26 +126,27 @@ $wims_name_account_property
  <input type="submit" name="abandon" value="$wims_name_giveup" />
 </div>
 </fieldset>
-
 !formend
 
-
 !if $wims_user=supervisor
- !set wims_menu_items=!append line part_list,1,cmd=resume\
- delstudent,1,cmd=reply&job=delprep&delprep=$getuser\
- addstudent,1,module=adm/class/reguser&step=1\
+ !if $wims_supertype=4 and $wims_typename!=course
+  !! on ne met pas les scores
+ !else
+  !set wims_menu_items=!append line \
+scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
+livret1,1,module=adm/class/livret&job=user&user=$getuser\
+activity1,1,module=adm/class/activity&job=user&user=$getuser\
+  itemsep,0,\
+to $wims_menu_items
+ !endif
+ !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
+ !set wims_menu_items=!append line itemsep,0,\
+part_list,1,cmd=resume\
+delstudent,1,cmd=reply&job=delprep&delprep=$getuser\
+addstudent,1,module=adm/class/reguser&step=1\
  ,0,\
 to $wims_menu_items
 
-!read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
-
-!if $wims_supertype=4 and $wims_typename!=course
-  !! on ne met pas les scores
- !else
-!set wims_menu_items=!append line \
-  scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
-to $wims_menu_items
- !endif
 !else
  !if $wims_supertype=4 and $wims_typename!=course
    !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
@@ -153,8 +154,6 @@ to $wims_menu_items
  !endif
  !set wims_menu_items=!append line class_home,1,module=home\
  to $wims_menu_items
-
 !endif
 
 !reset reg,abandon
-

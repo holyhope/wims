@@ -31,7 +31,7 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
-!! ----- transfÃ©rer dans usermanage (il s'agit d'un lien de transfert de score pour dÃ©placer des Ã©lÃ¨ves d'une classe Ã  l'autre (dans un portail ou un groupement)
+!! ----- transférer dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
 !! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
 !!  !readproc adm/gateway/transfer $getuser test
 !!  !if $transfer_test>0
@@ -326,26 +326,24 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
  !set wims_menu_items=!append line reg_ex,1,module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser\
  to $wims_menu_items
 !endif
-
-!if $wims_user!=supervisor
- !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
- to $wims_menu_items
-!endif
-!if $wims_user=supervisor
- !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
-part_list,1,cmd=resume\
+!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ ,0,\
 to $wims_menu_items
 
-!! 11/10/2014 supprime du menu_items (n'a pas Ã  ce trouver dans les notes choix A DISCUTER).
-!! delprep,1,cmd=reply&job=delprep&delprep=$getuser\
-!!passwd,1,module=adm/class/passwd&job=part&part=$getuser\
-
-
-!read adm/class/getnextuser $wims_class,$getuser,getuser,getuser
-
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line \
+ account,1,module=adm/class/usermanage&job=userprop&getuser=$getuser\
+to $wims_menu_items
  !if (($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)) and $wims_showlivret!=no
-  !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
+  !set wims_menu_items=!append line livret1,1,module=adm/class/livret&job=user&user=$getuser\
+ to $wims_menu_items
+  !set wims_menu_items=!append line activity1,1,module=adm/class/activity&job=exobyday&user=$getuser\
+ to $wims_menu_items
  !endif
+  !set wims_menu_items=!append line ,0, \
+  part_list,1,cmd=resume\
+ to $wims_menu_items
+  !read adm/class/getnextuser $wims_class,$getuser,getuser,getuser
 !else
  !if $wims_showlivret!=no
   !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
