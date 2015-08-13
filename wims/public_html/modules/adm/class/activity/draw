@@ -1,0 +1,121 @@
+!default maxday=365
+!set lim=30
+!set colorg=green
+!set datay0=!nonempty items $datay
+!set dataxmin=$(datax[1])
+!set dataxmax=$(datax[-1])
+!set datafirst=$dataxmin
+!set datalast=$dataxmax
+!set maxexo_=!exec pari vecmax([$datay0])
+!set maxexo=$[max(12,$maxexo_+5)]
+!if $datay=$empty
+ !exit
+!endif
+!set color=blue
+!reset barchart linegraph legend
+!set jday=0
+
+!set nbmonth=!nosubst 31,$nbf,31,30,31,30,31,31,30,31,30,31
+!set testfin=0
+!reset goodlist
+!reset insplot_data insplot_set tics
+!for j=$datafirst to $datalast
+  !set cnt=!nospace $j
+  !set cnt1=!char 1 to 4 of $cnt
+  !set cnt2=!char 5 to 6 of $cnt
+  !set cnt3=!char 7 to 8 of $cnt
+  !if $cnt1%4=0 and $cnt1%100!=0
+   !set nbf=29
+  !endif
+  !default nbf=28
+  !if $cnt2 <=12
+    !if $cnt3 <= $(nbmonth[$cnt2])
+      !increase jday
+      !set jj=!positionof item $cnt in $datax
+      !if $jj !=
+        !set tmp=$[min($(datay[$jj]),$maxexo)]
+        !if $barchart=$empty
+          !set jday0=$jday
+          !set jday_=2
+          !set barchart=$jday_:$tmp:$color
+        !else
+          !set jday_=$[$jday-$jday0+2]
+          !set barchart=$barchart:$jday_:$tmp:$color
+        !endif
+        !if $(dataz[$jj])!=$empty
+          !set linegraph=!append item $jday_:$(dataz[$jj]) to $linegraph
+        !else
+          !set linegraph=!append item $jday_:0 to $linegraph
+        !endif
+        !set legend=!append item $jday_:$cnt3/$cnt2 to $legend
+        !set good=!declosing $(datagood[$jj])
+        !set good=!nonempty items $good
+        !if $good!=$empty
+         !set gcnt=!itemcnt $good
+         !set good=!makelist $jday_,x for x in $good
+         !if $gcnt > $lim
+          !for t=0 to $[floor($gcnt/$lim)-1]
+            !set goodlist=!append line crosshairs,$colorg,$(good[$[2*$t*$lim+1]..$[2*($t+1)*$lim]]) to $goodlist
+          !next
+          !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
+         !else
+          !set goodlist=!append line crosshairs,$colorg,$good to $goodlist
+         !endif
+        !endif
+        !set testfin=$jday_
+!!for gnuplot (inutile maintenant)
+        !set insplot_data=!append line $jday $tmp to $insplot_data
+        !set tics=!append item "$cnt3:$cnt2" $jday to $tics
+!!
+      !endif
+    !endif
+  !endif
+  !if $jday_ > $maxday
+   !break
+  !endif
+!next
+!set linegraph=!replace internal , by : in $linegraph
+!set legend=!replace internal , by : in $legend
+
+!!!reset legend
+!!!for w=1 to $[$maxday/7]
+!! !set legend=$legend$[7*$w-3]:week $w:
+!!!next
+!set testfin=$[$testfin+2]
+!set mult= $[round($testfin/50)]
+!if $testfin < 50
+  !set mult=20
+!else
+  !set mult=10
+!endif
+!set xsize=$[$testfin*$mult]
+!set ysize=$[$maxexo*7]
+
+!!if $barchart=$empty
+ !!exit
+!!endif
+
+!exec canvasdraw\
+size $xsize,$ysize\
+xrange -2,$[$testfin]\
+yrange -5,$maxexo\
+legend $firstname $lastname ($datafirst-$datalast)\
+axis\
+xaxisup $legend\
+ylabel $name_ylabel\
+opacity 100,50\
+grid 7,10,grey,7,10,0,grey\
+barchart $barchart\
+opacity 255,255\
+$goodlist\
+linewidth 3\
+strokecolor red\
+linegraph $linegraph
+
+!exit
+!set xsize_gnuplot_mult=$[round(10*$xsize/500)/10]
+!set ysize_gnuplot_mult=$[round(10*$ysize/400)/10]
+!set insplot_set=grid;title "$name_student($datafirst ..)";format x;size $xsize_gnuplot_mult,$ysize_gnuplot_mult;
+!set insplot_transparent=white
+!set insplot_set=$(insplot_set)boxwidth 0.4;style fill solid 1.0;timefmt "%y:%m:%d";xtics ($tics) rotate;xrange [0:$testfin];yrange [0:$maxexo];
+!insplot "insplot_data" using 1:2 with boxes notitle

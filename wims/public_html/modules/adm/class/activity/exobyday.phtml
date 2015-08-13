@@ -1,0 +1,55 @@
+!! on a besoin de databyday
+!! utile ? on prend ensuite les dates extrêmes du fichier de données.
+!!defread wimshome/log/classes/$wims_class/.def
+!!default datafirst=$class_creation
+!!default datalast=!char 1 to 8 of $wims_now
+
+!set datax=!declosing $(databyday[1;1])
+!set datax=!nospace $datax
+!set datay=!declosing $(databyday[1;2])
+!set dataz=!declosing $(databyday[1;3])
+!set datagood=!declosing $(databyday[1;4])
+!set dataelse=!line 2 to -1 of $databyday
+!if $dataelse=$empty
+ !exit
+!endif
+!set nbs=!itemcnt $showsheet_
+<p class="activity_title">
+!if $nbs=1
+  $wims_name_Sheet
+!else
+  $wims_name_Sheets
+!endif
+!replace internal , by ,$ $ in $showsheet_
+</p>
+!read draw
+
+!if $nbs>1
+!!on regarde chacune des feuilles
+   !set name=$wims_name_Sheet
+!else
+!!on regarde chacun des exos
+  !set name=$wims_name_Exercise
+!endif
+ !set linecnt=!linecnt $dataelse
+ <ul class="inline">
+ !for nn=1 to $linecnt
+     !set line=!line $nn of $dataelse
+     !set exo=$(line[1])
+     !set datax=!declosing $(line[2])
+     !set datax=!nospace $datax
+     !set datay=!declosing $(line[3])
+     !set datay0=!nonempty items $datay
+     !if $datay0=$empty
+       !break
+     !endif
+     !set datay=!replace internal , by ,0 in $datay
+     !set datay=!nospace $datay
+     !set dataz=!declosing $(line[4])
+     !set datagood=!declosing $(line[5])
+     <li><p class="activity_title">$name $exo</p>
+     !read draw
+     </li>
+ !next
+  </ul>
+!endif

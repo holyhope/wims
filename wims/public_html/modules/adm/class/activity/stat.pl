@@ -1,9 +1,10 @@
 #!/usr/bin/perl
-#use strict;
+#use strict; use warnings;
 
 use Time::Local;
-my ($OUT, $SHEET, $OPTION, $SH);
-my $limit='10';
+my ($OUT, $SHEET);
+my $SH='';my $OPTION='';
+my $limit='9';
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'});
 while ($_ = shift (@ARGV))
 {
@@ -13,17 +14,22 @@ while ($_ = shift (@ARGV))
      if (/^--option=(.*):(.*)$/) {$OPTION = $1; $SH=$2} # option exobyday
 };
 #fichier à lire
-my $FILE = "/" . $_;
+#my $FILE = "/" . $_;
 my $FILE = $_;
+
+my $SH0=$SH;
 $SH =~ s/,/|/g;
 my (%lastdate, %score, %duree, $dattime);
 my %exobyday=();
 my %scorebyday=();
 my %goodbyday=();
-my %exobyday0=();
-my %scorebyday0=();
-my %goodbyday0=();
-
+my %exobyday1=();
+my %scorebyday1=();
+my %goodbyday1=();
+my %exobydaysh=();
+my %scorebydaysh=();
+my %goodbydaysh=();
+my $good;
 for my $sh (1..$SHEET) {
    $lastdate{$sh}='';
    $score{$sh} = 0;
@@ -49,11 +55,14 @@ while(<IN>){
     $exobyday{$date} ++ ;
     $scorebyday{$date} ++ if $_[5] >= $limit;
     $goodbyday{$date} .= $exobyday{$date} . ',' if $_[5] >= $limit;
+    $exobydaysh{$_[2]}->{$date} ++ ;
+    $scorebydaysh{$_[2]}->{$date} ++ if $_[5] >= $limit;
+    $goodbydaysh{$_[2]}->{$date} .= $exobydaysh{$_[2]}->{$date} . ',' if $_[5] >= $limit;
 ## n'a de sens que s'il y a une seule sheet
-    if ($_[2]=~ /$SH/){
-      $exobyday0{$_[3]}->{$date} ++;
-      $scorebyday0{$_[3]}->{$date} ++ if $_[5] >= $limit;
-      $goodbyday0{$_[3]}->{$date} .= $exobyday0{$_[3]}->{$date} . ',' if $_[5] >= $limit;
+    if ($_[2]=~ /$SH0/){
+      $exobyday1{$_[3]}->{$date} ++;
+      $scorebyday1{$_[3]}->{$date} ++ if $_[5] >= $limit;
+      $goodbyday1{$_[3]}->{$date} .= $exobyday1{$_[3]}->{$date} . ',' if $_[5] >= $limit;
     }
   }
   my ($annee, $mois, $jour)=($1,$2,$3);
@@ -88,29 +97,43 @@ print $dattime . ',' . $nbsessions
       . "," . $text;
 
 if ($OPTION eq 'exobyday'){
-my ($xcoord, $ycoord, $zcoord, $tmp) ;
+my ($xcoord, $ycoord, $zcoord, $good,$tmp)=('','','','','') ;
 for my $date ( sort keys %exobyday ) {
-  my $tmp=',' if ($xcoord);
+  if ($xcoord) {$tmp=',' } else {$tmp=''};
   $xcoord .= "$tmp$date";
-  $ycoord .= "$tmp" . $exobyday{$date};
-  $zcoord .= "$tmp" . $scorebyday{$date};
-  $good .= "$tmp" . "[" . $goodbyday{$date} ."]" ;
+  if ($exobyday{$date}){ $ycoord .= $tmp . $exobyday{$date};} else { $ycoord .= $tmp };
+  if ($scorebyday{$date}){ $zcoord .=  $tmp . $scorebyday{$date}; }else { $zcoord .= $tmp };
+  if ($goodbyday{$date}){$good .= "$tmp" ."[" . $goodbyday{$date} ."]"} else {$good .= "$tmp" . "[]"};
   }
   print "\n[$xcoord],[$ycoord],[$zcoord],[$good]";
   $tmp='';
-}
 
-if ($SH=~/\d+\b/) {
- for my $ex (sort keys %exobyday0){
-  my ($ycoord,$zcoord,$good,$xcoord)='';
+if (!($SH0=~ /,/)) {
+ for my $ex (sort keys %exobyday1){
+  my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
    for my $date ( sort keys %exobyday ) {
-      $xcoord .= "$tmp$date" .',';
-      $ycoord .= $exobyday0{$ex}{$date} . ',';
-      $zcoord .= $scorebyday0{$ex}{$date} . ',';
-      $good .= "[" . $goodbyday0{$ex}{$date} ."]," ;
+      if ($xcoord) {$tmp=',' } else {$tmp=''};
+      $xcoord .= "$tmp$date";
+      if ($exobyday1{$ex}->{$date}) { $ycoord .= $tmp . $exobyday1{$ex}->{$date}} else {$ycoord .= $tmp};
+      if ($scorebyday1{$ex}->{$date}){ $zcoord .= $tmp . $scorebyday1{$ex}->{$date}} else {$zcoord .= $tmp};
+      if ($goodbyday1{$ex}->{$date}){ $good .= $tmp . "[" . $goodbyday1{$ex}->{$date} ."]" } else { $good .= $tmp . "[]"};
    }
    print  "\n$ex,[$xcoord],[$ycoord],[$zcoord],[$good]";
   }
+ }
+ else {
+ for my $sh (sort keys %exobydaysh){
+  my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
+   for my $date ( sort keys %exobyday ) {
+      if ($xcoord) {$tmp=',' } else {$tmp=''};
+      $xcoord .= "$tmp$date";
+      if ($exobydaysh{$sh}->{$date}) { $ycoord .= $tmp . $exobydaysh{$sh}->{$date}} else { $ycoord .= $tmp };
+      if ($scorebydaysh{$sh}->{$date}) { $zcoord .= $tmp . $scorebydaysh{$sh}->{$date};} else { $zcoord .= $tmp};
+      if ($goodbydaysh{$sh}->{$date}){ $good .= $tmp . '[' . $goodbydaysh{$sh}->{$date} . ']' ;} else { $good .= $tmp . '[]'}
+   }
+   print  "\n$sh,[$xcoord],[$ycoord],[$zcoord],[$good]";
+  }
+ }
 }
 sub converttime {
     my $heure=shift;

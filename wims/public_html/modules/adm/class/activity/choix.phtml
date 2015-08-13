@@ -1,0 +1,61 @@
+!set file=wimshome/log/classes/$wims_class/.userlist
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!for lu =1 to $cnt
+  !set us_=!record $lu of $file
+  !if $(us_[3]) notitemof $select_user
+   !set option=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option
+  !else
+   !set option_select=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option_select
+  !endif
+!next
+!if $option=$empty
+  !set option=<option value=""></option>
+!endif
+!if $option_select=$empty
+  !set option_select=<option value=""></option>
+!endif
+<fieldset class="property_fields blockcenter">
+ <legend>$name_menu</legend>
+$name_expert0
+
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=choice1
+<p>
+!formradio choice list first prompt $name_shiftpart
+</p>
+
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=choice2
+<p>
+!formradio choice list select prompt <b>$name_select</b>:
+$name_expert1
+</p>
+!set wims_chooselist_select=$option
+!set wims_chooselist_checked=$option_select
+<div class="wimscenter">
+!read js/chooselist.phtml select_user1,select_user2,select_user
+</div>
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=choice3
+<p>
+!if $user!=$empty
+  !set choice=login
+  !set loginlist=$user
+!endif
+!formradio choice list login prompt <b>$name_loginlist</b>:
+$name_expert2
+</p>
+<div class="wimscenter">
+   <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
+</div>
+!set wims_ref_class=wims_formradio
+!set wims_ref_id=choice4
+<p>
+!formradio choice list filter prompt <b>$wims_name_filter:</b>
+$name_expert3
+</p>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=filter $wims_name_help
+<div class="wimscenter">
+  <textarea name="varfilter">$varfilter</textarea>
+</div>
