@@ -172,8 +172,8 @@ sub one {my ($a, $taxo, $desc, $tit, $ref, $vu)=@_;
   }
   if ($ref->{'text'}{$a} || $desc->{$a}){
     $T .="<ul id=\"list_$amod\">";
-    if ($ref->{'text'}{$a}){ $T .=  $ref->{'text'}{$a}; }
-    if ($ref->{'sheet'}{$a}){ $T .=  $ref->{'sheet'}{$a}; }
+    if ($ref->{'text'}{$a}){ $T .= $ref->{'text'}{$a}; }
+    if ($ref->{'sheet'}{$a}){ $T .= $ref->{'sheet'}{$a}; }
     if ($desc->{$a}) {
       for my $b (sortuniq (split ',', $desc->{$a})) { $T .= one($b, $taxo, $desc, $tit, $ref, $vu) };
     }
