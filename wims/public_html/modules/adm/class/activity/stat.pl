@@ -1,10 +1,10 @@
 #!/usr/bin/perl
-#use strict; use warnings;
+use strict; use warnings;
 
 use Time::Local;
 my ($OUT, $SHEET);
 my $SH='';my $OPTION='';
-my $limit='9';
+my $LIMIT='9';
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'});
 while ($_ = shift (@ARGV))
 {
@@ -12,6 +12,7 @@ while ($_ = shift (@ARGV))
      if (/^--file=(.*)$/) { $OUT   = $1; } # fichier de sortie
      if (/^--sheet=(.*)$/) {$SHEET = $1; } # nombre de feuilles
      if (/^--option=(.*):(.*)$/) {$OPTION = $1; $SH=$2} # option exobyday
+     if (/^--limit=(\d+)$/) {$LIMIT=$1} # limite de notes
 };
 #fichier à lire
 #my $FILE = "/" . $_;
@@ -20,22 +21,15 @@ my $FILE = $_;
 my $SH0=$SH;
 $SH =~ s/,/|/g;
 my (%lastdate, %score, %duree, $dattime);
-my %exobyday=();
-my %scorebyday=();
-my %goodbyday=();
-my %exobyday1=();
-my %scorebyday1=();
-my %goodbyday1=();
-my %exobydaysh=();
-my %scorebydaysh=();
-my %goodbydaysh=();
-my $good;
+my (%exobyday,%scorebyday, %goodbyday)=((),(),());
+my (%exobyday1, %scorebyday1, %goodbyday1)=((),(),());
+my (%exobydaysh, %scorebydaysh, %goodbydaysh)=((),(),());
+
 for my $sh (1..$SHEET) {
    $lastdate{$sh}='';
    $score{$sh} = 0;
 }
-my $session=' ';
-my $nbsessions = 0;
+my ($session,$nbsessions)=(' ',0);
   #le fichier est récupéré ordonné par dates croissantes
 open(IN, $FILE);
 while(<IN>){
@@ -46,23 +40,26 @@ while(<IN>){
  @_ = split(/ +/);
  $dattime=$_[0];
  if ($_[4] eq 'score' || (!$lastdate{$_[2]}) ) {
-  if (!($session eq $_[1])){ $nbsessions ++; $session = $_[1]; };
+  if (!($session eq $_[1])){ $nbsessions ++; $session=$_[1]; };
   $dattime=~/([0-9]+)\.([0-9:]+)/;
   my ($date, $time) = ($1,$2);
-  ##$exobyday{$date}=0 if !($exobyday{$date});
   $date =~/([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])/;
   if (($_[2]=~ /$SH/ || !($SH)) && ($_[4] eq 'score')) {
     $exobyday{$date} ++ ;
-    $scorebyday{$date} ++ if $_[5] >= $limit;
-    $goodbyday{$date} .= $exobyday{$date} . ',' if $_[5] >= $limit;
     $exobydaysh{$_[2]}->{$date} ++ ;
-    $scorebydaysh{$_[2]}->{$date} ++ if $_[5] >= $limit;
-    $goodbydaysh{$_[2]}->{$date} .= $exobydaysh{$_[2]}->{$date} . ',' if $_[5] >= $limit;
+    if ($_[5] >= $LIMIT){
+      $scorebyday{$date} ++ ;
+      $goodbyday{$date} .= (($goodbyday{$date})? ',':'') . $exobyday{$date};
+      $scorebydaysh{$_[2]}->{$date} ++;
+      $goodbydaysh{$_[2]}->{$date} .= (($goodbydaysh{$_[2]}{$date})? ',':'') . $exobydaysh{$_[2]}->{$date};
+    }
 ## n'a de sens que s'il y a une seule sheet
     if ($_[2]=~ /$SH0/){
       $exobyday1{$_[3]}->{$date} ++;
-      $scorebyday1{$_[3]}->{$date} ++ if $_[5] >= $limit;
-      $goodbyday1{$_[3]}->{$date} .= $exobyday1{$_[3]}->{$date} . ',' if $_[5] >= $limit;
+      if ($_[5] >= $LIMIT){
+        $scorebyday1{$_[3]}->{$date} ++;
+        $goodbyday1{$_[3]}->{$date} .= (($goodbyday1{$_[3]}{$date})? ',':'') . $exobyday1{$_[3]}->{$date};
+      }
     }
   }
   my ($annee, $mois, $jour)=($1,$2,$3);
@@ -74,22 +71,21 @@ while(<IN>){
       next;
    } else {
 #on juge que s'il y a moins de 15mn entre deux dates consecutives, le bonhomme a travaille pendant ce temps
-        if ($date-$lastdate{$_[2]}<900){
+        if ($lastdate{$_[2]} && $date-$lastdate{$_[2]}<900){
            $duree{$_[2]} += ($date-$lastdate{$_[2]});
         } else { }
           $lastdate{$_[2]}=$date;
   }
   if ($_[4] eq 'score') {;
     $score{$_[2]} ++;
-   ## $feuille{$_[2]} = 1; $exo{$_[2] . '.' . $_[3]} ++;#ne me sert à rien
-  };  ##nombre de fois pour l'exo feuille.numero
+  };
  };
 }
 
 my ($text,$score_global,$duree_globale,$nombresessions_globale)= (' ',0,0,0);
 for my $sh (1..$SHEET) {
  $text .= $score{$sh} . ',' . converttime2($duree{$sh}) . ',';
- $score_global += $score{$sh}; $duree_globale += $duree{$sh};
+ $score_global += $score{$sh}; if ($duree{$sh}) { $duree_globale += $duree{$sh}};
 }
 #dernière connexion,nb_sessions,nb exos abordés total, nb exos par feuille, temps par feuille
 print $dattime . ',' . $nbsessions
@@ -97,41 +93,61 @@ print $dattime . ',' . $nbsessions
       . "," . $text;
 
 if ($OPTION eq 'exobyday'){
+for my $date (sort keys %exobyday ) {
+   if (!$exobyday{$date}) {$exobyday{$date}=0;}
+   if (!$scorebyday{$date}) {$scorebyday{$date}=0;}
+   if (!$goodbyday{$date}) {$goodbyday{$date}='';}
+}
+
 my ($xcoord, $ycoord, $zcoord, $good,$tmp)=('','','','','') ;
 for my $date ( sort keys %exobyday ) {
-  if ($xcoord) {$tmp=',' } else {$tmp=''};
+  if ($xcoord) {$tmp=',' };
   $xcoord .= "$tmp$date";
-  if ($exobyday{$date}){ $ycoord .= $tmp . $exobyday{$date};} else { $ycoord .= $tmp };
-  if ($scorebyday{$date}){ $zcoord .=  $tmp . $scorebyday{$date}; }else { $zcoord .= $tmp };
-  if ($goodbyday{$date}){$good .= "$tmp" ."[" . $goodbyday{$date} ."]"} else {$good .= "$tmp" . "[]"};
-  }
-  print "\n[$xcoord],[$ycoord],[$zcoord],[$good]";
-  $tmp='';
+  $ycoord .= $tmp . $exobyday{$date};
+  $zcoord .= $tmp . $scorebyday{$date};
+  $good .= "$tmp" . '[' . $goodbyday{$date} .']';
+}
+###liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
+###liste des listes de positions des reussites
+
+print "\n[$xcoord],[$ycoord],[$zcoord],[$good]";
 
 if (!($SH0=~ /,/)) {
  for my $ex (sort keys %exobyday1){
-  my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
+   my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
    for my $date ( sort keys %exobyday ) {
-      if ($xcoord) {$tmp=',' } else {$tmp=''};
+      if (!$exobyday1{$ex}->{$date}) { $exobyday1{$ex}->{$date}=0;}
+      if (!$scorebyday1{$ex}->{$date}) {$scorebyday1{$ex}->{$date} = 0;}
+      if (!$goodbyday1{$ex}->{$date}) { $goodbyday1{$ex}->{$date}='';}
+      if ($xcoord) {$tmp=',' };
       $xcoord .= "$tmp$date";
-      if ($exobyday1{$ex}->{$date}) { $ycoord .= $tmp . $exobyday1{$ex}->{$date}} else {$ycoord .= $tmp};
-      if ($scorebyday1{$ex}->{$date}){ $zcoord .= $tmp . $scorebyday1{$ex}->{$date}} else {$zcoord .= $tmp};
-      if ($goodbyday1{$ex}->{$date}){ $good .= $tmp . "[" . $goodbyday1{$ex}->{$date} ."]" } else { $good .= $tmp . "[]"};
-   }
-   print  "\n$ex,[$xcoord],[$ycoord],[$zcoord],[$good]";
+      $ycoord .= $tmp . $exobyday1{$ex}->{$date};
+      $zcoord .= $tmp . $scorebyday1{$ex}->{$date};
+      $good .= $tmp . '[' . $goodbyday1{$ex}->{$date} . ']';
+ }
+###pour les exercices d'une feuille
+###numero exo, liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
+###liste des listes de positions des reussites
+   print "\n$ex,[$xcoord],[$ycoord],[$zcoord],[$good]";
   }
  }
  else {
- for my $sh (sort keys %exobydaysh){
-  my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
-   for my $date ( sort keys %exobyday ) {
-      if ($xcoord) {$tmp=',' } else {$tmp=''};
+  for my $sh (sort keys %exobydaysh){
+    my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
+    for my $date ( sort( keys %exobyday) ) {
+      if ($xcoord) {$tmp=',' };
       $xcoord .= "$tmp$date";
-      if ($exobydaysh{$sh}->{$date}) { $ycoord .= $tmp . $exobydaysh{$sh}->{$date}} else { $ycoord .= $tmp };
-      if ($scorebydaysh{$sh}->{$date}) { $zcoord .= $tmp . $scorebydaysh{$sh}->{$date};} else { $zcoord .= $tmp};
-      if ($goodbydaysh{$sh}->{$date}){ $good .= $tmp . '[' . $goodbydaysh{$sh}->{$date} . ']' ;} else { $good .= $tmp . '[]'}
+      if (!$exobydaysh{$sh}->{$date}) { $exobydaysh{$sh}->{$date}=0;}
+      if (!$scorebydaysh{$sh}->{$date}) {$scorebydaysh{$sh}->{$date} = 0;}
+      if (!$goodbydaysh{$sh}->{$date}) { $goodbydaysh{$sh}->{$date}='';}
+      $ycoord .= $tmp . $exobydaysh{$sh}->{$date};
+      $zcoord .= $tmp . $scorebydaysh{$sh}->{$date};
+      $good .= $tmp . '[' . $goodbydaysh{$sh}->{$date} . ']';
    }
-   print  "\n$sh,[$xcoord],[$ycoord],[$zcoord],[$good]";
+###pour les feuilles d'une liste de feuilles
+###numero feuille, liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
+###liste des listes de positions des reussites
+   print "\n$sh,[$xcoord],[$ycoord],[$zcoord],[$good]";
   }
  }
 }
@@ -149,6 +165,7 @@ sub converttime {
 
 sub converttime2 {
     my $duree=shift;
+    return "0:0:0" if !($duree);
     my $secondes = $duree% 60;
     $duree = ($duree-$secondes)/ 60;
     my $minutes = $duree% 60;

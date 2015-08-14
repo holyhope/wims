@@ -9,7 +9,7 @@
 !set maxexo_=!exec pari vecmax([$datay0])
 !set maxexo=$[max(12,$maxexo_+5)]
 !if $datay=$empty
- !exit
+  !exit
 !endif
 !set color=blue
 !reset barchart linegraph legend
@@ -18,7 +18,7 @@
 !set nbmonth=!nosubst 31,$nbf,31,30,31,30,31,31,30,31,30,31
 !set testfin=0
 !reset goodlist
-!reset insplot_data insplot_set tics
+!!!reset insplot_data insplot_set tics
 !for j=$datafirst to $datalast
   !set cnt=!nospace $j
   !set cnt1=!char 1 to 4 of $cnt
@@ -57,15 +57,17 @@
           !for t=0 to $[floor($gcnt/$lim)-1]
             !set goodlist=!append line crosshairs,$colorg,$(good[$[2*$t*$lim+1]..$[2*($t+1)*$lim]]) to $goodlist
           !next
-          !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
+          !if $[2*$t*$lim] < [2*$gcnt]
+            !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
+          !endif
          !else
           !set goodlist=!append line crosshairs,$colorg,$good to $goodlist
          !endif
         !endif
         !set testfin=$jday_
 !!for gnuplot (inutile maintenant)
-        !set insplot_data=!append line $jday $tmp to $insplot_data
-        !set tics=!append item "$cnt3:$cnt2" $jday to $tics
+        !!set insplot_data=!append line $jday $tmp to $insplot_data
+        !!set tics=!append item "$cnt3:$cnt2" $jday to $tics
 !!
       !endif
     !endif
@@ -77,23 +79,18 @@
 !set linegraph=!replace internal , by : in $linegraph
 !set legend=!replace internal , by : in $legend
 
-!!!reset legend
-!!!for w=1 to $[$maxday/7]
-!! !set legend=$legend$[7*$w-3]:week $w:
-!!!next
 !set testfin=$[$testfin+2]
-!set mult= $[round($testfin/50)]
 !if $testfin < 50
-  !set mult=20
-!else
   !set mult=10
+!else
+  !set mult=8
 !endif
 !set xsize=$[$testfin*$mult]
-!set ysize=$[$maxexo*7]
+!set ysize=$[$maxexo*$mult]
 
-!!if $barchart=$empty
- !!exit
-!!endif
+!if $barchart=$empty
+ !exit
+!endif
 
 !exec canvasdraw\
 size $xsize,$ysize\
@@ -113,6 +110,7 @@ strokecolor red\
 linegraph $linegraph
 
 !exit
+
 !set xsize_gnuplot_mult=$[round(10*$xsize/500)/10]
 !set ysize_gnuplot_mult=$[round(10*$ysize/400)/10]
 !set insplot_set=grid;title "$name_student($datafirst ..)";format x;size $xsize_gnuplot_mult,$ysize_gnuplot_mult;
