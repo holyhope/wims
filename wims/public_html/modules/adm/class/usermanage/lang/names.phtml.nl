@@ -12,6 +12,17 @@
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
+!if $job=regmanage
+	!set name_expert0=Si vous désirez changer les inscriptions de certains participants, plusieurs méthodes sont proposées.\
+Cochez la méthode désirée.
+	!set name_grpaction=Action sur les inscriptions des participants
+	!set name_all=Tous les participants
+	!set name_checked=Les participants sélectionnés dans le tableau ci-dessous
+	!set name_expert1=Choix de la classe
+	!set name_reguser=Inscrire les participants
+	!set name_unreguser=Supprimer l'inscription des participants
+!endif
+
 !if $job iswordof userprop teacher userlist
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord,\

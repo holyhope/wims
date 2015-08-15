@@ -1,0 +1,59 @@
+!! change participant registration in subclasses of groupement
+!! this job is actually limited to groupement type when user=supervisor (at the groupement level)
+
+!! TODO : reflexion sur l'usage des variables techniques dans ce job ( pour sélectionner ou simplement afficher)
+
+
+!if $varfilter!=$empty
+   !reset varfilter_
+   !set varfilter_cnt=!linecnt $varfilter
+   !for v=1 to $varfilter_cnt
+    var_line=!singlespace $(varfilter[$v;])
+    var_line =!replace $ $ by , in $var_line
+    varfilter_=!append line $var_line to $varfilter_
+   !next v
+!endif
+
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+!! generate list of subclasses
+nbsubclasses=!recordcnt wimshome/log/classes/$wims_class/.subclasses
+!reset ltsubclasses,ltnamesubclasses,ltsupsubclasses
+!if $nbsubclasses>0
+    !for k=1 to $nbsubclasses
+	tmp=!record $k of wimshome/log/classes/$wims_class/.subclasses
+	!distribute item $tmp into num,b,b,title,b,b,b,b,sup,b
+	ltsubclasses=!append item $num to $ltsubclasses
+	ltnamesubclasses=!append item $title to $ltnamesubclasses
+	ltsupsubclasses=!append item $sup to $ltsupsubclasses
+    !next k
+!endif
+
+!if $action=$name_reguser or $action=$name_unreguser
+    listlogin=$empty
+    !for k=1 to $usercnt
+	tmp=!record $k of wimshome/log/classes/$wims_class/.userlist
+	listlogin=!append item $(tmp[3]) to $listlogin
+    !next k
+    !if __ALL__=$listuserchoice
+	listuser=$listlogin
+    !else
+	listuser=!listintersect $listlogin and $listuser
+    !endif
+    listsclassch=!listintersect $listsclassch and $ltsubclasses
+    !if $listsclassch!=$empty and $listuser!=$empty
+	!if $action=$name_reguser
+	    !for login in $listuser
+		tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		tmp=!listunion $tmp and $listsclassch
+		!setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+	    !next login
+	!else
+	    !for login in $listuser
+		tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		tmp=!listcomplement $listsclassch in $tmp
+		!setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+	    !next login
+    !endif
+    !reset action,listuser,listuserchoice,listsclassch
+!endif

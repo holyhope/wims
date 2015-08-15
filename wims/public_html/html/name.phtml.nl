@@ -496,3 +496,7 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module isitemof home,adm/class/sheet,adm/class/exam
  !set wims_name_actionlist=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 !endif
+
+!if $module=adm/class/usermanage
+    !set wims_name_regmanage=Gestion des accès
+!endif

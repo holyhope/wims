@@ -32,7 +32,11 @@ picto=<img src="gifs/picto.gif" alt="picto" />
     !restart module=home
  !endif
 !else
- !bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist default userlist
+    !if $wims_typename iswordof group and $wims_supertype=2
+	!bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist,regmanage default userlist
+    !else
+	!bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist default userlist
+    !endif
 !endif
 
 !read adm/class/classlang
