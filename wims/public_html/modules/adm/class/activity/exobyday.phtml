@@ -27,11 +27,15 @@
 !if $nbs>1
 !!on regarde chacune des feuilles
    !set name=$wims_name_Sheet
+   !set names=$wims_name_Sheets
 !else
 !!on regarde chacun des exos
   !set name=$wims_name_Exercise
+  !set names=$wims_name_sheet_exos $showsheet_
 !endif
  !set linecnt=!linecnt $dataelse
+ <hr />
+  <p class="activity_title">$names</p>
  <ul class="inline">
  !for nn=1 to $linecnt
      !set line=!line $nn of $dataelse
@@ -47,8 +51,9 @@
      !set datay=!nospace $datay
      !set dataz=!declosing $(line[4])
      !set datagood=!declosing $(line[5])
-     <li><p class="activity_title">$name $exo</p>
+     <li style="vertical-align:bottom;">
      !read draw
+     <p class="activity_title">$name $exo</p>
      </li>
  !next
   </ul>
