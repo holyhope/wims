@@ -2,8 +2,6 @@
 !set lim=30
 !set colorg=green
 !set datay0=!nonempty items $datay
-!set dataxmin=$(datax[1])
-!set dataxmax=$(datax[-1])
 !set datafirst=$dataxmin
 !set datalast=$dataxmax
 !set maxexo_=!exec pari vecmax([$datay0])
@@ -13,8 +11,7 @@
 !endif
 !set color=blue
 !reset barchart linegraph legend
-!set jday=0
-
+!set jday_=$[$jday0-1]
 !set nbmonth=!nosubst 31,$nbf,31,30,31,30,31,31,30,31,30,31
 !set testfin=0
 !reset goodlist
@@ -30,16 +27,14 @@
   !default nbf=28
   !if $cnt2 <=12
     !if $cnt3 <= $(nbmonth[$cnt2])
-      !increase jday
+      !increase jday_
       !set jj=!positionof item $cnt in $datax
       !if $jj !=
         !set tmp=$[min($(datay[$jj]),$maxexo)]
         !if $barchart=$empty
-          !set jday0=$jday
-          !set jday_=2
           !set barchart=$jday_:$tmp:$color
         !else
-          !set jday_=$[$jday-$jday0+2]
+          !!set jday_=$[$jday-$jday0]
           !set barchart=$barchart:$jday_:$tmp:$color
         !endif
         !if $(dataz[$jj])!=$empty
@@ -83,7 +78,7 @@
 !if $testfin < 50
   !set mult=10
 !else
-  !set mult=8
+  !set mult=7
 !endif
 !set xsize=$[$testfin*$mult]
 !set ysize=$[$maxexo*$mult]

@@ -13,15 +13,25 @@
 !if $dataelse=$empty
  !exit
 !endif
+
+!set dataxmin=$(datax[1])
+!set dataxmax=$(datax[-1])
+!if $jday0=$empty
+!!! look for the weekday of the first date
+ !set cnt1=!char 1 to 4 of $dataxmin
+ !set cnt2=!char 5 to 6 of $dataxmin
+ !set cnt3=!char 7 to 8 of $dataxmin
+ !set jday0=!mexec wday.pl $cnt3 $cnt2 $cnt1
+!endif
 !set nbs=!itemcnt $showsheet_
-<p class="activity_title">
+<h2 class="activity_title">
 !if $nbs=1
   $wims_name_Sheet
 !else
   $wims_name_Sheets
 !endif
 !replace internal , by ,$ $ in $showsheet_
-</p>
+</h2>
 !read draw
 
 !if $nbs>1
@@ -35,7 +45,7 @@
 !endif
  !set linecnt=!linecnt $dataelse
  <hr />
-  <p class="activity_title">$names</p>
+  <h2 class="activity_title">$names</h2>
  <ul class="inline">
  !for nn=1 to $linecnt
      !set line=!line $nn of $dataelse
@@ -52,9 +62,11 @@
      !set dataz=!declosing $(line[4])
      !set datagood=!declosing $(line[5])
      <li style="vertical-align:bottom;">
+
      !read draw
-     <p class="activity_title">$name $exo</p>
+ <p class="activity_title">$name $exo</p>
      </li>
  !next
   </ul>
 !endif
+!reset jday0

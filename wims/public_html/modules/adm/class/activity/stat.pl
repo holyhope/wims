@@ -113,7 +113,7 @@ for my $date ( sort keys %exobyday ) {
 print "\n[$xcoord],[$ycoord],[$zcoord],[$good]";
 
 if (!($SH0=~ /,/)) {
- for my $ex (sort keys %exobyday1){
+ for my $ex (sort {$a <=> $b} keys %exobyday1){
    my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
    for my $date ( sort keys %exobyday ) {
       if (!$exobyday1{$ex}->{$date}) { $exobyday1{$ex}->{$date}=0;}
@@ -132,9 +132,9 @@ if (!($SH0=~ /,/)) {
   }
  }
  else {
-  for my $sh (sort keys %exobydaysh){
+  for my $sh (sort {$a <=> $b} keys %exobydaysh){
     my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
-    for my $date ( sort( keys %exobyday) ) {
+    for my $date ( sort ( keys %exobyday) ) {
       if ($xcoord) {$tmp=',' };
       $xcoord .= "$tmp$date";
       if (!$exobydaysh{$sh}->{$date}) { $exobydaysh{$sh}->{$date}=0;}
