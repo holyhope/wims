@@ -1,91 +1,58 @@
-!default maxday=365
-!set lim=30
-!set colorg=green
-!set datay0=!nonempty items $datay
-!set datafirst=$dataxmin
-!set datalast=$dataxmax
-!set maxexo_=!exec pari vecmax([$datay0])
-!set maxexo=$[max(12,$maxexo_+5)]
 !if $datay=$empty
   !exit
 !endif
-!set color=blue
-!reset barchart linegraph legend
-!set jday_=$[$jday0-1]
-!set nbmonth=!nosubst 31,$nbf,31,30,31,30,31,31,30,31,30,31
-!set testfin=0
-!reset goodlist
-!!!reset insplot_data insplot_set tics
-!for j=$datafirst to $datalast
-  !set cnt=!nospace $j
+!default maxday=365
+!distribute item 30,green into  lim, colorg
+!set maxexo_=!exec pari vecmax([$datay,7])
+!set maxexo=$[max(12,$maxexo_+3)]
+!distribute items blue,0 into color,testfin
+!reset barchart linegraph legend goodlist
+!set dataxcnt=!itemcnt $datax
+!for j=1 to $dataxcnt
+  !set cnt=$(datax[$j])
   !set cnt1=!char 1 to 4 of $cnt
   !set cnt2=!char 5 to 6 of $cnt
   !set cnt3=!char 7 to 8 of $cnt
-  !if $cnt1%4=0 and $cnt1%100!=0
-   !set nbf=29
-  !endif
-  !default nbf=28
-  !if $cnt2 <=12
-    !if $cnt3 <= $(nbmonth[$cnt2])
-      !increase jday_
-      !set jj=!positionof item $cnt in $datax
-      !if $jj !=
-        !set tmp=$[min($(datay[$jj]),$maxexo)]
-        !if $barchart=$empty
-          !set barchart=$jday_:$tmp:$color
-        !else
-          !!set jday_=$[$jday-$jday0]
-          !set barchart=$barchart:$jday_:$tmp:$color
-        !endif
-        !if $(dataz[$jj])!=$empty
-          !set linegraph=!append item $jday_:$(dataz[$jj]) to $linegraph
-        !else
-          !set linegraph=!append item $jday_:0 to $linegraph
-        !endif
-        !set legend=!append item $jday_:$cnt3/$cnt2 to $legend
-        !set good=!declosing $(datagood[$jj])
-        !set good=!nonempty items $good
-        !if $good!=$empty
-         !set gcnt=!itemcnt $good
-         !set good=!makelist $jday_,x for x in $good
-         !if $gcnt > $lim
-          !for t=0 to $[floor($gcnt/$lim)-1]
-            !set goodlist=!append line crosshairs,$colorg,$(good[$[2*$t*$lim+1]..$[2*($t+1)*$lim]]) to $goodlist
-          !next
-          !if $[2*$t*$lim] < [2*$gcnt]
-            !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
-          !endif
-         !else
-          !set goodlist=!append line crosshairs,$colorg,$good to $goodlist
-         !endif
-        !endif
-        !set testfin=$jday_
-!!for gnuplot (inutile maintenant)
-        !!set insplot_data=!append line $jday $tmp to $insplot_data
-        !!set tics=!append item "$cnt3:$cnt2" $jday to $tics
-!!
-      !endif
+  !set jday_=$(day[$j])
+  !set tmp=$[min($(datay[$j]),$maxexo)]
+  !set barchart=!append item $jday_:$tmp:$color to $barchart
+  !set linegraph=!append item $jday_:$(dataz[$j]) to $linegraph
+  !set legend=!append item $jday_:$cnt3/$cnt2 to $legend
+  !set good=!declosing $(datagood[$j])
+  !set good=!nonempty items $good
+  !if $good!=$empty
+   !set gcnt=!itemcnt $good
+   !set good=!makelist $jday_,x for x in $good
+   !if $gcnt > $lim
+    !for t=0 to $[floor($gcnt/$lim)-1]
+      !set goodlist=!append line crosshairs,$colorg,$(good[$[2*$t*$lim+1]..$[2*($t+1)*$lim]]) to $goodlist
+    !next
+    !if $[2*$t*$lim] < [2*$gcnt]
+      !set goodlist=!append line crosshairs,$colorg,$(good[$t*2*$lim+1..-1]) to $goodlist
     !endif
+   !else
+    !set goodlist=!append line crosshairs,$colorg,$good to $goodlist
+   !endif
+  !endif
   !endif
   !if $jday_ > $maxday
    !break
   !endif
 !next
+!if $barchart=$empty
+ !exit
+!endif
+
 !set linegraph=!replace internal , by : in $linegraph
 !set legend=!replace internal , by : in $legend
-
-!set testfin=$[$testfin+2]
+!set barchart=!replace internal , by : in $barchart
+!set testfin=$[$jday_+2]
 !if $testfin < 50
   !set mult=10
 !else
   !set mult=7
 !endif
-!set xsize=$[$testfin*$mult]
-!set ysize=$[$maxexo*$mult]
-
-!if $barchart=$empty
- !exit
-!endif
+!distribute item $[$testfin*$mult],$[$maxexo*$mult] into xsize, ysize
 
 !exec canvasdraw\
 size $xsize,$ysize\

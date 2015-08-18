@@ -24,27 +24,21 @@ $name_title
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$moduclass_lang
  </div>
-<p>
- !href module=home $name_homeback
-</p>
-!set wims_menu_items=!append line back,1,module=home\
+!set wims_menu_items=!append line back,1,\
 to $wims_menu_items
  !goto end
 !endif
 
 !read activity.phtml
-!goto end
 
 :end
 !reset parmuser1 parmuser2
 !if $user!=$empty
  !set parmuser1=&job=getuser&getuser=$user
  !set parmuser2=&job=user&user=$user
- !set sc=scores
- !set li=livret1
+ !distribute items scores,livret1 into sc,li
 !else
- !set sc=Score1
- !set li=livret
+ !distribute items Score1,livret into sc,li
 !endif
 
 !set wims_menu_items=!append line $sc,1,module=adm/class/userscore$parmuser1\

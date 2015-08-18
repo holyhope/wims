@@ -24,7 +24,7 @@ my (%lastdate, %score, %duree, $dattime);
 my (%exobyday,%scorebyday, %goodbyday)=((),(),());
 my (%exobyday1, %scorebyday1, %goodbyday1)=((),(),());
 my (%exobydaysh, %scorebydaysh, %goodbydaysh)=((),(),());
-
+my %seconds=();
 for my $sh (1..$SHEET) {
    $lastdate{$sh}='';
    $score{$sh} = 0;
@@ -44,6 +44,7 @@ while(<IN>){
   $dattime=~/([0-9]+)\.([0-9:]+)/;
   my ($date, $time) = ($1,$2);
   $date =~/([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])/;
+  $seconds{$date}=timelocal(0,0,0,$3,$2-1,$1);
   if (($_[2]=~ /$SH/ || !($SH)) && ($_[4] eq 'score')) {
     $exobyday{$date} ++ ;
     $exobydaysh{$_[2]}->{$date} ++ ;
@@ -99,10 +100,14 @@ for my $date (sort keys %exobyday ) {
    if (!$goodbyday{$date}) {$goodbyday{$date}='';}
 }
 
-my ($xcoord, $ycoord, $zcoord, $good,$tmp)=('','','','','') ;
+my ($xcoord, $ycoord, $zcoord, $good, $tmp, $day, $init, $t, $wday)=('','','','','','','','') ;
 for my $date ( sort keys %exobyday ) {
-  if ($xcoord) {$tmp=',' };
+  if ($xcoord) {$tmp=',' ;} else {
+   $init=$seconds{$date} ;
+   my @wday = localtime($date); $wday=$wday[6]}
   $xcoord .= "$tmp$date";
+  $t = ($seconds{$date}-$init) % 86400; $t=$wday+($seconds{$date}-$init-$t)/ 86400;
+  $day .= $tmp . $t;
   $ycoord .= $tmp . $exobyday{$date};
   $zcoord .= $tmp . $scorebyday{$date};
   $good .= "$tmp" . '[' . $goodbyday{$date} .']';
@@ -110,7 +115,7 @@ for my $date ( sort keys %exobyday ) {
 ###liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
 ###liste des listes de positions des reussites
 
-print "\n[$xcoord],[$ycoord],[$zcoord],[$good]";
+print "\n[$xcoord],[$day],[$ycoord],[$zcoord],[$good]";
 
 if (!($SH0=~ /,/)) {
  for my $ex (sort {$a <=> $b} keys %exobyday1){
