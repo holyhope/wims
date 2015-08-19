@@ -61,10 +61,12 @@ today=!char 1 to 8 of $wims_now
   warn=$warn backup
  !endif
  !if ($backdays>7 or $warn!=$empty) and $job2!=import and $job!=log
+  !read $job.proc
   job=new
  !endif
  nonew=yes
 !endif
 
 wims_module_log=$job $job2 $wims_class
+
 !read $job.proc
