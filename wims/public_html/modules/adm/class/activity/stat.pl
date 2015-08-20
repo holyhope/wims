@@ -89,9 +89,10 @@ for my $sh (1..$SHEET) {
  $score_global += $score{$sh}; if ($duree{$sh}) { $duree_globale += $duree{$sh}};
 }
 #dernière connexion,nb_sessions,nb exos abordés total, nb exos par feuille, temps par feuille
-print $dattime . ',' . $nbsessions
-      . ',' . $score_global . ',' . converttime2($duree_globale)
-      . "," . $text;
+exit if !($dattime);
+
+print $dattime . ',' . $nbsessions  . ',' . $score_global . ','
+   . converttime2($duree_globale) . ',' . $text;
 
 if ($OPTION eq 'exobyday'){
 for my $date (sort keys %exobyday ) {
