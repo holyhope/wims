@@ -1484,7 +1484,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIFILLOPACITY:
 	/*
-	 @ multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_7
+	 @ multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_8
 	 @ float values 0 - 1 or integer values 0 - 255 
 	 @ use before command 'multidraw'
 	 @ if not set all fill opacity_ will be set by previous command <em>'opacity int,int'</em> and keyword <em>'filled'</em>
@@ -1499,7 +1499,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTILABEL:
 	/*
-	 @ multilabel button_label_1,button_label_2,...,button_label_7,'stop drawing text'
+	 @ multilabel button_label_1,button_label_2,...,button_label_8,'stop drawing text'
 	 @ use before command 'multidraw'
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
@@ -1514,7 +1514,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTILINEWIDTH:
 	/*
-	 @ multilinewidth linewidth_1,linewidth_2,...,linewidth_7
+	 @ multilinewidth linewidth_1,linewidth_2,...,linewidth_8
 	 @ use before command 'multidraw'
 	 @ if not set all line width will be set by a previous command <em>'linewidth int'</em>
 	 @ use these up to 7 different line widths for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
@@ -1563,7 +1563,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIFILL:
 	/*
-	 @ multifill 0,0,1,0,1,0
+	 @ multifill 0,0,1,0,1,0,0
 	 @ meaning draw objects no. 3 and 5, in the list of command 'multifill', are filled<br />(if the object is fillable...and not a line,segment,arrow or point...)
 	 @ use before command 'multidraw'
 	 @ if not set all objects -except point|points-  will be set 'not filled'...<br />unless a command 'filled' was given before command 'multifill'
@@ -1578,7 +1578,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTISTROKECOLORS:
 	/*
-	 @ multistrokecolors color_name_1,color_name_2,...,color_name_7
+	 @ multistrokecolors color_name_1,color_name_2,...,color_name_8
 	 @ use before command 'multidraw'
 	 @ if not set all colors will be 'stroke_color' , 'stroke_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
@@ -1595,7 +1595,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIFILLCOLORS:
 	/*
-	 @ multifillcolors color_name_1,color_name_2,...,color_name_7
+	 @ multifillcolors color_name_1,color_name_2,...,color_name_8
 	 @ use before command 'multidraw'
 	 @ if not set all fillcolors (for circle | triangle | poly[3-9] | closedpoly ) will be 'stroke_color' , 'fill_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
@@ -1630,8 +1630,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case MULTIDRAW:
 	/*
-	 @ multidraw obj_type_1,obj_type_2...obj_type_7
-	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
+	 @ multidraw obj_type_1,obj_type_2...obj_type_8
+	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
 	 @ it makes no sense using something like "multidraw point,points" ...
 	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
@@ -1640,9 +1640,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 8 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 8 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
-	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
-	 @ <em>technical: all 7 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 9 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = rects_x +";"+rects_y+"\\n"<br />line 8 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 9 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
+	 @ attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed. 
+	 @ <em>technical: all 8 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
 	//    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
 	    if( use_userdraw == TRUE ){canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");}
@@ -1652,24 +1652,24 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    temp = str_replace(temp,",","\",\"");
 	    /* if these are not set, set the default values for the 6 (!!!)  draw_primitives + draw_text */
 	    fprintf(js_include_file,"\
-	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s','%s'];};\
-	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f'];};\
-	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f'];};\
-	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
-	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multistrokecolors === 'undefined' ){ var multistrokecolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multifillcolors === 'undefined' ){ var multifillcolors = ['%s','%s','%s','%s','%s','%s','%s','%s','%s'];};\
+	    if( typeof multistrokeopacity === 'undefined' ){ var multistrokeopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
+	    if( typeof multifillopacity === 'undefined' ){ var multifillopacity = ['%.2f','%.2f','%.2f','%.2f','%.2f','%.2f','%2.f','%2.f','%2.f'];};\
+	    if( typeof multilinewidth === 'undefined' ){ var multilinewidth = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multifill === 'undefined' ){ var multifill = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
+	    if( typeof multidash === 'undefined' ){ var multidash = ['%d','%d','%d','%d','%d','%d','%d','%d','%d'];};\
 	    if( typeof multilabel === 'undefined' ){ var multilabel = [\"%s\",\"stop drawing\"];};\
 	    if( typeof multiuserinput === 'undefined' ){ var multiuserinput= ['0','0','0','0','0','0','0','1'];};\
 	    if( typeof multisnaptogrid == 'undefined'){var multisnaptogrid;if( x_use_snap_to_grid == 1 && y_use_snap_to_grid == 1){ multisnaptogrid = [1,1,1,1,1,1,1];}else{if( x_use_snap_to_grid == 1 ){ multisnaptogrid = [2,2,2,2,2,2,2];}else{if( y_use_snap_to_grid == 1 ){ multisnaptogrid = [3,3,3,3,3,3,3];}else{ multisnaptogrid = [0,0,0,0,0,0,0];};};};};\
 	    var arrow_head = %d;var multifont_color = '%s';var multifont_family = '%s';",
-	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
-	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
-	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
-	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
-	    line_width,line_width,line_width,line_width,line_width,line_width,line_width,line_width,
-	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
-	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
+	    stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,stroke_color,
+	    fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,fill_color,
+	    stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,stroke_opacity,
+	    fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,fill_opacity,
+	    line_width,line_width,line_width,line_width,line_width,line_width,line_width,line_width,line_width,
+	    use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,use_filled,
+	    use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,use_dashed,
 	    temp,arrow_head,font_color,font_family);
 	    
 	    if(strstr(temp,"text") != NULL){
@@ -2296,7 +2296,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case USERTEXTAREA_XY:
 	/*
 	@ usertextarea_xy
-	@ keyword
+	@ keyword (no arguments required)
 	@ to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
 	@ if set two textareas are added to the document<br />(one for x-values , one for y-values)
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
@@ -2312,7 +2312,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case USERINPUT_XY:
 	/*
 	@ userinput_xy
-	@ keyword
+	@ keyword (no arguments required)
 	@ to be used in combination with command "userdraw object_type,color"
 	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
@@ -2343,7 +2343,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case USERINPUT_FUNCTION:
 	/*
 	@ userinput_function
-	@ keyword
+	@ keyword (no arguments required)
 	@ if set , a inputfield will be added to the page
 	@ repeat keyword for more function input fields
 	@ the userinput value will be plotted in the canvas
@@ -2869,14 +2869,16 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case AXIS_NUMBERING:
 	/*
 	    @ axisnumbering
-	    @ keyword, no arguments required
+	    @ keyword (no arguments required)
+	    @ to be used before command grid (see grid)
 	*/
 	    use_axis_numbering = 1;
 	    break;
 	case AXIS:
 	/*
 	    @ axis
-	    @ keyword, no arguments required
+	    @ keyword (no arguments required)
+	    @ to be used before command grid (see grid)
 
 	*/
 	    use_axis = TRUE;
@@ -2884,8 +2886,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case KILLSLIDER:
 	/*
 	 @ killslider
-	 @ keyword, no arguments required
-	 @ ends grouping of object under a preciously defined slider
+	 @ keyword (no arguments required)
+	 @ ends grouping of object under a previously defined slider
 	*/
 	    slider = 0;
 	    break;
@@ -3191,7 +3193,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case DASHED:
 	/*
-	@ keyword "dashed"
+	@ dashed
+	@ keyword (no arguments required)
 	@ next object will be drawn with a dashed line
 	@ change dashing scheme by using command "dashtype int,int)
 	*/
@@ -3199,7 +3202,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case FILLED:
 	/*
-	@ keyword "filled"
+	@ filled
+	@ keyword (no arguments required)
 	@ the next 'fillable' object (only) will be filled
 	@ use command "fillcolor color" to set fillcolor
 	@ use command "opacity 0-255,0-255" to set stroke and fill-opacity
@@ -3518,7 +3522,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case ONCLICK:
 	/*
 	 @ onclick
-	 @ keyword, no arguments
+	 @ keyword (no arguments required)
 	 @ if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 	 @ onclick seqeuence numbering starts at '0'.<br />e.g. if there are 6 objects set onclick, the first onclick object will have id-number '0', the last id-number '5'
 	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
@@ -3576,7 +3580,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ xunit some_unit_for_x-values
 	 @ unicode allowed (no html code)
 	 @ use together with command mousex
-	 @ will display the cursor x-coordinate 'unit'
+	 @ will display the cursor x-coordinate in 'unit'
 	*/
 	    fprintf(js_include_file,"unit_x = \"%s\";",get_string(infile,1));
 	    break;
@@ -3585,7 +3589,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ yunit some_unit_for_y-values
 	 @ unicode allowed (no html code)
 	 @ use together with command mousex
-	 @ will display the cursor y-coordinate 'unit'
+	 @ will display the cursor y-coordinate in 'unit'
 	*/
 	    fprintf(js_include_file,"unit_y = \"%s\";",get_string(infile,1));
 	    break;
@@ -5812,6 +5816,7 @@ read_canvas%d = function(){\
  if( arrows_x && arrows_x.length > 0 ){ reply = reply +  xy_precision(arrows_x,arrows_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( lines_x && lines_x.length > 0 ){ reply = reply + xy_precision(lines_x,lines_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( triangles_x && triangles_x.length > 0){ reply = reply + xy_precision(triangles_x,triangles_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
+ if( rects_x && rects_x.length > 0 ){ reply = reply + xy_precision(rects_x,rects_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( closedpoly_x && closedpoly_x.length > 0){ closedpoly_x.pop();closedpoly_y.pop();reply = reply + xy_precision(closedpoly_x,closedpoly_y)+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  if( text_x && text_x.length > 0){ reply = reply + xy_precision(text_x,text_y)+\";\"+text_abc+\"\\n\"; }else{ reply = reply + \"\\n\"; };\n\
  return reply;\

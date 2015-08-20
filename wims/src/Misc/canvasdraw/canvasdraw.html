@@ -9,7 +9,7 @@
  a:hover {color:#dd6300;}
  a:visited {color:#004077;}
 </style>
-<center><h3><a name='top'>Implemented canvasdraw commands (Wed Aug 12 16:21:11 CEST 2015)</a></h3></center>
+<center><h3><a name='top'>Implemented canvasdraw commands (Thu Aug 20 18:12:50 CEST 2015)</a></h3></center>
 <ul style='color:blue;font-size:0.8em'>
 
 <li><a href='#0'>canvasdraw</a></li>
@@ -115,8 +115,8 @@
 <li><a href='#100'>affine</a></li>
 <li><a href='#101'>translation</a></li>
 <li><a href='#102'>animate</a></li>
-<li><a href='#103'>keyword</a></li>
-<li><a href='#104'>keyword</a></li>
+<li><a href='#103'>dashed</a></li>
+<li><a href='#104'>filled</a></li>
 <li><a href='#105'>highlight</a></li>
 <li><a href='#106'>fillcolor</a></li>
 <li><a href='#107'>strokecolor</a></li>
@@ -557,7 +557,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='45' href='#top'>  multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_7</a></span><ul>
+<li><span style='color:red'><a name='45' href='#top'>  multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_8</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> float values 0 - 1 or integer values 0 - 255
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
@@ -572,7 +572,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='46' href='#top'>  multilabel button_label_1,button_label_2,...,button_label_7,'stop drawing text'</a></span><ul>
+<li><span style='color:red'><a name='46' href='#top'>  multilabel button_label_1,button_label_2,...,button_label_8,'stop drawing text'</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
@@ -587,7 +587,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='47' href='#top'>  multilinewidth linewidth_1,linewidth_2,...,linewidth_7</a></span><ul>
+<li><span style='color:red'><a name='47' href='#top'>  multilinewidth linewidth_1,linewidth_2,...,linewidth_8</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if not set all line width will be set by a previous command <em>'linewidth int'</em>
@@ -636,7 +636,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='50' href='#top'>  multifill 0,0,1,0,1,0</a></span><ul>
+<li><span style='color:red'><a name='50' href='#top'>  multifill 0,0,1,0,1,0,0</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> meaning draw objects no. 3 and 5, in the list of command 'multifill', are filled<br />(if the object is fillable...and not a line,segment,arrow or point...)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
@@ -651,7 +651,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='51' href='#top'>  multistrokecolors color_name_1,color_name_2,...,color_name_7</a></span><ul>
+<li><span style='color:red'><a name='51' href='#top'>  multistrokecolors color_name_1,color_name_2,...,color_name_8</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if not set all colors will be 'stroke_color' , 'stroke_opacity'
@@ -664,7 +664,7 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='52' href='#top'>  multifillcolors color_name_1,color_name_2,...,color_name_7</a></span><ul>
+<li><span style='color:red'><a name='52' href='#top'>  multifillcolors color_name_1,color_name_2,...,color_name_8</a></span><ul>
 <li><span style="color:blue;font-size:0.8em"> use before command 'multidraw'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if not set all fillcolors (for circle | triangle | poly[3-9] | closedpoly ) will be 'stroke_color' , 'fill_opacity'
@@ -696,8 +696,8 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='54' href='#top'>  multidraw obj_type_1,obj_type_2...obj_type_7</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
+<li><span style='color:red'><a name='54' href='#top'>  multidraw obj_type_1,obj_type_2...obj_type_8</a></span><ul>
+<li><span style="color:blue;font-size:0.8em"> implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
 </span></li>
@@ -715,11 +715,11 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.<br />The output is always a 8 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\n"<br/>line 3 = segments_x+";"+segments_y+"\n"<br/>line 4 = arrows_x+";"+arrows_y+"\n"<br/>line 5 = lines_x+";"+lines_y+"\n"<br/>line 6 = triangles_x+";"+triangles_y+"\n"<br/>line 7 = closedpoly_x+";"+closedpoly_y+"\n"<br/>line 8 = text_x+";"+text_y+";"+text"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
+<li><span style="color:blue;font-size:0.8em"> a local function read_canvas%d will read all userbased drawings.<br />The output is always a 9 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\n"<br/>line 3 = segments_x+";"+segments_y+"\n"<br/>line 4 = arrows_x+";"+arrows_y+"\n"<br/>line 5 = lines_x+";"+lines_y+"\n"<br/>line 6 = triangles_x+";"+triangles_y+"\n"<br/>line 7 = rects_x +";"+rects_y+"\n"<br />line 8 = closedpoly_x+";"+closedpoly_y+"\n"<br/>line 9 = text_x+";"+text_y+";"+text"\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> attention: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> <em>technical: all 7 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
+<li><span style="color:blue;font-size:0.8em"> <em>technical: all 8 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 </span></li>
 </ul>
 	    
@@ -897,7 +897,7 @@
 </ul>
 	    
 <li><span style='color:red'><a name='64' href='#top'>  usertextarea_xy</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> to be used in combination with command "userdraw object_type,color" wherein object_type is only segment / polyline for the time being...
 </span></li>
@@ -914,7 +914,7 @@
 </ul>
 	    
 <li><span style='color:red'><a name='65' href='#top'>  userinput_xy</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> to be used in combination with command "userdraw object_type,color"
 </span></li>
@@ -948,7 +948,7 @@
 </ul>
 	    
 <li><span style='color:red'><a name='67' href='#top'>  userinput_function</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if set , a inputfield will be added to the page
 </span></li>
@@ -1220,19 +1220,23 @@
 </ul>
 	    
 <li><span style='color:red'><a name='89' href='#top'>  axisnumbering</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword, no arguments required
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> to be used before command grid (see grid)
 </span></li>
 </ul>
 	    
 <li><span style='color:red'><a name='90' href='#top'>  axis</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword, no arguments required
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> to be used before command grid (see grid)
 </span></li>
 </ul>
 	    
 <li><span style='color:red'><a name='91' href='#top'>  killslider</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword, no arguments required
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> ends grouping of object under a preciously defined slider
+<li><span style="color:blue;font-size:0.8em"> ends grouping of object under a previously defined slider
 </span></li>
 </ul>
 	    
@@ -1393,14 +1397,18 @@
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='103' href='#top'>  keyword "dashed"</a></span><ul>
+<li><span style='color:red'><a name='103' href='#top'>  dashed</a></span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
 <li><span style="color:blue;font-size:0.8em"> next object will be drawn with a dashed line
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> change dashing scheme by using command "dashtype int,int)
 </span></li>
 </ul>
 	    
-<li><span style='color:red'><a name='104' href='#top'>  keyword "filled"</a></span><ul>
+<li><span style='color:red'><a name='104' href='#top'>  filled</a></span><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
+</span></li>
 <li><span style="color:blue;font-size:0.8em"> the next 'fillable' object (only) will be filled
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command "fillcolor color" to set fillcolor
@@ -1562,7 +1570,7 @@
 </ul>
 	    
 <li><span style='color:red'><a name='119' href='#top'>  onclick</a></span><ul>
-<li><span style="color:blue;font-size:0.8em"> keyword, no arguments
+<li><span style="color:blue;font-size:0.8em"> keyword (no arguments required)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 </span></li>
@@ -1609,7 +1617,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use together with command mousex
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> will display the cursor x-coordinate 'unit'
+<li><span style="color:blue;font-size:0.8em"> will display the cursor x-coordinate in 'unit'
 </span></li>
 </ul>
 	    
@@ -1618,7 +1626,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use together with command mousex
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> will display the cursor y-coordinate 'unit'
+<li><span style="color:blue;font-size:0.8em"> will display the cursor y-coordinate in 'unit'
 </span></li>
 </ul>
 	    
