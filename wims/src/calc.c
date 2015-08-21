@@ -715,7 +715,7 @@ void calc_charof(char *p)
 char *append_obj[]={
     "item","line","word","semicolon","colon"
 };
-char apch_list[]={',','\n',' ',':',';'};
+char apch_list[]={',','\n',' ',';',':'};
 #define append_obj_no (sizeof(append_obj)/sizeof(append_obj[0]))
 
 /* append object to string */

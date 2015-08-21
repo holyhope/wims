@@ -192,7 +192,7 @@ int main(int argc, char *argv[]){
 	    @size width,height
 	    @set canvas size in pixels
 	    @mandatory first command (can only be preceded by keyword 'popup')
-	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br />note: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
+	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
 	    /* using fabs : however "xsize == int" : so "xsize = abs( (int) get_real(infile,0))" would be the idea... */
@@ -1507,7 +1507,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
-	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
+	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b><b>note</b>:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
 	 @ wims will not check the amount or validity of your input
 	 @ always use the same sequence as is used for 'multidraw'
 	*/
@@ -1618,7 +1618,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ multiuserinput 0,1,1,0
 	@ meaning, when the command 'multidraw' is used <br />multidraw circles,points,lines,triangles<br />objects 'points' and 'lines' may additionally be 'drawn' by direct input (inputfields)<br/>all other objects must be drawn with a mouse
-	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br />note: R-values will not snap-to-grid
+	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br /><b>note</b>: R-values will not snap-to-grid
 	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 	@ in case of a triangle | poly3, three inputfields are provided.
 	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
@@ -1636,9 +1636,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multidraw obj_type_1,obj_type_2...obj_type_8
 	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
-	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br />note: no keyboard listeners are used
+	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br /><b>note</b>: no keyboard listeners are used
 	 @ it makes no sense using something like "multidraw point,points" ...
-	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	 @ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	 @ buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command <a href='#multilabel'>'multilabel'</a> for more details)
 	 @ multidraw is incompatible with command 'tooltip'
@@ -1769,16 +1769,16 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ userdraw object_type,color
 	@ only a single object_type is allowed.
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
-	@ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
-	@ note: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
-	@ note: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
-	@ note: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
+	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
+	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
+	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
+	@ <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
 	@ use command "dashed" and/or "dashtype int,int" to trigger dashing
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
 	@ may be combined with keyword 'userinput_xy' 
-	@ note: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
+	@ <b>note</b>: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
 		canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");
@@ -2321,7 +2321,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ if set two (or three) input fields are added to the document<br />(one for x-values , one for y-values and in case of drawing circle one for radius-values)
 	@ the student may use this as correction for (x:y) on a drawing (or to draw without mouse, using just the coordinates)
 	@ math input is allowed (e.g something like: 1+3,2*6,1/3,sqrt(3), sin(pi/4),10^-2,log(2)...)<br />eval function is 'protected' against code injection.
-	@ can <b>not</b> be combined with command "intooltip tiptext" <br />note: the 'tooltip div element' is used for placing inputfields
+	@ can <b>not</b> be combined with command "intooltip tiptext" <br /><b>note</b>: the 'tooltip div element' is used for placing inputfields
 	@ user drawings will not zoom on zooming (or pan on panning)
 	@ use command 'inputstyle some_css' to adjust the inputarea.
 	@ use command 'fontsize int' to adjust the text labels (if needed)
@@ -3410,11 +3410,15 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case CLEARBUTTON:
 	/*
 	 @clearbutton value
-	 @adds a button to clear the userdraw canvas with text 'value'
-	 @normally userdraw primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
+	 @adds a button to clear the <a href="#userdraw">userdraw</a> canvas with text 'value'
+	 @<b>attention</b> command 'clearbutton' is incompatible with <a href="multidraw">multidraw</a> based drawings<br/>(in 'multidraw' there is always a remove_object_button for every drawprimitive)
+	 @normally <a href="#userdraw">userdraw</a> primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
 	 @uses the tooltip placeholder div element: may not be used with command 'intooltip'
-	 @use command 'inputstyle' to style the button...
+	 @use command <a href="#inputstyle">'inputstyle'</a> to style the button...
 	*/
+	if(reply_format == 29){/* eg multidraw is selected */
+	 canvas_error("command clearbutton incompatible with multidraw...only suitable for userdraw");
+	}
 	    add_clear_button(js_include_file,canvas_root_id,input_style,get_string(infile,1));
 	break;
 	case INPUTSTYLE:
@@ -3429,9 +3433,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ input x,y,size,editable,value
 	 @ to set inputfield "readonly", use editable = 0
 	 @ only active inputfields (editable = 1) will be read with read_canvas();
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status'
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword 'status'
 	 @ may be further controlled by "inputstyle" (inputcss is not yet implemented...)
-	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
 	*/
 	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}
 	    for(i = 0 ; i<5;i++){
@@ -3457,8 +3461,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ textarea x,y,cols,rows,readonly,value
 	 @ may be further controlled by "inputstyle"
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be clearedand set readonly<br />Override this by keyword 'status'
-	 @ if mathml inputfields are present and / or some userdraw is performed, these data will NOT be send as well (javascript:read_canvas();)
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword 'status'
+	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
 	*/
 	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}
 	    for(i = 0 ; i<6;i++){
@@ -3485,7 +3489,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ precision int
 	    @ 1 = no decimals ; 10 = 1 decimal ; 100 = 2 decimals etc
 	    @ may be used / changed before every object
-	    @ In case of user interaction (like 'userdraw') this value will be used to determine the amount of decimals in the reply / answer
+	    @ In case of user interaction (like 'userdraw' or 'multidraw') this value will be used to determine the amount of decimals in the reply / answer
 	*/
 	    precision = (int) (get_real(infile,1));
 	    if(precision < 1 ){precision = 1;};
@@ -3495,8 +3499,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @setlimits
 	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
 	    @may be used for inputfield based zooming / panning
-	    @use command xlabel / ylabel to change text from xmin to 'xlabel'min etc
-	    @note:the input value will not be checked on validity
+	    @may be styled using command <a href="#inputstyle">inputstyle</a>
+	    @use command xlabel / ylabel to change text from xmin to 'xlabel' min etc
+	    @<b>note</b>:the input value will not be checked on validity
 	*/
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    add_setlimits(js_include_file,canvas_root_id,font_size,input_style);
@@ -3507,14 +3512,14 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case ZOOM:
 	/*
 	 @ zoom button_color
-	 @ introduce a controlpanel at the lower right corner
-	 @ giving six 15x15pixel 'active' rectangle areas<br />(for x,leftarrow,rightarrow,uparrow,downarrow and a '-' and a '+' sign ) for zooming and/or panning of the image
+	 @ introduce a very small 'controlpanel' at the lower right corner
+	 @ giving six 15&times;15px 'active' rectangle areas<br />(for &times;,leftarrow,rightarrow,uparrow,downarrow and a '-' and a '+' sign ) for zooming and/or panning of the image
 	 @ the 'x' symbol will do a 'location.reload' of the page, and thus reset all canvas drawings.
 	 @ choose an appropriate colour, so the small 'x,arrows,-,+' are clearly visible
 	 @ command 'opacity' may be used to set stroke_opacity of 'buttons
-	 @ NOTE: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
-	 @ NOTE: only objects that may be set draggable / clickable will be zoomed / panned
-	 @ NOTE: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	 @ <b>note</b>: use command 'zoom' at the end of your script code (the same is true for command 'mouse')
+	 @ <b>note</b>: only objects that may be set draggable / clickable will be zoomed / panned
+	 @ <b>note</b>: when an object is dragged, zooming / panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    fprintf(js_include_file,"use_pan_and_zoom = 1;");
 	    use_pan_and_zoom = TRUE;
@@ -3529,9 +3534,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ keyword (no arguments required)
 	 @ if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 	 @ onclick seqeuence numbering starts at '0'.<br />e.g. if there are 6 objects set onclick, the first onclick object will have id-number '0', the last id-number '5'
-	 @ Line based object will show an increase in linewidth<br />Font based objects will show the text in 'bold' when clicked.
-	 @ onclick and drag x|y|xy may be combined (although a single object can <b>not</b> be onclick and draggable at the same time...) 
-	 @ NOTE: not all objects may be set onclick
+	 @ line based objects will show an increase in line width<br />font based objects will show the text in 'bold' when clicked.
+	 @ onclick and <a href="#drag">drag x|y|xy</a> may be combined in a single flyscript <br />(although a single object can <b>not</b> be onclick and draggable at the same time...) 
+	 @ <b>note</b>: not all objects may be set onclick
 	*/
 	    fprintf(js_include_file,"use_dragdrop_reply = true;");
 	    onclick = 1;
@@ -3549,7 +3554,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the answer is  : drag_or_onclick_object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the sequence number of the draggable &amp; onclick objects in your script.<br />Only draggable & onclick objects will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
 	 @ use keyword 'snaptogrid' , 'xsnaptogrid' , 'ysnaptogrid' or command 'snaptopoints x1,y1,x2,y2,...' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
-	 @ NOTE: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
+	 @ <b>note</b>: in case an object is dragged , zooming or panning will cause the coordinates to be reset to the original position :( <br />e.g. dragging / panning will get lost. (array with 'drag data' is erased)<br />This is a design flaw and not a feature !!
 	*/
 	    temp = get_string(infile,1);
 	    if(strstr(temp,"xy") != NULL ){
@@ -3637,7 +3642,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ mouse_degree color,fontsize
 	 @ will display the angle in degrees between x-axis, (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using a fontfamily Ariel
 	 @ The angle is positive in QI and QIII and the angle value is negative in QII and QIV
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3650,7 +3655,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mousex color,fontsize
 	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using the fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3663,7 +3668,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mousey color,fontsize
 	 @ will display the cursor y-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3676,7 +3681,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ mouse color,fontsize
 	 @ will display the cursor (x:y) coordinates  in 'color' and 'font size'<br /> using default fontfamily Ariel
-	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
+	 @ <b>note</b>: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
 	    stroke_color = get_color(infile,0);
@@ -3908,7 +3913,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ fill the region  of point (x:y) bounded by 'bordercolor' with color 'color'
 	@ any other color will not act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
-	@ NOTE: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	@ <b>note</b>: filltoborder is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
 		switch(i){
@@ -3940,8 +3945,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ any other color or size of picture (borders of picture) will act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
 	@ Use command 'clickfill,color' for user click driven flood fill.
-	@ NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
-	@ NOTE: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
+	@ <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+	@ <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 	*/
 	    for(i=0 ;i < 4 ; i++){
 		switch(i){
@@ -3981,7 +3986,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ the answer will be read as the (x:y) click coordinates per coloured area
 	@ background color of main div may be set by using command "bgcolos color"
 	@ may not be combined with command "userdraw"
-	@ NOTE: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
+	@ <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
 	*/
 	 fill_color = get_color(infile,1);
 	 if(js_function[DRAW_FLOODFILL] != 1 ){/* use only once */
@@ -4121,7 +4126,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
 	@ also see command <a href='#piechart'>'piechart'</a>
 	@ multiple linegraphs may be used in a single plot
-	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+	@ <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	@ <ul><li>use command <a href='#strokecolor'>'strokecolor'</a> before a command 'linegraph' to set the color of this graph</li><li>use command <a href='#linewidth'>'linewidth'</a> before command 'linegraph' to set linewidth of this graph</li><li>use keyword <a href='#dashed'>'dashed'</a> before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command <a href='#dashtype'>'dashtype'</a> before command 'linegraph' to set the type of dashing of the (individual) graph</li></ul>
 	*/
 	    temp = get_string(infile,1);
@@ -4137,7 +4142,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ can be used together with freestyle x-axis/y-axis texts : see commands <a href='#xaxis'>'xaxis'</a>,<a href='#xaxisup'>'xaxisup'</a> and <a href='#yaxis'>'yaxis'</a>
 	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
 	@ also see command <a href='#piechart'>'piechart'</a>
-	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
+	@ <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":" ) != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -4156,7 +4161,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
 	@ no combinations with other reply_types allowed, for now
 	@ if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
-	@ NOTE: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
+	@ <b>note</b>: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
 	*/
 	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
 
@@ -4289,11 +4294,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command <a href='#opacity'>'opacity</a>'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ note: the complete canvas will be used for the 'log paper'
-	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
-	 @ note: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
+	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
+	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ <b>note</b>: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
+	 @ <b>note</b>: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
 	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
@@ -4323,11 +4328,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'ylogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'ylogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ note: the complete canvas will be used for the 'log paper'
-	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
-	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
+	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
@@ -4356,11 +4361,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number' and/or 'ylogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
-	 @ note: the complete canvas will be used for the 'log paper'
-	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
-	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
-	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ <b>note</b>: the complete canvas will be used for the 'log paper'
+	 @ <b>note</b>: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
+	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
+	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
+	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
 	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
