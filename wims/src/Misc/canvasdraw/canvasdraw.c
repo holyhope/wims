@@ -810,7 +810,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ hline x,y,color
 	@ draw a horizontal line through point (x:y) in color 'color'
-	@ or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
+	@ or use command <a href='#curve'>'curve color,formula'</a> to draw the line <br />(uses more points to draw the line; is however better draggable)
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<3;i++) {
@@ -914,7 +914,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ square x,y,side (px) ,color
 	@ draw a square with left top corner (x:y) with side 'side' in color 'color'
 	@ use command 'fsquare x,y,side,color' for a filled square
-	@ use command/keyword  'filled' before command 'square x,y,side,color'
+	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'square x,y,side,color'
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<5;i++){
@@ -940,7 +940,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ rect x1,y1,x2,y2,color
 	@ use command 'frect x1,y1,x2,y2,color' for a filled rectangle
-	@ use command/keyword  'filled' before command 'rect x1,y1,x2,y2,color'
+	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'rect x1,y1,x2,y2,color'
 	@ may be set draggable / onclick
 	*/
 	    for(i=0;i<5;i++){
@@ -964,7 +964,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ rects color,x1,y1,x2,y2,.....
 	@ use command 'frect color,x1,y1,x2,y2,.....' for a filled rectangle
-	@ use command/keyword  'filled' before command 'rects color,x1,y1,x2,y2,....'
+	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'rects color,x1,y1,x2,y2,....'
 	@ use command 'fillcolor color' before 'frects' to set the fill colour.
 	@ may be set draggable / onclick individually
 	*/
@@ -995,7 +995,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ roundrect x1,y1,x2,y2,radius in px,color
 	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
-	@ use command/keyword  'filled' before command 'roundrect x1,y1,x2,y2,radius,color'
+	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'roundrect x1,y1,x2,y2,radius,color'
 	@ fillcolor will be identical to 'color'
 	@ may be set draggable / onclick
 	*/
@@ -1023,7 +1023,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case ROUNDRECTS:
 	/*
 	@ roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
-	@ for filled roundrects use command/keyword  'filled' before command
+	@ for filled roundrects use command/keyword <a href='#filled'>'filled'</a> before command
 	@ may be set draggable / onclick individually
 	*/
 
@@ -1059,7 +1059,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ alternatives:<br />path color,x1,y1,x2,y2...x_n,y_n<br />polylines color,x1,y1,x2,y2...x_n,y_n<br />brokenline color,x1,y1,x2,y2...x_n,y_n<br />brokenlines color,x1,y1,x2,y2...x_n,y_n
 	@ draw a broken line interconnected between all points (not closed)
 	@ equivalent to flydraw command "line color,x1,y1,x2,y2...x_n,y_n"
-	@ use command "segments color,x1,y1,x2,y2...x_n,y_n" for not interconnected line segments.
+	@ use command <a href='#segments'>'segments'</a> for not interconnected line segments.
 	@ may be set draggable / onclick
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1090,7 +1090,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ poly color,x1,y1,x2,y2...x_n,y_n
 	@ draw closed polygon
-	@ use command 'fpoly' to fill it
+	@ use command 'fpoly' to fill it or use keyword <a href='#filled'>'filled'</a>
 	@ may be set draggable / onclick
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1123,7 +1123,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ can <b>not</b> be set "onclick" or "drag xy"
 	 @ attention: width in height in x/y-range 
 	 @ will not zoom in or zoom out (because radius is given in pixels an not in x/y-system !). Panning will work
-	 @ use command 'angle' for scalable angle
+	 @ use command <a href='#angle'>'angle'</a> for scalable angle
 	*/
 	    for(i=0;i<7;i++){
 		switch(i){
@@ -1154,7 +1154,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ angle xc,yc,width,start_angle,end_angle,color
 	 @ width is in x-range
 	 @ will zoom in/out
-	 @ if size is controlled by command 'slider' use radians to set limits of slider.
+	 @ if size is controlled by command <a href='#slider'>'slider'</a> use radians to set limits of slider.
 	*/
 	    for(i=0;i<7;i++){
 		switch(i){
@@ -1199,7 +1199,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case DASHTYPE:
 	/*
 	@ dashtype line_width_px,space_width_px
-	@ When dashed is set, the objects will be drawn with this dashtype
+	@ every indiviual object may have it's own dashtype, if needed...
+	@ When keyword <a href='#dashed'>dashed</a> is set, the objects will be drawn with this dashtype
 	@ default value "dashtype 2,2" e.g. 2px line and 2px space
 	@ html5 canvas specification supports more arguments (dashing schemes) ... but not all modern browsers are yet capable
 	*/
@@ -1396,6 +1397,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case TRIANGLE:
 	/*
 	 @triangle x1,y1,x2,y2,x3,y3,color
+	 @use ftriangle or keyword <a href='#filled'>'filled'</a> for a solid triangle
 	 @may be set draggable / onclick
 	*/
     	    for(i=0;i<7;i++){
@@ -1420,6 +1422,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case TRIANGLES:
 	/*
 	 @triangles color,x1,y1,x2,y2,x3,y3,...
+	 @use ftriangles or keyword <a href='#filled'>'filled'</a> for solid triangles
 	 @may be set draggable / onclick individually (!)
 	*/
 	    stroke_color = get_color(infile,0);/* name or hex color */
@@ -1471,7 +1474,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multistrokeopacity stroke_opacity_1,stroke_opacity_2,...,stroke_opacity_7
 	 @ float values 0 - 1 or integer values 0 - 255 
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all stroke opacity_ will be set by previous command <em>'opacity int,int'</em>
 	 @ use these up to 7 different stroke opacities for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will not check the amount or validity of your input
@@ -1486,7 +1489,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multifillopacity fill_opacity_1,fill_opacity_2,...,fill_opacity_8
 	 @ float values 0 - 1 or integer values 0 - 255 
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all fill opacity_ will be set by previous command <em>'opacity int,int'</em> and keyword <em>'filled'</em>
 	 @ use these up to 7 different stroke opacities for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_y</em>
 	 @ wims will not check the amount or validity of your input
@@ -1500,7 +1503,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTILABEL:
 	/*
 	 @ multilabel button_label_1,button_label_2,...,button_label_8,'stop drawing text'
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all labels (e.g. the value='' of input type 'button') will be set by the english names for the draw_primitives (like 'point','circle'...)
 	 @ the 'stop drawing' button text <b>must</b> be the last item on the 'multilabel' -list <br />for example:<br /><em>multilabel punten,lijnen,Stop met Tekenen<br />multidraw points,lines</em>
 	 @ all buttons can be 'styled' by using commant 'inputstyle'<br /><b>note:</b><em>If you want to add some CSS style to the buttons...<br />the id's of the 'draw buttons' are their english command argument<br />(e.g. id="canvasdraw_points" for the draw points button).<br />the id of the 'stop drawing' button is "canvasdraw_stop_drawing".<br />the id of the "OK" button is"canvasdraw_ok_button"</em>
@@ -1515,7 +1518,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTILINEWIDTH:
 	/*
 	 @ multilinewidth linewidth_1,linewidth_2,...,linewidth_8
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all line width will be set by a previous command <em>'linewidth int'</em>
 	 @ use these up to 7 different line widths for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
@@ -1530,7 +1533,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multidash 0,1,1
 	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like <em>'multifill points,circle,segments'</em>, are dashed
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all objects will be set 'not dashed'...<br />unless a generic keyword <em>'dashed'</em> was given before command <em>'multidraw'</em>
 	 @ the dash-type is not -yet- adjustable <br />(e.g. command <em>dashtype line_px,space_px</em> will give no control over multidraw objects)
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
@@ -1545,13 +1548,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTISNAPTOGRID:
 	/*
 	 @ multisnaptogrid 0,1,1
-	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like <em>'multifill points,circle,segments'</em>, will snap to the xy-grid (default 1 in x/y-coordinate system: see command 'snaptogrid')
+	 @ meaning draw objects no. 2 (circle) and 3 (segments), in the list of command like <em>'multifill points,circle,segments'</em>, will snap to the xy-grid (default 1 in x/y-coordinate system: see command <a href='#snaptogrid'>'snaptogrid'</a>)
 	 @ only the x-values snap_to_grid: <em>multisnaptogrid 0,2,2</em>
 	 @ only the y-values snap_to_grid: <em>multisnaptogrid 0,3,3</em>
 	 @ mixing allowed: <em>multisnaptogrid 1,2,3,0</em> e.g. the first object will snap to the xy-grid, the second draw object will snap to the x-values, the third object will snap to the y-valeus of the grid, the last object may be placed anywhere on the canvas
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all objects will be set 'no snap'...<br />unless a generic command 'snaptogrid' was given before command 'multidraw'
-	 @ commands 'xsnaptogrid', 'ysnaptogrid', 'snaptofunction' and 'snaptopoints x1,y1,x2,y2...' are <b>not</b> supported at this time
+	 @ commands <a href='#xsnaptogrid'>'xsnaptogrid'</a>, <a href='#ysnaptogrid'>'ysnaptogrid'</a>, <a href='#snaptofunction'>'snaptofunction'</a> and <a href='#snaptopoints'>'snaptopoints</a> x1,y1,x2,y2...' are <b>not</b> supported at this time
 	 @ always use the same sequence as is used for 'multidraw'
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
 	*/
@@ -1565,7 +1568,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ multifill 0,0,1,0,1,0,0
 	 @ meaning draw objects no. 3 and 5, in the list of command 'multifill', are filled<br />(if the object is fillable...and not a line,segment,arrow or point...)
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all objects -except point|points-  will be set 'not filled'...<br />unless a command 'filled' was given before command 'multifill'
 	 @ only suitable for draw_primitives like 'circle | circles' , 'triangle | triangles' and 'polygon'
 	 @ wims will <b>not</b> check if the number of 0 or 1's matches the amount of draw primitives...
@@ -1579,7 +1582,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTISTROKECOLORS:
 	/*
 	 @ multistrokecolors color_name_1,color_name_2,...,color_name_8
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all colors will be 'stroke_color' , 'stroke_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command <em>'multidraw obj_type_1,obj_type_2...obj_type_7</em>
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
@@ -1596,7 +1599,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTIFILLCOLORS:
 	/*
 	 @ multifillcolors color_name_1,color_name_2,...,color_name_8
-	 @ use before command 'multidraw'
+	 @ use before command <a href='#multidraw'>'multidraw'</a>
 	 @ if not set all fillcolors (for circle | triangle | poly[3-9] | closedpoly ) will be 'stroke_color' , 'fill_opacity'
 	 @ use these up to 6 colors for the draw primitives used by command 'multidraw obj_type_1,obj_type_2...obj_type_n
 	 @ wims will <b>not</b> check if the number of colours matches the amount of draw primitives...
@@ -1619,7 +1622,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ in case of a triangle | poly3, three inputfields are provided.
 	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
 	@ when exercise if finished (status=done) the buttons will not be shown.<br />To override this default behaviour use command / keyword 'status'
-	@ use before command 'multidraw'
+	@ use before command <a href='#multidraw'>'multidraw'</a>
 	@ always use the same sequence as is used for 'multidraw'
 	*/
 	    /* simple rawmath and input check */
@@ -1636,7 +1639,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ it makes no sense using something like "multidraw point,points" ...
 	 @ note: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	 @ buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
-	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command 'multilabel' for more details)
+	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command <a href='#multilabel'>'multilabel'</a> for more details)
 	 @ multidraw is incompatible with command 'tooltip'
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
@@ -2870,7 +2873,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	    @ axisnumbering
 	    @ keyword (no arguments required)
-	    @ to be used before command grid (see grid)
+	    @ to be used before command grid (see <a href="#grid">command grid</a>)
 	*/
 	    use_axis_numbering = 1;
 	    break;
@@ -2878,7 +2881,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	    @ axis
 	    @ keyword (no arguments required)
-	    @ to be used before command grid (see grid)
+	    @ to be used before command grid (see <a href="#grid">command grid</a>)
 
 	*/
 	    use_axis = TRUE;
@@ -3041,13 +3044,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case GRID:/* xmajor,ymajor,color [,xminor,yminor,tick length (px) ,color]*/
 	/*
 	 @ grid step_x,step_y,gridcolor
-	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
-	 @ if keywords "axis" or "axisnumbering" are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+	 @ use command <a href="#fontcolor">"fontcolor"</a>, <a href="#fontsize">"fontsize"</a> , <a href="#fontfamily">"fontfamily"</a> to adjust font <br />defaults: black,12,Ariel
+	 @ if keywords <a href="#axis">"axis"</a> or <a href="#axisnumbering">"axisnumbering"</a> are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
 	 @ if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
-	 @ can <b>not</b> be set "onclick" or "drag xy"
-	 @ use commands 'xlabel some_string' and/or 'ylabel some_string' to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
-	 @ see commands "xaxis" or "xaxistext", "yaxis" or "yaxistext" to set tailormade values on axis (the used font is set by command fontfamily; default '12px Ariel')
-	 @ see command "legend" to set a legend for the graph ;<br />use command "fontsize" to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
+	 @ can <b>not</b> be set <a href="#onclick">"onclick"</a> or <a href="#drag">"drag xy"</a>
+	 @ use commands <a href="#xlabel">'xlabel some_string'</a> and/or <a href="#ylabel">'ylabel some_string'</a> to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
+	 @ see commands (see <a href="#xaxis">"xaxis" or xaxistext"</a>, <a href="#yaxis">"yaxis" or "yaxistext"</a> to set tailormade values on axis (the used font is set by <a href="fontfamily">command fontfamily</a>; default '12px Ariel')
+	 @ see command <a href="#legend">"legend"</a>to set a legend for the graph ;<br />use command <a href="#fontsize">"fontsize"</a> to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
 	*/
 	    if( js_function[DRAW_YLOGSCALE] == 1 ){canvas_error("only one grid type is allowed...");}
 	    if( js_function[DRAW_GRID] != 1 ){ js_function[DRAW_GRID] = 1;}
@@ -3631,7 +3634,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case MOUSE_DEGREE:
 	/*
 	 @ mouse_degree color,fontsize
-	 @ will display the angle in degrees between x-axis, (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ will display the angle in degrees between x-axis, (0:0) and the cursor (x:y) in 'color' and 'font size'<br /> using a fontfamily Ariel
 	 @ The angle is positive in QI and QIII and the angle value is negative in QII and QIV
 	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
@@ -3645,7 +3648,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case MOUSEX:
 	/*
 	 @ mousex color,fontsize
-	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using default fontfamily Ariel
+	 @ will display the cursor x-coordinate in 'color' and 'font size'<br /> using the fontfamily Ariel
 	 @ NOTE: use command 'mouse' at the end of your script code (the same is true for command 'zoom')
 
 	*/
@@ -4080,8 +4083,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ legend string1:string2:string3....string_n
 	@ will be used to create a legend for a graph
-	@ also see command 'piechart'
-	@ will use the same colors per default as used in the graphs : use command 'legendcolors' to override the default
+	@ also see command <a href='#piechart'>'piechart'</a>
+	@ will use the same colors per default as used in the graphs : use command <a href='#legendcolors'>'legendcolors'</a> to override the default
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -4112,13 +4115,13 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ linegraph x1:y1:x2:y2...x_n:y_n
 	@ will plot your data in a graph
-	@ may only to be used together with command 'grid'
-	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis','xaxisup' and 'yaxis'
-	@ use command 'legend' to provide an optional legend in right-top-corner
-	@ also see command 'piechart'
+	@ may <b>only</b> to be used together with command <a href='#grid'>'grid'</a>
+	@ can be used together with freestyle x-axis/y-axis texts : see commands <a href='#xaxis'>'xaxis'</a>,<a href='#xaxisup'>'xaxisup'</a> and <a href='#yaxis'>'yaxis'</a>
+	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
+	@ also see command <a href='#piechart'>'piechart'</a>
 	@ multiple linegraphs may be used in a single plot
 	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
-	@ <ul><li>use command 'strokecolor' before command 'linegraph' to set the color of this graph</li><li>use command 'linewidth' before command 'linegraph' to set linewidth of this graph</li><li>use command 'dashed' before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command 'dashtype' before command 'linegraph' to set the type of dashing of the graph</li></ul>
+	@ <ul><li>use command <a href='#strokecolor'>'strokecolor'</a> before a command 'linegraph' to set the color of this graph</li><li>use command <a href='#linewidth'>'linewidth'</a> before command 'linegraph' to set linewidth of this graph</li><li>use keyword <a href='#dashed'>'dashed'</a> before command 'linegraph' to set dashing of the graph</li><li>if dashing is set, use command <a href='#dashtype'>'dashtype'</a> before command 'linegraph' to set the type of dashing of the (individual) graph</li></ul>
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -4129,10 +4132,10 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case BARCHART:
 	/*
 	@ barchart x_1:y_1:color_1:x_2:y_2:color_2:...x_n:y_n:color_n
-	@ may only to be used together with command 'grid'
-	@ can be used together with freestyle x-axis/y-axis texts : see commands 'xaxis','xaxisup' and 'yaxis'
-	@ use command 'legend' to provide an optional legend in right-top-corner
-	@ also see command 'piechart'
+	@ may <b>only</b> to be used together with command <a href='#grid'>'grid'</a>
+	@ can be used together with freestyle x-axis/y-axis texts : see commands <a href='#xaxis'>'xaxis'</a>,<a href='#xaxisup'>'xaxisup'</a> and <a href='#yaxis'>'yaxis'</a>
+	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
+	@ also see command <a href='#piechart'>'piechart'</a>
 	@ NOTE: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	*/
 	    temp = get_string(infile,1);
@@ -4225,8 +4228,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ data+color list: a colon separated list of raw data and corresponding colours<br />canvasdraw will not check validity of colornames...<br />in case of trouble look into javascript debugging of your browser
 	@ example data+colorlist : 132:red:23565:green:323:black:234324:orange:23434:yellow:2543:white
 	@ the number of colors must match the number of data.
-	@ use command "opacity 0-255,0-255" to adjust fill_opacity of colours
-	@ use command "legend string1:string2:...:string_n" to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...<br />use command 'fontfamily' to set the font of the legend.
+	@ use command "<a href='#opacity'>'opacity'</a> to adjust fill_opacity of colours
+	@ use command <a href='#legend'>'legend'</a> to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...<br />use command 'fontfamily' to set the font of the legend.
 	*/
 	    if( js_function[DRAW_PIECHART] != 1 ){ js_function[DRAW_PIECHART] = 1;}
 	    for(i=0;i<5;i++){
@@ -4282,14 +4285,14 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the x/y-range are set using commands 'xrange xmin,xmax' and 'yrange ymin,ymax'
 	 @ ymajor is the major step on the y-axis; yminor is the divisor for the y-step
 	 @ the linewidth is set using command 'linewidth int'
-	 @ the opacity of major / minor grid lines is set by command 'opacity [0-255],[0-255]'
+	 @ the opacity of major / minor grid lines is set by command <a href='#opacity'>'opacity</a>'
 	 @ default logbase number = 10 ... when needed , set the logbase number with command 'xlogbase number'
 	 @ the x/y- axis numbering is triggered by keyword 'axisnumbering'<ul><li>use command 'precision' before 'xlogscale' command to set the precision (decimals) of the axis numbering</li><li>use commands 'xlabel some_text' and/or 'ylabel some_text' for text on axis : use command 'fontsize int' to set the fontsize (default 12px)</li><li>use command 'fontfamily fnt_family_string' to set the fonts for axis-numbering</li><li>use command'fontcolor' to set the colour</li></ul>
 	 @ note: the complete canvas will be used for the 'log paper'
 	 @ note: userdrawings are done in the log paper, e.g. javascript:read_canvas() will return the real values
 	 @ note: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
-	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
-	 @ note: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
+	 @ note: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
+	 @ note: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
 	 @ attention: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
