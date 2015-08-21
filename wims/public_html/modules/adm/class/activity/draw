@@ -3,8 +3,7 @@
 !endif
 !default maxday=365
 !distribute item 30,green into  lim, colorg
-!set maxexo_=!exec pari vecmax([$datay,7])
-!set maxexo=$[max(12,$maxexo_+3)]
+!set maxexo=!exec pari vecmax([$datay,7])+3
 !distribute items blue,0 into color,testfin
 !reset barchart linegraph legend goodlist
 !set dataxcnt=!itemcnt $datax
@@ -15,9 +14,9 @@
   !set cnt3=!char 7 to 8 of $cnt
   !set jday_=$(day[$j])
   !set tmp=$[min($(datay[$j]),$maxexo)]
-  !set barchart=!append item $jday_:$tmp:$color to $barchart
-  !set linegraph=!append item $jday_:$(dataz[$j]) to $linegraph
-  !set legend=!append item $jday_:$cnt3/$cnt2 to $legend
+  !set barchart=!append semicolon $jday_:$tmp:$color to $barchart
+  !set linegraph=!append semicolon $jday_:$(dataz[$j]) to $linegraph
+  !set legend=!append semicolon $jday_:$cnt3/$cnt2 to $legend
   !set good=!declosing $(datagood[$j])
   !set good=!nonempty items $good
   !if $good!=$empty
@@ -43,9 +42,6 @@
  !exit
 !endif
 
-!set linegraph=!replace internal , by : in $linegraph
-!set legend=!replace internal , by : in $legend
-!set barchart=!replace internal , by : in $barchart
 !set testfin=$[$jday_+2]
 !if $testfin < 50
   !set mult=10
