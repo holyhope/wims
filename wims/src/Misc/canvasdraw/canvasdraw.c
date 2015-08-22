@@ -2438,9 +2438,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @curve color,formula(x)
 	 @plot color,formula(x)
-	 @use command trange before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
-	 @use command "precision" to increase the number of digits of the plotted points
-	 @use command "plotsteps" to increase / decrease the amount of plotted points (default 150)
+	 @use command <a href="#trange">trange</a> in parametric functions before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
+	 @use command <a href="#precision">"precision" </a>to ncrease the number of digits of the plotted points
+	 @use command <a href="#plotsteps">"plotsteps"</a> to increase / decrease the amount of plotted points (default 150)
 	 @may be set draggable / onclick
 	*/
 	    if( use_parametric == TRUE ){ /* parametric color,fun1(t),fun2(t)*/
@@ -2528,6 +2528,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @use commands fontsize and inputstyle to format the fonts for labels and inputfields.
 	 @use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
 	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	@be aware that the formula's of the plotted function(s) can be found in the page javascript source
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
@@ -2546,6 +2547,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    @use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
 	    @example: jsmath sin(x^2)
 	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	    @be aware that the formula's of the plotted function(s) can be found in the page javascript source
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( use_js_math == FALSE){
@@ -3108,6 +3110,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @rotate rotation_angle
 	 @angle in degrees
+	 @positive values rotate counter clockwise
 	*/
 	    use_rotate = TRUE;
 	    angle = -1*(get_real(infile,1));/* -1 : to be compatible with Flydraw... */
@@ -3279,8 +3282,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ If x1=y1=x2=y2=-1, the whole [filename URL] is copied.
 	@ [filename] is the URL of the image
 	@ URL is normal URL of network reachable image file location<br />(eg special url for 'classexo' not -yet- implemented)
-	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
-	@ if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+	@ if command <a href="#drag">'drag x/y/xy'</a> is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
+	@ if keyword <a href="#onclick">'onclick'</a> is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
 	@ 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
 	@ you may draw / userdraw / drag other stuff on top of an "imported" image
 	*/
@@ -3344,13 +3347,13 @@ height 	The height of the image to use (stretch or reduce the image) : dy2 - dy1
 	case COPYRESIZED:
 	/*
 	@ copyresized x1,y2,x2,y2,dx1,dy1,dx2,dy2,image_file_url
-	@ The image may be "bitmap" or "SVG"
+	@ The image may be any "bitmap" or "SVG"
 	@ Insert the region from (x1,y1) to (x2,y2) (in pixels) of [ filename], <br />possibly resized,<br />to the region of (dx1,dy1) to (dx2,dy2) in x/y-range
 	@ (dx1:dy1) must be left top corner; (dx2 :dy2) must be right bottom corner of inserted image
 	@ If x1=y1=x2=y2=-1, the whole [filename / URL ] is copied and resized.
 	@ URL is normal URL of network reachable image file location<br />(as seen from public_html-root or network reachable 'http://some_server/my_images/test.gif'<br />(eg no special wims paths are searched !!)
-	@ if command 'drag x/y/xy' is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
-	@ if keyword 'onclick' is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
+	@ if command <a href="#drag">'drag x/y/xy'</a> is set before command 'copy', the images will be draggable<br />javascript function read_canvas(); will return the x/y coordinate data in xrange/yrange of all -including non draggable- images<br />the command drag is only valid for the next image<br />draggable / non-draggable images may be mixed<br />may be used together with preceding keywords 'snaptogrid','xsnaptogrid','ysnaptogrid' or 'snaptopoints x1,y1,x2,y2...'
+	@ if keyword <a href="#onclick">'onclick'</a> is set before command 'copy' the image(s) is clickable (marked with a green rectangle around the image)<br />use 'read_dragdrop' to get the number of the clicked image(s)<br />use command 'clearbutton some_text' to reset the reply/click array.<br />example: 4 images; student clicked on image 2 and 3 : reply = 0,1,1,0<br />after clicking the clear button: reply = 0,0,0,0<br />May be mixed with commands 'drag x|y|xy' (use javascript read_canvas to get the new coordinates
 	@ 'onclick' for external images may be mixed with canvas generated stuff (like lines,curves etc)
 	@ you may draw / userdraw / drag stuff on top of an "imported" image
 	*/
@@ -3433,8 +3436,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ input x,y,size,editable,value
 	 @ to set inputfield "readonly", use editable = 0
 	 @ only active inputfields (editable = 1) will be read with read_canvas();
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword 'status'
-	 @ may be further controlled by "inputstyle" (inputcss is not yet implemented...)
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword <a href="#status">'status'</a>
+	 @ may be further controlled by <a href="#inputstyle">"inputstyle"</a> (inputcss is not yet implemented...)
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
 	*/
 	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}
@@ -3461,7 +3464,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ textarea x,y,cols,rows,readonly,value
 	 @ may be further controlled by "inputstyle"
-	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword 'status'
+	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword <a href="#status">'status'.</a>
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
 	*/
 	    if( js_function[DRAW_TEXTAREAS] != 1 ){ js_function[DRAW_TEXTAREAS] = 1;}
@@ -3500,7 +3503,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
 	    @may be used for inputfield based zooming / panning
 	    @may be styled using command <a href="#inputstyle">inputstyle</a>
-	    @use command xlabel / ylabel to change text from xmin to 'xlabel' min etc
+	    @use commands <a href="#xlabel">xlabel / ylabel</a> to change text from xmin to 'xlabel' etc
 	    @<b>note</b>:the input value will not be checked on validity
 	*/
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
@@ -3547,7 +3550,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ drag [x][y][xy]
 	 @ the next object will be draggable in x / y / xy direction
 	 @ the displacement can be read by 'javascript:read_dragdrop();'
-	 @ the precision (default 2 decimals) in the student reply may be set with command 'precision'.<br />Use this 'precision' command before this command 'drag x|y|xy' !
+	 @ the precision (default 2 decimals) in the student reply may be set with command <a href="#precision">'precision'.</a><br />Use this 'precision' command before this command 'drag x|y|xy' !
 	 @ 'onclick' and 'drag x|y|xy' may be combined (for different objects: a single object can either be onclick or drag , not both )
 	 @ 'multi_objects' will be numbered in the given x/y-sequence (example: points red,0,0,1,1,2,2,3,3 : point (0:0) is object_number 1)
 	 @ <b>Attention</b>: static objects and 'onclick/drag' objects of the same type (like point,circle,etc) with the same coordinates (e.g. objects that overlap) will give problems in the 'recognition algorithm')<br />in this example<br /><em>linewidth 4<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>the blue point will not be recognised as draggable !<br /><em>linewidth 4<br />drag xy<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>both points will be recognised
@@ -3597,7 +3600,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	 @ yunit some_unit_for_y-values
 	 @ unicode allowed (no html code)
-	 @ use together with command mousex
+	 @ use together with command mousey
 	 @ will display the cursor y-coordinate in 'unit'
 	*/
 	    fprintf(js_include_file,"unit_y = \"%s\";",get_string(infile,1));
@@ -3697,7 +3700,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ link_text may also be an image URL 'http://some_server/images/my_image.png' or '$module_dir/gifs/my_image.jpg'
 	    @ link_text may contain HTML markup
 	    @ the canvas will be displayed in a tooltip on 'link_text'
-	    @ the canvas is default transparent: use command 'bgcolor color' to adjust background-color<br />the link text will also be shown with this 'bgcolor'.
+	    @ the canvas is default transparent: use command <a href="#bgcolor">'bgcolor color'</a> to adjust background-color<br />the link text will also be shown with this 'bgcolor'.
 	    @ many 'userinput stuff' will use the tooltip_placeholder_div element...only one is defined in the wims-page<br />and are therefor these commands are mutually exclusive.<br />keep this in mind...
 	    */
 	    if(use_input_xy != FALSE ){canvas_error("intooltip can not be combined with userinput_xy or other commands using the tooltip-div...see documentation");}
@@ -3712,7 +3715,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ keyword (no arguments)
 	    @ if fly-script starts with keyword 'popup', the canvas image will be exclusively in a popup window (xsize px &times; ysize px)
 	    @ if keyword 'popup' is used after command 'size xsize,ysize' the canvas will also be displayed in a popup window with size 'xsize &times; ysize'
-	    @ the popup window will be embedded into the page as a 'normal' image , when 'status=done' ; override with keyword 'nostatus'
+	    @ the popup window will be embedded into the page as a 'normal' image , when 'status=done' ; override with keyword <a href="#status"> 'nostatus'</a>
 	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em><br />
 	    */
 	    use_tooltip = 2;
@@ -3834,7 +3837,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ gridfill x0,y0,dx,dy,color
 	@ x0,y0 in xrange / yrange
 	@ distances dx,dy in pixels
-	@ a draggable object may snap_to_grid (using keywords xysnaptogrid,xsnaprogrid, ysnaptogrid)
+	@ a draggable object may <a href="#snaptogrid">snap_to_grid</a> (using keywords snaptogrid,xsnaprogrid, ysnaptogrid or snaptopoints)
 	@ userdraw object may snap_to_grid
 	*/
 	    if( js_function[DRAW_GRIDFILL] != 1 ){ js_function[DRAW_GRIDFILL] = 1;}
@@ -3970,12 +3973,12 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    reset();
 	break;
 	case CLICKFILLMARGE:
-	    clickfillmarge = (int) (get_real(infile,1));
+	   clickfillmarge = (int) (get_real(infile,1));
 	    break;
 	/*
 	@ clickfillmarge int
 	@ default 20 (pixels)
-	@ when using command "clickfill fillcolor" a coloured area my be reverted ("undo") <br />back to background colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
+	@ when using command "clickfill fillcolor" a coloured area may be reverted ("undo") <br />back to backgrounbld colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
 	*/
 	case CLICKFILL:
 	/*
@@ -3984,8 +3987,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ multiple areas may be coloured
 	@ the coloured areas can be removed (changed to "bgcolor") by  middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
 	@ the answer will be read as the (x:y) click coordinates per coloured area
-	@ background color of main div may be set by using command "bgcolos color"
-	@ may not be combined with command "userdraw"
+	@ background color of main div may be set by using command "bgcolor color"
+	@ may <b>not</b> be combined with command "userdraw". <br />However <a href="#multidraw">"multidraw"</a> is possi (since it has a button 'stop drawing'...but in any case it's not a good idea...)
 	@ <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
 	*/
 	 fill_color = get_color(infile,1);
@@ -4000,7 +4003,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case SETPIXEL:
 	/*
 	@ setpixel x,y,color
-	@ A "point" with diameter 1 pixel centeres at (x:y) in xrange / yrange
+	@ A rectangular "point" with diameter 1 pixel centered at (x:y) in xrange / yrange
 	@ pixels can <b>not</b> be dragged or clicked
 	@ "pixelsize = 1" may be changed by command "pixelsize int"
 	*/
@@ -4023,14 +4026,14 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case PIXELSIZE:
 	/*
 	@ pixelsize int
-	@ in case you want to deviate from default pixelsize = 1...
+	@ in case you want to deviate from default pixelsize = 1(...)
 	*/
 	    pixelsize = (int) get_real(infile,1);
 	break;
 	case PIXELS:
 	/*
 	@ pixels color,x1,y1,x2,y2,x3,y3...
-	@ Draw  "points" with diameter 1 pixel
+	@ draw rectangular "points" with diameter 1 pixel
 	@ pixels can <b>not</b> be dragged or clicked
 	@ "pixelsize = 1" may be changed by command "pixelsize int"
 	*/
@@ -4101,7 +4104,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ xlabel some_string
 	@ will be used to create a label for the x-axis (label is in quadrant I)
-	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+	@ can only be used together with command 'grid'</a><br />not depending on keywords 'axis' and 'axisnumbering'
 	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
 	*/
 	    temp = get_string(infile,1);
@@ -4111,7 +4114,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	/*
 	@ ylabel some_string
 	@ will be used to create a (vertical) label for the y-axis (label is in quadrant I)
-	@ can only be used together with command 'grid'<br />not depending on keywords 'axis' and 'axisnumbering'
+	@ can only be used together with command <a href="#grid">'grid'</a><br />not depending on keywords 'axis' and 'axisnumbering'
 	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
 	*/
 	    temp = get_string(infile,1);
