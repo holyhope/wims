@@ -462,7 +462,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case CIRCLE:
 	/*
 	@ circle xc,yc,width (2*r in pixels),color
-	@ use command 'fcircle xc,yc,d,color' or command 'filled' for a filled disk
+	@ use command 'fcircle xc,yc,d,color'
+	@ alternative: disk for a filled circle
 	@ use command 'fillcolor color' to set the fillcolor
 	@ may be set draggable / onclick
 	@ will shrink / expand on zoom out / zoom in
@@ -487,8 +488,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case CIRCLES:
 	/*
 	@ circles color,xc1,yc1,r1,xc2,yc2,r2...xc_n,yc_n,r_n
-	@ <b>Attention</b> r = radius in x-range (!)
-	@ use keyword 'filled' or command 'fcircles' to produce solid circles 
+	@ <b>attention</b> r = radius in x-range (!)
+	@ use keyword 'filled' or command 'fcircles' to produce solid circles
+	@ alternative : disks for filled circles
 	@ use command 'fillcolor color' to set the fillcolor
 	@ may be set draggable / onclick (individually)
 	@ will shrink / expand on zoom out / zoom in
@@ -517,6 +519,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case SEGMENT:
 	/*
 	@ segment x1,y1,x2,y2,color
+	@ alternative : seg
 	@ draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
 	@ may be set draggable / onclick
 	*/
@@ -541,6 +544,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case SEGMENTS:
 	/*
 	@ segments color,x1,y1,x2,y2,...,x_n,y_n
+	@ alternative : segs
 	@ draw multiple segments between points (x1:y1)--(x2:y2).....and... (x_n-1:y_n-1)--(x_n:y_n) in color 'color'
 	@ use command 'linewidth int'  to adust size
 	@ may be set draggable / onclick individually (!)
@@ -627,7 +631,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ draw multiple lines through points (x1:y1)--(x2:y2) ...(x_n-1:y_n-1)--(x_n:y_n) in color 'color'
 	@ or use multiple commands 'curve color,formula' or "jscurve color,formule" to draw the line <br />(uses more points to draw the line; is however better draggable)
 	@ may be set draggable / onclick
-	@ <b>Attention</b>: the flydraw command "lines" is equivalent to canvasdraw command "polyline"
+	@ <b>attention</b>: the flydraw command "lines" is equivalent to canvasdraw command <a href="#polylines">"polyline"</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -810,6 +814,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case HLINE:
 	/*
 	@ hline x,y,color
+	@ alternative : horizontalline
 	@ draw a horizontal line through point (x:y) in color 'color'
 	@ or use command <a href='#curve'>'curve color,formula'</a> to draw the line <br />(uses more points to draw the line; is however better draggable)
 	@ may be set draggable / onclick
@@ -833,6 +838,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case HLINES:
 	/*
 	@ hlines color,x1,y1,x2,y2,...
+	@ alternative : horizontallines
 	@ draw horizontal lines through points (x1:y1)...(xn:yn) in color 'color'
 	@ may be set draggable / onclick individually
 	*/
@@ -862,6 +868,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case VLINE:
 	/*
 	@ vline x,y,color
+	@ alternative : verticalline
 	@ draw a vertical line through point (x:y) in color 'color'
 	@ may be set draggable / onclick
 	*/
@@ -884,6 +891,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case VLINES:
 	/*
 	@ vlines color,x1,y1,x2,y2....
+	@ alternative : verticallines
 	@ draw vertical lines through points (x1:y1),(x2:y2)... in color 'color'
 	@ may be set draggable / onclick individually
 	*/
@@ -1125,7 +1133,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ arc xc,yc,width,height,start_angle,end_angle,color
 	 @ can <b>not</b> be set "onclick" or "drag xy"
-	 @ <b>Attention</b>: width in height in x/y-range 
+	 @ <b>attention</b>: width in height in x/y-range 
 	 @ will not zoom in or zoom out (because radius is given in pixels an not in x/y-system !). Panning will work
 	 @ use command <a href='#angle'>'angle'</a> for scalable angle
 	*/
@@ -1626,6 +1634,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ in case of circle | circles a third inputfield for Radius (R) is added.<br />the radius must be in the x/y coordinate system (x-range) and <b>not</b> in pixels...students don't think in pixels.<br /><b>note</b>: R-values will not snap-to-grid
 	@ in case of line(s) | segment(s) | arrow(s) the user should write <b>x1:y1</b> in the first inputfield and <b/>x2:y2</b> in the second.<br />These 'hints' are pre-filled into the input field.<br />other coordinate delimiters are ";" and "," e.g. <b>x1;y1</b> or <b>x1,y1</b>.<br />An error message (alert box) will popup when things are not correctly...
 	@ in case of a triangle | poly3, three inputfields are provided.
+	@ may be styled using command <a href="#inputstyle">"inputstyle"</a>
 	@ an additional button 'stop drawing' may be used to combine userbased drawings with 'drag&amp;drop' or 'onclick' elements
 	@ when exercise if finished (status=done) the buttons will not be shown.<br />To override this default behaviour use command / keyword 'status'
 	@ use before command <a href='#multidraw'>'multidraw'</a>
@@ -1650,7 +1659,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
 	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 9 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = rects_x +";"+rects_y+"\\n"<br />line 8 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 9 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
-	 @ <b>Attention</b>: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed. 
+	 @ <b>attention</b>: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed. 
 	 @ <em>technical: all 8 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
 	//    if( use_tooltip == 1 ){canvas_error("command 'multidraw' is incompatible with command 'intooltip tip_text'");}
@@ -1685,7 +1694,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	     if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    } 
 
-	    /* the canvasses range from 1000 ... 1007 */
+	    /* the canvasses range from 1000 ... 1008 */
 	    add_js_multidraw(js_include_file,canvas_root_id,temp,input_style);
 	    reply_precision = precision;
 	    if( reply_format == 0){reply_format = 29;}
@@ -1700,7 +1709,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ passive_mode : use -1 to set the ruler interactive (eg mouse movement of ruler; drag &amp; rotate)<br />use passive_mode = '0&deg; - 360&deg;' to set the ruler with a static angle of some value
 	@ if combined with a protractor, use replyformat = 32
 	@ only one ruler allowed (for the time being)
-	@ when using command 'zoom' , pay <b>Attention</b> to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'ruler' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+	@ when using command 'zoom' , pay <b>attention</b> to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'ruler' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
 	@ usage: first left click on the ruler will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
 	*/
 	    for( i = 0;i < 5; i++ ){
@@ -1738,7 +1747,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ default replyformat: reply[0] = x;reply[1] = y;reply[2] = angle_in_radians<br />use command 'precision' to set the reply precision.
 	 @ if combined with a ruler, use replyformat = 32
 	 @ command <em>snap_to_grid</em> may be used to assist the pupil at placing the protractor 
-	 @ when using command 'zoom' , pay <b>Attention</b> to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'protractor' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
+	 @ when using command 'zoom' , pay <b>attention</b> to the size and symmetry of your canvas<br />...to avoid a partial image, locate the start position near the center of the visual canvas<br /><em>technical:<br /> the actual 'protractor' is just a static generated image in a new canvas-memory<br />This image is only generated once, and a copy of it's bitmap is translated & rotated onto the visible canvas.<br />That is the reason for the 'high-speed dragging and rotating'.<br />I've limited it's size to xsize &times; ysize e.g. the same size as the visual canvas... </em>
 	 @ only one protractor allowed (for the time being)
 	 @ usage: first left click on the protractor will activate dragging;<br />a second left click will activate rotating (just move mouse around)<br />a third click will freeze this position and the x/y-coordinate and angle in radians will be stored in reply(3)<br />a next click will restart this sequence...
 	*/
@@ -2416,7 +2425,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @your function will be plotted by the javascript engine of the client browser.
 	 @use only basic math in your curve:<br /> sqrt,^,asin,acos,atan,log,pi,abs,sin,cos,tan,e
 	 @use parenthesis and rawmath : use 2*x instead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
-	 @<b>Attention</b> : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
+	 @<b>attention</b> : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
 	 @no validity check is done by wims.
 	 @zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
 	 @use command 'trace_jscurve formula(x)` for tracing
@@ -2737,7 +2746,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ centerstring color,y-value,the text string
 	 @ title color,y-value,the text string
 	 @ draw a string centered on the canvas at y = y-value
-	 @ can not set "onclick" or "drag xy" (...)
+	 @ can not be set "onclick" or "drag xy" (...)
 	 @ unicode supported: centerstring red,5,\\u2232
 	 @ use a command like 'fontfamily italic 24px Ariel' <br />to set fonts on browser that support font change
 	*/
@@ -2764,7 +2773,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ mathml x1,y1,x2,y2,mathml_string
 	@ mathml will be displayed in a rectangle left top (x1:y1) , right bottom (x2:y2)
 	@ can be set onclick <br />(however dragging is not supported)<br />javascript:read_dragdrop(); will return click number of mathml-object
-	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br /><b>Attention</b>: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();"
+	@ if inputfields are incorporated in mathml (with id's : id='mathml0',id='mathml1',...id='mathml_n')<br />the user_input values will be read by javascript:read_mathml();<br /><b>attention</b>: if after this mathml-input object other user-interactions are included, these will read mathml too using "read_canvas();"
 	@ If other inputfields (command input / command textarea) or userdraw is performed, the function read_canvas() will not read mathml. Use some generic function to read it....
 
 	*/
@@ -3117,6 +3126,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @rotate rotation_angle
 	 @angle in degrees
+	 @(only) the next object will be rotated is given angle
 	 @positive values rotate counter clockwise
 	*/
 	    use_rotate = TRUE;
@@ -3132,7 +3142,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case AFFINE:
 	/*
-	 @affine a,b,c,d,tx,ty
+	 @ affine a,b,c,d,tx,ty
 	 @ defines a transformation matrix for subsequent objects
 	 @ images drawn by setting skew params a &amp; d will be very different from Flydraw's "affine a,b,c,d,e,tx,ty" !!  
 	 @ use keyword 'killaffine' to end the transformation
@@ -3167,7 +3177,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	break;
 	case KILLTRANSLATION:
 	/*
-	 killtranslation
+	 @killtranslation
+	 @resets the translation matrix to 1,0,0,1,0,0
 	*/
 	    use_affine = FALSE;
 	    snprintf(affine_matrix,14,"[1,0,0,1,0,0]");
@@ -3175,8 +3186,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case TRANSLATION:
 	/*
 	 @translation tx,ty
-	 @will translate the next object tx in xrange and ty in yrange
-	 @uase command 'killtranstation' to end the command
+	 @will translate the next objects tx in xrange and ty in yrange
+	 @use command 'killtranstation' to end the command
 	*/
 	    for(i = 0 ; i<2;i++){
 		switch(i){
@@ -3210,7 +3221,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ dashed
 	@ keyword (no arguments required)
 	@ next object will be drawn with a dashed line
-	@ change dashing scheme by using command "dashtype int,int)
+	@ change dashing scheme by using command <a href="#dashtype">dashtype</a>
 	*/
 	    use_dashed = TRUE;
 	    break;
@@ -3236,8 +3247,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case FILLCOLOR:
 	/*
 	@ fillcolor colorname or #hex
-	@ Set the color for a filled object : mainly used for command 'userdraw obj,stroke_color'
-	@ All fillable massive object will have a fillcolor == strokecolor (just to be compatible with flydraw...)
+	@ set the color for a filled object : mainly used for command 'userdraw obj,stroke_color'
+	@ all fillable massive objects will have a fillcolor == strokecolor (just to be compatible with flydraw...)
 	*/
 	    fill_color = get_color(infile,1);
 	    break;
@@ -3253,7 +3264,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case BGIMAGE:
 	/*
 	 @bgimage image_location
-	 @use an image as background .<br />(we use the background of 'canvas_div' )
+	 @use an image as background .<br />technical: we use the background of 'canvas_div' 
 	 @the background image will be resized to match "width = xsize" and "height = ysize"
 	*/
 	URL = get_string(infile,1);
@@ -3434,6 +3445,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case INPUTSTYLE:
 	/*
 	@ inputstyle style_description
+	@ may be used before any 'style-able' html object.(like inputfields or buttons)<br />or any html objects that are generated by some canvasdraw commands
 	@ example: inputstyle color:blue;font-weight:bold;font-style:italic;font-size:16pt
 	*/
 	    input_style = get_string(infile,1);
@@ -3446,7 +3458,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword <a href="#status">'status'</a>
 	 @ may be further controlled by <a href="#inputstyle">"inputstyle"</a> (inputcss is not yet implemented...)
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
-	*/
+	*/ 
 	if( js_function[DRAW_INPUTS] != 1 ){ js_function[DRAW_INPUTS] = 1;}
 	    for(i = 0 ; i<5;i++){
 		switch(i){
@@ -3470,7 +3482,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case TEXTAREA:
 	/*
 	 @ textarea x,y,cols,rows,readonly,value
-	 @ may be further controlled by "inputstyle"
+	 @ may be further controlled by <a href="#inputstyle">"inputstyle"</a>
 	 @ if "$status=done"  (e.g. in answer.phtml) the inputfield will be cleared and set readonly<br />override this by keyword <a href="#status">'status'.</a>
 	 @ if mathml inputfields are present and / or some userdraw is performed, these data will <b>not</b> be send as well (javascript:read_canvas();)
 	*/
@@ -3560,7 +3572,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ the precision (default 2 decimals) in the student reply may be set with command <a href="#precision">'precision'.</a><br />Use this 'precision' command before this command 'drag x|y|xy' !
 	 @ 'onclick' and 'drag x|y|xy' may be combined (for different objects: a single object can either be onclick or drag , not both )
 	 @ 'multi_objects' will be numbered in the given x/y-sequence (example: points red,0,0,1,1,2,2,3,3 : point (0:0) is object_number 1)
-	 @ <b>Attention</b>: static objects and 'onclick/drag' objects of the same type (like point,circle,etc) with the same coordinates (e.g. objects that overlap) will give problems in the 'recognition algorithm')<br />in this example<br /><em>linewidth 4<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>the blue point will not be recognised as draggable !<br /><em>linewidth 4<br />drag xy<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>both points will be recognised
+	 @ <b>attention</b>: static objects and 'onclick/drag' objects of the same type (like point,circle,etc) with the same coordinates (e.g. objects that overlap) will give problems in the 'recognition algorithm')<br />in this example<br /><em>linewidth 4<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>the blue point will not be recognised as draggable !<br /><em>linewidth 4<br />drag xy<br />point 0,0,red<br />drag xy<br />point 0,0,blue<br /></em>both points will be recognised
 	 @ the answer is  : drag_or_onclick_object_number : Xorg : Yorg : Xnew : Ynew<br />wherein object_number is the sequence number of the draggable &amp; onclick objects in your script.<br />Only draggable & onclick objects will have an object_number (e.g things like point,crosshair,line,segment,circle,rect,triangle...etc)
 	 @ use keyword 'snaptogrid' , 'xsnaptogrid' , 'ysnaptogrid' or command 'snaptopoints x1,y1,x2,y2,...' to switch from free to discrete movement
 	 @ in case of external images (commands copy / copyresized) the external image can be set draggable ; always xy. <br />The function javascript;read_canvas() will return the xy-coordinates of all images.
@@ -4309,7 +4321,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
 	 @ <b>note</b>: when using something like 'xrange 0.0001,0.01'...combined with commands <a href='#mouse'>'mouse'</a> and/or <a href='#userdraw'>'userdraw</a>...<br /> make sure the <a href='#precision'>precision</a> is set accordingly
 	 @ <b>note</b>: in case of userdraw , the use of keyword <a href='#userinput_xy'>'userinput_xy'</a> may be handy !
-	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
+	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
 	    if( js_function[DRAW_XLOGSCALE] != 1 ){ js_function[DRAW_XLOGSCALE] = 1;}
@@ -4343,7 +4355,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
 	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
 	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
-	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
+	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
 	    if( js_function[DRAW_YLOGSCALE] != 1 ){ js_function[DRAW_YLOGSCALE] = 1;}
@@ -4376,7 +4388,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ <b>note</b>: command 'mouse color,fontsize' will show the real values in the logpaper.<br />\
 	 @ <b>note</b>: when using something like 'yrange 0.0001,0.01'...combined with commands 'mouse color,fontsize' and/or 'userdraw type,color'...<br /> make sure the precision is set accordingly (eg command 'precision 10000')
 	 @ <b>note</b>: in case of userdraw , the use of keyword 'userinput_xy' may be handy !
-	 @ <b>Attention</b>: keyword 'snaptogrid' may not lead to the desired result...
+	 @ <b>attention</b>: keyword 'snaptogrid' may not lead to the desired result...
 	*/
 	    if( js_function[DRAW_GRID] == 1 ){canvas_error("only one type of grid is allowed...");}
 	    if( js_function[DRAW_XYLOGSCALE] != 1 ){ js_function[DRAW_XYLOGSCALE] = 1;}
@@ -7926,6 +7938,7 @@ int get_token(FILE *infile){
 	*dsegment="dsegment",
 	*dsegments="dsegments",
 	*seg="seg",
+	*segs="segs",
 	*bgimage="bgimage",
 	*bgcolor="bgcolor",
 	*strokecolor="strokecolor",
@@ -7961,9 +7974,11 @@ int get_token(FILE *infile){
 	*dhline="dhline",
 	*drag="drag",
 	*horizontalline="horizontalline",
+	*horizontallines="horizontallines",
 	*vline="vline",
 	*dvline="dvline",
 	*verticalline="verticalline",
+	*verticallines="verticallines",
 	*triangle="triangle",
 	*triangles="triangles",
 	*ftriangle="ftriangle",
@@ -8221,15 +8236,15 @@ int get_token(FILE *infile){
 	free(input_type);
 	return PARALLEL;
 	}
-	if( strcmp(input_type, hlines) == 0 ){
+	if( strcmp(input_type, hlines) == 0 || strcmp(input_type, horizontallines) == 0 ){
 	free(input_type);
 	return HLINES;
 	}
-	if( strcmp(input_type, vlines) == 0 ){
+	if( strcmp(input_type, vlines) == 0 ||  strcmp(input_type, verticallines) == 0 ){
 	free(input_type);
 	return VLINES;
 	}
-	if( strcmp(input_type, hline) == 0 ||  strcmp(input_type, horizontalline) == 0 ){
+	if( strcmp(input_type, hline) == 0 || strcmp(input_type, horizontalline) == 0 ){
 	free(input_type);
 	return HLINE;
 	}
@@ -8241,7 +8256,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return LINE;
 	}
-	if( strcmp(input_type, segments) == 0 ){
+	if( strcmp(input_type, segments) == 0 || strcmp(input_type, segs) == 0 ){
 	free(input_type);
 	return SEGMENTS;
 	}
@@ -8489,7 +8504,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return RECTS;
 	}
-	if( strcmp(input_type, frects) == 0 || strcmp(input_type, fsquares) == 0  ){
+	if( strcmp(input_type, frects) == 0 ){
 	free(input_type);
 	use_filled = TRUE;
 	return RECTS;

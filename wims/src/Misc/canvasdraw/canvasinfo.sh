@@ -27,33 +27,44 @@ echo "<ul>" > $tmp
 cnt=0
 br=5
 while read line ; do
-    chk=`echo $line | grep "@"`
-    if [ ! -z "$chk" ] ; then
-    echo $line
-	if [ $p -eq 0 ]; then
-	    string=`echo $line | tr '@' ' '`
-	    idx=`echo $string | awk '{ print $1 }'`
-	    echo ",'$idx'" >> $keys
-	    if [ $cnt -gt $br ]; then
-	     echo "</tr><tr>" >> $out
-	     cnt=0
-	    fi
-	    cnt=$(($cnt+1))
-	    echo "<td><a name='$idx top' href='#$idx'>$idx</a></td>" >> $out
-	    echo "<li><a name='$idx' href='#$idx top'>$string</a><ul>"  >> $tmp
-	    p=1
-	else
-	    p=2
-	    echo $line | sed 's/@/<li><span style="color:blue;font-size:0.8em">/g'  >> $tmp
-	    echo  "</span></li>" >> $tmp
-	fi
-    else
-	if [ $p -eq 2 ]; then
-	    echo  "</ul>
-	    " >> $tmp
-	fi
-	p=0
+ chk=`echo $line | grep "@"`
+ if [ ! -z "$chk" ] ; then
+  echo $line
+  if [ $p -eq 0 ]; then
+   string=`echo $line | tr '@' ' '`
+   idx=`echo $string | awk '{ print $1 }'`
+   echo ",'$idx'" >> $keys
+   if [ $cnt -gt $br ]; then
+    echo "</tr><tr>" >> $out
+    cnt=0
+   fi
+   cnt=$(($cnt+1))
+   echo "<td><a name='$idx top' href='#$idx'>$idx</a></td>" >> $out
+   echo "<li><a name='$idx' href='#$idx top'>$string</a><ul>"  >> $tmp
+   p=1
+  else
+   p=2
+   alt=`echo $line | grep "@ alternative :" | awk '{ print $4 }' | tr -d '[:blank:]'`
+   if [ ! -z $alt ] ; then
+    if [ $cnt -gt $br ]; then
+     echo "</tr><tr>" >> $out
+     cnt=0
     fi
+    cnt=$(($cnt+1))
+    echo ",'$alt'" >> $keys
+    echo "<td><a name='$alt top' href='#$idx'>$alt</a></td>" >> $out
+    echo "<li><span style=\"color:blue;font-size:0.8em\"><a name='$alt' href='#$alt top'>$alt</a></li></span>"  >> $tmp
+   else
+    echo $line | sed 's/@/<li><span style="color:blue;font-size:0.8em">/g'  >> $tmp
+    echo  "</span></li>" >> $tmp
+   fi
+  fi
+ else
+  if [ $p -eq 2 ]; then
+   echo  "</ul>" >> $tmp
+  fi
+  p=0
+ fi
 done < $in
 while [ $cnt -le $br ] ; do
  cnt=$(($cnt+1))
@@ -70,7 +81,7 @@ echo "
  var keys_len = keys.length;
  function match(s1,s2){
   var n1 = s1.length;
-  if(n1 < 2){return 0;}
+  if(n1 < 3){return 0;}
   var n2 = s2.length;
   var c1,c2,found;
   var count = n1 - Math.abs(n1 - n2);
