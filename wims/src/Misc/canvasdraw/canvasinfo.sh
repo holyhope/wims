@@ -68,14 +68,50 @@ echo "
 <script type='text/javascript'>
  var keys = ['canvasdraw' $keywords];
  var keys_len = keys.length;
+ function match(s1,s2){
+  var n1 = s1.length;
+  if(n1 < 2){return 0;}
+  var n2 = s2.length;
+  var c1,c2,found;
+  var count = n1 - Math.abs(n1 - n2);
+  for(var p = 0;p < n1;p++){
+   c1=s1.charAt(p);
+   found = false;
+   for(var i = 0;i < n2;i++){
+    c2 = s2.charAt(i);
+    if(c1 == c2){found = true;count = count + n1 - Math.abs(p - i);}
+   };
+   if(! found ){count = count - n2;}
+  };
+  return count;
+ };
  function look(){
-  var s = (document.getElementById('search').value).replace(/\s/g, '');
+  var s = ((document.getElementById('search').value).replace(/\s/g, '')).toLowerCase();
+  var typo;var next_best = -1;var next_idx = s.length;var tmp;var ss;
   for(var p = 0; p < keys_len ; p++){
-   if( s == keys[p] ){
-    window.location.href = '#'+s;return;
+   ss = keys[p];
+   if( s == ss ){
+    window.location.href = '#'+ss;
+    return;
+   };
+   /* not ok? ... try to find a match for a reasonable typo... */
+   tmp = match(s,ss);
+   if(tmp > next_idx){
+    next_idx = tmp;
+    next_best = p;
    };
   };
-  alert(s+' is not a valid canvasdraw command');
+  if(next_best != -1 ){
+   typo = keys[next_best];
+   if(confirm('\"'+s+'\" is not a valid canvasdraw command\ndid you mean \"'+typo+'\" ?')){
+    window.location.href = '#'+typo;
+    return;
+   };
+  }
+  else
+  {
+   alert(s+' is not a valid canvasdraw command');
+  };
   return;
  };
 </script>

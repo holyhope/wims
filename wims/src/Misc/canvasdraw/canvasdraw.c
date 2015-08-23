@@ -1057,7 +1057,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case POLYLINE:
 	/*
 	@ polyline color,x1,y1,x2,y2...x_n,y_n
-	@ alternatives:<br />path color,x1,y1,x2,y2...x_n,y_n<br />polylines color,x1,y1,x2,y2...x_n,y_n<br />brokenline color,x1,y1,x2,y2...x_n,y_n<br />brokenlines color,x1,y1,x2,y2...x_n,y_n
+	@ alternative : path color,x1,y1,x2,y2...x_n,y_n
+	@ alternative : polylines color,x1,y1,x2,y2...x_n,y_n
+	@ alternative : brokenline color,x1,y1,x2,y2...x_n,y_n
+	@ alternative : brokenlines color,x1,y1,x2,y2...x_n,y_n
 	@ draw a broken line interconnected between all points (not closed)
 	@ equivalent to flydraw command "line color,x1,y1,x2,y2...x_n,y_n"
 	@ use command <a href='#segments'>'segments'</a> for not interconnected line segments.
@@ -1258,7 +1261,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case ARROW:
 	/*
 	@ arrow x1,y1,x2,y2,h,color
-	@ draw a single headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
+	@ alternative : vector
+	@ draw a single headed arrow / vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
 	@ use command 'linewidth int' to adjust thickness of the arrow
 	@ may be set draggable / onclick
 	*/
@@ -1283,6 +1287,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case ARROWS:
 	/*
 	@ arrows color,head (px),x1,y1,x2,y2...x_n,y_n
+	@ alternative : vectors
 	@ draw single headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
 	@ use command 'linewidth int' to adjust thickness of the arrow
 	@ may be set draggable / onclick individually
@@ -2159,7 +2164,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case SNAPTOFUNCTION:
 	/*
 	@ snaptofunction some_function_in_x,some_funtion_in_y
-	@ alternative: snaptofun some_function_in_x,some_funtion_in_y
+	@ alternative : snaptofun some_function_in_x,some_funtion_in_y
 	@ the next object will snap to the calculated values
 	@ if you want only modification of y-values,just use: snaptofunction x,5*sin(1/y)
 	@ if you want only modification of x-values,just use: snaptofunction 5*sin(1/x),y
@@ -2241,7 +2246,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case USERINPUT:
 	/*
 	 @ userinput function | textarea | inputfield
-	 @ alternative command + argment to keywords "userinput_function","userinput_textarea" and "userinput_xy"
+	 @ alternative : userinput_function
+	 @ alternative : userinput_textarea
+	 @ alternative : userinput_xy
 	 @ textarea and inputfield are only usable in combination with some 'userdraw draw_ type'
 	 @ function may be used any time (e.g. without userdraw)
 	 @ multiple 'userinput function' commands may be used.
@@ -3943,7 +3950,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case FLOODFILL:
 	/*
 	@ floodfill x,y,color
-	@ alternative syntax: fill x,y,color
+	@ alternative : fill x,y,color
 	@ fill the region of point (x:y) with color 'color'
 	@ any other color or size of picture (borders of picture) will act as border to the bucket fill
 	@ use this command  after all boundary objects are declared.
@@ -7941,6 +7948,8 @@ int get_token(FILE *infile){
 	*axisnumbering="axisnumbering",
 	*axisnumbers="axisnumbers",
 	*arrow="arrow",
+	*vector="vector",
+	*vectors="vectors",
 	*darrow="darrow",
 	*arrow2="arrow2",
 	*darrow2="darrow2",
@@ -8414,11 +8423,11 @@ int get_token(FILE *infile){
 	free(input_type);
 	return ARROWS2;
 	}
-	if( strcmp(input_type, arrows) == 0 ){
+	if( strcmp(input_type, arrows) == 0  || strcmp(input_type, vectors) == 0 ){
 	free(input_type);
 	return ARROWS;
 	}
-	if( strcmp(input_type, arrow) == 0 ){
+	if( strcmp(input_type, arrow) == 0 ||  strcmp(input_type, vector) == 0 ){
 	free(input_type);
 	return ARROW;
 	}
