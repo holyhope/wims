@@ -168,10 +168,10 @@ int main(int argc, char *argv[]){
 	type = get_token(infile);
 	done = FALSE;
 	/*
-	@canvasdraw
-	@will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@General syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
-	@If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
+	@ canvasdraw
+	@ will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
+	@ General syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
+	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	*/
 	switch(type){
 	case END:
@@ -189,10 +189,10 @@ int main(int argc, char *argv[]){
 	    break;
 	case SIZE:
 	    /*
-	    @size width,height
-	    @set canvas size in pixels
-	    @mandatory first command (can only be preceded by keyword 'popup')
-	    @if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
+	    @ size width,height
+	    @ set canvas size in pixels
+	    @ mandatory first command (can only be preceded by keyword 'popup')
+	    @ if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
 	    /* using fabs : however "xsize == int" : so "xsize = abs( (int) get_real(infile,0))" would be the idea... */
@@ -1410,9 +1410,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case TRIANGLE:
 	/*
-	 @triangle x1,y1,x2,y2,x3,y3,color
-	 @use ftriangle or keyword <a href='#filled'>'filled'</a> for a solid triangle
-	 @may be set draggable / onclick
+	 @ triangle x1,y1,x2,y2,x3,y3,color
+	 @ use ftriangle or keyword <a href='#filled'>'filled'</a> for a solid triangle
+	 @ may be set draggable / onclick
 	*/
     	    for(i=0;i<7;i++){
     		switch(i){
@@ -1435,9 +1435,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case TRIANGLES:
 	/*
-	 @triangles color,x1,y1,x2,y2,x3,y3,...
-	 @use ftriangles or keyword <a href='#filled'>'filled'</a> for solid triangles
-	 @may be set draggable / onclick individually (!)
+	 @ triangles color,x1,y1,x2,y2,x3,y3,...
+	 @ use ftriangles or keyword <a href='#filled'>'filled'</a> for solid triangles
+	 @ may be set draggable / onclick individually (!)
 	*/
 	    stroke_color = get_color(infile,0);/* name or hex color */
 	    i = 0;
@@ -1458,8 +1458,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case LATTICE:
 	/*
-	 @lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
-	 @can <b>not</b> be set "onclick" or "drag xy"
+	 @ lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color
+	 @ can <b>not</b> be set "onclick" or "drag xy"
 	*/
 	    if( js_function[DRAW_LATTICE] != 1 ){ js_function[DRAW_LATTICE] = 1;}
 	    for( i = 0; i<9; i++){
@@ -1649,6 +1649,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case MULTIDRAW:
 	/*
 	 @ multidraw obj_type_1,obj_type_2...obj_type_8
+	 @ for single object user drawings you may also use command <a href="#userdraw">'userdraw'</a>
 	 @ implemented obj_types:<ul><li>point | points </li><li>circle | circles </li><li>line | lines </li><li>segment | segments </li><li>arrow | arrows <br />use command 'arrowhead int' for size (default value 8 pixels)</li><li>rect | rects </li><li>closedpoly<br />only one closedpolygon may be drawn.The number of 'corner points' is not preset (e.g. not limited,freestyle)<br />the polygone is closed when clicking on the first point again..(+/- 10px) </li><li>triangle | triangles<br />poly3, poly4, ... poly9 | polys3, polys4, ... polys9 <br />(<em>only 3 inputfields for poly*</em>)<br />parallelogram | parallelograms <br />(<em>no inputfields: parallelogram can be used for vector "contructions"</em>)</li></ul>
 	 @ additionally objects may be user labelled, using obj_type 'text'...<br >in this case allways a text input field and a (x:y) inputfield will be added to the page.<br />use commands 'fontfamily' and 'fontcolor' to adjust. (command 'multistrokeopacity' may be set to adjust text opacity)<br /><b>note</b>: no keyboard listeners are used
 	 @ it makes no sense using something like "multidraw point,points" ...
@@ -1782,6 +1783,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ userdraw object_type,color
 	@ only a single object_type is allowed.
+	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
 	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
@@ -2405,33 +2407,33 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case FONTSIZE:
 	/*
-	 @fontsize font_size
-	 @default value 12
+	 @ fontsize font_size
+	 @ default value 12
 	*/
 	    font_size = (int) (get_real(infile,1));
 	    break;
 	case FONTCOLOR:
 	/*
-	 @fontcolor color
-	 @color: hexcolor or colorname
-	 @default: black
-	 @example usage: x/y-axis text
+	 @ fontcolor color
+	 @ color: hexcolor or colorname
+	 @ default: black
+	 @ example usage: x/y-axis text
 	*/
 	    font_color = get_color(infile,1);
 	    break;
 	case JSCURVE:
 	/*
-	 @jscurve color,formula(x)
-	 @your function will be plotted by the javascript engine of the client browser.
-	 @use only basic math in your curve:<br /> sqrt,^,asin,acos,atan,log,pi,abs,sin,cos,tan,e
-	 @use parenthesis and rawmath : use 2*x instead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
-	 @<b>attention</b> : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
-	 @no validity check is done by wims.
-	 @zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
-	 @use command 'trace_jscurve formula(x)` for tracing
-	 @use command 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
-	 @can <b>not</b> be set draggable / onclick (yet)
-	 @commands plotjump / plotstep are not active for 'jscurve'
+	 @ jscurve color,formula(x)
+	 @ your function will be plotted by the javascript engine of the client browser.
+	 @ use only basic math in your curve:<br /> sqrt,^,asin,acos,atan,log,pi,abs,sin,cos,tan,e
+	 @ use parenthesis and rawmath : use 2*x instead of 2x ; use 2^(sin(x))...etc etc<br />use error console to debug any errors...
+	 @ <b>attention</b> : last "precision" command in the canvasdraw script determines the calculation precision of the javascript curve plot !
+	 @ no validity check is done by wims.
+	 @ zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
+	 @ use command 'trace_jscurve formula(x)` for tracing
+	 @ use command 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
+	 @ can <b>not</b> be set draggable / onclick (yet)
+	 @ commands plotjump / plotstep are not active for 'jscurve'
 	*/
 	    stroke_color = get_color(infile,0);
 	    if( use_js_math == FALSE){/* add this stuff only once...*/
@@ -2452,12 +2454,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case CURVE:
 	/*
-	 @curve color,formula(x)
-	 @plot color,formula(x)
-	 @use command <a href="#trange">trange</a> in parametric functions before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
-	 @use command <a href="#precision">"precision" </a>to ncrease the number of digits of the plotted points
-	 @use command <a href="#plotsteps">"plotsteps"</a> to increase / decrease the amount of plotted points (default 150)
-	 @may be set draggable / onclick
+	 @ curve color,formula(x)
+	 @ plot color,formula(x)
+	 @ use command <a href="#trange">trange</a> in parametric functions before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
+	 @ use command <a href="#precision">"precision" </a>to ncrease the number of digits of the plotted points
+	 @ use command <a href="#plotsteps">"plotsteps"</a> to increase / decrease the amount of plotted points (default 150)
+	 @ may be set draggable / onclick
 	*/
 	    if( use_parametric == TRUE ){ /* parametric color,fun1(t),fun2(t)*/
 		use_parametric = FALSE;
@@ -2481,12 +2483,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case LEVELCURVE:
 	/*
-	@levelcurve color,expression in x/y,l1,l2,...
-	@draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
-	@the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
-	@every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
-	@note : the arrays for holding the javascript data are limited in size
-	@note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
+	@ levelcurve color,expression in x/y,l1,l2,...
+	@ draws very primitive level curves for expression, with levels l1,l2,l3,...,l_n
+	@ the quality is <b>not to be compared</b> with the Flydraw levelcurve. <br />(choose flydraw if you want quality...)
+	@ every individual level curve may be set 'onclick / drag xy' <br />e.g. every single level curve (l1,l2,l3...l_n) has a unique identifier
+	@ note : the arrays for holding the javascript data are limited in size
+	@ note : reduce image size if javascript data arrays get overloaded<br />(command 'plotsteps int' will not control the data size of the plot...)
 	*/
 	    fill_color = get_color(infile,0);
 	    char *fun1 = get_string_argument(infile,0);
@@ -2507,9 +2509,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case BEZIER:
 	/*
-	@bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
-	@draw a bezier curve between points, starting from (x_start:y_start)
-	@can <b>not</b> be dragged or set onclick
+	@ bezier color,x_start,y_start,x_first,y_first,x_second,y_second,x_end,y_end
+	@ draw a bezier curve between points, starting from (x_start:y_start)
+	@ can <b>not</b> be dragged or set onclick
 	*/
 	    if( js_function[DRAW_BEZIER] != 1 ){ js_function[DRAW_BEZIER] = 1;}
 	    decimals = find_number_of_digits(precision);
@@ -2537,14 +2539,14 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case TRACE_JSCURVE:
 	/*
-	 @trace_jscurve some_math_function
-	 @will use a crosshair to trace the jsmath curve
-	 @two inputfields will display the current x/y-values (numerical evaluation by javascript)
-	 @default labels 'x' and 'y'<br />use commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' to customize the labels for the input fields
-	 @use commands fontsize and inputstyle to format the fonts for labels and inputfields.
-	 @use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
-	 @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
-	@be aware that the formula's of the plotted function(s) can be found in the page javascript source
+	 @ trace_jscurve some_math_function
+	 @ will use a crosshair to trace the jsmath curve
+	 @ two inputfields will display the current x/y-values (numerical evaluation by javascript)
+	 @ default labels 'x' and 'y'<br />use commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' to customize the labels for the input fields
+	 @ use commands fontsize and inputstyle to format the fonts for labels and inputfields.
+	 @ use commands linewidth,strokecolor,crosshairsize to adjust the corsshair.
+	 @ the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	@ be aware that the formula's of the plotted function(s) can be found in the page javascript source
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( js_function[DRAW_LINES] != 1 ){ js_function[DRAW_LINES] = 1;}
@@ -2557,13 +2559,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case JSMATH:
 	/*
-	    @jsmath some_math_function
-	    @will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
-	    @default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
-	    @use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
-	    @example: jsmath sin(x^2)
-	    @the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
-	    @be aware that the formula's of the plotted function(s) can be found in the page javascript source
+	    @ jsmath some_math_function
+	    @ will calculate an y-value from a userinput x-value and draws a crosshair on these coordinates.
+	    @ default labels 'x' and 'y'<br />the commands 'xlabel some_x_axis_name' and 'ylabel some_y_axis_name' will set the label for the input fields
+	    @ use command 'inputstyle some_css' for styling the display fields. Use command 'fontsize int' to size the labels 'x' and 'y'
+	    @ example: jsmath sin(x^2)
+	    @ the client browser will convert your math function to javascript math.<br />use parenthesis and rawmath : use 2*x instead of 2x etc etc<br />no check is done on the validity of your function and/or syntax<br />use error console to debug any errors...
+	    @ be aware that the formula's of the plotted function(s) can be found in the page javascript source
 	*/
 	    if( js_function[DRAW_CROSSHAIRS] != 1 ){ js_function[DRAW_CROSSHAIRS] = 1;}
 	    if( use_js_math == FALSE){
@@ -2808,10 +2810,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case HTTP:
 	/*
-	 @http x1,y1,x2,y2,http://some_adress.com
-	 @an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2)
-	 @do not use interactivity (or mouse) if the mouse needs to be active in the iframe
-	 @can <b>not</b> be 'set onclick' or 'drag xy'
+	 @ http x1,y1,x2,y2,http://some_adress.com
+	 @ an active html-page will be displayed in an "iframe" rectangle left top (x1:y1) , right bottom (x2:y2)
+	 @ do not use interactivity (or mouse) if the mouse needs to be active in the iframe
+	 @ can <b>not</b> be 'set onclick' or 'drag xy'
 	*/
 	    if( js_function[DRAW_HTTP] != 1 ){ js_function[DRAW_HTTP] = 1;}
 	    for(i=0;i<5;i++){
@@ -2842,7 +2844,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case X_AXIS_STRINGS:
 	/*
 	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ alternative : xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
 	 @ a javascript error message will flag non-matching value:name pairs
@@ -2858,7 +2860,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case X_AXIS_STRINGS_UP:
 	/*
 	 @ xaxisup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ alternative : xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ the text will be rotated 90&deg; up
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
@@ -2875,7 +2877,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case Y_AXIS_STRINGS:
 	/*
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
+	 @ alternativ : yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
 	 @ use these y-axis num1...num_n  values instead of default ymin...ymax
 	 @ a javascript error message will flag non-matching value:name pairs
@@ -3109,6 +3111,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ opacity 0-255,0-255
 	@ opacity 0.0 - 1.0,0.0 - 1.0
+	@ alternative : transparent
 	@ first item is stroke opacity, second is fill opacity
 	*/
 	    for(i = 0 ; i<2;i++){
@@ -3124,10 +3127,10 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case ROTATE:
 	/*
-	 @rotate rotation_angle
-	 @angle in degrees
-	 @(only) the next object will be rotated is given angle
-	 @positive values rotate counter clockwise
+	 @ rotate rotation_angle
+	 @ angle in degrees
+	 @ (only) the next object will be rotated is given angle
+	 @ positive values rotate counter clockwise
 	*/
 	    use_rotate = TRUE;
 	    angle = -1*(get_real(infile,1));/* -1 : to be compatible with Flydraw... */
@@ -3177,17 +3180,19 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	break;
 	case KILLTRANSLATION:
 	/*
-	 @killtranslation
-	 @resets the translation matrix to 1,0,0,1,0,0
+	 @ killtranslation
+	 @ alternative : killtranslate
+	 @ resets the translation matrix to 1,0,0,1,0,0
 	*/
 	    use_affine = FALSE;
 	    snprintf(affine_matrix,14,"[1,0,0,1,0,0]");
 	    break;
 	case TRANSLATION:
 	/*
-	 @translation tx,ty
-	 @will translate the next objects tx in xrange and ty in yrange
-	 @use command 'killtranstation' to end the command
+	 @ translation tx,ty
+	 @ alternative : translate
+	 @ will translate the next objects tx in xrange and ty in yrange
+	 @ use command 'killtranstation' to end the command
 	*/
 	    for(i = 0 ; i<2;i++){
 		switch(i){
@@ -3205,13 +3210,13 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	break;
 	case ANIMATE:
 	/*
-	 @animate type
-	 @REMOVED : this should be done with a slider
-	 @type may be "point" (nothing else , yet...)
-	 @the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
-	 @will animate a point on the next plot/curve command
-	 @the curve will not be draw
-	 @moves repeatedly from xmin to xmax
+	 @ animate type
+	 @ REMOVED : this should be done with a slider
+	 @ type may be "point" (nothing else , yet...)
+	 @ the point is a filled rectangle ; adjust colour with command 'fillcolor colorname/hexnumber'
+	 @ will animate a point on the next plot/curve command
+	 @ the curve will not be draw
+	 @ moves repeatedly from xmin to xmax
 	*/
 	    if( strstr(get_string(infile,1),"point") != 0 ){animation_type = 15;}else{canvas_error("the only animation type (for now) is \"point\"...");}
 	    break;
@@ -3238,7 +3243,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    break;
 	case STYLE:
 	/*
-	 @highlight color,opacity,linewidth
+	 @ highlight color,opacity,linewidth
 	 @ NOT IMPLEMENTED
 	 @ use command "onclick" : when the object receives a userclick it will increase it's linewidth
 	*/
@@ -3263,9 +3268,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case BGIMAGE:
 	/*
-	 @bgimage image_location
-	 @use an image as background .<br />technical: we use the background of 'canvas_div' 
-	 @the background image will be resized to match "width = xsize" and "height = ysize"
+	 @ bgimage image_location
+	 @ use an image as background .<br />technical: we use the background of 'canvas_div' 
+	 @ the background image will be resized to match "width = xsize" and "height = ysize"
 	*/
 	URL = get_string(infile,1);
 	fprintf(js_include_file,"<!-- set background image to canvas div -->\ncanvas_div.style.backgroundImage = \"url(%s)\";canvas_div.style.backgroundSize = \"%dpx %dpx\";\n",URL,xsize,ysize);
@@ -3273,8 +3278,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 
 	case BGCOLOR:
 	/*
-	 @bgcolor colorname or #hex
-	 @use this color as background of the "div" containing the canvas(es)
+	 @ bgcolor colorname or #hex
+	 @ use this color as background of the "div" containing the canvas(es)
 	*/
 	/* [255,255,255]*/
 	    bgcolor = get_string(infile,1);
@@ -3430,12 +3435,12 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    break;
 	case CLEARBUTTON:
 	/*
-	 @clearbutton value
-	 @adds a button to clear the <a href="#userdraw">userdraw</a> canvas with text 'value'
-	 @<b>attention</b> command 'clearbutton' is incompatible with <a href="multidraw">multidraw</a> based drawings<br/>(in 'multidraw' there is always a remove_object_button for every drawprimitive)
-	 @normally <a href="#userdraw">userdraw</a> primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
-	 @uses the tooltip placeholder div element: may not be used with command 'intooltip'
-	 @use command <a href="#inputstyle">'inputstyle'</a> to style the button...
+	 @ clearbutton value
+	 @ adds a button to clear the <a href="#userdraw">userdraw</a> canvas with text 'value'
+	 @ <b>attention</b> command 'clearbutton' is incompatible with <a href="multidraw">multidraw</a> based drawings<br/>(in 'multidraw' there is always a remove_object_button for every drawprimitive)
+	 @ normally <a href="#userdraw">userdraw</a> primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
+	 @ uses the tooltip placeholder div element: may not be used with command 'intooltip'
+	 @ use command <a href="#inputstyle">'inputstyle'</a> to style the button...
 	*/
 	if(reply_format == 29){/* eg multidraw is selected */
 	 canvas_error("command clearbutton incompatible with multidraw...only suitable for userdraw");
@@ -3518,12 +3523,12 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    break;
 	case SETLIMITS:
 	/*
-	    @setlimits
-	    @keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
-	    @may be used for inputfield based zooming / panning
-	    @may be styled using command <a href="#inputstyle">inputstyle</a>
-	    @use commands <a href="#xlabel">xlabel / ylabel</a> to change text from xmin to 'xlabel' etc
-	    @<b>note</b>:the input value will not be checked on validity
+	    @ setlimits
+	    @ keyword : if set, it will produce 4 inputfields for 'xmin,xmax,ymin,ymax' and an 'ok' button
+	    @ may be used for inputfield based zooming / panning
+	    @ may be styled using command <a href="#inputstyle">inputstyle</a>
+	    @ use commands <a href="#xlabel">xlabel / ylabel</a> to change text from xmin to 'xlabel' etc
+	    @ <b>note</b>:the input value will not be checked on validity
 	*/
 	    if( use_safe_eval == FALSE){use_safe_eval = TRUE;add_safe_eval(js_include_file);} /* just once */
 	    add_setlimits(js_include_file,canvas_root_id,font_size,input_style);
@@ -3626,10 +3631,10 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    break;
 	case MOUSE_DISPLAY:
 	/*
-	 @display x|y|xy|degree|radius,color,fontsize
-	 @will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color' !!<br />or the angle in degrees ( rhe angle between x-axis;(0:0);(x:y)
-	 @use commands 'xunit' and / or 'yunit' to add the units to the mouse values
-	 @just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
+	 @ display x|y|xy|degree|radius,color,fontsize
+	 @ will display the mouse cursor coordinates as x-only,y-only,(x:y),<br />the radius of a circle (this only in case 'userdraw circle(s),color' !!<br />or the angle in degrees ( rhe angle between x-axis;(0:0);(x:y)
+	 @ use commands 'xunit' and / or 'yunit' to add the units to the mouse values
+	 @ just like commands 'mouse','mousex','mousey','mouse_degree'...only other name)
 	*/
 	temp = get_string_argument(infile,0);
 	if( strstr(temp,"xy") != NULL ){
@@ -4279,12 +4284,12 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	break;
 	case STATUS:
 	/*
-	@status
-	@keyword
-	@alernative keyword: nostatus
-	@used to override the effects of "status=done" in wims (answer.phtml)
-	@affects 'readonly' in inputfields / textarea's in canvasimage and all userdraw based commands
-	@e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims $status variable' is set to 'done'
+	@ status
+	@ keyword
+	@ alernative : nostatus
+	@ used to override the effects of "status=done" in wims (answer.phtml)
+	@ affects 'readonly' in inputfields / textarea's in canvasimage and all userdraw based commands
+	@ e.g.: if keyword 'status' is set, the pupil will be able to modify the canvas when the 'wims $status variable' is set to 'done'
 	*/
 
 	    fprintf(js_include_file,"\nwims_status=\"waiting\";\n");
@@ -8625,7 +8630,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return STRINGUP;
 	}
-	if( strcmp(input_type, opacity) == 0 ){
+	if( strcmp(input_type, opacity) == 0 || strcmp(input_type, transparent) == 0 ){
 	free(input_type);
 	return OPACITY;
 	}
