@@ -170,8 +170,10 @@ int main(int argc, char *argv[]){
 	/*
 	@ canvasdraw
 	@ will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
-	@ General syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
+	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
+	@ be aware that older browsers will probably not work correctly<br />no efford has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
+	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:jm.evers_who_works_at_schaersvoorde.nl">me</a> an email with screenshots and the generated javascript include file.
 	*/
 	switch(type){
 	case END:
@@ -191,7 +193,7 @@ int main(int argc, char *argv[]){
 	    /*
 	    @ size width,height
 	    @ set canvas size in pixels
-	    @ mandatory first command (can only be preceded by keyword 'popup')
+	    @ mandatory first command (can only be preceded by keyword <a href="#popup">'popup'</a>)
 	    @ if xrange and/or yrange is not given the range will be set to pixels :<br />xrange 0,xsize yrange 0,ysize<br /><b>note</b>: lower left  corner is Origin (0:0) !!! this in contrast to flydraw
 	    */
 	    found_size_command = 1;
@@ -289,6 +291,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case XRANGE:
 	/*
 	@ xrange xmin,xmax
+	@ alternative : rangex
 	@ if not given: 0,xsize (eg in pixels)
 	*/
 	    for(i = 0 ; i<2; i++){
@@ -306,6 +309,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case YRANGE:
 	/*
 	@ yrange ymin,ymax
+	@ alternative : rangey
 	@ if not given 0,ysize (eg in pixels)
 	*/
 	    for(i = 0 ; i<2; i++){
@@ -323,6 +327,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case TRANGE:
 	/*
 	@ trange tmin,tmax
+	@ alternative : ranget
 	@ default -2,2
 	*/
 	    use_parametric = TRUE;
@@ -3436,6 +3441,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	case CLEARBUTTON:
 	/*
 	 @ clearbutton value
+	 @ alternative : delete
+	 @ alternative : erase
 	 @ adds a button to clear the <a href="#userdraw">userdraw</a> canvas with text 'value'
 	 @ <b>attention</b> command 'clearbutton' is incompatible with <a href="multidraw">multidraw</a> based drawings<br/>(in 'multidraw' there is always a remove_object_button for every drawprimitive)
 	 @ normally <a href="#userdraw">userdraw</a> primitives have the option to use middle/right mouse button on<br /> a point of the object to remove this specific object...this clear button will remove all drawings
@@ -3628,6 +3635,15 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ will display the cursor y-coordinate in 'unit'
 	*/
 	    fprintf(js_include_file,"unit_y = \"%s\";",get_string(infile,1));
+	    break;
+	case CURSOR:
+	/*
+	@ cursor 'some CSS cursor_style'
+	@ alternative : pointer
+	@ style can be any valid CSS property value, like crosshair,grabbing,move etc
+	@ wims will not check the validity of your cursor declaration
+	*/
+	    fprintf(js_include_file,"canvas_div%d.style.cursor = \"%s\";",canvas_root_id,get_string(infile,1));
 	    break;
 	case MOUSE_DISPLAY:
 	/*
@@ -7992,6 +8008,8 @@ int get_token(FILE *infile){
 	*html="html",
 	*input="input",
 	*clearbutton="clearbutton",
+	*erase="erase",
+	*delete="delete",
 	*inputstyle="inputstyle",
 	*textarea="textarea",
 	*trange="trange",
@@ -8148,7 +8166,9 @@ int get_token(FILE *infile){
 	*multiuserinput="multiuserinput",
 	*multisnaptogrid="multisnaptogrid",
 	*protractor="protractor",
-	*ruler="ruler";
+	*ruler="ruler",
+	*cursor="cursor",
+	*pointer="pointer";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -8236,10 +8256,6 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, grid) == 0 ){
 	free(input_type);
 	return GRID;
-	}
-	if( strcmp(input_type, parallel) == 0 ){
-	free(input_type);
-	return PARALLEL;
 	}
 	if( strcmp(input_type, hlines) == 0 || strcmp(input_type, horizontallines) == 0 ){
 	free(input_type);
@@ -8565,6 +8581,14 @@ int get_token(FILE *infile){
 	free(input_type);
 	return HLINE;
 	}
+	if( strcmp(input_type, halflines) == 0 || strcmp(input_type, demilines) == 0  ){
+	free(input_type);
+	return HALFLINES;
+	}
+	if( strcmp(input_type, halfline) == 0 || strcmp(input_type, demiline) == 0  ){
+	free(input_type);
+	return HALFLINE;
+	}
 	if( strcmp(input_type, frect) == 0 || strcmp(input_type, frectangle) == 0 ){
 	use_filled = TRUE;
 	free(input_type);
@@ -8618,10 +8642,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return ELLIPSE;
 	}
-	if( strcmp(input_type, fill) == 0 ){
-	free(input_type);
-	return FLOODFILL;
-	}
 	if( strcmp(input_type, string) == 0 ){
 	free(input_type);
 	return STRING;
@@ -8638,20 +8658,12 @@ int get_token(FILE *infile){
 	free(input_type);
 	return COMMENT;
 	}
-	if( strcmp(input_type, end) == 0){
-	free(input_type);
-	return END;
-	}
 	if( strcmp(input_type, fellipse) == 0){
 	free(input_type);
 	use_filled = TRUE;
 	return ELLIPSE;
 	}
-	if( strcmp(input_type, blink) == 0 ){
-	free(input_type);
-	return BLINK;
-	}
-	if( strcmp(input_type, clearbutton) == 0){
+	if( strcmp(input_type, clearbutton) == 0 || strcmp(input_type, erase) == 0 || strcmp(input_type, delete) == 0){
 	free(input_type);
 	return CLEARBUTTON;
 	}
@@ -8675,14 +8687,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return KILLAFFINE;
 	}
-	if( strcmp(input_type, audio) == 0 ){
-	free(input_type);
-	return AUDIO;
-	}
-	if( strcmp(input_type, audioobject) == 0 ){
-	free(input_type);
-	return AUDIOOBJECT;
-	}
 	if( strcmp(input_type, slider) == 0 ){
 	free(input_type);
 	return SLIDER;
@@ -8698,38 +8702,6 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, copyresized) == 0 ){
 	free(input_type);
 	return COPYRESIZED;
-	}
-	if( strcmp(input_type, patternfill) == 0 ){
-	free(input_type);
-	return PATTERNFILL;
-	}
-	if( strcmp(input_type, hatchfill) == 0 ){
-	free(input_type);
-	return HATCHFILL;
-	}
-	if( strcmp(input_type, diafill) == 0  || strcmp(input_type, diamondfill) == 0  ){
-	free(input_type);
-	return DIAMONDFILL;
-	}
-	if( strcmp(input_type, dotfill) == 0 ){
-	free(input_type);
-	return DOTFILL;
-	}
-	if( strcmp(input_type, gridfill) == 0 ){
-	free(input_type);
-	return GRIDFILL;
-	}
-	if( strcmp(input_type, imagefill) == 0 ){
-	free(input_type);
-	return IMAGEFILL;
-	}
-	if( strcmp(input_type, clicktile_colors) == 0 ){
-	free(input_type);
-	return CLICKTILE_COLORS;
-	}
-	if( strcmp(input_type, clicktile) == 0 ){
-	free(input_type);
-	return CLICKTILE;
 	}
 	if( strcmp(input_type, xlogscale) == 0 ){
 	free(input_type);
@@ -8811,22 +8783,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return Y_AXIS_STRINGS;
 	}
-	if( strcmp(input_type, piechart) == 0  ){
-	free(input_type);
-	return PIECHART;
-	}
-	if( strcmp(input_type, barchart) == 0  ){
-	free(input_type);
-	return BARCHART;
-	}
-	if( strcmp(input_type, linegraph) == 0  ){
-	free(input_type);
-	return LINEGRAPH;
-	}
-	if( strcmp(input_type, clock) == 0  ){
-	free(input_type);
-	return CLOCK;
-	}
 	if( strcmp(input_type, legend) == 0  ){
 	free(input_type);
 	return LEGEND;
@@ -8896,49 +8852,9 @@ int get_token(FILE *infile){
 	free(input_type);
 	return USERINPUT;
 	}
-	if( strcmp(input_type, sgraph) == 0 ){
-	free(input_type);
-	return SGRAPH;
-	}
-	if( strcmp(input_type, jsmath) == 0 ){
-	free(input_type);
-	return JSMATH;
-	}
-	if( strcmp(input_type, trace_jscurve) == 0 ){
-	free(input_type);
-	return TRACE_JSCURVE;
-	}
-	if( strcmp(input_type, jscurve) == 0  ||  strcmp(input_type, jsplot) == 0 ){
-	free(input_type);
-	return JSCURVE;
-	}
-	if( strcmp(input_type, centerstring) == 0 || strcmp(input_type, title) == 0 ){
-	free(input_type);
-	return CENTERSTRING;
-	}
-	if( strcmp(input_type, setlimits) == 0 ){
-	free(input_type);
-	return SETLIMITS;
-	}
-	if( strcmp(input_type, xunit) == 0 ){
-	free(input_type);
-	return XUNIT;
-	}
-	if( strcmp(input_type, yunit) == 0 ){
-	free(input_type);
-	return YUNIT;
-	}
 	if( strcmp(input_type, angle) == 0 ){
 	free(input_type);
 	return ANGLE;
-	}
-	if( strcmp(input_type, halflines) == 0 || strcmp(input_type, demilines) == 0  ){
-	free(input_type);
-	return HALFLINES;
-	}
-	if( strcmp(input_type, halfline) == 0 || strcmp(input_type, demiline) == 0  ){
-	free(input_type);
-	return HALFLINE;
 	}
 	if( strcmp(input_type, functionlabel) == 0 ){
 	free(input_type);
@@ -8996,6 +8912,10 @@ int get_token(FILE *infile){
 	free(input_type);
 	return MULTIUSERINPUT;
 	}
+	if( strcmp(input_type, parallel) == 0 ){
+	free(input_type);
+	return PARALLEL;
+	}
 	if( strcmp(input_type, protractor) == 0 ){
 	free(input_type);
 	return PROTRACTOR;
@@ -9003,6 +8923,110 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, ruler) == 0 ){
 	free(input_type);
 	return RULER;
+	}
+	if( strcmp(input_type, cursor) == 0 ||  strcmp(input_type, pointer) == 0 ){
+	free(input_type);
+	return CURSOR;
+	}
+	if( strcmp(input_type, sgraph) == 0 ){
+	free(input_type);
+	return SGRAPH;
+	}
+	if( strcmp(input_type, jsmath) == 0 ){
+	free(input_type);
+	return JSMATH;
+	}
+	if( strcmp(input_type, trace_jscurve) == 0 ){
+	free(input_type);
+	return TRACE_JSCURVE;
+	}
+	if( strcmp(input_type, jscurve) == 0  ||  strcmp(input_type, jsplot) == 0 ){
+	free(input_type);
+	return JSCURVE;
+	}
+	if( strcmp(input_type, centerstring) == 0 || strcmp(input_type, title) == 0 ){
+	free(input_type);
+	return CENTERSTRING;
+	}
+	if( strcmp(input_type, setlimits) == 0 ){
+	free(input_type);
+	return SETLIMITS;
+	}
+	if( strcmp(input_type, xunit) == 0 ){
+	free(input_type);
+	return XUNIT;
+	}
+	if( strcmp(input_type, yunit) == 0 ){
+	free(input_type);
+	return YUNIT;
+	}
+	if( strcmp(input_type, fill) == 0 ){
+	free(input_type);
+	return FLOODFILL;
+	}
+	if( strcmp(input_type, end) == 0){
+	free(input_type);
+	return END;
+	}
+	if( strcmp(input_type, blink) == 0 ){
+	free(input_type);
+	return BLINK;
+	}
+	if( strcmp(input_type, audio) == 0 ){
+	free(input_type);
+	return AUDIO;
+	}
+	if( strcmp(input_type, audioobject) == 0 ){
+	free(input_type);
+	return AUDIOOBJECT;
+	}
+	if( strcmp(input_type, patternfill) == 0 ){
+	free(input_type);
+	return PATTERNFILL;
+	}
+	if( strcmp(input_type, hatchfill) == 0 ){
+	free(input_type);
+	return HATCHFILL;
+	}
+	if( strcmp(input_type, diafill) == 0  || strcmp(input_type, diamondfill) == 0  ){
+	free(input_type);
+	return DIAMONDFILL;
+	}
+	if( strcmp(input_type, dotfill) == 0 ){
+	free(input_type);
+	return DOTFILL;
+	}
+	if( strcmp(input_type, gridfill) == 0 ){
+	free(input_type);
+	return GRIDFILL;
+	}
+	if( strcmp(input_type, imagefill) == 0 ){
+	free(input_type);
+	return IMAGEFILL;
+	}
+	if( strcmp(input_type, clicktile_colors) == 0 ){
+	free(input_type);
+	return CLICKTILE_COLORS;
+	}
+	if( strcmp(input_type, clicktile) == 0 ){
+	free(input_type);
+	return CLICKTILE;
+	}
+	if( strcmp(input_type, piechart) == 0  ){
+	free(input_type);
+	return PIECHART;
+	}
+	if( strcmp(input_type, barchart) == 0  ){
+	free(input_type);
+	return BARCHART;
+	}
+	if( strcmp(input_type, linegraph) == 0  ){
+	free(input_type);
+	return LINEGRAPH;
+	}
+	if( strcmp(input_type, clock) == 0  ){
+	free(input_type);
+	return CLOCK;
 	}
 	free(input_type);
 	ungetc(c,infile);
