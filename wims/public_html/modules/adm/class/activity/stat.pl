@@ -45,7 +45,7 @@ while(<IN>){
   my ($date, $time) = ($1,$2);
   $date =~/([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])/;
   $seconds{$date}=timelocal(0,0,0,$3,$2-1,$1);
-  if (($_[2]=~ /$SH/ || !($SH)) && ($_[4] eq 'score')) {
+  if (($_[2]=~ /\b($SH)\b/ || !($SH)) && ($_[4] eq 'score')) {
     $exobyday{$date} ++ ;
     $exobydaysh{$_[2]}->{$date} ++ ;
     if ($_[5] >= $LIMIT){
@@ -55,7 +55,7 @@ while(<IN>){
       $goodbydaysh{$_[2]}->{$date} .= (($goodbydaysh{$_[2]}{$date})? ',':'') . $exobydaysh{$_[2]}->{$date};
     }
 ## n'a de sens que s'il y a une seule sheet
-    if ($_[2]=~ /$SH0/){
+    if ($_[2]=~ /\b$SH0\b/){
       $exobyday1{$_[3]}->{$date} ++;
       if ($_[5] >= $LIMIT){
         $scorebyday1{$_[3]}->{$date} ++;
