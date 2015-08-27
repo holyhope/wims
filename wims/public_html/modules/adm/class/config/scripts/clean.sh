@@ -20,6 +20,5 @@ fi
 if [ "$w_user" = "y" ]; then
  cd $cldir
  rm -f .userprevlist .usernextlist .userlist_external 2>/dev/null
- src2def oef
 fi
 
