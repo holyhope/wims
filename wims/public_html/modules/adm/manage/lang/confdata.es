@@ -302,6 +302,13 @@ For example, if your system's mail command supports this, you can use
 <code class="tt">-a "User-Agent: WIMS"</code> to add a User-Agent header to the mail sent
 out by wims. Some providers require this to accept mails.
 </p>
+:tech mailback_opt
+Option to the system command !mailto for the back address.
+free
+
+
+For example, <code class="tt">-r</code>
+
 :security manager_https
 Site maintenance must use https connection*
 choice
