@@ -102,7 +102,7 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       !href cmd=resume&useropts=$(arg)0$font Mode image
 
       !set arg=!nospace $texsize 2
-      !set wims_ref_class=wims_button
+      !set wims_ref_class=wims_button $ wims_secondary_button
       !href cmd=resume&useropts=$(arg)0$font MathML
 
      </li>
@@ -124,10 +124,18 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
      </li><li>
       Zoom sur les formules par un click de souris.
-      !set wims_ref_class=wims_button
+      !reset secondary
+      !if $useropts=$texsize$(texalign)0$font
+        !set secondary1=wims_button wims_secondary_button
+        !set secondary2=wims_button
+      !else
+        !set secondary2=wims_button wims_secondary_button
+        !set secondary1=wims_button
+      !endif
+      !set wims_ref_class=$secondary2
       !href cmd=resume&useropts=$texsize$(texalign)1$font activé
       &nbsp;
-      !set wims_ref_class=wims_button
+      !set wims_ref_class=$secondary1
       !href cmd=resume&useropts=$texsize$(texalign)0$font désactivé
 !else
  <p>
@@ -146,10 +154,8 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
   !endif
   !set wims_ref_class=wims_button$secondary
   !href cmd=resume&useropts=$(arg)0$font Mode image
-
    !set arg=!nospace $texsize 2
    !reset secondary
-
    !if $useropts=$(arg)0$font
     !set secondary=$ wims_secondary_button
    !endif
@@ -191,10 +197,17 @@ Réglage de la position verticale. Si l'expression
 <h2>Accessibilité</h2>
 
 <p>Vous pouvez régler l'espacement des lettres et des mots
-    !set wims_ref_class=wims_button
+     !if $useropts=$(texsize)$texalign$(zoom)1
+        !set secondary1=wims_button wims_secondary_button
+        !set secondary2=wims_button
+      !else
+        !set secondary2=wims_button wims_secondary_button
+        !set secondary1=wims_button
+      !endif
+    !set wims_ref_class=$secondary2
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
 
-    !set wims_ref_class=wims_button
+    !set wims_ref_class=$secondary1
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Lecteur dyslexique
 </p><p>
 Le mode espacé est particulièrement adapté dans le cas d'un lecteur dyslexique.</p>
