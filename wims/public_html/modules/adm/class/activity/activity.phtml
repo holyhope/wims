@@ -6,7 +6,6 @@
  </p>
  !goto end
 !endif
-
 !if $user!=$empty
   !readdef wimshome/log/classes/$wims_class/.users/$user
   !distribute item $user_lastname,$user_firstname into lastname,firstname
@@ -65,7 +64,12 @@
  !endif
  !next j
   </tr>
+!!!no efficient !
+!set nbpart=0
  !for m=1 to $usercnt
+  !if $nbpart > $limitpart
+    !break
+  !endif
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
   !if $choice=first and $m=1
@@ -86,6 +90,7 @@ $varfilter_
     !endif
   !endif
   !set getraw=$uu
+  !increase nbpart
   !readproc raw.proc
   $table_tr
   <td>
@@ -94,7 +99,11 @@ $varfilter_
   !for h = 1 to 2*$sheetcnt + 4
     !set h1=$[($h+$h%2)/2-2]
     !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isitemof $showsheet
-  <td>$(data[$h])</td>
+  <td>$(data[$h])
+     !if $h=3
+        <span style="color:orange">+ $(data[-1])</span>
+     !endif
+     </td>
     !endif
   !next
   </tr>

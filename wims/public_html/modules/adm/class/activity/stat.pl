@@ -21,15 +21,15 @@ my $FILE = $_;
 my $SH0=$SH;
 $SH =~ s/,/|/g;
 my (%lastdate, %score, %duree, $dattime);
-my (%exobyday,%scorebyday, %goodbyday)=((),(),());
-my (%exobyday1, %scorebyday1, %goodbyday1)=((),(),());
-my (%exobydaysh, %scorebydaysh, %goodbydaysh)=((),(),());
-my %seconds=();
+my (%exobyday,%scorebyday, %goodbyday,%newbyday)=((),(),());
+my (%exobydayex, %scorebydayex, %goodbydayex,%newbydayex)=((),(),(),());
+my (%exobydaysh, %scorebydaysh, %goodbydaysh,%newbydaysh)=((),(),(),());
+my (%seconds)=();
 for my $sh (1..$SHEET) {
    $lastdate{$sh}='';
    $score{$sh} = 0;
 }
-my ($session,$nbsessions)=(' ',0);
+my ($session,$nbsessions,$nbnew)=(' ',0,0);
   #le fichier est récupéré ordonné par dates croissantes
 open(IN, $FILE);
 while(<IN>){
@@ -39,14 +39,21 @@ while(<IN>){
  next if (/^E/);
  @_ = split(/ +/);
  $dattime=$_[0];
- if ($_[4] eq 'score' || (!$lastdate{$_[2]}) ) {
+ if ($_[4] eq 'score' || $_[4] =~ /new|resume/ || (!$lastdate{$_[2]}) ) {
   if (!($session eq $_[1])){ $nbsessions ++; $session=$_[1]; };
   $dattime=~/([0-9]+)\.([0-9:]+)/;
   my ($date, $time) = ($1,$2);
   $date =~/([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])/;
+  if ($_[4] =~ /new|resume/) {
+    $nbnew ++;
+    if (($_[2]=~ /\b($SH)\b/ || !($SH))) { $newbydaysh{$_[2]}->{$date} ++ ; $newbyday{$date} ++}
+## n'a de sens que s'il y a une seule sheet
+    if ($_[2]=~ /\b$SH0\b/){ $newbydayex{$_[3]}->{$date} ++;}
+  next};
   $seconds{$date}=timelocal(0,0,0,$3,$2-1,$1);
   if (($_[2]=~ /\b($SH)\b/ || !($SH)) && ($_[4] eq 'score')) {
     $exobyday{$date} ++ ;
+    $nbnew --;
     $exobydaysh{$_[2]}->{$date} ++ ;
     if ($_[5] >= $LIMIT){
       $scorebyday{$date} ++ ;
@@ -56,10 +63,10 @@ while(<IN>){
     }
 ## n'a de sens que s'il y a une seule sheet
     if ($_[2]=~ /\b$SH0\b/){
-      $exobyday1{$_[3]}->{$date} ++;
+      $exobydayex{$_[3]}->{$date} ++;
       if ($_[5] >= $LIMIT){
-        $scorebyday1{$_[3]}->{$date} ++;
-        $goodbyday1{$_[3]}->{$date} .= (($goodbyday1{$_[3]}{$date})? ',':'') . $exobyday1{$_[3]}->{$date};
+        $scorebydayex{$_[3]}->{$date} ++;
+        $goodbydayex{$_[3]}->{$date} .= (($goodbydayex{$_[3]}{$date})? ',':'') . $exobydayex{$_[3]}->{$date};
       }
     }
   }
@@ -88,72 +95,79 @@ for my $sh (1..$SHEET) {
  $text .= $score{$sh} . ',' . converttime2($duree{$sh}) . ',';
  $score_global += $score{$sh}; if ($duree{$sh}) { $duree_globale += $duree{$sh}};
 }
-#dernière connexion,nb_sessions,nb exos abordés total, nb exos par feuille, temps par feuille
+#dernière connexion,nb_sessions,nb exos abordés total, nb exos par feuille, temps par feuille,nb exos non aboutis
 exit if !($dattime);
 
 print $dattime . ',' . $nbsessions  . ',' . $score_global . ','
-   . converttime2($duree_globale) . ',' . $text;
+   . converttime2($duree_globale) . ',' . $text . $nbnew;
 
 if ($OPTION eq 'exobyday'){
-for my $date (sort keys %exobyday ) {
+ for my $date (sort keys %exobyday ) {
    if (!$exobyday{$date}) {$exobyday{$date}=0;}
    if (!$scorebyday{$date}) {$scorebyday{$date}=0;}
    if (!$goodbyday{$date}) {$goodbyday{$date}='';}
-}
+   if (!$newbyday{$date}) {$newbyday{$date}=0;} else {$newbyday{$date} -=$exobyday{$date}}
+ }
 
-my ($xcoord, $ycoord, $zcoord, $good, $tmp, $day, $init, $t, $wday)=('','','','','','','','') ;
-for my $date ( sort keys %exobyday ) {
+ my ($xcoord, $ycoord, $zcoord, $good, $tmp, $day, $init, $t, $wday, $new)=('','','','','','','','','','') ;
+ for my $date ( sort keys %exobyday ) {
   if ($xcoord) {$tmp=',' ;} else {
    $init=$seconds{$date} ;
    my @wday = localtime($date); $wday=$wday[6]}
-  $xcoord .= "$tmp$date";
+  $xcoord .= $tmp . $date;
   $t = ($seconds{$date}-$init) % 86400; $t=$wday+($seconds{$date}-$init-$t)/ 86400;
   $day .= $tmp . $t;
   $ycoord .= $tmp . $exobyday{$date};
   $zcoord .= $tmp . $scorebyday{$date};
-  $good .= "$tmp" . '[' . $goodbyday{$date} .']';
+  $good .= $tmp . '[' . $goodbyday{$date} .']';
+  $new .= $tmp . $newbyday{$date}
 }
 ###liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
 ###liste des listes de positions des reussites
 
-print "\n[$xcoord],[$day],[$ycoord],[$zcoord],[$good]";
+print "\n[$xcoord],[$day],[$ycoord],[$zcoord],[$good],[$new]";
 
 if (!($SH0=~ /,/)) {
- for my $ex (sort {$a <=> $b} keys %exobyday1){
-   my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
+ for my $ex (sort {$a <=> $b} keys %exobydayex){
+   my ($xcoord,$ycoord,$zcoord,$good,$tmp,$new)=('','','','','','');
    for my $date ( sort keys %exobyday ) {
-      if (!$exobyday1{$ex}->{$date}) { $exobyday1{$ex}->{$date}=0;}
-      if (!$scorebyday1{$ex}->{$date}) {$scorebyday1{$ex}->{$date} = 0;}
-      if (!$goodbyday1{$ex}->{$date}) { $goodbyday1{$ex}->{$date}='';}
+      if (!$exobydayex{$ex}->{$date}) { $exobydayex{$ex}->{$date}=0;}
+      if (!$scorebydayex{$ex}->{$date}) {$scorebydayex{$ex}->{$date} = 0;}
+      if (!$goodbydayex{$ex}->{$date}) { $goodbydayex{$ex}->{$date}='';}
+      if (!$newbydayex{$ex}->{$date}) {$newbydayex{$ex}->{$date}=0;} else { $newbydayex{$ex}->{$date} -=$exobydayex{$ex}->{$date} }
       if ($xcoord) {$tmp=',' };
-      $xcoord .= "$tmp$date";
-      $ycoord .= $tmp . $exobyday1{$ex}->{$date};
-      $zcoord .= $tmp . $scorebyday1{$ex}->{$date};
-      $good .= $tmp . '[' . $goodbyday1{$ex}->{$date} . ']';
+      $xcoord .= $tmp . $date;
+      $ycoord .= $tmp . $exobydayex{$ex}->{$date};
+      $zcoord .= $tmp . $scorebydayex{$ex}->{$date};
+      $good .= $tmp . '[' . $goodbydayex{$ex}->{$date} . ']';
+      $new .= $tmp . $newbydayex{$ex}->{$date};
  }
 ###pour les exercices d'une feuille
 ###numero exo, liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
 ###liste des listes de positions des reussites
-   print "\n$ex,[$xcoord],[$ycoord],[$zcoord],[$good]";
+   print "\n$ex,[$xcoord],[$ycoord],[$zcoord],[$good],[$new]";
   }
  }
  else {
   for my $sh (sort {$a <=> $b} keys %exobydaysh){
-    my ($xcoord,$ycoord,$zcoord,$good,$tmp)=('','','','','');
+    my ($xcoord,$ycoord,$zcoord,$good,$tmp,$new)=('','','','','','');
     for my $date ( sort ( keys %exobyday) ) {
       if ($xcoord) {$tmp=',' };
-      $xcoord .= "$tmp$date";
+      $xcoord .= $tmp . $date;
       if (!$exobydaysh{$sh}->{$date}) { $exobydaysh{$sh}->{$date}=0;}
       if (!$scorebydaysh{$sh}->{$date}) {$scorebydaysh{$sh}->{$date} = 0;}
       if (!$goodbydaysh{$sh}->{$date}) { $goodbydaysh{$sh}->{$date}='';}
+      if (!$newbydaysh{$sh}->{$date}) { $newbydaysh{$sh}->{$date}=0;}
+         else { $newbydaysh{$sh}->{$date} -=$exobydaysh{$sh}->{$date} }
       $ycoord .= $tmp . $exobydaysh{$sh}->{$date};
       $zcoord .= $tmp . $scorebydaysh{$sh}->{$date};
       $good .= $tmp . '[' . $goodbydaysh{$sh}->{$date} . ']';
+      $new .= $tmp . $newbydaysh{$sh}->{$date};
    }
 ###pour les feuilles d'une liste de feuilles
 ###numero feuille, liste de dates, liste du nombre d'exos faits à cette date, liste des nombres de reussite,
 ###liste des listes de positions des reussites
-   print "\n$sh,[$xcoord],[$ycoord],[$zcoord],[$good]";
+   print "\n$sh,[$xcoord],[$ycoord],[$zcoord],[$good],[$new]";
   }
  }
 }

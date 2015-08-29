@@ -1,3 +1,12 @@
+<script type="text/javascript">
+/*<![CDATA[*/
+ jQuery(function($$) { $$(document).ready(function(){
+    $$(".content_expert").hide(); $$(".button_expert").click(function () {
+        $$(this).next(".content_expert").slideToggle(); });
+  });
+});
+/*]]>*/
+</script>
 !set file=wimshome/log/classes/$wims_class/.userlist
 !set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 !for lu =1 to $cnt
@@ -14,48 +23,47 @@
 !if $option_select=$empty
   !set option_select=<option value=""></option>
 !endif
+
 <fieldset class="property_fields blockcenter">
- <legend>$name_menu</legend>
+ <a class="wims_button button_expert">$name_menu</a>
+<div class="content_expert" href="#">
 $name_expert0
+!distribute items wims_formradio,choice1 into wims_ref_class,wims_ref_id
+<div>
+!formradio choice list first prompt <b>$name_shiftpart</b>
+<div class="formHelp">$name_help1</div>
+</div>
 
-!set wims_ref_class=wims_formradio
-!set wims_ref_id=choice1
-<p>
-!formradio choice list first prompt $name_shiftpart
-</p>
-
-!set wims_ref_class=wims_formradio
-!set wims_ref_id=choice2
-<p>
-!formradio choice list select prompt <b>$name_select</b>:
-$name_expert1
-</p>
+!distribute items wims_formradio,choice2 into wims_ref_class,wims_ref_id
+<div>
+!formradio choice list select prompt <b>$name_select</b>
+<div class="formHelp">$name_help2</div>
 !set wims_chooselist_select=$option
 !set wims_chooselist_checked=$option_select
 <div class="wimscenter">
 !read js/chooselist.phtml select_user1,select_user2,select_user
 </div>
-!set wims_ref_class=wims_formradio
-!set wims_ref_id=choice3
-<p>
+</div>
+!distribute items wims_formradio,choice3 into wims_ref_class,wims_ref_id
+<div>
 !if $user!=$empty
   !set choice=login
   !set loginlist=$user
 !endif
 !formradio choice list login prompt <b>$name_loginlist</b>:
-$name_expert2
-</p>
+<div class="formHelp">$name_help2</div>
+</div>
 <div class="wimscenter">
    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
 </div>
-!set wims_ref_class=wims_formradio
-!set wims_ref_id=choice4
+!distribute items wims_formradio,choice4 into wims_ref_class,wims_ref_id
 <p>
 !formradio choice list filter prompt <b>$wims_name_filter:</b>
-$name_expert3
+<div class="formHelp">$name_help2</div>
 </p>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=filter $wims_name_help
 <div class="wimscenter">
   <textarea name="varfilter">$varfilter</textarea>
+</div>
 </div>

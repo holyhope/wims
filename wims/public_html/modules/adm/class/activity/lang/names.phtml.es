@@ -11,11 +11,11 @@
 
 !set name_showsheet=Seleccione las hojas de cuales desea ver la actividad.
 
-!set name_ylabel=# done exercises
+!set name_ylabel=# ex.
 
 !set name_expert0=Si desean seleccionar a algunos participantes, se proponen varios métodos. \
 Marcan el método deseado.
 
-!distribute items Menu expert,Liste de logins&nbsp;,Sélection&nbsp;,\
-  Participant un par un\
+!distribute items  Menu expert,Par liste de logins,Par sélection,\
+  Par participant\
 into name_menu,name_loginlist,,name_select,name_shiftpart

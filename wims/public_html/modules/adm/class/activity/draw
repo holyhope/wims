@@ -1,11 +1,21 @@
+
 !if $datay=$empty
   !exit
 !endif
-!default maxday=365
-!distribute item 30,green into  lim, colorg
-!set maxexo=!exec pari vecmax([$datay,7])+3
-!distribute items blue,0 into color,testfin
-!reset barchart linegraph legend goodlist
+!distribute item 30,0,blue,darkgreen,darkgreen,orange into lim,testfin,\
+  color,colorg,colorgraph,colorgraph1
+!if $datanew!=$empty
+ !set test=!text select 123456789 in $datanew
+ !if $test=$empty
+   !reset datanew
+ !endif
+!endif
+!if $datanew!=$empty
+  !set maxexo=!exec pari vecmax([$datay,$datanew,7])+1
+!else
+  !set maxexo=!exec pari vecmax([$datay,7])+1
+!endif
+!reset barchart linegraph legend goodlist linegraph1
 !set dataxcnt=!itemcnt $datax
 !for j=1 to $dataxcnt
   !set cnt=$(datax[$j])
@@ -16,6 +26,9 @@
   !set tmp=$[min($(datay[$j]),$maxexo)]
   !set barchart=!append colon $jday_:$tmp:$color to $barchart
   !set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
+  !if $(datanew[$j])!=$empty
+   !set linegraph1=!append colon $jday_:$(datanew[$j]) to $linegraph1
+  !endif
   !set legend=!append colon $jday_:$cnt3/$cnt2 to $legend
   !set good=!declosing $(datagood[$j])
   !set good=!nonempty items $good
@@ -43,28 +56,36 @@
 !endif
 
 !set testfin=$[$jday_+2]
-!if $testfin < 50
+!if $testfin < 100
   !set mult=10
 !else
-  !set mult=7
+  !set mult=8
 !endif
 !distribute item $[$testfin*$mult],$[$maxexo*$mult] into xsize, ysize
+
+!if $linegraph1!=$empty
+   !set linegraph1=strokecolor $colorgraph1\
+linegraph $linegraph1
+!endif
 
 !exec canvasdraw\
 size $xsize,$ysize\
 xrange -2,$[$testfin]\
-yrange -5,$maxexo\
-legend $firstname $lastname ($datafirst-$datalast)\
+yrange -3,$maxexo\
 axis\
+fontsize 8\
 xaxisup $legend\
 ylabel $name_ylabel\
-opacity 100,50\
+legend $lastname $(datax[1])-$(datax[-1])\
+opacity 255,40\
 grid 7,10,grey,7,10,0,grey\
 barchart $barchart\
-opacity 255,255\
+linewidth 1\
+crosshairsize $[rint($mult/3)]\
 $goodlist\
-linewidth 3\
-strokecolor red\
+linewidth 1\
+$linegraph1\
+strokecolor $colorgraph\
 linegraph $linegraph
 
 !exit
