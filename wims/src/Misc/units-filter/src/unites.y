@@ -171,7 +171,7 @@ int significative(char* text){
     char * dot = strchr(text,'.');
     if (dot != NULL && *dot == '.') result += (end-dot)-1;
   } else { // the number is not zero
-    for(j=i;j<strlen(text)&&(text[j]>='0'&&text[j]<='9'||text[j]=='.');j++){
+    for(j=i;j<strlen(text)&&((text[j]>='0'&&text[j]<='9')||text[j]=='.');j++){
       if (text[j]!='.') {
 	result++;
       } else {
@@ -695,7 +695,7 @@ void printValue(optiontype option, yystype result, int s){
       printf("%s\\,",buf);
     }
   } else {
-    printf(buf);
+    printf("%s",buf);
   }
 }
 
