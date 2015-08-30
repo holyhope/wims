@@ -8,7 +8,7 @@
  a:visited {color:#004077;}
 </style>
 <input type='text' size='10' value='' id='search' /><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (25-08-2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (30-08-2015)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -239,6 +239,8 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
 </span></li>
+<li><span style="color:blue;font-size:0.8em"> you can heck the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+</span></li>
 <li><span style="color:blue;font-size:0.8em"> be aware that older browsers will probably not work correctly<br />no efford has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:jm.evers_who_works_at_schaersvoorde.nl">me</a> an email with screenshots and the generated javascript include file.
@@ -280,7 +282,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'crosshairsize int' and / or 'linewidth int' to adust
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='crosshairs' href='#crosshairs top'>  crosshairs color,x1,y1,x2,y2,...,x_n,y_n</a><ul>
@@ -288,7 +290,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'crosshairsize int' and / or 'linewidth int' to adust
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 </span></li>
 </ul>
 <li><a name='point' href='#point top'>  point x,y,color</a><ul>
@@ -296,7 +298,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming)
 </span></li>
@@ -306,7 +308,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 </span></li>
 </ul>
 <li><a name='circle' href='#circle top'>  circle xc,yc,width (2*r in pixels),color</a><ul>
@@ -316,7 +318,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
 </span></li>
@@ -329,7 +331,7 @@
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='disks' href='#disks top'>disks</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' to set the fillcolor
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick (individually)
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (individually)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
 </span></li>
@@ -338,7 +340,7 @@
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='seg' href='#seg top'>seg</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='segments' href='#segments top'>  segments color,x1,y1,x2,y2,...,x_n,y_n</a><ul>
@@ -347,7 +349,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adust size
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 </span></li>
 </ul>
 <li><a name='line' href='#line top'>  line x1,y1,x2,y2,color</a><ul>
@@ -355,7 +357,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='lines' href='#lines top'>  lines color,x1,y1,x2,y2...x_n-1,y_n-1,x_n,y_n</a><ul>
@@ -363,7 +365,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> or use multiple commands 'curve color,formula' or "jscurve color,formule" to draw the line <br />(uses more points to draw the line; is however better draggable)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>attention</b>: the flydraw command "lines" is equivalent to canvasdraw command <a href="#polylines">"polyline"</a>
 </span></li>
@@ -372,14 +374,14 @@
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='halfline' href='#halfline top'>halfline</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draws a halfline starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='demilines' href='#demilines top'>  demilines color,x1,y1,x2,y2,....</a><ul>
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='halflines' href='#halflines top'>halflines</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draws halflines starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex) etc etc
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick indiviually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> indiviually
 </span></li>
 </ul>
 <li><a name='hline' href='#hline top'>  hline x,y,color</a><ul>
@@ -388,28 +390,28 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> or use command <a href='#curve'>'curve color,formula'</a> to draw the line <br />(uses more points to draw the line; is however better draggable)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='hlines' href='#hlines top'>  hlines color,x1,y1,x2,y2,...</a><ul>
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='horizontallines' href='#horizontallines top'>horizontallines</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draw horizontal lines through points (x1:y1)...(xn:yn) in color 'color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='vline' href='#vline top'>  vline x,y,color</a><ul>
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='verticalline' href='#verticalline top'>verticalline</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draw a vertical line through point (x:y) in color 'color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='vlines' href='#vlines top'>  vlines color,x1,y1,x2,y2....</a><ul>
 <li><span style="color:blue;font-size:0.8em">alternative command:<a name='verticallines' href='#verticallines top'>verticallines</a></li></span>
 <li><span style="color:blue;font-size:0.8em"> draw vertical lines through points (x1:y1),(x2:y2)... in color 'color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='square' href='#square top'>  square x,y,side (px) ,color</a><ul>
@@ -419,7 +421,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command/keyword <a href='#filled'>'filled'</a> before command 'square x,y,side,color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='rect' href='#rect top'>  rect x1,y1,x2,y2,color</a><ul>
@@ -427,7 +429,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command/keyword <a href='#filled'>'filled'</a> before command 'rect x1,y1,x2,y2,color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='rects' href='#rects top'>  rects color,x1,y1,x2,y2,.....</a><ul>
@@ -437,7 +439,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'fillcolor color' before 'frects' to set the fill colour.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='roundrect' href='#roundrect top'>  roundrect x1,y1,x2,y2,radius in px,color</a><ul>
@@ -447,13 +449,13 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> fillcolor will be identical to 'color'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='roundrects' href='#roundrects top'>  roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....</a><ul>
 <li><span style="color:blue;font-size:0.8em"> for filled roundrects use command/keyword <a href='#filled'>'filled'</a> before command
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='polyline' href='#polyline top'>  polyline color,x1,y1,x2,y2...x_n,y_n</a><ul>
@@ -467,7 +469,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href='#segments'>'segments'</a> for not interconnected line segments.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='poly' href='#poly top'>  poly color,x1,y1,x2,y2...x_n,y_n</a><ul>
@@ -475,7 +477,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'fpoly' to fill it or use keyword <a href='#filled'>'filled'</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='arc' href='#arc top'>  arc xc,yc,width,height,start_angle,end_angle,color</a><ul>
@@ -501,7 +503,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> radius_x and radius_y are in pixels
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> will shrink / expand on zoom out / zoom in
 </span></li>
@@ -532,7 +534,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='arrows' href='#arrows top'>  arrows color,head (px),x1,y1,x2,y2...x_n,y_n</a><ul>
@@ -541,7 +543,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='arrow2' href='#arrow2 top'>  arrow2 x1,y1,x2,y2,h,color</a><ul>
@@ -551,7 +553,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrow
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='arrows2' href='#arrows2 top'>  arrows2 color,head (px),x1,y1,x2,y2...x_n,y_n</a><ul>
@@ -559,7 +561,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'linewidth int' to adjust thickness of the arrows
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 </span></li>
 </ul>
 <li><a name='parallel' href='#parallel top'>  parallel x1,y1,x2,y2,dx,dy,n,[colorname or #hexcolor]</a><ul>
@@ -569,13 +571,13 @@
 <li><a name='triangle' href='#triangle top'>  triangle x1,y1,x2,y2,x3,y3,color</a><ul>
 <li><span style="color:blue;font-size:0.8em"> use ftriangle or keyword <a href='#filled'>'filled'</a> for a solid triangle
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='triangles' href='#triangles top'>  triangles color,x1,y1,x2,y2,x3,y3,...</a><ul>
 <li><span style="color:blue;font-size:0.8em"> use ftriangles or keyword <a href='#filled'>'filled'</a> for solid triangles
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick individually (!)
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 </span></li>
 </ul>
 <li><a name='lattice' href='#lattice top'>  lattice x0,y0,xv1,yv1,xv2,yv2,n1,n2,color</a><ul>
@@ -745,7 +747,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> multidraw is incompatible with command 'tooltip'
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
+<li><span style="color:blue;font-size:0.8em"> all 'multidraw' drawings will scale on zooming.<br />this in contrast to the command <a href="#userdraw">'userdraw'</a>.
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
 </span></li>
@@ -1023,7 +1025,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command 'jsmath formula(x)` for calculating and displaying indiviual points on the curve
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set draggable / onclick (yet)
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (yet)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> commands plotjump / plotstep are not active for 'jscurve'
 </span></li>
@@ -1037,7 +1039,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href="#plotsteps">"plotsteps"</a> to increase / decrease the amount of plotted points (default 150)
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> may be set draggable / onclick
+<li><span style="color:blue;font-size:0.8em"> may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 </span></li>
 </ul>
 <li><a name='levelcurve' href='#levelcurve top'>  levelcurve color,expression in x/y,l1,l2,...</a><ul>
@@ -1309,15 +1311,15 @@
 </span></li>
 </ul>
 <li><a name='grid' href='#grid top'>  grid step_x,step_y,gridcolor</a><ul>
-<li><span style="color:blue;font-size:0.8em"> use command <a href="#fontcolor">"fontcolor"</a>, <a href="#fontsize">"fontsize"</a> , <a href="#fontfamily">"fontfamily"</a> to adjust font <br />defaults: black,12,Ariel
-</span></li>
 <li><span style="color:blue;font-size:0.8em"> if keywords <a href="#axis">"axis"</a> or <a href="#axisnumbering">"axisnumbering"</a> are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> in that case, use command <a href="#fontcolor">"fontcolor"</a>, <a href="#fontsize">"fontsize"</a> and / or <a href="#fontfamily">"fontfamily"</a> to adjust font <br />defaults: black,12,Ariel
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set <a href="#onclick">"onclick"</a> or <a href="#drag">"drag xy"</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use commands <a href="#xlabel">'xlabel some_string'</a> and/or <a href="#ylabel">'ylabel some_string'</a> to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
+<li><span style="color:blue;font-size:0.8em"> use commands <a href="#xlabel">'xlabel some_string'</a> and/or <a href="#ylabel">'ylabel some_string'</a> to label axis;<br />use command "fontsize" to adjust size:the font family is non-configurable 'italic your_fontsize px Ariel' !
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> see commands (see <a href="#xaxis">"xaxis" or xaxistext"</a>, <a href="#yaxis">"yaxis" or "yaxistext"</a> to set tailormade values on axis (the used font is set by <a href="fontfamily">command fontfamily</a>; default '12px Ariel')
 </span></li>
@@ -1897,6 +1899,8 @@
 <li><span style="color:blue;font-size:0.8em"> can be used together with freestyle x-axis/y-axis texts : see commands <a href='#xaxis'>'xaxis'</a>,<a href='#xaxisup'>'xaxisup'</a> and <a href='#yaxis'>'yaxis'</a>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> multiple barchart command may be used in a single script
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> also see command <a href='#piechart'>'piechart'</a>
 </span></li>

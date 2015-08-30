@@ -172,6 +172,7 @@ int main(int argc, char *argv[]){
 	@ will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
+	@ you can heck the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
 	@ be aware that older browsers will probably not work correctly<br />no efford has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:jm.evers_who_works_at_schaersvoorde.nl">me</a> an email with screenshots and the generated javascript include file.
 	*/
@@ -247,6 +248,7 @@ var read_canvas%d;\
 var set_clock;\
 var clear_draw_area%d;\
 var update_draw_area%d;\
+var redraw_all%d;\
 var userdraw_primitive;\n\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
 var userdraw_x = [];var userdraw_y = [];var userdraw_radius = [];\n\
@@ -282,7 +284,7 @@ var xstart = 0;\
 var ystart = 0;\
 var unit_x=\" \";\
 var unit_y=\" \";\
-var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,EXTERNAL_IMAGE_CANVAS);
+var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,EXTERNAL_IMAGE_CANVAS);
 /* default add the drag code : nearly always used ...*/
   add_drag_code(js_include_file,DRAG_CANVAS,canvas_root_id);
 
@@ -362,7 +364,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ crosshair x,y,color
 	@ draw a single crosshair point at (x;y) in color 'color'
 	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<3;i++){
     		switch(i){
@@ -385,7 +387,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ crosshairs color,x1,y1,x2,y2,...,x_n,y_n
 	@ draw multiple crosshair points at given coordinates in color 'color'
 	@ use command 'crosshairsize int' and / or 'linewidth int'  to adust
-	@ may be set draggable / onclick individually (!)
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -415,7 +417,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ point x,y,color
 	@ draw a single point at (x;y) in color 'color'
 	@ use command 'linewidth int'  to adust size
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	@ will not resize on zooming <br />(command 'circle x,y,r,color' will resize on zooming)
 	*/
     	    for(i=0;i<3;i++){
@@ -439,7 +441,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ points color,x1,y1,x2,y2,...,x_n,y_n
 	@ draw multiple points at given coordinates in color 'color'
 	@ use command 'linewidth int'  to adust size
-	@ may be set draggable / onclick individually (!)
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -470,7 +472,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ use command 'fcircle xc,yc,d,color'
 	@ alternative: disk for a filled circle
 	@ use command 'fillcolor color' to set the fillcolor
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	@ will shrink / expand on zoom out / zoom in
 	*/
     	    for(i=0;i<4;i++){
@@ -497,7 +499,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ use keyword 'filled' or command 'fcircles' to produce solid circles
 	@ alternative : disks for filled circles
 	@ use command 'fillcolor color' to set the fillcolor
-	@ may be set draggable / onclick (individually)
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (individually)
 	@ will shrink / expand on zoom out / zoom in
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -526,7 +528,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ segment x1,y1,x2,y2,color
 	@ alternative : seg
 	@ draw a line segment between points (x1:y1)--(x2:y2) in color 'color'
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<5;i++) {
 		switch(i){
@@ -552,7 +554,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ alternative : segs
 	@ draw multiple segments between points (x1:y1)--(x2:y2).....and... (x_n-1:y_n-1)--(x_n:y_n) in color 'color'
 	@ use command 'linewidth int'  to adust size
-	@ may be set draggable / onclick individually (!)
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -582,7 +584,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ line x1,y1,x2,y2,color
 	@ draw a line through points (x1:y1)--(x2:y2) in color 'color'
 	@ or use command 'curve color,formula' to draw the line <br />(uses more points to draw the line; is however better draggable)
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
@@ -635,7 +637,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ lines color,x1,y1,x2,y2...x_n-1,y_n-1,x_n,y_n
 	@ draw multiple lines through points (x1:y1)--(x2:y2) ...(x_n-1:y_n-1)--(x_n:y_n) in color 'color'
 	@ or use multiple commands 'curve color,formula' or "jscurve color,formule" to draw the line <br />(uses more points to draw the line; is however better draggable)
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	@ <b>attention</b>: the flydraw command "lines" is equivalent to canvasdraw command <a href="#polylines">"polyline"</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -691,7 +693,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ demiline x1,y1,x2,y2,color
 	@ alternative : halfline
 	@ draws a halfline starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex)
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
@@ -754,7 +756,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ demilines color,x1,y1,x2,y2,....
 	@ alternative : halflines
 	@ draws halflines starting in (x1:y1) and through (x2:y2) in color 'color' (colorname or hex) etc etc
-	@ may be set draggable / onclick indiviually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> indiviually
 	*/
 	    stroke_color=get_color(infile,0);
 	    fill_color = stroke_color;
@@ -822,7 +824,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ alternative : horizontalline
 	@ draw a horizontal line through point (x:y) in color 'color'
 	@ or use command <a href='#curve'>'curve color,formula'</a> to draw the line <br />(uses more points to draw the line; is however better draggable)
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<3;i++) {
 		switch(i){
@@ -845,7 +847,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ hlines color,x1,y1,x2,y2,...
 	@ alternative : horizontallines
 	@ draw horizontal lines through points (x1:y1)...(xn:yn) in color 'color'
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -875,7 +877,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ vline x,y,color
 	@ alternative : verticalline
 	@ draw a vertical line through point (x:y) in color 'color'
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<3;i++) {
 		switch(i){
@@ -898,7 +900,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ vlines color,x1,y1,x2,y2....
 	@ alternative : verticallines
 	@ draw vertical lines through points (x1:y1),(x2:y2)... in color 'color'
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -929,7 +931,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ draw a square with left top corner (x:y) with side 'side' in color 'color'
 	@ use command 'fsquare x,y,side,color' for a filled square
 	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'square x,y,side,color'
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
@@ -955,7 +957,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ rect x1,y1,x2,y2,color
 	@ use command 'frect x1,y1,x2,y2,color' for a filled rectangle
 	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'rect x1,y1,x2,y2,color'
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<5;i++){
 		switch(i){
@@ -980,7 +982,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ use command 'frect color,x1,y1,x2,y2,.....' for a filled rectangle
 	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'rects color,x1,y1,x2,y2,....'
 	@ use command 'fillcolor color' before 'frects' to set the fill colour.
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -1011,7 +1013,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ use command 'froundrect x1,y1,x2,y2,radius,color' for a filled rectangle
 	@ use command/keyword  <a href='#filled'>'filled'</a> before command 'roundrect x1,y1,x2,y2,radius,color'
 	@ fillcolor will be identical to 'color'
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    for(i=0;i<6;i++){
 		switch(i){
@@ -1038,7 +1040,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	@ roundrects color,radius in px,x1,y1,x2,y2,x3,y3,x4,y4,....
 	@ for filled roundrects use command/keyword <a href='#filled'>'filled'</a> before command
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1077,7 +1079,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ draw a broken line interconnected between all points (not closed)
 	@ equivalent to flydraw command "line color,x1,y1,x2,y2...x_n,y_n"
 	@ use command <a href='#segments'>'segments'</a> for not interconnected line segments.
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    i=0;
@@ -1108,7 +1110,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ poly color,x1,y1,x2,y2...x_n,y_n
 	@ draw closed polygon
 	@ use command 'fpoly' to fill it or use keyword <a href='#filled'>'filled'</a>
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    i=0;
@@ -1194,7 +1196,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ ellipse xc,yc,radius_x,radius_y,color
 	@ a ellipse with center xc/yc in x/y-range
 	@ radius_x and radius_y are in pixels
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	@ will shrink / expand on zoom out / zoom in
 	*/
 	    for(i=0;i<5;i++){
@@ -1277,7 +1279,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ alternative : vector
 	@ draw a single headed arrow / vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and in color 'color'
 	@ use command 'linewidth int' to adjust thickness of the arrow
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
     	    for(i=0;i<6;i++){
     		switch(i){
@@ -1303,7 +1305,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ alternative : vectors
 	@ draw single headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
 	@ use command 'linewidth int' to adjust thickness of the arrow
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -1335,7 +1337,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ draw a double headed arrow/vector from (x1:y1) to (x2:y2)<br />with arrowhead size h in px and  in color 'color'
 	@ use command 'arrowhead int' to adjust the arrow head size
 	@ use command 'linewidth int' to adjust thickness of the arrow
-	@ may be set draggable / onclick
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
     	    for(i=0;i<6;i++){
     		switch(i){
@@ -1360,7 +1362,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ arrows2 color,head (px),x1,y1,x2,y2...x_n,y_n
 	@ draw double headed arrows / vectors from (x1:y1) to (x2:y2) ... (x3:y3) to (x4:y4) etc ... in color 'color'
 	@ use command 'linewidth int' to adjust thickness of the arrows
-	@ may be set draggable / onclick individually
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -1417,7 +1419,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ triangle x1,y1,x2,y2,x3,y3,color
 	 @ use ftriangle or keyword <a href='#filled'>'filled'</a> for a solid triangle
-	 @ may be set draggable / onclick
+	 @ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
     	    for(i=0;i<7;i++){
     		switch(i){
@@ -1442,7 +1444,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ triangles color,x1,y1,x2,y2,x3,y3,...
 	 @ use ftriangles or keyword <a href='#filled'>'filled'</a> for solid triangles
-	 @ may be set draggable / onclick individually (!)
+	 @ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
 	    stroke_color = get_color(infile,0);/* name or hex color */
 	    i = 0;
@@ -1662,9 +1664,9 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ buttons for changing the obj_type (and incase of 'multiuserinput' , some inputfields and buttons) <br />will be present in the reserved div 'tooltip_div' and can be styled using command 'inputstyle some_css'
 	 @ the button label will be default the 'object primitive name' (like 'point', 'circles').<br />If you want a different label (e.g. an other language) ,use command 'multilabel'<br />for example in dutch: <br /><em>multilabel cirkel,lijnstuk,punten,STOP<br />multidraw circle,segment,points</em><br />(see command <a href='#multilabel'>'multilabel'</a> for more details)
 	 @ multidraw is incompatible with command 'tooltip'
-	 @ existing drawings will <b>not</b> scale on zooming ; only after zooming the new objects are scaled to the new xmin/xmax ; ymin/ymax<br />better not combine zooming with userdraw or multidraw (it's too much 'work' to do a rescaling on existing objects...)
+	 @ all 'multidraw' drawings will scale on zooming.<br />this in contrast to the command <a href="#userdraw">'userdraw'</a>.  
 	 @ wims will <b>not</b> check the amount or validity of your command arguments ! <br />( use javascript console to debug any typo's )
-	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 9 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = rects_x +";"+rects_y+"\\n"<br />line 8 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 9 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>	 
+	 @ a local function read_canvas%d will read all userbased drawings.<br />The output is always a 9 lines string with fixed sequence.<br/>line 1 = points_x+";"+points_y+"\\n"<br/>line 2 = circles_x+";"+circlespoint_y+";"+multi_radius+"\\n"<br/>line 3 = segments_x+";"+segments_y+"\\n"<br/>line 4 = arrows_x+";"+arrows_y+"\\n"<br/>line 5 = lines_x+";"+lines_y+"\\n"<br/>line 6 = triangles_x+";"+triangles_y+"\\n"<br/>line 7 = rects_x +";"+rects_y+"\\n"<br />line 8 = closedpoly_x+";"+closedpoly_y+"\\n"<br/>line 9 = text_x+";"+text_y+";"+text"\\n"<br/>The x/y-data are in x/y-coordinate system and display precision may be set by a previous command 'precision 0 | 10 | 100 | 1000...'<br />In case of circles the radius is -for the time being- rounded to pixels<br /><b>use the wims "direct exec" tool to see the format of the reply</b>
 	 @ <b>attention</b>: for command argument 'closedpoly' only one polygone can be drawn.<br />The last point (e.g. the point clicked near the first point) of the array is removed. 
 	 @ <em>technical: all 8 'draw primitives' + 'text' will have their own -transparent- PNG bitmap canvas. <br />So for example there can be a points_canvas entirely separated from a line_canvas.<br />This to avoid the need for a complete redraw when something is drawn to the canvas...(eg only the object_type_canvas is redrawn)<br />This in contrast to many very slow do-it-all HTML5 canvas javascript libraries.<br />The mouselisteners are attached to the canvas-div element.</em>
 	*/
@@ -2437,7 +2439,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ zooming & panning are implemented :<br />use command 'zoom color' for mouse driven zooming<br />or use keyword 'setlimits' for inputfields setting xmin/xmax, ymin/ymax
 	 @ use command 'trace_jscurve formula(x)` for tracing
 	 @ use command 'jsmath  formula(x)` for calculating and displaying indiviual points on the curve
-	 @ can <b>not</b> be set draggable / onclick (yet)
+	 @ can <b>not</b> be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> (yet)
 	 @ commands plotjump / plotstep are not active for 'jscurve'
 	*/
 	    stroke_color = get_color(infile,0);
@@ -2464,7 +2466,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ use command <a href="#trange">trange</a> in parametric functions before command curve / plot  (trange -pi,pi)<br />curve color,formula1(t),formula2(t)
 	 @ use command <a href="#precision">"precision" </a>to ncrease the number of digits of the plotted points
 	 @ use command <a href="#plotsteps">"plotsteps"</a> to increase / decrease the amount of plotted points (default 150)
-	 @ may be set draggable / onclick
+	 @ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    if( use_parametric == TRUE ){ /* parametric color,fun1(t),fun2(t)*/
 		use_parametric = FALSE;
@@ -3067,14 +3069,14 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    /* sgraph(canvas_type,precision,xmajor,ymajor,xminor,yminor,majorcolor,minorcolor,fontfamily,opacity)*/
 	    break;
-	case GRID:/* xmajor,ymajor,color [,xminor,yminor,tick length (px) ,color]*/
+	case GRID:/* xmajor,ymajor,gridcolor [,xminor,yminor,tick length (px) ,axis/tickscolor]*/
 	/*
 	 @ grid step_x,step_y,gridcolor
-	 @ use command <a href="#fontcolor">"fontcolor"</a>, <a href="#fontsize">"fontsize"</a> , <a href="#fontfamily">"fontfamily"</a> to adjust font <br />defaults: black,12,Ariel
 	 @ if keywords <a href="#axis">"axis"</a> or <a href="#axisnumbering">"axisnumbering"</a> are set, use :<br />grid step_x,step_y,major_color,minor_x,minor_y,tics height in px,axis_color<br />minor x step = step_x / minor_x
+	 @ in that case, use command <a href="#fontcolor">"fontcolor"</a>, <a href="#fontsize">"fontsize"</a> and / or <a href="#fontfamily">"fontfamily"</a> to adjust font <br />defaults: black,12,Ariel
 	 @ if xmin > 0 and/or ymin > 0 and zooming / panning is not activ: <br /> be aware that the x/y-axis numbering and x/y major/minor tic marks will not be visual <br /> as they are placed under the x-axis and left to the y-axis (in Quadrant II and IV)
 	 @ can <b>not</b> be set <a href="#onclick">"onclick"</a> or <a href="#drag">"drag xy"</a>
-	 @ use commands <a href="#xlabel">'xlabel some_string'</a> and/or <a href="#ylabel">'ylabel some_string'</a> to label axis;<br />use command "fontsize" to adjust size (the font family is non-configurable 'italic your_fontsize px Ariel')
+	 @ use commands <a href="#xlabel">'xlabel some_string'</a> and/or <a href="#ylabel">'ylabel some_string'</a> to label axis;<br />use command "fontsize" to adjust size:the font family is non-configurable 'italic your_fontsize px Ariel' !
 	 @ see commands (see <a href="#xaxis">"xaxis" or xaxistext"</a>, <a href="#yaxis">"yaxis" or "yaxistext"</a> to set tailormade values on axis (the used font is set by <a href="fontfamily">command fontfamily</a>; default '12px Ariel')
 	 @ see command <a href="#legend">"legend"</a>to set a legend for the graph ;<br />use command <a href="#fontsize">"fontsize"</a> to adjust size (the font family is non-configurable 'bold your_fontsize px Ariel')
 	*/
@@ -4184,6 +4186,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ may <b>only</b> to be used together with command <a href='#grid'>'grid'</a>
 	@ can be used together with freestyle x-axis/y-axis texts : see commands <a href='#xaxis'>'xaxis'</a>,<a href='#xaxisup'>'xaxisup'</a> and <a href='#yaxis'>'yaxis'</a>
 	@ use command <a href='#legend'>'legend'</a> to provide an optional legend in right-top-corner
+	@ multiple barchart command may be used in a single script
 	@ also see command <a href='#piechart'>'piechart'</a>
 	@ <b>note</b>: your arguments are not checked by canvasdraw : use your javascript console in case of trouble...
 	*/
@@ -4460,7 +4463,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
    zoom_x_increment = (xmax - xmin)/20;\
    pan_x_increment = (xmax - xmin)/20;\
   };\
+  var zoom_xy=[xmin,xmax,ymin,ymax];\
   function start_canvas%d(type){\
+   zoom_xy=[xmin,xmax,ymin,ymax];\
    switch(type){\
     case 0:xmin = xmin + zoom_x_increment;ymin = ymin + zoom_y_increment;xmax = xmax - zoom_x_increment;ymax = ymax - zoom_y_increment;break;\
     case 1:xmin = xmin - zoom_x_increment;ymin = ymin - zoom_y_increment;xmax = xmax + zoom_x_increment;ymax = ymax + zoom_y_increment;break;\
@@ -4473,13 +4478,14 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
    };\
    if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\
    if(ymax<=ymin){ymin=ymin_start;ymax=ymax_start;};\
-   try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){}\
-   %s\
+   try{dragstuff.Zoom(xmin,xmax,ymin,ymax);}catch(e){};\
+   if(typeof redraw_all%d === 'function' ){redraw_all%d(zoom_xy);}\
+   %s ;\
   };\
   start_canvas%d(333);\
  };\n\
 <!-- end wims_canvas_function -->\n\
-wims_canvas_function%d();\n",precision,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
+wims_canvas_function%d();\n",precision,canvas_root_id,canvas_root_id,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
   }
   else
   {

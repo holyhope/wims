@@ -125,6 +125,7 @@ for(var p = 0;p < draw_things.length;p++){\
   var context_points = canvas_points.getContext(\"2d\");\
   context_points.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
   context_points.fillStyle = context_points.strokeStyle;\
+  context_points.lineWidth = multilinewidth[p];\
   var points_x = new Array();var points_y = new Array();\
   var points_snap = multisnaptogrid[p];\
   if(draw_things[p] == 'point' ){desc = 0;}else{desc = 1;};\
@@ -309,6 +310,20 @@ function y_snap_check(y,snap){\
  return y;\
 };\
 function coord_split(coord){if(coord.indexOf(':') > 0 ){return coord.split(':');}else{if(coord.indexOf(';') > 0 ){return coord.split(';');}else{if(coord.indexOf(',') > 0 ){return coord.split(',');}else{alert(coord+'--> X : Y ');return;};};};};\
+function scale_xy(type,xy){var tmp_xmin = xmin;var tmp_xmax = xmax;var tmp_ymin = ymin;var tmp_ymax = ymax;xmin=zoom_xy[0];xmax=zoom_xy[1];ymin=zoom_xy[2];ymax=zoom_xy[3];if(type == 1 ){for(var p=0;p<xy.length;p++){xy[p] = px2x(xy[p]);};}else{for(var p=0;p<xy.length;p++){xy[p] = px2y(xy[p]);};};xmin = tmp_xmin;ymin = tmp_ymin;xmax = tmp_xmax;ymax = tmp_ymax;if(type == 1){for(var p=0;p<xy.length;p++){xy[p] = x2px(xy[p]);}}else{for(var p=0;p<xy.length;p++){xy[p] = y2px(xy[p]);};};return xy;};\
+function scale_multi_radius(r){for(var p = 0 ; p < r.length;p++ ){r[p] = zoom_xy[0]/xmin*r[p];};return r;};\
+redraw_all%d = function(){\
+if( points_x && points_x.length > 0 ){points_x = scale_xy(1,points_x);points_y = scale_xy(1,points_y);draw_points();};\
+if( circles_x && circles_x.length > 0 ){circles_x = scale_xy(1,circles_x);circles_y = scale_xy(1,circles_y);multi_radius = scale_multi_radius(multi_radius);draw_circles();};\n\
+if( segments_x && segments_x.length > 0 ){segments_x = scale_xy(1,segments_x);segments_y = scale_xy(1,segments_y);draw_segments();};\
+if( arrows_x && arrows_x.length > 0 ){arrows_x = scale_xy(1,arrows_x);arrows_y = scale_xy(2,arrows_y);draw_arrows();};\
+if( lines_x && lines_x.length > 0 ){lines_x = scale_xy(1,lines_x);lines_y = scale_xy(2,lines_y);draw_lines();};\
+if( triangles_x && triangles_x.length > 0 ){triangles_x = scale_xy(1,triangles_x);triangles_y = scale_xy(2,triangles_y);draw_triangles();};\
+if( rects_x && rects_x.length > 0 ){rects_x = scale_xy(1,rects_x);rects_y = scale_xy(2,rects_y);draw_rects();};\
+if( closedpoly_x && closedpoly_x.length > 0 ){closedpoly_x = scale_xy(1,closedpoly_x);closedpoly_y = scale_xy(2,closedpoly_y);draw_closedpoly();};\
+if( text_x && text_x.length > 0 ){text_x = scale_xy(1,text_x);text_y = scale_xy(2,text_y);draw_text();};\
+return;\
+};\
 update_draw_area%d = function(desc,id_x,id_y,id_r){\
  var x1,x2,x3,y1,y2,y3,r,A,B;\
  x1 = document.getElementById(id_x.id).value;\
@@ -364,7 +379,7 @@ update_draw_area%d = function(desc,id_x,id_y,id_r){\
  };\
 };\
  <!-- end multidraw -->\n",canvas_root_id,canvas_root_id,draw_types,canvas_root_id,button_style,
- canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
+ canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,
  canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id,canvas_root_id );
  
 /* 
@@ -410,14 +425,13 @@ TODO: add a selection of the 'generic js-code' from above into these C-code sele
    draw_points();\
   };\
   function draw_points(){\
-   var radius = parseInt(2*(multilinewidth[userdraw_primitive]));\
+   var radius = 2*(context_points.lineWidth);\
    context_points.clearRect(0,0,xsize,ysize);\
    for(var p = 0 ; p < points_x.length ; p++ ){\
     context_points.beginPath();\
     context_points.arc(points_x[p],points_y[p],radius,0,2*Math.PI,false);\
     context_points.closePath();\
     context_points.fill();\
-    context_points.stroke();\
    };\
   };");
  }
@@ -1168,7 +1182,7 @@ var draw_zoom_buttons = function(){\
  var ctx = obj.getContext(\"2d\");\
  ctx.font =\"18px Ariel\";\
  ctx.textAlign = \"right\";\
- ctx.fillStyle=\"rgba(\"+%s+\",\"+%f+\")\";\
+ ctx.fillStyle=\"rgba(%s,%f)\";\
  ctx.fillText(\"+\",xsize,ysize);\
  ctx.fillText(\"\\u2212\",xsize - 15,ysize);\
  ctx.fillText(\"\\u2192\",xsize - 30,ysize-2);\
