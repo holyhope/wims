@@ -11,11 +11,11 @@
 
 !set name_showsheet=Selecteer de werkbladen voor het activiteiten overzicht
 
-!set name_expert0=Si vous désirez sélectionner certains participants, \
-plusieurs méthodes sont proposées. Cochez la méthode désirée.
+!set name_expert0=Voor het selecteren van deelnemers zijn\
+ meerdere methodes beschikbaar. Kies de gewenste methode.
 
 !set name_ylabel=# ex.
 
-!distribute items Expert menu,Lijst met loginnamen&nbsp;,Selectie&nbsp;,\
-  Par participant\
+!distribute items Expert menu,Lijst met loginnamen&nbsp;,Per selectie&nbsp;,\
+Per student\
 into name_menu,name_loginlist,name_select,name_shiftpart
