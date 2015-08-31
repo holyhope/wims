@@ -17,5 +17,5 @@
 Marcan el método deseado.
 
 !distribute items  Menu expert,Par liste de logins,Par sélection,\
-  Par participant\
-into name_menu,name_loginlist,,name_select,name_shiftpart
+  Par participant,days\
+into name_menu,name_loginlist,,name_select,name_shiftpart,name_days

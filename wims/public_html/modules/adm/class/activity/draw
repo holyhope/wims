@@ -1,9 +1,9 @@
-
 !if $datay=$empty
   !exit
 !endif
-!distribute item 30,0,blue,darkgreen,darkgreen,orange into lim,testfin,\
-  color,colorg,colorgraph,colorgraph1
+!distribute item 30,0,14,0,grey,blue,darkgreen,darkgreen,orange,grey, into lim,testfin,\
+  noactivity,noday,\
+  colorgrid,color,colorg,colorgraph,colorgraph1,colorbreak,rupture
 !if $datanew!=$empty
  !set test=!text select 123456789 in $datanew
  !if $test=$empty
@@ -23,6 +23,15 @@
   !set cnt2=!char 5 to 6 of $cnt
   !set cnt3=!char 7 to 8 of $cnt
   !set jday_=$(day[$j])
+  !if $j>1 and $[$jday_ - $(day[$j-1])+1] > $noactivity
+    !set noday_=$[7*floor(($jday_ -$(day[$j-1]))/7)]
+    !set noday=$[$noday + $noday_ -7]
+    !set rupture=!append line frectangle $[$jday_ - $noday],0,$[$jday_ - $noday+6],$[$maxexo],$colorbreak\
+    text black, $[$jday_ - $noday+1],4,,/$noday_ $name_days/\
+    text black, $[$jday_ - $noday+2],6.5,,/.../\
+    to $rupture
+  !endif
+  !set jday_=$[$jday_ - $noday+7]
   !set tmp=$[min($(datay[$j]),$maxexo)]
   !set barchart=!append colon $jday_:$tmp:$color to $barchart
   !set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
@@ -78,7 +87,7 @@ xaxisup $legend\
 ylabel $name_ylabel\
 legend $lastname $(datax[1])-$(datax[-1])\
 opacity 255,40\
-grid 7,10,grey,7,10,0,grey\
+grid 7,10,$colorgrid,7,10,0,$colorgrid\
 barchart $barchart\
 linewidth 1\
 crosshairsize $[rint($mult/3)]\
@@ -86,7 +95,8 @@ $goodlist\
 linewidth 1\
 $linegraph1\
 strokecolor $colorgraph\
-linegraph $linegraph
+linegraph $linegraph\
+$rupture
 
 !exit
 
