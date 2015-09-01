@@ -27,11 +27,13 @@
     !set noday_=$[7*floor(($jday_ -$(day[$j-1]))/7)]
     !set noday=$[$noday + $noday_ -7]
     !set rupture=!append line frectangle $[$jday_ - $noday],-3,$[$jday_ - $noday+6],$[$maxexo],$colorbreak\
-    text black, $[$jday_ - $noday+1],-1,,$noday_ $name_days\
-    arrow2 $[$jday_ - $noday],-2,$[$jday_ - $noday+6],-2,4,black\
+    text black, $[$jday_ - $noday+2],-1.5,,$noday_ $name_days\
+    arrow2 $[$jday_ - $noday],-2.5,$[$jday_ - $noday+6],-2.5,6,black\
     to $rupture
   !endif
-  !set jday_=$[$jday_ - $noday+7]
+  !if $noday!=0
+    !set jday_=$[$jday_ - $noday+7]
+  !endif
   !set tmp=$[min($(datay[$j]),$maxexo)]
   !set barchart=!append colon $jday_:$tmp:$color to $barchart
   !set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
@@ -80,7 +82,7 @@ linegraph $linegraph1
 !exec canvasdraw\
 size $xsize,$ysize\
 xrange -2,$[$testfin]\
-yrange -3,$maxexo\
+yrange -4,$maxexo\
 axis\
 fontsize 8\
 xaxisup $legend\
