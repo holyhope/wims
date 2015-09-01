@@ -93,6 +93,9 @@ to $wims_menu_items
 ,0,\
 to $wims_menu_items
 !endif
+ !if $wims_typename iswordof group and $wims_supertype=2
+     !set wims_menu_items=!append line regmanage,1,module=adm/class/usermanage&job=regmanage to $wims_menu_items
+ !endif
 !if $typen!=level
  !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
 to $wims_menu_items
@@ -104,12 +107,10 @@ to $wims_menu_items
 
 !! menubox links -> teacher list
 !set class_Supervisor=!defof class_Supervisor in wimshome/log/classes/$wims_class/.def
-!!##  the administrator at the level of the portal or the creator of the class can add a teacher to
-!!##  the list of teachers of his class
+!!##  the administrator at the level of the portal or the creator of the class
+!!## can add a teacher to the list of teachers of his class
+!!## or manage the participants in the different classes.
 !if ($wims_typename iswordof group or $class_Supervisor=$wims_realuser) and $wims_supertype=2
- !if $wims_typename iswordof group and $wims_supertype=2
-     !set wims_menu_items=!append line regmanage,1,module=adm/class/usermanage&job=regmanage to $wims_menu_items
- !endif
  !default wims_superclass=$wims_class
  !set teacherlist=!record 0 of wimshome/log/classes/$wims_superclass/.teacherlist
  !set teachercnt=!linecnt $teacherlist
