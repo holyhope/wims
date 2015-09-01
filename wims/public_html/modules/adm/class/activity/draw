@@ -26,8 +26,9 @@
   !if $j>1 and $[$jday_ - $(day[$j-1])+1] > $noactivity
     !set noday_=$[7*floor(($jday_ -$(day[$j-1]))/7)]
     !set noday=$[$noday + $noday_ -7]
-    !set rupture=!append line frectangle $[$jday_ - $noday],0,$[$jday_ - $noday+6],$[$maxexo],$colorbreak\
-    text black, $[$jday_ - $noday+1],4,,< $noday_ $name_days >\
+    !set rupture=!append line frectangle $[$jday_ - $noday],-3,$[$jday_ - $noday+6],$[$maxexo],$colorbreak\
+    text black, $[$jday_ - $noday+1],-1,,$noday_ $name_days\
+    arrow2 $[$jday_ - $noday],-2,$[$jday_ - $noday+6],-2,4,black\
     to $rupture
   !endif
   !set jday_=$[$jday_ - $noday+7]
