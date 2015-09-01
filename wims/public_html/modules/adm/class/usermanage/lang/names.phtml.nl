@@ -15,7 +15,7 @@
 !if $job=regmanage
 	!set name_expert0=Si vous désirez changer les inscriptions de certains participants, plusieurs méthodes sont proposées.\
 Cochez la méthode désirée.
-	!set name_grpaction=Action sur les inscriptions des participants
+	!set name_grpaction=Changer les inscriptions des participants
 	!set name_all=Tous les participants
 	!set name_checked=Les participants sélectionnés dans le tableau ci-dessous
 	!set name_expert1=Choix de la classe
