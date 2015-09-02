@@ -56,7 +56,7 @@ CAS uitloggen,\
 Met dank aan,\
 Nieuwste,\
 Geef het antwoord,\
-Gestion des participants,\
+Leerling management,\
 Terug naar de module,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
@@ -145,8 +145,8 @@ Niveau(s),\
 Scorings mechanisme,\
 oefening / ontspanning,\
 Hulp software vereist,\
-Server tijd,\
-Data module,\
+Servertijd,\
+Datamodule,\
 Ontwikkeld op WIMS,\
 Publicatie centrum,\
 Download centrum,\
@@ -498,5 +498,5 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !endif
 
 !if $module=adm/class/usermanage
-    !set wims_name_regmanage=Gestion des accès
+    !set wims_name_regmanage=Toegangsbeheer
 !endif
