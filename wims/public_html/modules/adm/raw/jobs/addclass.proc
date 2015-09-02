@@ -1,4 +1,4 @@
-# AddClass 
+# AddClass
 # Let you create a new classe, or a group of classes, or a subclass in a group
 
 !if $qclass!=$empty
@@ -18,37 +18,37 @@
  !endif
 !else
  test=!defof class_defined in wimshome/log/classes/$qclass/.def
- #Si la classe existe : 
+ #Si la classe existe :
  !if $test=yes
-  
+
   !read scripts/check.class
   !if $error!=$empty
    !exit
   !endif
-  
+
   !readdef $classdeffile
-  
+
   !if $class_type<2
   # You can't add a subclass inside an independent class
   	error=class $qclass already exists
   	!exit
   !endif
-  
+
   class_nbsubclasses=!recordcnt wimshome/log/classes/$qclass/.subclasses
-  
+
   :new_sub_id
   !advance class_nbsubclasses
-    
+
   #If $qclass exists and is a group, we add a subclass inside it.
   cd=$qclass/$class_nbsubclasses
-  
+
   classdeffile=wimshome/log/classes/$cd/.def
   test=!defof class_defined in $classdeffile
   !if $test=yes
   	# If a subclass has been deleted before, nb_subclass may not correspond to the next available subclass. So we use the next free ID.
     !goto new_sub_id
   !endif
-  
+
  !else
   #si la classe n'existe pas, on la cree.
   cd=$qclass
@@ -144,6 +144,6 @@ langs=!words2items $wims_site_languages
 !endif
 
 # On ne reindexe les classes que si on ne vient pas de creer une sous-classe.
-!if $class_nbsubclasses != $empty
+!if $class_nbsubclasses = $empty
   log = !sh cd $wims_home/log/classes; ./.build-index
 !endif
