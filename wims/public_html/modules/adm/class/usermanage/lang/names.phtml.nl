@@ -13,13 +13,13 @@
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
 
 !if $job=regmanage
-	!set name_expert0=Cochez la méthode désirée.
-	!set name_grpaction=Changer les inscriptions des participants
-	!set name_all=Tous les participants
-	!set name_checked=Les participants sélectionnés dans le tableau ci-dessous
-	!set name_expert1=Choix de la classe
-	!set name_reguser=Inscrire les participants
-	!set name_unreguser=Supprimer l'inscription des participants
+	!set name_expert0=check de gewenste methode
+	!set name_grpaction=Verander de inschrijving van leeringen
+	!set name_all=Alle leeringen
+	!set name_checked=Leeringen gekozen uit de onderstaande lijst
+	!set name_expert1=Keuze van de klas
+	!set name_reguser=Inschrijven van leerlingen
+	!set name_unreguser=Annuleer de inschrijving
 !endif
 
 !if $job iswordof userprop teacher userlist

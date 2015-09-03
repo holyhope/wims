@@ -17,5 +17,5 @@
 !set name_ylabel=# ex.
 
 !distribute items Expert menu,Lijst met loginnamen&nbsp;,Per selectie&nbsp;,\
-Per student,days\
+Per student,dagen\
 into name_menu,name_loginlist,name_select,name_shiftpart,name_days
