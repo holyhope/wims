@@ -1,0 +1,45 @@
+!! html for create a new empty class (in or not a structure)
+
+
+!if $step=$empty or $step=pre
+
+<div class="wims_content">
+ $name_choose
+
+  <p>
+   !href cmd=reply&step=0&cltype=0 $wims_name_create_class
+  </p>
+
+  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+  to $wims_menu_items
+
+  <p>
+   !if 2 isitemof $alltypes
+    !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
+    !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+    to $wims_menu_items
+   !else
+    <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
+   !endif
+  </p>
+
+  <p>
+   !if 4 isitemof $alltypes
+    !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
+    ($name_expert)
+    !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+    to $wims_menu_items
+   !else
+    <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
+   !endif
+  </p>
+
+  <span class="wims_warning">$wims_name_help</span>:
+  !read lang/help.phtml.$modu_lang 1
+ </div>
+ !exit
+
+!else
+    !changeto proc/newclass.phtml
+!endif
+
