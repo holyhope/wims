@@ -3919,6 +3919,8 @@ void add_drag_code(FILE *js_include_file,int canvas_cnt,int canvas_root_id ){
     obj_type = 16== pixels
     obj_type = 17== new arc [command angle] :radius in x-range, so will scale on zooming in/out
     obj_type = 18== halfline
+    obj_type = 19== yerrorbars
+    obj_type = 20== xerrorbars
     
     
     arc
@@ -4013,6 +4015,8 @@ Shape.prototype.draw = function(ctx)\
   case 16: for(var p = 0; p < this.x.length;p++){ctx.fillRect( this.x[p], this.y[p],this.line_width,this.line_width );};break;\
   case 17: ctx.save();var start;var end;if(this.h[0] < this.h[1]){start = this.h[0];end = this.h[1]}else{start = this.h[1];end = this.h[0];};start=360-start;end=360-end;var r = scale_x_radius(this.w[0]);ctx.arc(this.x[0], this.y[0], r, start*(Math.PI / 180), end*(Math.PI / 180),true);if(this.use_filled){ctx.lineTo(this.x[0],this.y[0]);ctx.fill();};ctx.restore();break;\
   case 18: for(var p=0 ; p < this.x.length ;p=p+2){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
+  case 19: ctx.arc(this.x[0],this.y[0],this.line_width,0,2*Math.PI,false);var E1 = y2px(px2y(this.y[0]) - this.h[0]);var E2 = y2px(px2y(this.y[0]) + this.w[0]);ctx.moveTo(this.x[0],E1);ctx.lineTo(this.x[0],E2);ctx.moveTo(this.x[0] - 2*(this.line_width),E1);ctx.lineTo(this.x[0] + 2*(this.line_width),E1);ctx.moveTo(this.x[0] - 2*(this.line_width),E2);ctx.lineTo(this.x[0] + 2*(this.line_width),E2);break;\
+  case 20: ctx.arc(this.x[0],this.y[0],this.line_width,0,2*Math.PI,false);var E1 = x2px(px2x(this.x[0]) - this.w[0]);var E2 = x2px(px2x(this.x[0]) + this.h[0]);ctx.moveTo(E1,this.y[0]);ctx.lineTo(E2,this.y[0]);ctx.moveTo(E1,this.y[0]-2*(this.line_width));ctx.lineTo(E1,this.y[0]+2*(this.line_width));ctx.moveTo(E2,this.y[0]-2*(this.line_width));ctx.lineTo(E2,this.y[0]+2*(this.line_width));break;\
   default: alert(\"draw primitive unknown\");break;\
  };\
  if(this.use_filled == 1){ ctx.fill();}\

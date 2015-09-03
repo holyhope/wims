@@ -173,8 +173,8 @@ int main(int argc, char *argv[]){
 	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	@ you can heck the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
-	@ be aware that older browsers will probably not work correctly<br />no efford has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
-	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:jm.evers_who_works_at_schaersvoorde.nl">me</a> an email with screenshots and the generated javascript include file.
+	@ be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
+	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:wims@wims.math.leidenuniv.nl">me</a> an email with screenshots and the generated javascript include file.
 	*/
 	switch(type){
 	case END:
@@ -460,6 +460,66 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    decimals = find_number_of_digits(precision);
 	    for(c = 0 ; c < i-1 ; c = c+2){
 		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,2,[%.*f],[%.*f],[%.2f],[%d],%.2f,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],1.5*line_width,line_width,1.5*line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		/* click_cnt++; */
+		if(onclick > 0){click_cnt++;}
+	    }
+	    reset();
+	    break;
+	case YERRORBARS:
+	/*
+	@ yerrorbars color,E1,E2,x1,y1,x2,y2,...,x_n,y_n
+	@ draw multiple points with y-errorbars E1 (error under point) and E2 (error above point) at given coordinates in color 'color'
+	@ use command 'linewidth int' to adust size
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    for(c = 2 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,19,[%.*f],[%.*f],[%.2f],[%.2f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",
+		click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[0],double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
+		/* click_cnt++; */
+		if(onclick > 0){click_cnt++;}
+	    }
+	    decimals = find_number_of_digits(precision);
+	    reset();
+	    break;
+	case XERRORBARS:
+	/*
+	@ xerrorbars color,E1,E2,x1,y1,x2,y2,...,x_n,y_n
+	@ draw multiple points with x-errorbars E1 (error left from point) and E2 (error right from point) at given coordinates in color 'color'
+	@ use command 'linewidth int' to adust size
+	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
+	*/
+	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
+	    fill_color = stroke_color;
+	    i=0;
+	    while( ! done ){     /* get next item until EOL*/
+		if(i > MAX_INT - 1){canvas_error("to many points in argument: repeat command multiple times to fit");}
+		if(i%2 == 0 ){
+		    double_data[i] = get_real(infile,0); /* x */
+		}
+		else
+		{
+		    double_data[i] = get_real(infile,1); /* y */
+		}
+		i++;
+	    }
+	    decimals = find_number_of_digits(precision);
+	    for(c = 2 ; c < i-1 ; c = c+2){
+		fprintf(js_include_file,"dragstuff.addShape(new Shape(%d,%d,%d,20,[%.*f],[%.*f],[%.2f],[%.2f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d,%d,%.1f,\"%s\",%d,\"%s\",%d,%s,%d,%d));\n",
+		click_cnt,onclick,drag_type,decimals,double_data[c],decimals,double_data[c+1],double_data[0],double_data[1],line_width,stroke_color,stroke_opacity,stroke_color,stroke_opacity,1,0,0,0,use_rotate,angle,flytext,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt);
 		/* click_cnt++; */
 		if(onclick > 0){click_cnt++;}
 	    }
@@ -2416,6 +2476,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ fontsize font_size
 	 @ default value 12
+	 @ <b>note</b>:for some macro's (like grid | legend | xaxistext | xlabel etc) sometimes command <a href="#fontfamily">"fontfamily"</a> can be used for some specific font-setting<br />this is however not always very straight forward...so just try and see what happens
 	*/
 	    font_size = (int) (get_real(infile,1));
 	    break;
@@ -2853,7 +2914,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ xaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternative : xaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
-	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>) 
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big and will overlap, a simple alternating offset will be applied
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
@@ -2870,7 +2931,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	 @ alternative : xaxistextup num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ the text will be rotated 90&deg; up
 	 @ use these x-axis num1...num_n values instead of default xmin...xmax
-	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ use command "fontcolor","fontfamily" to adjust font <br />defaults: black,12,Ariel<br /><b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>) 
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ if the 'x-axis words' are too big, they will overlap the graph<br /> (in this case the text will start from ysize upwards)
 	 @ example:<br />size 400,400<br />xrange 0,13<br />yrange -100,500<br />axis<br />xaxisup 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'xmajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 1,100,grey,1,4,6,grey
@@ -2885,7 +2946,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	/*
 	 @ yaxis num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
 	 @ alternativ : yaxistext num1:string1:num2:string2:num3:string3:num4:string4:....num_n:string_n
-	 @ use command "fontcolor", "fontsize" , "fontfamily" to adjust font <br />defaults: black,12,Ariel
+	 @ use command "fontcolor", "fontfamily" to adjust font <br />defaults: black,12,Ariel<br /> <b>note</b>: command "fontsize" is not active for this command.("fontsize" can be used for the <a href="#legend">"legend"</a> in a <a href="#grid">grid</a>) 
 	 @ use these y-axis num1...num_n  values instead of default ymin...ymax
 	 @ a javascript error message will flag non-matching value:name pairs
 	 @ example:<br />size 400,400<br />yrange 0,13<br />xrange -100,500<br />axis<br />yaxis 1:january:2:february:3:march:5:may:6:june:7:july:8:august:9:september:10:october:11:november:12:december<br />#'ymajor' steps should be synchronised with numbers eg. "1" in this example<br />grid 100,1,grey,4,1,6,grey
@@ -4136,6 +4197,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ will be used to create a legend for a graph
 	@ also see command <a href='#piechart'>'piechart'</a>
 	@ will use the same colors per default as used in the graphs : use command <a href='#legendcolors'>'legendcolors'</a> to override the default
+	@ use command <a href="#fontsize">fontsize</a> to adjust. (command "fontfamily" is not active for command "legend")
 	*/
 	    temp = get_string(infile,1);
 	    if( strstr( temp,":") != 0 ){ temp = str_replace(temp,":","\",\""); }
@@ -4147,7 +4209,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ xlabel some_string
 	@ will be used to create a label for the x-axis (label is in quadrant I)
 	@ can only be used together with command 'grid'</a><br />not depending on keywords 'axis' and 'axisnumbering'
-	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)<br />use command "fontsize" to adjust.<br />(command "fontfamily" is not active for this command) 
 	*/
 	    temp = get_string(infile,1);
 	    fprintf(js_include_file,"var xaxislabel = \"%s\";",temp);
@@ -4157,7 +4219,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ ylabel some_string
 	@ will be used to create a (vertical) label for the y-axis (label is in quadrant I)
 	@ can only be used together with command <a href="#grid">'grid'</a><br />not depending on keywords 'axis' and 'axisnumbering'
-	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)
+	@ font setting: italic Courier, fontsize will be slightly larger (fontsize + 4)<br />use command "fontsize" to adjust.<br />(command "fontfamily" is not active for this command) 
 	*/
 	    temp = get_string(infile,1);
 	    fprintf(js_include_file,"var yaxislabel = \"%s\";",temp);
@@ -8174,7 +8236,9 @@ int get_token(FILE *infile){
 	*protractor="protractor",
 	*ruler="ruler",
 	*cursor="cursor",
-	*pointer="pointer";
+	*pointer="pointer",
+	*yerrorbars="yerrorbars",
+	*xerrorbars="xerrorbars";
 
 	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
 	    if( i == 0 && (c == ' ' || c == '\t') ){
@@ -9033,6 +9097,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, clock) == 0  ){
 	free(input_type);
 	return CLOCK;
+	}
+	if( strcmp(input_type, yerrorbars) == 0  ){
+	free(input_type);
+	return YERRORBARS;
+	}
+	if( strcmp(input_type, xerrorbars) == 0  ){
+	free(input_type);
+	return XERRORBARS;
 	}
 	free(input_type);
 	ungetc(c,infile);

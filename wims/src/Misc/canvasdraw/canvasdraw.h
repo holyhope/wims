@@ -187,7 +187,8 @@
 #define POPUP		190
 #define X_AXIS_STRINGS_UP 191
 #define CURSOR		192
-
+#define XERRORBARS	193
+#define YERRORBARS	194
 
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
