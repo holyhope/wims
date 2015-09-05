@@ -402,6 +402,7 @@ wims_name_Docstatus,wims_name_number
 !set wims_name_addstudent=Nieuwe student
 !set wims_name_modstudent=Studenten eigenschappen
 !set wims_name_delstudent=Verwijder een student
+!set wims_name_delstudent1=Delete the participant
 !set wims_name_group=Instituut
 !set wims_name_portal=Instituut
 !set wims_name_level=Leerniveau

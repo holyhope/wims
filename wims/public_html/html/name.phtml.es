@@ -402,6 +402,7 @@ Cuaderno de textos\
 !set wims_name_addstudent=Nuevo alumno
 !set wims_name_modstudent=Propiedades del alumno
 !set wims_name_delstudent=Borrar a un alumno
+!set wims_name_delstudent1=Borrar del alumno
 !set wims_name_group= Pórtico
 !set wims_name_portal= Pórtico
 !set wims_name_level=Nivel

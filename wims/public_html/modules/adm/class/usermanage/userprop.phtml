@@ -127,9 +127,8 @@ $wims_name_account_property
 </div>
 </fieldset>
 !formend
-
 !if $wims_user=supervisor
- !if $wims_supertype=4 and $wims_typename!=course
+ !if ($wims_supertype=4 and $wims_typename!=course) or ($wims_supertype=2 and $wims_typename=group)
   !! on ne met pas les scores
  !else
   !set wims_menu_items=!append line \
@@ -139,10 +138,13 @@ activity1,1,module=adm/class/activity&job=user&user=$getuser\
   itemsep,0,\
 to $wims_menu_items
  !endif
+  !set wims_menu_items=!append line \
+   itemsep,0,\
+  delstudent1,1,cmd=reply&job=delprep&delprep=$getuser\
+to $wims_menu_item
  !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
  !set wims_menu_items=!append line itemsep,0,\
 part_list,1,cmd=resume\
-delstudent,1,cmd=reply&job=delprep&delprep=$getuser\
 addstudent,1,module=adm/class/reguser&step=1\
  ,0,\
 to $wims_menu_items
