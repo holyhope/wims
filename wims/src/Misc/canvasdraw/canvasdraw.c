@@ -4387,8 +4387,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ if <a href="#jsboxplot">'jsboxplot'</a> is defined: <br />boxplot x_or_y,box-height_or_box-width,position<br />the values for 'min,Q1,median,Q2,max' will be calculated from the 'jsboxplot' data argument  
 	@ example:<br />xrange 0,300<br />yrange 0,10<br />boxplot x,4,8,120,160,170,220,245<br />meaning: create a boxplot in x-direction, with height 4 (in yrange) and centered around line y=8
 	@ example:<br />xrange 0,10<br />yrange 0,300<br />boxplot y,4,8,120,160,170,220,245<br />meaning: create a boxplot in y-direction, with width 4 (in xrange) and centered around line x=8
-	@ use command "<a href='#opacity'>'opacity'</a> to adjust fill_opacity of colour
+	@ use command <a href='filled'>'filled'</a> to fill the box
+	@ use command <a href='#opacity'>'opacity'</a> to adjust fill_opacity of colour
 	@ use command <a href='#legend'>'legend'</a> to automatically create a legend <br />unicode allowed in legend<br />use command 'fontfamily' to set the font of the legend.
+	@ there is no limit to the number of boxplots used.
+	@ can <b>not</b> be set draggable (<a href='#onclick'>'onclick\</a> is not ready ,yet)
 	*/
 	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
 	    for(i=0;i<8;i++){
