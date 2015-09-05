@@ -5,6 +5,7 @@
 #define MAX_COLOR_STRING	32
 #define MAX_JS_FUNCTIONS 64
 
+/* the commmand / keyword name collecton */
 #define END 		-1
 #define COMMENT 	-2
 #define SIZE 		1
@@ -189,7 +190,10 @@
 #define CURSOR		192
 #define XERRORBARS	193
 #define YERRORBARS	194
+#define BOXPLOT		195
+#define JSBOXPLOT	196
 
+/* the draw_function collection */
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
 #define DRAW_CROSSHAIRS	2
@@ -231,6 +235,8 @@
 #define DRAW_JSFUNCTION	40
 #define DRAW_DEMILINES	41
 #define DRAW_BEZIER	42
+#define DRAW_BOXPLOT	43
+#define DRAW_JSBOXPLOT  44
 
 #define EXTERNAL_IMAGE_CANVAS 0 /* this is created first !!! in order to draw on it */
 #define BG_CANVAS	1

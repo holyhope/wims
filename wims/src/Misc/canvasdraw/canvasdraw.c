@@ -118,6 +118,7 @@ int main(int argc, char *argv[]){
     int clock_cnt = 0; /* counts the amount of clocks used -> unique object clock%d */
     int linegraph_cnt = 0; /* identifier for command 'linegraph' ; multiple line graphs may be plotted in a single plot*/
     int barchart_cnt = 0; /* identifier for command 'barchart' ; multiple charts may be plotted in a single plot*/
+    int boxplot_cnt = 0;
     int legend_cnt = -1; /* to allow multiple legends to be used, for multiple piecharts etc  */
     int reply_precision = 100; /* used for precision of student answers / drawings */
     double angle = 0.0;
@@ -172,7 +173,7 @@ int main(int argc, char *argv[]){
 	@ will try use the same syntax as flydraw or svgdraw to paint a html5 bitmap image<br />by generating a tailor-made javascript include file: providing only the js-functionality needed to perform the job.<br />thus ensuring a minimal strain on the client browser <br />(unlike some popular 'canvas-do-it-all' libraries, who have proven to be not suitable for low-end computers found in schools...)
 	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
-	@ you can heck the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+	@ you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
 	@ be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href="mailto:wims@wims.math.leidenuniv.nl">me</a> an email with screenshots and the generated javascript include file.
 	*/
@@ -468,7 +469,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case YERRORBARS:
 	/*
 	@ yerrorbars color,E1,E2,x1,y1,x2,y2,...,x_n,y_n
-	@ draw multiple points with y-errorbars E1 (error under point) and E2 (error above point) at given coordinates in color 'color'
+	@ draw multiple points with y-errorbars E1 (error value under point) and E2 (error value above point) at given coordinates in color 'color'
+	@ the errors E1 and E2 values are in yrange. 
 	@ use command 'linewidth int' to adust size
 	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
@@ -498,7 +500,8 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case XERRORBARS:
 	/*
 	@ xerrorbars color,E1,E2,x1,y1,x2,y2,...,x_n,y_n
-	@ draw multiple points with x-errorbars E1 (error left from point) and E2 (error right from point) at given coordinates in color 'color'
+	@ draw multiple points with x-errorbars E1 (error value left from point) and E2 (error value right from point) at given coordinates in color 'color'
+	@ the errors E1 and E2 values are in xrange. 
 	@ use command 'linewidth int' to adust size
 	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a> individually (!)
 	*/
@@ -4363,6 +4366,54 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    }
 	    reset();
 	break;
+	case JSBOXPLOT:
+	/*
+	@ jsboxplot some_data
+	@ 'some_data' are a list of numbers separated by a comma "," (items)
+	@ only be used before command 'boxplot': the command <a href="#boxplot">'boxplot'</a> will provide the boxplot drawing of the data.
+	@ jsboxplot 11,22,13,15,23,43,12,12,14,2,45,32,44,13,21,24,13,19,35,21,24,23
+	@ <b>note</b>: wims will not check your data input | format. use js-error console to debug any problems.
+	@ use before command 'boxplot x_or_y,box-height_or_box-width,position
+	@ a javascript function 'statistics()' will parse the data and calculate the values [min,Q1,median,Q3,max] and hand them to the boxplot draw function.
+	@ if the data are to be externally generated (direct or indirect by the student),<br />use javascript "var student_boxplot_data = [some_data_collection_array];" and reload the page<br />use some bogus data like 'jsboxplot 1,2,3,4' (otherwise canvasdraw will throw an empty string error) 
+	*/
+	    if( js_function[DRAW_JSBOXPLOT] != 1 ){ js_function[DRAW_JSBOXPLOT] = 1;}
+	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
+	    fprintf(js_include_file,"var jsboxplot_data = [%s];\n",get_string(infile,1));
+	break;
+	case BOXPLOT:
+	/*
+	@ boxplot x_or_y,box-height_or_box-width,position,min,Q1,median,Q2,max
+	@ if <a href="#jsboxplot">'jsboxplot'</a> is defined: <br />boxplot x_or_y,box-height_or_box-width,position<br />the values for 'min,Q1,median,Q2,max' will be calculated from the 'jsboxplot' data argument  
+	@ example:<br />xrange 0,300<br />yrange 0,10<br />boxplot x,4,8,120,160,170,220,245<br />meaning: create a boxplot in x-direction, with height 4 (in yrange) and centered around line y=8
+	@ example:<br />xrange 0,10<br />yrange 0,300<br />boxplot y,4,8,120,160,170,220,245<br />meaning: create a boxplot in y-direction, with width 4 (in xrange) and centered around line x=8
+	@ use command "<a href='#opacity'>'opacity'</a> to adjust fill_opacity of colour
+	@ use command <a href='#legend'>'legend'</a> to automatically create a legend <br />unicode allowed in legend<br />use command 'fontfamily' to set the font of the legend.
+	*/
+	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
+	    for(i=0;i<8;i++){
+		switch(i){
+		    case 0: temp = get_string_argument(infile,0);if( strstr(temp,"x") != 0){int_data[0] = 1;}else{int_data[0] = 0;} break; /* x or y */
+		    case 1: double_data[0] = get_real(infile,0);break;/* height | width  */
+		    case 2: double_data[1] = get_real(infile,js_function[DRAW_JSBOXPLOT]);break;/* center value x or y */
+		    case 3: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[2] = 1;}else{double_data[2] = get_real(infile,0);} break;/* min */
+		    case 4: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[3] = 1;}else{double_data[3] = get_real(infile,0);} break;/* Q1 */
+		    case 5: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[4] = 1;}else{double_data[4] = get_real(infile,0);} break;/* median */
+		    case 6: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[5] = 1;}else{double_data[5] = get_real(infile,0);} break;/* Q3 */
+		    case 7: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[6] = 1;}else{double_data[6] = get_real(infile,1);}/* max */
+		    decimals = find_number_of_digits(precision);
+		    /*function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)*/
+		    string_length = snprintf(NULL,0,  "draw_boxplot(%d,%d,%.*f,%.*f,%d,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],js_function[DRAW_JSBOXPLOT],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+		    snprintf(tmp_buffer,string_length,"draw_boxplot(%d,%d,%.*f,%.*f,%d,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],js_function[DRAW_JSBOXPLOT],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+		    add_to_buffer(tmp_buffer);
+		    boxplot_cnt++;
+		    break;
+		    default:break;
+		}
+	    }
+	    reset();
+	break;
 	case STATUS:
 	/*
 	@ status
@@ -7361,6 +7412,113 @@ function draw_piechart(canvas_type,x_center,y_center,radius, data_color_list,fil
 };",canvas_root_id,canvas_root_id,canvas_root_id);
 
     break;
+    case DRAW_JSBOXPLOT:
+fprintf(js_include_file,"\n<!-- draw jsboxplots -->\n\
+function statistics(data){\
+ var len = data.length;\
+ var min = 10000000;\
+ var max = -10000000;\
+ var sum = 0;var d;\
+ for(var i=0;i<len;i++){\
+  d = data[i];\
+  if(d < min){min = d;}else{if(d > max){max = d;};};\
+  sum+= parseFloat(data[i]);\
+ };\
+ var mean = parseFloat(sum/len);\
+ var variance = 0;\
+ for(var i=0;i<len;i++){\
+  d = data[i];\
+  variance += (d - mean)*(d - mean);\
+ };\
+ variance = parseFloat(variance / len);\
+ var std = Math.sqrt(variance);\
+ data.sort(function(a,b){return a - b;});\
+ var median;var Q1;var Q3;\
+ var half = Math.floor(0.5*len);\
+ var q1 = Math.floor(0.25*len);\
+ var q3 = Math.floor(0.75*len);\
+ var half = Math.floor(0.5*len);\
+ if(len %%2 == 1){\
+  median = data[half];\
+  Q1 = data[q1];\
+  Q3 = data[q3];\
+ }\
+ else\
+ {\
+  median = (data[half - 1] + data[half] )/2;\
+  Q1 = (data[q1 - 1] + data[q1] )/2;\
+  Q3 = (data[q3 - 1] + data[q3] )/2;\
+ };\
+ return [min,Q1,median,Q3,max];\
+};");
+    break;
+    case DRAW_BOXPLOT:
+fprintf(js_include_file,"\n<!-- draw boxplots -->\n\
+function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1){\
+ if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
+  obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
+ }\
+ else\
+ {\
+  obj = create_canvas%d(canvas_type,xsize,ysize);\
+ };\
+ var ctx = obj.getContext(\"2d\");\
+ ctx.clearRect(0,0,xsize,ysize);\
+ ctx.save();\
+ ctx.lineWidth = line_width;\
+ ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
+ ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
+ if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
+ var hh = 0.25*hw;\
+ ctx.beginPath();\
+ if(use_data == 1){\
+  if( typeof student_boxplot_data !== 'undefined'){\
+    data = statistics(student_boxplot_data);\
+  }\
+  else\
+  {\
+   if( typeof jsboxplot_data !== 'undefined' ){\
+    data = statistics(jsboxplot_data);\
+   };\
+  };\
+ };\
+ var min,Q1,median,Q3,max;\
+ if(xy == 1 ){\
+  min=x2px(data[0]);Q1=x2px(data[1]);median=x2px(data[2]);Q3=x2px(data[3]);max=x2px(data[4]);\
+  hh = Math.abs(y2px(hh) - y2px(ystart));\
+  hw = Math.abs(y2px(hw) - y2px(ystart));\
+  cxy = y2px(cxy);\
+  ctx.moveTo(min,cxy);\
+  ctx.lineTo(Q1,cxy);\
+  ctx.moveTo(Q3,cxy);\
+  ctx.lineTo(max,cxy);\
+  ctx.moveTo(min,cxy+hh);\
+  ctx.lineTo(min,cxy-hh);\
+  ctx.moveTo(max,cxy+hh);\
+  ctx.lineTo(max,cxy-hh);\
+  ctx.rect(Q1,cxy-2*hh,median-Q1,hw);\
+  ctx.rect(median,cxy-2*hh,Q3-median,hw);\
+ }else{\
+  min=y2px(data[0]);Q1=y2px(data[1]);median=y2px(data[2]);Q3=y2px(data[3]);max=y2px(data[4]);\
+  hh = Math.abs(x2px(hh) - x2px(xstart));\
+  hw = Math.abs(x2px(hw) - x2px(xstart));\
+  cxy = x2px(cxy);\
+  ctx.moveTo(cxy,min);\
+  ctx.lineTo(cxy,Q1);\
+  ctx.moveTo(cxy,Q3);\
+  ctx.lineTo(cxy,max);\
+  ctx.moveTo(cxy + hh,min);\
+  ctx.lineTo(cxy - hh,min);\
+  ctx.moveTo(cxy + hh,max);\
+  ctx.lineTo(cxy - hh,max);\
+  ctx.rect(cxy - 2*hh,Q1,hw,median - Q1);\
+  ctx.rect(cxy - 2*hh,median,hw,Q3 - median);\
+ };\
+ ctx.closePath();\
+ if(use_filled == 1 ){ctx.fill();};\
+ ctx.stroke();\
+ ctx.restore();};",canvas_root_id,canvas_root_id,canvas_root_id);
+    break;
     case DRAW_ARCS:
 fprintf(js_include_file,"\n<!-- draw arcs -->\n\
 var draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,use_affine,affine_matrix){\
@@ -8178,6 +8336,8 @@ int get_token(FILE *infile){
 	*xaxistextup="xaxistextup",
 	*yaxistext="yaxistext",
 	*piechart="piechart",
+	*boxplot="boxplot",
+	*jsboxplot="jsboxplot",
 	*legend="legend",
 	*legendcolors="legendcolors",
 	*xlabel="xlabel",
@@ -9085,6 +9245,14 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, piechart) == 0  ){
 	free(input_type);
 	return PIECHART;
+	}
+	if( strcmp(input_type, boxplot) == 0  ){
+	free(input_type);
+	return BOXPLOT;
+	}
+	if( strcmp(input_type, jsboxplot) == 0  ){
+	free(input_type);
+	return JSBOXPLOT;
 	}
 	if( strcmp(input_type, barchart) == 0  ){
 	free(input_type);
