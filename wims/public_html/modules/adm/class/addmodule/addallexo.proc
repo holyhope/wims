@@ -44,7 +44,7 @@ wims_oefdefault_precw\
   expow,sepow,precw
 !endif
 
-!! calcul du nombre d'exercices 
+!! calcul du nombre d'exercices
 !if /////classes/ isin /////$smodule
     !! adresse du module d'exo d'une classe
     dir_header=wimshome/log/classes/$wims_class
@@ -162,12 +162,19 @@ exocnt=!itemcnt $exolist
 	 !if $lerror=1
 		listalready=!append item $ex to $listalready
    	 !else
+   	   desc_=!lookup $ex in wimshome/public_html/modules/$smodule/Descindex
+   	   !if $desc_!=$empty
+   	     desc=$desc_
+   	   !endif
+   	   obs_=!lookup $ex in wimshome/public_html/modules/$smodule/Obsindex
 		writedon=!append line :$smodule\
 $exoiniparm\
 $require\
 $weight\
 $(exotitle[$j])\
 $desc\
+\
+$obs_\
  to $writedon
          !endif
  !next j

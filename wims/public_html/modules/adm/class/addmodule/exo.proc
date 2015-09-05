@@ -32,6 +32,9 @@ desc_limit=255
    title=!module title_$lang $dir
    desc=!module description_$lang $dir
  !endif
+ !read getparm $iniparm exo
+ desc=!lookup $get_exo in wimshome/public_html/modules/$dir/Descindex
+ obs=!lookup $get_exo in wimshome/public_html/modules/$dir/Obsindex
  !default title=!module title $dir
  !default desc=!module description $dir
  cat=!module category $dir
@@ -70,6 +73,8 @@ desc_limit=255
  !endif
  idesc=!singlespace $new_desc
  idesc=!char 1 to $desc_limit of $idesc
+ iobs=!singlespace $obs
+ iobs=!char 1 to $desc_limit of $iobs
  ititle=!singlespace $title
  ititle=!char 1 to $title_limit of $ititle
  !if $scoring=yes
@@ -124,7 +129,9 @@ $iniparm\
 $require\
 $weight\
 $ititle\
-$idesc
+$idesc\
+\
+$iobs
 
  exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$picksheet
  wims_module_log=class $class: add No$exocnt to worksheet $picksheet
