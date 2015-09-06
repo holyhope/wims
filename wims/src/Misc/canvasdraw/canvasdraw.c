@@ -4273,6 +4273,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ no combinations with other reply_types allowed, for now
 	@ if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
 	@ <b>note</b>: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
+	@ <b>note</b>: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
 	*/
 	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
 
@@ -4327,10 +4328,11 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 			temp = get_string(infile,1);
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
-			string_length = snprintf(NULL,0,"var clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+			string_length = snprintf(NULL,0,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
 	    		check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-			snprintf(tmp_buffer,string_length,"var clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
+			snprintf(tmp_buffer,string_length,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
 			add_to_buffer(tmp_buffer);
+			fprintf(js_include_file,"var clocks%d;",clock_cnt);
 			clock_cnt++;
 			break;
 		default:break;
@@ -4599,8 +4601,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
    %s ;\
   };\
   start_canvas%d(333);\
- };\n\
-<!-- end wims_canvas_function -->\n\
+ };\
+\n<!-- end wims_canvas_function -->\n\
 wims_canvas_function%d();\n",precision,canvas_root_id,canvas_root_id,canvas_root_id,buffer,canvas_root_id,canvas_root_id);
   }
   else
