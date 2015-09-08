@@ -41,9 +41,9 @@
 !set name_independantclass=Clases independientes
 
 !distribute items Inscribirse,anónimo,abierto,protegido,Año,\
-Nuevo participante,inscrito,Tipo de conexión,Up\
+Nuevo participante,inscrito,Tipo de conexión,Up,copier\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
-name_new_participant,name_registered,name_connexion,name_up
+name_new_participant,name_registered,name_connexion,name_up,name_copy
 
 !set name_warning_external=Utilice el formulario de abajo sólo si el enlace arriba\
 no funciona.

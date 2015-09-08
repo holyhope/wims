@@ -37,7 +37,7 @@ $name_example4
 
  <caption>$(classification[$exampletype])</caption>
   $table_hdtr<th>$wims_name_name</th>
-  <th>$name_connexion</th><th>$name_register</th></tr>
+  <th>$name_connexion</th><th>$name_register</th><th>$name_copy</th></tr>
   !for i=1 to $clcnt
   !reset class_archived
    !set l=!line $i of $classes
@@ -69,6 +69,10 @@ $name_example4
      <td>
      !set wims_ref_class=wims_button
       !href module=adm/class/reguser&class=$code $name_register
+     </td>
+     <td>
+     !set wims_ref_class=wims_button
+      !href module=adm/class/regclass&job=cloneexemple&sourcecls=$code $name_copy
      </td>
     </tr>
    !endif

@@ -8,7 +8,11 @@ wims_prefix=class user tmp n sharing sharable
 !read adm/class/limits
 wims_helper=chapter=3&open=3_creat#creat
 
-job=emptyclass
+!if $sjob=$empty
+ sjob=emptyclass
+!endif
+
+!bound job within emptyclass,cloneexemple default $sjob
 
 !read $job.proc
 

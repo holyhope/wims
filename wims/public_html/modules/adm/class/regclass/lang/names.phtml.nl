@@ -75,3 +75,12 @@ Als hier niets wordt ingevuld, wordt bij elke handeling eerst een goedkeuringsem
 Als hier <span class="tt wims_code_words">all</span> wordt ingevuld, zijn deze handelingen vanaf elke computer toegestaan. 
 
 !set name_cas_help=Bij gebruik van externe authentificatie niet het type CAS vergeten.
+
+!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>
+!set name_choosemode=Vous devez choisir le mode de copie de cette classe 
+!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+
+!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées puis supprimées ou adaptées en fonction des dépendances.
+!set name_cpexemplemeth1=les examens ne seront pas copiés. Les ressources seront désactivées automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adpater ou garder. 
+!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées à la date de fermeture de la classe créée.
+

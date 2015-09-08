@@ -1,0 +1,25 @@
+!! html for create a individual class copying an exemple class
+
+$name_cpexempleintro
+<br/>
+!if $step=$empty
+<div class="wims_content">
+ $(name_choosemode):
+   <p>
+	!set wims_ref_class=wims_button
+	!href cmd=reply&methodecp=0&step=0 $name_btcpexemplemeth0
+	$name_cpexemplemeth0
+   </p>
+   <p>
+	!set wims_ref_class=wims_button
+	!href cmd=reply&methodecp=1&step=0 $name_btcpexemplemeth1
+	$name_cpexemplemeth1
+   </p>
+   $name_cpexemplecomment
+
+!!  <span class="wims_warning">$wims_name_help</span>:
+!!  !read lang/help.phtml.$modu_lang 1
+ !exit
+!else
+    !changeto proc/newclass.phtml
+!endif

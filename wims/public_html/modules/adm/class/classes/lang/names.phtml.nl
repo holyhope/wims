@@ -42,9 +42,9 @@
 !set name_independantclass=Onafhankelijke klassen
 
 !distribute items Aanmelden,Anoniem,openbaar,besloten,Jaar,\
-Nieuwe deelnemer,aanmelden,Inloggen,Up\
+Nieuwe deelnemer,aanmelden,Inloggen,Up,Copier\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
-name_new_participant,name_registered,name_connexion,name_up
+name_new_participant,name_registered,name_connexion,name_up,name_copy
 
 !set name_warning_external=Gebruik het formulier niet: de onderstaande link is niet correct.
 

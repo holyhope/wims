@@ -197,3 +197,20 @@ Interne serverfout (oprichten van een klas)
  !exit
 !endif
 
+!if classdontexists=$error
+ Cette classe n'existe pas.
+ !exit
+!endif
+
+!if notexempleclass=$error
+ Cette classe n'est pas une classe d'exemple : impossible de la copier.
+ !exit
+!endif
+
+!if badcpmethod=$error
+ Méthode de copie impossible à identifier. Recommencer l'opération. Si l'erreur persiste contacter l'administrateur du serveur.
+ !exit
+!endif
+
+!msg $error
+
