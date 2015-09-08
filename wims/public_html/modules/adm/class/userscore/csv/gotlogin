@@ -3,7 +3,6 @@
 !! logtest loglist dep_$ltest  got$keyword types ???
 !! list of types
 !distribute items $wims_read_parm into file,keyword
-
 n=!recordcnt $file
 !if $n<=0
  !exit
@@ -15,6 +14,8 @@ logtest=
 !! check if the keyword have more than 4 characters in all lines not commented by #
 !for i=1 to $n
  l=!record $i of $file
+ l=!replace internal ; by , in $l
+ l=!replace internal $	$ by , in $l
  !if $(got$keyword)!=$empty
   ltest=!item $(got$keyword) of $l
   ll=!wordcnt $ltest
