@@ -501,3 +501,4 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module=adm/class/usermanage
     !set wims_name_regmanage=Toegangsbeheer
 !endif
+!set wims_name_cloneclass=Cloner une classe existante

@@ -1,6 +1,68 @@
 sjob=$job
-cltype=0
+!!cltype=0
+
 !if $step=$empty
+    !if $sourcecls=$empty
+	step=-3
+    !else
+	step=-1
+    !endif
+!endif
+
+!if $wims_class=$empty
+    cltype=0
+!else
+	!read adm/class/userdef classes,$wims_class,$wims_user
+ 	supervisable=!defof user_supervisable in $userdef
+ 	!if $wims_supertype!=2 or ($wims_user!=supervisor and $supervisable!=yes) or $wims_class!=$wims_superclass
+		error=no_subclass
+	  	!exit
+	!endif
+!endif
+
+
+!if $step=-3
+!! génération de la liste des classes 
+	ltclass=$empty
+	keyword=!items2words $keyword
+	keyword=!trim $keyword
+	kw=!words2items $keyword
+	kw=!deaccent $kw
+	kw=!tolower $kw
+	ccnt=!recordcnt wimshome/log/classes/.index
+	!for i=1 to $ccnt
+		!let l=!record $i of wimshome/log/classes/.index
+		!distribute items $l into code,expire,inst,cl,la,ty
+		!let exemple=!defof class_isexemple in wimshome/log/classes/$code/.def
+		!if $exemple=yes and $ty notin 24	
+			l1=!deaccent $l
+			l1=!tolower $l1
+		  	c1=!text extract 0123456789 in $code
+		  	k=yes
+		  	!if $kw!=$empty
+				!for w in $kw
+			   		!if $w notin $l1
+						!let k=no
+						!break
+					!endif
+				!next w    
+			!endif
+			!if $k=yes
+				ltclass=!append line $l to $ltclass
+			!endif
+		!endif
+	!next i
+	nbcls=!linecnt $ltclass
+!endif
+
+!if $step=-2
+
+
+
+!endif
+
+
+!if $step=-1
     !!test de la classe d'exemple à copier
     tmp=!defof class_defined\
 class_isexemple in wimshome/log/classes/$sourcecls/.def
@@ -30,63 +92,8 @@ source_title=!defof class_institution,class_description in wimshome/log/classes/
 
 !! ajout des ressources de la classe d'exemple
 !if $step=3
-!! copy of ressources of class
-    !sh cp -r $wims_home/log/classes/$ssourcecls/sheets $wims_home/log/classes/$code/;\
-cp -r $wims_home/log/classes/$ssourcecls/doc $wims_home/log/classes//$code/;\
-cp -r $wims_home/log/classes/$ssourcecls/livret $wims_home/log/classes/$code/;\
-cp -r $wims_home/log/classes/$ssourcecls/seq $wims_home/log/classes/$code/;
-    date=!defof class_expiration in wimshome/log/classes/$code/.def
-    !if $smethodecp=0
-	!sh cp -r $wims_home/log/classes/$ssourcecls/exams $wims_home/log/classes/$code/;\
-cp $wims_home/log/classes/$ssourcecls/.E* $wims_home/log/classes/$code/;
-	nb=!recordcnt wimshome/log/classes/$code/exams/.exams
-	!if $nb>0
-	    save=$empty
-	    !for k from 1 to $nb
-		t=!record $k of wimshome/log/classes/$code/exams/.exams
-		t=!replace line number 2 in $t by $date
-		save=!append line :$t to $save
-	    !next k
-	    !writefile $wims_home/log/classes/$code/exams/.exams $save
-	!endif
-    !else
-	newstatut=0
-    !endif
-    nb=!recordcnt wimshome/log/classes/$code/sheets/.sheets
-    !if $nb>0
-	save=$empty
-	!for k from 1 to $nb
-	    t=!record $k of wimshome/log/classes/$code/sheets/.sheets
-	    t=!replace line number 2 in $t by $date
-	    !if $smethodecp=1
-		t=!replace line number 1 in $t by 0
-	    !endif
-	    save=!append line :$t to $save
-	!next k
-	!writefile wimshome/log/classes/$code/sheets/.sheets $save
-	!! suppression des entrées exam dans les sequences.
-	seq=!record 0 of wimshome/log/classes/$code/seq/.sequences
-	nb=!line 1 of $seq
-	!if $nb!=$empty and $nb>0
-	    newseq=$nb
-	    !for k from 1 to $nb
-		old=!line $k+1 of $seq
-		nbit=!itemcnt $old
-		!if $nbit>0
-		    newlist=$empty
-		    !for j from 1 to $nbit
-			!if exam notin $(old[$j])
-			    newlist=!append item $(old[$j]) to $newlist
-			!endif
-		    !next j
-		!endif
-		newseq=!append line $newlist to $newseq
-		tmp=!record 1 of wimshome/log/classes/$code/seq/.sequence$k
-		add=!item 2 to -1 of $newlist
-		tmp=!replace line number 3 in $tmp by $add
-		!writefile wimshome/log/classes/$code/seq/.sequence$k :$tmp
-	    !next k
-	    !writefile wimshome/log/classes/$code/seq/.sequences $newseq
-	!endif
+    !read proc/cloning.proc
+    !if $wims_class!=$empty
+	!restart module=home
     !endif
 !endif

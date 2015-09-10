@@ -1,8 +1,43 @@
 !! html for create a individual class copying an exemple class
 
-$name_cpexempleintro.
+!if $step=-3
+	<br/>cliquer sur la classe &agrave; cloner
+	<div class="wims_content">
+	!read proc/search.phtml
+	!if $nbcls>0
+		$table_header
+		$table_hdtr<th>$wims_name_name</th>
+		!for i=1 to $nbcls
+			!let l=!line $i of $ltclass
+			!distribute items $l into code,expire,inst,cl,la,ty
+			$table_tr
+     				<td>$inst <br /> 
+				!href cmd=reply&step=-1&sourcecls=$code $cl
+			        !if $class_info!=$empty
+     					<br /> $class_info
+     				!endif
+			        </td>
+			</tr>
+		!next i
+		$table_end
+	!else
+		$name_nofound
+	!endif
+	</div>
+	!exit
+!endif
 
-!if $step=$empty
+!if $step=-2
+saisie du mot de passe si c'est une classe privée.
+!exit
+!endif
+
+!if $step>=-1
+$name_cpexempleintro.
+!endif
+
+
+!if $step=-1
 <div class="wims_content spacer">
  $(name_choosemode):
    <p>
