@@ -1,5 +1,4 @@
 sjob=$job
-!!cltype=0
 
 !if $step=$empty
     !if $sourcecls=$empty
@@ -22,7 +21,7 @@ sjob=$job
 
 
 !if $step=-3
-!! génération de la liste des classes 
+!! make list of cloneable class + choose class
 	ltclass=$empty
 	keyword=!items2words $keyword
 	keyword=!trim $keyword
@@ -31,10 +30,9 @@ sjob=$job
 	kw=!tolower $kw
 	ccnt=!recordcnt wimshome/log/classes/.index
 	!for i=1 to $ccnt
-		!let l=!record $i of wimshome/log/classes/.index
+		l=!record $i of wimshome/log/classes/.index
 		!distribute items $l into code,expire,inst,cl,la,ty
-		!let exemple=!defof class_isexemple in wimshome/log/classes/$code/.def
-		!if $exemple=yes and $ty notin 24	
+		!if $ty notin 24
 			l1=!deaccent $l
 			l1=!tolower $l1
 		  	c1=!text extract 0123456789 in $code
@@ -45,7 +43,7 @@ sjob=$job
 						!let k=no
 						!break
 					!endif
-				!next w    
+				!next w
 			!endif
 			!if $k=yes
 				ltclass=!append line $l to $ltclass
@@ -55,27 +53,65 @@ sjob=$job
 	nbcls=!linecnt $ltclass
 !endif
 
+
 !if $step=-2
-
-
-
-!endif
-
-
-!if $step=-1
-    !!test de la classe d'exemple à copier
+!! checking allowed clonage + ask for cloning pwd
+    sourcecls=!text select 0123456789 in $sourcecls
     tmp=!defof class_defined\
-class_isexemple in wimshome/log/classes/$sourcecls/.def
-    !distribute line $tmp into tmp1,tmp2
+class_isexemple\
+class_allowcloning\
+class_type in wimshome/log/classes/$sourcecls/.def
+    !distribute line $tmp into tmp1,tmp2,tmp3,tmp6
     !if yes!=$tmp1
 	error=classdontexists
 	!exit
     !endif
-    !if yes!=$tmp2
-	error=notexempleclass
-	!exit
+    !if yes=$tmp2
+	step=-1
+	passe=1
+    !else
+	!! only single class can be cloned (waiting other improvment)
+	!if 0!=$tmp6
+	    error=disallowcloning
+	    !exit
+	!endif
+	!if yes!=$tmp3
+	    error=cloningnotallow
+	    !exit
+	!endif
     !endif
     ssourcecls=$sourcecls
+!endif
+
+!if $step=-1
+    !!checking pwd or exampleclass
+    !if $passe!=1
+    	!if $ssourcecls=$empty
+	    sourcecls=!text select 0123456789 in $sourcecls
+	    tmp=!defof class_defined\
+class_isexemple in wimshome/log/classes/$sourcecls/.def
+	    !distribute line $tmp into tmp1,tmp2
+	    !if yes!=$tmp1
+		error=classdontexists
+		!exit
+	    !endif
+	    !if $tmp2=yes
+		ssourcecls=$sourcecls
+	    !endif
+	!else
+	    tmp2=no
+	!endif
+    !endif
+    !if yes!=$tmp2
+	!! check cloningpwd
+	!! --------------------------------------- attention il faut rajouter la temporisation pour badpwd
+	pwd=!defof class_cloningpwd in wimshome/log/classes/$ssourcecls/.def
+	!if $pwd!=$clonepwd
+	    error=badcloningpwd
+	    step=-2
+	    !exit
+	!endif
+    !endif
 !endif
 
 source_title=!defof class_institution,class_description in wimshome/log/classes/$ssourcecls/.def

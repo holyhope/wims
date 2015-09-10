@@ -23,7 +23,7 @@
  <div class="wims_alertmsg">
  !read lang/msg.phtml.$modu_lang
  </div>
- !if $restart!=no
+ !if $restart!=no and $job=emptyclass
   <p>
    !href module=$module&cmd=reply&step=0 $name_again
   </p>
@@ -35,7 +35,7 @@
 
 
 :end
-!if $step>=0 and $cmd=reply
+!if $step>=0 and $cmd=reply and $job=emptyclass
  !set wims_menu_items=!append line back2,1,module=$module\
  to $wims_menu_items
 !endif

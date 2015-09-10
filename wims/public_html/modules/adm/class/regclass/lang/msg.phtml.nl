@@ -212,5 +212,20 @@ Interne serverfout (oprichten van een klas)
  !exit
 !endif
 
+!if cloningnotallow=$error
+ Le clonage de cette classe n'est pas autorisé par son administrateur.
+ !exit
+!endif
+
+!if badcloningpwd=$error
+ Mauvais mot de passe de clonage. 
+ !exit
+!endif
+
+!if disallowcloning=$error
+ Aucun clonage ne peut être réalisé sur cette classe. 
+ !exit
+!endif
+
 !msg $error
 

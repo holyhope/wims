@@ -6,17 +6,37 @@
 	!read proc/search.phtml
 	!if $nbcls>0
 		$table_header
-		$table_hdtr<th>$wims_name_name</th>
+		$table_hdtr<th>$wims_name_name</th><th>$wims_name_supervisor</th><th>$name_cloning</th>
 		!for i=1 to $nbcls
 			!let l=!line $i of $ltclass
-			!distribute items $l into code,expire,inst,cl,la,ty
+			!distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
 			$table_tr
-     				<td>$inst <br /> 
-				!href cmd=reply&step=-1&sourcecls=$code $cl
+				!let test=!defof class_isexemple,class_allowcloning in wimshome/log/classes/$code/.def
+     				<td>$inst <br />
+     				!if $(test[1])=yes or $(test[2])=yes
+					!href cmd=reply&step=-2&sourcecls=$code $cl
+				!else
+				    $cl
+				!endif
 			        !if $class_info!=$empty
      					<br /> $class_info
      				!endif
 			        </td>
+				<td>
+				    $first $last
+				</td>
+    				<td>
+    				    !let test=!defof class_isexemple,class_allowcloning in wimshome/log/classes/$code/.def
+				    !if $(test[1])=yes
+					$name_free
+				    !else
+					!if $(test[2])=yes
+					    $name_protected
+					!else
+					    $name_disallowed
+					!endif
+				    !endif
+				</td>
 			</tr>
 		!next i
 		$table_end
@@ -28,7 +48,15 @@
 !endif
 
 !if $step=-2
-saisie du mot de passe si c'est une classe privée.
+    !! saisie du mot de passe de clonage pour les classes privées.
+    $name_getcloningpwd
+    !form reply
+    	<input size="20" name="clonepwd" value="$clonepwd" id="clonepwd"/>
+	<input type="hidden" name="step" value="-1"/>
+ 	<input type="submit" value="$wims_name_tosave" />
+    !formend
+    
+
 !exit
 !endif
 
