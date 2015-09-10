@@ -461,7 +461,8 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform,name_config_supconnectshowed
     !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
 
-
+ !set name_allowcloning=Autoriser le clonage
+ !set name_cloningpwd=Mot de passe de clonage
 !endif
 
 :commun

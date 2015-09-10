@@ -46,6 +46,18 @@ n=!wordcnt $et
 !bound up_exotitleform within -1,0,1,2,3 default 0
 !bound up_exolog between integer 0 and $wims_exolog_limit
 !bound up_examlog between integer 0 and $wims_examlog_limit
+!bound up_allowcloning within yes,no default no
+!if $up_allowcloning=yes
+    !read adm/class/authchars
+    up_cloningpwd=!text select $char_passwd in $up_cloningpwd
+    l=!charcnt $up_cloningpwd
+    !if $l<$passwd_min or $l>$passwd_max
+	!reset up_cloningpwd
+	up_allowcloning=no
+    !endif
+!else
+    !reset up_cloningpwd
+!endif
 !default up_examshow=yes
 ll=!words2items $wims_site_languages
 !bound up_lang within $ll default $class_lang
@@ -122,6 +134,11 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_exotitleform=$up_exotitleform\
 !set class_supconnectshowed=$up_supconnectshowed\
 !set class_defined=yes in wimshome/log/classes/$wims_class/.def
+
+!if $class_type=0
+    !setdef !set class_allowcloning=$up_allowcloning\
+!set class_cloningpwd=$up_cloningpwd in wimshome/log/classes/$wims_class/.def
+!endif
 
 lastname=!word -1 of $up_supervisor
 firstname=!word 1 to -2 of $up_supervisor

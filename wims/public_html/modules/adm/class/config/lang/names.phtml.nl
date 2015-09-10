@@ -460,6 +460,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
     !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
 
+ !set name_allowcloning=Autoriser le clonage
+ !set name_cloningpwd=Mot de passe de clonage
 !endif
 
 :commun

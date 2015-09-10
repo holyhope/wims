@@ -84,6 +84,21 @@
 !href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
      <input size="5" name="up_limit" id="up_limit" value="$class_limit" />
    </div>
+   !if $class_type=0
+       <div class="field box halfwidth">
+	<label for="up_allowcloning">$name_allowcloning</label>
+	&nbsp;
+	!set wims_ref_class=wims_button_help float_right
+	!href cmd=help&special_parm=config&special_parm2=cloning $wims_name_help
+        !set wims_ref_class=wims_formradio
+        !let up_allowcloning=$class_allowcloning
+        !formselect up_allowcloning list yes,no prompt $wims_name_yes,$wims_name_no
+        <br/>
+        <label for="up_cloningpwd">$name_cloningpwd</label>
+        <input size="5" name="up_cloningpwd" id="up_cloningpwd" value="$class_cloningpwd" />
+    </div>
+    !endif
+
  </fieldset>
  <fieldset class="property_fields blockcenter">
   <legend></legend>
