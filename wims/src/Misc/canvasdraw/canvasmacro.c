@@ -126,6 +126,7 @@ for(var p = 0;p < draw_things.length;p++){\
   context_points.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
   context_points.fillStyle = context_points.strokeStyle;\
   context_points.lineWidth = multilinewidth[p];\
+  if(multilinewidth[p]%%2 == 1){ context_points.translate(0.5,0.5);};\
   var points_x = new Array();var points_y = new Array();\
   var points_snap = multisnaptogrid[p];\
   if(draw_things[p] == 'point' ){desc = 0;}else{desc = 1;};\
@@ -137,6 +138,7 @@ for(var p = 0;p < draw_things.length;p++){\
    var canvas_circles = create_canvas%d(1001,xsize,ysize);\
    var context_circles = canvas_circles.getContext(\"2d\");\
    context_circles.lineWidth = multilinewidth[p];\
+   if(multilinewidth[p]%%2 == 1){ context_circles.translate(0.5,0.5);};\
    context_circles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
    if(multifill[p] == '1' ){ context_circles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_circles.fillStyle = \"rgba( 255,255,255,0)\"; };\
    if(multidash[p] == '1' ){ if( context_circles.setLineDash ){context_circles.setLineDash([2,4]);}else{if(context_circles.mozDash){context_circles.mozDash = [2,4]};};};\
@@ -151,6 +153,7 @@ for(var p = 0;p < draw_things.length;p++){\
     var canvas_lines = create_canvas%d(1002,xsize,ysize);\
     var context_lines = canvas_lines.getContext(\"2d\");\
     context_lines.lineWidth = multilinewidth[p];\
+    if(multilinewidth[p]%%2 == 1){ context_lines.translate(0.5,0.5);};\
     context_lines.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
     if(multidash[p] == '1' ){ if( context_lines.setLineDash ){context_lines.setLineDash([2,4]);}else{if(context_lines.mozDash){context_lines.mozDash = [2,4]};};};\
     var lines_x = new Array();var lines_y = new Array();\
@@ -164,6 +167,7 @@ for(var p = 0;p < draw_things.length;p++){\
      var canvas_segments = create_canvas%d(1003,xsize,ysize);\
      var context_segments = canvas_segments.getContext(\"2d\");\
      context_segments.lineWidth = multilinewidth[p];\
+     if(multilinewidth[p]%%2 == 1){ context_segments.translate(0.5,0.5);};\
      context_segments.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
      if(multidash[p] == '1' ){ if( context_segments.setLineDash ){context_segments.setLineDash([2,4]);}else{if(context_segments.mozDash){context_segments.mozDash = [2,4]};};};\
      var segments_x = new Array();var segments_y = new Array();\
@@ -177,6 +181,7 @@ for(var p = 0;p < draw_things.length;p++){\
       var canvas_arrows = create_canvas%d(1004,xsize,ysize);\
       var context_arrows =  canvas_arrows.getContext(\"2d\");\
       context_arrows.lineWidth = multilinewidth[p];\
+      if(multilinewidth[p]%%2 == 1){ context_arrows.translate(0.5,0.5);};\
       context_arrows.lineCap = \"round\";\
       context_arrows.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
       context_arrows.fillStyle = context_arrows.strokeStyle;\
@@ -192,6 +197,7 @@ for(var p = 0;p < draw_things.length;p++){\
        var canvas_rects = create_canvas%d(1008,xsize,ysize);\
        var context_rects = canvas_rects.getContext(\"2d\");\
        context_rects.lineWidth = multilinewidth[p];\
+       if(multilinewidth[p]%%2 == 1){ context_rects.translate(0.5,0.5);};\
        context_rects.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
        if(multidash[p] == '1' ){ if( context_rects.setlineDash ){context_rects.setlineDash([2,4]);}else{if(context_rects.mozDash){context_rects.mozDash = [2,4]};};};\
        if(multifill[p] == '1' ){ context_rects.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_rects.fillStyle = \"rgba( 255,255,255,0)\"; };\
@@ -207,6 +213,7 @@ for(var p = 0;p < draw_things.length;p++){\
         var context_closedpoly =  canvas_closedpoly.getContext(\"2d\");\
         context_closedpoly.lineCap = \"round\";\
         context_closedpoly.lineWidth = multilinewidth[p];\
+        if(multilinewidth[p]%%2 == 1){ context_closedpoly.translate(0.5,0.5);};\
         context_closedpoly.lineCap = \"round\";\
         context_closedpoly.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
         if(multifill[p] == '1' ){ context_closedpoly.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_closedpoly.fillStyle = \"rgba( 255,255,255,0)\"; };\
@@ -223,6 +230,7 @@ for(var p = 0;p < draw_things.length;p++){\
          var context_triangles = canvas_triangles.getContext(\"2d\");\
          context_triangles.lineCap = \"round\";\
          context_triangles.lineWidth = multilinewidth[p];\
+         if(multilinewidth[p]%%2 == 1){ context_triangles.translate(0.5,0.5);};\
          context_triangles.strokeStyle = \"rgba(\"+multistrokecolors[p]+\",\"+multistrokeopacity[p]+\")\";\
          if(multifill[p] == '1' ){ context_triangles.fillStyle = \"rgba(\"+multifillcolors[p]+\",\"+multifillopacity[p]+\")\";}else{context_triangles.fillStyle = \"rgba( 255,255,255,0)\"; };\
          if(multidash[p] == '1' ){ if( context_triangles.setLineDash ){context_triangles.setLineDash([2,4]);}else{if(context_triangles.mozDash){context_triangles.mozDash = [2,4]};};};\
@@ -3996,12 +4004,13 @@ Shape.prototype.draw = function(ctx)\
   ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
  };\
  ctx.beginPath();\
- switch(this.type){\
+  if(this.line_width%%2 == 1){ctx.translate(0.5,0.5);};\
+  switch(this.type){\
   case 1: for(var p = 0 ; p < this.x.length;p = p+4){ctx.rect(this.x[p], this.y[p], this.x[p+1]-this.x[p], this.y[p+2] - this.y[p]);};break;\
   case 2: ctx.arc(this.x[0],this.y[0],0.5*this.w[0],0,2*Math.PI,false);break;\
   case 3: ctx.save();var w = 0.5*(scale_x_radius(this.w[0]));var h = 0.5*(scale_y_radius(this.h[0]));ctx.scale(1,h/w);ctx.beginPath();ctx.arc(this.x[0], w/h*this.y[0], w, 0, 2 * Math.PI);if(this.use_filled == 1){ ctx.fillStyle = this.fill_color; ctx.fill(); };ctx.closePath();ctx.stroke();ctx.restore();break;\
   case 4: for(var p = 0; p < this.x.length - 1;p++){ctx.moveTo(this.x[p], this.y[p]);ctx.lineTo(this.x[p+1],this.y[p+1]);};break;\
-  case 5: ctx.moveTo(this.x[0], this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
+  case 5: ctx.moveTo(this.x[0],this.y[0]);for(var p = 1; p < this.x.length;p++){ctx.lineTo(this.x[p],this.y[p]);};ctx.lineTo(this.x[0],this.y[0]);break;\
   case 6: var w = this.x[1] - this.x[0];var h = this.y[1] - this.y[0];var r = this.w[0];ctx.beginPath();ctx.moveTo(this.x[0] + r, this.y[0]);ctx.lineTo(this.x[0] + w - r, this.y[0]);ctx.quadraticCurveTo(this.x[0] + w, this.y[0], this.x[0] + w, this.y[0] + r);ctx.lineTo(this.x[0] + w, this.y[0] + h - r);ctx.quadraticCurveTo(this.x[0] + w, this.y[0] + h, this.x[0] + w - r, this.y[0] + h);ctx.lineTo(this.x[0] + r, this.y[0] + h);ctx.quadraticCurveTo(this.x[0], this.y[0] + h, this.x[0], this.y[0] + h - r);ctx.lineTo(this.x[0], this.y[0] + r);ctx.quadraticCurveTo(this.x[0], this.y[0], this.x[0] + r, this.y[0]);ctx.closePath();break;\
   case 7: ctx.moveTo(this.x[0]-this.w[0],this.y[0]-this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]+this.h[0]);ctx.moveTo(this.x[0]-this.w[0],this.y[0]+this.h[0]);ctx.lineTo(this.x[0]+this.w[0],this.y[0]-this.h[0]);break;\
   case 8: var dx;var dy;var len;var arrow_head = this.w[0];for(var p = 0; p < this.x.length - 1;p++){ctx.save();if(this.use_dashed == 1 ){if( ctx.setLineDash ){ ctx.setLineDash([this.dashtype0,this.dashtype1]);}else{ ctx.mozDash = [this.dashtype0,this.dashtype1];};};dx = this.x[p+1] - this.x[p];dy = this.y[p+1] - this.y[p];len = Math.sqrt(dx*dx+dy*dy);ctx.translate(this.x[p+1],this.y[p+1]);ctx.rotate(Math.atan2(dy,dx));ctx.lineCap = \"round\";ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-len,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-1*arrow_head,-0.5*arrow_head);ctx.lineTo(-1*arrow_head, 0.5*arrow_head);ctx.closePath();ctx.fill();ctx.restore();};break;\
