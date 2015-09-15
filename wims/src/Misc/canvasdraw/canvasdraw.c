@@ -249,6 +249,7 @@ var read_canvas%d;\
 var set_clock;\
 var clear_draw_area%d;\
 var update_draw_area%d;\
+var draw_boxplot;\
 var redraw_all%d;\
 var userdraw_primitive;\n\
 var wims_canvas_function%d = function(){\n<!-- common used stuff -->\n\
@@ -4371,32 +4372,59 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    }
 	    reset();
 	break;
-	case JSBOXPLOT:
+	case USERBOXPLOTDATA:
 	/*
-	@ jsboxplot some_data
+	 @ userboxplotdata 
+	 @ keyword, no arguments
+	 @ use before command <a href="#boxplot">'boxplot x_or_y,box-height_or_box-width,x_or_y-position'</a>
+	 @ if set, the student will have to generate some statistical data. These data should be put in a named array "student_boxplot_data"
+	 @ "min,Q1,median,Q3,max" are calculated by a js-function and the 'draw_boxplot' function will draw a boxplot.
+	 @ see command <a href="#userboxplot">'userboxplot'</a> for calling 'draw_boxplot()'
+	*/
+	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
+	    fprintf(js_include_file,"var boxplot_source = 2;\n");
+	    js_function[DRAW_JSBOXPLOT] = 1;
+	
+	break;
+	case USERBOXPLOT:
+	/*
+	 @ userboxplot 
+	 @ keyword, no arguments
+	 @ use before command <a href="#boxplot">'boxplot x_or_y,box-height_or_box-width,x_or_y-position'</a>
+	 @ if set, the student will have to calculate "min,Q1,median,Q3,max" and feed these data into the 'draw_boxplot' function
+	 @ for example:<br />put the canvas-script into a html element with id='boxplot'and set style='display:none'<br />define a variable called 'student_boxplot' and fill it with the 5 student-data (from inputfields or something)<br />var student_boxplot = new Array(5)<br />function show_boxplot(){<br />student_boxplot[0] = min;<br />student_boxplot[1] = Q1;<br />student_boxplot[2] = median;<br />student_boxplot[3] = Q3;<br />student_boxplot[4] = max;<br />document.getElementById('boxplot').style.display = "block";<br />draw_boxplot(12345,1,2.00,5.00,[0,0,0,0,0],4,"0,0,255",0.78,"255,165,0",0.60,1,0,1,1);<br />};<br />In the canvas-script the function draw_boxplot has the following arguments:<br />draw_boxplot=function(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)
+	*/
+	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
+	    fprintf(js_include_file,"var boxplot_source = 3;\n");
+	    js_function[DRAW_JSBOXPLOT] = 2;
+	break;
+	case BOXPLOTDATA:
+	/*
+	@ boxplotdata some_data
 	@ 'some_data' are a list of numbers separated by a comma "," (items)
 	@ only be used before command 'boxplot': the command <a href="#boxplot">'boxplot'</a> will provide the boxplot drawing of the data.
-	@ xrange 0,100<br />yrange 0,10<br />jsboxplot 11,22,13,15,23,43,12,12,14,2,45,32,44,13,21,24,13,19,35,21,24,23<br />boxplot x,4,5
+	@ xrange 0,100<br />yrange 0,10<br />boxplotdata 11,22,13,15,23,43,12,12,14,2,45,32,44,13,21,24,13,19,35,21,24,23<br />boxplot x,4,5
 	@ <b>note</b>: wims will not check your data input | format. use js-error console to debug any problems.
-	@ use before command 'boxplot x_or_y,box-height_or_box-width,position
 	@ a javascript function 'statistics()' will parse the data and calculate the values [min,Q1,median,Q3,max] and hand them to the boxplot draw function.
-	@ if the data are to be externally generated (direct or indirect by the student),<br />use javascript "var student_boxplot_data = [some_data_collection_array];" and reload the page<br />use some bogus data like 'jsboxplot 1,2,3,4' (otherwise canvasdraw will throw an empty string error) 
 	*/
 	    if( js_function[DRAW_JSBOXPLOT] != 1 ){ js_function[DRAW_JSBOXPLOT] = 1;}
 	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
-	    fprintf(js_include_file,"var jsboxplot_data = [%s];\n",get_string(infile,1));
+	    fprintf(js_include_file,"var boxplot_source = 1;var jsboxplot_data = [%s];\n",get_string(infile,1));
+	
 	break;
 	case BOXPLOT:
 	/*
-	@ boxplot x_or_y,box-height_or_box-width,position,min,Q1,median,Q2,max
-	@ if <a href="#jsboxplot">'jsboxplot'</a> is defined: <br />boxplot x_or_y,box-height_or_box-width,position<br />the values for 'min,Q1,median,Q2,max' will be calculated from the 'jsboxplot' data argument  
+	@ boxplot x_or_y,box-height_or_box-width,position,min,Q1,median,Q3,max
 	@ example:<br />xrange 0,300<br />yrange 0,10<br />boxplot x,4,8,120,160,170,220,245<br />meaning: create a boxplot in x-direction, with height 4 (in yrange) and centered around line y=8
 	@ example:<br />xrange 0,10<br />yrange 0,300<br />boxplot y,4,8,120,160,170,220,245<br />meaning: create a boxplot in y-direction, with width 4 (in xrange) and centered around line x=8
-	@ use command <a href='filled'>'filled'</a> to fill the box
-	@ use command <a href='#opacity'>'opacity'</a> to adjust fill_opacity of colour
+	@ use command <a href='filled'>'filled'</a> to fill the box<br /><b>note:</b> the strokecolor is used for filling Q1, the fillcolor is used for filling Q3
+	@ use command <a href='#opacity'>'opacity'</a> to adjust fill_opacity of stroke and fill colours
 	@ use command <a href='#legend'>'legend'</a> to automatically create a legend <br />unicode allowed in legend<br />use command 'fontfamily' to set the font of the legend.
 	@ there is no limit to the number of boxplots used.
-	@ can <b>not</b> be set draggable (<a href='#onclick'>'onclick\</a> is not ready ,yet)
+	@ can <b>not</b> be set draggable (<a href='#onclick'>'onclick'</a> is not ready ,yet)
+	@ use keyword <a href="#userboxplot">'userboxplot'</a> before command boxplot, if a pupil must draw a boxplot (using his own min,Q1,median,Q3,max data)
+	@ use keyword <a href="#userboxplotdata">'userboxplotdata'</a> before command boxplot, if a pupil must generate the data by some means.
+	@ use command <a href="#boxplotdata">'boxplotdata'</a> when the boxplot should be drawn from wims-generated raw statistical date
 	*/
 	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
 	    for(i=0;i<8;i++){
@@ -4404,16 +4432,18 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		    case 0: temp = get_string_argument(infile,0);if( strstr(temp,"x") != 0){int_data[0] = 1;}else{int_data[0] = 0;} break; /* x or y */
 		    case 1: double_data[0] = get_real(infile,0);break;/* height | width  */
 		    case 2: double_data[1] = get_real(infile,js_function[DRAW_JSBOXPLOT]);break;/* center value x or y */
-		    case 3: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[2] = 1;}else{double_data[2] = get_real(infile,0);} break;/* min */
-		    case 4: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[3] = 1;}else{double_data[3] = get_real(infile,0);} break;/* Q1 */
-		    case 5: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[4] = 1;}else{double_data[4] = get_real(infile,0);} break;/* median */
-		    case 6: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[5] = 1;}else{double_data[5] = get_real(infile,0);} break;/* Q3 */
-		    case 7: if(js_function[DRAW_JSBOXPLOT] == 1){double_data[6] = 1;}else{double_data[6] = get_real(infile,1);}/* max */
+		    case 3: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[2] = 1;}else{
+		     fprintf(js_include_file,"var boxplot_source = 0;\n");/* we use given min,Q1,median,Q3,max */
+		     double_data[2] = get_real(infile,0);} break;/* min */
+		    case 4: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[3] = 1;}else{double_data[3] = get_real(infile,0);} break;/* Q1 */
+		    case 5: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[4] = 1;}else{double_data[4] = get_real(infile,0);} break;/* median */
+		    case 6: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[5] = 1;}else{double_data[5] = get_real(infile,0);} break;/* Q3 */
+		    case 7: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[6] = 1;}else{double_data[6] = get_real(infile,1);}/* max */
 		    decimals = find_number_of_digits(precision);
-		    /*function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)*/
-		    string_length = snprintf(NULL,0,  "draw_boxplot(%d,%d,%.*f,%.*f,%d,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],js_function[DRAW_JSBOXPLOT],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+		    /*function draw_boxplot(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)*/
+		    snprintf(NULL,0,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
 		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,"draw_boxplot(%d,%d,%.*f,%.*f,%d,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],js_function[DRAW_JSBOXPLOT],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+		    snprintf(tmp_buffer,string_length,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
 		    add_to_buffer(tmp_buffer);
 		    boxplot_cnt++;
 		    break;
@@ -6196,7 +6226,7 @@ var draw_bezier = function(canvas_type,linewidth,xy_points,fill_color,fill_opaci
  ctx.save();\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -6224,7 +6254,7 @@ var draw_gridfill = function(canvas_type,x0,y0,dx,dy,linewidth,color,opacity,xsi
  snap_x = dx;snap_y = dy;\
  ctx.save();\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+color+\",\"+opacity+\")\";\
  for( x = x0 ; x < xsize+dx ; x = x + dx ){\
     ctx.moveTo(x,y0);\
@@ -6325,7 +6355,7 @@ var draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,s
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -6373,7 +6403,7 @@ var draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,str
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -6399,7 +6429,7 @@ var draw_circles = function(ctx,x_points,y_points,radius,line_width,stroke_color
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  for(var p = 0 ; p < x_points.length ; p++ ){\
   ctx.beginPath();\
   ctx.arc(x_points[p],y_points[p],radius[p],0,2*Math.PI,false);\
@@ -6420,7 +6450,7 @@ var draw_polyline = function(ctx,x_points,y_points,line_width,stroke_color,strok
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.clearRect(0,0,xsize,ysize);\
@@ -6449,7 +6479,7 @@ var draw_segments = function(ctx,x_points,y_points,line_width,stroke_color,strok
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  for(var p = 0 ; p < x_points.length ; p = p+2 ){\
@@ -6484,7 +6514,7 @@ var draw_lines = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  for(var p = 0 ; p < x_points.length ; p = p+2 ){\
@@ -6512,7 +6542,7 @@ var draw_demilines = function(ctx,x_points,y_points,line_width,stroke_color,stro
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  var pair = new Array(4);\
@@ -6535,7 +6565,7 @@ var draw_crosshairs = function(ctx,x_points,y_points,line_width,crosshair_size,s
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  var x1,x2,y1,y2;\
  for(var p = 0 ; p < x_points.length ; p++ ){\
@@ -6566,7 +6596,7 @@ var draw_rects = function(ctx,x_points,y_points,line_width,stroke_color,stroke_o
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle = 'rgba('+stroke_color+','+stroke_opacity+')';\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];}};\
  for(var p = 0 ; p < x_points.length ; p = p + 2){\
@@ -6589,7 +6619,7 @@ var draw_roundrects = function(ctx,x_points,y_points,line_width,stroke_color,str
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  var x,y,w,h,r;\
  for(var p = 0; p < x_points.length; p = p+2){\
   x = x_points[p];y = y_points[p];w = x_points[p+1] - x;h = y_points[p+1] - y;r = parseInt(0.1*w);\
@@ -6628,7 +6658,7 @@ var draw_ellipses = function(canvas_type,x_points,y_points,line_width,stroke_col
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  var cx,cy,ry,rx;\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  if( use_filled == 1 ){ctx.fillStyle =\"rgba(\"+fill_color+\",\"+fill_opacity+\")\";};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
@@ -6652,7 +6682,7 @@ var draw_paths = function(ctx,x_points,y_points,line_width,closed_path,stroke_co
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.lineJoin = \"round\";\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.beginPath();\
@@ -6676,7 +6706,7 @@ var draw_arrows = function(ctx,x_points,y_points,arrow_head,line_width,stroke_co
  ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.lineCap = \"round\";\
  var x1,y1,x2,y2,dx,dy,len;\
@@ -7040,7 +7070,7 @@ var y2step = ystep / yminor;\
 var zero_x = x2px(0);;var zero_y = y2px(0);var f_x;var f_y;\
 if(xmin < 0 ){ f_x = -1;}else{ f_x = 1;}\
 if(ymin < 0 ){ f_y = -1;}else{ f_y = 1;}\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
 ctx.beginPath();\
 ctx.lineWidth = line_width;\
 ctx.strokeStyle = stroke_color;\
@@ -7480,7 +7510,7 @@ function statistics(data){\
     break;
     case DRAW_BOXPLOT:
 fprintf(js_include_file,"\n<!-- draw boxplots -->\n\
-function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1){\
+draw_boxplot = function(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1){\
  if( document.getElementById(\"wims_canvas%d\"+canvas_type) ){\
   obj = document.getElementById(\"wims_canvas%d\"+canvas_type);\
  }\
@@ -7492,22 +7522,16 @@ function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_colo
  ctx.clearRect(0,0,xsize,ysize);\
  ctx.save();\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{if(ctx.mozDash){ ctx.mozDash = [dashtype0,dashtype1];};};};\
  var hh = 0.25*hw;\
- ctx.beginPath();\
- if(use_data == 1){\
-  if( typeof student_boxplot_data !== 'undefined'){\
-    data = statistics(student_boxplot_data);\
-  }\
-  else\
-  {\
-   if( typeof jsboxplot_data !== 'undefined' ){\
-    data = statistics(jsboxplot_data);\
-   };\
-  };\
+ switch(boxplot_source){\
+  case 1: if( typeof jsboxplot_data === 'undefined'){return;};data = statistics(jsboxplot_data);break;\
+  case 2: if( typeof student_boxplot_data === 'undefined'){return;};data = statistics(student_boxplot_data);break;\
+  case 3: if( typeof student_boxplot === 'undefined'){return;};data = student_boxplot;break;\
+  default: break;\
  };\
  var min,Q1,median,Q3,max;\
  if(xy == 1 ){\
@@ -7515,6 +7539,7 @@ function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_colo
   hh = Math.abs(y2px(hh) - y2px(ystart));\
   hw = Math.abs(y2px(hw) - y2px(ystart));\
   cxy = y2px(cxy);\
+  ctx.beginPath();\
   ctx.moveTo(min,cxy);\
   ctx.lineTo(Q1,cxy);\
   ctx.moveTo(Q3,cxy);\
@@ -7523,13 +7548,30 @@ function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_colo
   ctx.lineTo(min,cxy-hh);\
   ctx.moveTo(max,cxy+hh);\
   ctx.lineTo(max,cxy-hh);\
+  ctx.closePath();\
+  ctx.stroke();\
+  ctx.beginPath();\
   ctx.rect(Q1,cxy-2*hh,median-Q1,hw);\
+  ctx.closePath();\
+  if( use_filled == 1 ){\
+   ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+fill_opacity+\")\";\
+   ctx.fill();\
+  };\
+  ctx.stroke();\
+  ctx.beginPath();\
   ctx.rect(median,cxy-2*hh,Q3-median,hw);\
+  ctx.closePath();\
+  if( use_filled == 1 ){\
+   ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
+   ctx.fill();\
+  };\
+  ctx.stroke();\
  }else{\
   min=y2px(data[0]);Q1=y2px(data[1]);median=y2px(data[2]);Q3=y2px(data[3]);max=y2px(data[4]);\
   hh = Math.abs(x2px(hh) - x2px(xstart));\
   hw = Math.abs(x2px(hw) - x2px(xstart));\
   cxy = x2px(cxy);\
+  ctx.beginPath();\
   ctx.moveTo(cxy,min);\
   ctx.lineTo(cxy,Q1);\
   ctx.moveTo(cxy,Q3);\
@@ -7538,12 +7580,25 @@ function draw_boxplot(canvas_type,xy,hw,cxy,use_data,data,line_width,stroke_colo
   ctx.lineTo(cxy - hh,min);\
   ctx.moveTo(cxy + hh,max);\
   ctx.lineTo(cxy - hh,max);\
+  ctx.closePath;\
+  ctx.stroke();\
+  ctx.beginPath();\
   ctx.rect(cxy - 2*hh,Q1,hw,median - Q1);\
+  ctx.closePath();\
+  if( use_filled == 1 ){\
+   ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+fill_opacity+\")\";\
+   ctx.fill();\
+  };\
+  ctx.stroke();\
+  ctx.beginPath();\
   ctx.rect(cxy - 2*hh,median,hw,Q3 - median);\
+  ctx.closePath();\
+  if( use_filled == 1 ){\
+   ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
+   ctx.fill();\
+  };\
+  ctx.stroke();\
  };\
- ctx.closePath();\
- if(use_filled == 1 ){ctx.fill();};\
- ctx.stroke();\
  ctx.restore();};",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case DRAW_ARCS:
@@ -7557,7 +7612,7 @@ var draw_arc = function(ctx,xc,yc,r,start,end,line_width,stroke_color,stroke_opa
  start = 360 - start;\
  end = 360 - end;\
  ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle =  \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.fillStyle = \"rgba(\"+fill_color+\",\"+fill_opacity+\")\";\
  ctx.beginPath();\
@@ -7646,7 +7701,7 @@ var draw_curve = function(canvas_type,type,x_points,y_points,line_width,stroke_c
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
  ctx.beginPath();ctx.lineWidth = line_width;\
- if(line_width%%2 == 1){ctx.translate(0.5,0.5)};\
+ if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
  ctx.strokeStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.moveTo(x2px(x_points[0]),y2px(y_points[0]));\
@@ -8367,7 +8422,9 @@ int get_token(FILE *infile){
 	*yaxistext="yaxistext",
 	*piechart="piechart",
 	*boxplot="boxplot",
-	*jsboxplot="jsboxplot",
+	*boxplotdata="boxplotdata",
+	*userboxplot="userboxplot",
+	*userboxplotdata="userboxplotdata",
 	*legend="legend",
 	*legendcolors="legendcolors",
 	*xlabel="xlabel",
@@ -9280,9 +9337,17 @@ int get_token(FILE *infile){
 	free(input_type);
 	return BOXPLOT;
 	}
-	if( strcmp(input_type, jsboxplot) == 0  ){
+	if( strcmp(input_type, boxplotdata) == 0  ){
 	free(input_type);
-	return JSBOXPLOT;
+	return BOXPLOTDATA;
+	}
+	if( strcmp(input_type, userboxplot) == 0  ){
+	free(input_type);
+	return USERBOXPLOT;
+	}
+	if( strcmp(input_type, userboxplotdata) == 0  ){
+	free(input_type);
+	return USERBOXPLOT;
 	}
 	if( strcmp(input_type, barchart) == 0  ){
 	free(input_type);

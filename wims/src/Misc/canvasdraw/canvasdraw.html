@@ -8,7 +8,7 @@
  a:visited {color:#004077;}
 </style>
 <input type='text' size='10' value='' id='search' /><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (07-09-2015)</h3></center>
+<center><h3>Implemented canvasdraw commands (15-09-2015)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -222,14 +222,24 @@
 <td><a name='clock top' href='#clock'>clock</a></td>
 </tr><tr>
 <td><a name='piechart top' href='#piechart'>piechart</a></td>
-<td><a name='jsboxplot top' href='#jsboxplot'>jsboxplot</a></td>
+<td><a name='userboxplotdata top' href='#userboxplotdata'>userboxplotdata</a></td>
+<td><a name='userboxplot top' href='#userboxplot'>userboxplot</a></td>
+<td><a name='boxplotdata top' href='#boxplotdata'>boxplotdata</a></td>
 <td><a name='boxplot top' href='#boxplot'>boxplot</a></td>
 <td><a name='status top' href='#status'>status</a></td>
 <td><a name='xlogbase top' href='#xlogbase'>xlogbase</a></td>
 <td><a name='ylogbase top' href='#ylogbase'>ylogbase</a></td>
 <td><a name='xlogscale top' href='#xlogscale'>xlogscale</a></td>
+</tr><tr>
 <td><a name='ylogscale top' href='#ylogscale'>ylogscale</a></td>
 <td><a name='xylogscale top' href='#xylogscale'>xylogscale</a></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 </tr></table>
 <ul>
 <li><a name='canvasdraw' href='#canvasdraw top'>  canvasdraw</a><ul>
@@ -1974,7 +1984,29 @@
 <li><span style="color:blue;font-size:0.8em"> use command <a href='#legend'>'legend'</a> to automatically create a legend <br />using the same colours as pie segments<br />unicode allowed in legend<br />expect javascript trouble if the amount of 'pie-slices', 'pie-colours' 'pie-legend-titles' do not match<br />a javascript console is your best friend...<br />use command 'fontfamily' to set the font of the legend.
 </span></li>
 </ul>
-<li><a name='jsboxplot' href='#jsboxplot top'>  jsboxplot some_data</a><ul>
+<li><a name='userboxplotdata' href='#userboxplotdata top'>  userboxplotdata</a><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no arguments
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use before command <a href="#boxplot">'boxplot x_or_y,box-height_or_box-width,x_or_y-position'</a>
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> if set, the student will have to generate some statistical data. These data should be put in a named array "student_boxplot_data"
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> "min,Q1,median,Q3,max" are calculated by a js-function and the 'draw_boxplot' function will draw a boxplot.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> see command <a href="#userboxplot">'userboxplot'</a> for calling 'draw_boxplot()'
+</span></li>
+</ul>
+<li><a name='userboxplot' href='#userboxplot top'>  userboxplot</a><ul>
+<li><span style="color:blue;font-size:0.8em"> keyword, no arguments
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use before command <a href="#boxplot">'boxplot x_or_y,box-height_or_box-width,x_or_y-position'</a>
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> if set, the student will have to calculate "min,Q1,median,Q3,max" and feed these data into the 'draw_boxplot' function
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> for example:<br />put the canvas-script into a html element with id='boxplot'and set style='display:none'<br />define a variable called 'student_boxplot' and fill it with the 5 student-data (from inputfields)<br />var student_boxplot = new Array(5)<br />function show_boxplot(){<br />student_boxplot[0] = min;<br />student_boxplot[1] = Q1;<br />student_boxplot[2] = median;<br />student_boxplot[3] = Q3;<br />student_boxplot[4] = max;<br />document.getElementById('boxplot').style.display = "block";<br />draw_boxplot(12345,1,2.00,5.00,[0,0,0,0,0],4,"0,0,255",0.78,"255,165,0",0.60,1,0,1,1);<br />};<br />In the canvas-script the function draw_boxplot has the following arguments:<br />draw_boxplot=function(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)
+</span></li>
+</ul>
+<li><a name='boxplotdata' href='#boxplotdata top'>  boxplotdata some_data</a><ul>
 <li><span style="color:blue;font-size:0.8em"> 'some_data' are a list of numbers separated by a comma "," (items)
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> only be used before command 'boxplot': the command <a href="#boxplot">'boxplot'</a> will provide the boxplot drawing of the data.
@@ -1983,29 +2015,29 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: wims will not check your data input | format. use js-error console to debug any problems.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use before command 'boxplot x_or_y,box-height_or_box-width,position
-</span></li>
 <li><span style="color:blue;font-size:0.8em"> a javascript function 'statistics()' will parse the data and calculate the values [min,Q1,median,Q3,max] and hand them to the boxplot draw function.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> if the data are to be externally generated (direct or indirect by the student),<br />use javascript "var student_boxplot_data = [some_data_collection_array];" and reload the page<br />use some bogus data like 'jsboxplot 1,2,3,4' (otherwise canvasdraw will throw an empty string error)
-</span></li>
 </ul>
-<li><a name='boxplot' href='#boxplot top'>  boxplot x_or_y,box-height_or_box-width,position,min,Q1,median,Q2,max</a><ul>
-<li><span style="color:blue;font-size:0.8em"> if <a href="#jsboxplot">'jsboxplot'</a> is defined: <br />boxplot x_or_y,box-height_or_box-width,position<br />the values for 'min,Q1,median,Q2,max' will be calculated from the 'jsboxplot' data argument
-</span></li>
+<li><a name='boxplot' href='#boxplot top'>  boxplot x_or_y,box-height_or_box-width,position,min,Q1,median,Q3,max</a><ul>
 <li><span style="color:blue;font-size:0.8em"> example:<br />xrange 0,300<br />yrange 0,10<br />boxplot x,4,8,120,160,170,220,245<br />meaning: create a boxplot in x-direction, with height 4 (in yrange) and centered around line y=8
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> example:<br />xrange 0,10<br />yrange 0,300<br />boxplot y,4,8,120,160,170,220,245<br />meaning: create a boxplot in y-direction, with width 4 (in xrange) and centered around line x=8
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use command <a href='filled'>'filled'</a> to fill the box
+<li><span style="color:blue;font-size:0.8em"> use command <a href='filled'>'filled'</a> to fill the box<br /><b>note:</b> the strokecolor is used for filling Q1, the fillcolor is used for filling Q3
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> use command <a href='#opacity'>'opacity'</a> to adjust fill_opacity of colour
+<li><span style="color:blue;font-size:0.8em"> use command <a href='#opacity'>'opacity'</a> to adjust fill_opacity of stroke and fill colours
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> use command <a href='#legend'>'legend'</a> to automatically create a legend <br />unicode allowed in legend<br />use command 'fontfamily' to set the font of the legend.
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> there is no limit to the number of boxplots used.
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set draggable (<a href='#onclick'>'onclick</a> is not ready ,yet)
+<li><span style="color:blue;font-size:0.8em"> can <b>not</b> be set draggable (<a href='#onclick'>'onclick'</a> is not ready ,yet)
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use keyword <a href="#userboxplot">'userboxplot'</a> before command boxplot, if a pupil must draw a boxplot (using his own min,Q1,median,Q3,max data)
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use keyword <a href="#userboxplotdata">'userboxplotdata'</a> before command boxplot, if a pupil must generate the data by some means.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> use command <a href="#boxplotdata">'boxplotdata'</a> when the boxplot should be drawn from wims-generated raw statistical date
 </span></li>
 </ul>
 <li><a name='status' href='#status top'>  status</a><ul>
@@ -2110,7 +2142,7 @@
 </li>
 </ul>
 <script type='text/javascript'>
- var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','path','polylines','brokenline','brokenlines','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','filltoborder','floodfill','fill','clickfillmarge','clickfill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','jsboxplot','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
+ var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','path','polylines','brokenline','brokenlines','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','filltoborder','floodfill','fill','clickfillmarge','clickfill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
  var keys_len = keys.length;
  function match(s1,s2){
   var n1 = s1.length;

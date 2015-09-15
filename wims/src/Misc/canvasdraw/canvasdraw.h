@@ -191,7 +191,9 @@
 #define XERRORBARS	193
 #define YERRORBARS	194
 #define BOXPLOT		195
-#define JSBOXPLOT	196
+#define BOXPLOTDATA	196
+#define USERBOXPLOT	197
+#define USERBOXPLOTDATA	198
 
 /* the draw_function collection */
 #define DRAW_GRID	0
