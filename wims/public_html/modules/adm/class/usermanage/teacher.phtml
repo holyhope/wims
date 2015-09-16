@@ -1,6 +1,6 @@
 !read adm/title.phtml 1\
 $classname\
-$wims_name_teacherlist 
+$wims_name_teacherlist
 
 !!don't work as it is
 !!!if $teachercnt>0
@@ -25,28 +25,28 @@ $table_hdtr
  !set l=!line $i of $teacherlist
  !distribute items $l into tl_,tf_,tc_
  $table_tr
- <td><tt class="wims_login">$tc_
- </td>
-  <td>$tl_ </td>
+ <td><span class="tt wims_login">$tc_</span></td>
+ <td>$tl_ </td>
  <td>$tf_ </td>
  <td>
  !readproc adm/class/userdef classes,$wims_superclass,$tc_
 !set tu_=!defof user_supervise in $userdef
 $tu_
 !reset $userdef
- </td>
- <td>
+ </td><td>
 !! !set wims_ref_class=wims_button
 !!!href cmd=reply&job=deluser&deluser=$tc_ $wims_name_erase
 !! &nbsp;
  !set wims_ref_class=wims_button
 !href cmd=reply&job=userprop&getuser=$tc_ $wims_name_change
  </td>
- 
  </tr>
 !next i
 $table_end
-
+!if $wims_user=supervisor and $wims_realuser=supervisor
+  !set wims_menu_items=!append line \
+  addteacher,1, module=adm/class/reguser&step=1&utype=1\
+to $wims_menu_items
+!endif
 !set wims_menu_items=!append line part_list,1,cmd=resume\
 to $wims_menu_items
-
