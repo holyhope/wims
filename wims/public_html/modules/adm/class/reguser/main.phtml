@@ -302,6 +302,7 @@ $name_inscription4:
     !endif
  !endif
  !if $auth_user=$empty or $auth_method notitemof $auth_method_list
+ !!read adm/language lang/names.phtml
   <input type="hidden" name="step" value="2" />
  !else
   <input type="hidden" name="step" value="3" />
@@ -366,6 +367,9 @@ $name_inscription4:
    !set wims_ref_class=wims_formradio
     !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
    </div>
+ !endif
+ !if $regvars_cnt>0
+    !read regvars.phtml
  !endif
  !if $wims_user!=supervisor
    <div class="field box">

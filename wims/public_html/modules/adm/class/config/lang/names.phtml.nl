@@ -451,12 +451,14 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Mix\
     Opschorten scoreregistratie door studenten\
     Generieke naam voor de titel van OEF oefeningen\
- Les participants savent si l'enseignant est connecté\
+    Les participants savent si l'enseignant est connecté\
+    Additional fields to fill in the inscription\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
-    name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform,name_config_supconnectshowed
+    name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
+    name_config_exotitleform,name_config_supconnectshowed,name_regvars
 
     !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
 
