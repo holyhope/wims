@@ -44,11 +44,15 @@ logdir=$wims_home/log/classes/$wims_class/examlog/$checkuser
  tses=
  !for i=1 to $n
   l=!line $i of $sc
-  !distribute words $l into e_,s_,t_,T_,i_,S_,t_
+  !distribute words $l into e_,s_,t__,T_,i_,S_,t_
   score$(S_)$e_=$s_
   !if $s_ issametext 00
    tses=!append item $S_ to $tses
    start$(S_)$e_=$t_
+   dur$(S_)$e_=$T_
+  !endif
+  !if $t__ issametext -1
+    duree$(S_)$e_=!exec pari divrem($T_ - $(dur$(S_)$e_),60)~
   !endif
  !next i
  checksessions=!listintersect $tses and $checksessions

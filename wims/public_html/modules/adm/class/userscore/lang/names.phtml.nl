@@ -32,9 +32,10 @@ name_groupAverage
 !set name_formula=No,Gewicht,niveau
 !set name_sheetstatut=in bewerking,actief,verlopen,onzichtbaar
 
-!distribute items Proefwerk,Werkblad,Oefening,Start,Cijfer,Sessie,Klaar,equiv.\
+!distribute items Proefwerk,Werkblad,Oefening,Start,Cijfer,Sessie,\
+ Klaar,equiv.,Duration\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
-name_done,name_equiv
+name_done,name_equiv,name_Duration
 
 !set name_formula_comment=U kunt de moeiljkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
 De cijfers worden berekend met maximum =

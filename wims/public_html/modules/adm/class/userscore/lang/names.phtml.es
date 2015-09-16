@@ -30,9 +30,10 @@ name_groupAverage
 !set name_formula=Número,Peso,Nivel
 !set name_sheetstatut=prep,activa,expirada,ocultada
 
-!distribute items Examen,Hoja,Ejercicio,Comienzo,Puntuación,Sesión,Terminado&nbsp;,equiv.\
+!distribute items Examen,Hoja,Ejercicio,Comienzo,Puntuación,Sesión,\
+ Terminado&nbsp;,equiv.,Duration\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
-name_done,name_equiv
+name_done,name_equiv,name_Duration
 
 !set name_formula_comment=Puede definir los niveles de severidad y los pesos de las hojas de trabajo\
 en la tabla siguiente. Las notas serán calculadas con un máximo =
