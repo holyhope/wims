@@ -1,7 +1,5 @@
 !set wims_module_log=ERROR $error
 
-<span class="wims_warning">$wims_name_Error</span>.
-
 !if $error=bad_password
  Contraseña no reconocida. Por favor vuelva a intentarlo pasados unos segundos.
  <form action="#" name="chrono">
@@ -33,13 +31,13 @@ Primero debe aceptar los términos de uso antes identificarle.
   <div class="wimscenter wimsform">
   <input type="submit" value="$wims_name_tosave" />
   </div>
- 
+
 !formend
  !exit
 !endif
 
 !if $error=bad_loginmail
- Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription. 
+ Votre identifiant n'est pas reconnu ou vous n'avez pas défini d'adresse électronique lors de votre inscription.
  <br />
  Demandez à votre enseignant de vous attribuer un nouveau mot de passe.
  <form action="#" name="chrono">
