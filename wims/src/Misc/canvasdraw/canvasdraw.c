@@ -4429,27 +4429,42 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    if( js_function[DRAW_BOXPLOT] != 1 ){ js_function[DRAW_BOXPLOT] = 1;}
 	    for(i=0;i<8;i++){
 		switch(i){
-		    case 0: temp = get_string_argument(infile,0);if( strstr(temp,"x") != 0){int_data[0] = 1;}else{int_data[0] = 0;} break; /* x or y */
+		    case 0: temp = get_string_argument(infile,0);
+			    if( strstr(temp,"x") != 0){int_data[0] = 1;}else{int_data[0] = 0;} break; /* x or y */
 		    case 1: double_data[0] = get_real(infile,0);break;/* height | width  */
-		    case 2: double_data[1] = get_real(infile,js_function[DRAW_JSBOXPLOT]);break;/* center value x or y */
-		    case 3: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[2] = 1;}else{
+		    case 2: 
+		    if( js_function[DRAW_JSBOXPLOT] == 0 ){ 
+		     double_data[1] = get_real(infile,0);
 		     fprintf(js_include_file,"var boxplot_source = 0;\n");/* we use given min,Q1,median,Q3,max */
-		     double_data[2] = get_real(infile,0);} break;/* min */
-		    case 4: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[3] = 1;}else{double_data[3] = get_real(infile,0);} break;/* Q1 */
-		    case 5: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[4] = 1;}else{double_data[4] = get_real(infile,0);} break;/* median */
-		    case 6: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[5] = 1;}else{double_data[5] = get_real(infile,0);} break;/* Q3 */
-		    case 7: if(js_function[DRAW_JSBOXPLOT] != 0){double_data[6] = 1;}else{double_data[6] = get_real(infile,1);}/* max */
-		    decimals = find_number_of_digits(precision);
-		    /*function draw_boxplot(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)*/
-		    snprintf(NULL,0,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
-		    check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-		    snprintf(tmp_buffer,string_length,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
-		    add_to_buffer(tmp_buffer);
-		    boxplot_cnt++;
-		    break;
+		    }
+		    else
+		    {
+		     double_data[1] = get_real(infile,1);
+		     double_data[2] = 1;
+		     double_data[3] = 1;
+		     double_data[4] = 1;
+		     double_data[5] = 1;
+		     double_data[6] = 1;
+		     double_data[7] = 1;
+		     i=8;
+		    }
+		    break;/* center value x or y */
+		    case 3: double_data[2] = get_real(infile,0); break;/* min */
+		    case 4: double_data[3] = get_real(infile,0); break;/* Q1 */
+		    case 5: double_data[4] = get_real(infile,0); break;/* median */
+		    case 6: double_data[5] = get_real(infile,0); break;/* Q3 */
+		    case 7: double_data[6] = get_real(infile,1); break;/* max */
 		    default:break;
 		}
 	    }
+	    decimals = find_number_of_digits(precision);
+	    /*function draw_boxplot(canvas_type,xy,hw,cxy,data,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1)*/
+	    string_length = snprintf(NULL,0,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+	    check_string_length(string_length);
+	    tmp_buffer = my_newmem(string_length+1);
+	    snprintf(tmp_buffer,string_length,  "draw_boxplot(%d,%d,%.*f,%.*f,[%.*f,%.*f,%.*f,%.*f,%.*f],%d,\"%s\",%.2f,\"%s\",%.2f,%d,%d,%d,%d);\n",BOXPLOT+boxplot_cnt,int_data[0],decimals,double_data[0],decimals,double_data[1],decimals,double_data[2],decimals,double_data[3],decimals,double_data[4],decimals,double_data[5],decimals,double_data[6],line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype[0],dashtype[1]);
+	    add_to_buffer(tmp_buffer);
+	    boxplot_cnt++;
 	    reset();
 	break;
 	case STATUS:
@@ -8232,7 +8247,7 @@ var draw_grid%d = function(canvas_type,line_width,major_color,minor_color,major_
 }
 
 void check_string_length(int L){
- if(L<1 || L > MAX_BUFFER-1){
+ if( L > MAX_BUFFER-1){
   canvas_error("problem with your arguments to command...");
  }
  return;
