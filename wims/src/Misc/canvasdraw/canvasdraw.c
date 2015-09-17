@@ -4270,7 +4270,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ clock x,y,r(px),H,M,S,type hourglass,interactive [ ,H_color,M_color,S_color,background_color,foreground_color ]
 	@ use command 'opacity stroke-opacity,fill-opacity' to adjust foreground (stroke) and background (fill) transparency
 	@ type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
-	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2,[space]<br />default colours: clock 0,0,60,4,35,45,1,2,,,,,<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,white,white,black,yellow
+	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,green,blue,black,yellow
 	@ if you don't want a seconds hand (or minutes...), just make it invisible by using the background color of the hourglass...
 	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
@@ -4291,7 +4291,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	      case 4: int_data[4] = get_real(infile,0);break;/* minutes */
 	      case 5: int_data[5] = get_real(infile,0);break;/* seconds */
 	      case 6: int_data[6] = get_real(infile,0);if(int_data[6] < 0 || int_data[6] > 2){canvas_error("hourglass can be 0,1 or 2");}break;/* type hourglass */
-	      case 7: int_data[7] = (int)(get_real(infile,0));/* interactive 0,1,2*/
+	      case 7: int_data[7] = (int)(get_real(infile,1));/* interactive 0,1,2*/
 	        switch(int_data[7]){
 		    case 0:break;
 	    	    case 1:if(clock_cnt == 0){
@@ -4313,7 +4313,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		    break;
 		    case 2:if( reply_format == 0 ){
 				reply_format = 19; /* "onclick */
-				fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();\n\ncanvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();\nvar x = evt.clientX - canvas_rect.left;\nvar y = evt.clientY - canvas_rect.top;\nvar p = 0;\nvar name;\nvar t = true;\nwhile(t){try{name = eval('clocks'+p);\nif( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;\nname = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);\n};\n}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);\nname = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);\n};\np++;\n}catch(e){t=false;\n};\n};\n};\n};\n\n<!-- end onclick handler for clocks -->\n ");
+				fprintf(js_include_file,"\n<!-- begin onclick handler for clocks -->\nvar reply = new Array();canvas_div.addEventListener( 'mousedown', user_click,false);\n\nfunction user_click(evt){if(evt.which == 1){var canvas_rect = clock_canvas.getBoundingClientRect();var x = evt.clientX - canvas_rect.left;var y = evt.clientY - canvas_rect.top;var p = 0;var name;var t = true;while(t){try{name = eval('clocks'+p);if( x < name.xc + name.radius && x > name.xc - name.radius ){if( y < name.yc + name.radius && y > name.yc - name.radius ){reply[0] = p;name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,\"lightblue\",name.fg_color);};}else{clock_ctx.clearRect(name.xc-name.radius,name.yc-name.radius,name.xc+name.radius,name.yc+name.radius);name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};p++;}catch(e){t=false;};};};};\n");
 			    }
 			    else
 			    {
@@ -4329,7 +4329,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 			if(clock_cnt == 0 ){ /* set opacity's just once .... it should be a argument to clock() , for now it's OK */
 			    fprintf(js_include_file,"var clock_bg_opacity = %.2f;var clock_fg_opacity = %.2f;",fill_opacity,stroke_opacity);
 			}
-			temp = get_string(infile,1);
+			temp = get_string(infile,3);/* optional colors, like: ,,red,,blue*/
 			if( strstr( temp,",") != 0 ){ temp = str_replace(temp,",","\",\""); }
 			if( strlen(temp) < 1 ){temp = ",\"\",\"\",\"\",\"\",\"\"";}
 			string_length = snprintf(NULL,0,"clocks%d = new clock(%d,%d,%d,%d,%d,%d,%d,%d,\"%s\");\n",clock_cnt,int_data[0],int_data[1],int_data[2],int_data[3],int_data[4],int_data[5],int_data[6],int_data[7],temp);
@@ -4826,7 +4826,7 @@ char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments 
     if( ( c == '\n' || c == EOF) && last == 0){canvas_error("expecting more arguments in command");}
     if( c == '\n') { line_number++; }
     if( c == EOF ) {finished = 1;}
-    if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
+    if( finished == 1 && last == 0 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
 /*    
     17.10.2014 removed (question Perrin)

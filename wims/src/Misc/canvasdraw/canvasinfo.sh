@@ -17,7 +17,7 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http
  a:hover {color:#dd6300;}
  a:visited {color:#004077;}
 </style>
-<input type='text' size='10' value='' id='search' /><input type='button' onclick='javascript:look();' value='search' />
+<input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
 <center><h3>Implemented canvasdraw commands ($datum)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 " > $out
@@ -25,7 +25,7 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN\" \"http
 p=0
 echo "<ul>" > $tmp
 cnt=0
-br=5
+br=8
 while read line ; do
  chk=`echo $line | grep "@"`
  if [ ! -z "$chk" ] ; then
