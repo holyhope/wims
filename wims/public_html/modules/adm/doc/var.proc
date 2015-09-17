@@ -93,6 +93,7 @@ opensite=!record 0 of $docdir/open.site
 openlist=!items2words $openlist $opensite
 !if robot notin $session
  edlist  =!record 0 of wimshome/$wims_sesdir/doc.$module_language.editable
+ readlist  =!record 0 of wimshome/$wims_sesdir/doc.$module_language.readable
 !endif
 !default readcnt=0
 !if $job=creat
@@ -148,7 +149,7 @@ wims_priv_thisdoc=$docdir/$doc
   !endif
   !if $doctype notwordof class devel and \
     ($docopen!=yes or $doc notwordof $openlist) and \
-    $doc notwordof $edlist and $wims_ismanager<2
+    $doc notwordof $edlist $readlist and $wims_ismanager<2
    readable=no
   !endif
  !else

@@ -16,12 +16,20 @@ $name_author_is
 !form reply
 <input type="hidden" name="job" value="auth2" />
 !if $readauth=yes
- <input type="hidden" name="noedit" value="yes" />
+ <input type="hidden" name="noedit" value="$noedit" />
 !endif
-<div class="wimscenter">
-$name_secretcode <input type="password" size="16" name="coder" />
-<input type="submit" value="$wims_name_tosave" />
-</div>
+!if $noedit=yes
+ <div class="wimscenter">
+  $name_secretcoder<input type="password" size="16" name="coderr" />
+  <input type="submit" value="$wims_name_tosave" />
+ </div>
+!endif
+!if $noedit=no
+ <div class="wimscenter">
+  $name_secretcode<input type="password" size="16" name="coder" />
+  <input type="submit" value="$wims_name_tosave" />
+ </div>
+!endif
 !formend
 
 !if $readauth=yes

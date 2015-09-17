@@ -1,14 +1,12 @@
- !!##language independant
+
  $table_header
  <caption>$n_choosedocument</caption>
  $table_hdtr
  <th>$wims_name_action</th><th>$wims_name_title</th>
  !if $wims_ismanager=2
-  <th>$n_access
-  </th>
+  <th>$n_access</th>
  !endif
- <th>$n_number
- </th><th>$wims_name_Author
+ <th>$n_number</th><th>$wims_name_Author
  !for t=1 to $doccnt
   !set s_=!line $t of $slist
   !set t_=!line $t of $tlist
@@ -29,14 +27,14 @@
   !href cmd=reply&job=read&doc=$s_&block=main&noedit=yes $n_read
 &nbsp;
   !if $i_>0
-  !set wims_ref_class=wims_button
+   !set wims_ref_class=wims_button
    !href cmd=reply&job=auth&doc=$s_&block=main&noedit=no $wims_name_change
   !else
-   <strike>$wims_name_change</strike>
+     <span class="wims_button disabled">$wims_name_change</span>
   !endif
   <td>$t_</td>
   !if $wims_ismanager=2
-   <td align="center">
+   <td>
    !if $s_>65535
     !if $s_ iswordof $opensite
      !href cmd=reply&job=openclose&doc=$s_ $n_close
@@ -48,7 +46,7 @@
    !endif
    </td>
   !endif
-  <td align="right" class="small">$s_</td>
+  <td class="small">$s_</td>
   !if $e_=$empty
    <td>$a_</td>
   !else
