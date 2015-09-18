@@ -7656,11 +7656,13 @@ var draw_centerstring = function(canvas_type,y,font_family,stroke_color,stroke_o
  };\
  var ctx = obj.getContext(\"2d\");\
  ctx.save();\
+ ctx.clearRect(0,0,xsize,ysize);\
  ctx.font = font_family;\
  ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  var stringwidth = ctx.measureText(text).width;\
  var x = parseInt((xsize - stringwidth)/2);if( x < 0 ){x = 0;};\
  ctx.fillText(text,x,y2px(y));\
+ ctx.restore();\
 return;\
 };",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
