@@ -61,6 +61,7 @@ sjob=$job
 class_isexemple\
 class_allowcloning\
 class_type in wimshome/log/classes/$sourcecls/.def
+    testneighbors=!defof sharing_all in wimshome/log/classes/$sourcecls/neighbors
     !distribute line $tmp into tmp1,tmp2,tmp3,tmp6
     !if yes!=$tmp1
 	error=classdontexists
@@ -71,7 +72,8 @@ class_type in wimshome/log/classes/$sourcecls/.def
 	passe=1
     !else
 	!! only single class can be cloned (waiting other improvment)
-	!if 0!=$tmp6
+	!! class with sharing can't be cloned.
+	!if 0!=$tmp6 or $testneighbors!=$empty
 	    error=disallowcloning
 	    !exit
 	!endif
@@ -86,6 +88,7 @@ class_type in wimshome/log/classes/$sourcecls/.def
 !if $step=-1
     !!checking pwd or exampleclass
     !if $passe!=1
+	!! manage of directlink from "classes ouvertes page"
     	!if $ssourcecls=$empty
 	    sourcecls=!text select 0123456789 in $sourcecls
 	    tmp=!defof class_defined\

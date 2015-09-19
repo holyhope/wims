@@ -10,8 +10,11 @@
 		!for i=1 to $nbcls
 			!let l=!line $i of $ltclass
 			!distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
+			!let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
+			!if $testneighbors=$empty
 			$table_tr
 				!let test=!defof class_isexemple,class_allowcloning in wimshome/log/classes/$code/.def
+				
      				<td>$inst <br />
      				!if $(test[1])=yes or $(test[2])=yes
 					!href cmd=reply&step=-2&sourcecls=$code $cl
@@ -38,6 +41,7 @@
 				    !endif
 				</td>
 			</tr>
+			!endif
 		!next i
 		$table_end
 	!else
