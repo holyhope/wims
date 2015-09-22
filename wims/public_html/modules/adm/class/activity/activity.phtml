@@ -1,3 +1,4 @@
+
 !if $error!=$empty
  <p class="wims_alertmsg">
  !read msg.phtml
@@ -17,33 +18,43 @@
   <input type="hidden" name="job" value="select" />
   <input type="hidden" name="status" value="OK" />
   <fieldset class="property_fields halfwidth blockcenter">
-      <legend>$name_title
+    <legend>$name_title
       !if $user!=$empty
         ($name_student)
       !endif
-      </legend>
-     <div class="field box">
+    </legend>
+   <div class="field box">
        <label for="showsheet">$name_showsheet</label>
        <br />
     !set wims_formselect_switch=multiple size="$[min($activelist_cnt,10)]"
     !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
-     </div>
-     <div class="wimscenter wimsform">
+    </div>
+    <div class="wimscenter wimsform">
       <input type="submit" value="$wims_name_Show" />
-     </div>
+    </div>
        !read choix.phtml
    </fieldset>
-!formend
+  !formend
 !else
 !if $usercnt==0
   $name_noparticipant
 !else
-!default choice=first
-!default showsheet=$activlist
-!set nbth=4
-!if $user=$empty
+ !default showsheet=$activlist
+ !default graphics=0
+ !if $graphics=1
+   !default choice=first
+   !if $choice=all
+     !set choice=first
+   !endif
+ !else
+   !if $choice=all
+     !reset loginlist
+   !endif
+ !endif
+ !set nbth=4
+ !if $user=$empty
   <p>$name_click</p>
-!endif
+ !endif
  $table_header
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th class="small">$name_cnt_exo
@@ -67,7 +78,7 @@
 !!!no efficient !
 !set nbpart=0
  !for m=1 to $usercnt
-  !if $nbpart > $limitpart
+  !if $nbpart > $limitpart and $choice!=all
     !break
   !endif
   !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
@@ -76,7 +87,7 @@
     !default user=$uu
      !reset choice
   !endif
-  !if ($choice=login and $uu isitemof $loginlist) \
+ !if $choice=all or ($choice=login and $uu isitemof $loginlist and $user=$empty) \
    or ($choice=select and $uu isitemof $select_user)\
    or $uu=$user\
    or ($choice=filter and $varfilter_!=$empty)\
@@ -107,10 +118,12 @@ $varfilter_
     !endif
   !next
   </tr>
+ !if $graphics=1
   $table_tr
   <td colspan="$[$nbth+1]" style="text-align:left;">
   !read exobyday.phtml
   </td></tr>
+ !endif
 !endif
 :enduser
 !next
@@ -118,7 +131,7 @@ $table_end
 
 !endif
 
-!if $user!=$empty
+!if $user!=$empty and $choice!=all
  !distribute item scores,livret1 into sc,li
  !set parmuser1=&job=getuser&getuser=$user
  !set parmuser2=&job=user&user=$user
@@ -129,10 +142,10 @@ $table_end
 $sc,1,module=adm/class/userscore&job_affi=notes$parmuser1\
 $li,1,module=adm/class/livret$parmuser2\
 to $wims_menu_items
-
-!read adm/class/getnextuser $wims_class,$user,activity,user
-
+!if $choice!=all
+  !read adm/class/getnextuser $wims_class,$user,activity,user
+!endif
 :end
 !tail
-!reset choice
+
 
