@@ -58,18 +58,18 @@ sjob=$job
 !! checking allowed clonage + ask for cloning pwd
     sourcecls=!text select 0123456789 in $sourcecls
     tmp=!defof class_defined\
-class_isexemple\
 class_allowcloning\
 class_type in wimshome/log/classes/$sourcecls/.def
     testneighbors=!defof sharing_all in wimshome/log/classes/$sourcecls/neighbors
-    !distribute line $tmp into tmp1,tmp2,tmp3,tmp6
+    !distribute line $tmp into tmp1,tmp3,tmp6
     !if yes!=$tmp1
 	error=classdontexists
 	!exit
     !endif
-    !if yes=$tmp2
+    !if $sourcecls<=9999
 	step=-1
 	passe=1
+	tmp2=yes
     !else
 	!! only single class can be cloned (waiting other improvment)
 	!! class with sharing can't be cloned.
@@ -91,15 +91,15 @@ class_type in wimshome/log/classes/$sourcecls/.def
 	!! manage of directlink from "classes ouvertes page"
     	!if $ssourcecls=$empty
 	    sourcecls=!text select 0123456789 in $sourcecls
-	    tmp=!defof class_defined\
-class_isexemple in wimshome/log/classes/$sourcecls/.def
-	    !distribute line $tmp into tmp1,tmp2
+	    tmp=!defof class_defined in wimshome/log/classes/$sourcecls/.def
+	    !distribute line $tmp into tmp1
 	    !if yes!=$tmp1
 		error=classdontexists
 		!exit
 	    !endif
-	    !if $tmp2=yes
+	    !if $sourcecls<=9999
 		ssourcecls=$sourcecls
+		tmp2=yes
 	    !endif
 	!else
 	    tmp2=no

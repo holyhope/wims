@@ -13,9 +13,9 @@
          !let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
          !if $testneighbors=$empty
            $table_tr
-           !let test=!defof class_isexemple,class_allowcloning in wimshome/log/classes/$code/.def
+            !let test=!defof class_allowcloning in wimshome/log/classes/$code/.def
             <td>$inst <br />
-            !if $(test[1])=yes or $(test[2])=yes
+            !if $code<=9999 or $test=yes
                !href cmd=reply&step=-2&sourcecls=$code $cl
             !else
                 $cl
@@ -26,11 +26,10 @@
             </td><td>
                 $first $last
             </td><td>
-            !let test=!defof class_isexemple,class_allowcloning in wimshome/log/classes/$code/.def
-            !if $(test[1])=yes
+            !if $code<=9999
                $name_free
             !else
-              !if $(test[2])=yes
+              !if $test=yes
                $name_protected
               !else
                $name_disallowed
