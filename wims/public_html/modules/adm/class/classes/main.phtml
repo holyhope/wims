@@ -17,12 +17,17 @@
 !read adm/class/classname.phtml $class_description\
 $class_institution
 
-!header
-
-!read adm/title.phtml 3\
+!if $class_description$class_institution!=$empty
+ !header1
+ !read adm/title.phtml 2\
+ $wims_classname\
+ $class_institution <br/>--- $(wims_name_n_$type) ---
+!else
+  !header
+  !read adm/title.phtml 3\
 \
 --- $(wims_name_n_$type) ---
-
+!endif
 !if $error!=$empty
  <div class="wims_alertmsg">
  !read msg.phtml
@@ -61,8 +66,12 @@ $name_new_participant_external
 
 !read $type.phtml
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
- !for t in participant,supervisor,example
-  !if $t!=$type or $superclass!=$empty
+  !set list_menu=participant,example
+  !if $wims_user=$empty or $wims_user=supervisor
+   !set list_menu=$list_menu,supervisor
+  !endif
+ !for t in $list_menu
+  !if $t!=$type or $wims_superclass!=$empty
    !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
 to $wims_menu_items
   !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
