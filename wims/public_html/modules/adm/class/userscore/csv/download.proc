@@ -1,10 +1,12 @@
-
 quote="
 fbase=data-$wims_class
 fbase=!translate internal / to _ in $fbase
 fname=wimshome/$wims_sesdir/spreadsheet.$csvformat
 dl=!singlespace $csvdownload
 dl=!lower $dl
+!if login notin $dl
+  dl=login,$dl
+!endif
 !for t in average,sheet,exam,manual
  dl=!replace $t $ by $t in $dl
 !next t
@@ -17,24 +19,30 @@ dl=!replace word allscore by averages sheets exams manuals in $dl
 dl_tmp=$dl
 
 !readproc csv/keyword.proc
-tmp=!items2words $se
-good=$basic $av $sh $ex $ma $tmp
+tmp=!column 2 to -1 of $se
+tmp=!lines2words $tmp
+tmp=!items2words $tmp
+tmp=!singlespace $tmp
 
+good=$basic $av $sh $ex $ma $tmp
 dl=!replace word averages by $av in $dl
 dl=!replace word sheets by $sh in $dl
 dl=!replace word exams by $ex in $dl
 dl=!replace word manuals by $ma in $dl
 !if sheetexos isin $dl
- dl=!replace word sheetexos by $se in $dl
+ tmp=!column 2 to -1 of $se
+ tmp=!lines2words $tmp
+ dl=!replace word sheetexos by $tmp in $dl
 !else
   !for i in $activesh
     !if sheetexo$i iswordof $dl
-      dl=!replace word sheetexo$i by $(se[$i]) in $dl
+      tmp=!select $se where column 1 = $i
+      dl=!replace word sheetexo$i by $(tmp[2..-1]) in $dl
       dl=!replace word sheetexo$i by  in $dl
     !endif
   !next i
 !endif
-se=!items2words $se
+!!se=!items2words $se
 
 dl=!words2items $dl
 dl=!listuniq $dl
@@ -128,7 +136,7 @@ $dl3$dl5\
    !endif
   !next i
   !for i=1 to $sheetcnttot
-   !if sheetexo$i iswordof $dl_tmp and $i isitemof $activesh
+   !if sheet$(i)_exo isin $dl and $i isitemof $activesh
     !let e_=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
     !for k_ = 1 to $e_
       d_=!getscore user=$uu sheet=$i work=$k_
@@ -158,8 +166,6 @@ $dl3$dl5\
  !appendfile $fname $dl2$dl4
 !next u
 
-
 infile=spreadsheet.$csvformat
 outfile=$fbase.$csvformat
 !mexec csv/getprep.sh
-
