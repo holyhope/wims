@@ -12,7 +12,8 @@
 !if $user_exists!=yes or $abandon!=$empty
  !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars,up_external_auth,up_supervise
  !if $wims_user=supervisor
-  job=
+  job=userlist
+  !changeto $job.proc
   !exit
  !else
   job=getuser
