@@ -100,3 +100,5 @@ into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
 Pour cela vous devez saisir le mot de passe de clonage que \
 l'administrateur de la classe vous a communiqué.
 
+!set name_subclass=Sous-classe de
+
