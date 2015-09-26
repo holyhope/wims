@@ -17,6 +17,11 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
   !restart module=home
  !endif
 !else
+ !if $varfilter=$empty
+	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+ !else
+	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+ !endif
  !bound job within modif,delete,reactivate,write,groupe default $empty
  !if $listuser=__CLASS__
   !reset listuser

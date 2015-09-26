@@ -9,6 +9,11 @@ wims_prefix=class user tmp n sharing sharable
  !!user=$wims_user
  !exit
 !endif
+!if $varfilter=$empty
+	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+!else
+	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+!endif
 !if $varfilter!=$empty
    !reset varfilter_
    !set varfilter_cnt=!linecnt $varfilter
