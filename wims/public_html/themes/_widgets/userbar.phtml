@@ -36,9 +36,13 @@
            !set exo_class=wims_exo_untry,$wims_name_exo_untry
          !endif
        !endif
-       <li class="$(exo_class[1])" title="$wims_name_Exercise $ii: $(exo_class[2])">
-             $wims_name_Exercise $ii: $(exo_class[2])
+       !let donexo=!record $ii of wimshome/log/classes/$wims_class/sheets/.sheet$se
+       !distribute line $donexo into donm,donv,b,b,b,b
+       <a href="wims.cgi?session=$wims_session&+cmd=new&+worksheet=$se&+module=$donm&+$donv">
+       <li class="$(exo_class[1])" title="$wims_name_Exercise $ii: $(exo_class[2])"> 
+        $wims_name_Exercise $ii: $(exo_class[2]) 
        </li>
+       </a>
      !next
    </ol>
    </div>
