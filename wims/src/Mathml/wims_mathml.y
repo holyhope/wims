@@ -1258,26 +1258,7 @@ calletters: calletter {
 };
 
 calletter: CALCHAR {
-  if (*$1 == 'A'
-  || *$1 == 'C'
-  || *$1 == 'D'
-  || *$1 == 'G'
-  || *$1 == 'J'
-  || *$1 == 'K'
-  || *$1 == 'N'
-  || *$1 == 'O'
-  || *$1 == 'P'
-  || *$1 == 'Q'
-  || *$1 == 'R'
-  || *$1 == 'S'
-  || *$1 == 'T'
-  || *$1 == 'U'
-  || *$1 == 'V'
-  || *$1 == 'W'
-  || *$1 == 'X'
-  || *$1 == 'Y'
-  || *$1 == 'Z'
-  ){$$ = wims_mathml_copy_string($1);} else {$$ = wims_mathml_copy3("&",$1,"scr;"); }
+  $$ = wims_mathml_copy3("&",$1,"scr;");
   wims_mathml_free_string($1);
 };
 
