@@ -16,6 +16,7 @@
   <span class="wims_title_item">$tis_</span>
 </div>
 <div class="wims_comment_item">$cos_</div>
+!reset seq_item
 <ul class="wims_work_list">
 
 !set dcnt=!itemcnt $obj_
@@ -25,7 +26,9 @@
     !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
     !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_,bidon,bidon,de_
     !if $o_>0
+      !increase seq_item
       <li class="wims_doc_item">
+        <span class="wims_seq_item_n">$seq_item</span>
         !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
         <div class="wims_doc_desc">$de_</div>
       </li>
@@ -35,7 +38,9 @@
     !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.docindex
     !distribute lines $d_ into s_,t_,ti_,de_,o_,w_
     !if $o_>0
+      !increase seq_item
       <li class="wims_doc_item">
+        <span class="wims_seq_item_n">$seq_item</span>
         !href module=$s_&$t_&seq=$i&name=$wims_name_sequence&wksheet=$w_  $ti_
         <div class="wims_doc_desc">$de_</div>
       </li>
@@ -60,7 +65,9 @@
       !set pe=!line $num of $percents
       !set try=!getscoretry sheet=$num
       !set try=!text select 123456789 in $try
+      !increase seq_item
       <li class="wims_sheet_item">
+        <span class="wims_seq_item_n">$seq_item</span>
         !href module=adm/sheet&sh=$num&seq=$i $ti
         <ul class="wims_sheet_info">
           !if showshweight iswordof $class_option
@@ -121,7 +128,9 @@
     !set v_=!record $num of wimshome/log/classes/$wims_class/vote/.votes
     !distribute lines $v_ into a_,t_,ti,de_
     !if $a_>=1 and $a_<=2
+      !increase seq_item
       <li class="wims_vote_item">
+        <span class="wims_seq_item_n">$seq_item</span>
         !href module=adm/vote&job=read&vote=$num&seq=$i $t_
         <div class="wims_vote_desc">$de_</div>
       </li>
@@ -132,7 +141,9 @@
     !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
     !distribute lines $e_ into a_,ex_,du_,t_,de_
     !if $a_>=1 and $a_<=2
+      !increase seq_item
       <li class="wims_exam_item">
+        <span class="wims_seq_item_n">$seq_item</span>
         !href module=adm/class/exam&exam=$num&seq=$i $t_
         <span class="wims_user_exam_expire">
           !if $a_>=2
