@@ -1,10 +1,23 @@
  <!-- _widgets/sequence.phtml -->
+ <br />
  <ul class="inline">
  <li><span class="wims_doc_item">$wims_name_doc</span></li>
  <li><span class="wims_sheet_item">$wims_name_Sheets</span></li>
  <li><span class="wims_exam_item">$wims_name_Examens</span></li>
  <li><span class="wims_vote_item">$wims_name_Votes</span></li>
  </ul>
+
+ !if $seq_cnt >1
+  <br />
+  <ul class="inline">
+  !for i=1 to $seq_cnt
+ <li>
+  <a class="wims_button" href="#wims_seq_$i">$wims_name_sequence $i </a>
+ </li>
+  !next
+  </ul>
+
+ !endif
 
  !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
  !if $seq>0
