@@ -7,7 +7,7 @@
 \
 Niveles de severidad de las hojas de trabajo
 
-!if $wims_user=supervisor or $special_parm=$empty
+!if $wims_user=supervisor
 <p>
 El servidor calcula dos medias para el trabajo de cada participante en
 cada una de las hojas: un porcentaje de los puntos obtenidos con respecto al número

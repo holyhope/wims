@@ -6,7 +6,7 @@
 !read adm/title.phtml 1\
 \
 De moeilijkheidsgraad van Werkbladen
-!if $wims_user=supervisor or $special_parm=$empty
+!if $wims_user=supervisor
 <p>
 De WIMS server berekend een tweetal gemiddelden voor het werk dat leerlingen doen per werkblad
 Een percentage van het behaalde aantal punten met betrekking tot het totaal aantal benodigde punten
