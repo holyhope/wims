@@ -1,5 +1,8 @@
 
 !let help_isread=yes
+!if $wims_read_parm!=$empty
+    !goto $wims_read_parm
+!endif
 <p>
 El cuaderno de competencias permite obtener una rejilla de lectura sintética del conjunto
 del trabajo tenido en cuenta de los alumnos de la clase.
@@ -32,3 +35,14 @@ où
   vale 1 si la hoja <i> i</i> no está en la lista de las hojas desactivadas para el cálculo del nivel de adquisición de los grados y <i>0</i> si no. </li>
  <li> NM(a) vale <i> 1</i> si y es superior a la nota mínima para considerar que se adquiere una serie y <i> 0</i> si no (fijar la nota mínima a <i>0</i> neutraliza esta opción.</li>
 </ul>
+
+!exit
+
+:color
+Pour chaque couleur vous pouvez définir un texte qui sera affichée dans la légende colorée en début de chaque tableau de compétences (pour les élèves et le supervisor).
+<br\>
+Les couleurs se retrouvant sans texte sont affichées avec la plage de pourcentage de réussite auxquelles elles correspondent.
+<br\>
+En cas de l'utilisation des couleurs de la classe (et non celles du livret), la légende colorée est automatiquement affectée de la plage de pourcentage de réussite correspondante. 
+
+!exit

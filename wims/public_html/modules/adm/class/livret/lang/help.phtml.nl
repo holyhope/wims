@@ -1,5 +1,8 @@
 
 !let help_isread=yes
+!if $wims_read_parm!=$empty
+    !goto $wims_read_parm
+!endif
 Het vaardigheden overzicht geeft een configureerbaar totaalbeeld van het niveau van een klas.
 
 Per periode kan de docent een lijst met oefeningen aangeven, waaruit dan met de behaalde scores 
@@ -27,3 +30,14 @@ waarin
 <b><u>Opmerking</u></b>: 
 Als de status van een werkblad wordt veranderd moeten er op dat moment geen leerlingen met de vaardighedenboekje bezig zijn.
 </p>
+
+!exit
+
+:color
+Pour chaque couleur vous pouvez définir un texte qui sera affichée dans la légende colorée en début de chaque tableau de compétences (pour les élèves et le supervisor).
+<br\>
+Les couleurs se retrouvant sans texte sont affichées avec la plage de pourcentage de réussite auxquelles elles correspondent.
+<br\>
+En cas de l'utilisation des couleurs de la classe (et non celles du livret), la légende colorée est automatiquement affectée de la plage de pourcentage de réussite correspondante. 
+
+!exit
