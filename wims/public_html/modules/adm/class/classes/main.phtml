@@ -32,12 +32,12 @@ $class_institution
  <div class="wims_alertmsg">
  !read msg.phtml
  </div>
-!! why not having a !goto end here??
-!! (the "!exit" in lang/msg.phtml.$moduclass_lang seems not to be stopping
-!! the rest of the page from being shown)
-!! !goto end
+!! when you have the no_cgu error you do not want to show the rest
+!! of the page, do you? (it is shown e.g. when $(class_authidp[1;])=cas
+ !if $error=no_cgu
+  !goto end
+ !endif
 !endif
-
 
 !!! En fait cela devrait être $idp_method=$empty Comment arrive-t-on ici ?
 !if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
@@ -65,6 +65,7 @@ $name_new_participant_external
 !endif
 
 !read $type.phtml
+:end
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
   !set list_menu=participant,example
   !if $wims_user=$empty or $wims_user=supervisor
@@ -90,7 +91,6 @@ to $wims_menu_items
  </div>
  !endif
 !endif
-:end
 !tail
 
 !reset auth_user,auth_password,superclass,keyword
