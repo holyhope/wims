@@ -81,3 +81,7 @@ Cuaderno de $name_competences \
  name_put=Write the address of a skill booklet archive file on your computer. The skills of the file \
  will be add to those already in your skill booklet.
 !endif
+
+!set name_filter=Vous pouvez filtrer selon une variable technique (propriétés des participants)
+!set name_filtertitle=Sélection par variables techniques
+

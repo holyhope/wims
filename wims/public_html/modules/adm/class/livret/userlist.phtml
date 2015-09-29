@@ -15,6 +15,22 @@ $livret_title
 !endif
 !default note=0
 <p></p>
+
+!! add varfilter
+!form reply
+<fieldset class="property_fields halfwidth blockcenter">
+ <legend>$name_filtertitle</legend>
+  $name_filter
+  <br/>
+  <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+  !set wims_ref_class=wims_button_help float_right
+  !href target=wims_mhelp cmd=help&special_parm=filter $wims_name_help
+  <div class="wimsform wimscenter">
+  <input type="submit" value="$wims_name_Show" />
+  </div>
+</fieldset>
+!formend
+
 !read proc/legend.proc legend
 $table_header
  $table_hdtr
@@ -45,20 +61,26 @@ $table_header
  </tr>
  !for i=1 to $usercnt
   !set uu=!line $i of $userlist
-  $table_tr
-   <td>
-    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
-    !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
-     <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px" alt="connected" />
-    !endif
-   </td>
-   !for k=1 to $livret_nbcomp
-    !for j=1 to $(nbpalier_$k)
-     !read adm/class/colors $(skillu_$i[$k;$j]),livret
-     <td style=$style_note>$output_note</td>
-    !next j
-   !next k
-  </tr>
+  !if $varfilter_!=$empty
+  !reset var_filter_test
+  !readproc adm/class/testfilter $(uu[1])\
+$varfilter_
+  !if $var_filter_test=1
+	  $table_tr
+	   <td>
+	    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
+	    !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
+	     <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px" alt="connected" />
+	    !endif
+	   </td>
+	   !for k=1 to $livret_nbcomp
+	    !for j=1 to $(nbpalier_$k)
+	     !read adm/class/colors $(skillu_$i[$k;$j]),livret
+	     <td style=$style_note>$output_note</td>
+	    !next j
+	   !next k
+	  </tr>
+  !endif
  !next i
 $table_end
 
