@@ -91,3 +91,6 @@ name_help_add,name_the
 !set name_workfor=$name_work $name_for
 
 !set name_warning1=Als er geen tweede datum is opgegeven wordt alles gebaseerd op de eerst opgegeven datum.
+
+!set name_find2=Recherche
+!set name_find=Chercher

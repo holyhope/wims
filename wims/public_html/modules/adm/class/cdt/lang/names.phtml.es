@@ -90,4 +90,6 @@ name_help_add,name_the
 
 !set name_warning1=Si no escriben una segunda fecha, efectuarán \
 una investigación sobre la primera fecha.
+!set name_find2=Recherche
+!set name_find=Chercher
 

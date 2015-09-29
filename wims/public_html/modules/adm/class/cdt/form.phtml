@@ -1,8 +1,10 @@
 
 !form reply
-  <input type="submit" value="$wims_name_Show" />
-  !reset job
-  !formselect job list work,todo prompt $name_done,$name_todo 
+  <fieldset class="property_fields blockcenter">
+  <legend>$name_find2</legend>
+  <div class="field box">
+	!!reset job
+	!formselect job list work,todo prompt $name_done,$name_todo
   $name_between
   !let v=!values v for v=1 to 31
   !let creyear=!char 1 to 4 of $class_creation
@@ -19,8 +21,10 @@
 !!  !distribute item 0,0,0 into jyear2,jday2,jmonth2
   !let v1=!values v for v=$creyear to $expyear
   !read adm/lang/datemenu.phtml.$moduclass_lang 4,jday2,jmonth2,jyear2
+  </div>
   <br /><span class="small"> $name_warning1</span>
- 
+  <center><input type="submit" value="$name_find" /> </center> 
+</fieldset>
 !formend
  
 
