@@ -24,28 +24,32 @@ $name_param_change
   </div>
   <div class="field box">
    <label>$name_color</label>
-    <table class="wimscenter wimsborder">
     !default livret_scorecolor=$wims_scorecolor
+    <table class="wimscenter wimsborder">
      <tr>
       <td style="background-color: $(livret_scorecolor[1])">$name_nowork</td>
-    !for k=2 to 6
-      <td style="background-color: $(livret_scorecolor[$k]);text-align:center">$[($k-1)*10] %</td>
-    !next k
-     </tr><tr>
-    !for k=1 to 6
-       <td><input type="color" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8" /></td>
-    !next k
-     </tr><tr>
-      <td rowspan="2">&nbsp;</td>
-     !for k=7 to 11
-       <td style="background-color: $(livret_scorecolor[$k]);text-align:center">$[($k-1)*10] %</td>
-     !next k
+      <td><input type="color" value="$(livret_scorecolor[1])" name="cf_scorecolor1" size="8" /></td>
+      <td>$name_nowork</td>
      </tr>
-     <tr>
-     !for k=7 to 11
-      <td><input type="color" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8" /></td>
+     !readproc proc/legend.proc
+     !let cpt=11
+     !let cpt2=0
+     !for k=2 to 11
+       <tr>
+        <td style="background-color: $(livret_scorecolor[$k]);text-align:center">$[($k-1)*10] %</td>
+        <td><input type="color" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8" /></td>
+        !if $cpt<$(numcom[$cpt2])
+          !increase cpt
+        !else
+          !let cpt=1
+          !increase cpt2
+          <td rowspan="$(numcom[$cpt2])">
+            !default livret_legende$k=Legende $cpt2
+            <input type="text" value="$(livret_legende$k)" name="cf_legende$cpt2" size="25" />
+            </td>
+	!endif
+       </tr>
      !next k
-     </tr>
     </table>
   </div>
   <div class="field box">
