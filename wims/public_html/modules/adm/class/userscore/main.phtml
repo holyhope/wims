@@ -51,8 +51,8 @@ $module_title ($usercnt)
     !href cmd=reply&job=csv $wims_name_csv
     </div>
 !else -- $usercnt>0
- !set wims_ref_class=wims_button
- !href cmd=reply&job=csv $wims_name_csv
+!! !set wims_ref_class=wims_button
+!! !href cmd=reply&job=csv $wims_name_csv
  </div>
  !if $seq_cnt=0
  <p>
@@ -159,24 +159,23 @@ $module_title ($usercnt)
  !else
   !form reply
  !endif
- !if $wims_typename notwordof group portal program
-  <p>
-  $name_sheetdetail
-  </p>
-  !endif
-  <p>
- !if $wims_typename notwordof group portal program
-  $name_click.
- !endif
- $name_filter
- <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
- !set wims_ref_class=wims_button_help float_right
- !href cmd=help&special_parm=filter $wims_name_help
-  </p>
-<div class="wimsform wimscenter">
-  <input type="submit" value="$wims_name_Show" />
-  </div>
+ 
+ 
+ !read adm/varfilter html
+!! $name_filter
+!! <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+!! !set wims_ref_class=wims_button_help float_right
+!! !href cmd=help&special_parm=filter $wims_name_help
+!!<div class="wimsform wimscenter">
+!!  <input type="submit" value="$wims_name_Show" />
+!!  </div>
 !formend
+ !if $wims_typename notwordof group portal program
+  <p>$name_sheetdetail</p>
+ !endif
+ !if $wims_typename notwordof group portal program
+  <p>$name_click.</p>
+ !endif
 !endif
  !reset table_center
  $table_header

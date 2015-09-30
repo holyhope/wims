@@ -33,16 +33,17 @@ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
 !else
 	!writefile wimshome/s2/$wims_session/varfilter $varfilter
 !endif
-!if $varfilter!=$empty
-   !reset varfilter_
-   !set varfilter_cnt=!linecnt $varfilter
-   !for v=1 to $varfilter_cnt
-    var_line=!singlespace $(varfilter[$v;])
-    var_line =!replace $ $ by , in $var_line
-    varfilter_=!append line $var_line to $varfilter_
-  !next
-  !set name_classAverage=$name_groupAverage
-!endif
+
+!!if $varfilter!=$empty
+!!   !reset varfilter_
+!!   !set varfilter_cnt=!linecnt $varfilter
+!!   !for v=1 to $varfilter_cnt
+!!    var_line=!singlespace $(varfilter[$v;])
+!!    var_line =!replace $ $ by , in $var_line
+!!    varfilter_=!append line $var_line to $varfilter_
+!!  !next
+!!  !set name_classAverage=$name_groupAverage
+!!!endif
 
 
 !if $wims_user!=supervisor
@@ -50,6 +51,7 @@ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
  !bound job within getuser,userprop,examcheck,getraw default getuser
  getuser=$wims_user
 !else
+  !readproc adm/varfilter proc
   !bound job within getuser,userprop,examcheck,getraw,userexam,userexamclose,showsheet,csv,formula,sheets,$empty default $empty
 !endif
 

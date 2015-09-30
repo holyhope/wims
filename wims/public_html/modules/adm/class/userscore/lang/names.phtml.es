@@ -42,7 +42,6 @@ en la tabla siguiente. Las notas serán calculadas con un máximo =
 !set name_warning= Ha efectuado una petición ilegal.
 
 !set name_click=Pulse sobre un nombre para ver los detalles de su trabajo
-!set name_filter=or filter according to a technical variable (student properties)
 !set name_affi=la calidad, el trabajo efectuado, las notas
 !set name_workdetail=Detalles del trabajo de
 !set name_activesession=Este participante tiene una sesión de examen activa&nbsp;

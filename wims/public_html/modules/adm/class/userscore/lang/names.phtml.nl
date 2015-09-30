@@ -44,7 +44,6 @@ De cijfers worden berekend met maximum =
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
-!set name_filter= of filter a.h.v. een technische variabele (student eigenschappen)
 !set name_affi=&nbsp;kwaliteit&nbsp;,&nbsp;afgerond werk&nbsp;,&nbsp;cijfers&nbsp;,&nbsp;gemiddelde van de hoogste scores&nbsp;
 !set name_workdetail=Detail van het werk van
 !set name_activesession=Deze student heeft een nog actieve proefwerk sessie
