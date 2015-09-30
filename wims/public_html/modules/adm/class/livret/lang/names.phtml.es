@@ -82,6 +82,4 @@ Cuaderno de $name_competences \
  will be add to those already in your skill booklet.
 !endif
 
-!set name_filter=Vous pouvez filtrer selon une variable technique (propriétés des participants)
-!set name_filtertitle=Sélection par variables techniques
 

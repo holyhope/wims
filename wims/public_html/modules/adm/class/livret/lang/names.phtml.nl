@@ -82,6 +82,4 @@ Rapport van $name_competences\
  Het bestand zal worden toegevoegd aan het  bestaande rapport.
 !endif
 
-!set name_filter=Vous pouvez filtrer selon une variable technique (propriétés des participants)
-!set name_filtertitle=Sélection par variables techniques
 

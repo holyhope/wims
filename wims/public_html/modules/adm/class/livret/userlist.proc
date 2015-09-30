@@ -3,20 +3,7 @@ tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
 
 !! add for varfilter
 !if $wims_user=supervisor
- !if $varfilter=$empty and $wims_user=supervisor
-	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
- !else
-	!writefile wimshome/s2/$wims_session/varfilter $varfilter
- !endif
- !if $varfilter!=$empty
-   !reset varfilter_
-   !set varfilter_cnt=!linecnt $varfilter
-   !for v=1 to $varfilter_cnt
-    var_line=!singlespace $(varfilter[$v;])
-    var_line =!replace $ $ by , in $var_line
-    varfilter_=!append line $var_line to $varfilter_
-   !next v
- !endif
+ !readproc adm/varfilter proc
 !endif
 
 
