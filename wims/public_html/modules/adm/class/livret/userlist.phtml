@@ -32,6 +32,7 @@ $livret_title
 !formend
 
 !read proc/legend.proc legend
+
 $table_header
  $table_hdtr
    <th rowspan="2">$wims_name_lastname, $wims_name_firstname</th>
@@ -62,10 +63,11 @@ $table_header
  !for i=1 to $usercnt
   !set uu=!line $i of $userlist
   !if $varfilter_!=$empty
-  !reset var_filter_test
-  !readproc adm/class/testfilter $(uu[1])\
+   !reset var_filter_test
+   !readproc adm/class/testfilter $(uu[1])\
 $varfilter_
-  !if $var_filter_test=1
+  !endif
+  !if $var_filter_test=1 or $varfilter_=$empty
 	  $table_tr
 	   <td>
 	    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
