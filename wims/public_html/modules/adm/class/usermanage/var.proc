@@ -32,11 +32,7 @@ picto=<img src="gifs/picto.gif" alt="picto" />
     !restart module=home
  !endif
 !else
-    !if $varfilter=$empty
-	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
-    !else
-	!writefile wimshome/s2/$wims_session/varfilter $varfilter
-    !endif
+    !readproc adm/varfilter proc
     !if $wims_typename iswordof group and $wims_supertype=2
 	!bound job within userprop,delprep,deluser,recover,transfer,teacher,userlist,regmanage default userlist
     !else

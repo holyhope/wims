@@ -8,7 +8,6 @@
 !set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
 
 !set name_click=Pulse sobre un nombre para ver los detalles de su trabajo
-!set name_filter=or filter according to a technical variable (student properties)
 !set name_noyetparticipant=Esta clase no tiene ningún participante aún.
 !set name_transfer=Transferir sus actividades desde otras clases
 
