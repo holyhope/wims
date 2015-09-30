@@ -4,6 +4,7 @@
  !goto $wims_read_parm
 !endif
 
+!set name_donchoose=Choix des données
 !set name_studentloc=!nosubst $user_lastname $user_firstname
 !set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
 

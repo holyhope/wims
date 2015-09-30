@@ -69,8 +69,12 @@ $module_title ($usercnt)
   !form reply
   <input type="hidden" name="job" value="sheets" />
   !set wims_formselect_switch=multiple="multiple" size="$[min($activecnt,6)]"
-  $name_pickup
-<div class="wimscenter">
+
+ <fieldset class="property_fields blockcenter">
+ <legend>$name_donchoose</legend>
+
+ <div class="field box">
+  <label for="showsheet">$name_pickup</label>
   !reset tmp
   !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
   !for i=1 to $activecnt
@@ -98,8 +102,9 @@ $module_title ($usercnt)
   !next i
   !formselect showsheet list $ash prompt $tmp
   </div>
-  <p>
-   $wims_name_or $name_post
+  <div class="field box">
+!!   $wims_name_or 
+   $name_post
    !if $job_affi=notes or $job_affi=$empty
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=quality $(name_affi[1])
@@ -155,11 +160,16 @@ $module_title ($usercnt)
     !href cmd=reply&job_affi=best $(name_affi[4])
     <span class="wims_button disabled">$(name_affi[5])</span>
    !endif
-</p>
+ </div>
+  !read adm/varfilter htmldiv
+  <div class="wimsform wimscenter">
+  <input type="submit" value="$wims_name_Show" />
+  </div>
  !else
   !form reply
+  !read adm/varfilter html
  !endif
- !read adm/varfilter html
+ 
 !formend
  !if $wims_typename notwordof group portal program
   <p>$name_sheetdetail</p>
