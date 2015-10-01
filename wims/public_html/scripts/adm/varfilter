@@ -5,10 +5,15 @@
 !exit
 
 :proc
- !if $varfilter=$empty and $wims_user=supervisor
-	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+ !if $varfilterclear!=$empty
+    !reset varfilter
+    !writefile wimshome/s2/$wims_session/varfilter $varfilter
  !else
+  !if $varfilter=$empty and $wims_user=supervisor
+	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+  !else
 	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+  !endif
  !endif
  !if $varfilter!=$empty
    !reset varfilter_
@@ -32,6 +37,7 @@
   $name_filter
   <br/>
   <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+  <input type="submit" value="$name_clear" name="varfilterclear" />
   !set wims_ref_class=wims_button_help float_right
   !href target=wims_mhelp cmd=help&special_parm=filter $wims_name_help
   <div class="wimsform wimscenter">
@@ -52,6 +58,7 @@
   $name_filter
   <br/>
   <textarea name="varfilter" cols="20" rows="3">$varfilter</textarea>
+  <input type="submit" value="$name_clear" name="varfilterclear" />
   !set wims_ref_class=wims_button_help float_right
   !href target=wims_mhelp cmd=help&special_parm=filter $wims_name_help
  </div>
