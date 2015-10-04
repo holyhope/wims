@@ -2,7 +2,7 @@
 !set name_user=!nosubst $wims_firstname $wims_lastname.
 !set monthnames=jan,feb,maart,apr,mei,juni,juli,aug,sept,okt,nov,dec
 !set name_wroteon=schreef op
-!set name_default=Forum 
+!set name_default=Forum
 !distribute item <i>onderwerp&nbsp;:</i> <b>,</b> into subj1,subj2
 !distribute item <hr />,<hr /> into body1,body2
 
