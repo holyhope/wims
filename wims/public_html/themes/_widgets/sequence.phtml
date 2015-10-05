@@ -9,9 +9,11 @@
   <br />
   <ul id="wims_seq_summary" class="inline">
   !for i=1 to $seq_cnt
- <li>
-  <a class="wims_button" href="#wims_seq_$i">$wims_name_sequence $i </a>
- </li>
+  !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$i
+  !distribute line $seq_ into tis_,cos_,obj_,o_
+  !if $o_>0
+  <li><a class="wims_button" href="#wims_seq_$i">$wims_name_sequence $i</a></li>
+  !endif
   !next
   </ul>
  !endif
