@@ -11,15 +11,14 @@
 !set TI=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
 
 <div id="wims_seq_$i" class="wims_seq">
+!if $i > 1 and $seq=$empty
+ !read themes/_widgets/topback.phtml wims_seq_summary
+!endif
  <div class="wims_title_seq">
   <span class="wims_seq_id">$TI $i:</span>
   <span class="wims_title_item">$tis_</span>
  </div>
- <div class="wims_comment_item">$cos_
-!if $i > 1
- !read themes/_widgets/topback.phtml
-!endif
- </div>
+ <div class="wims_comment_item">$cos_</div>
 
 !reset seq_item
 <ul class="wims_work_list">
