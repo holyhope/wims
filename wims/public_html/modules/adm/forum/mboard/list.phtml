@@ -17,19 +17,30 @@
   $lyear, $n_most
  !endif
  !item $l_order of $n_old
-.  &nbsp;
+.
  !set wims_ref_class=wims_button
  !href cmd=reply&l_order=$[$l_order%2+1] $n_reverse
-  &nbsp;
-   &nbsp;
+
+ <div class="wimscenter">
  !set wims_ref_class=wims_button
-!href cmd=reply&job=threadlist& $n_subjectlist
- !if $send_right>0
-  &nbsp;
-   &nbsp;
- !set wims_ref_class=wims_button
-  !href cmd=new&forum=$forum&job=compose $n_new
+ !href cmd=reply&job=threadlist& $n_bysubject
+ &nbsp;&nbsp;
+ !if $mlist!=.newlist
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list&mlist=.newlist $n_bydate
+ !else
+   <span class="wims_button disabled">$n_bydate</span>
  !endif
+ !if $mlist=.newlist
+   !set mlist1=!record 0 of $forumdir/$mlist
+   !set mlist1=!line -1 of $mlist1
+   !set mlist1=!word 1 of $mlist1
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job=list&mlist=$mlist1 $n_recent
+ !else
+  <span class="wims_button disabled">$n_recent</span>
+ !endif
+</div>
 
  <ul class="wims_forum_list">
  !if $l_order=1
@@ -49,14 +60,6 @@
   </li>
  !next i
  </ul>
-!endif
-
-
-!if $mlist!=.newlist
-<p>
-!set wims_ref_class=wims_button
- !href cmd=reply&job=list&mlist=.newlist $n_recent.
-</p>
 !endif
 
 !read listarch.phtml

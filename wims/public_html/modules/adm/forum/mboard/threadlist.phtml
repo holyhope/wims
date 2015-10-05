@@ -1,20 +1,24 @@
 !read desc.phtml
 <br />
-
+$n_threadlist.
+<div class="wimscenter">
 !if $mlist=.newlist
- $n_subjectlist
+  <span class="wims_button disabled">$n_bysubject</span>
 !else
  $n_list_subject_month
   !item $lmon of $monthnames
   $lyear
 !endif
- &nbsp;
+&nbsp;&nbsp;
  !set wims_ref_class=wims_button
-!href cmd=reply&job=list $n_recent
-&nbsp;
+ !href cmd=reply&job=list&mlist=.newlist $n_bydate
+ &nbsp;&nbsp;
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=list $n_recent
+</div>
 <ul class="wims_forum_list">
 !for p = 1 to $tot_t
-  !set i = $(threadlist[$p]) 
+  !set i = $(threadlist[$p])
   !set i_=!replace internal / by , in $i
   !if $(i_[1])=
     !set mlist=.newlist
@@ -38,4 +42,3 @@
 </ul>
 
 !read listarch.phtml
-

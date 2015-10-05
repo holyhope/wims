@@ -1,17 +1,17 @@
 !if $wims_class=
   !read adm/language lang/names.phtml
 !else
-  !read adm/class/classlang names.phtml 
+  !read adm/class/classlang names.phtml
   !set modu_lang=$moduclass_lang
 !endif
 !if $cf_title$mb_title=
  !if $(module_title_$modu_lang)!=
   !set module_title=$(module_title_$modu_lang)
  !endif
- !else
+!else
  !if $cf_title!=
   !set module_title=$cf_title
- !else 
+ !else
   !set module_title=$mb_title
  !endif
 !endif
@@ -22,7 +22,7 @@
   !read js/speckedit.phtml name_deposit
 !endif
 !if $job notwordof read list config
- !set nextline= $(n_$job)
+ !!set nextline= $(n_$job)
 !else
   !reset nextline
 !endif
@@ -35,7 +35,7 @@ $nextline
 
 !if $error!=$empty
  <div class="wims_alertmsg">
- !read lang/msg.phtml.$modu_lang 
+ !read lang/msg.phtml.$modu_lang
  </div>
  <hr />
  !if $fatal=yes
