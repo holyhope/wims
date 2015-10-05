@@ -32,8 +32,10 @@ $sheet_title
 !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.$sh
 
 !if $expir_user=none
+ <p id="name_student5">
   <span class="wims_warning">$wims_name_warning</span>.
-  <p id="name_student5">$name_student5</p>
+  $name_student5
+ </p>
  !goto none
 !endif
 !if $expir_user!=
@@ -79,13 +81,13 @@ $sheet_title
  !endif
  !read adm/date.phtml
  !set expmon=!item $expmon of $months
- <p id="name_student1">$name_student1$exphour
- .</p>
+ <p id="name_student1">$name_student1$exphour</p>
 !endif
 :none
 !if $sheet_active=2
+ <p id="name_student2">
  <span class="wims_warning">$wims_name_warning</span>.
- <p id="name_student2">$name_student2</p>
+ $name_student2</p>
 !endif
 !if $n=0
  !if $sheet_active=$empty
