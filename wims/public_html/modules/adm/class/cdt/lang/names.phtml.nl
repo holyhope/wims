@@ -23,6 +23,7 @@
   !set name_see=Bekijk
   !set name_see2=de log file van de agenda.
   !set name_reversedate=De informatie in omgekeerde volgorde
+  !set name_showyear=Afficher l'année dans les tableaux
   !goto common
 !endif
 

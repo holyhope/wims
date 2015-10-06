@@ -23,6 +23,7 @@
   !set name_see=Ver
   !set name_see2=el fichero de conexión al cuaderno de texto de la clase
   !set name_reversedate=Affichage des informations dans l'ordre inverse de leur date
+  !set name_showyear=Afficher l'année dans les tableaux
   !goto common
 !endif
 

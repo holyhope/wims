@@ -17,6 +17,7 @@
  cf_title=!char 1 to 50 of $cf_title
  cf_link=!char 1 to 20 of $cf_link
  !bound cf_reversedate between 0 and 1 default $cdt_reversedate
+ !bound cf_showyear between 0 and 1 default $cdt_showyear
  test=!nospace $cf_link
  !if $test=$empty
   cf_link=$cdt_link
@@ -25,15 +26,23 @@
  !setdef !set cdt_title=$cf_title\
 !set cdt_description=$cf_description\
 !set cdt_link=$cf_link\
-!set cdt_reversedate=$cf_reversedate in wimshome/log/classes/$wims_class/cdt/.def
+!set cdt_reversedate=$cf_reversedate\
+!set cdt_showyear=$cf_showyear in wimshome/log/classes/$wims_class/cdt/.def
  cdt_description=$cf_description
  cdt_title=$cf_title
  cdt_link=$cf_link
  cdt_reversedate=$cf_reversedate
+ cdt_showyear=$cf_showyear
+ !if $cdt_showyear=1
+    dateoption=withyear
+ !else
+    dateoption=$empty
+ !endif
 !else
- !for k in title,description,reversedate
+ !for k in title,description,reversedate,showyear
   cf_$k=$(cdt_$k)
  !next k
  !default cf_reversedate=0
+ !default cf_showyear=0
 !endif
 

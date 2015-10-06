@@ -1,7 +1,7 @@
 !! some variable are global as expyear, creyear,months, v, v1
 !distribute items $wims_read_parm into r_
 !if $r_ isitemof 5
-  !distribute items $wims_read_parm into r_,date_
+  !distribute items $wims_read_parm into r_,date_,option_
   !goto $r_
 !endif
 !if $r_ isitemof 6
@@ -37,7 +37,7 @@
 !let day=!char 7 to 8 of $date_
 !let month=!char 5 to 6 of $date_
 !let year=!char 1 to 4 of $date_
-!if $cdt_nbmonth>12  
+!if withyear isin $option_  
  $day/$month/$year
 !else 
  $day/$month

@@ -3,8 +3,7 @@ max_defaffi=10
 
 !if ($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)
  cdt_supervise=yes
- tmp=!defof cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link in wimshome/log/classes/$wims_class/cdt/.def
- !distribute item $tmp into cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link
+ !readdef wimshome/log/classes/$wims_class/cdt/.def
  !if $cdt_defined!=yes
   !sh mkdir -p $wims_home/log/classes/$wims_class/cdt/def;\
    mkdir -p $wims_home/log/classes/$wims_class/cdt/src;\
@@ -50,8 +49,7 @@ max_defaffi=10
  nbdate=0
  !for prog in $courses 
   prog=!text select 0123456789/ in $prog
-  tmp=!defof cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link in wimshome/log/classes/$wims_superclass/$prog/cdt/.def
-  !distribute item $tmp into cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link
+  !readdef wimshome/log/classes/$wims_superclass/$prog/cdt/.def
   !if $cdt_defined!=yes
    !sh mkdir -p $wims_home/log/classes/$wims_superclass/$prog/cdt/def;\
     mkdir -p $wims_home/log/classes/$wims_superclass/$prog/cdt/src;\
@@ -95,5 +93,11 @@ test=!record 0 of wimshome/s2/$wims_session/cdt
 !if $test=$empty
  !appendfile wimshome/log/classes/$wims_class/cdt/connect.log $wims_now $httpd_REMOTE_ADDR connect $wims_user
  !writefile wimshome/s2/$wims_session/cdt $wims_session
+!endif
+
+!if $cdt_showyear=1
+    dateoption=withyear
+!else
+    dateoption=$empty
 !endif
 
