@@ -20,7 +20,9 @@ cdir=$wims_home/log/classes/$wims_class
 !bound $logsheet between integer 1 and $max_sheets default $
 !bound $logexo between integer 1 and $max_exos default $
 !if $job=erase
-  !sh rm $cdir/$source
+  !if $source!=$empty
+   !sh rm $cdir/$source
+  !endif
   job=list
 !endif
 !if $job=log
