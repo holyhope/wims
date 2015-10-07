@@ -103,7 +103,6 @@ $module_title ($usercnt)
   !formselect showsheet list $ash prompt $tmp
   </div>
   <div class="field box">
-!!   $wims_name_or 
    $name_post
    !if $job_affi=notes or $job_affi=$empty
     !set wims_ref_class=wims_button
@@ -169,7 +168,7 @@ $module_title ($usercnt)
   !form reply
   !read adm/varfilter html
  !endif
- 
+
 !formend
  !if $wims_typename notwordof group portal program
   <p>$name_sheetdetail</p>
@@ -238,7 +237,7 @@ $module_title ($usercnt)
    !endif
   !next j
  !endif
- :endgroup
+:endgroup
  </tr>
  !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
  !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
@@ -255,11 +254,13 @@ $varfilter_
   !endif
   !set UU=!hex $uu
   $table_tr
-  <td>
+  !reset css_connected
+  !if $uu isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+  !endif
+  <td $css_connected>
    !href cmd=reply&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_studentloc
-   !if $uu isitemof $wims_connectedlogin
-    <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
-   !endif
   </td>
   !if $wims_typename iswordof group portal
     !goto enduser

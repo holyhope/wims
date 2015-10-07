@@ -129,11 +129,13 @@ $varfilter_
    !endif
   !increase trueusercnt
   $table_tr
-  <td>
+  !reset css_connected
+  !if $uu isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+  !endif
+  <td $css_connected>
    !href cmd=reply&job=getuser&getuser=$uu $name_studentloc
-   !if $uu isitemof $wims_connectedlogin
-    <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px;" alt="connected" />
-   !endif
   </td>
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
    !let t=!word $pos of $tot

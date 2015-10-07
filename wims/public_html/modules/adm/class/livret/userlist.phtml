@@ -59,11 +59,13 @@ $varfilter_
   !endif
   !if $var_filter_test=1 or $varfilter_=$empty
 	  $table_tr
-	   <td>
+	   !reset css_connected
+       !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
+         !set css_connected=class="wims_connected"
+         !set wims_ref_title=connected
+       !endif
+       <td $css_connected>
 	    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
-	    !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
-	     <img src="gifs/themes/$wims_theme_icon/connected.png" style="width:15px" alt="connected" />
-	    !endif
 	   </td>
 	   !for k=1 to $livret_nbcomp
 	    !for j=1 to $(nbpalier_$k)

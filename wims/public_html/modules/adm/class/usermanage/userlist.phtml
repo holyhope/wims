@@ -24,7 +24,7 @@ $wims_name_part_list ($usercnt)
 !else
 !! ------ manage ask for technical variable selection.
     !form reply
-	!read adm/varfilter html
+    !read adm/varfilter html
     !formend
 !! ----- displaying table of participant
     $table_header
@@ -49,11 +49,13 @@ $varfilter_
           !readdef $userdef
           !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
      $table_tr
-             <td>
-      !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
-           !if $uu isitemof $wims_connectedlogin
-          <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
-           !endif
+     !reset css_connected
+     !if $uu isitemof $wims_connectedlogin
+       !set css_connected=class="wims_connected"
+       !set wims_ref_title=connected
+     !endif
+        <td $css_connected>
+       !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
         </td>
         <td>$uu</td>
              !for k in email,regnum,external_auth,vars
@@ -113,9 +115,9 @@ to $wims_menu_items
  !endif
 !!## only the administrator has the right to add a teacher to the superclass
  !if $wims_typename iswordof group and $wims_supertype=2
- 	!if $teachercnt=0 or $job=teacher
-  		!set wims_menu_items=!append line ,0, to $wims_menu_items
- 	!endif
-	!set wims_menu_items=!append line addteacher,1,module=adm/class/reguser&step=1&utype=1 to $wims_menu_items
+    !if $teachercnt=0 or $job=teacher
+        !set wims_menu_items=!append line ,0, to $wims_menu_items
+    !endif
+    !set wims_menu_items=!append line addteacher,1,module=adm/class/reguser&step=1&utype=1 to $wims_menu_items
  !endif
 !endif wims_typename=group etc

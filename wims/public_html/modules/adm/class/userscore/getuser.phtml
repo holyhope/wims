@@ -6,10 +6,14 @@ $name_workdetail
 
 <div class="wimscenter"><span class="wimsemph">
 !if $wims_user=supervisor
+  !reset css_connected
+  !if $getuser isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+  !endif
+  <span $css_connected>
  !href module=adm/class/usermanage/&job=userprop&getuser=$getuser $name_studentloc
- !if $getuser isitemof $wims_connectedlogin
-  <img src="gifs/themes/$wims_theme_icon/connected.png" style="text-width:15px;" alt="connected" />
- !endif
+  </span>
 !else
  $name_studentloc
 !endif
@@ -319,6 +323,7 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   </tr>
  !next j
  $table_end
+!read wimshome/public_html/themes/_widgets/topback.phtml
 :next
 !next i
 

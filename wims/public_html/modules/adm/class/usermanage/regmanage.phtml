@@ -95,11 +95,13 @@ $varfilter_
           !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
           $table_tr
             <td><input type="checkbox" name="listuser" value="$uu"/></td>
-            <td>
-            !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
+            !reset css_connected
             !if $uu isitemof $wims_connectedlogin
-                <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
+              !set css_connected=class="wims_connected"
+              !set wims_ref_title=connected
             !endif
+            <td $css_connected>
+            !href cmd=reply&job=userprop&getuser=$uu $name_studentloc
             </td>
             !for k in $ltsubclasses
               <td class="wimscenter">

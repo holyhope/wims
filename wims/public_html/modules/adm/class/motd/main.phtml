@@ -122,12 +122,15 @@ $table_header
  !for k=1 to $nbuser
   $table_tr
    !let u=$(listiduser[$k])
-   <td> <input type="checkbox" name="listuser" id="listuser$k" value="$u"/> <label for="listuser$k"></label> </td>
-   <td>
+   <td><input type="checkbox" name="listuser" id="listuser$k" value="$u"/>
+   <label for="listuser$k"></label></td>
+   !reset css_connected
+   !if $u isitemof $wims_connectedlogin
+    !set css_connected=class="wims_connected"
+    !set wims_ref_title=connected
+   !endif
+   <td $css_connected>
     <label for="listuser$k">$(listnameuser[$k])</label>
-    !if $u isitemof $wims_connectedlogin
-     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
-    !endif
    </td>
    <td>
     !record 0 of wimshome/log/classes/$wims_class/motd/$u

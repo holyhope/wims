@@ -24,16 +24,20 @@ $wims_name_account_property
 <input type="hidden" name="getuser" value="$getuser" />
 <fieldset class="property_fields halfwidth blockcenter">
  <div class="field box">
-   <label>$wims_name_Login</label>
-    <span class="tt">$getuser</span>
-  !if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
-    <img src="gifs/themes/$wims_theme_icon/connected.png" width="15px" alt="connected" />
+   $wims_name_Login
+   !reset css_connected
+   !if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
+     !set css_connected=class="tt wims_connected"
+     !set wims_ref_title=connected
+   !else
+     !set css_connected=class="tt"
    !endif
+    <span $css_connected title="connected">$getuser</span>
  </div>
 !if $type_class iswordof 2 4 or ($class_Supervisor=$wims_realuser and $wims_class!=$wims_superclass and $wims_realuser!=$getuser)
   !if $user_participate!=$empty and $type_class iswordof 2 4
     <div class="field box">
-     <label>$name_inscript</label>
+     $name_inscript
      <span class="tt">$user_participate</span>
     </div>
   !endif

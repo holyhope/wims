@@ -1,8 +1,8 @@
 listuser=!listintersect $listuser and $wims_connectedlogin
 !reset connectedname
 !for user in $wims_connectedlogin
-	n=!positionof item $user in $listiduser
-	connectedname=!append item $(listnameuser[$n]) to $connectedname
+    n=!positionof item $user in $listiduser
+    connectedname=!append item $(listnameuser[$n]) to $connectedname
 !next user
 
 !if $listuser=$empty
@@ -30,18 +30,18 @@ wims_alertmsg in wimshome/sessions/$ses/var.stat
  motd=!detag $motd
  motd=!char 1 to $alertmsg_limit of $motd
  !for user in $listuser
-	pl=!positionof item $user in $wims_connectedlogin
-	don=!line $pl of $wims_whoconnect
-	ses=!item 4 of $don
-	!reset test
-	test=!getdef wims_class in wimshome/sessions/$ses/var.stat
-	!if $test!=$empty	
-		ses=!item 4 of $don
- 		!for s in $ses
-  			!setdef wims_alertmsg=$motd in wimshome/sessions/$s/var.stat
- 		!next s
-	!endif
- !next user 
+   pl=!positionof item $user in $wims_connectedlogin
+   don=!line $pl of $wims_whoconnect
+   ses=!item 4 of $don
+   !reset test
+   test=!getdef wims_class in wimshome/sessions/$ses/var.stat
+   !if $test!=$empty
+      ses=!item 4 of $don
+      !for s in $ses
+           !setdef wims_alertmsg=$motd in wimshome/sessions/$s/var.stat
+     !next s
+   !endif
+ !next user
  !reset user,listuser,action,motd,job
 !else
  motd=$motdold
