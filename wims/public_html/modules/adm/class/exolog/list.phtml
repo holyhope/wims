@@ -15,7 +15,7 @@ $table_header
 $table_hdtr
 <th class="small">$wims_name_date</th>
 !if $checkuser!=supervisor
-<th class="small">$wims_name_Sheet</th>
+  <th class="small">$wims_name_Sheet</th>
 !else
   <th class="small">$wims_name_Module</th>
 !endif
@@ -37,8 +37,8 @@ $table_hdtr
  !set V_=!record $E_ of wimshome/log/classes/$wims_class/sheets/.sheet$S_
  !distribute lines $V_ into a,a,a,a,T_,D_
  !default T_=!getdef w_title in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
- !if $wims_user=supervisor and $checkuser=supervisor
-   !set S_=!getdef w_module in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !if $wims_user=supervisor
+   !set S__=!getdef w_module in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
    !set E_=!getdef w_exo in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
    !set M_=!getdef w_email in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
    !if xiao isin $M_
@@ -67,7 +67,7 @@ $table_hdtr
 !![qualite] $S_\
 !! :$source
 !set msg=Please join the file source in the attachment
-   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S_&body=$msg&cc=$CC_">$name_sendmail</a>.
+   <a class="wims_button" href="mailto:$M_?subject=[qualite] $S__ $E_&body=$msg&cc=$CC_">$name_sendmail</a>.
     !endif
    !endif
    !if $checkuser=$wims_user
