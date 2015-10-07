@@ -41,7 +41,9 @@ $wims_classname, $wims_institutionname\
 !distribute items div,div into div0,div1
 
 !if $class_type isin 3
- $SU_greet.
+ <p class="wims_greetings">
+   $SU_greet.
+ </p>
  !read Subclasses1.phtml
  !if $class_typename=level
     </div><!--wimsbody-->
@@ -55,6 +57,7 @@ $wims_classname, $wims_institutionname\
 !endif class_type = 3
 
 !if $class_type notin 13
+ <span class="wims_greetings">
  $SU_greet
  $SU_exp1
  !set d_=!char 7,8 of $class_expiration
@@ -63,16 +66,20 @@ $wims_classname, $wims_institutionname\
  !read adm/date.phtml date,$y_,$m_,$d_
  !href module=adm/class/config $c_date_out
  $SU_exp2.
+ </span>
 !else
- $SU_greet.
+ <span class="wims_greetings">
+  $SU_greet.
+ </span>
 !endif
+
 !set wims_ref_class=wims_button_help
 !href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_help
-<br />
+
 !if $wims_numpartconnected>0
- $SU_numpartconnected.
+ <p class="wims_connected">$SU_numpartconnected.</p>
 !else
- $SU_nopartconnected.
+ <p>$SU_nopartconnected.</p>
 !endif
 
 !if $quota_free<2

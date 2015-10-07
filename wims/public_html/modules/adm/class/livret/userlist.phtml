@@ -14,7 +14,6 @@ $livret_title
  !exit
 !endif
 !default note=0
-<p></p>
 
 !! add varfilter
 !form reply
@@ -59,20 +58,20 @@ $varfilter_
   !endif
   !if $var_filter_test=1 or $varfilter_=$empty
 	  $table_tr
-	   !reset css_connected
-       !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
-         !set css_connected=class="wims_connected"
-         !set wims_ref_title=connected
-       !endif
-       <td><span $css_connected>
-	    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
-	   </span></td>
-	   !for k=1 to $livret_nbcomp
-	    !for j=1 to $(nbpalier_$k)
-	     !read adm/class/colors $(skillu_$i[$k;$j]),livret
-	     <td style=$style_note>$output_note</td>
-	    !next j
-	   !next k
+      <td>
+        !set link_content = $(uu[2])
+        !if $(uu[1]) isitemof $wims_connectedlogin and $wims_user=supervisor
+          !set link_content = $link_content <i class="wims_connected wims_tooltip" title="($SU_partconnected)"><span class="hidden_text">($SU_partconnected)</span></i>
+        !endif
+	      !href cmd=reply&job=user&user=$(uu[1]) $link_content
+        !reset link_content
+	    </td>
+	    !for k=1 to $livret_nbcomp
+	      !for j=1 to $(nbpalier_$k)
+	        !read adm/class/colors $(skillu_$i[$k;$j]),livret
+	        <td style=$style_note>$output_note</td>
+	      !next j
+	    !next k
 	  </tr>
   !endif
  !next i

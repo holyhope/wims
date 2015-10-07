@@ -9,7 +9,7 @@
 Werk,Terug naar het werk,\
 WIMS hoofdpagina,Intro/Configuratie,Help,Over deze module,\
 Introductie,Sluiten,\
-Sluit dit venster,Terug,\
+Sluit dit venster,Terug,Start of page,\
 Site manager,Schrijver van deze pagina,Schrijvers van deze pagina,\
 Vertaald door,Exit,\
 WIMS Help,Referenties,\
@@ -62,7 +62,7 @@ Terug naar de module,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
 	wims_name_titleintro,wims_name_Close,\
-	wims_name_back,wims_name_back2,\
+	wims_name_back,wims_name_back2,wims_name_top_page,\
 	wims_name_manager,wims_name_author,wims_name_authors,\
 	wims_name_translatedby,wims_name_exit,\
 	wims_name_whelp,wims_name_reference,wims_name_forum,wims_name_forums,\
@@ -501,4 +501,5 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module=adm/class/usermanage
     !set wims_name_regmanage=Toegangsbeheer
 !endif
-!set wims_name_cloneclass=Cloner une classe existante
+!set wims_name_cloneclass =Cloner une classe existante
+!set SU_partconnected     =This participant is currently connected

@@ -8,6 +8,24 @@
 !!initialisation
 !set home_theme=yes
 
+
+!if $(class_actcolor) != $empty
+<style type="text/css">
+  body.main_body{background-color:red;}
+
+  .wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item{
+   color:$(class_actcolor[1]);
+  }
+
+  .wims_sheet_item {background-color:$(class_actcolor[2]);}
+  .wims_exam_item  {background-color:$(class_actcolor[3]);}
+  .wims_doc_item   {background-color:$(class_actcolor[4]);}
+  .wims_vote_item  {background-color:$(class_actcolor[5]);}
+  .wims_exo_item   {background-color:$(class_actcolor[6]);}
+</style>
+!endif
+
+
 !set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
 !set auth_method_list=cas,ldap,php
 !set auth_method=$(class_authidp[1;])
@@ -97,7 +115,7 @@
   !writefile wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
  !endif
 !endif
-$U_greet
+<p class="wims_greetings">$U_greet</p>
 
 !if & isin $newmsgcnt or $newmsgcnt>0
  <p class="wims_newmsg">
@@ -106,7 +124,7 @@ $U_greet
 !endif
 
 !if $wims_supconnectshowed=yes and $wims_supervisorconnected!=$empty
- <p>$U_supconnected</p>
+ <p class="wims_connected">$U_supconnected</p>
 !endif
 
 !read themes/_widgets/motd.phtml
