@@ -129,13 +129,11 @@ $table_header
     !set css_connected=class="wims_connected"
     !set wims_ref_title=connected
    !endif
-   <td $css_connected>
-    <label for="listuser$k">$(listnameuser[$k])</label>
-   </td>
    <td>
+    <label for="listuser$k"><span $css_connected>$(listnameuser[$k])</span></label>
+   </td><td>
     !record 0 of wimshome/log/classes/$wims_class/motd/$u
-   </td>
-   <td>
+   </td><td>
     !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$u
     !if $test=$empty
      $(name_status[1])
@@ -143,8 +141,7 @@ $table_header
      $(name_status[2])
      !href cmd=reply&job=reactivate&listuser=$u $name_reactive
     !endif
-   </td>
-   <td>
+   </td><td>
     !let p=!positionof item $u in $wims_connectedlogin
     !if $p!=$empty
      !let n=!itemcnt $(wims_whoconnect[$p;])
