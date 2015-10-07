@@ -37,15 +37,16 @@ $module_title ($usercnt)
  !goto end
 !endif
 
-<div class="wimscenter">
+
 !set typen=!defof class_typename in wimshome/log/classes/$wims_class/.def
 !if $usercnt==0
+   <div class="wimscenter">
     $name_noyetparticipant
     !if $typen!=level
         &nbsp;
-	!set wims_ref_class=wims_button
-	!href module=adm/class/reguser&step=1 $wims_name_addstudent
-	&nbsp;
+      !set wims_ref_class=wims_button
+      !href module=adm/class/reguser&step=1 $wims_name_addstudent
+      &nbsp;
     !endif
     !set wims_ref_class=wims_button
     !href cmd=reply&job=csv $wims_name_csv
@@ -53,7 +54,6 @@ $module_title ($usercnt)
 !else -- $usercnt>0
 !! !set wims_ref_class=wims_button
 !! !href cmd=reply&job=csv $wims_name_csv
- </div>
  !if $seq_cnt=0
  <p>
     $name_warning_no_sequence
@@ -103,7 +103,7 @@ $module_title ($usercnt)
   !formselect showsheet list $ash prompt $tmp
   </div>
   <div class="field box">
-   $name_post
+   $name_Post
    !if $job_affi=notes or $job_affi=$empty
     !set wims_ref_class=wims_button
     !href cmd=reply&job_affi=quality $(name_affi[1])
@@ -164,6 +164,7 @@ $module_title ($usercnt)
   <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
   </div>
+</fieldset>
  !else
   !form reply
   !read adm/varfilter html
@@ -417,8 +418,8 @@ $varfilter_
     !goto end
  !endif
  !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
-	$[rint(100*$mean_tea/$usercnt)/100],\
-	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+   $[rint(100*$mean_tea/$usercnt)/100],\
+   $[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
  $table_hdtr<th>$name_classAverage</th>
  !if $job_affi=notes
   !if $manual>0
@@ -469,8 +470,8 @@ $varfilter_
  !next j
  !if $cnt_glob>0
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
-	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
-	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+   $[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+   $[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
     </tr>
     $table_hdtr<th>$name_posAverage</th>
   !if $manual>0
@@ -552,4 +553,4 @@ to $wims_menu_items
 !tail
 
 !reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
-	passcheck
+   passcheck
