@@ -46,7 +46,11 @@
 !set nadd0=!translate internal $ $ to & in $nadd
 
 !if $get_wksheet!=$empty
-  !set nadd=$nadd worksheet=$get_wksheet
+ !if worksheet isin $nadd
+  !set nadd=!replace internal worksheet= by worksheet=$get_wksheet in $nadd
+  !else
+    !set nadd=$nadd worksheet=$get_wksheet
+  !endif
 !endif
 !set nadd=!translate internal $ $ to & in $nadd
 !set prompt=!item 2 to -1 of $parms
