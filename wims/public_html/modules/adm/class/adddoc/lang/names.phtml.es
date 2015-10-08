@@ -9,3 +9,5 @@ o su estatuto
 !if $doc>0
  !set name_intro=$name_intro o suprimir el vínculo sobre este recurso en su clase
 !endif
+
+!set name_noone=No one

@@ -9,3 +9,5 @@ omschrijving of toegangsrechten en status veranderen
 !if $doc>0
  !set name_intro=$name_intro of de link naar dit materiaal verwijderen
 !endif
+
+!set name_noone=No one
