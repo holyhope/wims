@@ -1,8 +1,11 @@
 !read adm/class/classlang names.phtml
 
+wims_prefix=none
+
 !if $wims_user=supervisor
 !! !bound job within prop,show default show
 !else
+ error=not_supervisor
  !exit
 !endif
 
@@ -10,13 +13,8 @@ title_limit=50
 desc_limit=255
 max_sheets=!defof MAX_SHEETS in wimshome/public_html/bases/sys/define.conf
 doctot=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
-wims_prefix=none
-sup=$wims_user
 class=$wims_class
-!if $sup!=supervisor
- error=not_supervisor
- !exit
-!endif
+
 !if $job=prop and $cmd iswordof new resume
   sh=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
   !distribute lines $sh into dir,t_,title,desc,status,wksheet
