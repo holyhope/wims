@@ -519,7 +519,14 @@ void determine_font(char *l);
 
 void _headmathjax ( char *p)
 {
-   _output_("\n<script type=\"text/javascript\">/*<![CDATA[*/if(\
+   _output_("\n<script type=\"text/javascript\">/*<![CDATA[*/\
+function wims_mathml_zoom(id){\
+var math = document.getElementById(id);\
+if(math.getAttribute(\"mathsize\") == \"100%\"){\
+math.setAttribute(\"mathsize\",\"200%\");}else{\
+math.setAttribute(\"mathsize\",\"100%\");};\
+};\
+if(\
 navigator.userAgent.toLowerCase().indexOf(\"firefox\") == -1 &&\
 navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
 (navigator.userAgent.toLowerCase().indexOf(\"safari\") == -1 ||\
@@ -529,7 +536,7 @@ navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
 script.type = \"text/javascript\";\
 script.src  = \"scripts/js/mathjax/MathJax.js?config=MML_HTMLorMML-full.js\";\
 document.body.appendChild(script);\
-}/*]]>*/</script>\n");
+};/*]]>*/</script>\n");
 }
 
 /* standardized header */

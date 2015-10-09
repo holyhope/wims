@@ -125,7 +125,7 @@ see forum post of Eric Reyssat
 http://wimsedu.info/?topic=unites-de-mesure-et-mathml/#post-3105
 
 */
-          char *argv[]={"wims_mathml","--use-zoom",zoom,"--tex-size 100%%","--max-mml-size",mml_buffer,"--tex-string",p,NULL};
+          char *argv[]={"wims_mathml","--use-zoom",zoom,"--tex-size 100%","--max-mml-size",mml_buffer,"--tex-string",p,NULL};
 	  /* This is the child process. Close other end first. */
           close(my_pipe[0]);
           dup2(my_pipe[1], 1);  /* send stdout to the pipe */
