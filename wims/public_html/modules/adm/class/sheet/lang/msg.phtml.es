@@ -18,6 +18,11 @@
  !exit
 !endif
 
+!if bad_maxsheet=$error
+ Le nombre de feuilles est limité à $max_sheets. Vous ne pouvez donc plus en créer.
+ !exit
+!endif
+
 !if no_title=$error
  Ha intentado grabar una hoja de trabajo sin título, lo cual no está
  permitido. ¿Error de manipulación?
