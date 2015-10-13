@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist baddocnumber not_supervisor insert_fail
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc
   !goto $error
 !else
  !msg $error
@@ -22,4 +22,8 @@
  
 :baddocnumber
  Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+!exit
+
+:maxdoc
+Le nombre de documents est limité à $max_doc.
 !exit

@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist baddocnumber not_supervisor insert_fail
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail max_doc
   !goto $error
 !else
  !msg $error
@@ -22,4 +22,8 @@ Seul l'administrateur de la classe peut mener cette action.
 
 :insert_fail
 vous essayez d'insérer un module non autorisé.
+!exit
+
+:maxdoc
+Le nombre de documents est limité à $max_doc.
 !exit
