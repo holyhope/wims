@@ -66,6 +66,8 @@ mean_score=0
 !for u=1 to $usercnt
 	l=!record $u of wimshome/log/classes/$qclass/.userlist
 	quser=!item 3 of $l
+	lastname=!item 2 of $l
+	firstname=!item 1 of $l
 	!defread $users_dir/$quser
 
 	examscore=!examscore user=$quser class=$qclass
@@ -87,7 +89,7 @@ mean_score=0
 	!if $exam_attempts > 0
 		!advance real_usercnt
 		mean_score = $[$mean_score + $exam_score]
-		new_line = "id":"$quser", "score":$exam_score , "attempts" : $exam_attempts
+		new_line = "id":"$quser", "first_name":"$firstname", "last_name":"$lastname", "score":$exam_score , "attempts" : $exam_attempts
 		data_scores = !append line $new_line to $data_scores
 	!endif
 	
