@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet
   !goto $error
 !else
  !msg $error
@@ -26,3 +26,8 @@ vous essayez d'insérer un module non autorisé.
 :maxdoc
 Le nombre de documents est limité à $max_doc.
 !exit
+
+:toomuchsheet
+Het maximum aantal werkbladen is ingesteld op $max_sheets. Er kan geen nieuw werkblad meer worden aangemaakt.
+ !exit
+

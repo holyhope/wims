@@ -1,0 +1,56 @@
+!if $nbsheet>=$max_sheets
+ error=toomuchsheet
+ !exit
+!endif
+
+docu=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+dir=!line 1 of $docu
+donnees=!sh grep -a primitives.phtml $wims_home/public_html/modules/$dir/doc/1/*.def | grep -a exercise
+nbexo=!linecnt $donnees
+donsh=$empty
+!for k=1 to $nbexo
+ exodon=!line $k of $donnees
+ iniparm=!item -2 of $exodon
+ title=!item -1 of $exodon
+ !read getparm $iniparm module,worksheet,cmd
+ !for name in cmd,worksheet,module
+  iniparm=!replace internal $name=$(get_$name) by $empty in $iniparm
+ !next name
+ iniparm=!singlespace $iniparm
+ iniparm=!replace internal & by , in $iniparm
+ iniparm=!nonempty item $iniparm
+ iniparm=!replace internal , by & in $iniparm
+ !if $iniparm!=$empty
+  tmp=:$get_module\
+$iniparm\
+10\
+1\
+$title\
+\
+
+ donsh=!append line $tmp to $donsh
+ !endif
+!next k
+
+autosheet=$[$nbsheet+1]
+!writefile wimshome/log/classes/$wims_class/sheets/.sheet$autosheet $donsh
+title=!line 4 of $docu
+date=!defof class_expiration in wimshome/log/classes/$wims_class/.def
+!appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
+$date\
+$title
+
+message=$name_confirmmksheet
+n=!linecnt $docu
+!if $n<=6
+ docu=!append line $autosheet to $docu
+!else
+ docu=!replace line number 7 by $autosheet in $docu
+!endif
+!read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+\
+$docu
+!distribute lines $docu into dir,param,title,desc,status,wksheet,autosheet
+nbsheet=$[$nbsheet+1]
+job=prop
