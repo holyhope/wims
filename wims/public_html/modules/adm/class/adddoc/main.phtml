@@ -9,54 +9,24 @@ $wims_institutionname
 !read adm/title.phtml 1\
 $classname\
 $module_title
+
 !if $error!=$empty
- <div>
- !read lang/msg.phtml.$moduclass_lang
+ <div class="wims_alertmsg">
+  !read lang/msg.phtml.$moduclass_lang
  </div>
  !goto end
+!else
+ !if $message!=$empty
+  <div class="wims_stdmsg">
+   $message
+  </div>
+ !endif
 !endif
- $name_intro.
- !form reply
 
- !set iniparm1=!replace internal & by $ $ in $iniparm
- !set block=!getopt block in $iniparm1
- <fieldset class="property_fields halfwidth blockcenter">
-    <legend>$module_title</legend>
-    <div class="field box">
-      <label for="title">$wims_name_title</label>
-      <input size="50" name="title" value="$title" id="title" />
-    </div>
-    <div class="field box">
-      <label for="status">$wims_name_Status</label>
-     !formselect status list 0,1 prompt $wims_name_status
-     <input type="hidden" name="job" value="$job" />
-  !if $doc>0
-   !set wims_ref_class=wims_formradio
-   !formcheckbox update list 0 prompt $wims_name_erase
- !endif
-    </div>
-    <div class="field box">
-      <label for="wksheet">$name_wksheet</label>
-       !set snlist=!values v for v from 1 to $max_sheets
-       !formselect wksheet from 0 to $max_sheets prompt $name_noone,$snlist
-    </div>
-    <div class="field box">
-      <label for="desc">$wims_name_Description</label>
-     <textarea name="desc" rows="5" cols="50" id="desc">$desc</textarea>
-    </div>
-    <div class="field box">
-     <label>Code</label>
-      <code>
-!replace internal & by &amp; in $dir
- !if $iniparm!=$empty
-!replace internal & by &amp; in &$iniparm
- !endif
-     </code>
-    </div>
-  <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave" /></div>
-  </fieldset>
-
-!formend
+!if $job isitemof prop,proc or $job=$empty
+ !read prop.phtml
+!else
+ !read $job.phtml
 !endif
 
 :end
@@ -66,5 +36,4 @@ to $wims_menu_items
 
 !tail
 
-!set job=
-
+!reset job

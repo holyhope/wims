@@ -1,0 +1,33 @@
+!! updatefield of a record
+!! wims_read_parm should be by line :
+!! file
+!! num of field
+!! optionword
+!! all other lines : new data for the field num
+!!
+!! option allow :
+!! delete : in this case field num will be deleted
+
+file_=!line 1 of $wims_read_parm
+num_=!line 2 of $wims_read_parm
+option_=!line 3 of $wims_read_parm
+data_=!line 4 to -1 of $wims_read_parm
+
+nbrec_=!recordcnt $file_
+newrecord_=$empty
+!if $num_>1
+    !for k_=1 to $num_-1
+	tmp_=!record $k_ of $file_
+	newrecord_=!append line :$tmp_ to $newrecord_
+    !next k_
+!endif
+!if delete notwordof $option_
+ newrecord_=!append line :$data_ to $newrecord_
+!endif
+!if $num_<$nbrec_
+    !for k_=$num_+1 to $nbrec_
+	tmp_=!record $k_ of $file_
+	newrecord_=!append line :$tmp_ to $newrecord_
+    !next k_
+!endif
+!writefile $file_ $newrecord_

@@ -1,26 +1,39 @@
 
-rec=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
-!distribute lines $rec into bidon,bidon,title_save,desc_save,status_save,wksheet_save
+!bound step within 0,1 default 0
 
-!if $title!=$title_save
- !distribute item 3,$title into update_field,update_content
- !read update.doc
-!endif
-!if $desc!=$desc_save
- !distribute item 4,$desc into update_field,update_content
- !read update.doc
-!endif
-!if $status!=$status_save
- !distribute item 5,$status into update_field,update_content
- !read update.doc
-!endif
-!if $wksheet!=$wksheet_save
- !distribute item 6,$wksheet into update_field,update_content
- !read update.doc
-!endif
-!if $update=0
-  !distribute item 0 into update_field
-  !read update.doc
+!if $step=0
+ !if NaN isin $[$doc/10] or $doc<1 or $doc>$doctot
+    error=baddocnumber
+    !exit
+ !endif
+ sdoc=$doc
+ sh=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+ !distribute lines $sh into dir,param,title,desc,status,wksheet
+ !exit
 !endif
 
-!restart
+!if $step=1
+ !if $update!=$empty
+  step=2
+ !else
+  desc=!singlespace $desc
+  desc=!char 1 to $desc_limit of $desc
+  title=!singlespace $title
+  title=!char 1 to $title_limit of $title
+  !bound wksheet between 0 and $nbsheet default 0
+  !bound status within 0,1 default 0
+  sh=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+  !distribute lines $sh into dir,param,b,b,b,b
+  newsh=$dir\
+$param\
+$title\
+$desc\
+$status\
+$wksheet
+  !read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+$empty\
+$newsh
+ message=$name_savemodif
+ !endif
+!endif

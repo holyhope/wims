@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail
   !goto $error
 !else
  !msg $error
@@ -9,4 +9,16 @@
 
 :already_exist
  El document que voleu inserir ja hi és a la classe.
+!exit
+
+:baddocnumber
+ Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+!exit
+
+:not_supervisor
+Seul l'administrateur de la classe peut mener cette action.
+!exit
+
+:insert_fail
+vous essayez d'insérer un module non autorisé.
 !exit

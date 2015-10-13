@@ -1,23 +1,25 @@
 !set wims_module_log=error: $error
 
-!if not_supervisor=$error
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:not_supervisor:
  ±§Ç¸, µ«ÊÇÖ»ÓĞ°à¼¶µÄ×¢²áÖ÷³Ö½ÌÊ¦²ÅÄÜ×÷Õâ¸ö×¼±¸²Ù×÷.
- !exit
-!endif
+!exit
 
-!if bad_class=$error
- Ææ¹Ö, ÎÒ·¢ÏÖÄãµÄ°à¼¶ÊÇÎŞĞ§µÄ!
- !exit
-!endif
-
-!if insert_fail=$error
+:insert_fail
  Èí¼ş²»ÄÜ°ÑÄãµÄ×÷Òµ¼Óµ½°à¼¶Àï. Çë¼ì²éÄãµÄÊı¾İ.
- !exit
-!endif
+!exit
 
-!if already_exist=$error
+
+:already_exist
  ÄãÒªÌá½»µÄÎÄ¼şÒÑ¾­°üº¬ÔÚÄãµÄ°à¼¶Àï.
- !exit
-!endif
+!exit
  
- 
+:baddocnumber
+ Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+!exit

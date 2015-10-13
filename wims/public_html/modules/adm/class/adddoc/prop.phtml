@@ -1,0 +1,18 @@
+!!$name_intro.
+
+!if $step<2
+ !set propform_legend=$name_propdoc
+ !read proc/propform.phtml
+!else
+ $name_deletemsg
+ <p class="wimscenter">
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=deldoc $wims_name_yes
+  &nbsp;&nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume&step=0&job=prop&doc=$sdoc $wims_name_no
+ </p>
+!endif
+!tail
+
+!reset job
