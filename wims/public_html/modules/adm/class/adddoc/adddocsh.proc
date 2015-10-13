@@ -4,6 +4,10 @@
 !endif
 
 docu=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+autosheet=!line 7 of $docu
+!if $autosheet!=$empty
+ !exit
+!endif
 dir=!line 1 of $docu
 donnees=!sh grep -a primitives.phtml $wims_home/public_html/modules/$dir/doc/1/*.def | grep -a exercise
 nbexo=!linecnt $donnees
