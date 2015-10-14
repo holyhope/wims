@@ -1,40 +1,56 @@
- <!-- _widgets/sequence.phtml -->
- <ul class="inline">
- <li><span class="wims_doc_item">$wims_name_doc</span></li>
- <li><span class="wims_sheet_item">$wims_name_Sheets</span></li>
- <li><span class="wims_exam_item">$wims_name_Examens</span></li>
- <li><span class="wims_vote_item">$wims_name_Votes</span></li>
- </ul>
- !if $seq_cnt >1 and $seq=$empty
-  <br />
-  <ul id="wims_seq_summary" class="inline">
-  !for i=1 to $seq_cnt
-  !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$i
-  !distribute line $seq_ into tis_,cos_,obj_,o_
-  !if $o_>0
-  <li><a class="wims_button" href="#wims_seq_$i">$wims_name_sequence $i</a></li>
+<!-- _widgets/sequence.phtml -->
+
+<div id="widget_sequence">
+
+!if $seq_cnt >1 and $seq=$empty
+  !if $jquery_defined=yes
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      jQuery(function($$) {
+        $$("#widget_sequence").tabs();
+      });
+      /*]]>*/
+    </script>
   !endif
+  <ul id="wims_seq_summary">
+  !for i=1 to $seq_cnt
+    !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$i
+    !distribute line $seq_ into tis_,cos_,obj_,o_
+    !if $o_>0
+      <li><a href="#wims_seq_$i">$wims_name_sequence $i</a></li>
+    !endif
   !next
   </ul>
- !endif
- !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
- !if $seq>0
+!endif
+
+!set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+!if $seq>0
   !read ./sequence.phtml $seq
   !reset seq
- !else
+!else
   !for i=1 to $seq_cnt
-   !if $seq_reverse=yes
-    !set u=$[$seq_cnt+1-$i]
-   !else
-    !set u=$i
-   !endif
-   !read ./sequence.phtml $u
+    !if $seq_reverse=yes
+      !set u=$[$seq_cnt+1-$i]
+    !else
+      !set u=$i
+    !endif
+    !read ./sequence.phtml $u
   !next
- !endif
- <!--end  _widgets/sequence.phtml -->
+!endif
+</div>
+<div class="wims_work_legend">
+  <p class="inline">$wims_name_legend:</p>
+  <ul class="inline">
+    <li class="wims_doc_item">$wims_name_doc</li>
+    <li class="wims_sheet_item">$wims_name_Sheets</li>
+    <li class="wims_exam_item">$wims_name_Examens</li>
+    <li class="wims_vote_item">$wims_name_Votes</li>
+  </ul>
+</div>
+<!--end  _widgets/sequence.phtml -->
 
 !if $seq_cnt>0
- !read themes/_widgets/user_varsheet.phtml
- !read themes/_widgets/user_varexam.phtml
+  !read themes/_widgets/user_varsheet.phtml
+  !read themes/_widgets/user_varexam.phtml
 !endif
 

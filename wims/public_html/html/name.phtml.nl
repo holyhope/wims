@@ -58,6 +58,7 @@ Nieuwste,\
 Geef het antwoord,\
 Leerling management,\
 Terug naar de module,\
+Legend,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -77,7 +78,7 @@ Terug naar de module,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
 	wims_name_Example,wims_name_Vote,wims_name_Votes,wims_name_cgu,wims_name_feedbackexo,wims_name_feedbackplus,\
 	wims_name_cas_logout,wims_name_credits,wims_name_mod_new,wims_name_answer,wims_name_usermanage,\
-	wims_name_moduback
+	wims_name_moduback,wims_name_legend
 
 !! **** Menuprof Names ***
 !distribute items Klassen, Zoeken,\
