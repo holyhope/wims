@@ -6,93 +6,48 @@ slib_author=Bernadette, Perrin-Riou
 slib_title=Date
 slib_parms=2\
  ,first date (written in format ddmmyyyy)\
- ,second date (written in format ddmmyyyy)
+ ,second date (written in format ddmmyyyy)\
+diff,option as diff, add
+
 
 slib_out=number of days between the two dates.
-slib_example=12022013,18082013\
-12022013,13022013\
-12022013,18082013\
+slib_example=12022013,18082013,diff\
+12022013,13022013,diff\
+12022013,18082013,diff\
 18082013,12022013\
 12022004,18082004\
 17012012,10092014\
 17012013,10092015\
 17032013,10092013\
-01022004,01032004
+01022004,01032004\
+12022013,0,add\
+12022013,20,add\
+04032013,-20,add\
+12022013,3,add item\
+18082013,365,add nospace\
+18022012,365,add
 !exit
 
 :proc
-on ne tient compte pas des années bissextiles !
-!distribute item $wims_read_parm into slib_date1, slib_date2
-!set slib_day1=!char 1 to 2 of $slib_date1
-!set slib_day2=!char 1 to 2 of $slib_date2
-!set slib_month1=!char 3 to 4 of $slib_date1
-!set slib_month2=!char 3 to 4 of $slib_date2
-!set slib_year1=!char 5 to 8 of $slib_date1
-!set slib_year2=!char 5 to 8 of $slib_date2
-!if $slib_year2 < $slib_year1 or ($slib_year2 = $slib_year1 and $slib_month2 < $slib_month1)\
-  or ($slib_year2 = $slib_year1 and $slib_month2 < $slib_month1 and $slib_day2 < $slib_day1)
-  !exchange slib_day1 and slib_day2
-  !exchange slib_month1 and slib_month2
-  !exchange slib_year1 and slib_year2
-  !set slib_sign=-1
-!else
-  !set slib_sign=1
-!endif
-!set slib_month1=$[$slib_month1]
-!set slib_month2=$[$slib_month2]
-!set slib_month_list=31,27,31,30,31,30,31,31,30,31,30,31
-pour l'instant même année  donc slib_month1 <= $slib_month2
-!if $slib_month1 = $slib_month2
-   !set slib_nb=$[$slib_day2-$slib_day1+1]
-   !if $slib_month1=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
-     !increase slib_nb
-   !endif
-!endif
-!if $slib_month1 < $slib_month2
-  !set slib_nb=$[$(slib_month_list[$slib_month1])-$slib_day1+1]
-  !if $slib_month1=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
-     !increase slib_nb
+!distribute item $wims_read_parm into slib_date1, slib_date2, slib_option
+!if add isin $slib_option
+  slib_date1=!nospace $slib_date1
+  slib_date1=!text expand $slib_date1 using 01101101111
+  slib_date1=!exec date.pl 1 $slib_date1
+  slib_date2=!exec pari $slib_date1 + ($slib_date2)*86400
+  slib_date2=!exec date.pl 2 $slib_date2
+  slib_out=!word 1 to 3 of $(slib_date2)
+  !if nospace isin $slib_option
+    slib_out=!nospace $slib_out
   !endif
-  !for slib_j=$slib_month1+1 to $[$slib_month2-1]
-    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
-    !if $slib_j=2 and $[$slib_year1%4]=0 and $[$slib_year1%100]!=0
-     !increase slib_nb
-    !endif
-  !next
-  !set slib_nb=$[$slib_nb + $(slib_day2)]
-  !for slib_j=$slib_year1 to $slib_year2 -1
-    !set slib_nb=$[$slib_nb + 365]
-    !if $slib_j%4=0 and $slib_year1%100!=0
-      !increase $slib_nb
-    !endif
-  !next
-!endif
-
-!if $slib_month1 > $slib_month2
-on change d'annee
-  !set slib_nb=$[$(slib_month_list[$slib_month1])-$slib_day1+1]
-  !for slib_j=$slib_month1+1 to 12
-    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
-    !if $slib_j=2 and $slib_year1%4=0 and $slib_year1%100!=0
-     !increase slib_nb
-    !endif
-  !next
-  !for slib_j=1 to $slib_month2-1
-    !set slib_nb=$[$slib_nb + $(slib_month_list[$slib_j])]
-    !if $slib_j=2 and $[($slib_year1+1)%4]=0 and $[($slib_year1+1)%100]!=0
-     !increase slib_nb
-    !endif
-  !next
-  !set slib_nb=$[$slib_nb + $(slib_day2)]
-  !for slib_j=$slib_year1 to $slib_year2 -1
-    !set slib_nb=$[$slib_nb + 365]
-    !if $slib_j%4=0 and $slib_year1%100!=0
-      !increase $slib_nb
-    !endif
-  !next
-!endif
-
-slib_out=$[$slib_nb-1]
-!if $slib_sign=-1
-  slib_out=-$slib_out
+  !if item isin $slib_option
+    slib_out=!words2items $slib_out
+  !endif
+!else
+  slib_date1=!text expand $slib_date1 using 01101101111
+  slib_date2=!text expand $slib_date2 using 01101101111
+  slib_date1=!exec date.pl 1 $slib_date1
+  slib_date2=!exec date.pl 1 $slib_date2
+!! not always an integer because of the time change
+  slib_out=$[round(($slib_date2 - $slib_date1)/86400)]
 !endif
