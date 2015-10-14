@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet noexo
   !goto $error
 !else
  !msg $error
@@ -30,3 +30,7 @@ Le nombre de documents est limité à $max_doc.
 :toomuchsheet
 The number of worksheets is limited to $max_sheets. You may not create another worksheet.
  !exit
+
+:noexo
+Ce document ne contient aucun exercice.
+!exit

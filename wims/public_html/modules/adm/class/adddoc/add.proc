@@ -1,10 +1,10 @@
-!!read proc/prop.proc
-
 !bound step within 0,1 default 0
 
 !if $step=0
+ test=!defof category in wimshome/public_html/modules/$dir/INDEX
  !if ../adm/ isin ../$dir or $dir=home or \
-   (../devel/ isin ../$dir and $wims_devel_modules notwordof open)
+   (../devel/ isin ../$dir and $wims_devel_modules notwordof open) or \
+   document notwordof $test
   error=insert_fail
   !exit
  !endif
@@ -13,6 +13,7 @@
   error=maxdoc
   !exit
  !endif
+
  title=!module title $dir
  desc=!module description $dir
  desc=!singlespace $desc
@@ -44,16 +45,17 @@
  title=!char 1 to $title_limit of $title
  !bound status within 0,1 default 0
  !bound wksheet within 0 and $nbsheet default 0
-!appendfile wimshome/log/classes/$wims_class/doc/.docindex :$dir\
-$iniparm\
+!appendfile wimshome/log/classes/$wims_class/doc/.docindex :$sdir\
+$siniparm\
 $title\
 $desc\
 $status\
 $wksheet\
 
-
-wims_module_log=class $wims_class: add $dir
-
+sdoc=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+wims_module_log=class $wims_class: add $sdir
+dir=$sdir
+iniparm=$siniparm
 message=$name_confirm
 job=prop
 

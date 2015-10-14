@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet
+!if $error iswordof already_exist baddocnumber not_supervisor insert_fail maxdoc toomuchsheet noexo
   !goto $error
 !else
  !msg $error
@@ -31,3 +31,6 @@ Le nombre de documents est limité à $max_doc.
 Het maximum aantal werkbladen is ingesteld op $max_sheets. Er kan geen nieuw werkblad meer worden aangemaakt.
  !exit
 
+:noexo
+Ce document ne contient aucun exercice.
+!exit
