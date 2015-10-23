@@ -1,0 +1,16 @@
+!! delete doc $sdoc
+
+!if NaN isin $[$doc/10] or $doc<1 or $doc>$doctot
+    error=baddocnumber
+    !exit
+!endif
+sdoc=$doc
+tmp=!record $sdoc of wimshome/log/classes/$wims_class/doc/.docindex
+s=!line 5 of $tmp
+tmp=!replace internal line number 5 by $[1-$s] in $tmp
+!read proc/updatefield.proc wimshome/log/classes/$wims_class/doc/.docindex\
+$sdoc\
+\
+$tmp
+
+!restart module=home
