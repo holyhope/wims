@@ -33,6 +33,24 @@ void patchgdImageFill (gdImagePtr im, int x, int y, int color)
 }
 
 
+#define DASHPIXELS 8
+
+void myDashedLine(gdImagePtr im, int x1, int y1, int x2, int y2, int color);
+void myDashedLine(gdImagePtr im, int x1, int y1, int x2, int y2, int color){
+  /**
+   * emulates gdImageDashedLine with gdImageSetStyle and gdImageLine
+   * GK: As gdImageDashedLine is slightly broken in latest libgd libraries,
+   * GK: I implemented an emulation named "myDashedLine"
+   **/
+
+  int styleDashed[DASHPIXELS],i;
+  for (i=0; i< DASHPIXELS/2; i++) styleDashed[i]=color;
+  for (; i< DASHPIXELS; i++) styleDashed[i]=gdTransparent;
+  gdImageSetStyle(im, styleDashed, DASHPIXELS);
+  gdImageLine(im, x1, y1, x2, y2, gdStyled);
+}
+
+
 /* File opening: with security */
 FILE *open4read(char *n)
 {
@@ -178,7 +196,7 @@ void _obj_arrow(objparm *pm, int twoside)
       gdImageFilledPolygon(image, ii,3,pm->color[0]);
     }
     stem: if(pm->fill)
-      gdImageDashedLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);
+      myDashedLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);
     else
       gdImageLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);
     if(vimg_enable) vimg_line(scale_buf[0],scale_buf[1],scale_buf[2],scale_buf[3]);
@@ -201,7 +219,7 @@ void obj_hline(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
     if(pm->fill)
-      gdImageDashedLine(image,0,pm->p[1],sizex,pm->p[1],pm->color[0]);
+      myDashedLine(image,0,pm->p[1],sizex,pm->p[1],pm->color[0]);
     else
       gdImageLine(image,0,pm->p[1],sizex,pm->p[1],pm->color[0]);
 }
@@ -211,7 +229,7 @@ void obj_vline(objparm *pm)
 {
     scale(pm->pd,pm->p,1);
     if(pm->fill)
-      gdImageDashedLine(image,pm->p[0],0,pm->p[0],sizey,pm->color[0]);
+      myDashedLine(image,pm->p[0],0,pm->p[0],sizey,pm->color[0]);
     else
       gdImageLine(image,pm->p[0],0,pm->p[0],sizey,pm->color[0]);
 }
@@ -349,7 +367,7 @@ void obj_dlines(objparm *pm)
     n=(pm->pcnt)/2;
     scale(pm->pd,pm->p,n);
     for(i=2;i<2*n;i+=2)
-      gdImageDashedLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
+      myDashedLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
     if(vimg_enable) vimg_polyline(scale_buf,n,0);
 }
 
