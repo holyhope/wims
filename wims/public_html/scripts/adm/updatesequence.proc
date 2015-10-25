@@ -1,0 +1,68 @@
+!! update seq repertory when delete a sheet,exam,doc (public or not)
+!distribute item $wims_read_parm into name_,number_
+
+!! ------ checking of input data
+po_=!positionof item $name_ in sheet,exam,c,doc
+!if $po_=$empty
+ !exit
+!endif
+file_=!line $po_ of sheets/.sheets\
+exams/.exams\
+doc/.index\
+doc/.docindex
+nb_=!recordcnt wimshome/log/classes/$wims_class/$file_
+!if NaN isin $[$number_/10] or $number_<=0 or $number_>$nb_
+ !exit
+!endif
+
+
+!! ------ effective update of seq directory
+
+seqs_=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+nbseq_=!line 1 of $seqs_
+seqs_=$nbseq_
+!if $nbseq_=0
+ !exit
+!endif
+
+!for k_=1 to $nbseq_
+ don_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$k_
+ !distribute lines $don_ into p1_,p2_,p3_,p4_
+ nbitem_=!itemcnt $p3_
+ !if $nbitem_>0
+  lseqs_=$empty
+  !for j_=1 to $nbitem_
+   !if $name_ isin $(p3_[$j_])
+    num_=!text select 0123456789 in $(p3_[$j_])
+    !if $num_>$number_
+     newit_=$name_ $[$num_-1]
+    !else
+     !if $num_<$number_
+      newit_=$(p3_[$j_])
+     !else
+      newit_=$empty
+     !endif
+    !endif
+    p3_=!replace internal item number $j_ by $newit_ in $p3_
+   !else
+    newit_=$(p3_[$j_])
+   !endif
+   !if sheet isin $newit_ or exam isin $newit_
+    lseqs_=!append item $newit_ to $lseqs_
+   !endif
+  !next j_
+  p3_=!nonempty item $p3_
+  lseqs_=!nonempty item $lseqs_
+  lseqs_=$k_,$lseqs_
+ !else
+  lseqs_=$k_
+ !endif
+ seqs_=!append line $lseqs_ to $seqs_
+ tmp_=$p1_\
+$p2_\
+$p3_\
+$p4_
+   !writefile wimshome/log/classes/$wims_class/seq/.sequence$k_ :$tmp_
+!next k_
+
+!writefile wimshome/log/classes/$wims_class/seq/.sequences $seqs_
