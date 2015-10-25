@@ -10,6 +10,12 @@ sh=!itemcnt $asheets
  !exit
 !endif
 
+!if $cmd=resume
+ !bound infoshow within yes,no default $wims_infoshow
+ wims_infoshow=$infoshow
+ !setdef wims_infoshow=$wims_infoshow in wimshome/sessions/$wims_session/var.stat
+!endif
+
 max_exams=!defof MAX_EXAMS in wimshome/public_html/bases/sys/define.conf
 title_limit=80
 desc_limit=4000

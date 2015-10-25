@@ -38,7 +38,16 @@ $name_title $exam
  !goto end
 !endif
 
-!read examinfo.phtml
+!if $wims_infoshow=no
+ <span class="bold"> $name_info [
+ !href cmd=resume&infoshow=yes +
+ ]
+ </span>
+ <br/>
+!else
+ !read examinfo.phtml
+!endif
+
 
 !ifval $activetest=-1
  !goto end
