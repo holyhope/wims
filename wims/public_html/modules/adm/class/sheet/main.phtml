@@ -30,7 +30,15 @@ $name_titlemodif $modif
  !goto end
 !endif
 
-!read adm/sheet/sheetinfo.phtml
+!if $wims_infoshow=no
+ <span class="bold"> $name_info [
+ !href cmd=resume&infoshow=yes +
+ ]
+ </span>
+ <br/>
+!else
+ !read adm/sheet/sheetinfo.phtml
+!endif
 
 !ifval $activetest=-1
  !goto end
