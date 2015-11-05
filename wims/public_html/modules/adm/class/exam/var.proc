@@ -10,6 +10,11 @@ sh=!itemcnt $asheets
  !exit
 !endif
 
+scnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!if $exam>$scnt
+ wims_infoshow=yes
+ !setdef wims_infoshow=$wims_infoshow in wimshome/sessions/$wims_session/var.stat
+!endif
 !if $cmd=resume
  !bound infoshow within yes,no default $wims_infoshow
  wims_infoshow=$infoshow
@@ -78,7 +83,6 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
  !exit
 !endif
 
-scnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
 !if $job=erase and $exam>=1 and $exam<=$scnt
  test=
  !for s=$exam+1 to $scnt
