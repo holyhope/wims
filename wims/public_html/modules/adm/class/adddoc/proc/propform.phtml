@@ -11,10 +11,10 @@
     <div class="field box">
       <label for="status">$wims_name_Status</label>
      !formselect status list 0,1 prompt $wims_name_status
-     !if $job!=add
-      !set wims_ref_class=wims_formradio
-      !formcheckbox update list 0 prompt $wims_name_erase
-     !endif
+!!     !if $job!=add
+!!      !set wims_ref_class=wims_formradio
+!!      !formcheckbox update list 0 prompt $wims_name_erase
+!!     !endif
     </div>
     !if $job!=add
      <div class="field box">
@@ -51,9 +51,12 @@
     </div>
     <input type="hidden" name="job" value="$job" />
     <input type="hidden" name="step" value="1" />
-    <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/></div>
+    <div class="wimscenter wimsform"><input type="submit" value="$wims_name_tosave"/>
+     !if $job!=add
+       <input type="submit" name="update" value="$wims_name_erase"/>
+     !endif
+    </div>
  </fieldset>
 !formend
-
 
 
