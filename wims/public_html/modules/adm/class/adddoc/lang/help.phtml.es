@@ -16,6 +16,7 @@
 <p>Cette fonctionnalité permet de générer une nouvelle feuille d'exercices contenant la liste de tous les exercices du document.</p>
 <p>Elle est automatiquement rajoutée à votre classe ; la liaison entre ce document et la feuille est automatiquement installée.</p>
 <p>Vous pouvez ensuite modifier ses paramètres d'utilisation, ou éventuellement supprimer des séries d'exercices et modifier le barême, en utilisant l'interface habituelle de gestion des feuilles d'exercices à partir de la page d'accueil de la classe.</p>
+<p>Cette fonctionnalité ne peut être utilisée qu'une seule fois. Si vous souhaitez générer une copie de la feuille une nouvelle fois, vous devez utiliser les outils de duplication des feuilles d'exercices.</p>
 
 !exit
 
