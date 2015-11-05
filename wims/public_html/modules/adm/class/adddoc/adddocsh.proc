@@ -28,12 +28,19 @@ donsh=$empty
    liniparm=!replace internal & by , in $liniparm
    liniparm=!nonempty item $liniparm
    liniparm=!replace internal , by & in $liniparm
+   helpcmd=!item 1 of $exodon
+   helpcmd=!replace internal : by , in $helpcmd
+   helpcmd=!replace internal / by , in $(helpcmd[1])
+   helpcmd=!replace internal . by , in $(helpcmd[-1])
    tmp=:$get_module\
 $liniparm\
 10\
 1\
 $title\
 \
+\
+\
+module=$dir&block=$(helpcmd[1])&cmd=new,10
 
    donsh=!append line $tmp to $donsh
   !endif
