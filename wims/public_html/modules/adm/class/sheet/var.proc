@@ -2,6 +2,11 @@
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang names.phtml
 
+scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!if $sheet>$scnt
+ wims_infoshow=yes
+ !setdef wims_infoshow=$wims_infoshow in wimshome/sessions/$wims_session/var.stat
+!endif
 !if $cmd=resume
  !bound infoshow within yes,no default $wims_infoshow
  wims_infoshow=$infoshow
