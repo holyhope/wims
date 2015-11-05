@@ -34,7 +34,7 @@ nb_active=0
 	!if $status>=1 and $status <=2
 		!advance nb_active
 	!endif
-	
+
 	!if $qsheet=$i
 		active_index=$nb_active
 	!endif
@@ -71,8 +71,8 @@ sheet_max_quality =0
 !for u=1 to $usercnt
 	l=!record $u of wimshome/log/classes/$qclass/.userlist
 	quser=!item 3 of $l
-	lastname=!item 2 of $l
-	firstname=!item 1 of $l
+	lastname=!item 1 of $l
+	firstname=!item 2 of $l
 	!defread $users_dir/$quser
 
 	#getscorepercent fournit les donnes globales de la feuille : pourcentage de realisation et qualitŽ
@@ -82,7 +82,7 @@ sheet_max_quality =0
 	user_quality=!word 2 of $sheet_summaries
 	sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
 	sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
-	
+
 	!default user_percent=0
 	!default user_quality=0
 	!if $user_percent>$sheet_max_percent
@@ -91,16 +91,15 @@ sheet_max_quality =0
 	!if $user_quality>$sheet_max_quality
 		sheet_max_quality=$user_quality
 	!endif
-	
+
 	gotdetail=!getscore user=$quser class=$qclass sheet=$qsheet
 	#gotdetail=!line $active_index of $gotdetail
-	
+
 	meandetail=!getscoremean user=$quser class=$qclass sheet=$qsheet
 	#meandetail=!line $active_index of $meandetail
-	
+
 	remain=!getscoreremain user=$quser class=$qclass sheet=$qsheet
 	#remain=!line $active_index of $remain
-	
 
 	!for v in gotdetail, meandetail, remain
 	    $v=!trim $($v)
@@ -111,9 +110,9 @@ sheet_max_quality =0
 			$v=""
 		!endif
 	!next v
-	
+
 	new_line = :"id":"$quser", "first_name":"$firstname", "last_name":"$lastname", "user_percent":$user_percent, "user_quality":$user_quality,"got_detail":$gotdetail,"mean_detail":$meandetail,"remain":$remain
-	
+
 	# Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
 	data_scores = !append line $new_line to $data_scores
 	!ifval  $u % 100 = 0
