@@ -49,12 +49,18 @@ $title\
 autosheet=$[$nbsheet+1]
 
 !writefile wimshome/log/classes/$wims_class/sheets/.sheet$autosheet $donsh
-title=!line 4 of $docu
+
+title=!line 3 of $docu
+desc=!line 4 of $docu
 date=!defof class_expiration in wimshome/log/classes/$wims_class/.def
 
 !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
 $date\
-$title
+$title\
+$desc\
+\
+autogenerate for document
+
 message=$name_confirmmksheet
 docu=!nonempty line $docu
 n=!linecnt $docu
