@@ -54,7 +54,6 @@ testimg=!exec pari abs(imag($test))
   !endif
 !endif
 
-
 m_reply$i=!mathsubst I=i in $(m_reply$i)
 
 !if $test_comma=yes
@@ -82,7 +81,7 @@ good=!exec pari $(replygood$i)
 tot=!exec pari max(abs($test)+abs($good),1/$precision)
 
 diff=!exec pari abs($test-($good))
-!if NaN isin $tot $diff or Inf isin $tot $diff
+!if NaN isin $tot $diff or Inf isin $tot $diff or $tot=$empty or $diff=$empty
  test=NaN
  !exit
 !endif
@@ -98,7 +97,7 @@ diff=!exec pari abs($test-($good))
    diareply$i=bad
  !endif
 !else
- !if $precision*$diff<=$tot
+ !if $[$precision*$diff]<=$tot
    diareply$i=good
    !advance freegot
  !else
