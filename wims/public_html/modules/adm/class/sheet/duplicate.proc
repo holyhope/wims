@@ -1,0 +1,29 @@
+!! duplicate a sheet
+
+!if $scnt>=$max_sheets
+    error=bad_maxsheets
+    !reset job
+    !changeto var.proc
+!endif
+!bound sheet between 1 and $scnt default $empty
+
+!if $sheet=$empty
+    error=
+    !reset job
+    !changeto var.proc
+!endif
+
+
+!sh cd $wims_home/log/classes/$wims_class/sheets/\
+cp .sheet$sheet .sheet$[$scnt+1]
+
+p=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
+p=!replace line number 1 by 0 in $p
+
+!appendfile wimshome/log/classes/$wims_class/sheets/.sheets :$p
+
+scnt=$[$scnt+1]
+sheet=$scnt
+message=$name_duplicateok
+!reset job
+!changeto var.proc

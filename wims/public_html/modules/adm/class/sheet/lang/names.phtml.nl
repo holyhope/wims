@@ -5,6 +5,8 @@
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
+!set name_duplicateok=Feuille d'exercices dupliquée correctement.
+
 
 !let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters,$wims_name_feedbackexo
 

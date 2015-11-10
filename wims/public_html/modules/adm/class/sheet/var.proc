@@ -114,6 +114,10 @@ scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
  !restart module=home
 !endif
 
+!if $job=duplicate
+ !changeto $job.proc
+!endif
+
 !if $job=expire
  !distribute item 1,2 into update_field,update_content
  !read update.sheet

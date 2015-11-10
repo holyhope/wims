@@ -23,6 +23,13 @@ $name_titlemodif $modif
 !!this is not a true message error ...
  !read lang/msg.phtml.$moduclass_lang
  !goto end
+!else
+ !if $message!=$empty
+    <div class="wims_msg success">
+     $message
+     !reset message
+    </div>
+ !endif
 !endif
 
 !if $job=getsource
@@ -94,7 +101,8 @@ $name_titlemodif $modif
  !if $job!=getsource
   !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
  !endif
- !let wims_menu_items=!append line ,0,\
+ !let wims_menu_items=!append line duplicatesheet,1,cmd=reply&job=duplicate&sheet=$sheet\
+,0,\
 printable,1,module=adm/sheet&sh=$sheet&job=print\
 participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
 !endif
