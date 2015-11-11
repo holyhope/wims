@@ -30,21 +30,18 @@ slib_example=3.5,,,,C,html\
 
 !set insdraw_size=$slib_size,$[4*$slib_size]
 !set slib_deg=$[$slib_deg/10]
-!set slib_xrange=$[2+2]
-!set slib_range0=3
-!set slib_yrange1=$[($(slib_range[1])/10)-1]
-!set slib_yrange2=$[($(slib_range[2])/10)+1]
-!set slib_tick=$(slib_color[1])
-!set slib_tick2=$(slib_color[2])
-!set slib_tick3=$(slib_color[3])
-!set slib_tick4=$(slib_color[4])
+!distribute items 4,3,$[($(slib_range[1])/10)-1],$[($(slib_range[2])/10)+1] \
+  into slib_xrange, slib_range0,slib_yrange1, slib_yrange2
+!distribute line $(slib_color[1])\
+$(slib_color[2])\
+$(slib_color[3])\
+$(slib_color[4])\
+into slib_tick,slib_tick2,slib_tick3,slib_tick4
 !default slib_tick=black
 !default slib_tick2=blue
 !default slib_tick3=grey
 !default slib_tick4=yellow
-!set slib_Ticks=
-!set slib_ticks=
-!set slib_tickss=
+!reset slib_Ticks slib_ticks slib_tickss
 !for slib_i=$slib_yrange1+1 to $slib_yrange2-1
  !set slib_Ticks=$slib_Ticks\
 segment -$slib_range0,$slib_i,-0.5,$slib_i,$slib_tick\
@@ -88,7 +85,7 @@ transparent white\
  linewidth 3\
  rectangle -$slib_xrange,$[$slib_yrange1-0.2],$slib_xrange,$slib_yrange2,blue\
  polyline grey, -0.5,$[$slib_yrange1+0.3],-0.5,$[$slib_yrange2-0.2], 0.5,$[$slib_yrange2-0.2],0.5,$[$slib_yrange1+0.3]\
- trange pi/2 + pi/6,2*pi + pi/2 - pi/6\
+ trange $[pi/2 + pi/6],$[2*pi + pi/2 - pi/6]\
  plot $slib_tick4, 0 + 0.6*cos(t), $slib_yrange1 + 0.2 + 0.6/4* sin(t)
 slib_point=$[($slib_yrange1 + ($slib_deg))/2]
 slib_out=$slib_out\
