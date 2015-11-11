@@ -13,14 +13,13 @@ title_limit=50
 desc_limit=255
 nbsheet=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 
-
 !read $job.proc
 
 !if $job=prop and $nbsheet>0
-listsheetname=$empty
-!for k=1 to $nbsheet
- t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
- t=!line 3 of $t
- listsheetname=!append item $k : $t to $listsheetname
-!next k
+ listsheetname=$empty
+ !for k=1 to $nbsheet
+  t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
+  t=!line 3 of $t
+  listsheetname=!append item $k : $t to $listsheetname
+ !next k
 !endif
