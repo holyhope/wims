@@ -5,7 +5,7 @@
 !let module_title=Setup your preferences for WIMS
 !let module_description=define preferences for wims
 !let module_version=1.00
-!let module_wims_version=0.13
+!let module_wims_version=4.05a
 !let module_language=en
 !let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
 !let module_category=adm
@@ -95,41 +95,31 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
     browser
     </a>
     or use the serveur with "math with images".
-    </p>
-    <ul>
-     <li>
+    </p><p>
      Modifier le mode d'affichage :
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font Math with images
 
       !set arg=!nospace $texsize 2
-      !set wims_ref_class=wims_button
+      !set wims_ref_class=wims_button $ wims_secondary_button
       !href cmd=resume&useropts=$(arg)0$font MathML
-
-     </li>
-     <li>
-      !let ts1=!eval $texsize-1
-      !let ts2=!eval $texsize+1
-      !if $ts1<1
-       !let ts1=1
-      !endif
-      !if $ts2>9
-       !let ts2=9
-      !endif
-      Set the size of mathematical formulas.
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$default Default
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
-     </li><li>
+     </p>
+     <ul><li>
       Use zoom on formulas by mouse click.
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$texsize$(texalign)1$font $wims_name_yes
+      !reset secondary
+      !if $useropts=$texsize$(texalign)0$font
+        !set secondary1=wims_button wims_secondary_button
+        !set secondary2=wims_button
+      !else
+        !set secondary2=wims_button wims_secondary_button
+        !set secondary1=wims_button
+      !endif
+      !set wims_ref_class=$secondary2
+      !href cmd=resume&useropts=$texsize$(texalign)1$font activated
       &nbsp;
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$texsize$(texalign)0$font $wims_name_no
+      !set wims_ref_class=$secondary1
+      !href cmd=resume&useropts=$texsize$(texalign)0$font desactivated
+     </li></ul>
 !else
  <p>
     Currently, you use the server with "Math with images". If you have a suitable
@@ -137,19 +127,23 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
     browser
     </a>,
     you may also use MathML.
- </p>
-
- <ul>
-  <li>Modifier le mode d'affichage :
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$(arg)0$font Mode image
-
+ </p><p>
+ Modifier le mode d'affichage :
+  !reset secondary
+  !if $useropts=$(arg)0$font
+    !set secondary=$ wims_secondary_button
+  !endif
+  !set wims_ref_class=wims_button$secondary
+  !href cmd=resume&useropts=$(arg)0$font Mode image
    !set arg=!nospace $texsize 2
-   !set wims_ref_class=wims_button
+   !reset secondary
+   !if $useropts=$(arg)0$font
+    !set secondary=$ wims_secondary_button
+   !endif
+   !set wims_ref_class=wims_button$secondary
    !href cmd=resume&useropts=$(arg)0$font MathML
-  </li>
-
-  <li>
+  </p>
+  <ul><li>
    Size of mathematical symbols and formulas.
    !let ts1=!eval $texsize-1
    !let ts2=!eval $texsize+1
@@ -172,28 +166,32 @@ Position of the formulas. If the expression
   !if $texalign=1
    too high with respect to the text line,
    !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$(texsize)0$zoom$font click here
-   to lower it.
+   !href cmd=resume&useropts=$(texsize)0$zoom$font click here to lower it.
   !else
    too low with respect to the text line,
    !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$(texsize)1$zoom$font click here
-   to raise it.
+   !href cmd=resume&useropts=$(texsize)1$zoom$font click here to raise it.
   !endif
-!endif
 </li>
 </ul>
-
+!endif
 <h2>Accessibilité</h2>
 
 <p>Vous pouvez régler l'espacement des lettres et des mots
-    !set wims_ref_class=wims_button
+     !if $useropts=$(texsize)$texalign$(zoom)1
+        !set secondary1=wims_button wims_secondary_button
+        !set secondary2=wims_button
+      !else
+        !set secondary2=wims_button wims_secondary_button
+        !set secondary1=wims_button
+      !endif
+    !set wims_ref_class=$secondary2
     !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
 
-    !set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Espacé
+    !set wims_ref_class=$secondary1
+    !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Lecteur dyslexique
 </p><p>
-Le mode espacé est particulierement adapté dans le cas d'un lecteur dyslexique.</p>
+Le mode espacé est particulièrement adapté dans le cas d'un lecteur dyslexique.</p>
 
 <br class="spacer" />
 <p>

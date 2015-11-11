@@ -94,9 +94,7 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
     navigateur
     </a>
     ou mettre le serveur en mode image.
-    </p>
-    <ul>
-     <li>
+    </p><p>
      Modifier le mode d'affichage :
       !set wims_ref_class=wims_button
       !href cmd=resume&useropts=$(arg)0$font Mode image
@@ -104,25 +102,8 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       !set arg=!nospace $texsize 2
       !set wims_ref_class=wims_button $ wims_secondary_button
       !href cmd=resume&useropts=$(arg)0$font MathML
-
-     </li>
-     <li>
-      !let ts1=!eval $texsize-1
-      !let ts2=!eval $texsize+1
-      !if $ts1<1
-       !let ts1=1
-      !endif
-      !if $ts2>9
-       !let ts2=9
-      !endif
-      Réglage de la taille des formules mathématiques.
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$default Normal
-      !set wims_ref_class=wims_button
-      !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
-     </li><li>
+     </p>
+     <ul><li>
       Zoom sur les formules par un click de souris.
       !reset secondary
       !if $useropts=$texsize$(texalign)0$font
@@ -137,6 +118,7 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
       &nbsp;
       !set wims_ref_class=$secondary1
       !href cmd=resume&useropts=$texsize$(texalign)0$font désactivé
+     </li></ul>
 !else
  <p>
     Actuellement, vous utilisez le serveur en mode image. Avec un
@@ -144,10 +126,8 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
     navigateur convenable
     </a>,
     vous pouvez utiliser le mode MathML.
- </p>
-
- <ul>
-  <li>Modifier le mode d'affichage :
+ </p><p>
+ Modifier le mode d'affichage :
   !reset secondary
   !if $useropts=$(arg)0$font
     !set secondary=$ wims_secondary_button
@@ -161,23 +141,24 @@ Le serveur permet 2 modes d'affichage des formules : le mode image, ou l'utilisa
    !endif
    !set wims_ref_class=wims_button$secondary
    !href cmd=resume&useropts=$(arg)0$font MathML
+  </p>
+  <ul><li>
+     Réglage de la taille des symboles.
+     !let ts1=!eval $texsize-1
+     !let ts2=!eval $texsize+1
+     !if $ts1<1
+       !let ts1=1
+     !endif
+     !if $ts2>9
+      !let ts2=9
+     !endif
+     !set wims_ref_class=wims_button
+     !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+     !set wims_ref_class=wims_button
+     !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Normal
+     !set wims_ref_class=wims_button
+     !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
   </li><li>
-   Réglage de la taille des symboles.
-   !let ts1=!eval $texsize-1
-   !let ts2=!eval $texsize+1
-   !if $ts1<1
-    !let ts1=1
-   !endif
-   !if $ts2>9
-    !let ts2=9
-   !endif
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Normal
-   !set wims_ref_class=wims_button
-   !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
-</li><li>
 Réglage de la position verticale. Si l'expression
   !insmath (x+y)/(x^$pw + y^2)
   est
@@ -190,10 +171,9 @@ Réglage de la position verticale. Si l'expression
    !set wims_ref_class=wims_button
    !href cmd=resume&useropts=$(texsize)1$zoom$font cliquez ici pour la faire monter.
   !endif
-!endif
 </li>
 </ul>
-
+!endif
 <h2>Accessibilité</h2>
 
 <p>Vous pouvez régler l'espacement des lettres et des mots
