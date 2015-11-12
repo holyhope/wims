@@ -1,5 +1,10 @@
 !set wims_module_log=error: $error
 
+!if bad_maxexams=$error
+ Le nombre d'examens est limité à $max_exams.
+ !exit
+!endif
+
 !if not_supervisor=$error
 Helaas, maar het maken of modificeren van een proefwerk
 is voorbehouden aan de docent van een klas.

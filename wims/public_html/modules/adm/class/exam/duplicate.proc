@@ -1,0 +1,34 @@
+!! duplicate an exam
+
+!if $scnt>=$max_exams
+    error=bad_maxexams
+    !reset job
+    !changeto var.proc
+!endif
+!bound exam between 1 and $scnt default $empty
+
+!if $exam=$empty
+    error=bad_exam
+    !reset job
+    !changeto var.proc
+!endif
+
+exocnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$exam
+!if $exocnt=0
+ !reset job
+ !changeto var.proc
+!endif
+
+!sh cd $wims_home/log/classes/$wims_class/exams/\
+cp .exam$exam .exam$[$scnt+1]
+
+p=!record $exam of wimshome/log/classes/$wims_class/exams/.exams
+p=!replace line number 1 by 0 in $p
+
+!appendfile wimshome/log/classes/$wims_class/exams/.exams :$p
+
+scnt=$[$scnt+1]
+exam=$scnt
+message=$name_duplicateok
+!reset job
+!changeto var.proc

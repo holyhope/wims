@@ -1,5 +1,6 @@
 !set lang_exists=yes
 
+!set name_duplicateok=Examen dupliqué correctement.
 !set name_title=Aanmaken van een proefwerk
 !set name_mainpage=Hoofdpagina van het proefwerk
 

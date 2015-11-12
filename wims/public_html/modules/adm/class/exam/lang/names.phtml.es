@@ -1,5 +1,6 @@
 !set lang_exists=yes
 
+!set name_duplicateok=Examen dupliqué correctement.
 !set wims_name_mainpage=Página principal del examen
 !set name_title=Preparación del examen
 
