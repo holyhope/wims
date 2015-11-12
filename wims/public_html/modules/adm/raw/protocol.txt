@@ -28,14 +28,14 @@ All requests must contain the following common parameters
 ---------------------------------------
  Name       Value
 ---------------------------------------
-module      adm/raw
-ident       sender identifier (a word, according to the definition
-        in WIMS_HOME/log/classes/.connections/)
-passwd      sender password (as defined in
-        WIMS_HOME/log/classes/.connections/)
-code        a random word. This word will be sent back to the sender,
-        in order to allow it to check whether the result is from
-        the good request.
+module  adm/raw
+ident   sender identifier (a word, according to the definition
+          in WIMS_HOME/log/classes/.connections/)
+passwd  sender password (as defined in
+          WIMS_HOME/log/classes/.connections/)
+code    a random word. This word will be sent back to the sender,
+          in order to allow it to check whether the result is from
+          the good request.
 job     type of request, see below.
 ---------------------------------------------
 
@@ -45,18 +45,18 @@ of the request.
 ---------------------------------------
  Name       Value
 ---------------------------------------
-qclass      identifier of the class on the receiving server.
-        It should be an integer.
+qclass    identifier of the class on the receiving server.
+            It should be an integer.
 qprogram
-quser       user identifier in the receiving server (when the request
-        concerns a particular user).
-qsheet      sheet identifier in the receiving server (when the request
-        concerns a particular sheet).
-rclass      identifier of the class on the sending server.
-format      Format of the data.
-option      Different meaning according to request.
-data1       Different meaning according to request.
-data2       Different meaning according to request.
+quser     user identifier in the receiving server (when the request
+            concerns a particular user).
+qsheet    sheet identifier in the receiving server (when the request
+            concerns a particular sheet).
+rclass    identifier of the class on the sending server.
+format    Format of the data.
+option    Different meaning according to request.
+data1     Different meaning according to request.
+data2     Different meaning according to request.
 ---------------------------------------------
 
 For example, the following request checks whether the class '12345' exists
@@ -74,15 +74,19 @@ ____________________________________________________________________________
 
 The query output (that is, the result of the http query) is always of
 text/plain type (even if sometimes the output is a binary file).
-The first line of the output content is a status line, which is either a
-word OK followed by the random code contained in the request, or the
-word ERROR. If the first line is not as such, then there is a
-serious error in the request or a bug in the server software.
 
-In case the status is OK, the remaining of the output content is the
-content of the data. Otherwise the second line contains the nature of
-the error.
+WIMS OUTPUT TYPE : (old fashioned way, non-recommended)
+    The first line of the output content is a status line, which is either a
+    word OK followed by the random code contained in the request, or the
+    word ERROR. If the first line is not as such, then there is a
+    serious error in the request or a bug in the server software.
 
+    In case the status is OK, the remaining of the output content is the
+    content of the data. Otherwise the second line contains the nature of
+    the error.
+
+JSON OUTPUT TYPE : (recommended)
+    output values are returned json formatted. (see http://json.org for more details)
 ___________________________________________________________________________
 
             Types of the requests.
@@ -92,87 +96,95 @@ A request to WIMS can have the following types (defined by the parameter
 
 job=help    Show this text.
 
-job=checkident  Check whether the connection is accepted. No output except
-        the status line.
+job=checkident  Check whether the connection is accepted.
 
-job=checkclass  Check whether the class accepts connection. No output except
-        the status line.
+job=checkclass  Check whether the class accepts connection.
 
-job=checkuser   Check whether the user exists. No output except the status
-        line.
+job=checkuser   Check whether the user exists.
 
-job=checksheet  Check whether the sheet exists. No output except the status
-        line.
+job=checksheet  Check whether the sheet exists.
 
 job=addclass    Add a class on the receiving server. For this request,
-        'data1' should be a multi-line text defining the properties
-        of the new class. Each line contains a definition
-        in the format 'name=value'. (Of course, this text
-        must be reformatted for http query string.)
-        The following names may be present in the definitions:
-    description = name of the class (mandatory)
-    institution = name of the institution (mandatory)
-    supervisor  = full name of the supervisor (mandatory)
-    email       = supervisor email address (mandatory)
-    password    = password for user registration (mandatory)
-    lang        = class language (en, fr, es, it, etc) (mandatory)
-    expiration  = class expiration date (yyyymmdd)
-              (optional, defaults to one year later)
-    limit       = limit of number of participants
-              (optional, defaults to 30)
-    level       = level of the class (optional, defaults to H4)
-              Valid levels: E1, E2, ..., E6, H1, ..., H6,
-              U1, ..., U5, G, R
-    secure      = secure hosts (optional)
-    bgcolor     = page background color
-    refcolor    = menu background color
-    css     = css file (must be existing css on the WIMS server)
+    'data1' should be a multi-line text defining the properties
+    of the new class. Each line contains a definition
+    in the format 'name=value'. (Of course, this text
+    must be reformatted for http query string.)
+    The following names may be present in the definitions:
+        description = name of the class (mandatory)
+        institution = name of the institution (mandatory)
+        supervisor  = full name of the supervisor (mandatory)
+        email       = supervisor email address (mandatory)
+        password    = password for user registration (mandatory)
+        lang        = class language (en, fr, es, it, etc) (mandatory)
+        expiration  = class expiration date (yyyymmdd)
+                        (optional, defaults to one year later)
+        limit       = limit of number of participants
+                        (optional, defaults to 30)
+        level       = level of the class (optional, defaults to H4)
+                        Valid levels: E1, E2, ..., E6, H1, ..., H6,
+                        U1, ..., U5, G, R
+        secure      = secure hosts (optional)
+        bgcolor     = page background color
+        refcolor    = menu background color
+        css         = css file (must be existing css on the WIMS server)
 
-        Moreover, 'data2' should be a multi-line text defining
-        the supervisor account, in the same format as for
-        data1. The following names may be present in
-        the definitions:
-    lastname    (mandatory)
-    firstname   (mandatory)
-    password    = user's password, non-crypted. (mandatory)
-    email       = email address (optional)
-    comments    = any comments (optional)
-    regnum      = registration number (optional)
+    Moreover, 'data2' should be a multi-line text defining
+    the supervisor account, in the same format as for data1.
+    The following names may be present in the definitions:
+        lastname    (mandatory)
+        firstname   (mandatory)
+        password    = user's password, non-crypted. (mandatory)
+        email       = email address (optional)
+        comments    = any comments (optional)
+        regnum      = registration number (optional)
+        photourl,
+        participate,
+        courses,
+        classes,
+        supervise, supervisable, external_auth, agreecgu,\
+ regprop1, regprop2, regprop3, regprop4, regprop5
 
-        There is no output data except the status line.
 
 job=adduser Add a user to the specified class. 'data1' should be a
-        multi-line text defining the user account, with names
-        as in 'addclass'.
-        There is no output data except the status line.
+        multi-line text defining the user account.
+        The following names may be present in the definitions:
+            (mandatory)
+                lastname      = user's lastname
+                firstname     = user's firstname
+                password      = user's password, non-crypted.
+            (optional)
+                email         = email address
+                comments      = any comments
+                regnum        = registration number
+                photourl      = url of user’s photo
+                participate   = list classes where user participates (only for group and portal)
+                courses       = special for portal
+                classes       = special for portal
+                supervise     = List classes where teacher are administator (only for group and portal)
+                supervisable  = yes/no ;  give right to the user to supervise a class (only for group and portal)
+                external_auth = login for external_auth (by cas or shiboleth for example). Not useful for Moodle
+                agreecgu      = if yes, the user will not be asked when he enters for the first time to agree the cgu
+                regprop[1..5] = custom variables, upon to you (i.e : you can set here an external group for example)
 
 job=modclass    Modify the properties of a class. 'data1' should be
-        a multi-line text containing the properties to be
-        redefined. Only modified properties need to be
-        present in data1.
-        There is no output data except the status line.
+        a multi-line text containing the properties to be redefined.
+        Only modified properties need to be present in data1.
 
-job=moduser Modify the properties of a user. As modclass.
-        There is no output data except the status line.
+job=moduser     Modify the properties of a user. As modclass.
 
 job=delclass    Delete a class.
-        There is no output data except the status line.
 
-job=deluser Delete a user.
-        There is no output data except the status line.
+job=deluser     Delete a user.
 
-job=recuser Recover a deleted user.
-        There is no output data except the status line.
+job=recuser     Recover a deleted user.
 
 job=getclass    Get the properties of a class.
 
         Optionally, the query parameter 'option' may contain
         the names of fields queried. In this case, only the
         queried properties are returned.
-        If the output type is WIMS,
-        it outputs a multi-line text, each line corresponding
-        to one definition in the format 'name=value', as
-        for the input format for 'addclass'.
+
+        OUTPUT variables :
         Definitions for portals have beed added (not yet in addclass) :
           typename
           programs
@@ -184,86 +196,82 @@ job=getclass    Get the properties of a class.
 
 job=getsheet    Get the properties of a sheet (of a class).
 
-        Optionally, the query parameter 'option' may contain
-        the names of fields queried. In this case, only the
-        queried properties are returned.
-        If the output type is WIMS, output is a multi-line text, each line corresponding
-        to one definition in the format 'name=value', with these names :
-    queryclass : the requested class
-    querysheet : the requested sheet
-    sheet_properties : list of properties of the requested sheet (sheet status,expiration date,title,description)
-    exocnt : number of exercices included
-    exotitlelist= list of the exercices included (module:params)
+    Optionally, the query parameter 'option' may contain
+    the names of fields queried. In this case, only the
+    queried properties are returned.
+
+    OUTPUT variables :
+        queryclass : the requested class
+        querysheet : the requested sheet
+        sheet_properties : list of properties of the requested sheet (sheet status,expiration date,title,description)
+        exocnt : number of exercices included
+        exotitlelist= list of the exercices included (module:params)
 
 job=listsheets  list all the sheets of a class.
-        If the output type is WIMS, output is a multi-line text, each line corresponding
-        to one definition in the format 'name=value', with these names :
-    queryclass : the requested class
-    nbsheet : number of sheets in this class
-    sheettitlelist=list of the sheets with the format "sheet_id:title"
+
+    OUTPUT variables :
+        queryclass : the requested class
+        nbsheet : number of sheets in this class
+        sheettitlelist=list of the sheets with the format "sheet_id:title"
 
 job=listclasses list all the classes with connection between the rclass and
 $ident/$rclass.
     Optionally, the query parameter 'option' contains the name of fields related to classes asked :
-    module=adm/raw&ident=$ident&passwd=....&code=abcde&job=listclasses&option=description,supervisor&rclass=$rclass
+    i.e. : option=description,supervisor
 
 job=getclassesuser list all the classes with connection between the rclass and
 $ident/$rclass where the user exists.
-   Optionally, the query parameter 'option' may contain
-  the names of fields queried. In this case, only the
-  queried properties of the classes are returned.
+    Optionally, the query parameter 'option' may contain
+    the names of fields queried. In this case, only the
+    queried properties of the classes are returned.
 
 job=getuser Get the properties of a user (of a class).
+    Optionally, the query parameter 'option' may contain the names of fields queried.
+    In this case, only the queried properties are returned.
+    The output format is as for 'getclass'.
 
-        Optionally, the query parameter 'option' may contain
-        the names of fields queried. In this case, only the
-        queried properties are returned.
-        The output format is as for 'getclass'.
+job=getcsv  Get data of the class, under the form of a csv/tsv spreatsheet file.
+    The query parameter 'format' may be used to specify the desired output format
+    (csv or tsv, defaults to csv).
+    The query parameter 'option' should contain a list of desired data columns.
+    The following names can be included in 'option', with their respective meanings:
+        login       user identifiers
+        password    user passwords (uncrypted)
+        name        user names (last name and first name)
+        lastname    user family names
+        firstname   user given names
+        email       user email addresses
+        regnum      user registration numbers
+        allscore    all score fields (averages and details)
+        averages    score averages (average0, average1, average2)
+        average0    global score average (as computed by WIMS)
+        average1    average of scores automatically attributed by WIMS
+        average2    average of teacher-entered scores
+        exams       exam1+exam2+...
+        exam1, exam2, ...
+                scores of each exam
+        sheets      sheet1+sheet2+...
+        sheet1, sheet2, ...
+                scores of each worksheet
+        manuals     manual1+manual2+...
+        manual1, manual2, ...
+                first, second, ... teacher-entered scores.
 
-job=getcsv  Get data of the class, under the form of a csv/tsv
-        spreatsheet file. The query parameter 'format' may be
-        used to specify the desired output format (csv or tsv,
-        defaults to csv).
-        The query parameter 'option' should contain a list of
-        desired data columns. The following names can be included
-        in 'option', with their respective meanings:
-    login       user identifiers
-    password    user passwords (uncrypted)
-    name        user names (last name and first name)
-    lastname    user family names
-    firstname   user given names
-    email       user email addresses
-    regnum      user registration numbers
-    allscore    all score fields (averages and details)
-    averages    score averages (average0, average1, average2)
-    average0    global score average (as computed by WIMS)
-    average1    average of scores automatically attributed by WIMS
-    average2    average of teacher-entered scores
-    exams       exam1+exam2+...
-    exam1, exam2, ...
-            scores of each exam
-    sheets      sheet1+sheet2+...
-    sheet1, sheet2, ...
-            scores of each worksheet
-    manuals     manual1+manual2+...
-    manual1, manual2, ...
-            first, second, ... teacher-entered scores.
-
-        The output content (below the status line) is a csv/tsv
+        The output content (below the status line in WIMS format) is a csv/tsv
         spreadsheet table. The first row of the table contains
         the names of the fields. The second row gives short
         descriptions of each field. The third row is blank.
         The rest is the table content, with one row for each user.
 
 job=lightpopup with query parameter 'emod'.
-     presents an exercise without the top, bottom, and left menu except for the
-    "about". The syntax is job=lightpopup&emod=$module where $module is a exercise module
-    with its parameters.
-
-    http://127.0.0.1/wims/wims.cgi?module=adm/raw&job=lightpopup&emod=H3%2Fanalysis%2Foeflinf.fr
+    presents an exercise without the top, bottom, and left menu except for the "about".
+    The syntax is job=lightpopup&emod=$module where $module is a exercise module with its parameters.
     option : noabout (the "about" which gives author information about the exercise will not appear).
              about (default)
-http://127.0.0.1/wims/wims.cgi?module=adm/raw&job=lightpopup&emod=H3%2Fanalysis%2Foeflinf.fr&parm=exo=antecedant;qnum=1;qcmlevel=3&option=noabout
+
+    SAMPLES REQUESTS :
+     * http://127.0.0.1/wims/wims.cgi?module=adm/raw&job=lightpopup&emod=H3%2Fanalysis%2Foeflinf.fr
+     * http://127.0.0.1/wims/wims.cgi?module=adm/raw&job=lightpopup&emod=H3%2Fanalysis%2Foeflinf.fr&parm=exo=antecedant;qnum=1;qcmlevel=3&option=noabout
 
 job=putcsv  Put data into the class. The data to put is sent as the
         value of the query parameter 'data1', in the same format
@@ -278,15 +286,11 @@ job=putcsv  Put data into the class. The data to put is sent as the
         can be used to install the whole user accounts of
         the class with one request.
 
-        There is no output data except the status line.
 
-job=getlog  Get the detailed activity registry of a user. The
-        output is in WIMS internal format.
+job=getlog  Get the detailed activity registry of a user.
 
 job=gettime Get the current time of the server, can be used for
         synchronization purposes.
-        The output can be formatted according to the desire
-        of the querying software.
 
 job=update  Ask WIMS to update data in a class. Upon reception of
         this request, WIMS server will issue queries back to
@@ -298,14 +302,14 @@ job=update  Ask WIMS to update data in a class. Upon reception of
     user    update properties of a user (moduser)
     scores  teacher-entered scores (putcsv)
 
-        There is no output data except the status line.
 
-job=authuser    Get an authentification for a user. The password of
-        the user is not required.
-        The output content is either a session number under
-        which the user can connect with no need of further
-        authentification (format for WIMS), or a complete
-        URL to connect as authentified.
+job=authuser    Get an authentification for a user.
+    User's password is not required.
+
+    OUTPUT :
+    "wims_session": a session number under
+        which the user can connect with no need of further authentification
+    "home_url": a complete URL to connect as authentified.
 
         Accept the query parameter 'option=hashlogin':
         hashlogin if called with option=hashlogin, quser should be the
@@ -316,41 +320,43 @@ job=authuser    Get an authentification for a user. The password of
                 the WIMS login is returned in the error message.
 
 job=addsheet    Add a new sheet to the specified class. 'data1' may be defined as a
-        multi-line text defining the sheet defs
-        The following names may be present in the definitions:
-    title           = name of the sheet (optional, defaults to "sheet n#")
-    description = description of the sheet (optional, defaults to "sheet n#")
-    expiration  = class expiration date (yyyymmdd) (optional, defaults to one year later)
-        sheetmode       = the mode of the sheet [0 = in preparation, 1 = active, 2 = ?, 3 = expired + hidden] (optional, defaults to 0)
-        contents        = the contents for the multi-line file to be created. The semicolons (;) in this parameter
-                          will be interpreted as new lines. Equal characters (=) must be replaced by the character AT (@).
-                          There is no check made, so the integrity of the contents is up to you only! (optional, defaults to "")
+    multi-line text defining the sheet defs
+    The following names may be present in the definitions:
+        title           = name of the sheet (optional, defaults to "sheet n#")
+        description = description of the sheet (optional, defaults to "sheet n#")
+        expiration  = class expiration date (yyyymmdd) (optional, defaults to one year later)
+        sheetmode   = the mode of the sheet [0 = in preparation, 1 = active, 2 = ?, 3 = expired + hidden] (optional, defaults to 0)
+        contents    = the contents for the multi-line file to be created. The semicolons (;) in this parameter
+                        will be interpreted as new lines. Equal characters (=) must be replaced by the character AT (@).
+                        There is no check made, so the integrity of the contents is up to you only! (optional, defaults to "")
 
-        If the output type is WIMS, output is a multi-line text, each line corresponding
-        to one definition in the format 'name=value', with these names :
-    queryclass : the requested class
-    sheet_id : id of the new created sheet
+    OUTPUT :
+        queryclass : the requested class
+        sheet_id : id of the new created sheet
 
 
 job=modsheet    Modify an existing sheet in the specified class. 'data1' may be defined as a
         multi-line text defining the sheet defs (cf addsheet)
 
 
-job=listexos        permet de lister tous les exercices presents dans la classe qclass
+job=listexos        Lists all exercices presents in class $qclass
 
-job=movexo          permet de deplacer l'exercice qexo de la classe qclass a la classe data1, a condition que les 2 classes soient liees a rclass
-# option peut contenir le mot "copy" pour copier le fichier au lieu de le deplacer.
+job=movexo          Moves exercice $qexo from class $qclass to class $data1
+    Condition : Both 2 classes must be linked by $rclass
+    # option : you can use "copy" to copy file instead of moving it.
 
-job=movexos         permet de deplacer l'ensemble des exercices de la classe qclass vers la classe data1, a condition que les 2 classes soient liees a rclass
-# option peut contenir le mot "copy" pour copier les fichiers au lieu de les deplacer.
+job=movexos         Moves ALL exercice from class $qclass to class $data1
+    Condition : Both 2 classes must be linked by $rclass
+    # option : you can use "copy" to copy files instead of moving them.
 
-job=sharecontent    permet de declarer des classes voisines, et de partager des contenus d'une classe "qclass" avec une classe "data1", a condition que les 2 classes soient liees a "rclass"
-"option" va contenir le type de contenu à partager. (pour le moment, seul "exo" est pris en compte)
+job=sharecontent    declare neighbour classes, allowing class "qclass" to share content with class "data1"
+    Condition : Both 2 classes must be linked by $rclass
+    "option" : which type of content you would like to share (by now, only "exo" is handled)
 
 job=linksheet       adds all exercices from sheet $qsheet to exam $qexam
 
-job=getsheetscores  gets all score from sheet $qsheet - JSON only
+job=getsheetscores  gets all score from sheet $qsheet - JSON OUTPUT only
 
-job=getexamscores   gets all score from exam $qexam - JSON only
+job=getexamscores   gets all score from exam $qexam - JSON OUTPUT only
 
 </pre>
