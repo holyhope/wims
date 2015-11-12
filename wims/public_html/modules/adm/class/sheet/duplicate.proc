@@ -13,6 +13,11 @@
     !changeto var.proc
 !endif
 
+exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!if $exocnt=0
+ !reset job
+ !changeto var.proc
+!endif
 
 !sh cd $wims_home/log/classes/$wims_class/sheets/\
 cp .sheet$sheet .sheet$[$scnt+1]

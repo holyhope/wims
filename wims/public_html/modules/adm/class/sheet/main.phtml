@@ -98,10 +98,12 @@ $name_titlemodif $modif
  !if $activetest=0
   !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
  !endif
- !if $job!=getsource
+ !if $job!=getsource and
   !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
  !endif
- !let wims_menu_items=!append line duplicatesheet,1,cmd=reply&job=duplicate&sheet=$sheet\
+ !if $exocnt>0
+  !let wims_menu_items=!append line duplicatesheet,1,cmd=reply&job=duplicate&sheet=$sheet\
+ !endif
 ,0,\
 printable,1,module=adm/sheet&sh=$sheet&job=print\
 participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
