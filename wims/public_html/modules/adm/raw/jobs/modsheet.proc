@@ -31,7 +31,7 @@ $ in $l
   n_=!word 1 of $n_
   v_=!trim $v_
   nbtot=!itemcnt $sheetdefs
-  
+
   !for numfield=1 to $nbtot
 
     defcur=!item $numfield of $sheetdefs
@@ -40,13 +40,13 @@ $ in $l
         ####################
         # il faudrait verifier qu'il n'y a aucune note sur cette feuille avant de la repasser en preparation. si c'est le cas, il faut basculer les notes en question du dossier /score vers /noscore avec les options "deact noscore" en plus.
         ###################
-             
+
         #le statut d'une feuille est forcement >=0 et <4
    	    !if $v_<0 or $v_>4
    	      error=bad status
    	      !exit
         !endif
-        
+
         #attention : avant de definir le statut a 0, il faut verifier qu'aucun examen ne fait appel a cette feuille
         !if $v_=0
         #cas ou on desactive une feuille
