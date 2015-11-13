@@ -436,7 +436,6 @@ void exam_currscore(int esh)
   char *p, *bf, pb[MAX_FNAME+1];
   char *s, *p1, *p2, *e1, *e2;
   int i;
-
   for(i=0;i<MAX_EXOS;i++) exam_scoredata[i]=-1000;
 /* session_prefix is not yet defined here */
   s=getvar("wims_session"); if(s==NULL || *s==0) return;
@@ -466,13 +465,22 @@ void calc_examscore(char *p)
 {
   char *p1;
   int i;
+  char *withoutip;
 
   _scoreparm(p); *p=0;
+  withoutip=getvar("wims_examscore_withoutip");
+
   if(*score_class==0 || *score_user==0) return;
   if(getscoreuser(score_class,score_user)<0) return;
   p1=p;
-  for(i=0; i<examcnt && p1-p<MAX_LINELEN-32; i++) {
-    p1=moneyprint(p1,rscore[examstart+i].score); *p1++=' ';
+  if(withoutip!=NULL && strcmp(withoutip,"yes")==0) {
+    for(i=0; i<examcnt && p1-p<MAX_LINELEN-32; i++) {
+    p1=moneyprint(p1,rscore[examstart+i].best); *p1++=' ';
+    }
+  } else {
+    for(i=0; i<examcnt && p1-p<MAX_LINELEN-32; i++) {
+      p1=moneyprint(p1,rscore[examstart+i].score); *p1++=' ';
+    }
   }
   *p1++='\n';
   for(i=0; i<examcnt && p1-p<MAX_LINELEN-32; i++) {

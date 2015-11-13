@@ -47,6 +47,7 @@ n=!wordcnt $et
 !bound up_exolog between integer 0 and $wims_exolog_limit
 !bound up_examlog between integer 0 and $wims_examlog_limit
 !bound up_allowcloning within yes,no default no
+!bound up_examscore_withoutip within yes,no default no
 !if $up_allowcloning=yes
     !read adm/class/authchars
     up_cloningpwd=!text select $char_passwd in $up_cloningpwd
@@ -133,7 +134,9 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_authscoresuspend=$up_authscoresuspend\
 !set class_exotitleform=$up_exotitleform\
 !set class_supconnectshowed=$up_supconnectshowed\
-!set class_defined=yes in wimshome/log/classes/$wims_class/.def
+!set class_defined=yes\
+!set class_examscore_withoutip=$up_examscore_withoutip\
+in wimshome/log/classes/$wims_class/.def
 
 !if $class_type=0 or ($class_type=1 and $wims_typename=class)
     !setdef !set class_allowcloning=$up_allowcloning\

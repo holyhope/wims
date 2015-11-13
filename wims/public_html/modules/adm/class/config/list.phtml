@@ -109,7 +109,7 @@
     !endif
  </fieldset>
  <fieldset class="property_fields blockcenter">
-  <legend></legend>
+  <legend>$wims_name_Sheets</legend>
      <div class="field box">
      <label for="up_exolog">$name_register_exo</label>
 !set wims_ref_class=wims_button_help float_right
@@ -118,31 +118,11 @@
  !let up_exolog=$class_exolog
  !formselect up_exolog from 0 to $wims_exolog_limit
    </div>
-
-   <div class="field box">
-    <div class="inline">
-      <label for="up_examlog">$name_register_exam
- !default class_examlog=$wims_examlog_limit
- !let up_examlog=$class_examlog
- !formselect up_examlog from 0 to $wims_examlog_limit
-    !set wims_ref_class=wims_button_help
-   !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
-   </div>
-      <div class="float_right">
-      <label for="up_examshow">$name_visible</label>
-!set wims_ref_class=wims_button_help float_right
-!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
-!default class_examshow=yes
-!set up_examshow=$class_examshow
-  !formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
-    </div>
-   </div>
    <div class="field box">
       <label for="up_exotitleform">$name_config_exotitleform &nbsp;</label>
  !set up_exotitleform=$class_exotitleform
  !default up_exotitleform=0
  !formselect up_exotitleform list -1,0,1,2,3 prompt $name_config_exotitleformoption
-!set up_ent=$class_ent
    </div>
 
   <div class="field box">
@@ -176,12 +156,38 @@
   !default up_supconnectshowed=no
     !formselect up_supconnectshowed list no,yes prompt $wims_name_no,$wims_name_yes
    </div>
-
+ </fieldset>
+ <fieldset class="property_fields blockcenter">
+  <legend>$wims_name_Examens</legend>
+ <div class="field box">
+    <div class="inline">
+      <label for="up_examlog">$name_register_exam</label>
+ !default class_examlog=$wims_examlog_limit
+ !let up_examlog=$class_examlog
+ !formselect up_examlog from 0 to $wims_examlog_limit
+ !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
+   </div>
+      <div class="float_right">
+      <label for="up_examshow">$name_visible</label>
+!set wims_ref_class=wims_button_help float_right
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
+!default class_examshow=yes
+!set up_examshow=$class_examshow
+  !formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
+    </div>
+    <div class=field box">
+    <label for="up_examscore_withoutip">$name_examscore_withoutip</label>
+ !let up_examscore_withoutip=$class_examscore_withoutip
+ !default up_examscore_withoutip=no
+ !formselect up_examscore_withoutip list no,yes prompt $wims_name_yes,$wims_name_no
+   </div>
  </fieldset>
  <fieldset class="property_fields blockcenter">
   <legend></legend>
    <div class="field box">
-      <label for="up_ent">$wims_name_config_ent</label>
+   !set up_ent=$class_ent
+    <label for="up_ent">$wims_name_config_ent</label>
 !set wims_ref_class=wims_button_help float_right
 !href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
      <input size="50" name="up_ent" id="up_ent" value="$class_ent" />

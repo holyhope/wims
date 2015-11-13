@@ -128,7 +128,7 @@ void examscorecalc(struct classdata *cd, char *uname)
     char *wlist[8];
     char *p1, *p2;
     int i, k, ecnt, num;
-    double ss, sc[MAX_EXOS], sc2[MAX_EXOS];
+    double ss, sc[MAX_EXOS], sc2[MAX_EXOS], scb[MAX_EXOS], scb2[MAX_EXOS];
     int ind[MAX_EXOS];
     unsigned int tr[MAX_EXOS], all[MAX_EXOS], ver[MAX_EXOS], start[MAX_EXOS], dure[MAX_EXOS];
     char *ip[MAX_EXOS], *ses[MAX_EXOS];
@@ -144,6 +144,7 @@ void examscorecalc(struct classdata *cd, char *uname)
      ind[k]=i+cd->examstart;
     }
     memset(sc,0,sizeof(sc)); memset(sc2,0,sizeof(sc2));
+    memset(scb,0,sizeof(scb)); memset(scb2,0,sizeof(scb2));
     memset(tr,0,sizeof(tr)); memset(cuttimes,0,sizeof(cuttimes));
     memset(dure,0,sizeof(dure)); memset(start,0,sizeof(start));
     memset(endtime,0,sizeof(endtime));
@@ -163,7 +164,8 @@ void examscorecalc(struct classdata *cd, char *uname)
      }
      if(strcmp(wlist[1],"00")==0) {
          if(sc2[i]<sc[i]) sc2[i]=sc[i];
-         ver[i]=1; tr[i]++; start[i]=start1; dure[i]=dure1; sc[i]=0;
+         if(scb2[i]<scb[i]) scb2[i]=scb[i];
+         ver[i]=1; tr[i]++; start[i]=start1; dure[i]=dure1; sc[i]=0; scb[i]=0;
          ip[i]=wlist[4]; ses[i]=wlist[5];
          if(tr[i]==1 && wlist[6]!=NULL) {
           char *pp1, *pp2, lbuf[CTBUFLEN];
@@ -185,7 +187,8 @@ void examscorecalc(struct classdata *cd, char *uname)
      else if(ver[i]==0) tr[i]++;
      if(tr[i]>all[i]) continue;
      ss=atof(wlist[1]); if(ss<=0) continue; if(ss>10) ss=10;
-     if(ss!=sc[i] && (dure1>=0 ||     /* checking conditions */
+/* checking conditions with ip checking*/
+     if(ss!=sc[i] && (dure1>=0 ||
                (start1-start[i]<dure[i]*60 &&
                 dure[i]>0 && dure[i]<4096 &&
                 *ses[i]!=0 && *ip[i]!=0 &&
@@ -194,14 +197,25 @@ void examscorecalc(struct classdata *cd, char *uname)
                 strcmp(ip[i],wlist[4])==0 &&
                 strcmp(ses[i],wlist[5])==0)))
        sc[i]=ss;
+/* checking conditions without ip checking -- will be in structure best */
+    if(ss!=scb[i] && (dure1>=0 ||
+               (start1-start[i]<dure[i]*60 &&
+                dure[i]>0 && dure[i]<4096 &&
+                *ses[i]!=0 && *ip[i]!=0 &&
+                start[i]!=0 && start1>start[i] &&
+                (endtime[i]==0 || endtime[i]>=start1) &&
+                strcmp(ses[i],wlist[5])==0)))
+       scb[i]=ss;
     }
     end:
     for(i=0; i<ecnt; i++) {
      if(sc2[i]<sc[i]) sc2[i]=sc[i];
+     if(scb2[i]<scb[i]) scb2[i]=scb[i];
      num=search_data(cd->exos,cd->exocnt,sizeof(exodata),0xFF00+i);
      if(num<0) continue;
      thiscore=uscore+num;
      thiscore->user=sc2[i];
+     thiscore->best=scb2[i];
      thiscore->try=tr[i];
      if(cuttimes[i][0] && strncmp(cuttimes[i],nowstr,14)<0) k=0; else k=1;
      thiscore->hint=k;

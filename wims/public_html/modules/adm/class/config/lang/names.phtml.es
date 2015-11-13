@@ -455,14 +455,16 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     Title for OEF exercises viewed by participants\
     Les participants savent si l'enseignant est connecté\
     Champs supplémentaires à remplir à l'inscription\
+    An eventual change of IP during an exam is taking in account\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
-    name_config_exotitleform,name_config_supconnectshowed,name_regvars
-    !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
+    name_config_exotitleform,name_config_supconnectshowed,name_regvars,\
+    name_examscore_withoutip
 
+ !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
  !set name_allowcloning=Autoriser le clonage
  !set name_cloningpwd=Mot de passe de clonage
 !endif
