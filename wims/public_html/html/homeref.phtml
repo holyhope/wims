@@ -5,7 +5,6 @@
 !! **********************************************
 <!-- begin of html/homeref.phtml -->
 
-
 !if yes isin $wims_lightpopup
  !if $wims_lightpopup_option=$empty
   !set 1_=!append line ,0, $wims_name_devwims to $1_
@@ -132,7 +131,8 @@
 !set wims_rm_1=$1_
 :local
 !reset 1_
-!set 1_=!append line $wims_menu_items to $1_
+!set 1_=!append line itemsep,0,\
+$wims_menu_items to $1_
 !set wims_rm_0=$1_
 !!wims_menu_tabs not used - to delete
 !set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
@@ -217,9 +217,9 @@ WIMS $module_title [$module_language]
 !set wims_rm_2=$2_
 
 :rmend
+!set wims_homeref_n0=!linecnt $wims_rm_0
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
-!set wims_homeref_n0=!linecnt $wims_rm_0
 !!!set wims_homeref_n3=!linecnt $wims_rm_3
 
 <!-- END of html/homeref.phtml -->
