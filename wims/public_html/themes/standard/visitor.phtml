@@ -38,15 +38,20 @@
 !else
  !read ./result.phtml
 !endif
-
    </div><!--end wimsbody-->
   </div><!--wimspagebox-->
 !distribute items div,div into div0,div1
 
 !! Sets all links to be displayed in menumodubox
+!read themes/_procs/homemenu.proc
+!set wims_rm_0 = $wims_rm_0\
+ itemsep,0,$V_cls
+!read themes/_procs/virtualzone.proc
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,
 !read themes/_procs/browsesite.proc
 !set wims_rm_0 = $wims_rm_0\
-itemsep,0,Docs
+itemsep,0,$CR_Docs
 !read themes/_procs/documentation.proc
 !set wims_rm_0 = $wims_rm_0\
 itemsep,0,$CR_1
@@ -57,7 +62,6 @@ itemsep,0,Site
 !set wims_homeref_n0 = !linecnt $wims_rm_0
 
 !read themes/_widgets/menumodubox.phtml
-
 
 !distribute items div,span into div0,div1
 !read themes/_widgets/visitormenubox.phtml

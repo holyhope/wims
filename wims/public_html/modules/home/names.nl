@@ -21,6 +21,7 @@ wims_name_stat = Serverstatistieken
 
 CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
+CR_Docs=Tutorials
 CR_mod = Full-power modules
 
 E_comp = gecompileerd op

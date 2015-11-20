@@ -20,6 +20,7 @@ wims_name_ref = lista de enlaces inversos
 wims_name_stat = estadísticas del sitio
 
 CR_1 = Crear mis propios
+CR_Docs=Tutorials
 CR_OEF = ejercicios interactivos
 CR_mod = módulos a toda potencia
 
