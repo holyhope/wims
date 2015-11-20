@@ -1,5 +1,4 @@
-
-<!-- BEGIN of html/headmenu_supervisor -->
+<!-- BEGIN of html/headmenu_* -->
 !read name.phtml.$lang
 !read themes/$wims_theme/lang/name.phtml.$lang
 !default wims_name_bgcolor=$wims_ref_bgcolor
@@ -9,7 +8,7 @@
 !if $job=print or $printing=yes
  !goto defend
 !endif
-!reset 1_
+!reset 1_ home_
 !if _ isin $wims_session
  !if _exam isin $wims_session
   !set wims_pses=!translate _ to , in $wims_session
@@ -19,9 +18,10 @@
  !endif
  !set 1_=!append line back,3,window.close();$wims_href_opener to $1_
 !else
- !set 1_=!append line class_home,1,session=$wims_session.1 to $1_
+ !set home_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
 
+!!! deconnexion link
 !if $class_cas_auth!=$empty
  !if $wims_user=supervisor
      !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $1_
@@ -134,8 +134,10 @@
 !endif
 
 !set wims_hm=$1_
+!set wims_home_items=$home_
 :defend
 !set wims_hm_cnt=!linecnt $wims_hm
+!set wims_home_items_cnt=!linecnt $wims_home_items
 !read themes.phtml header
 <div class="wimsbody">
-<!-- END of html/headmenu_supervisor -->
+<!-- END of html/headmenu_* -->
