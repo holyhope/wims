@@ -23,7 +23,7 @@
 !if $job=print or $printing=yes
  !goto defend
 !endif
-!reset 1_
+!reset 1_ home_
 
 !!********* Link #1 : "Close Window" or "Home"
 
@@ -31,7 +31,7 @@
  !set 1_=!append line back,3,window.close() to $1_
 !else
  !if $window != embeded and $module!=home
-   !set 1_=!append line home,1,session=$wims_session.1 to $1_
+   !set home_=!append line home,1,session=$wims_session.1 to $home_
  !endif
 !endif
 
@@ -104,9 +104,11 @@
 !endif
 
 !set wims_hm=$1_
+!set wims_home_items=$home_
 
 :defend
 !set wims_hm_cnt=!linecnt $wims_hm
+!set wims_home_items_cnt=!linecnt $wims_home_items
 !read themes.phtml header
 !if $module=home
   <div class="wimstrap">
