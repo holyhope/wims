@@ -1,24 +1,17 @@
+!read themes/_procs/visitortail.proc
+
+!if $wims_tail_home_n0>0
 <!-- _widgets/visitormenubox.phtml -->
 !!## Menu de bas pour la page d'accueil
 <div id="wimsmenubox" class="footer">
+
  <$div0 class="wimsmenu">
-  <$div1 class="menuitem">
-   !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
-  </$div1>
-  <$div1 class="menuitem">
-   !read ./adm/oneitem.phtml mirror,1,module=adm/light&phtml=mirror.phtml.$lang
-  </$div1>
-  <$div1 class="menuitem">
-   !read ./adm/oneitem.phtml forum,1,module=adm/forum/forum
-  </$div1>
-  !if $wims_theme_icon!= and $wims_theme_icon!=default
-   <$div1 class="menuitem">
-    !read ./adm/oneitem.phtml iconabout,1,module=adm/light&phtml=iconabout.phtml
-   </$div1><!-- menuitem-->
-  !endif
-  <$div1 class="menuitem">
-   !read ./adm/oneitem.phtml cgu,1,module=adm/light&phtml=cgu.phtml
-  </$div1><!-- menuitem-->
+  !for j_=1 to $wims_tail_home_n0
+    !set 1_=!line $j_ of $wims_tail_home
+<$div1 class="menuitem">
+!read ./adm/oneitem.phtml $1_
+</$div1>
+  !next j_
  </$div0><!--wimsmenu-->
 </div><!--wimsmenubox footer-->
 <!-- end _widgets/visitormenubox.phtml -->
