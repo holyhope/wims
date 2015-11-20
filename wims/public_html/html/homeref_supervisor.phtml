@@ -152,8 +152,9 @@
   !set 1_=!append line chseries,1,module=adm/class/sheet&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm&job=chseries&num=$special_parm4 to $1_
  !endif
 !endif
-
-!set 1_=!append line $wims_menu_items to $1_
+!! add module links to general links with a separation
+!set 1_=!append line line itemsep,0,\
+$wims_menu_items to $1_
 !if $wims_user=supervisor and $cmd!=intro and $cmd!=help and $module!=home and \
 	../adm/ notin ../$module
   !set 1_=!append line moduback,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
