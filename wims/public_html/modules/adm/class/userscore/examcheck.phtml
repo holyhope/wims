@@ -33,7 +33,11 @@ $name_title_examcheck
    !next i
   </tr>
   !for ses in $checksessions
+   !set ss=!sh grep "$ses" $wims_home/log/classes/$wims_class/noscore/$checkuser | grep "score" | awk -F"\t" '{print $$1}' | awk -F" " '{print $$3,$$4,$$6}'
+   !set ss=!lines2rows $ss
+   !set ss=!words2items $ss
    !for x in $(exam$ses)
+     !set s_=!select $ss where column 1=$x
     $table_tr<td class="small">$ses</td>
     <td>$x</td>
     <td>$[rint($(score$(ses)$x)*$scoremax)/10]</td>
@@ -41,17 +45,8 @@ $name_title_examcheck
     !for i=1 to $nbx
       <td>
       !if $i isitemof $(exo$(ses)$x)
-       !let s=!defof w_module_score in wimshome/log/classes/$wims_class/examlog/$checkuser/$ses/$x.$i
-       !!if $s=$empty
-        !!perhaps the file is too long
-        !!let s=!record 0 of wimshome/log/classes/$wims_class/examlog/$checkuser/$ses/$x.$i
-        !!let s=!getopt w_module_score in $s
-        !!! if $module_score is empty, $s can be the line after, so we test there is only numbers and .
-        !!let s0=!text select 0123456789. in $s
-        !!if $s0!=$s
-        !! !reset s
-        !!!endif
-       !!!endif
+      !set s=!select $s_ where column 2=$i
+      !set s=$(s[3])
       !if $s!=$empty
         !set s=$[rint($s*$scoremax)/10]
       !else
