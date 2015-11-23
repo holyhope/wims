@@ -118,9 +118,12 @@ Ce texte s'affichera après la réponse de l'apprenant, qu'elle soit juste ou faus
 \statement{
   \data[1;]
   \for{k=1 to \qs}{
+    \if{\types[\k] notsametext menu}{
       \embed{r \k,\lengths[\k]
-          autocomplete='off'}
-      \data[2*\k+1;]
+        autocomplete='off'}
+    }
+    { \embed{r \k,\lengths[\k]}}
+    \data[2*\k+1;]
   }
 }
 
