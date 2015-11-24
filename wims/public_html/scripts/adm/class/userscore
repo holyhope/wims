@@ -1,14 +1,12 @@
 !default uu=$wims_read_parm
-
 !!one line by sheet : points quality
 percents=!getscorepercent user=$uu
 
 percnt=!linecnt $percents
-per=0
-av=0
+!distribute items 0,0 into per,av
 
 !! w_$i etc are defined in sheetweights
-!!give an average for all sheets and for the user $uu - even not seen in sequences ??
+!! give an average for all sheets and for the user $uu - even not seen in sequences ??
 
 !for i=1 to $percnt
  !if  $(f_$i)=$empty or $(w_$i)=$empty
@@ -38,4 +36,3 @@ examout=!examscore user=$uu
 !else
  per=0
 !endif
-

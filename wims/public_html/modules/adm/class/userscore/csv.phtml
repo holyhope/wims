@@ -117,55 +117,58 @@ $name_data2<ul>
    </li>
   !endif
 !next
-!let list_type=sh,ex,ma,shexo
-!let list_name=$wims_name_Sheets,$wims_name_Examens,$name_manualscore,$name_indicateur
-!let list_keyword=sheet,exam,manual,sheetexo
-!if $($(list_type[1]))!=$empty or $($(list_type[2]))!=$empty or $($(list_type[3]))!=$empty or $($(list_type[4]))!=$empty
+!let list_type=sh,shexo,ex,exexo,examduration,ma
+!let list_name=$wims_name_Sheets,$name_indicateur,$wims_name_Examens,$wims_name_Examens ($wims_name_Exercices),\
+$wims_name_Examens (Durée),$name_manualscore
+!let list_keyword=sheet,sheetexo,exam,examexo,examduration,manual
+!if $($(list_type[1]))$($(list_type[2]))$($(list_type[3]))$($(list_type[4]))$($(list_type[5]))!=$empty
  <li><input type="checkbox" name="csvdownload" id="csvdownload_allscore" value="allscore"/><label for="csvdownload_allscore">$name_allscore</label></li>
 !endif
-!for t from 1 to 4
+!for t from 1 to 5
     !if $($(list_type[$t]))!=$empty
-	 !let tmp=!words2items $($(list_type[$t]))
-	 <li>
-	<b>$(list_name[$t])</b>: <input type="checkbox" name="csvdownload" id="csvdownload_$(list_keyword[$t])" value="$(list_keyword[$t])s"/><label for="csvdownload_$(list_keyword[$t])">$name_all</label>
-	!for k in $tmp
+	  !let tmp=!words2items $($(list_type[$t]))
+	  <li>
+	 <b>$(list_name[$t])</b>:
+	 !if $t notwordof 4 5
+	 <input type="checkbox" name="csvdownload" id="csvdownload_$(list_keyword[$t])" value="$(list_keyword[$t])s"/><label for="csvdownload_$(list_keyword[$t])">$name_all</label>
+	 !endif
+	 !for k in $tmp
 	  <input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label>
-	!next k
+	 !next k
 	</li>
     !endif
 !next t
 !if $av!=$empty
-!let tmp=!words2items $av
-<li><b>$name_Average</b>:
-!for k in $tmp
+  !let tmp=!words2items $av
+  <li><b>$name_Average</b>:
+  !for k in $tmp
     <input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label>
-!next k
-</li>
+  !next k
+  </li>
 !endif
 <li><b>$name_otherkeyword</b>: <input type="text" size="45" name="csvdownload2" value="$csvdownload2" />
 </li>
 </ul>
 <input type="submit" value="$wims_name_download" />
 
-
 !formend
-!! open the upload to the level supervisor  alternative use user_supervise
+!! open the upload to the level supervisor alternative use user_supervise
 !if $classtype notin 13 or $typename iswordof class course  or\
    ($typename iswordof level and $wims_user=supervisor)
- <hr />
+  <hr />
  !set wims_form_method=file
  !form reply
  <input type="hidden" name="job" value="csv" />
  <input type="hidden" name="csvtype" value="upload" />
  $name_data3
  &nbsp;
-!set wims_ref_class=wims_button_help
+ !set wims_ref_class=wims_button_help
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
  <ul>
  <li>$name_data <input type="file" size="30" name="wims_deposit" /> <br />
  $name_format2: <span class="tt">.csv</span>, <span class="tt">.tsv</span>, <span class="tt">.txt</span>
  &nbsp;
-!set wims_ref_class=wims_button_help
+ !set wims_ref_class=wims_button_help
  !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
  </li>
  </ul>
@@ -173,7 +176,6 @@ $name_data2<ul>
 
 !formend
 !endif
-
 
 !if $wims_user=supervisor and ($wims_typename iswordof course or \
 ($wims_typename iswordof class and $wims_supertype iswordof 0 2))

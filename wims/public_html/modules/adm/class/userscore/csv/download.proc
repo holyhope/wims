@@ -24,7 +24,14 @@ tmp=!lines2words $tmp
 tmp=!items2words $tmp
 tmp=!singlespace $tmp
 
-good=$basic $av $sh $ex $ma $tmp
+good=$basic $av $sh $ex $ma $examduration $tmp
+tmp=!column 2 to -1 of $exe
+
+tmp=!lines2words $tmp
+tmp=!items2words $tmp
+tmp=!singlespace $tmp
+good=$good $tmp
+
 dl=!replace word averages by $av in $dl
 dl=!replace word sheets by $sh in $dl
 dl=!replace word exams by $ex in $dl
@@ -42,10 +49,24 @@ dl=!replace word manuals by $ma in $dl
     !endif
   !next i
 !endif
-!!se=!items2words $se
 
+!! aoption all for examexos, non active
+!!!if examexos isin $dl
+!! tmp=!column 2 to -1 of $exe
+!! tmp=!lines2words $tmp
+!! dl=!replace word examexos by $tmp in $dl
+!!!else
+  !for i in $activexams
+    !if examexo$i iswordof $dl
+      tmp=!select $exe where column 1 = $i
+      dl=!replace word examexo$i by $(tmp[2..-1]) in $dl
+      dl=!replace word examexo$i by  in $dl
+    !endif
+  !next i
+!!!endif
 dl=!words2items $dl
 dl=!listuniq $dl
+
 good=!words2items $good
 dl_v =!listcomplement $good in $dl
 dl_v= !replace internal var_ by in $dl_v
@@ -151,10 +172,39 @@ $dl3$dl5\
     !next k_
    !endif
   !next
+  !if _exexo_ isin $dl or examduration isin $dl
+    logdir=$wims_home/log/classes/$wims_class/examlog/$uu
+    checksessions=!sh if [ -d $logdir ]; then cd $logdir; ls -tr; fi
+    checksessions=!words2items $checksessions
+    !read adm/class/userscore1 $uu
+  !endif
   !for i=1 to $examcnttot
    !if exam$i isitemof $dl and $i isitemof $activexams
-    user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
+     user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
    !endif
+   !if examduration$i isitemof $dl and $i isitemof $activexams
+      user_examduration$i=!replace internal , by $ $ in $quote$(Dureeexam_$i)$quote
+   !endif
+   !if exam$(i)_exexo isin $dl and $i isitemof $activexams
+     !set nb_ses=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+     !set nb_ses=!line 3 of $nb_ses
+     !set nb_ses=!word 2 of $nb_ses
+     !let e_=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+     !set oo=!makelist $ $ for x=1 to $nb_ses
+     !set checksessions_cnt=!itemcnt $checksessions
+     !for k_ = 1 to $e_
+        !reset t_
+        !for ses=1 to $checksessions_cnt
+          !if $(exam_$ses)=$i
+            !set tmp=$(Exam_$(i)_$ses)
+            !set t_=$t_,$(tmp[$k_])
+          !endif
+        !next
+        !set t_=$t_,$oo
+        !set t_=$(t_[2..$nb_ses+1])
+        !set user_exam$(i)_exexo_$(k_)=!replace internal , by $ :$ in $t_
+      !next
+    !endif
   !next i
   !for i=1 to $gcnt
    !if manual$i isitemof $dl

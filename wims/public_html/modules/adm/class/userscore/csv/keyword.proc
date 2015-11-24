@@ -6,32 +6,34 @@ basic=login lastname firstname password email regnum comments photourl \
    basic2=supervise supervisable participate
 !endif
 
+!reset sh shexo ex ma se exe exexo examduration
 !! list of active sheet
 sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
-sh=
-shexo=
+
 !for i in $activesh
- sh=$sh sheet$i
- shexo=$shexo sheetexo$i
- l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
- name=!line 3 of $l
- name_sheet$i=$quote$name$quote
+  sh=$sh sheet$i
+  shexo=$shexo sheetexo$i
+  l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  name=!line 3 of $l
+  name_sheet$i=$quote$name$quote
 !next i
 
 !! list of active exam
 examcnttot=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
 examcnt=!itemcnt $activexams
-ex=
 !for i in $activexams
- ex=$ex exam$i
- l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
- name=!line 4 of $l
- name_exam$i=$quote$name$quote
+  ex=$ex exam$i
+  exe=$exe
+  examduration=$examduration examduration$i
+  exexo=$exexo examexo$i
+  l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  name=!line 4 of $l
+  name_exam$i=$quote$name$quote
+  name_examduration$i=$quote$name$quote
 !next i
 
 !! list of manual score
-ma=
 l=!record 1 of wimshome/log/classes/$wims_class/.grades
 l=!line 2 of $l
 !for i=1 to $gcnt
@@ -52,10 +54,8 @@ av=
  av=$av average2
 !endif
 
-
-
 !! add keyword for sheetexo information
-  se=
+
 !for i in $activesh
   e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
   se=!append line $i to $se
@@ -73,5 +73,20 @@ av=
     name_$se0=$name I0 (%)
     name_$se1=$name I1 (%)
     name_$se2=$name I2
+  !next ee
+!next i
+!for i in $activexams
+  e=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+  exe=!append line $i to $exe
+  !set nb_ses$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !set nb_ses$i=!line 3 of $(nb_ses$i)
+  !set nb_ses$i=!word 2 of $(nb_ses$i)
+  !for ee=1 to $e
+    exe=!append item exam$(i)_exexo_$ee to $exe
+    name=!record $ee of wimshome/log/classes/$wims_class/exams/.exam$i
+    name=!line 3 of $name
+    name=!replace , by - in $name
+    name_exam$(i)_exexo_$ee=!makelist $name for x=1 to $(nb_ses$i)
+    name_exam$(i)_exexo_$ee=!replace internal , by $ :$ in $(name_exam$(i)_exexo_$ee)
   !next ee
 !next i
