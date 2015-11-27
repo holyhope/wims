@@ -1,0 +1,17 @@
+<!-- supervisormenubox.proc -->
+!! Adds all Supervisor links in wims_rm_0
+
+!if $class_typename notsametext program
+     !set wims_rm_0 = $wims_rm_0\
+menublock,0,\
+SE_mod,1,module=adm/class/motd
+!endif
+
+!if $exist_cdt=yes
+  !set wims_rm_0 = $wims_rm_0\
+cdt,1,module=adm/class/cdt
+!endif
+
+!read themes/_procs/supervisorforum.proc 0
+
+!!!!participantview,1,style=student\
