@@ -42,7 +42,7 @@ parmreg=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$quser.exam
 nb_parms=!wordcnt $parmreg
 
 ### Schema du fichier .parmreg/user.exam ###
-## 
+##
 ##    IP  SESS_ID   ??? exam_ID
 ## exemple : 134.59.121.121 UI99D09012 1315494761 3
 ##
@@ -55,9 +55,9 @@ remote_addr= !word 1 of $data1
 
 
 !if $nb_parms>=4
- 
+
  !distribute words $parmreg into sess_IP,sess_ID,sess_time,exam_id
- 
+
  !set r_=!record 0 of wimshome/sessions/$sess_ID/examreg.$exam_id
  !set now=$wims_nowseconds
 
@@ -65,18 +65,22 @@ remote_addr= !word 1 of $data1
  !set ws=!word 1 of $ws
 
  !set restrictions=!record 0 of wimshome/log/classes/$wims_class/.E$exam_id
- 
+
  !if $r_!=$empty and $sess_ID!=$ws and $sess_time>$now and $sm!=#
    !if $sess_IP != $remote_addr
-   
+
      !sh rm -f ../sessions/$ws/var.stat >/dev/null
-     error= $quser is in an exam session started on another IP ($sess_IP != $remote_addr). Go back quickly to this computer !
+     !if $remote_addr = $empty
+        error= $quser is already in an exam session, but your server didn't provided the user actual IP in data1.
+     !else
+        error= $quser is in an exam session started on another IP ($sess_IP != $remote_addr). Go back quickly to this computer !
+     !endif
      !exit
    !endif
    num_session=$sess_ID
  !endif
- 
- #si la session d'examen est terminee, on reinitialise les parametres de session 
+
+ #si la session d'examen est terminee, on reinitialise les parametres de session
  !if $sess_time<$now or $r_=$empty
    !writefile wimshome/log/classes/$wims_class/.parmreg/$quser.exam
  !endif
