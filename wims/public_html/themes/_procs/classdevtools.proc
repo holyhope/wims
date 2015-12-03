@@ -2,10 +2,9 @@
 !! Adds Classes devtools links in wims_rm_0 for navigation menus
 
 !if $wims_supertype!=4 or $class_typename!=class
-  !set wims_rm_0 = $wims_rm_0\
-  ,0,\
-classexo,1,module=classes/$lang&special_parm=.nocache.\
+add_exo,1,module=adm/createxo\
 modtool,1,module=adm/modtool
+
   !set exologs=!filelist -r $wims_home/log/classes/$wims_class/exolog/supervisor
   !if $exologs!=$empty
     !set wims_rm_0 = $wims_rm_0\
@@ -15,7 +14,6 @@ save_ex,1,module=adm/class/exolog&job=list
       !set wims_rm_0 = $wims_rm_0\
 add_class,1,module=adm/class/regclass\
 cloneclass,1,module=adm/class/regclass&job=cloneexemple\
-
 
   !endif
 !endif
