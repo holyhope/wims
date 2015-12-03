@@ -58,9 +58,9 @@ Nieuwste,\
 Geef het antwoord,\
 Leerling management,\
 Terug naar de module,\
-Legend,\
-Cloner la feuille,\
-Cloner l'examen,\
+Legenda,\
+Kloon werkblad,\
+Kloon proefwerk,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -506,5 +506,5 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !if $module=adm/class/usermanage
     !set wims_name_regmanage=Toegangsbeheer
 !endif
-!set wims_name_cloneclass =Cloner une classe existante
-!set SU_partconnected     =This participant is currently connected
+!set wims_name_cloneclass =Kloon een bestaande klas
+!set SU_partconnected     =Deze deelnemer is op dit moment ingelogd

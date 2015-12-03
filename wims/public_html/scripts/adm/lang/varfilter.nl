@@ -1,5 +1,6 @@
 !set lang_isread=yes
 
 !set name_filter= of filter a.h.v. een technische variabele (student eigenschappen)
-!set name_filtertitle=Sélection des participants par variables techniques
-!set name_clear=Réinitialiser
+!set name_filtertitle=Selecteer deelnemers ahv technische variabelen
+!set name_clear=Herladen
+
