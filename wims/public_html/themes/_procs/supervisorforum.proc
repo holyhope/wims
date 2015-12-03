@@ -1,12 +1,14 @@
 !!supervisorforum.proc :
-!!Adds Supervisor forum links in wims_rm_1 for footer navigation menus
+!!Adds Supervisor forum links in wims_rm_1 or wims_rm_xx for footer navigation menus
+!! depending of wims_read_parm
 
-
+!set tmp=$wims_read_parm
+!default tmp=1
 !reset name_c
 !if $class_superclass!=
  !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
  !set name_c=<small>($name_c)</small>
 !endif
 
-!set wims_rm_1 = $wims_rm_1\
+!set wims_rm_$i = $(wims_rm_$tmp)\
 forum $name_c,1,module=adm/forum/mboard
