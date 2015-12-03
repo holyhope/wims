@@ -18,7 +18,11 @@
  !endif
  !set 1_=!append line back,3,window.close();$wims_href_opener to $1_
 !else
- !set home_=!append line class_home,1,session=$wims_session.1 to $home_
+  !if $module!=home
+   !set home_=!append line class_home,1,session=$wims_session.1 to $home_
+  !else
+   !set home_=!append line class_home,8, to $home_
+  !endif
 !endif
 
 !!! deconnexion link
