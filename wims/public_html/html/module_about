@@ -20,10 +20,12 @@
    !set module_$(v_a)=$mod_u
   !endif
 !next
+
 !read namewriting.phtml $module_author
 !set module_address=!replace internal ; by , in $module_address
 !set module_au=!mailurl $(module_address[1]) $(script_out[1])\
 WIMS $module_title [$module_language]
+!default module_au=$(script_out[1])
 !set script_out=!replace internal ; by , in $(script_out[2..-1])
 !if $script_out!=$empty
   !set tmp_cnt=!itemcnt $script_out
@@ -31,7 +33,7 @@ WIMS $module_title [$module_language]
     !if $(module_address[$tmp+1])!=
     !set tmp=!mailurl $(module_address[$tmp+1]) $(script_out[$tmp])\
 WIMS $module_title [$module_language]
-    !else 
+    !else
       !set tmp=$(script_out[$tmp])
     !endif
     !set module_au=$module_au, $tmp
@@ -49,7 +51,7 @@ WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$lang]
 
-!!******** PERMALINK / EMBEDDABLE PLAYER ADD 
+!!******** PERMALINK / EMBEDDABLE PLAYER ADD
 
 !set current_module=!replace / by , in $module
 !set module_path= !item 1 of $current_module
@@ -112,4 +114,4 @@ WIMS $module_title [$module_language]
    $table_tr<th>$$wims_name_Copyright</th><td>$module_copyright</td></tr>\
    $module_data_tr\
    $table_end\
-   
+
