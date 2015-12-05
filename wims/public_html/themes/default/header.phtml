@@ -22,6 +22,10 @@
 !set wims_theme_version=1
 !set current_module=!replace / by , in $module
 !set module_path= !item 1 of $current_module
+!set wims_hm=$1_\
+$wims_home_items\
+$wims_link_close
+!set  wims_hm_cnt=!linecnt $wims_hm
 
 !if $wims_hm_cnt!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
  <div id="wimstopbox">
@@ -42,7 +46,7 @@
   !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
 !if $class_cas_auth!=$empty
-!!## it is better that the cas logout appears too much ... 
+!!## it is better that the cas logout appears too much ...
 !!## can be useless in the case of a supervisor so the next line is commented
 !!!!!!and $wims_user!=supervisor and ($wims_realuser=$empty or $wims_realuser!=supervisor)
   <div class="topmenuitem">

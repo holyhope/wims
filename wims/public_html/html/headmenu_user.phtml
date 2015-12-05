@@ -28,23 +28,23 @@
 !!! deconnexion link
 !if $class_cas_auth!=$empty
  !if $wims_user=supervisor
-     !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $1_
+     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $wims_link_close
  !else
    !if $wims_class!=$empty
-     !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $1_
+     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $wims_link_close
   !else
-    !set 1_=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $1_
+    !set wims_link_close=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $wims_link_close
   !endif
  !endif
 !else
   !if $wims_user=supervisor
-    !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $1_
+    !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $wims_link_close
   !else
      !if $wims_user=anonymous
-       !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $1_
+       !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $wims_link_close
      !else
        !if _exam notin $wims_session
-         !set 1_=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $1_
+         !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
        !endif
      !endif
   !endif
@@ -142,6 +142,7 @@
 :defend
 !set wims_hm_cnt=!linecnt $wims_hm
 !set wims_home_items_cnt=!linecnt $wims_home_items
+!set wims_link_close_cnt=!linecnt $wims_link_close
 !read themes.phtml header
 <div class="wimsbody">
 <!-- END of html/headmenu_* -->

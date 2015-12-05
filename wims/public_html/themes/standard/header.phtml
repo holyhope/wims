@@ -25,13 +25,14 @@
 !set current_module=!replace / by , in $module
 !set module_path= !item 1 of $current_module
 
-!if $[$wims_home_items_cnt + $wims_hm_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+!if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
  <div id="wimstopbox">
 
 !distribute items span into div1
    <div class="wimsmenu">
     !read themes/_widgets/headhome.phtml
     !read themes/_widgets/headmenu.phtml
+    !read themes/_widgets/logout.phtml
 !distribute items div,span into div0,div1
     !read themes/_widgets/permalink.phtml
 !!## technical parameters
