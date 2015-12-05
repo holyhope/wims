@@ -328,9 +328,12 @@ translation have been done, keywords have been completed.
   added keyword 'killslider'... a slider may adjust several different
    objects...until keyword 'killslider' or next 'slider'
 2014-08-18: [r8100] clean the c code:
-  - change the name of some functions similar but different to keep code equivalent to the old one (strip_trailing_spaces find_matching mkdirs singlespace deaccent wordchr string_modify search_list)
-  - delete #include "../Lib/basicstr.c", comment functions which are at the same time in Lib and in some other file.c and add
-  lopt=-L$(wims_home)/lib -lwims -lm $[rpath) in the Makefile
+  - change the name of some functions similar but different to keep code equivalent
+   to the old one (strip_trailing_spaces find_matching mkdirs singlespace deaccent wordchr
+   string_modify search_list)
+  - delete #include "../Lib/basicstr.c", comment functions which are at the same time
+  in Lib and in some other file.c and add
+  lopt=-L$(wims_home)/lib -lwims -lm $rpath in the Makefile
   (in Interfaces, Misc/oncechar, Misc/translator, Misc/dicsort, Misc/modind, Misc/ccsum, Texgif/texgif.c)
 2014-08-18 [r8099] schaersvoorde:
   canvasdraw: corrected javascript error in 'userdraw arc,color'
@@ -1709,9 +1712,9 @@ Version 3.46 packed.
         Reduce MAX_FOR_LEVEL to 12. Should be largely enough.
         Rewrite open_working_file(), reducing the number of strchr().
 2004-10-24: Various code cleaning of the main program.
-        Acceleration in save_session_vars(), and increase oef var limits.
-        module_error() variables switched from setenv() to setvar().
-        !readmotd and !writemotd removed. (undocumented commands.)
+        - Acceleration in save_session_vars(), and increase oef var limits.
+        - module_error() variables switched from setenv() to setvar().
+        - !readmotd and !writemotd removed. (undocumented commands.)
         These were used in home module and adm/class/motd.
         Replaced by !fileread, !filewrite and !read.
         Therefore now motd files are fully phtml ones.
@@ -1823,7 +1826,7 @@ Version 3.40 packed.
         Takuji Nishimura and Makoto Matsumoto (Lib/mt19937ar.c).
 2004-06-15: added !embraced.
 2004-06-13: wimslogd reads and executes log/wimslogd.exec
-        !module now returns empty if module does not exist (instead of current module).
+        command !module now returns empty if module does not exist (instead of current module).
 2004-06-12: Automatic module updating.
 2004-06-09: Individualized sheet opening was not working under superclass:
         wrong user file in _subword().
@@ -1917,7 +1920,7 @@ Version 3.34 packed.
 2003-10-12: Dutch version (Joke Evers).
         Supervisor can select existing class exercises in Createxo.
         OEF: TeX images accepted in type=radio and type=checkbox.
-        !date reopened for general modules, with stricter security restrictions.
+        command !date reopened for general modules, with stricter security restrictions.
 2003-10-11: !for x=1..5
 2003-10-05: log files now use wimslogd to dispatch.
 2003-10-04: Many temporary files moved to tmp/sessions.
@@ -1926,7 +1929,7 @@ Version 3.34 packed.
 Version 3.32 packed.
 2003-09-28: !date is now for trusted modules only.
         (others can use $wims_now and $wims_nowseconds)
-        !sql dereferenced.
+        command !sql dereferenced.
         Online management: mkindex now sent to at (had rlimit_cpu overflow).
 2003-09-27: Online update, backup and crontab managements.
 2003-09-22: Misc. bug fixes in virtual class management.
@@ -1969,7 +1972,7 @@ Version 3.30 packed.
 2003-06-19: Forums: supervisor now can read erased messages.
 2003-06-18: added cmd type `next'. Existing modules modified.
 2003-06-14: added !sum, !product, !recursion.
-        !values can do recursive computations with variable `last'.
+         command !values can do recursive computations with variable `last'.
 2003-06-13: added log2() (kernel and interfaces).
 2003-05-29: added !reaccent.
         added list of new OEF.
@@ -2013,7 +2016,7 @@ Version 3.28 packed.
 2003-03-14: erf() and erfc() added to evalue().
 2003-03-13: numerical integration in OEF/DOC now uses romberg() in MAXIMA.
 2003-03-12: User asking for unavailable language provokes internal error.
-        !rawmath was adding spurious () after function names.
+        command !rawmath was adding spurious () after function names.
 2003-03-11: New OEF reply types: checkbox, click, menu, radio.
 2003-03-09: Supervisor now allowed to import public OEF exercises.
 2003-03-08: Use cpp to process pre-source OEF and DED.
@@ -2125,7 +2128,7 @@ Version 3.22 packed.
         Replaced by alarm(). Global time limit is also installed, with
         a new module error message (timeup).
 2002-09-15: exec_exec() removed (unnecessary).
-        !sh will no longer output when not outputing.
+        command !sh will no longer output when not outputing.
 2002-09-14: Interfaces: added common.c.
         Interfaces: illegal names are renamed instead of refused.
         Interface to pari/gp: compatibility with version 1 deplecated.
@@ -2313,7 +2316,7 @@ Version 3.10 packed.
 2001-12-18: added !setdef (trusted modules only).
         Change participant properties by class supervisors.
         Recover deleted participants. Add user by supervisor.
-        !filelist must use call_sh() instead of call_ssh(), for pathname expansion.
+        command !filelist must use call_sh() instead of call_ssh(), for pathname expansion.
 2001-12-16: Normalisation in support software configuration parameters.
 2001-12-14: Virtual class changed to version 3: file locations moved.
         Query strings added `+' after `&' (to avoid browser translation).
@@ -2402,7 +2405,7 @@ Version 2.42 packed.
         their own web pages w/o installing the server.
 2001-03-18: itemnum() counted wrong when first item is enclosed list.
 2001-03-17: Students could see hidden sheets by directly typing url addresses.
-        !replace added keyword `internal'.
+        command !replace added keyword `internal'.
         Popup windows are now focused using javascript.
         Added !nonempty (lines or items).
 2001-03-09: msg2wims was not compiling.
@@ -2477,7 +2480,7 @@ Version 2.30 packed.
 2000-05-12: Record 0 now allowed.
 2000-05-09: Calls to system() are replaced by exec().
 2000-05-06: added !insmath.
-       !rawmath no longer translates []{} into ()().
+       command !rawmath no longer translates []{} into ()().
        Improvements in rawmath() and texmath().
 2000-05-04: Commas enclosed in parentheses are no longer item separators.
 2000-05-02 Fixed problem with effective and real uid (for gnuplot).
@@ -2649,8 +2652,8 @@ Version 1.24 packed.
 1999-04-22 Bug fix in substit() when string terminates with a $.
 ---------------------------------------------
 Version 1.23 packed.
-1999-04-04 Added !singlespace, !nospace, !lines2words...,
-    !listintersect, !listunion, !listuniq.
+1999-04-04 Added !singlespace, !nospace, !lines2words..., !listintersect
+    and !listunion, !listuniq.
     Multiple-output of executions are now controled by the file exec.type.
 1999-02-16 Added $wims_exec_out_2...
 ---------------------------------------------
@@ -2665,8 +2668,8 @@ Version 1.20 packed.
     Worksheet was lost when the exercise is renewed.
 1998-12-21 comparison added isitemof and notitemof.
     oef manager starts to work.
-1998-12-14 Users are prohibited to enter raw $ signs (will be replaced by &#36;).
-    !varlist adds a switch ``nofn''.
+1998-12-14 Users are prohibited to enter raw $ signs
+   (will be replaced by &#36;). !varlist adds a switch ``nofn''.
 1998-12-13 |x| now recognized by !rawmath (and replaced by abs(x)).
 1998-12-12 fixing a score delay bug/misfeature in bottom reference box.
     all sscanf() replaced by atof, atoi.
@@ -2701,7 +2704,7 @@ Version 1.13 packed.
 Version 1.12 packed.
 1998-11-16 Minor bug fixes in sheet preparation for supervisor.
 1998-11-15 Fix a typo in mathname_split() which created infinite loop.
-    !insplot sets a variable ins_animation (yes no).
+    command !insplot sets a variable ins_animation (yes no).
     Added $wims_warn_rawmath_parm.
 1998-11-12 Variable wims_main_font, defining client charset.
 1998-11-06 More options in usage statistics.
@@ -2819,8 +2822,8 @@ Version 0.14.1 packed.
 ----------------------------------------------
 Version 0.14 packed.
 1998-05-02. Warning structure established (via !warn and $wims_warn_...)
-        !insplot: patch of gnuplot integer arithmetic problem.
-        !htmlmath improvement.
+        - !insplot: patch of gnuplot integer arithmetic problem.
+        - !htmlmath improvement.
 1998-05-01. rawmath routine rewritten.
 1998-04-30. A very simple interface for Plouffe's Inverter.
 1998-04-27. added commands !filewrite and !fileappend.
@@ -2859,10 +2862,10 @@ Version 0.11.6 packed.
 Version 0.11.5 packed.
 1998-03-14. server now reads module's INDEX file, storing definitions
         into module_... variables.
-        added wims_html_header.
-        Tests also existence of intro.phtml, help.phtml, etc.
-        !instexst filename is now optional, and !instex calls it whenever possible.
-        !form now accepts optional cmd value.
+        - added wims_html_header.
+        - Tests also existence of intro.phtml, help.phtml, etc.
+        - !instexst filename is now optional, and !instex calls it whenever possible.
+        - !form now accepts optional cmd value.
 1998-03-13. subst_limit increased from 36 to 3000.
             added !homeref.
 1998-03-10. added encyclopedia pointer.
