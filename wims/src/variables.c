@@ -293,7 +293,7 @@ int check_session(void)
      if(n>=varget_no) continue;
      m=pl+strlen(ro_name[i]);
      if(tbuf[m]!='=' || tbuf[m+1]==0) continue;
-     if(i==ro_module && cmd_type!=cmd_new && cmd_type!=cmd_intro) {
+     if(i==ro_module && cmd_type!=cmd_new && cmd_type!=cmd_intro && cmd_type!=cmd_help) {
          char *pp;
          pp=getvar(ro_name[i]);
          if(pp!=NULL && *pp!=0 && strcmp(pp,tbuf+m+1)!=0) badmod=1;
