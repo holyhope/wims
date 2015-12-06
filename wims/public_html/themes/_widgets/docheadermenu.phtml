@@ -9,7 +9,7 @@
  !endif
 
  !if help notin $wims_session and _mfeed notin $wims_session
-  
+
   !if $wims_class=$empty
    <span class="menuitem">
     !read $oneitem doch_wims,1,module=home
@@ -22,7 +22,7 @@
      !set wims_ref_class=doch_class
      <a href="#" onclick="window.close()">$wims_name_doch_class</a>
     </span><!-- menuitem-->
-   !else 
+   !else
     <span class="menuitem">
      !read $oneitem doch_class,1,module=home
     </span><!-- menuitem-->
@@ -37,7 +37,7 @@
      !endif
     </span><!-- menuitem-->
    !else
-   
+
     !if $wims_sequence>0
      !set ti=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
      <span class="menuitem">
@@ -56,6 +56,7 @@
  !if ..//adm/doc isin ..//$module and \
     ($wims_class=$empty or $wims_user=supervisor) and _test notin $wims_session
   <span class="menuitem">
+  www
    !read $oneitem doch_docs,1,module=$module&cmd=reply&job=home
   </span><!-- menuitem-->
  !endif
