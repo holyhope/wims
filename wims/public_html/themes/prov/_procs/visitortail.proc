@@ -1,7 +1,10 @@
 !set wims_tail_home=$wims_tail_home\
-pref,1,module=adm/light&phtml=useropts.phtml.$lang\
-forum,1,module=adm/forum/forum
+pref,1,module=adm/light&phtml=useropts.phtml.$lang
 
+!if $wims_forum_limit>1
+ !set wims_tail_home=$wims_tail_home\
+forum,1,module=adm/forum/forum
+!endif
 !if $wims_theme_icon!= and $wims_theme_icon!=default
    !!!set  wims_tail_home=$wims_tail_home\
 iconabout,1,module=adm/light&phtml=iconabout.phtml
