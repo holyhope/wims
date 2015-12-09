@@ -9,6 +9,7 @@
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
  <!-- _widgets/menumodubox_accordion.phtml -->
  <div id="wimsmenumodubox">
+  <div class="accordion">
   !if $wims_homeref_n0>0
    !set started=0
    !for i_=1 to $wims_homeref_n0
@@ -83,15 +84,16 @@
     !next i_
    </$div0><!--wimsmenu-->
   !endif wims_homeref_local_n0
+  </div>
  </div> <!--wimsmenumodubox-->
-<!-- end _widgets/menumodubox.phtml -->
 !if $jquery_defined=yes
     <script type="text/javascript">
         /*<![CDATA[*/ jQuery(function(jq) {
-            jq( "#wimsmenumodubox" ).accordion({
+            jq( "#wimsmenumodubox .accordion" ).accordion({
               heightStyle: "content"
             });
         });
     </script>
 !endif
+<!-- end _widgets/menumodubox_accordion.phtml -->
 !endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
