@@ -163,7 +163,10 @@ $wims_classname, $wims_institutionname\
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
- !set wims_ref_class=wims_button
+ !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq_open=yes
+   $CR_sequence
+ !endif
  <div class="wimscenter">
  !href module=adm/class/sequence $wims_name_reorder
  </div>

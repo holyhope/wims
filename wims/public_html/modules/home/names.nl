@@ -23,6 +23,7 @@ CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
 CR_Docs=Tutorials
 CR_mod = Full-power modules
+CR_sequence=Vous avez choisi de présenter les ressources suivantes en séquence pour les participants.
 
 E_comp = gecompileerd op
 E_manager = Site manager:

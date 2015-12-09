@@ -165,9 +165,10 @@ $wims_classname, $wims_institutionname\
  <p>$SU_nosheet</p>
 !else
  !set wims_ref_class=wims_button
- <div class="wimscenter">
- !href module=adm/class/sequence $wims_name_reorder
- </div>
+ !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq_open=yes
+   $CR_sequence
+ !endif
  <div id="widget_supervisor_list">
  !if $jquery_defined=yes
     <script type="text/javascript">
