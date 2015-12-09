@@ -4,7 +4,7 @@
   !set path = $empty
 !endif
 !!read themes/$wims_theme/local.phtml
-!read themes/_procs/homemenu.proc
+!!read themes/_procs/homemenu.proc
 
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
  <!-- _widgets/menumodubox_accordion.phtml -->
@@ -29,15 +29,20 @@
       </$div1>
       !reset wims_ref_class
      !else
-       !if $started=1
-         </$div0>
-       !endif
 
-       <h2 class="menu_title">
-        !read $(path)oneitem.phtml $1_
-       </h2>
-       <$div0 class="wimsmenu homeref_n0">
-       !set started=1
+       !set item_text = !item 3 of $1_
+       !if $item_text notsametext $empty
+         !if $started=1
+           </$div0>
+         !endif
+         <h2 class="menu_title">
+          !read $(path)oneitem.phtml $1_
+         </h2>
+         <$div0 class="wimsmenu homeref_n0">
+        !set started=1
+       !else
+        <hr class="itemsep" />
+       !endif
      !endif
     !endif
    !next i_
@@ -92,7 +97,7 @@
             jq( "#wimsmenumodubox .accordion" ).accordion({
               heightStyle: "content"
             });
-        });
+        });/*]]>*/
     </script>
 !endif
 <!-- end _widgets/menumodubox_accordion.phtml -->

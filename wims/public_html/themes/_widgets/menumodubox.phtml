@@ -34,10 +34,12 @@
            <hr class="itemsep" />
          !endif
        !endif
-
-       <h2 class="menu_title">
-        !read $(path)oneitem.phtml $1_
-       </h2>
+       !set item_text = !item 3 of $1_
+       !if $item_text notsametext $empty
+         <h2 class="menu_title">
+          !read $(path)oneitem.phtml $1_
+         </h2>
+       !endif
        <$div0 class="wimsmenu homeref_n0">
        !set started=1
      !endif
