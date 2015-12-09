@@ -2,7 +2,7 @@
 !if $wims_theme_icon=yes
   !set  wims_theme_icon=$wims_theme
 !endif
-!distribute items $wims_read_parm into 1_,2_,3_,4_,5_
+!distribute items $wims_read_parm into 1_,2_,3_,4_,5_,6_
 !reset w_image
 !if " isin $1_
   !set w_name=!replace internal " by in $1_
@@ -15,6 +15,7 @@
     !set w_name=$1_
   !endif
 !endif
+!set wims_ref_title=$6_
 !goto $2_
 :0
  $(wims_read_parm[3..-1])
@@ -26,9 +27,10 @@
  !set 3_=!item 3 to -1 of $wims_read_parm
  !set 3_=!nospace $3_
  !set wims_ref_class=$w_name1
- !set wims_ref_title=$w_name
+ !default wims_ref_title=$w_name
  !href $3_ $w_name
  !reset wims_ref_class
+ !reset wims_ref_title
  !exit
 :2
  !if $4_ notsametext
@@ -42,9 +44,10 @@
  !exit
 :4
  !set wims_ref_class=$w_name1
- !set wims_ref_title=$w_name
+ !default wims_ref_title=$w_name
  !href target=wims_$4_ $3_ <span class="text_item">$w_name</span>
  !reset wims_ref_class
+ !reset wims_ref_title
  !exit
 :5
  <a href="$3_" class="$w_name1">$4_</a>
@@ -54,15 +57,17 @@
  !set 3_=!item 3 to -1 of $wims_read_parm
  !set 3_=!nospace $3_
  !set wims_ref_class=$w_name1
- !set wims_ref_title=$w_name
+ !default wims_ref_title=$w_name
  !href $3_ &nbsp;
  !reset wims_ref_class
+ !reset wims_ref_title
  !exit
 :7
  !set wims_ref_class=wims_button_feedback
- !set wims_ref_title=$w_name
+ !default wims_ref_title=$w_name
  !href target=wims_$4_ $3_ $w_name
  !reset wims_ref_class
+ !reset wims_ref_title
  !exit
 :8
  !set wims_ref_class=$w_name1
