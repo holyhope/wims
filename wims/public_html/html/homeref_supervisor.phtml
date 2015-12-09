@@ -36,9 +36,9 @@
 
 !!********* Link #1 : "Close Window" or "Home" (Not Shown if Embedded)
 !if _ isin $wims_subsession
- !set 1_=!append line back2,3,window.close() to $1_
+ !!set 1_=!append line back2,3,window.close() to $1_
 !else
- !set 1_=!append line class_home,1,session=$wims_session.1 to $1_
+ !!set 1_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
 
 !!********* Link #2 : "Sheet"
@@ -81,22 +81,23 @@
 !!********* Link #4 : "Introduction" (Not Shown if Embedded)
 !if $module_has_intro=yes and $cmd notwordof intro help and\
         $wims_sheet=$empty and exam notin $wims_session
- !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+ !!set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
 !endif
 
 !!********* Link #5 : "Help"
 !if $module_has_help=yes and $cmd notwordof intro help
  !if $module_help=$empty or $module_help=popup
-  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+  !!set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
  !else
-  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+  !!set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
 
 !!********* Link #6 : "About"
 !if $module_has_about=yes and $cmd notwordof help intro
- !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+  !!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
+
 !if print isin $job,$job2 or $print!=
   !set 1_=!append line print,3,window.print() to $1_
 !endif

@@ -104,7 +104,7 @@
  !!!set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
 !endif
 !if $wims_sheet>0 or P isin $wims_sheet
- !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
 !endif
 !if $wims_sequence>0 and adm/ isin $module
  !if $wims_user=supervisor
@@ -118,23 +118,27 @@
 !endif
 !if $module_has_intro=yes and $cmd notwordof intro help and \
 	$wims_sheet=$empty and exam notin $wims_session and mfeed notin $wims_session
- !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
 !endif
 !if $module_has_help=yes and $cmd notwordof intro help and _exam notin $wims_session
  !if $module_help=$empty or $module_help=popup
-  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
  !else
-  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
-!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home \
-  and _exam notin $wims_session and _mfeed notin $wims_session and ($wims_user=$empty or $wims_user=supervisor)
- !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
-!endif
+
 !if $wims_theme_version=0
   !if _ notin $wims_session
     !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
   !endif
+!endif
+
+!!********* Link: "About"
+!if $module_has_about=yes and $cmd notwordof help and $module!=home \
+  and _exam notin $wims_session and _mfeed notin $wims_session \
+  and (adm notin $module or $wims_user iswordof supervisor developper or $wims_user=$empty)
+  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp,,$wims_name_module_infos ($module) to $1_
 !endif
 
 !set wims_hm=$1_
