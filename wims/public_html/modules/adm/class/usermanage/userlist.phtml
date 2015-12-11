@@ -72,24 +72,12 @@ $varfilter_
 !endif
 
 !! define wims_menu_items
-
-!set wims_menu_items=!append line csv,1,module=adm/class/userscore&job=csv\
-,0,\
-sendmail,1,module=adm/class/sendmail\
-photoboard,1,module=adm/class/photoboard\
-,0,\
+!set wims_menu_items=!append line itemsep,0,\
+csv,1,module=adm/class/userscore&job=csv\
 to $wims_menu_items
-!if $typen notwordof level portal program group class \
-   or ($wims_typename iswordof course or ($wims_typename iswordof class and $wims_supertype iswordof 0 2))
-!set wims_menu_items=!append line Score1,1,module=adm/class/userscore\
- livret,1,module=adm/class/livret\
- activity,1,module=adm/class/activity\
-,0,\
-to $wims_menu_items
-!endif
- !if $wims_typename iswordof group and $wims_supertype=2
+!if $wims_typename iswordof group and $wims_supertype=2
      !set wims_menu_items=!append line regmanage,1,module=adm/class/usermanage&job=regmanage to $wims_menu_items
- !endif
+!endif
 !if $typen!=level
  !set wims_menu_items=!append line addparticipant,1,module=adm/class/reguser&step=1\
 to $wims_menu_items
@@ -121,3 +109,16 @@ to $wims_menu_items
     !set wims_menu_items=!append line addteacher,1,module=adm/class/reguser&step=1&utype=1 to $wims_menu_items
  !endif
 !endif wims_typename=group etc
+
+!set wims_menu_items=!append line itemsep,0,\
+sendmail,1,module=adm/class/sendmail\
+photoboard,1,module=adm/class/photoboard\
+to $wims_menu_items
+!if $typen notwordof level portal program group class \
+   or ($wims_typename iswordof course or ($wims_typename iswordof class and $wims_supertype iswordof 0 2))
+  !set wims_menu_items=!append line itemsep,0,\
+Score1,1,module=adm/class/userscore\
+ livret,1,module=adm/class/livret\
+ activity,1,module=adm/class/activity\
+to $wims_menu_items
+!endif
