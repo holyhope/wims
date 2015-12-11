@@ -36,7 +36,21 @@
 !read $job.phtml
 
 !if $auth_login!=$empty and $job!=modname
-
+ !set wims_menu_items=!append line modlist,1,cmd=reply&jobreq=modname\
+ to $wims_menu_items
+ !if $job iswordof index publish diff
+   !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
+    binfile,1,cmd=reply&jobreq=binfile\
+   to $wims_menu_items
+ !endif
+ !if $job iswordof flist and $modreq!=.new
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+to $wims_menu_items
+ !endif
+ !if $job iswordof binfile
+   !set wims_menu_items=!append line otherfiles,1,cmd=reply&jobreq=flist\
+     to $wims_menu_items
+  !endif
  !if $job iswordof flist edfile showfile binfile
   !if .oef isin $fname
     !set tmp_f=!replace internal src/ by in $fname
@@ -44,8 +58,13 @@
   !else
     !reset tmp_f
   !endif
-  !set wims_menu_items=!append line test,4,module=devel/$auth_login/$mod$tmp_f,test\
+  !set wims_menu_items=!append line itemsep,0,$wims_name_test\
+  test,4,module=devel/$auth_login/$mod$tmp_f,test\
  to $wims_menu_items
+  !if $job iswordof flist and $modreq!=.new
+    !set wims_menu_items=!append line scripttest,1,module=tool/directexec&cmd=new\
+to $wims_menu_items
+  !endif
   !set doctest=!module category devel/$auth_login/$mod
   !if document isin $doctest
     !set doclist=!defof doclist in wimshome/public_html/$devdir/$mod/var.proc
@@ -63,29 +82,15 @@
   !endif
  !endif
  !if $job iswordof flist index publish prop diff binfile
-  !if $job iswordof index publish diff
-   !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
-    binfile,1,cmd=reply&jobreq=binfile\
-   to $wims_menu_items
-  !endif
-  !if $job iswordof flist and $modreq!=.new
-    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
-   scripttest,1,module=tool/directexec&cmd=new\
-to $wims_menu_items
-  !endif
-  !if $job iswordof binfile
-   !set wims_menu_items=!append line otherfiles,1,cmd=reply&jobreq=flist\
-     to $wims_menu_items
-  !endif
   !if $wims_menu_items!=
-  !set wims_menu_items=!append line ,0,\
+  !set wims_menu_items=!append line itemsep,0,$wims_name_help\
    to $wims_menu_items
   !endif
   !set wims_menu_items=!append line docoef,4,module=adm/createxo&modtoolhelp=yes,help\
    docslib,4, module=help/wimsdoc&subject=slib#slib,help\
    docanswer,4,module=adm/createxo&modtoolhelp=yes&special_parm=reply,help\
    doctec,4,module=help/wimsdoc.en,help\
-   ,0,\
+   itemsep,0,\
   to $wims_menu_items
   !if $job iswordof flist publish diff binfile
   !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
@@ -103,25 +108,17 @@ to $wims_menu_items
    to $wims_menu_items
   !endif
  !endif
- !set wims_menu_items=!append line modlist,1,cmd=reply&jobreq=modname\
- to $wims_menu_items
 !endif
 
 !if $job=edfile
   !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
 to $wims_menu_items
 
-  !set wims_menu_items=!append line ,0,\
+  !set wims_menu_items=!append line itemsep,0,wims_name_help\
    docoef,4,module=adm/createxo&+modtoolhelp=yes,help\
    docslib,4,module=help/wimsdoc&+subject=slib#slib,help\
    docanswer,4,module=adm/createxo&+modtoolhelp=yes&+special_parm=reply,help\
  to $wims_menu_items
-!endif
-
-!if $job!=auth
-!set wims_menu_items=!append line  ,0,\
-   visitor,1,cmd=close&module=home\
-to $wims_menu_items
 !endif
 
 !tail

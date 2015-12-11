@@ -481,7 +481,9 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
    Quicktool\
    Latex2wims\
    Imageclick\
-   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_coordclick
+   Other tools\
+   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,\
+   wims_name_coordclick,wims_name_othertools
 
 !distribute line activeer de html-editor\
 deactiveer de html-editor\

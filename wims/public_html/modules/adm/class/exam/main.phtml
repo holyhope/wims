@@ -48,7 +48,6 @@ $name_title $exam
  !read examinfo.phtml
 !endif
 
-
 !ifval $activetest=-1
  !goto end
 !endif
@@ -63,10 +62,8 @@ $name_title $exam
   !let wims_menu_items=!append line cpexam,1,cmd=reply&job=cpexam to $wims_menu_items
  !endif
  </p>
-
 !else
  !read examcontent.phtml
-
 !endif
 
 !if $activetest=0
@@ -74,14 +71,14 @@ $name_title $exam
 addsexo,1,cmd=reply&job=cpsheet to $wims_menu_items
 !endif
 
-!if $activetest>=0
- !let wims_menu_items=!append line ,0,\
-participantview,1,cmd=reply&job=student to $wims_menu_items
+!if $wims_user=supervisor and $exocnt>0
+ !let wims_menu_items=!append line itemsep,0,\
+duplicateexam,1,cmd=reply&job=duplicate to $wims_menu_items
 !endif
 
-!if $wims_user=supervisor and $exocnt>0
- !let wims_menu_items=!append line ,0,\
-duplicateexam,1,cmd=reply&job=duplicate to $wims_menu_items
+!if $activetest>=0
+ !let wims_menu_items=!append line itemsep,0,\
+participantview,1,cmd=reply&job=student to $wims_menu_items
 !endif
 
 :end

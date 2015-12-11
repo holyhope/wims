@@ -104,12 +104,18 @@
  !endif
 !endif
 
+!if $wims_user$wims_developer!=$empty
+  !set wims_link_close=!append line visitor,1,cmd=close&module=home\
+  to $wims_link_close
+!endif
+
 !set wims_hm=$1_
 !set wims_home_items=$home_
 
 :defend
 !set wims_hm_cnt=!linecnt $wims_hm
 !set wims_home_items_cnt=!linecnt $wims_home_items
+!set wims_link_close_cnt=!linecnt $wims_link_close
 !read themes.phtml header
 !if $module=home
   <div class="wimstrap">

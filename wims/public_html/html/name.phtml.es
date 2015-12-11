@@ -482,7 +482,9 @@ Createxo\
 Quicktool\
 Latex2wims\
 Imageclick\
-   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_coordclick
+Other tools\
+   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,\
+   wims_name_coordclick,wims_name_othertools
 
 !distribute line activar el editor HTML \
 desactivar el editor HTML \

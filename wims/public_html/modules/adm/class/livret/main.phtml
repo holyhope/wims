@@ -35,7 +35,7 @@
  !if $livret_nbcomp<$maxcomp
   !set wims_menu_items=!append line add_competence,1,cmd=renew&job=addcomp&comp=$[$livret_nbcomp+1] to $wims_menu_items
  !endif
- !set wims_menu_items=!append line ,0,\
+ !set wims_menu_items=!append line itemsep,0,\
  refresh,1,cmd=reply\
 to $wims_menu_items
  !reset parmuser1 parmuser3
@@ -49,7 +49,7 @@ to $wims_menu_items
     !set sc=Score1
     !set ac=activity
  !endif
- !set wims_menu_items=!append line ,0,\
+ !set wims_menu_items=!append line itemsep,0,\
  account,1,module=adm/class/usermanage$parmuser3\
  $sc,1,cmd=new&module=adm/class/userscore$parmuser1\
  $ac,1,cmd=new&module=adm/class/activity$parmuser4\
@@ -58,12 +58,12 @@ to $wims_menu_items
 
 !if $wims_user=supervisor
   !if userlist notin $job
-   !set wims_menu_items=!append line ,0,\
+   !set wims_menu_items=!append line itemsep,0,\
   part_list,1,cmd=renew&job=userlist\
 to $wims_menu_items
 
   !endif
-  !set wims_menu_items=!append line    ,0,\
+  !set wims_menu_items=!append line itemsep,0,\
   usermanage,1,cmd=new&module=adm/class/usermanage\
 to $wims_menu_items
 !else
