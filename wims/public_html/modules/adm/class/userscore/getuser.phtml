@@ -1,4 +1,3 @@
-!!!###language independant
 
 !read adm/title.phtml 1\
 $classname\
@@ -323,16 +322,16 @@ $table_tr<td class="small" style="text-align:right;font-weight:bold">
   </tr>
  !next j
  $table_end
-!read wimshome/public_html/themes/_widgets/topback.phtml
 :next
 !next i
+!read wimshome/public_html/themes/_widgets/topback.phtml
 
 !if $exologs!=$empty
- !set wims_menu_items=!append line reg_ex,1,module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser\
+ !set wims_menu_items=!append line itemsep,0,\
+ reg_ex,1,module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser\
  to $wims_menu_items
 !endif
-!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
- ,0,\
+!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser
 to $wims_menu_items
 
 !if $wims_user=supervisor
@@ -345,7 +344,7 @@ to $wims_menu_items
   !set wims_menu_items=!append line activity1,1,module=adm/class/activity&job=exobyday&user=$getuser\
  to $wims_menu_items
  !endif
-  !set wims_menu_items=!append line ,0, \
+  !set wims_menu_items=!append line itemsep,0, \
   part_list,1,cmd=resume\
  to $wims_menu_items
   !read adm/class/getnextuser $wims_class,$getuser,getuser,getuser

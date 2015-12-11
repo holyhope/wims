@@ -24,7 +24,8 @@ $title
 !endif
 
 !read $job.phtml
-
+!set wims_menu_items=!append line itemsep,0,\
+  to $wims_menu_items
 !if $wims_theme_version!=0 and $wims_theme_version!=
  !set wims_menu_items=!append line config,1,cmd=renew&job=list\
 to $wims_menu_items
@@ -32,8 +33,6 @@ to $wims_menu_items
 !set wims_menu_items=!append line struct,1,module=adm/class/gateway\
 to $wims_menu_items
 !endif
-!set wims_menu_items=!append line ,0,\
-to $wims_menu_items
 !set wims_menu_items=!append line config_present,1,cmd=reply&job=present\
 to $wims_menu_items
 !set wims_menu_items=!append line config_oef,1,cmd=reply&job=oefdefault\
@@ -42,26 +41,29 @@ to $wims_menu_items
 !set wims_menu_items=!append line config_propagate,1,cmd=reply&job=propagate\
 to $wims_menu_items
 !endif
-!set wims_menu_items=!append line ,0,\
+!if $classdepth<=1
+ !set wims_menu_items=!append line itemsep,0,\
+ config_auth,1,cmd=reply&job=authtype\
+ to $wims_menu_items
+!endif
+!set wims_menu_items=!append line config_secure,1,cmd=reply&job=security\
+to $wims_menu_items
+
+!set wims_menu_items=!append line itemsep,0,\
  to $wims_menu_items
 !set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
 to $wims_menu_items
-!set wims_menu_items=!append line config_secure,1,cmd=reply&job=security\
-to $wims_menu_items
-!if $classdepth<=1
- !set wims_menu_items=!append line config_auth,1,cmd=reply&job=authtype\
- to $wims_menu_items
-!endif
+
 
 !set wims_menu_items=!append line config_clean,1, cmd=reply&job=clean\
 to $wims_menu_items
-!set wims_menu_items=!append line ,0,\
+!set wims_menu_items=!append line itemsep,0,\
  to $wims_menu_items
  !set wims_menu_items=!append line config_restr,1,cmd=reply&job=access\
   to $wims_menu_items
 !set wims_menu_items=!append line config_score,1,cmd=reply&job=grestrict\
 to $wims_menu_items
-!set wims_menu_items=!append line ,0,\
+!set wims_menu_items=!append line itemsep,0,\
  to $wims_menu_items
 !set wims_menu_items=!append line config_neigh,1,cmd=reply&job=neighbor&job2=first&excls=no\
 to $wims_menu_items

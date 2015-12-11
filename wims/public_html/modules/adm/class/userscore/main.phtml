@@ -524,21 +524,21 @@ $varfilter_
 !!photoboard,1,module=adm/class/photoboard\
 !!to $wims_menu_items
 
-!set wims_menu_items=!append line csv,1,cmd=reply&job=csv\
- ,0,\
-formula,1,cmd=reply&job=formula&formula=prep\
+!set wims_menu_items=!append line itemsep,0,\
+csv,1,cmd=reply&job=csv\
 grades,1,module=adm/class/grades\
+ itemsep,0,\
+formula,1,cmd=reply&job=formula&formula=prep\
 to $wims_menu_items
 !if (($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course program)) and $wims_showlivret!=no
  !set wims_menu_items=!append line ,0,\
 livret,1,module=adm/class/livret\
-activity,1,module=adm/class/activity\
   to $wims_menu_items
 !endif
 
 !if $usercnt!=0
- !set wims_menu_items=!append line ,0,\
-class_stat,1,module=adm/class/stat\
+ !set wims_menu_items=!append line activity,1,module=adm/class/activity\
+ class_stat,1,module=adm/class/stat\
 to $wims_menu_items
 !endif
 
