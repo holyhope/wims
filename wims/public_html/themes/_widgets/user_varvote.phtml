@@ -1,0 +1,10 @@
+!set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+!set avlist=
+!for i=1 to $t
+ !set v_$i=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+ !set a_=!line 1 of $(v_$i)
+ !if $a_>=1 and $a_<=2
+  !set avlist=!append item $i to $avlist
+ !endif
+!next i
+!set v=!itemcnt $avlist

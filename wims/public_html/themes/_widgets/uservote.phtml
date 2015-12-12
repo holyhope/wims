@@ -1,19 +1,9 @@
-
-!set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
-!set avlist=
-!for i=1 to $t
- !set v_$i=!record $i of wimshome/log/classes/$wims_class/vote/.votes
- !set a_=!line 1 of $(v_$i)
- !if $a_>=1 and $a_<=2
-  !set avlist=!append item $i to $avlist
- !endif
-!next i
-!set v=!itemcnt $avlist
+!read _widgets/user_varvote.phtml
 
 !if $v>0
  <!-- _widgets/uservote.phtml -->
- <div class="wims_seq">
- <div class="wims_title_seq">$wims_name_Votes</div>
+ <div class="wims_seq" id="wims_user_vote">
+ <div class="wims_title_seq" >$wims_name_Votes</div>
  <ul class="wims_work_list">
   !for i=1 to $v
    !set sv=!item $i of $avlist
