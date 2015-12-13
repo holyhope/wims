@@ -14,7 +14,7 @@
 !set name_del=Verwijder een module
 !set name_size=Grootte
 !set name_publish=!nosubst Publiceer $i_title<br/><span class="tt">$mod</span>
-
+!set name_publication=Publication
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
 !set name_compile=Compileren
 

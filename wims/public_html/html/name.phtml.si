@@ -184,9 +184,11 @@ Indexation,\
 
 !! Titles of menus
 !distribute items Vie de la classe,Configuration,\
-   Outils de la classe,Liens externes à la classe\
+   Outils de la classe,Liens externes à la classe,\
+   Navigation\
 into wims_name_classactivity,wims_name_configuration,\
-  wims_name_classtools,wims_name_otherclasses
+  wims_name_classtools,wims_name_otherclasses,\
+   wims_name_navigation
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty

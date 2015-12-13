@@ -36,7 +36,8 @@
 !read $job.phtml
 
 !if $auth_login!=$empty and $job!=modname
- !set wims_menu_items=!append line modlist,1,cmd=reply&jobreq=modname\
+ !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+ modlist,1,cmd=reply&jobreq=modname\
  to $wims_menu_items
  !if $job iswordof index publish diff
    !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
@@ -58,6 +59,9 @@ to $wims_menu_items
   !else
     !reset tmp_f
   !endif
+  !if $job notwordof publish prop diff
+  !set wims_menu_items=!append line modsave,1,cmd=reply&jobreq=backup\
+  to $wims_menu_items
   !set wims_menu_items=!append line itemsep,0,$wims_name_test\
   test,4,module=devel/$auth_login/$mod$tmp_f,test\
  to $wims_menu_items
@@ -90,18 +94,16 @@ to $wims_menu_items
    docslib,4, module=help/wimsdoc&subject=slib#slib,help\
    docanswer,4,module=adm/createxo&modtoolhelp=yes&special_parm=reply,help\
    doctec,4,module=help/wimsdoc.en,help\
-   itemsep,0,\
+  to $wims_menu_items
+   !set wims_menu_items=!append line itemsep,0,$name_publication\
   to $wims_menu_items
   !if $job iswordof flist publish diff binfile
-  !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
+    !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
   to $wims_menu_items
   !endif
-  !if $job notwordof publish prop diff
-  !set wims_menu_items=!append line modsave,1,cmd=reply&jobreq=backup\
-  to $wims_menu_items
    !if $pubtit!=$empty
-   !set wims_menu_items=!append line checkdiff,1,cmd=reply&jobreq=diff\
-  ,01,$pubversion/$version\
+     !set wims_menu_items=!append line checkdiff,1,cmd=reply&jobreq=diff\
+  ,01,local: $version / pub: $pubversion\
     to $wims_menu_items
    !endif
    !set wims_menu_items=!append line publish,1,cmd=reply&jobreq=publish\

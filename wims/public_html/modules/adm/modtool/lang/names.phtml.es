@@ -14,7 +14,7 @@
 !set name_del=Borrar un módulo
 !set name_size=Tamaño
 !set name_publish=!nosubst Publicar $i_title<br /><span class="tt">$mod</span>
-
+!set name_publication=Publication
 !set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
 !set name_compile=Compile
 
