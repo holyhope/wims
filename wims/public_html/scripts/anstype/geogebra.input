@@ -53,11 +53,9 @@ $oef_applet_option
 
 !set oef_applet_option=$slib_out
 
-
 !set maxobjects=!getopt max in $(replyoption$i)
-!if $maxobjects=$empty
-  !set maxobjects=10
-!endif
+!default maxobjects=10
+
 !set precision=!getopt precision in $(replyoption$i)
 !default  precision=18
 
@@ -86,11 +84,11 @@ function geogebra2wims() {
     var debug=0;
 
     !!!!!!! WIMS !!!!!!!
-    prec=$precision;
 
-  ch=new String(document.getElementById("applet$i").getXML());
-  arr1=new String('<decimals val=\"'+prec+'\"/>');
-  for ( i=0 ; i < 18 ; i++){
+prec=$precision;
+ch=new String(document.getElementById("applet$i").getXML());
+arr1=new String('<decimals val=\"'+prec+'\"/>');
+for ( i=0 ; i < 18 ; i++){
    dep1=new String('<decimals val=\"'+i+'\"/>');
    ch=ch.replace(dep1,arr1);}
    document.getElementById("applet$i").setXML(ch);
@@ -98,13 +96,13 @@ function geogebra2wims() {
    var data = new Array();
    var grec = new Array();
 
-   !if $list_of_things=$empty
+!if $list_of_things=$empty
     !! look for all possible object names
     list_of_things=['point','line','ray','circle','segment','function','polynomial','conic','ellipse','hyperbola','parabola','vector','angle','conicpart','numeric','text','polygon','triangle','quadrilateral','pentagon','hexagon'];
-   !endif
-   listcnt=list_of_things.length;
+!endif
+listcnt=list_of_things.length;
 
-  grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
+grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
    'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigmaf',\
    'sigma','tau','upsilon','phi','khi','psi','omega'];
 
@@ -140,7 +138,6 @@ function geogebra2wims() {
         data=document.getElementById("applet$i").getValueString(thing);
         data=encodeURIComponent(data);
         data=data.replace(/%C2%B/g,'^');
-
         data= decodeURIComponent(data);
         !! back to normal...
 
@@ -168,14 +165,14 @@ function geogebra2wims() {
         }
        else if (it=='angle')
        {
-        !!  on enleve le 'degre' ('^0')
+!!  on enleve le 'degre' ('^0')
         data=encodeURIComponent(data);
         data=data.replace(/%5E0/g,'');
         data=decodeURIComponent(data);
         !!on ecrit les noms grecs en toutes lettres
         name=data.charCodeAt(0);
         data=data.split('=');
-		name0=data[0];
+        name0=data[0];
         data=data[1];
         if(name>944){ name=name-945;
           name=grec[name];
@@ -209,7 +206,7 @@ function geogebra2wims() {
   tot=tot.substr(0,t-2);
   t=cond.length;
   cond=cond.substr(0,t-2);
-    tot=tot+';'+cond;
+  tot=tot+';'+cond;
 !! use encoding on math '+' signs
     tot=tot.replace(/undefined/g, '');
 !!    tot= encodeURIComponent( tot );
@@ -242,18 +239,3 @@ function algebraview() {
 </script>
 <input type="hidden" name="reply$i" id="geog" value="" />
 $out_applet
-!! cela a l'air de fonctionner un peu mais c'est très très lent. Donc je laisse uniquement
-!! pour voir mémoire....
-!!<script type="text/javascript">
-!! algebraview()
-!! </script>
-
-!!form reply
-
-!!if $noclue = yes
-!!      <input type="button" style="" onclick="javascript:dontknow();" name="button2" value="$inp3" />
-!!endif
-!!</p>
-
-!!set oef_formnosubmit=yes
-
