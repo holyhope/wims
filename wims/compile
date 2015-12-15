@@ -68,7 +68,21 @@ for a in $(seq $#) ; do opt=$1;
     rm -rf tmp/$vjmol
     rm -rf public_html/java/jmol/j2s_tmp
  fi
-
+ if [ "$opt" = "--geogebra" ] ; then
+  echo "load geogebra"
+    vGeogebra=GeoGebraWeb-5.0.182.0
+    cd tmp
+    wget http://dev.geogebra.org/download/web/$vGeogebra.zip
+    unzip $vGeogebra.zip
+    rm -f $vGeogebra.zip
+    cd $dir
+    if [ -d "public_html/scripts/js/geogebra/geogebraweb" ] ; then
+      mv public_html/scripts/js/geogebra public_html/scripts/js/geogebra/geogebraweb_tmp
+    fi
+    mv -f tmp/$vGeogebra public_html/scripts/js/geogebra/geogebraweb
+    rm -rf tmp/$vGeogebra
+    rm -rf public_html/scripts/js/geogebraweb_tmp
+ fi
  if [ "$opt" = "--modules" ] ; then
     echo "load modules"
     src/wims_modules.pl
