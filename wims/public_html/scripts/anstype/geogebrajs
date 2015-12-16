@@ -31,16 +31,16 @@ precision=!getopt precision in $(replyoption$i)
 !!precision=$[2*$precision]
 !default weight=1,0.2,1
 !default output=coord
-!read geogebra_translation
 parameters=$(oef_answer_option$i)
 ggblang=!getopt language in $(oef_answer_option$i)
+!default ggblang=$lang_choice
 !default ggblang=$module_language
 !!Insère la variable $typelangue
 !read lang/geogebra.phtml.$ggblang
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
 !endif
-
+!read anstype/geogebra_translation
 typelangue_en=$typelangue
 !set typecnt=!linecnt $typelangue
 !reset name_listtype
@@ -99,7 +99,6 @@ yourlistformal=!row 2 of $(reply$i)
 yourlistformal=!nospace $yourlistformal
 yourlistformal=!replace internal && by $\
 $ in $yourlistformal
-
 
 yourlist_name_nonignore=$yourlist_name
 yourlist_nonignore=!replace internal = by , in $yourlist_name_nonignore

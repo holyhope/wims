@@ -37,6 +37,7 @@ ray(p1,p2)=line(p1,p2)\
   v1=v1/sqrt(norml2(v1)) ; v2=v2/sqrt(norml2(v1)) ;\
   return(midperpendicular(p2+v1,p2+v2));\
 }\
+\
 {\
  circle(p1,p2)=\
   circ=(x-p1[1])^2 +(y-p1[2])^2 ;\
@@ -50,9 +51,7 @@ return([polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(p
  segment(p1,p2)=\
   if( #p2==2, return(sqrt(norml2(p2-p1))),return(p2));\
 }\
-
-
-
+\
 {\
  middle(x1,y1,x2,y2)=\
   x=(x1+x2)/2;y=(y1+y2)/2;\
