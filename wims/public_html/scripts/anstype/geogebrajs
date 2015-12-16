@@ -37,6 +37,9 @@ ggblang=!getopt language in $(oef_answer_option$i)
 !default ggblang=$module_language
 !!Insère la variable $typelangue
 !read lang/geogebra.phtml.$ggblang
+!if $lang_exists!=yes
+  !read lang/geogebra.phtml.en
+!endif
 
 typelangue_en=$typelangue
 !set typecnt=!linecnt $typelangue
@@ -239,8 +242,6 @@ yourlist_nonignore_cnt=!linecnt $yourlist_nonignore
 ## en même temps on fixe les points pour la réponse
 ### il faut aussi récupérer les conditions du type eq_c:equation
 ###yourggb permet de réafficher la réponse en fixant les points qui peuvent l'être.
-
-pp=$yourlist_name
 
 yourggb=
 js_fix=
@@ -846,6 +847,9 @@ displaylist2=
         coord=!rawmath $coord
         coord=!exec pari c=$coord; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
        !endif
+       !if $type isitemof function
+         coord=!rawmath $coord
+       !endif
    ###for a point coord=x,y
     ###for a conic coord=x2,y2,xy,x,y,cst
       !if $type isitemof segment,function,angle,numeric,text
@@ -887,9 +891,9 @@ displaylist2=
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-             test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
+             test=!exec pari myy=[$my];c=vecmax(abs(myy)) ; myy=myy/c ;\
              yo=[$coord] ; c=vecmax(abs(yo)) ; yo=yo/c ;\
-             if( vecmax(abs(yo - my)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + my)) < 10^(-(max(3,$precision/2))),1,0)
+             if( vecmax(abs(yo - myy)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + myy)) < 10^(-(max(3,$precision/2))),1,0)
              test=!trim $test
              !if $test=1
                cond=$test==1

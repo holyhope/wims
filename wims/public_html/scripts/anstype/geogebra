@@ -891,9 +891,9 @@ displaylist2=
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-             test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
+             test=!exec pari myy=[$my];c=vecmax(abs(myy)) ; myy=myy/c ;\
              yo=[$coord] ; c=vecmax(abs(yo)) ; yo=yo/c ;\
-             if( vecmax(abs(yo - my)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + my)) < 10^(-(max(3,$precision/2))),1,0)
+             if( vecmax(abs(yo - myy)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + myy)) < 10^(-(max(3,$precision/2))),1,0)
              test=!trim $test
              !if $test=1
                cond=$test==1
