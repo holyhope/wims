@@ -9,10 +9,11 @@
  !exit
 !endif
 !set ggblang=!getopt language in $(replyoption$i)
+!default ggblang=$lang_choice
 !default ggblang=$module_language
 !set replyoption$i=!replace internal true by yes in $(replyoption$i)
 !set noclue=!getopt idontknow in $(replyoption$i)
-!set oef_js_submit=geogebra2wims();
+!set oef_js_submit=geogebra2wims()
 
 !read lang/geogebra.phtml.$ggblang
 !!! let the following tabulation
@@ -24,31 +25,28 @@ $ in $oef_applet_option
 !set Inputsize=!line 1 of $oef_applet_option
 !set Inputsize=!replace internal x by , in $Inputsize
 !set oef_applet_option=!line 2 to -1 of $oef_applet_option
-!set oef_applet_option=width=$(Inputsize[1])\
-height=$(Inputsize[2])\
-$oef_applet_option
+!if width notin $oef_applet_option
+  !set oef_applet_option=$oef_applet_option\
+width=$(Inputsize[1])
+!endif
+!if height notin $oef_applet_option
+  !set oef_applet_option=$oef_applet_option\
+height=$(Inputsize[2])
+!endif
 
-!for a in showToolBar,showResetIcon,showToolBarHelp
- !set test=!getopt $a in $oef_applet_option
- !if $test issametext
-   !set oef_applet_option=!append line $a=true to $oef_applet_option
- !endif
-!next
+!set oef_applet_option=$oef_applet_option\
+language=$ggblang
 
-!for a in showMenuBar,showAlgebraInput,enableRightClick
- !set test=!getopt $a in $oef_applet_option
- !if $test=
-   !set oef_applet_option=!append line $a=false to $oef_applet_option
- !endif
-!next
+!set oef_answer_option$i=$oef_applet_option
+!set number=!getopt number in $oef_applet_option
+!default number=0
 
-!readproc slib/geo2D/geogebra3 $oef_applet_option language=$ggblang number=$[$i+1]
-
+!readproc slib/geo2D/geogebra $oef_applet_option
 !set out_applet=$slib_out
 
 !readproc slib/geo2D/geogebracommand
 !set oef_applet_command=$slib_out
-!readproc slib/geo2D/geogebra3 $oef_applet_option
+!readproc slib/geo2D/geogebra $oef_applet_option
 !readproc slib/geo2D/geogebraoption
 
 !set oef_applet_option=$slib_out
@@ -57,12 +55,19 @@ $oef_applet_option
 !default maxobjects=10
 
 !set precision=!getopt precision in $(replyoption$i)
-!default  precision=18
+!default precision=18
 
 !set igno=!getopt ignore in $(replyoption$i)
 !set igno=!replace internal & by , in $igno
 !set igno=!makelist x:"1" for x in $igno
 !set igno={$igno}
+
+!! on analyse uniquement les objets commencant par Ny_
+
+!if applet isin $(replyoption$i)
+  !set Ny=data.substr(0,2)=="Ny"
+!endif
+!default Ny=data.indexOf('_')!= 2
 
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -74,7 +79,11 @@ function dontknow()
     document.location.href = URL;
 }
 
+!!ici on ne peut prendre document.getElementById("applet$i")
+!set mygbb=ggbApplet$number
+
 function geogebra2wims() {
+    var mygbb=$mygbb;
     var tot='';
     var ignore=$igno;
     var cond='';
@@ -82,16 +91,15 @@ function geogebra2wims() {
     var a,b,c,d,e,f,g,h,n,x,y,p,max,r,s,t,i,it,whatisit,thing,listcnt,def,name,prec;
     var list_of_things = new Array();
     var debug=0;
-
     !!!!!!! WIMS !!!!!!!
 
 prec=$precision;
-ch=new String(document.getElementById("applet$i").getXML());
+ch=new String($mygbb.getXML());
 arr1=new String('<decimals val=\"'+prec+'\"/>');
 for ( i=0 ; i < 18 ; i++){
    dep1=new String('<decimals val=\"'+i+'\"/>');
    ch=ch.replace(dep1,arr1);}
-   document.getElementById("applet$i").setXML(ch);
+   mygbb.setXML(ch);
 
    var data = new Array();
    var grec = new Array();
@@ -106,53 +114,44 @@ grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
    'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigmaf',\
    'sigma','tau','upsilon','phi','khi','psi','omega'];
 
-  var totalobject_count = 0;
-
-  nbre=document.getElementById("applet$i").getObjectNumber();
-  for ( i=0 ; i < nbre ; i++){
-   thing=document.getElementById("applet$i").getObjectName(i);
-   if (!(thing in ignore)) {
-    whatisit=document.getElementById("applet$i").getObjectType(thing);
-    def=document.getElementById("applet$i").getCommandString(thing);
-    if (def=='') {def=whatisit;}
-
-  !!replace the greek names of the angles
-  test=encodeURIComponent(thing);
-  test=decodeURIComponent(test);
-  name=test.charCodeAt(0);
-  if (name>944)
-    {
-    name=name-945;
-    test=grec[name];
-    }
-
-  for ( p=0 ; p < listcnt ; p++)
-      {
+//mygbb.setLanguage("en");
+var totalobject_count = 0;
+nbre=mygbb.getObjectNumber();
+for ( i=0 ; i < nbre ; i++){
+thing=mygbb.getObjectName(i);
+if (!(thing in ignore)) {
+whatisit=mygbb.getObjectType(thing);
+def=mygbb.getCommandString(thing,false);
+if (def=='') {def=whatisit;}
+//alert('getobjetname='+thing+'||getObjettype='+whatisit+'||command='+def+'||valuestring='+mygbb.getValueString(thing));
+!!replace the greek names of the angles
+test=encodeURIComponent(thing);
+test=decodeURIComponent(test);
+name=test.charCodeAt(0);
+if (name>944){name=name-945;
+    test=grec[name];}
+for ( p=0 ; p < listcnt ; p++){
     !! walk trough the selection of objects we are interested in
     !! defined in Wimsvariable $list_of_things='point','circle','polygon'
 
     it=list_of_things[p];
 
     if (whatisit==it)
-        {
-        data=document.getElementById("applet$i").getValueString(thing);
+      {
+        data=mygbb.getValueString(thing);
         data=encodeURIComponent(data);
         data=data.replace(/%C2%B/g,'^');
         data= decodeURIComponent(data);
         !! back to normal...
-
-        if (data.indexOf('_') != 2 )
-      !! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
-      {
-      totalobject_count=totalobject_count + 1;
-      if (it=='point'||it=='vector')
-        {
-        x=document.getElementById("applet$i").getXcoord(thing);
-        x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
-        y=document.getElementById("applet$i").getYcoord(thing);
-        y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
-        data=thing+'='+it+','+x+','+y;
-        }
+if ($Ny)
+!! check e.g. no special tags like My_A My_B used to mask a *.ggb objects or Ny_ used to analyse the *.gbb objects
+      {totalobject_count=totalobject_count + 1;
+      if (it=='point'||it=='vector'){
+x=mygbb.getXcoord(thing);
+x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
+y=mygbb.getYcoord(thing);
+y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
+data=thing+'='+it+','+x+','+y;}
       else if (it=='circle'||it=='line'||it=='polynomial'||it=='conic'||it=='parabola'||it=='ellipse'||it=='hyperbola'||it=='ray')
           !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
       {
@@ -228,13 +227,6 @@ grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
   }
 }
 
-function algebraview() {
- var ch=new String(document.getElementById("applet$i").getXML());
- var alg1=new String('<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>');
- var alg2=new String('<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>');
- ch=ch.replace(alg1,alg2);
- document.getElementById("applet$i").setXML(ch);
-}
 /*]]>*/
 </script>
 <input type="hidden" name="reply$i" id="geog" value="" />
