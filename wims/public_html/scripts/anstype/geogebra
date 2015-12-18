@@ -13,6 +13,11 @@
     !exit
 !endif
 
+!if correction isin $(replyoption$i)
+!set corrbutton=<input id="Correction" style="display:inline;" type="button" value="Correction" onClick="Correction();">
+!endif
+!default coor=
+
 extra=!getopt extra in $(replyoption$i)
 output=!getopt output in $(replyoption$i)
 !if $output notwordof coord nocoord formal nothing
@@ -26,17 +31,20 @@ precision=!getopt precision in $(replyoption$i)
 !!precision=$[2*$precision]
 !default weight=1,0.2,1
 !default output=coord
-!read geogebra_translation
-typelangue_en=$typelangue
-!set ggblang=!getopt language in $(replyoption$i)
-!default ggblang=$lang
+parameters=$(oef_answer_option$i)
+ggblang=!getopt language in $(oef_answer_option$i)
+!default ggblang=$lang_choice
+!default ggblang=$module_language
+!!Insère la variable $typelangue
 !read lang/geogebra.phtml.$ggblang
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
 !endif
-
+!read anstype/geogebra_translation
+typelangue_en=$typelangue
 !set typecnt=!linecnt $typelangue
 !reset name_listtype
+!!permet la traduction avec le nom des programmes pari.
 !for a=1 to $typecnt
   !set ltype=!line $a of $typelangue
   !set ltype=!replace internal = by , in $ltype
@@ -65,6 +73,12 @@ total_formal_cond=0
 
 conic=circle,line,conic,parabola,ellipse,hyperbola,ray
 
+#debug pourri en fr in en (Point[xAxis])
+!set reply$i=!replace internal Point[xAxis] by point in $(reply$i)
+!set reply$i=!replace internal Point[yAxis] by point in $(reply$i)
+!set reply$i=!replace internal Point[a] by point in $(reply$i)
+!!set reply$i=!replace Point\[.*\] by point in $(reply$i)
+
 yourlist_name=!row 1 of $(reply$i)
 yourlist_name=!replace internal " by $ $ in $yourlist_name
 yourlist_name=!nospace $yourlist_name
@@ -85,32 +99,6 @@ yourlistformal=!row 2 of $(reply$i)
 yourlistformal=!nospace $yourlistformal
 yourlistformal=!replace internal && by $\
 $ in $yourlistformal
-
-##################
-Ne sert plus
-!reset list
-!for s=1 to $ynamecnt
-  klaar=!line $s of $yourlist_name
-  klaar=!replace internal = by , in $klaar
-  !if $(klaar[1]) notitemof $ignore
-    !if $(klaar[2]) isitemof $conic
-      !if $(klaar[3])!=$empty
-        you=!rawmath $(klaar[3])
-        you=!exec pari c=$you ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-        ###coeffs : x^2,y^2,xy,x,y,cstte
-      !else
-        you=$empty
-      !endif
-      klaar=!nospace $(klaar[1])=$(klaar[2]),$you
-    !else
-      you=!item 2 to -1 of $klaar
-      klaar=!nospace $(klaar[1])=$you
-    !endif
-    list=!append line $klaar to $list
-  !endif
-!next s
-!!yourlist_name_nonignore=$list
-###################
 
 yourlist_name_nonignore=$yourlist_name
 yourlist_nonignore=!replace internal = by , in $yourlist_name_nonignore
@@ -147,6 +135,7 @@ yourlist$output=
 !next
 !endif
 
+###Traduction des instruction ggb Droite(fr) passe à line(en) mais devrait passer à Line <= A corriger
 yourlist1=$yourlistformal
 !for a=1 to $typecnt
   !if $(w_$(name_listtype[$a]))!=$empty
@@ -267,7 +256,14 @@ js_fix=
     ob1=!getopt $name in $yourlist_name
     ob1=!item 2 to -1 of $ob1
     !if $type isitemof point,vector
-      ob=!nospace $name = ( $ob1 )
+          !if $type=point
+          ob9=setCoords('$name',$(ob1[1]),$(ob1[2]))
+          ob=!nospace $name = ( $ob1 )
+          yourggb=!append line $ob9 to $yourggb
+          !endif
+          !if $type=vector
+          ob=!nospace $name = ( $ob1 )
+          !endif
     !else
       ob=!nospace $name = $ob1
     !endif
@@ -290,57 +286,57 @@ yourggb1=$yourggb
 ###traitement verbeux des données
 ##on enlève les lignes en trop pour les polygones : segment avec 3 arguments
 ## qui font boguer geogebra
-yourggb=
-!for p = 1 to $ynamecnt
-  ob=!line $p of $yourggb1
-  ob1=!replace internal = by , in $ob
-  ob1=!replace internal [ by , in $ob1
-  ob1=!replace internal ] by , in $ob1
-  name=!item 1 of $ob1
-  type=!item 2 of $ob1
-  type=!lower $type
-  type=!getopt $type in $typelangue
-  !if $type issametext segment
-    obcnt=!itemcnt $ob1
-    !if $obcnt>5
-       ob=
-    !endif
-  !endif
-  !if $type issametext polygon
-    ob1=!getopt $name in $yourlist_name
-    !if $(ob1[1]) notsametext polygon
-      ob=
-    !endif
-  !endif
-  !if $type issametext intersection
-    ob1=!getopt $name in $yourlist_name
-    ob2=!replace internal [ by , in $ob
-    ob2=!replace internal ] by , in $ob2
-    name1=$(ob2[2])
-    name2=$(ob2[3])
-    name1=!positionof item $name1 in $your_name
-    name2=!positionof item $name2 in $your_name
-    name1=!line $name1 of $yourlist_name
-    name1=!replace internal = by , in $name1
-    name2=!line $name2 of $yourlist_name
-    name2=!replace internal = by , in $name2
-    !if circle iswordof $(name1[2]) $(name2[2])
-     !if $test_inter=$empty
-      test_inter=!getopt $name in $ob
-      !if ,1] notin $ob and ,2] notin $ob
-        ob=!replace internal ] by ,1] in $ob
-      !endif
-     !else
-      test_inter2=!getopt $name in $ob
-      !if  $test_inter issametext $test_inter2
-        ob=!replace internal ] by ,2] in $ob
-      !endif
-      !reset test_inter test_inter
-     !endif
-    !endif
-  !endif
-  yourggb=!append line $ob to $yourggb
-!next
+!!yourggb=
+!!!for p = 1 to $ynamecnt
+!!  ob=!line $p of $yourggb1
+!!  ob1=!replace internal = by , in $ob
+!!  ob1=!replace internal [ by , in $ob1
+!!  ob1=!replace internal ] by , in $ob1
+!!  name=!item 1 of $ob1
+!!  type=!item 2 of $ob1
+!!  type=!lower $type
+!!  type=!getopt $type in $typelangue
+!!  !if $type issametext segment
+!!    obcnt=!itemcnt $ob1
+!!    !if $obcnt>5
+!!       ob=
+!!    !endif
+!!  !endif
+!!  !if $type issametext polygon
+!!    ob1=!getopt $name in $yourlist_name
+!!    !if $(ob1[1]) notsametext polygon
+!!      ob=
+!!    !endif
+!!  !endif
+!!  !if $type issametext intersection
+!!    ob1=!getopt $name in $yourlist_name
+!!    ob2=!replace internal [ by , in $ob
+!!    ob2=!replace internal ] by , in $ob2
+!!    name1=$(ob2[2])
+!!    name2=$(ob2[3])
+!!    name1=!positionof item $name1 in $your_name
+!!    name2=!positionof item $name2 in $your_name
+!!    name1=!line $name1 of $yourlist_name
+!!    name1=!replace internal = by , in $name1
+!!    name2=!line $name2 of $yourlist_name
+!!    name2=!replace internal = by , in $name2
+!!    !if circle iswordof $(name1[2]) $(name2[2])
+!!     !if $test_inter=$empty
+!!      test_inter=!getopt $name in $ob
+!!      !if ,1] notin $ob and ,2] notin $ob
+!!        ob=!replace internal ] by ,1] in $ob
+!!      !endif
+!!     !else
+!!      test_inter2=!getopt $name in $ob
+!!      !if  $test_inter issametext $test_inter2
+!!        ob=!replace internal ] by ,2] in $ob
+!!      !endif
+!!      !reset test_inter test_inter
+!!     !endif
+!!    !endif
+!!  !endif
+!!  yourggb=!append line $ob to $yourggb
+!!!next
 
 yourlistformal=
 !for a = 1 to $ynamecnt
@@ -850,6 +846,9 @@ displaylist2=
         coord=!rawmath $coord
         coord=!exec pari c=$coord; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
        !endif
+       !if $type isitemof function
+         coord=!rawmath $coord
+       !endif
    ###for a point coord=x,y
     ###for a conic coord=x2,y2,xy,x,y,cst
       !if $type isitemof segment,function,angle,numeric,text
@@ -1019,11 +1018,11 @@ msg=<br />$msg</span>
 ####PREPARATION des feedback
 :end
 
-!readproc slib/geo2D/geogebra3 $oef_applet_option\
+!readproc slib/geo2D/geogebrajs $parameters\
 $feed\
 $yourggb\
-$js_fix\
-language=$ggblang
+$js_fix
+
 #### On ne fait afficher que les points nouveaux
  yourlistnew$output =
  !for p = 1 to $ynamecnt
@@ -1037,7 +1036,9 @@ language=$ggblang
 !next
 
 ### Reponse affichée à la place de embed
-reply_$i = $slib_out
+reply_$i = $corrbutton\
+$slib_out
+
 m_reply$i=$yourggb
 
 !if $wims_read_parm=nocompare
