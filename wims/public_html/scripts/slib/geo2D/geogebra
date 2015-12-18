@@ -4,7 +4,7 @@
  !goto proc
 !endif
 slib_title=Geogebra HTML 5
-slib_author=Michael, Borcherds; Julien, Lyotard; Bernadette, Perrin-Riou
+slib_author=Julien, Lyotard; Bernadette, Perrin-Riou
 
 slib_example=Z=(-3,6.78);W=(0.2,5.8);a=Circle[Z,W];e=Ellipse[Z,W,5];u=Line[W,Z];showMenuBar=true;showToolBar=true;language=en;customToolBar="0|40@10||1|2";width=800;height=500;setCoordSystem(-9,7,1,11.5);setAxesVisible(true, true);number=1;\
 A=(0,3.5);B=(0,5);a=Circle[A,B];d:y=2x+1;number=6;width=600;language=fr;showToolBar=true;customToolBar="0|40"\
@@ -14,6 +14,13 @@ ggbBase64=UEsDBBQACAAIAE9zJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VZNc9s2ED03vw
 !exit
 
 :proc
+
+!read js/geogebra/test
+!if $geogebra_exists!=yes
+  slib_out=<span class="wims_warning">GeoGebra is not installed</span>
+  !exit
+!endif
+
 !set name_clickgeogebra_fr=Initialiser
 !default name_clickgeogebra_$lang=Init
 
