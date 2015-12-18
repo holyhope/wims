@@ -227,8 +227,14 @@ $slib_appletcommand\
 $slib_injection
 !endif
 
-!set slib_geogebrawindow2=$slib_geogebrawindow2\
-$slib_commandgeneral
+slib_commandgeneral_cnt=!linecnt $slib_commandgeneral
+!for slib_j=1 to $slib_commandgeneral_cnt
+  !set slib_tmp=!line $slib_j of $slib_commandgeneral
+  !if $slib_tmp notlineof $slib_geogebrawindow2
+    !set slib_geogebrawindow2=$slib_geogebrawindow2\
+$slib_tmp
+  !endif
+!next
 
 !reset slib_injection slib_commandgeneral
 
