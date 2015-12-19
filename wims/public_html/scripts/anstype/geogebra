@@ -1,4 +1,4 @@
-!reset weight output ggblang typeu precision
+!reset weight output ggblang typeu precision feedbackbutton
 !if $wims_read_parm=nocompare
   !if ? isin $(reply$i)
     !exit
@@ -13,14 +13,16 @@
     !exit
 !endif
 
-!if feedback isin $(replyoption$i)
-!set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" type="button" value="geogebra_feedback" onClick="geogebra_feedback();">
+!set feedbackscript=!getopt feedbackscript in $(replyoption$i)
+!if $feedbackscript!=$empty
+    !set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" \
+type="button" value="$name_ggbcorrection" onClick="$(feedbackscript)();" />
 !endif
 
 extra=!getopt extra in $(replyoption$i)
 output=!getopt output in $(replyoption$i)
 !if $output notwordof coord nocoord formal nothing
-  output=
+  !reset output
 !endif
 replyoption$i=!replace internal weights by weight in $(replyoption$i)
 weight=!getopt weight in $(replyoption$i)

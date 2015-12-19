@@ -1,9 +1,11 @@
 !set lang_exists=yes
 !!INPUT
-!set inp0=Veel te veel objecten getekend. Het aantal toegestaan 
+!set inp0=Veel te veel objecten getekend. Het aantal toegestaan
 !set inp1=objecten. Probeer opnieuw...
 !set inp2=Versturen
 !set inp3=Ik weet het niet
+!!
+!set name_ggbcorrection=Correction
 
 !!GEOGEBRA
 !set pointnocoord=!nosubst een punt $(M_objet[1])
@@ -103,7 +105,7 @@
 !set pointpolygonformal=!nosubst een punt $(M_objet[1]) op de polygoon $(M_objet[3])
 
 !set polygonpointpointnumericformal=!nosubst de regelmatige polygoon met $(M_objet[5]) zijden with $(M_objet[3])$(M_objet[4]) als zijde
-!set polygon4formal=!nosubst de vierkant met $(M_objet[3])$(M_objet[4]) als een zijde 
+!set polygon4formal=!nosubst de vierkant met $(M_objet[3])$(M_objet[4]) als een zijde
 !set polygon3formal=!nosubst de gelijkzijdige driehoek met $(M_objet[3])$(M_objet[4]) als een zijde
 !set polygon5formal=!nosubst de regelmatige vijfhoek met $(M_objet[3])$(M_objet[4]) als een zijde
 !set polygont6formal=!nosubst de regelmatige zeshoek met $(M_objet[3])$(M_objet[4]) als een zijde
@@ -111,7 +113,7 @@
 !set polygon8formal=!nosubst de regelmatige achthoek met $(M_objet[3])$(M_objet[4]) als een zijde
 
 
-!set polygonpointpointpointformal=!nosubst $(M_objet[1]) de driehoek $(M_objet[3])$(M_objet[4])$(M_objet[5]) 
+!set polygonpointpointpointformal=!nosubst $(M_objet[1]) de driehoek $(M_objet[3])$(M_objet[4])$(M_objet[5])
 !set polygonpointpointpointformal=!nosubst $(M_objet[1]) de driehoek $(M_objet[3])$(M_objet[4])$(M_objet[5])
 !set polygonpoint4formal=!nosubst $(M_objet[1]) de vierhoek $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])
 !set polygonpoint5formal=!nosubst $(M_objet[1]) de vijfhoek $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])
@@ -189,7 +191,7 @@ anglegeom=anglegeom
 
 !set w_penalty=Er zijn strafpunten gegeven omdat er teveel objecten zijn getekend.
 !set w_analyze=Je hebt getekend:
-!set w_NO= Nee. Je moest getekend hebben 
+!set w_NO= Nee. Je moest getekend hebben
 !set w_OK= Ja. Je hebt getekend
 !set w_yes= Ja.
 !set w_no= Nee.

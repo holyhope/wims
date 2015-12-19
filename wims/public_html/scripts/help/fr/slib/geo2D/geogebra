@@ -2,83 +2,65 @@ slib_lang_exists_tmp=yes
 
 slib_title=Applet GeoGebra (html5)
 slib_parms=1\
-,option ou commande pour javascript, une par ligne, ou associées par demi-colonne
+,options ou/et commandes pour javascript, une par ligne ou associées par demi-colonne
 slib_out=L'applet GeoGebra en sortie html5
-slib_comment=<ul><li>Il est toujours possible de charger l'applet à partir d'un fichier ggb avec l'option \
-<span class="tt wims_code_words">file</span>.\
- On peut aussi utiliser le <span class="tt wims_code_words">ggbBase64</span>\
- récupérable en tapant Ctrl+shift+B lorsque un fichier ggb est ouvert.\
- Petite nouveauté on peut aussi utiliser l'id d'une figure réalisé sur GeoGebraTube\
- en utilisant l'option <span class="tt wims_code_words">material_id</span>.\
- L'id se récupère en demandant à partager la figure sur le GeogebraTube.</li>\
-<li>L'option <span class="tt wims_code_words">showAlgebraView</span> n'est plus \
-utilisable par contre il est possible de charger\
- des figures sans cette fenêtre ou de la désactiver en utilisant la commande\
- <span class="tt wims_code_words">SetPerspective[2]</span>.\
-Les valeurs suivantes renvoit la fenêtre :\
-<ul><li> 1 : Algèbre et Graphique</li>\
-<li> 2 : Graphique</li>\
-<li> 3 : Tableur</li>\
-<li> 4 : CAS</li>\
-<li> 5 : Fenêtre 3D</li>\
-<li> 6 : Probabilité</li></ul>\
-</li><li>\
-L'ensemble des commandes doit être écrit en anglais quelque que soit la langue choisie.\
-</li></ul>\
-Les commandes applets utilisées permettent soit la définition d'un objet&#44;\
-soit des méhodes javascript. Pour des détails de syntaxe concernant la création d'objets&#44;\
-vous pouvez vous référer à la page d'aide suivante \
-<a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods">GeoGebra_JavaScript_Methods.</a>\
-Il existe de nombreuses méthodes javascript utilisables : par exemple&#44;\
-<pre>\
+slib_comment=Le paramètre peut contenir  soit la définition d'un objet (voir \
+<a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters">\
+ici pour les détails.</a>) (au plus une des trois premières méthodes peut être utilisée).\
+<div>\
+<br/><span class="tt wims_code_words">file=</span> nom du fichier ggb (à mettre dans le répertoire images).\
+<br/><span class="tt wims_code_words">ggbBase64=</span> code récupérable en tapant Ctrl+shift+B lorsque un fichier ggb est ouvert. Dans le cas d'un fichier en chaînes de caractères, écrire <span class="tt wims_code_words">ggbBase64=chaine_de_caracteres</span> sans espace et obligatoirement sur la première ligne.\
+<br/><span class="tt wims_code_words">material_id=</span> id d'une figure mise sur GeoGebraTube que l'on trouve en demandant à partager la figure sur GeogebraTube (déconseillé dans le cas du développement d'un exercice\
+<br/><span class="tt wims_code_words">height=</span> par défaut <span class="tt wims_code_words">300</span>\
+<br/><span class="tt wims_code_words">width=</span> par défaut <span class="tt wims_code_words">300</span>\
+<br/><span class="tt wims_code_words">showToolBar=</span> par défaut <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">customToolBar=</span> par défaut, une barre complète d'outils est présente. Attention : les virgules sont interdites comme séparateur. <a target="wims_external" href="http:///wiki.geogebra.org/en/Reference:Toolbar">Liste des icônes de la Toolbar</a> ; si vous souhaitez séparer deux entiers par un espace, utilisez une arobase <span class="tt wims_code_words">@</span> à la place de l'espace ! \
+<br/><span class="tt wims_code_words">showMenuBar=</span> par défaut <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">showAlgebraInput=</span> par défaut <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">showResetIcon=</span> par défaut <span class="tt wims_code_words">false</span> (Attention : cette option rend possible la réactualisation de l'applet, mais sans que la construction soit refaite dans wims)\
+<br/><span class="tt wims_code_words">showToolBarHelp=</span> par défaut <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">enableRightClick=</span> par défaut <span class="tt wims_code_words">true</span> (Attention : par un double-clic droit sur un objet, l'élève peut modifier tout les objets de la construction !)\
+<br/><span class="tt wims_code_words">language=</span> par défaut <span class="tt wims_code_words">le language du module</span>\
+<br/><span class="tt wims_code_words">enableLabelDrags=</span> par défaut <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">enableShiftDragZoom=</span> par défaut <span class="tt wims_code_words">true</span>\
+<br/><span class="tt wims_code_words">debug=</span> par défaut <span class="tt wims_code_words">false</span>\
+<br/><span class="tt wims_code_words">number=</span> numéro de l'applet dans la page html (par défaut <span class="tt wims_code_words">1</span>).\
+</div>\
+soit des méhodes javascript\
+(<a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods">GeoGebra_JavaScript_Methods</a>)\
+<div class="tt wims_code_words">\
   evalCommand setValue setCoords setColor setVisible \
   setLabelVisible setLabelStyle setFixed setTrace\
   setAxesVisible setGridVisible setCoordSystem setUndoPoint\
   deleteObject renameObject setLayer setLayerVisible\
   setLineStyle setThickness setPointStyle setPointSize\
   setFilling setAnimating setAnimationSpeed\
-  startAnimation stopAnimation isAnimationRunning</pre>\
-Les options autorisées sont les suivantes (voir \
-<a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters">\
-ici pour les détails.</a>)\
-<pre><span class="tt wims_code_words">height</span> par défaut <span class="tt wims_code_words">300</span>\
-<span class="tt wims_code_words">width</span> par défaut <span class="tt wims_code_words">300</span>\
-<span class="tt wims_code_words">showToolBar</span> par défaut <span class="tt wims_code_words">false</span>\
-<span class="tt wims_code_words">customToolBar</span> par défaut <span class="tt wims_code_words">une barre complete d'outils est présente</span>.\
-Attention : les virgules sont interdites comme séparateur.\
-</pre>\
-si vous souhaitez séparer deux entiers par un espace, utilisez une arobase <span class="tt wims_code_words">@</span> à la place de l'espace ! \
-La liste des icônes <a target="wims_external" href="http:///wiki.geogebra.org/en/Reference:Toolbar">se trouve là</a>\
-<pre><span class="tt wims_code_words">showMenuBar</span> par défaut <span class="tt wims_code_words">false</span>\
-<span class="tt wims_code_words">showAlgebraInput</span> par défaut <span class="tt wims_code_words">false</span>\
-<span class="tt wims_code_words">showResetIcon</span> par défaut <span class="tt wims_code_words">false</span> (Attention : cette option rend possible la réactualisation \
-de l'applet, mais sans que la construction soit refaite dans wims)\
-<span class="tt wims_code_words">showToolBarHelp</span> par défaut <span class="tt wims_code_words">true</span>\
-<span class="tt wims_code_words">enableRightClick</span> par défaut <span class="tt wims_code_words">true</span> (Attention : par un double-clic droit \
-sur un objet, l'élève peut modifier tout les objets de la construction !)\
-<span class="tt wims_code_words">language</span> par défaut <span class="tt wims_code_words">le language du module</span>\
-<span class="tt wims_code_words">enableLabelDrags</span> par défaut <span class="tt wims_code_words">true</span>\
-<span class="tt wims_code_words">enableShiftDragZoom</span> par défaut <span class="tt wims_code_words">true</span>\
-<span class="tt wims_code_words">debug</span> par défaut <span class="tt wims_code_words">false</span>\
-<span class="tt wims_code_words">number</span> numéro de l'applet dans la page html (par défaut <span class="tt wims_code_words">1</span>).\
-</pre>\
-Si vous souhaitez afficher plusieurs applets et uniquement dans ce cas là&#44; il est impératif de préciser cette option et de préciser le mot "last" pour le dernier. Exemple: number=4 last;\
-<br/> Dans le cas d'un fichier en chaînes de caractères, écrire <span class="tt wims_code_words">ggbBase64=chaine_de_caracteres</span>\
-sans espace et obligatoirement sur la première ligne.\
-<br/>EXEMPLE\
+  startAnimation stopAnimation isAnimationRunning\
+</div>\
 <pre>&#92;integer{x=randint(1..3)}\
-&#92;text{appletcommand= Z=(&#92;x,3.78)&#92;\
-W=(6.2,2.8)&#92;\
-Ellipse[Z,W,5]&#92;\
+&#92;text{appletcommand= Z=(&#92;x,3.78)\
+W=(6.2,2.8)\
+Ellipse[Z,W,5]\
 u=Line[W,Z]}\
-#le langage peut être choisi dans les options\
 &#92;text{option=showToolBar=true\
-language=en\
-customToolBar="0|5@40 10||1|2"\
+customToolBar="0|40|||1|2|5@10"\
 width=800\
 height=500\
-number=1\
+number=1}\
 &#92;text{applet=slib(geo2D/geogebra &#92;appletcommand ; &#92;option)}\
 &#92;statement{&#92;applet}\
 </pre>\
-Nous remercions Michael Borcherds (geogebra)  de son aide.
+L'option <span class="tt wims_code_words">showAlgebraView</span> n'est plus \
+utilisable par contre il est possible de charger\
+ des figures sans cette fenêtre ou de la désactiver en utilisant la commande\
+ <span class="tt wims_code_words">SetPerspective[2]</span>.\
+D'autres valeurs renvoient d'autres fenêtres :\
+<ul><li> 1 : Algèbre et Graphique</li>\
+<li> 2 : Graphique</li>\
+<li> 3 : Tableur</li>\
+<li> 4 : CAS</li>\
+<li> 5 : Fenêtre 3D</li>\
+<li> 6 : Probabilité</li></ul>\
+</li>\
+</ul>\
+Nous remercions Michael Borcherds (geogebra) de son aide.
