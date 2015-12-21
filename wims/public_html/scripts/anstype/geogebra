@@ -36,7 +36,7 @@ parameters=$(oef_answer_option$i)
 ggblang=!getopt language in $(oef_answer_option$i)
 !default ggblang=$lang_choice
 !default ggblang=$module_language
-!!Insère la variable $typelangue
+!!Insert the variable $typelangue
 !read lang/geogebra.phtml.$ggblang
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
@@ -45,7 +45,7 @@ ggblang=!getopt language in $(oef_answer_option$i)
 typelangue_en=$typelangue
 !set typecnt=!linecnt $typelangue
 !reset name_listtype
-!!permet la traduction avec le nom des programmes pari.
+!!dictionnary with pari programs in geogebra.inc.
 !for a=1 to $typecnt
   !set ltype=!line $a of $typelangue
   !set ltype=!replace internal = by , in $ltype
@@ -106,7 +106,7 @@ yourlist_nonignore=!replace internal = by , in $yourlist_name_nonignore
 yourlist_nonignore=!column 2 to -1 of $yourlist_nonignore
 
 ### yourlist1= A=point,b ; a=Segment,A,C .....
-### on y rajoute des relations "évidentes" A=point a=Segment,A,C => A=point&A=point,a
+### add trivial relations A=point a=Segment,A,C => A=point&A=point,a
 
 yourlistformal=!row 2 of $(reply$i)
 yourlistformal=!nospace $yourlistformal
@@ -207,7 +207,7 @@ yourlist1=$yourlist11
    !next
   !endif
 !next li
-#### on relit encore pour récupérer des intersections
+#### read intersections
 
 !for li = 1 to $ynamecnt
   ligne=!line $li of $yourlist1
@@ -236,12 +236,11 @@ $ in $ligne1
 yourlist_nonignore_cnt=!linecnt $yourlist_nonignore
 
 ## on trouve dans yourlist les objets déclarés au départ.
-## pour chacun des noms, on récupère les coordonnées ou équations et le type
-## sauf si la définition fait intervenir des relations (présence de [ ])
-## permet la reconstruction
-## en même temps on fixe les points pour la réponse
-### il faut aussi récupérer les conditions du type eq_c:equation
-###yourggb permet de réafficher la réponse en fixant les points qui peuvent l'être.
+## pour chacun des noms, coordinates or equations ant the type
+## if no relation (detected by [ ]) in the definition
+## used for reconstruction: yourggb
+## the points are fixed in the answer
+### conditions of type eq_c:equation
 
 yourggb=
 js_fix=
@@ -257,14 +256,14 @@ js_fix=
     ob1=!getopt $name in $yourlist_name
     ob1=!item 2 to -1 of $ob1
     !if $type isitemof point,vector
-          !if $type=point
+       !if $type=point
           ob9=setCoords('$name',$(ob1[1]),$(ob1[2]))
           ob=!nospace $name = ( $ob1 )
           yourggb=!append line $ob9 to $yourggb
-          !endif
-          !if $type=vector
+       !endif
+       !if $type=vector
           ob=!nospace $name = ( $ob1 )
-          !endif
+       !endif
     !else
       ob=!nospace $name = $ob1
     !endif
@@ -284,60 +283,60 @@ js_fix=
 !next p
 yourggb1=$yourggb
 
-###traitement verbeux des données
-##on enlève les lignes en trop pour les polygones : segment avec 3 arguments
-## qui font boguer geogebra
-!!yourggb=
-!!!for p = 1 to $ynamecnt
-!!  ob=!line $p of $yourggb1
-!!  ob1=!replace internal = by , in $ob
-!!  ob1=!replace internal [ by , in $ob1
-!!  ob1=!replace internal ] by , in $ob1
-!!  name=!item 1 of $ob1
-!!  type=!item 2 of $ob1
-!!  type=!lower $type
-!!  type=!getopt $type in $typelangue
-!!  !if $type issametext segment
-!!    obcnt=!itemcnt $ob1
-!!    !if $obcnt>5
-!!       ob=
-!!    !endif
-!!  !endif
-!!  !if $type issametext polygon
-!!    ob1=!getopt $name in $yourlist_name
-!!    !if $(ob1[1]) notsametext polygon
-!!      ob=
-!!    !endif
-!!  !endif
-!!  !if $type issametext intersection
-!!    ob1=!getopt $name in $yourlist_name
-!!    ob2=!replace internal [ by , in $ob
-!!    ob2=!replace internal ] by , in $ob2
-!!    name1=$(ob2[2])
-!!    name2=$(ob2[3])
-!!    name1=!positionof item $name1 in $your_name
-!!    name2=!positionof item $name2 in $your_name
-!!    name1=!line $name1 of $yourlist_name
-!!    name1=!replace internal = by , in $name1
-!!    name2=!line $name2 of $yourlist_name
-!!    name2=!replace internal = by , in $name2
-!!    !if circle iswordof $(name1[2]) $(name2[2])
-!!     !if $test_inter=$empty
-!!      test_inter=!getopt $name in $ob
-!!      !if ,1] notin $ob and ,2] notin $ob
-!!        ob=!replace internal ] by ,1] in $ob
-!!      !endif
-!!     !else
-!!      test_inter2=!getopt $name in $ob
-!!      !if  $test_inter issametext $test_inter2
-!!        ob=!replace internal ] by ,2] in $ob
-!!      !endif
-!!      !reset test_inter test_inter
-!!     !endif
-!!    !endif
-!!  !endif
-!!  yourggb=!append line $ob to $yourggb
-!!!next
+!! - traitement verbeux -- type=segment, polygon, intersection
+!! - too much lines for polygons: segment wtih 3 arguments (this should be deleted)
+
+yourggb=
+!for p = 1 to $ynamecnt
+  ob=!line $p of $yourggb1
+  ob1=!replace internal = by , in $ob
+  ob1=!replace internal [ by , in $ob1
+  ob1=!replace internal ] by , in $ob1
+  name=!item 1 of $ob1
+  type=!item 2 of $ob1
+  type=!lower $type
+  type=!getopt $type in $typelangue
+  !if $type issametext segment
+    obcnt=!itemcnt $ob1
+    !if $obcnt>5
+       ob=
+    !endif
+  !endif
+  !if $type issametext polygon
+    ob1=!getopt $name in $yourlist_name
+    !if $(ob1[1]) notsametext polygon
+      ob=
+    !endif
+  !endif
+  !if $type issametext intersection
+    ob1=!getopt $name in $yourlist_name
+    ob2=!replace internal [ by , in $ob
+    ob2=!replace internal ] by , in $ob2
+    name1=$(ob2[2])
+    name2=$(ob2[3])
+    name1=!positionof item $name1 in $your_name
+    name2=!positionof item $name2 in $your_name
+    name1=!line $name1 of $yourlist_name
+    name1=!replace internal = by , in $name1
+    name2=!line $name2 of $yourlist_name
+    name2=!replace internal = by , in $name2
+    !if circle iswordof $(name1[2]) $(name2[2])
+     !if $test_inter=$empty
+      test_inter=!getopt $name in $ob
+      !if ,1] notin $ob and ,2] notin $ob
+        ob=!replace internal ] by ,1] in $ob
+      !endif
+     !else
+      test_inter2=!getopt $name in $ob
+      !if  $test_inter issametext $test_inter2
+        ob=!replace internal ] by ,2] in $ob
+      !endif
+      !reset test_inter test_inter
+     !endif
+    !endif
+  !endif
+  yourggb=!append line $ob to $yourggb
+!next
 
 yourlistformal=
 !for a = 1 to $ynamecnt
@@ -394,8 +393,8 @@ yourlistformal=
  !goto end
 !endif
 
-### traitement des données de replygood
-### mes conditions numériques
+### traitement de replygood
+### numerical conditions
 ### mylist2= x_A > x_B,texte1 ; (x_A)^2+(x_B)^2 < 3,texte2 ....
 
 mylist=$(replygood$i)
@@ -403,8 +402,9 @@ mylist=$(replygood$i)
   !if $(w_$geoword)!=$empty
     mylist=!replace internal $(w_$geoword)[ by $geoword[ in $(mylist)
   !endif
-  !if $(enw_$geoword)!=$empty
-    mylist=!replace internal $(enw_$geoword)[ by $geoword[ in $(mylist)
+!!FIXME is it a typo ?? en_w
+  !if $(en_w_$geoword)!=$empty
+    mylist=!replace internal $(en_w_$geoword)[ by $geoword[ in $(mylist)
   !endif
 !next
 
@@ -422,8 +422,8 @@ mylist2=
 
 fn=f,n
 memory=
-#on sépare les conditions numériques des conditions formelles
-#on garde en mémoire l'ordre
+#separe numerical conditions and formal conditions
+#keep the order in memory
 !for k = 1 to $mylist_cnt
   ligne=!line $k of $mylist
   !if $(ligne[1]) iswordof f n formal numeric
@@ -446,8 +446,11 @@ mylist1_cnt=!linecnt $mylist1
 mylist2_cnt=!linecnt $mylist2
 mylist2orig=$mylist2
 
-###inachevé, à completer
-### transforme certaines conditions formelles en conditions numériques
+### unfinish
+### transform some formal conditions in numerical conditions
+### see geogebra_translation
+### ray line midperpendicular perpendicular middle angle anglegeom bisector circle
+
 !if $precision>12
    pr=13
 !else
@@ -470,7 +473,7 @@ mylist2orig=$mylist2
     name=!positionof item  $(ligne[4]) in $your_name
     !!type=!line $name of $yourlist_name
     !!type=!replace internal = by , in $type
-    ### enlever la , après vérification
+    ### delete , after checks
     type=$(your_type[$name])
     !if $type=point
       ligne_num=eq_$(ligne[1]):(y_$(ligne[4])-y_$(ligne[3]))*(x-x_$(ligne[3])) - (x_$(ligne[4])-x_$(ligne[3]))*(y-y_$(ligne[3]))=0
@@ -496,11 +499,11 @@ mylist2orig=$mylist2
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof angle
-   ligne_num=abs(arg((x_$(ligne[6])-x_$(ligne[5])+i*(y_$(ligne[6])-y_$(ligne[5])))/(x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3]))))*180/pi-$(ligne[1]))<10^(-$pr)
+    ligne_num=abs(arg((x_$(ligne[6])-x_$(ligne[5])+i*(y_$(ligne[6])-y_$(ligne[5])))/(x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3]))))*180/pi-$(ligne[1]))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof anglegeom
-ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[4])+i*(y_$(ligne[3])-y_$(ligne[4])))))*180/pi-abs($(ligne[1])))<10^(-$pr)
+    ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[4])+i*(y_$(ligne[3])-y_$(ligne[4])))))*180/pi-abs($(ligne[1])))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof bisector
@@ -530,7 +533,7 @@ ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4]
   !endif
 !next
 
-#### données présentes dans l'applet
+#### donnees presentes dans l'applet
 cnt=!linecnt $oef_applet_command
 feed=
 ### mon navigateur bogue s'il y a des informations sur les points en doubles
@@ -582,7 +585,7 @@ mylistformal=
         !reset typeu
         !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??
           typeu=!positionof item $(M_objet[2+$u]) in $my_name
-          ## il peut ne pas exister si défini par eq_c .
+          ## il peut ne pas exister si defini par eq_c .
           !if $typeu issametext
             typeu=numeric
           !else
@@ -735,8 +738,7 @@ $ in $yobj1
    !endif
     !next li
   !endif
-##si  on n'a rien obtenu avec les conditions formelles et le nom,
-### on réessaye au nom près
+##if no result with formal condition and object names, try up to the object name
   !if $klaar=0
     !for s = 1 to $ynamecnt
       !if $klaar=0
@@ -823,7 +825,7 @@ displaylist2=
     display=!replace internal v_ by in $display
   !endif
   mscr2=0
-  #### on étudie chaque condition && cela n'ira pas dans le cas de condition compliquée avec des parenthèses
+  #### study condition with && (no complex condition)
   cond=!item 1 of $cond
   cond=!nospace $cond
   condligne=!replace internal && by $\
@@ -1012,7 +1014,7 @@ msg=<span class="oef_indbad">
       diareply$i=good
     !endif
 !endif
-####cela n'allait pas: il faut que diareply=good simplement si $score=1
+#### diareply=good only if $score=1
 freegot=$[$freegot+$score]
 msg=<br />$msg</span>
 
@@ -1046,7 +1048,7 @@ m_reply$i=$yourggb
   !exit
 !endif
 
-### Reponse affichée dans l'analyse de la réponse
+### Answer in the automatic answer analysis
 !if $output=nothing
   reply__$i=&nbsp;
 !else
@@ -1058,7 +1060,7 @@ m_reply$i=$yourggb
 </tr></table>
 !endif
 
-### Reponse renvoyée dans \reply1
+### Answer for \reply1
 m_reply$i=$ynamecnt\
 $yourggb\
 $yourlist_name
