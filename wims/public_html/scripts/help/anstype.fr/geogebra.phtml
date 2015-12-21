@@ -38,8 +38,27 @@ quelque chose comme <span class="tt wims_code_words">c=Circle[A,B]</span>.
 </li><li>
 <span class="tt wims_code_words">c=Circle[,B]</span> : Il doit y avoir un cercle c passant par B.
 </li><li>
-<span class="tt wims_code_words">d2=PerpendicularLine[A,d1]</span> : d2 doit être la perpendiculaire à d1 passant par A, obtenue
-par la commande GeoGebra <span class="tt wims_code_words">PerpendicularLine</span>.
+<span class="tt wims_code_words">d2=OrthogonalLine[A,d1]</span> : d2 doit être la perpendiculaire
+à d1 passant par A, obtenue par la commande GeoGebra
+<span class="tt wims_code_words">PerpendicularLine</span>.
+</li></ul>
+Seules quelques commandes sont disponibles (XXXX A vérifier).
+<p>
+<b>$wims_name_example</b> :
+<span class="tt wims_code_words">n, a=Line[A,B] </span> : a doit être la droite passant
+par A et B (vérification numérique).
+<p>
+<b>Commandes disponibles (elles sont très limitées)</b> :
+<ul>
+<li><span class="tt wims_code_words">a=Line[A,B] </span> :
+a doit être la droite passant par A et B
+</li><li><span class="tt wims_code_words">a=LineBisector[A,B]</span> :
+</li><li><span class="tt wims_code_words">b=PerpendicularLine[A,a]</span> :
+</li><li><span class="tt wims_code_words">C=Middle[A,B]</span> :
+</li><li><span class="tt wims_code_words">C=AngularBisector[A,B]</span> :
+</li><li><span class="tt wims_code_words">c=Circle[A,B]</span> :
+</li><li><span class="tt wims_code_words">-30=AngleOriente[A,B,A,C]</span> : l'angle orienté (AB,AC) doit mesurer -30°
+</li><li><span class="tt wims_code_words">30=AngleGeom[A,B,C]</span> : l'angle géométrique ABC doit mesurer 30°
 </li></ul>
 </li>
 <li><b>condition numérique</b> :
@@ -77,23 +96,6 @@ très grande précision (par défaut 10^(-18)). Les noms des objets à
 l'intérieur des commandes doivent tous être donnés.
 Le remplacement numérique est fait à l'aide des données numériques
 de la réponse de l'utilisateur.
-Seules quelques commandes sont disponibles (voir liste ci-dessous).
-<p>
-<b>Exemple</b> :
-<span class="tt wims_code_words">n, a=Line[A,B] </span> : a doit être la droite passant par A et B (vérification numérique)
-<p>
-<b>Commandes disponibles (elles sont très limitées)</b> :
-<ul>
-<li><span class="tt wims_code_words">a=Line[A,B] </span> :
-a doit être la droite passant par A et B
-</li><li><span class="tt wims_code_words">a=LineBisector[A,B]</span> :
-</li><li><span class="tt wims_code_words">b=PerpendicularLine[A,a]</span> :
-</li><li><span class="tt wims_code_words">C=Middle[A,B]</span> :
-</li><li><span class="tt wims_code_words">C=AngularBisector[A,B]</span> :
-</li><li><span class="tt wims_code_words">c=Circle[A,B]</span> :
-</li><li><span class="tt wims_code_words">-30=AngleOriente[A,B,A,C]</span> : l'angle orienté (AB,AC) doit mesurer -30°
-</li><li><span class="tt wims_code_words">30=AngleGeom[A,B,C]</span> : l'angle géométrique ABC doit mesurer 30°
-</li></ul>
 </li></ul>
 <p>Une seule réponse du type <span class="tt wims_code_words">geogebra</span> est possible
 pour l'instant dans l'exercice.
@@ -117,6 +119,8 @@ de l'applet ou de commandes (objets prédéfinis). Par exemple :
 </pre>
 La liste complète et à jour se trouve dans la documentation du slib geogebra.
 <pre>
+file
+ggbBase64
 showToolBar (default : false)
 showMenuBar (default : false)
 showResetIcon (default : false)
@@ -126,20 +130,18 @@ enableLabelDrags (default : false)
 enableShiftDragZoom (default : true)
 showAlgebraInput (default : false)
 customToolBar (Une barre d'outils est donnée par défaut. La liste des icônes <a target="wims_external" href="http:///wiki.geogebra.org/en/Reference:Toolbar">se trouve là</a>)
-file
-ggbBase64
 </pre>
 Les commandes possibles sont les définitions d'objets et certaines méthodes javascript
-de GeoGebra
-Nous en donnons quelques-unes, mais voir la documentation du slib geogebra pour une liste
+de GeoGebra.
+Nous en donnons quelques-unes, voir la documentation du slib geogebra pour une liste
 à jour de ce qui est utilisable à travers WIMS.
 <pre>
-  evalCommand setValue setCoords setColor setVisible \
-  setLabelVisible setLabelStyle setFixed setTrace\
-  setAxesVisible setGridVisible setCoordSystem setUndoPoint\
-  deleteObject renameObject setLayer setLayerVisible\
-  setLineStyle setThickness setPointStyle setPointSize\
-  setFilling setAnimating setAnimationSpeed\
+  evalCommand setValue setCoords setColor setVisible
+  setLabelVisible setLabelStyle setFixed setTrace
+  setAxesVisible setGridVisible setCoordSystem setUndoPoint
+  deleteObject renameObject setLayer setLayerVisible
+  setLineStyle setThickness setPointStyle setPointSize
+  setFilling setAnimating setAnimationSpeed
   startAnimation stopAnimation isAnimationRunning
 </pre>
 Par exemple,
@@ -150,13 +152,14 @@ Pour plus de détails, voir l'aide de GeoGebra sur la syntaxe des méthodes javasc
 <a target="wims_external" href="http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html">
 http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html</a>
 <p>
-La variable <span class="tt wims_code_words">\reply</span><i>n</i> où <i>n</i> est le numéro du champ de réponse est formée
+La variable <span class="tt wims_code_words">\reply</span><i>n</i> où <i>n</i> est
+le numéro du champ de réponse est formée
 de plusieurs lignes. La première ligne donne le nombre d'objets. Les lignes suivantes
 contiennent la définition de chaque objet (une ligne par objet), d'abord formellement
 si cela est possible, puis numériquement.
 </p><p>
-La variable <span class="tt wims_code_words">\sc_reply</span><i>n</i> contient sur la première ligne : 0 (mauvaise réponse),
-0.5 (erreur de nom seulement) ou 1 (bonne réponse);
+La variable <span class="tt wims_code_words">\sc_reply</span><i>n</i> contient
+sur la première ligne : 0 (mauvaise réponse), 0.5 (erreur de nom seulement) ou 1 (bonne réponse);
 sur les lignes suivantes, le même détail (0, 0.5 ou 1) pour chaque ligne de la bonne réponse
 </p><p>
 <b>Options</b> :
@@ -194,16 +197,14 @@ la moyenne pondérée de trois scores dont on peut ici préciser les coefficients
 (séparés par des <span class="tt wims_code_words">&</span>). Ces trois scores sont respectivement le score
 des <i>tests formels</i> (f),
 le score des <i>noms des objets demandés</i>, le score des <i>tests numériques</i> (n).
-</li><li><span class="tt wims_code_words">applet</span>
-précise que seuls les objets commençant par le mot <span class="tt wims_code_words">Ny_</span> sont analysés. Par conséquent il est indispensable de modifier
- au préalable le fichier utilisé.
-</li><li><span class="tt wims_code_words">feedbackscript</span> valeur est le nom de la fonction
-javascript. Un bouton apparait alors lors de l'analyse de la réponse quipermet de l'executer.
-Cette fonction doit être définie en javascript correct dans le champ
-<span class="tt wims_code_words">\feedback</span>
-de l'exercice.
+</li><li><span class="tt wims_code_words"></span> le préfixe des noms d'objets qui seront analysés.
+Il ne peut s'agir que d'objets prédéfinis. Dans ce cas, aucun autre objet ne sera analysé.
+Si un fichier ggb est utilisé, il est indispensable de modifier au préalable le fichier utilisé.
+</li><li><span class="tt wims_code_words">feedbackscript</span> : Sa valeur est le nom
+d'une fonction javascript qui doit être définie en javascript correct dans le champ
+<span class="tt wims_code_words">\feedback</span>. Lors de l'analyse de la réponse,
+un bouton permet de lancer son exécution.
 </li></ul>
-
 <p><b>Remarques générales</b> :</p>
 <ul><li>
 L'utilisation du type de réponse <span class="tt wims_code_words">geogebra</span> ralentit

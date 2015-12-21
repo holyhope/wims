@@ -62,12 +62,14 @@ language=$ggblang
 !set igno=!makelist x:"1" for x in $igno
 !set igno={$igno}
 
-!! on analyse uniquement les objets commencant par Ny_
-
-!if applet isin $(replyoption$i)
-  !set Ny=data.substr(0,2)=="Ny"
+!! only objects beginning by the prefix given in the option "object_analysis"
+!! will be analyzed
+!set Ny_=!getopt object_analysis in $(replyoption$i)
+!if $Ny_ !=$empty
+  !set ny_=!charcnt $Ny_
+  !set Ny=data.substr(0,$[$ny_-1])=="$Ny_"
 !endif
-!default Ny=data.indexOf('_')!= 2
+!default Ny=data.substr(0,2])!="My_"
 
 <script type="text/javascript">
 /*<![CDATA[*/
