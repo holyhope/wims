@@ -1,4 +1,4 @@
-!reset weight output ggblang typeu precision feedbackbutton
+!reset weight output ggblang typeu precision feedbackbutton listcoord
 !if $wims_read_parm=nocompare
   !if ? isin $(reply$i)
     !exit
@@ -74,12 +74,6 @@ total_formal_cond=0
 
 conic=circle,line,conic,parabola,ellipse,hyperbola,ray
 
-#debug pourri en fr in en (Point[xAxis])
-!!set reply$i=!replace internal Point[xAxis] by point in $(reply$i)
-!!set reply$i=!replace internal Point[yAxis] by point in $(reply$i)
-!!set reply$i=!replace internal Point[a] by point in $(reply$i)
-!!set reply$i=!replace Point\[.*\] by point in $(reply$i)
-
 yourlist_name=!row 1 of $(reply$i)
 yourlist_name=!replace internal " by $ $ in $yourlist_name
 yourlist_name=!nospace $yourlist_name
@@ -150,6 +144,7 @@ yourlist1=$yourlist11
 !! case where a point has been build by A=(1,2)
 !! to check the test is minimal !(is there some parenthesis in other cases ?)
 !! should be changed in the javascript ?
+!! A=1,2 seems to create a cursor ??
   par=(
   !if $par isin $(ligne1[2])
     ligne1=!line $li of $yourlist_name
@@ -207,6 +202,11 @@ yourlist1=$yourlist11
         yourlist1=!replace line number $li by $ligneb&&point,$(ligne1[$u]) in $yourlist1
       !endif
    !next
+  !endif
+  !if $vartemp iswordof point
+     ligne1=!line $li of $yourlist_name
+     ligne1=!replace = by , in $ligne1
+     !set listcoord=!append line setCoords('$(ligne1[1])',$(ligne1[3]),$(ligne1[4])) to $listcoord
   !endif
 !next li
 #### read intersections
@@ -1026,6 +1026,7 @@ msg=<br />$msg</span>
 
 !readproc slib/geo2D/geogebra $parameters\
 $feed\
+$listcoord\
 $yourggb\
 $js_fix
 
