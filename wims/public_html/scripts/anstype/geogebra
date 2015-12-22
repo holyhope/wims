@@ -75,9 +75,9 @@ total_formal_cond=0
 conic=circle,line,conic,parabola,ellipse,hyperbola,ray
 
 #debug pourri en fr in en (Point[xAxis])
-!set reply$i=!replace internal Point[xAxis] by point in $(reply$i)
-!set reply$i=!replace internal Point[yAxis] by point in $(reply$i)
-!set reply$i=!replace internal Point[a] by point in $(reply$i)
+!!set reply$i=!replace internal Point[xAxis] by point in $(reply$i)
+!!set reply$i=!replace internal Point[yAxis] by point in $(reply$i)
+!!set reply$i=!replace internal Point[a] by point in $(reply$i)
 !!set reply$i=!replace Point\[.*\] by point in $(reply$i)
 
 yourlist_name=!row 1 of $(reply$i)
@@ -108,11 +108,6 @@ yourlist_nonignore=!column 2 to -1 of $yourlist_nonignore
 ### yourlist1= A=point,b ; a=Segment,A,C .....
 ### add trivial relations A=point a=Segment,A,C => A=point&A=point,a
 
-yourlistformal=!row 2 of $(reply$i)
-yourlistformal=!nospace $yourlistformal
-yourlistformal=!replace internal && by $\
-$ in $yourlistformal
-
 ##liste des objets avec commentaires (fichier coord) on le place ici pour pouvoir
 ## analyser les polygones
 !if $output iswordof coord nocoord
@@ -137,21 +132,28 @@ yourlist$output=
 !endif
 
 ###Traduction des instruction ggb Droite(fr) passe à line(en) mais devrait passer à Line <= A corriger
+!!!no more useful ??
 yourlist1=$yourlistformal
 !for a=1 to $typecnt
   !if $(w_$(name_listtype[$a]))!=$empty
-   !set yourlist1=!replace internal $(w_$(name_listtype[$a]))[ by $(name_listtype[$a])[ in $yourlist1
+  !set yourlist1=!replace internal $(w_$(name_listtype[$a]))[ by $(name_listtype[$a])[ in $yourlist1
   !endif
 !next
 
 yourlist1=!replace internal [ by , in $yourlist1
 yourlist1=!replace internal ] by  in $yourlist1
 yourlist11=!rows2lines $yourlist1
-
 yourlist1=$yourlist11
 !for li = 1 to $ynamecnt
   ligne=!line $li of $yourlist11
   ligne1=!replace internal = by , in $ligne
+!! case where a point has been build by A=(1,2)
+!! to check the test is minimal !(is there some parenthesis in other cases ?)
+!! should be changed in the javascript ?
+  par=(
+  !if $par isin $(ligne1[2])
+    ligne1=!line $li of $yourlist_name
+  !endif
   vartemp=!lower $(ligne1[2])
   vartemp=!deaccent $vartemp
   vartemp=!getopt $vartemp in $typelangue
@@ -195,9 +197,9 @@ yourlist1=$yourlist11
         !endif
      !next
   !endif
-  vartemp=!lower $(ligne1[2])
-  vartemp=!deaccent $vartemp
-  vartemp=!getopt $vartemp in $typelangue
+ !! vartemp=!lower $(ligne1[2])
+ !! vartemp=!deaccent $vartemp
+ !! vartemp=!getopt $vartemp in $typelangue
   !if $vartemp iswordof intersection
     !for u = 3 to 4
       !if $(ligne1[$u]) notsametext
@@ -236,7 +238,7 @@ $ in $ligne1
 yourlist_nonignore_cnt=!linecnt $yourlist_nonignore
 
 ## on trouve dans yourlist les objets déclarés au départ.
-## pour chacun des noms, coordinates or equations ant the type
+## pour chacun des noms, coordinates or equations and the type
 ## if no relation (detected by [ ]) in the definition
 ## used for reconstruction: yourggb
 ## the points are fixed in the answer
@@ -254,12 +256,13 @@ js_fix=
   !if [ notin $ob
     js_fix = !append line setFixed('$name',true) to $js_fix
     ob1=!getopt $name in $yourlist_name
+    type=!item 1 of $ob1
     ob1=!item 2 to -1 of $ob1
     !if $type isitemof point,vector
        !if $type=point
-          ob9=setCoords('$name',$(ob1[1]),$(ob1[2]))
+          !!ob9=setCoords('$name',$(ob1[1]),$(ob1[2]))
           ob=!nospace $name = ( $ob1 )
-          yourggb=!append line $ob9 to $yourggb
+          !!yourggb=!append line $ob9 to $yourggb
        !endif
        !if $type=vector
           ob=!nospace $name = ( $ob1 )

@@ -1,6 +1,6 @@
-!!la liste des types d'objets reconnus pas wims se trouve dans "list_of_things"
-!!à la sortie du fichier, la liste des objets et celle des 'cond' sont dans le même ordre
-!!que celui de la construction...
+!!"list_of_things": object types treated by wims (to increase ? )
+!!dans reply$i: objects list and formal condition in the order of the
+!!construction...
 
 !set anstype=yes
 !set anstyle=dprompt
@@ -65,12 +65,13 @@ language=$ggblang
 !! only objects beginning by the prefix given in the option "object_analysis"
 !! will be analyzed
 !set Ny_=!getopt object_analysis in $(replyoption$i)
-!if $Ny_ !=$empty
+!set Ny_=!nospace $Ny_
+!if $Ny_!=$empty
   !set ny_=!charcnt $Ny_
   !set Ny=data.substr(0,$[$ny_-1])=="$Ny_"
 !endif
 !default Ny=data.substr(0,2)!="My_"
-
+!! before it was data.indexOf('_') != 2
 <script type="text/javascript">
 /*<![CDATA[*/
 function dontknow()
@@ -120,24 +121,25 @@ grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
 var totalobject_count = 0;
 nbre=mygbb.getObjectNumber();
 for ( i=0 ; i < nbre ; i++){
-thing=mygbb.getObjectName(i);
+  thing=mygbb.getObjectName(i);
+
 if (!(thing in ignore)) {
-whatisit=mygbb.getObjectType(thing);
-def=mygbb.getCommandString(thing,false);
-if (def=='') {def=whatisit;}
-//alert('getobjetname='+thing+'||getObjettype='+whatisit+'||command='+def+'||valuestring='+mygbb.getValueString(thing));
+  whatisit=mygbb.getObjectType(thing);
+!!return the command in english because of the boolean
+  def=mygbb.getCommandString(thing,false);
+  if (def=='') {def=whatisit};
+/*alert('getobjetname='+thing+'||getObjettype='+whatisit+'||command='+def+'||valuestring='+mygbb.getValueString(thing));*/
 !!replace the greek names of the angles
-test=encodeURIComponent(thing);
-test=decodeURIComponent(test);
-name=test.charCodeAt(0);
-if (name>944){name=name-945;
+  test=encodeURIComponent(thing);
+  test=decodeURIComponent(test);
+  name=test.charCodeAt(0);
+  if (name>944){name=name-945;
     test=grec[name];}
 for ( p=0 ; p < listcnt ; p++){
     !! walk trough the selection of objects we are interested in
     !! defined in Wimsvariable $list_of_things='point','circle','polygon'
 
     it=list_of_things[p];
-
     if (whatisit==it)
       {
         data=mygbb.getValueString(thing);
@@ -145,15 +147,16 @@ for ( p=0 ; p < listcnt ; p++){
         data=data.replace(/%C2%B/g,'^');
         data= decodeURIComponent(data);
         !! back to normal...
-if ($Ny)
-!! check e.g. no special tags like My_A My_B used to mask a *.ggb objects or Ny_ used to analyse the *.gbb objects
-      {totalobject_count=totalobject_count + 1;
+  if ($Ny)
+!! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
+!! or Ny_ used to analyse the *.gbb objects
+     {totalobject_count=totalobject_count + 1;
       if (it=='point'||it=='vector'){
-x=mygbb.getXcoord(thing);
-x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
-y=mygbb.getYcoord(thing);
-y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
-data=thing+'='+it+','+x+','+y;}
+        x=mygbb.getXcoord(thing);
+        x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
+        y=mygbb.getYcoord(thing);
+        y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
+        data=thing+'='+it+','+x+','+y;}
       else if (it=='circle'||it=='line'||it=='polynomial'||it=='conic'||it=='parabola'||it=='ellipse'||it=='hyperbola'||it=='ray')
           !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
       {
@@ -193,9 +196,7 @@ data=thing+'='+it+','+x+','+y;}
         data=data[1];
         data=name+'=polygon,'+data;
       }
-
         !! here we produce the URL string 'tot'
-
           tot=tot + data + '&&' ;
           cond=cond+test+'='+def+'&&';
      }
@@ -209,10 +210,10 @@ data=thing+'='+it+','+x+','+y;}
   cond=cond.substr(0,t-2);
   tot=tot+';'+cond;
 !! use encoding on math '+' signs
-    tot=tot.replace(/undefined/g, '');
+  tot=tot.replace(/undefined/g, '');
 !!    tot= encodeURIComponent( tot );
 !! replace the strange unicode for ^2
-    tot=tot.replace(/%C2%B/g,'^');
+   tot=tot.replace(/%C2%B/g,'^');
 
     if (totalobject_count == 0)
     {
