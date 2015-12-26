@@ -89,23 +89,23 @@ slib_customToolBar= !replace internal @ by , in $slib_customToolBar
 slib_customToolBar= !replace internal || by % in $slib_customToolBar
 slib_customToolBar= !replace internal | by ,|, in $slib_customToolBar
 slib_customToolBar= !replace internal % by ,||, in $slib_customToolBar
-slib_customToolBar= !items2words  $slib_customToolBar
+slib_customToolBar= !items2words $slib_customToolBar
 
 !default slib_width=300
 !default slib_height=300
 !default slib_enableRightClick=true
 !default slib_showToolBar=false
-!default slib_showToolBarHelp=true
+!default slib_showToolBarHelp=false
 !default slib_showMenuBar=false
 !default slib_showResetIcon=false
 !default slib_showAlgebraInput=false
 !default slib_language=$module_language
 !default slib_enableLabelDrags=false
 !default slib_enableShiftDragZoom=true
-!default slib_useBrowserForJS=false
+!default slib_useBrowserForJS=true
 !default slib_preventFocus=false
 !default slib_debug=false
-!default slib_customToolBar=0 39 | 1 501 67 , 5 19 , 72 | 2 15 45 , 18 65 , 7 37 | 4 3 8 9 , 13 44 , 58 , 47 | 16 51 64 , 70 | 10 34 53 11 , 24  20 22 , 21 23 | 55 56 57 , 12 | 36 46 , 38 49  50 , 71 | 30 29 54 32 31 33 | 17 26 62 73 , 14 68 | 25 52 60 61 | 40 41 42 , 27 28 35 , 6
+!default slib_customToolBar=0 39 | 1 501 67 , 5 19 , 72 | 2 15 45 , 18 65 , 7 37 | 4 3 8 9 , 13 44 , 58 , 47 | 16 51 64 , 70 | 10 34 53 11 , 24  20 22 , 21 23 | 55 56 57 , 12 | 36 46 , 38 49 50 , 71 | 30 29 54 32 31 33 | 17 26 62 73 , 14 68 | 25 52 60 61 | 40 41 42 , 27 28 35 , 6
 !default slib_number=1
 slib_number=$[$slib_number-1]
 !default slib_ggbapplet=ggbApplet$slib_number
@@ -140,7 +140,7 @@ slib_data1=!replace internal ( by , in $slib_data1
     !endif
   !else
     !if $slib_first iswordof $slib_js_parm
-      slib_appletcommand=!append line  $slib_ggbapplet.$slib_line; to $slib_appletcommand
+      slib_appletcommand=!append line $slib_ggbapplet.$slib_line; to $slib_appletcommand
       slib_geogebracommand=!append line $slib_line to $slib_geogebracommand
     !else
       !if $slib_first notwordof height width language number material_id file ggbBase64
@@ -160,14 +160,14 @@ slib_parameters$slib_number=var parameters$slib_number = {\
 "showAlgebraInput":$slib_showAlgebraInput,\
 "showToolBar":$slib_showToolBar,\
 "customToolBar":"$slib_customToolBar",\
-"showToolBarHelp":false,\
+"showToolBarHelp":$slib_showToolBarHelp,\
 "showResetIcon":$slib_showResetIcon,\
 "enableLabelDrags":$slib_enableLabelDrags,\
 "enableShiftDragZoom":$slib_enableShiftDragZoom,\
 "enableRightClick":$slib_enableRightClick,\
 "errorDialogsActive":$slib_debug,\
-"useBrowserForJS":true,\
-"preventFocus":false,\
+"useBrowserForJS":$slib_useBrowserForJS,\
+"preventFocus":$slib_preventFocus,\
 "language":"$slib_language",
 
 !if $slib_file!=$empty
@@ -196,7 +196,7 @@ slib_parameters$slib_number=$(slib_parameters$slib_number)\
 !endif
 
 !if $slib_material_id!=$empty
-slib_parameters$slib_number=$(slib_parameters$slib_number)\
+  slib_parameters$slib_number=$(slib_parameters$slib_number)\
 "material_id":"$slib_material_id"
 !endif
 
