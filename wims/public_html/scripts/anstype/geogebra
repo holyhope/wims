@@ -36,14 +36,14 @@ parameters=$(oef_answer_option$i)
 ggblang=!getopt language in $(oef_answer_option$i)
 !default ggblang=$lang_choice
 !default ggblang=$module_language
-!!Insert the variable $typelangue
 !read lang/geogebra.phtml.$ggblang
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
 !endif
+!!Insert the variable $typelangue
 !read anstype/geogebra_translation
-typelangue_en=$typelangue
 !set typecnt=!linecnt $typelangue
+
 !reset name_listtype
 !!dictionnary with pari programs in geogebra.inc.
 !for a=1 to $typecnt
@@ -52,10 +52,10 @@ typelangue_en=$typelangue
   !set ltype=!nospace $ltype
   !set w_$(ltype[2])=$(ltype[1])
   !set name_listtype=!append item $(ltype[2]) to $name_listtype
-  !set ltype=!line $a of $typelangue_en
+  !set ltype=!line $a of $typelangue
   !set ltype=!replace internal = by , in $ltype
   !set ltype=!nospace $ltype
-  !set en_w_$(ltype[2])=$(ltype[1])
+  !!set en_w_$(ltype[2])=$(ltype[1])
 !next
 
 !read anstype/geogebra.inc
@@ -102,30 +102,32 @@ yourlist_nonignore=!column 2 to -1 of $yourlist_nonignore
 ### yourlist1= A=point,b ; a=Segment,A,C .....
 ### add trivial relations A=point a=Segment,A,C => A=point&A=point,a
 
-##liste des objets avec commentaires (fichier coord) on le place ici pour pouvoir
-## analyser les polygones
+##liste des objets avec commentaires , useful to replace instruction by language
+## as in lang/geogebra.phtml.xx
+## on le place ici pour pouvoir analyser les polygones
 !if $output iswordof coord nocoord
-yourlist$output=
-!for a = 1 to $ynamecnt
+ yourlist$output=
+ !for a = 1 to $ynamecnt
    ob=!line $a of $yourlist_name
    M_objet=!replace internal = by , in $ob
    M_objet=!replace internal -(( by = in $M_objet
    M_objet=!replace internal )) by in $M_objet
    type=!nospace $(M_objet[2]) $output
+   type=!lowercase $type
    ob1=$ob
    ob=$($type)
    !if $(M_objet[2]) issametext segment
      obcnt=!itemcnt $ob1
      !if $obcnt>=5
-       ob=
+       !reset ob
      !endif
    !endif
    yourlist$output = !append line $ob to $(yourlist$output)
    !reset type M_objet
-!next
+ !next
 !endif
 
-###Traduction des instruction ggb Droite(fr) passe à line(en) mais devrait passer à Line <= A corriger
+###Traduction des instruction ggb Line -> line
 !!!no more useful ??
 yourlist1=$yourlistformal
 !for a=1 to $typecnt
@@ -138,11 +140,12 @@ yourlist1=!replace internal [ by , in $yourlist1
 yourlist1=!replace internal ] by  in $yourlist1
 yourlist11=!rows2lines $yourlist1
 yourlist1=$yourlist11
+
 !for li = 1 to $ynamecnt
   ligne=!line $li of $yourlist11
   ligne1=!replace internal = by , in $ligne
-!! case where a point has been build by A=(1,2)
-!! to check the test is minimal !(is there some parenthesis in other cases ?)
+!! case where a point has been built by A=(1,2)
+!! to check, the test is minimal !(is there some parenthesis in other cases ?)
 !! should be changed in the javascript ?
 !! A=1,2 seems to create a cursor ??
   par=(
@@ -152,7 +155,7 @@ yourlist1=$yourlist11
   vartemp=!lower $(ligne1[2])
   vartemp=!deaccent $vartemp
   vartemp=!getopt $vartemp in $typelangue
-  !if $vartemp iswordof segment line ray midperpendicular parallel perpendicular
+  !if $vartemp iswordof segment line ray midperpendicular parallel perpendicular middle
    !for u = 3 to 4
     !if $(ligne1[$u]) notsametext
       b=!positionof item $(ligne1[$u]) in $your_name
@@ -192,9 +195,6 @@ yourlist1=$yourlist11
         !endif
      !next
   !endif
- !! vartemp=!lower $(ligne1[2])
- !! vartemp=!deaccent $vartemp
- !! vartemp=!getopt $vartemp in $typelangue
   !if $vartemp iswordof intersection
     !for u = 3 to 4
       !if $(ligne1[$u]) notsametext
@@ -210,7 +210,6 @@ yourlist1=$yourlist11
   !endif
 !next li
 #### read intersections
-
 !for li = 1 to $ynamecnt
   ligne=!line $li of $yourlist1
   ligne1=!replace internal && by $\
@@ -237,7 +236,7 @@ $ in $ligne1
 
 yourlist_nonignore_cnt=!linecnt $yourlist_nonignore
 
-## on trouve dans yourlist les objets déclarés au départ.
+## in yourlist, there are the initial objects
 ## pour chacun des noms, coordinates or equations and the type
 ## if no relation (detected by [ ]) in the definition
 ## used for reconstruction: yourggb
@@ -257,16 +256,10 @@ js_fix=
     js_fix = !append line setFixed('$name',true) to $js_fix
     ob1=!getopt $name in $yourlist_name
     type=!item 1 of $ob1
+    type=!lowercase $type
     ob1=!item 2 to -1 of $ob1
     !if $type isitemof point,vector
-       !if $type=point
-          !!ob9=setCoords('$name',$(ob1[1]),$(ob1[2]))
-          ob=!nospace $name = ( $ob1 )
-          !!yourggb=!append line $ob9 to $yourggb
-       !endif
-       !if $type=vector
-          ob=!nospace $name = ( $ob1 )
-       !endif
+      ob=!nospace $name = ( $ob1 )
     !else
       ob=!nospace $name = $ob1
     !endif
@@ -302,13 +295,13 @@ yourggb=
   !if $type issametext segment
     obcnt=!itemcnt $ob1
     !if $obcnt>5
-       ob=
+       !reset ob
     !endif
   !endif
   !if $type issametext polygon
     ob1=!getopt $name in $yourlist_name
     !if $(ob1[1]) notsametext polygon
-      ob=
+      !reset ob
     !endif
   !endif
   !if $type issametext intersection
@@ -334,7 +327,7 @@ yourggb=
       !if  $test_inter issametext $test_inter2
         ob=!replace internal ] by ,2] in $ob
       !endif
-      !reset test_inter test_inter
+      !reset test_inter test_inter2
      !endif
     !endif
   !endif
@@ -405,23 +398,15 @@ mylist=$(replygood$i)
   !if $(w_$geoword)!=$empty
     mylist=!replace internal $(w_$geoword)[ by $geoword[ in $(mylist)
   !endif
-!!FIXME is it a typo ?? en_w
-  !if $(en_w_$geoword)!=$empty
-    mylist=!replace internal $(en_w_$geoword)[ by $geoword[ in $(mylist)
-  !endif
 !next
-
-!!mylist=!replace internal && by $\
-!!$ in $mylist
 
 mylist=!rows2lines $mylist
 mylist=!replace internal ; by $\
 $ in $mylist
 
 mylist_cnt=!linecnt $mylist
-mylist1=
-mylist2=
-!distribute items 0,0, into tmp1,tmp2
+!reset mylist1 mylist2
+!distribute items 0,0 into tmp1,tmp2
 
 fn=f,n
 memory=
@@ -539,16 +524,15 @@ mylist2orig=$mylist2
 #### donnees presentes dans l'applet
 cnt=!linecnt $oef_applet_command
 feed=
-### mon navigateur bogue s'il y a des informations sur les points en doubles
-### cela explique la suite
+### bogue s'il y a des informations sur les points en doubles
 mylist11=
 !for a = 1 to $cnt
    ligne=!line $a of $oef_applet_command
    ligne1=!replace internal = by ,=, in $ligne
    !if $(ligne1[2]) notsametext =
-    feed=!append line $ligne to $feed
+     feed=!append line $ligne to $feed
    !else
-   mylist11=!append line $ligne to $mylist11
+     mylist11=!append line $ligne to $mylist11
    !endif
  !next
 
@@ -657,17 +641,15 @@ displaylist1=
   cond=!replace internal = by , in $cond
   !distribute item $cond into name,type
   type=!lower $type
-  !!type2 est le type de l'objet en anglais
   type2=!getopt $type in $typelangue
-  !!si l'auteur a déjà mis en anglais, on fait type2=$type
   !if $type2 issametext
      type2=$type
   !endif
   obj=!item 3 to -1 of $cond
   obj=!nospace $obj
   !if $obj$name issametext
-  ###on interdit à l'auteur de l'exercice de ne pas suffisamment définir les objets :
-  ###il faut donner soit le nom, soit une indication de définition.
+  ### the author must define enough objects
+  ### must give the name or a hint for definition
     Test=bad $i
     !exit
   !endif
@@ -798,7 +780,7 @@ $ in $yobj1
 !else
     displaylist1=$displaylist1\
 
-!!!! laisser la ligne vide précédente
+!!!! let empty the previous line
  !endif
   mscr=!append item $mscr2 to $mscr
 !next p
@@ -917,9 +899,9 @@ displaylist2=
   !if eq_ isin $cond
     cond=0==1
   !endif
-  ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ??
-  #### il faudrait remplacer les && (et les ||) par des lignes (commencant par &&), remplacer les lignes où il y a ==
-  ### par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
+  ### replace equalities by numerical conditions even if the developper has not done it ??
+  #### should replace the && (and the ||) by lines (begining with &&), replace lines
+  #### with == par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
 
   check=!exec pari ($cond)
   !if $check=$empty
@@ -953,7 +935,7 @@ Mscr=
    mscr2=!item $(mem[2]) of $mscr
    Mscr=!append item $mscr2 to $Mscr
 !next k
-### a modifier ?? mais c'est dangereux de laisser la possibilité d'entrer 0,1,0
+### a modifier ?? 0,1,0 is "dangerous" ?
 !if $[$(weight[1])+$(weight[3])] = 0
   weight=$(weight[2]),$(weight[2]),$(weight[2])
 !endif
@@ -1031,7 +1013,7 @@ $yourggb\
 $js_fix
 
 #### On ne fait afficher que les points nouveaux
- yourlistnew$output =
+ !reset yourlistnew$output
  !for p = 1 to $ynamecnt
   u = !item $p of $your_name
   u=!getopt $u in $oef_applet_command
@@ -1042,7 +1024,7 @@ $js_fix
   !reset u
 !next
 
-### Reponse affichée à la place de embed
+### Answer printed instead of the embed
 reply_$i = $feedbackbutton\
 $slib_out
 

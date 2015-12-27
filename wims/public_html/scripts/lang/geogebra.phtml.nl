@@ -158,8 +158,10 @@
 !set vectorpointnumericformal=!nosubst de vector $(M_objet[1]) van $(M_objet[3]), met lengte $(M_objet[4])
 !set vectorpointformal=!nosubst de vector $(M_objet[1]) van O naar $(M_objet[3])
 
+!set middlepointpointformal=!nosubst the middle of the segment $(M_objet[3])$(M_objet[4])
+
 !! use for translation of the language terms of geogebra
-!set typelangue= punt=point \
+!!!set typelangue= punt=point \
 snijpunt=intersection \
 puntcirkel=pointcircle \
 lijn=line \
