@@ -3534,6 +3534,9 @@ void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style
 all members will be set to 0 eg reply[0] = 0 , reply[1] = 0 ...
 hope this does not interfere with existing work... 
 */
+/*
+12/2016 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
+*/
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
  if(confirm(\"remove all drawings ? \")){\
@@ -3550,9 +3553,9 @@ clear_draw_area%d = function(){\
 function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  var button = document.createElement('input');\
- button.type = \"button\";\
- button.style = \"%s\";\
- button.value = \"%s\";\
+ button.setAttribute(\"type\" , \"button\");\
+ button.setAttribute(\"style\" , \"%s\");\
+ button.setAttribute(\"value\" , \"%s\");\
  button.setAttribute(\"onclick\",\"clear_draw_area%d()\");\
  tooltip_placeholder_div.appendChild(button);\
 };\
