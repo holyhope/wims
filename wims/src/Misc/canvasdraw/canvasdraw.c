@@ -221,7 +221,7 @@ canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 
 if( use_tooltip != 2){
  fprintf(stdout,"<!-- canvasdraw div  -->\n\
-<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <!-- tooltip and input placeholder  -->\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
@@ -234,7 +234,7 @@ set canvas_div invisible and do not include placeholder in main html page :
 the js-include will also be in a popup window...to be shown when wims $status = done  
 */
  fprintf(stdout,"<!-- canvasdraw div invisible  -->\n\
-<div tabindex=\"0\" id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"display:none;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
 <script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,getfile_cmd);
