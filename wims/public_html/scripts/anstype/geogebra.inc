@@ -52,12 +52,12 @@ return([polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(p
   if( #p2==2, return(sqrt(norml2(p2-p1))),return(p2));\
 }\
 \
+\\compute the middle of 2 points\
 {\
  middle(x1,y1,x2,y2)=\
   x=(x1+x2)/2;y=(y1+y2)/2;\
   return([x,y]);\
 }\
-
 
 
 \\ compute the line through 2 points ax+by+c=0 segment,x1,y1,x2,y2\
@@ -85,12 +85,6 @@ ray(p1,p2)=\
   return([a,b,c,xm+yd,ym-xd,xm-yd,ym+xd]);\
 }\
 \
-\\ compute the middle of 2 points\
-{\
- middle(x1,y1,x2,y2)=\
-  x=(x1+x2)/2;y=(y1+y2)/2;\
-  return([x,y]);\
-}\
 {\
  barycenter(p1,p2,t)=\
   x1=p1[1];y1=p1[2];x2=p2[1];y2=p2[2] ; t1=t[1]; t2=t[2];\
@@ -117,7 +111,7 @@ ray(p1,p2)=\
   return([x,y]);\
 }\
 \
-\\ internal computation, intersection point of a lines and a circle\
+\\ internal computation, intersection point of a line and a circle\
 {\
  lc_int_(data)=\
   a=data[1];b=data[2];c=data[3];xc=data[4];yc=data[5];r=data[6];\
@@ -144,7 +138,7 @@ ray(p1,p2)=\
   if(out==[], return("error no_available"), return(out));\
 }\
 \
-\\ compute the intersection point of a lines and a circle\
+\\ compute the intersection point of a line and a circle\
 {\
  lc_intersect(l1,c2)=\
   return(lc_int_(l1,c2));\
