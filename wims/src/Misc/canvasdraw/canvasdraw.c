@@ -221,7 +221,7 @@ canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 
 if( use_tooltip != 2){
  fprintf(stdout,"<!-- canvasdraw div  -->\n\
-<div id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <!-- tooltip and input placeholder  -->\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
@@ -234,7 +234,7 @@ set canvas_div invisible and do not include placeholder in main html page :
 the js-include will also be in a popup window...to be shown when wims $status = done  
 */
  fprintf(stdout,"<!-- canvasdraw div invisible  -->\n\
-<div id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
+<div tabindex=\"0\" id=\"canvas_div%d\" style=\"display:none;position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <div id=\"tooltip_placeholder_div%d\" style=\"display:none;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
 <script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,getfile_cmd);
@@ -7678,17 +7678,17 @@ var draw_text = function(canvas_type,x,y,font_size,font_family,stroke_color,stro
    obj = create_canvas%d(canvas_type,xsize,ysize);\
   };\
   var ctx = obj.getContext(\"2d\");\
-  if(angle2 == 0 && angle != 0){\
-   ctx.save();\
-   if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
-   if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
-  };\
-  if( font_family.indexOf('px') != null ){\
+  if( font_family != 'null' ){\
    ctx.font = font_family;\
   }\
   else\
   {\
-   ctx.font = font_family;\
+   ctx.font = font_size+'px Ariel';\
+  };\
+  if(angle2 == 0 && angle != 0){\
+   ctx.save();\
+   if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);}\
+   if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);}\
   };\
   ctx.fillStyle = \"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
   if(angle2 != 0){\
