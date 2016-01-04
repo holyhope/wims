@@ -1,7 +1,7 @@
 
 pari_precision=$precision
 
-pari_header=\
+pari_header=$pari_header\
 \
 {\
  line(p1,p2)=\
