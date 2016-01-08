@@ -4,13 +4,22 @@
 !!! variables which are necessary : wims_class, checksessions
 !!! FIXME 64= max of exam number
 !!! FIXME max of session number
+!!! do reset only if the variable is non empty, if not it creates a variable
+!!! and gives some "variable_name_buffer_overflow"
+
 !for i in $activexams
- !reset Dureeexam_$i
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
  !for jj=1 to 64
  !! jj correspond to maximum of number sessions
-   !reset duree$(jj)_$(i)
+   !if $(duree$(jj)_$(i))!=$empty
+     !reset duree$(jj)_$(i)
+   !endif
 !! jj correspond to exos in an exam
-   !reset exam$(i)_$jj
+   !if $( exam$(i)_$jj)!=$empty
+     !reset exam$(i)_$jj
+   !endif
   !next
 !next
 
@@ -30,11 +39,17 @@ nsc=!linecnt $sc
     duree$(jj)_$(e_)=$[$T_ - $(dur$(jj)_$e_)]
   !endif
 !next
-
 !for i in $activexams
- !reset Dureeexam_$i
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
  !for e=1 to 64
-   !reset exam$(i)_$e Exam_$(i)_$(e)
+  !if $(Exam_$(i)_$(e))!=$empty
+    !reset Exam_$(i)_$(e)
+  !endif
+  !if $(exam$(i)_$e)!=$empty
+     !reset exam$(i)_$e
+  !endif
  !next
  !for ses_ in $checksessions
    !set jj=!positionof item $ses_ in $checksessions
