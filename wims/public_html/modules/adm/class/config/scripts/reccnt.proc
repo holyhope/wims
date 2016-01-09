@@ -26,6 +26,12 @@ $(cl)_testcnt=$[$($(cl)_scorecnt1)+$($(cl)_manualcnt)]
 $(cl)_reccnt=$[$($(cl)_usercnt)+$($(cl)_sheetcnt)+$($(cl)_examcnt)\
 	+$($(cl)_doccnt)+$($(cl)_docpubliccnt)+$($(cl)_forumcnt)+$($(cl)_votecnt)\
 	+$($(cl)_exocnt)+$($(cl)_scorecnt)+$($(cl)_manualcnt)]
+$(cl)_motdcnt=!filelist $wims_home/$cls/.motd
+!if $($(cl)_motdcnt)!=$empty
+  $(cl)_motdcnt=1
+!else
+  $(cl)_motdcnt=0
+!endif
 
 t=!defof user_exists in wimshome/$cls/supervisor
 !if $t=yes

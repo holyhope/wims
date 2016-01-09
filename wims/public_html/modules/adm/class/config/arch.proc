@@ -3,7 +3,7 @@
  !exit
 !endif
 
-reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote,livret,seq
+reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote,livret,seq,motd
 !! test of sharing ressources
 !if $class_typename!=program
  test_sharing=!defof sharable_all in wimshome/log/classes/$wims_class/neighbors
@@ -19,12 +19,12 @@ reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote
 !if $job2 iswordof restore upload and $wims_supertype=4
  reclist_portal=sup,neighbor,log,def
  reclist_program=$(reclist_portal),exo,sheet,exam,doc,vote,livret,seq
- reclist_class=$(reclist_portal),user
+ reclist_class=$(reclist_portal),user,motd
  !! program test
  !if /0/// isin $(wims_class)///
    reclist_course=exo,sheet,doc
  !else
-   reclist_course=$(reclist_portal),score,manual,cdt,exo,sheet,exam,doc,vote
+   reclist_course=$(reclist_portal),score,manual,cdt,exo,sheet,exam,doc,vote,motd
  !endif
  reclist=$(reclist_$(wims_typename))
 !endif

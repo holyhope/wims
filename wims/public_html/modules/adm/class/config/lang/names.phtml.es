@@ -73,13 +73,14 @@ siguientes. Marque lo que quiera recuperar en su clase.
    Sustitución\
 Recuperar los recursos seleccionados\
    Fusión\
-sustituir a los recursos existentes excepto las cuentas de participantes y los ejercicios de la clase. Para estos últimos, los teniendo mismos nombres serán sustituidos por los datos restaurados y se guardarán los otros \
-Restaurar los recursos seleccionados \
+   sustituir a los recursos existentes excepto las cuentas de participantes y los ejercicios de la clase. Para estos últimos, los teniendo mismos nombres serán sustituidos por los datos restaurados y se guardarán los otros \
+   Restaurar los recursos seleccionados \
+   Existing message of the day\
  into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
-   name_selectrestore
+   name_selectrestore,name_motd1
 
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
