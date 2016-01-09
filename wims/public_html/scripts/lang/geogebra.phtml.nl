@@ -24,6 +24,7 @@
 !set polygonnocoord=!nosubst een polygoon $(M_objet[1])
 !set functionnocoord=!nosubst een curve $(M_objet[1])
 !set raynocoord=!nosubst een halve lijn $(M_objet[1])
+!set booleannocoord=!nosubst een boolean $(M_objet[1])
 
 !set pointcoord=!nosubst het punt $(M_objet[1]) met co&ouml;rdinaten ($(M_objet[3..4]))
 !set vectorcoord=!nosubst de vector $(M_objet[1]) met co&ouml;rdinaat ($(M_objet[3..4]))
@@ -41,10 +42,10 @@
 !set polygoncoord=!nosubst een polygoon $(M_objet[1]) met oppervlak $(M_objet[3..-1])
 !set functioncoord=!nosubst de curve met vergelijking y=$(M_objet[1]) waarin \($(M_objet[1]) = $(M_objet[3..-1]))
 !set raycoord=!nosubst de halve lijn $(M_objet[1]) op de lijn met vergelijking \($(M_objet[3..-1]))
+!set booleancoord=!nosubst een boolean $(M_objet[1]) met waarde $(M_objet[3..-1])
 
-
-!!!! commande anglicisée + type des paramètres + formal
-!!!! si un paramètre risque de manquer on le remplace par _
+!!!! commande anglicisee + type des paramètres + formal
+!!!! si un parametre risque de manquer on le remplace par _
 
 !set anglepointpointpointformal=!nosubst de hoek $(M_objet[3])$(M_objet[4])$(M_objet[5])
 !set angle_point_formal=!nosubst de hoek in $(M_objet[4])

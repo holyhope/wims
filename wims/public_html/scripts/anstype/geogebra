@@ -15,8 +15,10 @@
 
 !set feedbackscript=!getopt feedbackscript in $(replyoption$i)
 !if $feedbackscript!=$empty
+    !set namebutton=!getopt namebutton in $(replyoption$i)
+    !default namebutton=$name_ggbcorrection
     !set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" \
-type="button" value="$name_ggbcorrection" onClick="$(feedbackscript)();" />
+type="button" value="$namebutton" onclick="$(feedbackscript)();" />
 !endif
 
 extra=!getopt extra in $(replyoption$i)
@@ -839,7 +841,7 @@ displaylist2=
        !endif
    ###for a point coord=x,y
     ###for a conic coord=x2,y2,xy,x,y,cst
-      !if $type isitemof segment,function,angle,numeric,text
+      !if $type isitemof segment,function,angle,numeric,text,boolean
         cond=!replace internal v_$(name)= by ($coord)== in $cond
         cond=!replace internal v_$(name) by ($coord) in $cond
       !endif

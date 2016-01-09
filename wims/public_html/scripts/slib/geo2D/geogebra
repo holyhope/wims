@@ -27,7 +27,7 @@ ggbBase64=UEsDBBQACAAIAE9zJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VZNc9s2ED03vw
 !reset slib_customToolBar slib_ggbBase64 slib_customToolBar slib_width\
   slib_height slib_enableRightClick slib_showToolBar slib_showToolBarHelp \
   slib_showMenuBar slib_showResetIcon slib_showAlgebraInput slib_language \
-  slib_enableLabelDrags slib_enableShiftDragZoom slib_errorDialogsActive
+  slib_enableLabelDrags slib_enableShiftDragZoom slib_errorDialogsActive slib_useBrowserForJS
 
 
 !reset slib_out slib_data slib_option slib_ggbapplet slib_extra \
@@ -62,7 +62,7 @@ slib_list_ap = width,height,language,\
    enableLabelDrags,enableShiftDragZoom,enableRightClick,enableFileFeatures,allowRescaling,\
   showToolBar,showMenuBar,showResetIcon,showToolBarHelp,showAlgebraInput,customToolBar,\
   borderColor,capturingThreshold,algebraInputPosition,\
-  material_id,ggbBase64,errorDialogsActive
+  material_id,ggbBase64,errorDialogsActive,useBrowserForJS
 
 !for slib_a in file,$slib_list_ap
   slib_$slib_a=!getopt $slib_a in $slib_data
@@ -130,8 +130,7 @@ slib_data1=!replace internal = by , in $slib_data
 slib_data1=!replace internal ( by , in $slib_data1
 
 !reset slib_appletcommand slib_appletoption slib_geogebracommand slib_data_param
-slib_data_param="id":"ggbApplet$slib_number",\
-"useBrowserForJS":"$slib_useBrowserForJS"
+slib_data_param="id":"ggbApplet$slib_number"
 
 slib_list_ap2=!listcomplement id in $slib_list_ap
 !for slib_first in $slib_list_ap
@@ -212,7 +211,7 @@ $(slib_parameters$slib_number)\
 var views = {'is3D': 0,'AV': 0,'SV': 0,'CV': 0,'EV2': 0,'CP': 0,'PC': 0,'DA': 0,'FI': 0,'PV': 0,'macro': 0};\
 var applet$slib_number = new GGBApplet(parameters$slib_number, '5.0', views);\
 function test$slib_number(){\
-$slib_appletcommand\
+ggbApplet$slib_number.setXML(ggbApplet$slib_number_tmpi);\
 }\
 /*]]>*/\
 </script>
