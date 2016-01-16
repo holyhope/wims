@@ -45,7 +45,7 @@ slib_width1000=12
 slib_height1000=35
 slib_poids1000=frectangle 0,0,$(slib_width1000),$(slib_height1000),white\
 rectangle 0,0,$(slib_width1000),$(slib_height1000),black\
-gridfill 5,15,10,10,grey\
+fill 5,15,lightgrey\
 fcircle $[$(slib_width1000)/2],$[$slib_height1000+2],15,black\
 text black,2,28,medium,1kg
 
@@ -53,7 +53,7 @@ slib_width500=11
 slib_height500=25
 slib_poids500=frectangle 0,0,$(slib_width500),$(slib_height500),white\
 rectangle 0,0,$(slib_width500),$(slib_height500),black\
-gridfill 4,15,10,10,grey\
+fill 4,15,grey\
 fcircle $[$(slib_width500)/2],$[$slib_height500+2],15,black\
 text black,1,18,medium,500g
 
@@ -61,7 +61,7 @@ slib_width200=10
 slib_height200=20
 slib_poids200=frectangle 0,0,$(slib_width200),$(slib_height200),white\
 rectangle 0,0,$(slib_width200),$(slib_height200),black\
-gridfill 4,10,10,10,grey\
+fill 4,10,lightgrey\
 fcircle $[$(slib_width200)/2],$[$slib_height200+2],15,black\
 text black,1,14,medium,200g
 
@@ -69,7 +69,7 @@ slib_width100=9
 slib_height100=15
 slib_poids100=frectangle 0,0,$(slib_width100),$(slib_height100),white\
 rectangle 0,0,$(slib_width100),$(slib_height100),black\
-gridfill 3,5,10,10,grey\
+fill 3,5,lightgrey\
 fcircle $[$(slib_width100)/2],$[$slib_height100+1],10,black\
 text black,1,9,medium,100g
 
@@ -77,7 +77,7 @@ slib_width50=8
 slib_height50=12
 slib_poids50=frectangle 0,0,$(slib_width50),$(slib_height50),white\
 rectangle 0,0,$(slib_width50),$(slib_height50),black\
-gridfill 3,5,10,10,grey\
+fill 3,5,lightgrey\
 fcircle $[$(slib_width50)/2],$[$slib_height50+1],10,black\
 text black,1,$[$(slib_height50)/2+1],medium,50g
 
@@ -85,7 +85,7 @@ slib_width20=7
 slib_height20=10
 slib_poids20=frectangle 0,0,$(slib_width20),$(slib_height20),white\
 rectangle 0,0,$(slib_width20),$(slib_height20),black\
-gridfill 2,2,5,5,grey\
+fill 2,2,lightgrey\
 fcircle $[$(slib_width20)/2],$[$slib_height20+1],10,black\
 text black,1,$[$(slib_height20)/2+1],medium,20g
 
@@ -93,7 +93,7 @@ slib_width10=6
 slib_height10=7
 slib_poids10=frectangle 0,0,$(slib_width10),$(slib_height10),white\
 rectangle 0,0,$(slib_width10),$(slib_height10),black\
-gridfill 1,1,5,5,grey\
+fill 1,1,lightgrey\
 fcircle $[$(slib_width10)/2],$[$slib_height10+1],10,black\
 text black,0,$[$slib_height10/2+1],medium,10g
 
@@ -101,7 +101,7 @@ slib_width5=5
 slib_height5=5
 slib_poids5=frectangle 0,0,$(slib_width5),$(slib_height5),white\
 rectangle 0,0,$(slib_width5),$(slib_height5),black\
-gridfill 1,1,10,10,grey\
+fill 1,1,lightgrey\
 fcircle $[$(slib_width5)/2],$[$slib_height5+1],7,7,black\
 text black,1,$[$(slib_height5)],medium,5g
 
@@ -109,7 +109,7 @@ slib_width2=4
 slib_height2=3
 slib_poids2=frectangle 0,0,$(slib_width2),$(slib_height2),white\
 rectangle 0,0,$(slib_width2),$(slib_height2),black\
-gridfill 1,1,10,10,grey\
+fill 1,1,lightgrey\
 fcircle $[$(slib_width2)/2],$[$slib_height2+1],5,black\
 text black,1,$[$(slib_height2)],medium,2g
 
@@ -117,7 +117,7 @@ slib_width1=2
 slib_height1=2
 slib_poids1=rectangle 0,0,$(slib_width1),$(slib_height1),white\
 rectangle 0,0,$(slib_width1),$(slib_height1),black\
-gridfill 1,1,10,10,grey\
+fill 1,1,lightgrey\
 fcircle $[$(slib_width1)/2],$[$slib_height1+1],5,black\
 text black,1,$[$(slib_height1)],medium,1g
 
@@ -153,7 +153,7 @@ killtranslation to $slib_g
 !endif
 
 !for slib_p in $slib_left
-  slib_g=!append line translation XXX+$slib_t,20-$slib_penche\
+  slib_g=!append line translation XXX+$slib_t,$[20-$slib_penche]\
 $(slib_poids$slib_p)\
 killtranslation \
 to $slib_g
@@ -173,8 +173,8 @@ slib_t=0
    slib_h =$(slib_height500)
    slib_form1=
   !endif
-  slib_d=!append line translation XXX+$slib_t,20+$slib_penche\
-frectangle 0,0,10,$[$slib_h],$$(slib_color[2])\
+  slib_d=!append line translation XXX+$slib_t,$[20+$slib_penche]\
+frectangle 0,0,10,$[$slib_h],$(slib_color[2])\
 $slib_form1\
 text black, 5,$[$slib_h/2],large,$slib_u\
 killtranslation to $slib_d
@@ -183,7 +183,7 @@ killtranslation to $slib_d
 !endif
 
 !for slib_p in $slib_right
-  slib_d=!append line translation XXX+$slib_t,20+$slib_penche\
+  slib_d=!append line translation XXX+$slib_t,$[20+$slib_penche]\
 $(slib_poids$slib_p)\
 killtranslation \
 to $slib_d
@@ -191,11 +191,11 @@ to $slib_d
 !next
 slib_d= !replace internal XXX by $[110-$slib_t/2] in $slib_d
 
-slib_nuage=disk $slib_par+80,65,40*$slib_agr,white\
-disk $slib_par+85,72,30*$slib_agr,white\
-disk $slib_par+110,75,40*$slib_agr,white\
-disk $slib_par+120,65,40*$slib_agr,white\
-disk $slib_par+97,68,60*$slib_agr,white
+slib_nuage=disk $[$slib_par+80],65,$[40*$slib_agr],white\
+disk $[$slib_par+85],72,$[30*$slib_agr],white\
+disk $[$slib_par+110],75,$[40*$slib_agr],white\
+disk $[$slib_par+120],65,$[40*$slib_agr],white\
+disk $[$slib_par+97],68,$[60*$slib_agr],white
 
 slib_dessin=xrange 0,140\
 yrange -10,90\
