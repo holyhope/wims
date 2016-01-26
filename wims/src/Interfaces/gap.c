@@ -112,7 +112,9 @@ void about(void)
 {    char *p;
     prepabout(aboutquitstring,outputfname,NULL);
     if(readabout()>0) {
+/* Take first line in version message */
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
+/* delete garbage before "GAP" */
       p=aboutbuf; while(*p && *p!='G') p++;
       strip_trailing_spaces(p);
       printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,p);
