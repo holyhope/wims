@@ -113,8 +113,9 @@ void about(void)
     prepabout(aboutquitstring,outputfname,NULL);
     if(readabout()>0) {
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
-      strip_trailing_spaces(aboutbuf);
-      printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,aboutbuf);
+      p=aboutbuf; while(*p && *p!='G') p++;
+      strip_trailing_spaces(p);
+      printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,p);
     }
 }
 
