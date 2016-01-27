@@ -459,7 +459,7 @@ sheetqualitydetail=[$sheetqualitydetail]
 :getscore
 
 
-json_lists = examscore, weights, requires, summary, gotdetail, meandetail, remain
+json_lists = examscore, weights, requires, summary, gotdetail, meandetail, remain, best_detail, level_detail
 double_lists = examscore
 
 !for v in $json_lists
@@ -479,6 +479,9 @@ $ by ],[ in $($v)
  !endif
 !next v
 
+!if $qsheet!=$empty
+  !shortout "query_sheet":"$qsheet",
+!endif
 
 !shortout "query_class":"$qclass",\
 "query_user":"$quser",\
@@ -489,6 +492,8 @@ $ by ],[ in $($v)
 "sheet_summaries":$summary,\
 "got_points":$gotdetail,\
 "remain":$remain,\
+"best_detail":$best_detail,\
+"level_detail":$level_detail,\
 "score_status":"$score_status",\
 "score_qualities":$meandetail\
 
