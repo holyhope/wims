@@ -78,10 +78,22 @@ sheet_max_quality =0
 	#getscorepercent fournit les donnes globales de la feuille : pourcentage de realisation et qualite
 	sheet_summaries=!getscorepercent user=$quser class=$qclass
 	sheet_summaries=!line $qsheet of $sheet_summaries
+
+	#user_percent  pourcentage des points cumulés
+	#   (en abrégé "cumul" : valeur sur 100 qui correspond à 100*I0 dans les formules données dans l'aide de wims)
 	user_percent=!word 1 of $sheet_summaries
+
+	#user_quality  qualité (valeur sur 10 correspond à 10*Q dans les formules)
 	user_quality=!word 2 of $sheet_summaries
+
+	#user_best     niveau de réussite (en abrégé "Réussite" :
+	#	valeur sur 100 qui correspond à 100*I1 dans les formules)
 	user_best   =!word 3 of $sheet_summaries
+
+	#user_level         niveau d'acquisition (en abrégé "Acquis" :
+	#	valeur sur 100 qui correspond à 100*I2 dans les formules)
 	user_level  =!word 4 of $sheet_summaries
+
 	sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
 	sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
 
