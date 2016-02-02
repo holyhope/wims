@@ -1,4 +1,5 @@
-#!/usr/bin/perl
+#!/bin/sh
+exec perl <<'EOF'
 use Time::Local;
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'});
 my ($option)=shift @ARGV;
@@ -14,3 +15,5 @@ if ($option==1) {
   if($mon<10) {$mon="0" . $mon};
   print $mday . " " . $mon . " " . eval($year+1900) . " " . $wday . " " . $yday . " " . $isdst
 }
+
+EOF
