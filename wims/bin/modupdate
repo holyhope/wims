@@ -61,7 +61,7 @@ installone() {
    echo "$msg:	Successful."
    echo $addr >>$wims_home/log/modupdate
    echo "$today: $addr $vtest" >>$wims_home/public_html/modules/Changelog.$3
-   find $wims_home/public_html/w/instex -path "*$addr*" -name '*.gif' -exec rm -f '{}' \; 
+   find $wims_home/public_html/w/instex -path "*$addr*" -name '*.gif' -exec rm -f '{}' \;
   else
    echo "$msg:	Install failed."
   fi
@@ -173,12 +173,12 @@ case "$mu_auto" in
  check)
   if [ -z "$tot" ]; then exit; fi
   echo "
-WIMS server on $hostname: checking new modules from 
+WIMS server on $hostname: checking new modules from
 publication center $mu_site (no real update is done).
 
 $tot" >>$outfile
  ;;
- 
+
  install)
   if [ -n "$new" ]; then
    echo "
@@ -188,7 +188,7 @@ WIMS server on $hostname: installing new modules from $mu_site.
    [ -d /wsys ] && touch /wsys/wims/timestamp
   fi
  ;;
-  
+
  update)
   if [ -n "$modif" ]; then
    echo "
@@ -198,7 +198,7 @@ WIMS server on $hostname: updating existing modules from $mu_site.
    [ -d /wsys ] && touch /wsys/wims/timestamp
   fi
  ;;
- 
+
  all)
   modd=
   if [ -n "$new" ]; then
@@ -228,8 +228,8 @@ if [ -s "$outfile" ]; then
   cat $outfile | mail $w_mail_opt -s "WIMS module update result" $site_manager
   echo "$today modupdate to $site_manager" >>$wims_home/log/mail.log
   mkdir -p $wims_home/public_html/rss
-  bin/rss.pl --wims="http://$httpd_HTTP_HOST/wims" --file=public_html/modules/Changelog --out=public_html/rss --type=new
-  bin/rss.pl --wims="http://$httpd_HTTP_HOST/wims" --file=public_html/modules/Changelog --out=public_html/rss --type=modif
+  perl bin/rss.pl --wims="http://$httpd_HTTP_HOST/wims" --file=public_html/modules/Changelog --out=public_html/rss --type=new
+  perl bin/rss.pl --wims="http://$httpd_HTTP_HOST/wims" --file=public_html/modules/Changelog --out=public_html/rss --type=modif
  else
   cat $outfile
  fi

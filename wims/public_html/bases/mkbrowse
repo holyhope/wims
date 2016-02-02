@@ -1,7 +1,7 @@
 #! /bin/sh
 dir=`pwd`;
 cd classification;
-./classif.pl
+perl ./classif.pl
 cd $dir;
 
 ### clean
@@ -13,11 +13,11 @@ rm -f sys/taxonomy/unisciel.*
 cd sys;
 
 for a in en fr ; do
-  taxonomy/taxo.pl --module=1 --output=adm/browse/taxoext --lang=$a
+  perl taxonomy/taxo.pl --module=1 --output=adm/browse/taxoext --lang=$a
 done;
 
 for a in en fr it nl ca es si ; do
-  taxonomy/taxo.pl --option=1  --output=adm/browse --lang=$a
+  perl taxonomy/taxo.pl --option=1  --output=adm/browse --lang=$a
 done;
 
-taxonomy/taxo.pl --output=adm/tool/classification/keywords
+perl taxonomy/taxo.pl --output=adm/tool/classification/keywords
