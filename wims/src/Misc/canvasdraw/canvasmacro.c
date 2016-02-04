@@ -3946,7 +3946,7 @@ h[1] = end_angle = double_data[3]
 */
 fprintf(js_include_file,"\n<!-- begin drag_drop_onclick shape library -->\n\
 if( typeof dragdrop_precision == 'undefined' ){var dragdrop_precision = 100;};\
-function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt){\
+function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,stroke_opacity,fill_color,fill_opacity,use_filled,use_dashed,dashtype0,dashtype1,use_rotate,angle,text,font_size,font_family,use_affine,affine_matrix,slider,slider_cnt,rotation_center){\
  this.slider = slider || 0;\
  this.slider_cnt = slider_cnt || 0;\
  this.text = text || 0;\
@@ -3980,6 +3980,9 @@ function Shape(click_cnt,onclick,direction,type,x,y,w,h,line_width,stroke_color,
     this.h[p] = h[p];\
   }\
  };\
+ if( rotation_center != null ){\
+  this.rotation_center = [x2px(rotation_center[0]),y2px(rotation_center[1])];\
+ }else{this.rotation_center = [this.x[0],this.y[0]];};\
  this.line_width = line_width || 30;\
  this.org_line_width = line_width || 30;\
  this.stroke_opacity = stroke_opacity || 1.0;\
@@ -3999,9 +4002,9 @@ Shape.prototype.draw = function(ctx)\
  ctx.lineJoin = \"round\";\
  ctx.save();\
  if(this.use_rotate == 1){\
-  ctx.translate(this.x[0],this.y[0]);\
-  ctx.rotate(this.angle);\
-  ctx.translate(-1*this.x[0],-1*this.y[0]);\
+   ctx.translate(this.rotation_center[0],this.rotation_center[1]);\
+   ctx.rotate(this.angle);\
+   ctx.translate(-1*(this.rotation_center[0]),-1*(this.rotation_center[1]));\
  };\
  if( this.use_affine == 1 ){\
   ctx.setTransform(this.affine_matrix[0],this.affine_matrix[1],this.affine_matrix[2],this.affine_matrix[3],this.affine_matrix[4],this.affine_matrix[5]);\
