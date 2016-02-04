@@ -194,7 +194,8 @@
 #define BOXPLOTDATA	196
 #define USERBOXPLOT	197
 #define USERBOXPLOTDATA	198
-
+#define ROTATION_CENTER 199
+#define KILLROTATE	200
 /* the draw_function collection */
 #define DRAW_GRID	0
 #define DRAW_SEGMENTS	1
