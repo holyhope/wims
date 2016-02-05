@@ -1,5 +1,5 @@
 #GetLog permet d'obtenir les logs d'un utilisateur $quser
-# 3 options possibles : "score" , "noscore" ou "exams" 
+# 3 options possibles : "score" , "noscore" ou "exams"
 
 #on commence par verifier la classe $qclass
 !read scripts/check.class
@@ -18,7 +18,7 @@
 !else
     !if $option==score or $option==noscore
       tmp_log =  !sh cd $wims_home/log/classes/$qclass\
-      cat $option/$quser | grep '^[^E]' 2>/dev/null          
+      cat $option/$quser | grep '^[^E]' 2>/dev/null
     !else
       tmp_log =  !sh cd $wims_home/log/classes/$qclass\
       cat score/$quser noscore/$quser | grep '^[^E]' 2>/dev/null | sort
@@ -41,12 +41,12 @@ export_size = 0
 !for i=1 to $logsize
    current = !line $i of $tmp_log
 
-   # Sheet Log Format : 
+   # Sheet Log Format :
    #DATE, SESSION, SHEET_ID, EXO, CMD, [SCORE if cmd=score] ,IP
-   # Exam Log Format : 
+   # Exam Log Format :
    #EDATE, SESSION, EXAM_ID, EXO, CMD, [SCORE if cmd=SCORE], IP, [SH.EXO if cmd = new]
-   
-   # Procedure pour masquer partiellement les IP des etudiants : 
+
+   # Procedure pour masquer partiellement les IP des etudiants :
    position = -1
    !if $option==exams
      command = !word 5 of $current
@@ -54,17 +54,17 @@ export_size = 0
        position = -2
      !endif
    !endif
-   
+
    IP = !word $position of $current
    IP = !replace internal . by , in $IP
    IP3 = !item -2 of $IP
    IP4 = !item -1 of $IP
    masked_IP = ###.###.$IP3.$IP4
    current = !replace word number $position by $masked_IP in $current
-   
+
    !if $id_filter != $empty
        id = !word 3 of $current
-       !if $id == $id_filter  
+       !if $id == $id_filter
           user_log = !append line :$current to $user_log
           export_size = $[$export_size + 1]
        !endif
@@ -73,8 +73,7 @@ export_size = 0
        export_size = $[$export_size + 1]
    !endif
 
-   
-   
+
    # Pour des raisons de performance (wims interdit des variables trop gourmandes), on enregistre maintenant les donnees dans un fichier, toutes les 100 lignes
    !ifval  $export_size % 100 = 0
 	   !appendfile wimshome/sessions/$wims_session/user.log $user_log

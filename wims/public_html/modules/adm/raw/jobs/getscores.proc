@@ -1,6 +1,6 @@
 # GetScores
 # Fournit les notes de la classes, separees par le caractere associe au format specifie
-# NB : a comparer avec "Download" et GetCSV ?
+# TODO : appeler directement les fonctions de userscore, comme c'est fait avec getcsv.
 
 !bound format within csv, tsv, xls default xls
 
@@ -138,6 +138,9 @@ tit=!translate , to $sep in $dl
 !for n in login,password,lastname,firstname,email,regnum,comments
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
+
+!read csv/csvnames
+
 dl3=!replace user_ by $$name_ in $dl2
 dl2=!replace user_ by $$user_ in $dl2
 
@@ -146,9 +149,8 @@ scores=no
  scores=yes
 !endif
 
+!read csv/csvnames
 !read names.$lang
-
-
 
 s=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!line 1 of $s
@@ -180,7 +182,7 @@ class_superclass=!defof class_superclass in $classdeffile
   !for i=1 to $sheetcnt
    !if sheet$i isitemof $dl
     p_=!line $i of $percents
-!! cfr r7612-r7638 for adm/class/userscore
+!! cf r7612-r7638 for adm/class/userscore
 !!   and r7638-r7664
     !distribute words $p_ into p1,p2,p3,p4
     !if $p2!=$empty
@@ -208,6 +210,6 @@ class_superclass=!defof class_superclass in $classdeffile
   !next i
  !endif
  data_scores=!append item $dl2 to $data_scores
- data_csv=!append line $dl2 to $data_csv  
+ data_csv=!append line $dl2 to $data_csv
 !next u
 
