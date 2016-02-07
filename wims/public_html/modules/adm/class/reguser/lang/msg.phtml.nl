@@ -66,8 +66,7 @@ is al in gebruik in de klas
 !endif
 
 !if login_empty=$error
- L'identifiant n'a pu être créé car les données sont vides. Vérifiez les paramètres 
- d'authentification ou l'identifiant externe. 
+Er zij geen gegevens aangeleverd... controleer de instellingen.
  !exit
 !endif
 

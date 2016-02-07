@@ -12,19 +12,19 @@
 !exit
 
 :baddocnumber
- Les informations que vous avez saisies ne correspondent pas à un document enregistré de la classe.
+ De ingevoerde informatie komt niet overeen met een document in deze klas.
 !exit
 
 :not_supervisor
-Seul l'administrateur de la classe peut mener cette action.
+ Alleen de supervisor van deze klas mag deze actie uitvoeren.
 !exit
 
 :insert_fail
-vous essayez d'insérer un module non autorisé.
+ Het is niet toegestaan deze module op te nemen.
 !exit
 
 :maxdoc
-Le nombre de documents est limité à $max_doc.
+ Het maximum aantal documenten is  $max_doc.
 !exit
 
 :toomuchsheet
@@ -32,5 +32,5 @@ Het maximum aantal werkbladen is ingesteld op $max_sheets. Er kan geen nieuw wer
  !exit
 
 :noexo
-Ce document ne contient aucun exercice.
+Het document bevat geen oefeningen.
 !exit

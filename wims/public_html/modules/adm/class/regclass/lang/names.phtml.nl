@@ -76,24 +76,22 @@ Als hier <span class="tt wims_code_words">all</span> wordt ingevuld, zijn deze h
 
 !set name_cas_help=Bij gebruik van externe authentificatie niet het type CAS vergeten.
 
-!set name_cpexempleintro=!nosubst Vous allez créer une copie de la classe <span class="tt wims_code_words">$source_title</span>
-!set name_choosemode=Vous devez choisir le mode de copie de cette classe
-!distribute item Intégrale,Partielle into name_btcpexemplemeth0,name_btcpexemplemeth1
+!set name_cpexempleintro=!nosubst U kunt een kopie van klas <span class="tt wims_code_words">$source_title</span> aanmaken
+!set name_choosemode=U moet de kopieerfunctie die klasse te kiezen
+!distribute item Integraal,Gedeeltelijk into name_btcpexemplemeth0,name_btcpexemplemeth1
 
-!set name_cpexemplemeth0=Toutes les ressources seront copiées. Les ressources pourront être désactivées puis supprimées ou adaptées en fonction des dépendances.
-!set name_cpexemplemeth1=les examens ne seront pas copiés. Les ressources seront désactivées automatiquement. Vous pourrez alors décider de celles que vous souhaitez supprimer, adpater ou garder.
-!set name_cpexemplecomment=Dans tous les cas, les dates d'expiration seront adaptées à la date de fermeture de la classe créée.
-!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant pour trouver celle que vous cherchez.
-!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. Veuillez donner un mot plus précis.
-!set name_searchclass=Rechercher une classe
-!set name_nofound=Aucune classe ne correspond à votre recherche.
+!set name_cpexemplemeth0=De klas is gekopieerd.Het lesmateriaal is gedeactiveerd.
+!set name_cpexemplemeth1=De toetsen zijn niet gekopieerd. Het lesmateriaal is gedeactiveerd.U kunt nu het materiaal naar eigen inzicht aanpassen.
+!set name_cpexemplecomment=In ieder geval zijn de vervaldata gezet op de einddatum van de nieuwe klas.
+!set name_research1=Er zijn veel virtuele klassen op deze site. Voer een sleutelwoord of de naam van de leraar in als zoekterm.
+!set name_research2=Er ahv de zoekterm te veel klassen gevonden. Geef een betere zoekterm in. 
+!set name_searchclass=Zoek een klas
+!set name_nofound=Er ahv de zoekterm geen klas gevonden.
 
-!distribute items Libre, Protégé, Non autorisé, Clonage, \
-Cliquez sur la classe à cloner\
+!distribute items Open,Gesloten,Vrij,Kopieren,Klik op de te kopieren klas\
 into name_free,name_protected,name_disallowed,name_cloning,name_clickclone
 
-!set name_getcloningpwd=!nosubst Vous allez créer une copie de la classe \
-<span class="tt wims_code_words">$source_title</span>. \
-Pour cela vous devez saisir le mot de passe de clonage que \
-l'administrateur de la classe vous a communiqué.
-!set name_subclass=Sous-classe de
+!set name_getcloningpwd=!nosubst U gaat een kopie van klas \
+<span class="tt wims_code_words">$source_title</span> aanmaken. \
+Voer het wachtwoord voor deze handeling in.
+!set name_subclass=Sub klas van

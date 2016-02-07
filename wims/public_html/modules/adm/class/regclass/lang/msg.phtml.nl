@@ -198,32 +198,33 @@ Interne serverfout (oprichten van een klas)
 !endif
 
 !if classdontexists=$error
- Cette classe n'existe pas.
+ Die klas bestaat niet.
  !exit
 !endif
 
 !if notexempleclass=$error
- Cette classe n'est pas une classe d'exemple : impossible de la copier.
+ Deze klas is niet kopieerbaar.
  !exit
 !endif
 
 !if badcpmethod=$error
- Méthode de copie impossible à identifier. Recommencer l'opération. Si l'erreur persiste contacter l'administrateur du serveur.
+ Deze methode van kopieren kan niet worden uitgevoerd.
+ Probeer opnieuw. Als deze fout zich blijft voordoen, neem dan kontact op met de site manager.
  !exit
 !endif
 
 !if cloningnotallow=$error
- Le clonage de cette classe n'est pas autorisé par son administrateur.
+ Het kopieren van de klas is niet toegestaan door de beheerder ervan.
  !exit
 !endif
 
 !if badcloningpwd=$error
- Mauvais mot de passe de clonage. 
+ Het ingevoerde wachtwoord voor kopieren is niet correct.
  !exit
 !endif
 
 !if disallowcloning=$error
- Aucun clonage ne peut être réalisé sur cette classe. 
+ Het kopieren van deze klas mag niet worden uitgevoerd.
  !exit
 !endif
 

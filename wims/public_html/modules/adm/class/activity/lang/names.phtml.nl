@@ -17,13 +17,14 @@
  meerdere methodes beschikbaar. Kies de gewenste methode.
 
 !distribute items Expert menu,Lijst met loginnamen&nbsp;,Per selectie&nbsp;,\
-Per student,dagen,Montrer les graphiques, Tous les participants\
+Per student,dagen,Grafische weergave, Alle deelnemers\
 into name_menu,name_loginlist,name_select,name_shiftpart,name_days,\
  name_graphics, name_allpart
 
-!distribute lines Vous pourrez ensuite faire défiler les participants (méthode par défaut dans le cas où les graphiques sont demandés).\
-Le nombre de participants sélectionnés est limité à $limitpart, seuls les $limitpart premiers seront affichés\
-Dans le cas où les graphiques sont affichés, le nombre de participants affichés est limité à $limitpart\
-Uniquement dans le cas où les graphiques ne sont pas demandés.\
-dans le cas où les graphiques sont demandés\
+!distribute lines 
+U kunt door de deelnemers bladeren  (standaardmethode ingeval grafische weergave).\
+Het maximaal aantal gelijktijdig te selecteren deelnemers is beperkt tot $limitpart.\
+In dit geval of bij grafische weergave kunnen maximaal $limitpart deelnemers gelijktijdig worden getoond.\
+Uitsluitend wanneer geen grafische weergave is vereist.\
+in het geval er een grafische weergave wordt vereist.\
 into name_help1,name_help2,name_help3,name_help0,name_help00

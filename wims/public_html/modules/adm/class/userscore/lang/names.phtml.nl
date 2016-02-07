@@ -4,7 +4,7 @@
  !goto $wims_read_parm
 !endif
 
-!set name_donchoose=Choix des données
+!set name_donchoose=Geselecteerd
 !set name_studentloc=!nosubst $user_lastname $user_firstname
 !set name_studentglo=!nosubst $wims_name_lastname $wims_name_firstname
 
@@ -34,7 +34,7 @@ name_groupAverage
 !set name_sheetstatut=in bewerking,actief,verlopen,onzichtbaar
 
 !distribute items Proefwerk,Werkblad,Oefening,Start,Cijfer,Sessie,\
- Klaar,equiv.,Duration\
+ Klaar,equiv.,Tijdsduur\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv,name_Duration
 

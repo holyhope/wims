@@ -33,7 +33,7 @@ alle studenten de klas.
 
 !set name_alertmsg=Spoed bericht
 !set name_walertmsg=Schrijf een spoed bericht
-!set name_Introalertmsg1=Schrijf een spoed berichtje aan
+!set name_Introalertmsg1=Schrijf een berichtje aan
 !set name_Introalertmsg2=(geen links of html tags toegestaan; maximale bericht lengte $alertmsg_limit karakters).
 !set name_usermultisession=Meerdere sessies op in deze klas
 
@@ -41,7 +41,7 @@ alle studenten de klas.
 !set name_technical_var=Technische Variabele
 
 !set name_aloneaction=Individuele aktie
-!set name_grpaction=Aktie voor geselecteerde studenten)
+!set name_grpaction=(Aktie voor geselecteerde studenten)
 !set name_erase=Wissen
 !set name_change=Wijzigen
 !set name_all=Allemaal

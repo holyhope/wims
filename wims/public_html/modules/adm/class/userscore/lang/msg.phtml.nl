@@ -35,7 +35,7 @@ Uw spreadsheet data zijn in binair formaat en wordt uiteraard niet geaccepteerd.
 !endif
 
 !if no_manual iswordof $error
- U moetr eerst een 
+ U moet eerst een 
  !href module=adm/class/grades handmatige
  &nbsp;cijfer kolom aanmaken, voordat deze gevuld kan worden met opgestuurde data.
  !exit
