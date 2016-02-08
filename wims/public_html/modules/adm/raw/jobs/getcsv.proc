@@ -20,11 +20,22 @@ csvformat=$format
 scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !reset activesh
 !for i=1 to $scnt
- l=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
- l=!word 1 of $l
- !if $l>0
-  activesh=!append item $i to $activesh
- !endif
+  l=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
+  l=!word 1 of $l
+  !if $l>0
+    activesh=!append item $i to $activesh
+  !endif
+!next i
+
+# Définition de "activexams"
+ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!reset activexams
+!for i=1 to $ecnt
+  e=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  e=!word 1 of $e
+  !if $e>0
+    activexams=!append item $i to $activexams
+  !endif
 !next i
 
 # Définition de "scoremax"
