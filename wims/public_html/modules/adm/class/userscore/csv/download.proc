@@ -97,7 +97,7 @@ dl2=!translate , to $sep in $dl2
 !endif
 tit=!replace , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
-!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth
+!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
 !for n in $dl_var
@@ -117,7 +117,7 @@ scores=no
 !writefile $fname $tit\
 $dl3$dl5\
 
-
+!reset data_scores
 !for u=1 to $usercnt
  !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
      user_external_auth,user_supervise,user_participate,user_supervisable
@@ -215,6 +215,7 @@ $dl3$dl5\
   !next i
  !endif
  !appendfile $fname $dl2$dl4
+ data_scores=!append item $dl2$dl4 to $data_scores
 !next u
 
 infile=spreadsheet.$csvformat
