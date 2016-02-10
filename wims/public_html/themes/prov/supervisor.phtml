@@ -47,8 +47,8 @@ $wims_classname, $wims_institutionname\
  </p>
  !read Subclasses1.phtml
  !if $class_typename=level
-    </div><!--wimsbody-->
-   </div><!--wimspagebox-->
+    </div><!--/wimsbody-->
+   </div><!--/wimspagebox-->
    !read themes/_procs/menumodubox3.proc
    !read themes/$wims_theme/_widgets/menumodubox.phtml
   !goto end
@@ -104,8 +104,8 @@ $wims_classname, $wims_institutionname\
 !endif
 
 !if $class_type=4
- </div><!--wimsbody-->
-</div><!--wimspagebox-->
+ </div><!--/wimsbody-->
+</div><!--/wimspagebox-->
 
  !read themes/_procs/menumodubox3.proc
  !read themes/$wims_theme/_widgets/menumodubox.phtml
@@ -172,7 +172,16 @@ $wims_classname, $wims_institutionname\
     <script type="text/javascript">
       /*<![CDATA[*/
       jQuery(function($$) {
-        $$("#widget_supervisor_list").tabs();
+        // Get in sessionStorage if a tab was previously selected, and activate it.
+        var selectedTabId = sessionStorage.getItem("supervisor_list_selectedTab");
+        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+        $$("#widget_supervisor_list").tabs({
+          active: selectedTabId,
+          activate : function( event, ui ) {
+              selectedTabId = $$("#widget_supervisor_list").tabs("option", "active");
+              sessionStorage.setItem("supervisor_list_selectedTab", selectedTabId);
+          }
+        });
       });
       /*]]>*/
     </script>
