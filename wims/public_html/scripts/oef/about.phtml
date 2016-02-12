@@ -25,7 +25,11 @@ $name_about1
       <td>
     !set email=!replace internal ; by , in $email
      !for au=1 to $script_cnt
+        !if $(email[$au])!=$empty
           !mailurl $(email[$au]) $(script_out[$au])
+        !else
+          $(script_out[$au])
+        !endif
 &nbsp;
       !next
      !endif
