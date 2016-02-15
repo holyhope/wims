@@ -6,7 +6,7 @@
 
 :proc
  !if $varfilterclear!=$empty
-    !reset varfilter
+    !reset varfilter,varfilter_
     !writefile wimshome/s2/$wims_session/varfilter $varfilter
  !else
   !if $varfilter=$empty and $wims_user=supervisor
@@ -47,11 +47,11 @@
 !exit
 
 :htmldiv
-!reset lang_isread
-!readproc adm/lang/varfilter.$lang
-!if $lang_isread!=yes
- !readproc adm/lang/varfilter.en
-!endif
+ !reset lang_isread
+ !readproc adm/lang/varfilter.$lang
+ !if $lang_isread!=yes
+  !readproc adm/lang/varfilter.en
+ !endif
  <div class="field box">
  <label for="showsheet">$name_filtertitle</label>
   <br/>
