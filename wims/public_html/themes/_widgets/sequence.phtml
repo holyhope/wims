@@ -12,23 +12,27 @@
       /*]]>*/
     </script>
   !endif
-
+!set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
   <ul id="wims_seq_summary">
   !for i=1 to $seq_cnt
-    !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$i
+    !if $seq_reverse=yes
+      !set u=$[$seq_cnt+1-$i]
+    !else
+      !set u=$i
+    !endif
+    !set seq_=!record 1 of wimshome/log/classes/$wims_class/seq/.sequence$u
     !distribute line $seq_ into tis_,cos_,obj_,o_
     !if $o_>0
       !if $tis_!=$empty
-        <li><a href="#wims_seq_$i">$tis_</a></li>
+        <li><a href="#wims_seq_$u">$tis_</a></li>
       !else
-        <li><a href="#wims_seq_$i">$wims_name_sequence $i</a></li>
+        <li><a href="#wims_seq_$u">$wims_name_sequence $u</a></li>
        !endif
     !endif
   !next
   </ul>
 !endif
 
-!set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
 !if $seq>0
   !read ./sequence.phtml $seq
   !reset seq
