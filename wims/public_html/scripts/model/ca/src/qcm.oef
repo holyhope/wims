@@ -3,8 +3,8 @@ textarea="data1 data2 data3 data4 data5 data6 data7 data8 data9 data10"
 :Questions à choix multiples
 
 <p>Cet exercice présente des questions à choix multiples.</p>
-<p>Le nombre de questions est limité à 10. On choisit le nombre de questions 
-à présenter à chaque exercice. Ces questions seront pris au hasard ou pas.</p> 
+<p>Le nombre de questions est limité à 10. On choisit le nombre de questions
+à présenter à chaque exercice. Ces questions seront pris au hasard ou pas.</p>
 <p>Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr></p>
 
 :%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
@@ -79,7 +79,7 @@ $embraced_randitem
 \text{accolade=item(1,1 oui,
 2 non)}
 
-:Question 
+:Question
 <p>Entrez ici la question à poser, selon le format suivant : </p>
 <ul>
 <li>La première ligne est le texte général.</li>
@@ -163,7 +163,7 @@ le quatrième jeudi de Novembre}
 
 :Question 8
 
-\text{data8=Dans le film  <i>"Rain Man"</i>, quel acteur a un frère autiste surdoué ? 
+\text{data8=Dans le film  <i>"Rain Man"</i>, quel acteur a un frère autiste surdoué ?
 <i>Rain Man</i> est un film américain réalisé par Barry Levinson, sorti en 1989 en France.
 2
 Bruce Willis
@@ -180,7 +180,7 @@ Faux}
 
 :Question 10
 
-\text{data10=Quel est le premier ballet écrit par Tchaïkovski ? 
+\text{data10=Quel est le premier ballet écrit par Tchaïkovski ?
 Le Lac des cygnes a été écrit en 1875 et Casse-noisette en 1891.
 1
 Le Lac des cygnes
@@ -234,13 +234,13 @@ Casse-noisette}
 \text{option_reaccent=\reaccent!=yes ? noreaccent:}
 \text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
 
-\text{audio=\audio_file notsametext  and  \audio_file notsametext no? 
+\text{audio=\audio_file notsametext  and  \audio_file notsametext no?
 <div class="wimscenter">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</div>}
 
-\text{image=\image_file notsametext  and  \image_file notsametext no? 
+\text{image=\image_file notsametext  and  \image_file notsametext no?
 wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
 
-\if{\video_file notsametext  and  \video_file notsametext no}{ 
+\if{\video_file notsametext  and  \video_file notsametext no}{
   \text{video_file=http notin \video_file ? \imagedir/\video_file}
 \text{video=\video_file notsametext ? <a target="wims_external" href="\video_file">[video] </a>}
 }
@@ -252,7 +252,7 @@ wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
  .question ol{padding:0px 0em 0px 1.5em;margin:0}
  .reponse {\style_reponse}
  .oefstatement{\style_oef}
- 
+
  .highlight_false{color:red;font-weight:bold;text-decoration:line-through;}
  .highlight{font-weight:bold;}
  .true{color:green;}
@@ -266,7 +266,7 @@ wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
 \text{battage=\alea issametext yes ? shuffle(\data_q,,) :
 \data_q}
 \text{battage=wims(nonempty items \battage)}
-     
+
 \text{qcm_prompt1=Votre réponse :}
 \text{qcm_prompt2=La(les) bonne(s) réponse(s) :}
 \text{good_answer_text=Bonne réponse}
@@ -290,7 +290,7 @@ wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
  \text{QUEST=\battage[\i]=8? \data8}
  \text{QUEST=\battage[\i]=9? \data9}
  \text{QUEST=\battage[\i]=10? \data10}
- 
+
  \text{preliminaire_test=\QUEST}
  \text{preliminaire_test=row(1,\preliminaire_test)}
  \text{inst_audio=wims(getopt audio in \preliminaire_test)}
@@ -303,7 +303,7 @@ wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
  \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
  \text{rab_inst=\inst_image notsametext ? \rab_inst <div class="wimscenter"><img src="\imagedir/\inst_image" alt="" /></div>}
  \if{\inst_audio notsametext }{
-     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+     \text{rab_inst1= . isin \inst_audio or \packs= ?
        slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
      \text{rab_inst=\rab_inst <div class="wimscenter">\rab_inst1[1;1]</div>}
    }
@@ -348,7 +348,7 @@ wims(makelist <img src="\imagedir/x " alt="" /> for x in \image_file)}
    \text{H = wims(nospace \QUEST[\debut;])}
    \text{cnt_c=items(\H)}
    \text{Rep = }
-   \for{ k = 1 to \cnt_c}{ 
+   \for{ k = 1 to \cnt_c}{
      \text{Rep = \Rep, position(\H[\k],\mix)}
    }
    \text{Rep = wims(sort items wims(nonempty items \Rep))}
@@ -421,21 +421,21 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;3]>0}{<span style="color:red">\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
          \if{\answer_given=yes}{
-          <br/> \qcm_prompt2 
+          <br/> \qcm_prompt2
           <ul class="highlight true">
              \for{s=1 to \CNT_choix[\h]}{
-               \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>} 
+               \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>}
             }
           </ul>
          }
-      \if{\explication[\h;] notsametext }{<div class="feedback">\explication[\h;]</div>}     
+      \if{\explication[\h;] notsametext }{<div class="feedback">\explication[\h;]</div>}
      </div>
    }
    { \if{ r \h isitemof \nstep}{
       <div class="question">
-   <ol>
-      \for{s=1 to \CNT_choix[\h]}{ <li><label>\embed{reply \h , \s}</label></li> }
-      </ol>
+        <ol>
+          \for{s=1 to \CNT_choix[\h]}{ <li>\embed{reply \h , \s}</li> }
+        </ol>
       </div>
       }
    }
@@ -475,7 +475,7 @@ text{testexp=wims(nospace \testexp)}
    \text{test2 = wims(listcomplement \REP[\H;] in \CHOIX[\H;\rep[\H;]])}
    \text{test3 = wims(listcomplement \CHOIX[\H;\rep[\H;]] in \REP[\H;])}
   %%% \integer{test4=items(\REP[\H;]) - items(\CHOIX[\H;])}
-   \text{test_cnt=\test1, items(\test2),items(\test3)}    
+   \text{test_cnt=\test1, items(\test2),items(\test3)}
    \integer{cnt_juste= \test_cnt[1]+\test_cnt[2]+\test_cnt[3] =0 ? \cnt_juste + 1}
    \matrix{TEST=\TEST
    \test_cnt}
@@ -486,7 +486,7 @@ test2  nombre de réponses dites justes et en fait fausses
 test3  nombre de réponses dites fausses et en fait justes
 
 totalement justes : test1=0, test2=0 test3=0
-partiellement justes : 
+partiellement justes :
 
 \real{v=\cnt_juste/\CNT[\step-1;\N]}
 
@@ -519,7 +519,7 @@ partiellement justes :
 \text{test=wims(lines2items \test)}
 \text{test=wims(items2words \test)}
 \text{test=wims(nospace \test)}
-feedback{1=1}{\explication 
+feedback{1=1}{\explication
    \if{\test notsametext}{
      <div class="reponse"><ol>
       \for{w = 1 to \MAX}{
