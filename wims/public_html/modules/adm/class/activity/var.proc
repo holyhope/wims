@@ -9,20 +9,25 @@ wims_prefix=class user tmp n sharing sharable
  !!user=$wims_user
  !exit
 !endif
-!if $varfilter=$empty
-	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
-!else
-	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+
+!read adm/varfilter proc
+!if $varfilterclear!=$empty 
+    !reset varfilterclear,status
 !endif
-!if $varfilter!=$empty
-   !reset varfilter_
-   !set varfilter_cnt=!linecnt $varfilter
-   !for v=1 to $varfilter_cnt
-    var_line=!singlespace $(varfilter[$v;])
-    var_line =!replace $ $ by , in $var_line
-    varfilter_=!append line $var_line to $varfilter_
-  !next
-!endif
+!!!if $varfilter=$empty
+!!	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
+!!!else
+!!	!writefile wimshome/s2/$wims_session/varfilter $varfilter
+!!endif
+!!!if $varfilter!=$empty
+!!   !reset varfilter_
+!!   !set varfilter_cnt=!linecnt $varfilter
+!!   !for v=1 to $varfilter_cnt
+!!    var_line=!singlespace $(varfilter[$v;])
+!!    var_line =!replace $ $ by , in $var_line
+!!    varfilter_=!append line $var_line to $varfilter_
+!!  !next
+!!!endif
 
 !default choice=all
 !default graphics=0
