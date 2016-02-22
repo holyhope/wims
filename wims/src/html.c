@@ -139,7 +139,7 @@ void _form_menus(char *p,int kind)
         case FORM_RADIO:
         case FORM_CHECKBOX:
          if (itemcnt > 1) {
-         output("%s<input type=\"%s\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/><label for=\"%s%d\">%s</label>%s",
+         output("%s<input type=\"%s\" name=\"%s\" id=\"%s_%d\" value=\"%s\"%s/><label for=\"%s_%d\">%s</label>%s",
              pfrb,name,nbuf,input_id,i+1,p0,pc,input_id,i+1,plist[i],pfre);
          } else {
          output("%s<input type=\"%s\" name=\"%s\" id=\"%s\" value=\"%s\"%s/><label for=\"%s\">%s</label>%s",
@@ -149,7 +149,7 @@ void _form_menus(char *p,int kind)
          _output_("\n");
          break;
         case FORM_BAR:
-         output("<input type=\"radio\" name=\"%s\" id=\"%s%d\" value=\"%s\"%s/>",
+         output("<input type=\"radio\" name=\"%s\" id=\"%s_%d\" value=\"%s\"%s/>",
              nbuf,input_id,i+1,p0,pc);
          break;
       }
