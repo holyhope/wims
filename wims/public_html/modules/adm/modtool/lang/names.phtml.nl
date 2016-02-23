@@ -16,7 +16,7 @@
 !set name_publish=!nosubst Publiceer $i_title<br/><span class="tt">$mod</span>
 !set name_publication=Publication
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
-!set name_compile=Compileren
+!set name_compile=Compileren latex2wims
 
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige

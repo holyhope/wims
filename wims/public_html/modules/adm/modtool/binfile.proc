@@ -64,3 +64,11 @@ bfiles=!sh cd $devdir/$mod\
 	ls -l $$dd | awk '{print $$9","$$5}'
 
 bcnt=!linecnt $bfiles
+
+dest_=$wims_home/public_html/$devdir/$mod
+
+!if  $mkdoc !=$empty
+  !sh cd $dest_ ; $wims_home/other/bin/src2def ;
+!endif
+
+!reset mkdoc

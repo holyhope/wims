@@ -23,6 +23,20 @@
 </fieldset>
 !formend
 
+!if document isin $doctest1
+!!the script src2def should be launched for oefexercises also, but I do not see
+!! the need for the moment
+  !set testsrc=!record 0 of wimshome/public_html/$devdir/$mod/doc/srctex/0index
+  !if $testsrc!=$empty
+   !form reply
+   !reset mkdoc
+   <input type="submit" name="mkdoc" value="$name_compile" />
+   !set wims_ref_class=wims_button_help
+   !href cmd=help&special_parm=mkdoc $wims_name_help
+   !formend
+  !endif
+!endif
+
 !if $bcnt>0
  $table_header
  <caption>$name_file</caption>
