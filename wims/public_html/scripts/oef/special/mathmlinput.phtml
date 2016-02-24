@@ -89,8 +89,10 @@ $hlist
       !if $(diareply$m_)!=good
        !set test=1
       !endif
-     !set codereply=!replace internal reply$m_ by $ \special{color=$cl}{$(reply$m_)} $ in $codereply
-     !set codegood=!replace internal reply$m_ by $ $(replyGood$m_)$ in $codegood
+     !set replytolatex=!texmath $(reply$m_)
+     !set rgoodtolatex=!texmath $(replyGood$m_)
+     !set codereply=!replace internal reply$m_ by $ \special{color=$cl}{$replytolatex} $ in $codereply
+     !set codegood=!replace internal reply$m_ by $ $(rgoodtolatex)$ in $codegood
     !endif m_
  !next tt
  !if $test=1 and $noanswer!=1
