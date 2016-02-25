@@ -103,10 +103,12 @@ compressorlink=yuicompressor
 themes="standard default Nikaia pommier"
 cd $wims_dir
 css_dir=public_html/themes
+rm -rf $target/wims/css_dir/prov
  for a in $themes ; do
   cp -r $css_dir/$a/css.css $target/wims/$css_dir/$a
  done
- rm $target/wims/$css_dir/$compressor ; rm $target/wims/$css_dir/$compressorlink
+rm $target/wims/$css_dir/$compressor ; rm $target/wims/$css_dir/$compressorlink
+rm -rf $target/wims/css_dir/_packages
 
 echo "** Archiving WIMS package..."
 cd $target/wims ; tar -czf ../wims-$version.tgz .
