@@ -21,8 +21,7 @@ Per student,dagen,Grafische weergave, Alle deelnemers\
 into name_menu,name_loginlist,name_select,name_shiftpart,name_days,\
  name_graphics, name_allpart
 
-!distribute lines 
-U kunt door de deelnemers bladeren  (standaardmethode ingeval grafische weergave).\
+!distribute lines U kunt door de deelnemers bladeren  (standaardmethode ingeval grafische weergave).\
 Het maximaal aantal gelijktijdig te selecteren deelnemers is beperkt tot $limitpart.\
 In dit geval of bij grafische weergave kunnen maximaal $limitpart deelnemers gelijktijdig worden getoond.\
 Uitsluitend wanneer geen grafische weergave is vereist.\
