@@ -137,7 +137,16 @@
     <script type="text/javascript">
       /*<![CDATA[*/
       jQuery(function($$) {
-        $$("#widget_user_list").tabs();
+        // Get in sessionStorage if a tab was previously selected, and activate it.
+        var selectedTabId = sessionStorage.getItem("user_list_selectedTab");
+        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+        $$("#widget_user_list").tabs({
+          active: selectedTabId,
+          activate : function( event, ui ) {
+              selectedTabId = $$("#widget_user_list").tabs("option", "active");
+              sessionStorage.setItem("user_list_selectedTab", selectedTabId);
+          }
+        });
       });
       /*]]>*/
     </script>
@@ -178,7 +187,8 @@
 
 !!must have read user*.phtml,  with *=sheet, exam must be read before
 !distribute items div,div into div0,div1
-!read themes/$wims_theme/_widgets/usermenumodubox.phtml
+!read themes/_widgets/usermenumodubox_accordion.phtml
+!!read themes/$wims_theme/_widgets/usermenumodubox.phtml
 
 !read themes/_widgets/topback.phtml
 

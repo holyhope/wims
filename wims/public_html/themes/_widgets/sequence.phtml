@@ -7,7 +7,16 @@
     <script type="text/javascript">
       /*<![CDATA[*/
       jQuery(function($$) {
-        $$("#widget_sequence").tabs();
+        // Get in sessionStorage if a tab was previously selected, and activate it.
+        var selectedTabId = sessionStorage.getItem("user_sequence_selectedTab");
+        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+        $$("#widget_sequence").tabs({
+          active: selectedTabId,
+          activate : function( event, ui ) {
+              selectedTabId = $$("#widget_sequence").tabs("option", "active");
+              sessionStorage.setItem("user_sequence_selectedTab", selectedTabId);
+          }
+        });
       });
       /*]]>*/
     </script>
