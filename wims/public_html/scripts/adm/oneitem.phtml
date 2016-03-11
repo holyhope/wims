@@ -1,8 +1,19 @@
 !! 0 is used for title in the menu, 01 is juste some text.
+!! the next line doesn't work from everywhere (for example,
+!! when executing an exercise in a sheet so ... copy paste for the moment
+!! must be the same as html/oneitem.phtml
+!!##!changeto adm/oneitem.phtml $wims_read_parm
+
+!! be careful : if 3_ (url) contains a comma, there should be a confusion
+!! for types 2, 3, 4, 5, 7
+!! to have no bug, the url part (3_) should be coded, for example , -> %2C
+!! it should have been better to put the url always in last position.
+!! it would be the only way to be sure and to have no surprise.
+
 !if $wims_theme_icon=yes
-  !set  wims_theme_icon=$wims_theme
+  !set wims_theme_icon=$wims_theme
 !endif
-!distribute items $wims_read_parm into 1_,2_,3_,4_,5_,6_
+!distribute items $wims_read_parm into 1_,2_,3_,4_,5_
 !reset w_image
 !if " isin $1_
   !set w_name=!replace internal " by in $1_
@@ -15,7 +26,6 @@
     !set w_name=$1_
   !endif
 !endif
-!set wims_ref_title=$6_
 !goto $2_
 :0
  $(wims_read_parm[3..-1])
@@ -74,5 +84,14 @@
  !set wims_ref_title=$w_name
  <span class="text_item">$w_name</span>
  !exit
-
+:9
+!! title is the last item
+ !set 3_=!item 3 to -2 of $wims_read_parm
+ !set 3_=!nospace $3_
+ !set wims_ref_class=$w_name1
+ !set wims_ref_title=!item -1 of $wims_read_parm
+ !href $3_ $w_name
+ !reset wims_ref_class
+ !reset wims_ref_title
+ !exit
 :*
