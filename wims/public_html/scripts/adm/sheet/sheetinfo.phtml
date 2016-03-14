@@ -4,11 +4,11 @@
  <input type="hidden" name="job" value="text" />
  <fieldset class="property_fields blockcenter">
  !!check
-      <legend>$name_info 
-      !if $sheet<=$scnt
-      [
-      !href cmd=resume&infoshow=no $wims_name_hide
-      ]
+      <legend>$name_info
+      !if $jquery_defined!=yes and $sheet<=$scnt
+        [
+        !href cmd=resume&infoshow=no $wims_name_hide
+        ]
       !endif
       </legend>
       <div class="field box">
@@ -65,6 +65,7 @@
      !endif
      </div>
   !endif
+  </fieldset>
    <div class="wimscenter wimsform">
     !ifval $activetest=-1
      <input type="submit" value="$name_mksheet" />
@@ -72,5 +73,4 @@
      <input type="submit" value="$wims_name_tosave" />
     !endif
   </div>
-  </fieldset>
 !formend

@@ -37,22 +37,52 @@ $name_titlemodif $modif
  !goto end
 !endif
 
-!if $wims_infoshow=no
- <span class="bold"> $name_info [
- !href cmd=resume&infoshow=yes $wims_name_showall
- ]
- </span>
- <br/>
-!else
- !read adm/sheet/sheetinfo.phtml
-!endif
+<div id="sheet_management">
+  !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+          // Get in sessionStorage if a tab was previously selected, and activate it.
+          var selectedTabId = sessionStorage.getItem("sheet_management_selectedTab");
+          selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+          $$("#sheet_management").tabs({
+            active: selectedTabId,
+            activate : function( event, ui ) {
+                selectedTabId = $$("#sheet_management").tabs("option", "active");
+                sessionStorage.setItem("sheet_management_selectedTab", selectedTabId);
+            }
+          });
+        });
+        /*]]>*/
+      </script>
+      <ul>
+        <li><a href="#sheetinfo">$name_info</a></li>
+        !ifval $activetest!=-1
+          <li><a href="#list">$name_content</a></li>
+        !endif
+      </ul>
+      <div id="sheetinfo">
+         !read adm/sheet/sheetinfo.phtml
+      </div>
+  !else
+    !if $wims_infoshow=no
+     <fieldset class="property_fields blockcenter">
+     <legend> $name_info [
+     !href cmd=resume&infoshow=yes $wims_name_showall
+     ]
+     </legend>
+     </fieldset>
+    !else
+     !read adm/sheet/sheetinfo.phtml
+    !endif
+  !endif
 
 !ifval $activetest=-1
  !goto end
 !endif
 
 :end1
-<a id="list"></a>
+<div id="list">
 <span class="bold">$name_content:</span>
 !if $exocnt=0
  <p>$name_warning</p>
@@ -92,8 +122,10 @@ $name_titlemodif $modif
    !endif
   </ul>
 !endif
+</div>
 
 :end
+</div>
 !if $activetest>=0
  !if $activetest=0
   !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
