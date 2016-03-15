@@ -38,21 +38,53 @@ $name_title $exam
  !goto end
 !endif
 
-!if $wims_infoshow=no
- <span class="bold"> $name_info [
- !href cmd=resume&infoshow=yes $wims_name_showall
- ]
- </span>
- <br/>
-!else
- !read examinfo.phtml
-!endif
+<div id="exam_management">
+  !if $jquery_defined=yes
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        jQuery(function($$) {
+          // Get in sessionStorage if a tab was previously selected, and activate it.
+          var selectedTabId = sessionStorage.getItem("exam_management_selectedTab");
+          selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+          $$("#exam_management").tabs({
+            active: selectedTabId,
+            activate : function( event, ui ) {
+                selectedTabId = $$("#exam_management").tabs("option", "active");
+                sessionStorage.setItem("exam_management_selectedTab", selectedTabId);
+            }
+          });
+        });
+        /*]]>*/
+      </script>
+      <ul>
+        <li><a href="#examinfo">$name_info</a></li>
+        !ifval $activetest!=-1
+          <li><a href="#examcontent">$name_content</a></li>
+        !endif
+      </ul>
+      <div id="examinfo">
+         !read examinfo.phtml
+      </div>
+  !else
+    !if $wims_infoshow=no
+     <fieldset class="property_fields blockcenter">
+     <legend> $name_info [
+     !href cmd=resume&infoshow=yes $wims_name_showall
+     ]
+     </legend>
+     </fieldset>
+    !else
+     !read examinfo.phtml
+    !endif
+  !endif
 
 !ifval $activetest=-1
  !goto end
 !endif
 
 :end1
+<div id="examcontent">
+
 !if $exocnt=0
  <p>$name_warning
  !set nex=!itemcnt $aexams
@@ -63,7 +95,7 @@ $name_title $exam
  !endif
  </p>
 !else
- !read examcontent.phtml
+  !read examcontent.phtml
 !endif
 
 !if $activetest=0
@@ -80,8 +112,10 @@ duplicateexam,1,cmd=reply&job=duplicate to $wims_menu_items
  !let wims_menu_items=!append line itemsep,0,\
 participantview,1,cmd=reply&job=student to $wims_menu_items
 !endif
+</div>
 
 :end
+</div>
 !tail
 
 !reset job,echoose,eweight,ename,edep,eopt,source

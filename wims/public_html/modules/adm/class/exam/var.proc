@@ -26,7 +26,16 @@ title_limit=80
 desc_limit=4000
 etitle_limit=100
 edesc_limit=400
-!default duration=90
+
+duration_min=2
+duration_max=600
+duration_default=90
+
+tries_min=1
+tries_max=100
+tries_default=3
+
+!default duration=$duration_default
 wims_helper=chapter=3
 
 !if $wims_user!=supervisor
@@ -312,8 +321,8 @@ expyear=!char 1,2,3,4 of $expiration
   !exit
  !endif
  !ifval $activetest<=0
-  !bound duration between integer 2 and 600 default 90
-  !bound tries between integer 1 and 100 default 3
+  !bound duration between integer $duration_min and $duration_max default $duration_default
+  !bound tries between integer $tries_min and $tries_max default $tries_default
   setup=$duration $tries
  !else
   rec=!record $exam of wimshome/log/classes/$wims_class/exams/.exams

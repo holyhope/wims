@@ -11,8 +11,8 @@
 
  <fieldset class="property_fields blockcenter">
 
-   <legend>$name_info 
-   !if $exam<=$scnt
+   <legend>$name_info
+   !if $jquery_defined!=yes and $exam<=$scnt
    [
     !href cmd=resume&infoshow=no $wims_name_hide
     ]
@@ -22,7 +22,7 @@
   !!Title
   <div class="field box fullwidth">
     <label for="title">$(name_shinfo[1])</label>
-    <input size="65" name="title" id="title" value="$title" />
+    <input size="65" name="title" id="title" value="$title" required="required" />
     <div class="formHelp">$name_desc_title</div>
   </div>
 
@@ -62,7 +62,7 @@
        <label for="duration">$(name_shinfo[9])</label>
        !set wims_ref_class=wims_button_help float_right
        !href target=wims_mhelp cmd=help&special_parm=session $wims_name_help
-       <input size="5" name="duration" id="duration" value="$duration" style="text-align:right;" $readonly /> <span class="units">$name_units_duration</span>
+       <input type="number" min="$duration_min" max="$duration_max" size="5" name="duration" id="duration" value="$duration" style="text-align:right;" $readonly /> <span class="units">$name_units_duration</span>
        <div class="formHelp">$name_desc_duration</div>
   </div>
 
@@ -71,7 +71,7 @@
        <label for="tries">$(name_shinfo[10])</label>
         !set wims_ref_class=wims_button_help float_right
        !href target=wims_mhelp cmd=help&special_parm=session $wims_name_help
-       <input size="5" name="tries" id="tries" value="$stries" $readonly/>
+       <input type="number" min="$tries_min" max="$tries_max" size="5" name="tries" id="tries" value="$stries" $readonly/>
        <div class="formHelp">$name_desc_tries &nbsp;</div>
   </div>
 
@@ -104,15 +104,14 @@
       <input name="cutt" id="cutt" value="$cutt" />
     </div>
   !endif
-   <div class="wimscenter wimsform">
+  </fieldset>
+
+  <div class="wimscenter wimsform">
     !ifval $activetest=-1
      <input type="submit" value="$name_mkexam" />
     !else
      <input type="submit" value="$wims_name_tosave" />
     !endif
-   </div>
-  </fieldset>
-
-
+  </div>
 
 !formend

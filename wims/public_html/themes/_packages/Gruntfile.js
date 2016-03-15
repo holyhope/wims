@@ -7,7 +7,8 @@ module.exports = function(grunt){
       /*all: ['../../scripts/js/*.js'],*/
       /*ASCII: ['../../scripts/js/ASCII*.js'],*/
       /*utils: ['../../scripts/js/utils.js'],*/
-      wz: ['../../scripts/js/wz*.js'],
+      /*wz: ['../../scripts/js/wz*.js'],*/
+      inc: ['../_inc/*.js'],
     },
 
     /* Concatene plusieurs fichiers en un seul
@@ -132,10 +133,22 @@ module.exports = function(grunt){
 
         ],
       },
+
+      // MathJax specific copying task
+      MathJax: {
+        files: [
+          {
+            expand: true,
+            src: ['bower_components/MathJax/**' ],
+            dest: '../../scripts/js/',
+          },
+        ],
+      },
     },
 
   });
 
+  /* available jobs */
   grunt.loadNpmTasks('grunt-contrib-jshint');
   /*grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');*/
@@ -143,6 +156,8 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['less', 'cssmin', 'copy'])
+  /* Defined Tasks */
+  grunt.registerTask('default', ['jshint', 'less', 'cssmin', 'copy:main'])
+  grunt.registerTask('MathJax', ['copy:MathJax'])
 
 }
