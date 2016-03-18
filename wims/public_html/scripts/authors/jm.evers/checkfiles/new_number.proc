@@ -164,8 +164,8 @@ extra=$empty
 	tc_tmp=0
 	!for a=1 to $t_tmp
 	    A=!item $a of $rep
+	    A=!rawmath $A
 	    !if NaN notin $[1*($A)]
-		A=!rawmath $A
 		tc_tmp=1
 		tmp=!append item $A to $tmp
 	    !else
@@ -189,6 +189,7 @@ extra=$empty
 	filtered_rep=!append line $tmp to $filtered_rep
     !endif
 !next p
+
 
 lg=!linecnt $(answer$n)
 
