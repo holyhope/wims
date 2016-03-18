@@ -259,19 +259,18 @@ score=0
 	    rnd=$[10^(log($rounding)/log(10))]
 	!endif
 	!for i in $rawvars
+	    # kijken of het goede antwoord in de buurt (x=0 ... x=10)ligt van het leerling antwoord
 	    g0=!evalsubst $i=0 in $GGG
     	    g1=!evalsubst $i=1 in $GGG
-	    g2=!evalsubst $i=2 in $GGG
 	    a0=!evalsubst $i=0 in $AAA
 	    a1=!evalsubst $i=1 in $AAA
-	    a2=!evalsubst $i=2 in $AAA
 	    !if NaN notin $g0,$a0
 		!ifval $g0=$a0
 		    score1=$[$score1+$P6]
 		!endif
 	    !endif
-	    diff1=$[abs(($g0-$g1)/($g1-$g2))]
-	    diff2=$[abs(($a0-$a1)/($a1-$a2))]
+	    diff1=$[abs($g0-$g1)]
+	    diff2=$[abs($a0-$a1)]
 	    !if NaN notin $diff1,$diff2
 		!ifval $[abs($diff1-$diff2)]<$rnd
 		    score2=$[$score2+$P6]
@@ -297,7 +296,6 @@ modulescore=$[$modulescore + $maxscore]
 	remark$n=$NOK
     !endif
 !endif
-
 goback=0
 !exit
 
