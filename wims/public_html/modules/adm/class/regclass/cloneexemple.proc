@@ -21,15 +21,16 @@ sjob=$job
 
 
 !if $step=-3
-!! make list of cloneable class + choose class
-	ltclass=$empty
+!! search if exists at less one cloneable class (verifying keywords)
 	keyword=!items2words $keyword
 	keyword=!trim $keyword
 	kw=!words2items $keyword
 	kw=!deaccent $kw
 	kw=!tolower $kw
 	ccnt=!recordcnt wimshome/log/classes/.index
-	!for i=1 to $ccnt
+	i=1
+	debcls=$empty
+	!while i<=1$ccnt and $debcls=$empty
 		l=!record $i of wimshome/log/classes/.index
 		!distribute items $l into code,expire,inst,cl,la,ty
 		!if $ty!=4
@@ -46,11 +47,11 @@ sjob=$job
 				!next w
 			!endif
 			!if $k=yes
-				ltclass=!append line $l to $ltclass
+				debcls=$i
 			!endif
 		!endif
-	!next i
-	nbcls=!linecnt $ltclass
+		!increase i
+	!endwhile
 !endif
 
 
