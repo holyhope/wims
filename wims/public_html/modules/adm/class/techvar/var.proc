@@ -1,0 +1,28 @@
+!read adm/class/classlang names.phtml
+
+wims_prefix=class user
+
+test=!defof class_defined in wimshome/log/classes/$wims_class/.def
+!if $test!=yes
+ error=bad_class
+ !reset job
+ !exit
+!endif
+
+!readproc tabletheme
+
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !reset job
+ !exit
+!endif
+
+
+!bound job within listvar,modifvar,addvar,userlist,userprop default listvar
+
+# make list of technical variable
+!readproc adm/vfilter/listvarfilter.proc
+
+!if $job!=$empty
+ !read $job.proc
+!endif

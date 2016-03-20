@@ -1,0 +1,49 @@
+nblocalvar=!itemcnt $tv_listlocal
+!if $nblocalvar>=$MAXtechvar
+    error=toomanytechvar
+    job=listvar
+    !changeto $job.proc
+    !exit
+!endif
+
+!if $tc_abandon!=$empty
+    !reset tc_abandon,tc_value,tc_name,tc_set
+    job=listvar
+    !changeto $job.proc
+    !exit
+!endif
+
+!if $tc_set!=$empty
+!! check name validity
+    tc_name=!text select 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ in $tc_name
+    tc_name=!nospace $tc_name
+    n=!charcnt $tc_name
+    !if $n>$MAXcharname or $n<1
+	error=badnamelen
+	!reset tc_set
+	!exit
+    !endif
+
+!! check list of name already in use
+    !if $tc_name isitemof $tv_listallname
+	error=namealreadyuse
+	!reset tc_set
+	!exit
+    !endif
+
+!! check list of value
+    tc_value=!listuniq $tc_value
+    tc_value=!listcomplement _EMPTY_ in $tc_value
+    n=!itemcnt $tc_value
+    !if $n<1 or $n>$MAXnbvalue
+	error=badvaluenb
+	!reset tc_set
+	!exit
+    !endif
+!! save
+    !fileappend wimshome/log/classes/$wims_class/.techvar :$tc_name\
+$tc_value
+    !fileappend wimshome/log/classes/$tv_Sclass/.indextechvar :$tc_name,$wims_class,$[$nblocalvar+1]
+    !restart module=adm/class/techvar
+!endif
+
