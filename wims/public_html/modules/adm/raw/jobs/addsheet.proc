@@ -62,6 +62,13 @@ sh_contents=!translate ; to $\
 $ in $sh_contents
 sh_contents=!translate @ to = in $sh_contents
 
+sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+
+!if $sheetcnt >= $MAX_SHEETS
+ error= error : The number of worksheets is limited to $MAX_SHEETS. You may not create worksheet #$[$sheetcnt+1].
+ !exit
+!endif
+
 !appendfile wimshome/log/classes/$qclass/sheets/.sheets \
 :$sh_sheetmode\
 $sh_expiration\

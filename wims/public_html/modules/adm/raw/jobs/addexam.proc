@@ -30,6 +30,11 @@ FORMAT OF THE /exams/.exams INDEX FILE :
 # IP/Hours/Both - open for IP and/or hours defined
 ######################################################
 
+examcnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+!if $examcnt >= $MAX_EXAMS
+ error= error : The number of exams is limited to $MAX_EXAMS. You may not create exam #$[$examcnt+1].
+ !exit
+!endif
 
 data1=!nonempty lines $data1
 n1=!linecnt $data1

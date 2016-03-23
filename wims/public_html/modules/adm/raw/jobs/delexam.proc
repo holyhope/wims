@@ -1,5 +1,7 @@
-# DelExam
+# DelExam (BETA)
 # Suppression de l'examen qexam
+
+### Attention : il faut etre sur que la suppression ne cause pas de décalage dans les notes, a verifier !!
 
 #Pour commencer, on verifie la classe
 !read scripts/check.class
@@ -15,7 +17,7 @@ type=exams
 
 state=!line 1 of $qproperties
 
-#ici on verifie que l'examen est "En pr�paration"
+#ici on verifie que l'examen est "En préparation"
 #STATUS FORMAT :
 #0 = EN PREPARATION
 #1 = ACTIF
@@ -26,6 +28,17 @@ state=!line 1 of $qproperties
  error=Exam #$qexam has been activated.
  !exit
 !endif
+
+# Il faut également vérifier qu'aucun des exams > $qexam n'a pas été activé
+
+!for n=$[$qexam+1] to $cnt
+  q_properties=!record $n of $listfile
+  state=!line 1 of $q_properties
+  !if $state!=0
+    error=This Exam can't be deleted : A more recent exam (#$n) has been activated.
+    !exit
+  !endif
+!next n
 
 dir=$wims_home/log/classes/$qclass
 
@@ -38,12 +51,12 @@ rm .exam$qexam
 n=$[$qexam+1]
 
 !while $n <= $cnt
- !sh mv $dir/$type/.sheet$n $dir/$type/.sheet$[$n-1]
+ !sh mv $dir/$type/.exam$n $dir/$type/.exam$[$n-1]
  !sh mv $dir/.E$n $dir/.E$[$n-1]
  !increase n
 !endwhile
 
-# Les fichiers sont supprim�s, reste � corriger le contenu du fichier d'index .exams
+# Les fichiers sont supprimés, reste à corriger le contenu du fichier d'index .exams
 
 update_field=0
 !read scripts/update.proc
