@@ -30,6 +30,9 @@ if [ ! -s $datafile.for_sh ] || [ $datafile -nt $datafile.for_sh ] || [ mksymbol
 fi
 
 complist=`echo $comp_all | tr ',' ' '`
+## doesnot work : copy the list in compdata in the corresponding line below
+##compnorotate=`echo $comp_norotate | tr ' ' '|'`
+
 
 mkdir -p $outdir
 for c in $complist; do
@@ -42,7 +45,7 @@ $draw
 output $outdir/$c-h.gif
 @
  case $c in
-  acsrc|meter)
+  acsrc|ammeter|ammeterN|lamp|lampN|meter|motor|num|voltmeter|voltmeterN)
    ln -s $c-h.gif $outdir/$c-v.gif
    ln -s $c-h.gif $outdir/${c}R-h.gif
    ln -s $c-h.gif $outdir/${c}R-v.gif

@@ -2,15 +2,15 @@
 
 ########## Basic definitions. #############
 
-comp_all=acsrc,and,arrow,_Arrow,bat,buf,cap,\
-chas,close,coil,del,diode,_Diode,gen,\
-gnd,iarrow,_iArrow,inv,isrc,lamp,meter,nand,nor,npn,npn2,\
-open,or,pnp,pnp2,res,res2,src,\
-term,term2,wire,xnor,xor,zener,_Zener
+comp_all=acsrc,ammeter,ammeterN,and,arrow,_Arrow,bat,buf,cap,\
+chas,close,close2,coil,del,diode,_Diode,fuse,gen,\
+gnd,iarrow,_iArrow,inv,isrc,lamp,lampN,meter,motor,nand,nor,npn,npn2,\
+open,open2,or,pnp,pnp2,res,res2,rheostat,src,\
+term,term2,voltmeter,voltmeterN,wire,xnor,xor,zener,_Zener
 
 comp_notext=wire num color
 
-comp_norotate=acsrc meter num
+comp_norotate=acsrc ammeter ammeterN lamp lampN meter motor num voltmeter voltmeterN
 
 ############### Subroutines ##################
 
@@ -25,6 +25,16 @@ segment -0.6,-0.8,0.6,-0.8,_color_
 
 comp_acsrc=ellipse 0,0,2,2,_color_\
 curve _color_,-0.6+1.2*t,0.4*sin(2*pi*t)
+
+comp_ammeter=ellipse 0,0,2,2,_color_\
+segment 0,0.45,0.35,-0.4,_color_\
+segment 0,0.45,-0.35,-0.4,_color_\
+segment -0.2,0,0.2,0,_color_
+
+comp_ammeterN=ellipse 0,0,2,2,_color_\
+segment -0.2,0.45,0.1,-0.4,_color_\
+segment -0.2,0.45,-0.5,-0.4,_color_\
+segment -0.35,0,-0.05,0,_color_
 
 comp_and=lines _color_,0,0.7,-1,0.7,-1,-0.7,0,-0.7\
 plot _color_,0.65*sin(pi*t),0.7*cos(pi*t)\
@@ -53,6 +63,13 @@ ellipse -0.5,0,0.4,0.4,_color_\
 ellipse 0.5,0,0.4,0.4,_color_\
 segment -0.7,0.2,0.7,0.2,_color_
 
+comp_close2=parallel -1,0,-0.7,0,1.7,0,2,_color_\
+ellipse -0.5,0,0.4,0.4,_color_\
+fill -0.5,0,_color_\
+ellipse 0.5,0,0.4,0.4,_color_\
+fill 0.5,0,_color_\
+segment -0.5,0.2,0.5,0.2,_color_
+
 comp_coil=parallel -1,0,-0.875,0,1.875,0,2,_color_\
 curve _color_,-0.15*cos(7*pi*t)+1.44*t-0.72,0.3*sin(7*pi*t)
 
@@ -75,6 +92,10 @@ arrow 0.1,0.4,0.35,0.75,7,_color_
 comp_gen=parallel -1,0,-0.2,0,1.2,0,2,_color_\
 segment -0.2,-0.7,-0.2,0.7,_color_\
 segment 0.2,-0.3,0.2,0.3,_color_
+
+comp_fuse=parallel -1,0,-0.75,0,1.75,0,2,_color_\
+rectangle -0.75,-0.3,0.75,0.3,_color_\
+segment -0.75,0,0.75,0,_color_
 
 comp_gnd=segment 1,0,0.6,0,_color_\
 segment 0.6,-0.7,0.6,0.7,_color_\
@@ -100,9 +121,19 @@ segment -0.5,-0.5,0.5,0.5,_color_\
 segment -0.5,0.5,0.5,-0.5,_color_\
 parallel -1,0,-0.71,0,1.71,0,2,_color_
 
+comp_lampN=ellipse 0,0,2,2,_color_\
+segment -0.70,-0.70,0.70,0.70,_color_\
+segment -0.70,0.70,0.70,-0.70,_color_\
+
 comp_meter=ellipse 0,0,2,2,_color_\
 segment -0.8,-0.55,0.8,-0.55,_color_\
 arrow -0.1,-0.5,0.4,0.5,$slib_dotwidth,_color_
+
+comp_motor=ellipse 0,0,2,2,_color_\
+segment -0.32,-0.4,-0.32,0.42,_color_\
+segment -0.32,0.42,0,-0.4,_color_\
+segment 0,-0.4,0.33,0.42,_color_\
+segment 0.33,0.42,0.33,-0.4,_color_\
 
 comp_nand=lines _color_,0,0.7,-1,0.7,-1,-0.7,0,-0.7\
 plot _color_,0.65*sin(pi*t),0.7*cos(pi*t)\
@@ -126,6 +157,13 @@ ellipse -0.5,0,0.4,0.4,_color_\
 ellipse 0.5,0,0.4,0.4,_color_\
 segment -0.7,0.6,0.7,0.6,_color_
 
+comp_open2=parallel -1,0,-0.7,0,1.7,0,2,_color_\
+ellipse -0.5,0,0.4,0.4,_color_\
+fill -0.5,0,_color_\
+ellipse 0.5,0,0.4,0.4,_color_\
+fill 0.5,0,_color_\
+segment -0.5,0,0.4,0.6,_color_
+
 comp_or=curve _color_,-0.15*(2*t-1)^2-0.85,0.7-1.4*t\
 curve _color_,t*1.65-1,0.7-0.7*t^3\
 curve _color_,t*1.65-1,-0.7+0.7*t^3\
@@ -142,6 +180,10 @@ comp_res=lines _color_,-1,0,-0.75,0,-0.625,-0.3,-0.375,0.3,-0.125,-0.3,0.125,0.3
 comp_res2=parallel -1,0,-0.75,0,1.75,0,2,_color_\
 rectangle -0.75,-0.3,0.75,0.3,_color_
 
+comp_rheostat=parallel -1,0,-0.75,0,1.75,0,2,_color_\
+rectangle -0.75,-0.3,0.75,0.3,_color_\
+arrow 0,0.9,0,0.3,$slib_dotwidth,_color_
+
 comp_src=ellipse 0,0,2,2,_color_
 
 comp_term=segment 0.5,0,1,0,_color_\
@@ -149,6 +191,14 @@ ellipse 0.3,0,0.4,0.4,_color_
 
 comp_term2=ellipse -0.8,0,0.4,0.4,_color_\
 ellipse 0.8,0,0.4,0.4,_color_
+
+comp_voltmeter=ellipse 0,0,2,2,_color_\
+segment 0,-0.45,0.35,0.4,_color_\
+segment 0,-0.45,-0.35,0.4,_color_
+
+comp_voltmeterN=ellipse 0,0,2,2,_color_\
+segment -0.2,-0.45,0.15,0.4,_color_\
+segment -0.2,-0.45,-0.55,0.4,_color_\
 
 comp_wire=segment -1,0,1,0,_color_
 
