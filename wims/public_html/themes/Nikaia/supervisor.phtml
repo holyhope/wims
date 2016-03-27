@@ -46,8 +46,8 @@ $wims_classname, $wims_institutionname\
  !if $class_typename=level
     </div><!--wimsbody-->
    </div><!--wimspagebox-->
-  !read themes/_procs/menumodubox3.proc
-  !read themes/_widgets/menumodubox.phtml
+   !read themes/_procs/menumodubox3.proc
+   !read themes/_widgets/menumodubox.phtml
   !goto end
  !else
   !goto nocheck
@@ -155,11 +155,16 @@ $wims_classname, $wims_institutionname\
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
+  !if $seq_open=yes
+  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_sequence</th><th>$wims_name_action</th></tr>
+ !else
+  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !endif
  $table_header
  <caption>$SU_shlist &nbsp; [
  !href module=adm/class/sequence $wims_name_reorder
  ] </caption>
- $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ $table_htdr_
  !read themes/_widgets/supervisorsubclass.phtml
  !read themes/_widgets/supervisordoc.phtml
  !read themes/_widgets/supervisordocp.phtml
