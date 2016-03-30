@@ -62,3 +62,18 @@
 !set wims_formselect_switch=multiple="multiple" size="$qcnt"
 !formselect exo list $exolist prompt $titlelist
 !set wims_formselect_switch=
+
+!if $exocnt>2 and $jquery_defined=yes
+  <ul class="oef_filter">
+    <li>
+      <label for="selectorForExo">$name_select_auto:</label>
+      <input type="search" results="5" id="selectorForExo" value="$special_parm" placeholder="$name_select_placeholder">
+    </li>
+  </ul>
+  <script type="text/javascript" src="scripts/js/interface/jQuery.selectFilters.js"></script>
+  <script type="text/javascript">
+    $$(function() {
+      $$('#exo').selectByText($$('#selectorForExo'));
+    });
+  </script>
+!endif

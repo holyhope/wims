@@ -6,7 +6,7 @@ function start_multicomplete(){
 	var search_category = $("#search_category").val();
 	var search_lang = $("#search_lang").val();
 	var fichier = "";
-	
+
 	if (search_category=="P")
 		{fichier =  "./modules/tool/popup."+search_lang+"/dic/form.json";}
 	else

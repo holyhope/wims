@@ -159,9 +159,7 @@ $name_remarkintro1
 
 
 !if * isin $titlelist
- <p>
-  $name_remarkintro2
- </p>
+ <p>$name_remarkintro2</p>
 !endif
 !!test if there is an introhook (works with new modules)
 !if _classes/ isin _$module
@@ -170,29 +168,27 @@ $name_remarkintro1
  !readproc introhook.phtml
 !endif
 !if $introhook_exists!=no
-<fieldset class="oef_expert">
+  <fieldset class="oef_expert">
     <legend>$name_module_setup</legend>
-<div class="field introhook">
-<table class="field introhook">
-!read introhook.phtml
-</table>
-</div>
-</fieldset>
+    <div class="field introhook">
+      <table class="field introhook">
+        !read introhook.phtml
+      </table>
+    </div>
+  </fieldset>
 !endif
 <fieldset class="oef_expert">
  <legend>$name_general_setup</legend>
  <div class="field">
- <label for="qnum">$name_oneserie:</label>
- !default qnum=$(default_choice[1])
- !formselect qnum from 1 to 9
- $name_exercises.
+   <label for="qnum">$name_oneserie:</label>
+   !default qnum=$(default_choice[1])
+   !formselect qnum from 1 to 9
+   $name_exercises.
  </div>
  <div class="field">
   <label for="scoredelay">$name_chrono:</label>
   <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
-  <div class="formHelp">
- $name_remarkintro3
-  </div>
+  <div class="formHelp">$name_remarkintro3</div>
  </div>
  <div class="field">
       !formcheckbox random list 0 prompt $name_aleaseries

@@ -8,6 +8,7 @@ module.exports = function(grunt){
       /*ASCII: ['../../scripts/js/ASCII*.js'],*/
       /*utils: ['../../scripts/js/utils.js'],*/
       /*wz: ['../../scripts/js/wz*.js'],*/
+      interface: ['../../scripts/js/interface/*.js'],
       inc: ['../_inc/*.js'],
     },
 
