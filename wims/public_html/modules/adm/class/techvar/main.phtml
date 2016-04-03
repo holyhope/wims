@@ -40,7 +40,14 @@ $name_title
  !set wims_menu_items=!append line part_list,1,cmd=reply&job=userlist to $wims_menu_items
 !endif
 !if $job!=listvar
- !set wims_menu_items=!append line back2,1,cmd=reply to $wims_menu_items
+ !if $job!=userprop
+     !set wims_menu_items=!append line back2,1,cmd=reply to $wims_menu_items
+ !else
+     !set wims_menu_items=!append line back2,1,cmd=reply&job=userlist to $wims_menu_items
+ !endif
+!endif
+!if $job!=oldvar
+ !set wims_menu_items=!append line oldvar,1,cmd=reply&job=oldvar to $wims_menu_items
 !endif
 </div>
 !tail

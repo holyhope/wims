@@ -46,4 +46,18 @@
  !exit
 !endif
 
+!if nooldvar=$error
+ Il n'y a pas d'ancienne variable technique détectée dans cette structure.
+ !exit
+!endif
+
+!if $error=oldvar_nouser
+ L'ancienne variable technique que vous souhaitez créer n'est définie pour aucun élève de votre classe. Probablement que cette variable appartient à une autre classe du groupement. La création n'a pas eu lieu.
+!exit
+!endif
+
+!if $error=oldvar_badvar
+ L'ancienne variable que vous essayer de transférer ne correspond à aucune ancienne variable transférable. Ne jouez pas avec la barre d'adresse du navigateur !
+!exit
+!endif
 !msg $error
