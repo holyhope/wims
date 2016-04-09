@@ -21,6 +21,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\credits{}
 :Instruction Globale
 Tapez ici une instruction commune à toutes les questions de l'exercice
+$embraced_randitem
 \text{instruction=Instruction globale : Répondez à chaque question d'une première série, validez, puis répondez aux questions de la seconde série.}
 
 :Ordre aléatoire
@@ -78,6 +79,10 @@ padding: 0.2em;}
 $embraced_randitem
 \text{accolade=item(1,1 oui,
 2 non)}
+
+:Affichage des bonnes réponses
+Si oui, la liste des bonnes réponses sera affichée une fois la réponse donnée par l'apprenant.
+\text{answer_given=item(1, oui, non)}
 
 :Question
 <p>Entrez ici la question à poser, selon le format suivant : </p>
@@ -187,7 +192,6 @@ Le Lac des cygnes
 Casse-noisette}
 
 :
-\text{accolade=wims(word 1 of \accolade)}
 \language{fr}
 \computeanswer{no}
 \format{html}
@@ -206,12 +210,12 @@ Casse-noisette}
 \text{pos_rep=inside}
 \text{second_step=yes}
 \text{first_step=1}
-\text{answer_given=yes}
 \text{option=}
 \text{packs=}
 \text{player=---}
 \text{player_option= autostart="false" loop="false"}
-#####################
+
+:%%%%%%%%%%%%%% Rien à modifier jusqu'à l'énoncé %%%%%%%%%%%%%%%%
 
 \text{data_q=\data1!= ? 1:}
 \text{data_q=\data2!= ? wims(append item 2 to \data_q)}
@@ -223,6 +227,9 @@ Casse-noisette}
 \text{data_q=\data8!= ? wims(append item 8 to \data_q)}
 \text{data_q=\data9!= ? wims(append item 9 to \data_q)}
 \text{data_q=\data10!= ? wims(append item 10 to \data_q)}
+
+\text{accolade=wims(word 1 of \accolade)}
+\text{instruction=\accolade = 1 ? wims(embraced randitem \instruction):\instruction}
 
 
 \integer{cnt_question=items(\data_q)}
@@ -420,7 +427,7 @@ text{testexp=wims(nospace \testexp)}
           </span>}
          \if{\TEST[\h;3]>0}{<span style="color:red">\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
-         \if{\answer_given=yes}{
+         \if{\answer_given issametext oui}{
           <br/> \qcm_prompt2
           <ul class="highlight true">
              \for{s=1 to \CNT_choix[\h]}{

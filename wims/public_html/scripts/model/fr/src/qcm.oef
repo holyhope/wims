@@ -22,6 +22,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\credits{Image de Pfly [CC BY-SA 2.5], via Wikimedia Commons}
 :Instruction Globale
 Tapez ici une instruction commune à toutes les questions de l'exercice
+$embraced_randitem
 \text{instruction=Répondez à chaque question d'une première série, validez, puis répondez aux questions de la seconde série.}
 
 :Ordre aléatoire
@@ -74,7 +75,7 @@ $embraced_randitem
 \text{accolade=item(2, oui, non)}
 
 :Affichage des bonnes réponses
-Si oui, la liste des bonnes réponses sera affiché une fois la réponse donnée par l'apprenant.
+Si oui, la liste des bonnes réponses sera affichée une fois la réponse donnée par l'apprenant.
 \text{answer_given=item(1, oui, non)}
 
 :Questions
@@ -208,18 +209,21 @@ Le Lac des cygnes a été écrit en 1875 et Casse-noisette en 1891.
 Le Lac des cygnes
 Casse-noisette)}
 
+:Type de réponses
+Le type "checkbox" (boutons carrés) permet à l'apprenant de cocher plusieurs réponses par question.<br/>
+Alors que le type "radio" (boutons ronds) ne permet qu'une réponse par question.
+\text{format=item(1, checkbox, radio)}
+
 :
 \language{fr}
 \computeanswer{no}
 \format{html}
 
-\text{format=checkbox}
-
 \text{paste=yes}
 
 \text{option=}
 
-#####################
+:%%%%%%%%%%%%%% Rien à modifier jusqu'à l'énoncé %%%%%%%%%%%%%%%%
 
 \text{data_q=\data1!= ? 1:}
 \text{data_q=\data2!= ? wims(append item 2 to \data_q)}
@@ -231,6 +235,8 @@ Casse-noisette)}
 \text{data_q=\data8!= ? wims(append item 8 to \data_q)}
 \text{data_q=\data9!= ? wims(append item 9 to \data_q)}
 \text{data_q=\data10!= ? wims(append item 10 to \data_q)}
+
+\text{instruction=\accolade issametext oui ? wims(embraced randitem \instruction):\instruction}
 
 \integer{cnt_question=items(\data_q)}
 
@@ -320,7 +326,7 @@ Casse-noisette)}
  \integer{test_inst=\inst_audio\inst_image\inst_title notsametext ? 1 : 0}
  \text{preliminaire=\test_inst=1 ? \rab_inst:&nbsp;}
  \matrix{QUEST=\test_inst=1 ? \QUEST[2..-1;]}
- \matrix{QUEST=\accolade=1 ?wims(embraced randitem \QUEST):\QUEST}
+ \matrix{QUEST=\accolade issametext oui ?wims(embraced randitem \QUEST):\QUEST}
  \matrix{question = \question
 \QUEST[1;]}
  \matrix{PRELIMINAIRE=\PRELIMINAIRE
@@ -442,7 +448,7 @@ text{testexp=wims(nospace \testexp)}
            {<span class="oef_indbad">\bad_answer_text</span>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}
            {<span class="oef_indgood">\good_answer_text</span>}
-         \if{\answer_given=oui}{
+         \if{\answer_given issametext oui}{
            <p class="qcm_prompt2"> \qcm_prompt2</p>
            <ul class="oef_indgood">
              \for{s=1 to \CNT_choix[\h]}{
