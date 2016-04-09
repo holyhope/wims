@@ -106,7 +106,21 @@ $wims_name_account_property
   </div>
   <div class="field box">
     <label for="up_vars">$name_vars</label>
-    <textarea class="nowrap" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea>
+    !readproc adm/vfilter/listvarfilter.proc
+    !readproc adm/vfilter/uservarfilter.proc $userdef
+    !let nb=!linecnt $user_vars
+    !set wims_ref_class=wims_button
+    !href module=adm/class/techvar&+job=userprop&+user=$getuser $wims_name_change
+    !if $nb>0
+    $table_header
+    !for k=1 to $nb
+	$table_tr
+	    <td>$(user_vars[$k;1])</td><td>$(user_vars[$k;2])</td>
+	</tr>
+    !next k
+    $table_end
+    !endif
+!!    <textarea class="nowrap" cols="$[$inplen-1]" rows="4" name="up_vars" id="up_vars">$user_vars</textarea>
   </div>
   <div class="field box">
     <label for="up_external_auth">$name_external_auth</label>
