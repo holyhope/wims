@@ -10,6 +10,7 @@
 !set name_click=Pulse sobre un nombre para ver los detalles de su trabajo
 !set name_noyetparticipant=Esta clase no tiene ningún participante aún.
 !set name_transfer=Transferir sus actividades desde otras clases
+!set name_filter=Variables techniques
 
 !if $job=regmanage
 	!set name_expert0=Cochez la méthode désirée.

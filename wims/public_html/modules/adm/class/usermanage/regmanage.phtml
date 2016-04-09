@@ -25,32 +25,33 @@ $wims_name_regmanage
       !set wims_ref_class=wims_formradio
       !set wims_ref_id=motd_type
       !set listuserchoices=__ALL__,__CHECK__
-      !!,__FILTER__
+!!,__FILTER__
       !set listusernchoices=$name_all,$name_checked
-      !!,$name_filter
+!!,$name_filter
       !formradio listuserchoice list $listuserchoices prompt $listusernchoices
     </ul>
-    <div style="margin-left:4.5em;" id="tech_var">
-      !set wims_ref_class=wims_button_help float_right
-      !href cmd=help&special_parm=filter $wims_name_help
-      <label for="varfilter">$name_technical_var:</label>
-      <textarea name="varfilter" id="varfilter" rows="6" cols="20">$varfilter</textarea>
-    </div>
+!!    <div style="margin-left:4.5em;" id="tech_var">
+!!      !set wims_ref_class=wims_button_help float_right
+!!      !href cmd=help&special_parm=filter $wims_name_help
+!!      <label for="varfilter">$name_technical_var:</label>
+!!      !read adm/vfilter/varfilter htmldiv
+!!      <textarea name="varfilter" id="varfilter" rows="6" cols="20">$varfilter</textarea>
+!!    </div>
 
-    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
-    !if $jquery_defined=yes
-      <script type="text/javascript">
-        /*<![CDATA[*/ jQuery(function(jq) {
-          jq( "#tech_var" ).hide();
-          jq( "#motd_type3" ).click(function() {
-            jq( "#tech_var" ).slideDown();
-          });
-          jq( "#motd_type1, #motd_type2" ).click(function() {
-            jq( "#tech_var" ).slideUp();
-          });
-        }); /*]]>*/
-      </script>
-    !endif
+!!    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
+!!    !if $jquery_defined=yes
+!!      <script type="text/javascript">
+!!        /*<![CDATA[*/ jQuery(function(jq) {
+!!          jq( "#tech_var" ).hide();
+!!          jq( "#motd_type3" ).click(function() {
+!!            jq( "#tech_var" ).slideDown();
+!!          });
+!!          jq( "#motd_type1, #motd_type2" ).click(function() {
+!!            jq( "#tech_var" ).slideUp();
+!!          });
+!!        }); /*]]>*/
+!!      </script>
+!!    !endif
   </div>
   <div class="field box">
   <p>$name_expert1</p>
@@ -83,8 +84,10 @@ $wims_name_regmanage
     !for i=1 to $usercnt
      !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
      !distribute items $uu into bl,bl,uu
+!! suppression de varfilter_ en attendant reflexion sur usage (voir var.proc)
+!reset varfilter_
      !if $varfilter_!=$empty
-        !read adm/class/testfilter $uu\
+        !read adm/vfilter/testfilter $uu\
 $varfilter_
      !endif
      !if $(var_filter_test)=1 or $varfilter_=$empty

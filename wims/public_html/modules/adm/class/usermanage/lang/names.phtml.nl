@@ -10,6 +10,8 @@
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
+!set name_filter=Variables techniques
+
 
 !if $job=regmanage
 	!set name_expert0=check de gewenste methode
