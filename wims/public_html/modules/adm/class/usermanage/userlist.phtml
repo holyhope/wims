@@ -24,30 +24,39 @@ $wims_name_part_list ($usercnt)
 !else
 !! ------ manage ask for technical variable selection.
     !form reply
-    !read adm/varfilter html
+    !read adm/vfilter/varfilter html
     !formend
 !! ----- displaying table of participant
     $table_header
     $table_hdtr
-       !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth,$name_vars,$name_comments
-        <th>$k</th>
+       !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth
+        <th rowspan="2">$k</th>
        !next k
+        <th colspan="$nbtechvar">$name_vars</th>
+	<th rowspan="2">$name_comments</th>
    </tr>
+    !if $nbtechvar>0
+	!for k in $(tv_listtechvar[;1])
+	    <th>$k</th>
+	!next k
+    !else
+	<th>&nbsp;</th>
+    !endif
     !readproc adm/class/mkcomment name
     !let namecomment=$scriptout
     !for i=1 to $usercnt
    !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
    !distribute items $uu into bl,bl,uu
    !if $varfilter_!=$empty
-       !read adm/class/testfilter $uu\
+       !read adm/vfilter/testfilter $uu\
 $varfilter_
    !endif
    !if $(var_filter_test)=1 or $varfilter_=$empty
 !!        !set UU=!hex $uu
           !reset user_exists,user_email,user_regnum,user_external_auth,user_vars,user_comments$namecomment,user_comments
-         !readproc adm/class/userdef classes,$wims_class,$uu
+          !readproc adm/class/userdef classes,$wims_class,$uu
           !readdef $userdef
-          !set user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
+          !readproc adm/vfilter/uservarfilter.proc $userdef
      $table_tr
      !reset css_connected
      !if $uu isitemof $wims_connectedlogin
@@ -58,9 +67,17 @@ $varfilter_
        !href cmd=reply&job=userprop&getuser=$uu $user_lastname $user_firstname
         </td>
         <td>$uu</td>
-             !for k in email,regnum,external_auth,vars
+             !for k in email,regnum,external_auth
                  <td>$(user_$(k))</td>
              !next k
+	     !if $nbtechvar>0
+	        !let val=!column 2 of $user_vars
+	        !for v in $val
+	    	    <td>$v</td>
+	        !next v
+	     !else
+	        <td>&nbsp;</td>
+	     !endif
              <td>
                   !readproc adm/class/mkcomment val
                   $scriptout
