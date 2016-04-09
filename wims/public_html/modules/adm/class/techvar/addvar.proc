@@ -45,5 +45,26 @@ nblocalvar=!itemcnt $tv_listlocal
 $tc_value
     !fileappend wimshome/log/classes/$tv_Sclass/.indextechvar :$tc_name,$wims_class,$[$nblocalvar+1]
     !restart module=adm/class/techvar
+!else
+	!if $nblocalvar=0
+	olddon=!record 0 of wimshome/s2/$wims_session/oldtechvar.don
+	!if $olddon=$empty
+	    olddon=!sh cd $wims_home/log/classes/$tv_Sclass/.users/;\
+grep -r user__ * | awk -F= '$$2!=""{print $$0}'
+	    olddon=!replace internal :!set user__ by , in $olddon
+	    olddon=!replace internal = by , in $olddon
+	    !if $olddon=$empty
+	        !writefile wimshome/s2/$wims_session/oldtechvar.don EMPTY
+	    !else
+		!writefile wimshome/s2/$wims_session/oldtechvar.don $olddon
+	    !endif
+	!endif
+	!if EMPTY=$olddon
+	    !reset olddon
+	!endif
+	!if $olddon!=$empty
+		error=witholdvar
+	!endif
+	!endif
 !endif
 
