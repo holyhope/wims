@@ -160,14 +160,14 @@ $module_title ($usercnt)
     <span class="wims_button disabled">$(name_affi[5])</span>
    !endif
  </div>
-  !read adm/varfilter htmldiv
+  !read adm/vfilter/varfilter htmldiv
   <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
   </div>
 </fieldset>
  !else
   !form reply
-  !read adm/varfilter html
+  !read adm/vfilter/varfilter html
  !endif
 
 !formend
@@ -247,7 +247,7 @@ $module_title ($usercnt)
   !distribute items $uu into user_lastname,user_firstname,uu
   !if $varfilter_!=$empty
     !reset var_filter_test
-    !read adm/class/testfilter $uu\
+    !read adm/vfilter/testfilter $uu\
 $varfilter_
     !if $var_filter_test!=1
       !goto enduser

@@ -28,18 +28,14 @@ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
 !if $cmd=help
  !exit
 !endif
-!if $varfilter=$empty and $wims_user=supervisor
-	varfilter=!record 0 of wimshome/s2/$wims_session/varfilter
-!else
-	!writefile wimshome/s2/$wims_session/varfilter $varfilter
-!endif
 
 !if $wims_user!=supervisor
  !reset deluser,formula,getraw,delprep
  !bound job within getuser,userprop,examcheck,getraw default getuser
  getuser=$wims_user
 !else
-  !readproc adm/varfilter proc
+  !readproc adm/vfilter/listvarfilter.proc
+  !readproc adm/vfilter/varfilter proc
   !bound job within getuser,userprop,examcheck,getraw,userexam,userexamclose,showsheet,csv,formula,sheets,$empty default $empty
 !endif
 
