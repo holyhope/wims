@@ -1,10 +1,7 @@
 !set lang_exists=yes
 
 !!set module_title=Verstuur Email
-!set name_noemail=Geen van de deelnemers heeft een emailadres opgegeven.
 !set name_noemail2=De volgend deelnemers hebben geen emailadres opgegeven
-!set name_nouser=Er zijn geen deelnemers geselecteerd. Kontroleer de filter instellingen.
-!set name_nomsg=Het emailbericht is leeg !
 
 !set name_participant1=Het bericht is verstuurd naar
 !set name_participant2=Het bericht kom niet worden verstuurd naar
@@ -28,5 +25,3 @@ kan ook hierop worden geselecteerd.
  Alle deelnemers\
 into name_menu,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
-!set name_nosupervisoremail=Er is geen emailadres bekend voor uw account ! \
-Het is dus niet mogelijk om via dit programma emails te versturen.

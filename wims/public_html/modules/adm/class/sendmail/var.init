@@ -1,7 +1,14 @@
 
-!if $wims_class= or $wims_user!=supervisor
+!if $wims_user!=supervisor
+  error=noclass
   !exit
 !endif
+
+!if $wims_user!=supervisor
+  error=notsupervisor
+  !exit
+!endif
+
 !read adm/class/classlang names.phtml
 
 !if $wims_realuser!= and  $wims_realuser!=supervisor
@@ -12,7 +19,6 @@
 
 supervisormail=!defof user_email in wimshome/log/classes/$add
 
-!if $supervisormail=
+!if $supervisormail=$empty
   error=nosupervisoremail
-  
 !endif

@@ -1,0 +1,33 @@
+!set wims_module_log=error: $error
+
+!if error=nosupervisoremail
+  Vous n'avez pas indiqué d'email. Il ne vous est donc pas possible d'envoyer un mail.
+ !exit
+!endif
+
+!if empty_msg=$error
+ Votre message est vide !
+ !exit
+!endif
+
+!if empty_user=$error
+ Vous n'avez sélectionné aucun participant. Vérifiez les filtres.
+ !exit
+!endif
+
+!if empty_mailuser=$error
+ Aucun des participants sélectionnés n'a d'adresse email
+ !exit
+!endif
+
+!if noclass=$error
+ Vous n'êtes pas identifié dans une classe. Ne jouez pas avec la barre d'adresse du navigateur !
+ !exit
+!endif
+
+!if notsupervisor=$error
+ Vous n'êtes pas l'enseignant de cette classe. Ne jouez pas avec la barre d'adresse du navigateur !
+ !exit
+!endif
+
+!msg $error

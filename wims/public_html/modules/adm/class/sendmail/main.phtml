@@ -19,10 +19,14 @@ $module_title\
 
 !if $error!=$empty
   <div class="wims_alertmsg">
-  !read msg.phtml
+  !read lang/msg.phtml.$moduclass_lang
   </div>
+  !if $error isitemof notsupervisor,noclass,nosupervisoremail
+    !exit
+  !endif
   !set job=
 !endif
+
 !if $cmd!=reply or $error!=$empty
 $name_intro
  !form reply

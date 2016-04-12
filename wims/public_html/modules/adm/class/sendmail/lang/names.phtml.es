@@ -1,10 +1,8 @@
 !set lang_exists=yes
 
 !!set module_title=Envío de correos electrónicos agrupados
-!set name_noemail=Ningún de los participantes seleccionados tiene correo electrónico
+
 !set name_noemail2=Los participantes siguientes no tienen correo electrónico
-!set name_nouser=No seleccionaron a ningún participante. Compruebe los filtros.
-!set name_nomsg=¡Su mensaje es vacío!
 
 !set name_participant1=Se envió el mensaje a
 !set name_participant2=El mensaje no pudo enviarse a los participantes siguientes
@@ -28,4 +26,4 @@ es posible filtrar a los participantes según sus valores.
  Tous les participants\
 into name_menu,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
-!set name_nosupervisoremail= No indicaron correo electrónico. No les es pues posible enviar un correo electrónico.
+!set name_nosupervisoremail= 
