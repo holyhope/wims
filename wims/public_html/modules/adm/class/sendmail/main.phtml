@@ -101,17 +101,19 @@ $name_expert2
 !formradio job list filter prompt <b>$wims_name_filter:</b>
 $name_expert3
 </p>
-!set wims_ref_class=wims_button_help float_right
-!href cmd=help&special_parm=filter $wims_name_help
+!read adm/vfilter/varfilter htmldiv
+!!!set wims_ref_class=wims_button_help float_right
+!!!href cmd=help&special_parm=filter $wims_name_help
 
-<div class="wimscenter">
-<textarea name="variable" cols="20" rows="3">$variable</textarea>
-</div>
+!!<div class="wimscenter">
+!!<textarea name="variable" cols="20" rows="3">$variable</textarea>
+!!</div>
 </fieldset>
 
 !formend
 !goto end
 !endif
+
 !if $confirm=$empty and $reg!=
  !if $email_exists=0
 !! $list_user$list_noemail
