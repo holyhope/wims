@@ -1,14 +1,19 @@
-
-Se avete definito delle variabili tecniche associate agli iscritti
-(ad esempio i gruppi di lavoro), cosa che potete fare
-<ul><li>
+!if $tv_listtechvar=$empty
+	Aucune variable technique n'est définie.
+	<br/>
+	Vous pouvez définir des variables techniques :
+	<ul><li>
 importando i dati (da un file .csv),
-</li><li>
+(Indisponible pour l'instant)</li><li>
 direttamente dalla pagina di ogni studente
 </li><li>
 attraverso un questionario nominale
-</li></ul>
-(si vedano le documentazioni corrispondenti), potete costruire
+(Indisponible pour l'instant)</li></ul>
+(si vedano le documentazioni corrispondenti)
+!else
+	Liste des variables techniques disponibles :
+	!read adm/vfilter/listvar.phtml
+	potete costruire
 filtri utilizzando tali variabili. Le condizioni scritte
 su una stessa riga, separate da spazi, devono essere tutte soddisfatte.
 Saranno inclusi nell'elenco gli studenti che soddisfano
@@ -20,3 +25,6 @@ groupe=3
 </pre>
 selezionerà gli iscritti che appartengono al gruppo 1 e per cui la lingua
 è 2 oppure che appartengono al gruppo 3 (senza ulteriori condizioni).
+!endif
+
+ 
