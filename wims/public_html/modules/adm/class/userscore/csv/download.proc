@@ -70,9 +70,9 @@ dl=!listuniq $dl
 
 good=!words2items $good
 dl_v =!listcomplement $good in $dl
-dl_v= !replace internal var_ by in $dl_v
+!!dl_v=!replace internal var_ by in $dl_v
 !if $dl_v!=
-  dl_var=!replace internal , by ,var_ in var_$(dl_v)
+  dl_var=$dl_v
 !endif
 dl=!listintersect $dl and $good
 dl=!nospace $dl
@@ -100,14 +100,14 @@ tit=!translate , to $sep in $dl
 !for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
-!for n in $dl_var
- dl4=!replace user_$n by $(quote)user__$n$quote in $dl4
-!next n
-
+dl4r=$dl4
+dl4=!replace , by $(quote),$(quote) in $(quote)$dl4$(quote)
+dl4=!char 3 to -1 of $dl4
 dl3=!replace user_ by $$name_ in $dl2
 dl2=!replace user_ by $$user_ in $dl2
-dl5=!replace user_ by $$name__ in $dl4
-dl4=!replace user_ by $$user__ in $dl4
+dl5=!replace user_ by $$name_user_ in $dl4
+dl4=!replace user_ by $$user_ in $dl4
+
 scores=no
 !if average isin $dl or manual isin $dl or sheet isin $dl or exam isin $dl
  scores=yes
@@ -216,6 +216,7 @@ $dl3$dl5\
  !endif
  !appendfile $fname $dl2$dl4
  data_scores=!append item $dl2$dl4 to $data_scores
+ !reset $dl4r
 !next u
 
 infile=spreadsheet.$csvformat

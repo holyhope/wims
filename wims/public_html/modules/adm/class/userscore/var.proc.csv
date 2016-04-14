@@ -20,8 +20,16 @@ classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
 
 !if $csvtype=download
  csvdownload=!trim $csvdownload
- tmp=!trim $csvdownload2
- csvdownload=$csvdownload $csvdownload2
+ !if techvar isitemof $csvdownload
+  !! add technical variable list to download list
+    csvdownload=!listcomplement techvar in $csvdownload
+    nb=!linecnt $tv_listtechvar
+    !for k=1 to $nb
+	name=!replace internal / by _ in $(tv_listtechvar[$k;2])_$(tv_listtechvar[$k;3])
+	csvdownload=!append item techvar_$name to $csvdownload
+	name_user_techvar_$name=$(tv_listtechvar[$k;1])
+    !next k
+ !endif
  !if $csvdownload!=$empty and $usercnt>0
   !read csv/download.proc
  !endif
