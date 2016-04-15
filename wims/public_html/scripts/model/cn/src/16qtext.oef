@@ -49,6 +49,10 @@ Linux 是由 Linus Torvalds 在
 发布了这个系统.
 }
 
+:Menu display order
+Menus can be displayed in a shuffle order or sorted.
+\text{list_order=item(1,alpha,shuffle)}
+
 :%%%%%%%%%%%%%%       不要改动下面这段命令          %%%%%%%%%%%%%%%%
 
 \precision{10000}
@@ -67,7 +71,12 @@ Linux 是由 Linus Torvalds 在
  \integer{test=items(\f)}
  \if{\test>1}{
   \text{g=\f[1]}
-  \text{f=wims(sort items \f)}
+  \if{\list_order issametext alpha}{
+    \text{f=wims(sort items \f)}
+  }
+  {
+    \text{f=shuffle(\f,,)}
+  }
   \text{g=positionof(\g,\f)}
   \text{good=\good\g;,}
   \text{field=\field\f;}
@@ -96,8 +105,6 @@ Linux 是由 Linus Torvalds 在
  \text{options=\options,}
 }
 
-\text{pre=wims(embraced randitem \pre)}
-\text{post=wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

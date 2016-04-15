@@ -51,10 +51,14 @@ apprentissage sur le système
 de son système sur un newsgroupe, qui était la version
 ??0.02??.
 }
-:Mise en aléatoire par des accolades emboitables
+:Embraced Random items
 $embraced_randitem
-\text{accolade=item(1,1 oui,
-2 non)}
+\text{accolade=item(1,1 yes,
+2 no)}
+
+:Menu display order
+Menus can be displayed in a shuffle order or sorted.
+\text{list_order=item(1,alpha,shuffle)}
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 \text{accolade=wims(word 1 of \accolade)}
@@ -74,7 +78,12 @@ $embraced_randitem
  \integer{test=items(\f)}
  \if{\test>1}{
   \text{g=\f[1]}
-  \text{f=wims(sort items \f)}
+  \if{\list_order issametext alpha}{
+    \text{f=wims(sort items \f)}
+  }
+  {
+    \text{f=shuffle(\f,,)}
+  }
   \text{g=positionof(\g,\f)}
   \text{good=\good\g;,}
   \text{field=\field\f;}
@@ -103,8 +112,6 @@ $embraced_randitem
  \text{options=\options,}
 }
 
-\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
-\text{post=\accolade=1 ? wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 

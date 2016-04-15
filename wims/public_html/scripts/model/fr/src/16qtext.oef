@@ -52,32 +52,40 @@ de son système sur un newsgroupe, qui était la version
 }
 :Mise en aléatoire par des accolades emboitables
 $embraced_randitem
-\text{accolade=item(1,1 oui,
-2 non)}
+\text{accolade=item(1,oui,non)}
+
+:Ordre d'affichage des listes de choix
+Les listes de choix peuvent s'afficher en ordre aléatoire (shuffle) ou alphabétique(alpha).
+\text{list_order=item(1,alpha,shuffle)}
 
 :Feedback General
 Ce texte s'affichera après la réponse de l'apprenant, qu'elle soit juste ou fausse.
 \text{feedback_general=}
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
-\text{accolade=wims(word 1 of \accolade)}
 \precision{10000}
 \text{data=wims(singlespace \data)}
-\text{data=\accolade=1 ? wims(embraced randitem \data)}
+\text{data=\accolade issametext oui ? wims(embraced randitem \data)}
 \text{data=slib(text/cutchoice2 \data)}
 \integer{qs=min(20,floor(rows(\data)/2))}
+
 \text{types=}
 \text{options=}
 \text{lengths=}
-
 \text{good=}
 \text{field=}
+
 \for{i=1 to \qs}{
  \text{f=\data[2*\i;]}
  \integer{test=items(\f)}
  \if{\test>1}{
   \text{g=\f[1]}
-  \text{f=wims(sort items \f)}
+  \if{\list_order issametext alpha}{
+    \text{f=wims(sort items \f)}
+  }
+  {
+    \text{f=shuffle(\f,,)}
+  }
   \text{g=positionof(\g,\f)}
   \text{good=\good\g;,}
   \text{field=\field\f;}
@@ -106,8 +114,6 @@ Ce texte s'affichera après la réponse de l'apprenant, qu'elle soit juste ou faus
  \text{options=\options,}
 }
 
-\text{pre=\accolade=1 ? wims(embraced randitem \pre)}
-\text{post=\accolade=1 ? wims(embraced randitem \post)}
 \text{qlist=wims(makelist reply x for x=1 to \qs)}
 \steps{\qlist}
 
