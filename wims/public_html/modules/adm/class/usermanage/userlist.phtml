@@ -72,19 +72,24 @@ $varfilter_
              !next k
          !if $nbtechvar>0
             !let val=!column 2 of $user_vars
+            !set tmp=0
             !for v in $val
+               !increase tmp
                 <td>$v</td>
             !next v
+            !for v = 1 to $[$nbtechvar-$tmp]
+              <td></td>
+            !next v
          !else
-            <td>$nbtechvar&nbsp;</td>
+            <td></td>
          !endif
              <td>
-                  !readproc adm/class/mkcomment val
-                  $scriptout
+                !readproc adm/class/mkcomment val
+                $scriptout
              </td>
           </tr>
    !endif
-    !next i
+  !next i
     </table>
 !endif
 
