@@ -66,22 +66,28 @@ $name_new_participant_external
 
 !read $type.phtml
 :end
+
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
-  !set wims_menu_items=!append line itemsep,0,$wims_name_Classes\
-  to $wims_menu_items
   !set list_menu=example,participant
   !if $wims_user=$empty or $wims_user=supervisor
     !set list_menu=example,participant,supervisor
   !endif
- !for t in $list_menu
-  !if $t!=$type or $wims_superclass!=$empty
-   !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+  !if $wims_user=supervisor and $class_type iswordof 2 4
+    !reset list_menu
+  !endif
+  !if $list_menu!=$empty
+    !set wims_menu_items=!append line itemsep,0,$wims_name_Classes\
+ to $wims_menu_items
+   !for t in $list_menu
+   !if $t!=$type or $wims_superclass!=$empty
+     !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
 to $wims_menu_items
   !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
+   !endif
+   !next t
   !endif
- !next t
 !endif
-!if $wims_user=$empty and $type iswordof supervisor example
+!if $wims_user=$empty and $type iswordof supervisor example and
  !set wims_menu_items=!append line itemsep,0,$wims_name_Creation\
  classcreate,1,module=adm/class/regclass\
 to $wims_menu_items
