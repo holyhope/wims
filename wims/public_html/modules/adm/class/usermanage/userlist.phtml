@@ -33,14 +33,14 @@ $wims_name_part_list ($usercnt)
         <th rowspan="2">$k</th>
        !next k
         <th colspan="$nbtechvar">$name_vars</th>
-	<th rowspan="2">$name_comments</th>
-   </tr>
+        <th rowspan="2">$name_comments</th>
+    </tr>
     !if $nbtechvar>0
-	!for k in $(tv_listtechvar[;1])
-	    <th>$k</th>
-	!next k
+      !for k in $(tv_listtechvar[;1])
+        <th>$k</th>
+      !next k
     !else
-	<th>&nbsp;</th>
+      <th>&nbsp;</th>
     !endif
     !readproc adm/class/mkcomment name
     !let namecomment=$scriptout
@@ -70,14 +70,14 @@ $varfilter_
              !for k in email,regnum,external_auth
                  <td>$(user_$(k))</td>
              !next k
-	     !if $nbtechvar>0
-	        !let val=!column 2 of $user_vars
-	        !for v in $val
-	    	    <td>$v</td>
-	        !next v
-	     !else
-	        <td>&nbsp;</td>
-	     !endif
+         !if $nbtechvar>0
+            !let val=!column 2 of $user_vars
+            !for v in $val
+                <td>$v</td>
+            !next v
+         !else
+            <td>$nbtechvar&nbsp;</td>
+         !endif
              <td>
                   !readproc adm/class/mkcomment val
                   $scriptout
