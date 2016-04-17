@@ -1,22 +1,17 @@
 <!-- _widgets/docheadermenu.phtml -->
 <div class="wimsmenu">
-
  !if _mfeed  isin $wims_session
   <span class="menuitem">
    !set wims_ref_class=doch_class
    <a href="#" onclick="window.close()">$wims_name_back2</a>
   </span><!-- menuitem-->
  !endif
-
  !if help notin $wims_session and _mfeed notin $wims_session
-
   !if $wims_class=$empty
-   <span class="menuitem">
-    !read $oneitem doch_wims,1,module=home
-   </span><!-- menuitem-->
-
+   !!<span class="menuitem">
+    !!read $oneitem doch_wims,1,module=home
+   !!</span><!-- menuitem-->
   !else
-
    !if _doc isin $wims_session
     <span class="menuitem">
      !set wims_ref_class=doch_class
@@ -24,10 +19,9 @@
     </span><!-- menuitem-->
    !else
     <span class="menuitem">
-     !read $oneitem doch_class,1,module=home
+     !!read $oneitem doch_class,1,module=home
     </span><!-- menuitem-->
    !endif
-
    !if $m_wims_sequence>0
     <span class="menuitem">
      !if $wims_user=supervisor
@@ -37,7 +31,6 @@
      !endif
     </span><!-- menuitem-->
    !else
-
     !if $wims_sequence>0
      !set ti=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
      <span class="menuitem">
@@ -48,11 +41,9 @@
       !endif
      </span><!-- menuitem-->
     !endif
-
    !endif
   !endif
  !endif
-
  !if ..//adm/doc isin ..//$module and \
     ($wims_class=$empty or $wims_user=supervisor) and _test notin $wims_session
   <span class="menuitem">
@@ -61,14 +52,12 @@
  !endif
 
  !if $printable!=yes
-
   !if $job=exosource
    <span class="menuitem">
     !read $oneitem doch_back,1,cmd=reply&job=read
     !reset wims_ref_class
    </span><!-- menuitem-->
   !endif
-
   !if $doc!=$helpd and $editable=yes and $printable!=yes
    <span class="menuitem">
     !!!ne pas utiliser oneitem, ne fonctionne pas
@@ -77,7 +66,6 @@
     !reset wims_ref_class
    </span><!-- menuitem-->
   !endif
-
   !if _mfeed notin $wims_session and $printable!=yes
    <span class="menuitem">
     !!!ne pas utiliser oneitem
@@ -87,6 +75,5 @@
    </span><!-- menuitem-->
   !endif
  !endif
-
-</div>
+</div> <!--menu -->
 <!-- end _widgets/docheadermenu.phtml -->

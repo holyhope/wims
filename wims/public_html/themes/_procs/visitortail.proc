@@ -1,6 +1,14 @@
-!set wims_tail_home=!append line pref,1,module=adm/light&phtml=useropts.phtml.$lang\
-forum,1,module=adm/forum/forum\
-to $wims_tail_home
+!if $wims_forum_limit>1
+ !set wims_tail_home=$wims_tail_home\
+forum,1,module=adm/forum/forum
+!endif
+
+!set wims_tail_home_n0=!linecnt $wims_tail_home
+
+!exit
+
+!!set wims_tail_home=$wims_tail_home\
+pref,1,module=adm/light&phtml=useropts.phtml.$lang
 
 !if $wims_theme_icon!= and $wims_theme_icon!=default
    !set  wims_tail_home=$wims_tail_home\

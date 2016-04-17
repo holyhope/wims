@@ -22,10 +22,10 @@
 !read classlogo.phtml
 !if $class_logo!=
  <div class="menuitem">
- <div id="wimslogo$class_logoside">
-  <img src="$class_logo" alt="class logo" class="float_left"/>
- </div><!--classlogo-->
- </div><!-- menuitem-->
+  <div id="wimslogo$class_logoside">
+   <img src="$class_logo" alt="class logo" class="float_left"/>
+  </div>
+ </div>
 !endif
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
@@ -47,8 +47,8 @@ $wims_classname, $wims_institutionname\
  </p>
  !read Subclasses1.phtml
  !if $class_typename=level
-    </div><!--wimsbody-->
-   </div><!--wimspagebox-->
+    </div><!--/wimsbody-->
+   </div><!--/wimspagebox-->
    !read themes/_procs/menumodubox3.proc
    !read themes/_widgets/menumodubox.phtml
   !goto end
@@ -104,8 +104,8 @@ $wims_classname, $wims_institutionname\
 !endif
 
 !if $class_type=4
- </div><!--wimsbody-->
-</div><!--wimspagebox-->
+ </div><!--/wimsbody-->
+</div><!--/wimspagebox-->
 
  !read themes/_procs/menumodubox3.proc
  !read themes/_widgets/menumodubox.phtml
@@ -264,24 +264,26 @@ $wims_classname, $wims_institutionname\
 !endif
  </div>
 
-</div><!--wimsbody-->
-</div><!--wimspagebox-->
-
+</div><!--/wimsbody-->
+</div><!--/wimspagebox-->
 !read themes/_procs/menumodubox0.proc
-!read themes/_widgets/menumodubox.phtml
+!read themes/_widgets/menumodubox_accordion.phtml
+
 
 :end
 
 !reset div0 div1
 
-!distribute items div, span into div0,div1
-!read themes/_procs/supervisormenubox.proc
-!read themes/_widgets/menubox.phtml
-!reset div0,div1
+!!distribute items div, span into div0,div1
+!!read themes/_procs/supervisormenubox.proc
+!!read themes/_widgets/menubox.phtml
+!!reset div0,div1
 
-</div><!--wimsbodybox-->
 
-!read themes/_widgets/visitorcredits.phtml
+
+</div><!--/wimsbodybox-->
+
+!!read themes/_widgets/visitorcredits.phtml
 </body>
 </html>
 <!-- end of $wims_theme/supervisor.phtml -->

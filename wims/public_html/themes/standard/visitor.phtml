@@ -18,8 +18,12 @@
   !read themes/_widgets/language_selector.phtml
 
   <div class="wimsmenu">
-   !read themes/_widgets/virtualzone.phtml
+   !!read themes/_widgets/virtualzone.phtml
    !read themes/_widgets/authlogout.phtml
+   !default wims_name_aboutw=$wims_name_about
+   <span class="menuitem">
+   !read ./adm/oneitem.phtml aboutw,4,cmd=help&special_parm=about,mhelp
+   </span>
   </div><!--wimsmenu-->
 </div>
 <div>
@@ -43,19 +47,28 @@
 !distribute items div,div into div0,div1
 
 !! Sets all links to be displayed in menumodubox
-!read themes/_procs/browsesite.proc
+!read themes/_procs/homemenu.proc
+
+!set wims_rm_0 = $wims_rm_0\
+ itemsep,0,$V_cls
+!read themes/_procs/virtualzone.proc
+
 !set wims_rm_0 = $wims_rm_0\
 itemsep,0,$CR_Docs
 !read themes/_procs/documentation.proc
+
 !set wims_rm_0 = $wims_rm_0\
 itemsep,0,$CR_1
 !read themes/_procs/devtools.proc
+
 !set wims_rm_0 = $wims_rm_0\
 itemsep,0,Site
+!read themes/_procs/browsesite.proc
 !read themes/_procs/site.proc
+
 !set wims_homeref_n0 = !linecnt $wims_rm_0
 
-!read themes/_widgets/menumodubox.phtml
+!read themes/_widgets/menumodubox_accordion.phtml
 
 !distribute items div,span into div0,div1
 !read themes/_widgets/visitormenubox.phtml
@@ -64,7 +77,6 @@ itemsep,0,Site
 
  !read themes/_widgets/tailbox.phtml
  </div><!--wimsfrontpage-->
-
 
  </body>
 </html>
