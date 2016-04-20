@@ -196,19 +196,24 @@ $dl3$dl5\
      !set nb_ses=!line 3 of $nb_ses
      !set nb_ses=!word 2 of $nb_ses
      !let e_=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
-     !set oo=!makelist $ $ for x=1 to $nb_ses
      !set checksessions_cnt=!itemcnt $checksessions
      !for k_ = 1 to $e_
         !reset t_
+        !set n_ses=0
         !for ses=1 to $checksessions_cnt
           !if $i isitemof $(exam_$ses)
             !set tmp=$(Exam_$(i)_$ses)
-            !set t_=$t_,$(tmp[$k_])
+            !set t_=$t_$(tmp[$k_]),
+            !increase n_ses
           !endif
         !next
-        !set t_=$t_,$oo
-        !set t_=$(t_[2..$nb_ses+1])
-        !set user_exam$(i)_exexo_$(k_)=!replace internal , by $ :$ in $t_
+        !set t_=$(t_[1..-2])
+        !if $nb_ses>$n_ses
+          !set oo=!makelist $ $ for x=1 to $[$nb_ses-$n_ses-1]
+!! leave the space ! useful for some spreadsheet
+          !set t_=$t_ ,$oo
+        !endif
+        !set user_exam$(i)_exexo_$(k_)=!replace internal , by : in $t_
       !next
     !endif
   !next i
@@ -219,6 +224,7 @@ $dl3$dl5\
    !endif
   !next i
  !endif
+ dl4=!trim $dl4
  !appendfile $fname $dl2$dl4
  data_scores=!append item $dl2$dl4 to $data_scores
  !reset $dl4r

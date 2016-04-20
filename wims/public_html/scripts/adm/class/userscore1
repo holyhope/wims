@@ -11,10 +11,16 @@
  !if $(Dureeexam_$i)!=$empty
    !reset Dureeexam_$i
  !endif
+ !if $(Dureeexam_$i)!=$empty
+   !reset Dureeexam_$i
+ !endif
  !for jj=1 to 64
  !! jj correspond to maximum of number sessions
    !if $(duree$(jj)_$(i))!=$empty
      !reset duree$(jj)_$(i)
+   !endif
+   !if $(exam_$jj)!=$empty
+    !reset exam_$jj
    !endif
 !! jj correspond to exos in an exam
    !if $(exam$(i)_$jj)!=$empty
@@ -24,20 +30,29 @@
 !next
 
 sc=!record 0 of wimshome/log/classes/$wims_class/score/$uu.exam
+!if $sc=$empty
+  !exit
+!endif
 nsc=!linecnt $sc
+
+
 !for i=1 to $nsc
   l=!line $i of $sc
   !distribute words $l into e_,s_,t__,T_,i_,S_,t_
-  !set jj=!positionof item $S_ in $checksessions
-  !set score$(jj)_$e_=$s_
-  !set exam_$jj=!append item $e_ to $(exam_$jj)
-  !set exam_$jj=!listuniq $(exam_$jj)
-  !if $s_ issametext 00
-    start$(jj)_$e_=$t_
-    dur$(jj)_$e_=$T_
-  !endif
-  !if $t__ issametext -1
-    duree$(jj)_$(e_)=$[$T_ - $(dur$(jj)_$e_)]
+  !if $S_=0
+    !reset jj
+  !else
+    !set jj=!positionof item $S_ in $checksessions
+    !set score$(jj)_$e_=$s_
+    !set exam_$jj=!append item $e_ to $(exam_$jj)
+    !set exam_$jj=!listuniq $(exam_$jj)
+    !if $s_ issametext 00
+      start$(jj)_$e_=$t_
+      dur$(jj)_$e_=$T_
+    !endif
+    !if $t__ issametext -1
+      duree$(jj)_$(e_)=$[$T_ - $(dur$(jj)_$e_)]
+    !endif
   !endif
 !next
 !for i in $activexams
