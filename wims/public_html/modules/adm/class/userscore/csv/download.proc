@@ -101,7 +101,7 @@ tit=!translate , to $sep in $dl
 !for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
-dl4r=$dl4
+dl4r=!items2words $dl4
 !if $dl4!=$empty
  dl4=!replace , by $(quote),$(quote) in $(quote)$dl4$(quote)
  dl4=!char 3 to -1 of $dl4
@@ -126,18 +126,18 @@ $dl3$dl5\
 !for u=1 to $usercnt
  !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
      user_external_auth,user_supervise,user_participate,user_supervisable
- !for n in $dl_v
-   !reset user__$n
- !next
+!! !for n in $dl_v
+!!   !reset user__$n
+!! !next
  l=!record $u of wimshome/log/classes/$wims_class/.userlist
  user_login=!item 3 of $l
  uu=$user_login
  uuu=!hex $uu
- !reset $basic
+ !reset $basic,$dl4r
  !read adm/class/userdef classes,$wims_class,$user_login
  !defread $userdef
-  user_participate=!items2words $user_participate
-  user_supervise=!items2words $user_supervise
+ user_participate=!items2words $user_participate
+ user_supervise=!items2words $user_supervise
  !if $scores=yes
   !read adm/class/userscore $uu
   user_average1=$per
@@ -224,10 +224,9 @@ $dl3$dl5\
    !endif
   !next i
  !endif
- dl4=!trim $dl4
- !appendfile $fname $dl2$dl4
- data_scores=!append item $dl2$dl4 to $data_scores
- !reset $dl4r
+ tmp=!trim $dl4
+ !appendfile $fname $dl2$tmp
+ data_scores=!append item $dl2$tmp to $data_scores
 !next u
 
 infile=spreadsheet.$csvformat
