@@ -40,12 +40,6 @@ Italy
 it en fr es
 Marina Cazzola
 marina.cazzola@unimib.it
-:wims.math.leidenuniv.nl/wims/
-Universiteit Leiden
-Nederland
-en fr cn es ca si it de nl
-wims@math.leidenuniv.nl
-wims@math.leidenuniv.nl
 :wims.unicaen.fr/wims/
 Caen University
 France
