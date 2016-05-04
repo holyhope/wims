@@ -13,7 +13,7 @@
 $table_header
 <caption>$n_blocklist</caption>
 $table_hdtr
-<th>$wims_name_name</th><th>$wims_name_title</th><th>$wims_name_action</th></tr>
+<th>$wims_name_name</th><th>$wims_name_title</th><th>$wims_name_navigation</th><th>$wims_name_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
@@ -22,7 +22,20 @@ $table_hdtr
  $table_tr
  <td class="tt">$s_</td>
  <td>$t_</td>
- <td>
+ <td style="text-align:left">
+ !if $s_!=main
+   !reset prev next upbl
+   !set navig=!defof prev,next,upbl in $docdir/$doc/src/$s_.hd
+   !if $(navig[1])$(navig[2])$(navig[3]) =$empty
+    !set navig=!defof prev,next,upbl in $docdir/$doc/$s_.def
+   !endif
+<ul style="list-style-type:none">
+<li>$name_prev: <span class="tt">$(navig[1])</span></li>
+<li>$name_next: <span class="tt">$(navig[2])</span></li>
+<li>$name_up: <span class="tt">$(navig[3])</span></li>
+</ul>
+!endif
+</td><td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
