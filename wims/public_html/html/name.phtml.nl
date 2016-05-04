@@ -430,7 +430,8 @@ wims_name_Docstatus,wims_name_number
  !distribute line $wims_name_config\
  Hoofdpagina klassen onderhoud\
  Instituut administratie\
-into wims_name_configb,wims_name_config,wims_name_struct
+Management\
+into wims_name_configb,wims_name_config,wims_name_struct,wims_name_manage
 !endif
 
 !set wims_name_save=Backup en herstel

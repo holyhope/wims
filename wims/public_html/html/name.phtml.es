@@ -430,7 +430,8 @@ Cuaderno de textos\
  !distribute line $wims_name_config\
  Página principal de configuración\
 Gestión de la estructura\
-into wims_name_configb,wims_name_config,wims_name_struct
+Gestión\
+into wims_name_configb,wims_name_config,wims_name_struct,wims_name_manage
 !endif
 
 !set wims_name_save=Copias de seguridad y recuperación
