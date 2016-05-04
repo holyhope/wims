@@ -47,7 +47,7 @@
      !set choice=first
    !endif
  !else
-   !if $choice=all
+   !if $choice!=login
      !reset loginlist
    !endif
  !endif
@@ -85,13 +85,11 @@
   !distribute items $uu into lastname,firstname,uu
   !if $choice=first and $m=1
     !default user=$uu
-     !reset choice
   !endif
  !if $choice=all or ($choice=login and $uu isitemof $loginlist and $user=$empty) \
    or ($choice=select and $uu isitemof $select_user)\
    or $uu=$user\
-   or ($choice=filter and $varfilter_!=$empty)\
-   or ($choice=first and $m=1)
+   or ($choice=filter and $varfilter_!=$empty)
   !if $varfilter_!=$empty
     !reset var_filter_test
     !readproc adm/vfilter/testfilter $uu\
@@ -147,5 +145,3 @@ to $wims_menu_items
 !endif
 :end
 !tail
-
-
