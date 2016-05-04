@@ -1281,14 +1281,19 @@ sub linewidth { my ($line,$w)= @_ ;
   $line =~ s/0?\.([0-9])\s*\\(line|text)width/$1 0\%/g;
   $line =~ s/0?\.([0-9]{2})[0-9]?\s*\\(line|text)width/$1\%/g;
   $line =~ s/ //g;
-  $line = "$w=\"$line\"" if ($w) ;
+  $line = "$w=\"$line\"" if ($w);
   $line ;
 }
-sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ;
-   $ad2 =~ s/worksheet=(\d)+//g ;
-   $SHEET .= ":$ad1\n$ad2\n$titre\n\n" ;
-   "\\exercise\{module=$ad1\&$ad2\&worksheet=$worksheet\}\{$titre\}" ;
- }
+sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_;
+   $ad2 =~ s/worksheet=(\d)+//g;
+   $SHEET .= ":$ad1\n$ad2\n$titre\n\n";
+   if ($worksheet) {
+     "\\exercise\{module=$ad1\&$ad2\&worksheet=$worksheet\}\{$titre\}"
+   }
+   else {
+      "\\exercise\{module=$ad1\&$ad2\}\{$titre\}"
+   };
+}
 
 sub traite_preambule { my ($TEXT, $ref_env, $ref_command, $ref) = @_;
   if ($TEXT=~ s/\\usepackage\[([^]]+)\]\{algorithmic\}//) {
