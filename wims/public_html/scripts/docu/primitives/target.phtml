@@ -37,20 +37,15 @@
  !if $l1=module
    !set lmod=$l2
  !endif
- !if $l1 notwordof module cmd session lang
+ !if $l1 notwordof module cmd session lang worksheet
    !set nadd=$nadd $l
  !endif
 !next i
 !default lmod=home
 !default lcmd=new
 !set nadd0=!translate internal $ $ to & in $nadd
-
 !if $get_wksheet!=$empty
- !if worksheet isin $nadd
-  !set nadd=!replace internal worksheet= by worksheet=$get_wksheet in $nadd
-  !else
-    !set nadd=$nadd worksheet=$get_wksheet
-  !endif
+   !set nadd=$nadd worksheet=$get_wksheet
 !endif
 !set nadd=!translate internal $ $ to & in $nadd
 !set prompt=!item 2 to -1 of $parms
@@ -74,8 +69,6 @@ $prompt\
 \
 \
 module=$module&block=$block&cmd=new,9\
-
-!!module=$module&doc=$doc&block=$block&cmd=new,9\
 
  !endif
 !endif

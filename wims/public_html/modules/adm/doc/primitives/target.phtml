@@ -59,11 +59,15 @@ $ in $module_init_parm
 !default prompt=$n_unknown
 
 !if $prim=exercise
- !href target=wims_exo module=$lmod&cmd=$lcmd$nadd&worksheet=$wksheet $prompt
- !if $lcmd=new
-  !set nadd=!replace internal &+ by & in $nadd
-  !set nadd=!char 2 to -1 of $nadd
-  !set sheetdata=$sheetdata\
+  !reset ww_
+  !if $wksheet!=$empty
+   !set ww_=&worksheet=$wksheet
+  !endif
+  !href target=wims_exo module=$lmod&cmd=$lcmd$nadd$ww_ $prompt
+  !if $lcmd=new
+   !set nadd=!replace internal &+ by & in $nadd
+   !set nadd=!char 2 to -1 of $nadd
+   !set sheetdata=$sheetdata\
 :$lmod\
 $nadd\
 10\
