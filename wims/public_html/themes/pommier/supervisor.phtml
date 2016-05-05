@@ -16,6 +16,7 @@
 !default ext_login=$wims_realuser
 !default ext_login=$wims_user
 !default ext_login=supervisor
+!set table_spacer=no
 !readproc tabletheme
 
 !read classlogo.phtml
@@ -46,8 +47,8 @@ $wims_classname, $wims_institutionname\
  </p>
  !read Subclasses1.phtml
  !if $class_typename=level
-    </div><!--wimsbody-->
-   </div><!--wimspagebox-->
+    </div><!--/wimsbody-->
+   </div><!--/wimspagebox-->
    !read themes/_procs/menumodubox3.proc
    !read themes/_widgets/menumodubox.phtml
   !goto end
@@ -103,8 +104,8 @@ $wims_classname, $wims_institutionname\
 !endif
 
 !if $class_type=4
- </div><!--wimsbody-->
-</div><!--wimspagebox-->
+ </div><!--/wimsbody-->
+</div><!--/wimspagebox-->
 
  !read themes/_procs/menumodubox3.proc
  !read themes/_widgets/menumodubox.phtml
@@ -156,8 +157,11 @@ $wims_classname, $wims_institutionname\
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
- $table_header
- <caption>$SU_shlist &nbsp; [
+ !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq_open=yes
+   $CR_sequence
+ !endif
+ <div class="wimscenter">
  !href module=adm/class/sequence $wims_name_reorder
  ] </caption>
  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
@@ -183,14 +187,16 @@ $wims_classname, $wims_institutionname\
 
 !reset div0 div1
 
-!distribute items div, span into div0,div1
-!read themes/_procs/supervisormenubox.proc
-!read themes/_widgets/menubox.phtml
-!reset div0,div1
+!!distribute items div, span into div0,div1
+!!read themes/_procs/supervisormenubox.proc
+!!read themes/_widgets/menubox.phtml
+!!reset div0,div1
 
-</div><!--wimsbodybox-->
 
-!read themes/_widgets/visitorcredits.phtml
+
+</div><!--/wimsbodybox-->
+
+!!read themes/_widgets/visitorcredits.phtml
 </body>
 </html>
 <!-- end of $wims_theme/supervisor.phtml -->

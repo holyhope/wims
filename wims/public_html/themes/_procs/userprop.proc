@@ -1,0 +1,10 @@
+!if $class_type isin 0134
+  !set tmp_cl=$wims_superclass
+  !default tmp_cl=$wims_class
+  !set tmp=!defof class_authidp in wimshome/log/classes/$tmp_cl/.def
+  !set tmp=$(tmp[2;])
+ !if $tmp issametext $empty
+   !set wims_rm_0 = $wims_rm_0\
+account,1,module=adm/class/usermanage&job=userprop
+ !endif
+!endif

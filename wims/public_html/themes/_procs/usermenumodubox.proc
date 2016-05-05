@@ -1,0 +1,43 @@
+!!menumodubox0.proc :
+!! Adds all class links for user in wims_rm_0 for navigation menus,
+!! Sets all links to be displayed in menumodubox
+
+!set tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_class/cdt/.def
+!if $tmp>0
+   !set exist_cdt=yes
+!endif
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0, $wims_name_otherclasses
+
+!read themes/_procs/userotherclass.proc
+
+!set wims_rm_0 = $wims_rm_0\
+itemsep,0,$wims_name_myinfo
+
+!read themes/_procs/userprop.proc
+!if $auth_method notwordof cas ldap php
+  !set wims_rm_0 = $wims_rm_0\
+passwd,1,module=adm/class/passwd&job=user\
+pref,1,module=adm/light&phtml=useropts.phtml.$lang
+!endif
+
+!ifval $n+$m>0 and $is_interclass!=yes
+  !set wims_rm_0=$wims_rm_0\
+itemsep,0,$wims_name_myscore
+  !read themes/_procs/userscore.proc
+!endif
+!set wims_rm_0=$wims_rm_0\
+itemsep,0,$$wims_name_classactivity
+!if $exist_cdt=yes
+   !set wims_rm_0=$wims_rm_0\
+cdt,1,module=adm/class/cdt
+!endif
+
+!read themes/_procs/userforum.proc
+
+!if $wims_user=supervisor
+  !set wims_rm_0=$wims_rm_0\
+backteacher,1,$
+
+!endif
+
