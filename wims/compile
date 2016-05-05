@@ -55,10 +55,11 @@ for a in $(seq $#) ; do opt=$1;
     vjmol2=4
     datejmol=_2016.04.22
     vjmol012=$vjmol0.$vjmol1.$vjmol2
-    vjmol=Jmol-$vjmol012
+    vJmol=Jmol-$vjmol012
+    vjmol=jmol-$vjmol012
     cd tmp
-    wget http://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Version%20$vjmol012/$vjmol$datejmol-binary.zip
-    unzip $vjmol$datejmol-binary.zip
+    wget http://downloads.sourceforge.net/project/jmol/Jmol/Version%20$vjmol0.$vjmol1/Version%20$vjmol012/$vJmol$datejmol-binary.zip
+    unzip $vJmol$datejmol-binary.zip
     cd $vjmol$datejmol;
     unzip jsmol.zip
     rm -f jsmol.zip
@@ -67,9 +68,10 @@ for a in $(seq $#) ; do opt=$1;
       mv public_html/java/jmol/j2s public_html/java/jmol/j2s_tmp
     fi
     mv -f tmp/$vjmol$datejmol/jsmol/j2s public_html/java/jmol/j2s
-    cp tmp/$vjmol$datejmol/jsmol/JSmol.min.js public_html/java/jmol/
-    cp tmp/$vjmol$datejmol/jsmol/js/Jmol2.js public_html/java/jmol/
+    cp -f tmp/$vjmol$datejmol/jsmol/JSmol.min.js public_html/java/jmol/
+    cp -f tmp/$vjmol$datejmol/jsmol/js/Jmol2.js public_html/java/jmol/
     rm -rf tmp/$vjmol$datejmol
+    rm -rf tmp/$vJmol$datejmol-binary.zip
     rm -rf public_html/java/jmol/j2s_tmp
  fi
  if [ "$opt" = "--geogebra" ] ; then
@@ -114,8 +116,8 @@ if [ -f ../.wims_maintainer_mode ]; then
   fi
   autoheader
 fi
-#./configure || exit
-./configure CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib || exit
+./configure || exit
+#./configure CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib || exit
 make clean || exit
 make all || exit
 
