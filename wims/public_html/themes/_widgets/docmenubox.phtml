@@ -10,12 +10,12 @@
  !exit
 !endif
 
+!!transfert dans adm/doc
 <div id="wimsmenubox" class="footer">
  <div class="wimsmenu">
   !if $editable=yes
    <div class="menuitem">
     !read $oneitem properties,1,cmd=reply&job=prop
-    !!href cmd=reply&job=prop $n_properties
    </div>
    !if $job!=file
      <div class="menuitem">
@@ -31,7 +31,6 @@
    !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
     <div class="menuitem">
      !read $oneitem modify,1,module=adm/modtool&original=$module
-     !!!href module=adm/modtool&original=$module $wims_name_modify
     </div>
    !endif
   !endif
@@ -44,7 +43,8 @@
 
   !if $wims_user=supervisor and _adm/doc notin _$module and $job!=exosource
     <div class="menuitem">
-     !read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
+!! deja dans homeref_supervisor
+     !!read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
     </div>
   !endif
 

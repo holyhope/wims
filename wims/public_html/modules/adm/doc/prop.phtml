@@ -15,16 +15,18 @@
  !set wims_menu_items=!append line "$n_codechange",1,cmd=reply&job=recode\
    to $wims_menu_items
 !endif
+!reset wims_target
 !set wims_menu_items=!append line blocklist,1,cmd=reply&job=list\
+doch_upload,1,cmd=reply&job=file\
    to $wims_menu_items
 
 !if $transferable=yes
   !set wims_menu_items=!append line doch_transfer,1,cmd=reply&job=transfer\
    to $wims_menu_items
 !endif
-<p>
+<pre>
 $n_codedoc $doc.
 $n_freespace1 $quota_total Meg
 $n_freespace2 $quota_free Meg.
-</p>
+</pre>
 

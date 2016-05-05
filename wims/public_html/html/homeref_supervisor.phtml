@@ -157,8 +157,18 @@
 !set 1_=!append line line itemsep,0,\
 $wims_menu_items to $1_
 !if $wims_user=supervisor and $cmd!=intro and $cmd!=help and $module!=home and \
-	../adm/ notin ../$module
-  !set 1_=!append line moduback,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
+	../adm/ notin ../$module and ($module_category!=document or $job=exosource)
+  !if $job=exosource
+    !set tmp=back2
+    !if $block!=$empty
+      !set docbl=block=$block
+    !else
+      !reset docbl
+    !endif
+  !else
+    !set tmp=moduback
+  !endif
+  !set 1_=!append line $tmp,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4&$docbl to $1_
 !endif
 !! next exo and prev exo in the menu for supervisor
 !if $wims_user=supervisor and $exoprev$exonext != $empty and $wims_sheet=$empty
@@ -174,7 +184,7 @@ $wims_menu_items to $1_
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open) \
 	and oef isin $module_category and $wims_classification_open=yes and ../devel/ notin ../$module
-   !set 1_=!append line ,0,\
+   !set 1_=!append line itemsep,0,\
    Indexation,4,module=adm/tool/classification&refdir=$module&iniparm=$wims_homeref_parm,test to $1_
  !endif
 !endif
