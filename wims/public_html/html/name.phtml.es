@@ -234,7 +234,6 @@ into wims_name_class_home,wims_name_add,wims_name_addh,\
  !if _check isin $session
   !let wims_page_name=Page
  !endif
- !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Secuencia
  !set wims_name_sequences=secuencias
 

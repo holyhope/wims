@@ -234,7 +234,6 @@ into wims_name_classactivity,wims_name_configuration,\
  !if _check isin $session
   !let wims_page_name=Pagina's
  !endif
- !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Werkvolgorde
  !set wims_name_sequences=werkvolgorde
 
