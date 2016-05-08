@@ -17,6 +17,7 @@
 !read themes/$wims_theme/name.phtml.$lang
 !default wims_homeref_bgcolor=$wims_ref_bgcolor
 !read themes/$wims_theme/local.phtml
+
 !if exam isin $wims_session
  !set wims_hr_r=$[max(0,$wims_exam_remain)]
  !set wims_hr_rm=$[floor($wims_hr_r/60)]
@@ -63,8 +64,8 @@
 !if $wims_sheet>0 or P isin $wims_sheet
  !if $(wims_exofeedback[$wims_exo;])!=$empty
   !set feedexo=$(wims_exofeedback[$wims_exo;])
-    !if $module_score!=$empty and $module_score < $(feedexo[2]) and $module_score >= $(feedexo[3])
-     !if $(feedexo[3])=0 or $(feedexo[3])=$empty
+  !if $module_score!=$empty and $module_score < $(feedexo[2]) and $module_score >= $(feedexo[3])
+    !if $(feedexo[3])=0 or $(feedexo[3])=$empty
       !set 5_=!append line feedbackexo,7,$(feedexo[1]),mfeed to $5_
     !else
       !set 5_=!append line feedbackplus,7,$(feedexo[1]),mfeed to $5_
@@ -101,11 +102,17 @@
 !if print isin $job,$job2 or $print!=
   !set 1_=!append line print,3,window.print() to $1_
 !endif
-
 !set wims_rm_1=$1_
 
 :local
 !reset 1_
+!if $wims_sheet!=$empty or _exam isin $wims_session
+  !set 1_=!append line itemsep,0,\
+  tools,4,module=home,tool\
+  line itemsep,0,\
+  to $1_
+!endif
+
 !if $wims_developer!=$empty and COPYING isin $module_copyright and ../classes/ notin ../$module
  !set V_=!char 1 of $module
  !set M_=!translate internal / to , in $module
@@ -154,7 +161,7 @@
  !endif
 !endif
 !! add module links to general links with a separation
-!set 1_=!append line line itemsep,0,\
+!set 1_=!append line itemsep,0,\
 $wims_menu_items to $1_
 !if $wims_user=supervisor and $cmd!=intro and $cmd!=help and $module!=home and \
 	../adm/ notin ../$module and ($module_category!=document or $job=exosource)

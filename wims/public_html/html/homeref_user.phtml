@@ -29,6 +29,7 @@
 !else
  !!set 1_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
+
 !!!if $wims_sheet>0 or P isin $wims_sheet or $wims_sequence>0
 !! !if $wims_sequence>0 and $wims_sheet=$empty
 !!  !set tmp_=sequence,1,module=home&seq=$wims_sequence
@@ -44,6 +45,10 @@
  !if $wims_exo<$wims_sheetmax
   !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
  !endif
+!endif
+
+!if $wims_sheet!=$empty or _exam isin $wims_session
+  !set wims_menu_items=!append line tools,4,module=home,tool to $wims_menu_items
 !endif
 
 !if $wims_sheet>0 or P isin $wims_sheet
@@ -151,6 +156,7 @@ $module_title
 !set wims_rm_2=$2_
 !set wims_rm_4=$4_
 !set wims_rm_5=$5_
+
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
