@@ -272,6 +272,7 @@ int open_working_file(WORKING_FILE *f, char *fname)
     f->linecnt=f->linepointer=0;
     f->for_idx=f->nocache=0;
     f->l=-1; f->lines=NULL;
+    strncpy(f->filepath,fname,MAX_FNAME+1);
     f->textbuf=readfile(fname,NULL,WORKFILE_LIMIT);
     if(f->textbuf==NULL) return -1;
     p=f->textbuf; if(*p) {

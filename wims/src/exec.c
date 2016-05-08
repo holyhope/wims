@@ -371,6 +371,7 @@ void exec_read(char *p)
     if(outputing) phtml_put(p,cache); else var_proc(p,cache);
     readnest--; untrust=t;
     memmove(&m_file,&save,sizeof(WORKING_FILE));
+    if (trace_file) {fprintf(trace_file,"\n%s:",m_file.filepath); fflush(trace_file);}
     setvar("wims_read_parm",parmsave);
 }
 

@@ -239,6 +239,7 @@ char lang[16]="en";
 char available_lang[MAX_LANGUAGES][4]={"en","fr"};
 int available_lang_no=2;
 char pre_language[4]="";
+FILE *trace_file;
 char *protocol="http"; /* http or https */
 
 /* check for coordinate input. This will mean that
@@ -1232,6 +1233,8 @@ int main(int argc, char *argv[], char *envp[])
     parse_ro_names();
     manager_check();
     access_check(0);
+    if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1)
+       trace_file = fopen(mkfname(NULL,"%s/%s",tmp_dir,"trace.txt"),"a");
     set_variables();
     determine_font(getvar("module_language"));
     determine_dirn(getvar("module_language"));
@@ -1255,6 +1258,7 @@ int main(int argc, char *argv[], char *envp[])
       write_logs(); save_session_vars();
     }
     outgo:
+    if (trace_file) fclose(trace_file);
     debug_output();
     if(var_str!=stdinbuf) free(var_str);
     delete_pid();

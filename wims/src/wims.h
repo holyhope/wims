@@ -124,6 +124,7 @@ typedef struct {
     char name[MAX_FNAME+1];
     int  l;
     int linepointer;
+    char filepath[MAX_FNAME+1];
 /* nocache bits: 0. !nocache; 1. hard nocache; 2. isfromcache; 3. isbase; */
     short int for_idx, nocache;
     int linecnt;
@@ -486,6 +487,7 @@ extern int sesrandomtab[MAX_SESRANDOM]; /* session random values */
 extern char job_identifier[32];
 extern int print_precision, substnest, getvar_len;
 extern char pre_language[4];
+extern FILE * trace_file;
 enum {
     ro_cmd, ro_empty, ro_lang, ro_module, ro_session, ro_special_parm,
       ro_special_parm2, ro_special_parm3, ro_special_parm4, ro_useropts, ro_wsession, ro_subsession, ro_win, ro_worksheet
