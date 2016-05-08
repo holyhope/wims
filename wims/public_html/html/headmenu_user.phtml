@@ -103,16 +103,24 @@
 	and $cmd notwordof help ref
  !!!set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
 !endif
-!if $wims_sheet>0 or P isin $wims_sheet
-  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
-!endif
-!if $wims_sequence>0 and adm/ isin $module
+
+!if $wims_sequence>0 and adm/sheet isin $module
  !if $wims_user=supervisor
-  !set 1_=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence to $1_
+  !set wims_ariane=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence\
+   to $wims_ariane
  !else
-  !set 1_=!append line sequence,1,module=home&seq=$wims_sequence to $1_
+  !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence\
+     to $wims_ariane
  !endif
 !endif
+!if $wims_sheet>0 or P isin $wims_sheet
+  !if $wims_sequence!=$empty
+    !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence \
+      to $wims_ariane
+  !endif
+    !set wims_ariane=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $wims_ariane
+!endif
+
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
@@ -147,6 +155,7 @@
 !set wims_hm_cnt=!linecnt $wims_hm
 !set wims_home_items_cnt=!linecnt $wims_home_items
 !set wims_link_close_cnt=!linecnt $wims_link_close
+!set wims_ariane_cnt=!linecnt $wims_ariane
 !read themes.phtml header
 <div class="wimsbody">
 <!-- END of html/headmenu_* -->

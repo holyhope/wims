@@ -1,4 +1,5 @@
-<!-- _widgets/docheadermenu.phtml -->
+
+       <!-- _widgets/docheadermenu.phtml -->
 <div class="wimsmenu">
  !if _mfeed  isin $wims_session
   <span class="menuitem">
@@ -21,26 +22,6 @@
     <span class="menuitem">
      !!read $oneitem doch_class,1,module=home
     </span><!-- menuitem-->
-   !endif
-   !if $m_wims_sequence>0
-    <span class="menuitem">
-     !if $wims_user=supervisor
-      !href module=adm/class/sequence&seq=$m_wims_sequence $name
-     !else
-      !href module=home&seq=$m_wims_sequence $name
-     !endif
-    </span><!-- menuitem-->
-   !else
-    !if $wims_sequence>0
-     !set ti=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
-     <span class="menuitem">
-      !if $wims_user=supervisor
-       !href module=adm/class/sequence&seq=$wims_sequence $name
-      !else
-       !read $oneitem sequence,1,module=home&seq=$wims_sequence
-      !endif
-     </span><!-- menuitem-->
-    !endif
    !endif
   !endif
  !endif

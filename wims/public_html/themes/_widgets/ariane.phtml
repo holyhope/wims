@@ -1,0 +1,14 @@
+!if $module = home
+  !set path = ./adm/
+!else
+  !set path = $empty
+!endif
+!set wims_ariane_cnt=!linecnt $wims_ariane
+!for i_=1 to $wims_ariane_cnt
+  !set 1_=!line $i_ of $wims_ariane
+   -><span class="menuitem $(1_[1])">
+   !$wims_name_sequence
+   !read $(path)oneitem.phtml $1_
+   </span>
+!next
+

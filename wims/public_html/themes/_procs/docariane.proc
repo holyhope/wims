@@ -1,0 +1,20 @@
+!set wims_name_sequence=$name
+!if $m_wims_sequence>0
+  !if $wims_user=supervisor
+     !set wims_ariane=!append line sequence,1,module=adm/class/sequence&seq=$m_wims_sequence\
+to $wims_ariane
+  !else
+     !set wims_ariane=!append line sequence,1,home&seq=$m_wims_sequence\
+to $wims_ariane
+  !endif
+!else
+  !if $wims_sequence>0
+    !if $wims_user=supervisor
+      !set wims_ariane=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence\
+to $wims_ariane
+    !else
+      !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence\
+to $wims_ariane
+    !endif
+  !endif
+!endif
