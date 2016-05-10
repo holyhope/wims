@@ -51,15 +51,68 @@
       <input type="hidden" name="allow" value="yes" />
       <div class="field box">
         <label for="allowtype">$(name_shinfo[6])</label>
-     !set wims_ref_class=wims_button_help float_right
+      !set wims_ref_class=wims_button_help float_right
       !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
-     !formselect allowtype list all, none, select prompt $name_allowtype
-     <br /><input size="50" name="IPlist" value="$IPlist" />
+	<select id="allowtype" name="allowtype" onchange="submit()">
+        !if $tv_listname=$empty
+		!set list_allowtype=all,none,select
+	!else
+		!set list_allowtype=all,none,select,techvar
+	!endif
+	!let nboption=!itemcnt $list_allowtype
+        !for i=1 to $nboption
+         !if $(list_allowtype[$i])=$allowtype
+          <option value="$(list_allowtype[$i])" selected="selected">$(name_allowtype[$i])</option>
+         !else
+          <option value="$(list_allowtype[$i])">$(name_allowtype[$i])</option>
+         !endif
+        !next i
+        </select>
+       !if $allowtype=select
+	 <br /><input size="50" name="IPlist" value="$IPlist" />
+       !endif
+       !if $allowtype=techvar
+	 <br />
+         <label for="allowtechvar">$name_desc_allowtechvar</label>
+	 <select id="allowtechvar" name="allowtechvar" onchange="submit()">
+        !for i in $tv_listname
+         !if $i=$allowtechvar
+          <option value="$i" selected="selected">$i</option>
+         !else
+          <option value="$i">$i</option>
+         !endif
+        !next i
+        </select>
+        !! table d'affectation pour chaque valeur.
+        $table_header
+ 	 <caption>$name_desctableval</caption>
+         $table_hdtr
+          <th>$name_value</th><th>$name_filtre</th>
+	 </tr>
+	 !default allowtechvar=$(tv_listname[1])
+	 !let nb=!positionof item $allowtechvar in $tv_listname
+	 !let don=!line $nb of $tv_listtechvar
+	 !distribute item $don into name,classid,number
+	 !let don=!record $number of wimshome/log/classes/$classid/.techvar
+	 !let listval=!line 2 of $don
+	 !let nb=!itemcnt $listval
+	 $table_tr
+		<td>$name_empty</td>
+		<td><input size="50" name="IPlist" value="$(IPlist)" /></td>
+ 	 </tr>
+ 	 !for i=1 to $nb
+		$table_tr
+			<td>$(listval[$i])</td>
+			<td><input size="50" name="IPtechvar$i" value="$(IPtechvar$i)" /></td>
+		</tr>
+	 !next i
+        $table_end
+       !endif
      !default allowshare=0
      !if $sharers!=$empty
       <br />
        <label for="allowshare">$(name_shinfo[7])</label>
-      !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
+       !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
      !else
       <input type="hidden" name="allowshare" value="0" />
      !endif
@@ -70,7 +123,7 @@
     !ifval $activetest=-1
      <input type="submit" value="$name_mksheet" />
     !else
-     <input type="submit" value="$wims_name_tosave" />
+     <input type="submit" value="$wims_name_tosave" name="save"/>
     !endif
   </div>
 !formend

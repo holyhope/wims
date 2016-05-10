@@ -19,10 +19,16 @@ Fecha de expiración, Page de présentation, Registro de las notas, para todas las
 Texte d'explication,\
 Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les classes en partage :,$wims_name_comment,Durée d'une session d'examen,Nombre d'essais par session
 
-!let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):
+!let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):,réglage par variable technique
+
 !if exam notin $module
- !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4]),Réglage par variable technique
 !endif
+!set name_desc_allowtechvar=Choix de la variable technique
+!set name_desctableval=Table de filtre en fonction de la valeur de la variable technique
+!set name_value=Valeur
+!set name_filtre=Filtre
+!set name_empty=Vide
 
 !set name_desc_comment=Visible solamente por el profesor.
 !let name_selectsheet=Indicar solamente los ejercicios de la hoja

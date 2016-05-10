@@ -38,11 +38,23 @@ $sheet_title
  </p>
  !goto none
 !endif
-!if $expir_user!=
-  !if \ isin $expir_user
-   !set expir_user=!replace internal \ by in $expir_user
-   !set expir_user=!getdef user__$expir_user in wimshome/log/classes/$wims_class/.users/$wims_user
+!set cle=!word 1 of $expir_user
+!if $expir_user!=$empty
+  !set cle=!word 1 of $expir_user
+!! process for technical variable definition (replace expir_user by value decide by the technical variable)
+  !if techvar=$cle
+   !set idtechvar=!word 3 of $expir_user
+   !set val=!getdef user_techvar_$(idtechvar) in wimshome/log/classes/$wims_superclass/.users/$wims_user
+   !set don=!line 2 to -1 of $expir_user
+   !set cle=!column 1 of $don
+   !set nb=!positionof item $val in $cle
+   !if $nb!=$empty
+    !set expir_user=$(don[$nb;2])
+   !else
+    !set expir_user=$(don[2;2])
+   !endif
   !endif
+!! end process technical variable
 !!! a corriger
    !set expir_user=!words2items $expir_user
    !for l_ in $expir_user

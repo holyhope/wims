@@ -38,6 +38,7 @@ wims_helper=chapter=3
 !readproc adm/search_engine/names.$lang
 !readproc adm/search_engine/mklist_form.proc
 
+
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
 
@@ -215,12 +216,17 @@ activetest=!replace line number 3 by $ecnt in $activetest
  !exit
 !endif
 
+!readproc adm/vfilter/listvarfilter.proc
 !if $allow=yes
- !bound allowtype within all,none,select default all
+ !if $tv_listname=$empty
+  !bound allowtype within all,none,select default all
+ !else
+  !bound allowtype within all,none,select,techvar default all
+ !endif
  IPlist=!translate ,;\
 * to $    $ in $IPlist
  IPlist=!trim $IPlist
- !if $allowtype=select and $IPlist=$empty
+ !if $allowtype=select and $IPlist=$empty and $save!=$empty
   allowtype=all
  !endif
  !if $allowtype=all
@@ -232,35 +238,98 @@ activetest=!replace line number 3 by $ecnt in $activetest
  !if $allowtype=select
   allow_parm=$IPlist
  !endif
- !if $sharers!=$empty and $allowshare=1
-  setclass=!items2words $wims_class,$sharers
-  setclass=!words2items $setclass
- !else
-  setclass=$wims_class
+ !if $allowtype=techvar
+  !let nb=!positionof item $allowtechvar in $tv_listname
+  !if $nb=$empty
+	!if $save!=$empty
+	    allowtype=none
+	    allowtechvar=$empty
+	!endif
+	allow_parm=none
+  !else
+	!let don=!line $nb of $tv_listtechvar
+	!distribute item $don into name,classid,number
+	!let don=!record $number of wimshome/log/classes/$classid/.techvar
+	!let listval=!line 2 of $don
+	!let nb=!itemcnt $listval
+        id=!replace internal / by A in $classid
+        allow_parm=techvar $allowtechvar $(classid)_$number\
+$empty,$IPlist
+	!for i=1 to $nb
+		IPtechvar$i=!translate ,;\
+* to $    $ in $(IPtechvar$i)
+ 		IPtechvar$i=!trim $(IPtechvar$i)
+		ligne=$(listval[$i]),$(IPtechvar$i)
+		allow_parm=!append line $ligne to $allow_parm
+	!next i
+  !endif
  !endif
- !if $allow_parm=$empty
-  !sh for c in $setclass; do rm -f $wims_home/log/classes/$$c/.$sheet; done
- !else
-  !for c in $setclass
-   !writefile wimshome/log/classes/$c/.$sheet $allow_parm
-  !next c
+!! ---- save modification of allow parameters
+ !if $save!=$empty
+  !if $sharers!=$empty and $allowshare=1
+   setclass=!items2words $wims_class,$sharers
+   setclass=!words2items $setclass
+  !else
+   setclass=$wims_class
+  !endif
+  !if $allow_parm=$empty
+   !sh for c in $setclass; do rm -f $wims_home/log/classes/$$c/.$sheet; done
+  !else
+   !for c in $setclass
+    !writefile wimshome/log/classes/$c/.$sheet $allow_parm
+   !next c
+  !endif
+  wims_class_log=sheet $sheet allow $allowtype $allowshare by $wims_realuser
  !endif
- wims_class_log=sheet $sheet allow $allowtype $allowshare by $wims_realuser
+!! ---- end of saving
 !endif
 
-allow=
+!if $allow=$empty or $save!=$empty
+!! --- read saving configuration for allow parameters initial time and after saving
 allowlist=!record 0 of wimshome/log/classes/$wims_class/.$sheet
 allowlist=!trim $allowlist
 !if $allowlist=$empty
  allowtype=all
-!else
- !if none iswordof $allowlist
+!endif
+!if $allowlist!=$empty
+ cle=!word 1 of $allowlist
+ !if none iswordof $cle
   allowtype=none
  !else
-  allowtype=select
-  IPlist=$allowlist
- !endif
+  !if techvar iswordof $cle
+   don=!line 3 to -1 of $allowlist
+   cledon=!column 1 of $don
+   IPlist=$(allowlist[2;2])
+   d=!line 1 of $allowlist
+   !distribute word $d into type,name,id
+   !let nb=!positionof item $name in $tv_listname
+   !if $nb=$empty
+	allowtype=none
+	allowtechvar=$empty
+   !else
+	don=!line $nb of $tv_listtechvar
+	!distribute item $don into bl,classid,number
+	don=!record $number of wimshome/log/classes/$classid/.techvar
+	listval=!line 2 of $don
+	nb=!itemcnt $listval
+        !for i=1 to $nb
+            p=!positionof item $(listval[$i]) in $cledon
+            !if $p!=0
+        	IPtechvar$i=$(allowlist[$p+2;2])
+            !else
+        	IPtechvar$i=$empty
+            !endif
+	!next i
+	allowtype=techvar
+    !endif
+  !else
+   allowtype=select
+   IPlist=$allowlist
+  !endif
 !endif
+!endif
+!reset allow,save
+!! --- end of reading
 
 expmon=!char 5,6 of $expiration
 expday=!char 7,8 of $expiration
