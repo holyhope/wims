@@ -16,10 +16,11 @@
 		!!module_path = $module_path
 		!!wims_hm_cnt = $wims_hm_cnt
 
-		!if $wims_hm_cnt!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+		!if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
 			!distribute items li into div1
 			!read themes/_widgets/headhome.phtml
 			!read themes/_widgets/headmenu.phtml
+			!read themes/_widgets/logout.phtml
 
 			!distribute items li,div into div0,div1
    			!read themes/$wims_theme/widgets/permalink.phtml
@@ -33,7 +34,6 @@
 			!endif
 
             !read themes/_widgets/authlogout.phtml
-
 
 		!endif
 
