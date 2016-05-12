@@ -1,3 +1,4 @@
+
 !if $datay=$empty
   !exit
 !endif
@@ -37,9 +38,12 @@
   !endif
   !set tmp=$[min($(datay[$j]),$maxexo)]
   !set barchart=!append colon $jday_:$tmp:$color to $barchart
-  !set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
+  !!set linegraph=!append colon $jday_:$(dataz[$j]) to $linegraph
   !if $(datanew[$j])!=$empty
-   !set linegraph1=!append colon $jday_:$(datanew[$j]) to $linegraph1
+   !!set linegraph1=!append colon $jday_:$(datanew[$j]) to $linegraph1
+   !if $(datanew[$j])>0
+     !set linegraph1=!append line segment $[$jday_+0.5],0,$[$jday_+0.5],$(datanew[$j]),$colorgraph1 to $linegraph1
+   !endif
   !endif
   !set legend=!append colon $jday_:$cnt3/$cnt2 to $legend
   !set good=!declosing $(datagood[$j])
@@ -75,11 +79,6 @@
 !endif
 !distribute item $[$testfin*$mult],$[$maxexo*$mult] into xsize, ysize
 
-!if $linegraph1!=$empty
-   !set linegraph1=strokecolor $colorgraph1\
-linegraph $linegraph1
-!endif
-
 !exec canvasdraw\
 size $xsize,$ysize\
 xrange -2,$[$testfin]\
@@ -92,13 +91,13 @@ legend $lastname $(datax[1])-$(datax[-1])\
 opacity 255,40\
 grid 7,10,$colorgrid,7,10,0,$colorgridm\
 barchart $barchart\
-linewidth 1\
+linewidth 2\
 crosshairsize $[rint($mult/3)]\
 $goodlist\
-linewidth 1\
+linewidth 3\
 $linegraph1\
-strokecolor $colorgraph\
-linegraph $linegraph\
+comment strokecolor $colorgraph\
+comment linegraph $linegraph\
 $rupture
 
 !exit

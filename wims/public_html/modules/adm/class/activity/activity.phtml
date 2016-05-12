@@ -109,10 +109,22 @@ $varfilter_
     !set h1=$[($h+$h%2)/2-2]
     !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isitemof $showsheet
   <td>$(data[$h])
-     !if $h=3
+     !if $h=3 and $(data[$h])!=$empty and $(data[-1])>0
         <span style="color:orange">+ $(data[-1])</span>
      !endif
-     </td>
+     !set h2=$[$h%2]
+     !if $h1 isitemof $showsheet and $h2=1
+       !if , isin $showsheet
+         !set bb=!select $databyday where column 1=$h1
+       !else
+         !set bb=$(databyday[1;])
+       !endif
+       !if $bb!=$empty
+         !set bb=!exec pari vecsum($(bb[6]))
+         <span style="color:orange">+ $bb</span>
+       !endif
+     !endif
+  </td>
     !endif
   !next
   </tr>
