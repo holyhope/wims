@@ -58,7 +58,8 @@ matrix
 random record replace
 solve
 sort
-texmath text'
+texmath text
+cutit'
 
 for j in $list ; do
     $wims_home/src/wims test $wims_dirtest $j test> $wims_tmp/$j 2>&1
