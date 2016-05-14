@@ -38,26 +38,26 @@ char *nameofcmd="octave -Hf --no-line-editing";
 int precision=9;
 char header[]="split_long_rows(0)\n\
 page_screen_output(0)\n\
-function y=sh(x) y=sinh(x); endfunction\n\
-function y=ch(x) y=cosh(x); endfunction\n\
-function y=th(x) y=tanh(x); endfunction\n\
-function y=ln(x) y=log(x); endfunction\n\
-function y=lg(x) y=log10(x); endfunction\n\
-function y=sgn(x) y=sign(x); endfunction\n\
-function y=tg(x) y=tan(x); endfunction\n\
-function y=cotan(x) y=cot(x); endfunction\n\
-function y=ctg(x) y=cot(x); endfunction\n\
-function y=arcsin(x) y=asin(x); endfunction\n\
-function y=arccos(x) y=acos(x); endfunction\n\
-function y=arctan(x) y=atan(x); endfunction\n\
-function y=arctg(x) y=atan(x); endfunction\n\
-function y=argsh(x) y=asinh(x); endfunction\n\
-function y=argch(x) y=acosh(x); endfunction\n\
-function y=argth(x) y=atanh(x); endfunction\n\
-function y=Argsh(x) y=asinh(x); endfunction\n\
-function y=Argch(x) y=acosh(x); endfunction\n\
-function y=Argth(x) y=atanh(x); endfunction\n\
-function y=rint(x) y=round(x); endfunction\n\
+sh=@sinh\n\
+ch=@cosh\n\
+th=@tanh\n\
+ln=@log\n\
+lg=@log10\n\
+sgn=@sign\n\
+tg=@tan\n\
+cotan=@cot\n\
+ctg=@cot\n\
+arcsin=@asin\n\
+arccos=@acos\n\
+arctan=@atan\n\
+arctg=@atan\n\
+argsh=@asinh\n\
+argch=@acosh\n\
+argth=@atanh\n\
+Argsh=@asinh\n\
+Argch=@acosh\n\
+Argth=@atanh\n\
+rint=@round\n\
 PI=pi\n\
 Pi=pi\n\
 ";
