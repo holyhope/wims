@@ -820,6 +820,16 @@ free
 
 For example, http://validator.w3.org/check
 
+:software octave_command
+Commande d'accès à Octave
+free
+
+GNU Octave is a high-level language, primarily intended for numerical computations.
+It provides a convenient command line interface for solving linear
+and nonlinear problems numerically,
+and for performing other numerical experiments using a language
+that is mostly compatible with Matlab.
+
 :software QRencode_command
 command for QRcode picture
 free

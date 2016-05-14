@@ -71,6 +71,7 @@ char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R
 char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima -X '--dynamic-space-size 512'";
 char *pari_command="gp -f -q -p 150000";
+char *octave_command="octave -Hfq --no-line-editing --no-window-system";
 char *scilab_command="scilab -nwni";
 char *QRencode_command="qrencode -o";
 
@@ -253,6 +254,7 @@ CONFIG_DATA main_config[]={
       {"mu_publish_site",		0, &mu_publish_site},
       {"mu_site",		0, &mu_site},
       {"mu_zone",		0, &mu_zone},
+      {"octave_command",		2, &octave_command},
       {"old_log_files",		1, &OLD_LOG_FILES},
       {"page_bgcolor",		0, &bgcolor},
       {"page_bgimg",		0, &bgimg},

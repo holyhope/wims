@@ -133,12 +133,13 @@ void about(void)
 {
     char *p;
 
-    prepabout(quitstring,outputfname,NULL);
+    prepabout("version\nquit\n",outputfname,NULL);
     if(readabout()>0) {
       p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
-      p=strchr(aboutbuf,'('); if(p!=NULL) *p=0;
-      strip_trailing_spaces2(aboutbuf);
-      printf("<a target=\"wims_external\" href=\"%s\">%s</a>",homepage,aboutbuf);
+      p=aboutbuf;while(*p && *p!='=') p++;
+      p++;
+      strip_trailing_spaces2(p);
+      printf("<a target=\"wims_external\" href=\"%s\">Octave%s</a>",homepage,p);
     }
 }
 
