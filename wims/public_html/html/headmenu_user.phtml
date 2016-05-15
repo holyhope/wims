@@ -26,17 +26,18 @@
 !endif
 
 !!! deconnexion link
-!if $class_cas_auth!=$empty
- !if $wims_user=supervisor
+!if _tool notin $wims_session
+ !if $class_cas_auth!=$empty
+  !if $wims_user=supervisor
      !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor&class_auth=$class_cas_auth to $wims_link_close
- !else
+  !else
    !if $wims_class!=$empty
      !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant&class_auth=$class_cas_auth to $wims_link_close
-  !else
+   !else
     !set wims_link_close=!append line visitor,1,cmd=close&class_auth=$wims_cas_auth to $wims_link_close
+   !endif
   !endif
- !endif
-!else
+ !else
   !if $wims_user=supervisor
     !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=supervisor to $wims_link_close
   !else
@@ -46,8 +47,9 @@
        !if _exam notin $wims_session
          !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
        !endif
-     !endif
+    !endif
   !endif
+ !endif
 !endif
 
 !if _check isin $wims_session
