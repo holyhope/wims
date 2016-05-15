@@ -6,7 +6,7 @@ mkdir -p $forumdir/.users
 
 today=`date '+%Y%m%d'`
 cat <<@ >$forumdir/.def
-!set mb_title=$w_module_title
+!set mb_title=
 !set mb_description=
 !set mb_supervisor=$w_wims_supervisor
 !set mb_email=$w_wims_supervisormail
