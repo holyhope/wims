@@ -75,15 +75,15 @@
  !read level$level.phtml
 !endif
 
-!if $level notwordof 0
- !set wims_menu_items=!append line createxo,1,module=adm/createxo\
+!!! FIXME: to comment when the ARIANE thread will be there
+!!!if $level notwordof 0
+!set wims_menu_items=!append line createxo,1,module=adm/createxo\
 to $wims_menu_items
-!else
- !set wims_menu_items=createxo,0,Createxo
-!endif
+!!!endif
 
 !if $level iswordof 0 1
-!set wims_menu_items=!append line model,1,cmd=reply&mode=model&level=1\
+  !set wims_menu_items=!append line createxo,0,Createxo\
+model,1,cmd=reply&mode=model&level=1\
 normalmode,1,cmd=reply&mode=normal&level=1\
 rawmode,1,cmd=reply&rawinp=yes&level=1\
 filemode,1,cmd=reply&mode=file&level=1\
@@ -98,8 +98,9 @@ latex2wims,1,module=adm/latex2wims\
  to $wims_menu_items
 !endif
 !if $level iswordof 2 and $mode=model
-!set wims_menu_items=!append line modellist,1,cmd=reply&level=1&mode=model\
- rawmode,1,cmd=reply&rawinp=yes\
+!set wims_menu_items=!append line itemsep,0,\
+modellist,1,cmd=reply&level=1&mode=model\
+rawmode,1,cmd=reply&rawinp=yes\
 to $wims_menu_items
 !endif
 
