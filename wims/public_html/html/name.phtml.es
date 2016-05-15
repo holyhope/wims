@@ -48,7 +48,7 @@ Fecha de expiración,\
 Error,\
 Série suivante,Série précédente,\
 Example,\
-Encuesta,Encuesta\
+Encuesta,Encuesta,\
 Conditions générales d'utilisation,\
 Besoin d'aide ?,\
 Bravo!,\
