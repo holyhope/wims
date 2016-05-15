@@ -1,5 +1,5 @@
 !set lang_exists=yes
-!set name_title=Individuele activiteiten
+!!!set name_title=Individuele activiteiten
 !set name_noparticipant=Deze klas heeft geen deelnemers/leerlingen
 !set name_lastconnexion=Laatste inlogsessie via ip-adres
 !set name_total=tijdsduur

@@ -2,7 +2,8 @@
 !read lang/names.phtml.$moduclass_lang
 !read adm/class/classname.phtml $wims_classname\
 $wims_institutionname
-
+!set module_title_lang=!module title_$lang
+!default module_title_lang=$module_title
 !read adm/css.phtml
 !if $cmd=help
  !header
@@ -18,7 +19,7 @@ to $wims_html_header
 !header1
 !read adm/title.phtml 1\
 $classname\
-$name_title
+$(module_title_lang)
 !default job=activity
 !if $error!=$empty
  <div class="wims_alertmsg">
@@ -41,10 +42,9 @@ to $wims_menu_items
  !distribute items Score1,livret into sc,li
 !endif
 
-!set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation\
+!set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation $user\
 $sc,1,module=adm/class/userscore$parmuser1\
 $li,1,module=adm/class/livret$parmuser2\
-back2,1,\
  to $wims_menu_items
 !tail
 
