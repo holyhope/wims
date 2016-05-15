@@ -22,7 +22,7 @@ into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Vi
   Sous-total\
 into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
   name_to,name_installed,name_subtotal
-!set title=Estadísticas de visitas
+!!!set title=Estadísticas de visitas
 !set name_sum=!nosubst en total $laps días
 
 !set name_prompt= peticiones<br />totales,peticiones<br />por sitio,sitios<br />totales
@@ -34,11 +34,11 @@ into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_vis
     número de sesiones.</li>\
 </li></ul>
 !set name_warning=El seguimiento de visitas no está activado en este sitio. No hay estadísticas disponibles. Lo sentimos. <p>
- 
- 
+
+
 !set name_numberclass=!nosubst  Hay $classcnt portales y clases individuales en este servidor, con\
   $usercnt cuentas de usuario en total.
-  
+
 
 !set format1=%d%m
 !set format2=%d%m

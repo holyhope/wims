@@ -22,7 +22,7 @@ Installatie datum\
 Subtotaal\
 into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
   name_to,name_installed,name_subtotal
-!set title=Gebruiks statistieken
+!!!set title=Gebruiks statistieken
 !set name_sum=!nosubst het totaal van $laps dagen
 
 !set name_prompt=totaal<br />aanvragen,aanvragen<br />per website,totaal<br />websites
@@ -35,11 +35,11 @@ het aantal websites en het aantal opgestarte sessies. \
 </li></ul>
 
 !set name_warning=De gebruiks statistieken op deze server worden helaas niet bijgehouden.
- 
+
 !set name_numberclass=!nosubst Er zijn $classcnt klassen en/of scholen op deze server in gebruik,\
 met in totaal $usercnt gebruikers.
-  
-  
+
+
 !set format1=%m%d
 !set format2=%m%d
 !set format3=%m%y

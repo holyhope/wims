@@ -12,7 +12,7 @@
 
 !distribute items día(s),semana(s),mes(es),año(s),el inicio,à\
   into name_day,name_week,name_month,name_year,name_begining,name_to
-  
+
 !distribute lines sitio\
   directorio base\
   dirección completa\
@@ -25,24 +25,24 @@
  Facultativement, vous pouvez restreindre la liste aux sites/pages contenant un mot\
 into name_site1,name_stem,name_uniq,name_listlink,name_limited,name_searchengine,\
  name_included,name_excluded,name_option
- 
+
 !set name_list1=!nosubst Lista de web $(names_$type) que dirigen a visitantes hacia nosotros, \
   en el periodo de
-   
+
 !set name_sum=!nosubst en total $laps días
 
 !set name_list2=>La primera columna muestra el número de visitantes que siguieron\
 un enlace en $(name_$type) de la segunda columna.
-  
+
 !set name_visit1=personas que nos han visitado a través de enlaces de
 !set name_visit2=!nosubst Al menos $auto otras visitas no especificaron referencias a páginas\
  públicas. Las páginas que tienen como referencia $httpd_HTTP_HOST no se han contado.
 
-!set title=Lista de enlaces inversos
+!!!set title=Lista de enlaces inversos
 
 !set name_warning=El registro de enlaces inversos (referers) de las cabeceras http no está \
 activado en este sitio. No está disponible la lista de enlaces inversos. Lo sentimos.
- 
+
 !set name_choose=Periodo del listado: a partir de
 
 !exit
