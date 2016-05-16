@@ -1,19 +1,14 @@
 !header
 
-!! Contenu du module par ici. Ce qui suit est un modele d'organisation de ce
-!! fichier.
-
 !if $step=1
  !set wims_menu_items=!append line createxo,1,module=adm/createxo\
  to $wims_menu_items
 !else
 !set wims_name_renew1=$wims_name_renew
 !set wims_name_renew=$name_empty
-!set wims_menu_items=!append line renew,1,cmd=renew\
+  !set wims_menu_items=!append line renew,1,cmd=renew\
 to $wims_menu_items
-
 !endif
-
 
 !if $end!=0 and $end!=$empty
  !if $error!=$empty
@@ -34,7 +29,8 @@ to $wims_menu_items
  !read menu.phtml
 !endif compute=yes?
 
+!set wims_menu_items=!append line modtool,1,module=adm/modtool\
+  to $wims_menu_items
 
 :end
 !tail
-
