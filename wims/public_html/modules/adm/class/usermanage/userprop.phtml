@@ -148,7 +148,7 @@ $wims_name_account_property
 !formend
 !if $wims_user=supervisor
  !if ($wims_supertype=4 and $wims_typename!=course) or ($wims_supertype=2 and $wims_typename=group)
-  !! on ne met pas les scores
+  !! no score
  !else
   !set wims_menu_items=!append line \
 scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
@@ -157,7 +157,7 @@ activity1,1,module=adm/class/activity&job=user&user=$getuser\
 to $wims_menu_items
  !endif
  !set wims_menu_items=!append line \
-   itemsep,0,\
+   itemsep,0,$wims_name_usermanage\
   delstudent1,1,cmd=reply&job=delprep&delprep=$getuser\
 to $wims_menu_items
  !read getparm $module_init_parm job
@@ -166,18 +166,16 @@ to $wims_menu_items
     !set wims_menu_items=!append line itemsep,0,\
 part_list,1,cmd=resume\
 addstudent,1,module=adm/class/reguser&step=1\
- itemsep,0,\
   to $wims_menu_items
   !else
    !set wims_menu_items=!append line itemsep,0,\
 teacherlist,1,module=adm/class/usermanage&job=teacher\
 to $wims_menu_items
    !if $wims_user=supervisor and $wims_realuser=supervisor
-    !set wims_menu_items=!append line \
-addteacher,1, module=adm/class/reguser&step=1&utype=1\
+    !set wims_menu_items=!append line addteacher,1, module=adm/class/reguser&step=1&utype=1\
     to $wims_menu_items
    !endif
-   !set wims_menu_items=!append line itemsep,0, to $wims_menu_items
+   !set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation to $wims_menu_items
 !else
  !if $wims_supertype=4 and $wims_typename!=course
    !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
