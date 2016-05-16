@@ -11,10 +11,17 @@
    !read $(path)oneitem.phtml $1_
    </span>
 !next
+
+!! the variable wims_ariane_self must be defined in the var.proc of
+!! the module if one does not an ariane thread automatically created
+!! should have more parameters, for the moment, just no.
+
+!if $wims_ariane_self!=$empty
+  !exit
+!endif
 !if _ notin $session and $module!=home and adm isin $module_category
 /
 
-  !reset mtitle
   !set mtitle=$(module_title_$lang)
   !default mtitle=$module_title
 
