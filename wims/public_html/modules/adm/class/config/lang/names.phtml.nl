@@ -4,8 +4,6 @@
   !goto $wims_read_parm
 !endif
 
-!set title=Configuratie en Onderhoud
-
 !distribute items zones,studenten,oefeningen,documenten,docenten,werkbladen\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
@@ -25,7 +23,9 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
  !set name_allowedsites=Toegestane adressen
  !set name_excepted=Uitgezonderd
 !endif
-
+!if $job=connectlink
+  !set title=Connexion links
+!endif
 !if $job=arch
  !set title=Backup en Herstel
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat

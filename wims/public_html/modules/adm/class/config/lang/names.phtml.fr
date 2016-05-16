@@ -4,8 +4,6 @@
   !goto $wims_read_parm
 !endif
 
-!set title=Configuration et Maintenance
-
 !distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
@@ -25,7 +23,9 @@ name_sheets
  !set name_allowedsites=Sites admis aux scores
  !set name_excepted=Exceptés
 !endif
-
+!if $job=connectlink
+  !set title=Liens de connexion
+!endif
 !if $job=arch
  !set title=Sauvegarde et Restauration
  !set name_intro=Vous pouvez télécharger une copie de sauvegarde de votre classe, en format
@@ -228,7 +228,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_stop=arrêter.
  !endif
  !if $job2=sharelist
-  !set title= Information de partages de ressources.
+  !set title=Information de partages de ressources.
   !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
   !distribute lines Vous ne partagez pas de ressource.\
   Vous partagez des ressources d'autres classes\
@@ -421,8 +421,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !endif
 !endif
 
-!if $job=list
-  !distribute line  Nom de l'établissement\
+!if $job iswordof list new
+  !distribute line Nom de l'établissement\
     Nom de la classe\
     Numéro de la classe\
     Mots d'option\
@@ -444,10 +444,10 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Actualiser les index\
     dont le changement de\
     Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
-    restreindre les sites \
+    Restreindre les ressources accessibles\
+    Restreindre les sites \
     pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
+    Faire un nettoyage sélectif\
     Configurer \
     Utilisation actuelle d'espace disque\
     La limite est\
@@ -472,7 +472,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 :commun
-!distribute line Authentification\
+!distribute line Configuration globale\
+Authentification\
 Préférences\
 Restriction d'accès\
 Paramétrage OEF\
@@ -488,7 +489,7 @@ Restriction des scores\
 Adresse d'une plateforme\
 de\
 Authentification externe\
-into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
+into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
@@ -661,7 +662,7 @@ Vous êtes sur le point de remplacer un(e) $(name_$itype)
 </p><p>
 Comme vous n'avez pas défini de poste sûr, nous vérifions votre
 authentification en vous envoyant un code secret à votre adresse électronique.
-Veuillez lire vos mails, prendre le code, et le taper ci-dessous&nbsp;:
+Veuillez lire vos mails, prendre le code et le taper ci-dessous&nbsp;:
 </p>
 !exit
 :auth2

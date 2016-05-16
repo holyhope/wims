@@ -13,7 +13,7 @@
   <p>
   Bescherm Uw virtuele klassen tegen onvoorzien data verlies !
  !endif
- !href cmd=reply&job=arch Backup uw klassen 
+ !href cmd=reply&job=arch Backup uw klassen
  regelmatig
  </p>
 !endif
@@ -22,7 +22,7 @@
  <p><span class="wims_warning">WAARSCHUWING</span>.
  Uw virtuele klas is $creatdays oud: dit is te oud !
  </p><p>
- Het is dringend aan te bevelen een nieuwe klas op te richten aan het begin van 
+ Het is dringend aan te bevelen een nieuwe klas op te richten aan het begin van
  een schooljaar.
  </p>
  !if $class_type notin 13
@@ -43,19 +43,19 @@
   </li></ol>
  !else
   <p>
-  Maak een 
+  Maak een
   !href cmd=reply&job=arch backup
   van alle lesmateriaal van uw huidige klas; hiermee kan een nieuwe klas worden gevuld.
   </p>
  !endif
 !endif
-
+!exit
 !if $warn=$empty
  !set job=list
  !changeto list.phtml
 !else
   <div class="wimscenter">
-  !href cmd=reply&job=list Doorgaan 
+  !href cmd=reply&job=list Doorgaan
   met het klasse onderhoud.
  </div>
 !endif

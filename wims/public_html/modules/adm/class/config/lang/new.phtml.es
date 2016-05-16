@@ -58,7 +58,7 @@ en la nueva.
   </p>
  !endif
 !endif
-
+!exit
 !if $warn=$empty
  !set job=list
  !changeto list.phtml

@@ -4,8 +4,6 @@
   !goto $wims_read_parm
 !endif
 
-!set title=Configuración y Administración
-
 !distribute items zonas,participantes,ejercicios,documentos,profesores,hojas de ejercicios\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
@@ -26,7 +24,9 @@ name_sheets
  !set name_allowedsites=Sitios a los que se les permite recibir calificaciones
  !set name_excepted=Exceptuados
 !endif
-
+!if $job=connectlink
+  !set title=Connexion links
+!endif
 !if $job=arch
  !set title=Copias de seguridad y Recuperación
  !set name_intro=Puede descargar una copia de seguridad de su clase, en formato

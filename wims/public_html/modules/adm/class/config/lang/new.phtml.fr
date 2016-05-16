@@ -22,12 +22,12 @@
 !endif
 
 !if creation iswordof $warn
- <p><b>$wims_name_warning</b>. Votre classe virtuelle est trop vieille&nbsp;! Elle a
+ <p><b>$wims_name_warning</b>. Votre classe virtuelle est trop ancienne&nbsp;! Elle a
  déjà $creatdays jours.
  </p><p>
  Il est vivement recommandé de recréer une nouvelle structure de classe
  virtuelle au début de chaque nouvelle année scolaire. Continuer à utiliser
- une vieille classe virtuelle pendant des années conduira inexorablement à
+ une classe virtuelle pendant des années conduira inexorablement à
  un débordement des fichiers de registre et du quota d'espace disque, ce qui
  risque de bloquer l'accès à votre classe à un moment crucial.
  </p>
@@ -60,14 +60,16 @@
  !endif
 !endif
 
+!exit
+
 !!if $warn=$empty
  !set job=list
  !changeto list.phtml
 !!else
-!!  <div class="wimscenter">
-!! !href cmd=reply&job=list Continuer avec la maintenance de la classe.
-!! </div>
-!!!endif
+  <div class="wimscenter">
+ !href cmd=reply&job=list Continuer avec la maintenance de la classe.
+ </div>
+!endif
 
 
 
