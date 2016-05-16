@@ -7,9 +7,33 @@
 !set wims_ariane_cnt=!linecnt $wims_ariane
 !for i_=1 to $wims_ariane_cnt
   !set 1_=!line $i_ of $wims_ariane
-   -><span class="menuitem $(1_[1])">
+   / <span class="menuitem $(1_[1])">
    !read $(path)oneitem.phtml $1_
    </span>
 !next
+!if _ notin $session and $module!=home and adm isin $module_category
+/
+
+  !reset mtitle
+  !set mtitle=$(module_title_$lang)
+  !default mtitle=$module_title
+
+!! clickable or not ? it depends and the link module=$module
+!! is not always pertinent and sometimes repetition with Back
+!! the other problem is that some modules
+!! rename module_title according to the job.
+ <span class="menuitem">
+!! the test is not always OK, how to find if we are not in the homepage
+!! of the adm module
+  !if $cmd!=$empty and $cmd!=new and adm/light notin $module
+   !read $(path)oneitem.phtml "$cmd --- $mtitle",1,module=$module
+  </span><span class="menuitem">
+  / *
+ !else
+   !read $(path)oneitem.phtml "$cmd --- $mtitle",8
+ !endif
+  </span>
+
+!endif
 
 <!-- _widgets/ariane.phtml -->
