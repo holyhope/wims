@@ -5,22 +5,24 @@
 !endif
 !!readproc adm/class/initclass $class,auth
 
-$wims_name_class : $classname.
+<fieldset class="property_fields">
+ <legend>$wims_name_class : $classname.</legend>
+
 !if $step=0
  !form reply
   !set auth_user=$auth_user_connection
-   $table_header
-    <tr><td><label for="auth_user">$wims_name_Login</label></td>
-    <td><input size="20" name="auth_user" value="$auth_user" id="auth_user" /></td>
-    </tr>
-   $table_end
-    <input type="hidden" name="step" value="1" />
-   <div class="wimscenter wimsform">
+  <div class="field box">
+    <label for="auth_user">$wims_name_Login</label>
+    <input size="20" name="auth_user" value="$auth_user" id="auth_user" placeholder="$wims_name_Login" />
+  </div>
+  <input type="hidden" name="step" value="1" />
+  <div class="wimscenter wimsform">
     <input type="submit" value="$wims_name_Enter" />
-   </div>
+  </div>
 
-!formend
+ !formend
 !endif
+</fieldset>
 
 !if $step=1
  !if $error=$empty
