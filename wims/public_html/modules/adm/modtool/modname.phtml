@@ -43,18 +43,11 @@ $name_moddevcnt
  !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
  createnew,1,cmd=reply&jobreq=create\
  restore,1,cmd=reply&jobreq=restore\
- itemsep,0,$wims_name_othertools\
- createxo,1,module=adm/createxo\
- latex2wims,1,cmd=new&module=adm/latex2wims\
- to $wims_menu_items
- !set wims_menu_items=!append line quicktool,1,cmd=new&module=adm/quicktool\
- to $wims_menu_items
- !set wims_menu_items=!append line coordclick,1,module=adm/tool/coordclick\
- to $wims_menu_items
- !set wims_menu_items=!append line chemtool,1,module=adm/tool/chemtool\
- to $wims_menu_items
- !set wims_menu_items=!append line scripttest,4,module=tool/directexec&cmd=new,internal\
 to $wims_menu_items
+
+ !read themes/_procs/othermethods.proc
+ !read themes/_procs/othertools.proc
+
 !else
 $name_nomodule
  !href cmd=reply&jobreq=create $name_create
@@ -68,4 +61,3 @@ account_property,1,cmd=reply&jobreq=prop\
 to $wims_menu_items
 
 !reset target target1 target2 target3 target4 selectshow
-

@@ -77,7 +77,7 @@
 
 !!! FIXME: to comment when the ARIANE thread will be there
 !!!if $level notwordof 0
-!set wims_menu_items=!append line createxo,1,module=adm/createxo\
+!set wims_menu_items=!append line createxo ARIANE,1,module=adm/createxo\
 to $wims_menu_items
 !!!endif
 
@@ -88,14 +88,7 @@ normalmode,1,cmd=reply&mode=normal&level=1\
 rawmode,1,cmd=reply&rawinp=yes&level=1\
 filemode,1,cmd=reply&mode=file&level=1\
  to $wims_menu_items
-
-!set wims_menu_items=!append line othermethods,0,$wims_name_othermethods\
-Createqcm,1,module=adm/auth/createqcm\
-Confia2qcm,1,module=adm/auth/confia2qcm\
-modtool,1,module=adm/modtool\
-quicktool,1,module=adm/quicktool\
-latex2wims,1,module=adm/latex2wims\
- to $wims_menu_items
+  !read themes/_procs/othermethods.proc
 !endif
 !if $level iswordof 2 and $mode=model
 !set wims_menu_items=!append line itemsep,0,\

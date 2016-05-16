@@ -1,0 +1,13 @@
+!if $wims_user=supervisor or $wims_developer!=$empty
+  !set wims_menu_items=!append line itemsep,0,$wims_name_tools\
+ to $wims_menu_items
+
+  !set wims_menu_items=!append line coordclick,1,module=adm/tool/coordclick\
+ to $wims_menu_items
+
+  !if $wims_developer!=$empty
+  !set wims_menu_items=!append line chemtool,1,module=adm/tool/chemtool\
+ scripttest,4,module=tool/directexec&cmd=new,internal\
+to $wims_menu_items
+  !endif
+!endif
