@@ -61,9 +61,9 @@ Vuelta al módulo,\
 Legend,\
 Cloner la feuille,\
 Cloner l'examen,\
-Manage technical variable,\
-Anciennes variables,\
-Evaluation,\
+Manage technical variables,\
+Old technical variables,\
+Global results,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
