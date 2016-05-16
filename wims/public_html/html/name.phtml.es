@@ -92,11 +92,12 @@ Creation, Samples,\
 Exercices, Helps,\
 FAQ, Help docs,\
 Informations,\
+Otros métodos,\
 	into wims_name_Classes, wims_name_Searching,\
 	wims_name_Creation, wims_name_Samples,\
 	wims_name_Exercices, wims_name_Aid,\
     wims_name_faq, wims_name_dochelp,\
-    wims_name_Infos
+    wims_name_Infos, wims_name_othermethods
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\

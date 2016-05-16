@@ -7,7 +7,6 @@
 !distribute lines Beginners mode \
 Expert mode\
 File mode\
-Andere methoden\
 Voorbeelden\
 Stuur het bestand\
 Broncode van de oefening\
@@ -23,9 +22,9 @@ Test de oefening\
 Corrigeer de fout\
 Terug naar \
 Uw oefening is nu als volgt: \
-Hier staan de beschikbare voorbeelden. Kies er &eacute;&eacute;n.\
+Hier staan de beschikbare voorbeelden. Kies er één.\
 De module waarin uw oefening tijdelijk is opgenomen.\
-into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,wims_name_adapt,name_testexo,\
   name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
@@ -163,13 +162,13 @@ Gebruik daarvoor de expert mode van Createxo:
 !exit
 :model
 <b>Opmerking</b>. Deze voorbeeld modellen kunnen worden gebruikt om snel
-een oefening te bouwen. 
-Uiteraard zijn dit veelal simpelere toepassingen en wordt niet al het potentieel van Createxo benut. 
+een oefening te bouwen.
+Uiteraard zijn dit veelal simpelere toepassingen en wordt niet al het potentieel van Createxo benut.
 !exit
 
 :register
 Uw oefening is met succes opgenomen in deze server.
-Bedankt namens allen die profiteren van uw inzet en moeite ! 
+Bedankt namens allen die profiteren van uw inzet en moeite !
 <p>
 De administrator van deze server zal de oefening nog controleren en de definitieve plaats bepalen.
 Dit kan enkele dagen in beslag nemen.

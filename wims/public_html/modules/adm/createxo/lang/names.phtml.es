@@ -7,7 +7,6 @@
 !distribute lines Método guiado\
   Método bruto\
   Método fichero\
-  Otros métodos\
   modelos preparados\
   Enviar el fichero\
   Fichero fuente de su ejercicio\
@@ -25,7 +24,7 @@
   La realización de su ejercicio será como sigue.\
   Ahí tienes los modelos de ejercicios disponibles. Elija uno.\
  Módulo que contiene temporalmente su ejercicio\
-into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,wims_name_adapt,name_testexo,\
   name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
