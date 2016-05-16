@@ -23,18 +23,23 @@
 !endif
 !read $job.phtml
 !if $job notwordof home
- !if $job!=getsource
-  !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
-   to $wims_menu_items
+  !if $job!=getsource
+    !if $job=creat
+     !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
+to $wims_menu_items
+    !else
+     !set wims_menu_items=!append line vote ARIANE,1,cmd=renew&job=home\
+to $wims_menu_items
+    !endif
   !if $vote_src!=$empty
     !set wims_menu_items=!append line source,1,cmd=renew&job=getsource&vote=$vote\
    to $wims_menu_items
-   !endif
+  !endif
  !else
-   !set wims_menu_items=!append line back2,1,cmd=resume&job=edit&vote=$vote\
+   !set wims_menu_items=!append line back2 $vote,1,cmd=resume&job=edit&vote=$vote\
    to $wims_menu_items
  !endif
- !if $job notwordof read creat getsource and $reg_title$vote_title!=$empty and $reg_src$vote_src!=$empty
+ !if $job notwordof read creat getsource showresult csv and $reg_title$vote_title!=$empty and $reg_src$vote_src!=$empty
    !set wims_menu_items=!append line test,1,cmd=reply&job=read\
    to $wims_menu_items
  !endif
