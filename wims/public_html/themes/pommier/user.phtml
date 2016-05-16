@@ -72,7 +72,6 @@
  !goto end
 !endif
 !set supmail=!mailurl $wims_supervisormail $wims_name_mail
-!set supmail=!replace internal <a by <a class="mail" in $supmail
 !if $n_>=4
  !distribute words $etest into h_,s_,t_,n_
  !set r_=!record 0 of wimshome/sessions/$s_/examreg.$n_
@@ -124,6 +123,48 @@
   !endif
   !goto endbar
 !endif
+
+!read themes/_widgets/user_vardoc.phtml
+!read themes/_widgets/user_vardocp.phtml
+!read themes/_widgets/user_varsheet.phtml
+!read themes/_widgets/user_varexam.phtml
+!read themes/_widgets/user_varvote.phtml
+
+!ifval $dcnt+$dpcnt+$n+$m+$v>1
+ <div id="widget_user_list">
+ !if $jquery_defined=yes
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      jQuery(function($$) {
+        // Get in sessionStorage if a tab was previously selected, and activate it.
+        var selectedTabId = sessionStorage.getItem("user_list_selectedTab");
+        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+        $$("#widget_user_list").tabs({
+          active: selectedTabId,
+          activate : function( event, ui ) {
+              selectedTabId = $$("#widget_user_list").tabs("option", "active");
+              sessionStorage.setItem("user_list_selectedTab", selectedTabId);
+          }
+        });
+      });
+      /*]]>*/
+    </script>
+ !endif
+<ul id="wims_user_summary">
+ !if $[$dcnt+$dpcnt]>0
+  <li><a href="#wims_user_doc">$wims_name_Docs</a></li>
+ !endif
+ !if $n>0
+  <li><a href="#wims_user_sheet">$wims_name_Sheets</a></li>
+ !endif
+ !if $m>0
+  <li><a href="#wims_user_exam">$wims_name_Examens</a></li>
+ !endif
+ !if $v>0
+  <li><a href="#wims_user_vote">$wims_name_Votes</a></li>
+ !endif
+</ul>
+!endif
 !!define variable $dcnt and $ dpcnt
 !read themes/_widgets/userdoc.phtml
 !!define variable $n
@@ -132,7 +173,7 @@
 !read themes/_widgets/userexam.phtml
 !!define variable $v
 !read themes/_widgets/uservote.phtml
-
+</div>
 !ifval $dcnt+$dpcnt+$n+$m+$v=0
  !if $is_interclass!=yes
    $U_nosheet

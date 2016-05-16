@@ -164,15 +164,99 @@ $wims_classname, $wims_institutionname\
  <div class="wimscenter">
  !href module=adm/class/sequence $wims_name_reorder
  </div>
- $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
- !read themes/_widgets/supervisorsubclass.phtml
- !read themes/_widgets/supervisordoc.phtml
- !read themes/_widgets/supervisordocp.phtml
- !read themes/_widgets/supervisorsheet.phtml
- !read themes/_widgets/supervisorexam.phtml
- !read themes/_widgets/supervisorvote.phtml
- $table_end
+ <div id="widget_supervisor_list">
+ !if $jquery_defined=yes
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      jQuery(function($$) {
+        // Get in sessionStorage if a tab was previously selected, and activate it.
+        var selectedTabId = sessionStorage.getItem("supervisor_list_selectedTab");
+        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+        $$("#widget_supervisor_list").tabs({
+          active: selectedTabId,
+          activate : function( event, ui ) {
+              selectedTabId = $$("#widget_supervisor_list").tabs("option", "active");
+              sessionStorage.setItem("supervisor_list_selectedTab", selectedTabId);
+          }
+        });
+      });
+      /*]]>*/
+    </script>
+ !endif
+ <ul id="wims_supervisor_summary">
+ !if $subclasscnt>0
+  <li><a href="#wims_supervisor_subclass">$wims_name_classlist</a></li>
+ !endif
+ !if $[$docpubliccnt+$doccnt]>0
+  <li><a href="#wims_supervisor_doc">$wims_name_Docs</a></li>
+ !endif
+ !if $sheetcnt>0
+  <li><a href="#wims_supervisor_sheet">$wims_name_Sheets</a></li>
+ !endif
+ !if $examcnt>0
+  <li><a href="#wims_supervisor_exam">$wims_name_Examens</a></li>
+ !endif
+ !if $votecnt>0
+  <li><a href="#wims_supervisor_vote">$wims_name_Votes</a></li>
+ !endif
+ </ul>
+ !if $subclasscnt>0
+   <div id="wims_supervisor_subclass">
+    !distribute item 1,no into wims_incremental,table_spacer
+    $table_header
+    $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+    !read themes/_widgets/supervisorsubclass.phtml
+    $table_end
+   </div>
+ !endif
+ !if $seq_open=yes
+  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_sequence</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !else
+  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+ !endif
+ !if $[$doccnt+$docpubliccnt]>0
+  <div id="wims_supervisor_doc">
+   !distribute item 1,no into wims_incremental,table_spacer
+   $table_header
+  !!<caption>$wims_name_Docs</caption>
+   $table_htdr_
+   !read themes/_widgets/supervisordoc.phtml
+   !read themes/_widgets/supervisordocp.phtml
+   $table_end
+  </div>
+ !endif
+ !if $sheetcnt>0
+  <div id="wims_supervisor_sheet">
+   !distribute item 1,no into wims_incremental,table_spacer
+   $table_header
+   !!<caption>$wims_name_Sheets</caption>
+   $table_htdr_
+   !read themes/_widgets/supervisorsheet.phtml
+   $table_end
+  </div>
+ !endif
+ !if $examcnt>0
+  <div id="wims_supervisor_exam">
+   !distribute item 1,no into wims_incremental,table_spacer
+   $table_header
+   $table_htdr_
+   !!<caption>$wims_name_Examens</caption>
+   !read themes/_widgets/supervisorexam.phtml
+   $table_end
+  </div>
+ !endif
+ !if $votecnt>0
+  <div id="wims_supervisor_vote">
+   !distribute item 1,no into wims_incremental,table_id,table_spacer
+   $table_header
+   !!<caption>$wims_name_Votes</caption>
+   $table_htdr_
+   !read themes/_widgets/supervisorvote.phtml
+   $table_end
+  </div>
+ !endif
 !endif
+ </div>
 
 !read ./form.phtml
 <br class="clearall" />
@@ -181,7 +265,8 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
 
 !read themes/_procs/menumodubox0.proc
-!read themes/_widgets/menumodubox.phtml
+!read themes/_widgets/menumodubox_accordion.phtml
+
 
 :end
 
