@@ -7,10 +7,12 @@
 #	insert the following word to httpd.conf (in a commented line):
 #	manually_configured_for_wims
 #
+echo
+echo  " ## This script adds WIMS-related definitions to Apache config. ##"
+echo ;
 
 if [ ! "$(id -ru )" = 0 ]; then
  echo
- echo This script adds WIMS-related definitions to Apache config.
  echo It must be run as root.
  echo
  echo su to root before running this script!
@@ -24,11 +26,12 @@ distro=default
 
 PATH=$PATH:/usr/sbin:/sbin
 export PATH
-# httpd or apache?
-httpd -v >/dev/null && httpdname=httpd
+
+echo "Detecting which HTTP server to execute...";
+apache2 -v >/dev/null && httpdname=apache2
 if [ -z "$httpdname" ]; then apache -v >/dev/null && httpdname=apache; fi
-if [ -z "$httpdname" ]; then apache2 -v >/dev/null && httpdname=apache2; fi
 if [ -z "$httpdname" ]; then httpd2 -v >/dev/null && httpdname=httpd2; fi
+if [ -z "$httpdname" ]; then httpd -v >/dev/null && httpdname=httpd; fi
 if [ -z "$httpdname" ]; then
  cat <<@
 
@@ -40,6 +43,10 @@ Please first install Apache (>=1.3).
  exit
 fi
 [ -f /etc/apache2/envvars ] && . /etc/apache2/envvars
+
+echo " => HTTP server detected as $httpdname";
+
+echo "Searching $httpdname conf file...";
 conffile=`$httpdname -V | grep SERVER_CONFIG_FILE | awk -F'=' '{print $2}'  | tr -d ' "'`
 confdir=`dirname $conffile`
 if [ -z "$confdir" ]; then
@@ -52,15 +59,17 @@ Please first update your web server to Apache >=1.3.
  exit
 fi
 
-case $distro in
- debian) if [ `lsb_release -c | cut -f2` = "trusty" ];then
-           conffile=$confdir/conf-enabled/wims.conf
-         else
-           conffile=$confdir/conf.d/wims.conf
-         fi
+echo " # Linux Type: $distro";
+if [ "$distro" = "debian" ];then
+  lsb_release=`lsb_release -c | cut -f2`
+  echo " # Release : $lsb_release";
+    case $lsb_release in
+    trusty|jessie|xenial) conffile=$confdir/conf-enabled/wims.conf;;
+    *)                    conffile=$confdir/conf.d/wims.conf;;
+    esac
+fi
 
- ;;
-esac
+echo " => HTTPd conf file : $conffile";
 
 cd `dirname $0`/..
 wimshome=`pwd`
@@ -71,9 +80,12 @@ if [ ! -e public_html/wims.cgi ] || [ ! -e bin/apache-config ]; then
  exit
 fi
 
+echo "Searching HTTPd root..."
 httpdroot=`$httpdname -V | grep HTTPD_ROOT | awk -F'=' '{print $2}' \
  | tr -d ' "'`
 if [ ! -z "$httpdroot" ]; then cd $httpdroot; fi
+
+echo " => HTTPd root found : $httpdroot"
 
 tmpfile=/tmp/wims-apache.conf
 vtest=`$httpdname -v | grep Apache`
@@ -86,6 +98,7 @@ if [ -z "$vtest" ]; then
  exit
 fi
 
+echo "Config test..."
 conftest=`grep -i manually_configured_for_wims $conffile`
 if [ ! -z "$conftest" ]; then
  echo Manually configured $conffile not modified.
@@ -129,8 +142,10 @@ cat >>$tmpfile <<@
 
 # $vtest looks like "Server version: Apache/X.Y.Z (Unix)"
 # $vmajor will be XY
-
+echo "Searching HTTPd major version..."
 vmajor=`echo $vtest | grep 'pache' | perl -pe 's/.*pache\/([\d]+).([\d]+).*/$1$2/'`
+
+echo " => HTTPd major version found : $vmajor"
 
 # Apache version == 1.2
 if [ "$vmajor" = "12" ]; then
@@ -184,6 +199,8 @@ cat >>$tmpfile <<@
 @
 
 mv $tmpfile $conffile
+
+echo  "## WIMS Configuration added to your HTTPd server conf. ##"
 
 initdir=/etc/init.d
 [ -d $initdir ] || initdir=/etc/rc.d/init.d
