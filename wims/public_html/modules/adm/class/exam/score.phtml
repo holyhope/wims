@@ -84,19 +84,19 @@ $wims_institutionname
  !else
   $name_bestscore
  !endif
-
-!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
-!if $test>=2
- !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
- to $wims_menu_items
-!endif
-!set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
- to $wims_menu_items
+ !set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
+to $wims_menu_items
+ !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+ !if $test>=2
+  !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+ !endif
 !endif
 
 !if $wims_user=supervisor
-!set wims_menu_items=!append line teacherview,1,cmd=resume\
- to $wims_menu_items
+  !set wims_menu_items=!append line itemsep,0,\
+backteacher,1,cmd=resume\
+to $wims_menu_items
 
 !endif
 
