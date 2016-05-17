@@ -1,5 +1,5 @@
 # Modclass
-# Modifie les propriŽtŽs de la classe qclass
+# Modifie les proprietes de la classe qclass
 
 !read scripts/check.class
 !if $error!=$empty
@@ -27,9 +27,9 @@ $ in $l
   !if $v_ notin $class_connections
     !setdef !set class_connections = $class_connections $v_ in $classdeffile
     !advance set
-  !endif 
+  !endif
  !endif
- 
+
  !if $n_ isitemof name,description
     !advance name_or_def
  !endif
@@ -40,7 +40,7 @@ $ in $l
  !exit
 !endif
 
-#on ne recree l'index des classes que si un nom ou une description a change 
+# on ne recree l'index des classes que si un nom ou une description a change
 !if $name_or_def>0
-  !sh cd $wims_home/log/classes; ./.build-index
+  !sh cd $wims_home/log/classes; ./.build-index $qclass
 !endif

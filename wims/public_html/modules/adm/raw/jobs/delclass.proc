@@ -7,14 +7,14 @@
 !endif
 
 !if $class_superclass != $empty
-	# Cas d'une sous-classe : 
-	# La classe sera automatiquement supprimee du fichier ".subclasses" du portail lors du build-index 
+	# Cas d'une sous-classe :
+	# La classe sera automatiquement supprimee du fichier ".subclasses" du portail lors du build-index
 	# A FAIRE : Rechercher toutes les occurences de cette classe dans les fichiers "neighbors" des classes voisines. (les supprimer ou empecher la suppression de cette classe ?)
 !endif
 
 log = !sh cd $wims_home/log/classes\
     tar -czf ../$qclass.tgz $qclass\
     rm -Rf $qclass\
-    ./.build-index
+    ./.build-index $qclass
 
 
