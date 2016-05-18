@@ -1233,8 +1233,12 @@ int main(int argc, char *argv[], char *envp[])
     parse_ro_names();
     manager_check();
     access_check(0);
+/* this gives some bug on some servers... so desactivated
+  it is really for developing in wims, so no use in general */
+   if (1==0) {
     if(strstr(tmp_debug,"yes")!=NULL && checkhost(manager_site)>=1)
        trace_file = fopen(mkfname(NULL,"%s/%s",tmp_dir,"trace.txt"),"a");
+   }
     set_variables();
     determine_font(getvar("module_language"));
     determine_dirn(getvar("module_language"));
