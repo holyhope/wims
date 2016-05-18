@@ -3,13 +3,20 @@
 !else
   !set path = $empty
 !endif
+
 <!-- _widgets/ariane.phtml -->
 !set wims_ariane_cnt=!linecnt $wims_ariane
+
+<nav aria-label="You are here:" role="navigation">
+  <ul class="breadcrumbs">
+
 !for i_=1 to $wims_ariane_cnt
   !set 1_=!line $i_ of $wims_ariane
-   / <span class="menuitem $(1_[1])">
-   !read $(path)oneitem.phtml $1_
-   </span>
+   <li>
+    <span class="$(1_[1])">
+     !read $(path)oneitem.phtml $1_
+    </span>
+   </li>
 !next
 
 !! the variable wims_ariane_self must be defined in the var.proc of
@@ -20,7 +27,6 @@
   !exit
 !endif
 !if _ notin $session and $module!=home and adm isin $module_category
-/
 
   !set mtitle=$(module_title_$lang)
   !default mtitle=$module_title
@@ -29,18 +35,21 @@
 !! is not always pertinent and sometimes repetition with Back
 !! the other problem is that some modules
 !! rename module_title according to the job.
- <span class="menuitem">
+
 !! the test is not always OK, how to find if we are not in the homepage
 !! of the adm module
   !if $cmd!=$empty and $cmd!=new and adm/light notin $module
-   !read $(path)oneitem.phtml "$mtitle",1,module=$module
-  </span><span class="menuitem">
-  / *
- !else
-   !read $(path)oneitem.phtml "$mtitle",8
- !endif
-  </span>
+    <li>
+    !read $(path)oneitem.phtml "$mtitle",1,module=$module
+    </li>
+    <li>*<span class="show-for-sr">(Current)</span></li>
+  !else
+    <li><span class="show-for-sr">Current: </span>
+    !read $(path)oneitem.phtml "$mtitle",8
+    </li>
+  !endif
 
 !endif
-
+  </ul>
+</nav>
 <!-- _widgets/ariane.phtml -->
