@@ -150,7 +150,7 @@ $wims_name_account_property
  !if ($wims_supertype=4 and $wims_typename!=course) or ($wims_supertype=2 and $wims_typename=group)
   !! no score
  !else
-  !set wims_menu_items=!append line \
+  !set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation\
 scores,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
 livret1,1,module=adm/class/livret&job=user&user=$getuser\
 activity1,1,module=adm/class/activity&job=user&user=$getuser\
@@ -164,7 +164,7 @@ to $wims_menu_items
   !if $get_job!=teacher
     !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
     !set wims_menu_items=!append line itemsep,0,\
-part_list,1,cmd=resume\
+part_list ARIANE,1,cmd=resume\
 addstudent,1,module=adm/class/reguser&step=1\
   to $wims_menu_items
   !else
@@ -181,7 +181,7 @@ to $wims_menu_items
    !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
  to $wims_menu_items
  !endif
- !set wims_menu_items=!append line class_home,1,module=home\
+ !set wims_menu_items=!append line class_home ARIANE,1,module=home\
  to $wims_menu_items
 !endif
 
