@@ -237,6 +237,7 @@ classpass_=!defof class_password in wimshome/log/classes/$class/.def
      !setdef wims_otherclass=$wims_otherclass in wimshome/$mses/var.stat
      wims_module_log=Addclass $class by $wims_class/$wims_user
      !read adm/class/mkuserlist $class
+     !read adm/class/stat
      date=!translate : to . in $wims_now
      !appendfile wimshome/log/classes/$class/.log $date $httpd_REMOTE_ADDR	User $login added: $lastn, $firstn
     !endif
@@ -406,6 +407,7 @@ classpass_=!defof class_password in wimshome/log/classes/$class/.def
  wims_module_log=registered $login in $class
  date=!translate : to . in $wims_now
  !appendfile wimshome/log/classes/$class/.log $date $httpd_REMOTE_ADDR	User $login created: $lastn, $firstn
+ !read adm/class/stat
  !exit
 !endif
 

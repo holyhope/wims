@@ -27,15 +27,12 @@ class_superclass = !defof class_superclass in $classdeffile
       new_participate = !listcomplement $qclass in $participate
       !if $new_participate == $empty
           !sh rm -f $wims_home/log/classes/$class_superclass/.users/$user_id\
-          
+
       !else
           !setdef !set user_participate=$new_participate in $userdeffile
       !endif
   !next
 !endif
-
-
-
 
 
 log = !sh cd $wims_home/log/classes\
@@ -56,7 +53,8 @@ log = !sh cd $wims_home/log/classes\
 !! bizarrement, cette ligne ne fonctionne pas bien si elle est ajoutee aux precedentes
 !sh cd $wims_home/log/classes/$qclass\
     rm -Rf examlog
-    
-    
+
+
 !read adm/class/mkuserlist $qclass
 usercnt_after=!recordcnt wimshome/log/classes/$qclass/.userlist
+!read adm/class/stat

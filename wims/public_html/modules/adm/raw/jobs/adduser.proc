@@ -50,7 +50,6 @@ test=!defof user_exists in $userdeffile
 
     ### Faut-il aussi l'ajouter dans la sous-classe ici ?
     ### normalement, mkuserlist va s'en charger ?
-
     !exit
   !else
     error=user already exists in this class ($qclass)
@@ -88,7 +87,7 @@ $ in $l
 !read adm/class/mkuserlist $qclass
 !! log student have been added to class (cfr. module/adm/class/reguser/var.proc)
 date=!translate : to . in $wims_now
-!appendfile wimshome/log/classes/$qclass/.log $date $httpd_REMOTE_ADDR      User $quser added 
+!appendfile wimshome/log/classes/$qclass/.log $date $httpd_REMOTE_ADDR      User $quser added
 
 !if $class_superclass != $empty
   !read adm/class/mkuserlist $subclass
@@ -98,5 +97,4 @@ class_type=!defof class_type in $classdeffile
 !! need also to read mkteacherlist as you might want to add users wish user_supervisable=yes
   !read adm/gateway/mkteacherlist $qclass
 !endif
-
-
+!read adm/class/stat
