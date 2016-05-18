@@ -13,10 +13,9 @@ l=!record $confcat of lang/cat.$modu_lang
  themelist=!sh find themes -name visitor.phtml | sed 's!^themes/!!;s!/visitor.phtml$!!' | sort
  themelist=!words2items $themelist
  themelist=!listuniq default,$themelist
- iconlist=!sh cd gifs/themes/;ls | sort
-!!not very clean
- iconlist=!replace internal mkindex by in $iconlist
+ iconlist=!sh cd gifs/themes/;ls -d */ | cut -f1 -d'/' | sort
  iconlist=!words2items $iconlist
+ iconpromptlist=!replace internal default by No icon in $iconlist
 !endif
 
 !if $catname=graphics
