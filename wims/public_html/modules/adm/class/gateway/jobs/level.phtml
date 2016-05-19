@@ -4,6 +4,7 @@
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
+!!! mettre des onglets !!!
 !read scripts/levelform.phtml
 
 !if $classcnt=0
@@ -11,14 +12,15 @@
  $name_level1
  !href cmd=reply&job=addclass $wims_name_addclass
 .
-&nbsp;
+ $
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#class $wims_name_help
 </p>
 !else
+
  $table_header
  <caption>$name_level4
- &nbsp;
+  $
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#class $wims_name_help
  !href cmd=reply&job=addclass $wims_name_addclass
@@ -57,22 +59,20 @@
    </tr>
  !next i
  $table_end
-
 !endif
-
 
 !if $progcnt=0
 <p>
 $name_level2
  !href cmd=reply&job=addprog $wims_name_addprog
-.&nbsp;
+. $
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#program $wims_name_help
 </p>
 !else
  $table_header
  <caption>$name_level3
- &nbsp;
+  $
 !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#program $wims_name_help
  <span class="small">
@@ -94,7 +94,6 @@ $name_level2
    </td><td>
    !set wims_ref_class=wims_button
     !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
-
    </td><td>
    !if $s_!=$empty
     !if $s_=supervisor
@@ -110,6 +109,7 @@ $name_level2
    </tr>
  !next i
  $table_end
+
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
