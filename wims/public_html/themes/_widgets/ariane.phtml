@@ -14,20 +14,25 @@
      !read $(path)oneitem.phtml $1_
 </li>
 
-!for i_=1 to $wims_ariane_cnt
-  !set 1_=!line $i_ of $wims_ariane
-   <li class="menuitem $(1_[1])">
-     !read $(path)oneitem.phtml $1_
-   </li>
-!next
-
 !! the variable wims_ariane_self must be defined in the var.proc of
 !! the module if one does not an ariane thread automatically created
 !! should have more parameters, for the moment, just no.
 
 !if $wims_ariane_self!=$empty
-  !exit
+ !for i_=1 to $wims_ariane_cnt
+  !set 1_=!line $i_ of $wims_ariane
+  !set 2_=!word 1 of $1_
+   <li class="menuitem $2_">
+     !read $(path)oneitem.phtml $1_
+   </li>
+ !next
+ </ul>
+ </nav>
+ !reset wims_ref_class
+ !exit
 !endif
+
+
 !if _ notin $session and $module!=home and adm isin $module_category
 
   !set mtitle=$(module_title_$lang)
@@ -50,7 +55,6 @@
     !read $(path)oneitem.phtml "$mtitle",8
     </li>
   !endif
-
 !endif
   </ul>
 </nav>
