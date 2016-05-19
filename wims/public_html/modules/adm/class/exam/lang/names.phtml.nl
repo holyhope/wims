@@ -48,7 +48,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam9=!nosubst Dit proefwerk mag maximaal <strong>$sdure min.</strong> in beslag nemen.\
 Wanneer een opgave wordt aangeklikt,
- 
+
 !set name_simulation=Dit proefwerk verloopt in simulatie mode. Het werkt precies zo als het echte proefwerk, \
 alleen worden nu de cijfers -en andere data- natuurlijk niet opgeslagen.
 
@@ -60,13 +60,14 @@ Start dit proefwerk.\
 De score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.\
 into name_pending,name_begin1,name_begin2,name_simulation2
 
-!set name_timeleft=!nosubst De beschikbare tijd is verlopen! Je hebt de toegestane $sdure minuten verbruikt.
+!set name_timeleft=!nosubst De beschikbare tijd is verlopen! Je hebt de toegestane $sdure \
+ minuten verbruikt. You must logout now.
 !set name_realscore=!nosubst De echte score voor deze proefwerk-sessie is $lastscore.
 !set name_bestscore=!nosubst De score voor dit proefwerk is $lastscore. (En de beste score telt !)
 
 
 !! ---------------------------
-!! nouvelle partie 
+!! nouvelle partie
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 

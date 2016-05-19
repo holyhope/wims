@@ -64,7 +64,8 @@ que el examen verdadero pero no se puede guardar la puntuación y el intento no s
  La puntuación actual no se tomará en cuenta, porque el examen está en modo simulación.\
 into name_pending,name_begin1,name_begin2,name_simulation2
 
-!set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos permitidos para este examen.
+!set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos\
+ permitidos para este examen. You must logout now.
 !set name_realscore=!nosubst Su puntuación real para esta hoja de examen es $lastscore
 !set name_bestscore =!nosubst Su mejor puntuación para este examen es $lastscore (la mejor puntuación es la que se tomará en cuenta).
 
