@@ -31,6 +31,17 @@ nblocalvar=!itemcnt $tv_listlocal
 	!exit
     !endif
 
+!! check forbidden name
+    !for rac in exam,sheet,vote,manual,login,name,lastname,firstname,password,email,regnum,photourl,comments,external_auth,allscore,averages,average,sheets,sheetexo,exams,manuals,participate,supervisable,supervise,manual
+	!if $rac isin $tc_name
+	    t=!replace internal $rac by $empty in $tc_name
+	    !if $[$t]!=NaN 
+		error=nameforbidden
+		!exit
+	    !endif
+	!endif
+    !next rac
+
 !! check list of value
     tc_value=!listuniq $tc_value
     tc_value=!listcomplement _EMPTY_ in $tc_value

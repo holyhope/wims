@@ -5,6 +5,11 @@
  !exit
 !endif
 
+!if nameforbidden=$error
+ Désolé, les variables techniques ne peuvent pas porter des noms du type exam, sheet, vote, manual suivis d'un numéro.
+ !exit
+!endif
+
 !if bad_class=$error
  Vous n'êtes pas connecté à une classe.
  !exit
