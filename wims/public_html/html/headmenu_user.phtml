@@ -106,22 +106,20 @@
  !!!set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
 !!!endif
 
-!if $wims_sequence>0 and adm/sheet isin $module
+!if $wims_sequence>0
  !if $wims_user=supervisor
   !set wims_ariane=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence\
    to $wims_ariane
  !else
-  !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence\
-     to $wims_ariane
+  !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence to $wims_ariane
  !endif
+ !set wims_ariane_self=no
 !endif
 !if $wims_sheet>0 or P isin $wims_sheet
-  !if $wims_sequence!=$empty
-    !set wims_ariane=!append line sequence,1,module=home&seq=$wims_sequence \
-      to $wims_ariane
-  !endif
-    !set wims_ariane=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $wims_ariane
+   !set wims_ariane=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $wims_ariane
+   !set wims_ariane_self=no
 !endif
+
 
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
