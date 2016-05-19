@@ -100,26 +100,39 @@ l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur
 :allowtype
 <h2 id="allowtype">Indication sur l'enregistrement des notes.</h2>
 
-Vous pouvez imposer une restriction dans le temps
- pour l'enregistrement des notes en sélectionnant
-<span class="tt wims_code_words">$(name_allowtype[4])</span>
- dans le champ
-<span class="tt wims_code_words">$(name_shinfo[6])</span>
-et en ajoutant des mots
- mots
- <span class="tt wims_code_words">
-&gt;aaaammjj.hh:mm</span>
- (début) et/ou
- <span class="tt wims_code_words">
-&lt;aaaammjj.hh:mm</span>
- (fin). Les dates et heures doivent être en temps local du SERVEUR
- et ces mots doivent être séparés les uns des autres par des espaces.
-<p>
+Vous pouvez imposer une restriction dans le temps pour l'enregistrement des notes. Plusieurs options sont disponibles :
+<ul>
+ <li><span class="tt wims_code_words">$(name_allowtype[1])</span> : les notes seront enregistrées.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[2])</span> : aucune note ne sera enregistrée.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[3])</span> : un champ de saisi, <span class="tt wims_code_words">$(name_shinfo[6])</span>, apparaît et vous pouvez indiquer une plage horaire ainsi que les adresses IP à partir desquelles les notes seront enregistrées. Cette restriction s'écrit à l'aide de trois mots (qui peuvent ne pas tous être présents) : <br/>
+ <ul>
+  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span> permet d'indiquer une heure de début ;</li>
+  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span> permet d'indiquer une heure de fin ;</li>
+  <li><span class="tt wims_code_words">192.168. </span> qui permet d'indiquer une plage d'IP ;</li>
+ </ul>
+ Les dates et heures doivent être en temps local du SERVEUR et ces trois mots doivent être séparés les uns des autres par des espaces.
+ <p>
 Exemple :
 <span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
 permet l'enregistrement des notes entre 2 dates et seulement pour les numéros IP commençant
-par <span class="tt wims_code_words"127.0</span>.
+par <span class="tt wims_code_words">127.0</span>.
 </p>
+</li>
+
+<li><span class="tt wims_code_words">$(name_allowtype[4])</span> : cette option peut-être choisie afin d'individualiser les restrictions d'accès à l'aide d'une <span class="tt wims_code_words">variable technique</span> (cette variable technique est définie pour chaque participant soit manuellement en utilisant le module de gestion des variables techniques soit à l'aide d'un <span class="tt wims_code_words">questionnaire</span>). Lors du choix de cette option, un menu permet de choisir la variable technique qui sert de différenciation et un tableau permet d'effectuer un réglage du filtre (en utilisant le même format que précédemment) pour chaque valeur possible de la variable.
+<br/>
+Dans le cas d'une variable technique définie à l'aide du modèle <span class="tt wims_code_words"> Accès individualisé</span> d'un <span class="tt wims_code_words">questionnaire</span> spécifique à la création de réservation de créneau horaire, le tableau est déjà pré-rempli avec les données proposées lors de la création du questionnaire (WORK IN PROGRESS : NOT OPERATIONNEL FOR THE MOMENT). Ces données peuvent être modifiées, mais les modifications ne sont pas répercutées sur le questionnaire.
+</li>
+</ul>
+!if $tv_listtechvar!=$empty
+ Les variables techniques actuellement disponibles dans votre classe sont :
+ !read adm/vfilter/listvar.phtml 
+!else
+ Il n'y a actuellement aucune variable technique définie dans votre classe. Si vous voulez utiliser cette option, il faudra d'abord définir une variable technique.
+!endif
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :variable
 <p>
@@ -144,6 +157,7 @@ exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
 !if $wims_read_parm!=$empty
  !exit
 !endif
+
 :feedback
 <h2 id="feedback">$(name_shtab[10])</h2>
 

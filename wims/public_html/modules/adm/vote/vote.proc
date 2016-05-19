@@ -130,14 +130,32 @@ nbvotes=$vcnt
 !! these lines are writing the variable user__ttt in the user file when
 !!\uservar{ttt, ....}
 
+
 ccc=!itemcnt $uvcnt
-!for i=1 to $ccc
- uvc=!item $i of $uvcnt
- uvn=!item $i of $uvname
- uvv=!line $i of $uvval
- uvv=!item $(parm$uvc)+1 of $uvv
- !setdef !set user__$uvn=$uvv in $userfile
-!next uv
+!if $ccc>0
+ !readproc adm/vfilter/listvarfilter.proc
+ localname=!item $tv_listlocal of $tv_listname
+ !for i=1 to $ccc
+  uvc=!item $i of $uvcnt
+  uvn=!item $i of $uvname
+!! no registery if the technical variable is not already define
+  !if $uvn isitemof $localname
+      uvv=!line $i of $uvval
+      uvv=!item $(parm$uvc)+1 of $uvv
+!! check if the value exists for this technical variable (only defined values can be save in user .def file)
+      po=!positionof item $uvn in $tv_listname
+      don=!line $po of $tv_listtechvar
+      !distribute item $don into name,classid,number
+      don=!record $number of wimshome/log/classes/$wims_class/.techvar
+      don=!line 2 of $don
+      !if $uvv notitemof $don
+	uvv=$empty
+      !endif
+      classid=!replace internal / by A in $classid
+      !setdef !set user_techvar_$(classid)_$number=$uvv in $userfile
+  !endif
+ !next i
+!endif
 !! -------------------------------------------
 
 !restart module=adm/vote&job=read&vote=$vote

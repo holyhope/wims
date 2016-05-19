@@ -7,6 +7,8 @@
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 !set name_duplicateok=Feuille d'exercices dupliquée correctement.
 
+!set name_name=Nom
+!set name_ltvalue=Valeur(s)
 
 !let name_shtab=!nosubst $wims_name_number,$wims_name_title,$wims_name_Description,Puntos,Points,$name_weight,$name_dependency,$wims_name_comment,$wims_name_action,Paramètres de la série,$wims_name_feedbackexo
 
