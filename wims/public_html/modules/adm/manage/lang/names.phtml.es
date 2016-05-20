@@ -13,7 +13,7 @@
    Configuración\
    Chequeo del sistema\
    tras la adición de nuevos recursos (módulos, hojas de trabajo) al servidor.\
-   Check/maintain\
+   Maintain\
    Create/maintain\
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
