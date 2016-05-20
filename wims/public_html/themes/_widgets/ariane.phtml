@@ -1,3 +1,6 @@
+!! variable wims_ariane_home =no don't use $wims_home_items
+!! wims_ariane_self don't generate automatically : home / module
+
 !if $module = home
   !set path = ./adm/
 !else
@@ -9,11 +12,14 @@
 
 <nav aria-label="You are here:">
   <ul class="breadcrumbs">
+!! the test is when student are doing an exercise in a sheet!
+!! tricky
+  !if $wims_ariane_home=$empty
    !set 1_=!line 1 of $wims_home_items
    <li class="breadcrumb_root $(1_[1])">
      !read $(path)oneitem.phtml $1_
    </li>
-
+  !endif
 !! the variable wims_ariane_self must be defined in the var.proc of
 !! the module if one does not an ariane thread automatically created
 !! should have more parameters, for the moment, just no.
@@ -30,7 +36,6 @@
  </nav>
  !exit
 !endif
-
 
 !if _ notin $session and $module!=home and adm isin $module_category
 
@@ -67,3 +72,4 @@
   </ul>
 </nav>
 <!-- _widgets/ariane.phtml -->
+!!reset wims_ariane_home wims_ariane_self
