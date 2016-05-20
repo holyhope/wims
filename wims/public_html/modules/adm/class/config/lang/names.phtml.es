@@ -471,7 +471,8 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
 !endif
 
 :commun
-!distribute line Autenticación\
+!distribute line Global configuration\
+Autenticación\
 Preferencias\
 Restricción de acceso\
 Parametrización OEF\
@@ -487,7 +488,7 @@ Restricción de la puntuación\
 Dirección de una plataforma\
 de\
 External authentication\
-into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
+into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
