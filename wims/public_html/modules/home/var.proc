@@ -34,9 +34,22 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
  browse_parm=job=$browse_job&parm=$browse_parm
 !endif
 
-!if $wims_user!=$empty
+!if $wims_user!=$empty and $wims_class!=$empty
  !readdef ./wimshome/log/classes/$wims_class/.def
  !default class_typename=class
+ !set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
+ !set auth_method_list=cas,ldap,php
+ !set auth_method=$(class_authidp[1;])
+ !if $(class_authidp[1;]) isitemof $auth_method_list
+   !set ext_login=$wims_external_auth
+ !endif
+ !if $wims_user!=supervisor
+   !default ext_login=$wims_user
+ !else
+   !default ext_login=$wims_realuser
+   !default ext_login=$wims_user
+   !default ext_login=supervisor
+ !endif
 !endif
 
 !if $wims_user=$empty or $wims_user=supervisor or _tool isin $wims_session
