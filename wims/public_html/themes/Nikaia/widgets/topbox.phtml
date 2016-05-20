@@ -1,58 +1,63 @@
 <div id="wimstopbox">
 
-	!!Site Title
-	!read themes/_widgets/site_title.phtml
+  !!Site Title
+  !read themes/_widgets/site_title.phtml
 
-	!!Institution logo
-	!set positionlogo=right
-	!read themes/_widgets/institution_logo.phtml
+  !!Institution logo
+  !set positionlogo=right
+  !read themes/_widgets/institution_logo.phtml
 
-	!!Language Selector
-	!read themes/_widgets/language_selector.phtml
+  !!Language Selector
+  !read themes/_widgets/language_selector.phtml
 
-	<br class="clearall"/>
+  <br class="clearall"/>
 
-	<ul class="wimsmenu menuglobal">
-		!!module_path = $module_path
-		!!wims_hm_cnt = $wims_hm_cnt
+  <ul class="wimsmenu menuglobal">
+    !!module_path = $module_path
+    !!wims_hm_cnt = $wims_hm_cnt
 
-		!if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
-			!distribute items li into div1
-			!read themes/_widgets/headhome.phtml
-			!read themes/_widgets/headmenu.phtml
-			!read themes/_widgets/logout.phtml
+    !if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+      !distribute items li into div1
+      !read themes/_widgets/headhome.phtml
+      !read themes/_widgets/headmenu.phtml
+      !read themes/_widgets/logout.phtml
 
-			!distribute items li,div into div0,div1
-   			!read themes/$wims_theme/widgets/permalink.phtml
+      !distribute items li,div into div0,div1
+      !read themes/$wims_theme/widgets/permalink.phtml
 
-   			!reset div0 div1
+      !reset div0 div1
 
-   			!!## technical parameters
-			!if $class_cas_auth=$empty
-		     !set m_init_parm=!replace internal & by $ $ in $module_init_parm
-		     !set class_cas_auth=!getopt class_auth in $m_init_parm
-			!endif
+      !!## technical parameters
+      !if $class_cas_auth=$empty
+        !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+        !set class_cas_auth=!getopt class_auth in $m_init_parm
+      !endif
 
-            !read themes/_widgets/authlogout.phtml
+      !read themes/_widgets/authlogout.phtml
 
-		!endif
+    !endif
 
-		!!Menu a afficher sur la page d'accueil des visiteurs
-		!if $module_path isitemof home and $wims_user=$empty
-			!!Accueil WIMS
-			<li class="menuitem home">
-				!set wims_ref_class=home
-				!href module=home $wims_name_home
-			</li>
-			!!Zone Enseignants
-			<li class="menuitem n_supervisor">
-				!read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
-			</li>
-			!!Aide
-			<li class="menuitem help">
-				!read ./adm/oneitem.phtml help,4,module=help/main,help
-			</li>
-		!endif
-	</ul><!-- /menuglobal -->
-	!read themes/_widgets/ariane.phtml
+    !!Menu a afficher sur la page d'accueil des visiteurs
+    !if $module_path isitemof home and $wims_user=$empty
+      !! Adds "wims Home" root to Breadcrumbs
+      !set wims_home_items=!append line home,8,, to $wims_home_items
+
+      !!Accueil WIMS
+      !!<li class="menuitem home">
+      !!  !set wims_ref_class=home
+      !!  !href module=home $wims_name_home
+      !!</li>
+
+      !! Teachers Zone
+      <li class="menuitem n_supervisor">
+        !read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
+      </li>
+      !!Aide
+      <li class="menuitem help">
+        !read ./adm/oneitem.phtml help,4,module=help/main,help
+      </li>
+    !endif
+  </ul><!-- /menuglobal -->
+
+  !read themes/_widgets/ariane.phtml
 </div><!-- fin de wimstopbox-->

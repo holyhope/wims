@@ -3,15 +3,14 @@
 !! Header menu bar definition.
 !nocache
 !set wims_theme_header=yes
-
 !set jquery_defined=yes
 
 !default wims_theme_icon=$class_theme_icon
-!default wims_theme_icon=standard
+!default wims_theme_icon=wimsedu
 
 !if _tool isin $wims_session
-    <!-- end of $wims_theme/header.phtml -->
-    !changeto themes/$wims_theme/toolheader.phtml
+  <!-- end of Nikaia/header.phtml -->
+  !changeto themes/$wims_theme/toolheader.phtml
 !endif
 
 !if _help isin $wims_session
@@ -23,27 +22,26 @@
 !endif
 
 !if $wims_lightpopup=yes
-  <!--<div id="wimslightpopup">-->
-   <link rel="stylesheet" href="html/themes/_css/light.css" type="text/css">
+  <!--wimslightpopup-->
+  <link rel="stylesheet" href="html/themes/_css/light.css" type="text/css">
 !endif
 
 !set wims_theme_version=1
 !set current_module=!replace / by , in $module
 !set module_path= !item 1 of $current_module
 
-
 !read themes/$wims_theme/widgets/topbox.phtml
 
 !if $module!=home or $wims_user!=
- <div id="wimsbodybox"
- !if $wims_subsession!=$empty
-      class="$wims_subsession"
- !endif
+  <div id="wimsbodybox"
+  !if $wims_subsession!=$empty
+    class="$wims_subsession"
+  !endif
   >
 
   <!--Ajout du menu de la zone enseignant-->
   !if $module isitemof adm/class/regclass,adm/createxo,adm/modtool,adm/quicktool,adm/latex2wims
-   !set wims_zone=zone_prof
+    !set wims_zone=zone_prof
   !else
     !if $module = adm/class/classes and $type != participant
       !set wims_zone=zone_prof
@@ -68,4 +66,5 @@
   !read themes/_widgets/alertchat.phtml
 !endif
 
-<!-- end of $wims_theme/header.phtml -->
+<!-- END of Nikaia/header -->
+!! NEXT ==> default/visitor.phtml ??

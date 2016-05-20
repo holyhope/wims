@@ -7,26 +7,26 @@
 <!-- _widgets/ariane.phtml -->
 !set wims_ariane_cnt=!linecnt $wims_ariane
 
-<nav aria-label="You are here:" role="navigation">
+<nav aria-label="You are here:">
   <ul class="breadcrumbs">
-!set 1_=!line 1 of $wims_home_items
- <li class="menuitem $(1_[1])">
+   !set 1_=!line 1 of $wims_home_items
+   <li class="breadcrumb_root $(1_[1])">
      !read $(path)oneitem.phtml $1_
-</li>
+   </li>
 
 !! the variable wims_ariane_self must be defined in the var.proc of
 !! the module if one does not an ariane thread automatically created
 !! should have more parameters, for the moment, just no.
 
 !if $wims_ariane_self!=$empty
- !for i_=1 to $wims_ariane_cnt
-  !set 1_=!line $i_ of $wims_ariane
-  !set 2_=!word 1 of $1_
+  !for i_=1 to $wims_ariane_cnt
+   !set 1_=!line $i_ of $wims_ariane
+   !set 2_=!word 1 of $1_
    <li class="menuitem $2_">
      !read $(path)oneitem.phtml $1_
    </li>
- !next
- </ul>
+  !next
+  </ul>
  </nav>
  !exit
 !endif
@@ -46,7 +46,7 @@
 !! of the adm module
   !if $cmd!=$empty and $cmd!=new and adm/light notin $module
     <li>
-    !read $(path)oneitem.phtml "$mtitle",1,module=$module
+     !read $(path)oneitem.phtml "$mtitle",1,module=$module
     </li>
     !if $wims_ariane_cnt>0
       !for i_=1 to $wims_ariane_cnt
