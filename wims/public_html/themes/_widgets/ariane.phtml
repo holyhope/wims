@@ -28,7 +28,6 @@
  !next
  </ul>
  </nav>
- !reset wims_ref_class
  !exit
 !endif
 
@@ -49,6 +48,15 @@
     <li>
     !read $(path)oneitem.phtml "$mtitle",1,module=$module
     </li>
+    !if $wims_ariane_cnt>0
+      !for i_=1 to $wims_ariane_cnt
+        !set 1_=!line $i_ of $wims_ariane
+        !set 2_=!word 1 of $1_
+        <li class="menuitem $2_">
+          !read $(path)oneitem.phtml $1_
+        </li>
+      !next
+    !endif
     <li>*<span class="show-for-sr">(Current)</span></li>
   !else
     <li><span class="show-for-sr">Current: </span>
