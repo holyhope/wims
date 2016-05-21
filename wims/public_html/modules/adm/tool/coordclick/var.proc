@@ -1,7 +1,18 @@
 !default wims_firstname=$wims_devfirstname
 !default wims_lastname=$wims_devlastname
 
-!!$wims_sesdir a mettre partout y a t-il quelque chose pour s2
+!set wims_ariane=!append line modtool,1,module=adm/modtool\
+  to $wims_ariane
+!set wims_ariane_self=no
+!if $cmd!=reply
+   !set wims_ariane=!append line coordclick,8\
+to $wims_ariane
+!else
+   !set wims_ariane=!append line coordclick,1,module=$module\
+to $wims_ariane
+!endif
+
+!!$wims_sesdir a mettre partout y a-t-il quelque chose pour s2
 !read lang/names.phtml.fr
 !set limit=50
 !reset begin
