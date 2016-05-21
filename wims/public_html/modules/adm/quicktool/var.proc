@@ -1,4 +1,4 @@
-!!@#language independant 
+!!@#language independant
 !read adm/language lang/names.phtml
 
 !read tabletheme
@@ -35,7 +35,7 @@ author=!nonempty items $author
               !endif
           !next
            compute=yes
-      !endif       
+      !endif
    !else
       !for a in type_exo,title,author,email,file,N,MAX1,M,try,\
         instruction,instruction2,answer_given,alea,choice,format,format0,\
@@ -46,14 +46,14 @@ author=!nonempty items $author
         sens,aucune,raw,partialscore,paste,specialhelp1,specialhelp2,\
         specialhelp3,specialhelp4,helpprompt,reaccent,packs,player,player_option,\
         good_answer_text,bad_answer_text,incomplete_answer_text,\
-    
+
         $(a) =!getdef $a in $example_dir/$TYPE/$example
       !next
       !if $type_exo iswordof CORRESP
         taille_corr=$size
       !endif
       !if $type_exo iswordof ORDONNE \
-         or ($type_exo iswordof SELECTWORD SELECTWORDA GAP and ($format iswordof dragfill clickfill)) 
+         or ($type_exo iswordof SELECTWORD SELECTWORDA GAP and ($format iswordof dragfill clickfill))
          taille_drag=$size
       !endif
       !if $type_exo iswordof SELECTWORD SELECTWORDA GAP and $format=case
@@ -62,7 +62,7 @@ author=!nonempty items $author
       !if $type_exo iswordof COMPOSE
          taille_compose=$size
       !endif
-      
+
       !if $type_exo iswordof TRUEFALSE
          choice_tf=$choice
       !endif
@@ -75,7 +75,7 @@ author=!nonempty items $author
       !if $type_exo iswordof QCMIII
          choice_fd=$choice
       !endif
-      
+
       !for a in reading,audio,image,video
         !if $($(a)_file) notsametext no and $($(a)_file)!=$empty
           $(a)_file0=$($(a)_file)
@@ -86,7 +86,7 @@ author=!nonempty items $author
       !next
       compute=no
      example=
-       
+
    !endif example
    !readproc values
    !if $N issametext all
@@ -97,7 +97,7 @@ author=!nonempty items $author
    !else
       MAX=$MAX1
    !endif
-   !if $type_exo iswordof CORRESP  
+   !if $type_exo iswordof CORRESP
       size=$taille_corr
    !endif
    !if $type_exo iswordof ORDONNE \
@@ -124,11 +124,11 @@ author=!nonempty items $author
       choice=$choice_fd
    !endif
 
-   liste = 
+   liste =
    !for a in reading, audio, image, video
       !if $($(a)_file1)=no
         $(a)_file=no
-      !else 
+      !else
         $(a)_file=!trim $($(a)_file0)
       !endif
    !next
@@ -147,14 +147,14 @@ $modele
    !for a in $Type_exo
      mod=!record 0 of $dossier/$a
      modele =$modele\
-     $mod   
+     $mod
    !next
-   
+
    modele=!replace internal IMAGES by $image_tag in  $modele
    modele=!replace internal VIDEO by $video_tag in  $modele
    modele=!replace internal READING by $reading_tag in  $modele
    modele=!replace internal _image_dir by \imagedir in  $modele
-   
+
    !for a in title,email,author
      b=!trim $($a)
      modele=!replace internal \$a{} by \$a{$b} in  $modele
@@ -190,17 +190,17 @@ $ by 	 in $($a)
        help=!replace internal RAW(reading) by \reading in  $help
      !endif
    !endif
-   modele = $modele $help 
+   modele = $modele $help
    exo=$modele
    exo1 = !replace internal & by &amp; in $exo
-   
+
    example=
    !if $wims_developer!=$empty
        list_mod=!sh ls $wims_home/public_html/modules/devel/$wims_developer
        list_mod=!words2items $list_mod
        list_module=
        !for a in $list_mod
-          category = !module category devel/$wims_developer/$a  
+          category = !module category devel/$wims_developer/$a
          !if oef isin $category
             list_module=!append item $a to $list_module
          !endif
@@ -215,7 +215,7 @@ $ by 	 in $($a)
 
    !if $transfert=yes and $target!=$empty
       !if / isin $target or .. isin $target
-        error=$error nom_fichier     
+        error=$error nom_fichier
        !exit
       !endif
       !if / isin $source or .. isin $source
@@ -232,7 +232,7 @@ $ by 	 in $($a)
        cp $wims_home/$wims_sesdir/getfile/$source.oef $dir/src\
        cd $dir\
        src2def
-       
+
       !readproc listefile
       !if  / isin $wims_deposit or .. isin $wims_deposit
         !exit
@@ -247,7 +247,7 @@ $ by 	 in $($a)
           file_transfert=$reading_file
         !endif
         !if $type_fichier=3
-          file_transfert=images/$image_file 
+          file_transfert=images/$image_file
         !endif
         !if $type_fichier=4
           file_transfert=images/$audio_file
@@ -268,18 +268,31 @@ $ by 	 in $($a)
            !sh cd $wims_home/$wims_sesdir\
              mv user-deposit getfile/$wims_deposit\
              cp getfile/$wims_deposit $dir/$file_transfert
-          !endif                     
-        !endif      
+          !endif
+        !endif
        !reset type_fichier
             dir=$wims_home/public_html/modules/devel/$wims_developer/$target
   !readproc listefile
-      
+
       !endif
     !reset file_transfert
    !endif
    !endif transfert
 !endif
+!set wims_ariane=!append line modtool,1,module=adm/modtool\
+to $wims_ariane
+!if $type_exo!=$empty
+    !set wims_ariane=!append line quicktool,1,module=$module\
+to $wims_ariane
+!else
+   !set wims_ariane=!append line quicktool,8, to $wims_ariane
+!endif
+!set wims_ariane_self=no
 
+!if $wims_theme=default
+  !set wims_menu_items=!append line $wims_ariane to $wims_menu_items
+  !reset wims_ariane
+!endif
 
 class_importation=no
 

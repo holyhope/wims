@@ -36,17 +36,6 @@
 
 :end
 
-!if $type_exo!=$empty
-  !set wims_menu_items=!append line modtool,1,module=adm/modtool\
-  back2,1,module=$module\
-  itemsep,0,\
-   to $wims_menu_items
-!else
- !set wims_menu_items=!append line modtool,1,module=adm/modtool\
-  to $wims_menu_items
-!endif
-
-
 !if $wims_developer!= and $type_exo=
 !set wims_menu_items=!append line itemsep,0,\
    to $wims_menu_items
@@ -59,6 +48,7 @@
    !next a
 !next
 !endif
+
 !tail
 
 !reset wims_exec_error wims_deposit

@@ -16,7 +16,9 @@ wims_prefix=class user tmp
 !endif
 
 :debut
-    !default execut=0
+!set wims_ariane_self=no
+
+!default execut=0
 !if  / isin $wims_deposit or .. isin $wims_deposit
   !exit
 !endif
@@ -76,6 +78,7 @@ cnt_fichier=!itemcnt $fichiers
 !if $error!=$empty
   !exit
 !endif
+
 Document dans le compte Modtool
 
 !if $wims_developer!=$empty
@@ -148,5 +151,17 @@ Document dans le compte Modtool
       execut=3
     !endif
   !endif
+!endif
+
+!set wims_ariane=!append line modtool,1,module=adm/modtool\
+to $wims_ariane
+!if $execut>0
+  !set wims_ariane=!append line latex2wims,1,module=adm/latex2wims&execut=0\
+to $wims_ariane
+!endif
+
+!if $wims_theme=default
+  !set wims_ariane=!append line $wims_ariane to $wims_menu_items
+  !reset wims_ariane
 !endif
 
