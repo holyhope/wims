@@ -79,24 +79,24 @@ name_nonnumeric,name_prompt,name_condition
 
 !if $level=2
  !set types=!sort nocase lines \
-auto,			default\
-literal expression,	litexp\
-algebraic expression,	algexp\
-formal expression,	formal\
-approximative text,	atext\
-case-nonsensitive text,	nocase\
-case-sensitive text,	case\
-raw text,		raw\
-character set, 		chset\
-equation,		equation\
-finite set,		set\
-matrix,			matrix\
-number,			numeric\
-number with range,	range\
-number with units,	units\
-numerical function,	function\
-vector,			vector\
-words in a list,	wlist
+auto,default\
+literal expression,litexp\
+algebraic expression,algexp\
+formal expression,formal\
+approximative text,atext\
+case-nonsensitive text,nocase\
+case-sensitive text,case\
+raw text,raw\
+character set, chset\
+equation,equation\
+finite set,set\
+matrix,matrix\
+number,numeric\
+number with range,range\
+number with units,units\
+numerical function,function\
+vector,vector\
+words in a list,wlist
 
 !distribute lines Geef de inhoud van de oefening \
 Hier kunnen de random parameters worden gedeclareerd \

@@ -1,4 +1,3 @@
-
 !if $oef_test=yes
  !set wims_html_header=!append line $header_js to $wims_html_header
  !set wims_html_header=!append line $oefcss to $wims_html_header
@@ -92,7 +91,7 @@ filemode,1,cmd=reply&mode=file&level=1\
 !endif
 !if $level iswordof 2 and $mode=model
 !set wims_menu_items=!append line itemsep,0,\
-modellist,1,cmd=reply&level=1&mode=model\
+modellist ARIANE,1,cmd=reply&level=1&mode=model\
 rawmode,1,cmd=reply&rawinp=yes\
 to $wims_menu_items
 !endif
@@ -101,6 +100,11 @@ to $wims_menu_items
 !if $wims_user=supervisor or $wims_developper!=$empty
   !set wims_menu_items=!append line tools,0,$wims_name_tools\
   coordclick,1,module=adm/tool/coordclick\
+ to $wims_menu_items
+!endif
+!if $wims_developper!=$empty
+  !set wims_menu_items=!append line tools,0,$wims_name_tools\
+  chemtool,1,module=adm/tool/chemtool\
  to $wims_menu_items
 !endif
 :end

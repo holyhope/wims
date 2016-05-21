@@ -81,23 +81,23 @@ name_nonnumeric,name_prompt,name_condition
 
 !if $level=2
  !set types=!sort nocase lines \
-auto,			default\
-expresión literal,	litexp\
-expresión algebraica,	algexp\
-expresión formal,	formal\
-texto aproximado,	atext\
+auto,default\
+expresión literal,litexp\
+expresión algebraica,algexp\
+expresión formal,formal\
+texto aproximado,atext\
 texto convertido en minúsculas,nocase\
-texto exacto,		case\
-texto bruto,		raw\
-ecuación,		equation\
-conjunto finito,		set\
-matriz,		matrix\
-número,			numeric\
-número con zona,	range\
-número con unidad,	units\
-función numérica,	function\
-vector,		vector\
-palabras en una lista,	wlist
+texto exacto,case\
+texto bruto,raw\
+ecuación,equation\
+conjunto finito,set\
+matriz,matrix\
+número,numeric\
+número con zona,range\
+número con unidad,units\
+función numérica,function\
+vector,vector\
+palabras en una lista,wlist
 
 !distribute lines Ahora, por favor, introduce el contenido de tu ejercicio \
  Puedes definir los parámetros aleatorios aquí\

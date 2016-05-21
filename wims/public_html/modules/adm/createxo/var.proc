@@ -86,6 +86,14 @@ choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
  !exit
 !endif
 
+!if $level notwordof 2 and ($realtest!=no and $realtest!=$empty)
+  !set wims_ariane=!append line backcreatexo,1,cmd=resume&realtest=no\
+  to $wims_ariane
+!endif
+!if $level iswordof 6
+  !set wims_ariane=!append line backcreatexo,1,cmd=reply&level=3\
+  to $wims_ariane
+!endif
 !if $mode=model and $model!=$empty
  model=!text select abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 in $model
  !sh cp -f $wims_home/public_html/scripts/model/$lang/src/$model.oef $wims_home/sessions/$wims_session/user-deposit\
@@ -104,9 +112,13 @@ choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
   mode=
   !goto nomodel
  !endif
+ !set wims_ariane=!append line modellist,1,cmd=reply&level=1&mode=model\
+to $wims_ariane
 !endif
 
 !if $level=2 and $mode=$empty
+  !set wims_ariane=!append line normalmode,1,cmd=reply&level=1\
+to $wims_ariane
  !read model/cut.proc
  !if $cnt>=6 and $sps!=$empty and $parms!=$empty and $desc!=$empty and\
 	$model_type!=$empty and statementrec>1
@@ -117,7 +129,7 @@ choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
 
 :nomodel
 !if $level=3 and $realtest=yes
- oef_test=yes
+  oef_test=yes
  !changeto oef/var.proc
 !else
  !if $realtest=no
