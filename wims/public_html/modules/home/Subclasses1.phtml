@@ -3,106 +3,98 @@
 !set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
 !set classes=!record 0 of wimshome/log/classes/$wims_class/classes
 !set classcnt=!linecnt $classes
-!if $classcnt>0
- <p>
- $(CL_Names[2]):</p>
- !reset compt
- !for i=1 to $classcnt
-  !set l=!line $i of $classes
-  !distribute items $l into c_,s_,t_
-  <span class="wims_classes_direct_class">
-  !if $c_ isitemof $user_supervise
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
-   !else
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-   !endif
-  </span>
-  !if $compt=9
-    !set compt=0
-     <p class="emptyline"></p>
-  !else
-    !increase compt
-  !endif
- !next i
-!endif
 !set progs=!record 0 of wimshome/log/classes/$wims_class/programs
 !set progcnt=!linecnt $progs
-
-!if $progcnt>0
- <p>
- $(CL_Names[3]):</p>
- !reset compt
- !for i=1 to $progcnt
-  !set l=!line $i of $progs
-  !distribute items $l into c_,s_,t_
-  <span class="wims_classes_direct_program">
-  !if $c_ isitemof $user_supervise
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
-   !else
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-   !endif
-  </span>
-  !if $compt=5
-    !set compt=0
-     <p class="emptyline"></p>
-  !else
-    !increase compt
-  !endif
- !next i
-!endif
-
 !if $classcnt+$progcnt<1
  !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
  !set coursecnt=!linecnt $courses
+!endif
+!set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
+!set icoursecnt=!linecnt $icourses
+!if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
+  !goto nosubclass
+!endif
+ <ul class="wims_nopuce">
+!if $classcnt>0
+ <li>
+ $(CL_Names[2]):
+  <ul class="inline">
+ !for i=1 to $classcnt
+  !set l=!line $i of $classes
+  !distribute items $l into c_,s_,t_
+  <li>
+  <div class="wims_classes_direct_class">
+  !if $c_ isitemof $user_supervise
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+   !endif
+  </div>
+  </li>
+ !next i
+ </ul></li>
+!endif
+!if $progcnt>0
+  <li>
+ $(CL_Names[3]):
+ <ul class="inline">
+ !for i=1 to $progcnt
+  !set l=!line $i of $progs
+  !distribute items $l into c_,s_,t_
+  <li>
+  <div class="wims_classes_direct_program">
+  !if $c_ isitemof $user_supervise
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
+   !else
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+   !endif
+  </div>
+  </li>
+ !next i
+ </ul></li>
+!endif
 
+!if $classcnt+$progcnt<1
  !if $coursecnt>0
-  <p>
-  $(CL_Names[4]):</p>
-  !reset compt
+  <li>
+  $(CL_Names[4]):
+  <ul class="inline">
   !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into c_,s_,t_
-   <span class="wims_classes_direct_course">
+   <li>
+   <div class="wims_classes_direct_course">
    !if $c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
    !endif
-   </span>
-   !if $compt=5
-    !set compt=0
-    <p class="emptyline"></p>
-   !else
-    !increase compt
-   !endif
+   </div>
+      </li>
   !next i
+  </ul></li>
  !endif
- !set courses=!record 0 of wimshome/log/classes/$wims_class/icourses
- !set coursecnt=!linecnt $courses
- !if $coursecnt>0
-  <p>
-  $(CL_Names[5]):</p>
-  !reset compt
-  !for i=1 to $coursecnt
-   !set l=!line $i of $courses
+ !if $icoursecnt>0
+  <li>
+  $(CL_Names[5]):
+  <ul class="inline">
+  !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
    !distribute items $l into c_,s_,t_
-   <span class="wims_classes_direct_course">
+   <li>
+   <div class="wims_classes_direct_course">
    !if $c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
    !endif
-   </span>
-   !if $compt=5
-    !set compt=0
-     <p class="emptyline"></p>
-   !else
-    !increase compt
-   !endif
+   </div>
+   </li>
   !next i
- !endif
+  </ul></li>
 !endif
-
+</ul>
+:nosubclass
 !if $class_typename=program
  !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
  !if $test=yes
