@@ -30,6 +30,10 @@
   </div>
  </div>
 !endif
+!! classtype=0 or 1
+<div id="wims_class_manager_msg">
+ !read ./wimshome/log/manager_msg.phtml.$lang
+</div>
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
 ($SU_log - $(wims_name_$class_typename))
@@ -43,7 +47,6 @@ $wims_classname, $wims_institutionname\
 !endif
 !!definition for menumodubox
 !distribute items div,div into div0,div1
-
 !if $class_type isin 3
  <p class="wims_greetings">
    $SU_greet.
@@ -114,7 +117,6 @@ $wims_classname, $wims_institutionname\
  !read themes/_widgets/menumodubox.phtml
  !goto end
 !endif class_type=4
-
 !if $class_type=2
  !if $subclasscnt>0
   $table_header
@@ -143,16 +145,12 @@ $wims_classname, $wims_institutionname\
  !read themes/_widgets/menumodubox.phtml
  !goto end
 !endif class_type=2
-!! classtype=0 or 1
-<div id="wims_class_manager_msg">
- !read ./wimshome/log/manager_msg.phtml.$lang
-</div>
 
 !set test=!replace / by , in $wims_class
 !if $(test[-1])=0
   !set test_up=!replace internal /0- by in $wims_class-
   !set wims_ref_class=wims_button
-  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
+  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram ARIANE
 !endif
 
  <div id="wims_supervisor_search">
@@ -266,12 +264,10 @@ $wims_classname, $wims_institutionname\
  !endif
 !endif
  </div>
-
 </div><!--/wimsbody-->
 </div><!--/wimspagebox-->
 !read themes/_procs/menumodubox0.proc
 !read themes/_widgets/menumodubox_accordion.phtml
-
 
 :end
 
@@ -281,8 +277,6 @@ $wims_classname, $wims_institutionname\
 !!read themes/_procs/supervisormenubox.proc
 !!read themes/_widgets/menubox.phtml
 !!reset div0,div1
-
-
 
 </div><!--/wimsbodybox-->
 
