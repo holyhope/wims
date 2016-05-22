@@ -20,7 +20,7 @@ if [ "$1" ] ; then
 else
   for i in `ls $wims_dirsrc/*.sh`; do
    j=`basename $i .sh`;
-   msg1="Testing $j... "
+   msg1="Testing $j... ";
    $i > $wims_tmp/$j 2>&1
    if [ "$j" = "oef" ] ; then
      for ii in `ls $wims_dirtest/diroef/*` ; do

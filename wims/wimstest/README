@@ -1,0 +1,42 @@
+Use in the wims directory:
+
+Launch  the command
+wimstest/test.sh
+It creates files in the directory wimstest/tmp that
+should be compared with the results (which are in the svn)
+in wimstest/
+Check if there is a behaviour change (do not change the svn
+file in the directory wimstest/dirres, if you don't
+understand the change). If you have added a
+test and that it is OK, change wimstest/dirres in the svn.
+
+If you want to test only a special command.
+There is three types of tests.
+
+-- For tests in wimstest/dirtest
+src/wims test /Users/perrinriou/wims/wimstest/dirtest [file] vartest
+
+replace [file] by the name of the file in wimstest/dirtest
+vartest is the name of the variable to examine (is defined in the file)
+
+for example
+src/wims test /Users/perrinriou/wims/wimstest/dirtest replace vartest
+
+-- Tests in public_html/modules/moduletest/src
+
+wimstest/tag.pl --file=[file] --out=[out]
+in the script [out]=wimstest/tmp
+
+-- Other tests (calling scripts in dirsrc)
+for example :
+wimstest/dirsrc/maxima.sh
+
+
+-- There is other tests for OEF modules.
+
+
+-- If you have compile with option --gcov
+launch wimstest/gcov.h
+and open gcovout/index.html in a browser.
+
+
