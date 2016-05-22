@@ -26,6 +26,12 @@ wims_trustfile=primitives.phtml
  !bound job within home,todo,work default home
 !endif
 
+!if $job!=home
+  !set wims_ariane=!append line cdt,1,cmd=new&job=home\
+to $wims_ariane
+  !set wims_ariane_self=no
+!endif
+
 !if $job isitemof work,todo
  !read work.proc
 !else
