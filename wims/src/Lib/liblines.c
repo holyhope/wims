@@ -186,22 +186,19 @@ char *strparchr(char *p, char c)
 /* search for string, skipping parentheses */
 char *strparstr(char *p, char *fnd)
 {
-    char *pp, c;
-    int n;
-
-    if(*fnd==0) return p+strlen(p);
-    c=*fnd; n=strlen(fnd);
-    for(pp=p;pp-1!=NULL && *pp!=0; pp++) {
+    char *pp, c=*fnd;
+    size_t n = strlen(fnd);
+    /*if(*fnd==0) return p+strlen(p);*/
+    for(pp=p; *pp; pp++) {
       if(*pp==c && (n==1 || strncmp(pp,fnd,n)==0)) return pp;
       switch(*pp) {
           case '(': pp=find_matching(pp+1,')'); break;
           case '[': pp=find_matching(pp+1,']'); break;
           case '{': pp=find_matching(pp+1,'}'); break;
       }
+      if (!pp) { pp = strstr(p,fnd); if (!pp) pp = p+strlen(p); break; }
     }
-    if(pp-1==NULL) pp=strstr(p,fnd);
-    if(pp!=NULL) return pp;
-    else return p+strlen(p);
+    return pp;
 }
 
 /* Points to the end of an item */
