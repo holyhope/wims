@@ -5,7 +5,7 @@ desc_limit=4000
 
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
-!if $class_expiration=$empty 
+!if $class_expiration=$empty
  !defread wimshome/log/classes/$wims_class/.def
 !endif
 !if $class_expiration=$empty
@@ -28,8 +28,9 @@ jday=!char 2,3 of $[abs(floor($jday))+100]
 jyear=!char -4 to -1 of $[abs(floor($jyear))+100000]
 !if $jday>=1 and $jday<=31 and $jmonth>=1 and $jmonth<=12 \
 	and N notin $jmonth$jday$jyear
+
 !!	and $jyear$jmonth$jday<=$class_expiration
-!!	and $jyear$jmonth$jday>=$class_creation 
+!!	and $jyear$jmonth$jday>=$class_creation
  jour=$jyear$jmonth$jday
 !else
  error=bad_day
@@ -56,7 +57,7 @@ ltjdevoir=$date_todo
 	and N notin $dmonth$dday$dyear \
 	and $dyear$dmonth$dday>$jour
 !!	and $dyear$dmonth$dday<=$class_expiration
-!!	and $dyear$dmonth$dday>=$class_creation 
+!!	and $dyear$dmonth$dday>=$class_creation
   jdevoir$i=$dyear$dmonth$dday
   ltjdevoir=!append item $(jdevoir$i) to $ltjdevoir
  !else

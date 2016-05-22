@@ -1,7 +1,7 @@
 # Variable calculations should be done in this file.
 # It is read and interpreted by wims for all valid calls to the module.
 
-!if $class_expiration=$empty 
+!if $class_expiration=$empty
  !defread wimshome/log/classes/$wims_class/.def
 !endif
 !if $class_expiration=$empty
@@ -15,7 +15,7 @@ jour_end=!char 1 to 8 of $wims_now
 !if $cdt_supervise!=yes
  class_parent=!text select 0123456789/ in $class_parent
  courses=!record 0 of wimshome/log/classes/$wims_class/courses
- courses=!column 1 of $courses 
+ courses=!column 1 of $courses
  courses=!items2lines $courses
  courses=!replace internal / by , in $courses
  courses=!columns 3 of $courses
@@ -33,4 +33,3 @@ nbligne=!linecnt $list
 !endif
 
 job=work
-
