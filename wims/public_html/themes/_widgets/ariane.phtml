@@ -32,6 +32,10 @@
      !read $(path)oneitem.phtml $1_
    </li>
   !next
+   !set 3_=!item 2 of $1_
+   !if $3_!=8
+      <li>$3_*<span class="show-for-sr">(Current)</span></li>
+   !endif
   </ul>
  </nav>
  !exit
@@ -57,12 +61,18 @@
       !for i_=1 to $wims_ariane_cnt
         !set 1_=!line $i_ of $wims_ariane
         !set 2_=!word 1 of $1_
+        !set 3_=!item 2 of $1_
         <li class="menuitem $2_">
+        !if $3_=8
+         <span class="show-for-sr">Current: </span>
+        !endif
           !read $(path)oneitem.phtml $1_
         </li>
       !next
     !endif
-    <li>*<span class="show-for-sr">(Current)</span></li>
+    !if $3_!=8
+      <li>*<span class="show-for-sr">(Current)</span></li>
+    !endif
   !else
     <li><span class="show-for-sr">Current: </span>
     !read $(path)oneitem.phtml "$mtitle",8
