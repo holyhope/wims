@@ -1,13 +1,15 @@
 #! /bin/sh
-
-IND="ALLOEFHTML"
+SRC="wimstest/ALLOEF";
+IND1="ALLOEFHTML";
+IND="wimstest/$IND1";
+OUT="$IND/index.html";
 mkdir -p $IND
- echo '<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN"><HTML><HEAD><TITLE>Enscript Output</TITLE></HEAD><BODY><ul>' > index.html
->> index.html
-for j in `ls ALLOEF/*` ; do
+ echo '<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>Enscript Output</title></head><body><ul>' > $OUT
+>> $OUT
+for j in `ls $SRC/*` ; do
    jj=`basename $j`
-   enscript --color -w html -2 --header="<a href=\"index.html\">retour</a>" -Ediffu $j -o ALLOEFHTML/$jj.html ;
-   echo "<li><a href="$IND/$jj.html">$jj</a>" >> index.html
+   enscript --color -w html -2 --header="<a href=\"$OUT\">retour</a>" -Ediffu $j -o $IND/$jj.html ;
+   echo "<li><a href=\"$jj.html\">$jj</a></li>" >> $OUT
 done
 
-echo "</ul></body></html>" >> index.html
+echo "</ul></body></html>" >> $OUT
