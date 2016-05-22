@@ -113,8 +113,8 @@ palabras en una lista,wlist
  Elecciones correctas\
  Elecciones incorrectas\
  Puedes dar opcionalemente una nota y/o solución\
- Indicación<br />(Formato html)\
- Solución<br />(Formato html)\
+ Indicación\
+ Solución\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution

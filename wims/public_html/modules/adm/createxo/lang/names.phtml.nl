@@ -112,8 +112,8 @@ Meerkeuze vragen\
 Correcte keuzes\
 Foutieve keuzes\
 Er kan ook optioneel een indicatieve hint en/of een oplossing worden gegeven\
-Indicatie<br />(html formaat)\
-Oplossing<br />(html formaat)\
+Indicatie\
+Oplossing\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution

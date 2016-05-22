@@ -1,30 +1,45 @@
 
 !form reply
+ <fieldset class="property_fields">
+   <legend>$wims_name_properties</legend>
+   <div class="field box halfwidth">
+      <label for="oef_author">$wims_name_Author</label>
+      <input size="30" maxlength="60" name="oef_author" value="$oef_author" />
+    </div>
+    <div class="field box halfwidth">
+      <label for="oef_email">$wims_name_email</label>
+      <input size="30" maxlength="80" name="oef_email" value="$oef_email" />
+    </div>
+    <div class="field box">
+     <label for="oef_title">$name_givetitle</label>
+      <input size="40" maxlength="40" name="oef_title" value="$oef_title" />
+    </div>
 <input type="hidden" name="level" value="2" />
-$name_givetitle<br />
-<input size="40" maxlength="40" name="oef_title" value="$oef_title" /> <p>
-$name_giveformat
-!formselect oef_format list tex,html
- !set wims_ref_class=wims_button_help
- !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
- </p>
-$name_exo
+
+ !!<p>
+!!$name_giveformat
+!!!formselect oef_format list tex,html
+!! !set wims_ref_class=wims_button_help
+!! !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
+!! </p>
+   <div class="field box">
+     <label for="oef_answercnt">$name_exo</label>
 !formselect oef_answercnt from 0 to 10
-$name_answer1
+     <label for="oef_choicecnt"> $name_answer1</label>
 !formselect oef_choicecnt from 0 to 10
 $name_answer2.
-$name_nonnumeric
-!formselect oef_computeanswer list yes,no prompt $name_prompt
-!formselect oef_condcnt from 0 to $condlim
-$name_condition
- !set wims_ref_class=wims_button_help
+     !set wims_ref_class=wims_button_help
  !href target=wims_mhelp cmd=help&special_parm=reply $wims_name_help
- 
-<table class="wimsnoborder"><tr><td>
-$wims_name_Author</td><td><input size="30" maxlength="60" name="oef_author" value="$oef_author" /></td></tr>
-<tr><td>
-$wims_name_email</td><td><input size="30" maxlength="80" name="oef_email" value="$oef_email" /></td></tr>
-</table>
+   </div>
+   <div class="field box">
+    <label for="oef_computeanswer">$name_nonnumeric</label>
+!formselect oef_computeanswer list yes,no prompt $name_prompt
+    </div>
+    <div class="field box">
+!formselect oef_condcnt from 0 to $condlim
+     <label for="oef_condcnt">$name_condition</label>
+     </div>
+</fieldset>
 <div class="wimscenter wimsform">
 <input class="wims_button" type="submit" value="$name_continue" />
 </div>
@@ -42,4 +57,3 @@ $wims_name_email</td><td><input size="30" maxlength="80" name="oef_email" value=
 !formend
  !endif
 !endif
-
