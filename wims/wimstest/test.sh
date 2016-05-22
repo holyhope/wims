@@ -85,3 +85,5 @@ for j in $wims_exec ; do
       rm -f $wims_tmp/$j.diff; rm $j.html;
      fi
 done
+
+$wims_home/wimstest/flydraw/flydraw.sh

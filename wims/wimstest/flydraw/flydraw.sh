@@ -3,8 +3,7 @@ wims_home=`pwd`;
 dir=$wims_home/wimstest/flydraw
 flydraw=$wims_home/src/Flydraw/flydraw
 mkdir -p $dir/tmp
-list=`ls $dir/src`;
-echo $list;
+
 check(){
     cmp --quiet $dir/tmp/$f.gif $dir/targets/$f.gif
     case "$?" in
