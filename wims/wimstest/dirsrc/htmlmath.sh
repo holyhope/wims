@@ -9,4 +9,4 @@ export wims_warn_rawmath=
 export htmlmath_gtlt=
 export force_mathml=
 
-$wims_home/src/wims test $wims_dirtest htmlmath test
+$wims_home/src/wims test $wims_dirtest htmlmath vartest
