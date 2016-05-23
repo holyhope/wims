@@ -8,7 +8,12 @@
 !if $wims_homeref_n0=1 and itemsep isin $wims_rm_0
  !set wims_homeref_n0=0
 !endif
-!debug  $wims_rm_0
+!!delete a line itemsep,0 at the beginning without third argument
+!set wims_rm_0=!nonempty line $wims_rm_0
+!set tmp_=!line 1 of $wims_rm_0
+!if itemsep isitemof $(tmp_[1]) and $(tmp_[3])=$empty
+  !set wims_rm_0=!line 2 to -1 of $wims_rm_0
+!endif
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
  <!-- _widgets/menumodubox.phtml -->
  <div id="wimsmenumodubox">
