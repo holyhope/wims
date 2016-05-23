@@ -10,11 +10,11 @@
 !! empty_data bad_data double_reply  are in html/msg.phtml.fr - suppress on test
 
 !if bad_answer iswordof $error
- Va¹ odgovor <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
+ Va¹ odgovor
+ <b>$bad_name</b> = <span class="wims_msg alert tt">$bad_value</span>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-  ni razumljiv: beseda <span class="wims_warning">$w</span>
+  ni razumljiv: beseda <span class="wims_msg alert tt">$w</span>
   v odgovoru ni videti povezana s problemom. Prosim, da vnesete popravek.
   !exit
  !endif
@@ -25,13 +25,13 @@
  !if nocomputecomplex iswordof $test
    is not allowed.
    Please give the complex number in standard rectangular form
-   <span class="tt"> a + b i </span>
+   <span class="wims_msg alert tt"> a + b i </span>
    where
-   <span class="tt">a</span>
+   <span class="wims_msg alert tt">a</span>
    and
-   <span class="tt">b</span>
+   <span class="wims_msg alert tt">b</span>
    are computed, and submit the resulting value (for example,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+    <span class="wims_msg alert tt"> -1 + 2 i</span> or <span class="wims_msg alert tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -41,6 +41,10 @@
  !if notunit iswordof $test
   je zgolj ¹tevilo. Prosim, da v odgovoru oznaèite tudi enoto.
   !exit
+ !endif
+ !if variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
  !endif
  ni razumljiv. Prosim, popravite napako.
  !exit

@@ -11,7 +11,7 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Your code contains illegal name <span class="tt">$illegal_name</span>. Please correct.
+  Your code contains illegal name <span class="wims_msg alert tt">$illegal_name</span>. Please correct.
   !exit
  !endif
  !if lengthoverflow iswordof $test
@@ -20,10 +20,10 @@
   !exit
  !endif
  La risposta
- <p class="wimscenter tt">$bad_value</p>
+ <span span class="wims_msg alert tt">$bad_value</span>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-  non è comprensibile: la parola <span class="wims_warning">$w</span>
+  non è comprensibile: la parola <span class="wims_msg alert tt">$w</span>
   contenuta nella risposta data non ha nulla a che fare con il
   problema posto. Correggere e riproporre la risposta.
   !exit
@@ -36,13 +36,13 @@
  !if nocomputecomplex iswordof $test
    non è accettata.
    Per favore inserisci il numero complesso nella forma cartesiana standard
-   <span class="tt"> a + b i </span>
+   <span class="wims_msg alert tt"> a + b i </span>
    dove
-   <span class="tt">a</span>
+   <span class="wims_msg alert tt">a</span>
    e
-   <span class="tt">b</span>
+   <span class="wims_msg alert tt">b</span>
     sono i risultati dei calcoli richiesti (per esempio,
-    <span class="tt"> -1 + 2 i</span> o <span class="tt"> 1 - 2 i</span>).
+    <span class="wims_msg alert tt"> -1 + 2 i</span> o <span class="wims_msg alert tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -57,6 +57,10 @@
   è solo un numero: occorre specificare l'unità di misura.
   !exit
  !endif
+ !if variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
   non è comprensibile. Correggere e riproporre la risposta.
  !exit
 !endif
@@ -66,7 +70,7 @@
  !for j=1 to 50
    !if bad_exo $j isin $error
      !set whichexo=!nosubst (la risposta corretta per la domanda $j \
-     <span class="tt">$(replyname$j)</span>
+     <span class="wims_msg alert tt">$(replyname$j)</span>
      non è valida)
      !!goto end_bad
      !break

@@ -11,7 +11,7 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-你的回答包含非法名字<span class="tt">$illegal_name</span>. 请改正.
+你的回答包含非法名字<span class="wims_msg alert tt">$illegal_name</span>. 请改正.
   !exit
  !endif
  !if lengthoverflow iswordof $test
@@ -19,10 +19,10 @@
   !exit
  !endif
 你的回答
- <p class="wimscenter tt">$bad_value</p>
+ <span span class="wims_msg alert tt">$bad_value</span>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-看不懂: 回答中的<span class="wims_warning">$w</span>
+看不懂: 回答中的<span class="wims_msg alert tt">$w</span>
 与问题无关. 请改正.
   !exit
  !endif
@@ -33,13 +33,13 @@
  !if nocomputecomplex iswordof $test
 是不允许的.
 请按下列形式给出复数
-   <span class="tt"> a + b i </span>
+   <span class="wims_msg alert tt"> a + b i </span>
    其中
-   <span class="tt">a</span>
+   <span class="wims_msg alert tt">a</span>
    和
-   <span class="tt">b</span>
+   <span class="wims_msg alert tt">b</span>
    是计算出来的数值 (例如,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+    <span class="wims_msg alert tt"> -1 + 2 i</span> or <span class="wims_msg alert tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -54,6 +54,11 @@
 只是一个数: 请写出它的单位.
   !exit
  !endif
+  !if variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
+ is not understandable.
 看不懂. 请改正后重新发送.
  !exit
 !endif

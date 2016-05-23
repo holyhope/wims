@@ -26,19 +26,19 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Su código contiene el término no autorizado <span class="tt">$illegal_name</span>. Por favor corríjalo.
+  Su código contiene el término no autorizado <span class="wims_msg alert tt">$illegal_name</span>. Por favor corríjalo.
   !exit
  !endif
  !if lengthoverflow iswordof $test
   Su código ha excedido el límite de longitud. Por favor reescríbalo.
   !exit
  !endif
- Su respuesta <p class="wimscenter">
- <b>$bad_name</b> = <span class="tt">$bad_value</span> </p>
+ Su respuesta
+ <b>$bad_name</b> = <span class="wims_msg alert tt">$bad_value</span>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   no es comprensible:
-  el término <span class="wims_warning">$w</span>
+  el término <span class="wims_msg alert tt">$w</span>
   de la respuesta no tiene relación con el problema o no está autorizado.
   Por favor corríjalo o elija una expresión más sencilla.
   !exit
@@ -51,13 +51,13 @@
  !if nocomputecomplex iswordof $test
    is not allowed.
    Please give the complex number in standard rectangular form
-   <span class="tt"> a + b i </span>
+   <span class="wims_msg alert tt"> a + b i </span>
    where
-   <span class="tt">a</span>
+   <span class="wims_msg alert tt">a</span>
    and
-   <span class="tt">b</span>
+   <span class="wims_msg alert tt">b</span>
    are computed, and submit the resulting value (for example,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+    <span class="wims_msg alert tt"> -1 + 2 i</span> or <span class="wims_msg alert tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -73,6 +73,11 @@
   por favor precise la unidad en su respuesta.
   !exit
  !endif
+ !if variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
+ is not understandable.
   no puedo entenderla. Por favor, corrija el error y reenvíe su respuesta.
  !exit
 !endif

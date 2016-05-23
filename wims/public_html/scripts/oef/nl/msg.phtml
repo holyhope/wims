@@ -11,7 +11,7 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  De opgestuurde code bevat de term: <span class="tt">$illegal_name</span> en is niet toegestaan.<br />
+  De opgestuurde code bevat de term: <span class="wims_msg alert tt">$illegal_name</span> en is niet toegestaan.<br />
   Corrigeer dit even.
   !exit
  !endif
@@ -20,10 +20,10 @@
   !exit
  !endif
   Het antwoord
- <p class="wimscenter tt">$bad_value</p>
+ <span span class="wims_msg alert tt"$bad_value</span>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
-  is onbegrijpelijk: het woord <span class="wims_warning">$w</span>
+  is onbegrijpelijk: het woord <span class="wims_msg alert tt">$w</span>
   staat in geen enkele relatie met het gestelde probleem.<br />
   Graag corrigeren
   !exit
@@ -36,13 +36,13 @@
  !if nocomputecomplex iswordof $test
    is not allowed.
    Please give the complex number in standard rectangular form
-   <span class="tt"> a + b i </span>
+   <span class="wims_msg alert tt"> a + b i </span>
    where
-   <span class="tt">a</span>
+   <span class="wims_msg alert tt">a</span>
    and
-   <span class="tt">b</span>
+   <span class="wims_msg alert tt">b</span>
    are computed, and submit the resulting value (for example,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+    <span class="wims_msg alert tt"> -1 + 2 i</span> or <span class="wims_msg alert tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -54,22 +54,38 @@
  dat is alleen een getal, ik verwacht ook de bijpassende eenheid.
   !exit
  !endif
+ !if variable iswordof $test
+   is not understandable. It should contain extra variables.
+   !exit
+ !endif
  onbegrijpelijk...<br />
     corrigeer de fout en stuurje antwoord dan nog een keer op.
  !exit
 !endif
 
 !if bad_exo iswordof $error
-Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord voor vraag <b>$(replyname$i)</b> is ongeldig...).
- Dus het is onmogelijk om te testen of het ingeleverde antwoord correct is. Waarvoor excuses.
- <br />
- S.V.P.
+ !for j=1 to 50
+   !if bad_exo $j isin $error
+     !set whichexo=!nosubst (the good answer for the question $j\
+     <span class="wims_msg alert tt">$(replyname$j)</span>\
+     is invalid)
+     !!goto end_bad
+     !break
+   !endif
+ !next
+:end_bad
+ Due to an error in this exercise $whichexo, it is impossible to test the
+ correctness of your answer. The only solution for you is to change the
+ exercise; sorry.
+ <p>
+ Please
  !if $email!=$empty
   !mailurl $email schrijf naar de maker van deze oefening
  !else
   schrijf naar de maker van deze oefening
  !endif
  als U deze fout wilt melden.
+ </p>
  !exit
 !endif
 
