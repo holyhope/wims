@@ -6,10 +6,8 @@
 !else
   !set path = $empty
 !endif
-
 <!-- _widgets/ariane.phtml -->
 !set wims_ariane_cnt=!linecnt $wims_ariane
-
 <nav aria-label="You are here:">
   <ul class="breadcrumbs">
 !! the test is when student are doing an exercise in a sheet!
@@ -23,7 +21,6 @@
 !! the variable wims_ariane_self must be defined in the var.proc of
 !! the module if one does not an ariane thread automatically created
 !! should have more parameters, for the moment, just no.
-
 !if $wims_ariane_self!=$empty
   !for i_=1 to $wims_ariane_cnt
    !set 1_=!line $i_ of $wims_ariane
@@ -32,9 +29,11 @@
      !read $(path)oneitem.phtml $1_
    </li>
   !next
-   !set 3_=!item 2 of $1_
-   !if $3_!=8
+  !if $wims_ariane_cnt>1
+    !set 3_=!item 2 of $1_
+    !if $3_!=8
       <li>$3_*<span class="show-for-sr">(Current)</span></li>
+    !endif
    !endif
   </ul>
  </nav>

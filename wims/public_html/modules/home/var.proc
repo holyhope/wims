@@ -173,8 +173,10 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
  !readproc ./var.cdt
 !endif
 !read ./otherclass.proc
-!distribute items no,no into wims_ariane_self,wims_ariane_home
-
+!if $wims_sheet$wims_sequence=$empty
+!!! should be on the complete home page (not only one sequence)
+  !distribute items no,no into wims_ariane_self,wims_ariane_home
+!endif
 !set tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_class/cdt/.def
 !if $tmp>0
    !set exist_cdt=yes
