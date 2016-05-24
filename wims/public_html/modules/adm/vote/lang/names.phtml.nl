@@ -115,8 +115,7 @@ into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
 die u hebt gekozen is <span class="tt wims_code_variable">$namevar</span>
 !set name_accessvar_instr=!nosubst <strong>Voor gebruik in een werkblad of toets</strong>: \
 in een actief werkblad of toets, <span class="tt wims_code_words">$(name_shinfo[6])</span>, selecteer \
- <span class="tt wims_code_words">$(name_allowtype[3])</span> en schrijf \
-<span class="tt wims_code_variable">\$namevar</span> ( <span class="tt wims_code_variable">\</span>).
+ <span class="tt wims_code_words">$(name_allowtype[4])</span>.
 
 !set name_group_instr=!nosubst <strong>Voor gebruik in een klas</strong>: U kunt de deelnemers \
 op basis van deze variabele voor een aantal activiteiten in de klas filteren

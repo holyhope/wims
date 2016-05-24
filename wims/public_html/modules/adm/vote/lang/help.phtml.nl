@@ -40,7 +40,8 @@ plus de volgende extra commando's <dl>
 16:Sessie 2 om 10.00,
 21:Sessie 3 om 13.00}
 </pre>
-	</dd>
+Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.
+  </dd>
 <dt><span class="tt wims_code_variable">\textarea</span>
    <dd>Een tekst invoerveld, alleen te gebruiken bij een anoniem enquete.
 	</dd>
@@ -113,7 +114,8 @@ De volgende modes zijn mogelijk
    Met behulp van deze variabele kunnen leerlingen worden toegevoegd.
    Of emails worden verstuurd naar de deelnemers; lijsten met cijfers worden gesorteerd etc.
    Meerdere toepassingen worden nog ontwikkeld.
-  </li></ul>
+  </li>
+<li>Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.</li></ul>
 
 Let op dat de variabele naam uniek is voor de klas en dat deze variabele niet in gebruik is door WIMS.
 Bijvoorbeeld nooit variabelen gebruiken met namen als  <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,

@@ -41,7 +41,8 @@ elementos que los mensajes de los foros. Además se pueden utilizar las siguiente
 46:Séance 2 à partir de 10h,
 40:Séance 3 à partir de 13h}
 </pre>
-	</dd>
+Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.
+  </dd>
 </dl>
 
 Una encuesta puede contener hasta $max_parms campos de elección.
@@ -97,12 +98,8 @@ Plusieurs modes sont possibles :
 !readproc adm/lang/sheetexam.phtml.$lang
   <b>$name_accessvar</b> : avec ce formulaire, vous pourrez permettre l'inscription sur des tranches horaires.
   La variable technique alors créée vous permettra par exemple de définir un accès individualisé
-  à des feuilles ou à des examens. Pour cela, si vous avez appelé
-  <span class="tt wims_code_variable">ma_variable</span>
-  la variable que le formulaire vous demandera, il vous suffira de sélectionner
-  <span class="tt wims_code_words">$(name_allowtype[3])</span> et d'écrire
-  <span class="tt wims_code_variable">\ma_variable</span> dans la zone
-  libre de la feuille ou de l'examen correspondant à <span class="tt wims_code_words">$(name_shinfo[6])</span>.
+  à des feuilles ou à des examens. Pour cela, il vous suffira de sélectionner
+  <span class="tt wims_code_words">$(name_allowtype[4])</span>.
   </li><li>
   <b>$name_group</b> : vous pourrez constituer des groupes. Un nom de variable vous sera demandé
   (disons que vous l'avez appelé <span class="tt wims_code_variable">ma_variable</span>. A l'aide
@@ -110,7 +107,8 @@ Plusieurs modes sont possibles :
   trier les fichiers csv obtenus dans la classe selon le groupe (à condition <b>dans ce dernier cas</b>
   d'avoir demandé la variable <span class="tt wims_code_variable">var_ma_variable</span>).
   D'autres utilisations sont prévues.
-  </li></ul>
+  </li>
+<li>Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.</li></ul>
 
 Le nom des variables doit être différent des noms de variables déjà utilisés par WIMS (par exemple,
 ne pas utiliser

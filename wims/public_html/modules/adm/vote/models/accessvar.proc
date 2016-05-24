@@ -1,0 +1,118 @@
+
+
+today=!char 1 to 8 of $wims_now
+thisyear=!char 1 to 4 of $today
+!if $class_expiration=$empty
+ !defread wimshome/log/classes/$wims_class/.def
+!endif
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+!readdef $votedir/$vote.data
+!default testointro=!record 1 of $votedir/$vote.data
+!default mod_numsess=$numsess
+numsess=$mod_numsess
+!for i=1 to $numsess
+   !for var in bday, bmonth, byear, bhour, bmin, ehour, emin, nstud, testoextra,exconnip
+    !default up_$var$i=$($var$i)
+    !set $var$i=$(up_$var$i)
+   !next var
+ !next i
+!for var in testointro, namevar, defconnip
+    !default up_$var=$($var)
+    !set $var=$(up_$var)
+!next var
+
+!if $gstep=2
+!! need to check carefully namexevar vs. up_namevar (at some step we seem to
+!! be loosing the correction)(?? should this go outside the if $gstep=2)
+ !bound up_namevar within $listlocalname
+ !if $up_namevar=$empty and $namevar=$empty
+   error=bad_variable
+   gstep=1
+   !exit
+ !endif
+ !default namevar=$up_namevar
+ !if $namevar=$empty
+  error=no_variable
+  gstep=1
+  !exit
+ !endif
+
+!! !read adm/class/authchars
+ !for dato in namevar,defconnip
+  !setdef $dato=$($dato) in  $votedir/$vote.data
+ !next dato
+!endif
+
+!if $gstep>=2
+!! get list of value for the technical variable :
+ tmp=!positionof item $namevar in $tv_listname
+ tmp=!line $tmp of $tv_listtechvar
+ !distribute item $tmp into bb,classid,num
+ don=!record $num of wimshome/log/classes/$wims_class/.techvar
+ listval=!line 2 of $don
+ numsess=!itemcnt $listval
+!endif
+
+!if $gstep=3
+!!## need to check $testointro contains no vote primitives
+!for i in uservar,menu,list,radio,checkbox,textarea
+  testointro=!replace internal \$i by INVALID in $testointro
+!next i
+!writefile $votedir/$vote.data
+
+!!## with writefile we are loosing these variables at gstep=3
+!for dato in numsess,namevar,defconnip
+  !appendfile $votedir/$vote.data $dato=$($dato)
+!next dato
+
+classid2=!replace internal / by A in $classid
+techvartable=techvar $varname $(classid2)_$num\
+,>$class_expiration
+!for i=1 to $numsess
+!!## need to check no "," in exconnip/testoextra
+  !set exconnip$i=!replace internal , by . in $(exconnip$i)
+  !set testoextra$i=!replace internal , by . in $(testoextra$i)
+  !for dato in nstud$i,bday$i,mese$i,byear$i,bhour$i,bmin$i,testoextra$i,bmonth$i,ehour$i,emin$i,exconnip$i
+    !appendfile $votedir/$vote.data $dato=$($dato)
+  !next dato
+!next i
+
+!appendfile $votedir/$vote.data \
+:$testointro
+!set reg_src=<div>\
+$testointro\
+</div>\
+\list{
+
+ reg_src1=$reg_src
+ reg_src2=\uservar{$namevar,$empty,
+ !for i=1 to $numsess
+  mese$i=!item $(bmonth$i) of $months
+  bmonth$i=!char 2,3 of $[abs(floor($(bmonth$i)))+100]
+  byear$i=!char -4 to -1 of $[abs(floor($(byear$i)))+100000]
+  bmin$i=!char 2,3 of $[abs(floor($(bmin$i)))+100]
+  emin$i=!char 2,3 of $[abs(floor($(emin$i)))+100]
+  bday$i=!char 2,3 of $[abs(floor($(bday$i)))+100]
+  bhour$i=!char 2,3 of $[abs(floor($(bhour$i)))+100]
+  ehour$i=!char 2,3 of $[abs(floor($(ehour$i)))+100]
+  reg_src1=$reg_src1\
+$(nstud$i): $(bday$i) $(mese$i) $(byear$i) - $(bhour$i).$(bmin$i) / $(ehour$i).$(emin$i)$ $(testoextra$i),
+  techvartable=$techvartable\
+$(listval[$i]),>$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i),
+  reg_src2=$reg_src2\
+$(listval[$i]),
+ !next i
+
+ reg_src=$reg_src1\
+$name_cancellation\
+}\
+$reg_src2\
+$empty\
+}
+ !sh mkdir $wims_home/log/classes/$wims_class/techvar
+ !writefile wimshome/log/classes/$wims_class/techvar/$(classid2)_$num $techvartable
+!endif

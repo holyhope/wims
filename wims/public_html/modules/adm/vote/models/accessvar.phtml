@@ -5,44 +5,44 @@
 !reset table_center
 <fieldset class="property_fields blockcenter">
   <legend>$name_create_or_edit</legend>
+!!  <div class="field box">
+!!   <label for="mod_numsess">$name_howmany</label>
+!!if $vote_status>0
+!!$numsess
+!!!else
+!!formselect mod_numsess from 1 to 10
+!!!endif
+!!   <div class="formHelp">$name_atmost 10</div>
+!!  </div>
   <div class="field box">
-   <label for="mod_numsess">$name_howmany</label>
-!if $vote_status>0
-$numsess
-!else
-!formselect mod_numsess from 1 to 10
-!endif
-    <div class="formHelp">$name_atmost 10</div>
-   </div>
+   <label for="namevar">$name_namevar <span class="field_required">*</span></label>
+   !if $vote_status>0
+    $namevar
+   !else
+    !formselect up_namevar list $listlocalname
+   !endif
+   <div class="formHelp">$(name_$(reg_model)_help)</div>
+  </div>
   <div class="field box">
-  <label for="namevar">$name_namevar <span class="field_required">*</span></label>
-!if $vote_status>0
-  $namevar
-!else
-   <input size="12" name="up_namevar" id="namevar" value="$namevar" />
-!endif
-  <div class="formHelp">$(name_$(reg_model)_help)</div>
-   </div>
-   <div class="field box">
    <label for="defconnip">$name_textconnip</label>
-!if $vote_status>0
-  $defconnip
-!else
-  <input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
-!endif
+   !if $vote_status>0
+    $defconnip
+   !else
+    <input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
+   !endif
    <div class="formHelp">$name_textconnip2</div>
- </div>
- </fieldset>
+  </div>
+</fieldset>
 <input type="hidden" name="gstep" value="2" />
 
 !exit
 :2
 <p>$name_introtext ($name_introtext2)</p>
-<div class="wimscenter">
+!!<div class="wimscenter">
 <textarea class="iEdit" id="testointro" rows="10" cols="80" name="up_testointro">
 !replace internal \( by &#92;( in $testointro
 </textarea>
-</div>
+!!</div>
 
 <p>$name_session_select</p>
 !reset table_center
@@ -58,11 +58,17 @@ $table_hdtr
  !let jmonth=!char 5 to 6 of $wims_now
  !let jday=!char 7 to 8 of $wims_now
 !endif
-
-  <th>$name_numstud</th><th>$name_sessiondate</th><th>$name_begintime</th><th>$name_endtime</th><th>$name_connip</th><th>$name_extra</th>
+  <th>$name_group1</th>
+  <th>$name_numstud</th>
+  <th>$name_sessiondate</th>
+  <th>$name_begintime</th>
+  <th>$name_endtime</th>
+  <th>$name_connip</th>
+  <th>$name_extra</th>
  </tr>
  !for i=1 to $numsess
 $table_tr
+  <td>$(listval[$i])
   <td>
   <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
   </td>
@@ -105,81 +111,9 @@ $table_tr
  !next i
  $table_end
 <input type="hidden" name="gstep" value="3" />
-!goto end
+!exit
 
 :3
-
-!!## need to check $testointro contains no vote primitives
-!for i in uservar,menu,list,radio,checkbox,textarea
-  !set testointro=!replace internal \$i by INVALID in $testointro
-!next i
-!writefile $votedir/$vote.data
-
-!!## with writefile we are loosing these variables at gstep=3
-!for dato in numsess,namevar,defconnip
-  !appendfile $votedir/$vote.data $dato=$($dato)
-!next dato
-!!## NOTE: the above list should be setup at model level
-!##! (e.g. defconnip is not needed for vote_model=groups)
-
-!for i=1 to $numsess
-!!## need to check no "," in exconnip/testoextra
-  !set exconnip$i=!replace internal , by . in $(exconnip$i)
-  !set testoextra$i=!replace internal , by . in $(testoextra$i)
-  !for dato in nstud$i,bday$i,mese$i,byear$i,bhour$i,bmin$i,testoextra$i,\
-       bmonth$i,ehour$i,emin$i,exconnip$i
-    !appendfile $votedir/$vote.data $dato=$($dato)
-  !next dato
-!next i
-
-!appendfile $votedir/$vote.data \
-:$testointro
-!set reg_src=<div>\
-$testointro\
-</div>\
-\list{
-
-!set reg_src1=$reg_src
-!set reg_src2=\uservar{$namevar,>20081105.17:30 <20081105.15:30,
-!for i=1 to $numsess
-!set mese$i=!item $(bmonth$i) of $months
-!set bmonth$i=!char 2,3 of $[abs(floor($(bmonth$i)))+100]
-!set byear$i=!char -4 to -1 of $[abs(floor($(byear$i)))+100000]
-!set bmin$i=!char 2,3 of $[abs(floor($(bmin$i)))+100]
-!set emin$i=!char 2,3 of $[abs(floor($(emin$i)))+100]
-!set bday$i=!char 2,3 of $[abs(floor($(bday$i)))+100]
-!set bhour$i=!char 2,3 of $[abs(floor($(bhour$i)))+100]
-!set ehour$i=!char 2,3 of $[abs(floor($(ehour$i)))+100]
-$
-!set reg_src1=$reg_src1\
-$(nstud$i): $(bday$i) $(mese$i) $(byear$i) - $(bhour$i).$(bmin$i) / $(ehour$i).$(emin$i)$ $(testoextra$i),
-!set reg_src2=$reg_src2\
- >$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i),
-
-!next i
-!set reg_src=$reg_src1\
-$name_cancellation\
-}\
-$reg_src2\
- >20081105.17:30 <20081105.15:30\
-}
-
-!! same as above, shorter version for userlist
-!set reg_src2=\uservar{list_vote$vote,nogroup,
-
-!for i=1 to $numsess
-!set reg_src2=$reg_src2\
-$i,
-
-!next i
-
-!set reg_src2=$reg_src2\
-nogroup\
-}
-
-!set reg_src=$reg_src\
-$reg_src2
-
 $name_describesource
 <p>$name_yourvariable.</p>
 <pre>
@@ -187,4 +121,4 @@ $reg_src
 </pre>
 $(name_$(reg_model)_instr)
 <input type="hidden" name="gstep" value="0" />
-:end
+
