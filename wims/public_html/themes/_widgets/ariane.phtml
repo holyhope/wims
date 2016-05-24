@@ -42,9 +42,10 @@
 
 !if _ notin $session and $module!=home and adm isin $module_category
 
-  !set mtitle=$(module_title_$lang)
+  !default mtitle=$title
+  !default mtitle=$wims_title_title
+  !default mtitle=$(module_title_$lang)
   !default mtitle=$module_title
-
 !! clickable or not ? it depends and the link module=$module
 !! is not always pertinent and sometimes repetition with Back
 !! the other problem is that some modules
@@ -70,7 +71,13 @@
       !next
     !endif
     !if $3_!=8
-      <li>*<span class="show-for-sr">(Current)</span></li>
+      !if $wims_title_title!=$empty
+        <li><span class="show-for-sr">Current:</span>
+        $wims_title_title
+        </li>
+      !else
+        <li>*<span class="show-for-sr">(Current)</span></li>
+     !endif
     !endif
   !else
     <li><span class="show-for-sr">Current: </span>
