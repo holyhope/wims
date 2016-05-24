@@ -43,10 +43,11 @@ cattest=!module category devel/$auth_login/$mod
   !sh $src
  !endif
 !endif
-
+success=no
 !if $wims_deposit!=$empty and $wims_deposit!=noname.file \
 	and $bin_job=deposit and $bin_dir!=$empty \
 	and / notin $wims_deposit and .. notin $wims_deposit
+
  src=mkdir $devdir/$mod/$bin_dir\
    mv $wims_home/$wims_sesdir/user-deposit $devdir/$mod/$bin_dir/$wims_deposit
  !if ../images/ isin ../$bin_dir/
@@ -55,6 +56,7 @@ cattest=!module category devel/$auth_login/$mod
    exec imgindex
  !endif
  !sh $src
+ success=yes
 !endif
 
 dirs=!items2words $dir

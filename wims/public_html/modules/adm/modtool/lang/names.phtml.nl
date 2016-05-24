@@ -28,6 +28,7 @@
 !set name_in_module=in de module
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
+!set name_successfile=The file has been uploaded in the module.
 !set name_help_addfile=(the name of a file of the OEF exercise source\
    must be of the form <span class="tt"> src/name_file.oef</span>)
 !set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
