@@ -1,20 +1,17 @@
 !! html for create a new empty class (in or not a structure)
-
-
 !if $step=$empty or $step=pre
 
 <div class="wims_content">
  $name_choose
 
-  <p>
+  <ul class="wims_nopuce spacer">
+  <li>
    !href cmd=reply&step=0&cltype=0 $wims_name_create_class
-  </p>
-
+  </li><li>
   !set wims_menu_items=!append line itemsep,0,$wims_name_Creation\
   create_class,1,cmd=reply&step=0&cltype=0\
   to $wims_menu_items
 
-  <p>
    !if 2 isitemof $alltypes
     !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
     !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
@@ -22,7 +19,7 @@
    !else
     <span class="wims_emph"><strike>$wims_name_create_superclass</strike></span> ($noright).
    !endif
-  </p><p>
+  </li><li>
    !if 4 isitemof $alltypes
     !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
     ($name_expert)
@@ -31,12 +28,12 @@
    !else
     <span class="wims_emph"><strike>$wims_name_create_portal</strike></span> ($noright).
    !endif
-  </p><p>
+  </li><li>
    !href cmd=reply&job=cloneexemple $wims_name_cloneclass
    !set wims_menu_items=!append line cloneclass,1,cmd=reply&job=cloneexemple\
     to $wims_menu_items
 
-  </p>
+  </li></ul>
   <span class="wims_warning">$wims_name_help</span>:
   !read lang/help.phtml.$modu_lang 1
  </div>
