@@ -39,12 +39,11 @@
  !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
  modlist ARIANE,1,cmd=reply&jobreq=modname\
  to $wims_menu_items
- !if $job iswordof index publish diff
-   !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
+ !if $job iswordof index publish diff edfile showfile
+   !set wims_menu_items=!append line modcontent ARIANE,1,cmd=reply&jobreq=flist\
     binfile,1,cmd=reply&jobreq=binfile\
    to $wims_menu_items
  !endif
-
  !if $job iswordof flist and $modreq!=.new
     !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
 to $wims_menu_items
@@ -110,15 +109,19 @@ to $wims_menu_items
   !endif
  !endif
 !endif
+!if $job=showfile
+ !set wims_menu_items=!append line edfile,1,cmd=reply&jobreq=edfile\
+to $wims_menu_items
+!endif
 
 !if $job=edfile
   !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
 to $wims_menu_items
 
   !set wims_menu_items=!append line itemsep,0,$wims_name_help\
-   docoef,4,module=adm/createxo&+modtoolhelp=yes,help\
-   docslib,4,module=help/wimsdoc&+subject=slib#slib,help\
-   docanswer,4,module=adm/createxo&+modtoolhelp=yes&+special_parm=reply,help\
+   docoef,4,module=adm/createxo&modtoolhelp=yes,help\
+   docslib,4,module=help/wimsdoc&subject=slib#slib,help\
+   docanswer,4,module=adm/createxo&modtoolhelp=yes&+special_parm=reply,help\
  to $wims_menu_items
 !endif
 

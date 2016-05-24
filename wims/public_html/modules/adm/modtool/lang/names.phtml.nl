@@ -18,6 +18,8 @@
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
 !set name_compile=Compileren latex2wims
 !set name_backup=Backup
+!set name_edfile=File modification
+!set name_showfile=File content
 
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige

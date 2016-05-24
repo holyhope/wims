@@ -18,6 +18,8 @@
 !set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
 !set name_compile=Compile latex2wims
 !set name_backup=Backup
+!set name_edfile=File modification
+!set name_showfile=File content
 
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
