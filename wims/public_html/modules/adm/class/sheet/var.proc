@@ -249,19 +249,27 @@ activetest=!replace line number 3 by $ecnt in $activetest
   !else
 	!let don=!line $nb of $tv_listtechvar
 	!distribute item $don into name,classid,number
-	!let don=!record $number of wimshome/log/classes/$classid/.techvar
-	!let listval=!line 2 of $don
-	!let nb=!itemcnt $listval
-        id=!replace internal / by A in $classid
-        allow_parm=techvar $allowtechvar $(classid)_$number\
+	id=!replace internal / by A in $classid
+	!if $old_allowtype!=$allowtype or $allowtechvar!=$old_allowtechvar
+	    tmp=!record 0 of wimshome/log/classes/$wims_class/techvar/$(id)_$number
+	    !if $tmp!=$empty
+	     !writefile wimshome/log/classes/$wims_class/.$sheet $tmp
+	     !reset allow
+            !endif
+	!else
+		!let don=!record $number of wimshome/log/classes/$classid/.techvar
+		!let listval=!line 2 of $don
+		!let nb=!itemcnt $listval
+    		allow_parm=techvar $allowtechvar $(classid)_$number\
 $empty,$IPlist
-	!for i=1 to $nb
-		IPtechvar$i=!translate ,;\
+		!for i=1 to $nb
+		    IPtechvar$i=!translate ,;\
 * to $    $ in $(IPtechvar$i)
- 		IPtechvar$i=!trim $(IPtechvar$i)
-		ligne=$(listval[$i]),$(IPtechvar$i)
-		allow_parm=!append line $ligne to $allow_parm
-	!next i
+ 		    IPtechvar$i=!trim $(IPtechvar$i)
+		    ligne=$(listval[$i]),$(IPtechvar$i)
+		    allow_parm=!append line $ligne to $allow_parm
+		!next i
+       !endif
   !endif
  !endif
 !! ---- save modification of allow parameters
@@ -327,6 +335,8 @@ allowlist=!trim $allowlist
    IPlist=$allowlist
   !endif
 !endif
+old_allowtype=$allowtype
+old_allowtechvar=$allowtechvar
 !endif
 !reset allow,save
 !! --- end of reading
