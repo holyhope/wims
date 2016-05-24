@@ -2,56 +2,39 @@
 !goto $gstep
 
 :1
-
 <fieldset class="property_fields blockcenter">
- <div class="field box">
-  <label for="mod_numsess">$name_howmanygroups </label>
-!if $vote_status>0
- $numsess
-!else
- !formselect mod_numsess from 1 to 10
-!endif
-  <div class="formHelp">$name_atmost 10</div>
-  </div>
   <div class="field box">
-   <label for="namevar">$name_namevar <span class="field_required">*</span></label>
+   <label for="up_namevar">$name_namevar <span class="field_required">*</span></label>
 !if $vote_status>0
  $namevar
 !else
- <input size="12" name="up_namevar" id="namevar" value="$namevar" />
- <div class="formHelp">$(name_$(reg_model)_help)</div>
+ !formselect up_namevar list $listlocalname
 !endif
   </div>
 </fieldset>
 <input type="hidden" name="gstep" value="2" />
-
 !exit
+
 :2
 <p>$name_introtext</p>
-!!<div class="wimscenter">
 <textarea class="iEdit" id="testointro" rows="10" cols="80" name="up_testointro">
 !replace internal \( by &#92;( in $testointro
 </textarea>
-!!</div>
 
-<p>$name_session_select</p>
+<p>$name_introtext_group</p>
 $table_header
  $table_hdtr
-  <th>$name_numstud</th><th>$name_group1</th><th>$name_extra</th>
+  <th>$name_group1</th>
+  <th>$name_cardinal</th>
+  <th>$name_extra</th>
  </tr>
  !for i=1 to $numsess
-$table_tr
-  <td>
-  <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
+  $table_tr
+   <td>
+    !item $i of $listval
   </td>
   <td>
-!! need a variable, using exconnip
-!default exconnip$i= $i
-!if $vote_status=0
-   <input size="20" name="up_exconnip$i" id="exconnip$i" value="$(exconnip$i)" />
-!else
-   $(exconnip$i)
-!endif
+    <input size="4" name="up_nstud$i" id="nstud$i" value="$(nstud$i)" />
   </td>
   <td>
    <input size="10" name="up_testoextra$i" id="testoextra$i" value="$(testoextra$i)" />
@@ -60,56 +43,9 @@ $table_tr
  !next i
  $table_end
 <input type="hidden" name="gstep" value="3" />
-!goto end
+!exit
 
 :3
-
-!!## need to check $testointro contains no vote primitives
-!for i in uservar,menu,list,radio,checkbox,textarea
-  !set testointro=!replace internal \$i by INVALID in $testointro
-!next i
-!writefile $votedir/$vote.data
-
-!!## with writefile we are loosing these variables at gstep=3
-!for dato in numsess,namevar,defconnip
-  !appendfile $votedir/$vote.data $dato=$($dato)
-!next dato
-!!## NOTE: the above list should be setup at model level
-!##! (e.g. defconnip is not needed for vote_model=groups)
-
-!for i=1 to $numsess
-!!## need to check no "," in exconnip/testoextra
-  !set exconnip$i=!replace internal , by . in $(exconnip$i)
-  !set testoextra$i=!replace internal , by . in $(testoextra$i)
-  !for dato in nstud$i,testoextra$i,exconnip$i
-   !appendfile $votedir/$vote.data $dato=$($dato)
-  !next dato
-!next i
-
-!appendfile $votedir/$vote.data \
-:$testointro
-!set reg_src=<div>\
-$testointro\
-</div>\
-\list{
-
-!set reg_src1=$reg_src
-!set reg_src2=\uservar{$namevar,nogroup,
-
-!for i=1 to $numsess
-
-!set reg_src1=$reg_src1\
-$(nstud$i): $(exconnip$i) $(testoextra$i),
-!set reg_src2=$reg_src2\
-$i,
-
-!next i
-!set reg_src=$reg_src1\
-$name_cancellation\
-}\
-$reg_src2\
-nogroup\
-}
 $name_describesource
 <p>$name_yourvariable.</p>
 <pre>
@@ -118,4 +54,3 @@ $reg_src
 $(name_$(reg_model)_instr)
 <input type="hidden" name="gstep" value="0" />
 
-:end

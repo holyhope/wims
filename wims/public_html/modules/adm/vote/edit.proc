@@ -8,6 +8,22 @@ src=!replace internal < by &lt; in $src
 !endif
 
 !if $reg_model isitemof $vmodellist
- !read guided.proc
+ !readproc adm/vfilter/listvarfilter.proc
+ !if $tv_listlocal=$empty
+    !set error=notechvar
+    !reset step
+ !endif
+ !let listlocalname=!item $tv_listlocal of $tv_listname
+ !let tmp=!line $tv_listlocal of $tv_listtechvar
+ !let listnumtechvar=!column 3 of $tmp
+!! final cmd !readproc models/$reg_model.proc will replace next lines
+ !if $reg_model=group
+  !readproc models/group.proc
+ !else
+  !read guided.proc
+ !endif
+!else
+ !reset reg_src
 !endif
-!reset reg_src
+
+!!reset reg_src

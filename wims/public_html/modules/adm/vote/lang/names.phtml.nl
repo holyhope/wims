@@ -1,5 +1,8 @@
 !set lang_exists=yes
 
+!set name_introtext_group=Saisir l'effectif de chaque groupe ainsi qu'un commentaire (éventuel).
+!set name_cardinal=Effectif
+
 !set name_0=in bewerking
 !set name_1=open
 !set name_2=gesloten
