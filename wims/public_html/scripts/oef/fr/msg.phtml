@@ -11,7 +11,7 @@
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Votre code contient un mot non autorisé <span class="wims_msg alert tt">$illegal_name</span>. Veuillez corriger.
+  Votre code contient un mot non autorisé <span class="tt">$illegal_name</span>. Veuillez corriger.
   !exit
  !endif
  !if lengthoverflow iswordof $test
@@ -19,11 +19,11 @@
   !exit
  !endif
  La réponse
- <span class="wims_msg alert tt">$bad_value</span> que vous avez donnée
+ <span class="tt">$bad_value</span> que vous avez donnée
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   n'est pas compréhensible&nbsp;:
-  le mot <span class="wims_msg alert tt">$w</span>
+  le mot <span class="tt">$w</span>
   n'a pas de rapport avec ce problème ou n'est pas autorisé.
   Veuillez corriger ou choisir une phrase plus simple.
   !exit
@@ -35,13 +35,13 @@
  !if nocomputecomplex iswordof $test
    n'est pas permise.
    Veuillez mettre le nombre complexe sous forme canonique
-   <span class="wims_msg alert tt"> a + b i </span>
+   <span class="tt"> a + b i </span>
    avec
-   <span class="wims_msg alert tt">a</span>
+   <span class="tt">a</span>
    et
-   <span class="wims_msg alert tt">b</span>
+   <span class="tt">b</span>
    calculés et soumettre de nouveau votre réponse (par exemple,
-    <span class="wims_msg alert tt"> -1 + 2 i</span> ou <span class="wims_msg alert tt"> 1 - 2 i</span>).
+    <span class="tt"> -1 + 2 i</span> ou <span class="tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -69,7 +69,7 @@
  !for j=1 to 50
    !if bad_exo $j isin $error
      !set whichexo=!nosubst (la bonne réponse pour la question $j \
-     <span class="wims_msg alert tt">$(replyname$j)</span>
+     <span class="tt">$(replyname$j)</span>
      n'est pas valable)
      !!goto end_bad
      !break
