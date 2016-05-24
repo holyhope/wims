@@ -25,10 +25,10 @@
 %Permet de mettre du texte dans le document  entre des sections, sousections ...
 \defwims\wimsnavig#1#2{\#1{#2}}
 \defwims\wimsentre#1{\wimsentre#1}
-\def\about{} 
+\def\about{}
 \def\email#1{}
-%%%%%%%%%%%%%%% Deuxième Partie : 
-%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à 
+%%%%%%%%%%%%%%% Deuxième Partie :
+%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à
 %partir du fichier pdf. changer l'adresse
 \def\exercise#1#2{\href{http://127.0.0.1/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
 \def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
@@ -37,7 +37,7 @@
 \wimsinclude{style.css} % mettre l'adresse du fichier de style
 %%%%%%%%%%%%%%%%   Options %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%  definition des styles css (même style que le premier de la liste)
-\samestyle{defn,defin,rems,NB,remF,definF,footnote}                                                 
+\samestyle{defn,defin,rems,NB,remF,definF,footnote}
 \samestyle{thm,prop,theo,lem,prop,cor,rappel,propF}
 \samestyle{ex,egs,algorithm,eg,algoF,exL,exF}
 \samestyle{exo,exoF,exoL}
@@ -56,22 +56,22 @@
 \wimsoption{depth=4} % profondeur des sections et co de style link
 \wimsoption{toc_down,toc_right,toc_left} %configuration des tables de matières
 %%%%% toc_up
-\wimsoption{index,numero, tooltip} 
-   %existence d'un index (détecté aussi par \printindex), 
+\wimsoption{index,numero, tooltip}
+   %existence d'un index (détecté aussi par \printindex),
    %numerotation des parties
    %bulle d'aide pour la table des matières
-%%%%%%%%%%%%%%%%%%%%%%% Redéfinition de macros pour le document wims  (exemple) 
+%%%%%%%%%%%%%%%%%%%%%%% Redéfinition de macros pour le document wims  (exemple)
 \defwims\paragraph#1{<p class="paragraph">#1</p>}
 \defwims\texttt#1{<span class="tt">#1</span>}
-%%%%%%%%%%%%% définition de quelques commandes diverses. 
+%%%%%%%%%%%%% définition de quelques commandes diverses.
 \defwims\url#1{<a http:"#1" target="wims_external">#1</a>} %avec package url
 \defwims\href#1#2{<a http:"#1" target="wims_external">#2</a>} %avec package hyperref
-%%%%% exemple de redéfinition perso de commandes 
+%%%%% exemple de redéfinition perso de commandes
 \defwims\dfrac{\frac}
-\defwims\card{\mathrm{Card}} 
-\defwims\textbf#1{<b>#1</b>}
-\defwims\uline#1{<u>#1</u>}
-\defwims\textit#1{<i>#1</i>}
+\defwims\card{\mathrm{Card}}
+\defwims\textbf#1{<span class="bold">#1</span>}
+\defwims\uline#1{<span style="text-decoration:underline">#1</span>}
+\defwims\textit#1{<span style="font-style:italic;">#1</span>}
 \defwims\emph#1{<span class="emph">#1</span>}
 \defwims\guill#1{<em>#1</em>}
 \defwims\defn#1{<span class="defn">#1</span>}
@@ -80,8 +80,8 @@
 \environmentwims{footnote}[1]{Footnote}{<div class=\"footnote\">}{</div>}
 \environmentwims{quote}[1]{Citation}{}{}
 \environmentwims{proof}[1]{Démonstration}{<div class="dem">}%
-    {</div> <div class="fin">Fin de la démonstration</div>}
+    {</div><div class="fin">Fin de la démonstration</div>}
 \environmentwims{center}[1]{}{<div class="center">}{</div>}
 \environmentwims{flushright}[1]{}%
-  {<table><tr><td>&nbsp;</td><td style="text-align:right">}%
-  {</td></tr></table>}
+  {<div style="text-align:right">}%
+  {</div>}
