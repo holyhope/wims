@@ -8,8 +8,8 @@
   !read adm/search_engine/search_clear.phtml
 !endif
 
-!if $error!=$empty and  $(ER_$error)!=
-  <p class="wims_alertmsg">
+!if $error!=$empty and $(ER_$error)!=
+  <p class="wims_msg alert">
    $(ER_$error)
    !read adm/search_engine/search_empty.phtml
   </p>
@@ -34,7 +34,7 @@
 
 !else
  !if $s_keywords!=$empty and $Gotcnt<1
- <div class="wims_alertmsg">
+ <div class="wims_msg info">
   $RE_nomatch.
   !if $(rel_$s_category)!=$empty
    <div class="RE_try">
@@ -71,7 +71,7 @@
   !reset list_start
  !else
   !if $s_category isin ADXOTR and $s_keywords=$empty
-    <p class="wims_alertmsg">
+    <p class="wims_msg info">
      $RE_noKeyword.
     </p>
   !endif
