@@ -7,82 +7,82 @@
    !if $debcls!=$empty
       $table_header
       $table_hdtr<th>$wims_name_name</th><th>$wims_name_supervisor</th><th>$name_cloning</th>
-	!for i=$debcls to $ccnt
-		!! find if classe is clonable
-		!let l=!record $i of wimshome/log/classes/.index
-		!distribute items $l into code,expire,inst,cl,la,ty
-		!if $ty!=4
-			!let l1=!deaccent $l
-			!let l1=!tolower $l1
-			!let c1=!text extract 0123456789 in $code
-			!let k=yes
-			!if $kw!=$empty
-				!for w in $kw
-					!if $w notin $l1
-						!let k=no
-						!break
-					!endif
-				!next w
-			!endif
-			!if $k!=yes
-				!reset l
-			!endif
-		!endif
-		!! display clonable class	
-		!if $l!=$empty
-		        !distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
-        		!let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
-			!let test=!defof class_allowcloning in wimshome/log/classes/$code/.def
-			!if ($testneighbors=$empty and $test=yes) or $code<=9999 or $ty=2
-	    			!if $ty!=2
-					$table_tr
-					<td>$inst <br />
-			    			!href cmd=reply&step=-2&sourcecls=$code $cl
-        					!if $class_info!=$empty
-			            	    		<br /> $class_info
-			        		!endif
-			        	</td>
-        				<td>$first $last</td>
-					<td>
-					       	!if $code<=9999
- 				           	    $name_free
-				        	!else
-            	    				    !if $test=yes
-				            		$name_protected
- 				           	    !else
-				            		$name_disallowed
-				            	    !endif
-				    		!endif
- 				       	</td>
-					</tr>
-				 !else
-			         !! class_type=2 display subclasses
-					!let nbsubclass=!recordcnt wimshome/log/classes/$code/.subclasses
-					!let auth=$empty
-					!for j=1 to $nbsubclass
-		    				!let tmp=!record $j of wimshome/log/classes/$code/.subclasses
-		    				!let test=!defof class_allowcloning in wimshome/log/classes/$code/$j/.def
-						!if $test=yes
-							!let auth=!append item $j to $auth
-						!endif
-					!next j
-					!if $auth!=$empty
-					!for j in $auth
-					    !let tmp=!record $j of wimshome/log/classes/$code/.subclasses
-					    !distribute items $tmp into codes,expires,insts,cls,las,tys,b,b,firsts,lasts
-					    $table_tr
-						    <td>$name_subclass  $inst $cl <br />
-				    			    !href cmd=reply&step=-2&sourcecls=$codes $cls
-			            		    </td>
-			        		    <td>$firsts $lasts</td>
-			        		    <td>$name_protected</td>
-		        		    </tr>
-					!next j
-				!endif
-			    !endif
-        		!endif
-		!endif      		
-	!next i
+      !for i=$debcls to $ccnt
+      !! find if classe is clonable
+      !let l=!record $i of wimshome/log/classes/.index
+        !distribute items $l into code,expire,inst,cl,la,ty
+        !if $ty!=4
+         !let l1=!deaccent $l
+         !let l1=!tolower $l1
+         !let c1=!text extract 0123456789 in $code
+         !let k=yes
+         !if $kw!=$empty
+            !for w in $kw
+               !if $w notin $l1
+                  !let k=no
+                  !break
+               !endif
+            !next w
+         !endif
+         !if $k!=yes
+            !reset l
+         !endif
+      !endif
+      !! display clonable class
+      !if $l!=$empty
+              !distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
+              !let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
+         !let test=!defof class_allowcloning in wimshome/log/classes/$code/.def
+         !if ($testneighbors=$empty and $test=yes) or $code<=9999 or $ty=2
+                !if $ty!=2
+               $table_tr
+               <td>$inst <br />
+                      !href cmd=reply&step=-2&sourcecls=$code $cl
+                       !if $class_info!=$empty
+                           <br /> $class_info
+                       !endif
+                </td>
+                <td>$first $last</td>
+               <td>
+                !if $code<=9999
+                     $name_free
+                !else
+                     !if $test=yes
+                        $name_protected
+                     !else
+                        $name_disallowed
+                      !endif
+                 !endif
+                 </td>
+               </tr>
+             !else
+                  !! class_type=2 display subclasses
+               !let nbsubclass=!recordcnt wimshome/log/classes/$code/.subclasses
+               !let auth=$empty
+               !for j=1 to $nbsubclass
+                  !let tmp=!record $j of wimshome/log/classes/$code/.subclasses
+                  !let test=!defof class_allowcloning in wimshome/log/classes/$code/$j/.def
+                  !if $test=yes
+                     !let auth=!append item $j to $auth
+                  !endif
+               !next j
+               !if $auth!=$empty
+                 !for j in $auth
+                   !let tmp=!record $j of wimshome/log/classes/$code/.subclasses
+                   !distribute items $tmp into codes,expires,insts,cls,las,tys,b,b,firsts,lasts
+                   $table_tr
+                      <td>$name_subclass  $inst $cl <br />
+                             !href cmd=reply&step=-2&sourcecls=$codes $cls
+                               </td>
+                           <td>$firsts $lasts</td>
+                           <td>$name_protected</td>
+                        </tr>
+                !next j
+              !endif
+            !endif
+        !endif
+      !endif
+   !next i
       $table_end
    !else
       $name_nofound
@@ -99,15 +99,12 @@
     <input type="hidden" name="step" value="-1"/>
     <input type="submit" value="$wims_name_tosave" />
     !formend
-
-
 !exit
 !endif
 
 !if $step>=-1
 $name_cpexempleintro.
 !endif
-
 
 !if $step=-1
 <div class="wims_content spacer">
