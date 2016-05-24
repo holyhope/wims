@@ -14,13 +14,15 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 !!!!
+!set name_listclass=class,class,group of classes,class,portal
+
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
-    !set name_classe=group of classes
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=teacher-supervisor
    !else
-    !set name_classe=portal
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=supervisor
    !endif
      !set name_classes= the $name_classe
@@ -28,7 +30,7 @@
      !set name_classesss= of the $name_classe
      !set name_classessss= The $name_classe
  !else
-   !set name_classe=class
+   !set name_classe=$(name_listclass[$Cltype+1])
    !set name_classes=the $name_classe
    !set name_classess=a $name_classe
    !set name_classesss= of the $name_classe
@@ -38,7 +40,7 @@
 
 !distribute lines Continue\
   Click here to try again.\
-  Creation of a class, a group of classes, an institutional portal\
+  Creation of a class structure\
   Name of the institution\
   maximum\
   minimum\

@@ -6,13 +6,15 @@
 !set leveldesc=小学一年级,小学二年级,小学三年级,小学四年级,小学五年级,小学六年级,中学一年级,中学二年级,中学三年级,中学四年级,中学五年级,中学六年级,中学七年级,大学一年级,大学二年级,大学三年级,大学四年级,大学五年级,研究生,科研
 !set nblevel=!itemcnt $levelid
 
+!set name_listclass=班级,班级,班级组,班级,学区
+
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
-    !set name_classe=班级组
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=教师-主持教师
    !else
-    !set name_classe=学区
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=主持教师
    !endif
      !set name_classes=$name_classe
@@ -20,7 +22,7 @@
      !set name_classesss=$name_classe
      !set name_classessss=$name_classe
  !else
-   !set name_classe=班级
+   !set name_classe=$(name_listclass[$Cltype+1])
    !set name_classes=$name_classe
    !set name_classess=$name_classe
    !set name_classesss=$name_classe

@@ -5,14 +5,15 @@
 
 !set nblevel=19
 !! !itemcnt $levelid
+!set name_listclass=klas,klas,klassen,klas,portaal
 
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
     !if $Cltype=2
-	!set name_classe=klassen
+	!set name_classe=$(name_listclass[$Cltype+1])
 	!set name_sup=van de docent/administateur
 	!else
-	!set name_classe=portaal
+	!set name_classe=$(name_listclass[$Cltype+1])
 	!set name_sup=van de administrator
     !endif
     !set name_classes=de $name_classe
@@ -20,7 +21,7 @@
     !set name_classesss=van de $name_classe
     !set name_classessss=De $name_classe
 !else
-    !set name_classe=klas
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_classes=de $name_classe
     !set name_classess=een $name_classe
     !set name_classesss=van de $name_classe
@@ -84,7 +85,7 @@ Als hier <span class="tt wims_code_words">all</span> wordt ingevuld, zijn deze h
 !set name_cpexemplemeth1=De toetsen zijn niet gekopieerd. Het lesmateriaal is gedeactiveerd.U kunt nu het materiaal naar eigen inzicht aanpassen.
 !set name_cpexemplecomment=In ieder geval zijn de vervaldata gezet op de einddatum van de nieuwe klas.
 !set name_research1=Er zijn veel virtuele klassen op deze site. Voer een sleutelwoord of de naam van de leraar in als zoekterm.
-!set name_research2=Er ahv de zoekterm te veel klassen gevonden. Geef een betere zoekterm in. 
+!set name_research2=Er ahv de zoekterm te veel klassen gevonden. Geef een betere zoekterm in.
 !set name_searchclass=Zoek een klas
 !set name_nofound=Er ahv de zoekterm geen klas gevonden.
 

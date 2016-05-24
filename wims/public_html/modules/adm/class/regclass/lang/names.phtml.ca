@@ -2,13 +2,15 @@
 
 !set name_passsup=contrasenya de professor
 
+!set name_listclass=classe,classe,grup de classes,classe,portal del centre
+
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
-    !set name_classe=grup de classes
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=de l'administrador
    !else
-    !set name_classe=portal del centre
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=de l'administrador
    !endif
    !set name_classes= el $name_classe
@@ -16,7 +18,7 @@
    !set name_classesss= del $name_classe
    !set name_classessss= El $name_classe
 !else
-   !set name_classe=classe
+   !set name_classe=$(name_listclass[$Cltype+1])
    !set name_classes=la $name_classe
    !set name_classess=una $name_classe
    !set name_classesss= de la $name_classe
@@ -26,7 +28,7 @@
 
 !distribute lines Continuar\
   Tornar a començar l'operació.\
-  Creació d'una estructura: classe, grup, portal de centre\
+  Creació d'una estructura\
   Nom del centre\
   amb un màxim de\
   amb un mínim de\

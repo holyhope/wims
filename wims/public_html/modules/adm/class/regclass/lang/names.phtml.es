@@ -10,13 +10,15 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 
+!set name_listclass=clase,clase,agrupación de clases,clase,portal de centro educativo
+
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
-    !set name_classe=agrupación de clases
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=del profesor-administrador
    !else
-    !set name_classe=portal de centro educativo
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=del administrador
    !endif
      !set name_classes= el $name_classe
@@ -24,7 +26,7 @@
      !set name_classesss= del $name_classe
      !set name_classessss= El $name_classe
  !else
-   !set name_classe=clase
+   !set name_classe=$(name_listclass[$Cltype+1])
    !set name_classes=la $name_classe
    !set name_classess=una $name_classe
    !set name_classesss= de la $name_classe

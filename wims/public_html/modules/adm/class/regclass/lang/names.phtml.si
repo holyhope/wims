@@ -4,13 +4,15 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 
+!set name_listclass=uèilnica,uèilnica,skupina uèilnic,uèilnica,ustanova
+
 !default Cltype=$cltype
 !if $Cltype iswordof 2 4
    !if $Cltype=2
-    !set name_classe=skupina uèilnic
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=uèitelja-skrbnika
    !else
-    !set name_classe=ustanova
+    !set name_classe=$(name_listclass[$Cltype+1])
     !set name_sup=skrbnika
    !endif
    !set name_classes= the $name_classe
@@ -18,7 +20,7 @@
    !set name_classesss= of the $name_classe
    !set name_classessss= The $name_classe
  !else
-   !set name_classe=uèilnica
+   !set name_classe=$(name_listclass[$Cltype+1])
    !set name_classes=the $name_classe
    !set name_classess=a $name_classe
    !set name_classesss= of the $name_classe
