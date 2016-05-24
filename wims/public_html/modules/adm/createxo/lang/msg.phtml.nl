@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
+<span class="wims_warning">$wims_name_Error</span>:
 
 !if no_title iswordof $error
 Geef de oefening eerst een titel.
@@ -36,7 +36,7 @@ Geef de oefening eerst een titel.
 !if def_fail iswordof $error
     De software kon uw oefening niet compileren tot een geldige OEF.
     Er zijn fouten gevonden in uw definities:
- <p><pre>$oef2wims_out</pre>
+ <div class="tt"><pre>$oef2wims_out</pre></div>
  !if $mode!=$empty
   !set level=1
  !else
@@ -47,7 +47,7 @@ Geef de oefening eerst een titel.
 
 !if name_exhaust iswordof $error
  Er zijn meerdere oefeningen in uw klas met een zelfde titel/naam.
- Als de oefeningen echt anders zijn, geef ze dan verschillende namen 
+ Als de oefeningen echt anders zijn, geef ze dan verschillende namen
 
 
  !exit
@@ -89,7 +89,7 @@ Geef de oefening eerst een titel.
   bestaat niet <b>of</b> mag niet door u worden geimporteerd.
 
  !else
-  Deze oefening <span class="tt">$del</span> bestaat niet in uw klas. 
+  Deze oefening <span class="tt">$del</span> bestaat niet in uw klas.
  !endif
  !exit
 !endif

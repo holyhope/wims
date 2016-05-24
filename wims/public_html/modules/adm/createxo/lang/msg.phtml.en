@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
+<span class="wims_warning">$wims_name_Error</span>:
 
 !if no_title iswordof $error
  Please give a title to your exercise under preparation.
@@ -21,21 +21,21 @@
 !endif
 
 !if no_statement iswordof $error
- The content of your exercise is incomplete: you did not define the 
+ The content of your exercise is incomplete: you did not define the
  statement of the exercise.
  !exit
 !endif
 
 !if no_reply2 iswordof $error
- The content of your exercise is incomplete: there is no valid demand 
+ The content of your exercise is incomplete: there is no valid demand
  of replies. (A demand of reply is valid only if all the fields are filled.)
  !exit
 !endif
 
 !if def_fail iswordof $error
- The software has failed to generate a valid exercise from what you have 
+ The software has failed to generate a valid exercise from what you have
  submitted. There are errors in your definitions.
- <p><pre>$oef2wims_out</pre> <p>
+ <div class="tt"><pre>$oef2wims_out</pre></div>
  !if $mode!=$empty
   !set level=1
  !else
@@ -46,8 +46,8 @@
 
 !if name_exhaust iswordof $error
  There are already several exercises in your class which carry the same
- title as the one you want to create. If these exercises are REALLY 
- different, please choose another title for your current exercise, then 
+ title as the one you want to create. If these exercises are REALLY
+ different, please choose another title for your current exercise, then
  submit it again.
  !exit
 !endif
@@ -77,7 +77,7 @@
 
 !if not_supervisor iswordof $error
  Hmm... Of course only supervisors can delete exercises in the class!
- <p>Your request is refused.
+ <p>Your request is refused.</p>
  !exit
 !endif
 

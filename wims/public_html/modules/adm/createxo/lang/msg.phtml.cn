@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
+<span class="wims_warning">$wims_name_Error</span>:
 
 !if no_title iswordof $error
  请为你准备中的文件给一个标题.
@@ -30,7 +30,7 @@
 
 !if def_fail iswordof $error
 根据你提交的材料, 软件不能生成有效的练习. 你的定义有错误.
- <p><pre>$oef2wims_out</pre> <p>
+ <div class="tt"><pre>$oef2wims_out</pre></div>
  !if $mode!=$empty
   !set level=1
  !else
@@ -67,7 +67,7 @@
 !endif
 
 !if not_supervisor iswordof $error
- 只有主持教师才能删除班级的练习! 
+ 只有主持教师才能删除班级的练习!
  <p>你的请求被拒绝.</p>
  !exit
 !endif

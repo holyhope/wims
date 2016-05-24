@@ -5,5 +5,4 @@
 sessiond=$w_wims_home/$w_wims_sesdir
 oefname=$sessiond/submit.oef
 
-sed 's/\&/\&amp;/g' <$oefname | sed 's/</\&lt;/g;s/>/\&gt;/g'
-
+LC_ALL=C sed 's/\&/\&amp;/g' <$oefname | LC_ALL=C sed 's/</\&lt;/g;s/>/\&gt;/g'

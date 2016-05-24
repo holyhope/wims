@@ -1,8 +1,7 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<h3 class="wimscenter wims_warning">$wims_name_Error</h3>
-
+<span class="wims_warning">$wims_name_Error</span>:
 
 !if no_title iswordof $error
  Por favor, dé un título a este ejercicio en preparación.
@@ -36,7 +35,7 @@
 !if def_fail iswordof $error
  El software no ha podido generar un ejercicio válido a partir de los
  datos que ha introducido. Hay errores en lo que ha escrito.
- <p><pre>$oef2wims_out</pre> <p>
+ <div class="tt"><pre>$oef2wims_out</pre></div>
  !if $mode!=$empty
   !set level=1
  !else
