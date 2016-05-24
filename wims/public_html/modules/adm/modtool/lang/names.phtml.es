@@ -17,6 +17,7 @@
 !set name_publication=Publication
 !set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
 !set name_compile=Compile latex2wims
+!set name_backup=Backup
 
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
@@ -130,14 +131,14 @@ de desarrollo bajo la dirección
  !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
    publicación $publishname
  !set name_warning01=Quiere entrar su identificación de publicación.
- !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un  \
+ !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un \
    módulo existente? Si no, nadie pondrá al día su nueva versión.
- !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local  \
+ !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local \
    de este servidor. ¿Quieren seguir?
  !set name_warning3=La principal ventaja de una publicación en el espacio local es evidenciar \
   el módulo en el motor de búsqueda del servidor local.
   !set name_cheat1=!nosubst Este módulo declara que se satisface con WIMS-$Wver2,\
- mientras que se desarrolló probablemente o modificado bajo este servidor que es  \
+ mientras que se desarrolló probablemente o modificado bajo este servidor que es \
  de versión $wims_version. Deben poner al día el fichero ÍNDICE del módulo \
  modificando la versión de wims en <span class="tt"> Propiedades< /tt>.
   !set name_cheat2= ¡Si están seguros de lo que hicieron, pueden engañar \
@@ -179,7 +180,7 @@ into name_diff1,name_diff2,name_diff3
  !set name_warning1=Su fichero no tiene el aire de un fichero de protección de un módulo&nbsp;!<p> \
    No pueden restaurar un fichero sino si fue telecargado antes a partir de Modtool. Vuelva a intentar.</p>
 
- !distribute lines  No pude reconocer su fichero como una protección de módulo. Error en el fichero&nbsp;!\
+ !distribute lines No pude reconocer su fichero como una protección de módulo. Error en el fichero&nbsp;!\
    Ninguna diferencia se encuentra entre el módulo existente (en su espacio de desarrollo) y lo salvaguarda.\
    Demasiada diferencia existe entre el módulo existente (en su espacio de desarrollo) y la salvaguarda.\
    Diferencias entre el módulo existente (en su espacio de desarrollo) y la salvaguarda&nbsp;\
@@ -193,7 +194,7 @@ into name_diff1,name_diff2,name_diff3
 !set name_illegal= ¡Su protección contiene ficheros de tipos ilegales! Restauración imposible.\
  <p> ¿Es una protección de una antigua versión? Ahora deben copiar los ficheros uno a uno</p>
 !set name_warning2=Solas las protecciones desde Modtool o los ficheros cargados a distancia \
-   desde el centro de publicación  <a href="$downloadsite">$downloadsite</a>\
+   desde el centro de publicación <a href="$downloadsite">$downloadsite</a>\
    se aceptan. Ninguna modificación manual del fichero de archivos se autoriza.
 !set name_warning_diff=!nosubst Este módulo va a sustituir completamente al módulo existente a la misma dirección,  \
   sin posibilidad de vuelta. Pero pueden
@@ -212,7 +213,7 @@ trabajo que hace referencia a su módulo no funcionarán
 ya si se borra este módulo.
 
 </p><p>
-Está  seguro de querer borrar el módulo
+Está seguro de querer borrar el módulo
 !!</p> close after the name of the module
 !exit
 :delconfirm
@@ -224,7 +225,7 @@ El fichero
 
 :delfile
 
-Está  seguro de querer borrar el módulo
+Está seguro de querer borrar el módulo
 <span class="wims_fname">$fname</span>
 del módulo
 <span class="wims_mod_title">$title</span>&nbsp;?

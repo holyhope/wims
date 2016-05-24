@@ -59,7 +59,7 @@ cattest=!module category devel/$auth_login/$mod
 
 dirs=!items2words $dir
 bfiles=!sh cd $devdir/$mod\
-	dd=`find $dirs -type f -name '*'| sort | uniq  2>/dev/null`\
+	dd=`find $dirs -type f -name '*'| sort | uniq 2>/dev/null`\
 	[ -z "$$dd" ] && exit\
 	ls -l $$dd | awk '{print $$9","$$5}'
 
@@ -67,7 +67,7 @@ bcnt=!linecnt $bfiles
 
 dest_=$wims_home/public_html/$devdir/$mod
 
-!if  $mkdoc !=$empty
+!if $mkdoc !=$empty
   !sh cd $dest_ ; $wims_home/other/bin/src2def ;
 !endif
 
