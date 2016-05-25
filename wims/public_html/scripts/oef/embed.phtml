@@ -1,6 +1,13 @@
 
+!! This script handle OEF embed{t, inputsize, [prompt]} instruction
+
 !set parm=!replace internal \ by $$m_ in $wims_read_parm
-!distribute items $parm into t_,inputsize,prompt_
+
+!set t_=!item 1 of $parm
+!set inputsize=!item 2 of $parm
+!! To be well displayed with Maths formula, prompt_ must keep its "\"
+!set prompt_=!item 3 of $wims_read_parm
+
 !set inputsize1=!word 1 of $inputsize
 !if $(replytype$i) iswordof flashcard
   !set inputsize1=!word 1 of $inputsize
