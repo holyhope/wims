@@ -30,7 +30,5 @@
 
 
 !if $job=addallexo
-if $job=addallexo
   !read oef/nl/intronames
- !endif
 !endif
