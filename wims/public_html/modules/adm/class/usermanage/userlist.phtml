@@ -119,14 +119,14 @@ to $wims_menu_items
  !set teacherlist=!record 0 of wimshome/log/classes/$wims_superclass/.teacherlist
  !set teachercnt=!linecnt $teacherlist
  !if $teachercnt>0 and $job!=teacher
-  !set wims_menu_items=!append line ,0,\
+  !set wims_menu_items=!append line itemsep,0,\
 teacherlist,1,module=adm/class/usermanage&job=teacher\
 to $wims_menu_items
  !endif
 !!## only the administrator has the right to add a teacher to the superclass
  !if $wims_typename iswordof group and $wims_supertype=2
     !if $teachercnt=0 or $job=teacher
-        !set wims_menu_items=!append line ,0, to $wims_menu_items
+        !set wims_menu_items=!append line itemsep,0, to $wims_menu_items
     !endif
     !set wims_menu_items=!append line addteacher,1,module=adm/class/reguser&step=1&utype=1 to $wims_menu_items
  !endif
