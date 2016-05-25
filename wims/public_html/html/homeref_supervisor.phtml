@@ -19,10 +19,11 @@
 !read themes/$wims_theme/local.phtml
 
 !if exam isin $wims_session
+ !!debug end= $wims_exam_end, $wims_now $wims_exam_remain timeleft=[60*$sdure-($now-$registered)]
  !set wims_hr_r=$[max(0,$wims_exam_remain)]
  !set wims_hr_rm=$[floor($wims_hr_r/60)]
  !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
- !set wims_homeref_special=$wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
+ !set wims_homeref_special= XXX=$wims_exam_end $wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
  !goto rmend
 !endif
 
@@ -109,7 +110,7 @@
 !if $wims_sheet!=$empty or _exam isin $wims_session
   !set 1_=!append line itemsep,0,\
   tools,4,module=home,tool\
-  line itemsep,0,\
+  itemsep,0,\
   to $1_
 !endif
 
