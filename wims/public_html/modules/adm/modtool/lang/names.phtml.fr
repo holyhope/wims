@@ -9,6 +9,8 @@
 !set name_modname=!nosubst Liste de modules pour <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Créer un module
 !set name_diff=Check diff
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=Fichiers principaux du module
 !set name_binfile=Autres fichiers
 !set name_del=Effacer un module
@@ -16,10 +18,13 @@
 !set name_publish=!nosubst Publier $i_title<br /><span class="tt">$mod</span>
 !set name_publication=Publication
 !set name_validation_message=Demander au gestionnaire du site de vérifier l'installation.
-!set name_compile= Compiler latex2wims
+!set name_compile=Compiler latex2wims
 !set name_backup=Sauvegarde
 !set name_edfile=Modification du fichier
 !set name_showfile=Contenu du fichier
+
+!! wims_name_properties
+!set name_index=Propriétés
 
 !set name_file=Fichiers existants
 !set name_file1=Fichier
@@ -82,18 +87,23 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines Copier,Renommer,Dupliquer,Renommer\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
+
 !if $job iswordof move copy
-  !distribute lines Copier,Renommer,Dupliquer,Renommer\
-   faites une copie\
+  !distribute lines faites une copie\
    Renommer le module va casser les feuilles de travail qui l'utilisent. Assurez-vous que ce n'est pas le cas\
-into name_choice,name_copy,name_warning1
+into name_copy,name_warning1
+
 !set name_public_module=!nosubst le module public <span class="wims_mod_title">$otit</span>\
 (<span class="tt wims_fname">$original2</span>) dans votre espace de développement sous l'adresse
 !set name_warning2=Renommer ou dupliquer un module d'adresse publique\
   peut conduire à la duplication de sa publication. Soyez très prudent !\
-  <p>Si vous voulez faire des tests sur le module, choisissez la zone <span class="tt wims_fname">test</span>.</p>
+  <p>Si vous voulez faire des tests sur le module, choisissez la zone <span class="tt wims_fname">test</span>.
 !set name_warning3=Si vous avez déjà publié ce module, veuillez changer cette adresse exactement selon \
-  son adresse publique. Sinon vous risquez une duplication de sa publication.
+  son adresse publique. Sinon vous risquez une duplication de sa publication.</p>
 !endif
 
 !if $job=auth

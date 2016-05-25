@@ -9,6 +9,8 @@
 !set name_modname=!nosubst Lijst modules van <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Maak een nieuwe module
 !set name_diff=Controleer verschil (diff)
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=Lijst van files
 !set name_binfile=Binaire bestanden
 !set name_del=Verwijder een module
@@ -20,6 +22,9 @@
 !set name_backup=Backup
 !set name_edfile=File modification
 !set name_showfile=File content
+
+!! wims_name_properties
+!set name_index=Eigenschappen
 
 !set name_file=Aanwezige binaire bestanden
 !set name_file1=Aanwezige
@@ -78,11 +83,14 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines Kopie,Hernoemen,Dupliceren,Hernoemen\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
 !if $job iswordof copy move
-  !distribute lines Kopie,Hernoemen,Dupliceren,Hernoemen\
-  maak een kopie\
+  !distribute lines maak een kopie\
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
- into name_choice,name_copy,name_warning1
+ into name_copy,name_warning1
 !set name_public_module=!nosubst de reeds gebubliceerde module <span class="wims_mod_title">$otit</span> \
   (<span class="tt wims_fname">$original2</span>) naar de development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\

@@ -9,6 +9,8 @@
 !set name_modname=Lista de módulos para <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Crear un módulo
 !set name_diff=Comprobar las diferencias
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=Lista de ficheros
 !set name_binfile=Ficheros binarios
 !set name_del=Borrar un módulo
@@ -20,6 +22,9 @@
 !set name_backup=Backup
 !set name_edfile=File modification
 !set name_showfile=File content
+
+!! wims_name_properties
+!set name_index=Propiedades
 
 !set name_file=Ficheros binarios existentes
 !set name_file1=Fichero
@@ -79,11 +84,15 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines Copiar, cambiar nombre, duplicar, cambiar nombre\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
+
 !if $job iswordof move copy
-  !distribute lines Copiar, cambiar nombre, duplicar, cambiar nombre\
-   Hacer una copia\
+  !distribute lines Hacer una copia\
    Cambiar el nombre del módulo va a romper las hojas de trabajo que lo utilizan. Garantizan que no es el caso\
-into name_choice,name_copy,name_warning1
+ into name_copy,name_warning1
 !set name_public_module=!nosubst el módulo público <span class="tt wims_fname">$original2</span>) en su espacio \
 de desarrollo bajo la dirección
 !set name_warning2=Cambiar el nombre o duplicar un módulo de dirección pública puede conducir a la duplicación \

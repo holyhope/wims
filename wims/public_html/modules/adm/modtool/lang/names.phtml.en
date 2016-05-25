@@ -9,6 +9,8 @@
 !set name_modname=List of modules for <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Create a module
 !set name_diff=Check diff
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=List of main files
 !set name_binfile=Other files
 !set name_del=Delete a module
@@ -20,8 +22,9 @@
 !set name_backup=Backup
 !set name_edfile=File modification
 !set name_showfile=File content
-!set name_edfile=File modification
-!set name_showfile=File content
+
+!! wims_name_properties
+!set name_index=Properties
 
 !set name_file=Other existing files
 !set name_file1=File
@@ -84,11 +87,14 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines Copy,Rename,Duplicate,Rename\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
 !if $job iswordof copy move
-  !distribute lines Copy,Rename,Duplicate,Rename\
-   duplicate it\
+  !distribute lines duplicate it\
    Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
- into name_choice,name_copy,name_warning1
+ into name_copy,name_warning1
 !set name_public_module=!nosubst the public module <span class="wims_mod_title">$otit</span> \
  (<span class="tt wims_fname">$original2</span>) to the development space, under the address
 !set name_warning2= Remaning or duplicating a public-address module may lead to\
@@ -212,9 +218,10 @@ into name_diff1,name_diff2,name_diff3
 Deleted modules are definitely gone.
 !href cmd=reply&jobreq=backup Make a backup
  first!
+<p>
 <b>Do not forget</b>: if there are any virtual classes or worksheets
 referencing your module, these will be broken if the module is deleted.
-<p>
+</p><p>
 Are you sure you want to delete the module
 !!</p> close after the name of the module
 !exit

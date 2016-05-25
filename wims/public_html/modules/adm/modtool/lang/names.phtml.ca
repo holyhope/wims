@@ -9,6 +9,8 @@
 !set name_modname=Llista de mòduls de <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Crear un mòdul
 !set name_diff=Comprova diferències
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=Llista de fitxers
 !set name_binfile=Fitxers binaris
 !set name_del=Esborrar un mòdul
@@ -20,6 +22,9 @@
 !set name_backup=Backup
 !set name_edfile=File modification
 !set name_showfile=File content
+
+!! wims_name_properties
+!set name_index=Propietats
 
 !set name_file=Fitxers existents
 !set name_file1=Fitxer
@@ -78,11 +83,14 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines Copiar,Reanomenar,Duplicar,Reanomenar\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
 !if $job iswordof move copy
-  !distribute lines Copiar,Reanomenar,Duplicar,Reanomenar\
-   fer una còpia\
+  !distribute lines  fer una còpia\
    Canviar el nom del mòdul malmetrà tots els fulls de treball que l'utilitzin. Comproveu que aquest no és el cas,\
- into name_choice,name_copy,name_warning1
+ into name_copy,name_warning1
 !set name_public_module=!nosubst el mòdul públic <span class="wims_mod_title">$otit</span>\
 (<span class="tt wims_fname">$original2</span>) en el vostre espai de desenvolupament a l'adreça
 !set name_warning2=Reanomenar o duplicar un mòdul d'adreça publica\

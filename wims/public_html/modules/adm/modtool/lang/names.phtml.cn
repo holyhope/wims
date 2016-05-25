@@ -9,6 +9,8 @@
 !set name_modname=<em>$(auth_name[2]) $(auth_name[1])</em>的模块目录表
 !set name_create=创建模块
 !set name_diff=检查差别
+!! must be the same as wims_name_modcontent in html/names.phtml.$lang
+!! dont succeed not to duplicate
 !set name_flist=文件表
 !set name_binfile=二进制文件
 !set name_del=删除模块
@@ -21,6 +23,9 @@
 !set name_backup=Backup
 !set name_edfile=File modification
 !set name_showfile=File content
+
+!! wims_name_properties
+!set name_index=性质\
 
 !set name_file=已有二进制文件
 !set name_file1=文件
@@ -79,11 +84,14 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
+!distribute lines 复制,改名,复制,改名\\
+ into name_choice
+!set name_move=$(name_choice[2])
+!set name_copy=$(name_choice[3])
 !if $job iswordof copy move
-  !distribute lines 复制,改名,复制,改名\
-   复制\
+  !distribute lines    复制\
    模块改名后会影响到所有用到它的作业页. 请确认这种情况不会发生,\
- into name_choice,name_copy,name_warning1
+ into name_copy,name_warning1
 !set name_public_module=!nosubst 供公众使用的模块 <span class="wims_mod_title">$otit</span>\
 (<span class="tt wims_fname">$original2</span>)到开发空间, 地址为
 !set name_warning2=改名或复制公共地址的模块会导致重复发布.\
