@@ -82,6 +82,12 @@ Recuperar los recursos seleccionados\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore,name_motd1
 
+!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
+  toutes les sauvegardes faites et contenant les données des élèves.\
+  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de clonage.
+
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
    La fecha de expiración de la clase se modificó después de la restauración, ya que la fecha restaurada es \

@@ -14,7 +14,7 @@ Hieruit produceerd WIMS diverse overzichten.
 Alle studenten hebben toegang tot hun persoonlijke gegevens waarover ook de docent kan beschikken.
 Studenten kunnen onder geen enkele voorwaarde gegevens inzien van medestudenten.
 </p><p>
-Het gebruik van specifieke hulpmiddelen in een digitale klas (zoals forum,bericht van de dag,raportboek etc etc) vallen 
+Het gebruik van specifieke hulpmiddelen in een digitale klas (zoals forum,bericht van de dag,raportboek etc etc) vallen
 onder de verantwoording van een docent.
 </p><p>
 Alle data worden automatisch opgeslagen.
@@ -26,6 +26,6 @@ Alle data worden automatisch opgeslagen.
 Alle data worden door de sitemanager op regelmatige basis van de server verwijderd.
 (veelal aan het eind van een schooljaar)
 </p>
-<div class="wims_warning">
+<div class="wims_msg info">
 Bij aanmelding op deze WIMS server gaat u akkoord met deze voorwaarden.
 </div>
