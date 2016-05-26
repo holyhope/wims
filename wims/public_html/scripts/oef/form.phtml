@@ -60,7 +60,13 @@ $name_enterreply:
  !else
   !set oef_js_submit=
  !endif
- <p class="send_answer"><input type="submit" $oef_js_submit value="$name_sendanswer" /></p>
+ <p class="send_answer">
+ !if _check notin $wims_session
+   <input type="submit" $oef_js_submit value="$name_sendanswer" />
+ !else
+   <input type="submit" $oef_js_submit value="$name_sendanswer" disabled="disabled"/>
+ !endif
+ </p>
 !endif
 
 !formend
