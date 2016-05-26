@@ -8,25 +8,39 @@ thisyear=!char 1 to 4 of $today
  !exit
 !endif
 
-!readdef $votedir/$vote.data
-!default testointro=!record 1 of $votedir/$vote.data
-!default mod_numsess=$numsess
-numsess=$mod_numsess
-!for i=1 to $numsess
-   !for var in testoextra,nstud
-    !default up_$var$i=$($var$i)
-    !set $var$i=$(up_$var$i)
-   !next var
+!! ------------------ keep save data
+data=!record 1 of $votedir/$vote.data
+namevar=!line 1 of $data
+po=!positionof item $namevar in $tv_listname
+!bound up_namevar within $listlocalname default $namevar
+
+!if $po isitemof $tv_listlocal and $namevar=$up_namevar
+ data=!line 2 to -1 of $data
+ listcle=!column 1 of $data
+ tmp=!line $po of $tv_listtechvar
+ tmp=!record $(tmp[3]) of wimshome/log/classes/$wims_class/.techvar
+ listval=!line 2 of $tmp
+ numsess=!itemcnt $listval
+ !default mod_numsess=$numsess
+ !for i=1 to $numsess
+   p=!positionof item $(listval[$i]) in $listcle
+   !if $p!=$empty
+    tdon=!line $p of $data
+    !default up_nstud$i=$(tdon[2])
+    !default up_testoextra$i=$(tdon[3])
+   !endif
+   nstud$i=$(up_nstud$i)
+   testoextra$i=$(up_testoextra$i)
  !next i
-!for var in testointro, namevar
-    !default up_$var=$($var)
-    !set $var=$(up_$var)
-!next var
+!else
+ data=$empty
+!endif
+!default up_testointro=!record 2 of $votedir/$vote.data
+testointro=$up_testointro
 
 !if $gstep=2
 !! need to check carefully namexevar vs. up_namevar (at some step we seem to
 !! be loosing the correction)(?? should this go outside the if $gstep=2)
- !bound up_namevar within $listlocalname
  !if $up_namevar=$empty and $namevar=$empty
    error=bad_variable
    gstep=1
@@ -38,10 +52,9 @@ numsess=$mod_numsess
   gstep=1
   !exit
  !endif
- !for dato in namevar
-  !setdef $dato=$($dato) \
-in  $votedir/$vote.data
- !next dato
+ !writefile $votedir/$vote.data :$namevar\
+$data\
+:$testointro
 !endif
 
 !if $gstep>=2
@@ -58,26 +71,17 @@ in  $votedir/$vote.data
  !for i in uservar,menu,list,radio,checkbox,textarea
   !set testointro=!replace internal \$i by INVALID in $testointro
  !next i
- !writefile $votedir/$vote.data
-
-!!## with writefile we are loosing these variables at gstep=3
-!for dato in numsess,namevar
-  !appendfile $votedir/$vote.data $dato=$($dato)
-!next dato
-
- donfile=$empty
+ donfile=$namevar
  !for i=1 to $numsess
 !!## need to check no "," in testoextra
-  !set testoextra$i=!replace internal , by . in $(testoextra$i)
+  testoextra$i=!replace internal , by . in $(testoextra$i)
   nstud$i=$[max(0,$(nstud$i))]
   !if NaN isin $(nstud$i)
     nstud$i=0
   !endif
-  !for dato in nstud$i,testoextra$i
-   donfile=!append line $dato=$($dato) to $donfile
-  !next dato
-!next i
- !appendfile $votedir/$vote.data $donfile\
+  donfile=!append line $(listval[$i]),$(nstud$i),$(testoextra$i) to $donfile
+ !next i
+ !writefile $votedir/$vote.data :$donfile\
 :$testointro
 
  reg_src=<div>\
