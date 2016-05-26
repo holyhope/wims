@@ -32,10 +32,14 @@ nblocalvar=!itemcnt $tv_listlocal
     !endif
 
 !! check forbidden name
-    !for rac in exam,sheet,vote,manual,login,name,lastname,firstname,password,email,regnum,photourl,comments,external_auth,allscore,averages,average,sheets,sheetexo,exams,manuals,participate,supervisable,supervise,manual
+    !for rac in exam,sheet,vote,manual,login,name,lastname,firstname,password,email,\
+      regnum,photourl,comments,external_auth,allscore,averages,average,sheets,sheetexo,\
+      exams,manuals,participate,supervisable,supervise,manual,\
+      regprop1,regprop2,regprop3,regprop4,regprop5,\
+      regprop6,regprop7,regprop8,regprop9,regprop10
 	!if $rac isin $tc_name
 	    t=!replace internal $rac by $empty in $tc_name
-	    !if $[$t]!=NaN 
+	    !if $[$t]!=NaN
 		error=nameforbidden
 		!exit
 	    !endif
@@ -78,4 +82,3 @@ grep -r user__ * | awk -F= '$$2!=""{print $$0}'
 	!endif
 	!endif
 !endif
-
