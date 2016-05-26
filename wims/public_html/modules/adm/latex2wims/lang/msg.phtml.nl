@@ -16,5 +16,10 @@ U moet de naam van een bestaand document binnen uw Modtool account opgegeven.
  !reset error
 !endif
 
+!if documentempty iswordof $error
+  Please create first a module of type document in Modtool.
+ !reset error
+!endif
+
 !msg $error
 !reset error
