@@ -29,7 +29,7 @@
 !set name_series=Séries d'exercices
 !set name_orderchange=Changer l'ordre des exercices
 
-if $job=addallexo
+!if $job=addallexo
   !read oef/es/intronames
 !endif
 
