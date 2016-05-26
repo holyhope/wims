@@ -61,7 +61,22 @@ choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
 
 !if $cmd=help
  !if $realtest=yes
-  !changeto oef/var.proc
+!!variable for ariane
+   !set ariane_title=$$wims_name_createxo
+   !set wims_ariane=!append line backcreatexo,1,module=adm/createxo&cmd=resume&realtest=no\
+testexo,1,module=$module&cmd=resume\
+to $wims_ariane
+   !changeto oef/var.proc
+ !else
+   !set wims_ariane=!append line resume,1,module=$module&cmd=resume\
+to $wims_ariane
+   !if $modtoolhelp!=yes
+!!trouble with mhelp=%2Cmhelp (coming from ,mhelp)
+     !if $special_parm!=$empty and ($special_parm notwordof mhelp help and mhelp notin $special_parm)
+      !set wims_ariane=!append line back2 $$wims_name_help,1,cmd=help\
+ to $wims_ariane
+     !endif
+   !endif
  !endif
  !exit
 !endif
