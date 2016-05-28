@@ -10,17 +10,39 @@ thisyear=!char 1 to 4 of $today
  !exit
 !endif
 
-!readdef $votedir/$vote.data
-!default testointro=!record 1 of $votedir/$vote.data
-!default mod_numsess=$numsess
-numsess=$mod_numsess
-!for i=1 to $numsess
-   !for var in bday, bmonth, byear, bhour, bmin, ehour, emin, nstud, testoextra,exconnip
-    !default up_$var$i=$($var$i)
-    !set $var$i=$(up_$var$i)
+data=!record 1 of $votedir/$vote.data
+namevar=!line 1 of $data
+!default up_defconnip=!line 2 of $data
+po=!positionof item $namevar in $tv_listname
+!bound up_namevar within $listlocalname default $namevar
+
+listvar=bday,bmonth,byear,bhour,bmin,ehour,emin,nstud,testoextra,exconnip
+!if $po isitemof $tv_listlocal and $namevar=$up_namevar
+ data=!line 3 to -1 of $data
+ listcle=!column 1 of $data
+ tmp=!line $po of $tv_listtechvar
+ tmp=!record $(tmp[3]) of wimshome/log/classes/$wims_class/.techvar
+ listval=!line 2 of $tmp
+ numsess=!itemcnt $listval
+ !default mod_numsess=$numsess
+ !for i=1 to $numsess
+   p=!positionof item $(listval[$i]) in $listcle
+   !if $p!=$empty
+    tdon=!line $p of $data
+    !for v=1 to 10
+     !default up_$(listvar[$v])$i=$(tdon[$v+1])
+    !next v
+   !endif
+   !for var in $listvar
+    $(var)$i=$(up_$(var)$i)
    !next var
  !next i
-!for var in testointro, namevar, defconnip
+!else
+ data=$empty
+!endif
+!default up_testointro=!record 2 of $votedir/$vote.data
+testointro=$up_testointro
+!for var in testointro,defconnip
     !default up_$var=$($var)
     !set $var=$(up_$var)
 !next var
@@ -40,11 +62,10 @@ numsess=$mod_numsess
   gstep=1
   !exit
  !endif
-
-!! !read adm/class/authchars
- !for dato in namevar,defconnip
-  !setdef $dato=$($dato) in  $votedir/$vote.data
- !next dato
+ !writefile $votedir/$vote.data :$namevar\
+$defconnip\
+$data\
+:$testointro
 !endif
 
 !if $gstep>=2
@@ -59,29 +80,33 @@ numsess=$mod_numsess
 
 !if $gstep=3
 !!## need to check $testointro contains no vote primitives
-!for i in uservar,menu,list,radio,checkbox,textarea
-  testointro=!replace internal \$i by INVALID in $testointro
-!next i
-!writefile $votedir/$vote.data
+ !for i in uservar,menu,list,radio,checkbox,textarea
+   testointro=!replace internal \$i by INVALID in $testointro
+ !next i
+ donfile=$namevar\
+$defconnip
 
-!!## with writefile we are loosing these variables at gstep=3
-!for dato in numsess,namevar,defconnip
-  !appendfile $votedir/$vote.data $dato=$($dato)
-!next dato
-
-techvartable=techvar $namevar $(classid)_$num\
+ techvartable=techvar $namevar $(classid)_$num\
 ,>$class_expiration
-!for i=1 to $numsess
-!!## need to check no "," in exconnip/testoextra
-  !set exconnip$i=!replace internal , by . in $(exconnip$i)
-  !set testoextra$i=!replace internal , by . in $(testoextra$i)
-  !for dato in nstud$i,bday$i,mese$i,byear$i,bhour$i,bmin$i,testoextra$i,bmonth$i,ehour$i,emin$i,exconnip$i
-    !appendfile $votedir/$vote.data $dato=$($dato)
-  !next dato
-!next i
+ !for i=1 to $numsess
+  !!## need to check no "," in exconnip/testoextra and numerical for date variable.
+  exconnip$i=!replace internal , by . in $(exconnip$i)
+  testoextra$i=!replace internal , by . in $(testoextra$i)
+  !for v in bday,bmonth,byear,bhour,bmin,ehour,emin
+   !if NaN isin $[$($v$i)*1]
+	$v$i=$empty
+   !endif
+  !next v
 
-!appendfile $votedir/$vote.data \
+  ligne=$(listval[$i])
+  !for var in $listvar
+   ligne=!append item $($var$i) to $ligne
+  !next var
+  donfile=!append line $ligne to $donfile
+ !next i
+ !writefile $votedir/$vote.data :$donfile\
 :$testointro
+
 !set reg_src=<div>\
 $testointro\
 </div>\
