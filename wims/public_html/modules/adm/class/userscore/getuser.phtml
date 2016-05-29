@@ -1,9 +1,9 @@
 
 !read adm/title.phtml 1\
 $classname\
-$name_workdetail
+$name_workdetail $name_studentloc
 
-<div class="wimscenter"><span class="wimsemph">
+<div class="center"><span class="wims_emph">
 !if $wims_user=supervisor
   !reset css_connected
   !if $getuser isitemof $wims_connectedlogin
@@ -13,8 +13,6 @@ $name_workdetail
   <span $css_connected>
  !href module=adm/class/usermanage/&job=userprop&getuser=$getuser $name_studentloc
   </span>
-!else
- $name_studentloc
 !endif
 </span><br /><span class="small">$wims_name_Login: <span class="tt">$getuser</span>
 !if $user_external_auth!=$empty
@@ -33,8 +31,8 @@ $wims_name_email: <a href="mailto:$user_email">$user_email</a>
  <br class="spacer" />
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
-!else
-!! ----- transférer dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
+!!!else
+!! ----- transféré dans usermanage (il s'agit d'un lien de transfert de score pour déplacer des élèves d'une classe à l'autre (dans un portail ou un groupement)
 !! !if $wims_user=supervisor and $wims_supertype iswordof 2 4
 !!  !readproc adm/gateway/transfer $getuser test
 !!  !if $transfer_test>0
