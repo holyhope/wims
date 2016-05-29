@@ -76,7 +76,11 @@
 
 !!********* Link #8 : "Resume"
 !if $cmd=help or $cmd=hint
- !set 1_=!append line resume ARIANE,1,cmd=resume to $1_
+ !if _test isin $session
+   !set 1_=!append line resume,1,cmd=resume to $1_
+ !else
+    !set 1_=!append line resume ARIANE,1,cmd=resume to $1_
+ !endif
  !if $module_category!=adm
    !set wims_ariane=!append line resume,1,cmd=resume\
  to $wims_ariane
@@ -112,7 +116,7 @@
  !endif
 !endif
 
-!if $wims_user$wims_developer!=$empty
+!if $wims_user$wims_developer!=$empty and _ notin $session
   !set wims_link_close=!append line visitor,1,cmd=close&module=home\
   to $wims_link_close
 !endif
