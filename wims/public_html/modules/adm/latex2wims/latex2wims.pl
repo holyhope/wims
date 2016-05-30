@@ -300,9 +300,11 @@ my $toc = analyse_texte ($TEXT, \%hash, 'main', $NIVEAU, $NIVEAU_max, '');
 # PASSE 4: création de tous les blocs ( environnements de type fold ou link)
 {
   my ($ref, $ref_env) = (\%hash, \%hash_environ);
-  while (my ($Id, $TEXT) = each (%{$hash{text}})) {
+  my (@TODO);
+  while (my ($Id, $TEXT) = each (%{$hash{text}})) { push(@TODO, [$Id,$TEXT]); }
+  for (@TODO) {
+    my ($Id, $TEXT) = @{$_};
     $TEXT = TraiteText ($TEXT, $ref, $ref_env, $Id);
-#TODO non testé l'utilisation de prev etc
     $ref->{text}{$Id} = $TEXT;
   }
 }
