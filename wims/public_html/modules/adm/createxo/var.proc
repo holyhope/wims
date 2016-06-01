@@ -1,5 +1,11 @@
 !read adm/language lang/names.phtml
 
+!if $wims_developer!=$empty
+  !set wims_ariane_self=no
+  !set wims_ariane=!append line modtool,1,module=adm/modtool&job=flist&modreq=$catmodule\
+  to $wims_ariane
+!endif
+
 wims_helper=chapter=4&open=4_oef#oef
 wims_form_method=post
 wims_nw=existing catmodule catmodule1 newone oef_fname level vsave \
@@ -452,4 +458,3 @@ to $wims_ariane
  imglist=!filelist $wims_home/$wims_sesdir/getfile/oefimg
  imglist=!words2items $imglist
 !endif
-

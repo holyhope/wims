@@ -2,6 +2,9 @@ mailchar=.-@_$alnum
 
 !if $modreq!=$empty
 modreq=!word 1 of $modreq
+!if $wims_developer!=$empty
+  !set modreq=!replace internal devel/$wims_developer/ by in $modreq
+!endif
 !if / isin $modreq or .. isin $modreq
  modreq=
 !endif
