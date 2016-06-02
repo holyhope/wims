@@ -131,8 +131,10 @@
 !set wims_rm_1=$1_
 :local
 !reset 1_
-!set 1_=!append line itemsep,0,\
+!if $wims_menu_items!=$empty
+  !set 1_=!append line itemsep,0,\
 $wims_menu_items to $1_
+!endif
 !set wims_rm_0=$1_
 !!wims_menu_tabs not used - to delete
 !set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
