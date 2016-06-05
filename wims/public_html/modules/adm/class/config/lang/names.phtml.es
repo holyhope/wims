@@ -538,6 +538,9 @@ Addresses of the connection links to the class:\
 
 !set name_content_style2=o copiar aquí la hoja de estilo de la clase
 
+!distribute lines Details on the other links\
+You can also configure the following activity outside the maintenance zone\
+into name_newrem1,name_newrem2
 !exit
 :arch
  <p>Ha enviado unos recursos guardados a partir de otra clase.

@@ -535,6 +535,9 @@ Addresses of the connection links to the class:\
 
 !set name_content_style2=Kopieer hier een css-stylesheet
 
+!distribute lines Details on the other links\
+You can also configure the following activity outside the maintenance zone\
+into name_newrem1,name_newrem2
 !exit
 :arch
 
