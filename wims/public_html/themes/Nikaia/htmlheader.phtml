@@ -128,7 +128,7 @@ table.wimstable th a{
 .container h4{  background-color:$wims_ref_bgcolor; color:$wims_ref_button_color;}
 #menu_pendant,#menu_html { background-color:$wims_ref_bgcolor;  color:$wims_ref_button_color;}
 #menu_avant,#menu_apres {  background-color:$wims_ref_button_bgcolor; color:$wims_ref_button_color;}*/
-.infobulle{ 
+.infobulle{
   background-color: $wims_ref_button_bgcolor;
   color: $wims_ref_button_color;
 }
@@ -174,19 +174,9 @@ body.main_body .wims_button_help{
   background-color:$wims_ref_button_help_bgcolor;
   color:$wims_ref_button_help_color;
 }
-
-!if $(class_actcolor) != $empty
-  .wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item{
-   color:$(class_actcolor[1]);
-  }
-
-  .wims_sheet_item {background-color:$(class_actcolor[2]);}
-  .wims_exam_item  {background-color:$(class_actcolor[3]);}
-  .wims_doc_item   {background-color:$(class_actcolor[4]);}
-  .wims_vote_item  {background-color:$(class_actcolor[5]);}
-  .wims_exo_item   {background-color:$(class_actcolor[6]);}
-!endif
-
+!! definition of the .wims_*_item for *=sheet, exam_item, .wims_doc, vote, exo_item
+!! done in var.proc to be able to test if the colors are defined.
+$class_actcolor_css
 </style>
 
 <!--end $wims_theme/htmlheader.phtml-->

@@ -179,5 +179,13 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
 !endif
 !set tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_class/cdt/.def
 !if $tmp>0
-   !set exist_cdt=yes
+ !set exist_cdt=yes
+!endif
+!if $(class_actcolor)!=$empty
+  !set class_actcolor_css=.wims_sheet_item, .wims_exam_item, .wims_doc_item, .wims_vote_item, .wims_exo_item {color:$(class_actcolor[1])}\
+.wims_sheet_item {background-color:$(class_actcolor[2])}\
+.wims_exam_item  {background-color:$(class_actcolor[3])}\
+.wims_doc_item   {background-color:$(class_actcolor[4])}\
+.wims_vote_item  {background-color:$(class_actcolor[5])}\
+.wims_exo_item   {background-color:$(class_actcolor[6])}
 !endif
