@@ -1262,8 +1262,8 @@ int main(int argc, char *argv[], char *envp[])
       write_logs(); save_session_vars();
     }
     outgo:
-    if (trace_file) fclose(trace_file);
     debug_output();
+    if (trace_file)  { fclose(trace_file); trace_file=NULL; }
     if(var_str!=stdinbuf) free(var_str);
     delete_pid();
     if(mode!=mode_popup && trusted_module()) {
