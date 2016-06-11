@@ -36,7 +36,7 @@ exp=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
 # exp is the expiration date minus one month (-100 if the month is different
 # from january , -8900 else)
 exp1=`expr "$exp" : "....\(.*\).."`;
-if [ "$exp1" -eq "01" ]; then exp=`expr $exp - 8900`; else  exp=`expr $exp - 100`; fi
+if [ "$exp1" -eq "01" ]; then exp=`expr $exp - 8900`; else exp=`expr $exp - 100`; fi
 if [ "$exp" -eq "$today" ]; then
 email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' $cls/.def`
 inst=`awk -F'=' '$1=="!set class_institution" {print $2; exit}' $cls/.def`
@@ -178,6 +178,13 @@ for s in `find . -path '*/sheets/.sheets' -type f`; do
     mv -f .sheets $s
    fi
 done
+
+#destroy the oldclasses which have been expired since more than 400 days.
+##today1=`date +%d`
+##if [ "$today1" -eq "01" ]; then
+##  find $WIMS_HOME/backup/oldclasses/[0-9]* -mtime +400 -exec rm {} \;
+##  find $WIMS_HOME/backup2/oldclasses/[0-9]* -mtime +400 -exec rm {} \;
+##fi
 
 # Build class index file
 rm -f .lockindex
