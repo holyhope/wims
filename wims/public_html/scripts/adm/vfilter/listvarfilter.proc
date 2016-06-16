@@ -6,12 +6,13 @@
 # tv_listtechvar : list (of line) for each techvar available (with information on each techvar in each line : name,classid,number)
 # tv_listlocal : list of num of local techvar (in the list tv_listtechvar)
 # tv_varfilterreaden : yes when read this file
+# tv_listcode : list of code (in .def) for each technical variable
 
 tv_varfilterreaden=yes
 !if $tv_Sclass!=$empty
     !exit
 !endif
-!reset tv_Sclass,tv_listallname,tv_listname,tv_listtechvar,tv_listlocal
+!reset tv_Sclass,tv_listallname,tv_listname,tv_listtechvar,tv_listlocal,tv_listcode
 !if $wims_superclass!=$empty
     tv_Sclass=$wims_superclass
     tmp_=!replace / by , in $wims_class
@@ -27,8 +28,6 @@ tv_varfilterreaden=yes
     parent_=$wims_class
 !endif
 nbtechvar_=!recordcnt wimshome/log/classes/$tv_Sclass/.indextechvar
-tv_listtechvar=$empty
-tv_listlocal=$empty
 !if $nbtechvar_>0
     !for k_=1 to $nbtechvar_
 	tmp_=!record $k_ of wimshome/log/classes/$tv_Sclass/.indextechvar
@@ -36,6 +35,8 @@ tv_listlocal=$empty
 	!if $(tmp_[2]) isitemof $parent_
 		tv_listtechvar=!append line $tmp_ to $tv_listtechvar
 		tv_listname=!append item $(tmp_[1])$ to $tv_listname
+		tn_=!replace internal / by A in $(tmp_[2])
+		tv_listcode=!append item $(tn_)_$(tmp_[3]) to $tv_listcode
 		!if $(tmp_[2])=$wims_class
 		    t_=!linecnt $tv_listtechvar
 		    tv_listlocal=!append item $t_ to $tv_listlocal

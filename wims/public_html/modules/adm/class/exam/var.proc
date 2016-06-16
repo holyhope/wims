@@ -1,6 +1,6 @@
 
 !read adm/class/classlang names.phtml
-wims_prefix=class user tmp
+wims_prefix=class user tmp techvar
 !default activeexo=10
 optionlist=autogen
 !read tabletheme
@@ -233,8 +233,13 @@ awk 'length($$1)==18{if($$3==$exam){print "no";exit};}' $$list;
 !endif
 !! ---------------------------
 
+!readproc adm/vfilter/listvarfilter.proc
 !if $allow=yes and $wims_user=supervisor
- !bound allowtype within all,simulation,none,select default all
+ !if $tv_listname=$empty
+	!bound allowtype within all,simulation,none,select default all
+ !else
+        !bound allowtype within all,simulation,none,select,techvar default all
+ !endif
  !if $sharers!=$empty and $allowshare=1
   setclass=$wims_class,$sharers
  !else
@@ -248,7 +253,7 @@ awk 'length($$1)==18{if($$3==$exam){print "no";exit};}' $$list;
   IPlist=!translate ,;\
 * to $    $ in $IPlist
   IPlist=!trim $IPlist
-  !if $allowtype=select and $IPlist=$empty
+  !if $allowtype=select and $IPlist=$empty and $save!=$empty
    allowtype=all
   !endif
   !if $allowtype=all
@@ -260,38 +265,41 @@ awk 'length($$1)==18{if($$3==$exam){print "no";exit};}' $$list;
   !if $allowtype=select
    allow_parm=$IPlist
   !endif
-  !for c in $setclass
-   !writefile wimshome/log/classes/$c/.E$exam $allow_parm
-  !next c
- !endif
- !if $cutt notsametext $cutt_save
-  cutt=!translate ,; to $  $ in $cutt
-  cutt=!sort words $cutt
-  cutt=!singlespace $cutt
-  !distribute lines 6\
-$cutt into update_field,update_content
-  !read update.exam
-  cutt_save=$cutt
- !endif
-!endif
+  !if $allowtype=techvar
+   !readproc adm/vfilter/shexselect.proc E$exam
+  !endif
+!! --- save modification of allow parameters
+  !if $save!=$empty
+   !if $allow_parm=$empty
+    !sh for c in $setclass; do rm -f $wims_home/log/classes/$$c/.E$exam; done
+   !else
+    !for c in $setclass
+     !writefile wimshome/log/classes/$c/.E$exam $allow_parm
+    !next c
+   !endif
+   wims_class_log=exam $exam allow $allowtype $allowshare by $wims_realuser
+  !endif
+!! --- end of saving
 
-allow=
-allowlist=!record 0 of wimshome/log/classes/$wims_class/.E$exam
-allowlist=!trim $allowlist
-!if $allowlist=$empty
- allowtype=all
-!else
- !if $allowlist=#
-  allowtype=simulation
- !else
-  !if none iswordof $allowlist
-   allowtype=none
-  !else
-   allowtype=select
-   IPlist=$allowlist
+  !if $cutt notsametext $cutt_save
+   cutt=!translate ,; to $  $ in $cutt
+   cutt=!sort words $cutt
+   cutt=!singlespace $cutt
+   !distribute lines 6\
+$cutt into update_field,update_content
+   !read update.exam
+   cutt_save=$cutt
   !endif
  !endif
 !endif
+
+!if $allow=$empty or $save!=$empty
+!! --- read saving configuration for allow parameters initial time and after saving
+ !readproc adm/vfilter/shexread.proc E$exam
+!endif
+old_allowtype=$allowtype
+old_allowtechvar=$allowtechvar
+!reset allow,save
 
 !if $job iswordof student score
  !if $wims_user=supervisor

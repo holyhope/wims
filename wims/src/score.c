@@ -331,7 +331,7 @@ int getsheetstatus(char *classe, int sheet)
 /* return 1 if a word of bf2 is a substring of host.
  * Content of bf2 is destroyed.
  */
-int _subword(char bf2[])
+int _subword(char bf2[],char *ftbuf)
 {
   char *p1, *p2;
   for(p1=strchr(bf2,'\\'); p1!=NULL; p1=strchr(p1+1,'\\')) {
@@ -345,13 +345,21 @@ int _subword(char bf2[])
     if(!isalnum(*(p1+1))) continue;
     p2=find_word_end(p1); if(p2>=p1+MAX_NAMELEN) continue;
     memmove(buf2, p1+1, p2-p1-1); buf2[p2-p1-1]=0;
-    snprintf(buf,sizeof(buf),"user__%s",buf2);
+    /* get value of technical variable */
+    snprintf(buf,sizeof(buf),"user_techvar_%s",buf2);
     if(strcmp(userp,"supervisor")==0)
       mkfname(fbuf,"%s/%s/supervisor",class_base,classp);
     else
       mkfname(fbuf,"%s/%s/.users/%s",class_base,classp2,userp);
-    getdef(fbuf,buf,buf2); if(buf2[0]==0) ovlstrcpy(buf2,"none");
-    string_modify(bf2,p1,p2,buf2);
+    getdef(fbuf,buf,buf2);
+    if(buf2[0]==0) ovlstrcpy(buf2,"EMPTY");
+    /* get time restriction for this value */
+    snprintf(buf,sizeof(buf),"techvar_%s",buf2);
+    /*mkfname(fbuf,"%s/%s/.E%s",class_base,classp,sheet);*/
+    getdef(ftbuf,buf,buf2);
+    if(buf2[0]==0) ovlstrcpy(buf2,"none");
+    /*string_modify(bf2,p1,p2,buf2);*/
+    bf2=buf2;
     p1+=strlen(buf2);
   }
   if((isexam || score_isexam) && bf2[0]=='#') return 1;
@@ -365,6 +373,7 @@ int _subword(char bf2[])
 int _getscorestatus(char *classe, int sheet)
 {
   char nbuf[MAX_LINELEN+1], gbuf[MAX_LINELEN+1];
+  char ftbuf[MAX_FNAME+1]="";
   char *es;
 
   if(classe==NULL || *classe==0 || sheet<=0) return 1;
@@ -378,10 +387,10 @@ int _getscorestatus(char *classe, int sheet)
   accessfile(nbuf,"r","%s/%s/.security",class_base,classe);
   if(nbuf[0]) {
     _getdef(nbuf,"allow",gbuf);
-    if(*find_word_start(gbuf)!=0 && _subword(gbuf)==0)
+    if(*find_word_start(gbuf)!=0 && _subword(gbuf,ftbuf)==0)
       return 0;
     _getdef(nbuf,"except",gbuf);
-    if(*find_word_start(gbuf)!=0 && _subword(gbuf)==1)
+    if(*find_word_start(gbuf)!=0 && _subword(gbuf,ftbuf)==1)
       return 0;
   }
 
@@ -389,7 +398,8 @@ int _getscorestatus(char *classe, int sheet)
   if(isexam || score_isexam) es="E"; else es="";
   accessfile(nbuf,"r","%s/%s/.%s%d",class_base,classe,es,sheet);
   if(*find_word_start(nbuf)==0) return 1;
-  return _subword(nbuf);
+  mkfname(ftbuf,"%s/%s/.%s%d",class_base,classe,es,sheet);
+  return _subword(nbuf,ftbuf);
 }
 
 /* Returns 1 if score registration is open, 0 otherwise. */

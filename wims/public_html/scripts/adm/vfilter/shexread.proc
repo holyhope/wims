@@ -1,0 +1,43 @@
+!! --- read saving configuration for allow parameters initial time and after saving
+!! wims_read_parm should contain E$exam for exam or $sheet for sheet
+
+allowlist=!record 0 of wimshome/log/classes/$wims_class/.$wims_read_parm
+allowlist=!trim $allowlist
+!if $allowlist=$empty
+ allowtype=all
+ !goto end
+!endif
+!if $allowlist=# and E isin $wims_read_parm
+  allowtype=simulation
+ !goto end
+!endif
+!if $allowlist=none
+ allowtype=none
+ !goto end
+!endif
+cle=!line 1 of $allowlist
+!if \ isin $cle
+   !read wimshome/log/classes/$wims_class/.$wims_read_parm
+   IPlist=$(techvar_EMPTY)
+   allowtechvar=!char 2 to -1 of $cle
+   !let nb=!positionof item $allowtechvar in $tv_listcode
+   !if $nb=$empty
+	allowtype=none
+	allowtechvar=$empty
+   !else
+	don=!line $nb of $tv_listtechvar
+	!distribute item $don into bl,classid,number
+	don=!record $number of wimshome/log/classes/$classid/.techvar
+	listval=!line 2 of $don
+	nb=!itemcnt $listval
+        !for i=1 to $nb
+        	IPtechvar$i=$(techvar_$(listval[$i]))
+	!next i
+	allowtype=techvar
+   !endif
+!else
+   allowtype=select
+   IPlist=$allowlist
+!endif
+:end
+

@@ -1,0 +1,34 @@
+!!  process for use technical variable in sheet or exam to manage activate scoring
+!! wims_read_parm should contain E$exam for exam or $sheet for sheet
+
+!let nb=!positionof item $allowtechvar in $tv_listcode
+!if $nb=$empty
+	!if $save!=$empty
+	    allowtype=none
+	    allowtechvar=$empty
+	!endif
+	allow_parm=none
+!else
+	!let don=!line $nb of $tv_listtechvar
+	!distribute item $don into name,classid,number
+	!if $old_allowtype!=$allowtype or $allowtechvar!=$old_allowtechvar
+	    tmp=!record 0 of wimshome/log/classes/$wims_class/techvar/$allowtechvar
+	    !if $tmp!=$empty
+	     !writefile wimshome/log/classes/$wims_class/.$wims_read_parm $tmp
+	     !reset allow
+            !endif
+	!else
+		!let don=!record $number of wimshome/log/classes/$classid/.techvar
+		!let listval=!line 2 of $don
+		!let nb=!itemcnt $listval
+   		allow_parm=\$allowtechvar\
+!set techvar_EMPTY=$IPlist
+		!for i=1 to $nb
+		    IPtechvar$i=!translate ,;\
+* to $    $ in $(IPtechvar$i)
+ 		    IPtechvar$i=!trim $(IPtechvar$i)
+		    allow_parm=!append line !set techvar_$(listval[$i])=$(IPtechvar$i) to $allow_parm
+		!next i
+       !endif
+!endif
+
