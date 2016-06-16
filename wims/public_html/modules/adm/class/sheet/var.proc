@@ -23,7 +23,7 @@ require_limit=!defof MAX_REQUIRE in wimshome/public_html/bases/sys/define.conf
 require_limit=200
 ####
 require_limit=$[$require_limit/10]
-wims_prefix=class user tmp n sharing sharable
+wims_prefix=class user tmp n sharing sharable techvar
 srcname=wimshome/$wims_sesdir/home_sheet.src
 wims_helper=chapter=3
 
@@ -238,42 +238,13 @@ activetest=!replace line number 3 by $ecnt in $activetest
  !if $allowtype=select
   allow_parm=$IPlist
  !endif
+
  !if $allowtype=techvar
-  !let nb=!positionof item $allowtechvar in $tv_listname
-  !if $nb=$empty
-	!if $save!=$empty
-	    allowtype=none
-	    allowtechvar=$empty
-	!endif
-	allow_parm=none
-  !else
-	!let don=!line $nb of $tv_listtechvar
-	!distribute item $don into name,classid,number
-	id=!replace internal / by A in $classid
-	!if $old_allowtype!=$allowtype or $allowtechvar!=$old_allowtechvar
-	    tmp=!record 0 of wimshome/log/classes/$wims_class/techvar/$(id)_$number
-	    !if $tmp!=$empty
-	     !writefile wimshome/log/classes/$wims_class/.$sheet $tmp
-	     !reset allow
-            !endif
-	!else
-		!let don=!record $number of wimshome/log/classes/$classid/.techvar
-		!let listval=!line 2 of $don
-		!let nb=!itemcnt $listval
-    		allow_parm=techvar $allowtechvar $(classid)_$number\
-$empty,$IPlist
-		!for i=1 to $nb
-		    IPtechvar$i=!translate ,;\
-* to $    $ in $(IPtechvar$i)
- 		    IPtechvar$i=!trim $(IPtechvar$i)
-		    ligne=$(listval[$i]),$(IPtechvar$i)
-		    allow_parm=!append line $ligne to $allow_parm
-		!next i
-       !endif
-  !endif
+   !readproc adm/vfilter/shexselect.proc $sheet
  !endif
+!endif
 !! ---- save modification of allow parameters
- !if $save!=$empty
+!if $save!=$empty
   !if $sharers!=$empty and $allowshare=1
    setclass=!items2words $wims_class,$sharers
    setclass=!words2items $setclass
@@ -288,56 +259,15 @@ $empty,$IPlist
    !next c
   !endif
   wims_class_log=sheet $sheet allow $allowtype $allowshare by $wims_realuser
- !endif
-!! ---- end of saving
 !endif
+!! ---- end of saving
 
 !if $allow=$empty or $save!=$empty
 !! --- read saving configuration for allow parameters initial time and after saving
-allowlist=!record 0 of wimshome/log/classes/$wims_class/.$sheet
-allowlist=!trim $allowlist
-!if $allowlist=$empty
- allowtype=all
-!endif
-!if $allowlist!=$empty
- cle=!word 1 of $allowlist
- !if none iswordof $cle
-  allowtype=none
- !else
-  !if techvar iswordof $cle
-   don=!line 3 to -1 of $allowlist
-   cledon=!column 1 of $don
-   IPlist=$(allowlist[2;2])
-   d=!line 1 of $allowlist
-   !distribute word $d into type,name,id
-   !let nb=!positionof item $name in $tv_listname
-   !if $nb=$empty
-	allowtype=none
-	allowtechvar=$empty
-   !else
-	don=!line $nb of $tv_listtechvar
-	!distribute item $don into bl,classid,number
-	don=!record $number of wimshome/log/classes/$classid/.techvar
-	listval=!line 2 of $don
-	nb=!itemcnt $listval
-        !for i=1 to $nb
-            p=!positionof item $(listval[$i]) in $cledon
-            !if $p!=0
-        	IPtechvar$i=$(allowlist[$p+2;2])
-            !else
-        	IPtechvar$i=$empty
-            !endif
-	!next i
-	allowtype=techvar
-    !endif
-  !else
-   allowtype=select
-   IPlist=$allowlist
-  !endif
+ !readproc adm/vfilter/shexread.proc $sheet
 !endif
 old_allowtype=$allowtype
 old_allowtechvar=$allowtechvar
-!endif
 !reset allow,save
 !! --- end of reading
 

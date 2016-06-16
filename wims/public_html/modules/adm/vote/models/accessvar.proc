@@ -86,8 +86,9 @@ $data\
  donfile=$namevar\
 $defconnip
 
- techvartable=techvar $namevar $(classid)_$num\
-,>$class_expiration
+ classid2=!replace internal / by A in $classid
+ techvartable=\$(classid2)_$num\
+!set techvar_EMPTY=>$class_expiration
  !for i=1 to $numsess
   !!## need to check no "," in exconnip/testoextra and numerical for date variable.
   exconnip$i=!replace internal , by . in $(exconnip$i)
@@ -126,7 +127,7 @@ $testointro\
   reg_src1=$reg_src1\
 $(nstud$i): $(bday$i) $(mese$i) $(byear$i) - $(bhour$i).$(bmin$i) / $(ehour$i).$(emin$i)$ $(testoextra$i),
   techvartable=$techvartable\
-$(listval[$i]),>$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i),
+!set techvar_$(listval[$i])=>$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i)
   reg_src2=$reg_src2\
 $(listval[$i]),
  !next i

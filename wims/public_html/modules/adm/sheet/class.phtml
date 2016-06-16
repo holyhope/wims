@@ -42,17 +42,12 @@ $sheet_title
 !if $expir_user!=$empty
   !set cle=!word 1 of $expir_user
 !! process for technical variable definition (replace expir_user by value decide by the technical variable)
-  !if techvar=$cle
-   !set idtechvar=!word 3 of $expir_user
-   !set val=!getdef user_techvar_$(idtechvar) in wimshome/log/classes/$wims_superclass/.users/$wims_user
-   !set don=!line 2 to -1 of $expir_user
-   !set cle=!column 1 of $don
-   !set nb=!positionof item $val in $cle
-   !if $nb!=$empty
-    !set expir_user=$(don[$nb;2])
-   !else
-    !set expir_user=$(don[2;2])
-   !endif
+  !if \ isin $cle
+   !set idtechvar=!line 1 of $expir_user
+   !set idtechvar=!char 2 to -1 of $idtechvar
+   !set val=!defof user_techvar_$(idtechvar) in wimshome/log/classes/$wims_superclass/.users/$wims_user
+   !default val=EMPTY
+   !set expir_user=!defof techvar_$val in wimshome/log/classes/$wims_class/.$sh
   !endif
 !! end process technical variable
 !!! a corriger
