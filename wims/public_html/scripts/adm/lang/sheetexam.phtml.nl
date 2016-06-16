@@ -23,7 +23,7 @@ Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het
 !set name_desctableval=Table de filtre en fonction de la valeur de la variable technique
 !set name_value=Valeur
 !set name_filtre=Filtre
-!set name_empty=Vide
+!set name_EMPTY=Vide
 
 !set name_desc_comment=Alleen zichtbaar voor docenten.
 !let name_selectsheet=Laat alleen oefeningen zien uit werkblad

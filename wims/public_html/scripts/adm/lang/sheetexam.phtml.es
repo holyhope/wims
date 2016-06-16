@@ -28,7 +28,7 @@ Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les 
 !set name_desctableval=Table de filtre en fonction de la valeur de la variable technique
 !set name_value=Valeur
 !set name_filtre=Filtre
-!set name_empty=Vide
+!set name_EMPTY=Vide
 
 !set name_desc_comment=Visible solamente por el profesor.
 !let name_selectsheet=Indicar solamente los ejercicios de la hoja
