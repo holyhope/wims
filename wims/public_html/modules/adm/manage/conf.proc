@@ -38,7 +38,7 @@ l=!record $confcat of lang/cat.$modu_lang
 	H5/physics/travail,\
 	into mod_bc,mod_fortune,mod_perl,mod_chemeq,mod_units,babel
 # otherlist=tex perl bc fortune chemeq units-filter
- otherlist=tex perl bc fortune chemeq units-filter ldapsearch
+ otherlist=tex perl bc fortune chemeq units-filter ldapsearch tac
  test=!sh for bin in $otherlist\
   do\
    which $$bin\
@@ -49,12 +49,24 @@ l=!record $confcat of lang/cat.$modu_lang
    othermiss=!append item $other to $othermiss
   !endif
  !next other
-!endif
-!if perl notin in $othermiss
-  !set pack_validation=WebService::Validator::HTML::W3C
-  !sh perl -M$pack_validation -e 1
+ !if perl notin in $othermiss
+   !set pack_validation=WebService::Validator::HTML::W3C
+   !sh perl -M$pack_validation -e 1
+   !if $wims_exec_error!=$empty
+     othermiss=!append item validation to $othermiss
+     !reset wims_exec_error
+   !endif
+  !endif
+!! test for non posix options for date and stat.
+  test=!sh date -d '20 minutes' '+%s'
   !if $wims_exec_error!=$empty
-    othermiss=!append item validation to $othermiss
+     othermiss=!append item date to $othermiss
+     !reset wims_exec_error
+  !endif
+  test=!sh stat -c'%s' .
+  !if $wims_exec_error!=$empty
+     othermiss=!append item stat to $othermiss
+     !reset wims_exec_error
   !endif
 !endif
 
