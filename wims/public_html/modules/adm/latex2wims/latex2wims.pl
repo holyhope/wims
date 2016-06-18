@@ -669,9 +669,9 @@ sub complete {my ($tag, $ref) = @_;
   if ($INDEX == 1 && !($ref->{titb}{index})) { $ref->{titb}{index} = 'Index' ;}
 }
 
-#option full <h2 class=" l2w_content defn">Définition [titre perso]</h2> <div class= " l2w_content definition">  </div> si cela existe
+#option full <h3 class="l2w_content defn">Définition [titre perso]</h3> <div class= "l2w_content definition">  </div> si cela existe
 #option bloc <div class= "definition"> </div> si cela existe (intérieur d'un fold ou d'un link)
-#option titre <h2 class="l2w_content defn">Définition </h2> si cela existe (titre d'un fold)
+#option titre <h3 class="l2w_content defn">Définition </h3> si cela existe (titre d'un fold)
 sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
   my $a = $ref_env->{titre}{$rubrique};
   my $b = $ref_env->{style}{$rubrique};
@@ -689,8 +689,8 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
     $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])?/$div_d/g;
     $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } elsif ($option eq 'full') {
-    $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h2 class=\"l2w_content $b\">$a $1<\/h2>$div_d/g;
-    $TEXT =~ s/<$rubrique>/<h2 class=\"l2w_content $b\">$a<\/h2>$div_d/g;
+    $TEXT =~ s/<$rubrique>\s*(\[[^\]]+\])/<h3 class=\"l2w_content $b\">$a $1<\/h3>$div_d/g;
+    $TEXT =~ s/<$rubrique>/<h3 class=\"l2w_content $b\">$a<\/h3>$div_d/g;
     $TEXT =~ s/<\/$rubrique>/$div_f/g;
   } else {
     $TEXT =~ s/<$rubrique>/<span class=\"$b\">/g;

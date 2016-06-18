@@ -43,16 +43,17 @@ $name_expired
  </p>
  !exit
 !endif
-<h3 class="wims_docu_titleb">$titb
+<h2 class="wims_docu_titleb">$titb
 !if $editable=yes
  <span class="small">[
  !href cmd=reply&job=edit&doc=$doc&block=$block $wims_name_Edit
  ]</span>
 !endif
-</h3>
+</h2>
 
 !read $docdir/$doc/$block.def content
-
-!set wims_menu_items=!append line properties,1,cmd=reply&job=prop\
+!if $doctype=class and $editable=yes
+ !set wims_menu_items=!append line properties,1,cmd=reply&job=prop\
 doch_upload,1,cmd=reply&job=file\
 to $wims_menu_items
+!endif
