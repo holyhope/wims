@@ -24,6 +24,11 @@
 !if $job=read
  !if ($wims_class!=$empty and $wims_user!=supervisor)
    <br class="clearall spacer" />
+!! modumenubox in class for participant.
+ !distribute items div, div into div0, div1
+ !read themes/_procs/docmodumenubox.proc
+ !read themes/_widgets/menumodubox.phtml
+ !reset div0 div1
  </div><!-- end of wimsbodybox-->
 </div><!--end of wimsdoc-->
  !exit
@@ -31,10 +36,9 @@
 !endif
 
 !if help notin $wims_session
-!!TRY
  !distribute items div, div into div0, div1
+ !read themes/_procs/docmodumenubox.proc
  !read themes/_widgets/menumodubox.phtml
- !!!read themes/_widgets/docmenumodubox.phtml
  !reset div0 div1
 !endif
 
@@ -42,7 +46,7 @@
 
  <br class="clearall spacer" />
 
-</div><!-- end ofwimsbodybox-->
+</div><!-- end of wimsbodybox-->
 
 !!read themes/_widgets/doctailbox.phtml
 

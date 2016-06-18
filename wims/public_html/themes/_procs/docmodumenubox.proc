@@ -1,0 +1,18 @@
+!if $printable=yes
+    !set wims_rm_0=$wims_rm_0\
+    doch_interactive,1,cmd=reply&job=read&doc=$doc&block=$startblock
+!else
+   !if $job=read
+     !set wims_rm_0=!append line doch_printable,1,cmd=reply&job=print&doc=$doc\
+to $wims_rm_0
+   !endif
+!endif
+!if $job=read
+   !if $doctoc=yes
+      !set wims_rm_0=!append line doch_toc,1,cmd=reply&job=read&block=doctoc\
+to $wims_rm_0
+    !endif
+    !set wims_rm_0=!append line doch_reload,1,cmd=reply&job=read\
+to $wims_rm_0
+!endif
+!set wims_homeref_n0=!linecnt $wims_rm_0

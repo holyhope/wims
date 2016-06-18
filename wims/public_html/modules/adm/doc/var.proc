@@ -244,5 +244,13 @@ wims_priv_thisdoc=$docdir/$doc
   !read $docdir/$doc/main.def
  !endif
 !endif
-
 !read $job.proc
+
+!! document management
+
+!if $module=adm/doc and $doctype=devel and $wims_developer!=$empty
+  !set wims_ariane_self=no
+  !set wims_ariane=modtool,1,module=adm/modtool\
+modcontent,1,module=adm/modtool&jobreq=flist&modreq=$devdoc\
+docgestion,8
+!endif

@@ -29,17 +29,16 @@
 !if $job notwordof home
  !read menu.phtml
 !else
-!if $(module_title_$modu_lang)!=
+ !if $(module_title_$modu_lang)!=
   !set module_title=$(module_title_$modu_lang)
-!endif
-
+ !endif
  !header
 !endif
 
 !read $job.phtml
 !!transfert from docmenubox.phtml
-!if $job!=exosource and $sheetdata!=$empty
-     !set wims_menu_items=!append line source,1,cmd=reply&job=exosource&block=$startblock\
+!if $job!=exosource and $sheetdata!=$empty and ($wims_user=supervisor or $wims_developer!=$empty)
+  !set wims_menu_items=!append line source,1,cmd=reply&job=exosource&block=$startblock\
 to $wims_menu_items
 !endif
 
