@@ -11,18 +11,7 @@
  !set wims_hr_r=$[max(0,$wims_exam_remain)]
  !set wims_hr_rm=$[floor($wims_hr_r/60)]
  !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
- !set xxx=!translate internal =. to ,, in $wims_module_start_time
- !set xxx=!translate internal : to , in $(xxx[2])
- !set xxx_min=$[$(xxx[2])+60*$(xxx[1])+floor($wims_duration)]
- !set ex_end_h=$[floor($xxx_min/60)]
- !set ex_end_m=!char 2,3 of $[$xxx_min%60+100]
-
-!set wims_exam_end=$ex_end_h:$ex_end_m
- !!debug $xxx_min $wims_duration $xxx $wims_exam_end
- !set wims_homeref_special= Vous avez commencé l'examen à $wims_module_start_time.\
-   Vous devez le terminer avant $wims_exam_end.
-
- !!$wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
+ !set wims_homeref_special=$wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
  !goto rmend
 !endif
 
