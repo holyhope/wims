@@ -5,7 +5,7 @@ flydraw=$wims_home/src/Flydraw/flydraw
 mkdir -p $dir/tmp
 
 check(){
-    cmp --quiet $dir/tmp/$f.gif $dir/targets/$f.gif
+    cmp --quiet -i 8:8 $dir/tmp/$f.gif $dir/targets/$f.gif
     case "$?" in
 	0) echo "OK, test $f passed."
 	   ok=$((ok+1))
