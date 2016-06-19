@@ -177,13 +177,14 @@ $wims_name_Examens ($name_Duration),$name_manualscore
 
 !formend
 !endif
+!set wims_menu_items=!append line itemsep,0,$wims_name_manage\
+usermanage,1,module=adm/class/usermanage\
+to $wims_menu_items
 
 !if $wims_user=supervisor and ($wims_typename iswordof course or \
 ($wims_typename iswordof class and $wims_supertype iswordof 0 2))
-  !set wims_menu_items=!append line Score1,1,cmd=resume\
+  !set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation\
+  Score1,1,cmd=resume\
   livret,1,module=adm/class/livret\
 to $wims_menu_items
 !endif
-
-!set wims_menu_items=!append line usermanage,1,module=adm/class/usermanage\
-to $wims_menu_items
