@@ -230,13 +230,13 @@ $dl3$dl5\
  data_scores=!append item $dl2$tmp to $data_scores
 !next u
 
-!if csvformat iswordof cvs tsv
+!if $csvformat iswordof cvs tsv
  infile=spreadsheet.$csvformat
  outfile=$fbase.$csvformat
  !mexec csv/getprep.sh
 !else
  !! it is format ods
  infile=spreadsheet.$csvformat
- outfile=$fbase.$csvformat 
+ outfile=$fbase.$csvformat
  !mexec csv/mkODS.py
 !endif
