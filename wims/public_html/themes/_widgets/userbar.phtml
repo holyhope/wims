@@ -1,5 +1,9 @@
 !distribute items 9,9 into bar_scoreexo_limit, exo_bar_quallimit
-
+!if $wims_theme=default
+  !set float=
+!else
+ !set float=float_right
+!endif
 !if $wims_read_parm!=$empty
   !set se=$wims_read_parm
 !endif
@@ -19,7 +23,7 @@
     !set d_=!words2items $d_
     !set d_qual=!words2items $d_qual
     !set require=!words2items $require
-    <div class="wims_score_bar float_right">
+    <div class="wims_score_bar $float">
     <ol>
      !for ii=1 to $nb_exo
        !set exo_try= !word $ii of $try
