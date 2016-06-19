@@ -142,9 +142,12 @@ int
 0,2000
 
 :housekeep backup_delete
-Délai de destruction des classes en jours après leur expiration
+Délai de destruction des classes en jours
 int
 100,2000
+Mettre un nombre de jours entre 100 et 2000.
+Si vous indiquez un entier N, les classes archivées seront détruites N jours après la date de leur
+archivage ou plutôt le premier du mois suivant.
 
 :graphics default_ins_format ins_format
 Format of dynamic graphics*
@@ -317,7 +320,7 @@ For example, <code class="tt">-r</code>
 :security manager_https
 Site maintenance must use https connection*
 choice
-0,1;no (0),yes (1)
+0,1;$wims_name_no,$wims_name_yes
 Whenever possible, choose https connection to increase security.
 An intrusion to your server as webmaster represents a great danger to your installation!
 <p>WIMS is compatible with https. All you have to do is to configure your
@@ -348,7 +351,7 @@ if Maxima is installed in a usual way with the starting executable in PATH.
 :log module_log
 Log individual module informations
 choice
-1,0;yes (1),no (0)
+1,0;$wims_name_no,$wims_name_yes
 Many WIMS modules define their own log informations.
 If you want to see these module informations, you can activate this (see also the definition of
 module log file lengths).
@@ -366,7 +369,7 @@ Length limit of module log files.
 :housekeep site_accounting
 Activity accounting
 choice
-0,1; no, yes
+0,1;$wims_name_yes,$wims_name_no
 Enable or disable daily activity accounting.
 This is necessary for site activity statistics, as well as for virtual class connection time accounting.
 
