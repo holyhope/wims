@@ -429,7 +429,7 @@ wims_name_Docstatus,wims_name_number
 !set wims_name_icourse=Interklas cursus
 !set wims_name_backstruct=Backup van de gehele structuur
 
-!if config isin $module or $module=home
+!if config isin $module or $module=home or $module=adm/class/userscore
  !distribute line $wims_name_config\
  Hoofdpagina klassen onderhoud\
  Instituut administratie\

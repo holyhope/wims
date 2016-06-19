@@ -430,7 +430,7 @@ Cuaderno de textos\
 !set wims_name_icourse=Curso de interclase
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
-!if config isin $module or $module=home
+!if config isin $module or $module=home or $module=adm/class/userscore
  !distribute line $wims_name_config\
  Página principal de configuración\
 Gestión de la estructura\
