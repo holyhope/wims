@@ -1,0 +1,18 @@
+!set tmp=!word 1 of $wims_read_parm
+ <script type="text/javascript">
+     /*<![CDATA[*/
+     jQuery(function($$) {
+       // Get in sessionStorage if a tab was previously selected, and activate it.
+       var selectedTabId = sessionStorage.getItem("$(tmp)_selectedTab");
+       selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
+       $$("#widget_$tmp").tabs({
+         active: selectedTabId,
+         activate : function( event, ui ) {
+             selectedTabId = $$("#widget_$tmp").tabs("option", "active");
+             sessionStorage.setItem("$(tmp)_selectedTab", selectedTabId);
+         }
+       });
+     });
+     /*]]>*/
+ </script>
+!reset tmp
