@@ -2,6 +2,21 @@
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang names.phtml
 
+!if $job!=$empty and $job notwordof text modify
+  job1=$job
+  !if $job=getsource
+    job1=sheetsource
+  !endif
+  !if $job=prep_putsource
+    job1=putsource
+  !endif
+  !set wims_ariane=!append line sheetadmin,1,cmd=resume \
+$job1,8, to $wims_ariane
+!else
+  !set wims_ariane=!append line sheetadmin,8 to $wims_ariane
+!endif
+!set wims_ariane_self=no
+
 scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !if $sheet>$scnt
  wims_infoshow=yes
