@@ -1,27 +1,28 @@
 <!-- _widgets/docheadermenu.phtml -->
+
 <div class="wimsmenu">
- !if _mfeed  isin $wims_session
+ !if _mfeed isin $wims_session
   <span class="menuitem">
    !set wims_ref_class=doch_class
    <a href="#" onclick="window.close()">$wims_name_back2</a>
   </span><!-- menuitem-->
  !endif
- !if help notin $wims_session and _mfeed notin $wims_session
+ !if help notin $wims_session and _mfeed notin $wims_session and $doc!=$helpd
   !if $wims_class=$empty
    !!<span class="menuitem">
     !!read $oneitem doch_wims,1,module=home
    !!</span><!-- menuitem-->
   !else
-   !if _doc isin $wims_session
+    !if _doc isin $wims_session
     <span class="menuitem">
      !set wims_ref_class=doch_class
      <a href="#" onclick="window.close()">$wims_name_doch_class</a>
     </span><!-- menuitem-->
-   !else
+    !else
     !!<span class="menuitem">
      !!read $oneitem doch_class,1,module=home
     !!</span><!-- menuitem-->
-   !endif
+    !endif
   !endif
 !else
    <span class="menuitem">
@@ -32,8 +33,8 @@
 !!! FIXME mettre dans le menu de gauche ??
 !!! link on the list of documents.
  !if ..//adm/doc isin ..//$module \
-    and (($wims_class=$empty and $wims_developer=$empty) or $wims_user=supervisor) \
-    and $doctype!=devel and _help notin $wims_session
+    and ($wims_class=$empty and $wims_developer=$empty) \
+    and $doctype!=devel and _help notin $wims_session and $doc!=$helpd
   <span class="menuitem">
    !read $oneitem doch_docs,1,module=$module&cmd=reply&job=home
   </span><!-- menuitem-->
@@ -56,14 +57,14 @@
       !endif
       !reset wims_ref_class
     </span><!-- menuitem-->
-     !if _mfeed notin $wims_session
+      !if _mfeed notin $wims_session
     <span class="menuitem">
     !!!ne pas utiliser oneitem
       !set wims_ref_class=doch_about
       !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
       !reset wims_ref_class
     </span><!-- menuitem-->
-   !endif
+     !endif
   !endif
  !!endif
 </div> <!--menu -->
