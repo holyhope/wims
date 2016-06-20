@@ -1,19 +1,29 @@
-
 !set form_titlename=$wims_name_title
 !set form_caption=$name_programproperties
 !set title=$class_description
 !set sup=$class_Supervisor
+<div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_classform">$wims_name_properties</a></li>
+ <li><a href="#wims_zone_course">$wims_name_course</a></li>
+ <li><a href="#wims_zone_icourse">$wims_name_icourse</a></li>
+ <li><a href="#wims_zone_recsharable">$name_prog6</a></li>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+</ul>
+<div id="wims_classform">
 !read scripts/progform.phtml
- <div class="wimscenter">
 !if $hastest=yes
  $name_prog1
   $
-!set wims_ref_class=wims_button_help
+ !set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#test $wims_name_help
-!set wims_ref_class=wims_button
+ !set wims_ref_class=wims_button
  !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 $name_visit
  $
-!set wims_ref_class=wims_button wims_warning
+ !set wims_ref_class=wims_button wims_warning
  !href cmd=reply&job=deltest $wims_name_erase
 !else
  $name_prog2
@@ -23,6 +33,7 @@
  !href cmd=help&special_parm=structure#test $wims_name_help
 !endif
 </div>
+<div id="wims_zone_course">
 !if $coursecnt=0
  $name_prog4
  !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
@@ -46,13 +57,13 @@
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into l_,s_,t_,n_
-   $table_tr<td style="text-align:center">$l_</td>
-   <td style="text-align:center">
+   $table_tr<td>$l_</td>
+   <td>
    !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
-   </td><td style="text-align:center">
+   </td><td>
    !set wims_ref_class=wims_button wims_warning
     !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
-   </td><td style="text-align:center">
+   </td><td>
    !if $s_!=$empty
     !if $s_=supervisor
      $wims_name_supervisor
@@ -64,13 +75,13 @@
     $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
-   </td><td style="text-align:center">$c</td>
+   </td><td>$c</td>
    </tr>
  !next i
  $table_end
 !endif
-
-
+</div>
+<div id="wims_zone_icourse">
 !if $icoursecnt=0
 $name_prog9
  !href cmd=reply&cparent=prog&job=addicourse $wims_name_addicourse
@@ -93,14 +104,13 @@ $name_prog9
  !for i=1 to $icoursecnt
    !set l=!line $i of $icourses
    !distribute items $l into l_,s_,t_,n_
-   $table_tr<td style="text-align:center">$l_</td>
-   <td style="text-align:center">
+   $table_tr<td>$l_</td>
+   <td>
    !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
-   </td><td style="text-align:center">
+   </td><td>
    !set wims_ref_class=wims_button wims_warning
     !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
-
-   </td><td style="text-align:center">
+   </td><td>
    !if $s_!=$empty
     !if $s_=supervisor
      $s_
@@ -112,13 +122,14 @@ $name_prog9
     $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
-   </td><td style="text-align:center">$c</td>
+   </td><td>$c</td>
  !next i
+  </tr>
  $table_end
 !endif
-
+</div>
+<div id="wims_zone_recsharable">
 !if $recsharable!=$empty
-
  $table_header
  <caption>$name_prog6</caption>
  $table_hdtr
@@ -134,15 +145,14 @@ $name_prog9
   !set l_=!translate / to , in $add
   !set l_=!item 1 of $l_
   !set l_=!defof class_description in $classdir1/$l_/.def
-  <td style="text-align:center"><span class="tt">$add</span></td>
-  <td style="text-align:center">$l_</td>
+  <td><span class="tt">$add</span></td>
+  <td>$l_</td>
   <td style="text-align:left">
   !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
   </td></tr>
  !next i
  $table_end
 !endif
-
 !if $class_recshare!=$empty
  <p>
  !if $class_recshare=main
@@ -156,10 +166,9 @@ $name_prog9
  !endif
  </p>
 !endif
-
+</div>
 !set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=prog&job=addcourse\
 addicourse,1,cmd=reply&cparent=prog&job=addicourse\
 to $wims_menu_items
 
 !reset title
-

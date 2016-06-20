@@ -4,9 +4,20 @@
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
-!!!FIXME mettre des onglets !!!
+<div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_levelform">$wims_name_properties</a></li>
+ <li><a href="#wims_zone_class">$wims_name_class</a></li>
+ <li><a href="#wims_zone_program">$wims_name_program</a></li>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+</ul>
+<div id="wims_levelform">
 !read scripts/levelform.phtml
-
+</div>
+<div id="wims_zone_class">
 !if $classcnt=0
 <p>
  $name_level1
@@ -17,7 +28,6 @@
  !href cmd=help&special_parm=structure#class $wims_name_help
 </p>
 !else
-
  $table_header
  <caption>$name_level4
   $
@@ -60,7 +70,8 @@
  !next i
  $table_end
 !endif
-
+</div>
+<div id="wims_zone_program">
 !if $progcnt=0
 <p>
 $name_level2
@@ -109,11 +120,11 @@ $name_level2
    </tr>
  !next i
  $table_end
-
+</div>
+!! div id="widget_zone_list" is closed in main.phtml
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
 !endif
 
 !reset title
-

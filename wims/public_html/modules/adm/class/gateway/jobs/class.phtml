@@ -1,12 +1,21 @@
-
 !set form_OK=$wims_name_tosave
 !set form_titlename=$wims_name_title
 !set form_caption=$name_classproperties
 !set title=$class_description
 !set sup=$class_Supervisor
-!read scripts/classform.phtml
-
-
+<div id="widget_zone_list">
+!if $jquery_defined=yes
+  !read adm/tabscript zone_list
+!endif
+<ul>
+ <li><a href="#wims_classform">$wims_name_properties</a></li>
+ <li><a href="#wims_zone_course">$wims_name_course</a></li>
+ <li><a href="#wims_othergestion">$name_othergestion</a></li>
+</ul>
+<div id="wims_classform">
+ !read scripts/classform.phtml
+</div>
+<div id="wims_zone_course">
 !if $coursecnt=0
 <p>
  $name_class1
@@ -50,8 +59,8 @@
    </td></tr>
  !next i
  $table_end
-
 !endif
+</div>
 !set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=class&job=addcourse\
 to $wims_menu_items
 !reset title
