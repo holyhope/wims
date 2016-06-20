@@ -51,9 +51,11 @@
       !endif
     !next
 !!should be in the module ?? made to correct the automatic creation of ariane thread
-    !default ariane_title=$(module_title_$lang)
-    !default ariane_title=$module_title
-    !set ariane_title="$ariane_title"
+    !if $ariane_title=$empty
+      !default ariane_title=$(module_title_$lang)
+      !default ariane_title=$module_title
+      !set ariane_title="$ariane_title"
+    !endif
     !if $module=adm/class/userscore
       !set ariane_title=Score1
     !endif
