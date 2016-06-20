@@ -51,16 +51,16 @@
       !endif
     !next
 !!should be in the module ?? made to correct the automatic creation of ariane thread
+    !default ariane_title=$(module_title_$lang)
+    !default ariane_title=$module_title
+    !set ariane_title="$ariane_title"
     !if $module=adm/class/userscore
       !set ariane_title=Score1
     !endif
-    !default ariane_title="$(module_title_$lang)"
-    !default ariane_title="$module_title"
     !! clickable or not ? it depends and the link module=$module
     !! is not always pertinent and sometimes repetition with Back
     !! the other problem is that some modules
     !! rename module_title according to the job.
-
     !! the test is not always OK, how to find if we are not
     !! in the homepage of the adm module
     !if $cmd!=$empty and ($module_init_parm!=$empty or $cmd!=new) and adm/light notin $module
