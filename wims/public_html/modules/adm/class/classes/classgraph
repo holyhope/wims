@@ -1,0 +1,71 @@
+
+!if $wims_user!=supervisor
+ !exit
+!endif
+!set list=$(wims_read_parm[;1])
+!set statut=$(wims_read_parm[;2])
+!let compsup=$empty
+
+!for cls in $list
+ !let tmp=!replace internal / by , in $cls
+ !let nb=!itemcnt $tmp
+ !if $nb=1
+   !let compsup=$tmp
+ !endif
+ !for l=2 to $nb
+  !let t=!replace internal , by / in $(tmp[1 to $l])
+  !let compsup=!append line $t to $compsup
+ !next l
+!next cls
+!let compsup=!sh echo "$compsup" | sort | uniq;
+!let compsup=!lines2items $compsup
+!let compsup=!nospace $compsup
+
+!let tab=0
+!for cls in $compsup
+ !if /0_ isin $(cls)_
+   !goto endfor
+ !endif
+ !let don=!defof class_typename,class_description,class_supervisor,class_parent in wimshome/log/classes/$cls/.def
+ !let t=!positionof item $(don[1]) in level,class,program,course
+ !if $t=$empty
+   <span class="wims_classes_direct_$(don[1])"> $(CL_Name[6]) :
+   !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+   </span>
+  !goto endfor
+ !endif
+ !if $t=3
+  !let ta=2
+ !else
+  !let ta=$t
+ !endif
+ !if $tab!=$ta
+  !if $tab>$ta
+   !for k=$ta+1 to $tab
+    </ul>
+   !next k
+  !else
+   !for k=$tab+1 to $ta
+    <ul class="wims_subclasses">
+   !next k
+  !endif
+ !endif
+ !let tab=$ta
+ !if $t=4
+  !let tmp=!defof class_typename in wimshome/log/classes/$(don[4])/.def
+  !if $tmp=program
+   !let t=5
+  !endif
+ !endif
+ <li>$arr <span class="wims_classes_direct_$(don[1])"> $(CL_Name[$t]) :
+ !if $cls notitemof $list
+  $(don[2])
+ !else
+  !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+ !endif
+ ($(don[3])) </span> </li>
+:endfor
+!next cls
+!for k=1 to $tab
+ </ul>
+!next k

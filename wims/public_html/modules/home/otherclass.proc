@@ -2,10 +2,7 @@
 !if $wims_user=$empty
   !exit
 !endif
-!!debug $auth_method isitemof $auth_method_list \
-   and ($wims_user!=$wims_realuser)
-!if $auth_method isitemof $auth_method_list \
-   and ($wims_user!=$wims_realuser)
+!if $auth_method isitemof $auth_method_list and ($wims_user!=$wims_realuser)
   !set tmp_=auth
 !else
    !reset tmp_
@@ -25,6 +22,7 @@ to $wims_ariane
    !endif
 !else
     !if $wims_otherclass!=$empty
+       !reset tmp_
        !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
 to $wims_ariane
    !endif
@@ -34,7 +32,7 @@ to $wims_ariane
 :nosupervisor
 
 !if $wims_otherclass!=$empty and $wims_superclass=$wims_class and $tmp_=$empty
-    !set wims_ariane=!append line U_oclass,1,module=adm/class/classes&type=participant\
+    !!set wims_ariane=!append line U_oclass,1,module=adm/class/classes&type=participant\
 to $wims_ariane
 !endif
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class

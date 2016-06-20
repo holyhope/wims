@@ -40,7 +40,7 @@ $class_institution
  !endif
 !endif
 
-!!! En fait cela devrait être $idp_method=$empty Comment arrive-t-on ici ?
+!!! En fait cela devrait etre $idp_method=$empty Comment arrive-t-on ici ?
 !if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
 !! we get here e.g. in case class_authidp=cas;php
 $name_new_participant_external
@@ -67,28 +67,27 @@ $name_new_participant_external
 
 !read $type.phtml
 :end
-
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
   !set list_menu=example,participant
   !if $wims_user=$empty or $wims_user=supervisor
     !set list_menu=example,participant,supervisor
   !endif
-  !if $wims_user=supervisor and $class_type iswordof 2 4
+  !if $wims_user=supervisor and $class_type iswordof 1 2 3 4
     !reset list_menu
   !endif
   !if $list_menu!=$empty
     !set wims_menu_items=!append line itemsep,0,$wims_name_Classes\
  to $wims_menu_items
-   !for t in $list_menu
-   !if $t!=$type or $wims_superclass!=$empty
-     !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+    !for t in $list_menu
+      !if $t!=$type or $wims_superclass!=$empty
+        !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
 to $wims_menu_items
   !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
-   !endif
+      !endif
    !next t
   !endif
 !endif
-!if $wims_user=$empty and $type iswordof supervisor example and
+!if $wims_user=$empty and $type iswordof supervisor example
  !set wims_menu_items=!append line itemsep,0,$wims_name_Creation\
  classcreate,1,module=adm/class/regclass\
 to $wims_menu_items
