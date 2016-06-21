@@ -10,11 +10,12 @@ $wims_exec_error
 !set wims_menu_items=!append line modellist,1,cmd=reply&level=1&mode=model\
 to $wims_menu_items
 !endif
-
+!if $wims_theme=default
+!!ARIANE
 !set wims_menu_items=!append line itemsep,0\
-backcreatexo ARIANE,1,cmd=resume&realtest=no\
+backcreatexo,1,cmd=resume&realtest=no\
 to $wims_menu_items
-
+!endif
 !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
    !if $mode!=model
      !set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\

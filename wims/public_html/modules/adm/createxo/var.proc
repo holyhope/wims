@@ -20,7 +20,6 @@ choicelim=!defof MAX_OEFCHOICES in wimshome/public_html/bases/sys/define.conf
 !distribute item 10,40 into condlim,promptlim
 !bound mode within raw,file,model default $
 !read tabletheme
-
 !if $wims_user!=$empty or $wims_developer!=$empty
  !default oef_author=!trim $wims_firstname $wims_lastname
  !default oef_email=$wims_email
@@ -84,9 +83,14 @@ to $wims_ariane
      !endif
    !endif
  !endif
+ !if $modtoolhelp=yes
+    !distribute items no,no, into wims_ariane_home,wims_ariane_self,wims_ariane
+ !endif
  !exit
 !endif
-
+!if $modtoolhelp=yes
+  !distribute items no,no, into wims_ariane_home,wims_ariane_self,wims_ariane
+!endif
 !if $delete!=$empty
  !if $wims_class==$empty
   error=not_class

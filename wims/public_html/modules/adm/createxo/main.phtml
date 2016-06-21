@@ -74,11 +74,11 @@
  !read level$level.phtml
 !endif
 
-!!! FIXME: to comment when the ARIANE thread will be there
-!!!if $level notwordof 0
-!set wims_menu_items=!append line createxo ARIANE,1,module=adm/createxo\
+!if $wims_theme=default
+!!ARIANE
+  !set wims_menu_items=!append line createxo,1,module=adm/createxo\
 to $wims_menu_items
-!!!endif
+!endif
 
 !if $level iswordof 0 1
   !set wims_menu_items=!append line createxo,0,Createxo\
@@ -90,8 +90,9 @@ filemode,1,cmd=reply&mode=file&level=1\
   !read themes/_procs/othermethods.proc
 !endif
 !if $level iswordof 2 and $mode=model
+!!modellist ARIANE
 !set wims_menu_items=!append line itemsep,0,\
-modellist ARIANE,1,cmd=reply&level=1&mode=model\
+modellist,1,cmd=reply&level=1&mode=model\
 rawmode,1,cmd=reply&rawinp=yes\
 to $wims_menu_items
 !endif
@@ -111,4 +112,3 @@ to $wims_menu_items
 !tail
 
 !reset wims_deposit, delfile
-

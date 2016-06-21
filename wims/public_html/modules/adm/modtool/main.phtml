@@ -36,13 +36,25 @@
 !read $job.phtml
 
 !if $auth_login!=$empty and $job notwordof modname copy
-  !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
-modlist ARIANE,1,cmd=reply&jobreq=modname\
+  !if $wims_theme=default
+!!ARIANE
+    !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+modlist,1,cmd=reply&jobreq=modname\
 to $wims_menu_items
+  !else
+    !set wims_menu_items=!append line itemsep,0,$wims_name_navigation\
+to $wims_menu_items
+  !endif
   !if $job iswordof index publish diff edfile showfile
-    !set wims_menu_items=!append line modcontent ARIANE,1,cmd=reply&jobreq=flist\
-    binfile,1,cmd=reply&jobreq=binfile\
-   to $wims_menu_items
+    !if $wims_theme=default
+!!ARIANE
+      !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
+binfile,1,cmd=reply&jobreq=binfile\
+to $wims_menu_items
+    !else
+      !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+to $wims_menu_items
+    !endif
   !endif
   !if $job iswordof flist and $modreq!=.new
     !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
@@ -86,8 +98,11 @@ test,4,module=devel/$auth_login/$mod$tmp_f,test\
 to $wims_menu_items
     !endif
     !if $job=edfile
-      !set wims_menu_items=!append line back3 ARIANE,1,cmd=reply&jobreq=flist\
+      !if $wims_theme=default
+!!ARIANE
+        !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
 to $wims_menu_items
+      !endif
     !endif
   !endif
 !endif

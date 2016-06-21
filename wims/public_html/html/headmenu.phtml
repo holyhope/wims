@@ -79,7 +79,9 @@
  !if _test isin $session
    !set 1_=!append line resume,1,cmd=resume to $1_
  !else
-    !set 1_=!append line resume ARIANE,1,cmd=resume to $1_
+    !if _help isin $session
+      !set 1_=!append line back2,1,cmd=resume to $1_
+    !endif
  !endif
  !if $module_category!=adm
    !set wims_ariane=!append line resume,1,cmd=resume\
