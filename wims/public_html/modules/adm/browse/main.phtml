@@ -38,15 +38,18 @@
 !endif
 !read $job.phtml
 
-!if $job!=home
- !set wims_menu_items=!append line browse ARIANE,1,module=$module&cmd=new&job=home\
+!if $job!=home and $wims_theme=default
+!!ARIANE
+ !set wims_menu_items=!append line browse,1,module=$module&cmd=new&job=home\
 to $wims_menu_items
 !endif
 
 !if $job=subject
   !set parm_father=!lookup $parm in $treefile
-  !set wims_menu_items=!append line back2,1,module=$module&cmd=new&job=subject&parm=$parm_father\
+  !if $parm_father!=$empty
+    !set wims_menu_items=!append line back2,1,module=$module&cmd=new&job=subject&parm=$parm_father\
 to $wims_menu_items
+  !endif
 !endif
 
 !if $job notwordof light
