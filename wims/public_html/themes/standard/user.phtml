@@ -63,6 +63,7 @@
  !goto end
 !endif
 !set supmail=!mailurl $wims_supervisormail $wims_name_mail
+!set supmail=!replace internal " by ' in $supmail
 !if $n_>=4
  !distribute words $etest into h_,s_,t_,n_
  !set r_=!record 0 of wimshome/sessions/$s_/examreg.$n_
@@ -155,7 +156,6 @@
   <li><a href="#wims_user_vote">$wims_name_Votes</a></li>
  !endif
 </ul>
-!endif
 !!define variable $dcnt and $ dpcnt
 !read themes/_widgets/userdoc.phtml
 !!define variable $n
@@ -165,6 +165,7 @@
 !!define variable $v
 !read themes/_widgets/uservote.phtml
 </div>
+!endif
 !ifval $dcnt+$dpcnt+$n+$m+$v=0
  !if $is_interclass!=yes
    $U_nosheet
