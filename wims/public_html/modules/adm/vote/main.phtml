@@ -28,8 +28,11 @@
      !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
 to $wims_menu_items
     !else
-     !set wims_menu_items=!append line vote $wims_user ARIANE,1,cmd=renew&job=home\
+      !if $wims_theme=default
+!!ARIANE
+        !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
 to $wims_menu_items
+      !endif
     !endif
   !if $vote_src!=$empty
     !set wims_menu_items=!append line source,1,cmd=renew&job=getsource&vote=$vote\

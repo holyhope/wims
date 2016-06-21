@@ -33,14 +33,14 @@
 
 !read $job.phtml
 
-
 :end
 !if $step>=0 and $cmd=reply and $job=emptyclass
- !set wims_menu_items=!append line back2 ARIANE,1,module=$module\
- to $wims_menu_items
+  !if $wims_theme=default
+!!ARIANE
+    !set wims_menu_items=!append line back2,1,module=$module\
+to $wims_menu_items
+  !endif
 !endif
 
 !tail
-
-!set step=
-!reset job
+!reset job step

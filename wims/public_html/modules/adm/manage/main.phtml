@@ -24,11 +24,12 @@
 !endif
 
 !if $wims_ismanager=2 and $job!=list
-!!FIXME the line should be deleted with ARIANE Thread wims_name_sitegestion
-!! be no more useful if the definition in index is OK.
  !set wims_name_sitegestion=$(module_title_$modu_lang)
- !set wims_menu_items=!append line sitegestion ARIANE,1,cmd=reply&job=list\
- to $wims_menu_items
+ !if $wims_theme=default
+!! ARIANE
+   !set wims_menu_items=!append line sitegestion,1,cmd=reply&job=list\
+to $wims_menu_items
+ !endif
  !if $job=conf and $confcat=6
   !set wims_menu_items=!append line download_module,1,cmd=reply&job=modules&job2=first to $wims_menu_items
  !endif
