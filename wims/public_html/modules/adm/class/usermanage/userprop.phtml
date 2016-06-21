@@ -12,12 +12,12 @@ $wims_name_account_property
 !set inplen=40
 
 !! ----- permet de transferer les scores d'un user provenant d'une classe en partage dans un groupement ou entre des cours d'un même portail
- !if $wims_user=supervisor and $wims_supertype iswordof 2 4
+!if $wims_user=supervisor and $wims_supertype iswordof 2 4
   !readproc adm/gateway/transfer $getuser test
   !if $transfer_test>0
    !href module=adm/class/usermanage&job=transfer&getuser=$getuser $name_transfer
   !endif
- !endif
+!endif
 
 !form reply
 <input type="hidden" name="job" value="userprop" />
@@ -26,12 +26,12 @@ $wims_name_account_property
  <div class="field box">
    $wims_name_Login
    !reset css_connected
-   !if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
+!if $getuser isitemof $wims_connectedlogin and $wims_user=supervisor
      !set css_connected=class="tt wims_connected"
      !set wims_ref_title=connected
    !else
      !set css_connected=class="tt"
-   !endif
+!endif
     <span $css_connected title="connected">$getuser</span>
  </div>
 !if $type_class iswordof 2 4 or ($class_Supervisor=$wims_realuser and $wims_class!=$wims_superclass and $wims_realuser!=$getuser)
@@ -112,9 +112,9 @@ $wims_name_account_property
     !set wims_ref_class=wims_button
     !href module=adm/class/techvar&+job=userprop&+user=$getuser $wims_name_change
     !if $nb>0
-    $table_header
-    !for k=1 to $nb
-	$table_tr
+      $table_header
+      !for k=1 to $nb
+	    $table_tr
 	    <td>$(user_vars[$k;1])</td><td>$(user_vars[$k;2])</td>
 	</tr>
     !next k
@@ -160,27 +160,32 @@ to $wims_menu_items
   delstudent1,1,cmd=reply&job=delprep&delprep=$getuser\
 to $wims_menu_items
  !read getparm $module_init_parm job
-  !if $get_job!=teacher
+ !if $get_job!=teacher
     !read adm/class/getnextuser $wims_class,$getuser,userprop,getuser
     !set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\\
     itemsep,0,\
-part_list ARIANE,1,cmd=resume\
-  to $wims_menu_items
-  !else
+to $wims_menu_items
+    !if $wims_theme=default
+!!ARIANE
+      !set wims_menu_items=!append line part_list,1,cmd=resume\
+to $wims_menu_items
+    !endif
+ !else
    !set wims_menu_items=!append line itemsep,0,\
 teacherlist,1,module=adm/class/usermanage&job=teacher\
 to $wims_menu_items
    !if $wims_user=supervisor and $wims_realuser=supervisor
-    !set wims_menu_items=!append line addteacher,1, module=adm/class/reguser&step=1&utype=1\
-    to $wims_menu_items
+     !set wims_menu_items=!append line addteacher,1, module=adm/class/reguser&step=1&utype=1\
+to $wims_menu_items
    !endif
    !set wims_menu_items=!append line itemsep,0,$wims_name_Evaluation to $wims_menu_items
+  !endif
 !else
- !if $wims_supertype=4 and $wims_typename!=course
+  !if $wims_supertype=4 and $wims_typename!=course
    !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
- to $wims_menu_items
- !endif
- !set wims_menu_items=!append line class_home ARIANE,1,module=home\
+to $wims_menu_items
+  !endif
+  !set wims_menu_items=!append line class_home ARIANE,1,module=home\
  to $wims_menu_items
 !endif
 
