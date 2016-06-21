@@ -25,16 +25,15 @@
    !set started=0
    !for i_=1 to $wims_homeref_n0
     !set 1_=!line $i_ of $wims_rm_0
-
     !if $(1_[1])$(1_[2]) != $empty
      !set is_link=!item 2 of $1_
-
      !if $is_link!=0
       !if $started=0
         <$div0 class="wimsmenu homeref_n0">
         !set started=1
       !endif
       !set wims_ref_class = !item 1 of $1_
+      !set wims_ref_class = !word 1 of $wims_ref_class
       <$div1 class="menuitem $wims_ref_class">
        !read $(path)oneitem.phtml $1_
       </$div1>
