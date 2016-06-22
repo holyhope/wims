@@ -69,14 +69,14 @@ dl=!replace word manuals by $ma in $dl
 dl=!words2items $dl
 dl=!listuniq $dl
 
-good=!words2items $good
+good=!words2items $good,$regvarlist
+!! only techvar should be in dl_v other variable have to stay in good (generic traitement for name)
 dl_v =!listcomplement $good in $dl
-!!dl_v=!replace internal var_ by in $dl_v
 !if $dl_v!=
   dl_var=$empty
   !for k in $dl_v
-   realname=!replace internal techvar_ by $empty in $k
-   dl_var=!append item $(code_user_techvar_$(realname)) to $dl_var
+    realname=!replace internal techvar_ by $empty in $k
+    dl_var=!append item $(code_user_techvar_$(realname)) to $dl_var
   !next k
 !endif
 dl=!listintersect $dl and $good

@@ -39,10 +39,10 @@ classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
     csvdownload=!listcomplement regvar in $csvdownload
     !reset regvarlist
     !for k=1 to $regvar_cnt
-       name_user_regprop$k=$(regvar_name[$k])
+       name_regprop$k=$(regvar_name[$k])
        csvdownload=!append item regprop$k to $csvdownload
        regvarlist=!append item regprop$k to $regvarlist
-    !next
+    !next k
  !endif
 
  !if $csvdownload!=$empty and $usercnt>0
