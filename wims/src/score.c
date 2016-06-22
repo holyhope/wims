@@ -352,12 +352,15 @@ int _subword(char bf2[],char *ftbuf)
     else
       mkfname(fbuf,"%s/%s/.users/%s",class_base,classp2,userp);
     getdef(fbuf,buf,buf2);
-    if(buf2[0]==0) ovlstrcpy(buf2,"EMPTY"); /* in case of no value define for the user*/
+    if(buf2[0]==0) ovlstrcpy(buf2,"EMPTY"); /* in case of no value defined for the user*/
     /* get time restriction for this value */
     snprintf(buf,sizeof(buf),"techvar_%s",buf2);
     /*mkfname(fbuf,"%s/%s/.E%s",class_base,classp,sheet);*/
-    getdef(ftbuf,buf,buf2);  /* read time restriction correspond to the value of technival variable in the file of the sheet or exam*/
+/* read time restriction corresponding to the value of
+  technical variable in the file of the sheet or exam
+ */
     if(buf2[0]==0) ovlstrcpy(buf2,"none");
+    getdef(ftbuf,buf,buf2);
     /*string_modify(bf2,p1,p2,buf2);*/
     bf2=buf2;
     p1+=strlen(buf2);
