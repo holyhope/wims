@@ -20,20 +20,12 @@
       !distribute items li into div1
       !!read themes/_widgets/headhome.phtml
       !read themes/_widgets/headmenu.phtml
-      !read themes/_widgets/logout.phtml
+
+      !read themes/_widgets/user_links.phtml
 
       !distribute items li,div into div0,div1
       !read themes/$wims_theme/widgets/permalink.phtml
-
       !reset div0 div1
-
-      !!## technical parameters
-      !if $class_cas_auth=$empty
-        !set m_init_parm=!replace internal & by $ $ in $module_init_parm
-        !set class_cas_auth=!getopt class_auth in $m_init_parm
-      !endif
-
-      !read themes/_widgets/authlogout.phtml
 
     !endif
 
@@ -50,6 +42,7 @@
         !read ./adm/oneitem.phtml help,4,module=help/main,help
       </li>
     !endif
+      <br class="clearall"/>
   </ul><!-- /menuglobal -->
 
   !read themes/_widgets/ariane.phtml
