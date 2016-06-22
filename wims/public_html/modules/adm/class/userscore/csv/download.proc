@@ -73,7 +73,11 @@ good=!words2items $good
 dl_v =!listcomplement $good in $dl
 !!dl_v=!replace internal var_ by in $dl_v
 !if $dl_v!=
-  dl_var=$dl_v
+  dl_var=$empty
+  !for k in $dl_v
+   realname=!replace internal techvar_ by $empty in $k
+   dl_var=!append item $(code_user_techvar_$(realname)) to $dl_var
+  !next k
 !endif
 dl=!listintersect $dl and $good
 dl=!nospace $dl
