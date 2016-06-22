@@ -2,16 +2,18 @@
 !! Tail menu theme.
 !nocache
 !set wims_theme_tail=yes
-<div class="wimscenter">
-!for i_=1 to $wims_homeref_n0
- !set 1_=!line $i_ of $wims_rm_0
- !if $(1_[2])=0 and $(1_[1])=$empty
-  <p></p>
- !endif
- !read oneitem.phtml $1_
- &nbsp;
-!next i_
-</div>
+!if $wims_homeref_n0 > 0
+	<div class="wimscenter wimsmenu">
+	!for i_=1 to $wims_homeref_n0
+	 !set 1_=!line $i_ of $wims_rm_0
+	 !if $(1_[2])=0 and $(1_[1])=$empty
+	  <br/>
+	 !endif
+	 !read oneitem.phtml $1_
+	 &nbsp;
+	!next i_
+	</div>
+!endif
 
 <hr style="width:35%"/>
 
