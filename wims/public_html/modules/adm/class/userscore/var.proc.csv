@@ -26,11 +26,24 @@ classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
     csvdownload=!listcomplement techvar in $csvdownload
     nb=!linecnt $tv_listtechvar
     !for k=1 to $nb
-	name=!replace internal / by _ in $(tv_listtechvar[$k;2])_$(tv_listtechvar[$k;3])
-	csvdownload=!append item techvar_$name to $csvdownload
-	name_user_techvar_$name=$(tv_listtechvar[$k;1])
+      name=!replace internal / by _ in $(tv_listtechvar[$k;2])_$(tv_listtechvar[$k;3])
+      csvdownload=!append item techvar_$name to $csvdownload
+      name_user_techvar_$name=$(tv_listtechvar[$k;1])
     !next k
  !endif
+ !if regvar isitemof $csvdownload
+  !! add register variable list to download list
+    regvar_name=!defof class_regvars in wimshome/log/classes/$wims_class/.def
+    regvar_cnt=!itemcnt $regvar_name
+    csvdownload=!listcomplement regvar in $csvdownload
+    !reset regvarlist
+    !for k=1 to $regvar_cnt
+       name_user_regprop$k=$(regvar_name[$k])
+       csvdownload=!append item regprop$k to $csvdownload
+       regvarlist=!append item regprop$k to $regvarlist
+    !next
+ !endif
+
  !if $csvdownload!=$empty and $usercnt>0
   !read csv/download.proc
  !endif

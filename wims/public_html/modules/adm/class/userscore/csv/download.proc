@@ -1,3 +1,4 @@
+
 quote="
 fbase=data-$wims_class
 fbase=!translate internal / to _ in $fbase
@@ -99,7 +100,9 @@ dl2=!translate , to $sep in $dl2
 
 tit=!replace , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
-!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2
+
+!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2,\
+  $regvarlist
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
 dl4r=!items2words $dl4

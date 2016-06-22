@@ -129,7 +129,8 @@ van alle oefeningen met het corresponderende werkblad.
 
   !set name_deposit=!nosubst Spreadsheet bestand <span class="tt">$wims_deposit</span> met succes verwerkt.
   !set name_indicateur=Indicatie
-  !set name_otherkeyword=Andere zoekterm
+  !set name_techvar=Andere zoekterm
+  !set name_regvar=Registration variables
   !set name_all=Alles
   !set name_allscore=Alle scores
 !endif
