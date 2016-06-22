@@ -12,8 +12,13 @@ class_type=!defof class_type in wimshome/log/classes/$up_class/.def
 l=!text select $char_login in $uu
 t=!char 1 of $uu
 n=!charcnt $l
-regvarlist=!makelist regprop x for x=1 to $regvars_cnt
-regvarlist=!nospace $regvarlist
+!if $class_type isin 01 and $wims_superclass=$empty
+ regvarlist=!makelist regprop x for x=1 to $regvars_cnt
+ regvarlist=!nospace $regvarlist
+ replacelist=!append item $regvarlist to $replacelist
+!else
+ regvarlist=$empty
+!endif
 
 !if $l!=$uu or $t isin $char_punct or $n<$login_min or $n>$login_max
  !exit
@@ -27,7 +32,7 @@ login_wims=$uu
    !if $(user_$j)!=$empty
      !reset user_$j
    !endif
-!next
+!next j
 !read adm/class/userdef classes,$up_class,$uu
 !defread $userdef
 
@@ -78,7 +83,7 @@ replace_=
 !!!
 !for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
   external_auth,agreecgu,$regvarlist,$techvarlist
- !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
+  !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
    l_=!singlespace $(up_$n)
    !if $n=comments
 	!readproc adm/class/mkcomment name
