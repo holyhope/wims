@@ -1,4 +1,6 @@
-!!! variables used (to check) : replacelist , up_xx for xx in replacelist and in firstname, lastname and ???
+!!! variables used (to check) : replacelist , up_xx for xx in replacelist and in firstname, lastname
+!!! regvars_cnt  techvarlist and ???
+
 uu=$wims_read_parm
 !if user notwordof $wims_prefix
  wims_prefix=$wims_prefix user class
@@ -74,10 +76,9 @@ replace_=
  !goto next
 !endif
 !!!
-
 !for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
-  external_auth,agreecgu,$regvarlist
- !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth,$regvarlist
+  external_auth,agreecgu,$regvarlist,$techvarlist
+ !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
    l_=!singlespace $(up_$n)
    !if $n=comments
 	!readproc adm/class/mkcomment name
@@ -106,6 +107,9 @@ replace_=
         l_=!listuniq $l__
      !endif
     !else
+      !if techvar isin $n
+!!!FIXME add a test for validity or add the value to the possible values
+      !endif
 !!FIXME one can do l_=!detag $l ???
       !if $n isitemof $regvarlist
         l_=!detag $l_

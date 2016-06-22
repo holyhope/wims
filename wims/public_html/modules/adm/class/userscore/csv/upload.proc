@@ -34,6 +34,12 @@ file=wimshome/$wims_sesdir/user_deposit
 
 !read csv/gotlogin $file,login
 
+nb=!linecnt $tv_listtechvar
+!for k=1 to $nb
+    name=!replace internal / by _ in $(tv_listtechvar[$k;2])_$(tv_listtechvar[$k;3])
+    techvarlist=!append item techvar_$name to $techvarlist
+!next k
+
 !if $gotlogin=$empty
  !read adm/class/initclass $wims_class,auth
  !if $auth_method notitemof $auth_method_list
@@ -82,7 +88,8 @@ processed=yes
 !for i = 1 to $gotcnt
   l=$(loglist[$i])
   l__=$(logtest[$i])
-  !reset up_firstname,up_lastname,up_email,up_password,up_comments,up_regnum,up_photourl,up_vars,up_participate,up_external_auth,up_supervise,up_supervisable
+  !reset up_firstname,up_lastname,up_email,up_password,up_comments,up_regnum,up_photourl,\
+    up_vars,up_participate,up_external_auth,up_supervise,up_supervisable
   !! fill in the fields ...
   !distribute items $(dep_$l__) into $types
   !for m = 1 to $types_cnt
