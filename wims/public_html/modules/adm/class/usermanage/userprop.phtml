@@ -185,8 +185,10 @@ to $wims_menu_items
    !set wims_menu_items=!append line myscore,1,module=adm/class/userscore&job=getuser&getuser=$getuser\
 to $wims_menu_items
   !endif
-  !set wims_menu_items=!append line class_home ARIANE,1,module=home\
- to $wims_menu_items
+  !if $wims_theme=default
+!!ARIANE
+    !set wims_menu_items=!append line class_home,1,module=home\
+to $wims_menu_items
+  !endif
 !endif
-
 !reset reg,abandon
