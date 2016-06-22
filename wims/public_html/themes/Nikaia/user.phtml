@@ -24,16 +24,6 @@
 </style>
 !endif
 
-!!! transfert in home/var.proc
-!!!set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
-!!!set auth_method_list=cas,ldap,php
-!!!set auth_method=$(class_authidp[1;])
-!!!if $(class_authidp[1;]) isitemof $auth_method_list
-!!  !set ext_login=$wims_external_auth
-!!!endif
-!!!default ext_login=$wims_user
-!!! end transfert
-
 !set percents=!getscorepercent
 !set class_homepage=!getdef class_homepage in wimshome/log/classes/$wims_class/.def
 !set etest=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
@@ -91,8 +81,7 @@
  !read ./tools.phtml
  !goto end
 !endif
-!set supmail=!mailurl $wims_supervisormail $wims_name_mail
-!set supmail=!replace internal <a by <a class="mail" in $supmail
+
 !if $n_>=4
  !distribute words $etest into h_,s_,t_,n_
  !set r_=!record 0 of wimshome/sessions/$s_/examreg.$n_
@@ -164,12 +153,12 @@
 
  <br class="clearall" />
 
+!read themes/_procs/usermenumodubox.proc
+!set wims_homeref_n0=!linecnt $wims_rm_0
 
 !!must have read user*.phtml,  with *=sheet, exam must be read before
-!distribute items div,ul into div0,div1
-!read themes/_widgets/usermenumodubox.phtml
-
 !distribute items ul,li into div0,div1
+!read themes/_widgets/menumodubox.phtml
 !read themes/_widgets/usermenubox.phtml
 !reset div0 div1
 

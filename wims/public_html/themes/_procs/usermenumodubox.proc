@@ -1,4 +1,4 @@
-!!menumodubox0.proc :
+!!usermenumodubox.proc :
 !! Adds all class links for user in wims_rm_0 for navigation menus,
 !! Sets all links to be displayed in menumodubox
 
@@ -29,6 +29,11 @@ cdt,1,module=adm/class/cdt
 !endif
 
 !read themes/_procs/userforum.proc
+
+!set supmail=!mailurl $wims_supervisormail $wims_name_mail
+!set supmail=!replace internal <a by <a class="mail" in $supmail
+!set supmail=!replace internal " by ' in $supmail
+
 !set wims_rm_0=$wims_rm_0\
 mail,01,$supmail
 
