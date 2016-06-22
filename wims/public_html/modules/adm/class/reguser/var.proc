@@ -8,7 +8,6 @@ limit_regvars=10
 ## output auth_method_list, idp_method_list, auth_method, idp_method
 !read adm/class/initclass $class,auth
 !set regvars_cnt=!itemcnt $regvars_class
-
 !!! test pour une nouvelle inscription dans une classe d'un groupement
 !if $auth_method isitemof $auth_method_list and $user_auth=$empty and $wims_user!=supervisor
   !if $wims_external_auth!=$empty
@@ -76,6 +75,7 @@ limit_regvars=10
 !endif
 :begin
 !read tabletheme
+
 !if $site_total=$empty
  !read adm/class/stat
  site_total=$usercnt
@@ -114,7 +114,6 @@ limit_regvars=10
   !exit
  !endif
 !endif
-
 !if $class!=$empty and $subclass!=yes and $wims_user=supervisor
  ctype=!defof class_typename in wimshome/log/classes/$class/.def
  !if $ctype=course
@@ -149,7 +148,7 @@ limit_regvars=10
   !exit
  !endif
  !if $class_typename iswordof level program or \
-	$wims_user=supervisor and $class_typename iswordof course
+   $wims_user=supervisor and $class_typename iswordof course
   error=bad_classtype
   !exit
  !endif
@@ -161,7 +160,6 @@ limit_regvars=10
    !exit
   !endif
  !endif
-
  participants=!recordcnt wimshome/log/classes/$class/.userlist
  classe=$class_limit\
 $participants\
@@ -219,7 +217,7 @@ classpass_=!defof class_password in wimshome/log/classes/$class/.def
    !exit
   !endif
   !if $superclass!=$empty and ../$superclass/ isin ../$wims_class/ \
-	and $wims_user!=supervisor
+    and $wims_user!=supervisor
     !read adm/class/userdef classes,$wims_class,$wims_user
     scl=!defof user_participate in $userdef
     cl2=!defof user_class in wimshome/log/classes/$class/.users/$wims_user
@@ -361,9 +359,8 @@ classpass_=!defof class_password in wimshome/log/classes/$class/.def
   up_lastname=$lastn
   up_email=$email
   !if $regvars_cnt>0
-    !reset up_vars
     !for j=1 to $regvars_cnt
-       up_vars=!append line regprop$j=$(var_regprop$j) to $up_vars
+       up_regprop$j=!detag $(regprop$j)
     !next
   !endif
  !else

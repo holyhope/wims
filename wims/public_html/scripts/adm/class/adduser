@@ -10,6 +10,9 @@ class_type=!defof class_type in wimshome/log/classes/$up_class/.def
 l=!text select $char_login in $uu
 t=!char 1 of $uu
 n=!charcnt $l
+regvarlist=!makelist regprop x for x=1 to $regvars_cnt
+regvarlist=!nospace $regvarlist
+
 !if $l!=$uu or $t isin $char_punct or $n<$login_min or $n>$login_max
  !exit
 !endif
@@ -18,6 +21,11 @@ login_wims=$uu
 
 !reset user_lastname,user_firstname,user_password,user_email,user_comments,user_photourl,\
 	user_exists,user_participate,user_supervise,user_supervisable,user_external_auth
+!for j in $regvarlist
+   !if $(user_$j)!=$empty
+     !reset user_$j
+   !endif
+!next
 !read adm/class/userdef classes,$up_class,$uu
 !defread $userdef
 
@@ -68,8 +76,8 @@ replace_=
 !!!
 
 !for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
-  external_auth,agreecgu
- !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
+  external_auth,agreecgu,$regvarlist
+ !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth,$regvarlist
    l_=!singlespace $(up_$n)
    !if $n=comments
 	!readproc adm/class/mkcomment name
@@ -98,11 +106,15 @@ replace_=
         l_=!listuniq $l__
      !endif
     !else
-     l_=!replace , by &#44; in $l_
-     l_=!replace < by &lt; in $l_
-     l_=!translate internal "#*!$$ to $.....$ in $l_
+!!FIXME one can do l_=!detag $l ???
+      !if $n isitemof $regvarlist
+        l_=!detag $l_
+      !endif
+      l_=!replace , by &#44; in $l_
+      l_=!replace < by &lt; in $l_
+      l_=!translate internal "#*!$$ to $.....$ in $l_
     !endif
-    !if $n iswordof comments photourl
+    !if $n isitemof comments,photourl,$regvarlist
      l_=!char 1 to 5000 of $l_
     !else
       !if $n iswordof participate supervise
