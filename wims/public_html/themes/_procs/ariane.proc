@@ -77,12 +77,14 @@
       !endif
       !if $3_!=8
         !if $wims_title_title!=$empty
-          !set wims_ariane_list = !append line "$wims_title_title",8 to $wims_ariane_list
+          !set tmp=!detag $wims_title_title
+          !set wims_ariane_list = !append line "$tmp",8 to $wims_ariane_list
         !else
           !set wims_ariane_list = !append line *,8 to $wims_ariane_list
         !endif
       !endif
     !else
+      !set tmp=!detag $ariane_title
       !set wims_ariane_list = !append line $ariane_title,8 to $wims_ariane_list
     !endif
   !endif
