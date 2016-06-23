@@ -103,14 +103,18 @@ dl2=!translate , to $sep in $dl2
    dl=$dl$sep$dl_var
 !endif
 
-tit=!replace , by $quote,$quote in $quote$tit$quote
+tit=!replace internal , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
-
 !! quote the values (case of word groups)
-!for n in login,password,lastname,firstname,email,regnum,comments,$regvarlist,\
+!for n in login,password,lastname,firstname,email,regnum,comments,\
   participate,supervise,supervisable,external_auth,average0,average1,average2
   dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
+!if $regvarlist!=$empty
+  !for n in $regvarlist
+    dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
+  !next n
+!endif
 dl4r=!items2words $dl4
 !if $dl4!=$empty
  dl4=!replace , by $(quote),$(quote) in $(quote)$dl4$(quote)
