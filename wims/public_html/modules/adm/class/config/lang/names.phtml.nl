@@ -28,6 +28,9 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 !endif
 !if $job=arch
  !set title=Backup en Herstel
+ !set name_title_save=Sauvegarde de la classe
+ !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
+ !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
  !set name_tosend=Om de klas te herstellen via een backup archief; geef de backup archief naam
  !set name_namefile=Geef de naam van het backup archief

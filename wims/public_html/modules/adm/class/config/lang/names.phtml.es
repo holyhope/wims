@@ -29,6 +29,9 @@ name_sheets
 !endif
 !if $job=arch
  !set title=Copias de seguridad y Recuperación
+ !set name_title_save=Sauvegarde de la classe
+ !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
+ !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
  !set name_intro=Puede descargar una copia de seguridad de su clase, en formato
  !set name_tosend=Para enviar una copia de seguridad de su clase
  !set name_namefile=introduzca por favor el nombre del fichero de seguridad

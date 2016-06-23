@@ -1,3 +1,8 @@
+
+<h3>$name_title_save
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=download $wims_name_help
+</h3>
 !if $noarch=yes
  $name_restore5
  !exit
@@ -19,11 +24,12 @@ $name_intro
  $wims_name_or
 !href cmd=reply&job=arch&job2=download&selection=all&format=tar.gz tar.gz
 .
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=download $wims_name_help
 
-<hr />
+<h3>
+$name_title_restore
+!set wims_ref_class=wims_button_help
+!href cmd=help&special_parm=upload $wims_name_help
+</h3>
 
 !if $test_sharing!=$empty
  $(name_forbiddenrestore).
@@ -34,17 +40,13 @@ $name_intro
 !form reply
 <input type="hidden" name="job" value="arch" />
 <input type="hidden" name="job2" value="upload" />
-$name_tosend,
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=upload $wims_name_help
-, $name_namefile:
-<p>
+<ul class="nopuce"><li>
+$name_intro1
 <input type="file" name="wims_deposit" size="40" />
-
-</p><p> <input type="submit" value="$wims_name_send" />
-($name_help).
-</p>
-
+</li><li>
+$name_selective1
+<input type="submit" value="$wims_name_send" />.
+$name_help
+</li>
+</ul>
 !formend
-
