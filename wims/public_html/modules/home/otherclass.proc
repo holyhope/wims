@@ -7,6 +7,7 @@
 !else
    !reset tmp_
 !endif
+
 !if $wims_user!=supervisor
   !goto nosupervisor
 !endif
@@ -21,11 +22,11 @@ to $wims_ariane
 to $wims_ariane
    !endif
 !else
-    !if $wims_otherclass!=$empty
-       !reset tmp_
-       !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
+   !!if $wims_otherclass!=$empty
+     !!reset tmp_
+     !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
 to $wims_ariane
-   !endif
+   !!endif
 !endif
 
 !goto subclasses
@@ -53,5 +54,5 @@ to $wims_ariane
   !set wims_ariane=!append line "$wims_classname",8 to $wims_ariane
  !else
    !!set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
-   !!set wims_ariane=!append line "$superclass_description yyy",8 to $wims_ariane
+   !!set wims_ariane=!append line "$superclass_description",8 to $wims_ariane
 !endif

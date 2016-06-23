@@ -4,25 +4,26 @@
 !! for the administrator , the method is wims_authentification
 !if $auth_method isitemof $auth_method_list \
   and ($wims_user=supervisor and $wims_realuser=supervisor)
-  !set tmp_=auth
-!else
   !reset tmp_
+!else
+  !set tmp_=auth
 !endif
 
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty
    !if $tmp_!=$empty
      !set wims_rm_0 = $wims_rm_0\
-U_oclass ARIANE,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass
+ U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass
    !else
      !set wims_rm_0 = $wims_rm_0\
-U_oclass,1,module=adm/class/classes&type=supervisor
+ U_oclass,1,module=adm/class/classes&type=supervisor
    !endif
 !else
   !if $wims_otherclass=$empty and $tmp_=$empty
     !set wims_rm_0 = $wims_rm_0\
-U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor
+ U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor
   !else
     !set wims_rm_0 = $wims_rm_0\
-U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass
+ U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass
   !endif
 !endif
+

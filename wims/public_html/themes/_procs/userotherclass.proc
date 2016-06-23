@@ -9,14 +9,19 @@
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty
   !if $auth_method isitemof $auth_method_list
     !set wims_rm_0 = $wims_rm_0\
-U_oclass ARIANE,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass
+U_oclass,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass
   !else
     !set wims_rm_0 = $wims_rm_0\
-U_oclass ARIANE,1,module=adm/class/classes&type=participant
+U_oclass,1,module=adm/class/classes&type=participant
   !endif
+  !exit
 !else
   !if $wims_otherclass=$empty
    !set wims_rm_0 = $wims_rm_0\
 U_oclass,1,module=adm/class/classes&type=$(tmp_)participant
+  !exit
   !endif
 !endif
+
+!!set wims_rm_0 = $wims_rm_0\
+U_oclass,1,module=adm/class/classes&type=$(tmp_)participant

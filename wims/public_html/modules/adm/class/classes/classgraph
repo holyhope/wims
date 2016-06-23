@@ -1,6 +1,6 @@
 
 !if $wims_user!=supervisor
- !exit
+ !!exit
 !endif
 !set list=$(wims_read_parm[;1])
 !set statut=$(wims_read_parm[;2])
@@ -61,7 +61,15 @@
  !if $cls notitemof $list
   $(don[2])
  !else
-  !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+    !set cls_pos=!positionof item $cls in $list
+  !if $cls_pos!=$empty
+    !set cls_statut=$(statut[$cls_pos])
+    !if $cls_statut=supervisor
+      !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+    !else
+      !href module=adm/class/classes&type=authparticipant&class=$cls&auth_user=$cls_statut $(don[2])
+    !endif
+  !endif
  !endif
  ($(don[3])) </span> </li>
 :endfor
