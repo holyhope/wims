@@ -37,9 +37,19 @@
   <div class="wimsmenu">
     !read themes/_widgets/headmenu.phtml
     !read themes/_widgets/about.phtml
-    !!if _help notin $wims_session
-      !!read themes/_widgets/permalink.phtml
-    !!endif
+    !if _help notin $wims_session
+      !distribute items div,span into div0,div1
+!!## technical parameters FIXME, should be elsewere
+     !if $class_cas_auth=$empty
+       !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+       !set class_cas_auth=!getopt class_auth in $m_init_parm
+     !endif
+     !if $class_cas_auth!=$empty and $wims_class=$empty
+      <$div1 class="menuitem">
+       !read adm/class/logout_cas
+      </$div1>
+ !endif
+    !endif
   </div><!--wimsmenu-->
   <br class="clearall"/>
   !read themes/_widgets/ariane.phtml

@@ -3,12 +3,12 @@
 !if $wims_firstname$wims_lastname = $empty or _help isin $wims_session
   !exit
 !endif
-
+!!define also in class/initclass
+!set auth_method_list=ldap,cas,php
 !if $class_cas_auth=$empty
     !set m_init_parm=!replace internal & by $ $ in $module_init_parm
     !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
-
 <ul class="wimsmenu float_right dropdown menu" data-dropdown-menu>
     <li class="menuitem">
         <a href="#user_account" class="account">
@@ -21,16 +21,17 @@
             <li class="menuitem">
                 !read oneitem.phtml account,1,module=adm/class/usermanage&job=userprop
             </li>
-            !if $auth_method notwordof cas ldap php
+            !if $auth_method notitemof $auth_method_list
               <li class="menuitem">
                 !! "Change password"
                 !read oneitem.phtml passwd,1,module=adm/class/passwd&job=user
               </li>
+            !endif
               <li class="menuitem">
                 !! "Display prefs"
                 !read oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
               </li>
-            !endif
+
             !! "WIMS logout"
             !read themes/_widgets/logout.phtml
             !! "CAS logout"
