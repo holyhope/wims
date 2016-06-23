@@ -35,10 +35,10 @@ $cdt_subtitle
   <div class="field box">
     !set id0=!getopt id in $wims_id0
     <label for="$id0">$name_workdone ( &lt; $desc_limit $name_character) :</label>
-    &nbsp;
+  $
     !set wims_ref_class=wims_button_help
     !href target=wims_help cmd=new&module=$module&job=helplink&cible=$id0 $name_help_add
-    <textarea $wims_id0 rows="12" cols="120" name="jdesc" class="wrap">
+    <textarea $wims_id0 rows="12" cols="120" name="jdesc">
       !replace internal \( by &#92;( in $jdesc
     </textarea>
   </div>
@@ -70,7 +70,7 @@ $cdt_subtitle
       !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
       !read adm/lang/datemenu.phtml.$moduclass_lang 1,dday$i,dmonth$i,dyear$i
       &#58;
-      &nbsp;
+    $
       !set id0=!getopt id in $(wims_id$i)
       !set wims_ref_class=wims_button_help
       !href target=wims_help cmd=new&module=$module&job=helplink&cible=$id0 $name_help_add
@@ -86,7 +86,7 @@ $cdt_subtitle
 </p>
 
 !formend
-
-!set wims_menu_items=!append line back2 ARIANE,1,cmd=new&job=home\
+!!ARIANE already
+!set wims_menu_items=!append line back2,1,cmd=new&job=home\
 to $wims_menu_items
 !tail
