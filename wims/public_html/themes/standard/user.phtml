@@ -124,22 +124,7 @@
 !ifval $dcnt+$dpcnt+$n+$m+$v>1
  <div id="widget_user_list">
  !if $jquery_defined=yes
-    <script type="text/javascript">
-      /*<![CDATA[*/
-      jQuery(function($$) {
-        // Get in sessionStorage if a tab was previously selected, and activate it.
-        var selectedTabId = sessionStorage.getItem("user_list_selectedTab");
-        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
-        $$("#widget_user_list").tabs({
-          active: selectedTabId,
-          activate : function( event, ui ) {
-              selectedTabId = $$("#widget_user_list").tabs("option", "active");
-              sessionStorage.setItem("user_list_selectedTab", selectedTabId);
-          }
-        });
-      });
-      /*]]>*/
-    </script>
+  !read adm/tabscript user_list
  !endif
 <ul id="wims_user_summary">
  !if $[$dcnt+$dpcnt]>0

@@ -4,22 +4,7 @@
 
 !if $seq_cnt >1 and $seq=$empty
   !if $jquery_defined=yes
-    <script type="text/javascript">
-      /*<![CDATA[*/
-      jQuery(function($$) {
-        // Get in sessionStorage if a tab was previously selected, and activate it.
-        var selectedTabId = sessionStorage.getItem("user_sequence_selectedTab");
-        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
-        $$("#widget_sequence").tabs({
-          active: selectedTabId,
-          activate : function( event, ui ) {
-              selectedTabId = $$("#widget_sequence").tabs("option", "active");
-              sessionStorage.setItem("user_sequence_selectedTab", selectedTabId);
-          }
-        });
-      });
-      /*]]>*/
-    </script>
+    !read adm/tabscript sequence
   !endif
 !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
   <ul id="wims_seq_summary">

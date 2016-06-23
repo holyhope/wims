@@ -160,22 +160,7 @@ $wims_classname, $wims_institutionname\
  </div>
  <div id="widget_supervisor_list">
  !if $jquery_defined=yes
-    <script type="text/javascript">
-      /*<![CDATA[*/
-      jQuery(function($$) {
-        // Get in sessionStorage if a tab was previously selected, and activate it.
-        var selectedTabId = sessionStorage.getItem("supervisor_list_selectedTab");
-        selectedTabId = selectedTabId === null ? 0 : selectedTabId; //default tab = 0
-        $$("#widget_supervisor_list").tabs({
-          active: selectedTabId,
-          activate : function( event, ui ) {
-              selectedTabId = $$("#widget_supervisor_list").tabs("option", "active");
-              sessionStorage.setItem("supervisor_list_selectedTab", selectedTabId);
-          }
-        });
-      });
-      /*]]>*/
-    </script>
+ !read adm/tabscript supervisor_list
  !endif
  <ul id="wims_supervisor_summary">
  !if $subclasscnt>0
