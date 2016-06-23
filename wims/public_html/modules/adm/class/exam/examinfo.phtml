@@ -92,12 +92,12 @@
       !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
      <br class="clearall" />
       <select id="allowtype" name="allowtype" onchange="submit()">
-        !if $tv_listname=$empty
-		!set list_allowtype=all,simulation,none,select
-	!else
-		!set list_allowtype=all,simulation,none,select,techvar
-	!endif
-	!let nboption=!itemcnt $list_allowtype
+    !if $tv_listname=$empty
+        !set list_allowtype=all,simulation,none,select
+    !else
+      !set list_allowtype=all,simulation,none,select,techvar
+    !endif
+    !let nboption=!itemcnt $list_allowtype
         !for i=1 to $nboption
          !if $(list_allowtype[$i])=$allowtype
           <option value="$(list_allowtype[$i])" selected="selected">$(name_allowtype[$i])</option>
@@ -107,10 +107,10 @@
         !next i
        </select>
        !if $allowtype=select
-	 <br /><input size="50" name="IPlist" value="$IPlist" />
+     <br /><input size="50" name="IPlist" value="$IPlist" />
        !endif
        !if $allowtype=techvar
-	 !read adm/vfilter/scoreregform.phtml
+     !read adm/vfilter/scoreregform.phtml
        !endif
      !!formselect allowtype list all, simulation, none, select prompt $name_allowtype
      !!<input size="50" name="IPlist" value="$IPlist" />

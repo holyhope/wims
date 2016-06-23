@@ -79,10 +79,10 @@ expmon=!char 2,3 of $[abs(floor($expmon))+100]
 expday=!char 2,3 of $[abs(floor($expday))+100]
 expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
 !if $expday>=1 and $expday<=31 and $expmon>=1 and $expmon<=12 \
-	and $expyear>=$thisyear and $expyear<=$thisyear+1 \
-	and $expyear$expmon$expday>$today \
-	and $expyear$expmon$expday<=$class_expiration
-	and N notin $expmon$expday$expyear
+   and $expyear>=$thisyear and $expyear<=$thisyear+1 \
+   and $expyear$expmon$expday>$today \
+   and $expyear$expmon$expday<=$class_expiration
+   and N notin $expmon$expday$expyear
  expiration=$expyear$expmon$expday
 !endif
 
@@ -93,7 +93,7 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
 
 # menu preparation
 !if $job!=$empty and $job iswordof \
-	prep_activate prep_erase prep_expire
+    prep_activate prep_erase prep_expire
  title=!record $exam of wimshome/log/classes/$wims_class/exams/.exams
  title=!line 4 of $title
  error=$job
@@ -160,8 +160,8 @@ activetest=!replace line 4 by $ecnt in $activetest
     $k=!trim $($k)
     w$k=!wordcnt $($k)
    !next k
-   !if NaN isin $[$re]$[$we] or $[$wre*$wwe*$wdi]!=1 or $wpa>1 or $ti=$empty or\
-	.. isin $di or $re<0 or $we<0 or ($re>0 and $we=0)
+   !if NaN isin $[$re]$[$we] or $[$wre*$wwe*$wdi]!=1 or $wpa>1 or $ti=$empty \
+     or isin $di or $re<0 or $we<0 or ($re>0 and $we=0)
     error=bad_source
     !exit
    !endif
@@ -236,9 +236,9 @@ awk 'length($$1)==18{if($$3==$exam){print "no";exit};}' $$list;
 !readproc adm/vfilter/listvarfilter.proc
 !if $allow=yes and $wims_user=supervisor
  !if $tv_listname=$empty
-	!bound allowtype within all,simulation,none,select default all
+    !bound allowtype within all,simulation,none,select default all
  !else
-        !bound allowtype within all,simulation,none,select,techvar default all
+    !bound allowtype within all,simulation,none,select,techvar default all
  !endif
  !if $sharers!=$empty and $allowshare=1
   setclass=$wims_class,$sharers
