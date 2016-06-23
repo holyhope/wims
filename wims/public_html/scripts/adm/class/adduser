@@ -27,7 +27,7 @@ uu=!translate internal . to @ in $uu
 login_wims=$uu
 
 !reset user_lastname,user_firstname,user_password,user_email,user_comments,user_photourl,\
-	user_exists,user_participate,user_supervise,user_supervisable,user_external_auth
+    user_exists,user_participate,user_supervise,user_supervisable,user_external_auth
 !for j in $regvarlist
    !if $(user_$j)!=$empty
      !reset user_$j
@@ -247,7 +247,8 @@ replace_=
    !endif
   !next i
 !endif
-
+!!FIXME even if there is no change in user_techvar, it is changed
+!! and add to the list of users.
 !if $replace_=$empty
  !exit
 !endif
