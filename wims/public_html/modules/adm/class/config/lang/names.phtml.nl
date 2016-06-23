@@ -425,7 +425,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    !endif
 !endif
 
-!if $job=list
+!if $job iswordof list new
   !distribute line Naam van het instituut\
     Naam van de klas\
     Klas number\
@@ -461,13 +461,14 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Les participants savent si l'enseignant est connecté\
     Additional fields to fill in the inscription\
     An eventual change of IP during an exam is taking in account\
+paramètres définis lors de la création de la classe, configuration des feuilles et des examens notamment\
  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,\
     name_config_exotitleform,name_config_supconnectshowed,name_regvars,\
-    name_examscore_withoutip
+    name_examscore_withoutip,name_param
 
  !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
  !set name_allowcloning=Autoriser le clonage
@@ -537,7 +538,14 @@ Addresses of the connection links to the class:\
 
 !distribute lines Details on the other links\
 You can also configure the following activity outside the maintenance zone\
-into name_newrem1,name_newrem2
+la configuration peut se faire aussi en dehors de cette zone
+paramètres par défaut pour l'insertion d'exercices dans une feuille
+Accès aux ressources et à l'enregistrement des notes
+Relation avec d'autres classes wims ou d'autres serveurs
+Les liens ci-dessous vous permettent de modifier certains paramètres de la classe.
+Sauvegarde et maintenance de la classe\
+into name_newrem1,name_newrem2,name_seqrem,name_oefrem,
+  name_title_access,name_title_other,name_configrem,name_title_saveman
 !exit
 :arch
 

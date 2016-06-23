@@ -5,10 +5,21 @@
    !href module=adm/class/gateway $wims_name_struct
   </div>
 !endif
-<ul class="wims_nopuce"><li>
-<ul><li>
+<h3>$name_title_saveman</h3>
+<ul class="wims_nopuce">
+<li>
 !href cmd=reply&job=connectlink $name_connectlink
- ($name_connectlinkhelp)</li><li>
+ ($name_connectlinkhelp)
+</li><li>
+!href cmd=reply&job=arch&job2=first $wims_name_save
+ $ ($name_load)
+</li><li>
+!href cmd=reply&job=security $wims_name_config_secure
+  $name_change
+!href module=adm/class/passwd $wims_name_config_passwd
+</li><li>
+!href cmd=reply&job=clean $name_clean
+</li><li>
 $name_index
  $
 !set wims_ref_class=wims_button
@@ -33,68 +44,71 @@ $name_index
 !href cmd=reply&job=index&job2=doc $wims_name_docs
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=index $wims_name_help
-</li>
+</li></ul>
+ <h3>$wims_name_configuration</h3>
+$name_remconfig
+<ul class="wims_nopuce">
 !if $class_type iswordof 2 3 4
 <li>
  !href cmd=reply&job=propagate $name_dependant_zone
 </li>
 !endif
-</ul>
-</li><li>
- <strong>$name_newrem2</strong>
-<ul><li>
-$name_config
-!href target=wims_help module=adm/forum/mboard&job=config $name_forum
-,
-!href target=wims_help module=adm/class/motd $name_motd
-,
-!href target=wims_help module=adm/class/cdt&job=config $name_cdt
-,
-!href target=wims_help module=adm/class/livret&job=config $name_livret
-,
-!href target=wims_help module=adm/class/sequence&job=config $name_seq
-.
-</li><li>
-!set t_=!defof module_title in wimshome/public_html/modules/adm/light/pages/useropts.phtml.$lang
-!href target=wims_help module=adm/light&phtml=useropts.phtml.$lang $t_
- ($name_pref).
-</li></ul></li><li>
-<strong>$name_newrem1</strong>
-<ul><li>
-!href cmd=reply&job=list $wims_name_config_list
-,
-!href cmd=reply&job=oefdefault $wims_name_config_oef
-</li><li>
-$name_apparence :
-!href cmd=reply&job=present $wims_name_config_present
-.
-</li>
 !if $classdepth<=1
 <li>
-!href cmd=reply&job=authtype $name_useauth
-$name_ldap.
+!href cmd=reply&job=authtype $wims_name_config_auth
+$ ($name_useauth)
 </li>
 !endif
+<li><strong>$name_newrem1</strong>
+<ul><li>
+!href cmd=reply&job=list $wims_name_config_list
+$ ($name_param),
+</li><li>
+!href target=wims_help module=adm/class/sequence&job=config $name_seq
+ ($name_seqrem)
+</li><li>
+!href cmd=reply&job=oefdefault $wims_name_config_oef
+ ($name_oefrem)
+</li><li>
+!href cmd=reply&job=present $wims_name_config_present
+$ ($name_apparence)
+</li>
+ </ul></li>
+ <li><strong>$wims_name_classtools</strong> ($name_newrem2)
+  <ul><li>
+!href target=wims_help module=adm/forum/mboard&job=config $name_forum
+</li><li>
+!href target=wims_help module=adm/class/motd $name_motd
+</li><li>
+!href target=wims_help module=adm/class/cdt&job=config $name_cdt
+</li><li>
+!href target=wims_help module=adm/class/livret&job=config $name_livret
+</li></ul>
+</li>
+<li><strong>$name_title_access</strong></li>
 <li>
-!href cmd=reply&job=security $wims_name_config_secure
-  ($name_change
-!href module=adm/class/passwd $wims_name_config_passwd
-)
+<ul><li>
+!href cmd=reply&job=access $wims_name_config_restr
+ ($name_restriction1)
 </li><li>
-!href cmd=reply&job=arch&job2=first $name_load
-,
-!href cmd=reply&job=clean $name_clean
-</li><li>
-!href cmd=reply&job=access $name_restriction1
-,
- !href cmd=reply&job=grestrict $name_restriction2
-$name_score.
-</li><li>
-!href cmd=reply&job=neighbor&job2=first $name_neigh
-,
-!href cmd=reply&job=connect&job2=first $name_link
-.
+!href cmd=reply&job=grestrict $wims_name_config_score
+$ ($name_restriction2).
+!!$name_score.
 </li></ul>
+<li><strong>$name_title_other</strong></li>
+<ul><li>
+!href cmd=reply&job=neighbor&job2=first $wims_name_config_neigh
+ ($name_neigh),
+</li><li>
+!href cmd=reply&job=connect&job2=first $wims_name_config_otherserver
+ ($name_link).
 </li></ul>
+</li>
+</ul>
+<p>
+ !set t_=!defof module_title in wimshome/public_html/modules/adm/light/pages/useropts.phtml.$lang
+!href target=wims_help module=adm/light&phtml=useropts.phtml.$lang $t_
+ ($name_pref).
+ </p><p>
 $name_disk: $du MB. ($name_limit2 $wims_class_quota.)
 </p>
