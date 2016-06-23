@@ -70,7 +70,8 @@ dl=!words2items $dl
 dl=!listuniq $dl
 
 good=!words2items $good,$regvarlist
-!! only techvar should be in dl_v other variable have to stay in good (generic traitement for name)
+!! only techvar should be in dl_v other variable have to stay in good
+!! (generic traitement for name)
 dl_v =!listcomplement $good in $dl
 !if $dl_v!=
   dl_var=$empty
@@ -105,8 +106,10 @@ dl2=!translate , to $sep in $dl2
 tit=!replace , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
 
-!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,supervisable,external_auth,average0,average1,average2
- dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
+!! quote the values (case of word groups)
+!for n in login,password,lastname,firstname,email,regnum,comments,$regvarlist,\
+  participate,supervise,supervisable,external_auth,average0,average1,average2
+  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
 dl4r=!items2words $dl4
 !if $dl4!=$empty
@@ -131,11 +134,12 @@ $dl3$dl5\
 
 !reset data_scores
 !for u=1 to $usercnt
+!! reinitialise variables of type user_
  !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
      user_external_auth,user_supervise,user_participate,user_supervisable
-!! !for n in $dl_v
-!!   !reset user__$n
-!! !next
+ !for n in $regvarlist
+   !reset user_$n
+ !next
  l=!record $u of wimshome/log/classes/$wims_class/.userlist
  user_login=!item 3 of $l
  uu=$user_login
