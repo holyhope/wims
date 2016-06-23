@@ -33,13 +33,14 @@
   <fieldset class="property_fields blockcenter">
     <legend>$wims_name_General</legend>
     <div class="field box">
-      <label for="">$wims_name_Address</label>
+      <strong>$wims_name_Address</strong>
       <span class="wims_fname">
         !if $title!=$empty and $modreq!=.new
-          $modreq&nbsp;
+          $modreq
+  $
           !set wims_ref_class=wims_button
           !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
-        &nbsp;
+  $
           !set wims_ref_class=wims_button
           !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
         !else
@@ -57,7 +58,7 @@
       <input type="text" name="i_description" id="i_description" value="$i_description" />
     </div>
     <div class="field box">
-      <label for="i_label">$wims_name_Type</label>
+      <strong>$wims_name_Type</strong>
       !set wims_formselect_switch=multiple
       !set wims_ref_class=wims_formradio
       !formcheckbox i_category list exercise,tool,document,recreation,oef,deductio\
@@ -84,13 +85,13 @@
       <input type="text" name="i_keywords" id="i_keywords" value="$i_keywords" />
     </div>
     <div class="field box">
-      <label for="i_level">$wims_name_Levels</label>
+      <strong>$wims_name_Levels</strong>
       !set wims_ref_class=wims_formradio
       !formcheckbox i_level list $levellist
       <br /><span class="small">$name_levellist</span>
     </div>
     <div class="field box fullwidth">
-      <label for="i_scoring">$wims_name_Scoring</label>
+      <strong>$wims_name_Scoring</strong>
       !default i_scoring=no
       !set wims_ref_class=wims_formradio
       !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
@@ -145,7 +146,7 @@
    <fieldset class="property_fields blockcenter">
     <legend>$wims_name_Language</legend>
     <div class="field box halfwidth">
-      <label for="i_language">$wims_name_Language</label>
+      <strong>$wims_name_Language</strong>
       !default i_language=$module_language
       !formselect i_language list $langlist prompt $langname
     </div>
@@ -174,14 +175,14 @@
       <div class="formHelp">$name_increment</div>
     </div>
     <div class="field box halfwidth">
-      <label for="i_wims_version">$wims_name_Required_WIMS_version</label>
+      <strong>$wims_name_Required_WIMS_version</strong>
       !set wims_ref_class=wims_button_help float_right
       !href cmd=help&special_parm=wimsversion $wims_name_help
       !default i_wims_version=$wims_version
       <input type="text" class="small_input" name="i_wims_version" id="i_wims_version" value="$i_wims_version" />
     </div>
     <div class="field box fullwidth">
-      <label for="i_require">$wims_name_require</label><br/>
+      <strong>$wims_name_require</strong><br/>
        !set wims_ref_class=wims_formradio
        !formcheckbox i_require list $swlist prompt $swname
     </div>
@@ -192,7 +193,7 @@
       <input type="text" name="i_data" id="i_data" value="$i_data" />
     </div>
     <div class="field box">
-      <label for="i_copyright">$wims_name_Copyright</label>
+      <strong>$wims_name_Copyright</strong>
       !set wims_formselect_switch=
       !formselect i_copyright list gnu prompt GNU General Public License
     </div>
