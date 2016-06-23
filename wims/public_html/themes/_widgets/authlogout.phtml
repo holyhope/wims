@@ -1,13 +1,14 @@
-!default $div0 = span
+!default div1=li
 
 !if $class_cas_auth!=$empty
  <!-- _widgets/authlogout.phtml -->
-   <$div0 class="menuitem">
-!!FIXME this line does not work
-!! !read adm/class/cas_logout
-!!if there is a number session, there is an error message
-   !set url = $wims_ref_name?module=home
-     <a href="$class_cas_auth/logout?service=$url">$wims_name_cas_logout</a>
-   </$div0><!--menuitem-->
+   <$div1 class="menuitem">
+     !!FIXME this line does not work
+     !!if there is a number session, there is an error message
+     !read adm/class/logout_cas
+
+     !!set url = $wims_ref_name?module=home
+     !!  <a href="$class_cas_auth/logout?service=$url">$wims_name_cas_logout</a>
+   </$div1><!--menuitem-->
  <!-- end _widgets/authlogout.phtml-->
 !endif

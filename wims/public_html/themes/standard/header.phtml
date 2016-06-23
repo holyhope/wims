@@ -28,6 +28,8 @@
 !if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
  <div id="wimstopbox">
 
+  !distribute items li into div1
+  !read themes/_widgets/user_links.phtml
   !distribute items span into div1
   <div class="wimsmenu float_left">
    !read themes/_widgets/headhome.phtml
@@ -35,24 +37,11 @@
   <div class="wimsmenu">
     !read themes/_widgets/headmenu.phtml
     !read themes/_widgets/about.phtml
-    !if _help notin $wims_session
-      !read themes/_widgets/logout.phtml
-      !distribute items div,span into div0,div1
+    !!if _help notin $wims_session
       !!read themes/_widgets/permalink.phtml
-      !!## technical parameters
-      !if $class_cas_auth=$empty
-        !set m_init_parm=!replace internal & by $ $ in $module_init_parm
-        !set class_cas_auth=!getopt class_auth in $m_init_parm
-      !endif
-      !!## end technical parameters
-
-      !if $class_cas_auth!=$empty
-        <$div1 class="menuitem">
-         !read adm/class/logout_cas
-        </$div1>
-      !endif
-    !endif
+    !!endif
   </div><!--wimsmenu-->
+
   !read themes/_widgets/ariane.phtml
   !reset div1
  </div><!--wimstopbox-->
