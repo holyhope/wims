@@ -401,7 +401,7 @@ int _getscorestatus(char *classe, int sheet)
   if(isexam || score_isexam) es="E"; else es="";
   accessfile(nbuf,"r","%s/%s/.%s%d",class_base,classe,es,sheet);
   if(*find_word_start(nbuf)==0) return 1;
-/* preparing score restriction file name :/*
+/* preparing score restriction file name :*/
   mkfname(ftbuf,"%s/%s/.%s%d",class_base,classe,es,sheet);
   return _subword(nbuf,ftbuf);
 }
