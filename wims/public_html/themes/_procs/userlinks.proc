@@ -18,13 +18,13 @@
   !if $wims_user!=$empty
     !if ($wims_user!=supervisor \
      or ($wims_class isitemof $wims_supervise and $module=$module_config))
-      !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
-   !endif
+       !read themes/_procs/userprop.proc wims_user_links
+    !endif
     !if ($auth_method notitemof $auth_method_list and $wims_user!=supervisor) \
     or ($module=$module_config and $wims_user=supervisor \
       and ($wims_class isitemof $wims_supervise or $wims_class=$wims_superclass\
       or $wims_superclass=$empty ))
-     !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
+      !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
 to $wims_user_links
    !endif
  !endif
