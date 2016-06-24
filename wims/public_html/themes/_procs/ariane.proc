@@ -38,18 +38,20 @@
   !if $wims_ariane_cnt>1
     !set 3_=!item 2 of $1_
     !if $3_!=8
-      !set wims_ariane_list = !append line $3_*,8 to $wims_ariane_list
+      !set wims_ariane_list = !append line *,8 to $wims_ariane_list
     !endif
   !endif
+
 !else
   !if _ notin $session and $module!=home and adm isin $module_category
 !!hack, list to complete : for these adm modules wims_name_xxx
 !!(for example wims_name_modtool ) exists (to complete)
-    !for a_ in modtool, quicktool, createxo,latex2wims
+    !for a_ in modtool,quicktool,createxo,latex2wims
       !if $a_ isin $module
         !set ariane_title=$a_
       !endif
     !next
+
 !!should be in the module ?? made to correct the automatic creation of ariane thread
     !if $ariane_title=$empty
       !default ariane_title=$(module_title_$lang)
@@ -90,3 +92,4 @@
   !endif
 !endif
 !set wims_ariane_cnt=!linecnt $wims_ariane_list
+
