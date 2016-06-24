@@ -6,11 +6,15 @@
 !endif
 
 !if $module notwordof adm/modtool
-  !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
-
-  !if $auth_method notitemof $auth_method_list
-    !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
+  !if $wims_user!=supervisor
+    !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
+  !endif
+  !if ($auth_method notitemof $auth_method_list and $wims_user!=supervisor) \
+    or ($module=adm/class/config and $wims_user=supervisor)
+      !!debug $module
+     !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
 to $wims_user_links
+   !endif
   !endif
   !! "Display prefs"
   !set wims_user_links=!append line pref,1,module=adm/light&phtml=useropts.phtml.$lang\
