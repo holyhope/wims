@@ -1,0 +1,25 @@
+!!define also in class/initclass
+!set auth_method_list=ldap,cas,php
+!if $class_cas_auth=$empty
+    !set m_init_parm=!replace internal & by $ $ in $module_init_parm
+    !set class_cas_auth=!getopt class_auth in $m_init_parm
+!endif
+
+!if $module notwordof adm/modtool
+  !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
+
+  !if $auth_method notitemof $auth_method_list
+    !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
+to $wims_user_links
+  !endif
+  !! "Display prefs"
+  !set wims_user_links=!append line pref,1,module=adm/light&phtml=useropts.phtml.$lang\
+to $wims_user_links
+!endif
+!if $module iswordof adm/modtool
+  !set wims_user_links=account,1,module=adm/modtool&cmd=reply&jobreq=prop
+!endif
+!set wims_user_links_cnt=!linecnt $wims_user_links
+
+!set wims_which_user=$wims_firstname $wims_lastname
+!default wims_which_user=$wims_developer
