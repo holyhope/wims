@@ -4,14 +4,16 @@
     !set m_init_parm=!replace internal & by $ $ in $module_init_parm
     !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
-
+!set module_config=adm/class/config
 !if $module notwordof adm/modtool
-  !if $wims_user!=supervisor
+  !if $wims_user!=supervisor \
+    or ($wims_class isitemof $wims_supervise and $module=$module_config)
     !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
   !endif
   !if ($auth_method notitemof $auth_method_list and $wims_user!=supervisor) \
-    or ($module=adm/class/config and $wims_user=supervisor)
-      !!debug $module
+    or ($module=$module_config and $wims_user=supervisor \
+      and ($wims_class isitemof $wims_supervise or $wims_class=$wims_superclass\
+      or $wims_superclass=$empty ))
      !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
 to $wims_user_links
    !endif
