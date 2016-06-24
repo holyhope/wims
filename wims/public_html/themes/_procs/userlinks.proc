@@ -6,6 +6,13 @@
 !endif
 !set module_config=adm/class/config
 !set module_special=adm/modtool adm/quicktool adm/latex2wims
+!set isexample=!charcnt $wims_class
+!if $isexample=4
+  !set isexample=yes
+  !if $wims_user=anonymous
+    !goto pref
+  !endif
+!endif
 
 !if $module notwordof $module_special
   !if $wims_user!=supervisor \
@@ -18,8 +25,8 @@
       or $wims_superclass=$empty ))
      !set wims_user_links=!append line passwd,1,module=adm/class/passwd&job=user\
 to $wims_user_links
-   !endif
   !endif
+:pref
   !! "Display prefs"
   !set wims_user_links=!append line pref,1,module=adm/light&phtml=useropts.phtml.$lang\
 to $wims_user_links
@@ -27,6 +34,8 @@ to $wims_user_links
 !if $module iswordof adm/modtool
   !set wims_user_links=account,1,module=adm/modtool&cmd=reply&jobreq=prop
 !endif
+
+:end
 !set wims_user_links_cnt=!linecnt $wims_user_links
 
 !set wims_which_user=$wims_firstname $wims_lastname
