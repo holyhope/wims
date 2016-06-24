@@ -42,13 +42,14 @@ for my $f (glob("*/*.css.template")) {
  for my $k (keys %{$colors}) {
    $TEXT =~ s/color: *$k/color:$colors{$k}/g;
  }
- 
+
  out("$f2" ,$TEXT) ;
  $/ = undef;
  system("java -jar yuicompressor $f2 -o $f1 -v; rm $f2");
 }
 
 sub t { my ($c1,$c2,$L)=@_; $L->{$c1}=$c2};
+
 sub treate { my ($c)= @_ ;
   return if ((!$c) || ($c =~ /#/));
   open(INN, $c);
@@ -56,8 +57,6 @@ sub treate { my ($c)= @_ ;
   close(INN) ;
   "\n/*! from $c */\n$text" ;
 };
-
-
 
 sub out { my ($bloc, $text) = @_ ;
   open  (OUT, ">$bloc") || warn "Creation du bloc $bloc impossible";
