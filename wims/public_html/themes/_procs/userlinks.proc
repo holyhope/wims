@@ -5,7 +5,9 @@
     !set class_cas_auth=!getopt class_auth in $m_init_parm
 !endif
 !set module_config=adm/class/config
-!if $module notwordof adm/modtool
+!set module_special=adm/modtool adm/quicktool adm/latex2wims
+
+!if $module notwordof $module_special
   !if $wims_user!=supervisor \
     or ($wims_class isitemof $wims_supervise and $module=$module_config)
     !set wims_user_links=account,1,module=adm/class/usermanage&job=userprop
@@ -28,4 +30,6 @@ to $wims_user_links
 !set wims_user_links_cnt=!linecnt $wims_user_links
 
 !set wims_which_user=$wims_firstname $wims_lastname
-!default wims_which_user=$wims_developer
+!if $wims_firstname $wims_lastname issametext $empty
+  !set wims_which_user=$wims_devfirstname $wims_devlastname
+!endif
