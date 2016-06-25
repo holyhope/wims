@@ -80,7 +80,7 @@ jQuery.fn.filterByText = function(textbox, selectMatches, preventReturn) {
       if (selectMatches == "single" && $(select).children().length === 1) {
         $(select).children().get(0).prop('selected', true);
       }
-      else if (selectMatches == "multiple" && search != "") {
+      else if (selectMatches == "multiple" && search !== "") {
         $(select).children().prop('selected', true);
       }
     });
@@ -147,7 +147,7 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
           $(this).prop('selected', false);
       });
       var regex = new RegExp(search,'gi');
-      if (search != "")
+      if (search !== "")
       {
           $.each(options, function(i) {
             var option = options[i];
