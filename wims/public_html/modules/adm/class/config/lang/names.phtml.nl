@@ -29,8 +29,8 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 !if $job=arch
  !set title=Backup en Herstel
  !set name_title_save=Sauvegarde de la classe
- !set name_title_restore=Restauration de ressources Ã  partir d'une sauvegarde
- !set name_intro1=SÃ©lectionner le fichier de sauvegarde Ã  restaurer
+ !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
+ !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
  !set name_tosend=Om de klas te herstellen via een backup archief; geef de backup archief naam
  !set name_namefile=Geef de naam van het backup archief
@@ -84,11 +84,11 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore,name_motd1
 
-!!set name_cnil_warning=Nous vous rappelons que conformÃ©ment aux dÃ©clarations faites Ã  la CNIL, \
-  vous ne devez pas garder de donnÃ©es relatives Ã  vos Ã©lÃ¨ves plus d'un an. Vous devrez alors dÃ©truire\
-  toutes les sauvegardes contenant les donnÃ©es des Ã©lÃ¨ves.\
-  Faites une sauvegarde sÃ©lective si vous dÃ©sirez garder les ressources que vous\
-  avez crÃ©Ã©es (feuilles, examens, documents) ou utilisez la possibilitÃ© de clonage.
+!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+  vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
+  toutes les sauvegardes contenant les données des élèves.\
+  Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de clonage.
 
 !distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
@@ -461,10 +461,10 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Mix\
     Opschorten scoreregistratie door studenten\
     Generieke naam voor de titel van OEF oefeningen\
-    Les participants savent si l'enseignant est connectÃ©\
+    Les participants savent si l'enseignant est connecté\
     Additional fields to fill in the inscription\
     An eventual change of IP during an exam is taking in account\
-paramÃ¨tres dÃ©finis lors de la crÃ©ation de la classe, configuration des feuilles et des examens notamment\
+paramètres définis lors de la création de la classe, configuration des feuilles et des examens notamment\
  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
@@ -541,13 +541,13 @@ Addresses of the connection links to the class:\
 
 !distribute lines Details on the other links\
 You can also configure the following activity outside the maintenance zone\
-la configuration peut se faire aussi en dehors de cette zone
-paramÃ¨tres par dÃ©faut pour l'insertion d'exercices dans une feuille
-AccÃ¨s aux ressources et Ã  l'enregistrement des notes
-Relation avec d'autres classes wims ou d'autres serveurs
-Les liens ci-dessous vous permettent de modifier certains paramÃ¨tres de la classe.
+la configuration peut se faire aussi en dehors de cette zone\
+paramètres par défaut pour l'insertion d'exercices dans une feuille\
+Accès aux ressources et à l'enregistrement des notes\
+Relation avec d'autres classes wims ou d'autres serveurs\
+Les liens ci-dessous vous permettent de modifier certains paramètres de la classe.\
 Sauvegarde et maintenance de la classe\
-into name_newrem1,name_newrem2,name_seqrem,name_oefrem,
+into name_newrem1,name_newrem2,name_seqrem,name_oefrem,\
   name_title_access,name_title_other,name_configrem,name_title_saveman
 !exit
 :arch
