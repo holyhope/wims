@@ -1,34 +1,50 @@
 !!## technical parameters
 
-!if $wims_firstname$wims_lastname$wims_user$wims_developer=$empty \
-  or _help isin $wims_session or _exam isin $wims_session\
-  or _test isin $wims_session
-  !exit
-!endif
-!read themes/_procs/userlinks.proc
-!default wims_which_user=xxx
 <ul class="wimsmenu float_right dropdown menu" data-dropdown-menu data-options="data-autoclose:true;">
-  <li class="menuitem is-dropdown-submenu-parent">
-    <a href="#user_account" class="account">
-      <span>$wims_which_user</span>
-    </a>
-    <ul id="user_account" class="menu">
-      !for i_=1 to $wims_user_links_cnt
-        !set 1_=!line $i_ of $wims_user_links
-        <li class="menuitem">
-          !read oneitem.phtml $1_
-        </li>
-      !next
 
-      !! "WIMS logout"
-      !read themes/_widgets/logout.phtml
-      !! "CAS logout"
-      !set div1=li
-      !read themes/_widgets/authlogout.phtml
-    </ul>
-  </li>
+  !! USER LINKS
+  !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty \
+    and _help notin $wims_session and _exam notin $wims_session \
+    and _test notin $wims_session
+    !read themes/_procs/userlinks.proc
+    !default wims_which_user=xxx
+    <li class="menuitem is-dropdown-submenu-parent">
+      <a href="#user_links" class="account">
+        <span>$wims_which_user</span>
+        !if $wims_developer!=$empty
+          <span class="user_type">[modtool]</span>
+        !endif
+      </a>
+      <ul id="user_links" class="menu">
+        !for i_=1 to $wims_user_links_cnt
+          !set 1_=!line $i_ of $wims_user_links
+          <li class="menuitem">
+            !read oneitem.phtml $1_
+          </li>
+        !next
+
+        !! "WIMS logout"
+        !read themes/_widgets/logout.phtml
+        !! "CAS logout"
+        !set div1=li
+        !read themes/_widgets/authlogout.phtml
+      </ul>
+    </li>
+  !endif
+
+  !! Language selector
+  !!set wims_language_cnt=!wordcnt $wims_site_languages
+  !! TODO FIX : lang_name_ must be defined !
+  !if $wims_language_cnt>1
+    <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
+      <a href="#lang_list" class="lang">
+        <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)"/> Language</span>
+      </a>
+      !read themes/_widgets/language_selector.phtml
+    </li>
+  !endif
 </ul>
 
 <!-- Foundation Dropdown Menu -->
 <script type="text/javascript" src="html/themes/_inc/foundation_dropdown_menu.js"></script>
-<script type="text/javascript" >$$(document).foundation()</script>
+<script type="text/javascript" >jQuery(function($$) {$$(document).foundation();});</script>

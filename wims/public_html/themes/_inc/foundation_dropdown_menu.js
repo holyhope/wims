@@ -1438,7 +1438,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
            * Fires when the open menus are closed.
            * @event DropdownMenu#hide
            */
-          this.$element.trigger('hide.zf.dropdownmenu', [$toClose]);
+          // Attention : ici conflit avec Prototype.js !!
+          //this.$element.trigger('hide.zf.dropdownmenu', [$toClose]);
+          this.$element.trigger('hiding.zf.dropdownmenu', [$toClose]);
         }
       }
 
