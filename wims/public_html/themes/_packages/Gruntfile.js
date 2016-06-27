@@ -9,7 +9,7 @@ module.exports = function(grunt){
       /*utils: ['../../scripts/js/utils.js'],*/
       /*wz: ['../../scripts/js/wz*.js'],*/
       interface: ['../../scripts/js/interface/*.js'],
-      inc: ['../_inc/*.js'],
+      /*inc: ['../_inc/*.js'],*/
     },
 
     /* Concatene plusieurs fichiers en un seul
@@ -24,18 +24,23 @@ module.exports = function(grunt){
       },
     },*/
 
-    /* Concatene et minifie les fichiers JS.
+    /* Concatene et minifie les fichiers JS.*/
     uglify: {
       options: {
         // mangle permet de renommer les variables JS.
         mangle: false
       },
-      dist: {
+      ASCIIMathML: {
         files: {
-          'grunt_tests/built.min.js': ['grunt_tests/built.js', 'autre.js']
+          '../../scripts/js/ASCIIMathML.js': ['bower_components/asciimathml/ASCIIMathML.js']
+        }
+      },
+      LaTeXMathML: {
+        files: {
+          '../../scripts/js/LaTeXMathML.js': ['bower_components/asciimathml/LaTeXMathML.js']
         }
       }
-    },*/
+    },
 
     // Compile les fichiers LESS en fichiers CSS
     less: {
@@ -68,7 +73,8 @@ module.exports = function(grunt){
       },
       normalize: {
         files: {
-          "../../scripts/js/bower_components/normalize.css": ["bower_components/normalize.css/*.css"]
+          /*"../../scripts/js/bower_components/normalize.css": ["bower_components/normalize.css/*.css"]*/
+          "../_css/normalize.css": ["bower_components/normalize.css/*.css"]
         }
       }
     },
@@ -122,15 +128,14 @@ module.exports = function(grunt){
             src: ['bower_components/jquery-hoverIntent/*.js' ],
             dest: '../../scripts/js/',
           },
-
-          // ASCIIMathML (+LaTeXMathML)
+          /* ASCIIMathML (+LaTeXMathML)
           {
             expand: true,
             flatten: true,
             filter: 'isFile',
             src: ['bower_components/asciimathml/*.js' ],
             dest: '../../scripts/js/',
-          },
+          },*/
 
         ],
       },
@@ -151,14 +156,14 @@ module.exports = function(grunt){
 
   /* available jobs */
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  /*grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');*/
+  /*grunt.loadNpmTasks('grunt-contrib-concat');*/
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   /* Defined Tasks */
-  grunt.registerTask('default', ['jshint', 'less', 'cssmin', 'copy:main'])
+  grunt.registerTask('default', ['jshint', 'uglify', 'less', 'cssmin', 'copy:main'])
   grunt.registerTask('MathJax', ['copy:MathJax'])
 
 }
