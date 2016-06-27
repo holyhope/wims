@@ -31,20 +31,19 @@ $wims_CSS
 <meta name="apple-mobile-web-app-capable" content="yes" />
 
 <!-- prevents links from apps from opening in mobile safari -->
-<script type="application/javascript" src="scripts/js/safari_mobile_links.js"></script>
+<script type="application/javascript" src="scripts/js/bower_components/safari_mobile_links/compressed.js"></script>
 
 <!-- Librairies JQUERY -->
-    <script type="text/javascript" src="scripts/js/jquery/jquery.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="scripts/js/jquery/themes/smoothness/jquery-ui.min.css" />
-    <script type="text/javascript" src="scripts/js/jquery/jquery-ui.min.js"></script>
-    <!--script type="text/javascript" src="scripts/js/jquery/jquery-ui-1.10.3.custom.js"></script-->
+  <script type="text/javascript" src="scripts/js/bower_components/jquery/jquery.min.js"></script>
+  <link rel="stylesheet" href="scripts/js/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" />
+  <script type="text/javascript" src="scripts/js/bower_components/jquery-ui/jquery-ui.min.js"></script>
 
-    <!--JQUERY EXtruder (menu de type "slide")-->
-    <script type="text/javascript" src="scripts/js/jquery/plugins/jquery.hoverIntent.min.js"></script>
-    <script type="text/javascript" src="scripts/js/jquery/plugins/jquery.metadata.js"></script>
-    <!-- permet d'afficher du texte vertical ( exemple sur le menu)-->
-    <script type="text/javascript" src="scripts/js/jquery/plugins/jquery.mb.flipText.js"></script>
-    <script type="text/javascript" src="scripts/js/jquery/plugins/mbExtruder.js"></script>
+  <!--JQUERY EXtruder (menu de type "slide")-->
+  <script type="text/javascript" src="scripts/js/bower_components/jquery-hoverIntent/jquery.hoverIntent.js"></script>
+  <!-- permet d'afficher du texte vertical ( exemple sur le menu)-->
+  <script type="text/javascript" src="scripts/js/bower_components/jquery.mb.extruder/inc/jquery.mb.flipText.js"></script>
+  <!-- permet le menu en "tiroir"-->
+  <script type="text/javascript" src="scripts/js/bower_components/jquery.mb.extruder/inc/mbExtruder.js"></script>
 
 <!-- wimsmenumodubox -->
 <script type="text/javascript" src="html/themes/_inc/wimsmenumodubox.js"></script>
@@ -68,6 +67,7 @@ $wims_CSS
 body.main_body {
     background-color: $wims_ref_bgcolor;
     /*color: $wims_textcolor;*/
+    $wims_special_font
 }
 
 a:link {color:$wims_link_color;}
@@ -88,17 +88,23 @@ div#wimstailbox,
 .oef_name_menu,
 table.wimstable th,
 #answeranalysis .oefanswername{
-    background-color: $wims_ref_bgcolor;
-    color: $wims_ref_menucolor;
+  background-color: $wims_ref_bgcolor;
+  color: $wims_ref_menucolor;
 }
 div#wimstailbox a,
 table.wimstable th a{
   color: $wims_ref_menucolor;
 }
 
-#wimsmenumodubox.extruder .content, #wimsmenumodubox.extruder .flap, #wimsmenumodubox.extruder .flapLabel{
-    background-color: $wims_ref_bgcolor;
-    color: $wims_ref_menucolor;
+#wimsmenumodubox.extruder .extruder-content,
+#wimsmenumodubox.extruder .flap,
+#wimsmenumodubox.extruder .flapLabel{
+  background-color: $wims_ref_bgcolor;
+  color: $wims_ref_menucolor;
+}
+#wimsmenumodubox.extruder .text,
+#wimsmenumodubox.extruder a{
+  color: $wims_ref_menucolor;
 }
 
 .title_box,
@@ -110,16 +116,16 @@ table.wimstable th a{
 .wims_docu_title,
 .wimsbody #wims_title .wims_title,
 .wims_title_seq {
-    background-color: $wims_ref_bgcolor;
-    color: $wims_ref_menucolor;
+  background-color: $wims_ref_bgcolor;
+  color: $wims_ref_menucolor;
 }
 
 .wimstable caption a{
-    color: $wims_ref_menucolor;
+  color: $wims_ref_menucolor;
 }
 
 /*#wimsmenumodubox.extruder .content{
-    border-left-color : $wims_ref_bgcolor;
+  border-left-color : $wims_ref_bgcolor;
 }*/
 
 
@@ -154,14 +160,13 @@ body.main_body .wims_button_help{
 
 /*.legend {background-color: $wims_ref_bgcolor;color:$wims_ref_menucolor;}*/
 
-.property_fields{
-  border-color:$wims_ref_bgcolor;
-  background-color:$wims_ref_bgcolor;
-}
-.property_fields legend{
-  background-color: $wims_ref_bgcolor;
-  color:$wims_ref_menucolor;
-}
+.property_fields
+  {border-color:$wims_ref_bgcolor;}
+.property_fields,.property_fields legend
+  {background-color: $wims_ref_bgcolor;}
+.property_fields legend,.property_fields legend>a
+  {color:$wims_ref_menucolor;}
+
 .wims_color1 {
    background-color: $wims_ref_bgcolor;
    color:$wims_ref_menucolor;
