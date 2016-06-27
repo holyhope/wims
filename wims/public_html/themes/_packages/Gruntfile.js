@@ -74,7 +74,7 @@ module.exports = function(grunt){
       normalize: {
         files: {
           /*"../../scripts/js/bower_components/normalize.css": ["bower_components/normalize.css/*.css"]*/
-          "../_css/normalize.css": ["bower_components/normalize.css/*.css"]
+          "../../scripts/js/bower_components/normalize.min.css": ["bower_components/normalize.css/*.css"]
         }
       }
     },
