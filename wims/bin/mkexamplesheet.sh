@@ -6,7 +6,7 @@
 # authors : F. Guerimand, bpr
 # mail : fwguerima@free.fr
 # this script is launch by mkindex. Do not use it directly
-# 
+#
 
 ## level, lang, supervisor, email are those of the class
 ## if information is in the file .sheet$i, take it

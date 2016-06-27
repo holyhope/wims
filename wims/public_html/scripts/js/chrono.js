@@ -8,10 +8,10 @@ function tempo() {
 	return Math.ceil((exit.getTime()-enter.getTime())/1000);
 }
 function clock() {
- document.chrono.clock.value=rtick; 
+ document.chrono.clock.value=rtick;
 rtick=fixrtick-tempo();
  if(rtick<0) rtick=0;
- Timer= setTimeout("clock()",1000);                    
-}                  
+ Timer= setTimeout("clock()",1000);
+}
 </script>
 !set wims_html_onload=clock();

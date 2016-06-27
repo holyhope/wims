@@ -1,7 +1,7 @@
 
 /********* Autocomplete.js  ************************************************************************
-    Autocompletion d'un champ texte 
-    ajoutez la classe "multicomplete" ou "autocomplete" au choix sur l'input, selon que vous 
+    Autocompletion d'un champ texte
+    ajoutez la classe "multicomplete" ou "autocomplete" au choix sur l'input, selon que vous
     souhaitez autoriser un ou plusieurs mot-cles.
     Puis lancez set_multicomplete, ou set_autocomplete avec la liste des mots cles en parametre
 ****************************************************************************************************/
@@ -25,12 +25,12 @@ String.prototype.deAccent = function(){
                     'U','u',
                     'N','n',
                     'C','c'];
-     
+
     var str = this;
     for(var i = 0; i < accent.length; i++){
         str = str.replace(accent[i], noaccent[i]);
     }
-     
+
     return str;
 };
 
