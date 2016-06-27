@@ -73,10 +73,26 @@ ul.wims_work_list, ul.wims_user_sheet{
 .wims_exam_item  { background-color:#9CF;}
 .wims_exam_item:before { content:"\270D";}
 
+
+/* Display ol list numbers before each li (even when display=inline)*/
+.wims_sheet_list
+{
+  /* List will start at 1 */
+  counter-reset: LIST-ITEMS;
+}
+
+.wims_sheet_list li:before
+{
+  content: counter( LIST-ITEMS ) ".";
+  counter-increment: LIST-ITEMS;
+  padding-right: 0.25em;
+}
+
+
+
 .wims_exo_item   {
   /*background-color:#FC9;*/
-  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25)) ;
-;
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .25));
 }
 
 .wims_sheet_item, .wims_doc_item, .wims_vote_item, .wims_exam_item, .wims_exo_item
