@@ -62,7 +62,7 @@ $module_title ($usercnt)
     !href module=adm/class/sequence&job=config $wims_name_config
  </p>
  !endif
- !!test inutile ?
+!!test inutile ?
  !if $usercnt > 0
   !if $activecnt+$eactivecnt>=1
 
@@ -160,17 +160,20 @@ $module_title ($usercnt)
     <span class="wims_button disabled">$(name_affi[5])</span>
    !endif
  </div>
-  !read adm/vfilter/varfilter htmldiv
+  !if $tv_listtechvar!=$empty
+   !read adm/vfilter/varfilter htmldiv
+  !endif
   <div class="wimsform wimscenter">
   <input type="submit" value="$wims_name_Show" />
   </div>
 </fieldset>
  !else
   !form reply
-  !read adm/vfilter/varfilter html
+  !if $tv_listtechvar!=$empty
+   !read adm/vfilter/varfilter html
+  !endif
  !endif
-
-!formend
+ !formend
  !if $wims_typename notwordof group portal program
   <p>$name_sheetdetail</p>
  !endif
