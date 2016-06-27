@@ -1,9 +1,13 @@
+!default div1=li
+
+
 <!-- _widgets/logout.phtml -->
 !for i_=1 to $wims_link_close_cnt
  !set 1_=!line $i_ of $wims_link_close
  !set wims_ref_class = !item 1 of $1_
  <$div1 class="menuitem $wims_ref_class">
-  !read oneitem.phtml $1_
+  !read $(path)oneitem.phtml $1_
+
  </$div1>
  !reset wims_ref_class
 !next i_
