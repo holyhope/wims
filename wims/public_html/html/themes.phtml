@@ -1,17 +1,17 @@
-
 !!!default wims_theme=default
-
+!reset tmp
 !if $wims_read_parm=tail and $wims_headertype=doc
- !set 1_=doctail
+ !set tmp=doctail
 !goto end
 !endif
 !if $wims_read_parm=header and $wims_headertype=doc
- !set 1_=docheader
+ !set tmp=docheader
 !else
- !set 1_=$wims_read_parm
+ !set tmp=$wims_read_parm
 !endif
 :end
-!read ./themes/$wims_theme/$1_.phtml
-!if $(wims_theme_$1_)!=yes and $wims_theme!=default
- !read ./themes/default/$1_.phtml
+!read ./themes/$wims_theme/$tmp.phtml
+
+!if $(wims_theme_$tmp)!=yes and $wims_theme!=default
+ !read ./themes/default/$tmp.phtml
 !endif
