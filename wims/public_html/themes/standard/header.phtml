@@ -26,6 +26,7 @@
 !set module_path= !item 1 of $current_module
 
 !if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
+ !if $module!=home or $wims_user!=
  <div id="wimstopbox">
 
   !distribute items li into div1
@@ -48,13 +49,14 @@
       <$div1 class="menuitem">
        !read adm/class/logout_cas
       </$div1>
- !endif
+     !endif
     !endif
   </div><!--wimsmenu-->
   <br class="clearall"/>
-  !reset div1
+    !reset div1
  </div><!--wimstopbox-->
- !read themes/_widgets/ariane.phtml
+    !read themes/_widgets/ariane.phtml
+  !endif
 !endif
 
 !if $module!=home or $wims_user!=
