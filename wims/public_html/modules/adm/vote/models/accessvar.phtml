@@ -5,20 +5,12 @@
 !reset table_center
 <fieldset class="property_fields blockcenter">
   <legend>$name_create_or_edit</legend>
-!!  <div class="field box">
-!!   <label for="mod_numsess">$name_howmany</label>
-!!if $vote_status>0
-!!$numsess
-!!!else
-!!formselect mod_numsess from 1 to 10
-!!!endif
-!!   <div class="formHelp">$name_atmost 10</div>
-!!  </div>
   <div class="field box">
    <label for="namevar">$name_namevar <span class="field_required">*</span></label>
    !if $vote_status>0
     $namevar
    !else
+    !let up_namevar=$namevar
     !formselect up_namevar list $listlocalname
    !endif
    <div class="formHelp">$(name_$(reg_model)_help)</div>
