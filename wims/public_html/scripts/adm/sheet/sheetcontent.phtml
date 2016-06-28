@@ -16,7 +16,7 @@ $table_header
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep,com,feed
   $table_tr
-   <td>$i</td>
+   <td id="td_exo_$i">$i</td>
    <td>
     !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
    </td>
@@ -43,7 +43,7 @@ $table_header
      !if $i>1
       &nbsp;
       !set wims_ref_class=wims_button
-      !href cmd=reply&job=moveup&moveup=$i#list $(seriesaction[3])
+      !href cmd=reply&job=moveup&moveup=$i#td_exo_$[$i-1] $(seriesaction[3])
      !endif
     !endif
     </td>
