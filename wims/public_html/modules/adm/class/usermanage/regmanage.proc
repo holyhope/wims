@@ -21,9 +21,15 @@ nbsubclasses=!recordcnt wimshome/log/classes/$wims_class/.subclasses
     listlogin=$empty
     !for k=1 to $usercnt
 	tmp=!record $k of wimshome/log/classes/$wims_class/.userlist
-	listlogin=!append item $(tmp[3]) to $listlogin
+        !if $varfilter_!=$empty
+        	!read adm/vfilter/testfilter $(tmp[3])\
+$varfilter_
+     	!endif
+     	!if $(var_filter_test)=1 or $varfilter_=$empty
+	 listlogin=!append item $(tmp[3]) to $listlogin
+        !endif
     !next k
-    !if __ALL__=$listuserchoice
+    !if __ALL__ isin $listuser
 	listuser=$listlogin
     !else
 	listuser=!listintersect $listlogin and $listuser
@@ -32,15 +38,15 @@ nbsubclasses=!recordcnt wimshome/log/classes/$wims_class/.subclasses
     !if $listsclassch!=$empty and $listuser!=$empty
 	!if $action=$name_reguser
 	    !for login in $listuser
-		tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
-		tmp=!listunion $tmp and $listsclassch
-		!setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!listunion $tmp and $listsclassch
+		 !setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
 	    !next login
 	!else
 	    !for login in $listuser
-		tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
-		tmp=!listcomplement $listsclassch in $tmp
-		!setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!defof user_participate in wimshome/log/classes/$wims_class/.users/$login
+		 tmp=!listcomplement $listsclassch in $tmp
+		 !setdef !set user_participate=$tmp in wimshome/log/classes/$wims_class/.users/$login
 	    !next login
     !endif
     !reset action,listuser,listuserchoice,listsclassch

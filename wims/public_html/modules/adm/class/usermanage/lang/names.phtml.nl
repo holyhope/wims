@@ -14,13 +14,12 @@
 
 
 !if $job=regmanage
-	!set name_expert0=check de gewenste methode
-	!set name_grpaction=Verander de inschrijving van leeringen
 	!set name_all=Alle leeringen
-	!set name_checked=Leeringen gekozen uit de onderstaande lijst
-	!set name_expert1=Keuze van de klas
 	!set name_reguser=Inschrijven van leerlingen
 	!set name_unreguser=Annuleer de inschrijving
+        !set name_display=Afficher
+        !set name_techvardisplay=Sélection par variables techniques
+	!set name_description=Utiliser les cases à cocher pour sélectionner les participants et les classes de votre choix puis appuyez sur l'un des deux boutons pour changer leurs droits d'accès.
 !endif
 
 !if $job iswordof userprop teacher userlist

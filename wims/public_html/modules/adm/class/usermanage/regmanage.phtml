@@ -15,69 +15,36 @@ $wims_name_regmanage
     !endif
     </div>
 !else
- !form reply
- <fieldset class="property_fields blockcenter">
-  <legend>$name_grpaction</legend>
-  <div class="field box">
-    <p>$name_expert0</p>
-    <ul>
-      !set wims_html_mode=li
-      !set wims_ref_class=wims_formradio
-      !set wims_ref_id=motd_type
-      !if $tv_listtechvar!=$empty
-       !set listuserchoices=__ALL__,__CHECK__,__FILTER__
-       !set listusernchoices=$name_all,$name_checked,$name_filter
-      !else
-       !set listuserchoices=__ALL__,__CHECK__
-       !set listusernchoices=$name_all,$name_checked,
-      !endif
-      !formradio listuserchoice list $listuserchoices prompt $listusernchoices
-    </ul>
-    !if $tv_listtechvar!=$empty
+
+ $name_description
+ !if $tv_listtechvar!=$empty
+   <fieldset class="property_fields blockcenter">
+   <legend>$name_techvardisplay</legend>
+   <div class="field box">
+    !form reply
     <div style="margin-left:4.5em;" id="tech_var">
       !read adm/vfilter/varfilter htmldiv
     </div>
-!! DON'T WORK : WHY ? (FG)
-!!    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
-!!    !if $jquery_defined=yes
-!!      <script type="text/javascript">
-!!        /*<![CDATA[*/ jQuery(function(jq) {
-!!          jq( "#tech_var" ).hide();
-!!          jq( "#motd_type3" ).click(function() {
-!!            jq( "#tech_var" ).slideDown();
-!!          });
-!!          jq( "#motd_type1, #motd_type2" ).click(function() {
-!!            jq( "#tech_var" ).slideUp();
-!!          });
-!!        }); /*]]>*/
-!!      </script>
-!!    !endif
-   !endif
-  </div>
-  <div class="field box">
-  <p>$name_expert1</p>
-  !set wims_html_mode=li
-  !set wims_ref_class=wims_formcheck
-  !set wims_ref_id=motd_class
-  !for k=1 to $nbsubclasses
-    !set k_=!replace internal / by _ in $k
-     <input type="checkbox" name="listsclassch" id="listsclassch$k_" value="$(ltsubclasses[$k])"/><label for="listsclassch$k_">$(ltnamesubclasses[$k])</label>
-  !next k
-  </div>
- <div class="wimscenter">
-  <input type="hidden" name="job" value="regmanage" />
-  <input type="submit" name="action" value="$name_reguser" $wims_on_click/>
-  <input type="submit" name="action" value="$name_unreguser" $wims_on_click/>
- </div>
-</fieldset>
+    <div class="wimscenter">
+     <input type="hidden" name="job" value="regmanage" />
+     <input type="submit" name="action" value="$name_display" $wims_on_click/>
+    </div>
+    !formend
+   </div>
+  </fieldset>
+ !endif
 
+!form reply
 !! ----- displaying table of participant
     $table_header
     $table_hdtr
-        <th></th>
+        <th><input type="checkbox" name="listuser" id="listuser_all" value="__ALL__"/><label for="listuser_all">$name_all</label></th>
         <th>$name_studentglo</th>
        !for l=1 to $nbsubclasses
-            <th>$(ltnamesubclasses[$l])<br/> ($(ltsupsubclasses[$l]))</th>
+            <th>
+             <input type="checkbox" name="listsclassch" id="listsclassch$l_" value="$(ltsubclasses[$l])"/><label for="listsclassch$l_">$(ltnamesubclasses[$l])</label>
+             $(ltnamesubclasses[$l])<br/> ($(ltsupsubclasses[$l]))
+            </th>
        !next l
    </tr>
     !readproc adm/class/mkcomment name
@@ -116,6 +83,13 @@ $varfilter_
     !endif
     !next i
     </table>
+    <div class="wimscenter">
+     <input type="hidden" name="job" value="regmanage" />
+     <input type="submit" name="action" value="$name_reguser" $wims_on_click/>
+     <input type="submit" name="action" value="$name_unreguser" $wims_on_click/>
+    </div>
+
+!!    </fieldset>
     !formend
 !endif
 
