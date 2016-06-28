@@ -139,4 +139,9 @@
   !exit
 !endif
 
+!if $error=addexook
+  Ajout de l'exercice effectué correctement.
+  !exit
+!endif
+
 !msg $error

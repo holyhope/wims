@@ -122,4 +122,9 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
   !exit
 !endif
 
+!if $error=addexook
+  Ajout de l'exercice effectué correctement.
+  !exit
+!endif
+
 !msg $error

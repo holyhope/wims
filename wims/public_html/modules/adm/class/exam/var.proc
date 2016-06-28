@@ -427,10 +427,11 @@ duration=$sdure
   !exit
  !endif
  !bound $exo between integer 1 and $exocnt+1 default $exocnt+1
+
  ee=!record $exo of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ee into w_,c_,n_,d_,o_,co_
 !! !if $echoose$ename$eweight!=$empty
- !if $save!=$empty
+ !if $save2!=$empty
   !if $echoose=$empty
     !if $c_!=$empty
      echoose=$c_
@@ -452,9 +453,12 @@ $edep\
 $eopt\
 $ecomment
   update_field=0
-  !reset save
+  !reset save2
   !read update.exo
   !reset job,sasheets
+  !if $error=$empty
+   msg_info=addexook
+  !endif
   !changeto var.proc
  !else
   eweight=$w_
@@ -463,6 +467,8 @@ $ecomment
   edep=$d_
   eopt=$o_
   ecomment=$co_
+ !endif
+
  !endif
 !endif
 
