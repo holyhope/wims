@@ -28,26 +28,27 @@
 
 :home
 $module_about
-$wims_name_Version: WIMS-$wims_version $E_comp $wims_version_date.
+<strong>$wims_name_Version:</strong> WIMS-$wims_version $E_comp $wims_version_date.
 <hr/>
 $E_manager
 !mailurl $wims_site_manager\
-   WIMS: $httpd_HTTP_HOST .
+<strong>WIMS:</strong> $httpd_HTTP_HOST .
 <hr/>
 
 !if $wims_theme_icon!=$empty
 !set icon_about=!defof title,author,description,address,version,copyright in wimshome/public_html/gifs/themes/$wims_theme_icon/INDEX
   $table_header
-   <caption>$wims_name_infos</caption>\
+   <caption class="text_icon about">[Information Pictos]</caption>\
    $table_tr<th>$wims_name_title</th><td>$(icon_about[1])</td></tr>
    $table_tr<th>$wims_name_Author</th><td>$(icon_about[2])</td></tr>
    $table_tr<th>$wims_name_Description</th><td>$(icon_about[3])</td></tr>
-   $table_tr<th>$wims_name_Address</th><td>$(icon_about[4])</td></tr>
+   $table_tr<th>$wims_name_Address</th><td><a target="_blank" href="$(icon_about[4])">$(icon_about[4])</a></td></tr>
    $table_tr<th>$wims_name_Version</th><td>$(icon_about[5])</td></tr>
    $table_tr<th>$wims_name_Copyright</th><td>$(icon_about[6])</td></tr>
    $table_end
 !endif
-Changelog:
+
+<h2>Change log:</h2>
 !!FIXME 700
 <pre>
 !sh head -n 700 html/Changelog
