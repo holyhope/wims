@@ -1,4 +1,4 @@
-# Add a level under the current superclass.
+# Add a level under the current gateway.
 # Calling parameter: supervisor_account,title,...
 
 !if $wims_superclass=$empty or $wims_user!=supervisor or \
@@ -22,16 +22,18 @@ newcnt=!itemcnt $titles
  !exit
 !endif
 
-!if $passs!=$empty
- passs=!text select $char_passwd in $passs
- passlen=!charcnt $passs
- !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
-  error=bad_password
-  !exit
- !endif
-!else
- passs=!defof user_password in wimshome/log/classes/$wims_superclass/supervisor
-!endif
+
+!! no superivor password needed in a gateway for level (auth by useraccount)
+!!!if $passs!=$empty
+!! passs=!text select $char_passwd in $passs
+!! passlen=!charcnt $passs
+!! !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
+!!  error=bad_password
+!!  !exit
+!! !endif
+!!!else
+!! passs=!defof user_password in wimshome/log/classes/$wims_superclass/supervisor
+!!!endif
 
 1=!defof user_exists in $userdir/$s_
 ac_su_list=
@@ -50,13 +52,16 @@ sup_save=$s_
 !endif
 !read adm/class/userdef classes,$wims_superclass,$s_
 cadd_Supervisor=$s_
-sadd_firstname=!defof user_firstname in $userdef
-sadd_lastname=!defof user_lastname in $userdef
-sadd_email=!defof user_email in $userdef
+!debug tmp=!defof user_firstname,user_lastname,user_email,user_password in $userdef
+!distribute item $tmp into sadd_firstname,sadd_lastname,sadd_email,sadd_password
+!!sadd_firstname=!defof user_firstname in $userdef
+!!sadd_lastname=!defof user_lastname in $userdef
+!!sadd_email=!defof user_email in $userdef
+!!sadd_password=$passs
+
 cadd_email=$sadd_email
 cadd_level=$alevel
-cadd_password=
-sadd_password=$passs
+!!cadd_password=
 cadd_secure=$sechost
 cadd_superclass=$wims_superclass
 cadd_parent=$wims_superclass
