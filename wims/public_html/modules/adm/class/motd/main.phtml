@@ -66,21 +66,18 @@ $name_title
       !set wims_html_mode= li
       !set wims_ref_class=wims_formradio
       !set wims_ref_id=motd_type
-      !set listuser=__ALL__,__CHECK__,__FILTER__
-      !set listuserchoices=$name_all,$name_checked,$name_filter
+      !if $tv_listtechvar!=$empty
+        !set listuser=__ALL__,__CHECK__,__FILTER__
+        !set listuserchoices=$name_all,$name_checked,$name_filter
+      !else
+        !set listuser=__ALL__,__CHECK__
+        !set listuserchoices=$name_all,$name_checked
+      !endif
       !formradio listuser list $listuser prompt $listuserchoices
     </ul>
-!!    <div style="margin-left:4.5em;" id="tech_var">
-
+    !if $tv_listtechvar!=$empty
 	!read adm/vfilter/varfilter htmldiv
-!!      !set wims_ref_class=wims_button_help float_right
-!!      !href cmd=help&special_parm=filter $wims_name_help
-!!      <label for="varfilter">$name_technical_var:</label>
-!!      <textarea name="varfilter" id="varfilter" cols="20" rows="3">$varfilter</textarea>
-
-
-!!    </div>
-
+    
     !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
     !if $jquery_defined=yes
       <script type="text/javascript">
@@ -95,7 +92,7 @@ $name_title
         }); /*]]>*/
       </script>
     !endif
-
+    !endif
   </div>
 
  <div class="wimscenter">

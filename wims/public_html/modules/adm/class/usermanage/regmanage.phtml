@@ -24,20 +24,20 @@ $wims_name_regmanage
       !set wims_html_mode=li
       !set wims_ref_class=wims_formradio
       !set wims_ref_id=motd_type
-      !set listuserchoices=__ALL__,__CHECK__
-!!,__FILTER__
-      !set listusernchoices=$name_all,$name_checked
-!!,$name_filter
+      !if $tv_listtechvar!=$empty
+       !set listuserchoices=__ALL__,__CHECK__,__FILTER__
+       !set listusernchoices=$name_all,$name_checked,$name_filter
+      !else
+       !set listuserchoices=__ALL__,__CHECK__
+       !set listusernchoices=$name_all,$name_checked,
+      !endif
       !formradio listuserchoice list $listuserchoices prompt $listusernchoices
     </ul>
-!!    <div style="margin-left:4.5em;" id="tech_var">
-!!      !set wims_ref_class=wims_button_help float_right
-!!      !href cmd=help&special_parm=filter $wims_name_help
-!!      <label for="varfilter">$name_technical_var:</label>
-!!      !read adm/vfilter/varfilter htmldiv
-!!      <textarea name="varfilter" id="varfilter" rows="6" cols="20">$varfilter</textarea>
-!!    </div>
-
+    !if $tv_listtechvar!=$empty
+    <div style="margin-left:4.5em;" id="tech_var">
+      !read adm/vfilter/varfilter htmldiv
+    </div>
+!! DON'T WORK : WHY ? (FG)
 !!    !!# Avec JQuery, Le champ "variable technique" n'apparait que lorsqu'il est necessaire.
 !!    !if $jquery_defined=yes
 !!      <script type="text/javascript">
@@ -52,6 +52,7 @@ $wims_name_regmanage
 !!        }); /*]]>*/
 !!      </script>
 !!    !endif
+   !endif
   </div>
   <div class="field box">
   <p>$name_expert1</p>
@@ -84,8 +85,6 @@ $wims_name_regmanage
     !for i=1 to $usercnt
      !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
      !distribute items $uu into bl,bl,uu
-!! suppression de varfilter_ en attendant reflexion sur usage (voir var.proc)
-!reset varfilter_
      !if $varfilter_!=$empty
         !read adm/vfilter/testfilter $uu\
 $varfilter_

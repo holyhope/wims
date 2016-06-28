@@ -54,7 +54,7 @@ $name_intro
   !else
    !set option_select=!append line <option value="$(us_[3])">$(us_[1]) $(us_[2]) ($(us_[3]))</option> to $option_select
   !endif
-!next
+!next lu
 !if $option=$empty
   !set option=<option value=""></option>
 !endif
@@ -95,19 +95,16 @@ $name_expert2
    <textarea name="loginlist" cols="20" rows="5">$loginlist</textarea>
 </div>
 !default job=$job
+!if $tv_listtechvar!=$empty
 !set wims_ref_class=wims_formradio
 !set wims_ref_id=job4
 <p>
 !formradio job list filter prompt <b>$wims_name_filter:</b>
 $name_expert3
 </p>
-!read adm/vfilter/varfilter htmldiv
-!!!set wims_ref_class=wims_button_help float_right
-!!!href cmd=help&special_parm=filter $wims_name_help
 
-!!<div class="wimscenter">
-!!<textarea name="variable" cols="20" rows="3">$variable</textarea>
-!!</div>
+ !read adm/vfilter/varfilter htmldiv
+!endif
 </fieldset>
 
 !formend
