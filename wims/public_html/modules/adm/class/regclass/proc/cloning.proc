@@ -72,3 +72,21 @@ cp $wims_home/log/classes/$ssourcecls/.E* $wims_home/log/classes/$code/;
 	    !writefile wimshome/log/classes/$code/seq/.sequences $newseq
 	!endif
     !endif
+!! keep configuration classes data.  
+ cls_list=topscores,anonymtopscores,authscoresuspend,supconnectshowed,exotitleform,exolog,examlog,examscore_withoutip,examshow,\
+connections,option,lock,bgcolor,refcolor,ref_menucolor,ref_button_help_bgcolor,ref_button_help_color,ref_button_bgcolor,\
+ref_button_color,bgimg,theme,theme_icon,css,actcolor,showlivret
+ nb=!itemcnt $cls_list
+ !for v=1 to $nb
+    t=!defof class_$(cls_list[$v]) in wimshome/log/classes/$ssourcecls/.def
+    cls_data=!append line !set class_$(cls_list[$v])=$t to $cls_data
+ !next v
+ nb2=!linecnt $t
+ !setdef $cls_data in wimshome/log/classes/$code/.def
+ cls_list=qnum,qcmlevel,scoredelay,qcmpresent,presentsol,check,sepow,expow,precw
+ nb=!itemcnt $cls_list
+ !for v=1 to $nb
+    t=!defof user_$(cls_list[$v]) in wimshome/log/classes/$ssourcecls/supervisor
+    cls_data=!append line !set user_$(cls_list[$v])=$v to $cls_data
+ !next v
+ !setdef $cls_data in $wims_home/log/classes/$code/supervisor
