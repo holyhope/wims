@@ -15,27 +15,25 @@
 !set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
   !if $auth_method isitemof $auth_method_list
-     !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
+    !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
 to $wims_ariane
   !else
-     !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
+    !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
 to $wims_ariane
-   !endif
-!else
-   !!if $wims_otherclass!=$empty
-     !!reset tmp_
-     !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass\
-to $wims_ariane
-   !!endif
+  !endif
+!!else
+  !!if $wims_otherclass!=$empty
+    !!reset tmp_
+    !!set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass to $wims_ariane
+  !!endif
 !endif
 
 !goto subclasses
 :nosupervisor
 
-!if $wims_otherclass!=$empty and $wims_superclass=$wims_class and $tmp_=$empty
-    !!set wims_ariane=!append line U_oclass,1,module=adm/class/classes&type=participant\
-to $wims_ariane
-!endif
+!!if $wims_otherclass!=$empty and $wims_superclass=$wims_class and $tmp_=$empty
+  !!set wims_ariane=!append line U_oclass,1,module=adm/class/classes&type=participant to $wims_ariane
+!!endif
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
     !if $auth_method isitemof $auth_method_list
        !set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
@@ -52,7 +50,7 @@ to $wims_ariane
 to $wims_ariane
   !endif
   !set wims_ariane=!append line "$wims_classname",8 to $wims_ariane
- !else
+ !!else
    !!set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
    !!set wims_ariane=!append line "$superclass_description",8 to $wims_ariane
 !endif
