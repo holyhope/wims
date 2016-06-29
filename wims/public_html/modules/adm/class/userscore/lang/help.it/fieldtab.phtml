@@ -2,14 +2,14 @@
 $table_header
 <caption>Campi utilizzabili per i dati degli studenti</caption>
 $table_hdtr<th>Nome</th><th>Significato</th></tr>
-$table_tr<td class="tt wims_code_variable">login</td><td>login dell'iscritto</td></tr>
+$table_tr<td class="tt wims_code_variable">login</td><td>$wims_name_Login</td></tr>
 !if $special_parm!=upload
 $table_tr<td class="tt wims_code_variable">name</td><td>cognome e nome (in quest'ordine, due colonne)</td></tr>
 !endif
 $table_tr<td class="tt wims_code_variable">lastname</td><td>cognome</td></tr>
 $table_tr<td class="tt wims_code_variable">firstname</td><td>nome</td></tr>
-$table_tr<td class="tt wims_code_variable">password</td><td>password dell'iscritto (in fase di download
-è sempre codificata, ma può essere inserita sul server non codificata).</td></tr>
+$table_tr<td class="tt wims_code_variable">password</td><td>password dell'utente (in fase di download
+è sempre codificata, ma in fase di prima iscrizione può essere inserita sul server non codificata).</td></tr>
 $table_tr<td class="tt wims_code_variable">email</td><td>indirizzo email</td></tr>
 $table_tr<td class="tt wims_code_variable">regnum</td><td>registration number</td></tr>
 $table_tr<td class="tt wims_code_variable">photourl</td><td>URL di una foto</td></tr>
@@ -17,7 +17,7 @@ $table_tr<td class="tt wims_code_variable">comments</td><td>commenti relativi al
 $table_tr<td class="tt wims_code_variable">external_auth</td><td>identificativo per autenticazione esterna</td></tr>
 
 !if $special_parm!=upload
-$table_tr<td class="tt wims_code_variable">allscore</td><td>tutti i punteggi e le m edie</td></tr>
+$table_tr<td class="tt wims_code_variable">allscore</td><td>tutti i punteggi e le medie</td></tr>
 $table_tr<td class="tt wims_code_variable">averages</td><td>medie (sia dei voti assegnati dal server,
 che dei voti assegnati dal docente)</td></tr>
 $table_tr<td class="tt wims_code_variable">average1</td><td>media dei voti assegnati dal server</td></tr>
@@ -26,37 +26,41 @@ $table_tr<td class="tt wims_code_variable">sheets</td><td>punteggi ottenuti in t
 (uno per colonna)</td></tr>
 $table_tr<td class="tt wims_code_variable">sheet1,sheet2,...</td><td>punteggio ottenuto nel test 1,
 test 2, ...</td></tr>
-$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicators of the exercises of the sheet 1, of the sheet 2, ...
-  (there are two indicators : percentage of points, quality note)</td></tr>
+$table_tr<td class="tt wims_code_variable">sheetexo1,sheetexo2,...</td><td>indicatori degli esercizi del test 1, del test 2, ...
+  (ci sono due indicatori: la percentuale dei punti ottenuti e la qualità)</td></tr>
 $table_tr<td class="tt wims_code_variable">exams</td><td>punteggi ottenuti in tutti gli esami</td></tr>
 $table_tr<td class="tt wims_code_variable">exam1,exam2,...</td><td>punteggio ottenuto nell'esame1,
 esame 2, ...</td></tr>
 $table_tr<td class="tt wims_code_variable">manuals</td><td>tutti i voti assegnati manualmente
 (uno per colonna)</td></tr>
-!else
+!endif
 $table_tr<td><span class="tt wims_code_variable">participate (nel caso di un portale di sede e solo per
 il coordinatore)</span></td><td>sigle dei corsi a cui lo studente risulta iscritto
 nella forma abcdefg/1/101 dove abcdefg è il numero del portale. Se più corsi,
 separati da spazi.</td></tr>
+$table_tr<td><span class="tt wims_code_variable">supervisable</span> (nel caso di un portale e solo per il coordinatore)</td><td>"yes" per gli utenti che sono dei docenti
+!if $special_parm=upload
+ (solo in faso di primo inserimento)
 !endif
+.</td></tr>
 $table_tr<td>manual1,manual2,...</td><td><span class="tt wims_code_variable">voti assegnati manualmente 1, 2, ... (uno per colonna)</span></td></tr>
 $table_tr<td class="tt wims_code_variable">var_xxx</td><td>variabile tecnica <span class="tt">xxx</span></td></tr>
 $table_tr<td class="tt wims_code_variable">regprop1,regprop2,...</td><td>variabili d'iscrizione aggiuntive<span class="tt">xxx</span></td></tr>
 
 
 $table_end
-<p>
+
 I campi non riconosciuti vengono ignorati. Le variabile tecniche possono
 essere utilizzare per limitare la registrazione dei punteggi nei
 test di autovalutazione o nei temi d'esame.
-</p>
+
 !if $special_parm=upload
 <p>
-Nel caso del campo <span class="tt wims_code_variable">participate</span>, è possibile aggiungere corsi, ma non rimuoverne.
+Nel caso del campo <span class="tt wims_code_variable">participate</span>, è possibile aggiungere, ma non rimuovere corsi.
 </p>
 <p>
-Dans le cas du champ <span class="tt wims_code_variable">var_xxx</span>,
-la variable technique doit déjà être créée et seules les valeurs définies lors de la création de la variable sont utilisables.
+Per inserire variabili <span class="tt wims_code_variable">var_xxx</span>,
+la corrispondente variabile tecnica deve essere definita e possono essere inseriti solo valori definiti per tale variabile.
 </p>
 !endif
 
