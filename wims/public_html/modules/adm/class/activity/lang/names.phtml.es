@@ -7,7 +7,6 @@
 !set name_nbsessions=Numero de sesiones
 !set name_exo=ejercicios
 !set name_time=Tiempo
-!set name_cnt_exo=Numero de ejercicios
 
 !set name_showsheet=Seleccione las hojas de cuales desea ver la actividad.
 

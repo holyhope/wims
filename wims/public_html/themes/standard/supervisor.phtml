@@ -186,12 +186,16 @@ $wims_classname, $wims_institutionname\
     $table_end
    </div>
  !endif
- !if $seq_open=yes
-  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_sequence</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
- !else
-  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+  !set table_htdr_1=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th>
+  !set table_htdr_2=<th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+  !if $seq_open=yes
+    !set table_htdr_seq=<th>$wims_name_sequence</th>
+  !else
+    !reset table_htdr_seq
+  !endif
  !endif
  !if $[$doccnt+$docpubliccnt]>0
+   !set table_htdr=$table_htdr_1$table_htdr_seq$table_htdr_2
   <div id="wims_supervisor_doc">
    !distribute item 1,no into wims_incremental,table_spacer
    $table_header
@@ -203,6 +207,8 @@ $wims_classname, $wims_institutionname\
   </div>
  !endif
  !if $sheetcnt>0
+   !set table_exocnt=<th>$wims_name_cnt_exo</th>
+  !set table_htdr_=$table_htdr_1$table_exocnt$table_htdr_seq$table_htdr_2
   <div id="wims_supervisor_sheet">
    !distribute item 1,no into wims_incremental,table_spacer
    $table_header
@@ -213,6 +219,7 @@ $wims_classname, $wims_institutionname\
   </div>
  !endif
  !if $examcnt>0
+   !set table_htdr_=$table_htdr_1$table_htdr_seq$table_htdr_2
   <div id="wims_supervisor_exam">
    !distribute item 1,no into wims_incremental,table_spacer
    $table_header
@@ -223,6 +230,7 @@ $wims_classname, $wims_institutionname\
   </div>
  !endif
  !if $votecnt>0
+  !set table_htdr_=$table_htdr_1$table_htdr_seq$table_htdr_2
   <div id="wims_supervisor_vote">
    !distribute item 1,no into wims_incremental,table_id,table_spacer
    $table_header

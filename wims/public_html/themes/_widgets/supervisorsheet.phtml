@@ -2,11 +2,13 @@
 !for i=1 to $sheetcnt
  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !distribute lines $sh into ac,t_,ti
+ !let exocnt_=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  $table_tr
   <td>$wims_name_Sheet $i</td>
   <td>
    !href module=adm/class/sheet&sheet=$i $ti
   </td>
+  <td>$exocnt_</td>
   !if $seq_open=yes
     !read themes/_procs/supervisorseq.proc sheet,$ac
   !endif

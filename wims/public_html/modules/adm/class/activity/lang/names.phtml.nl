@@ -7,7 +7,6 @@
 !set name_nbsessions=Aantal sessies
 !set name_exo=oefening
 !set name_time=Tijd
-!set name_cnt_exo=Aantal oefeningen
 
 !set name_showsheet=Selecteer de werkbladen voor het activiteiten overzicht
 
