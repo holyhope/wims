@@ -1,15 +1,26 @@
-!!how to test that we need this box
-!!if $module!=home and ($wims_user_links_cnt=0 or $wims_user_links_cnt=$empty)
- !!exit
-!!endif
+!!## Dropdown Menu on top right (user links + languages + wims about)
+
+!if _help isin $wims_session or _exam isin $wims_session or _test isin $wims_session
+  !exit
+!endif
+
+
+!set div1=li
+
 <ul class="wimsmenu float_right dropdown menu" data-dropdown-menu data-options="data-autoclose:true;">
 
+  !!head menus
+  !if $module=home
+   !default wims_name_aboutw=$wims_name_about
+   !set wims_hm = !append line aboutw,4,cmd=help&special_parm=about,mhelp to $wims_hm
+   !increase wims_hm_cnt
+  !endif
+  !read themes/_widgets/headmenu.phtml
+
   !! USER LINKS
-  !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty \
-    and _help notin $wims_session and _exam notin $wims_session \
-    and _test notin $wims_session
+  !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty
     !read themes/_procs/userlinks.proc
-    !default wims_which_user=xxx
+    !default wims_which_user=[xxx]
     <li class="menuitem is-dropdown-submenu-parent">
       <a href="#user_links" class="account">
         <span>$wims_which_user</span>
@@ -28,22 +39,23 @@
         !! "WIMS logout"
         !read themes/_widgets/logout.phtml
         !! "CAS logout"
-        !set div1=li
         !read themes/_widgets/authlogout.phtml
       </ul>
     </li>
+  !else
+    !! Language selector (displayed only if you're not connected)
+    !!set wims_language_cnt=!wordcnt $wims_site_languages
+    !! TODO FIX : lang_name_ must be defined !
+    !if $wims_language_cnt>1
+      <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
+        <a href="#lang_list" class="lang">
+          <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)"/> $wims_name_Language</span>
+        </a>
+        !read themes/_widgets/language_selector.phtml
+      </li>
+    !endif
   !endif
-  !! Language selector
-  !!set wims_language_cnt=!wordcnt $wims_site_languages
-  !! TODO FIX : lang_name_ must be defined !
-  !if $wims_language_cnt>1
-    <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
-      <a href="#lang_list" class="lang">
-        <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)"/> $wims_name_Language</span>
-      </a>
-      !read themes/_widgets/language_selector.phtml
-    </li>
-  !endif
+
 </ul>
 
 <!-- Foundation Dropdown Menu -->
