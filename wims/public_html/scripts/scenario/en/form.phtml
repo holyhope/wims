@@ -6,12 +6,13 @@
    Which is the <em>first</em> wrong step of this series?
    !formselect badstep from 0 to $stepcnt
    (0 would mean that every step is correct.)
-   <p><center><input type="submit" value="Send the reply"/></center>
+   <div class="wimscenter">
+   <input type="submit" value="Send the reply" /></div>
   !else
    Mark <em>all</em> bad steps above, then
-   <input type="submit" value="click here"/>.
+   <input type="submit" value="click here" />.
   !endif
-  </form>
+  !formend
  !else
   !if $all_steps=0
    !if $badstep=0
@@ -22,7 +23,8 @@
   !endif
   Your score: $module_score/10.
   !if $expstep!=$empty
-   <p>Some explanations.<ul>
+   <p>Some explanations.
+   </p><ul>
    !for i in $expstep
     <li> Step $i
     !if $i isitemof $badstep
@@ -35,7 +37,7 @@
      !read reasons/$e.det
     !endif
    </li>
-   !next i   
+   !next i
    </ul>
   !endif
  !endif
@@ -45,20 +47,20 @@
   What do you think of the <em>last</em> step?
   !formselect ans list --,OK,$bad_reasons prompt I don't know,\
   	Yes : this step is correct,$bad_rnames
-  <input type=submit value="Send"/>
-  </form>
+  <input type="submit" value="Send" />
+  !formend
  !endif
- 
+
  !if $substep=2
   You are right:
   !if $step_reason=OK
    the last step is correct.
   !else
    the last step is wrong.
-   The good step will be<p><center>
-   <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
+   The good step will be
+   <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
    !line $step of $good
-   </td></tr></table> </center>
+   </td></tr></table>
   !endif
   <p>
   !if $step<$stepcnt
@@ -66,6 +68,6 @@
   !else
    This is the end of the exercise. Your score: $module_score/10.
   !endif
+  </p>
  !endif
 !endif
-

@@ -4,14 +4,14 @@
  !if $step_reason=OK
   is correct. $step_remark
  !else
-  is wrong. $step_remark 
+  is wrong. $step_remark
   <p>
   !read reasons/$step_reason.det
   <p>
-  A correct versionof the last step will be<p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  A correct versionof the last step will be
+  <table class="wimscenter" border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
   !line $step of $good
- </td></tdr </table> </center>
+ </td></tr> </table>
  !endif
  <p>It's a pity that you didn't see all this.
  !goto gnext
@@ -33,10 +33,10 @@
   <p>
   !read reasons/$step_reason.det
   <p>
-  A correct version of the last step will be<p><center>
-  <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  A correct version of the last step will be
+  <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
   !line $step of $good
-  </td></tr></table> </center> <p>
+  </td></tr></table>
  !endif
  :gnext
  <p>
@@ -45,6 +45,7 @@
  !else
   This is the end of the exercise. Your score: $module_score/10.
  !endif
+ </p>
  !exit
 !endif
 
@@ -77,10 +78,12 @@
  !exit
 !endif
 
-!if double_reply=$error
- You have already submitted a reply to this problem, which has been 
- analysed and scored. Repetitive replies are ignored. (Don't use the 
- `reload' button of your browser to repost replies!)
- !exit
-!endif
+!!!if double_reply=$error
+!! You have already submitted a reply to this problem, which has been
+!! analysed and scored. Repetitive replies are ignored. (Don't use the
+!! `reload' button of your browser to repost replies!)
+!! !exit
+!!!endif
+
+!msg $error
 

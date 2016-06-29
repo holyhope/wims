@@ -6,12 +6,13 @@
    Quelle est la <em>première</em> étape erronée de cette série&nbsp;?
    !formselect badstep from 0 to $stepcnt
    (0 voudra dire que tout est juste.)
-   <p><center><input type="submit" value="Envoyer la réponse"/></center>
+   <div class="wimscenter">
+   <input type="submit" value="Envoyer la réponse" /></div>
   !else
    Marquer <em>toutes</em> les mauvaises étapes ci-dessus, puis
-   <input type="submit" value="cliquer ici"/>.
+   <input type="submit" value="cliquer ici" />.
   !endif
-  </form>
+  !formend
  !else
   !if $all_steps=0
    !if $badstep=0
@@ -22,7 +23,8 @@
   !endif
   Votre note&nbsp;: $module_score/10.
   !if $expstep!=$empty
-   <p>Quelques explications.<ul>
+   <p>Quelques explications.
+   </p><ul>
    !for i in $expstep
     <li> Etape $i
     !if $i isitemof $badstep
@@ -35,7 +37,7 @@
      !read reasons/$e.det
     !endif
    </li>
-   !next i   
+   !next i
    </ul>
   !endif
  !endif
@@ -45,20 +47,20 @@
   Que pensez-vous de la <em>dernière</em> étape&nbsp;?
   !formselect ans list --,OK,$bad_reasons prompt Je ne sais pas,\
   	Oui : cette étape est correcte,$bad_rnames
-  <input type=submit value="Envoyer"/>
-  </form>
+  <input type="submit" value="Envoyer" />
+  !formend
  !endif
- 
+
  !if $substep=2
   Vous avez raison&nbsp;:
   !if $step_reason=OK
    la dernière étape est correcte.
   !else
-   la dernière étape est erronée. 
-   La bonne étape sera<p><center>
-   <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
+   la dernière étape est erronée.
+   La bonne étape sera
+   <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
    !line $step of $good
-   </td></tr></table> </center>
+   </td></tr></table>
   !endif
   <p>
   !if $step<$stepcnt
@@ -66,6 +68,7 @@
   !else
    Cet exercice est terminé. Votre note&nbsp;: $module_score/10.
   !endif
+  </p>
  !endif
 !endif
 

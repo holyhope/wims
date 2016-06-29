@@ -5,24 +5,25 @@
    !form reply
    Qual è il <em>primo</em> termine errato in questa serie?
    !formselect badstep from 0 to $stepcnt
-   (La risposta 0 significa che tutto &egrave; corretto.)
-   <p><center><input type=submit value="Invia la risposta"/></center>
+   (La risposta 0 significa che tutto è corretto.)
+   <div class="wimscenter"><input type="submit" value="Invia la risposta"/></div>
   !else
    Selezionare <em>tutti</em> i passaggi sbagliati e
-   <input type="submit" value="cliccare qui"/>.
+   <input type="submit" value="cliccare qui" />.
   !endif
-  </form>
+  !formend
  !else
   !if $all_steps=0
    !if $badstep=0
     Effettivamente tutti i passaggi sono corretti.
    !else
-    Effettivamente il primo passaggio errato &egrave; il numero $badstep.
+    Effettivamente il primo passaggio errato è il numero $badstep.
    !endif
   !endif
   Punteggio ottenuto: $module_score/10.
   !if $expstep!=$empty
-   <p>Alcune spiegazioni.<ul>
+   <p>Alcune spiegazioni.
+   </p><ul>
    !for i in $expstep
     <li> Il passaggio $i
     !if $i isitemof $badstep
@@ -35,7 +36,7 @@
      !read reasons/$e.det
     !endif
    </li>
-   !next i   
+   !next i
    </ul>
   !endif
  !endif
@@ -44,21 +45,21 @@
   !form reply
   Cosa ne pensi dell'<em>ultimo</em> passaggio?
   !formselect ans list --,OK,$bad_reasons prompt Non lo so,\
-  	S&igrave;: il passaggio &egrave; corretto,$bad_rnames
-  <input type=submit value="Invia"/>
-  </form>
+  	S&igrave;: il passaggio è corretto,$bad_rnames
+  <input type="submit" value="Invia" />
+  !formend
  !endif
- 
+
  !if $substep=2
   Hai ragione:
   !if $step_reason=OK
-   l'ultimo passaggio &egrave; corretto.
+   l'ultimo passaggio è corretto.
   !else
-   l'ultimo passaggio non &egrave; corretto.
-   Il passaggio corretto sar&agrave;<p><center>
-   <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
+   l'ultimo passaggio non è corretto.
+   Il passaggio corretto sarà
+   <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
    !line $step of $good
-   </td></tr></table> </center>
+   </td></tr></table>
   !endif
   <p>
   !if $step<$stepcnt
@@ -66,6 +67,7 @@
   !else
    L'esercizio è terminato. Punteggio ottenuto: $module_score/10.
   !endif
+  </p>
  !endif
 !endif
 

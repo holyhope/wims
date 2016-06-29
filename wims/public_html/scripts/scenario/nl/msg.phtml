@@ -4,16 +4,16 @@ In feite, is de laatste stap
  !if $step_reason=OK
   goed. $step_remark
  !else
-  foutief. $step_remark 
+  foutief. $step_remark
   <p>
   !read reasons/$step_reason.det
   <p>
-  De correcte versie van de laatste stap moest zijn;<p><center>
-  <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  De correcte versie van de laatste stap moest zijn;
+  <table class="wimscenter wimsnoborder" style="width:80%"><tr><td>
   !line $step of $good
- </td></tdr </table> </center>
+ </td></tr> </table>
  !endif
- <p>het is wel jammer, dat je dat niet doorzag...
+ <p>het is wel jammer, dat je dat niet doorzag...</p>
  !goto gnext
 !endif
 
@@ -21,7 +21,7 @@ In feite, is de laatste stap
 
 !if step_error iswordof $error
  !if $step_reason=OK
- Maar deze stap is <b>echt</b> wel goed ! 
+ Maar deze stap is <b>echt</b> wel goed !
   $step_remark
  !else
   !if $ask_reason>0 and $step_reason!=$ans
@@ -33,10 +33,10 @@ In feite, is de laatste stap
   <p>
   !read reasons/$step_reason.det
   <p>
-  De correcte versie van de laatste stap moest zijn<p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  De correcte versie van de laatste stap moest zijn
+  <table class="wimscenter" border="0" bgcolor="#d0c0d0" width="80%"><tr><td>
   !line $step of $good
-  </td></tr></table> </center> <p>
+  </td></tr></table>
  !endif
  :gnext
  <p>
@@ -76,12 +76,13 @@ In feite, is de laatste stap
  !exit
 !endif
 
-!if double_reply=$error
-Je hebt al eens een antwoord op dit probleem ingeleverd.
-Dit antwoord is reeds verwerkt en becijferd.
-Herhaalde pogingen worden niet mee gerekend 
-(maar gebruik niet de "RELOAD" of "TERUG" knop van je browser, voor
-het indienen van je antwoorden.)
- !exit
-!endif
+!!!if double_reply=$error
+!!Je hebt al eens een antwoord op dit probleem ingeleverd.
+!!Dit antwoord is reeds verwerkt en becijferd.
+!!Herhaalde pogingen worden niet mee gerekend
+!!(maar gebruik niet de "RELOAD" of "TERUG" knop van je browser, voor
+!!het indienen van je antwoorden.)
+!! !exit
+!!!endif
 
+!msg $error

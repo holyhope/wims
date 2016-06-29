@@ -6,7 +6,7 @@
    在此过程中, <em>最早</em>出错的是哪一步?
    !formselect badstep from 0 to $stepcnt
    (0意指全部正确.)
-   <p><center><input type="submit" value="提交答案"/></center>
+   <div class="wimscenter"><input type="submit" value="提交答案" /></div>
   !else
    标出上面<em>所有的</em>错误之处, 然后
    <input type="submit" value="点击这里"/>.
@@ -35,7 +35,7 @@
      !read reasons/$e.det
     !endif
    </li>
-   !next i   
+   !next i
    </ul>
   !endif
  !endif
@@ -45,20 +45,20 @@
   你觉得这<em>最后</em>一步怎么样?
   !formselect ans list --,OK,$bad_reasons prompt 我不知道,\
   	好: 这一步是对的,$bad_rnames
-  <input type=submit value="提交"/>
-  </form>
+  <input type="submit" value="提交" />
+  !formend
  !endif
- 
+
  !if $substep=2
   你答对了:
   !if $step_reason=OK
    最后一步是对的.
   !else
    最后一步是错的.
-   正确的应是<p><center>
-   <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
+   正确的应是
+   <table class="wimscenter"  border=0 bgcolor="#d0c0d0" width="80%"><tr><td>
    !line $step of $good
-   </td></tr></table> </center>
+   </td></tr></table>
   !endif
   <p>
   !if $step<$stepcnt
@@ -66,6 +66,7 @@
   !else
    练习结束. 得分: $module_score/10.
   !endif
+  </p>
  !endif
 !endif
 

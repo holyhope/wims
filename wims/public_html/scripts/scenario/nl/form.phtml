@@ -2,16 +2,17 @@
 !if $sstyle=1
  !if $substep=0
   !if $all_steps=0
-   !form reply   
+   !form reply
    Wat is de <em>eerste</em> foute stap in deze reeks?
    !formselect badstep from 0 to $stepcnt
    (0 betekend in dit geval dat alle stappen goed zijn.)
-   <p><center><input type="submit" value="OK"/></center>
+   <div class="wimscenter">
+   <input type="submit" value="OK" /></div>
   !else
    Markeer <em>alle</em> foutieve stappen hierboven, en dan
-   <input type=submit value="Klik hier"/>.
+   <input type="submit" value="Klik hier" />.
   !endif
-  </form>
+  !formend
  !else
   !if $all_steps=0
    !if $badstep=0
@@ -22,7 +23,8 @@
   !endif
   Je score: $module_score/10.
   !if $expstep!=$empty
-   <p>Uitleg.<ul>
+   <p>Uitleg.
+   </p><ul>
    !for i in $expstep
     <li> Step $i
     !if $i isitemof $badstep
@@ -34,7 +36,8 @@
      is niet goed.
      !read reasons/$e.det
     !endif
-   !next i   
+    </li>
+   !next i
    </ul>
   !endif
  !endif
@@ -44,20 +47,20 @@
   Wat vind je van de <em>laatste</em> stap?
   !formselect ans list --,OK,$bad_reasons prompt I weet het niet,\
   	Ja : deze stap is correct,$bad_rnames
-  <input type=submit value="Sturen"/>
-  </form>
+  <input type="submit" value="Sturen" />
+  !formend
  !endif
- 
+
  !if $substep=2
   Je hebt gelijk:
   !if $step_reason=OK
   de laatste stap is correct.
   !else
   de laatste stap was foutief.
-   De goede stap moest zijn<p><center>
-   <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
+   De goede stap moest zijn
+   <table class="wimscenter" border=0 bgcolor="#d0c0d0" width="80%"><tr><td>
    !line $step of $good
-   </td></tr></table> </center>
+   </td></tr></table>
   !endif
   <p>
   !if $step<$stepcnt
@@ -65,6 +68,7 @@
   !else
    Dit is het einde van deze oefening.<br/>Je score: $module_score/10.
   !endif
+  </p>
  !endif
 !endif
 

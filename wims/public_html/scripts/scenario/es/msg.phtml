@@ -4,14 +4,14 @@
  !if $step_reason=OK
   correcto. $step_remark
  !else
-  erróneo. $step_remark 
+  erróneo. $step_remark
   <p>
   !read reasons/$step_reason.det
   <p>
-  Una versión correcta del último paso sería <p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  Una versión correcta del último paso sería
+  <table class="wimscenter" border="0" bgcolor="#d0c0d0" width="80%"><tr><td>
   !line $step of $good
- </td></tdr </table> </center>
+ </td></tr> </table>
  !endif
  <p>Es una lástima que no lo viera.
  !goto gnext
@@ -33,10 +33,10 @@
   <p>
   !read reasons/$step_reason.det
   <p>
-  Una versión correcta del último paso sería<p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  Una versión correcta del último paso sería
+  <table class="wimscenter" border="0" bgcolor="#d0c0d0" width="80%"><tr><td>
   !line $step of $good
-  </td></tr></table> </center> <p>
+  </td></tr></table>
  !endif
  :gnext
  <p>
@@ -76,10 +76,11 @@
  !exit
 !endif
 
-!if double_reply=$error
- Ya ha enviado una respuesta a este problema, la cual ha sido analizada
- y puntuada. Las respuestas repetitivas se ignoran (¡no use el botón
- `Actualizar' de su navegador para reenviar las respuestas!).
- !exit
-!endif
+!!!if double_reply=$error
+!! Ya ha enviado una respuesta a este problema, la cual ha sido analizada
+!! y puntuada. Las respuestas repetitivas se ignoran (¡no use el botón
+!! `Actualizar' de su navegador para reenviar las respuestas!).
+!! !exit
+!!!endif
 
+!msg $error

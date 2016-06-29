@@ -4,16 +4,16 @@
  !if $step_reason=OK
 是对的. $step_remark
  !else
-是错的. $step_remark 
+是错的. $step_remark
   <p>
   !read reasons/$step_reason.det
   <p>
-最后一部的正确答复应为<p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+最后一部的正确答复应为
+  <table class="wimscenter wimsnoborder" style="width:80%">><tr><td>
   !line $step of $good
- </td></tdr </table> </center>
+ </td></tr></table>
  !endif
- <p>可惜你没有看清.
+ <p>可惜你没有看清.</p>
  !goto gnext
 !endif
 
@@ -33,10 +33,10 @@
   <p>
   !read reasons/$step_reason.det
   <p>
-  最后一步的正确答案应为<p><center>
-  <table border="0" bgcolor="#d0c0d0" width="80%"><tr><td align="center">
+  最后一步的正确答案应为
+  <table class="wimscenter" border="0" bgcolor="#d0c0d0" width="80%"><tr><td>
   !line $step of $good
-  </td></tr></table> </center> <p>
+  </td></tr></table>
  !endif
  :gnext
  <p>
@@ -76,9 +76,10 @@
  !exit
 !endif
 
-!if double_reply=$error
- 你已经提交了本练习的一个答案, 它已被分析并给分.
-重复提交将被忽略. (不要使用浏览器的`刷新'按钮重复提交答案!)
- !exit
-!endif
+!!!if double_reply=$error
+!! 你已经提交了本练习的一个答案, 它已被分析并给分.
+!!重复提交将被忽略. (不要使用浏览器的`刷新'按钮重复提交答案!)
+!! !exit
+!!!endif
 
+!msg $error
