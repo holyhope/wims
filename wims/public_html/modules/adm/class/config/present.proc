@@ -12,7 +12,10 @@ iconlist=!sh cd gifs/themes/;ls | sort
 !!not very clean
 iconlist=!replace internal mkindex by in $iconlist
 iconlist=!words2items $iconlist
-iconlist=---,$iconlist
+!for icon_theme in $iconlist
+  !set icon_title=!defof title in wimshome/public_html/gifs/themes/$icon_theme/INDEX
+  !set iconpromptlist=!append item $icon_title to $iconpromptlist
+!next
 csslist=!words2items ---- -theme- class $csslist
 csslist=!sh cd html/css/$lang; ls *.css | sed 's/\.css$$//'
 csslist=!words2items ---- -theme- class $csslist
