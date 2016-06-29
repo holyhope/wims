@@ -13,8 +13,8 @@ In questo modo si può monitorare e valutare l'attività degli studenti.
 
 Per costruire un test in un corso è possibile
 <ul><li>
-importare un test di autovalutazione disponibile sul server e visualizzabile
-attraverso il motore di ricerca (cliccare sul
+importare un test di autovalutazione pubblico disponibile sul server 
+e visualizzabile attraverso il motore di ricerca (cliccare sul
 titolo del test e quindi sul link
 <span class="tt wims_code_words">$wims_name_import</span>)
 e se serve modificarlo.
@@ -102,19 +102,42 @@ Per esempio, <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span> signific
 :allowtype
 <h2 id="allowtype">Opzioni per la registrazione dei voti</h2>
 
-È possibile inserire un controllo per limitare la registrazione dei voti
-a determinati periodi e/o a determinate postazioni,
-selezionando 
-<span class="tt wims_code_words">$(name_allowtype[3])</span>
- nei campi
-<span class="tt wims_code_words">$(name_shinfo[6])</span>
-e utilizzando i seguenti formati
+È possibile inserire un controllo per limitare la registrazione dei
+voti a determinati periodi e/o a determinate postazioni. Le opzioni
+disponibili sono
+<ul>
+ <li><span class="tt wims_code_words">$(name_allowtype[1])</span>: tutti i voti sono registrati.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[2])</span>: nessun voto viene registrato.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[3])</span>: nel campo <span class="tt wims_code_words">$(name_shinfo[6])</span>, sarà possibile inserire un intervallo di tempo e gli IP delle postazioni abilitate alla registrazione dei voti. Questa restrizione può essere scritta mediante tre stringhe (che possono essere presenti solo in parte): <br/>
+ <ul>
+  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span> permette di indicare un orario di inizio;</li>
+  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span> permette di indicare un orario di termine;</li>
+  <li><span class="tt wims_code_words">192.168.</span> permette di indicare un gruppo di IP (attenzione al punto finale!);</li>
+ </ul>
+ (più avanti in questa pagina maggiori dettagli sui formati di queste
+ stringhe);
+</li>
+<li><span class="tt wims_code_words">$(name_allowtype[4])</span>: questa opzione può essere utilizzata per indicare filtri di accesso a seconda dell'appartenenza dello studente a un gruppo individuato mediante una <span class="tt wims_code_words">variabile tecnica</span> (questa variabile tecnica deve essere definita per ciascun iscritto, può essere definita manualmente dal docente attraverso la pagina di gestione delle variabile o la scelta può essere lasciata agli studenti attraverso l'utilizzo di un <span class="tt wims_code_words">questionario</span>). Se si sceglie questa opzione e si seleziona una variabile per ogni gruppo definito da tale variabile sarà possibile inserire un filtro (secondo le regole definite sopra).
+<br/>
+Si segnala che tra i <span class="tt wims_code_words">questionari</span> è disponibile il modello <span class="tt wims_code_words">Accessi individualizzati</span> specifico per la creazione di variabili tecniche utilizzabili per la creazione di questi filtri orari. Se si utilizza una variabile tecnica creata attraverso tale modello i campi corrispondenti a ogni gruppo vengono automaticamente riempiti con i valori definiti attraverso il questionario. Questi valori possono essere modificati in questa pagina, per esempio modificando date e orari (ma le modifiche effettuate in questa pagina non modificano i dati contenuti nel questionario).
+<br/>
+!if $tv_listtechvar!=$empty
+ Le variabili tecniche attualmente disponibili nel corso sono:
+ !read adm/vfilter/listvar.phtml 
+!else
+ Non ci sono attualmente variabili tecniche definite nel corso. Se volete utilizzare questa opzione, dovete definire una variabile tecnica.
+!endif
+
+</li>
+</ul>
+
+<h3>Formati utilizzabili per i filtri</h3>
 <p>
 Per le date:
 </p><p>
 <span class="tt wims_code_words">
 &gt;yyyymmdd.hh:mm</span>
-(data e ora di inizio) and/or
+(data e ora di inizio) e/o
 <span class="tt wims_code_words">
 &lt;yyyymmdd.hh:mm</span>
 (data e ora di fine). Queste date devono essere espresse nel fuso orario
@@ -132,7 +155,15 @@ connessioni provenienti IP che cominciano con
 <span class="tt wims_code_words">127.0</span>.
 </p>
 
+
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
+
+
 :variable
+!! questo testo è utilizzato?
 <p>
 Per indicare le limitazioni di accesso alla registrazione dei voti è possibile
 utilizzare variabili indicandone il nome (nell'esempio qui sotto, si puà scrivere 
