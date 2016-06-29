@@ -1,5 +1,5 @@
 !if $wims_read_parm!=$empty
-!goto $wims_read_parm
+ !goto $wims_read_parm
 !endif
 !if $job=student
   !goto student
@@ -20,8 +20,9 @@ una volta che si clicca sull'esercizio, l'enunciato appare in
 un'altra finestra del navigatore. Il link <span class="tt wims_code_words">$wims_name_back</span>
 permette di passare a un altro esercizio.
 </li><li>
-Non è necessario aver risposto a un esercizio
-per poter passare all'esercizio seguente, l'enunciato viene conservato.
+Non è necessario aver risposto a un esercizio per poter passare
+all'esercizio seguente (a meno che il docente non imposti delle
+condizioni ad hoc), l'enunciato viene conservato.
 </li></ul>
 </p><p>
 Il docente potrebbe dare la possibilità di sostenere più volte l'esame.
@@ -41,13 +42,13 @@ Esempio:
 Se nella pagina dell'esame compare il testo:
 </p>
 !set h_min=$[rint(9*60+$stries*($sdure) - $sdure/2)]
-!set h_fin= $[floor($h_min/60)] h $[$h_min%60] min
-!set h_d2=$[round($sdure - $sdure/3)]
-!set h_min2=$[$sdure - $h_d2]
+!set h_fin= $[rint($h_min/60)] h $[$h_min%60] min
+!set h_d2=$[rint($sdure - $sdure/3)]
+!set h_min2=$[min($sdure,$h_d2)]
 !!set h_fin2=  $[floor($h_min2/60)] h $[$h_min2%60] min
-!set d_1=$[min(10,$sdure)]
-!set h_min3=$[floor(9*60+$d_1 + $sdure/2)]
-!set h_3=$[floor($h_min3/60)] h $[$h_min3%60] min
+!set d_1=$[rint(min(10,$sdure/2))]
+!set h_min3=$[9*60+$d_1]
+!set h_3=$[rint($h_min3/60)] h $[$h_min3%60] min
 <pre>
 $name_exam2
 $name_exam6
@@ -129,7 +130,7 @@ Un esame può essere in uno dei 4 seguenti stati:
 !replace internal , by ,$ $ in $(wims_name_shstatus).
 </span>
 <p>
-<span class="wims_emph">$(wims_name_shstatus[1]) :</span>
+<span class="wims_emph">$(wims_name_shstatus[1]):</span>
 lo stato iniziale dell'esame. In questa fase, l'esame non è visibile 
 per gli studenti.
 </p><p>
@@ -138,7 +139,7 @@ una volta che si è cliccato su
 <span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
 l'esame diventa visibile per gli studenti (che possono lavorare 
 sugli esercizi a meno che qualche parametro del campo
-<span class="tt wims_code_words">$(name_shinfo[6])</span>
+<span class="tt wims_code_words">$(name_shinfo[4])</span>
 non lo impedisca), i contenuti a questo punto
 non sono più modificabili, eccetto i titoli e il testo di presentazione
 dell'esame e il campo
@@ -173,11 +174,11 @@ ma può anche essere rimesso nello stato
 <h2 id="duration">Numero di tentativi (sessioni) d'esame e durata delle sessioni</h2>
 
 <p>
-Durante un esame lo studente non ha la possibili di cambiare la
+Durante un esame lo studente non ha la possibilità di cambiare la
 versione dell'esercizio che gli viene proposto, né di disattivare la 
 registrazione dei voti.
 Il docente può lasciare la possibilità di ripetere più volte un esame
-impostano il <span class="wims_emph">$(name_shinfo[10])</span>. 
+impostando il <span class="tt wims_code_words">$(name_shinfo[10])</span>. 
 Un tentativo corrisponde a una sessione d'esame.
 </p><p>
 La <span class="wims_emph">$(name_shinfo[9])</span> è il tempo
@@ -188,7 +189,7 @@ riparte da zero. Quando il cronometro arriva al limite stabilito
 lo studente non può più lavorare sull'esame.
 </p><p>
 La durata di una sessione d'esame può essere impostata tra i due valori
-di 2 minuti e di 600 minuti.
+di $duration_min minuti e di $duration_max minuti.
 </p><p>
 <span class="wims_warning">Attenzione:</span> su questo server
 le sessioni non attive vengono cancellate dopo $[floor($idle_time/60)] 
@@ -217,10 +218,25 @@ voti ottenuti nei vari tentativi.
 
 :allowtype
 <h2 id="allowtype">Opzioni per la registrazione dei voti</h2>
- <p> 
+<p>
+Potete selezionare il modo
+<span class="tt wims_code_words">$(name_allowtype[2])</span>
+nel campo
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+per permettere agli studenti di svolgere l'esame senza che 
+i risultati e i tentativi siano revistrati dal server (di fatto è 
+la modalità con cui l'esame viene visualizzato dal docente quando
+clicca su <span class="tt wims_code_words">Vista studente</span>).
+</p><p>
  È possibile inserire un controllo per limitare la registrazione dei voti 
 a determinati periodi e/o a determinate postazioni, 
-selezionando &ldquo;limitata ai seguenti IP (e/o orari)&rdquo; e 
+selezionando 
+<span class="tt wims_code_words">$(name_allowtype[4])</span>
+oppure 
+<span class="tt wims_code_words">$(name_allowtype[5])</span>
+nel campo
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+e 
 utilizzando i seguenti formati</p>
 <p>Per le date:</p><p>
  <span class="tt wims_code_words">
@@ -278,7 +294,7 @@ aprire una nuova sessione d'esame dopo le 10.
 :variable
 <p id="variable">
 Per indicare le limitazioni di accesso alla registrazione dei voti è possibile 
-utilizzare variabili indicandone il nome. Tale variabile deve 
+utilizzare <span class="wims_emph">variabili tecniche</span> indicandone il nome nel campo <span class="tt wims_code_words">$(name_shinfo[6])</span>. Tale variabile deve 
 allora essere definita per ciascuno studente secondo le regole indicate
 sopra. Questo può essere fatto manualmente nelle "opzioni account" dello 
 studente oppure attraverso l'upload di un file csv (nel campo variabili 
@@ -332,8 +348,8 @@ stato è
 !endif
 
 :dependency
- <h2 id="dependency">Punteggi con dipendenza</h2>
- <p>
+<h2 id="dependency">Punteggi con dipendenza</h2>
+<p>
   Punteggi &ldquo;con dipendenza&rdquo; significa che un candidato deve
   ottenere un determinato punteggio in altri esercizi dell'esame prima di 
   poter affrontare questo. Per esempio,
@@ -349,13 +365,13 @@ stato è
  <h2 id="options">Opzioni</h2>
  <p> Al momeno è disponibile una sola opzione</p>
   <ul>
-   <li><em>autogen</em> significa che l'esercizio viene generato automaticamente
+   <li><span class="tt wims_code_words">autogen</span> significa che l'esercizio viene generato automaticamente
   anche se l'untente non ci clicca sopra. In questo modo può consultare 
   l'esercizio anche a sessione chiusa. Non raccomandato se non per gli esercizi
   che prevedono una valutazione da parte del docente (cioè che <b>non</b>
   prevedono una valutazione automatica).
-   </li>
-  </ul>
+</li></ul>
+
 !if $wims_read_parm!=$empty
  !exit
 !endif
