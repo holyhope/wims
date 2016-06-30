@@ -94,7 +94,8 @@ list=!replace internal  ,  by "," in $list
 :getinfoserver
 
 !shortout "server_version":"$wims_version",\
-"compilation_date":"$wims_version_date"
+"compilation_date":"$wims_version_date",\
+"wims_session":"$wims_session"
 
 !if $ident != $empty
  !shortout ,\
@@ -530,6 +531,13 @@ $ by ],[ in $($v)
 	!shortout ""\
 
 !endif
+
+!goto footer
+
+
+:getsession
+
+!shortout "wims_session":"$wims_session"
 
 !goto footer
 
