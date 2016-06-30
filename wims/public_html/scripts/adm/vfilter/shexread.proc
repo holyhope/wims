@@ -5,15 +5,15 @@ allowlist=!record 0 of wimshome/log/classes/$wims_class/.$wims_read_parm
 allowlist=!trim $allowlist
 !if $allowlist=$empty
  allowtype=all
- !goto end
+ !exit
 !endif
 !if $allowlist=# and E isin $wims_read_parm
   allowtype=simulation
- !goto end
+ !exit
 !endif
 !if $allowlist=none
  allowtype=none
- !goto end
+ !exit
 !endif
 cle=!line 1 of $allowlist
 !if \ isin $cle
@@ -39,5 +39,4 @@ cle=!line 1 of $allowlist
    allowtype=select
    IPlist=$allowlist
 !endif
-:end
 
