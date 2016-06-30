@@ -75,9 +75,9 @@ $data\
  !for i=1 to $numsess
 !!## need to check no "," in testoextra
   testoextra$i=!replace internal , by . in $(testoextra$i)
-  nstud$i=$[max(0,$(nstud$i))]
-  !if NaN isin $(nstud$i)
-    nstud$i=0
+  nstud$i=$[max(-1,$(nstud$i))]
+  !if NaN isin $(nstud$i) or . isin $(nstud$i)
+    nstud$i=-1
   !endif
   donfile=!append line $(listval[$i]),$(nstud$i),$(testoextra$i) to $donfile
  !next i
