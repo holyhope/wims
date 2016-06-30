@@ -1,17 +1,20 @@
 # Variable calculations should be done in this file.
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang names.phtml
-
 !if $job!=$empty and $job notwordof text modify
   job1=$job
+!!for the icon and the title
   !if $job=getsource
     job1=sheetsource
   !endif
   !if $job=prep_putsource
     job1=putsource
   !endif
-  !set wims_ariane=!append line sheetadmin,1,cmd=resume \
-$job1,8, to $wims_ariane
+  !default name_$(job1)=$(wims_name_$job1)
+  wims_ariane=!append line sheetadmin,1,cmd=resume to $wims_ariane
+  !if $(name_$(job1))!=$empty or
+    wims_ariane=!append line "$(name_$(job1))",8, to $wims_ariane
+  !endif
 !else
   !set wims_ariane=!append line sheetadmin,8 to $wims_ariane
 !endif

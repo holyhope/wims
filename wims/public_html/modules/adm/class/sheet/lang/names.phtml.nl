@@ -31,7 +31,7 @@ Vereiste punten aantal\
 Corrigeer de broncode\
 De uiterste datum van het werkblad moet vóór de vervaldatum van deze klas zijn\
 Uw data worden dus genegeerd\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+into name_info,name_content,name_warning,name_oldtitle,name_prep_modify,\
 name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=Om oefening (of hulpmiddelen etc) aan een werkblad toe te voegen, moet\

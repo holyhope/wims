@@ -31,7 +31,7 @@ Número de puntos pedidos\
 Corregir el código fuente\
 La fecha de expiración de la hoja debe ser previa a la fecha de expiración de la clase\
 Se ignora pues su petición.\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+into name_info,name_content,name_warning,name_oldtitle,name_prep_modify,\
 name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=Para añadir un trabajo (ejercicio, herramienta, etc.) a la hoja, deben en primer lugar elegirlo\
