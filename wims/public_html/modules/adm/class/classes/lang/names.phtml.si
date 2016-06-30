@@ -3,10 +3,17 @@
 !if $class_type iswordof 2 4
    !if $class_type=2
     !set name_classe=skupina uèilnic
-    !set name_sup=uèitelj
+    !set name_sup=skrbnik
+    !set name_classes= $name_classe
+    !set name_classesss= $name_classe
+    !set name_classessss= $name_classe
+   
    !else
     !set name_classe=ustanova
     !set name_sup=skrbnik
+    !set name_classes= $name_classe
+    !set name_classesss= $name_classe
+    !set name_classessss= $name_classe
    !endif
      !set name_classes= $name_classe
      !set name_classess=$name_classe
@@ -17,7 +24,7 @@
    !set name_classes=$name_classe
    !set name_classess=$name_classe
    !set name_classesss= uèilnice
-   !set name_classessss= uèilnice
+   !set name_classessss= Uèilnica
    !set name_sup=uèitelj
  !endif
 
@@ -32,84 +39,75 @@
    !set sousclasses_else=uèilnica ali ustanova
  !endif
 
-!set CL_Name	=Level,Class,Program,Course,Course interclasses,Portal,Test Zone
-!set Name_program=Programs
+!set CL_Name	=Stopnja,Razred,Program,Teèaj,Medrazredni teèaj,Portal,Preizkusno obmoèje
+!set Name_program=Programi
 !set name_program=program
 !set name_portalandgroup=Ustanove in skupine uèilnic
 !set name_independantclass=Samostojne uèilnice
 
-!distribute items Registracija,Anonyme,javno,za¹èiteno,Leto,\
-Nov uporabnik,inscrit,Type de connexion,Up,Copier\
+!distribute items Vpis,Anonimno,odprto,za¹èiteno,Leto,\
+Nov uporabnik,vpis,Tip povezave,Gor,Kopiraj\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up,name_copy
 
-!set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
- ne fonctionne pas.
+!set name_new_participant_external=!nosubst Niste prijavljeni v uèilnici $classname. Èe se ¾elite vpisati,\
+pritisnite gumb.
+!set name_warning_external=Èe povezava ne deluje uporabite spodnji obrazec.
 
 !distribute line V drugih uèilnicah nimate uporabni¹kega raèuna.\
-Recherchez votre classe\
-Na tem stre¾niku trenutno ni nobene virtualne uèilnice.\
-Aucune classe ne correspond à votre recherche.\
- Neposredno lahko prestopite v\
+Iskanje v va¹i uèilnici\
+Trenutno ni na razpolago drugih uèilnic.\
+Nobena uèilnica ne ustreza va¹emu iskanju.\
+Neposredno lahko prestopite v\
 into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
-!let classification=Ecole,Collège,Lycée,Université,Language,Archives,Développement
+!let classification=Osnovna ¹ola,Osnovna ¹ola (vi¹ja),Srednja ¹ola,Univerza,Jezik,Arhivi,Razvoj
 
-!set name_text1=S klikom na ime lahko vstopite v virtualno uèilnico. \
-Novi uporabniki se s klikom na besedo <span class="wims_button disabled">$name_register</span> registrirate za uporabo uèilnice\
-(èe je uèilnica za¹èitena z geslom, potrebujete skupno geslo, ki vam ga posreduje va¹ skrbnik).\
-<p>\
-Èe ste se ¾e registrirali, pa se s klikom na ime uèilnice prijavite za delo v njej \
-(potrebujete uporabni¹ko ime in osebno geslo, ki ste ju izbrali ob registraciji).
-
+!set name_text1=S klikom na ime lahko vstopite v spletno uèilnico. \
+Novi uporabniki s klikom na <span class="wims_button disabled">$wims_name_Enter</span> vstopite ali se registrirate za uporabo uèilnice\
+(èe je uèilnica za¹èitena z geslom, potrebujete geslo, ki vam ga posreduje va¹ skrbnik oziroma uèitelj).\
 
 !set name_text2=Za obisk druge $name_level_else $sousclasses_else, jo izberite iz seznama.
-!set name_text3=Ali: $name_level_else $sousclasses_else v spodnjem seznamu.
+!set name_text3=Izberite $name_classess v seznamu.
 
-!set name_language=Na tem stre¾niku trenutno ni nobene virtualne uèilnice v slovenskem jeziku. \
-Morda i¹èete uèilnico v kak¹nem drugem jeziku ?
-!set name_language2=Na tem stre¾niku trenutno ni nobene virtualne uèilnice v slovenskem jeziku.
+!set name_language=Na tem stre¾niku trenutno ni nobene spletne uèilnice v slovenskem jeziku. \
+Morda i¹èete uèilnico v kak¹nem drugem jeziku?
+!set name_language2=Na tem stre¾niku trenutno ni nobene spletne uèilnice v slovenskem jeziku.
 
-!set name_warning=Posku¹ate se prijaviti v uèilnico $name_classess, \
-  ki ne obstaja. Prosim, preverite svojo zahtevo.
+!set name_warning=Posku¹ate se prijaviti v $name_classess, \
+ki ne obstaja. Prosim, preverite svojo zahtevo.
 
-!set name_enter=!nosubst nesite svoje uporabni¹ko ime in osebno geslo za uporabo uèilnice \
-  <span class="wims_classdesc">$class_description</span> ustanove \
-  <span class="wims_institutiondesc">$class_institution</span>.
+!set name_enter=!nosubst Za vstop v uèilnico $classname vpi¹ite uporabni¹ko ime in osebno geslo.
 
-!set name_entersup=!nosubst Vnesite geslo za prijavo <em>skrbnika</em> uèilnice \
-  <span class="wims_classdesc">$class_description</span> ustanove\
-  <span class="wims_institutiondesc">$class_institution</span>.
+!set name_entersup=!nosubst Za prijavo v $nameclasses $classname kot $name_sup vnesite geslo $name_sup. 
+  
+ !set name_research1=Tukaj je veliko spletnih uèilnic. Pri iskanju morate uporabiti kljuèno besedo.
+!set name_research2=©e vedno je preveè zadetkov. Poskusite z drugo kljuèno besedo.
 
- !set name_research1=There are many virtual classes on this site. To find your class, please type\
-  a search keyword.
-!set name_research2=There are still too many classes corresponding to your search word. Please\
-  type a more precise keyword.
-
-!set name_supervisor_text=V nasprotnem primeru pa na seznamu izberite svojo uèilnico in se prijavite kot skrbnik.
+!set name_supervisor_text=!nosubst Izberite vrstico, ki ustreza uèilnici, skupini uèilnic ali ustanovi, ki jo i¹èete.\
+<br />Potem kliknite na <span class="wims_button disabled">$wims_name_Enter</span> za vstop ali vpis uèitelja\
+ali skrbnika.\
+<p> Vpis je dovoljen le uèiteljem.</p>
 
 !if $type=example
    !set name_example1=Na tem stre¾niku trenutno ni pripravljenih primerov virtualnih uèilnic.
    !set name_example2=Na tem stre¾niku trenutno ni pripravljenih primerov virtualnih uèilnic v slovenskem jeziku.
-   !set name_example3=!nosubst There is $clcnt example classes of English language on this site.
-   !set name_example4=They intend to show you how virtual classes work from a students'side.\
-     If you want to experiment  with a virtual class as a supervisor, you will first have to create\
-      one. Click on the link and follow the instructions
+   !set name_example3=!nosubst Na voljo je $clcnt primerov odprtih uèilnic v slovenskem jeziku.
+   !set name_example3b=!nosubst Na voljo je $othercnt primerov odprtih uèilnic v drugih jezikih.
+   !set name_example4=V odprtih uèilnicah lahko preizku¹ate izku¹njo ¹tudenta.\
+   Èe ¾elite preizkusiti izku¹njo uèitelja, morate ustvariti svojo uèilnico.
    !set name_instruction=<ul>\
-  <li>Kliknite na `Osebna prijava' za prijavo z lastnim uporabni¹kim imenom.\
-  Pred tem morate opraviti postopek registracije (stre¾nik lahko obèasno tudi izbri¹e ¾e \
-  obstojeèe registracije v preizkusnih uèilnicah).\
-  </li><li>Kliknite na `Anonimna prijava' za anonimno prijavo v uèilnico, èe nimate ali \
-  si ne ¾elite uporabiti lastnega uporabni¹kega imena.\
-  </li><li>Kliknite na `Registracija' za pridobitev uporabni¹kega imena.\
+  <li>Kliknite na <span class="wims_button disabled">$name_anonymous</span> za vstop v uèilnico kot anonimni uporabnik.\
+</li><li>Kliknite na <span class="wims_button disabled">$name_registered</span> za vstop v uèilnico s svojim uporabni¹kim imenom in geslom (najprej se morate vpisati v uèilnico - pri odprtih uèilnicah so uporabni¹ka imena obèasno izbrisana)
+</li><li>Kliknite na <span class="wims_button disabled">$name_register</span> za vpis v uèilnico.\
 </li></ul>
 
-  !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
-    dans votre classe et modifier.
+
+  !set name_sheet_example=Na¹li boste tudi primere delovnih listov,\ ki jih lahko uvozite in prilagodite v svoji uèilnici.
 !endif
 
-!set name_acceptcgu=J'accepte les conditions générales d'utilisation
-!set name_seecgu=Voir les CGU
+!set name_acceptcgu=Sprejemam splo¹ne pogoje uporabe
+!set name_seecgu=Glej pogoje uporabe
 
-!set name_sendmailmess=Un message contenant un nouveau mot de passe vous a été envoyé à l'adresse électronique que vous avez définie.
+!set name_sendmailmess=Na va¹ e-naslov je bilo poslano sporoèilo z novim geslom.
 
