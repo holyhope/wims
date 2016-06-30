@@ -5,65 +5,64 @@
 !endif
 
 !if double_reply iswordof $wims_error
- Odgovor na ta problem ste ¾e oddali in zanj prejeli ustrezno oceno. Ponovni odgovori niso upo¹tevani (ne uporabljajte gumba 
+ Odgovor na to vpra¹anje ste ¾e oddali in zanj prejeli oceno. Ponovni poskusi niso upo¹tevani (ne uporabljajte gumba 
  `Vnoviè nalo¾i' na va¹em brskalniku, da bi odgovarjali ponovno!).
  !exit
 !endif
 
 !if bad_data iswordof $wims_error
-  I have failed to evaluate the values you have submitted. A typo?
+  Oddanih podatkov ni mogoèe preveriti. Morda gre za napako pri vnosu.
  !exit
 !endif
 
 !if no_ldap_parameter iswordof $wims_error
- Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
- le gestionnaire de votre annuaire ldap. 
+Polja z zvezdico je potrebno izpolniti.
  !exit
 !endif
 
 !if bad_class iswordof $wims_error
- Nerazumljivo: va¹a uèilnica ni veljavna?
+ Napaka. Ka¾e, da iskana uèilnica ni veljavna?
  !exit
 !endif
 
 !if bad_day iswordof $wims_error or day_dontexist iswordof $wims_error
- The given date is not valid.
+ Zahtevani datum ni veljaven.
 !exit
 !endif
 
 
 !if not_supervisor iswordof $wims_error
- Désolé, ce module est accessible uniquement à l'enseignant d'une classe
- virtuelle.
+ Oprostite. Do tega modula lahko dostopa le skrbnik uèilnice.
  !exit
 !endif
 
-!if $wims_error iswordof nouser bad_user bad_usercls
- This participant does not seem to exist !!!!
+
+!if nouser iswordof $wims_error or bad_user iswordof $wims_error \
+  or bad_usercls iswordof $wims_error
+ Napaka. Ne najdem vas med uporabniki te uèilnice ($wims_class)!
 !exit
 !endif
 
+
+
 !if insert_fail iswordof $wims_error
-  Stre¾nik va¹ega dela ni uspel shraniti v svojo bazo. Preverite smiselnost svojih podatke.
+  Stre¾nik va¹ega dela ni uspel shraniti v uèilnici. Preverite smiselnost podatkov.
  !exit
 !endif
 
 !if bad_pass iswordof $wims_error
- Bad password: it must contain only letters and digits, between
- 4 and 16 characters. And the repeat password should be equal to the
- first one! Try again.
+ Neustrezno geslo: uporabite lahko le èrke in ¹tevke, skupaj med 4 in 16 znakov.
  !exit
 !endif
 
 !if bad_auth iswordof $wims_error
- Authentification failed. Please try again.
+ Prijava ni uspela. Poskusite ponovno.
  !exit
 !endif
 
 !if bad_login iswordof $wims_error
- Your login name contains illegal characters.
- Please use a word containing only digits or letters without accents, and 
- without space between them.
+ Va¹e uporabni¹ko ime vsebuje nedovoljene znake.
+ Dovoljene so le èrke in ¹tevke brez stre¹ic in akcentov.
  !exit
 !endif
 
