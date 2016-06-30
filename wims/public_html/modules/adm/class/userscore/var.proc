@@ -1,4 +1,3 @@
-
 # Variable calculations should be done in this file.
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang
@@ -16,8 +15,6 @@ sclassdir=log/classes/$userdir
 userdir=log/classes/$userdir/.users
 tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
 picto=<img src="gifs/picto.gif" alt="picto" />
-
-!!debug $csvdownload
 
 shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
 !if $wims_user=$empty
@@ -44,6 +41,11 @@ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
 !endif
 
 !if $job=showsheet
+  show_tmp=!words2items $show
+!!no comma in the first field of the line for oneitem.phtml
+  !set wims_ariane=!append line sheet $show,1,cmd=reply&job=sheets&showsheet=$show_tmp\
+to $wims_ariane
+
  !changeto var.proc.showsheet
 !endif
 
@@ -185,7 +187,6 @@ job=!word 1 of $job
   !next i
  !endif
 !endif
-
 !if $job!=$empty
  wims_module_log=$job
  !read var.proc.$job
