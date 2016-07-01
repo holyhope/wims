@@ -1,5 +1,6 @@
 !set lang_exists=yes
 
+!set name_remark_numstud=Vous pouvez saisir 0 dans la deuxième colonne pour indiquer qu'il n'y a pas de limite.
 !set name_introtext_group=Saisir l'effectif de chaque groupe ainsi qu'un commentaire (éventuel).
 !set name_cardinal=Effectif
 
