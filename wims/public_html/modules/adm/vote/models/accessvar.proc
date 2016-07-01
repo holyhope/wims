@@ -128,8 +128,19 @@ $testointro\
   bday$i=!char 2,3 of $[abs(floor($(bday$i)))+100]
   bhour$i=!char 2,3 of $[abs(floor($(bhour$i)))+100]
   ehour$i=!char 2,3 of $[abs(floor($(ehour$i)))+100]
+!!
+!! ??? (MC) for vote "0" means "no limit", but maybe when a teacher 
+!! writes "0" here he/she means really "0" so we should change 
+!! $(nstud$i) to "-1"?
+!!
+!! writing "0:" gives bad output in the vote page
+!if $(nstud$i)=0
+  reg_src1=$reg_src1\
+ $(bday$i) $(mese$i) $(byear$i) - $(bhour$i).$(bmin$i) / $(ehour$i).$(emin$i)$ $(testoextra$i),
+!else
   reg_src1=$reg_src1\
 $(nstud$i): $(bday$i) $(mese$i) $(byear$i) - $(bhour$i).$(bmin$i) / $(ehour$i).$(emin$i)$ $(testoextra$i),
+!endif
   techvartable=$techvartable\
 !set techvar_$(listval[$i])=>$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i)
   reg_src2=$reg_src2\
