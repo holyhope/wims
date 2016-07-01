@@ -58,17 +58,16 @@
    <div class="formHelp">$name_atmost $instlim $name_characters</div>
   !endif
    </div>
-
    <div class="field box">
     <label for="description">$wims_name_name $name_classesss</label>
     <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" />
     <div class="formHelp">$name_atmost $desclim $name_characters</div>
-  </div>
+   </div>
   !if $Cltype notin 24
    !set nblevel=!itemcnt $wims_listlevel
    <div class="field box">
     <label for="level">$wims_name_level $name_classesss</label>
-     <select name="level" id="level">
+    <select name="level" id="level">
    !for k=1 to $nblevel
     !if $(wims_listlevel[$k])=$level
      <option selected="selected" value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
@@ -76,7 +75,7 @@
      <option value="$(wims_listlevel[$k])">$(name_wims_listlevel[$k])</option>
     !endif
     !next k
-   </select>
+    </select>
    </div>
  !endif
 
@@ -121,7 +120,7 @@
     </div>
     <div class="field box halfwidth">
     !else
-    <div class="field box">
+    <div class="field box halfwidth">
    !endif
      <label for="password">$wims_name_Password ($name_classesss)</label>
      <input size="16" type="password" name="password" id="password" maxlength="16" />
@@ -132,6 +131,12 @@
        $name_help3
      !endif
      </div>
+   </div>
+   <div class="field box halfwidth">
+     <label for="limit">$name_help_limit</label>
+    !let num=!charcnt $wims_class_user_limit
+    <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
+    <div class="formHelp">&lt; $wims_class_user_limit</div>
    </div>
    <div class="field box halfwidth">
     <label for="exp_day">$wims_name_expiration</label>
@@ -166,16 +171,9 @@
    </option>
   !next i
   </select>
-  <div class="formHelp">$name_help_date</div>
+   <div class="formHelp">$name_help_date</div>
   </div>
    <div class="field box halfwidth">
-     <label for="limit">$name_help_limit</label>
-    !let num=!charcnt $wims_class_user_limit
-    <input size="3" name="limit" value="$limit" id="limit" maxlength="$num" />
-    <div class="formHelp">&lt; $wims_class_user_limit</div>
-  </div>
-
-   <div class="field box">
      <label for="secure">$name_secure ($name_sup)</label>
      !default secure=all
      <input size="30" name="secure" value="$secure" id="secure" />
@@ -186,7 +184,7 @@
   !!!endif
    </div>
    !if $cltype isin 024
-    <div class="field box">
+    <div class="field box halfwidth">
      <label for="cas_auth">$name_cas ($name_optional)</label>
      <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth" />
      <div class="formHelp">$name_cas_help</div>
