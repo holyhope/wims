@@ -124,13 +124,27 @@ listnew=!listcomplement $listforbname1 in $listnew
 	!exit
     !endif
     num=!replace internal / by A in $wims_class
-    num=$(num)_$[$nb+1]
+    !increase nb
+    num=$(num)_$nb
     liste=!sh grep $techvar $wims_home/s2/$wims_session/oldtechvar.don
     !if $liste=$empty
 	error=oldvar_nouser
 	!reset subjob
 	!exit
     !endif
+!! make the new technical variable
+    listval=!column 3 of $liste
+    listval=!listuniq $listval
+    nbval=!itemcnt $listval
+    !if $nbval>$MAXnbvalue
+       error=badoldvaluesnb
+       !reset subjob
+       !exit
+    !endif
+    !fileappend wimshome/log/classes/$wims_class/.techvar :$techvar\
+$listval
+    !fileappend wimshome/log/classes/$tv_Sclass/.indextechvar :$techvar,$wims_class,$[$nb]
+!! put value in participant file.
     nb=!linecnt $liste
     !for k=1 to $nb
 	udon=!line $k of $liste
@@ -138,12 +152,6 @@ listnew=!listcomplement $listforbname1 in $listnew
 	!setdef !set user_techvar_$num=$val in wimshome/log/classes/$tv_Sclass/.users/$login
 	listlogin=!append item $login to $listlogin
     !next k
-!! make the new technical variable
-    listval=!column 3 of $liste
-    listval=!listuniq $listval
-    !fileappend wimshome/log/classes/$wims_class/.techvar :$techvar\
-$listval
-    !fileappend wimshome/log/classes/$tv_Sclass/.indextechvar :$techvar,$wims_class,$[$nb]
     !restart module=adm/class/techvar
 !endif
 

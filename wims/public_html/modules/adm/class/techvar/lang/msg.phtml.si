@@ -1,5 +1,11 @@
 !set wims_module_log=error: $error
 
+!if badoldvaluesnb=$error
+ Le nombre de valeurs prises par cette ancienne variable technique est trop élevé pour qu'elle puisse être récupérée.
+ !exit
+!endif
+
+
 !if not_supervisor=$error
  Désolé, mais seul l'enseignant peut utiliser cette fonctionnalité.
  !exit
