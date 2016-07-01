@@ -3,12 +3,12 @@
 !if $wims_read_parm!=$empty
     !goto $wims_read_parm
 !endif
-Het vaardigheden overzicht geeft een configureerbaar totaalbeeld van het niveau van een klas.
+Het vaardigheden (completenties) overzicht geeft een totaalbeeld van het niveau van een klas.
 
 Per periode kan de docent een lijst met oefeningen aangeven, waaruit dan met de behaalde scores 
-een vaardigheidsniveau kan worden berekend.
+een vaardigheidsniveau wordt gevormd.
 <p>
-Ook kan de docent besluiten  sommige werkbladen niet te laten meetellen voor het bepalen van het vaardigheidsniveau.
+Ook kan de docent besluiten sommige werkbladen niet te laten meetellen voor het bepalen van het vaardigheidsniveau.
 Het is mogelijk deze data gedurende meerdere jaren te vervolgen.
 </p><p>
 Het vaardigheidsniveau wordt berekend met :

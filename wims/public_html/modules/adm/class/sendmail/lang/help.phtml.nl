@@ -4,7 +4,7 @@
 
 :general
 <p>
-De filter regels kunnen gelijktijdig worden gebruikt met het selecteren van loginnamen.
+De filter-regels kunnen gelijktijdig worden gebruikt met het selecteren van loginnamen.
 De email wordt verstuurd naar geselecteerde deelnemers.
 Het filter wordt dan toegepast op deze lijst deelnemers.
 Wordt er geen gebruik gemaakt van loginnamen,

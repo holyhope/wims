@@ -1,73 +1,75 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Désolé, mais seul l'enseignant peut utiliser cette fonctionnalité.
+ Helaas, alleen een docent of supervisor mag deze handeling verrichten.
  !exit
 !endif
 
 !if nameforbidden=$error
- Désolé, les variables techniques ne peuvent pas porter des noms du type exam, sheet, vote, manual suivis d'un numéro.
+ Helaas, de naam van een technische variabele mag niet die van een werkblad, examen, enquete,  getal etc zijn.
  !exit
 !endif
 
 !if bad_class=$error
- Vous n'êtes pas connecté à une classe.
+ U bent niet aangemeld bij een klas.
  !exit
 !endif
 
 !if toomanytechvar=$error
- Vous avez déjà atteint le nombre maximum de variables techniques autorisé. 
+ Het maximum toegestane aantal technische variabelen hier is reeds overschreden.  
  !exit
 !endif
 
 !if badnamelen=$error
- Le nom de variable technique proposé n'est pas de la bonne longueur : trop de caractères ou pas assez (limitation à $MAXcharname caractères). 
+ De naam van de technische variabele is niet correct : teveel of te weinig karacters (maximaal $MAXcharname ). 
  !exit
 !endif
 
 !if namealreadyuse=$error
- Le nom de variable technique proposé est déjà utilisé. Choisissez en un autre !
+ Deze naam is reeds in gebruikt. Kies ene andere naam voor deze technische variabele !
  !exit
 !endif
 
 !if badvaluenb=$error
- La liste des valeurs possibles doit être non vide et contenir au plus $MAXnbvalue éléments. 
+ De lijst met mogelijke waarden mag niet leeg zijn en maximaal $MAXnbvalue waarden bevatten. 
  !exit
 !endif
 
 !if badtechvarnumber=$error
- Problème d'identification de la variable technique. Ne jouez pas avec la barre d'adresse du navigateur !
+ Een probleem met interpreteren van de tecghnische variabele. Niet prutsen met de adresbalk van je browser !
  !exit
 !endif
 
 !if valuedisappear=$error
- Pour l'instant la liste des nouvelles valeurs doit au moins contenir les anciennes valeurs. 
- (Interface en cours d'amélioration : soyez patient !)
+ Voor nu moet de lijst met nieuwe waarden ook nog de oude waarden bevatten. 
+ (de interface is werk-in-uitvoering op dit moment!)
  !exit
 !endif
 
 !if nolocalvartech=$error
- Il n'y a pas de variable technique modifiable pour cet élève.
+ Deze technische variabele is niet modificeerbaar voor die leerling.
  !exit
 !endif
 
 !if nooldvar=$error
- Il n'y a pas d'ancienne variable technique détectée dans cette structure.
+ Er zijn geen oude technische variabelen gedetecteerd in deze structuur.
  !exit
 !endif
 
 !if $error=oldvar_nouser
- L'ancienne variable technique que vous souhaitez créer n'est définie pour aucun élève de votre classe. Probablement que cette variable appartient à une autre classe du groupement. La création n'a pas eu lieu.
+De oude technische variabele is niet gedefineerd voor een leerling is deze klas.
+Misschien hoor deze variabele bij een andere klas of groep.
+Het aanmaken is mislukt.
 !exit
 !endif
 
 !if $error=oldvar_badvar
- L'ancienne variable que vous essayer de transférer ne correspond à aucune ancienne variable transférable. Ne jouez pas avec la barre d'adresse du navigateur !
+De oude variabele die je probeert om te zetten bestaat niet. Niet prutsen met de adres-balk van je browser ! 
 !exit
 !endif
 
 !if $error=witholdvar
- D'anciennes variables techniques sont détectées. Peut-être devriez-vous les récupérer, en utilisant le lien <i>$wims_name_oldvar</i>, avant de créer de nouvelles variables ?
+Er zijn oude technische variabelen gevonde, Misschien moeten deze eerst worden omgezet mbv  <i> $wims_name_oldvar </i> voordat er nieuwe variabelen worden aangemaakt ? 
  !exit
 !endif
 

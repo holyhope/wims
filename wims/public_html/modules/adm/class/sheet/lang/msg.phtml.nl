@@ -6,19 +6,19 @@
 !endif
 
 !if bad_series=$error
- Vreemd, ik kan geen serie oefeningen vinden om te veranderen !!
+ Vreemd, ik kan geen serie oefeningen vinden om te veranderen !
  !exit
 !endif
 
 !if bad_source=$error
- Het item nummer $bad_source in de code die U zojuist invoerde is ongeldig.
+ Het item nummer $bad_source in de  zojuist ingevoerde code is ongeldig.
  !href cmd=reply&job=prep_putsource&source=$source Verbeter deze code
  .
  !exit
 !endif
 
 !if active_sheet=$error
-    Dit werkblad is aktief. De inhoud ervsn kan niet meer worden veranderd.
+    Dit werkblad is aktief. De inhoud ervan kan niet meer worden veranderd.
 !exit
 !endif
 
@@ -33,8 +33,7 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
 !endif
 
 !if no_title=$error
-    U wilt een werkblad registreren zonder titel, dat is niet handig
-    Foutje of misbruik?
+    U wilt een werkblad registreren zonder titel, dat is niet handig...foutje of misbruik?
  !exit
 !endif
 
@@ -42,7 +41,7 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
 Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  !if $sec=$empty
   Verboden toegang.
-  U hebt geen veilige ip-adressen gedefinieerd. U kunt de sitemanager vragen dit te regelen.
+  U hebt geen veilige ip-adressen gedefinieerd. De sitemanager kan dit regelen.
  !else
   Verboden toegang.
  !endif
@@ -57,7 +56,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  !endif
  U loopt het risico dat er hierdoor in andere klassen ongeldige werkbladen of toetsen ontstaan.
  <p>
-  Doorgaan met de procedure?
+  Doorgaan met deze procedure?
 </p><div class="wimscenter">
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
@@ -68,16 +67,16 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 !endif
 
 !if $error=sheet_in_exam
-    Het is onmogelijk dit werkblad te deactiveren: er zijn proefwerken op basis van dit werkblad.
+    Het is onmogelijk dit werkblad te deactiveren: er zijn proefwerken aangemeekt op basis van dit werkblad.
  !exit
 !endif
 
 !if $error=non_empty_activities
-	U wilt het werblad $sheet deactiveren, maar er zijn al studenten mee aan het werk geweest.
+ U wilt het werblad $sheet deactiveren, maar er zijn al studenten mee aan het werk geweest.
 
  !if share iswordof $confirmed
      En dit werkblad wordt ook gedeeld mat andere klassen.
-     Onmogelijk te deactiveren.
+     Onmogelijk nu te deactiveren.
   !exit
  !endif
  Alle behaalde cijfers voor dit werblad worden verwijderd, indien U het deactiveerd.
@@ -99,7 +98,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 
 !if prep_activate=$error
 U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken.
-Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
+Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden veranderd !
 
 !if $test_expire!=$empty
   <div class="wims_warning">
@@ -146,7 +145,7 @@ Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
 !if prep_putsource=$error
 Hebt U een broncode van een reeds eerder gemaakt werkblad, kan deze
 in het onderstaande venster worden ingevoerd. Daarna klikken op "Sturen".
-Uiteraard kan ook met "knippen en plakken" worden gewerkt.
+Uiteraard kan ook met "knippen &amp; plakken" worden gewerkt.
 
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items

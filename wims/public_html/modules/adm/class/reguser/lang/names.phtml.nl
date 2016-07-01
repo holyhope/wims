@@ -61,7 +61,7 @@ Kies een klas (klik op de naam)\
 is beschermd door een wachtwoord en een directe aanmelding is alleen voorbehouden voor <b>docenten</b>.\
 Klik op de naam van de student om deze over te zetten.\
 Dit wordt gebruikt als naam om later in $$classname in te loggen.\
-het wachtwoord moet tussen de 4 en 16 kararakter bevatten (cijfers of letters zonder accenten)\
+het wachtwoord moet tussen de 4 en 16 cijfers en/of letters zonder accenten bevatten\
 Om het ingevoerde wachtwoord te controleren, voer het nog een keer in\
 Er is geen geldig email adres opgegeven.\
 Verplaats de activiteiten.\
@@ -80,7 +80,7 @@ name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttyp
 name_writepasswd,name_obtainpasswd,name_hello
 
 !set name_remark1=Bij alle open klassen kan men zich aanmelden zonder beperkingen.\
-Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten.Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school. 
+Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten. Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school. 
 
 !set name_access1=!nosubst Als de administrator ($supervisor) je toegang verleent,
 !set name_access2=!nosubst Als de docent ($supervisor) je toegang verleent,
@@ -96,5 +96,5 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_inscription4=De gebruiksvoorwaarden moeten worden geaccepteerd voordat inschrijving kan plaats vinden.
 
 !set name_warning_direct=Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.Ben je een leerling meld je dan aan bij
-!set name_cgu=Ik ga akkoord met de gebruiksvoorwaarden
+!set name_cgu=Ik ga akkoord met de gebruikssvoorwaarden
 !set name_seecgu=Gebruiksvoorwaarden

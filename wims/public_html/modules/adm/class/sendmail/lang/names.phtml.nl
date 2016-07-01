@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !!set module_title=Verstuur Email
-!set name_noemail2=De volgend deelnemers hebben geen emailadres opgegeven
+!set name_noemail2=De volgend deelnemers hebben geen email adres opgegeven
 
 !set name_participant1=Het bericht is verstuurd naar
 !set name_participant2=Het bericht kom niet worden verstuurd naar

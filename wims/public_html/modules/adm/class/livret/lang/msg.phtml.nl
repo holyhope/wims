@@ -9,7 +9,7 @@
 
 
 :toomanycomp
-    Er kunnen geen nieuwe vaardigheden meer worden toegevoegd : de limiet is $maxcomp ! 
+    Er kunnen geen nieuwe vaardigheden (competienties) meer worden toegevoegd : de limiet is $maxcomp ! 
 !exit
 
 !msg $error

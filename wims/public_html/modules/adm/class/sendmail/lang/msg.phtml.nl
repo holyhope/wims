@@ -1,13 +1,13 @@
 !set wims_module_log=error: $error
 
 !if error=nosupervisoremail
-  Er is geen emailadres bekend voor uw account ! 
+  Er is geen email adres bekend voor uw account ! 
   Het is dus niet mogelijk om via dit programma emails te versturen.
  !exit
 !endif
 
 !if empty_msg=$error
- Het emailbericht is leeg !
+ Het email bericht is leeg !
  !exit
 !endif
 
@@ -17,17 +17,17 @@
 !endif
 
 !if empty_mailuser=$error
- Geen van de deelnemers heeft een emailadres opgegeven.
+ Geen van de deelnemers heeft een email adres opgegeven.
  !exit
 !endif
 
 !if noclass=$error
- Vous n'êtes pas identifié dans une classe. Ne jouez pas avec la barre d'adresse du navigateur !
+ Je bent niet aangemeld als leerling in een bestaande klas. Niet met de adresbalk van je browser prutsen !
  !exit
 !endif
 
 !if notsupervisor=$error
- Vous n'êtes pas l'enseignant de cette classe. Ne jouez pas avec la barre d'adresse du navigateur !
+ Je bent niet aangemeld als ldocent / supervisor in een bestaande klas. Niet met de adresbalk van je browser prutsen !
  !exit
 !endif
 

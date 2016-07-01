@@ -66,7 +66,7 @@ Rapport van $name_competences\
 !endif
 
 !if $job=delpalier
- !let name_delpalier=!nosubst Weet u zeker dat $name_n_palier $palier ( $mem_palier ) van  $name_competence $comp ( $mem_title ) verwijderd moet worden uit de $name_livret ?
+ !let name_delpalier=!nosubst Weet u zeker dat $name_n_palier $palier ( $mem_palier ) van $name_competence $comp ( $mem_title ) verwijderd moet worden uit de $name_livret ?
  !exit
 !endif
 
@@ -76,7 +76,7 @@ Rapport van $name_competences\
 !endif
 
 !if $job=save
- name_get=U kunt de broncode van het rapportboek downloaden \
+ name_get=U kunt de broncode van het rapport downloaden \
  bijvoorbeeld om het in een andere klas te plaatsen.
  name_put=Geef het adres van het backuparchief op uw computer.\
  Het bestand zal worden toegevoegd aan het  bestaande rapport.

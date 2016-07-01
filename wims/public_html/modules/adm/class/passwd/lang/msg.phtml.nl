@@ -3,7 +3,7 @@
 !endif
 
 !if not_supervisor=$error
- Nee, alleen de supervisor heeft de rechten om het aanmeldings wachtwoord te veranderen 
+ Nee, alleen de supervisor heeft de rechten om het aanmeldingswachtwoord te veranderen 
 
  !exit
 !endif
@@ -56,7 +56,7 @@ Gebruik gewoon letters en of cijfers zonder accenten en spaties als wachtwoord.
 
 !if fail iswordof $error
     Dit programma kon uw wachtwoord niet registreren.
-    Dit moet een interne software fout zijn.
+    Dit moet kan interne software fout zijn.
     Neem contact op met de systeembeheerder !
  !exit
 !endif

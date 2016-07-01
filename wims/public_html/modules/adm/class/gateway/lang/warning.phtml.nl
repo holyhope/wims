@@ -74,16 +74,14 @@ Deze testzone verwijderen ?
 
 <h3 class="wimscenter">Sharing resources of another program</h3>
 <div class="wims_alert warning">
-Your program is going to share all teaching resources
-(exercises, sheets, exams, documents, votes) with the program
-<em>$other_description</em> in level <em>$other_level</em>. This means that
-any changes to the resources in one program will be automatically reflected
-in all the other sharing programs.
-</p><p> <span class="wims_warning">$wims_name_warning</span>. This experimental operation will erase existing teaching
-resources in your program, and is <span class="wims_warning">IRREVERSIBLE</span>! You cannot stop the
-resource sharing, and resource-sharing programs should not be deleted!
+Dit lesprogramma gaat alle lesmateriaal delen
+(oefeningen, werkbladen, examens, documenten, enquetes en alle andere voorzieningen) met lesprogramma
+<em>$other_description</em> op niveau <em>$other_level</em>. 
+Dit betekend dat alle veranderingen onmiddelijk en automaitsch worden geimplementeerd in <em>$other_description</em> 
+</p><p> <span class="wims_warning">$wims_name_warning</span>. 
+Deze experimentele operatie zal alle bestaande lesmateriaal kunnen wissen en is <span class="wims_warning">IRREVERSIBEL</span>! 
 </p>
 </div><p>
-Are you sure you want to continue?
+Doorgaan  ?
 </p>
 !exit

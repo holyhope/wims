@@ -32,7 +32,7 @@ Uw login-naam is te
  !else
   lang.
  !endif
- Het mag tussen de 4 en 16 karakters bevatten.
+ Het mag tussen de 4 en 16 letters en/of cijfers bevatten.
  !exit
 !endif
 
@@ -43,22 +43,20 @@ Uw login-naam is te
  !else
   lang.
  !endif
-    Het mag tussen de 4 en 16 karakters bevatten.
+    Het mag tussen de 4 en 16 letters en/of cijfers bevatten.
  !exit
 !endif
 
 !if bad_classpass=$error
  Het ingevoerde aanmeldings wachtwoord van klas
  $classname
- is niet juist. 
- Helaas , U kunt zich dus niet aanmelden als leerling bij deze klas.
+ is niet juist.  Helaas. 
  !exit
 !endif
 
 !if login_double=$error
  De login-naam <span class="tt wims_login">$login</span>
-is al in gebruik in de klas
- $classname.
+is al in gebruik in de klas $classname.
  <p>
  Kontroleer of U zich reeds heeft aangemeld; of anders kies een andere loginnaam. 
  </p>
