@@ -2,9 +2,11 @@
   @author: GeoGebra - Dynamic Mathematics for Everyone, http://www.geogebra.org
   @license: This file is subject to the GeoGebra Non-Commercial License Agreement, see http://www.geogebra.org/license. For questions please write us at office@geogebra.org.
 */
-var ipwims="";
-function Ipwims(toto){
-return ipwims=toto;}
+var ipwims = "";
+
+function Ipwims(toto) {
+  return ipwims = toto;
+}
 
 var isRenderGGBElementEnabled = false;
 var scriptLoadStarted = false;
@@ -15,13 +17,11 @@ var ggbHTML5LoadedScript = null;
 var ggbCompiledResourcesLoadFinished = false;
 var ggbCompiledResourcesLoadInProgress = false;
 var ggbCompiledAppletsLoaded = false;
-var GGBApplet = function () {
+var GGBApplet = function() {
   'use strict';
-  var applet = {
-  };
+  var applet = {};
   var ggbVersion = '5.0';
-  var parameters = {
-  };
+  var parameters = {};
   var views = null;
   var html5NoWebSimple = false;
   var html5NoWebSimpleParamExists = false;
@@ -33,27 +33,27 @@ var GGBApplet = function () {
     var p = arguments[i];
     if (p !== null) {
       switch (typeof p) {
-      case 'number':
-        ggbVersion = p.toFixed(1);
-        break;
-      case 'string':
-        if (p.match(new RegExp('^[0-9]\\.[0-9]+$'))) {
-          ggbVersion = p
-        } else {
-          appletID = p
-        }
-        break;
-      case 'object':
-        if (typeof p.is3D !== 'undefined') {
-          views = p
-        } else {
-          parameters = p
-        }
-        break;
-      case 'boolean':
-        html5NoWebSimple = p;
-        html5NoWebSimpleParamExists = true;
-        break
+        case 'number':
+          ggbVersion = p.toFixed(1);
+          break;
+        case 'string':
+          if (p.match(new RegExp('^[0-9]\\.[0-9]+$'))) {
+            ggbVersion = p
+          } else {
+            appletID = p
+          }
+          break;
+        case 'object':
+          if (typeof p.is3D !== 'undefined') {
+            views = p
+          } else {
+            parameters = p
+          }
+          break;
+        case 'boolean':
+          html5NoWebSimple = p;
+          html5NoWebSimpleParamExists = true;
+          break
       }
     }
   }
@@ -104,53 +104,53 @@ var GGBApplet = function () {
   if (parameters.width !== undefined) {
     parameters.width = Math.round(parameters.width)
   }
-  var parseVersion = function (d) {
-    return parseFloat(d) > 4 ? parseFloat(d)  : 5
+  var parseVersion = function(d) {
+    return parseFloat(d) > 4 ? parseFloat(d) : 5
   };
-  applet.setHTML5Codebase = function (codebase, offline) {
+  applet.setHTML5Codebase = function(codebase, offline) {
     html5OverwrittenCodebase = codebase;
     setHTML5CodebaseInternal(codebase, offline)
   };
-  applet.setJavaCodebaseVersion = function (version) {
+  applet.setJavaCodebaseVersion = function(version) {
     javaCodebaseVersion = version;
     setDefaultJavaCodebaseForVersion(version)
   };
-  applet.setHTML5CodebaseVersion = function (version, offline) {
-    if (version === '4.2') return ;
+  applet.setHTML5CodebaseVersion = function(version, offline) {
+    if (version === '4.2') return;
     html5OverwrittenCodebaseVersion = version;
     setDefaultHTML5CodebaseForVersion(version, offline)
   };
-  applet.getHTML5CodebaseVersion = function () {
+  applet.getHTML5CodebaseVersion = function() {
     return html5CodebaseVersion
   };
-  applet.getParameters = function () {
+  applet.getParameters = function() {
     return parameters
   };
-  applet.setJavaCodebase = function (codebase, offline) {
+  applet.setJavaCodebase = function(codebase, offline) {
     isOverriddenJavaCodebase = true;
-    if (codebase.slice( - 1) === '/') {
-      javaCodebaseVersion = codebase.slice( - 4, - 1)
+    if (codebase.slice(-1) === '/') {
+      javaCodebaseVersion = codebase.slice(-4, -1)
     } else {
-      javaCodebaseVersion = codebase.slice( - 3)
+      javaCodebaseVersion = codebase.slice(-3)
     }
     if (offline === null) {
-      offline = codebase.indexOf('http') === - 1
+      offline = codebase.indexOf('http') === -1
     }
     if (offline && jnlpBaseDir !== null) {
       jnlpBaseDir = null
     }
     doSetJavaCodebase(codebase, offline)
   };
-  applet.setFontsCSSURL = function (url) {
+  applet.setFontsCSSURL = function(url) {
     fonts_css_url = url
   };
-  applet.setGiacJSURL = function (url) {
+  applet.setGiacJSURL = function(url) {
     giac_js_url = url
   };
-  applet.toggleAppletTypeControls = function (parentSelector) {
+  applet.toggleAppletTypeControls = function(parentSelector) {
     var currentAppletType = applet.getLoadedAppletType();
     var displayJava = 'none',
-    displayHTML5 = 'none';
+      displayHTML5 = 'none';
     if (currentAppletType === 'java' && applet.isHTML5Installed()) {
       displayHTML5 = 'inline'
     } else if (currentAppletType === 'html5' && applet.isJavaInstalled()) {
@@ -173,7 +173,7 @@ var GGBApplet = function () {
       elem.style.display = displayHTML5
     }
   };
-  var doSetJavaCodebase = function (codebase, offline) {
+  var doSetJavaCodebase = function(codebase, offline) {
     javaCodebase = codebase;
     isJavaOffline = offline;
     if (jnlpBaseDir === null) {
@@ -187,14 +187,14 @@ var GGBApplet = function () {
       applet.setJNLPFile(jnlpBaseDir + javaCodebaseVersion + '/' + buildJNLPFileName(isJavaOffline))
     }
   };
-  applet.setJNLPFile = function (newJnlpFilePath) {
+  applet.setJNLPFile = function(newJnlpFilePath) {
     jnlpFilePath = newJnlpFilePath
   };
-  applet.setJNLPBaseDir = function (baseDir) {
+  applet.setJNLPBaseDir = function(baseDir) {
     jnlpBaseDir = baseDir;
     applet.setJNLPFile(jnlpBaseDir + javaCodebaseVersion + '/' + buildJNLPFileName(isJavaOffline))
   };
-  applet.inject = function () {
+  applet.inject = function() {
     var type = 'auto';
     var container_ID = parameters.id;
     var container;
@@ -215,6 +215,7 @@ var GGBApplet = function () {
       }
     }
     continueInject();
+
     function continueInject() {
       if (!initComplete) {
         setTimeout(continueInject, 200);
@@ -256,6 +257,7 @@ var GGBApplet = function () {
     }
     return
   };
+
   function isMobileDevice() {
     if (window.innerWidth <= 768 && (!parameters.hasOwnProperty('screenshotGenerator') || !parameters.screenshotGenerator)) {
       return true
@@ -263,9 +265,10 @@ var GGBApplet = function () {
       return false
     }
   }
+
   function getWidthHeight(appletElem, appletWidth) {
     var myWidth = 0,
-    myHeight = 0;
+      myHeight = 0;
     if (typeof window.innerWidth === 'number') {
       myWidth = window.innerWidth;
       myHeight = window.innerHeight
@@ -297,6 +300,7 @@ var GGBApplet = function () {
       height: myHeight
     }
   }
+
   function calcScale(isScreenshoGenerator, appletElem, appletWidth) {
     if (isScreenshoGenerator) {
       return 1
@@ -307,10 +311,10 @@ var GGBApplet = function () {
     var yscale = Math.min(1, windowSize.height / parameters.height);
     return Math.min(xscale, yscale)
   }
-  applet.getViews = function () {
+  applet.getViews = function() {
     return views
   };
-  applet.isJavaInstalled = function () {
+  applet.isJavaInstalled = function() {
     if (typeof deployJava === 'undefined') {
       if (navigator.javaEnabled()) {
         if (isInternetExplorer() && getIEVersion() >= 10) {
@@ -318,7 +322,7 @@ var GGBApplet = function () {
             return false
           }
         }
-        if (navigator.userAgent.indexOf('Android ') > - 1) {
+        if (navigator.userAgent.indexOf('Android ') > -1) {
           return false
         }
         if (!isInternetExplorer() && !pluginEnabled('java')) {
@@ -330,10 +334,11 @@ var GGBApplet = function () {
       return deployJava.versionCheck('1.6.0+') || deployJava.versionCheck('1.4') || deployJava.versionCheck('1.5.0*')
     }
   };
+
   function pluginEnabled(name) {
     var plugins = navigator.plugins,
-    i = plugins.length,
-    regExp = new RegExp(name, 'i');
+      i = plugins.length,
+      regExp = new RegExp(name, 'i');
     while (i--) {
       if (regExp.test(plugins[i].name)) {
         return true
@@ -341,12 +346,12 @@ var GGBApplet = function () {
     }
     return false
   }
-  var getTubeURL = function () {
+  var getTubeURL = function() {
     var tubeurl,
-    protocol;
+      protocol;
     if (parameters.tubeurl !== undefined) {
       tubeurl = parameters.tubeurl
-    } else if (window.location.host.indexOf('geogebratube.org') > - 1 || window.location.host.indexOf('tube.geogebra.org') > - 1 || window.location.host.indexOf('tube-test.geogebra.org') > - 1 || window.location.host.indexOf('tube-beta.geogebra.org') > - 1 || window.location.host.indexOf('geomatech-test.geogebra.org') > - 1) {
+    } else if (window.location.host.indexOf('geogebratube.org') > -1 || window.location.host.indexOf('tube.geogebra.org') > -1 || window.location.host.indexOf('tube-test.geogebra.org') > -1 || window.location.host.indexOf('tube-beta.geogebra.org') > -1 || window.location.host.indexOf('geomatech-test.geogebra.org') > -1) {
       tubeurl = window.location.protocol + '//' + window.location.host
     } else {
       if (window.location.protocol.substr(0, 4) === 'http') {
@@ -358,131 +363,116 @@ var GGBApplet = function () {
     }
     return tubeurl
   };
-  var fetchParametersFromTube = function (successCallback) {
+  var fetchParametersFromTube = function(successCallback) {
     var tubeurl = getTubeURL();
     var api_request = {
-      request: {
-        '-api': '1.0.0',
-        login: {
-          '-type': 'cookie',
-          '-getuserinfo': 'false'
-        },
-        task: {
-          '-type': 'fetch',
-          fields: {
-            field: [
-              {
-                '-name': 'id'
-              },
-              {
-                '-name': 'geogebra_format'
-              },
-              {
-                '-name': 'width'
-              },
-              {
-                '-name': 'height'
-              },
-              {
-                '-name': 'toolbar'
-              },
-              {
-                '-name': 'menubar'
-              },
-              {
-                '-name': 'inputbar'
-              },
-              {
-                '-name': 'reseticon'
-              },
-              {
-                '-name': 'labeldrags'
-              },
-              {
-                '-name': 'shiftdragzoom'
-              },
-              {
-                '-name': 'rightclick'
-              },
-              {
-                '-name': 'ggbbase64'
-              }
-            ]
+        request: {
+          '-api': '1.0.0',
+          login: {
+            '-type': 'cookie',
+            '-getuserinfo': 'false'
           },
-          filters: {
-            field: [
-              {
+          task: {
+            '-type': 'fetch',
+            fields: {
+              field: [{
+                '-name': 'id'
+              }, {
+                '-name': 'geogebra_format'
+              }, {
+                '-name': 'width'
+              }, {
+                '-name': 'height'
+              }, {
+                '-name': 'toolbar'
+              }, {
+                '-name': 'menubar'
+              }, {
+                '-name': 'inputbar'
+              }, {
+                '-name': 'reseticon'
+              }, {
+                '-name': 'labeldrags'
+              }, {
+                '-name': 'shiftdragzoom'
+              }, {
+                '-name': 'rightclick'
+              }, {
+                '-name': 'ggbbase64'
+              }]
+            },
+            filters: {
+              field: [{
                 '-name': 'id',
                 '#text': '' + parameters.material_id + ''
-              }
-            ]
-          },
-          order: {
-            '-by': 'id',
-            '-type': 'asc'
-          },
-          limit: {
-            '-num': '1'
+              }]
+            },
+            order: {
+              '-by': 'id',
+              '-type': 'asc'
+            },
+            limit: {
+              '-num': '1'
+            }
           }
         }
-      }
-    },
-    success = function () {
-      var text = xhr.responseText;
-      var jsondata = JSON.parse(text);
-      var item = null;
-      for (i = 0; i < jsondata.responses.response.length; i++) {
-        if (jsondata.responses.response[i].item !== undefined) {
-          item = jsondata.responses.response[i].item
+      },
+      success = function() {
+        var text = xhr.responseText;
+        var jsondata = JSON.parse(text);
+        var item = null;
+        for (i = 0; i < jsondata.responses.response.length; i++) {
+          if (jsondata.responses.response[i].item !== undefined) {
+            item = jsondata.responses.response[i].item
+          }
         }
-      }
-      if (item === null) {
-        onError();
-        return
-      }
-      ggbVersion = item.geogebra_format;
-      if (parameters.ggbBase64 === undefined) {
-        parameters.ggbBase64 = item.ggbBase64
-      }
-      if (parameters.width === undefined) {
-        parameters.width = item.width
-      }
-      if (parameters.height === undefined) {
-        parameters.height = item.height
-      }
-      if (parameters.showToolBar === undefined) {
-        parameters.showToolBar = item.toolbar === 'true'
-      }
-      if (parameters.showMenuBar === undefined) {
-        parameters.showMenuBar = item.menubar === 'true'
-      }
-      if (parameters.showAlgebraInput === undefined) {
-        parameters.showAlgebraInput = item.inputbar === 'true'
-      }
-      if (parameters.showResetIcon === undefined) {
-        parameters.showResetIcon = item.reseticon === 'true'
-      }
-      if (parameters.enableLabelDrags === undefined) {
-        parameters.enableLabelDrags = item.labeldrags === 'true'
-      }
-      if (parameters.enableShiftDragZoom === undefined) {
-        parameters.enableShiftDragZoom = item.shiftdragzoom === 'true'
-      }
-      if (parameters.enableRightClick === undefined) {
-        parameters.enableRightClick = item.rightclick === 'true'
-      }
-      if (parameters.showToolBarHelp === undefined) {
-        parameters.showToolBarHelp = parameters.showToolBar
-      }
-      if (parseFloat(item.geogebra_format) >= 5) {
-        views.is3D = true
-      }
-      applet.setPreviewImage(tubeurl + '/files/material-' + item.id + '.png', tubeurl + '/images/GeoGebra_loading.png', tubeurl + '/images/applet_play.png');
-      successCallback()
-    };
+        if (item === null) {
+          onError();
+          return
+        }
+        ggbVersion = item.geogebra_format;
+        if (parameters.ggbBase64 === undefined) {
+          parameters.ggbBase64 = item.ggbBase64
+        }
+        if (parameters.width === undefined) {
+          parameters.width = item.width
+        }
+        if (parameters.height === undefined) {
+          parameters.height = item.height
+        }
+        if (parameters.showToolBar === undefined) {
+          parameters.showToolBar = item.toolbar === 'true'
+        }
+        if (parameters.showMenuBar === undefined) {
+          parameters.showMenuBar = item.menubar === 'true'
+        }
+        if (parameters.showAlgebraInput === undefined) {
+          parameters.showAlgebraInput = item.inputbar === 'true'
+        }
+        if (parameters.showResetIcon === undefined) {
+          parameters.showResetIcon = item.reseticon === 'true'
+        }
+        if (parameters.enableLabelDrags === undefined) {
+          parameters.enableLabelDrags = item.labeldrags === 'true'
+        }
+        if (parameters.enableShiftDragZoom === undefined) {
+          parameters.enableShiftDragZoom = item.shiftdragzoom === 'true'
+        }
+        if (parameters.enableRightClick === undefined) {
+          parameters.enableRightClick = item.rightclick === 'true'
+        }
+        if (parameters.showToolBarHelp === undefined) {
+          parameters.showToolBarHelp = parameters.showToolBar
+        }
+        if (parseFloat(item.geogebra_format) >= 5) {
+          views.is3D = true
+        }
+        applet.setPreviewImage(tubeurl + '/files/material-' + item.id + '.png', tubeurl + '/images/GeoGebra_loading.png', tubeurl + '/images/applet_play.png');
+        successCallback()
+      };
     var url = tubeurl + '/api/json.php';
     var xhr = createCORSRequest('POST', url);
-    var onError = function () {
+    var onError = function() {
       log('Error: The request for fetching material_id ' + parameters.material_id + ' from tube was not successful.')
     };
     if (!xhr) {
@@ -491,13 +481,13 @@ var GGBApplet = function () {
     }
     xhr.onload = success;
     xhr.onerror = onError;
-    xhr.onprogress = function () {
-    };
+    xhr.onprogress = function() {};
     if (xhr.setRequestHeader) {
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
     }
     xhr.send(JSON.stringify(api_request))
   };
+
   function createCORSRequest(method, url) {
     var xhr = new XMLHttpRequest;
     if ('withCredentials' in xhr) {
@@ -510,7 +500,7 @@ var GGBApplet = function () {
     }
     return xhr
   }
-  var JavaVersion = function () {
+  var JavaVersion = function() {
     var resutl = null;
     for (var i = 0, size = navigator.mimeTypes.length; i < size; i++) {
       if ((resutl = navigator.mimeTypes[i].type.match(/^application\/x-java-applet;jpi-version=(.*)$/)) !== null) {
@@ -519,7 +509,7 @@ var GGBApplet = function () {
     }
     return null
   };
-  applet.isHTML5Installed = function () {
+  applet.isHTML5Installed = function() {
     if (isInternetExplorer()) {
       if ((views.is3D || html5CodebaseScript === 'web3d.nocache.js') && getIEVersion() < 11) {
         return false
@@ -529,7 +519,7 @@ var GGBApplet = function () {
     }
     return true
   };
-  applet.isCompiledInstalled = function () {
+  applet.isCompiledInstalled = function() {
     if (isInternetExplorer()) {
       if (views.is3D && getIEVersion() < 11) {
         return false
@@ -539,15 +529,15 @@ var GGBApplet = function () {
     }
     return true
   };
-  applet.getLoadedAppletType = function () {
+  applet.getLoadedAppletType = function() {
     return loadedAppletType
   };
-  applet.setPreviewImage = function (previewFilePath, loadingFilePath, playFilePath) {
+  applet.setPreviewImage = function(previewFilePath, loadingFilePath, playFilePath) {
     previewImagePath = previewFilePath;
     previewLoadingPath = loadingFilePath;
     previewPlayPath = playFilePath
   };
-  applet.removeExistingApplet = function (appletParent, showScreenshot) {
+  applet.removeExistingApplet = function(appletParent, showScreenshot) {
     var i;
     if (typeof appletParent === 'string') {
       appletParent = document.getElementById(appletParent)
@@ -589,7 +579,7 @@ var GGBApplet = function () {
       window[appName] = null
     }
   };
-  applet.refreshHitPoints = function () {
+  applet.refreshHitPoints = function() {
     if (parseVersion(ggbHTML5LoadedCodebaseVersion) >= 5) {
       return true
     }
@@ -602,7 +592,7 @@ var GGBApplet = function () {
     }
     return false
   };
-  applet.startAnimation = function () {
+  applet.startAnimation = function() {
     var app = applet.getAppletObject();
     if (app) {
       if (typeof app.startAnimation === 'function') {
@@ -612,7 +602,7 @@ var GGBApplet = function () {
     }
     return false
   };
-  applet.stopAnimation = function () {
+  applet.stopAnimation = function() {
     var app = applet.getAppletObject();
     if (app) {
       if (typeof app.stopAnimation === 'function') {
@@ -622,21 +612,21 @@ var GGBApplet = function () {
     }
     return false
   };
-  applet.setPreCompiledScriptPath = function (path, version) {
+  applet.setPreCompiledScriptPath = function(path, version) {
     preCompiledScriptPath = path;
     if (preCompiledResourcePath === null) {
       preCompiledResourcePath = preCompiledScriptPath
     }
     preCompiledScriptVersion = version
   };
-  applet.setPreCompiledResourcePath = function (path) {
+  applet.setPreCompiledResourcePath = function(path) {
     preCompiledResourcePath = path
   };
-  applet.getAppletObject = function () {
+  applet.getAppletObject = function() {
     var appName = parameters.id !== undefined ? parameters.id : 'ggbApplet';
     return window[appName]
   };
-  var injectJavaApplet = function (appletElem, parameters) {
+  var injectJavaApplet = function(appletElem, parameters) {
     if (views.CV) {
       var giac_url;
       if (giac_js_url !== null) {
@@ -646,7 +636,7 @@ var GGBApplet = function () {
       }
       var script = document.createElement('script');
       script.setAttribute('src', giac_url);
-      script.onload = function () {
+      script.onload = function() {
         window._GIAC_caseval = __ggb__giac.cwrap('_ZN4giac7casevalEPKc', 'string', [
           'string'
         ])
@@ -693,16 +683,16 @@ var GGBApplet = function () {
     appletElem.appendChild(applet);
     log('GeoGebra Java applet injected. Used JNLP file = \'' + jnlpFilePath + '\'' + (isOverriddenJavaCodebase ? ' with overridden codebase \'' + javaCodebase + '\'.' : '.'), parameters)
   };
-  var appendParam = function (applet, name, value) {
+  var appendParam = function(applet, name, value) {
     var param = document.createElement('param');
     param.setAttribute('name', name);
     param.setAttribute('value', value);
     applet.appendChild(param)
   };
-  var valBoolean = function (value) {
+  var valBoolean = function(value) {
     return value && value !== 'false'
   };
-  var injectHTML5Applet = function (appletElem, parameters, noPreview) {
+  var injectHTML5Applet = function(appletElem, parameters, noPreview) {
     if (parseVersion(html5CodebaseVersion) <= 4.2) {
       noPreview = true
     }
@@ -772,7 +762,7 @@ var GGBApplet = function () {
         if (typeof parameters.appletOnLoad === 'function') {
           var oriAppletOnload = parameters.appletOnLoad
         }
-        parameters.appletOnLoad = function () {
+        parameters.appletOnLoad = function() {
           var preview = appletElem.querySelector('.ggb_preview');
           if (preview) {
             preview.parentNode.removeChild(preview)
@@ -798,6 +788,7 @@ var GGBApplet = function () {
     } else {
       appletElem.appendChild(article)
     }
+
     function renderGGBElementWithParams(article, parameters) {
       if (parameters && typeof parameters.appletOnLoad === 'function' && typeof renderGGBElement === 'function') {
         renderGGBElement(article, parameters.appletOnLoad)
@@ -806,20 +797,20 @@ var GGBApplet = function () {
       }
       log('GeoGebra HTML5 applet injected and rendered with previously loaded codebase.', parameters)
     }
+
     function renderGGBElementOnTube(a, parameters) {
       if (typeof renderGGBElement === 'undefined') {
         if (html5AppletsToProcess === null) {
-          html5AppletsToProcess = [
-          ]
+          html5AppletsToProcess = []
         }
         html5AppletsToProcess.push({
           article: a,
           params: parameters
         });
-        window.renderGGBElementReady = function () {
+        window.renderGGBElementReady = function() {
           isRenderGGBElementEnabled = true;
           if (html5AppletsToProcess !== null && html5AppletsToProcess.length) {
-            html5AppletsToProcess.forEach(function (obj) {
+            html5AppletsToProcess.forEach(function(obj) {
               renderGGBElementWithParams(obj.article, obj.params)
             });
             html5AppletsToProcess = null
@@ -864,7 +855,7 @@ var GGBApplet = function () {
         }
       }
       var script = document.createElement('script');
-      var scriptLoaded = function () {
+      var scriptLoaded = function() {
         renderGGBElementOnTube(article, parameters)
       };
       log(html5Codebase);
@@ -884,7 +875,7 @@ var GGBApplet = function () {
     if (window.onresize !== undefined && typeof window.onresize === 'function') {
       oldOnResize = window.onresize
     }
-    window.onresize = function () {
+    window.onresize = function() {
       var scale = getScale(parameters, appletElem);
       if (!isFlexibleWorksheetEditor() && !isNaN(scale) && scale !== 1) {
         article.setAttribute('data-param-scale', scale);
@@ -914,7 +905,7 @@ var GGBApplet = function () {
       }
     }
   };
-  var injectCompiledApplet = function (appletElem, parameters, noPreview) {
+  var injectCompiledApplet = function(appletElem, parameters, noPreview) {
     var appletObjectName = parameters.id;
     var scale = calcScale(parameters.screenshotGenerator, appletElem, parameters.width);
     if (scale !== 1) {
@@ -959,11 +950,11 @@ var GGBApplet = function () {
     appletStyle.innerHTML = '\n' + '.view-frame {\n' + '    border: 1px solid black;\n' + '    display: inline-block;\n' + '}\n' + '#tip {\n' + '    background-color: yellow;\n' + '    border: 1px solid blue;\n' + '    position: absolute;\n' + '    left: -200px;\n' + '    top: 100px;\n' + '};\n';
     appletElem.appendChild(appletStyle);
     var script = document.createElement('script');
-    var scriptLoaded = function () {
+    var scriptLoaded = function() {
       window[appletObjectName].preCompiledScriptPath = preCompiledScriptPath;
       window[appletObjectName].scaleParameter = parameters.scale;
       if (!noPreview) {
-        appletElem.querySelector('.ggb_preview_container') .remove()
+        appletElem.querySelector('.ggb_preview_container').remove()
       }
       appletElem.appendChild(viewContainer);
       appletElem.appendChild(viewImages);
@@ -987,7 +978,7 @@ var GGBApplet = function () {
     log('GeoGebra precompiled applet injected. Script=' + scriptFile + '.');
     appletElem.appendChild(script)
   };
-  var injectScreenshot = function (appletElem, parameters, showPlayButton) {
+  var injectScreenshot = function(appletElem, parameters, showPlayButton) {
     var previewContainer = createScreenShotDiv(parameters.width, parameters.height, parameters.borderColor, showPlayButton);
     var previewPositioner = document.createElement('div');
     previewPositioner.style.position = 'relative';
@@ -1008,7 +999,7 @@ var GGBApplet = function () {
     if (window.onresize !== undefined && typeof window.onresize === 'function') {
       oldOnResize = window.onresize
     }
-    window.onresize = function () {
+    window.onresize = function() {
       var scale = getScale(parameters, appletElem);
       if (!isFlexibleWorksheetEditor() && !isNaN(scale) && scale !== 1) {
         previewPositioner.style.transform = 'scale(' + scale + ',' + scale + ')';
@@ -1021,7 +1012,7 @@ var GGBApplet = function () {
       }
     }
   };
-  var getScale = function (paramters, appletElem) {
+  var getScale = function(paramters, appletElem) {
     var scale = 1;
     if (parameters.hasOwnProperty('scale')) {
       scale = parseFloat(parameters.scale);
@@ -1032,11 +1023,10 @@ var GGBApplet = function () {
     var autoScale = calcScale(parameters.screenshotGenerator, appletElem, parameters.width);
     return Math.min(scale, autoScale)
   };
-  var injectPlayButton = function (appletElem, parameters, noPreview, type) {
+  var injectPlayButton = function(appletElem, parameters, noPreview, type) {
     injectScreenshot(appletElem, parameters, true);
-    var play = function () {
-      var elems = [
-      ];
+    var play = function() {
+      var elems = [];
       for (i = 0; i < appletElem.childNodes.length; i++) {
         elems.push(appletElem.childNodes[i])
       }
@@ -1060,7 +1050,7 @@ var GGBApplet = function () {
       window.ggbAppletPlayerOnload(appletElem)
     }
   };
-  var createScreenShotDiv = function (oriWidth, oriHeight, borderColor, showPlayButton) {
+  var createScreenShotDiv = function(oriWidth, oriHeight, borderColor, showPlayButton) {
     var previewContainer = document.createElement('div');
     previewContainer.className = 'ggb_preview';
     previewContainer.style.position = 'absolute';
@@ -1093,7 +1083,7 @@ var GGBApplet = function () {
       previewOverlay.style.zIndex = '1001';
       previewOverlay.style.opacity = 1;
       var pWidth,
-      pHeight;
+        pHeight;
       if (previewPlayPath !== null && showPlayButton) {
         pWidth = 80;
         pHeight = 80;
@@ -1119,7 +1109,7 @@ var GGBApplet = function () {
     previewContainer.appendChild(preview);
     return previewContainer
   };
-  var buildJNLPFileName = function (isOffline) {
+  var buildJNLPFileName = function(isOffline) {
     var version = parseFloat(javaCodebaseVersion);
     var filename = 'applet' + version * 10 + '_';
     if (isOffline) {
@@ -1133,7 +1123,7 @@ var GGBApplet = function () {
     filename += '.jnlp';
     return filename
   };
-  var detectAppletType = function (preferredType) {
+  var detectAppletType = function(preferredType) {
     preferredType = preferredType.toLowerCase();
     if (preferredType === 'java' || preferredType === 'html5' || preferredType === 'screenshot' || preferredType === 'compiled') {
       return preferredType
@@ -1164,19 +1154,21 @@ var GGBApplet = function () {
       }
     }
   };
-  var getIEVersion = function () {
+  var getIEVersion = function() {
     var a = navigator.appVersion;
     if (a.indexOf('Trident/7.0') > 0) return 11;
-     else {
-      return a.indexOf('MSIE') + 1 ? parseFloat(a.split('MSIE') [1])  : 999
+    else {
+      return a.indexOf('MSIE') + 1 ? parseFloat(a.split('MSIE')[1]) : 999
     }
   };
-  var isInternetExplorer = function () {
+  var isInternetExplorer = function() {
     return getIEVersion() != 999
   };
+
   function isFlexibleWorksheet() {
     return window.GGBT_wsf_view !== undefined || window.GGBT_wsf_edit !== undefined
   }
+
   function isFlexibleWorksheetEditor() {
     return window.GGBT_wsf_edit !== undefined
   }
@@ -1188,7 +1180,7 @@ var GGBApplet = function () {
     'tablet3d',
     'phone'
   ];
-  var setDefaultHTML5CodebaseForVersion = function (version, offline) {
+  var setDefaultHTML5CodebaseForVersion = function(version, offline) {
     html5CodebaseVersion = version;
     if (offline) {
       setHTML5CodebaseInternal(html5CodebaseVersion, true);
@@ -1202,7 +1194,7 @@ var GGBApplet = function () {
       }
     }
     var protocol,
-    codebase;
+      codebase;
     if (window.location.protocol.substr(0, 4) === 'http') {
       protocol = window.location.protocol
     } else {
@@ -1215,10 +1207,10 @@ var GGBApplet = function () {
       codebase = protocol + html5CodebaseVersion
     } else {
       codebase = protocol + '//' + ipwims + '/wims/scripts/js/geogebra/geogebraweb/'
-     //codebase = protocol + '//web.geogebra.org/' + html5CodebaseVersion + '/'
+        //codebase = protocol + '//web.geogebra.org/' + html5CodebaseVersion + '/'
     }
     for (var key in modules) {
-      if (html5CodebaseVersion.slice(modules[key].length * - 1) === modules[key] || html5CodebaseVersion.slice((modules[key].length + 1) * - 1) === modules[key] + '/') {
+      if (html5CodebaseVersion.slice(modules[key].length * -1) === modules[key] || html5CodebaseVersion.slice((modules[key].length + 1) * -1) === modules[key] + '/') {
         setHTML5CodebaseInternal(codebase, false);
         return
       }
@@ -1235,13 +1227,13 @@ var GGBApplet = function () {
     }
     setHTML5CodebaseInternal(codebase, false)
   };
-  var setHTML5CodebaseInternal = function (codebase, offline) {
-    if (codebase.slice( - 1) !== '/') {
+  var setHTML5CodebaseInternal = function(codebase, offline) {
+    if (codebase.slice(-1) !== '/') {
       codebase += '/'
     }
     html5Codebase = codebase;
     if (offline === null) {
-      offline = codebase.indexOf('http') === - 1
+      offline = codebase.indexOf('http') === -1
     }
     isHTML5Offline = offline;
     html5CodebaseScript = 'web.nocache.js';
@@ -1263,7 +1255,7 @@ var GGBApplet = function () {
       html5CodebaseVersion = '5.0'
     }
   };
-  var setDefaultJavaCodebaseForVersion = function (version) {
+  var setDefaultJavaCodebaseForVersion = function(version) {
     if (version === 'test32') {
       javaCodebaseVersion = '3.2'
     } else if (version === 'test40') {
@@ -1293,7 +1285,7 @@ var GGBApplet = function () {
     applet.setJNLPBaseDir('http://tube.geogebra.org/webstart/');
     doSetJavaCodebase(codebase, false)
   };
-  var log = function (text, parameters) {
+  var log = function(text, parameters) {
     if (window.console && window.console.log) {
       if (!parameters || typeof parameters.showLogging === 'undefined' || parameters.showLogging && parameters.showLogging !== 'false') {
         console.log(text)
@@ -1305,6 +1297,7 @@ var GGBApplet = function () {
   } else {
     continueInit()
   }
+
   function continueInit() {
     var html5Version = ggbVersion;
     if (html5OverwrittenCodebaseVersion !== null) {
