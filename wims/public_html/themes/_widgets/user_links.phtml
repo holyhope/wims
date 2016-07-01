@@ -1,16 +1,15 @@
 !!## Dropdown Menu on top right (user links + languages + wims about)
 
+!!! _help _exam _test _tool
 !if _help isin $wims_session or _exam isin $wims_session or _test isin $wims_session
   !exit
 !endif
 
-
 !set div1=li
 
 <ul class="wimsmenu dropdown menu" data-dropdown-menu data-options="data-autoclose:true;">
-
   !!head menus
-  !if $module=home
+  !if $module=home and $wims_user=$empty
    !default wims_name_aboutw=$wims_name_about
    !set wims_hm = !append line aboutw,4,cmd=help&special_parm=about,mhelp to $wims_hm
    !increase wims_hm_cnt
@@ -43,13 +42,12 @@
       </ul>
     </li>
   !else
+     !readproc languages
     !! Language selector (displayed only if you're not connected)
-    !!set wims_language_cnt=!wordcnt $wims_site_languages
-    !! TODO FIX : lang_name_ must be defined !
     !if $wims_language_cnt>1
       <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
         <a href="#lang_list" class="lang">
-          <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)"/> $wims_name_Language</span>
+          <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)" /> $wims_name_Language</span>
         </a>
         !read themes/_widgets/language_selector.phtml
       </li>
