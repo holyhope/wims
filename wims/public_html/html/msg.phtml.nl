@@ -9,18 +9,18 @@ Graag geheel ingevuld opsturen.
 !if double_reply iswordof $wims_error
 Je hebt al eens een antwoord ingeleverd bij deze opgave.<br />
 Dat antwoord is reeds geanalyseerd en verwerkt in je score.<br />
-Herhaalde antwoorden worden genegeerd.
+Herhaalde antwoorden worden genegeerd.<br />
 Gebruik nooit de "back" knop van je browser !
  !exit
 !endif
 
 !if bad_data iswordof $wims_error
-    De opgestuurde data / antwoorden kon ik niet verwerken (een tiep foutje ?)
+    De opgestuurde data / antwoorden kon ik niet verwerken (een "tiep" foutje ?)
  !exit
 !endif
 
 !if no_ldap_parameter iswordof $wims_error
-De met een asterix gemarkeerde velden moeten worden ingevuld.
+De met een asterix gemarkeerde velden moeten worden ingevuld.<br />
 Raadpleeg desgewenst eerst de documentatie van uw <span class="tt">ldap</span> server. 
  !exit
 !endif

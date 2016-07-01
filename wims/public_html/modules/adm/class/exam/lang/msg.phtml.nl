@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
 !if bad_maxexams=$error
- Le nombre d'examens est limité à $max_exams.
+ Het aantal proefwerken is beperkt tot $max_exams.
  !exit
 !endif
 
@@ -16,10 +16,10 @@ is voorbehouden aan de docent van een klas.
 De inhoud van een proefwerk kan alleen worden genomen
 uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
  </p><p>
- Uw klas heeft echter geen werkbladen (actief of verlopen). <br />
- Dus eerst maakt U een werkblad van Uw oefeningen (oef of module)<br />
- onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b><br />
- Daarna maakt U van deze actieve/verlopen werkbladen het echte proefwerk.
+ Deze klas heeft echter geen werkbladen (actief of verlopen). <br />
+ Dus eerst een werkblad maken uit oefeningen. (zoek naar een onderwerp)<br />
+ Onderaan elke oefening staan de link <b>"toevoegen aan werkblad"</b><br />
+ Daarna kan van deze actieve/verlopen werkbladen het echte proefwerk worden gemaakt.
  </p>
  !exit
 !endif
@@ -43,7 +43,7 @@ Je cijfer staat al genoteerd.
 
 !if no_more_registration=$error
 Dit proefwerk mocht je $stries keer maken.<br />
-Jij mag het proefwerk dus niet meer overdoen.
+Je mag het proefwerk dus niet meer overdoen...
  !exit
 !endif
 
@@ -84,15 +84,15 @@ Wil U werkelijk het proefwerk nummer $exam ($title) verwijderen?
 !endif
 
 !if prep_expire=$error
-Dit proefwerk nummer $exam ($title) zou verlopen zijn op $expday
+Dit proefwerk $exam ($title) zou verlopen zijn op $expday
  !item $expmon of $months
- $expyear. wilt U het <b>nu</b> laten verlopen?
+ $expyear. Het <b>nu</b> laten verlopen?
   <div class="wimscenter">
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </div><b>Opmerking.</b>
- Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen proefwerk.<br />
+ Leerlingen kunnen niet doorgaan met het werken aan een verlopen proefwerk.<br />
 Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
 (en ook statistisch verwerkt, zodat deze resultaten altijd nog kunnen worden bekeken)
  !exit
@@ -123,7 +123,7 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
 !endif
 
 !if $error=addexook
-  Ajout de l'exercice effectué correctement.
+ De oefening is correct verwerkt.
   !exit
 !endif
 

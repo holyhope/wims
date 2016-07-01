@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!set name_duplicateok=Examen dupliqué correctement.
+!set name_duplicateok=Proefwerk is correct gekopieerd.
 !set name_title=Aanmaken van een proefwerk
 !set name_mainpage=Hoofdpagina van het proefwerk
 
@@ -55,7 +55,7 @@ alleen worden nu de cijfers -en andere data- natuurlijk niet opgeslagen.
 !set wims_name_examremain=Resterende tijd voor dit proefwerk : $
 
 !distribute lines bezig...\
-U bent nog niet begonnen met dit proefwerk.\
+Je bent nog niet begonnen met dit proefwerk.\
 Start dit proefwerk.\
 De score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.\
 into name_pending,name_begin1,name_begin2,name_simulation2
@@ -89,9 +89,9 @@ into name_info,name_content,name_warning
 !let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. \
 Elke oefening krijgt gewicht 1 en \
 de titel van de oorspronkelijke oefening. \
-Of geef hier generieke titel aan
+Of geef hier algemene titel aan
 
-!let name_cpsheet3=Generieke titel voor een oefening
+!let name_cpsheet3=Algemene titel voor een oefening
 !let name_cpsheet4=De oefeningen zijn genummerd
 
 !set name_warning_nonfinished=Je hebt nog niet alle opgaven uit dit proefwerk gemaakt. Wanneer je \

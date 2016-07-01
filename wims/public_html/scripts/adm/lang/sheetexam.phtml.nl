@@ -14,16 +14,16 @@ into wims_name_addexo,wims_name_addsexo
 Uitleg,\
 Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het proefwerk deelnemen :,Opmerkingen,Maximaal beschikbare tijd voor een proefwerk,Aantal pogingen per proefwerksessie
 
-!let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgende ip-adressen (en/of tijdstippen) :,réglage par variable technique
+!let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgende ip-adressen (en/of tijdstippen) :,volgens technische variabelen
 
 !if exam notin $module
- !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4]),Réglage par variable technique
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4]),Instelling volgens technische variabelen
 !endif
-!set name_desc_allowtechvar=Choix de la variable technique
-!set name_desctableval=Table de filtre en fonction de la valeur de la variable technique
-!set name_value=Valeur
-!set name_filtre=Filtre
-!set name_EMPTY=Vide
+!set name_desc_allowtechvar=Kies de technische variabele
+!set name_desctableval=Filterinstellings tabel voor de technische variabelen
+!set name_value=Waarde
+!set name_filtre=Filter
+!set name_EMPTY=Leeg
 
 !set name_desc_comment=Alleen zichtbaar voor docenten.
 !let name_selectsheet=Laat alleen oefeningen zien uit werkblad

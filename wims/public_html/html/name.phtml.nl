@@ -61,9 +61,9 @@ Terug naar de module,\
 Legenda,\
 Kloon werkblad,\
 Kloon proefwerk,\
-Manage technical variables,\
-Old technical variables,\
-Global results,\
+Manage technische variabelen,\
+Oude technische variabelen,\
+Globale resultaten,\
  into wims_name_search,\
    wims_name_work,wims_name_resume,\
    wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -119,8 +119,8 @@ deze configuratie,\
 !set wims_name_Share = delen
 !set wims_name_to_embed_it = opnemen
 !set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefening.
-!set wims_name_hide=Hide
-!set wims_name_showall=Show
+!set wims_name_hide=Verbergen
+!set wims_name_showall=Tonen
 
 !! the following sentences can be changed according to language if needed
 !set wims_name_display1=!nosubst $wims_name_this_module $wims_name_Share
@@ -142,7 +142,7 @@ Taal,\
 Schrijver,\
 Administrator,\
 Vertaler,\
-General,\
+Algemeen,\
 Dit is een module van,\
 WWW Interactive Multipurpose Server,\
 Copyright,\
@@ -191,9 +191,9 @@ Instellingen,\
     wims_name_pref
 
 !! Titles of menus
-!distribute items Vie de la classe,Configuration,\
-   Outils de la classe,Liens externes à la classe,\
-   Navigation,My infos\
+!distribute items Activiteiten,Configuratie,\
+   Hulpmiddelen,Externe hyperlinks,\
+   Navigatie,Persoonlijke info\
 into wims_name_classactivity,wims_name_configuration,\
   wims_name_classtools,wims_name_otherclasses,\
    wims_name_navigation,wims_name_myinfo
@@ -206,7 +206,7 @@ into wims_name_classactivity,wims_name_configuration,\
  Je hebt het behalen van cijfers opgeschort,\
  Open cijfer registratie,Sluit cijfer registratie,\
  U bent docent van deze klas,\
- Bewaar de details van deze oefening,\
+ Bewaar details van deze oefening,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
  Gezien,\
@@ -247,8 +247,8 @@ into wims_name_classactivity,wims_name_configuration,\
  Klasse management is hierdoor niet meer bereikbaar.\
  We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
 
- !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde server limiet.\
- Als deze limiet is bereikt , wordt het klasse management geblokkeerd !
+ !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde limiet.\
+ Bij overschrijding wordt het klasse management geblokkeerd !
 
  !set wims_name_chseries=!nosubst Sla de veranderingen aan serie oefeningen $(special_parm4[2]) werkblad $(special_parm4[1]) op
 !endif
@@ -264,7 +264,7 @@ into wims_name_classactivity,wims_name_configuration,\
 	lagere school\
 	middelbare school\
 	universiteit\
-	klassen lijst\
+	klassenlijst\
 	Lijst met klassen en/of instituten\
 	Individuele klassen\
 	Groep klassen\
@@ -361,7 +361,7 @@ Werkblad oefeningen\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
-!distribute items untry,undone,done,congratulations,klaar \
+!distribute items niet doorgaan,ongedaan maken,klaar,gefeliciteerd,klaar \
   into wims_name_exo_untry,wims_name_exo_undone,wims_name_exo_done,wims_name_exo_congratulation,wims_name_exo_tried
 
 !!! for documents...
@@ -418,11 +418,11 @@ wims_name_Docstatus,wims_name_number,wims_name_cnt_exo
 !set wims_name_addparticipant=Voeg een deelnemer toe
 !set wims_name_modteacher=Docent eigenschappen
 !set wims_name_delteacher=Verwijder een docent
-!set wims_name_student=Studenten accounts
+!set wims_name_student=Studenten account
 !set wims_name_addstudent=Nieuwe student
-!set wims_name_modstudent=Studenten eigenschappen
+!set wims_name_modstudent=Studenten informatie
 !set wims_name_delstudent=Verwijder een student
-!set wims_name_delstudent1=Delete the participant
+!set wims_name_delstudent1=Verwijder een deelnemer
 !set wims_name_group=Instituut
 !set wims_name_portal=Instituut
 !set wims_name_level=Leerniveau
@@ -434,7 +434,7 @@ wims_name_Docstatus,wims_name_number,wims_name_cnt_exo
 
 !if config isin $module or $module=home or $module=adm/class/userscore
  !distribute line $wims_name_config\
- Hoofdpagina klassen onderhoud\
+ Hoofdpagina klassenonderhoud\
  Instituut administratie\
 Management\
 into wims_name_configb,wims_name_config,wims_name_struct,wims_name_manage
@@ -454,11 +454,11 @@ into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addpr
 wims_name_login,wims_name_chzone
 
 !distribute line Statistisch overzicht van de activiteiten\
-Globale activiteiten van de deelnemers\
+Globale activiteiten\
 Verander de moeilijkheidsgraad\
 Handmatig ingevoerde cijfers\
 Spreadsheet data\
-Globale activiteiten\
+Activiteiten\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv,wims_name_activity1
 
@@ -466,7 +466,7 @@ wims_name_csv,wims_name_activity1
 !distribute line Lijst van alle studenten \
 Lijst van alle docenten\
 Cijfers\
-Beeindig deze proefwerk sessie\
+Beeindig deze proefwerksessie\
 Details van het werk\
 Schors deze student\
 Ruwe gegevens\
@@ -476,7 +476,7 @@ Overzicht vaardigheden \
 Volgende\
 Vorige\
 Filters\
-Add technical variable\
+Technische variabele toevoegen\
 into wims_name_part_list,wims_name_teacherlist,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret,\
  wims_name_next_participant,wims_name_prev_participant,wims_name_filter,\
@@ -498,7 +498,7 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
    Quicktool\
    Latex2wims\
    Imageclick\
-   Other tools\
+   Andere hulpmiddelen\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,\
    wims_name_coordclick,wims_name_othertools
 

@@ -42,7 +42,7 @@
 !set name_independantclass=Onafhankelijke klassen
 
 !distribute items Aanmelden,Anoniem,openbaar,besloten,Jaar,\
-Nieuwe deelnemer,aanmelden,Inloggen,Up,Copier\
+Nieuwe deelnemer,aanmelden,Inloggen,Up,Kopieren\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up,name_copy
 
@@ -83,9 +83,9 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
 
 !set name_research1= Er zijn zeer veel virtuele klassen ge&iuml;nstalleerd op deze server. \
-   Om uw klas te vinden, voer een zoekterm in.
+   Voer een zoekterm in om de juiste klas te vinden.
 
-!set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
+!set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een iets duidelijkere zoekterm.
 
 !set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br />\
      Op <span class="wims_button disabled">Inloggen</span> klikken,  als u al als docent of supervisor ben geregistreerd.<br />\

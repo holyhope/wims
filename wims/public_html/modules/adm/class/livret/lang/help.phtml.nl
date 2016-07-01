@@ -34,10 +34,10 @@ Als de status van een werkblad wordt veranderd moeten er op dat moment geen leer
 !exit
 
 :color
-Pour chaque couleur vous pouvez définir un texte qui sera affichée dans la légende colorée en début de chaque tableau de compétences (pour les élèves et le supervisor).
-<br\>
-Les couleurs se retrouvant sans texte sont affichées avec la plage de pourcentage de réussite auxquelles elles correspondent.
-<br\>
-En cas de l'utilisation des couleurs de la classe (et non celles du livret), la légende colorée est automatiquement affectée de la plage de pourcentage de réussite correspondante. 
+Bij elke kleur kan ook een kleine tekst worden getoond in de tabel met competenties.
+<br />
+Kleuren zonder begeleidende tekst worden bepaald door de behaalde scores.
+<br />
+Als ger geen speciale kleuren worden vastgesteld, wordt het algemene kleur&amp;score schema gebruikt.
 
 !exit

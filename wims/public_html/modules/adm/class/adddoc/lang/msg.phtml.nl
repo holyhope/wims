@@ -8,7 +8,7 @@
 !endif
 
 :already_exist
-    Het document dat u wilt toevoegen , bestaat reeds in uw klas.
+    Het document bestaat reeds in uw klas.
 !exit
 
 :baddocnumber
@@ -24,11 +24,11 @@
 !exit
 
 :maxdoc
- Het maximum aantal documenten is  $max_doc.
+ Het maximum aantal documenten is $max_doc.
 !exit
 
 :toomuchsheet
-Het maximum aantal werkbladen is ingesteld op $max_sheets. Er kan geen nieuw werkblad meer worden aangemaakt.
+Het maximum aantal werkbladen is ingesteld op $max_sheets. Er mag geen nieuw werkblad meer worden aangemaakt.
  !exit
 
 :noexo

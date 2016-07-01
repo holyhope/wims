@@ -34,15 +34,15 @@
   !exit
  !endif
  !if nocomputecomplex iswordof $test
-   is not allowed.
-   Please give the complex number in standard rectangular form
+   is niet toegestaan.
+   Geef een complex getal op in de standaard vorm
    <span class="tt"> a + b i </span>
-   where
+   waarin
    <span class="tt">a</span>
-   and
+   en
    <span class="tt">b</span>
-   are computed, and submit the resulting value (for example,
-    <span class="tt"> -1 + 2 i</span> or <span class="tt"> 1 - 2 i</span>).
+   zjn berekend en stuur de waarde op (bijvoorbeeld ,
+    <span class="tt"> -1 + 2 i</span> of <span class="tt"> 1 - 2 i</span>).
    !exit
  !endif
  !if badform iswordof $test
@@ -51,11 +51,11 @@
   !exit
  !endif
  !if notunit iswordof $test
- dat is alleen een getal, ik verwacht ook de bijpassende eenheid.
+ dat is alleen een getal, ik verwacht ook de bijpassende SI eenheid.
   !exit
  !endif
  !if bad_variable iswordof $test
-   is not understandable. It should contain extra variables.
+  is onbegrijpelijk. Het mist nog wat variabelen...
    !exit
  !endif
  onbegrijpelijk...<br />
@@ -66,31 +66,29 @@
 !if bad_exo iswordof $error
  !for j=1 to 50
    !if bad_exo $j isin $error
-     !set whichexo=!nosubst (the good answer for the question $j\
+     !set whichexo=!nosubst (het correcte antwoord voor vraag $j\
      <span class="tt">$(replyname$j)</span>\
-     is invalid)
+     is ongeldig)
      !!goto end_bad
      !break
    !endif
  !next
 :end_bad
- Due to an error in this exercise $whichexo, it is impossible to test the
- correctness of your answer. The only solution for you is to change the
- exercise; sorry.
+ Door een fout in de oefening $whichexo, is het helaas onmogelijk de juistheid van het opgestuurde antwoord te controleren.
  <p>
- Please
+ SVP
  !if $email!=$empty
   !mailurl $email schrijf naar de maker van deze oefening
  !else
   schrijf naar de maker van deze oefening
  !endif
- als U deze fout wilt melden.
+ als je deze fout wilt melden.
  </p>
  !exit
 !endif
 
 !if too_many_print iswordof $error
-U hebt te veel verzoeken tot printbare versies ingediend
+er zijn te veel verzoeken tot printbare versies ingediend.
  !exit
 !endif
 

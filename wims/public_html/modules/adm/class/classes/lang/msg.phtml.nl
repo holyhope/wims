@@ -16,13 +16,13 @@ Je kan natuurlijk niet van klas veranderen tijdens een overhoring !
 !endif
 
 !if $error=recent_rafale
-Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
+Dit account is i.v.m. verdachte activiteiten voor 10 minuten geblokkeerd !
  !exit
 !endif
 
 !if $error=no_cgu
     De algemene voorwaarden voor het gebruik van deze server zijn nog niet geaccepteerd.
-    Geef eerst goedkeuring aan deze algemene voorwaarden:
+    Geef eerst goedkeuring aan de algemene gebruikers voorwaarden:
  !form reply
   !formcheckbox agreecgu list yes prompt $name_acceptcgu
   [

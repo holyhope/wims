@@ -4,7 +4,7 @@
 
 !set name_wksheet=Link document met werkblad (optie)
 
-!set name_noone=Noone
+!set name_noone=niemand
 !set name_propdoc=!nosubst Document $sdoc
 !set name_deletemsg=!nosubst U wil het document <span class="tt wims_fname">$title</span> verwijderen uit uw klas ?
 !set name_adddoc=Een document toevoegen

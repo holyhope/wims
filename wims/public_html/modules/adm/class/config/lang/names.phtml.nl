@@ -9,8 +9,8 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 name_sheets
 
 !distribute item bericht van de dag,oefeningen,werkbladen,proefwerken,documenten,\
-	studenten,pedagogische volgorde,huiswerk agenda,huiswerk,vragenlijsten,\
-	raport boekje,docenten account,discussie forum\
+	studenten,pedagogische volgorde,huiswerkagenda,huiswerk,vragenlijsten,\
+	raportboekje,docenten account,discussieforum\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
 	name_user,name_seq,name_livret,name_competence,name_vote,\
 	name_cdt,name_sup,name_forum,name_forum_mesg
@@ -24,19 +24,19 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
  !set name_excepted=Uitgezonderd
 !endif
 !if $job=connectlink
-  !set title=Connexion links
+  !set title=Verbindingen
 !endif
 !if $job=arch
  !set title=Backup en Herstel
- !set name_title_save=Sauvegarde de la classe
- !set name_title_restore=Restauration de ressources à partir d'une sauvegarde
- !set name_intro1=Sélectionner le fichier de sauvegarde à restaurer
+ !set name_title_save=Backup van de klas
+ !set name_title_restore=Herstel van een klas via een backup
+ !set name_intro1=Kies het backup archief voor de herstel procedure
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
  !set name_tosend=Om de klas te herstellen via een backup archief; geef de backup archief naam
  !set name_namefile=Geef de naam van het backup archief
  !set name_help=Er wordt gevraagd naar de specifiek te herstellen onderdelen van uw klas.
 
- !set name_deposit=!nosubst Het backup archief <span class="tt wims_fname">$wims_deposit</span> bevar de volgend onderdelen.\
+ !set name_deposit=!nosubst Het backup archief <span class="tt wims_fname">$wims_deposit</span> bevat de volgend onderdelen.\
  Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
 
  !set name_no_restore=De herstelprocedure wordt afgebroken: er is gedeeld materiaal van een andere klas aanwezig.\
@@ -77,25 +77,25 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
    Samenvoegen\
    vervang al het aanwezige materiaal, behalve de studenten accounts en de klasse oefeningen; bij deze klasse oefeningen worden alles met een gelijke naam overschreven.\
    Vervang en herstel het aangegeven materiaal\
-   Existing message of the day\
+   Aanwezige bericht van de dag\
  into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore,name_motd1
 
-!!set name_cnil_warning=Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
+!!set name_cnil_warning=ALLEEN VOOR FR : Nous vous rappelons que conformément aux déclarations faites à la CNIL, \
   vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
   toutes les sauvegardes contenant les données des élèves.\
   Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
   avez créées (feuilles, examens, documents) ou utilisez la possibilité de clonage.
 
 !distribute lines Backup archief herstel klas\
-Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
-De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
-  Participant accounts already in use in your group of classes (restauration refused)\
-  restore is not allowed because of ressources sharable\
-  Save/Restoration is not needed at this level of the structure\
+Herstel van studenten accounts (en alle geregistreerde studenten activiteit) gaat niet door : er is niet genoeg ruimte meer over.\
+De klaseinddatum is veranderd na de herstelprocedure, omdat de upload datum \
+ Deelnemer accounts zijn in gebruik in deze groep klassen (herstel gaat nioet door)\
+ herstel is noet toegestaan ivm gedeelde bronnen\
+ Backup en/of herstel is niet noodzakelijk op deze plek van het instituut\
  into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items onherkenbaar is, te vroeg is, te laat is into ebad,eearly,elate
@@ -110,7 +110,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
- !set name_download5=Het backup archief is misschien te groot om naar deze sever te sturen.\
+ !set name_download5=Het backup archief is misschien te groot om naar deze server te sturen.\
  Om (meerdere) kleinere archieven aan te leggen kunt u gebruik maken van een selectieve backup.
 
 
@@ -121,8 +121,8 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
  !set title=Opschonen van een klas
  !set name_lines=Studenten activeiten
  !set name_empty=Deze klas is leeg!<br />\
- Er staat dus ook niets in  dat opgeschoond kan worden.
- !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
+ Er staat dus ook niets in dat geschoond kan worden.
+ !set name_no_erase=Kan niet worden geschoond omdat er materiaal wordt gedeeld met een andere klas.
 
  !distribute lines Opschonen\
    Dit verwijdert ook de activiteiten registratie\
@@ -292,14 +292,14 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Onderhoud\
    Verwijder de klas op de verbonden server\
    De verbinding met de verbonden server werkt.\
-   De verbinding is toegevoegd aan uw klas, maar de verbonden server geeft een foutmelding\
+   De verbinding is toegevoegd aan uw klas, maar helaas geeft de verbonden server een foutmelding\
    De andere server reageert niet. Raporteer dit aan de\
    De verbinding met de verbonden server is geweigerd. Foutmelding\
-   Gecontroleer de andere klas \
-   De verbinding werkt. Date ontvangen van de verbonden server\
+   Controleer de andere klas \
+   De verbinding werkt. Data ontvangen van de verbonden server\
    Voor het maken van een verbinding met bovenstaande server, specificeer \
    Identificeer de netwerk verbonden klas\
-   Als de klas op de verbonden server leeg is, zal deze server een nieuwe klas aanmaken. De eigenschappen van die klas worden gebaseerd op deze klas\
+   Als de klas op de verbonden server leeg is, zal deze server een nieuwe klas aanmaken. De instellingen van die klas worden gebaseerd op deze klas\
    Voer veranderingen aan deze klas automatisch door aan de klas op de verbonden server\
    Sta de klas op de verbonden server toe deze klas te wijzigen\
    Deze klas heeft geen connecties met andere servers.\
@@ -461,10 +461,10 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Mix\
     Opschorten scoreregistratie door studenten\
     Generieke naam voor de titel van OEF oefeningen\
-    Les participants savent si l'enseignant est connecté\
-    Additional fields to fill in the inscription\
-    An eventual change of IP during an exam is taking in account\
-paramètres définis lors de la création de la classe, configuration des feuilles et des examens notamment\
+    Deelnemers zien wanneer een docent is ingelogd\
+    Extra velden voor  bij de aanmelding\
+    Een eventuele verandering van ip-adres tijdens een examen is toegstaan\
+    inclusief alle configuratie parameter ,werkbladen, examens etc.\
  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
@@ -474,8 +474,8 @@ paramètres définis lors de la création de la classe, configuration des feuilles 
     name_examscore_withoutip,name_param
 
  !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
- !set name_allowcloning=Autoriser le clonage
- !set name_cloningpwd=Mot de passe de clonage
+ !set name_allowcloning=Kloneren toegestaan
+ !set name_cloningpwd=Wachtwoord voor kloneren
 !endif
 
 :commun
@@ -493,7 +493,7 @@ Wachtwoorden\
 Andere zones\
 Uiterlijk\
 Score instellingen\
-Netwerkverbonden Server adressen\
+Netwerkverbonden server adressen\
 of\
 Externe authentificatie en identificatie\
 into wims_name_config_list,wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
@@ -514,18 +514,18 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Wachtwoord docent\
    Configureer de opslag van toetsresultaten\
    Links naar andere leerplatformen of webpagina's\
-   Pagina achtergrond kleur\
-   Menu achtergrond kleur\
-   Menu link kleur\
+   Pagina achtergrondkleur\
+   Menu achtergrondkleur\
+   Menu linkkleur\
    Achtergrond plaatje\
    download een css style bestand\
-   Cijfer kleuren (van 0 tot 10) \
+   Cijfer kleurindicatie (van 0 tot 10) \
    Achtergrondkleur van een knop\
-   Tekst kleur van een knop\
-   Helpknop achtergrond kleur\
-   Helpknop tekst kleur\
-   Verbindings link\
-   Tekst kleur\
+   Tekstkleur van een knop\
+   Helpknop achtergrondkleur\
+   Helpknop tekstkleur\
+   Verbindingslink\
+   Tekstkleur\
    Kleuren voor presentatie van activiteiten\
 Addresses of the connection links to the class:\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
@@ -584,7 +584,7 @@ niet meer worden gewist uit een werkende klas.
 
 :clean
  <p>U kunt geen lesmateriaal verwijderen waar
- leerlingen op dit moment nog aan kunnen werken.
+ leerlingen op dit moment nog aan werken.
  </p><p>
  Bedenk de volgende zaken:
  </p><p>
@@ -620,8 +620,7 @@ Deze klas moet dan wel eerst
 
 :connect_first_info
 <p>De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
-met een andere WIMS server of een andere ELO
-(Electronische Leer Omgeving) te communiceren.<br />
+met een andere WIMS server of een andere ELO te communiceren.<br />
 De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.
 </p><p>
 In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,

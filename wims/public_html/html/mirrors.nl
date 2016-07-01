@@ -52,3 +52,15 @@ Spain
 ca en fr es it nl
 Manel Querol
 mquerol@xtec.cat
+wims@wims.univ-savoie.fr
+:http://wims.lyc-arsonval-brive.ac-limoges.fr/wims/
+Serveur du lycée d'Arsonval (Brive)
+France
+fr en es it nl
+Sébastien Dumortier
+sdumortier@ac-limoges.fr
+:http://sercalwims.ig-edu.univ-paris13.fr
+Serveur de l'université Paris 13 - Sorbonne Paris Cité
+France
+fr en nl it es cn
+oukphala.te@univ-paris13.fr

@@ -22,9 +22,9 @@ padding-left: 3%; padding-right: 3%;}
  <h1 class="wims_center">We zijn te druk</h1>
  <hr style="width:50%"/>
  Deze WIMS server <span style="color:blue">$httpd_HTTP_HOST</span> 
- is op dit moment belast door een zeer groot aantal aanvragen,
- en neemt geen nieuwe opdrachten meer aan.
- Kom later terug, of maak gebruik van een WIMS mirror site 
+ is op dit moment belast door een zeer groot aantal aanvragen
+ en neemt geen nieuwe opdrachten meer aan.<br />
+ Kom later terug, of maak gebruik van een WIMS mirror site. 
  <p>We hopen U spoedig  weer van dienst te kunnen zijn. </p>
  !read mirror.phtml.en
  </body></html>
@@ -46,7 +46,7 @@ padding-left: 3%; padding-right: 3%;}
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
  nodig om aan Uw verzoek te voldoen, helaas is dit pakket niet 
- beschikbaar (of niet zichtbaar voor WIMS)  op deze server.
+ beschikbaar (of niet zichtbaar voor WIMS) op deze server.
  </p>
  <p>
  U kunt een email sturen naar de
@@ -65,7 +65,7 @@ padding-left: 3%; padding-right: 3%;}
  Het materiaal op
  <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
  is niet geschikt voor het automatisch downloaden.
- De pagina's worden interactief gegenereerd, en zijn ongeschikt voor offline gebruik
+ De pagina's worden interactief gegenereerd en zijn ongeschikt voor offline gebruik.
  </body>
  </html>
  !exit 
@@ -73,12 +73,12 @@ padding-left: 3%; padding-right: 3%;}
 
 <h1 class="wims_center">WIMS error</h1><hr />
 <p>
-Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.
+Er is een fout geconstateerd in het verzoek aan deze WIMS server.
 </p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
- Voorkom het gebruik van de 'Terug' knop van Uw browser op deze Interactieve server.
+ Voorkom het gebruik van de 'Terug' knop van de browser op deze Interactieve server.
   <p class="wimscenter">
   !set tit=!module title $module
   !default tit=$module
@@ -89,44 +89,44 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.
    &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">Exit WIMS</a>
   !else
    </p>
-   <small>Mocht U deze website gewoon willen verlaten, negeer dan deze mededelingen en
+   <small>Wilt U deze website gewoon willen verlaten, negeer dan deze mededelingen en
    ga door met het klikken van de `Terug' knop.</small>
   !endif
   !exit
  !endif
  U hebt een illegaal verzoek gedaan.
- Gebruikt U soms een geautomatiseerd download programma om deze site te benaderen?
+ Gebruik van een download robot om deze site te benaderen is verboden?
  :unblock
  !form new
  <input type="hidden" name="module" value="home" />
  <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]" />
  Hebt U per ongeluk op de `Terug' knop van de browser geklikt,
- typ dan s.v.p. het woord "wims" hier:
- <input size="8" name="special_parm" /> en dan
+ voer dan s.v.p. het woord "wims" hier:
+ <input size="8" name="special_parm" /> en 
  <input type="submit" value="opsturen naar de server" />.
  </form>
  <p>
- Besef goed dat deze WIMS pagina's dynamisch worden gegenereerd, en kunnen
+ Besef goed dat deze WIMS pagina's dynamisch worden gegenereerd en kunnen
  dus <b>alleen</b> online gebruikt worden, via een normale browser.
  Het is zinloos deze pagina's op te halen met een "download robot". 
  </p>
 
  !if robot_doubt iswordof $wims_user_error
   <small>Besef goed dat hackers voorgoed toegang tot deze
-  site wordt ontnomen !</small>
+  site kunnen worden ontnomen !</small>
  !endif
  !exit
 !endif
 
 !if robot_doubt iswordof $wims_user_error
-We blokkeren de toegang to deze website voor U, omdat er het verdacht bestaat 
-dat U een "download robot" gebruikt op deze pagina's op te halen.
+We blokkeren de toegang tot deze website omdat er het verdacht bestaat 
+dat een "download robot" gebruikt wordt om de webpagina's op te halen.
 
  !goto unblock
 !endif
 
 !if allow_violation iswordof $wims_user_error
- U hebt niet de toegangsrechten om de variabele  ``$wims_error_data''
+ U hebt niet de toegangsrechten om de variabele ``$wims_error_data''
  te veranderen met de opdracht ``$cmd''.
   !goto end
 !endif
@@ -140,11 +140,11 @@ dat U een "download robot" gebruikt op deze pagina's op te halen.
 
 !if bad_host iswordof $wims_user_error
 U hebt geprobeerd een sessie op te starten van af een andere computer.
-Dit is niet toegestaan in Uw virtuele klas.  
+Dit is niet toegestaan vanuit een virtuele klas.  
   <p>
   Helaas geven sommige Internet Service Providers een dynamisch hostadres,
-  dat tijdens een verbindging kan veranderen...
-  Mocht dit bij U het geval zijn, schrijf dan naar uw supervisor met het verzoek
+  dat tijdens een verbinding kan veranderen...
+  Mocht dit bij U het geval zijn, schrijf dan naar de docent met het verzoek
   de betreffende instellingen te wijzigen.
   </p>
   !goto end
@@ -153,7 +153,7 @@ Dit is niet toegestaan in Uw virtuele klas.
 !if need_https iswordof $wims_user_error
  Uw klas kan alleen via een <b>https</b> sessie worden bereikt.
  !set refname=!replace http:// by https:// in $wims_ref_name
- <a href="$refname?session=$wims_session&module=home&cmd=new">Probeer dit</a>.
+ <a href="$refname?session=$wims_session&module=home&cmd=new">Probeer deze link</a>.
  !exit
 !endif
 
@@ -161,29 +161,27 @@ Dit is niet toegestaan in Uw virtuele klas.
  !if $cmd=getfile
  Het gezochte bestand bestaat niet
  !else
- De bestandsnaam voor dit dynamisch bestand is niet geldig.
+ De bestandsnaam is niet geldig.
   
  !endif
  !goto end
 !endif
 
 !if cmd_output_too_long iswordof $wims_user_error
-Het resultaat van de door U verzocht berekening heeft het ingestelde maximum
-ruim overtreden.<br />
-U hebt vermoedelijk om een te gecompliceerde? berekening verzocht.
-Vereenvoudig Uw verzoek, s.v.p.
- 
+Deze berekening heeft het ingestelde maximum ruim overtreden.<br />
+Vermoedelijk een te gecompliceerde? berekening...
+Vereenvoudig het verzoek.
   !goto end
 !endif
 
 !if double_click iswordof $wims_user_error
 De server is nog steeds bezig met Uw <b>vorige opdracht</b>.  
 <p>
-Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan  
+Per ongeluk <b>dubbel geklikt ?</b>, wacht dan  
  <span class="wims_warning">$wims_cpu_limit seconden</span>
- tot de vorige opdracht is afgehandeld, en dan
+ tot de vorige opdracht is afgehandeld en 
  !href cmd=resume klik hier
- om terug te gaan naar uw werk.
+ om terug te gaan naar het werk.
 </p>
 <p>
  Mocht U deze website gewoon willen verlaten, negeer dan deze mededelingen en
@@ -198,7 +196,7 @@ Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan
 !endif
 
 !if name_conflict iswordof $wims_user_error
-  ``$wims_error_data'' is een  gereserveerde naam van WIMS.
+  ``$wims_error_data'' is een gereserveerde naam van WIMS.
   !goto end
 !endif
 
@@ -209,16 +207,15 @@ Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan
 
 !if no_insnum iswordof $wims_user_error
  !if $cmd=getfile
- U hebt een file aangevraag zonder passende filenaam.
+ Een file aangevraagd zonder passende filenaam ?
  !else
- U hebt een "dynamische invoeging" verzocht zonder een passend nummer hiervoor.
-  
+ Een "dynamische invoeging" verzocht zonder een passend nummer ?
  !endif
  !goto end
 !endif
 
 !if no_module_name iswordof $wims_user_error
-U hebt een nieuwe sessie aangevraagd zonder module naam.  
+U hebt een nieuwe sessie aangevraagd zonder module naam...vermoedelijk een foutieve link naar een module ?
   !goto end
 !endif
 
@@ -228,18 +225,17 @@ Het sessienummer is niet aanwezig.
 !endif
 
 !if parm_too_long iswordof $wims_user_error
-Uw opdracht regel is veel te groot...<br />
-Dit is -om beveiligings redenen- niet toegestaan.
+Uw opdracht regel is veel te groot...niet toegestaan.
   !goto end
 !endif
 
 !if string_too_long iswordof $wims_user_error
-De definitie van deze variabele val buiten het toegestane maximum.
+De definitie van deze variabele valt buiten het toegestane maximum.
   !goto end
 !endif
 
 !if too_many_variables iswordof $wims_user_error
-Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
+Het aantal parameters is groter dan de toegestane limiet.
   !goto end
 !endif
 
@@ -298,7 +294,7 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
 !if wrong_session iswordof $wims_user_error
   
 Het sessienummer ``$session'' is niet (of niet langer) geldig.
-  <a href="wims.cgi">Maak een nieuwe Sessie</a>.
+  <a href="wims.cgi">Maak een nieuwe sessie</a>.
   !goto end
 !endif  
 
@@ -340,7 +336,7 @@ Je hebt een illegaal verzoek gedaan binnen een examen sessie.
 
 !if exam_exo_finished iswordof $wims_user_error
 Je hebt deze oefening reeds afgerond met een $wims_exo_lastscore als resultaat. 
- Je kunt dit niet nog eens overdoen: dit is een examen ...
+ Je kunt dit niet nog eens overdoen: dit is een examen (...)
  
   !goto examend
 !endif
@@ -359,8 +355,8 @@ Je hebt geen tijd meer over om het examen af te maken.
 !endif
 
 !if exam_closed iswordof $wims_user_error
-Dit "examen" is op dit moment niet meer bereikbaar voor Uw ipadres.<br />
-Log opnieuw in, en start een nieuw "examen" <br />
+Dit "examen" is op dit moment niet meer bereikbaar vanuit je ipadres.<br />
+Log opnieuw in en start een nieuw "examen" <br />
 Eventueel even navragen bij je docent.
  !goto examend
 !endif
@@ -377,7 +373,7 @@ Probeer je andermans sessie te benaderen?
 !endif
 
 !if no_access iswordof $wims_user_error
-  Door het toegangsbeleid op deze site kan uw verzoek niet worden behandeld.<br />
+  Door het toegangsbeleid op deze site kan het verzoek niet worden behandeld.<br />
   Onze excuses.
   !goto end
 !endif  
@@ -385,7 +381,7 @@ Probeer je andermans sessie te benaderen?
 !if class_closed iswordof $wims_user_error
   Sorry.
   <p>
-  Je docent heeft deze virtuele klas is eventjes gesloten.<br />
+  Je docent heeft de virtuele klas is eventjes gesloten.<br />
   Kom later terug, of vraag aan je docent de klas weer te openen...
   </p>
   <div class="wimscenter">

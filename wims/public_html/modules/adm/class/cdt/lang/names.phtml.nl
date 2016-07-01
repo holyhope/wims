@@ -32,8 +32,7 @@
   !set name_depos=Een bestand toevoegen
   !set name_available=Beschikbare bestanden
   !set name_erase=Verwijder een bestand
-  !set name_nodeposit=Er kan geen bestand meer worden toegevoegd omdat de ingestelde maximum \
-  hardeschijfruimte voor deze klas is bereikt.
+  !set name_nodeposit=Er kan geen bestand meer worden toegevoegd omdat de ingestelde maximum voor deze klas is bereikt.
   !set name_explanation1=!nosubst Deze bestanden kunnen worden ingebonden door de variabele\
   <span class="tt wims_code_variable">\filedir</span>. \
   Bijvoorbeeld:\
@@ -48,7 +47,7 @@
  <span class="tt">myfile.jpg</span> \
  toe te voegen. <br />De bestanden zijn alleen bereikbaar voor leerlingen van deze klas.
 
- !set name_availablespace=Totaal beschikbare hardeschijf ruimte,Onbenutte hardeschijf ruimte
+ !set name_availablespace=Totaal beschikbare ruimte,Onbenutte ruimte
 
   !goto common
 !endif
@@ -81,7 +80,7 @@ Disciplines\
 In klas\
 Gegeven\
 Er is geen werk opgegeven voor\
-Voeg een klasse activiteit toe\
+Voeg een activiteit toe\
 le\
 into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
 name_work,name_nb_date,name_todo2,name_workdone,name_session,\

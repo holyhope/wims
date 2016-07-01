@@ -9,21 +9,20 @@
  !else
  Deze module is alleen bereikbaar voor een "secure host".
  !endif
-Toegang Geweigerd !
+Toegang geweigerd !
  !exit
 !endif
 
 !if checkhost iswordof $error
 Uw huidige ipadres staat niet in de nieuwe lijst van "secure hosts".
 Waarschijnlijk is dit een klein foutje.
-En ik zal dus de "secure host" datalijst 
-niet bijwerken.
+En ik zal dus de "secure host" datalijst niet bijwerken.
  !exit
 !endif
 
 !if bad_file iswordof $error
 Helaas, maar ik kan de <em>$wims_deposit</em> file niet als een klas backup archief bestand identificeren.
-Of U hebt een verkeerd bestand gestuurd of het backup archief zelf is corrupt.
+Of er is  een verkeerd bestand gestuurd of het backup archief zelf is corrupt.
  
  !exit
 !endif
@@ -47,35 +46,35 @@ Voor beide klassen moet U de deling van materiaal beeindigen.
 !endif
 
 !if share_dep iswordof $error
- Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord partager 
+ Het delen van materiaal moet wel de afhankelijkeheden respecteren: voordat er 
  !if sheet iswordof $error 
- les exercices avant de partager les feuilles de travail. 
+  oefeningen uit werkbladen gedeeld kunnen worden.
  !else 
- !if exam iswordof $error 
- les exercices et les feuilles de travail avant de partager les examens. 
- !else 
- !if livret iswordof $error 
- les exercices et les feuilles de travail avant de partager le livret de compétences. 
- !endif 
- !endif 
+  !if exam iswordof $error 
+   oefeningen en werkbladen uit examens gedeeld kunnen worden.
+  !else 
+   !if livret iswordof $error 
+    oefeningen en werkbaden voor de vereiste raport competenties gedeeld kunnen worden.
+   !endif 
+  !endif 
  !endif
 !exit 
 !endif
 
 !if stopshare_dep iswordof $error
- Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord arr&ecirc;ter le partage 
+ Voordat gedeeld materiaal be&iuml;ndigd kan worden, moeten wel de afhankelijkeheden gerespecteerd worden : 
  !if sheet iswordof $error 
- des examens et du livret de compétences avant celui des feuilles de travail . 
+  denk aan proefwerken en raport competenties en hun bijhorende werkbladen.
  !else 
- !if exo iswordof $error 
- des feuilles de travail avant celui des exercices. 
- !endif 
+  !if exo iswordof $error 
+   denk aan werkbladen en de bijhorende oefeningen.
+  !endif 
  !endif 
  !exit 
 !endif
 
 !if not_neighbor iswordof $error
-U hebt geen erkende buur klassen. 
+U hebt geen erkende buurklassen. 
  <br />
 Besef goed dat een klas pas echt een buur klas is als dit door <b>beide</b> klassen wordt erkend !
 

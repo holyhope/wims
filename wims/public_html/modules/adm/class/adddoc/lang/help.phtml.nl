@@ -26,7 +26,7 @@ Het werkblad wordt automatisch toegevoegd aan uw klas
 Vervolgens kan op de gebruikelijke manier de werkbladen worden aangepast
 </p><p>
 Deze functie kan slechts eenmaal worden gebruikt.
-En is niet geschikt voor het aanmaken van  meerdere kopieen.
+En is niet geschikt voor het aanmaken van meerdere kopieen.
 (gebuik hiervoor de handmatige werkblad aanmaak pagina)
 </p>
 

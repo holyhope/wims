@@ -1,7 +1,7 @@
 <p>Hier kunt aangeven welke computer netwerkadressen
  mogen deelnemen aan uw virtuele klas.<br />
- Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
- mogelijk andere de instellingen uit de individuele werkbladen
+ Deze instellingen blijven van kracht en hebben een hogere prioriteit dan
+ mogelijk andere de instellingen uit de individuele werkbladen ,toetsen etc.
 </p>
 !read grestrictform.phtml
 <p>
