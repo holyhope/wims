@@ -1,6 +1,6 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.Numeric extension	
+	dynapi.functions.Numeric extension
 */
 
 var f = dynapi.functions;
@@ -27,7 +27,7 @@ f.formatNumber = function(n,format){
 	nInt=nInt.split('').reverse().join('');;
 	nDec=(s[1]==''||s[1]==null||s[1]=='undefinded')? '':s[1];
 	if (nInt) len=nInt.length;
-	if (fInt.length>len) len=fInt.length;	
+	if (fInt.length>len) len=fInt.length;
 	for(i=0;i<len;i++){
 		c=nInt.charAt(i);
 		f=fInt.charAt(i);

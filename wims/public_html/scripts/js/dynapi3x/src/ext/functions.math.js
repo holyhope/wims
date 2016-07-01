@@ -1,7 +1,7 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.Math extension	
-	
+	dynapi.functions.Math extension
+
 	Math and Path functions
 */
 
@@ -37,7 +37,7 @@ f.getGUID = function() { // Globally Unique ID
 	n2=this.getRandomNumber(255);n3=this.getRandomNumber(255);n4=this.getRandomNumber(255);
 	n2 = (n2 < 16 ? '0' : '') + n2.toString(16);
 	n3 = (n3 < 16 ? '0' : '') + n3.toString(16);
-	n4 = (n4 < 16 ? '0' : '') + n4.toString(16);	
+	n4 = (n4 < 16 ? '0' : '') + n4.toString(16);
 	return (n1+n2+'-'+l+'-'+n3+n4+'-'+r).toUpperCase();
 };
 

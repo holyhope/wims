@@ -101,8 +101,10 @@ $ by ',' in '$Objs'
  var f_cll=-1;
  var f_clr=-1;
 
-dynapi.onLoad(function() {
+//dynapi.library.include('dynapi.debug');
 
+dynapi.onLoad(function() {
+	//dynapi.debug.print('ClickFill Onload');
 	var i,j;
 	var mev={};
 	$fillafter_js
@@ -290,17 +292,17 @@ function f_cright(n) {
 	else {f_corr(f_cll,n);}
 	f_lbis[n].setZIndex(100);
 }
+
 /*]]>*/
 </script>
 !reset wims_ins_alt
 !set vertical=text-top
 <div style="text-align:left;">
 !for i_=1 to $objcnt2
- !set l_=!item $i_ of $wims_fill_list
-<img style="width:$(fill_sx)px;height:$[$fill_sy+10]px;vertical-align:$vertical;" src="gifs/transparent.gif" alt="transparent" />
-<a id="fillobj$i_"><img style="width:1px;height:1px" src="gifs/transparent.gif" alt="transparent" /></a>
+  !set l_=!item $i_ of $wims_fill_list
+  <img style="width:$(fill_sx)px;height:$[$fill_sy+10]px;vertical-align:$vertical;" src="gifs/transparent.gif" alt="transparent" />
+  <a id="fillobj$i_"><img style="width:1px;height:1px" src="gifs/transparent.gif" alt="transparent" /></a>
 !next i_
 </div>
-
 <br class="clearall spacer"/>
 

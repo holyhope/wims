@@ -161,7 +161,7 @@ DynLayer.prototype.setInnerBorder = function(w,c){
         if(!this._borTp){
                 // create border layers
                 this.addChild(new Highlighter(this._bor_tp),'_borTp');//top
-                this.addChild(new Highlighter(this._bor_rt),'_borRt');//right         
+                this.addChild(new Highlighter(this._bor_rt),'_borRt');//right
                 this.addChild(new Highlighter(this._bor_bm),'_borBm');//bottom
                 this.addChild(new Highlighter(this._bor_lt),'_borLt'); //left
         }

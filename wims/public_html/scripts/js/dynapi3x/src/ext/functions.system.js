@@ -1,6 +1,6 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.System extension	
+	dynapi.functions.System extension
 */
 
 var f = dynapi.functions;
@@ -64,7 +64,7 @@ f.getElementById = function(id,parentLyr){
 			else if (layer.layers.length){
 				layer = this.getElementById(id,layer);
 				if (layer) return layer;
-			}				
+			}
 		}
 	}
 };

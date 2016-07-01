@@ -1,6 +1,6 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.Date extension	
+	dynapi.functions.Date extension
 */
 
 var f = dynapi.functions;
@@ -9,12 +9,12 @@ f.Date = {}; // used by dynapi.library
 // Date Functions --------------------------------------
 
 f.dateAdd = function(interval,n,dt){
-	if(!interval||!n||!dt) return;	
+	if(!interval||!n||!dt) return;
 	var s=1,m=1,h=1,dd=1,i=interval;
 	if(i=='month'||i=='year'){
 		dt=new Date(dt);
 		if(i=='month') dt.setMonth(dt.getMonth()+n);
-		if(i=='year') dt.setFullYear(dt.getFullYear()+n);		
+		if(i=='year') dt.setFullYear(dt.getFullYear()+n);
 	}else if (i=='second'||i=='minute'||i=='hour'||i=='day'){
 		dt=Date.parse(dt);
 		if(isNaN(dt)) return;
@@ -28,8 +28,8 @@ f.dateAdd = function(interval,n,dt){
 	return dt
 };
 f.dateDiff=function(interval,dt1,dt2){
-	if(!interval||!dt1||!dt2) return;	
-	var v,s=1,m=1,h=1,dd=1,i=interval;	
+	if(!interval||!dt1||!dt2) return;
+	var v,s=1,m=1,h=1,dd=1,i=interval;
 	if(i=='month'||i=='year'){
 		dt1=new Date(dt1);
 		dt2=new Date(dt2);
@@ -37,7 +37,7 @@ f.dateDiff=function(interval,dt1,dt2){
 		if (i=='year') v=years;
 		else if(i=='month') {
 			v=(dt2.getMonth()+1)-(dt1.getMonth()+1);
-			if(years!=0) v+=(years*12);			
+			if(years!=0) v+=(years*12);
 		}
 	}else if (i=='second'||i=='minute'||i=='hour'||i=='day'){
 		dt1=Date.parse(dt1);

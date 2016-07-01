@@ -1,6 +1,6 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.String extension	
+	dynapi.functions.String extension
 */
 
 var f = dynapi.functions;
@@ -16,7 +16,7 @@ f.trim = function(s,dir){
 	if(dir=='<'||dir=='<>') s=s.replace(/^(\s+)/g,'');
 	if(dir=='>'||dir=='<>') s=s.replace(/(\s+)$/g,'');
 	return s;
-	
+
 };
 f.strRepeat = function(s,n) {
 	if(!s) return '';
@@ -33,7 +33,7 @@ f.strReverse = function(s) {
 	return a.join('');
 };
 f.strStuff = function(s,v,index) {
-	if(!s) return '';	
+	if(!s) return '';
 	if (index==null) s=s+v+'';
 	else {
 		var t1=t2=s+'';

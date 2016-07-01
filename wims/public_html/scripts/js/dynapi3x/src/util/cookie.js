@@ -3,14 +3,14 @@
    Cookie functions
 
    The DynAPI Distribution is distributed under the terms of the GNU LGPL license.
-*/ 
+*/
 
 /*
 This is not tested, should work like this:
 
 		var c = new Cookie('mycookieset');
 		c.add('array',[1,2,3]); // re-saves cookie each time a value is added
-		
+
 		var c = new Cookie('mycookieset');  // auto-retrieves saved cookie object
 		var name = c.get('name');
 		var array = c.get('array');
@@ -23,7 +23,7 @@ This is not tested, should work like this:
 function Cookie(name,pDType) {
 	this.DynObject = DynObject;
 	this.DynObject();
-	
+
 	this.data = {};
 	this.name = name;
 	this.exists = false;
@@ -92,13 +92,13 @@ Cookie.encode = function(t,pDType,_lvl){
 	else {
 		if(isNaN(_lvl)) _lvl=0; else _lvl++;
 		if(t.constructor==Date) t='d['+escape(t)+']';
-		else if(t.constructor==Array){	
+		else if(t.constructor==Array){
 			//encode array = a[n1\0n2...\0nN]
 			var a=[];
-			for(var i=0;i<t.length;i++) a[i]=Cookie.encode(t[i],pDType);			
+			for(var i=0;i<t.length;i++) a[i]=Cookie.encode(t[i],pDType);
 			t='a['+a.join('\\'+_lvl)+']';
 		}
-		else {							
+		else {
 			//encode object = o[name1:value1\0name2:value2...\0nameN:valueN]
 			var a=[];
 			for(var i in t){
@@ -153,7 +153,7 @@ dynapi.functions.setCookie = function(name,value,days) {
 		var date=new Date();
 		date.setTime(date.getTime()+(days*24*60*60*1000));
 		var expires="; expires="+date.toGMTString();
-	} 
+	}
 	else expires = "";
 	dynapi.frame.document.cookie = name+"="+value+expires+"; path=/";
 };

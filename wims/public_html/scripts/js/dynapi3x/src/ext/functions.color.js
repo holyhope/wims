@@ -1,6 +1,6 @@
 /*
 	DynAPI Distribution
-	dynapi.functions.Color extension	
+	dynapi.functions.Color extension
 */
 
 var f = dynapi.functions;
@@ -18,7 +18,7 @@ f.DecToHex = function(val){
 	if (hi>57) hi+=7;
 	return String.fromCharCode(hi,lo);
 };
-f.getColor = function(r,g,b) { 
+f.getColor = function(r,g,b) {
 	return '#'+dynapi.functions.DecToHex(r)+dynapi.functions.DecToHex(g)+dynapi.functions.DecToHex(b);
 };
 f.getRandomColor = function() {
@@ -66,7 +66,7 @@ f.fadeColor = function(from, to, percent){
 	if(!from || !to) return;
 	if(percent<0) return from;
 	else if(percent>100) to;
-	
+
 	if(from.substring(0,1)!='#') from='#'+from;
 	if(to.substring(0,1)!='#') to='#'+to;
 
