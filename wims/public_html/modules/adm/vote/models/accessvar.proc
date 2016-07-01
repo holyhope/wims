@@ -93,6 +93,10 @@ $defconnip
   !!## need to check no "," in exconnip/testoextra and numerical for date variable.
   exconnip$i=!replace internal , by . in $(exconnip$i)
   testoextra$i=!replace internal , by . in $(testoextra$i)
+  nstud$i=$[max(-1,$(nstud$i))]
+  !if NaN isin $(nstud$i) or . isin $(nstud$i)
+    nstud$i=-1
+  !endif
   !for v in bday,bmonth,byear,bhour,bmin,ehour,emin
    !if NaN isin $[$($v$i)*1]
 	$v$i=$empty
