@@ -104,3 +104,7 @@ l'administrateur de la classe vous a communiqué.
 
 !set name_subclass=Sous-classe de
 
+!distribute lines Location (town, country)\
+ En remplissant ce champ, vous acceptez que nous indiquions que WIMS est utilisé dans votre ville (sans aucune autre mention)\
+into name_location,name_location_help
+

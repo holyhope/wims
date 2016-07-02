@@ -175,11 +175,12 @@ thisday=!char 7,8 of $today
   addcheck=$empty
  !endif
 
- !for i in $(checklist)institution,description,firstname,lastname,email,password$addcheck
+ !for i in $(checklist)institution,description,firstname,lastname,email,password$addcheck,location
   $i=!translate ,!$$"< to $     $ in $($i)
   $i=!singlespace $($i)
   $i=!trim $($i)
-  !if $($i)=$empty
+
+  !if $($i)=$empty and $i!=location
    error=has_empty
    !exit
   !endif
@@ -195,6 +196,7 @@ thisday=!char 7,8 of $today
    warn_subject=$i
   !endif
  !next i
+
  !!! can be defined in the file names.phtml.$lang if it is not the good order
  !default name_username=$firstname $lastname
  supervisor=$name_username
@@ -282,7 +284,8 @@ $ in $email
 $description\
 $lastname\
 $firstname\
-$email
+$email\
+$location
  !exit
 !endif
 
@@ -322,7 +325,7 @@ $email
   !exit
  !endif
  !distribute lines $datasave into \
-   institution,description,lastname,firstname,email
+   institution,description,lastname,firstname,email,location
  class_defined=
  !defread wimshome/log/classes/$code/.def
  !if $class_defined=yes
@@ -343,7 +346,7 @@ $email
  !endif
  # abuse check
  check=!deaccent $check
- check=!lower $institution, $description, $supervisor
+ check=!lower $institution, $description, $supervisor, $location
  mask=!text mark $char_lower in $check
  check=!text select $char_lower in $check
  check=!text expand $check using $mask
@@ -366,7 +369,7 @@ $email
   !reset superclass
  !endif
  !for t in description,institution,email,lang,expiration,\
-	superclass,defid,secure,cas_auth
+	superclass,defid,secure,cas_auth,location
   cadd_$t=$($t)
  !next t
  cadd_password=$pword

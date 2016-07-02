@@ -54,14 +54,19 @@
    !let institution=$wims_institutionname
    $institution
   !else
-   <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim" />
+   <input size="$instlim" name="institution" value="$institution" id="institution" maxlength="$instlim" required="required" />
    <div class="formHelp">$name_atmost $instlim $name_characters</div>
   !endif
    </div>
-   <div class="field box">
+   <div class="field box halfwidth">
     <label for="description">$wims_name_name $name_classesss</label>
-    <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" />
+    <input size="$desclim" name="description" value="$description" id="description" maxlength="$desclim" required="required" />
     <div class="formHelp">$name_atmost $desclim $name_characters</div>
+   </div>
+   <div class="field box halfwidth">
+    <label for="location">$name_location</label>
+    <input size="$desclim" name="location" value="$location" id="location" maxlength="$desclim" />
+    <div class="formHelp">$name_location_help</div>
    </div>
   !if $Cltype notin 24
    !set nblevel=!itemcnt $wims_listlevel
@@ -90,12 +95,12 @@
  !else
   <div class="field box halfwidth">
     <label for="firstname">$wims_name_firstname</label>
-    <input size="$suplim2" name="firstname" value="$firstname" id="firstname" />
+    <input size="$suplim2" name="firstname" value="$firstname" id="firstname" required="required"/>
     <div class="formHelp">$wims_name_Supervisor</div>
   </div>
   <div class="field box halfwidth">
     <label for="lastname">$wims_name_lastname</label>
-    <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" />
+    <input size="$suplim2" name="lastname" value="$lastname" id="lastname" maxlength="$suplim2" required="required" />
     <div class="formHelp">$wims_name_Supervisor</div>
   </div>
  !endif
