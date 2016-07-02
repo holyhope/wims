@@ -1,7 +1,7 @@
 <div class="wims_warning" style="padding:20px">
 De server staat mbt Wiskundige opmaak ingesteld op <a href="http://www.w3.org/Math/" target="wims_external">MathML</a> .
 Test of uw browser deze opmaak <a href="http://www.mozilla.org/projects/mathml/demo/texvsmml.html" target="wims_external">correct kan weergeven</a>.
-Zoniet , kies dan bijvoorkeur een geschikte browser (FireFox) of schakel over op "wiskunde met plaatjes" via
+Zo niet , kies dan bijvoorkeur een geschikte browser (FireFox) of schakel over op "wiskunde met plaatjes" via
 !href module=adm/light&+phtml=useropts.phtml.$lang $wims_name_pref
 .
 </div>

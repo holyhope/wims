@@ -23,7 +23,7 @@ CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
 CR_Docs=Tutorials
 CR_mod = Full-power modules
-CR_sequence=Vous avez choisi de présenter les ressources suivantes en séquence pour les participants.
+CR_sequence=U hebt gekozen om het lesmateriaal aan te bieden in een speciale volgorde. 
 
 E_comp = gecompileerd op
 E_manager = Site manager:
@@ -91,7 +91,7 @@ wims_name_SE_list = Leerlingen en cijfers (old)
 wims_name_n_participant = Zo zien leerlingen deze pagina
 
 wims_name_SE_mod = Bericht van de dag
-wims_name_SE_config = Configuratie/Onderhoud
+wims_name_SE_config = Configuratie&amp;Onderhoud
 wims_name_SE_secu = Security management
 
 ADD_1 = Toevoegen:

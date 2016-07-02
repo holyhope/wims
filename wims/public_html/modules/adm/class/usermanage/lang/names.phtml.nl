@@ -10,16 +10,16 @@
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 !set name_transfer=Breng zijn/haar activiteiten over uit andere klassen
-!set name_filter=Variables techniques
+!set name_filter=Technische variabelen
 
 
 !if $job=regmanage
 	!set name_all=Alle leeringen
 	!set name_reguser=Inschrijven van leerlingen
 	!set name_unreguser=Annuleer de inschrijving
-        !set name_display=Afficher
-        !set name_techvardisplay=Sélection par variables techniques
-	!set name_description=Utiliser les cases à cocher pour sélectionner les participants et les classes de votre choix puis appuyez sur l'un des deux boutons pour changer leurs droits d'accès.
+        !set name_display=Laat zien
+        !set name_techvardisplay=Selectie dmv tech. variabelen
+	!set name_description=Gebruik de checkboxen voor het selecteren van  deelnemers en klassen en klik op eacute;eacute;n van de knoppen om de toegangsrechten aan te passen.
 !endif
 
 !if $job iswordof userprop teacher userlist
@@ -39,7 +39,7 @@
    into name_merge, name_replace,name_show
 !set name_error1=Deze student is niet geregistreerd bij de andere cursus en\
 kan dus niet worden overgezet van
- !set name_error2=<b>Fout</b> in de klas identificatie. Verkeerde handeling of een software fout?
+ !set name_error2=<b>Fout</b> in de klas authentificatie. Verkeerde handeling of een software fout?
  !set name_activities=!nosubst Details van de aktiviteiten in $i (beperkt tot 1000 regels).
  !set name_totransfer=Hier staan de andere cursussen waarin deze student werk heeft uitgevoerd.\
  Klik om het werk over te hevelen

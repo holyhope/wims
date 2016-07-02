@@ -40,10 +40,10 @@ plus de volgende extra commando's <dl>
 16:Sessie 2 om 10.00,
 21:Sessie 3 om 13.00}
 </pre>
-Attention cependant, utiliser la même variable technique dans plusieurs questionnaire peut générer des conflits.
+Let op: het gebruik van dezelfde technische variabelen in meerdere enquetes kan problemen geven.
   </dd>
 <dt><span class="tt wims_code_variable">\textarea</span>
-   <dd>Een tekst invoerveld, alleen te gebruiken bij een anoniem enquete.
+   <dd>Een tekst invoerveld, alleen te gebruiken bij een anonieme enquete.
 	</dd>
 </dl>
 
@@ -59,11 +59,11 @@ Een enquete mag tot $max_parms keuzevelden bevatten.
  <li><b>$wims_name_Type</b>:
   <ul>
    <li><b>$name_anonymous </b>:
-   In een anonieme stemming weet niemand wat de ander heeft geantwoord.
+   In een anonieme enquete weet niemand wat de ander heeft geantwoord.
    Het is ook onmogelijk om terug te gaan en het antwoord te veranderen.
 </li>
    <li><b>$name_trace met log files</b>:
-   Dit type is te vergelijken met een anonoieme stemming.
+   Dit type is te vergelijken met een anonoieme enquete.
    Het verschil is dat antwoorden aan de deelnemer zijn gekoppeld, zonder dat de naam van deze deelnemer bekend is.
    </li>
    <li><b>$name_nominative</b>:
@@ -74,10 +74,10 @@ Een enquete mag tot $max_parms keuzevelden bevatten.
  </li>
  <li><b>$wims_name_Status</b>:
      <ul>
-      <li><b>$name_0</b>: de stemming kan worden veranderd, deelnemers kunnen nu de stemming niet zien.</li>
-      <li><b>$name_1</b>: de stemming kan niet worden veranderd, deelnemers nu kunnen de vragen beantwoorden</li>
-      <li><b>$name_2</b>: de stemming kan niet worden veranderd, deelnemers nu kunnen de vragen niet beantwoorden </li>
-      <li><b>$name_3</b>: de stemming kan niet worden veranderd, deelnemers kunnen nu de stemming niet zien.</li>
+      <li><b>$name_0</b>: de enquete kan worden veranderd, deelnemers kunnen nu de enquete niet zien.</li>
+      <li><b>$name_1</b>: de enquete kan niet worden veranderd, deelnemers nu kunnen de vragen beantwoorden</li>
+      <li><b>$name_2</b>: de enquete kan niet worden veranderd, deelnemers nu kunnen de vragen niet beantwoorden </li>
+      <li><b>$name_3</b>: de enquete kan niet worden veranderd, deelnemers kunnen nu de enquete niet zien.</li>
      </ul>
  </li>
  <li><b>$name_result</b>:
@@ -97,7 +97,7 @@ Een enquete mag tot $max_parms keuzevelden bevatten.
 De volgende modes zijn mogelijk
 <ul><li>
   <b>$name_free</b> :
-  er kan een enquete of stemming worden aangemaakt, zie voor de configuratie instellingen de help pagina.
+  er kan een enquete worden aangemaakt, zie voor de configuratie instellingen de help pagina.
   </li><li>
 !readproc adm/lang/sheetexam.phtml.$lang
   <b>$name_accessvar</b> :

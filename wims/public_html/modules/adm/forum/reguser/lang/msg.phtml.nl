@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
 !if no_forum=$error
-U hebt niet opgegeven aan wel forum U wilt deelnemen
+Je hebt niet opgegeven aan wel forum je wilt deelnemen
  <p>
  !href module=adm/forum/forum forum lijst
 .
@@ -9,9 +9,9 @@ U hebt niet opgegeven aan wel forum U wilt deelnemen
 !endif
 
 !if bad_forum=$error
-Het forum dat u hebt uitgezocht bestaat niet!
+Het forum dat je hebt uitgezocht bestaat niet!
 Als dit geen software fout is, dan is het forum verlopen, 
-of u bent aan het spelen met deze server (bedenk goed dat alle handelingen worden gelogd!)
+of je bent aan het spelen met deze server (bedenk goed dat alle handelingen worden gelogd!)
 !endif
 
 !if no_register=$error

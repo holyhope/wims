@@ -66,7 +66,7 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
    name_thisvote_already2,name_give_your_choice,name_details,\
    name_comments,name_textarea
 
-!set name_textarea_limit=!nosubst limited to $limit_textarea characters
+!set name_textarea_limit=!nosubst beperkte to $limit_textarea lettertekens
 !set name_whovote=Lijst met stemmers
 !set name_whodontvote=Lijst met niet stemmers
 
@@ -84,7 +84,7 @@ programma naar keuze.
 !set name_optionclosed=gesloten, wordt geopend als alle andere opties zijn ingevuld
 
 !distribute lines Hoeveel sessies ?\
-How many groups?\
+Hoeveel groepen?\
 maximaal\
 uservar naam\
 Default host IP \
@@ -106,7 +106,7 @@ into name_howmany,name_howmanygroups,name_atmost,name_namevar,name_textconnip,\
 !set name_numsess=!nosubst $numsess toets sessies zijn beschikbaar.
 !set name_session_select=!nosubst Selecteer datum en tijd van de $numsess beschikbare toets sessies
 
-!set name_describesource=!nosubst Hier staat de brontekst.Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
+!set name_describesource=!nosubst Hier staat de brontekst. Controleer de gegevens en klik op <span class="wims_button disabled">$wims_name_tosave</span>.
 
 !if $vote_mode!=free
  !readproc adm/lang/sheetexam.phtml.$lang

@@ -20,8 +20,8 @@
 !set name_validation_message=Vraag de sitemanager de installatie hiervan te controleren.
 !set name_compile=Compileren latex2wims
 !set name_backup=Backup
-!set name_edfile=File modification
-!set name_showfile=File content
+!set name_edfile=Bestands modificatie
+!set name_showfile=Bestands inhoud
 
 !! wims_name_properties
 !set name_index=Eigenschappen
@@ -132,7 +132,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
   Als dit niet de bedoeling is, graag de systeembeheerder van deze server vragen de module handmatig te verwijderen\
   U wordt een email ter bevestiging toegestuurd.\
   OK, ga door\
-  The following domains do not exist\
+  De volgende domeinnamen zijn niet bekend \
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
    name_local,name_error,name_emailsend,name_goahead,name_warning_nodomain
 
@@ -164,13 +164,9 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    gebruik hiervoor de technische engelse versie.\
    Stuur uw bijdrage voor domeinen en / of zoektermen naar
 
-!set name_warning_keywords_unknown=The following keywords are not in the official \
- list of WIMS keywords.
- !set name_warning_keywords2=Only official keywords will be proposed using autocompletion\
- in the search engine. Have you checked that all keywords\
- you are proposing have no equivalent in the "official" list ? Remember that\
- all words in the title or description are also taken into account by the search engine.
- !set name_warning_suggestion=You could help us by sending new propositions for domains and keywords to
+ !set name_warning_keywords_unknown=De volgende zoektermen zijn niet opgenomen in de officiele zoektermlijst van WIMS 
+ !set name_warning_keywords2=Alleen de officiele zoektermen komen in aanmerking voor 'autocompletering' in de zoekmachine. Controleer of er geen bruikbare alternatieven in de zoektermlijst van WIMS aanwezig zijn.
+ !set name_warning_suggestion=Nieuwe voorstellen voor domeinen en / of zoektermen zijn uiteraard welkom.
 !endif
 
 !if $job=diff
@@ -192,7 +188,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    Geef de backup file\
    controleer verschillend met de bestaande module.\
    Ga aan het werk met deze module.\
-   Module hersteld\
+   Module is hersteld\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
 

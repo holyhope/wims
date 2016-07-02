@@ -3,13 +3,13 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
-Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld. 
+Helaas, deze handeling is alleen voorbehouden voor de supervisor van een klas. 
  !exit
 !endif
 
 !if bad_classpass=$error
-Helaas, U hebt niet het juiste wachtwoord ingevuld.
-U kunt dus de gegevens niet wijzigen. 
+Helaas, niet het juiste wachtwoord ingevuld.
+De gegevens worden niet gewijzigd. 
  !exit
 !endif
 

@@ -5,8 +5,7 @@ Binaire Bestanden voor oefeningen
 
 !if $quota=yes
  <span class="wims_warning">$wims_name_Error</span>.
- Er is helaat voor Uw klas niet genoeg ruimte meer 
- beschikbaar op de harde schijf.
+ Er is helaas voor niet genoeg ruimte meer beschikbaar.
  <p></p>
  !goto sendend
 !endif

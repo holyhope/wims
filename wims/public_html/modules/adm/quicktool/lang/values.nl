@@ -23,6 +23,6 @@
 
 !set list_swac_prompt=Duits,Engels,Frans,Nederlands,Zweeds,Spaans
 
-!set name_warning=!nosubst %%De brondcode van deze oefening is gemaakt met $module_title \
+!set name_warning=!nosubst %%De broncode van deze oefening is gemaakt met $module_title \
 %%Het soort oefening is $$(type_exo).\
 %% Kan naar wens worden aangepast.

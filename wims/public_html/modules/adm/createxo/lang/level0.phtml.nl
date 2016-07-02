@@ -43,7 +43,7 @@ Andere beschikbare hulpmiddelen:
 <li>    
 !href module=adm/modtool $wims_name_modtool 
     voor het online maken en organiseren van alle type OEF oefeningen en interactieve documenten.
-    Hiervoor is een 'ontwikkelaar account' noodzakelijk.
+    Hiervoor is een 'Modtool account' noodzakelijk.
     Het publiceren van uw interactieve materiaal verondersteld een Modtool account. 
 <li>
 !href module=adm/quicktool $wims_name_quicktool
@@ -51,12 +51,12 @@ Andere beschikbare hulpmiddelen:
  Verschillende types OEF oefeningen kunnen worden gemaakt in begeleidde mode, zoals GAP,MCQ,SELECTWORD etc.
  Met quicktool kunnen oefeningen worden met speciale help paginas.
  Ook kan gebruik worden gemaakt van de audio databank van het <a target="wims_external" href="http://shtooka.net">Shtooka</a>
- Ook quicktool vereist een 'ontwikkelaar account'.
+ Ook quicktool vereist een 'Modtool account'.
 
 <li>     
 !href module=adm/latex2wims $wims_name_latex2wims
     maakt mogelijk dat LaTeX documenten kunnen worden 
     omgezet naar interactieve <span class="tt">WIMS</span>  documenten.
-    Ook dit hulpmiddel vereist een 'ontwikkelaar account'.
+    Ook dit hulpmiddel vereist een 'Modtool account'.
 </li></ul>
 </div>

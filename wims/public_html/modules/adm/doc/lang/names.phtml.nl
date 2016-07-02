@@ -33,7 +33,7 @@
  <span class="tt wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</span>
 </p>
 om het plaatje <span class="tt wims_fname">myfile.jpg</span> te verwerken in de pagina.
-Bestanden opgenomen in dit document zijn alleen beschikbaar voor mensen met "leesrechten" voor dit document
+De bestanden zijn alleen beschikbaar voor dit document.
 
 </p><p>
 
@@ -46,10 +46,9 @@ Om een link naar een bestand aan te maken, is de onderstaande syntax afdoende:
 !exit
 
 :readauth
-Als schrijver van dit document moet u  toestemming aan de
+Er moet toestemming van de
  !mailurl $wims_site_manager systeem beheerder 
-
- van deze server vragen om dit document $doc openbaar te maken.
+ van deze server zijn om document $doc openbaar te maken.
 !exit
 
 :erase1

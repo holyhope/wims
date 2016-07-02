@@ -2,7 +2,7 @@
 
 <span class="wims_warning">$wims_name_Error</span>.
 !if $error=notechvar
- Aucune variable technique définie dans cette classe. Pour utiliser ce modèle de questionnaire vous devez d'abord définir une variable technique dans la classe en utilisant le gestionnaire de variable technique.
+ Er zijn geen technische variabelen gedefinieerd in deze klas. Stel eerst de benodigde technische variabelen vast voordat deze instelling kan worden gebruikt. 
  !exit
 !endif
 

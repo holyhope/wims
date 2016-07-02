@@ -1,7 +1,7 @@
 !set wims_module_log=error: $error
 
 !if badoldvaluesnb=$error
- Le nombre de valeurs prises par cette ancienne variable technique est trop élevé pour qu'elle puisse être récupérée.
+ Het aantal waarden voor deze oude technische variabele zijn te groot om te worden hersteld.
  !exit
 !endif
 
