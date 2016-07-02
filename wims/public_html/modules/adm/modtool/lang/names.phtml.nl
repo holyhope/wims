@@ -43,7 +43,7 @@
 !set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
 !set gnu=!nosubst &copy; $year (<a href=\"COPYING\">GNU GPL</a>)
 
-!set name_type=oefening, hulpmiddel, document, recreatie, OEF, Deductio
+!set name_type=OEF, document, oefening, hulpmiddel, recreatie, Deductio
 !set name_zone=Zone
 !set name_Category=Categorie
 !set name_category=!nosubst $wims_name_Type
@@ -164,7 +164,7 @@ into name_optiontest,name_formule,name_useropts1, name_useropts2,name_fonte,name
    gebruik hiervoor de technische engelse versie.\
    Stuur uw bijdrage voor domeinen en / of zoektermen naar
 
- !set name_warning_keywords_unknown=De volgende zoektermen zijn niet opgenomen in de officiele zoektermlijst van WIMS 
+ !set name_warning_keywords_unknown=De volgende zoektermen zijn niet opgenomen in de officiele zoektermlijst van WIMS
  !set name_warning_keywords2=Alleen de officiele zoektermen komen in aanmerking voor 'autocompletering' in de zoekmachine. Controleer of er geen bruikbare alternatieven in de zoektermlijst van WIMS aanwezig zijn.
  !set name_warning_suggestion=Nieuwe voorstellen voor domeinen en / of zoektermen zijn uiteraard welkom.
 !endif

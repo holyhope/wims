@@ -43,7 +43,7 @@
 !set name_simpl_address=La dirección de este módulo es una dirección simplificada
 !set gnu=!nosubst &copy; $year (<a href=\"COPYING\">GNU GPL</a>)
 
-!set name_type=ejercicio, herramienta, documento, recreación, OEF, deducción
+!set name_type=OEF,documento, ejercicio, herramienta, recreación, deducción
 !set name_zone=Zona
 !set name_Category=Categoría
 !set name_category=!nosubst $wims_name_Type
