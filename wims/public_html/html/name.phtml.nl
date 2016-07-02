@@ -355,10 +355,11 @@ Nieuw werkblad\
 Nieuwe proefwerk\
 Nieuwe klas\
 Nieuwe enquete\
+Mes questionnaires\
 Nieuwe oefening\
 Oefeningen van deze klas\
 Werkblad oefeningen\
-into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
+into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
 !distribute items niet doorgaan,ongedaan maken,klaar,gefeliciteerd,klaar \

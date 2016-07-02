@@ -356,10 +356,11 @@ Nueva hoja \
 Nuevo examen \
 Nueva clase \
 Nuevo cuestionario \
+cuestionario\
 Nuevo ejercicio \
 Ejercicios de la clase \
 Exercices de la feuille&nbsp\
-into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
+into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos
 
 !distribute items untry,undone,done,congratulations,hecho \
