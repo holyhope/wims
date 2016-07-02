@@ -168,11 +168,14 @@ processed=yes
        remark=$remark full
       !endif userremain
      !endif prop=yes
+     !else
+      !if $up_password=$empty
+        pass_missing=yes
+      !endif
     !endif firstname ... non empty
    !endif exist2=yes
   !endif exist=yes
 !next l
-
 !if $change!=$empty
  !read adm/class/mkuserlist
  !if $classtype isin 24
@@ -181,7 +184,6 @@ processed=yes
  !read adm/class/stat
  wims_class_log=spreadsheet userinfo by $wims_realuser
 !endif
-
 missing=!listcomplement $added in $missing
 change=!listcomplement $added in $change
 added=!listcomplement $missing in $added

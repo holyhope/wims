@@ -123,9 +123,11 @@ La nota <span class="tt">global</span> se calcula a partir de las otras dos, med
     Para $wims_name_send los datos de su hoja de cálculo a la clase, especifique\
     El fichero de datos\
     Formatos aceptados\
+    For the new participants, the password column is compulsory.\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
   name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
-    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2,\
+    name_passwarning
 
 
   !set name_deposit=!nosubst  El fichero de hoja de cálculo <span class="tt">$wims_deposit</span> ha sido reconocido correctamente.

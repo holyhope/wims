@@ -28,7 +28,6 @@ $wims_name_csv
  </span> $name_download
  <hr />
 !endif
-
 !if $processed=yes
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
   $name_deposit<ul>
@@ -44,32 +43,36 @@ $wims_name_csv
   !endif
    !if $bad_login!=$empty
    <li>$name_badlogin: <span class="tt wims_login">
-   !replace internal , by ,$ $ in $bad_login
+    !replace internal , by ,$ $ in $bad_login
    </span></li>
-  !endif
-  !if full iswordof $remark
-   <li>$name_warning1</li>
-  !endif
-  !if noprop iswordof $remark
-   <li>$name_warning2</li>
-  !endif
-  !if noauto iswordof $remark
-   <li>$name_warning3</li>
-  !endif
-  !if $erased!=$empty
-   <li>$name_warning4:
-   <span class="tt wims_login">
-   !replace internal , by ,$ $ in $erased
-   </span></li>
-  !endif
-  !if $missing!=$empty
-   <li>
-   !if full notwordof $remark
-    $name_nologin1:
-   !else
-    $name_nologin2:
    !endif
-   <span class="tt wims_login">$missing</span>
+   !if full iswordof $remark
+    <li>$name_warning1</li>
+   !endif
+   !if noprop iswordof $remark
+    <li>$name_warning2</li>
+   !endif
+   !if noauto iswordof $remark
+    <li>$name_warning3</li>
+   !endif
+   !if $erased!=$empty
+    <li>$name_warning4:
+    <span class="tt wims_login">
+    !replace internal , by ,$ $ in $erased
+    </span></li>
+   !endif
+   !if $missing!=$empty
+    <li>
+    !if full notwordof $remark
+     $name_nologin1:
+    !else
+     $name_nologin2:
+    !endif
+    <span class="tt wims_login">$missing</span>.
+    !if $pass_missing=yes
+     $name_passwarning
+    !endif
+   !endif
   !endif
   </li>
   !if $manual=yes
