@@ -43,6 +43,7 @@
      !if $wims_user=anonymous
        !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=example to $wims_link_close
      !else
+!! FIXME this never happens as _ is not in $wims_session !
        !if _exam notin $wims_session
          !set wims_link_close=!append line visitor,1,cmd=close&module=adm/class/classes&type=participant to $wims_link_close
        !endif

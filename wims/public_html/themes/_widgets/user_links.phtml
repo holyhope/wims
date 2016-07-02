@@ -1,7 +1,7 @@
 !!## Dropdown Menu on top right (user links + languages + wims about)
 
-!!! _help _exam _test _tool
-!if _help isin $wims_session or _exam isin $wims_session or _test isin $wims_session
+!!! _help _test _tool
+!if _help isin $wims_session or _test isin $wims_session
   !exit
 !endif
 
@@ -15,9 +15,9 @@
    !increase wims_hm_cnt
   !endif
   !read themes/_widgets/headmenu.phtml
-
+  !if _ notin $wims_session
   !! USER LINKS
-  !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty
+   !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty
     !read themes/_procs/userlinks.proc
     !default wims_which_user=[xxx]
     <li class="menuitem is-dropdown-submenu-parent">
@@ -53,7 +53,7 @@
       </li>
     !endif
   !endif
-
+ !endif
 </ul>
 
 <!-- Foundation Dropdown Menu -->
