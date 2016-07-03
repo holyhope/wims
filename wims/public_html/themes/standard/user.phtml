@@ -39,7 +39,12 @@
 !!!if $auth_method isitemof $auth_method_list
 !!   !set wims_user_ext=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user
 !!!endif
-!!!default wims_user_ext=$wims_user
+!!default wims_user_ext=$wims_user
+
+!! (MC) the following seems to be needed for groupement to go back to 
+!! the superclass (is it sufficient to change the name of the variable 
+!! in the links below?)
+!default wims_user_ext=$ext_login
 
 <div class="wims_classes_direct">
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
