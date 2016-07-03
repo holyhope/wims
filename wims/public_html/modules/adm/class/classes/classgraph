@@ -29,9 +29,9 @@
  !let don=!defof class_typename,class_description,class_supervisor,class_parent in wimshome/log/classes/$cls/.def
  !let t=!positionof item $(don[1]) in level,class,program,course
  !if $t=$empty
-   <span class="wims_classes_direct_$(don[1])"> $(CL_Name[6]) :
-   !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
-   </span>
+  !! <span class="wims_classes_direct_$(don[1])"> $(CL_Name[6]) :
+   !!href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+  !! </span>
   !goto endfor
  !endif
  !if $t=3
@@ -65,9 +65,10 @@
   !if $cls_pos!=$empty
     !set cls_statut=$(statut[$cls_pos])
     !if $cls_statut=supervisor
-      !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+      !href cmd=reply&&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
+    ($cls_statut)
     !else
-      !href module=adm/class/classes&type=authparticipant&class=$cls&auth_user=$cls_statut $(don[2])
+      !href cmd=reply&type=authparticipant&class=$cls&auth_user=$cls_statut $(don[2])
     !endif
   !endif
  !endif

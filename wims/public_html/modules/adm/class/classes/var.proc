@@ -32,8 +32,6 @@ superclass=!text remove . in $superclass
  !bound type within supervisor,participant,example,\
    authsupervisor,authparticipant default example
 !endif
-!set wims_ariane_self=no
-!set wims_ariane=!append line n_$type,8, to $wims_ariane
 !if $type=example
  superclass=
 !endif
@@ -102,7 +100,12 @@ listla=
  sccnt=0
  !if $wims_class!=$empty
   !defread wimshome/log/classes/$wims_class/.def
+  !set wims_ariane=!append line n_$type,8, to $wims_ariane
   !default class_type=0
+  !if $class_type=4
+    !set wims_ariane_home=no
+  !endif
+  !set wims_ariane_self=no
   !if $class_type>=2
    !read adm/class/userdef classes,$wims_class,$wims_user
    supervisable=!defof user_supervisable in $userdef
