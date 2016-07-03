@@ -1,19 +1,6 @@
 
-/*display l2w left toc inside wimsmenumodubox */
-#wimspagebox{
-  position:relative;
-}
-#left_toc, #wimsmenumodubox{
-  position: absolute;
-}
-#left_toc{
-  left:0;
-  top:6em;
-}
-
-
 /* classes pour menu*/
-.ui-menu {width: 100px; font-size: 80%;}
+.ui-menu {font-size: 80%;}
 /* classes pour latex2wims : latex2wims , latex2wimsl, latex2wimsr, latex2wimslr
 selon qu'il y n'a pas de toc, un toc à gauche, à droite, des deux côtés*/
 .doc_latex2wims .wimsdoc,
@@ -22,12 +9,13 @@ selon qu'il y n'a pas de toc, un toc à gauche, à droite, des deux côtés*/
 .doc_latex2wimslr .wimsdoc{
    display:inline-block;
    text-align:justify;
-   margin-left: 0;
-   margin-right: 0;
-   padding-left: 1em;
+   /*margin-left: 0;
+   margin-right: 0;*/
+   padding-top: 0;
    padding-right: 1em;
-   padding-top: 0em;
    padding-bottom: 0;
+   padding-left: 1em;
+
    border: solid #FC9;
    border-width: 1px;
    border-color: gray;
@@ -35,24 +23,20 @@ selon qu'il y n'a pas de toc, un toc à gauche, à droite, des deux côtés*/
    line-height: 1.1;
    overflow: auto;
 }
-.doc_latex2wims .wimsdoc {}
-.doc_latex2wimsl .wimsdoc,.doc_latex2wimsr .wimsdoc{ width:80%;}
-.doc_latex2wimslr .wimsdoc {width:71%;}
 .doc_latex2wimsl .left_toc,.doc_latex2wimslr .right_toc,
 .doc_latex2wimslr .left_toc,.doc_latex2wimsr .right_toc {
   display: inline-block;
-  min-width:10em;
   vertical-align:top;
-  padding: 0em;
-  padding-top: 0em;
+  padding: 0;
+  padding-top: 0;
 }
-.left_toc  {float:left;  left: auto;}
-.right_toc {float:right; right:auto;}
+
 #docprint .doc_latex2wimsl  .left_toc,
 #docprint .doc_latex2wimsr  .right_toc,
 #docprint .doc_latex2wimslr .left_toc,
 #docprint .doc_latex2wimslr .right_toc
 {visibility:hidden; display:none;}
+
 /*Pour mettre en relief l'endroit où on est dans les menus*/
 .left_selection,.right_selection {
   padding:0em;
@@ -271,3 +255,79 @@ span.subsubsection {
 }
 /* list allexercise*/
 div.lw_allexo > itemize li{list-style:none;}
+
+
+/* When toc is included in wimsdoc */
+.wimsdoc>.left_toc{
+  margin:0 1em 1em -1em;
+}
+.wimsdoc>.right_toc{
+  float:right;
+  margin:0 -1em 1em 1em;
+}
+
+/* Small screens */
+@media only screen and (max-width: 40em) {
+  .ui-menu{
+    max-width:none;
+    width:98%;
+  }
+  ul.ui-menu.ui-widget.ui-widget-content.ui-front{
+    border-color:red;
+    left:0!important;
+    max-width:80%;
+  }
+  .wimsdoc{
+    margin-right: .5em;
+  }
+}
+
+
+#left_toc, #right_toc, .wimsdoc{
+  /* includes borders when calculating width */
+  box-sizing: border-box;
+}
+
+/* Small screens */
+@media only screen and (max-width: 40em){
+  .wimsdoc { width:100%;}
+}
+
+/* Medium screens */
+@media only screen and (min-width: 40.063em) and (max-width: 64em){
+  .ui-menu{
+    max-width:none;
+  }
+  .doc_latex2wimslr>#right_toc{
+    float:left;
+  }
+  #left_toc,#right_toc{ width:25%;}
+  .wimsdoc { width:75%;}
+}
+
+/* Medium & large screens */
+@media only screen and (min-width: 40.063em) {
+  #left_toc{
+    float:left;
+  }
+  /* larger submenus */
+  #left_toc ul{
+    width:100%;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 64.063em) {
+  /* 3 columns */
+  .doc_latex2wimslr #left_toc, .doc_latex2wimslr #right_toc{width:15%;}
+  .doc_latex2wimslr .wimsdoc {width:70%;}
+
+
+  .doc_latex2wimsl .wimsdoc {width:75%;}
+
+  #right_toc{
+    float:right;
+  }
+}
+
+
