@@ -1,34 +1,18 @@
 !!INDEX
-!let module_author	=XIAO, Gang
-!let module_address	=
-!let module_maintainer_address=wimsdev@groupes.renater.fr
-!let module_title   =設定  WIMS 的偏好
-!let module_description	=define preferences for wims
-!let module_version	=1.00
-!let module_wims_version=0.13
-!let module_language	=tw
-!let module_copyright	=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
-!let module_category	=adm
-!let module_level	=
-!let module_domain	=adm
-!let module_keywords	=wims
+!let module_translator=
+!let module_translator_address=
+!let module_title=設定  WIMS 的偏好
+!let module_description=define preferences for wims
+!let module_language=tw
 !!INDEXEND
 
 !let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
 
-
-!let texsize=!char 1 of $useropts
-!let texalign=!char 2 of $useropts
-!default texsize=$[$wims_texbasesize-1]
-!default texalign=$talign
-!let useropt2=!char 3 to -1 of $useropts
-!if $useropts!=$empty and $wims_realuser!=$empty
- !readproc adm/class/userdef classes,$wims_class,$wims_realuser
- !setdef !set user_opts=$useropts in $userdef
- !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
-!endif
+!read proc/useropts.proc
 
 !header
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
 本頁讓您改變在 WIMS 伺服器上工作時的偏好設定。
 <p>
 設定偏好：
@@ -136,6 +120,6 @@
 <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
  title="WIMS">連結</a>
 放在書簽中以便在未來的連線中保持這些偏好。
-<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+
 :end
 !tail

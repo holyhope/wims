@@ -1,147 +1,154 @@
 !!INDEX
-!let module_author=XIAO, Gang
-!let module_address	=
-!let module_maintainer_address=wimsdev@groupes.renater.fr
+!let module_translator=
+!let module_translator_address=
 !let module_title=Nastavitve WIMS
 !let module_description=osebna nastavitev lastnosti za WIMS
-!let module_version=1.00
-!let module_wims_version=0.13
-!let module_language=en
-!let module_copyright=&copy; 1998 (<a href="COPYING">GNU GPL</a>)
-!let module_category=adm
-!let module_level=
-!let module_domain=adm
-!let module_keywords=wims
+!let module_language=si
 !!INDEXEND
 
 !let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
 
-
-!let texsize=!char 1 of $useropts
-!let texalign=!char 2 of $useropts
-!let default=$[$wims_texbasesize-1]
-!default texsize=$default
-!let default=!char 1 of $default
-!default texalign=$talign
-!set arg=!nospace $texsize 1
-
-!let useropt2=!char 3 to -1 of $useropts
-!if $useropts!=$empty and $wims_realuser!=$empty
- !readproc adm/class/userdef classes,$wims_class,$wims_realuser
- !setdef !set user_opts=$useropts in $userdef
- !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
-!endif
-
-!set zoom=!char 3 of $useropts
+!read proc/useropts.proc
 
 !header
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
-Ta stran vam omogoèa nastavitev dela s stre¾nikom WIMS po va¹ih ¾eljah.
-<ul>
-!if $wims_user=$empty
- <li>Privzeti jezik.
-  !set wims_language_cnt=!wordcnt $wims_site_languages
-  !for l=1 to $wims_language_cnt
-   !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1/>$(lang_name_$la)
-   &nbsp;&nbsp;
-  !next l
-  </li>
-!endif
+<p>Ta stran vam omogoèa nastavitev dela s stre¾nikom WIMS po va¹ih ¾eljah.</p>
 
-<li>
-Mathematical formulas.
+<div id="widget_useropts">
+  <ul>
+    <li><a href="#formula">Mathematical formulas</a></li>
+    !if $wims_user=$empty
+      <li><a href="#language_selector">Default language</a></li>
+    !endif
+    <li><a href="#accessibility">Accessibility</a></li>
+  </ul>
 
-!if $texalign=2
-  The server is currently set to MathML if you have a suitable browser. For example,
+  <div id="language_selector">
+    <h2>Privzeti jezik</h2>
+    !read themes/_widgets/language_selector.phtml
+  </div>
+
+  <div id="formula">
+    <h2>Mathematical formulas</h2>
+
+    !if $texalign=2
+    <ul><li>
+      The server is currently set to MathML if you have a suitable browser. For example,
+      <p class="wimscenter">
+        !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
+      </p>
+      If the formula is not correctly displayed, you can use another
+      <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span></a>
+      or use the serveur with "math with images".
+      !set wims_ref_class=wims_button
+      <p class="wimscenter">
+         !href cmd=resume&useropts=$arg Math with images
+      </p>
+    </li>
+    <li>
+        !let ts1=!eval $texsize-1
+        !let ts2=!eval $texsize+1
+        !if $ts1<1
+          !let ts1=1
+        !endif
+        !if $ts2>9
+          !let ts2=9
+        !endif
+        Set the size of mathematical formulas.
+    !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" />
+        &nbsp;
+    !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$default Default
+        &nbsp;
+    !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px" />
+     </li><li>
+    !set zoom=1
+      Use zoom on formulas by mouse click.
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
+    !set zoom=0
+       &nbsp;
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
+    !else
+        Currently, you use the server with "Math with images". If you have a suitable
+        <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>, you may also use MathML.
     <p class="wimscenter">
-    !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{2} - 4 a c}}{2a}
+    !set arg=!nospace $texsize 2
+    !set wims_ref_class=wims_button
+    !href cmd=resume&useropts=$arg MathML
     </p>
-    If the formula is not correctly displayed, you can use another
-    <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>
-    </a>
-    or use the serveur with "math with images".
-!set wims_ref_class=wims_button
-<p class="wimscenter">
-   !href cmd=resume&useropts=$arg Math with images
-</p>
-</li><li>
+
+    </li><li>
+    Velikost matematiènih simbolov.
     !let ts1=!eval $texsize-1
     !let ts2=!eval $texsize+1
     !if $ts1<1
-      !let ts1=1
-    !endif
+        !let ts1=1
+      !endif
     !if $ts2>9
-      !let ts2=9
+        !let ts2=9
     !endif
-    Set the size of mathematical formulas.
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign <img src="gifs/doc/dgauche.gif" width="20px" />
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$default Default
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign <img src="gifs/doc/ddroite.gif" width="20px" />
- </li><li>
-!set zoom=1
-  Use zoom on formulas by mouse click.
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_yes
-!set zoom=0
-   &nbsp;
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$texsize$texalign$zoom $wims_name_no
-!else
-    Currently, you use the server with "Math with images". If you have a suitable
-    <a onmouseover="return Tip($tip)"><span class="wims_emph">browser</span>, you may also use MathML.
-<p class="wimscenter">
-!set arg=!nospace $texsize 2
-!set wims_ref_class=wims_button
-!href cmd=resume&useropts=$arg MathML
-</p>
+    !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
+        &nbsp;
+    !set wims_ref_class=wims_button
+        !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
+      <p>
+      Gr¹ke èrke $m_alpha, $m_pi. <br />Matematièni izrazi
+      !let ins_align=middle
+    !! we need to force dynamic insertion
+      !set pw=2
+      !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
+      <br />
+      Me¹ana neenakost
+      </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
+    </li><li>
+    Polo¾aj formul. Èe se izraz
+      !insmath (x+y)/(x^$pw + y^2)
+      !if $texalign=1
+       izri¹e previsoko, ga
+       !href cmd=resume&useropts=$(texsize)0$useropt2 s klikom
+       zni¾ate.
+      !else
+       izri¹e prenizko, ga
+       !href cmd=resume&useropts=$(texsize)1$useropt2 s klikom
+       zvi¹ate.
+      !endif
+    !set zoom=$empty
+    !endif
+    </li>
+    </ul>
+  </div>
 
-</li><li>
-Velikost matematiènih simbolov.
-!let ts1=!eval $texsize-1
-!let ts2=!eval $texsize+1
-!if $ts1<1
-    !let ts1=1
-  !endif
-!if $ts2>9
-    !let ts2=9
-!endif
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts1$texalign$useropt2 <img src="gifs/doc/dgauche.gif" width="20px" />
-    &nbsp;
-!set wims_ref_class=wims_button
-    !href cmd=resume&useropts=$ts2$texalign$useropt2 <img src="gifs/doc/ddroite.gif" width="20px" />
-  <p>
-  Gr¹ke èrke $m_alpha, $m_pi. <br />Matematièni izrazi
-  !let ins_align=middle
-!! we need to force dynamic insertion
-  !set pw=2
-  !insmath x_{1,2} = \frac{-b \pm \sqrt{b^{$pw} - 4ac}}{2a}
-  <br />
-  Me¹ana neenakost
-  </p><p class="wimscenter">| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</p>
-</li><li>
-Polo¾aj formul. Èe se izraz
-  !insmath (x+y)/(x^$pw + y^2)
-  !if $texalign=1
-   izri¹e previsoko, ga
-   !href cmd=resume&useropts=$(texsize)0$useropt2 s klikom
-   zni¾ate.
-  !else
-   izri¹e prenizko, ga
-   !href cmd=resume&useropts=$(texsize)1$useropt2 s klikom
-   zvi¹ate.
-  !endif
-!set zoom=$empty
-!endif
-</li>
-</ul>
+  <div id="accessibility">
+    <h2>Accessibility</h2>
 
+    <p>You can modify space width beetween characters.
+         !if $useropts=$(texsize)$texalign$(zoom)1
+            !set secondary1=wims_button wims_secondary_button
+            !set secondary2=wims_button
+          !else
+            !set secondary2=wims_button wims_secondary_button
+            !set secondary1=wims_button
+          !endif
+        !set wims_ref_class=$secondary2
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normal
+
+        !set wims_ref_class=$secondary1
+        !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Spaced
+    </p>
+    <p>The spaced mode may be better if you have some reading difficulties.</p>
+  </div>
+
+</div>
+!if $jquery_defined=yes
+  !read adm/tabscript useropts
+!endif
+
+<p>
 !if $wims_user=$empty
  Ko najdete ustrezne nastavitve, shranite
  <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2$zoom"
@@ -150,7 +157,7 @@ Polo¾aj formul. Èe se izraz
 !else
  Va¹e nastavitve se shranijo za naslednje prijave v ta razred.
 !endif
+</p>
 
-:end
 !tail
 
