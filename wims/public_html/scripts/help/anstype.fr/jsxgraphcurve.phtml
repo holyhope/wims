@@ -2,11 +2,8 @@
 un rectangle, une ligne brisée</b>
 (nom : <span class="tt wims_code_words">jsxgraphcurve</span>)
 <br />
-Ce type de réponse permet à l'utilisateur de dessiner une droite, un polygone,
-un rectangle ou plusieurs points dans un dessin. La syntaxe est exactement la même
-que celle de javacurve mais utilise javascript au lieu de java.
-Il faut y rajouter la figure <span class="wims_code_words">brokenline</span>
 
+!read help/anstype.$lang/jcurve.inc general
 !set p=anstype.$lang/javacurve
 !readproc tabletheme
 $table_header
@@ -17,21 +14,27 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td class="tt wims_code_words">
+    $table_tr<td class="tt wims_code_variable">
 !line 1 of $l_
     </td><td>
 !line 2 to -1 of $l_
    </td>
   </tr>
   !next
-  $table_tr<td class="tt wims_code_words">
-  brokenline,x1,y1,x2,y2, ...
-  </td><td>
-  Ligne polygonale
-  </td></tr>
 $table_end
 
-<p>Nous donnons ici quelques particularités.
+Des options peuvent être ajoutées dans le champ d'option :
+<span class="tt wims_code_words">precision</span>,
+<span class="tt wims_code_words">color1</span> (couleur de la réponse donnée),
+<span class="tt wims_code_words">color2</span> (couleur de la bonne réponse).
+Par exemple
+<pre>
+\answer{}{...}{type=jsxgraphcurve}{option=color1=black color2=#B4B4FF precision=8}
+</pre>
+Le paramètre <span class="tt wims_code_words">precision</span> doit être manié avec précaution ...
+
+!read help/anstype.$lang/jcurve.inc reply
+<p>
 Si l'on désire centrer le résultat, on doit définir les classes css
 <span class="wims_code_words">jxgbox</span> et <span class="wims_code_words">jsxgraph_button</span>.
 Par exemple,
@@ -43,9 +46,8 @@ Par exemple,
 &lt;/style>
 </pre>
 
-Exemple :
-
-<textarea id="wims_show" cols="100" rows="30" name="wims_show" readonly="readonly">
+<p>Exemple :</p>
+<textarea id="wims_show" cols="100" rows="23" name="wims_show" readonly="readonly">
 \title{Exemple de jsxgraphcurve}
 
 \title{ Droite}
