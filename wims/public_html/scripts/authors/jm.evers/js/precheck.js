@@ -4,6 +4,7 @@
  19/5/2008 version 0.04 [added item 12,13,14,15]
  12/2012 version 0.05 [added item 16...26]
  5/2014 version 0.06 [ added item 27,28]
+ 6/2016 version 0.07 [added item 29]
  this is all very premature !!! The naming needs to be adapted to f1,f2...f20
 
   1 science(t)	checks scientific notation 4e+4 --> 4*10^4		: returns modified t or "error"
@@ -44,6 +45,7 @@
  26 is_text(string) returns 0 if number are present in text
  27 shuffle(array) : returns randomized array
  28 randint(x1,x2) : returns random integer between x1 and x2
+ 29 plusminus(t) : reforms the answer t : x= pm 5 or x= pm 6 (etc) into x=5 or x=-5 or x=6 or x=-6  : returns modified t or "error"  [pm -> \u00B1 can be used with mathmlinput app.]
 */
 
 function shuffle(array) {
@@ -70,12 +72,12 @@ function SetTexAppSize(){
     		document.getElementById('TexApp'+p).height = ysize;
 		p++;
 	    }catch(e){setAlarm("The resizing of the applet went wrong...<br />May be your java \"virtual machine\" is very slow in starting up...<br />Try a reload on the page ...<br />or try a different -more recent- browswer<br />Use the Oracle / SUN java plugin...the \"OpenJDK plugin (icedtea)\" is known to have some serious problems");return;}// problems on opera (bug)
-	}
+	};
 	if(document.getElementById('wait_for_applet')){
 	    document.getElementById('wait_for_applet').style.display = "none"; 
-	}
-    }
-}
+	};
+    };
+};
 
 function setAlarm(txt){
     var h = parseInt( (document.documentElement.clientHeight)/2);
@@ -86,7 +88,7 @@ function setAlarm(txt){
     document.getElementById('alarmtext').innerHTML=txt;
     window.scrollTo(w,h-120);
     setTimeout('resetAlarm()',4000);
-}
+};
 
 function myConfirm(txt,reply,server,session,module,counter,color){
     reply=encodeURIComponent(reply);
@@ -99,11 +101,11 @@ function myConfirm(txt,reply,server,session,module,counter,color){
     document.getElementById('alarmtext').style.display = "block";
     window.scrollTo(w,h-120);
     document.getElementById('alarmtext').innerHTML=r0+'<br /><span style=\"color:red\"><tt>'+txt+'</tt></span><br />'+"<input type=\"button\" id=\"schaersvoorde_confirm_ok_button\" value="+r45+" onclick=\"javascript:document.getElementById(\'schaersvoorde_exercise\').setAttribute(\'style\',\'background-color:"+color+"\');if(xcalc_window != null ){ xcalc_window.close();};if( typeof popup !== 'undefined'){popup.close();};document.location.href = \'"+server+"?session="+session+"&module="+module+"&cmd=reply&reply"+counter+"="+reply+"\';\" />&nbsp;&nbsp;<input type=\"button\" id=\"schaersvoorde_confirm_nok_button\" value="+r46+" onclick=\"javascript:resetAlarm()\" \>"
-}
+};
 
 function resetAlarm(){
     document.getElementById('alarmtext').style.display = "none";
-}
+};
 
 function science(t){// corrected: startvalue+3 != startvalu*10^3 :)
     t=t.replace(/\*\*/g,'^'); 
@@ -126,12 +128,12 @@ function science(t){// corrected: startvalue+3 != startvalu*10^3 :)
 	    t=t.replace('e','E');
 	    e=t.indexOf('e');
 	    trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
-	}
+	};
 	t=t.replace(/E/g,"e");
 	t=t.replace(/10\^0/g,"10^");
-    }
+    };
     return t;
-}
+};
 
 function check_o(t){
     var alfabet="abcdefghijklmonpqrstuvwxyz";
@@ -151,19 +153,19 @@ function check_o(t){
 			d=dingen[sa];
 		        if(t3==d || t2==d){
 			    setAlarm(r5);return 0;
-			}
-		    }
-		}
-	    }    
+			};
+		    };
+		};
+	    };
 	    t=t.replace(o,'0');t1=t.indexOf(o);
-	    trouble++;if(trouble>200){setAlarm(r20);return 0;}
-	}
-    }
+	    trouble++;if(trouble>200){setAlarm(r20);return 0;};
+	};
+    };
     return 1;
-}
+};
 
 function check_f(t){
-    if(t.indexOf('^^') > 0 ){setAlarm(r48);return 0;}
+    if(t.indexOf('^^') > 0 ){setAlarm(r48);return 0;};
     var alfabet="abcdefghijklmonpqrstuvwxyz";
     var Alfabet="ABCDEFGHIJKLMONPQRSTUVWXYZ";
     t=t.replace(/log\[/g,'#');
@@ -177,10 +179,10 @@ function check_f(t){
 	    c=c0+ismatch;t1=t.substring(ismatch-1,ismatch);t2=t.substring(c,c+1);
 	    if(t2=='(' || alfabet.indexOf(t1)!=-1 || Alfabet.indexOf(t1)!=-1 || alfabet.indexOf(t2)!=-1 || Alfabet.indexOf(t2)!=-1){t=t.replace(fun,F);ismatch=t.indexOf(fun);}else{setAlarm(r9);return 0;}
 	    trouble++;if(trouble>200){setAlarm(r20);return 0;}
-	}
-    }
+	};
+    };
     return 1;
-}
+};
 
 function check_x(t){
     var dingen=['1','2','3','4','5','6','7','8','9','0'];
@@ -193,50 +195,53 @@ function check_x(t){
 	t3=t.charAt(t1+1);
 	for(s=0;s<10;s++){
 	    d=dingen[s];
-	    if(t2==d){chk=chk+1;}if(t3==d){chk=chk+1;}
-	}
-	if(chk==2){setAlarm(r7);return 0;}
+	    if(t2==d){chk=chk+1;}if(t3==d){chk=chk+1;};
+	};
+	if(chk==2){setAlarm(r7);return 0;};
 	t=t.replace('x','*');t1=t.indexOf('x');
-	trouble++;if(trouble>100){setAlarm(r20);return 0;}
-    }
+	trouble++;if(trouble>100){setAlarm(r20);return 0;};
+    };
     return 1;
-}
+};
 
 function specialroot(t){
     var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;
     t2=t.indexOf("](");if(t2==-1){setAlarm(r11);t="error";return t;}
     org=t;t=t.replace(/sqrt\(/g,"SQRT(");
     t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");
-    if(test.indexOf("#")!=-1){setAlarm(r11);t="error"; return t;}
+    if(test.indexOf("#")!=-1){setAlarm(r11);t="error"; return t;};
     t2=t.indexOf("[");var trouble=0;
     while(t2 != -1){
 	begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");
 	if(t2==begin+1 && t3>t2){
 	    power=t.substring(t2+1,t3);
-	    if(power.length==0){setAlarm(r16);t="error";return t;}
+	    if(power.length==0){setAlarm(r16);t="error";return t;};
 	    if(power<2){setAlarm(r16);t="error";return t;}
 	    t4="["+power+"]";t=t.replace(t4,'');
 	    tot=t.length;wait=0;got=0;end=0;
 	    for(s=begin;s<tot;s++){
 		if(end==0){
 		    chr=t.charAt(s);
-		    if(chr=="("){wait=wait+1;}
-		    if(chr==")"){got=got+1;}
-		    if(got!=0){if(wait==got){end=s;}}
-		}
-	    }
+		    if(chr=="("){wait=wait+1;};
+		    if(chr==")"){got=got+1;};
+		    if(got!=0){if(wait==got){end=s;};};
+		};
+	    };
 	    begin=begin+2;
 	    sqrt=t.substring(begin,end);
 	    mod=(power % 2);
-	    if(sqrt<0 && mod!=1){setAlarm(r16);t="error";return t;}
+	    if(sqrt<0 && mod!=1){setAlarm(r16);t="error";return t;};
 	    t=t.replace("@("+sqrt+")","("+sqrt+")^(1/("+power+"))");
 	}
-	else{t=t.replace("]","?");}
-	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
-    }
+	else
+	{
+	 t=t.replace("]","?");
+	};
+	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;};
+    };
     t=t.replace(/SQRT\(/g,"sqrt(");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"sqrt");
     return t;
-}
+};
     
 function speciallog(t){
     var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;
@@ -723,3 +728,22 @@ function rawmath(i){
     return i;
 }
     
+
+function plusminus(t){
+ if( t.indexOf('pm') < 0 ){ return t;};
+ t = keywords(t);if( t == "error" ){return "error";};
+ /* x = pm 5 and x = pm 6 */
+ var temp = t.split('and');
+ var len = temp.length;
+ var rp = "";
+ for( var p = 0 ; p < len ; p++ ){
+  var t1=temp[p].replace('pm','-');
+  var t2=temp[p].replace('pm',' ');
+  rp = rp + t1 + " or " + t2;
+  if(len > 1 && p < len - 1){
+   rp = rp + " or ";
+  };
+ };
+ return rp;
+};
+
