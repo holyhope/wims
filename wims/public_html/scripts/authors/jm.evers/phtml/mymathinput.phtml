@@ -35,8 +35,8 @@ function sendanswer(){
    !endif
    show = input;
    <!-- convert all unicode to wims-math ... more to come... >= <= etc-->
-   var unicode_math = ["\u2227","\u2228","\u2264","\u2265","\u2212","\u221A","\u20AC","\u03C0","\u2208","\u2209","\u21D2","\u27F6","\u2192","\u2194","\u21D4","\u2211","\\table","\u221E","\u222B","\u2329","\u232A","\u29F5"];
-   var calc_math = [" and "," or "," <= "," >= ","-","sqrt"," euro ","pi"," in "," notin "," -> "," -> "," -> "," -> "," -> "," SUM "," "," inf "," int "," langle "," rangle "," \\ "];
+   var unicode_math = ["\u00B1","\u2227","\u2228","\u2264","\u2265","\u2212","\u221A","\u20AC","\u03C0","\u2208","\u2209","\u21D2","\u27F6","\u2192","\u2194","\u21D4","\u2211","\\table","\u221E","\u222B","\u2329","\u232A","\u29F5"];
+   var calc_math = [" pm "," and "," or "," <= "," >= ","-","sqrt"," euro ","pi"," in "," notin "," -> "," -> "," -> "," -> "," -> "," SUM "," "," inf "," int "," langle "," rangle "," \\ "];
    for(var i=0; i < unicode_math.length ; i++){
     input = input.split(unicode_math[i]).join(calc_math[i]);
    }
@@ -135,7 +135,7 @@ function sendanswer(){
 		<td onclick="javascript:button(' &#8744; ');">   &#8744;</td><!-- or \u2228 -->
 		<td onclick="javascript:button(' &#8804; ');">   &#8804;</td><!-- <= \u2264 -->
 		<td onclick="javascript:button(' &#8805; ');">   &#8805;</td><!-- >= \u2265 -->
-		<td onclick="javascript:button(' &#8476; ');">    &#8476;</td><!-- R -->
+		<td onclick="javascript:button(' &#xB1; ');">    &#xB1;</td><!-- plusmin -->
 		<td onclick="javascript:button(' N ');">    N</td>
 		</tr>
 		<tr id="math_op4" style="display:none">
@@ -242,7 +242,7 @@ function sendanswer(){
  "use strict";
  var num_button_tabs = 8;var JSMathView = document.getElementById("JSMathView");var show_it = document.getElementById("show_it");var clear_it   = document.getElementById("clear_it");var math_out   = document.getElementById("math_out");var math_font_size = 1.1;
  /* wims variable mathviewpanel something like 'module_title:sqrt():sin():f(x):F(x)" */
- var mathviewpanel ="$mathviewpanel";mathviewpanel = mathviewpanel.split(':');if(mathviewpanel.length > 1){for(var i=1; i<num_button_tabs;i++){(function(){var paneltxt = mathviewpanel[i];if(i>=mathviewpanel.length){paneltxt = ' ';}var td = document.createElement('td');document.getElementById('math_op0').appendChild(td);td.addEventListener('click',function(e){button(paneltxt);},false);td.innerHTML = paneltxt;}());};};
+ var mathviewpanel ="$mathviewpanel";mathviewpanel = mathviewpanel.split(':');if(mathviewpanel.length > 1){ for(var i=1; i<num_button_tabs;i++){(function(){var paneltxt = mathviewpanel[i];if(i>=mathviewpanel.length){paneltxt = ' ';}var td = document.createElement('td');document.getElementById('math_op0').appendChild(td);td.addEventListener('click',function(e){button(paneltxt);},false);td.innerHTML = paneltxt;}());};};
  function show_button_row(row){hide_button_row();document.getElementById("math_op"+row).style.display = 'table-row';adapt_width();};
  function hide_button_row(){var i=1;while(document.getElementById("math_op"+i)){document.getElementById("math_op"+i).style.display = 'none';i++};adapt_width()};
  function displayroot(t){var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;t2=t.indexOf("](");if(t2==-1){return;};org=t;t=t.replace(/sqrt\(/g,"SQRT(");t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");if(test.indexOf("#")!=-1){return;};t2=t.indexOf("[");var trouble=0;while(t2 != -1){begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");if(t2==begin+1 && t3>t2){power=t.substring(t2+1,t3);if(power.length==0){return t;};if(power<2){return;}t4="["+power+"]";t=t.replace(t4,'');tot=t.length;wait=0;got=0;end=0;for(var s=begin;s<tot;s++){if(end==0){chr=t.charAt(s);if(chr=="("){wait=wait+1;};if(chr==")"){got=got+1;};if(got!=0){if(wait==got){end=s;}}}};begin=begin+2;sqrt=t.substring(begin,end);mod=(power % 2);if(sqrt<0 && mod!=1){return;};t=t.replace("@("+sqrt+")","{^"+power+"&radic;#"+sqrt+"!}");}else{t=t.replace("]","?");}trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}};t=t.replace(/SQRT\(/g,"&radic;#");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"&radic;");return t;}
@@ -260,3 +260,4 @@ function sendanswer(){
 </script>
 
     
+!! # 3/6/2016 : added " pm " as option:  y = ± 5*t
