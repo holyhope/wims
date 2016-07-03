@@ -102,34 +102,6 @@ $wims_classname, $wims_institutionname\
  !read themes/_widgets/menumodubox.phtml
  !goto end
 !endif class_type=4
-!if $class_type=2
- !if $subclasscnt>0
-  $table_header
-  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
-  !for i=1 to $subclasscnt
-   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
-   !let f_aff=!item 4 of $f_class
-   !let f_name=!item 1 of $f_class
-   $table_tr
-    <td>$ADD_class $i</td>
-    <td>
-    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
-    </td>
-    <td>
-     !item 9 of $f_class
-    </td>
-   </tr>
-  !next i
-  $table_end
- !endif subclasscnt
-
- </div><!--wimsbody-->
-</div><!--wimspagebox-->
-
- !read themes/_procs/menumodubox2.proc
- !read themes/_widgets/menumodubox.phtml
- !goto end
-!endif class_type=2
 
 !set test=!replace / by , in $wims_class
 !if $(test[-1])=0
@@ -137,25 +109,27 @@ $wims_classname, $wims_institutionname\
   !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
 !endif
-
+!if $class_type notin 24
  <div id="wims_supervisor_search">
 !read ./form.phtml
  <br class="clearall" />
 !read ./result.phtml
  </div>
-
+!endif
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet</p>
 !else
- !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
- !if $seq_open=yes
+ !if $class_type notin 24
+  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+  !if $seq_open=yes
    $CR_sequence
+  !endif
+  <div class="wimscenter">
+  !href module=adm/class/sequence $wims_name_reorder
+  </div>
  !endif
- <div class="wimscenter">
- !href module=adm/class/sequence $wims_name_reorder
- </div>
  <div id="widget_supervisor_list">
  !if $jquery_defined=yes
  !read adm/tabscript supervisor_list
@@ -181,7 +155,7 @@ $wims_classname, $wims_institutionname\
    <div id="wims_supervisor_subclass">
     !distribute item 1,no into wims_incremental,table_spacer
     $table_header
-    $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
+    $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
     !read themes/_widgets/supervisorsubclass.phtml
     $table_end
    </div>
@@ -245,9 +219,13 @@ $wims_classname, $wims_institutionname\
 
 </div><!--/wimsbody-->
 </div><!--/wimspagebox-->
-!read themes/_procs/menumodubox0.proc
-!read themes/_widgets/menumodubox_accordion.phtml
-
+!if $class_type isin 24
+ !read themes/_procs/menumodubox2.proc
+ !read themes/_widgets/menumodubox.phtml
+!else
+ !read themes/_procs/menumodubox0.proc
+ !read themes/_widgets/menumodubox_accordion.phtml
+!endif
 :end
 
 !reset div0 div1

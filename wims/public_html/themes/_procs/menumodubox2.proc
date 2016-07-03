@@ -5,16 +5,18 @@
 !read themes/_procs/supervisorotherclass.proc
 !read themes/_procs/extlink.proc
 
-!set wims_rm_0 = $wims_rm_0\
+!set wims_rm_0 = !append line itemsep,0,$wims_name_class\
 addclass,1,module=adm/class/regclass\
 cloneclass,1,module=adm/class/regclass&job=cloneexemple\
-itemsep,0,$wims_name_vote\
-myvote,1,module=adm/vote\
-add_vote,1,module=adm/vote&job=creat
+to $wims_rm_0
+
+!set wims_rm_0 = !append line itemsep,0,$wims_name_tools\
+to $wims_rm_0
+
+!read themes/_procs/classtools.proc
 
 !set wims_rm_0 = $wims_rm_0\
-itemsep,0,
-
+itemsep,0,$wims_name_manage
 !read themes/_procs/supervisorusermanage.proc
 
 !set wims_rm_0 = $wims_rm_0\
