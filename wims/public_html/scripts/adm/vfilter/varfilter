@@ -46,12 +46,7 @@
 !exit
 
 :html
-!reset lang_isread
-!readproc adm/vfilter/listvarfilter.proc
-!readproc adm/lang/varfilter.$lang
-!if $lang_isread!=yes
- !readproc adm/lang/varfilter.en
-!endif
+!read adm/language adm/lang/varflter
 <fieldset class="property_fields halfwidth blockcenter">
  <legend>$name_filtertitle</legend>
   $name_filter
@@ -67,11 +62,8 @@
 !exit
 
 :htmldiv
- !reset lang_isread
- !readproc adm/lang/varfilter.$lang
- !if $lang_isread!=yes
-  !readproc adm/lang/varfilter.en
- !endif
+ !read adm/language adm/lang/varflter
+ !readproc adm/vfilter/listvarfilter.proc
  <div class="field box">
  <label for="varfilter">$name_filtertitle</label>
   <br/>
