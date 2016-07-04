@@ -56,11 +56,11 @@ n'est plus modifiable excepté les titres et les textes d'explication de la feuil
 des exercices, le champ
 <span class="tt wims_code_words">$(name_shinfo[6])</span> ainsi que
 les champs
-<span class="tt wims_code_words">Besoin d'aide</span> des exercices.
+<span class="tt wims_code_words">$wims_name_feedbackexo</span> des exercices.
 </p><p>
 Du statut
 <span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
-la feuile  peut passer au statut
+la feuille  peut passer au statut
 <span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
  en cliquant sur le bouton
  <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
@@ -100,17 +100,30 @@ l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur
 :allowtype
 <h2 id="allowtype">Indication sur l'enregistrement des notes.</h2>
 
-Vous pouvez imposer une restriction dans le temps pour l'enregistrement des notes. Plusieurs options sont disponibles :
+Vous pouvez imposer une restriction, par exemple dans le temps, pour 
+l'enregistrement des notes. Plusieurs options sont disponibles :
 <ul>
- <li><span class="tt wims_code_words">$(name_allowtype[1])</span> : les notes seront enregistrées.</li>
- <li><span class="tt wims_code_words">$(name_allowtype[2])</span> : aucune note ne sera enregistrée.</li>
- <li><span class="tt wims_code_words">$(name_allowtype[3])</span> : un champ de saisi, <span class="tt wims_code_words">$(name_shinfo[6])</span>, apparaît et vous pouvez indiquer une plage horaire ainsi que les adresses IP à partir desquelles les notes seront enregistrées. Cette restriction s'écrit à l'aide de trois mots (qui peuvent ne pas tous être présents) : <br/>
+ <li><span class="tt wims_code_words">$(name_allowtype[1])</span> : 
+les notes seront enregistrées.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[2])</span> : 
+aucune note ne sera enregistrée.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[3])</span> : 
+un champ de saisie, 
+<span class="tt wims_code_words">$(name_shinfo[6])</span>, 
+apparaît et vous pouvez indiquer une plage horaire ainsi que les 
+adresses IP à partir desquelles les notes seront enregistrées. 
+Cette restriction s'écrit à l'aide de trois expressions (qui peuvent
+ ne pas toutes être présentes) : <br/>
  <ul>
-  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span> permet d'indiquer une heure de début ;</li>
-  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span> permet d'indiquer une heure de fin ;</li>
-  <li><span class="tt wims_code_words">192.168. </span> qui permet d'indiquer une plage d'IP ;</li>
+  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span> 
+permet d'indiquer une heure de début ;</li>
+  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span> 
+permet d'indiquer une heure de fin ;</li>
+  <li><span class="tt wims_code_words">192.168. </span> qui permet 
+d'indiquer une plage d'IP ;</li>
  </ul>
- Les dates et heures doivent être en temps local du SERVEUR et ces trois mots doivent être séparés les uns des autres par des espaces.
+Les dates et heures doivent être en temps local du SERVEUR et ces 
+trois expressions doivent être séparés les uns des autres par des espaces.
  <p>
 Exemple :
 <span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
@@ -119,16 +132,34 @@ par <span class="tt wims_code_words">127.0</span>.
 </p>
 </li>
 
-<li><span class="tt wims_code_words">$(name_allowtype[4])</span> : cette option peut-être choisie afin d'individualiser les restrictions d'accès à l'aide d'une <span class="tt wims_code_words">variable technique</span> (cette variable technique est définie pour chaque participant soit manuellement en utilisant le module de gestion des variables techniques soit à l'aide d'un <span class="tt wims_code_words">questionnaire</span>). Lors du choix de cette option, un menu permet de choisir la variable technique qui sert de différenciation et un tableau permet d'effectuer un réglage du filtre (en utilisant le même format que précédemment) pour chaque valeur possible de la variable.
+<li><span class="tt wims_code_words">$(name_allowtype[4])</span> : 
+cette option peut-être choisie afin d'individualiser les restrictions 
+d'accès à l'aide d'une <span class="tt wims_code_words">variable 
+technique</span> (cette variable technique est définie pour chaque 
+participant soit manuellement en utilisant le module de gestion des 
+variables techniques soit à l'aide d'un 
+<span class="tt wims_code_words">$wims_name_Vote</span>). 
+Lors du choix de cette option, un menu permet de choisir la variable
+ technique qui sert de différenciation et un tableau permet 
+d'effectuer un réglage du filtre (en utilisant le même format que 
+précédemment) pour chaque valeur possible de la variable.
 <br/>
-Dans le cas d'une variable technique définie à l'aide du modèle <span class="tt wims_code_words"> Accès individualisé</span> d'un <span class="tt wims_code_words">questionnaire</span> spécifique à la création de réservation de créneau horaire, le tableau est déjà pré-rempli avec les données proposées lors de la création du questionnaire. Ces données peuvent être modifiées, mais les modifications ne sont pas répercutées sur le questionnaire.
+Dans le cas d'une variable technique définie à l'aide du modèle 
+<span class="tt wims_code_words"> Accès individualisé</span> 
+d'un <span class="tt wims_code_words">$wims_name_Vote</span> 
+spécifique à la création de réservation de créneau horaire, 
+le tableau est déjà pré-rempli avec les données proposées lors de la
+ création du questionnaire. Ces données peuvent être modifiées, 
+mais les modifications ne sont pas répercutées sur le questionnaire.
 </li>
 </ul>
 !if $tv_listtechvar!=$empty
  Les variables techniques actuellement disponibles dans votre classe sont :
  !read adm/vfilter/listvar.phtml 
 !else
- Il n'y a actuellement aucune variable technique définie dans votre classe. Si vous voulez utiliser cette option, il faudra d'abord définir une variable technique.
+ Il n'y a actuellement aucune variable technique définie dans votre 
+classe. Si vous voulez utiliser cette option, il faudra d'abord 
+définir une variable technique.
 !endif
 !if $wims_read_parm!=$empty
  !exit
@@ -139,9 +170,9 @@ Dans le cas d'une variable technique définie à l'aide du modèle <span class="tt 
 Afin d'individualiser les restrictions d'accès, il est possible de mettre
 une variable (dans l'exemple ci-dessous, mettre
 <span class="tt wims_code_words">\timelimit</span>).
-Cette variable doit alors être définie pour chaque participant selon les règles précédentes
-soit manuellement dans les propriétés du compte d'un participant
-(variable technique).
+Cette variable doit alors être définie pour chaque participant selon 
+les règles précédentes soit manuellement dans les propriétés du 
+compte d'un participant (variable technique).
 </p><p>
 Exemple : mettre
 <span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00</span>
@@ -150,9 +181,9 @@ Pour les participants pour lesquels cette variable est vide,
 l'enregistrement des notes est fermé.
 </p><p>
 Il est possible d'ajouter cette variable par liaison tableur.
-Si la restriction est un choix du participant (inscription selon certaines dates par
-exemple), il est possible de créer et  utiliser un questionnaire en mode guidé
-(voir l'aide correspondante).
+Si la restriction est un choix du participant (inscription selon 
+certaines dates par exemple), il est possible de créer et utiliser 
+un questionnaire en mode guidé (voir l'aide correspondante).
 </p>
 !if $wims_read_parm!=$empty
  !exit
@@ -167,10 +198,12 @@ strictement inférieur à une note fixée (sur 10).
 Le second item est la note limite (sur 10), le premier item est l'adresse
 sous la forme suivante (forme abrégée):
 <ul><li>
-Exercice d'un module public ou document public : <span class="tt wims_address">module=xxx</span>
+Exercice d'un module public ou document public : 
+<span class="tt wims_address">module=xxx</span>
 (comme dans <span class="wims_button disabled">$wims_name_about</span>).
 </li><li>
-Exercice de la classe : <span class="tt wims_address">module=classes/fr&exo=_nom_fichier_</span>
+Exercice de la classe : 
+<span class="tt wims_address">module=classes/fr&exo=_nom_fichier_</span>
 où <span class="tt">_nom_fichier_</span> est le nom du fichier de l'exercice
 (sans l'extension <span class="tt">.oef</span>).
 </li><li>
@@ -181,8 +214,9 @@ Document de la classe  :
 Les paramètres supplémentaires peuvent être ajoutés (voir
 <span class="wims_button disabled">$wims_name_about</span>)
 
-Par exemple, dans l'exemple ci-dessous, si la note est inférieure à 5, l'élève sera dirigé
-sur le document de la classe <span class="tt">c2</span>, et plus précisément
+Par exemple, dans l'exemple ci-dessous, si la note est inférieure à 
+5, l'élève sera dirigé sur le document <span class="tt">c2</span> 
+de la classe , et plus précisément
 sur la page correspondant au bloc
 <span class="tt">aaa</span> de ce document.
 
@@ -197,14 +231,16 @@ la classe).
 
 En mettant deux nombres (dont le deuxième est strictement positif), le bouton
 apparaît lorsque le score est compris entre le second nombre
-et le premier nombre : par exemple, si vous mettez,
+et le premier nombre : par exemple, si vous mettez
 <pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
-le bouton apparaît lorsque le score est de 10 et c'est le mot $wims_name_feedbackplus
-qui apparaît. Si le deuxième nombre est 0, le comportement est le même que s'il
+le bouton apparaît lorsque le score est de 10 et c'est le mot 
+$wims_name_feedbackplus qui apparaît. Si le deuxième nombre est 0, le comportement est le même que s'il
 n'existait pas.
 
-Vous pouvez aussi insérer un lien d'aide dans la feuille en sélectionnant d'abord une ressource WIMS
-et en suivant le lien <span  class="wims_button disabled">$wims_name_addh</span> dans le menu de gauche.
+Vous pouvez aussi insérer un lien d'aide dans la feuille en 
+sélectionnant d'abord une ressource WIMS et en suivant le lien 
+<span  class="wims_button disabled">$wims_name_addh</span> 
+dans le menu de gauche.
 
 !!if $wims_read_parm!=$empty
  !exit
@@ -213,8 +249,10 @@ et en suivant le lien <span  class="wims_button disabled">$wims_name_addh</span>
 :series
 <p>
 En général, les exercices d'une série sont tirés aléatoirement
-et au moins un exercice de chaque type est proposé si le nombre demandé le permet.
+et au moins un exercice de chaque type est proposé si le nombre 
+demandé le permet.
 </p><p>
-Vous avez demandé dans le paramétrage expert que l'ordre ne soit pas aléatoire,
+Vous avez demandé dans le paramétrage expert que l'ordre ne soit 
+pas aléatoire,
 vous pouvez ici changer l'ordre des exercices d'une série.
 </p>

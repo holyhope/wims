@@ -3,21 +3,87 @@
 !endif
 
 :general
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
-!read lang/help.phtml.fr general
+<h2 id="general">Introduction</h2>
+
+<p>
+A sheet allows to propose to students a list of WIMS exercises.
+The student activity can then be scored and monitored.
+</p>
+
+To construct the sheets of the class, one may
+<ul><li>
+import sheets found through the search engine (click on
+the title of the sheet then on the link
+<span class="tt wims_code_words">$wims_name_import</span>)
+and change it if necessary
+</li><li>
+create a new sheet using the link
+<span class="tt wims_code_words">$wims_name_add_sheet</span>
+then build the content of the sheet by inserting one by one
+the exercises found from the search engine or from the classe 
+exercises (the link
+<span class = "tt wims_code_words"> $wims_name_add_sheet </span>
+is visible when you go to work with the selected exercise)
+or insert a source file from a list of exercises found for instance
+in a wims document.
+</li></ul>
+The sheets are numbered in the order of creation / integration in the class.
+It is possible to rearrange the layout sheets for students using
+the link <span class="tt wims_code_words">$wims_name_reorder</span>.
 
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :statut
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
-!read lang/help.phtml.fr statut
+<h2 id="statut">Status of a worksheet</h2>
+A sheet may have four statuses :
+<span class="wims_emph">
+!replace internal , by ,$ $ in $(wims_name_shstatus).
+</span>
+<p>
+<span class="wims_emph">$(wims_name_shstatus[1]) :</span>
+This is the initial status of a sheet. In this status, the sheet is not
+visible by the participants.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[2]) :</span>
+when we click on
+<span class="tt wims_code_words">$(wims_name_actionlist[1])</span>,
+the sheet becomes visible by the participants 
+(they can work on the exercises if no parameter in the field
+<span class="tt wims_code_words">$(name_shinfo[6])</span>
+prevents it), its content
+is no longer editable except the titles and explanatory texts of the sheet and
+exercises, the field
+<span class="tt wims_code_words">$(name_shinfo[6])</span> 
+as well as the fields
+<span class="tt wims_code_words">$wims_name_feedbackexo</span> of the exercises.
+</p><p>
+From the status
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>,
+the sheet may be changed to the status
+<span class="tt wims_code_words">$(wims_name_shstatus[3])</span>
+by clicking on the button
+ <span class="tt wims_code_words">$(wims_name_actionlist[2])</span>.
+It's not possible to return to the status
+<span class="tt wims_code_words">$(wims_name_shstatus[1])</span>.
+</p><p>
+<span class="wims_emph">$(wims_name_shstatus[3]) :</span>
+the participant can work on the sheet but his work is not accounted for.
+</p><p>
+Once the sheet is expired, it can be made invisible to students by clicking
+<span class="tt wims_code_words">$(wims_name_actionlist[4])</span>,
+but its status can also be turned to
+<span class="tt wims_code_words">$(wims_name_shstatus[2])</span>.
+ </p>
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :dependancies
 <h2 id="dependancies">$(name_shtab[6])</h2>
 <p>
-  means that a participant must get
+It means that a participant must get
   required scores in other exercises of the worksheet before he/she can do
   this one. For example,
   <span class="tt wims_code_words">1:50,2:30,3+4+5:60</span>
@@ -32,38 +98,164 @@
 !endif
 
 :allowtype
-!read adm/title.phtml 1\
-Score registration
+!! !read adm/title.phtml 1\
+!! Score registration
+<h2 id="allowtype">Information about score registration.</h2>
 
-You can make restrictions to score registration, by selecting hosts from which
-the tasks can be done or by determining time periods for work by writing the following code
-<span class="tt wims_code_words">
-&gt;yyyymmdd.hh:mm</span>
-(starting time) and/or
-<span class="tt wims_code_words">
-&lt;yyyymmdd.hh:mm</span>
-(ending time).
-Time must be the
-SERVER's local time and items must be separated by spaces.
+You can impose a restriction, for instance about time, on score 
+recording. Several options are available:
+<ul>
+ <li><span class="tt wims_code_words">$(name_allowtype[1])</span> : 
+the scores will be recorded.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[2])</span> : 
+no score will be recorded.</li>
+ <li><span class="tt wims_code_words">$(name_allowtype[3])</span> : 
+an input field, 
+<span class="tt wims_code_words">$(name_shinfo[6])</span>, 
+appears and you can specify a time range and the
+IP addresses from which the scores will be recorded.
+This restriction is written using three expressions (which are optional):
+<br/>
+ <ul>
+  <li><span class="tt wims_code_words">&gt;aaaammjj.hh:mm</span> 
+allows to specify a start time ;</li>
+  <li><span class="tt wims_code_words">&lt;aaaammjj.hh:mm</span> 
+allows to specify an end time ;</li>
+  <li><span class="tt wims_code_words">192.168. </span> 
+which lets you specify an IP range ;</li>
+ </ul>
+The dates and times must be in the SERVER local time and these  
+three expressions must be separated from each other by spaces.
+ <p>
+Example :
+<span class="tt wims_code_words">&lt;20131007.10:30 &gt;20131001.10:00 127.0.</span>
+allows the recording of notes between two dates and only for IP 
+numbers beginning with
+ <span class="tt wims_code_words">127.0</span>.
+</p>
+</li>
 
-For example, <span class="tt wims_code_words">
-175.190.50. &gt;20110421.15.15  &lt;20110421.16.15</span>
+<li><span class="tt wims_code_words">$(name_allowtype[4])</span> : 
+this option may be chosen to individualize access restrictions using a
+<span class="tt wims_code_words">technical variable</span>
+ (this technique variable is defined for each participant either 
+manually using the technical variables management module or using 
+a <span class="tt wims_code_words">$wims_name_Vote</span>). 
+When choosing this option, a menu allows you to select the technical
+variable used as a differentiation criterion and a table allows 
+the setting of the filter (using the same format as above) 
+for each possible value of the variable.
+<br/>
+In the case of a technical variable defined using the model 
+<span class="tt wims_code_words"> individualized access</span> 
+of a  <span class="tt wims_code_words">$wims_name_Vote</span> 
+specific to the time slot reservation creation,
+the table is pre-filled with the data proposed in the
+  creation of the vote. These data can be modified,
+but the changes are not reflected on the vote.
+</li>
+</ul>
+!if $tv_listtechvar!=$empty
+ the technical variables currently available in your class are:
+ !read adm/vfilter/listvar.phtml 
+!else
+ There is no technical variable currently defined in your class. 
+To use this option, you should first define a technical variable.
+!endif
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :variable
-!read lang/help.phtml.fr variable
-
+:variable
+<p>
+In order to individualize the access restrictions, it is possible 
+to put a variable (in the example below, write
+<span class="tt wims_code_words">\timelimit</span>).
+This variable must be defined for each participant according
+the previous rules, or manually in the properties of
+a participant's account (technical variable).
+</p><p>
+Example : write
+<span class="tt wims_code_words">timelimit=&lt;20131007.10:30 &gt;20131001.10:00</span>
+in the "Technical variable" input field of the properties account 
+of a student.
+For participants for which this variable is empty,
+the score recording is closed.
+</p><p>
+You can add this variable using the spreadsheet link.
+If the restriction is choosen by a participant (registration by 
+certain dates for example), it is possible to create and use a vote
+in guided mode (See corresponding help).
+</p>
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :feedback
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :feedback
-!read lang/help.phtml.fr feedback
+<h2 id="feedback">$(name_shtab[10])</h2>
 
-!exit
+You can provide in this field a link to a WIMS document 
+or exercise. The link to this resource appears when the score is
+strictly less than a preset note (out of 10).
+The second item is the limit rating (out of 10), the first item is 
+the address as follows (abbreviated):
+<ul><li>
+Exercise from a public module or document  : 
+<span class="tt wims_address">module=xxx</span>
+(as in <span class="wims_button disabled">$wims_name_about</span>).
+</li><li>
+Exercise in the class : 
+<span class="tt wims_address">module=classes/fr&exo=_file_name_</span>
+where <span class="tt">_file_name_</span> 
+is the file name of the exercise
+(without the extension <span class="tt">.oef</span>).
+</li><li>
+Document in the class  :
+<span class="tt wims_address">module=adm/doc&doc=c1&+block=_block_name_</span>
+</li></ul>
+
+Additonal parameters may be added (see
+<span class="wims_button disabled">$wims_name_about</span>).
+
+For instance, in the example below, if the score is less than 5, 
+the student will be led to the document 
+<span class="tt">c2</span> of the class, more specifically
+on the page corresponding to the block
+<span class="tt">aaa</span> of this document.
+
+<pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
+
+In the example below, there will be a
+link to an exercise of the module H6/set/oefset.fr whose source is 
+named traduction1 (the score of the student on this exercise
+will not be recorded in the class).
+
+<pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,10</pre>
+
+By writing two numbers (the second of which is positive), the button
+appears when the score is between the second number
+and the first number: for example, if you put
+<pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,11,10</pre>
+the button appears when the score is 10 and the word 
+$wims_name_feedbackplus
+is writen. If the second number is 0, the behavior is the same as 
+if it did not exist.
+
+You can also insert a help link in the sheet by first selecting a 
+WIMS resource and following the link
+<span  class="wims_button disabled">$wims_name_addh</span>
+ in the left menu.
+
+!!if $wims_read_parm!=$empty
+ !exit
+!!endif
 
 :series
-!! for translation copy the part of the lang/help.phtml.fr corresponding to the record :series
-!read lang/help.phtml.fr series
-
-!exit
+<p>
+In general, the exercises of a series are randomly chosen
+and at least one exercise for each type is proposed if the requested
+number allows it.
+</p><p>
+You asked in the expert setting for a non random order,
+you can change here the order of exercises in a series.
+</p>
