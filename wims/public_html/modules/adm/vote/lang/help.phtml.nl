@@ -120,6 +120,8 @@ De volgende modes zijn mogelijk
 Let op dat de variabele naam uniek is voor de klas en dat deze variabele niet in gebruik is door WIMS.
 Bijvoorbeeld nooit variabelen gebruiken met namen als  <span class="tt wims_code_variable">exam1</span>, ... , <span class="tt wims_code_variable">sheet1</span>, ...,
 <span class="tt wims_code_variable">manual1</span>, ...).
+<br/>
+Les modèles <span class="tt wims_code_words">$name_free</span> et <span class="tt wims_code_words">$name_group</span> ne sont pas disponibles lorsque les questionnaires sont partagés avec une autre classe.
 !tail
 !exit
 !endif

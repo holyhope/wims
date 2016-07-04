@@ -1,7 +1,8 @@
 max_votes=!defof MAX_VOTES in wimshome/public_html/bases/sys/define.conf
 max_parms=!defof MAX_VOTES in wimshome/public_html/bases/sys/define.conf
 
-!!wims_prefix=user class
+!! NEED TO BE FIXED
+!!wims_prefix=user class sharable sharing
 !!wims_trustfile=primitives.phtml primitives/checkbox.phtml primitives/list.phtml primitives/list.phtml primitives/uservar.phtml
 !!wims_readable=wims_read_parm noprint serial prim parmcnt
 !!wims_writable=serial prim parms wims_read_parm
@@ -106,8 +107,15 @@ votecnt=!recordcnt $votedir/.votes
  job=home
 !endif
 
-!set vmodellist=accessvar,group
-!set name_vmodellist=$(name_accessvar), $(name_group)
-
+!! don't allow to use model if vote is sharing or sharable (waiting sharin/sharable techvar)
+test_share=!defof sharable_vote,sharing_vote in wimshome/log/classes/$wims_class/neighbors
+test_share=!nonempty item $test_share
+!if $test_share=$empty
+ !set vmodellist=accessvar,group
+ !set name_vmodellist=$(name_accessvar), $(name_group)
+!else
+ vmodellist=$empty
+ name_vmodellist=$empty
+!endif
 !read $job.proc
 
