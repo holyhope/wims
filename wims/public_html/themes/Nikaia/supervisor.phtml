@@ -6,26 +6,13 @@
 !endif
 !set home_theme=yes
 
-!!! transfer in home/var.proc
-!!!set class_authidp=!defof class_authidp in wimshome/log/classes/$wims_superclass/.def
-!!!set auth_method_list=cas,ldap,php
-!!!set auth_method=$(class_authidp[1;])
-!!!if $auth_method isitemof $auth_method_list
-!!  !set ext_login=$wims_external_auth
-!!!endif
-
-!!!default ext_login=$wims_realuser
-!!!default ext_login=$wims_user
-!!!default ext_login=supervisor
-!!end transfer
-
 !readproc tabletheme
 
 !read classlogo.phtml
 !if $class_logo!=
- <div id="classlogo" class="float_$class_logoside">
-  <img src="$class_logo" alt="class logo" />
- </div>
+  <div id="classlogo" class="float_$class_logoside">
+   <img src="$class_logo" alt="class logo" />
+  </div>
 !endif
 
 !read ./adm/title.phtml 2\
@@ -91,7 +78,7 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
   !goto end
  !else
-   <br /><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   <br /><span class="wims_msg warning">$wims_name_warning</span>! $wims_name_reaching_limit
  !endif
 !endif
 :nocheck
