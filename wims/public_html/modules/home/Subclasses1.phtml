@@ -24,10 +24,11 @@
   !distribute items $l into c_,s_,t_
   <li>
   <div class="wims_classes_direct_class">
-  !if $c_ isitemof $user_supervise
+   !if $wims_superclass/$c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+      $t_
    !endif
   </div>
   </li>
@@ -43,10 +44,11 @@
   !distribute items $l into c_,s_,t_
   <li>
   <div class="wims_classes_direct_program">
-  !if $c_ isitemof $user_supervise
+   !if $wims_superclass/$c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     $t_
    !endif
   </div>
   </li>
@@ -64,13 +66,14 @@
    !distribute items $l into c_,s_,t_
    <li>
    <div class="wims_classes_direct_course">
-   !if $c_ isitemof $user_supervise
+   !if $wims_superclass/$c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
-    !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+    !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+    $t_
    !endif
    </div>
-      </li>
+   </li>
   !next i
   </ul></li>
  !endif
@@ -83,10 +86,11 @@
    !distribute items $l into c_,s_,t_
    <li>
    <div class="wims_classes_direct_course">
-   !if $c_ isitemof $user_supervise
+   !if $wims_superclass/$c_ isitemof $user_supervise
      !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_&auth_user=supervisor $t_
    !else
-     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     !!!href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+     $t_
    !endif
    </div>
    </li>
@@ -101,8 +105,8 @@
   <div>
   !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
-  &nbsp;
-!set wims_ref_class=wims_button
+   $
+  !set wims_ref_class=wims_button
   !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $wims_name_import
   ($CL_Test)
   !set wims_menu_items=!append line testgo,1,module=adm/class/classes&type=authsupervisor&class=$wims_class/0 \
