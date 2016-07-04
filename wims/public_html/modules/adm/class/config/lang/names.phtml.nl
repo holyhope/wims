@@ -88,7 +88,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
   vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
   toutes les sauvegardes contenant les données des élèves.\
   Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
-  avez créées (feuilles, examens, documents) ou utilisez la possibilité de clonage.
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
 
 !distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle geregistreerde studenten activiteit) gaat niet door : er is niet genoeg ruimte meer over.\

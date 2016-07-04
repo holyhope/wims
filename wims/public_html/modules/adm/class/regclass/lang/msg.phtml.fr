@@ -37,12 +37,12 @@ Création de classe virtuelle
   La création de $cname sur ce site est protégée par un mot de
   passe. Vous devez entrer ce mot de passe avant de continuer.
  !endif
- 
+
  !form reply
   <input type="hidden" name="step" value="0" />
-  Entrez le mot de passe : <input size="16" name="regpass" type="password" /> 
+  Entrez le mot de passe : <input size="16" name="regpass" type="password" />
   <input type="submit" name="Envoyer" value="$wims_name_send" />
- 
+
 !formend
  <div>
  Remarque. Le mot de passe nécessaire à la création de classes virtuelles peut être obtenu auprès du
@@ -64,7 +64,7 @@ Mot de passe pour la création de classes virtuelles
   !endif
   &nbsp;
   <input type="submit" value="Recevoir" name="Recevoir" />
- 
+
 !formend
  !else
   !reset sendmail
@@ -81,7 +81,7 @@ Mot de passe pour la création de classes virtuelles
   La création de classes virtuelles sur ce site est protégée par un système
   d'authentification. Veuillez vous identifier.
  !endif
- 
+
  !form reply
   <table class="wimscenter wimsnoborder">
   <tr><td style="text-align:right">
@@ -90,7 +90,7 @@ Mot de passe pour la création de classes virtuelles
   Et le mot de passe :</td><td><input size="16" name="regpass" type="password" />
   <input type="submit" value="$wims_name_tosave" /></td>
   </tr></table>
- 
+
 !formend
 
  Remarque. Veuillez écrire au
@@ -110,7 +110,7 @@ Mot de passe pour la création de classes virtuelles
 !endif
 
 !if bad_secure=$error
- Votre poste actuel ne fait pas partie de la définition 
+ Votre poste actuel ne fait pas partie de la définition
  d'accès sécurisé (<span class="tt wims_code_words">$secure</span>)&nbsp;! C'est probablement une erreur qui
  aurait la conséquence de vous interdire l'accès de contrôle de votre classe.
  <p>
@@ -125,7 +125,7 @@ Mot de passe pour la création de classes virtuelles
 !endif
 
 !if has_empty=$error
- Vous n'avez pas donné toutes les informations nécessaires pour la création 
+ Vous n'avez pas donné toutes les informations nécessaires pour la création
  d'une classe. Veuillez compléter vos données avant de les soumettre.
  !exit
 !endif
@@ -141,7 +141,7 @@ Mot de passe pour la création de classes virtuelles
 !endif
 
 !if anti_date=$error
- Votre classe a une date d'expiration antérieure à aujourd'hui. Elle serait donc 
+ Votre classe a une date d'expiration antérieure à aujourd'hui. Elle serait donc
  périmée avant d'être créée!
  !exit
 !endif
@@ -161,7 +161,7 @@ La création de classe ne peut réussir que si vous
 !endif
 
 !if existing=$error
- La classe $classname semble déjà exister. Vous ne pouvez pas recréer la 
+ La classe $classname semble déjà exister. Vous ne pouvez pas recréer la
  même classe.
  !exit
 !endif
@@ -204,7 +204,7 @@ user registration failure
  Vous avez tenté de recréer une classe déjà créée. Peut-être
  avez-vous cliqué sur le bouton <span class="tt">actualiser</span>&nbsp;? En tout cas, votre classe
  $classname est déjà en place et la deuxième tentative de création
- est ignorée. 
+ est ignorée.
  <div>
  !read adm/lang/links.phtml.$modu_lang
  </div>
@@ -227,17 +227,17 @@ user registration failure
 !endif
 
 !if cloningnotallow=$error
- Le clonage de cette classe n'est pas autorisé par son administrateur.
+ La duplication de cette classe n'est pas autorisée par son administrateur.
  !exit
 !endif
 
 !if badcloningpwd=$error
- Mauvais mot de passe de clonage. 
+ Mauvais mot de passe de duplication.
  !exit
 !endif
 
 !if disallowcloning=$error
- Aucun clonage ne peut être réalisé sur cette classe. 
+ Aucun duplication de cette classe ne peut être réalisée.
  !exit
 !endif
 !msg $error

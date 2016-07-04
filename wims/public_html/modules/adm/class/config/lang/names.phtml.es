@@ -89,7 +89,7 @@ Recuperar los recursos seleccionados\
   vous ne devez pas garder de données relatives à vos élèves plus d'un an. Vous devrez alors détruire\
   toutes les sauvegardes contenant les données des élèves.\
   Faites une sauvegarde sélective si vous désirez garder les ressources que vous\
-  avez créées (feuilles, examens, documents) ou utilisez la possibilité de clonage.
+  avez créées (feuilles, examens, documents) ou utilisez la possibilité de duplication.
 
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
@@ -476,8 +476,8 @@ paramètres définis lors de la création de la classe, configuration des feuilles 
     name_examscore_withoutip,name_param
 
  !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
- !set name_allowcloning=Autoriser le clonage
- !set name_cloningpwd=Mot de passe de clonage
+ !set name_allowcloning=Autoriser la duplication
+ !set name_cloningpwd=Mot de passe de duplication
 !endif
 
 :commun

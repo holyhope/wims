@@ -26,7 +26,7 @@ Creación de una clase virtual
  !if $sendmail!=$empty
   <div class="wimscenter">La contraseña se envió a la dirección electrónica $sendmail.
   </div>
-  
+
  !endif
  !if $regpass!=$empty
   Lo sentimos, su contraseña no es correcta. Vuelva a intentarlo.
@@ -36,11 +36,11 @@ Creación de una clase virtual
   La creación de $cname en este sitio está protegida por una contraseña.
   Debe introducir esta contraseña antes de continuar.
  !endif
- 
+
  !form reply
   <input type="hidden" name="step" value="0" />
   Introduzca la contraseña: <input size="16" name="regpass" type="password" />
- 
+
 !formend
  <div>
  Nota. Puede solicitar la contraseña necesaria para la creación
@@ -68,7 +68,7 @@ Contraseña para la creación de clases virtuales
   Y la contraseña:</td><td><input size="16" name="regpass" type="password" />
   <input type="submit" value="$wims_name_tosave" /></td>
   </tr></table>
- 
+
 !formend
 
  Nota. Por favor escriba al
@@ -206,17 +206,17 @@ user registration failure
 !endif
 
 !if cloningnotallow=$error
- Le clonage de cette classe n'est pas autorisé par son administrateur.
+ La duplication de cette classe n'est pas autorisée par son administrateur.
  !exit
 !endif
 
 !if badcloningpwd=$error
- Mauvais mot de passe de clonage. 
+ Mauvais mot de passe de duplication.
  !exit
 !endif
 
 !if disallowcloning=$error
- Aucun clonage ne peut être réalisé sur cette classe. 
+ Aucune duplication de cette classene peut être réalisée.
  !exit
 !endif
 
