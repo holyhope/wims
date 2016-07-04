@@ -26,7 +26,12 @@ wims_nw=today empty nonew creatdays backdays warn
 !!## must be read again because $job could be not defined
 !read adm/class/classlang lang/names.phtml
 wims_helper=chapter=3
-sharelist=user,doc,exo,sheet,exam,forum,sup,motd,vote,cdt,livret,seq
+!readproc scripts/votemodel.proc
+!if $votemodel=yes
+ sharelist=user,doc,exo,sheet,exam,forum,sup,motd,cdt,livret,seq
+!else
+ sharelist=user,doc,exo,sheet,exam,forum,sup,motd,vote,cdt,livret,seq
+!endif
 nosharelist=user,exo,sheet,exam
 !read adm/class/limits
 class_bgcolor=$wims_bgcolor
