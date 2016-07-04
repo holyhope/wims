@@ -2,11 +2,16 @@
 !for i=1 to $examcnt
  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
  !distribute lines $sh into ac,t_,d_,ti
+ !let exocnt_=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
  $table_tr
   <td>$wims_name_Examen $i</td>
   <td>
-   !href module=adm/class/exam&exam=$i $ti
+    <div class="exam_link">
+      !href module=adm/class/exam&exam=$i $ti
+    </div>
+    <div class="exocnt smaller">$exocnt_ $wims_name_Exercise(s)</div>
   </td>
+
   !if $seq_open=yes
     !read themes/_procs/supervisorseq.proc exam,$ac
   !endif
@@ -16,4 +21,5 @@
   </td>
  </tr>
 !next i
+!reset exocnt_
 <!-- end _widgets/supervisorsexam.phtml -->
