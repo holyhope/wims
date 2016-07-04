@@ -29,9 +29,7 @@
   <img src="$class_logo" alt="class logo" />
  </div>
 !endif
-
-!read ./adm/title.phtml 2\
- <span class="wims_classname">$wims_classname</span> <span class="wims_class_typename">($(wims_name_$class_typename))</span>
+!read themes/_widgets/classtitle.phtml
 
 !read adm/class/initclass $wims_superclass, auth
 
@@ -41,27 +39,26 @@
 !!!endif
 !!default wims_user_ext=$wims_user
 
-!! (MC) the following seems to be needed for groupement to go back to 
-!! the superclass (is it sufficient to change the name of the variable 
+!! (MC) the following seems to be needed for groupement to go back to
+!! the superclass (is it sufficient to change the name of the variable
 !! in the links below?)
 !default wims_user_ext=$ext_login
 
-<div class="wims_classes_direct">
-!if $wims_superclass=$empty or $wims_superclass=$wims_class
-  $wims_institutionname
-!else
-  <span class="wims_classes_direct_portal">
-   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
-  </span>
-  !if / isin $class_parent and $class_type=1
-    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
-  / $
- <span class="wims_classes_direct_class">
-  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user_ext $pname
- </span>
- !endif
-!endif
-</div> <!--wims_classes_direct-->
+!!<div class="wims_classes_direct">
+!!!if $wims_superclass=$empty or $wims_superclass=$wims_class
+!!!else
+!!  <span class="wims_classes_direct_portal">
+!!   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
+!!  </span>
+!!  !if / isin $class_parent and $class_type=1
+!!   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+!! / $
+!!<span class="wims_classes_direct_class">
+!!  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user_ext $pname
+!! </span>
+!! !endif
+!!!endif
+!!</div> <!--wims_classes_direct-->
 
 !if _tool isin $wims_session
  !read ./tools.phtml

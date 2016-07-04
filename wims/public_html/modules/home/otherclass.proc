@@ -17,7 +17,7 @@
 !if $wims_class isitemof $wims_supervise
   !set c_=1
 !endif
-  !set wims_ariane=!append line "$superclass_description",$c_,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
+  !set wims_ariane=!append line class_home $superclass_description,$c_,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
 to $wims_ariane
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
   !if / isin $class_parent and $class_type=1
@@ -26,9 +26,9 @@ to $wims_ariane
     !if $class_parent isitemof $wims_supervise
       !set c_=1
     !endif
-    !set wims_ariane=!append line "$pname",$c_,module=adm/class/classes&type=$(tmp_)supervisor&class=$class_parent to $wims_ariane
+    !set wims_ariane=!append line class_home $pname,$c_,module=adm/class/classes&type=$(tmp_)supervisor&class=$class_parent to $wims_ariane
   !endif
-  !set wims_ariane=!append line "$wims_classname",8 to $wims_ariane
+  !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
 !endif
 
 !exit
@@ -37,7 +37,7 @@ to $wims_ariane
 
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
     !set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
-    !set wims_ariane=!append line "$superclass_description",1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass\
+    !set wims_ariane=!append line class_home $superclass_description,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$wims_superclass\
 to $wims_ariane
 !endif
 
@@ -45,8 +45,10 @@ to $wims_ariane
 !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
   !if / isin $class_parent and $class_type=1
     !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
-    !set wims_ariane=!append line "$pname",1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$class_parent\
+    !set wims_ariane=!append line class_home $pname,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$class_parent\
 to $wims_ariane
   !endif
-  !set wims_ariane=!append line "$wims_classname",8 to $wims_ariane
+  !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
 !endif
+
+
