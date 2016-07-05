@@ -14,7 +14,7 @@
 :supervisor
 !set superclass_description=!defof class_description in wimshome/log/classes/$wims_superclass/.def
 !set c_=8
-!if $wims_class isitemof $wims_supervise
+!if $wims_class isitemof $wims_supervise or $wims_realuser=supervisor
   !set c_=1
 !endif
   !set wims_ariane=!append line class_home $superclass_description,$c_,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass\
@@ -23,7 +23,7 @@ to $wims_ariane
   !if / isin $class_parent and $class_type=1
     !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     !set c_=8
-    !if $class_parent isitemof $wims_supervise
+    !if $class_parent isitemof $wims_supervise or $wims_realuser=supervisor
       !set c_=1
     !endif
     !set wims_ariane=!append line class_home $pname,$c_,module=adm/class/classes&type=$(tmp_)supervisor&class=$class_parent to $wims_ariane
