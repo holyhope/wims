@@ -1,12 +1,14 @@
 !default CL_Name=$CL_Names
-!if $supervisable=yes
+!if $supervisable=yes or ($wims_user=supervisor and $wims_realuser=supervisor)
  !read subclasses_user.phtml
  !if ($wims_user=supervisor or $wims_class=$wims_superclass)
-!!FIXME desactivate the possibility for teachers to register without the administrator in a portal t
+!!FIXME desactivate the possibility for teachers to register without the administrator in a portal
    !if $class_type notwordof 2 4
     !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
    !else
-     $name_gotosupervise
+     !if $wims_user!=supervisor or $wims_realuser!=supervisor
+       $name_gotosupervise
+     !endif
    !endif
  !endif
 !endif
@@ -105,7 +107,6 @@
 !!   !href module=adm/class/reguser&class=$c&auth_user=$u_ $name
    !href module=adm/class/reguser&class=$c&user_auth=$u_ $name
    </span></li>
-   &nbsp;
   !next c
  </ul>
 </div>

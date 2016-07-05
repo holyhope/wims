@@ -2,7 +2,31 @@ $U_gotoclass3
 !if $wims_superclass=$empty
   !let wims_superclass=$wims_class
 !endif
+!set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
+!set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!set classes=!record 0 of wimshome/log/classes/$wims_class/classes
+!set classcnt=!linecnt $classes
+!set progs=!record 0 of wimshome/log/classes/$wims_class/programs
+!set progcnt=!linecnt $progs
+
+!if $classcnt+$progcnt>=1
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ !set coursecnt=!linecnt $courses
+!endif
+!set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
+!set icoursecnt=!linecnt $icourses
+!if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
+  !goto nosubclass
+!endif
+
 !let user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_user
+!if $wims_user=supervisor and $wims_realuser=supervisor
+  !set user_supervise=!column 1 of $classes\
+  $progs\
+  $courses
+  !set user_supervise=!makelist $wims_superclass/x for x in $user_supervise
+!endif
+
 !! ----------- definition des droits de connexion supervisor
 <br/>
 !let compsup=$empty
