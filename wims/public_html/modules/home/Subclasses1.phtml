@@ -1,3 +1,6 @@
+!!!make the list of all subclasses classified by their type in a portal
+!!! for supervisor
+!!! at the end something on the test zone
 
 !set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
 !set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
@@ -5,10 +8,10 @@
 !set classcnt=!linecnt $classes
 !set progs=!record 0 of wimshome/log/classes/$wims_class/programs
 !set progcnt=!linecnt $progs
-!if $classcnt+$progcnt>=1
+!!if $classcnt+$progcnt>=1
  !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
  !set coursecnt=!linecnt $courses
-!endif
+!!endif
 !set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
 !set icoursecnt=!linecnt $icourses
 !if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
@@ -56,7 +59,7 @@
  </ul></li>
 !endif
 
-!if $classcnt+$progcnt>=1
+!!if $classcnt+$progcnt>=1
  !if $coursecnt>0
   <li>
   $(CL_Names[4]):
@@ -114,4 +117,4 @@
   to $wims_menu_items
   </div>
  !endif
-!endif
+!!endif
