@@ -10,22 +10,17 @@
 <nav aria-label="You are here:">
   <ul class="breadcrumbs">
   !for i_=1 to $wims_ariane_cnt
-   !set 1_=!line $i_ of $wims_ariane_list
-   <li class="
-     !if $i_=1
-breadcrumb_root
-     !else
-menuitem
-     !endif
-     !if " notin $(1_[1]) and * notin $(1_[1])
-!word 1 of $(1_[1])
-     !endif
-">
+    !set 1_=!line $i_ of $wims_ariane_list
+    !if " notin $(1_[1]) and * notin $(1_[1])
+      !set wims_ref_class = !word 1 of $(1_[1])
+    !endif
+    !set css_class = $wims_ref_class menuitem
+    <li class="$css_class">
      !read $(path)oneitem.phtml $1_
      !if $i_=$wims_ariane_cnt
-      <span class="show-for-sr">(Current)</span>
+       <span class="show-for-sr">(Current)</span>
      !endif
-   </li>
+    </li>
   !next
   </ul>
  </nav>
