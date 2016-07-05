@@ -528,3 +528,4 @@ into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 !endif
 !set wims_name_cloneclass =Kloon een bestaande klas
 !set SU_partconnected     =Deze deelnemer is op dit moment ingelogd
+!set wims_name_SE_config = Configuratie&amp;Onderhoud

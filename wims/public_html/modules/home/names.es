@@ -94,7 +94,6 @@ SU_numpartconnected=!nosubst Il y a actuellement $wims_numpartconnected particip
 wims_name_SE_list = Participantes y puntuaciones (old)
 wims_name_n_participant = Página inicial para el participante
 wims_name_SE_mod = Mensaje del día
-wims_name_SE_config = Config./Mantenim.
 wims_name_SE_secu = Administración de seguridad
 
 ADD_1 = Añadir un
