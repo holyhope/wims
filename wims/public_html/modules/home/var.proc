@@ -115,9 +115,10 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
    class_parent=$wims_superclass/$parentcheck
   !endif
  !endif
+ !default wims_realuser=$wims_user
+ !read adm/class/userdef logclasses,$wims_class,$wims_realuser
+ supervisable=!defof user_supervisable in $userdef
  !if $class_type>=2
-  !read adm/class/userdef logclasses,$wims_class,$wims_user
-  supervisable=!defof user_supervisable in $userdef
   !if $class_type=4
    subclasses=!record 0 of wimshome/log/classes/$wims_class/classes
    subclasses=!column 1 of $subclasses

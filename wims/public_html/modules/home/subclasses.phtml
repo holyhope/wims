@@ -1,43 +1,51 @@
-!default CL_Name=$CL_Names
-!if $supervisable=yes or ($wims_user=supervisor and $wims_realuser=supervisor)
- !read subclasses_user.phtml
- !if ($wims_user=supervisor or $wims_class=$wims_superclass)
-!!FIXME desactivate the possibility for teachers to register without the administrator in a portal
-   !if $class_type notwordof 2 4
-    !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
-   !else
-     !if $wims_user!=supervisor or $wims_realuser!=supervisor
-       $name_gotosupervise
-     !endif
-   !endif
- !endif
-!endif
-
-!if $(subclasscnt1)>0 and $insc!=yes
-<p>
-  !if $supervisable!=yes
-   $U_gotoclass
-  !else
-   $(U_gotoclass1)
-  !endif
-</p>
-!endif
+!! make the list of all classes and programms which are supervised
+!! with the courses inside with incrementation.
+!! no test zone. No intecourses ?
+!! subclass1 is something as the variable $wims_participate (only courses ? )+ optional courses
+!! eventually
+!! subclass2 is the complement
 
 !if $auth_method isitemof $auth_method_list and $wims_user!=supervisor
       !set u_=$wims_external_auth
 !else
       !set u_=$wims_user
 !endif
-
-!if $subclass1=$empty
-  !goto end
+!default CL_Name=$CL_Names
+!if $user_participate$user_supervise!=$empty
+<p>
+  !if $supervisable!=yes
+   !!$U_gotoclass
+  !else
+   !!$(U_gotoclass1)
+  !endif
+</p>
 !endif
+
+!if $supervisable=yes or ($wims_user=supervisor and $wims_realuser=supervisor)
+  !read subclasses_supervisor.phtml
+  !if ($wims_user=supervisor or $wims_class=$wims_superclass)
+!!FIXME desactivate the possibility for teachers to register without the administrator in a portal
+    !if $class_type notwordof 2 4
+     !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+    !else
+      !if $wims_user!=supervisor or $wims_realuser!=supervisor
+        $name_gotosupervise
+      !endif
+    !endif
+  !endif
+!else
+    !if $supervisable!=yes
+      !read subclasses_user.phtml
+    !endif
+!endif
+
+!goto end1
+
   <ul class="wims_subclasses"><!--wims_subclasses-->
 !reset alreadyseen
 !if $wims_class!=$wims_superclass
    !set subclass1=$wims_class,$subclass1
 !endif
-
 !for c in $subclass1
      !set name=!defof class_description in wimshome/log/classes/$c/.def
      !set type=!defof class_type in wimshome/log/classes/$c/.def
@@ -88,6 +96,7 @@
 
 :end
 </ul>
+:end1
 !if $alreadyseen!=$empty
   !set subclass2=!listcomplement $alreadyseen in $subclass2
   !set subclasscnt2=!itemcnt $subclass2

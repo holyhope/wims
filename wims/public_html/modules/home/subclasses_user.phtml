@@ -1,36 +1,45 @@
-$U_gotoclass3
+
 !if $wims_superclass=$empty
   !let wims_superclass=$wims_class
 !endif
 !set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
-!set user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!set user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!set levels=!record 0 of wimshome/log/classes/$wims_class/levels
+!set levelcnt=!linecnt $levels
 !set classes=!record 0 of wimshome/log/classes/$wims_class/classes
 !set classcnt=!linecnt $classes
 !set progs=!record 0 of wimshome/log/classes/$wims_class/programs
 !set progcnt=!linecnt $progs
 
-!if $classcnt+$progcnt>=1
+!!if $classcnt+$progcnt>=1
  !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
  !set coursecnt=!linecnt $courses
-!endif
+!!endif
 !set icourses=!record 0 of wimshome/log/classes/$wims_class/icourses
 !set icoursecnt=!linecnt $icourses
-!if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
-  !goto nosubclass
-!endif
 
-!let user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_user
-!if $wims_user=supervisor and $wims_realuser=supervisor
-  !set user_supervise=!column 1 of $classes\
-  $progs\
-  $courses
-  !set user_supervise=!makelist $wims_superclass/x for x in $user_supervise
-!endif
+!!add the compulsory courses
 
-!! ----------- definition des droits de connexion supervisor
-<br/>
+!for cls in $user_participate
+  !set sub_=!record 0 of wimshome/log/classes/$cls/courses
+  !set sub_cnt=!linecnt $sub_
+  !if $sub_cnt>0
+     !for k_=1 to $sub_cnt
+       !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
+       !set split=!replace internal / by , in $(sub_[$k_;1])
+       !set progstyle=!defof class_progstyle in wimshome/log/classes/$wims_superclass/$(split[1])/$(split[3])/.def
+       !if optional iswordof $progstyle
+          !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
+       !endif
+       !if mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit
+          !set user_participate=!append item $wims_superclass/$(sub_[$k_;1]) to $user_participate
+       !endif
+     !next
+  !endif
+!next
+
 !let compsup=$empty
-!for cls in $user_supervise
+!for cls in $user_participate
  !let tmp=!replace internal / by , in $cls
  !let nb=!itemcnt $tmp
  !for l=2 to $nb
@@ -42,41 +51,4 @@ $U_gotoclass3
 !let compsup=!lines2items $compsup
 !let compsup=!nospace $compsup
 
-!let tab=0
-!for cls in $compsup
- !let don=!defof class_typename,class_description,class_supervisor,class_parent in wimshome/log/classes/$cls/.def
- !let t=!positionof item $(don[1]) in level,class,program,course
- !if $t=3
-  !let ta=2
- !else
-  !let ta=$t
- !endif
- !if $tab!=$ta
-  !if $tab>$ta
-   !for k=$ta+1 to $tab
-    </ul>
-   !next k
-  !else
-   !for k=$tab+1 to $ta
-    <ul class="wims_subclasses">
-   !next k
-  !endif
- !endif
- !let tab=$ta
- !if $t=4
-  !let tmp=!defof class_typename in wimshome/log/classes/$(don[4])/.def
-  !if $tmp=program
-   !let t=5
-  !endif
- !endif
- <li>$arr <span class="wims_classes_direct_$(don[1])"> $(CL_Name[$t]) :
- !if $cls notitemof $user_supervise
-  $(don[2])
- !else
-  !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
- !endif
- ($(don[3])) </span> </li>
-!next cls
-!for k=1 to $tab
- </ul>
-!next k
+!read classgraph.phtml participate,$compsup
