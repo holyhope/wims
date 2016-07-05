@@ -8,11 +8,13 @@
 !!.
 !!</div>
 
-On this site, you will find <ul class="wims_home_list">
-
+<div class="wims_widget_box">
+    <div class="title_box"><h2 class="wims_title">
+On this site, you will find:</h2></div>
+    <ul class="wims_home_list box_content">
+ 
 <li>
-!href module=$module&cmd=new&search_category=D Interactive lessons and references
- on various topics.
+!href module=$module&cmd=new&search_category=D Interactive lessons and references.
 </li><li>
 !href module=$module&cmd=new&search_category=T Online calculators and plotters
 &#58; numbers, functions, matrices, graphs, surfaces, statistics, etc.
@@ -24,9 +26,26 @@ On this site, you will find <ul class="wims_home_list">
 &#58; puzzles and games.
 </li>
 </ul>
-You may also check out
-<ul class="wims_home_list">
-<li>
-!href module=adm/class/classes virtual example classes or create your own class
-.
-</li></ul>
+
+
+!if $wims_theme!=Nikaia
+<h3 class="wims_title"><span class="titre">You may visit:</span></h3>
+    <ul class="wims_home_list">
+        <li>
+        !href module=adm/class/classes open classes (or create your own class).
+        </li>
+        !if $wims_theme_version=0
+            <li>
+            !href module=adm/doc Help documents
+             and
+            !href module=help/teacher/faq FAQ (in french)
+            .</li>
+        !endif
+    </ul>
+!endif
+
+!if $wims_theme_version=0
+    You may also
+    !href module=adm/browse&$browse_parm browse the site
+     in guided mode.
+!endif
