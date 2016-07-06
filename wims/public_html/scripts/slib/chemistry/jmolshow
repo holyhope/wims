@@ -9,17 +9,17 @@ slib_example=data/molecule_pdb/reseau1.pdb,150,100,white,spin on;,,HTML5\
 data/molecule_pdb/xeo2f2.pdb,100,100,,,1\
 datamodule/chemistry/mol2D.fr/data/60_18_4.mol,,,,select all;wireframe 0.05;select none;,2\
 @CC1=C(C=C(C=C1[N+](=O)[O-])[N+](=O)[O-])[N+](=O)[O-],,,,select all;wireframe 0.05;select none;,3\
-@caffeine,,,,select all;wireframe 0.05;select none;,4
+@butanoic acid,,,,select all;wireframe 0.05;select none;,4
 !exit
 
 :proc
 !distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_color,slib_script,slib_id,slib_type
 
 !reset slib_initout
-!set slib_http=http
-!if __https: isin __$wims_ref_name
+!!set slib_http=http
+!!if __https: isin __$wims_ref_name
   !set slib_http=https
-!endif
+!!endif
 !default slib_id=0
 
 !if $slib_id=0
@@ -102,7 +102,7 @@ $slib_css\
 /*<![CDATA[*/
 !if $dollar==1
     !set slib_out=$slib_out\
-var jscr$slib_id='set loadFormat "$slib_http://cactus.nci.nih.gov/chemical/structure/%FILE/file?format=sdf&get3d=True";load =$slib_file;';
+var jscr$slib_id='set loadFormat "$slib_http://cactus.nci.nih.gov/chemical/structure/%FILE/file?format=sdf&get3d=True";load "=$slib_file";';
 !else
     !set slib_out=$slib_out\
 var jscr$slib_id='load $slib_file;';
