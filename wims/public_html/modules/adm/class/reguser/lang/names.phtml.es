@@ -89,10 +89,11 @@ ninguna cuenta de participante
 !set name_welcome=!nosubst Ya está inscrito(a), con el identificador de usuario
 !set name_newparticipant=!nosubst Por favor proporcione las siguientes informaciones \
   relativas al nuevo participante en $classname
-!set name_inscription2=!nosubst Para inscribirse como participante en $name_classes $classname,\
-  por favor proporcione las informaciones siguientes
+!set name_inscription2=!nosubst Para inscribirse como participante en $name_classes $classname, por favor proporcione las informaciones siguientes
 !set name_inscription3=!nosubst Se está inscribiendo como participante $name_classesss $classname, con el identificador de usuario
 !set name_inscription4= Afin de valider votre inscription, vous devez accepter les conditions d'utilisation après les avoir lus
+!set name_inscription21=!nosubst Para inscribirse como participante en $name_classes $classname, por favor proporcione las informaciones siguientes
+!set name_inscription31=!nosubst Se está inscribiendo como participante $name_classesss $classname, con el identificador de usuario
 
 !set name_warning_direct=La inscripción directa a $name_classe se reserva a\
   profesores. Si son alumno, inscribirse

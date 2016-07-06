@@ -29,7 +29,7 @@
     !set name_classesss= van $name_classe
     !set name_classessss= De $name_classe
     !endif
- !else 
+ !else
    !set name_classe=klas
    !set name_classes=de klas
    !set name_classess=een klas
@@ -80,11 +80,11 @@ name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttyp
 name_writepasswd,name_obtainpasswd,name_hello
 
 !set name_remark1=Bij alle open klassen kan men zich aanmelden zonder beperkingen.\
-Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten. Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school. 
+Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten. Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school.
 
 !set name_access1=!nosubst Als de administrator ($supervisor) je toegang verleent,
 !set name_access2=!nosubst Als de docent ($supervisor) je toegang verleent,
-!set name_research=Geef een loginnaam of echte naam (of een gedeelte hiervan), om te zoeken naar een deelnemer in $name_classes 
+!set name_research=Geef een loginnaam of echte naam (of een gedeelte hiervan), om te zoeken naar een deelnemer in $name_classes
 !set name_nofound=!nosubst Er is geen deelnemer met <span class="tt wims_code_words">$search</span> in echte naam of loginnaam gevonden.
 
 !set name_student=!nosubst $firstn $lastn!
@@ -94,6 +94,8 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
 !set name_inscription3=!nosubst Je bent bezig met de aanmelding bij $name_classesss $classname, met loginnaam &nbsp;
 !set name_inscription4=De gebruiksvoorwaarden moeten worden geaccepteerd voordat inschrijving kan plaats vinden.
+!set name_inscription21=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
+!set name_inscription31=!nosubst Je bent bezig met de aanmelding bij $name_classesss $classname, met loginnaam &nbsp;
 
 !set name_warning_direct=Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.Ben je een leerling meld je dan aan bij
 !set name_cgu=Ik ga akkoord met de gebruikssvoorwaarden

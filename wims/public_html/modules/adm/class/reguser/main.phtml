@@ -216,7 +216,11 @@ $institution
   $name_newparticipant
  !else
   !if $idp_method notitemof $idp_method_list
-  $name_inscription2
+    !if $wims_user=supervisor
+      $name_inscription21
+    !else
+      $name_inscription2
+    !endif
   !endif
  !endif
   !form reply
@@ -389,8 +393,13 @@ $name_inscription4:
 !endif
 
 !if $step=2
- $name_hello, $name_student!<p>
- $name_inscription3 <span class="tt wims_login">$login</span>. </p>
+ !if $wims_user!=supervisor
+   $name_hello, $name_student!<p>
+   $name_inscription3
+ !else
+   $name_inscription31
+ !endif
+  <span class="tt wims_login">$login</span>. </p>
  !if $email=$empty
  <p> $name_passwd_nonvalid </p>
  !else
