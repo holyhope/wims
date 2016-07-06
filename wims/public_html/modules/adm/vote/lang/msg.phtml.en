@@ -1,8 +1,9 @@
 !set wims_module_log=error: $error
 
 <span class="wims_warning">$wims_name_Error</span>.
+
 !if $error=notechvar
- Aucune variable technique définie dans cette classe. Pour utiliser ce modèle de questionnaire vous devez d'abord définir une variable technique dans la classe en utilisant le gestionnaire de variable technique.
+ No technical variable defined in this class. To use this vote model you should first define a technical variable in the class using the technical variable manager.
  !exit
 !endif
 
@@ -42,19 +43,24 @@
  !exit
 !endif
 
+!if $error = not_secure
+ You can only access the spreadsheet data from a secure host.
+ !exit
+!endif
+
 !if $error = no_vote
- Vous n'avez pas encore voté donc vous ne pouvez pas voir les résultats.
+ You have not yet voted so you can not see the results.
  !exit
 !endif
 
 !if $error = no_variable
-   Vous n'avez pas donné de nom de variable ou il n'est pas valide.
+   You have not given any variable name or it is invalid.
    !exit
 !endif
 
 !if $error = bad_variable
-   Le nom de variable que vous avez donné (<span class="tt wims_code_words">$namevar</span>) ne convient pas car il 
-   est peut-être utilisé par le logiciel.
+   The variable name you gave (<span class="tt wims_code_words">$namevar</span>) is not suitable ; it
+    may be used by the software.
    !exit
 !endif
 
