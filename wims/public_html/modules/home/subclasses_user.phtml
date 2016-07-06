@@ -4,6 +4,9 @@
 !endif
 !set wims_realuser=!defof wims_realuser in wimshome/$wims_sesdir/var.stat
 !set user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+!if $user_participate=$empty
+  !exit
+!endif
 !set levels=!record 0 of wimshome/log/classes/$wims_class/levels
 !set levelcnt=!linecnt $levels
 !set classes=!record 0 of wimshome/log/classes/$wims_class/classes

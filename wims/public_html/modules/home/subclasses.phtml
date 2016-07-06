@@ -25,9 +25,9 @@
   !read subclasses_supervisor.phtml
   !if ($wims_user=supervisor or $wims_class=$wims_superclass)
 !!FIXME desactivate the possibility for teachers to register without the administrator in a portal
-    !if $class_type notwordof 2 4
-     !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
-    !else
+    !if $class_type iswordof 2 4
+       !!href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+    !!else
       !if $wims_user!=supervisor or $wims_realuser!=supervisor
         $name_gotosupervise
       !endif
@@ -107,7 +107,7 @@
  !else
 <div>
   $U_inscription1
- <ul>
+ <ul class="wims_subclasses">
   !for c in $subclass2
    !set name=!defof class_description in wimshome/log/classes/$c/.def
    !set type=!defof class_typename in wimshome/log/classes/$c/.def
