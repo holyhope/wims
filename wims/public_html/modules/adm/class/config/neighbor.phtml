@@ -1,6 +1,13 @@
-
 !if $classcnt1+$classcnt2<1 and $kw = $empty
  $name_noclass
+ !if $excls!=yes and ($supertype!=4 or ($supertype=4 and $ctypename iswordof course program))
+  <div class="wimscenter">
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job2=sharelist $name_info
+   !set wims_ref_class=wims_button
+   !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+  </div>
+ !endif
  !exit
 !endif
 
