@@ -42,8 +42,12 @@ to $wims_user_links
 !set wims_user_links_cnt=!linecnt $wims_user_links
 
 !! FIXME wims_realuser or $wims_user
-
-!set wims_which_user=$wims_firstname $wims_lastname
-!if $wims_firstname $wims_lastname issametext $empty
+!if $wims_superclass!=$wims_class and $wims_realuser=supervisor and $wims_user=supervisor
+  !set wims_which_user=!getdef user_firstname user_lastname in wimshome/log/classes/$wims_superclass/supervisor
+!endif
+!if $wims_which_user issametext $empty
+  !set wims_which_user=$wims_firstname $wims_lastname
+!endif
+!if $wims_which_user issametext $empty
   !set wims_which_user=$wims_devfirstname $wims_devlastname
 !endif
