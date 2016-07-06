@@ -1,53 +1,75 @@
-!set statut=!item 1 of $wims_read_parm
-!set compsup=!item 2 to -1 of $wims_read_parm
-!set compsup=!nospace $compsup
-!let tab=0
-!for cls in $compsup
- !if $wims_class/ notin $cls
-   !goto encls
- !endif
- !let don=!defof class_typename,class_description,class_supervisor,class_parent in wimshome/log/classes/$cls/.def
- !let t=!positionof item $(don[1]) in level,class,program,course
- !if $t=0 or $t=$empty
-    !goto encls
- !endif
- !if $t=3
-  !let ta=2
- !else
-  !let ta=$t
- !endif
- !if $tab!=$ta
-  !if $tab>$ta
-   !for k=$ta+1 to $tab
+!set statut=!line 1 of $wims_read_parm
+!set compsup=!line 2 to -1 of $wims_read_parm
+!set compsup1=!column 2 to -1 of $compsup
+!set col1=!column 1 of $compsup1
+!set col1=!listuniq $col1
+!set col1cnt=!itemcnt $col1
+  <ul class="wims_subclasses">
+ !for j1=1 to $col1cnt
+   !set cls1=$wims_superclass/$(col1[$j1])
+   !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
+   <li><span class="wims_classes_direct_$(don[1])">
+     !if $cls1 isitemof $(user_$statut)
+       !if $statut=supervise
+         !href module=adm/class/classes&type=authsupervisor&class=$cls1&auth_user=supervisor $(don[2])
+       !else
+         !href module=adm/class/classes&type=authparticipant&class=$cls1&auth_user=$u_ $(don[2])
+       !endif
+     !else
+        $(don[2])
+     !endif
+     </span>
+    !set compsup2=!select $compsup1 where column 1=$(col1[$j1])
+    !set col2=!column 2 of  $compsup2
+    !set col2=!listuniq $col2
+    !set col2cnt=!itemcnt $col2
+    !if $col2cnt>0
+      !set compsup2=!column 2 to -1 of $compsup2
+      <ul class="wims_subclasses">
+      !for j2=1 to $col2cnt
+        !set cls2=!nospace $cls1/$(col2[$j2])
+        !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls2/.def
+         <li><span class="wims_classes_direct_$(don[1])">
+         !if $cls2 isitemof $(user_$statut)
+           !if $statut=supervise
+             !href module=adm/class/classes&type=authsupervisor&class=$cls2&auth_user=supervisor $(don[2])
+           !else
+             !href module=adm/class/classes&type=authparticipant&class=$cls2&auth_user=$u_ $(don[2])
+           !endif
+         !else
+           $(don[2])
+         !endif
+         </span>
+        !set compsup3=!select $compsup2 where column 1=$(col2[$j2])
+        !set col3=!column 2 of  $compsup3
+        !set col3=!listuniq $col3
+        !set col3cnt=!itemcnt $col3
+        !if $col3cnt!=0
+          <ul>
+          !set compsup3=!column 2 to -1 of $compsup3
+          !for j3=1 to $col3cnt
+            !set cls3=!nospace $cls2/$(col3[$j3])
+            !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls3/.def
+             <li><span class="wims_classes_direct_$(don[1])">
+              !if $cls3 isitemof $(user_$statut)
+                !if $statut=supervise
+                  !href module=adm/class/classes&type=authsupervisor&class=$cls3&auth_user=supervisor $(don[2])
+                !else
+                  !href module=adm/class/classes&type=authparticipant&class=$cls3&auth_user=$u_ $(don[2])
+                !endif
+                ($(don[3]))
+              !else
+                $(don[2])
+              !endif
+              </span>
+             </li>
+          !next j3
+          </ul>
+        !endif col3cnt
+      </li>
+     !next j2
     </ul>
-   !next k
-  !else
-   !for k=$tab+1 to $ta
-    <ul class="wims_subclasses">
-   !next k
-  !endif
- !endif
- !let tab=$ta
- !if $t=4
-  !let tmp=!defof class_typename in wimshome/log/classes/$(don[4])/.def
-  !if $tmp=program
-   !let t=5
-  !endif
- !endif
- <li>$arr <span class="wims_classes_direct_$(don[1])"> $(CL_Name[$t]) :
- !if $cls notitemof $(user_$statut)
-  $(don[2])
- !else
-   !if $statut=supervise
-     !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
-   !else
-     !href module=adm/class/classes&type=authparticipant&class=$cls&auth_user=$u_ $(don[2])
-   !endif
- !endif
- ($(don[3])) </span> </li>
-:encls
-!next cls
-!for k=1 to $tab
+   !endif col2cnt
+   </li>
+ !next j1
  </ul>
-!next k
-!reset compsup

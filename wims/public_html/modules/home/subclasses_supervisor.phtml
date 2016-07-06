@@ -29,17 +29,29 @@ $courses
 
 !! ----------- definition des droits de connexion supervisor
 
-!let compsup=$empty
+!reset compsup
 !for cls in $user_supervise
- !let tmp=!replace internal / by , in $cls
- !let nb=!itemcnt $tmp
- !for l=2 to $nb
-  !let t=!replace internal , by / in $(tmp[1 to $l])
-  !let compsup=!append line $t to $compsup
- !next l
+  !let tmp=!replace internal / by , in $cls
+  !let compsup=!append line $tmp to $compsup
 !next cls
-!let compsup=!sh echo "$compsup" | sort | uniq;
-!let compsup=!lines2items $compsup
-!let compsup=!nospace $compsup
 
-!read classgraph.phtml supervise,$compsup
+!let compsup=!sh echo "$compsup" | sort | uniq;
+$U_gotoclass3
+!read classgraph.phtml supervise\
+$compsup
+
+!let user_particpate=!defof user_particpate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+
+!reset compsup
+$U_gotoclass1
+
+!for cls in $user_participate
+  !let tmp=!replace internal / by , in $cls
+  !let compsup=!append line $tmp to $compsup
+!next cls
+
+!let compsup=!sh echo "$compsup" | sort | uniq;
+
+!read classgraph.phtml participate\
+$compsup
+

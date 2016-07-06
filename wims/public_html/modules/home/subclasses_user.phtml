@@ -41,14 +41,12 @@
 !let compsup=$empty
 !for cls in $user_participate
  !let tmp=!replace internal / by , in $cls
- !let nb=!itemcnt $tmp
- !for l=2 to $nb
-  !let t=!replace internal , by / in $(tmp[1 to $l])
-  !let compsup=!append line $t to $compsup
- !next l
+  !let compsup=!append line $tmp to $compsup
 !next cls
-!let compsup=!sh echo "$compsup" | sort | uniq;
-!let compsup=!lines2items $compsup
-!let compsup=!nospace $compsup
 
-!read classgraph.phtml participate,$compsup
+!let compsup=!sh echo "$compsup" | sort | uniq;
+!!let compsup=!lines2items $compsup
+!!let compsup=!nospace $compsup
+$U_gotoclass
+!read classgraph.phtml participate\
+$compsup
