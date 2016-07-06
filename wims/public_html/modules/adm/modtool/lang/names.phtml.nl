@@ -12,7 +12,7 @@
 !! must be the same as wims_name_modcontent in html/names.phtml.$lang
 !! dont succeed not to duplicate
 !set name_flist=Lijst van files
-!set name_binfile=Binaire bestanden
+!set name_files_binfile=Binaire bestanden
 !set name_del=Verwijder een module
 !set name_size=Grootte
 !set name_publish=!nosubst Publiceer $i_title<br/><span class="tt">$mod</span>
@@ -22,6 +22,13 @@
 !set name_backup=Backup
 !set name_edfile=Bestands modificatie
 !set name_showfile=Bestands inhoud
+
+!distribute line Files OEF/src\
+Files OEF/src/cpp\
+Editable data files\
+Translation files\
+Configuration files\
+into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml
 
 !! wims_name_properties
 !set name_index=Eigenschappen
@@ -34,8 +41,20 @@
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
 !set name_successfile=The file has been uploaded in the module.
-!set name_help_addfile=(the name of a file of the OEF exercise source\
-   must be of the form <span class="tt"> src/name_file.oef</span>)
+!set name_help=<span class="tt wims_fname">name_file</span> doit ne contenir\
+  que de caractères alphanumériques sans accents ni espaces (ne pas mettre de signe -).
+!set name_help_addfile_src=the name of a file of the OEF exercise source\
+   must be of the form <span class="tt"> src/name_file.oef</span>
+!set name_help_addfile_cpp=Le nom du fichier contenant le source d'un fichier ccp d'un exercice OEF\
+ doit être de la forme <span class="tt wims_fname">src/cpp/name_file.cpp</span>.
+!set name_help_addfile_other=Le nom du fichier doit être de la forme \
+ <span class="tt wims_fname">name_file</span>.
+!set name_help_addfile_lang=Le nom du fichier doit être de la forme \
+ <span class="tt wims_fname">lang/name_file.xx</span> où\
+ <span class="tt wims_fname">xx</span> est le symbole représentant la langue.
+!set name_help_addfile_phtml=Vous pouvez modifier certains de ces fichiers pour\
+   une configuration plus poussée de votre module.
+
 !set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Uw module
 !set name_file2=bevat de volgende bestanden

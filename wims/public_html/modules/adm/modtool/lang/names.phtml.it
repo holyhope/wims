@@ -12,7 +12,7 @@
 !! must be the same as wims_name_modcontent in html/names.phtml.$lang
 !! dont succeed not to duplicate
 !set name_flist=File principali
-!set name_binfile= File binari
+!set name_files_binfile= File binari
 !set name_del=Cancella un modulo
 !set name_size=Dimensioni
 !set name_publish=!nosubst Pubblica $i_title<br /><span class="tt">$mod</span>
@@ -22,6 +22,13 @@
 !set name_backup=Backup
 !set name_edfile=Modifica file
 !set name_showfile=Contenuto del file
+
+!distribute line Files OEF/src\
+Files OEF/src/cpp\
+Editable data files\
+Translation files\
+Configuration files\
+into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml
 
 !! wims_name_properties
 !set name_index=Proprietà
@@ -34,8 +41,23 @@
 !set name_replace=un file per sostituirlo
 !set name_addfile=Aggiungi un nuovo file
 !set name_successfile=Il file è stato inserito nel modulo
-!set name_help_addfile=(il nome di un file per un esercizio OEF \
-   deve avere la forma <span class="tt wims_fname">src/name_file.oef</span>)
+
+!set name_help=<span class="tt wims_fname">name_file</span> doit ne contenir\
+  que de caractères alphanumériques sans accents ni espaces (ne pas mettre de signe -).
+!set name_help_addfile_src=il nome di un file per un esercizio OEF \
+   deve avere la forma <span class="tt wims_fname">src/name_file.oef</span>
+!set name_help_addfile_src=Le nom du fichier contenant le source d'un exercice OEF\
+ doit être de la forme <span class="tt wims_fname">src/name_file.oef</span>.
+!set name_help_addfile_cpp=Le nom du fichier contenant le source d'un fichier ccp d'un exercice OEF\
+ doit être de la forme <span class="tt wims_fname">src/cpp/name_file.cpp</span>.
+!set name_help_addfile_other=Le nom du fichier doit être de la forme \
+ <span class="tt wims_fname">name_file</span>.
+!set name_help_addfile_lang=Le nom du fichier doit être de la forme \
+ <span class="tt wims_fname">lang/name_file.xx</span> où\
+ <span class="tt wims_fname">xx</span> est le symbole représentant la langue.
+!set name_help_addfile_phtml=Vous pouvez modifier certains de ces fichiers pour\
+   une configuration plus poussée de votre module.
+
 !set name_gestion=Per aggiungere/modificare un documento, cliccare sul \
  link <span class="wims_button disabled">$wims_name_docgestion</span>. Il link <span class="wims_button disabled">$wims_name_binfile</span>\
  permette di cambiare i file biniari o i sorgenti latex da cui sono generate le pagine \
