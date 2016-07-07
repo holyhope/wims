@@ -2,8 +2,10 @@
  error=bad_context
  !exit
 !endif
+!!FIXME propagation for class password should not be done
+!! allows inscription of teachers in portal and of participants in classes
 
-propall=secure,colors,css,logo,theme,theme_icon,level,security,supass,password,exolog,ent
+propall=secure,colors,css,logo,theme,theme_icon,level,security,supass,exolog,ent
 propagate=!listintersect $propagate and $propall
 
 !if $propagate=$empty or $confirm=$empty
@@ -43,6 +45,7 @@ propag=!replace item exolog by exolog,examlog in $propag
 
 !defread wimshome/log/classes/$wims_class/.def
 setup=
+
 !for s in $propag
  setup=!append line !set class_$s=$(class_$s) to $setup
 !next s
