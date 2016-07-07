@@ -1,3 +1,4 @@
+!!called by participant.phtml, not by authparticipant.phtml
 !read adm/class/initclass $wims_class
 
 !if $directcnt>0
@@ -10,17 +11,16 @@
    !set directtest=!append item $(directlist[$i_]) to $directtest
   !endif
  !next
-!set directlist2=!items2lines $directlist
-!set directlist2=!lines2rows $directlist2
-!set directlist2=!words2items $directlist2
-
 $name_direct:
 
-<div class="spacer">
-!read classgraph $directlist2
-</div>
+!!set directlist2=!items2lines $directlist
+!!set directlist2=!lines2rows $directlist2
+!!set directlist2=!words2items $directlist2
+!!<div class="spacer">
+!!!read classgraph $directlist2
+!!</div>
 
-!!read tableold.phtml
+!read tableold.phtml
 
  !if $wims_user=supervisor
    $name_text3
