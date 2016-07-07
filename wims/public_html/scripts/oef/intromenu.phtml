@@ -126,17 +126,17 @@ $ in $special_parm3
  !set titlelist=$(titlelist_$lang)
 !endif
 
-!if $exocnt=1
- $name_oneexercise, <span class="bold">
- !item 1 of $titlelist
- </span>.
- !else
- !if $wims_user=supervisor
-  <div class="formHelp">
-   $name_remarkallexo
-  </div>
-!endif
-!endif
+!!if $exocnt=1
+!! $name_oneexercise, <span class="bold">
+!! !item 1 of $titlelist
+!! </span>.
+!! !else
+!!   !if $wims_user=supervisor
+!!  <div class="formHelp">
+!!   $name_remarkallexo
+!!  </div>
+!!   !endif
+!!!endif
 
 !form new
 <input type="hidden" name="module" value="$module" />
@@ -146,17 +146,15 @@ $ in $special_parm3
 
 $name_remarkintro1
 </div>
-!if $exocnt>1
- <div class="field">
+<div class="field">
+ !if $exocnt>1
   !set special_parm=!trim $special_parm
-  !if select iswordof $special_parm2 and $special_parm!=$empty
+  !if select iswordof $special_parm2 and $special_parm notsametext $empty
    <span>$name_chooseexo$name_exercisescontaining</span> &laquo;<em style="color:blue">$special_parm</em>&nbsp;&raquo;&nbsp;:
-  !else
   !endif
-  !read oef/select.phtml
+ !endif
+ !read oef/select.phtml
  </div>
-!endif
-
 
 !if * isin $titlelist
  <p>$name_remarkintro2</p>
