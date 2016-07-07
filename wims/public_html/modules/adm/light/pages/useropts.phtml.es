@@ -24,6 +24,7 @@
     <li><a href="#accessibility">Accessibility</a></li>
   </ul>
 
+  !if $wims_user=$empty
   <div id="language_selector">
     <h2>
       El lenguaje predeterminado
@@ -32,6 +33,7 @@
       !read themes/_widgets/language_selector.phtml
     </p>
   </div>
+  !endif
 
   <div id="formula">
     <h2>

@@ -23,10 +23,12 @@
     <!--li><a href="#accessibility">Accessibility</a></li-->
   </ul>
 
+  !if $wims_user=$empty
   <div id="language_selector">
     <h2>De taal</h2>
     !read themes/_widgets/language_selector.phtml
   </div>
+  !endif
 
   <div id="formula">
     <h2>Wiskundige formules:</h2>
