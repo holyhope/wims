@@ -144,6 +144,7 @@ langs=!words2items $wims_site_languages
 !endif
 
 # On ne reindexe les classes que si on ne vient pas de creer une sous-classe.
-!if $class_nbsubclasses = $empty
+!! needed for subclasses as well (it updates the file .subclasses)
+!! !if $class_nbsubclasses = $empty
   log = !sh cd $wims_home/log/classes; ./.build-index $cd
-!endif
+!! !endif
