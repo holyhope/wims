@@ -1,4 +1,3 @@
-
 !if $wims_superclass=$empty
   !let wims_superclass=$wims_class
 !endif
@@ -31,12 +30,14 @@ $courses
 
 !reset compsup
 !for cls in $user_supervise
-  !let tmp=!replace internal / by , in $cls
-  !let compsup=!append line $tmp to $compsup
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !let compsup=!append line $tmp to $compsup
+  !endif
 !next cls
-
 !let compsup=!sh echo "$compsup" | sort | uniq;
 $U_gotoclass3
+
 !read classgraph.phtml supervise\
 $compsup
 
@@ -48,8 +49,10 @@ $compsup
 $U_gotoclass1
 
 !for cls in $user_participate
-  !let tmp=!replace internal / by , in $cls
-  !let compsup=!append line $tmp to $compsup
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !let compsup=!append line $tmp to $compsup
+  !endif
 !next cls
 
 !let compsup=!sh echo "$compsup" | sort | uniq;

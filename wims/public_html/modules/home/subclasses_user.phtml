@@ -43,10 +43,11 @@
 
 !let compsup=$empty
 !for cls in $user_participate
- !let tmp=!replace internal / by , in $cls
-  !let compsup=!append line $tmp to $compsup
+  !if $wims_class isin $cls
+    !let tmp=!replace internal / by , in $cls
+    !let compsup=!append line $tmp to $compsup
+  !endif
 !next cls
-
 !let compsup=!sh echo "$compsup" | sort | uniq;
 !!let compsup=!lines2items $compsup
 !!let compsup=!nospace $compsup
