@@ -98,11 +98,11 @@ sesdir=$wims_home/$wims_sesdir
       smi_=!nospace $smi_
       fi_=$(data_2[$sm])
       fi_=!nospace $fi_
-      !if $type=1
+      !if $type=1 and $test=1
         !sh obabel -:"$smi_" -O $s2_dir/$fi_.$f $option_
         !sh cp $s2_dir/$fi_.$f $wims_home/$wims_sesdir/getfile/
       !endif
-      !if $type=2
+      !if $type=2 or $test=2
         !sh export wims_exec_parm="https://cactus.nci.nih.gov/chemical/structure/$smi_/file?format=$f" ;\
         bin/webget > $s2_dir/$fi_.$f ;\
         cp $s2_dir/$fi_.$f $wims_home/$wims_sesdir/getfile/

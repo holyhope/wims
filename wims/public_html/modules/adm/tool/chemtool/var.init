@@ -8,7 +8,21 @@
    !exit
 !endif
 
-test=!sh obabel -V
+temp=!sh obabel -V
+!if $temp=$empty
+ test=2
+!else
+ temp= !word 3 of $temp
+ temp= !replace internal . by , in $temp
+ v1=!item 1 of $temp
+ v2=!item 2 of $temp
+ v3=!item 3 of $temp
+ !if $v1 > 2 or ($v1==2 and $v2>=3)
+  test=1
+ !else
+  test=2
+ !endif
+!endif
 
 !if $wims_developer!=$empty
    dev_dir=$wims_home/public_html/modules/devel/$wims_developer
