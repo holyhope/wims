@@ -49,14 +49,11 @@ s_=$sup
 !endif
 !read adm/class/userdef classes,$wims_superclass,$s_
 cadd_Supervisor=$s_
-tmp=!defof user_firstname,user_lastname,user_email,user_password in $userdef
+tmp=!defof user_firstname,user_lastname,user_email in $userdef
 !distribute item $tmp into sadd_firstname,sadd_lastname,sadd_email,sadd_password
-!!sadd_firstname=!defof user_firstname in $userdef
-!!sadd_lastname=!defof user_lastname in $userdef
-!!sadd_email=!defof user_email in $userdef
-!!sadd_password=$passs
 cadd_email=$sadd_email
 cadd_password=$pass
+sadd_password=$passs
 modclass_slist=!listunion firstname,lastname,email and $modclass_slist
 
 !read adm/gateway/delsup $wims_read_parm
