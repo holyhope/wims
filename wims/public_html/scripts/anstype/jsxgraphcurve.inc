@@ -1,7 +1,7 @@
 !distribute item $wims_read_parm into input_type,jsx_reply,jsx_xsize,jsx_ysize,jsx_imgurl,jsx_nb
 !default showinfobox=false
 
-!set wims_bound=100
+!set wims_bound=200
 !set name_alert=La taille des requetes sur le serveur ne peut exceder $wims_bound points. Realiser le trace plus rapidement pour que la requete soit plus petite.
 !set script$jsx_nb=$(script$jsx_nb)\
 JXG.Options.point.showInfobox = $showinfobox;\
