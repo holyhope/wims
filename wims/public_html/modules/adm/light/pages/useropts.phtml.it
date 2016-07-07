@@ -6,12 +6,11 @@
 !let module_language=it
 !!INDEXEND
 
-!let tip='<ul><li>FireFox&nbsp;<a target=\'new\' href=\'http://www.mozilla-europe.org/$module_language/\'><img src=\'gifs/mathml/getFireFox.gif\' alt=\'get FireFox\'/></a></li><li>Google Chrome&nbsp;<a target=\'new\' href=\'https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa\'> MathJax Extension </a><li>Windows<ul><li>Internet Explorer: <a target=\'new\' href=\'http://www.dessci.com/en/products/mathplayer/\'><img src=\'gifs/mathml/dessci_logo.gif\' alt=\'dessci\'/> DESSCI MathPlayer plugin</a><li>Opera: <a target=\'new\' href=\'http://xml-maiden.com/userjs/mathml/\'>UserJS MathML plugin</a></ul></li><li>Safari</li></ul>'
+!let tip=<ul><li><strong>FireFox</strong> supporta nativamente MathML senza bisogno di installare estensioni</li><li><strong>Google Chrome</strong>: ha necessità dell'installazione del plugin <a target="new" href="https://chrome.google.com/webstore/detail/mathjax-for-chrome/elbbpgnifnallkilnkofjcgjeallfcfa">MathJax</a></li><li><strong>Internet Explorer</strong>: ha necessità dell'installazione del plugin <a target="new" href="http://www.dessci.com/en/products/mathplayer/">DESSCI MathPlayer</a></li><li><strong>Opera</strong>: ha necessità dell'installazione del plugin <a target="new" href="http://xml-maiden.com/userjs/mathml/">UserJS MathML plugin</a></li></ul>
 
 !read proc/useropts.proc
 
 !header
-<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 <p>Questa pagina permette di modificare opzioni di visualizzzazione delle pagine WIMS.</p>
 
 <div id="widget_useropts">
@@ -40,7 +39,11 @@
       <span class="wims_emph">con immagini</span> e l'utilizzo di
       <span class="wims_emph">MathML</span> (purché si utilizzi un browser compatibile).
     </p>
-    <p>Ecco alcuni esempi:</p>
+    <p>
+      !if $texalign=2
+        Al momento, le formule sono visualizzate utilizzando MathML.<br />
+      !endif
+    Ecco alcuni esempi:</p>
     <ul>
       <li>
         Lettere greche
@@ -66,70 +69,46 @@
     </ul>
 
     !if $texalign=2
-      <p>La visualizzazione delle formule matematiche è impostata per l'utilizzo di MathML, in questo caso è necessario un browser compatibile. Se gli esempi sopra non sono visualizzati correttamente occorre utilizzare un
-        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
-        browser
-        </a>
-        diverso o impostare la modalità <span class="wims_emph">con immagini</span> per la visualizzazione delle formule.
+      <p>
+       Se gli esempi sopra non sono visualizzati correttamente occorre utilizzare un 
+       browser diverso o impostare la modalità <span class="wims_emph">con immagini</span> per la visualizzazione delle formule.
       </p>
-      <ul>
-       <li>
-       Modifica la modalità di visualizzazione delle formule:
+      <h3>Modalità di visualizzazione</h3>
+       <p>
+         Siete in modalità MathML
         !set wims_ref_class=wims_button
-        !href cmd=resume&useropts=$(arg)0$font Con immagini
-
-        !set arg=!nospace $texsize 2
+        !href cmd=resume&useropts=$(arg)0$font Passare alla modalità con immagini
+	</p>
+        <h3 id="formula_options">Opzioni per la modalità xMathML :</h3>
+          <p>La modalità MathML permette l'ingrandimento delle formule tramite un click del mouse.</p>
         !set wims_ref_class=wims_button
-        !href cmd=resume&useropts=$(arg)0$font MathML
-
-       </li>
-       <li>
-        !let ts1=!eval $texsize-1
-        !let ts2=!eval $texsize+1
-        !if $ts1<1
-         !let ts1=1
-        !endif
-        !if $ts2>9
-         !let ts2=9
-        !endif
-        Imposta la dimensione delle formule matematiche.
-        !set wims_ref_class=wims_button
-        !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" alt="gauche" style="width:1em" />
-        !set wims_ref_class=wims_button
-        !href cmd=resume&useropts=$default Normale
-        !set wims_ref_class=wims_button
-        !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" alt="droite" style="width:1em" />
-       </li><li>
-          Ingrandimento delle formule tramite un click del mouse.
-          !set wims_ref_class=wims_button
-          !href cmd=resume&useropts=$texsize$(texalign)1$font attivato
-          &nbsp;
-          !set wims_ref_class=wims_button
-          !href cmd=resume&useropts=$texsize$(texalign)0$font disattivato
-        </li>
-      </ul>
+          !if $useropts=$texsize$(texalign)0$font
+            Lo zoom è <span class="disabled">distattivato</span>.
+            !href cmd=resume&useropts=$texsize$(texalign)1$font#formula_options attiva
+            <span class="wims_button disabled">disattiva</span>
+          !else
+            Lo zoom è <span class="oef_indgood success">attivo</span>.
+            <span class="wims_button disabled">attiva</span>
+            !href cmd=resume&useropts=$texsize$(texalign)0$font#formula_options disattiva
+          !endif
+        <h3>Browser compatibili con MathML</h3>
+        $tip
     !else
       <p>
-        La visualizzazione delle formule è impostata in modalità <span class="wims_emph">con immagini</span>. Se si utilizza un
-        <a onmouseover="return Tip($tip)" class="wims_emph" style="cursor:help;">
-        browser compatibile
-        </a>,
-        è possibile visualizzare le formule utilizzando MathML.
+        La visualizzazione delle formule è impostata in modalità <strong>con immagini</strong>.<br />
+        Se si utilizza un browser compatibile è possibile visualizzare le formule utilizzando MathML.
       </p>
-
-      <ul>
-        <li>Modifica la modalità di visualizzazione delle formule:
-          !set wims_ref_class=wims_button
-          !href cmd=resume&useropts=$(arg)0$font Con immagini
-
+      <h3>Modalità di visualizzazione</h3>
+      <p>
+       State utilizzando la modalità con immagini
           !set arg=!nospace $texsize 2
           !set wims_ref_class=wims_button
-          !href cmd=resume&useropts=$(arg)0$font MathML
-        </li>
-
-        <li>
+          !href cmd=resume&useropts=$(arg)0$font passare alla modalità MathML
+        </p>
+      <h3>Opzioni della modalità con immagini</h3>
+      <ul><li>
          Dimensione dei simboli e delle formule matematiche.
-          !! È possibile aumentare o diminuire la dimensione delle formule basandosi sugli esempi della riga seguente.
+!! È possibile aumentare o diminuire la dimensione delle formule basandosi sugli esempi della riga seguente.
          !let ts1=!eval $texsize-1
          !let ts2=!eval $texsize+1
          !if $ts1<1
@@ -139,11 +118,11 @@
           !let ts2=9
          !endif
          !set wims_ref_class=wims_button
-         !href cmd=resume&useropts=$ts1$texalign$zoom$font <img src="gifs/doc/dgauche.gif" style="width:1em" />
+         !href cmd=resume&useropts=$ts1$texalign$zoom$font#formula <img src="gifs/doc/dgauche.gif" style="width:1em" />
          !set wims_ref_class=wims_button
-         !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font Normale
+         !href cmd=resume&useropts=$[$wims_texbasesize-1]$texalign$zoom$font#formula Normale
          !set wims_ref_class=wims_button
-         !href cmd=resume&useropts=$ts2$texalign$zoom$font <img src="gifs/doc/ddroite.gif" style="width:1em" />
+         !href cmd=resume&useropts=$ts2$texalign$zoom$font#formula <img src="gifs/doc/ddroite.gif" style="width:1em" />
       </li><li>
         Allineamento delle formule. Se l'espressione
         !insmath (x+y)/(x^$pw + y^2)
@@ -166,13 +145,20 @@
     <h2>Accessibilità</h2>
 
     <p>È possibile configurare la spaziatura delle lettere e delle parole
-      !set wims_ref_class=wims_button
+         !if $useropts=$(texsize)$texalign$(zoom)1
+            !set secondary1=wims_button disabled
+            !set secondary2=wims_button
+          !else
+            !set secondary2=wims_button disabled
+            !set secondary1=wims_button
+          !endif
+        !set wims_ref_class=$secondary2
       !href cmd=resume&useropts=$(texsize)$texalign$(zoom)0 Normale
 
-      !set wims_ref_class=wims_button
+        !set wims_ref_class=$secondary1
       !href cmd=resume&useropts=$(texsize)$texalign$(zoom)1 Distanziato
     </p>
-    <p>Il modo distanziato è particolarmente adatto in caso di un utente dislessico.</p>
+    <p>Il modo distanziato è particolarmente adatto in caso di dislessia.</p>
 
   </div>
 
@@ -194,3 +180,4 @@
 </p>
 
 !tail
+
