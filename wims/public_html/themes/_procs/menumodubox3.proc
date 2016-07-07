@@ -23,8 +23,13 @@ itemsep,0,$wims_name_configuration
 !read themes/_procs/extlink.proc cnt
 !if $class_ent_n0 >0
   !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
+  !set tmp_exists=yes
   !read themes/_procs/extlink.proc proc
+!endif
+!if $tmp_exists!=yes
+  !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
 !endif
 !read themes/_procs/supervisorotherclass.proc
 
+!reset tmp_exists
 !set wims_homeref_n0 = !linecnt $wims_rm_0
