@@ -2,19 +2,13 @@
 !! process listvarfilter.proc should have been read before.
 !! output is in user_vars one line by technical variables (name,values)
 
-# tv_Sclass : dir of .indextechvar file in the structure.
-# tv_listallname : list of all name of techvar in structure.
-# tv_listname : list of name of techvar available at the actual level of a structure.
-# tv_listtechvar : list (of line) for each techvar available (with information on each techvar in each line : name,classid,number)
-# tv_listlocal : list of num of local techvar (in the list tv_listtechvar)
-
 !reset user_vars
 !if $tv_listtechvar=$empty
     !exit
 !endif
 nb_=!linecnt $tv_listtechvar
 !for k_=1 to $nb_
-    add_=!replace internal / by A in $(tv_listtechvar[$k_;2])_$(tv_listtechvar[$k_;3])
-    s_=!defof user_techvar_$(add_) in $wims_read_parm
+    add_=!replace internal / by _ in $(tv_listtechvar[$k_;2])_$(tv_listtechvar[$k_;3])
+    s_=!defof user_techvar_$(tv_listcode[$k_]) in $wims_read_parm
     user_vars=!append line $(tv_listtechvar[$k_;1]),$s_ to $user_vars
 !next k_

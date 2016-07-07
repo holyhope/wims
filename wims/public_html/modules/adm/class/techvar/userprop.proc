@@ -24,12 +24,12 @@ listglobal=!listcomplement $tv_listlocal in $v
 !for k in $tv_listlocal
 	don=!line $k of $tv_listtechvar
 	!distribute item $don into name,cls,num_$k
-	id_$k=!replace internal / by A in $cls
+	id_$k=!item $k of $tv_listcode
 	tmp=!record $(num_$k) of wimshome/log/classes/$wims_class/.techvar
 	tmp=!line 2 of $tmp
 	ltprompt_$k=$name_empty,$tmp
 	ltval_$k=_EMPTY_,$tmp
-	old_$k=$(user_techvar_$(id_$k)_$(num_$k))
+	old_$k=$(user_techvar_$(id_$k))
 	!bound old_$k within $(ltval_$k) default _EMPTY_
 !next k
 
@@ -45,7 +45,7 @@ listglobal=!listcomplement $tv_listlocal in $v
 	wdon=$empty
 	!for k in $tv_listlocal
 		!bound techval$(num_$k) within $(ltval_$k) default $(old_$k)
-		wdon=!append line !set user_techvar_$(id_$k)_$(num_$k)=$(techval$(num_$k)) to $wdon
+		wdon=!append line !set user_techvar_$(id_$k)=$(techval$(num_$k)) to $wdon
 		old_$k=$(techval$(num_$k))
 	!next k
 	wdon=!replace internal _EMPTY_ by $empty in $wdon

@@ -22,8 +22,8 @@
      !set num_=!positionof item $(sel1[1]) in $tv_listname
      !set don_=!line $num_ of $tv_listtechvar
      !distribute item $don_ into name_,clsid_,num_
-     !let clsid_=!replace internal / by A in $clsid_
-     !set val_=!defof user_techvar_$(clsid_)_$num_ in wimshome/log/classes/$tv_Sclass/.users/$test_user
+     !set clsid_=!item $num_ of $tv_listcode
+     !set val_=!defof user_techvar_$(clsid_) in wimshome/log/classes/$tv_Sclass/.users/$test_user
      !if $val_ issametext $(sel1[2])
        !set testf=!append item 1 to $testf
      !else

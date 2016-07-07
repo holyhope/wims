@@ -123,7 +123,7 @@ listnew=!listcomplement $listforbname1 in $listnew
 	!reset subjob
 	!exit
     !endif
-    num=!replace internal / by A in $wims_class
+    num=!replace internal / by _ in $wims_class
     !increase nb
     num=$(num)_$nb
     liste=!sh grep $techvar $wims_home/s2/$wims_session/oldtechvar.don
@@ -168,13 +168,13 @@ $listval
 	!exit
     !endif
     nb=!linecnt $liste
-    num=!positionof item $techvar in $tv_listname
-    num=$(tv_listtechvar[$num;3])
-    cls=!replace internal / by A in $wims_class
+    num0=!positionof item $techvar in $tv_listname
+    num=$(tv_listtechvar[$num0;3])
+    cls=!item $num0 of $tv_listcode
     !for k=1 to $nb
 	udon=!line $k of $liste
 	!distribute item $udon into login,bb,val
-	!setdef !set user_techvar_$(cls)_$num=$val in wimshome/log/classes/$tv_Sclass/.users/$login
+	!setdef !set user_techvar_$(cls)=$val in wimshome/log/classes/$tv_Sclass/.users/$login
 	listlogin=!append item $login to $listlogin
     !next k
 !! modify list of values (if necessary) of technical variable
@@ -198,8 +198,4 @@ $listval
     !restart module=adm/class/techvar&job=userlist
 !endif
 
-!!debug detectee : $listoldtmp \
-!!chargeable : $listold\
-!!mauvais nom : $listbadname\
-!!nom deja en utilisation et non modifiable: $listforbname
 

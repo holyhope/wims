@@ -70,8 +70,9 @@ $data\
 
 !if $gstep>=2
 !! get list of value for the technical variable :
- tmp=!positionof item $namevar in $tv_listname
- tmp=!line $tmp of $tv_listtechvar
+ numvar=!positionof item $namevar in $tv_listname
+ tmp=!line $numvar of $tv_listtechvar
+ varcode=!item $numvar of $tv_listcode
  !distribute item $tmp into bb,classid,num
  don=!record $num of wimshome/log/classes/$wims_class/.techvar
  listval=!line 2 of $don
@@ -86,8 +87,7 @@ $data\
  donfile=$namevar\
 $defconnip
 
- classid2=!replace internal / by A in $classid
- techvartable=\$(classid2)_$num\
+ techvartable=\$varcode\
 !set techvar_EMPTY=>$class_expiration
  !for i=1 to $numsess
   !!## need to check no "," in exconnip/testoextra and numerical for date variable.
@@ -154,5 +154,5 @@ $reg_src2\
 $empty\
 }
  !sh mkdir $wims_home/log/classes/$wims_class/techvar
- !writefile wimshome/log/classes/$wims_class/techvar/$(classid2)_$num $techvartable
+ !writefile wimshome/log/classes/$wims_class/techvar/$varcode $techvartable
 !endif

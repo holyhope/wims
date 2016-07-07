@@ -6,8 +6,8 @@ lttechvarid=$empty
 !for k=1 to $nblisttechvar
     don=!line $k of $tv_listtechvar
     !distribute item $don into bl,cl,num
-    tmp=!replace internal / by A in $cl
-    lttechvarid=!append item user_techvar_$(tmp)_$(num) to $lttechvarid
+    tmp=!item $k of $tv_listcode
+    lttechvarid=!append item user_techvar_$(tmp) to $lttechvarid
 !next k
 
 # varfilter proc
