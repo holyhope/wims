@@ -18,9 +18,7 @@ wims_nw=today empty nonew creatdays backdays warn
  !exit
 !endif
 
-!bound job within list,arch,clean,security,grestrict,log,neighbor,\
-	connect,present,access,propagate,index,oefdefault,authtype,\
-	connectlink default new
+
 
 !read adm/levelname.phtml
 !!## must be read again because $job could be not defined
@@ -46,6 +44,12 @@ class_ref_button_help_bgcolor=$wims_ref_button_help_bgcolor
 class_ref_button_help_color=$wims_ref_button_help_color
 today=!char 1 to 8 of $wims_now
 !defread wimshome/log/classes/$wims_class/.def
+joballowlist=list,arch,clean,security,grestrict,log,connect,\
+    present,access,propagate,index,oefdefault,authtype,connectlink
+!if $class_type!=2
+ joballowlist=$joballowlist,neighbor
+!endif
+!bound job within $joballowlist default new
 du=!record 0 of wimshome/log/classes/$wims_class/.du
 du=!word 1 of $du
 du1=!char -3 to -1 of $du

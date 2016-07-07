@@ -62,10 +62,16 @@ config_restr,1,cmd=reply&job=access\
 config_score,1,cmd=reply&job=grestrict\
 to $wims_menu_items
 
-  !set wims_menu_items=!append line itemsep,0,\
+  !if neighbor isitemof $joballowlist
+   !set wims_menu_items=!append line itemsep,0,\
 config_neigh,1,cmd=reply&job=neighbor&job2=first&excls=no\
 config_otherserver,1,cmd=reply&job=connect&job2=first\
 to $wims_menu_items
+  !else
+   !set wims_menu_items=!append line itemsep,0,\
+config_otherserver,1,cmd=reply&job=connect&job2=first\
+to $wims_menu_items
+  !endif
   !else
     !if $job notwordof list new
       !set wims_menu_items=!append line config,1,cmd=renew&job=list\
