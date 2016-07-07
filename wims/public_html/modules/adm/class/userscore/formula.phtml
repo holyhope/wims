@@ -9,15 +9,15 @@ $name_formula_comment
 <input size="5" name="maxscore" value="$scoremax" />.
 $table_header
 <caption>$wims_name_Sheets</caption>
-$table_hdtr<th>$(name_formula[1])</th><th>$wims_name_title</th><th>$wims_name_Status</th>
-  <th>$(name_formula[2])</th><th>$(name_formula[3])</th></tr>
+$table_hdtr<th scope="col">$(name_formula[1])</th><th scope="col">$wims_name_title</th><th scope="col">$wims_name_Status</th>
+  <th scope="col">$(name_formula[2])</th><th scope="col">$(name_formula[3])</th></tr>
 !for i=1 to $totsheets
  !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !set k_=!line $i of $defaultformula
  !distribute word $k_ into w$i,s$i,ss$i
  !default w$i=1
  !default s$i=2
- !default ss$i=0
+ !default ss$i=1
  !distribute line $t_ into a_,b_,c_,d_
  !set a_=!char 1 of $a_
  !set S_=!item $a_+1 of $name_sheetstatut
