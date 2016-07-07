@@ -41,18 +41,19 @@
         !read themes/_widgets/authlogout.phtml
       </ul>
     </li>
-  !else
+    !endif
+    !if $module iswordof adm/modtool or $wims_firstname$wims_lastname$wims_user=$empty
      !readproc languages
     !! Language selector (displayed only if you're not connected)
-    !if $wims_language_cnt>1
+      !if $wims_language_cnt>1
       <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
         <a href="#lang_list" class="lang">
           <span><img src="gifs/$lang.gif" alt="$(Lang_name_$lang)" /> $wims_name_Language</span>
         </a>
         !read themes/_widgets/language_selector.phtml
       </li>
+      !endif
     !endif
-  !endif
  !endif
 </ul>
 
