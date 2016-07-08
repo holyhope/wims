@@ -27,11 +27,12 @@ ggbBase64=UEsDBBQACAAIAE9zJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VZNc9s2ED03vw
 !reset slib_customToolBar slib_ggbBase64 slib_customToolBar slib_width\
   slib_height slib_enableRightClick slib_showToolBar slib_showToolBarHelp \
   slib_showMenuBar slib_showResetIcon slib_showAlgebraInput slib_language \
-  slib_enableLabelDrags slib_enableShiftDragZoom slib_errorDialogsActive slib_useBrowserForJS
+  slib_enableLabelDrags slib_enableShiftDragZoom slib_errorDialogsActive\
+  slib_useBrowserForJS slib_enable3d
 
 
 !reset slib_out slib_data slib_option slib_ggbapplet slib_extra \
-  slib_appletcommand slib_geogebracommand slib_debug slib_list_ap slib_number
+  slib_appletcommand slib_geogebracommand slib_debug slib_list_ap slib_number slib_init slib_fonction
 slib_data=!trim $wims_read_parm
 
 slib_data= !items2lines $wims_read_parm
@@ -62,7 +63,7 @@ slib_list_ap = width,height,language,\
    enableLabelDrags,enableShiftDragZoom,enableRightClick,enableFileFeatures,allowRescaling,\
   showToolBar,showMenuBar,showResetIcon,showToolBarHelp,showAlgebraInput,customToolBar,\
   borderColor,capturingThreshold,algebraInputPosition,\
-  material_id,ggbBase64,errorDialogsActive,useBrowserForJS
+  material_id,ggbBase64,errorDialogsActive,useBrowserForJS,enable3d
 
 !for slib_a in file,$slib_list_ap
   slib_$slib_a=!getopt $slib_a in $slib_data
@@ -71,6 +72,8 @@ slib_list_ap = width,height,language,\
 !if $slib_ggbBase64$slib_file$slib_material_id=$empty
   slib_ggbBase64=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
 !endif
+
+slib_init=!getopt init in $slib_data
 
 slib_number1=!getopt number in $slib_data
 !if $slib_number1!=
@@ -107,6 +110,8 @@ slib_customToolBar= !items2words $slib_customToolBar
 !default slib_enableLabelDrags=false
 !default slib_enableShiftDragZoom=true
 !default slib_useBrowserForJS=true
+!default slib_init=0
+!default slib_enable3d=false
 !default slib_preventFocus=false
 slib_errorDialogsActive=$slib_debug
 !default slib_errorDialogsActive=false
@@ -123,7 +128,7 @@ slib_js_parm=evalCommand setValue setCoords setColor setVisible \
   setFilling setAnimating setAnimationSpeed\
   startAnimation stopAnimation isAnimationRunning
 
-slib_notcommand=height width language number material_id ggbBase64
+slib_notcommand=height width language number material_id ggbBase64 init enable3d
 slib_cnt=!linecnt $slib_data
 
 slib_data1=!replace internal = by , in $slib_data
@@ -200,21 +205,49 @@ applet$slib_number.inject('$slib_ggbapplet');
 slib_commandgeneral=$slib_commandgeneral\
 $slib_appletcommand
 
-slib_out=<script type="text/javascript" src="scripts/js/geogebra/deployggb.js"></script>\
-<input type="button" style="background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;" value="$(name_clickgeogebra_$lang)" onclick="test$slib_number();" />\
+!if $printing=yes
+  slib_commandgeneral=$slib_commandgeneral\
+var base64_string$slib_number="data:image/png;base64,"+ggbApplet$slib_number.getPNGBase64(1,true, 72);\
+document.getElementById("slib_img_print$slib_number").src=base64_string$slib_number;\
+document.getElementById("$slib_ggbapplet").style.display='none';
+!endif
+
+!if $slib_enable3d=true
+  slib_3d=1
+!else
+  slib_3d=0
+!endif
+
+!if $slib_init=1 or $slib_init=2
+  slib_button=<input type="button" style="background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;" value="$(name_clickgeogebra_$lang)" onclick="test$slib_number();" />
+  slib_fonction=$slib_appletcommand
+!endif
+!if $slib_init=1
+  slib_commandgeneral=$slib_commandgeneral\
+ggbApplet$(slib_number)_tmpi=ggbApplet$slib_number.getXML();
+slib_fonction=ggbApplet$slib_number.setXML(ggbApplet$(slib_number)_tmpi);
+!endif
+
+slib_out=<script type="text/javascript" language="javascript" src="scripts/js/geogebra/deployggb.js"></script>\
+$slib_button\
 <div id="$slib_ggbapplet"></div>\
 <script type="text/javascript">\
 /*<![CDATA[*/\
 Ipwims('$httpd_HTTP_HOST');\
 $(slib_parameters$slib_number)\
 /* is3D=is 3D applet using 3D view, AV=Algebra View, SV=Spreadsheet View, CV=CAS View, EV2=Graphics View 2, CP=Construction Protocol, PC=Probability Calculator, DA=Data Analysis, FI=Function Inspector, PV=Python, macro=Macro View (<=ne fonctionne pas )*/\
-var views = {'is3D': 0,'AV': 0,'SV': 0,'CV': 0,'EV2': 0,'CP': 0,'PC': 0,'DA': 0,'FI': 0,'PV': 0,'macro': 0};\
+var views = {'is3D': $slib_3d,'AV': 0,'SV': 0,'CV': 0,'EV2': 0,'CP': 0,'PC': 0,'DA': 0,'FI': 0,'PV': 0,'macro': 0};\
 var applet$slib_number = new GGBApplet(parameters$slib_number, '5.0', views);\
 function test$slib_number(){\
-ggbApplet$slib_number.setXML(ggbApplet$slib_number_tmpi);\
+$slib_fonction\
 }\
 /*]]>*/\
 </script>
+
+!if $printing=yes
+  slib_out=$slib_out\
+  <div><img id="slib_img_print$slib_number" style="width:$slib_width px;height:$slib_height px;" /></div>
+!endif
 
 !!! use to test if we have to print the onload.window at the end of the pages\
 !!! (see the tail of themes for the moment)
@@ -237,6 +270,6 @@ $slib_tmp
 
 !if $slib_debug=true
   slib_out=$slib_out \
-$fonction<br />Parameters read by the applet : $slib_z1<br /><br />The slib_data : $slib_z2 --> $slib_data\
+$slib_fonction<br />Parameters read by the applet : $slib_z1<br /><br />The slib_data : $slib_z2 --> $slib_data\
 <br />slib_data_param=$slib_data_param
 !endif

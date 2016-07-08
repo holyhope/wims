@@ -1,4 +1,4 @@
-!reset weight output ggblang typeu precision feedbackbutton listcoord
+!reset weight output ggblang typeu precisionn feedbackbutton listcoord
 !if $wims_read_parm=nocompare
   !if ? isin $(reply$i)
     !exit
@@ -13,25 +13,48 @@
     !exit
 !endif
 
-!set feedbackscript=!getopt feedbackscript in $(replyoption$i)
-!if $feedbackscript!=$empty
-    !set namebutton=!getopt namebutton in $(replyoption$i)
-    !default namebutton=$name_ggbcorrection
-    !set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" \
-type="button" value="$namebutton" onclick="$(feedbackscript)();" />
-!endif
+!reset scenario scenario_cnt scenario_tab scenario_list zdzd
+scenario=!trim $(replyoption$i)
+scenario=!items2lines $scenario
+scenario=!replace internal $	$ by $\
+$ in $scenario
+scenario=!rows2lines $scenario
+scenario=!replace internal @ by $\
+$ in $scenario
+scenario=!line 2 to -1 of $scenario
+default scenario_cnt=1
+scenario_cnt=!linecnt $scenario
+
+!for qs=1 to $scenario_cnt
+  zdzd=!line $qs of $scenario
+  zdzd=!replace internal : by , in $zdzd
+  scenario_tab=!append line $zdzd to $scenario_tab
+!next
+
+!for rr=1 to $scenario_cnt
+  blbl=!charcnt $(scenario_tab[$rr;1])
+  !if $blbl=0 or $(scenario_tab[$rr;1]) isin $(reply$i)
+!!A améliorer avec $scenario_test pour effectuer des tests plus complexes mais l'expression n'est pas évaluée
+!!scenario_test=!replace internal reponse by $(reply$i) in $(scenario_tab[$rr;1])
+!!if $scenario_test
+    scenario_list=!append item $rr to $(scenario_list)
+!!endif
+  !endif
+!next
+!default scenario_list=0
 
 extra=!getopt extra in $(replyoption$i)
 output=!getopt output in $(replyoption$i)
-!if $output notwordof coord nocoord formal nothing
+!if $output notwordof coord nocoord formal nothing noobjet
   !reset output
 !endif
+
 replyoption$i=!replace internal weights by weight in $(replyoption$i)
 weight=!getopt weight in $(replyoption$i)
 weight=!replace internal & by , in $weight
-precision=!getopt precision in $(replyoption$i)
-!default precision=18
-!!precision=$[2*$precision]
+precisionn=!getopt precision in $(replyoption$i)
+!default precisionn=18
+!!precision=$[2*$precisionn]
 !default weight=1,0.2,1
 !default output=coord
 parameters=$(oef_answer_option$i)
@@ -42,7 +65,7 @@ ggblang=!getopt language in $(oef_answer_option$i)
 !if $lang_exists!=yes
   !read lang/geogebra.phtml.en
 !endif
-!!Insert the variable $typelangue
+!!Insert the variable $type/langue
 !read anstype/geogebra_translation
 !set typecnt=!linecnt $typelangue
 
@@ -63,16 +86,16 @@ ggblang=!getopt language in $(oef_answer_option$i)
 !read anstype/geogebra.inc
 !!exec pari $pari_header
 
+!set feedbackscript=!getopt feedbackscript in $(replyoption$i)
+!if $feedbackscript!=$empty
+    !set namebutton=!getopt namebutton in $(replyoption$i)
+    !default namebutton=$name_ggbcorrection
+    !set feedbackbutton=<input id="geogebra_feedback" style="display:inline;" \
+type="button" value="$namebutton" onClick="$(feedbackscript)();" />
+!endif
+
 #######################
 ###INITIALISATION
-
-### set "all" possible scores zero
-name_score=0
-num_cond_score=0
-formal_cond_score=0
-total_name=0
-total_num_cond=0
-total_formal_cond=0
 
 conic=circle,line,conic,parabola,ellipse,hyperbola,ray
 
@@ -203,7 +226,7 @@ yourlist1=$yourlist11
         ligneb=!line $li of $yourlist1
         yourlist1=!replace line number $li by $ligneb&&point,$(ligne1[$u]) in $yourlist1
       !endif
-   !next
+    !next
   !endif
   !if $vartemp iswordof point
      ligne1=!line $li of $yourlist_name
@@ -257,10 +280,10 @@ js_fix=
   !if [ notin $ob
     js_fix = !append line setFixed('$name',true) to $js_fix
     ob1=!getopt $name in $yourlist_name
-    type=!item 1 of $ob1
-    type=!lowercase $type
+    typetest=!item 1 of $ob1
+    typetest=!lowercase $typetest
     ob1=!item 2 to -1 of $ob1
-    !if $type isitemof point,vector
+    !if $typetest isitemof point,vector
       ob=!nospace $name = ( $ob1 )
     !else
       ob=!nospace $name = $ob1
@@ -270,7 +293,7 @@ js_fix=
   ob=!replace internal )) by $ $ in $ob
   ob=!nospace $ob
   !if $type=function
-   ob = !line $p of $yourlist_name
+   ob=!line $p of $yourlist_name
    ob=!replace internal function, by in $ob
   !endif
   !if $type=line
@@ -391,62 +414,75 @@ yourlistformal=
  !goto end
 !endif
 
-### traitement de replygood
+###############################################################################################################################################
+### traitement de replygood en incluant l'option scenario
 ### numerical conditions
 ### mylist2= x_A > x_B,texte1 ; (x_A)^2+(x_B)^2 < 3,texte2 ....
+!reset gg ggg uu mylist
+!for gg in $scenario_list
+  !for ggg in $(scenario_tab[$gg;2..-1])
+    good$gg=!append line $(replygood$i[$ggg;]) to $(good$gg)
+  !next ggg
+  mylist=$(good$gg)
 
-mylist=$(replygood$i)
-!for geoword in $name_listtype
-  !if $(w_$geoword)!=$empty
-    mylist=!replace internal $(w_$geoword)[ by $geoword[ in $(mylist)
-  !endif
-!next
+  !default mylist=$(replygood$i)
 
-mylist=!rows2lines $mylist
-mylist=!replace internal ; by $\
+### set "all" possible scores zero
+  !distribute items 0,0,0,0,0,0,0,0,0 into name_score, num_cond_score, formal_cond_score, \
+total_name,total_num_cond, total_formal_cond, check, cond,score
+
+ !for geoword in $name_listtype
+   !if $(w_$geoword)!=$empty
+     mylist=!replace internal $(w_$geoword)[ by $geoword[ in $mylist
+   !endif
+ !next
+
+  mylist=!rows2lines $mylist
+  mylist=!replace internal ; by $\
 $ in $mylist
 
-mylist_cnt=!linecnt $mylist
-!reset mylist1 mylist2
-!distribute items 0,0 into tmp1,tmp2
+  mylist_cnt=!linecnt $mylist
+  !reset mylist1 mylist2
+  !distribute items 0,0 into tmp1,tmp2
 
-fn=f,n
-memory=
+  fn=f,n
+  memory=
 #separe numerical conditions and formal conditions
 #keep the order in memory
-!for k = 1 to $mylist_cnt
-  ligne=!line $k of $mylist
-  !if $(ligne[1]) iswordof f n formal numeric
-    v=!text select fn in $(ligne[1])
-    j=!positionof item $v in f,n
-    mylist$j=!append line $(ligne[2..-1]) to $(mylist$j)
-    tmp$j=$[$(tmp$j)+1]
-    memory=!append line $j,$(tmp$j) to $memory
-  !endif
-!next
+  !for k = 1 to $mylist_cnt
+    ligne=!line $k of $mylist
+    !if $(ligne[1]) iswordof f n formal numeric
+      v=!text select fn in $(ligne[1])
+      j=!positionof item $v in f,n
+      mylist$j=!append line $(ligne[2..-1]) to $(mylist$j)
+      tmp$j=$[$(tmp$j)+1]
+      memory=!append line $j,$(tmp$j) to $memory
+    !endif
+  !next
 
 ### rem: 1 to 1 permet de garder en colonnes
-mylist1display=!column 2 to -1 of $mylist1
-mylist1=!column 1 to 1 of $mylist1
+  mylist1display=!column 2 to -1 of $mylist1
+  mylist1=!column 1 to 1 of $mylist1
 
-mylist1=!replace internal [ by , in $mylist1
-mylist1=!replace internal ] by  in $mylist1
+  mylist1=!replace internal [ by , in $mylist1
+  mylist1=!replace internal ] by  in $mylist1
 
-mylist1_cnt=!linecnt $mylist1
-mylist2_cnt=!linecnt $mylist2
-mylist2orig=$mylist2
+  mylist1_cnt=!linecnt $mylist1
+  mylist2_cnt=!linecnt $mylist2
+  mylist2orig=$mylist2
 
 ### unfinish
 ### transform some formal conditions in numerical conditions
 ### see geogebra_translation
 ### ray line midperpendicular perpendicular middle angle anglegeom bisector circle
 
-!if $precision>12
-   pr=13
-!else
-   pr=$precision
-!endif
-!for p= 1 to $mylist2_cnt
+  !if $precisionn>12
+    pr=13
+  !else
+   pr=$precisionn
+  !endif
+
+ !for p= 1 to $mylist2_cnt
   ligne=!line $p of $mylist2
   lignetest=!text select =] in $ligne
   lignetest=!nospace $lignetest
@@ -521,7 +557,7 @@ mylist2orig=$mylist2
     !endif
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-!next
+ !next
 
 #### donnees presentes dans l'applet
 cnt=!linecnt $oef_applet_command
@@ -536,7 +572,7 @@ mylist11=
    !else
      mylist11=!append line $ligne to $mylist11
    !endif
- !next
+!next
 
 mylist11=!append line $mylist1 to $mylist11
 
@@ -655,7 +691,7 @@ displaylist1=
     Test=bad $i
     !exit
   !endif
-  !if $type2 iswordof segment line intersection bissector center middle
+  !if $type2 iswordof segment line intersection bissector center middle midperpendicular
     obj=$obj $(obj[2]),$(obj[1])
   !endif
   !if $type2 iswordof angle
@@ -777,13 +813,13 @@ $ in $yobj1
     !endif
     !next s
   !endif
- !if $display notsametext hiden or $display issametext
+  !if $display notsametext hiden or $display issametext
     displaylist1=!append line <li>$result</li> to $displaylist1
-!else
+  !else
     displaylist1=$displaylist1\
 
 !!!! let empty the previous line
- !endif
+  !endif
   mscr=!append item $mscr2 to $mscr
 !next p
 
@@ -882,7 +918,7 @@ displaylist2=
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
              test=!exec pari myy=[$my];c=vecmax(abs(myy)) ; myy=myy/c ;\
              yo=[$coord] ; c=vecmax(abs(yo)) ; yo=yo/c ;\
-             if( vecmax(abs(yo - myy)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + myy)) < 10^(-(max(3,$precision/2))),1,0)
+             if( vecmax(abs(yo - myy)) < 10^(-(max(3,$precisionn/2))) || vecmax(abs(yo + myy)) < 10^(-(max(3,$precisionn/2))),1,0)
              test=!trim $test
              !if $test=1
                cond=$test==1
@@ -926,84 +962,99 @@ displaylist2=
 !next p
 
 ### on remet dans l'ordre des conditions
-Displaylist=
-Mscr=
-!for k = 1 to $mylist_cnt
+  Displaylist$gg=
+  Mscr$gg=
+ !for k = 1 to $mylist_cnt
    mem=!line $k of $memory
    ligne=!line $(mem[2]) of $(displaylist$(mem[1]))
    !if $ligne notsametext
-     Displaylist=!append line $ligne to $Displaylist
+     Displaylist$gg=!append line $ligne to $(Displaylist$gg)
    !endif
    mscr2=!item $(mem[2]) of $mscr
-   Mscr=!append item $mscr2 to $Mscr
-!next k
+   Mscr$gg=!append item $mscr2 to $(Mscr$gg)
+ !next k
 ### a modifier ?? 0,1,0 is "dangerous" ?
-!if $[$(weight[1])+$(weight[3])] = 0
-  weight=$(weight[2]),$(weight[2]),$(weight[2])
-!endif
+ !if $[$(weight[1])+$(weight[3])] = 0
+   weight=$(weight[2]),$(weight[2]),$(weight[2])
+ !endif
 
 ###SCORE AND OUTPUT
-!if $total_name=0
-  name_score=0
-  weight=$(weight[1]),0,$(weight[3])
-!else
-  name_score=$[$name_score/$total_name]
-!endif
+ !if $total_name=0
+   name_score=0
+   weight=$(weight[1]),0,$(weight[3])
+ !else
+   name_score=$[$name_score/$total_name]
+ !endif
+ !if $total_num_cond=0
+   num_cond_score=0
+   weight=$(weight[1]),$(weight[2]),0
+ !else
+   num_cond_score=$[$num_cond_score/$total_num_cond]
+ !endif
+ !if $total_formal_cond=0
+   formal_cond_score=0
+   weight=0,$(weight[2]),$(weight[3])
+ !else
+   formal_cond_score=$[$formal_cond_score/$total_formal_cond]
+ !endif
+ score=$[$(weight[1])*$(formal_cond_score)+$(weight[2])*$(name_score)+$(weight[3])*$(num_cond_score)]
+ score$gg=$[$score/($(weight[1])+$(weight[2])+$(weight[3]))]
+ scorenoname=$[$(weight[3])*$(num_cond_score)+$(weight[1])*$(formal_cond_score)]
+ scorenoname$gg=$[$scorenoname/($(weight[1])+$(weight[3]))]
+ !if $(score$gg)=1
+    mscr$gg=1
+ !else
+    !if $(scorenoname$gg)=1
+      mscr$gg=0.5
+    !else
+      mscr$gg=0
+    !endif
+ !endif
+ Mscr$gg=$(mscr$gg);$(Mscr$gg);$gg
 
-!if $total_num_cond=0
-  num_cond_score=0
-  weight=$(weight[1]),$(weight[2]),0
-!else
-  num_cond_score=$[$num_cond_score/$total_num_cond]
-!endif
-!if $total_formal_cond=0
-  formal_cond_score=0
-  weight=0,$(weight[2]),$(weight[3])
-!else
-  formal_cond_score=$[$formal_cond_score/$total_formal_cond]
-!endif
-score=$[$(weight[1])*$(formal_cond_score)+$(weight[2])*$(name_score)+$(weight[3])*$(num_cond_score)]
-score=$[$score/($(weight[1])+$(weight[2])+$(weight[3]))]
-scorenoname=$[$(weight[3])*$(num_cond_score)+$(weight[1])*$(formal_cond_score)]
-scorenoname=$[$scorenoname/($(weight[1])+$(weight[3]))]
-!if $score=1
-    mscr=1
-!else
-    !if $scorenoname=1
-      mscr=0.5
-  !else
-      mscr=0
-  !endif
-!endif
-Mscr=$mscr;$Mscr
+ msg$gg=<span class="oef_indbad">
 
-msg=<span class="oef_indbad">
+ !if $extra!=yes
+   !if $total_formal_cond < $ynamecnt
+     score$gg=$[$(score)*$total_formal_cond/$ynamecnt]
+     scorenoname$gg=$[$(scorenoname)*$total_formal_cond/$ynamecnt]
+     msg$gg=$(msg$gg) $w_penalty<br />
+   !endif
+ !endif
 
-!if $extra!=yes
-  !if $total_formal_cond < $ynamecnt
-    score=$[$score*$total_formal_cond/$ynamecnt]
-    scorenoname=$[$scorenoname*$total_formal_cond/$ynamecnt]
-    msg=$msg $w_penalty<br />
-  !endif
-!endif
-!if $scorenoname=NaN
-  Test=bad $i
-  !exit
-!endif
+ !increase uu
+ !if $uu=1
+   score_max=$(score$gg)
+ !endif
+ !if $uu>=2
+   !if $(score$gg) >= $score_max
+    final=$gg
+    score_max=$(score$gg)
+   !endif
+   !if $final=$empty
+     final=1
+   !endif
+ !endif
+!next gg
+###############################################################################################################################
+
+!default final=0
+
+######NOTATION#######
 !!On peut ne demander aucun nom et alors cela ne va pas
-!if $scorenoname=0 and $score < 1
+!if ($(scorenoname$final)=0 and $(score$final) < 1) or $(scorenoname$final)=NaN
     diareply$i=bad
 !else
-    !if $scorenoname < 1
- !! partialgood$i=yes
-      diareply$i=bad
-    !else
-      diareply$i=good
-    !endif
+  !if $(scorenoname$final) < 1 or $(score$final) < 1
+    partialgood$i=yes
+    diareply$i=good
+  !else
+    diareply$i=good
+  !endif
 !endif
 #### diareply=good only if $score=1
-freegot=$[$freegot+$score]
-msg=<br />$msg</span>
+freegot=$[$freegot+$(score$final)]
+msg$final=<br />$(msg$final)</span>
 
 ####PREPARATION des feedback
 :end
@@ -1015,8 +1066,8 @@ $yourggb\
 $js_fix
 
 #### On ne fait afficher que les points nouveaux
- !reset yourlistnew$output
- !for p = 1 to $ynamecnt
+!reset yourlistnew$output
+!for p = 1 to $ynamecnt
   u = !item $p of $your_name
   u=!getopt $u in $oef_applet_command
   !if $u issametext
@@ -1040,12 +1091,15 @@ m_reply$i=$yourggb
 !if $output=nothing
   reply__$i=&nbsp;
 !else
+  reply__$i=<hr style="width:50%"/>\
+<table><tr><td><ul type="square">$(Displaylist$final)</ul>$(msg$final) </td>\
+</tr></table>
+!endif
+!if $output iswordof coord nocoord formal
   reply__$i=$w_analyze\
 <pre>$(yourlistnew$output)\
 </pre>\
-<hr style="width:50%"/>\
-<table><tr><td><ul type="square">$Displaylist</ul>$msg </td>\
-</tr></table>
+$(reply__$i)
 !endif
 
 ### Answer for \reply1
@@ -1053,4 +1107,4 @@ m_reply$i=$ynamecnt\
 $yourggb\
 $yourlist_name
 
-m_sc_reply$i=$Mscr
+m_sc_reply$i=$(Mscr$final)
