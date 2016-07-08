@@ -6,20 +6,22 @@
 <fieldset class="property_fields blockcenter">
   <legend>$name_create_or_edit</legend>
   <div class="field box">
-   <label for="namevar">$name_namevar <span class="field_required">*</span></label>
    !if $vote_status>0
+     <strong>$name_namevar <span class="field_required">*</span></strong>
     $namevar
    !else
+    <label for="up_namevar">$name_namevar <span class="field_required">*</span></label>
     !let up_namevar=$namevar
     !formselect up_namevar list $tv_listlocalname
    !endif
    <div class="formHelp">$(name_$(reg_model)_help)</div>
   </div>
   <div class="field box">
-   <label for="defconnip">$name_textconnip</label>
    !if $vote_status>0
+   <strong>$name_textconnip</strong>
     $defconnip
    !else
+    <label for="defconnip">$name_textconnip</label>
     <input size="12" name="up_defconnip" id="defconnip" value="$defconnip" />
    !endif
    <div class="formHelp">$name_textconnip2</div>
