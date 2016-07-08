@@ -2,7 +2,7 @@
 
 v=!record 0 of wimshome/$wims_sesdir/upload/class/version
 v=!word 1 of $v
-!if $v=$empty or $v notwordof 4
+!if $v=$empty or $v<4
  error=no_upload
  !exit
 !endif
@@ -70,7 +70,7 @@ copy=!listuniq $copy
     test=!defof user_exists in wimshome/log/classes/$wims_superclass/.users/$(u[3])
     !if $test!=$empty
      user_loginused=!append item $(u[3]) to $(user_loginused)
-     !sh rm -f $wims_home/$wims_sesdir/upload/class/.users/$(u[3])  $wims_home/$wims_sesdir/upload/class/score/$(u[3]) $wims_home/$wims_sesdir/upload/class/noscore/$(u[3]);
+     !sh rm -f $wims_home/$wims_sesdir/upload/class/.users/$(u[3]) $wims_home/$wims_sesdir/upload/class/score/$(u[3]) $wims_home/$wims_sesdir/upload/class/noscore/$(u[3]);
     !else
      user_ok=!append item $(u[3]) to $user_ok
     !endif

@@ -49,11 +49,10 @@ to $wims_menu_items
 !!ARIANE already in ariane thread
     !set wims_menu_items=!append line listvar,1,cmd=reply&job=listvar to $wims_menu_items
 !endif
-
 !if $job!=addvar
   !set wims_menu_items=!append line add_techvar,1,cmd=reply&job=addvar to $wims_menu_items
 !endif
-!if $job!=oldvar
+!if $job!=oldvar and $version_class < 5
  !set wims_menu_items=!append line oldvar,1,cmd=reply&job=oldvar to $wims_menu_items
 !endif
 </div>

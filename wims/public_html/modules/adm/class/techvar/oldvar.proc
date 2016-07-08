@@ -1,5 +1,7 @@
 !! search old technical variable. variable without values are forget
-
+!if $version_class>=5
+  !exit
+!endif
 olddon=!record 0 of wimshome/s2/$wims_session/oldtechvar.don
 !if $olddon=$empty or $subjob=$empty
     olddon=!sh cd $wims_home/log/classes/$tv_Sclass/.users/;\
@@ -9,7 +11,7 @@ grep -r user__ * | awk -F= '$$2!=""{print $$0}'
     !if $olddon=$empty
         !writefile wimshome/s2/$wims_session/oldtechvar.don EMPTY
     !else
-	!writefile wimshome/s2/$wims_session/oldtechvar.don $olddon
+      !writefile wimshome/s2/$wims_session/oldtechvar.don $olddon
     !endif
 !endif
 !if EMPTY=$olddon
@@ -27,20 +29,20 @@ listclsuser=$empty
 nuser=!recordcnt wimshome/log/classes/$wims_class/.userlist
 !if $nuser>0
     !for k=1 to $nuser
-	u=!record $k of wimshome/log/classes/$wims_class/.userlist
-	listclsuser=!append item $(u[3]) to $listclsuser
+      u=!record $k of wimshome/log/classes/$wims_class/.userlist
+      listclsuser=!append item $(u[3]) to $listclsuser
     !next k
 !endif
 listlocalname=!item $tv_listlocal of $tv_listname
 
-!! ------ description of variables used:
-!! listforbname1 : contient les noms de variables non chargeable car affectÃ©s Ã©galement Ã  des participants extÃ©rieurs Ã  la classe
-!! listforbname2 : le nom est dÃ©jÃ  utilisÃ© comme une variable globale (non modifiable localement)
+!! ------ description of used variables :
+!! listforbname1 : contient les noms de variables non chargeables car affectés également à des participants extérieurs à la classe
+!! listforbname2 : le nom est déjà utilisé comme une variable globale (non modifiable localement)
 !! listforbname3 : nom de variable non exploitable ou liste des valeurs trop longue.
 !! listnew : variable ajoutable en variable locale
 !! listmodify : variable locale modifiable
 !! listlogin_$name : contient la liste des logins contenant une valeur pour la variable name
-!! listval_$name : liste des diffÃ©rentes valeurs trouvÃ©es pour la variable name
+!! listval_$name : liste des différentes valeurs trouvées pour la variable name
 
 !for k=1 to $nb
     l=!line $k of $olddon
@@ -49,23 +51,23 @@ listlocalname=!item $tv_listlocal of $tv_listname
     name2=!nospace $name2
     n=!charcnt $name2
     !if $n>$MAXcharname or $n<1
-	listforbname3=!listunion $listforbname3 and $varname
+      listforbname3=!listunion $listforbname3 and $varname
     !else
-	varname=$name2
-	!if $varname notitemof $tv_listallname
-	    # eventualy a new vartech
-	    listnew=!listunion $listnew and $varname
-	    # precheck condition of localisation (no participant use it outside class)
-	    !if $varuser notitemof $listclsuser
-		listforbname1=!listunion $listforbname1 and $varname
-	    !endif
-	!else
-	    !if $varname isitemof $listlocalname
-		listmodify=!listunion $listmodify and $varname
-	    !else
-		listforbname2=!listunion $listforbname2 and $varname
-	    !endif
-	!endif
+      varname=$name2
+      !if $varname notitemof $tv_listallname
+          # eventualy a new vartech
+          listnew=!listunion $listnew and $varname
+          # precheck condition of localisation (no participant use it outside class)
+          !if $varuser notitemof $listclsuser
+            listforbname1=!listunion $listforbname1 and $varname
+          !endif
+      !else
+          !if $varname isitemof $listlocalname
+            listmodify=!listunion $listmodify and $varname
+          !else
+            listforbname2=!listunion $listforbname2 and $varname
+          !endif
+      !endif
     !endif
 !next k
 listnew=!listcomplement $listforbname1 in $listnew
@@ -76,8 +78,8 @@ listnew=!listcomplement $listforbname1 in $listnew
     newval=!listuniq $newval
     nb=!itemcnt $newval
     !if $nb>$MAXnbvalue
-	listnew=!listcomplement $k in $listnew
-	listforbname3=!listunion $listforbname3 and $k
+      listnew=!listcomplement $k in $listnew
+      listforbname3=!listunion $listforbname3 and $k
     !endif
 !next k
 !! check list of value for modify techvar
@@ -90,8 +92,8 @@ listnew=!listcomplement $listforbname1 in $listnew
     val=!listuniq $newval,$oldval
     nb=!itemcnt $val
     !if $nb>$MAXnbvalue
-	listmodify=!listcomplement $k in $listmodify
-	listforbname3=!listunion $listforbname3 and $k
+      listmodify=!listcomplement $k in $listmodify
+      listforbname3=!listunion $listforbname3 and $k
     !endif
 !next k
 
@@ -109,73 +111,73 @@ listnew=!listcomplement $listforbname1 in $listnew
     !exit
 !endif
 
-!! --------------------------- le processus make est Ã  reprendre avec les nouvelles variables.
+!! --------------------------- le processus make est à reprendre avec les nouvelles variables.
 
 !if $subjob=make
-    nb=!itemcnt $tv_listlocal
-    !if $nb>=$MAXtechvar
-	error=toomanytechvar
-	!reset subjob
-	!exit
-    !endif
-    !if $techvar notitemof $listnew
-	error=oldvar_badvar
-	!reset subjob
-	!exit
-    !endif
-    num=!replace internal / by _ in $wims_class
-    !increase nb
-    num=$(num)_$nb
-    liste=!sh grep $techvar $wims_home/s2/$wims_session/oldtechvar.don
-    !if $liste=$empty
-	error=oldvar_nouser
-	!reset subjob
-	!exit
-    !endif
+   nb=!itemcnt $tv_listlocal
+   !if $nb>=$MAXtechvar
+     error=toomanytechvar
+     !reset subjob
+     !exit
+   !endif
+   !if $techvar notitemof $listnew
+     error=oldvar_badvar
+     !reset subjob
+     !exit
+   !endif
+   num=!replace internal / by _ in $wims_class
+   !increase nb
+   num=$(num)_$nb
+   liste=!sh grep $techvar $wims_home/s2/$wims_session/oldtechvar.don
+   !if $liste=$empty
+     error=oldvar_nouser
+     !reset subjob
+     !exit
+   !endif
 !! make the new technical variable
-    listval=!column 3 of $liste
-    listval=!listuniq $listval
-    nbval=!itemcnt $listval
-    !if $nbval>$MAXnbvalue
-       error=badoldvaluesnb
-       !reset subjob
-       !exit
-    !endif
-    !fileappend wimshome/log/classes/$wims_class/.techvar :$techvar\
+   listval=!column 3 of $liste
+   listval=!listuniq $listval
+   nbval=!itemcnt $listval
+   !if $nbval>$MAXnbvalue
+     error=badoldvaluesnb
+     !reset subjob
+     !exit
+   !endif
+   !fileappend wimshome/log/classes/$wims_class/.techvar :$techvar\
 $listval
     !fileappend wimshome/log/classes/$tv_Sclass/.indextechvar :$techvar,$wims_class,$[$nb]
 !! put value in participant file.
     nb=!linecnt $liste
     !for k=1 to $nb
-	udon=!line $k of $liste
-	!distribute item $udon into login,bb,val
-	!setdef !set user_techvar_$num=$val in wimshome/log/classes/$tv_Sclass/.users/$login
-	listlogin=!append item $login to $listlogin
+      udon=!line $k of $liste
+      !distribute item $udon into login,bb,val
+      !setdef !set user_techvar_$num=$val in wimshome/log/classes/$tv_Sclass/.users/$login
+      listlogin=!append item $login to $listlogin
     !next k
     !restart module=adm/class/techvar
 !endif
 
 !if $subjob=modify
     !if $techvar notitemof $listmodify
-	error=oldvar_badvar
-	!reset subjob
-	!exit
+      error=oldvar_badvar
+      !reset subjob
+      !exit
     !endif
     liste=!sh grep $techvar $wims_home/s2/$wims_session/oldtechvar.don
     !if $liste=$empty
-	error=oldvar_nouser
-	!reset subjob
-	!exit
+       error=oldvar_nouser
+      !reset subjob
+      !exit
     !endif
     nb=!linecnt $liste
     num0=!positionof item $techvar in $tv_listname
     num=$(tv_listtechvar[$num0;3])
     cls=!item $num0 of $tv_listcode
     !for k=1 to $nb
-	udon=!line $k of $liste
-	!distribute item $udon into login,bb,val
-	!setdef !set user_techvar_$(cls)=$val in wimshome/log/classes/$tv_Sclass/.users/$login
-	listlogin=!append item $login to $listlogin
+      udon=!line $k of $liste
+      !distribute item $udon into login,bb,val
+      !setdef !set user_techvar_$(cls)=$val in wimshome/log/classes/$tv_Sclass/.users/$login
+      listlogin=!append item $login to $listlogin
     !next k
 !! modify list of values (if necessary) of technical variable
     listval=!column 3 of $liste
@@ -184,18 +186,16 @@ $listval
     oldval=!line 2 of $don
     new=!listcomplement $oldval in $listval
     !if $new!=$empty
-        nb=!recordcnt wimshome/log/classes/$wims_class/.techvar
-	output=$empty
-	!for k=1 to $nb
-	    tmp=!record $k of wimshome/log/classes/$wims_class/.techvar
-	    !if $k=$num
-		tmp=!replace line number 2 by $oldval,$new in $tmp
-	    !endif
-	    output=!append line :$tmp to $output
-	!next k
+      nb=!recordcnt wimshome/log/classes/$wims_class/.techvar
+      output=$empty
+      !for k=1 to $nb
+          tmp=!record $k of wimshome/log/classes/$wims_class/.techvar
+          !if $k=$num
+            tmp=!replace line number 2 by $oldval,$new in $tmp
+          !endif
+          output=!append line :$tmp to $output
+      !next k
         !filewrite wimshome/log/classes/$wims_class/.techvar $output
     !endif
     !restart module=adm/class/techvar&job=userlist
 !endif
-
-

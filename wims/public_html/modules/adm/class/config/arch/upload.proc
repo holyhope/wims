@@ -24,7 +24,8 @@ new=$wims_sesdir/upload/class
 old=log/classes/$wims_class
 v=!record 0 of wimshome/$new/version
 v=!trim $v
-!if $v=$empty or $v notwordof 4
+!!version <=4 for classes
+!if $v=$empty or $v<4
  error=bad_file
  !exit
 !endif
@@ -45,7 +46,6 @@ new_reccnt=$[$new_reccnt+$new_defcnt+$new_supcnt]
   gotlist=!append item $rec to $gotlist
  !endif
 !next rec
-
 
 !if $gotlist=$empty
  error=empty_file
