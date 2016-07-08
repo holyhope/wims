@@ -4,7 +4,6 @@
 !set name_name=Naam
 !set name_ltvalue=Waarde(s)
 !set name_value=Waarde
-!set name_modify=Veranderen
 !set name_make=Aanmaken
 !set name_listtechvarlocal=Lijst met lokale technische variabelen
 !set name_listtechvarglobal=Lijst met globale technische variabelen
