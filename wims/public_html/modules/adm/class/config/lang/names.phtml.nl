@@ -428,7 +428,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    !endif
 !endif
 
-!if $job iswordof list new
+!if $job iswordof list new or $job=
   !distribute line Naam van het instituut\
     Naam van de klas\
     Klas number\

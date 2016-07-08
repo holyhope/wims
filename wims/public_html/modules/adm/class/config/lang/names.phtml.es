@@ -430,7 +430,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
   !endif
 !endif
 
-!if $job iswordof list new
+!if $job iswordof list new or $job=
   !distribute line Nombre del Centro\
     Nombre de la clase\
     Class Number\
