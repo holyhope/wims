@@ -10,14 +10,18 @@
  !goto end
 !endif
 
+
+!if $cmd=new and $special_parm=module_updates
+ !read module_updates.phtml
+ !goto end
+!endif
+
 !read adm/title.phtml 1\
 WIMS @ $httpd_HTTP_HOST\
 $(module_title_$lang)
 
 !if $sitestart=$empty
-<p>
-$name_warning
-</p>
+ <p class="wims_msg warning">$name_warning</p>
  !goto end
 !endif
 !if $show=yes and $total_site>0 and $laps>0
@@ -31,12 +35,11 @@ $name_warning
  </div>
 !else
  !if $usercnt>0
- <p>
-  $name_numberclass
-  </p>
+ <p>$name_numberclass</p>
  !endif
  !read menu.phtml
 !endif
+
 :end
 !!!homeref
 !tail
