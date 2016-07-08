@@ -14,7 +14,7 @@ namevar=!line 1 of $data
 !default up_defconnip=!line 2 of $data
 po=!positionof item $namevar in $tv_listname
 
-!bound up_namevar within $listlocalname default $namevar
+!bound up_namevar within $tv_listlocalname default $namevar
 
 listvar=bday,bmonth,byear,bhour,bmin,ehour,emin,nstud,testoextra,exconnip
 !if $po isitemof $tv_listlocal and $namevar=$up_namevar
@@ -50,7 +50,7 @@ testointro=$up_testointro
 !if $gstep=2
 !! need to check carefully namexevar vs. up_namevar (at some step we seem to
 !! be loosing the correction)(?? should this go outside the if $gstep=2)
- !bound up_namevar within $listlocalname default $namevar
+ !bound up_namevar within $tv_listlocalname default $namevar
  !if $up_namevar=$empty and $namevar=$empty
    error=bad_variable
    gstep=1
