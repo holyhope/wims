@@ -90,7 +90,9 @@ processed=yes
     typ=$(types[$m])
     !if Aup_var_ isin A$typ
       typ1=!replace internal up_var_ by  in $typ
-      up_vars=!append line $typ1=$($typ) to $up_vars
+      !if $typ1 isitemof $tv_listlocalname
+       up_vars=!append line $typ1=$($typ) to $up_vars
+      !endif
     !endif
   !next m
   up_vars=!lines2rows $up_vars
