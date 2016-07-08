@@ -1,24 +1,3 @@
 !set lang_exists=yes
-
-!set name_notechvar=Aucune variable technique définie.
-!set name_name=Nom
-!set name_ltvalue=Valeur(s)
-!set name_value=Valeur
-!set name_modify=Modifier
-!set name_make=Créer
-!set name_listtechvarlocal=Liste des variables techniques locales
-!set name_listtechvarglobal=Liste des variables techniques globales
-!set name_addtechvar=Ajout d'une variable technique
-!set name_modiftechvar=Modification d'une variable technique
-!set name_studentloc=!nosubst $user_firstname $user_lastname
-!set name_studentglo=!nosubst $wims_name_firstname $wims_name_lastname
-!set name_noyetparticipant=Cette classe n'a pas encore de participant.
-!set name_ltuservalue=!nosubst Valeurs des variables techniques de $user_firstname $user_lastname
-!set name_empty=Aucune
-!set name_listoldvar=Liste des anciennes variables techniques
-!set name_listmodify_co=Pour chaque participant, les valeurs non vides de l'ancienne variable remplaceront les valeurs existantes de la variable technique. La liste des valeurs admissibles de la variable technique sera modifiée si nécessaire.
-!set name_listnew_co=Récupération intégrale de l'ancienne variable (incluant la construction de la liste des valeurs). Cette opération n'est possible que lorsque le nombre maximal de variables techniques n'est pas atteint. Attention, la variable technique sera une variable technique locale de cette classe.
-!set name_listforbname1_co=Le nom de cette variable ancienne n'est pas utilisable à ce niveau car il est utilisé également pour d'autres participants de la structure que ne sont pas inscrits dans la classe.
-!set name_listforbname2_co=Le nom de la variable ancienne correspond à une variable technique globale non modifiable à ce niveau ou, ce nom n'est pas exploitable (nombre de caractères) ou la liste des valeurs est trop longue. 
-!set name_listforbname3_co=Le nom n'est pas exploitable (nombre de caractères) ou la liste des valeurs est trop longue. 
-!set name_descoldvar=Ci dessous la liste des anciennes variables techniques détectées. Certaines actions de récupérations sont possibles.
+!set name_listvar=Technical variables list
+!changeto lang/names.phtml.en

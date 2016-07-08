@@ -7,10 +7,13 @@ $wims_institutionname
 
 !!read js/speckedit.phtml name_deposit
 !header1
+!set name_userlist=$(wims_name_part_list)
 
 !read adm/title.phtml 1\
 $classname\
+$(name_$job)\
 $(module_title_lang)
+
 
 <div class="wims_content">
 
@@ -26,24 +29,25 @@ $(module_title_lang)
    !read lang/msg.phtml.$moduclass_lang
  </div>
 !endif
-
 !if $job!=$empty
  !read $job.phtml
 !endif
 
 !set wims_menu_items=$empty
-!if $job!=listvar
- !if $job!=userprop
-!!ARIANE already in ariane thread
-     !set wims_menu_items=!append line back2,1,cmd=reply to $wims_menu_items
- !else
-     !set wims_menu_items=!append line back2,1,cmd=reply&job=userlist to $wims_menu_items
- !endif
+!if $job=userprop
+!!classe, student login, job, name of the variable used for the login
+  !read adm/class/getnextuser $wims_class,$user,userprop,user
 !endif
-
 !if $job!=userlist
  !set wims_menu_items=!append line part_list,1,cmd=reply&job=userlist\
- itemsep,0, to $wims_menu_items
+to $wims_menu_items
+!endif
+!if $job!=addvar or $job!=oldvar or $job!=listvar
+ !set wims_menu_items=!append line itemsep,0, to $wims_menu_items
+!endif
+!if $job!=listvar
+!!ARIANE already in ariane thread
+    !set wims_menu_items=!append line listvar,1,cmd=reply&job=listvar to $wims_menu_items
 !endif
 
 !if $job!=addvar

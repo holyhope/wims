@@ -1,5 +1,6 @@
 !read adm/class/classlang names.phtml
 
+!set wims_name_listvar=$name_listvar
 wims_prefix=class user
 
 test=!defof class_defined in wimshome/log/classes/$wims_class/.def
@@ -17,7 +18,6 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
  !exit
 !endif
 
-
 !bound job within listvar,modifvar,addvar,userlist,userprop,oldvar default listvar
 
 # make list of technical variable
@@ -26,3 +26,5 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
 !if $job!=$empty
  !read $job.proc
 !endif
+
+!set wims_ariane=!append line "$(name_$job)",8 to $wims_ariane
