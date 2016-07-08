@@ -9,6 +9,7 @@ module.exports = function(grunt){
       /*utils: ['../../scripts/js/utils.js'],*/
       /*wz: ['../../scripts/js/wz*.js'],*/
       interface: ['../../scripts/js/interface/*.js'],
+      /*geogebra: ['../../scripts/js/geogebra/*.js'],*/
       /*inc: ['../_inc/*.js'],*/
     },
 
@@ -38,6 +39,11 @@ module.exports = function(grunt){
       LaTeXMathML: {
         files: {
           '../../scripts/js/LaTeXMathML.js': ['bower_components/asciimathml/LaTeXMathML.js']
+        }
+      },
+      Geogebra: {
+        files: {
+          '../../scripts/js/geogebra/deployggb.min.js': ['../../scripts/js/geogebra/deployggb.js']
         }
       }
     },
@@ -126,6 +132,20 @@ module.exports = function(grunt){
             expand: true,
             filter: 'isFile',
             src: ['bower_components/jquery-hoverIntent/*.js' ],
+            dest: '../../scripts/js/',
+          },
+          // what-input
+          {
+            expand: true,
+            filter: 'isFile',
+            src: ['bower_components/what-input/dist/*.min.js' ],
+            dest: '../../scripts/js/',
+          },
+          // Chart.js
+          {
+            expand: true,
+            filter: 'isFile',
+            src: ['bower_components/Chart.js/dist/*.bundle.min.js' ],
             dest: '../../scripts/js/',
           },
           /* ASCIIMathML (+LaTeXMathML)
