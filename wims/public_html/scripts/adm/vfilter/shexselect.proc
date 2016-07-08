@@ -2,6 +2,7 @@
 !! wims_read_parm should contain E$exam for exam or $sheet for sheet
 
 !let nb=!positionof item $allowtechvar in $tv_listcode
+
 !if $nb=$empty
 	!if $save!=$empty
 	    allowtype=none
@@ -12,7 +13,17 @@
 	!let don=!line $nb of $tv_listtechvar
 	!distribute item $don into name,classid,number
 	!if $old_allowtype!=$allowtype or $allowtechvar!=$old_allowtechvar
-	    tmp=!record 0 of wimshome/log/classes/$wims_class/techvar/$allowtechvar
+!!
+!! if $allowtechvar is a global variable we need to read its definition
+!! in the right place. try to get directory name from the name of the
+!! variable $allowtechvar
+tmpdir=!replace internal _ by , in $allowtechvar
+tmpdir=!items 1 to -2 of $tmpdir
+tmpdir=!replace internal , by / in $tmpdir
+tmpdir=!nospace $tmpdir
+!! !debug |$tmpdir|$allowtechvar|wimshome/log/classes/$tmpdir/techvar/$allowtechvar
+!!	    tmp=!record 0 of wimshome/log/classes/$wims_class/techvar/$allowtechvar
+	tmp=!record 0 of wimshome/log/classes/$tmpdir/techvar/$allowtechvar
 	    !if $tmp!=$empty
 	     !writefile wimshome/log/classes/$wims_class/.$wims_read_parm $tmp
 	     !reset allow
@@ -24,6 +35,7 @@
    		allow_parm=\$allowtechvar\
 !set techvar_EMPTY=$IPlist
 		!for i=1 to $nb
+!! if we are in a subclass IPtechvar$i is empty
 		    IPtechvar$i=!translate ,;\
 * to $    $ in $(IPtechvar$i)
  		    IPtechvar$i=!trim $(IPtechvar$i)
