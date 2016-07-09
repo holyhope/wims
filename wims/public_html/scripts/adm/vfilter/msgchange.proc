@@ -1,0 +1,25 @@
+!! script to replace user name of technical variable by code.
+!! first ligne is write or read
+!! option write change user name to code
+!! option read change code to user name
+option_=!line 1 of $wims_read_parm
+out_script=!line 2 to -1 of $wims_read_parm
+!if $tv_varfilterreaden!=yes
+ !readproc adm/vfilter/listvarfilter.proc
+!endif
+!if $tv_listlocalname=$empty
+ !exit
+!endif
+nb_=!itemcnt $tv_listlocalname
+!if $option_=write
+ !for k_=1 to $nb_
+   out_script=!replace internal \uservar{$(tv_listlocalname[$k_]) by \uservar{$(tv_listcode[$(tv_listlocal[$k_])]) in $out_script
+ !next k_
+!! check if all name used in the file are valid technical variable name.
+!! TODO
+!endif
+!if $option_=read
+ !for k_=1 to $nb_
+  out_script=!replace internal \uservar{$(tv_listcode[$(tv_listlocal[$k_])]) by \uservar{$(tv_listlocalname[$k_]) in $out_script
+ !next k_
+!endif

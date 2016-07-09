@@ -95,6 +95,9 @@ votecnt=!recordcnt $votedir/.votes
  !default vote_show=1
 !! !default vote_model=free
  vote_src=!record 0 of $votedir/$vote.src
+ !readproc adm/vfilter/msgchange.proc read\
+$vote_src
+ vote_src=$out_script
 !endif
 !default reg_model=$vote_model
 !! at some gstep these variables are not in the form but are required by reg.proc, so

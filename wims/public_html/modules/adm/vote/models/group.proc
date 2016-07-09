@@ -10,11 +10,12 @@ thisyear=!char 1 to 4 of $today
 
 !! ------------------ keep save data
 data=!record 1 of $votedir/$vote.data
-namevar=!line 1 of $data
-po=!positionof item $namevar in $tv_listname
-!bound up_namevar within $tv_listlocalname default $namevar
+codevar=!line 1 of $data
+po=!positionof item $codevar in $tv_listcode
+namevar=!item $po of $tv_listname
+!bound up_codevar within $tv_listlocalcode default $codevar
 
-!if $po isitemof $tv_listlocal and $namevar=$up_namevar
+!if $po isitemof $tv_listlocal and $codevar=$up_codevar
  data=!line 2 to -1 of $data
  listcle=!column 1 of $data
  tmp=!line $po of $tv_listtechvar
@@ -41,25 +42,25 @@ testointro=$up_testointro
 !if $gstep=2
 !! need to check carefully namexevar vs. up_namevar (at some step we seem to
 !! be loosing the correction)(?? should this go outside the if $gstep=2)
- !if $up_namevar=$empty and $namevar=$empty
+ !if $up_codevar=$empty and $codevar=$empty
    error=bad_variable
    gstep=1
    !exit
  !endif
- !default namevar=$up_namevar
- !if $namevar=$empty
+ !default codevar=$up_codevar
+ !if $codevar=$empty
   error=no_variable
   gstep=1
   !exit
  !endif
- !writefile $votedir/$vote.data :$namevar\
+ !writefile $votedir/$vote.data :$codevar\
 $data\
 :$testointro
 !endif
 
 !if $gstep>=2
 !! get list of value for the technical variable :
- numvar=!positionof item $namevar in $tv_listname
+ numvar=!positionof item $codevar in $tv_listcode
  tmp=!line $numvar of $tv_listtechvar
  tmp=!record $(tmp[3]) of wimshome/log/classes/$wims_class/.techvar
  listval=!line 2 of $tmp
@@ -71,7 +72,7 @@ $data\
  !for i in uservar,menu,list,radio,checkbox,textarea
   !set testointro=!replace internal \$i by INVALID in $testointro
  !next i
- donfile=$namevar
+ donfile=$codevar
  !for i=1 to $numsess
 !!## need to check no "," in testoextra
   testoextra$i=!replace internal , by . in $(testoextra$i)

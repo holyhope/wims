@@ -10,14 +10,15 @@ thisyear=!char 1 to 4 of $today
 !endif
 
 data=!record 1 of $votedir/$vote.data
-namevar=!line 1 of $data
+codevar=!line 1 of $data
 !default up_defconnip=!line 2 of $data
-po=!positionof item $namevar in $tv_listname
+po=!positionof item $codevar in $tv_listcode
+namevar=!item $po of $tv_listname
 
-!bound up_namevar within $tv_listlocalname default $namevar
+!bound up_codevar within $tv_listlocalcode default $codevar
 
 listvar=bday,bmonth,byear,bhour,bmin,ehour,emin,nstud,testoextra,exconnip
-!if $po isitemof $tv_listlocal and $namevar=$up_namevar
+!if $po isitemof $tv_listlocal and $codevar=$up_codevar
  data=!line 3 to -1 of $data
  listcle=!column 1 of $data
  tmp=!line $po of $tv_listtechvar
@@ -50,19 +51,19 @@ testointro=$up_testointro
 !if $gstep=2
 !! need to check carefully namexevar vs. up_namevar (at some step we seem to
 !! be loosing the correction)(?? should this go outside the if $gstep=2)
- !bound up_namevar within $tv_listlocalname default $namevar
- !if $up_namevar=$empty and $namevar=$empty
+ !bound up_codevar within $tv_listlocalcode default $codevar
+ !if $up_codevar=$empty and $codevar=$empty
    error=bad_variable
    gstep=1
    !exit
  !endif
- !default namevar=$up_namevar
- !if $namevar=$empty
+ !default codevar=$up_codevar
+ !if $codevar=$empty
   error=no_variable
   gstep=1
   !exit
  !endif
- !writefile $votedir/$vote.data :$namevar\
+ !writefile $votedir/$vote.data :$codevar\
 $defconnip\
 $data\
 :$testointro
@@ -70,9 +71,9 @@ $data\
 
 !if $gstep>=2
 !! get list of value for the technical variable :
- numvar=!positionof item $namevar in $tv_listname
+ numvar=!positionof item $codevar in $tv_listcode
  tmp=!line $numvar of $tv_listtechvar
- varcode=!item $numvar of $tv_listcode
+ namevar=!item $numvar of $tv_listname
  !distribute item $tmp into bb,classid,num
  don=!record $num of wimshome/log/classes/$wims_class/.techvar
  listval=!line 2 of $don
@@ -84,10 +85,10 @@ $data\
  !for i in uservar,menu,list,radio,checkbox,textarea
    testointro=!replace internal \$i by INVALID in $testointro
  !next i
- donfile=$namevar\
+ donfile=$codevar\
 $defconnip
 
- techvartable=\$varcode\
+ techvartable=\$codevar\
 !set techvar_EMPTY=>$class_expiration
  !for i=1 to $numsess
   !!## need to check no "," in exconnip/testoextra and numerical for date variable.
@@ -153,6 +154,6 @@ $name_cancellation\
 $reg_src2\
 $empty\
 }
- !sh mkdir $wims_home/log/classes/$wims_class/techvar
- !writefile wimshome/log/classes/$wims_class/techvar/$varcode $techvartable
+ !sh mkdir -p $wims_home/log/classes/$wims_class/techvar
+ !writefile wimshome/log/classes/$wims_class/techvar/$codevar $techvartable
 !endif

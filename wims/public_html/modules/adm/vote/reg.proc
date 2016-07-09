@@ -50,7 +50,11 @@ $reg_model
 !next i
 
 !if $reg_src!=$empty and ($vote_status=0 or $mod_numsess>0)
- !writefile $votedir/$vote.src $reg_src
+!! convert username/code for technical variable
+  !readproc adm/vfilter/msgchange.proc write\
+$reg_src
+  !writefile $votedir/$vote.src $out_script
+!! -----------
  msg2wims_primitives=def define comment draw if for uservar\
 	menu list radio mmenu mlist checkbox textarea
  !sh cd $wims_home; bin/msg2wims log/$Votedir/$vote.src log/$Votedir/$vote.def
