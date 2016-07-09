@@ -32,15 +32,16 @@
 !if $[$wims_home_items_cnt + $wims_hm_cnt + $wims_link_close_cnt]!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
  !if $module!=home or $wims_user!=
  <div id="wimstopbox">
-
-  !distribute items li into div1
-  !read themes/_widgets/user_links.phtml
   !distribute items span into div1
   <div class="wimsmenu float_left">
    !read themes/_widgets/headhome.phtml
   </div>
+  !distribute items li into div1
+  !read themes/_widgets/user_links.phtml
   <div class="wimsmenu">
-    !!read themes/_widgets/headmenu.phtml
+    !if $user_links_exists!=yes
+      !read themes/_widgets/headmenu.phtml
+    !endif
     !!read themes/_widgets/about.phtml
     !if _help notin $wims_session
       !distribute items div,span into div0,div1
