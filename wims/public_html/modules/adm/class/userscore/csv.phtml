@@ -6,10 +6,10 @@ $wims_name_csv
 
 !if $wims_user=supervisor and ($wims_typename iswordof course or \
 ($wims_typename iswordof class and $wims_supertype iswordof 0 2))
-<p class="wimscenter">
-!set wims_ref_class=wims_button
-!href cmd=reply $name_direct_score
-</p>
+ <p class="wimscenter">
+ !set wims_ref_class=wims_button
+ !href cmd=reply $name_direct_score
+ </p>
 !endif
 
 !if $error!=$empty
@@ -28,9 +28,11 @@ $wims_name_csv
  </span> $name_download
  <hr />
 !endif
+
 !if $processed=yes
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  $name_deposit<ul>
+  $name_deposit
+  <ul>
   !if $change!=$empty
    <li>$name_infochanged: <span class="tt wims_login">
    !replace internal , by ,$ $ in $change
@@ -41,27 +43,27 @@ $wims_name_csv
    !replace internal , by ,$ $ in $added
    </span></li>
   !endif
-   !if $bad_login!=$empty
+  !if $bad_login!=$empty
    <li>$name_badlogin: <span class="tt wims_login">
     !replace internal , by ,$ $ in $bad_login
    </span></li>
-   !endif
-   !if full iswordof $remark
+  !endif
+  !if full iswordof $remark
     <li>$name_warning1</li>
-   !endif
-   !if noprop iswordof $remark
+  !endif
+  !if noprop iswordof $remark
     <li>$name_warning2</li>
-   !endif
-   !if noauto iswordof $remark
+  !endif
+  !if noauto iswordof $remark
     <li>$name_warning3</li>
-   !endif
-   !if $erased!=$empty
+  !endif
+  !if $erased!=$empty
     <li>$name_warning4:
     <span class="tt wims_login">
     !replace internal , by ,$ $ in $erased
     </span></li>
-   !endif
-   !if $missing!=$empty
+  !endif
+  !if $missing!=$empty
     <li>
     !if full notwordof $remark
      $name_nologin1:
@@ -72,43 +74,44 @@ $wims_name_csv
     !if $pass_missing=yes
      $name_passwarning
     !endif
-   !endif
+    </li>
   !endif
-  </li>
   !if $manual=yes
    <li>$name_manual1
    !href module=adm/class/grades $name_check
-.</li>
+   .</li>
   !endif
   </ul>
  !else
- $name_data1
+  $name_data1
+  <hr />
  !endif
- <hr />
 !endif
 
 !form reply
 <input type="hidden" name="job" value="csv" />
 <input type="hidden" name="csvtype" value="download" />
-$name_data2<ul>
+$name_data2
+<ul>
 <li>$name_format
-!formselect csvformat list $csvformatlist
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href module=$module&cmd=help&special_parm=csvformats $wims_name_help
+ !formselect csvformat list $csvformatlist
+ &nbsp;
+ !set wims_ref_class=wims_button_help
+ !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </li>
 
 !! keywords of column
 
-<li>$name_column
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href module=$module&cmd=help&special_parm=csvfields $wims_name_help
+<li>
+ $name_column
+ &nbsp;
+ !set wims_ref_class=wims_button_help
+ !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
 
-!readproc csv/keyword.proc
-<div class="field">
-<ul>
-!for bas in basic, basic2
+ !readproc csv/keyword.proc
+ <div class="field">
+ <ul>
+ !for bas in basic, basic2
   !if $($bas)!=$empty
    <li>
    !let tmp=!replace password by in $($bas)
@@ -119,15 +122,15 @@ $name_data2<ul>
    !next k
    </li>
   !endif
-!next
-!let list_type=sh,shexo,ex,exexo,examduration,ma
-!let list_name=$wims_name_Sheets,$name_indicateur,$wims_name_Examens,$wims_name_Examens ($wims_name_Exercices),\
-$wims_name_Examens ($name_Duration),$name_manualscore
-!let list_keyword=sheet,sheetexo,exam,examexo,examduration,manual
-!if $($(list_type[1]))$($(list_type[2]))$($(list_type[3]))$($(list_type[4]))$($(list_type[5]))!=$empty
- <li><input type="checkbox" name="csvdownload" id="csvdownload_allscore" value="allscore"/><label for="csvdownload_allscore">$name_allscore</label></li>
-!endif
-!for t from 1 to 5
+ !next bas
+ !let list_type=sh,shexo,ex,exexo,examduration,ma
+ !let list_name=$wims_name_Sheets,$name_indicateur,$wims_name_Examens,$wims_name_Examens ($wims_name_Exercices),\
+ $wims_name_Examens ($name_Duration),$name_manualscore
+ !let list_keyword=sheet,sheetexo,exam,examexo,examduration,manual
+ !if $($(list_type[1]))$($(list_type[2]))$($(list_type[3]))$($(list_type[4]))$($(list_type[5]))!=$empty
+  <li><input type="checkbox" name="csvdownload" id="csvdownload_allscore" value="allscore"/><label for="csvdownload_allscore">$name_allscore</label></li>
+ !endif
+ !for t from 1 to 5
     !if $($(list_type[$t]))!=$empty
 	  !let tmp=!words2items $($(list_type[$t]))
 	  <li>
@@ -140,50 +143,54 @@ $wims_name_Examens ($name_Duration),$name_manualscore
 	 !next k
 	</li>
     !endif
-!next t
-!if $av!=$empty
+ !next t
+ !if $av!=$empty
   !let tmp=!words2items $av
   <li><b>$name_Average</b>:
   !for k in $tmp
     <input type="checkbox" name="csvdownload" id="csvdownload_$k" value="$k"/><label for="csvdownload_$k">$k</label>
   !next k
   </li>
-!endif
-<li>
-<input type="checkbox" name="csvdownload" id="csvdownload_techvar" value="techvar"/>
- <label for="csvdownload_techvar">$name_techvar</label>
-</li><li>
-<input type="checkbox" name="csvdownload" id="csvdownload_regvar" value="regvar"/>
- <label for="csvdownload_regvar">$name_regvar</label>
+ !endif
+ <li>
+  <input type="checkbox" name="csvdownload" id="csvdownload_techvar" value="techvar"/>
+  <label for="csvdownload_techvar">$name_techvar</label>
+ </li>
+ <li>
+  <input type="checkbox" name="csvdownload" id="csvdownload_regvar" value="regvar"/>
+  <label for="csvdownload_regvar">$name_regvar</label>
+ </li>
 </li>
 </ul>
 <input type="submit" value="$wims_name_download" />
-
 !formend
+
+
+
 !! open the upload to the level supervisor alternative use user_supervise
 !if $classtype notin 13 or $typename iswordof class course  or\
    ($typename iswordof level and $wims_user=supervisor)
   <hr />
  !set wims_form_method=file
  !form reply
- <input type="hidden" name="job" value="csv" />
- <input type="hidden" name="csvtype" value="upload" />
- $name_data3
- &nbsp;
- !set wims_ref_class=wims_button_help
- !href module=$module&cmd=help&special_parm=upload $wims_name_help
- <ul>
- <li>$name_data <input type="file" size="30" name="wims_deposit" /> <br />
- $name_format2: <span class="tt">.csv</span>, <span class="tt">.tsv</span>, <span class="tt">.txt</span>
- &nbsp;
- !set wims_ref_class=wims_button_help
- !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
- </li>
- </ul>
- <input type="submit" value="$wims_name_send" />
-
-!formend
+  <input type="hidden" name="job" value="csv" />
+  <input type="hidden" name="csvtype" value="upload" />
+  $name_data3
+  &nbsp;
+  !set wims_ref_class=wims_button_help
+  !href module=$module&cmd=help&special_parm=upload $wims_name_help
+  <ul>
+   <li>$name_data <input type="file" size="30" name="wims_deposit" /> <br />
+   $name_format2: <span class="tt">.csv</span>, <span class="tt">.tsv</span>, <span class="tt">.txt</span>
+   &nbsp;
+   !set wims_ref_class=wims_button_help
+   !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+   </li>
+  </ul>
+  <input type="submit" value="$wims_name_send" />
+ !formend
 !endif
+
 !set wims_menu_items=!append line itemsep,0,$wims_name_manage\
 usermanage,1,module=adm/class/usermanage\
 techvar,1,module=adm/class/techvar\
