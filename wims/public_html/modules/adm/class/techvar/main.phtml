@@ -45,15 +45,19 @@ to $wims_menu_items
 !if $job!=addvar or $job!=oldvar or $job!=listvar
  !set wims_menu_items=!append line itemsep,0, to $wims_menu_items
 !endif
-!if $job!=listvar
+!!if $job!=listvar
 !!ARIANE already in ariane thread
-    !set wims_menu_items=!append line listvar,1,cmd=reply&job=listvar to $wims_menu_items
-!endif
+!!    !set wims_menu_items=!append line listvar,1,cmd=reply&job=listvar to $wims_menu_items
+!!!endif
 !if $job!=addvar
   !set wims_menu_items=!append line add_techvar,1,cmd=reply&job=addvar to $wims_menu_items
 !endif
 !if $job!=oldvar and $version_class < 5
  !set wims_menu_items=!append line oldvar,1,cmd=reply&job=oldvar to $wims_menu_items
+!endif
+!if $job=listvar
+ !set wims_menu_items=!append line itemsep,0,\
+csv,1,module=adm/class/userscore&job=csv to $wims_menu_items
 !endif
 </div>
 !tail
