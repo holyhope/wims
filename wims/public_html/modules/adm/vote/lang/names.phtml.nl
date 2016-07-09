@@ -1,8 +1,8 @@
 !set lang_exists=yes
 
-!set name_remark_numstud=Vous pouvez saisir 0 dans la deuxième colonne pour indiquer qu'il n'y a pas de limite.
-!set name_introtext_group=Saisir l'effectif de chaque groupe ainsi qu'un commentaire (éventuel).
-!set name_cardinal=Effectif
+!set name_remark_numstud=Geef in de tweede kolom een 0 om aan te geven dat er geen limiet is.
+!set name_introtext_group=Voer een nummer in voor elke groen en eventueel kommantaar.
+!set name_cardinal=Belangrijk
 
 !set name_0=in bewerking
 !set name_1=open

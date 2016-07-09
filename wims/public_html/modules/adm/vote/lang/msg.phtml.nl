@@ -1,8 +1,8 @@
 !set wims_module_log=error: $error
-
 <span class="wims_warning">$wims_name_Error</span>.
 !if $error=badvariablename
- L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ &Eacute;&eacute;n of meerdere van uw technische variabelen bestaan niet of kunnen niet worden gewijzigd op dit niveau.
+ De vragenlijst zal niet goed werken.
  !exit
 !endif
 

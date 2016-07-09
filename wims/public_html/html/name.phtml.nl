@@ -355,12 +355,12 @@ Nieuw werkblad\
 Nieuwe proefwerk\
 Nieuwe klas\
 Nieuwe enquete\
-Mes questionnaires\
+Mijn enquetes\
 Nieuwe oefening\
 Oefeningen van deze klas\
 Werkblad oefeningen\
-Next exercise\
-Previous exercise\
+Volgende oefening\
+Vorige oefening\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,wims_name_myvote,\
 wims_name_add_exo,wims_name_classexo,wims_name_sheet_exos,wims_name_next,wims_name_prev
 
