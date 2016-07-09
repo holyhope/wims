@@ -1,6 +1,10 @@
 !set wims_module_log=error: $error
 
 <span class="wims_warning">$wims_name_Error</span>.
+!if $error=badvariablename
+ L'une, au moins, des variables techniques que vous utilisez n'existe pas ou n'est pas modifiable à ce niveau. Votre questionnaire ne fonctionnera pas correctement. 
+ !exit
+!endif
 
 !if $error=notechvar
  No technical variable defined in this class. To use this vote model you should first define a technical variable in the class using the technical variable manager.

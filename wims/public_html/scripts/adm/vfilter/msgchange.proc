@@ -16,7 +16,18 @@ nb_=!itemcnt $tv_listlocalname
    out_script=!replace internal \uservar{$(tv_listlocalname[$k_]) by \uservar{$(tv_listcode[$(tv_listlocal[$k_])]) in $out_script
  !next k_
 !! check if all name used in the file are valid technical variable name.
-!! TODO
+   test_=!replace internal , by $ &#44; in $out_script
+   test_=!replace internal \uservar{ by , in $test_
+   l_=!itemcnt $test_
+   k_=2
+   !while $k_<=$l_ and $error=$empty
+     t_=!item $k_ of $test_
+     t_=!word 1 of $t_
+     !if $t_ notitemof $tv_listlocalcode
+      error=badvariablename
+     !endif
+     !increase k_
+   !endwhile
 !endif
 !if $option_=read
  !for k_=1 to $nb_
