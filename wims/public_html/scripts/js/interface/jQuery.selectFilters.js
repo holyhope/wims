@@ -132,7 +132,7 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
     var options = [];
     $(select).find('option').each(function() {
       options.push({value: $(this).val(), text: $(this).text(), object:$(this)});
-      $(this).prop('selected', false);
+      //$(this).prop('selected', false);
     });
     //$(select).data('options', options);
 
@@ -149,16 +149,16 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
       var regex = new RegExp(search,'gi');
       if (search !== "")
       {
-          $.each(options, function(i) {
-            var option = options[i];
-            if(option.text.match(regex) !== null) {
-              /*$(select).append(
-                 $('<option>').text(option.text).val(option.value)
-                 //.prop('selected', true)
-              );*/
-              option.object.prop('selected', true);
-            }
-          });
+        $.each(options, function(i) {
+          var option = options[i];
+          if(option.text.match(regex) !== null) {
+            /*$(select).append(
+               $('<option>').text(option.text).val(option.value)
+               //.prop('selected', true)
+            );*/
+            option.object.prop('selected', true);
+          }
+        });
       }
     });
   });
