@@ -62,12 +62,13 @@
 
  !if $idp_method notwordof ldap
   !if $subclass=yes
-   !set tmp_=&subclass=$subclass
+    !set tmp_=&subclass=$subclass
+  !else
+    !reset tmp_
   !endif
-
   !set wims_ref_class=wims_button
   !href module=adm/class/reguser&class=$class$tmp_ $name_register
-
+  !reset tmp_
  !endif
 
 !endif
