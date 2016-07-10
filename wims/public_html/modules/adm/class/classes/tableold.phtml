@@ -21,9 +21,16 @@
    !else
     !set t_=$type
    !endif
+
   <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td>
   <td class="wims_classes_direct_name">
-
+  !set u__=$u_
+   !if $auth_method isitemof $auth_method_list
+     !if $u_ != supervisor
+      !readproc adm/class/userdef classes,$c_,$u_
+      !set u__=!defof user_external_auth in $userdef
+     !endif
+   !endif
    !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u__ $n_
    </td><td class="tt">$u__</td>
    </tr>

@@ -35,27 +35,28 @@ $compsup
 !reset compsup
 
 $name_direct:
-!for cls in $user_participate_
+!if / isin $user_participate_
+ !for cls in $user_participate_
   !if $wims_class isin $cls
     !let tmp=!replace internal / by , in $cls
     !let compsup=!append line $tmp to $compsup
   !endif
-!next cls
-!let compsup=!sh echo "$compsup" | sort | uniq;
-!read adm/class/graphclass participate\
+ !next cls
+ !let compsup=!sh echo "$compsup" | sort | uniq;
+ !read adm/class/graphclass participate\
 $compsup
-!reset compsup
-
-
+ !reset compsup
+ !goto enter
+!endif
 !!set directlist2=!items2lines $directlist
 !!set directlist2=!lines2rows $directlist2
 !!set directlist2=!words2items $directlist2
 !!<div class="spacer">
-!!!read graphclass $directlist2
+!read adm/class/graphclass $directlist
 !!</div>
 
-!!read tableold.phtml
-
+!read tableold.phtml
+:enter
  !if $wims_user=supervisor
    $name_text3
  !else
