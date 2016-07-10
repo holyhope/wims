@@ -1,15 +1,48 @@
+
+!reset compsup1 compsup2 compsup3
 !set statut=!line 1 of $wims_read_parm
 !set compsup=!line 2 to -1 of $wims_read_parm
 !set compsup1=!column 2 to -1 of $compsup
 !set col1=!column 1 of $compsup1
 !set col1=!listuniq $col1
 !set col1cnt=!itemcnt $col1
-  <ul class="wims_subclasses">
- !for j1=1 to $col1cnt
-   !set cls1=$wims_superclass/$(col1[$j1])
-   !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
-   <li><span class="wims_classes_direct_$(don[1])">
-     !if $cls1 isitemof $(user_$statut)
+!let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$wims_class/.def
+
+!!program without icourses
+!if $(don[1])=program and $col1cnt=0
+      <ul class="wims_subclasses">
+      !read adm/class/graphprog $wims_class
+      </ul>
+!endif
+!if $col1cnt=0
+  !exit
+!endif
+
+!set classrad=$wims_superclass
+!while $classrad!=$wims_class
+   !set classrad=$classrad/$col1
+   !set lcnt=!linecnt $compsup1
+    !set compsup1=!column 2 to -1 of $compsup1
+    !set col1=!column 1 of $compsup1
+    !set col1=!listuniq $col1
+    !set col1cnt=!itemcnt $col1
+!endwhile
+
+!let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$classrad/.def
+
+!if $col1cnt=0 and $(don[1])!=program
+  !exit
+!endif
+
+   <ul class="wims_subclasses">
+  !if $(don[1])=program
+      !read adm/class/graphprog $classrad
+  !endif
+  !for j1=1 to $col1cnt
+     !set cls1=!nospace $classrad/$(col1[$j1])
+     !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
+      <li><span class="wims_classes_direct_$(don[1])">
+     !if $cls1 isitemof $(user_$(statut)_)
        !if $statut=supervise
          !href module=adm/class/classes&type=authsupervisor&class=$cls1&auth_user=supervisor $(don[2])
        !else
@@ -19,6 +52,11 @@
         $(don[2])
      !endif
      </span>
+    !if $(don[1])=program
+    <ul>
+      !read adm/class/graphprog $cls1
+    </ul>
+    !endif
     !set compsup2=!select $compsup1 where column 1=$(col1[$j1])
     !set col2=!column 2 of  $compsup2
     !set col2=!listuniq $col2
@@ -30,7 +68,7 @@
         !set cls2=!nospace $cls1/$(col2[$j2])
         !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls2/.def
          <li><span class="wims_classes_direct_$(don[1])">
-         !if $cls2 isitemof $(user_$statut)
+         !if $cls2 isitemof $(user_$(statut)_)
            !if $statut=supervise
              !href module=adm/class/classes&type=authsupervisor&class=$cls2&auth_user=supervisor $(don[2])
            !else
@@ -40,6 +78,11 @@
            $(don[2])
          !endif
          </span>
+        !if $(don[1])=program
+          <ul>
+           !read adm/class/graphprog $cls2
+         </ul>
+        !endif
         !set compsup3=!select $compsup2 where column 1=$(col2[$j2])
         !set col3=!column 2 of  $compsup3
         !set col3=!listuniq $col3
@@ -51,7 +94,7 @@
             !set cls3=!nospace $cls2/$(col3[$j3])
             !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls3/.def
              <li><span class="wims_classes_direct_$(don[1])">
-              !if $cls3 isitemof $(user_$statut)
+              !if $cls3 isitemof $(user_$(statut)_)
                 !if $statut=supervise
                   !href module=adm/class/classes&type=authsupervisor&class=$cls3&auth_user=supervisor $(don[2])
                 !else
@@ -62,6 +105,11 @@
                 $(don[2])
               !endif
               </span>
+              !if $(don[1])=program
+              <ul>
+                !read adm/class/graphprog $cls3
+              </ul>
+              !endif
              </li>
           !next j3
           </ul>
@@ -70,6 +118,7 @@
      !next j2
     </ul>
    !endif col2cnt
-   </li>
+    </li>
+   !endif
  !next j1
  </ul>

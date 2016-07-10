@@ -121,7 +121,7 @@ $table_header
    !set show=$cl
   !endif
 !!! put it var.proc ??
-  !set directlist_=!items2words $directlist
+  !set directlist_=!replace internal , by ; in $directlist
   !read adm/class/initclass $code,auth
   !!defread wimshome/log/classes/$code/.def
   $table_tr<td>
@@ -130,9 +130,9 @@ $table_header
   !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
      !read participant2.phtml
   !else
-  <td>
-  !set wims_ref_class=wims_button
-    !if $code notwordof $directlist_
+   <td>
+    !set wims_ref_class=wims_button
+    !if $code isitemof $user_participate_
       !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
     !else
       !if $splevel=$empty or $splevel=2

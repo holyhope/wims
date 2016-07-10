@@ -22,28 +22,33 @@
   !set user_supervise=!column 1 of $levels\
 $classes\
 $progs\
-$courses
+$courses\
+$icourses
+  !set user_supervise=!nonempty items $user_supervise
   !set user_supervise=!makelist $wims_superclass/x for x in $user_supervise
 !endif
 
 !! ----------- definition des droits de connexion supervisor
-
 !reset compsup
 !for cls in $user_supervise
   !if $wims_class isin $cls
     !let tmp=!replace internal / by , in $cls
-    !let compsup=!append line $tmp to $compsup
+    !if $tmp!=$empty
+      !let compsup=!append line $tmp to $compsup
+    !endif
   !endif
 !next cls
 !let compsup=!sh echo "$compsup" | sort | uniq;
-$U_gotoclass3
-
-!read classgraph.phtml supervise\
+!if $user_participate!=$empty
+  $U_gotoclass3
+!endif
+!let user_supervise_=$user_supervise
+!read adm/class/graphclass supervise\
 $compsup
 
 !let user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
 !if $user_participate=$empty
- !exit
+  !exit
 !endif
 !reset compsup
 $U_gotoclass1
@@ -51,12 +56,13 @@ $U_gotoclass1
 !for cls in $user_participate
   !if $wims_class isin $cls
     !let tmp=!replace internal / by , in $cls
-    !let compsup=!append line $tmp to $compsup
+    !if $tmp!=$empty
+      !let compsup=!append line $tmp to $compsup
+    !endif
   !endif
 !next cls
 
 !let compsup=!sh echo "$compsup" | sort | uniq;
-
-!read classgraph.phtml participate\
+!let user_participate_=$user_participate
+!read adm/class/graphclass participate\
 $compsup
-

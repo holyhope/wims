@@ -1,0 +1,26 @@
+!set prog=$wims_read_parm
+!set courses=!record 0 of wimshome/log/classes/$prog/courses
+!set courses=!column 1 of $courses
+!if $courses=$empty
+ !exit
+!endif
+!reset courses_right
+
+!for cours in $courses
+  !if $wims_superclass/$cours isitemof $(user_$(statut)_) or $wims_realuser=supervisor
+    !set courses_right=!append item $cours to $courses_right
+ !endif
+ !next
+!if $courses_right=$empty
+ !exit
+!endif
+!for cours in $courses_right
+   !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$wims_superclass/$cours/.def
+    <li class="inline"><span class="wims_classes_direct_course">
+       !if $statut=supervise
+         !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$cours&auth_user=supervisor $(don[2])
+       !else
+         !href module=adm/class/classes&type=authparticipant&class=$wims_superclass/$cours&auth_user=$u_ $(don[2])
+       !endif
+   </span></li>
+!next
