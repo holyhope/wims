@@ -100,11 +100,9 @@ listla=
  sccnt=0
  !if $wims_class!=$empty
   !defread wimshome/log/classes/$wims_class/.def
+  !! n_type is not always good
   !set wims_ariane=!append line n_$type,8, to $wims_ariane
   !default class_type=0
-  !if $class_type=4
-    !set wims_ariane_home=no
-  !endif
   !set wims_ariane_self=no
   !if $class_type>=2
    !read adm/class/userdef classes,$wims_class,$wims_user

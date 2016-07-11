@@ -42,14 +42,14 @@ backteacher,1,$
   !read themes/_procs/extlink.proc proc
 !endif
 !if $user_supervisable=yes
- !if $wims_otherclass=$empty or $class_type=0
+ !if $wims_otherclass=$empty or $class_type isin 04
   !if $tmp_exists!=yes
-  !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
+    !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
   !endif
   !read themes/_procs/supervisorotherclass.proc
  !endif
 !else
- !if $class_type=0
+ !if $class_type isin 04
    !if $tmp_exists!=yes
      !set wims_rm_0 = !append line itemsep,0,$wims_name_otherclasses to $wims_rm_0
    !endif

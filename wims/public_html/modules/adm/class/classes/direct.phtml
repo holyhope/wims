@@ -21,42 +21,37 @@
 !set user_participate_=!listuniq $user_participate_
 !set user_supervise_=!append item $directlistsupervise to $user_supervise
 !set user_supervise_=!listuniq $user_supervise_
+!! finally leave the old table ! too much trouble
+!!!for cls in $user_supervise_
+!!  !if $wims_class isin $cls
+!!   !let tmp=!replace internal / by , in $cls
+!!    !let compsup=!append line $tmp to $compsup
+!!  !endif
+!!!next cls
+!!!let compsup=!sh echo "$compsup" | sort | uniq;
 
-!for cls in $user_supervise_
-  !if $wims_class isin $cls
-    !let tmp=!replace internal / by , in $cls
-    !let compsup=!append line $tmp to $compsup
-  !endif
-!next cls
-!let compsup=!sh echo "$compsup" | sort | uniq;
-
-!read adm/class/graphclass supervise\
-$compsup
+!!!read adm/class/graphclass supervise\
+!!$compsup
 !reset compsup
 
 $name_direct:
-!if / isin $user_participate_
- !for cls in $user_participate_
-  !if $wims_class isin $cls
-    !let tmp=!replace internal / by , in $cls
-    !let compsup=!append line $tmp to $compsup
-  !endif
- !next cls
- !let compsup=!sh echo "$compsup" | sort | uniq;
- !read adm/class/graphclass participate\
-$compsup
- !reset compsup
- !goto enter
-!endif
-!!set directlist2=!items2lines $directlist
-!!set directlist2=!lines2rows $directlist2
-!!set directlist2=!words2items $directlist2
-!!<div class="spacer">
-!read adm/class/graphclass $directlist
-!!</div>
 
+!!!if / isin $user_participate_
+!! !for cls in $user_participate_
+!!  !if $wims_class isin $cls
+!!    !let tmp=!replace internal / by , in $cls
+!!    !let compsup=!append line $tmp to $compsup
+!!  !endif
+!! !next cls
+!! !let compsup=!sh echo "$compsup" | sort | uniq;
+!! !read adm/class/graphclass participate\
+!!$compsup
+!! !reset compsup
+!! !goto enter
+!!!endif
 !read tableold.phtml
 :enter
+<div>
  !if $wims_user=supervisor
    $name_text3
  !else
@@ -69,3 +64,4 @@ $compsup
   $name_noaccount
  !endif
 !endif
+</div>
