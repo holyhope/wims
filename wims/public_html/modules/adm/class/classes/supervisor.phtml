@@ -61,9 +61,8 @@
   $table_end
  !endif
  !if $clcnt>0 and $s_prog!=1
-
   $table_header
-  !if $superclass=$empty
+  !if $superclass_orig=$empty
    <caption>$name_independantclass</caption>
    $table_hdtr<th>$wims_name_name</th><th>$wims_name_nameteacher / $wims_name_Supervisor</th>
    <th>$wims_name_action</th></tr>
@@ -71,7 +70,7 @@
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
-    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
    !endif
    !default Name_level=$(CL_Name[2])
     <caption>$Name_level / $inst
@@ -85,7 +84,7 @@
     !endif
     </caption>
     $table_hdtr<th>$Name_level</th><th>$wims_name_nameteacher</th>
-    !if $superclass!=$empty and $stype=4
+    !if $superclass_orig!=$empty and $stype=4
      <th>+</th>
      !if $ty!=1 and $splevel =1
       <th>+</th>
@@ -100,7 +99,7 @@
      !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
 
      $table_tr
-     !if $superclass=$empty
+     !if $superclass_orig=$empty
       <td>$in<br />$cl</td>
      !else
       <td>
@@ -108,7 +107,7 @@
       </td>
      !endif
      <td>$supv</td>
-     !if $superclass!=$empty and $stype=4
+     !if $superclass_orig!=$empty and $stype=4
       <td>
       !if $ty!=1
        !set wims_ref_class=wims_button
@@ -124,7 +123,7 @@
        </td>
       !endif
      !endif
-     !if $superclass=$empty
+     !if $superclass_orig=$empty
       <td>
       !set wims_ref_class=wims_button
       !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
@@ -139,7 +138,7 @@
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
-    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
    !endif
    $table_header
     <caption>$Name_program ($inst)
@@ -158,7 +157,7 @@
      !href module=$module&type=authsupervisor&class=$code $cl
      </td>
      <td>$supv</td>
-     !if $superclass!=$empty and $stype=4
+     !if $superclass_orig!=$empty and $stype=4
       <td>
       !if $ty!=1
        !set wims_ref_class=wims_button
@@ -174,7 +173,7 @@
    !endif
   !endif
 !else
- !if $class_type=$empty and $superclass=$empty and $keyword=$empty
+ !if $class_type=$empty and $superclass_orig=$empty and $keyword=$empty
   ($name_language2)
  !else
    !if $clcnt=0 and $keyword=$empty

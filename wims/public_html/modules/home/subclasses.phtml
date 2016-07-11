@@ -15,9 +15,9 @@
 !!!if $user_participate$user_supervise!=$empty
 !!<p>
 !!  !if $supervisable!=yes
-!!    $U_gotoclass ttt
+!!    $U_gotoclass
 !!  !else
-!!    $U_gotoclass3 www
+!!    $U_gotoclass3
 !!  !endif
 !!</p>
 !!!endif
@@ -128,8 +128,12 @@
   !set subclasscnt2=!itemcnt $subclass2
 !endif
 !if $class_mixed_external_auth!=2 and $subclasscnt2>0
+
  !if $insc!=yes
-  !href module=home&cmd=new&insc=yes $U_inscription2
+ !!not a program
+  !if $class_type!=3
+    !href module=home&cmd=new&insc=yes $U_inscription2
+  !endif
  !else
 <div>
   $U_inscription1
@@ -137,7 +141,7 @@
   !for c in $subclass2
    !set name=!defof class_description in wimshome/log/classes/$c/.def
    !set type=!defof class_typename in wimshome/log/classes/$c/.def
-   <li> <span class="wims_classes_direct_$type">
+   <li><span class="wims_classes_direct_$type">
 !! wrong variable?
 !!   !href module=adm/class/reguser&class=$c&auth_user=$u_ $name
    !href module=adm/class/reguser&class=$c&user_auth=$u_&subclass=yes $name

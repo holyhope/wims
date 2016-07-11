@@ -16,7 +16,7 @@
 !endif
 !if $wims_user!=$empty
  !read direct.phtml
- !if $wims_user!=supervisor and $superclass=$empty
+ !if $wims_user!=supervisor and $superclass_orig=$empty
   !exit
  !endif
 !else
@@ -76,7 +76,7 @@
 
 !if $clcnt>0 and $super_mixed_auth!=2
 $table_header
- !if $superclass=$empty
+ !if $superclass_orig=$empty
   <caption>$name_independantclass</caption>
   $table_hdtr
   <th>$wims_name_name</th><th>$wims_name_action</th>
@@ -85,7 +85,7 @@ $table_header
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
-    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass_orig/.def
    !endif
    <caption>$Name_levels ($inst)
    !if $splevel>1
@@ -95,7 +95,7 @@ $table_header
    $table_hdtr
    <th>$wims_name_name</th><th>$wims_name_action</th>
    <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
-   !if $superclass!=$empty and $stype=4
+   !if $superclass_orig!=$empty and $stype=4
     <th>+</th>
    !endif
  !endif
@@ -103,13 +103,9 @@ $table_header
 
  !!! put it var.proc ??
   !set directlist_=!replace internal , by $ ; $ $ in $directlist
-  !set directlist_2=!replace internal , by $ $ in $directlist
  !for i=1 to $clcnt
   !set l=!line $i of $classes
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
-  !if $code iswordof $directlist_2
-    !goto endloop
-  !endif
   !set supv=!item 9 of $l
   !if $supv=$empty
    !reset class_password
@@ -119,7 +115,7 @@ $table_header
    !set pswd=$class_password
   !endif
   !distribute char $lv into l_,y_
-  !if $superclass=$empty
+  !if $superclass_orig=$empty
    !set show=$inst <br />$cl
   !else
    !set show=$cl
@@ -133,17 +129,13 @@ $table_header
      !read participant2.phtml
   !else
   <td>
-  !set wims_ref_class=wims_button
-    !if $code notwordof $directlist_2
-        !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
-    !else
-      !if $splevel=$empty or $splevel=2
-       !set wims_ref_class=wims_button
-       !href module=adm/class/reguser&class=$code $name_register
+      !if ($splevel=$empty or $splevel=2) and $code notwordof $directlist_
+        !set wims_ref_class=wims_button
+        !href module=adm/class/reguser&class=$code $name_register
       !else
         <span style="color:grey">$name_register</span>
       !endif
-    !endif
+    !!endif
     </td>
   !endif
   <td>
@@ -156,7 +148,7 @@ $table_header
    $name_protected
   !endif
   </td>
-   !if $superclass!=$empty and $stype=4
+   !if $superclass_orig!=$empty and $stype=4
     <td>
     !if $ty!=1 and $splevel!=3
     !set wims_ref_class=wims_button
