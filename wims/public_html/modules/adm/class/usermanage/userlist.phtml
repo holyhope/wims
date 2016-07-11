@@ -30,23 +30,30 @@ $wims_name_part_list ($usercnt)
   !endif
 !! ----- displaying table of participant
     $table_header
+    !if $nbtechvar>0
+	!let nbrow=2
+    !else
+	!let nbrow=1
+    !endif
     $table_hdtr
        !for k in $name_studentglo,$wims_name_Login,$wims_name_email,$name_regnum,$name_external_auth
-        <th rowspan="2">$k</th>
+        <th rowspan="$nbrow">$k</th>
        !next k
-        <th colspan="$nbtechvar">$name_vars</th>
-        <th rowspan="2">$name_comments</th>
+        !if $nbtechvar>0
+         <th colspan="$nbtechvar">$name_vars</th>
+        !endif
+        <th rowspan="$nbrow">$name_comments</th>
     </tr>
     !if $nbtechvar>0
-      !for k in $(tv_listtechvar[;1])
+      <tr>
+       !for k in $(tv_listtechvar[;1])
         <th>$k</th>
-      !next k
-    !else
-      <th>&nbsp;</th>
+       !next k
+      </tr>
     !endif
     !readproc adm/class/mkcomment name
     !let namecomment=$scriptout
-    !for i=1 to $usercnt
+  !for i=1 to $usercnt
    !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
    !distribute items $uu into bl,bl,uu
    !if $varfilter_!=$empty
@@ -82,8 +89,6 @@ $varfilter_
             !for v = 1 to $[$nbtechvar-$tmp]
               <td></td>
             !next v
-         !else
-            <td></td>
          !endif
              <td>
                 !readproc adm/class/mkcomment val
