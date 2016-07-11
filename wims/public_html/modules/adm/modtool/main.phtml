@@ -46,15 +46,9 @@ to $wims_menu_items
 to $wims_menu_items
   !endif
   !if $job iswordof index publish diff edfile showfile
-    !if $wims_theme=default
-!!ARIANE
-      !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
-binfile,1,cmd=reply&jobreq=binfile\
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+    modcontent,1,cmd=reply&jobreq=flist\
 to $wims_menu_items
-    !else
-      !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
-to $wims_menu_items
-    !endif
   !endif
   !if $job iswordof flist and $modreq!=.new
     !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
