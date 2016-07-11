@@ -75,7 +75,7 @@ Dit wachtwoord is nodig voor het starten van de inschrijving\
 kunt je dit wachtwoord bij je docent aanvragen.\
 Hallo\
  into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
-name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_passwd_nonvalid,\
+name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_emptyemail,\
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
 name_writepasswd,name_obtainpasswd,name_hello
 
