@@ -19,7 +19,10 @@ $wims_classname
   !else
     !set tmp=$(wims_name_$class_typename)
   !endif
-  !set tmp_desc=!append line $(C_[1]) ($wims_institutionname) / $CC\
+  !if $CC!=$empty
+    !set CC = / $cc
+  !endif
+  !set tmp_desc=!append line $(C_[1]) ($wims_institutionname) $CC\
 <span class="wims_classes_direct_$class_typename">$tmp $wims_classname</span>\
 to $tmp_desc
 !endif

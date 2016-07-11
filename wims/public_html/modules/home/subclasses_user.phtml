@@ -1,4 +1,3 @@
-
 !if $wims_superclass=$empty
   !let wims_superclass=$wims_class
 !endif
@@ -50,9 +49,13 @@
 !next cls
 !set user_participate_=$user_participate
 !let compsup=!sh echo "$compsup" | sort | uniq;
-!!let compsup=!lines2items $compsup
-!!let compsup=!nospace $compsup
-  U_gotoclass
+
+
+!if $class_type=3 and $class_typename!=level
+   $U_gotoclass01
+!else
+   $U_gotoclass0
+!endif
 
 !read adm/class/graphclass participate\
 $compsup

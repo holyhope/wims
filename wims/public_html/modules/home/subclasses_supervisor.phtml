@@ -29,6 +29,8 @@ $icourses
 !endif
 
 !! ----------- definition des droits de connexion supervisor
+
+!!! as a supervisor
 !reset compsup
 !for cls in $user_supervise
   !if $wims_class isin $cls
@@ -39,19 +41,31 @@ $icourses
   !endif
 !next cls
 !let compsup=!sh echo "$compsup" | sort | uniq;
-!if $user_participate!=$empty
-  $U_gotoclass3
+
+!let user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+
+!if $class_type=3 and $class_typename!=level
+!!in a class
+    $U_gotoclass31
+!else
+    $U_gotoclass3
 !endif
 !let user_supervise_=$user_supervise
 !read adm/class/graphclass supervise\
 $compsup
 
-!let user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
-!if $user_participate=$empty
+!if $user_participate=$empty or $wims_class/ notin $user_participate
   !exit
 !endif
+
+!!! as a student
 !reset compsup
-$U_gotoclass1
+!if $class_type=3 and $class_typename!=level
+!!in a class
+    $U_gotoclass11
+!else
+    $U_gotoclass1
+!endif
 
 !for cls in $user_participate
   !if $wims_class isin $cls

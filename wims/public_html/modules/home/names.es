@@ -65,9 +65,10 @@ wims_name_coeff = coeficiente
 
 U_gotoclass1 = Entrar como participante:
 U_gotoclass3 = Entrar como profesor:
-U_gotoclass = Sus zonas de trabajo:
-
-
+U_gotoclass0 = Sus zonas de trabajo:
+U_gotoclass11 = $U_gotoclass1
+U_gotoclass31 = $U_gotoclass3
+U_gotoclass01 = $U_gotoclass0
 
 U_inscription1 = Para inscribirse en una zona de trabajo, pulse una de las clases:
 U_inscription2 = Inscribirse en una zona de trabajo como participante.

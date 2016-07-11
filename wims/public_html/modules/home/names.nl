@@ -23,7 +23,7 @@ CR_1 = Maak je eigen
 CR_OEF = Simpele interactieve oefeningen
 CR_Docs=Tutorials
 CR_mod = Full-power modules
-CR_sequence=U hebt gekozen om het lesmateriaal aan te bieden in een speciale volgorde. 
+CR_sequence=U hebt gekozen om het lesmateriaal aan te bieden in een speciale volgorde.
 
 E_comp = gecompileerd op
 E_manager = Site manager:
@@ -63,7 +63,10 @@ wims_name_coeff = weging
 
 U_gotoclass1 = Ga naar een klas als leerling:
 U_gotoclass3 = Ga naar een klas als supervisor:
-U_gotoclass = Uw klassen :
+U_gotoclass0 = Uw klassen :
+U_gotoclass11 = $U_gotoclass1
+U_gotoclass31 = $U_gotoclass3
+U_gotoclass01 = U_gotoclass0
 
 U_inscription1 = Meld je aan bij een klas:
 U_inscription2 = Aanmelden in een andere klas.
