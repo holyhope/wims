@@ -42,5 +42,9 @@ $ in $l
 
 # on ne recree l'index des classes que si un nom ou une description a change
 !if $name_or_def>0
-  !sh cd $wims_home/log/classes; ./.build-index $qclass
+  !if $class_superclass != $empty
+    !sh cd $wims_home/log/classes; ./.build-index $class_superclass
+  !else
+    !sh cd $wims_home/log/classes; ./.build-index $qclass
+  !endif
 !endif

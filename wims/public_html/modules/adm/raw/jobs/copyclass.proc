@@ -81,7 +81,8 @@ cl_expiration=$[$class_creation+10000]
  !appendfile wimshome/log/classes/$new_class/.def !set class_$t=$(class_$t)
 !next t
 
-# On ne reindexe les classes que si on ne vient pas de creer une sous-classe.
-!if $class_nbsubclasses != $empty
+!if $class_superclass != $empty
+  log = !sh cd $wims_home/log/classes; ./.build-index $class_superclass
+!else
   log = !sh cd $wims_home/log/classes; ./.build-index $new_class
 !endif
