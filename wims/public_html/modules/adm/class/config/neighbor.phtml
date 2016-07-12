@@ -13,33 +13,36 @@
 
 !if $job2!=first
  !read neighbor/$job2.phtml
- <div class="wimscenter">
- !set wims_ref_class=wims_button
- !href cmd=reply&job2=first $wims_name_back2
- !if $job2!=sharelist and $excls!=yes
-  !set wims_ref_class=wims_button
-  !href cmd=reply&job2=sharelist $name_info
- !endif
+ !if $class_type!=3
+ !! not a program
+   <div class="wimscenter">
+   !set wims_ref_class=wims_button
+   !href cmd=reply&job2=first $wims_name_back2
+   !if $job2!=sharelist and $excls!=yes
+    !set wims_ref_class=wims_button
+    !href cmd=reply&job2=sharelist $name_info
+  !endif
  </div>
+ !endif
  !exit
 !endif
 
 <p>
 $name_help
-&nbsp;
+ $
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neighbor $wims_name_help
 &nbsp;&nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neiexample $name_example
-&nbsp;</p>
+</p>
 
 !if $excls!=yes and ($supertype!=4 or ($supertype=4 and $ctypename iswordof course program))
 <div class="wimscenter">
 !set wims_ref_class=wims_button
   !href cmd=reply&job2=sharelist $name_info
 !set wims_ref_class=wims_button
- !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
 </div>
 !endif
 
