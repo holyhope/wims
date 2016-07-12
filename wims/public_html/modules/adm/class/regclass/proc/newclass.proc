@@ -399,7 +399,11 @@ $location
   error=define_fail
   !exit
  !endif
- !sh $wims_home/log/classes/.build-index $code
+ !if $wims_class!=$empty
+   !sh $wims_home/log/classes/.build-index $wims_class
+ !else
+   !sh $wims_home/log/classes/.build-index $code
+ !endif
  !if $wims_user!=$empty
   creator=$wims_class/$wims_user
   !if $wims_email=$empty

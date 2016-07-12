@@ -160,6 +160,9 @@ sesdir=!word 1 of $sesdir
   !setdef !set wims_developer=$empty in wimshome/log/classes/$wims_class/supervisor
   !setdef wims_developer=$empty in wimshome/$sesdir/var.stat
 !endif
-
-!sh cd $wims_home/log/classes; ./.build-index $wims_class
+!if $wims_superclass!=$empty
+  !sh cd $wims_home/log/classes; ./.build-index $wims_superclass
+!else
+  !sh cd $wims_home/log/classes; ./.build-index $wims_class
+!endif
 

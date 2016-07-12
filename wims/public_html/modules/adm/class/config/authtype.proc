@@ -17,6 +17,10 @@
  wims_class_log=Modify class authentification by $wims_realuser
 
 !! need to rebuild .index (for adm/raw)
-!sh $wims_home/log/classes/.build-index $wims_class
+  !if $wims_superclass!=$empty
+    !sh $wims_home/log/classes/.build-index $wims_superclass
+  !else
+    !sh $wims_home/log/classes/.build-index $wims_class
+  !endif
 !!read adm/du $wims_home/log/classes/$wims_class
 !endif
