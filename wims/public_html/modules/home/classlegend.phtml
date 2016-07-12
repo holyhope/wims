@@ -2,14 +2,14 @@
  <div class="wims_work_legend">
   <p class="inline">$wims_name_legend:</p>
   <ul class="inline">
-  !set tmp=level,class,program,course,testclass
+  !set tmp=level,class,program,course
   !if $supervisable=yes or $wims_user=supervisor
     !set wims_name_testclass=$CL_Test
     !if $class_typename=program
-      !set tmp=$(tmp[3..-1])
+      !set tmp=$(tmp[3,4]),testclass
     !endif
     !if $class_typename=class
-      !set tmp=$(tmp[2..-1])
+      !set tmp=$(tmp[2,4])
     !endif
   !else
     !set tmp=$(tmp[1,2,4])
