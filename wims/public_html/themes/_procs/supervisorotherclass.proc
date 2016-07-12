@@ -1,6 +1,3 @@
-!! dans le cas d'un portal et dans le cas où wims_otherclass est non vide,
-!! le lien otherclass est dans le fil d'ariane
-
 !! for the administrator, the method is wims_authentification
 !reset tmp_
 !if $auth_method isitemof $auth_method_list \
@@ -12,18 +9,13 @@
 !if $wims_superclass!=$wims_class and $wims_superclass!=$empty
    !if $tmp_!=$empty
      !set wims_rm_0 = $wims_rm_0\
- U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login&class=$wims_superclass
+ U_oclass,1,module=adm/class/classes&auth_user=$ext_login&class=$wims_superclass
    !else
      !set wims_rm_0 = $wims_rm_0\
  U_oclass,1,module=adm/class/classes&type=supervisor
    !endif
 !else
-  !if $wims_otherclass=$empty
     !set wims_rm_0 = $wims_rm_0\
- U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login
-  !else
-    !set wims_rm_0 = $wims_rm_0\
- U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&auth_user=$ext_login
-  !endif
+ U_oclass,1,module=adm/class/classes&type=$(tmp_)supervisor&class=$wims_superclass
 !endif
 !exit
