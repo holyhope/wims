@@ -17,6 +17,8 @@
 !!if $[$classcnt+$progcnt+$coursecnt+$icourses]=0
   !goto nosubclass
 !!endif
+
+!!! not useful now, but as I am not quite sure, leave it !!!
  <ul class="wims_nopuce">
 !if $classcnt>0
  <li>
@@ -105,10 +107,12 @@
 !if $class_typename=program
  !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
  !if $test=yes
-  <div>
-  !set wims_ref_class=wims_button
+  <ul class="wims_subclasses"><li>
+  <span class="wims_classes_direct_testclass">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
-   $
+  </span>
+  </li>
+  </ul>
   !set wims_ref_class=wims_button
   !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $wims_name_import
   ($CL_Test)
@@ -117,4 +121,5 @@
   to $wims_menu_items
   </div>
  !endif
-!!endif
+!endif
+!read classlegend.phtml

@@ -1,0 +1,25 @@
+!if $wims_supertype=4
+ <div class="wims_work_legend">
+  <p class="inline">$wims_name_legend:</p>
+  <ul class="inline">
+  !set tmp=level,class,program,course,testclass
+  !if $supervisable=yes or $wims_user=supervisor
+    !set wims_name_testclass=$CL_Test
+    !if $class_typename=program
+      !set tmp=$(tmp[3..-1])
+    !endif
+    !if $class_typename=class
+      !set tmp=$(tmp[2..-1])
+    !endif
+  !else
+    !set tmp=$(tmp[1,2,4])
+    !if $class_typename=class
+      !set tmp=$(tmp[2,3])
+    !endif
+  !endif
+  !for t in $tmp
+    <li class="wims_classes_direct_$t">$(wims_name_$t)</li>
+  !next
+  </ul>
+ </div>
+!endif
