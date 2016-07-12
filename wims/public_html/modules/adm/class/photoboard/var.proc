@@ -9,6 +9,8 @@ job=!items2words $job
 
 rac=wimshome/log/classes/$wims_class
 wims_superclass=!defof class_superclass in $rac/.def
+class_type=!defof class_type in $rac/.def
+class_typename=!defof class_typename in $rac/.def
 !default wims_superclass=$wims_class
 file=$rac/.userlist
 
@@ -52,7 +54,7 @@ variable=!trim $variable
   !distribute item $us_ into l_name_,f_name_,login
   !defread wimshome/log/classes/$wims_superclass/.users/$login
   !if $filter=all
-   !if $loginlist_!=all and $login notitemof $loginlist_  
+   !if $loginlist_!=all and $login notitemof $loginlist_
      test=0
    !endif
   !else

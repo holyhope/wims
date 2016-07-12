@@ -43,22 +43,27 @@ $name_expert
 !endif
 
 !if $photourl_exists=0
- <p class="wimscenter"> $name_nophoto</p>
+ <p class="wimscenter">$name_nophoto</p>
  !goto end
 !endif
 !set cmp=0
 !set cmp_tr=0
-<table><tr>
+!if $class_type=0 or $class_typename=course or ($class_typename=class and $class_type=1)
+  !set tmp=adm/class/userscore&job=getuser
+!else
+  !set tmp=adm/class/usermanage&job=userprop
+!endif
+  <table><tr>
 !for l_ = 1 to $cnt
   !set ll=$[ceil($l_/$lim)]
   !set u=!line $[$l_ - ($ll-1)*$lim] of $(list_user$ll)
   !if $(u[1])!=
   <td style="width:120px;">
   !if $(u[4])!=
-    !href module=adm/class/userscore&job=getuser&getuser=$(u[1]) <img border="0" width="120px" src="$(u[4])" alt="$(u[2]) $(u[3])" />
+    !href module=$tmp&getuser=$(u[1]) <img border="0" width="120px" src="$(u[4])" alt="$(u[2]) $(u[3])" />
     <br />$(u[2]) $(u[3])
   !else
-     !href module=adm/class/userscore&job=getuser&getuser=$(u[1]) $(u[2]) $(u[3])
+     !href module=adm/class/$tmp&getuser=$(u[1]) $(u[2]) $(u[3])
   !endif
   </td>
   !increase cmp_tr
@@ -72,7 +77,7 @@ $name_expert
   !reset u
 !next
 </table>
-
+!reset tmp
 !if $cmd=reply
  !set wims_menu_items=!append line back2,1,cmd=resume\
  to $wims_menu_items
