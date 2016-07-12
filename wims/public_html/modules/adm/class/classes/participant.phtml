@@ -129,13 +129,17 @@ $table_header
      !read participant2.phtml
   !else
   <td>
-      !if ($splevel=$empty or $splevel=2) and $code notwordof $directlist_
-        !set wims_ref_class=wims_button
-        !href module=adm/class/reguser&class=$code $name_register
+    !set wims_ref_class=wims_button
+     !if $code notwordof $directlist_
+       !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
+     !else
+      !if $splevel=$empty or $splevel=2
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code $name_register
       !else
         <span style="color:grey">$name_register</span>
       !endif
-    !!endif
+    !endif
     </td>
   !endif
   <td>
