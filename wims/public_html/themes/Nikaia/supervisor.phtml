@@ -18,7 +18,7 @@
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
 ($SU_log - $(wims_name_$class_typename))
-<br class="clearall" />
+
 <div class="wims_content">
 
 !if _tool isin $wims_session
@@ -30,9 +30,10 @@ $wims_classname, $wims_institutionname\
 !!definition for menumodubox
 !distribute items div,div into div0,div1
 
-!if $class_type isin 3
+!if $class_type=3
  $SU_greet.
- !read Subclasses1.phtml
+ !read ./subclasses.phtml
+ !read ./Subclasses1.phtml
  !if $class_typename=level
     </div><!--wimsbody-->
    </div><!--wimspagebox-->
@@ -42,7 +43,20 @@ $wims_classname, $wims_institutionname\
  !else
   !goto nocheck
  !endif
-!endif class_type = 3
+!endif class_type=3
+
+!if $class_type=4
+  !if $wims_user=supervisor
+    !read ./subclasses.phtml
+    !read ./Subclasses1.phtml
+  !endif
+ </div><!--/wimsbody-->
+</div><!--/wimspagebox-->
+ !read themes/_procs/menumodubox3.proc
+ !read themes/_widgets/menumodubox.phtml
+ !goto end
+!endif class_type=4
+
 
 <p class="wims_greetings">
 !if $class_type notin 13
@@ -103,7 +117,10 @@ $wims_classname, $wims_institutionname\
 !if $class_type=2
  !if $subclasscnt>0
   $table_header
-  $table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th></tr>
+  <thead>
+  $table_hdtr<th scope="col">$wims_name_number</th><th scope="col">$wims_name_title</th><th scope="col">$wims_name_nameteacher</th></tr>
+  </thead>
+  <tbody>
   !for i=1 to $subclasscnt
    !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
    !let f_aff=!item 4 of $f_class
@@ -118,6 +135,7 @@ $wims_classname, $wims_institutionname\
     </td>
    </tr>
   !next i
+  </tbody>
   $table_end
  !endif subclasscnt
 
@@ -142,28 +160,91 @@ $wims_classname, $wims_institutionname\
 
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 
-!if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
- <p>$SU_nosheet</p>
+!set table_htdr_1=$table_hdtr<th scope="col">$wims_name_number</th><th scope="col">$wims_name_title</th>
+!set table_htdr_2=<th scope="col">$wims_name_Status</th><th scope="col">$wims_name_action</th></tr>
+!set table_exocnt=<th>$wims_name_cnt_exo</th>
+!if $seq_open=yes
+  !set table_htdr_seq=<th scope="col">$wims_name_sequence</th>
 !else
-  !if $seq_open=yes
-  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_sequence</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
- !else
-  !set table_htdr_=$table_hdtr<th>$wims_name_number</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
- !endif
- $table_header
- <caption>$SU_shlist &nbsp; [
- !href module=adm/class/sequence $wims_name_reorder
- ] </caption>
- $table_htdr_
- !read themes/_widgets/supervisorsubclass.phtml
- !read themes/_widgets/supervisordoc.phtml
- !read themes/_widgets/supervisordocp.phtml
- !read themes/Nikaia/_widgets/supervisorsheet.phtml
- !read themes/Nikaia/_widgets/supervisorexam.phtml
- !read themes/_widgets/supervisorvote.phtml
- $table_end
+  !reset table_htdr_seq
 !endif
 
+!if $class_type notin 24
+  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+  !if $seq_open=yes
+   $CR_sequence
+  !endif
+  <div class="wimscenter">
+  !href module=adm/class/sequence $wims_name_reorder
+  </div>
+!endif
+
+<div id="widget_supervisor_list">
+  <ul id="wims_supervisor_summary">
+    !if $subclasscnt>0
+      <li><a href="#wims_supervisor_subclass">$wims_name_classlist</a></li>
+    !endif
+    !if $[$sheetcnt+$examcnt]>0
+      <li><a href="#wims_supervisor_shlist">$C_A</a></li>
+    !endif
+    !if $[$docpubliccnt+$doccnt]>0
+      <li><a href="#wims_supervisor_doc">$wims_name_Docs</a></li>
+    !endif
+    !if $votecnt>0
+      <li><a href="#wims_supervisor_vote">$wims_name_Votes</a></li>
+    !endif
+  </ul>
+
+  !! Jquery tabs
+  !read adm/tabscript supervisor_list
+
+  !if $subclasscnt>0
+    <div id="wims_supervisor_subclass">
+      !distribute item 1,no into wims_incremental,table_spacer
+      $table_header
+      $table_hdtr<th scope="col">$wims_name_number</th><th scope="col">$wims_name_title</th><th scope="col">$wims_name_nameteacher</th></tr>
+      !read themes/_widgets/supervisorsubclass.phtml
+      $table_end
+    </div>
+  !endif
+
+  <div id="wims_supervisor_shlist">
+    !if $sheetcnt+$examcnt<=0
+      <p>$SU_nosheet</p>
+    !else
+        !set table_htdr_=$table_htdr_1$table_exocnt$table_htdr_seq$table_htdr_2
+        $table_header
+        <caption>$C_A</caption>
+        $table_htdr_
+        !read themes/_widgets/supervisorsheet.phtml
+        !read themes/_widgets/supervisorexam.phtml
+        $table_end
+    !endif
+  </div>
+
+  !if $[$doccnt+$docpubliccnt]>0
+    !set table_htdr_=$table_htdr_1$table_htdr_seq$table_htdr_2
+    <div id="wims_supervisor_doc">
+      $table_header
+      <caption>$wims_name_Docs</caption>
+      $table_htdr_
+      !read themes/_widgets/supervisordoc.phtml
+      !read themes/_widgets/supervisordocp.phtml
+      $table_end
+    </div>
+  !endif
+
+  !if $votecnt>0
+    !set table_htdr_=$table_htdr_1$table_htdr_seq$table_htdr_2
+    <div id="wims_supervisor_vote">
+      $table_header
+      <caption>$wims_name_Votes</caption>
+      $table_htdr_
+      !read themes/_widgets/supervisorvote.phtml
+      $table_end
+    </div>
+!endif
+</div>
 !read ./form.phtml
 !read ./result.phtml
 </div><!--wimsbody-->
