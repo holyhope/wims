@@ -141,7 +141,8 @@ m_oefenv=!replace word debug by $ in $m_oefenv
 !if $status=$empty
  !read oef/exo.init
 !endif
-!if $cmd iswordof new renew reply and $wims_user=supervisor
+!if $cmd iswordof new renew reply and \
+  ($wims_user=supervisor or $wims_user=$empty or $wims_developer!=$empty)
   exonext=!positionof item $exo in $exolist
   exoprev=$[$exonext-1]
   exonext=$[$exonext+1]

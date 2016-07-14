@@ -1,5 +1,5 @@
 !!************** homeref.phtml  ****************
-!! This File creates 2 sets of links, to put in the tail menu of Wims.
+!! This File creates 2 sets of links, to put in the left menu or tail menu of Wims.
 !! 1st set contains up to 6 links
 !! 2nd set contains informations about author(s), and mail links to them.
 !! **********************************************
@@ -57,7 +57,6 @@
  strict permissions to them in var.def, in order to build a secure exercise module.
  </p>
  <pre>$wims_hacked_variables</pre>
-
 !endif
 
 !read name.phtml.$module_language
@@ -97,6 +96,16 @@
  !if $wims_exo<$wims_sheetmax
   !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
  !endif
+!endif
+
+!if ($wims_user=$empty or $wims_developer!=$empty or $wims_user=supervisor)\
+  and $exoprev$exonext != $empty and $wims_sheet=$empty
+   !set wims_menu_items=!append line itemsep,0\
+prev,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 \
+     to $wims_menu_items
+   !set wims_menu_items=!append line next,1,cmd=new&module=$module&exo=$exonext&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 \
+to $wims_menu_items
+  !reset exoprev exonext
 !endif
 
 !!********* Link #3 : "Resume"

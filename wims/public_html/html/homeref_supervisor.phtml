@@ -19,7 +19,6 @@
 !read themes/$wims_theme/local.phtml
 
 !if exam isin $wims_session
- !!debug end= $wims_exam_end, $wims_now $wims_exam_remain timeleft=[60*$sdure-($now-$registered)]
  !set wims_hr_r=$[max(0,$wims_exam_remain)]
  !set wims_hr_rm=$[floor($wims_hr_r/60)]
  !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
@@ -184,10 +183,11 @@ $wims_menu_items to $1_
 !endif
 !! next exo and prev exo in the menu for supervisor
 !if $wims_user=supervisor and $exoprev$exonext != $empty and $wims_sheet=$empty
-   !set 1_=!append line next,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
-  to $1_
-   !set 1_=!append line prev,1,cmd=new&module=$module&exo=$exonext&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
-  to $1_
+   !set 1_=!append line itemsep,0\
+prev,1,cmd=new&module=$module&exo=$exoprev&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
+to $1_
+  !set 1_=!append line next,1,cmd=new&module=$module&exo=$exonext&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4  \
+to $1_
   !reset exoprev exonext
 !endif
 
