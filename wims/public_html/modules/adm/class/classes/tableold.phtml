@@ -1,4 +1,4 @@
-<table class="wims_classes_direct">
+<ul class="wims_subclasses">
  !for typ in portal,group,level,class,course,program,test
   !set nstyle=wims_classes_direct_$typ
   !set ntype_=$typ
@@ -21,9 +21,8 @@
    !else
     !set t_=$type
    !endif
-
-  <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td>
-  <td class="wims_classes_direct_name">
+  <li>
+  <span class="$nstyle">
   !set u__=$u_
    !if $auth_method isitemof $auth_method_list
      !if $u_ != supervisor
@@ -32,10 +31,10 @@
      !endif
    !endif
    !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u__ $n_
-   </td><td class="tt">$u__</td>
-   </tr>
+   ($u__)</span>
+   </li>
 :out
  !reset c_ u_ t_
   !next cl
  !next typ
- </table>
+ </ul>

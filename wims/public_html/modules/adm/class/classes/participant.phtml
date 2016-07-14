@@ -4,7 +4,6 @@
 !if $overflow=yes
  !exit
 !endif
-
 !if $clcnt+$sccnt+$directcnt<1
  !if $keyword=$empty
   $name_language
@@ -17,7 +16,7 @@
 !if $wims_user!=$empty
  !read direct.phtml
  !if $wims_user!=supervisor and $superclass_orig=$empty
-  !exit
+  !!exit
  !endif
 !else
   $name_text1
@@ -25,7 +24,6 @@
 
 !set super_mixed_auth=!defof class_mixed_external_auth in wimshome/log/classes/$wims_superclass/.def
 !if $sccnt>0 and $super_mixed_auth!=2
-
  $table_header
  <caption>$name_portalandgroup</caption>
  $table_hdtr
@@ -63,7 +61,7 @@
    !endif
   <td>
   $supv
-  </td> <td>
+  </td><td>
   !if $pswd=$empty
    $name_open
   !else
