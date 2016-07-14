@@ -1,10 +1,26 @@
 /*
+ jm.evers
+ update 14/7/2016: 
  
+ Back in 2014 I was convinced there would be a fairly easy / straightforward way of removing JQuery
+ ,since all interesting things in JQuery are now -thanks to JQuery- a standard in modern browsers.
+ And many critical websites (taxes / banks / goverment) refuse older (IE) browsers...so there is virtually no need
+ for the JQuery browser-glue-javascript-code 
+ 
+ See https://toddmotto.com/is-it-time-to-drop-jquery-essentials-to-learning-javascript-from-a-jquery-background/
+ See http://tutorialzine.com/2014/06/10-tips-for-writing-javascript-without-jquery/
+ See http://blog.wearecolony.com/a-year-without-jquery/
+ See http://blog.garstasio.com/you-dont-need-jquery/
+ 
+ But...after many hours of trying to get rid of JQuery in jqmath.js, I must give up !
+ this is too difficult;for me there is no easy way to replace JQuery by ordinary javascript.
+ What a shame :(
+   
  jm.evers 22/2/2014
  preliminary version of jqmath written with some jquery (grrrr)
  when wims-integration is finished, 
  I will rewrite jqmath , removing all JQuery !...the most used useless js-glue-library 
-
+ 
  See http://jsperf.com/vanilla-js-ftw-jquery-vs-js
  Where vanilla javascript is on average 5 - 10 times faster than JQuery...
  In general, clients / students should use modern / up-to-date html5 capable browsers...and not only for something like 
