@@ -417,13 +417,20 @@ char *fnd_line(char *p, int n, char bf[])
     char *pp;
     int i;
 
-    for(i=1,pp=p; pp-1!=NULL && *pp!=0 && i<n; pp=strchr(pp,'\n')+1, i++);
-    fnd_position=pp; if(pp-1==NULL) {
-      fnd_position=NULL; fnd_nextpos=""; *bf=0; return bf;
+    /*
+for(i=1,pp=p; pp-1!=NULL && *pp!=0 && i<n; pp=strchr(pp,'\n')+1, i++);
+    */
+    for(i=1,pp=p; i<n; i++) {
+        pp=strchr(pp,'\n');
+        if (!pp++) {
+          fnd_position=NULL; fnd_nextpos=""; *bf=0; return bf;
+        }
     }
+    fnd_position=pp;
     for(i=0; *(pp+i)!=0 && *(pp+i)!='\n'; i++) *(bf+i)=*(pp+i);
     *(bf+i)=0;
-    if(pp[i]=='\n') i++; fnd_nextpos=pp+i;
+    if(pp[i]=='\n') i++;
+    fnd_nextpos=pp+i;
     return bf;
 }
 
