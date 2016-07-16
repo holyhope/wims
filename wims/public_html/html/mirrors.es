@@ -28,7 +28,7 @@ China
 cn en fr
 CHEN, Zhijie
 zjchen@math.ecnu.edu.cn
-:wims.auto.u-psud.fr/wims/
+:https://wims.auto.u-psud.fr/wims/
 Universite Paris-Sud
 France
 fr en cn es it
