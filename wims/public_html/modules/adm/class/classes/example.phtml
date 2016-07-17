@@ -15,8 +15,18 @@
 !if $othercnt>0
 $name_example3b ($listla).
 !endif
-$name_example4
-!href module=adm/class/regclass $wims_name_classcreate
+<div>
+<p>$name_example4</p>
+$name_instruction
+</div>
+<div>$name_example41
+!set tmp=!replace internal XXXXX by , in $name_sheet_example
+$(tmp[1])
+!href module=home&search_keywords=&search_category=S $wims_name_Sheets
+$ $(tmp[2])
+!reset tmp
+</div>
+!!href module=adm/class/regclass $wims_name_classcreate
 !let nb=!itemcnt $classification
 !bound exampletype between 1 and $nb default 3
 <div class="wimscenter">
@@ -34,7 +44,6 @@ $name_example4
  !next k
 </div>
  $table_header
-
  <caption>$(classification[$exampletype])</caption>
   $table_hdtr<th>$wims_name_name</th>
   <th>$name_connexion</th><th>$name_register</th>
@@ -80,12 +89,4 @@ $name_example4
    !endif
   !next i
  $table_end
-
-
-$name_instruction
-
-$name_sheet_example
-
-!href module=home&search_keywords=&search_category=S $wims_name_sheet
-
 </div>

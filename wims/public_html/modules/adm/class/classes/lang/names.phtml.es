@@ -104,7 +104,7 @@ las clases virtuales desde el punto de vista del estudiante. Debería crear\
  ejemplo).\
 </li><li>Pulse en <span class="wims_button disabled">Inscribirse</span> para darse de alta en la clase.\
 </li></ul>
-  !set name_sheet_example=Encontrará también hojas de ejercicios que, a continuación, podrá importar \
+  !set name_sheet_example=Encontrará también hojas de ejercicios XXXXX que, a continuación, podrá importar \
 en su clase y cambiar.
  !endif
 
