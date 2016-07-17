@@ -6,7 +6,7 @@
 
 !set name_auth=Autenticación del desarrollador
 !set name_prop=Propiedades
-!set name_modname=Lista de módulos para <em>$(auth_name[1]) $(auth_name[2])</em>
+!set name_modname=!nosubst Lista de módulos para <em>$(auth_name[1]) $(auth_name[2])</em>
 !set name_create=Crear un módulo
 !set name_diff=Comprobar las diferencias
 !! must be the same as wims_name_modcontent in html/names.phtml.$lang
