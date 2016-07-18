@@ -23,14 +23,16 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
+ <div class="wims_msg success">
   $name_file <span class="tt wims_fname">
  !getfile $outfile $outfile
  </span> $name_download
- <hr />
+ </div>
 !endif
 
 !if $processed=yes
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  <div class="wims_msg success">
   $name_deposit
   <ul>
   !if $change!=$empty
@@ -82,9 +84,11 @@ $wims_name_csv
    .</li>
   !endif
   </ul>
+  </div>
  !else
+ <div class="wims_msg success">
   $name_data1
-  <hr />
+  </div>
  !endif
 !endif
 
@@ -155,11 +159,11 @@ $name_data2
  <li>
   <input type="checkbox" name="csvdownload" id="csvdownload_techvar" value="techvar"/>
   <label for="csvdownload_techvar">$name_techvar</label>
- </li>
- <li>
+ </li><li>
   <input type="checkbox" name="csvdownload" id="csvdownload_regvar" value="regvar"/>
   <label for="csvdownload_regvar">$name_regvar</label>
  </li>
+ </ul>
 </li>
 </ul>
 <input type="submit" value="$wims_name_download" />
