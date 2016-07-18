@@ -16,8 +16,10 @@
   !set l_=!line $i of $addline
   !set t_=!item $i of $addparms
   !if $lv<=$i
+   !set tmp=!replace internal = by , in $t_
    !href cmd=reply&$t_ $l_
-   ($wims_class)
+   ($(tmp[-1]))
+   !reset tmp
    !!!set wims_menu_items=!append line backgateway $l_,1,cmd=reply&$t_\
 to $wims_menu_items
   !else
