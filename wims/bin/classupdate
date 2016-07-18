@@ -3,12 +3,24 @@
 WIMS_HOME=`dirname $0`/..
 cd $WIMS_HOME
 WIMS_HOME=`pwd`
-forumdir=$WIMS_HOME/forums
-cmoduledir=$WIMS_HOME/public_html/modules/classes
+
 cd log/classes
 class=[0-9]*
+##if there is no old technical variables, put class in version 5
+for cl in $class; do
+  version=`cat $cl/version 2>/dev/null | awk '{print $1; exit}'`
+  if [ ! $version -lt 5 ]; then :;
+  else
+     tv=`grep user__ $cl/.users/* 2>/dev/null`
+     if [ -z "$tv" ]; then echo 5 >$cl/version ; fi ;
+  fi
+done
 
-### all classes has now version 4 so nothing is done ... put in another file
+exit
+
+forumdir=$WIMS_HOME/forums
+cmoduledir=$WIMS_HOME/public_html/modules/classes
+### all classes has now version >=4 so nothing is done ...
 ## nothing is useful in this case
 for cl in $class
 do
