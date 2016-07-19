@@ -53,7 +53,7 @@ while read line ; do
     cnt=$(($cnt+1))
     echo ",'$alt'" >> $keys
     echo "<td><a name='$alt top' href='#$idx'>$alt</a></td>" >> $out
-    echo "<li><span style=\"color:blue;font-size:0.8em\">alternative command:<a name='$alt' href='#$alt top'>$alt</a></li></span>"  >> $tmp
+    echo "<li><span style=\"color:blue;font-size:0.8em\">alternative command:<a name='$alt' href='#$alt top'>$alt</a></span></li>"  >> $tmp
    else
     echo $line | sed 's/@/<li><span style="color:blue;font-size:0.8em">/g'  >> $tmp
     echo  "</span></li>" >> $tmp
