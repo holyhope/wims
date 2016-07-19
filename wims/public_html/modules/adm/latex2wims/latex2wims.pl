@@ -45,7 +45,7 @@ $doc_DIR = '';
 $SUBDIR='1';
 my @SECTIONS = qw(document part chapter section subsection subsubsection);
 #my @SECTIONS = ( document part entete frame subsection subsubsection );
-#TODO biblio dans un fichier séparé si on a rencontré \begin{thebibliography} Non,
+#TODO biblio dans un fichier separe si on a rencontre \begin{thebibliography} Non,
 # on n'a qu'a mettre cet environnement de type link
 #$doc_DIR=$ENV{'w_docdir'};
 #$DIR=$ENV{'w_dir'};
@@ -92,7 +92,7 @@ $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ;
 #d'avoir des titres, ca serait du type description en latex
 #pas de titre ? deb fin <ul ... >  </ul>
 #type =
-#hash contenant les caractéristiques des environnements latex, voir \environmentwims
+#hash contenant les caracteristiques des environnements latex, voir \environmentwims
 my %hash_environ = (
   titre  => {},
   style  => {},
@@ -104,7 +104,6 @@ my %hash_environ = (
   list   => {},
   tabular => {},
 );
-
 
 #hash contenant les commandes venant de \defwims, \def & co ou par defaut
 my %hash_command = (
@@ -125,7 +124,7 @@ my @liste_env_spec = ('equation', 'multline', 'latexonly',
 
 my @liste_com_spec = ('paragraph', 'href', 'url', 'exercise', 'doc') ; #je ne m'en sers pas encore
 
-#commandes par défaut : sont écrasés par un \def ou un \defwims
+#commandes par defaut : sont ecrases par un \def ou un \defwims
 
 #$hash_command{cnt_arg}{text} = 1 ;
 #$hash_command{definition}{text} = '\) #1 \(' ;
@@ -151,7 +150,7 @@ $hash_command{cnt_arg}{doc} = 2 ;
 $hash_command{definition}{doc} = '\doc{#1&cmd=new}{#2}';
 $hash_command{origin}{doc} = 'defwims' ;
 
-#a un label est associé son bloc [nom de fichier]
+#a un label est associe son bloc [nom de fichier]
 my %hash_bloc = (
   fichier  => {},
   titre    => {},
@@ -161,7 +160,7 @@ my %hash_index = (
   page    => {},
 );
 
-#type sert à repérer les fichiers embed ou fold.
+#type sert a reperer les fichiers embed ou fold.
 my %hash = (
   text   => {},
   prev   => {},
@@ -189,7 +188,7 @@ my %prefixe = ( fold => 'F_' , link => 'L_' );
 my %hash_secinv;
 for (my $i = 0; $i <= $#SECTIONS; $i++) { $hash_secinv{$SECTIONS[$i]} = $i; }
 
-my (%errmsg); # empèche le ré-affichage d'un même warning.
+my (%errmsg); # empeche le re-affichage d'un même warning.
 $SIG{__WARN__} = sub { my ($x) = @_;
   return if $errmsg{$x};
   $errmsg{$x} = 1;
@@ -201,7 +200,7 @@ system("mkdir -p $BASE") if (!$ENV{'wims_exec_parm'});
 
 $hash{niveau}{'main'} = 0;
 #pour algorithmic
-#TODO récupérer les informations dans le fichier de l'utilisateur
+#TODO recuperer les informations dans le fichier de l'utilisateur
 
 my %hash_algo = (
   titre => {},
@@ -237,7 +236,6 @@ $hash_command{definition}{algorithmicuntil}='<b>until</b>';
 $hash_command{definition}{algorithmicprint}='<b>print</b>';
 $hash_command{definition}{algorithmicreturn}='<b>return</b>';
 
-
 for my $cmd (@liste_voca) { $hash_command{origin}{"algorithmic\L$cmd\E"} = 'defaut' }
 
 for my $cmd ('FOR','IF','WHILE','REPEAT','ELSE','ELSIF') {
@@ -255,8 +253,7 @@ for my $cmd ('ENDFOR','ENDIF','ENDWHILE','REQUIRE','ENSURE', 'STATE','UNTIL') {
           $hash_algo{apres}{$cmd} = 0 ;
 }
 
-
-# lit les fichiers wims.sty puis les fichers .tex. pour éviter : un seul fichier tex, le premier ?
+# lit les fichiers wims.sty puis les fichers .tex. pour eviter : un seul fichier tex, le premier ?
 
 my $TEXT = Init($FILE, \%hash_environ, \%hash_command, \%hash, \%hash_algo);
 out1 ('sheet', $SHEET) ;
@@ -276,7 +273,6 @@ if (!($hash{email}{main})) {
   warn " ATTENTION : Vous devez mettre un email \\email{xxx}" ;
   $hash{email}{main}=$email } ;
 
-
 # PASSE 2: ferme les \section & co
 my $SEC_MIN_GLOBAL = 10; # = \infty
 #$SEC_MIN_GLOBAL = 3 ;
@@ -292,12 +288,10 @@ $TEXT =~ s|.*<document>||s;
 if($SEC_MIN_GLOBAL == 10) {$SEC_MIN_GLOBAL = 0} ;
 my ($NIVEAU, $NIVEAU_max) = ($SEC_MIN_GLOBAL, $SEC_MIN_GLOBAL + $depth - 1);
 
-
-
-# PASSE 3: crée les blocs venant des sections et co
-#  et renvoie une partie de la table des matières
+# PASSE 3: cree les blocs venant des sections et co
+#  et renvoie une partie de la table des matieres
 my $toc = analyse_texte ($TEXT, \%hash, 'main', $NIVEAU, $NIVEAU_max, '');
-# PASSE 4: création de tous les blocs ( environnements de type fold ou link)
+# PASSE 4: creation de tous les blocs ( environnements de type fold ou link)
 {
   my ($ref, $ref_env) = (\%hash, \%hash_environ);
   my (@TODO);
@@ -308,8 +302,8 @@ my $toc = analyse_texte ($TEXT, \%hash, 'main', $NIVEAU, $NIVEAU_max, '');
     $ref->{text}{$Id} = $TEXT;
   }
 }
-#récupération de tous les labels et rajout du titre en haut de la table dans la toc du tag
-#On les traite pour que le label soit associé au nom du fichier créé automatiquement.
+#recuperation de tous les labels et rajout du titre en haut de la table dans la toc du tag
+#On les traite pour que le label soit associe au nom du fichier cree automatiquement.
 #$hash{toc}{$tag} contient les fichiers des sections en dessous de $tag
 
 # PASSE 5
@@ -319,13 +313,12 @@ for my $tag (keys %{$hash{text}}) {
   $T =~ s/\\index\s*\{([^}]+)\}/store_index($1, $tag, \%hash_index)/eg;
   $hash{text}{$tag} = $T;
   my $tagupbl = $hash{upbl}{$tag};
-  #plus utilisé, mais j'hésite !
+  #plus utilise, mais j'hesite !
 #  $hash_toc{$tag} = "\\link{$tagupbl}\n\n" . $hash{toc}{$tagupbl};
 }
 
-
-# PASSE 6: sort l'index mis à jour des ref à l'aide des labels créés auparavant et rajoute
-#TODO rajouter eqref mais ca dépend vraiment de la phrase !
+# PASSE 6: sort l'index mis a jour des ref a l'aide des labels crees auparavant et rajoute
+#TODO rajouter eqref mais ca depend vraiment de la phrase !
 for my $tag (keys %{$hash{text}}) {
   my $macro = '\\\\ref|\\\\cite|\\\\eqref';
   my $T = $hash{text}{$tag};
@@ -340,20 +333,20 @@ for my $tag (keys %{$hash{text}}) {
 }
 my @ListIndex = sort {$a cmp $b} (keys %{$hash_index{page}}) ;
 out('index', selection('<div class="index">' . makeindex (\%hash_index, 0, @ListIndex) . '</div>'
-                         ,'left-selection','index')) if ((@ListIndex) && $INDEX == 1 && makeindex (\%hash_index));
+       ,'left-selection','index')) if ((@ListIndex) && $INDEX == 1 && makeindex (\%hash_index));
 
-#crée les blocs [entourés de la table des matières]
+#cree les blocs [entoures de la table des matieres]
 
-#crée les deux sortes de fichiers demandés par wims .def (fichier de définition général) +
-# nom.hd qui gère les règles de navigation pour chaque bloc
-#attention : dans le cas où il y a un \\embed{toto}, il faut créer le fichier toto.hd ...
-#TODO : \embed{toto} : je suppose ici que le contenu de toto est du wims à ne pas
-#interpréter
+#cree les deux sortes de fichiers demandes par wims .def (fichier de definition general) +
+# nom.hd qui gere les regles de navigation pour chaque bloc
+#attention : dans le cas où il y a un \\embed{toto}, il faut creer le fichier toto.hd ...
+#TODO : \embed{toto} : je suppose ici que le contenu de toto est du wims a ne pas
+#interpreter
 #pour l'instant je m'en suis servi pour stocker des programmes qui interviennent plusieurs fois.
 
-#Crée le vrai fichier qui est mis dans le dossier src
-#On ne met pas de table de matières si le bloc est de type fold
-#TODO option = chemin tout seul, toc à gauche + chemin, toc à gauche et à droite + chemin,
+#Cree le vrai fichier qui est mis dans le dossier src
+#On ne met pas de table de matieres si le bloc est de type fold
+#TODO option = chemin tout seul, toc a gauche + chemin, toc a gauche et a droite + chemin,
 #style selection droite, selection gauche
 
 for my $tag (keys %{$hash{text}}) {
@@ -363,13 +356,13 @@ for my $tag (keys %{$hash{text}}) {
   my $tagupbl = $hash{upbl}{$tag};
   my $type = $hash{type}{$tag} ;
   my $style = $hash{style}{$tag};
- #si type est non vide il est égal à embed ou fold
+ #si type est non vide il est egal a embed ou fold
   my $dotoc_left = ($OPTION =~ /toc_left/ && !$type);
   my $dotoc_right = ($OPTION =~ /toc_right/ && !$type);
   my $dotoc_up = ($OPTION =~ /toc_up/ && !$type);
   my $dotoc_down = ($OPTION =~ /toc_down/ && !$type);
   my $CHEMIN = chemin($tag, \%hash);
-  #J'ai enlevé $LOAD
+  #J'ai enleve $LOAD
   $CHEMIN = ($dotoc_up || $dotoc_down) && ($CHEMIN =~ $FLECHE) ? $CHEMIN : '';
   my $CHEMIN_up=($dotoc_up) ? "<div id=\"up_toc\">$CHEMIN</div>": '' ;
   my $CHEMIN_down=($dotoc_down) ? "<div id=\"down_toc\">$CHEMIN</div>" : '' ;
@@ -401,16 +394,15 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
   my $text = $decoup[0];
   my $toc_titre ;
   my ($cnt, $id) = (1, "");
-  #On parcourt un texte $Id : $text et on enlève tous les niveaux inférieurs
+  #On parcourt un texte $Id : $text et on enleve tous les niveaux inferieurs
  # (boucle while)
   while ( $decoup[$cnt]) {
   #tient compte des titres courts pour la toc
     my @u = extract_tagged ($decoup[$cnt],'\[','\]');
     $toc_titre = ($u[4]) ? $u[4] : '' ;
     @u = extract_tagged ($u[1],'{','}');
-    if (!$u[4]) { $NUMERO = 1 ; warn " ATTENTION : section dans $Id sans titre ; l'option numerotation a été rajoutée"};
+    if (!$u[4]) { $NUMERO = 1 ; warn " ATTENTION : section dans $Id sans titre ; l'option numerotation a eté rajoutée"};
     my @extract = extract_tagged ($sectiontag . $u[1], $sectiontag);
-
     my $idold = $id;
     $id = $Id . ($link? 'S': "$prefixe{fold}S") . $cnt;
     $cnt++;
@@ -420,7 +412,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     $titre = Numero($id) . " $titre" if ($NUMERO);
     $toc_titre = Numero($id) . " $toc_titre" if ($NUMERO);
     $text .= $link ?"<p>\\link{$id}</p>"
-                    :"<p>\\fold{$id}{<span class=\"$section\">$titre</span>}</p>";
+                    :"<div class=\"spacer\">\\fold{$id}{<span class=\"$section\">$titre</span>}</div>";
     if ($link) {
       $Toc .= "<p><XXXX=\"$id\">\\link{$id}{$toc_titre}<YYYY=\"$id\"></p>";
     }
@@ -531,7 +523,7 @@ for my $rubrique (@liste_env_tabular) {
       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique, 1);
     }
   }
-#le 1 et 0 servent à initialiser le compteur dans le cas ou on doit créer de nouveaux blocs dans la même page
+#le 1 et 0 servent a initialiser le compteur dans le cas ou on doit creer de nouveaux blocs dans la même page
 
   for my $rubrique (keys %{$ref_env->{titre}}) {
     if ($TEXT =~ /\\begin{$rubrique}/) {
@@ -556,8 +548,8 @@ for my $rubrique (@liste_env_tabular) {
 
 #on pourrait faire une boucle while ; on pourrait avoir deux fois le meme environnement imbrique ?
 #begin{proof} \begin{proof} \end{proof}\end{proof} Je crois que c'est pour cela que je fais ce truc
-#tordu. En fait split me sert uniquement à trouver le premier <$environ>
-#$cnt sert à numéroter semi-globalement (création de blocs correspondant à un même environnement dans une meme page
+#tordu. En fait split me sert uniquement a trouver le premier <$environ>
+#$cnt sert a numeroter semi-globalement (creation de blocs correspondant a un même environnement dans une meme page
 #exemple mainS4S3F_proof1,mainS4S3F_proof2,mainS4S3F_proof3,mainS4S3F_proof4,mainS4S3F_proof5
 
 sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
@@ -579,7 +571,7 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
               $e_item = "\\end{$environ\_item}" ;
               $b_item = "\\begin{$environ\_item}"
               }
-        elsif ($environ eq 'trivlist') { $b_class = "ul style=\"list-style:none;\"" ;
+        elsif ($environ eq 'trivlist') { $b_class = "ul class=\"wims_nopuce\"" ;
                $e_class= "\/ul" ;
         }
       };
@@ -592,7 +584,7 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
   return $TEXT if (!$a) ;
   my @u = extract_tagged ("<$environ>$a", "<$environ>");
   my $milieu = "<$environ>" . $u[4] . "<\/$environ>" ;
-#FIXME pas de listes emboitées de type différent !
+#FIXME pas de listes emboitees de type different !
   $milieu =~ s|<$environ>\s*\\item|<$environ><li>$b_item|g ;
   $milieu =~ s|</$environ>|</li><$e_class>|g;
   $milieu =~ s|\\item|$e_item</li><li>$b_item|g;
@@ -627,7 +619,7 @@ sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
       my $newtag = $Id . $prefixe{$type} . $environ . $cnt;
       $ref->{type}{$newtag} = 'fold' if $type eq 'fold' ;
       $cnt++;
-      # LaTeX interdit des [ ] imbriqués.
+      # LaTeX interdit des [ ] imbriques.
       if ($milieu =~ s/^\s*\[([^\]]+)\]//) {
         $titre = ($titre) ? "$titre [ $1 ]" : $1 ;
       }
@@ -669,9 +661,9 @@ sub complete {my ($tag, $ref) = @_;
   if ($INDEX == 1 && !($ref->{titb}{index})) { $ref->{titb}{index} = 'Index' ;}
 }
 
-#option full <h3 class="l2w_content defn">Définition [titre perso]</h3> <div class= "l2w_content definition">  </div> si cela existe
-#option bloc <div class= "definition"> </div> si cela existe (intérieur d'un fold ou d'un link)
-#option titre <h3 class="l2w_content defn">Définition </h3> si cela existe (titre d'un fold)
+#option full <h3 class="l2w_content defn">Definition [titre perso]</h3> <div class= "l2w_content definition">  </div> si cela existe
+#option bloc <div class= "definition"> </div> si cela existe (interieur d'un fold ou d'un link)
+#option titre <h3 class="l2w_content defn">Definition </h3> si cela existe (titre d'un fold)
 sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
   my $a = $ref_env->{titre}{$rubrique};
   my $b = $ref_env->{style}{$rubrique};
@@ -712,7 +704,6 @@ sub encadrement { my ($TEXT, $rubrique, $ref_env) = @_;
   $d;
 }
 
-
 sub tabular { my ( $b, $style ) = @_;
   my @v = extract_bracketed ($b, '{}') ;
   my $stylerow = $style . "_row";
@@ -735,7 +726,7 @@ sub tabular { my ( $b, $style ) = @_;
  $b ;
 }
 
-###demande de convertir d'abord de manière indépendante les pdf tiff eps svg en un format d'image png
+###demande de convertir d'abord de maniere independante les pdf tiff eps svg en un format d'image png
 sub includegraphics{ my ( $b, $opt ) = @_;
    $b=~ s/.(pdf|tiff|eps|svg)/.png/ ;
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\(line|text)width)/linewidth("$2$3",$1)/eg;
@@ -784,7 +775,6 @@ sub column { my ( $b ) = @_;
    $v[1]
    </div>";
 }
-
 
 sub lstlisting { my ($b,$id ) = @_ ;
   $b =~ s ,\\,\\\\,g ;
@@ -871,7 +861,7 @@ sub thebibliography { my ( $b ) = @_;
 sub pspicture { '<p>dessin à faire dans wims</p>' ; }
 sub picture { '<p>dessin à faire dans wims</p>' ; }
 
-#decoupe ce qui se trouve à l'intérieur de \begin{wims} \end{wims} pour ne pas y toucher.
+#decoupe ce qui se trouve a l'interieur de \begin{wims} \end{wims} pour ne pas y toucher.
 # même pour verbatim, lstlisting
 sub traite_special { my ( $TEXT, $ref_spec, $ref, $environ ) = @_;
   $TEXT = recup_embed($TEXT, $ref) ;
@@ -929,7 +919,6 @@ sub store_environ { my ($def, $cmd, $narg, $titre, $deb, $fin, $ref_env) = @_;
   '';
 }
 
-
 sub recup_command {my ($TEXT, $ref_command) = @_;
   my $DEF = '(defwims|def|newcommand|renewcommand)';
   #FIXME ? mauvais pour def \def\toto#1#2 ... demander de le refaire avec defwims s'il y a plus de 3 arguments ?
@@ -939,9 +928,9 @@ sub recup_command {my ($TEXT, $ref_command) = @_;
   $TEXT =~ s/\\$DEF\s*\\(\w*)\s*\{(.*)\}/store_cmd($1,$2,0,$3,$ref_command)/eg;
   #3 arguments
   $TEXT =~ s/\\$DEF\s*\\(\w*)#(\d)#(\d)#(\d)\{(.*)\}/store_cmd($1,$2,$5,$6,$ref_command)/eg;
-  # newcommand avec paramètres
+  # newcommand avec parametres
   $TEXT =~ s/\\$DEF\s*\{\\(\w*)\}\s*\[(\d)\]\s*\{(.*)\}/store_cmd($1,$2,$3,$4,$ref_command)/eg;
-  # newcommand sans paramètres
+  # newcommand sans parametres
   $TEXT =~ s/\\$DEF\s*\{\\(\w*)\}\s*\{(.*)\}/store_cmd($1,$2,0,$3,$ref_command)/eg;
   $TEXT;
 }
@@ -1049,7 +1038,7 @@ sub out_def { my ($bloc, $text) = @_;
   print OUT $text ; close OUT;
 }
 
-# PASSE 1: développe 'input/include'
+# PASSE 1: developpe 'input/include'
 sub find_expand { my ($file) = @_;
   if (!open(IN, $DIR . $file)) { warn "$DIR$file n'existe pas"; return; }
   dbg("... lecture de $file");
@@ -1085,7 +1074,6 @@ sub cnt_section { my ($sec, $cnt) = @_ ;
   $SEC_MIN_GLOBAL = $ind if ($ind < $SEC_MIN_GLOBAL && $ind);
   "<$sec>"
  }
-
 
 sub store { my ($ref, $cle, $id, $text, $court) = @_ ;
    $ref->{$cle}{$id}=$text ;
@@ -1144,7 +1132,7 @@ sub Init { my ($file, $ref_env, $ref_command, $ref, $ref_algo) = @_;
 #    $txt =~ s/\\printindex/\link{index}{Index}/ ;
 #   }
 sub traitement_final { my ($TEXT) = @_;
- #FIXME : je ne peux pas faire ca à cause des exercices de développement dont l'adresse
+ #FIXME : je ne peux pas faire ca a cause des exercices de developpement dont l'adresse
  #contienne un ~. De toute facon
  #ca ne devrait pas exister, mais quand même. ou les wims only
 #   $TEXT =~ s/~/&nbsp;/g;
@@ -1288,7 +1276,7 @@ sub linewidth { my ($line,$w)= @_ ;
 }
 sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_;
    $ad2 =~ s/worksheet=(\d)+//g;
-   $SHEET .= ":$ad1\n$ad2\n$titre\n\n";
+   $SHEET .= ":$ad1\n$ad2\n10\n1\n$titre\n\n";
    if ($worksheet) {
      "\\exercise\{module=$ad1\&$ad2\&worksheet=$worksheet\}\{$titre\}"
    }
@@ -1324,7 +1312,7 @@ sub recup_embed { my ($TEXT, $ref) = @_ ;
  }
 
 #FIXME on ne peut prendre qu'un seul fichier de style
-#crée le fichier 1/.def
+#cree le fichier 1/.def
 sub def { my ($ref, @style) = @_;
   my $tit = $ref->{title}{main};
   my $aut = $ref->{author}{main};
@@ -1353,8 +1341,8 @@ email=$mail
 header=$header
 datm=$datm";
 }
-#TODO en fait il faudrait renvoyer dans le cas ou le fichier est de type fold à la page en dessus
-# dépliée. Je ne suis pas sure de savoir faire ! sinon, on perd la table des matières.
+#TODO en fait il faudrait renvoyer dans le cas ou le fichier est de type fold a la page en dessus
+# depliee. Je ne suis pas sure de savoir faire ! sinon, on perd la table des matieres.
 
 sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
   my $txt = '' ;
@@ -1369,10 +1357,9 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
  $txt ;
 };
 
+#cree la page
 
-#crée la page
-
-sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ ;
+sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index,$type) = @_ ;
    my $s='' ;
    $s= "l" if($toc_g) ; $s .= "r" if($toc_d) ;
   if (($toc_g) || ($toc_d)) {
@@ -1381,13 +1368,13 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
    . (($toc_g) ? '<ul id="left_toc" class="left_toc">'. $toc_g . $index . '</ul>' : '')
    . $text
    . (($toc_d) ? '<ul id="right_toc" class="right_toc">' . $toc_d . '</ul>' : '')
-   . '<div class="wimscenter">'
-   . $LOAD
-   . '</div>'
    . $CHEMIN_down .
    '</div></div>';
    }
-   else {'<div class="wimsdoc">' . $CHEMIN_up . $text . $CHEMIN_down . '</div>' };
+   else {
+    if ($type=~/fold/) {$CHEMIN_up . $text . $CHEMIN_down }
+      else {'<div class="wimsdoc">' . $CHEMIN_up . $text . $CHEMIN_down . '</div>'};
+    }
  }
 
  #################################
@@ -1436,7 +1423,7 @@ sub algorithmic { my ($Text) = @_;
          ($ligne,$indent) = store_algo($3, $4, $1, $2, $indent) ;
     }
     if ($ligne =~ /\s*\\($cle)\s*(\[[^\]]+\]*)?\s*([^\n]*)/) {($ligne,$indent) = store_algo('',$3, $1, $2, $indent);}
-# TODO accepter des commentaires de plusieurs lignes ; présentation
+# TODO accepter des commentaires de plusieurs lignes ; presentation
 # des commentaires ?
     if ($ligne =~ /^\s*\\COMMENT/) { $ligne = "<i>$ligne</i>\n" };
     $text .= "\n" . $ligne;
@@ -1461,7 +1448,7 @@ sub Numero { my ($id) = @_;
 }
 
 # permet de faire modifier quelque chose dans la table pour un tag
-#TODO j'ai rajouté l'option couleur, du coup je ne sais plus faire fonctionner le shif
+#TODO j'ai rajoute l'option couleur, du coup je ne sais plus faire fonctionner le shif
 sub selection { my ($text, $couleur, @tag) = @_ ;
   return '' if !defined($text);
   for my $ta (@tag) {
@@ -1472,14 +1459,14 @@ sub selection { my ($text, $couleur, @tag) = @_ ;
 }
 
 sub clean { my ($text, $ref) = @_;
-  return '' if !defined($text);
+   return '' if !defined($text);
    $text =~ s/<XXXX="\w*">/<li class="no_selected">/g;
    $text =~ s/<YYYY="\w*">/<\/li>/g;
    $text =~ s/ZZZZZ(\w+)/store_tip($1,$ref)/ge;
    $text;
 }
 
-sub store_tip { my ($tag,$ref)=@_ ;
+sub store_tip { my ($tag, $ref)=@_ ;
   my $tip = $ref->{toctip}{$tag} ;
   my $title=$ref->{tittoc}{$tag} ;
   #$tip =~ s/'/\\\\'/g if ($tip) ;
@@ -1500,14 +1487,13 @@ sub chemin { my ($tag, $ref) = @_;
   }
   $ref->{chemin}{$tag} = $ch;
   $ref->{niveau}{$tag} = $niv;
-  return $LOAD if (!$txt);
+  return if (!$txt);
   '<div class="wims_chemin">' . $LOAD . "$linkout $txt" . '</div>';}
 
 sub sortuniq {
   my $prev = "not $_[0]";
   grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
 }
-
 
 sub isotime {
     my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
@@ -1524,14 +1510,14 @@ latex2wims [--style=style.css] [--macro=wims.sty] [--dir=dossier1] [--docdir=dos
 
   --style=style.css : style.css fichier de style css à utiliser
      (peut aussi être mis dans le fichier file : \\wimsinclude{style.css})
-  --macro=wims.sty : wims.sty fichier de style à utiliser
+  --macro=wims.sty : wims.sty fichier de style a utiliser
      (peut aussi être mis dans le fichier file : \\wimsinclude{wims.sty})
-  --dir=dossier1 : dossier1 est le répertoire où se trouvent tous les fichiers dont le fichier file
-  --docdir=dossier2 : dossier2 est le répertoire dans lequel sera créé le document
+  --dir=dossier1 : dossier1 est le repertoire où se trouvent tous les fichiers dont le fichier file
+  --docdir=dossier2 : dossier2 est le repertoire dans lequel sera cree le document
      (un dossier dans le compte Modtool par exemple)
-  --embed=dossier3 : les fichiers de dossier3 sont appelés dans file
+  --embed=dossier3 : les fichiers de dossier3 sont appeles dans file
      par la commande \embed{} (pour expert)
-  --verbose : détails
+  --verbose : details
 EOT
 ;
   exit 1;
