@@ -23,8 +23,9 @@ Er zijn een tweetal types technische variabelen :
 <h3>
  De lokale technische variabele
 </h3>
-Gebruik het menu <span class="tt wims_code_words">$name_addvar</span> 
+Gebruik het menu <span class="tt wims_code_words">$name_addvar</span>
 voor het vastleggen van de naam van deze variabele en van zijn waarde.
+(pour le nom, seules les lettres minuscules sont autorisées ; il y aura une conversion automatique)
 <h3>
 Deklareren of modificeren van een lokale technische variabele voor een leerling
 </h3>
