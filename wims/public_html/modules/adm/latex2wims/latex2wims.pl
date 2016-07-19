@@ -43,6 +43,7 @@ $SHEET = '' ;
 $DIR = '';
 $doc_DIR = '';
 $SUBDIR='1';
+$EMBED='.';
 my @SECTIONS = qw(document part chapter section subsection subsubsection);
 #my @SECTIONS = ( document part entete frame subsection subsubsection );
 #TODO biblio dans un fichier separe si on a rencontre \begin{thebibliography} Non,
@@ -354,11 +355,13 @@ for my $tag (keys %{$hash{text}}) {
   out ("$tag.hd", hd($tag,\%hash));
   my $txt = traitement_final($hash{text}{$tag});
   my $tagupbl = $hash{upbl}{$tag};
-  my $type = $hash{type}{$tag} ;
+  my $type = $hash{type}{$tag};
   my $style = $hash{style}{$tag};
  #si type est non vide il est egal a embed ou fold
+
   my $dotoc_left = ($OPTION =~ /toc_left/ && !$type);
   my $dotoc_right = ($OPTION =~ /toc_right/ && !$type);
+  my $dotoc_partial = ($OPTION =~ /toc_partial/ && !$type);
   my $dotoc_up = ($OPTION =~ /toc_up/ && !$type);
   my $dotoc_down = ($OPTION =~ /toc_down/ && !$type);
   my $CHEMIN = chemin($tag, \%hash);
@@ -369,13 +372,13 @@ for my $tag (keys %{$hash{text}}) {
   my @Chemin = split(',', $hash{chemin}{$tag});
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
   my $TOCd = ($dotoc_right && $tag ne 'main' && (!($dotoc_left) || $tagupbl ne 'main' )) ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
-
+  my $TOCp = ($dotoc_partial && !($dotoc_left)) ? selection($hash{toc}{$tagupbl}, 'left_selection', @Chemin) : '';
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1 && (@ListIndex)) ? "<li>\\link{index}{$tit_index}</li>" : '';
   my $tooltip = "";
   ##$txt="<div class=\"fold\"> ".$txt ."<\/div>" if ($type=~/fold/) ;
   my $pat= '<br\s+class="spacer"\s*/>';
-  $txt = $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index);
+  $txt = $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), clean($TOCp,\%hash), $CHEMIN_up, $CHEMIN_down, $index);
   $txt =~ s/$pat\s*$pat/<br class="spacer" \>/g;
   out ($tag, $txt );
 }
@@ -428,10 +431,10 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
    #modifier avec selection
     my $tp = '' ;
     if ($TOOLTIP==1) {
-    if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=($ref->{tittoc}{$id}) ?
+    if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=($ref->{tittoc}{$id}) && !($id =~/F_/) ?
       "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ; }
     else {
-      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ? "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ;
+      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id} && !($id =~/F_/)) ? "<li>\\link{$id}{$ref->{tittoc}{$id}}</li>": '' ;
     }
     #$ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
@@ -1359,20 +1362,21 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
 
 #cree la page
 
-sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index,$type) = @_ ;
+sub toc_HTML {my ($text, $toc_g, $toc_d, $toc_p, $CHEMIN_up, $CHEMIN_down, $index,$type) = @_ ;
    my $s='' ;
-   $s= "l" if($toc_g) ; $s .= "r" if($toc_d) ;
-  if (($toc_g) || ($toc_d)) {
+   $s= "l" if($toc_g || $toc_p) ; $s .= "r" if($toc_d) ;
+  if (($toc_g) || ($toc_d) || ($toc_p)) {
     $CHEMIN_up . '<div class="doc_latex2wims' . $s . '">'
    . '<div class="wimsdoc">'
    . (($toc_g) ? '<ul id="left_toc" class="left_toc">'. $toc_g . $index . '</ul>' : '')
    . $text
    . (($toc_d) ? '<ul id="right_toc" class="right_toc">' . $toc_d . '</ul>' : '')
+   . (($toc_p && !$toc_g) ? '<ul id="left_toc" class="left_toc">' . $toc_p . '</ul>' : 'aaaaa')
    . $CHEMIN_down .
    '</div></div>';
    }
    else {
-    if ($type=~/fold/) {$CHEMIN_up . $text . $CHEMIN_down }
+    if (!(defined $type) || $type=~/fold|embed/) {$CHEMIN_up . $text . $CHEMIN_down }
       else {'<div class="wimsdoc">' . $CHEMIN_up . $text . $CHEMIN_down . '</div>'};
     }
  }
@@ -1488,7 +1492,7 @@ sub chemin { my ($tag, $ref) = @_;
   $ref->{chemin}{$tag} = $ch;
   $ref->{niveau}{$tag} = $niv;
   return if (!$txt);
-  '<div class="wims_chemin">' . $LOAD . "$linkout $txt" . '</div>';}
+  '<div class="wims_chemin">' . "$LOAD $linkout $txt" . '</div>';}
 
 sub sortuniq {
   my $prev = "not $_[0]";
