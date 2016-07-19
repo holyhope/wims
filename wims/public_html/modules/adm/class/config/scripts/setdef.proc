@@ -143,7 +143,10 @@ in wimshome/log/classes/$wims_class/.def
 !if $class_type=0 or ($class_type=1 and $wims_typename=class)
     !setdef !set class_allowcloning=$up_allowcloning\
 !set class_cloningpwd=$up_cloningpwd\
-!set class_regvars=$up_regvars in wimshome/log/classes/$wims_class/.def
+in wimshome/log/classes/$wims_class/.def
+!endif
+!if $class_type isin 02
+    !setdef !set class_regvars=$up_regvars in wimshome/log/classes/$wims_class/.def
 !endif
 
 lastname=!word -1 of $up_supervisor
