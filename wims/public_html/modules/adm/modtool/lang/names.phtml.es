@@ -58,6 +58,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 
 !set name_gestion=Para ver los ficheros del documento, pulsen el vínculo <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Su módulo
+!set name_your_module_OEF=is a module of exercises written in OEF format and
 !set name_file2=contiene los ficheros siguientes
 !set name_updateadress=Ponga la dirección al día
 !set name_simpl_address=La dirección de este módulo es una dirección simplificada

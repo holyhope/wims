@@ -50,6 +50,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_help_addfile_phtml=U kunt een aantal van deze bestanden te wijzigen bij het configureren van uw module.
 !set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Uw module
+!set name_your_module_OEF=is a module of exercises written in OEF format and
 !set name_file2=bevat de volgende bestanden
 !set name_updateadress=Vernieuw het adres
 !set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
