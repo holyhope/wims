@@ -38,38 +38,40 @@ cp $wims_home/log/classes/$ssourcecls/.E* $wims_home/log/classes/$code/;
 	    save=!append line :$t to $save
 	!next k
 	!writefile wimshome/log/classes/$code/sheets/.sheets $save
-	!! suppression des entrées exam dans les sequences.
-	seq=!record 0 of wimshome/log/classes/$code/seq/.sequences
-	nb=!line 1 of $seq
-	!if $nb!=$empty and $nb>0
-	    newseq=$nb
-	    !for k from 1 to $nb
-		old=!line $k+1 of $seq
-		nbit=!itemcnt $old
-		!if $nbit>0
-		    newlist=$empty
-		    !for j from 1 to $nbit
-			!if exam notin $(old[$j])
-			    newlist=!append item $(old[$j]) to $newlist
+	!! delete of exam in sequence (only if smethodecp!=0)
+        !if $smethodecp!=0
+		seq=!record 0 of wimshome/log/classes/$code/seq/.sequences
+		nb=!line 1 of $seq
+		!if $nb!=$empty and $nb>0
+		    newseq=$nb
+		    !for k from 1 to $nb
+			old=!line $k+1 of $seq
+			nbit=!itemcnt $old
+			!if $nbit>0
+			    newlist=$empty
+			    !for j from 1 to $nbit
+				!if exam notin $(old[$j])
+				    newlist=!append item $(old[$j]) to $newlist
+				!endif
+			    !next j
 			!endif
-		    !next j
-		!endif
-		newseq=!append line $newlist to $newseq
-		tmp=!record 1 of wimshome/log/classes/$code/seq/.sequence$k
-		old2=!line 3 of $tmp
-		nbit=!itemcnt $old2
-		!if $nbit>0
-		    newlist2=$empty
-		    !for j from 1 to $nbit
-			!if exam notin $(old2[$j])
-			    newlist2=!append item $(old2[$j]) to $newlist2
+			newseq=!append line $newlist to $newseq
+			tmp=!record 1 of wimshome/log/classes/$code/seq/.sequence$k
+			old2=!line 3 of $tmp
+			nbit=!itemcnt $old2
+			!if $nbit>0
+			    newlist2=$empty
+			    !for j from 1 to $nbit
+				!if exam notin $(old2[$j])
+				    newlist2=!append item $(old2[$j]) to $newlist2
+				!endif
+			    !next j
 			!endif
-		    !next j
+			tmp=!replace line number 3 in $tmp by $newlist2
+			!writefile wimshome/log/classes/$code/seq/.sequence$k :$tmp
+		    !next k
+		    !writefile wimshome/log/classes/$code/seq/.sequences $newseq
 		!endif
-		tmp=!replace line number 3 in $tmp by $newlist2
-		!writefile wimshome/log/classes/$code/seq/.sequence$k :$tmp
-	    !next k
-	    !writefile wimshome/log/classes/$code/seq/.sequences $newseq
 	!endif
     !endif
 !! keep configuration classes data.  
