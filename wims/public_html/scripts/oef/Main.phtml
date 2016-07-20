@@ -134,9 +134,14 @@ to $wims_html_header
  $
  !endif
  !if $help!=$empty
-  !set wims_ref_class=wims_button_help
-  !set wims_ref_id=oef_help
-  !href cmd=help $wims_name_help
+!!FIXME should be in src/exec.c
+   !if _exam isin $wims_session
+     <span class="disabled_link">$wims_name_help</span>
+   !else
+     !set wims_ref_class=wims_button_help
+     !set wims_ref_id=oef_help
+     !href cmd=help $wims_name_help
+   !endif
  $
  !endif
 

@@ -5,11 +5,15 @@
 !set prompt=!item 2 to -1 of $wims_read_parm
 !default prompt=$wims_read_parm
 !if $prompt != $empty
- !if $cmd=help
-  !set wims_ref_class=oef_specialhelp
-  !href cmd=help&special_parm=$(wims_read_parm[1]) $prompt
- !else
-  !set wims_ref_class=oef_specialhelp
-  !href target=wims_mhelp cmd=help&special_parm=$(wims_read_parm[1]) $prompt
- !endif
+  !if _exam isin $wims_session
+     <span class="disabled_link">$prompt</span>
+  !else
+    !if $cmd=help
+      !set wims_ref_class=oef_specialhelp
+      !href cmd=help&special_parm=$(wims_read_parm[1]) $prompt
+    !else
+      !set wims_ref_class=oef_specialhelp
+      !href target=wims_mhelp cmd=help&special_parm=$(wims_read_parm[1]) $prompt
+    !endif
+  !endif
 !endif
