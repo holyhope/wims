@@ -9,9 +9,9 @@
 
 !!program without icourses
 !if $(don[1])=program and $col1cnt=0
-      <ul class="wims_subclasses">
-      !read adm/class/graphprog $wims_class
-      </ul>
+  <ul class="wims_subclasses">
+  !read adm/class/graphprog $wims_class
+  </ul>
 !endif
 !if $col1cnt=0
   !exit
@@ -40,7 +40,11 @@
   !for j1=1 to $col1cnt
      !set cls1=!nospace $classrad/$(col1[$j1])
      !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
-      <li><span class="wims_classes_direct_$(don[1])">
+     !if $(don[1])=course
+        !set tmp=$ class="inline"
+     !endif
+      <li$tmp><span class="wims_classes_direct_$(don[1])">
+     !reset tmp
      !if $cls1 isitemof $(user_$(statut)_)
        !if $statut=supervise
          !href module=adm/class/classes&type=authsupervisor&class=$cls1&auth_user=supervisor $(don[2])
@@ -66,7 +70,11 @@
       !for j2=1 to $col2cnt
         !set cls2=!nospace $cls1/$(col2[$j2])
         !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls2/.def
-         <li><span class="wims_classes_direct_$(don[1])">
+        !if $(don[1])=course
+          !set tmp=$ class="inline"
+        !endif
+         <li$tmp><span class="wims_classes_direct_$(don[1])">
+         !reset tmp
          !if $cls2 isitemof $(user_$(statut)_)
            !if $statut=supervise
              !href module=adm/class/classes&type=authsupervisor&class=$cls2&auth_user=supervisor $(don[2])
@@ -92,7 +100,11 @@
           !for j3=1 to $col3cnt
             !set cls3=!nospace $cls2/$(col3[$j3])
             !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls3/.def
-             <li><span class="wims_classes_direct_$(don[1])">
+            !if $(don[1])=course
+              !set tmp=$ class="inline"
+            !endif
+             <li$tmp><span class="wims_classes_direct_$(don[1])">
+             !reset tmp
               !if $cls3 isitemof $(user_$(statut)_)
                 !if $statut=supervise
                   !href module=adm/class/classes&type=authsupervisor&class=$cls3&auth_user=supervisor $(don[2])
