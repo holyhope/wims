@@ -35,7 +35,11 @@ csvformatlist=csv,tsv
  !endif
  !if regvar isitemof $csvdownload
   !! add register variable list to download list
-    regvar_name=!defof class_regvars in wimshome/log/classes/$wims_class/.def
+    !if $wims_superclass!=$empty
+      regvar_name=!defof class_regvars in wimshome/log/classes/$wims_superclass/.def
+    !else
+      regvar_name=!defof class_regvars in wimshome/log/classes/$wims_class/.def
+    !endif
     regvar_cnt=!itemcnt $regvar_name
     csvdownload=!listcomplement regvar in $csvdownload
     !reset regvarlist
