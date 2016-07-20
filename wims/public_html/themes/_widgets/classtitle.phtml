@@ -16,16 +16,20 @@ $wims_classname
   !set CC=!replace internal , by / in $(C_[2..-2])
   !if /0// isin $wims_class//
     !set tmp=$CL_Test
+    !set tmp_=testclass
   !else
     !set tmp=$(wims_name_$class_typename)
+    !set tmp_=$class_typename
   !endif
   !if $CC!=$empty
     !set CC = / $cc
   !endif
   !set tmp_desc=!append line $(C_[1]) ($wims_institutionname) $CC\
-<span class="wims_classes_direct_$class_typename">$tmp $wims_classname</span>\
+<span class="wims_classes_direct_$tmp_">$tmp $wims_classname</span>\
 to $tmp_desc
+  !reset tmp_ tmp
 !endif
+
 !read $(path)title.phtml 1\
 $tmp_desc
 
