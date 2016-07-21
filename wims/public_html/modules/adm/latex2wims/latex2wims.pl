@@ -1371,7 +1371,7 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $toc_p, $CHEMIN_up, $CHEMIN_down, $inde
    . (($toc_g) ? '<ul id="left_toc" class="left_toc">'. $toc_g . $index . '</ul>' : '')
    . $text
    . (($toc_d) ? '<ul id="right_toc" class="right_toc">' . $toc_d . '</ul>' : '')
-   . (($toc_p && !$toc_g) ? '<ul id="left_toc" class="left_toc">' . $toc_p . '</ul>' : 'aaaaa')
+   . (($toc_p && !$toc_g) ? '<ul id="left_toc" class="left_toc">' . $toc_p . '</ul>' : '')
    . $CHEMIN_down .
    '</div></div>';
    }
