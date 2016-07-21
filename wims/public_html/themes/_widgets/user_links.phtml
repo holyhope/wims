@@ -2,13 +2,13 @@
 
 !!! _help _test _tool
 !if _help isin $wims_session or _test isin $wims_session
-!if $div1=li
- <ul>
-!endif
+  !if $div1=li
+    <ul>
+  !endif
   !read themes/_widgets/headmenu.phtml
-!if $div1=li
-</ul>
-!endif
+  !if $div1=li
+    </ul>
+  !endif
   !exit
 !endif
 
@@ -17,16 +17,16 @@
 <ul class="wimsmenu dropdown menu" data-dropdown-menu data-options="data-autoclose:true;">
   !!head menus
   !if $module=home and $wims_user=$empty
-   !default wims_name_aboutw=$wims_name_about
-   !set wims_hm = !append line aboutw,4,cmd=help&special_parm=about,mhelp to $wims_hm
-   !increase wims_hm_cnt
+    !default wims_name_aboutw=$wims_name_about
+    !set wims_hm = !append line aboutw,4,cmd=help&special_parm=about,mhelp to $wims_hm
+    !set wims_hm_cnt = !linecnt $wims_hm
   !endif
   !read themes/_widgets/headmenu.phtml
   !if _ notin $wims_session
   !! USER LINKS
    !if $wims_firstname$wims_lastname$wims_user$wims_developer!=$empty
     !read themes/_procs/userlinks.proc
-    !default wims_which_user=[xxx]
+    !default wims_which_user=[no_name]
     <li class="menuitem is-dropdown-submenu-parent">
       <a href="#user_links" class="account">
         <span>$wims_which_user</span>
@@ -50,7 +50,7 @@
     </li>
     !endif
     !if $module iswordof adm/modtool or $wims_firstname$wims_lastname$wims_user=$empty
-     !readproc languages
+    !readproc languages
     !! Language selector (displayed only if you're not connected)
       !if $wims_language_cnt>1
       <li id="language_selector" class="menuitem is-dropdown-submenu-parent">
