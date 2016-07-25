@@ -28,7 +28,8 @@ Files OEF/src/cpp\
 Editable data files\
 Translation files\
 Configuration files\
-into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml
+Help Files\
+into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_phtml,name_files_help
 
 !! wims_name_properties
 !set name_index=Eigenschappen
