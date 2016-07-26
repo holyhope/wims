@@ -14,13 +14,16 @@
     !if " notin $(1_[1]) and * notin $(1_[1])
       !set wims_ref_class = !word 1 of $(1_[1])
     !endif
-    !set css_class = $wims_ref_class menuitem
-    <li class="$css_class">
+    !if $wims_ref_class!=$empty
+      !set css_class = class="$wims_ref_class menuitem"
+    !endif
+    <li $css_class>
      !read $(path)oneitem.phtml $1_
      !if $i_=$wims_ariane_cnt
        <span class="show-for-sr">(Current)</span>
      !endif
     </li>
+    !reset css_class
   !next
   </ul>
  </nav>
