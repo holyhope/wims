@@ -71,7 +71,7 @@ char *commonpath="/usr/local/bin:/usr/bin:/usr/games:/bin:/usr/bin/X11:/usr/X11R
 char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima -X '--dynamic-space-size 512'";
 char *pari_command="gp -f -q -p 150000";
-char *octave_command="octave -Hfq --no-line-editing --no-window-system";
+char *octave_command="octave -Hfq --no-line-editing --no-window-system --silent";
 char *scilab_command="scilab -nwni";
 char *QRencode_command="qrencode -o";
 
@@ -853,6 +853,7 @@ void define_html_header(void)
     if(readfile(html_header,buf,sizeof(buf))) setvar("wims_html_header",buf);
 }
 
+/* Set Session Dir */
 void setsesdir(char *d)
 {
     char buf[MAX_FNAME+1];
