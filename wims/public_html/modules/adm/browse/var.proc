@@ -70,6 +70,14 @@ to $wims_ariane
   !if $parm_father!=$empty
     !set wims_ariane=!append line back2 $parm_father,1,module=$module&cmd=new&job=subject&parm=$parm_father\
 to $wims_ariane
+  !else
+    !set wims_ariane=!append line "$(name_by_$job)",8 to $wims_ariane
+  !endif
+!else
+  !if $job isitemof subject,taxo,level,type
+    !set wims_ariane=!append line "$(name_by_$job)",8 to $wims_ariane
+  !else
+    !set wims_ariane=!append line "$(name_$job)",8 to $wims_ariane
   !endif
 !endif
 

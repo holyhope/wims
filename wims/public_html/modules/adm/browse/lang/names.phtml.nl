@@ -10,6 +10,8 @@
 
 !set name_M=module(s)
 
+!set wims_name_credits=Credits
+
 !if $job=subject
   !set title=Browsen per onderwerp
   !set name_domain= Kies een van de volgende onderwerpen.
@@ -28,8 +30,9 @@
    Universiteit\
    Promovendus\
    Research\
+   Levels\
  into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,\
- name_research
+ name_research,name_levels
 
 !endif
 
@@ -48,6 +51,7 @@
   avec les programmes de l'enseignement français\
   Fold / Unfold\
   by taxonomy\
+  popular applications\
 into name_h_browse,name_by_subject,name_by_level,name_by_level2,name_by_date,name_news,\
   name_selected,name_by_type,name_by_type2,name_introduction,name_thebest,name_french1,\
-  name_french2,name_fold,name_by_taxo
+  name_french2,name_fold,name_by_taxo,name_best
