@@ -42,41 +42,47 @@ $(function() {
 jQuery.fn.filterByText = function(textbox, selectMatches, preventReturn) {
   preventReturn = typeof preventReturn !== 'undefined' ? preventReturn : true;
   if (preventReturn) {
-      /* prevent user from sending form by pressing "return". */
-      $(textbox).keydown(function(event){
-          if(event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-          }
-      });
+    /* prevent user from sending form by pressing "return". */
+    $(textbox).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
   }
 
   return this.each(function() {
+
     var select = this;
     var options = [];
     $(select).find('option').each(function() {
       options.push({value: $(this).val(), text: $(this).text()});
     });
-    $(select).data('options', options);
+    $(select).data('all_options', options);
 
     $(textbox).bind('change keyup', function() {
-      var options = $(select).empty().scrollTop(0).data('options');
+      var options = $(select).empty().scrollTop(0).data('all_options');
       var search = $.trim($(this).val());
       /*if (search == "")
         selected_state = false;
       else
         selected_state = true;*/
       var regex = new RegExp(search,'gi');
+      /* reset select_options for selectByText() */
 
+      var displayed_options = [];
       $.each(options, function(i) {
         var option = options[i];
         if(option.text.match(regex) !== null) {
-          $(select).append(
-             $('<option>').text(option.text).val(option.value)
-             //.prop('selected', true)
-          );
+          var new_option = $('<option>').text(option.text).val(option.value);
+          $(select).append(new_option);
+
+          /* recreate displayed_options array for selectByText() */
+          displayed_options.push({value: option.value, text: option.text, object: new_option});
         }
       });
+      $(select).data('displayed_options', displayed_options);
+
       if (selectMatches == "single" && $(select).children().length === 1) {
         $(select).children().get(0).prop('selected', true);
       }
@@ -129,36 +135,30 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
 
   return this.each(function() {
     var select = this;
-    var options = [];
+    var select_options = [];
     $(select).find('option').each(function() {
-      options.push({value: $(this).val(), text: $(this).text(), object:$(this)});
-      //$(this).prop('selected', false);
+      select_options.push({value: $(this).val(), text: $(this).text(), object:$(this)});
     });
-    //$(select).data('options', options);
+    $(select).data('displayed_options', select_options)
 
     $(textbox).bind('change keyup', function() {
-      //var options = $(select).empty().scrollTop(0).data('options');
+      //var nb_res = 0;
       var search = $.trim($(this).val());
-      /*if (search == "")
-        selected_state = false;
-      else
-        selected_state = true;*/
       $(select).find('option').each(function() {
           $(this).prop('selected', false);
       });
       var regex = new RegExp(search,'gi');
       if (search !== "")
       {
-        $.each(options, function(i) {
-          var option = options[i];
+        select_options = $(select).data('displayed_options');
+        $.each(select_options, function(i) {
+          var option = select_options[i];
           if(option.text.match(regex) !== null) {
-            /*$(select).append(
-               $('<option>').text(option.text).val(option.value)
-               //.prop('selected', true)
-            );*/
+            //nb_res++;
             option.object.prop('selected', true);
           }
         });
+        //console.log("nb_res="+nb_res);
       }
     });
   });
