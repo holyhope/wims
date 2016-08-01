@@ -44,7 +44,7 @@ into name_files_src,name_files_cpp, name_files_other,name_files_lang,name_files_
 !set name_successfile=The file has been uploaded in the module.
 
 !set name_help_addfile=Le nom <span class="tt wims_fname">name_file</span> ne doit contenir\
-  que de caractères alphanumériques sans accents ni espaces (ne pas mettre de signe -).
+  que des caractères alphanumériques sans accents ni espaces (ne pas mettre de signe -).
 !set name_help_addfile_src=the name of a file of the OEF exercise source\
    must be of the form <span class="tt"> src/name_file.oef</span>
 !set name_help_addfile_cpp=Le nom du fichier contenant le source d'un fichier ccp d'un exercice OEF\
