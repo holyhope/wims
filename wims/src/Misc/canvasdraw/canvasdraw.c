@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
 	@ general syntax <ul><li>The transparency of all objects can be controlled by command <a href="#opacity">'opacity [0-255],[0,255]'</a></il><li>line width of any object can be controlled by command <a href="#linewidth">'linewidth int'</a></li><li>any may be dashed by using keyword <a href="#dashed">'dashed'</a> before the object command.<br />the dashing type can be controled by command <a href="#dashtype">'dashtype int,int'</a></li><li>a fillable object can be set fillable by starting the object command with an 'f'<br />(like frect,fcircle,ftriangle...)<br />or by using the keyword <a href="#filled">'filled'</a> before the object command.<br />The fill colour of 'non_userdraw' objects will be the stroke colour...(flydraw harmonization 19/10/2013)</li><li>all draggable objects may have a <a href="#slider">slider</a> for translation / rotation; several objects may be translated / rotated by a single slider</li> <li> a draggable object can be set draggable by a preceding command <a href="#drag">'drag x/y/xy'</a><br />The translation can be read by javascript:read_dragdrop();The replyformat is : object_number : x-orig : y-orig : x-drag : y-drag<br />The x-orig/y-orig will be returned in maximum precision (javascript float)...<br />the x-drag/y-drag will be returned in defined 'precision' number of decimals<br />Multiple objects may be set draggable / clickable (no limit)<br /> not all flydraw objects may be dragged / clicked<br />Only draggable / clickable objects will be scaled on <a href="#zoom">zoom</a> and will be translated in case of panning</li><li> a 'onclick object' can be set 'clickable' by the preceding keyword <a href="#onclick">'onclick'</a><br />not all flydraw objects can be set clickable</li><li><b>remarks using a ';' as command separator</b><br />commands with only numeric or colour arguments may be using a ';' as command separator (instead of a new line)<br />commands with a string argument may not use a ';' as command separator !<br />these exceptions are not really straight forward... so keep this in mind.</li><li>almost every <a href="#userdraw">"userdraw object,color"</a>  or <a href="#multidraw">"multidraw"</a> command 'family' may be combined with keywords <a href="#snaptogrid">"snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>every draggable | onclick object may be combined with keywords <a href="#snaptogrid">snaptogrid | xsnaptogrid | ysnaptogrid | snaptofunction</a> or command "snaptopoints x1,y1,x2,y2,..."  </li><li>almost every command for a single object has a multiple objects counterpart:<br /><ul>general syntaxrule:<li><em>single_object</em> x1,y1,...,color</li><li><em>multi_object</em> color,x1,y1,...</li></ul><li>All inputfields or textareas generated, can be styled individually using command <a href="#inputstyle">'inputstyle some_css'</a><br/>the fontsize used for labeling these elements can be controlled by command <a href="fontsize">'fontsize int'</a> <br />command 'fontfamily' is <b>not</b> active for these elements </li></ul>
 	@ If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>	
 	@ you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+	@ for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br /><small>\text{dessin=<br />popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />}<br />\text{functionplot=wims(exec canvasdraw \dessin)}<br />\statement{<br />\functionplot<br />}</small>
 	@ be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href='mailto:jm.evers-at-schaersvoorde.nl'>me</a> an email with screenshots and the generated javascript include file.
 	*/
@@ -4780,7 +4781,7 @@ char *get_color(FILE *infile , int last){
     int c,i = 0,is_hex = 0;
     char temp[MAX_COLOR_STRING], *string;
     const char *not_allowed = "0123456789";
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) && ( c != ';' ) ){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',' ) && ( c != ';' )  && ( c != '\t' ) ){
 	if( i > MAX_COLOR_STRING ){ canvas_error("colour string is too big ... ? ");}
 	if( c == '#' ){
 	    is_hex = 1;
@@ -4791,8 +4792,8 @@ char *get_color(FILE *infile , int last){
 	    i++;
 	}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");}
-    if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' || c == '\t' ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( c == '\n' || c == ';'  || c == '\t' ){ done = TRUE; line_number++; }
     if( c == EOF ){finished = 1;}
     if( finished == 1 && last != 1 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -4826,13 +4827,13 @@ char *get_color(FILE *infile , int last){
 char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char  temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') ){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != '\t') ){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...repeat command to fit string");break;}
     }
-    if( ( c == '\n' || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");}
-    if( c == '\n') { done = TRUE; line_number++; }
+    if( ( c == '\n' ||  c == '\t'  || c == EOF ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( c == '\n' ||  c == '\t') { done = TRUE; line_number++; }
     if( c == EOF ) {
 	finished = 1;
 	if( last != 1 ){ canvas_error("expected more arguments");}
@@ -4847,13 +4848,13 @@ char *get_string(FILE *infile,int last){ /* last = 0 : more arguments ; last=1 f
 char *get_string_argument(FILE *infile,int last){  /* last = 0 : more arguments ; last=1 final argument */
     int c,i=0;
     char temp[MAX_BUFFER], *string;
-    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != ',')){
+    while(( (c=getc(infile)) != EOF ) && ( c != '\n') && ( c != '\t') && ( c != ',')){
 	temp[i]=c;
 	i++;
 	if(i > MAX_BUFFER){ canvas_error("string size too big...will cut it off");break;}
     }
     if( ( c == '\n' || c == EOF) && last == 0){canvas_error("expecting more arguments in command");}
-    if( c == '\n') { line_number++; }
+    if( c == '\n' || c == '\t' ) { line_number++; }
     if( c == EOF ) {finished = 1;}
     if( finished == 1 && last == 0 ){ canvas_error("expected more arguments");}
     temp[i]='\0';
@@ -4878,7 +4879,7 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
     */
     const char *allowed = "earcostanpilogqb*+-/^()";/* assuming these are allowed stuff in a 'number'*/
     const char *not_allowed = "#dfhjkmuvwxyz{}[]%&~!$";/* avoid segmentation faults in a "atof()" and "wims eval" */
-    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && ( c != ';')){
+    while(( (c=getc(infile)) != EOF ) && ( c != ',') && (c != '\n') && (c != '\t') && ( c != ';')){
      if( c != ' ' ){
       if( i == 0 &&  c == '+' ){
        continue;
@@ -4894,8 +4895,8 @@ double get_real(FILE *infile, int last){ /* accept anything that looks like an n
      }
      if( i > MAX_INT - 1){canvas_error("number too large");}
     }
-    if( ( c == '\n' || c == EOF || c == ';' ) && last == 0){canvas_error("expecting more arguments in command");}
-    if( c == '\n' || c == ';' ){ done = TRUE; line_number++; }
+    if( ( c == '\n' || c == EOF || c == ';' || c == '\t' ) && last == 0){canvas_error("expecting more arguments in command");}
+    if( c == '\n' || c == ';' || c == '\t' ){ done = TRUE; line_number++; }
     if( c == EOF ){done = TRUE ; finished = 1;}
     tmp[i]='\0';
     if( strlen(tmp) == 0 ){canvas_error("expected a number , but found nothing !!");}
@@ -8535,37 +8536,27 @@ int get_token(FILE *infile){
 	*yerrorbars="yerrorbars",
 	*xerrorbars="xerrorbars";
 
-	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')){
-	    if( i == 0 && (c == ' ' || c == '\t') ){
-	continue; /* white spaces or tabs allowed before first command identifier */
-	    }
-	    else
-	    {
-	if( c == ' ' || c == '\t' ){
+	while(((c = getc(infile)) != EOF)&&(c!='\n')&&(c!=',')&&(c!='=')&&(c!='\r')&&(c!='\t')){
+	 if( i == 0 && (c == ' ') ){ continue; /* white spaces or tabs allowed before first command identifier */
+	 }else{
+	  if( c == ' ' ){
 	    break;
+	  }else{
+	   temp[i] = c;
+	   if(i > MAX_INT - 2){canvas_error("command string too long !");}
+	   i++;
+	  }
+	 }
+	 if(temp[0] == '#'){ break; }
 	}
-	else
-	{
-	    temp[i] = c;
-	    if(i > MAX_INT - 2){canvas_error("command string too long !");}
-	    i++;
-	}
-	    }
-	    if(temp[0] == '#') break;
-	}
-	if (c == EOF) finished = 1;
-
-	if (c == '\n' || c == '\r') {
-	line_number++;
+	if (c == '\n' || c == '\r' || c == '\t' ){  line_number++; }
 	if (i == 0) { return EMPTY; }
-	} else if (c == EOF) {
-	return 0;
-	}
+	if (c == EOF) {finished=1;return 0;}
 
 	temp[i]='\0';
 	input_type=(char*)my_newmem(strlen(temp));
 	snprintf(input_type,sizeof(temp),"%s",temp);
-
+/* fprintf(stdout,"temp = %s <br/>",input_type); */
 	if( strcmp(input_type, size) == 0 ){
 	free(input_type);
 	return SIZE;

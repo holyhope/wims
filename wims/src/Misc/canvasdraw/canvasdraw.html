@@ -8,7 +8,7 @@
  a:visited {color:#004077;}
 </style>
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (19-07-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (04-08-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -250,6 +250,8 @@
 <li><span style="color:blue;font-size:0.8em"> If needed multiple interactive scripts may be used in a single webpage.<br />A function 'read_canvas()' and / or 'read_dragdrop()' can read all interactive userdata from these images.<br />The global array 'canvas_scripts' will contain all unique random "canvas_root_id" of the included scripts.<br />The included local javascript "read" functions "read_canvas%d()" and "read_dragdrop%d()" will have this "%d = canvas_root_id"<br />e.g. canvas_scripts[0] will be the random id of the first script in the page and will thus provide a function<br />fun = eval("read_canvas"+canvas_scripts[0]) to read user based drawings / inputfield in this first image.<br />The read_dragdrop is analogue.<br />If the default reply formatting is not suitable, use command <a href='#replyformat'>'replyformat'</a> to format the replies for an individual canvas script,<br />To read all user interactions from all included canvas scripts , use something like:<br /><em>function read_all_canvas_images(){<br />&nbsp;var script_len = canvas_scripts.length;<br />&nbsp;var draw_reply = "";<br />&nbsp;var found_result = false;<br />&nbsp;for(var p = 0 ; p < script_len ; p++){<br />&nbsp;&nbsp;var fun = eval("read_canvas"+canvas_scripts[p]);<br />&nbsp;&nbsp;if( typeof fun === 'function'){<br />&nbsp;&nbsp;&nbsp;var result = fun();<br />&nbsp;&nbsp;&nbsp;if( result&nbsp;&nbsp;&& result.length != 0){<br />&nbsp;&nbsp;&nbsp;&nbsp;if(script_len == 1 ){ return result;};<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found_result = true;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draw_reply = draw_reply + result + "\n";<br />&nbsp;&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;&nbsp;};<br />&nbsp;&nbsp;};<br />&nbsp;if( found_result ){return draw_reply;}else{return null;};<br />};</em>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br />\text{dessin=popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />}<br />\text{functionplot=wims(exec canvasdraw \dessin)}<br />\statement{<br />\functionplot<br />}
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 </span></li>
