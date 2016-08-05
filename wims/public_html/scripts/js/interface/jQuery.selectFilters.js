@@ -40,10 +40,11 @@ $(function() {
 */
 
 jQuery.fn.filterByText = function(textbox, selectMatches, preventReturn) {
+  var textbox_object = $(textbox);
   preventReturn = typeof preventReturn !== 'undefined' ? preventReturn : true;
   if (preventReturn) {
     /* prevent user from sending form by pressing "return". */
-    $(textbox).keydown(function(event){
+    textbox_object.keydown(function(event){
       if(event.keyCode == 13) {
         event.preventDefault();
         return false;
@@ -60,7 +61,8 @@ jQuery.fn.filterByText = function(textbox, selectMatches, preventReturn) {
     });
     $(select).data('all_options', options);
 
-    $(textbox).bind('change keyup', function() {
+    textbox_object.bind('change keyup', function() {
+      //alert("Trigger declenché sur filtre.");
       var options = $(select).empty().scrollTop(0).data('all_options');
       var search = $.trim($(this).val());
       /*if (search == "")
@@ -90,6 +92,10 @@ jQuery.fn.filterByText = function(textbox, selectMatches, preventReturn) {
         $(select).children().prop('selected', true);
       }
     });
+    if (textbox_object.val()!=="")
+    {
+      textbox_object.trigger("change");
+    }
   });
 };
 
@@ -121,16 +127,16 @@ $(function() {
 */
 
 jQuery.fn.selectByText = function(textbox, preventReturn) {
-
-  preventReturn = typeof preventReturn !== 'undefined' ? preventReturn : false;
+  textbox_object = $(textbox);
+  preventReturn = typeof preventReturn !== 'undefined' ? preventReturn : true;
   if (preventReturn) {
-      /* prevent user from sending form by pressing "return". */
-      $(textbox).keydown(function(event){
-          if(event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-          }
-      });
+    /* prevent user from sending form by pressing "return". */
+    textbox_object.keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+    });
   }
 
   return this.each(function() {
@@ -139,9 +145,10 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
     $(select).find('option').each(function() {
       select_options.push({value: $(this).val(), text: $(this).text(), object:$(this)});
     });
-    $(select).data('displayed_options', select_options)
+    $(select).data('displayed_options', select_options);
 
-    $(textbox).bind('change keyup', function() {
+    textbox_object.bind('change keyup', function() {
+      //alert("Trigger declenche sur select");
       //var nb_res = 0;
       var search = $.trim($(this).val());
       $(select).find('option').each(function() {
@@ -161,5 +168,9 @@ jQuery.fn.selectByText = function(textbox, preventReturn) {
         //console.log("nb_res="+nb_res);
       }
     });
+    if (textbox_object.val()!=="")
+    {
+      textbox_object.trigger("change");
+    }
   });
 };
