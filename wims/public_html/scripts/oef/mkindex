@@ -238,8 +238,9 @@ if [ -d src/data ]; then
  rm -f $dfindex.tmp
  for df in $datafiles; do
   tit=`awk 'NF>0 {if($1 ~ /^[^.:]/) print; exit}' src/data/$df.data`
+  recordcnt=`awk '/^:/{i++}END{print i}' src/data/$df.data`
   [ -z "$tit" ] && tit=$df
-  echo "$df,$tit" >>$dfindex.tmp
+    echo "$df,$tit,$recordcnt" >>$dfindex.tmp
  done
  sort -f -t, -k2 <$dfindex.tmp >$dfindex
  rm -f $dfindex.tmp

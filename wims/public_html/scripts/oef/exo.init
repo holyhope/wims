@@ -8,41 +8,41 @@ nn=!itemcnt $exo
 
 shlist=
 !ifval $random=0
- shufflelist=$exo
+  shufflelist=$exo
 !else
- shuffle=!shuffle $nn
- shufflelist=!item $shuffle of $exo
+  shuffle=!shuffle $nn
+  shufflelist=!item $shuffle of $exo
 !endif
 !if $intro_expert=yes
-   !distribute items 0,0,0,0 into qcmgood,penalty,presentgood,givehint
-   !bound intro_qcmpresent between 2 and 8 default $(default_choice[4])
-   qcmpresent=$intro_qcmpresent
-   !bound intro_presentsol between 0 and 2 default $(default_choice[3])
-   presentsol=$intro_presentsol
-   !if 4 isitemof $intro_check
-      givehint=1
-   !endif
-   !bound intro_expow between 1 and 6 default $(list_expow[1])
-   !bound intro_sepow between 1 and 6 default $(list_sepow[1])
-   !bound intro_precw between 0 and 1 default $(list_precw[1])
-   !if $qnum>1
-      scorepower=$intro_sepow
-   !else
-      scorepower=1
-   !endif
-   freepower=$intro_expow
-   precweight=$intro_precw
-   intro_check=!listintersect $intro_check and 1,2,3,4
+  !distribute items 0,0,0,0 into qcmgood,penalty,presentgood,givehint
+  !bound intro_qcmpresent between 2 and 8 default $(default_choice[4])
+  qcmpresent=$intro_qcmpresent
+  !bound intro_presentsol between 0 and 2 default $(default_choice[3])
+  presentsol=$intro_presentsol
+  !if 4 isitemof $intro_check
+    givehint=1
+  !endif
+  !bound intro_expow between 1 and 6 default $(list_expow[1])
+  !bound intro_sepow between 1 and 6 default $(list_sepow[1])
+  !bound intro_precw between 0 and 1 default $(list_precw[1])
+  !if $qnum>1
+    scorepower=$intro_sepow
+  !else
+    scorepower=1
+  !endif
+  freepower=$intro_expow
+  precweight=$intro_precw
+  intro_check=!listintersect $intro_check and 1,2,3,4
 !!for choice type
-   !if 1 isitemof $intro_check
-      qcmgood=1
-   !endif
-   !if 2 isitemof $intro_check
-      penalty=1
-   !endif
-   !if 3 isitemof $intro_check
-      presentgood=1
-   !endif
+  !if 1 isitemof $intro_check
+    qcmgood=1
+  !endif
+  !if 2 isitemof $intro_check
+    penalty=1
+  !endif
+  !if 3 isitemof $intro_check
+    presentgood=1
+  !endif
 !else
 !! non expert parametrage, every thing is deduced from the qcmlevel
   !default qcmpresent =!item $qcmlevel of 2,3,4,5,5,6,7,8,8
@@ -60,16 +60,15 @@ shlist=
 
 !!! where is defined allchoices, except as a default 0 ?
 !if $allchoices>0
- !default qcmpresent=8
+  !default qcmpresent=8
 !endif
 
 !distribute item 0,0,0 into reply_cnt,score_should,score_got
 !if $oef_test!=yes
- !if $nn>4
-  loglist=$nn
- !else
-  loglist=$shufflelist
- !endif
- wims_module_log=$cmd: $qnum exos on $loglist level=$qcmlevel
+  !if $nn>4
+    loglist=$nn
+  !else
+    loglist=$shufflelist
+  !endif
+  wims_module_log=$cmd: $qnum exos on $loglist level=$qcmlevel
 !endif
-
