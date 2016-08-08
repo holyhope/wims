@@ -1,0 +1,32 @@
+<fieldset class="property_fields blockcenter">
+  <legend>$name_general_setup</legend>
+  <div class="field">
+    <label for="qnum">$name_oneserie:</label>
+    !default qnum=$(default_choice[1])
+    !formselect qnum from 1 to 9
+    $name_exercises.
+  </div>
+
+  !read oef/intromenu_chrono.phtml
+
+  <div class="field">
+    !formcheckbox random list 0 prompt $name_aleaseries
+    <div class="formHelp">
+      $name_remarkorder1
+      !if $wims_user=supervisor
+        $name_remarkorder2
+      !endif
+    </div>
+  </div>
+  !set translation_language=!getdef translation_language in INDEX
+  !if $translation_language!=$empty
+    !set translation_language=$module_language,$translation_language
+    !set translation_language=!words2items $translation_language
+    !set translation_language=!sort items $translation_language
+    <div class="field">
+      <label for="lang_choice">$wims_name_Language:</label>
+      !set wims_ref_class=wims_formradio
+      !formradio lang_choice list $translation_language
+    </div>
+  !endif
+</fieldset>

@@ -145,98 +145,79 @@ $ in $special_parm3
   <h2 class="legend oef_name_menu">$name_menu</h2>
   <div class="formHelp">$name_remarkintro1</div>
 
-  <fieldset class="property_fields blockcenter">
+  <fieldset class="property_fields blockcenter" id="general_parms">
     <legend>$name_general_parms</legend>
-    <div class="field">
-      !if $exocnt>1
-        !set special_parm=!trim $special_parm
-        !if select iswordof $special_parm2 and $special_parm notsametext $empty
-          <span>$name_chooseexo$name_exercisescontaining</span> &laquo;<em style="color:blue">$special_parm</em>&nbsp;&raquo;&nbsp;:
+    !if $oefintro_custom_select=$empty
+      <div class="field">
+        !if $exocnt>1
+          !set special_parm=!trim $special_parm
+          !if select iswordof $special_parm2 and $special_parm notsametext $empty
+            <span>$name_chooseexo$name_exercisescontaining</span> &laquo;<em style="color:blue">$special_parm</em>&nbsp;&raquo;&nbsp;:
+          !endif
         !endif
-      !endif
-      !read oef/select.phtml
-    </div>
+        !read oef/select.phtml
+      </div>
 
-    !if * isin $titlelist
-     <p>$name_remarkintro2</p>
+      !if * isin $titlelist
+        <p>$name_remarkintro2</p>
+      !endif
+    !else
+      !read $oefintro_custom_select
     !endif
   </fieldset>
 
-    !!test if there is an introhook (works with new modules)
-    !if _classes/ isin _$module
-      !set introhook_exists=no
-    !else
-      !readproc introhook.phtml
-    !endif
+  !!test if there is an introhook (works with new modules)
+  !if _classes/ isin _$module
+    !set introhook_exists=no
+  !else
+    !readproc introhook.phtml
+  !endif
 
   !if $introhook_exists!=no
-    <fieldset class="oef_expert property_fields blockcenter">
+    <fieldset class="introhook property_fields blockcenter">
       <legend>$name_module_setup</legend>
-      <div class="introhook">
-        !if $introhook_tableless=yes
+      !if $introhook_tableless=yes
+        !read introhook.phtml
+      !else
+        <table>
           !read introhook.phtml
-        !else
-          <table class="field introhook">
-            !read introhook.phtml
-          </table>
-        !endif
-      </div>
+        </table>
+      !endif
     </fieldset>
   !endif
 
-  <fieldset class="oef_expert property_fields blockcenter">
-   <legend>$name_general_setup</legend>
-   <div class="field">
-     <label for="qnum">$name_oneserie:</label>
-     !default qnum=$(default_choice[1])
-     !formselect qnum from 1 to 9
-     $name_exercises.
-   </div>
-   <div class="field">
-    <label for="scoredelay">$name_chrono:</label>
-    <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay" /> $name_secondes.
-    <div class="formHelp">$name_remarkintro3</div>
-   </div>
-   <div class="field">
-      !formcheckbox random list 0 prompt $name_aleaseries
-      <div class="formHelp">
-        $name_remarkorder1
-        !if $wims_user=supervisor
-          $name_remarkorder2
-        !endif
-      </div>
-   </div>
-  !set translation_language=!getdef translation_language in INDEX
-  !if $translation_language!=$empty
-    !set translation_language=$module_language,$translation_language
-    !set translation_language=!words2items $translation_language
-    !set translation_language=!sort items $translation_language
-    <div class="field">
-     <label for="lang_choice">$wims_name_Language:</label>
-     !set wims_ref_class=wims_formradio
-     !formradio lang_choice list $translation_language
-    </div>
+  !if $oefintro_custom_series_setup=$empty
+    !read oef/intromenu_series.phtml
   !endif
-  </fieldset>
 
-<fieldset class="oef_expert property_fields blockcenter">
-  <legend>$name_score_setup</legend>
-  !if expert notwordof $special_parm2 and yes notin $expert_option
+!set wims_ref_class=wims_button
+!set trimmed_parm2=!trim $special_parm2
+!set trimmed_parm3=!trim $special_parm3
+
+!if expert notwordof $trimmed_parm2 and yes notin $expert_option
+  <p class="oef_intro_buttons" id="score_setup">
+    !set trimmed_parm2=$trimmed_parm2 expert
+    !set trimmed_parm3=!replace internal intro_expert=no by $ in $trimmed_parm3
+    !set trimmed_parm3=$trimmed_parm3 intro_expert=yes
+    !href module=$module&special_parm=$special_parm&special_parm2=$trimmed_parm2&special_parm3=$trimmed_parm3&special_parm4=$special_parm4#general_parms $name_expertmenu
+  </p>
+  <fieldset class="oef_expert property_fields blockcenter">
+    <legend>$name_score_setup</legend>
     <div class="field">
       <label for="qcmlevel">$name_levelseverity:</label>
       !default qcmlevel=$(default_choice[2])
       !formselect qcmlevel from 1 to 9
     </div>
-
-    !let tmp=$special_parm2 expert
-    !set tmp3=!replace internal intro_expert=no by $ in $special_parm3
-    !set tmp3=$tmp3 intro_expert=yes
-    !set wims_ref_class=wims_button
-    <p class="oef_intro_buttons">
-      !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_expertmenu
-    </p>
-  !else
-
+  </fieldset>
+!else
+  <p class="oef_intro_buttons" id="score_setup">
+    !set trimmed_parm2=!replace word expert by $ in $trimmed_parm2
+    !set trimmed_parm3=!replace internal intro_expert=yes by $ in $trimmed_parm3
+    !set trimmed_parm3=$trimmed_parm3 intro_expert=no
+    !href module=$module&special_parm=$special_parm&special_parm2=$trimmed_parm2&special_parm3=$trimmed_parm3&special_parm4=$special_parm4#general_parms $name_simplifiedmenu_back
+  </p>
+  <fieldset class="oef_expert property_fields blockcenter">
+    <legend>$name_score_setup</legend>
     !!default intro_check=1,2,3,4
     !reset name_prompt_expower2 name_prompt_sepower2
     !set powercnt=!itemcnt $list_expow
@@ -247,14 +228,8 @@ $ in $special_parm3
     !default intro_sepow=$(list_sepow[1])
     !default intro_expow=$(list_expow[1])
     !default intro_precw=$(list_precw[1])
-    !let tmp=!replace word expert by $ in $special_parm2
-    !set tmp3=!replace internal intro_expert=yes by $ in $special_parm3
-    !set tmp3=$tmp3 intro_expert=no
+
     <input type="hidden" name="intro_expert" value="yes" />
-    !set wims_ref_class=wims_button
-    <p class="oef_intro_buttons">
-      !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$tmp3&special_parm4=$special_parm4 $name_simplifiedmenu_back
-    </p>
 
     <div class="field">
       <label for="intro_presentsol">$name_solutiongiven? </label>
@@ -295,58 +270,38 @@ $ in $special_parm3
       !formradio intro_precw list $list_precw
       <div class="formHelp">$name_help_precweight</div>
     </div>
-
-    <hr />
-
-    $name_qcm
-    !default intro_qcmpresent=$(default_choice[4])
-    <div class="field">
-      <label for="intro_qcmpresent">$name_qcmanswer: </label>
-      !set wims_ref_class=wims_formradio
-      !formselect intro_qcmpresent list 2,3,4,5,6,7,8
-    </div>
-
-    <div class="field">
-      !set wims_ref_id=introcheck1
-      !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
-    </div>
-
-    <div class="field">
-      !set wims_ref_id=introcheck2
-      !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
-    </div>
-
+  </fieldset>
+  !if $oefintro_custom_choices_setup=$empty
+    !read oef/intromenu_choices.phtml
   !endif
-</fieldset>
+!endif
 </div>
 
-<div class="oef_intro_buttons">
+<div class="oef_intro_buttons spacer">
 	<input type="submit" value="$wims_name_work" />&nbsp;
 	<input type="submit" name="print" value="$name_print" />
 	<input type="hidden" name="special_parm2" value="$special_parm2" />
 	<input type="hidden" name="special_parm4" value="$special_parm4" />
 </div>
-
 !formend
 
 !if $exocnt>10
- !form intro
- <input type="hidden" name="special_parm2" value="select $special_parm2" />
- <input type="hidden" name="special_parm3" value="$special_parm3" />
- <input type="hidden" name="special_parm4" value="$special_parm4" />
- <input type="hidden" name="module" value="$module" />
- $name_select
- <input size="12" maxlength="12" name="special_parm" value="$special_parm" />
- <input type="submit" value="$wims_name_send" />
-
- !formend
+  !form intro
+    <input type="hidden" name="special_parm2" value="select $special_parm2" />
+    <input type="hidden" name="special_parm3" value="$special_parm3" />
+    <input type="hidden" name="special_parm4" value="$special_parm4" />
+    <input type="hidden" name="module" value="$module" />
+    $name_select
+    <input size="12" maxlength="12" name="special_parm" value="$special_parm" />
+    <input type="submit" value="$wims_name_send" />
+  !formend
 !endif
 
 !if expert iswordof $special_parm2 or yes isin $expert_option
-<div class="formHelp">
-  $name_remarkseverity
-  !read oef/helpseverity
-</div>
+  <div class="formHelp">
+    $name_remarkseverity
+    !read oef/helpseverity
+  </div>
 !endif
 
 !if $wims_class!=$empty and $wims_user=supervisor and (../devel/ notin ../$module or $wims_devel_modules iswordof open)
