@@ -18,12 +18,12 @@ sleep 10
 cd $WIMS_HOME
 
 # TeX pictures and fonts since 90 days: atime can no longer be used.
-find public_html/w/instex -name '*.gif' -mtime +90 -exec rm '{}' 2>/dev/null \;
+find public_html/w/instex -name '*.gif' -mtime +90 -exec rm '{}' ';' 2>/dev/null
 find public_html/w/instex -type d -empty -exec rm '{}' 2>/dev/null \;
-find public_html/w/texgif -name '*.font' -mtime +90 -exec rm '{}' 2>/dev/null \;
+find public_html/w/texgif -name '*.font' -mtime +90 -exec rm '{}' ';' 2>/dev/null
 # Clean tmp directory
-find tmp -maxdepth 1 -type f -mtime +2 -exec rm '{}' 2>/dev/null \;
-find tmp/forall -mindepth 1 -mtime +2 -exec rm '{}' 2>/dev/null \;
+find tmp -maxdepth 1 -type f -mtime +2 -exec rm '{}' ';' 2>/dev/null
+find tmp/forall -mindepth 1 -mtime +2 -exec rm '{}' ';' 2>/dev/null
 mkdir -p tmp/forall
 chmod a+rwx tmp/forall
 
@@ -163,7 +163,7 @@ find . -type f -name "*.bin" -exec rm -v "{}" ";" 1>/dev/null
 
 # check if all compulsory directories are here (only in non example classes)
 cd $WIMS_HOME/log/classes
-list=`find [0-9][0-9][0-9][0-9][0-9]* -type d -maxdepth 0` ;
+list=`find [0-9][0-9][0-9][0-9][0-9]* -maxdepth 0 -type d` ;
 for s in $list ; do
    for d in .users sheets exams doc score noscore vote cdt src def livret seq ; do
     mkdir -p $s/$d
@@ -198,8 +198,8 @@ if [ "$backup_delete" ]; then
   if test "$backup_delete" -eq "$backup_delete" 2>/dev/null; then
    today1=`date +%d`
    if [ "$today1" -eq "01" ]; then
-    find $WIMS_HOME/backup/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null\;
-    find $WIMS_HOME/backup2/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null\;
+    find $WIMS_HOME/backup/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null
+    find $WIMS_HOME/backup2/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null
    fi
   fi
 fi
