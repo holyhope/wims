@@ -8,7 +8,6 @@ today=`date '+%Y%m%d'`
 weekday=`date '+%w'`
 thisyear=`date '+%Y'`
 
-backup_delete=`awk -F'=' '$1=="backup_delete" {print $2; exit}' $WIMS_HOME/log/wims.conf`
 # Forum management
 cd log/forums
 ./.build-index
@@ -199,8 +198,8 @@ if [ "$backup_delete" ]; then
   if test "$backup_delete" -eq "$backup_delete" 2>/dev/null; then
    today1=`date +%d`
    if [ "$today1" -eq "01" ]; then
-    find $WIMS_HOME/backup/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' 2>/dev/null\;
-    find $WIMS_HOME/backup2/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' 2>/dev/null\;
+    find $WIMS_HOME/backup/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null\;
+    find $WIMS_HOME/backup2/oldclasses/[0-9]* -mtime +$backup_delete -exec rm '{}' ';' 2>/dev/null\;
    fi
   fi
 fi
