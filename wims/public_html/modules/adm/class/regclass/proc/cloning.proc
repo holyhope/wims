@@ -81,7 +81,9 @@ ref_button_color,bgimg,theme,theme_icon,css,actcolor,showlivret
  nb=!itemcnt $cls_list
  !for v=1 to $nb
     t=!defof class_$(cls_list[$v]) in wimshome/log/classes/$ssourcecls/.def
-    cls_data=!append line !set class_$(cls_list[$v])=$t to $cls_data
+   !if $t!=$empty
+      cls_data=!append line !set class_$(cls_list[$v])=$t to $cls_data
+   !endif
  !next v
  nb2=!linecnt $t
  !setdef $cls_data in wimshome/log/classes/$code/.def
