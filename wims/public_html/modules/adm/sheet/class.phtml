@@ -31,6 +31,20 @@ $sheet_title
 !!expiration date in a variable
 !set expir_user=!record 0 of wimshome/log/classes/$wims_class/.$sh
 
+!set cle=!word 1 of $expir_user
+!! process for technical variable definition (replace expir_user by value decide by the technical variable)
+!if \ isin $cle
+   !set idtechvar=!line 1 of $expir_user
+   !set idtechvar=!char 2 to -1 of $idtechvar
+   !readproc adm/class/userdef ,$wims_class,$wims_user
+   !set val=!defof user_techvar_$(idtechvar) in $userdef
+   !default val=EMPTY
+   !reset expir_user
+   !set expir_user=!defof techvar_$val in wimshome/log/classes/$wims_class/.$sh
+!endif
+!! end process technical variable
+
+!default expir_user=none
 !if $expir_user=none
  <p id="name_student5">
   <span class="wims_warning">$wims_name_warning</span>.
@@ -38,20 +52,11 @@ $sheet_title
  </p>
  !goto none
 !endif
-!set cle=!word 1 of $expir_user
+
 !if $expir_user!=$empty
   !set cle=!word 1 of $expir_user
-!! process for technical variable definition (replace expir_user by value decide by the technical variable)
-  !if \ isin $cle
-   !set idtechvar=!line 1 of $expir_user
-   !set idtechvar=!char 2 to -1 of $idtechvar
-   !set val=!defof user_techvar_$(idtechvar) in wimshome/log/classes/$wims_superclass/.users/$wims_user
-   !default val=EMPTY
-   !set expir_user=!defof techvar_$val in wimshome/log/classes/$wims_class/.$sh
-  !endif
-!! end process technical variable
 !!! a corriger
-   !set expir_user=!words2items $expir_user
+  !set expir_user=!words2items $expir_user
    !for l_ in $expir_user
      !set l_=!replace internal < by ?, in $l_
      !if ? isitemof $l_
@@ -64,8 +69,9 @@ $sheet_title
       !set sheet_beginning_user=$(l_[2])
      !endif
    !next
- !endif
- !if $sheet_beginning_user!=$empty and $sheet_active=1
+!endif
+
+!if $sheet_beginning_user!=$empty and $sheet_active=1
   !set expday=!char 7,8 of $sheet_beginning_user
   !set expmon=!char 5,6 of $sheet_beginning_user
   !set expyear=!char 1 to 4 of $sheet_beginning_user
@@ -76,7 +82,8 @@ $sheet_title
   !read adm/date.phtml
   !set expmon=!item $expmon of $months
   !set fromdate=$name_from $expday $expmon $expyear$exphour
- !endif
+!endif
+
 !default sheet_expiration_user=$sheet_expiration
 !if $sheet_expiration_user!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration_user
@@ -90,6 +97,7 @@ $sheet_title
  !set expmon=!item $expmon of $months
  <p id="name_student1">$name_student1$exphour</p>
 !endif
+
 :none
 !if $sheet_active=2
  <p id="name_student2">
