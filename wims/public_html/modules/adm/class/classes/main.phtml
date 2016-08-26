@@ -60,6 +60,8 @@ $name_new_participant_external
  !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
    !if $type=authsupervisor
      !set ttmp_=&authtype=teacher
+   !else
+     !reset ttmp_
    !endif
    <a href="$class_php_auth?enter=$class$ttmp_" class="wims_button">$name_register</a>
  !else
@@ -67,6 +69,7 @@ $name_new_participant_external
    !href module=adm/class/reguser&class=$class$tmp_&authtype_=$authtype_ $name_register
  !endif
  </div>
+ reset tmp_ ttmp_
  !goto end
 !endif
 
