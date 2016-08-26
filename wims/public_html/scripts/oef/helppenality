@@ -1,0 +1,25 @@
+$name_examplepenality
+!set tmp_liste=1,1.5,2,2.5,3,3.5,4,4.5,5
+!set tmp_n=2
+!for tmp_j=1 to $tmp_n
+  !set tmp_penal$tmp_j=!values rint(100*(($tmp_n-$tmp_j)/$tmp_n)^x)/10 for x in $tmp_liste
+!next
+
+!readproc slib/text/matrixhtml [,$tmp_liste\
+1,$tmp_penal1\
+],wimscenter wimsborder,TH=[1;1] CAPTION="$name_example1"
+
+$slib_out
+
+!set tmp_n=4
+!for tmp_j=1 to $tmp_n
+  !set tmp_penal$tmp_j=!values rint(100*(($tmp_n-$tmp_j)/$tmp_n)^x)/10 for x in $tmp_liste
+!next
+
+!readproc slib/text/matrixhtml [,$tmp_liste\
+1,$tmp_penal1\
+2,$tmp_penal2\
+3,$tmp_penal3\
+],wimscenter wimsborder,TH=[1;1] CAPTION="$name_example1"
+
+$slib_out

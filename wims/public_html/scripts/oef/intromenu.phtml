@@ -207,6 +207,7 @@ $ in $special_parm3
       <label for="qcmlevel">$name_levelseverity:</label>
       !default qcmlevel=$(default_choice[2])
       !formselect qcmlevel from 1 to 9
+      <div class="formHelp">$name_warning_levelseverity</div>
     </div>
   </fieldset>
 !else
@@ -252,6 +253,7 @@ $ in $special_parm3
       <div>
         !set wims_ref_class=wims_formradio
         !formradio intro_expow list $list_expow prompt $name_prompt_expower2
+        <div class="formHelp">$name_warning_expower</div>
       </div>
     </div>
 
@@ -260,7 +262,9 @@ $ in $special_parm3
       <div>
        !set wims_ref_class=wims_formradio
        !formradio intro_sepow list $list_sepow prompt $name_prompt_sepower2
-       <div class="formHelp">$name_warning_pow</div>
+       <div class="formHelp">
+        $name_warning_sepower $name_warning_pow
+       </div>
       </div>
      </div>
 
@@ -301,6 +305,7 @@ $ in $special_parm3
   <div class="formHelp">
     $name_remarkseverity
     !read oef/helpseverity
+    !read oef/helppenality
   </div>
 !endif
 
