@@ -14,6 +14,7 @@ Maar je kunt natuurlijk wel oefenen met het werkblad.
 !set name_score2=!nosubst ($[$require] punten vereist).
 
 !set name_scoreopen=De cijferregistratie is open.
+!set name_scoreclose=Score registration is closed.
 !set name_scoreclosesup=De cijferregistratie kan niet worden opgechort.
 
 !set name_textsource=Hier staat de broncode van het werkblad. U kunt deze via \
