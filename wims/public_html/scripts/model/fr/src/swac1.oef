@@ -45,25 +45,49 @@ S'il y a plusieurs lignes, les distracteurs seront pris sur la même ligne que le
 :La taille horizontale des cases à gauche en pixels.
 \integer{sizel=20}
 
-:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
-\text{liste=randomrow(\liste)}
-\text{mot = randitem(\liste)}
-\text{perturb=wims(listcomplement \mot in \liste)}
-\text{perturb=shuffle(\perturb)}
-\text{perturb=\perturb[1..\cntpertub]}
+:Selon l'option, tous les mots ou un seul aléatoirement sont proposés (au plus 10 mots).
+\text{choix=item(1,1 tout,
+2 un seul)}
 
-\text{audio = slib(lang/swac \mot,\lang)}
-\text{audio = \audio[1;1]}
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+\text{choix=wims(word 1 of \choix)}
+\text{Audio =}
+\text{Perturb=}
+\text{list=randrow(\liste)}
+\text{mots=\choix=1 ? shuffle(\liste): randitem(\liste)}
+\integer{cnt=items(\mots)}
+\integer{cnt=min(10,\cnt)}
+\for{j=1 to \cnt}{
+  \text{mot=\mots[\j]}
+  \text{audio = slib(lang/swac \mot,\lang)}
+  \text{Audio = wims(append item \audio[1;1] to \Audio)}
+  \text{perturb=wims(listcomplement \mot in \liste)}
+  \text{perturb=shuffle(\perturb)}
+  \text{perturb=\perturb[1..\cntpertub]}
+  \text{Perturb=wims(append line \perturb to \Perturb)}
+}
 \text{size=\sizev[]x\sizel[]x\sizer}
+\text{etape=wims(makelist r x for x=1 to \cnt)}
+\text{etape=wims(replace , by ; in \etape)}
+\steps{\etape}
 
 \statement{
 <div class="instruction">
 \instruction
 </div>
-<div class="wimscenter">\audio</div>
+<div class="wimscenter">\Audio[\step]</div>
 
 <div class="wimscenter">
-\embed{r1,\size}
+\embed{r \step,\size}
 </div>
 }
-\answer{}{\mot;\perturb}{type=clickfill}
+\answer{}{\mots[1];\Perturb[1;]}{type=clickfill}
+\answer{}{\mots[2];\Perturb[2;]}{type=clickfill}
+\answer{}{\mots[3];\Perturb[3;]}{type=clickfill}
+\answer{}{\mots[4];\Perturb[4;]}{type=clickfill}
+\answer{}{\mots[5];\Perturb[5;]}{type=clickfill}
+\answer{}{\mots[6];\Perturb[6;]}{type=clickfill}
+\answer{}{\mots[7];\Perturb[7;]}{type=clickfill}
+\answer{}{\mots[8];\Perturb[8;]}{type=clickfill}
+\answer{}{\mots[9];\Perturb[9;]}{type=clickfill}
+\answer{}{\mots[10];\Perturb[10;]}{type=clickfill}
