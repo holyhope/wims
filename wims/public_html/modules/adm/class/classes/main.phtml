@@ -50,15 +50,17 @@ $name_new_participant_external
 
  !if $type_class > 0 and $type!=authsupervisor and $authtype_!=teacher
   !set tmp_=&subclass=yes
+ !else
+   !reset tmp_
  !endif
 
  <div class="wimscenter">
 !! this is probably the only place we need idp_method=php
 !! (e.g. if class_authidp=cas;php)
  !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
- !if $type=authsupervisor
-  !set ttmp_=&authtype=teacher
- !endif
+   !if $type=authsupervisor
+     !set ttmp_=&authtype=teacher
+   !endif
    <a href="$class_php_auth?enter=$class$ttmp_" class="wims_button">$name_register</a>
  !else
    !set wims_ref_class=wims_button
