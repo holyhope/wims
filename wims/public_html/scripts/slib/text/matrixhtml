@@ -8,13 +8,13 @@ slib_example=[1,2;allo;mer]\
 [1,2;allo,make your own css],4\
 [1;30000],center\
 [\(x^4\),\(x^3);\(\frac{x}{y}\),3],center\
-[\(x^4\),\(x^3);\(\frac{x}{y}\),3],wimscenter\
+[\(x^4\),\(x^3) &lt; a;\(\frac{x}{y}\),3],wimscenter\
 [\(x^4\),\(x^3);\(\frac{x}{y}\),3],wimsnoborder wimscenter 1\
 [1,2,3;4,5,6;5,2,3]\
 [def1,2,3,4;def2,5,6,7;def3,2,3,4],1,TH=[;1,3]\
 [def1,2,3;def2,5,6;def3,2,3],1,TH=[1;]\
 [def1,2,3;def2,5,6;def3,2,3;def4,2,3;def5,2,3],1,TH=[2,4;3]\
-[def1,2,3;def2,5,6;def3,2,3;def4,2,3;def5,2,3],1,TH=[2,4;3] CAPTION="texte en haut"
+[def1,2,3;def2,5,6;def3,2,3;def4,2,3;def5,2,3],1,TH=[2,4;3] CAPTION="texte en caption"
 slib_require=pari
 !exit
 
@@ -26,7 +26,7 @@ slib_matrix=!declosing $slib_matrix
   slib_align=$ style="text-align:center"
   slib_id=!replace internal center by in $slib_id
 !endif
-!for slib_cl in wimscenter, wimsborder, wimsnoborder
+!for slib_cl in wimscenter, wimsborder, wimsnoborder, wimstable
  !if $slib_cl iswordof $slib_id
   slib_class=!append word $slib_cl to $slib_class
   slib_id=!replace internal $slib_cl by in $slib_id
@@ -44,11 +44,11 @@ slib_out=<table $slib_class>
 !if $slib_caption!=$empty
   slib_out=$slib_out<caption>$slib_caption</caption>
 !endif
-slib_matrix1=!replace internal ; by $\
-$ in $slib_matrix
+slib_matrix=!lines2rows $slib_matrix
 slib_cnt=
 slib_colcnt=0
-slib_rowcnt=!linecnt $slib_matrix1
+slib_rowcnt=!rowcnt $slib_matrix
+
 !for slib_a =1 to $slib_rowcnt
   slib_cnt_p=!itemcnt $(slib_matrix[$slib_a;])
   slib_cnt=!append item $slib_cnt_p to $slib_cnt
