@@ -111,9 +111,11 @@ wims_participate=$user_participate\
 wims_superclass=$class_superclass\
 wims_supervise=$user_supervise\
 wims_supertype=$class_type\
-wims_realuser=$quser\
 wims_typename=$class_typename
 
+!if $quser!=supervisor
+!appendfile wimshome/$dir_session/var.stat wims_realuser=$quser
+!endif
 
 !if lightpopup iswordof $option
  !setdef wims_lightpopup=yes in wimshome/$dir_session/var.stat
