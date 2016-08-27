@@ -1,7 +1,12 @@
 !set wims_module_log=error: $error
 
+!default name_passsup=$wims_name_Password ($name_sup)
+!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_institution=$name_Name_portal
+!default wims_name_description=$wims_name_name $name_classesss
+
 !if no_subclass iswordof $error
-    Bij de huidige instellingen heeft U niet de 
+    Bij de huidige instellingen heeft U niet de
     rechten om subklassen op te richten.
   !set restart=no
  !exit
@@ -41,13 +46,13 @@
   <input type="hidden" name="step" value="0" />
   Het wachtwoord: <input size="16" name="regpass" type="password" />
   <input type="submit" name="Envoyer" value="$wims_name_send" />
- 
+
 !formend
 <p>
- Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de 
+ Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de
  !mailurl $wims_site_manager systeembeheerder\
  van deze WIMS server.
-</p> 
+</p>
  !if $regpassmail!=$empty and $sendmail=$empty
   !form reply
   Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
@@ -63,7 +68,7 @@
    !endif
    &nbsp;
   <input type="submit" value="Recevoir" name="Ontvangen" />
-    
+
 !formend
    !else
     !reset sendmail
@@ -76,7 +81,7 @@
  !if $regpass$regid!=$empty
   Helaas, het wachtwoord was niet correct. Probeer nog een keer.
  !else
-  Het oprichten van klassen op deze server wordt geregeld door een 
+  Het oprichten van klassen op deze server wordt geregeld door een
   wachtwoord beschermde aanmeldings procedure.
  !endif
 
@@ -88,8 +93,8 @@
     en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password" />
     <input type="submit" value="OK" /></td>
     </tr></table>
- 
-!formend 
+
+!formend
  Opmerking: Schrijf naar de systeembeheerder of
  !mailurl $wims_site_manager sitemanager\
  voor een account
@@ -135,8 +140,8 @@
 !endif
 
 !if anti_date=$error
- De verloopdatum van Uw klas ligt voor vandaag...uw klas is dus verlopen <b>voor</b> dat 
-  "hij" is opgericht ;-) 
+ De verloopdatum van Uw klas ligt voor vandaag...uw klas is dus verlopen <b>voor</b> dat
+  "hij" is opgericht ;-)
  !exit
 !endif
 
@@ -165,7 +170,7 @@
 !endif
 
 !if bad_pass=$error
- Uw $(name_$(error_subject)) bevat niet toegestane karakters. <p>
+ Uw $(name_$(error_subject)) bevat niet toegestane karakters.
   Gebruik een woord met alleen cijfers en/of letters zonder accenten en zonder spaties.
  !exit
 !endif
@@ -191,7 +196,7 @@ Interne serverfout (oprichten van een klas)
 !if duplicate=$error
  U probeert een bestaande klas opnieuw op te richten...<br />
  Hebt U op de <b>reload</b>-knop van uw browser geklikt?
- In elk geval: Uw klas $classname bestaat gewoon op deze server, 
+ In elk geval: Uw klas $classname bestaat gewoon op deze server,
  en deze poging wordt dus genegeerd.<p>
  !read adm/lang/links.phtml.$modu_lang
  !exit

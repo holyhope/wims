@@ -1,5 +1,10 @@
 !set wims_module_log=error: $error
 
+!default name_passsup=$wims_name_Password ($name_sup)
+!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_institution=$name_Name_portal
+!default wims_name_description=$wims_name_name $name_classesss
+
 !if no_subclass iswordof $error
  V trenutnih okoli¹èinah nimate pravic za ustvarjanje uèilnic.
  !set restart=no
@@ -158,7 +163,7 @@ Virtual class creation password
 !endif
 
 !if bad_pass=$error
- Your $(name_$(error_subject)) contains illegal characters. <p>
+ Your $(name_$(error_subject)) contains illegal characters.
  Please use a word containing only digits or letters without accent, and
  without space between them.
  !exit
@@ -168,6 +173,7 @@ Virtual class creation password
  You did not enter the right code for the class. Have you given your
  email address correctly?<p>
  This failure has been logged.
+ </p>
  !exit
 !endif
 

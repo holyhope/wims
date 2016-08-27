@@ -1,5 +1,10 @@
 !set wims_module_log=error: $error
 
+!default name_passsup=$wims_name_Password ($name_sup)
+!default name_password=$wims_name_Password ($name_classesss)
+!default wims_name_institution=$name_Name_portal
+!default wims_name_description=$wims_name_name $name_classesss
+
 !if no_subclass iswordof $error
  No está autorizado para crear subclases en la situación actual.
  !set restart=no
@@ -154,7 +159,7 @@ La creación de clases sólo puede tener éxito si
 !endif
 
 !if bad_pass=$error
- Su $(name_$(error_subject)) contiene caracteres ilegales. <p>
+ Su $(name_$(error_subject)) contiene caracteres ilegales.
  Por favor utilice una contraseña que contenga únicamente cifras o letras
  sin acentos y sin espacios entre ellas.
  !exit
