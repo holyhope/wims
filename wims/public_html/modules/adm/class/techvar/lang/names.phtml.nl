@@ -1,7 +1,6 @@
 !set lang_exists=yes
 
 !set name_notechvar=Geen technische variabele gerdefinieerd.
-!set name_name=Naam
 !set name_ltvalue=Waarde(s)
 !set name_value=Waarde
 !set name_make=Aanmaken

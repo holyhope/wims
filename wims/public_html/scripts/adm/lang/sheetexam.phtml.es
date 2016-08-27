@@ -22,7 +22,7 @@ Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les 
 !let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):,réglage par variable technique
 
 !if exam notin $module
- !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4]),Réglage par variable technique
+ !let name_allowtype=$(name_allowtype[1,3,4,5])
 !endif
 !set name_desc_allowtechvar=Choix de la variable technique
 !set name_desctableval=Table de filtre en fonction de la valeur de la variable technique

@@ -17,7 +17,7 @@ Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle klassen die aan het
 !let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgende ip-adressen (en/of tijdstippen) :,volgens technische variabelen
 
 !if exam notin $module
- !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4]),Instelling volgens technische variabelen
+ !let name_allowtype=$(name_allowtype[1,3,4,5])
 !endif
 !set name_desc_allowtechvar=Kies de technische variabele
 !set name_desctableval=Filterinstellings tabel voor de technische variabelen
