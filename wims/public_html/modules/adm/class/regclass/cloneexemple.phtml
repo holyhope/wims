@@ -8,8 +8,8 @@
       $table_header
       $table_hdtr<th>$wims_name_name</th><th>$wims_name_supervisor</th><th>$name_cloning</th>
       !for i=$debcls to $ccnt
-      !! find if classe is clonable
-      !let l=!record $i of wimshome/log/classes/.index
+        !! find if classe is clonable
+        !let l=!record $i of wimshome/log/classes/.index
         !distribute items $l into code,expire,inst,cl,la,ty
         !if $ty!=4
          !let l1=!deaccent $l
@@ -24,25 +24,49 @@
                !endif
             !next w
          !endif
+         !if $k=no and $ty=2 and $kw!=$empty
+            !! find of keyword in subclasses
+            !let sbcnt=!recordcnt wimshome/log/classes/$code/.subclasses
+	    !let sb=1
+            !while $sb<=$sbcnt and $k=no
+               !let ksb=yes
+               !let l1sb=!record $sb of wimshome/log/classes/$code/.subclasses
+               !let l1sb=!deaccent $l1sb
+	       !let l1sb=!tolower $l1sb
+
+               !for w in $kw
+		!if $w notin $l1sb
+			!let ksb=no
+			!break
+		!endif
+	       !next w
+	       !if $ksb=yes
+		!let k=yes
+               !endif
+	       !increase sb
+             !endwhile
+         !endif
          !if $k!=yes
             !reset l
          !endif
-      !endif
-      !! display clonable class
-      !if $l!=$empty
-              !distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
-              !let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
-         !let test=!defof class_allowcloning in wimshome/log/classes/$code/.def
-         !if ($testneighbors=$empty and $test=yes) or $code<=9999 or $ty=2
-                !if $ty!=2
+        !else
+         !reset l
+        !endif
+        !! display clonable class
+        !if $l!=$empty
+            !distribute items $l into code,expire,inst,cl,la,ty,b,b,first,last
+            !let testneighbors=!defof sharing_all in wimshome/log/classes/$code/neighbors
+    	    !let test=!defof class_allowcloning in wimshome/log/classes/$code/.def
+            !if ($testneighbors=$empty and $test=yes) or $code<=9999 or $ty=2
+             !if $ty!=2
                $table_tr
                <td>$inst <br />
                       !href cmd=reply&step=-2&sourcecls=$code $cl
                        !if $class_info!=$empty
                            <br /> $class_info
                        !endif
-                </td>
-                <td>$first $last</td>
+               </td>
+               <td>$first $last</td>
                <td>
                 !if $code<=9999
                      $name_free
@@ -53,10 +77,10 @@
                         $name_disallowed
                       !endif
                  !endif
-                 </td>
-               </tr>
-             !else
-                  !! class_type=2 display subclasses
+                </td>
+                </tr>
+              !else
+              !! class_type=2 display subclasses
                !let nbsubclass=!recordcnt wimshome/log/classes/$code/.subclasses
                !let auth=$empty
                !for j=1 to $nbsubclass
@@ -82,8 +106,8 @@
             !endif
         !endif
       !endif
-   !next i
-      $table_end
+     !next i
+     $table_end
    !else
       $name_nofound
    !endif

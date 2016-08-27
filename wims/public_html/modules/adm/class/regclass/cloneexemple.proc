@@ -46,6 +46,27 @@ sjob=$job
 					!endif
 				!next w
 			!endif
+                        !if $k=no and $kw!=$empty and $ty=2
+		            !! find of keyword in subclasses
+		            sbcnt=!recordcnt wimshome/log/classes/$code/.subclasses
+			    sb=1
+		            !while $sb<=$sbcnt and $k=no
+               			ksb=yes
+               			l1sb=!record $sb of wimshome/log/classes/$code/.subclasses
+				l1sb=!deaccent $l1sb
+				l1sb=!tolower $l1sb
+               			!for w in $kw
+				  !if $w notin $l1sb
+					ksb=no
+					!!break
+				  !endif
+	       		        !next w
+	       	                !if $ksb=yes
+		                 k=yes
+                                !endif
+	                        !increase sb
+                            !endwhile                        
+                        !endif
 			!if $k=yes
 				debcls=$i
 			!endif
@@ -53,7 +74,6 @@ sjob=$job
 		!increase i
 	!endwhile
 !endif
-
 
 !if $step=-2
 !! checking allowed clonage + ask for cloning pwd
