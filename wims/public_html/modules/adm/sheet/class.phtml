@@ -145,7 +145,10 @@ itemsep,0,\
  !set sev=!line $sh + 1 of $sevlist
  !reset s ss
  !set ss=!word 3 of $sev
- !bound ss between integer 0 and 2 default 0
+ !set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+ !set tmp=!word 3 of $tmp
+ !bound ss between integer 0 and 2 default $tmp
+ !reset tmp
  <div class="wims_sheet">
   <div class="wims_title_seq">$wims_name_Exercices</div>
  <ol class="wims_sheet_list">

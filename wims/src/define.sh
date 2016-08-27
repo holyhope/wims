@@ -9,3 +9,4 @@ grep "#define MAX_VOTES" wimsdef.h | awk -F'#define MAX_VOTES' ' {print "MAX_VOT
 grep "#define MAX_OEFCHOICES" wimsdef.h | awk -F'#define MAX_OEFCHOICES' ' {print "MAX_OEFCHOICES="$2 ; exit}'
 grep "#define MAX_OEFREPLIES" wimsdef.h | awk -F'#define MAX_OEFREPLIES' ' {print "MAX_OEFREPLIES="$2 ; exit}'
 echo "DEBUG_MODULE=qualite@wimsedu.info"
+echo "DF_SEVERITY=1 2 1"

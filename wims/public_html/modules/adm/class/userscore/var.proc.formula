@@ -9,12 +9,15 @@
  !endif
  !reset formula reg
  reg=
+ !set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+ !distribute words $tmp into tmp_w,tmp_s,tmp_ss
  !for i=1 to $totsheets
-  !bound w$i between 0 and 100000 default 1
-  !bound s$i between integer 0 and 6 default 2
-  !bound ss$i between integer 0 and 2 default 0
+  !bound w$i between 0 and 100000 default $tmp_w
+  !bound s$i between integer 0 and 6 default $tmp_s
+  !bound ss$i between integer 0 and 2 default $tmp_ss
   reg=!append line $(w$i) $(s$i) $(ss$i) to $reg
  !next i
+ !reset tmp tmp_s tmp_ss
  !bound maxscore between integer 1 and 1000 default 10
  scoremax=$maxscore
  defaultformula=$reg

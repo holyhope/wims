@@ -13,12 +13,14 @@
 !set totexams=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
 !set examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
 !set formula_list=!record 0 of adm/class/sheetformula
+!set tmp=!defof DF_SEVERITY in wimshome/public_html/bases/sys/define.conf
+!distribute words $tmp into bidon,tmp_s,tmp_ss
 !for i_=1 to $totsheets
  !set f_=!line $i_ of $defaultformula
  !distribute word $f_ into w_$i_,s,ss
  !default w_$i_=1
- !bound s between integer 0 and 6 default 2
- !bound ss between integer 0 and 2 default 0
+ !bound s between integer 0 and 6 default $tmp_s
+ !bound ss between integer 0 and 2 default $tmp_ss
 !!  f_$i_=!line $s+1 of max($$x$(ss)_,$$y_)\
 $$x$(ss)_\
 $$x$(ss)_*$$y_^0.3\
