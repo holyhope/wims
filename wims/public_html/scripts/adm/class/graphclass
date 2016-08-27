@@ -40,6 +40,7 @@
   !for j1=1 to $col1cnt
      !set cls1=!nospace $classrad/$(col1[$j1])
      !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls1/.def
+     !reset tmp
      !if $(don[1])=course
         !set tmp=$ class="inline"
      !endif
@@ -70,11 +71,11 @@
       !for j2=1 to $col2cnt
         !set cls2=!nospace $cls1/$(col2[$j2])
         !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls2/.def
+        !reset tmp
         !if $(don[1])=course
           !set tmp=$ class="inline"
         !endif
          <li$tmp><span class="wims_classes_direct_$(don[1])">
-         !reset tmp
          !if $cls2 isitemof $(user_$(statut)_)
            !if $statut=supervise
              !href module=adm/class/classes&type=authsupervisor&class=$cls2&auth_user=supervisor $(don[2])
@@ -100,6 +101,7 @@
           !for j3=1 to $col3cnt
             !set cls3=!nospace $cls2/$(col3[$j3])
             !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$cls3/.def
+            !reset tmp
             !if $(don[1])=course
               !set tmp=$ class="inline"
             !endif
