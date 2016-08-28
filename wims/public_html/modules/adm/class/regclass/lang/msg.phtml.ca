@@ -30,7 +30,9 @@ Creació de classes virtuals
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <p class="wimscenter larger">La contrasenya s'ha enviat per email a l'adreça $sendmail.</p>
+  <div class="wimscenter">
+  La contrasenya s'ha enviat per email a l'adreça $sendmail.
+  </div>
  !endif
  !if $regpass!=$empty
   Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
@@ -44,13 +46,35 @@ Creació de classes virtuals
  !form reply
   <input type="hidden" name="step" value="0" />
   Entreu la contrasenya : <input size="16" name="regpass" type="password" />
+  <input type="submit" name="Enviar" value="$wims_name_send" />
 
 !formend
-
+<div>
  Nota. La contrasenya necessària per crear classes virtuals pot obtenir-se a partir del
  !mailurl $wims_site_manager gestor\
 Contrasenya per a la creació de classes virtuals
  d'aquest lloc WIMS.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  També es pot rebre la contrasenya per correu electrònic introduint la teva adreça de correu electrònic a continuació:
+  <input type="text" name="adresse1" value="$adresse1" size="20" />
+  <input type="hidden" name="step" value="0" />
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size="+1">@$regpassmail</font>
+   <input type="hidden" name="adresse2" value="$regpassmail" />
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Rebre" />
+
+!formend
+ !else
+  !reset sendmail
+ !endif
+ </div>
  !set restart=no
  !exit
 !endif
@@ -60,7 +84,7 @@ Contrasenya per a la creació de classes virtuals
   Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
  !else
   La creació de classes virtuals en aquest lloc està protegit per un sistema
-  d'autentificació. Si us plau identifiqueu-vos.
+  d'autenticació. Si us plau identifiqueu-vos.
  !endif
 
  !form reply
@@ -78,6 +102,7 @@ Contrasenya per a la creació de classes virtuals
  !mailurl $wims_site_manager gestor\
 Contrasenya per a la creació de classes virtuals
  en aquest lloc si voleu un compte per crear classes virtuals.
+</p>
  !set restart=no
  !exit
 !endif
@@ -94,9 +119,9 @@ Contrasenya per a la creació de classes virtuals
  d'accés segur (<span class="tt">$secure</span>)&nbsp;! Això és probablement un error que
  provocarà la prohibició d'accedir al control de la vostra classe.
  <p>
- Llegiu atentament la documentació següent. Si encara no ho enteneu,
- deixeu aquest camp en blanc (us enviarem els codis secrets
- temporals per les operacions sensibles), o poseu la paraula <span class="tt">all</span>
+ Llegiu atentament la documentació següent. També podeu
+ deixar aquest camp en blanc (o posar un espai): us enviarem els codis secrets
+ temporals per les operacions sensibles, o poseu la paraula <span class="tt">all</span>
  per desactivar aquesta mesura de seguretat.
  </p><hr />
  !read help/hosts.phtml
@@ -111,7 +136,7 @@ Contrasenya per a la creació de classes virtuals
 !endif
 
 !if too_short=$error
- El camp de dades ''$(name_$(error_subject))'' sembla ser massa curt.
+ El camp de dades <span class="tt wims_code_words">$(wims_name_$(error_subject))</span> sembla ser massa curt.
  !exit
 !endif
 
@@ -136,6 +161,7 @@ Contrasenya per a la creació de classes virtuals
  <p>
 La creació de la classe només pot tenir èxit si
  envieu la vostra adreça de correu electrònic real.
+</p>
  !exit
 !endif
 
@@ -163,6 +189,7 @@ La creació de la classe només pot tenir èxit si
  No heu introduït el codi correcte per a la classe. L'adreça de correu electrònic
  que heu utilitzat és correcta&nbsp;?<p>
  Hem registrat aquest fracàs.
+</p>
  !exit
 !endif
 
@@ -174,6 +201,7 @@ La creació de la classe només pot tenir èxit si
  !mailurl $wims_site_manager gestor d'aquest lloc\
 user registration failure
 . Gràcies!
+</p>
  !exit
 !endif
 
@@ -181,40 +209,40 @@ user registration failure
  Heu intentat tornar a crear una classe ja creada. Potser
  heu clicat al botó <span class="tt">actualitzar</span>&nbsp;? En tot cas, la vostra classe
  $classname ja està en aquest lloc i el segon intent de crear-la
- s'ha ignorat. <p>
+ s'ha ignorat.
+<div>
  !read adm/lang/links.phtml.$modu_lang
+</div>
  !exit
 !endif
 
 !if classdontexists=$error
- Cette classe n'existe pas.
+ Aquesta classe no existeix.
  !exit
 !endif
 
 !if notexempleclass=$error
- Cette classe n'est pas une classe d'exemple : impossible de la copier.
+ Aquesta classe no és una classe d'exemple: impossible copiar-la.
  !exit
 !endif
 
 !if badcpmethod=$error
- Méthode de copie impossible à identifier. Recommencer l'opération. Si l'erreur persiste contacter l'administrateur du serveur.
+ Mètode de còpia no identificable. Començar de nou. Si l'error persisteix, poseu-vos en contacte amb l'administrador del servidor.
  !exit
 !endif
 
 !if cloningnotallow=$error
- La duplication de cette classe n'est pas autorisée par son administrateur.
+ La duplicació d'aquesta classe no està autoritzada pel seu administrador.
  !exit
 !endif
 
 !if badcloningpwd=$error
- Mauvais mot de passe de duplication.
+ Contrasenya de duplicació incorrecta.
  !exit
 !endif
 
 !if disallowcloning=$error
- Aucune duplication de cette classe ne peut être réalisée.
+ No es pot fer cap duplicació d'aquesta classe.
  !exit
 !endif
-
 !msg $error
-

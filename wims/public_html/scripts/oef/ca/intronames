@@ -17,28 +17,34 @@
     Trieu títols que continguin la paraula\
     exercicis\
     Configurar l'exercici\
-    Paramètres Généraux\
+    Configuració general\
     Configuració específica per a aquest mòdul\
     Configuració general\
     Configuració per a l'anàlisi de les respostes\
-Select all exercices containing\
-function\
+    Seleccionar tots els exercicis que contenen\
+    funció\
  into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
     name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
     name_simplifiedmenu,name_simplifiedmenu_back,name_expertmenu,name_select,name_exercises,name_menu,name_general_parms,name_module_setup,\
     name_general_setup,name_score_setup,name_select_auto,name_select_placeholder
 
-!set name_qcmanswer_help=Each question will display this maximum choices.
+!set name_qcmanswer_help=Cada pregunta mostrarà com a màxim aquest nombre d'opcions.
 
 !distribute lines Càlcul de les notes en un exercici de qüestions múltiples\
-Mitjana aritmètica, Penalitzar els errors, Penalitzar molt els errors\
+Sense penalització, Poca penalització, Molta penalització\
 Càlcul de la nota en una sèrie d'exercicis\
 només si tria una sèrie que conté almenys dos exercicis\
-Mitjana aritmètica, Penalitzar els errors, Penalitzar molt els errors\
+Sense penalització, Poca penalització, Molta penalització\
 Penalitzar per mala precisió\
 A vegades\
 into name_expower,name_prompt_expower, name_sepower,name_warning_pow,\
 name_prompt_sepower, name_precweight,name_sometimes
+
+!set name_warning_expower=Moyenne arithmétique du score à chaque question mise à la \
+  puissance le nombre sélectionné.
+
+!set name_warning_sepower=Moyenne arithmétique du score de chaque exercice mise à la \
+  puissance le nombre sélectionné.
 
 !set name_datamodule=Aquest mòdul requereix el mòdul de dades <span class="tt">$module_data</span> \
   que no està instal·lat en aquest servidor. Si vol utilitzar-lo, \
@@ -47,20 +53,26 @@ name_prompt_sepower, name_precweight,name_sometimes
 !set name_choice=mai, si la nota no és màxima, sempre
 !set name_qcm=QCM (només per a alguns tipus d'exercici)
 !set name_choice_check=Figuri sempre la resposta correcta,\
-  Penalitzar respostes incorrectes a les opcions múltiples.,\
+  Penalitzar per una resposta incorrecta.,\
   Mostrar la resposta correcta.,\
   Permetre suggeriments (si estan disponibles).
 
  !set name_aleaseries= Proposar els exercicis de la sèrie en ordre.
- !set name_remarkintro1=Després d'haver seleccionat un exercici de la llista,\
-cliqueu a <span class="wims_button disabled">$wims_name_work</span>. Els exercicis es trien a l'atzar entre la vostra selecció \
-  (o entre tots els exercicis disponibles si no en trieu cap).
+ !set name_remarkintro1=Trieu un o més exercicis i la configuració\
+  (simplificada o completa). A continuació, feu clic a \
+<span class="wims_button disabled">$wims_name_work</span>. Els exercices proposats \
+es prendran a l'atzar entre la vostra tria (o entre tots els exercicis disponibles \
+si no n'heu triat cap).
+
 
 !if * isin $titlelist
   !set name_remarkintro2=Els exercicis marcats amb * són en general més difícils que els altres.
 !endif
 !!leave on one line
-!set name_remarkintro3=Podeu posar dos nombres en el límit de temps, un límit menor seguit per un de més gran. En aquest cas, el primer límit inicia la reducció de la nota, que serà 0 si s'arriba al segon límit.
+!set name_remarkintro3=Podeu posar dos nombres en el cronòmetre, separades per una \
+coma sense espai, el segon més gran que el primer. El primer número \
+representa el temps (en segons) a partir del qual es redueix la puntuació. \
+El segon, per defecte igual al primer, és el temps (en segons) a partir del qual la puntuació és 0.
 
 !set name_remarkseverity= Aquí hi ha una taula que mostra la correspondència \
 entre els nivells de severitat (Menú simplificat) i diferents configuracions (Menú per experts).
@@ -76,10 +88,12 @@ d'exercicis de les sèries.
 !set name_remarkorder2=Es pot canviar aquest ordre després de la inserció en un full de treball.
 
 !set name_help_precweight=Com més petit sigui el nombre, més dura la penalització.
+En concret, la nota d'una resposta numèrica imprecisa es multiplica per aquest nombre\
+en comparació amb la d'una resposta correcta.
 
-!set name_examplepenality=Exemple : tableaux donnant le calcul du score pour un exercice comportant\
- plusieurs questions de même importance en fonction du nombre de mauvaises réponses\
- et du poids de pénalisation choisi.
+!set name_examplepenality=Exemple: taula que mostra el càlcul de la puntuació per a un exercici que implica\
+  diverses preguntes d'igual importància en funció del nombre de respostes incorrectes\
+  i el pes de la penalització triada.
 
-!set name_example1=!nosubst Exercice à $tmp_n questions <br/>Nombre d'erreurs \ Poids de pénalisation
-!set name_warning_levelseverity=Cliquer sur Paramétrage expert pour plus de détails.
+!set name_example1=!nosubst Exercici à $tmp_n preguntes <br/>Nombre d'errors \ Pes de la penalització
+!set name_warning_levelseverity=Cliqueu a Configuració per experts per a més detalls.
