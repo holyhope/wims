@@ -1,5 +1,8 @@
-<div class="wimscenter">
+!! FIXME was not read if the job has changed, should be put in var.proc or main.phtml ?
+!read adm/class/classlang names.phtml
+<div>
  <p>
+!set wims_ref_class=wims_button
  !if $teachercnt=0
 $name_first1
  !href cmd=reply&job=addteacher $wims_name_addteacher
@@ -13,6 +16,7 @@ $name_first1
 to $wims_menu_items
 !goto nopart
  <p>
+!set wims_ref_class=wims_button
 !if $studentcnt=0
  $name_first2
  !href cmd=reply&job=addstudent $wims_name_addstudent
@@ -29,10 +33,11 @@ to $wims_menu_items
 
 :nopart
 </div>
-
 !if $levelcnt=0
+<div>
 <p>
   $name_first3
+!set wims_ref_class=wims_button
   !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_items
