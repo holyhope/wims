@@ -246,14 +246,12 @@ $dl3$dl5\
  data_scores=!append item $dl2$tmp to $data_scores
 !next u
 
+infile=spreadsheet.$csvformat
+outfile=$fbase.$csvformat
 !if $csvformat iswordof ods
  !! it is format ods
- infile=spreadsheet.$csvformat
- outfile=$fbase.$csvformat
  !mexec csv/mkODS.py
 !else
- !! it is format csv/tsv
- infile=spreadsheet.$csvformat
- outfile=$fbase.$csvformat
+ !! it is format csv/tsv/xls
  !mexec csv/getprep.sh
 !endif
