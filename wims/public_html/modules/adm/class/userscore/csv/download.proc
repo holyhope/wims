@@ -92,6 +92,7 @@ dlcnt=!itemcnt $dl
 
 sep_csv=,
 sep_ods=;
+sep_xls=;
 sep_tsv=$	$
 sep=$(sep_$csvformat)
 dl2=!replace , by ,user_ in user_$dl
@@ -245,13 +246,14 @@ $dl3$dl5\
  data_scores=!append item $dl2$tmp to $data_scores
 !next u
 
-!if $csvformat iswordof csv tsv
- infile=spreadsheet.$csvformat
- outfile=$fbase.$csvformat
- !mexec csv/getprep.sh
-!else
+!if $csvformat iswordof ods
  !! it is format ods
  infile=spreadsheet.$csvformat
  outfile=$fbase.$csvformat
  !mexec csv/mkODS.py
+!else
+ !! it is format csv/tsv
+ infile=spreadsheet.$csvformat
+ outfile=$fbase.$csvformat
+ !mexec csv/getprep.sh
 !endif
