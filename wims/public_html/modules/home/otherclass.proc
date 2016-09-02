@@ -30,7 +30,11 @@ to $wims_ariane
     !endif
     !set wims_ariane=!append line class_home $pname,$c_,module=adm/class/classes&type=$(tmp_)supervisor&class=$class_parent to $wims_ariane
   !endif
-  !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !if $seq!=$empty
+    !set wims_ariane=!append line class_home $wims_classname,1,cmd=resume to $wims_ariane
+  !else
+    !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !endif
 !endif
 
 !exit
@@ -50,7 +54,11 @@ to $wims_ariane
     !set wims_ariane=!append line class_home $pname,1,module=adm/class/classes&type=$(tmp_)participant&auth_user=$ext_login&class=$class_parent\
 to $wims_ariane
   !endif
-  !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !if $seq!=$empty
+    !set wims_ariane=!append line class_home $wims_classname,1,cmd=resume to $wims_ariane
+  !else
+    !set wims_ariane=!append line class_home $wims_classname,8 to $wims_ariane
+  !endif
 !endif
 
 
