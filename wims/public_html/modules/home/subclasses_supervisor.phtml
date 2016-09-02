@@ -42,6 +42,13 @@ $icourses
 !next cls
 !let compsup=!sh echo "$compsup" | sort | uniq;
 
+!if $user_supervisable=yes and $wims_superclass isitemof $user_supervise and $wims_superclass=$wims_class
+  !let don=!defof class_typename,class_description,class_supervisor in wimshome/log/classes/$classrad/.def
+    <ul class="wims_subclasses"><li><span class="wims_classes_direct_portal">
+     !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass&auth_user=supervisor $class_description (supervisor)
+    </span></li>
+   </ul>
+!endif
 !let user_participate=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$wims_realuser
 
 !if $class_type=3 and $class_typename!=level
