@@ -11,6 +11,12 @@
 !else
  !reset ct1,ct2
 !endif
+!set linkword=!getopt linkword in $(replyoption$i)
+!default linkword=$ $
+!if $linkword=empty
+  !reset linkword
+!endif
+!set oef_answer_option$i=$linkword
 !set inputsize=$[$inputsize*10]
 !set lenlimit=40
 !set imgs=$(replygood$i)
@@ -63,7 +69,7 @@ dynapi.onLoad(function() {
  function $(z)_addone(t) {
   if(t<0 || $(z)_imgcnt>=$lenlimit) return;
   if($(z)_imgcnt>0) {
-    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+' '+$(z)_imgs[t];
+    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+'$linkword'+$(z)_imgs[t];
     $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+' '+$(z)_Imgs[t];
   }
   else {

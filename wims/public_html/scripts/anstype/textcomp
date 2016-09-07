@@ -13,6 +13,8 @@ dd=!trim $dd
 
 m_reply$i=$dd
 reply$i=$dd
+reply_$i=!replace internal $ $ by $(oef_answer_option$i) in $dd
+reply__$i=$dd
 !if $wims_read_parm=nocompare
  !exit
 !endif
@@ -27,6 +29,7 @@ good=!translate | to $\
 $ in $good
 good=!nonempty lines $good
 replyGood$i=!line 1 of $good
+replyGood$i=!replace internal $ $ by $(oef_answer_option$i) in $(replyGood$i)
 t_=!linecnt $good
 !for n=1 to $t_
  g=!line $n of $good
