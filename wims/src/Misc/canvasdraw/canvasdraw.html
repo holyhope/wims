@@ -8,7 +8,7 @@
  a:visited {color:#004077;}
 </style>
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (04-08-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (09-09-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -251,7 +251,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> you can check the javascript reply format in the wims tool <a href="http://wims.math.leidenuniv.nl/wims/wims.cgi?lang=en&module=tool/directexec">direct exec</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br />\text{dessin=popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />}<br />\text{functionplot=wims(exec canvasdraw \dessin)}<br />\statement{<br />\functionplot<br />}
+<li><span style="color:blue;font-size:0.8em"> for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br /><small>text{dessin=<br />popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />}<br />text{functionplot=wims(exec canvasdraw dessin)}<br />statement{<br />functionplot<br />}</small>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 </span></li>
@@ -1638,6 +1638,8 @@
 <li><span style="color:blue;font-size:0.8em"> onclick seqeuence numbering starts at '0'.<br />e.g. if there are 6 objects set onclick, the first onclick object will have id-number '0', the last id-number '5'
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> line based objects will show an increase in line width<br />font based objects will show the text in 'bold' when clicked.
+</span></li>
+<li><span style="color:blue;font-size:0.8em"> the click zone (accuracy) is determined by 2&times; the line width of the object
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> onclick and <a href="#drag">drag x|y|xy</a> may be combined in a single flyscript <br />(although a single object can <b>not</b> be onclick and draggable at the same time...)
 </span></li>

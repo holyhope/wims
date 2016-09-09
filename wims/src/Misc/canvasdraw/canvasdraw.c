@@ -3669,6 +3669,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	 @ if the next object is clicked, it's 'object onclick_or_drag sequence number' in fly script is returned <br /> by javascript:read_canvas();
 	 @ onclick seqeuence numbering starts at '0'.<br />e.g. if there are 6 objects set onclick, the first onclick object will have id-number '0', the last id-number '5'
 	 @ line based objects will show an increase in line width<br />font based objects will show the text in 'bold' when clicked.
+	 @ the click zone (accuracy) is determined by 2&times; the line width of the object
 	 @ onclick and <a href="#drag">drag x|y|xy</a> may be combined in a single flyscript <br />(although a single object can <b>not</b> be onclick and draggable at the same time...) 
 	 @ <b>note</b>: not all objects may be set onclick
 	*/
