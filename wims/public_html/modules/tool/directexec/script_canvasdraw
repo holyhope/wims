@@ -1,0 +1,27 @@
+<script type="text/javascript">
+//<![CDATA[
+"use strict";
+ <!-- will return all 'userdraw' or 'userinput' data from all canvas javascript includes -->
+ <!-- will return all 'drag&drop' or 'onclick' data from all canvas javascript includes -->
+ function read_canvas(){
+  if( typeof popup !== 'undefined' ){
+   var fun = popup['read_canvas'+canvas_scripts[0]];
+   return fun();
+  }
+  else
+  {
+   var script_len = canvas_scripts.length;var draw_reply = "";var found_result = false;for(var p = 0 ; p < script_len ; p++){var fun = eval("read_canvas"+canvas_scripts[p]);if( typeof fun === 'function'){var result = fun();if( result  && result.length != 0){if(script_len == 1 ){ return result;};found_result = true;draw_reply = draw_reply + "["+p+"]="+ result + "\n";};};};if( found_result ){return draw_reply;}else{return null;}
+  };
+ };
+ function read_dragdrop(){
+  if( typeof popup !== 'undefined' ){
+   var fun = popup['read_dragdrop'+canvas_scripts[0]];
+   return fun();
+  }else{
+   var script_len = canvas_scripts.length;var dragdrop_reply = "";var found_result = false; for(var p = 0 ; p < script_len ; p++){var fun = eval("read_dragdrop"+canvas_scripts[p]); if(typeof fun === 'function'){var result = fun();if( result && result.length != 0 ){if(script_len == 1 ){ return result;};found_result = true;dragdrop_reply = dragdrop_reply + "["+p+"]=" + result +"\n";};};};if( found_result ){return dragdrop_reply;}else{return null;}
+  };
+ };
+//]]>
+</script>
+   <input type="button" onclick="alert(read_canvas());" value="read_canvas()" />
+   <input type="button" onclick="alert(read_dragdrop());" value="read_dragdrop()" />
