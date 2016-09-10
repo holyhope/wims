@@ -3016,11 +3016,11 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	break;
 	case SLIDER:
 	/*
-	@ slider start_value,end_value,width px,height px,type,label
-	@ type: xy,x,y,angle
-	@ if a value display is desired, use<br />type:xy display,x display,y display,angle radian,angle degree
+	@ slider start_value,end_value,width px,height px,<em>type</em>,label
+	@ <em>type</em> may be : xy,x,y,angle
+	@ if a slider value display is desired, use for argument <em>type</em>:<br />xy display<br />x display<br />y display<br />angle radian<br />angle degree
+	@ is a unit (or something like that...) for x/y-value display is needed, use commands 'xunit' and / or 'yunit'
 	@ if the translation should be performed using a function, use for type : xy function,x function,y function<br />use commands sliderfunction_x and/or sliderfunction_y before the slider command to define the functions<br />example:<br />sliderfunction_x x^2<br />sliderfunction_y y^2<br />slider -5,5,100,100,xy function,Some_Text<br />...some stuff to slide<br />killslider<br />sliderfunction_x x^2-2<br />slider -15,15,100,10,x function,Some_Other_Text<br />...more stuff to slide<br />killslider<br />... etc
-	@ is a unit for x / y value display is needed, use commands 'xunit' and / or 'yunit'
 	@ use command 'slider' before draggable/clickable objects.
 	@ drag and drop may be combined with rotation slider<br />for example an arrow rotated by a slider may be placed anywhere (drag&drop)<em>size 300,300<br />xrange -5,5<br />yrange -5,5<br />grid 1,1,grey<br />linewidth 3<br />drag xy<br />fillcolor orange<br />strokecolor blue<br />slider 0,2*pi,250,30,angle degrees,Rotate arrow<br />arrow 2,2,5,5,8,red</em>
 	@ no slider for a math function, these can be traced using command 'trace_jscurve some_function_in_x'
@@ -3070,7 +3070,19 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		    		}
 		    	    }
 			    if(strstr(temp,"display")!=0){
-		    		use_slider_display = 1; /* show x xy values in canvas window */
+				if( slider == 4 ){ /* show x:y */
+		    		    use_slider_display = 1; /* show x xy values in canvas window */
+		    		}
+		    		else
+		    		{
+		    		    if( slider == 1 ){ /* show only x -values */
+		    		     use_slider_display = 10;
+		    		    }
+		    		    else
+		    		    {
+		    		     use_slider_display = 11; /* show only y -values*/
+		    		    }
+		    		}
 			    }
 			    else
 			    {

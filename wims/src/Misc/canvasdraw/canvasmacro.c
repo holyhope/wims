@@ -2690,7 +2690,10 @@ fprintf(js_include_file," \nfunction safe_eval(exp){\
 
 /*
 add display of slider value in mouse context
-use_slider_display = 1 : x or x/y
+use_slider_display = 1 : x/y -values
+use_slider_display = 10 : x-values only
+use_slider_display = 11 : y-values only
+
 use_slider_display = 2 : angle in degrees
 use_slider_display = 3 : angle in radians
 */
@@ -2702,17 +2705,13 @@ function show_slider_value(value,use_slider_display){\
  current_context.clearRect(0,0,xsize,ysize);\
  var prec = Math.log(%d)/(Math.log(10));\
  var string;\
- if(use_slider_display == 1){\
-  string = \" \"+value[0].toFixed(prec)+\" \"+unit_x+\":\"+value[1].toFixed(prec)+\" \"+unit_y;\
- }else{\
-  if(use_slider_display == 2){\
-   value[1] = value[1]*180/Math.PI;\
-   string = \" \"+value[1].toFixed(prec)+\"\\u00B0\";\
-  }else{\
-   if(use_slider_display == 3){\
-    string = \" \"+value[1].toFixed(prec)+\" rad\";\
-   };\
-  };\
+ switch(use_slider_display){\
+  case 1: string = \" \"+value[0].toFixed(prec)+\" \"+unit_x+\":\"+value[1].toFixed(prec)+\" \"+unit_y; break;\
+  case 10: string = \" \"+value[0].toFixed(prec)+\" \"+unit_x; break;\
+  case 11: string = \" \"+value[1].toFixed(prec)+\" \"+unit_y; break;\
+  case 2: value[1] = value[1]*180/Math.PI;string = \" \"+value[1].toFixed(prec)+\"\\u00B0\";break;\
+  case 3: string = \" \"+value[1].toFixed(prec)+\" rad\";break;\
+  default: string = \" \";break;\
  };\
  var s = parseInt(1.2*%d*(string).length);\
  current_context.font = \"%dpx Ariel\";\
