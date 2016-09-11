@@ -4317,10 +4317,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ if you don't want a seconds hand (or minutes...), just make it invisible by using the background color of the hourglass...
 	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li><li>3: no prefab buttons...create your own buttons (or other means) to make the clock(s) adjustable by javascript function set_clock(num,type,diff)<br />wherein: num = clock id (starts with 0) ; type = 1 (hours) ; type = 2 (minutes) ; type = 3 (seconds) <br />and diff = the increment of 'type' (positive or negative) </li></ul>
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
-	
 	@ no combinations with other reply_types allowed, for now
 	@ if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
-	@ <b>note</b>: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
+	@ <b>note</b>: if you need multiple -interactive- clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
 	@ <b>note</b>: clocks will not zoom or pan, when using command <a href='#zoom'>'zoom'</a>
 	*/
 	    if( js_function[DRAW_CLOCK] != 1 ){ js_function[DRAW_CLOCK] = 1;}
