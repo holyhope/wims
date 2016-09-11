@@ -4315,8 +4315,9 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	@ type hourglass:<br />type = 0 : only segments<br />type = 1 : only numbers<br />type = 2 : numbers and segments
 	@ colors are optional: if not defined, default values will be used<br />default colours: clock 0,0,60,4,35,45,1,2<br />custom colours: clock 0,0,60,4,35,45,1,2,,,,yellow,red<br />custom colours: clock 0,0,60,4,35,45,1,2,white,green,blue,black,yellow
 	@ if you don't want a seconds hand (or minutes...), just make it invisible by using the background color of the hourglass...
-	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li></ul>
+	@ interactive <ul><li>0 : not interactive, just clock(s)</li><li>1 : function read_canvas() will read all active clocks in H:M:S format<br />The active clock(s) can be adjusted by pupils</li><li>2 : function read_canvas() will return the clicked clock <br />(like multiplechoice; first clock in script in nr. 0 )</li><li>3: no prefab buttons...create your own buttons (or other means) to make the clock(s) adjustable by javascript function set_clock(num,type,diff)<br />wherein: num = clock id (starts with 0) ; type = 1 (hours) ; type = 2 (minutes) ; type = 3 (seconds) <br />and diff = the increment of 'type' (positive or negative) </li></ul>
 	@ canvasdraw will not check validity of colornames...the javascript console is your best friend
+	
 	@ no combinations with other reply_types allowed, for now
 	@ if interactive is set to '1', 6 buttons per clock will be displayed for adjusting a clock (H+ M+ S+ H- M- S-)<br /> set_clock(clock_id,type,incr) <br />first clock has clock_id=0 ; type : H=1,M=2,S=3 ; incr : increment integer
 	@ <b>note</b>: if you need multiple clocks on a webpage, use multiple 'clock' commands in a single script !<br />and <i>not multiple canvas scripts</i> in a single page
@@ -4338,21 +4339,35 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	        switch(int_data[7]){
 		    case 0:break;
 	    	    case 1:if(clock_cnt == 0){
-	    			if( reply_format == 0 ){
-	    			     reply_format = 18; /* user sets clock */
-	    			    /* string_length = snprintf(NULL,0,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
-	    			     check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
-	    			     snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
-	    			     add_to_buffer(tmp_buffer);
-	    			    */
-				     fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
-	    			}
-				else
-				{
-				    canvas_error("interactive clock may not be used together with other reply_types...");
-			    	}
-			     }
+	    		   if( reply_format == 0 ){
+	    		    reply_format = 18; /* user sets clock */
+	    		    /* string_length = snprintf(NULL,0,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    		       check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+	    		       snprintf(tmp_buffer,string_length,"set_clock = function(num,type,diff){var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    		       add_to_buffer(tmp_buffer);
+	    		   */
+	    		    fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,name.interaction,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    		   }
+	    		   else
+			   {
+			    canvas_error("interactive clock may not be used together with other reply_types...");
+			   }
+			  }
+			  fprintf(stdout,"<p style=\"text-align:center\"><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><br /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S&minus;\" /></p>",input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt);
+		    break;
+	    	    case 3:if(clock_cnt == 0){
+	    	            if( reply_format == 0 ){
+	    	             reply_format = 18; /* user sets clock */
+	    	             fprintf(js_include_file,"set_clock = function(num,type,diff){if(wims_status == \"done\"){return;};var name = eval(\"clocks\"+num);switch(type){case 1:name.H = parseInt(name.H+diff);break;case 2:name.M = parseInt(name.M+diff);break;case 3:name.S = parseInt(name.S+diff);break;default: break;};name = new clock(name.xc,name.yc,name.radius,name.H,name.M,name.S,name.type,1,name.H_color,name.M_color,name.S_color,name.bg_color,name.fg_color);};\n");
+	    		    }
+			    else
+			    {
+			     canvas_error("interactive clock may not be used together with other reply_types...");
+			    }
+			   }
+			    /* 
 			    fprintf(stdout,"<p style=\"text-align:center\"><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,1)\" value=\"H+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,1)\" value=\"M+\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,1)\" value=\"S+\" /><br /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,1,-1)\" value=\"H&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,2,-1)\" value=\"M&minus;\" /><input style=\"%s\" type=\"button\" onclick=\"javascript:set_clock(%d,3,-1)\" value=\"S&minus;\" /></p>",input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt,input_style,clock_cnt);
+			   */
 		    break;
 		    case 2:if( reply_format == 0 ){
 				reply_format = 19; /* "onclick */
@@ -5794,6 +5809,11 @@ read_canvas%d = function(){\
 <!-- end function 17 read_canvas%d() -->",canvas_root_id,canvas_root_id,canvas_root_id);
     break;
     case 18: fprintf(js_include_file,"\
+\n<!-- javascript has no real modulo function -->\n\
+function mod(n, m){\
+ var m = parseInt(((n %% m) + m) %% m);\
+ return m;\
+};\
 \n<!-- begin function 18 read_canvas%d() -->\n\
 read_canvas%d = function(){\
  var p = 0;\
@@ -5805,10 +5825,7 @@ read_canvas%d = function(){\
   try{\
    name = eval('clocks'+p);\
    h = name.H;m = name.M;s = name.S;\
-   if(s < 0){s = 60 + s;m = m - 1;};\
-   if(m < 0){m = 60 + m;h = h - 1;};\
-   if(h < 0){h = 12 + h;};\
-   h = parseInt((h+m/60+s/3600)%%12);m = parseInt((m + s/60)%%60);s = parseInt(s%%60);\
+   h = mod((h+m/60+s/3600),12);m = mod((m + s/60),60);s = mod(s,60);\
    reply[p] = h+\":\"+m+\":\"+s;\
    p++;\
   }catch(e){t=false;};\
@@ -7838,9 +7855,6 @@ var clock = function(xc,yc,radius,H,M,S,type,interaction,h_color,m_color,s_color
  this.H = H;\
  this.M = M;\
  this.S = S;\
- if(this.S == -1){this.S = 59;this.M = this.M - 1;};\
- if(this.M == -1){this.M = 59;this.H = this.H - 1;};\
- if(this.H == -1){this.H = 11;};\
  this.xc = xc || xsize/2;\
  this.yc = yc || ysize/2;\
  this.radius = radius || xsize/4;\
