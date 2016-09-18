@@ -3869,7 +3869,8 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 	    @ if fly-script starts with keyword 'popup', the canvas image will be exclusively in a popup window (xsize px &times; ysize px)
 	    @ if keyword 'popup' is used after command 'size xsize,ysize' the canvas will also be displayed in a popup window with size 'xsize &times; ysize'
 	    @ the popup window will be embedded into the page as a 'normal' image , when 'status=done' ; override with keyword <a href="#status"> 'nostatus'</a>
-	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em><br />
+	    @ to access the read_canvas and read_dragdrop functions in a popup window, use:<br /><em><br /> function read_all(){<br /> if( typeof popup !== 'undefined' ){<br />  var fun1 = popup['read_dragdrop'+canvas_scripts[0]];<br />  var fun2 = popup['read_canvas'+canvas_scripts[0]];<br />   popup.close();<br />  return "dragdrop="+fun1()+"\\ncanvas="+fun2();<br /> };<br /></em>
+	    @ to set a canvasdraw produced <a href="#clock">clock</a> or multiple clocks...use something like:<br /><em>popup.set_clock(clock_id,type,diff);</em><br />as js-function for a button (or something else) in your document page.<br />wherein <b>clock_id</b> starts with 0 for the first clock<br /><b>type</b> is 1 for Hours,2 for Minutes and 3 for Seconds<br /><b>diff</b> is the increment (positive or negative) per click
 	    */
 	    use_tooltip = 2;
 	    break;
