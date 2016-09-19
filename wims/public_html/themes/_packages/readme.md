@@ -16,8 +16,8 @@ And then we use `Grunt` to perform special tasks (concat, minify, ...)
     npm install -g grunt-cli
 
 
-# Upgrade
----------
+# Upgrade package manager
+-------------------------
 from `_packages` directory :
 
     npm update
@@ -29,13 +29,17 @@ from `_packages` directory :
 # Manage Bower Packages
 -----------------------
 
-## list all installed plugins :
+## List all installed plugins :
     bower list
 
-## update Javascripts plugins via Bower :
+## Update Javascripts plugins via Bower :
     bower update --save
+*nb : After each jquery-ui update, look at these URL :*
 
-## update Javascripts plugins for production (without devDepedencies) :
+* Tabs : [searchform](http://localhost/wims/wims.cgi?cmd=new&module=home&search_keywords=oef&search_category=A&search_lang=fr#searchform)
+* Menu : [H6/algebra/docnatural.fr](http://localhost/wims/wims.cgi?module=H6/algebra/docnatural.fr)
+
+## Update Javascripts plugins for production (without devDepedencies) :
     bower update -p
 
 
@@ -46,10 +50,11 @@ from `_packages` directory :
 
 # Migrate files from _packages/ to wims/
   #  After each update, Grunt is handy to automatically compress js + css, and move each files at is wims destination. simply call "grunt"
+
     grunt
 
 #  Documentations
-------------------------
+-----------------
 * [Bower docs](http://bower.io/docs/creating-packages/)
 * [Grunt HowTo (video fr)](http://www.grafikart.fr/tutoriels/grunt/grunt-introduction-470)
 * [Grunt "getting started"](http://gruntjs.com/getting-started)

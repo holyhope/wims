@@ -106,10 +106,18 @@ module.exports = function(grunt){
            dest: '../../scripts/js/'
           },
 
-          // includes all files & sub-directories within path "jquery-ui/themes/smoothness"
+          // includes all minified files within path "jquery-ui-slider-pips/"
           {
            expand: true,
-           src: ['bower_components/jquery-ui/themes/smoothness/**'],
+           filter: 'isFile',
+           src: ['bower_components/jquery-ui-slider-pips/dist/*.min.*'],
+           dest: '../../scripts/js/'
+          },
+
+          // includes all files & sub-directories within paths "jquery-ui/themes/smoothness" and "jquery-ui/themes/base"
+          {
+           expand: true,
+           src: ['bower_components/jquery-ui/themes/smoothness/**','bower_components/jquery-ui/themes/base/**'],
            dest: '../../scripts/js/'
           },
 
@@ -148,6 +156,15 @@ module.exports = function(grunt){
             src: ['bower_components/Chart.js/dist/*.bundle.min.js' ],
             dest: '../../scripts/js/',
           },
+          // jsxGraph
+          {
+            expand: true,
+            filter: 'isFile',
+            flatten: 'true',
+            src: ['bower_components/jsxgraph/distrib/jsxgraph*', 'bower_components/jsxgraph/distrib/geo*' ],
+            //dest: '../../scripts/js/bower_components/jsxgraph/',
+            dest: '../../scripts/js/jsxgraph/',
+          },
           /* ASCIIMathML (+LaTeXMathML)
           {
             expand: true,
@@ -160,7 +177,7 @@ module.exports = function(grunt){
         ],
       },
 
-      // MathJax specific copying task
+      // MathJax specific copying task (it could be long)
       MathJax: {
         files: [
           {
