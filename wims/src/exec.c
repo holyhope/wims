@@ -524,13 +524,13 @@ void _headmathjax ( char *p)
 function wims_mathml_zoom(id){\
 var math = document.getElementById(id);\
 if(math.getAttribute(\"mathsize\") == \"100%\"){\
-math.setAttribute(\"mathsize\",\"200%\");}else{\
-math.setAttribute(\"mathsize\",\"100%\");};\
+  math.setAttribute(\"mathsize\",\"200%\");}else{\
+  math.setAttribute(\"mathsize\",\"100%\");};\
 };\
 if(\
 navigator.userAgent.toLowerCase().indexOf(\"firefox\") == -1 &&\
 navigator.userAgent.toLowerCase().indexOf(\"opera\") == -1 &&\
-(navigator.userAgent.toLowerCase().indexOf(\"safari\") == -1 ||\
+(navigator.userAgent.toLowerCase().indexOf(\"safari\") > 0 ||\
  navigator.userAgent.toLowerCase().indexOf(\"chrome\") > 0 ||\
  navigator.userAgent.toLowerCase().indexOf(\"android\") > 0)\
 ){var script = document.createElement(\"script\");\
