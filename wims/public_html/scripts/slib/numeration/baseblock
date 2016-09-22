@@ -1,0 +1,59 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=,,,html\
+[10,5,4],lightblue,[,200],html\
+[4,1,1],orange,[,100],html\
+[1,5,1],lightgreen,[50],html\
+[5,1,1],lightgreen,[,50],html\
+[1,1,3],lightgreen,[100],html
+
+!exit
+:proc
+!reset slib_out
+!distribute item $wims_read_parm into slib_num,slib_color,slib_size,slib_url
+
+slib_num=!declosing $slib_num
+!default slib_num=10,10,10
+slib_size=!declosing $slib_size
+slib_slope=0.5,0.2
+!default slib_color=lightblue
+slib_maxx=$[$(slib_num[1])+$(slib_slope[1])*$(slib_num[3])]
+slib_maxy=$[$(slib_num[2])+$(slib_slope[2])*$(slib_num[3])]
+!default slib_size=200
+!if $(slib_size[1])=$empty
+  slib_size=!exec pari $(slib_size[2])*[($slib_maxx+0.3)/($slib_maxy+0.3),1]
+!endif
+!if $(slib_size[2])=$empty
+  slib_size=!exec pari $(slib_size[1])*[1,($slib_maxy+0.3)/($slib_maxx+0.3)]
+!endif
+
+slib_out=xrange -0.1,$slib_maxx+0.2\
+yrange -0.1,$slib_maxy+0.2\
+linewidth 3\
+transparent 255,255,255\
+frectangle 0,0,$(slib_num[1]),$(slib_num[2]),$slib_color\
+fpolygon $slib_color,0,$(slib_num[2]),$(slib_num[1]),$(slib_num[2]),$(slib_num[1])+$(slib_num[3])*$(slib_slope[1]),$(slib_num[2])+$(slib_num[3])*$(slib_slope[2]),$(slib_num[3])*$(slib_slope[1]),$(slib_num[2])+$(slib_num[3])*$(slib_slope[2])\
+fpolygon $slib_color,$(slib_num[1]),0,$(slib_num[1]),$(slib_num[2]),$(slib_num[1])+$(slib_num[3])*$(slib_slope[1]),$(slib_num[2])+$(slib_num[3])*$(slib_slope[2]),$(slib_num[1])+$(slib_num[3])*$(slib_slope[1]),$(slib_num[3])*$(slib_slope[2])\
+linewidth 1\
+parallel 0,0,$(slib_num[1]),0,0,1,$(slib_num[2]),black\
+parallel 0,0,0,$(slib_num[2]),1,0,$(slib_num[1]),black\
+parallel 0,$(slib_num[2]),$(slib_slope[1])*$(slib_num[3]),$(slib_num[2])+$(slib_slope[2])*$(slib_num[3]),1,0,$(slib_num[1])+1,black\
+parallel 0,$(slib_num[2]),$(slib_num[1]),$(slib_num[2]),$(slib_slope[1]),$(slib_slope[2]),$(slib_num[3])+1,black\
+parallel $(slib_num[1]),0,$(slib_num[1]),$(slib_num[2]),$(slib_slope[1]),$(slib_slope[2]),$(slib_num[3])+1,black\
+parallel $(slib_num[1]),0,$(slib_num[1])+$(slib_slope[1])*$(slib_num[3]),$(slib_slope[2])*$(slib_num[3]),0,1,$(slib_num[2])+1,black
+
+
+!if url iswordof $slib_url or html iswordof $slib_url
+  insdraw_size=$slib_size
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_url
+    slib_out=<img src="$ins_url" alt="$(slib_num[1]) $(slib_num[2]) $(slib_num[3])" />
+  !else
+    slib_out=$slib_out,$insdraw_size
+  !endif
+!endif
