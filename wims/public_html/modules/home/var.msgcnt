@@ -5,10 +5,14 @@ forumtest=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
  !exit
 !endif
 
-!if $wims_user=supervisor
+!if $wims_user=supervisor and ($wims_realuser=$empty or $wims_realuser=supervisor)
  deffile=wimshome/log/classes/$wims_class/supervisor
 !else
- deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+ !if $wims_realuser!=$empty
+   deffile=wimshome/log/classes/$wims_class/.users/$wims_realuser
+ !else
+   deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+ !endif
 !endif
 
 newlim=10

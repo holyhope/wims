@@ -98,10 +98,14 @@ tag_escaper=
  wims_module_log=$job  	$forum
  !if classes isin $forumdir and $job iswordof read list
   now=!date '+%Y%m%d%H%M%S'
-  !if $wims_user=supervisor
+  !if $wims_user=supervisor and ($wims_realuser=$empty or $wims_realuser=supervisor)
    deffile=wimshome/log/classes/$wims_class/supervisor
   !else
-   deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+   !if $wims_realuser!=$empty
+     deffile=wimshome/log/classes/$wims_class/.users/$wims_realuser
+   !else
+     deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+   !endif
   !endif
   !setdef !set user_lastmsg=$now in $deffile
  !endif
