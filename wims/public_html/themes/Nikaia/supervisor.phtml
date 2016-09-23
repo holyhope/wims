@@ -92,16 +92,18 @@ $wims_classname, $wims_institutionname\
 </div><!--wimspagebox-->
   !goto end
  !else
-   <br /><span class="wims_msg warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   <div class="wims_alert warning">
+     <span class="wims_msg warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   </div>
  !endif
 !endif
 :nocheck
 
 !if & isin $newmsgcnt or $newmsgcnt>0
- <br />
+ <p class="wims_msg info">
  !href module=adm/forum/mboard $U_newmsg
+ </p>
 !endif
-
 !if $class_type=4
   <div class="wimscenter">
    !href module=adm/class/gateway $wims_name_SU_Gateway

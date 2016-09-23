@@ -49,33 +49,36 @@
 !else
  $SU_greet.
 !endif
+
 !set wims_ref_class=wims_button_help
 !href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet $wims_name_help
-<br />
+
 !if $wims_numpartconnected>0
- $SU_numpartconnected.
+ <p class="wims_connected">$SU_numpartconnected.</p>
 !else
- $SU_nopartconnected.
+ <p>$SU_nopartconnected.</p>
 !endif
 
 !if $quota_free<2
  !if $quota_free<0
   <p>$wims_name_exceeded</p>
   <p>
-  !href cmd=close&module=home&lang=$lang $wims_name_visitor
+    !href cmd=close&module=home&lang=$lang $wims_name_visitor
   </p>
   !goto end
  !else
-  <br /><span class="wims_warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   <div class="wims_alert warning">
+     <span class="wims_msg warning">$wims_name_warning</span>! $wims_name_reaching_limit
+   </div>
  !endif
 !endif
 :nocheck
 
 !if & isin $newmsgcnt or $newmsgcnt>0
- <br />
+ <p class="wims_msg info">
  !href module=adm/forum/mboard $U_newmsg
+ </p>
 !endif
-
 !if $class_type=4
    <div class="wimscenter">
     !href module=adm/class/gateway $wims_name_SU_Gateway
