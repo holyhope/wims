@@ -2200,6 +2200,31 @@ var click_cnt=0;\
 var x0,y0;\
 var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
+ var y = evt.clientY - canvas_rect.top;\
+ if( y < ysize + 1){\
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var x = evt.clientX - canvas_rect.left;\
+  if( use_snap_to_points != 0 ){\
+   var xy = new Array(2);\
+   if( use_snap_to_points == 1 ){\
+    xy = snap_to_points(x,y);\
+   }\
+   else\
+   {\
+    xy = snap_to_fun(x,y);\
+   };\
+   x = xy[0];y = xy[1];\
+  }\
+  else\
+  {\
+   if( x_use_snap_to_grid == 1 ){\
+    x = snap_to_x(x);\
+   };\
+   if( y_use_snap_to_grid == 1 ){\
+    y = snap_to_y(y);\
+   };\
+  };\
+ };\
  if(evt.which == 1 ){\
   if( click_cnt == 0 ){\
    click_cnt = 1;\
