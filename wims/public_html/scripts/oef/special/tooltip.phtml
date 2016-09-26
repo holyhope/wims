@@ -11,13 +11,18 @@
 !endif
 !set parm1=!item 1 of $parms
 !set text=!item 3 to -1 of $parms
-!set option=!item  2 of $parms
+!if $text=$empty
+  !set text=!item 2 of $parms
+!else
+  !set option=!item 2 of $parms
+!endif
 !if nojs iswordof $option
   !set option=!replace internal nojs by in $option
   !set special_out=
 !else
   !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 !endif
+
 !set option=!trim $option
 !set option=!declosing $option
 !if $option=$empty
@@ -32,7 +37,7 @@
 !! !set text=!replace internal < by &#lt; in $text
 !! !set text=!replace internal > by &#gt; in $text
  !set text=!replace internal $\
-$ by  $  in  $text
+$ by $ in $text
  !set special_out=$special_out\
  <span class="tooltip"><a onmouseover="Tip('$text', $option)" onmouseout="UnTip()">$parm1</a></span>
  !else
