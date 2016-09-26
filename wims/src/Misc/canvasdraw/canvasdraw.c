@@ -705,7 +705,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ draw multiple lines through points (x1:y1)--(x2:y2) ...(x_n-1:y_n-1)--(x_n:y_n) in color 'color'
 	@ or use multiple commands 'curve color,formula' or "jscurve color,formule" to draw the line <br />(uses more points to draw the line; is however better draggable)
 	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
-	@ <b>attention</b>: the flydraw command "lines" is equivalent to canvasdraw command <a href="#polylines">"polyline"</a>
+	@ <b>attention</b>: the flydraw command "lines" is equivalent to canvasdraw command <a href="#polyline">"polyline"</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
 	    fill_color = stroke_color;
@@ -1139,13 +1139,12 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case POLYLINE:
 	/*
 	@ polyline color,x1,y1,x2,y2...x_n,y_n
-	@ alternative : path color,x1,y1,x2,y2...x_n,y_n
-	@ alternative : polylines color,x1,y1,x2,y2...x_n,y_n
-	@ alternative : brokenline color,x1,y1,x2,y2...x_n,y_n
-	@ alternative : brokenlines color,x1,y1,x2,y2...x_n,y_n
-	@ draw a broken line interconnected between all points (not closed)
-	@ equivalent to flydraw command "line color,x1,y1,x2,y2...x_n,y_n"
-	@ use command <a href='#segments'>'segments'</a> for not interconnected line segments.
+	@ brokenline color,x1,y1,x2,y2...x_n,y_n
+	@ path color,x1,y1,x2,y2...x_n,y_n
+	@ remark: there is <b>no</b> command polylines | brokenlines | paths ... just use multiple commands "polyline ,x1,y1,x2,y2...x_n,y_n"
+	@ remark: there are commands "userdraw path(s),color" and "userdraw polyline,color"... these are two entirely different things !<br />the path(s) userdraw commands may be used for freehand drawing(s)<br />the polyline userdraw command is analogue to this polyline|brokenline command
+	@ the command interconnects the points in the given order with a line (canvasdraw will not close the drawing: use command <a href="#poly">polygon</a> for this)
+	@ use command <a href='#segments'>'segments'</a> for a series of segments.<br />these may be clicked/dragged individually
 	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
 	*/
 	    stroke_color=get_color(infile,0); /* how nice: now the color comes first...*/
@@ -1175,6 +1174,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	case POLY:
 	/*
 	@ poly color,x1,y1,x2,y2...x_n,y_n
+	@ polygon color,x1,y1,x2,y2...x_n,y_n
 	@ draw closed polygon
 	@ use command 'fpoly' to fill it or use keyword <a href='#filled'>'filled'</a>
 	@ may be set <a href="#drag">draggable</a> / <a href="#onclick">onclick</a>
@@ -1858,17 +1858,17 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ userdraw object_type,color
 	@ only a single object_type is allowed.
 	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline</li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline</li><li>freehandlines</li><li>path</li><li>paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
-	@ <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse butten (e.g. event.which != 1 : all buttons but left)
+	@ <b>note</b>: all objects will be removed -after a javascript confirm box- when clicked on an object point with middle or right mouse button (e.g. event.which != 1 : all buttons but left)
 	@ use command "filled", "opacity int,int"  and "fillcolor color" to trigger coloured filling of fillable objects
 	@ use command "dashed" and/or "dashtype int,int" to trigger dashing
 	@ use command "replyformat int" to control / adjust output formatting of javascript function read_canvas();
 	@ may be combined with onclick or drag xy  of other components of flyscript objects (although not very usefull...)
 	@ may be combined with keyword 'userinput_xy'
-	@ <b>note</b>: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!
+	@ <b>note</b>: when zooming / panning after a drawing, the drawing will NOT be zoomed / panned...this is a "design" flaw and not a feature <br />To avoid trouble do not use zooming / panning together width userdraw.!<br />use command <a href="#multidraw">multidraw</a> is this is a problem for you...
 	*/
 	    if( use_userdraw == TRUE ){ /* only one object type may be drawn*/
 		canvas_error("Only one userdraw primitive may be used in command 'userdraw' use command 'multidraw' for this...");
@@ -1914,7 +1914,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_segments(js_include_file,1,draw_type,line_width,stroke_color,stroke_opacity,use_dashed,dashtype[0],dashtype[1]);
 	    }
 	    else
-	    if( strcmp(draw_type,"polyline") == 0 ){
+	    if( strcmp(draw_type,"polyline") == 0 ||  strcmp(draw_type,"brokenline") == 0 ){
 		if( js_function[DRAW_POLYLINE] != 1 ){ js_function[DRAW_POLYLINE] = 1;}
 		if(reply_format == 0){reply_format = 23;}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
@@ -8405,9 +8405,7 @@ int get_token(FILE *infile){
 	*rangey="rangey",
 	*path="path",
 	*polyline="polyline",
-	*polylines="polylines",
 	*brokenline="brokenline",
-	*brokenlines="brokenlines",
 	*lines="lines",
 	*poly="poly",
 	*polygon="polygon",
@@ -8896,7 +8894,7 @@ int get_token(FILE *infile){
 	free(input_type);
 	return FONTFAMILY;
 	}
-	if( strcmp(input_type, path) == 0 ||  strcmp(input_type, polyline) == 0 || strcmp(input_type, polylines) == 0 || strcmp(input_type, brokenline) == 0  || strcmp(input_type, brokenlines) == 0  ){
+	if( strcmp(input_type, polyline) == 0 ||  strcmp(input_type, path) == 0 || strcmp(input_type, brokenline) == 0 ){
 	free(input_type);
 	return POLYLINE;
 	}
