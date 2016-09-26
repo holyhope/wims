@@ -25,18 +25,18 @@ $my_temp_css to $wims_html_header
 	!set wims_html_onload=!append word $ $my_html_onload $ to $wims_html_onload
     !endif
     !header
-    
+
     !if $newstyle=$empty
-	<H2>THIS MODULE IS OUTDATED
+	<h2>THIS MODULE IS OUTDATED
 	<hr />
 	PLEASE UPDATE YOUR MODULES !!
 	<hr />
-	</H2>
-	<H3>
+	</h2>
+	<h3>
 	<a href="mailto:$wims_site_manager?subject=$module please update all Dutch modules to their latest version !">
-	    Write an email to the systems administator
+	    Write an email to the system administrator
 	</a>
-	</H3>
+	</h3>
 
     !else
 	<div style="width:100%;height:100%" id="schaersvoorde_exercise">
@@ -50,6 +50,7 @@ $my_temp_css to $wims_html_header
 		!read $phtmldir/form.phtml
 		<!-- end form.phtml in authordir -->
 		<p style="text-align:left">
+		!set wims_ref_class=wims_button wims_secondary_button
 		!href exo_Renew
 		</p>
 	    !else
@@ -57,18 +58,20 @@ $my_temp_css to $wims_html_header
 		!read $phtmldir/answer.phtml
     		<!-- end answer.phtml in authordir -->
 		<p style="text-align:left">
+		!set wims_ref_class=wims_button
 		!href exo_Again
 		.
 		</p>
-	
+
 		!if $worksheet=$empty
+		    !set wims_ref_class=wims_button wims_secondary_button
 		    !href exo_Intro
 		    .
 		!endif
 	    !endif
 	</div>
 	:end
-	<script type="text/javascript" src="$jsdir/wz_tooltip.js"></script> 
+	<script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>
 	!tail
     !endif
 !endif
