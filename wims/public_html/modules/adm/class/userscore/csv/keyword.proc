@@ -55,38 +55,43 @@ av=
 !endif
 
 !! add keyword for sheetexo information
-
-!for i in $activesh
-  e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
-  se=!append line $i to $se
-  !for ee=1 to $e
-    seq=sheet$(i)_exo_$(ee)_Q
-    se0=sheet$(i)_exo_$(ee)_I0
-    se1=sheet$(i)_exo_$(ee)_I1
-    se2=sheet$(i)_exo_$(ee)_I2
-    tmp=$seq $se0 $se1 $se2
-    se=!append item $tmp to $se
-    name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
-    name=!line 5 of $name
-    name=!replace , by  in $name
-    name_$seq=$name Q
-    name_$se0=$name I0 (%)
-    name_$se1=$name I1 (%)
-    name_$se2=$name I2
-  !next ee
-!next i
-!for i in $activexams
-  e=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
-  exe=!append line $i to $exe
-  !set nb_ses$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
-  !set nb_ses$i=!line 3 of $(nb_ses$i)
-  !set nb_ses$i=!word 2 of $(nb_ses$i)
-  !for ee=1 to $e
-    exe=!append item exam$(i)_exexo_$ee to $exe
-    name=!record $ee of wimshome/log/classes/$wims_class/exams/.exam$i
-    name=!line 3 of $name
-    name=!replace , by - in $name
-    name_exam$(i)_exexo_$ee=!makelist $name $ee for x=1 to $(nb_ses$i)
-    name_exam$(i)_exexo_$ee=!replace internal , by $ :$ in $(name_exam$(i)_exexo_$ee)
-  !next ee
-!next i
+!if $dl!=$empty
+  !for i in $activesh
+    !if sheetexo$i isin $dl
+      e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+      se=!append line $i to $se
+      !for ee=1 to $e
+        seq=sheet$(i)_exo_$(ee)_Q
+        se0=sheet$(i)_exo_$(ee)_I0
+        se1=sheet$(i)_exo_$(ee)_I1
+        se2=sheet$(i)_exo_$(ee)_I2
+        tmp=$seq $se0 $se1 $se2
+        se=!append item $tmp to $se
+        name=!record $ee of wimshome/log/classes/$wims_class/sheets/.sheet$i
+        name=!line 5 of $name
+        name=!replace , by  in $name
+        name_$seq=$name Q
+        name_$se0=$name I0 (%)
+        name_$se1=$name I1 (%)
+        name_$se2=$name I2
+      !next ee
+    !endif
+  !next i
+  !for i in $activexams
+    !if exam$(i)_exexo isin $dl
+      e=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$i
+      exe=!append line $i to $exe
+      !set nb_ses$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+      !set nb_ses$i=!line 3 of $(nb_ses$i)
+      !set nb_ses$i=!word 2 of $(nb_ses$i)
+      !for ee=1 to $e
+        exe=!append item exam$(i)_exexo_$ee to $exe
+        name=!record $ee of wimshome/log/classes/$wims_class/exams/.exam$i
+        name=!line 3 of $name
+        name=!replace , by - in $name
+        name_exam$(i)_exexo_$ee=!makelist $name $ee for x=1 to $(nb_ses$i)
+        name_exam$(i)_exexo_$ee=!replace internal , by $ :$ in $(name_exam$(i)_exexo_$ee)
+      !next ee
+    !endif
+  !next i
+!endif
