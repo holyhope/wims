@@ -3,7 +3,7 @@
 <span class="wims_warning">Errore!</span>
 
 !if not_supervisor=$error
- Spiacente, ma la preparazione e la modifica di un test di autovalutazione &egrave; 
+ Spiacente, ma la preparazione e la modifica di un test di autovalutazione &egrave;
  riservata al docente registrato del corso.
  !exit
 !endif
@@ -22,7 +22,7 @@
 !if bad_filename iswordof $error
  Il file indicato non sembra un file di dati nel formato corretto.
  :csvformat
- &Egrave; salvare i dati in formato testo (con i campi separati da 
+ &Egrave; salvare i dati in formato testo (con i campi separati da
  virgole o TAB, e con estensione .csv, .tsv o .txt).
  !exit
 !endif
@@ -72,6 +72,11 @@
  Strano! sembra che l'utente richiesto in realtà non sia iscritto al corso!
  !exit
 !endif
-
+!if too_big=$error
+  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
+  If you need the details of the exercices, you can do it sheet by sheet or
+  exam by exam. The file to download does not give you all the informations you asked.
+ !exit
+!endif
 !msg $error
 

@@ -30,7 +30,7 @@
 !endif
 
 !if binary_upload iswordof $error
- ¡Sus datos de hoja de cálculo están en formato binario! Este formato no 
+ ¡Sus datos de hoja de cálculo están en formato binario! Este formato no
  está reconocido, lo sentimos.
  <p>
  !goto csvformat
@@ -70,6 +70,11 @@
  Operación incorrecta. Cierre la ventana.
  !exit
 !endif
-
+!if too_big=$error
+  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
+  If you need the details of the exercices, you can do it sheet by sheet or
+  exam by exam. The file to download does not give you all the informations you asked.
+ !exit
+!endif
 !msg $error
 

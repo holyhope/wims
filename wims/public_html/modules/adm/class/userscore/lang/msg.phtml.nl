@@ -3,7 +3,7 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
-Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld. 
+Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld.
  !exit
 !endif
 
@@ -13,7 +13,7 @@ Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld.
 !endif
 
 !if no_login iswordof $error
-De opgestuurde data moeten wel een kolom bevatten met de 
+De opgestuurde data moeten wel een kolom bevatten met de
 loginnaam van de student.
  !exit
 !endif
@@ -35,7 +35,7 @@ Uw spreadsheet data zijn in binair formaat en wordt uiteraard niet geaccepteerd.
 !endif
 
 !if no_manual iswordof $error
- U moet eerst een 
+ U moet eerst een
  !href module=adm/class/grades handmatige
  &nbsp;cijfer kolom aanmaken, voordat deze gevuld kan worden met opgestuurde data.
  !exit
@@ -67,8 +67,13 @@ Dat werkblad/document bestaat niet.
 !if bad_op=$error
 <span class="wims_warning">Ongeldige bewerking</span>.
 Sluit dit venster.
-!exit 
+!exit
 !endif
-
+!if too_big=$error
+  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
+  If you need the details of the exercices, you can do it sheet by sheet or
+  exam by exam. The file to download does not give you all the informations you asked.
+ !exit
+!endif
 !msg $error
 

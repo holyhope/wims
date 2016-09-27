@@ -21,7 +21,7 @@
 !endif
 
 !if bad_filename iswordof $error
- Your file does not look like a spreadsheet data under text format. 
+ Your file does not look like a spreadsheet data under text format.
  :csvformat
  Please
  save your data under a text format (comma-separated or tab-separated, with
@@ -68,6 +68,11 @@
  Bad operation. Please close the window.
  !exit
 !endif
-
+!if too_big=$error
+  The number of columns of the spreadsheet is too big (greater than $TOO_BIG).
+  If you need the details of the exercices, you can do it sheet by sheet or
+  exam by exam. The file to download does not give you all the informations you asked.
+ !exit
+!endif
 !msg $error
 

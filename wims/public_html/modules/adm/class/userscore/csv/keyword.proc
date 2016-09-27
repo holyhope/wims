@@ -55,11 +55,17 @@ av=
 !endif
 
 !! add keyword for sheetexo information
+!set control_overflow=0
 !if $dl!=$empty
   !for i in $activesh
     !if sheetexo$i isin $dl
       e=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
       se=!append line $i to $se
+      control_overflow=$[$control_overflow+4*$e]
+      !if $control_overflow>$TOO_BIG
+        error=too_big
+        !exit
+      !endif
       !for ee=1 to $e
         seq=sheet$(i)_exo_$(ee)_Q
         se0=sheet$(i)_exo_$(ee)_I0
@@ -84,6 +90,11 @@ av=
       !set nb_ses$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
       !set nb_ses$i=!line 3 of $(nb_ses$i)
       !set nb_ses$i=!word 2 of $(nb_ses$i)
+      control_overflow=$[$control_overflow+4*$e]
+      !if $control_overflow>$TOO_BIG
+        error=too_big
+        !exit
+      !endif
       !for ee=1 to $e
         exe=!append item exam$(i)_exexo_$ee to $exe
         name=!record $ee of wimshome/log/classes/$wims_class/exams/.exam$i
