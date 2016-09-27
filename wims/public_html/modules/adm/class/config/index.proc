@@ -38,6 +38,7 @@ common=userlist,oef,doc
     list=!record 0 of wimshome/log/classes/$wims_superclass/$j_
     list=!column 1 of $list
     !for cl_ in $list
+!!FIXME I am not sure it is useful !read adm/gateway/mkteacherlist already does it
      !read adm/gateway/mkteacherlist $wims_superclass/$cl_
      Result=!record 0 of wimshome/log/classes/$wims_superclass/$cl_/.teacherlist
      Result=!linecnt $Result
@@ -51,6 +52,7 @@ $Result teachers found in $cl_.
    !for c_=1 to $classcnt
     cl_=!record $c_ of wimshome/log/classes/$wims_superclass/.subclasses
     cl_=!item 1 of $cl_
+!!FIXME I am not sure it is useful !read adm/gateway/mkteacherlist already does it
     !read adm/gateway/mkteacherlist $cl_
      Result=!record 0 of wimshome/log/classes/$cl_/.teacherlist
      Result=!linecnt $Result

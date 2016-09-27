@@ -1,5 +1,5 @@
 ##create teacherlist and .teacherlist_external at all levels
-## le paramètre est la classe
+## le parametre est la classe
 
 uclass=$wims_read_parm
 superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
@@ -35,8 +35,13 @@ tlist=!words2items $tlist
   !if $superclass=$uclass or $uclass isitemof $US_
    U_=!defof user_lastname,user_firstname in $basedir/.users/$t
    !appendfile $basedirr/.teacherlist.1 $U_,$t
+   !if $EXT_!=$empty
+     !appendfile $basedirr/.teacherlist_external.1 $EXT_:$t
+   !endif
    !for l in $US_
-     !if _$superclass isin _$US_
+!!teacherlist has not the same status in the superclass (every teacher)
+!! and in the subclasses (supervise teachers )
+     !if $l notwordof $superclass $uclass
        !appendfile $basedir0/$l/.teacherlist.1 $U_,$t
        !if $EXT_!=$empty
          !appendfile $basedir0/$l/.teacherlist_external.1 $EXT_:$t
@@ -45,18 +50,14 @@ tlist=!words2items $tlist
      !endif
    !next
  !endif
- !if $EXT_!=$empty
-   !appendfile $basedirr/.teacherlist_external.1 $EXT_:$t
- !endif
 !next t
-!set tmp=!listuniq $tmp,$uclass,$superclass
+!set tmp=!listuniq $tmp,$uclass
+!set tmp=!nonempty items $tmp
 !for t in $tmp
-  !if $t!=$empty
-    !sh sort -f $basedir02/$t/.teacherlist.1 | grep . >$basedir02/$t/.teacherlist\
+    !sh sort -f $basedir02/$t/.teacherlist.1 | uniq | grep . >$basedir02/$t/.teacherlist\
        rm -f $basedir02/$t/.teacherlist.1 >/dev/null
-    !sh sort -f $basedir02/$t/.teacherlist_external.1 | grep . >$basedir02/$t/.teacherlist_external\
+    !sh sort -f $basedir02/$t/.teacherlist_external.1 | uniq | grep . >$basedir02/$t/.teacherlist_external\
   rm -f $basedir02/$t/.teacherlist_external.1 >/dev/null
-  !endif
 !next
 
 !reset tmp
