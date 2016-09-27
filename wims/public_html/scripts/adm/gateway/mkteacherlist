@@ -20,27 +20,43 @@ basedir=wimshome/log/classes/$superclass
 basedir2=$wims_home/log/classes/$superclass
 basedirr=wimshome/log/classes/$uclass
 basedirr2=$wims_home/log/classes/$uclass
+basedir0=wimshome/log/classes
+basedir02=$wims_home/log/classes
+
 tlist=!sh cd $basedir2/.users\
 	grep -l user_supervisable=yes *
 tlist=!words2items $tlist
-
+!set tmp=
 !writefile $basedirr/.teacherlist.1
 !writefile $basedirr/.teacherlist_external.1
 !for t in $tlist
   US_=!defof user_supervise in $basedir/.users/$t
+  EXT_=!defof user_external_auth in $basedir/.users/$t
   !if $superclass=$uclass or $uclass isitemof $US_
    U_=!defof user_lastname,user_firstname in $basedir/.users/$t
    !appendfile $basedirr/.teacherlist.1 $U_,$t
+   !for l in $US_
+     !if _$superclass isin _$US_
+       !appendfile $basedir0/$l/.teacherlist.1 $U_,$t
+       !if $EXT_!=$empty
+         !appendfile $basedir0/$l/.teacherlist_external.1 $EXT_:$t
+       !endif
+       !set tmp=!append item $l to $tmp
+     !endif
+   !next
  !endif
-  EXT_=!defof user_external_auth in $basedir/.users/$t
-  !if $EXT_!=$empty
+ !if $EXT_!=$empty
    !appendfile $basedirr/.teacherlist_external.1 $EXT_:$t
-  !endif
+ !endif
 !next t
+!set tmp=!listuniq $tmp,$uclass,$superclass
+!for t in $tmp
+  !if $t!=$empty
+    !sh sort -f $basedir02/$t/.teacherlist.1 | grep . >$basedir02/$t/.teacherlist\
+       rm -f $basedir02/$t/.teacherlist.1 >/dev/null
+    !sh sort -f $basedir02/$t/.teacherlist_external.1 | grep . >$basedir02/$t/.teacherlist_external\
+  rm -f $basedir02/$t/.teacherlist_external.1 >/dev/null
+  !endif
+!next
 
-!sh sort -f $basedirr2/.teacherlist.1 | grep . >$basedirr2/.teacherlist\
-  rm -f $basedirr2/.teacherlist.1 >/dev/null
-
-!sh sort -f $basedirr2/.teacherlist_external.1 | grep . >$basedirr2/.teacherlist_external\
-  rm -f $basedirr2/.teacherlist_external.1 >/dev/null
-
+!reset tmp
