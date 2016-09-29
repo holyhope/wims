@@ -5955,7 +5955,7 @@ read_canvas%d = function(){\
  var marge = 5;var p = 0;\
  var prec = %d;\
  for(var i = 0; i < lu - 1 ; i++ ){\
-  if( Math.abs(userdraw_x[i] - userdraw_x[i+1])){\
+  if( Math.abs(userdraw_x[i] - userdraw_x[i+1]) || Math.abs(userdraw_y[i] - userdraw_y[i+1])){\
    reply_x[p] = (Math.round(prec*(px2x(userdraw_x[i]))))/prec;reply_y[p] = (Math.round(prec*(px2y(userdraw_y[i]))))/prec;\
    if( isNaN(reply_x[p]) || isNaN(reply_y[p]) ){ alert(\"hmmmm ?\");return; };\
    p++;\
