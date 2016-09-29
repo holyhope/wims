@@ -43,8 +43,9 @@ wims_prefix=mb class user tmp
   job=list
   !exit
  !endif
- forumuser=$wims_realuser
- !default forumuser=$wims_user
+ forumrealuser=$wims_realuser
+ forumuser=$wims_user
+ !default forumrealuser=$wims_user
 !else
  forum=!text select 0123456789 in $forum
  !default forum=1001
@@ -67,9 +68,9 @@ wims_prefix=mb class user tmp
 
 !mexec scripts/rmdeposit.sh
 
-!if $forumuser!=$empty
+!if $forumrealuser!=$empty
  !if classes isin $forumdir
-  !read adm/class/userdef classes,$wims_class,$forumuser
+  !read adm/class/userdef classes,$wims_class,$forumrealuser
   !defread $userdef
  !else
   !defread $forumdir/.users/$forumuser

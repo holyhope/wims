@@ -1,61 +1,20 @@
 # This file declares variables which is allowed for user submit
 # and/or is saved from request to request.
 #
-# In this example we need only to recognize one user variable which is
-# `formula'.
+
 init:modu_lang
 
-forum		init
-fuser		init
-forum_limit init
-fpassword	init
-c_subject	reply
-c_sender	reply
-c_smail		reply
-c_prec		reply
-c_orig		reply
-c_quote		reply
-wims_deposit	reply
-c_preview	reply
-c_send		reply
-c_list		reply
-speckedit reply
-job		any
-r_msg		any
-r_month		any
-th_orig		any
-th_start	any
-readtype	any
-mlist		any
-l_order		any
-s_code		reply
-cf_title	reply
-cf_description	reply
-cf_readpolicy	reply
-cf_sendpolicy	reply
-cf_regpassword	reply
-cf_set		reply
-cf_abandon	reply
+init:forum fuser forum_limit fpassword
 
-mb_title	deny
-mb_description	deny
-mb_supervisor	deny
-mb_mail		deny
-mb_lang		deny
-mb_readpolicy	deny
-mb_sendpolicy	deny
-mb_password	deny
-mb_creation	deny
-spolycode	deny
-rpolycode	deny
-send_right	deny
-read_right	deny
-s_hidecode	deny
-is_owner	deny
-forumdir	deny
-forumuser	deny
-user_lastname	deny
-user_firstname	deny
-user_email	deny
+reply: c_subject c_sender c_smail c_prec c_orig c_quote wims_deposit c_preview c_send \
+  c_list speckedit
+
+any:job r_msg r_month th_orig th_start readtype mlist l_order
+
+reply:s_code cf_title cf_description cf_readpolicy cf_sendpolicy cf_regpassword cf_set cf_abandon
+
+deny:mb_title mb_description mb_supervisor mb_mail mb_lang mb_readpolicy mb_sendpolicy\
+  mb_password mb_creation spolycode rpolycode send_right read_right s_hidecode is_owner\
+  forumdir forumuser forumrealuser user_lastname user_firstname user_email
 
 deny:prohibited_words
