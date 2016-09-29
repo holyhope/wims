@@ -1,0 +1,112 @@
+
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Square tile
+slib_author=Bernadette, Perrin-Riou
+slib_example=[0,0,2,4;2,2,4,10],[300,300],[blue,green],html\
+[0,0,2,4;2,2,4,10],[,300],[blue,green],html\
+[0,0,2,4;2,2,4,5;-1,-1,1,2],[300,],[black,violet],html\
+[0,0;0,1;0,2;0,3;1,2],,[blue,green],html\
+[0,0;0,2;0,3;1,1;2,2;3,3],,,html\
+[0,0;0,2;0,3;1,1;2,2;3,3],,[blue],html\
+[0,0;0,2;0,3;1,1,t2;2,2;3,3,t1],,[blue],html\
+[0,0;0,2;0,3;1,1,t1;2,2;3,3,t2],,[blue],html\
+[0,0,2,4;2,2,4,5;-1,-1,1,2;2,7,t1;3,7,t2;4,7,t3;5,7,t4],[300,300],[black,violet],html\
+
+!exit
+
+:proc
+!reset slib_out slib_data slib_color slib_sizex slib_sizey
+!distribute items $wims_read_parm into slib_d,slib_size, slib_color,slib_option
+slib_size=!declosing $slib_size
+!if $slib_size=$empty
+  slib_size=200
+!endif
+!distribute items $slib_size into slib_sizex,slib_sizey
+!distribute items -1000,-1000,1000,1000 into slib_maxx,slib_maxy,slib_minx,slib_miny
+slib_d=!declosing $slib_d
+slib_d=!rows2lines $slib_d
+slib_dcnt=!linecnt $slib_d
+slib_d=!lines2rows $slib_d
+slib_color=!declosing $slib_color
+!default slib_color=red
+
+slib_cnt=0
+!reset slib_list
+!for slib_n = 1 to $slib_dcnt
+     slib_square=$(slib_d[$slib_n;])
+     slib_square=!nospace $slib_square
+     !if $(slib_square[4])!=$empty
+         !for slib_i=0 to $(slib_square[3])-1
+           !for slib_j = 0 to $(slib_square[4])-1
+             slib_list=!append line $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j] to $slib_list
+             !if $(slib_color[2])!=$empty
+               slib_out=!append line frectangle $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j],$[$(slib_square[1])+$slib_i]+1,$[$(slib_square[2])+$slib_j]+1,$(slib_color[2]) to $slib_out
+             !endif
+             slib_out=!append line rectangle $[$(slib_square[1])+$slib_i],$[$(slib_square[2])+$slib_j],$[$(slib_square[1])+$slib_i]+1,$[$(slib_square[2])+$slib_j]+1,$(slib_color[1]) to $slib_out
+           !next
+          !next
+          slib_maxx=$[max($(slib_square[1])+$(slib_square[3])+1,$slib_maxx)]
+          slib_maxy=$[max($(slib_square[2])+$(slib_square[4])+1,$slib_maxy)]
+          slib_minx=$[min($(slib_square[1]),$slib_minx)]
+          slib_miny=$[min($(slib_square[2]),$slib_miny)]
+    !else
+         !if $(slib_square[3])!=$empty
+           !if $(slib_square[3])=t2
+             slib_tmp=$[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1]
+           !endif
+           !if $(slib_square[3])=t1
+             slib_tmp=$[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])],$[$(slib_square[2])+1],$[$(slib_square[1])+1],$[$(slib_square[2])+1]
+           !endif
+           !if $(slib_square[3])=t3
+             slib_tmp=$[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])],$[$(slib_square[1])],$[$(slib_square[2])+1]
+           !endif
+           !if $(slib_square[3])=t4
+             slib_tmp=$[$(slib_square[1])+1],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1],$[$(slib_square[1])],$[$(slib_square[2])+1]
+           !endif
+           !if $(slib_color[2])!=$empty
+             slib_out=!append line ftriangle $slib_tmp,$(slib_color[2]) \
+to $slib_out
+           !endif
+           slib_out=!append line triangle $slib_tmp,$(slib_color[1]) \
+to $slib_out
+         !else
+           !if $(slib_color[2])!=$empty
+             slib_out=!append line frectangle $[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1],$(slib_color[2]) \
+to $slib_out
+           !endif
+          slib_out=!append line rectangle $[$(slib_square[1])],$[$(slib_square[2])],$[$(slib_square[1])+1],$[$(slib_square[2])+1],$(slib_color[1]) \
+to $slib_out
+        !endif
+        slib_maxx=$[max($(slib_square[1])+1,$slib_maxx)]
+        slib_maxy=$[max($(slib_square[2])+1,$slib_maxy)]
+        slib_minx=$[min($(slib_square[1]),$slib_minx)]
+        slib_miny=$[min($(slib_square[2]),$slib_miny)]
+     !endif
+!next
+slib_min=$[min($slib_minx,$slib_miny)-1]
+slib_max=$[max($slib_maxx,$slib_maxy)+1]
+
+!if $slib_sizey=$empty
+  slib_sizey=$[round($slib_sizex*(2+$slib_maxy-($slib_miny))/(2+$slib_maxx-($slib_minx)))]
+!else
+  !if $slib_sizex=$empty
+    slib_sizex=$[round($slib_sizey*(2+$slib_maxx-($slib_minx))/(2+$slib_maxy-($slib_miny)))]
+  !endif
+!endif
+
+slib_out=xrange $slib_minx-1,$slib_maxx+1\
+yrange $slib_miny-1,$slib_maxy+1\
+$slib_out
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=$slib_sizex,$slib_sizey
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="" />
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif
