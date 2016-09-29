@@ -2,7 +2,9 @@
 ## le parametre est la classe
 
 uclass=$wims_read_parm
-superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
+!if $uclass!=$empty
+  superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
+!endif
 !default superclass=$wims_superclass
 !default uclass=$wims_superclass
 !!! je ne comprends pas : l'indexation ne se fait pas sinon lorsqu'un enseignant s'inscrit
@@ -28,16 +30,14 @@ tlist=!sh cd $basedir2/.users\
 tlist=!words2items $tlist
 !set tmp=
 !writefile $basedirr/.teacherlist.1
-!if $(authidp_method[1;]) iswordof cas php
-  !writefile $basedirr/.teacherlist_external.1
-!endif
+!writefile $basedirr/.teacherlist_external.1
 !for t in $tlist
   US_=!defof user_supervise in $basedir/.users/$t
   EXT_=!defof user_external_auth in $basedir/.users/$t
   !if $superclass=$uclass or $uclass isitemof $US_
    U_=!defof user_lastname,user_firstname in $basedir/.users/$t
    !appendfile $basedirr/.teacherlist.1 $U_,$t
-   !if $EXT_!=$empty and $(authidp_method[1;]) iswordof cas php
+   !if $EXT_!=$empty
      !appendfile $basedirr/.teacherlist_external.1 $EXT_:$t
    !endif
    !for l in $US_
@@ -45,7 +45,7 @@ tlist=!words2items $tlist
 !! and in the subclasses (supervise teachers )
      !if $l notwordof $superclass $uclass
        !appendfile $basedir0/$l/.teacherlist.1 $U_,$t
-       !if $EXT_!=$empty and $(authidp_method[1;]) iswordof cas php
+       !if $EXT_!=$empty
          !appendfile $basedir0/$l/.teacherlist_external.1 $EXT_:$t
        !endif
        !set tmp=!append item $l to $tmp
@@ -58,10 +58,8 @@ tlist=!words2items $tlist
 !for t in $tmp
     !sh sort -f $basedir02/$t/.teacherlist.1 | uniq | grep . >$basedir02/$t/.teacherlist\
        rm -f $basedir02/$t/.teacherlist.1 >/dev/null
-    !if $(authidp_method[1;]) iswordof cas php
-     !sh sort -f $basedir02/$t/.teacherlist_external.1 | uniq | grep . >$basedir02/$t/.teacherlist_external\
+     !sh [ -f $basedir02/$t/.teacherlist_external.1 ] && sort -f $basedir02/$t/.teacherlist_external.1 | uniq | grep . >$basedir02/$t/.teacherlist_external\
   rm -f $basedir02/$t/.teacherlist_external.1 >/dev/null
-    !endif
 !next
 
 !reset tmp
