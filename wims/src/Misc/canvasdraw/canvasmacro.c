@@ -3567,7 +3567,7 @@ clear_draw_area%d = function(){\
   var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
   var context_userdraw = canvas_userdraw.getContext(\"2d\");\
   context_userdraw.clearRect(0,0,xsize,ysize);\
-  userdraw_x = [];userdraw_y = [];userdraw_radius = [];\
+  userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
   for(var p = 0;p < reply.length; p++){\
    reply[p] = 0;\
   };\
