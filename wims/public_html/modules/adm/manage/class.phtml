@@ -26,10 +26,10 @@ $table_hdtr
 <th>$wims_name_name</th><th>$wims_name_action</th><th class="small">$wims_name_Language</th><th>$wims_name_Supervisor</th>
 <th>$name_created<br /><span class="tt small">yyyymmdd</span></th>
 <th>$name_expire<br /><span class="tt small">yyyymmdd</span></th>
-</tr>
 !if $actives=yes
- <th>load<sup>[1]</sup></th>
+ <th>$name_Load<sup>[1]</sup></th>
 !endif
+</tr>
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
  !distribute items $l into c_,e_,t_,d_
@@ -72,7 +72,7 @@ $table_hdtr
 <th>$name_created<br /><span class="tt small">yyyymmdd</span></th>
 <th>$name_expire<br /><span class="tt small">yyyymmdd</span></th>
 !if $actives=yes
- <th>load<sup>[1]</sup></th>
+ <th>$name_Load<sup>[1]</sup></th>
 !endif
 !for i=1 to $clcnt
  !set l=!line $i of $classes
@@ -110,7 +110,7 @@ $table_end
 !if $actives=yes
  <div class="wimscenter">
  !form reply
- <span class="small bold">[1]</span>. <span class="tt">load</span>''
+ <span class="small bold">[1]</span>. <span class="tt">$name_Load</span>''
 $name_cumul
  <input type=text name="bst_since" value="$bst_since" onchange="submit()" />
  ($name_format <span class="wims_emph">yyyymmdd</span>).
