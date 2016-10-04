@@ -933,12 +933,12 @@ var dashtype1 = %d;\
 var dashtype0 = %d;\
 var click_cnt = 0;\
 var x0,y0,x1,y1;\
-var canvas_rect;\
+var mouse;\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- y0 = evt.clientY - canvas_rect.top;\
+ mouse = dragstuff.getMouse(evt);\
+ x0 = mouse.x;\
+ y0 = mouse.y;\
  if(y0 < ysize + 1){\
-  x0 = evt.clientX - canvas_rect.left;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -959,7 +959,7 @@ function user_draw(evt){\
     y0 = snap_to_y(y0);\
    };\
   };\
-  if(evt.which == 1){\
+  if(evt.which == 1 || evt.identifier == 0){\
    if( click_cnt == 0 ){\
     userdraw_x[xy_cnt] = x0;\
     userdraw_y[xy_cnt] = y0;\
@@ -981,9 +981,9 @@ function user_draw(evt){\
 };\
 function user_drag(evt){\
  if( click_cnt == 1 ){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  y1 = evt.clientY - canvas_rect.top;\
-  x1 = evt.clientX - canvas_rect.left;\
+  mouse = dragstuff.getMouse(evt);\
+  x1 = mouse.x;\
+  y1 = mouse.y;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -1054,41 +1054,39 @@ var dashtype0 = %d;\
 var x0,y0,x1,y1;\
 var canvas_rect;\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- y0 = evt.clientY - canvas_rect.top;\
- if(y0 < ysize + 1){\
-  x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x0,y0);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x0,y0);\
-   };\
-   x0 = xy[0];y0 = xy[1];\
+ var mouse = dragstuff.getMouse(evt);\
+ x0 = mouse.x;\
+ y0 = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x0,y0);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x0 = snap_to_x(x0);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y0 = snap_to_y(y0);\
-   };\
+   xy = snap_to_fun(x0,y0);\
   };\
-  if(evt.which == 1){\
-    userdraw_x[xy_cnt] = x0;\
-    userdraw_y[xy_cnt] = y0;\
-    userdraw_radius[xy_cnt] = line_width;\
-    if( num != 1 ){ xy_cnt++; }else{context_userdraw.clearRect(0,0,xsize,ysize);};\
-    draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
-  }\
-  else\
-  {\
-    canvas_remove(x0,y0);\
+  x0 = xy[0];y0 = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x0 = snap_to_x(x0);\
   };\
+  if( y_use_snap_to_grid == 1 ){\
+   y0 = snap_to_y(y0);\
+  };\
+ };\
+ if(evt.which == 1 || evt.identifier == 0){\
+  userdraw_x[xy_cnt] = x0;\
+  userdraw_y[xy_cnt] = y0;\
+  userdraw_radius[xy_cnt] = line_width;\
+  if( num != 1 ){ xy_cnt++; }else{context_userdraw.clearRect(0,0,xsize,ysize);};\
+  draw_circles(context_userdraw,userdraw_x,userdraw_y,userdraw_radius,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+ }\
+ else\
+ {\
+  canvas_remove(x0,y0);\
  };\
 };\
 function user_drag(evt){ return;};\
@@ -1197,11 +1195,13 @@ var draw_zoom_buttons = function(){\
  ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
  ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
  ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
- ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
  ctx.stroke();\
 };\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);
 }
 
+/*  removed reload() 4/10/2016
+ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2); 
+*/
 
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on currect active canvas -->\n\
@@ -3554,23 +3554,23 @@ var to_js_math = function(math_fun){\
 }
 
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
-/* 
-25/11/2014 added clearing of reply array
+/* 25/11/2014 added clearing of reply array
 all members will be set to 0 eg reply[0] = 0 , reply[1] = 0 ...
 hope this does not interfere with existing work... 
-12/2015 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
-9/2016 removed the confirmbox 
+*/
+/*
+12/2016 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
 */
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
- var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
- var context_userdraw = canvas_userdraw.getContext(\"2d\");\
- context_userdraw.clearRect(0,0,xsize,ysize);\
- userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
- for(var p = 0;p < reply.length; p++){\
-  reply[p] = 0;\
- };\
- return;\
+  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
+  var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+  context_userdraw.clearRect(0,0,xsize,ysize);\
+  userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
+  for(var p = 0;p < reply.length; p++){\
+   reply[p] = 0;\
+  };\
+  return;\
 };\
 function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
@@ -4099,13 +4099,12 @@ function CanvasState(canvas,container_div){\
  this.dragging = false;\
  this.selection = null;\
  var myState = this;\
- container_div.addEventListener( 'mouseup'    , mouseup,false);\
+ container_div.addEventListener( 'mouseup'    , mouseup,  false);\
  container_div.addEventListener( 'mousemove'  , mousemove,false);\
  container_div.addEventListener( 'mousedown'  , mousedown,false);\
- container_div.addEventListener( 'touchend'   , mouseup,false);\
- container_div.addEventListener( 'selectstart', function(e) { e.preventDefault(); return false; }, false);\
- container_div.addEventListener( 'touchstart' , mousedown,false);\
- container_div.addEventListener( 'touchmove'  , mousemove,false);\
+ container_div.addEventListener('touchstart'  , function(e) { e.preventDefault(); mousedown(e.changedTouches[0]);},false);\
+ container_div.addEventListener( 'touchmove'  , function(e) { e.preventDefault(); mousemove(e.changedTouches[0]);},false);\
+ container_div.addEventListener( 'touchend'   , function(e) { e.preventDefault(); mouseup(  e.changedTouches[0]);},false);\
  function mousedown(e){\
   var mouse = myState.getMouse(e);\
   var mx = mouse.x;\
@@ -4283,13 +4282,13 @@ CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
  };\
 };\
 CanvasState.prototype.getMouse = function(e){\
-var element = this.canvas, offsetX = 0,offsetY = 0;\
-while( ( element = element.offsetParent) ){\
-offsetX += element.offsetLeft;\
-offsetY += element.offsetTop;\
-}\
-var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
-var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
+ var element = this.canvas, offsetX = 0,offsetY = 0;\
+ while( ( element = element.offsetParent) ){\
+  offsetX += element.offsetLeft;\
+  offsetY += element.offsetTop;\
+ };\
+ var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
+ var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
  return {x: mx, y: my};\
 };\
 CanvasState.prototype.read_dragdrop = function(){\

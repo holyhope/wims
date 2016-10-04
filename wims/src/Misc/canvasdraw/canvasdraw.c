@@ -1875,7 +1875,17 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	    }
 	    reply_precision = precision;
 	    use_userdraw = TRUE;
-	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nuserdraw_x = new Array();userdraw_y = new Array();userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};if(wims_status != \"done\"){canvas_div.addEventListener(\"mousedown\",user_draw,false);canvas_div.addEventListener(\"mousemove\",user_drag,false);canvas_div.addEventListener(\"touchstart\",user_draw,false);canvas_div.addEventListener(\"touchmove\",user_drag,false);}\n<!-- end userdraw mouse events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
+	    fprintf(js_include_file,"\n<!-- begin userdraw mouse events -->\nuserdraw_x = new Array();userdraw_y = new Array();\
+	    userdraw_radius = new Array();var xy_cnt=0;var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
+	    var context_userdraw = canvas_userdraw.getContext(\"2d\");var use_dashed = %d;\
+	    if(use_dashed == 1){if( context_userdraw.setLineDash ){context_userdraw.setLineDash([%d,%d]);}else{if(context_userdraw.mozDash){context_userdraw.mozDash = [%d,%d];};};};\
+	    if(wims_status != \"done\"){\
+	    canvas_div.addEventListener(\"mousedown\",user_draw,false);\
+	    canvas_div.addEventListener(\"mousemove\",user_drag,false);\
+	    canvas_div.addEventListener(\"touchstart\", function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
+	    canvas_div.addEventListener(\"touchmove\", function(e){ e.preventDefault();user_drag(e.changedTouches[0]);},false);\
+	    canvas_div.addEventListener(\"touchend\", function(e){ e.preventDefault();user_draw(e.changedTouches[0]);},false);\
+	    }\n<!-- end userdraw mouse & touch events -->",canvas_root_id,DRAW_CANVAS,use_dashed,dashtype[0],dashtype[1],dashtype[0],dashtype[1]);
 	    draw_type = get_string_argument(infile,0);
 	    stroke_color = get_color(infile,1);
 	    if( strcmp(draw_type,"point") == 0 ){
@@ -4697,7 +4707,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
     case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\
     case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\
     case 5:xmin = xmin;ymin = ymin + pan_y_increment ;xmax = xmax;ymax = ymax + pan_y_increment;break;\
-    case 6:location.reload();break;\
+    case 6:break;\
     default:break;\
    };\
    if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\
