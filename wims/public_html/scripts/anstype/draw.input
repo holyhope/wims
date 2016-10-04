@@ -57,6 +57,9 @@ $type $color,$option
 !if $type iswordof circles
   !set replyformat=28
 !endif
+!if $type iswordof polyline
+  !set replyformat=23
+!endif
 !default replyformat=22
 
 !set parm3=$parm3\
@@ -67,7 +70,7 @@ userdraw $type,$color
 /*<![CDATA[*/
      function my_canvasdraw$i() {
      fun = this['read_canvas'+canvas_scripts[0]];
-     var p = new Array(); p = eval(fun());
+     var p = new Array(); p = fun();
      if( p === undefined) { p[0] = '' };
      document.getElementById('oefvar' + $i).value=p;
      }
