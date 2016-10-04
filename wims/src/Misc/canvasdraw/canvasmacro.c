@@ -3554,25 +3554,23 @@ var to_js_math = function(math_fun){\
 }
 
 void add_clear_button(FILE *js_include_file,int canvas_root_id,char *input_style,char *button_text){
-/* 25/11/2014 added clearing of reply array
+/* 
+25/11/2014 added clearing of reply array
 all members will be set to 0 eg reply[0] = 0 , reply[1] = 0 ...
 hope this does not interfere with existing work... 
-*/
-/*
-12/2016 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
+12/2015 changed  to 'setAttribute()' because of trouble on Chromium/Safari/IE 
+9/2016 removed the confirmbox 
 */
 fprintf(js_include_file,"<!-- add clear button -->\n\
 clear_draw_area%d = function(){\
- if(confirm(\"remove all drawings ? \")){\
-  var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
-  var context_userdraw = canvas_userdraw.getContext(\"2d\");\
-  context_userdraw.clearRect(0,0,xsize,ysize);\
-  userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
-  for(var p = 0;p < reply.length; p++){\
-   reply[p] = 0;\
-  };\
-  return;\
+ var canvas_userdraw = create_canvas%d(%d,xsize,ysize);\
+ var context_userdraw = canvas_userdraw.getContext(\"2d\");\
+ context_userdraw.clearRect(0,0,xsize,ysize);\
+ userdraw_x = [];userdraw_y = [];userdraw_radius = [];xy_cnt = 0;\
+ for(var p = 0;p < reply.length; p++){\
+  reply[p] = 0;\
  };\
+ return;\
 };\
 function add_clear_button(){\
  var tooltip_placeholder_div = document.getElementById(\"tooltip_placeholder_div%d\");\
