@@ -935,7 +935,7 @@ var click_cnt = 0;\
 var x0,y0,x1,y1;\
 var mouse;\
 function user_draw(evt){\
- mouse = dragstuff.getMouse(evt);\
+ mouse = dragstuff.getMouse(evt,canvas_userdraw);\
  x0 = mouse.x;\
  y0 = mouse.y;\
  if(y0 < ysize + 1){\
@@ -981,7 +981,7 @@ function user_draw(evt){\
 };\
 function user_drag(evt){\
  if( click_cnt == 1 ){\
-  mouse = dragstuff.getMouse(evt);\
+  mouse = dragstuff.getMouse(evt,canvas_userdraw);\
   x1 = mouse.x;\
   y1 = mouse.y;\
   if( use_snap_to_points != 0 ){\
@@ -1054,7 +1054,7 @@ var dashtype0 = %d;\
 var x0,y0,x1,y1;\
 var canvas_rect;\
 function user_draw(evt){\
- var mouse = dragstuff.getMouse(evt);\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
  x0 = mouse.x;\
  y0 = mouse.y;\
  if( use_snap_to_points != 0 ){\
@@ -1195,19 +1195,15 @@ var draw_zoom_buttons = function(){\
  ctx.fillText(\"\\u2190\",xsize - 45,ysize-2);\
  ctx.fillText(\"\\u2191\",xsize - 60,ysize-2);\
  ctx.fillText(\"\\u2193\",xsize - 75,ysize-2);\
+ ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2);\
  ctx.stroke();\
 };\ndraw_zoom_buttons();",BG_CANVAS,canvas_root_id,canvas_root_id,canvas_root_id,stroke_color,stroke_opacity);
 }
-
-/*  removed reload() 4/10/2016
-ctx.fillText(\"\\u00D7\",xsize - 90,ysize-2); 
-*/
 
 void add_js_crosshairs(FILE *js_include_file,int num,char *draw_type,int line_width, int crosshair_size ,char *stroke_color,double stroke_opacity){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on currect active canvas -->\n\
 var num = %d;\
 var crosshair_size = %d;\
-var canvas_rect;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
 var stroke_opacity = %f;\
@@ -1215,9 +1211,9 @@ context_userdraw.lineWidth = line_width;\
 context_userdraw.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
 function user_drag(evt){return;}\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
   if( use_snap_to_points == 1 ){\
@@ -1239,7 +1235,7 @@ function user_draw(evt){\
   };\
  };\
  var x1,y1,x2,y2;\
- if(evt.which == 1){\
+ if(evt.which == 1 || evt.identifier == 0 ){\
    userdraw_x[xy_cnt] = x;\
    userdraw_y[xy_cnt] = y;\
    x1 = x - crosshair_size;\
@@ -1291,7 +1287,6 @@ function canvas_remove(x,y){\
 
 void add_js_rect(FILE *js_include_file,int num,int roundrect,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on currect active canvas -->\n\
-var canvas_rect;\
 var roundrect = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1311,59 +1306,57 @@ xy_cnt = 0;\
 var x0,y0,x1,y1;\
 var marge = 10*line_width;\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- y0 = evt.clientY - canvas_rect.top;\
- if( y0  < ysize + 1 ){\
-  x0 = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x0,y0);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x0,y0);\
-   };\
-   x0 = xy[0];y0 = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ x0 = mouse.x;\
+ y0 = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x0,y0);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x0 = snap_to_x(x0);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y0 = snap_to_y(y0);\
-   };\
+   xy = snap_to_fun(x0,y0);\
   };\
-  if( evt.which == 1 ){\
-   if(clickcnt == 0 ){\
-    clickcnt = 1;\
-    userdraw_x[xy_cnt] = x0;userdraw_y[xy_cnt] = y0;xy_cnt++;\
-   }\
-   else\
-   {\
-    clickcnt = 0;\
-    if(roundrect == 0 ){\
-     draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
-    }\
-    else\
-    {\
-     draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
-    }\
-    if( num != 1 ){ xy_cnt++; }else{xy_cnt--;}\
-   }\
+  x0 = xy[0];y0 = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x0 = snap_to_x(x0);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y0 = snap_to_y(y0);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0 ){\
+  if(clickcnt == 0 ){\
+   clickcnt = 1;\
+   userdraw_x[xy_cnt] = x0;userdraw_y[xy_cnt] = y0;xy_cnt++;\
   }\
   else\
   {\
-   canvas_remove(x0,y0);\
-  };\
+   clickcnt = 0;\
+   if(roundrect == 0 ){\
+    draw_rects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
+   }\
+   else\
+   {\
+    draw_roundrects(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
+   }\
+   if( num != 1 ){ xy_cnt++; }else{xy_cnt--;}\
+  }\
+ }\
+ else\
+ {\
+  canvas_remove(x0,y0);\
  };\
 };\
 function user_drag(evt){\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ x1 = mouse.x;\
+ y1 = mouse.y;\
  if( clickcnt == 1 ){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  y1 = evt.clientY - canvas_rect.top;\
-  x1 = evt.clientX - canvas_rect.left;\
   var xy = new Array(2);\
   if( use_snap_to_points != 0 ){\
    if( use_snap_to_points == 1 ){\
@@ -1428,7 +1421,6 @@ function canvas_remove(x,y){\
 
 void add_js_poly(FILE *js_include_file,int num,char *draw_type,int line_width,char *stroke_color,double stroke_opacity,int use_filled,char *fill_color,double fill_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on currect active canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1447,64 +1439,63 @@ var closed_path = 1;\
 var done = 1;\
 var x,y;\
 var marge = 10*line_width;\
+var canvas_rect;\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1 ){\
-  x = evt.clientX - canvas_rect.left;\
-  var xy = new Array(2);\
-  if( use_snap_to_points != 0 ){\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ x = mouse.x;\
+ y = mouse.y;\
+ var xy = new Array(2);\
+ if( use_snap_to_points != 0 ){\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
   };\
-  if( evt.which == 1){\
-   if( num == -1 && xy_cnt > 2 ){\
-    if( x - marge < userdraw_x[0] && x + marge > userdraw_x[0]){\
-     if( y - marge < userdraw_y[0] && y + marge > userdraw_y[0]){\
-      userdraw_x.splice(xy_cnt,1);userdraw_y.splice(xy_cnt,1);\
-      draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
-      done = 1;return;\
-     };\
-    };\
-   }\
-   else\
-   {\
-    if( xy_cnt == num - 1){\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0 ){\
+  if( num == -1 && xy_cnt > 2 ){\
+   if( x - marge < userdraw_x[0] && x + marge > userdraw_x[0]){\
+    if( y - marge < userdraw_y[0] && y + marge > userdraw_y[0]){\
+     userdraw_x.splice(xy_cnt,1);userdraw_y.splice(xy_cnt,1);\
      draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
      done = 1;return;\
     };\
    };\
-   done = 0;\
-   userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;xy_cnt++;\
-   user_drag(evt);\
   }\
   else\
   {\
-   canvas_remove(x,y);\
-   return;\
-  }\
- };\
+   if( xy_cnt == num - 1){\
+    draw_paths(context_userdraw,userdraw_x,userdraw_y,line_width,closed_path,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1,use_rotate,angle,0,[1,0,0,1,0,0]);\
+    done = 1;return;\
+   };\
+  };\
+  done = 0;\
+  userdraw_x[xy_cnt] = x;userdraw_y[xy_cnt] = y;xy_cnt++;\
+  user_drag(evt);\
+ }\
+ else\
+ {\
+  canvas_remove(x,y);\
+  return;\
+ }\
 };\
 function user_drag(evt){\
  if( done == 0 ){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  x = evt.clientX - canvas_rect.left;\
-  y = evt.clientY - canvas_rect.top;\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  x = mouse.x;\
+  y = mouse.y;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -1545,9 +1536,13 @@ function canvas_remove(x,y){\
 };",draw_type,num,line_width,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);
 }
 
+/*
+  canvas_rect = canvas_userdraw.getBoundingClientRect();\
+  var x = evt.clientX - canvas_rect.left;\
+  var y = evt.clientY - canvas_rect.top;\
+*/
 void add_js_polyline(FILE *js_include_file,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var cnt = 0;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1555,12 +1550,12 @@ var stroke_opacity = %f;\
 var use_dashed = %d;\
 var dashtype0 = %d;\
 var dashtype1 = %d;\
+var x,y;\
 function user_draw(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ x = mouse.x;\
+ y = mouse.y;\
  var lu = userdraw_x.length;\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
   if( use_snap_to_points == 1 ){\
@@ -1581,7 +1576,7 @@ function user_draw(evt){\
    y = snap_to_y(y);\
   };\
  };\
- if( evt.which == 1 ){\
+ if( evt.which == 1 || evt.identifier == 0 ){\
   userdraw_x[lu] = x;userdraw_y[lu] = y;\
   if( cnt == 0 ){\
    user_drag(evt);\
@@ -1600,9 +1595,9 @@ function user_draw(evt){\
 };\
 function user_drag(evt){\
  if( cnt == 0){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  var y = evt.clientY - canvas_rect.top;\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  x = mouse.x;\
+  y = mouse.y;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -1641,7 +1636,6 @@ function canvas_remove(x,y){\
 
 void add_js_segments(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1655,53 +1649,51 @@ function user_draw(evt){\
  if( lu != 0 && lu%%2 == 0){\
   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
  }\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
   };\
-  if( evt.which == 1 ){\
-   if( lu%%2 == 0){\
-    x0 = x;y0 = y;\
-    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
-    draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
-    user_drag(evt);\
-   }\
-   else\
-   {\
-    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
-    draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-   }\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0){\
+  if( lu%%2 == 0){\
+   x0 = x;y0 = y;\
+   if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;};\
+   draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+   user_drag(evt);\
   }\
   else\
   {\
-   canvas_remove(x,y);\
+   if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
+   draw_segments(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   }\
+ }\
+ else\
+ {\
+  canvas_remove(x,y);\
  }\
 };\
 function user_drag(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
  var lu = userdraw_x.length;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
@@ -1759,7 +1751,6 @@ function canvas_remove(x,y){\
 
 void add_js_demilines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1773,53 +1764,51 @@ function user_draw(evt){\
  if( lu != 0 && lu%%2 == 0){\
   draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
  }\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
   };\
-  if( evt.which == 1 ){\
-   if( lu%%2 == 0){\
-    x0 = x;y0 = y;\
-    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
-    draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
-    user_drag(evt);\
-   }\
-   else\
-   {\
-    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
-    draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-   }\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0 ){\
+  if( lu%%2 == 0){\
+   x0 = x;y0 = y;\
+   if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
+   draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+   user_drag(evt);\
   }\
   else\
   {\
-   canvas_remove(x,y);\
+   if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
+   draw_demilines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   }\
+ }\
+ else\
+ {\
+  canvas_remove(x,y);\
  }\
 };\
 function user_drag(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
  var lu = userdraw_x.length;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
@@ -1884,7 +1873,6 @@ num=4 multiple vertical lines
 */
 void add_js_hlines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1894,10 +1882,10 @@ var dashtype0 = %d;\
 var dashtype1 = %d;\
 var x0,y0;\
 function user_draw(evt){\
- if( evt.which == 1 ){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var y = evt.clientY - canvas_rect.top;\
-  var x = evt.clientX - canvas_rect.left;\
+ if( evt.which == 1 || evt.identifier == 0){\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  var x = mouse.x;\
+  var y = mouse.y;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -1940,7 +1928,6 @@ function user_drag(evt){ return evt; };",draw_type,num,line_width,stroke_color,s
 
 void add_js_lines(FILE *js_include_file,int num,char *draw_type,int line_width, char *stroke_color,double stroke_opacity,int use_dashed,int dashtype0,int dashtype1){
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -1954,53 +1941,51 @@ function user_draw(evt){\
  if( lu != 0 && lu%%2 == 0){\
   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
  }\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
   };\
-  if( evt.which == 1 ){\
-   if( lu%%2 == 0){\
-    x0 = x;y0 = y;\
-    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
-    draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
-    user_drag(evt);\
-   }\
-   else\
-   {\
-    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
-    draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
-   };\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0 ){\
+  if( lu%%2 == 0){\
+   x0 = x;y0 = y;\
+   if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
+   draw_circles(context_userdraw,[x0],[y0],[line_width],line_width,stroke_color,stroke_opacity,1,stroke_color,stroke_opacity,0,1,1);\
+   user_drag(evt);\
   }\
   else\
   {\
-   canvas_remove(x,y);\
+   if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
+   draw_lines(context_userdraw,userdraw_x,userdraw_y,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1);\
   };\
+ }\
+ else\
+ {\
+  canvas_remove(x,y);\
  };\
 };\
 function user_drag(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
  var lu = userdraw_x.length;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
@@ -2062,7 +2047,6 @@ void add_js_arrows(FILE *js_include_file,int num,char *draw_type,int line_width,
 constants in draw_arrows() ... for this moment: ;var use_rotate = 0;var angle = 0;var use_translate = 0 ;var vector = [0,0];\
 */
 fprintf(js_include_file,"\n<!-- begin userdraw \"%s\" on final canvas -->\n\
-var canvas_rect;\
 var num = %d;\
 var line_width = %d;\
 var stroke_color = \"%s\";\
@@ -2079,52 +2063,50 @@ function user_draw(evt){\
  if( lu != 0 && lu%%2 == 0){\
   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
  }\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
   };\
-  if( evt.which == 1 ){\
-   if( lu%%2 == 0){\
-    x0 = x;y0 = y;\
-    if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
-    user_drag(evt);\
-   }\
-   else\
-   {\
-    if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
-    draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
-   }\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
+  };\
+ };\
+ if( evt.which == 1 || evt.identifier == 0 ){\
+  if( lu%%2 == 0){\
+   x0 = x;y0 = y;\
+   if(num == 1){ userdraw_x = [];userdraw_y = [];userdraw_x[0] = x0;userdraw_y[0] = y0;} else {userdraw_x[lu] = x0;userdraw_y[lu] = y0;}\
+   user_drag(evt);\
   }\
   else\
   {\
-   canvas_remove(x,y);\
-  }\
+   if( num == 1 ){ userdraw_x[1] = x;userdraw_y[1] = y;} else {userdraw_x[lu] = x;userdraw_y[lu] = y;};\
+   draw_arrows(context_userdraw,userdraw_x,userdraw_y,arrow_head,line_width,stroke_color,stroke_opacity,use_dashed,dashtype0,dashtype1,type,use_rotate,angle,0,[1,0,0,1,0,0]);\
+  };\
  }\
+ else\
+ {\
+  canvas_remove(x,y);\
+ };\
 };\
 function user_drag(evt){\
- canvas_rect = canvas_userdraw.getBoundingClientRect();\
- var x = evt.clientX - canvas_rect.left;\
- var y = evt.clientY - canvas_rect.top;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
  var lu = userdraw_x.length;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
@@ -2197,35 +2179,31 @@ var dashtype0 = %d;\
 var dashtype1 = %d;\
 var closed_path = 0;\
 var click_cnt=0;\
-var x0,y0;\
-var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
- var y = evt.clientY - canvas_rect.top;\
- if( y < ysize + 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  if( use_snap_to_points != 0 ){\
-   var xy = new Array(2);\
-   if( use_snap_to_points == 1 ){\
-    xy = snap_to_points(x,y);\
-   }\
-   else\
-   {\
-    xy = snap_to_fun(x,y);\
-   };\
-   x = xy[0];y = xy[1];\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ var x = mouse.x;\
+ var y = mouse.y;\
+ if( use_snap_to_points != 0 ){\
+  var xy = new Array(2);\
+  if( use_snap_to_points == 1 ){\
+   xy = snap_to_points(x,y);\
   }\
   else\
   {\
-   if( x_use_snap_to_grid == 1 ){\
-    x = snap_to_x(x);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    y = snap_to_y(y);\
-   };\
+   xy = snap_to_fun(x,y);\
+  };\
+  x = xy[0];y = xy[1];\
+ }\
+ else\
+ {\
+  if( x_use_snap_to_grid == 1 ){\
+   x = snap_to_x(x);\
+  };\
+  if( y_use_snap_to_grid == 1 ){\
+   y = snap_to_y(y);\
   };\
  };\
- if(evt.which == 1 ){\
+ if(evt.which == 1 || evt.identifier == 0){\
   if( click_cnt == 0 ){\
    click_cnt = 1;\
    user_drag(evt);\
@@ -2245,7 +2223,7 @@ function user_draw(evt){\
  }\
  else\
  {\
-   canvas_remove(evt.clientX - canvas_rect.left,evt.clientY - canvas_rect.top);\
+   canvas_remove(x,y);\
  };\
  context_userdraw.clearRect(0,0,xsize,ysize);\
  for(var p=0; p < path_cnt; p++){\
@@ -2256,18 +2234,17 @@ function user_draw(evt){\
 };\
 function user_drag(evt){\
  if(click_cnt == 1 ){\
-  temp_y[xy_cnt] = evt.clientY - canvas_rect.top;\
-  if( temp_y[xy_cnt] < ysize + 1){\
-   temp_x[xy_cnt] = evt.clientX - canvas_rect.left;\
-   if( x_use_snap_to_grid == 1 ){\
-    temp_x[xy_cnt] = snap_to_x(temp_x[xy_cnt]);\
-   };\
-   if( y_use_snap_to_grid == 1 ){\
-    temp_y[xy_cnt] = snap_to_y(temp_y[xy_cnt]);\
-   };\
-   xy_cnt++;\
-   draw_paths(context_userdraw,temp_x,temp_y,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  temp_x[xy_cnt] = mouse.x;\
+  temp_y[xy_cnt] = mouse.y;\
+  if( x_use_snap_to_grid == 1 ){\
+   temp_x[xy_cnt] = snap_to_x(temp_x[xy_cnt]);\
   };\
+  if( y_use_snap_to_grid == 1 ){\
+   temp_y[xy_cnt] = snap_to_y(temp_y[xy_cnt]);\
+  };\
+  xy_cnt++;\
+  draw_paths(context_userdraw,temp_x,temp_y,line_width,0,stroke_color,stroke_opacity,use_filled,fill_color,fill_opacity,use_dashed,dashtype0,dashtype1);\
  };\
 };\
 function canvas_remove(x,y){\
@@ -2417,10 +2394,10 @@ function user_draw(evt){\
  var num = %d;\
  var x,xc,x1,x2,y,yc,y1,y2;var lu = userdraw_x.length;\
  if( num == 1 && lu == 3 ){ userdraw_x = [];userdraw_y = [];userdraw_radius = [];};\
- if(evt.which == 1){\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  x = evt.clientX - canvas_rect.left;\
-  y = evt.clientY - canvas_rect.top;\
+ if(evt.which == 1 || evt.identifier == 0 ){\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  x = mouse.x;\
+  y = mouse.y;\
   if( use_snap_to_points != 0 ){\
    var xy = new Array(2);\
    if( use_snap_to_points == 1 ){\
@@ -2463,9 +2440,9 @@ function user_draw(evt){\
 function user_drag(evt){ \
  var lu = userdraw_x.length;\
  if( (lu+1)%%3 == 0) {\
-  canvas_rect = canvas_userdraw.getBoundingClientRect();\
-  var x2 = evt.clientX - canvas_rect.left;\
-  var y2 = evt.clientY - canvas_rect.top;\
+  var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+  var x2 = mouse.x;\
+  var y2 = mouse.y;\
   var xc = userdraw_x[lu-2];\
   var yc = userdraw_y[lu-2];\
   var x1 = userdraw_x[lu-1];\
@@ -2545,10 +2522,10 @@ var x_txt = 0;\
 var y_txt = 0;\
 var w_txt = 0;\
 var typing = 0;\
-var canvas_rect = canvas_userdraw.getBoundingClientRect();\
 function user_draw(evt){\
- y_txt = evt.clientY - canvas_rect.top;\
- x_txt = evt.clientX - canvas_rect.left;\
+ var mouse = dragstuff.getMouse(evt,canvas_userdraw);\
+ x_txt = mouse.x;\
+ y_txt = mouse.y;\
  if( use_snap_to_points != 0 ){\
   var xy = new Array(2);\
   if( use_snap_to_points == 1 ){\
@@ -2577,10 +2554,10 @@ return;\
 function user_text(evt){\
  var kc = evt.keyCode;var w;\
  if( kc== 8 || kc == 27 || kc == 46 ){\
-  if(typing == 1 ){\
-    w = context_userdraw.measureText(txt).width;\
-    context_userdraw.clearRect(x_txt-2,y_txt-font_size-2,w+2,font_size+2);\
-    txt = \"\";\
+  if( typing == 1 ){\
+   w = context_userdraw.measureText(txt).width;\
+   context_userdraw.clearRect(x_txt-2,y_txt-font_size-2,w+2,font_size+2);\
+   txt = \"\";\
   }\
   else\
   {\
@@ -2654,12 +2631,12 @@ function use_mouse_coordinates(){\
  var current_context = current_canvas.getContext(\"2d\");\
  current_context.clearRect(0,0,xsize,ysize);\
  current_canvas.addEventListener(\"mousemove\",show_coordinate%d,false);\
- current_canvas.addEventListener(\"touchmove\",show_coordinate%d,false);\
+ current_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();show_coordinate%d(e.changedTouches[0]);},false);\
  var prec = Math.log(%d)/(Math.log(10));\
  function show_coordinate%d(evt){\
-  var canvas_rect = (current_canvas).getBoundingClientRect();\
-  var x = evt.clientX - canvas_rect.left;\
-  var y = evt.clientY - canvas_rect.top;\
+  var mouse = dragstuff.getMouse(evt,current_canvas);\
+  var x = mouse.x;\
+  var y = mouse.y;\
   var m_data = \"\";var l = userdraw_x.length;\
   switch(type){\
    case 0: m_data = \" \"+(px2x(x)).toFixed(prec)+\" \"+unit_x;break;\
@@ -2748,6 +2725,8 @@ function show_slider_value(value,use_slider_display){\
 /*
 add slider
 return value is array : value[0] is the actual value between value_1 and value_2
+
+ var x_px = evt.clientX\
 */
 void add_slider(FILE *js_include_file,int canvas_root_id,double v1,double v2,int width,int height,int type,char *label,int slider_cnt,char *stroke_color,char *fill_color,int line_width,double opacity,char *font_family,char *font_color,int use_slider_display){
 fprintf(js_include_file,"\n<!-- begin add_slider no. %d -->\n\
@@ -2777,7 +2756,6 @@ function add_slider_%d(){\
  var slider_opacity = %f;\
  slider_canvas.width = slider_width;\
  slider_canvas.height = slider_height;\
- var canvas_rect = (slider_canvas).getBoundingClientRect();\
  var slider_ctx = slider_canvas.getContext(\"2d\");\
  slider_ctx.font = \"%s\";\
  slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\
@@ -2792,11 +2770,14 @@ function add_slider_%d(){\
  slider_ctx.fill();\
  slider_ctx.stroke();\
  slider_canvas.addEventListener(\"mousemove\",slider_%d,false);\
+ slider_canvas.addEventListener(\"touchmove\", function(e){ e.preventDefault();slider_%d(e.changedTouches[0]);},false);\
+alert('OK');\
 function slider_%d(evt){\
  var value_1 = %f;\
  var value_2 = %f;\
  slider_ctx.clearRect(0,0,slider_width,slider_height);\
- var x_px = evt.clientX - canvas_rect.left;\
+ var mouse = dragstuff.getMouse(evt,slider_canvas);\
+ var x_px = mouse.x;\
  var x;var y;\
  if( slider_type == 1 ){\
   x = x_px*(value_2 - value_1)/slider_width + value_1;\
@@ -2818,7 +2799,7 @@ function slider_%d(evt){\
  return;\
  };\
 };\
-add_slider_%d();\n",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
+add_slider_%d();\n",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,slider_cnt,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,use_slider_display,use_slider_display,slider_cnt);
 }
 
 
@@ -2833,7 +2814,7 @@ function add_slider_%d(){\
  var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
  var slider_type = %d;\
  var span = document.createElement(\"span\");\
- span.style= \"font:%s;color:%s\";\
+ span.setAttribute(\"style\",\"font:%s;color:%s\");\
  var title = document.createTextNode(\" %s \");\
  var br = document.createElement(\"br\");\
  span.appendChild(title);\
@@ -2855,7 +2836,6 @@ function add_slider_%d(){\
  var slider_opacity = %f;\
  slider_canvas.width = slider_width;\
  slider_canvas.height = slider_height;\
- var canvas_rect = (slider_canvas).getBoundingClientRect();\
  var slider_ctx = slider_canvas.getContext(\"2d\");\
  slider_ctx.font = \"%s\";\
  slider_ctx.strokeStyle = \"rgba(\"+slider_strokecolor+\",\"+slider_opacity+\")\";\
@@ -2869,14 +2849,16 @@ function add_slider_%d(){\
  slider_ctx.stroke();\
  slider_canvas.addEventListener(\"mousemove\",sliderdrag_%d,false);\
  slider_canvas.addEventListener(\"mousedown\",sliderclick_%d,false);\
+ slider_canvas.addEventListener(\"touchmove\",function(e){ e.preventDefault();sliderdrag_%d(e.changedTouches[0]);},false);\
+ slider_canvas.addEventListener(\"touchstart\", function(e){ e.preventDefault();sliderclick_%d(e.changedTouches[0]);},false);\
 function sliderdrag_%d(evt){\
  if(slider_click == 1){\
   var value_1 = %f;\
   var value_2 = %f;\
-  var canvas_rect = (slider_canvas).getBoundingClientRect();\
+  var mouse = dragstuff.getMouse(evt,slider_canvas);\
   slider_ctx.clearRect(0,0,slider_width,slider_height);\
-  var x_px = evt.clientX - canvas_rect.left;\
-  var y_px = evt.clientY - canvas_rect.top;\
+  var x_px = mouse.x;\
+  var y_px = mouse.y;\
   var x = x_px*(value_2 - value_1)/slider_width + value_1;\
   var y = y_px*(value_2 - value_1)/slider_height + value_1;\
   x = parseFloat(eval(slider_function%d.x));\
@@ -2894,8 +2876,8 @@ function sliderdrag_%d(evt){\
 function sliderclick_%d(evt){\
   if(slider_click == 1){slider_click = 0;}else{slider_click = 1;};\
 };\
-};\
-add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,canvas_root_id,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt,slider_cnt,use_slider_display,slider_cnt,slider_cnt,slider_cnt);
+};\n\
+add_slider_%d();",slider_cnt,slider_cnt,canvas_root_id,type,font_family,font_color,label,fill_color,stroke_color,line_width,canvas_root_id,width,height,(int)(0.5*height),opacity,font_family,slider_cnt,slider_cnt,slider_cnt,slider_cnt,slider_cnt,v1,v2,slider_cnt,slider_cnt,slider_cnt,use_slider_display,slider_cnt,slider_cnt,slider_cnt);
 }
 
 
@@ -2907,26 +2889,31 @@ void add_calc_y(FILE *js_include_file,int canvas_root_id,char *jsmath,int font_s
 fprintf(js_include_file,"\n<!-- begin add_calc_y -->\n\
 use_jsmath=1;\
 function add_calc_y(){\
-if( wims_status == \"done\" ){return;};\
-var fun = to_js_math(\"%s\");if(fun == null){return;};\
-function eval_jsmath(x){return parseFloat(eval(fun));};\
-var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
-var calc_div = document.createElement('div');\
-calc_div.id = \"calc_div\";\
-tooltip_div.appendChild(calc_div);\
-var label_x = \"x\";var label_y = \"y\";\
-if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
-if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
-calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='%s' />&nbsp;\"+ label_y+\" : <input type='text' size='5' value='' id='calc_output_y' style='%s' readonly /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
-var calc_button = document.getElementById(\"calc_button\");\
-calc_button.addEventListener(\"mousedown\",function(e){var x_value=document.getElementById(\"calc_input_x\").value;\
-var y_value = eval_jsmath(x_value);\
-document.getElementById(\"calc_output_y\").value = y_value;\
-if(isNaN(y_value)){return;};\
-var canvas = create_canvas%d(123,xsize,ysize);\
-var ctx = canvas.getContext(\"2d\");\
-draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;},false);\
-};add_calc_y();",jsmath,canvas_root_id,font_size,input_style,input_style,canvas_root_id);
+ if( wims_status == \"done\" ){return;};\
+ var fun = to_js_math(\"%s\");if(fun == null){return;};\
+ function eval_jsmath(x){return parseFloat(eval(fun));};\
+ var tooltip_div = document.getElementById(\"tooltip_placeholder_div%d\");\
+ var calc_div = document.createElement('div');\
+ calc_div.id = \"calc_div\";\
+ tooltip_div.appendChild(calc_div);\
+ var label_x = \"x\";var label_y = \"y\";\
+ if( typeof xaxislabel !== 'undefined' ){label_x = xaxislabel;}\
+ if( typeof yaxislabel !== 'undefined' ){label_y = yaxislabel;}\
+ calc_div.innerHTML=\"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='calc_input_x' style='%s' />&nbsp;\"+ label_y+\" : <input type='text' size='5' value='' id='calc_output_y' style='%s' readonly /><input id='calc_button' type='button' value='OK' onclick=''  style='color:red;background-color:lightblue;' /></span> \";\
+ var calc_button = document.getElementById(\"calc_button\");\
+ calc_button.addEventListener(\"mousedown\",show_it,false);\
+ calc_button.addEventListener(\"touchstart\", function(e){ e.preventDefault();show_it(e.changedTouches[0]);},false);\
+ function show_it(){\
+  var x_value=document.getElementById(\"calc_input_x\").value;\
+  var y_value = eval_jsmath(x_value);\
+  document.getElementById(\"calc_output_y\").value = y_value;\
+  if(isNaN(y_value)){return;};\
+  var canvas = create_canvas%d(123,xsize,ysize);\
+  var ctx = canvas.getContext(\"2d\");\
+  draw_crosshairs(ctx,[x2px(x_value)],[y2px(y_value)],1,5,\"#000000\",1,0,0,0,[0,0]);return;\
+ };\
+};\
+;add_calc_y();",jsmath,canvas_root_id,font_size,input_style,input_style,canvas_root_id);
 }
 /*
  x-value of the mouse will be used to calculate via javascript the corresponding y-value using the verbatim js-math function
@@ -2949,12 +2936,12 @@ if( wims_status == \"done\" ){return;};\
  tooltip_div.appendChild(trace_div);\
  trace_div.innerHTML = \"<br /><span style='font-style:italic;font-size:%dpx'>\"+label_x+\" : <input type='text' size='4' value='' id='trace_input_x' style='%s' />\"+label_y+\" : <input type='text' size='5' value='' id='trace_input_y' style='%s' readonly /></span> \";\
  canvas_div.addEventListener(\"mousemove\",trace,false);\
- canvas_div.addEventListener(\"touchmove\",trace,false);\
+ canvas_div.addEventListener(\"touchmove\",function(e){ e.preventDefault();trace(e.changedTouches[0]);},false);\
  var fun = to_js_math(\"%s\");if(fun == null){return;};\
  function eval_jsmath(x){return parseFloat(eval(fun));};\
  function trace(evt){\
-  var canvas_rect = (trace_canvas).getBoundingClientRect();\
-  var x_px = evt.clientX - canvas_rect.left;\
+  var mouse = dragstuff.getMouse(evt,trace_canvas);\
+  var x_px = mouse.x;\
   var x = px2x(x_px);\
   var y = eval_jsmath(x);\
   if(isNaN(y)){return;};\
@@ -4106,7 +4093,7 @@ function CanvasState(canvas,container_div){\
  container_div.addEventListener( 'touchmove'  , function(e) { e.preventDefault(); mousemove(e.changedTouches[0]);},false);\
  container_div.addEventListener( 'touchend'   , function(e) { e.preventDefault(); mouseup(  e.changedTouches[0]);},false);\
  function mousedown(e){\
-  var mouse = myState.getMouse(e);\
+  var mouse = myState.getMouse(e,canvas);\
   var mx = mouse.x;\
   var my = mouse.y;\
   if( use_pan_and_zoom == 1 && my > ysize - 15){\
@@ -4153,7 +4140,7 @@ function CanvasState(canvas,container_div){\
   if(myState.selection != null ){\
    if(myState.selection.onclick == 2 ){\
     if( x_use_snap_to_grid == 1 || y_use_snap_to_grid == 1 || use_snap_to_points != 0){\
-     var mouse = myState.getMouse(e);\
+     var mouse = myState.getMouse(e,canvas);\
      var dx=mouse.x;\
      var dy=mouse.y;\
      if( use_snap_to_points != 0){\
@@ -4201,7 +4188,7 @@ function CanvasState(canvas,container_div){\
  };\
  function mousemove(e){\
   if(myState.dragging){\
-   var mouse = myState.getMouse(e);\
+   var mouse = myState.getMouse(e,canvas);\
    var dx=mouse.x - myState.selection.x[myState.chk];\
    var dy=mouse.y - myState.selection.y[myState.chk];\
    switch(myState.selection.direction){\
@@ -4281,14 +4268,21 @@ CanvasState.prototype.Zoom = function(xmin,xmax,ymin,ymax){\
   shape.draw(this.ctx);\
  };\
 };\
-CanvasState.prototype.getMouse = function(e){\
- var element = this.canvas, offsetX = 0,offsetY = 0;\
- while( ( element = element.offsetParent) ){\
-  offsetX += element.offsetLeft;\
-  offsetY += element.offsetTop;\
+CanvasState.prototype.getMouse = function(e,element){\
+ var offsetX = 0,offsetY = 0,mx,my;\
+  while( ( element = element.offsetParent) ){\
+   offsetX += element.offsetLeft;\
+   offsetY += element.offsetTop;\
+  };\
+ if(isTouch){\
+  mx = e.pageX - offsetX;\
+  my = e.pageY - offsetY;\
+ }\
+ else\
+ {\
+  mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
+  my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
  };\
- var mx = e.clientX - offsetX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);\
- var my = e.clientY - offsetY + (document.documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop);\
  return {x: mx, y: my};\
 };\
 CanvasState.prototype.read_dragdrop = function(){\
@@ -4507,7 +4501,6 @@ int line_width,int dynamic){
   var full = 2*Math.PI;\
   var once = true;\
   var canvas = create_canvas%d(3000,xsize,ysize);\
-  var canvas_rect = canvas.getBoundingClientRect();\
   var ctx = canvas.getContext(\"2d\");\
   var canvas_temp =  document.createElement(\"canvas\");\
   var size_x = xsize*(%f)/(xmax - xmin);\
@@ -4582,6 +4575,9 @@ int line_width,int dynamic){
     canvas_div.addEventListener( 'mouseup'   , ruler_stop,false);\
     canvas_div.addEventListener( 'mousedown' , ruler_start,false);\
     canvas_div.addEventListener( 'mousemove' , ruler_move,false);\
+    canvas_div.addEventListener( 'touchstart', function(e){ e.preventDefault();ruler_start(e.changedTouches[0]);},false);\
+    canvas_div.addEventListener( 'touchmove', function(e){ e.preventDefault();ruler_move(e.changedTouches[0]);},false);\
+    canvas_div.addEventListener( 'touchend', function(e){ e.preventDefault();ruler_stop(e.changedTouches[0]);},false);\
    };\
    function ruler_stop(evt){\
     ruler_data[0] = ruler_x;\
@@ -4591,27 +4587,27 @@ int line_width,int dynamic){
    };\
    var ruler_click_cnt = 0;\
    function ruler_start(evt){\
-     canvas_rect = canvas.getBoundingClientRect();\
-     var mouse_y = evt.clientY - canvas_rect.top;\
-     if( mouse_y > ysize - 20 ){return;};\
-     var mouse_x = evt.clientX - canvas_rect.left;\
-     if( mouse_x > ruler_x - 50 && mouse_x < ruler_x + size_x + 50){\
-      if( mouse_y > ruler_y - 50 && mouse_y < ruler_y + size_y + 50){\
-       ruler_click_cnt++;\
-       ruler_move(evt);\
-       return;\
-      };\
-     }else{ruler_click_cnt = 0; return;};\
+    var mouse = dragstuff.getMouse(evt,canvas);\
+    var mouse_y = mouse.y;\
+    if( mouse_y > ysize - 20 ){return;};\
+    var mouse_x = mouse.x;\
+    if( mouse_x > ruler_x - 50 && mouse_x < ruler_x + size_x + 50){\
+     if( mouse_y > ruler_y - 50 && mouse_y < ruler_y + size_y + 50){\
+      ruler_click_cnt++;\
+      ruler_move(evt);\
+      return;\
+     };\
+    }else{ruler_click_cnt = 0; return;};\
    };\
    var angle = 0;\
    function ruler_move(evt){\
+    var mouse = dragstuff.getMouse(evt,canvas);\
     switch(ruler_click_cnt){\
      case 1:\
       angle = 0;\
-      canvas_rect = canvas.getBoundingClientRect();\
-      ruler_y = evt.clientY - canvas_rect.top;\
+      ruler_y = mouse.y;\
       if( ruler_y > ysize - 20 ){ruler_y = 0.5*ysize;ruler_x = 0.5*xsize;return;};\
-      ruler_x = evt.clientX - canvas_rect.left;\
+      ruler_x = mouse.x;\
       if( x_use_snap_to_grid == 1 ){\
        ruler_x = snap_to_x(ruler_x);\
       };\
@@ -4625,9 +4621,8 @@ int line_width,int dynamic){
       ctx.restore();\
       break;\
      case 2:\
-      canvas_rect = canvas.getBoundingClientRect();\
-      var mouse_y = evt.clientY - canvas_rect.top;\
-      var mouse_x = evt.clientX - canvas_rect.left;\
+      var mouse_y = mouse.y;\
+      var mouse_x = mouse.x;\
       angle = find_angle(ruler_x,ruler_y,mouse_x,mouse_y);\
       if(angle > full){angle = angle - full;};\
       ctx.clearRect(0,0,xsize,ysize);\
@@ -4686,7 +4681,6 @@ if( type == 1 ){ /* geodriehoek */
   var once = true;\
   var full = 2*Math.PI;\
   var canvas = create_canvas%d(2000,xsize,ysize);\
-  var canvas_rect = canvas.getBoundingClientRect();\
   var ctx = canvas.getContext(\"2d\");\
   var canvas_temp =  document.createElement(\"canvas\");\
   var size = parseInt(xsize*(%d)/(xmax - xmin));\
@@ -4764,6 +4758,9 @@ if(dynamic == -1 ){
    canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
    canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
    canvas_div.addEventListener( 'mousemove' , protractor_move,false);\
+   canvas_div.addEventListener( 'touchstart', function(e){ e.preventDefault();protractor_start(e.changedTouches[0]);},false);\
+   canvas_div.addEventListener( 'touchmove', function(e){ e.preventDefault();protractor_move(e.changedTouches[0]);},false);\
+   canvas_div.addEventListener( 'touchend', function(e){ e.preventDefault();protractor_stop(e.changedTouches[0]);},false);\
   };\
   function protractor_stop(evt){\
    if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
@@ -4774,27 +4771,27 @@ if(dynamic == -1 ){
   };\
   var protractor_click_cnt = 0;\
   function protractor_start(evt){\
-    canvas_rect = canvas.getBoundingClientRect();\
-    var mouse_y = evt.clientY - canvas_rect.top;\
-    if( mouse_y > ysize - 20 ){return;};\
-    var mouse_x = evt.clientX - canvas_rect.left;\
-    if( mouse_x > protractor_x - 50 && mouse_x < protractor_x + size ){\
-     if( mouse_y > protractor_y - 50 && mouse_y < protractor_y + size ){\
-      protractor_click_cnt++;\
-      protractor_move(evt);\
-      return;\
-     };\
-    }else{protractor_click_cnt = 0; return;};\
+   var mouse = dragstuff.getMouse(evt,canvas);\
+   var mouse_y = mouse.y;\
+   if( mouse_y > ysize - 20 ){return;};\
+   var mouse_x = mouse.x;\
+   if( mouse_x > protractor_x - 50 && mouse_x < protractor_x + size ){\
+    if( mouse_y > protractor_y - 50 && mouse_y < protractor_y + size ){\
+     protractor_click_cnt++;\
+     protractor_move(evt);\
+     return;\
+    };\
+   }else{protractor_click_cnt = 0; return;};\
   };\
   var angle = 0;\
   function protractor_move(evt){\
+   var mouse = dragstuff.getMouse(evt,canvas);\
    switch(protractor_click_cnt){\
     case 1:\
       angle = 0;\
-      canvas_rect = canvas.getBoundingClientRect();\
-      protractor_y = evt.clientY - canvas_rect.top;\
+      protractor_y = mouse.y;\
       if( protractor_y > ysize - 20 ){protractor_y = 0.5*ysize;protractor_x = 0.5*xsize;return;};\
-      protractor_x = evt.clientX - canvas_rect.left;\
+      protractor_x = mouse.x;\
       if( x_use_snap_to_grid == 1 ){\
        protractor_x = snap_to_x(protractor_x);\
       };\
@@ -4808,9 +4805,8 @@ if(dynamic == -1 ){
       ctx.restore();\
     break;\
     case 2:\
-      canvas_rect = canvas.getBoundingClientRect();\
-      var mouse_y = parseInt(evt.clientY - canvas_rect.top);\
-      var mouse_x = parseInt(evt.clientX - canvas_rect.left);\
+      var mouse_y = mouse.x;\
+      var mouse_x = mouse.y;\
       angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
       ctx.clearRect(0,0,xsize,ysize);\
       ctx.save();\
@@ -4853,14 +4849,13 @@ else
 } /* end type == 1 */
 
 
-if( type == 0 ){
+if( type != 1 ){
  fprintf(js_include_file,"\n<!-- begin command protractor type 0 -->\n\
  var protractor_data = new Array(3);\
  var protractor%d = function(){\
   var once = true;\
   var full = 2*Math.PI;\
   var canvas = create_canvas%d(2000,xsize,ysize);\
-  var canvas_rect = canvas.getBoundingClientRect();\
   var ctx = canvas.getContext(\"2d\");\
   var canvas_temp =  document.createElement(\"canvas\");\
   var size = parseInt(xsize*(%d)/(xmax - xmin));\
@@ -4933,6 +4928,9 @@ if( dynamic == -1 ){
    canvas_div.addEventListener( 'mouseup'   , protractor_stop,false);\
    canvas_div.addEventListener( 'mousedown' , protractor_start,false);\
    canvas_div.addEventListener( 'mousemove' , protractor_move,false);\
+   canvas_div.addEventListener( 'touchstart', function(e){ e.preventDefault();protractor_start(e.changedTouches[0]);},false);\
+   canvas_div.addEventListener( 'touchmove', function(e){ e.preventDefault();protractor_move(e.changedTouches[0]);},false);\
+   canvas_div.addEventListener( 'touchend', function(e){ e.preventDefault();protractor_stop(e.changedTouches[0]);},false);\
   };\
   function protractor_stop(evt){\
    if(display_type > 1 ){show_slider_value([0,angle],display_type);};\
@@ -4943,27 +4941,27 @@ if( dynamic == -1 ){
   };\
   var protractor_click_cnt = 0;\
   function protractor_start(evt){\
-    canvas_rect = canvas.getBoundingClientRect();\
-    var mouse_y = evt.clientY - canvas_rect.top;\
-    if( mouse_y > ysize - 20 ){return;};\
-    var mouse_x = evt.clientX - canvas_rect.left;\
-    if( mouse_x > protractor_x - half && mouse_x < protractor_x + half ){\
-     if( mouse_y > protractor_y - half && mouse_y < protractor_y + half ){\
-      protractor_click_cnt++;\
-      protractor_move(evt);\
-      return;\
-     };\
-    }else{protractor_click_cnt = 0; return;};\
+   var mouse = dragstuff.getMouse(evt,canvas);\
+   var mouse_y = mouse.y;\
+   if( mouse_y > ysize - 20 ){return;};\
+   var mouse_x = mouse.x;\
+   if( mouse_x > protractor_x - half && mouse_x < protractor_x + half ){\
+    if( mouse_y > protractor_y - half && mouse_y < protractor_y + half ){\
+     protractor_click_cnt++;\
+     protractor_move(evt);\
+     return;\
+    };\
+   }else{protractor_click_cnt = 0; return;};\
   };\
   var angle = 0;\
   function protractor_move(evt){\
+   var mouse = dragstuff.getMouse(evt,canvas);\
    switch(protractor_click_cnt){\
     case 1:\
       angle = 0;\
-      canvas_rect = canvas.getBoundingClientRect();\
-      protractor_y = evt.clientY - canvas_rect.top;\
+      protractor_y = mouse.y;\
       if( protractor_y > ysize - 20 ){protractor_y = 0.5*ysize;protractor_x = 0.5*xsize;return;};\
-      protractor_x = evt.clientX - canvas_rect.left;\
+      protractor_x = mouse.x;\
       if( x_use_snap_to_grid == 1 ){\
        protractor_x = snap_to_x(protractor_x);\
       };\
@@ -4977,9 +4975,8 @@ if( dynamic == -1 ){
       ctx.restore();\
       break;\
     case 2:\
-     canvas_rect = canvas.getBoundingClientRect();\
-     var mouse_y = evt.clientY - canvas_rect.top;\
-     var mouse_x = evt.clientX - canvas_rect.left;\
+     var mouse_y = mouse.y;\
+     var mouse_x = mouse.x;\
      angle = find_angle(protractor_x,protractor_y,mouse_x,mouse_y);\
      if(angle > full){angle = angle - full;};\
      ctx.clearRect(0,0,xsize,ysize);\

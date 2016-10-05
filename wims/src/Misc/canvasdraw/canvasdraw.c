@@ -178,6 +178,7 @@ int main(int argc, char *argv[]){
 	@ for usage within OEF (without anstype "draw"), something like this (a popup function plotter) will work:<br /><small>\\text{popup_grapher=wims(exec canvasdraw <br />popup<br />size 400,400<br />xrange -10,10<br />yrange -10,10<br />axis<br />axisnumbering<br />opacity 100,100<br />grid 2,2,grey,2,2,6,black<br />snaptogrid<br />linewidth 2<br />jsplot red,5*sin(1/x)<br />strokecolor green<br />functionlabel f(x)=<br />userinput function<br />mouse blue,22<br />)<br />}<br />\\statement{<br />\\popup_grapher<br />}</small>
 	@ be aware that older browsers will probably not work correctly<br />no effort has been undertaken to add glue code for older browsers !! <br />in any case it's not wise to use older browsers...not just for canvasdraw
 	@ if you find flaws, errors or other incompatibilities -not those mentioned in this document- send <a href='mailto:jm.evers-at-schaersvoorde.nl'>me</a> an email with screenshots and the generated javascript include file.
+	@ there is limited support for touch devices : touchstart,touchmove and touchend in commands <a href="#userdraw">userdraw primitives </a>, <a href="#protractor">protractor</a> and <a href="#ruler">ruler</a><br />only single finger gestures are supported (for now)<br />for more accurate user-interaction with canvasdraw on touch devices: use the command family <a href="userinput_xy">userinput</a>
 	*/
 	switch(type){
 	case END:
@@ -272,6 +273,7 @@ function distance(x1,y1,x2,y2){return Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y
 function distance_to_line (r,q,x,y){var c = (y) - (-1/r)*(x);var xs = r*(c - q)/(r*r+1);var ys = (r)*(xs)+(q);return parseInt(Math.sqrt( (xs-x)*(xs-x) + (ys-y)*(ys-y) ));};\
 function move(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = obj.x[p] + dx;obj.y[p] = obj.y[p] + dy;};return obj;};\
 function slide(obj,dx,dy){for(var p = 0 ; p < obj.x.length; p++){obj.x[p] = x2px(obj.xorg[p] + dx);obj.y[p] = y2px(obj.yorg[p] + dy);};return obj;};\
+var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));\
 var x_use_snap_to_grid = 0;var y_use_snap_to_grid = 0;var snap_x = 1;var snap_y = 1;\
 var use_snap_to_points = 0;\
 function snap_to_x(x){return x2px(snap_x*(Math.round((px2x(x))/snap_x)));};\
