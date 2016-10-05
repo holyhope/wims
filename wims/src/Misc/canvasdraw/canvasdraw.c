@@ -221,12 +221,12 @@ if( typeof canvas_scripts === 'undefined' ){ var canvas_scripts = new Array();};
 canvas_scripts.push(\"%d\");\n/*]]>*/\n</script>\n\
 ",canvas_root_id);
 
-
+/* style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\" */
 if( use_tooltip != 2){
  fprintf(stdout,"<!-- canvasdraw div  -->\n\
 <div tabindex=\"0\" id=\"canvas_div%d\" style=\"position:relative;width:%dpx;height:%dpx;margin-left:auto;margin-right:auto;\" ></div>\n\
 <!-- tooltip and input placeholder  -->\n\
-<div id=\"tooltip_placeholder_div%d\" style=\"display:block;position:relative;margin-left:auto;margin-right:auto;margin-bottom:4px;\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
+<div id=\"tooltip_placeholder_div%d\" style=\"text-align:center\"><span id=\"tooltip_placeholder%d\" style=\"display:none;\"></span></div>\
 <!-- include actual object code via include file -->\n\
 <script id=\"canvas_script%d\" type=\"text/javascript\" src=\"%s\"></script>\n",canvas_root_id,xsize,ysize,canvas_root_id,canvas_root_id,canvas_root_id,getfile_cmd);
 }
@@ -4709,7 +4709,7 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
     case 3:xmin = xmin + pan_x_increment;ymin = ymin ;xmax = xmax + pan_x_increment;ymax = ymax;break;\
     case 4:xmin = xmin;ymin = ymin - pan_y_increment ;xmax = xmax;ymax = ymax - pan_y_increment;break;\
     case 5:xmin = xmin;ymin = ymin + pan_y_increment ;xmax = xmax;ymax = ymax + pan_y_increment;break;\
-    case 6:break;\
+    case 6:xmin = xmin_start; xmax = xmax_start;ymin = ymin_start;ymax = ymax_start;break;\
     default:break;\
    };\
    if(xmax<=xmin){xmin=xmin_start;xmax=xmax_start;};\
