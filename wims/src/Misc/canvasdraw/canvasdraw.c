@@ -1860,7 +1860,7 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 	@ userdraw object_type,color
 	@ only a single object_type is allowed.
 	@ for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
-	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+	@ implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with a color<br />only one area can be selected</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 	@ <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 	@ <b>note</b>: object_type text: Any string or multiple strings may be placed anywhere on the canvas.<br />while typing the background of every typed char will be lightblue..."backspace / delete / esc" will remove typed text.<br />You will need to hit "enter" to add the text to the array "userdraw_txt()" : lightblue background will disappear<br />Placing the cursor somewhere on a typed text and hitting "delete/backspace/esc" , a confirm will popup asking to delete the selected text.This text will be removed from the "userdraw_txt()" answer array.<br />Use commands 'fontsize' and 'fontfamily' to control the text appearance
 	@ <b>note</b>: object_type polygone: Will be finished (the object is closed) when clicked on the first point of the polygone again.
@@ -2251,6 +2251,16 @@ var external_canvas = create_canvas%d(%d,xsize,ysize);\n",canvas_root_id,canvas_
 		add_js_inputs(js_include_file,canvas_root_id,1,input_cnt,input_style,line_width);
 		if(use_input_xy == 1){ canvas_error("userinput_xy not yet implemented for this userdraw type !");}
 		if(use_input_xy == 2){ canvas_error("usertextarea_xy not yet implemented for this userdraw type !");}
+	    }
+	    else
+	    if( strcmp(draw_type,"clickfill") == 0){
+		decimals = find_number_of_digits(precision);
+		if(reply_format == 0){reply_format = 22;}
+		add_js_clickfill(js_include_file,canvas_root_id,stroke_color,(int) (fill_opacity/0.0039215));
+		if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
+		 js_function[DRAW_FILLTOBORDER] = 1;
+		 add_js_filltoborder(js_include_file,canvas_root_id);
+	        }
 	    }
 	    else
 	    {
@@ -4122,49 +4132,32 @@ URL,[2],[3],[6],    [7], [4],[5],[6],[7],ext_img_cnt,1,    [8],      [9]
 		    case 0:double_data[0] = get_real(infile,0);break;
 		    case 1:double_data[1] = get_real(infile,0);break;
 		    case 2:fill_color = get_color(infile,1);
-			   if(js_function[DRAW_FLOODFILL] != 1 ){/* use only once */
-				js_function[DRAW_FLOODFILL] = 1;
-				add_js_floodfill(js_include_file,canvas_root_id);
+			   if(js_function[DRAW_FILLTOBORDER] != 1 ){/* use only once */
+				js_function[DRAW_FILLTOBORDER] = 1;
+				add_js_filltoborder(js_include_file,canvas_root_id);
 			   }
-			   decimals = find_number_of_digits(precision);/*floodfill(interaction,x,y,[R,G,B,A]) */
+
 			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
-			   string_length = snprintf(NULL,0,  "setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
+/*
+			   decimals = find_number_of_digits(precision);
+			    string_length = snprintf(NULL,0,  "setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
 			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
 			   snprintf(tmp_buffer,string_length,"setTimeout(function(){floodfill(0,%.*f,%.*f,[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215));
 			   add_to_buffer(tmp_buffer);
+*/
+
+			   decimals = find_number_of_digits(precision);
+			   /* we need to set a timeout: the canvas is not yet draw in memory? when floodfill is called directly... */
+			   string_length = snprintf(NULL,0,  "setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   check_string_length(string_length);tmp_buffer = my_newmem(string_length+1);
+			   snprintf(tmp_buffer,string_length,"setTimeout(function(){filltoborder(%.*f,%.*f,[%s,%d],[%s,%d]);},1000);\n",decimals,double_data[0],decimals,double_data[1],fill_color,(int) (fill_opacity/0.0039215),fill_color,(int) (fill_opacity/0.0039215));
+			   add_to_buffer(tmp_buffer);
+
 			   break;
 		    default:break;
 		}
 	    }
 	    reset();
-	break;
-	case CLICKFILLMARGE:
-	   clickfillmarge = (int) (get_real(infile,1));
-	    break;
-	/*
-	@ clickfillmarge int
-	@ default 20 (pixels)
-	@ when using command "clickfill fillcolor" a coloured area may be reverted ("undo") <br />back to backgrounbld colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
-	*/
-	case CLICKFILL:
-	/*
-	@ clickfill fillcolor
-	@ user left mouse click will floodfill the area with fillcolor
-	@ multiple areas may be coloured
-	@ the coloured areas can be removed (changed to "bgcolor") by  middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
-	@ the answer will be read as the (x:y) click coordinates per coloured area
-	@ background color of main div may be set by using command "bgcolor color"
-	@ may <b>not</b> be combined with command "userdraw". <br />However <a href="#multidraw">"multidraw"</a> is possi (since it has a button 'stop drawing'...but in any case it is not a good idea...)
-	@ <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
-	*/
-	 fill_color = get_color(infile,1);
-	 if(js_function[DRAW_FLOODFILL] != 1 ){/* use only once */
-	    js_function[DRAW_FLOODFILL] = 1;
-	    add_js_floodfill(js_include_file,canvas_root_id);
-	 }
-	 fprintf(js_include_file,"\n<!-- begin command clickfill -->\nvar marge_xy = %d;userdraw_x = new Array();userdraw_y = new Array();var user_clickfill_cnt = 0;\ncanvas_div.addEventListener(\"mousedown\",clickfill,false);function clickfill(evt){var x = evt.clientX - findPosX(canvas_div) + document.body.scrollLeft + document.documentElement.scrollLeft;var y = evt.clientY - findPosY(canvas_div) + document.body.scrollTop + document.documentElement.scrollTop;if(evt.which != 1){for(var p=0; p < user_clickfill_cnt;p++){if(userdraw_x[p] + marge_xy > x && userdraw_x[p] - marge_xy < x){if(userdraw_y[p] + marge_xy > y && userdraw_y[p] - marge_xy < y){if(confirm(\"Clear ?\")){floodfill(1,userdraw_x[p],userdraw_y[p],canvas_div.style.backgroundColor || [255,255,255,0]);userdraw_x.splice(p,2);userdraw_y.splice(p,2);user_clickfill_cnt--;return;};};};};};userdraw_x[user_clickfill_cnt] = x;userdraw_y[user_clickfill_cnt] = y;user_clickfill_cnt++;floodfill(1,x,y,[%s,%d]);};",clickfillmarge,fill_color,(int) (fill_opacity/0.0039215));
-	 add_read_canvas(canvas_root_id,1,reply_precision);
-	 reset();
 	break;
 	case SETPIXEL:
 	/*
@@ -6313,7 +6306,7 @@ var draw_bezier = function(canvas_type,linewidth,xy_points,fill_color,fill_opaci
  ctx.save();\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  if(use_affine == 1 ){ctx.translate(affine_matrix[4],affine_matrix[5]);};\
  if(use_rotate == 1 ){ctx.rotate(angle*Math.PI/180);};\
  if(use_dashed == 1){if(ctx.setLineDash){ctx.setLineDash([dashtype0,dashtype1]);}else{ctx.mozDash = [dashtype0,dashtype1];};};\
@@ -6442,7 +6435,7 @@ var draw_diamondfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,s
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -6490,7 +6483,7 @@ var draw_hatchfill = function(canvas_type,x0,y0,dx,dy,linewidth,stroke_color,str
  var y;\
  ctx.save();\
  ctx.lineWidth = linewidth;\
- if(line_width%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
+ if(linewidth%%2 == 1 && typeof zoom_x_increment === 'undefined'){ctx.translate(0.5,0.5)};\
  ctx.strokeStyle=\"rgba(\"+stroke_color+\",\"+stroke_opacity+\")\";\
  y = ysize;\
  for( x = x0 ; x < xsize ; x = x + dx ){\
@@ -8495,11 +8488,9 @@ int get_token(FILE *infile){
 	*replyformat="replyformat",
 	*floodfill="floodfill",
 	*filltoborder="filltoborder",
-	*clickfill="clickfill",
 	*setpixel="setpixel",
 	*pixels="pixels",
 	*pixelsize="pixelsize",
-	*clickfillmarge="clickfillmarge",
 	*xaxis="xaxis",
 	*xaxisup="xaxisup",
 	*yaxis="yaxis",
@@ -9148,10 +9139,6 @@ int get_token(FILE *infile){
 	free(input_type);
 	return FILLTOBORDER;
 	}
-	if( strcmp(input_type,clickfill) == 0 ){
-	free(input_type);
-	return CLICKFILL;
-	}
 	if( strcmp(input_type, replyformat) == 0 ){
 	free(input_type);
 	return REPLYFORMAT;
@@ -9167,10 +9154,6 @@ int get_token(FILE *infile){
 	if( strcmp(input_type, pixels) == 0 ){
 	free(input_type);
 	return PIXELS;
-	}
-	if( strcmp(input_type, clickfillmarge) == 0 ){
-	free(input_type);
-	return CLICKFILLMARGE;
 	}
 	if( strcmp(input_type, xaxis) == 0 || strcmp(input_type, xaxistext) == 0 ){
 	free(input_type);

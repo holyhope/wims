@@ -8,7 +8,7 @@
  a:visited {color:#004077;}
 </style>
 <input type='text' size='10' value='' id='search'  onkeydown='javascripts:if(event.keyCode == 13){look();}'/><input type='button' onclick='javascript:look();' value='search' />
-<center><h3>Implemented canvasdraw commands (05-10-2016)</h3></center>
+<center><h3>Implemented canvasdraw commands (06-10-2016)</h3></center>
 <table style='color:blue;font-size:0.8em;'><tr>
 
 <td><a name='canvasdraw top' href='#canvasdraw'>canvasdraw</a></td>
@@ -204,15 +204,13 @@
 <td><a name='filltoborder top' href='#filltoborder'>filltoborder</a></td>
 <td><a name='floodfill top' href='#floodfill'>floodfill</a></td>
 <td><a name='fill top' href='#floodfill'>fill</a></td>
-<td><a name='clickfillmarge top' href='#clickfillmarge'>clickfillmarge</a></td>
-<td><a name='clickfill top' href='#clickfill'>clickfill</a></td>
 <td><a name='setpixel top' href='#setpixel'>setpixel</a></td>
 <td><a name='pixelsize top' href='#pixelsize'>pixelsize</a></td>
 <td><a name='pixels top' href='#pixels'>pixels</a></td>
 <td><a name='replyformat top' href='#replyformat'>replyformat</a></td>
-</tr><tr>
 <td><a name='legendcolors top' href='#legendcolors'>legendcolors</a></td>
 <td><a name='legend top' href='#legend'>legend</a></td>
+</tr><tr>
 <td><a name='xlabel top' href='#xlabel'>xlabel</a></td>
 <td><a name='ylabel top' href='#ylabel'>ylabel</a></td>
 <td><a name='linegraph top' href='#linegraph'>linegraph</a></td>
@@ -220,9 +218,9 @@
 <td><a name='clock top' href='#clock'>clock</a></td>
 <td><a name='piechart top' href='#piechart'>piechart</a></td>
 <td><a name='userboxplotdata top' href='#userboxplotdata'>userboxplotdata</a></td>
-</tr><tr>
 <td><a name='userboxplot top' href='#userboxplot'>userboxplot</a></td>
 <td><a name='boxplotdata top' href='#boxplotdata'>boxplotdata</a></td>
+</tr><tr>
 <td><a name='boxplot top' href='#boxplot'>boxplot</a></td>
 <td><a name='status top' href='#status'>status</a></td>
 <td><a name='xlogbase top' href='#xlogbase'>xlogbase</a></td>
@@ -230,6 +228,8 @@
 <td><a name='xlogscale top' href='#xlogscale'>xlogscale</a></td>
 <td><a name='ylogscale top' href='#ylogscale'>ylogscale</a></td>
 <td><a name='xylogscale top' href='#xylogscale'>xylogscale</a></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 </tr></table>
 <ul>
 <li><a name='canvasdraw' href='#canvasdraw top'>  canvasdraw</a><ul>
@@ -843,7 +843,7 @@
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> for multiple object user drawings use command <a href="#multidraw">'multidraw'</a>
 </span></li>
-<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
+<li><span style="color:blue;font-size:0.8em"> implemented object_type: <ul><li>point</li><li>points</li><li>crosshair</li><li>crosshairs</li><li>line</li><li>lines</li><li>vline</li><li>vlines</li><li>hline</li><li>hlines</li><li>demiline</li><li>demilines</li><li>segment</li><li>segments</li><li>polyline | brokenline </li><li>circle</li><li>circles</li><li>arrow</li><li>arrow2 (double arrow)</li><li>arrows</li><li>arrows2 (double arrows)</li><li>triangle</li><li>polygon</li><li>poly[3-9] (e.g poly3 ... poly7...poly9 </li><li>rect</li><li>roundrect</li><li>rects</li><li>roundrects</li><li>freehandline | path</li><li>freehandlines | paths</li><li>clickfill : fill the clicked area with color</li><li>text</li><li>arc</li><li>arcs</li><li>input<br/>place a single inputfield on 'canvas'<br />use commands 'inputstyle' for css styling: use command 'linewidth' for adjusting the input field size (default 1)</li><li>inputs<br/>place multiple inputfield : placing inputfields on top of each other is not possible</li></ul>
 </span></li>
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: mouselisteners are only active if "$status != done " (eg only drawing in an active/non-finished exercise) <br /> to overrule use command/keyword "status" (no arguments required)
 </span></li>
@@ -1854,28 +1854,6 @@
 <li><span style="color:blue;font-size:0.8em"> <b>note</b>: floodfill is a very (client) cpu intensive operation!<br />filling is done pixel by pixel<br/>e.g. image size of 400x400 uses 160000 pixels : each pixel contains 4 data (R,G,B,Opacity) = 640000 data.<br />on every data a few operations / comparisons are done...<br />So have pity on your students CPU..
 </span></li>
 </ul>
-<li><a name='clickfillmarge' href='#clickfillmarge top'>  clickfillmarge int</a><ul>
-<li><span style="color:blue;font-size:0.8em"> default 20 (pixels)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> when using command "clickfill fillcolor" a coloured area may be reverted ("undo") <br />back to backgrounbld colour with a middle mouse click<br />when the click is in a 40x40 rectangle around a stored m mouseclick (userdraw_x[] and userdraw_y[])
-</span></li>
-</ul>
-<li><a name='clickfill' href='#clickfill top'>  clickfill fillcolor</a><ul>
-<li><span style="color:blue;font-size:0.8em"> user left mouse click will floodfill the area with fillcolor
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> multiple areas may be coloured
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> the coloured areas can be removed (changed to "bgcolor") by middle / right mouse click <br />(if the click is in an 40x40 pixel area of the click coordinate that "painted" the area)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> the answer will be read as the (x:y) click coordinates per coloured area
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> background color of main div may be set by using command "bgcolor color"
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> may <b>not</b> be combined with command "userdraw". <br />However <a href="#multidraw">"multidraw"</a> is possi (since it has a button 'stop drawing'...but in any case it is not a good idea...)
-</span></li>
-<li><span style="color:blue;font-size:0.8em"> <b>note</b>: recognised colour boundaries are in the "drag canvas" e.g. only for objects that can be set draggable / clickable
-</span></li>
-</ul>
 <li><a name='setpixel' href='#setpixel top'>  setpixel x,y,color</a><ul>
 <li><span style="color:blue;font-size:0.8em"> A rectangular "point" with diameter 1 pixel centered at (x:y) in xrange / yrange
 </span></li>
@@ -2172,7 +2150,7 @@
 </li>
 </ul>
 <script type='text/javascript'>
- var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','filltoborder','floodfill','fill','clickfillmarge','clickfill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
+ var keys = ['canvasdraw' ,'canvasdraw','size','xrange','rangex','yrange','rangey','trange','ranget','linewidth','crosshairsize','crosshair','crosshairs','point','points','yerrorbars','xerrorbars','circle','circles','disks','segment','seg','segments','segs','line','lines','demiline','halfline','demilines','halflines','hline','horizontalline','hlines','horizontallines','vline','verticalline','vlines','verticallines','square','rect','rects','roundrect','roundrects','polyline','poly','arc','angle','ellipse','dashtype','rays','arrowhead','arrow','vector','arrows','vectors','arrow2','arrows2','parallel','triangle','triangles','lattice','multistrokeopacity','multifillopacity','multilabel','multilinewidth','multidash','multisnaptogrid','multifill','multistrokecolors','multifillcolors','multiuserinput','multidraw','ruler','protractor','userdraw','snaptofunction','snaptofun','snaptopoints','snaptogrid','xsnaptogrid','ysnaptogrid','userinput','userinput_function','userinput_textarea','userinput_xy','usertextarea_xy','userinput_xy','functionlabel','userinput_function','plotsteps','fontsize','fontcolor','jscurve','jsplot','curve','levelcurve','bezier','trace_jscurve','jsmath','text','textup','fontfamily','stringup','string','centerstring','mathml','http','html','xaxis','xaxistext','xaxisup','xaxistextup','yaxis','axisnumbering','axis','killslider','sliderfunction_x','sliderfunction_y','slider','sgraph','grid','opacity','transparent','rotationcenter','rotate','killrotate','killaffine','affine','killtranslation','killtranslate','translation','translate','animate','dashed','filled','highlight','fillcolor','strokecolor','bgimage','bgcolor','copy','copyresized','clearbutton','delete','erase','inputstyle','input','textarea','precision','setlimits','zoom','onclick','drag','blink','xunit','yunit','cursor','pointer','display','mouse_degree','mousex','mousey','mouse','intooltip','popup','audio','video','hatchfill','diamondfill','gridfill','dotfill','imagefill','filltoborder','floodfill','fill','setpixel','pixelsize','pixels','replyformat','legendcolors','legend','xlabel','ylabel','linegraph','barchart','clock','piechart','userboxplotdata','userboxplot','boxplotdata','boxplot','status','xlogbase','ylogbase','xlogscale','ylogscale','xylogscale'];
  var keys_len = keys.length;
  function match(s1,s2){
   var n1 = s1.length;
